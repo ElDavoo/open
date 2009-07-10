@@ -29,6 +29,7 @@ Readonly my $AUTH_INFO_DEFAULTS => {
 };
 
 field 'meta';
+field 'dev_popup';
 
 my @AuthInfo;
 my @ResourceHooks;
@@ -342,6 +343,28 @@ sub callHandler {
     # Convert the result to a ref if it isn't already
     return ref($result) ? $result : \$result;
 
+}
+
+sub preRun {
+    my ($self) = @_;
+
+    # create a dev-popup *UNLESS* we're running on an appliance
+    unless (Socialtext::AppConfig->is_appliance()) {
+        require Socialtext::DevPopup;
+        my $popup = Socialtext::DevPopup->new( rest => $self );
+        $popup->init();
+        $self->dev_popup($popup);
+    }
+}
+
+sub postRun {
+    my ($self, $resultref) = @_;
+
+    # add a dev-popup to our output, *IF* we have one available
+    my $popup = $self->dev_popup;
+    if ($popup) {
+        $popup->add_popup($resultref);
+    }
 }
 
 my %type_alias = (
