@@ -116,7 +116,7 @@ sub UserHasRoleInWorkspace {
         $role_id,
         ($role_id, $user_id)
     );
-    return $is_ok;
+    return $is_ok || 0;
 }
 
 ###############################################################################
