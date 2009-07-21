@@ -1,0 +1,18 @@
+# source this file to run Signals Only Testcases
+
+if [ "$SELENIUM_PLAN_SERVER" == "" ]; then
+    echo You must export SELENIUM_PLAN_SERVER=http://PLANSERVER:PLANPORT
+    echo in order to test this Signals Only environment
+else
+    PLAN_PAGE="signals_only_testcases"
+    [ "$1" ] && PLAN_PAGE="$1"
+    USERNAME="wikitester@ken.socialtext.net"
+    OUTFILE="$PLAN_PAGE".out
+    
+    echo PLAN_SERVER is $SELENIUM_PLAN_SERVER
+    echo PLAN_PAGE is $PLAN_PAGE
+    
+    ~/stbin/run-wiki-tests --no-maximize --timeout 60000 --test-username "$USERNAME" --test-email "$USERNAME" --plan-server "$SELENIUM_PLAN_SERVER" --plan-workspace wikitests --plan-page "$PLAN_PAGE"  >& signal"$OUTFILE"&
+    ln -sf "$OUTFILE"  testcases.out
+    echo RUNNING "$PLAN_PAGE"  ... tail -f testcases.out to monitor progress
+fi
