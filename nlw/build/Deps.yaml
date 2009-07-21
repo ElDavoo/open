@@ -113,6 +113,7 @@ MLDBM: 2.01
 Module::Pluggable 0
 Moose: 0.72
 MooseX::AttributeHelpers: 0.14
+MooseX::Traits: 0.03
 Params::Validate: 0.86
 Pod::Usage: 0
 POSIX: 1.08
