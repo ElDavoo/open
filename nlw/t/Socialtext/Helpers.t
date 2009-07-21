@@ -18,20 +18,22 @@ my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
 my $script_path = 'index.cgi';
 
 _get_workspace_list_for_template: {
-    my $workspacelist=$hub->helpers->_get_workspace_list_for_template;
+    my $workspacelist   = $hub->helpers->_get_workspace_list_for_template;
+    my $acct_default    = Socialtext::Account->Default();
+    my $acct_socialtext = Socialtext::Account->Socialtext();
      
     is scalar(@$workspacelist), 2, 'length of workspace list';
     is_deeply $workspacelist,
         [
             {
                 label   => 'Admin Wiki',
-                account => 'topaz.socialtext.net',
+                account => $acct_default->name(),
                 name    => 'admin',
                 id      => 2
             },
             {
                 label   => 'Socialtext Documentation',
-                account => 'Socialtext',
+                account => $acct_socialtext->name(),
                 name    => 'help-en',
                 id      => 1
             },
