@@ -442,33 +442,8 @@ sub user_ids {
 
 sub user_count {
     my $self = shift;
-    my %p    = @_;
-
-    my $primary_only   = $p{primary_only}          || 0;
-    my $exclude_hidden = $p{exclude_hidden_people} || 0;
-
-    my $account_where = 'primary_account_id = ?';
-    my @bind = ($self->account_id);
-    unless ($primary_only) {
-        $account_where .= ' OR secondary_account_id = ?';
-        push @bind, $self->account_id;
-    }
-
     Socialtext::Timer->Continue('acct_user_count');
-
-    my $exclude_hidden_clause = '';
-    if ($exclude_hidden) {
-        $exclude_hidden_clause = 'AND NOT is_profile_hidden';
-    }
-
-    my $sth = sql_execute(<<EOSQL, @bind);
-        SELECT COUNT(DISTINCT(user_id))
-        FROM user_account
-        WHERE $account_where
-              $exclude_hidden_clause
-EOSQL
-
-    my $count = $sth->fetchall_arrayref->[0][0];
+    my $count = $self->users(@_)->count();
     Socialtext::Timer->Pause('acct_user_count');
     return $count;
 }
@@ -1058,35 +1033,26 @@ Returns a count of Groups that exist within this Account.
 Returns a cursor of the Groups that exist within this Account, ordered by
 Group name.
 
+=item $account->users(PARAMS)
+
+Returns a cursor of the Users in this Account, ordered by Username.
+
+Accepts thes same PARAMS as C<Socialtext::User-E<gt>ByAccountId()>; please
+refer to L<Socialtext::User> for more information on acceptable parameters.
+
+=item $account->user_ids(PARAMS)
+
+Returns a list-ref of User Ids, for Users that have access to this Account.
+
+Accepts thes same PARAMS as C<Socialtext::User-E<gt>ByAccountId()>; please
+refer to L<Socialtext::User> for more information on acceptable parameters.
+
 =item $account->user_count(PARAMS)
 
 Returns the count of Users in this Account.
 
-Accepts the following PARAMS:
-
-=over
-
-=item primary_only
-
-Specifies that we should only return a count of Users that have this Account
-as their B<primary> Account.  By default, we return Users that have this
-Account as I<either> a primary or secondary Account.
-
-=item exclude_hidden_people
-
-Specifies that we should exclude hidden Users from the count.  By default,
-hidden Users B<are> counted towards the total count of Users in the Account.
-
-=back
-
-=item $account->users()
-
-Returns a cursor of the users for this account, ordered by username.
-
-=item $account->user_ids()
-
-Returns a list-ref of User Ids, for Users that have access to this Account
-(either as a primary or secondary account).
+Accepts thes same PARAMS as C<Socialtext::User-E<gt>ByAccountId()>; please
+refer to L<Socialtext::User> for more information on acceptable parameters.
 
 =item $account->is_plugin_enabled($plugin)
 
