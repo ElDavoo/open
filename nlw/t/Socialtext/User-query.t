@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Socialtext::User;
-use Test::Socialtext tests => 37;
+use Test::Socialtext tests => 30;
 
 ###############################################################################
 # Fixtures: clean populated_rdbms
