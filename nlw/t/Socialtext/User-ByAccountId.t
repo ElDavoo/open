@@ -5,7 +5,6 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 16;
 use Socialtext::User;
-use Socialtext::People::Profile;
 
 ###############################################################################
 # Fixtures: db
@@ -89,51 +88,61 @@ users_only_with_primary_account: {
 ###############################################################################
 # TEST: ByAccountId by default includes hidden people
 include_hidden_people: {
-    my $account  = create_test_account_bypassing_factory();
-    my $user_one = create_test_user(account => $account);
-    my $user_two = create_test_user(account => $account);
+    SKIP: {
+        eval { require Socialtext::People::Profile }
+            or skip("People plugin not available", 2);
 
-    # hide one of the Users
-    my $profile = Socialtext::People::Profile->GetProfile($user_one->user_id);
-    $profile->is_hidden(1);
-    $profile->save();
-    # get the Users in the second Account; should be *both* Users
-    my $results = Socialtext::User->ByAccountId(
-        account_id   => $account->account_id,
-    );
-    is $results->count(), 2, 'ByAccountId includes hidden people by default';
-    is_deeply(
-        [ map { $_->username } $results->all ],
-        [ map { $_->username } ($user_one, $user_two) ],
-        '... and its the Users/order we expected',
-    );
+        my $account  = create_test_account_bypassing_factory();
+        my $user_one = create_test_user(account => $account);
+        my $user_two = create_test_user(account => $account);
+
+        # hide one of the Users
+        my $profile = Socialtext::People::Profile->GetProfile($user_one->user_id);
+        $profile->is_hidden(1);
+        $profile->save();
+        # get the Users in the second Account; should be *both* Users
+        my $results = Socialtext::User->ByAccountId(
+            account_id   => $account->account_id,
+        );
+        is $results->count(), 2, 'ByAccountId includes hidden people by default';
+        is_deeply(
+            [ map { $_->username } $results->all ],
+            [ map { $_->username } ($user_one, $user_two) ],
+            '... and its the Users/order we expected',
+        );
+    }
 }
 
 ###############################################################################
 # TEST: ByAccountId can exclude hidden people.
 exclude_hidden_people: {
-    my $account      = create_test_account_bypassing_factory();
-    my $user_hidden  = create_test_user(account => $account);
-    my $user_visible = create_test_user(account => $account);
+    SKIP: {
+        eval { require Socialtext::People::Profile }
+            or skip("People plugin not available", 2);
 
-    # hide one of the Users
-    my $profile = Socialtext::People::Profile->GetProfile(
-        $user_hidden->user_id
-    );
-    $profile->is_hidden(1);
-    $profile->save();
+        my $account      = create_test_account_bypassing_factory();
+        my $user_hidden  = create_test_user(account => $account);
+        my $user_visible = create_test_user(account => $account);
 
-    # get the Users in the second Account; should be *both* Users
-    my $results = Socialtext::User->ByAccountId(
-        account_id            => $account->account_id,
-        exclude_hidden_people => 1,
-    );
-    is $results->count(), 1, 'ByAccountId can exclude hidden people';
-    is_deeply(
-        [ map { $_->username } $results->all ],
-        [ map { $_->username } ($user_visible) ],
-        '... and its the User we expected',
-    );
+        # hide one of the Users
+        my $profile = Socialtext::People::Profile->GetProfile(
+            $user_hidden->user_id
+        );
+        $profile->is_hidden(1);
+        $profile->save();
+
+        # get the Users in the second Account; should be *both* Users
+        my $results = Socialtext::User->ByAccountId(
+            account_id            => $account->account_id,
+            exclude_hidden_people => 1,
+        );
+        is $results->count(), 1, 'ByAccountId can exclude hidden people';
+        is_deeply(
+            [ map { $_->username } $results->all ],
+            [ map { $_->username } ($user_visible) ],
+            '... and its the User we expected',
+        );
+    }
 }
 
 ###############################################################################
