@@ -11,8 +11,8 @@ else
     
     echo PLAN_SERVER is $SELENIUM_PLAN_SERVER
     echo PLAN_PAGE is $PLAN_PAGE
-    
-    ~/stbin/run-wiki-tests --no-maximize --timeout 60000 --test-username "$USERNAME" --test-email "$USERNAME" --plan-server "$SELENIUM_PLAN_SERVER" --plan-workspace wikitests --plan-page "$PLAN_PAGE"  >& signal"$OUTFILE"&
+    echo OUTFILE is $OUTFILE
+    ~/stbin/run-wiki-tests --no-maximize --timeout 60000 --test-username "$USERNAME" --test-email "$USERNAME" --plan-server "$SELENIUM_PLAN_SERVER" --plan-workspace wikitests --plan-page "$PLAN_PAGE" >& "$OUTFILE" &
     ln -sf "$OUTFILE"  testcases.out
     echo RUNNING "$PLAN_PAGE"  ... tail -f testcases.out to monitor progress
 fi
