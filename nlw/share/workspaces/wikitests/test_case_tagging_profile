@@ -1,7 +1,7 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Starting Test Case: Tagging Profile. Log in %%username%% |  |
-| click_and_wait | link=Home |  |
+| click_and_wait | link=Dashboard |  |
 | st-logoutin |  |  |
 
 | *Comment* | Test Case: Tagging Profile. fog tag added |  |

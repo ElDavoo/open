@@ -22,6 +22,8 @@
 | type_ok | //body | Once Upon A Time %%start_time%% %%mark%% |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
+| *Comment* | Test Case: Signals Page. Signals must be spaced by at least two seconds |  |
+| pause | 3000 |  |
 | click_ok | post |  |
 | *Comment* | Test Case: Signals Page. Signals must be spaced by at least two seconds |  |
 | pause | 3000 |  |
@@ -53,6 +55,8 @@
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
+| *Comment* | Test Case: Signals Page. Signals must be spaced by at least two seconds |  |
+| pause | 3000 |  |
 
 | *Comment* | Test Case: Signals Page. Verify signals in page. |  |
 | select-frame | relative=parent |  |

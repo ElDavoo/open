@@ -46,6 +46,9 @@
 | type_ok | //body | She rocks in the treehouse %%start_time%% |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
+
+| *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
+| pause | 3000 |  |
 | click_ok | post |  |
 | *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
 | pause | 3000 |  |
@@ -77,6 +80,8 @@
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
+| *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
+| pause | 3000 |  |
 
 | *Comment* | Test Case: Signals Widget. Verify signals in widget. |  |
 | wait_for_text_present_ok | She rocks in the treehouse %%start_time%% | 30000 |

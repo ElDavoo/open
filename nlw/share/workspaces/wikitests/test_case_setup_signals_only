@@ -9,7 +9,7 @@ Since it will delete all wikis, the plan server and plan workspace must be in a 
 
 It is intended to be called from [Signals Only Testcases]
 
-| click_and_wait | link=Home |  |
+| click_and_wait | link=Dashboard |  |
 | st-admin | enable-plugin --all-accounts --p signals |  |
 | st-admin | disable-plugin --all-accounts --p dashboard |  |
 | st-logout |  |  |
