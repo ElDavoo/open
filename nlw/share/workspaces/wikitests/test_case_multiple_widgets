@@ -3,7 +3,8 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Multiple Widgets Add Image Widget |  |
-| open_ok | /?dashboard | 60000 |
+| open_ok | /?dashboard |  |
+| wait_for_text_present_ok | Welcome | 30000 |
 | st-empty-container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
@@ -14,8 +15,11 @@
 | st-name-widget | 1 | image_widget |
 | st-widget-title-like | image_widget | Image |
 | st-widget-settings | image_widget |  |
+| wait_for_element_visible_ok | up_src | 30000 |
+| wait_for_element_visible_ok | up_title | 30000 |
 | type_ok | up_src | `http://www.socialtext.com/images/people/r-mayfield.jpg` |
 | type_ok | up_title | Chairman |
+| wait_for_element_visible_ok | st-savebutton-%%image_widget%% | 30000 |
 | click_and_wait | st-savebutton-%%image_widget%% |  |
 
 | *Comment* | Test Case: Multiple Widgets Add Wiki Page Widget |  |
@@ -40,14 +44,13 @@
 | st-name-widget | 3 | image_widget |
 | st-widget-title-like | image_widget | Chairman |
 | st-name-widget | 2 | wiki_page |
-| type_ok | //input[contains(@name,'up_workspace_name')] | %%workspace%% |
+| wait_for_element_visible_ok | //input[contains(@name,'up_page_title')] | 30000 |
 | type_ok | //input[contains(@name,'up_page_title')] | jabberwocky |
 | click_ok | st-savebutton-%%wiki_page%% |  |
-| pause | 5000 |  |
+| wait_for_element_not_visible_ok | //input[contains(@name,'up_page_title')] | 30000 |
 | st-select-widget-frame | wiki_page |  |
 | wait_for_element_present_ok | link=Edit | 30000 |
 | wait_for_element_present_ok | link=View | 30000 |
-| pause | 5000 |  |
 | wait_for_text_present_ok | Beware the Jabberwock, my son! | 30000 |
 | select-frame | relative=parent |  |
 
@@ -66,7 +69,6 @@
 | st-select-widget-frame | wiki_page |  |
 | wait_for_element_present_ok | link=Edit | 30000 |
 | wait_for_element_present_ok | link=View | 30000 |
-| pause | 5000 |  |
 | wait_for_text_present_ok | Beware the Jabberwock, my son! | 30000 |
 | select-frame | relative=parent |  |
 
@@ -91,7 +93,13 @@
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | gallery-widget-RSS Viewer | 30000 |
 | click_and_wait | gallery-widget-RSS Viewer |  |
-| *Comment* | Do Something with the RSS Viewer HERE |  |
+| wait_for_text_present_ok | Socialtext blog | 30000 |
+
+| *Comment* | Add All People Tags everything shifts by 1 |  |
+| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | gallery-widget-All People Tags | 30000 |
+| click_and_wait | gallery-widget-All People Tags |  |
+| wait_for_text_present_ok | All People Tags | 30000 |
 
 | *Comment* | Test Case: Multiple Widgets teardown |  |
 
