@@ -12,6 +12,7 @@ use Socialtext::Exceptions;
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::Timer;
 use Socialtext::l10n 'loc';
+use List::MoreUtils qw/uniq/;
 
 use constant MAX_EVENT_COUNT => 500;
 use constant DEFAULT_EVENT_COUNT => 25;
@@ -67,82 +68,109 @@ sub if_authorized {
     }
 }
 
+# returns zero or more things, lowercased
+sub _bunch_of {
+    my $q = shift;
+    my $name = shift;
+    my @result;
+
+    for my $param ($name,"$name!") {
+        my $val = $q->param($param);
+        next unless defined $val;
+        if (defined $val) {
+            $val = lc $val;
+            if ($val eq '') {
+                $val = undef;
+            }
+            elsif ($val =~ /,/) {
+                $val = [map { lc $_ } split(/,/, $val)];
+            }
+        }
+        $param =~ tr/./_/;
+        push @result, $param => $val;
+    }
+    return @result;
+}
+
+# returns zero or one thing, verbatim
+sub _one {
+    my $q = shift;
+    my $name = shift;
+
+    my $val = $q->param($name); # datetime
+    return unless defined $val;
+    $name =~ tr/./_/;
+    return $name => $val;
+}
+
 sub extract_common_args {
     my $self = shift;
-
+    my $q = $self->rest->query;
     my @args;
 
-    my $count = $self->rest->query->param('count') || 
-                $self->rest->query->param('limit') || DEFAULT_EVENT_COUNT;
+    my $count = $q->param('count') || 
+                $q->param('limit') || DEFAULT_EVENT_COUNT;
     $count = DEFAULT_EVENT_COUNT unless $count =~ /^\d+$/;
     $count = MAX_EVENT_COUNT if ($count > MAX_EVENT_COUNT);
     push @args, count => $count if ($count > 0);
 
-    my $offset = $self->rest->query->param('offset') || 0;
+    my $offset = $q->param('offset') || 0;
     $offset = 0 unless $offset =~ /^\d+$/;
     push @args, offset => $offset if ($offset > 0);
 
-    my $before = $self->rest->query->param('before') || ''; # datetime
-    push @args, before => $before if $before;
-    my $after = $self->rest->query->param('after') || ''; # datetime
-    push @args, after => $after if $after;
-
-    my $event_class = $self->rest->query->param('event_class');
-    push @args, event_class => lc $event_class if $event_class;
-
-    my $action = $self->rest->query->param('action');
-    push @args, action => ($action =~ /,/ ? [map { lc $_ } split(/,/, $action)] : lc $action) if $action;
-
-    my $ne_action = $self->rest->query->param('!action');
-    push @args, '!action' => ($ne_action =~ /,/ ? [map { lc $_ } split(/,/, $ne_action)] : lc $ne_action) if $ne_action;
-
-    my $tag_name = $self->rest->query->param('tag_name');
-    push @args, tag_name => ($tag_name =~ /,/ ? [split(/,/, $tag_name)] : $tag_name) if $tag_name;
-
-    my $actor_id = $self->rest->query->param('actor.id');
-    push @args, actor_id => $actor_id if $actor_id;
+    push @args,
+        _one($q,'before');
+        _one($q,'after'),
+        _bunch_of($q,'event_class'),
+        _bunch_of($q,'action'),
+        _bunch_of($q,'tag_name'),
+        _bunch_of($q,'actor.id');
 
     return @args
 }
 
 sub extract_page_args {
     my $self = shift;
+    my $q = $self->rest->query;
 
     my @args;
-    my $workspace_id = $self->rest->query->param('page.workspace_id');
-    if (!$workspace_id || $workspace_id !~ /^\d+$/) {
-        my $workspace_name = $self->rest->query->param('page.workspace_name');
-        if ($workspace_name) {
-            my $ws = Socialtext::Workspace->new(name => $workspace_name);
-            unless ($ws) {
-                Socialtext::Exception::NoSuchWorkspace->throw(
-                    name => $workspace_name );
-            }
-            $workspace_id = $ws->workspace_id if $ws;
+    my @workspace_ids;
+
+    my $workspace_id = $q->param('page.workspace_id');
+    if ($workspace_id && $workspace_id =~ /^\d+(,\d+)*$/) {
+        push @workspace_ids, split(',', $workspace_id);
+    }
+
+    my $workspace_name = $q->param('page.workspace_name');
+    if ($workspace_name) {
+        my @names = split(',', $workspace_name);
+        for my $name (@names) {
+            my $ws = Socialtext::Workspace->new(name => $name);
+            Socialtext::Exception::NoSuchWorkspace->throw(name => $name)
+                unless $ws;
+            push @workspace_ids, $ws->workspace_id;
         }
     }
-    push @args, page_workspace_id => $workspace_id if $workspace_id;
 
-    my $page_id = $self->rest->query->param('page.id');
-    push @args, page_id => $page_id if $page_id;
+    if (@workspace_ids > 1) {
+        push @args, page_workspace_id => [uniq @workspace_ids];
+    }
+    elsif (@workspace_ids == 1) {
+        push @args, page_workspace_id => $workspace_ids[0];
+    }
 
-    my $contributions = $self->rest->query->param('contributions');
-    push @args, contributions => $contributions if $contributions;
+    push @args,
+        _bunch_of($q,'page.id'),
+        _one($q,'contributions');
 
     return @args;
 }
 
 sub extract_people_args {
     my $self = shift;
-    my @args;
-
-    my $followed = $self->rest->query->param('followed');
-    push @args, followed => 1 if $followed;
-
-    my $person_id = $self->rest->query->param('person.id');
-    push @args, person_id => $person_id if $person_id;
-
-    return @args;
+    my $q = $self->rest->query;
+    return _one($q, 'followed'),
+           _bunch_of($q,'person.id');
 }
 
 sub resource_to_text {
