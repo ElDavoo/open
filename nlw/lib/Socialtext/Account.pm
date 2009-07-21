@@ -421,9 +421,13 @@ sub finish_import {
 
 sub users {
     my $self = shift;
-
-    return
-        Socialtext::User->ByAccountId( account_id => $self->account_id, @_ );
+    Socialtext::Timer->Continue('acct_users');
+    my $cursor = Socialtext::User->ByAccountId(
+        account_id => $self->account_id,
+        @_,
+    );
+    Socialtext::Timer->Pause('acct_users');
+    return $cursor;
 }
 
 sub user_ids {
