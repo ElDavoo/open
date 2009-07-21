@@ -431,7 +431,7 @@ sub user_ids {
     Socialtext::Timer->Continue('acct_user_ids');
     my @user_ids =
         map { $_->user_id }
-        $self->users->all(@_);
+        $self->users(@_)->all();
     Socialtext::Timer->Pause('acct_user_ids');
     return \@user_ids;
 }
