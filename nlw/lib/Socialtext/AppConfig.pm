@@ -166,6 +166,7 @@ sub _default_code_base {
 }
 
 sub _default_template_compile_dir {
+    warn File::Spec->catdir( _cache_root_dir(), 'tt2' );
     return File::Spec->catdir( _cache_root_dir(), 'tt2' );
 }
 
