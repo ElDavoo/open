@@ -79,68 +79,43 @@ sub _make_getter {
         my ( $self, $rest ) = @_;
 
         Socialtext::Timer->Continue("GET_$content_type");
-        my $rv;
-        eval {
-            $rv = $self->if_authorized(
-                'GET',
-                sub {
-                    my $result;
-                    eval {
-                        Socialtext::Timer->Continue('get_resource');
-                        my $resource = $self->get_resource($rest, $content_type);
-                        Socialtext::Timer->Pause('get_resource');
-                        $resource = [] unless (ref $resource && @$resource);
+        my $rv = eval { $self->if_authorized( 'GET', sub {
+            my $result;
+            Socialtext::Timer->Continue('get_resource');
+            my $resource = $self->get_resource($rest, $content_type);
+            Socialtext::Timer->Pause('get_resource');
+            $resource = [] unless (ref $resource && @$resource);
 
-                        my $lm = $self->make_http_date(
-                            $self->last_modified($resource)
-                        );
-                        my %new_headers = (
-                            -status => HTTP_200_OK,
-                            -type => $content_type . '; charset=UTF-8',
-                            -Last_Modified => $lm,
-                            # override those with:
-                            $rest->header,
-                        );
-                        $rest->header(%new_headers);
-                        $result = $self->$perl_method($resource);
-                    };
-                    if (my $err = $@) {
-                        if (Exception::Class->caught(
-                                'Socialtext::Exception::Auth')) {
-                            return $self->not_authorized;
-                        }
-                        if ( my $e = Exception::Class->caught(
-                                'Socialtext::Exception::NoSuchWorkspace')
-                            ) {
-                            return $self->no_workspace($e->name);
-                        }
-                        elsif ($e = Exception::Class->caught(
-                                'Socialtext::Exception')) {
-                            $rest->header(-status => $e->{http_status});
-                            return $e->{error};
-                        }
-                        st_log->info("Rest Collection Error: $err");
-                        die "Rest Collection Error: $err";
-                    }
-                    return $result;
-                }
+            my $lm = $self->make_http_date(
+                $self->last_modified($resource)
             );
-        };
+            my %new_headers = (
+                -status => HTTP_200_OK,
+                -type => $content_type . '; charset=UTF-8',
+                -Last_Modified => $lm,
+                # override those with:
+                $rest->header,
+            );
+            $rest->header(%new_headers);
+            return $self->$perl_method($resource);
+        })};
         Socialtext::Timer->Pause("GET_$content_type");
-        if ($@) {
-            st_log->info("Rest Collection Error: $@");
-            my $e;
+        if (my $err = $@) {
+            st_log->info("Rest Collection Error: $err");
+            warn "Rest Collection Error: $err";
             if (Exception::Class->caught('Socialtext::Exception::Auth')) {
                 return $self->not_authorized;
             }
-            elsif ($e = Exception::Class->caught('Socialtext::Exception::NoSuchWorkspace')) {
+            elsif (my $e = Exception::Class->caught(
+                    'Socialtext::Exception::NoSuchWorkspace')) 
+            {
                 return $self->no_workspace($e->name);
             }
-            elsif ($e = Exception::Class->caught('Socialtext::Exception')) {
+            elsif (my $e = Exception::Class->caught('Socialtext::Exception')) {
                 $e->rethrow;
             }
             else {
-                my ($error) = split "\n", $@; # first line only
+                my ($error) = split "\n", $err; # first line only
                 Socialtext::Exception->throw(error => $error);
             }
         }
