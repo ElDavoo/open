@@ -1,6 +1,7 @@
 package Socialtext::Events::Stream::HasWorkspaces;
 use Moose::Role;
 use Socialtext::SQL qw/:exec/;
+use Socialtext::SQL::Builder qw/sql_abstract/;
 use List::Util qw/first/;
 use namespace::clean -except => 'meta';
 
@@ -20,21 +21,53 @@ before 'assemble' => sub {
 sub _build_workspace_ids {
     my $self = shift;
 
+    my $acct_filter = $self->filter->has_account_id;
+    if ($acct_filter && !$self->filter->account_id) {
+        $self->filter->clear_account_id;
+        undef $acct_filter;
+    }
+
     # TODO: respect group membership
-    my $sth = sql_execute(q{
-        SELECT workspace_id FROM "UserWorkspaceRole" WHERE user_id = $1
+    my ($member_sql, @member_bind);
+    {
+        my $from = q{"UserWorkspaceRole"};
+        my @where = (user_id => $self->viewer_id);
 
-        UNION
+        if ($acct_filter) {
+            $from .= ' JOIN "Workspace" USING (workspace_id)';
+            push @where, account_id => $self->filter->account_id;
+        }
 
-        SELECT workspace_id
-        FROM "WorkspaceRolePermission" wrp
-        JOIN "Role" r USING (role_id)
-        JOIN "Permission" p USING (permission_id)
-        WHERE r.name = 'guest' AND p.name = 'read'
-    }, $self->viewer_id);
+        ($member_sql, @member_bind) = sql_abstract()->select(
+            \$from, 'workspace_id', {-and => \@where}
+        );
+    }
 
+    my ($guest_sql, @guest_bind);
+    {
+        my $from = q{
+            "WorkspaceRolePermission" wrp
+            JOIN "Role" r USING (role_id)
+            JOIN "Permission" p USING (permission_id)
+        };
+        my @where = (\[q{r.name = 'guest' AND p.name = 'read'}]);
+
+        if ($acct_filter) {
+            $from .= ' JOIN "Workspace" USING (workspace_id)';
+            push @where, account_id => $self->filter->account_id;
+        }
+
+        ($guest_sql, @guest_bind) = sql_abstract()->select(
+            \$from, 'workspace_id', {-and => \@where}
+        );
+    }
+
+    local $Socialtext::SQL::TRACE_SQL = 1;
+    my $sth = sql_execute(
+        "$member_sql \n UNION \n $guest_sql",
+        @member_bind, @guest_bind
+    );
     my $rows = $sth->fetchall_arrayref;
-    my @ids = map {$_->[0]} @$rows;
 
     if ($self->filter->has_page_workspace_id) {
         my $wses = $self->filter->page_workspace_id;
@@ -43,14 +76,14 @@ sub _build_workspace_ids {
         }
         elsif (ref($wses)) {
             my %wanted = map { $_ => 1 } @$wses;
-            @ids = grep { $wanted{$_} } @ids;
+            @$rows = grep { $wanted{$_->[0]} } @$rows;
         }
         else {
-            @ids = first {$wses==$_} @ids;
+            @$rows = first {$wses==$_->[0]} @$rows;
         }
     }
 
-    return [grep {defined} @ids];
+    return [grep {defined} map { $_->[0] } @$rows];
 }
 
 1;

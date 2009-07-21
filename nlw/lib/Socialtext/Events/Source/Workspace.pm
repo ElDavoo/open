@@ -14,6 +14,7 @@ sub query_and_binds {
     my $self = shift;
 
     $self->filter->clear_page_workspace_id;
+    $self->filter->clear_account_id;
 
     my @where = (
         \"event_class = 'page'",

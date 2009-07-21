@@ -65,7 +65,7 @@ sub get_events {
     }
 
     my $opts_slice = opts_slice($opts, qw(
-        action contributions followed before after
+        account_id action contributions followed before after
         page_id page_workspace_id actor_id person_id tag_name
     ));
     
@@ -122,7 +122,7 @@ sub get_events_page_contribs {
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
 
     my $opts_slice = opts_slice($opts, qw(
-        actor_id before after followed tag_name page_workspace_id page_id
+        account_id actor_id before after followed tag_name page_workspace_id page_id
     ));
     $opts_slice->{contributions} = 1;
 
@@ -154,7 +154,7 @@ sub get_events_activities {
     return [] unless $user;
 
     my $opts_slice = opts_slice($opts, qw(
-        before after page_id page_workspace_id actor_id person_id tag_name
+        before after account_id page_id page_workspace_id actor_id person_id tag_name
     ));
 
     my $result = [];
@@ -183,7 +183,7 @@ sub get_events_conversations {
 
     # filter the options to a subset of what's usually allowed
     my $opts_slice = opts_slice($opts, qw(
-       action actor_id page_workspace_id page_id tag_name
+       account_id action actor_id page_workspace_id page_id tag_name
        before after
     ));
     delete $opts_slice->{actor_id} unless defined $opts_slice->{actor_id};

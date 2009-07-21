@@ -119,8 +119,9 @@ sub extract_common_args {
     push @args, offset => $offset if ($offset > 0);
 
     push @args,
-        _one($q,'before');
+        _one($q,'before'),
         _one($q,'after'),
+        _bunch_of($q,'account_id'),
         _bunch_of($q,'event_class'),
         _bunch_of($q,'action'),
         _bunch_of($q,'tag_name'),

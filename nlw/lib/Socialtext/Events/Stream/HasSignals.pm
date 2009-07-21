@@ -4,6 +4,10 @@ use Socialtext::Events::Source::Signals;
 use Socialtext::Events::Source::SignalPersonal;
 use namespace::clean -except => 'meta';
 
+requires 'assemble';
+requires 'add_sources';
+requires 'account_ids_for_plugin';
+
 has 'signals_account_ids' => (
     is => 'rw', isa => 'ArrayRef[Int]',
     lazy_build => 1,

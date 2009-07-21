@@ -19,11 +19,8 @@ sub get_resource {
     }
 
     my %args = $self->extract_common_args();
-    my @filtered_args = map {$_ => $args{$_}} 
-        qw(count offset before after actor_id);
-
     my $reporter = Socialtext::Events::Reporter->new(viewer => $user);
-    return $reporter->get_events_conversations($user, @filtered_args);
+    return $reporter->get_events_conversations($user, \%args);
 }
 
 1;

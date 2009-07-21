@@ -54,6 +54,7 @@ has_param 'person_id'         => (isa => bunch_of('Int'));
 has_param 'page_id'           => (isa => bunch_of('Str'));
 has_param 'page_workspace_id' => (isa => bunch_of('Int'));
 has_param 'tag_name'          => (isa => bunch_of('Str'));
+has_param 'account_id'        => (isa => bunch_of('Int'));
 
 # TODO: coerce from "Any" => "Iso8601Str" these two attrs:
 has_param 'before' => (isa => 'Str', sql_builder => '_sb_before');

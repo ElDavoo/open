@@ -22,11 +22,7 @@ override 'add_sources' => sub {
     }
 
     if ($self->viewer->can_use_plugin_with('people' => $self->user)) {
-        # TODO: intersection of account ids to minimize IN clause?
-        my $accts = $self->viewer->accounts(
-            plugin => 'people',
-            ids_only => 1,
-        );
+        my $accts = $self->account_ids_for_plugin('people');
         push @$sources, $self->construct_source(
             'Socialtext::Events::Source::PersonVisible' => (
                 visible_account_ids => $accts,
@@ -36,10 +32,7 @@ override 'add_sources' => sub {
     }
 
     if ($self->viewer->can_use_plugin_with('signals' => $self->user)) {
-        my $accts = $self->viewer->accounts(
-            plugin => 'signals',
-            ids_only => 1,
-        );
+        my $accts = $self->account_ids_for_plugin('signals');
 
         # direct between user and viewer
         push @$sources, $self->construct_source(

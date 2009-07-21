@@ -5,6 +5,7 @@ use MooseX::StrictConstructor;
 use Socialtext::SQL qw/:exec/;
 use Socialtext::Events::FilterParams;
 use Array::Heap;
+use List::Util qw/first/;
 use namespace::clean -except => 'meta';
 
 with 'Socialtext::Events::Source', 'MooseX::Traits';
@@ -222,7 +223,23 @@ sub account_ids_for_plugin {
 
     my $sth = sql_execute($sql, @bind);
     my $rows = $sth->fetchall_arrayref;
-    my @ids = map {$_->[0]} @$rows;
+    return [] unless $rows && @$rows;
+
+    if ($self->filter->has_account_id) {
+        my $accts = $self->filter->account_id;
+        if (!defined $accts) {
+            # just use visible accounts
+        }
+        elsif (ref($accts)) {
+            my %wanted = map { $_ => 1 } @$accts;
+            @$rows = grep { $wanted{$_->[0]} } @$rows;
+        }
+        else {
+            @$rows = first {$accts==$_->[0]} @$rows;
+        }
+    }
+
+    my @ids = grep {defined} map {$_->[0]} @$rows;
     return \@ids;
 }
 
