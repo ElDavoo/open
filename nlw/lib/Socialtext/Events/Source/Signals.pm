@@ -1,4 +1,5 @@
 package Socialtext::Events::Source::Signals;
+# @COPYRIGHT@
 use Moose;
 use MooseX::StrictConstructor;
 use Socialtext::SQL::Builder qw/sql_abstract/;

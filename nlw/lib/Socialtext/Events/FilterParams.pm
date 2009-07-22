@@ -1,4 +1,5 @@
 package Socialtext::Events::FilterParams;
+# @COPYRIGHT@
 use Moose;
 use Carp qw/croak/;
 use MooseX::StrictConstructor;

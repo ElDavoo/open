@@ -1,4 +1,5 @@
 package Socialtext::Events::Source::Workspace;
+# @COPYRIGHT@
 use Moose;
 use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::Events::Event::Page;

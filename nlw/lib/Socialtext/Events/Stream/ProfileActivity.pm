@@ -1,4 +1,5 @@
 package Socialtext::Events::Stream::ProfileActivity;
+# @COPYRIGHT@
 use Moose;
 use MooseX::AttributeHelpers;
 use MooseX::StrictConstructor;

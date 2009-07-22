@@ -1,4 +1,5 @@
 package Socialtext::Events::Source;
+# @COPYRIGHT@
 use Moose::Role;
 use Socialtext::Events::FilterParams;
 use namespace::clean -except => 'meta';

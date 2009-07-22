@@ -1,4 +1,5 @@
 package Socialtext::Events::Stream::HasWorkspaces;
+# @COPYRIGHT@
 use Moose::Role;
 use Socialtext::SQL qw/:exec/;
 use Socialtext::SQL::Builder qw/sql_abstract/;

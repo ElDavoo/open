@@ -1,4 +1,5 @@
 package Socialtext::Events::Event;
+# @COPYRIGHT@
 use Moose;
 use MooseX::StrictConstructor;
 use Carp qw/croak/;

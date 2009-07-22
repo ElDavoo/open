@@ -1,4 +1,5 @@
 package Socialtext::Events::Stream::HasPeople;
+# @COPYRIGHT@
 use Moose::Role;
 use Socialtext::Events::Source::PersonVisible;
 use namespace::clean -except => 'meta';

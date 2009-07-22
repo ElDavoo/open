@@ -1,4 +1,5 @@
 package Socialtext::Events::Source::WorkspaceConversations;
+# @COPYRIGHT@
 use Moose;
 use Socialtext::SQL qw/:exec/;
 use Socialtext::SQL::Builder qw/sql_abstract/;

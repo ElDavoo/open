@@ -1,4 +1,5 @@
 package Socialtext::Events::Stream::HasPages;
+# @COPYRIGHT@
 use Moose::Role;
 use Socialtext::Events::Source::Workspace;
 use namespace::clean -except => 'meta';

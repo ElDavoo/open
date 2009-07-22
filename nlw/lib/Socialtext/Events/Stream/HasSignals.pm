@@ -1,4 +1,5 @@
 package Socialtext::Events::Stream::HasSignals;
+# @COPYRIGHT@
 use Moose::Role;
 use Socialtext::Events::Source::Signals;
 use Socialtext::Events::Source::SignalPersonal;

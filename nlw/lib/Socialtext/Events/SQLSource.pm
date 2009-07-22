@@ -1,4 +1,5 @@
 package Socialtext::Events::SQLSource;
+# @COPYRIGHT@
 use Moose::Role;
 #use Moose;
 use MooseX::AttributeHelpers;

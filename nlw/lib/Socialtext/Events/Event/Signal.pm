@@ -1,4 +1,5 @@
 package Socialtext::Events::Event::Signal;
+# @COPYRIGHT@
 use Moose;
 use MooseX::StrictConstructor;
 use Moose::Util::TypeConstraints;

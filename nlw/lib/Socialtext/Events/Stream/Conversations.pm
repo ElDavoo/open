@@ -1,4 +1,5 @@
 package Socialtext::Events::Stream::Conversations;
+# @COPYRIGHT@
 use Moose;
 use Socialtext::Events::Source::WorkspaceConversations;
 use namespace::clean -except => 'meta';
