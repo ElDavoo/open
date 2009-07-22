@@ -78,12 +78,12 @@ sub _bunch_of {
         my $val = $q->param($param);
         next unless defined $val;
         if (defined $val) {
-            $val = lc $val;
+            $val = lc $val unless $name eq 'tag_name';
             if ($val eq '') {
                 $val = undef;
             }
             elsif ($val =~ /,/) {
-                $val = [map { lc $_ } split(/,/, $val)];
+                $val = [split(/,/, $val)];
             }
         }
         $param =~ tr/./_/;
