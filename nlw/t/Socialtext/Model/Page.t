@@ -30,6 +30,7 @@ Create_from_row: {
     my $data = {
         workspace_id => 3,
         workspace_name => 'workspace_name',
+        workspace_title => 'workspace_title',
         page_id => 'page_id',
         name => 'name',
         last_editor_id => 310,
@@ -80,18 +81,19 @@ Create_from_row: {
     my $hash = $page->hash_representation;
     like delete $hash->{page_uri}, qr{\Q/workspace_name/index.cgi?page_id\E$};
     is_deeply $hash, {
-        name           => 'name',
-        uri            => 'page_id',
-        page_id        => 'page_id',
-        last_editor    => 'editor@example.com',
-        last_edit_time => '2008-01-01 23:12:01 GMT',
-        revision_id    => 'current_revision_id',
-        revision_count => 'revision_count',
-        workspace_name => 'workspace_name',
-        type           => 'page_type',
-        tags           => ['tag'],
-        modified_time  => '1199229121',
-        locked => undef,
+        name            => 'name',
+        uri             => 'page_id',
+        page_id         => 'page_id',
+        last_editor     => 'editor@example.com',
+        last_edit_time  => '2008-01-01 23:12:01 GMT',
+        revision_id     => 'current_revision_id',
+        revision_count  => 'revision_count',
+        workspace_name  => 'workspace_name',
+        workspace_title => 'workspace_title',
+        type            => 'page_type',
+        tags            => ['tag'],
+        modified_time   => '1199229121',
+        locked          => undef,
     };
 
     $page->add_tag('zed');
