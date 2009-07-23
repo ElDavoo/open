@@ -53,11 +53,10 @@ sub public_workspaces {
     # - "help"
     # - "hand-picked list of ws by admin" (TODO)
     # - "most often accessed public workspaces last week"
-    my $ws_help   = Socialtext::Workspace->help_workspace();
-    my @available = (
-        [ $ws_help->name, $ws_help->title ],
-        Socialtext::Workspace->MostOftenAccessedLastWeek(),
-    );
+    my @available = Socialtext::Workspace->MostOftenAccessedLastWeek;
+
+    my $ws_help = Socialtext::Workspace->help_workspace();
+    unshift @available, [$ws_help->name, $ws_help->title] if $ws_help;
 
     # trim list to max length, and remove duplicates
     my %seen;
