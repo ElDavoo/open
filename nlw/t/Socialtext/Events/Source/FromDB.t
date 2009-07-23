@@ -9,14 +9,14 @@ use mocked 'Socialtext::User';
 
 BEGIN {
     use_ok 'Socialtext::Events::Source';
-    use_ok 'Socialtext::Events::SQLSource';
+    use_ok 'Socialtext::Events::Source::FromDB';
 }
 
 {
-    package Socialtext::Events::SQLSource::Test;
+    package Socialtext::Events::Source::FromDB::Test;
     use Moose;
     use Socialtext::SQL::Builder qw/sql_abstract/;
-    with 'Socialtext::Events::Source', 'Socialtext::Events::SQLSource';
+    with 'Socialtext::Events::Source', 'Socialtext::Events::Source::FromDB';
 
     use constant event_type => 'Socialtext::Events::Event';
 
@@ -67,7 +67,7 @@ Happy_path: {
         before => 54321,
     );
     my $viewer = Socialtext::User->new(user_id => 222);
-    my $source = Socialtext::Events::SQLSource::Test->new(
+    my $source = Socialtext::Events::Source::FromDB::Test->new(
         viewer => $viewer,
         limit => 5,
         filter => $filter,

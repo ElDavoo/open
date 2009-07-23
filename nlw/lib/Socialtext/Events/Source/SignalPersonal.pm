@@ -6,7 +6,7 @@ use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::Events::Event::Signal;
 use namespace::clean -except => 'meta';
 
-with 'Socialtext::Events::Source', 'Socialtext::Events::SQLSource';
+with 'Socialtext::Events::Source', 'Socialtext::Events::Source::FromDB';
 
 use constant event_type => 'Socialtext::Events::Event::Signal';
 

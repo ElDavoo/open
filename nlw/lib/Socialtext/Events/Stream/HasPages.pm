@@ -6,11 +6,13 @@ use namespace::clean -except => 'meta';
 
 with 'Socialtext::Events::Stream::HasWorkspaces';
 
-requires 'add_sources';
+requires 'construct_source';
+requires '_build_sources';
 
-after 'add_sources' => sub {
+around '_build_sources' => sub {
+    my $code = shift;
     my $self = shift;
-    my $sources = shift;
+    my $sources = $self->$code;
 
     for my $workspace_id (@{ $self->workspace_ids }) {
         push @$sources, $self->construct_source(
@@ -18,6 +20,8 @@ after 'add_sources' => sub {
             workspace_id => $workspace_id
         );
     }
+
+    return $sources;
 };
 
 1;

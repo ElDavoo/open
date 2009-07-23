@@ -246,16 +246,8 @@ sub account_ids_for_plugin {
 
 sub _build_sources {
     my $self = shift;
-
-    my @sources;
-    $self->add_sources(\@sources);
-    return \@sources;
+    return [];
 }
-
-sub add_sources {
-    my $self = shift;
-    my $sources = shift;
-} # no-op
 
 __PACKAGE__->meta->make_immutable;
 1;

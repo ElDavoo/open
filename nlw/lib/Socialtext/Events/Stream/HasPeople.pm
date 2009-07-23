@@ -5,7 +5,7 @@ use Socialtext::Events::Source::PersonVisible;
 use namespace::clean -except => 'meta';
 
 requires 'assemble';
-requires 'add_sources';
+requires '_build_sources';
 requires 'account_ids_for_plugin';
 
 has 'people_account_ids' => (
@@ -21,9 +21,10 @@ before 'assemble' => sub {
 
 sub _build_people_account_ids { $_[0]->account_ids_for_plugin('people'); }
 
-after 'add_sources' => sub {
+around '_build_sources' => sub {
+    my $code = shift;
     my $self = shift;
-    my $sources = shift;
+    my $sources = $self->$code;
 
     my $ids = $self->people_account_ids;
     return unless $ids && @$ids;
@@ -31,6 +32,8 @@ after 'add_sources' => sub {
         'Socialtext::Events::Source::PersonVisible',
         visible_account_ids => $ids,
     );
+
+    return $sources;
 };
 
 1;

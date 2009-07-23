@@ -6,7 +6,7 @@ use Socialtext::Events::Source::SignalPersonal;
 use namespace::clean -except => 'meta';
 
 requires 'assemble';
-requires 'add_sources';
+requires '_build_sources';
 requires 'account_ids_for_plugin';
 
 has 'signals_account_ids' => (
@@ -22,12 +22,13 @@ before 'assemble' => sub {
 
 sub _build_signals_account_ids { $_[0]->account_ids_for_plugin('signals'); }
 
-after 'add_sources' => sub {
+around '_build_sources' => sub {
+    my $code = shift;
     my $self = shift;
-    my $sources = shift;
+    my $sources = $self->$code;
    
     my $ids = $self->signals_account_ids;
-    return unless $ids && @$ids;
+    return $sources unless $ids && @$ids;
 
     push @$sources, $self->construct_source(
         'Socialtext::Events::Source::Signals',
@@ -40,6 +41,8 @@ after 'add_sources' => sub {
         viewer => $self->viewer,
         user => $self->user,
     );
+
+    return $sources;
 };
 
 1;

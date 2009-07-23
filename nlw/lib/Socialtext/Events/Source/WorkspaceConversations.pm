@@ -6,7 +6,7 @@ use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::Events::Event::Page;
 use namespace::clean -except => 'meta';
 
-with 'Socialtext::Events::Source', 'Socialtext::Events::SQLSource';
+with 'Socialtext::Events::Source', 'Socialtext::Events::Source::FromDB';
 
 has 'workspace_id' => ( is => 'ro', isa => 'Int', required => 1 );
 

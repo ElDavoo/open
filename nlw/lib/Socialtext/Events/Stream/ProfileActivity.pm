@@ -1,15 +1,13 @@
 package Socialtext::Events::Stream::ProfileActivity;
 # @COPYRIGHT@
 use Moose;
-use MooseX::AttributeHelpers;
-use MooseX::StrictConstructor;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Events::Stream';
 
-override 'add_sources' => sub {
+override '_build_sources' => sub {
     my $self = shift;
-    my $sources = shift;
+    my $sources = [];
 
     {
         my $fp = $self->filter->clone;
@@ -51,6 +49,8 @@ override 'add_sources' => sub {
             )
         );
     }
+
+    return $sources;
 };
 
 __PACKAGE__->meta->make_immutable;

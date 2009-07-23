@@ -5,7 +5,7 @@ use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::Events::Event::Page;
 use namespace::clean -except => 'meta';
 
-with 'Socialtext::Events::Source', 'Socialtext::Events::SQLSource';
+with 'Socialtext::Events::Source', 'Socialtext::Events::Source::FromDB';
 
 has 'workspace_id' => ( is => 'ro', isa => 'Int', required => 1 );
 
@@ -15,7 +15,9 @@ sub query_and_binds {
     my $self = shift;
 
     $self->filter->clear_page_workspace_id;
+    $self->filter->clear_not_page_workspace_id;
     $self->filter->clear_account_id;
+    $self->filter->clear_not_account_id;
 
     my @where = (
         \"event_class = 'page'",

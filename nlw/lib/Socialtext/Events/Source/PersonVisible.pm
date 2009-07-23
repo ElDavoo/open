@@ -5,7 +5,7 @@ use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::Events::Event::Person;
 use namespace::clean -except => 'meta';
 
-with 'Socialtext::Events::Source', 'Socialtext::Events::SQLSource';
+with 'Socialtext::Events::Source', 'Socialtext::Events::Source::FromDB';
 
 has 'visible_account_ids' => ( is => 'ro', isa => 'ArrayRef' );
 has 'activity_mode' => ( is => 'ro', isa => 'Bool', default => undef );

@@ -1,7 +1,6 @@
 package Socialtext::Events::Stream::Pages;
 # @COPYRIGHT@
 use Moose;
-use MooseX::StrictConstructor;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Events::Stream';
