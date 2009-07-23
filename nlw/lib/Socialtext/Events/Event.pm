@@ -91,5 +91,7 @@ sub build_hash {
     return $hash;
 }
 
+sub to_hash { return $_[0]->build_hash({}); }
+
 __PACKAGE__->meta->make_immutable;
 1;
