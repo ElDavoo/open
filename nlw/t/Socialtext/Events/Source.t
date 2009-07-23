@@ -16,9 +16,10 @@ BEGIN {
     use Moose;
     extends 'Socialtext::Events::Stream';
 
-    after 'add_sources' => sub {
+    around '_build_sources' => sub {
+        my $code = shift;
         my $self = shift;
-        my $sources = shift;
+        my $sources = $self->$code();
 
         for my $feed (2,1,3) {
             my $src = $self->construct_source(
@@ -36,6 +37,8 @@ BEGIN {
         push @$sources, $self->construct_source(
             'Socialtext::Events::EmptySource'
         );
+
+        return $sources;
     };
 
     has '+filter' => (
