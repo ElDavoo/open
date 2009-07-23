@@ -1589,11 +1589,12 @@ sub Any {
 }
 
 sub ImportFromTarball {
-    shift;
+    my $self = shift;
 
     require Socialtext::Workspace::Importer;
 
-    Socialtext::Workspace::Importer->new(@_)->import_workspace();
+    my ( $main, $hub ) = $self->_main_and_hub();
+    Socialtext::Workspace::Importer->new(hub => $hub, @_)->import_workspace();
 }
 
 sub AllWorkspaceIdsAndNames {
