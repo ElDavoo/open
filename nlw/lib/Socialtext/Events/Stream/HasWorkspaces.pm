@@ -63,7 +63,6 @@ sub _build_workspace_ids {
         );
     }
 
-    local $Socialtext::SQL::TRACE_SQL = 1;
     my $sth = sql_execute(
         "$member_sql \n UNION \n $guest_sql",
         @member_bind, @guest_bind
