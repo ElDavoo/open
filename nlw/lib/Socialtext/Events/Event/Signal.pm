@@ -56,3 +56,26 @@ after 'build_hash' => sub {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Event::Signal - Signal Event object.
+
+=head1 DESCRIPTION
+
+A Socialtext Signals C<Socialtext::Events::Event>. Adds restrictions to the
+C<action> attribute.
+
+Does C<Socialtext::Events::Event::HasPerson>.
+
+Sets context body to C<html_body> in C<build_hash()>.
+
+=head1 SYNOPSIS
+
+    my $signal_ev = $source->next(); # See Socialtext::Events::Source
+    my $user = $signal_ev->person;
+    my $signal_id = $signal_ev->signal_id;
+    my $is_dm = $signal_ev->is_direct;
+    my $html = $signal_ev->html_body;

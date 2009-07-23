@@ -46,3 +46,30 @@ around '_build_sources' => sub {
 };
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Stream::HasSignals - Stream role to add standard signals
+events.
+
+=head1 DESCRIPTION
+
+Adds regular and direct signals to a Stream.  Direct signals are limited to
+those sent/received by the C<viewer>.
+
+Since this class is a Stream role, it can be mixed-in to a Stream class at
+run-time.
+
+=head1 SYNOPSIS
+
+To construct a Stream of just Signals events:
+
+    my $stream = Socialtext::Events::Stream->new_with_traits(
+        traits => ['HasSignals'], # literally
+        viewer => $current_user,
+        offset => 0,
+        limit => 50,
+    );
+

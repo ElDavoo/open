@@ -91,3 +91,19 @@ after 'build_hash' => sub {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Event::Page - Page Event object.
+
+=head1 DESCRIPTION
+
+A wiki page event. Adds restrictions to the C<action> attribute.
+
+=head1 SYNOPSIS
+
+    my $page_ev = $source->next(); # See Socialtext::Events::Source
+    my $page = $page_ev->page; # C<Socialtext::Model::Page> with no hub.
+

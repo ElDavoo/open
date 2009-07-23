@@ -23,3 +23,24 @@ override '_build_sources' => sub {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Stream::Conversations - The "My Conversations" feed.
+
+=head1 DESCRIPTION
+
+Comrpised of C<Socialtext::Events::Source::WorkspaceConversations> Sources, gives a feed of "Conversational" page events.
+
+Cannot be composed with other roles.
+
+=head1 SYNOPSIS
+
+    my $c = Socialtext::Events::Stream::Conversations->new(
+        viewer => $viewer_user,
+        limit => 50,
+        offset => 0,
+    );
+

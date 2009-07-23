@@ -76,3 +76,34 @@ around 'columns' => sub {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Source::PersonVisible - People events visible to the viewer.
+
+=head1 DESCRIPTION
+
+Provides C<Socialtext::Events::Event::Person> events.  The C<actor> is the user doing the event's action and the C<person> is the target of 
+
+The caller is responsible for doing any C<account_id> filtering.
+
+Visibility is limited to events where the C<viewer> and C<actor> share a
+people-enabled account B<and> the C<viewer> and C<person> also share a
+people-enabled account.  Note: two different accounts may satisfy the
+visibility requirement.
+
+=head1 SYNOPSIS
+
+Use C<construct_source> from a Stream where possible, but you could also
+construct this stream directly.
+
+    my $src = Socialtext::Events::Source::PersonVisible->new(
+        activity_mode => 1, # for the ProfileActivity Stream component
+        visible_account_ids => [...],
+        viewer => $current_user,
+        filter => ...,
+        ...
+    );
+

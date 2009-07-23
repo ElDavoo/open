@@ -12,3 +12,19 @@ with qw(
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Stream::Regular - The "All Events" Stream
+
+=head1 DESCRIPTION
+
+Convenience class that does the C<HasPages>, C<HasPeople> and C<HasSignals> Stream roles.
+
+Cannot be composed with other Stream roles.
+
+=head1 SYNOPSIS
+
+For usage, see C<Socialtext::Events::Stream>

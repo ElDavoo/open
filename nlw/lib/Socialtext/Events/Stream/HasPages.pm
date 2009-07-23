@@ -25,3 +25,30 @@ around '_build_sources' => sub {
 };
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Stream::HasPages - Stream role to incorporate standard
+wiki page events.
+
+=head1 DESCRIPTION
+
+This role appends a list of C<Socialtext::Events::Source::Workspace> Sources
+to the stream via C<_build_sources()>.
+
+Does C<Socialtext::Events::Stream::HasWorkspaces>.
+
+=head1 SYNOPSIS
+
+    package MyStream;
+    use Moose;
+    extends 'Socialtext::Events::Stream';
+    with 'Socialtext::Events::Stream::HasPages';
+    ...
+    my $e = $self->next(); # could return a Socialtext::Events::Event::Page
+
+=head1 SEE ALSO
+
+C<Socialtext::Events::Stream>

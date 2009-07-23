@@ -95,3 +95,35 @@ sub to_hash { return $_[0]->build_hash({}); }
 
 __PACKAGE__->meta->make_immutable;
 1;
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Event - Base Event object.
+
+=head1 DESCRIPTION
+
+Attributes and methods common to all Events.
+
+Treat this as an Abstract Base Class - don't instantiate it directly.
+
+Note: StrictConstructor
+
+=head1 SYNOPSIS
+
+    my $event = $source->next(); # See Socialtext::Events::Source
+    my $hash = $event->to_hash();
+    my $user = $event->actor;
+
+=head1 SUBCLASSING
+
+To decorate C<to_hash>, use 
+
+    after 'build_hash' => sub {
+        my $self = shift;
+        my $hash = shift;
+
+        $hash->{thingy} = $self->get_thinger();
+    };
+
+

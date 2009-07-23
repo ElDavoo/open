@@ -55,3 +55,32 @@ around 'columns' => sub {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Source::SignalPersonal - Direct-Signal events occuring
+between two users.
+
+=head1 DESCRIPTION
+
+Provides C<Socialtext::Events::Event::Signal> events that are "direct" signals.
+
+If just a C<viewer> is supplied, then they are the sender or recipient.
+
+If a C<user> ("owner") is also supplied, then the signal is direct between the
+viewer and user.
+
+=head1 SYNOPSIS
+
+Use C<construct_source> from a Stream where possible, but you could also
+construct this stream directly.
+
+    my $src = Socialtext::Events::Source::Signals->new(
+        viewer => $current_user,
+        viewer => $profile_owner,
+        filter => ...,
+        ...
+    );
+

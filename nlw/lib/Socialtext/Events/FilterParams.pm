@@ -155,3 +155,35 @@ sub _before_after {
 
 __PACKAGE__->meta->make_immutable;
 1;
+__END__
+
+=head1 NAME
+
+Socialtext::Events::FilterParams - Encapsulate Event feed filter parameters.
+
+=head1 DESCRIPTION
+
+Encapsulate Event feed filter parameters.
+
+=head1 SYNOPSIS
+
+    use Socialtext::Events::FilterParams
+
+    # look for events that have edit_start or edit_cancel, but not view, and
+    # no tag_name.
+    my $filter = Socialtext::Events::FilterParams->new(
+        action     => [ qw/edit_start edit_cancel/ ],
+        not_action => 'view',
+        tag_name   => undef,
+    );
+
+    # generate input for SQL::Abstract
+    my @where = $filter->generate_standard_filter();
+
+    # or (where will contain not_action clauses as well)
+    my @where = $filter->generate_filter(qw/action tag_name/);
+
+=head1 SEE ALSO
+
+C<SQL::Abstract>
+

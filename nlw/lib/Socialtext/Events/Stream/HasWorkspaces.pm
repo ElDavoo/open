@@ -88,3 +88,28 @@ sub _build_workspace_ids {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Stream::HasWorkspaces - Stream role for
+workspace-contained Sources.
+
+=head1 DESCRIPTION
+
+Adds a C<workspace_ids> attr that returns the workspaces that the C<viewer>
+can see.  If an C<account_id> filter is present, the workspaces will be
+further limited to meet that requirement.
+
+=head1 SYNOPSIS
+
+    package MyStream;
+    use Moose;
+    with 'Socialtext::Events::Stream::HasWorkspaces'
+    ...
+    my $ids = $self->workspace_ids;
+
+=head1 SEE ALSO
+
+C<Socialtext::Events::Stream>

@@ -100,3 +100,35 @@ around 'columns' => sub {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Source::WorkspaceConversations - A per-workspace source of page conversation events.
+
+=head1 DESCRIPTION
+
+Provides C<Socialtext::Events::Event::Page> events that are specific to a C<viewer> and a C<workspace_id>.
+
+A page conversation event will show up when the viewer contributes to a wiki
+page and then some other user contributes to the same page after that.
+
+The caller is responsible for checking that the C<viewer> has access to each
+workspace.
+
+=head1 SYNOPSIS
+
+Use C<construct_source> from a Stream where possible, but you could also
+construct this stream directly.
+
+    for my $ws_id (@workspace_ids) {
+        my $src = Socialtext::Events::Source::WorkspaceConversations->new(
+            workspace_id => $ws_id, # required
+            viewer => $current_user,
+            filter => ...,
+            ...
+        );
+        push @sources, $src;
+    }
+

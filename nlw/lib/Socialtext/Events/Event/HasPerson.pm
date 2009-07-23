@@ -20,3 +20,26 @@ after 'build_hash' => sub {
 };
 
 1;
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Event::HasPerson - Role to add a person field.
+
+=head1 DESCRIPTION
+
+Adds C<person> and C<person_id> attributes.  The C<person> was the "object" of
+an event; he/she is the user that the action was done to (e.g. he/she was
+tagged).  The C<actor> is the user who did the action.
+
+Will add the person user to the hash during C<build_hash()>.
+
+=head1 SYNOPSIS
+
+    package MyEvent;
+    use Moose;
+    with 'Socialtext::Events::Event::HasPerson';
+
+=head1 SEE ALSO
+
+C<Socialtext::Events::Event::Person> - a concrete class that uses this role.

@@ -60,3 +60,41 @@ around 'columns' => sub {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Source::Signals - Signal events visible to the viewer's
+accounts.
+
+=head1 DESCRIPTION
+
+Provides C<Socialtext::Events::Event::Signal> events.  Only signals sent to an
+account are included in this Source.  Direct signals are from the
+C<Socialtext::Events::Source::SignalPersonal> source.
+
+The caller is responsible for doing any C<account_id> filtering.
+
+Since each signal has metadata about which accounts it was sent to, this
+Source simply uses that for the visibility calculation.
+
+If C<activity_mode> is enabled, only signals sent by the "owner" (C<user>
+attribute) or that mention the owner are displayed.
+
+=head1 SYNOPSIS
+
+Use C<construct_source> from a Stream where possible, but you could also
+construct this stream directly.
+
+    my $src = Socialtext::Events::Source::Signals->new(
+        activity_mode => 1, # for the ProfileActivity Stream component
+        account_ids => [...],
+        viewer => $current_user,
+        filter => ...,
+        ...
+    );
+
+=head1 TODO
+
+Use the same visibility criteria as in C<Socialtext::Signal>.

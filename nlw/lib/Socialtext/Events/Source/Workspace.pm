@@ -45,3 +45,31 @@ around 'columns' => sub {
 __PACKAGE__->meta->make_immutable;
 1;
 
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Source::Workspace - A per-workspace source of page events.
+
+=head1 DESCRIPTION
+
+Provides C<Socialtext::Events::Event::Page> events on a per-workspace basis.
+
+The caller is responsible for checking that the C<viewer> has access to each
+workspace.
+
+=head1 SYNOPSIS
+
+Use C<construct_source> from a Stream where possible, but you could also
+construct this stream directly.
+
+    for my $ws_id (@workspace_ids) {
+        my $src = Socialtext::Events::Source::Workspace->new(
+            workspace_id => $ws_id, # required
+            viewer => $current_user,
+            filter => ...,
+            ...
+        );
+        push @sources, $src;
+    }
+

@@ -55,3 +55,35 @@ override '_build_sources' => sub {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Stream::ProfileActivity - The "Activity" feed on a
+person's profile page.
+
+=head1 DESCRIPTION
+
+Composes a number of Streams where the events have a relationship with the
+"owner" of this stream (the C<user> paramater).  Event visibility should be
+limited to events that the C<viewer> can see.  Direct/private events (e.g.
+signals) between the C<user> and C<viewer> are included.
+
+This stream is heterogenous; Page, Person, and Signal events are mixed
+together in this stream.
+
+Cannot be composed with other Stream roles.
+
+=head1 SYNOPSIS
+
+    my $c = Socialtext::Events::Stream::ProfileActivity->new(
+        viewer => $viewer_user,
+        user => $owner_user,
+        limit => 50,
+        offset => 0,
+        filter => Socialtext::Events::FilterParams->new(
+            after => 'a week ago', # not literally; use a iso8601 string
+        ),
+    );
+

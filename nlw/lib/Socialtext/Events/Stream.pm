@@ -251,3 +251,91 @@ sub _build_sources {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Stream - Base class for all Streams.
+
+=head1 DESCRIPTION
+
+Implements the basic behaviour for all Streams.
+
+A Stream is a collection of Sources which will have their events merged
+together to be ordered by time.  Uses L<Array::Heap> to do the merging as
+efficiently as possible.
+
+A Stream isa Source and so can be composed into other Streams.
+
+Unlike Sources, Streams accept an C<offset> attribute, which is a number of
+events to C<< ->skip() >> before iterating towards C<limit>.
+
+Does L<MooseX::Traits> so you can mix-in roles at runtime via
+C<new_with_roles>.  The trait namspace is C<Socialtext::Events::Stream::> for
+convenience.
+
+=head1 SYNOPSIS
+
+There's two ways to compose a Stream: a factory pattern and roles.
+
+For a factory, just pass in a list of C<Socialtext::Events::Source> objects
+using the constructor:
+
+    package MySourceFactory;
+    use Moose;
+    use Socialtext::Events::Stream;
+
+    sub Build_stream {
+        return Socialtext::Events::Stream->new(
+            sources => [ ... ]
+        );
+    }
+
+To implement a Stream role, wrap C<_build_sources>.  Don't forget to declare
+via C<requires> any methods you need.
+
+    package HasMooses;
+    use Moose::Role;
+
+    requires 'construct_source', '_build_sources';
+
+    around '_build_sources' => sub {
+        my $code = shift;
+        my $self = shift;
+        my $sources = $self->$code();
+
+        push @$sources, $self->construct_source(
+            'Socialtext::Events::Source::MooseHerd',
+        );
+
+        return $sources;
+    };
+
+Note that roles can be mixed-in at run-time since Stream does the
+L<MooseX::Traits> role.  For example:
+
+    my $stream = Socialtext::Events::Stream->new_with_traits(
+        traits => [
+            'HasPages', # namespaced
+            'My::StreamRole',
+        ],
+        offset => 5,
+        limit => 10,
+        ...
+    );
+
+=head1 METHODS
+
+=over 4
+
+=item construct_source($class => @args)
+
+Constructs a source of a given class, duplicating the parameters from this
+stream (e.g. C<filter>, C<viewer>, C<user>).
+
+=back
+
+=head1 SEE ALSO
+
+L<Socialtext::Events::Source> L<Array::Heap> L<MooseX::Traits>

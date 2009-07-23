@@ -37,3 +37,29 @@ around '_build_sources' => sub {
 };
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Stream::HasPeople - Stream role to add standard person
+events.
+
+=head1 DESCRIPTION
+
+Adds Socialtext People ("person") events to a Stream.
+
+Since this class is a Stream role, it can be mixed-in to a Stream class at
+run-time.
+
+=head1 SYNOPSIS
+
+To construct a Stream of just person events:
+
+    my $stream = Socialtext::Events::Stream->new_with_traits(
+        traits => ['HasPeople'], # literally
+        viewer => $current_user,
+        offset => 0,
+        limit => 50,
+    );
+

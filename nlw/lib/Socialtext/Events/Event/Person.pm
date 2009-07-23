@@ -27,3 +27,22 @@ after 'build_hash' => sub {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Events::Event::Person - Person Event object.
+
+=head1 DESCRIPTION
+
+A Socialtext People C<Socialtext::Events::Event>. Adds restrictions to the
+C<action> attribute.
+
+Does C<Socialtext::Events::Event::HasPerson>.
+
+=head1 SYNOPSIS
+
+    my $person_ev = $source->next(); # See Socialtext::Events::Source
+    my $user = $person_ev->person;
+
