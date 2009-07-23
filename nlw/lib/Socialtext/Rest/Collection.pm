@@ -100,23 +100,22 @@ sub _make_getter {
             return $self->$perl_method($resource);
         })};
         Socialtext::Timer->Pause("GET_$content_type");
-        if (my $err = $@) {
-            my $e;
-            st_log->info("Rest Collection Error: $err");
-            warn "Rest Collection Error: $err";
+        if (my $e = $@) {
             if (Exception::Class->caught('Socialtext::Exception::Auth')) {
                 return $self->not_authorized;
             }
-            elsif ($e = Exception::Class->caught(
+            elsif (Exception::Class->caught(
                     'Socialtext::Exception::NoSuchWorkspace')) 
             {
                 return $self->no_workspace($e->name);
             }
-            elsif ($e = Exception::Class->caught('Socialtext::Exception')) {
+            elsif (Exception::Class->caught('Socialtext::Exception')) {
                 $e->rethrow;
             }
             else {
-                my ($error) = split "\n", $err; # first line only
+                my ($error) = split "\n", $e; # first line only
+                st_log->info("Rest Collection Error: $e");
+                warn "Rest Collection Error: $e";
                 Socialtext::Exception->throw(error => $error);
             }
         }
