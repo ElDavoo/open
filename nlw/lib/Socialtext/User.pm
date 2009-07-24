@@ -371,10 +371,7 @@ sub accounts {
 sub is_in_account {
     my $self = shift;
     my $account = shift;
-
-    return sql_singlevalue(<<EOT, $account->account_id, $self->user_id);
-SELECT 1 FROM account_user WHERE account_id = ? AND user_id = ?
-EOT
+    return $account->has_user($self);
 }
 
 sub shared_accounts {
