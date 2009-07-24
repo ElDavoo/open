@@ -1,4 +1,8 @@
 # source this file to run Signals Only Testcases
+# The test cases must come from the SELENIUM_PLAN_SERVER
+# because the environment under test will have its workspaces stripped.
+# For now, signals_only_testcases only works in a pair of dev envs, not VEs
+# If $1 is provided, it is run instead of signals_only_testcases
 
 if [ "$SELENIUM_PLAN_SERVER" == "" ]; then
     echo You must export SELENIUM_PLAN_SERVER=http://PLANSERVER:PLANPORT
