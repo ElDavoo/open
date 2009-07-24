@@ -164,6 +164,7 @@ sub NewUserRecord {
     my $proto_user = shift;
 
     $proto_user->{user_id} ||= $class->NewUserId();
+    $proto_user->{is_profile_hidden} ||= 0;
 
     # always need a cached_at during INSERT, default it to 'now'
     $proto_user->{cached_at} = $class->Now()
@@ -179,7 +180,6 @@ sub NewUserRecord {
         = map { $_ => $proto_user->{$_} } @Socialtext::User::Base::all_fields;
     $insert_args{first_name} ||= '';
     $insert_args{last_name}  ||= '';
-    $insert_args{is_profile_hidden} ||= 'f';
 
     $insert_args{driver_username} = $proto_user->{driver_username};
     delete $insert_args{username};
