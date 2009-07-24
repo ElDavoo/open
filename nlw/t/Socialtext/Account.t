@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 93;
+use Test::Socialtext tests => 97;
 use Test::Socialtext::User;
 use Test::Exception;
 use Socialtext::File;
@@ -253,6 +253,28 @@ Plugins_enabled_for_all: {
     my $account2 = Socialtext::Account->create(name => "newer_account_$^T");
     ok $account2->is_plugin_enabled('fakeplugin'),
        'fakeplugin is enabled for new accounts after EnablePluginForAll';
+}
+
+account_has_user_primary_account: {
+    my $account_one = create_test_account_bypassing_factory();
+    my $account_two = create_test_account_bypassing_factory();
+    my $user_one    = create_test_user(account => $account_one);
+    my $user_two    = create_test_user(account => $account_two);
+
+    ok  $account_one->has_user($user_one), 'Account contains User';
+    ok !$account_one->has_user($user_two), '... but not this other User';
+}
+
+account_has_user_secondary_account: {
+    my $account_one = create_test_account_bypassing_factory();
+    my $account_two = create_test_account_bypassing_factory();
+    my $user_one    = create_test_user(account => $account_one);
+    my $user_two    = create_test_user(account => $account_two);
+    my $workspace   = create_test_workspace(account => $account_one);
+    $workspace->add_user(user => $user_two);
+
+    ok $account_one->has_user($user_one), 'Account contains User (which is his Primary Account)';
+    ok $account_one->has_user($user_two), '... and this other User (which is a Secondary Account)';
 }
 
 exit;

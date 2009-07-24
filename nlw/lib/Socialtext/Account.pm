@@ -459,6 +459,19 @@ sub user_count {
     return $count;
 }
 
+sub has_user {
+    my $self = shift;
+    my $user = shift;
+    Socialtext::Timer->Continue('acct_has_user');
+    my $has_user = sql_singlevalue(
+        'SELECT 1 FROM account_user WHERE account_id=? AND user_id=?',
+        $self->account_id,
+        $user->user_id,
+    );
+    Socialtext::Timer->Pause('acct_has_user');
+    return $has_user ? 1 : 0;
+}
+
 sub Unknown    { $_[0]->new( name => 'Unknown' ) }
 sub Socialtext { $_[0]->new( name => 'Socialtext' ) }
 sub Deleted    { $_[0]->new( name => 'Deleted' ) }
@@ -1064,6 +1077,14 @@ Returns the count of Users in this Account.
 
 Accepts thes same PARAMS as C<Socialtext::User-E<gt>ByAccountId()>; please
 refer to L<Socialtext::User> for more information on acceptable parameters.
+
+=item $account->has_user($user)
+
+Returns true if the C<$user> has access to this C<$account> (which would be
+either from this being his Primary Account, or from it being a Secondary
+Account that the User has access to).
+
+Returns false if the C<$user> has no access to the C<$account>.
 
 =item $account->is_plugin_enabled($plugin)
 
