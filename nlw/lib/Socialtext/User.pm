@@ -303,6 +303,7 @@ _delegate last_name => (to => 'homunculus', utf8ify => 1);
 _delegate password_is_correct => (to => 'homunculus');
 _delegate has_valid_password => (to => 'homunculus');
 _delegate driver_name => (to => 'homunculus');
+_delegate is_profile_hidden => (to => 'homunculus');
 
 _delegate email_address_at_import => (to => 'metadata');
 _delegate creation_datetime => (to => 'metadata');

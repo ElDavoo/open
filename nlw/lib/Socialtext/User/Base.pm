@@ -22,6 +22,7 @@ Readonly our @other_fields => qw(
     driver_key
     driver_unique_id
     cached_at
+    is_profile_hidden
 );
 Readonly our @all_fields => (@fields, @other_fields);
 Readonly our %all_fields => map {$_=>1} @all_fields;
