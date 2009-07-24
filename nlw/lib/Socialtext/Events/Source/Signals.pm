@@ -43,6 +43,10 @@ sub query_and_binds {
         ];
     }
 
+    if ($self->filter->followed) {
+        push @where, actor_id => \[$self->followed_clause, $self->viewer_id];
+    }
+
     push @where, -nest => $self->filter->generate_filter(
         qw(before after actor_id person_id)
     );
