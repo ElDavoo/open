@@ -421,10 +421,11 @@ sub finish_import {
 
 sub users {
     my $self = shift;
+    my %args = ref($_[0]) eq 'HASH' ? %{$_[0]} : @_;
     Socialtext::Timer->Continue('acct_users');
     my $cursor = Socialtext::User->ByAccountId(
         account_id => $self->account_id,
-        @_,
+        %args,
     );
     Socialtext::Timer->Pause('acct_users');
     return $cursor;
@@ -432,10 +433,14 @@ sub users {
 
 sub user_ids {
     my $self = shift;
+    my %args = ref($_[0]) eq 'HASH' ? %{$_[0]} : @_;
     Socialtext::Timer->Continue('acct_user_ids');
-    my @user_ids =
-        map { $_->user_id }
-        $self->users(@_)->all();
+    my $cursor = Socialtext::User->ByAccountId(
+        account_id => $self->account_id,
+        ids_only   => 1,
+        %args,
+    );
+    my @user_ids = $cursor->all;
     Socialtext::Timer->Pause('acct_user_ids');
     return \@user_ids;
 }
@@ -443,7 +448,13 @@ sub user_ids {
 sub user_count {
     my $self = shift;
     Socialtext::Timer->Continue('acct_user_count');
-    my $count = $self->users(@_)->count();
+    my %args = ref($_[0]) eq 'HASH' ? %{$_[0]} : @_;
+    my $cursor = Socialtext::User->ByAccountId(
+        account_id => $self->account_id,
+        ids_only   => 1,
+        %args,
+    );
+    my $count = $cursor->count();
     Socialtext::Timer->Pause('acct_user_count');
     return $count;
 }

@@ -992,11 +992,17 @@ EOSQL
         account_id => SCALAR_TYPE,
         primary_only => BOOLEAN_TYPE( default => 0 ),
         exclude_hidden_people => BOOLEAN_TYPE( default => 0 ),
+        ids_only => BOOLEAN_TYPE( default => 0),
     };
     sub ByAccountId {
         # Returns an iterator of Socialtext::User objects
         my $class = shift;
         my %p = validate( @_, $spec );
+
+        $p{apply} =
+            $p{ids_only}
+            ? sub { shift->[0] }
+            : sub { Socialtext::User->new(user_id => shift->[0]) };
 
         # We're supposed to default to DESCending if we're creation_datetime.
         $p{sort_order} ||= $p{order_by} eq 'creation_datetime' ? 'DESC' : 'ASC';
