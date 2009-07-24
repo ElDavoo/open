@@ -13,6 +13,9 @@ my $USERS = 5000; # _Must_ be bigger than $ACCOUNTS - should be more than 10x to
 my $PAGES = 1000;
 my $WRITES_PER_COMMIT = 5000;
 my $EVENTS = 500_000;
+my $GROUPS = 10_000;        # Expected case is "number of groups >= number of users"
+my $GROUP_WS_RATIO = 10;        # How many WS's should each Group be added to
+my $GROUP_USER_RATIO = 30;      # How many User's should be added to each Group
 my $VIEW_EVENT_RATIO = 0.85;
 my $SIGNALS = 100_000;
 
@@ -24,6 +27,9 @@ GetOptions(
     'users|u=i' => \$USERS,
     'pages|p=i' => \$PAGES,
     'events|e=i' => \$EVENTS,
+    'groups|g=i' => \$GROUPS,
+    'group-ws-ratio=f' => \$GROUP_WS_RATIO,
+    'group-user-ratio=f' => \$GROUP_USER_RATIO,
     'view-event-ratio|v=s' => \$VIEW_EVENT_RATIO,
     'signals|s=i' => \$SIGNALS,
     'base|b=s' => \$base,
@@ -33,11 +39,15 @@ my $MAX_WS_ASSIGN = int($ACCOUNTS / 20);
 my $PAGE_VIEW_EVENTS = int($VIEW_EVENT_RATIO * $EVENTS);
 my $OTHER_EVENTS = $EVENTS - $PAGE_VIEW_EVENTS;
 
+my $USER_GROUP_ROLES      = int($GROUPS * $GROUP_USER_RATIO);
+my $GROUP_WORKSPACE_ROLES = int($GROUPS * $GROUP_WS_RATIO);
+
 
 my $create_ts = '2007-01-01 00:00:00+0000';
 my @accounts;
 my @workspaces;
 my @users;
+my @groups;
 my %ws_to_acct;
 my @pages;
 
@@ -247,6 +257,111 @@ sub maybe_commit {
         assign_random_workspaces($user_id, $m, \@workspaces); 
     }
 
+    print " done!\n";
+}
+
+{
+    print "Adding $GROUPS groups";
+    my $create_group_sth = $dbh->prepare_cached(qq{
+        INSERT INTO groups (
+            group_id, driver_unique_id,
+            driver_key, driver_group_name,
+            primary_account_id, created_by_user_id
+        ) VALUES (
+            nextval('groups___group_id'), currval('groups___group_id'),
+            ?, ?, ?, ?
+        );
+    } );
+
+    for (my $group=1; $group<=$GROUPS; $group++) {
+        # pick random User to create the Group
+        my $user = $users[ rand(@users) ];
+
+        # get the User's primary account
+        my ($account) = $dbh->selectrow_array(q{
+            SELECT primary_account_id FROM "UserMetadata" WHERE user_id=?
+        }, {}, $user);
+
+        # create the Group
+        my $group_name = "group-$group-$base";
+        $create_group_sth->execute('Default', $group_name, $account, $user);
+        $writes ++;
+
+        # re-query the Group's group_id
+        my ($group_id) = $dbh->selectrow_array(q{
+            SELECT currval('groups___group_id')
+        });
+        push @groups, $group_id;
+        maybe_commit();
+    }
+    print " done!\n";
+}
+
+{
+    print "Assigning $USER_GROUP_ROLES User->Group Roles";
+    my $ugr_sth = $dbh->prepare_cached(qq{
+        INSERT INTO user_group_role(
+            user_id, group_id, role_id
+        ) VALUES (
+            ?, ?, 3
+        );
+    } );
+    my %ugrs_created;
+
+    for (0 .. $USER_GROUP_ROLES) {
+        # pick a random Group
+        my $group_id = $groups[ rand(@groups) ];
+
+        # pick a random User (that isn't in the Group yet)
+        my $user_id;
+        my @available = shuffle(@users);
+        while (@available) {
+            $user_id = shift @available;
+            last unless (exists $ugrs_created{$user_id}{$group_id});
+        }
+
+        # give the User a Role in this Group
+        if ($user_id) {
+            $ugrs_created{$user_id}{$group_id} ++;
+            $ugr_sth->execute( $user_id, $group_id );
+            $writes++;
+            maybe_commit();
+        }
+    }
+    print " done!\n";
+}
+
+{
+    print "Assigning $GROUP_WORKSPACE_ROLES Group->Workspace Roles";
+    my $gwr_sth = $dbh->prepare_cached(qq{
+        INSERT INTO group_workspace_role (
+            group_id, workspace_id, role_id
+        ) VALUES (
+            ?, ?, 3
+        );
+    } );
+    my %gwrs_created;
+
+    for (0 .. $GROUP_WORKSPACE_ROLES) {
+        # pick a random Group
+        my $group_id = $groups[ rand(@groups) ];
+
+        # pick random WS (that the Group isn't in yet)
+        my $workspace_id;
+        my @available = shuffle(@workspaces);
+        while (@available) {
+            $workspace_id = shift @available;
+            last unless (exists $gwrs_created{$group_id}{$workspace_id});
+        }
+
+        # give the Group a Role in this Workspace
+        if ($workspace_id) {
+            $gwrs_created{$group_id}{$workspace_id}++;
+            $gwr_sth->execute( $group_id, $workspace_id );
+            $writes++;
+            maybe_commit();
+        }
+    }
     print " done!\n";
 }
 
