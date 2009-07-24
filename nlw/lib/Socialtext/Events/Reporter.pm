@@ -68,7 +68,7 @@ sub get_events {
         account_id action contributions followed before after
         page_id page_workspace_id actor_id person_id tag_name
     ));
-    
+
     my %construct = (
         viewer => $self->viewer,
         user => $self->viewer,
@@ -122,7 +122,8 @@ sub get_events_page_contribs {
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
 
     my $opts_slice = opts_slice($opts, qw(
-        account_id actor_id before after followed tag_name page_workspace_id page_id
+        action account_id actor_id before after followed
+        tag_name page_workspace_id page_id
     ));
     $opts_slice->{contributions} = 1;
 
