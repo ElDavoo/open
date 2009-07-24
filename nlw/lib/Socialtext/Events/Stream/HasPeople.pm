@@ -24,10 +24,11 @@ sub _build_people_account_ids { $_[0]->account_ids_for_plugin('people'); }
 around '_build_sources' => sub {
     my $code = shift;
     my $self = shift;
-    my $sources = $self->$code;
+    my $sources = $self->$code() || [];
 
     my $ids = $self->people_account_ids;
-    return unless $ids && @$ids;
+    return $sources unless $ids && @$ids;
+
     push @$sources, $self->construct_source(
         'Socialtext::Events::Source::PersonVisible',
         visible_account_ids => $ids,

@@ -25,7 +25,7 @@ sub _build_signals_account_ids { $_[0]->account_ids_for_plugin('signals'); }
 around '_build_sources' => sub {
     my $code = shift;
     my $self = shift;
-    my $sources = $self->$code;
+    my $sources = $self->$code() || [];
    
     my $ids = $self->signals_account_ids;
     return $sources unless $ids && @$ids;
