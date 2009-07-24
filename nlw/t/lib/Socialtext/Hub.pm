@@ -31,6 +31,7 @@ use unmocked 'Socialtext::Stax';
 use unmocked 'Socialtext::Pluggable::Adapter';
 use unmocked 'Socialtext::Formatter';
 use unmocked 'Socialtext::Formatter::Viewer';
+use unmocked 'Socialtext::Attachments';
 
 # warn "MOCKED HUB";
 
