@@ -24,6 +24,7 @@ use Socialtext::AccountLogo;
 use YAML qw/DumpFile LoadFile/;
 use MIME::Base64 ();
 use namespace::clean;
+use Socialtext::JSON::Proxy::Helper;
 
 Readonly our @ACCT_COLS => qw(
     account_id
@@ -251,6 +252,7 @@ sub enable_plugin {
     }, $self->account_id, $plugin);
 
     Socialtext::Cache->clear('authz_plugin');
+    Socialtext::JSON::Proxy::Helper->ClearForUser($self->account_id);
 
     for my $dep ($plugin_class->dependencies, $plugin_class->enables) {
         $self->enable_plugin($dep);
@@ -273,6 +275,7 @@ sub disable_plugin {
     }, $self->account_id, $plugin);
 
     Socialtext::Cache->clear('authz_plugin');
+    Socialtext::JSON::Proxy::Helper->ClearForUser($self->account_id);
 
     # Disable any reverse depended packages
     for my $rdep ($plugin_class->reverse_dependencies) {

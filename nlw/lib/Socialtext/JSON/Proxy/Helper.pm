@@ -10,6 +10,15 @@ sub ClearForUser {
     sql_execute('DELETE FROM json_proxy_cache WHERE user_id = ?', $user_id);
 }
 
+sub ClearForAccount {
+    my ($class, $account_id) = @_;
+    sql_execute('
+        DELETE FROM json_proxy_cache WHERE user_id IN (
+            SELECT user_id FROM account_user WHERE account_id = ?
+        )
+    ', $account_id);
+}
+
 1;
 
 __END__
