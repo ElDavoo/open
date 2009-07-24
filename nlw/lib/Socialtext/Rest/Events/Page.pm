@@ -20,8 +20,6 @@ sub get_resource {
     my $rest = shift;
     my $content_type = shift;
 
-    warn "page get resource";
-
     my %args = $self->extract_common_args;
 
     $args{page_id} = $self->hub->pages->current->id;

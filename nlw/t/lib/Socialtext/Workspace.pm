@@ -88,6 +88,12 @@ sub All {
     );
 }
 
+sub ByAccountId {
+    return Socialtext::MultiCursor->new(
+        iterables => [],
+    );
+}
+
 sub Default {
     my $class = shift;
     return $class->new( name => 'default' );

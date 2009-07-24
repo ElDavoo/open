@@ -57,6 +57,7 @@ BEGIN {
     for my $l (qw( debug info notice warning error critical alert emergency )) {
         no strict 'refs';
         *{$l} = sub {
+            local $@;
             eval {
                 my $self = shift;
                 foreach my $call (@deferred_calls) {
@@ -145,9 +146,14 @@ sub new {
     my $class = shift;
     return $Instance if $Instance;
     my $self = bless {}, $class;
-    $self->_syslog_output;
-    $self->_screen_output if $ENV{NLW_DEBUG_SCREEN};
-    $self->_devenv_output if Socialtext::AppConfig->_startup_user_is_human_user();
+    local $@;
+    eval {
+        $self->_syslog_output;
+        $self->_screen_output if $ENV{NLW_DEBUG_SCREEN};
+        $self->_devenv_output
+            if Socialtext::AppConfig->_startup_user_is_human_user();
+    };
+    warn $@ if $@;
 
     $Instance = $self;
     return $Instance;

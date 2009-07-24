@@ -56,7 +56,7 @@ sub public_workspaces {
     my @available = Socialtext::Workspace->MostOftenAccessedLastWeek;
 
     my $ws_help = Socialtext::Workspace->help_workspace();
-    push @available, [$ws_help->name, $ws_help->title] if $ws_help;
+    unshift @available, [$ws_help->name, $ws_help->title] if $ws_help;
 
     # trim list to max length, and remove duplicates
     my %seen;

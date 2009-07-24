@@ -117,7 +117,7 @@ sub _process {
     
     # Safari's JS doesn't properly handled raw utf8 data.
     # Escaping them to entities seems to be the only way out.
-    if ( Socialtext::BrowserDetect::safari() && $self->cgi->is_xhr ) {
+    if ( defined $html and Socialtext::BrowserDetect::safari() and $self->cgi->is_xhr ) {
         $html =~ s/([^\x00-\xa0])/sprintf('&#x%x;', unpack('U', $1))/egs;
     }
 

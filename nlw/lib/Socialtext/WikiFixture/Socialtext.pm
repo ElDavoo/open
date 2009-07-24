@@ -688,17 +688,7 @@ sub _click_user_row {
 }
 
 sub _run_command {
-    my $command = shift;
-    my $verify = shift || '';
-    my $output = qx($command 2>&1);
-    return if $verify eq 'ignore output';
-
-    if ($verify) {
-        like $output, $verify, $command;
-    }
-    else {
-        warn $output;
-    }
+    Socialtext::WikiFixture::SocialBase->can('_run_command')->(@_);
 }
 
 =head1 AUTHOR

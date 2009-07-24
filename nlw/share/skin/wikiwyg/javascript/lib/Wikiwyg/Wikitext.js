@@ -1989,7 +1989,9 @@ proto.format_td = function(elem) {
         elem.firstChild &&
         elem.firstChild.nodeName.match(/^(H[123456])$/)
     ) {
-        elem.wikitext = elem.wikitext.replace(/\n?$/, '\n');
+        if (elem.wikitext != '') {
+            elem.wikitext = elem.wikitext.replace(/\n?$/, '\n');
+        }
         return '| ' + elem.wikitext;
     }
 
@@ -2036,7 +2038,9 @@ for (var i = 1; i <= 6; i++) {
     (function(p){
         proto['format_h'+i] = function(elem) {
             elem.top_level_block = true;
-            var text = p + this._format_one_line(elem);
+            var text = this._format_one_line(elem);
+            if (text == '') return '';
+            text = p + text;
             return text.replace(/\n*$/, '\n');
         };
     })(padding);

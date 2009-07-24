@@ -4,11 +4,15 @@ use strict;
 use warnings;
 use Socialtext::SQL qw/get_dbh/;
 use Socialtext::JSON qw/encode_json/;
+use Socialtext::System qw/shell_run/;
 
 my $dbh = get_dbh();
 
 $dbh->{RaiseError} = 1;
 $dbh->{AutoCommit} = 0;
+
+# Install the activities widget
+shell_run("st-run-as-web-user st-widgets install-widget --src 'local:widgets:activities'");
 
 my $signals_id = get_gadget_id('local:signals:signals');
 my $conversations_id = get_gadget_id('local:widgets:recent_conversations');

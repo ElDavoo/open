@@ -165,6 +165,8 @@ sub template_render {
     return join "\n", map { $args{$_} ||= ''; "$_=$args{$_}" } keys %args;
 }
 
+sub is_hook_enabled { 1 }
+sub declined { 0 }
 sub set_workspace_prefs {}
 sub get_workspace_prefs {}
 

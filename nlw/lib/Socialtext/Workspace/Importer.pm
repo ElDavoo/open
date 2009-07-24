@@ -3,6 +3,7 @@ package Socialtext::Workspace::Importer;
 
 use strict;
 use warnings;
+use base 'Socialtext::Base';
 
 use Encode::Guess qw( ascii iso-8859-1 utf8 );
 use File::chdir;
@@ -10,7 +11,7 @@ use Cwd;
 use Socialtext::File::Copy::Recursive ();
 use Readonly;
 use Socialtext::SQL qw(:txn :exec);
-use Socialtext::Validate qw( validate FILE_TYPE BOOLEAN_TYPE SCALAR_TYPE );
+use Socialtext::Validate qw( validate FILE_TYPE BOOLEAN_TYPE SCALAR_TYPE OBJECT_TYPE );
 use Socialtext::AppConfig;
 use Socialtext::Workspace;
 use Socialtext::Exceptions qw/rethrow_exception/;
@@ -32,6 +33,7 @@ Readonly my $MAX_VERSION => 1;
         tarball   => FILE_TYPE,
         overwrite => BOOLEAN_TYPE( default => 0 ),
         noindex   => BOOLEAN_TYPE( default => 0 ),
+        hub       => OBJECT_TYPE,
     };
     sub new {
         my $class = shift;
@@ -65,6 +67,7 @@ Readonly my $MAX_VERSION => 1;
             tarball   => $tarball,
             version   => $version,
             noindex   => $p{noindex},
+            hub       => $p{hub},
             },
             $class;
     }
