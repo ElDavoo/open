@@ -1764,8 +1764,12 @@ sub send_as_email {
 
     my $make_body_content = sub {
         if ($self->is_spreadsheet) {
-            my $intro = $self->hub->viewer->process($p{body_intro}, $self);
             my $content = $self->to_absolute_html();
+            if ($p{body_intro} eq '') {
+                return $content;
+            }
+
+            my $intro = $self->hub->viewer->process($p{body_intro}, $self);
             return "$intro<hr/>$content";
         }
 
