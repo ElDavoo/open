@@ -1765,9 +1765,7 @@ sub send_as_email {
     my $make_body_content = sub {
         if ($self->is_spreadsheet) {
             my $content = $self->to_absolute_html();
-            if ($p{body_intro} eq '') {
-                return $content;
-            }
+            return $content unless $p{body_intro} =~ /\S/;
 
             my $intro = $self->hub->viewer->process($p{body_intro}, $self);
             return "$intro<hr/>$content";
@@ -1795,7 +1793,7 @@ sub send_as_email {
     );
 
     my $text_body = Text::Autoformat::autoformat(
-        $p{body_intro} . ($self->is_spreadsheet ? '' : $self->content), {
+        $p{body_intro} . ($self->is_spreadsheet ? "\n" : $self->content), {
             all    => 1,
             # This won't actually work properly until the next version
             # of Text::Autoformat, as 1.13 has a bug.
