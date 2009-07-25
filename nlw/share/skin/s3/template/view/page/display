@@ -71,8 +71,7 @@
         [% END %]
       [% END %]
       <li><a class="print" title="[% loc('Print this page') %]" id="st-pagetools-print" href="JavaScript:window.print()">[% loc('Print') %]</a></li>
-      [% IF checker.check_permission('email_out') &&
-            page.page_type != 'spreadsheet' %]
+      [% IF checker.check_permission('email_out') %]
       <li><a class="email" title="[% loc('Email this page') %]" id="st-pagetools-email" href="#">[% loc('Email') %]</a></li>
       [% END %]
       <li class="last submenu"><a class="tools" id="st-pagetools-tools" href="#">[% loc('Tools') %]</a>
