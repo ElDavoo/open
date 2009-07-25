@@ -22,20 +22,6 @@ BEGIN {
 fixtures( 'db' );
 
 ###############################################################################
-# Subroutine to create a new dummy/test user record.
-my $start_time = time();
-my $counter    = 1;
-sub create_test_user {
-    my $email = "test-$start_time-$counter\@socialtext.net";
-    $counter++;
-    my $user = Socialtext::User->create(
-        username      => $email,
-        email_address => $email,
-        password      => 'password',
-    );
-}
-
-###############################################################################
 # Test: confirmation e-mail qualities
 confirmation_email_qualities: {
     my $user = create_test_user();
