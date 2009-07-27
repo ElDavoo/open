@@ -89,7 +89,7 @@ Process_a_failing_job: {
     is scalar(@jobs), 1;
     my @failures = $jobs[0]->failure_log;
     is scalar(@failures), 1;
-    is $failures[0], "failed!\n";
+    like $failures[0], qr/^failed!\n/;
     is $Socialtext::Job::Test::Work_count, 0;
 }
 
