@@ -1,17 +1,8 @@
 package Socialtext::Events::Reporter;
 # @COPYRIGHT@
 use Moose;
-
-use Socialtext::Encode ();
-use Socialtext::SQL qw/sql_execute/;
-use Socialtext::JSON qw/decode_json/;
 use Socialtext::User;
-use Socialtext::Pluggable::Adapter;
 use Socialtext::Timer qw/time_this/;
-use Class::Field qw/field/;
-use Socialtext::WikiText::Parser::Messages;
-use Socialtext::WikiText::Emitter::Messages::HTML;
-
 use Socialtext::Events::FilterParams;
 use Socialtext::Events::Stream;
 use Socialtext::Events::Stream::HasPages;
