@@ -3,6 +3,7 @@ package Socialtext::Events::Source::FromDB;
 use Moose::Role;
 use MooseX::AttributeHelpers;
 use Socialtext::SQL qw/:exec/;
+use Socialtext::Timer qw/time_this/;
 use namespace::clean -except => 'meta';
 
 has 'sql_results' => (
@@ -24,11 +25,16 @@ sub next {
 }
 requires 'event_type';
 requires 'query_and_binds';
+requires 'query_name';
 
 sub _build_sql_results {
     my $self = shift;
     my ($sql, $binds) = $self->query_and_binds();
-    my $sth = sql_execute($sql, @$binds);
+    my $name = $self->query_name;
+    my $sth;
+    time_this {
+        $sth = sql_execute($sql, @$binds);
+    } "source_$name";
     return [] unless $sth->rows > 0;
     return $sth->fetchall_arrayref({});
 }

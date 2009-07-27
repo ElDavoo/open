@@ -10,6 +10,7 @@ with 'Socialtext::Events::Source', 'Socialtext::Events::Source::FromDB';
 has 'workspace_id' => ( is => 'ro', isa => 'Int', required => 1 );
 
 use constant event_type => 'Socialtext::Events::Event::Page';
+use constant query_name => 'workspace';
 
 sub query_and_binds {
     my $self = shift;

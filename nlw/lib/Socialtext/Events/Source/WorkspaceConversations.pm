@@ -11,6 +11,7 @@ with 'Socialtext::Events::Source', 'Socialtext::Events::Source::FromDB';
 has 'workspace_id' => ( is => 'ro', isa => 'Int', required => 1 );
 
 use constant event_type => 'Socialtext::Events::Event::Page';
+use constant query_name => 'convos';
 
 around 'prepare' => sub {
     my $code = shift;

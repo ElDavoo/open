@@ -3,6 +3,7 @@ package Socialtext::Events::Stream::HasWorkspaces;
 use Moose::Role;
 use Socialtext::SQL qw/:exec/;
 use Socialtext::SQL::Builder qw/sql_abstract/;
+use Socialtext::Timer qw/time_this/;
 use List::Util qw/first/;
 use namespace::clean -except => 'meta';
 
@@ -63,10 +64,13 @@ sub _build_workspace_ids {
         );
     }
 
-    my $sth = sql_execute(
-        "$member_sql \n UNION \n $guest_sql",
-        @member_bind, @guest_bind
-    );
+    my $sth;
+    time_this {
+        $sth = sql_execute(
+            "$member_sql \n UNION \n $guest_sql",
+            @member_bind, @guest_bind
+        );
+    } 'stream_has_workspaces';
     my $rows = $sth->fetchall_arrayref;
 
     if ($self->filter->has_page_workspace_id) {

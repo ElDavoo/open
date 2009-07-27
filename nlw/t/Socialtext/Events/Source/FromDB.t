@@ -19,6 +19,7 @@ BEGIN {
     with 'Socialtext::Events::Source', 'Socialtext::Events::Source::FromDB';
 
     use constant event_type => 'Socialtext::Events::Event';
+    use constant query_name => 'test';
 
     sub query_and_binds {
         my $self = shift;

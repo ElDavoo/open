@@ -11,6 +11,7 @@ has 'visible_account_ids' => ( is => 'ro', isa => 'ArrayRef' );
 has 'activity_mode' => ( is => 'ro', isa => 'Bool', default => undef );
 
 use constant event_type => 'Socialtext::Events::Event::Person';
+use constant query_name => 'person_visible';
 
 sub _visible_exists {
     my $self = shift;
