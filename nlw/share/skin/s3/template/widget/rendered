@@ -17,7 +17,23 @@
         <script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
         [% END %]
         </head>
-    <body onload="document.body.loaded = true">
+        <body>
         [% content %]
-    </body>
+        <script>(function(){
+            var _onload = window.onload;
+            if (typeof window.onload != 'function') {
+                window.onload = function() {
+                    document.body.loaded = true;
+                }
+            }
+            else {
+                window.onload = function() {
+                    if (_onload) _onload();
+                    document.body.loaded = true;
+                }
+            }
+        })();
+        </script>
+        </body>
+    </script>
 </html>

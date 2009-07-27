@@ -3671,6 +3671,14 @@ table.widgetUserPrefs td.widgetUserPrefsButtons {
     padding-top: 5px;
 }
 
+table.widgetUserPrefs th {
+    width: 25%;
+}
+
+table.widgetUserPrefs select {
+    width: 95%;
+}
+
 #st-tags-field {
     width: 50%;
     margin:10px;
