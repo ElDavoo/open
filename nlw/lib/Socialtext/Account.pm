@@ -35,6 +35,7 @@ Readonly our @ACCT_COLS => qw(
     is_exportable
     allow_invitation
     all_users_workspace
+    account_type
 
     desktop_logo_uri
     desktop_header_gradient_top
