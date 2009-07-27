@@ -1,3 +1,4 @@
+[% USE decorate %]
 <div id="homeLink">
   <a id="st-home-link" href="[% FILTER decorate('home_href') %]/[% END %]">
       [% loc("Dashboard") %]</a></div>
