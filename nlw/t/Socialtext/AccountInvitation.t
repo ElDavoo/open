@@ -17,26 +17,15 @@ fixtures( 'db' );
 
 $Socialtext::EmailSender::Base::SendClass = 'Test';
 
-my $acct = Socialtext::Account->create( 
-    name              => 'invitation',
-    is_system_created => 0,
-);
-
-my $from = Socialtext::User->create(
-    username           => 'invitor@example.com',
-    email_address      => 'invitor@example.com',
-    first_name         => 'Igor',
-    last_name          => 'Vitor',
-    created_by_user_id => Socialtext::User->SystemUser()->user_id,
-    primary_account_id => $acct->account_id,
-);
+my $acct = create_test_account_bypassing_factory();
+my $from = create_test_user( unique_id => 'invitor', account => $acct );
 
 Simple_case: {
     my $invitee_email = 'invitee@example.com';
     my $invitation = Socialtext::AccountInvitation->new(
         account   => $acct,
         from_user => $from,
-        invitee   => 'invitee@example.com'
+        invitee   => $invitee_email,
     );
 
     eval { $invitation->send(); };
