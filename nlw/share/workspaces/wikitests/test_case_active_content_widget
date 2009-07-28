@@ -11,50 +11,86 @@
 | st-admin | add-member --workspace %%acw%% --username %%conv_email%% |  |
 
 | *Comment* | Test Case: Active Content Widget Create Tag page though GUI |  |
-| open_ok | /%%acw%%/index.cgi?action=new_page |  |
+| open_ok | /%%acw%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | Active Content Tag %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_ok | st-save-button-link |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 
 | *Comment* | Test Case: Active Content Widget Create Edit page though GUI |  |
-| open_ok | /%%acw%%/index.cgi?action=new_page |  |
+| open_ok | /%%acw%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | Active Content Edit %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_ok | st-save-button-link |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 
 | *Comment* | Test Case: Active Content Widget Create Comment page though GUI |  |
-| open_ok | /%%acw%%/index.cgi?action=new_page |  |
+| open_ok | /%%acw%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | Active Content Comment %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_ok | st-save-button-link |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 
 | *Comment* | Test Case: Active Content Widget Create Watched page though GUI |  |
-| open_ok | /%%acw%%/index.cgi?action=new_page |  |
+| open_ok | /%%acw%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | Active Content Watch %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_ok | st-save-button-link |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| st-watch-page | 1 |  |
+| st-is-watched | 1 |  |
+| st-watch-page | 0 |  |
+| st-is-watched | 0 |  |
+| st-watch-page | 1 |  |
+| st-is-watched | 1 |  |
+| st-watch-page | 0 |  |
+| st-is-watched | 0 |  |
+| st-watch-page | 1 |  |
+| st-is-watched | 1 |  |
+| st-watch-page | 0 |  |
+| st-is-watched | 0 |  |
+| st-watch-page | 1 |  |
+| st-is-watched | 1 |  |
+
+ *Comment* | Test Case: Active Content Widget Create Emailed page though GUI | |
+
+| open_ok | /%%acw%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| type_ok | st-newpage-pagename-edit | Active Content Emailed %%start_time%% |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| click_ok | st-save-button-link |  |
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| click_ok | st-pagetools-email |  |
+| wait_for_element_visible_ok | st-email-lightbox | 30000 |
+| wait_for_element_visible_ok | email_recipient | 30000 |
+| type_ok | email_recipient | %%workspace%%@%%wikiemail%% |
+| click_ok | email_add |  |
+| text_like | email_page_user_choices | %%workspace%%@%%wikiemail%% |
+| type_ok | email_page_subject | Email subject %%start_time%% |
+| click_ok | email_send |  |
+| wait_for_element_not_visible_ok | st-email-lightbox | 30000 |
 
 | *Comment* | Test Case: Active Content Widget Login as %%conv_email%% |  |
+| open_ok | /%%acw%%/ |  |
 | st-logoutin | %%conv_email%% | %%password%% |
 
 | *Comment* | Test Case: Active Content Widget Edit a page |  |
@@ -86,7 +122,7 @@
 | wait_for_element_visible_ok | link=%%conv_user%% tags | 30000 |
 
 | *Comment* | Test Case: Active Content Widget if you logout now, IE raises an authen dialog for no reason |  |
-| *Comment* | Try to find a workaround by leaving page |
+| *Comment* | Try to find a workaround by leaving page |  |
 | open_ok | /%%acw%%/ |  |
 | wait_for_element_visible_ok | link=Dashboard | 30000 |
 
@@ -97,13 +133,14 @@ st-login | %%username%% | %%password%% |
 | open_ok | /?dashboard | 60000 |
 | st-empty-container |  |  |
 | st-catchup-logs |  |  |
+| st-clear-json-cache |  |  |
 
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | gallery-widget-Active Content | 30000 |
 | click_and_wait | gallery-widget-Active Content |  |
 
-| *Comment* | Test Case: Test Case: Active Content Widget is the widget there? |  |
+| *Comment* | Test Case: Active Content Widget is the widget there? |  |
 | wait_for_element_visible_ok | //a[@class='close'] | 30000 |
 
 | st-name-widget | 1 | active_content |
@@ -114,13 +151,32 @@ st-login | %%username%% | %%password%% |
 | click_ok | st-savebutton-%%active_content%% |  |
 | wait_for_element_not_visible_ok | up_workspace | 30000 |
 
-| st-select-widget-frame | active_content |  |
-| pause | 60000 |  |
+ *Comment* | Test Case: Active Content Widget Check the content of the widget |
+| st-select-widget-frame | active_content | |
+| pause | 60000 | |
+| wait_for_element_visible_ok | link=Edited | 30000 |
 | text_like | //body | Viewed |
-| wait_for_element_visible_ok | link=Edited |  |
-| wait_for_element_visible_ok | link=Watched |  |
-| wait_for_element_visible_ok | link=Emailed |  |
-| pause | 60000 |  |
+| wait_for_element_visible_ok | link=Watched | 30000 |
+| wait_for_element_visible_ok | link=Emailed | 30000 |
+| wait_for_element_visible_ok | link=active-content-%%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=Active Content Edit %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=Active Content Tag %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=Active Content Comment %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=Active Content Emailed %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=Active Content Watched %%start_time%% | 30000 |
+| click_ok | link=Edited | |
+| wait_for_element_visible_ok | link=Viewed | 30000 |
+| text_like | //body | Edited |
+| wait_for_element_visible_ok | link=Watched | 30000 |
+| wait_for_element_visible_ok | link=Emailed | 30000 |
+| wait_for_element_visible_ok | link=active-content-%%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=Active Content Edit %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=Active Content Tag %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=Active Content Comment %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=Active Content Emailed %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=Active Content Watched %%start_time%% | 30000 |
+| click_ok | link=Edited | |
+
 | select-frame | relative=parent |  |
 | st-empty-container |  |  |
 
