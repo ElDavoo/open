@@ -907,22 +907,7 @@ Wikiwyg.htmlEscape = function(str) {
 }
 
 Wikiwyg.htmlUnescape = function(escaped) {
-    // thanks to Randal Schwartz for the correct solution to this one
-    // (from CGI.pm, CGI::unescapeHTML())
-    return escaped.replace(
-        /&(.*?);/g,
-        function(dummy,s) {
-            return s.match(/^amp$/i) ? '&' :
-                s.match(/^quot$/i) ? '"' :
-                s.match(/^gt$/i) ? '>' :
-                s.match(/^lt$/i) ? '<' :
-                s.match(/^#(\d+)$/) ?
-                    String.fromCharCode(s.replace(/#/,'')) :
-                s.match(/^#x([0-9a-f]+)$/i) ?
-                    String.fromCharCode(s.replace(/#/,'0')) :
-                s
-        }
-    );
+    return jQuery("<div>"+escaped.replace(/</g, '&lt;')+"</div>").text().replace(/\xA0/g, ' ');
 }
 
 Wikiwyg.showById = function(id) {
