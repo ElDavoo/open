@@ -83,7 +83,7 @@ sub membership_is {
     my $expected = shift;
     my $name = shift;
 
-    local $Test::Bulder::Level = ($Test::Bulder::Level||0) + 1;
+    local $Test::Builder::Level = ($Test::Builder::Level||0) + 1;
 
     my $dbh = get_dbh;
 
