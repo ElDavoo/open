@@ -23,8 +23,7 @@ sub get_resource {
                 $self->extract_page_args(),
                 $self->extract_people_args());
 
-    my $events = eval { Socialtext::Events->Get($self->rest->user, @args); };
-    if ($@) { warn $@; die $@ }
+    my $events = Socialtext::Events->Get($self->rest->user, @args);
     $events ||= [];
 
     return $events;
