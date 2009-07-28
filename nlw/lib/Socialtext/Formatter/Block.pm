@@ -52,10 +52,10 @@ const pattern_block =>
         (?:
         ^(?!        # All consecutive lines *not* starting with
         (?:
-            [\#\-\*]+[\ ] |
-            [\^\|\>] |
-            \.\w+\s*\n |
-            \{[^\}]+\}\s*\n
+            (?:\^+|\#+|\*+|\-+)[\ ] |   # Headers or bullets (spaces mandatory)
+            \> |                        # Quote marks (spaces optional)
+            \.\w+\s*\n |                # .wafl blocks
+            \{[^\}]+\}\s*\n             # {wafl} phrases
         )
         )
         .*\S.*\n
@@ -85,7 +85,7 @@ use base 'Socialtext::Formatter::Paragraph';
 use Class::Field qw( const );
 
 const formatter_id  => 'empty_p';
-const pattern_block => qr/^(\s*\n)/m;
+const pattern_block => qr/\A(\s*\n)/m;
 const html_start    => "";
 const html_end      => "<br />";
 
