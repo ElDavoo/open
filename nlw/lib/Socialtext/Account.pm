@@ -54,7 +54,7 @@ foreach my $column ( @ACCT_COLS ) {
     field $column;
 }
 
-my @TYPES = qw/Standard/;
+my @TYPES = ('Standard', 'Free 50', 'Paid', 'Comped', 'Trial', 'Unknown');
 my %VALID_TYPE = map { $_ => 1 } @TYPES;
 sub Types { [ @TYPES ] }
 
