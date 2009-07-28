@@ -15,6 +15,10 @@ CREATE INDEX ix_event_signal_direct ON event (at)
 CREATE INDEX ix_event_signal_indirect ON event (at)
   WHERE event_class = 'signal' AND NOT is_direct_signal(actor_id,person_id);
 
+-- speeds up bare /data/events queries
+CREATE INDEX ix_event_workspace ON event (page_workspace_id, at)
+  WHERE event_class = 'page';
+
 UPDATE "System"
    SET value = '75'
  WHERE field = 'socialtext-schema-version';

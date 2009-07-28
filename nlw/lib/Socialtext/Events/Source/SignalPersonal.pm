@@ -9,6 +9,7 @@ use namespace::clean -except => 'meta';
 with 'Socialtext::Events::Source', 'Socialtext::Events::Source::FromDB';
 
 use constant event_type => 'Socialtext::Events::Event::Signal';
+use constant query_name => 'signal_personal';
 
 sub query_and_binds {
     my $self = shift;

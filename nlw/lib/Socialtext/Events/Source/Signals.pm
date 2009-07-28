@@ -12,6 +12,7 @@ has 'account_ids' => ( is => 'ro', isa => 'ArrayRef[Int]', required => 1 );
 has 'activity_mode' => ( is => 'ro', isa => 'Bool', default => undef );
 
 use constant event_type => 'Socialtext::Events::Event::Signal';
+use constant query_name => 'signal';
 
 sub query_and_binds {
     my $self = shift;

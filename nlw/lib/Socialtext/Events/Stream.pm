@@ -5,6 +5,7 @@ use MooseX::AttributeHelpers;
 use MooseX::StrictConstructor;
 use Socialtext::SQL qw/:exec/;
 use Socialtext::Events::FilterParams;
+use Socialtext::Timer qw/time_this/;
 use Array::Heap;
 use List::Util qw/first/;
 use namespace::clean -except => 'meta';
@@ -67,7 +68,9 @@ sub construct_source {
 sub assemble {
     my $self = shift;
     return if $self->_assembled;
-    for my $src ($self->sources) {
+    my @sources;
+    time_this { @sources = $self->sources } 'stream_assemble';
+    for my $src (@sources) {
         $src->assemble if $src->does('Socialtext::Events::Stream');
     }
     $self->_assembled(1);

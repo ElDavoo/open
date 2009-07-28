@@ -11,9 +11,12 @@ use Test::Socialtext;
 use Test::Socialtext::Search;
 use Socialtext::File;
 
-# This unit test *requires* that there be *no* pages in the workspace that
-# we're testing.
-fixtures( 'admin_no_pages' );
+###############################################################################
+# Fixtures: no-ceq-jobs admin_no_pages
+# - we're an indexer test, so make sure there are *NO* Ceq jobs kicking around
+#   that could cause things to get indexed
+# - this test also expects that we've got *NO* pages in the WS
+fixtures(qw( no-ceq-jobs admin_no_pages ));
 
 
 my $wvtext_path = check_for_file_in_path('wvText');
