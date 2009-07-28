@@ -1005,69 +1005,52 @@ EOSQL
         $p{sort_order} ||= $p{order_by} eq 'creation_datetime' ? 'DESC' : 'ASC';
 
         my @bind = qw( account_id limit offset );
-        my $account_where = 'ua.primary_account_id = ?';
-        unless ($p{primary_only}) {
-            $account_where .= ' OR ua.secondary_account_id = ?';
-            unshift @bind, 'account_id';
+        my $account_where = 'ua.account_id = ?';
+        if ($p{primary_only}) {
+            $account_where .= ' AND ua.is_primary';
         }
 
         my $exclude_hidden_clause = '';
         if ($p{exclude_hidden_people}) {
-            $exclude_hidden_clause = 'AND NOT ua.is_profile_hidden';
+            $exclude_hidden_clause = 'AND NOT u.is_profile_hidden';
         }
 
         Readonly my %SQL => (
             creation_datetime => <<EOSQL,
-SELECT DISTINCT ua.user_id,
-                ua.driver_key,
-                ua.driver_unique_id,
-                ua.driver_username,
-                ua.creation_datetime
-    FROM user_account ua
-    WHERE ($account_where)
-          $exclude_hidden_clause
-    ORDER BY creation_datetime $p{sort_order}, driver_username ASC
-    LIMIT ? OFFSET ?
+SELECT DISTINCT u.user_id, um.creation_datetime, u.driver_username
+  FROM user_account ua
+  JOIN users u USING (user_id)
+  JOIN "UserMetadata" um USING (user_id)
+ WHERE ($account_where) $exclude_hidden_clause
+ ORDER BY um.creation_datetime $p{sort_order}, u.driver_username ASC
+ LIMIT ? OFFSET ?
 EOSQL
             creator => <<EOSQL,
-SELECT DISTINCT ua.user_id AS user_id,
-                ua.driver_key AS driver_key,
-                ua.driver_unique_id AS driver_unique_id,
-                ua.driver_username AS driver_username,
-                u2.driver_username AS creator
-    FROM user_account ua
-         LEFT JOIN "UserMetadata" um2 ON (ua.creator_id = um2.user_id)
-         LEFT JOIN users u2 ON (um2.user_id = u2.user_id)
-    WHERE ($account_where)
-          $exclude_hidden_clause
-    ORDER BY u2.driver_username $p{sort_order}, ua.driver_username ASC
-    LIMIT ? OFFSET ?
+SELECT DISTINCT ua.user_id, u2.driver_username AS creator_name, u.driver_username
+  FROM user_account ua
+  JOIN users u USING (user_id)
+  JOIN "UserMetadata" um USING (user_id)
+  LEFT JOIN users u2 ON (um.created_by_user_id = u2.user_id)
+ WHERE ($account_where) $exclude_hidden_clause
+ ORDER BY u2.driver_username $p{sort_order}, u.driver_username ASC
+ LIMIT ? OFFSET ?
 EOSQL
             username => <<EOSQL,
-SELECT DISTINCT ua.user_id,
-                ua.driver_key,
-                ua.driver_unique_id,
-                ua.driver_username
-    FROM user_account ua
-    WHERE ($account_where)
-          $exclude_hidden_clause
-    ORDER BY driver_username $p{sort_order}
-    LIMIT ? OFFSET ?
+SELECT DISTINCT ua.user_id, u.driver_username
+  FROM user_account ua
+  JOIN users u USING (user_id)
+ WHERE ($account_where) $exclude_hidden_clause
+ ORDER BY u.driver_username $p{sort_order}
+ LIMIT ? OFFSET ?
 EOSQL
-
             primary_account => <<EOSQL,
-SELECT DISTINCT ua.user_id AS user_id,
-                ua.driver_key AS driver_key,
-                ua.driver_unique_id AS driver_unique_id,
-                ua.driver_username AS driver_username,
-                a.name AS primary_account_name
-    FROM user_account ua
-         LEFT JOIN "UserMetadata" um ON (ua.user_id = um.user_id)
-         JOIN "Account" a ON a.account_id = um.primary_account_id
-    WHERE ($account_where)
-          $exclude_hidden_clause
-    ORDER BY a.name $p{sort_order}, driver_username ASC
-    LIMIT ? OFFSET ?
+SELECT DISTINCT ua.user_id, acct.name, u.driver_username
+  FROM user_account ua
+  JOIN users u USING (user_id)
+  JOIN "Account" acct USING (account_id)
+ WHERE ($account_where) $exclude_hidden_clause
+ ORDER BY acct.name $p{sort_order}, u.driver_username ASC
+ LIMIT ? OFFSET ?
 EOSQL
         );
 
