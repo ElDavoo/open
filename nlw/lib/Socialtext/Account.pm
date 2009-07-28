@@ -53,7 +53,9 @@ foreach my $column ( @ACCT_COLS ) {
     field $column;
 }
 
-my %VALID_TYPE = map { $_ => 1 } qw/Standard/;
+my @TYPES = qw/Standard/;
+my %VALID_TYPE = map { $_ => 1 } @TYPES;
+sub Types { [ @TYPES ] }
 
 Readonly my @RequiredAccounts => qw( Unknown Socialtext Deleted );
 sub EnsureRequiredDataIsPresent {
