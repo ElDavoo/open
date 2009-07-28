@@ -79,15 +79,6 @@ sub load_hub {
 
 sub debug {
     my $self = shift;
-    no warnings 'redefine';
-
-    if ($self->is_in_cgi) {
-        require CGI::Carp;
-        *CORE::GLOBAL::die = \&CGI::Carp::confess;
-    }
-    else {
-        *CORE::GLOBAL::die = \&Carp::confess;
-    }
 
     $self->using_debug(1);
     return $self;

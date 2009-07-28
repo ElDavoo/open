@@ -5,12 +5,18 @@ use warnings;
 
 use Class::Field qw( const field );
 
+use Carp();
 use Data::Dumper;
 use Encode;
 use Socialtext::Paths;
 use Socialtext::File;
 use Socialtext::String;
 use URI::Escape ();
+
+BEGIN {
+    no warnings 'once';
+    *CORE::GLOBAL::die = \&Carp::confess;
+}
 
 field hub => -weak;
 
