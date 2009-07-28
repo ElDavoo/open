@@ -37,6 +37,7 @@ Readonly our @ACCT_COLS => qw(
     allow_invitation
     all_users_workspace
     account_type
+    restrict_to_domain
 
     desktop_logo_uri
     desktop_header_gradient_top

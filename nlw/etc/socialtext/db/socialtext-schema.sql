@@ -104,7 +104,8 @@ CREATE TABLE "Account" (
     desktop_highlight_color varchar(7) DEFAULT '#FFFDD3'::varchar,
     allow_invitation boolean DEFAULT true NOT NULL,
     all_users_workspace bigint,
-    account_type text DEFAULT 'Standard' NOT NULL
+    account_type text DEFAULT 'Standard' NOT NULL,
+    restrict_to_domain text DEFAULT '' NOT NULL
 );
 
 CREATE SEQUENCE "Account___account_id"
