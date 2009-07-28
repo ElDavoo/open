@@ -53,6 +53,8 @@ foreach my $column ( @ACCT_COLS ) {
     field $column;
 }
 
+my %VALID_TYPE = map { $_ => 1 } qw/Standard/;
+
 Readonly my @RequiredAccounts => qw( Unknown Socialtext Deleted );
 sub EnsureRequiredDataIsPresent {
     my $class = shift;
@@ -899,8 +901,12 @@ sub _validate_and_clean_data {
                 unless $ws->account_id == $self->account_id;
         }
         else {
-            push(@errors, loc("Workspace ([_1]) doesn't exist"));
+            push(@errors, loc("Workspace ([_1]) doesn't exist", $ws_id));
         }
+    }
+
+    if ($p->{type} and !$VALID_TYPE{ $p->{type} }) {
+        push @errors, loc("Account type ([_1]) is not valid!", $p->{type});
     }
 
     data_validation_error errors => \@errors if @errors;
