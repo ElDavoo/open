@@ -1,0 +1,12 @@
+* Fixture: SocialRest
+
+| Standard-test-setup | | |
+| set | acct_name | test%%start_time%% |
+| set-business-admin | %%email_address%% | 1 |
+
+| POST_json | /data/accounts | {"name":"%%acct_name%%","type":"Standard"} |
+| code-is | 201 |
+
+GETting /data/accounts/:account_id is not currently supported.
+
+| st-account-type-is | %%acct_name%% | Standard |

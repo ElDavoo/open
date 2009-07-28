@@ -53,6 +53,7 @@ sub POST {
     
     my $account_request_hash = decode_json( $rest->getContent() );
     my $new_account_name = $account_request_hash->{name};
+    my $new_account_type = $account_request_hash->{type};
 
     unless ($self->_user_is_business_admin_p( ) ) {
         $rest->header(
@@ -61,7 +62,7 @@ sub POST {
         return '';
     }
 
-    my $account = $self->_create_account( $new_account_name );
+    my $account = $self->_create_account($new_account_name, $new_account_type);
     if( $account ) {
         $rest->header(
                       -status => HTTP_201_Created,
@@ -89,11 +90,14 @@ sub POST {
 sub _create_account {
     my $self = shift;
     my $new_account_name = shift;
+    my $new_account_type = shift;
     my $new_account;
 
     eval {
         $new_account = $self->hub->account_factory->create(
-            name => $new_account_name );
+            name => $new_account_name,
+            ($new_account_type ? (account_type => $new_account_type) : ()),
+        );
     };
 
     if ( my $e

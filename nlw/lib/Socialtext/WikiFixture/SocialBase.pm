@@ -724,6 +724,10 @@ sub set_from_header {
     my $header = shift || die "header is mandatory for set-from-header";
     my $content = $self->{http}->response->header($header);
 
+    if ($header eq 'Location') {
+        $content =~ s#^\w+://[^/]+##;
+    }
+
     if (defined $content) {
         $self->{$name} = $content;
         warn "# Set $name to '$content' from response header\n";
@@ -1250,6 +1254,16 @@ sub st_fast_forward_jobs {
     sql_execute(q{UPDATE exitstatus SET completion_time = completion_time-$1}, $s);
     sql_commit;
     pass "fast-forwarded jobs by $minutes minutes";
+}
+
+sub st_account_type_is {
+    my $self = shift;
+    my $name = shift;
+    my $type = shift;
+
+    my $acct = Socialtext::Account->new( name => $name );
+    die "Couldn't find account $name" unless $acct;
+    is $acct->account_type, $type, "Account type matches";
 }
 
 sub _run_command {
