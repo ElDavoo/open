@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 1;
+use Test::Socialtext tests => 2;
 fixtures( 'admin' );
 
 filters {
@@ -21,7 +21,7 @@ sub format {
 }
 
 __DATA__
-=== labels on wafl phrases should not be greedy
+=== labels on wafl phrases should not be greedy with ^ sign
 --- wiki
 ^Malformed Header
 
@@ -31,8 +31,27 @@ three
 
 --- match
 <div class="wiki">
-^Malformed Header
-<br /><p>
+<p>
+^Malformed Header</p>
+<p>
+one<br />
+two<br />
+three</p>
+</div>
+
+=== Ensure equal treatment for non-^-signed lines
+--- wiki
+Not Header
+
+one
+two
+three
+
+--- match
+<div class="wiki">
+<p>
+Not Header</p>
+<p>
 one<br />
 two<br />
 three</p>
