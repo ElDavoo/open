@@ -905,8 +905,9 @@ sub _validate_and_clean_data {
         }
     }
 
-    if ($p->{type} and !$VALID_TYPE{ $p->{type} }) {
-        push @errors, loc("Account type ([_1]) is not valid!", $p->{type});
+    if ($p->{account_type} and !$VALID_TYPE{ $p->{account_type} }) {
+        push @errors, 
+            loc("Account type ([_1]) is not valid!", $p->{account_type});
     }
 
     data_validation_error errors => \@errors if @errors;

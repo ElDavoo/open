@@ -1050,7 +1050,7 @@ sub create_account {
 
     my $account = eval { $hub->account_factory->create( 
             name => $name,
-            ($type ? (type => $type) : ()),
+            ($type ? (account_type => $type) : ()),
         ) };
 
     if ( my $e
