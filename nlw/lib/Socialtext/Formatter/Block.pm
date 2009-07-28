@@ -85,7 +85,7 @@ use base 'Socialtext::Formatter::Paragraph';
 use Class::Field qw( const );
 
 const formatter_id  => 'empty_p';
-const pattern_block => qr/\A((^\s*\n)+)/m;
+const pattern_block => qr/^(\s*\n)/m;
 const html_start    => "";
 const html_end      => "<br />";
 
