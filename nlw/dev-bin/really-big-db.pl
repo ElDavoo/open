@@ -306,23 +306,22 @@ sub maybe_commit {
             ?, ?, 3
         );
     } );
-    my %ugrs_created;
+    my %available;
 
     for (0 .. $USER_GROUP_ROLES) {
         # pick a random Group
         my $group_id = $groups[ rand(@groups) ];
 
         # pick a random User (that isn't in the Group yet)
-        my $user_id;
-        my @available = shuffle(@users);
-        while (@available) {
-            $user_id = shift @available;
-            last unless (exists $ugrs_created{$user_id}{$group_id});
+        unless (exists $available{$group_id}) {
+            $available{$group_id} = [ @users ];
         }
+
+        my $offset  = rand( @{$available{$group_id}} );
+        my $user_id = splice( @{$available{$group_id}}, $offset, 1 );
 
         # give the User a Role in this Group
         if ($user_id) {
-            $ugrs_created{$user_id}{$group_id} ++;
             $ugr_sth->execute( $user_id, $group_id );
             $writes++;
             maybe_commit();
@@ -340,24 +339,23 @@ sub maybe_commit {
             ?, ?, 3
         );
     } );
-    my %gwrs_created;
+    my %available;
 
     for (0 .. $GROUP_WORKSPACE_ROLES) {
         # pick a random Group
         my $group_id = $groups[ rand(@groups) ];
 
         # pick random WS (that the Group isn't in yet)
-        my $workspace_id;
-        my @available = shuffle(@workspaces);
-        while (@available) {
-            $workspace_id = shift @available;
-            last unless (exists $gwrs_created{$group_id}{$workspace_id});
+        unless (exists $available{$group_id}) {
+            $available{$group_id} = [ @workspaces ];
         }
 
+        my $offset = rand( @{$available{$group_id}} );
+        my $ws_id  = splice( @{$available{$group_id}}, $offset, 1 );
+
         # give the Group a Role in this Workspace
-        if ($workspace_id) {
-            $gwrs_created{$group_id}{$workspace_id}++;
-            $gwr_sth->execute( $group_id, $workspace_id );
+        if ($ws_id) {
+            $gwr_sth->execute( $group_id, $ws_id );
             $writes++;
             maybe_commit();
         }
