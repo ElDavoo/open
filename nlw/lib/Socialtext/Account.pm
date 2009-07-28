@@ -15,6 +15,7 @@ use Socialtext::String;
 use Socialtext::User;
 use Socialtext::MultiCursor;
 use Socialtext::Validate qw( validate SCALAR_TYPE );
+use Socialtext::Log qw( st_log );
 use Socialtext::l10n qw(loc);
 use Socialtext::SystemSettings qw( get_system_setting );
 use Socialtext::Skin;
@@ -532,6 +533,7 @@ sub new_from_hash_ref {
 # directly.
 sub create {
     my ( $class, %p ) = @_;
+    my $timer = Socialtext::Timer->new;
 
     $class->_validate_and_clean_data(\%p);
     exists $p{is_system_created} ? $class->_create_full(%p)
@@ -546,6 +548,12 @@ sub create {
                 "$plugin-enabled-all"
             );
     }
+
+    my $msg = 'CREATE,ACCOUNT,account:' . $self->name
+              . '(' . $self->account_id . '),'
+              . 'type=' . $self->account_type . ','
+              . '[' . $timer->elapsed . ']';
+    st_log()->info($msg);
     return $self;
 }
 
