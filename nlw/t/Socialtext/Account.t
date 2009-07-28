@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 97;
+use Test::Socialtext tests => 101;
 use Test::Socialtext::User;
 use Test::Exception;
 use Socialtext::File;
@@ -275,6 +275,26 @@ account_has_user_secondary_account: {
 
     ok $account_one->has_user($user_one), 'Account contains User (which is his Primary Account)';
     ok $account_one->has_user($user_two), '... and this other User (which is a Secondary Account)';
+}
+
+Account_types: {
+    my $account_one = create_test_account_bypassing_factory();
+    is $account_one->account_type, 'Standard', 'account_type';
+
+    # Set it up like a free 50: email restriction & no socialcalc
+    $account_one->update(account_type => 'Free 50');
+    is $account_one->account_type, 'Free 50', 'account_type';
+    my $workspace   = create_test_workspace(account => $account_one);
+    $workspace->update(invitation_filter => 'monkey.com');
+    $workspace->disable_plugin('socialcalc');
+
+    $account_one->update(account_type => 'Paid'); # or any type, really
+    is $account_one->account_type, 'Paid', 'account_type';
+    my $wksps = $account_one->workspaces;
+    while (my $w = $wksps->next) {
+        is $w->invitation_filter, '', 'no invitation filter';
+        is $w->is_plugin_enabled('socialcalc'), 1, 'socialcalc enabled';
+    }
 }
 
 exit;

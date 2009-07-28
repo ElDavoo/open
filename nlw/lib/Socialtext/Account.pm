@@ -592,6 +592,7 @@ sub update {
     my ( $self, %p ) = @_;
 
     $self->_validate_and_clean_data(\%p);
+    my $prev_settings = { map { $_ => $self->{$_} } keys %p };
 
     my ( @updates, @bindings );
     while (my ($column, $value) = each %p) {
@@ -619,20 +620,30 @@ sub update {
         }
     }
 
-    $self->_post_update( \%p );
+    $self->_post_update( $prev_settings, \%p );
 
     return $self;
 }
 
 sub _post_update {
     my $self = shift;
-    my $p    = shift;
+    my $old  = shift;
+    my $new  = shift;
 
-    if ( $p->{all_users_workspace} ) {
+    if ( $new->{all_users_workspace} ) {
         my $users = $self->users();
 
         while ( my $user = $users->next() ) {
             $self->add_to_all_users_workspace( user_id => $user->user_id );
+        }
+    }
+
+    if (    ($old->{account_type}||'') eq 'Free 50'
+        and ($new->{account_type}||'') ne 'Free 50') {
+        my $wksps = $self->workspaces;
+        while (my $w = $wksps->next) {
+            $w->update(invitation_filter => '');
+            $w->enable_plugin('socialcalc');
         }
     }
 }
