@@ -4,6 +4,7 @@ use Moose;
 use Socialtext::SQL qw/:exec/;
 use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::Events::Event::Page;
+use Socialtext::Timer qw/time_this/;
 use namespace::clean -except => 'meta';
 
 with 'Socialtext::Events::Source', 'Socialtext::Events::Source::FromDB';
@@ -18,15 +19,21 @@ around 'prepare' => sub {
     my $self = shift;
 
     # decline if the viewer hasn't contributed here
-    my $has_contribs = sql_singlevalue(q{
-        SELECT 1
-        FROM event
-        WHERE event_class = 'page' AND is_page_contribution(action)
-          AND actor_id = ?
-          AND page_workspace_id = ?
-        LIMIT 1
-    }, $self->viewer_id, $self->workspace_id);
-    return unless $has_contribs;
+    my $earliest;
+    time_this {
+        $earliest = sql_singlevalue(q{
+            SELECT at AT TIME ZONE 'UTC' || 'Z' AS at_utc
+            FROM event
+            WHERE event_class = 'page' AND is_page_contribution(action)
+              AND actor_id = ?
+              AND page_workspace_id = ?
+            ORDER BY at ASC
+            LIMIT 1
+        }, $self->viewer_id, $self->workspace_id);
+    } 'contribs_i_has_them';
+
+    return unless $earliest; # decline
+    $self->filter->after($earliest) unless $self->filter->has_after;
 
     return $self->$code(@_);
 };
