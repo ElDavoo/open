@@ -151,9 +151,9 @@ st-login | %%username%% | %%password%% |
 | click_ok | st-savebutton-%%active_content%% |  |
 | wait_for_element_not_visible_ok | up_workspace | 30000 |
 
- *Comment* | Test Case: Active Content Widget Check the content of the widget |
-| st-select-widget-frame | active_content | |
-| pause | 60000 | |
+| *Comment* | Test Case: Active Content Widget Check the content of the widgets |  |
+| st-select-widget-frame | active_content |  |
+| pause | 60000 |  |
 | wait_for_element_visible_ok | link=Edited | 30000 |
 | text_like | //body | Viewed |
 | wait_for_element_visible_ok | link=Watched | 30000 |
@@ -164,7 +164,7 @@ st-login | %%username%% | %%password%% |
 | wait_for_element_visible_ok | link=Active Content Comment %%start_time%% | 30000 |
 | wait_for_element_visible_ok | link=Active Content Emailed %%start_time%% | 30000 |
 | wait_for_element_visible_ok | link=Active Content Watched %%start_time%% | 30000 |
-| click_ok | link=Edited | |
+| click_ok | link=Edited |  |
 | wait_for_element_visible_ok | link=Viewed | 30000 |
 | text_like | //body | Edited |
 | wait_for_element_visible_ok | link=Watched | 30000 |
@@ -175,8 +175,27 @@ st-login | %%username%% | %%password%% |
 | wait_for_element_visible_ok | link=Active Content Comment %%start_time%% | 30000 |
 | wait_for_element_visible_ok | link=Active Content Emailed %%start_time%% | 30000 |
 | wait_for_element_visible_ok | link=Active Content Watched %%start_time%% | 30000 |
-| click_ok | link=Edited | |
-
+| click_ok | link=Watched |  |
+| wait_for_element_visible_ok | link=Viewed | 30000 |
+| wait_for_element_visible_ok | link=Edited | 30000 |
+| text_like | //body | Watched |
+| wait_for_element_visible_ok | link=Emailed | 30000 |
+| text_unlike | //body | active-content-%%start_time%% |
+| text_unlike | //body | Active Content Edit %%start_time%% |
+| text_unlike | //body | Active Content Tag %%start_time%% |
+| text_unlike | //body | Active Content Comment %%start_time%% |
+| text_unlike | //body | Active Content Emailed %%start_time%% |
+| wait_for_element_visible_ok | link=Active Content Watched %%start_time%% | 30000 |
+| click_ok | link=Emailed |  |
+| wait_for_element_visible_ok | link=Viewed | 30000 |
+| wait_for_element_visible_ok | link=Edited | 30000 |
+| wait_for_element_visible_ok | link=Watched | 30000 |
+| text_unlike | //body | active-content-%%start_time%% |
+| text_unlike | //body | Active Content Edit %%start_time%% |
+| text_unlike | //body | Active Content Tag %%start_time%% |
+| text_unlike | //body | Active Content Comment %%start_time%% |
+| wait_for_element_visible_ok | link=Active Content Emailed %%start_time%% | 30000 |
+| test_unlike | //body | Active Content Watched %%start_time%% |
 | select-frame | relative=parent |  |
 | st-empty-container |  |  |
 
