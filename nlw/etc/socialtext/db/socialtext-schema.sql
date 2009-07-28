@@ -1064,6 +1064,10 @@ CREATE INDEX ix_event_signal_indirect
 	    ON event ("at")
 	    WHERE ((event_class = 'signal') AND (NOT is_direct_signal((actor_id)::bigint, (person_id)::bigint)));
 
+CREATE INDEX ix_event_workspace
+	    ON event (page_workspace_id, "at")
+	    WHERE (event_class = 'page');
+
 CREATE INDEX ix_event_workspace_contrib
 	    ON event (page_workspace_id, "at")
 	    WHERE ((event_class = 'page') AND is_page_contribution("action"));
