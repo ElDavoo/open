@@ -48,10 +48,11 @@
 
     [%- BLOCK image_cache %]
         # image cache: [% cache_name %]
+        RewriteMap escape int:escape
         RewriteCond %{REQUEST_METHOD} ^GET$
         RewriteCond %{REQUEST_URI} [% rest_pattern %]
-        RewriteCond [% config.cache_dir %]/[% cache_name %]/%1[% file_suffix %] -f
-        RewriteRule [% rest_pattern %] /nlw/[% cache_name %]/$1[% file_suffix %] [PT]
+        RewriteCond [% config.cache_dir %]/[% cache_name %]/${escape:%1}[% file_suffix %] -f
+        RewriteRule [% rest_pattern %] /nlw/[% cache_name %]/${escape:$1}[% file_suffix %] [PT]
 
         [%- IF alias %]
             Alias /nlw/[% cache_name %] [% config.cache_dir %]/[% cache_name %]

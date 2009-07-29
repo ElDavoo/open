@@ -10,6 +10,7 @@ use Imager;
 use Socialtext::Paths;
 use Socialtext::File qw(get_contents ensure_directory);
 use Socialtext::AppConfig;
+use Socialtext::String;
 use File::Basename qw(dirname);
 use Cwd qw(abs_path);
 use namespace::clean;
@@ -38,8 +39,8 @@ sub GET_image {
     $cache_dir = abs_path($cache_dir);
     ensure_directory($cache_dir);
 
-    my $text = decode_utf8($self->text);
-    my $image_file = abs_path("$cache_dir/$text.$uneditable.png");
+    my $text = decode_utf8($self->__text__);
+    my $image_file = abs_path("$cache_dir/".Socialtext::String::uri_escape($text)."$uneditable.png");
 
     die 'Bad Text' unless dirname($image_file) eq $cache_dir;
     return $self->return_file($image_file) if -f $image_file;

@@ -196,6 +196,32 @@ sub log_timings {
     );
 }
 
+sub loadResource {
+    my ($self, $path, @extraArgs) = @_;
+    $path ||= $self->getMatchText();
+    my $handler = sub { $self->defaultResourceHandler(@_) };
+    my %vars;
+
+    # Loop through the keys of the hash returned by resourceHooks().  Each of
+    # the keys is a URI template, see if the current path info matches that
+    # template.  Save the parent matches for passing into the handler.
+    for my $template (keys %{ $self->resourceHooks() }) {
+        my $regex = join "\\/",
+                    map {/^:__/ ? '(.+)' : /^:/ ? '([^\/]+)' : quotemeta $_}
+                    split m{/}, $template;
+        $regex = "^(?:$regex)\\/?\$";
+        if ($self->checkMatch($path, $regex)) {
+            $self->{__last_match_pattern} = $template;
+            %vars = $self->getTemplateVars($template);
+            $handler = $self->_getHandlerFromHook($template);
+            last;
+        }
+    }
+
+    return $self->callHandler($handler, \%vars, @extraArgs);
+}
+
+
 
 # overrride from REST::Application so we can return file handles effectively
 sub run {

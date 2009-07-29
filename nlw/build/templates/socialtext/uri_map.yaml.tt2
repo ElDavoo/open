@@ -384,7 +384,7 @@
             'image/png': [Socialtext::Rest::AccountLogo, GET_image]
         '*':             [Socialtext::Rest::AccountLogo, bad_method]
 -
-    '/data/wafl/:text':
+    '/data/wafl/:__text__':
         'GET':
             '*/*':              [Socialtext::Rest::Wafl, GET_image]
 -
