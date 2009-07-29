@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 33;
+use Test::Socialtext tests => 42;
 
 ###############################################################################
 # Fixtures: db
@@ -286,3 +286,59 @@ get_roles_for_user_in_workspace: {
             '... second Role has lower effectiveness';
     }
 }
+
+###############################################################################
+# TEST: Get Workspaces that a given User has a Role in
+workspaces_by_user_id: {
+    my $user = create_test_user();
+
+    my $ws_one   = create_test_workspace();
+    my $ws_two   = create_test_workspace();
+
+    # User has access via explicit Role in the Workspace
+    $ws_one->add_user(user => $user);
+
+    # User has access via explicit Role in the Workspace
+    $ws_two->add_user(user => $user);
+
+    # Get list of Workspaces the User has access to
+    ws_by_user_id_default_order: {
+        my $cursor = Socialtext::Workspace::Roles->WorkspacesByUserId(
+            user_id => $user->user_id,
+        );
+        isa_ok $cursor, 'Socialtext::MultiCursor',
+            'list of Workspaces that User has access to';
+        is $cursor->count(), 2, '... each WS appears *ONCE* in the list';
+        is_deeply(
+            [ map { $_->name } $cursor->all ],
+            [ sort map { $_->name } ($ws_one, $ws_two) ],
+            '... WS returned ordered by name'
+        );
+    }
+
+    # Get list of Workspaces, limited
+    ws_by_user_id_limited: {
+        my $cursor = Socialtext::Workspace::Roles->WorkspacesByUserId(
+            user_id => $user->user_id,
+            limit   => 1,
+        );
+        isa_ok $cursor, 'Socialtext::MultiCursor',
+            'list of Workspaces that User has access to';
+        is $cursor->count(), 1, '... limited to *one* result';
+        is $cursor->next->name, $ws_one->name, '... the first WS';
+    }
+
+    # Get list of Workspaces, limit + offset
+    ws_by_user_id_limit_and_offset: {
+        my $cursor = Socialtext::Workspace::Roles->WorkspacesByUserId(
+            user_id => $user->user_id,
+            limit   => 1,
+            offset  => 1,
+        );
+        isa_ok $cursor, 'Socialtext::MultiCursor',
+            'list of Workspaces that User has access to';
+        is $cursor->count(), 1, '... limited to *one* result';
+        is $cursor->next->name, $ws_two->name, '... the second WS';
+    }
+}
+
