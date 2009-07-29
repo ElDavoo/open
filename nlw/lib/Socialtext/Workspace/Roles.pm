@@ -194,8 +194,8 @@ sub RolesForUserInWorkspace {
     # arguments in from the control panel.
     Readonly my $spec => {
         exclude       => ARRAYREF_TYPE(default => []),
-        limit         => SCALAR_TYPE(default   => ''),
-        offset        => SCALAR_TYPE(default   => ''),
+        limit         => SCALAR_TYPE(default   => undef),
+        offset        => SCALAR_TYPE(default   => 0),
         order_by      => SCALAR_TYPE(default   => 'name'),
         sort_order    => SCALAR_TYPE(default   => 'asc'),
         user_id       => SCALAR_TYPE,
@@ -204,17 +204,13 @@ sub RolesForUserInWorkspace {
         my $class   = shift;
         my %p       = validate(@_, $spec);
         my $user_id = $p{user_id};
+        my $limit   = $p{limit};
+        my $offset  = $p{offset};
 
         my $exclude_clause = '';
         if (@{ $p{exclude} }) {
             my $wksps = join(',', @{ $p{exclude} });
             $exclude_clause = "AND workspace_id NOT IN ($wksps)";
-        }
-
-        my $limit_and_offset = '';
-        if ( $p{limit} ) {
-            $limit_and_offset = "LIMIT $p{limit}";
-            $limit_and_offset .= " OFFSET $p{offset}" if $p{offset};
         }
 
         my $sql = qq{
@@ -223,9 +219,13 @@ sub RolesForUserInWorkspace {
              WHERE workspace_id IN ( $SQL_UNION_WS_ID_BY_USER_ID )
              $exclude_clause
              ORDER BY "Workspace".name $p{sort_order}
-             $limit_and_offset
+             LIMIT ? OFFSET ?
         };
-        my $sth = sql_execute($sql, $user_id, $user_id);
+        my $sth = sql_execute(
+            $sql,
+            $user_id, $user_id,
+            $limit, $offset,
+        );
 
         return Socialtext::MultiCursor->new(
             iterables => [ $sth->fetchall_arrayref() ],
