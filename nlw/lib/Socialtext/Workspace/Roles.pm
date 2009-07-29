@@ -10,10 +10,9 @@ use Socialtext::Validate qw(validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE);
 use Readonly;
 
 ###############################################################################
-# Common SQL UNION used to get the UserIds of those Users that have a
-# relationship with a Workspace.
+# Common SQL UNIONs used to get one type of Id when we've got another.
 #
-# *REQUIRES* that you pass in "workspace_id" as a binding, *twice*.
+# *REQUIRES* that you pass in need Id as a binding, *twice*.
 our $SQL_UNION_USER_ID_BY_WS_ID = qq{
     (   SELECT user_id
           FROM users
@@ -26,6 +25,19 @@ our $SQL_UNION_USER_ID_BY_WS_ID = qq{
           JOIN user_group_role ugr USING (user_id)
           JOIN group_workspace_role gwr USING (group_id)
           WHERE gwr.workspace_id = ?
+    )
+};
+
+our $SQL_UNION_WS_ID_BY_USER_ID = qq{
+    (   SELECT uwr.workspace_id
+          FROM "UserWorkspaceRole" uwr
+         WHERE uwr.user_id = ?
+    )
+    UNION ALL
+    (   SELECT gwr.workspace_id
+          FROM group_workspace_role gwr
+          JOIN user_group_role ugr USING (group_id)
+         WHERE ugr.user_id = ?
     )
 };
 
@@ -189,8 +201,9 @@ sub RolesForUserInWorkspace {
         user_id       => SCALAR_TYPE,
     };
     sub WorkspacesByUserId {
-        my $class = shift;
-        my %p = validate( @_, $spec );
+        my $class   = shift;
+        my %p       = validate(@_, $spec);
+        my $user_id = $p{user_id};
 
         my $exclude_clause = '';
         if (@{ $p{exclude} }) {
@@ -205,20 +218,20 @@ sub RolesForUserInWorkspace {
         }
 
         my $sql = qq{
-            SELECT *
-              FROM "UserWorkspaceRole"
-              LEFT OUTER JOIN "Workspace" USING (workspace_id)
-             WHERE user_id=?
-                   $exclude_clause
-             ORDER BY name
+            SELECT "Workspace".workspace_id
+              FROM "Workspace"
+             WHERE workspace_id IN ( $SQL_UNION_WS_ID_BY_USER_ID )
+             $exclude_clause
+             ORDER BY "Workspace".name $p{sort_order}
              $limit_and_offset
         };
-        my $sth = sql_execute($sql, $p{user_id});
+        my $sth = sql_execute($sql, $user_id, $user_id);
 
         return Socialtext::MultiCursor->new(
-            iterables => [ $sth->fetchall_arrayref({}) ],
+            iterables => [ $sth->fetchall_arrayref() ],
             apply => sub {
-                return Socialtext::Workspace->new_from_hash_ref($_[0]);
+                my $row = shift;
+                return Socialtext::Workspace->new(workspace_id => $row->[0]);
             }
         );
     }

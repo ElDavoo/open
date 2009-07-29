@@ -294,12 +294,26 @@ workspaces_by_user_id: {
 
     my $ws_one   = create_test_workspace();
     my $ws_two   = create_test_workspace();
+    my $ws_three = create_test_workspace();
 
     # User has access via explicit Role in the Workspace
     $ws_one->add_user(user => $user);
 
-    # User has access via explicit Role in the Workspace
-    $ws_two->add_user(user => $user);
+    # User has access via Group Role in the Workspace
+    my $group = create_test_group();
+    $group->add_user(user => $user);
+    $ws_two->add_group(group => $group);
+
+    # User has access via UWR and multiple UGR+GWRs
+    $ws_three->add_user(user => $user);
+
+    $group = create_test_group();
+    $group->add_user(user => $user);
+    $ws_three->add_group(group => $group);
+
+    $group = create_test_group();
+    $group->add_user(user => $user);
+    $ws_three->add_group(group => $group);
 
     # Get list of Workspaces the User has access to
     ws_by_user_id_default_order: {
@@ -308,10 +322,10 @@ workspaces_by_user_id: {
         );
         isa_ok $cursor, 'Socialtext::MultiCursor',
             'list of Workspaces that User has access to';
-        is $cursor->count(), 2, '... each WS appears *ONCE* in the list';
+        is $cursor->count(), 3, '... each WS appears *ONCE* in the list';
         is_deeply(
             [ map { $_->name } $cursor->all ],
-            [ sort map { $_->name } ($ws_one, $ws_two) ],
+            [ sort map { $_->name } ($ws_one, $ws_two, $ws_three) ],
             '... WS returned ordered by name'
         );
     }
