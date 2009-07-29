@@ -3,7 +3,6 @@ package Test::Socialtext::Ceqlotron;
 use strict;
 use warnings;
 use Test::Builder ();
-use File::LogReader;
 use Socialtext::AppConfig;
 use base 'Exporter';
 our $VERSION = 1.0;
@@ -16,6 +15,8 @@ our $Ceq_bin = 'bin/ceqlotron';
 our $NLW_log_file = 't/tmp/log/nlw.log';
 system("touch $NLW_log_file");
 my $nlwlog;
+open $nlwlog, '<', $NLW_log_file
+    or die "can't open $NLW_log_file: $!";
 
 sub ceq_config {
     my %args = @_;
@@ -42,13 +43,9 @@ sub ceq_start {
     return $ceq_pid;
 }
 
-sub nlwlog {
-    $nlwlog ||= File::LogReader->new( filename => $NLW_log_file );
-    return $nlwlog;
-}
-
 sub ceq_fast_forward {
-    while( nlwlog()->read_line ) { }
+    while( <$nlwlog> ) { }
+    return;
 }
 
 sub ceq_get_log_until {
@@ -61,7 +58,7 @@ sub ceq_get_log_until {
         my $got_cond = 0;
 
         # keep reading until there's nothing left
-        while (my $line = nlwlog()->read_line) {
+        while (my $line = <$nlwlog>) {
             chomp $line;
             Test::Builder->new->diag("LOG: $line") if NOISY;
             push @lines, $line;
