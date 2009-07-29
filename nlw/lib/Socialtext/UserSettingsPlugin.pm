@@ -241,6 +241,7 @@ sub users_invitation {
     my $restrict_invitation_to_search = $ws->restrict_invitation_to_search;
     my $invitation_filter             = $ws->invitation_filter;
     my $template_dir                  = $ws->invitation_template;
+    my $restrict_domain               = $ws->account->restrict_to_domain;
     my $template;
     my $action;
 
@@ -265,6 +266,7 @@ sub users_invitation {
         invitation_filter         => $invitation_filter,
         workspace_invitation_body =>
             "email/$template_dir/workspace-invitation-body.html",
+        restrict_domain => $restrict_domain,
         $self->status_messages_for_template,
     );
 

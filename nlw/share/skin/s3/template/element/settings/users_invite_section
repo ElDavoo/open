@@ -6,6 +6,12 @@
   <dt><label>[% loc('Invite Other Users') %]</label></dt>
   <dd>[% loc('Enter a list of email addresses (one address per line) of people you would like to invite to this Workspace.') %]</dd>
 
+  [% IF restrict_domain %]
+    [% restrict_domain = '<span style="color: red">' _ restrict_domain
+                         _ '</span>' %]
+    [% loc('You can only invite people who share the [_1] email domain with you.', restrict_domain) %]
+  [% END %]
+  [% IF restrict_domain && invitation_filter %]<br />[% END %]
   [% IF invitation_filter %]
     [% loc('A filter has been set on this workspace. All candidate email addresses must match this pattern: <span style="color: red"> [_1] </span>', invitation_filter) %]
   [% END %]
