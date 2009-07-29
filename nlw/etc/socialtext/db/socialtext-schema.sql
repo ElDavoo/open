@@ -985,6 +985,9 @@ CREATE INDEX error_jobid
 CREATE INDEX error_time
 	    ON error (error_time);
 
+CREATE INDEX event_hidden
+	    ON event (hidden);
+
 CREATE INDEX exitstatus_deleteafter
 	    ON exitstatus (delete_after);
 
@@ -1213,6 +1216,9 @@ CREATE UNIQUE INDEX search_set_workspaces___search_set_id___search_set_id___work
 
 CREATE UNIQUE INDEX search_sets___owner_user_id___owner_user_id___name
 	    ON search_sets (owner_user_id, lower((name)::text));
+
+CREATE INDEX signal_hidden
+	    ON signal (hidden);
 
 CREATE INDEX storage_class_key_ix
 	    ON "storage" ("class", "key");
