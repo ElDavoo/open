@@ -799,6 +799,7 @@ sub _AllByWorkspaceCount {
         . $where
         . ' GROUP BY "Account".account_id, "Account".name,'
         . '       "Account".is_system_created, "Account".skin_name,'
+        . '       "Account".account_type,'
         . '       "Account".email_addresses_are_hidden,'
         . '       "Account".is_exportable,'
         . '       "Account".desktop_logo_uri,'
@@ -842,6 +843,7 @@ sub _AllByUserCount {
         . $where
         . ' GROUP BY "Account".account_id, "Account".name,'
         . '       "Account".is_system_created, "Account".skin_name,'
+        . '       "Account".account_type,'
         . '       "Account".email_addresses_are_hidden,'
         . '       "Account".is_exportable,'
         . '       "Account".desktop_logo_uri,'
