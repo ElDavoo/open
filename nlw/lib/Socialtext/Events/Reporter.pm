@@ -317,7 +317,7 @@ sub _process_field_conditions {
     }
 
     foreach my $eq_key (@QueryOrder) {
-        my $ne_key = "!$eq_key";
+        my $ne_key = "$eq_key!";
         next unless exists $opts->{$ne_key};
 
         my $arg = $opts->{$ne_key};
