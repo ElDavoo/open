@@ -258,10 +258,16 @@ my $VISIBLE_WORKSPACES = <<'EOSQL';
         r.name = 'guest' AND p.name = 'read'
 EOSQL
 
-my $I_CAN_USE_THIS_WORKSPACE = <<"EOSQL";
-    page_workspace_id IS NULL OR
-    page_workspace_id IN ( $VISIBLE_WORKSPACES )
-EOSQL
+sub _limit_ws_to_account {
+    my $visible_ws = shift || $VISIBLE_WORKSPACES;
+    return qq{
+        SELECT workspace_id
+        FROM ( $visible_ws ) visws
+        WHERE workspace_id IN (
+            SELECT workspace_id FROM "Workspace" WHERE account_id = ?
+        )
+    };
+}
 
 my $FOLLOWED_PEOPLE_ONLY = <<'EOSQL';
 (
@@ -359,12 +365,24 @@ sub _build_standard_sql {
     my $self = shift;
     my $opts = shift;
 
+    my $viewer_id = $self->viewer->user_id;
+
     $self->_process_before_after($opts);
 
     unless ($self->{_skip_standard_opts}) {
-        $self->prepend_condition(
-            $I_CAN_USE_THIS_WORKSPACE => $self->viewer->user_id
-        );
+        {
+            my $visible_ws = $VISIBLE_WORKSPACES;
+            my @bind = ($viewer_id);
+            if ($opts->{account_id}) {
+                $visible_ws = _limit_ws_to_account($visible_ws);
+                push @bind, $opts->{account_id};
+            }
+            my $can_use_this_ws = qq{
+                page_workspace_id IS NULL OR
+                page_workspace_id IN ( $visible_ws )
+            };
+            $self->prepend_condition($can_use_this_ws => @bind);
+        }
 
         unless ($self->{_skip_visibility}) {
             $self->add_outer_condition(
@@ -453,10 +471,9 @@ sub get_events_page_contribs {
         q{event_class = 'page' AND is_page_contribution(action)}
     );
     local $self->{_skip_visibility} = 1;
-    my ($sql, $args) = $self->_build_standard_sql($opts);
-
     my %opts_slice = map { $_ => $opts->{$_} }
-        qw(limit count offset before after followed);
+        qw(limit count offset before after followed account_id);
+    my ($sql, $args) = $self->_build_standard_sql(\%opts_slice);
 
     Socialtext::Timer->Continue('get_page_contribs');
     #$Socialtext::SQL::PROFILE_SQL = 1;
@@ -615,13 +632,7 @@ EOSQL
     push @bind, ($opts->{user_id}) x 2; # ws visibility so far
 
     if ($filtered_opts{account_id}) {
-        $visible_ws = qq{
-            SELECT workspace_id
-            FROM ( $visible_ws ) visws
-            WHERE workspace_id IN (
-                SELECT workspace_id FROM "Workspace" WHERE account_id = ?
-            )
-        };
+        $visible_ws = _limit_ws_to_account($visible_ws);
         push @bind, $filtered_opts{account_id};
     }
 
