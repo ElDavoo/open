@@ -79,12 +79,7 @@ sub load_hub {
 
 sub debug {
     my $self = shift;
-    no warnings;
-    if ($self->is_in_cgi) {
-#         eval q{use CGI::Carp qw(fatalsToBrowser)}; die $@ if $@;
-#         $SIG{__DIE__} = sub { CGI::Carp::confess(@_) }
-    }
-    $SIG{__DIE__} = sub { Carp::confess(@_) };
+
     $self->using_debug(1);
     return $self;
 }

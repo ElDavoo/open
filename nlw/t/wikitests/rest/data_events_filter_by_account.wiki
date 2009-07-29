@@ -1,3 +1,5 @@
+Test account_id=N filtering for the /data/events ReST API.
+
 * Fixture: SocialRest
 
 | comment             | set up two user-account-workspace sets |
@@ -11,6 +13,12 @@
 
 | comment | a and c are disjoint |
 | add-member | %%b_username%% | %%c_workspace%% |
+
+
+
+Set up events
+
+| st-clear-events |
 
 | comment         | set up some test pages |            |             |
 | http-user-pass  | %%a_username%%         | a_password |             |
@@ -39,6 +47,9 @@
 | post-json | /data/signals | {"signal":"tk 3b!","account_ids":[%%b_account_id%%]} |
 | post-json | /data/signals | {"signal":"tk 3c!","account_ids":[%%c_account_id%%]} |
 
+
+
+
 | comment         | check event setup |                  |
 | http-user-pass  | %%b_username%%    | b_password       |
 | get             | /data/events      | application/json |
@@ -55,6 +66,8 @@
 | body-like       | 3a!               |                  |
 | body-like       | 3b!               |                  |
 | body-like       | 3c!               |                  |
+
+
 
 `/data/events/conversations`
 
@@ -86,10 +99,43 @@
 | body-unlike     | "tk":"1a" |
 | body-like       | "tk":"1b" |
 
-TODO:
-* `/data/events` general case
-* `/data/events/activities`
-* `/data/events/followed`
+
+
+`/data/events` page contribs
+
+| comment | page contrib events, user=a, filter=a |
+| http-user-pass | %%a_username%% | a_password |
+| get | /data/events?account_id=%%a_account_id%%;event_class=page;contributions=1 | application/json |
+| code-is         | 200       |
+| json-parse      |           |
+| json-array-size | 2         |
+| body-like       | "tk":"1a" |
+| body-unlike     | "tk":"1b" |
+| body-unlike     | "tk":"1c" |
+
+| comment | page contrib events, user=b, filter=b |
+| http-user-pass | %%b_username%% | b_password |
+| get | /data/events?account_id=%%b_account_id%%;event_class=page;contributions=1 | application/json |
+| code-is         | 200       |
+| json-parse      |           |
+| json-array-size | 2         |
+| body-unlike     | "tk":"1a" |
+| body-like       | "tk":"1b" |
+| body-unlike     | "tk":"1c" |
+
+| comment | page contrib events, user=b, filter=c |
+| http-user-pass | %%b_username%% | b_password |
+| get | /data/events?account_id=%%c_account_id%%;event_class=page;contributions=1 | application/json |
+| code-is         | 200       |
+| json-parse      |           |
+| json-array-size | 2         |
+| body-unlike     | "tk":"1a" |
+| body-unlike     | "tk":"1b" |
+| body-like       | "tk":"1c" |
+
+
+
+`/data/events` general case
 
 | comment | general events, user=a, filter=a |
 | http-user-pass | %%a_username%% | a_password |
@@ -107,7 +153,6 @@ TODO:
 | body-like       | "tk 3a!"  |
 | body-unlike     | "tk 3b!"  |
 | body-unlike     | "tk 3c!"  |
-
 
 | comment | general events, user=b, filter=b |
 | http-user-pass | %%b_username%% | b_password |
@@ -128,6 +173,9 @@ User c is only in account c, so that edit event won't show:
 | body-unlike | "tk 3c!"   |
 
 
+
+`/data/events/activities`
+
 | comment | a viewing b's profile, no filter |
 | http-user-pass | %%a_username%% | a_password |
 | get | /data/events/activities/%%b_username%% | application/json |
@@ -137,13 +185,13 @@ User c is only in account c, so that edit event won't show:
 | body-like       | "tk":"1a"  |
 | body-like       | "tk":"1b"  |
 | body-unlike     | "tk":"1c"  |
-| body-unlike       | "tk":"2a"  |
+| body-unlike     | "tk":"2a"  |
 | body-like       | "tk":"2b"  |
 | body-unlike     | "tk":"2c"  |
 | body-like       | "tk 3abc!" |
 | body-like       | "tk 3a!"   |
 | body-like       | "tk 3b!"   |
-| body-unlike       | "tk 3c!"   |
+| body-unlike     | "tk 3c!"   |
 
 | comment | a viewing b's profile, filter acct a |
 | get | /data/events/activities/%%b_username%%?account_id=%%a_account_id%% | application/json |
