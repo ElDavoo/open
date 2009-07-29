@@ -422,9 +422,9 @@ sub _build_standard_sql {
     my ($limit_stmt, @limit_args) = $self->_limit_and_offset($opts);
 
     my $where = join("\n  AND ",
-                     map {"($_)"} ('1=1',@{$self->{_conditions}}));
+                     map {"($_)"} ('1=1',@{$self->{_conditions}},'NOT hidden'));
     my $outer_where = join("\n  AND ",
-                           map {"($_)"} ('1=1',@{$self->{_outer_conditions}}));
+                           map {"($_)"} ('1=1',@{$self->{_outer_conditions}},'NOT hidden'));
 
     my $sql = <<EOSQL;
 SELECT $FIELDS FROM (
