@@ -344,24 +344,29 @@ sub users_search {
 sub _invite_users {
     my $self = shift;
     my ($emails, $invalid) = @_;
-    my $filter = $self->hub->current_workspace->invitation_filter();
+    my $ws = $self->hub->current_workspace;
+    my $ws_filter = $ws->invitation_filter();
 
     my %users;
     my @present;
+    my @wrong_domain;
     for my $e (@{ $emails }) {
         my $email = $e->{email_address};
-        if ($filter) {
-            unless ( $email =~ qr/$filter/ ) {
-                push @{ $invalid }, $email;
+        next if $users{$email};
+
+        if ($ws_filter) {
+            unless ( $email =~ qr/$ws_filter/ ) {
+                push @$invalid, $email;
                 next;
             }
         }
-        next if $users{$email};
+        unless ($ws->account->email_passes_domain_filter($email)) {
+            push @wrong_domain, $email;
+            next;
+        }
 
         my $user = Socialtext::User->new( email_address => $email );
-        if (   $user
-            && $self->hub->current_workspace->has_user( $user ) )
-        {
+        if ($user && $ws->has_user($user)) {
             push @present, $email;
             next;
         }
@@ -391,7 +396,9 @@ sub _invite_users {
         'element/settings/users_invited_section',
         users_invited         => [ sort keys %users ],
         users_already_present => [ sort @present ],
-        invalid_addresses     => [ sort @{ $invalid } ],
+        invalid_addresses     => [ sort @$invalid ],
+        domain                => $ws->account->restrict_to_domain,
+        wrong_domain          => [ sort @wrong_domain ],
         $self->status_messages_for_template,
     );
 

@@ -989,6 +989,20 @@ sub is_using_account_logo_as_desktop_logo {
     }
 }
 
+sub email_passes_domain_filter {
+    my $self = shift;
+    my $email = shift;
+
+    my $domain = $self->restrict_to_domain;
+    return 1 unless $domain;
+
+    my $filter = qr/@\Q$domain\E$/;
+    if ($email =~ $filter) {
+        return 1;
+    }
+    return 0;
+}
+
 1;
 
 __END__

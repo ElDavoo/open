@@ -11,6 +11,10 @@
          users = invalid_addresses
          IF invalid_addresses.size;
         PROCESS users_listing
+         label = loc('You can only invite people who share the [_1] email domain with you.', '<span style="color: red;">' _ domain _ '</span>'),
+         users = wrong_domain
+         IF wrong_domain.size;
+        PROCESS users_listing
          label = loc('The following users were invited into this Workspace'),
          users = users_invited
          IF checker.check_permission('admin_workspace') ;
