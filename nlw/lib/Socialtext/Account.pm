@@ -643,6 +643,7 @@ sub _post_update {
     $new->{account_type} ||= '';
     if (    $old->{account_type} eq 'Free 50'
         and $new->{account_type} ne 'Free 50') {
+        $self->update( restrict_to_domain => '' );
         my $wksps = $self->workspaces;
         while (my $w = $wksps->next) {
             $w->update(invitation_filter => '');
