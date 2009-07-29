@@ -800,31 +800,34 @@ sub _AllByWorkspaceCount {
         unshift @args, $p{name};
     }
 
-    my $sth = sql_execute(
-        'SELECT "Account".*,'
-        . ' COUNT("Workspace".workspace_id) AS workspace_count'
-        . ' FROM "Account"'
-        . ' LEFT OUTER JOIN "Workspace" USING ( account_id )' 
-        . $where
-        . ' GROUP BY "Account".account_id, "Account".name,'
-        . '       "Account".is_system_created, "Account".skin_name,'
-        . '       "Account".account_type,'
-        . '       "Account".restrict_to_domain,'
-        . '       "Account".email_addresses_are_hidden,'
-        . '       "Account".is_exportable,'
-        . '       "Account".desktop_logo_uri,'
-        . '       "Account".desktop_header_gradient_top,'
-        . '       "Account".desktop_header_gradient_bottom,'
-        . '       "Account".desktop_bg_color,'
-        . '       "Account".desktop_2nd_bg_color,'
-        . '       "Account".desktop_text_color,'
-        . '       "Account".desktop_link_color,'
-        . '       "Account".desktop_highlight_color,'
-        . '       "Account".allow_invitation,'
-        . '       "Account".all_users_workspace'
-        . " ORDER BY workspace_count $p{sort_order}, \"Account\".name ASC"
-        . ' LIMIT ? OFFSET ?' ,
-        @args );
+    my $sql = qq{
+        SELECT "Account".*,
+               COUNT("Workspace".workspace_id) AS workspace_count
+          FROM "Account"
+          LEFT OUTER JOIN "Workspace" USING (account_id)
+          $where
+         GROUP BY "Account".account_id,
+                  "Account".name,
+                  "Account".is_system_created,
+                  "Account".skin_name,
+                  "Account".account_type,
+                  "Account".restrict_to_domain,
+                  "Account".email_addresses_are_hidden,
+                  "Account".is_exportable,
+                  "Account".desktop_logo_uri,
+                  "Account".desktop_header_gradient_top,
+                  "Account".desktop_header_gradient_bottom,
+                  "Account".desktop_bg_color,
+                  "Account".desktop_2nd_bg_color,
+                  "Account".desktop_text_color,
+                  "Account".desktop_link_color,
+                  "Account".desktop_highlight_color,
+                  "Account".allow_invitation,
+                  "Account".all_users_workspace
+         ORDER BY workspace_count $p{sort_order}, "Account".name ASC
+         LIMIT ? OFFSET ?
+    };
+    my $sth = sql_execute($sql, @args);
 
     return Socialtext::MultiCursor->new(
         iterables => [ $sth->fetchall_arrayref({}) ],
