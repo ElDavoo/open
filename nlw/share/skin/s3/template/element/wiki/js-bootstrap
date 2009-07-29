@@ -129,7 +129,7 @@ v.ui_is_expanded = 1;
 
 v.new_tags = [];
 [% FOREACH tag = new_tags %]
-v.new_tags.push("[% tag %]");
+v.new_tags.push("[% tag | html %]");
 [% END %]
 
 v.miki_url = "[% miki_url %]";
