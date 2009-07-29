@@ -6,6 +6,8 @@ use warnings;
 use Socialtext::MultiCursor;
 use Socialtext::SQL qw(:exec);
 use Socialtext::User;
+use Socialtext::Validate qw(validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE);
+use Readonly;
 
 ###############################################################################
 # Common SQL UNION used to get the UserIds of those Users that have a
@@ -168,6 +170,63 @@ sub RolesForUserInWorkspace {
     return wantarray ? @sorted : shift @sorted;
 }
 
+###############################################################################
+# Get a MultiCursor of the Workspaces that a given User has a Role in (either
+# directly as an UWR, or indirectly as an UGR+GWR).
+#
+# The list of Users is de-duped; if the User has multiple Roles in a Workspace
+# they only appear _once_ in the resulting MultiCursor.
+{
+    # order_by and sort_order are currently a part of the spec here,
+    # but are not actually being used. This is so we can pass paging
+    # arguments in from the control panel.
+    Readonly my $spec => {
+        selected_only => BOOLEAN_TYPE(default  => 0),
+        exclude       => ARRAYREF_TYPE(default => []),
+        limit         => SCALAR_TYPE(default   => ''),
+        offset        => SCALAR_TYPE(default   => ''),
+        order_by      => SCALAR_TYPE(default   => 'name'),
+        sort_order    => SCALAR_TYPE(default   => 'asc'),
+        user_id       => SCALAR_TYPE,
+    };
+    sub WorkspacesByUserId {
+        my $class = shift;
+        my %p = validate( @_, $spec );
+
+        my $selected_only_clause
+            = $p{selected_only} ? 'AND is_selected = TRUE' : '';
+
+        my $exclude_clause = '';
+        if (@{ $p{exclude} }) {
+            my $wksps = join(',', @{ $p{exclude} });
+            $exclude_clause = "AND workspace_id NOT IN ($wksps)";
+        }
+
+        my $limit_and_offset = '';
+        if ( $p{limit} ) {
+            $limit_and_offset = "LIMIT $p{limit}";
+            $limit_and_offset .= " OFFSET $p{offset}" if $p{offset};
+        }
+
+        my $sth = sql_execute(<<EOSQL, $p{user_id});
+SELECT *
+    FROM "UserWorkspaceRole" LEFT OUTER JOIN "Workspace" USING (workspace_id)
+    WHERE user_id=?
+    $selected_only_clause
+    $exclude_clause
+    ORDER BY name
+    $limit_and_offset
+EOSQL
+
+        return Socialtext::MultiCursor->new(
+            iterables => [ $sth->fetchall_arrayref({}) ],
+            apply => sub {
+                return Socialtext::Workspace->new_from_hash_ref($_[0]);
+            }
+        );
+    }
+}
+
 1;
 
 =head1 NAME
@@ -198,6 +257,11 @@ Socialtext::Workspace::Roles - User/Workspace Role helper methods
   @roles = Socialtext::Workspace::Roles->RolesForUserInWorkspace(
     user      => $user,
     workspace => $workspace,
+  );
+
+  # List of all Workspaces that User has a Role in
+  $cursor = Socialtext::Workspace::Roles->WorkspacesByUserId(
+    user_id => $user_id
   );
 
 =head1 DESCRIPTION
@@ -278,6 +342,53 @@ User object
 =item workspace
 
 Workspace object
+
+=back
+
+=item B<Socialtext::Workspace::Roles-E<gt>WorkspacesByUserId(PARAMS)>
+
+Returns a C<Socialtext::MultiCursor> containing all of the Workspaces that a
+given User has access to.
+
+The list of Workspaces returned is I<already> de-duped (so any Workspace
+appears once and only once in the list), and is ordered by Workspace Name.
+
+Acceptable C<PARAMS> include:
+
+=over
+
+=item user_id
+
+B<Required.>  Specifies the User Id for the User that we are attempting to
+find the list of accessible Workspaces for.
+
+=item exclude
+
+A list-ref containing the Workspace Ids for Workspaces that are to be
+I<excluded> from the result set.
+
+=item selected_only
+
+When set to true, only "selected" Workspaces are returned.
+
+=item limit
+
+Limits the number of results that are returned in the result set.
+
+=item offset
+
+Specifies an offset into the results to start the result set at.
+
+=item order_by
+
+B<Ignored.>  Provided solely for compatibility with other parts of the system
+that hand this through automatically.
+
+The result set is B<always> ordered by Workspace Name.
+
+=item sort_order
+
+Sort ordering; ASCending or DESCending.
 
 =back
 

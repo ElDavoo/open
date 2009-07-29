@@ -690,55 +690,13 @@ EOSQL
     }
 }
 
-{
-    # order_by and sort_order are currently a part of the spec here,
-    # but are not actually being used. This is so we can pass paging
-    # arguments in from the control panel.
-    Readonly my $spec => {
-        selected_only => BOOLEAN_TYPE( default => 0 ),
-        exclude => ARRAYREF_TYPE( default => [] ),
-        limit => SCALAR_TYPE(default => ''),
-        offset => SCALAR_TYPE(default => ''),
-        order_by => SCALAR_TYPE(default => 'name'),
-        sort_order => SCALAR_TYPE(default => 'asc'),
-    };
-    sub workspaces {
-        my $self = shift;
-        my %p = validate( @_, $spec );
-        require Socialtext::Workspace;      # lazy-load, to reduce startup impact
-
-        my $selected_only_clause
-            = $p{selected_only} ? 'AND is_selected = TRUE' : '';
-
-        my $exclude_clause = '';
-        if (@{ $p{exclude} }) {
-            my $wksps = join(',', @{ $p{exclude} });
-            $exclude_clause = "AND workspace_id NOT IN ($wksps)";
-        }
-
-        my $limit_and_offset = '';
-        if ( $p{limit} ) {
-            $limit_and_offset = "LIMIT $p{limit}";
-            $limit_and_offset .= " OFFSET $p{offset}" if $p{offset};
-        }
-
-        my $sth = sql_execute(<<EOSQL, $self->user_id);
-SELECT *
-    FROM "UserWorkspaceRole" LEFT OUTER JOIN "Workspace" USING (workspace_id)
-    WHERE user_id=?
-    $selected_only_clause
-    $exclude_clause
-    ORDER BY name
-    $limit_and_offset
-EOSQL
-
-        return Socialtext::MultiCursor->new(
-            iterables => [ $sth->fetchall_arrayref({}) ],
-            apply => sub {
-                return Socialtext::Workspace->new_from_hash_ref($_[0]);
-            }
-        );
-    }
+sub workspaces {
+    my $self = shift;
+    require Socialtext::Workspace;      # lazy-load, to reduce startup impact
+    return Socialtext::Workspace::Roles->WorkspacesByUserId(
+        @_,
+        user_id => $self->user_id,
+    );
 }
 
 sub is_authenticated {
@@ -1856,16 +1814,9 @@ Returns the number of workspaces of which the user is a member.
 Returns a cursor of the workspaces of which the user is a member,
 ordered by workspace name.
 
-PARAMS can include:
-
-=over 4
-
-=item * selected_only
-
-If this is true, then only workspaces for which UserWorkspaceRole.is_selected
-is true are returned.
-
-=back
+This is just a helper method to
+`Socialtext::Workspace::Roles->WorkspacesByUserId()`; please
+refer to L<Socialtext::Workspace::Roles> for more information.
 
 =head2 $user->workspaces_with_selected()
 
