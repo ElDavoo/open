@@ -275,20 +275,18 @@ CREATE TABLE user_group_role (
 );
 
 CREATE VIEW user_account_implicit_gwr AS
-  SELECT DISTINCT ugr.user_id, w.account_id
+  SELECT ugr.user_id, w.account_id
    FROM user_group_role ugr
    JOIN group_workspace_role gwr USING (group_id)
-   JOIN "Workspace" w USING (workspace_id)
-  ORDER BY ugr.user_id, w.account_id;
+   JOIN "Workspace" w USING (workspace_id);
 
 CREATE VIEW user_account_implicit_uwr AS
-  SELECT DISTINCT uwr.user_id, w.account_id
+  SELECT uwr.user_id, w.account_id
    FROM "UserWorkspaceRole" uwr
-   JOIN "Workspace" w USING (workspace_id)
-  ORDER BY uwr.user_id, w.account_id;
+   JOIN "Workspace" w USING (workspace_id);
 
 CREATE VIEW account_user AS
-  SELECT DISTINCT account_user_relationships.account_id, account_user_relationships.user_id
+  SELECT account_user_relationships.account_id, account_user_relationships.user_id
    FROM (( SELECT user_account_explicit.account_id, user_account_explicit.user_id
            FROM user_account_explicit
 UNION ALL 
@@ -296,8 +294,7 @@ UNION ALL
            FROM user_account_implicit_uwr)
 UNION ALL 
          SELECT user_account_implicit_gwr.account_id, user_account_implicit_gwr.user_id
-           FROM user_account_implicit_gwr) account_user_relationships
-  ORDER BY account_user_relationships.account_id, account_user_relationships.user_id;
+           FROM user_account_implicit_gwr) account_user_relationships;
 
 CREATE TABLE container (
     container_id bigint NOT NULL,
@@ -661,7 +658,7 @@ CREATE TABLE topic_signal_user (
 );
 
 CREATE VIEW user_account AS
-  SELECT DISTINCT user_account_relationships.user_id, user_account_relationships.account_id, user_account_relationships.is_primary
+  SELECT user_account_relationships.user_id, user_account_relationships.account_id, user_account_relationships.is_primary
    FROM (( SELECT user_account_explicit.user_id, user_account_explicit.account_id, true AS is_primary
            FROM user_account_explicit
 UNION ALL 
@@ -669,17 +666,15 @@ UNION ALL
            FROM user_account_implicit_uwr)
 UNION ALL 
          SELECT user_account_implicit_gwr.user_id, user_account_implicit_gwr.account_id, false AS is_primary
-           FROM user_account_implicit_gwr) user_account_relationships
-  ORDER BY user_account_relationships.user_id, user_account_relationships.account_id, user_account_relationships.is_primary;
+           FROM user_account_implicit_gwr) user_account_relationships;
 
 CREATE VIEW user_account_implicit AS
-  SELECT DISTINCT implicit_user_account_relationships.user_id, implicit_user_account_relationships.account_id
+  SELECT implicit_user_account_relationships.user_id, implicit_user_account_relationships.account_id
    FROM ( SELECT user_account_implicit_uwr.user_id, user_account_implicit_uwr.account_id
            FROM user_account_implicit_uwr
 UNION ALL 
          SELECT user_account_implicit_gwr.user_id, user_account_implicit_gwr.account_id
-           FROM user_account_implicit_gwr) implicit_user_account_relationships
-  ORDER BY implicit_user_account_relationships.user_id, implicit_user_account_relationships.account_id;
+           FROM user_account_implicit_gwr) implicit_user_account_relationships;
 
 CREATE TABLE user_plugin_pref (
     user_id bigint NOT NULL,

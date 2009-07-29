@@ -7,18 +7,18 @@ CREATE VIEW user_account_explicit AS
       FROM "UserMetadata" um;
 
 CREATE VIEW user_account_implicit_uwr AS
-    SELECT DISTINCT uwr.user_id, w.account_id
+    SELECT uwr.user_id, w.account_id
       FROM "UserWorkspaceRole" uwr
       JOIN "Workspace" w USING (workspace_id);
 
 CREATE VIEW user_account_implicit_gwr AS
-    SELECT DISTINCT ugr.user_id, w.account_id
+    SELECT ugr.user_id, w.account_id
       FROM user_group_role ugr
       JOIN group_workspace_role gwr USING (group_id)
       JOIN "Workspace" w USING (workspace_id);
 
 CREATE VIEW user_account_implicit AS
-    SELECT DISTINCT user_id, account_id
+    SELECT user_id, account_id
       FROM (    (SELECT user_id, account_id FROM user_account_implicit_uwr)
                 UNION ALL
                 (SELECT user_id, account_id FROM user_account_implicit_gwr)
@@ -27,7 +27,7 @@ CREATE VIEW user_account_implicit AS
 -- Drop and recreate existing VIEWs, but based on the smaller pieces this time
 DROP VIEW user_account;
 CREATE VIEW user_account AS
-    SELECT DISTINCT user_id, account_id, is_primary
+    SELECT user_id, account_id, is_primary
       FROM (    (SELECT user_id, account_id, TRUE  AS is_primary FROM user_account_explicit)
                 UNION ALL
                 (SELECT user_id, account_id, FALSE AS is_primary FROM user_account_implicit_uwr)
@@ -37,7 +37,7 @@ CREATE VIEW user_account AS
 
 DROP VIEW account_user;
 CREATE VIEW account_user AS
-    SELECT DISTINCT account_id, user_id
+    SELECT account_id, user_id
       FROM (    (SELECT account_id, user_id FROM user_account_explicit)
                 UNION ALL
                 (SELECT account_id, user_id FROM user_account_implicit_uwr)
