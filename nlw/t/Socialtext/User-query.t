@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Socialtext::User;
-use Test::Socialtext tests => 30;
+use Test::Socialtext tests => 24;
 
 ###############################################################################
 # Fixtures: clean populated_rdbms
@@ -104,69 +104,6 @@ fixtures(qw( clean populated_rdbms ));
     is( join(',', map { $_->username } $users->all() ),
         'system-user,guest,devnull1@urth.org',
         'ByUserIds() returns users in the order that IDs are passed.'
-    );
-}
-
-{
-    # These tests are the same as the previous block, but test the Unknown
-    # account, which doesn't have any workspaces.
-    my $account_id = Socialtext::Account->Unknown()->account_id();
-
-    my $users = Socialtext::User->ByAccountId(
-        account_id => $account_id );
-    is_deeply(
-        [ map { $_->username } $users->all() ],
-        [ ],
-        'ByAccountId() returns users sorted by name by default',
-    );
-
-    $users = Socialtext::User->ByAccountId(
-        order_by   => 'creation_datetime',
-        account_id => $account_id );
-    is_deeply(
-        [ map { $_->username } $users->all() ],
-        [ ],
-        'ByAccountId() returns users sorted by creation_datetime',
-    );
-
-    $users = Socialtext::User->ByAccountId(
-        order_by   => 'creator',
-        account_id => $account_id );
-    is_deeply(
-        [ map { $_->username } $users->all() ],
-        [ ],
-        'ByAccountId() returns users sorted by creator',
-    );
-}
-
-{
-    # These tests are the same as the previous block, but test the Other1
-    my $account_id = Socialtext::Account->new(name => 'Other 1')->account_id;
-
-    my $users = Socialtext::User->ByAccountId(
-        account_id => $account_id );
-    is_deeply(
-        [ map { $_->username } $users->all() ],
-        [ map({ ("devnull$_\@urth.org") } (1, 2, 3, 4, 5, 6, 7)) ],
-        'ByAccountId() returns users sorted by name by default',
-    );
-
-    $users = Socialtext::User->ByAccountId(
-        order_by   => 'creation_datetime',
-        account_id => $account_id );
-    is_deeply(
-        [ map { $_->username } $users->all() ],
-        [ map({ ("devnull$_\@urth.org") } (7, 6, 5, 4, 3, 2, 1)) ],
-        'ByAccountId() returns users sorted by creation_datetime',
-    );
-
-    $users = Socialtext::User->ByAccountId(
-        order_by   => 'creator',
-        account_id => $account_id );
-    is_deeply(
-        [ map { $_->username } $users->all() ],
-        [ map({ ("devnull$_\@urth.org") } (3, 4, 5, 6, 7, 1, 2)) ],
-        'ByAccountId() returns users sorted by creator',
     );
 }
 
