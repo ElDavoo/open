@@ -638,12 +638,20 @@ sub _post_update {
         }
     }
 
-    if (    ($old->{account_type}||'') eq 'Free 50'
-        and ($new->{account_type}||'') ne 'Free 50') {
+    $old->{account_type} ||= '';
+    $new->{account_type} ||= '';
+    if (    $old->{account_type} eq 'Free 50'
+        and $new->{account_type} ne 'Free 50') {
         my $wksps = $self->workspaces;
         while (my $w = $wksps->next) {
             $w->update(invitation_filter => '');
             $w->enable_plugin('socialcalc');
+        }
+    }
+    elsif ($new->{account_type} eq 'Free 50') {
+        my $wksps = $self->workspaces;
+        while (my $w = $wksps->next) {
+            $w->disable_plugin('socialcalc');
         }
     }
 }
