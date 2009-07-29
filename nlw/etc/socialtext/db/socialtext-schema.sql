@@ -351,7 +351,8 @@ CREATE TABLE event (
     page_workspace_id bigint,
     person_id integer,
     tag_name text,
-    signal_id bigint
+    signal_id bigint,
+    hidden boolean DEFAULT false
 );
 
 CREATE TABLE exitstatus (
@@ -614,7 +615,8 @@ CREATE TABLE signal (
     user_id bigint NOT NULL,
     body text NOT NULL,
     in_reply_to_id bigint,
-    recipient_id bigint
+    recipient_id bigint,
+    hidden boolean DEFAULT false
 );
 
 CREATE TABLE signal_account (
@@ -1706,4 +1708,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '77');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '78');
