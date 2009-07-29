@@ -8,10 +8,11 @@ use Sys::Hostname qw(hostname);
 use Socialtext::Account;
 
 ###############################################################################
-# Fixtures: clean db
+# Fixtures: clean db destructive
 # - Need a clean slate to start with, so we *only* have to test for the
 #   default set of Accounts and the ones that we create
-fixtures(qw( clean db ));
+# - We're also destructive; we nuke the default "hostname" Account
+fixtures(qw( clean db destructive ));
 
 ###############################################################################
 # Specify the list of built-in Accounts, from @ST::Accounts::RequiredAccounts.
