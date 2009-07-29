@@ -150,5 +150,3 @@ sub _log_action {
 }
 
 1;
-
-1;
