@@ -41,9 +41,6 @@ sub _entities_for_query {
     {
         return ( Socialtext::Workspace->All()->all() );
     }
-    elsif ( defined $query and $query eq 'selected' ) {
-        return ( $self->rest->user->workspaces( selected_only => 1 )->all() );
-    }
     else {
         return ( $self->rest->user->workspaces()->all() );
     }

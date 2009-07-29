@@ -1871,7 +1871,7 @@ sub read_breadcrumbs {
 
 sub prepopulate_breadcrumbs {
     my ( $self, $user ) = @_;
-    my @workspaces = $user->workspaces( selected_only => 1 )->all();
+    my @workspaces = $user->workspaces->all();
 
     for my $ws ( reverse @workspaces ) {
         Socialtext::WorkspaceBreadcrumb->Save(

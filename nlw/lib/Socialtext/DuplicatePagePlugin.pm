@@ -51,8 +51,7 @@ sub copy_to_workspace_popup {
 
     my $current_workspace = $self->hub->current_workspace;
     my $workspaces = $self->hub->current_user->workspaces(
-        selected_only => 1,
-        exclude       => [ $self->hub->current_workspace->workspace_id ],
+        exclude => [ $self->hub->current_workspace->workspace_id ],
     );
 
     $self->template_process(

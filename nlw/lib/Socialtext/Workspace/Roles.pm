@@ -181,7 +181,6 @@ sub RolesForUserInWorkspace {
     # but are not actually being used. This is so we can pass paging
     # arguments in from the control panel.
     Readonly my $spec => {
-        selected_only => BOOLEAN_TYPE(default  => 0),
         exclude       => ARRAYREF_TYPE(default => []),
         limit         => SCALAR_TYPE(default   => ''),
         offset        => SCALAR_TYPE(default   => ''),
@@ -192,9 +191,6 @@ sub RolesForUserInWorkspace {
     sub WorkspacesByUserId {
         my $class = shift;
         my %p = validate( @_, $spec );
-
-        my $selected_only_clause
-            = $p{selected_only} ? 'AND is_selected = TRUE' : '';
 
         my $exclude_clause = '';
         if (@{ $p{exclude} }) {
@@ -213,7 +209,6 @@ sub RolesForUserInWorkspace {
               FROM "UserWorkspaceRole"
               LEFT OUTER JOIN "Workspace" USING (workspace_id)
              WHERE user_id=?
-                   $selected_only_clause
                    $exclude_clause
              ORDER BY name
              $limit_and_offset
@@ -368,10 +363,6 @@ find the list of accessible Workspaces for.
 
 A list-ref containing the Workspace Ids for Workspaces that are to be
 I<excluded> from the result set.
-
-=item selected_only
-
-When set to true, only "selected" Workspaces are returned.
 
 =item limit
 
