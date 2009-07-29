@@ -208,15 +208,17 @@ sub RolesForUserInWorkspace {
             $limit_and_offset .= " OFFSET $p{offset}" if $p{offset};
         }
 
-        my $sth = sql_execute(<<EOSQL, $p{user_id});
-SELECT *
-    FROM "UserWorkspaceRole" LEFT OUTER JOIN "Workspace" USING (workspace_id)
-    WHERE user_id=?
-    $selected_only_clause
-    $exclude_clause
-    ORDER BY name
-    $limit_and_offset
-EOSQL
+        my $sql = qq{
+            SELECT *
+              FROM "UserWorkspaceRole"
+              LEFT OUTER JOIN "Workspace" USING (workspace_id)
+             WHERE user_id=?
+                   $selected_only_clause
+                   $exclude_clause
+             ORDER BY name
+             $limit_and_offset
+        };
+        my $sth = sql_execute($sql, $p{user_id});
 
         return Socialtext::MultiCursor->new(
             iterables => [ $sth->fetchall_arrayref({}) ],
