@@ -646,13 +646,13 @@ sub st_catchup_logs {
        my $current_dir = cwd;
        my $new_dir =  $ENV{ST_CURRENT} . "/socialtext-reports/";
        chdir($new_dir);
-       my $str = $ENV{ST_CURRENT} . "/socialtext-reports/parse-dev-env-logs /var/log/nlw.log 2>&1";
+       my $str = $ENV{ST_CURRENT} . "/socialtext-reports/parse-dev-env-logs /var/log/nlw.log >/dev/null 2>&1";
        shell_run($str);
        chdir($current_dir);
    } else {
       #On An Appliance
-      shell_run("sudo /usr/bin/st-reports-consume-access-log /var/log/apache-perl/access.log >> /var/log/st-reports.log 2>&1");
-      shell_run("sudo /usr/bin/st-reports-consume-nlw-log /var/log/nlw.log >> /var/log/st-reports.log 2>&1");
+      shell_run("sudo /usr/bin/st-reports-consume-access-log /var/log/apache-perl/access.log >> /var/log/st-reports.log >/dev/null 2>&1");
+      shell_run("sudo /usr/bin/st-reports-consume-nlw-log /var/log/nlw.log >> /var/log/st-reports.log >/dev/null 2>&1");
    }
 }
 
