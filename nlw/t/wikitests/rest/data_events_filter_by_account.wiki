@@ -18,6 +18,8 @@ Test account_id=N filtering for the /data/events ReST API.
 
 Set up events
 
+| st-clear-events |
+
 | comment         | set up some test pages |            |             |
 | http-user-pass  | %%a_username%%         | a_password |             |
 | edit-page       | %%a_workspace%%        | X01        | x01-content |
