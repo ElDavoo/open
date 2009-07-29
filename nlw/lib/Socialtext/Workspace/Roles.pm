@@ -20,7 +20,7 @@ our $SQL_UNION_USER_ID_BY_WS_ID = qq{
           JOIN "UserWorkspaceRole" uwr USING (user_id)
          WHERE uwr.workspace_id = ?
     )
-    UNION
+    UNION ALL
     (   SELECT user_id
           FROM users
           JOIN user_group_role ugr USING (user_id)
