@@ -408,7 +408,7 @@ sub _build_standard_sql {
 
         if ($opts->{followed}) {
             $self->add_condition(
-                $FOLLOWED_PEOPLE_ONLY => ($self->viewer->user_id) x 2
+                $FOLLOWED_PEOPLE_ONLY => ($viewer_id) x 2
             );
         }
 
@@ -466,6 +466,25 @@ sub _get_events {
     return $result;
 }
 
+my %can_negate = map {$_=>1} qw(
+    action tag_name actor_id person_id
+);
+
+sub _filter_opts {
+    my $opts = shift;
+    my @allowed = @_;
+
+    my %filtered;
+    # check for definedness; NULL values can't use an index so disallow them
+    for my $k (@allowed) {
+        $filtered{$k} = $opts->{$k} if defined $opts->{$k};
+        next unless $can_negate{$k};
+        $filtered{"$k!"} = $opts->{"$k!"} if defined $opts->{"$k!"};
+    }
+
+    return \%filtered;
+}
+
 sub get_events {
     my $self   = shift;
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
@@ -487,9 +506,10 @@ sub get_events_page_contribs {
         q{event_class = 'page' AND is_page_contribution(action)}
     );
     local $self->{_skip_visibility} = 1;
-    my %opts_slice = map { $_ => $opts->{$_} }
-        qw(limit count offset before after followed account_id);
-    my ($sql, $args) = $self->_build_standard_sql(\%opts_slice);
+    my $filtered_opts = _filter_opts($opts, 
+        qw(limit count offset before after action followed account_id)
+    );
+    my ($sql, $args) = $self->_build_standard_sql($filtered_opts);
 
     Socialtext::Timer->Continue('get_page_contribs');
     #$Socialtext::SQL::PROFILE_SQL = 1;
@@ -620,15 +640,13 @@ sub _build_convos_sql {
     my $self = shift;
     my $opts = shift;
 
+    my $user_id = $opts->{user_id};
+
     # filter the options to a subset of what's usually allowed
-    my %filtered_opts = map {
-        exists($opts->{$_}) ? ($_ => $opts->{$_}) : ()
-    } qw(
+    my $filtered_opts = _filter_opts($opts, qw(
        action actor_id page_workspace_id page_id tag_name account_id
        before after limit count offset
-    );
-    delete $filtered_opts{actor_id}
-        unless defined $filtered_opts{actor_id};
+    ));
 
     local $self->{_skip_standard_opts} = 1;
 
@@ -644,19 +662,19 @@ sub _build_convos_sql {
 EOSQL
     (my $visible_ws = $VISIBLE_WORKSPACES) =~
         s/-- workspace vis/$limit_public_to_contributed/;
-    my @bind = ($opts->{user_id}); # actor_id <> ?
-    push @bind, ($opts->{user_id}) x 2; # ws visibility so far
+    my @bind = ($user_id); # actor_id <> ?
+    push @bind, ($user_id) x 2; # ws visibility so far
 
-    if ($filtered_opts{account_id}) {
+    if ($filtered_opts->{account_id}) {
         $visible_ws = _limit_ws_to_account($visible_ws);
-        push @bind, $filtered_opts{account_id};
+        push @bind, $filtered_opts->{account_id};
     }
 
     my $conv_where = _conversations_where($visible_ws);
-    push @bind, ($opts->{user_id}) x 3;
+    push @bind, ($user_id) x 3;
     $self->prepend_condition($conv_where, @bind);
 
-    return $self->_build_standard_sql(\%filtered_opts);
+    return $self->_build_standard_sql($filtered_opts);
 }
 
 sub get_events_conversations {
@@ -697,11 +715,11 @@ sub get_events_followed {
     if ($opts->{action} && $opts->{action} eq 'view') {
         return []; # view events aren't contributions
     }
-    else {
-        # by using non-view indexes, we can get a simple perf boost until we
-        # devise something better
-        $self->prepend_condition(q{action <> 'view'});
-    }
+
+    # by using non-view indexes, we can get a simple perf boost until we
+    # devise something better
+    $opts->{"action!"} = 'view';
+
     my ($followed_sql, $followed_args) = $self->_build_standard_sql($opts);
 
     Socialtext::Timer->Continue('get_followed_events');
