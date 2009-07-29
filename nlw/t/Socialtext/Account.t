@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 105;
+use Test::Socialtext tests => 108;
 use Test::Socialtext::User;
 use Test::Exception;
 use Socialtext::File;
@@ -296,6 +296,22 @@ Account_types: {
     is $account_one->account_type, 'Paid', 'account_type';
     is $workspace->invitation_filter, '',        'no invitation filter';
     is $workspace->is_plugin_enabled('socialcalc'), 1, 'socialcalc enabled';
+}
+
+restrict_to_domain: {
+    my $account = create_test_account_bypassing_factory();
+
+    # valid domain.
+    eval { $account->update( restrict_to_domain => 'valid.com' ); };
+    is $@, '', 'updated restrict_to_domain with valid value';
+
+    # invalid domain.
+    eval { $account->update( restrict_to_domain => 'valid!@.com' ); };
+    like $@, qr/is not valid/, 'restrict_to_domain has invalid value';
+
+    # remove restriction
+    eval { $account->update( restrict_to_domain => '' ); };
+    is $@, '', 'unsetting restrict_to_domain';
 }
 
 exit;

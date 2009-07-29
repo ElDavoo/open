@@ -944,6 +944,13 @@ sub _validate_and_clean_data {
             loc("Account type ([_1]) is not valid!", $p->{account_type});
     }
 
+    if ($p->{restrict_to_domain}
+        and !Socialtext::String::valid_email_domain( $p->{restrict_to_domain} )
+    ) {
+        push @errors,
+            loc("Domain ([_1]) is not valid!", $p->{restrict_to_domain});
+    }
+
     data_validation_error errors => \@errors if @errors;
 }
 
