@@ -14,7 +14,7 @@ use Readonly;
 # relationship with a Workspace.
 #
 # *REQUIRES* that you pass in "workspace_id" as a binding, *twice*.
-our $SQL_UNION_UWR_GWR = qq{
+our $SQL_UNION_USER_ID_BY_WS_ID = qq{
     (   SELECT user_id
           FROM users
           JOIN "UserWorkspaceRole" uwr USING (user_id)
@@ -43,7 +43,7 @@ sub UsersByWorkspaceId {
     my $sql = qq{
         SELECT user_id, driver_username
           FROM users
-         WHERE user_id IN ( $SQL_UNION_UWR_GWR )
+         WHERE user_id IN ( $SQL_UNION_USER_ID_BY_WS_ID )
          ORDER BY driver_username
     };
 
@@ -68,7 +68,7 @@ sub CountUsersByWorkspaceId {
     my $sql = qq{
         SELECT COUNT(user_id)
           FROM users
-         WHERE user_id IN ( $SQL_UNION_UWR_GWR )
+         WHERE user_id IN ( $SQL_UNION_USER_ID_BY_WS_ID )
     };
 
     my $count = sql_singlevalue($sql, $ws_id, $ws_id);
