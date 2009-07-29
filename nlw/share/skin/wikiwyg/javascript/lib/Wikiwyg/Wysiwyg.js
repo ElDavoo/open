@@ -2641,8 +2641,8 @@ proto.getWidgetImageLocalizeText = function(widget, text) {
         for (i = 0; i < params.length; i++) {
             params[i] = params[i].replace(/^%/, "");
             var mytext = widget[params[i]] || "";
-            newtext = newtext.replace("%" + params[i], "[_" + ( i + 1 ) + "]");
-            newtext_args += ", \"" + mytext.replace(/"/g, '\\"') + "\"";
+            newtext = newtext.replace("%" + params[i], "[_" + ( i + 1 ) + "]").replace(/\\/g, '\\\\');
+            newtext_args += ", \"" + mytext.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + "\"";
         }
     }
     if (newtext_args != "") {
@@ -2672,7 +2672,7 @@ proto.getWidgetImageUrl = function(widget_text) {
         // Just ignore and set the text to be the widget text
     }
 
-    return '/data/wafl/' + widget_text + (uneditable ? '?uneditable=1' : '');
+    return '/data/wafl/' + encodeURI(widget_text) + (uneditable ? '?uneditable=1' : '');
 }
 
 proto.create_wafl_string = function(widget, form) {
