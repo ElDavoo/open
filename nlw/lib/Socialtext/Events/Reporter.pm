@@ -541,44 +541,47 @@ sub get_events_activities {
     return $evs;
 }
 
-my $CONVERSATIONS_WHERE = <<"EOSQL";
-  event_class = 'page'
-  AND is_page_contribution(action)
-  AND e.actor_id <> ?
-  AND page_workspace_id IN ( $VISIBLE_WORKSPACES )
-  AND (
-      -- it's in my watchlist
-      EXISTS (
-          SELECT 1
-          FROM "Watchlist" wl
-          WHERE e.page_workspace_id = wl.workspace_id
-            AND wl.user_id = ?
-            AND e.page_id = wl.page_text_id::text
-      )
-      OR
-      -- i created it
-      EXISTS (
-          SELECT 1
-          FROM page p
-          WHERE p.workspace_id = e.page_workspace_id
-            AND p.page_id = e.page_id
-            AND p.creator_id = ?
-      )
-      OR
-      -- they contributed to it after i did
-      EXISTS (
-          SELECT 1
-          FROM event my_contribs
-          WHERE my_contribs.event_class = 'page'
-            AND is_page_contribution(my_contribs.action)
-            AND my_contribs.actor_id = ?
-            AND my_contribs.page_workspace_id
-                  = e.page_workspace_id
-            AND my_contribs.page_id = e.page_id
-            AND my_contribs.at < e.at
-      )
-  )
-EOSQL
+sub _conversations_where {
+    my $visible_ws = shift || $VISIBLE_WORKSPACES;
+    return qq{
+        event_class = 'page'
+        AND is_page_contribution(action)
+        AND e.actor_id <> ?
+        AND page_workspace_id IN ( $visible_ws )
+        AND (
+            -- it's in my watchlist
+            EXISTS (
+                SELECT 1
+                FROM "Watchlist" wl
+                WHERE e.page_workspace_id = wl.workspace_id
+                  AND wl.user_id = ?
+                  AND e.page_id = wl.page_text_id::text
+            )
+            OR
+            -- i created it
+            EXISTS (
+                SELECT 1
+                FROM page p
+                WHERE p.workspace_id = e.page_workspace_id
+                  AND p.page_id = e.page_id
+                  AND p.creator_id = ?
+            )
+            OR
+            -- they contributed to it after i did
+            EXISTS (
+                SELECT 1
+                FROM event my_contribs
+                WHERE my_contribs.event_class = 'page'
+                  AND is_page_contribution(my_contribs.action)
+                  AND my_contribs.actor_id = ?
+                  AND my_contribs.page_workspace_id
+                        = e.page_workspace_id
+                  AND my_contribs.page_id = e.page_id
+                  AND my_contribs.at < e.at
+            )
+        )
+    };
+}
 
 sub _build_convos_sql {
     my $self = shift;
@@ -588,7 +591,7 @@ sub _build_convos_sql {
     my %filtered_opts = map {
         exists($opts->{$_}) ? ($_ => $opts->{$_}) : ()
     } qw(
-       action actor_id page_workspace_id page_id tag_name
+       action actor_id page_workspace_id page_id tag_name account_id
        before after limit count offset
     );
     delete $filtered_opts{actor_id}
@@ -606,10 +609,25 @@ sub _build_convos_sql {
               AND has_contrib.actor_id = ?
         ) AND
 EOSQL
-
-    (my $conv_where = $CONVERSATIONS_WHERE) =~
+    (my $visible_ws = $VISIBLE_WORKSPACES) =~
         s/-- workspace vis/$limit_public_to_contributed/;
-    $self->prepend_condition($conv_where, ($opts->{user_id}) x 6);
+    my @bind = ($opts->{user_id}); # actor_id <> ?
+    push @bind, ($opts->{user_id}) x 2; # ws visibility so far
+
+    if ($filtered_opts{account_id}) {
+        $visible_ws = qq{
+            SELECT workspace_id
+            FROM ( $visible_ws ) visws
+            WHERE workspace_id IN (
+                SELECT workspace_id FROM "Workspace" WHERE account_id = ?
+            )
+        };
+        push @bind, $filtered_opts{account_id};
+    }
+
+    my $conv_where = _conversations_where($visible_ws);
+    push @bind, ($opts->{user_id}) x 3;
+    $self->prepend_condition($conv_where, @bind);
 
     return $self->_build_standard_sql(\%filtered_opts);
 }
