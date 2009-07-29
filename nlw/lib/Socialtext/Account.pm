@@ -655,6 +655,14 @@ sub _post_update {
             $w->disable_plugin('socialcalc');
         }
     }
+
+    if ($old->{account_type} and $old->{account_type} ne $new->{account_type}) {
+        my $msg = 'UPDATE,ACCOUNT,account:' . $self->name
+                  . '(' . $self->account_id . '),'
+                  . "old_type='" . $old->{account_type} . "',"
+                  . "new_type='" . $new->{account_type} . "'";
+        st_log()->info($msg);
+    }
 }
 
 sub add_to_all_users_workspace {
