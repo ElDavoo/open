@@ -215,8 +215,11 @@ my $SIGNAL_VIS_SQL = <<'EOSQL';
 EOSQL
 
 sub visible_exists {
-    my ($plugin, $event_field) = @_;
-    my $sql = <<EOSQL;
+    my $plugin = shift;
+    my $event_field = shift;
+    my $account_id = shift;
+
+    my $sql = qq{
        EXISTS (
             SELECT 1
             FROM account_user viewer
@@ -224,27 +227,40 @@ sub visible_exists {
             JOIN account_user othr USING (account_id)
             WHERE plugin = '$plugin' AND viewer.user_id = ?
               AND othr.user_id = $event_field
-              -- signal vis
-        )
-EOSQL
+    };
+
+    if ($account_id) {
+        $sql .= "\nAND account_id = ? ";
+    }
 
     if ($plugin eq 'signals') {
-        $sql =~ s/-- signal vis/$SIGNAL_VIS_SQL/;
+        $sql .= $SIGNAL_VIS_SQL;
     }
+
+    $sql .= "\n)";
     return $sql;
 }
 
-my $VISIBILITY_SQL = join "\n",
-    '(',
-        "(evt.event_class <> 'person' OR (",
-            visible_exists('people', 'evt.actor_id'),
-            "AND",
-            visible_exists('people', 'evt.person_id'),
-        '))',
-        "AND ( evt.event_class <> 'signal' OR",
-            visible_exists('signals', 'evt.actor_id'),
-        ')',
-    ')';
+sub visibility_sql {
+    my $viewer_id = shift;
+    my $account_id = shift;
+    my @unit_bind = ($viewer_id);
+    push @unit_bind, $account_id if $account_id;
+    return join("\n",
+        '(',
+            "(evt.event_class <> 'person' OR (",
+                visible_exists('people', 'evt.actor_id', $account_id),
+                "AND",
+                visible_exists('people', 'evt.person_id', $account_id),
+            '))',
+            "AND ( evt.event_class <> 'signal' OR",
+                visible_exists('signals', 'evt.actor_id', $account_id),
+            ')',
+        ')'
+    ), 
+    (@unit_bind) x 3,
+    ($viewer_id) x 2; # for signals vis
+}
 
 my $VISIBLE_WORKSPACES = <<'EOSQL';
     SELECT workspace_id FROM "UserWorkspaceRole" WHERE user_id = ?
@@ -386,7 +402,7 @@ sub _build_standard_sql {
 
         unless ($self->{_skip_visibility}) {
             $self->add_outer_condition(
-                $VISIBILITY_SQL => ($self->viewer->user_id) x 5
+                visibility_sql($viewer_id, $opts->{account_id})
             );
         }
 

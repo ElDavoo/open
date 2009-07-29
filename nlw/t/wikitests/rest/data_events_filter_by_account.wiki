@@ -159,6 +159,7 @@ User c is only in account c, so that edit event won't show:
 | body-unlike | "tk 3c!"   |
 
 
+
 `/data/events/activities`
 
 | comment | a viewing b's profile, no filter |
@@ -170,13 +171,13 @@ User c is only in account c, so that edit event won't show:
 | body-like       | "tk":"1a"  |
 | body-like       | "tk":"1b"  |
 | body-unlike     | "tk":"1c"  |
-| body-unlike       | "tk":"2a"  |
+| body-unlike     | "tk":"2a"  |
 | body-like       | "tk":"2b"  |
 | body-unlike     | "tk":"2c"  |
 | body-like       | "tk 3abc!" |
 | body-like       | "tk 3a!"   |
 | body-like       | "tk 3b!"   |
-| body-unlike       | "tk 3c!"   |
+| body-unlike     | "tk 3c!"   |
 
 | comment | a viewing b's profile, filter acct a |
 | get | /data/events/activities/%%b_username%%?account_id=%%a_account_id%% | application/json |
