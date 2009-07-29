@@ -5,7 +5,8 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 24;
-fixtures( 'ALL' );
+# destructive because it adds pages to these workspaces.
+fixtures('admin','foobar','public','destructive');
 
 # Confirm that we can create tables of contents of 
 # the current page, of another page in the same workspace,
