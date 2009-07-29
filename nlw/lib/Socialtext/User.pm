@@ -614,14 +614,7 @@ sub _guess_nonreal_name {
 
 sub workspace_count {
     my $self = shift;
-
-    my $sth = sql_execute(
-        'SELECT count(distinct(workspace_id))'
-        . ' FROM "UserWorkspaceRole"'
-        . ' WHERE user_id=?',
-        $self->user_id );
-
-    return $sth->fetchall_arrayref->[0][0];
+    return $self->workspaces(@_)->count();
 }
 
 sub workspaces_with_selected {
