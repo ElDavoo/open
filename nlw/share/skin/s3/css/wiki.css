@@ -76,7 +76,7 @@ html .wiki a:hover {
     font-size: 1.7em;
     margin-bottom: 0.75em;
 }
-.wiki h3 {
+.wiki h3, div#contentColumns div#contentLeft .wiki h3 {
     font-size: 1.4em;
     margin-bottom: 0.5em;
 }
