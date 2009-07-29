@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use utf8;
 
-use Test::More tests => 45;
+use Test::More tests => 47;
 
 BEGIN {
     use_ok( 'Socialtext::String' );
@@ -103,4 +103,11 @@ TITLE_TO_DISPLAY_ID: {
         is(Socialtext::String::title_to_display_id($in), $out, 
             "title_to_display_id '$in' => '$out'");
     }
+}
+
+valid_email_domain: {
+    ok Socialtext::String::valid_email_domain( 'socialtext.net' ),
+        'got a valid email domain';
+    ok ! Socialtext::String::valid_email_domain( 'nosuchdom@in.com' ),
+        'got an invalid domain';
 }
