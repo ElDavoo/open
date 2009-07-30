@@ -2092,26 +2092,43 @@ sub add_users_from {
 
     my $ws        = $self->_require_workspace();
     my $target_ws = $self->_require_target_workspace();
+    my $acct      = $target_ws->account;
+    my $users     = $ws->users();
 
-    my $users = $ws->users();
-
-    my @added;
+    my (@added, @rejected);
     while ( my $user = $users->next() ) {
         next if $target_ws->has_user( $user );
+
+        if ( ! $acct->email_passes_domain_filters($user->email_address) ) {
+            push @rejected, $user->username;
+            next;
+        }
 
         $target_ws->add_user( user => $user );
         push @added, $user->username();
     }
 
-    if (@added) {
-        my $msg = 'The following users from the '
-            . $ws->name()
-            . ' workspace were added to the '
-            . $target_ws->name()
-            . " workspace:\n\n";
+    if ( @added || @rejected ) {
+        my $msg;
+        if (@added) {
+            my $msg = 'The following users from the '
+                . $ws->name()
+                . ' workspace were added to the '
+                . $target_ws->name()
+                . " workspace:\n\n";
 
-        $msg .= " - $_\n" for sort @added;
+            $msg .= " - $_\n" for sort @added;
+        }
 
+        if (@rejected) {
+            my $msg = 'The following users from the '
+                . $ws->name()
+                . ' workspace were rejected when adding to the '
+                . $target_ws->name()
+                . " workspace:\n\n";
+
+            $msg .= " - $_\n" for sort @rejected;
+        }
         $self->_success($msg);
     }
     else {
