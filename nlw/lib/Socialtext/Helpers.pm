@@ -386,6 +386,18 @@ sub _get_wiki_info {
     };
 }
 
+# This is a little stupid, but in order to validate the email domain
+# we're mocking up an email address and validating that.
+# Regexp::Common's $RE{net}{domain} didn't do the trick and I couldn't think
+# of a better way.
+sub valid_email_domain {
+    my $self_or_class = shift;
+    my $domain = shift;
+
+    my $validator =  Email::Valid->new( tldcheck => 1 );
+    return $validator->address( 'user@' . $domain ) ? 1 : 0;
+}
+
 sub validate_email_addresses {
     my $self = shift;
     my @emails;

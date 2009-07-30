@@ -5,7 +5,6 @@ use warnings;
 use HTML::Entities ();
 use URI::Escape ();
 use HTML::Truncate;
-use Email::Valid;
 
 use constant MAX_PAGE_ID_LEN => 255;
 use constant BOM => chr(0xFEFF);
@@ -186,16 +185,6 @@ sub title_to_display_id {
     $id =~ s/(?<=.)\s$//;
     $id =~ s/^0$/_/;
     return uri_escape($id);
-}
-
-# This is a little stupid, but in order to validate the email domain
-# we're mocking up an email address and validating that.
-# Regexp::Common's $RE{net}{domain} didn't do the trick and I couldn't think
-# of a better way.
-sub valid_email_domain {
-    my $domain    = shift;
-    my $validator =  Email::Valid->new( tldcheck => 1 );
-    return $validator->address( 'user@' . $domain ) ? 1 : 0;
 }
 
 1;
