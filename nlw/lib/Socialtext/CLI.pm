@@ -585,6 +585,14 @@ sub create_user {
 
     $user{username} ||= $user{email_address};
     if (my $account = $self->_require_account('optional')) {
+
+        if ( ! $account->email_passes_domain_filter($user{email_address}) ) {
+            $self->_error(
+                loc("The email address, [_1], is not in the domain [_2].",
+                    $user{email_address}, $account->restrict_to_domain)
+            );
+        }
+
         $user{primary_account_id} = $account->account_id;
     }
 
