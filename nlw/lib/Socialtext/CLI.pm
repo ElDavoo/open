@@ -585,13 +585,10 @@ sub create_user {
 
     $user{username} ||= $user{email_address};
     if (my $account = $self->_require_account('optional')) {
-
-        if ( ! $account->email_passes_domain_filter($user{email_address}) ) {
-            $self->_error(
-                loc("The email address, [_1], is not in the domain [_2].",
-                    $user{email_address}, $account->restrict_to_domain)
-            );
-        }
+        $self->_ensure_email_passes_filters(
+            $user{email_address},
+            { account => $account },
+        );
 
         $user{primary_account_id} = $account->account_id;
     }
@@ -616,6 +613,19 @@ sub create_user {
     $self->_success( 'A new user with the username "'
             . $user->username()
             . '" was created.' );
+}
+
+sub _ensure_email_passes_filters {
+    my $self           = shift;
+    my $email          = shift;
+    my $filter_sources = shift;
+
+    return unless my $account = $filter_sources->{account};
+
+    $self->_error(
+        loc("The email address, [_1], is not in the domain [_2].",
+            $email, $account->restrict_to_domain)
+    ) unless $account->email_passes_domain_filter( $email )
 }
 
 sub _require_create_user_params {
@@ -747,6 +757,11 @@ sub add_member {
     my $user = $self->_require_user();
     my $ws   = $self->_require_workspace();
 
+    $self->_ensure_email_passes_filters(
+        $user->email_address,
+        { account => $ws->account },
+    );
+
     if ( $ws->has_user( $user ) ) {
         $self->_error( $user->username
                 . ' is already a member of the '
@@ -796,6 +811,13 @@ sub _make_role_toggler {
 
         my $user = $self->_require_user();
         my $ws   = $self->_require_workspace();
+
+        if ( $add_p ) {
+            $self->_ensure_email_passes_filters(
+                $user->email_address,
+                { account => $ws->account },
+            );
+        }
 
         require Socialtext::Role;
         my $role         = Socialtext::Role->new( name => $rolename );
@@ -2260,6 +2282,11 @@ sub invite_user {
 
     $self->_error('You must specify an invitee email address')
         if (!$opts{email});
+
+    $self->_ensure_email_passes_filters(
+        $opts{email},
+        { account => $workspace->account },
+    );
 
     $self->_error('You must specify an inviter email address')
         if (!$opts{from});
