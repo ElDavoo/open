@@ -310,3 +310,6 @@ t/rest_files/time.pl
 bin/st-remove-expired-proxy-cache
 t/rest_files/atom.json
 lib/Socialtext/Pluggable/Plugin/Appliance.pm
+lib/Socialtext/Rest/Signals/Hidden.pm
+lib/Socialtext/Rest/Signals/Signal.pm
+t/wikitests/signals/data_signals_delete.wiki
