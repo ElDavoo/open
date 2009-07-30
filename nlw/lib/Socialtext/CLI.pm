@@ -2111,7 +2111,7 @@ sub add_users_from {
     if ( @added || @rejected ) {
         my $msg;
         if (@added) {
-            my $msg = 'The following users from the '
+            $msg .= 'The following users from the '
                 . $ws->name()
                 . ' workspace were added to the '
                 . $target_ws->name()
@@ -2121,7 +2121,7 @@ sub add_users_from {
         }
 
         if (@rejected) {
-            my $msg = 'The following users from the '
+            $msg .= 'The following users from the '
                 . $ws->name()
                 . ' workspace were rejected when adding to the '
                 . $target_ws->name()
@@ -2129,6 +2129,7 @@ sub add_users_from {
 
             $msg .= " - $_\n" for sort @rejected;
         }
+
         $self->_success($msg);
     }
     else {
