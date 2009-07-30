@@ -38,8 +38,8 @@ Simple_case: {
 }
 
 Account_domain_filter_match: {
-    $acct->update('restrict_to_domain' => 'correct-domain.com');
-    my $invitee_email = 'invitee@correct-domain.com';
+    $acct->update('restrict_to_domain' => 'socialtext.com');
+    my $invitee_email = 'invitee@socialtext.com';
     my $invitation = Socialtext::AccountInvitation->new(
         account   => $acct,
         from_user => $from,
@@ -56,7 +56,7 @@ Account_domain_filter_match: {
 }
 
 Account_domain_filter_no_match: {
-    $acct->update('restrict_to_domain' => 'correct-domain.com');
+    $acct->update('restrict_to_domain' => 'socialtext.com');
     my $invitee_email = 'invitee@wrong-domain.com';
     my $invitation = Socialtext::AccountInvitation->new(
         account   => $acct,
