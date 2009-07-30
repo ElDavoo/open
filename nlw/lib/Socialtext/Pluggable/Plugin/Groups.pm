@@ -55,26 +55,7 @@ sub import_groups_for_account {
     print loc("Importing all groups for account '[_1]'...", $acct->name ), "\n";
 
     for my $group_info ( @$groups ) {
-        # Find the User who created the Group, falling back on the SystemUser
-        # if they can't be found.  This matches the behaviour of Workspace
-        # imports (where we assign the WS to the SystemUser).
-        my $creator = Socialtext::User->new(
-            username => $group_info->{created_by_username} );
-        $creator ||= Socialtext::User->SystemUser;
-
-        # See if the Group already exists.  If it doesn't, create a new Group.
-        my $group = Socialtext::Group->GetGroup( {
-            driver_group_name  => $group_info->{driver_group_name},
-            created_by_user_id => $creator->user_id,
-            primary_account_id => $acct->account_id,
-        } );
-        unless ($group) {
-            $group = Socialtext::Group->Create( {
-                driver_group_name  => $group_info->{driver_group_name},
-                created_by_user_id => $creator->user_id,
-                primary_account_id => $acct->account_id,
-            } );
-        }
+        my $group = _import_group($group_info, $acct);
 
         # Add all of the Users from the export into the Group
         $self->_set_ugrs_on_import( $group, $group_info->{users} );
@@ -118,26 +99,7 @@ sub import_groups_for_workspace {
     print loc("Importing all groups for workspace '[_1]'...", $ws->name ), "\n";
 
     for my $group_info ( @$groups ) {
-        # Find the User who created the Group, falling back on the SystemUser
-        # if they can't be found.  This matches the behaviour of Workspace
-        # imports (where we assign the WS to the SystemUser).
-        my $creator = Socialtext::User->new(
-            username => $group_info->{created_by_username} );
-        $creator ||= Socialtext::User->SystemUser;
-
-        # See if the Group already exists.  If it doesn't, create a new Group.
-        my $group = Socialtext::Group->GetGroup( {
-            driver_group_name  => $group_info->{driver_group_name},
-            created_by_user_id => $creator->user_id,
-            primary_account_id => $ws->account_id,
-        } );
-        unless ($group) {
-            $group = Socialtext::Group->Create( {
-                driver_group_name  => $group_info->{driver_group_name},
-                created_by_user_id => $creator->user_id,
-                primary_account_id => $ws->account_id,
-            } );
-        }
+        my $group = _import_group($group_info, $ws->account);
 
         # Add all of the Users from the export into the Group
         $self->_set_ugrs_on_import( $group, $group_info->{users} );
@@ -153,6 +115,29 @@ sub import_groups_for_workspace {
         }
         $ws->add_group( group => $group, role => $group_role );
     }
+}
+
+sub _import_group {
+    my $group_info = shift;
+    my $acct       = shift;
+
+    # Find the User who created the Group, falling back on the SystemUser
+    # if they can't be found.  This matches the behaviour of Workspace
+    # imports (where we assign the WS to the SystemUser).
+    my $creator = Socialtext::User->new(
+        username => $group_info->{created_by_username} );
+    $creator ||= Socialtext::User->SystemUser;
+
+    my $group_params = {
+        driver_group_name  => $group_info->{driver_group_name},
+        created_by_user_id => $creator->user_id,
+        primary_account_id => $acct->account_id,
+    };
+    my $group = Socialtext::Group->GetGroup($group_params);
+    # Create it anew if it doesn't exist:
+    $group ||= Socialtext::Group->Create($group_params);
+
+    return $group;
 }
 
 sub _get_ugrs_for_export {
