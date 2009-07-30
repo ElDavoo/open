@@ -2099,7 +2099,7 @@ sub add_users_from {
     while ( my $user = $users->next() ) {
         next if $target_ws->has_user( $user );
 
-        if ( ! $acct->email_passes_domain_filters($user->email_address) ) {
+        if ( ! $acct->email_passes_domain_filter($user->email_address) ) {
             push @rejected, $user->username;
             next;
         }
