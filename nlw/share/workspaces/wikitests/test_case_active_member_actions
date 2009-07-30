@@ -3,8 +3,6 @@
 | *Comment* | Test Case: Active Members - View Profile |  |
 | wait_for_element_visible_ok | link=Profile | 60000 |
 | click_and_wait | link=Profile |  |
-| open_ok | /?profile |  |
-| wait_for_element_visible_ok |
 | st-name-widget | 1 | profile |
 | st-select-widget-frame | profile |
 | wait_for_element_visible_ok | link=(Edit) | 60000 |
