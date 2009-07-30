@@ -215,6 +215,7 @@ ErrorDocument 500 /static/html/500.html
         SSLCertificateFile    [% config.ssl_base_dir %]/certs/[% config.nlw_server_hostname %].crt
         SSLCertificateKeyFile [% config.ssl_base_dir %]/private/[% config.nlw_server_hostname %].key
         SSLProtocol All -SSLv2
+        SSLCipherSuite HIGH:MEDIUM:!ADH
         SetEnvIf User-Agent ".*MSIE.*" ssl-unclean-shutdown force-response-1.0
     </VirtualHost>
 [%- END %]
