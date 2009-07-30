@@ -15,6 +15,10 @@ sub register {
         'nlw.export_account' => 'export_groups_for_account');
     $class->add_hook(
         'nlw.import_account' => 'import_groups_for_account');
+    $class->add_hook(
+        'nlw.export_workspace' => 'export_groups_for_workspace');
+    $class->add_hook(
+        'nlw.import_workspace' => 'import_groups_for_workspace');
 }
 
 sub export_groups_for_account {
@@ -74,6 +78,80 @@ sub import_groups_for_account {
 
         # Add all of the Users from the export into the Group
         $self->_set_ugrs_on_import( $group, $group_info->{users} );
+    }
+}
+
+sub export_groups_for_workspace {
+    my $self     = shift;
+    my $ws       = shift;
+    my $data_ref = shift;
+    my @groups   = ();
+
+    print loc("Exporting all groups for workspace '[_1]'...", $ws->name ), "\n";
+
+    my $gwrs = Socialtext::GroupWorkspaceRoleFactory->ByWorkspaceId(
+        $ws->workspace_id,
+    );
+
+    while ( my $gwr = $gwrs->next() ) {
+        my $group = $gwr->group;
+        my $group_data = {
+            driver_group_name   => $group->driver_group_name,
+            created_by_username => $group->creator->username,
+            role_name           => $gwr->role->name,
+        };
+        $group_data->{users} = $self->_get_ugrs_for_export( $group );
+        push @groups, $group_data;
+    }
+
+    $data_ref->{groups} = \@groups;
+}
+
+sub import_groups_for_workspace {
+    my $self   = shift;
+    my $ws     = shift;
+    my $data   = shift;
+    my $groups = $data->{groups} || [];
+
+    return unless @$groups;
+
+    print loc("Importing all groups for workspace '[_1]'...", $ws->name ), "\n";
+
+    for my $group_info ( @$groups ) {
+        # Find the User who created the Group, falling back on the SystemUser
+        # if they can't be found.  This matches the behaviour of Workspace
+        # imports (where we assign the WS to the SystemUser).
+        my $creator = Socialtext::User->new(
+            username => $group_info->{created_by_username} );
+        $creator ||= Socialtext::User->SystemUser;
+
+        # See if the Group already exists.  If it doesn't, create a new Group.
+        my $group = Socialtext::Group->GetGroup( {
+            driver_group_name  => $group_info->{driver_group_name},
+            created_by_user_id => $creator->user_id,
+            primary_account_id => $ws->account_id,
+        } );
+        unless ($group) {
+            $group = Socialtext::Group->Create( {
+                driver_group_name  => $group_info->{driver_group_name},
+                created_by_user_id => $creator->user_id,
+                primary_account_id => $ws->account_id,
+            } );
+        }
+
+        # Add all of the Users from the export into the Group
+        $self->_set_ugrs_on_import( $group, $group_info->{users} );
+
+        # Add the Group into the Workspace, using the default Role if we're
+        # unable to find the Role that it used to have.
+        my $group_role = Socialtext::Role->new(
+            name => $group_info->{role_name},
+        );
+        unless ($group_role) {
+            warn loc("Missing/unknown Role '[_1]'; using default Role", $group_info->{role_name}) . "\n";
+            $group_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
+        }
+        $ws->add_group( group => $group, role => $group_role );
     }
 }
 
@@ -151,6 +229,21 @@ If the Group I<already exists> within the Account, any Users/Roles that are
 present in the export but that are I<not> present in the Group are added
 automatically to the Group; missing Users get added to the Group, but existing
 Users and their Roles are untouched.
+
+=item B<$plugin-E<gt>export_groups_for_workspace($ws, $data_ref)>
+
+Exports information on all of the Groups that have access to the provided
+C<$ws>, by adding group information to the provided C<$data_ref> hash-ref.
+
+=item B<$plugin-E<gt>import_groups_for_workspace($ws, $data_ref)>
+
+Imports Group information from the provided C<$data_ref> hash-ref, adding the
+Groups and their membership lists to the given C<$ws>.
+
+If the Group I<already exists> within the Account that this Workspace resides
+in, any USers/Roles that are present in the export but that are I<not> present
+in the Group are added automatically to the Group; missing users get added to
+the Group, but existing Users and their Roles are untouched.
 
 =back
 

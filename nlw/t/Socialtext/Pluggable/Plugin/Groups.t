@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 28;
+use Test::Socialtext tests => 48;
 use Test::Exception;
 use Test::Socialtext::Account;
 use Test::Socialtext::User;
@@ -22,7 +22,8 @@ fixtures(qw/db/);
 backup: {
     my $data_ref = {};
     my $def_user = Socialtext::User->SystemUser;
-    my $def_role = Socialtext::UserGroupRoleFactory->DefaultRole();
+    my $ugr_role = Socialtext::UserGroupRoleFactory->DefaultRole();
+    my $gwr_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
 
     # create dummy data.
     my $account   = create_test_account_bypassing_factory();
@@ -34,7 +35,14 @@ backup: {
     my $group_two    = create_test_group();
     add_user_to_group( $user_one, $group_two);
 
-    # make backup data
+    # this Group will be in the backups (Account, and Workspace)
+    my $ws = create_test_workspace(account => $account);
+    my $user_two    = create_test_user();
+    my $group_three = create_test_group(account => $account);
+    $group_three->add_user(user => $user_two);
+    $ws->add_group( group => $group_three );
+
+    # make Account backup data
     my $plugin = Socialtext::Pluggable::Plugin::Groups->new();
     stdout_is {
         $plugin->export_groups_for_account($account, $data_ref);
@@ -42,18 +50,47 @@ backup: {
 
     my $expected = [
         {
-            'users' => [
-                {
-                    'role_name' => $def_role->name,
-                    'username'  => $user_one->username,
-                } 
-            ],
-            'created_by_username' => $def_user->username,
             'driver_group_name'   => $group_one->driver_group_name,
-        } 
+            'created_by_username' => $def_user->username,
+            'users'               => [
+                {
+                    'role_name' => $ugr_role->name,
+                    'username'  => $user_one->username,
+                }
+            ],
+        },
+        {
+            driver_group_name   => $group_three->driver_group_name,
+            created_by_username => $def_user->username,
+            users               => [
+                {
+                    username  => $user_two->username,
+                    role_name => $ugr_role->name,
+                },
+            ],
+        }
     ];
-
     is_deeply $data_ref->{groups}, $expected, 'correct export data structure';
+
+    # Make Workspace backup data
+    $data_ref = {};
+    stdout_is {
+        $plugin->export_groups_for_workspace($ws, $data_ref);
+    } "Exporting all groups for workspace '" . $ws->name . "'...\n";
+    $expected = [
+        {
+            driver_group_name   => $group_three->driver_group_name,
+            created_by_username => $def_user->username,
+            role_name           => $gwr_role->name,
+            users               => [
+                {
+                    username  => $user_two->username,
+                    role_name => $ugr_role->name,
+                },
+            ],
+        }
+    ];
+    is_deeply $data_ref->{groups}, $expected, 'correct WS export data structure';
 }
 
 ################################################################################
@@ -256,7 +293,115 @@ restore_with_existing_group: {
         '... missing User was added with their exported Role';
 }
 
+###############################################################################
+# TEST: basic restore of Workspace
+restore_workspace: {
+    my $data_ref = {
+        groups => [ {
+            driver_group_name   => 'Test Group Name',
+            created_by_username => 'system-user',
+            role_name           => 'guest',             # not the default Role
+            users => [
+                {
+                    username    => Test::Socialtext::User->test_username,
+                    role_name   => 'impersonator',
+                },
+            ],
+        } ],
+    };
 
+    # Import the Workspace
+    my $plugin = Socialtext::Pluggable::Plugin::Groups->new();
+    my $ws     = create_test_workspace();
+    stdout_is {
+        $plugin->import_groups_for_workspace($ws, $data_ref);
+    } "Importing all groups for workspace '".$ws->name."'...\n";
+
+    # Make sure that the Group got added to the WS
+    my $groups = $ws->groups;
+    is $groups->count, 1, 'got a group';
+
+    my $group = $groups->next;
+    is $group->driver_group_name, 'Test Group Name',
+        '... with correct driver_group_name';
+
+    my $creator = $group->creator;
+    isa_ok $creator, 'Socialtext::User', '... creator';
+    is $creator->username, 'system-user', '... ... correct creating user';
+
+    my $gwr = $ws->role_for_group($group);
+    is $gwr->name, 'guest', '... correct GWR';
+
+    my $users = $group->users;
+    is $users->count, 1, '... contains a User';
+
+    my $user = $users->next;
+    is $user->username, Test::Socialtext::User->test_username,
+        '... ... correct User';
+
+    my $uwr = $group->role_for_user($user);
+    is $uwr->name, 'impersonator', '... correct UWR';
+}
+
+###############################################################################
+# TEST: restore of Workspace, when Group already exists in the Account
+restore_workspace_with_existing_group: {
+    my $account    = create_test_account();
+    my $group_name = 'Another Test Group';
+    my $data_ref = {
+        groups => [ {
+            driver_group_name   => $group_name,
+            created_by_username => 'carl',              # non-existent User
+            role_name           => 'guest',             # not the default Role
+            users => [
+                {
+                    username    => Test::Socialtext::User->test_username,
+                    role_name   => 'impersonator',
+                },
+            ],
+        } ],
+    };
+
+    # Create the Group in the Account, so it already exists
+    {
+        my $group = create_test_group(
+            unique_id => $group_name,
+            account   => $account,
+        );
+        is $group->users->count(), 0, 'Group has *no* Users in it (yet)';
+    }
+
+    # Import the Workspace
+    my $plugin = Socialtext::Pluggable::Plugin::Groups->new();
+    my $ws     = create_test_workspace();
+    stdout_is {
+        $plugin->import_groups_for_workspace($ws, $data_ref);
+    } "Importing all groups for workspace '".$ws->name."'...\n";
+
+    # Grab the Group, make sure we didn't create it all over again
+    my $groups = $ws->groups;
+    is $groups->count, 1, 'got a group';
+
+    my $group = $groups->next;
+    is $group->driver_group_name, $group_name,
+        '... with correct driver_group_name';
+
+    my $creator = $group->creator;
+    isnt $creator->username, 'carl', '... did not override creating user';
+
+    my $gwr = $ws->role_for_group($group);
+    is $gwr->name, 'guest', '... correct GWR';
+
+    my $users = $group->users;
+    is $users->count, 1, '... now contains a User';
+
+    my $user = $users->next;
+    is $user->username, Test::Socialtext::User->test_username,
+        '... ... correct User';
+
+    my $uwr = $group->role_for_user($user);
+    is $uwr->name, 'impersonator', '... correct UWR';
+}
 
 ###############################################################################
 # Helper method, to add a User to a Group.
