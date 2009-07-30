@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Socialtext::User;
-use Test::Socialtext tests => 24;
+use Test::Socialtext tests => 25;
 
 ###############################################################################
 # Fixtures: clean populated_rdbms
@@ -200,6 +200,22 @@ fixtures(qw( clean populated_rdbms ));
             6, 7, 1, 2
         ],
         'ByWorkspaceIdWithRoles() sorted by creator',
+    );
+
+    $users_with_roles = Socialtext::User->ByWorkspaceIdWithRoles(
+        workspace_id => $ws_id,
+        order_by     => 'role_name',
+    );
+    is_deeply(
+        [
+            map { [ $_->[0]->username, $_->[1]->name ] }
+                $users_with_roles->all()
+        ],
+        [
+            map { my $u = "devnull$_\@urth.org"; [ $u, $roles{$u} ] }
+            2 .. 7, 1
+        ],
+        'ByWorkspaceIdWithRoles() sorted by role_name',
     );
 }
 

@@ -1031,81 +1031,51 @@ EOSQL
         # We're supposed to default to DESCending if we're creation_datetime.
         $p{sort_order} ||= $p{order_by} eq 'creation_datetime' ? 'DESC' : 'ASC';
 
+        my $columns = q{
+SELECT DISTINCT user_id,
+                role_id,
+                driver_username
+        };
+
+        my $from = q{
+            users
+            JOIN "UserWorkspaceRole" USING (user_id)
+            JOIN "Role" USING (role_id)
+        };
+
         Readonly my %SQL => (
             username => <<EOSQL,
-SELECT DISTINCT users.user_id AS user_id,
-                "Role".role_id AS role_id,
-                users.driver_key AS driver_key,
-                users.driver_unique_id AS driver_unique_id,
-                users.driver_username AS driver_username,
-                "Role".name AS name,
-                "Role".used_as_default AS used_as_default,
-                users.driver_username AS driver_username
-    FROM users AS users,
-         "UserWorkspaceRole" AS "UserWorkspaceRole",
-         "Role" AS "Role"
-    WHERE (users.user_id = "UserWorkspaceRole".user_id
-            AND "UserWorkspaceRole".role_id = "Role".role_id)
-        AND ("UserWorkspaceRole".workspace_id = ? )
-    ORDER BY users.driver_username $p{sort_order}
+$columns
+    FROM $from
+    WHERE workspace_id = ?
+    ORDER BY driver_username $p{sort_order}
     LIMIT ? OFFSET ?
 EOSQL
             creation_datetime => <<EOSQL,
-SELECT DISTINCT users.user_id AS user_id,
-                "Role".role_id AS role_id,
-                users.driver_key AS driver_key,
-                users.driver_unique_id AS driver_unique_id,
-                users.driver_username AS driver_username,
-                "Role".name AS name,
-                "Role".used_as_default AS used_as_default,
-                "UserMetadata".creation_datetime AS creation_datetime,
-                users.driver_username AS driver_username
-    FROM users AS users,
-         "UserWorkspaceRole" AS "UserWorkspaceRole",
-         "Role" AS "Role",
-         "UserMetadata" AS "UserMetadata"
-    WHERE (users.user_id = "UserWorkspaceRole".user_id
-            AND "UserWorkspaceRole".role_id = "Role".role_id
-            AND users.user_id = "UserMetadata".user_id)
-        AND ("UserWorkspaceRole".workspace_id = ? )
-    ORDER BY "UserMetadata".creation_datetime $p{sort_order},
-        users.driver_username ASC
+$columns, creation_datetime
+    FROM $from
+    JOIN "UserMetadata" USING (user_id)
+    WHERE workspace_id = ?
+    ORDER BY creation_datetime $p{sort_order}, driver_username ASC
     LIMIT ? OFFSET ?
 EOSQL
             creator => <<EOSQL,
-SELECT DISTINCT (u.user_id) AS user_id,
-                "Role".role_id AS role_id,
-                u.driver_username AS driver_username,
-                creator.driver_username AS driver_username
-    FROM users u
-    JOIN "UserMetadata" ON (u.user_id = "UserMetadata".user_id)
-    LEFT JOIN users creator 
-        ON ("UserMetadata".created_by_user_id = creator.user_id)
-    JOIN "UserWorkspaceRole" uwr ON (u.user_id = uwr.user_id)
-    JOIN "Role" ON (uwr.role_id = "Role".role_id)
-    WHERE uwr.workspace_id = ?
-    ORDER BY creator.driver_username $p{sort_order},
-       u.driver_username ASC
+$columns, creator_username
+    FROM $from
+    JOIN "UserMetadata" USING (user_id)
+    JOIN (
+        SELECT user_id as creator_id, driver_username as creator_username
+        FROM users
+    ) creator ON (creator_id = created_by_user_id)
+    WHERE workspace_id = ?
+    ORDER BY creator_username $p{sort_order}, driver_username ASC
     LIMIT ? OFFSET ?
 EOSQL
             role_name => <<EOSQL,
-SELECT DISTINCT users.user_id AS user_id,
-                "Role".role_id AS role_id,
-                users.driver_key AS driver_key,
-                users.driver_unique_id AS driver_unique_id,
-                users.driver_username AS driver_username,
-                "Role".name AS name,
-                "Role".used_as_default AS used_as_default,
-                "Role".name AS name,
-                users.driver_username AS driver_username
-    FROM users AS users,
-        "UserWorkspaceRole" AS "UserWorkspaceRole",
-        "Role" AS "Role"
-    WHERE (users.user_id = "UserWorkspaceRole".user_id
-            AND "UserWorkspaceRole".role_id = "Role".role_id )
-        AND  ("UserWorkspaceRole".workspace_id = ? )
-    ORDER BY "Role".name $p{sort_order},
-        users.driver_username ASC
+$columns, "Role".name
+    FROM $from
+    WHERE workspace_id = ?
+    ORDER BY "Role".name $p{sort_order}, driver_username ASC
     LIMIT ? OFFSET ?
 EOSQL
         );
