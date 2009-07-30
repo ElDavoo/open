@@ -14,7 +14,7 @@ sub register {
     $class->add_hook(
         'nlw.export_account' => 'export_groups_for_account');
     $class->add_hook(
-        'nlw.finish_import_account' => 'import_groups_for_account');
+        'nlw.import_account' => 'import_groups_for_account');
 }
 
 sub export_groups_for_account {
