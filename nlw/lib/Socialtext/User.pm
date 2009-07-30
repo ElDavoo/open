@@ -1034,12 +1034,13 @@ EOSQL
         my $columns = q{
 SELECT DISTINCT user_id,
                 role_id,
-                driver_username
+                driver_username,
+                "Role".name as role_name
         };
 
         my $from = q{
             users
-            JOIN "UserWorkspaceRole" USING (user_id)
+            JOIN distinct_user_workspace_role USING (user_id)
             JOIN "Role" USING (role_id)
         };
 
@@ -1048,7 +1049,7 @@ SELECT DISTINCT user_id,
 $columns
     FROM $from
     WHERE workspace_id = ?
-    ORDER BY driver_username $p{sort_order}
+    ORDER BY driver_username $p{sort_order}, role_name ASC
     LIMIT ? OFFSET ?
 EOSQL
             creation_datetime => <<EOSQL,
@@ -1056,7 +1057,8 @@ $columns, creation_datetime
     FROM $from
     JOIN "UserMetadata" USING (user_id)
     WHERE workspace_id = ?
-    ORDER BY creation_datetime $p{sort_order}, driver_username ASC
+    ORDER BY creation_datetime $p{sort_order}, driver_username ASC,
+        role_name ASC
     LIMIT ? OFFSET ?
 EOSQL
             creator => <<EOSQL,
@@ -1068,14 +1070,15 @@ $columns, creator_username
         FROM users
     ) creator ON (creator_id = created_by_user_id)
     WHERE workspace_id = ?
-    ORDER BY creator_username $p{sort_order}, driver_username ASC
+    ORDER BY creator_username $p{sort_order}, driver_username ASC,
+        role_name ASC
     LIMIT ? OFFSET ?
 EOSQL
             role_name => <<EOSQL,
-$columns, "Role".name
+$columns
     FROM $from
     WHERE workspace_id = ?
-    ORDER BY "Role".name $p{sort_order}, driver_username ASC
+    ORDER BY role_name $p{sort_order}, driver_username ASC
     LIMIT ? OFFSET ?
 EOSQL
         );

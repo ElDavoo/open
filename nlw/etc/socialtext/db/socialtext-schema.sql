@@ -297,6 +297,24 @@ UNION ALL
          SELECT user_account_implicit_gwr.account_id, user_account_implicit_gwr.user_id
            FROM user_account_implicit_gwr) account_user_relationships;
 
+CREATE VIEW all_user_workspace AS
+  SELECT my_workspaces.user_id, my_workspaces.workspace_id
+   FROM ( SELECT "UserWorkspaceRole".user_id, "UserWorkspaceRole".workspace_id
+           FROM "UserWorkspaceRole"
+UNION ALL 
+         SELECT ugr.user_id, gwr.workspace_id
+           FROM user_group_role ugr
+      JOIN group_workspace_role gwr USING (group_id)) my_workspaces;
+
+CREATE VIEW all_user_workspace_role AS
+  SELECT my_workspace_roles.user_id, my_workspace_roles.workspace_id, my_workspace_roles.role_id
+   FROM ( SELECT "UserWorkspaceRole".user_id, "UserWorkspaceRole".workspace_id, "UserWorkspaceRole".role_id
+           FROM "UserWorkspaceRole"
+UNION ALL 
+         SELECT ugr.user_id, gwr.workspace_id, gwr.role_id
+           FROM user_group_role ugr
+      JOIN group_workspace_role gwr USING (group_id)) my_workspace_roles;
+
 CREATE TABLE container (
     container_id bigint NOT NULL,
     container_type text NOT NULL,
@@ -333,6 +351,16 @@ CREATE SEQUENCE default_gadget_id
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
+
+CREATE VIEW distinct_user_workspace AS
+  SELECT DISTINCT all_user_workspace.user_id, all_user_workspace.workspace_id
+   FROM all_user_workspace
+  ORDER BY all_user_workspace.user_id, all_user_workspace.workspace_id;
+
+CREATE VIEW distinct_user_workspace_role AS
+  SELECT DISTINCT all_user_workspace_role.user_id, all_user_workspace_role.workspace_id, all_user_workspace_role.role_id
+   FROM all_user_workspace_role
+  ORDER BY all_user_workspace_role.user_id, all_user_workspace_role.workspace_id, all_user_workspace_role.role_id;
 
 CREATE TABLE error (
     error_time integer NOT NULL,

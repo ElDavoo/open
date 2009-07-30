@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Socialtext::User;
-use Test::Socialtext tests => 25;
+use Test::Socialtext tests => 30;
 
 ###############################################################################
 # Fixtures: clean populated_rdbms
@@ -216,6 +216,135 @@ fixtures(qw( clean populated_rdbms ));
             2 .. 7, 1
         ],
         'ByWorkspaceIdWithRoles() sorted by role_name',
+    );
+}
+
+{
+    ### These tests verify that we're getting the Groups users out correctly.
+    ### Other tests for "are things sorting correctly by 'foo'" are done
+    ### above; we're just concerned here that we got the Groups users.
+    my $ws    = create_test_workspace();
+    my $ws_id = $ws->workspace_id();
+
+    # create some Groups and use those to help define membership for the WS
+    my $group_one = create_test_group(account => $ws->account);
+    $ws->add_group(
+        group => $group_one,
+        role  => Socialtext::Role->Impersonator,
+    );
+
+    my $group_two = create_test_group(account => $ws->account);
+    $ws->add_group(
+        group => $group_two,
+        role  => Socialtext::Role->Guest,
+    );
+
+    # create some other Users and give them access to the WS
+    my $user_uwr = create_test_user(account => $ws->account);
+    $ws->add_user(user => $user_uwr);
+
+    my $user_uwr_gwr = create_test_user(account => $ws->account);
+    $ws->add_user(user => $user_uwr_gwr);
+    $group_one->add_user(user => $user_uwr_gwr);
+
+    my $user_gwr_gwr = create_test_user(account => $ws->account);
+    $group_one->add_user(user => $user_gwr_gwr);
+    $group_two->add_user(user => $user_gwr_gwr);
+
+    # TEST: default sort order
+    my $users_with_roles = Socialtext::User->ByWorkspaceIdWithRoles(
+        workspace_id => $ws_id,
+    );
+    is_deeply(
+        [
+            map { [ $_->[0]->username, $_->[1]->name ] }
+                $users_with_roles->all()
+        ],
+        [
+            [ $user_uwr->username,     'member' ],
+            [ $user_uwr_gwr->username, 'impersonator' ],
+            [ $user_uwr_gwr->username, 'member' ],
+            [ $user_gwr_gwr->username, 'guest' ],
+            [ $user_gwr_gwr->username, 'impersonator' ],
+        ],
+        'ByWorkspaceIdWithRoles() with Groups, default ordering'
+    );
+
+    $users_with_roles = Socialtext::User->ByWorkspaceIdWithRoles(
+        workspace_id => $ws_id,
+        order_by => 'username',
+        sort_order => 'DESC',
+    );
+    is_deeply(
+        [
+            map { [ $_->[0]->username, $_->[1]->name ] }
+                $users_with_roles->all()
+        ],
+        [
+            [ $user_gwr_gwr->username, 'guest' ],
+            [ $user_gwr_gwr->username, 'impersonator' ],
+            [ $user_uwr_gwr->username, 'impersonator' ],
+            [ $user_uwr_gwr->username, 'member' ],
+            [ $user_uwr->username,     'member' ],
+        ],
+        'ByWorkspaceIdWithRoles() with Groups, reverse username ordering'
+    );
+
+    $users_with_roles = Socialtext::User->ByWorkspaceIdWithRoles(
+        workspace_id => $ws_id,
+        order_by => 'creation_datetime',
+    );
+    is_deeply(
+        [
+            map { [ $_->[0]->username, $_->[1]->name ] }
+                $users_with_roles->all()
+        ],
+        [
+            [ $user_gwr_gwr->username, 'guest' ],
+            [ $user_gwr_gwr->username, 'impersonator' ],
+            [ $user_uwr_gwr->username, 'impersonator' ],
+            [ $user_uwr_gwr->username, 'member' ],
+            [ $user_uwr->username,     'member' ],
+        ],
+        'ByWorkspaceIdWithRoles() with Groups, creation ordering'
+    );
+
+    $users_with_roles = Socialtext::User->ByWorkspaceIdWithRoles(
+        workspace_id => $ws_id,
+        order_by => 'creator',
+    );
+    is_deeply(
+        [
+            map { [ $_->[0]->username, $_->[1]->name ] }
+                $users_with_roles->all()
+        ],
+        [
+            [ $user_uwr->username,     'member' ],
+            [ $user_uwr_gwr->username, 'impersonator' ],
+            [ $user_uwr_gwr->username, 'member' ],
+            [ $user_gwr_gwr->username, 'guest' ],
+            [ $user_gwr_gwr->username, 'impersonator' ],
+        ],
+        'ByWorkspaceIdWithRoles() with Groups, creator ordering'
+    );
+
+    $users_with_roles = Socialtext::User->ByWorkspaceIdWithRoles(
+        workspace_id => $ws_id,
+        order_by => 'role_name',
+    );
+    is_deeply(
+        [
+            map { [ $_->[0]->username, $_->[1]->name ] }
+                $users_with_roles->all()
+        ],
+        [
+            [ $user_gwr_gwr->username, 'guest' ],
+            [ $user_uwr_gwr->username, 'impersonator' ],
+            [ $user_gwr_gwr->username, 'impersonator' ],
+            [ $user_uwr->username,     'member' ],
+            [ $user_uwr_gwr->username, 'member' ],
+        ],
+        'ByWorkspaceIdWithRoles() with Groups, role_name ordering'
     );
 }
 

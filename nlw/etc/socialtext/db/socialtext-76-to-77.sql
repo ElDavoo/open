@@ -1,5 +1,33 @@
 BEGIN;
 
+CREATE VIEW all_user_workspace AS
+    SELECT user_id, workspace_id
+    FROM 
+    (   SELECT user_id, workspace_id
+          FROM "UserWorkspaceRole"
+    UNION ALL
+       SELECT user_id, workspace_id
+          FROM user_group_role ugr
+          JOIN group_workspace_role gwr USING (group_id)
+    ) my_workspaces;
+
+CREATE VIEW distinct_user_workspace AS
+    SELECT DISTINCT * FROM all_user_workspace;
+
+CREATE VIEW all_user_workspace_role AS
+    SELECT user_id, workspace_id, role_id
+    FROM 
+    (   SELECT user_id, workspace_id, role_id
+          FROM "UserWorkspaceRole"
+    UNION ALL
+       SELECT user_id, workspace_id, gwr.role_id AS role_id
+          FROM user_group_role ugr
+          JOIN group_workspace_role gwr USING (group_id)
+    ) my_workspace_roles;
+
+CREATE VIEW distinct_user_workspace_role AS
+    SELECT DISTINCT * FROM all_user_workspace_role;
+
 -- Create a series of smaller VIEWs that give us bits+pieces of the
 -- User/Account relationship puzzle
 CREATE VIEW user_account_explicit AS
