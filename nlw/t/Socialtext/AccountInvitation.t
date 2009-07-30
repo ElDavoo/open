@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 9;
+use Test::Socialtext tests => 4;
 use Email::Send::Test;
 use Socialtext::Account;
 use Socialtext::User;
@@ -35,40 +35,4 @@ Simple_case: {
     my $invitee = Socialtext::User->new( email_address => $invitee_email );
     ok $invitee, 'user created';
     is $invitee->primary_account_id, $acct->account_id, 'user in correct acct';
-}
-
-Account_domain_filter_match: {
-    $acct->update('restrict_to_domain' => 'socialtext.com');
-    my $invitee_email = 'invitee@socialtext.com';
-    my $invitation = Socialtext::AccountInvitation->new(
-        account   => $acct,
-        from_user => $from,
-        invitee   => $invitee_email,
-    );
-
-    eval { $invitation->send(); };
-    my $e = $@;
-    is $e, '', 'account invite sent';
-
-    my $invitee = Socialtext::User->new( email_address => $invitee_email );
-    ok $invitee, 'user created';
-    is $invitee->primary_account_id, $acct->account_id, 'user in correct acct';
-}
-
-Account_domain_filter_no_match: {
-    $acct->update('restrict_to_domain' => 'socialtext.com');
-    my $invitee_email = 'invitee@wrong-domain.com';
-    my $invitation = Socialtext::AccountInvitation->new(
-        account   => $acct,
-        from_user => $from,
-        invitee   => $invitee_email,
-    );
-
-    eval { $invitation->send(); };
-    my $e = $@;
-    is $e, "user ($invitee_email) is not in restricted domain.\n",
-        'account invite sent';
-
-    my $invitee = Socialtext::User->new( email_address => $invitee_email );
-    ok !$invitee, 'user was not created';
 }

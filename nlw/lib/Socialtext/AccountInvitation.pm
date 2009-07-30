@@ -48,9 +48,6 @@ sub _invite_one_user {
     my $acct   = $self->{account};
     my $domain = $acct->restrict_to_domain;
 
-    die "user ($self->{invitee}) is not in restricted domain.\n"
-        if $domain && $self->{invitee} !~ /.+\@\Q$domain\E$/o;
-
     my $user = Socialtext::User->new(
         email_address => $self->{invitee}
     );
