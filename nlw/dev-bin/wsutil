@@ -120,8 +120,8 @@ sub wikicat {
 sub exec_on_page {
     my ($workspace, $page_name, @command) = @_;
     my $page_path = get_page_path($workspace, $page_name);
-    exec @command, $page_path;
-    die "exec @command $page_path: $!";
+    exec @command, $page_path 
+        or die "exec @command $page_path: $!";
 }
 
 sub edit {
