@@ -13,11 +13,6 @@ use Socialtext::File;
 use Socialtext::String;
 use URI::Escape ();
 
-BEGIN {
-    no warnings 'once';
-    *CORE::GLOBAL::die = \&Carp::confess;
-}
-
 field hub => -weak;
 
 # This at one point was changed to simply do this:
