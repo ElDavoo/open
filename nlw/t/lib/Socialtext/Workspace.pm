@@ -6,6 +6,7 @@ use base 'Socialtext::MockBase';
 use unmocked 'Socialtext::Account';
 use unmocked 'Class::Field', qw/field/;
 use unmocked 'Socialtext::MultiCursor';
+use unmocked 'Socialtext::Workspace::Roles';
 
 field 'skin_name';
 field 'uploaded_skin';
