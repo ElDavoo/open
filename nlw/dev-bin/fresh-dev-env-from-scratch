@@ -70,6 +70,8 @@ echo "Starting in dual-Apache mode";
 dev-bin/nlwctl start;
 
 st-admin set-workspace-config --workspace admin skin_name s3
+dev-bin/st-socialcalc enable
+
 st-widgets update-all
 st-widgets update-gallery
 
