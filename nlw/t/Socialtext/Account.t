@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 108;
+use Test::Socialtext tests => 111;
 use Test::Socialtext::User;
 use Test::Exception;
 use Socialtext::File;
@@ -312,6 +312,36 @@ restrict_to_domain: {
     # remove restriction
     eval { $account->update( restrict_to_domain => '' ); };
     is $@, '', 'unsetting restrict_to_domain';
+}
+
+free50_accounts: {
+    my $lookup = Socialtext::Account->Free50ForDomain('valid.com');
+    ok ! $lookup, 'no Free 50 account found';
+
+    my $acct = create_test_account_bypassing_factory();
+    my $ws   = create_test_workspace( account => $acct );
+    $acct->update(
+        all_users_workspace => $ws->workspace_id,
+        restrict_to_domain  => 'valid.com',
+        account_type        => 'Free 50',
+    );
+
+    $lookup = Socialtext::Account->Free50ForDomain('valid.com');
+    is $acct->account_id, $lookup->account_id, 'got correct Free 50 account';
+
+    my $other    = create_test_account_bypassing_factory();
+    my $other_ws = create_test_workspace( account => $other );
+    $other->update(
+        all_users_workspace => $other_ws->workspace_id,
+        restrict_to_domain  => 'valid.com',
+        account_type        => 'Free 50',
+    );
+
+    $lookup = Socialtext::Account->Free50ForDomain('valid.com');
+
+    # when two accounts have the same domain restriction, we should return the
+    # one with the the smallest account_id; $lookup will _still_ equal $acct.
+    is $lookup->account_id, $acct->account_id, 'got first Free 50 account'
 }
 
 exit;

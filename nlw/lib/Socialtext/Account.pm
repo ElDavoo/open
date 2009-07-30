@@ -792,6 +792,29 @@ sub _All {
     );
 }
 
+# There's a _tiny_ chance that there could be more than one matching
+# result here, forcibly return either 0 or 1.
+sub Free50ForDomain {
+    my $class        = shift;
+    my $domain       = shift;
+
+    my $sth = sql_execute(qq{
+        SELECT *
+          FROM "Account"
+         WHERE restrict_to_domain = ?
+           AND account_type = 'Free 50'
+           AND all_users_workspace IS NOT NULL
+         ORDER BY account_id
+         LIMIT 1
+    }, $domain);
+
+    my $row = $sth->fetchall_arrayref({});
+
+    return @$row
+        ? $class->new_from_hash_ref($row->[0])
+        : undef;
+}
+
 sub _AllByWorkspaceCount {
     my ( $self, %p ) = @_;
 
