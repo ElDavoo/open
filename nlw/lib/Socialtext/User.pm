@@ -1021,6 +1021,7 @@ EOSQL
             default => 'username',
         ),
         workspace_id => SCALAR_TYPE,
+        direct => BOOLEAN_TYPE(default => undef),
     };
 
     sub ByWorkspaceIdWithRoles {
@@ -1038,9 +1039,12 @@ SELECT DISTINCT user_id,
                 "Role".name as role_name
         };
 
-        my $from = q{
+        my $uwr_table = $p{direct}
+            ? '"UserWorkspaceRole"'
+            : 'distinct_user_workspace_role';
+        my $from = qq{
             users
-            JOIN distinct_user_workspace_role USING (user_id)
+            JOIN $uwr_table USING (user_id)
             JOIN "Role" USING (role_id)
         };
 

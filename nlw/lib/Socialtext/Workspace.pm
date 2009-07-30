@@ -1497,7 +1497,7 @@ sub _dump_users_to_yaml_file {
 
     my $file = Socialtext::File::catfile( $dir, $name . '-users.yaml' );
 
-    my $users_with_roles = $self->users_with_roles;
+    my $users_with_roles = $self->users_with_roles(direct => 1);
     my @dump;
     while ( 1 ) {
         my $elem = $users_with_roles->next;

@@ -9,6 +9,8 @@ use Test::Socialtext::User;
 use Test::Output;
 use Socialtext::UserGroupRoleFactory;
 use Socialtext::Role;
+use File::Temp qw/tempdir/;
+use YAML qw/LoadFile/;
 
 use_ok 'Socialtext::Pluggable::Plugin::Groups';
 
@@ -36,11 +38,18 @@ backup: {
     add_user_to_group( $user_one, $group_two);
 
     # this Group will be in the backups (Account, and Workspace)
-    my $ws = create_test_workspace(account => $account);
     my $user_two    = create_test_user();
     my $group_three = create_test_group(account => $account);
     $group_three->add_user(user => $user_two);
-    $ws->add_group( group => $group_three );
+
+    my $user_three    = create_test_user();
+    $group_three->add_user(user => $user_three);
+
+    # Load some users into the workspace (direct & transitive)
+    my $ws = create_test_workspace(account => $account);
+    $ws->add_group( group => $group_three, role => Socialtext::Role->WorkspaceAdmin() );
+    $ws->add_user(user => $user_one);
+    $ws->add_user(user => $user_three);
 
     # make Account backup data
     my $plugin = Socialtext::Pluggable::Plugin::Groups->new();
@@ -67,6 +76,10 @@ backup: {
                     username  => $user_two->username,
                     role_name => $ugr_role->name,
                 },
+                {
+                    username  => $user_three->username,
+                    role_name => $ugr_role->name,
+                },
             ],
         }
     ];
@@ -81,10 +94,14 @@ backup: {
         {
             driver_group_name   => $group_three->driver_group_name,
             created_by_username => $def_user->username,
-            role_name           => $gwr_role->name,
+            role_name           => 'workspace_admin',
             users               => [
                 {
                     username  => $user_two->username,
+                    role_name => $ugr_role->name,
+                },
+                {
+                    username  => $user_three->username,
                     role_name => $ugr_role->name,
                 },
             ],
