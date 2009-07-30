@@ -980,6 +980,10 @@ ALTER TABLE ONLY workspace_plugin
 CREATE UNIQUE INDEX "Account___name"
 	    ON "Account" (name);
 
+CREATE INDEX "Account__free_fifty_domain"
+	    ON "Account" (restrict_to_domain)
+	    WHERE (account_type = 'Free 50');
+
 CREATE UNIQUE INDEX "Permission___name"
 	    ON "Permission" (name);
 
