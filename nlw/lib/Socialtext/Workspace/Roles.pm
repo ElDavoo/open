@@ -235,6 +235,34 @@ sub RolesForUserInWorkspace {
             }
         );
     }
+
+    sub CountWorkspacesByUserId {
+        my $class   = shift;
+        my %p       = validate(@_, $spec);
+        my $user_id = $p{user_id};
+        my $limit   = $p{limit};
+        my $offset  = $p{offset};
+
+        my $exclude_clause = '';
+        if (@{ $p{exclude} }) {
+            my $wksps = join(',', @{ $p{exclude} });
+            $exclude_clause = "AND workspace_id NOT IN ($wksps)";
+        }
+
+        my $sql = qq{
+            SELECT COUNT("Workspace".workspace_id)
+              FROM "Workspace"
+             WHERE workspace_id IN ( $SQL_UNION_WS_ID_BY_USER_ID )
+             $exclude_clause
+             LIMIT ? OFFSET ?
+        };
+        my $count = sql_singlevalue(
+            $sql,
+            $user_id, $user_id,
+            $limit, $offset,
+        );
+        return $count;
+    }
 }
 
 1;
@@ -271,6 +299,11 @@ Socialtext::Workspace::Roles - User/Workspace Role helper methods
 
   # List of all Workspaces that User has a Role in
   $cursor = Socialtext::Workspace::Roles->WorkspacesByUserId(
+    user_id => $user_id
+  );
+
+  # Get Count of Workspaces that User has _some_ Role in
+  $count = Socialtext::Workspace::Roles->CountWorkspacesByUserId(
     user_id => $user_id
   );
 
@@ -397,6 +430,16 @@ The result set is B<always> ordered by Workspace Name.
 Sort ordering; ASCending or DESCending.
 
 =back
+
+=item B<Socialtext::Workspace::Roles-E<gt>CountWorkspacesByUserId(PARAMS)>
+
+Returns the count of Workspaces that the User has a Role in.
+
+Accepts the same parameters as C<WorkspacesByUserId()>.
+
+This method has been optimized so that it doesn't have to fetch B<all> of the
+Workspaces from the DB in order to count them up; we just issue the query and
+take the count of the results.
 
 =back
 

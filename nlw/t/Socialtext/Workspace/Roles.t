@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 42;
+use Test::Socialtext tests => 44;
 
 ###############################################################################
 # Fixtures: db
@@ -356,3 +356,43 @@ workspaces_by_user_id: {
     }
 }
 
+###############################################################################
+# TEST: Count Workspaces that a given User has a Role in
+count_workspaces_by_user_id: {
+    my $user = create_test_user();
+
+    my $ws_one   = create_test_workspace();
+    my $ws_two   = create_test_workspace();
+    my $ws_three = create_test_workspace();
+
+    # User has access via explicit Role in the Workspace
+    $ws_one->add_user(user => $user);
+
+    # User has access via Group Role in the Workspace
+    my $group = create_test_group();
+    $group->add_user(user => $user);
+    $ws_two->add_group(group => $group);
+
+    # User has access via UWR and multiple UGR+GWRs
+    $ws_three->add_user(user => $user);
+
+    $group = create_test_group();
+    $group->add_user(user => $user);
+    $ws_three->add_group(group => $group);
+
+    $group = create_test_group();
+    $group->add_user(user => $user);
+    $ws_three->add_group(group => $group);
+
+    # Get the count of Workspaces the User has access to
+    my $count = Socialtext::Workspace::Roles->CountWorkspacesByUserId(
+        user_id => $user->user_id,
+    );
+    is $count, 3, 'User has access to correct number of Workspaces';
+
+    # Make sure that count matches up with the list of Workspaces
+    my $cursor = Socialtext::Workspace::Roles->WorkspacesByUserId(
+        user_id => $user->user_id,
+    );
+    is $count, $cursor->count(), '... matching count of WS access list';
+}

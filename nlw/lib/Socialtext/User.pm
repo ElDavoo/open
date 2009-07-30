@@ -614,7 +614,11 @@ sub _guess_nonreal_name {
 
 sub workspace_count {
     my $self = shift;
-    return $self->workspaces(@_)->count();
+    require Socialtext::Workspace;      # lazy-load, to reduce startup impact
+    return Socialtext::Workspace::Roles->CountWorkspacesByUserId(
+        @_,
+        user_id => $self->user_id,
+    );
 }
 
 sub workspaces_with_selected {
