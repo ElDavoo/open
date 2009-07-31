@@ -1122,6 +1122,12 @@ sub permissions {
         my %p    = validate( @_, $spec );
         my $user = $p{user};
 
+        # Now according to {bz: 2896} we need to check invitation_filter before adding any members.
+        my $ws_filter = $self->invitation_filter();
+        if ($ws_filter) {
+            return unless $user->email_address =~ qr/$ws_filter/;
+        }
+
         Socialtext::JSON::Proxy::Helper->ClearForUser($user->user_id);
 
         $p{role} ||= Socialtext::Role->Member();
