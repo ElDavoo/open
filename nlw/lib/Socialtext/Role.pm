@@ -12,6 +12,7 @@ use Socialtext::Exceptions qw( data_validation_error );
 use Socialtext::MultiCursor;
 use Socialtext::SQL 'sql_execute';
 use Socialtext::Validate qw( validate SCALAR_TYPE );
+use Clone ();
 
 field 'role_id';
 field 'name';
@@ -40,24 +41,37 @@ sub EnsureRequiredDataIsPresent {
         );
     }
 }
+{
+    my %role_cache = ( name => {}, role_id => {} );
 
-sub new {
-    my ( $class, %p ) = @_;
+    sub new {
+        my ( $class, %p ) = @_;
 
-    return exists $p{name} ? $class->_new_from_name(%p)
-                           : $class->_new_from_role_id(%p);
-}
+        my($role_key, $val);
+        if (exists $p{name}) {
+            $role_key = 'name';
+            $val = lc $p{name};
+        }
+        elsif (exists $p{role_id}) {
+            $role_key = 'role_id';
+            $val = $p{role_id};
+        }
+        else {
+            return;
+        }
 
-sub _new_from_name {
-    my ( $class, %p ) = @_;
+        if (!$role_cache{$role_key}{$val}) {
+            my $role = $class->_new_from_where("$role_key=?", $val);
 
-    return $class->_new_from_where('name=?', $p{name});
-}
+            # don't cache roles that don't exist; they could come into existence
+            # later.
+            return unless $role;
 
-sub _new_from_role_id {
-    my ( $class, %p ) = @_;
-
-    return $class->_new_from_where('role_id=?', $p{role_id});
+            $role_cache{name}{lc $role->name} = $role;
+            $role_cache{role_id}{$role->role_id} = $role;
+        }
+        return $role_cache{$role_key}{$val}->clone
+    }
 }
 
 sub _new_from_where {
@@ -107,6 +121,10 @@ sub update {
     $self->name($p{name});
 
     return $self;
+}
+
+sub clone {
+    return Clone::clone(shift);
 }
 
 sub display_name {
