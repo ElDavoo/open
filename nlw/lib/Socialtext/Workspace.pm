@@ -1511,6 +1511,10 @@ sub _dump_users_to_yaml_file {
         push @dump, $dumped_user;
     }
 
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub(Socialtext::User->SystemUser(), $self);
+    $adapter->hook('nlw.export_workspace_users', $self, \@dump);
+
     _dump_yaml( $file, \@dump );
 }
 
