@@ -620,12 +620,21 @@ sub _ensure_email_passes_filters {
     my $email          = shift;
     my $filter_sources = shift;
 
-    return unless my $account = $filter_sources->{account};
+    my $account = $filter_sources->{account};
+    if ($account) {
+        $self->_error(
+            loc("The email address, [_1], is not in the domain [_2].",
+                $email, $account->restrict_to_domain)
+        ) unless $account->email_passes_domain_filter( $email )
+    }
 
-    $self->_error(
-        loc("The email address, [_1], is not in the domain [_2].",
-            $email, $account->restrict_to_domain)
-    ) unless $account->email_passes_domain_filter( $email )
+    my $workspace = $filter_sources->{workspace};
+    if ($workspace) {
+        $self->_error(
+            loc("The email address, [_1], does not match the workspace invitation filter [_2].",
+                $email, $workspace->invitation_filter)
+        ) unless $workspace->email_passes_invitation_filter( $email )
+    }
 }
 
 sub _require_create_user_params {
@@ -759,7 +768,7 @@ sub add_member {
 
     $self->_ensure_email_passes_filters(
         $user->email_address,
-        { account => $ws->account },
+        { account => $ws->account, workspace => $ws },
     );
 
     if ( $ws->has_user( $user ) ) {
@@ -815,7 +824,7 @@ sub _make_role_toggler {
         if ( $add_p ) {
             $self->_ensure_email_passes_filters(
                 $user->email_address,
-                { account => $ws->account },
+                { account => $ws->account, workspace => $ws },
             );
         }
 
@@ -2104,6 +2113,11 @@ sub add_users_from {
             next;
         }
 
+        if ( ! $target_ws->email_passes_invitation_filter($user->email_address) ) {
+            push @rejected, $user->username;
+            next;
+        }
+
         $target_ws->add_user( user => $user );
         push @added, $user->username();
     }
@@ -2303,7 +2317,7 @@ sub invite_user {
 
     $self->_ensure_email_passes_filters(
         $opts{email},
-        { account => $workspace->account },
+        { account => $workspace->account, workspace => $workspace },
     );
 
     $self->_error('You must specify an inviter email address')
