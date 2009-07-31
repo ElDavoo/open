@@ -101,10 +101,16 @@ sub import_workspace {
         $self->_populate_db_metadata();
 
         for my $u (@users) {
-            $self->{workspace}->add_user(
-                user => $u->[0],
-                role => Socialtext::Role->new( name => $u->[1] ),
-            );
+            my ($username, $rolename, $indirect) = @{$u};
+            unless ($indirect) {
+                # If a User has an "indirect" Role, they have access to the
+                # Workspace from some other means (e.g. a Group Role), so
+                # don't add a Role for them here.
+                $self->{workspace}->add_user(
+                    user => $username,
+                    role => Socialtext::Role->new( name => $rolename ),
+                );
+            }
         }
 
         unless ($self->{noindex}) {
@@ -386,11 +392,12 @@ sub _import_users {
     for my $info (@$users) {
         delete $info->{primary_account_id};
         my $plugin_prefs = delete($info->{plugin_prefs}) || {};
+        my $indirect     = delete($info->{indirect})     || 0;
 
         my $user = Socialtext::User->new( username => $info->{username} )
                 || Socialtext::User->new( email_address => $info->{email_address} )
                 || Socialtext::User->Create_user_from_hash( $info );
-        push @users, [ $user, $info->{role_name} ];
+        push @users, [ $user, $info->{role_name}, $indirect ];
 
         if (keys %$plugin_prefs) {
             my $adapter = Socialtext::Pluggable::Adapter->new;
