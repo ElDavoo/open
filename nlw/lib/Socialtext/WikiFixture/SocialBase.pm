@@ -11,6 +11,7 @@ use Socialtext::System qw();
 use Socialtext::HTTP::Ports;
 use Socialtext::Role;
 use File::LogReader;
+use File::Path qw(rmtree);
 use Test::More;
 use Test::HTTP;
 use Time::HiRes qw/gettimeofday tv_interval time/;
@@ -1264,6 +1265,50 @@ sub st_account_type_is {
     my $acct = Socialtext::Account->new( name => $name );
     die "Couldn't find account $name" unless $acct;
     is $acct->account_type, $type, "Account type matches";
+}
+
+my @exports;
+END { rmtree(@exports) };
+
+sub st_export_account {
+    my $self = shift;
+    my $account = shift;
+    my $dir = "/tmp/$account.export";
+    push @exports, $dir;
+    Socialtext::System::shell_run(
+        'st-admin', 'export-account', '--account', $account, '--dir', $dir,
+    );
+}
+
+sub _st_account_export_field {
+    my $self = shift;
+    my $account = shift;
+    my $field = shift;
+    my $yaml = YAML::LoadFile("/tmp/$account.export/account.yaml");
+    for my $part (split /\./, $field) {
+        $yaml = $part =~ /^\d+$/ ? $yaml->[$part] : $yaml->{$part};
+    }
+    return $yaml;
+}
+
+sub st_account_export_field_is {
+    my $self = shift;
+    my $account = shift;
+    my $field = shift;
+    my $expected = shift;
+    is $self->_st_account_export_field($account, $field),
+        $expected,
+        "$account $field";
+}
+
+sub st_account_export_field_like {
+    my $self = shift;
+    my $account = shift;
+    my $field = shift;
+    my $expected = shift;
+    like $self->_st_account_export_field($account, $field),
+        $expected,
+        "$account $field";
 }
 
 sub _run_command {

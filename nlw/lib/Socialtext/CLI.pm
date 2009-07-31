@@ -340,7 +340,7 @@ sub get_default_account {
 sub export_account {
     my $self = shift;
     my $account = $self->_require_account;
-    my %opts     = $self->_get_options('force');
+    my %opts     = $self->_get_options('force', 'dir:s');
 
     my ( $hub, $main ) = $self->_make_hub(
         Socialtext::NoWorkspace->new(),
@@ -348,7 +348,7 @@ sub export_account {
     );
 
     (my $short_name = lc($account->name)) =~ s#\W#_#g;
-    my $dir = $self->_export_dir_base
+    my $dir = $opts{dir} || $self->_export_dir_base
         . "/$short_name.id-"
         . $account->account_id
         . ".export";
