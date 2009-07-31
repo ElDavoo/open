@@ -1505,19 +1505,29 @@ sub _dump_users_to_yaml_file {
         my $role = $elem->[1];
         last unless defined $user;
 
-        my $adapter = Socialtext::Pluggable::Adapter->new;
-        $adapter->make_hub($user);
-        my $plugin_prefs = {};
-        $adapter->hook('nlw.export_user_prefs', $plugin_prefs);
+        my $dumped_user = $self->_dump_user_to_hash( $user );
+        $dumped_user->{role_name} = $role->name;
 
-        my $dump = $user->to_hash;
-        delete $dump->{user_id};
-        $dump->{role_name} = $role->name;
-        $dump->{plugin_prefs} = $plugin_prefs if keys %$plugin_prefs;
-        push @dump, $dump;
+        push @dump, $dumped_user;
     }
 
     _dump_yaml( $file, \@dump );
+}
+
+sub _dump_user_to_hash {
+    my $self = shift;
+    my $user = shift;
+
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub($user);
+    my $plugin_prefs = {};
+    $adapter->hook('nlw.export_user_prefs', $plugin_prefs);
+
+    my $dump = $user->to_hash;
+    delete $dump->{user_id};
+    $dump->{plugin_prefs} = $plugin_prefs if keys %$plugin_prefs;
+
+    return $dump;
 }
 
 sub _dump_permissions_to_yaml_file {
