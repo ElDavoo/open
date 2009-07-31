@@ -4,7 +4,7 @@
 | wait_for_element_visible_ok | link=Profile | 60000 |
 | click_and_wait | link=Profile |  |
 | st-name-widget | 1 | profile |
-| st-select-widget-frame | profile |
+| st-select-widget-frame | profile |  |
 | wait_for_element_visible_ok | link=(Edit) | 60000 |
 | select-frame | relative=parent |  |
 
@@ -16,7 +16,7 @@
 | type_ok | comment | this is a comment, which is a contribution |
 | click_ok | link=Save |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
-| open_ok | /%%am_ws_1%%/%%createme_page1%% |  |
+| open_ok | /%%am_ws_1%%/index.cgi?%%createme_page1%% |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
@@ -40,26 +40,4 @@
 
 | *Comment* | The first signal fails if you don't wait a while. | I hate pause |
 | pause | 10000 |  |
-
-| *Comment* | Test Case: Active Members - Once Upon A Time |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | Once Upon A Time %%start_time%% %%mark%% |
 | select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| *Comment* | Test Case: Active Members - Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-| click_ok | post |  |
-| *Comment* | Test Case: Active Members - Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-
-| *Comment* | Test Case:Active Members - I Remember Long Ago |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | I Remember Long Ago %%start_time%% %%mark%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| *Comment* | Test Case: Active Members - Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-| select-frame | relative=parent |

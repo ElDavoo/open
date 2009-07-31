@@ -25,22 +25,22 @@
 | st-empty-container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | gallery-widget-Active Content | 30000 |
-| click_and_wait | gallery-widget-Active Content |  |
+| wait_for_element_visible_ok | gallery-widget-Active Members | 30000 |
+| click_and_wait | gallery-widget-Active Members |  |
 
 | *Comment* | Test Case: Active Members Widget is the widget there? |  |
 | wait_for_element_visible_ok | //a[@class='close'] | 30000 |
-| st-name-widget | 1 | active_content |
-| st-widget-title-like | active_content | Active Content |
-| st-widget-settings | active_content |  |
-| wait_for_element_visible_ok | up_workspace | 30000 |
+| st-name-widget | 1 | active_members |
+| st-widget-title-like | active_members | Active Members |
+| st-widget-settings | active_members |  |
+| wait_for_element_visible_ok | up_account | 30000 |
 | click_ok | up_rotate |  |
-| select_ok | up_workspace | %%acw%% |
-| click_ok | st-savebutton-%%active_content%% |  |
-| wait_for_element_not_visible_ok | up_workspace | 30000 |
+| select_ok | up_account | %%am_acct_one%% |
+| click_ok | st-savebutton-%%active_members%% |  |
+| wait_for_element_not_visible_ok | active_members | 30000 |
 
 | *Comment* | Test Case: Active Members Widget Check the content of Viewed |  |
-| st-select-widget-frame | active_content |  |
+| st-select-widget-frame | active_members |  |
 | wait_for_element_visible_ok | link=Readers | 30000 |
 | text_like | //body | Viewed |
 | wait_for_element_visible_ok | link=Edits | 30000 |
@@ -69,8 +69,8 @@
 
 | *Comment* | Test Case: Active Members Widget Different Accounts Details don't show up |  |
 | open_ok | /?dashboard |  |
-| st-name-widget | 1 | active_content |
-| st-select-widget-frame | active_content |  |
+| st-name-widget | 1 | active_members |
+| st-select-widget-frame | active_members |  |
 | wait_for_element_visible_ok | link=Edited | 30000 |
 | text_like | //body | Viewed |
 | text_unlike | //body | test page 1 |
@@ -79,13 +79,13 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Active Members Widget Test Account Combo Box |  |
-| st-widget-settings | active_content |  |
-| wait_for_element_visible_ok | up_workspace | 30000 |
-| select_ok | up_workspace | %%acwnoresults%% |
+| st-widget-settings | active_members |  |
+| wait_for_element_visible_ok | up_account | 30000 |
+| select_ok | up_account | %%am_acct_two%% |
 | select_ok | up_view | Viewed Pages |
-| click_ok | st-savebutton-%%active_content%% |  |
-| wait_for_element_not_visible_ok | up_workspace | 30000 |
-| st-select-widget-frame | active_content |  |
+| click_ok | st-savebutton-%%active_members%% |  |
+| wait_for_element_not_visible_ok | up_account | 30000 |
+| st-select-widget-frame | active_members |  |
 | wait_for_element_visible_ok | link=Edited | 30000 |
 | text_like | //body | Viewed |
 | text_unlike | //body | Active Content Edit %%start_time%% |
@@ -100,5 +100,6 @@
 | *Comment* | Test case: Active Members Widget TEARDOWN |  |
 | select-frame | relative=parent |  |
 | st-empty-container |  |  |
-| st-admin | delete-workspace --w %%acw%% --no-export |  |
+| st-admin | delete-workspace --w %%am_ws_1%% --no-export |  |
+| st-admin | delete-workspace --w %%am_ws_2%% --no-export |  |
 | *Comment* | Test case: Active Content Widget COMPLETED |  |
