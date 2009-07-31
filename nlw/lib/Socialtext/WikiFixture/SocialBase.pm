@@ -308,6 +308,60 @@ sub delete_user {
         time() . '@devnull.socialtext.net', $email);
 }
 
+sub create_group {
+    my $self = shift;
+    my $name = shift;
+
+    my $account = Socialtext::Account->Default;
+    my $group = Socialtext::Group->Create({
+        driver_group_name => $name,
+        primary_account_id => Socialtext::Account->Default->account_id,
+        created_by_user_id => Socialtext::User->SystemUser->user_id,
+    });
+    diag "Created group $name (".$group->driver_unique_id.")" if $group;
+}
+
+sub add_group_to_workspace {
+    my $self = shift;
+    my $group_name = shift;
+    my $ws_name = shift;
+    my $role_name = shift;
+
+    my $ws = Socialtext::Workspace->new(name => $ws_name);
+
+    my $account = Socialtext::Account->Default;
+    my $group = Socialtext::Group->GetGroup(
+        driver_group_name => $group_name,
+        primary_account_id => Socialtext::Account->Default->account_id,
+        created_by_user_id => Socialtext::User->SystemUser->user_id,
+    );
+
+    if ($role_name) {
+        my $role = Socialtext::Role->new(name => $role_name);
+        $ws->add_group( group => $group, role => $role );
+        diag "Added group $group_name to $ws_name with role $role_name";
+    }
+    else {
+        $ws->add_group( group => $group );
+        diag "Added group $group_name to $ws_name";
+    }
+}
+
+sub add_user_to_group {
+    my $self = shift;
+    my $user_name = shift;
+    my $group_name = shift;
+
+    my $group = Socialtext::Group->GetGroup(
+        driver_group_name => $group_name,
+        primary_account_id => Socialtext::Account->Default->account_id,
+        created_by_user_id => Socialtext::User->SystemUser->user_id,
+    );
+    my $user = Socialtext::User->Resolve($user_name);
+    $group->add_user(user => $user);
+    diag "Added user $user_name to group $group_name";
+}
+
 sub create_workspace {
     my $self = shift;
     my $name = shift;
@@ -367,14 +421,22 @@ sub add_member {
     my $self = shift;
     my $email = shift;
     my $workspace = shift;
+    my $role_name = shift;
 
     my $ws = Socialtext::Workspace->new(name => $workspace);
     die "No such workspace $workspace" unless $ws;
     my $user = Socialtext::User->Resolve($email);
     die "No such user $email" unless $user;
 
-    $ws->add_user( user => $user );
-    diag "Added user $email to $workspace";
+    if ($role_name) {
+        my $role = Socialtext::Role->new(name => $role_name);
+        $ws->add_user( user => $user, role => $role );
+        diag "Added user $email to $workspace with role $role_name";
+    }
+    else {
+        $ws->add_user( user => $user );
+        diag "Added user $email to $workspace";
+    }
 }
 
 sub remove_member {
@@ -387,7 +449,7 @@ sub remove_member {
     my $user = Socialtext::User->Resolve($email);
     die "No such user $email" unless $user;
 
-    $ws->remove_user( user => $user );
+    $ws->remove_user(user => $user);
     diag "Added user $email to $workspace";
 }
 
@@ -412,6 +474,7 @@ sub set_business_admin {
     my $self = shift;
     my $email = shift;
     my $value = shift;
+    $value = 1 unless defined $value;
 
     my $user = Socialtext::User->Resolve($email);
     die "No such user $email" unless $user;
