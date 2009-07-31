@@ -13,13 +13,13 @@
 | st-admin | add-member --email %%username%% --workspace %%am_ws_1%% |
 | st-admin | add-member --email %%username%% --workspace %%am_ws_2%% |
 
-| st-admin | create-user --email %%members_email_1%% --password %%members_user_2%% --account %%am_acct_one%% |  |
+| st-admin | create-user --email %%members_email_1%% --password %%password%% --account %%am_acct_one%% |  |
 | st-admin | add-member --email %%members_email_1%% --workspace %%am_ws_1%% |  |
 | st-admin | add-member --email %%members_email_1%% --workspace %%am_ws_2%% |  |
-| st-admin | create-user --email %%members_email_2%% --password %%members_user_2%% --account %%am_acct_one%% |  |
+| st-admin | create-user --email %%members_email_2%% --password %%password%% --account %%am_acct_one%% |  |
 | st-admin | add-member --email %%members_email_2%% --workspace %%am_ws_1%% |  |
 | st-admin | add-member --email %%members_email_2%% --workspace %%am_ws_2%% |  |
-| st-admin | create-user --email %%members_email_3%% --password %%members_user_3%% --account %%am_acct_one%% |  |
+| st-admin | create-user --email %%members_email_3%% --password %%password%% --account %%am_acct_one%% |  |
 | st-admin | add-member --email %%members_email_3%% --workspace %%am_ws_1%% |  |
 | st-admin | add-member --email %%members_email_3%% --workspace %%am_ws_2%% |  |
 | st-admin | create-user --email %%view_edit_email%% --password %%password%% --account %%am_acct_one%% |  |
@@ -58,11 +58,11 @@
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 
 | *Comment* | Test Case: Active Members - Other users view profiles, view/edit pages, and send signals |  |
-| st-logoutin | %%username%% | %%password%% |
+| st-logoutin | %%members_email_1%% | %%password%% |
 | include | [Test Case: Active Member Actions] |  |
-| st-logoutin | %%username%% | %%password%% |
+| st-logoutin | %%members_email_2%% | %%password%% |
 | include | [Test Case: Active Member Actions] |  |
-| st-logoutin | %%username%% | %%password%% |
+| st-logoutin | %%members_email_3%% | %%password%% |
 | include | [Test Case: Active Member Actions] |  |
 | include | [Test Case: Active Member Actions] |  |
 | st-catchup-logs |  |  |
