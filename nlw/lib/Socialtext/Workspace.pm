@@ -1111,6 +1111,13 @@ sub permissions {
     return $self->{_perms};
 }
 
+sub email_passes_invitation_filter {
+    my $self   = shift;
+    my $email  = shift;
+    my $filter = $self->invitation_filter or return 1;
+    return($email and $email =~ qr/$filter/);
+}
+
 {
     Readonly my $spec => {
        user => USER_TYPE,

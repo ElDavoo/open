@@ -683,10 +683,7 @@ sub add_to_all_users_workspace {
     return if $ws->has_user($user);
 
     # Now according to {bz: 2896} we still need to check invitation_filter here.
-    my $ws_filter = $ws->invitation_filter();
-    if ($ws_filter) {
-        return unless $user->email_address =~ qr/$ws_filter/;
-    }
+    return unless $ws->email_passes_invitation_filter($user->email_address);
 
     $ws->assign_role_to_user(
         user => $user,
