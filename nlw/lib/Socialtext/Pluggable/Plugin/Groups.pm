@@ -6,19 +6,22 @@ use base 'Socialtext::Pluggable::Plugin';
 use Socialtext::Group;
 use Socialtext::l10n qw/loc/;
 use Socialtext::Role;
+use Socialtext::SQL qw(sql_execute);
 use Socialtext::User;
 use Socialtext::UserGroupRoleFactory;
 
 sub register {
     my $class = shift;
+
+    # Account import/export
+    $class->add_hook('nlw.export_account' => 'export_groups_for_account');
+    $class->add_hook('nlw.import_account' => 'import_groups_for_account');
+
+    # Workspace import/export
     $class->add_hook(
-        'nlw.export_account' => 'export_groups_for_account');
-    $class->add_hook(
-        'nlw.import_account' => 'import_groups_for_account');
-    $class->add_hook(
-        'nlw.export_workspace' => 'export_groups_for_workspace');
-    $class->add_hook(
-        'nlw.import_workspace' => 'import_groups_for_workspace');
+        'nlw.export_workspace_users' => 'export_group_users_for_workspace');
+    $class->add_hook('nlw.export_workspace' => 'export_groups_for_workspace');
+    $class->add_hook('nlw.import_workspace' => 'import_groups_for_workspace');
 }
 
 sub export_groups_for_account {
@@ -60,6 +63,42 @@ sub import_groups_for_account {
         # Add all of the Users from the export into the Group
         $self->_set_ugrs_on_import( $group, $group_info->{users} );
     }
+}
+
+# Export Users that *ONLY* have transitive (indirect) Roles in the WS (as
+# those Users are explicitly ignored in the core Workspace export).
+sub export_group_users_for_workspace {
+    my $self     = shift;
+    my $ws       = shift;
+    my $data_ref = shift;
+    my $ws_id    = $ws->workspace_id();
+    my $role     = 'member';    # lowest Role you can actually assign to User
+
+    # Find all of the Users that *ONLY* have indirect Roles in the WS
+    my $sql = qq{
+        SELECT u.user_id
+          FROM all_user_workspace u
+         WHERE u.workspace_id = ?
+           AND u.user_id NOT IN
+               (    SELECT uwr.user_id
+                      FROM "UserWorkspaceRole" uwr
+                     WHERE uwr.workspace_id = ?
+               );
+    };
+    my $sth = sql_execute($sql, $ws_id, $ws_id);
+
+    # Dump the data for each of these "indirect only" Users, and add that to
+    # the User data that's being exported.
+    while (my $row = $sth->fetchrow_arrayref()) {
+        my $user = Socialtext::User->new(user_id => $row->[0]);
+        my $dump = $ws->_dump_user_to_hash($user);
+        $dump->{role_name} = $role;
+        $dump->{indirect}  = 1;
+        push @{$data_ref}, $dump;
+    }
+
+    # Return the data structure (for *test* purposes)
+    return $data_ref;
 }
 
 sub export_groups_for_workspace {
@@ -214,6 +253,13 @@ If the Group I<already exists> within the Account, any Users/Roles that are
 present in the export but that are I<not> present in the Group are added
 automatically to the Group; missing Users get added to the Group, but existing
 Users and their Roles are untouched.
+
+=item B<$plugin-E<gt>export_group_users_for_workspace($ws, $data_ref)>
+
+Exports information on all of the Users that have access to the provided
+C<$ws> but that were I<not> exported automatically by the Workspace itself (as
+the Users have B<indirect> Roles in the Workspace) (e.g. a Role in the
+Workspace via a Group membership).
 
 =item B<$plugin-E<gt>export_groups_for_workspace($ws, $data_ref)>
 

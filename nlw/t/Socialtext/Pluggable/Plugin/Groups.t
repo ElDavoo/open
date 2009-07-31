@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 48;
+use Test::Socialtext tests => 57;
 use Test::Exception;
 use Test::Socialtext::Account;
 use Test::Socialtext::User;
@@ -108,6 +108,25 @@ backup: {
         }
     ];
     is_deeply $data_ref->{groups}, $expected, 'correct WS export data structure';
+
+    direct_workspace_roles_exported: {
+        my $dir = tempdir(CLEANUP => 1);
+        $ws->_dump_users_to_yaml_file($dir, 'exported');
+        my $dumped = LoadFile("$dir/exported-users.yaml");
+
+        is scalar(@$dumped), 3, 'got two dumped users';
+
+        is $dumped->[0]{username}, $user_one->username, 'correct username';
+        is $dumped->[0]{role_name}, $ugr_role->name, 'correct role';
+
+        is $dumped->[1]{username}, $user_three->username, 'correct username';
+        is $dumped->[1]{role_name}, $ugr_role->name, 'correct direct role';
+        ok !exists($dumped->[1]{indirect}), 'role is via some group somewhere';
+
+        is $dumped->[2]{username}, $user_two->username, 'correct username';
+        is $dumped->[2]{role_name}, 'member', 'correct role via group';
+        is $dumped->[2]{indirect}, 1, 'role is via some group somewhere';
+    }
 }
 
 ################################################################################
@@ -313,6 +332,7 @@ restore_with_existing_group: {
 ###############################################################################
 # TEST: basic restore of Workspace
 restore_workspace: {
+    my $test_user = create_test_user();
     my $data_ref = {
         groups => [ {
             driver_group_name   => 'Test Group Name',
@@ -320,12 +340,15 @@ restore_workspace: {
             role_name           => 'guest',             # not the default Role
             users => [
                 {
-                    username    => Test::Socialtext::User->test_username,
+                    username    => $test_user->username,
                     role_name   => 'impersonator',
                 },
             ],
         } ],
     };
+
+    # NOTE: Its *ok* to leave our $test_user in the system; on restore we
+    # rely on ST::WS::Importer to create the User record for us.
 
     # Import the Workspace
     my $plugin = Socialtext::Pluggable::Plugin::Groups->new();
@@ -353,7 +376,7 @@ restore_workspace: {
     is $users->count, 1, '... contains a User';
 
     my $user = $users->next;
-    is $user->username, Test::Socialtext::User->test_username,
+    is $user->username, $test_user->username,
         '... ... correct User';
 
     my $uwr = $group->role_for_user($user);
@@ -363,7 +386,8 @@ restore_workspace: {
 ###############################################################################
 # TEST: restore of Workspace, when Group already exists in the Account
 restore_workspace_with_existing_group: {
-    my $account    = create_test_account();
+    my $account    = create_test_account_bypassing_factory();
+    my $test_user  = create_test_user();
     my $group_name = 'Another Test Group';
     my $data_ref = {
         groups => [ {
@@ -372,12 +396,15 @@ restore_workspace_with_existing_group: {
             role_name           => 'guest',             # not the default Role
             users => [
                 {
-                    username    => Test::Socialtext::User->test_username,
+                    username    => $test_user->username,
                     role_name   => 'impersonator',
                 },
             ],
         } ],
     };
+
+    # NOTE: Its *ok* to leave our $test_user in the system; on restore we
+    # rely on ST::WS::Importer to create the User record for us.
 
     # Create the Group in the Account, so it already exists
     {
@@ -413,7 +440,7 @@ restore_workspace_with_existing_group: {
     is $users->count, 1, '... now contains a User';
 
     my $user = $users->next;
-    is $user->username, Test::Socialtext::User->test_username,
+    is $user->username, $test_user->username,
         '... ... correct User';
 
     my $uwr = $group->role_for_user($user);
