@@ -2892,7 +2892,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   ACCOUNTS
 
-  create-account --name
+  create-account --name [--type]
   list-accounts [--ids]
   show-members --account
   give-accounts-admin [--username or --email]
