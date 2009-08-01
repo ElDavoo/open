@@ -10,11 +10,9 @@
 
 | *Comment* | Test case: Business Control Panel should no longer be necessary to set-locale |  |
 
-| *Comment* | Set Up Restricted Account And Workspace |  |
+| *Comment* | Set Up Restricted Account |  |
 | set | restrict_acct | restrictedacc%%start_time%% |
-| set | restrict_ws | restrictedws%%start_time%% |
 | st-admin | create-account --name %%restrict_acct%% |  |
-| st-admin | create-workspace --name %%restrict_ws%% --title %%restrict_ws%% |  |
 | open_ok | /nlw/control/account |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%restrict_acct%% |
@@ -25,10 +23,12 @@
 | wait_for_element_visible_ok | st-account-restrict-to-domain |  |
 | type_ok | st-account-restrict-to-domain | floodyflooy |
 | click_and_wait | st-account-restrict-submit |  |
+| pause | 1000 | All the elements before are still visible. No wait_for_text_like. Ugh |
 | wait_for_element_visible_ok | st-account-restrict-to-domain |  |
 | text_like | //body | Domain (floodyflooy) is not valid. |
 | type_ok | st-account-restrict-to-domain | floodyflooy.notadomain |
 | click_and_wait | st-account-restrict-submit |  |
+| pause | 1000 | All the elements before are still visible. No wait_for_text_like. Ugh |
 | wait_for_element_visible_ok | st-account-restrict-to-domain | 30000 |
 | text_like | //body | Domain (floodyflooy.notadomain) is not valid. |
 | type_ok | st-account-restrict-to-domain | xndev.com |
@@ -41,6 +41,10 @@
 | open_ok | /nlw/control/account |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | text_like | Accounts |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | Socialtext |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| click_ok | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=Socialtext | 30000 |
 | clickAndWait | link=Socialtext |  |
 | text_like | Socialtext account |  |
@@ -120,8 +124,10 @@
 | st-submit |  |  |
 | click_and_wait | link=%%new_workspace%% |  |
 | text_like | %%new_workspace%% |  |
-| select_ok | account_id | label=Socialtext |
-| st-submit |  |  |
+| wait_for_element_visible_ok | st-assign-to-account | 30000 |
+| type_ok | st-assign-to-account | Socialtext |
+| wait_for_element_visible_ok | st-assign-to-account-submit | 30000 |
+| click_and_wait | st-assign-to-account-submit |  |
 | text_like | The %%new_workspace%% workspace is now part of the Socialtext account. |  |
 | click_and_wait | link=%%new_workspace%% |  |
 | text_like | Account: Socialtext |  |
@@ -234,7 +240,11 @@
 
 | *Comment* | Test case: Business Control Panel sorting Accounts display |  |
 | open_ok | /nlw/control/account |  |
-
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | account %%start_time%% |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| click_ok | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=0 sort 3 account %%start_time%% | 30000 |
 | clickAndWait | link=Name |  |
 | text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
 | clickAndWait | link=Name |  |
@@ -467,7 +477,10 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 
 | st-admin | enable-plugin --p dashboard --acc Socialtext |  |
 | st-admin | enable-plugin --p people --acc Socialtext |  |
-
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | Socialtext |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| click_ok | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=Socialtext | 60000 |
 | clickAndWait | link=Socialtext |  |
 | wait_for_element_visible_ok | link=Profile Fields | 30000 |

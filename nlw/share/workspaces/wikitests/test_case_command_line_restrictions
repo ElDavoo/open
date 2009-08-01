@@ -11,6 +11,7 @@
 | *Comment* | Test Case: Command Line Tests RESTRICTIONS can't create bad domain in restricted account |  |
 | st-admin | create-account --name %%acc_name%% |  |
 | st-admin | set-account-config --account %%acc_name%% restrict_to_domain %%domain%% |
+| st-admin | show-account-config --account %%acc_name%% | %%domain%% |
 | st-admin | create-user --email %%emailok%% --password %%password%% --account %%acc_name%% | A new user with the username "%%emailok%%" was created. |
 | st-admin | create-user --email %%emailbad%% --password %%password%% --account %%acc_name%% | The email address, %%emailbad%%, is not in the domain %%domain%% |
 
