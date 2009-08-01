@@ -19,6 +19,7 @@
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
 | click_ok | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%restrict_acct%% | 30000 |
+| pause | 1000 |  |
 | click_ok | link=%%restrict_acct%% |
 | wait_for_element_visible_ok | st-account-restrict-to-domain |  |
 | type_ok | st-account-restrict-to-domain | floodyflooy |
@@ -46,6 +47,7 @@
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
 | click_ok | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=Socialtext | 30000 |
+| pause | 2000 |  |
 | clickAndWait | link=Socialtext |  |
 | text_like | Socialtext account |  |
 
@@ -124,8 +126,8 @@
 | st-submit |  |  |
 | click_and_wait | link=%%new_workspace%% |  |
 | text_like | %%new_workspace%% |  |
-| wait_for_element_visible_ok | st-assign-to-account | 30000 |
-| type_ok | st-assign-to-account | Socialtext |
+| wait_for_element_visible_ok | account_id | 30000 |
+| select_ok | account_id | Socialtext |
 | wait_for_element_visible_ok | st-assign-to-account-submit | 30000 |
 | click_and_wait | st-assign-to-account-submit |  |
 | text_like | The %%new_workspace%% workspace is now part of the Socialtext account. |  |
@@ -482,6 +484,7 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
 | click_ok | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=Socialtext | 60000 |
+| pause | 1000 | why do I need this? |
 | clickAndWait | link=Socialtext |  |
 | wait_for_element_visible_ok | link=Profile Fields | 30000 |
 | click_and_wait | link=Profile Fields |  |
