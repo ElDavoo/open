@@ -624,6 +624,7 @@
 | click_and_wait | login_btn |  |
 | text_like | errors-and-messages | You are not authorized to view this workspace. |
 
-| *Comment* | Test Case: Preferences UI User No Teardown |  |
+| *Comment* | Test Case: Preferences UI Use Teardown |  |
+| st-admin | delete-workspace --no-export --w %%new_ws%% | has been deleted |
 
 | *Comment* | Test Case: Preferences UI User COMPLETED |

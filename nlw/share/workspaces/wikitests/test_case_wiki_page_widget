@@ -26,6 +26,10 @@
 | *Comment* | Test Case: Wiki Page Widget. Load the widget |  |
 | st-name-widget | 1 | wikipage |
 | st-widget-title-like | wikipage | Wiki Page |
+
+| wait_for_element_visible_ok | up_workspace_name | 30000 |
+| wait_for_element_visible_ok | //input[contains(@name,'up_page_title')] | 30000 |
+| select_ok | up_workspace_name | label=%%title%% |
 | type_ok | //input[contains(@name,'up_page_title')] | Wiki Page %%start_time%% |
 | wait_for_element_visible_ok | st-savebutton-%%wikipage%% | 30000 |
 | click_ok | st-savebutton-%%wikipage%% |  |

@@ -114,4 +114,6 @@
 | select-frame | relative=parent |  |
 | st-empty-container |  |  |
 | st-admin | delete-workspace --w %%acw%% --no-export |  |
+| st-admin | delete-workspace --w %%acwnoresults%% --no-export |  |
+
 | *Comment* | Test case: Active Content Widget COMPLETED |  |
