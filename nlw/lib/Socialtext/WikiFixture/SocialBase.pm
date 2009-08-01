@@ -1331,7 +1331,7 @@ sub st_account_type_is {
 }
 
 my @exports;
-END { rmtree(@exports) };
+END { rmtree(\@exports) if @exports };
 
 sub st_export_account {
     my $self = shift;
