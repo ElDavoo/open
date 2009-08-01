@@ -5,6 +5,43 @@
 | set | acct_user | ipn-%%start_time%%@ken.socialtext.net |
 | set | eacct_user | ipn-%%start_time%%\@ken.socialtext.net |
 
+| *Comment* | Test Case: Invite people. Restrict domain. |  |
+| set | rest_acct | restrictedacct%%start_time%% |
+| set | domain | xndev.com |
+| set | emailok | matt%%start_time%%@%%domain%% |
+| set | emailok2 | ken%%start_time%%@%%domain%% |
+| set | emailbad | matt%%start_time%%@foofoo.com |
+| set | eemailok2 | ken%%start_time%%\@%%domain%% |
+| set | eemailbad | matt%%start_time%%\@foofoo.com |
+
+| st-admin | create-account --name %%rest_acct%% |  |
+| st-admin | set-account-config --account %%rest_acct%% restrict_to_domain %%domain%% |  |
+| st-admin | create-user --email %%emailok%% --password %%password%% --account %%rest_acct%% |  |
+| st-config | set allow_network_invitation 1 |
+| st-admin | enable-plugin --account %%rest_acct%% --plugin people |  |
+| st-admin | enable-plugin --account %%rest_acct%% --plugin dashboard |  |
+| st-logoutin | %%emailok%% | %%password%% |
+| open_ok | / |  |
+| wait_for_element_visible_ok | link=Invite! | 30000 |
+| click_ok | link=Invite! |  |
+| wait_for_element_present_ok | link=Cancel | 30000 |
+| wait_for_element_present_ok | link=Contact Support | 30000 |
+| text_like | You can only invite people who share the %%domain%% email domain with you. |  |
+| wait_for_element_present_ok | users_new_ids | 30000 |
+| type_ok | users_new_ids | %%emailok2%% |
+| click_ok | link=Invite |  |
+| wait_for_element_visible_ok | Link=Invite more people | 30000 |
+| text_like | qr/The following users were successfully invited into this Network:\s+%%eemailok2%%/ |  |
+| click_ok | Link=Invite more people |
+| pause | 20000 |  |
+| wait_for_element_present_ok | link=Cancel | 30000 |
+| wait_for_element_present_ok | users_new_ids | 30000 |
+| type_ok | users_new_ids | %%emailbad%% |
+| click_ok | link=Invite |
+| wait_for_element_visible_ok | Link=Invite more people | 30000 |
+| text_like | qr/Sorry, the following email addresss are not in the domain xndev.com\s+%%eemailbad%%/ |  |
+| st-logoutin | %%username%% | %%password%% |
+
 | *Comment* | Test Case: Invite people. Define a brand new user to invite. Make the email address of that user a wiki |  |
 | set | to_ws | ipn-ws-%%start_time%% |
 | set | to_ws_user | %%to_ws%%@%%wikiemail%% |
