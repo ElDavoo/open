@@ -38,6 +38,16 @@
 | wait_for_text_present_ok | Download Socialtext | 60000 |
 | wait_for_text_present_ok | Try out the | 60000 |
 
+| *Comment* | Test Case: Active Members - Once Upon A Time |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | Once Upon A Time %%start_time%% %%mark%% |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | post | 10000 |
+| *Comment* | Test Case: Signals Page. Signals must be spaced by at least two seconds |  |
+| pause | 3000 |  |
+| click_ok | post |  |
+
 | *Comment* | The first signal fails if you don't wait a while. | I hate pause |
 | pause | 10000 |  |
 | select-frame | relative=parent |  |

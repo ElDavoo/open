@@ -93,6 +93,7 @@ Put tests that don't use the browser here
 * [Test Case: Command Line: WORKSPACES]
 * [Test Case: Command Line: INDEXING]
 * [Test Case: Command Line: ACCOUNTS]
+* [Test Case: Command Line: RESTRICTIONS]
 * [Test Case: Command Line: EMAIL]
 * [Test Case: Command Line: OTHER]
 * [Test Case: Command Line: INVITE NEW USER]
