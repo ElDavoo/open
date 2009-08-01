@@ -10,6 +10,33 @@
 
 | *Comment* | Test case: Business Control Panel should no longer be necessary to set-locale |  |
 
+| *Comment* | Set Up Restricted Account And Workspace |  |
+| set | restrict_acct | restrictedacc%%start_time%% |
+| set | restrict_ws | restrictedws%%start_time%% |
+| st-admin | create-account --name %%restrict_acct%% |  |
+| st-admin | create-workspace --name %%restrict_ws%% --title %%restrict_ws%% |  |
+| open_ok | /nlw/control/account |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%restrict_acct%% |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| click_ok | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=%%restrict_acct%% | 30000 |
+| click_ok | link=%%restrict_acct%% |
+| wait_for_element_visible_ok | st-account-restrict-to-domain |  |
+| type_ok | st-account-restrict-to-domain | floodyflooy |
+| click_and_wait | st-account-restrict-submit |  |
+| wait_for_element_visible_ok | st-account-restrict-to-domain |  |
+| text_like | //body | Domain (floodyflooy) is not valid. |
+| type_ok | st-account-restrict-to-domain | floodyflooy.notadomain |
+| click_and_wait | st-account-restrict-submit |  |
+| wait_for_element_visible_ok | st-account-restrict-to-domain | 30000 |
+| text_like | //body | Domain (floodyflooy.notadomain) is not valid. |
+| type_ok | st-account-restrict-to-domain | xndev.com |
+| click_and_wait | st-account-restrict-submit |  |
+| wait_for_element_visible_ok | st-account-restrict-to-domain | 30000 |
+| text_like | //body | Account updated. |
+| st-admin | show-account-config --account %%restrict_acct%% | xndev.com |
+
 | *Comment* | Test case: Business Control Panel Socialtext Account exists |  |
 | open_ok | /nlw/control/account |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
@@ -22,7 +49,7 @@
 | clickAndWait | link=Accounts |  |
 | wait_for_element_visible_ok | st-new-account-name | 30000 |
 | type_ok | st-new-account-name | %%new_acct%% |
-| click_and_wait | st-submit-new-account-name |  |
+| click_and_wait | st-submit-new-account-submit |  |
 | text_like | The %%new_acct%% account has been created. |  |
 | st-admin | disable-plugin --p dashboard --acc "%%new_acct%%" |  |
 | st-admin | disable-plugin --p people --acc "%%new_acct%%" |  |
