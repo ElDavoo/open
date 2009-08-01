@@ -17,42 +17,34 @@
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%restrict_acct%% |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
-| click_ok | st-submit-search-by-name |  |
+| click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%restrict_acct%% | 30000 |
-| pause | 1000 |  |
-| click_ok | link=%%restrict_acct%% |
+| click_and_wait | link=%%restrict_acct%% |
 | wait_for_element_visible_ok | st-account-restrict-to-domain |  |
 | type_ok | st-account-restrict-to-domain | floodyflooy |
 | click_and_wait | st-account-restrict-submit |  |
-| pause | 1000 | All the elements before are still visible. No wait_for_text_like. Ugh |
-| wait_for_element_visible_ok | st-account-restrict-to-domain |  |
-| text_like | //body | Domain (floodyflooy) is not valid. |
+| wait_for_text_present_ok |  Domain (floodyflooy) is not valid. | 30000 |
 | type_ok | st-account-restrict-to-domain | floodyflooy.notadomain |
 | click_and_wait | st-account-restrict-submit |  |
-| pause | 1000 | All the elements before are still visible. No wait_for_text_like. Ugh |
-| wait_for_element_visible_ok | st-account-restrict-to-domain | 30000 |
-| text_like | //body | Domain (floodyflooy.notadomain) is not valid. |
+| wait_for_text_present_ok | Domain (floodyflooy.notadomain) is not valid. | 30000 |
 | type_ok | st-account-restrict-to-domain | xndev.com |
 | click_and_wait | st-account-restrict-submit |  |
-| wait_for_element_visible_ok | st-account-restrict-to-domain | 30000 |
-| text_like | //body | Account updated. |
+| wait_for_text_present_ok |  Account updated | 30000 |
 | st-admin | show-account-config --account %%restrict_acct%% | xndev.com |
 
 | *Comment* | Test case: Business Control Panel Socialtext Account exists |  |
 | open_ok | /nlw/control/account |  |
-| wait_for_element_visible_ok | st-search-by-name | 30000 |
 | text_like | Accounts |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | Socialtext |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
-| click_ok | st-submit-search-by-name |  |
+| click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=Socialtext | 30000 |
-| pause | 2000 |  |
-| clickAndWait | link=Socialtext |  |
+| click_and_wait | link=Socialtext |  |
 | text_like | Socialtext account |  |
 
 | *Comment* | Test case: Business Control Panel Create and verify new account |  |
-| clickAndWait | link=Accounts |  |
+| click_and_wait | link=Accounts |  |
 | wait_for_element_visible_ok | st-new-account-name | 30000 |
 | type_ok | st-new-account-name | %%new_acct%% |
 | click_and_wait | st-submit-new-account-submit |  |
@@ -113,10 +105,10 @@
 | open_ok | /nlw/control/account |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | Socialtext |
-| clickAndWait | st-submit-search-by-name |  |
+| click_and_wait | st-submit-search-by-name |  |
 | text_like | link=Socialtext | Socialtext |
 | type_ok | st-search-by-name | %%new_acct%% |
-| clickAndWait | st-submit-search-by-name |  |
+| click_and_wait | st-submit-search-by-name |  |
 | text_like | link=%%new_acct%% | %%new_acct%% |
 
 | *Comment* | Test case: Business Control Panel Change new workspace account to Socialtext |  |
@@ -150,11 +142,11 @@
 | open_ok | /nlw/control/user |  |
 | st-admin | create-user --email %%cli_user%% --password wikicli --first-name Wiki --last-name CLI --account '%%new_acct%%' | A new user with the username "%%cli_user%%" was created |
 | st-admin | add-workspace-admin --email %%cli_user%% --workspace %%new_workspace%% |  |
-| clickAndWait | link=Workspaces |  |
+| click_and_wait | link=Workspaces |  |
 | wait_for_element_visible_ok | name | 30000 |
 | type_ok | name | %%new_workspace%% |
 | st-submit |  |  |
-| clickAndWait | link=%%new_workspace%% |  |
+| click_and_wait | link=%%new_workspace%% |  |
 | text_like | workspace admin |  |
 
 | *Comment* | Test case: Business Control Panel exercise 'add user' button |  |
@@ -192,10 +184,10 @@
 | click_and_wait | //input[@value='Remove Access to Socialtext Accounts'] |  |
 | text_like | Removed Socialtext Accounts access from %%cli_user%% |  |
 | text_like | Socialtext Accounts Access? no |  |
-| clickAndWait | //input[@value='Give Access to Socialtext System Management'] |  |
+| click_and_wait | //input[@value='Give Access to Socialtext System Management'] |  |
 | text_like | Gave Socialtext System Management access to %%cli_user%% |  |
 | text_like | Socialtext System Management Access? yes |  |
-| clickAndWait | //input[@value='Remove Access to Socialtext System Management'] |  |
+| click_and_wait | //input[@value='Remove Access to Socialtext System Management'] |  |
 | text_like | Removed Socialtext System Management access from %%cli_user%% |  |
 | text_like | Socialtext System Management Access? no |  |
 
@@ -207,7 +199,7 @@
 | text_like | Primary Account: %%new_acct%% |  |
 
 | *Comment* | Test case: Business Control Panel search for new user |  |
-| clickAndWait | link=Users |  |
+| click_and_wait | link=Users |  |
 | wait_for_element_visible_ok | username | 30000 |
 | type_ok | username | %%cli_user%% |
 | st-submit |  |  |
@@ -245,75 +237,75 @@
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | account %%start_time%% |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
-| click_ok | st-submit-search-by-name |  |
+| click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=0 sort 3 account %%start_time%% | 30000 |
-| clickAndWait | link=Name |  |
+| click_and_wait | link=Name |  |
 | text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
-| clickAndWait | link=Name |  |
+| click_and_wait | link=Name |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
 
-| clickAndWait | link=Number of Workspaces |  |
+| click_and_wait | link=Number of Workspaces |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
-| clickAndWait | link=Number of Workspaces |  |
+| click_and_wait | link=Number of Workspaces |  |
 | text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
 
-| clickAndWait | link=Number of Users |  |
+| click_and_wait | link=Number of Users |  |
 | text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
-| clickAndWait | link=Number of Users |  |
+| click_and_wait | link=Number of Users |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
 
 | *Comment* | Test case: Business Control Panel sorting Workspaces display |  |
-| clickAndWait | link=Workspaces |  |
-| clickAndWait | link=Name |  |
+| click_and_wait | link=Workspaces |  |
+| click_and_wait | link=Name |  |
 | text_like | qr/0-sort-3-workspace3-%%start_time%%.+0-sort-2-workspace2-%%start_time%%.+0-sort-1-workspace1-%%start_time%%/ |  |
-| clickAndWait | link=Name |  |
+| click_and_wait | link=Name |  |
 | text_like | qr/0-sort-1-workspace1-%%start_time%%.+0-sort-2-workspace2-%%start_time%%.+0-sort-3-workspace3-%%start_time%%/ |  |
 
 TODO: RESTORE THE FOLLOWING TWO TESTS AFTER {bz: 472} IS FIXED
 
 | *Comment* | RESTORE THE FOLLOWING TWO TESTS AFTER {bz: 472} IS FIXED |  |
-| clickAndWait | link=Number of Users |  |
+| click_and_wait | link=Number of Users |  |
 
 text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ | |
 
-| clickAndWait | link=Number of Users |  |
+| click_and_wait | link=Number of Users |  |
 
 text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ | |
 
-| clickAndWait | link=Account |  |
+| click_and_wait | link=Account |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
-| clickAndWait | link=Account |  |
+| click_and_wait | link=Account |  |
 | text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
 
-| clickAndWait | link=Created |  |
+| click_and_wait | link=Created |  |
 | text_like | qr/0-sort-3-workspace3-%%start_time%%.+0-sort-2-workspace2-%%start_time%%.+0-sort-1-workspace1-%%start_time%%/ |  |
-| clickAndWait | link=Created |  |
+| click_and_wait | link=Created |  |
 | text_like | qr/0-sort-1-workspace1-%%start_time%%.+0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%/ |  |
 
-| clickAndWait | link=Created By |  |
+| click_and_wait | link=Created By |  |
 | text_like | qr/devnull1.+system-user/ |  |
-| clickAndWait | link=Created By |  |
+| click_and_wait | link=Created By |  |
 | text_like | qr/system-user.+devnull1/ |  |
 
 | *Comment* | Test case: Business Control Panel sorting Users display |  |
-| clickAndWait | link=Users |  |
+| click_and_wait | link=Users |  |
 
-| clickAndWait | link=Name |  |
+| click_and_wait | link=Name |  |
 | text_like | qr/two.+one/ |  |
-| clickAndWait | link=Name |  |
+| click_and_wait | link=Name |  |
 | text_like | qr/0_sort_1_user1\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_3_user3\@%%start_time%%\.com/ |  |
 
-| clickAndWait | link=Number of Workspaces |  |
+| click_and_wait | link=Number of Workspaces |  |
 | text_like | qr/0_sort_2_user1\@%%start_time%%\.com.+0_sort_3_user1\@%%start_time%%\.com.+0_sort_3_user2\@%%start_time%%\.com/ |  |
-| clickAndWait | link=Number of Workspaces |  |
+| click_and_wait | link=Number of Workspaces |  |
 | text_like | qr/0_sort_3_user3\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_1_user1\@%%start_time%%\.com/ |  |
 
-| clickAndWait | link=Invited |  |
+| click_and_wait | link=Invited |  |
 | text_like | qr/one.+two/ |  |
-| clickAndWait | link=Invited |  |
+| click_and_wait | link=Invited |  |
 | text_like | qr/0_sort_3_user3\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_1_user1\@%%start_time%%\.com/ |  |
 
-| clickAndWait | link=Invited By |  |
+| click_and_wait | link=Invited By |  |
 | text_like | qr/devnull1.+system/ |  |
 
 | *Comment* | Test case: Business Control Panel check the elements on the page |  |
@@ -482,10 +474,9 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | Socialtext |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
-| click_ok | st-submit-search-by-name |  |
-| wait_for_element_visible_ok | link=Socialtext | 60000 |
-| pause | 1000 | why do I need this? |
-| clickAndWait | link=Socialtext |  |
+| click_and_wait | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=Socialtext | 30000 |
+| click_and_wait | link=Socialtext |  |
 | wait_for_element_visible_ok | link=Profile Fields | 30000 |
 | click_and_wait | link=Profile Fields |  |
 | wait_for_element_visible_ok | link=Edit | 30000 |
