@@ -1343,6 +1343,15 @@ sub st_export_account {
     );
 }
 
+sub st_import_account {
+    my $self = shift;
+    my $account = shift;
+    my $dir = "/tmp/$account.export";
+    Socialtext::System::shell_run(
+        'st-admin', 'import-account', '--dir', $dir, '--overwrite',
+    );
+}
+
 sub _st_account_export_field {
     my $self = shift;
     my $account = shift;
