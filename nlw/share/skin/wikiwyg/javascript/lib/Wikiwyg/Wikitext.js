@@ -1371,11 +1371,14 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
         /* Turn visual BRs (P[margin-bottom < 1px]) into real BRs */
         while (cur = $(dom).find('p:not(._st_walked)')[0]) {
             var $cur = $(cur);
-            if (self._css_to_px($cur.css('margin-bottom')) < 1) {
+            /* We use cur.style.marginBottom here as it's significantly faster
+             * than $(cur).css('margin-bottom').
+             */
+            if (self._css_to_px(cur.style.marginBottom) < 1) {
                 var next = self._get_next_node(cur);
                 if (next && next.nodeType == 1 && next.nodeName == 'P') {
                     var $next = $(next);
-                    $cur.css('margin-bottom', $next.css('margin-bottom'));
+                    cur.style.marginBottom = next.style.marginBottom;
                     $cur.append('<br />' + $next.html());
                     $next.remove();
                     continue;
@@ -1570,7 +1573,20 @@ proto.walk = function(elem) {
             if (this.wikitext) {
                 for (var node = part; node; node = node.firstChild) {
                     if (node.top_level_block) {
-                        this.wikitext = this.wikitext.replace(/ *\n*$/, '\n\n');
+                        // *** Hotspot - Optimizing by hand. ***
+                        // this.wikitext = this.wikitext.replace(/ *\n*$/, '\n\n');
+                        var len = this.wikitext.length;
+
+                        while (this.wikitext.charAt(len-1) == '\n') len--;
+                        while (this.wikitext.charAt(len-1) == ' ') len--;
+
+                        if (end == this.wikitext.length) {
+                            this.wikitext += '\n\n';
+                        }
+                        else {
+                            this.wikitext = this.wikitext.substr(0, len) + '\n\n';
+                        }
+
                         break;
                     }
 
