@@ -2083,24 +2083,6 @@ proto.setWidgetHandler = function(img) {
     this.attachTooltip(img);
 }
 
-proto.need_to_revert_widet = function(img) {
-    var style = img.getAttribute("style");
-    var width = img.getAttribute("width");
-    var height = img.getAttribute("height");
-    var has_style_attr = (typeof style == 'string');
-    var has_width_attr = (typeof width != 'undefined' );
-    var has_height_attr = (typeof height != 'undefined');
-
-    if (
-        has_style_attr ||
-        img.getAttribute("src").match(/^\.\./) ||
-        ( has_width_attr && has_height_attr )
-    ) {
-        return true;
-    }
-    return false;
-}
-
 proto.revert_widget_images = function() {
     if ( this._fixer_interval_id ) {
         return;
@@ -2117,7 +2099,6 @@ proto.revert_widget_images = function() {
             var img = imgs[i];
 
             if (!img.getAttribute("widget")) { continue; }
-            if (!self.need_to_revert_widet(img)) { continue; }
 
             img.removeAttribute("style");
             img.removeAttribute("width");
