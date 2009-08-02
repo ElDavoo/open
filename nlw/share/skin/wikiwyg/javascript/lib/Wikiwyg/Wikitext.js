@@ -973,28 +973,14 @@ proto.check_style_for_attribute = function(style, attribute) {
 }
 
 proto._for_interesting_attributes = function(cb) {
-    var interesting_attributes = [
-        [ 'font', 'weight' ],
-        [ 'font', 'style' ],
-        [ 'text', 'decoration' ]
-    ];
-    for (var i = 0; i < interesting_attributes.length; i++) {
-        var pair = interesting_attributes[i];
-        var css = pair[0] + '-' + pair[1];
-        var js = pair[0] + pair[1].ucFirst();
-        cb(js, css);
-    }
+    cb('fontWeight',     'font-weight');
+    cb('fontStyle',      'font-style');
+    cb('textDecoration', 'text-decoration');
 }
 
 proto.squish_style_object_into_string = function(style) {
     if (! style) return;
-    if ((style.constructor+'').match('String'))
-        return style;
-    var interesting_attributes = [
-        [ 'font', 'weight' ],
-        [ 'font', 'style' ],
-        [ 'text', 'decoration' ]
-    ];
+    if (typeof style == 'string') return style;
     var string = '';
     this._for_interesting_attributes(function(js, css){
         if (style[js])
