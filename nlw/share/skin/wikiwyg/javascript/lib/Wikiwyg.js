@@ -907,7 +907,15 @@ Wikiwyg.htmlEscape = function(str) {
 }
 
 Wikiwyg.htmlUnescape = function(escaped) {
-    return jQuery("<div>"+escaped.replace(/</g, '&lt;')+"</div>").text().replace(/\xA0/g, ' ');
+    var _NewlineReplacementCharacter_ = String.fromCharCode(0xFFFC);
+    return jQuery(
+        "<div>" + 
+        escaped.replace(/</g, '&lt;')
+               .replace(/ /g, '&#160;')
+               .replace(/\n/g, _NewlineReplacementCharacter_) +
+        "</div>"
+    ).text().replace(/\xA0/g, ' ')
+            .replace(new RegExp(_NewlineReplacementCharacter_, 'g'), '\n');
 }
 
 Wikiwyg.showById = function(id) {
