@@ -1580,7 +1580,7 @@ proto.walk = function(elem) {
                         while (this.wikitext.charAt(len-1) == '\n') len--;
                         while (this.wikitext.charAt(len-1) == ' ') len--;
 
-                        if (end == this.wikitext.length) {
+                        if (len == this.wikitext.length) {
                             this.wikitext += '\n\n';
                         }
                         else {
