@@ -1369,23 +1369,37 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
         $(dom).find('._st_walked').removeClass('_st_walked');
 
         /* Turn visual BRs (P[margin-bottom < 1px]) into real BRs */
-        while (cur = $(dom).find('p:not(._st_walked)')[0]) {
-            var $cur = $(cur);
-            /* We use cur.style.marginBottom here as it's significantly faster
-             * than $(cur).css('margin-bottom').
-             */
-            if (self._css_to_px(cur.style.marginBottom) < 1) {
-                var next = self._get_next_node(cur);
-                if (next && next.nodeType == 1 && next.nodeName == 'P') {
-                    var $next = $(next);
-                    cur.style.marginBottom = next.style.marginBottom;
-                    $cur.append('<br />' + $next.html());
-                    $next.remove();
-                    continue;
+        var foundVisualBR;
+        do {
+            var paragraphs = dom.getElementsByTagName('p');
+            var len = paragraphs.length;
+            if (!len) break;
+
+            foundVisualBR = false;
+
+            for (var i = 0; i < len; i++) {
+                var cur = paragraphs[i];
+                if (cur.className.indexOf('st_walked') >= 0) continue;
+
+                if (self._css_to_px(cur.style.marginBottom) < 1) {
+                    /* It's a pseudo-BR; turn it into BR and start over. */
+                    var next = self._get_next_node(cur);
+                    if (next && next.nodeType == 1 && next.nodeName == 'P') {
+                        cur.style.marginBottom = next.style.marginBottom;
+
+                        var $next = $(next);
+                        $(cur).append('<br />' + $next.html());
+                        $next.remove();
+
+                        foundVisualBR = true;
+                        break;
+                    }
                 }
+
+                cur.className += (cur.className ? ' ' : '') + 'st_walked';
             }
-            $cur.addClass('_st_walked');
-        }
+        } while (foundVisualBR);
+
         $(dom).find('._st_walked').removeClass('_st_walked');
 
         // This needs to be done by hand for IE.
