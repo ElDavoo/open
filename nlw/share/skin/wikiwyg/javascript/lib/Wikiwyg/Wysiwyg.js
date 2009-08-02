@@ -1918,17 +1918,19 @@ proto.assert_padding_between_block_elements = function(html) {
 }
 
 proto.assert_padding_around_block_elements = function(html) {
-    var doc = jQuery('<div />').append(
+    var tmpElement = document.createElement('div');
+    tmpElement.innerHTML = 
         html.replace(/<div\b/g, '<span tmp="div"')
             .replace(/<\/div>/g, '</span>')
-    );
+    var doc = $(tmpElement);
 
     var el;
     while (el = doc.find('span[tmp=div]:first')[0]) {
         var span = jQuery(el);
-        var div = jQuery('<div />')
-            .append( span.clone().removeAttr('tmp') )
-            .html()
+        var divElement = document.createElement("div");
+        divElement.appendChild( (span.clone().removeAttr('tmp'))[0] );
+
+        var div = divElement.innerHTML
             .replace(/^<span/, '<div')
             .replace(/<\/span>$/, '</div>');
 
