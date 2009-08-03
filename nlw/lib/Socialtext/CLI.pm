@@ -1088,7 +1088,7 @@ sub create_account {
     }
 
     my $account = eval { $hub->account_factory->create( 
-            is_system_created => 1,
+            created_by_user_id => Socialtext::User->SystemUser()->user_id,
             name => $name,
             ($type ? (account_type => $type) : ()),
         ) };
