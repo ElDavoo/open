@@ -442,7 +442,7 @@ sub _parse_email_address {
     my $self = shift;
     my $email = shift;
 
-    return unless defined $email;
+    return unless defined $email and Email::Valid->address($email);
 
     my ($address) = Email::Address->parse($email);
     return unless $address;
