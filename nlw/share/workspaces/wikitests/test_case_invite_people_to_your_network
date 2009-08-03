@@ -17,7 +17,7 @@
 | st-admin | create-account --name %%rest_acct%% |  |
 | st-admin | set-account-config --account %%rest_acct%% restrict_to_domain %%domain%% |  |
 | st-admin | create-user --email %%emailok%% --password %%password%% --account %%rest_acct%% |  |
-| st-config | set allow_network_invitation 1 |
+| st-config | set allow_network_invitation 1 |  |
 | st-admin | enable-plugin --account %%rest_acct%% --plugin people |  |
 | st-admin | enable-plugin --account %%rest_acct%% --plugin dashboard |  |
 | st-logoutin | %%emailok%% | %%password%% |
@@ -32,12 +32,12 @@
 | click_ok | link=Invite |  |
 | wait_for_element_visible_ok | Link=Invite more people | 30000 |
 | text_like | qr/The following users were successfully invited into this Network:\s+%%eemailok2%%/ |  |
-| click_ok | Link=Invite more people |
+| click_ok | Link=Invite more people |  |
 | pause | 20000 |  |
 | wait_for_element_present_ok | link=Cancel | 30000 |
 | wait_for_element_present_ok | users_new_ids | 30000 |
 | type_ok | users_new_ids | %%emailbad%% |
-| click_ok | link=Invite |
+| click_ok | link=Invite |  |
 | wait_for_element_visible_ok | Link=Invite more people | 30000 |
 | text_like | qr/Sorry, the following email addresss are not in the domain xndev.com\s+%%eemailbad%%/ |  |
 | st-logoutin | %%username%% | %%password%% |
