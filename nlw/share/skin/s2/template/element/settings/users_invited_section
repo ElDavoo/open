@@ -3,23 +3,23 @@
   <tr>
    <td>
      [% PROCESS users_listing
-         label = loc('The following users were already members of this Workspace'),
+         label = loc('The following [*,_1,user was,users were] already members of this Workspace:', users_already_present.size),
          users = users_already_present
          IF users_already_present.size;
         PROCESS users_listing
-         label = loc('The following email addresses were invalid'),
+         label = loc('The following [*,_1,email address was,email addresses were] invalid:', invalid_addresses.size),
          users = invalid_addresses
          IF invalid_addresses.size;
         PROCESS users_listing
-         label = loc('You can only invite people who share the [_1] email domain with you.', '<span style="color: red;">' _ domain _ '</span>'),
+         label = loc('You can only invite people who share the [_1] email domain with you:', '<span style="color: red;">' _ domain _ '</span>'),
          users = wrong_domain
          IF wrong_domain.size;
         PROCESS users_listing
-         label = loc('The following users were invited into this Workspace'),
+         label = loc('The following [*,_1,user was,users were] invited into this Workspace:', users_invited.size),
          users = users_invited
          IF checker.check_permission('admin_workspace') ;
         PROCESS users_listing
-         label = loc('Your request to invite the following users has been sent'),
+         label = loc('Your request to invite the following [*,_1,user] has been sent:', users_invited.size),
          users = users_invited
          IF !checker.check_permission('admin_workspace') AND users_invited.size;
      %]
