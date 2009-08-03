@@ -7,10 +7,7 @@ lib/Socialtext/Build/ConfigureValues.pm
 tmp/
 build/tmp/
 share/skin/.gitignore
-share/html/500.html
-share/html/502.html.en
-share/html/502.html.html
-share/html/502.html.ja
+share/html/502.html
 t/test-data/ja/mecabif
 t/share/plugin/fakeplugin/etc/widgets.yaml
 blib
