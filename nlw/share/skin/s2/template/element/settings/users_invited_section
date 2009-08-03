@@ -3,7 +3,7 @@
   <tr>
    <td>
      [% PROCESS users_listing
-         label = loc('The following [*,_1,user was,users were] already members of this Workspace:', users_already_present.size),
+         label = loc('The following [*,_1,user was already a member,users were already members] of this Workspace:', users_already_present.size),
          users = users_already_present
          IF users_already_present.size;
         PROCESS users_listing
