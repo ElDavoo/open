@@ -1087,8 +1087,10 @@ sub create_account {
             qq|The account name you provided, "$name", is already in use.|);
     }
 
+    print "account_type=($type)\n";
+
     my $account = eval { $hub->account_factory->create( 
-            created_by_user_id => Socialtext::User->SystemUser()->user_id,
+            is_system_created => 1,
             name => $name,
             ($type ? (account_type => $type) : ()),
         ) };
