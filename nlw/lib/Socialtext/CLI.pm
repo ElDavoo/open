@@ -1088,6 +1088,7 @@ sub create_account {
     }
 
     my $account = eval { $hub->account_factory->create( 
+            is_system_created => 1,
             name => $name,
             ($type ? (account_type => $type) : ()),
         ) };
