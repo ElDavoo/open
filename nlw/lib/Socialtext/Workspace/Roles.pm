@@ -48,18 +48,24 @@ our $SQL_UNION_WS_ID_BY_USER_ID = qq{
 # The list of Users is de-duped; if a User has multiple Roles in the Workspace
 # they only appear _once_ in the resulting MultiCursor.
 sub UsersByWorkspaceId {
-    my $class = shift;
-    my %p     = @_;
-    my $ws_id = $p{workspace_id};
+    my $class  = shift;
+    my %p      = @_;
+    my $ws_id  = $p{workspace_id};
+    my $direct = $p{direct};
+
+    my $uwr_table = $p{direct}
+        ? '"UserWorkspaceRole"'
+        : 'distinct_user_workspace_role';
 
     my $sql = qq{
         SELECT user_id, driver_username
           FROM users
-         WHERE user_id IN ( $SQL_UNION_USER_ID_BY_WS_ID )
+          JOIN $uwr_table USING (user_id)
+         WHERE workspace_id = ?
          ORDER BY driver_username
     };
 
-    my $sth = sql_execute($sql, $ws_id, $ws_id);
+    my $sth = sql_execute($sql, $ws_id);
     return Socialtext::MultiCursor->new(
         iterables => [ $sth->fetchall_arrayref ],
         apply => sub {
