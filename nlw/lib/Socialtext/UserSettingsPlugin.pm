@@ -105,7 +105,7 @@ sub get_admins {
     my $self = shift;
     my $workspace = $self->hub->current_workspace;
     my @admins;
-    my $users_with_roles = $workspace->users_with_roles();
+    my $users_with_roles = $workspace->users_with_roles(direct => 1);
 
     while ( my $tuple = $users_with_roles->next ) {
         my $user = $tuple->[0];
@@ -127,7 +127,7 @@ sub users_listall {
     $self->_update_users_in_workspace()
         if $self->cgi->Button;
 
-    my @uwr = $self->hub->current_workspace->users_with_roles->all;
+    my @uwr = $self->hub->current_workspace->users_with_roles(direct => 1)->all;
     my $settings_section = $self->template_process(
         'element/settings/users_listall_section',
         users_with_roles => \@uwr,
@@ -175,7 +175,7 @@ sub _update_users_in_workspace {
     if ( keys %should_be_admin ) {
 
         my $users_with_roles
-            = $self->hub->current_workspace->users_with_roles;
+            = $self->hub->current_workspace->users_with_roles(direct => 1);
 
         while ( my $tuple = $users_with_roles->next ) {
 
@@ -354,6 +354,12 @@ sub _invite_users {
         my $email = $e->{email_address};
         next if $users{$email};
 
+        my $user = Socialtext::User->new( email_address => $email );
+        if ($user && $ws->has_user($user)) {
+            push @present, $email;
+            next;
+        }
+
         if ($ws_filter) {
             unless ( $email =~ qr/$ws_filter/ ) {
                 push @$invalid, $email;
@@ -362,12 +368,6 @@ sub _invite_users {
         }
         unless ($ws->account->email_passes_domain_filter($email)) {
             push @wrong_domain, $email;
-            next;
-        }
-
-        my $user = Socialtext::User->new( email_address => $email );
-        if ($user && $ws->has_user($user)) {
-            push @present, $email;
             next;
         }
 

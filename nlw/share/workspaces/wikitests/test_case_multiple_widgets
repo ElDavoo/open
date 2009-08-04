@@ -44,10 +44,15 @@
 | st-name-widget | 3 | image_widget |
 | st-widget-title-like | image_widget | Chairman |
 | st-name-widget | 2 | wiki_page |
+
+| wait_for_element_visible_ok | up_workspace_name | 30000 |
 | wait_for_element_visible_ok | //input[contains(@name,'up_page_title')] | 30000 |
+| select_ok | up_workspace_name | label=%%title%% |
 | type_ok | //input[contains(@name,'up_page_title')] | jabberwocky |
+| wait_for_element_visible_ok | st-savebutton-%%wiki_page%% | 30000 |
 | click_ok | st-savebutton-%%wiki_page%% |  |
 | wait_for_element_not_visible_ok | //input[contains(@name,'up_page_title')] | 30000 |
+
 | st-select-widget-frame | wiki_page |  |
 | wait_for_element_present_ok | link=Edit | 30000 |
 | wait_for_element_present_ok | link=View | 30000 |

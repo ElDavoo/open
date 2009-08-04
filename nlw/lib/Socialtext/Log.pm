@@ -206,9 +206,9 @@ sub _devenv_output {
     require Socialtext::Paths;
     my $logpath = Socialtext::Paths->log_directory();
 
-    require Log::Dispatch::File::Locked;
+    require Log::Dispatch::File::Socialtext;
     $self->log->add(
-        Log::Dispatch::File::Locked->new(
+        Log::Dispatch::File::Socialtext->new(
             name        => 'devenv',
             min_level   => 'debug',
             mode        => 'append',

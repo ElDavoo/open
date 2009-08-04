@@ -340,7 +340,7 @@ sub get_default_account {
 sub export_account {
     my $self = shift;
     my $account = $self->_require_account;
-    my %opts     = $self->_get_options('force');
+    my %opts     = $self->_get_options('force', 'dir:s');
 
     my ( $hub, $main ) = $self->_make_hub(
         Socialtext::NoWorkspace->new(),
@@ -348,7 +348,7 @@ sub export_account {
     );
 
     (my $short_name = lc($account->name)) =~ s#\W#_#g;
-    my $dir = $self->_export_dir_base
+    my $dir = $opts{dir} || $self->_export_dir_base
         . "/$short_name.id-"
         . $account->account_id
         . ".export";
@@ -620,12 +620,21 @@ sub _ensure_email_passes_filters {
     my $email          = shift;
     my $filter_sources = shift;
 
-    return unless my $account = $filter_sources->{account};
+    my $account = $filter_sources->{account};
+    if ($account) {
+        $self->_error(
+            loc("The email address, [_1], is not in the domain [_2].",
+                $email, $account->restrict_to_domain)
+        ) unless $account->email_passes_domain_filter( $email )
+    }
 
-    $self->_error(
-        loc("The email address, [_1], is not in the domain [_2].",
-            $email, $account->restrict_to_domain)
-    ) unless $account->email_passes_domain_filter( $email )
+    my $workspace = $filter_sources->{workspace};
+    if ($workspace) {
+        $self->_error(
+            loc("The email address, [_1], does not match the workspace invitation filter [_2].",
+                $email, $workspace->invitation_filter)
+        ) unless $workspace->email_passes_invitation_filter( $email )
+    }
 }
 
 sub _require_create_user_params {
@@ -759,7 +768,7 @@ sub add_member {
 
     $self->_ensure_email_passes_filters(
         $user->email_address,
-        { account => $ws->account },
+        { account => $ws->account, workspace => $ws },
     );
 
     if ( $ws->has_user( $user ) ) {
@@ -815,7 +824,7 @@ sub _make_role_toggler {
         if ( $add_p ) {
             $self->_ensure_email_passes_filters(
                 $user->email_address,
-                { account => $ws->account },
+                { account => $ws->account, workspace => $ws },
             );
         }
 
@@ -1079,6 +1088,7 @@ sub create_account {
     }
 
     my $account = eval { $hub->account_factory->create( 
+            is_system_created => 1,
             name => $name,
             ($type ? (account_type => $type) : ()),
         ) };
@@ -1637,7 +1647,7 @@ sub _show_workspace_members {
     my $msg = "Members of the " . $ws->name . " workspace\n\n";
     $msg .= "| Email Address | First | Last | Role |\n";
 
-    my $user_cursor =  $ws->users_with_roles;
+    my $user_cursor = $self->_get_ws_users_cursor($ws);
     my $entry;
     while ($entry = $user_cursor->next) {
         my ($user, $role) = @$entry;
@@ -1655,7 +1665,7 @@ sub show_admins {
     my $msg = "Admins of the " . $ws->name . " workspace\n\n";
     $msg .= "| Email Address | First | Last |\n";
 
-    my $user_cursor =  $ws->users_with_roles;
+    my $user_cursor = $self->_get_ws_users_cursor($ws);
     my $entry;
     while ($entry = $user_cursor->next) {
         my ($user, $role) = @$entry;
@@ -1674,7 +1684,7 @@ sub show_impersonators {
     my $msg = "Impersonators in the " . $ws->name . " workspace\n\n";
     $msg .= "| Email Address | First | Last |\n";
 
-    my $user_cursor =  $ws->users_with_roles;
+    my $user_cursor = $self->_get_ws_users_cursor($ws);
     my $entry;
     while ($entry = $user_cursor->next) {
         my ($user, $role) = @$entry;
@@ -1683,6 +1693,14 @@ sub show_impersonators {
     }
 
     $self->_success($msg, "no indent");
+}
+
+sub _get_ws_users_cursor {
+    my $self     = shift;
+    my $ws       = shift;
+    my %opts     = $self->_get_options('indirect');
+    my $indirect = $opts{indirect} || 0;
+    return $ws->users_with_roles(direct => !$indirect);
 }
 
 sub purge_page {
@@ -2104,6 +2122,11 @@ sub add_users_from {
             next;
         }
 
+        if ( ! $target_ws->email_passes_invitation_filter($user->email_address) ) {
+            push @rejected, $user->username;
+            next;
+        }
+
         $target_ws->add_user( user => $user );
         push @added, $user->username();
     }
@@ -2303,7 +2326,7 @@ sub invite_user {
 
     $self->_ensure_email_passes_filters(
         $opts{email},
-        { account => $workspace->account },
+        { account => $workspace->account, workspace => $workspace },
     );
 
     $self->_error('You must specify an inviter email address')
@@ -2878,7 +2901,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   ACCOUNTS
 
-  create-account --name
+  create-account --name [--type]
   list-accounts [--ids]
   show-members --account
   give-accounts-admin [--username or --email]

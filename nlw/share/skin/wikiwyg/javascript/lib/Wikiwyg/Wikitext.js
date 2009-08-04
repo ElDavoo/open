@@ -973,28 +973,14 @@ proto.check_style_for_attribute = function(style, attribute) {
 }
 
 proto._for_interesting_attributes = function(cb) {
-    var interesting_attributes = [
-        [ 'font', 'weight' ],
-        [ 'font', 'style' ],
-        [ 'text', 'decoration' ]
-    ];
-    for (var i = 0; i < interesting_attributes.length; i++) {
-        var pair = interesting_attributes[i];
-        var css = pair[0] + '-' + pair[1];
-        var js = pair[0] + pair[1].ucFirst();
-        cb(js, css);
-    }
+    cb('fontWeight',     'font-weight');
+    cb('fontStyle',      'font-style');
+    cb('textDecoration', 'text-decoration');
 }
 
 proto.squish_style_object_into_string = function(style) {
     if (! style) return;
-    if ((style.constructor+'').match('String'))
-        return style;
-    var interesting_attributes = [
-        [ 'font', 'weight' ],
-        [ 'font', 'style' ],
-        [ 'text', 'decoration' ]
-    ];
+    if (typeof style == 'string') return style;
     var string = '';
     this._for_interesting_attributes(function(js, css){
         if (style[js])
@@ -1369,20 +1355,37 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
         $(dom).find('._st_walked').removeClass('_st_walked');
 
         /* Turn visual BRs (P[margin-bottom < 1px]) into real BRs */
-        while (cur = $(dom).find('p:not(._st_walked)')[0]) {
-            var $cur = $(cur);
-            if (self._css_to_px($cur.css('margin-bottom')) < 1) {
-                var next = self._get_next_node(cur);
-                if (next && next.nodeType == 1 && next.nodeName == 'P') {
-                    var $next = $(next);
-                    $cur.css('margin-bottom', $next.css('margin-bottom'));
-                    $cur.append('<br />' + $next.html());
-                    $next.remove();
-                    continue;
+        var foundVisualBR;
+        do {
+            var paragraphs = dom.getElementsByTagName('p');
+            var len = paragraphs.length;
+            if (!len) break;
+
+            foundVisualBR = false;
+
+            for (var i = 0; i < len; i++) {
+                var cur = paragraphs[i];
+                if (cur.className.indexOf('st_walked') >= 0) continue;
+
+                if (self._css_to_px(cur.style.marginBottom) < 1) {
+                    /* It's a pseudo-BR; turn it into BR and start over. */
+                    var next = self._get_next_node(cur);
+                    if (next && next.nodeType == 1 && next.nodeName == 'P') {
+                        cur.style.marginBottom = next.style.marginBottom;
+
+                        var $next = $(next);
+                        $(cur).append('<br />' + $next.html());
+                        $next.remove();
+
+                        foundVisualBR = true;
+                        break;
+                    }
                 }
+
+                cur.className += (cur.className ? ' ' : '') + 'st_walked';
             }
-            $cur.addClass('_st_walked');
-        }
+        } while (foundVisualBR);
+
         $(dom).find('._st_walked').removeClass('_st_walked');
 
         // This needs to be done by hand for IE.
@@ -1570,7 +1573,20 @@ proto.walk = function(elem) {
             if (this.wikitext) {
                 for (var node = part; node; node = node.firstChild) {
                     if (node.top_level_block) {
-                        this.wikitext = this.wikitext.replace(/ *\n*$/, '\n\n');
+                        // *** Hotspot - Optimizing by hand. ***
+                        // this.wikitext = this.wikitext.replace(/ *\n*$/, '\n\n');
+                        var len = this.wikitext.length;
+
+                        while (this.wikitext.charAt(len-1) == '\n') len--;
+                        while (this.wikitext.charAt(len-1) == ' ') len--;
+
+                        if (len == this.wikitext.length) {
+                            this.wikitext += '\n\n';
+                        }
+                        else {
+                            this.wikitext = this.wikitext.substr(0, len) + '\n\n';
+                        }
+
                         break;
                     }
 

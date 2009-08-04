@@ -62,18 +62,6 @@
                 .appendTo('body');
 
             $('#overlay').createSelectOverlap({zIndex: 2000});
-            if ($.browser.msie && $.browser.version < 7) {
-                $('<iframe src="/static/html/blank.html"></iframe>')
-                    .addClass('hack')
-                    .css({
-                        zIndex: 2000,
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        filter: "alpha(opacity=0)"
-                    })
-                    .appendTo('#overlay');
-            } 
         }
 
         var arrayPageScroll = _getPageScroll();

@@ -10,6 +10,10 @@ verify the filled in profile
 
 * [Test Case: Verify Profile]
 
+verify the profile avatar popup
+
+* [Test Case: Verify Avatar Popup]
+
 test profile (People) tagging
 
 * [Test Case: Tagging Profile]

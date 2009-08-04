@@ -10,56 +10,30 @@ use Socialtext::Validate qw(validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE);
 use Readonly;
 
 ###############################################################################
-# Common SQL UNIONs used to get one type of Id when we've got another.
-#
-# *REQUIRES* that you pass in need Id as a binding, *twice*.
-our $SQL_UNION_USER_ID_BY_WS_ID = qq{
-    (   SELECT user_id
-          FROM users
-          JOIN "UserWorkspaceRole" uwr USING (user_id)
-         WHERE uwr.workspace_id = ?
-    )
-    UNION ALL
-    (   SELECT user_id
-          FROM users
-          JOIN user_group_role ugr USING (user_id)
-          JOIN group_workspace_role gwr USING (group_id)
-          WHERE gwr.workspace_id = ?
-    )
-};
-
-our $SQL_UNION_WS_ID_BY_USER_ID = qq{
-    (   SELECT uwr.workspace_id
-          FROM "UserWorkspaceRole" uwr
-         WHERE uwr.user_id = ?
-    )
-    UNION ALL
-    (   SELECT gwr.workspace_id
-          FROM group_workspace_role gwr
-          JOIN user_group_role ugr USING (group_id)
-         WHERE ugr.user_id = ?
-    )
-};
-
-###############################################################################
 # Get a MultiCursor of the Users that have a Role in a given Workspace (either
 # directly as an UWR, or indirectly as an UGR+GWR).
 #
 # The list of Users is de-duped; if a User has multiple Roles in the Workspace
 # they only appear _once_ in the resulting MultiCursor.
 sub UsersByWorkspaceId {
-    my $class = shift;
-    my %p     = @_;
-    my $ws_id = $p{workspace_id};
+    my $class  = shift;
+    my %p      = @_;
+    my $ws_id  = $p{workspace_id};
+    my $direct = $p{direct};
+
+    my $uwr_table = $p{direct}
+        ? '"UserWorkspaceRole"'
+        : 'distinct_user_workspace_role';
 
     my $sql = qq{
         SELECT user_id, driver_username
           FROM users
-         WHERE user_id IN ( $SQL_UNION_USER_ID_BY_WS_ID )
+          JOIN $uwr_table USING (user_id)
+         WHERE workspace_id = ?
          ORDER BY driver_username
     };
 
-    my $sth = sql_execute($sql, $ws_id, $ws_id);
+    my $sth = sql_execute($sql, $ws_id);
     return Socialtext::MultiCursor->new(
         iterables => [ $sth->fetchall_arrayref ],
         apply => sub {
@@ -73,17 +47,23 @@ sub UsersByWorkspaceId {
 # Get the Count of Users that have a Role in a given Workspace (either
 # directly as an UWR, or indirectly as an UGR+GWR).
 sub CountUsersByWorkspaceId {
-    my $class = shift;
-    my %p     = @_;
-    my $ws_id = $p{workspace_id};
+    my $class  = shift;
+    my %p      = @_;
+    my $ws_id  = $p{workspace_id};
+    my $direct = $p{direct};
+
+    my $uwr_table = $p{direct}
+        ? '"UserWorkspaceRole"'
+        : 'all_user_workspace_role';
 
     my $sql = qq{
-        SELECT COUNT(user_id)
+        SELECT COUNT(DISTINCT user_id)
           FROM users
-         WHERE user_id IN ( $SQL_UNION_USER_ID_BY_WS_ID )
+          JOIN $uwr_table USING (user_id)
+         WHERE workspace_id = ?
     };
 
-    my $count = sql_singlevalue($sql, $ws_id, $ws_id);
+    my $count = sql_singlevalue($sql, $ws_id);
     return $count;
 }
 
@@ -91,11 +71,16 @@ sub CountUsersByWorkspaceId {
 # Check to see if a User has a specific Role in the Workspace (either directly
 # as an UWR, or indirectly as an UGR+GWR)
 sub UserHasRoleInWorkspace {
-    my $class = shift;
-    my %p     = @_;
-    my $user  = $p{user};
-    my $role  = $p{role};
-    my $ws    = $p{workspace};
+    my $class  = shift;
+    my %p      = @_;
+    my $user   = $p{user};
+    my $role   = $p{role};
+    my $ws     = $p{workspace};
+    my $direct = exists $p{direct} ? $p{direct} : 0;
+
+    my $uwr_table = $p{direct}
+        ? '"UserWorkspaceRole"'
+        : 'all_user_workspace_role';
 
     my $user_id = $user->user_id();
     my $role_id = $role->role_id();
@@ -103,34 +88,13 @@ sub UserHasRoleInWorkspace {
 
     my $sql = qq{
         SELECT 1
-          FROM users
-         WHERE users.user_id = ?
-           AND (
-                    ( EXISTS (
-                        SELECT user_id
-                          FROM "UserWorkspaceRole" AS uwr
-                         WHERE uwr.user_id = users.user_id
-                           AND uwr.role_id = ?
-                           AND uwr.workspace_id = ?
-                    ) )
-                    OR
-                    ( EXISTS (
-                        SELECT gwr.group_id
-                          FROM group_workspace_role AS gwr
-                         WHERE gwr.role_id = ?
-                           AND gwr.workspace_id = ?
-                           AND gwr.group_id IN (
-                                  SELECT ugr.group_id
-                                    FROM user_group_role AS ugr
-                                   WHERE ugr.user_id = ?
-                             )
-                    ) )
-               )
+          FROM $uwr_table
+         WHERE user_id = ? AND workspace_id = ? AND role_id = ?
+         LIMIT 1
     };
     my $is_ok = sql_singlevalue(
         $sql,
-        ($user_id, $role_id, $ws_id),
-        ($role_id, $ws_id, $user_id)
+        $user_id, $ws_id, $role_id
     );
     return $is_ok || 0;
 }
@@ -143,32 +107,21 @@ sub RolesForUserInWorkspace {
     my %p     = @_;
     my $user  = $p{user};
     my $ws    = $p{workspace};
+    my $direct = exists $p{direct} ? $p{direct} : 0;
 
     my $user_id = $user->user_id();
     my $ws_id   = $ws->workspace_id();
 
+    my $uwr_table = $p{direct}
+        ? '"UserWorkspaceRole"'
+        : 'distinct_user_workspace_role';
+
     my $sql = qq{
-        SELECT DISTINCT(role_id)
-          FROM (
-                ( SELECT uwr.role_id
-                    FROM "UserWorkspaceRole" AS uwr
-                   WHERE uwr.user_id = ?
-                     AND uwr.workspace_id = ?
-                )
-                UNION
-                ( SELECT gwr.role_id
-                    FROM group_workspace_role AS gwr
-                    JOIN user_group_role ugr USING (group_id)
-                   WHERE ugr.user_id = ?
-                     AND gwr.workspace_id = ?
-                )
-          ) AS all_his_roles
+        SELECT role_id
+        FROM $uwr_table
+        WHERE user_id = ? AND workspace_id = ?
     };
-    my $sth = sql_execute(
-        $sql,
-        ($user_id, $ws_id),
-        ($user_id, $ws_id),
-    );
+    my $sth = sql_execute($sql, $user_id, $ws_id);
 
     # turn the results into a list of Roles
     my @all_roles =
@@ -199,6 +152,7 @@ sub RolesForUserInWorkspace {
         order_by      => SCALAR_TYPE(default   => 'name'),
         sort_order    => SCALAR_TYPE(default   => 'asc'),
         user_id       => SCALAR_TYPE,
+        direct        => BOOLEAN_TYPE(default => undef),
     };
     sub WorkspacesByUserId {
         my $class   = shift;
@@ -206,6 +160,11 @@ sub RolesForUserInWorkspace {
         my $user_id = $p{user_id};
         my $limit   = $p{limit};
         my $offset  = $p{offset};
+        my $direct  = $p{direct};
+
+        my $uwr_table = $p{direct}
+            ? '"UserWorkspaceRole"'
+            : 'distinct_user_workspace_role';
 
         my $exclude_clause = '';
         if (@{ $p{exclude} }) {
@@ -216,16 +175,13 @@ sub RolesForUserInWorkspace {
         my $sql = qq{
             SELECT "Workspace".workspace_id
               FROM "Workspace"
-             WHERE workspace_id IN ( $SQL_UNION_WS_ID_BY_USER_ID )
+              JOIN $uwr_table USING (workspace_id)
+             WHERE user_id = ?
              $exclude_clause
              ORDER BY "Workspace".name $p{sort_order}
              LIMIT ? OFFSET ?
         };
-        my $sth = sql_execute(
-            $sql,
-            $user_id, $user_id,
-            $limit, $offset,
-        );
+        my $sth = sql_execute( $sql, $user_id, $limit, $offset );
 
         return Socialtext::MultiCursor->new(
             iterables => [ $sth->fetchall_arrayref() ],
@@ -242,6 +198,11 @@ sub RolesForUserInWorkspace {
         my $user_id = $p{user_id};
         my $limit   = $p{limit};
         my $offset  = $p{offset};
+        my $direct  = $p{direct};
+
+        my $uwr_table = $p{direct}
+            ? '"UserWorkspaceRole"'
+            : 'all_user_workspace_role';
 
         my $exclude_clause = '';
         if (@{ $p{exclude} }) {
@@ -250,17 +211,13 @@ sub RolesForUserInWorkspace {
         }
 
         my $sql = qq{
-            SELECT COUNT("Workspace".workspace_id)
-              FROM "Workspace"
-             WHERE workspace_id IN ( $SQL_UNION_WS_ID_BY_USER_ID )
+            SELECT COUNT(DISTINCT workspace_id)
+              FROM $uwr_table
+             WHERE user_id = ?
              $exclude_clause
              LIMIT ? OFFSET ?
         };
-        my $count = sql_singlevalue(
-            $sql,
-            $user_id, $user_id,
-            $limit, $offset,
-        );
+        my $count = sql_singlevalue( $sql, $user_id, $limit, $offset );
         return $count;
     }
 }
@@ -322,22 +279,53 @@ Role in the given Workspace, only that he has it.
 
 =over
 
-=item B<Socialtext::Workspace::Roles-E<gt>UsersByWorkspaceId(workspace_id =E<gt> $ws_id)>
+=item B<Socialtext::Workspace::Roles-E<gt>UsersByWorkspaceId(PARAMS)>
 
 Returns a C<Socialtext::MultiCursor> containing all of the Users that have a
-Role in the Workspace represented by the given C<workspace_id>.
+Role in the Workspace.
 
 The list of Users returned is I<already> de-duped (so any User appears once
 and only once in the list), and is ordered by Username.
 
-=item B<Socialtext::Workspace::Roles-E<gt>CountUsersByWorkspaceId(workspace_id =E<gt> $ws_id)>
+Acceptable C<PARAMS> include:
 
-Returns the count of Users that have a Role in the Workspace represented by
-the given C<workspace_id>.
+=over
+
+=item workspace_id => $workspace_id
+
+B<Required.>  Id for the Workspace to get the list of Users for.
+
+=item direct => 1|0
+
+A boolean stating whether or not we should only be concerned about Users that
+have a B<direct> Role in the Workspace.  By default, Users with either a
+direct or an indirect Role are considered.
+
+=back
+
+=item B<Socialtext::Workspace::Roles-E<gt>CountUsersByWorkspaceId(PARAMS)>
+
+Returns the count of Users that have a Role in the Workspace.
 
 This method has been optimized so that it doesn't have to fetch B<all> of the
 Users from the DB in order to count them up; we just issue the query and take
 the count of the results.
+
+Acceptable C<PARAMS> include:
+
+=over
+
+=item workspace_id => $workspace_id
+
+B<Required.>  Id for the Workspace to get the User count for.
+
+=item direct => 1|0
+
+A boolean stating whether or not we should only be concerned about Users that
+have a B<direct> Role in the Workspace.  By default, Users with either a
+direct or an indirect Role are considered.
+
+=back
 
 =item B<Socialtext::Workspace::Roles-E<gt>UserHasRoleInWorkspace(PARAMS)>
 
@@ -359,6 +347,17 @@ Role object
 =item workspace
 
 Workspace object
+
+=back
+
+C<PARAMS> may also include:
+
+=over
+
+=item direct => 1|0
+
+A boolean stating whether or not we should only be concerned about B<direct>
+Roles in the Workspace.  By default, direct or indirect Roles are considered.
 
 =back
 
@@ -385,6 +384,17 @@ User object
 =item workspace
 
 Workspace object
+
+=back
+
+C<PARAMS> may also include:
+
+=over
+
+=item direct => 1|0
+
+A boolean stating whether or not we should only be concerned about B<direct>
+Roles in the Workspace.  By default, direct or indirect Roles are considered.
 
 =back
 
@@ -428,6 +438,12 @@ The result set is B<always> ordered by Workspace Name.
 =item sort_order
 
 Sort ordering; ASCending or DESCending.
+
+=item direct => 1|0
+
+A boolean stating whether or not we should only be concerned with Workspaces
+that the User has a B<direct> Role in.  By default, we consider Workspaces
+that the User could have a Role in either directly or indirectly.
 
 =back
 

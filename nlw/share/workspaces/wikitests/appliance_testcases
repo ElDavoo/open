@@ -3,3 +3,4 @@ These testcases are specific to the appliance.
 * [Test case: Appliance Console]
 * [Test case: Console Setup]
 * [Test case: Console Backup and Restore]
+* [Test Case: User Settings: First Last locale order]

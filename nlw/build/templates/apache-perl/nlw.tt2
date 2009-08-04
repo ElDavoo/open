@@ -27,8 +27,6 @@
     PerlSetEnv APACHE_LOG_DIR [% config.log_dir %]
 
 [%- IF config.is_dev %]
-    ErrorDocument 500 /nlw/errors/500.html
-
     PerlSetVar ReloadAll Off
     PerlSetVar ReloadModules "Socialtext::WebApp Socialtext::WebApp::* Socialtext::* Socialtext::Handler Socialtext::Handler::* Socialtext::RequestContext"
     PerlInitHandler  +Apache::Reload

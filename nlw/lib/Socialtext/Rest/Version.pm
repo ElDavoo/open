@@ -19,9 +19,11 @@ use Readonly;
 #  9: iteration-2009-07-17 (release-3.5.9): /data/events gets new html template,
 #     supports account_id, new "negative" filters 
 #     (e.g. ?event_class=page;action!=view )
-# 10: iteration-2009-07-31 (release-3.5.10): PUT /data/accounts gets `type` arg
+# 10: iteration-2009-07-31 (release-3.5.10): PUT /data/accounts gets `type`
+#     arg, /data/workspaces/:ws/users has effective roles.
+#     PUT /data/signal/:signal/hide, DELETE /data/signal/:signal.
 # 11: iteration-2009-08-14 (release-3.5.11): GET /data/signals/:id
-Readonly our $API_VERSION => 10;
+Readonly our $API_VERSION => 11;
 Readonly our $MTIME       => ( stat(__FILE__) )[9];
 
 sub allowed_methods {'GET, HEAD'}

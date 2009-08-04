@@ -1,0 +1,43 @@
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Verify Avatar Popup |  |
+| *Comment* | [Test Case: Verify Profile] should have run before Avatar Popup |  |
+
+| *Comment* | These values must match the one in [Test Case: Edit Profile] |  |
+| set | e_user | profile.editor@ken.socialtext.net |
+| set | es_user | profile.editor\@ken.socialtext.net |
+| set | short_e_user | profile.editor |
+| set | fname | Profligate |
+| set | lname | Edisaurus |
+
+| *Comment* | Test Case: Verify Avatar Popup . Home page last edited by %%fname%% %%lname%% |  |
+| wait_for_element_visible_ok | //span[@id='update-attribution']//a | 30000 |
+| MouseOver | //span[@id='update-attribution']//a |  |
+
+| *Comment* | Test Case: Verify Avatar Popup. %%short_e_user%% Popup should pop up from update attribution |  |
+| wait_for_text_present_ok | 555-work-%%short_e_user%% | 30000 |
+| text_like | qr/%%fname%%.+%%lname%%.+%%es_user%%.+Work.+555-work-%%short_e_user%%.+AIM.+%%short_e_user%%.+Sametime/ism |  |
+
+| *Comment* | Test Case: Verify Avatar Popup. %%short_e_user%% Popup should pop up from listview |  |
+| click_and_wait | link=What's New |  |
+| wait_for_element_visible_ok | link=%%fname%% %%lname%% | 30000 |
+| MouseOver | link=%%fname%% %%lname%% |  |
+| wait_for_text_present_ok | 555-work-%%short_e_user%% | 30000 |
+| text_like | qr/%%fname%%.+%%lname%%.+%%es_user%%.+Work.+555-work-%%short_e_user%%.+AIM.+%%short_e_user%%.+Sametime/ism |  |
+
+| *Comment* | Test Case: Verify Avatar Popup. Follow from pop up |  |
+| wait_for_element_visible_ok | link=Follow this person | 30000 |
+| click_ok | link=Follow this person |  |
+| click_and_wait | link=%%fname%% %%lname%% | 30000 |
+| wait_for_element_visible_ok | link=Stop following this person | 30000 |
+
+| *Comment* | Test Case: Verify Avatar Popup. Stop following from pop up |  |
+| open_ok | /%%workspace%% |  |
+| wait_for_element_visible_ok | //span[@id='update-attribution']//a | 30000 |
+| MouseOver | //span[@id='update-attribution']//a |  |
+| wait_for_element_visible_ok | link=Stop following this person | 30000 |
+| click_ok | link=Stop following this person |  |
+| click_and_wait | link=%%fname%% %%lname%% | 30000 |
+| wait_for_element_visible_ok | link=Follow this person | 30000 |
+
+| *Comment* | Test Case: Avatar Popup COMPLETED |  |

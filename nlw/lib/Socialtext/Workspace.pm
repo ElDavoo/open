@@ -1111,6 +1111,13 @@ sub permissions {
     return $self->{_perms};
 }
 
+sub email_passes_invitation_filter {
+    my $self   = shift;
+    my $email  = shift;
+    my $filter = $self->invitation_filter or return 1;
+    return($email and $email =~ qr/$filter/);
+}
+
 {
     Readonly my $spec => {
        user => USER_TYPE,
@@ -1270,23 +1277,23 @@ sub has_user {
 
 sub user_count {
     my $self = shift;
-    return Socialtext::Workspace::Roles->CountUsersByWorkspaceId(
-        workspace_id => $self->workspace_id,
-    );
+    my %p = (@_==1) ? %{+shift} : @_;
+    $p{workspace_id} = $self->workspace_id;
+    return Socialtext::Workspace::Roles->CountUsersByWorkspaceId(%p);
 }
 
 sub users {
     my $self = shift;
-    return Socialtext::Workspace::Roles->UsersByWorkspaceId(
-        workspace_id => $self->workspace_id,
-    );
+    my %p = (@_==1) ? %{+shift} : @_;
+    $p{workspace_id} = $self->workspace_id;
+    return Socialtext::Workspace::Roles->UsersByWorkspaceId(%p);
 }
 
 sub users_with_roles {
     my $self = shift;
-
-    return Socialtext::User->ByWorkspaceIdWithRoles(
-            workspace_id => $self->workspace_id(), @_ );
+    my %p = (@_==1) ? %{+shift} : @_;
+    $p{workspace_id} = $self->workspace_id;
+    return Socialtext::User->ByWorkspaceIdWithRoles(%p);
 }
 
 sub add_group {
@@ -2611,16 +2618,27 @@ role.
 Returns the number of users with an explicitly assigned role in the
 workspace.
 
+Passthrough to C<Socialtext::Workspace::Roles-E<gt>CountUsersByWorkspaceId()>.
+Refer to L<Socialtext::Workspace::Roles> for more information on acceptable
+parameters.
+
 =head2 $workspace->users()
 
 Returns a cursor of C<Socialtext::User> objects for users in the
 workspace, ordered by username.
+
+Passthrough to C<Socialtext::Workspace::Roles-E<gt>UsersByWorkspaceId()>.
+Refer to L<Socialtext::Workspace::Roles> for more information on acceptable
+parameters.
 
 =head2 $workspace->users_with_roles()
 
 Returns a cursor of C<Socialtext::User> and
 C<Socialtext::UserWorkspaceRole> objects for users in the the
 workspace, ordered by username.
+
+Passthrough to C<Socialtext::User-E<gt>ByWorkspaceIdWithRoles()>.  Refer to
+L<Socialtext::User> for more information on acceptable parameters.
 
 =head2 $workspace->add_group(group=>$group, role=>$role)
 

@@ -1918,17 +1918,19 @@ proto.assert_padding_between_block_elements = function(html) {
 }
 
 proto.assert_padding_around_block_elements = function(html) {
-    var doc = jQuery('<div />').append(
+    var tmpElement = document.createElement('div');
+    tmpElement.innerHTML = 
         html.replace(/<div\b/g, '<span tmp="div"')
             .replace(/<\/div>/g, '</span>')
-    );
+    var doc = $(tmpElement);
 
     var el;
     while (el = doc.find('span[tmp=div]:first')[0]) {
         var span = jQuery(el);
-        var div = jQuery('<div />')
-            .append( span.clone().removeAttr('tmp') )
-            .html()
+        var divElement = document.createElement("div");
+        divElement.appendChild( (span.clone().removeAttr('tmp'))[0] );
+
+        var div = divElement.innerHTML
             .replace(/^<span/, '<div')
             .replace(/<\/span>$/, '</div>');
 
@@ -2083,24 +2085,6 @@ proto.setWidgetHandler = function(img) {
     this.attachTooltip(img);
 }
 
-proto.need_to_revert_widet = function(img) {
-    var style = img.getAttribute("style");
-    var width = img.getAttribute("width");
-    var height = img.getAttribute("height");
-    var has_style_attr = (typeof style == 'string');
-    var has_width_attr = (typeof width != 'undefined' );
-    var has_height_attr = (typeof height != 'undefined');
-
-    if (
-        has_style_attr ||
-        img.getAttribute("src").match(/^\.\./) ||
-        ( has_width_attr && has_height_attr )
-    ) {
-        return true;
-    }
-    return false;
-}
-
 proto.revert_widget_images = function() {
     if ( this._fixer_interval_id ) {
         return;
@@ -2117,7 +2101,6 @@ proto.revert_widget_images = function() {
             var img = imgs[i];
 
             if (!img.getAttribute("widget")) { continue; }
-            if (!self.need_to_revert_widet(img)) { continue; }
 
             img.removeAttribute("style");
             img.removeAttribute("width");

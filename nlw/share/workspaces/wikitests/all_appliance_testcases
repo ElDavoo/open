@@ -17,6 +17,7 @@ Socialcalc enabled is required because we run Calc Testcases
 * [File Testcases]
 * [Localization Testcases]
 * [Test case: Business Control Panel]
+* [Test case: Account Types]
 
 LDAP Testcases will Enable LDAP and use a known LDAP user instead of a Default user where required
 

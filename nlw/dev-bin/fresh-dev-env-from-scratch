@@ -49,6 +49,7 @@ PLUGINS=${PLUGINS:-widgets agile csskit dashboard people signals socialcalc apac
 dev-bin/link-plugins $PLUGINS
 st-make-all @clean all
 rm -f etc/socialtext/db/cache.*.sql
+dev-bin/link-console
 dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --preserve --fixture base_config
 dev-bin/make-test-fixture --home_dir $HOME --preserve --fixture ALL
@@ -62,7 +63,6 @@ echo "Linking in extra modules ..."
 # otherwise everyone is forced to have all this code checked out
 set +e
 dev-bin/link-control-panel
-dev-bin/link-console
 dev-bin/link-reports
 set -e
 
