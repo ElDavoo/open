@@ -1647,7 +1647,7 @@ sub _show_workspace_members {
     my $msg = "Members of the " . $ws->name . " workspace\n\n";
     $msg .= "| Email Address | First | Last | Role |\n";
 
-    my $user_cursor =  $ws->users_with_roles;
+    my $user_cursor = $self->_get_ws_users_cursor($ws);
     my $entry;
     while ($entry = $user_cursor->next) {
         my ($user, $role) = @$entry;
@@ -1665,7 +1665,7 @@ sub show_admins {
     my $msg = "Admins of the " . $ws->name . " workspace\n\n";
     $msg .= "| Email Address | First | Last |\n";
 
-    my $user_cursor =  $ws->users_with_roles;
+    my $user_cursor = $self->_get_ws_users_cursor($ws);
     my $entry;
     while ($entry = $user_cursor->next) {
         my ($user, $role) = @$entry;
@@ -1684,7 +1684,7 @@ sub show_impersonators {
     my $msg = "Impersonators in the " . $ws->name . " workspace\n\n";
     $msg .= "| Email Address | First | Last |\n";
 
-    my $user_cursor =  $ws->users_with_roles;
+    my $user_cursor = $self->_get_ws_users_cursor($ws);
     my $entry;
     while ($entry = $user_cursor->next) {
         my ($user, $role) = @$entry;
@@ -1693,6 +1693,14 @@ sub show_impersonators {
     }
 
     $self->_success($msg, "no indent");
+}
+
+sub _get_ws_users_cursor {
+    my $self     = shift;
+    my $ws       = shift;
+    my %opts     = $self->_get_options('indirect');
+    my $indirect = $opts{indirect} || 0;
+    return $ws->users_with_roles(direct => !$indirect);
 }
 
 sub purge_page {
