@@ -34,5 +34,13 @@ __END__
 
 Log::Dispatch::File::Socialtext - use syswrite
 
+=head1 DESCRIPTION
+
+Our custom logger.
+
+=head1 SYNOPSIS
+
+Go see Socialtext::Log.
+
 =cut
 
