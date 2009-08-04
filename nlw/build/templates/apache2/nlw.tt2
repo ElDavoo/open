@@ -196,7 +196,6 @@
   # Real code starts 
   # ###################################### %]
 ErrorDocument 502 /static/html/502.html
-ErrorDocument 500 /static/html/500.html
 
 <VirtualHost *:[% config.frontend_ports.http %]>
     [%- IF config.ssl_only %]

@@ -172,29 +172,9 @@ sub main {
         );
         my $static_dir = _static_dir();
 
-        push @files,
-        [
-        'html/500.tt2' => "$static_dir/html/500.html",
-        \%config,
-        'overwrite',
-        ];
 
-        foreach my $lang ( _get_langs() ) {
-            push @files,
-                [
-                "html/502.$lang.tt2" => "$static_dir/html/502.html.$lang",
-                \%config,
-                'overwrite',
-                ];
-        }
-
-        push @files,
-                [
-                'html/502.en.tt2' => "$static_dir/html/502.html.html",
-                \%config,
-                'overwrite',
-                 ];
-
+        symlink "$static_dir/html/502.standard.html" => "$static_dir/html/502.html"
+           unless ( -e "$static_dir/html/502.standard.html" || -l "$static_dir/html/502.standard.html" );
     }
 
     if ( is_target_for( 'apache', 'apache-perl' ) ) {
