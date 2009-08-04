@@ -1,0 +1,51 @@
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+| set | admin | admin%%start_time%%@q.q |
+| create-user | %%admin%% | password | %%account%% |
+| add-member | %%admin%% | %%workspace%% | workspace_admin |
+| set | peon | peon%%start_time%%@q.q |
+| create-user | %%peon%% | password | %%account%% |
+| add-member | %%peon%% | %%workspace%% | member |
+
+| http-user-pass | %%admin%% | password |
+| GET | /data/workspaces/%%workspace%%/users | application/json|
+| code-is | 200 |
+| json-parse |
+| json-array-size | 3 |
+| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"member"}] |
+
+* Add peon to some group
+* Add that group to workpace A with role workspace_admin
+
+| set | group | %%start_time%% group! |
+
+| create-group           | %%group%% | %%account%%   |                 |
+| add-group-to-workspace | %%group%% | %%workspace%% | workspace_admin |
+| add-user-to-group      | %%peon%%  | %%group%%       |                 |
+
+| http-user-pass | %%admin%% | password |
+| GET | /data/workspaces/%%workspace%%/users | application/json|
+| code-is | 200 |
+| json-parse |
+| json-array-size | 3 |
+| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"workspace_admin","roles":["member","workspace_admin"]}] |
+
+| add-member | %%peon%% | %%workspace%% | impersonator |
+
+| http-user-pass | %%admin%% | password |
+| GET | /data/workspaces/%%workspace%%/users | application/json|
+| code-is | 200 |
+| json-parse |
+| json-array-size | 3 |
+| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"impersonator","roles":["workspace_admin","impersonator"]}] |
+
+| remove-member | %%peon%% | %%workspace%% |
+
+| http-user-pass | %%admin%% | password |
+| GET | /data/workspaces/%%workspace%%/users | application/json|
+| code-is | 200 |
+| json-parse |
+| json-array-size | 3 |
+| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"workspace_admin","roles":["workspace_admin"]}] |
