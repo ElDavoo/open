@@ -482,6 +482,12 @@ sub invite_one_user {
         viewer             => $self->hub->viewer
     );
     $invitation->send();
+
+    $self->hub->pluggable->hook(
+        'nlw.invite_user_to_workspace',
+        $user_data->{email_address},
+        $self->cgi->follow_invitees
+    );
 }
 
 package Socialtext::UserSettings::CGI;
@@ -504,4 +510,5 @@ cgi 'last_name';
 cgi 'append_invitation';
 cgi 'invitation_text';
 cgi 'dm_sends_email';
+cgi 'follow_invitees';
 1;
