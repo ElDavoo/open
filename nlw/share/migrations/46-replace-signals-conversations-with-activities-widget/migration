@@ -5,6 +5,9 @@ use warnings;
 use Socialtext::SQL qw/get_dbh/;
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::System qw/shell_run/;
+use Socialtext::Migration::Utils qw(ensure_socialtext_schema);
+
+ensure_socialtext_schema(77);
 
 my $dbh = get_dbh();
 
