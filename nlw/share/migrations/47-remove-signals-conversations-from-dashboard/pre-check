@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Socialtext::Migration::Utils qw/ensure_socialtext_schema/;
 
-ensure_socialtext_schema(74); # Current version when this migration written
+ensure_socialtext_schema(76);
 
 my $st_widgets = '/usr/bin/st-widgets';
 if (-x $st_widgets) {
