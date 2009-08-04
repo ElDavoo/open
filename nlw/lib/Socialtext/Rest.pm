@@ -54,6 +54,25 @@ sub bad_method {
     return HTTP_405_Method_Not_Allowed . "\n\nOnly $allowed are supported.\n";
 }
 
+sub if_plugin_authorized {
+    my $self = shift;
+    my $plugin = shift;
+    my $method = shift;
+    my $perl_method = shift;
+
+    my $authz = Socialtext::Authz->new();
+    my $user = $self->rest->user;
+    return $self->not_authorized
+        unless $user
+            and $user->is_authenticated
+            and $authz->plugin_enabled_for_user(
+                user => $user,
+                plugin_name => $plugin, 
+            );
+
+    return $self->$perl_method(@_);
+}
+
 =head2 bad_type
 
 The request sent a content-type that's not useful for the current URI.
