@@ -279,22 +279,53 @@ Role in the given Workspace, only that he has it.
 
 =over
 
-=item B<Socialtext::Workspace::Roles-E<gt>UsersByWorkspaceId(workspace_id =E<gt> $ws_id)>
+=item B<Socialtext::Workspace::Roles-E<gt>UsersByWorkspaceId(PARAMS)>
 
 Returns a C<Socialtext::MultiCursor> containing all of the Users that have a
-Role in the Workspace represented by the given C<workspace_id>.
+Role in the Workspace.
 
 The list of Users returned is I<already> de-duped (so any User appears once
 and only once in the list), and is ordered by Username.
 
-=item B<Socialtext::Workspace::Roles-E<gt>CountUsersByWorkspaceId(workspace_id =E<gt> $ws_id)>
+Acceptable C<PARAMS> include:
 
-Returns the count of Users that have a Role in the Workspace represented by
-the given C<workspace_id>.
+=over
+
+=item workspace_id => $workspace_id
+
+B<Required.>  Id for the Workspace to get the list of Users for.
+
+=item direct => 1|0
+
+A boolean stating whether or not we should only be concerned about Users that
+have a B<direct> Role in the Workspace.  By default, Users with either a
+direct or an indirect Role are considered.
+
+=back
+
+=item B<Socialtext::Workspace::Roles-E<gt>CountUsersByWorkspaceId(PARAMS)>
+
+Returns the count of Users that have a Role in the Workspace.
 
 This method has been optimized so that it doesn't have to fetch B<all> of the
 Users from the DB in order to count them up; we just issue the query and take
 the count of the results.
+
+Acceptable C<PARAMS> include:
+
+=over
+
+=item workspace_id => $workspace_id
+
+B<Required.>  Id for the Workspace to get the User count for.
+
+=item direct => 1|0
+
+A boolean stating whether or not we should only be concerned about Users that
+have a B<direct> Role in the Workspace.  By default, Users with either a
+direct or an indirect Role are considered.
+
+=back
 
 =item B<Socialtext::Workspace::Roles-E<gt>UserHasRoleInWorkspace(PARAMS)>
 
@@ -316,6 +347,17 @@ Role object
 =item workspace
 
 Workspace object
+
+=back
+
+C<PARAMS> may also include:
+
+=over
+
+=item direct => 1|0
+
+A boolean stating whether or not we should only be concerned about B<direct>
+Roles in the Workspace.  By default, direct or indirect Roles are considered.
 
 =back
 
@@ -342,6 +384,17 @@ User object
 =item workspace
 
 Workspace object
+
+=back
+
+C<PARAMS> may also include:
+
+=over
+
+=item direct => 1|0
+
+A boolean stating whether or not we should only be concerned about B<direct>
+Roles in the Workspace.  By default, direct or indirect Roles are considered.
 
 =back
 
@@ -385,6 +438,12 @@ The result set is B<always> ordered by Workspace Name.
 =item sort_order
 
 Sort ordering; ASCending or DESCending.
+
+=item direct => 1|0
+
+A boolean stating whether or not we should only be concerned with Workspaces
+that the User has a B<direct> Role in.  By default, we consider Workspaces
+that the User could have a Role in either directly or indirectly.
 
 =back
 
