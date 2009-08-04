@@ -360,6 +360,21 @@ sub add_user_to_group {
     diag "Added user $user_name to group $group_name";
 }
 
+sub remove_user_from_group {
+    my $self = shift;
+    my $user_name = shift;
+    my $group_name = shift;
+
+    my $group = Socialtext::Group->GetGroup(
+        driver_group_name => $group_name,
+        primary_account_id => Socialtext::Account->Default->account_id,
+        created_by_user_id => Socialtext::User->SystemUser->user_id,
+    );
+    my $user = Socialtext::User->Resolve($user_name);
+    $group->remove_user(user => $user);
+    diag "Remove user $user_name from group $group_name";
+}
+
 sub create_workspace {
     my $self = shift;
     my $name = shift;
