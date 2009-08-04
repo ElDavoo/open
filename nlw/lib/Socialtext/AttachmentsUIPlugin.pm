@@ -348,7 +348,7 @@ sub _gen_sort_closure {
                 Socialtext::User->new( 
                     username => $a->{user} 
                 )->best_full_name 
-                <=> 
+                cmp 
                 Socialtext::User->new(
                     username => $b->{user}
                 )->best_full_name
@@ -360,7 +360,7 @@ sub _gen_sort_closure {
                 Socialtext::User->new( 
                     username => $b->{user} 
                 )->best_full_name 
-                <=> 
+                cmp 
                 Socialtext::User->new(
                     username => $a->{user}
                 )->best_full_name
