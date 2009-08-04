@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 10;
+use Test::Socialtext tests => 14;
 
 ###############################################################################
 # Fixtures: db
@@ -78,4 +78,23 @@ get_all_roles_ordered_by_effectiveness_with_custom_roles: {
     );
     is_deeply \@role_names, \@expected_order,
         '... Roles were returned in the expected sorted order';
+}
+
+###############################################################################
+# TEST: Update a Role name
+update_role_name: {
+    my $old_name = 'Crappy Role Name';
+    my $new_name = 'Better Role Name';
+
+    my $role = Socialtext::Role->create(name => $old_name);
+    isa_ok $role, 'Socialtext::Role', 'Test Role';
+
+    $role->update(name => $new_name);
+    is $role->name, $new_name, 'Updated Role has new name';
+
+    $role = Socialtext::Role->new(name => $new_name);
+    isa_ok $role, 'Socialtext::Role', 'Role queried by new name';
+
+    $role = Socialtext::Role->new(name => $old_name);
+    is $role, undef, 'Unable to query Role by old name';
 }
