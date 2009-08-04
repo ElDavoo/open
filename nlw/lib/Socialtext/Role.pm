@@ -8,7 +8,6 @@ our $VERSION = '0.01';
 
 use Class::Field 'field';
 use Readonly;
-use Socialtext::Cache;
 use Socialtext::Exceptions qw( data_validation_error );
 use Socialtext::MultiCursor;
 use Socialtext::SQL 'sql_execute';
@@ -44,28 +43,32 @@ sub EnsureRequiredDataIsPresent {
 }
 
 {
+    # A persistent per-process cache of Roles.
+    #
+    # These things change so *RARELY* that we can confidently keep a cache of
+    # them around basically forever, without worrying about cache coherency
+    # across processes.
     my %ValidCacheKeys = (
         name    => 1,
         role_id => 1,
     );
-    sub _cache {
-        my $name = shift;
-        return Socialtext::Cache->cache("ST::Role-$name");
-    }
+    my %role_cache = map { $_ => +{} } keys %ValidCacheKeys;
     sub _cache_fetch {
         my ($name, $key) = @_;
-        return _cache($name)->get($key);
+        return $role_cache{$name}{$key};
     }
     sub _cache_add {
         my $role = shift;
         foreach my $name (keys %ValidCacheKeys) {
-            _cache($name)->set( $role->$name, $role );
+            my $key = $role->$name;
+            $role_cache{$name}{$key} = $role;
         }
     }
     sub _cache_remove {
         my $role = shift;
         foreach my $name (keys %ValidCacheKeys) {
-            _cache($name)->remove( $role->$name, $role );
+            my $key = $role->$name;
+            delete $role_cache{$name}{$key};
         }
     }
 }
@@ -130,7 +133,7 @@ sub create {
 sub delete {
     my ($self) = @_;
 
-    _cache_remove($self);
+    _cache_remove($self);   # only affects *CURRENT* process
     sql_execute( 'DELETE FROM "Role" WHERE role_id=?',
         $self->role_id );
 }
@@ -140,7 +143,7 @@ sub update {
     my ( $self, %p ) = @_;
 
     $self->_validate_and_clean_data(\%p);
-    _cache_remove($self);
+    _cache_remove($self);   # only affects *CURRENT* process
 
     sql_execute( 'UPDATE "Role" SET name=? WHERE role_id=?',
         $p{name}, $self->role_id );
