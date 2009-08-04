@@ -149,26 +149,10 @@ sub RolesForUserInWorkspace {
 
     my $sql = qq{
         SELECT DISTINCT(role_id)
-          FROM (
-                ( SELECT uwr.role_id
-                    FROM "UserWorkspaceRole" AS uwr
-                   WHERE uwr.user_id = ?
-                     AND uwr.workspace_id = ?
-                )
-                UNION
-                ( SELECT gwr.role_id
-                    FROM group_workspace_role AS gwr
-                    JOIN user_group_role ugr USING (group_id)
-                   WHERE ugr.user_id = ?
-                     AND gwr.workspace_id = ?
-                )
-          ) AS all_his_roles
+        FROM all_user_workspace_role
+        WHERE user_id = ? AND workspace_id = ?
     };
-    my $sth = sql_execute(
-        $sql,
-        ($user_id, $ws_id),
-        ($user_id, $ws_id),
-    );
+    my $sth = sql_execute($sql, $user_id, $ws_id);
 
     # turn the results into a list of Roles
     my @all_roles =
