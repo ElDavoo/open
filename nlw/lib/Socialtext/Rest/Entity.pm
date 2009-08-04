@@ -26,6 +26,10 @@ sub attribute_table_row {
 
     $value = "<a href='$value'>$value</a>" if $name =~ /uri$/;
 
+    if (ref $value eq 'ARRAY') {
+        $value = join('</td><td>', @$value);
+    }
+
     return "<tr><td>$name</td><td>$value</td></tr>\n";
 }
 
