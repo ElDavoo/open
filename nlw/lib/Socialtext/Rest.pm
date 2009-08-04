@@ -60,7 +60,7 @@ sub if_plugin_authorized {
     my $method = shift;
     my $perl_method = shift;
 
-    my $authz = Socialtext::Authz->new();
+    my $authz = $self->hub ? $self->hub->authz : Socialtext::Authz->new();
     my $user = $self->rest->user;
     return $self->not_authorized
         unless $user
