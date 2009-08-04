@@ -50,7 +50,7 @@ sub EnsureRequiredDataIsPresent {
         my($role_key, $val);
         if (exists $p{name}) {
             $role_key = 'name';
-            $val = lc $p{name};
+            $val = $p{name};
         }
         elsif (exists $p{role_id}) {
             $role_key = 'role_id';
@@ -67,7 +67,7 @@ sub EnsureRequiredDataIsPresent {
             # later.
             return unless $role;
 
-            $role_cache{name}{lc $role->name} = $role;
+            $role_cache{name}{$role->name} = $role;
             $role_cache{role_id}{$role->role_id} = $role;
         }
         return $role_cache{$role_key}{$val}->clone
