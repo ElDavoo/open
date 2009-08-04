@@ -20,6 +20,7 @@ use Readonly;
 #     supports account_id, new "negative" filters 
 #     (e.g. ?event_class=page;action!=view )
 # 10: iteration-2009-07-31 (release-3.5.10): PUT /data/accounts gets `type` arg
+# 11: iteration-2009-08-14 (release-3.5.11): GET /data/signals/:id
 Readonly our $API_VERSION => 10;
 Readonly our $MTIME       => ( stat(__FILE__) )[9];
 
