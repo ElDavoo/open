@@ -152,6 +152,7 @@ sub RolesForUserInWorkspace {
         order_by      => SCALAR_TYPE(default   => 'name'),
         sort_order    => SCALAR_TYPE(default   => 'asc'),
         user_id       => SCALAR_TYPE,
+        direct        => BOOLEAN_TYPE(default => undef),
     };
     sub WorkspacesByUserId {
         my $class   = shift;
@@ -159,6 +160,11 @@ sub RolesForUserInWorkspace {
         my $user_id = $p{user_id};
         my $limit   = $p{limit};
         my $offset  = $p{offset};
+        my $direct  = $p{direct};
+
+        my $uwr_table = $p{direct}
+            ? '"UserWorkspaceRole"'
+            : 'distinct_user_workspace_role';
 
         my $exclude_clause = '';
         if (@{ $p{exclude} }) {
@@ -169,7 +175,7 @@ sub RolesForUserInWorkspace {
         my $sql = qq{
             SELECT "Workspace".workspace_id
               FROM "Workspace"
-              JOIN distinct_user_workspace_role USING (workspace_id)
+              JOIN $uwr_table USING (workspace_id)
              WHERE user_id = ?
              $exclude_clause
              ORDER BY "Workspace".name $p{sort_order}
@@ -192,6 +198,11 @@ sub RolesForUserInWorkspace {
         my $user_id = $p{user_id};
         my $limit   = $p{limit};
         my $offset  = $p{offset};
+        my $direct  = $p{direct};
+
+        my $uwr_table = $p{direct}
+            ? '"UserWorkspaceRole"'
+            : 'all_user_workspace_role';
 
         my $exclude_clause = '';
         if (@{ $p{exclude} }) {
@@ -201,7 +212,7 @@ sub RolesForUserInWorkspace {
 
         my $sql = qq{
             SELECT COUNT(DISTINCT workspace_id)
-              FROM all_user_workspace_role
+              FROM $uwr_table
              WHERE user_id = ?
              $exclude_clause
              LIMIT ? OFFSET ?
