@@ -503,6 +503,26 @@ sub st_admin {
     _run_command("st-admin $options", $verify);
 }
 
+#=head2 st_appliance_config($command_options)
+#
+#Runs st-appliance-config command line script with the supplied options.
+#
+#=cut
+
+sub st_appliance_config {
+    my $self = shift;
+    my $options = shift || '';
+    my $verify = shift;
+    $verify = $self->quote_as_regex($verify) if $verify;
+    #ONLY runs on an appliance
+    if (!Socialtext::AppConfig::_startup_user_is_human_user()) {
+       #On An Appliance
+       my $str = "sudo st-appliance-config $options";
+       diag $str;
+       _run_command($str, $verify);
+    }
+}
+
 =head2 st_ldap( $command_options )
 
 Runs st_bootstrap_openldap command line script with the supplied options.
