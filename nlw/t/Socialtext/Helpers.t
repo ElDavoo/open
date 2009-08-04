@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 14;
 
 ###############################################################################
 # Fixtures: clean admin
@@ -119,4 +119,12 @@ is $hub->helpers->script_link('go', action => 'brownian', extra => 1),
 is $hub->helpers->preference_path('flavors', 'layout' => 'ugly'),
     "$script_path?action=preferences_settings;"
       . 'preferences_class_id=flavors;layout=ugly',
-    'preferences_link'
+    'preferences_link';
+
+# Check for Valid e-mail domain
+valid_email_domain: {
+    ok $hub->helpers->valid_email_domain( 'socialtext.net' ),
+        'got a valid email domain';
+    ok ! $hub->helpers->valid_email_domain( 'nosuchdom@in.com' ),
+        'got an invalid domain';
+}
