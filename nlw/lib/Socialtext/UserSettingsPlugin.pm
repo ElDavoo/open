@@ -354,6 +354,12 @@ sub _invite_users {
         my $email = $e->{email_address};
         next if $users{$email};
 
+        my $user = Socialtext::User->new( email_address => $email );
+        if ($user && $ws->has_user($user)) {
+            push @present, $email;
+            next;
+        }
+
         if ($ws_filter) {
             unless ( $email =~ qr/$ws_filter/ ) {
                 push @$invalid, $email;
@@ -362,12 +368,6 @@ sub _invite_users {
         }
         unless ($ws->account->email_passes_domain_filter($email)) {
             push @wrong_domain, $email;
-            next;
-        }
-
-        my $user = Socialtext::User->new( email_address => $email );
-        if ($user && $ws->has_user($user)) {
-            push @present, $email;
             next;
         }
 
