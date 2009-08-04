@@ -347,12 +347,12 @@ sub _invite_users {
     my $ws = $self->hub->current_workspace;
     my $ws_filter = $ws->invitation_filter();
 
-    my %users;
+    my %invitees;
     my @present;
     my @wrong_domain;
     for my $e (@{ $emails }) {
         my $email = $e->{email_address};
-        next if $users{$email};
+        next if $invitees{$email};
 
         my $user = Socialtext::User->new( email_address => $email );
         if ($user && $ws->has_user($user)) {
@@ -371,7 +371,13 @@ sub _invite_users {
             next;
         }
 
-        $users{$email} = {
+        my $invitee = Socialtext::User->new( email_address => $email );
+        if ($invitee && $ws->has_user($invitee)) {
+            push @present, $email;
+            next;
+        }
+
+        $invitees{$email} = {
             username      => $email,
             email_address => $email,
             first_name => $e->{first_name},
@@ -384,17 +390,17 @@ sub _invite_users {
                             '';
 
     if ( $self->hub->checker->check_permission('admin_workspace') ) {
-        for my $user_data ( values %users ) {
+        for my $user_data ( values %invitees ) {
             $self->invite_one_user( $user_data, $extra_invite_text );
         }
     }
     else {
-        $self->invite_request_to_admin( \%users, $extra_invite_text );
+        $self->invite_request_to_admin( \%invitees, $extra_invite_text );
     }
 
     my $settings_section = $self->template_process(
         'element/settings/users_invited_section',
-        users_invited         => [ sort keys %users ],
+        users_invited         => [ sort keys %invitees ],
         users_already_present => [ sort @present ],
         invalid_addresses     => [ sort @$invalid ],
         domain                => $ws->account->restrict_to_domain,
