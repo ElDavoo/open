@@ -1,4 +1,5 @@
 package Log::Dispatch::File::Socialtext;
+# @COPYRIGHT@
 use strict;
 use warnings;
 use base qw( Log::Dispatch::File );
