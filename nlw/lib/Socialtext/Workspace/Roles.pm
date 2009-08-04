@@ -73,17 +73,23 @@ sub UsersByWorkspaceId {
 # Get the Count of Users that have a Role in a given Workspace (either
 # directly as an UWR, or indirectly as an UGR+GWR).
 sub CountUsersByWorkspaceId {
-    my $class = shift;
-    my %p     = @_;
-    my $ws_id = $p{workspace_id};
+    my $class  = shift;
+    my %p      = @_;
+    my $ws_id  = $p{workspace_id};
+    my $direct = $p{direct};
+
+    my $uwr_table = $p{direct}
+        ? '"UserWorkspaceRole"'
+        : 'all_user_workspace_role';
 
     my $sql = qq{
-        SELECT COUNT(user_id)
+        SELECT COUNT(DISTINCT user_id)
           FROM users
-         WHERE user_id IN ( $SQL_UNION_USER_ID_BY_WS_ID )
+          JOIN $uwr_table USING (user_id)
+         WHERE workspace_id = ?
     };
 
-    my $count = sql_singlevalue($sql, $ws_id, $ws_id);
+    my $count = sql_singlevalue($sql, $ws_id);
     return $count;
 }
 
