@@ -25,18 +25,47 @@
 | st-admin | create-account --name %%badtype%% --type foody | Account type (foody) is not valid! |
 | st-admin | show-account-config --account %%badtype%% | There is no account named "%%badtype%%". |
 
-| *Comment* | Test Case: Account Types Create through GUI - No Account Type DropDown |
+| *Comment* | Test Case: Account Types Create through GUI - No Account Type DropDown |  |
+| st-appliance-config | set is_socialtext_hosted 0 |  |
 | open_ok | /nlw/control/account |  |
 | wait_for_element_visible_ok | st-new-account-name | 30000 |
 | wait_for_element_not_present_ok | st-new-account-type | 30000 |
-| st-appliance-config | set socialtext_hosted 1 |
-| open_ok | /nlw/control/account |  |
-| wait_for_element_visible_ok | st-new-account-name | 30000 |
-| wait_for_element_not_visible_ok | st-new-account-type | 30000 |
 
-| *Comment* | Test Case: Account Types Create through GUI - set is_hosted flag - YES Account Type DropDown |
-| *Comment* | Test Case: Account Types Modify through GUI |
+| *Comment* | Test Case: Account Types Create through GUI - set is_hosted flag - YES Account Type DropDown |  |
+| st-appliance-config | set is_socialtext_hosted 1 |  |
+| open_ok | /nlw/control/account |  |
+| wait_for_element_visible_ok | st-submit-new-account-submit | 30000 |
+| wait_for_element_visible_ok | st-new-account-name | 30000 |
+| wait_for_element_visible_ok | st-new-account-type | 30000 |
+| type_ok | st-new-account-name | %%GUI1%% |
+| select_ok | st-new-account-type | Paid |
+| click_and_wait | st-submit-new-account-submit |  |
+| wait_for_text_present_ok | The %%GUI1%% account has been created. | 30000 |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%GUI1%% |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| click_and_wait | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=%%GUI1%% | 30000 |
+| click_and_wait | link=%%GUI1%% | 30000 |
+| wait_for_text_present_ok | Account type: Paid | 30000 |
+
+| *Comment* | Test Case: Account Types Create through GUI - set is_hosted flag - YES create a standard account |  |
+| open_ok | /nlw/control/account |  |
+| wait_for_element_visible_ok | st-submit-new-account-submit | 30000 |
+| wait_for_element_visible_ok | st-new-account-name | 30000 |
+| wait_for_element_visible_ok | st-new-account-type | 30000 |
+| type_ok | st-new-account-name | %%GUI2%% |
+| select_ok | st-new-account-type | Standard |
+| click_and_wait | st-submit-new-account-submit |  |
+| wait_for_text_present_ok | The %%GUI2%% account has been created. | 30000 |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%GUI2%% |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| click_and_wait | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=%%GUI2%% | 30000 |
+| click_and_wait | link=%%GUI2%% | 30000 |
+| wait_for_text_present_ok | Account type: Standard | 30000 |
 
 | *Comment* | Test Case: Account types TEARDOWN |  |
-| st-appliance-config | set socialtext_hosted 0 |
+| st-appliance-config | set is_socialtext_hosted 0 |  |
 | *Comment* | Test Case: Account Types COMPLETED |  |
