@@ -11,21 +11,19 @@ Verifies a fix for:
 | set | utf8_last_name | 太郎 |
 
 | *Comment* | Create test user |  |
-| set | test_username | %%start_time%%@null.socialtext.net |
+| set | test_username | %%start_time%%@ken.socialtext.net |
 | set | test_password | %%start_time%% |
+
 | st-admin | create-user --email %%test_username%% --password %%test_password%% |  |
 | st-admin | add-member --email %%test_username%% --workspace %%workspace%% |  |
-| st-logout |  |  |
-| st-login | %%test_username%% | %%test_password%% |
+| st-logoutin | %%test_username%% | %%test_password%% |
 
 | *Comment* | Use the "My Settings" page to set utf-8 first/last name |  |
 | open-ok | /%%workspace%%/index.cgi?action=users_settings |  |
+| wait_for_element_visible_ok | //input[@name='first_name'] | 30000 |
 | type_ok | //input[@name='first_name'] | %%utf8_first_name%% |
 | type_ok | //input[@name='last_name'] | %%utf8_last_name%% |
-
- submit | //form[@name='settings'] | |
-
-| click_and_wait | st-standard-submitbutton |  |
+| click_and_wait | link=Save |  |
 
 | *Comment* | Verify no mojibake on /:ws/index.cgi?action=users_settings |  |
 | open-ok | /%%workspace%%/index.cgi?action=users_settings |  |
