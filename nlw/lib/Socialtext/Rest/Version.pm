@@ -21,6 +21,7 @@ use Readonly;
 #     (e.g. ?event_class=page;action!=view )
 # 10: iteration-2009-07-31 (release-3.5.10): PUT /data/accounts gets `type`
 #     arg, /data/workspaces/:ws/users has effective roles.
+#     PUT /data/signal/:signal/hide, DELETE /data/signal/:signal.
 Readonly our $API_VERSION => 10;
 Readonly our $MTIME       => ( stat(__FILE__) )[9];
 
