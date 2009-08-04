@@ -312,7 +312,6 @@ sub create_group {
     my $self = shift;
     my $name = shift;
 
-    my $account = Socialtext::Account->Default;
     my $group = Socialtext::Group->Create({
         driver_group_name => $name,
         primary_account_id => Socialtext::Account->Default->account_id,
@@ -329,7 +328,6 @@ sub add_group_to_workspace {
 
     my $ws = Socialtext::Workspace->new(name => $ws_name);
 
-    my $account = Socialtext::Account->Default;
     my $group = Socialtext::Group->GetGroup(
         driver_group_name => $group_name,
         primary_account_id => Socialtext::Account->Default->account_id,
