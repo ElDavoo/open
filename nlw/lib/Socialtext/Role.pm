@@ -8,6 +8,7 @@ our $VERSION = '0.01';
 
 use Class::Field 'field';
 use Readonly;
+use Socialtext::Cache;
 use Socialtext::Exceptions qw( data_validation_error );
 use Socialtext::MultiCursor;
 use Socialtext::SQL 'sql_execute';
@@ -41,37 +42,60 @@ sub EnsureRequiredDataIsPresent {
         );
     }
 }
+
 {
-    my %role_cache = ( name => {}, role_id => {} );
-
-    sub new {
-        my ( $class, %p ) = @_;
-
-        my($role_key, $val);
-        if (exists $p{name}) {
-            $role_key = 'name';
-            $val = lc $p{name};
-        }
-        elsif (exists $p{role_id}) {
-            $role_key = 'role_id';
-            $val = $p{role_id};
-        }
-        else {
-            return;
-        }
-
-        if (!$role_cache{$role_key}{$val}) {
-            my $role = $class->_new_from_where("$role_key=?", $val);
-
-            # don't cache roles that don't exist; they could come into existence
-            # later.
-            return unless $role;
-
-            $role_cache{name}{lc $role->name} = $role;
-            $role_cache{role_id}{$role->role_id} = $role;
-        }
-        return $role_cache{$role_key}{$val}->clone
+    my %ValidCacheKeys = (
+        name    => 1,
+        role_id => 1,
+    );
+    sub _cache {
+        my $name = shift;
+        return Socialtext::Cache->cache("ST::Role-$name");
     }
+    sub _cache_fetch {
+        my ($name, $key) = @_;
+        return _cache($name)->get($key);
+    }
+    sub _cache_add {
+        my $role = shift;
+        foreach my $name (keys %ValidCacheKeys) {
+            _cache($name)->set( $role->$name, $role );
+        }
+    }
+    sub _cache_remove {
+        my $role = shift;
+        foreach my $name (keys %ValidCacheKeys) {
+            _cache($name)->remove( $role->$name, $role );
+        }
+    }
+}
+
+sub new {
+    my ( $class, %p ) = @_;
+
+    my($role_key, $val);
+    if (exists $p{name}) {
+        $role_key = 'name';
+        $val = $p{name};
+    }
+    elsif (exists $p{role_id}) {
+        $role_key = 'role_id';
+        $val = $p{role_id};
+    }
+    else {
+        return;
+    }
+
+    my $role = _cache_fetch($role_key, $val);
+    unless ($role) {
+        $role = $class->_new_from_where("$role_key=?", $val);
+
+        # don't cache roles that don't exist; they could come into existence
+        # later.
+        return unless $role;
+        _cache_add($role);
+    }
+    return $role->clone;
 }
 
 sub _new_from_where {
@@ -106,6 +130,7 @@ sub create {
 sub delete {
     my ($self) = @_;
 
+    _cache_remove($self);
     sql_execute( 'DELETE FROM "Role" WHERE role_id=?',
         $self->role_id );
 }
@@ -115,11 +140,13 @@ sub update {
     my ( $self, %p ) = @_;
 
     $self->_validate_and_clean_data(\%p);
+    _cache_remove($self);
+
     sql_execute( 'UPDATE "Role" SET name=? WHERE role_id=?',
         $p{name}, $self->role_id );
-
     $self->name($p{name});
 
+    _cache_add($self);
     return $self;
 }
 
