@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 14;
+use Test::Socialtext tests => 18;
 
 ###############################################################################
 # Fixtures: db
@@ -97,4 +97,22 @@ update_role_name: {
 
     $role = Socialtext::Role->new(name => $old_name);
     is $role, undef, 'Unable to query Role by old name';
+}
+
+###############################################################################
+# TEST: Delete a Role
+delete_role: {
+    my $role = Socialtext::Role->create(name => 'Delete me!');
+    isa_ok $role, 'Socialtext::Role', 'Test Role';
+
+    my $role_name = $role->name();
+    my $role_id   = $role->role_id();
+
+    ok $role->delete(), 'Role was deleted';
+
+    $role = Socialtext::Role->new(role_id => $role_id);
+    is $role, undef, '... unable to query by role_id';
+
+    $role = Socialtext::Role->new(name => $role_name);
+    is $role, undef, '... unable to query by name';
 }
