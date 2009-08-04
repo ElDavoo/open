@@ -13,21 +13,6 @@ use Readonly;
 # Common SQL UNIONs used to get one type of Id when we've got another.
 #
 # *REQUIRES* that you pass in need Id as a binding, *twice*.
-our $SQL_UNION_USER_ID_BY_WS_ID = qq{
-    (   SELECT user_id
-          FROM users
-          JOIN "UserWorkspaceRole" uwr USING (user_id)
-         WHERE uwr.workspace_id = ?
-    )
-    UNION ALL
-    (   SELECT user_id
-          FROM users
-          JOIN user_group_role ugr USING (user_id)
-          JOIN group_workspace_role gwr USING (group_id)
-          WHERE gwr.workspace_id = ?
-    )
-};
-
 our $SQL_UNION_WS_ID_BY_USER_ID = qq{
     (   SELECT uwr.workspace_id
           FROM "UserWorkspaceRole" uwr
