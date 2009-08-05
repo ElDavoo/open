@@ -4,7 +4,7 @@
   <p>[% loc('You have free access to view and <br />contribute to any of these public wikis:') %]</p>
   <ul>
     [% FOREACH ws IN public_workspaces %]
-      <li><a href="/lite/page/[% ws.0 | html %]/">[% ws.1 | html %]</a></li>
+      <li><a href="/m/page/[% ws.0 | html %]/">[% ws.1 | html %]</a></li>
     [% END %]
   </ul>
 [% END %]

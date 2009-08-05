@@ -4,7 +4,7 @@
   <p>[% loc('Workspaces you belong to:') %]</p>
   <ul>
     [% FOREACH ws IN my_workspaces %]
-      <li><a href="/lite/page/[% ws.0 | html %]/">[% ws.1 | html %]</a></li>
+      <li><a href="/m/page/[% ws.0 | html %]/">[% ws.1 | html %]</a></li>
     [% END %]
   </ul>
   <hr/>

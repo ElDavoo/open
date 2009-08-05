@@ -12,7 +12,7 @@
 [% BLOCK category_list %]
 <ul>
 [% FOREACH category = categories %]
-<li><a href="/lite/category/[% ws.name %]/[% category | uri | html %]">
+<li><a href="/m/category/[% ws.name %]/[% category | uri | html %]">
     [% category | html %]
 </a></li>
 [% END %]
@@ -21,7 +21,7 @@
 
 [% BLOCK recent_changes_link %]
 <div>
-    <a href="/lite/changes/[% ws.name %]/[% category | uri |html %]">
+    <a href="/m/changes/[% ws.name %]/[% category | uri |html %]">
         [% SET escaped_str = category | html %]
         [% loc("Recent changes in [_1] category", escaped_str) %]
     </a>
