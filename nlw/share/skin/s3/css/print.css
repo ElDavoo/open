@@ -626,3 +626,11 @@ div.st-weblog-entrytitle span.text {
     font-family: Verdana, Helvetica, sans-serif;
 }
 
+
+table.st-ss td {
+    border-collapse: separate;
+    border: #CCC 0.5px solid;
+    color: black !important;
+    background: white !important;
+}
+
