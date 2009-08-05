@@ -163,7 +163,7 @@ Specifies the maximum depth to which LDAP referrals are followed.  Defaults to
 
 =item B<ttl>
 
-Specifies the TTL (in seconds) for user data which is queried via this LDAP
+Specifies the TTL (in seconds) for data which is queried via this LDAP
 instance.  Defaults to "300" seconds.
 
 =item B<attr_map> (required)
