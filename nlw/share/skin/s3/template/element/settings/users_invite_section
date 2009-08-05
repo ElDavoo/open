@@ -66,10 +66,6 @@
       </div><!-- messageBoxRight END -->
     </div><!-- messageBox END -->
   </dd>
-  <dd>
-    <input type="checkbox" name="follow_invitees" values="1" />
-    [% loc('Follow These Users?') %]
-  </dd>
 </dl>
 [% END %]
 [% INCLUDE element/settings/stop %]
