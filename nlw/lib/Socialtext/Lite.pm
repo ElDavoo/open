@@ -142,13 +142,9 @@ Presents HTML including a form for editing $page, a L<Socialtext::Page>.
 sub edit_action {
     my $self = shift;
     my $page = shift;
-    # XXX would rather not send the page object, but can't decide
     return $self->_process_template(
         $EDIT_TEMPLATE,
-        workspace_name => $self->hub->current_workspace->name,
         page => $page,
-        page_body => $page->content,
-        page_title => $page->title,
     );
 }
 
@@ -203,9 +199,8 @@ sub recent_changes {
 
     return $self->_process_template(
         $CHANGES_TEMPLATE,
-        workspace_name => $self->hub->current_workspace->name,
-        title          => $title,
-        category       => $category,
+        title     => $title,
+        category  => $category,
         %$changes,
     );
 }
@@ -222,7 +217,6 @@ sub workspace_list {
     return $self->_process_template(
         $WORKSPACE_LIST_TEMPLATE,
         title             => loc('Workspace List'),
-        login_logout      => $self->_login_logout,
         my_workspaces     => [ $self->hub->workspace_list->my_workspaces ],
         public_workspaces => [ $self->hub->workspace_list->public_workspaces ],
     );
@@ -261,10 +255,9 @@ sub search {
 
     return $self->_process_template(
         $SEARCH_TEMPLATE,
-        search_term    => $search_term,
-        workspace_name => $self->hub->current_workspace->name,
-        title          => $title,
-        search_error   => $error,
+        search_term   => $search_term,
+        title         => $title,
+        search_error  => $error,
         %$search_results,
     );
 }
@@ -295,10 +288,9 @@ sub _pages_for_category {
     my $rows = $self->hub->category->get_page_info_for_category($category);
     return $self->_process_template(
         $CATEGORY_TEMPLATE,
-        workspace_name => $self->hub->current_workspace->name,
-        title          => loc("Category [_1]", $category),
-        rows           => $rows,
-        category       => $category,
+        title     => loc("Category [_1]", $category),
+        rows      => $rows,
+        category  => $category,
     );
 }
 
@@ -307,9 +299,8 @@ sub _all_categories {
 
     return $self->_process_template(
         $CATEGORY_TEMPLATE,
-        title          => loc('Categories'),
-        categories     => [ $self->hub->category->all ],
-        workspace_name => $self->hub->current_workspace->name,
+        title      => loc('Categories'),
+        categories => [ $self->hub->category->all ],
     );
 }
 
@@ -329,11 +320,9 @@ sub _handle_contention {
 
     return $self->_process_template(
         $CONTENTION_TEMPLATE,
-        title          => "$subject Editing Error",
-        content        => $content,
-        page_uri       => $page->uri,
-        workspace_name => $self->hub->current_workspace->name,
-        edit_link      => $self->_edit_link($page),
+        title     => "$subject Editing Error",
+        content   => $content,
+        page      => $page->uri,
     );
 }
 
@@ -345,10 +334,9 @@ sub _handle_lock {
 
     return $self->_process_template(
         $PAGE_LOCKED_TEMPLATE,
-        title          => "$subject Editing Error",
-        content        => $content,
-        page_uri       => $page->uri,
-        workspace_name => $self->hub->current_workspace->name,
+        title   => "$subject Editing Error",
+        content => $content,
+        page    => $page,
     );
 }
 
@@ -357,8 +345,6 @@ sub _frame_page {
     my $page = shift;
 
     my $attachments = $self->_get_attachments($page);
-
-    my $edit_link = $self->_edit_link($page);
 
     $self->hub->viewer->link_dictionary(
         Socialtext::Formatter::LiteLinkDictionary->new() );
@@ -370,32 +356,16 @@ sub _frame_page {
         $DISPLAY_TEMPLATE,
         page_html        => $html,
         title            => $page->title,
-        edit_link        => $edit_link,
-        login_logout     => $self->_login_logout($page->uri),
         page_update_info => $self->_page_update_info($page),
         attachments      => $attachments,
         # XXX next two for attachments, because we are using legacy urls
         # for now
-        page_uri         => $page->uri,
-        workspace_name   => $self->hub->current_workspace->name,
-        page_locked           => $page->locked,
+        page             => $page,
         page_locked_for_user  => 
             $page->locked && 
             $self->hub->current_workspace->allows_page_locking &&
             !$self->hub->checker->check_permission('lock'),
     );
-}
-
-sub _login_logout {
-    my $self = shift;
-    my $page_uri = shift;
-    if ($self->hub->current_user->is_guest) {
-        my $uri = $self->hub->current_workspace->uri;
-        $uri =~ s#^(.*://[^/]+)/([^/]+)#$1/lite/page/$2/$page_uri#g;
-        return '<a href="/challenge?' . $uri . '">' . loc('Log in') . '</a>';
-    } else {
-        return '<a href="/nlw/submit/logout?redirect_to=/lite/login">' . loc('Log out') . '</a>';
-    }
 }
 
 sub _process_template {
@@ -406,19 +376,19 @@ sub _process_template {
     my %ws_vars;
     if ($self->hub->current_workspace->real) {
         %ws_vars = (
-            home_link       => $self->_home_link,
-            rc_link         => $self->_recent_changes_link,
-            search_link     => $self->_search_link,
-            workspace_title => $self->hub->current_workspace->title,
+            ws => $self->hub->current_workspace,
         );
     }
 
+    my $user = $self->hub->current_user;
     return $self->hub->template->process(
         $template,
-        brand_stamp     => $self->hub->main->version_tag,
-        static_path     => Socialtext::Helpers::static_path,
-        skin_uri        => sub { $self->hub->skin->skin_uri($_[0]) },
-        user            => $self->hub->current_user,
+        user        => $self->hub->current_user,
+        brand_stamp => $self->hub->main->version_tag,
+        static_path => Socialtext::Helpers::static_path,
+        skin_uri    => sub { $self->hub->skin->skin_uri($_[0]) },
+        pluggable   => $self->hub->pluggable,
+        user        => $user,
         %ws_vars,
         %vars,
     );
@@ -444,50 +414,6 @@ sub _page_update_info {
     my $page_date   = $page->datetime_for_user,
     my $page_author = $page->last_edited_by->best_full_name;
     return "$page_date by $page_author";
-}
-
-sub _edit_link {
-    my $self = shift;
-    my $page = shift;
-
-    my $authz = Socialtext::Authz->new;
-    unless ( $authz->user_has_permission_for_workspace(
-                 user       => $self->hub->current_user,
-                 permission => ST_EDIT_PERM,
-                 workspace  => $self->hub->current_workspace,
-             ) ) {
-        return $self->_login_logout($page->uri);
-    }
-
-    my $workspace_name = $self->hub->current_workspace->name;
-    my $edit = loc('Edit');
-    return qq{<a href="/lite/page/$workspace_name/}
-        . $page->uri
-        . qq{?action=edit">$edit</a>};
-}
-
-sub _home_link {
-    my $self           = shift;
-
-    my $workspace_name = $self->hub->current_workspace->name;
-    my $home = loc("Home");
-    return qq{<a href="/lite/page/$workspace_name/">$home</a>};
-}
-
-sub _recent_changes_link {
-    my $self           = shift;
- 
-    my $workspace_name = $self->hub->current_workspace->name;
-    my $rc = loc('Recent Changes');
-    return qq{<a href="/lite/changes/$workspace_name">$rc</a>};
-}
-
-sub _search_link {
-    my $self           = shift;
- 
-    my $workspace_name = $self->hub->current_workspace->name;
-    my $search = loc('Search');
-    return qq{<a href="/lite/search/$workspace_name">$search</a>};
 }
 
 1;

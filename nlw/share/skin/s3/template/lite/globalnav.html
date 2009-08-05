@@ -1,0 +1,22 @@
+[% USE decorate %] 
+[% IF user.is_guest %]
+    [% IF workspace %]
+        <a href="/challenge?/lite/page/[% ws.name %]/[% page.uri %]">
+            [% loc('Log in') %]
+        </a>
+    [% ELSE %]
+        <a href="/challenge?/lite/workspace_list">
+            [% loc('Log in') %]
+        </a>
+    [% END %]
+[% ELSE %]
+    [% FILTER decorate('lite_global_nav') %]
+    <a href="/lite/workspace_list">
+        [% loc('Workspace list') %]
+    </a>
+    [% END %]
+    | 
+    <a href="/nlw/submit/logout?redirect_to=/lite/login">
+        [% loc('Log out') %]
+    </a>
+[% END %]

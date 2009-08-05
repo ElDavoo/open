@@ -7,11 +7,11 @@
 [% BLOCK category_link %]
 <div>
     [% IF !category %]
-    <a href="/lite/category/[% workspace_name %]/">
+    <a href="/lite/category/[% ws.name %]/">
         [% loc('Filter by category') %]
     </a>
     [% ELSE %]
-    <a href="/lite/category/[% workspace_name %]/[% category | uri |html %]">
+    <a href="/lite/category/[% ws.name %]/[% category | uri |html %]">
         [% SET escaped_str = category | html %]
         [% loc('All Pages in [_1]', escaped_str) %]
     </a>

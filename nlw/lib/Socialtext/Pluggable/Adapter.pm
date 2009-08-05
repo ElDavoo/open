@@ -29,7 +29,6 @@ memoize('plugins', NORMALIZER => sub { '' } ); # memoize ignores args
 my %ONCE_TYPES = (
     action       => 1,
     wafl         => 1,
-    template     => 1,
     template_var => 1,
 );
 

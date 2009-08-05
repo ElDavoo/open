@@ -1,0 +1,15 @@
+<div id="subnav">
+[% IF ws %]
+    <a href="/lite/page/[% ws.name %]/">[% ws.title %]</a>
+    | <a href="/lite/changes/[% ws.name %]/">[% loc("What's new") %]</a>
+    | <a href="/lite/search/[% ws.name %]/">[% loc('Search') %]</a>
+    [% IF page AND !page_locked_for_user %]
+        | <a href="/lite/page/[% ws.name %]/[% page.uri %]?action=edit">[% loc('Edit') %]</a>
+    [% END %]
+[% END %]
+
+[% IF cancel_edit %]
+    | <a href="/lite/page/[% ws.name %]/[% cancel_edit %]">[% loc('Cancel Edit') %]</a>
+[% END %]
+
+</div>

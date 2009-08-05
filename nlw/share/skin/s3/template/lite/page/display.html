@@ -1,0 +1,21 @@
+[%# @COPYRIGHT@ -%]
+[% PROCESS lite/header.html %]
+
+[% page_html %]
+<div class="pageinfo">
+    [% IF page_update_info %]
+        [% loc('Page Last Updated:') %] [% page_update_info %]
+    [% END %]
+    [% IF attachments.size %]
+        <div class="attachments">
+            <p>[% loc('Attachments for this page:') %]</p>
+            <ul>
+                [% FOREACH row = attachments %]
+                    <li><a href="/[% ws.name %]/index.cgi/[% row.filename | uri %]?action=attachments_download;page_name=[% page.uri %];id=[% row.id %]">[% row.filename | html %]</a></li>
+                [% END %]
+            </ul>
+        </div>
+    [% END %]
+</div>
+            
+[% PROCESS lite/footer.html %]

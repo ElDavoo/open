@@ -1,0 +1,16 @@
+[%# @COPYRIGHT@ -%]
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>[% "$ws.title : " IF ws.title %][%- title | html %]</title>
+        <link rel="stylesheet" href="[% skin_uri('/css/miki.css') %]" type="text/css">
+    </head>
+    <body>
+        <div class="logo"></div>
+        <div class="top globalnav">
+            [% INCLUDE lite/globalnav.html %]
+        </div>
+        <div class="top subnav">
+            [% INCLUDE lite/subnav.html %]
+        </div>
