@@ -22,5 +22,5 @@
 [% PROCESS lite/footer.html %]
 
 [% BLOCK attachment_link %]
-<li><a href="/[% workspace_name %]/index.cgi/[% filename | uri %]?action=attachments_download;page_name=[% page_uri %];id=[% file_id %]">[% filename | html %]</a></li>
+<li><a href="/data/workspaces/[% workspace_name %]/attachments/[% page_uri %]:[% file_id %]/original/[% filename | uri %]">[% filename | html %]</a></li>
 [% END %]
