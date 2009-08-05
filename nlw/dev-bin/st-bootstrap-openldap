@@ -62,8 +62,8 @@ exit;
 
 
 ###############################################################################
-# Start.  Bootstraps a copy of OpenLDAP, adds data to it, and sets it up as a
-# viable user factory.  This method does *NOT* return.
+# Start.  Bootstraps a copy of OpenLDAP, and adds data to it.  This method does
+# *NOT* return.
 sub start {
     my $pidfile = _pidfile();
 
@@ -127,15 +127,16 @@ Press ^C to abort.
 }
 
 ###############################################################################
-# Stop.  Kills off any running copy, and resets the user factories back to
-# their default value.
+# Stop.  Kills off any running copy, and resets the user/group factories back
+# to their default value.
 sub stop {
     # kill off any other running copy of st-bootstrap-openldap
     _kill_running_copy_of_ourselves();
 
-    # reset the user_factories back to the default
+    # reset the (user|group)_factories back to the default
     my $appconfig = Socialtext::AppConfig->new();
     $appconfig->set( 'user_factories', 'Default' );
+    $appconfig->set( 'group_factories', 'Default' );
     eval {
         $appconfig->write();
     }
@@ -283,7 +284,7 @@ C<st-bootstrap-openldap> is a command line utility to help bootstrap an
 OpenLDAP instance for testing.
 
 When bootstrapped, the OpenLDAP instance is populated with some test data and
-Socialtext is then configured to use this instance as a user factory.
+Socialtext is then configured to use this instance as a User/Group Factory.
 
 This script automatically kills any running copy of itself on subsequent
 starts.  Its safe to just do C<st-bootstrap-openldap start --daemonize>
