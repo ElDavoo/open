@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 9;
+use Test::Socialtext tests => 12;
 use Test::Socialtext::Search;
 use Socialtext::Search::AbstractFactory;
 

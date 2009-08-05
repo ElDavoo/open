@@ -13,7 +13,7 @@ use Socialtext::Search::Config;
 
 fixtures(qw( admin no-ceq-jobs ));
 
-plan tests => 19;
+plan tests => 22;
 
 my $hub            = Test::Socialtext::Search::hub();
 my $workspace_name = $hub->current_workspace->name;

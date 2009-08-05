@@ -66,6 +66,8 @@ sub search_for_term_in_attach {
     my $term = shift;
     my $filename = shift;
 
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
     Test::Socialtext::ceqlotron_run_synchronously();
 
     my $hub    = hub();

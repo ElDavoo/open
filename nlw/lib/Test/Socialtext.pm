@@ -207,7 +207,14 @@ sub formatted_unlike() {
 }
 
 sub ceqlotron_run_synchronously() {
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    require Socialtext::SQL;
     shell_run("$ENV{ST_CURRENT}/nlw/bin/ceqlotron -f -o");
+    my $jobs_left = Socialtext::SQL::sql_singlevalue(q{
+        SELECT COUNT(*) FROM job WHERE run_after < EXTRACT(epoch from now())
+    });
+    $jobs_left ||= 0;
+    Test::More::is($jobs_left, 0, "ceqlotron finished all runnable jobs");
 }
 
 # Create a temp directory and setup an AppConfig using that directory.

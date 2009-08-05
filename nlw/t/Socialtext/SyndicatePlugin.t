@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 44;
+use Test::Socialtext tests => 45;
 use Socialtext::URI;
 use Socialtext::Cache;
 fixtures(qw( auth-to-edit no-ceq-jobs ));
