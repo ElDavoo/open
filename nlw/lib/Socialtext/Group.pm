@@ -84,7 +84,7 @@ sub Factory {
     my $driver_id   = $p{driver_id};
     my $driver_key  = $p{driver_key};
     if ($driver_key) {
-        ($driver_name, $driver_id) = split /;/, $driver_key;
+        ($driver_name, $driver_id) = split /:/, $driver_key;
     }
 
     my $driver_class = join '::', $class->base_package(), $driver_name, 'Factory';
