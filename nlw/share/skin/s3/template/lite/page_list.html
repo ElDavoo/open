@@ -2,6 +2,7 @@
         [%- IF rows.size %]
         <ul>
         [%- FOREACH row = rows %]
+            [% row = load_row_times(row) %]
             <li>
                 <a title="[% row.Subject | html %]"
                     href="/lite/page/[% row.workspace_name || ws.name %]/[% row.page_uri %]">[% row.Subject |html %]</a>

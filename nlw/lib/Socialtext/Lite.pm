@@ -201,6 +201,7 @@ sub recent_changes {
         $CHANGES_TEMPLATE,
         title     => $title,
         category  => $category,
+        load_row_times => \&Socialtext::Query::Plugin::load_row_times,
         %$changes,
     );
 }
