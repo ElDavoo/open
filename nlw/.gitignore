@@ -310,3 +310,4 @@ lib/Socialtext/Pluggable/Plugin/Appliance.pm
 lib/Socialtext/Rest/Signals/Hidden.pm
 lib/Socialtext/Rest/Signals/Signal.pm
 t/wikitests/signals/data_signals_delete.wiki
+lib/Socialtext/Rest/Signals/Lite.pm

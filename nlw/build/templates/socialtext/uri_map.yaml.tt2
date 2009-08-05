@@ -430,42 +430,42 @@
             'text/html':        [Socialtext::Rest::Settings::DefaultWorkspace, GET_html]
         '*':                    [Socialtext::Rest::Settings::DefaultWorkspace, bad_method]
 -
-    '/lite/changes/:ws/:tag':
+    '/m/changes/:ws/:tag':
         'GET':                  [Socialtext::Rest::Lite, changes]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
-    '/lite/changes/:ws':
+    '/m/changes/:ws':
         'GET':                  [Socialtext::Rest::Lite, changes]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
-    '/lite/category/:ws/:tag':
+    '/m/category/:ws/:tag':
         'GET':                  [Socialtext::Rest::Lite, category]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
-    '/lite/category/:ws':
+    '/m/category/:ws':
         'GET':                  [Socialtext::Rest::Lite, category]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
-    '/lite/search/:ws':
+    '/m/search/:ws':
         'GET':                  [Socialtext::Rest::Lite, search]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
-    '/lite/page/:ws/:pname':
+    '/m/page/:ws/:pname':
         'GET':                  [Socialtext::Rest::Lite, get_page]
         'POST':
             'application/x-www-form-urlencoded': [Socialtext::Rest::Lite, edit_page]
             '*/*':              [Socialtext::Rest::Lite, bad_type]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
-    '/lite/page/:ws':
+    '/m/page/:ws':
         'GET':                  [Socialtext::Rest::Lite, get_page]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
-    '/lite/workspace_list':
+    '/m/workspace_list':
         'GET':                  [Socialtext::Rest::Lite, workspace_list]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
-    '/lite/login':
+    '/m/login':
         'GET':                  [Socialtext::Rest::Lite, login]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
