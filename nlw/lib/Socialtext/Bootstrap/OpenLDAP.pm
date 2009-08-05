@@ -77,6 +77,7 @@ sub new {
     $self->start() or return;
     $self->add_to_ldap_config() or return;
     $self->add_to_user_factories() or return;
+    $self->add_to_group_factories() or return;
 
     # return newly created object
     return $self;
@@ -322,6 +323,12 @@ sub _ldap_config {
             first_name      => 'givenName',
             last_name       => 'sn',
             },
+        group_filter => '(objectClass=groupOfNames)',
+        group_attr_map => {
+            group_id        => 'dn',
+            group_name      => 'cn',
+            member_dn       => 'member',
+            },
         );
     $self->root_dn() && $config->bind_user( $self->root_dn() );
     $self->root_pw() && $config->bind_password( $self->root_pw() );
@@ -370,7 +377,7 @@ sub add_to_user_factories {
 
     # get the list of existing User Factories, stripping us out of it (so we
     # don't add ourselves again as a duplicate)
-    my $me_as_factory = $self->_user_factory();
+    my $me_as_factory = $self->_as_factory();
     my @factories =
         grep { $_ ne $me_as_factory }
         split /;\s*/, Socialtext::AppConfig->user_factories();
@@ -392,7 +399,7 @@ sub remove_from_user_factories {
     verbose( "# removing LDAP instance from user_factories" );
 
     # get the list of existing User Factories, stripping us out of it
-    my $me_as_factory = $self->_user_factory();
+    my $me_as_factory = $self->_as_factory();
     my @factories =
         grep { $_ ne $me_as_factory }
         split /;\s*/, Socialtext::AppConfig->user_factories();
@@ -409,7 +416,52 @@ sub remove_from_user_factories {
     return $got_set_ok;
 }
 
-sub _user_factory {
+sub add_to_group_factories {
+    my $self = shift;
+    verbose( "# adding LDAP instance to group_factories" );
+
+    # get the list of Group Factories, stripping us out of it (so we don't add
+    # ourselves again as a duplicate)
+    my $me_as_factory = $self->_as_factory();
+    my @factories =
+        grep { $_ ne $me_as_factory }
+        split /;\s*/, Socialtext::AppConfig->group_factories();
+
+    # prefix ourselves to the list of Group Factories
+    my $group_factories = join ';', $me_as_factory, @factories;
+    Socialtext::AppConfig->set('group_factories' => $group_factories);
+    Socialtext::AppConfig->write();
+
+    my $got_set_ok = Socialtext::AppConfig->group_factories() eq $group_factories;
+    unless ($got_set_ok) {
+        warn "# unable to add LDAP instance to group_factories\n";
+    }
+    return $got_set_ok;
+}
+
+sub remove_from_group_factories {
+    my $self = shift;
+    verbose( "# removing LDAP instance from group_factories" );
+
+    # get the list of existing Group Factories, stripping us out of it
+    my $me_as_factory = $self->_as_factory();
+    my @factories =
+        grep { $_ ne $me_as_factory }
+        split /;\s*/, Socialtext::AppConfig->group_factories();
+
+    # save the remaining Group Factories back out
+    my $group_factories = join ';', @factories;
+    Socialtext::AppConfig->set('group_factories' => $group_factories);
+    Socialtext::AppConfig->write();
+
+    my $got_set_ok = Socialtext::AppConfig->group_factories() eq $group_factories;
+    unless ($got_set_ok) {
+        warn "# unable to remove LDAP instance from group_factories\n";
+    }
+    return $got_set_ok;
+}
+
+sub _as_factory {
     my $self = shift;
     my $id   = $self->ldap_config->id();
     return "LDAP:$id";
@@ -447,6 +499,7 @@ moduleload back_bdb
 include $self->{schemadir}/core.schema
 include $self->{schemadir}/cosine.schema
 include $self->{schemadir}/inetorgperson.schema
+include $self->{schemadir}/nis.schema
 # logging
 pidfile $self->{statedir}/slapd-$self->{port}.pid
 argsfile $self->{statedir}/slapd-$self->{port}.args
@@ -823,6 +876,24 @@ Socialtext configuration file.
 
 This is called automatically during object cleanup; when the bootstrap object
 goes out of scope it'll de-register itself from the list of C<user_factories>.
+
+=item B<add_to_group_factories()>
+
+Adds B<this> LDAP instance to the list of known C<group_factories> in the
+Socialtext configuration file, by prefixing it to the list of existing
+C<group_factories>.
+
+This is called automatically by C<new()>, so you only need to call this if you
+have explicitly removed it from the C<group_factories> yourself.
+
+=item B<remove_from_group_factories()>
+
+Removes B<this> LDAP instance from the list of known C<group_factories> in the
+Socialtext configuration file.
+
+This is called automatically during object cleanup; when the bootstrap object
+goes out of scope it'll de-register itself from the list of
+C<group_factories>.
 
 =item B<setup()>
 
