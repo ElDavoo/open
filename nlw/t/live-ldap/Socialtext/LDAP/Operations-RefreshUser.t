@@ -333,7 +333,7 @@ test_ldap_missing_email_address: {
 }
 
 ###############################################################################
-# BENCHMARK: how long does it take to refresh ~5000 users?
+# BENCHMARK: how long does it take to refresh ~1000 users?
 benchmark_refresh: {
     my $BENCHMARK_USERS = 1000;
 
