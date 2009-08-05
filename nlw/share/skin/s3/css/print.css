@@ -627,12 +627,8 @@ div.st-weblog-entrytitle span.text {
 }
 
 
-table.st-ss {
-    border-collapse: separate !important;
-}
-
 table.st-ss td {
-    border: #CCC 0.2px solid;
+    border: #DDD 1px ridge;
     color: black !important;
     background: white !important;
 }
