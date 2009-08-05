@@ -16,6 +16,7 @@ use Time::HiRes qw(sleep);
 use User::pwent;
 use Socialtext::HTTP::Ports;
 use Socialtext::AppConfig;
+use Socialtext::LDAP;
 use Socialtext::LDAP::Config;
 
 # XXX: these should be treated as "read-only" fields after instantiation
