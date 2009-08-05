@@ -362,6 +362,14 @@ sub _teardown_cleanup {
                 $obj->{delete_item}->($item);
             }
         }
+
+        Test::More::diag("CLEANUP: removing all ceq jobs");
+        Socialtext::SQL::sql_begin_work();
+        # OK to leave funcmap alone
+        Socialtext::SQL::sql_execute(
+            "TRUNCATE note, error, exitstatus, job"
+        );
+        Socialtext::SQL::sql_commit();
     }
 }
 
