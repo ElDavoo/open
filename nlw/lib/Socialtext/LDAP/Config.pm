@@ -149,7 +149,7 @@ Specifies the password that should be used when binding to the LDAP connection.
 =item B<filter>
 
 Specifies a LDAP filter (e.g. C<(objectClass=inetOrgPerson)>) that should be
-applied and used with B<ALL> queries/searches.
+used to restrict LDAP searches to B<just User records>.
 
 =item B<follow_referrals>
 
