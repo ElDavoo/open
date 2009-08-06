@@ -150,7 +150,7 @@
 | body-like   | >All</span>                   |
 | body-like   | >Mine</a>                     |
 
-| GET         | /m/signals/?actor=%%user_id%% |
+| GET         | /m/signals/?mine=1 |
 | code-is     | 200                           |
 | body-like   | >My Colleagues</a>            |
 | body-like   | >All</a>                      |
