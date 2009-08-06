@@ -47,7 +47,7 @@
     [%- TRY -%]
         [%- INCLUDE "data/events/$event_class_icons" -%]
     [%- CATCH -%]
-        <img class="asset-icon" src="[% wiki.skin_uri('s3') %]/images/asset-icons/edit-16.png"/>
+        <img class="asset-icon" src="[% skin_uri('/images/asset-icons/edit-16.png') %]"/>
     [%- END -%]
 
 [%- END -%]

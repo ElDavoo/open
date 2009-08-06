@@ -62,10 +62,19 @@ body {
 }
 .event_table td {
     border-top: 1px solid #666;
-    padding: 3px 0;
+    padding: 5px 0 3px 0;
 }
 .event_table img.avatar {
-    vertical-align: middle;
+    float: left;
+    margin-right: 5px;
+    border: 1px solid #666 !important;
+}
+.event_table img.asset-icon {
+    float: right;
+}
+.event_table .ago {
+    font-style: italic;
+    color: #666;
 }
 
 .postsignal {
