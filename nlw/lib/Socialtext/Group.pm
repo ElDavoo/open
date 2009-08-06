@@ -90,7 +90,7 @@ sub Factory {
     my $driver_class = join '::', $class->base_package(), $driver_name, 'Factory';
     eval "require $driver_class";
     die "couldn't load $driver_class: $@" if $@;
-    return $driver_class->new(driver_id => $driver_id);
+    return $driver_class->new(driver_key => $driver_key);
 }
 
 ###############################################################################
