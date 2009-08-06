@@ -14,8 +14,8 @@ t.runAsync([
 
         t.is(
             rss_link.getAttribute('target'),
-            '_top',
-            "[RSS Feed] link opens in parent window, not a child window"
+            '_blank',
+            "[RSS Feed] link opens in new window, not a child window"
         );
 
         t.endAsync();
