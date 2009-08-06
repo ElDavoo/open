@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use YAML qw();
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 23;
+use Test::Socialtext tests => 33;
 
 use_ok( 'Socialtext::LDAP::Config' );
 
@@ -29,6 +29,11 @@ attr_map:
     email_address: mail
     first_name: gn
     last_name: sn
+group_filter: (objectClass=groupOfNames)
+group_attr_map:
+    group_id: dn
+    group_name: cn
+    member_dn: member
 EOY
 
 ###############################################################################
@@ -63,6 +68,33 @@ check_required_mapped_attributes: {
 
         is logged_count(), 1, '... logged right number of entries';
         next_log_like 'error', qr/missing mapped User attribute '$attr'/, "... ... missing $attr";
+    }
+}
+
+###############################################################################
+# Check that "group_attr_map" is optional; upgrades ain't gonna have one.
+check_group_attribute_map_is_optional: {
+    my $data = YAML::Load($yaml);
+    delete $data->{group_attr_map};
+
+    my $config = Socialtext::LDAP::Config->new(%{$data});
+    isa_ok $config, 'Socialtext::LDAP::Config', 'valid instantiation';
+}
+
+###############################################################################
+# Check for required mapped Group attributes; group_id, group_name, member_dn
+check_required_mapped_group_attributes: {
+    foreach my $attr (qw( group_id group_name member_dn )) {
+        clear_log();
+
+        my $data = YAML::Load($yaml);
+        delete $data->{group_attr_map}{$attr};
+
+        my $config = Socialtext::LDAP::Config->new(%{$data});
+        ok !defined $config, "instantiation, missing '$attr' mapped Group attribute";
+
+        is logged_count(), 1, '... logged an error';
+        next_log_like 'error', qr/missing mapped Group attribute '$attr'/, "... ... missing $attr";
     }
 }
 

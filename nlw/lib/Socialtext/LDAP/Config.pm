@@ -25,10 +25,12 @@ field 'port';
 field 'bind_user';
 field 'bind_password';
 field 'filter';
+field 'group_filter';
 field 'follow_referrals' => 1;
 field 'max_referral_depth' => 3;
 field 'ttl' => 300;
 field 'attr_map';
+field 'group_attr_map' => +{};
 
 # XXX: possible future config options:
 #           timeout
@@ -49,6 +51,10 @@ sub init {
     # make sure we've got all required mapped User attributes
     my @req_attrs = (qw( user_id username email_address first_name last_name ));
     $self->check_required_mapped_user_attributes(@req_attrs);
+
+    # make sure we've got all required mapped Group attributes
+    @req_attrs = (qw( group_id group_name member_dn ));
+    $self->check_required_mapped_group_attributes(@req_attrs);
 }
 
 sub check_required_mapped_user_attributes {
@@ -57,6 +63,21 @@ sub check_required_mapped_user_attributes {
     foreach my $attr (@attrs) {
         unless ($attr_map->{$attr}) {
             die "config missing mapped User attribute '$attr'\n";
+        }
+    }
+}
+
+sub check_required_mapped_group_attributes {
+    my ($self, @attrs) = @_;
+
+    # get the Group Attr Map.  Its OK to not have one (its optional)
+    my $attr_map = $self->group_attr_map();
+    return unless ($attr_map && %{$attr_map});
+
+    # make sure that all of the required Group Attrs are mapped properly
+    foreach my $attr (@attrs) {
+        unless ($attr_map->{$attr}) {
+            die "config missing mapped Group attribute '$attr'\n";
         }
     }
 }
@@ -151,6 +172,11 @@ Specifies the password that should be used when binding to the LDAP connection.
 Specifies a LDAP filter (e.g. C<(objectClass=inetOrgPerson)>) that should be
 used to restrict LDAP searches to B<just User records>.
 
+=item B<group_filter>
+
+Specifies an LDAP filter (e.g. C<(objectClass=posixGroup)>) that should be
+used to restrict LDAP searches to B<just Group records>.
+
 =item B<follow_referrals>
 
 Specifies whether or not LDAP referral responses from this server are followed
@@ -169,6 +195,10 @@ instance.  Defaults to "300" seconds.
 =item B<attr_map> (required)
 
 Maps Socialtext user attributes to their underlying LDAP representations.
+
+=item B<group_attr_map>
+
+Maps Socialtext Group attributes to their underlying LDAP representations.
 
 =back
 

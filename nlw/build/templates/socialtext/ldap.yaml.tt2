@@ -30,6 +30,11 @@
 #       position: title
 #       supervisor: manager
 #       work_phone: telephoneNumber
+#   group_filter: (objectClass=groupOfNames)
+#   group_attr_map:
+#       group_id: dn
+#       group_name: cn
+#       member_dn: member
 #   ---
 #   id: 1529909304
 #   name: Our Active Directory server
@@ -53,3 +58,8 @@
 #       position: title
 #       supervisor: manager
 #       work_phone: telephoneNumber
+#   group_filter: (objectClass=group)
+#   group_attr_map:
+#       group_id: dn
+#       group_name: cn
+#       member_dn: member
