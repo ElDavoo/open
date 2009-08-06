@@ -62,7 +62,7 @@ check_required_mapped_attributes: {
         ok !defined $config, "instantiation, missing '$attr' mapped attribute";
 
         is logged_count(), 1, '... logged right number of entries';
-        next_log_like 'error', qr/missing mapped attribute '$attr'/, "... ... missing $attr";
+        next_log_like 'error', qr/missing mapped User attribute '$attr'/, "... ... missing $attr";
     }
 }
 

@@ -46,17 +46,17 @@ sub init {
     my @required = (qw( id host attr_map ));
     $self->check_required_fields(@required);
 
-    # make sure we've got all required mapped attributes
+    # make sure we've got all required mapped User attributes
     my @req_attrs = (qw( user_id username email_address first_name last_name ));
-    $self->check_required_mapped_attributes(@req_attrs);
+    $self->check_required_mapped_user_attributes(@req_attrs);
 }
 
-sub check_required_mapped_attributes {
+sub check_required_mapped_user_attributes {
     my ($self, @attrs) = @_;
     my $attr_map = $self->attr_map();
     foreach my $attr (@attrs) {
         unless ($attr_map->{$attr}) {
-            die "config missing mapped attribute '$attr'\n";
+            die "config missing mapped User attribute '$attr'\n";
         }
     }
 }
