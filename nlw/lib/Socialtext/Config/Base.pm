@@ -83,8 +83,9 @@ sub load {
         my $mod_time = (stat $file)[9];
         my $size     = -s _;
         if (   $ConfigCache{$file}
-            && ($mod_time == $ConfigCache{$file}{last_modified})
-            && ($size == $ConfigCache{$file}{last_size})) {
+            && ((defined $mod_time) && ($mod_time == $ConfigCache{$file}{last_modified}))
+            && ((defined $size)     && (    $size == $ConfigCache{$file}{last_size}))
+        ) {
             @config = @{ $ConfigCache{$file}{config} };
         }
         else {
