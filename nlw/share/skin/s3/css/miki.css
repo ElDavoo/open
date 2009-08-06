@@ -1,3 +1,8 @@
+body {
+    font-size: 10pt;
+    font-family: Helvetica, Arial, sans-serif
+}
+
 .wiki-include-page {
     border-left: 1px solid #80a9f3;
     padding: 0px 10px 0px 5px;
@@ -18,7 +23,6 @@
     background-color: #CEECFE;    
     border-bottom: 1px solid #666;
     padding: 3px 2px;
-    font-size: 85%;
 }
 .globalnav.bottom {
     border-top: 1px solid #666;
@@ -26,14 +30,22 @@
 .subnav {
     background-color: #ddd;    
     padding: 3px 2px;
-    font-size: 85%;
     border-bottom: 1px solid #666;
+}
+
+.paging {
+    border-top: 1px solid #666;
+    background-color: #ddd;    
+    padding: 3px 2px;
+}
+
+.feeds {
+    padding: 3px 2px;
 }
 
 .pageinfo {
     padding: 3px 2px;
     border-top: 1px solid #666;
-    font-size: 85%;
     background-color: #DDD;
     padding-bottom: 5px;
 }
@@ -42,13 +54,17 @@
     margin: 0;
 }
 
-.event_row td {
+.event_table {
+    width: 100%;
+    margin: 5px 0;
+    padding: 0;
+    border-collapse: collapse;
+}
+.event_table td {
     border-top: 1px solid #666;
+    padding: 0;
 }
-.event_row td.last {
-    border-bottom: 1px solid #666;
-}
-.event_row img.avatar {
+.event_table img.avatar {
     vertical-align: middle;
 }
 
@@ -60,5 +76,5 @@
     margin: 0;
 }
 .postsignal textarea {
-    width: 320px;
+    width: 300px;
 }
