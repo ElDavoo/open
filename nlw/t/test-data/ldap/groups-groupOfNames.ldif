@@ -1,0 +1,27 @@
+dn: cn=Motorhead,dc=example,dc=com
+objectClass: groupOfNames
+cn: Motorhead
+member: cn=Lemmy Kilmister,dc=example,dc=com
+member: cn=Phil Taylor,dc=example,dc=com
+member: cn=Eddie Clarke,dc=example,dc=com
+
+dn: cn=Lemmy Kilmister,dc=example,dc=com
+objectClass: inetOrgPerson
+mail: lemmy@example.com
+gn: Lemmy
+sn: Kilmister
+cn: Lemmy Kilmister
+
+dn: cn=Phil Taylor,dc=example,dc=com
+objectClass: inetOrgPerson
+mail: phil@example.com
+gn: Phil
+sn: Taylor
+cn: Phil Taylor
+
+dn: cn=Eddie Clarke,dc=example,dc=com
+objectClass: inetOrgPerson
+mail: eddie@example.com
+gn: Eddie
+sn: Clarke
+cn: Eddie Clarke
