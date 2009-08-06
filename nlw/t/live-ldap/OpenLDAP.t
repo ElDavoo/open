@@ -6,7 +6,7 @@ use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Socialtext::LDAP;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 55;
+use Test::Socialtext tests => 45;
 
 use_ok 'Socialtext::LDAP::OpenLDAP';
 
@@ -210,36 +210,4 @@ search_without_filter_gets_users_and_contacts: {
     my $organizationalPerson = grep { $_->get_value('objectClass') eq 'organizationalPerson' } @entries;
     ok $inetOrgPerson, 'one result was an inetOrgPerson';
     ok $organizationalPerson, 'one result was an organizationalPerson';
-}
-
-###############################################################################
-# Search with global "filter"; restricts us to just "users"
-search_with_filter_gets_users_only: {
-    # bootstrap OpenLDAP
-    my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
-    isa_ok $openldap, 'Test::Socialtext::Bootstrap::OpenLDAP', 'bootstrapped OpenLDAP';
-
-    # set filter into our config, and save LDAP config to YAML
-    $openldap->ldap_config->filter( '(objectClass=inetOrgPerson)' );
-    ok $openldap->add_to_ldap_config(), 'saved custom LDAP config to YAML';
-
-    # populate OpenLDAP with some data
-    ok $openldap->add_ldif('t/test-data/ldap/base_dn.ldif'), 'added data; base_dn';
-    ok $openldap->add_ldif('t/test-data/ldap/people.ldif'), 'added data; people';
-    ok $openldap->add_ldif('t/test-data/ldap/contacts.ldif'), 'added data; contacts';
-
-    # filtered results should have single result (an inetOrgPerson)
-    my $ldap = Socialtext::LDAP->new();
-    isa_ok $ldap, 'Socialtext::LDAP::OpenLDAP', 'connected to OpenLDAP';
-    my $mesg = $ldap->search(
-        base    => $openldap->base_dn(),
-        filter  => '(cn=John Doe)',
-        attrs   => ['objectClass'],
-        );
-    ok !$mesg->code(), 'search executed successfully';
-    is $mesg->count(), 1, 'search returned one result';
-
-    my $user = $mesg->shift_entry();
-    ok $user, 'got result record';
-    is $user->get_value('objectClass'), 'inetOrgPerson', 'which is an inetOrgPerson';
 }

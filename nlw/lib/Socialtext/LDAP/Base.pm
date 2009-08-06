@@ -153,17 +153,6 @@ sub search {
     # preserve our LDAP connection, in case we end up following referrals
     local $self->{ldap} = $self->{ldap};
 
-    # add global filter to search args
-    my $filter = $self->config->filter();
-    if ($filter) {
-        if ($args{filter}) {
-            $args{filter} = '(&' . $filter . $args{filter} . ')';
-        }
-        else {
-            $args{filter} = $filter;
-        }
-    }
-
     # do search, return results
     return $self->_do_following_referrals(
         action => sub {
@@ -339,9 +328,10 @@ to re-bind the connection and reset its privileges.
 
 =item B<search(%opts)>
 
-Performs a search against the LDAP connection, making sure that any C<filter>
-that has been defined in the LDAP configuration is applied automatically by
-prepending it to any provided C<filter> as an "&" (and) condition.
+Performs a search against the LDAP connection, using B<ONLY> the LDAP
+C<filter> provided in the C<%opts>.  This method B<no longer> applies the
+global LDAP C<filter> to the search automatically; that filter is now applied
+by C<Socialtext::User::LDAP::Factory> when doing a search for User records.
 
 Accepts all of the parameters that C<Net::LDAP::search()> does (refer to
 L<Net::LDAP> for more information).  Returns a C<Net::LDAP::Search> object back

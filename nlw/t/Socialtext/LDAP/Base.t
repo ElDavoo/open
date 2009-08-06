@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use mocked 'Net::LDAP';
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 78;
+use Test::Socialtext tests => 55;
 use Socialtext::LDAP::Config;
 
 use_ok 'Socialtext::LDAP::Base';
@@ -309,108 +309,4 @@ search_success: {
     isa_ok $mesg, 'Net::LDAP::Search';
     ok !$mesg->code(), 'search success';
     is $mesg->count(), 2, '... correct number of search results';
-}
-
-###############################################################################
-# Search without "filter" directive is passed through 'as-is'.
-search_without_filter_as_is: {
-    Net::LDAP->set_mock_behaviour();
-
-    # make sure config DOESN'T have a "filter" directive
-    ok !defined $config->filter(), 'make sure config has no "filter"';
-
-    # perform search
-    my $ldap = Socialtext::LDAP::Base->new($config);
-    isa_ok $ldap, 'Socialtext::LDAP::Base';
-    ok $ldap->bind();
-
-    my $mesg = $ldap->search( filter => '(cn=John Doe)' );
-    isa_ok $mesg, 'Net::LDAP::Search';
-
-    # VERIFY mocks
-    my $mock = Net::LDAP->mocked_object();
-    my ($name, $args);
-
-    ($name, $args) = $mock->next_call();
-    is $name, 'bind', 'connection was bound first';
-
-    ($name, $args) = $mock->next_call();
-    is $name, 'search', 'then search was performed';
-    my ($self, %params) = @{$args};
-    is_deeply \%params, { filter => '(cn=John Doe)' }, 'filter passed through as-is';
-
-}
-
-###############################################################################
-# Empty search with "filter" directive has the filter used as the search.
-empty_search_with_filter: {
-    Net::LDAP->set_mock_behaviour();
-
-    # create custom config object for test
-    my $config = Socialtext::LDAP::Config->new(
-        %data,
-        filter => '(objectClass=inetOrgPerson)',
-        );
-    isa_ok $config, 'Socialtext::LDAP::Config', 'created custom configuration';
-    ok $config->filter(), 'with a "filter"';
-
-    # perform search
-    my $ldap = Socialtext::LDAP::Base->new($config);
-    isa_ok $ldap, 'Socialtext::LDAP::Base';
-    ok $ldap->bind();
-
-    my $mesg = $ldap->search();
-    isa_ok $mesg, 'Net::LDAP::Search';
-
-    # VERIFY mocks
-    my $mock = Net::LDAP->mocked_object();
-    my ($name, $args);
-
-    ($name, $args) = $mock->next_call();
-    is $name, 'bind', 'connection was bound first';
-
-    ($name, $args) = $mock->next_call();
-    is $name, 'search', 'then search was performed';
-    my ($self, %params) = @{$args};
-    my %expected = (
-        filter => '(objectClass=inetOrgPerson)',
-        );
-    is_deeply \%params, \%expected, 'filter used as search';
-}
-
-###############################################################################
-# Search with "filter" directive has the filter prepended to the search.
-search_with_filter: {
-    Net::LDAP->set_mock_behaviour();
-
-    # create custom config object for test
-    my $config = Socialtext::LDAP::Config->new(
-        %data,
-        filter => '(objectClass=inetOrgPerson)',
-        );
-    isa_ok $config, 'Socialtext::LDAP::Config', 'created custom configuration';
-    ok $config->filter(), 'with a "filter"';
-
-    # perform search
-    my $ldap = Socialtext::LDAP::Base->new($config);
-    isa_ok $ldap, 'Socialtext::LDAP::Base';
-    ok $ldap->bind();
-
-    my $mesg = $ldap->search( filter => '(cn=John Doe)' );
-    isa_ok $mesg, 'Net::LDAP::Search';
-
-    # VERIFY mocks
-    my $mock = Net::LDAP->mocked_object();
-    my ($name, $args);
-
-    ($name, $args) = $mock->next_call();
-    is $name, 'bind', 'connection was bound first';
-
-    ($name, $args) = $mock->next_call();
-    is $name, 'search', 'then search was performed';
-    my ($self, %params) = @{$args};
-    my %expected = (
-        filter => '(&(objectClass=inetOrgPerson)(cn=John Doe))',
-        );
-    is_deeply \%params, \%expected, 'filter prepended to search';
 }

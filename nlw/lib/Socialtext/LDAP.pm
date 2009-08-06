@@ -106,6 +106,29 @@ sub authenticate {
     return $ldap->authenticate($user_id, $password);
 }
 
+sub BuildFilter {
+    my ($class, %opts) = @_;
+    my $global = $opts{global};
+    my $search = $opts{search} || {};
+
+    # Build up the part of the filter based on the "search" we're doing
+    my @components    = map {"($_=$search->{$_})"} keys %{$search};
+    my $search_filter = scalar(@components) > 1
+        ? '(| ' . (join ' ', @components) . ' )'
+        : $components[0];
+
+    # Wrap the provided filter in parens if it doesn't have them yet
+    if ($global && ($global !~ m{^\s*\(.+\)\s*$})) {
+        $global = "($global)";
+    }
+
+    # Assemble the final LDAP search filter, from the component bits
+    if ($global && $search_filter) {
+        return "(& $global $search_filter )";
+    }
+    return $global ? $global : $search_filter;
+}
+
 sub _get_connection {
     my $config = shift;
 
@@ -230,6 +253,33 @@ The unique ID for the User we're attempting to authenticate.
 The password to attempt authentication with.
 
 =back
+
+=item B<Socialtext::LDAP-E<gt>BuildFilter(PARAMS)>
+
+Assembles an LDAP filter based on the provided criteria, returning it back to
+the caller as a SCALAR value.
+
+Acceptable PARAMS include:
+
+=over
+
+=item global => $filter
+
+A string containing a global filter that is to be AND'd to the LDAP filter, to
+restrict the filter.  To be used to help filter out things like "only Users"
+or "only Groups".
+
+=item search => \%search
+
+A hash-ref containing a set of key/value pairs for LDAP attributes that are to
+be searched against and the values to look for.  These LDAP attributes will be
+joined together with an OR condition.
+
+=back
+
+You should take care to make sure that you pass through B<at least one of> the
+two above parameters; if you build an empty filter you'll be searching your
+LDAP directory for "everything you've got".
 
 =back
 

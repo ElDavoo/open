@@ -358,14 +358,19 @@ sub Search {
     return unless $term;
     $term = escape_filter_value($term);
 
-    # build up the search options
+    # build up the LDAP search filter
     my $attr_map = $self->attr_map;
-    my $filter = join ' ', map { "($_=*$term*)" } values %$attr_map;
+    my %search   = map { $_ => "*$term*" } values %$attr_map;
+    my $filter   = Socialtext::LDAP->BuildFilter(
+        global => $self->ldap_config->filter(),
+        search => \%search,
+    );
 
+    # build up the search options
     my %options = (
         base    => $self->ldap_config->base(),
         scope   => 'sub',
-        filter  => "(|$filter)",
+        filter  => $filter,
         attrs   => [ values %$attr_map ],
     );
 
@@ -419,14 +424,20 @@ sub _find_user {
         # DN searches are best done as -exact- searches
         $options{'base'}    = $val;
         $options{'scope'}   = 'base';
-        $options{'filter'}  = '(objectClass=*)';
+        $options{'filter'}  = Socialtext::LDAP->BuildFilter(
+            global => $self->ldap_config->filter,
+        );
     }
     else {
         # all other searches are done as sub-tree under Base DN
-        $val = escape_filter_value($val);
         $options{'base'}    = $self->ldap_config->base();
         $options{'scope'}   = 'sub';
-        $options{'filter'}  = "($search_attr=$val)";
+        $options{'filter'}  = Socialtext::LDAP->BuildFilter(
+            global => $self->ldap_config->filter,
+            search => {
+                $search_attr => escape_filter_value($val),
+            },
+        );
     }
 
     my $ldap = $self->ldap;
