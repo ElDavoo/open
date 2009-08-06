@@ -199,6 +199,7 @@ sub recent_changes {
 
     return $self->_process_template(
         $CHANGES_TEMPLATE,
+        section   => 'recent_changes',
         title     => $title,
         category  => $category,
         load_row_times => \&Socialtext::Query::Plugin::load_row_times,
@@ -218,6 +219,7 @@ sub workspace_list {
     return $self->_process_template(
         $WORKSPACE_LIST_TEMPLATE,
         title             => loc('Workspace List'),
+        section           => 'workspaces',
         my_workspaces     => [ $self->hub->workspace_list->my_workspaces ],
         public_workspaces => [ $self->hub->workspace_list->public_workspaces ],
     );
@@ -256,6 +258,7 @@ sub search {
 
     return $self->_process_template(
         $SEARCH_TEMPLATE,
+        section       => 'search',
         search_term   => $search_term,
         title         => $title,
         search_error  => $error,

@@ -1,8 +1,16 @@
 [% IF ws %]
     <div class="[% class %] subnav">
         <a href="/m/page/[% ws.name %]/">[% ws.title %]</a>
+        [% IF section == 'recent_changes' %]
+        | <span>[% loc("What's new") %]</span>
+        [% ELSE %]
         | <a href="/m/changes/[% ws.name %]/">[% loc("What's new") %]</a>
+        [% END %]
+        [% IF section == 'search' %]
+        | <span>[% loc('Search') %]</span>
+        [% ELSE %]
         | <a href="/m/search/[% ws.name %]/">[% loc('Search') %]</a>
+        [% END %]
         [% IF page AND !page_locked_for_user %]
             | <a href="/m/page/[% ws.name %]/[% page.uri %]?action=edit">[% loc('Edit') %]</a>
         [% END %]

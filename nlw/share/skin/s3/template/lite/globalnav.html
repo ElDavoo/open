@@ -8,7 +8,11 @@
     [% END %]
 [% ELSE %]
     [% FILTER decorate('lite_global_nav') %]
-    <a href="/m/workspace_list">[% loc('Workspaces') %]</a>
+        [% IF section == 'workspaces' %]
+        <span>[% loc('Workspaces') %]</span>
+        [% ELSE %]
+        <a href="/m/workspace_list">[% loc('Workspaces') %]</a>
+        [% END %]
     [% END %]
     | 
     <a href="/nlw/submit/logout?redirect_to=/m/login">[% loc('Log out') %]</a>
