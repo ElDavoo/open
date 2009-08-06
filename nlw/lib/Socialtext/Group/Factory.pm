@@ -48,6 +48,7 @@ requires 'Create';
 requires 'Update';
 requires 'can_update_store';
 requires '_build_cache_lifetime';
+requires '_lookup_group';
 
 sub _build_driver_name {
     my $self = shift;
@@ -572,6 +573,8 @@ Factory, you need to provide implementations for the following methods:
 =item can_update_store()
 
 =item _build_cache_lifetime()
+
+=item _lookup_group(\%proto_group)
 
 =back
 

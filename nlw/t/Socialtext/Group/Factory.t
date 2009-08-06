@@ -25,6 +25,7 @@ fixtures(qw( base_config ));
     sub _build_cache_lifetime {
         return DateTime::Duration->new(years => 10);
     }
+    sub _lookup_group { }
 }
 
 {
@@ -40,6 +41,7 @@ fixtures(qw( base_config ));
     sub _build_cache_lifetime {
         return DateTime::Duration->new(years => 10);
     }
+    sub _lookup_group { }
 }
 
 ###############################################################################

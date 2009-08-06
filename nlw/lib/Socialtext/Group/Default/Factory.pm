@@ -16,6 +16,12 @@ has '+driver_key' => (
 # the Default store *is* updateable
 sub can_update_store { 1 }
 
+# the Default store doesn't need to look up Groups; they would've been found
+# automatically when searching for "do I have a cached copy of this Group?"
+sub _lookup_group {
+    return;
+}
+
 # creates a new Group, and stores it in the data store
 sub Create {
     my ($self, $proto_group) = @_;
