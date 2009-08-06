@@ -41,6 +41,15 @@ sub process {
     } @templates;
 }
 
+sub template_paths {
+    my $self = shift;
+    $self->{_template_paths} ||= [
+        @{$self->hub->skin->template_paths},
+        glob(Socialtext::AppConfig->code_base . "/plugin/*/template"),
+    ];
+    return $self->{_template_paths};
+}
+
 sub render {
     my $self = shift;
     my $template = shift;
@@ -51,7 +60,7 @@ sub render {
     return $renderer->render(
         template => $template,
         vars     => \%vars,
-        paths    => $self->hub->skin->template_paths,
+        paths    => $self->template_paths,
     );
 }
 

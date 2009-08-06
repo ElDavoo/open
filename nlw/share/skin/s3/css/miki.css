@@ -5,7 +5,7 @@
 }
 
 .logo {
-    background: url('../images/logo.png') #17417F 5px no-repeat;
+    background: url('../images/miki-logo.png') #17417F 5px no-repeat;
     width: 100%;
     height: 45px;
 }
@@ -36,4 +36,16 @@
 
 .pageinfo ul, .pageinfo p{
     margin: 0;
+}
+
+.event_row td {
+    border-bottom: 1px solid #666;
+}
+
+.event_row td.last {
+    border-bottom: none;
+}
+
+.event_row img.avatar {
+    vertical-align: middle;
 }

@@ -315,7 +315,7 @@ sub miki_path {
     my ($self, $link) = @_;
     require Socialtext::Formatter::LiteLinkDictionary;
 
-    my $miki_path      = '/lite/workspace_list';
+    my $miki_path      = '/m';
     my $page_name      = $self->hub->pages->current->name;
     my $workspace_name = $self->hub->current_workspace->name;
 
@@ -324,7 +324,7 @@ sub miki_path {
             link => $link || 'interwiki',
             workspace => $workspace_name,
             page_uri  => $page_name,
-            );
+        );
     }
     return $miki_path;
 }
