@@ -313,3 +313,8 @@ div.pagination-container .paging-forward {
 * html .container.signals #col1 {
     width: 62%;
 }
+
+/* Purely a hack to counter {bz: 2930} */
+div#contentContainer {
+    border-bottom: 1px solid transparent;
+}
