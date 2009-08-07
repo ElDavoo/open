@@ -8,19 +8,27 @@ use warnings;
 use Class::Field qw'field';
 
 field free         => '%{page_uri}';
-field interwiki    => '/lite/page/%{workspace}/%{page_uri}%{section}';
-field interwiki_edit    => '/lite/page/%{workspace}/%{page_uri}%{section}?action=edit';
-field interwiki_edit_incipient    => '/lite/page/%{workspace}/%{page_uri}%{section}?action=edit;is_incipient=1';
+field interwiki    => '/m/page/%{workspace}/%{page_uri}%{section}';
+field interwiki_edit    => '/m/page/%{workspace}/%{page_uri}%{section}?action=edit';
+field interwiki_edit_incipient    => '/m/page/%{workspace}/%{page_uri}%{section}?action=edit;is_incipient=1';
 field search_query =>
-    '/lite/search/%{workspace}?search_term=%{search_term}';
+    '/m/search/%{workspace}?search_term=%{search_term}';
 field category_query =>
-    '/lite/changes/%{workspace}/%{category}';
-field recent_changes_query => '/lite/changes/%{workspace}';
+    '/m/changes/%{workspace}/%{category}';
+field recent_changes_query => '/m/changes/%{workspace}';
 field category             =>
-    '/lite/category/%{workspace}/%{category}';
+    '/m/category/%{workspace}/%{category}';
 field weblog             =>
-    '/lite/changes/%{workspace}/%{category}';
+    '/m/changes/%{workspace}/%{category}';
 # special_http and file and image are default
+
+=head2 people links
+
+{user_link} links to a user's people profile if people is installed an enabled.
+
+=cut
+
+field people_profile => '/m/profile/%{user_id}';
 
 sub format_link {
     my $self   = shift;
