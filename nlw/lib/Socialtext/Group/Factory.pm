@@ -7,6 +7,7 @@ use List::Util qw(first);
 use Socialtext::Date;
 use Socialtext::Exceptions qw(data_validation_error);
 use Socialtext::Group::Homunculus;
+use Socialtext::Log qw(st_log);
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::SQL::Builder qw(:all);
 use Socialtext::l10n qw(loc);
@@ -77,38 +78,57 @@ sub GetGroupHomunculus {
         return $self->NewGroupHomunculus($proto_group);
     }
 
-=begin PLACEHOLDER
-
     # cache non-existent or stale, refresh from data store
     # ... if unable to refresh, return empty-handed; we know nothing about
     # this Group.
-    my $refreshed = $self->_lookup_group($proto_group);
+    my $refreshed = $self->_lookup_group($proto_group || $where);
     unless ($refreshed) {
+# XXX: what if?... we had an old cached group, but couldn't find it now?
         return;
     }
 
-    # validate data retrieved from underlying data store
-    $self->ValidateAndCleanData($proto_group, $refreshed);
-
-    # update local cache with updated Group data
-    $self->UpdateGroupRecord( {
-        %{$refreshed},
-        group_id    => $proto_group->{group_id},
-        } );
-
-    # merge the refreshed data back into the proto_group
-    $proto_group = {
-        %{$proto_group},
-        %{$refreshed},
+    # validate the data we got from the underlying data store
+    #
+    # IF ...
+    # ... we're adding a new Group to the system, this is a fatal error
+    # ... we're updating an existing Group, log error and re-use old data
+    eval {
+        $self->ValidateAndCleanData($proto_group, $refreshed);
     };
+    if (my $e = Exception::Class->caught('Socialtext::Exception::DataValidation')) {
+        # data validation error; log as error and attempt to continue
+        my $group_name = $proto_group->{driver_group_name}
+            || $refreshed->{driver_group_name};
+        st_log->warning("Unable to refresh LDAP Group '$group_name':");
+        foreach my $err ($e->messages) {
+            st_log->warning(" * $err");
+        }
+        # re-use the last known data we got from LDAP; refreshed data is bunk
+        $refreshed = +{ };
+    }
+    elsif ($@) {
+        # some other kind of error; re-throw it
+        die $@;
+    }
+
+    # depending on whether or not the Group existed in the DB to begin with,
+    # INSERT/UPDATE a record in the DB for the Group.
+    if ($proto_group && %{$proto_group}) {
+        # Had one in the DB before; UPDATE
+        $proto_group = {
+            %{$proto_group},
+            %{$refreshed},
+        };
+        $self->UpdateGroupRecord( $proto_group );
+    }
+    else {
+        # Wasn't in DB; INSERT
+        $proto_group = $refreshed;
+        $self->NewGroupRecord( $proto_group );
+    }
 
     # create the homunculus, returning it back to the caller
     return $self->NewGroupHomunculus($proto_group);
-
-=end PLACEHOLDER
-
-=cut
-
 }
 
 # Looks up a Group in the DB, to see if we have a cached copy of it already.
@@ -281,6 +301,10 @@ sub ValidateAndCleanData {
     # Group unless we've been told otherwise.
     $self->_validate_assign_created_by($p) if ($is_create);
 
+    # new Groups *have* to have a primary Account; default unless we've been
+    # told otherwise.
+    $self->_validate_assign_primary_account($p) if ($is_create);
+
     # trim fields, removing leading/trailing whitespace
     $self->_validate_trim_values($p);
 
@@ -337,6 +361,14 @@ sub _validate_assign_created_by {
     # unless we were told who is creating this Group, presume that it's being
     # created by the System-User
     $p->{created_by_user_id} ||= Socialtext::User->SystemUser()->user_id();
+    return;
+}
+
+sub _validate_assign_primary_account {
+    my ($self, $p) = @_;
+    # unless we were told which Account this Group was being placed in,
+    # presume that its going into the default Account
+    $p->{primary_account_id} ||= Socialtext::Account->Default()->account_id();
     return;
 }
 

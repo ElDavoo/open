@@ -73,6 +73,17 @@ auto_assign_created_by_user_id: {
 }
 
 ###############################################################################
+# TEST: new Groups are assigned a "primary_account_id"
+auto_assign_primary_account_id: {
+    my %proto_group = %TEST_DATA;
+    delete $proto_group{primary_account_id};
+
+    my $factory = TestGroupFactory->new(driver_key => 'DummyKey');
+    $factory->ValidateAndCleanData(undef, \%proto_group);
+    ok $proto_group{primary_account_id}, 'auto-assigned Primary Account';
+}
+
+###############################################################################
 # TEST: attributes having leading/trailing whitespace trimmed
 trim_whitespace: {
     my %proto_group = %TEST_DATA;
@@ -91,6 +102,7 @@ required_attributes: {
         grep { $_ ne 'group_id' }               # validation assigns default
         grep { $_ ne 'created_by_user_id' }     # validation assigns default
         grep { $_ ne 'creation_datetime' }      # validation assigns default
+        grep { $_ ne 'primary_account_id' }     # validation assigns default
         map { $_->name }
         grep { $_->is_required && !$_->is_lazy_build }
         Socialtext::Group::Homunculus->meta->get_all_attributes;
