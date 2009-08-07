@@ -50,6 +50,7 @@ requires 'Update';
 requires 'can_update_store';
 requires '_build_cache_lifetime';
 requires '_lookup_group';
+requires '_update_group_members';
 
 sub _build_driver_name {
     my $self = shift;
@@ -126,6 +127,8 @@ sub GetGroupHomunculus {
         $proto_group = $refreshed;
         $self->NewGroupRecord( $proto_group );
     }
+
+    $self->_update_group_members( $proto_group );
 
     # create the homunculus, returning it back to the caller
     return $self->NewGroupHomunculus($proto_group);

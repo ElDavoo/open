@@ -4,6 +4,8 @@ package Socialtext::Group::LDAP::Factory;
 use Moose;
 use Socialtext::LDAP;
 use Socialtext::LDAP::Config;
+use Socialtext::User::LDAP::Factory;
+use Socialtext::UserGroupRoleFactory;
 use Socialtext::Log qw(st_log);
 use DateTime::Duration;
 use Net::LDAP::Util qw(escape_filter_value);
@@ -125,7 +127,24 @@ sub _lookup_group {
     # Map the LDAP response back to a proto group
     $proto_group = $self->_map_ldap_entry_to_proto($entry);
     $proto_group->{driver_key} = $self->driver_key();
+    $proto_group->{members} = [ $entry->get_value( $attr_map->{member_dn} ) ];
     return $proto_group;
+}
+
+sub _update_group_members {
+    my $self        = shift;
+    my $proto_group = shift;
+    my $members     = $proto_group->{members};
+    my $factory     = Socialtext::User::LDAP::Factory->new();
+
+    for my $member ( @$members ) {
+        my $user = $factory->GetUser( driver_unique_id => $member );
+        Socialtext::UserGroupRoleFactory->Create( {
+            user_id  => $user->user_id,
+            group_id => $proto_group->{group_id},
+            role_id  => Socialtext::UserGroupRoleFactory->DefaultRole->role_id,
+        } );
+    }
 }
 
 {

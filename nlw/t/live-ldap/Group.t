@@ -44,4 +44,17 @@ retrieve_ldap_group: {
     isa_ok $motorhead, 'Socialtext::Group';
     isa_ok $motorhead->homunculus, 'Socialtext::Group::LDAP';
     is $motorhead->driver_group_name, 'Motorhead';
+
+    my $users = $motorhead->users;
+    isa_ok $users => 'Socialtext::MultiCursor';
+    is $users->count => '3', '... with correct number of users';
+
+    my $user = $users->next();
+    is $user->username => 'lemmy kilmister', '... first user has correct name';
+
+    $user = $users->next();
+    is $user->username => 'phil taylor', '... second user has correct name';
+
+    $user = $users->next();
+    is $user->username => 'eddie clarke', '... second user has correct name';
 }

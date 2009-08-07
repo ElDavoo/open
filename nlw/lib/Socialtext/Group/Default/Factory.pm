@@ -22,6 +22,11 @@ sub _lookup_group {
     return;
 }
 
+# Unused in this factory.
+sub _update_group_members {
+    return;
+}
+
 # creates a new Group, and stores it in the data store
 sub Create {
     my ($self, $proto_group) = @_;

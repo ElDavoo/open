@@ -26,6 +26,7 @@ fixtures(qw( base_config ));
         return DateTime::Duration->new(years => 10);
     }
     sub _lookup_group { }
+    sub _update_group_members { }
 }
 
 {
@@ -42,6 +43,7 @@ fixtures(qw( base_config ));
         return DateTime::Duration->new(years => 10);
     }
     sub _lookup_group { }
+    sub _update_group_members { }
 }
 
 ###############################################################################
