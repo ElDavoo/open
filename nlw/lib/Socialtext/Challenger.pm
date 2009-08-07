@@ -32,7 +32,7 @@ sub Challengers {
 
 sub Challenge {
     my $class = shift;
-    my $return = $class->_first('challenge', @_);
+    return $class->_first('challenge', @_);
 }
 
 1;
