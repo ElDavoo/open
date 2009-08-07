@@ -76,11 +76,11 @@
     # backwards compat for old-style /foo/member/index.cgi links
     RewriteRule    ^(/\w+)/member/(.*)  $1/$2          [R,L]
 
-    RewriteRule    ^/lite/?$    /m/signals [R,L,NE]
-    RewriteRule    ^/lite/(.*)$ /m/$1      [R,L,NE]
-    RewriteRule    ^/m/?$       /m/signals [R,L,NE]
+    RewriteRule    ^/lite(/.*)$      /m$1        [R,L,NE]
+    RewriteRule    ^/m/$             /m          [R,L,NE]
     RewriteRule    ^/m/page/([^/]+)$ /m/page/$1/ [R,L,NE]
 
+    RewriteRule    !^/m$            -   [C]
     RewriteRule    !^/data(/.*)?$   -   [C]
     RewriteRule    !^/nlw           -   [C]
     RewriteRule    !^/challenge     -   [C]

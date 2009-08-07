@@ -10,10 +10,12 @@ use Socialtext::Lite;
 use Socialtext::Challenger;
 use Socialtext::HTTP ':codes';
 use Socialtext::Events;
-
+use Socialtext::Workspace;
 
 # basically just a dispatcher to NLW::Lite
 # need some deduping
+
+sub ws { Socialtext::NoWorkspace->new };
 
 sub not_authorized {
     my $self = shift;
@@ -41,6 +43,17 @@ sub not_authorized {
         -status => HTTP_500_Internal_Server_Error,
     );
     return 'Challenger Did not Redirect';
+}
+
+sub homepage {
+    my ( $self, $rest ) = @_;
+    my $loc = $self->hub->pluggable->hook('nlw.lite_homepage')
+       || '/m/workspace_list';
+    $self->rest->header(
+        -status   => HTTP_302_Found,
+        -Location => $loc,
+    );
+    return '';
 }
 
 sub changes {

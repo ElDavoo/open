@@ -430,6 +430,10 @@
             'text/html':        [Socialtext::Rest::Settings::DefaultWorkspace, GET_html]
         '*':                    [Socialtext::Rest::Settings::DefaultWorkspace, bad_method]
 -
+    '/m':
+        'GET':                  [Socialtext::Rest::Lite, homepage]
+        '*':                    [Socialtext::Rest::Lite, bad_method]
+-
     '/m/changes/:ws/:tag':
         'GET':                  [Socialtext::Rest::Lite, changes]
         '*':                    [Socialtext::Rest::Lite, bad_method]
