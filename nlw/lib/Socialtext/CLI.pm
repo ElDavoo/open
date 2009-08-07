@@ -182,6 +182,9 @@ sub _enabled_plugins {
     if ($opts{'all-accounts'}) {
         return Socialtext::Account->PluginsEnabledForAny;
     }
+    if ($opts{'all-workspaces'}) {
+        return Socialtext::Workspace->PluginsEnabledForAny;
+    }
     elsif ($opts{workspace}) {
         my $workspace = Socialtext::Workspace->new( name => $opts{workspace} );
         return $workspace->plugins_enabled
@@ -204,6 +207,7 @@ sub _plugin_after {
     my %after = map { $_ => 1 } $self->_enabled_plugins(%opts);
 
     my $what = $opts{'all-accounts'} ? 'all accounts'
+        : $opts{'all-workspaces'} ? 'all workspaces'
         : $opts{workspace} ? "workspace $opts{workspace}"
         : $opts{account} ? "account $opts{account}"
         : '';
@@ -225,13 +229,18 @@ sub _plugin_after {
 sub enable_plugin {
     my $self = shift;
     my $plugin  = $self->_require_plugin;
-    my %opts = $self->_get_options('account:s', 'all-accounts', 'workspace:s');
+    my %opts = $self->_get_options('account:s', 'all-accounts', 'workspace:s', 'all-workspaces');
 
     my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
 
     if ($opts{'all-accounts'}) {
         $self->_plugin_before(%opts);
         Socialtext::Account->EnablePluginForAll($plugin);
+        return $self->_plugin_after(%opts);
+    }
+    elsif ($opts{'all-workspaces'}) {
+        $self->_plugin_before(%opts);
+        Socialtext::Workspace->EnablePluginForAll($plugin);
         return $self->_plugin_after(%opts);
     }
     elsif ($opts{account}) {
@@ -265,12 +274,17 @@ sub enable_plugin {
 sub disable_plugin {
     my $self = shift;
     my $plugin  = $self->_require_plugin;
-    my %opts = $self->_get_options('account:s', 'all-accounts', 'workspace:s');
+    my %opts = $self->_get_options('account:s', 'all-accounts', 'workspace:s', 'all-workspaces');
     my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
 
     if ($opts{'all-accounts'}) {
         $self->_plugin_before(%opts);
         Socialtext::Account->DisablePluginForAll($plugin);
+        return $self->_plugin_after(%opts);
+    }
+    if ($opts{'all-workspaces'}) {
+        $self->_plugin_before(%opts);
+        Socialtext::Workspace->DisablePluginForAll($plugin);
         return $self->_plugin_after(%opts);
     }
     elsif ($opts{account}) {
