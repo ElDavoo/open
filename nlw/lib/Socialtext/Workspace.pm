@@ -1869,6 +1869,30 @@ sub MostOftenAccessedLastWeek {
     return @viewed;
 }
 
+sub EnablePluginForAll {
+    my $class = shift;
+    my $plugin = shift;
+    my $workspaces = $class->All();
+    while ( my $ws = $workspaces->next() ) {
+        $ws->enable_plugin( $plugin );
+    }
+}
+
+sub DisablePluginForAll {
+    my $class = shift;
+    my $plugin = shift;
+    my $workspaces = $class->All();
+    while ( my $ws = $workspaces->next() ) {
+        $ws->disable_plugin( $plugin );
+    }
+}
+
+sub PluginsEnabledForAny {
+    my $class = shift;
+    my $sth = sql_execute('SELECT distinct plugin FROM workspace_plugin');
+    return map { $_->[0] } @{ $sth->fetchall_arrayref };
+}
+
 use constant RECENT_WORKSPACES => 10;
 sub read_breadcrumbs {
     my ( $self, $user ) = @_;
