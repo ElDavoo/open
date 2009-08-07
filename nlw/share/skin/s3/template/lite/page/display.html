@@ -1,11 +1,14 @@
 [%# @COPYRIGHT@ -%]
 [% PROCESS lite/header.html %]
+[% MACRO user_link BLOCK %]
+    [% name | decorate('user_link') %]
+[% END %]
 
 [% page_html %]
 <div class="pageinfo">
-    [% IF page_update_info %]
-        [% loc('Page Last Updated:') %] [% page_update_info %]
-    [% END %]
+    [% SET author = user_link(name=page.last_edited_by.user_id) %]
+    [% SET time = page.datetime_for_user %]
+    [% loc('Page Last Updated: [_1] by [_2]', time, author) %]
     [% IF attachments.size %]
         <div class="attachments">
             <p>[% loc('Attachments for this page:') %]</p>
