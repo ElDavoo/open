@@ -27,6 +27,7 @@ sub register {
     my $registry = shift;
     $registry->add(action => 'new_page');
     $registry->add(action => 'display');
+    $registry->add(action => 'edit_page');
     $registry->add(action => 'random_page');
     $registry->add(action => 'display_html');
     $registry->add(action => 'page_info');
@@ -129,6 +130,12 @@ sub locale {
     # XXX default value should be server locale
     $p->default(system_locale());
     return $p;
+}
+
+sub edit_page {
+    my $self = shift;
+    $self->hub->action('display');
+    return $self->display(1);
 }
 
 sub random_page {
