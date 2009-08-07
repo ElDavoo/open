@@ -319,6 +319,7 @@ sub export {
         logo => MIME::Base64::encode($$image_ref),
         allow_invitation => $self->allow_invitation,
         all_users_workspace => $all_users_workspace,
+        plugins => [ $self->plugins_enabled ],
         (map { $_ => $self->$_ } grep { /^desktop_/ } @ACCT_COLS),
     };
     $hub->pluggable->hook('nlw.export_account', $self, $data);
@@ -411,6 +412,13 @@ sub import_file {
     unless ($@) {
         print loc("Importing people profiles ...") . "\n";
         Socialtext::People::Profile->create_from_hash( $_ ) for @profiles;
+    }
+
+    if ($hash->{plugins}) {
+        print loc("Enabling account plugins ...") . "\n";
+        for my $plugin_name (@{ $hash->{plugins} }) {
+            $account->enable_plugin($plugin_name);
+        }
     }
 
     return $account;
@@ -1203,7 +1211,7 @@ Note that the plugin still may be disabled for particular users; use C<Socialtex
 
 Enables the plugin for the specified account.
 
-=item $account->plugins_enabled()
+=item $account->plugins_enabled
 
 Returns an array ref for the plugins enabled.
 
