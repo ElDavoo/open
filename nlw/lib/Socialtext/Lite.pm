@@ -1,10 +1,7 @@
-# @COPYRIGHT@
 package Socialtext::Lite;
-use strict;
-use warnings;
-
+# @COPYRIGHT@
+use Moose;
 use Readonly;
-use Socialtext::Formatter::LiteLinkDictionary;
 use Socialtext::Authen;
 use Socialtext::String;
 use Socialtext::Permission 'ST_EDIT_PERM';
@@ -12,6 +9,16 @@ use Socialtext::Helpers;
 use Socialtext::l10n qw(loc);
 use Socialtext::Timer;
 use Socialtext::Session;
+use Socialtext::Formatter::LiteLinkDictionary;
+
+use namespace::clean -except => 'meta';
+
+has 'link_dictionary' => (
+    is => 'rw', isa => 'Socialtext::Formatter::LiteLinkDictionary',
+    lazy_build => 1,
+);
+
+sub _build_link_dictionary { Socialtext::Formatter::LiteLinkDictionary->new }
 
 =head1 NAME
 
@@ -350,8 +357,7 @@ sub _frame_page {
 
     my $attachments = $self->_get_attachments($page);
 
-    $self->hub->viewer->link_dictionary(
-        Socialtext::Formatter::LiteLinkDictionary->new() );
+    $self->hub->viewer->link_dictionary($self->link_dictionary);
     
     Socialtext::Timer->Continue('lite_page_html');
     my $html = $page->to_html_or_default;
@@ -360,7 +366,6 @@ sub _frame_page {
         $DISPLAY_TEMPLATE,
         page_html        => $html,
         title            => $page->title,
-        page_update_info => $self->_page_update_info($page),
         attachments      => $attachments,
         # XXX next two for attachments, because we are using legacy urls
         # for now
@@ -408,18 +413,6 @@ sub _get_attachments {
     return \@attachments;
 }
 
-
-sub _page_update_info {
-    my $self = shift;
-    my $page = shift;
-
-    return '' unless $page->active;
-
-    my $page_date   = $page->datetime_for_user,
-    my $page_author = $page->last_edited_by->best_full_name;
-    return "$page_date by $page_author";
-}
-
 1;
 
 =head1 AUTHOR
@@ -434,4 +427,6 @@ This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
+
+__PACKAGE__->meta->make_immutable;
 
