@@ -7,7 +7,7 @@ use Socialtext::JobCreator;
 use Socialtext::Workspace;
 use base 'Exporter'; 
 our @EXPORT_OK = qw/socialtext_schema_version ensure_socialtext_schema
-                    create_job_for_each_workspace/;
+                    create_job_for_each_workspace create_job/;
 
 sub socialtext_schema_version {
     my $schema = Socialtext::Schema->new;
