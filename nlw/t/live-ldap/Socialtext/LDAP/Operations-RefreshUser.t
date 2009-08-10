@@ -63,7 +63,9 @@ test_ldap_users_all_fresh: {
     # they were both cached at the same time (e.g. we didn't just refresh the
     # user).
     isnt $ldap_homey, $refreshed_homey, 'user objects are different';
-    is $ldap_homey->cached_at->hires_epoch, $refreshed_homey->cached_at->hires_epoch, 'user was not refreshed; was already fresh';
+    is $refreshed_homey->cached_at->hires_epoch,
+        $ldap_homey->cached_at->hires_epoch,
+        'user was not refreshed; was already fresh';
 
     # cleanup; don't want to pollute other tests
     Test::Socialtext::User->delete_recklessly($ldap_user);
