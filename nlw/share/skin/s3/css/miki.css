@@ -78,6 +78,9 @@ div.clear {
     border-top: none;
 }
 img.avatar {
+    vertical-align: middle;
+}
+.profile img.avatar {
     float: left;
     margin-right: 5px;
     border: 1px solid #666 !important;
