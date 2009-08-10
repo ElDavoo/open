@@ -5,6 +5,7 @@ use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::SQL qw(sql_execute);
 
 requires 'Sql_table_name';
+requires 'Sql_coerce_bindings';
 
 sub SqlInsert {
     my $self  = shift;
@@ -13,6 +14,8 @@ sub SqlInsert {
     my $table   = $self->Sql_table_name();
     my $builder = sql_abstract();
     my ($sql, @bindings) = $builder->insert($table, $proto);
+
+    $self->Sql_coerce_bindings(\@bindings);
     return sql_execute($sql, @bindings);
 }
 

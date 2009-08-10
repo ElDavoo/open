@@ -9,6 +9,7 @@ use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::SQL qw(sql_execute);
 
 requires 'Sql_table_name';
+requires 'Sql_coerce_bindings';
 
 sub SqlSelect {
     my $self = shift;
@@ -25,6 +26,8 @@ sub SqlSelect {
     my ($sql, @bindings) = $builder->select(
         $table, $cols, $where, $order, $limit, $offset
     );
+
+    $self->Sql_coerce_bindings(\@bindings);
     return sql_execute($sql, @bindings);
 }
 

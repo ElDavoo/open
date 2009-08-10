@@ -10,6 +10,7 @@ use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::SQL qw(sql_execute);
 
 requires 'Sql_table_name';
+requires 'Sql_coerce_bindings';
 
 sub SqlDelete {
     my $self  = shift;
@@ -20,6 +21,8 @@ sub SqlDelete {
     my ($sql, @bindings) = $builder->delete(
         $table, $where,
     );
+
+    $self->Sql_coerce_bindings(\@bindings);
     return sql_execute($sql, @bindings);
 }
 

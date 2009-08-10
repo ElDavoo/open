@@ -10,6 +10,7 @@ use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::SQL qw(sql_execute);
 
 requires 'Sql_table_name';
+requires 'Sql_coerce_bindings';
 
 sub SqlUpdate {
     my $self = shift;
@@ -23,6 +24,8 @@ sub SqlUpdate {
     my ($sql, @bindings) = $builder->update(
         $table, $values, $where,
     );
+
+    $self->Sql_coerce_bindings(\@bindings);
     return sql_execute($sql, @bindings);
 }
 
