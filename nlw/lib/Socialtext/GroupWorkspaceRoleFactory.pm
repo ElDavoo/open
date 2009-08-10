@@ -17,6 +17,7 @@ with qw(
     Socialtext::Moose::SqlBuilder::Role::DoesSqlUpdate
     Socialtext::Moose::SqlBuilder::Role::DoesSqlDelete
     Socialtext::Moose::SqlBuilder::Role::DoesColumnFiltering
+    Socialtext::Moose::SqlBuilder::Role::DoesTypeCoercion
 );
 
 sub Builds_sql_for { 'Socialtext::GroupWorkspaceRole' }
