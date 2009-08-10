@@ -171,6 +171,7 @@ sub extract_people_args {
     my $self = shift;
     my $q = $self->rest->query;
     return _one($q, 'followed'),
+           _one($q, 'with_my_signals'),
            _bunch_of($q,'person.id');
 }
 
