@@ -41,7 +41,7 @@ sub RefreshUsers {
         my ($driver_key, $driver_unique_id, $driver_username) = @{$row};
 
         # get the LDAP user factory we need for this user.
-        my $factory = _get_factory($driver_key);
+        my $factory = _get_user_factory($driver_key);
         next unless $factory;
 
         # refresh the user data from the Factory
@@ -53,7 +53,7 @@ sub RefreshUsers {
             st_log->error($@);
         }
     }
-    _clear_factory_cache();
+    _clear_user_factory_cache();
 
     # All done.
     st_log->info( "done" );
@@ -147,7 +147,7 @@ sub LoadUsers {
 }
 
 ###############################################################################
-# Subroutine:   _get_factory($driver_key)
+# Subroutine:   _get_user_factory($driver_key)
 ###############################################################################
 # Gets the LDAP user Factory to use for the given '$driver_key'.  Caches the
 # Factory for later re-use, so that we're not opening a new LDAP connection
@@ -155,7 +155,7 @@ sub LoadUsers {
 ###############################################################################
 {
     my %Factories;
-    sub _get_factory {
+    sub _get_user_factory {
         my $driver_key = shift;
 
         # create a new Factory if we don't have a cached one yet
@@ -180,7 +180,7 @@ sub LoadUsers {
         }
         return $Factories{$driver_key};
     }
-    sub _clear_factory_cache {
+    sub _clear_user_factory_cache {
         %Factories = ();
     }
 }
