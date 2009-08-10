@@ -12,6 +12,7 @@ use Test::Builder;
 use Test::Socialtext::Environment;
 use Test::Socialtext::User;
 use Test::Socialtext::Account;
+use Test::Socialtext::Group;
 use Test::Socialtext::Workspace;
 use Socialtext::Account;
 use Socialtext::Group;
@@ -330,6 +331,17 @@ sub _teardown_cleanup {
             },
             delete_item => sub { $_[0]->delete },
         },
+        group => {
+            get_iterator => sub { Test::Socialtext::Group->All() },
+            get_id       => sub { $_[0]->group_id },
+            identifier   => sub {
+                my $g = shift;
+                return $g->group_id . ' (' . $g->driver_group_name . ')';
+            },
+            delete_item  => sub {
+                Test::Socialtext::Group->delete_recklessly($_[0]);
+            },
+        }
     );
 
     sub _store_initial_objects {
