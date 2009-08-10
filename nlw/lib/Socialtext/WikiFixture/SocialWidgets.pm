@@ -6,7 +6,7 @@ use base 'Socialtext::WikiFixture::Socialtext';
 use Test::More;
 use URI;
 use URI::QueryParam;
-
+use Cwd;
 =head1 NAME
 
 Socialtext::WikiFixture::SocialWidgets - Test the Widgets using Selenium

@@ -17,6 +17,7 @@ use Test::HTTP;
 use Time::HiRes qw/gettimeofday tv_interval time/;
 use URI::Escape qw(uri_unescape uri_escape);
 use Data::Dumper;
+use Cwd;
 
 =head1 NAME
 
@@ -1408,6 +1409,23 @@ sub _run_command {
     else {
         warn $output;
     }
+}
+
+
+sub st_catchup_logs {
+   if (Socialtext::AppConfig::_startup_user_is_human_user()) {
+       #In Dev Env
+       my $current_dir = cwd;
+       my $new_dir =  $ENV{ST_CURRENT} . "/socialtext-reports/";
+       chdir($new_dir);
+       my $str = $ENV{ST_CURRENT} . "/socialtext-reports/parse-dev-env-logs /var/log/nlw.log >/dev/null 2>&1";
+       _run_command($str);
+       chdir($current_dir);
+   } else {
+      #On An Appliance
+      _run_command("sudo /usr/bin/st-reports-consume-access-log /var/log/apache-perl/access.log >> /var/log/st-reports.log >/dev/null 2>&1");
+      _run_command("sudo /usr/bin/st-reports-consume-nlw-log /var/log/nlw.log >> /var/log/st-reports.log >/dev/null 2>&1");
+   }
 }
 
 
