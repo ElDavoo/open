@@ -10,12 +10,9 @@ use Socialtext::Lite;
 use Socialtext::Challenger;
 use Socialtext::HTTP ':codes';
 use Socialtext::Events;
-use Socialtext::Workspace;
 
 # basically just a dispatcher to NLW::Lite
 # need some deduping
-
-sub ws { Socialtext::NoWorkspace->new };
 
 sub not_authorized {
     my $self = shift;
