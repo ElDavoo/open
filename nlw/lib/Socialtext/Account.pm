@@ -119,9 +119,7 @@ sub EnablePluginForAll {
         $account->enable_plugin($plugin);
     }
     require Socialtext::SystemSettings;
-    Socialtext::SystemSettings::set_system_setting(
-        "$plugin-enabled-all", 1,
-    );
+    Socialtext::SystemSettings::set_system_setting( "$plugin-enabled-all", 1 );
 }
 
 sub DisablePluginForAll {
@@ -131,9 +129,7 @@ sub DisablePluginForAll {
         $account->disable_plugin($plugin);
     }
     require Socialtext::SystemSettings;
-    Socialtext::SystemSettings::set_system_setting(
-        "$plugin-enabled-all", 0,
-    );
+    Socialtext::SystemSettings::set_system_setting( "$plugin-enabled-all", 0 );
 }
 
 sub skin_name {
@@ -542,14 +538,7 @@ sub create {
                                  : $class->_create_from_name(%p);
 
     my $self = $class->new(%p);
-    require Socialtext::SystemSettings;
-    for (Socialtext::Pluggable::Adapter->plugins) {
-        my $plugin = $_->name;
-        $self->enable_plugin($plugin)
-            if Socialtext::SystemSettings::get_system_setting(
-                "$plugin-enabled-all"
-            );
-    }
+    $self->_enable_default_plugins;
 
     my $msg = 'CREATE,ACCOUNT,account:' . $self->name
               . '(' . $self->account_id . '),'
@@ -557,6 +546,19 @@ sub create {
               . '[' . $timer->elapsed . ']';
     st_log()->info($msg);
     return $self;
+}
+
+sub _enable_default_plugins {
+    my $self = shift;
+    require Socialtext::SystemSettings;
+    for (Socialtext::Pluggable::Adapter->plugins) {
+        next unless $_->scope eq 'account';
+        my $plugin = $_->name;
+        $self->enable_plugin($plugin)
+            if Socialtext::SystemSettings::get_system_setting(
+                "$plugin-enabled-all"
+            );
+    }
 }
 
 sub _create_full {
