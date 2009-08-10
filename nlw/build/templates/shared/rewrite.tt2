@@ -77,6 +77,10 @@
     RewriteRule    ^(/\w+)/member/(.*)  $1/$2          [R,L]
 
     RewriteRule    ^/lite(/.*)$      /m$1        [R,L,NE]
+    RewriteRule    ^/m/a$            /m/activities [R,L,NE]
+    RewriteRule    ^/m/s$            /m/signals    [R,L,NE]
+    RewriteRule    ^/m/p$            /m/people     [R,L,NE]
+    RewriteRule    ^/m/w$            /m/workspace_list     [R,L,NE]
     RewriteRule    ^/m/$             /m          [R,L,NE]
     RewriteRule    ^/m/page/([^/]+)$ /m/page/$1/ [R,L,NE]
 
