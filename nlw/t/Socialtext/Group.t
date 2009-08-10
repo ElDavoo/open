@@ -3,7 +3,8 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 13;
+use Test::Exception;
 
 ###############################################################################
 # Fixtures: db
@@ -74,4 +75,12 @@ query_groups_by_account_id: {
 
     $iter = $groups->next();
     ok !$iter, '... no more Groups';
+}
+
+###############################################################################
+# TEST: instantiate Group Factory with bogus driver_key
+instantiate_factory_bogus_driver_key: {
+    dies_ok {
+        Socialtext::Group->Factory(driver_key => 'Bogus:123');
+    } 'Instantiation dies on bogus driver_key';
 }
