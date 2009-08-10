@@ -204,7 +204,6 @@ EOSQL
 
         $self = $class->new( name => $p{name} );
 
-
         my $creator = $self->creator;
         unless ( $creator->is_system_created ) {
             $self->add_user(
@@ -233,6 +232,7 @@ EOSQL
     }
 
     $self->_update_aliases_file();
+    $self->_enable_default_plugins();
 
     my $msg = 'CREATE,WORKSPACE,workspace:' . $self->name
               . '(' . $self->workspace_id . '),'
@@ -384,6 +384,21 @@ sub _update_aliases_file {
     my $self = shift;
 
     Socialtext::EmailAlias::create_alias( $self->name );
+}
+
+sub _enable_default_plugins {
+    my $self = shift;
+    require Socialtext::SystemSettings;
+    for (Socialtext::Pluggable::Adapter->plugins) {
+        next if $_->scope ne 'workspace';
+        my $plugin = $_->name;
+        next if $plugin eq 'socialcalc'
+            and $self->account->account_type eq 'Free 50';
+        $self->enable_plugin($plugin)
+            if Socialtext::SystemSettings::get_system_setting(
+                "$plugin-enabled-all"
+            );
+    }
 }
 
 sub update {
@@ -1874,8 +1889,12 @@ sub EnablePluginForAll {
     my $plugin = shift;
     my $workspaces = $class->All();
     while ( my $ws = $workspaces->next() ) {
+        next if $plugin eq 'socialcalc'
+            and $ws->account->account_type eq 'Free 50';
         $ws->enable_plugin( $plugin );
     }
+    require Socialtext::SystemSettings;
+    Socialtext::SystemSettings::set_system_setting( "$plugin-enabled-all", 1 );
 }
 
 sub DisablePluginForAll {
@@ -1885,6 +1904,8 @@ sub DisablePluginForAll {
     while ( my $ws = $workspaces->next() ) {
         $ws->disable_plugin( $plugin );
     }
+    require Socialtext::SystemSettings;
+    Socialtext::SystemSettings::set_system_setting( "$plugin-enabled-all", 0 );
 }
 
 sub PluginsEnabledForAny {
