@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Socialtext::SQL qw/sql_singlevalue/;
 
-my $enabled = sql_singlevalue(q{SELECT value FROM "System" WHERE field = 'socialcalc-enabled-all'"});
+my $enabled = sql_singlevalue(q{SELECT value FROM "System" WHERE field = 'socialcalc-enabled-all'});
 
 # We don't need to run this migration if it's already been enabled
 exit -1 if $enabled;
