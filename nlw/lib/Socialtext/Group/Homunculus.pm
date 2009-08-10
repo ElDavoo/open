@@ -89,7 +89,7 @@ has 'is_system_managed' => (
 );
 
 has 'factory' => (
-    is => 'ro', isa => 'Socialtext::Group::Factory',
+    is => 'ro', does => 'Socialtext::Group::Factory',
     lazy_build => 1,
     handles => [qw( can_update_store )],
 );
