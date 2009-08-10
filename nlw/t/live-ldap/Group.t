@@ -4,8 +4,9 @@
 use strict;
 use warnings;
 use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
+use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 39;
+use Test::Socialtext tests => 43;
 
 ###############################################################################
 # Fixtures: clean db
@@ -116,14 +117,20 @@ ldap_group_records_events_on_membership_change: {
 
     # Get the Group, make sure that the "create_role" Events were emitted
     clear_events();
+    clear_log();
     my $motorhead = Socialtext::Group->GetGroup(
         driver_unique_id => $group_dn,
     );
 
     is_event_count 3;
     event_ok( event_class => 'group', action => 'create_role' );
+    next_log_like 'info', qr/ASSIGN,GROUP_ROLE/, '... and shows in nlw.log';
+
     event_ok( event_class => 'group', action => 'create_role' );
+    next_log_like 'info', qr/ASSIGN,GROUP_ROLE/, '... and shows in nlw.log';
+
     event_ok( event_class => 'group', action => 'create_role' );
+    next_log_like 'info', qr/ASSIGN,GROUP_ROLE/, '... and shows in nlw.log';
 
     # expire the Group, so subsequent lookups will cause it to get refreshed
     $motorhead->expire();
@@ -148,4 +155,5 @@ ldap_group_records_events_on_membership_change: {
 
     is_event_count 1;
     event_ok( event_class => 'group', action => 'delete_role' );
+    next_log_like 'info', qr/REMOVE,GROUP_ROLE/, '... and shows in nlw.log';
 }
