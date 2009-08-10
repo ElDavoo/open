@@ -117,17 +117,25 @@ sub GetGroup {
     my $class = shift;
     my %p = (@_==1) ? %{+shift} : @_;
 
-    # ask all of the configured Group Factories if they know about this Group
-    my @drivers = $class->Drivers();
+    # Get the list of Drivers that the Group _could_ be found in; if we were
+    # given a Driver Key explicitly then use that, otherwise go searching for
+    # the Group in the list of configured Drivers.
+    my @drivers = $p{driver_key} || $class->Drivers();
+
+    # Go find the Group
     foreach my $driver_key (@drivers) {
+        # instantiate the Group Factory, skipping if Factory doesn't exist
         my $factory = $class->Factory(driver_key => $driver_key);
-        my $homey   = $factory->GetGroupHomunculus(%p);
+        next unless $factory;
+
+        # see if this Factory knows about the Group
+        my $homey = $factory->GetGroupHomunculus(%p);
         if ($homey) {
             return Socialtext::Group->new(homunculus => $homey);
         }
     }
 
-    # nope, didn't find it
+    # nope, didn't find
     return;
 }
 
