@@ -1462,6 +1462,7 @@ sub _dump_to_yaml_file {
     $dump{logo_filename} = File::Basename::basename( $self->logo_filename() )
         if $self->logo_filename();
     $dump{name} = $name;
+    $dump{plugins} = { map { $_ => 1 } $self->plugins_enabled };
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), $self);
