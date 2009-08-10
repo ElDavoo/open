@@ -848,10 +848,10 @@ sub _parse_page_for_headers {
         # create a list describing the headers
         foreach my $header (@$headers) {
             # Headers shouldn't have toc blocks, as that doesn't make sense
-            # and causes infinite recursion.  So lets put {{ }} around it
+            # and causes infinite recursion.  So lets just render it as-is
             # so it doesn't render, but still looks weird, so the user
-            # can fix it. - Bug 598
-            $header->{text} =~ s/{(toc:?\s*.*?)}/{{{$1}}}/g;
+            # can fix it. - Bug 598, 2905
+            $header->{text} =~ s/{(toc:?\s*.*?)}/{$1}/g;
 
 
             # Bracketed hyperlinks inside toc like "Foo"<http://foo.com>
