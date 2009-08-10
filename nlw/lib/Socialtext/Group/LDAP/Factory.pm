@@ -132,16 +132,16 @@ sub _lookup_group {
 }
 
 sub _update_group_members {
-    my $self        = shift;
-    my $proto_group = shift;
-    my $members     = $proto_group->{members};
-    my $factory     = Socialtext::User::LDAP::Factory->new();
+    my $self    = shift;
+    my $homey   = shift;
+    my $members = shift;
+    my $group   = Socialtext::Group->new(homunculus => $homey);
 
     for my $member ( @$members ) {
-        my $user = $factory->GetUser( driver_unique_id => $member );
+        my $user = Socialtext::User->new( driver_unique_id => $member );
         Socialtext::UserGroupRoleFactory->Create( {
             user_id  => $user->user_id,
-            group_id => $proto_group->{group_id},
+            group_id => $group->group_id,
             role_id  => Socialtext::UserGroupRoleFactory->DefaultRole->role_id,
         } );
     }

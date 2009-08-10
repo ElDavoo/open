@@ -128,10 +128,11 @@ sub GetGroupHomunculus {
         $self->NewGroupRecord( $proto_group );
     }
 
-    $self->_update_group_members( $proto_group );
-
-    # create the homunculus, returning it back to the caller
-    return $self->NewGroupHomunculus($proto_group);
+    # create the homunculus, update its membership list, and return it back to
+    # the caller
+    my $homey = $self->NewGroupHomunculus($proto_group);
+    $self->_update_group_members($homey, $proto_group->{members});
+    return $homey;
 }
 
 # Looks up a Group in the DB, to see if we have a cached copy of it already.
