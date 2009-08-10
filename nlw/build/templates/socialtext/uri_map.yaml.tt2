@@ -469,6 +469,10 @@
         'GET':                  [Socialtext::Rest::Lite, workspace_list]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
+    '/m/activities':
+        'GET':                  [Socialtext::Rest::Lite::Activities, GET_activities]
+        '*':                    [Socialtext::Rest::Lite::Activities, bad_method]
+-
     '/m/login':
         'GET':                  [Socialtext::Rest::Lite, login]
         '*':                    [Socialtext::Rest::Lite, bad_method]

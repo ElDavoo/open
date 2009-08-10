@@ -1,0 +1,37 @@
+[%# @COPYRIGHT@ -%]
+[% PROCESS lite/header.html %]
+
+<div class="postsignal">
+    <strong>What are you working on?</strong> (140)
+    <form action="[% base_uri %]" method="POST">
+        <textarea name="signal"></textarea>
+        <input type="submit" value="Update"/> 
+    </form>
+</div>
+
+<div class="tabs">
+    [% refresh_uri = base_uri %]
+    [% IF all %]
+        <span>[% loc("All") %]</span> |
+        [% refresh_uri = "$base_uri?all=1" %]
+    [% ELSE %]
+        <a href="[% base_uri %]?all=1">[% loc("All") %]</a> |
+    [% END %]
+    [% IF all || mine %]
+        <a href="[% base_uri %]">[% loc("People I follow") %]</a> |
+    [% ELSE %]
+        <span>[% loc('People I follow') %]</span> |
+        [% refresh_uri = base_uri %]
+    [% END %]
+    [% IF mine %]
+        <span>[% loc("Mine") %]</span> |
+        [% refresh_uri = "$base_uri?mine=1" %]
+    [% ELSE %]
+        <a href="[% base_uri %]/?mine=1">[% loc("Mine") %]</a> |
+    [% END %]
+    <a href="[% refresh_uri %]">Refresh</a>
+</div>
+
+[% INCLUDE lite/event_list.html %]
+
+[% PROCESS lite/footer.html %]
