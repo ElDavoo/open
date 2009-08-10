@@ -1888,9 +1888,9 @@ sub EnablePluginForAll {
     my $class = shift;
     my $plugin = shift;
     my $workspaces = $class->All();
+    my $is_socialcalc = $plugin eq 'socialcalc';
     while ( my $ws = $workspaces->next() ) {
-        next if $plugin eq 'socialcalc'
-            and $ws->account->account_type eq 'Free 50';
+        next if $is_socialcalc and $ws->account->account_type eq 'Free 50';
         $ws->enable_plugin( $plugin );
     }
     require Socialtext::SystemSettings;
