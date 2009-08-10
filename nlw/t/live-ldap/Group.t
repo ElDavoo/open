@@ -3,8 +3,9 @@
 
 use strict;
 use warnings;
+use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 25;
+use Test::Socialtext tests => 39;
 
 ###############################################################################
 # Fixtures: clean db
@@ -105,4 +106,46 @@ remove_user_from_group: {
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($motorhead);
+}
+
+###############################################################################
+# Events get properly recorded when Users are added/removed
+ldap_group_records_events_on_membership_change: {
+    my $openldap = bootstrap_openldap();
+    my $group_dn = 'cn=Motorhead,dc=example,dc=com';
+
+    # Get the Group, make sure that the "create_role" Events were emitted
+    clear_events();
+    my $motorhead = Socialtext::Group->GetGroup(
+        driver_unique_id => $group_dn,
+    );
+
+    is_event_count 3;
+    event_ok( event_class => 'group', action => 'create_role' );
+    event_ok( event_class => 'group', action => 'create_role' );
+    event_ok( event_class => 'group', action => 'create_role' );
+
+    # expire the Group, so subsequent lookups will cause it to get refreshed
+    $motorhead->expire();
+
+    # update the Group in LDAP, removing one of its members
+    my $rc = $openldap->modify(
+        $group_dn,
+        replace => [
+            member => [
+                "cn=Lemmy Kilmister,dc=example,dc=com",
+                "cn=Eddie Clarke,dc=example,dc=com",
+            ],
+        ],
+    );
+    ok $rc, 'ldap store updated, user removed.';
+
+    # Re-query the Group, and make sure that the "delete_role" Event was
+    # emitted
+    $motorhead = Socialtext::Group->GetGroup(
+        driver_unique_id => $group_dn,
+    );
+
+    is_event_count 1;
+    event_ok( event_class => 'group', action => 'delete_role' );
 }
