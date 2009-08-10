@@ -5,7 +5,6 @@ use Moose;
 use Socialtext::LDAP;
 use Socialtext::LDAP::Config;
 use Socialtext::User::LDAP::Factory;
-use Socialtext::UserGroupRoleFactory;
 use Socialtext::Log qw(st_log);
 use DateTime::Duration;
 use Net::LDAP::Util qw(escape_filter_value);
@@ -137,13 +136,33 @@ sub _update_group_members {
     my $members = shift;
     my $group   = Socialtext::Group->new(homunculus => $homey);
 
+    # get the list of all of the existing Users in the Group, which we'll
+    # whittle down to *just* those that are no longer members and can have
+    # their UGRs deleted.
+    my %deleted_users =
+        map { $_->homunculus->driver_unique_id => $_ }
+        $group->users->all;
+
+  MEMBER:
     for my $member ( @$members ) {
+        # If this user already exists in the group, remove them
+        # from the deleted users list and skip to the next user.
+        if ( exists $deleted_users{$member} ) {
+            delete $deleted_users{$member};
+            next MEMBER;
+        }
+        # User wasn't in Group before; add them to the Group
         my $user = Socialtext::User->new( driver_unique_id => $member );
-        Socialtext::UserGroupRoleFactory->Create( {
-            user_id  => $user->user_id,
-            group_id => $group->group_id,
-            role_id  => Socialtext::UserGroupRoleFactory->DefaultRole->role_id,
-        } );
+        if ($user) {
+            $group->add_user( user => $user );
+        }
+        # XXX: Is the entry a group? (nested Groups)
+    }
+
+    # Remove all of the remaining Users; they _used to_ be in the Group, but
+    # they aren't any more.
+    for my $user ( values %deleted_users ) {
+        $group->remove_user( user => $user );
     }
 }
 

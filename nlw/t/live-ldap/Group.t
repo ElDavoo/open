@@ -4,14 +4,12 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 10;
+use Test::Socialtext tests => 25;
 
 ###############################################################################
 # Fixtures: clean db
-# - XXX: needs a clean DB to start (Groups don't auto-cleanup yet)
 # - needs a DB
-# - XXX: we're destructive (we add Groups to DB, which don't auto-cleanup yet)
-fixtures(qw( clean db destructive ));
+fixtures(qw( db ));
 
 ###############################################################################
 sub bootstrap_openldap {
@@ -26,7 +24,6 @@ sub bootstrap_openldap {
 # TEST: instantiate an LDAP Group Factory
 instantiate_ldap_group_factory: {
     my $openldap    = bootstrap_openldap();
-
     my $factory_key = $openldap->_as_factory();
     my $factory = Socialtext::Group->Factory(driver_key => $factory_key);
     isa_ok $factory, 'Socialtext::Group::LDAP::Factory';
@@ -36,7 +33,6 @@ instantiate_ldap_group_factory: {
 # TEST: retrieve an LDAP Group
 retrieve_ldap_group: {
     my $openldap  = bootstrap_openldap();
-
     my $group_dn  = 'cn=Motorhead,dc=example,dc=com';
     my $motorhead = Socialtext::Group->GetGroup(
         driver_unique_id => $group_dn,
@@ -56,5 +52,57 @@ retrieve_ldap_group: {
     is $user->username => 'phil taylor', '... second user has correct name';
 
     $user = $users->next();
-    is $user->username => 'eddie clarke', '... second user has correct name';
+    is $user->username => 'eddie clarke', '... third user has correct name';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($motorhead);
+}
+
+###############################################################################
+# When a User is removed from the Group, membership list updated automatically
+remove_user_from_group: {
+    my $openldap = bootstrap_openldap();
+    my $group_dn = 'cn=Motorhead,dc=example,dc=com';
+
+    # get the Group, make sure it looks right
+    my $motorhead = Socialtext::Group->GetGroup(
+        driver_unique_id => $group_dn,
+    );
+
+    my $users = $motorhead->users;
+    isa_ok $users => 'Socialtext::MultiCursor';
+    is $users->count => '3', '... with three users';
+
+    # expire the Group, so subsequent lookups will cause it to get refreshed
+    $motorhead->expire();
+
+    # update the Group in LDAP, removing one of its members
+    my $rc = $openldap->modify(
+        $group_dn,
+        replace => [
+            member => [
+                "cn=Lemmy Kilmister,dc=example,dc=com",
+                "cn=Eddie Clarke,dc=example,dc=com",
+            ],
+        ],
+    );
+    ok $rc, 'ldap store updated, user removed.';
+
+    # re-instantiate the Group, and verify that the User was removed
+    $motorhead = Socialtext::Group->GetGroup(
+        driver_unique_id => $group_dn,
+    );
+
+    $users = $motorhead->users;
+    isa_ok $users => 'Socialtext::MultiCursor';
+    is $users->count => '2', '... with two users';
+
+    my $user = $users->next();
+    is $user->username => 'lemmy kilmister', '... first user has correct name';
+
+    $user = $users->next();
+    is $user->username => 'eddie clarke', '... third user has correct name';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($motorhead);
 }
