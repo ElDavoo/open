@@ -43,7 +43,9 @@ sub not_authorized {
 }
 
 sub homepage {
-    my ( $self, $rest ) = @_;
+    my $self = shift;
+    return $self->not_authorized unless $self->rest->user->is_authenticated;
+
     my $loc = $self->hub->pluggable->hook('nlw.lite_homepage')
        || '/m/workspace_list';
     $self->rest->header(
