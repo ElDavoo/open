@@ -5,6 +5,7 @@ use Moose;
 use Carp qw(croak);
 use List::Util qw(first);
 use Socialtext::AppConfig;
+use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
 use Socialtext::Timer;
 use Socialtext::SQL qw(:exec);
@@ -90,7 +91,12 @@ sub Factory {
     my $driver_class = join '::', $class->base_package(), $driver_name, 'Factory';
     eval "require $driver_class";
     die "couldn't load $driver_class: $@" if $@;
-    return $driver_class->new(driver_key => $driver_key);
+
+    my $factory = eval { $driver_class->new(driver_key => $driver_key) };
+    if ($@) {
+        st_log->warning( $@ );
+    }
+    return $factory;
 }
 
 ###############################################################################

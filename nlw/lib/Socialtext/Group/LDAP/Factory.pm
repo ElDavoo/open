@@ -14,8 +14,19 @@ with qw(
     Socialtext::Group::Factory
 );
 
+sub BUILD {
+    my $self = shift;
+
+    # If we can't find our LDAP Config, throw a fatal error
+    my $config = $self->ldap_config();
+    unless (defined $config) {
+        my $driver_id = $self->driver_id();
+        die "Can't find configuration '$driver_id' for LDAP Group Factory\n";
+    }
+}
+
 has 'ldap_config' => (
-    is => 'ro', isa => 'Socialtext::LDAP::Config',
+    is => 'ro', isa => 'Maybe[Socialtext::LDAP::Config]',
     lazy_build => 1,
 );
 
