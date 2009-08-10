@@ -1396,6 +1396,22 @@ sub st_account_export_field_like {
         "$account $field";
 }
 
+sub enable_ws_plugin    { shift; _change_plugin('Workspace', 1, @_) }
+sub disable_ws_plugin   { shift; _change_plugin('Workspace', 0, @_) }
+sub enable_acct_plugin  { shift; _change_plugin('Account',   1, @_) }
+sub disable_acct_plugin { shift; _change_plugin('Account',   0, @_) }
+
+sub _change_plugin {
+    my $class  = 'Socialtext::' . shift;
+    my $method = shift() ? 'enable_plugin' : 'disable_plugin';
+    my $plugin = shift;
+    my $name = shift;
+
+    my $obj = $class->new(name => $name);
+    $obj->$method($plugin);
+    diag "$method($plugin) for $name\n";
+}
+
 sub _run_command {
     my $command = shift;
     my $verify = shift || '';
