@@ -9,9 +9,15 @@
 [% ELSE %]
     [% FILTER decorate('lite_global_nav') %]
         [% IF section == 'workspaces' %]
-        <span>[% loc('Workspaces') %]</span>
+          <span>[% loc('Workspaces') %]</span>
         [% ELSE %]
-        <a href="/m/workspace_list">[% loc('Workspaces') %]</a>
+          <a href="/m/workspace_list">[% loc('Workspaces') %]</a>
+        [% END %]
+
+        [% IF section == 'activities' %]
+          <span>[% loc('Activities') %]</span>
+        [% ELSE %]
+          <a href="/m/activities">[% loc('Activities') %]</a>
         [% END %]
     [% END %]
     | 
