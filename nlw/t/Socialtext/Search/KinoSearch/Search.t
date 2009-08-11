@@ -7,7 +7,7 @@ use IPC::Run qw(run timeout);
 
 use utf8;
 use Test::Socialtext::Search;
-use Test::Socialtext tests => 206;
+use Test::Socialtext tests => 232;
 fixtures(qw( admin no-ceq-jobs ));
 
 use_ok("Socialtext::Search::KinoSearch::Factory");
@@ -18,8 +18,8 @@ our $hub       = new_hub($workspace);
 my $INDEXER;
 my $SEARCHER;
 
-make_indexer();
-make_searcher();
+ok make_indexer(), 'made indexer';
+ok make_searcher(), 'made searcher';
 basic_search();
 more_featured_search();
 flexing_multiple_pages();
@@ -30,7 +30,7 @@ lots_of_hits();
 test_for_dollar_amp_and_friend();
 index_and_search_a_big_document(); # go away?
 basic_wildcard_search();
-rampup_indexing();
+rampup_indexing(); # MUST be the last test.
 
 sub basic_search {
     erase_index_ok();
@@ -334,9 +334,13 @@ sub index_ok {
 sub erase_index_ok {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
+    undef $SEARCHER;
+
     eval { indexer()->delete_workspace($workspace) };
     diag("erase_index_ok: $@\n") if $@;
     ok( not($@), "============ ERASED INDEX =============" );
+    ok(make_searcher(), 'made searcher after erasing index');
+    ok(make_indexer(), 'made indexer after erasing index');
 }
 
 sub make_searcher {

@@ -411,7 +411,6 @@ QUICK_TESTS = \
 	t/Socialtext/EmailSender/ja.t \
 	t/Socialtext/EmailSender.t \
 	t/Socialtext/Events-signal.t \
-	t/Socialtext/Events.t \
 	t/Socialtext/Exceptions.t \
 	t/Socialtext/File_guess_en.t \
 	t/Socialtext/File_guess_ja.t \

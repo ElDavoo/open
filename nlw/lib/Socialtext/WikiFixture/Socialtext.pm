@@ -656,27 +656,6 @@ sub st_click_reset_password {
 }
 
 
-=head2 st_catchup_logs
-  Runs the script to import the nlw_log into the reports database
-=cut
-
-sub st_catchup_logs {
-   if (Socialtext::AppConfig::_startup_user_is_human_user()) {
-       #In Dev Env
-       my $current_dir = cwd;
-       my $new_dir =  $ENV{ST_CURRENT} . "/socialtext-reports/";
-       chdir($new_dir);
-       my $str = $ENV{ST_CURRENT} . "/socialtext-reports/parse-dev-env-logs /var/log/nlw.log >/dev/null 2>&1";
-       shell_run($str);
-       chdir($current_dir);
-   } else {
-      #On An Appliance
-      shell_run("sudo /usr/bin/st-reports-consume-access-log /var/log/apache-perl/access.log >> /var/log/st-reports.log >/dev/null 2>&1");
-      shell_run("sudo /usr/bin/st-reports-consume-nlw-log /var/log/nlw.log >> /var/log/st-reports.log >/dev/null 2>&1");
-   }
-}
-
-
 sub _click_user_row {
     my ($self, $email, $method_name, $click_col) = @_;
     my $sel = $self->{selenium};

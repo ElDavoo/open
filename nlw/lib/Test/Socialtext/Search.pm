@@ -3,6 +3,7 @@ package Test::Socialtext::Search;
 use strict;
 use warnings;
 
+use Data::Dumper;
 use File::Path;
 use File::Spec;
 use Test::More;
@@ -49,6 +50,9 @@ sub search_for_term {
             [],
             "result set found no hits $term"
         );
+        if (@{ $set->{rows} }) {
+            warn Dumper $set->{rows};
+        }
     } else {
         ok( $set, 'we have results' );
         ok( $set->{hits} > 0, 'result set found hits' );
@@ -65,6 +69,8 @@ sub search_for_term {
 sub search_for_term_in_attach {
     my $term = shift;
     my $filename = shift;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     Test::Socialtext::ceqlotron_run_synchronously();
 

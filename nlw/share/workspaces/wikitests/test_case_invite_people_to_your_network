@@ -31,7 +31,7 @@
 | type_ok | users_new_ids | %%emailok2%% |
 | click_ok | link=Invite |  |
 | wait_for_element_visible_ok | Link=Invite more people | 30000 |
-| text_like | qr/The following users were successfully invited into this Network:\s+%%eemailok2%%/ |  |
+| text_like | qr/The following 1 user was successfully invited into this Network:\s+%%eemailok2%%/ |  |
 | click_ok | Link=Invite more people |  |
 | pause | 20000 |  |
 | wait_for_element_present_ok | link=Cancel | 30000 |
@@ -39,7 +39,7 @@
 | type_ok | users_new_ids | %%emailbad%% |
 | click_ok | link=Invite |  |
 | wait_for_element_visible_ok | Link=Invite more people | 30000 |
-| text_like | qr/Sorry, the following email addresss are not in the domain xndev.com\s+%%eemailbad%%/ |  |
+| text_like | qr/Sorry, the following 1 email address is not in the domain xndev.com\s+%%eemailbad%%/ |  |
 | st-logoutin | %%username%% | %%password%% |
 
 | *Comment* | Test Case: Invite people. Define a brand new user to invite. Make the email address of that user a wiki |  |
@@ -97,10 +97,10 @@ TODO: verify cannot actually issue invitations via URL
 
 | *Comment* | Test Case: Invite people. Verify the invitations |  |
 | text_like | Invite people to %%acct%% |  |
-| text_like | qr/The following users were already members of this Network\s+%%eacct_user%%/ |  |
-| text_like | qr/The following users were successfully invited into this Network:\s+%%eto_ws_user%%/ |  |
-| text_like | qr/The following users were already members of another Network\s+%%eguest%%/ |  |
-| text_like | qr/The following email addresses were invalid\s+foo2bar.com/ |  |
+| text_like | qr/The following 1 user was already a member of this Network:\s+%%eacct_user%%/ |  |
+| text_like | qr/The following 1 user was successfully invited into this Network:\s+%%eto_ws_user%%/ |  |
+| text_like | qr/The following 1 user was already a member of another Network:\s+%%eguest%%/ |  |
+| text_like | qr/The following 1 email address was invalid:\s+foo2bar.com/ |  |
 | click_and_wait | link=Invite more people |  |
 | text_like | Invite people to your network |  |
 

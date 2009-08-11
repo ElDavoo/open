@@ -6,6 +6,7 @@ use base 'Socialtext::WikiFixture::Socialtext';
 use Test::More;
 use URI;
 use URI::QueryParam;
+use Cwd;
 
 =head1 NAME
 
@@ -318,6 +319,29 @@ ENDJS2
     ok( !$@, "st-wait-for-all-widgets-load");
 }
 
+
+
+=head2 st_add_activity_widget()
+
+Adds the activity widget to a dashboard
+(A work in progress)
+
+=cut
+
+sub st_add_activity_widget {
+    my ($self, $username, $password) = @_;
+}
+
+=head2 st_send_signal
+
+Sends a signal to the selected widget
+(A work in progress) 
+
+=cut
+
+sub st_send_signal {
+    my ($self, $username, $password) = @_;
+}
 
 sub _adjust_location {
     my ($self, %params) = @_;

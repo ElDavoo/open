@@ -4,7 +4,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 40;
+use Test::Socialtext tests => 41;
 fixtures(qw( admin no-ceq-jobs ));
 
 use Socialtext::Page ();

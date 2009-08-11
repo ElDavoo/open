@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 2;
+use Test::Socialtext tests => 3;
 use Socialtext::Jobs;
 use Socialtext::Search::AbstractFactory;
 

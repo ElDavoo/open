@@ -300,6 +300,13 @@ my $FOLLOWED_PEOPLE_ONLY = <<'EOSQL';
 )
 EOSQL
 
+my $FOLLOWED_PEOPLE_ONLY_WITH_MY_SIGNALS = <<"EOSQL";
+(
+   $FOLLOWED_PEOPLE_ONLY
+   OR (event_class = 'signal' AND actor_id = ?)
+)
+EOSQL
+
 my $CONTRIBUTIONS = <<'EOSQL';
     (event_class = 'person' AND is_profile_contribution(action))
     OR
@@ -408,9 +415,16 @@ sub _build_standard_sql {
         }
 
         if ($opts->{followed}) {
-            $self->add_condition(
-                $FOLLOWED_PEOPLE_ONLY => ($viewer_id) x 3
-            );
+            if ($opts->{with_my_signals}) {
+                $self->add_condition(
+                    $FOLLOWED_PEOPLE_ONLY_WITH_MY_SIGNALS => ($viewer_id) x 3
+                );
+            }
+            else {
+                $self->add_condition(
+                    $FOLLOWED_PEOPLE_ONLY => ($viewer_id) x 2
+                );
+            }
         }
 
         # filter for contributions-type events

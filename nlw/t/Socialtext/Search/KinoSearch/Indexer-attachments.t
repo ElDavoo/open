@@ -29,7 +29,7 @@ if ( !$elinks_path ) {
     plan skip_all => 'elinks is not installed.  Word attachments cannot be or tested.';
 }
 
-plan tests => (scalar blocks) * 10;
+plan tests => (scalar blocks) * 12;
 
 my $hub = Test::Socialtext::Search::hub();
 

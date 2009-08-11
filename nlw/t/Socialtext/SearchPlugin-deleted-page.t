@@ -4,9 +4,9 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 9;
+use Test::Socialtext tests => 11;
 use Test::Socialtext::Search;
-fixtures( 'admin' );
+fixtures( 'no-ceq-jobs', 'admin' );
 
 {
     my $title = 'A Page with a Wacktastic Title';

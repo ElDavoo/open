@@ -27,7 +27,7 @@
 | select-frame | relative=parent |  |
 | st-widget-settings | tag_cloud |  |
 | wait_for_element_visible_ok | up_workspace | 30000 |
-| type_ok | up_workspace | test-data |
+| select-ok | up_workspace | Canonical Test Data Set |
 | wait_for_element_visible_ok | st-savebutton-%%tag_cloud%% | 30000 |
 | click_ok | st-savebutton-%%tag_cloud%% |  |
 | wait_for_element_not_visible_ok | st-savebutton-%%tag_cloud%% | 30000 |

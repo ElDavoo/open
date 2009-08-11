@@ -150,7 +150,7 @@
 
 | *Comment* | Test Case: Console Setup. apache logs |  |
 | click_and_wait | apache_error_log |  |
-| text_like | `module mod_perl.c is already added` |  |
+| text_like | `resuming normal operations` |  |
 | open_ok | /console |  |
 | wait_for_element_visible_ok | link=Setup | 60000 |
 | click_and_wait | link=Setup |  |
