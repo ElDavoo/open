@@ -48,6 +48,10 @@ my %commands = (
     'refresh-groups' => sub {
         Socialtext::LDAP::Operations->RefreshGroups(force => $force);
     },
+    'refresh' => sub {
+        Socialtext::LDAP::Operations->RefreshUsers(force => $force);
+        Socialtext::LDAP::Operations->RefreshGroups(force => $force);
+    }
     'load-users' => sub {
         Socialtext::LDAP::Operations->LoadUsers(dryrun => $dryrun);
     },
@@ -88,6 +92,9 @@ st-ldap - Socialtext LDAP integration utility
 
     refresh-groups  Refreshes group data from LDAP
         --force         Force refresh for all LDAP groups
+
+    refresh         Refreshes user and group data from LDAP
+        --force         Force refresh for all LDAP users/groups
 
   Options:
     --verbose       Enable verbose output
@@ -209,6 +216,22 @@ directory, and want that data to be reflected immediately within Socialtext.
 By default, only those groups whose cached data is stale are refreshed.  This
 can be over-ridden by using the C<--force> command line option, which forces a
 refresh of B<all> LDAP groups.
+
+=item B<refresh>
+
+Refreshes the local DB cache with information on LDAP users and groups.
+
+=over
+
+=item B<--force>
+
+Forces a refresh for B<all> LDAP users and groups, not just those who are
+known to have stale/outdated cached data.
+
+=back
+
+Note that "refresh" is simply a short-hand method for calling "refresh-users"
+and "refresh-groups" (in that order).
 
 =head1 OPTIONS
 
