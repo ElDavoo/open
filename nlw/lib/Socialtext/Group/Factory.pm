@@ -52,6 +52,7 @@ has 'cache_lifetime' => (
 requires 'Create';
 requires 'Update';
 requires 'can_update_store';
+requires 'is_cacheable';
 requires '_build_cache_lifetime';
 requires '_lookup_group';
 requires '_update_group_members';
@@ -161,8 +162,14 @@ sub _get_cached_group {
 sub _cached_group_is_fresh {
     my ($self, $proto_group) = @_;
 
+    # If the Factory doesn't support caching, then items are *always*
+    # considered fresh.
+    return 1 unless $self->is_cacheable();
+
+    # Allow for the cache to be en/disabled for testing purposes
     return 0 unless $CacheEnabled;
 
+    # Check to see if the cached proto_group is fresh
     my $now       = $self->Now();
     my $ttl       = $self->cache_lifetime();
     my $cached_at = sql_parse_timestamptz($proto_group->{cached_at});
@@ -466,6 +473,14 @@ returning false if the data store is read-only.
 Factories consuming this Role B<MUST> implement this method to indicate if
 they're updateable or not.
 
+=item B<$factory-E<gt>is_cacheable()>
+
+Returns true if we should be caching Group data fetched from the underlying
+data store.
+
+Factories consuming this Role B<MUST> implement this method to indicate if
+they should be cached or not.
+
 =item B<$factory-E<gt>GetGroupHomunculus(group_id =E<gt> $group_id)>
 
 Retrieves the Group record from the local DB, turns it into a Group Homunculus
@@ -615,6 +630,8 @@ Factory, you need to provide implementations for the following methods:
 =item Update($group, \%proto_group)
 
 =item can_update_store()
+
+=item is_cacheable()
 
 =item _build_cache_lifetime()
 

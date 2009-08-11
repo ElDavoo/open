@@ -16,6 +16,9 @@ has '+driver_key' => (
 # the Default store *is* updateable
 sub can_update_store { 1 }
 
+# the Default store is *not* cacheable
+sub is_cacheable { 0 }
+
 # the Default store doesn't need to look up Groups; they would've been found
 # automatically when searching for "do I have a cached copy of this Group?"
 sub _lookup_group {
@@ -103,6 +106,10 @@ Consumes the C<Socialtext::Group::Factory> Role.
 =item B<$factory-E<gt>can_update_store()>
 
 Returns true; the Default Group Factory B<is> updateable.
+
+=item B<$factory-E<gt>is_cacheable()>
+
+Returns false; the Default Group Factory is B<not> cacheable.
 
 =item B<$factory-E<gt>Create(\%proto_group)>
 

@@ -18,6 +18,7 @@ fixtures(qw( base_config ));
     with 'Socialtext::Group::Factory';
 
     sub can_update_store { 1 };
+    sub is_cacheable { 0 };
     sub Create {
         my ($self, $proto_group) = @_;
     }
@@ -35,6 +36,7 @@ fixtures(qw( base_config ));
     with 'Socialtext::Group::Factory';
 
     sub can_update_store { 0 };
+    sub is_cacheable { 0 };
     sub Create {
         my ($self, $proto_group) = @_;
     }

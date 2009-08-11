@@ -49,6 +49,9 @@ sub _build_ldap {
 # the LDAP store is *NOT* updateable; its read-only
 sub can_update_store { 0 }
 
+# the LDAP store *is* cacheable
+sub is_cacheable { 1 }
+
 # empty stub; store is read-only, can't create a new Group in LDAP
 sub Create {
     # XXX: should we throw a warning here?
@@ -269,6 +272,10 @@ server that this Factory presents Groups from.
 =item B<$factory-E<gt>can_update_store()>
 
 Returns false; LDAP Group Factories are B<read-only>.
+
+=item B<$factory-E<gt>is_cacheable()>
+
+Returns true; LDAP Group stores should be cached locally.
 
 =back
 
