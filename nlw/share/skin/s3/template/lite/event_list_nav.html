@@ -1,0 +1,46 @@
+<div class="tabs">
+    [% refresh_uri = base_uri %]
+    [% IF section == "activities" %]
+      [% IF all %]
+          <span>[% loc("All") %]</span> |
+          [% refresh_uri = "$base_uri?all=1" %]
+      [% ELSE %]
+          <a href="[% base_uri %]?all=1">[% loc("All") %]</a> |
+      [% END %]
+
+      [% IF followed %]
+          <span>[% loc('People I follow') %]</span> |
+          [% refresh_uri = "$base_uri?followed=1" %]
+      [% ELSE %]
+          <a href="[% base_uri %]?followed=1">[% loc("People I follow") %]</a> |
+      [% END %]
+
+      [% IF all || followed %]
+          <a href="[% base_uri %]">[% loc("My Conversations") %]</a> |
+      [% ELSE %]
+          <span>[% loc("My Conversations") %]</span> |
+      [% END %]
+    [% ELSIF section == "signals" %]
+      [% refresh_uri = base_uri %]
+      [% IF all %]
+          <span>[% loc("All") %]</span> |
+          [% refresh_uri = "$base_uri?all=1" %]
+      [% ELSE %]
+          <a href="[% base_uri %]?all=1">[% loc("All") %]</a> |
+      [% END %]
+      [% IF all || mine %]
+          <a href="[% base_uri %]">[% loc("People I follow") %]</a> |
+      [% ELSE %]
+          <span>[% loc('People I follow') %]</span> |
+          [% refresh_uri = base_uri %]
+      [% END %]
+      [% IF mine %]
+          <span>[% loc("Mine") %]</span> |
+          [% refresh_uri = "$base_uri?mine=1" %]
+      [% ELSE %]
+          <a href="[% base_uri %]/?mine=1">[% loc("Mine") %]</a> |
+      [% END %]
+    [% END %]
+    <a href="[% refresh_uri %]">Refresh</a>
+</div>
+

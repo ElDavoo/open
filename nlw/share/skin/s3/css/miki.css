@@ -29,6 +29,7 @@ div.clear {
 }
 .globalnav.bottom {
     border-top: 1px solid #666;
+    margin-top: 5px;
 }
 .subnav {
     background-color: #ddd;    
@@ -111,6 +112,7 @@ img.avatar {
 .profile .info {
     padding-bottom: 10px;
     padding-left: 70px;
+    height: 75px;
 }
 .profile .section {
     border-bottom: 1px solid #666;

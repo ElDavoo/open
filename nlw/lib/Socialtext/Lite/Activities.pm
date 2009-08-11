@@ -53,7 +53,7 @@ sub events {
 
     $self->hub->viewer->link_dictionary($self->link_dictionary);
     return $self->_process_template(
-        "lite/activities.html",
+        "lite/$args{section}.html",
         events   => $events,
         more     => $more ? 1 : 0,
         base_uri => "/m/$args{section}",
