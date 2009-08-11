@@ -138,7 +138,6 @@ sub _lookup_group {
     $proto_group = $self->_map_ldap_entry_to_proto($entry);
     $proto_group->{driver_key} = $self->driver_key();
     $proto_group->{members} = [ $entry->get_value( $attr_map->{member_dn} ) ];
-    $proto_group->{cached_at} = $self->Now();
     return $proto_group;
 }
 

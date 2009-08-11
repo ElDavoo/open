@@ -13,6 +13,9 @@ use Socialtext::SQL::Builder qw(:all);
 use Socialtext::l10n qw(loc);
 use namespace::clean -except => 'meta';
 
+# Do *NOT* disable this unless you are testing!
+our $CacheEnabled = 1;
+
 with qw(
     Socialtext::Moose::SqlBuilder
     Socialtext::Moose::SqlBuilder::Role::DoesSqlInsert
@@ -120,6 +123,7 @@ sub GetGroupHomunculus {
         $proto_group = {
             %{$proto_group},
             %{$refreshed},
+            cached_at => $self->Now(),
         };
         $self->UpdateGroupRecord( $proto_group );
     }
@@ -156,6 +160,9 @@ sub _get_cached_group {
 # for this Group Factory.
 sub _cached_group_is_fresh {
     my ($self, $proto_group) = @_;
+
+    return 0 unless $CacheEnabled;
+
     my $now       = $self->Now();
     my $ttl       = $self->cache_lifetime();
     my $cached_at = sql_parse_timestamptz($proto_group->{cached_at});
