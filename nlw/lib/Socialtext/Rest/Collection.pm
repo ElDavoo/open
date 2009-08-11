@@ -113,10 +113,9 @@ sub _make_getter {
                 $e->rethrow;
             }
             else {
+                # Rely on error thrower to set HTTP headers properly.
                 my ($error) = split "\n", $e; # first line only
                 st_log->info("Rest Collection Error: $e");
-                warn "Rest Collection Error: $e";
-                Socialtext::Exception->throw(error => $error);
             }
         }
 
