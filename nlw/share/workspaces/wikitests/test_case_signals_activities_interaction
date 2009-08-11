@@ -13,6 +13,8 @@
 | set | econversant | %%conversant%%@ken.socialtext.net |  |
 | set | second | seconduser%%start_time%% |  |
 | set | esecond | %%second%%@ken.socialtext.net |  |
+| set | wsadmin | wsadmin%%start_time%% |  |
+| set | ewsadmin | %%wsadmin%%@ken.socialtext.net |  |
 | set | acct | signalacct%%start_time%% |  |
 | set | ws | signalws%%start_time%%-ws |  |
 | set | secondaryacct | secondary%%start_time%% |  |
@@ -26,15 +28,23 @@
 | create-user | %%efriend%% | %%password%% | %%acct%% |
 | create-user | %%econversant%% | %%password%% | %%acct%% |
 | create-user | %%esecond%% | %%password%% | %%secondaryacct%% |
+| create-user | %%ewsadmin%% | %%password%% | %%acct%% |
 | add-member | %%emainuser%% | %%ws%% |  |
 | add-member | %%econversant%% | %%ws%% |  |
 | add-member | %%emainuser%% | %%secondws%% |  |
 | add-member | %%esecond%% | %%secondws%% |  |
 | add-member | %%efollowed%% | %%ws%% |  |
-| st-admin | enable-plugin --account %%acct%% --plugin people |  |  |
-| st-admin | enable-plugin --account %%acct%% --plugin signals |  |  |
-| st-admin | enable-plugin --account %%secondaryacct%% --plugin people |  |  |
-| st-admin | enable-plugin --account %%secondaryacct%% --plugin signals |  |  |
+| add-member | %%ewsadmin%% | %%ws%% |  |
+| st-admin | enable-plugin --plugin people --account %%acct%% |  |  |
+| st-admin | enable-plugin --plugin signals --account %%acct%% |  |  |
+| st-admin | enable-plugin --plugin people --account %%secondaryacct%% |  |  |
+| st-admin | enable-plugin --plugin signals --account %%secondaryacct%% |  |  |
+| add_workspace_admin | %%ewsadmin%% | %%ws%% |  |
+
+enable-acct-plugin | people | %%acct%% | |
+enable-acct-plugin | signals | %%acct%% | |
+enable-acct-plugin | people | %%secondaryacct%% | |
+enable-acct-plugin | signals | %%secondaryacct%% | |
 
 | *Comment* | Test Case: Signals/Activities Interaction Summary Signal |  |
 | st-logoutin | %%emainuser%% | %%password%% |
@@ -124,15 +134,30 @@
 | pause | 3000 |  |
 | selectFrame | signalFrame |  |
 | wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | {user: %%emainuser} mention from followed |
+| type_ok | //body | %%followed%% simple signal |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
-| *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | {user: %%emainuser%%} mention from %%followed%% |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | post | 10000 |
+| click_ok | post |  |
+| pause | 3000 |  |
+| select-frame | relative=parent |  |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | d {user: %%emainuser%%} direct from %%followed%% |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | post | 10000 |
+| click_ok | post |  |
 | pause | 3000 |  |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Signals/Activities Interaction As everyone |  |
+| *Comment* | Test Case: Signals/Activities Interaction As %%efriend%% - just someone in my acct |  |
 | st-logoutin | %%efriend%% | %%password%% |
 | open_ok | /?dashboard | 60000 |
 | st-empty-container |  |  |
@@ -272,9 +297,51 @@
 | pause | 3000 |  |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Signals/Activities Teardown |  |
+| *Comment* | Test Case: Signals/Activities Interaction As %%wsadmin%% - a workspace admin |  |
+| st-logoutin | %%ewsadmin%% | %%password%% |
 | open_ok | /?dashboard | 60000 |
 | st-empty-container |  |  |
+| wait_for_element_visible_ok | link=Add Content | 30000 |
+| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Activities'] | 30000 |
+| click_and_wait | //a[@id='gallery-widget-Activities'] |  |
+| wait_for_text_present_ok | Welcome | 30000 |
+| text_like | st-editing-tools-edit | Welcome |
+| wait_for_text_present_ok | Activities | 30000 |
+| st-name-widget | 1 | signals_widget |
+| st-widget-title-like | signals_widget | Activities |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_element_visible_ok | expand-input | 10000 |
+| click_ok | expand-input |  |
+| wait_for_element_visible_ok | signalFrame | 10000 |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | %%wsadmin%% simple signal |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | post | 10000 |
+| click_ok | post |  |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | {user: %%emainuser%%} mention from %%wsadmin%% |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | post | 10000 |
+| click_ok | post |  |
+| pause | 3000 |  |
+| select-frame | relative=parent |  |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | d {user: %%emainuser%%} direct from %%wsadmin%% |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | post | 10000 |
+| click_ok | post |  |
+| pause | 3000 |  |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Signals/Activities Teardown |  |
+| open_ok | /?dashboard | 60000 |
 | st-catchup-logs |  |  |
 
 | *Comment* | Test Case: Signals/Activities Interaction |  |

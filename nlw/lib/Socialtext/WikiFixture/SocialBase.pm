@@ -1397,20 +1397,6 @@ sub st_account_export_field_like {
         "$account $field";
 }
 
-sub _run_command {
-    my $command = shift;
-    my $verify = shift || '';
-    my $output = qx($command 2>&1);
-    return if $verify eq 'ignore output';
-
-    if ($verify) {
-        like $output, $verify, $command;
-    }
-    else {
-        warn $output;
-    }
-}
-
 
 sub st_catchup_logs {
    if (Socialtext::AppConfig::_startup_user_is_human_user()) {
@@ -1419,14 +1405,30 @@ sub st_catchup_logs {
        my $new_dir =  $ENV{ST_CURRENT} . "/socialtext-reports/";
        chdir($new_dir);
        my $str = $ENV{ST_CURRENT} . "/socialtext-reports/parse-dev-env-logs /var/log/nlw.log >/dev/null 2>&1";
-       _run_command($str);
+       system($str);
        chdir($current_dir);
    } else {
       #On An Appliance
-      _run_command("sudo /usr/bin/st-reports-consume-access-log /var/log/apache-perl/access.log >> /var/log/st-reports.log >/dev/null 2>&1");
-      _run_command("sudo /usr/bin/st-reports-consume-nlw-log /var/log/nlw.log >> /var/log/st-reports.log >/dev/null 2>&1");
+      _run_command("/usr/bin/st-reports-consume-access-log /var/log/apache-perl/access.log >> /var/log/st-reports.log >/dev/null 2>&1");
+      _run_command("/usr/bin/st-reports-consume-nlw-log /var/log/nlw.log >> /var/log/st-reports.log >/dev/null 2>&1");
    }
 }
+
+
+sub _run_command {
+    my $command = shift;
+    my $verify = shift || '';
+    my $output = qx($command 2>&1);
+    return if $verify eq 'ignore output';
+    
+    if ($verify) {
+        like $output, $verify, $command;
+    }
+    else {
+        warn $output;
+    }
+}
+
 
 
 1;
