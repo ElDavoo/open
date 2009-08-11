@@ -192,7 +192,7 @@ test_force_refresh: {
 # total records: 2000
 benchmark_tiny_groups: {
     unless ($ENV{NLW_BENCHMARK}) {
-        diag "Medium group benchmark tests skipped; set NLW_BENCHMARK=1 to run them";
+        diag "Tiny group benchmark tests skipped; set NLW_BENCHMARK=1 to run them";
     }
     else {
         diag "Running benchmark for tiny groups; this may take a while.";
