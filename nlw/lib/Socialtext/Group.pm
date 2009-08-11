@@ -106,8 +106,8 @@ sub Create {
     # find first updateable factory
     my $factory =
         first { $_->can_update_store }
-        grep { defined $_ }
-        map { $class->Factory(driver_key => $_) }
+        grep  { defined $_ }
+        map   { $class->Factory(driver_key => $_) }
         $class->Drivers();
     unless ($factory) {
         die "No writable Group factories configured.";
