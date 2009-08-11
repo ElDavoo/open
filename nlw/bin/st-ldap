@@ -45,6 +45,9 @@ my %commands = (
     'refresh-users' => sub {
         Socialtext::LDAP::Operations->RefreshUsers(force => $force);
     },
+    'refresh-groups' => sub {
+        Socialtext::LDAP::Operations->RefreshGroups(force => $force);
+    },
     'load-users' => sub {
         Socialtext::LDAP::Operations->LoadUsers(dryrun => $dryrun);
     },
@@ -83,6 +86,9 @@ st-ldap - Socialtext LDAP integration utility
     refresh-users   Refreshes user data from LDAP
         --force         Force refresh for all LDAP users
 
+    refresh-groups  Refreshes group data from LDAP
+        --force         Force refresh for all LDAP groups
+
   Options:
     --verbose       Enable verbose output
     --help/-?       Brief help message
@@ -91,6 +97,7 @@ st-ldap - Socialtext LDAP integration utility
   Example:
     st-ldap load-users
     st-ldap refresh-users --force --verbose
+    st-ldap refresh-groups --force --verbose
 
 =head1 DESCRIPTION
 
@@ -167,7 +174,41 @@ By default, only those users whose cached data is stale are refreshed.  This
 can be over-ridden by using the C<--force> command line option, which forces a
 refresh of B<all> LDAP users.
 
+=item B<refresh-groups>
+
+Refreshes the local DB cache with information on LDAP groups.
+
+=over
+
+=item B<--force>
+
+Forces a refresh for B<all> LDAP groups, not just those who are known to have
+stale/outdated cached data.
+
 =back
+
+LDAP group data I<is> refreshed automatically by the system as part of its
+regular operations, but there are times when you may wish to refresh the data
+explicitly:
+
+=over
+
+=item *
+
+Initial population of LDAP group data; cache is empty and you'd like to
+pre-fetch all of the group data so that its available immediately, rather than
+waiting for the group data to get cached naturally through system use.
+
+=item *
+
+You've made (possibly major) changes to the data stored within the LDAP
+directory, and want that data to be reflected immediately within Socialtext.
+
+=back
+
+By default, only those groups whose cached data is stale are refreshed.  This
+can be over-ridden by using the C<--force> command line option, which forces a
+refresh of B<all> LDAP groups.
 
 =head1 OPTIONS
 

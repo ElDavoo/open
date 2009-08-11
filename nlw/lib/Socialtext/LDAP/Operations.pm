@@ -147,6 +147,55 @@ sub LoadUsers {
 }
 
 ###############################################################################
+# Refreshes existing LDAP Groups.
+sub RefreshGroups {
+    my ($class, %opts) = @_;
+    my $force = $opts{force};
+
+    # Disable cache freshness checks if we're forcing the refresh of all
+    # Groups.
+    local $Socialtext::Group::Factory::CacheEnabled = 0 if ($force);
+    # Get the list of LDAP Groups *directly* from the DB.
+    #
+    # Order this by "driver_key" so that we'll group all of the LDAP lookups
+    # for a single server together; if we spread them out we risk having the
+    # LDAP connection time out between lookups.
+    st_log->info( "getting list of LDAP groups to refresh" );
+    my $sth = sql_execute( qq{
+        SELECT driver_key, driver_unique_id, driver_group_name
+          FROM groups
+         WHERE driver_key ~* 'LDAP'
+         ORDER BY driver_key, driver_group_name
+    } );
+    st_log->info( "... found " . $sth->rows . " LDAP groups" );
+
+    my $rows_aref = $sth->fetchall_arrayref();
+    $sth->finish();
+
+    # Refresh each of the LDAP Groups
+    foreach my $row (@{$rows_aref}) {
+        my ($driver_key, $driver_unique_id, $driver_group_name) = @{$row};
+
+        # get the LDAP group factory we need for this Group.
+        my $factory = _get_group_factory($driver_key);
+        next unless $factory;
+
+        # refresh the Group data from the Factory
+        st_log->info( "... refreshing: $driver_group_name" );
+        my $homunculus = eval {
+            $factory->GetGroupHomunculus(driver_unique_id => $driver_unique_id);
+        };
+        if ($@) {
+            st_log->error($@);
+        }
+    }
+    _clear_group_factory_cache();
+
+    # All done.
+    st_log->info( "done" );
+}
+
+###############################################################################
 # Subroutine:   _get_user_factory($driver_key)
 ###############################################################################
 # Gets the LDAP user Factory to use for the given '$driver_key'.  Caches the
@@ -185,6 +234,46 @@ sub LoadUsers {
     }
 }
 
+###############################################################################
+# Subroutine:   _get_group_factory($driver_key)
+###############################################################################
+# Gets the LDAP Group Factory to use for the given '$driver_key'.  Caches the
+# Factory for later re-use, so that we're not opening a new LDAP connection
+# for each and every group lookup.
+###############################################################################
+{
+    my %Factories;
+    sub _get_group_factory {
+        my $driver_key = shift;
+
+        # create a new Factory if we don't have a cached one yet
+        unless ($Factories{$driver_key}) {
+            # instantiate a new LDAP Group Factory
+            my ($driver_id) = ($driver_key =~ /LDAP:(.*)/);
+            st_log->info( "creating new LDAP Group Factory, '$driver_id'" );
+            my $factory
+                = Socialtext::Group->Factory(driver_key => "LDAP:$driver_id");
+            unless ($factory) {
+                st_log->error( "unable to find LDAP config '$driver_id'; was it removed from your LDAP config?" );
+                return;
+            }
+
+            # make sure we can actually connect to the LDAP server
+            unless ($factory->ldap()) {
+                st_log->error( "unable to connect to LDAP server" );
+                return;
+            }
+
+            # cache the factory for later re-use
+            $Factories{$driver_key} = $factory;
+        }
+        return $Factories{$driver_key};
+    }
+    sub _clear_group_factory_cache {
+        %Factories = ();
+    }
+}
+
 1;
 
 =head1 NAME
@@ -197,6 +286,9 @@ Socialtext::LDAP::Operations - LDAP operations
 
   # refresh all known/existing LDAP Users
   Socialtext::LDAP::Operations->RefreshUsers();
+
+  # refresh all known/existing LDAP Groups
+  Socialtext::LDAP::Operations->RefreshGroups();
 
 =head1 DESCRIPTION
 
@@ -247,6 +339,21 @@ Supports the following options:
 
 Dry-run; Users are searched for in the configured LDAP directories, but are
 B<not> actually added to Socialtext.
+
+=back
+
+=item B<Socialtext::LDAP::Operations-E<gt>RefreshGroups(%opts)>
+
+Refreshes known/existing LDAP Groups from the configured LDAP servers.
+
+Supports the following options:
+
+=over
+
+=item force => 1
+
+Forces a refresh of the LDAP Group data regardless of whether our local cached
+copy is stale or not.  By default, only stale Groups are refreshed.
 
 =back
 
