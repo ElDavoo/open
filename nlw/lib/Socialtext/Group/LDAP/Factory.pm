@@ -150,32 +150,52 @@ sub _update_group_members {
     my $members = shift;
     my $group   = Socialtext::Group->new(homunculus => $homey);
 
-    # get the list of all of the existing Users in the Group, which we'll
+    # Get the list of all of the existing Users in the Group, which we'll
     # whittle down to *just* those that are no longer members and can have
     # their UGRs deleted.
-    my %deleted_users =
+    my %last_cached_users =
         map { $_->homunculus->driver_unique_id => $_ }
         $group->users->all;
 
-  MEMBER:
-    for my $member ( @$members ) {
-        # If this user already exists in the group, remove them
-        # from the deleted users list and skip to the next user.
-        if ( exists $deleted_users{$member} ) {
-            delete $deleted_users{$member};
-            next MEMBER;
-        }
-        # User wasn't in Group before; add them to the Group
-        my $user = Socialtext::User->new( driver_unique_id => $member );
+    # Keep track of DNs that we've looked up already, so we're not looking
+    # them up repeatedly.  This prevents infinite recursion on nested Groups.
+    my %seen_dns;
+
+    # Take all of the "Member DNs" that we were given, and add all of them to
+    # ourselves.  Be forewarned, though, that the DN _may_ be a User, but it
+    # _may_ be a *Group* (and there's no way to tell without actually looking
+    # it up).
+    my @left_to_add = @{$members};
+    while (@left_to_add) {
+        # get the next DN, skipping it if we've looked this one up already
+        my $dn = shift @left_to_add;
+        next if ($seen_dns{$dn}++);
+
+        # if this DN existed in the Group before, leave it unchanged
+        next if (delete $last_cached_users{$dn});
+
+        # look this DN up as a User, and give them an UGR
+        my $user = Socialtext::User->new( driver_unique_id => $dn );
         if ($user) {
             $group->add_user( user => $user );
+            next;
         }
-        # XXX: Is the entry a group? (nested Groups)
+
+        # look this DN up as a Group, and add its membership list to the list
+        # of things we have left to lookup
+        my $nested_proto = $self->_lookup_group( { driver_unique_id => $dn } );
+        if ($nested_proto) {
+            push @left_to_add, @{$nested_proto->{members}};
+            next;
+        }
+
+        # didn't find this DN as a User or Group, log a warning
+        st_log->warning( "Unable to find User/Group in LDAP for DN '$dn'; skipping" );
     }
 
-    # Remove all of the remaining Users; they _used to_ be in the Group, but
-    # they aren't any more.
-    for my $user ( values %deleted_users ) {
+    # Remove Users that *used to* be in the Group, but that don't appear to be
+    # any more.
+    for my $user (values %last_cached_users) {
         $group->remove_user( user => $user );
     }
 }

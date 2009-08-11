@@ -6,7 +6,7 @@ use warnings;
 use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 43;
+use Test::Socialtext tests => 65;
 
 ###############################################################################
 # Fixtures: clean db
@@ -58,6 +58,64 @@ retrieve_ldap_group: {
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($motorhead);
+}
+
+###############################################################################
+# TEST: retrieve a *nested* LDAP Group
+retrieve_nested_ldap_group: {
+    my $openldap = bootstrap_openldap();
+    my $group_dn = 'cn=Hawkwind,dc=example,dc=com';
+    my $hawkwind = Socialtext::Group->GetGroup(
+        driver_unique_id => $group_dn,
+    );
+    isa_ok $hawkwind, 'Socialtext::Group';
+    isa_ok $hawkwind->homunculus, 'Socialtext::Group::LDAP';
+    is $hawkwind->driver_group_name, 'Hawkwind';
+
+    my $users = $hawkwind->users;
+    isa_ok $users => 'Socialtext::MultiCursor';
+    is $users->count => '4', '... with correct number of users';
+
+    my $user = $users->next();
+    is $user->username => 'michael moorcock', '... first user has correct name';
+
+    $user = $users->next();
+    is $user->username => 'lemmy kilmister', '... second user has correct name';
+
+    $user = $users->next();
+    is $user->username => 'phil taylor', '... third user has correct name';
+
+    $user = $users->next();
+    is $user->username => 'eddie clarke', '... fourth user has correct name';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($hawkwind);
+}
+
+###############################################################################
+# TEST: retrieve a nested LDAP Group that has circular Group references
+retrieve_nested_ldap_group_circular_references: {
+    my $openldap = bootstrap_openldap();
+    my $group_dn = 'cn=Circular A,dc=example,dc=com';
+    my $circular = Socialtext::Group->GetGroup(
+        driver_unique_id => $group_dn,
+    );
+    isa_ok $circular, 'Socialtext::Group';
+    isa_ok $circular->homunculus, 'Socialtext::Group::LDAP';
+    is $circular->driver_group_name, 'Circular A';
+
+    my $users = $circular->users;
+    isa_ok $users => 'Socialtext::MultiCursor';
+    is $users->count => '2', '... with correct number of users';
+
+    my $user = $users->next();
+    is $user->username => 'michael moorcock', '... first user has correct name';
+
+    $user = $users->next();
+    is $user->username => 'phil taylor', '... second user has correct name';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($circular);
 }
 
 ###############################################################################
