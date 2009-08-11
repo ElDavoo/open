@@ -7,6 +7,7 @@ use Test::More;
 use URI;
 use URI::QueryParam;
 use Cwd;
+
 =head1 NAME
 
 Socialtext::WikiFixture::SocialWidgets - Test the Widgets using Selenium
@@ -331,10 +332,11 @@ sub st_add_activity_widget {
     my ($self, $username, $password) = @_;
 }
 
-=head st_send_signal
+=head2 st_send_signal
 
 Sends a signal to the selected widget
 (A work in progress) 
+
 =cut
 
 sub st_send_signal {
