@@ -7,6 +7,20 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Lite';
 
+=head1 NAME
+
+Socialtext::Lite::Activities
+
+=head1 SYNOPSIS
+
+call events()
+
+=head1 DESCRIPTION
+
+Fetches types of events for miki signals and activities.
+
+=cut
+
 sub activities {
     my $self = shift;
     return $self->events(
