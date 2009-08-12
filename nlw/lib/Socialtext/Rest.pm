@@ -405,9 +405,10 @@ sub _renderer_load {
             link => Socialtext::URI::uri(path => $self->rest->request->uri),
             minutes_ago => sub { int((time - str2time(shift)) / 60) },
             round => sub { int($_[0] + .5) },
-
-            # XXX: can we avoid calling this, if possible?
-            $self->hub->helpers->global_template_vars,
+            skin_uri => sub {
+                join '', Socialtext::Helpers::skin_uri('s3'), @_;
+            },
+            pluggable => $self->hub->pluggable,
         ];
 
         Socialtext::Timer->Pause('coll_tt2_prep');
