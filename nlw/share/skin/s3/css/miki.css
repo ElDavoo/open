@@ -72,6 +72,7 @@ div.clear {
     margin: 5px 0;
     padding: 0;
     border-collapse: collapse;
+    list-style: none;
 }
 .event_list li {
     border-top: 1px solid #666;
