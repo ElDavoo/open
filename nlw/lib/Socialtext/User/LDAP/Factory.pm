@@ -110,12 +110,17 @@ sub GetUser {
     }
 
     # Didn't find User in LDAP, but they *do* exist in the DB
-    # Previously we made the distinction between users that had been deleted
-    # and failed LDAP lookups, but {bz: 2923} requests that we return a the
-    # last cached copy instead of a deleted user, so return the cached user
-    # regardless.
     if ($self->{_cache_lookup}) {
-        return $self->{_cache_lookup};
+        if ($self->{_user_not_found}) {
+            # User was previously cached, so they existed at some point but
+            # can't be found in LDAP any longer.  Must be a Deleted User.
+            return Socialtext::User::Deleted->new($self->{_cache_lookup});
+        }
+        else {
+            # Something else caused LDAP lookup to fail; return previously
+            # cached data (its better than nothing).
+            return $self->{_cache_lookup};
+        }
     }
 
     # Didn't find User in LDAP, don't exist in DB; unknown User.
