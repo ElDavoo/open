@@ -211,12 +211,6 @@ Avatar.prototype = {
                 )
                 .appendTo(this.contentNode);
         }
-
-        // min-height: 62px
-        if ($.browser.msie) {
-            var $vcard = $('.vcard', this.contentNode);
-            if ($vcard.height() < 65) $vcard.height(65);
-        }
         
         this.mouseOver();
     },
@@ -253,7 +247,20 @@ Avatar.prototype = {
                 .css('top', offset.top + $node.height() + 5);
         }
 
-        this.popup.css('left', offset.left - 43 ).fadeIn();
+        this.popup.css('left', offset.left - 43 );
+
+        if ($.browser.msie && this.popup.is(':hidden')) {
+            var $vcard = $('.vcard', this.contentNode);
+            this.popup.fadeIn('def', function() {
+                // min-height: 62px
+                if ($.browser.msie && $vcard.height() < 65) {
+                    $vcard.height(65);
+                }
+            });
+        }
+        else {
+            this.popup.fadeIn();
+        }
     },
 
     hide: function() {
