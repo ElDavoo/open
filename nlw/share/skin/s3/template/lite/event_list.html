@@ -1,14 +1,10 @@
-<table class="event_table">
-    <tbody>
-        [% FOR event = events %]
-            <tr class="[% event.row_class %]">
-                <td class="timestamped[% IF event == events.last() %] last[% END %][% IF event == events.first() %] first[% END %]">
-                    [% PROCESS data/event e=event out="html" %]</br/>
-                </td>
-            </tr>
-        [% END %]
-    </tbody>
-</table>
+<ul class="event_list">
+    [% FOR event = events %]
+        <li class="[% event.row_class %] timestamped[% IF event == events.last() %] last[% END %][% IF event == events.first() %] first[% END %]">
+            [% PROCESS data/event e=event out="html" %]</br/>
+        </li>
+    [% END %]
+</ul>
 
 <div class="paging">
     [% IF pagenum > 0 %]

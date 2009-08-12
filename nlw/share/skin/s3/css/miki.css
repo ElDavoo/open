@@ -67,29 +67,34 @@ div.clear {
     margin: 0;
 }
 
-.event_table {
+.event_list {
     width: 100%;
     margin: 5px 0;
     padding: 0;
     border-collapse: collapse;
 }
-.event_table td {
+.event_list li {
     border-top: 1px solid #666;
     padding: 5px 0 3px 0;
 }
-.event_table td.first {
+.event_list li.first {
     border-top: none;
 }
-.event_table img.avatar {
+.event_list img.avatar {
     float: left;
 }
-.event_table .metadata, .event_table .eventText {
+.event_list .metadata, .event_list .eventText {
     margin-left: 35px;
 }
-.event_table img.asset-icon {
-    float: right;
+.event_list li {
+    position: relative;
 }
-.event_table .ago {
+.event_list img.asset-icon {
+    position: absolute;
+    right: 0;
+    top: 5px;
+}
+.event_list .ago {
     font-style: italic;
     color: #666;
     white-space: nowrap;
