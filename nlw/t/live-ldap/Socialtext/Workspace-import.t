@@ -9,7 +9,7 @@ use Socialtext::LDAP;
 use Socialtext::Workspace;
 use Socialtext::Workspace;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 27;
+use Test::Socialtext tests => 26;
 use Test::Socialtext::User;
 use Test::Exception;
 
@@ -36,6 +36,10 @@ fixtures( 'foobar', 'destructive' );
 #   shouldn't prevent the import.  Ideally, the users should be matched up
 #   properly against the LDAP user factories on the new appliance, but even if
 #   that fails we shouldn't fail catastrophically.
+#
+# NOTE: as of Aug 12 2009, "Deleted User" objects _no longer_ over-ride the
+#       first/last/email attributes.  Thus, deleted Users should get exported
+#       using the "last cached data" we had for the LDAP User.
 deleted_ldap_user_shouldnt_prevent_workspace_import: {
     # bootstrap OpenLDAP
     my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
@@ -100,7 +104,6 @@ deleted_ldap_user_shouldnt_prevent_workspace_import: {
 
     my ($john_doe) = grep { $_->{username} eq 'john doe' } @{$users};
     ok defined $john_doe, '... ... and which contained our test user';
-    is $john_doe->{email_address}, 'deleted.user@socialtext.com', '... ... ... as a deleted user';
 
     ###########################################################################
     # re-rig LDAP, just like if we'd been moved to a new appliance

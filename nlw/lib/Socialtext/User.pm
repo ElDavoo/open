@@ -96,17 +96,17 @@ sub new_homunculus {
     # associated with that system id
     if ($key eq 'user_id') {
         return undef if $val =~ /\D/;
-        my ($driver_key, $driver_username, $driver_unique_id) = 
-            sql_selectrow(
-                q{SELECT driver_key, driver_username, driver_unique_id
-                  FROM users WHERE user_id=?},
-                $val
-            );
-        return undef unless $driver_key;
+
+        # Go get this User from the DB (so we know what driver it came from,
+        # and what it looked like _last time_ we saw it.
+        my $sql = qq{ SELECT * FROM users WHERE user_id=? };
+        my $sth = sql_execute($sql, $val);
+        my $row = $sth->fetchrow_hashref();
+        return unless $row;
 
         # if driver doesn't exist any more, we don't have an instance of it to
         # query.  e.g. customer removed an LDAP data store.
-        my $driver = eval {$class->_realize($driver_key, 'GetUser')};
+        my $driver = eval {$class->_realize($row->{driver_key}, 'GetUser')};
         if ($driver) {
             # look the user up by *user_id*; *ALL* factories must support this
             # lookup.
@@ -114,10 +114,8 @@ sub new_homunculus {
         }
 
         $homunculus ||= Socialtext::User::Deleted->new(
-            user_id          => $val,
-            driver_unique_id => $driver_unique_id,
-            username         => $driver_username,
-            driver_key       => $driver_key,
+            %{$row},
+            username => $row->{driver_username},    # ugh.
         );
     }
     # system generated users MUST come from the Default user store; we don't
