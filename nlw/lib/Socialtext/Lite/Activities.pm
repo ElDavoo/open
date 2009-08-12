@@ -21,10 +21,11 @@ sub events {
     my ($self, %args) = @_;
     my $viewer = $self->hub->current_user;
     my $page_size = 10;
+    my $pagenum = $args{pagenum} || 0;
 
     my %event_args = (
         ($args{event_class} ? (event_class => $args{event_class}) : ()),
-        offset => $args{pagenum} * $page_size,
+        offset => $pagenum * $page_size,
         count => $page_size + 1,
     );
     my $reporter = Socialtext::Events::Reporter->new(viewer => $viewer);
