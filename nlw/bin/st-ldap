@@ -233,6 +233,8 @@ known to have stale/outdated cached data.
 Note that "refresh" is simply a short-hand method for calling "refresh-users"
 and "refresh-groups" (in that order).
 
+=back
+
 =head1 OPTIONS
 
 =over
