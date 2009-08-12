@@ -1,7 +1,83 @@
 | *Comment* | STARTING Test Case: Miki |  |
 
-| *Comment* | Test Case: Miki RT 26984 |  |
-| *Comment* | Test Case: Miki create test weblog for capitalization test |  |
+| *Comment* | Test Case: Miki Create new account, workspace, user, add user |  |  |
+| set | ws | miki-ws-%%start_time%% |  |
+| set | mikiacct | mikiacct%%start_time%% |  |
+| set | mikiuser | mikiuser%%start_time%%@ken.socialtext.net |  |
+| create_account | %%mikiacct%% |  |  |
+| enable_acct_plugin | dashboard | %%mikiacct%% |  |
+| enable_acct_plugin | people | %%mikiacct%% |  |
+| enable_acct_plugin | signals | %%mikiacct%% |  |
+| create_workspace | %%ws%% | %%mikiacct%% |  |
+| create_user | %%mikiuser%% | %%password%% | %%mikiacct%% |
+| add_member | %%mikiuser%% | %%ws%% |  |
+| st-logoutin | %%mikiuser%% | %%password%% |  |
+
+| *Comment* | Test case: Miki Open global nav, should be signals |  |
+| open_ok | /lite/ |  |  |
+| wait_for_element_visible_ok | link=Workspaces | 30000 |  |
+| wait_for_element_visible_ok | link=Activities | 30000 |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |  |
+| text_like | Signals |  |
+| text_like | What are you working on? |  |  |
+
+| *Comment* | Test case: Miki Click 'Workspaces' in global nav |  |
+| click_ok | link=Workspaces |  |  |
+| wait_for_element_visible_ok | link=Activities | 30000 |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |  |
+| wait_for_element_visible_ok | link=Signals | 30000 |  |
+| wait_for_element_visible_ok | link=%%ws%% | 30000 |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |  |
+| text_like | Workspaces |  |  |
+| text_like | Hello, %%mikiuser%% |  |  |
+| text_like | Workspaces you belong to: |  |  |
+
+| *Comment* | Test case: Miki Click 'Activities' in global nav |  |
+| click_ok | link=Activities |  |  |
+| wait_for_element_visible_ok | link=All | 30000 |  |
+| wait_for_element_visible_ok | link=People I follow | 30000 |  |
+| wait_for_element_visible_ok | link=refresh | 30000 |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |  |
+| text_like | My Conversations |  |  |
+
+| *Comment* | Test case: Miki Click 'All' within 'Activities' in global nav |  |
+| click_ok | Link=All |  |  |
+| wait_for_element_visible_ok | link=People I follow | 30000 |  |
+| wait_for_element_visible_ok | link=refresh | 30000 |  |
+| wait_for_element_visible_ok | link=My Conversations | 30000 |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |  |
+| text_like | All |  |  |
+
+| *Comment* | Test case: Miki Click 'People I follow' within 'Activities' in global nav |  |
+| click_ok | link=People I follow |  |  |
+| wait_for_element_visible_ok | link=My Conversations | 30000 |  |
+| wait_for_element_visible_ok | link=refresh | 30000 |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |  |
+| text_like | People I follow |  |  |
+| click_ok | link=My Conversations |  |  |
+
+| *Comment* | Test Case: Miki Loginlogout, change enabled-ness, see different global nav ftw. |  |
+| disable-acct-plugin | signals | %%mikiacct%% |
+| click_ok | link=Log out |
+| wait_for_element_visible_ok | link=I don't know my password. |  |
+| st-login | %%mikiuser%% | %%password%% |
+| open_ok | /m/ |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |
+| wait_for_element_not_present_ok | link=Signals | 30000 |
+| wait_for_element_visible_ok | link=%%ws%% | 30000 |
+| text_like | Workspaces |  |
+| text_like | Hello, %%mikiuser%% |  |
+| text_like | Workspaces you belong to: |  |
+| text_like | You have free access to view and |  |
+| text_like | contribute to any of these public wikis: |  |
+| click_ok | link=Log out |
+| wait_for_element_visible_ok | link=I don't know my password. |  |
+
+| *Comment* | Test Case: Miki Loginlogout, traditional Miki verification as %%username%% |  |
+| st-login | %%username%% | %%password%% |
+| open_ok | /%%workspace%%/ |  |
+| *Comment* | Test Case: Miki Loginlogout RT 26984 |  |
+| *Comment* | Test Case: Miki Loginlogout create test weblog for capitalization test |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Create New Weblog |  |
 | type_ok | weblog_title | Caps Test Weblog %%start_time%% |
@@ -13,12 +89,12 @@
 | text_like | link=Recent changes in Caps Test Weblog %%start_time%% Weblog category | Recent changes in Caps Test Weblog %%start_time%% Weblog category |
 
 | *Comment* | Test Case: Miki Open the weblog without caps |  |
-| open_ok | /lite/category/%%workspace%%/caps%20test%20weblog%20%%start_time%%%20Weblog |  |
+| open_ok | /m/category/%%workspace%%/caps%20test%20weblog%20%%start_time%%%20Weblog |  |
 | text_like | link=First Post in Caps Test Weblog %%start_time%% Weblog | First Post in Caps Test Weblog %%start_time%% Weblog |
 | text_like | link=Recent changes in caps test weblog %%start_time%% Weblog category | Recent changes in caps test weblog %%start_time%% Weblog category |
 
 | *Comment* | Test Case: Miki |  |
-| click_and_wait | link=Recent Changes |  |
+| click_and_wait | link=What's new |  |
 | wait_for_element_present_ok | link=Filter by category | 5000 |
 | click_and_wait | link=Filter by category |  |
 | click_and_wait | link=Caps Test Weblog %%start_time%% Weblog |  |
@@ -27,6 +103,6 @@
 
 | *Comment* | Test Case: Miki Teardown |  |
 | st-admin | purge-page --workspace %%workspace%% --page first_post_in_caps_test_weblog_%%start_time%%_weblog | page was purged |
-| *Comment* | Test Case: Miki END RT 26984 |
+| *Comment* | Test Case: Miki END RT 26984 |  |
 
 | *Comment* | Test Case: Miki COMPLETED |  |
