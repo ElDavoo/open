@@ -11,6 +11,7 @@ use Socialtext::Log qw(st_log);
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::SQL::Builder qw(:all);
 use Socialtext::l10n qw(loc);
+use Socialtext::Timer;
 use namespace::clean -except => 'meta';
 
 # Do *NOT* disable this unless you are testing!
@@ -79,7 +80,9 @@ sub GetGroupHomunculus {
 
     # check DB for existing cached Group
     # ... if cached copy exists and is fresh, use that
+    Socialtext::Timer->Continue('ldap_group_check_cache');
     my $proto_group = $self->_get_cached_group($where);
+    Socialtext::Timer->Pause('ldap_group_check_cache');
     if ($proto_group && $self->_cached_group_is_fresh($proto_group)) {
         return $self->NewGroupHomunculus($proto_group);
     }
@@ -87,7 +90,9 @@ sub GetGroupHomunculus {
     # cache non-existent or stale, refresh from data store
     # ... if unable to refresh, return empty-handed; we know nothing about
     # this Group.
+    Socialtext::Timer->Continue('ldap_group_lookup');
     my $refreshed = $self->_lookup_group($proto_group || $where);
+    Socialtext::Timer->Pause('ldap_group_lookup');
     unless ($refreshed) {
 # XXX: what if?... we had an old cached group, but couldn't find it now?
         return;
@@ -137,7 +142,9 @@ sub GetGroupHomunculus {
     # create the homunculus, update its membership list, and return it back to
     # the caller
     my $homey = $self->NewGroupHomunculus($proto_group);
+    Socialtext::Timer->Continue('ldap_group_membership_update');
     $self->_update_group_members($homey, $proto_group->{members});
+    Socialtext::Timer->Pause('ldap_group_membership_update');
     return $homey;
 }
 
