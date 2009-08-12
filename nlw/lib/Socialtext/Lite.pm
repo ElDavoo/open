@@ -302,6 +302,7 @@ sub _pages_for_category {
         title     => loc("Category [_1]", $category),
         rows      => $rows,
         category  => $category,
+        load_row_times => \&Socialtext::Query::Plugin::load_row_times,
     );
 }
 
