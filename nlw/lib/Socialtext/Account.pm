@@ -542,9 +542,7 @@ sub create {
     my $timer = Socialtext::Timer->new;
 
     $class->_validate_and_clean_data(\%p);
-    exists $p{is_system_created} ? $class->_create_full(%p)
-                                 : $class->_create_from_name(%p);
-
+    $class->_create_full(%p);
     my $self = $class->new(%p);
     $self->_enable_default_plugins;
 
@@ -581,11 +579,6 @@ sub _create_full {
         INSERT INTO "Account" (account_id, $fields)
             VALUES (nextval(\'"Account___account_id"\'),$values)
     },@bind);
-}
-
-sub _create_from_name {
-    my ( $class, %p ) = @_;
-    return $class->_create_full(name => $p{name});
 }
 
 sub delete {
