@@ -12,6 +12,11 @@ use Socialtext::LDAP::Config;
 
 # Enables/disables the LDAP connection cache
 our $CacheEnabled = 1;
+our %stats = (
+    'connect'       => 0,
+    'cache_hit'     => 0,
+    'cache_miss'    => 0,
+);
 
 sub new {
     my ($class, $driver_or_config) = @_;
@@ -61,7 +66,11 @@ sub connect {
     # check to see if we've already got an open connection to this LDAP server
     if ($CacheEnabled) {
         my $conn = ConnectionCache()->get($config->id);
-        return $conn if $conn;
+        if ($conn) {
+            $stats{cache_hit}++;
+            return $conn;
+        }
+        $stats{cache_miss}++;
     }
 
     # create a connection to the LDAP server, and bind it
@@ -81,6 +90,10 @@ sub connect {
 
 sub ConnectionCache {
     return Socialtext::Cache->cache('ldap-connections');
+}
+
+sub ResetStats {
+    map { $stats{$_} = 0 } keys %stats;
 }
 
 sub available {
@@ -141,6 +154,7 @@ sub _get_connection {
     }
 
     # instantiate the back-end
+    $stats{connect}++;
     my $conn = eval { $backend->new( $config ) };
     if ($@) {
         st_log->error( "ST::LDAP; unable to instantiate LDAP back-end plug-in '$backend'; $@" );
