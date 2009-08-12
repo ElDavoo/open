@@ -78,6 +78,7 @@ div.clear {
     border-top: 1px solid #666;
     padding: 5px 0 3px 0;
 }
+
 .event_list li.first {
     border-top: none;
 }
@@ -85,8 +86,9 @@ div.clear {
     float: left;
     border: 1px solid #666 !important;
 }
-.event_list .metadata, .event_list .eventText {
-    margin-left: 35px;
+.event_list .mainSection {
+    float: left;
+    margin-left: 5px;
 }
 .event_list li {
     position: relative;

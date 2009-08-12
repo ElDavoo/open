@@ -44,25 +44,26 @@
 
 [%- IF out == 'html' -%]
     [%- event.actor.id | decorate('user_small_photo') -%]
-
-    <div class="metadata">
-        [% actor %]
-        [%- ago UNLESS no_ago -%]
+    <div class="mainSection">
+        <div class="metadata">
+            [% actor %]
+            [%- ago UNLESS no_ago -%]
+        </div>
+        <div class="eventText">
+            [%- TRY -%]
+                [%- INCLUDE "data/events/$event_class" -%]
+            [%- CATCH -%]
+                [%- loc('Unknown event class: [_1]', event.event_class) -%]
+            [%- END -%]
+        </div>
     </div>
+    <div class="clear"></div>
 
     [%- TRY -%]
         [%- INCLUDE "data/events/$event_class_icons" -%]
     [%- CATCH -%]
         <img class="asset-icon" src="[% skin_uri('/images/asset-icons/edit-16.png') %]"/>
     [%- END -%]
-
-    <div class="eventText">
-        [%- TRY -%]
-            [%- INCLUDE "data/events/$event_class" -%]
-        [%- CATCH -%]
-            [%- loc('Unknown event class: [_1]', event.event_class) -%]
-        [%- END -%]
-    </div>
 [%- ELSE -%]
     [%- actor -%]
     [%- ago UNLESS no_ago -%]
