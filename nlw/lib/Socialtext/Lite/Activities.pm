@@ -42,7 +42,10 @@ sub events {
         offset => $pagenum * $page_size,
         count => $page_size + 1,
     );
-    my $reporter = Socialtext::Events::Reporter->new(viewer => $viewer);
+    my $reporter = Socialtext::Events::Reporter->new(
+        viewer => $viewer,
+        link_dictionary => $self->link_dictionary,
+    );
 
     my $events;
     if ($args{mine}) {

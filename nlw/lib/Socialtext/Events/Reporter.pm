@@ -1,7 +1,6 @@
 package Socialtext::Events::Reporter;
 # @COPYRIGHT@
-use warnings;
-use strict;
+use Moose;
 use Socialtext::Encode ();
 use Socialtext::SQL qw/sql_execute/;
 use Socialtext::JSON qw/decode_json/;
@@ -11,8 +10,19 @@ use Socialtext::Timer;
 use Class::Field qw/field/;
 use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::HTML;
+use Socialtext::Formatter::LinkDictionary;
+use namespace::clean -except => 'meta';
 
-field 'viewer';
+has 'viewer' => (
+    is => 'ro', isa => 'Socialtext::User',
+);
+
+has 'link_dictionary' => (
+    is => 'ro', isa => 'Socialtext::Formatter::LinkDictionary',
+    lazy_build => 1,
+);
+
+sub _build_link_dictionary { Socialtext::Formatter::LinkDictionary->new }
 
 sub new {
     my $class = shift;
@@ -105,7 +115,10 @@ sub _extract_person {
     $row->{$prefix} = {
         id => $id,
         best_full_name => $real_name,
-        uri => "/data/people/$id",
+        uri => $self->link_dictionary->format_link(
+            link => 'people_profile',
+            user_id => $id,
+        ),
         hidden => $hidden,
         avatar_is_visible => $avatar_is_visible,
         profile_is_visible => $profile_is_visible,
@@ -116,6 +129,8 @@ sub _extract_page {
     my $self = shift;
     my $row = shift;
 
+    my $link_dictionary = $self->link_dictionary;
+
     my $page = {
         id => delete $row->{page_id} || undef,
         name => delete $row->{page_name} || undef,
@@ -124,12 +139,44 @@ sub _extract_page {
         workspace_title => delete $row->{page_workspace_title} || undef,
     };
 
-    if ($page->{workspace_name} && $page->{id}) {
-        $page->{uri} =
-            "/data/workspaces/$page->{workspace_name}/pages/$page->{id}";
+    if ($page->{workspace_name}) {
+        $page->{workspace_uri} = $link_dictionary->format_link(
+            link => 'interwiki',
+            workspace => $page->{workspace_name},
+        );
+
+        if ($page->{id}) {
+            $page->{uri} = $link_dictionary->format_link(
+                link => 'interwiki',
+                workspace => $page->{workspace_name},
+                page_uri => $page->{id},
+            );
+        }
     }
 
     $row->{page} = $page if ($row->{event_class} eq 'page');
+}
+
+sub _extract_tag {
+    my $self = shift;
+    my $row = shift;
+    my $link_dictionary = $self->link_dictionary;
+
+    if ($row->{tag_name}) {
+        if (my $page = $row->{page}) {
+            $row->{tag_uri} = $link_dictionary->format_link(
+                link => 'category',
+                workspace => $page->{workspace_name},
+                category => $page->{tag_name},
+            );
+        }
+        elsif ($row->{person}) {
+            $row->{tag_uri} = $link_dictionary->format_link(
+                link => 'people_tag',
+                tag_name => $row->{tag_name},
+            );
+        }
+    }
 }
 
 sub _expand_context {
@@ -172,6 +219,7 @@ sub decorate_event_set {
         $self->_extract_page($row);
         $self->_expand_context($row);
         $self->_extract_signal($row);
+        $self->_extract_tag($row);
 
         delete $row->{person}
             if (!defined($row->{person}) and $row->{event_class} ne 'person');
@@ -764,5 +812,6 @@ sub get_page_contention_events {
     my $result = $self->decorate_event_set($sth);
     return $result;
 }
+__PACKAGE__->meta->make_immutable;
 
 1;
