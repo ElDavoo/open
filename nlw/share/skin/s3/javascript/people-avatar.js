@@ -156,10 +156,12 @@ Avatar.prototype = {
     },
 
     makeBubble: function(className, src) {
-        var src = nlw_make_s3_path(src);
+        var absoluteSrc = (''+document.location.href).replace(
+            /^(\w+:\/+[^\/]+).*/, '$1' + nlw_make_s3_path(src)
+        );
         var $div = $('<div></div>').addClass(className);
 	if ($.browser.msie && $.browser.version < 7) {
-            var args = "src='" + src + "', sizingMethod='crop'";
+            var args = "src='" + absoluteSrc + "', sizingMethod='crop'";
             $div.css(
                 'filter',
                 "progid:DXImageTransform.Microsoft"
@@ -167,7 +169,7 @@ Avatar.prototype = {
             );
         }
         else {
-            $div.css('background', 'transparent url('+src+') no-repeat');
+            $div.css('background', 'transparent url('+absoluteSrc+') no-repeat');
         }
         return $div;
     },
@@ -211,12 +213,6 @@ Avatar.prototype = {
                 )
                 .appendTo(this.contentNode);
         }
-
-        // min-height: 62px
-        if ($.browser.msie) {
-            var $vcard = $('.vcard', this.contentNode);
-            if ($vcard.height() < 65) $vcard.height(65);
-        }
         
         this.mouseOver();
     },
@@ -253,7 +249,20 @@ Avatar.prototype = {
                 .css('top', offset.top + $node.height() + 5);
         }
 
-        this.popup.css('left', offset.left - 43 ).fadeIn();
+        this.popup.css('left', offset.left - 43 );
+
+        if ($.browser.msie && this.popup.is(':hidden')) {
+            var $vcard = $('.vcard', this.contentNode);
+            this.popup.fadeIn('def', function() {
+                // min-height: 62px
+                if ($.browser.msie && $vcard.height() < 65) {
+                    $vcard.height(65);
+                }
+            });
+        }
+        else {
+            this.popup.fadeIn();
+        }
     },
 
     hide: function() {
