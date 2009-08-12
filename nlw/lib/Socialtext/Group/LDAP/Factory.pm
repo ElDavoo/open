@@ -299,6 +299,24 @@ Returns true; LDAP Group stores should be cached locally.
 
 =back
 
+=head1 NOTES
+
+In an Active Directory, User records contain a C<memberOf> attribute, which
+points I<back> to the Group object DN ("Hey, I'm a member of I<that> Group").
+B<However>, the Group record contains a C<member> attribute which contains a
+list of User DNs (one for each User) ("Hey, I<these> Users are member of this
+Group").  Fortunately, these C<member> and C<memberOf> attributes are linked
+and are updated automatically by Active Directory; updating "Group.member"
+automatically updates the "User.memberOf" attribute.
+
+As a result, B<we> only ever have to be concerned with enumerating the
+"Group.member" attribute; that's going to contain the full list of DNs for
+Users/Groups/etc. that are members of this Group.  We do I<not> have to also
+go out and scour AD for Users that are a C<memberOf> the Group, as we already
+got the full list of those from querying the Group object directly.
+
+Reference: http://www.informit.com/articles/article.aspx?p=26136&seqNum=5
+
 =head1 AUTHOR
 
 Socialtext, Inc.,  C<< <code@socialtext.com> >>
