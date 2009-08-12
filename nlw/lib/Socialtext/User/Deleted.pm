@@ -9,14 +9,21 @@ sub new {
     my $class = shift;
     return unless @_;
 
-    return $class->SUPER::new({
-        username => 'deleted-user',
-        ((@_ == 1) ? %{$_[0]} : @_),
-        cached_at     => DateTime::Infinite::Past->new,
-        email_address => 'deleted.user@socialtext.com',
-        first_name    => 'Deleted',
-        last_name     => 'User',
-    });
+    # Take what we were given, and make it _look like_ a Deleted User.  We
+    # *might* have some of the data to display for the User, but might not; do
+    # the best we can.
+    my %proto_user = (@_ == 1) ? %{$_[0]} : @_;
+    $proto_user{username}      ||= 'deleted-user';
+    $proto_user{email_address} ||= 'deleted.user@socialtext.com';
+    $proto_user{first_name}    ||= 'Deleted';
+    $proto_user{last_name}     ||= 'User';
+
+    # *FORCE* these fields on the Deleted User.  Regardless of what we were
+    # given, these fields are *forced* and are non-negotiable.
+    $proto_user{cached_at} = DateTime::Infinite::Past->new;
+
+    # Construct the Deleted User Homunculus, and return that back to the caller.
+    return $class->SUPER::new( \%proto_user );
 }
 
 sub password {
