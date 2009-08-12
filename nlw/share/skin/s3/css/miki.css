@@ -29,7 +29,6 @@ div.clear {
 }
 .globalnav.bottom {
     border-top: 1px solid #666;
-    margin-top: 5px;
 }
 .subnav {
     background-color: #ddd;    
@@ -44,7 +43,6 @@ div.clear {
 }
 
 .tabs {
-    border-top: 1px solid #666;
     border-bottom: 1px solid #666;
     background-color: #ddd;    
     padding: 3px 2px;
@@ -101,6 +99,7 @@ img.avatar {
 
 .postsignal {
     margin-top: 10px;
+    border-bottom: 1px solid #666;
 }
 .postsignal form {
     padding: 0;
