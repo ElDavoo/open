@@ -50,6 +50,10 @@ div.clear {
     padding: 3px 2px;
 }
 
+.tabs .current {
+    font-weight: bold;
+}
+
 .feeds {
     padding: 3px 2px;
 }

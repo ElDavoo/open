@@ -1,32 +1,42 @@
 <div class="tabs">
-      [% IF all %]
-          <span>[% loc("All") %]</span>
-          <a href="[% base_uri %]?all=1">[% loc("(refresh)") %]</a> |
-      [% ELSE %]
-          <a href="[% base_uri %]?all=1">[% loc("All") %]</a> |
-      [% END %]
+    <span class="first tab">
+        [% IF all %]
+            <span class="current">[% loc("All") %]</span>
+            (<a href="[% base_uri %]?all=1">[% loc("refresh") %]</a>)
+        [% ELSE %]
+            <a href="[% base_uri %]?all=1">[% loc("All") %]</a>
+        [% END %]
+    </span>
 
-      [% IF followed %]
-          <span>[% loc('People I follow') %]</span>
-          <a href="[% base_uri %]?followed=1">[% loc("(refresh)") %]</a> |
-      [% ELSE %]
-          <a href="[% base_uri %]?followed=1">[% loc("People I follow") %]</a> |
-      [% END %]
+    |
 
-    [% IF section == "activities" %]
-      [% IF all || followed %]
-          <a href="[% base_uri %]">[% loc("My Conversations") %]</a> |
-      [% ELSE %]
-          <span>[% loc("My Conversations") %]</span>
-          <a href="[% base_uri %]">[% loc("(refresh)") %]</a> |
-      [% END %]
-    [% ELSIF section == "signals" %]
-      [% IF mine %]
-          <span>[% loc("Mine") %]</span>
-          <a href="[% base_uri %]?mine=1">[% loc("(refresh)") %]</a> |
-      [% ELSE %]
-          <a href="[% base_uri %]/?mine=1">[% loc("Mine") %]</a> |
-      [% END %]
-    [% END %]
+    <span class="tab">
+        [% IF followed %]
+            <span class="current">[% loc('People I follow') %]</span>
+            (<a href="[% base_uri %]?followed=1">[% loc("refresh") %]</a>)
+        [% ELSE %]
+            <a href="[% base_uri %]?followed=1">[% loc("People I follow") %]</a>
+        [% END %]
+    </span>
+
+    |
+
+    <span class="last tab">
+        [% IF section == "activities" %]
+            [% IF all || followed %]
+                <a href="[% base_uri %]">[% loc("My Conversations") %]</a>
+            [% ELSE %]
+                <span class="current">[% loc("My Conversations") %]</span>
+                (<a href="[% base_uri %]">[% loc("refresh") %]</a>)
+            [% END %]
+        [% ELSIF section == "signals" %]
+            [% IF mine %]
+                <span class="current">[% loc("Mine") %]</span>
+                (<a href="[% base_uri %]?mine=1">[% loc("refresh") %]</a>)
+            [% ELSE %]
+                <a href="[% base_uri %]/?mine=1">[% loc("Mine") %]</a>
+            [% END %]
+        [% END %]
+    </span>
 </div>
 
