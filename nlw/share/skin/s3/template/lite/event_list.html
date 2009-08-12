@@ -1,4 +1,5 @@
 <ul class="event_list">
+    [% error %]
     [% FOR event = events %]
         <li class="[% event.row_class %] timestamped[% IF event == events.last() %] last[% END %][% IF event == events.first() %] first[% END %]">
             [% PROCESS data/event e=event out="html" %]</br/>
