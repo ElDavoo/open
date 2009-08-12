@@ -2,6 +2,7 @@ package Socialtext::Lite;
 # @COPYRIGHT@
 use Moose;
 use Readonly;
+use Date::Parse qw/str2time/;
 use Socialtext::Authen;
 use Socialtext::String;
 use Socialtext::Permission 'ST_EDIT_PERM';
@@ -399,6 +400,7 @@ sub _process_template {
         skin_uri    => sub { $self->hub->skin->skin_uri($_[0]) },
         pluggable   => $self->hub->pluggable,
         user        => $user,
+        minutes_ago => sub { int((time - str2time(shift)) / 60) },
         %ws_vars,
         %vars,
     );

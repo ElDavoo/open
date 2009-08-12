@@ -80,13 +80,11 @@ div.clear {
 .event_table td.first {
     border-top: none;
 }
-img.avatar {
-    vertical-align: middle;
-}
-.profile img.avatar {
+.event_table img.avatar {
     float: left;
-    margin-right: 5px;
-    border: 1px solid #666 !important;
+}
+.event_table .metadata, .event_table .eventText {
+    margin-left: 35px;
 }
 .event_table img.asset-icon {
     float: right;
@@ -111,6 +109,11 @@ img.avatar {
 
 .profile {
     padding-top: 10px;
+}
+.profile img.avatar {
+    float: left;
+    margin-right: 5px;
+    border: 1px solid #666 !important;
 }
 .profile .info {
     padding-bottom: 10px;
