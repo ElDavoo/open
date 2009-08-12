@@ -82,6 +82,7 @@ div.clear {
 }
 .event_list img.avatar {
     float: left;
+    border: 1px solid #666 !important;
 }
 .event_list .metadata, .event_list .eventText {
     margin-left: 35px;
