@@ -51,7 +51,7 @@ my %commands = (
     'refresh' => sub {
         Socialtext::LDAP::Operations->RefreshUsers(force => $force);
         Socialtext::LDAP::Operations->RefreshGroups(force => $force);
-    }
+    },
     'load-users' => sub {
         Socialtext::LDAP::Operations->LoadUsers(dryrun => $dryrun);
     },
