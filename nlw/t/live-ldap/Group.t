@@ -6,7 +6,7 @@ use warnings;
 use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 65;
+use Test::Socialtext tests => 72;
 
 ###############################################################################
 # Fixtures: clean db
@@ -214,4 +214,26 @@ ldap_group_records_events_on_membership_change: {
     is_event_count 1;
     event_ok( event_class => 'group', action => 'delete_role' );
     next_log_like 'info', qr/REMOVE,GROUP_ROLE/, '... and shows in nlw.log';
+}
+
+###############################################################################
+# TEST: LDAP Group lookup *re-uses* existing LDAP connection
+group_lookup_reuses_ldap_connection: {
+    my $openldap = bootstrap_openldap();
+    my $group_dn = 'cn=Hawkwind,dc=example,dc=com';
+
+    # Clear the LDAP connection cache, and reset its instrumentation stats
+    Socialtext::LDAP->ConnectionCache->clear();
+    Socialtext::LDAP->ResetStats();
+
+    # Vivify the LDAP Group
+    my $hawkwind = Socialtext::Group->GetGroup(
+        driver_unique_id => $group_dn,
+    );
+    isa_ok $hawkwind, 'Socialtext::Group';
+    isa_ok $hawkwind->homunculus, 'Socialtext::Group::LDAP';
+    is $hawkwind->driver_group_name, 'Hawkwind';
+
+    is $Socialtext::LDAP::stats{connect}, 1,
+        '... using only a *single* LDAP connection';
 }
