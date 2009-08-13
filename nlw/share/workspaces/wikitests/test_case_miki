@@ -4,61 +4,116 @@
 | set | ws | miki-ws-%%start_time%% |  |
 | set | mikiacct | mikiacct%%start_time%% |  |
 | set | mikiuser | mikiuser%%start_time%%@ken.socialtext.net |  |
+| set | othershortuser | othermuser%%start_time%% |  |
+| set | othermikiuser | %%othershortuser%%@ken.socialtext.net |  |
 | create_account | %%mikiacct%% |  |  |
+| set | signal1 | hello from a different user at %%start_time%% |  |
+| set | signal2 | and I say goodbye from the main user at %%start_time%% |  |
 | enable_acct_plugin | dashboard | %%mikiacct%% |  |
 | enable_acct_plugin | people | %%mikiacct%% |  |
 | enable_acct_plugin | signals | %%mikiacct%% |  |
 | create_workspace | %%ws%% | %%mikiacct%% |  |
 | create_user | %%mikiuser%% | %%password%% | %%mikiacct%% |
+| create_user | %%othermikiuser%% | %%password%% | %%mikiacct%% |
 | add_member | %%mikiuser%% | %%ws%% |  |
-| st-logoutin | %%mikiuser%% | %%password%% |  |
+| add_member | %%othermikiuser%% | %%ws%% |  |
 
+| st-logoutin | %%othermikiuser%% | %%password%% |
 | *Comment* | Test case: Miki Open global nav, should be signals |  |
-| open_ok | /lite/ |  |  |
-| wait_for_element_visible_ok | link=Workspaces | 30000 |  |
-| wait_for_element_visible_ok | link=Activities | 30000 |  |
-| wait_for_element_visible_ok | link=Log out | 30000 |  |
+| open_ok | /lite/ |  |
+| wait_for_element_visible_ok | link=Workspaces | 30000 |
+| wait_for_element_visible_ok | link=Activities | 30000 |
+| wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | Signals |  |
-| text_like | What are you working on? |  |  |
+| text_like | What are you working on? |  |
+
+| *Comment* | Test case: Miki Send Signals |  |
+| wait_for_element_visible_ok | link=All | 30000 |
+| text_like | People I follow |  |
+| wait_for_element_visible_ok | link=refresh | 30000 |
+| wait_for_element_visible_ok | link=Mine | 30000 |
+| type_ok | st-signal-text | %%signal1%% |
+| click_ok | st-signal-submit |  |
+| wait_for_element_present_ok | link=%%othershortuser%% | 30000 |
+| wait_for_text_present_ok | less than a minute ago | 30000 |
+| wait_for_text_present_ok | %%signal1%% | 30000 |
+
+| *Comment* | Test case: Miki Log In as 'main' user, see global nav |  |
+| click_ok | link=Log out |  |
+| wait_for_element_visible_ok | link=I don't know my password. |  |
+| st-login | %%mikiuser%% | %%password%% |
+| open_ok | /m/ |  |
+| wait_for_element_visible_ok | link=Workspaces | 30000 |
+| wait_for_element_visible_ok | link=Activities | 30000 |
+| wait_for_element_visible_ok | link=Log out | 30000 |
+| text_like | Signals |  |
+| text_like | What are you working on? |  |
+
+| *Comment* | Test case: Miki As 'main' user, see old signals, send some, follow, see different |  |
+| wait_for_element_present_ok | link=All | 30000 |
+| text_unlike | //body | %%signal1%% |
+| click_ok | link=All | 30000 |
+| wait_for_text_present_ok | %%signal1%% | 30000 |
+| wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
+| open_ok | /?action=people |  |
+| wait_for_element_visible_ok | st-search-term | 30000 |
+| type_ok | st-search-term | %%othershortuser%% |
+| click_and_wait | st-search-submit |  |
+| wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
+| click_and_wait | link=%%othershortuser%% |  |
+| *Comment* | Test Case: Follow. Make %%short_username%% Follow %%othershortuser%% |  |
+| wait_for_element_visible_ok | link=Follow this person | 30000 |
+| click_ok | link=Follow this person |  |
+| wait_for_element_visible_ok | link=Stop following this person | 30000 |
+| wait_for_element_visible_ok | link=Mobile | 30000 |
+| pause | 3000 |  |
+| click_and_wait | link=Dashboard |  |
+| wait_for_element_visible_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile |  |
+| open_ok | /lite/ |  |
+| wait_for_text_present_ok | %%signal1%% |  |
+| wait_for_element_visible_ok | link=%%othershortuser%% |  |
+| text_like | People I follow |  |
+| wait_for_element_not_present_ok | link=People I follow |  |
 
 | *Comment* | Test case: Miki Click 'Workspaces' in global nav |  |
-| click_ok | link=Workspaces |  |  |
-| wait_for_element_visible_ok | link=Activities | 30000 |  |
-| wait_for_element_visible_ok | link=Log out | 30000 |  |
-| wait_for_element_visible_ok | link=Signals | 30000 |  |
-| wait_for_element_visible_ok | link=%%ws%% | 30000 |  |
-| wait_for_element_visible_ok | link=Log out | 30000 |  |
-| text_like | Workspaces |  |  |
-| text_like | Hello, %%mikiuser%% |  |  |
-| text_like | Workspaces you belong to: |  |  |
+| click_ok | link=Workspaces |  |
+| wait_for_element_visible_ok | link=Activities | 30000 |
+| wait_for_element_visible_ok | link=Log out | 30000 |
+| wait_for_element_visible_ok | link=Signals | 30000 |
+| wait_for_element_visible_ok | link=%%ws%% | 30000 |
+| wait_for_element_visible_ok | link=Log out | 30000 |
+| text_like | Workspaces |  |
+| text_like | Hello, %%mikiuser%% |  |
+| text_like | Workspaces you belong to: |  |
 
 | *Comment* | Test case: Miki Click 'Activities' in global nav |  |
-| click_ok | link=Activities |  |  |
-| wait_for_element_visible_ok | link=All | 30000 |  |
-| wait_for_element_visible_ok | link=People I follow | 30000 |  |
-| wait_for_element_visible_ok | link=refresh | 30000 |  |
-| wait_for_element_visible_ok | link=Log out | 30000 |  |
-| text_like | My Conversations |  |  |
+| click_ok | link=Activities |  |
+| wait_for_element_visible_ok | link=All | 30000 |
+| wait_for_element_visible_ok | link=People I follow | 30000 |
+| wait_for_element_visible_ok | link=refresh | 30000 |
+| wait_for_element_visible_ok | link=Log out | 30000 |
+| text_like | My Conversations |  |
 
 | *Comment* | Test case: Miki Click 'All' within 'Activities' in global nav |  |
-| click_ok | Link=All |  |  |
-| wait_for_element_visible_ok | link=People I follow | 30000 |  |
-| wait_for_element_visible_ok | link=refresh | 30000 |  |
-| wait_for_element_visible_ok | link=My Conversations | 30000 |  |
-| wait_for_element_visible_ok | link=Log out | 30000 |  |
-| text_like | All |  |  |
+| click_ok | Link=All |  |
+| wait_for_element_visible_ok | link=People I follow | 30000 |
+| wait_for_element_visible_ok | link=refresh | 30000 |
+| wait_for_element_visible_ok | link=My Conversations | 30000 |
+| wait_for_element_visible_ok | link=Log out | 30000 |
+| text_like | All |  |
 
 | *Comment* | Test case: Miki Click 'People I follow' within 'Activities' in global nav |  |
-| click_ok | link=People I follow |  |  |
-| wait_for_element_visible_ok | link=My Conversations | 30000 |  |
-| wait_for_element_visible_ok | link=refresh | 30000 |  |
-| wait_for_element_visible_ok | link=Log out | 30000 |  |
-| text_like | People I follow |  |  |
-| click_ok | link=My Conversations |  |  |
+| click_ok | link=People I follow |  |
+| wait_for_element_visible_ok | link=My Conversations | 30000 |
+| wait_for_element_visible_ok | link=refresh | 30000 |
+| wait_for_element_visible_ok | link=Log out | 30000 |
+| text_like | People I follow |  |
+| click_ok | link=My Conversations |  |
 
 | *Comment* | Test Case: Miki Loginlogout, change enabled-ness, see different global nav ftw. |  |
 | disable-acct-plugin | signals | %%mikiacct%% |
-| click_ok | link=Log out |
+| click_ok | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. |  |
 | st-login | %%mikiuser%% | %%password%% |
 | open_ok | /m/ |  |
@@ -70,7 +125,7 @@
 | text_like | Workspaces you belong to: |  |
 | text_like | You have free access to view and |  |
 | text_like | contribute to any of these public wikis: |  |
-| click_ok | link=Log out |
+| click_ok | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. |  |
 
 | *Comment* | Test Case: Miki Loginlogout, traditional Miki verification as %%username%% |  |
