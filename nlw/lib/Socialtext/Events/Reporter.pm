@@ -426,6 +426,10 @@ sub _build_standard_sql {
             }
         }
 
+        if ($opts->{signals}) {
+            $self->add_condition('signal_id IS NOT NULL');
+        }
+
         # filter for contributions-type events
         $self->add_condition($CONTRIBUTIONS)
             if $opts->{contributions};

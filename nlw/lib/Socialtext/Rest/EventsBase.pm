@@ -162,7 +162,8 @@ sub extract_page_args {
 
     push @args,
         _bunch_of($q,'page.id'),
-        _one($q,'contributions');
+        _one($q,'contributions'),
+        _one($q,'signals');
 
     return @args;
 }

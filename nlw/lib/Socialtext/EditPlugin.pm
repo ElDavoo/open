@@ -135,16 +135,23 @@ sub edit_content {
         }
     }
 
-    $page->store(
+    my %event = (
+        event_class => 'page',
+        action => 'edit_save',
+        page => $page,
+    );
+
+    my $signal = $page->store(
         user => $self->hub->current_user,
         signal_edit_summary => scalar($self->cgi->signal_edit_summary),
         edit_summary => $edit_summary,
     );
-    Socialtext::Events->Record({
-        event_class => 'page',
-        action => 'edit_save',
-        page => $page,
-    });
+
+    if ($signal) {
+        $event{signal} = $signal->signal_id;
+    } 
+
+    Socialtext::Events->Record(\%event);
 
     # Move attachments uploaded to 'Untitled Page' to the actual page
     my @attach = $self->cgi->attachment;
