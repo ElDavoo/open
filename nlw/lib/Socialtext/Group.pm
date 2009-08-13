@@ -5,6 +5,7 @@ use Moose;
 use Carp qw(croak);
 use List::Util qw(first);
 use Socialtext::AppConfig;
+use Socialtext::Cache;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
 use Socialtext::Timer;
@@ -124,6 +125,12 @@ sub GetGroup {
     my $class = shift;
     my %p = (@_==1) ? %{+shift} : @_;
 
+    # Allow for lookups by "Group Id" to be cached.
+    if ((scalar keys %p == 1) && (exists $p{group_id})) {
+        my $cached = $class->cache->get($p{group_id});
+        return $cached if $cached;
+    }
+
     # Get the list of Drivers that the Group _could_ be found in; if we were
     # given a Driver Key explicitly then use that, otherwise go searching for
     # the Group in the list of configured Drivers.
@@ -138,12 +145,23 @@ sub GetGroup {
         # see if this Factory knows about the Group
         my $homey = $factory->GetGroupHomunculus(%p);
         if ($homey) {
-            return Socialtext::Group->new(homunculus => $homey);
+            my $group = Socialtext::Group->new(homunculus => $homey);
+            $class->cache->set( $group->group_id, $group );
+            return $group;
         }
     }
 
     # nope, didn't find
     return;
+}
+
+{
+    # IN-MEMORY cache of Groups, by Group Id.
+    my $CacheByGroupId;
+    sub cache {
+        $CacheByGroupId ||= Socialtext::Cache->cache('group:group_id');
+        return $CacheByGroupId;
+    }
 }
 
 ###############################################################################

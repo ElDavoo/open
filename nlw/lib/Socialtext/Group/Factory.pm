@@ -203,6 +203,9 @@ sub Delete {
 sub DeleteGroupRecord {
     my ($self, $proto_group) = @_;
 
+    # Delete any copy of this Group in the *in-memory* cache
+    Socialtext::Group->cache->remove($proto_group->{group_id});
+
     # Only concern ourselves with valid Db Columns
     my $where = $self->FilterValidColumns( $proto_group );
 
@@ -214,6 +217,9 @@ sub DeleteGroupRecord {
 # Updates the local DB using the provided Group information
 sub UpdateGroupRecord {
     my ($self, $proto_group) = @_;
+
+    # Delete any copy of this Group in the *in-memory* cache
+    Socialtext::Group->cache->remove($proto_group->{group_id});
 
     # set "cached_at" 
     $proto_group->{cached_at} ||= $self->Now();
