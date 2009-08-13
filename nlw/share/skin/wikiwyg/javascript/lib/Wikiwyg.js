@@ -649,16 +649,7 @@ proto.saveChanges = function() {
         */
 
         var saver = function() {
-            // Move Images from "Current Page" to the new page
-            if (Socialtext.new_page) {
-                var files = Attachments.get_new_attachments();
-
-                jQuery.each(files, function () {
-                    jQuery('<input type="hidden" name="attachment" />')
-                        .val(this['id'] + ':' + this['page-id'])
-                        .appendTo('#st-page-editing-files');
-                });
-            }
+            Socialtext.prepare_attachments_before_save();
 
             jQuery('#st-page-editing-pagebody').val(wikitext);
             jQuery('#st-page-editing-form').trigger('submit');
