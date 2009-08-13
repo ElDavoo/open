@@ -78,7 +78,6 @@ sub new_homunculus {
     my $class = shift;
     my $key = shift;
     my $val = shift;
-    my $homunculus;
 
     # if we are passed in an email confirmation hash, we look up the user_id
     # associated with that hash
@@ -88,7 +87,7 @@ sub new_homunculus {
         $key = 'user_id'; $val = $user_id;
     }
 
-    $homunculus = Socialtext::User::Cache->Fetch($key, $val);
+    my $homunculus = Socialtext::User::Cache->Fetch($key, $val);
     return $homunculus if $homunculus;
 
     # if we pass in user_id, it will be one of the new system-wide
