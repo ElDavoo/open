@@ -491,9 +491,13 @@ sub Unknown    { $_[0]->new( name => 'Unknown' ) }
 sub Socialtext { $_[0]->new( name => 'Socialtext' ) }
 sub Deleted    { $_[0]->new( name => 'Deleted' ) }
 
-sub Default {
-    my $class = shift;
-    return get_system_setting('default-account');
+{
+    my $CachedDefault;
+    sub Default {
+        my $class = shift;
+        $CachedDefault ||= get_system_setting('default-account');
+        return $CachedDefault;
+    }
 }
 
 sub new {
