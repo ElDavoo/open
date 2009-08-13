@@ -35,6 +35,7 @@ field 'slapd';
 field 'schemadir';
 field 'moduledir';
 field 'conffile';
+field 'debug_level';
 field 'ldap_config', -init => '$self->_ldap_config';
 
 my %ports = (
@@ -61,6 +62,7 @@ sub new {
         root_pw         => $config{root_pw}         || 'its-a-secret',
         requires_auth   => $config{requires_auth}   || 0,
         # openldap specific parameters
+        debug_level     => $config{debug_level}     || 256,
         raw_conf        => $config{raw_conf}        || '',
         statedir        => $config{statedir}        || File::Spec->catdir(_ldap_root_dir(),'run'),
         datadir         => $config{datadir}         || File::Spec->catdir(_ldap_root_dir(),'ldap',$port),
@@ -227,7 +229,7 @@ sub start {
     # start OpenLDAP
     my @args = (
         '-f'    => $self->conffile(),
-        '-d'    => 256,
+        '-d'    => $self->debug_level(),
         '-h'    => "ldap://$self->{host}:$self->{port}",
         );
     my $pid;
