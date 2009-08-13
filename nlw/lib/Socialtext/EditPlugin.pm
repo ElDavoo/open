@@ -146,7 +146,7 @@ sub edit_content {
         page => $page,
     });
 
-    # Move attachments uploaded to 'Untitled Page' to the actual page
+    # Move attachments uploaded to 'Untitled Page'/'Untitled Spreadsheet' to the actual page
     my @attach = $self->cgi->attachment;
     for my $a (@attach) {
         my ($id, $page_id) = split ':', $a;

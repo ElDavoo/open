@@ -211,7 +211,7 @@ sub display {
     $page->load;
 
     if (!$is_new_page &&
-        $page->id ne 'untitled_page') 
+        !$page->is_untitled)
     {
         eval {
             Socialtext::Events->Record({

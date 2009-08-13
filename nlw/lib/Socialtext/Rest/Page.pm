@@ -189,7 +189,7 @@ sub GET_json {
 
 sub _record_view {
     my ($self, $page) = @_;
-    if (($page->id ne 'untitled_page')  && ($page->id ne 'untitled_spreadsheet')) {
+    unless ($page->is_untitled) {
         Socialtext::Events->Record({
             event_class => 'page',
             action => 'view',

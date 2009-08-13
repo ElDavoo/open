@@ -836,6 +836,19 @@ sub restored {
     return ( defined $_[0]->{_restored} ) ? 1 : 0;
 }
 
+sub is_untitled {
+    my $self = shift;
+
+    if ($self->id eq 'untitled_page') {
+        return 'Untitled Page';
+    }
+    elsif ($self->id eq 'untitled_spreadsheet') {
+        return 'Untitled Spreadsheet';
+    }
+
+    return '';
+}
+
 sub store {
     my $self = shift;
     my %p = @_;
@@ -843,13 +856,8 @@ sub store {
         unless $p{user};
 
     # Fix for {bz 2099} -- guard against storing an "Untitled Page".
-    if ($self->id eq 'untitled_page') {
-        die loc('"[_1]" is a reserved name. Please use a different name.',
-            'Untitled Page');
-    }
-    if ($self->id eq 'untitled_spreadsheet') {
-        die loc('"[_1]" is a reserved name. Please use a different name.',
-            'Untitled Spreadsheet');
+    if (my $display_name = $self->is_untitled) {
+        die loc('"[_1]" is a reserved name. Please use a different name.', $display_name);
     }
 
     # Make sure we have minimal metadata needed to store a page
