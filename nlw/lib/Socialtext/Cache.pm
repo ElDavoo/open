@@ -34,6 +34,16 @@ sub clear {
     }
 }
 
+sub stats {
+    my %stats;
+    while (my ($name, $cache) = each %CACHES) {
+        if ($cache->can('stats')) {
+            $stats{$name} = $cache->stats();
+        }
+    }
+    return \%stats;
+}
+
 1;
 
 =head1 NAME
@@ -56,6 +66,9 @@ Socialtext::Cache - In-memory named caches
 
   # clear/flush *all* named caches
   Socialtext::Cache->clear();
+
+  # get instrumentation stats on all caches
+  $stats = Socialtext::Cache->stats();
 
 =head1 DESCRIPTION
 
@@ -95,6 +108,11 @@ doesn't already exist.
 Clears the given named cache, removing B<all> entries from the cache.
 
 If no C<$name> is provided, this method clears B<ALL> of the caches.
+
+=item B<Socialtext::Cache-E<gt>stats()>
+
+Returns a hash-ref of instrumentation data on all of the named caches that are
+in use.
 
 =back
 

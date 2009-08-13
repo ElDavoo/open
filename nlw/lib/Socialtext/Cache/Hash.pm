@@ -3,6 +3,8 @@ package Socialtext::Cache::Hash;
 use strict;
 use warnings;
 
+our %stats;
+
 sub new {
     my $class = shift;
     my $self  = { };
@@ -11,16 +13,19 @@ sub new {
 
 sub get {
     my ($self, $key) = @_;
+    exists $self->{$key} ? $stats{$self}{hit}++ : $stats{$self}{miss}++;
     return $self->{$key};
 }
 
 sub set {
     my ($self, $key, $val) = @_;
+    $stats{$self}{set}++;
     $self->{$key} = $val;
 }
 
 sub remove {
     my ($self, $key) = @_;
+    $stats{$self}{remove}++;
     delete $self->{$key};
 }
 
@@ -32,6 +37,11 @@ sub get_keys {
 sub clear {
     my $self = shift;
     map { delete $self->{$_} } $self->get_keys();
+}
+
+sub stats {
+    my $self = shift;
+    return $stats{$self};
 }
 
 1;
