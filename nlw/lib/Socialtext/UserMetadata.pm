@@ -149,8 +149,8 @@ sub creator {
 
     my $created_by_user_id = $self->created_by_user_id;
 
-    if (! defined $created_by_user_id) {
-        $created_by_user_id = Socialtext::User->SystemUser->user_id;
+    unless (defined $created_by_user_id) {
+        return Socialtext::User->SystemUser;
     }
 
     return Socialtext::User->new( user_id => $created_by_user_id );
