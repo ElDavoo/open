@@ -1,5 +1,5 @@
+[% IF error %]<span class="error">[% error %]</span>[% END %]
 <ul class="event_list">
-    [% error %]
     [% FOR event = events %]
         <li class="[% event.row_class %] timestamped[% IF event == events.last() %] last[% END %][% IF event == events.first() %] first[% END %]">
             [% PROCESS data/event e=event out="html" %]</br/>
@@ -7,19 +7,4 @@
     [% END %]
 </ul>
 
-<div class="paging">
-    [% IF pagenum > 0 %]
-    <a href="/m/signals/?page=[% pagenum - 1 %]">[% loc('&lt;&lt; Newer') %]</a> |
-    <a href="/m/signals">[% loc('Newest') %]</a> |
-    [% ELSE %]
-    <span>[% loc('&lt;&lt; Newer') %]</span> |
-    <span>[% loc('Newest') %]</span> |
-    [% END %]
-
-    [% IF more %]
-    <a href="/m/signals/?page=[% pagenum + 1 %]">[% loc('Older &gt;&gt;') %]</a>
-    [% ELSE %]
-    <span>[% loc('Older &gt;&gt;') %]</span>
-    [% END %]
-</div>
-            
+[% INCLUDE lite/paging.html uri_base="/m/signals" %]

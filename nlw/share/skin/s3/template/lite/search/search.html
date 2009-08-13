@@ -1,6 +1,6 @@
 [%# @COPYRIGHT@ -%]
 [% PROCESS lite/header.html %]
-<div>
+<div class="content search">
     <form name="searchform"
         method="get"
         action="/m/search/[% ws.name %]"
@@ -13,5 +13,5 @@
 [% IF search_error %]
 <div>[% loc("Error:") %] [% search_error %]</div>
 [% END %]
-[% PROCESS lite/page_list.html %]
+[% INCLUDE lite/page_list.html %]
 [% PROCESS lite/footer.html %]

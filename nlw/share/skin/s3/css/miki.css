@@ -1,9 +1,24 @@
 body {
     font-size: 10pt;
-    font-family: Helvetica, Arial, sans-serif
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
+form {
+    margin: 0;
+    padding: 0;
+}
+
 div.clear {
-	clear: both;
+    clear: both;
+}
+
+.content {
+    margin: 0 5px;
+}
+
+.content.search {
+    margin: 5px;
 }
 
 .wiki-include-page {
@@ -48,6 +63,12 @@ div.clear {
     padding: 3px 2px;
 }
 
+.tabs .letter_set,
+.globalnav a,
+.tabs a {
+    white-space: nowrap;
+}
+
 .tabs .current, .globalnav .current {
     font-weight: bold;
 }
@@ -63,30 +84,37 @@ div.clear {
     padding-bottom: 5px;
 }
 
-.pageinfo ul, .pageinfo p{
+.pageinfo ul, .pageinfo p {
     margin: 0;
 }
 
+.error {
+    padding: 5px;
+}
+
+.people_list,
 .event_list {
     width: 100%;
     margin: 5px 0;
-    padding: 0;
     border-collapse: collapse;
     list-style: none;
+    padding: 0;
 }
-.event_list li {
+.event_list li, .people_list li {
     border-top: 1px solid #666;
+    margin-left: 5px;
     padding: 5px 0 3px 0;
+    clear: all;
 }
 
-.event_list li.first {
+.event_list li.first, .people_list li.first {
     border-top: none;
 }
 .event_list img.avatar {
     float: left;
     border: 1px solid #666 !important;
 }
-.event_list .mainSection {
+.event_list .mainSection, .people_list .mainSection {
     float: left;
     margin-left: 5px;
 }
@@ -104,8 +132,17 @@ div.clear {
     white-space: nowrap;
 }
 
+.people_search {
+    padding: 5px;
+    border-bottom: 1px solid #666;
+}
+
+.people_search input {
+    vertical-align: middle;
+}
+
 .postsignal {
-    margin-top: 10px;
+    padding: 5px;
     border-bottom: 1px solid #666;
 }
 .postsignal form {
@@ -122,6 +159,7 @@ div.clear {
 .profile img.avatar {
     float: left;
     margin-right: 5px;
+    margin-left: 5px;
     border: 1px solid #666 !important;
 }
 .profile .info {
@@ -133,8 +171,26 @@ div.clear {
 .profile .section {
     border-bottom: 1px solid #666;
     padding-bottom: 10px;
+    margin-left: 5px;
 }
 .profile .section.last {
     border-bottom: none;
 }
 
+.people_list {
+    padding: 5px 0;
+}
+
+.people_list img {
+    border: none;
+}
+.people_list img.avatar {
+    float: left;
+    border: 1px solid #666;
+    vertical-align: middle;
+    width: 27px !important;
+}
+
+.people_list .user_link {
+    margin-bottom: 5px;
+}

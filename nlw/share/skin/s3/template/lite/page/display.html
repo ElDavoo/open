@@ -4,7 +4,9 @@
     [% name | decorate('user_link') %]
 [% END %]
 
-[% page_html %]
+<div class="content">
+    [% page_html %]
+</div>
 <div class="pageinfo">
     [% SET author = user_link(name=page.last_edited_by.user_id) %]
     [% SET time = page.datetime_for_user %]
