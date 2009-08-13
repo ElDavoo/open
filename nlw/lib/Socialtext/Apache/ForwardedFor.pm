@@ -16,7 +16,7 @@ sub handler {
 
     # get the list of candidate IPs, from the "X-Forwarded-For" header and the
     # current "remote_ip"
-    my @ips = split /\s*,\s*/, $r->header_in('X-Forwarded-For');
+    my @ips = split(/\s*,\s*/, $r->header_in('X-Forwarded-For') || '');
     push @ips, $r->connection->remote_ip;
 
     # trim the list to a unique list of valid IPs
