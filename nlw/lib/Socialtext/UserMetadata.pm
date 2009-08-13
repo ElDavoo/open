@@ -44,10 +44,10 @@ sub create_if_necessary {
         : Socialtext::User->SystemUser->user_id;
 
     return $class->create(
-        user_id => $user->user_id,
+        user_id                 => $user->user_id,
         email_address_at_import => $user->email_address,
-        created_by_user_id => $created_by_user_id
-        );
+        created_by_user_id      => $created_by_user_id
+    );
 }
 
 # turn a user into a hash suitable for JSON and
