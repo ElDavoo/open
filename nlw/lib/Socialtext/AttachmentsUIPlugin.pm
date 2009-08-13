@@ -353,14 +353,11 @@ sub _gen_sort_closure {
         }
         else {
             return sub {
-                Socialtext::User->new( 
-                    username => $b->{user} 
-                )->best_full_name 
-                cmp 
-                Socialtext::User->new(
-                    username => $a->{user}
-                )->best_full_name
-                or lc( $b->{subject} ) cmp lc( $a->{subject} );
+                my $ua = Socialtext::User->new(username => $a->{user});
+                my $ub = Socialtext::User->new(username => $b->{user});
+                my $bfn_a = $ua->best_full_name;
+                my $bfn_b = $ub->best_full_name;
+                return lc($bfn_b) cmp lc($bfn_a) or lc($b->{subject}) cmp lc($a->{subject});
             }
         }
     }
