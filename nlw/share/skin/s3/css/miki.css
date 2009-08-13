@@ -48,7 +48,7 @@ div.clear {
     padding: 3px 2px;
 }
 
-.tabs .current {
+.tabs .current, .globalnav .current {
     font-weight: bold;
 }
 
