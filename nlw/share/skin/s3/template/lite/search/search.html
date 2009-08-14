@@ -13,5 +13,5 @@
 [% IF search_error %]
 <div>[% loc("Error:") %] [% search_error %]</div>
 [% END %]
-[% INCLUDE lite/page_list.html %]
+[% PROCESS lite/page_list.html %]
 [% PROCESS lite/footer.html %]

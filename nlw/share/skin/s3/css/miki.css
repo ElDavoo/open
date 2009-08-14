@@ -69,7 +69,7 @@ div.clear {
     white-space: nowrap;
 }
 
-.tabs .current, .globalnav .current {
+.tabs .current, .globalnav .current, .subnav .current {
     font-weight: bold;
 }
 

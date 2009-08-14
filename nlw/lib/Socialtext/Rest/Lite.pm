@@ -61,9 +61,9 @@ sub changes {
     $self->if_authorized(
         'GET',
         sub {
-            my $category = $self->_category_from_uri();
+            my $tag = $self->_tag_from_uri();
             my $content = Socialtext::Lite->new( hub => $self->hub )
-                ->recent_changes($category);
+                ->recent_changes($tag);
 
             $rest->header(
                 -status => HTTP_200_OK,
@@ -119,14 +119,14 @@ sub workspace_list {
     return $content;
 }
 
-sub category {
+sub tag {
     my ( $self, $rest ) = @_;
 
     $self->if_authorized(
         'GET',
         sub {
             my $content = Socialtext::Lite->new( hub => $self->hub )
-                ->category( $self->_category_from_uri );
+                ->tag( $self->_tag_from_uri );
             $rest->header(
                 -status => HTTP_200_OK,
                 -type   => 'text/html' . '; charset=UTF-8'
@@ -258,7 +258,7 @@ sub _get_page {
     return $page;
 }
 
-sub _category_from_uri {
+sub _tag_from_uri {
     my $self = shift;
 
     # XXX why can't i get tag from self->tag?
