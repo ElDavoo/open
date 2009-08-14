@@ -1,5 +1,5 @@
 [% USE decorate %] 
-<div class="[% class %] globalnav">
+<div class="[% IF bottom %]bottom[% END %] globalnav">
 [% IF user.is_guest %]
     [% IF workspace %]
         <a href="/challenge?/m/page/[% ws.name %]/[% page.uri %]">[% loc('Log in') %]</a>
@@ -7,20 +7,27 @@
         <a href="/challenge?/m/workspace_list">[% loc('Log in') %]</a>
     [% END %]
 [% ELSE %]
-    [% FILTER decorate('lite_global_nav') %]
-        [% IF section == 'workspaces' %]
-          <span class="current">[% loc('Workspaces') %]</span> |
-        [% ELSE %]
-          <a href="/m/workspace_list">[% loc('Workspaces') %]</a> |
-        [% END %]
 
+    [% FILTER decorate('lite_nav_activities') %]
         [% IF section == 'activities' %]
-          <span class="current">[% loc('Activities') %]</span>
+          <span class="current">[% loc('Activity') %]</span>
         [% ELSE %]
-          <a href="/m/activities">[% loc('Activities') %]</a>
+          <a href="/m/activities">[% loc('Activity') %]</a>
+        [% END %]
+        |
+    [% END %]
+
+    [% FILTER decorate('lite_nav_workspaces') %]
+        [% IF section == 'workspaces' %]
+          <span class="current">[% loc('Workspaces') %]</span>
+        [% ELSE %]
+          <a href="/m/workspace_list">[% loc('Workspaces') %]</a>
         [% END %]
     [% END %]
+
+    [% IF bottom %]
     | 
     <a href="/nlw/submit/logout?redirect_to=/m/login">[% loc('Log out') %]</a>
+    [% END %]
 [% END %]
 </div>
