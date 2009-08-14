@@ -290,15 +290,20 @@ sub update_from_remote {
 
     # XXX: record a lock/unlock event.
 
-    Socialtext::Events->Record({
+    my %event = (
         event_class => 'page',
         action => 'edit_save',
         page => $self,
-    });
+    );
 
-    $self->_signal_edit_summary($user, $edit_summary) 
-        if $p{signal_edit_summary};
+    if ($p{signal_edit_summary}) {
+        my $signal = $self->_signal_edit_summary($user, $edit_summary);
+        if ($signal) {
+            $event{signal} = $signal->signal_id;
+        }
+    }
 
+    Socialtext::Events->Record(\%event);
     return; 
 }
 
@@ -895,8 +900,12 @@ sub store {
     $self->_perform_store_actions();
 
     $self->_log_edit_summary($p{user}) if $self->metadata->RevisionSummary;
-    $self->_signal_edit_summary($p{user}, $p{edit_summary})
-        if $p{signal_edit_summary};
+
+    if ($p{signal_edit_summary}) {
+        return $self->_signal_edit_summary($p{user}, $p{edit_summary});
+    }
+
+    return;
 }
 
 sub _log_edit_summary {

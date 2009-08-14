@@ -312,8 +312,7 @@ sub sorted_result_set {
     my $sortby = $self->cgi->sortby || 'filename';
     my $direction = $self->cgi->direction || $self->sortdir->{$sortby};
 
-    my $sortsub
-        = $self->_gen_sort_closure( $sortby, $direction );
+    my $sortsub = $self->_gen_sort_closure( $sortby, $direction );
 
     @{$rows} = sort $sortsub @{$rows};
     splice @{$rows}, $limit
@@ -345,26 +344,20 @@ sub _gen_sort_closure {
         # may not be the same as the from header.
         if ( $direction eq 'asc' ) {
             return sub {
-                Socialtext::User->new( 
-                    username => $a->{user} 
-                )->best_full_name 
-                cmp 
-                Socialtext::User->new(
-                    username => $b->{user}
-                )->best_full_name
-                or lc( $a->{subject} ) cmp lc( $b->{subject} );
+                my $ua = Socialtext::User->new(username => $a->{user});
+                my $ub = Socialtext::User->new(username => $b->{user});
+                my $bfn_a = $ua->best_full_name;
+                my $bfn_b = $ub->best_full_name;
+                return lc($bfn_a) cmp lc($bfn_b) or lc($a->{subject}) cmp lc($b->{subject});
             }
         }
         else {
             return sub {
-                Socialtext::User->new( 
-                    username => $b->{user} 
-                )->best_full_name 
-                cmp 
-                Socialtext::User->new(
-                    username => $a->{user}
-                )->best_full_name
-                or lc( $b->{subject} ) cmp lc( $a->{subject} );
+                my $ua = Socialtext::User->new(username => $a->{user});
+                my $ub = Socialtext::User->new(username => $b->{user});
+                my $bfn_a = $ua->best_full_name;
+                my $bfn_b = $ub->best_full_name;
+                return lc($bfn_b) cmp lc($bfn_a) or lc($b->{subject}) cmp lc($a->{subject});
             }
         }
     }

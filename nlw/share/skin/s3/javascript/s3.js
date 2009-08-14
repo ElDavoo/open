@@ -77,6 +77,18 @@ Socialtext.make_table_unsortable = function(table) {
     $(table).removeClass("sort").find("tr:eq(0) td").unbind("click").unbind("mousedown");
 }
 
+Socialtext.prepare_attachments_before_save = function() {
+    if (Socialtext.new_page) {
+        var files = Attachments.get_new_attachments();
+
+        $.each(files, function () {
+            $('<input type="hidden" name="attachment" />')
+                .val(this['id'] + ':' + this['page-id'])
+                .appendTo('#st-page-editing-files');
+        });
+    }
+}
+
 $(function() {
     setTimeout(function() { $('#contentWarning').hide('slow') }, 10000);
 

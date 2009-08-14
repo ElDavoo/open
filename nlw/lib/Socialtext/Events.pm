@@ -37,6 +37,11 @@ sub Record {
         $ev->{context} ||= {};
         $ev->{context}{revision_count} ||= $page->revision_count;
         $ev->{context}{revision_id} ||= $page->revision_id;
+
+        if ($ev->{signal}) {
+            $ev->{context}{account_ids} ||= [ $page->hub->current_workspace->account_id ] ;
+        }
+
         if (my $es = $page->edit_summary) {
             $ev->{context}{edit_summary} ||= $es;
         }
