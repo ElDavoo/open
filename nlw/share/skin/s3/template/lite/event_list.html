@@ -1,4 +1,5 @@
-[% IF error %]<span class="error">[% error %]</span>[% END %]
+[% IF error %]<div class="error">[% error %]</div>[% END %]
+[% IF events.size %]
 <ul class="event_list">
     [% FOR event = events %]
         <li class="[% event.row_class %] timestamped[% IF event == events.last() %] last[% END %][% IF event == events.first() %] first[% END %]">
@@ -6,5 +7,6 @@
         </li>
     [% END %]
 </ul>
+[% END %]
 
 [% INCLUDE lite/paging.html uri_base="/m/signals" %]
