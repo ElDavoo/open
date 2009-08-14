@@ -67,7 +67,7 @@ $html = $lite->edit_action($page);
 
 like( $html, qr{\Q<title>Admin Wiki : Edit we are the world</title>},
     'edit form has the correct title' );
-like( $html, qr{\Qaction="/lite/page/admin/we_are_the_world"},
+like( $html, qr{\Qaction="/m/page/admin/we_are_the_world"},
     'edit form action goes to correct page' );
 like( $html, qr{<textarea.*we are the children.*except that we're not}sm,
     'edit form contains correct page content' );
@@ -86,7 +86,7 @@ $html = $lite->edit_action($incipient_page);
 
 like( $html, qr{\Q<title>Admin Wiki : Edit Stronger Than Dust?</title>},
     'edit form has correct title for incipient page' );
-like( $html, qr{\Qaction="/lite/page/admin/Stronger%20Than%20Dust%3F\E"},
+like( $html, qr{\Qaction="/m/page/admin/Stronger%20Than%20Dust%3F\E"},
     'edit form action goes to correct page' );
 like( $html, qr{<textarea[^>]+></textarea>},
     'edit form contains no content' );
@@ -129,9 +129,9 @@ like( $html,
     qr{Singapore link <a href="%E6%96%B0%E5%8A%A0%E5%9D%A1\?action=edit".*>$Singapore</a>},
     'funkity characters remain sane through input' );
 
-like( $html, qr{\Qtitle="category link" href="/lite/category/admin/help">help</a>},
+like( $html, qr{\Qtitle="category link" href="/m/category/admin/help">help</a>},
     'category link links right place' );
-like( $html, qr{\Qtitle="weblog link" href="/lite/changes/admin/help">help</a>},
+like( $html, qr{\Qtitle="weblog link" href="/m/changes/admin/help">help</a>},
     'weblog link links right place' );
 
 # exercise contention handling
@@ -153,7 +153,7 @@ like( $html,
     qr{<pre>.*collide with me.*}ms,
     'content of contention info is right' );
 like( $html,
-    qr{\Q<a href="/lite/page/admin/stronger_than_dust?action=edit">Edit},
+    qr{\Q<a href="/m/page/admin/stronger_than_dust?action=edit">Edit},
     'edit link is displayed' );
 like( $html,
     qr{<pre>.*&lt;h1&gt;Ho&lt;/h1&gt;.*</pre>}ms,
@@ -183,7 +183,7 @@ ceqlotron_run_synchronously();
 $html = $lite->search('title:dust');
 like( $html, qr{\Q<input name="search_term" value="title:dust" />},
     'search form presents with search_term' );
-like( $html, qr{<li>.*<a.*href="/lite/page/admin/stronger_than_dust"}ms, 
+like( $html, qr{<li>.*<a.*href="/m/page/admin/stronger_than_dust"}ms, 
     'search results include expected page' );
 
 ## investigate category handling
@@ -193,7 +193,7 @@ $html = $lite->category();
 like( $html, qr{\Q<title>Admin Wiki : Categories</title>},
     'category display has correct title' );
 # XXX case here?
-like( $html, qr{<li>\s*<a.*href="/lite/category/admin/Welcome".*>\s*Welcome\s*</a>},
+like( $html, qr{<li>\s*<a.*href="/m/category/admin/Welcome".*>\s*Welcome\s*</a>},
     'category Welcome is listed with correct url and name' );
 
 # get a specific category
@@ -204,7 +204,7 @@ is ( lc($html_from_lc_category), lc($html), 'case of category does not change co
 # XXX case is odd
 like ( $html, qr{\Q<title>Admin Wiki : Category Welcome</title>},
     'category display for welcome has right title' );
-like ( $html, qr{<li>\s+<a.*href="/lite/page/admin/start_here".*>\s*Start here\s*</a>}ms,
+like ( $html, qr{<li>\s+<a.*href="/m/page/admin/start_here".*>\s*Start here\s*</a>}ms,
     'category display for welcome links to included page' );
 
 # get category changes, different case
@@ -215,5 +215,5 @@ is ( lc($html_from_rc_category), lc($html), 'case of rc category does not change
 # XXX case is odd
 like ( $html, qr{\Q<title>Admin Wiki : Recent Changes in Welcome</title>},
     'rc category display for welcome has right title' );
-like ( $html, qr{<li>\s+<a.*href="/lite/page/admin/start_here".*>\s*Start here\s*</a>}ms,
+like ( $html, qr{<li>\s+<a.*href="/m/page/admin/start_here".*>\s*Start here\s*</a>}ms,
     'rc category display for welcome links to included page' );
