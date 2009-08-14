@@ -172,9 +172,14 @@ div.clear {
     border-bottom: 1px solid #666;
 }
 .profile .section {
-    border-bottom: 1px solid #666;
+    border-top: 1px solid #666;
+}
+.profile .section.first {
+    border-top: none;
+}
+.profile .section {
     padding-bottom: 10px;
-    margin-left: 5px;
+    padding-left: 5px;
 }
 .profile .section.last {
     border-bottom: none;
