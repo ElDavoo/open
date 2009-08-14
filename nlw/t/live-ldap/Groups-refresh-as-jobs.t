@@ -9,16 +9,16 @@ use Socialtext::JobCreator;
 use Socialtext::Jobs;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext::Group;
-use Test::Socialtext tests => 32;
+use Test::Socialtext tests => 30;
 
 # Need a DB, but don't care at all what's in it.
 # Don't want any leftover Ceq jobs.
-fixtures( qw/db/ );
+fixtures( qw/db no-ceq-jobs/ );
 
 use_ok 'Socialtext::Job::GroupRefresh';
 
 # Register workers
-Socialtext::Jobs->can_do_all();
+Socialtext::Jobs->can_do('Socialtext::Job::GroupRefresh');
 
 ################################################################################
 # TEST: LDAP group w/expired cache.
@@ -71,20 +71,15 @@ ldap_group_freshened: {
     is $forced->users->count, 0, '... still no users';
     local $Socialtext::Group::Factory::CacheEnabled = 1;
 
-    # Force run the first job, this one will _not_ update the group.
-    # We've refreshed the group and invalidated it's cache_key.
+    # Run the jobs.
     my $job = Socialtext::Jobs->find_job_for_workers();
     ok $job, 'first job found.';
     my $rc = Socialtext::Jobs->work_once($job);
     ok $rc, '... first job completed';
     is $job->exit_status, 0, '... ... successfully';
 
-    # Run the job with the _right_ cache key, vivify users.
     $job = Socialtext::Jobs->find_job_for_workers();
-    ok $job, 'second job found.';
-    $rc = Socialtext::Jobs->work_once($job);
-    ok $rc, '... second job completed';
-    is $job->exit_status, 0, '... ... successfully';
+    ok !$job, 'we did _not_ create a second job';
 
     my $actualized = Socialtext::Group->GetGroup(
         { driver_unique_id => 'cn=Motorhead,dc=example,dc=com' } );
