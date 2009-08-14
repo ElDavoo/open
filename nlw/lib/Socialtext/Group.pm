@@ -9,7 +9,7 @@ use Socialtext::Cache;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
 use Socialtext::Timer;
-use Socialtext::SQL qw(:exec);
+use Socialtext::SQL qw(:exec :time);
 use Socialtext::UserGroupRoleFactory;
 use Socialtext::GroupWorkspaceRoleFactory;
 use namespace::clean -except => 'meta';
@@ -162,6 +162,29 @@ sub GetGroup {
         $CacheByGroupId ||= Socialtext::Cache->cache('group:group_id');
         return $CacheByGroupId;
     }
+}
+
+###############################################################################
+# Peek at the Group's attrs without auto_vivifying.
+sub GetProtoGroup {
+    my $class = shift;
+    my %p = (@_==1) ? %{+shift} : @_;
+
+    my @drivers = $p{driver_key} || $class->Drivers();
+    foreach my $driver_key (@drivers) {
+        # instantiate the Group Factory, skipping if Factory doesn't exist
+        my $factory = $class->Factory(driver_key => $driver_key);
+        next unless $factory;
+
+        my $proto = $factory->_get_cached_group( \%p );
+        return undef unless defined $proto;
+
+        $proto->{cached_at} = sql_parse_timestamptz( $proto->{cached_at} );
+        return $proto;
+    }
+
+    # nope, didn't find
+    return undef;
 }
 
 ###############################################################################
@@ -357,6 +380,13 @@ Valid C<$key>s include:
 
 Returns a C<Socialtext::MultiCursor> containing a list of all of the Groups
 that exist within the given Account, ordered by "Group Name".
+
+=item B<Socialtext::Group-E<gt>GetProtoGroup($key, $val)>
+
+Looks for group matching the give C<$key/$val> pair, and returns a
+hashref for the group's attributes.
+
+Uses the same C<$key> args as C<Socialtext::Group-E<gt>GetGroup()>.
 
 =item B<Socialtext::Group-E<gt>base_package()>
 
