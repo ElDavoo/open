@@ -155,6 +155,7 @@ sub RefreshGroups {
     # Disable cache freshness checks if we're forcing the refresh of all
     # Groups.
     local $Socialtext::Group::Factory::CacheEnabled = 0 if ($force);
+    local $Socialtext::Group::Factory::Asynchronous = 0 if ($force);
     # Get the list of LDAP Groups *directly* from the DB.
     #
     # Order this by "driver_key" so that we'll group all of the LDAP lookups
