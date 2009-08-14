@@ -17,6 +17,9 @@ use namespace::clean -except => 'meta';
 # Do *NOT* disable this unless you are testing!
 our $CacheEnabled = 1;
 
+# Do *NOT* disable this unless you know why you're doing a *SYNC* lookup
+our $Asynchronous = 1;
+
 with qw(
     Socialtext::Moose::SqlBuilder
     Socialtext::Moose::SqlBuilder::Role::DoesSqlInsert
@@ -139,13 +142,50 @@ sub GetGroupHomunculus {
         $self->NewGroupRecord( $proto_group );
     }
 
-    # create the homunculus, update its membership list, and return it back to
-    # the caller
-    my $homey = $self->NewGroupHomunculus($proto_group);
     Socialtext::Timer->Continue('ldap_group_membership_update');
-    $self->_update_group_members($homey, $proto_group->{members});
+    my $homey = $self->NewGroupHomunculus($proto_group);
+
+    if ($Asynchronous) {
+        # Double-purpose the *hi-res* "cached_at" for the Group, so that _our_
+        # job will know to update/refresh the Group *ONLY IF* nobody else got
+        # there first.
+        #
+        # When our Job runs, if the "cached_at" in the DB still matches up
+        # with this one, it should run.  Otherwise, somebody else twiddled the
+        # DB and refreshed the Group, and our Job should just auto-cancel
+        # itself.
+        my $cached_at_key = $proto_group->{cached_at}->hires_epoch;
+
+        # This job is a *HIGH* priority job, so we know that it's going to get
+        # scheduled and started *before* the LDAP TTL starts to expire out the
+        # Group again.
+        $self->_make_me_a_job(
+            cached_at => $cached_at_key,
+            group_id  => $proto_group->{group_id},
+        );
+    }
+    else {
+        $self->_update_group_members($homey, $proto_group->{members});
+    }
+
     Socialtext::Timer->Pause('ldap_group_membership_update');
     return $homey;
+}
+
+# Please refer to t/live-ldap/Groups-refresh-as-jobs.t for test coverage of
+# this job.
+sub _make_me_a_job {
+    my $self = shift;
+    my %p    = @_;
+
+    # Make this high priority, group membership updates are important.
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::GroupRefresh',
+        {
+            priority => -50,
+            %p,
+        }
+    );
 }
 
 # Looks up a Group in the DB, to see if we have a cached copy of it already.
