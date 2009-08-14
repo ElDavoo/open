@@ -182,7 +182,7 @@ sub _make_me_a_job {
     Socialtext::JobCreator->insert(
         'Socialtext::Job::GroupRefresh',
         {
-            priority => -50,
+            priority => -64,
             %p,
         }
     );
