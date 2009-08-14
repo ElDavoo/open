@@ -16,7 +16,7 @@ use mocked 'Socialtext::Hub';
 BEGIN { use_ok 'Socialtext::DisplayPlugin' }
 
 my $hub = Socialtext::Hub->new;
-my $page = Socialtext::Page->new(name => 'special_sauce');
+my $page = Socialtext::Page->new(name => 'special_sauce', id => 'special_sauce');
 $hub->pages->current($page);
 
 no warnings 'redefine';
@@ -52,7 +52,7 @@ New_page: {
 }
 
 View_untitled_page: { 
-    my $untitled = Socialtext::Page->new(name => 'untitled_page');
+    my $untitled = Socialtext::Page->new(name => 'untitled_page', id => 'untitled_page');
     $hub->pages->current($untitled);
     my $dp = setup_plugin();
     $dp->display();
