@@ -47,16 +47,19 @@ sub events {
         link_dictionary => $self->link_dictionary,
     );
 
-    my ($events, $error);
+    my ($events, $error, $base_uri);
     if ($args{mine}) {
+        $base_uri = "/m/$args{section}?mine=1";
         $events = $reporter->get_events_activities($viewer, \%event_args);
         $error = loc("There are no [_1] to display because you have not created any.", $args{section}) unless @$events;
     }
     elsif ($args{followed}) {
+        $base_uri = "/m/$args{section}?followed=1";
         $events = $reporter->get_events_followed(\%event_args);
         $error = loc("There are no [_1] to display, either because you aren't following anyone yet, or the people you're following haven't created any. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues.", $args{section}) unless @$events;
     }
     elsif ($args{all}) {
+        $base_uri = "/m/$args{section}?all=1";
         if ($args{section} eq 'activities') {
             $events = $reporter->get_events_activities($viewer, \%event_args);
         }
@@ -66,6 +69,7 @@ sub events {
         $error = loc("There are no [_1] to display because none have been created any.", $args{section}) unless @$events;
     }
     else {
+        $base_uri = "/m/$args{section}";
         $events = $reporter->get_events_conversations($viewer, \%event_args);
         $error = loc("There are no [_1] to display because you haven't engaged in conversations with your colleagues.", $args{section}) unless @$events;
     }
@@ -78,7 +82,7 @@ sub events {
         error    => $error,
         events   => $events,
         more     => $more ? 1 : 0,
-        base_uri => "/m/$args{section}",
+        base_uri => $base_uri,
         %args,
     );
 }
