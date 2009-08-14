@@ -49,7 +49,7 @@ my $hub = new_hub('admin');
     my $ld = Socialtext::Formatter::LiteLinkDictionary->new();
 
     is( $ld->free, '%{page_uri}', 'free link is %{page_uri}' );
-    is( $ld->interwiki, '/lite/page/%{workspace}/%{page_uri}%{section}',
+    is( $ld->interwiki, '/m/page/%{workspace}/%{page_uri}%{section}',
         'interwiki link is peachy' );
     is( $ld->file, $DEFAULTLINKS{file},
         'file link is parent default' );
@@ -89,7 +89,7 @@ my $hub = new_hub('admin');
 
     like( $html, qr{hello%20moto\?action=edit},
         'free link formats as expected' );
-    like( $html, qr{"/lite/page/admin/junkie#farter"},
+    like( $html, qr{"/m/page/admin/junkie#farter"},
         'interwiki link formats as expected' );
 }
 
