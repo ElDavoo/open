@@ -1,10 +1,10 @@
-| st-admin | create-user --email %%conv_email%% --password %%password%% |  |
-| st-admin | create-workspace --name %%acw%% --title %%acw%% |  |
-| st-admin | create-workspace --name %%acwnoresults%% --title %%acwnoresults%% |  |
-| st-admin | add-member --workspace %%acw%% --username %%username%% |  |
-| st-admin | add-member --workspace %%acw%% --username %%conv_email%% |  |
-| st-admin | add-member --workspace %%acwnoresults%% --username %%username%% |  |
-| st-admin | add-member --workspace %%acwnoresults%% --username %%conv_email%% |  |
+| create_user | %%conv_email%% | %%password%% |  |
+| create_workspace | %%acw%% |  |  |
+| create_workspace | %%acwnoresults%% |  |  |
+| add-member | %%username%% | %%acw%% |  |
+| add-member | %%conv_email%% | %%acw%% |  |
+| add-member | %%username%% | %%acwnoresults%% |  |
+| add-member | %%conv_email%% | %%acwnoresults%% |  |
 
 | *Comment* | Test Case: Active Content Create Pages to test length limits of widget |  |
 | st-create-pages | %%acwnoresults%% | 20 |
