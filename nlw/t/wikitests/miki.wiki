@@ -135,25 +135,29 @@
 | code-is     | 302                    |                |
 | header-like | Location               | /m/signals     |
 
-| Comment     | Test the signals tabs   |
-| GET         | /m/signals              |
-| code-is     | 200                     |
-| body-like   | o hai                   |
-| body-unlike | >People I follow</a>    |
-| body-like   | >People I follow</span> |
-| body-like   | >All</a>                |
-| body-like   | >Mine</a>               |
+| Comment     | Test the signals tabs                         |
+| GET         | /m/signals                                    |
+| code-is     | 200                                           |
+| body-like   | o hai                                         |
+| body-unlike | >People I follow</a>                          |
+| body-like   | >People I follow</span>                       |
+| body-like   | (<a href="/m/signals?followed=1">refresh</a>) |
+| body-like   | <a href="/m/signals?all=1">All</a>            |
+| body-like   | <a href="/m/signals?mine=1">Mine</a>          |
 
-| GET         | /m/signals/?all=1    |
-| code-is     | 200                  |
-| body-like   | >People I follow</a> |
-| body-unlike | >All</a>             |
-| body-like   | >All</span>          |
-| body-like   | >Mine</a>            |
+| GET         | /m/signals?all=1                                    |
+| code-is     | 200                                                 |
+| body-like   | <a href="/m/signals?followed=1">People I follow</a> |
+| body-unlike | >All</a>                                            |
+| body-like   | >All</span>                                         |
+| body-like   | (<a href="/m/signals?all=1">refresh</a>)            |
+| body-like   | <a href="/m/signals?mine=1">Mine</a>                |
 
-| GET         | /m/signals/?mine=1   |
-| code-is     | 200                  |
-| body-like   | >People I follow</a> |
-| body-like   | >All</a>             |
-| body-unlike | >Mine</a>            |
-| body-like   | >Mine</span>         |
+| GET         | /m/signals?mine=1                                   |
+| code-is     | 200                                                 |
+| body-like   | <a href="/m/signals?followed=1">People I follow</a> |
+| body-like   | <a href="/m/signals?all=1">All</a>                  |
+| body-unlike | >Mine</a>                                           |
+| body-like   | >Mine</span>                                        |
+| body-like   | (<a href="/m/signals?mine=1">refresh</a>)           |
+

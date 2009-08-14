@@ -13,35 +13,35 @@
 [% BLOCK mine_tab %]
     [% IF mine %]
         <span class="current">[% loc("Mine") %]</span>
-        (<a href="[% base_uri %]?mine=1">[% loc("refresh") %]</a>)
+        (<a href="/m/[% section %]?mine=1">[% loc("refresh") %]</a>)
     [% ELSE %]
-        <a href="[% base_uri %]/?mine=1">[% loc("Mine") %]</a>
+        <a href="/m/[% section %]?mine=1">[% loc("Mine") %]</a>
     [% END %]
 [% END %]
 
 [% BLOCK all_tab %]
     [% IF all %]
         <span class="current">[% loc("All") %]</span>
-        (<a href="[% base_uri %]?all=1">[% loc("refresh") %]</a>)
+        (<a href="/m/[% section %]?all=1">[% loc("refresh") %]</a>)
     [% ELSE %]
-        <a href="[% base_uri %]?all=1">[% loc("All") %]</a>
+        <a href="/m/[% section %]?all=1">[% loc("All") %]</a>
     [% END %]
 [% END %]
 
 [% BLOCK conversations_tab %]
     [% IF all || followed %]
-        <a href="[% base_uri %]">[% loc("My Conversations") %]</a>
+        <a href="/m/[% section %]">[% loc("My Conversations") %]</a>
     [% ELSE %]
         <span class="current">[% loc("My Conversations") %]</span>
-        (<a href="[% base_uri %]">[% loc("refresh") %]</a>)
+        (<a href="/m/[% section %]">[% loc("refresh") %]</a>)
     [% END %]
 [% END %]
 
 [% BLOCK followed_tab %]
     [% IF followed %]
         <span class="current">[% loc('People I follow') %]</span>
-        (<a href="[% base_uri %]?followed=1">[% loc("refresh") %]</a>)
+        (<a href="/m/[% section %]?followed=1">[% loc("refresh") %]</a>)
     [% ELSE %]
-        <a href="[% base_uri %]?followed=1">[% loc("People I follow") %]</a>
+        <a href="/m/[% section %]?followed=1">[% loc("People I follow") %]</a>
     [% END %]
 [% END %]
