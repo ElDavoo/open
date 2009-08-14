@@ -6,10 +6,14 @@ use warnings;
 use Socialtext::Group;
 use Socialtext::User;
 use Socialtext::LDAP;
+use Socialtext::Group::Factory;
 use Socialtext::LDAP::Config;
 use Socialtext::User::LDAP::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 56;
+
+# Force this to be synchronous.
+local $Socialtext::Group::Factory::Asynchronous = 0;
 
 ###############################################################################
 # Fixtures:     db

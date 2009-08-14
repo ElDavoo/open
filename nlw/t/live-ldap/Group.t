@@ -5,8 +5,12 @@ use strict;
 use warnings;
 use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
+use Socialtext::Group::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 72;
+
+# Force this to be synchronous.
+local $Socialtext::Group::Factory::Asynchronous = 0;
 
 ###############################################################################
 # Fixtures: clean db
