@@ -1,0 +1,105 @@
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+| set | convos_empty | There are no activities to display because you haven't engaged in conversations with your colleagues. |
+| set | follow_empty | There are no activities to display, either because you aren't following anyone yet, or the people you're following haven't created any. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues. |
+| set | all_empty | There are no activities to display because none have been created any. |
+
+| *Comment* | Error messages           |
+| get       | /m/activities            |
+| body-like | %%convos_empty%%         |
+| get       | /m/activities?followed=1 |
+| body-like | %%follow_empty%%         |
+| get       | /m/activities?all=1      |
+| body-like | %%all_empty%%            |
+
+| *Comment* | My Conversations |
+
+| set         | ct        | Content-Type=text/x.socialtext-wiki |             |
+| set         | domain    | ken.socialtext.net                  |             |
+| set         | other     | other%%start_time%%@%%domain%%      |             |
+| create-user | %%other%% | password                            | %%account%% |
+| set-user-id | other_id  | %%other%%                           |             |
+
+| put | /data/workspaces/%%workspace%%/pages/shared | %%ct%% | hello |
+
+| post-json | /data/events | {"page":{"id":"shared", "workspace_name":"%%workspace%%"},"action":"view","event_class":"page"}      |
+| post-json | /data/events | {"page":{"id":"shared", "workspace_name":"%%workspace%%"},"action":"edit_save","event_class":"page"} |
+
+| http-user-pass | %%other%% | password |
+| post-json | /data/events | {"page":{"id":"shared", "workspace_name":"%%workspace%%"},"action":"edit_save","event_class":"page"} |
+
+| http-user-pass | %%username%% | password |
+
+| GET         | /m/activities                                                                                                                        |
+| code-is     | 200                                                                                                                                  |
+| body-unlike | %%convos_empty%%                                                                                                                     |
+| body-like   | qr/edited .*<a href="\/m\/page\/%%workspace%%\/shared">shared<\/a><\/b> in <a href="\/m\/page\/%%workspace%%\/">%%workspace%%<\/a>./ |
+| body-unlike | <div class="eventText">view                                                                                                          |
+
+| *Comment* | People I follow |
+
+| st-clear-events |
+
+| http-user-pass | %%other%% | password |
+| post-json | /data/events | {"page":{"id":"shared", "workspace_name":"%%workspace%%"},"action":"edit_save","event_class":"page"} |
+| post-json | /data/events | {"event_class":"page", "action":"tag_add", "actor":{"id":"%%other_id%%"}, "page":{"id":"shared","workspace_name":"%%workspace%%"}, "tag_name":"sometag"} |
+
+| http-user-pass | %%username%%                     | password |
+| get            | /m/activities?followed=1         |          |
+| body-like      | %%follow_empty%%                 |          |
+| get            | /m/profile/%%other_id%%?follow=1 |          |
+| code-is        | 200                              |          |
+| get            | /m/activities?followed=1         |          |
+| body-unlike    | %%follow_empty%%                 |          |
+| body-like | qr/tagged.*<a.*href="\/m\/page\/%%workspace%%\/shared">.*sometag/ |
+
+| Comment   | Pagination                 |                         |
+| post-json | /data/signals              | {"signal":"signal '1'"} |
+| post-json | /data/signals              | {"signal":"signal '2'"} |
+| post-json | /data/signals              | {"signal":"signal '3'"} |
+| post-json | /data/signals              | {"signal":"signal '4'"} |
+| post-json | /data/signals              | {"signal":"signal '5'"} |
+
+| post    | /data/people/%%other%%/tags | someTag | tag_name=MyTagName |
+| code-is | 204                         |         |                    |
+
+| GET       | /m/activities?all=1 |
+| code-is   | 200                 |
+| body-like | signal '1'          |
+| body-like | signal '2'          |
+| body-like | signal '3'          |
+| body-like | signal '4'          |
+| body-like | signal '5'          |
+| body-like | qr/tagged.*<a.*href="\/m\/profile\/%%other_id%%">.*MyTagName/ |
+
+| body-like | <span>&lt;&lt; Previous page</span> |
+| body-like | <span>First page</span>             |
+| body-like | <span>Next page &gt;&gt;</span>     |
+
+| Comment     | Test the activities tabs                               |
+| GET         | /m/activities                                          |
+| code-is     | 200                                                    |
+| body-unlike | >My Conversations</a>                                  |
+| body-like   | >My Conversations</span>                               |
+| body-like   | (<a href="/m/activities">refresh</a>)                  |
+| body-like   | <a href="/m/activities?followed=1">People I follow</a> |
+| body-like   | <a href="/m/activities?all=1">All</a>                  |
+
+| GET         | /m/activities?followed=1                         |
+| code-is     | 200                                              |
+| body-like   | <a href="/m/activities">My Conversations</a>     |
+| body-unlike | >People I follow</a>                             |
+| body-like   | >People I follow</span>                          |
+| body-like   | (<a href="/m/activities?followed=1">refresh</a>) |
+| body-like   | <a href="/m/activities?all=1">All</a>            |
+
+| GET         | /m/activities?all=1                                    |
+| code-is     | 200                                                    |
+| body-like   | <a href="/m/activities">My Conversations</a>           |
+| body-like   | <a href="/m/activities?followed=1">People I follow</a> |
+| body-unlike | >All</a>                                               |
+| body-like   | >All</span>                                            |
+| body-like   | (<a href="/m/activities?all=1">refresh</a>)            |
+
