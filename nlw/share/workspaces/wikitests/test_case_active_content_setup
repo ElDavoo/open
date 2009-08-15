@@ -76,7 +76,6 @@
 | wait_for_element_visible_ok | link=Edit | 30000 |
 | open_ok | /%%acw%%/index.cgi?test_page_20 |  |
 | wait_for_element_visible_ok | link=Edit | 30000 |
-| st-catchup-logs |  |  |
 
 | *Comment* | Test Case: Active Content Setup Create Tag page though GUI |  |
 | open_ok | /%%acw%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |

@@ -1428,6 +1428,8 @@ sub st_catchup_logs {
       $self->pause(24000);
       $self->pause(24000);
       $self->pause(24000);
+      $self->pause(24000);
+      $self->pause(24000);
    }
 }
 
