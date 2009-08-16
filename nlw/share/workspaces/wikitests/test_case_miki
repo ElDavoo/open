@@ -20,7 +20,7 @@
 
 | st-logoutin | %%othermikiuser%% | %%password%% |
 | *Comment* | Test case: Miki Open global nav, should be signals |  |
-| open_ok | /lite/ |  |
+| open_ok | /m/ |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activities | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
@@ -73,7 +73,7 @@
 | click_ok | link=Stop Following |  |
 | wait_for_element_visible_ok | link=Follow | 30000 |
 | click_ok | link=Follow |  |
-| open_ok | /lite/ |  |
+| open_ok | /m/ |  |
 | wait_for_text_present_ok | %%signal1%% |  |
 | wait_for_element_visible_ok | link=%%othershortuser%% |  |
 | text_like | People I follow |  |
@@ -148,7 +148,7 @@
 | click_and_wait | link=Save |  |
 
 | *Comment* | Test Case: Miki Open the weblog with caps |  |
-| open_ok | /lite/category/%%workspace%%/Caps%20Test%20Weblog%20%%start_time%%%20Weblog |  |
+| open_ok | /m/category/%%workspace%%/Caps%20Test%20Weblog%20%%start_time%%%20Weblog |  |
 | text_like | link=First Post in Caps Test Weblog %%start_time%% Weblog | First Post in Caps Test Weblog %%start_time%% Weblog |
 | text_like | link=Recent changes in Caps Test Weblog %%start_time%% Weblog category | Recent changes in Caps Test Weblog %%start_time%% Weblog category |
 
