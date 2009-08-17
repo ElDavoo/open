@@ -100,7 +100,6 @@ sub login {
 sub forgot_password {
     my ($self, $rest) = @_;
 
-    my $self        = shift;
     $self->params->{ws} ||= undef;
 
     my $content = Socialtext::Lite->new( hub => $self->hub )->forgot_password();

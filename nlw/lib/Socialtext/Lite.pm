@@ -139,8 +139,11 @@ Shows a mobile version of the forgot_password page.
 
 sub forgot_password {
     my $self = shift;
+    my $session = Socialtext::Session->new();
     return $self->_process_template(
         $FORGOT_PASSWORD_TEMPLATE,
+        errors            => [ $session->errors ],
+        messages          => [ $session->messages ],
     );
 }
 

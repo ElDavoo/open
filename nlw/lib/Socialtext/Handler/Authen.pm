@@ -232,21 +232,24 @@ sub forgot_password {
     my $self = shift;
     my $r = $self->r;
 
+    my $login_uri = $self->{args}{lite} ? '/lite/login' : '/nlw/login.html';
+    my $forgot_password_uri = $self->{args}{lite} ? '/lite/forgot_password' : '/nlw/forgot_password.html';
+
     my $username = $self->{args}{username} || '';
     my $user = Socialtext::User->new( username => $username );
     unless ( $user ) {
         $self->session->add_error(loc("[_1] is not registered as a user. Try a different entry?", $username));
-        return $self->_redirect('/nlw/forgot_password.html');
+        return $self->_redirect($forgot_password_uri);
     }
     elsif ($user->is_deactivated) {
         $self->session->add_error(loc("The user [_1] has been deactivated.", $username));
-        return $self->_redirect('/nlw/forgot_password.html');
+        return $self->_redirect($forgot_password_uri);
     }
     elsif ($user->driver_name ne 'Default') {
         $self->session->add_error(
             loc("Since your password is stored in the directory for your organization, there is no way to reset your password within the Socialtext system. Please contact your directory administrator for assistance.")
         );
-        return $self->_redirect('/nlw/forgot_password.html');
+        return $self->_redirect($forgot_password_uri);
     }
 
     $user->set_confirmation_info( is_password_change => 1 );
@@ -258,7 +261,7 @@ sub forgot_password {
 
     $self->session->save_args( username => $user->username() );
 
-    $self->_redirect("/nlw/login.html");
+    $self->_redirect($login_uri);
 }
 
 sub register {

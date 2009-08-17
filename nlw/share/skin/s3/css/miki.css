@@ -88,8 +88,11 @@ div.clear {
     margin: 0;
 }
 
-.error {
+#errors-and-messages {
+    background-color: #fbffbe;
+    border: 1px solid #dedede;
     padding: 5px;
+    font-weight: bold;
 }
 
 .people_list,
