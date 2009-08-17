@@ -16,7 +16,7 @@ div.clear {
     margin: 0 5px;
 }
 
-.content.search {
+.search {
     margin: 5px;
 }
 
@@ -40,7 +40,7 @@ div.clear {
     border-bottom: 1px solid #666;
     padding: 3px 2px;
 }
-.globalnav.bottom {
+.bottom {
     border-top: 1px solid #666;
 }
 .subnav {
