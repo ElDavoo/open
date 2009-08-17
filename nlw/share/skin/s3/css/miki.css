@@ -8,6 +8,10 @@ form {
     padding: 0;
 }
 
+#no_css_warning {
+    display: none;
+}
+
 div.clear {
     clear: both;
 }
