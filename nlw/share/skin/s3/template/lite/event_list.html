@@ -1,4 +1,8 @@
-[% IF error %]<span class="error">[% error %]</span>[% END %]
+[% IF error %]
+<div id="errors-and-messages">
+    <span class="error">[% error %]</span>
+</div>
+[% END %]
 <ul class="event_list">
     [% FOR event = events %]
         <li class="[% event.row_class %] timestamped[% IF event == events.last() %] last[% END %][% IF event == events.first() %] first[% END %]">
