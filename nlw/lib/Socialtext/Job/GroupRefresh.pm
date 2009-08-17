@@ -49,3 +49,23 @@ sub do_work {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Job::GroupRefresh - Refresh an LDAP group cache.
+
+=head1 SYNOPSIS
+
+    use Socialtext::JobCreator;
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::GroupRefresh',
+        { group_id => 10 },
+    );
+
+=head1 DESCRIPTION
+
+Schedule a job to be run by TheCeq which will refresh an LDAP group's cache of
+user data.
+
+=cut
