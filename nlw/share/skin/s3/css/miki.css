@@ -31,9 +31,8 @@ div.clear {
 }
 
 .logo {
-    background: url('../images/miki-logo.png') #17417F 5px no-repeat;
-    width: 100%;
-    height: 45px;
+    background: #17417F;
+    padding: 5px;
 }
 
 .globalnav {
