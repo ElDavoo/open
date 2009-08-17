@@ -97,6 +97,21 @@ sub login {
     return $content;
 }
 
+sub forgot_password {
+    my ($self, $rest) = @_;
+
+    my $self        = shift;
+    $self->params->{ws} ||= undef;
+
+    my $content = Socialtext::Lite->new( hub => $self->hub )->forgot_password();
+    $rest->header(
+        -status => HTTP_200_OK,
+        -type   => 'text/html' . '; charset=UTF-8'
+    );
+    return $content;
+}
+
+
 sub workspace_list {
     my ($self, $rest) = @_;
 

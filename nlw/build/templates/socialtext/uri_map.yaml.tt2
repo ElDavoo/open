@@ -477,6 +477,10 @@
         'GET':                  [Socialtext::Rest::Lite, login]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
+    '/m/forgot_password':
+        'GET':                  [Socialtext::Rest::Lite, forgot_password]
+        '*':                    [Socialtext::Rest::Lite, bad_method]
+-
     '/wsdl/:wsdl':
         'GET':                  [Socialtext::Rest::WSDL, GET]
         '*':                    [Socialtext::Rest::WSDL, bad_method]

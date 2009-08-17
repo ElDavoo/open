@@ -76,6 +76,7 @@ Readonly my $SEARCH_TEMPLATE         => 'lite/search/search.html';
 Readonly my $CATEGORY_TEMPLATE       => 'lite/category/category.html';
 Readonly my $WORKSPACE_LIST_TEMPLATE => 'lite/workspace_list/workspace_list.html';
 Readonly my $PAGE_LOCKED_TEMPLATE     => 'lite/page/page_locked.html';
+Readonly my $FORGOT_PASSWORD_TEMPLATE => 'lite/forgot_password/forgot_password.html';
 
 =head1 METHODS
 
@@ -127,6 +128,19 @@ sub login {
         username_label    => Socialtext::Authen->username_label,
         public_workspaces =>
             [ $self->hub->workspace_list->public_workspaces ],
+    );
+}
+
+=head2 forgot_password()
+
+Shows a mobile version of the forgot_password page.
+
+=cut
+
+sub forgot_password {
+    my $self = shift;
+    return $self->_process_template(
+        $FORGOT_PASSWORD_TEMPLATE,
     );
 }
 
