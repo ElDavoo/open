@@ -316,3 +316,4 @@ lib/Socialtext/Lite/Signals.pm
 lib/Socialtext/Rest/Lite/People.pm
 lib/Socialtext/Lite/People.pm
 t/wikitests/miki/profile.wiki
+t/wikitests/miki/signals.wiki
