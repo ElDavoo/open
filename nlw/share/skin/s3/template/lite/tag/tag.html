@@ -1,0 +1,20 @@
+[%# @COPYRIGHT@ -%]
+[% PROCESS lite/header.html %]
+[% IF tags %]
+    <div class="content">
+        <h4>[% loc("List of tags in the [_1] workspace.", ws.title) %]</h4>
+        <ul>
+        [% FOREACH tag = tags %]
+            <li><a href="/m/tag/[% ws.name %]/[% tag | uri | html %]">[% tag | html %]</a></li>
+        [% END %]
+        </ul>
+    </div>
+[% ELSE %]
+    <div class="content">
+        [% SET escaped_str = tag | html %]
+        <h4>[% loc("Recent changes in tag: [_1]", escaped_str) %]</h4>
+        [% PROCESS lite/page_list.html %]
+    </div>
+[% END %]
+[% PROCESS lite/footer.html %]
+

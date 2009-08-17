@@ -1,21 +1,16 @@
 [%# @COPYRIGHT@ -%]
 [% PROCESS lite/header.html %]
-[% PROCESS category_link %]
+[% PROCESS tag_link %]
 [% PROCESS lite/page_list.html %]
 [% PROCESS lite/footer.html %]
 
-[% BLOCK category_link %]
+[% BLOCK tag_link %]
 <div>
-    [% IF !category %]
-    <a href="/m/category/[% ws.name %]/">
-        [% loc('Filter by category') %]
-    </a>
-    [% ELSE %]
-    <a href="/m/category/[% ws.name %]/[% category | uri |html %]">
-        [% SET escaped_str = category | html %]
+    [% IF tag %]
+    <a href="/m/tag/[% ws.name %]/[% tag | uri |html %]">
+        [% SET escaped_str = tag | html %]
         [% loc('All Pages in [_1]', escaped_str) %]
     </a>
     [% END %]
 </div>
-<hr>
 [% END %]

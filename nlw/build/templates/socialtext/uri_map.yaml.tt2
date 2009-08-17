@@ -442,12 +442,12 @@
         'GET':                  [Socialtext::Rest::Lite, changes]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
-    '/m/category/:ws/:tag':
-        'GET':                  [Socialtext::Rest::Lite, category]
+    '/m/tag/:ws/:tag':
+        'GET':                  [Socialtext::Rest::Lite, tag]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
-    '/m/category/:ws':
-        'GET':                  [Socialtext::Rest::Lite, category]
+    '/m/tag/:ws':
+        'GET':                  [Socialtext::Rest::Lite, tag]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
     '/m/search/:ws':

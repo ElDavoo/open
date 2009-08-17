@@ -73,7 +73,7 @@ Readonly my $EDIT_TEMPLATE           => 'lite/page/edit.html';
 Readonly my $CONTENTION_TEMPLATE     => 'lite/page/contention.html';
 Readonly my $CHANGES_TEMPLATE        => 'lite/changes/changes.html';
 Readonly my $SEARCH_TEMPLATE         => 'lite/search/search.html';
-Readonly my $CATEGORY_TEMPLATE       => 'lite/category/category.html';
+Readonly my $TAG_TEMPLATE            => 'lite/tag/tag.html';
 Readonly my $WORKSPACE_LIST_TEMPLATE => 'lite/workspace_list/workspace_list.html';
 Readonly my $PAGE_LOCKED_TEMPLATE     => 'lite/page/page_locked.html';
 Readonly my $FORGOT_PASSWORD_TEMPLATE => 'lite/forgot_password/forgot_password.html';
@@ -156,7 +156,13 @@ output to a web browser.
 sub display {
     my $self = shift;
     my $page = shift || $self->hub->pages->current;
-    return $self->_frame_page($page);
+
+    my $section = 'page';
+    if ($self->hub->current_workspace->title eq $page->title) {
+        $section = 'workspace';
+    }
+
+    return $self->_frame_page($page, section => $section);
 }
 
 =head2 edit_action($page)
@@ -213,21 +219,23 @@ recently changed pages in the current workspace.
 
 sub recent_changes {
     my $self     = shift;
-    my $category = shift || '';
+    my $tag = shift || '';
     my $changes = $self->hub->recent_changes->get_recent_changes_in_category(
         count    => 50,
-        category => $category,
+        category => $tag,
     );
 
     my $title = 'Recent Changes';
-    $title .= " in $category" if $category;
+    $title .= " in $tag" if $tag;
 
     return $self->_process_template(
         $CHANGES_TEMPLATE,
         section   => 'recent_changes',
         title     => $title,
-        category  => $category,
-        load_row_times => \&Socialtext::Query::Plugin::load_row_times,
+        tag       => $tag,
+        load_row_times => sub {
+            return Socialtext::Query::Plugin::load_row_times(@_);
+        },
         %$changes,
     );
 }
@@ -287,50 +295,57 @@ sub search {
         search_term   => $search_term,
         title         => $title,
         search_error  => $error,
+        load_row_times => sub {
+            return Socialtext::Query::Plugin::load_row_times(@_);
+        },
         %$search_results,
     );
 }
 
-=head2 category([$category])
+=head2 tag([$tag])
 
-If $category is not defined, provide a list of links to all categories
-in the current workspace. If $category is defined, provide a list of
-links to all the pages in the category.
+If $tag is not defined, provide a list of links to all categories
+in the current workspace. If $tag is defined, provide a list of
+links to all the pages in the tag.
 
 =cut 
-sub category {
+sub tag {
     my $self = shift;
-    my $category = $self->_utf8_decode(shift);
+    my $tag = $self->_utf8_decode(shift);
 
-    if ($category) {
-        return $self->_pages_for_category($category);
+    if ($tag) {
+        return $self->_pages_for_tag($tag);
     }
     else {
-        return $self->_all_categories();
+        return $self->_all_tags();
     }
 }
 
-sub _pages_for_category {
+sub _pages_for_tag {
     my $self = shift;
-    my $category = shift;
+    my $tag = shift;
 
-    my $rows = $self->hub->category->get_page_info_for_category($category);
+    my $rows = $self->hub->category->get_page_info_for_category($tag);
     return $self->_process_template(
-        $CATEGORY_TEMPLATE,
-        title     => loc("Category [_1]", $category),
+        $TAG_TEMPLATE,
+        title     => loc("Tag [_1]", $tag),
+        section   => 'tag',
         rows      => $rows,
-        category  => $category,
-        load_row_times => \&Socialtext::Query::Plugin::load_row_times,
+        tag       => $tag,
+        load_row_times => sub {
+            return Socialtext::Query::Plugin::load_row_times(@_);
+        },
     );
 }
 
-sub _all_categories {
+sub _all_tags {
     my $self = shift;
 
     return $self->_process_template(
-        $CATEGORY_TEMPLATE,
-        title      => loc('Categories'),
-        categories => [ $self->hub->category->all ],
+        $TAG_TEMPLATE,
+        title    => loc('Tags'),
+        section  => 'tags',
+        tags     => [ $self->hub->category->all ],
     );
 }
 
@@ -371,8 +386,7 @@ sub _handle_lock {
 }
 
 sub _frame_page {
-    my $self = shift;
-    my $page = shift;
+    my ($self, $page, %args) = @_;
 
     my $attachments = $self->_get_attachments($page);
 
@@ -393,6 +407,7 @@ sub _frame_page {
             $page->locked && 
             $self->hub->current_workspace->allows_page_locking &&
             !$self->hub->checker->check_permission('lock'),
+        %args,
     );
 }
 
