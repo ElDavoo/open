@@ -1,7 +1,7 @@
 [% USE decorate %] 
 <div class="[% class %] globalnav">
 [% IF user.is_guest %]
-    [% IF workspace %]
+    [% IF ws %]
         <a href="/challenge?/m/page/[% ws.name %]/[% page.uri %]">[% loc('Log in') %]</a>
     [% ELSE %]
         <a href="/challenge?/m/workspace_list">[% loc('Log in') %]</a>
