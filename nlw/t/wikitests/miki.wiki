@@ -10,7 +10,7 @@
 | body-like | People                                                   |
 | body-like | Signals                                                  |
 | body-like | Log out                                                  |
-| body-like | qr/href="\/m\/page\/%%workspace%%\/">%%workspace%%<\/a>/ |
+| body-like | qr/<span class="current">%%workspace%%<\/span>/          |
 | body-like | qr/href="\/m\/changes\/%%workspace%%\/">What's new<\/a>/ |
 | body-like | qr/href="\/m\/search\/%%workspace%%\/">Search<\/a>/      |
 
@@ -31,7 +31,7 @@
 | body-like | People                   |
 | body-like | Signals                  |
 | body-like | Log out                  |
-| body-like | Filter by category       |
+| body-like | Tags                     |
 | body-like | %%workspace%%            |
 
 | Comment     | /lite/* should redirect to /m/* |                        |
@@ -39,19 +39,19 @@
 | code-is     | 302                             |                        |
 | header-like | Location                        | /m/page/%%workspace%%/ |
 
-| Comment     | /lite should redirect to /m/signals |            |
-| GET         | /lite                               |            |
-| code-is     | 302                                 |            |
-| header-like | Location                            | /m/signals |
-| GET         | /lite/                              |            |
-| code-is     | 302                                 |            |
-| header-like | Location                            | /m/signals |
-| GET         | /m                                  |            |
-| code-is     | 302                                 |            |
-| header-like | Location                            | /m/signals |
-| GET         | /m/                                 |            |
-| code-is     | 302                                 |            |
-| header-like | Location                            | /m/signals |
+| Comment     | /lite should redirect to /m |            |
+| GET         | /lite                       |            |
+| code-is     | 302                         |            |
+| header-like | Location                    | /m         |
+| GET         | /lite/                      |            |
+| code-is     | 302                         |            |
+| header-like | Location                    | /m/        |
+| GET         | /m                          |            |
+| code-is     | 302                         |            |
+| header-like | Location                    | /m/signals |
+| GET         | /m/                         |            |
+| code-is     | 302                         |            |
+| header-like | Location                    | /m         |
 
 | Comment     | signals                  |                           |
 | GET         | /m/signals               |                           |
@@ -63,34 +63,34 @@
 | code-is     | 200                      |                           |
 | body-like   | What are you working on? |                           |
 | body-like   | I can haz /m             |                           |
-| body-like   | Newer</span>             |                           |
-| body-like   | Newest</span>            |                           |
-| body-unlike | Older &gt;&gt;</a>       |                           |
-| body-like   | Older &gt;&gt;</span>    |                           |
-| body-like   | Refresh                  |                           |
+| body-like   | Previous page</span>     |                           |
+| body-like   | First page</span>        |                           |
+| body-unlike | Next page &gt;&gt;</a>   |                           |
+| body-like   | Next page &gt;&gt;</span>|                           |
+| body-like   | refresh                  |                           |
 
-| Comment     | Pagination               |                        |
-| post-json   | /data/signals            | {"signal":"signal '1'"}  |
-| post-json   | /data/signals            | {"signal":"signal '2'"}  |
-| post-json   | /data/signals            | {"signal":"signal '3'"}  |
-| post-json   | /data/signals            | {"signal":"signal '4'"}  |
-| post-json   | /data/signals            | {"signal":"signal '5'"}  |
-| post-json   | /data/signals            | {"signal":"signal '6'"}  |
-| post-json   | /data/signals            | {"signal":"signal '7'"}  |
-| post-json   | /data/signals            | {"signal":"signal '8'"}  |
-| post-json   | /data/signals            | {"signal":"signal '9'"}  |
-| post-json   | /data/signals            | {"signal":"signal '10'"} |
-| post-json   | /data/signals            | {"signal":"signal '11'"} |
-| post-json   | /data/signals            | {"signal":"signal '12'"} |
-| post-json   | /data/signals            | {"signal":"signal '13'"} |
-| post-json   | /data/signals            | {"signal":"signal '14'"} |
-| post-json   | /data/signals            | {"signal":"signal '15'"} |
-| post-json   | /data/signals            | {"signal":"signal '16'"} |
-| post-json   | /data/signals            | {"signal":"signal '17'"} |
-| post-json   | /data/signals            | {"signal":"signal '18'"} |
-| post-json   | /data/signals            | {"signal":"signal '19'"} |
-| post-json   | /data/signals            | {"signal":"signal '20'"} |
-| post-json   | /data/signals            | {"signal":"signal '21'"} |
+| Comment   | Pagination    |                          |
+| post-json | /data/signals | {"signal":"signal '1'"}  |
+| post-json | /data/signals | {"signal":"signal '2'"}  |
+| post-json | /data/signals | {"signal":"signal '3'"}  |
+| post-json | /data/signals | {"signal":"signal '4'"}  |
+| post-json | /data/signals | {"signal":"signal '5'"}  |
+| post-json | /data/signals | {"signal":"signal '6'"}  |
+| post-json | /data/signals | {"signal":"signal '7'"}  |
+| post-json | /data/signals | {"signal":"signal '8'"}  |
+| post-json | /data/signals | {"signal":"signal '9'"}  |
+| post-json | /data/signals | {"signal":"signal '10'"} |
+| post-json | /data/signals | {"signal":"signal '11'"} |
+| post-json | /data/signals | {"signal":"signal '12'"} |
+| post-json | /data/signals | {"signal":"signal '13'"} |
+| post-json | /data/signals | {"signal":"signal '14'"} |
+| post-json | /data/signals | {"signal":"signal '15'"} |
+| post-json | /data/signals | {"signal":"signal '16'"} |
+| post-json | /data/signals | {"signal":"signal '17'"} |
+| post-json | /data/signals | {"signal":"signal '18'"} |
+| post-json | /data/signals | {"signal":"signal '19'"} |
+| post-json | /data/signals | {"signal":"signal '20'"} |
+| post-json | /data/signals | {"signal":"signal '21'"} |
 
 | GET         | /m/signals               |
 | code-is     | 200                      |
@@ -107,10 +107,10 @@
 | body-like   | signal '12'              |
 | body-unlike | signal '11'              |
 | body-unlike | signal '10'              |
-| body-like   | Newer</span>             |
-| body-like   | Newest</span>            |
-| body-like   | Older &gt;&gt;</a>       |
-| body-like   | Refresh                  |
+| body-like   | Previous page</span>     |
+| body-like   | First page</span>        |
+| body-like   | Next page &gt;&gt;</a>   |
+| body-like   | refresh                  |
 | GET         | /m/signals/?page=1       |
 | code-is     | 200                      |
 | body-like   | What are you working on? |
@@ -125,34 +125,35 @@
 | body-like   | signal '3'               |
 | body-like   | signal '2'               |
 | body-unlike | signal '1'               |
-| body-like   | Newer</a>                |
-| body-like   | Newest</a>               |
-| body-like   | Older &gt;&gt;</a>       |
-| body-like   | Refresh                  |
+| body-like   | Previous page</a>        |
+| body-like   | First page</a>           |
+| body-like   | Next page &gt;&gt;</a>   |
+| body-like   | refresh                  |
 
-| Comment | Post a signal via miki |
-| POST_form | /m/signals | signal=o%20hai |
-| code-is | 200 |
-| body-like | o hai |
+| Comment     | Post a signal via miki |                |
+| POST_form   | /m/signals             | signal=o%20hai |
+| code-is     | 302                    |                |
+| header-like | Location               | /m/signals     |
 
-| Comment     | Test the signals tabs         |
-| GET         | /m/signals                    |
-| code-is     | 200                           |
-| body-unlike | >My Colleagues</a>            |
-| body-like   | >My Colleagues</span>         |
-| body-like   | >All</a>                      |
-| body-like   | >Mine</a>                     |
+| Comment     | Test the signals tabs   |
+| GET         | /m/signals              |
+| code-is     | 200                     |
+| body-like   | o hai                   |
+| body-unlike | >People I follow</a>    |
+| body-like   | >People I follow</span> |
+| body-like   | >All</a>                |
+| body-like   | >Mine</a>               |
 
-| GET         | /m/signals/?all=1             |
-| code-is     | 200                           |
-| body-like   | >My Colleagues</a>            |
-| body-unlike | >All</a>                      |
-| body-like   | >All</span>                   |
-| body-like   | >Mine</a>                     |
+| GET         | /m/signals/?all=1    |
+| code-is     | 200                  |
+| body-like   | >People I follow</a> |
+| body-unlike | >All</a>             |
+| body-like   | >All</span>          |
+| body-like   | >Mine</a>            |
 
-| GET         | /m/signals/?mine=1 |
-| code-is     | 200                           |
-| body-like   | >My Colleagues</a>            |
-| body-like   | >All</a>                      |
-| body-unlike | >Mine</a>                     |
-| body-like   | >Mine</span>                  |
+| GET         | /m/signals/?mine=1   |
+| code-is     | 200                  |
+| body-like   | >People I follow</a> |
+| body-like   | >All</a>             |
+| body-unlike | >Mine</a>            |
+| body-like   | >Mine</span>         |
