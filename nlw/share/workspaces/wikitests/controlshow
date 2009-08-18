@@ -71,10 +71,8 @@ This test case is an aid to visually observing each screen type in the applicati
 | click_and_wait | link=Back |  |
 
 | click_ok | link=Enable Export User Data |  |
-| click_ok | link=Disable Invitation to Network |  |
 | *Comment* | ` ` |  |
 | *Comment* | SEE Disable Export User Data |  |
-| *Comment* | SEE Enable Invitation to Network |  |
 | *Comment* | ` ` |  |
 | pause | %%pt%% |  |
 

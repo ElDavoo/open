@@ -149,10 +149,6 @@ Post by Email popup
 
 | *Comment* | SlideShow FINISHED WITH SETTINGS |  |
 
-| clickAndWait | link=Private Messages |  |
-| *Comment* | SEE: Private Messages |  |
-| pause | %%pt%% |  |
-
 * a search result
 
 | open_ok | /%%wiki%% |  |
@@ -181,28 +177,27 @@ Post by Email popup
 *** All in Category
 
 | clickAndWait | link=Mobile |
-| clickAndWait | link=Dashboard |
 | *Comment* | SEE MIKI Home |
 | pause | %%pt%% |
 
-| clickAndWait | link=Recent Changes |
+| clickAndWait | link=Workspaces |
+| *Comment* | SEE MIKI Workspace List |
+| pause | %%pt%% |
+
+| clickAndWait | link=Canonical Test Data Set |
+| *Comment* | SEE MIKI Details on Canonical Test Data Workspace |
+| pause | %%pt%% |
+
+| clickAndWait | link=What's New |
 | *Comment* | SEE MIKI Recent Changes |
 | pause | %%pt%% |
 
-| clickAndWait | link=Filter by category |
-| *Comment* | SEE MIKI Filter by category |
+| clickAndWait | link=Tags |
+| *Comment* | SEE MIKI Tag List |
 | pause | %%pt%% |
 
 | clickAndWait | link=Welcome |
-| *Comment* | SEE MIKI Recent changes in welcome category |
-| pause | %%pt%% |
-
-| clickAndWait | link=Recent changes in Welcome category |
-| *Comment* | SEE Recent changes in welcome |
-| pause | %%pt%% |
-
-| clickAndWait | link=All Pages in Welcome |
-| *Comment* | SEE MIKI ALL pagesges in Welcome category |
+| *Comment* | SEE MIKI Pages in welcome category |
 | pause | %%pt%% |
 
 | clickAndWait | link=Search |
@@ -230,12 +225,8 @@ Post by Email popup
 | *Comment* | SEE MIKI Edit again |
 | pause | %%pt%% |
 
-| clickAndWait | document.editform.elements[5] |
+| clickAndWait | st-miki-edit-sumbit |
 | *Comment* | SEE MIKI Save |
-| pause | %%pt%% |
-
-| clickAndWait | link=start here |
-| *Comment* | SEE MIKI Start Here |
 | pause | %%pt%% |
 
 | clickAndWait | link=Log out |
