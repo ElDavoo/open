@@ -1594,8 +1594,9 @@ sub _to_spreadsheet_plain_text {
 
     $html =~ s/<td[^>]*><\/td>//sg;
     $html =~ s/<tr[^>]*><\/tr>//sg;
-    $html =~ s/<td.*?>/ \| /sg;
-    $html .= ' |';
+    $html =~ s/<td.*?>/ | /sg;
+    $html =~ s/<tr.*?>/| /sg;
+    $html =~ s/<\/tr.*?>/ |/sg;
 
     $html =~ s/<.*?>//sg;
     $html =~ s/&nbsp;/ /g;
