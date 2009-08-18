@@ -79,6 +79,7 @@
 | click_ok | link=Follow |  |
 | wait_for_element_visible_ok | link=Stop Following | 30000 |
 | open_ok | /m/ |  |
+| wait_for_element_visible_ok | link=All | 30000 |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | text_like | People I follow |  |
