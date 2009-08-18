@@ -1,11 +1,12 @@
 | *Comment* | STARTING Test Case: Miki |  |
 
 | *Comment* | Test Case: Miki Create new account, workspace, user, add user |  |  |
-| set | ws | miki-ws-%%start_time%% |  |
-| set | mikiacct | mikiacct%%start_time%% |  |
-| set | mikiuser | mikiuser%%start_time%%@ken.socialtext.net |  |
-| set | othershortuser | othermuser%%start_time%% |  |
-| set | othermikiuser | %%othershortuser%%@ken.socialtext.net |  |
+| set | ws | `miki-ws-%%start_time%%` |  |
+| set | mikiacct | `mikiacct-%%start_time%%` |  |
+| set | mikiuser | `mikiuser%%start_time%%@ken.socialtext.net` |  |
+| set | othermikiuser | `othermikiuser%%start_time%%@ken.socialtext.net` |  |
+| set | othershortuser | `othermikiuser%%start_time%%` |  |
+
 | create_account | %%mikiacct%% |  |  |
 | set | signal1 | hello from a different user at %%start_time%% |  |
 | set | signal2 | and I say goodbye from the main user at %%start_time%% |  |
@@ -22,7 +23,7 @@
 | *Comment* | Test case: Miki Open global nav, should be signals |  |
 | open_ok | /m/ |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
-| wait_for_element_visible_ok | link=Activities | 30000 |
+| wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | Signals |  |
 | text_like | What are you working on? |  |
@@ -32,26 +33,29 @@
 | text_like | People I follow |  |
 | wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_element_visible_ok | link=Mine | 30000 |
+
+| wait_for_element_visible_ok | st-signal-text | 30000 |
+| wait_for_element_visible_ok | st-signal-submit | 30000 |
 | type_ok | st-signal-text | %%signal1%% |
 | click_ok | st-signal-submit |  |
-| wait_for_element_present_ok | link=%%othershortuser%% | 30000 |
+| wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | wait_for_text_present_ok | less than a minute ago | 30000 |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 
 | *Comment* | Test case: Miki Log In as 'main' user, see global nav |  |
 | click_ok | link=Log out |  |
-| wait_for_element_visible_ok | link=I don't know my password. |  |
+| wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 | st-login | %%mikiuser%% | %%password%% |
 | open_ok | /m/ |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
-| wait_for_element_visible_ok | link=Activities | 30000 |
+| wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | wait_for_element_visible_ok | link=People | 30000 |
 | text_like | Signals |  |
 | text_like | What are you working on? |  |
 
 | *Comment* | Test case: Miki As 'main' user, see old signals, send some |  |
-| wait_for_element_present_ok | link=All | 30000 |
+| wait_for_element_visible_ok | link=All | 30000 |
 | text_unlike | //body | %%signal1%% |
 | click_ok | link=All | 30000 |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
@@ -61,7 +65,7 @@
 | click_ok | link=People |  |
 | wait_for_element_visible_ok | st-search-text | 30000 |
 | type_ok | st-search-text | %%othershortuser%% |
-| wait_for_element_visible_ok | st-search-submit |  |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | click_and_wait | link=%%othershortuser%% |  |
@@ -73,17 +77,19 @@
 | click_ok | link=Stop Following |  |
 | wait_for_element_visible_ok | link=Follow | 30000 |
 | click_ok | link=Follow |  |
+| wait_for_element_visible_ok | link=Stop Following | 30000 |
 | open_ok | /m/ |  |
-| wait_for_text_present_ok | %%signal1%% |  |
-| wait_for_element_visible_ok | link=%%othershortuser%% |  |
+| wait_for_text_present_ok | %%signal1%% | 30000 |
+| wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | text_like | People I follow |  |
-| wait_for_element_not_present_ok | link=People I follow |  |
+| wait_for_element_not_present_ok | link=People I follow | 30000 |
 
 | include | [Test Case: Miki Pagination] |  |
 
 | *Comment* | Test case: Miki Click 'Workspaces' in global nav |  |
+| wait_for_element_visible_ok | link=Workspaces | 30000 |
 | click_ok | link=Workspaces |  |
-| wait_for_element_visible_ok | link=Activities | 30000 |
+| wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | wait_for_element_visible_ok | link=Signals | 30000 |
 | wait_for_element_visible_ok | link=People | 30000 |
@@ -93,7 +99,7 @@
 | text_like | Hello, %%mikiuser%% |  |
 | text_like | Workspaces you belong to: |  |
 
-| *Comment* | Test case: Miki Click 'Activities' in global nav |  |
+| *Comment* | Test case: Miki Click 'Activity' in global nav |  |
 | click_ok | link=Activity |  |
 | wait_for_element_visible_ok | link=All | 30000 |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
@@ -102,7 +108,7 @@
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | My Conversations |  |
 
-| *Comment* | Test case: Miki Click 'All' within 'Activities' in global nav |  |
+| *Comment* | Test case: Miki Click 'All' within 'Activity' in global nav |  |
 | click_ok | Link=All |  |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
 | wait_for_element_visible_ok | link=refresh | 30000 |
@@ -111,7 +117,7 @@
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | All |  |
 
-| *Comment* | Test case: Miki Click 'People I follow' within 'Activities' in global nav |  |
+| *Comment* | Test case: Miki Click 'People I follow' within 'Activity' in global nav |  |
 | click_ok | link=People I follow |  |
 | wait_for_element_visible_ok | link=My Conversations | 30000 |
 | wait_for_element_visible_ok | link=refresh | 30000 |
@@ -120,10 +126,10 @@
 | text_like | People I follow |  |
 | click_ok | link=My Conversations |  |
 
-| *Comment* | Test Case: Miki Loginlogout, change enabled-ness, see different global nav ftw. |  |
+| *Comment* | Test Case: Miki change enabled-ness, see different global nav ftw. |  |
 | disable-acct-plugin | signals | %%mikiacct%% |
 | click_ok | link=Log out |  |
-| wait_for_element_visible_ok | link=I don't know my password. |  |
+| wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 | st-login | %%mikiuser%% | %%password%% |
 | open_ok | /m/ |  |
 | wait_for_element_visible_ok | link=Log out | 30000 |
@@ -135,38 +141,36 @@
 | text_like | You have free access to view and |  |
 | text_like | contribute to any of these public wikis: |  |
 | click_ok | link=Log out |  |
-| wait_for_element_visible_ok | link=I don't know my password. |  |
+| wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 
-| *Comment* | Test Case: Miki Loginlogout, traditional Miki verification as %%username%% |  |
+| *Comment* | Test Case: Miki traditional Miki verification as %%username%% |  |
 | st-login | %%username%% | %%password%% |
 | open_ok | /%%workspace%%/ |  |
-| *Comment* | Test Case: Miki Loginlogout RT 26984 |  |
-| *Comment* | Test Case: Miki Loginlogout create test weblog for capitalization test |  |
+| *Comment* | Test Case: Miki RT 26984 |  |
+| *Comment* | Test Case: Miki create test weblog for capitalization test |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Create New Weblog |  |
 | type_ok | weblog_title | Caps Test Weblog %%start_time%% |
 | click_and_wait | link=Save |  |
 
 | *Comment* | Test Case: Miki Open the weblog with caps |  |
-| open_ok | /m/category/%%workspace%%/Caps%20Test%20Weblog%20%%start_time%%%20Weblog |  |
+| open_ok | /m/tag/%%workspace%%/Caps Test Weblog %%start_time%% Weblog |  |
 | text_like | link=First Post in Caps Test Weblog %%start_time%% Weblog | First Post in Caps Test Weblog %%start_time%% Weblog |
-| text_like | link=Recent changes in Caps Test Weblog %%start_time%% Weblog category | Recent changes in Caps Test Weblog %%start_time%% Weblog category |
+| text_like | Recent changes in tag: Caps Test Weblog %%start_time%% Weblog |  |
 
 | *Comment* | Test Case: Miki Open the weblog without caps |  |
-| open_ok | /m/category/%%workspace%%/caps%20test%20weblog%20%%start_time%%%20Weblog |  |
+| open_ok | /m/tag/%%workspace%%/caps test weblog %%start_time%% weblog |  |
 | text_like | link=First Post in Caps Test Weblog %%start_time%% Weblog | First Post in Caps Test Weblog %%start_time%% Weblog |
-| text_like | link=Recent changes in caps test weblog %%start_time%% Weblog category | Recent changes in caps test weblog %%start_time%% Weblog category |
+| text_like | Recent changes in tag: caps test weblog %%start_time%% weblog |  |
 
 | *Comment* | Test Case: Miki |  |
-| click_and_wait | link=What's new |  |
-| wait_for_element_present_ok | link=Filter by category | 5000 |
-| click_and_wait | link=Filter by category |  |
-| click_and_wait | link=Caps Test Weblog %%start_time%% Weblog |  |
+| wait_for_element_visible_ok | link=What's New | 30000 |
+| click_and_wait | link=What's New |  |
 | click_and_wait | link=First Post in Caps Test Weblog %%start_time%% Weblog |  |
-| text_like | qr/This is the first post in Caps Test Weblog %%start_time%% Weblog/ |  |
+| text_like | This is the first post in Caps Test Weblog %%start_time%% Weblog |  |
 
-| *Comment* | Test Case: Miki Teardown |  |
-| st-admin | purge-page --workspace %%workspace%% --page first_post_in_caps_test_weblog_%%start_time%%_weblog | page was purged |
+| *Comment* | Test Case: Miki TEARDOWN |  |
+| st-admin | delete_workspace --no-export --w %%ws%% | has been deleted |
 | *Comment* | Test Case: Miki END RT 26984 |  |
 
 | *Comment* | Test Case: Miki COMPLETED |  |
