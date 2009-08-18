@@ -4,6 +4,7 @@
 
 | *Comment* | Test Case: Signals Widget |  |
 | st-admin | update-page --workspace %%workspace%% --email %%email%% --page "Edit Summary Signal %%start_time%%" < %%wikitest_client_files%%wikitest_toc.txt | The "Edit Summary Signal %%start_time%%" page has been created. |
+|  st-admin |  enable-plugin --all-accounts --p signals |  |
 
 | *Comment* | Test Case: Signals Widget. Create one edit summary from signal |  |
 | open_ok | /%%workspace%%/index.cgi?Edit Summary Signal %%start_time%% |  |
