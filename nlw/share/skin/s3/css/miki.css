@@ -119,18 +119,21 @@ div.clear {
     float: left;
     margin-left: 5px;
 }
+.event_list .mainSection {
+    padding-left: 4px;
+    width: 85%;
+}
+.event_list img.asset-icon {
+    float: right;
+}
 .event_list li {
     position: relative;
 }
-.event_list img.asset-icon {
-    position: absolute;
-    right: 0;
-    top: 5px;
-}
-.event_list .ago {
+.ago_text {
     font-style: italic;
     color: #666;
-    white-space: nowrap;
+    width: 100%;
+    white-space: nowrap !important;
 }
 
 .people_search {

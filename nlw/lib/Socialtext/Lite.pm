@@ -426,6 +426,7 @@ sub _process_template {
     my $user = $self->hub->current_user;
     return $self->hub->template->process(
         $template,
+        miki        => 1,
         user        => $self->hub->current_user,
         brand_stamp => $self->hub->main->version_tag,
         static_path => Socialtext::Helpers::static_path,

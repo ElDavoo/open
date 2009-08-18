@@ -6,7 +6,8 @@
 <ul class="event_list">
     [% FOR event = events %]
         <li class="[% event.row_class %] timestamped[% IF event == events.last() %] last[% END %][% IF event == events.first() %] first[% END %]">
-            [% PROCESS data/event e=event out="html" %]</br/>
+            [% PROCESS data/event e=event out="html" %]
+            <div class="clear"></div>
         </li>
     [% END %]
 </ul>
