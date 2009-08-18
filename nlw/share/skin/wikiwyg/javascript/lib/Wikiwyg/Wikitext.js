@@ -2220,11 +2220,11 @@ proto.handle_wiki_link = function(label, href, elem) {
     if (label == href_orig && !(label.match(/=/))) {
         return '[' + (wiki_page || href) + ']';
     }
-    else if (wiki_page && !this.href_label_similar(elem, href, label)) {
-        return '"' + label + '"[' + wiki_page + ']';
+    else if (this.href_label_similar(elem, href, label)) {
+        return '[' + (wiki_page || label) + ']';
     }
     else {
-        return '[' + (wiki_page || label) + ']';
+        return '"' + label + '"[' + (wiki_page || href) + ']';
     }
 }
 
