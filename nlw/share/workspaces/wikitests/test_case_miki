@@ -94,7 +94,7 @@
 | text_like | Workspaces you belong to: |  |
 
 | *Comment* | Test case: Miki Click 'Activities' in global nav |  |
-| click_ok | link=Activities |  |
+| click_ok | link=Activity |  |
 | wait_for_element_visible_ok | link=All | 30000 |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
 | wait_for_element_visible_ok | link=refresh | 30000 |
