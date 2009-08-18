@@ -4,14 +4,13 @@
 | click_and_wait | link=Mobile |
 
 | *Comment* | Test Case: Miki - wait for the Miki navigation links to appear |  |
-| text_like | //a[contains(@href,'lite/changes/%%workspace%%')] | Recent Changes |
+| text_like | //a[contains(@href,'m/changes/%%workspace%%')] | What's New |
 | text_like | This loan is offered through the Biggie Motors Automation Corporation |  |
 | text_like | 3890.40 |  |
 | text_like | Loan Amount |  |
-| click_and_wait | link=Home |  |
 
 | *Comment* | Test Case: Miki Open a spreadsheet directly in Miki |  |
-| open_ok | /lite/page/%%workspace%%/car_loan |  |
+| open_ok | /m/page/%%workspace%%/car_loan |  |
 | wait_for_element_present_ok | link=Edit |  |
 | text_like | This loan is offered through the Biggie Motors Automation Corporation |  |
 | text_like | 3890.40 |  |

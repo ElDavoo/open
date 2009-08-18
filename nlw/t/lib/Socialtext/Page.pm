@@ -12,6 +12,17 @@ field 'uri', -init => '$self->id';
 
 sub title { $_[0]->{title} || $_[0]->name || 'Mock page title' }
 
+sub is_untitled {
+    my $title = $_[0]->{id} || ''; 
+    if ($title  eq 'untitled_page') {
+            return 'Untitled Page';
+    }
+    elsif ($title eq 'untitled_spreadsheet') {
+        return 'Untitled Spreadsheet';
+    }
+    return '';
+}
+
 sub to_html_or_default {
     my $self = shift;
     return $self->{html} || ($self->title . " Mock HTML");
@@ -62,5 +73,4 @@ sub original_revision { shift } # hack - return ourself
 sub datetime_for_user { 'Mon 12 12:00am' }
 sub last_edited_by { Socialtext::User->new(username => 'mocked_user') }
 sub edit_summary { 'awesome' }
-
 1;

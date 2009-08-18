@@ -1414,6 +1414,7 @@ sub _change_plugin {
 }
 
 sub st_catchup_logs {
+   my $self = shift;
    if (Socialtext::AppConfig::_startup_user_is_human_user()) {
        #In Dev Env
        my $current_dir = cwd;
@@ -1424,8 +1425,11 @@ sub st_catchup_logs {
        chdir($current_dir);
    } else {
       #On An Appliance
-      _run_command("/usr/bin/st-reports-consume-access-log /var/log/apache-perl/access.log >> /var/log/st-reports.log >/dev/null 2>&1");
-      _run_command("/usr/bin/st-reports-consume-nlw-log /var/log/nlw.log >> /var/log/st-reports.log >/dev/null 2>&1");
+      $self->pause(24000);
+      $self->pause(24000);
+      $self->pause(24000);
+      $self->pause(24000);
+      $self->pause(24000);
    }
 }
 

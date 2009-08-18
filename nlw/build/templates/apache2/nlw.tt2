@@ -183,6 +183,13 @@
         # Make sure proxies don't deliver the wrong content
         Header append Vary User-Agent env=!dont-vary
     </Location>
+
+    <Location /data>
+        # Fix {bz: 2952} - POST and PUT on /data/ might also get a 204.
+        SetEnvIfNoCase Request_Method DELETE no-gzip dont-vary
+        SetEnvIfNoCase Request_Method POST no-gzip dont-vary
+        SetEnvIfNoCase Request_Method PUT no-gzip dont-vary
+    </Location>
 [% END %][%# server_common %]
 
 [%- MACRO server_redirect(redirect_port, redirect_scheme) BLOCK %]

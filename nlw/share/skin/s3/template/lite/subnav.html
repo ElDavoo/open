@@ -8,7 +8,12 @@
         [% IF section == 'recent_changes' %]
         | <span class="current">[% loc("What's new") %]</span>
         [% ELSE %]
-        | <a href="/m/changes/[% ws.name %]/">[% loc("What's new") %]</a>
+        | <a href="/m/changes/[% ws.name %]/">[% loc("What's New") %]</a>
+        [% END %]
+        [% IF section == 'tags' %]
+        | <span class="current">[% loc('Tags') %]</span>
+        [% ELSE %]
+        | <a href="/m/tag/[% ws.name %]/">[% loc('Tags') %]</a>
         [% END %]
         [% IF section == 'tags' %]
         | <span class="current">[% loc('Tags') %]</span>

@@ -1,5 +1,4 @@
 body {
-    font-size: 10pt;
     font-family: Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -17,7 +16,7 @@ div.clear {
     margin: 0 5px;
 }
 
-.content.search {
+.search {
     margin: 5px;
 }
 
@@ -32,9 +31,8 @@ div.clear {
 }
 
 .logo {
-    background: url('../images/miki-logo.png') #17417F 5px no-repeat;
-    width: 100%;
-    height: 45px;
+    background: #17417F;
+    padding: 5px;
 }
 
 .globalnav {
@@ -42,7 +40,7 @@ div.clear {
     border-bottom: 1px solid #666;
     padding: 3px 2px;
 }
-.globalnav.bottom {
+.bottom {
     border-top: 1px solid #666;
 }
 .subnav {
@@ -88,8 +86,11 @@ div.clear {
     margin: 0;
 }
 
-.error {
+#errors-and-messages {
+    background-color: #fbffbe;
+    border: 1px solid #dedede;
     padding: 5px;
+    font-weight: bold;
 }
 
 .people_list,
@@ -118,18 +119,21 @@ div.clear {
     float: left;
     margin-left: 5px;
 }
+.event_list .mainSection {
+    padding-left: 4px;
+    width: 85%;
+}
+.event_list img.asset-icon {
+    float: right;
+}
 .event_list li {
     position: relative;
 }
-.event_list img.asset-icon {
-    position: absolute;
-    right: 0;
-    top: 5px;
-}
-.event_list .ago {
+.ago_text {
     font-style: italic;
     color: #666;
-    white-space: nowrap;
+    width: 100%;
+    white-space: nowrap !important;
 }
 
 .people_search {

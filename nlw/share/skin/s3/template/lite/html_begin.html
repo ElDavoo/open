@@ -1,0 +1,15 @@
+[%# @COPYRIGHT@ -%]
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>[% "$ws.title : " IF ws.title %][%- title | html %]</title>
+        <link rel="stylesheet" href="[% skin_uri('css/miki.css') %]" type="text/css">
+    <meta name = "viewport" content = "width = device-width">
+    </head>
+    <body>
+        <div style="display:none">
+            <strong>[% loc("Warning: Stylesheets are not enabled in your mobile device. In order to properly view Socialtext Mobile, you will need to enable stylesheets in your browser options.") %]</strong>
+            <br/>
+        </div>
+        <div class="logo"><img src="[% skin_uri('images/miki-logo.png') %]"></div>

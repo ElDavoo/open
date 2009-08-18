@@ -1,0 +1,123 @@
+| *Comment* | Test Case: Miki Pagination |  |  |
+| set | baseusername | aaaabasemiki%%start_time%% |  |
+| create_user | %%baseusername%%01@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%02@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%03@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%04@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%05@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%06@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%07@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%08@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%09@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%10@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%11@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%12@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%13@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%14@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%15@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%16@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%17@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%18@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%19@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%20@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%21@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%22@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%23@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%24@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%25@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%26@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%27@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%28@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%29@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%30@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%31@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%32@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%33@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%34@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%35@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%36@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%37@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%38@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%39@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%40@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%41@ken.socialtext.net | %%password%% | %%mikiacct%% |
+| create_user | %%baseusername%%42@ken.socialtext.net | %%password%% | %%mikiacct%% |
+
+| *Comment* | Test case: Miki Pagination - Test Letter Links |  |
+| click_ok | link=People |  |
+| wait_for_element_visible_ok | link=B | 30000 |
+| click_ok | link=B |  |
+| wait_for_element_visible_ok | link=A | 30000 |
+| wait_for_element_visible_ok | link=C | 30000 |
+| wait_for_element_not_present_ok | link=B | 30000 |
+| text_like | No people |  |
+| click_ok | link=A |  |
+
+| *Comment* | Test case: Miki Pagination - First Page |  |
+| wait_for_element_not_present_ok | link=A | 30000 |
+| wait_for_element_visible_ok | link=B | 30000 |  |
+| wait_for_element_visible_ok | link=C | 30000 |  |
+| wait_for_element_visible_ok | link=%%baseusername%%01 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%05 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%06 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%07 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%20 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%21 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%41 | 30000 |
+| wait_for_element_visible_ok | link=Next page >> | 30000 |
+| wait_for_element_not_present_ok | link=<< Previous page | 30000 |
+| wait_for_element_not_present_ok | link=First page | 30000 |
+| text_like | //body | Next page >> |
+| text_like | //body | First page |
+
+| *Comment* | Test case: Miki Pagination - Page Two |  |
+| click_ok | link=Next page >> | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%21 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%30 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%35 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%40 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%01 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%41 | 30000 |
+| wait_for_element_visible_ok | link=Next page >> | 30000 |
+| wait_for_element_visible_ok | link=<< Previous page | 30000 |
+| wait_for_element_visible_ok | link=First page | 30000 |
+
+| *Comment* | Test case: Miki Pagination - Page Three |  |
+| click_ok | link=Next page >> |  |
+| wait_for_element_visible_ok | link=%%baseusername%%41 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%01 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%21 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%30 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%35 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%40 | 30000 |
+| wait_for_element_not_present_ok | link=Next page >> | 30000 |
+| text_like | //body | Next page >> |
+| wait_for_element_visible_ok | link=First page | 30000 |
+| wait_for_element_visible_ok | link=<< Previous page | 30000 |
+
+| *Comment* | Test case: Miki Pagination - Back to Page 2 |  |
+| click_ok | link=<< Previous page |  |
+| wait_for_element_visible_ok | link=%%baseusername%%21 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%30 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%35 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%40 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%01 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%41 | 30000 |
+| wait_for_element_visible_ok | link=Next page >> | 30000 |
+| wait_for_element_visible_ok | link=<< Previous page | 30000 |
+| wait_for_element_visible_ok | link=First page | 30000 |
+
+| *Comment* | Test case: Miki Pagination - Back to page 1 |  |
+| click_ok | link=First page |  |
+| wait_for_element_visible_ok | link=%%baseusername%%01 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%05 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%06 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%07 | 30000 |
+| wait_for_element_visible_ok | link=%%baseusername%%20 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%21 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%41 | 30000 |
+| wait_for_element_visible_ok | link=Next page >> | 30000 |
+| wait_for_element_not_present_ok | link=<< Previous page | 30000 |
+| wait_for_element_not_present_ok | link=First page | 30000 |
+| text_like | //body | Next page >> |
+| text_like | //body | First page |

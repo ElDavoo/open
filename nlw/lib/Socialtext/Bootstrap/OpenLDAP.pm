@@ -512,6 +512,7 @@ suffix "$self->{base_dn}"
 rootdn "$self->{root_dn}"
 rootpw "$self->{root_pw}"
 directory "$self->{datadir}"
+cachesize 50000
 # auth requirements
 $requires_auth
 # raw config additions

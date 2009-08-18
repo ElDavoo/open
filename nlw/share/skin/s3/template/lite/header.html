@@ -1,13 +1,4 @@
 [%# @COPYRIGHT@ -%]
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-    <head>
-        <title>[% "$ws.title : " IF ws.title %][%- title | html %]</title>
-        <link rel="stylesheet" href="[% skin_uri('/css/miki.css') %]" type="text/css">
-    <meta name = "viewport" content = "width = device-width">
-    </head>
-    <body>
-        <div class="logo"></div>
-        [% INCLUDE lite/globalnav.html %]
-        [% INCLUDE lite/subnav.html class="top" %]
+[% INCLUDE lite/html_begin.html %]
+[% INCLUDE lite/globalnav.html class="top" %]
+[% INCLUDE lite/subnav.html class="top" %]

@@ -40,7 +40,7 @@ Repeat test using Miki/Lite access.
 | text_like | link=TC Include Page %%start_time%% | TC Include Page %%start_time%% |
 
 | *Comment* | Test Case: Include Page. Run the same test in Miki |  |
-| open_ok | /lite/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
+| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
 
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
@@ -72,7 +72,7 @@ Repeat test using Miki/Lite access.
 | verifyValue | wikiwyg_wikitext_textarea | qr/.+This quick tour.+/ |
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI Run the same test in Miki |  |
-| open_ok | /lite/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
+| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
 
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
@@ -91,7 +91,8 @@ Repeat test using Miki/Lite access.
 | *Comment* | Test Case: Include Page. PUBLIC MIKI. LOGOUT from Miki |  |
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | st-login-form |  |
-| text_like | You have free access to view and contribute to any of these public wikis: |  |
+| text_like | You have free |  |
+| text_like | these public wikis |  |
 
 | *Comment* | Test Case: Include Page. PUBLIC LOGGED OUT. Open page in page view while logged out |  |
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
@@ -108,7 +109,7 @@ Repeat test using Miki/Lite access.
 | verifyValue | wikiwyg_wikitext_textarea | qr/.+This quick tour.+/ |
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI LOGGED OUT. Run the same test in Miki |  |
-| open_ok | /lite/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
+| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
 
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
@@ -138,7 +139,7 @@ Repeat test using Miki/Lite access.
 | verifyValue | wikiwyg_wikitext_textarea | qr/.+This quick tour.+/ |
 
 | *Comment* | Test Case: Include Page. AUTH MIKI Run the same test in Miki |  |
-| open_ok | /lite/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
+| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
 | text_like | //div[@class='wiki-include-content'] | This quick tour |
@@ -156,7 +157,8 @@ Repeat test using Miki/Lite access.
 | *Comment* | Test Case: Include Page. AUTH MIKI. LOGOUT from Miki |  |
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | st-login-form |  |
-| text_like | You have free access to view and contribute to any of these public wikis: |  |
+| text_like | You have free |  |
+| text_like | these public wikis |  |
 
 | *Comment* | Test Case: Include Page. AUTH LOGGED OUT. Open page in page view while logged out |  |
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
@@ -168,7 +170,7 @@ Repeat test using Miki/Lite access.
 | wait_for_element_not_present_ok | //a[@class="smallEditButton"] | 10000 |
 
 | *Comment* | Test Case: Include Page. AUTH MIKI LOGGED OUT. Run the same test in Miki |  |
-| open_ok | /lite/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
+| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
 
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
@@ -219,7 +221,7 @@ Incipient include works in browser and MIKI
 repeat in Miki
 
 | *Comment* | Test Case: Include Page MIKI. Open the including page |  |
-| open_ok | /lite/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
+| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
 | wait_for_element_visible_ok | link=%%tcipii%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%tcipii%% |
 | text_like | //div[@class='wiki-include-content'] | qr/Replace this text with your own/ |
@@ -235,7 +237,7 @@ repeat in Miki
 | *Comment* | Test Case: Include Page MIKI. Open the incipient included page for editing using the link |  |
 | *Comment* | Test Case: Include Page MIKI. Page appears but not in edit mode. Use Edit link. |  |
 
-| open_ok | /lite/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
+| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
 | click_and_wait | link=%%tcipii%% |  |
 | text_like | qr/Replace this text with your own/ |  |
 | click_and_wait | link=Edit |  |

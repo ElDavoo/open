@@ -32,20 +32,40 @@ sub _build_proto_group {
 sub do_work {
     my $self          = shift;
     my $proto         = $self->proto_group;
-    my $job_cache_key = $self->arg->{'cached_at'};
 
-    # Compare the times as _strings_, it's not always right otherwise.
-    if ( $proto->{cached_at}->hires_epoch eq $job_cache_key ) {
-        # always force the refresh from the underlying store
-        local $Socialtext::Group::Factory::CacheEnabled = 0;
-        local $Socialtext::Group::Factory::Asynchronous = 0;
+    # always force the refresh from the underlying store
+    local $Socialtext::Group::Factory::CacheEnabled = 0;
+    local $Socialtext::Group::Factory::Asynchronous = 0;
 
-        # refresh the Group
-        Socialtext::Group->GetGroup( { group_id => $proto->{group_id} } );
-    }
+    # clear the in-memory Group cache, so we *know* we're going to the DB
+    # and to LDAP to refresh the Group.
+    Socialtext::Group->cache->clear();
+
+    # refresh the Group
+    Socialtext::Group->GetGroup( { group_id => $proto->{group_id} } );
 
     $self->completed();
 }
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Job::GroupRefresh - Refresh an LDAP group cache.
+
+=head1 SYNOPSIS
+
+    use Socialtext::JobCreator;
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::GroupRefresh',
+        { group_id => 10 },
+    );
+
+=head1 DESCRIPTION
+
+Schedule a job to be run by TheCeq which will refresh an LDAP group's cache of
+user data.
+
+=cut

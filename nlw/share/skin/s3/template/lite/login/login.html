@@ -1,11 +1,17 @@
 [%# vim: set et sts=2 sw=2: %]
 [%# @COPYRIGHT@ -%]
-[% PROCESS lite/header.html %]
+[% PROCESS lite/html_begin.html %]
+
 <div class="content">
   [% INCLUDE 'errors_and_messages' %]
   [% INCLUDE 'authen/element/login_form' lite=1 %]
-  [% INCLUDE 'authen/element/forgot_password_link' %]
+
+  <p>
+    <a href="/m/forgot_password">[% loc("I don't know my password.") %]</a>
+  </p>
+
   <hr/>
   [% INCLUDE 'lite/workspace_list/public_workspaces' %]
 </div>
-[% PROCESS lite/footer.html %]
+
+[% PROCESS lite/html_end.html %]

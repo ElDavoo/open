@@ -8,6 +8,7 @@
 | set-default | network | %%hostname%% |
 
 | *Comment* | Test Case: Signals Page. Get to the Signals page. Wait for the widget to fully load |  |
+|  st-admin |  enable-plugin --all-accounts --p signals |  |
 | open_ok | /?signals |  |
 | wait_for_text_present_ok | Send a Signal | 60000 |
 

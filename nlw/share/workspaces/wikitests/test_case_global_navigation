@@ -35,7 +35,7 @@
 
 | *Comment* | Test Case: Global Navigation Mobile |  |
 | click_and_wait | link=Mobile |  |
-| location_like | `/lite/page/%%workspace%%` |  |
+| location_like | `/m/page/%%workspace%%` |  |
 
 | *Comment* | Test Case: Global Navigation Settings |  |
 | open_ok | /%%workspace%%/ |  |

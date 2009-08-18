@@ -76,6 +76,9 @@
     # backwards compat for old-style /foo/member/index.cgi links
     RewriteRule    ^(/\w+)/member/(.*)  $1/$2          [R,L]
 
+    # Fix {bz: 2963} where extra slashes are added during /:ws/?:pname rewrite
+    RewriteRule    ^/lite/+page/+([^/]+)/+(.*)  /m/page/$1/$2  [R,L,NE]
+
     RewriteRule    ^/lite(/?.*)$     /m$1        [R,L,NE]
     RewriteRule    ^/m/a$            /m/activities [R,L,NE]
     RewriteRule    ^/m/s$            /m/signals    [R,L,NE]
