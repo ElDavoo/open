@@ -310,13 +310,21 @@ sub _run_custom_generator {
     }
 }
 
+sub _default_account {
+    my $self = shift;
+
+    # Fetch the default account directly, so we avoid caching in
+    # Socialtext::Account
+    return  get_system_setting('default-account');
+}
+
 sub _create_user {
     my $self = shift;
     my %p = @_;
 
     # Set the default account to be Socialtext and enable all plugins for that
     # account
-    my $account = Socialtext::Account->Default;
+    my $account = $self->_default_account;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $account->enable_plugin($_)
         for grep { defined }
@@ -391,7 +399,7 @@ sub _generate_workspaces {
             name               => $name,
             title              => $title,
             created_by_user_id => $creator->user_id(),
-            account_id         => Socialtext::Account->Default->account_id,
+            account_id         => $self->_default_account->account_id,
             ($spec->{no_pages} ? (skip_default_pages => 1) : ())
         );
         $ws->add_user(
