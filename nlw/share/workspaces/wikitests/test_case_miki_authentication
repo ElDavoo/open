@@ -13,7 +13,7 @@ that follow it. So we do this test in a scratch workspace instead
 | open_ok | /m/page/%%miki_space%% |  |
 | text_like | link=Workspaces | Workspaces |
 | text_like | link=People | People |
-| text_like | link=Activities | Activities |
+| text_like | link=Activity | Activity |
 | text_like | link=Edit | Edit |
 | text_like | link=Log out | Log out |
 | click_and_wait | link=Log out |  |
@@ -27,7 +27,7 @@ that follow it. So we do this test in a scratch workspace instead
 | text_like | link=Signals | Signals |
 | text_like | link=Workspaces | Workspaces |
 | text_like | link=People | People |
-| text_like | link=Activities | Activities |
+| text_like | link=Activity | Activity |
 | text_like | link=Edit | Edit |
 | text_like | link=Log out | Log out |
 | click_and_wait | link=Log out |  |
@@ -71,7 +71,7 @@ that follow it. So we do this test in a scratch workspace instead
 | text_like | link=Signals | Signals |
 | text_like | link=Workspaces | Workspaces |
 | text_like | link=People | People |
-| text_like | link=Activities | Activities |
+| text_like | link=Activity | Activity |
 | text_like | link=Edit | Edit |
 | click_and_wait | link=Edit |  |
 | text_like | link=Cancel Edit | Cancel Edit |

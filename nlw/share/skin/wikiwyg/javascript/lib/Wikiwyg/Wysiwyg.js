@@ -833,10 +833,14 @@ proto.on_pasted = function(html) {
             content: wikitext
         },
         success: function(html) {
+            /* {bz: 3006}: Fix up pasted relative wiki-links copied from Wikiwyg itself. */
+            var base = location.href.replace(/\?.*/, '');
+
             html = html
                 .replace(/^<div class="wiki">\n*/i, '')
                 .replace(/\n*<br\/><\/div>\n*$/i, '')
-                .replace(/^<p>([\s\S]*?)<\/p>/, '$1');
+                .replace(/^<p>([\s\S]*?)<\/p>/, '$1')
+                .replace(/(<a\b[^>]*\bhref=['"])(index.cgi)?\?/ig, '$1' + base + '?');
 
             self.insert_html( html );
 

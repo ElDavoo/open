@@ -36,6 +36,7 @@ This test case is an aid to visually observing each screen type in the applicati
 | *Comment* | SEE Accounts |  |
 | pause | %%pt%% |  |
 
+| enable-acct-plugin | signals | %%hostname%% |
 | type_ok | name | %%hostname%% |
 | st-submit |  |  |
 | *Comment* | SEE ACCT search result |  |
@@ -74,7 +75,7 @@ This test case is an aid to visually observing each screen type in the applicati
 | click_ok | link=Disable Invitation to Network |  |
 | *Comment* | ` ` |  |
 | *Comment* | SEE Disable Export User Data |  |
-| *Comment* | SEE Enable Invitation to Network |  |
+| *Comment* | SEE Enable Invitation to network |  |
 | *Comment* | ` ` |  |
 | pause | %%pt%% |  |
 

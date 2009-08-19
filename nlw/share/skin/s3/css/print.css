@@ -642,3 +642,7 @@ table.st-ss tbody th span {
 table.st-ss th span {
     display: block !important;
 }
+
+#contentWarning {
+    display: none;
+}
