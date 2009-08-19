@@ -2209,6 +2209,7 @@ proto.make_wikitext_link = function(label, href, elem) {
 
 proto.handle_wiki_link = function(label, href, elem) {
     var href_orig = href;
+    href = href.replace(/\baction=display;is_incipient=1;page_name=/, '');
     href = href.replace(/.*\?/, '');
     href = decodeURI(escape(href));
     href = href.replace(/_/g, ' ');
@@ -2217,7 +2218,7 @@ proto.handle_wiki_link = function(label, href, elem) {
     // from page->id
     var wiki_page = jQuery(elem).attr('wiki_page');
 
-    if (label == href_orig && !(label.match(/=/))) {
+    if (label == href_orig && (label.indexOf('=') == -1)) {
         return '[' + (wiki_page || href) + ']';
     }
     else if (this.href_label_similar(elem, href, label)) {
