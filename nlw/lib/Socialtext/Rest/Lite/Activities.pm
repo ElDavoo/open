@@ -8,6 +8,20 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Lite';
 
+=head1 NAME
+
+Socialtext::Rest::Lite::Activities
+
+=head1 SYNOPSIS
+
+Wrapper around Socialtext::Lite::Activities
+
+=head1 DESCRIPTION
+
+Fetches types of events for miki activities.
+
+=cut
+
 sub if_authorized {
     my ( $self, $method, $perl_method, @args ) = @_;
 
