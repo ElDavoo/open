@@ -1,95 +1,16 @@
 package Socialtext::UserGroupRole;
 # @COPYRIGHT@
-
 use Moose;
 use Socialtext::Moose::SqlTable;
 use namespace::clean -except => 'meta';
 
+with qw(
+    Socialtext::Moose::Has::RoleId
+    Socialtext::Moose::Has::GroupId
+    Socialtext::Moose::Has::UserId
+);
+
 has_table 'user_group_role';
-
-has_column 'user_id' => (
-    is => 'rw', isa => 'Int',
-    writer => '_user_id',
-    trigger => \&_set_user_id,
-    primary_key => 1,
-);
-
-has 'user' => (
-    is => 'ro', isa => 'Socialtext::User',
-    lazy_build => 1,
-);
-
-has_column 'group_id' => (
-    is => 'rw', isa => 'Int',
-    writer => '_group_id',
-    trigger => \&_set_group_id,
-    primary_key => 1,
-);
-
-has 'group' => (
-    is => 'ro', isa => 'Socialtext::Group',
-    lazy_build => 1,
-);
-
-has_column 'role_id' => (
-    is => 'rw', isa => 'Int',
-    writer => '_role_id',
-    trigger => \&_set_role_id,
-    required => 1,
-);
-
-has 'role' => (
-    is => 'ro', isa => 'Socialtext::Role',
-    lazy_build => 1,
-);
-
-sub _set_user_id {
-    my $self = shift;
-    $self->clear_user();
-}
-
-sub _build_user {
-    my $self = shift;
-    require Socialtext::User;           # lazy-load
-    my $user_id = $self->user_id();
-    my $user    = Socialtext::User->new(user_id => $user_id);
-    unless ($user) {
-        die "user_id=$user_id no longer exists";
-    }
-    return $user;
-}
-
-sub _set_group_id {
-    my $self = shift;
-    $self->clear_group();
-}
-
-sub _build_group {
-    my $self     = shift;
-    require Socialtext::Group;          # lazy-load
-    my $group_id = $self->group_id();
-    my $group    = Socialtext::Group->GetGroup(group_id => $group_id);
-    unless ($group) {
-        die "group_id=$group_id no longer exists";
-    }
-    return $group;
-}
-
-sub _set_role_id {
-    my $self = shift;
-    $self->clear_role();
-}
-
-sub _build_role {
-    my $self    = shift;
-    require Socialtext::Role;           # lazy-load
-    my $role_id = $self->role_id();
-    my $role    = Socialtext::Role->new(role_id => $role_id);
-    unless ($role) {
-        die "role_id=$role_id no longer exists";
-    }
-    return $role;
-}
 
 sub update {
     my ($self, $proto_ugr) = @_;

@@ -1,95 +1,16 @@
 package Socialtext::GroupWorkspaceRole;
 # @COPYRIGHT@
-
 use Moose;
 use Socialtext::Moose::SqlTable;
 use namespace::clean -except => 'meta';
 
+with qw(
+    Socialtext::Moose::Has::RoleId
+    Socialtext::Moose::Has::WorkspaceId
+    Socialtext::Moose::Has::GroupId
+);
+
 has_table 'group_workspace_role';
-
-has_column 'group_id' => (
-    is => 'rw', isa => 'Int',
-    writer => '_group_id',
-    trigger => \&_set_group_id,
-    primary_key => 1,
-);
-
-has 'group' => (
-    is => 'ro', isa => 'Socialtext::Group',
-    lazy_build => 1,
-);
-
-has_column 'workspace_id' => (
-    is => 'rw', isa => 'Int',
-    writer => '_workspace_id',
-    trigger => \&_set_workspace_id,
-    primary_key => 1,
-);
-
-has 'workspace' => (
-    is => 'ro', isa => 'Socialtext::Workspace',
-    lazy_build => 1,
-);
-
-has_column 'role_id' => (
-    is => 'rw', isa => 'Int',
-    writer => '_role_id',
-    trigger => \&_set_role_id,
-    required => 1,
-);
-
-has 'role' => (
-    is => 'ro', isa => 'Socialtext::Role',
-    lazy_build => 1,
-);
-
-sub _set_group_id {
-    my $self = shift;
-    $self->clear_group();
-}
-
-sub _build_group {
-    my $self = shift;
-    require Socialtext::Group;          # lazy-load
-    my $group_id = $self->group_id();
-    my $group    = Socialtext::Group->GetGroup(group_id => $group_id);
-    unless ($group) {
-        die "group_id=$group_id no longer exists";
-    }
-    return $group;
-}
-
-sub _set_workspace_id {
-    my $self = shift;
-    $self->clear_workspace();
-}
-
-sub _build_workspace {
-    my $self = shift;
-    require Socialtext::Workspace;      # lazy-load
-    my $ws_id     = $self->workspace_id();
-    my $workspace = Socialtext::Workspace->new(workspace_id => $ws_id);
-    unless ($workspace) {
-        die "workspace_id=$ws_id no longer exists";
-    }
-    return $workspace;
-}
-
-sub _set_role_id {
-    my $self = shift;
-    $self->clear_role();
-}
-
-sub _build_role {
-    my $self = shift;
-    require Socialtext::Role;           # lazy-load
-    my $role_id = $self->role_id();
-    my $role    = Socialtext::Role->new(role_id => $role_id);
-    unless ($role) {
-        die "role_id=$role_id no longer exists";
-    }
-    return $role;
-}
 
 sub update {
     my ($self, $proto_gwr) = @_;
