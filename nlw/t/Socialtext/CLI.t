@@ -342,6 +342,7 @@ GIVE_REMOVE_ADMIN: {
 
 DEFAULT_ACCOUNT: {
     sql_execute(q{DELETE FROM "System" WHERE field = 'default-account'});
+    Socialtext::Account->Clear_Default_Account_Cache();
     expect_success(
         sub {
             Socialtext::CLI->new(
@@ -360,6 +361,7 @@ DEFAULT_ACCOUNT: {
         qr/The default account is now Socialtext\./,
         'output from set-default-account',
     );
+    Socialtext::Account->Clear_Default_Account_Cache();
     expect_success(
         sub {
             Socialtext::CLI->new(
@@ -1797,6 +1799,7 @@ SET_USER_NAMES_lastnameonly: {
 GET_SET_USER_ACCOUNT: {
     my $output = '';
     sql_execute(q{DELETE FROM "System" WHERE field = 'default-account'});
+    Socialtext::Account->Clear_Default_Account_Cache();
     expect_success(
         sub {
             Socialtext::CLI->new(
