@@ -99,7 +99,7 @@ My goodness, that sure is a page
 
 Singapore link [$Singapore]
 
-{category help}
+{tag help}
 
 {weblog help}
 EOF
@@ -129,8 +129,8 @@ like( $html,
     qr{Singapore link <a href="%E6%96%B0%E5%8A%A0%E5%9D%A1\?action=edit".*>$Singapore</a>},
     'funkity characters remain sane through input' );
 
-like( $html, qr{\Qtitle="category link" href="/m/category/admin/help">help</a>},
-    'category link links right place' );
+like( $html, qr{\Qtitle="tag link" href="/m/tag/admin/help">help</a>},
+    'tag link links right place' );
 like( $html, qr{\Qtitle="weblog link" href="/m/changes/admin/help">help</a>},
     'weblog link links right place' );
 
@@ -186,34 +186,34 @@ like( $html, qr{\Q<input name="search_term" value="title:dust" />},
 like( $html, qr{<li>.*<a.*href="/m/page/admin/stronger_than_dust"}ms, 
     'search results include expected page' );
 
-## investigate category handling
-# get the category list
-$html = $lite->category();
+## investigate tag handling
+# get the tag list
+$html = $lite->tag();
 
-like( $html, qr{\Q<title>Admin Wiki : Categories</title>},
-    'category display has correct title' );
+like( $html, qr{\Q<title>Admin Wiki : Tags</title>},
+    'tag display has correct title' );
 # XXX case here?
-like( $html, qr{<li>\s*<a.*href="/m/category/admin/Welcome".*>\s*Welcome\s*</a>},
-    'category Welcome is listed with correct url and name' );
+like( $html, qr{<li>\s*<a.*href="/m/tag/admin/Welcome".*>\s*Welcome\s*</a>},
+    'tag Welcome is listed with correct url and name' );
 
-# get a specific category
-my $html_from_lc_category = $lite->category('welcome');
-$html = $lite->category('Welcome');
+# get a specific tag
+my $html_from_lc_tag = $lite->tag('welcome');
+$html = $lite->tag('Welcome');
 
-is ( lc($html_from_lc_category), lc($html), 'case of category does not change content' );
+is ( lc($html_from_lc_tag), lc($html), 'case of tag does not change content' );
 # XXX case is odd
-like ( $html, qr{\Q<title>Admin Wiki : Category Welcome</title>},
-    'category display for welcome has right title' );
+like ( $html, qr{\Q<title>Admin Wiki : Tag Welcome</title>},
+    'tag display for welcome has right title' );
 like ( $html, qr{<li>\s+<a.*href="/m/page/admin/start_here".*>\s*Start here\s*</a>}ms,
-    'category display for welcome links to included page' );
+    'tag display for welcome links to included page' );
 
-# get category changes, different case
-my $html_from_rc_category = $lite->recent_changes('welcome');
+# get tag changes, different case
+my $html_from_rc_tag = $lite->recent_changes('welcome');
 $html = $lite->recent_changes('Welcome');
 
-is ( lc($html_from_rc_category), lc($html), 'case of rc category does not change content' );
+is ( lc($html_from_rc_tag), lc($html), 'case of rc tag does not change content' );
 # XXX case is odd
 like ( $html, qr{\Q<title>Admin Wiki : Recent Changes in Welcome</title>},
-    'rc category display for welcome has right title' );
+    'rc tag display for welcome has right title' );
 like ( $html, qr{<li>\s+<a.*href="/m/page/admin/start_here".*>\s*Start here\s*</a>}ms,
-    'rc category display for welcome links to included page' );
+    'rc tag display for welcome links to included page' );
