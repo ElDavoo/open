@@ -13,9 +13,9 @@ with qw(
 has_table 'group_account_role';
 
 sub update {
-    my ($self, $proto_ugr) = @_;
+    my ($self, $proto_gar) = @_;
     require Socialtext::GroupAccountRoleFactory;
-    Socialtext::GroupAccountRoleFactory->Update($self, $proto_ugr);
+    Socialtext::GroupAccountRoleFactory->Update($self, $proto_gar);
 }
 
 no Moose;
