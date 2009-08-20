@@ -367,7 +367,7 @@ sub _handle_contention {
         $CONTENTION_TEMPLATE,
         title     => "$subject Editing Error",
         content   => $content,
-        page      => $page->uri,
+        page      => $page,
     );
 }
 

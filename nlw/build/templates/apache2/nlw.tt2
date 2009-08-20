@@ -163,7 +163,7 @@
         BrowserMatch ^Mozilla/4\.0[678] no-gzip
 
         # MSIE masquerades as Netscape, but it is fine
-        BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+        BrowserMatch \bMSIE\s+[789] !no-gzip !gzip-only-text/html 
 
         # Safari doesn't like compressed JS, so *only* compress HTML content
         BrowserMatch Safari gzip-only-text/html

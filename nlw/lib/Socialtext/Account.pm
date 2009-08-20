@@ -498,6 +498,9 @@ sub Deleted    { $_[0]->new( name => 'Deleted' ) }
         $CachedDefault ||= get_system_setting('default-account');
         return $CachedDefault;
     }
+    sub Clear_Default_Account_Cache {
+        undef $CachedDefault;
+    }
 }
 
 sub new {
