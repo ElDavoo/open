@@ -1017,10 +1017,10 @@ SHOW_ACLS: {
         },
         qr/\Qpermission set name: public-read-only\E
            .+
-           \|\s+admin_workspace\s+\|\s+\|\s+\|\s+\|\s+X\s+\|\s+\|\s+
-           \|\s+attachments\s+\|\s+\|\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
+           \|\s+admin_workspace\s+\|\s+\|\s+\|\s+\|\s+\|\s+X\s+\|\s+\|\s+
+           \|\s+attachments\s+\|\s+\|\s+\|\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
            .+
-           \|\s+read\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
+           \|\s+read\s+\|\s+X\s+\|\s+X\s+\|\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
           /xs,
         'show-acls'
     );
