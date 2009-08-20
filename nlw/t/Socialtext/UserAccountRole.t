@@ -16,9 +16,9 @@ use_ok 'Socialtext::UserAccountRole';
 # TEST: instantiation
 instantiation: {
     my $uar = Socialtext::UserAccountRole->new( {
-        user_id  => 1,
+        user_id    => 1,
         account_id => 2,
-        role_id  => 3,
+        role_id    => 3,
         } );
     isa_ok $uar, 'Socialtext::UserAccountRole';
     is $uar->user_id,  1, '... with the provided user_id';
@@ -61,16 +61,16 @@ instantiation_with_real_data: {
     is $uar->role_id,    $role->role_id,
         '... with the provided role_id';
 
-    is $uar->user->user_id, $user->user_id,
+    is $uar->user->user_id,       $user->user_id,
         '... with the right inflated User object';
     is $uar->account->account_id, $account->account_id,
         '... with the right inflated Account object';
-    is $uar->role->role_id, $role->role_id,
+    is $uar->role->role_id,       $role->role_id,
         '... with the right inflated Role object';
 }
 
 ###############################################################################
-# TEST: ST::(User|Group|Role) are lazy-loaded
+# TEST: ST::(User|Account|Role) are lazy-loaded
 lazy_load_modules: {
     my $loaded = modules_loaded_by('Socialtext::UserAccountRole');
     ok  $loaded->{'Socialtext::UserAccountRole'}, 'ST::UAR loaded';
