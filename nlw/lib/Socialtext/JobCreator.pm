@@ -31,17 +31,23 @@ sub index_attachment {
     my $attachment = shift;
     my $search_config = shift;
 
-    return if ($attachment->page_id eq 'untitled_page');
-    return if ($attachment->page_id eq 'untitled_spreadsheet');
+    my $wksp_id = $attachment->hub->current_workspace->workspace_id;
+    my $page_id = $attachment->page->id;
+    my $attach_id = $attachment->id;
+
+    return if $attachment->page->is_bad_page_title($page_id);
     return if ($attachment->loaded && $attachment->temporary);
 
     return $self->insert(
         'Socialtext::Job::AttachmentIndex' => {
-            workspace_id => $attachment->hub->current_workspace->workspace_id,
-            page_id => $attachment->page_id,
-            attach_id => $attachment->id,
+            workspace_id => $wksp_id,
+            page_id => $page_id,
+            attach_id => $attach_id,
             search_config => $search_config,
-            job => {priority => 63},
+            job => {
+                priority => 63,
+                coalesce => "$wksp_id-$page_id-$attach_id",
+            },
         }
     );
 }
@@ -51,17 +57,21 @@ sub index_page {
     my $page = shift;
     my $search_config = shift;
 
-    return if $page->id eq 'untitled_page';
-    return if $page->id eq 'untitled_spreadsheet';
+    return if $page->is_bad_page_title($page->id);
 
     my @job_ids;
 
+    my $wksp_id = $page->hub->current_workspace->workspace_id;
+    my $page_id = $page->id;
     my $main_job_id = $self->insert(
         'Socialtext::Job::PageIndex' => {
-            workspace_id => $page->hub->current_workspace->workspace_id,
-            page_id => $page->id,
+            workspace_id => $wksp_id,
+            page_id => $page_id,
             search_config => $search_config,
-            job => {priority => 63},
+            job => {
+                priority => 63,
+                coalesce => "$wksp_id-$page_id",
+            },
         }
     );
     push @job_ids, $main_job_id;
