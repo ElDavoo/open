@@ -19,6 +19,7 @@ our %PermissionSets = (
     'public' => {
         guest              => [ qw( read edit comment ) ],
         authenticated_user => [ qw( read edit comment email_in ) ],
+        affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
         workspace_admin    => [ qw( read edit attachments comment delete
@@ -27,6 +28,7 @@ our %PermissionSets = (
     'member-only' => {
         guest              => [ ],
         authenticated_user => [ 'email_in' ],
+        affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
         workspace_admin    => [ qw( read edit attachments comment delete
@@ -36,6 +38,7 @@ our %PermissionSets = (
         guest              => [ ],
         authenticated_user => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
+        affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
         workspace_admin    => [ qw( read edit attachments comment delete
@@ -44,6 +47,7 @@ our %PermissionSets = (
     'public-read-only' => {
         guest              => [ 'read' ],
         authenticated_user => [ 'read' ],
+        affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
         workspace_admin    => [ qw( read edit attachments comment delete
@@ -52,6 +56,7 @@ our %PermissionSets = (
     'public-comment-only' => {
         guest              => [ qw( read comment ) ],
         authenticated_user => [ qw( read comment ) ],
+        affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
         workspace_admin    => [ qw( read edit attachments comment delete
@@ -60,6 +65,7 @@ our %PermissionSets = (
     'public-join-to-edit' => {
         guest              => [ qw( read self_join) ],
         authenticated_user => [ qw( read self_join) ],
+        affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
         workspace_admin    => [ qw( read edit attachments comment delete
@@ -70,6 +76,7 @@ our %PermissionSets = (
                                     email_in email_out ) ],
         authenticated_user => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
+        affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ], 
         workspace_admin    => [ qw( read edit attachments comment delete
@@ -82,6 +89,7 @@ our %DeprecatedPermissionSets = (
         guest              => [ qw( read edit_controls ) ],
         authenticated_user => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
+        affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
         workspace_admin    => [ qw( read edit attachments comment delete
