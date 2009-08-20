@@ -11,7 +11,7 @@
 | body-like | Signals                                                  |
 | body-like | Log out                                                  |
 | body-like | qr/<span class="current">%%workspace%%<\/span>/          |
-| body-like | qr/href="\/m\/changes\/%%workspace%%\/">What's new<\/a>/ |
+| body-like | qr/href="\/m\/changes\/%%workspace%%\/">What's New<\/a>/ |
 | body-like | qr/href="\/m\/search\/%%workspace%%\/">Search<\/a>/      |
 
 | GET       | /m/workspace_list               |

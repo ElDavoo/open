@@ -344,7 +344,6 @@ my $FOLLOWED_PEOPLE_ONLY = <<'EOSQL';
         SELECT person_id2
         FROM person_watched_people__person
         WHERE person_id1=?))
-   OR actor_id = ?
 )
 EOSQL
 
@@ -465,12 +464,12 @@ sub _build_standard_sql {
         if ($opts->{followed}) {
             if ($opts->{with_my_signals}) {
                 $self->add_condition(
-                    $FOLLOWED_PEOPLE_ONLY_WITH_MY_SIGNALS => ($viewer_id) x 4
+                    $FOLLOWED_PEOPLE_ONLY_WITH_MY_SIGNALS => ($viewer_id) x 3
                 );
             }
             else {
                 $self->add_condition(
-                    $FOLLOWED_PEOPLE_ONLY => ($viewer_id) x 3
+                    $FOLLOWED_PEOPLE_ONLY => ($viewer_id) x 2
                 );
             }
         }

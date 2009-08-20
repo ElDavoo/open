@@ -851,7 +851,7 @@ sub _parse_page_for_headers {
             # and causes infinite recursion.  So lets just render it as-is
             # so it doesn't render, but still looks weird, so the user
             # can fix it. - Bug 598, 2905
-            $header->{text} =~ s/{(toc:?\s*.*?)}/{$1}/g;
+            $header->{text} =~ s/{(toc:?\s*.*?)}/{{{$1}}}/g;
 
 
             # Bracketed hyperlinks inside toc like "Foo"<http://foo.com>
@@ -889,6 +889,7 @@ sub _parse_page_for_headers {
     }
 
     my $html = $self->hub->viewer->text_to_html($wikitext);
+    $html =~ s/{{{(toc:?\s*.*?)}}}/{$1}/g;
 
     # Since we say which page this toc was generated for in the title, remove
     # all the page_name(...) parts of links
