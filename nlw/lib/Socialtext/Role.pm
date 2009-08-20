@@ -23,6 +23,7 @@ field 'used_as_default';
 Readonly my @RequiredRoles => (
     [ guest              => 1 ],
     [ authenticated_user => 1 ],
+    [ affiliate          => 0 ],
     [ member             => 0 ],
     [ workspace_admin    => 0 ],
     [ impersonator       => 0 ],
@@ -167,6 +168,10 @@ sub Guest {
 
 sub AuthenticatedUser {
     shift->new( name => 'authenticated_user' );
+}
+
+sub Affiliate {
+    shift->new( name => 'affiliate' );
 }
 
 sub Member {

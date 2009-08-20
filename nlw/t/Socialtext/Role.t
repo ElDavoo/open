@@ -17,17 +17,18 @@ use_ok 'Socialtext::Role';
 sort_by_effectiveness: {
     my $guest        = Socialtext::Role->Guest();
     my $auth_user    = Socialtext::Role->AuthenticatedUser();
+    my $affiliate    = Socialtext::Role->Affiliate();
     my $member       = Socialtext::Role->Member();
     my $admin        = Socialtext::Role->WorkspaceAdmin();
     my $impersonator = Socialtext::Role->Impersonator();
 
     # sort the Roles by their effective privileges
     my @sorted = Socialtext::Role->SortByEffectiveness(
-        roles => [$impersonator, $auth_user, $guest, $admin, $member],
+        roles => [$impersonator, $auth_user, $guest, $admin, $affiliate, $member],
     );
     my @ordered_names = map { $_->name } @sorted;
     my @expected_names =
-        map { $_->name } ($guest, $auth_user, $member, $admin, $impersonator);
+        map { $_->name } ($guest, $auth_user, $affiliate, $member, $admin, $impersonator);
     is_deeply \@ordered_names, \@expected_names,
         '... containing Roles in order of lowest->highest privilege';
 }
