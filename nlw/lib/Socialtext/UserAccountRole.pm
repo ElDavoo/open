@@ -21,6 +21,7 @@ sub update {
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
+
 =head1 NAME
 
 Socialtext::UserAccountRole - A User's Role in a specific Account

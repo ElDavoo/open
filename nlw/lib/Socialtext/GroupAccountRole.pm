@@ -20,6 +20,8 @@ sub update {
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
+1;
+
 =head1 NAME
 
 Socialtext::GroupAccountRole - A Group's Role in a specific Account
@@ -91,4 +93,3 @@ Socialtext, Inc.,  C<< <code@socialtext.com> >>
 Copyright 2009 Socialtext, Inc.,  All Rights Reserved.
 
 =cut
-1;

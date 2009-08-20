@@ -37,6 +37,7 @@ sub _build_account {
 
 no Moose::Role;
 1;
+
 =head1 NAME
 
 Socialtext::Moose::Has::AccountId - A Moose Role for using

@@ -36,6 +36,7 @@ sub _build_workspace {
 
 no Moose::Role;
 1;
+
 =head1 NAME
 
 Socialtext::Moose::Has::WorkspaceId - A Moose Role for using
