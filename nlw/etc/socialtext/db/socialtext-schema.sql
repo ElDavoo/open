@@ -259,15 +259,17 @@ CREATE TABLE account_plugin (
     plugin text NOT NULL
 );
 
-CREATE TABLE group_workspace_role (
+CREATE TABLE group_account_role (
     group_id bigint NOT NULL,
-    workspace_id bigint NOT NULL,
-    role_id integer NOT NULL
+    account_id bigint NOT NULL,
+    role_id bigint NOT NULL
 );
 
-CREATE VIEW user_account_explicit AS
-  SELECT um.user_id, um.primary_account_id AS account_id
-   FROM "UserMetadata" um;
+CREATE TABLE user_account_role (
+    user_id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    role_id integer
+);
 
 CREATE TABLE user_group_role (
     user_id bigint NOT NULL,
@@ -275,27 +277,20 @@ CREATE TABLE user_group_role (
     group_id bigint NOT NULL
 );
 
-CREATE VIEW user_account_implicit_gwr AS
-  SELECT ugr.user_id, w.account_id
-   FROM user_group_role ugr
-   JOIN group_workspace_role gwr USING (group_id)
-   JOIN "Workspace" w USING (workspace_id);
-
-CREATE VIEW user_account_implicit_uwr AS
-  SELECT uwr.user_id, w.account_id
-   FROM "UserWorkspaceRole" uwr
-   JOIN "Workspace" w USING (workspace_id);
-
 CREATE VIEW account_user AS
-  SELECT account_user_relationships.account_id, account_user_relationships.user_id
-   FROM (( SELECT user_account_explicit.account_id, user_account_explicit.user_id
-           FROM user_account_explicit
+  SELECT explicit.user_id, explicit.account_id
+   FROM ( SELECT user_account_role.user_id, user_account_role.account_id
+           FROM user_account_role
 UNION ALL 
-         SELECT user_account_implicit_uwr.account_id, user_account_implicit_uwr.user_id
-           FROM user_account_implicit_uwr)
-UNION ALL 
-         SELECT user_account_implicit_gwr.account_id, user_account_implicit_gwr.user_id
-           FROM user_account_implicit_gwr) account_user_relationships;
+         SELECT ugr.user_id, gar.account_id
+           FROM user_group_role ugr
+      JOIN group_account_role gar USING (group_id)) explicit;
+
+CREATE TABLE group_workspace_role (
+    group_id bigint NOT NULL,
+    workspace_id bigint NOT NULL,
+    role_id integer NOT NULL
+);
 
 CREATE VIEW all_user_workspace AS
   SELECT my_workspaces.user_id, my_workspaces.workspace_id
@@ -689,23 +684,11 @@ CREATE TABLE topic_signal_user (
 );
 
 CREATE VIEW user_account AS
-  SELECT user_account_relationships.user_id, user_account_relationships.account_id, user_account_relationships.is_primary
-   FROM (( SELECT user_account_explicit.user_id, user_account_explicit.account_id, true AS is_primary
-           FROM user_account_explicit
+  SELECT um.user_id, um.primary_account_id AS account_id, true AS is_primary
+   FROM "UserMetadata" um
 UNION ALL 
-         SELECT user_account_implicit_uwr.user_id, user_account_implicit_uwr.account_id, false AS is_primary
-           FROM user_account_implicit_uwr)
-UNION ALL 
-         SELECT user_account_implicit_gwr.user_id, user_account_implicit_gwr.account_id, false AS is_primary
-           FROM user_account_implicit_gwr) user_account_relationships;
-
-CREATE VIEW user_account_implicit AS
-  SELECT implicit_user_account_relationships.user_id, implicit_user_account_relationships.account_id
-   FROM ( SELECT user_account_implicit_uwr.user_id, user_account_implicit_uwr.account_id
-           FROM user_account_implicit_uwr
-UNION ALL 
-         SELECT user_account_implicit_gwr.user_id, user_account_implicit_gwr.account_id
-           FROM user_account_implicit_gwr) implicit_user_account_relationships;
+ SELECT account_user.user_id, account_user.account_id, false AS is_primary
+   FROM account_user;
 
 CREATE TABLE user_plugin_pref (
     user_id bigint NOT NULL,
@@ -881,6 +864,10 @@ ALTER TABLE ONLY gallery
     ADD CONSTRAINT gallery_pk
             PRIMARY KEY (gallery_id);
 
+ALTER TABLE ONLY group_account_role
+    ADD CONSTRAINT group_account_role_pkey
+            PRIMARY KEY (group_id, account_id);
+
 ALTER TABLE ONLY group_workspace_role
     ADD CONSTRAINT group_workspace_role_pk
             PRIMARY KEY (group_id, workspace_id);
@@ -961,6 +948,10 @@ ALTER TABLE ONLY topic_signal_user
     ADD CONSTRAINT topic_signal_user_pk
             PRIMARY KEY (signal_id, user_id);
 
+ALTER TABLE ONLY user_account_role
+    ADD CONSTRAINT user_account_role_pkey
+            PRIMARY KEY (user_id, account_id);
+
 ALTER TABLE ONLY user_group_role
     ADD CONSTRAINT user_group_role_pk
             PRIMARY KEY (user_id, group_id);
@@ -1028,6 +1019,9 @@ CREATE INDEX exitstatus_funcid
 
 CREATE INDEX gallery_gadget_gadget_id_idx
 	    ON gallery_gadget (gadget_id);
+
+CREATE INDEX group_account_role__account_id_ix
+	    ON group_account_role (account_id);
 
 CREATE INDEX group_workspace_role_workspace_id
 	    ON group_workspace_role (workspace_id);
@@ -1265,6 +1259,9 @@ CREATE INDEX storage_key_value_type_ix
 CREATE INDEX storage_key_value_viewer_ix
 	    ON "storage" ("key", value)
 	    WHERE (("key")::text = 'viewer');
+
+CREATE INDEX user_account_role__account_id_ix
+	    ON user_account_role (account_id);
 
 CREATE INDEX user_group_role_group_id
 	    ON user_group_role (group_id);
@@ -1505,6 +1502,21 @@ ALTER TABLE ONLY gallery_gadget
             FOREIGN KEY (gadget_id)
             REFERENCES gadget(gadget_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY group_account_role
+    ADD CONSTRAINT group_account_role__account_fk
+            FOREIGN KEY (account_id)
+            REFERENCES "Account"(account_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY group_account_role
+    ADD CONSTRAINT group_account_role__group_fk
+            FOREIGN KEY (group_id)
+            REFERENCES groups(group_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY group_account_role
+    ADD CONSTRAINT group_account_role__role_fk
+            FOREIGN KEY (role_id)
+            REFERENCES "Role"(role_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY group_workspace_role
     ADD CONSTRAINT group_workspace_role_group_fk
             FOREIGN KEY (group_id)
@@ -1660,6 +1672,21 @@ ALTER TABLE ONLY topic_signal_user
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY user_account_role
+    ADD CONSTRAINT user_account_role__account_fk
+            FOREIGN KEY (account_id)
+            REFERENCES "Account"(account_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_account_role
+    ADD CONSTRAINT user_account_role__role_fk
+            FOREIGN KEY (role_id)
+            REFERENCES "Role"(role_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_account_role
+    ADD CONSTRAINT user_account_role__user_fk
+            FOREIGN KEY (user_id)
+            REFERENCES users(user_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY user_group_role
     ADD CONSTRAINT user_group_role_group_fk
             FOREIGN KEY (group_id)
@@ -1746,4 +1773,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '78');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '79');
