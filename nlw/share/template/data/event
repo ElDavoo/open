@@ -37,7 +37,7 @@
     [%- MACRO person_tag GET event.tag_name %]
     [%- MACRO page GET event.page.name %]
     [%- MACRO workspace GET event.page.workspace_title %]
-    [%- MACRO ago BLOCK -%] ([% ago_text(minutes_ago(event.at)) %])[%- END -%]
+    [%- MACRO ago BLOCK -%] ([% ago_text(minutes_ago(event.at)) %]) [%- END -%]
 [%- END -%]
 
 [%- MACRO page_in_workspace BLOCK -%]

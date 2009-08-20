@@ -39,7 +39,7 @@ Test case for `/data/events`(GET and POST).
 | get        | /data/events                | text/html      |
 | has-header | Content-type                | qr/text\/html/ |
 | code-is    | 200                         |                |
-| body-like  | "signal1 at %%start_time%%" |                |
+| body-like  | signal1 at %%start_time%%   |                |
 
 | Comment         | signal events as json |                  |
 | get             | /data/events          | application/json |
@@ -109,19 +109,22 @@ Test case for `/data/events`(GET and POST).
 | get        | /data/events                                                     | text/plain      |
 | has-header | Content-type                                                     | qr/text\/plain/ |
 | code-is    | 200                                                              |                 |
-| body-like  | qr/Tester One tagged Page One in %%test_workspace%% as taggy/    |                 |
-| body-like  | qr/Tester One tagged Page Two in %%test_workspace%% as saggy./   |                 |
-| body-like  | qr/Tester Two tagged Page Three in %%test_workspace%% as taggy./ |                 |
-| body-like  | qr/Tester Two tagged Tester One downer./                         |                 |
+| body-like  | qr/Tester One \(less than a minute ago\) tagged Page One in %%test_workspace%% as taggy/    |                 |
+| body-like  | qr/Tester One \(less than a minute ago\) tagged Page Two in %%test_workspace%% as saggy./   |                 |
+| body-like  | qr/Tester Two \(less than a minute ago\) tagged Page Three in %%test_workspace%% as taggy./ |                 |
+| body-like  | qr/Tester Two \(less than a minute ago\) tagged Tester One downer./                         |                 |
 
 | Comment    | GET all events as text/html                                                                                    |                |
 | get        | /data/events                                                                                                   | text/html      |
 | has-header | Content-type                                                                                                   | qr/text\/html/ |
 | code-is    | 200                                                                                                            |                |
-| body-like  | qr/Tester One<\/a><\/span> tagged <b><[^>]+>Page One<\/a><\/b> in <a [^>]+>%%test_workspace%%<\/a> as <a[^>]+>taggy/   |                |
-| body-like  | qr/Tester One<\/a><\/span> tagged <b><[^>]+>Page Two<\/a><\/b> in <a [^>]+>%%test_workspace%%<\/a> as <a[^>]+>saggy/   |                |
-| body-like  | qr/Tester Two<\/a><\/span> tagged <b><[^>]+>Page Three<\/a><\/b> in <a [^>]+>%%test_workspace%%<\/a> as <a[^>]+>taggy/ |                |
-| body-like  | qr/Tester Two<\/a><\/span> tagged <[^>]+>\s*<[^>]+>Tester One<\/a><\/span> <a[^>]+>downer/                                               |                |
+Tester One</a></span>            <span class="ago_raw" style="display:none">2009-08-20 18:15:54.981155Z</span>        <span class="ago"><span class="ago_text">less than a minute ago</span></span>        </div>
+#         <div class="eventText">tagged <b><a href="/test_workspace1250792145/index.cgi?page_two">Page Two</a></b> in <a href="/test_workspace1250792145/index.cgi?">test_workspace1250792145</a> as <a href="/test_workspace1250792145/index.cgi?action=category_display;category=">saggy</a>.        </div>
+
+| body-like  | qr/Tester One<\/a><\/span> .+>less than a minute ago<.+tagged <b><[^>]+>Page One<\/a><\/b> in <a [^>]+>%%test_workspace%%<\/a> as <a[^>]+>taggy/   |                |
+| body-like  | qr/Tester One<\/a><\/span> .+>less than a minute ago<.+tagged <b><[^>]+>Page Two<\/a><\/b> in <a [^>]+>%%test_workspace%%<\/a> as <a[^>]+>saggy/   |                |
+| body-like  | qr/Tester Two<\/a><\/span> .+>less than a minute ago<.+tagged <b><[^>]+>Page Three<\/a><\/b> in <a [^>]+>%%test_workspace%%<\/a> as <a[^>]+>taggy/ |                |
+| body-like  | qr/Tester Two<\/a><\/span> .+>less than a minute ago<.+tagged <[^>]+>\s*<[^>]+>Tester One<\/a><\/span> <a[^>]+>downer/                                               |                |
 
 
 | Comment     | GET one event (limit) |                  |
@@ -139,8 +142,8 @@ Test case for `/data/events`(GET and POST).
 | get         | /data/events?limit=1                                           | text/plain  |
 | code-is     | 200                                                            |             |
 | has-header  | Cache-Control                                                  | qr/private/ |
-| body-like   | qr/Tester One tagged Page One in %%test_workspace%% as taggy/  |             |
-| body-unlike | qr/Tester One tagged Page Two in %%test_workspace%% as saggy./ |             |
+| body-like   | qr/Tester One \(less than a minute ago\) tagged Page One in %%test_workspace%% as taggy/  |             |
+| body-unlike | qr/Tester One \(less than a minute ago\) tagged Page Two in %%test_workspace%% as saggy./ |             |
 
 | Comment     | GET one event as text/html(limit)                                       |             |
 | get         | /data/events?limit=1                                                    | text/html   |
@@ -164,8 +167,8 @@ Test case for `/data/events`(GET and POST).
 | get         | /data/events?count=1                                           | text/plain  |
 | code-is     | 200                                                            |             |
 | has-header  | Cache-Control                                                  | qr/private/ |
-| body-like   | qr/Tester One tagged Page One in %%test_workspace%% as taggy/  |             |
-| body-unlike | qr/Tester One tagged Page Two in %%test_workspace%% as saggy./ |             |
+| body-like   | qr/Tester One \(less than a minute ago\) tagged Page One in %%test_workspace%% as taggy/  |             |
+| body-unlike | qr/Tester One \(less than a minute ago\) tagged Page Two in %%test_workspace%% as saggy./ |             |
 
 | Comment     | GET one event as text/html(count)                                       |             |
 | get         | /data/events?count=1                                                    | text/html   |
@@ -189,9 +192,9 @@ Test case for `/data/events`(GET and POST).
 | get         | /data/events?count=1&offset=1                                    | text/plain  |
 | code-is     | 200                                                              |             |
 | has-header  | Cache-Control                                                    | qr/private/ |
-| body-unlike | qr/Tester One tagged Page One in %%test_workspace%% as taggy/    |             |
-| body-like   | qr/Tester One tagged Page Two in %%test_workspace%% as saggy./   |             |
-| body-unlike | qr/Tester Two tagged Page Three in %%test_workspace%% as taggy./ |             |
+| body-unlike | qr/Tester One \(less than a minute ago\) tagged Page One in %%test_workspace%% as taggy/    |             |
+| body-like   | qr/Tester One \(less than a minute ago\) tagged Page Two in %%test_workspace%% as saggy./   |             |
+| body-unlike | qr/Tester Two \(less than a minute ago\) tagged Page Three in %%test_workspace%% as taggy./ |             |
 
 | Comment     | GET one event as text/plain(offset)                                       |             |
 | get         | /data/events?count=1&offset=1                                             | text/html   |
