@@ -1,7 +1,6 @@
 package Socialtext::Moose::Has::UserId;
 # @COPYRIGHT@
 use Moose::Role;
-use Socialtext::Moose::SqlTable::Meta::Attribute::Trait::DbColumn;
 use namespace::clean -except => 'meta';
 
 has 'user_id' => (
