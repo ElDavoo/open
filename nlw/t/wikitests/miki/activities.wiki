@@ -50,7 +50,8 @@
 | get            | /m/activities?followed=1         |          |
 | body-like      | %%follow_empty%%                 |          |
 | get            | /m/profile/%%other_id%%?follow=1 |          |
-| code-is        | 200                              |          |
+| code-is        | 302                              |          |
+| header-like    | Location | /m/profile/%%other_id%% |
 | get            | /m/activities?followed=1         |          |
 | body-unlike    | %%follow_empty%%                 |          |
 | body-like | qr/tagged.*<a.*href="\/m\/page\/%%workspace%%\/shared">.*sometag/ |
