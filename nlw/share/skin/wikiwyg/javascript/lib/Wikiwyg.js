@@ -1403,13 +1403,13 @@ this.addGlobal().setup_wikiwyg = function() {
         return false;
     });
 
-    // Disable simple mode button for Safari browser.
+    // Disable Rich Text button for Safari browser.
     if ( Wikiwyg.is_safari )  {
         jQuery('#st-mode-wysiwyg-button')
             .css("text-decoration", "line-through")
             .unbind("click")
             .bind("click", function() {
-                alert(loc("Safari does not support simple mode editing"));
+                alert(loc("Safari does not support Rich Text editing"));
                 return false;
             });
     }
