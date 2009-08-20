@@ -57,7 +57,7 @@
 | body-like | The search term you have entered is too general |
 
 | Comment | miki searches |
-| GET | /lite/search/%%workspace%%?search_term=wiki&search=Search |
+| GET | /m/search/%%workspace%%?search_term=wiki&search=Search |
 | code-is | 200 |
 | body-like | The search term you have entered is too general; 5 pages and/or attachments matched your query |
 
