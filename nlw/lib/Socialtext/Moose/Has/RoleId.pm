@@ -37,3 +37,53 @@ sub _build_role {
 
 no Moose::Role;
 1;
+=head1 NAME
+
+Socialtext::Moose::Has::RoleId - A Moose Role for using
+C<Socialtext::Role>'s
+
+=head1 SYNOPSIS
+
+    package MyClass;
+    use Moose;
+    
+    with 'Socialtext::Moose::Has::RoleId';
+
+    sub do_something {
+        my $self = shift;
+
+        print "not the right role"
+            unless ( $self->role->name eq 'The Right Role' );
+    }
+
+=head1 DESCRIPTION
+
+C<Socialtext::Moose::Has::RoleId> provides us with easy access to a
+C<Socialtext::Role> object, provided an C<role_id>.
+
+This will set up the Moose Metadata to use the C<role_id> param passed to
+the C<new()> method of the comsuming object to have a C<primary_key> trait.
+
+=head1 METHODS
+
+=over
+
+=item B<$object-E<gt>role_id()>
+
+Accessor for the C<role_id> param passed to new.
+
+=item B<$object-E<gt>role()>
+
+Accessor for the C<Socialtext::Role> object described by C<role_id>.
+
+=back
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright (C) 2009 Socialtext, Inc., All Rights Reserved.
+
+=head1 SEE ALSO
+
+L<Socialtext::Moose::SqlTable::Meta::Attribute::Trait::DbColumn>.
+
+=cut
