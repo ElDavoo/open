@@ -22,6 +22,21 @@ with qw(
 
 sub Builds_sql_for { 'Socialtext::UserGroupRole' }
 
+sub EmitCreateEvent {
+    my ($self, $proto) = @_;
+    $self->_emit_event($proto, 'create_role');
+}
+
+sub EmitUpdateEvent {
+    my ($self, $proto) = @_;
+    $self->_emit_event($proto, 'update_role');
+}
+
+sub EmitDeleteEvent {
+    my ($self, $proto) = @_;
+    $self->_emit_event($proto, 'delete_role');
+}
+
 sub GetUserGroupRole {
     my ($self, %p) = @_;
 
@@ -56,8 +71,7 @@ sub CreateRecord {
 
     # INSERT the new record into the DB
     $self->SqlInsert( $valid );
-
-    $self->_emit_event($valid, 'create_role');
+    $self->EmitCreateEvent($valid);
 }
 
 sub Create {
@@ -94,7 +108,7 @@ sub UpdateRecord {
     } );
 
     my $did_update = ($sth && $sth->rows) ? 1 : 0;
-    $self->_emit_event($proto_ugr, 'update_role') if $did_update;
+    $self->EmitUpdateEvent($proto_ugr) if $did_update;
     return $did_update;
 }
 
@@ -136,7 +150,7 @@ sub DeleteRecord {
     my $sth = $self->SqlDeleteOneRecord( $where );
 
     my $did_delete = $sth->rows();
-    $self->_emit_event($proto_ugr, 'delete_role') if $did_delete;
+    $self->EmitDeleteEvent($proto_ugr) if $did_delete;
 
     return $did_delete;
 }
