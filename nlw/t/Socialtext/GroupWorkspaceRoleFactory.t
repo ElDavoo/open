@@ -63,7 +63,7 @@ create_gwr: {
         '... creation was logged';
 
     # double-check that we can pull this GWR from the DB
-    my $queried = Socialtext::GroupWorkspaceRoleFactory->GetGroupWorkspaceRole(
+    my $queried = Socialtext::GroupWorkspaceRoleFactory->Get(
         group_id     => $group->group_id,
         workspace_id => $workspace->workspace_id,
     );
@@ -169,7 +169,7 @@ update_a_gwr: {
         '... update was logged';
 
     # make sure the updates are reflected in the DB
-    my $queried = $factory->GetGroupWorkspaceRole(
+    my $queried = $factory->Get(
         group_id     => $group->group_id,
         workspace_id => $ws->workspace_id,
     );
@@ -302,7 +302,7 @@ delete_gwr: {
         '... removal was logged';
 
     # make sure the delete was reflected in the DB
-    my $queried = $factory->GetGroupWorkspaceRole(
+    my $queried = $factory->Get(
         group_id     => $group->group_id,
         workspace_id => $workspace->workspace_id,
     );

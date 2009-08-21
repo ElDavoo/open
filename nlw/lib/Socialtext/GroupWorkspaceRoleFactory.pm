@@ -82,7 +82,7 @@ sub Create {
     $proto_gwr->{role_id} ||= $self->DefaultRoleId();
     $self->CreateRecord($proto_gwr);
 
-    my $gwr = $self->GetGroupWorkspaceRole(%{$proto_gwr});
+    my $gwr = $self->Get(%{$proto_gwr});
     $self->RecordCreateLogEntry($gwr, $timer);
     return $gwr;
 }
@@ -227,7 +227,7 @@ Socialtext::GroupWorkspaceRoleFactory - Factory for ST::GroupWorkspaceRole objec
   } );
 
   # retrieve a GWR
-  $gwr = $factory->GetGroupWorkspaceRole(
+  $gwr = $factory->Get(
       group_id     => $group_id,
       workspace_id => $workspace_id,
   );
