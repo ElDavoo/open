@@ -4,21 +4,24 @@
 
 Find or create several pages that have no incoming links. This creates orphan pages. | pages are created
 
-| st-admin | update-page --email %%email%% --workspace %%workspace%% --page "orphan %%start_time%% 0001" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0001" page has been created. |
-| st-admin | update-page --email %%email%% --workspace %%workspace%% --page "orphan %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0002" page has been created. |
-| st-admin | update-page --email %%email%% --workspace %%workspace%% --page "orphan %%start_time%% 0003" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0003" page has been created. |
+| set | ws | orphans-ws-%%start_time%% |
+| create-workspace | %%ws%% | %%hostname%% |
+| add-member | %%username%% | %%ws%% |
+| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0001" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0001" page has been created. |
+| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0002" page has been created. |
+| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0003" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0003" page has been created. |
 
 Create a page by a different user
 
 | set | orphan_email | `aaa.orphan.%%start_time%%@ken.socialtext.net` |
 | st-admin | create-user --e %%orphan_email%% --p 123456 |  |
-| st-admin | add-member --w %%workspace%% --e %%orphan_email%% | is now a member |
-| st-admin | update-page --email %%orphan_email%% --workspace %%workspace%% --page "orphan %%start_time%% 0004" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0004" page has been created. |
+| st-admin | add-member --w %%ws%% --e %%orphan_email%% | is now a member |
+| st-admin | update-page --email %%orphan_email%% --workspace %%ws%% --page "orphan %%start_time%% 0004" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0004" page has been created. |
 
 "What's New -> Orphans List"<http://.../> | list of links to orphan pages appears
 
 | *Comment* | Test Case: Orphans List. Orphan page list |  |
-| open_ok | /%%workspace%%/index.cgi?action=orphans_list |  |
+| open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
 | text_like | link=orphan %%start_time%% 0001 | orphan %%start_time%% 0001 |
 | text_like | link=orphan %%start_time%% 0002 | orphan %%start_time%% 0002 |
 | text_like | link=orphan %%start_time%% 0003 | orphan %%start_time%% 0003 |
@@ -48,10 +51,10 @@ Create a page by a different user
 | text_like | contentContainer | qr/orphan %%start_time%% 0001.+orphan %%start_time%% 0002.+orphan %%start_time%% 0003.+orphan %%start_time%% 0004/ |
 
 | *Comment* | Test Case: Orphans List Sorting Revisions. Create rev 2 for page 0002 |  |
-| st-admin | update-page --email %%orphan_email%% --workspace %%workspace%% --page "orphan %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0002" page has been updated. |
+| st-admin | update-page --email %%orphan_email%% --workspace %%ws%% --page "orphan %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0002" page has been updated. |
 
 | *Comment* | Test Case: Orphans List Sorting reload the Orphans List to see new revisions |  |
-| open_ok | /%%workspace%%/index.cgi?action=orphans_list |  |
+| open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
 
 | *Comment* | Test Case: Orphans List Sorting revisions desc |  |
 | select_and_wait | sort-picker | label=Revisions |
@@ -72,7 +75,7 @@ click on several links | correct page appear
 | *Comment* | Test Case: Orphans List. Orphan page links work |  |
 | click_and_wait | link=orphan %%start_time%% 0001 |  |
 | text_like | st-page-titletext | orphan %%start_time%% 0001 |
-| open_ok | /%%workspace%%/index.cgi?action=orphans_list |  |
+| open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
 | click_and_wait | link=orphan %%start_time%% 0002 |  |
 | text_like | st-page-titletext | orphan %%start_time%% 0002 |
 
@@ -80,7 +83,7 @@ observe Incoming Links in sidepanel | there are no Incoming Links for any orphan
 
 | *Comment* | Test Case: Orphans List. Orphan page has no incoming links |  |
 | text_like | contentRight | qr/There are no pages that link to this page yet/i |
-| open_ok | /%%workspace%%/?orphan %%start_time%% 0001 |  |
+| open_ok | /%%ws%%/?orphan %%start_time%% 0001 |  |
 | text_like | contentRight | qr/There are no pages that link to this page yet/i |
 
 edit a page to include a link to an orphan page | link appears in page
@@ -95,19 +98,17 @@ edit a page to include a link to an orphan page | link appears in page
 | click_and_wait | st-save-button-link |  |
 
 | *Comment* | Test Case: Orphans List. second page should no longer be orphan |  |
-| open_ok | /%%workspace%%/index.cgi?action=orphans_list |  |
+| open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
 | text_unlike | contentContainer | orphan %%start_time%% 0002 |
 | text_like | contentContainer | orphan %%start_time%% 0001 |
 
 | *Comment* | Test Case: Orphans list. delete page |  |
-| st-admin | purge-page --w %%workspace%% --p orphan_%%start_time%%_0003 | was purged |
-| open_ok | /%%workspace%%/index.cgi?action=orphans_list |  |
+| st-admin | purge-page --w %%ws%% --p orphan_%%start_time%%_0003 | was purged |
+| open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
 | text_unlike | contentContainer | orphan %%start_time%% 0003 |
 | text_like | contentContainer | orphan %%start_time%% 0001 |
 
 | *Comment* | Test Case: Orphans List. Tearing down orphans list data |  |
-| st-admin | purge-page --w %%workspace%% --p orphan_%%start_time%%_0001 | was purged |
-| st-admin | purge-page --w %%workspace%% --p orphan_%%start_time%%_0002 | was purged |
-| st-admin | purge-page --w %%workspace%% --p orphan_%%start_time%%_0004 | was purged |
+| st-admin | delete-workspace --workspace %%ws%% --no-export | The %%ws%% workspace has been deleted. |
 
 | *Comment* | Test Case Orphans List COMPLETED |  |
