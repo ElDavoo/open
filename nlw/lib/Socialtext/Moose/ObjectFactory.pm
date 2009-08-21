@@ -21,9 +21,11 @@ requires 'SetDefaultValues';
 
 requires 'EmitCreateEvent';
 requires 'EmitUpdateEvent';
+requires 'EmitDeleteEvent';
 
 requires 'RecordCreateLogEntry';
 requires 'RecordUpdateLogEntry';
+requires 'RecordDeleteLogEntry';
 
 sub Get {
     my ($self, %p) = @_;
@@ -128,6 +130,28 @@ sub Update {
     return $instance;
 }
 
+sub DeleteRecord {
+    my ($self, $proto) = @_;
+
+    # Only concern ourselves with valid Db Columns
+    my $where = $self->FilterValidColumns($proto);
+
+    # DELETE the record in the DB
+    my $sth = $self->SqlDeleteOneRecord($where);
+
+    my $did_delete = $sth->rows();
+    $self->EmitDeleteEvent( $proto ) if $did_delete;
+    return $did_delete;
+}
+
+sub Delete {
+    my ($self, $instance) = @_;
+    my $timer = Socialtext::Timer->new();
+    my $did_delete = $self->DeleteRecord($instance->primary_key());
+    $self->RecordDeleteLogEntry($instance, $timer) if $did_delete;
+    return $did_delete;
+}
+
 sub Cursor {
     my $self_or_class = shift;
     my $sth           = shift;
@@ -215,6 +239,18 @@ given C<\%proto> hash-ref, including the underlying DB store.
 
 Returns the updated C<$instance> object back to the caller.
 
+=item B<$class-E<gt>DeleteRecord(\%proto)>
+
+Deletes the record in the DB, as defined by the given C<\%proto> hash-ref.
+
+Returns true if a record was deleted, false otherwise.
+
+=item B<$class-E<gt>Delete($instance)>
+
+Deletes the given C<$instance> object from the DB.
+
+Helper method which simply calls C<DeleteRecord()>.
+
 =item B<$self_or_class-E<gt>Cursor($sth, \&coderef)>
 
 Returns a C<Socialtext::MultiCursor> to iterate over all of the result records
@@ -250,6 +286,14 @@ underlying DB store.
 This method will be given a C<$proto> hash-ref containing all of the fields
 for the updated record.
 
+=item EmitDeleteEvent($proto)
+
+Emits whatever Event is necessary to indicate that a record was deleted in the
+underlying DB store.
+
+This method will be given a C<$proto> hash-ref containing all of the fields of
+the deleted record, B<after> the record has been deleted.
+
 =item RecordCreateLogEntry($instance, $timer)
 
 Records whatever entry you feel is necessary to indicate that a new record was
@@ -265,6 +309,14 @@ updated in the underlying DB store.
 
 This method will be given an actual C<$instance> of the object that was
 updated, and a C<Socialtext::Timer> object.
+
+=item RecordDeleteLogEntry($instance, $timer)
+
+Records whatever entry you feel is necessary to indicate that a record was
+deleted from the underlying DB store.
+
+This method will be given the actual C<$instance> of the object that was
+deleted, B<after> is has been deleted from the DB.
 
 =back
 

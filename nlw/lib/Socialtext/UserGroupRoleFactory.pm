@@ -55,29 +55,6 @@ sub SetDefaultValues {
     $proto->{role_id} ||= $self->DefaultRoleId();
 }
 
-sub DeleteRecord {
-    my ($self, $proto_ugr) = @_;
-
-    # Only concern ourselves with valid Db Columns
-    my $where = $self->FilterValidColumns( $proto_ugr );
-
-    # DELETE the record in the DB
-    my $sth = $self->SqlDeleteOneRecord( $where );
-
-    my $did_delete = $sth->rows();
-    $self->EmitDeleteEvent($proto_ugr) if $did_delete;
-
-    return $did_delete;
-}
-
-sub Delete {
-    my ($self, $ugr) = @_;
-    my $timer = Socialtext::Timer->new();
-    my $did_delete = $self->DeleteRecord( $ugr->primary_key() );
-    $self->RecordDeleteLogEntry($ugr, $timer) if $did_delete;
-    return $did_delete;
-}
-
 sub _emit_event {
     my ($self, $proto_ugr, $action) = @_;
 
@@ -227,19 +204,6 @@ record in the DB.
 
 If the C<\%proto_ugr> does not contain a C<role_id>, a default role will be
 used instead.
-
-=item B<$factory-E<gt>DeleteRecord(\%proto_ugr)>
-
-Deletes the user_group_role record from the DB, as described by the provided
-C<\%proto_ugr> hash-ref.
-
-Returns true if a record was deleted, false otherwise.
-
-=item B<$factory-E<gt>Delete($ugr)>
-
-Deletes the C<$ugr> from the DB.
-
-Helper method which calls C<DeleteRecord()>.
 
 =item B<$factory-E<gt>DefaultRole()>
 
