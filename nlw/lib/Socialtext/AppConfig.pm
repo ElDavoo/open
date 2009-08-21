@@ -78,7 +78,7 @@ sub _parse_pod_for_options {
                      )?                          # maybe it has neither
                      \s*
                      (?:^=for\ code\ default\s*=>\s* (.+?)$)? # the default is some subroutine
-                     \s*
+                     \s* # it is bullshit this ^^^ needs to be before this vvv
                      (?:^=for\ code\ type\s*=>\s*(.+?)$)      # the type, required
                      \s+
                     }gxsm ) {
@@ -218,6 +218,16 @@ sub _default_db_name {
     $name .= '_testing' if $ENV{HARNESS_ACTIVE};
 
     return $name;
+}
+
+sub _default_solr_base {
+    my $base = 'http://localhost:8983/solr';
+    return "$base/core0" unless _startup_user_is_human_user();
+
+    my $name = $StartupUser->name;
+    $name .= '_testing' if $ENV{HARNESS_ACTIVE};
+
+    return "$base/$name";
 }
 
 sub _default_schema_name { 'socialtext' }
@@ -1202,6 +1212,14 @@ Set this to false to prevent users from sending invite emails for other people t
 Default: 1
 
 =for code type => BOOLEAN_TYPE
+
+=head2 solr_base
+
+Set this to the base URL for your solr instance.
+
+=for code default => _default_solr_base()
+
+=for code type => SCALAR_TYPE
 
 =head1 OTHER METHODS
 

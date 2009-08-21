@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+EXTRA=""
+if [ -n "$HARNESS_ACTIVE" ]; then
+    EXTRA="_testing"
+fi
+CORE="$USER$EXTRA"
+
+DEV_CONF="$ST_SRC_BASE/socialtext/appliance/socialtext-solr/conf"
+SOLR_BASE="/var/lib/socialtext-solr"
+CORE_BASE="$SOLR_BASE/cores/$CORE"
+
+wget -q -O /dev/null "http://localhost:8983/solr/admin/cores?action=UNLOAD&core=$CORE" || true
+rm -rf $CORE_BASE
+mkdir $CORE_BASE
+cp -r $DEV_CONF $CORE_BASE/conf
+chmod a+w $CORE_BASE
+
+echo "Creating solr core ..."
+wget -q -O /dev/null "http://localhost:8983/solr/admin/cores?action=CREATE&name=$CORE&instanceDir=cores/$CORE"

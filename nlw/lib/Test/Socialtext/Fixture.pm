@@ -107,6 +107,9 @@ sub _built_in_base_config {
         '--dev=0',    # Don't create the files in ~/.nlw
         $testing,
     );
+    _system_or_die(
+        'dev-bin/solr-create',
+    );
 }
 
 sub _built_in_db {

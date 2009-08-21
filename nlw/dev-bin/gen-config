@@ -377,11 +377,14 @@ sub generate_app_config {
 
     # Throttle ceqlotron in dev-envs.  The default values tend to spike load
     # on shared machines.
-    if ( $config{is_dev} ) {
-        $appconfig->set( ceqlotron_max_concurrency => 1 );
-        $appconfig->set( ceqlotron_synchronous     => 0 );
+    if ($config{is_dev}) {
+        $appconfig->set(ceqlotron_max_concurrency => 1);
+        $appconfig->set(ceqlotron_synchronous     => 0);
+
         # Help find memory leaks in dev-envs
-        $appconfig->set( ceqlotron_worker_loops    => 1000 );
+        $appconfig->set(ceqlotron_worker_loops => 1000);
+        $appconfig->set(
+            solr_base => 'http://localhost:8983/solr/' . $user->name);
     }
 
     File::Path::mkpath(
