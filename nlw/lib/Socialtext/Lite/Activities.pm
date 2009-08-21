@@ -41,6 +41,7 @@ sub events {
         ($args{event_class} ? (event_class => $args{event_class}) : ()),
         offset => $pagenum * $page_size,
         count => $page_size + 1,
+        with_my_signals => 1,
     );
     my $reporter = Socialtext::Events::Reporter->new(
         viewer => $viewer,
