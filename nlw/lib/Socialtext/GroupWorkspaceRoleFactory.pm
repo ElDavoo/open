@@ -2,12 +2,9 @@ package Socialtext::GroupWorkspaceRoleFactory;
 # @COPYRIGHT@
 
 use MooseX::Singleton;
-use List::Util qw(first);
 use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::Role;
-use Socialtext::Timer;
-use Socialtext::GroupWorkspaceRole;
 use namespace::clean -except => 'meta';
 
 with qw(
