@@ -50,12 +50,6 @@ sub RecordDeleteLogEntry {
     $self->_record_log_entry('REMOVE', $ugr, $timer);
 }
 
-# This form is deprecated in favour of 'Get()', but exists for backwards
-# compatibility with previous implementation
-sub GetUserGroupRole {
-    return shift->Get(@_);
-}
-
 sub CreateRecord {
     my ($self, $proto_ugr) = @_;
 
@@ -246,10 +240,6 @@ C<Socialtext::UserGroupRole> objects.
 =head1 METHODS
 
 =over
-
-=item B<$factory-E<gt>GetUserGroupRole(PARAMS)>
-
-B<Deprecated.>  Use C<Get()> instead.
 
 =item B<$factory-E<gt>Get(PARAMS)>
 
