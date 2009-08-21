@@ -259,17 +259,15 @@ CREATE TABLE account_plugin (
     plugin text NOT NULL
 );
 
-CREATE TABLE group_account_role (
+CREATE TABLE group_workspace_role (
     group_id bigint NOT NULL,
-    account_id bigint NOT NULL,
-    role_id bigint NOT NULL
+    workspace_id bigint NOT NULL,
+    role_id integer NOT NULL
 );
 
-CREATE TABLE user_account_role (
-    user_id bigint NOT NULL,
-    account_id bigint NOT NULL,
-    role_id integer
-);
+CREATE VIEW user_account_explicit AS
+  SELECT um.user_id, um.primary_account_id AS account_id
+   FROM "UserMetadata" um;
 
 CREATE TABLE user_group_role (
     user_id bigint NOT NULL,
@@ -277,20 +275,27 @@ CREATE TABLE user_group_role (
     group_id bigint NOT NULL
 );
 
-CREATE VIEW account_user AS
-  SELECT explicit.user_id, explicit.account_id
-   FROM ( SELECT user_account_role.user_id, user_account_role.account_id
-           FROM user_account_role
-UNION ALL 
-         SELECT ugr.user_id, gar.account_id
-           FROM user_group_role ugr
-      JOIN group_account_role gar USING (group_id)) explicit;
+CREATE VIEW user_account_implicit_gwr AS
+  SELECT ugr.user_id, w.account_id
+   FROM user_group_role ugr
+   JOIN group_workspace_role gwr USING (group_id)
+   JOIN "Workspace" w USING (workspace_id);
 
-CREATE TABLE group_workspace_role (
-    group_id bigint NOT NULL,
-    workspace_id bigint NOT NULL,
-    role_id integer NOT NULL
-);
+CREATE VIEW user_account_implicit_uwr AS
+  SELECT uwr.user_id, w.account_id
+   FROM "UserWorkspaceRole" uwr
+   JOIN "Workspace" w USING (workspace_id);
+
+CREATE VIEW account_user AS
+  SELECT account_user_relationships.account_id, account_user_relationships.user_id
+   FROM (( SELECT user_account_explicit.account_id, user_account_explicit.user_id
+           FROM user_account_explicit
+UNION ALL 
+         SELECT user_account_implicit_uwr.account_id, user_account_implicit_uwr.user_id
+           FROM user_account_implicit_uwr)
+UNION ALL 
+         SELECT user_account_implicit_gwr.account_id, user_account_implicit_gwr.user_id
+           FROM user_account_implicit_gwr) account_user_relationships;
 
 CREATE VIEW all_user_workspace AS
   SELECT my_workspaces.user_id, my_workspaces.workspace_id
@@ -485,6 +490,12 @@ CREATE SEQUENCE gallery_id
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
+
+CREATE TABLE group_account_role (
+    group_id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    role_id bigint NOT NULL
+);
 
 CREATE TABLE groups (
     group_id bigint NOT NULL,
@@ -684,11 +695,29 @@ CREATE TABLE topic_signal_user (
 );
 
 CREATE VIEW user_account AS
-  SELECT um.user_id, um.primary_account_id AS account_id, true AS is_primary
-   FROM "UserMetadata" um
+  SELECT user_account_relationships.user_id, user_account_relationships.account_id, user_account_relationships.is_primary
+   FROM (( SELECT user_account_explicit.user_id, user_account_explicit.account_id, true AS is_primary
+           FROM user_account_explicit
 UNION ALL 
- SELECT account_user.user_id, account_user.account_id, false AS is_primary
-   FROM account_user;
+         SELECT user_account_implicit_uwr.user_id, user_account_implicit_uwr.account_id, false AS is_primary
+           FROM user_account_implicit_uwr)
+UNION ALL 
+         SELECT user_account_implicit_gwr.user_id, user_account_implicit_gwr.account_id, false AS is_primary
+           FROM user_account_implicit_gwr) user_account_relationships;
+
+CREATE VIEW user_account_implicit AS
+  SELECT implicit_user_account_relationships.user_id, implicit_user_account_relationships.account_id
+   FROM ( SELECT user_account_implicit_uwr.user_id, user_account_implicit_uwr.account_id
+           FROM user_account_implicit_uwr
+UNION ALL 
+         SELECT user_account_implicit_gwr.user_id, user_account_implicit_gwr.account_id
+           FROM user_account_implicit_gwr) implicit_user_account_relationships;
+
+CREATE TABLE user_account_role (
+    user_id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    role_id integer
+);
 
 CREATE TABLE user_plugin_pref (
     user_id bigint NOT NULL,
