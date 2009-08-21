@@ -50,35 +50,9 @@ sub RecordDeleteLogEntry {
     $self->_record_log_entry('REMOVE', $ugr, $timer);
 }
 
-sub CreateRecord {
-    my ($self, $proto_ugr) = @_;
-
-    # Only concern ourselves with valid Db Columns
-    my $valid = $self->FilterValidColumns( $proto_ugr );
-
-    # SANITY CHECK: need all required attributes
-    my $missing =
-        first { not defined $valid->{$_} }
-        map   { $_->name }
-        grep  { $_->is_required }
-        $self->Sql_columns;
-    die "need a $missing attribute to create a UserGroupRole" if $missing;
-
-    # INSERT the new record into the DB
-    $self->SqlInsert( $valid );
-    $self->EmitCreateEvent($valid);
-}
-
-sub Create {
-    my ($self, $proto_ugr) = @_;
-    my $timer = Socialtext::Timer->new();
-
-    $proto_ugr->{role_id} ||= $self->DefaultRoleId();
-    $self->CreateRecord($proto_ugr);
-
-    my $ugr = $self->Get(%{$proto_ugr});
-    $self->RecordCreateLogEntry($ugr, $timer);
-    return $ugr;
+sub SetDefaultValues {
+    my ($self, $proto) = @_;
+    $proto->{role_id} ||= $self->DefaultRoleId();
 }
 
 sub UpdateRecord {
@@ -298,7 +272,15 @@ It can I<optionally> include:
 =back
 
 If no C<$role_id> is provided, a default role will be used instead.  Refer to
-C<DefaultRoleId()> for details.
+C<SetDefaultValues()> for details.
+
+=item B<$factory-E<gt>SetDefaultValues(\%proto_ugr)>
+
+Sets default values into the provided C<\%proto_ugr>, prior to creation of the
+record in the DB.
+
+If the C<\%proto_ugr> does not contain a C<role_id>, a default role will be
+used instead.
 
 =item B<$factory-E<gt>UpdateRecord(\%proto_ugr)>
 

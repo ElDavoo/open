@@ -2,6 +2,8 @@ package Socialtext::Moose::ObjectFactory;
 # @COPYRIGHT@
 
 use Moose::Role;
+use List::Util qw(first);
+use Socialtext::Timer;
 use namespace::clean -except => 'meta';
 
 with qw(
@@ -15,6 +17,9 @@ with qw(
 );
 
 requires 'Builds_sql_for';
+requires 'SetDefaultValues';
+requires 'EmitCreateEvent';
+requires 'RecordCreateLogEntry';
 
 sub Get {
     my ($self, %p) = @_;
@@ -30,6 +35,40 @@ sub Get {
     # Create an instance of the object based on the row we got back
     my $class = $self->Builds_sql_for();
     return $class->new($row);
+}
+
+sub CreateRecord {
+    my ($self, $proto) = @_;
+
+    # Only concern ourselves with valid Db Columns
+    my $valid = $self->FilterValidColumns( $proto );
+
+    # SANITY CHECK: need all required attributes
+    my $missing =
+        first { not defined $valid->{$_} }
+        map   { $_->name }
+        grep  { $_->is_required }
+        $self->Sql_columns;
+    if ($missing) {
+        my $short_name = $self->_short_builds_sql_for();
+        die "need a $missing attribute to create a $short_name";
+    }
+
+    # INSERT the new record into the DB
+    $self->SqlInsert( $valid );
+    $self->EmitCreateEvent( $valid );
+}
+
+sub Create {
+    my ($self, $proto) = @_;
+    my $timer = Socialtext::Timer->new();
+
+    $self->SetDefaultValues($proto);
+    $self->CreateRecord($proto);
+
+    my $instance = $self->Get(%{$proto});
+    $self->RecordCreateLogEntry($instance, $timer);
+    return $instance;
 }
 
 sub Cursor {
@@ -49,6 +88,12 @@ sub Cursor {
             return ( $closure ) ? $closure->($instance) : $instance;
         },
     );
+}
+
+sub _short_builds_sql_for {
+    my $self_or_class = shift;
+    my ($short) = ($self_or_class->Builds_sql_for() =~ /::(.+?)$/);
+    return $short;
 }
 
 no Moose::Role;
@@ -82,6 +127,17 @@ Looks for an existing record in the underlying DB table matching the given
 PARAMS, and returns an instantiated object representing that row, or C<undef>
 if it can't find a match.
 
+=item B<$class-E<gt>CreateRecord(\%proto)>
+
+Create a new record in the underlying DB table based on the given C<\%proto>
+hash-ref of data.
+
+=item B<$class-E<gt>Create(\%proto)>
+
+Creates a new record in the underlying DB table based on the given C<\%proto>
+hash-ref of data, and returns back to the caller an object instance for the
+resulting record.
+
 =item B<$self_or_class-E<gt>Cursor($sth, \&coderef)>
 
 Returns a C<Socialtext::MultiCursor> to iterate over all of the result records
@@ -93,6 +149,32 @@ This method takes an optional C<\&coderef> that can be used to manipulate the
 instantiated objects prior to them getting returned.
 
 =back
+
+=head1 REQUIREMENTS
+
+In order to consume this role and create your own Object Factory,
+implementations for the following methods are required:
+
+=over
+
+=item EmitCreateEvent($proto)
+
+Emits whatever Event is necessary to indicate that a new record was created in
+the underlying DB store.
+
+This method will be given a C<$proto> hash-ref containing all of the fields
+that were stored in the DB.
+
+=item RecordCreateLogEntry($instance, $timer)
+
+Records whatever entry you feel is necessary to indicate that a new record was
+created in the underlying DB store.
+
+This method will be given an actual C<$instance> of the object that was
+created, and a C<Socialtext::Timer> object.
+
+=back
+
 
 =head1 AUTHOR
 
