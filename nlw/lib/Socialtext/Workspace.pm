@@ -486,6 +486,11 @@ sub delete {
         File::Path::rmtree($dir);
     }
 
+    my $mc = $self->users();
+    while ( my $user = $mc->next() ) {
+        $self->remove_user(user => $user);
+    }
+
     Socialtext::EmailAlias::delete_alias( $self->name );
 
     sql_execute( 'DELETE FROM "Workspace" WHERE workspace_id=?',
