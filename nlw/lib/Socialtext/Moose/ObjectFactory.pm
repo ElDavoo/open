@@ -14,6 +14,27 @@ with qw(
     Socialtext::Moose::SqlBuilder::Role::DoesTypeCoercion
 );
 
+requires 'Builds_sql_for';
+
+sub Cursor {
+    my $self_or_class = shift;
+    my $sth           = shift;
+    my $closure       = shift;
+    my $target_class  = $self_or_class->Builds_sql_for();
+
+    eval  "require $target_class";
+    die $@ if $@;
+
+    return Socialtext::MultiCursor->new(
+        iterables => [ $sth->fetchall_arrayref( {} ) ],
+        apply     => sub {
+            my $row      = shift;
+            my $instance = $target_class->new($row);
+            return ( $closure ) ? $closure->($instance) : $instance;
+        },
+    );
+}
+
 no Moose::Role;
 1;
 
@@ -36,6 +57,20 @@ C<Socialtext::Moose::ObjectFactory> provides a baseline Role for a Factory to
 create objects that are stored in a SQL DB.
 
 =head1 METHODS
+
+=over
+
+=item B<$self_or_class-E<gt>Cursor($sth, \&coderef)>
+
+Returns a C<Socialtext::MultiCursor> to iterate over all of the result records
+in the given DBI C<$sth>, by turning each one of the result rows into an
+actual I<instance> of the class that the Factory generating objects of (the
+same one it C<Builds_sql_for>).
+
+This method takes an optional C<\&coderef> that can be used to manipulate the
+instantiated objects prior to them getting returned.
+
+=back
 
 =head1 AUTHOR
 

@@ -181,7 +181,7 @@ sub ByUserId {
         where => { user_id => $user_id },
         order => 'group_id',
     } );
-    return $self_or_class->_UgrCursor( $sth, $closure );
+    return $self_or_class->Cursor( $sth, $closure );
 }
 
 sub ByGroupId {
@@ -193,22 +193,7 @@ sub ByGroupId {
         where => { group_id => $group_id},
         order => 'user_id',
     } );
-    return $self_or_class->_UgrCursor( $sth, $closure );
-}
-
-sub _UgrCursor {
-    my $self_or_class = shift;
-    my $sth           = shift;
-    my $closure       = shift;
-
-    return Socialtext::MultiCursor->new(
-        iterables => [ $sth->fetchall_arrayref( {} ) ],
-        apply     => sub {
-            my $row = shift;
-            my $ugr = Socialtext::UserGroupRole->new($row);
-            return ( $closure ) ? $closure->($ugr) : $ugr;
-        },
-    );
+    return $self_or_class->Cursor( $sth, $closure );
 }
 
 sub _emit_event {

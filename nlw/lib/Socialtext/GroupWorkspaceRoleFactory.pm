@@ -181,7 +181,7 @@ sub ByGroupId {
         where => { group_id => $group_id },
         order => 'workspace_id',
     } );
-    return $self_or_class->_GwrCursor( $sth, $closure );
+    return $self_or_class->Cursor( $sth, $closure );
 }
 
 sub ByWorkspaceId {
@@ -193,22 +193,7 @@ sub ByWorkspaceId {
         where => { workspace_id => $workspace_id },
         order => 'group_id',
     } );
-    return $self_or_class->_GwrCursor( $sth, $closure );
-}
-
-sub _GwrCursor {
-    my $self_or_class = shift;
-    my $sth           = shift;
-    my $closure       = shift;
-
-    return Socialtext::MultiCursor->new(
-        iterables => [ $sth->fetchall_arrayref( {} ) ],
-        apply     => sub {
-            my $row = shift;
-            my $gwr = Socialtext::GroupWorkspaceRole->new($row);
-            return ( $closure ) ? $closure->($gwr) : $gwr;
-        },
-    );
+    return $self_or_class->Cursor( $sth, $closure );
 }
 
 sub _emit_event {
