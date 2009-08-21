@@ -55,60 +55,6 @@ sub SetDefaultValues {
     $proto->{role_id} ||= $self->DefaultRoleId();
 }
 
-sub UpdateRecord {
-    my ($self, $proto_ugr) = @_;
-
-    # Only concern ourselves with valid Db Columns
-    my $valid = $self->FilterValidColumns( $proto_ugr );
-
-    # Update is done against the primary key
-    my $pkey = $self->FilterPrimaryKeyColumns( $valid );
-
-    # Don't allow for primary key fields to be updated
-    my $values = $self->FilterNonPrimaryKeyColumns( $valid );
-
-    # If there's nothing to update, *don't*.
-    return unless %{$values};
-
-    # UPDATE the record in the DB
-    my $sth = $self->SqlUpdateOneRecord( {
-        values => $values,
-        where  => $pkey,
-    } );
-
-    my $did_update = ($sth && $sth->rows) ? 1 : 0;
-    $self->EmitUpdateEvent($proto_ugr) if $did_update;
-    return $did_update;
-}
-
-sub Update {
-    my ($self, $user_group_role, $proto_ugr) = @_;
-    my $timer = Socialtext::Timer->new();
-
-    # update the record for this UGR in the DB
-    my $primary_key = $user_group_role->primary_key();
-    my $updates_ref = {
-        %{$proto_ugr},
-        %{$primary_key},
-    };
-    my $did_update = $self->UpdateRecord($updates_ref);
-
-    if ($did_update) {
-        # merge the updates back into the UGR object, skipping primary key
-        # columns (which *aren't* updateable)
-        my $to_merge = $self->FilterNonPrimaryKeyColumns($updates_ref);
-
-        foreach my $attr (keys %{$to_merge}) {
-            my $setter = "_$attr";
-            $user_group_role->$setter( $to_merge->{$attr} );
-        }
-
-        $self->RecordUpdateLogEntry($user_group_role, $timer);
-    }
-
-    return $user_group_role;
-}
-
 sub DeleteRecord {
     my ($self, $proto_ugr) = @_;
 
@@ -281,27 +227,6 @@ record in the DB.
 
 If the C<\%proto_ugr> does not contain a C<role_id>, a default role will be
 used instead.
-
-=item B<$factory-E<gt>UpdateRecord(\%proto_ugr)>
-
-Updates an existing user_group_role record in the DB, based on the information
-provided in the C<\%proto_ugr> hash-ref.  Returns true if a record was updated
-in the DB, returning false otherwise (e.g. if the update was effectively "no
-change").
-
-This C<\%proto_ugr> hash-ref B<MUST> contain the C<user_id> and C<group_id> of
-the UGR that we are updating in the DB.
-
-If you attempt to update a non-existing UGR, this method fails silently; no
-exception is thrown, B<but> no data is updated/inserted in the DB (as it
-didn't exist there in the first place).
-
-=item B<$factory-E<gt>Update($ugr, \%proto_ugr)>
-
-Updates the given C<$ugr> object with the information provided in the
-C<\%proto_ugr> hash-ref.
-
-Returns the updated C<$ugr> object back to the caller.
 
 =item B<$factory-E<gt>DeleteRecord(\%proto_ugr)>
 

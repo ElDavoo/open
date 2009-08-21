@@ -55,60 +55,6 @@ sub SetDefaultValues {
     $proto->{role_id} ||= $self->DefaultRoleId();
 }
 
-sub UpdateRecord {
-    my ($self, $proto_gwr) = @_;
-
-    # Only concern ourselves with valid Db Columns
-    my $valid = $self->FilterValidColumns( $proto_gwr );
-
-    # Update is done against the primary key
-    my $pkey = $self->FilterPrimaryKeyColumns( $valid );
-
-    # Don't allow for primary key fields to be updated
-    my $values = $self->FilterNonPrimaryKeyColumns( $valid );
-
-    # If there's nothing to update, *don't*.
-    return unless %{$values};
-
-    # UPDATE the record in the DB
-    my $sth = $self->SqlUpdateOneRecord( {
-        values => $values,
-        where  => $pkey,
-    } );
-
-    my $did_update = ($sth && $sth->rows) ? 1 : 0;
-    $self->EmitUpdateEvent($proto_gwr) if $did_update;
-    return $did_update;
-}
-
-sub Update {
-    my ($self, $group_workspace_role, $proto_gwr) = @_;
-    my $timer = Socialtext::Timer->new();
-
-    # update the record for this GWR in the DB
-    my $primary_key = $group_workspace_role->primary_key();
-    my $updates_ref = {
-        %{$proto_gwr},
-        %{$primary_key},
-    };
-    my $did_update = $self->UpdateRecord($updates_ref);
-
-    if ($did_update) {
-        # merge the updates back into the GWR object, skipping primary key
-        # columns (which *aren't* updateable
-        my $to_merge = $self->FilterNonPrimaryKeyColumns($updates_ref);
-
-        foreach my $attr (keys %{$to_merge}) {
-            my $setter = "_$attr";
-            $group_workspace_role->$setter( $updates_ref->{$attr} );
-        }
-
-        $self->RecordUpdateLogEntry($group_workspace_role, $timer);
-    }
-
-    return $group_workspace_role;
-}
-
 sub DeleteRecord {
     my ($self, $proto_gwr) = @_;
 
@@ -281,27 +227,6 @@ record in the DB.
 
 If the C<\%proto_gwr> does not contain a C<role_id>, a default role will be
 used instead.
-
-=item B<$factory-E<gt>UpdateRecord(\%proto_gwr)>
-
-Updates an existing group_workspace_role record in the DB, based on the
-information provided in the C<\%proto_gwr> hash-ref.  Returns true if a record
-was updated in the DB, returning false otherwise (e.g. if the update was
-effectively "no change").
-
-This C<\%proto_gwr> hash-ref B<MUST> contain the C<group_id> and
-C<workspace_id> of the GWR that we are updating in the DB.
-
-If you attempt to update a non-existing GWR, this method fails silently; no
-exception is thrown, B<but> no data is updated/inserted in the DB (as it
-didn't exist there in the first place).
-
-=item B<$factory-E<gt>Update($gwr, \%proto_gwr)>
-
-Updates the given C<$gwr> object with the information provided in the
-C<\%proto_gwr> hash-ref.
-
-Returns the updated C<$gwr> object back to the caller.
 
 =item B<$factory-E<gt>DeleteRecord(\%proto_gwr)>
 

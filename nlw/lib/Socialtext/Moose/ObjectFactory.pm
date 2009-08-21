@@ -18,8 +18,12 @@ with qw(
 
 requires 'Builds_sql_for';
 requires 'SetDefaultValues';
+
 requires 'EmitCreateEvent';
+requires 'EmitUpdateEvent';
+
 requires 'RecordCreateLogEntry';
+requires 'RecordUpdateLogEntry';
 
 sub Get {
     my ($self, %p) = @_;
@@ -68,6 +72,59 @@ sub Create {
 
     my $instance = $self->Get(%{$proto});
     $self->RecordCreateLogEntry($instance, $timer);
+    return $instance;
+}
+
+sub UpdateRecord {
+    my ($self, $proto) = @_;
+
+    # Only concern ourselves with valid Db Columns
+    my $valid = $self->FilterValidColumns($proto);
+
+    # Update is done against the Primary Key
+    my $pkey = $self->FilterPrimaryKeyColumns($valid);
+
+    # Don't allow for Primary Key fields to be updated
+    my $values = $self->FilterNonPrimaryKeyColumns($valid);
+
+    # If there's nothing to update, *don't*.
+    return unless %{$values};
+
+    # UPDATE the record in the DB
+    my $sth = $self->SqlUpdateOneRecord( {
+        values => $values,
+        where  => $pkey,
+    } );
+
+    my $did_update = ($sth && $sth->rows) ? 1 : 0;
+    $self->EmitUpdateEvent( $proto ) if $did_update;
+    return $did_update;
+}
+
+sub Update {
+    my ($self, $instance, $proto) = @_;
+    my $timer = Socialtext::Timer->new();
+
+    # Update the record in the DB
+    my $pkey        = $instance->primary_key();
+    my $updates_ref = {
+        %{$proto},
+        %{$pkey},
+    };
+    my $did_update  = $self->UpdateRecord($updates_ref);
+
+    if ($did_update) {
+        # merge the updates back into the instance, skipping primary key
+        # columns (which *aren't* updateable)
+        my $to_merge = $self->FilterNonPrimaryKeyColumns($updates_ref);
+
+        foreach my $attr (keys %{$to_merge}) {
+            $instance->meta->find_attribute_by_name($attr)->set_value(
+                $instance, $to_merge->{$attr},
+            );
+        }
+        $self->RecordUpdateLogEntry($instance, $timer);
+    }
     return $instance;
 }
 
@@ -138,6 +195,26 @@ Creates a new record in the underlying DB table based on the given C<\%proto>
 hash-ref of data, and returns back to the caller an object instance for the
 resulting record.
 
+=item B<$class-E<gt>UpdateRecord(\%proto)>
+
+Updates an existing record in the DB, based on the information in the provided
+C<\%proto> hash-ref.  Returns true if a record was updated in the DB,
+returning false otherwise (e.g. if the update was effectively "no change").
+
+The C<\%proto> hash-ref B<MUST> contain all of the data necessary to identify
+the primary key for the record in the DB to update.
+
+If you attempt to update a non-existing record, this method fails silently; no
+exception is thrown, B<but> no data is updated/inserted in the DB (as it
+didn't exist there in the first place.
+
+=item B<$class-E<gt>Update($instance, \%proto)>
+
+Updates the given C<$instance> object with the information provided in the
+given C<\%proto> hash-ref, including the underlying DB store.
+
+Returns the updated C<$instance> object back to the caller.
+
 =item B<$self_or_class-E<gt>Cursor($sth, \&coderef)>
 
 Returns a C<Socialtext::MultiCursor> to iterate over all of the result records
@@ -165,6 +242,14 @@ the underlying DB store.
 This method will be given a C<$proto> hash-ref containing all of the fields
 that were stored in the DB.
 
+=item EmitUpdateEvent($proto)
+
+Emits whatever Event is necessary to indicate that a record was updated in the
+underlying DB store.
+
+This method will be given a C<$proto> hash-ref containing all of the fields
+for the updated record.
+
 =item RecordCreateLogEntry($instance, $timer)
 
 Records whatever entry you feel is necessary to indicate that a new record was
@@ -173,8 +258,15 @@ created in the underlying DB store.
 This method will be given an actual C<$instance> of the object that was
 created, and a C<Socialtext::Timer> object.
 
-=back
+=item RecordUpdateLogEntry($instance, $timer)
 
+Records whatever entry you feel is necessary to indicate that a record was
+updated in the underlying DB store.
+
+This method will be given an actual C<$instance> of the object that was
+updated, and a C<Socialtext::Timer> object.
+
+=back
 
 =head1 AUTHOR
 
