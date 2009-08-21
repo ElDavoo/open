@@ -50,22 +50,10 @@ sub RecordDeleteLogEntry {
     $self->_record_log_entry('REMOVE', $gwr, $timer);
 }
 
+# This form is deprecated in favour of 'Get()', but exists for backwards
+# compatibility with previous implementation
 sub GetGroupWorkspaceRole {
-    my ($self, %p) = @_;
-
-    # Only concern ourselves with valid Db Columns
-    my $where = $self->FilterValidColumns( \%p );
-
-    # fetch the GWR from the DB
-    my $sth = $self->SqlSelectOneRecord( {
-        where => $where,
-    } );
-
-    my $row = $sth->fetchrow_hashref();
-    return unless $row;
-
-    # create the GWR object
-    return Socialtext::GroupWorkspaceRole->new( $row );
+    return shift->Get(@_);
 }
 
 sub CreateRecord {
@@ -260,6 +248,10 @@ for C<Socialtext::GroupWorkspaceRole> objects.
 =over
 
 =item B<$factory-E<gt>GetGroupWorkspaceRole(PARAMS)>
+
+B<Deprecated.>  Use C<Get()> instead.
+
+=item B<$factory-E<gt>Get(PARAMS)>
 
 Looks for an existing record in the group_workspace_role table matching PARAMS
 and returns a C<Socialtext::GroupWorkspaceRole> representing that row, or

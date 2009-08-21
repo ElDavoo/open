@@ -50,22 +50,10 @@ sub RecordDeleteLogEntry {
     $self->_record_log_entry('REMOVE', $ugr, $timer);
 }
 
+# This form is deprecated in favour of 'Get()', but exists for backwards
+# compatibility with previous implementation
 sub GetUserGroupRole {
-    my ($self, %p) = @_;
-
-    # Only concern ourselves with valid Db Columns
-    my $where = $self->FilterValidColumns( \%p );
-
-    # fetch the UGR from the DB
-    my $sth = $self->SqlSelectOneRecord( {
-        where => $where,
-    } );
-
-    my $row = $sth->fetchrow_hashref();
-    return unless $row;
-
-    # create the UGR object
-    return Socialtext::UserGroupRole->new( $row );
+    return shift->Get(@_);
 }
 
 sub CreateRecord {
@@ -260,6 +248,10 @@ C<Socialtext::UserGroupRole> objects.
 =over
 
 =item B<$factory-E<gt>GetUserGroupRole(PARAMS)>
+
+B<Deprecated.>  Use C<Get()> instead.
+
+=item B<$factory-E<gt>Get(PARAMS)>
 
 Looks for an existing record in the user_group_role table matching PARAMS and
 returns a C<Socialtext::UserGroupRole> representing that row, or undef if it

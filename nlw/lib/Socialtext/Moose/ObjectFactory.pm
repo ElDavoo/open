@@ -16,6 +16,22 @@ with qw(
 
 requires 'Builds_sql_for';
 
+sub Get {
+    my ($self, %p) = @_;
+
+    # Only concern ourselves with valid Db Columns
+    my $where = $self->FilterValidColumns( \%p );
+
+    # Fetch the record from the DB
+    my $sth = $self->SqlSelectOneRecord( { where => $where } );
+    my $row = $sth->fetchrow_hashref();
+    return unless $row;
+
+    # Create an instance of the object based on the row we got back
+    my $class = $self->Builds_sql_for();
+    return $class->new($row);
+}
+
 sub Cursor {
     my $self_or_class = shift;
     my $sth           = shift;
@@ -59,6 +75,12 @@ create objects that are stored in a SQL DB.
 =head1 METHODS
 
 =over
+
+=item B<$class-E<gt>Get(PARAMS)>
+
+Looks for an existing record in the underlying DB table matching the given
+PARAMS, and returns an instantiated object representing that row, or C<undef>
+if it can't find a match.
 
 =item B<$self_or_class-E<gt>Cursor($sth, \&coderef)>
 
