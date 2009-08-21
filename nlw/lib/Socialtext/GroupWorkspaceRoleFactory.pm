@@ -55,6 +55,14 @@ sub SetDefaultValues {
     $proto->{role_id} ||= $self->DefaultRoleId();
 }
 
+sub DefaultRole {
+    Socialtext::Role->Member();
+}
+
+sub DefaultRoleId {
+    DefaultRole()->role_id();
+}
+
 sub _emit_event {
     my ($self, $proto_gwr, $action) = @_;
 
@@ -85,14 +93,6 @@ sub _record_log_entry {
             . '(' . $gwr->workspace->workspace_id . '),'
         . '[' . $timer->elapsed . ']';
     st_log->info($msg);
-}
-
-sub DefaultRole {
-    Socialtext::Role->Member();
-}
-
-sub DefaultRoleId {
-    DefaultRole()->role_id();
 }
 
 no Moose;
