@@ -37,6 +37,21 @@ sub EmitDeleteEvent {
     $self->_emit_event($proto, 'delete_role');
 }
 
+sub RecordCreateLogEntry {
+    my ($self, $ugr, $timer) = @_;
+    $self->_record_log_entry('ASSIGN', $ugr, $timer);
+}
+
+sub RecordUpdateLogEntry {
+    my ($self, $ugr, $timer) = @_;
+    $self->_record_log_entry('CHANGE', $ugr, $timer);
+}
+
+sub RecordDeleteLogEntry {
+    my ($self, $ugr, $timer) = @_;
+    $self->_record_log_entry('REMOVE', $ugr, $timer);
+}
+
 sub GetUserGroupRole {
     my ($self, %p) = @_;
 
@@ -82,7 +97,7 @@ sub Create {
     $self->CreateRecord($proto_ugr);
 
     my $ugr = $self->GetUserGroupRole(%{$proto_ugr});
-    $self->_record_log_entry('ASSIGN', $ugr, $timer);
+    $self->RecordCreateLogEntry($ugr, $timer);
     return $ugr;
 }
 
@@ -134,7 +149,7 @@ sub Update {
             $user_group_role->$setter( $to_merge->{$attr} );
         }
 
-        $self->_record_log_entry('CHANGE', $user_group_role, $timer);
+        $self->RecordUpdateLogEntry($user_group_role, $timer);
     }
 
     return $user_group_role;
@@ -159,7 +174,7 @@ sub Delete {
     my ($self, $ugr) = @_;
     my $timer = Socialtext::Timer->new();
     my $did_delete = $self->DeleteRecord( $ugr->primary_key() );
-    $self->_record_log_entry('REMOVE', $ugr, $timer) if $did_delete;
+    $self->RecordDeleteLogEntry($ugr, $timer) if $did_delete;
     return $did_delete;
 }
 

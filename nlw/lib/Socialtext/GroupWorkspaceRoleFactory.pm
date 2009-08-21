@@ -37,6 +37,21 @@ sub EmitDeleteEvent {
     $self->_emit_event($proto, 'delete_role');
 }
 
+sub RecordCreateLogEntry {
+    my ($self, $gwr, $timer) = @_;
+    $self->_record_log_entry('ASSIGN', $gwr, $timer);
+}
+
+sub RecordUpdateLogEntry {
+    my ($self, $gwr, $timer) = @_;
+    $self->_record_log_entry('CHANGE', $gwr, $timer);
+}
+
+sub RecordDeleteLogEntry {
+    my ($self, $gwr, $timer) = @_;
+    $self->_record_log_entry('REMOVE', $gwr, $timer);
+}
+
 sub GetGroupWorkspaceRole {
     my ($self, %p) = @_;
 
@@ -82,7 +97,7 @@ sub Create {
     $self->CreateRecord($proto_gwr);
 
     my $gwr = $self->GetGroupWorkspaceRole(%{$proto_gwr});
-    $self->_record_log_entry('ASSIGN', $gwr, $timer);
+    $self->RecordCreateLogEntry($gwr, $timer);
     return $gwr;
 }
 
@@ -134,7 +149,7 @@ sub Update {
             $group_workspace_role->$setter( $updates_ref->{$attr} );
         }
 
-        $self->_record_log_entry('CHANGE', $group_workspace_role, $timer);
+        $self->RecordUpdateLogEntry($group_workspace_role, $timer);
     }
 
     return $group_workspace_role;
@@ -159,7 +174,7 @@ sub Delete {
     my ($self, $gwr) = @_;
     my $timer = Socialtext::Timer->new();
     my $did_delete = $self->DeleteRecord( $gwr->primary_key() );
-    $self->_record_log_entry('REMOVE', $gwr, $timer) if $did_delete;
+    $self->RecordDeleteLogEntry($gwr, $timer) if $did_delete;
     return $did_delete;
 }
 
