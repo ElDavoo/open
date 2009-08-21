@@ -12,9 +12,13 @@ use namespace::clean -except => 'meta';
 
 with qw(
     Socialtext::Moose::ObjectFactory
+    Socialtext::Moose::Does::UserSearch
+    Socialtext::Moose::Does::GroupSearch
 );
 
 sub Builds_sql_for { 'Socialtext::UserGroupRole' }
+
+sub SqlSortOrder { 'user_id, group_id' }
 
 sub EmitCreateEvent {
     my ($self, $proto) = @_;
@@ -170,30 +174,6 @@ sub Delete {
     my $did_delete = $self->DeleteRecord( $ugr->primary_key() );
     $self->RecordDeleteLogEntry($ugr, $timer) if $did_delete;
     return $did_delete;
-}
-
-sub ByUserId {
-    my $self_or_class = shift;
-    my $user_id       = shift;
-    my $closure       = shift;
-
-    my $sth = $self_or_class->SqlSelect( {
-        where => { user_id => $user_id },
-        order => 'group_id',
-    } );
-    return $self_or_class->Cursor( $sth, $closure );
-}
-
-sub ByGroupId {
-    my $self_or_class = shift;
-    my $group_id      = shift;
-    my $closure       = shift;
-
-    my $sth = $self_or_class->SqlSelect( {
-        where => { group_id => $group_id},
-        order => 'user_id',
-    } );
-    return $self_or_class->Cursor( $sth, $closure );
 }
 
 sub _emit_event {
@@ -371,24 +351,6 @@ Returns true if a record was deleted, false otherwise.
 Deletes the C<$ugr> from the DB.
 
 Helper method which calls C<DeleteRecord()>.
-
-=item B<$factory-E<gt>ByUserId($user_id)>
-
-Get a C<Socialtext::MultiCursor> of UGR's for a user.
-
-This method takes an optional C<$closure> PARAM that can be used to maniulate
-the UGR before it gets passed back with C<Socialtext::MultiCursor->next()>.
-This can be used, for example to return only the C<group> attribute of the
-UGR.
-
-=item B<$factory-E<gt>ByGroupId($group_id, $closure)>
-
-Get a C<Socialtext::MultiCursor> of UGR's for a group.
-
-This method takes an optional C<$closure> PARAM that can be used to maniulate
-the UGR before it gets passed back with C<Socialtext::MultiCursor->next()>.
-This can be used, for example to return only the C<user> attribute of the
-UGR.
 
 =item B<$factory-E<gt>DefaultRole()>
 
