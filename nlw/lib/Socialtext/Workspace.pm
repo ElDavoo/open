@@ -1224,6 +1224,14 @@ sub email_passes_invitation_filter {
              . 'workspace:' . $self->name . '('
              . $self->workspace_id . '),'
              . '[' . $timer->elapsed . ']');
+
+        my $adapter = Socialtext::Pluggable::Adapter->new;
+        $adapter->make_hub(Socialtext::User->SystemUser(), $self);
+        $adapter->hook(
+            'nlw.add_user_account_role',
+            $self->account,
+            $p{user}
+        );
     }
 }
 
@@ -1277,6 +1285,14 @@ sub has_user {
              . 'workspace:' . $self->name . '('
              . $self->workspace_id . '),'
              . '[' . $timer->elapsed . ']');
+
+        my $adapter = Socialtext::Pluggable::Adapter->new;
+        $adapter->make_hub(Socialtext::User->SystemUser(), $self);
+        $adapter->hook(
+            'nlw.remove_user_account_role',
+            $self->account,
+            $p{user}
+        );
     }
 }
 
