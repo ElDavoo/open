@@ -4,6 +4,8 @@
 
 * Fixture: SocialWidgets
 
+| *Comment* | Test Case: Upload Update Gallery Widgets files for upload at %%wikitest_files%% |  |
+
 | *Comment* | Test Case: Upload Update Gallery Widgets create a fresh account |  |
 | set | acct | MWG %%start_time%% |
 | set | mwgmail | mwg-%%start_time%%@ken.socialtext.net |
@@ -88,7 +90,7 @@
 | wait_for_element_visible_ok | widget-file | 30000 |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | widget-file | seems to be needed |
-| type_ok | widget-file | %%wikitest_client_files%%wikitest.txt |
+| type_ok | widget-file | %%wikitest_files%%wikitest.txt |
 | click_ok | st-add-widget |  |
 | wait_for_text_present_ok | The file you provided does not appear to be valid XML | 30000 |
 | wait_for_element_visible_ok | link=Close | 30000 |
@@ -100,7 +102,7 @@
 | wait_for_element_visible_ok | widget-file | 30000 |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | widget-file | seems to be needed |
-| type_ok | widget-file | %%wikitest_client_files%%bosspy.xml |
+| type_ok | widget-file | %%wikitest_files%%bosspy.xml |
 | click_ok | st-add-widget |  |
 | wait_for_text_present_ok | Successfully added your widget | 30000 |
 | wait_for_element_visible_ok | link=Close | 30000 |

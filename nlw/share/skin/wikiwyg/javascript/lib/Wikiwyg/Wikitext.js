@@ -2211,7 +2211,7 @@ proto.handle_wiki_link = function(label, href, elem) {
     var href_orig = href;
     href = href.replace(/\baction=display;is_incipient=1;page_name=/, '');
     href = href.replace(/.*\?/, '');
-    href = decodeURI(escape(href));
+    href = decodeURI(href);
     href = href.replace(/_/g, ' ');
     // XXX more conversion/normalization poo
     // We don't yet have a smart way to get to page->Subject->metadata

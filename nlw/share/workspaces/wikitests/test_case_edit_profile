@@ -71,6 +71,8 @@
 | type_ok | facebook_url | facebook/%%short_e_user%% |
 
 | *Comment* | Test Case: Edit Profile. Need to select users in a common account |  |
+| wait_for_element_visible_ok | field_supervisor | 30000 |
+| wait_for_element_visible_ok | field_assistant | 30000 |
 | select_ok | field_supervisor | user one |
 | select_ok | field_assistant | user two |
 
