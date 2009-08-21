@@ -82,7 +82,7 @@ sub Create {
     $proto_ugr->{role_id} ||= $self->DefaultRoleId();
     $self->CreateRecord($proto_ugr);
 
-    my $ugr = $self->GetUserGroupRole(%{$proto_ugr});
+    my $ugr = $self->Get(%{$proto_ugr});
     $self->RecordCreateLogEntry($ugr, $timer);
     return $ugr;
 }
@@ -227,7 +227,7 @@ Socialtext::UserGroupRoleFactory - Factory for ST::UserGroupRole objects
   } );
 
   # retrieve a UGR
-  $ugr = $factory->GetUserGroupRole(
+  $ugr = $factory->Get(
       user_id  => $user_id,
       group_id => $group_id,
   );

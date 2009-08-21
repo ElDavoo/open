@@ -257,7 +257,7 @@ sub role_for_user {
 sub _ugr_for_user {
     my $self = shift;
     my $user = shift;
-    my $ugr  = Socialtext::UserGroupRoleFactory->GetUserGroupRole(
+    my $ugr  = Socialtext::UserGroupRoleFactory->Get(
         user_id  => $user->user_id,
         group_id => $self->group_id,
     );

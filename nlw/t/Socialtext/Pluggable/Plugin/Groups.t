@@ -145,7 +145,7 @@ basic_restore: {
         $test_username     = $user->username();
         $test_creator_name = $group->creator->username();
         $test_group_name   = $group->driver_group_name();
-        $test_role_name = Socialtext::UserGroupRoleFactory->GetUserGroupRole(
+        $test_role_name = Socialtext::UserGroupRoleFactory->Get(
             user_id  => $user->user_id(),
             group_id => $group->group_id(),
         )->role->name();
@@ -202,7 +202,7 @@ basic_restore: {
     is $user->username, $test_username, '... ... is test User';
 
     # User has the correct Role in the Group
-    my $ugr = Socialtext::UserGroupRoleFactory->GetUserGroupRole(
+    my $ugr = Socialtext::UserGroupRoleFactory->Get(
         user_id  => $user->user_id,
         group_id => $group->group_id,
     );
@@ -313,7 +313,7 @@ restore_with_existing_group: {
     } "Importing all groups for account '".$account->name."'...\n";
 
     # CHECK: the User we'd added to the Group already has his Role untouched
-    my $ugr = Socialtext::UserGroupRoleFactory->GetUserGroupRole(
+    my $ugr = Socialtext::UserGroupRoleFactory->Get(
         user_id  => $test_user_one->user_id,
         group_id => $group->group_id,
     );
@@ -321,7 +321,7 @@ restore_with_existing_group: {
         '... existing User had their UGR left as-is';
 
     # CHECK: the other User was added to the Group, with his original Role
-    $ugr = Socialtext::UserGroupRoleFactory->GetUserGroupRole(
+    $ugr = Socialtext::UserGroupRoleFactory->Get(
         user_id  => $test_user_two->user_id,
         group_id => $group->group_id,
     );

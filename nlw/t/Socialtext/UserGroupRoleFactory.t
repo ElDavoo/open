@@ -60,7 +60,7 @@ create_ugr: {
     logged_like 'info', qr/ASSIGN,GROUP_ROLE/, '... creation was logged';
 
     # double-check that we can pull this UGR from the DB
-    my $queried = Socialtext::UserGroupRoleFactory->GetUserGroupRole(
+    my $queried = Socialtext::UserGroupRoleFactory->Get(
         user_id  => $user->user_id,
         group_id => $group->group_id,
     );
@@ -160,7 +160,7 @@ update_a_ugr: {
     logged_like 'info', qr/CHANGE,GROUP_ROLE/, '... update was logged';
 
     # make sure the updates are reflected in the DB
-    my $queried = $factory->GetUserGroupRole(
+    my $queried = $factory->Get(
         user_id  => $user->user_id,
         group_id => $group->group_id,
     );
@@ -285,7 +285,7 @@ delete_ugr: {
     logged_like 'info', qr/REMOVE,GROUP_ROLE/, '... removal was logged';
 
     # make sure the delete was reflected in the DB
-    my $queried = $factory->GetUserGroupRole(
+    my $queried = $factory->Get(
         user_id  => $user->user_id,
         group_id => $group->group_id,
     );
