@@ -318,3 +318,5 @@ lib/Socialtext/Lite/People.pm
 bin/st-purge-json-proxy-cache
 t/wikitests/miki/profile.wiki
 t/wikitests/miki/signals.wiki
+bin/st-purge-json-proxy-cache
+t/wikitests/widgets/export-import.wiki
