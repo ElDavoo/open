@@ -1,0 +1,47 @@
+#!/usr/bin/perl
+use warnings;
+use strict;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use Socialtext::JSON qw/decode_json/;
+use YAML qw/Dump/;
+use LWP::Simple qw/get/;
+use Getopt::Long;
+
+my $core_name;
+my $verbose = 0;
+GetOptions(
+    'core=s' => \$core_name,
+    'verbose!' => \$verbose,
+);
+
+my $SOLR_ADMIN_BASE = q{http://localhost:8983/solr/admin/cores};
+
+my $status = get("$SOLR_ADMIN_BASE?action=STATUS&wt=json");
+my $struct = decode_json($status);
+my $cores = $struct->{status};
+
+if (defined $core_name) {
+    dump_core_status($cores->{$core_name});
+}
+else {
+    for my $core (values %$cores) {
+        dump_core_status($core);
+    }
+}
+
+sub dump_core_status {
+    my $core = shift;
+    if ($verbose) {
+        print Dump($core),$/;
+    }
+    else {
+        my %s = map { $_ => $core->{$_} }
+            qw(name instanceDir startTime);
+        $s{lastModified} = $core->{index}{lastModified};
+        $s{version} = $core->{index}{version};
+        $s{numDocs} = $core->{index}{numDocs};
+        print Dump(\%s);
+    }
+}
