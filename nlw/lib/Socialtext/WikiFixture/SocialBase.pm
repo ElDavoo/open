@@ -567,6 +567,26 @@ sub set_regex_escaped {
     $self->{$var_name} = "\Q$value\E";
 }
 
+sub exec_regex {
+    my $self = shift;
+    my $name = shift;
+    my $content = shift;
+    my $regex = $self->quote_as_regex(shift || '');
+    if ($content =~ $regex) {
+        if (defined $1) {
+            $self->{$name} = $1;
+            warn "# Set $name to '$1' from response content\n";
+        }
+        else {
+            die "Could not set $name - regex didn't capture!";
+        }
+    }
+    else {
+        die "Could not set $name - regex ($regex) did not match $content";
+    }
+
+}
+
 sub sleep {
     my $self = shift;
     my $secs = shift;
@@ -774,20 +794,8 @@ Set a variable from content in the last response.
 sub set_from_content {
     my $self = shift;
     my $name = shift || die "name is mandatory for set-from-content";
-    my $regex = $self->quote_as_regex(shift || '');
-    my $content = $self->{http}->response->content;
-    if ($content =~ $regex) {
-        if (defined $1) {
-            $self->{$name} = $1;
-            warn "# Set $name to '$1' from response content\n";
-        }
-        else {
-            die "Could not set $name - regex didn't capture!";
-        }
-    }
-    else {
-        die "Could not set $name - regex ($regex) did not match $content";
-    }
+    my $regex = shift;
+    $self->exec_regex($name, $self->{http}->response->content, $regex);
 }
 
 =head2 set_from_header ( name, header )
@@ -1395,6 +1403,34 @@ sub st_account_export_field_like {
     like $self->_st_account_export_field($account, $field),
         $expected,
         "$account $field";
+}
+
+sub st_purge_account_gallery {
+    my ($self, $acct_name) = @_;
+    my $acct = Socialtext::Account->new(name => $acct_name);
+    sql_execute('
+        DELETE FROM gallery WHERE account_id = ?
+    ', $acct->account_id);
+}
+
+sub st_purge_account_containers {
+    my ($self, $acct_name) = @_;
+    my $acct = Socialtext::Account->new(name => $acct_name);
+    sql_execute('
+        DELETE FROM container
+         WHERE user_id
+            IN (
+                SELECT user_id
+                  FROM "UserMetadata"
+                 WHERE primary_account_id = ?
+            )
+            OR account_id = ?
+    ', $acct->account_id, $acct->account_id);
+}
+
+sub st_purge_widget {
+    my ($self, $src) = @_;
+    sql_execute('DELETE FROM gadget WHERE src = ?', $src);
 }
 
 sub enable_ws_plugin    { shift; _change_plugin('Workspace', 1, @_) }
