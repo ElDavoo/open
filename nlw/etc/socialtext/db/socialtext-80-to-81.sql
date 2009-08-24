@@ -98,7 +98,7 @@ ALTER TABLE ONLY group_account_role
 
 -- update the schema-version
 UPDATE "System"
-   SET value = '80'
+   SET value = '81'
  WHERE field = 'socialtext-schema-version';
 
 COMMIT;
