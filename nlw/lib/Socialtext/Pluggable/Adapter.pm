@@ -27,8 +27,9 @@ memoize('plugins', NORMALIZER => sub { '' } ); # memoize ignores args
 # These hook types are executed only once, all other types are called as many
 # times as they are registered
 my %ONCE_TYPES = (
-    action       => 1,
-    wafl         => 1,
+    action => 1,
+    wafl   => 1,
+    root   => 1,
 );
 
 BEGIN {
