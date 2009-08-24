@@ -4,7 +4,7 @@ set -e
 # Create a Solr core named after the current user.
 #
 # This assumes the custom socialtext layout for Solr; the Ubuntu layout cannot
-# be used. The current user must aslo be a member of the www-data UNIX group.
+# be used. The current user must also be a member of the www-data UNIX group.
 #
 
 DATA_DIR="/var/lib/socialtext-solr/cores"
