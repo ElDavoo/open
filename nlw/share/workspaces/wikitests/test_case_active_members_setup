@@ -1,31 +1,30 @@
 | *Comment* | Test Case: Active Members Setup - Create users and accounts |  |
-| st-admin | create-account --name %%am_acct_one%% |  |
-| st-admin | create-account --name %%am_acct_two%% |  |
-| st-admin | enable-plugin --plugin dashboard --account %%am_acct_one%% |  |
-| st-admin | enable-plugin --plugin people --account %%am_acct_one%% |  |
-| st-admin | enable-plugin --plugin signals --account %%am_acct_one%% |  |
-| st-admin | enable-plugin --plugin dashboard --account %%am_acct_two%% |  |
-| st-admin | enable-plugin --plugin people --account %%am_acct_two%% |  |
-| st-admin | enable-plugin --plugin signals --account %%am_acct_two%% |  |
-| st-admin | create-workspace --name %%am_ws_1%% --title %%am_ws_1%% --account %%am_acct_one%% |  |
-| st-admin | create-workspace --name %%am_ws_2%% --title %%am_ws_2%% --account %%am_acct_one%% |  |
+| create-account | %%am_acct_one%% |  |
+| create-account | %%am_acct_two%% |  |
+| create-workspace | %%am_ws_1%% | %%am_acct_one%% |
+| create-workspace | %%am_ws_2%% | %%am_acct_two%% |
+| add-member | %%username%% | %%am_ws_1%% |
+| add-member | %%username%% | %%am_ws_2%% |
+| enable-acct-plugin | dashboard | %%am_acct_one%% |
+| enable-acct-plugin | people | %%am_acct_one%% |
+| enable-acct-plugin | signals | %%am_acct_one%% |
+| enable-acct-plugin | dashboard | %%am_acct_two%% |
+| enable-acct-plugin | people | %%am_acct_two%% |
+| enable-acct-plugin | signals | %%am_acct_two%% |
 
-| st-admin | add-member --email %%username%% --workspace %%am_ws_1%% |
-| st-admin | add-member --email %%username%% --workspace %%am_ws_2%% |
-
-| st-admin | create-user --email %%members_email_1%% --password %%password%% --account %%am_acct_one%% |  |
-| st-admin | add-member --email %%members_email_1%% --workspace %%am_ws_1%% |  |
-| st-admin | add-member --email %%members_email_1%% --workspace %%am_ws_2%% |  |
-| st-admin | create-user --email %%members_email_2%% --password %%password%% --account %%am_acct_one%% |  |
-| st-admin | add-member --email %%members_email_2%% --workspace %%am_ws_1%% |  |
-| st-admin | add-member --email %%members_email_2%% --workspace %%am_ws_2%% |  |
-| st-admin | create-user --email %%members_email_3%% --password %%password%% --account %%am_acct_one%% |  |
-| st-admin | add-member --email %%members_email_3%% --workspace %%am_ws_1%% |  |
-| st-admin | add-member --email %%members_email_3%% --workspace %%am_ws_2%% |  |
-| st-admin | create-user --email %%view_edit_email%% --password %%password%% --account %%am_acct_one%% |  |
-| st-admin | add-member --email %%view_edit_email%% --workspace %%am_ws_1%% |  |
-| st-admin | add-member --email %%view_edit_email%% --workspace %%am_ws_2%% |  |
-| st-logoutin | %%view_edit_email%% | %%password%% |
+| create-user | %%members_email_1%% | %%password%% | %%am_acct_one%% |
+| add-member | %%members_email_1%% | %%am_ws_1%% |  |
+| add-member | %%members_email_1%% | %%am_ws_2%% |  |
+| create-user | %%members_email_2%% | %%password%% | %%am_acct_one%% |
+| add-member | %%members_email_2%% | %%am_ws_1%% |  |
+| add-member | %%members_email_2%% | %%am_ws_2%% |  |
+| create-user | %%members_email_3%% | %%password%% | %%am_acct_one%% |
+| add-member | %%members_email_3%% | %%am_ws_1%% |  |
+| add-member | %%members_email_3%% | %%am_ws_2%% |  |
+| create-user | %%view_edit_email%% | %%password%% | %%am_acct_one%% |
+| add-member | %%view_edit_email%% | %%am_ws_1%% |  |
+| add-member | %%view_edit_email%% | %%am_ws_2%% |  |
+| st-logoutin | %%view_edit_email%% | %%password%% |  |
 
 | *Comment* | Test Case: Active Members - Username Creates a page in %%am_ws_1%% |  |
 | open_ok | /%%am_ws_1%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
@@ -59,10 +58,13 @@
 
 | *Comment* | Test Case: Active Members - Other users view profiles, view/edit pages, and send signals |  |
 | st-logoutin | %%members_email_1%% | %%password%% |
+| set | mark | step1 |
 | include | [Test Case: Active Member Actions] |  |
 | st-logoutin | %%members_email_2%% | %%password%% |
+| set | mark | step2 |
 | include | [Test Case: Active Member Actions] |  |
 | st-logoutin | %%members_email_3%% | %%password%% |
+| set | mark | step3 |
 | include | [Test Case: Active Member Actions] |  |
 | include | [Test Case: Active Member Actions] |  |
 | st-catchup-logs |  |  |
