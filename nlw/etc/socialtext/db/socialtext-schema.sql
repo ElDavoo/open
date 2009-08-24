@@ -297,6 +297,14 @@ UNION ALL
          SELECT user_account_implicit_gwr.account_id, user_account_implicit_gwr.user_id
            FROM user_account_implicit_gwr) account_user_relationships;
 
+CREATE VIEW account_user_no_groups AS
+  SELECT "Workspace".account_id, "UserWorkspaceRole".user_id
+   FROM "UserWorkspaceRole"
+   JOIN "Workspace" USING (workspace_id)
+UNION ALL 
+ SELECT "UserMetadata".primary_account_id AS account_id, "UserMetadata".user_id
+   FROM "UserMetadata";
+
 CREATE VIEW all_user_workspace AS
   SELECT my_workspaces.user_id, my_workspaces.workspace_id
    FROM ( SELECT "UserWorkspaceRole".user_id, "UserWorkspaceRole".workspace_id
