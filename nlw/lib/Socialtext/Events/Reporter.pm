@@ -222,9 +222,9 @@ sub visible_exists {
     my $sql = qq{
        EXISTS (
             SELECT 1
-            FROM account_user viewer
+            FROM account_user_no_groups viewer
             JOIN account_plugin USING (account_id)
-            JOIN account_user othr USING (account_id)
+            JOIN account_user_no_groups othr USING (account_id)
             WHERE plugin = '$plugin' AND viewer.user_id = ?
               AND othr.user_id = $event_field
     };
