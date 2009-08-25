@@ -1046,10 +1046,6 @@ CREATE UNIQUE INDEX groups_account_user_group_name
 CREATE UNIQUE INDEX groups_driver_unique_id
 	    ON groups (driver_key, driver_unique_id);
 
-CREATE INDEX ix_event_at_signal_id_not_null
-	    ON event ("at")
-	    WHERE (COALESCE(signal_id, (0)::bigint) <> 0);
-
 CREATE INDEX ix_container_account_id
 	    ON container (account_id);
 
@@ -1077,6 +1073,10 @@ CREATE INDEX ix_event_actor_time
 
 CREATE INDEX ix_event_at
 	    ON event ("at");
+
+CREATE INDEX ix_event_at_signal_id_not_null
+	    ON event ("at")
+	    WHERE (COALESCE(signal_id, (0)::bigint) <> 0);
 
 CREATE INDEX ix_event_event_class_action_at
 	    ON event (event_class, "action", "at");
