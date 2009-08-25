@@ -21,6 +21,8 @@ sub allowed_methods { 'GET' }
 sub collection_name { loc('Events') }
 sub events_auth_method { 'default' }
 
+our @ADD_HEADERS = (); # for testing only!
+
 sub default_if_authorized {
     my $self = shift;
     my $method = shift;
@@ -176,8 +178,19 @@ sub extract_people_args {
            _bunch_of($q,'person.id');
 }
 
+sub _add_test_headers {
+    my $self = shift;
+
+    $self->rest->header(
+        $self->rest->header,
+        @ADD_HEADERS,
+    );
+    @ADD_HEADERS = ();
+}
+
 sub resource_to_text {
     my ($self, $events) = @_;
+    $self->_add_test_headers();
     $self->template_render('data/events.txt', {
         events => $events,
         viewer => $self->rest->user,
@@ -186,6 +199,7 @@ sub resource_to_text {
 
 sub resource_to_html {
     my ($self, $events) = @_;
+    $self->_add_test_headers();
     $self->template_render('data/events.html', {
         events => $events,
         viewer => $self->rest->user,
@@ -194,6 +208,8 @@ sub resource_to_html {
 
 sub resource_to_atom {
     my ($self, $events) = @_;
+
+    $self->_add_test_headers();
 
     # Format dates for atom
     $_->{at} =~ s{^(\d+-\d+-\d+) (\d+:\d+:\d+).\d+Z$}{$1T$2+0} for @$events;
@@ -216,6 +232,7 @@ sub _htmlize_event {
 sub resource_to_json {
     my ($self, $events) = @_;
     $self->_htmlize_event($_) for @$events;
+    $self->_add_test_headers();
     return encode_json($events);
 }
 
