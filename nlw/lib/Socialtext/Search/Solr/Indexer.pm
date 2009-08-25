@@ -32,6 +32,8 @@ has '_docs' => (
     provides => { push => '_add_doc' },
 );
 
+use constant FUDGE_ATTACH_REVS => 25;
+
 sub _build_solr {
     my $self = shift;
     return WebService::Solr->new(
@@ -84,9 +86,12 @@ sub index_workspace {
 # Delete the index directory.
 sub delete_workspace {
     my ( $self, $ws_name ) = @_;
+    my $ws = Socialtext::Workspace->new(name => $ws_name);
+    my $ws_id = $ws->workspace_id;
     
-    die 'todo';
-    $self->_commit;
+    Socialtext::Timer->Continue('solr_del_wksp');
+    $self->solr->delete_by_query("w:$ws_id");
+    Socialtext::Timer->Pause('solr_del_wksp');
 }
 
 # Get all the active attachments on a given page and add them to the index.
@@ -109,6 +114,7 @@ sub index_page {
     my ( $self, $page_uri ) = @_;
     my $page = $self->_load_page($page_uri) || return;
     $self->_add_page_doc($page);
+    $self->_index_page_attachments($page);
     $self->_commit;
 }
 
@@ -149,7 +155,7 @@ sub _add_page_doc {
         [w => $ws_id],
         [c => 'page'], 
         [c => $page->metadata->Type],
-        [page_key => $self->page_key($page)],
+        [page_key => $self->page_key($page->id)],
         [title => $page->title],
         [date => $mtime],
         [created => $ctime],
@@ -167,9 +173,9 @@ sub _add_page_doc {
 
 sub page_key {
     my $self = shift;
-    my $page = shift;
+    my $page_id = shift;
 
-    join '__', $self->workspace->workspace_id, $page->id;
+    join '__', $self->workspace->workspace_id, $page_id;
 }
 
 ########################
@@ -201,33 +207,52 @@ sub delete_attachment {
 }
 
 # Get the attachments content, create a new Document, set the Doc's fields,
-# and add the Document to the index.  The key for this document is
-# 'page_id:attachment_id'.
+# and add the Document to the index.
 sub _add_attachment_doc {
-    my ( $self, $attachment ) = @_;
-    # REVIEW we are using page_id not page_uri here where we pass to
-    # compose_key, which may or may not be guaranteed to be okay...
-    # XXX FIXME HACK
-    my $key
-        = $self->generate_key( $attachment->page_id ) . ':' . $attachment->id;
-    my $content = $attachment->to_string;
-    _debug( "Retrieved attachment content.  Length is " . length $content );
-    return unless length $content;
-    $self->_truncate( $key, \$content );
+    my $self = shift;
+    my $att = shift;
 
-    my $doc = $self->_create_new_document();
-    $self->_set_fields(
-        $doc,
-        key       => $key,
-        parent    => $attachment->page_id,
-        title     => $attachment->id,
-        type      => Socialtext::Search::ContentTypes->lookup( 
-                         ref $attachment ),
-        workspace => Socialtext::Search::Utils::harden( $self->ws_name ),
-        text      => $content,
+    Socialtext::Timer->Continue('solr_add_attach');
+
+    my $ws_id = $self->workspace->workspace_id;
+    my $id = join(':',$ws_id,$att->page_id,$att->id);
+    st_log->debug("Indexing attachment doc $id <".$att->filename.">");
+
+    my $date = _date_header_to_iso($att->Date);
+    my $editor_id = $att->uploaded_by->user_id;
+
+    # XXX: this code assumes there's just one attachment revision
+    # counteract the revisions boost by providing a dummy constant
+    my $revisions = FUDGE_ATTACH_REVS;
+
+    Socialtext::Timer->Continue('solr_attach_body');
+    my $body = $att->to_string;
+    _scrub_body(\$body);
+    my $key = $self->page_key($att->page_id);
+    $self->_truncate( $key, \$body );
+    Socialtext::Timer->Pause('solr_attach_body');
+
+    _debug( "Retrieved attachment content.  Length is " . length $body );
+    return unless length $body;
+
+    my @fields = (
+        [id => $id],
+        [w => $ws_id],
+        [c => 'page'], [c => 'attachment'],
+        [page_key => $key],
+        [attach_id => $att->id],
+        [title => $att->filename],
+        [filename => $att->filename],
+        [editor => $editor_id],
+        [creator => $editor_id],
+        [date => $date],
+        [created => $date],
+        [revisions => $revisions],
+        [body => $body],
     );
 
-    $self->_add_document($doc);
+    $self->_add_doc(WebService::Solr::Document->new(@fields));
+    Socialtext::Timer->Pause('solr_add_attach');
 }
 
 # Make sure the text we index is not bigger than 20 million characters, which
@@ -293,12 +318,19 @@ sub _commit {
     Socialtext::Timer->Continue('solr_commit');
     my $docs = $self->_docs;
     eval {
-        # TODO
-#        Socialtext::Timer->Continue('solr_delete');
-#        $self->solr->delete_by_query(
-#            'page_key:'.$self->page_key
-#        );
-#        Socialtext::Timer->Pause('solr_delete');
+        # First, explicitly delete all previously indexed content for
+        # this page
+        my %page_keys;
+        for my $d (@$docs) {
+            next unless $d->{page_key};
+            $page_keys{$d->{page_key}}++;
+
+        }
+        Socialtext::Timer->Continue('solr_delete');
+        for my $key (keys %page_keys) {
+            $self->solr->delete_by_query("page_key:$key");
+        }
+        Socialtext::Timer->Pause('solr_delete');
 
         if (@$docs) {
             Socialtext::Timer->Continue('solr_add');

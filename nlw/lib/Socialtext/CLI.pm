@@ -1992,15 +1992,11 @@ sub index_workspace {
     my $search_config = $self->_optional_string('search-config') || 'live';
     if ( $self->_get_options("sync") ) {
         my $ws_name = $hub->current_workspace()->name();
-        my $factory = Socialtext::Search::AbstractFactory->GetFactory();
-        my $indexer = $factory->create_indexer(
-            $ws_name,
-            config_type => $search_config
-        );
-        if ( !$indexer ) {
-            $self->_error("Couldn't create an indexer\n");
+        require Socialtext::Search::AbstractFactory;
+        my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
+        for my $indexer (@indexers) {
+            $indexer->index_workspace($ws_name);
         }
-        $indexer->index_workspace($ws_name);
         $self->_success("The $ws_name workspace has been indexed.");
     }
 
