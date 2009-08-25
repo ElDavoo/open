@@ -1046,7 +1046,7 @@ CREATE UNIQUE INDEX groups_account_user_group_name
 CREATE UNIQUE INDEX groups_driver_unique_id
 	    ON groups (driver_key, driver_unique_id);
 
-CREATE INDEX ix
+CREATE INDEX ix_event_at_signal_id_not_null
 	    ON event ("at")
 	    WHERE (COALESCE(signal_id, (0)::bigint) <> 0);
 
