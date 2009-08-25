@@ -1,0 +1,338 @@
+package Socialtext::Search::Solr::Indexer;
+# @COPYRIGHT@
+use Date::Parse qw(str2time);
+use DateTime;
+use Moose;
+use MooseX::AttributeInflate;
+use MooseX::AttributeHelpers;
+use Socialtext::Timer;
+use Socialtext::Hub;
+use Socialtext::Workspace;
+use Socialtext::Page;
+use Socialtext::User;
+use Socialtext::Attachment;
+use Socialtext::Attachments;
+use Socialtext::Log qw(st_log);
+use Socialtext::Search::ContentTypes;
+use Socialtext::Search::Utils;
+use Socialtext::File;
+use WebService::Solr;
+use namespace::clean -except => 'meta';
+
+extends 'Socialtext::Search::Indexer';
+
+has 'ws_name' => (is => 'ro', isa => 'Str', required => 1);
+has 'workspace' => (is => 'ro', isa => 'Object', lazy_build => 1);
+has 'hub' => (is => 'ro', isa => 'Object', lazy_build => 1);
+
+has_inflated 'solr' => (
+    is => 'ro', isa => 'WebService::Solr',
+    inflate_args => ['http://localhost:8983/solr', {autocommit => 0}],
+);
+has '_docs' => (
+    is => 'rw', isa => 'ArrayRef[WebService::Solr::Document]',
+    metaclass => 'Collection::Array',
+    default => sub { [] },
+    provides => { push => '_add_doc' },
+);
+
+sub _build_workspace {
+    my $self = shift;
+    my $ws_name = $self->ws_name;
+    my $ws = Socialtext::Workspace->new( name => $ws_name );
+    die "Cannot create workspace '$ws_name'" unless defined $ws;
+    return $ws;
+}
+
+sub _build_hub {
+    my $self = shift;
+    my $ws_name = $self->ws_name;
+
+    my $hub = Socialtext::Hub->new(
+        current_workspace => $self->workspace,
+        current_user => Socialtext::User->SystemUser,
+    );
+    $hub->registry->load;
+    _debug("Loaded Hub with workspace '$ws_name'.");
+
+    return $hub;
+}
+
+######################
+# Workspace Handlers
+######################
+
+# Make sure we're in a valid workspace, then recreate the index and get all
+# the active pages, add each of them, and then add all the attachments on each
+# page. 
+sub index_workspace {
+    my ( $self, $ws_name ) = @_;
+    $self->delete_workspace($ws_name);
+    _debug("Starting to retrieve page ids to index workspace.");
+    for my $page_id ( $self->hub->pages->all_ids ) {
+        my $page = $self->_load_page($page_id) || next;
+        $self->_add_page_doc($page);
+        $self->_index_page_attachments($page);
+    }
+    $self->commit;
+}
+
+# Delete the index directory.
+sub delete_workspace {
+    my ( $self, $ws_name ) = @_;
+    
+    die 'todo';
+    $self->commit;
+}
+
+# Get all the active attachments on a given page and add them to the index.
+sub _index_page_attachments {
+    my ( $self, $page ) = @_;
+    _debug( "Retrieving attachments from page: " . $page->id );
+    my $attachments = $page->hub->attachments->all( page_id => $page->id );
+    _debug( sprintf "Retreived %d attachments", scalar @$attachments );
+    for my $attachment (@$attachments) {
+        $self->_add_attachment_doc($attachment);
+    }
+}
+
+##################
+# Page Handling
+##################
+
+# Load up the page and add its content to the index.
+sub index_page {
+    my ( $self, $page_uri ) = @_;
+    my $page = $self->_load_page($page_uri) || return;
+    $self->_add_page_doc($page);
+    $self->commit;
+}
+
+# Remove the page from the index.
+sub delete_page {
+    my ( $self, $page_uri ) = @_;
+    die 'todo';
+    $self->commit;
+}
+
+# Create a new Document object and set it's fields.  Then delete the document
+# from the index using 'key', which should be unique, and then add the
+# document to the index.  The 'key' is just the page id.
+sub _add_page_doc {
+    my $self = shift;
+    my $page = shift;
+
+    Socialtext::Timer->Continue('solr_page');
+
+    my $ws_id = $self->workspace->workspace_id;
+    my $id = join(':',$ws_id,$page->id);
+    st_log->debug("Indexing page doc $id");
+
+    my $mtime = _date_header_to_iso($page->metadata->Date);
+    my $editor_id = $page->last_edited_by->user_id;
+    my $ctime = _date_header_to_iso($page->original_revision->metadata->Date);
+    my $creator_id = $page->creator->user_id;
+
+    my $revisions = $page->revision_count;
+
+    Socialtext::Timer->Continue('solr_page_body');
+    my $body = $page->_to_plain_text;
+    _scrub_body(\$body);
+    Socialtext::Timer->Pause('solr_page_body');
+
+    my @fields = (
+        [id => $id],
+        [w => $ws_id],
+        [c => 'page'], 
+        [c => $page->metadata->Type],
+        [page_key => $self->page_key($page)],
+        [title => $page->title],
+        [date => $mtime],
+        [created => $ctime],
+        [editor => $editor_id],
+        [creator => $creator_id],
+        [revisions => $revisions],
+        [body => $body],
+        map { [ tag => $_ ] } @{$page->metadata->Category},
+    );
+
+    $self->_add_doc(WebService::Solr::Document->new(@fields));
+
+    Socialtext::Timer->Pause('solr_page');
+}
+
+sub page_key {
+    my $self = shift;
+    my $page = shift;
+
+    join '__', $self->workspace->workspace_id, $page->id;
+}
+
+########################
+# Attachment Handling
+########################
+
+# Load an attachment and then add it to the index.
+sub index_attachment {
+    my ( $self, $page_uri, $attachment_id ) = @_;
+
+    my $attachment = Socialtext::Attachment->new(
+        hub     => $self->hub,
+        id      => $attachment_id,
+        page_id => $page_uri,
+    )->load;
+    _debug("Loaded attachment: page_id=$page_uri attachment_id=$attachment_id");
+
+    $self->_add_attachment_doc($attachment);
+    $self->commit();
+}
+
+# Remove an attachment from the index.
+sub delete_attachment {
+    my ( $self, $page_uri, $attachment_id ) = @_;
+    my $key;
+    $key = $page_uri . ':' . $attachment_id;
+    $self->_delete_doc_by_key( $key );
+    $self->_finish();
+}
+
+# Get the attachments content, create a new Document, set the Doc's fields,
+# and add the Document to the index.  The key for this document is
+# 'page_id:attachment_id'.
+sub _add_attachment_doc {
+    my ( $self, $attachment ) = @_;
+    # REVIEW we are using page_id not page_uri here where we pass to
+    # compose_key, which may or may not be guaranteed to be okay...
+    # XXX FIXME HACK
+    my $key
+        = $self->generate_key( $attachment->page_id ) . ':' . $attachment->id;
+    my $content = $attachment->to_string;
+    _debug( "Retrieved attachment content.  Length is " . length $content );
+    return unless length $content;
+    $self->_truncate( $key, \$content );
+
+    my $doc = $self->_create_new_document();
+    $self->_set_fields(
+        $doc,
+        key       => $key,
+        parent    => $attachment->page_id,
+        title     => $attachment->id,
+        type      => Socialtext::Search::ContentTypes->lookup( 
+                         ref $attachment ),
+        workspace => Socialtext::Search::Utils::harden( $self->ws_name ),
+        text      => $content,
+    );
+
+    $self->_add_document($doc);
+}
+
+# Make sure the text we index is not bigger than 20 million characters, which
+# is about 20 MB.  Unicode might screw us here with its multibyte characters,
+# but I'm not too worried about it.
+# 
+# The 20 MB figure was arrived at by history which is no longer relevant.
+#
+# See {link dev-tasks [KinoSearch - Maximum File Size Cap]} for more
+# information.
+sub _truncate {
+    my ( $self, $key, $text_ref ) = @_;
+    my $max_size = 20 * ( 1024**2 );
+    return if length($$text_ref) <= $max_size;
+    my $info = "ws = " . $self->ws_name . " key = $key";
+    _debug("Truncating text to $max_size characters:  $info");
+    $$text_ref = substr( $$text_ref, 0, $max_size );
+}
+
+#################
+# Miscellaneous 
+#################
+
+# Given a page_id, retrieve the corresponding Page object.
+sub _load_page {
+    my ( $self, $page_id ) = @_;
+    _debug("Loading $page_id");
+    my $page = $self->hub->pages->new_page($page_id);
+    if ( not defined $page ) {
+        _debug("Could not load page $page_id");
+    }
+    elsif ( $page->deleted ) {
+        _debug("Page $page_id is deleted, skipping.");
+        undef $page;
+    }
+    _debug("Finished loading $page_id");
+    return $page;
+}
+
+# Send a debugging message to syslog.
+sub _debug {
+    my $msg = shift || "(no message)";
+    $msg = __PACKAGE__ . ": $msg";
+    st_log->debug($msg);
+}
+
+sub _date_header_to_iso {
+    my $hdr = shift;
+    my $date = DateTime->from_epoch(epoch => str2time($hdr));
+    $date->set_time_zone('UTC');
+    return $date->iso8601 . 'Z';
+}
+
+sub _scrub_body {
+    my $body_ref = shift;
+    $$body_ref =~ s/[[:cntrl:]]+/ /g; # make Jetty happy
+}
+
+sub _commit {
+    my $self = shift;
+
+    _debug("Preparing to finalize index.");
+    Socialtext::Timer->Continue('solr_commit');
+    my $docs = $self->_docs;
+    eval {
+#        Socialtext::Timer->Continue('solr_delete');
+#        $self->solr->delete_by_query(
+#            'page_key:'.$self->page_key
+#        );
+#        Socialtext::Timer->Pause('solr_delete');
+
+        if (@$docs) {
+            Socialtext::Timer->Continue('solr_add');
+            st_log->debug('Adding '.@$docs.' documents to index');
+            $self->solr->add($docs);
+            Socialtext::Timer->Pause('solr_add');
+        }
+    };
+    my $err = $@;
+    Socialtext::Timer->Pause('solr_commit');
+    die $err if $err;
+    _debug("Done finalizing index.");
+}
+
+__PACKAGE__->meta->make_immutable;
+1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Socialtext::Search::KinoSearch::Indexer
+
+=cut
+
+=head1 SEE
+
+L<Socialtext::Search::Indexer> for the interface definition.
+
+=head1 AUTHOR
+
+Socialtext, Inc. C<< <code@socialtext.com> >>
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2006 Socialtext, Inc., all rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut

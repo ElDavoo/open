@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 13;
 use Test::Socialtext::Search;
 use Socialtext::Search::AbstractFactory;
 
@@ -27,3 +27,9 @@ search_for_term('the impossiblesearchterm', 'negate');
 
 # search for number (plucene simple no index numbers)
 search_for_term('1', 'negate');
+
+
+Multiple_indexers: {
+    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers('admin');
+    is scalar(@indexers), 2, 'found 2 indexers';
+}

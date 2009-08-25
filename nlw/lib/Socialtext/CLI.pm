@@ -1943,19 +1943,13 @@ sub index_page {
     my ( $hub, $main ) = $self->_require_hub();
     my $page = $self->_require_page($hub);
 
-    my $search_config = $self->_optional_string('search-config') || 'live';
     my $ws_name = $hub->current_workspace()->name();
 
     require Socialtext::Search::AbstractFactory;
-    my $indexer
-        = Socialtext::Search::AbstractFactory->GetFactory->create_indexer(
-        $ws_name,
-        config_type => $search_config
-    );
-    if ( !$indexer ) {
-        $self->_error("Couldn't create an indexer\n");
+    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
+    for my $indexer (@indexers) {
+        $indexer->index_page( $page->id() );
     }
-    $indexer->index_page( $page->id() );
 
     $self->_success( 'The '
             . $page->metadata()->Subject()

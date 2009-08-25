@@ -64,6 +64,33 @@ sub GetFactory {
     return $factory;
 }
 
+=head2 GetIndexers()
+
+Returns an array of indexer objects for the current active indexers.
+
+=cut
+
+sub GetIndexers {
+    my ( $class, $ws_name ) = @_;
+
+    my @classes = (Socialtext::AppConfig->search_factory_class);
+    if ($classes[0] !~ m/solr/i) {
+        push @classes, 'Socialtext::Search::Solr::Factory';
+    }
+
+    my @indexers;
+    for my $class (@classes) {
+        eval "require $class";
+        die __PACKAGE__, "->GetFactory: $@" if $@;
+
+        my $factory = $class->new
+            or die __PACKAGE__, "->GetFactory: $class->new returned null";
+        push @indexers, $factory->create_indexer($ws_name);
+    }
+
+    return @indexers;
+}
+
 =head1 OBJECT INTERFACE
 
 =head2 $factory->create_searcher($workspace_name,
