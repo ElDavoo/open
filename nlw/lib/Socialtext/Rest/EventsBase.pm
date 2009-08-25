@@ -123,6 +123,7 @@ sub extract_common_args {
     push @args,
         _one($q,'before'),
         _one($q,'after'),
+        _one($q, 'activity'),
         _bunch_of($q,'account_id'),
         _bunch_of($q,'event_class'),
         _bunch_of($q,'action'),

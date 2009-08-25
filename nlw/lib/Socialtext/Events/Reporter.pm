@@ -483,7 +483,11 @@ sub _build_standard_sql {
         }
 
         if ($opts->{signals}) {
-            $self->add_condition('COALESCE(signal_id, 0)<>0');
+            $self->add_condition('signal_id IS NOT NULL');
+        }
+
+        if ($opts->{activity} && $opts->{activity} eq 'all-combined') {
+            $self->add_condition('NOT is_ignorable_action(event_class,action)');
         }
 
         # filter for contributions-type events
