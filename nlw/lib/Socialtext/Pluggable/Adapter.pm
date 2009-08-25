@@ -27,10 +27,9 @@ memoize('plugins', NORMALIZER => sub { '' } ); # memoize ignores args
 # These hook types are executed only once, all other types are called as many
 # times as they are registered
 my %ONCE_TYPES = (
-    action       => 1,
-    wafl         => 1,
-    template     => 1,
-    template_var => 1,
+    action => 1,
+    wafl   => 1,
+    root   => 1,
 );
 
 BEGIN {
@@ -197,7 +196,7 @@ sub register {
                 $registry->add(action => $action);
             }
 
-            $hook->{once} = 1 if $ONCE_TYPES{$type};
+            $hook->{type} = $type;
 
             push @{$hook_types{$type}}, $hook;
             push @{$hooks{$hook->{name}}}, $hook;
@@ -289,6 +288,7 @@ sub hook {
         for my $hook (@$hooks) {
             my $method = $hook->{method};
             my $plugin = $self->plugin_object($hook->{class});
+            my $type = $hook->{type};
 
             my $enabled = $plugin->is_hook_enabled($name);
             next unless $enabled;
@@ -297,8 +297,12 @@ sub hook {
                 local $plugin->{_action_plugin} =
                     ($name =~ /^action\./) ? $plugin->name : undef;
                 $plugin->declined(undef);
+                $plugin->last($ONCE_TYPES{$type});
                 my $results = $plugin->$method(@args);
-                unless ($plugin->declined) {
+                if ($plugin->declined) {
+                    $plugin->last(undef);
+                }
+                else {
                     push @output, $results;
                 }
             };
@@ -308,13 +312,7 @@ sub hook {
                 return $err;
             }
 
-            # XXX: special handling for "root" plugins; run them all until one
-            # of them does some processing.
-            if ($name eq 'root') {
-                last unless $plugin->declined;
-            }
-
-            last if $hook->{once};
+            last if $plugin->last;
         }
     }
     return @output == 1 ? $output[0] : join("\n", grep {defined} @output);

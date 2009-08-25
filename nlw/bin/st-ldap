@@ -56,8 +56,13 @@ my %commands = (
         Socialtext::LDAP::Operations->LoadUsers(dryrun => $dryrun);
     },
 );
-unless ($commands{$command}) {
-    die "Unknown command, '$command'.\n";
+
+if ( $command ) {
+    die "Unknown command, '$command'.\n" unless ($commands{$command});
+}
+else {
+    print "$0 requires a command\n\n";
+    pod2usage(1) unless $command;
 }
 
 $commands{$command}->();

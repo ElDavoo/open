@@ -32,6 +32,7 @@ my %rests;
 field hub => -weak;
 field 'rest';
 field 'declined';
+field 'last';
 
 const priority => 100;
 const scope => 'account';

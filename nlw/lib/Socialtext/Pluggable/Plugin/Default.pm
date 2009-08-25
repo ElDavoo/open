@@ -15,7 +15,6 @@ sub scope { 'always' }
 sub register {
     my $class = shift;
     $class->add_hook('root'                              => 'root');
-    $class->add_hook('wafl.user'                         => 'user_name');
 
     # Socialtext People Hooks
     $class->add_hook('template.user_avatar.content'      => 'user_name');
