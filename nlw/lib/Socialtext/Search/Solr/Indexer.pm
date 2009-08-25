@@ -21,20 +21,24 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Search::Indexer';
 
-has 'ws_name' => (is => 'ro', isa => 'Str', required => 1);
-has 'workspace' => (is => 'ro', isa => 'Object', lazy_build => 1);
-has 'hub' => (is => 'ro', isa => 'Object', lazy_build => 1);
-
-has_inflated 'solr' => (
-    is => 'ro', isa => 'WebService::Solr',
-    inflate_args => ['http://localhost:8983/solr', {autocommit => 0}],
-);
+has 'ws_name'   => (is => 'ro', isa => 'Str', required => 1);
+has 'workspace' => (is => 'ro', isa => 'Object',           lazy_build => 1);
+has 'hub'       => (is => 'ro', isa => 'Object',           lazy_build => 1);
+has 'solr'      => (is => 'ro', isa => 'WebService::Solr', lazy_build => 1);
 has '_docs' => (
     is => 'rw', isa => 'ArrayRef[WebService::Solr::Document]',
     metaclass => 'Collection::Array',
     default => sub { [] },
     provides => { push => '_add_doc' },
 );
+
+sub _build_solr {
+    my $self = shift;
+    return WebService::Solr->new(
+        Socialtext::AppConfig->solr_base,
+        { autocommit => 0 },
+    );
+}
 
 sub _build_workspace {
     my $self = shift;
@@ -74,7 +78,7 @@ sub index_workspace {
         $self->_add_page_doc($page);
         $self->_index_page_attachments($page);
     }
-    $self->commit;
+    $self->_commit;
 }
 
 # Delete the index directory.
@@ -82,7 +86,7 @@ sub delete_workspace {
     my ( $self, $ws_name ) = @_;
     
     die 'todo';
-    $self->commit;
+    $self->_commit;
 }
 
 # Get all the active attachments on a given page and add them to the index.
@@ -105,14 +109,14 @@ sub index_page {
     my ( $self, $page_uri ) = @_;
     my $page = $self->_load_page($page_uri) || return;
     $self->_add_page_doc($page);
-    $self->commit;
+    $self->_commit;
 }
 
 # Remove the page from the index.
 sub delete_page {
     my ( $self, $page_uri ) = @_;
     die 'todo';
-    $self->commit;
+    $self->_commit;
 }
 
 # Create a new Document object and set it's fields.  Then delete the document
@@ -184,7 +188,7 @@ sub index_attachment {
     _debug("Loaded attachment: page_id=$page_uri attachment_id=$attachment_id");
 
     $self->_add_attachment_doc($attachment);
-    $self->commit();
+    $self->_commit();
 }
 
 # Remove an attachment from the index.
@@ -289,6 +293,7 @@ sub _commit {
     Socialtext::Timer->Continue('solr_commit');
     my $docs = $self->_docs;
     eval {
+        # TODO
 #        Socialtext::Timer->Continue('solr_delete');
 #        $self->solr->delete_by_query(
 #            'page_key:'.$self->page_key

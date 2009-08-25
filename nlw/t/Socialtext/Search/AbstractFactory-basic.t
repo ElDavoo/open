@@ -16,8 +16,13 @@ fixtures(qw( clean admin no-ceq-jobs ));
 
 ###############################################################################
 # We only want this *ONE* Page indexed, not the whole WS.
-Socialtext::Search::AbstractFactory->GetFactory->create_indexer('admin')
-    ->index_page('quick_start');
+Multiple_indexers: {
+    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers('admin');
+    is scalar(@indexers), 2, 'found 2 indexers';
+    for my $i (@indexers) {
+        $i->index_page('quick_start');
+    }
+}
 
 # test for a simple entry
 search_for_term('the');
@@ -29,7 +34,3 @@ search_for_term('the impossiblesearchterm', 'negate');
 search_for_term('1', 'negate');
 
 
-Multiple_indexers: {
-    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers('admin');
-    is scalar(@indexers), 2, 'found 2 indexers';
-}
