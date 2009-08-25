@@ -10,13 +10,15 @@ use LWP::Simple qw/get/;
 use Getopt::Long;
 
 my $core_name;
+my $solr_host = 'http://localhost:8983';
 my $verbose = 0;
 GetOptions(
     'core=s' => \$core_name,
+    'solr_host=s' => \$solr_host,
     'verbose!' => \$verbose,
 );
 
-my $SOLR_ADMIN_BASE = q{http://localhost:8983/solr/admin/cores};
+my $SOLR_ADMIN_BASE = $solr_host . q{/solr/admin/cores};
 
 my $status = get("$SOLR_ADMIN_BASE?action=STATUS&wt=json");
 my $struct = decode_json($status);
