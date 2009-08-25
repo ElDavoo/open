@@ -1189,9 +1189,6 @@ CREATE INDEX ix_event_workspace_contrib
 CREATE INDEX ix_event_workspace_page
 	    ON event (page_workspace_id, page_id);
 
-CREATE INDEX ix_gadget__src
-	    ON gadget (src);
-
 CREATE INDEX ix_gadget_instance__container_id
 	    ON gadget_instance (container_id);
 
