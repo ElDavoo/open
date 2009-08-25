@@ -17,7 +17,10 @@ use Test::HTTP;
 use Time::HiRes qw/gettimeofday tv_interval time/;
 use URI::Escape qw(uri_unescape uri_escape);
 use Data::Dumper;
+use MIME::Types;
 use Cwd;
+use HTTP::Request::Common;
+use LWP::UserAgent;
 
 =head1 NAME
 
@@ -104,8 +107,6 @@ sub http_user_pass {
     $self->{http}->username($user) if $user;
     $self->{http}->password($pass) if $pass;
 }
-
-
 
 =head2 follow_redirects_for ( $methods )
 
@@ -721,6 +722,36 @@ sub post_form {
     $self->post($uri, 'Content-Type=application/x-www-form-urlencoded', @_);
 }
 
+=head2 post_file( uri, post_vars, filename_var filename )
+
+Post a local file to the specified URI
+
+    | post-file | other_var=1&something_else=1 | file | bob.txt |
+
+=cut
+
+sub post_file {
+    my $self = shift;
+    my $uri = shift;
+    my $vars = shift;
+    my $filename_var = shift;
+    my $filename = shift;
+
+    my @vars = map { /^(.*)=(.*)$/ } split /;&/, $vars;
+    push @vars, ($filename_var, [$filename]); 
+
+    my $ua = LWP::UserAgent->new;
+    my $req = POST $self->{browser_url} . $uri,
+        Content_Type => 'multipart/form-data',
+        Content => \@vars;
+    $req->authorization_basic($self->{username}, $self->{password});
+    my $start = time();
+    my $res = $ua->request($req);
+    $self->{http}->response($res);
+    die $res->status_line unless $res->is_success;
+    $self->{_last_http_time} = time() - $start;
+}
+
 =head2 put( uri, headers, body )
 
 Put to the specified URI
@@ -768,8 +799,8 @@ sub put_sheet {
 
 Enables/disables support for HTTP "Keep-Alive" connections (defaulting to I<off>).
 
-When called, this method re-instantiates the C<Test::HTTP> object that is
-being used for testing; be aware of this when writing your tests.
+When called, this method re-instantiates the C<Test::HTTP> object
+that is being used for testing; be aware of this when writing your tests.
 
 =cut
 
@@ -778,7 +809,8 @@ sub set_http_keepalive {
     my $on_off = shift;
 
     # switch User-Agent classes
-    $Test::HTTP::UaClass = $on_off ? 'Test::LWP::UserAgent::keep_alive' : 'LWP::UserAgent';
+    $Test::HTTP::UaClass = $on_off
+        ? 'Test::LWP::UserAgent::keep_alive' : 'LWP::UserAgent';
 
     # re-instantiate our Test::HTTP object
     delete $self->{http};
