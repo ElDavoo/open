@@ -263,9 +263,13 @@ my $SIGNAL_VIS_SQL = <<'EOSQL';
 EOSQL
 
 sub visible_exists {
+    my $self = shift;
     my $plugin = shift;
     my $event_field = shift;
-    my $account_id = shift;
+    my $opts = shift;
+    my $bind_ref = shift;
+
+    my $account_id = $opts->{account_id};
 
     my $sql = qq{
        EXISTS (
@@ -276,38 +280,74 @@ sub visible_exists {
             WHERE plugin = '$plugin' AND viewer.user_id = ?
               AND othr.user_id = $event_field
     };
+    push @$bind_ref, $self->viewer->user_id;
 
     if ($account_id) {
-        $sql .= "\nAND account_id = ? ";
+        $sql .= "\nAND account_id = ?\n";
+        push @$bind_ref, $account_id;
     }
 
     if ($plugin eq 'signals') {
         $sql .= $SIGNAL_VIS_SQL;
+        push @$bind_ref, ($self->viewer->user_id) x 2;
     }
 
     $sql .= "\n)";
     return $sql;
 }
 
+sub no_signals_are_visible {
+    my $self = shift;
+    my $opts = shift;
+    {
+        local $@;
+        return 1 unless eval "require Socialtext::Signal; 1;";
+    }
+    return unless Socialtext::Signal->Can_shortcut_events({
+        %$opts, viewer => $self->viewer
+    });
+    push @Socialtext::Rest::EventsBase::ADD_HEADERS,
+        ('X-Events-Optimize' => 'signal-shortcut');
+    return 1;
+}
+
 sub visibility_sql {
-    my $viewer_id = shift;
-    my $account_id = shift;
-    my @unit_bind = ($viewer_id);
-    push @unit_bind, $account_id if $account_id;
-    return join("\n",
-        '(',
-            "(evt.event_class <> 'person' OR (",
-                visible_exists('people', 'evt.actor_id', $account_id),
-                "AND",
-                visible_exists('people', 'evt.person_id', $account_id),
-            '))',
-            "AND ( evt.event_class <> 'signal' OR",
-                visible_exists('signals', 'evt.actor_id', $account_id),
-            ')',
-        ')'
-    ), 
-    (@unit_bind) x 3,
-    ($viewer_id) x 2; # for signals vis
+    my $self = shift;
+    my $opts = shift;
+    my @parts;
+    my @bind;
+
+    if (_options_include_class($opts, 'person') &&
+        $self->viewer->can_use_plugin('people')
+    ) {
+        push @parts,
+            "(evt.event_class <> 'person' OR (".
+                $self->visible_exists('people','evt.actor_id',$opts,\@bind).
+                "AND".
+                $self->visible_exists('people','evt.person_id',$opts,\@bind).
+            '))';
+    }
+    else {
+        push @parts, "(evt.event_class <> 'person')";
+    }
+
+    if (_options_include_class($opts, 'signal')
+        and $self->viewer->can_use_plugin('signals') 
+        and not $self->no_signals_are_visible($opts)
+    ) {
+        push @parts,
+            "( evt.event_class <> 'signal' OR".
+                $self->visible_exists('signals','evt.actor_id',$opts,\@bind).
+            ')';
+    }
+    else {
+        push @parts, "(evt.event_class <> 'signal')";
+    }
+
+    my $sql;
+    $sql = "\n(\n".join(" AND ",@parts)."\n)\n";
+
+    return $sql,@bind;
 }
 
 my $VISIBLE_WORKSPACES = <<'EOSQL';
@@ -432,6 +472,22 @@ sub _limit_and_offset {
     return ($statement, @args);
 }
 
+sub _options_include_class {
+    my $opts = shift;
+    my $class = shift;
+
+    return 1 unless $opts->{event_class};
+
+    if (ref($opts->{event_class})) {
+        return 1 if grep { $_ eq $class } @{$opts->{event_class}};
+    }
+    else {
+        return 1 if $opts->{event_class} eq $class;
+    }
+    return 0;
+}
+
+
 sub _build_standard_sql {
     my $self = shift;
     my $opts = shift;
@@ -457,7 +513,7 @@ sub _build_standard_sql {
 
         unless ($self->{_skip_visibility}) {
             $self->add_outer_condition(
-                visibility_sql($viewer_id, $opts->{account_id})
+                $self->visibility_sql($opts)
             );
         }
 
@@ -476,6 +532,10 @@ sub _build_standard_sql {
 
         if ($opts->{signals}) {
             $self->add_condition('signal_id IS NOT NULL');
+        }
+
+        if ($opts->{activity} && $opts->{activity} eq 'all-combined') {
+            $self->add_condition('NOT is_ignorable_action(event_class,action)');
         }
 
         # filter for contributions-type events
@@ -518,6 +578,25 @@ EOSQL
 sub _get_events {
     my $self   = shift;
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+
+    # Try to shortcut a pure signals query.
+    # "just signal events or just signal actions or the magic signals flag":
+    if (( !$opts->{event_class} &&
+          $opts->{action} &&
+          !ref($opts->{action}) &&
+          $opts->{action} eq 'signal' ) or 
+        ( $opts->{event_class} &&
+          !ref($opts->{event_class}) &&
+          $opts->{event_class} eq 'signal' ) or
+        ( $opts->{signals} )
+    ) {
+        if (!$self->viewer->can_use_plugin('signals')) {
+            push @Socialtext::Rest::EventsBase::ADD_HEADERS,
+                ('X-Events-Optimize' => 'no-plugin-access');
+            return [];
+        }
+        return [] if $self->no_signals_are_visible($opts);
+    }
 
     my ($sql, $args) = $self->_build_standard_sql($opts);
 

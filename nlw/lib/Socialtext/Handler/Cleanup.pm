@@ -18,6 +18,8 @@ sub handler {
 
     Socialtext::SQL::invalidate_dbh();
 
+    @Socialtext::Rest::EventsBase::ADD_HEADERS = ();
+
     # This must always come last since it may cause the process to
     # exit.
     _call_apache_size_limit($r);

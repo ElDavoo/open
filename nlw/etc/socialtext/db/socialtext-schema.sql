@@ -35,6 +35,29 @@ END;
 $$
     LANGUAGE plpgsql IMMUTABLE;
 
+CREATE FUNCTION is_ignorable_action(event_class text, "action" text) RETURNS boolean
+    AS $$
+BEGIN
+    IF event_class = 'page' THEN
+        RETURN action IN ('view', 'edit_start', 'edit_cancel', 'edit_contention', 'watch_add', 'watch_delete');
+
+    ELSIF event_class = 'person' THEN
+        RETURN action IN ('view', 'watch_add', 'watch_delete');
+
+    ELSIF event_class = 'signal' THEN
+        RETURN false;
+
+    ELSIF event_class = 'widget' THEN
+        RETURN action NOT IN ('add');
+
+    END IF;
+
+    -- ignore all other event classes:
+    RETURN true;
+END;
+$$
+    LANGUAGE plpgsql IMMUTABLE;
+
 CREATE FUNCTION is_page_contribution("action" text) RETURNS boolean
     AS $$
 BEGIN
@@ -1064,6 +1087,10 @@ CREATE INDEX ix_container_workspace_id
 CREATE INDEX ix_event_action_at
 	    ON event ("action", "at");
 
+CREATE INDEX ix_event_activity_ignore
+	    ON event ("at")
+	    WHERE (NOT is_ignorable_action(event_class, "action"));
+
 CREATE INDEX ix_event_actor_page_contribs
 	    ON event (actor_id, page_workspace_id, page_id, "at")
 	    WHERE ((event_class = 'page') AND is_page_contribution("action"));
@@ -1143,6 +1170,14 @@ CREATE INDEX ix_event_signal_indirect
 	    ON event ("at")
 	    WHERE ((event_class = 'signal') AND (NOT is_direct_signal((actor_id)::bigint, (person_id)::bigint)));
 
+CREATE INDEX ix_event_signal_ref
+	    ON event ("at")
+	    WHERE (signal_id IS NOT NULL);
+
+CREATE INDEX ix_event_signal_ref_actions
+	    ON event ("at")
+	    WHERE ((("action" = 'signal') OR ("action" = 'edit_save')) AND (signal_id IS NOT NULL));
+
 CREATE INDEX ix_event_workspace
 	    ON event (page_workspace_id, "at")
 	    WHERE (event_class = 'page');
@@ -1153,9 +1188,6 @@ CREATE INDEX ix_event_workspace_contrib
 
 CREATE INDEX ix_event_workspace_page
 	    ON event (page_workspace_id, page_id);
-
-CREATE INDEX ix_gadget__src
-	    ON gadget (src);
 
 CREATE INDEX ix_gadget_instance__container_id
 	    ON gadget_instance (container_id);
@@ -1757,4 +1789,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '80');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '82');

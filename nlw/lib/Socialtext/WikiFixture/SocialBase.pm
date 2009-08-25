@@ -1232,7 +1232,7 @@ sub header_isnt {
         my $header = shift;
         my $expected = shift;
         my $value = $self->{http}->response->header($header);
-        isnt($value, $expected, "header $header");
+        isnt($value, $expected, "header $header isnt $expected");
     }
 }
 
