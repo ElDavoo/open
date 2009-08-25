@@ -103,9 +103,15 @@ sub _build_indexer {
     my $ws = $self->workspace or return;
 
     require Socialtext::Search::AbstractFactory;
+    require Socialtext::Search::Solr::Factory;
 
-    my $indexer = eval {
-        Socialtext::Search::AbstractFactory->GetFactory->create_indexer(
+    my $indexer;
+    eval {
+        my $factory = $self->arg->{solr}
+            ? Socialtext::Search::Solr::Factory->new
+            : Socialtext::Search::AbstractFactory->GetFactory;
+
+        $indexer = $factory->create_indexer(
             $ws->name,
             config_type => ($self->arg->{search_config} || 'live')
         );

@@ -38,16 +38,26 @@ sub index_attachment {
     return if $attachment->page->is_bad_page_title($page_id);
     return if ($attachment->loaded && $attachment->temporary);
 
+    my %job_args = (
+        workspace_id => $wksp_id,
+        page_id => $page_id,
+        attach_id => $attach_id,
+        job => {
+            priority => 63,
+            coalesce => "$wksp_id-$page_id-$attach_id",
+        },
+    );
+
+    if ($search_config and $search_config eq 'solr') {
+        return $self->insert(
+            'Socialtext::Job::AttachmentIndex' => {
+                %job_args, solr => 1,
+            }
+        );
+    }
     return $self->insert(
         'Socialtext::Job::AttachmentIndex' => {
-            workspace_id => $wksp_id,
-            page_id => $page_id,
-            attach_id => $attach_id,
-            search_config => $search_config,
-            job => {
-                priority => 63,
-                coalesce => "$wksp_id-$page_id-$attach_id",
-            },
+            %job_args, search_config => $search_config,
         }
     );
 }
@@ -74,13 +84,25 @@ sub index_page {
             },
         }
     );
-    push @job_ids, $main_job_id;
+    my $solr_job_id = $self->insert(
+        'Socialtext::Job::PageIndex' => {
+            workspace_id => $wksp_id,
+            page_id => $page_id,
+            solr => 1,
+            job => {
+                priority => 63,
+                coalesce => "$wksp_id-$page_id",
+            },
+        }
+    );
+    push @job_ids, $main_job_id, $solr_job_id;
 
     my $attachments = $page->hub->attachments->all( page_id => $page->id );
     foreach my $attachment (@$attachments) {
         next if $attachment->deleted();
         my $job_id = $self->index_attachment($attachment, $search_config);
-        push @job_ids, $job_id;
+        my $solr_job_id = $self->index_attachment($attachment, 'solr');
+        push @job_ids, $job_id, $solr_job_id;
     }
 
     return @job_ids;
