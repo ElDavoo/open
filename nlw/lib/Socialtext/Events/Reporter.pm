@@ -483,7 +483,7 @@ sub _build_standard_sql {
         }
 
         if ($opts->{signals}) {
-            $self->add_condition('signal_id IS NOT NULL');
+            $self->add_condition('COALESCE(signal_id, 0)<>0');
         }
 
         # filter for contributions-type events

@@ -1046,6 +1046,10 @@ CREATE UNIQUE INDEX groups_account_user_group_name
 CREATE UNIQUE INDEX groups_driver_unique_id
 	    ON groups (driver_key, driver_unique_id);
 
+CREATE INDEX ix
+	    ON event ("at")
+	    WHERE (COALESCE(signal_id, (0)::bigint) <> 0);
+
 CREATE INDEX ix_container_account_id
 	    ON container (account_id);
 
@@ -1757,4 +1761,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '80');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '81');
