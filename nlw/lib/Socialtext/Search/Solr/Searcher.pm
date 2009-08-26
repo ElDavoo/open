@@ -40,15 +40,14 @@ sub begin_search {
         _debug("Processing ".$self->ws_name." thunk");
         Socialtext::Timer->Continue('solr_begin');
         my $docs = $self->_search($query_string);
-
         my $results = $self->_process_docs($docs);
         Socialtext::Timer->Continue('solr_begin');
         return $results;
     };
-    return ($thunk, 0);
+    return ($thunk, -42);
 }
 
-# Parses the query string and returns the raw KinoSearch hit results.
+# Parses the query string and returns the raw Solr hit results.
 sub _search {
     my ( $self, $query_string, $authorizer ) = @_;
 
@@ -57,7 +56,6 @@ sub _search {
     _debug("Performing actual search for query in ".$self->ws_name);
 
     Socialtext::Timer->Continue('solr_raw');
-    warn "Searching for $query";
     my $response = $self->solr->search($query, {fl => 'id score'});
     my $docs = $response->docs;
     my $num_hits = $response->pager->total_entries();
@@ -111,6 +109,7 @@ sub _make_result {
     my $hit = {
         snippet => 'No worky',
         key => $key,
+        score => $doc->value_for('score'),
     };
 
     return
@@ -131,8 +130,8 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 
-Socialtext::Search::KinoSearch::Searcher
-- KinoSearch Socialtext::Search::Searcher implementation.
+Socialtext::Search::Solr::Searcher
+- Solr Socialtext::Search::Searcher implementation.
 
 =head1 SEE
 
