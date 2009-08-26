@@ -31,6 +31,9 @@
 | include | [Test Case: Activities Widget Other User's Signals] |  |
 | include | [Test Case: Activities Widget Verify My Signals] |  |
 | include | [Test Case: Activities Widget Verify Others Signals] |  |
+| include | "Test Case: Activities Widget Conversations"[Test Case%3A Activities Widget Conversations] |  |
+| include | "Test Case: Activities Widget Tags and Tagging"[Test Case%3A Activities Widget Tags and Tagging] |  |
+| include | "Test Case: Activities Widget Follows and Following"[Test Case%3A Activities Widget Follows and Following] |  |
 
 | *Comment* | Test Case: Activities Widget Teardown |  |
 | open_ok | / |  |
