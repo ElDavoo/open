@@ -21,9 +21,9 @@
 | wait_for_element_not_visible_ok | up_limit | 30000 |
 
 | *Comment* | Test Case: Activities Widget Verify My Signals. Signals in widget. Select signals. |  |
-| st-select-widget-frame | activities_widget |  |  | wait_for_element_visible_ok | action | 10000 |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_element_visible_ok | action | 10000 |
 | select_ok | action | label=signals |
-| is_selected_ok | action | label=signals |
 
 | *Comment* | Test Case: Activities Widget Verify My Signals. select_and_wait in iframe doesn't work. Use pause. |  |
 | pause | 10000 | I hate pause |
@@ -62,7 +62,6 @@
 | st-select-widget-frame | activities_widget |  |
 
 | *Comment* | Test case: Activities Widget Verify My Signals. Signals should still be there |  |
-| is_selected_ok | action | label=signals |
 | wait_for_text_present_ok | She rocks in the treehouse %%start_time%% | 10000 |
 | wait_for_text_present_ok | Rockin and a bopin %%start_time%% | 10000 |
 | wait_for_text_present_ok | All the little birds %%start_time%% | 10000 |
