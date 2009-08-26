@@ -5,7 +5,7 @@ use warnings;
 
 use Socialtext::l10n qw(system_locale);
 use Socialtext::Search::Solr::Indexer;
-# use Socialtext::Search::Solr::Searcher;
+use Socialtext::Search::Solr::Searcher;
 use Socialtext::Search::Config;
 use Socialtext::AppConfig;
 use base 'Socialtext::Search::AbstractFactory';
