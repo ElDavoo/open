@@ -449,6 +449,7 @@ sub _update {
     my ( $self, %p ) = @_;
 
     $self->_validate_and_clean_data(\%p);
+    my $old_account = $self->account;
 
     my ( @updates, @bindings );
     while (my ($column, $value) = each %p) {
@@ -465,6 +466,17 @@ sub _update {
 
         while (my ($column, $value) = each %p) {
             $self->$column($value);
+        }
+    }
+
+    if ( $old_account->account_id != $self->account_id ) {
+        my $adapter = Socialtext::Pluggable::Adapter->new;
+        $adapter->make_hub(Socialtext::User->SystemUser(), $self);
+
+        my $users = $self->users;
+        while ( my $user = $users->next ) {
+            $adapter->hook('nlw.remove_user_account_role', $old_account, $user);
+            $adapter->hook( 'nlw.add_user_account_role', $self->account, $user);
         }
     }
 
