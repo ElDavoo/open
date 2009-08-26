@@ -216,6 +216,9 @@ sub ceqlotron_run_synchronously() {
     });
     $jobs_left ||= 0;
     Test::More::is($jobs_left, 0, "ceqlotron finished all runnable jobs");
+    if ($jobs_left) {
+        system("ceq-read");
+    }
 }
 
 # Create a temp directory and setup an AppConfig using that directory.
