@@ -1,5 +1,10 @@
 BEGIN;
 
+-- We are explicitly not adding indexes to this table
+-- because we are not currently running queries on it.
+-- If we want to query this table in the future, we will
+-- need to add indexes at that time
+
 CREATE TABLE event_archive (
     "at" timestamptz NOT NULL,
     "action" text NOT NULL,
