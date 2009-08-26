@@ -20,11 +20,8 @@ use WebService::Solr;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Search::Indexer';
+extends 'Socialtext::Search::Solr';
 
-has 'ws_name'   => (is => 'ro', isa => 'Str', required => 1);
-has 'workspace' => (is => 'ro', isa => 'Object',           lazy_build => 1);
-has 'hub'       => (is => 'ro', isa => 'Object',           lazy_build => 1);
-has 'solr'      => (is => 'ro', isa => 'WebService::Solr', lazy_build => 1);
 has '_docs' => (
     is => 'rw', isa => 'ArrayRef[WebService::Solr::Document]',
     metaclass => 'Collection::Array',
@@ -33,36 +30,6 @@ has '_docs' => (
 );
 
 use constant FUDGE_ATTACH_REVS => 25;
-
-sub _build_solr {
-    my $self = shift;
-    return WebService::Solr->new(
-        Socialtext::AppConfig->solr_base,
-        { autocommit => 0 },
-    );
-}
-
-sub _build_workspace {
-    my $self = shift;
-    my $ws_name = $self->ws_name;
-    my $ws = Socialtext::Workspace->new( name => $ws_name );
-    die "Cannot create workspace '$ws_name'" unless defined $ws;
-    return $ws;
-}
-
-sub _build_hub {
-    my $self = shift;
-    my $ws_name = $self->ws_name;
-
-    my $hub = Socialtext::Hub->new(
-        current_workspace => $self->workspace,
-        current_user => Socialtext::User->SystemUser,
-    );
-    $hub->registry->load;
-    _debug("Loaded Hub with workspace '$ws_name'.");
-
-    return $hub;
-}
 
 ######################
 # Workspace Handlers

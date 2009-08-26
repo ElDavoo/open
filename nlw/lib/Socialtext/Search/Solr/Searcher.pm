@@ -1,0 +1,152 @@
+package Socialtext::Search::Solr::Searcher;
+# @COPYRIGHT@
+use Moose;
+use MooseX::AttributeInflate;
+use Socialtext::Log qw(st_log);
+use Socialtext::Timer;
+use Socialtext::Search::AbstractFactory;
+use Socialtext::Search::Solr::QueryParser;
+use Socialtext::Search::SimpleAttachmentHit;
+use Socialtext::Search::SimplePageHit;
+use Socialtext::Search::Utils;
+use Socialtext::AppConfig;
+use Socialtext::Exceptions;
+use Socialtext::Workspace;
+use Socialtext::JSON qw/decode_json/;
+use WebService::Solr;
+use namespace::clean -except => 'meta';
+
+extends 'Socialtext::Search::Searcher';
+extends 'Socialtext::Search::Solr';
+
+has_inflated 'query_parser' =>
+    (is => 'ro', isa => 'Socialtext::Search::Solr::QueryParser',
+     handles => [qw/parse/]);
+
+# Perform a search and return the results.
+sub search {
+    my $self = shift;
+    my ($thunk, $num_hits) = $self->begin_search(@_);
+    return @{ $thunk->() || [] };
+}
+
+# Start a search, but don't process the results.  Return a thunk and a number
+# of hits.  The thunk returns an arrayref of processed results.
+sub begin_search {
+    my ( $self, $query_string, $authorizer ) = @_;
+    _debug("Searching ".$self->ws_name." with query: $query_string");
+
+    my $thunk = sub {
+        _debug("Processing ".$self->ws_name." thunk");
+        Socialtext::Timer->Continue('solr_begin');
+        my $docs = $self->_search($query_string);
+
+        my $results = $self->_process_docs($docs);
+        Socialtext::Timer->Continue('solr_begin');
+        return $results;
+    };
+    return ($thunk, 0);
+}
+
+# Parses the query string and returns the raw KinoSearch hit results.
+sub _search {
+    my ( $self, $query_string, $authorizer ) = @_;
+
+    my $query = $self->parse($query_string);
+    $self->_authorize( $query, $authorizer );
+    _debug("Performing actual search for query in ".$self->ws_name);
+
+    Socialtext::Timer->Continue('solr_raw');
+    warn "Searching for $query";
+    my $response = $self->solr->search($query, {fl => 'id score'});
+    my $docs = $response->docs;
+    my $num_hits = $response->pager->total_entries();
+    Socialtext::Timer->Pause('solr_raw');
+
+    _debug("Found $num_hits matches");
+    my $hit_limit = Socialtext::AppConfig->search_warning_threshold;
+    Socialtext::Exception::TooManyResults->throw(
+        num_results => $num_hits
+    ) if $num_hits > $hit_limit;
+
+    return $docs;
+}
+
+# Either do nothing if the query's authorized, or throw NoSuchWorkspace or
+# Auth.
+sub _authorize {
+    my ( $self, $query, $authorizer ) = @_;
+    return unless defined $authorizer;
+
+    unless ($authorizer->( $self->ws_name )) {
+        _debug("authorizer failed for ".$self->ws_name);
+        Socialtext::Exception::Auth->throw;
+    }
+}
+
+sub _process_docs {
+    my ( $self, $docs ) = @_;
+    _debug("Processing search results");
+
+    my @results;
+    my %seen;
+    for my $doc (@$docs) {
+        my $doc_id = $doc->value_for('id');
+        next if exists $seen{ $doc_id };
+        $seen{$doc_id} = 1;
+        push @results, $self->_make_result($doc);
+    }
+
+    return \@results;
+}
+
+sub _make_result {
+    my ( $self, $doc ) = @_;
+    my $key = $doc->value_for('id');
+    my ( $workspace_id, $page, $attachment ) = split /:/, $key, 3;
+
+    my $ws = Socialtext::Workspace->new( workspace_id => $workspace_id );
+    my $ws_name = $ws->name;
+
+    my $hit = {
+        snippet => 'No worky',
+        key => $key,
+    };
+
+    return
+        defined $attachment
+        ? Socialtext::Search::SimpleAttachmentHit->new( $hit, $ws_name, $page, $attachment )
+        : Socialtext::Search::SimplePageHit->new( $hit, $ws_name, $page );
+}
+
+# Send a debugging message to syslog.
+sub _debug {
+    my $msg = shift || "(no message)";
+    $msg = __PACKAGE__ . ": $msg";
+    st_log->debug($msg);
+}
+
+__PACKAGE__->meta->make_immutable;
+1;
+
+=head1 NAME
+
+Socialtext::Search::KinoSearch::Searcher
+- KinoSearch Socialtext::Search::Searcher implementation.
+
+=head1 SEE
+
+L<Socialtext::Search::Searcher> for the interface definition.
+
+=head1 AUTHOR
+
+Socialtext, Inc. C<< <code@socialtext.com> >>
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2006 Socialtext, Inc., all rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut
