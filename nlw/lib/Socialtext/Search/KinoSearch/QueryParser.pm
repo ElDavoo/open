@@ -13,6 +13,8 @@ use Socialtext::Search::Utils;
 
 extends 'Socialtext::Search::QueryParser';
 
+has 'searcher' => (is => 'ro', isa => 'Object', required => 1);
+
 sub _build_searchable_fields { [qw/key title tag text/] }
 
 around 'parse' => sub {
