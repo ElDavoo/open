@@ -1,8 +1,6 @@
 # @COPYRIGHT@
 package Socialtext::Search::KinoSearch::QueryParser;
-use strict;
-use warnings;
-
+use Moose;
 require bytes;
 use Data::UUID;
 use Encode qw(encode_utf8);
@@ -13,16 +11,14 @@ use KinoSearch::Search::TermQuery;
 use KinoSearch::Store::RAMInvIndex;
 use Socialtext::Search::Utils;
 
-sub new {
-    my ( $class, %args ) = @_;
-    return bless( \%args, $class );
-}
+extends 'Socialtext::Search::QueryParser';
 
-sub parse {
-    my ( $self, $query_string ) = @_;
+sub _build_searchable_fields { [qw/key title tag text/] }
 
-    # Fix the raw query string.  Mostly manipulating "field:"-like strings.
-    $query_string = $self->munge_raw_query_string($query_string);
+around 'parse' => sub {
+    my ( $orig, $self, $query_string ) = @_;
+
+    $query_string = $orig->($self, $query_string);
 
     # Preprocess the query to clearly mark wildcards out of the way.
     $self->_replace_wildcards( \$query_string );
@@ -40,39 +36,7 @@ sub parse {
 
     # Postprocess the query string to expand wildcards
     return $self->_expand_wildcards($query);
-}
-
-# Raw text manipulations like this are not 100% safe to do, but should be okay
-# considering their esoteric nature (i.e. dealing w/ fields).
-sub munge_raw_query_string {
-    my ( $self, $query ) = @_;
-
-    # Establish some field synonyms.
-    $query =~ s/=/title:/g;        # Old style title search
-    $query =~ s/category:/tag:/gi; # Old name for tags
-    $query =~ s/tag:\s*/tag:/gi;   # fix capitalization and allow an extra space
-
-    # Find everything that looks like a field, but is not.  I.e. in "cow:foo"
-    # we would find "cow:". 
-    #
-    # XXX: Fields duplicated here and Socialtext/Search/KinoSearch/Indexer.
-    my @fields = qw(key title tag text);
-    my @non_fields;
-    while ( $query =~ /(\w+):/g ) {
-        my $maybe_field = $1;
-        push @non_fields, $maybe_field
-            unless grep { $_ eq $maybe_field } @fields;
-    }
-
-    # If it looks like a field but is not then remove the ":".  This prevents
-    # things being treated as fields when they are not fields.
-    for my $non_field (@non_fields) {
-        $non_field = quotemeta $non_field;
-        $query =~ s/(${non_field}):/$1 /g;
-    }
-
-    return $query;
-}
+};
 
 sub _harden_workspace {
     my ( $self, $query_string_ref ) = @_;
