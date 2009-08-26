@@ -58,6 +58,7 @@ sub delete_workspace {
     
     Socialtext::Timer->Continue('solr_del_wksp');
     $self->solr->delete_by_query("w:$ws_id");
+    $self->_commit;
     Socialtext::Timer->Pause('solr_del_wksp');
 }
 
@@ -170,10 +171,11 @@ sub index_attachment {
 # Remove an attachment from the index.
 sub delete_attachment {
     my ( $self, $page_uri, $attachment_id ) = @_;
-    my $key;
-    $key = $page_uri . ':' . $attachment_id;
-    $self->_delete_doc_by_key( $key );
-    $self->_finish();
+    my $ws_id = $self->workspace->workspace_id;
+    my $page = $self->_load_page($page_uri, 'deleted ok') || return;
+    my $id = join(':',$ws_id,$page->id,$attachment_id);
+    $self->solr->delete_by_id($id);
+    $self->_commit();
 }
 
 # Get the attachments content, create a new Document, set the Doc's fields,
