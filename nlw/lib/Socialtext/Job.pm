@@ -26,7 +26,7 @@ has hub => (
 );
 
 has indexer => (
-    is => 'ro', isa => 'Maybe[Socialtext::Search::Indexer]',
+    is => 'ro', isa => 'Object',
     lazy_build => 1,
 );
 
