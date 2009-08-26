@@ -1,0 +1,43 @@
+| *Comment* | STARTING Test case: Activities Widget |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Activities Widget Variables |  |
+| set | ws | signals-ws-%%start_time%% |
+| set | acct | signalsacct%%start_time%% |
+| set | signalsuser | othersign%%start_time%%@ken.socialtext.net |
+| set | othersignaluser | signalu%%start_time%%@ken.socialtext.net |
+| set | diffacctuser | diffaccttuser%%start_time%%@ken.socialtext.net |
+| set | diffacct | diffacct%%start_time%% |
+| set | diffws | diffws%%start_time%% |
+| set | overlapuser | overlapuser%%start_time%%@ken.socialtext.net |
+
+| *Comment* | Test Case: Activities Widget SETUP |  |  |
+| create-account | %%acct%% |  |  |
+| create-account | %%diffacct%% |  |  |
+| create-workspace | %%ws%% | %%acct%% |  |
+| create-workspace | %%diffws%% | %%diffacct%% |  |
+| create-user | %%signalsuser%% | %%password%% | %%acct%% |
+| add-member | %%signalsuser%% | %%ws%% |  |
+| create-user | %%othersignaluser%% | %%password%% | %%acct%% |
+| add-member | %%othersignaluser%% | %%ws%% |  |
+| create-user | %%diffacctuser%% | %%password%% | %%acct%% |
+| add-member | %%diffacctuser%% | %%diffws%% |  |
+| create-user | %%overlapuser%% | %%password | %%acct%% |
+| add-member | %%overlapuser%% | %%diffws%% |  |
+| add-member | %%overlapuser%% | %%ws%% |  |
+
+| include | [Test Case: Activities Widget Setup My Signals] |  |
+| include | [Test Case: Activities Widget Other User's Signals] |  |
+| include | [Test Case: Activities Widget Verify My Signals] |  |
+| include | [Test Case: Activities Widget Verify Others Signals] |  |
+
+| *Comment* | Test Case: Activities Widget Teardown |  |
+| open_ok | / |  |
+| st-empty-container |  |  |
+| st-admin | delete-workspace --w %%ws%% --no-export |  |
+| st-admin | delete-workspace --w %%diffws%% --no-export |  |
+
+| *Comment* | Test Case: Activities Widget COMPLETED |  |
+
+TODO: write a second TC that exercises all signals, signals from followers only, older, newer, newest

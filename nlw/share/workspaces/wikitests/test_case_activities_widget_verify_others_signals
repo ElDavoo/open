@@ -1,0 +1,59 @@
+| *Comment* | Test Case: Activities Widget Verify Others Signals |
+
+| open_ok | /?dashboard | 60000 |
+| st-empty-container |  |  |
+| wait_for_element_visible_ok | link=Add Content | 30000 |
+| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Activities'] | 30000 |
+| click_and_wait | //a[@id='gallery-widget-Activities'] |  |
+
+| *Comment* | Test Case: Activities Widget Verify Others Signals. Back at Dashboard with widget |  |
+| wait_for_text_present_ok | Welcome | 30000 |
+| text_like | st-editing-tools-edit | Welcome |
+| wait_for_text_present_ok | Activities | 30000 |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+| st-widget-settings | activities_widget |  |
+| wait_for_element_visible_ok | up_limit | 30000 |
+| select_ok | up_limit | 25 |
+| click_ok | st-savebutton-%%activities_widget%% |  |
+| wait_for_element_not_visible_ok | up_limit | 30000 |
+
+| *Comment* | Test Case: Activities Widget Verify Other Signals. Signals in widget. Select signals. |  |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_element_visible_ok | action | 10000 |
+| select_ok | action | label=signals |
+| is_selected_ok | action | label=signals |
+
+| *Comment* | Test Case: Activities Widget Verify Other Signals. select_and_wait in iframe doesn't work. Use pause. |  |
+| pause | 10000 | I hate pause |
+| wait_for_text_present_ok | woke up %%start_time%% | 30000 |
+| wait_for_text_present_ok | fell out of bed %%start_time%% | 30000 |
+| wait_for_text_present_ok | dragged a comb across my head %%start_time%% | 30000 |
+| wait_for_text_present_ok | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% | 30000 |
+| wait_for_text_present_ok | Other User Summary signal %%start_time%% | 30000 |
+
+| *Comment* | Test Case: Activities widget. Wait for automatic refresh to two minutes ago in Activity |  |
+| wait_for_text_present_ok | 2 minutes ago | 120000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test case: Activities Widget Verify Other's Signas. Check Dashboard, then wait for auto refresh |  |
+| open_ok | / |  |
+| wait_for_text_present_ok | Welcome | 30000 |
+| text_like | st-editing-tools-edit | Welcome |
+| wait_for_text_present_ok | Activities | 30000 |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+| st-select-widget-frame | activities_widget |  |
+
+| *Comment* | Test case: Activities Widget. Signals should still be there |  |
+| is_selected_ok | action | label=signals |
+| wait_for_text_present_ok | woke up %%start_time%% | 30000 |
+| wait_for_text_present_ok | fell out of bed %%start_time%% | 30000 |
+| wait_for_text_present_ok | dragged a comb across my head %%start_time%% | 30000 |
+| wait_for_text_present_ok | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% | 30000 |
+| wait_for_text_present_ok | Other User Summary signal %%start_time%% | 30000 |
+
+| *Comment* | Test case: Activities Widget Verify Others. wait for auto refresh to two minutes ago |  |
+| wait_for_text_present_ok | 2 minutes ago | 120000 |
+| select-frame | relative=parent |  |
