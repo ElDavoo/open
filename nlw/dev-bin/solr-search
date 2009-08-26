@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+use warnings;
+use strict;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use Socialtext::Search::Solr::Searcher;
+
+my $SOLR_ADMIN_BASE = q{/solr/admin/cores};
+my $searcher = Socialtext::Search::Solr::Searcher->new(ws_name => 'admin');
+
+my @results = $searcher->search("workspace");
+use Data::Dumper;
+warn Dumper \@results;
+

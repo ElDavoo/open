@@ -9,6 +9,7 @@ use Pod::Usage;
 use CGI;
 use Socialtext;
 use Socialtext::User;
+use Socialtext::Workspace;
 use Socialtext::Timer;
 
 ###############################################################################
