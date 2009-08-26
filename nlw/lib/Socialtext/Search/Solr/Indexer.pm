@@ -305,6 +305,8 @@ sub _commit {
             $self->solr->add($docs);
             Socialtext::Timer->Pause('solr_add');
         }
+
+        $self->solr->commit();
     };
     my $err = $@;
     Socialtext::Timer->Pause('solr_commit');
