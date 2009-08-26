@@ -4,12 +4,22 @@ use strict;
 
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use Socialtext::Search::Solr::Searcher;
+use Socialtext::Search::AbstractFactory;
 
-my $SOLR_ADMIN_BASE = q{/solr/admin/cores};
-my $searcher = Socialtext::Search::Solr::Searcher->new(ws_name => 'admin');
+my $factory = Socialtext::Search::AbstractFactory->GetFactory;
+my $searcher = $factory->create_searcher('admin');
 
-my @results = $searcher->search("workspace");
-use Data::Dumper;
-warn Dumper \@results;
+my $term = "workspace";
+my ($thunk, $num_hits) = $searcher->begin_search($term);
+my $hits = $thunk->();
 
+foreach my $hit (@$hits) {
+    if ($hit->can('attachment_id')) {
+        warn "'$term' found in attachment to page",
+            $hit->page_uri,
+            ".  Attachment id ", $hit->attachment_id;
+    }
+    else {
+        warn "'$term' found in page ", $hit->page_uri;
+    }
+}
