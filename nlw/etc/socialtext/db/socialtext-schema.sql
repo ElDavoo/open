@@ -414,6 +414,20 @@ CREATE TABLE event (
     hidden boolean DEFAULT false
 );
 
+CREATE TABLE event_archive (
+    "at" timestamptz NOT NULL,
+    "action" text NOT NULL,
+    actor_id integer NOT NULL,
+    event_class text NOT NULL,
+    context text,
+    page_id text,
+    page_workspace_id bigint,
+    person_id integer,
+    tag_name text,
+    signal_id bigint,
+    hidden boolean DEFAULT false
+);
+
 CREATE TABLE exitstatus (
     jobid bigint NOT NULL,
     funcid integer DEFAULT 0 NOT NULL,
@@ -1789,4 +1803,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '82');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '83');
