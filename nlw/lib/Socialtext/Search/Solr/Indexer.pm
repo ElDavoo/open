@@ -79,7 +79,8 @@ sub _index_page_attachments {
 # Load up the page and add its content to the index.
 sub index_page {
     my ( $self, $page_uri ) = @_;
-    my $page = $self->_load_page($page_uri) || return;
+    my $page = $self->_load_page($page_uri, 'deleted ok') || return;
+    return $self->delete_page($page_uri) if $page->deleted;
     $self->_add_page_doc($page);
     $self->_index_page_attachments($page);
     $self->_commit;
@@ -88,7 +89,9 @@ sub index_page {
 # Remove the page from the index.
 sub delete_page {
     my ( $self, $page_uri ) = @_;
-    die 'todo';
+    my $page = $self->_load_page($page_uri, 'deleted ok') || return;
+    my $key = $self->page_key($page->id);
+    $self->solr->delete_by_query("page_key:$key");
     $self->_commit;
 }
 
@@ -245,13 +248,13 @@ sub _truncate {
 
 # Given a page_id, retrieve the corresponding Page object.
 sub _load_page {
-    my ( $self, $page_id ) = @_;
+    my ( $self, $page_id, $deleted_ok ) = @_;
     _debug("Loading $page_id");
     my $page = $self->hub->pages->new_page($page_id);
     if ( not defined $page ) {
         _debug("Could not load page $page_id");
     }
-    elsif ( $page->deleted ) {
+    elsif ( !$deleted_ok and $page->deleted ) {
         _debug("Page $page_id is deleted, skipping.");
         undef $page;
     }
