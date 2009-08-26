@@ -48,6 +48,7 @@ use Socialtext::SQL qw(
 use Socialtext::String;
 use Readonly;
 use Socialtext::Account;
+use Socialtext::Cache;
 use Socialtext::Permission qw( ST_EMAIL_IN_PERM ST_READ_PERM );
 use Socialtext::Role;
 use Socialtext::URI;
@@ -113,6 +114,7 @@ Readonly our @COLUMNS => (
     'allows_page_locking',
 );
 
+
 # Hash for quick lookup of columns
 my %COLUMNS = map { $_ => 1 } @COLUMNS;
 
@@ -148,13 +150,20 @@ sub new {
 # before you move this code.
 sub _new {
     my ( $class, %args ) = @_;
+
     my $sth;
-    if (my $name = $args{name}) {
+    if (my $name = lc $args{name}) {
+        if (my $user = $class->cache->get("name:$name")) {
+            return $user;
+        }
         $sth = sql_execute(
-            qq{SELECT * FROM "Workspace" WHERE LOWER(name) = ?}, lc($name),
+            qq{SELECT * FROM "Workspace" WHERE LOWER(name) = ?}, $name,
         );
     }
     elsif (my $id = $args{workspace_id}) {
+        if (my $user = $class->cache->get("id:$id")) {
+            return $user;
+        }
         $sth = sql_execute(
             qq{SELECT * FROM "Workspace" WHERE workspace_id = ?}, $id,
         );
@@ -165,7 +174,14 @@ sub _new {
 
     # Sure there's a better way to make use of the row we're getting back.
     my $row = $sth->fetchrow_hashref();
-    return $class->new_from_hash_ref($row);
+    my $new_obj = $class->new_from_hash_ref($row);
+
+    if ($new_obj) {
+        $class->cache->set("name:" . $new_obj->name => $new_obj);
+        $class->cache->set("id:" . $new_obj->workspace_id => $new_obj);
+    }
+
+    return $new_obj;
 }
 
 sub new_from_hash_ref {
@@ -496,6 +512,8 @@ sub delete {
     sql_execute( 'DELETE FROM "Workspace" WHERE workspace_id=?',
         $self->workspace_id );
 
+    $self->cache->clear();
+
     st_log()
         ->info( 'DELETE,WORKSPACE,workspace:'
             . $self->name . '('
@@ -751,6 +769,8 @@ sub NameIsValid {
 
         Socialtext::EmailAlias::delete_alias($old_name);
         $self->_update_aliases_file();
+
+        $self->cache->clear();
 
         st_log()
             ->info( 'RENAME,WORKSPACE,old_workspace:'
@@ -1992,6 +2012,14 @@ sub Default {
         Socialtext::Workspace->new(name => $default_name);
     };
 }
+
+{
+    my $cache;
+    sub cache {
+        return $cache ||= Socialtext::Cache->cache('workspace');
+    }
+}
+
 
 package Socialtext::NoWorkspace;
 use strict;
