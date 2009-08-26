@@ -79,12 +79,12 @@ sub GetIndexers {
     }
 
     my @indexers;
-    for my $class (@classes) {
-        eval "require $class";
+    for my $class_name (@classes) {
+        eval "require $class_name";
         die __PACKAGE__, "->GetIndexers $@" if $@;
 
-        my $factory = $class->new
-            or die __PACKAGE__, "->GetIndexers $class->new returned null";
+        my $factory = $class_name->new
+            or die __PACKAGE__, "->GetIndexers $class_name->new returned null";
         push @indexers, $factory->create_indexer($ws_name);
     }
 
