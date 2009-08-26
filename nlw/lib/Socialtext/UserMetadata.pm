@@ -102,7 +102,14 @@ sub create {
         $p{primary_account_id},
     );
 
-    return $class->new( user_id => $p{user_id} );
+    my $user = $class->new(user_id => $p{user_id});
+    my $acct = Socialtext::Account->new(account_id => $p{primary_account_id});
+
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub(Socialtext::User->SystemUser(), undef);
+    $adapter->hook( 'nlw.add_user_account_role', $acct, $user );
+
+    return $user;
 }
 
 # "update" methods: set_technical_admin, set_business_admin
@@ -179,6 +186,12 @@ sub primary_account {
             user_id => $self->user_id );
 
         Socialtext::Cache->clear('authz_plugin');
+
+        my $adapter = Socialtext::Pluggable::Adapter->new;
+        $adapter->make_hub(Socialtext::User->SystemUser(), undef);
+
+        $adapter->hook('nlw.remove_user_account_role', $old_account, $self);
+        $adapter->hook('nlw.add_user_account_role', $new_account, $self);
     }
 
     return Socialtext::Account->new(account_id => $self->{primary_account_id})
