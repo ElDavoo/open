@@ -19,6 +19,23 @@ use Socialtext::File;
 use WebService::Solr;
 use namespace::clean -except => 'meta';
 
+=head1 NAME
+
+Socialtext::Search::Solr::Indexer
+
+=head1 SYNOPSIS
+
+  my $i = Socialtext::Search::Solr::Factory->create_indexer($workspace_name);
+  $i->index_workspace(...);
+  $i->index_page(...);
+  $i->index_attachment(...);
+
+=head1 DESCRIPTION
+
+Index documents using Solr;
+
+=cut
+
 extends 'Socialtext::Search::Indexer';
 extends 'Socialtext::Search::Solr';
 
@@ -123,9 +140,12 @@ sub _add_page_doc {
 
     my @fields = (
         [id => $id],
+        # it is important to call this 'w' instead of 'workspace_id', because
+        # we specify it many times for inter-workspace search, and we face 
+        # lengths on the URI limit.
         [w => $ws_id],
-        [c => 'page'], 
-        [c => $page->metadata->Type],
+        [doctype => 'page'], 
+        [pagetype => $page->metadata->Type],
         [page_key => $self->page_key($page->id)],
         [title => $page->title],
         [date => $mtime],
@@ -209,8 +229,11 @@ sub _add_attachment_doc {
 
     my @fields = (
         [id => $id],
-        [w => $ws_id],
-        [c => 'page'], [c => 'attachment'],
+        # it is important to call this 'w' instead of 'workspace_id', because
+        # we specify it many times for inter-workspace search, and we face 
+        # lengths on the URI limit.
+        [w => $ws_id], 
+        [doctype => 'attachment'],
         [page_key => $key],
         [attach_id => $att->id],
         [title => $att->filename],
@@ -321,29 +344,3 @@ sub _commit {
 
 __PACKAGE__->meta->make_immutable;
 1;
-__END__
-
-=pod
-
-=head1 NAME
-
-Socialtext::Search::KinoSearch::Indexer
-
-=cut
-
-=head1 SEE
-
-L<Socialtext::Search::Indexer> for the interface definition.
-
-=head1 AUTHOR
-
-Socialtext, Inc. C<< <code@socialtext.com> >>
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2006 Socialtext, Inc., all rights reserved.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut

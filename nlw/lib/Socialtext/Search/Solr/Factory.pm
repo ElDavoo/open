@@ -10,6 +10,21 @@ use Socialtext::Search::Config;
 use Socialtext::AppConfig;
 use base 'Socialtext::Search::AbstractFactory';
 
+=head1 NAME
+
+Socialtext::Search::Solr::Factory
+
+=head1 SYNOPSIS
+
+  my $s = Socialtext::Search::Solr::Factory->create_searcher($workspace_name);
+  $s->search(...);
+
+=head1 DESCRIPTION
+
+Factory class for creating Solr indexers and searchers
+
+=cut
+
 # Rather than create an actual object (since there's no state), just return
 # the class name.  This will continue to make all the methods below work.
 sub new { $_[0] }

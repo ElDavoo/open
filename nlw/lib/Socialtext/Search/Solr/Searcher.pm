@@ -16,6 +16,21 @@ use Socialtext::JSON qw/decode_json/;
 use WebService::Solr;
 use namespace::clean -except => 'meta';
 
+=head1 NAME
+
+Socialtext::Search::Solr::Searcher
+
+=head1 SYNOPSIS
+
+  my $s = Socialtext::Search::Solr::Factory->create_searcher($workspace_name);
+  $s->search(...);
+
+=head1 DESCRIPTION
+
+Search the solr index.
+
+=cut
+
 extends 'Socialtext::Search::Searcher';
 extends 'Socialtext::Search::Solr';
 
