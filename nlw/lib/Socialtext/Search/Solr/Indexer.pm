@@ -69,7 +69,8 @@ sub index_workspace {
 
 # Delete the index directory.
 sub delete_workspace {
-    my ( $self, $ws_name ) = @_;
+    my $self = shift;
+    my $ws_name = shift || $self->ws_name;
     my $ws = Socialtext::Workspace->new(name => $ws_name);
     my $ws_id = $ws->workspace_id;
     
