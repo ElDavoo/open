@@ -3,6 +3,20 @@ use Moose;
 use WebService::Solr;
 use namespace::clean -except => 'meta';
 
+=head1 NAME
+
+Socialtext::Search::Solr
+
+=head1 SYNOPSIS
+
+  Do not use directly, this is a base class.
+
+=head1 DESCRIPTION
+
+Base class for other Solr classes.
+
+=cut
+
 has 'ws_name' => (is => 'ro', isa => 'Str', required => 1);
 has 'workspace' => (is => 'ro', isa => 'Object', lazy_build => 1);
 has 'hub'       => (is => 'ro', isa => 'Object',           lazy_build => 1);

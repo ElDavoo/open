@@ -2,6 +2,21 @@ package Socialtext::Search::QueryParser;
 use Moose;
 use namespace::clean -except => 'meta';
 
+=head1 NAME
+
+Socialtext::Search::QueryParser
+
+=head1 SYNOPSIS
+
+  my $qp = Socialtext::Search::QueryParser->new;
+  my $query = $qp->parse($query_string);
+
+=head1 DESCRIPTION
+
+Base class for parsing search queries.
+
+=cut
+
 has 'searchable_fields' => (is => 'ro', isa => 'ArrayRef[Str]', lazy_build => 1);
 
 sub parse {

@@ -11,6 +11,21 @@ use Socialtext::Role;
 use Socialtext::SQL::Builder qw/sql_insert/;
 use Socialtext::SQL qw/sql_singlevalue sql_execute/;
 
+=head1 NAME
+
+Socialtext::Pluggable::Plugin::AccountMembership
+
+=head1 SYNOPSIS
+
+  Provides hooks for account membership.
+  my $query = $qp->parse($query_string);
+
+=head1 DESCRIPTION
+
+Pluggable plugin for account memberships.
+
+=cut
+
 sub register {
     my $class = shift;
 
