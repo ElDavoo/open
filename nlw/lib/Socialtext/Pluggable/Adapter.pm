@@ -9,6 +9,7 @@ my %hooks;
 my %hook_types;
 
 use base 'Socialtext::Plugin';
+use Carp;
 use Socialtext::Workspace;
 use Socialtext::l10n qw/loc_lang/;
 use Fcntl ':flock';
@@ -34,8 +35,20 @@ my %ONCE_TYPES = (
 
 BEGIN {
     # This is still needed for dev-env -- Do Not Delete!
+    require Socialtext::AppConfig;
     our $code_base = Socialtext::AppConfig->code_base;
     push @INC, glob("$code_base/plugin/*/lib");
+
+    for my $plugin (__PACKAGE__->plugins) {
+        eval "require $plugin";
+        Carp::confess "Error loading Pluggable plugin '$plugin': $@" if $@;
+    }
+}
+
+# plugins should have been loaded into perl above
+for my $plugin (__PACKAGE__->plugins) {
+    eval { $plugin->register; };
+    Carp::confess "Error registering plugin '$plugin': $@" if $@;
 }
 
 sub AUTOLOAD {
@@ -136,12 +149,6 @@ sub DisablePlugin {
 
 sub class_id { 'pluggable' };
 sub class_title { 'Pluggable' };
-
-for my $plugin (__PACKAGE__->plugins) {
-    eval "require $plugin";
-    die $@ if $@;
-    $plugin->register;
-}
 
 sub make {
     my $class = shift;
