@@ -9,7 +9,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 28;
+use Test::Socialtext tests => 2;
 use Socialtext::SQL qw/get_dbh/;
 use Socialtext::User;
 use Socialtext::Account;
@@ -143,7 +143,6 @@ workspace_changes_account: {
 
     $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
     ok $ws;
-    isnt $ws,$old_ws;
     is $ws->account_id, $acct2_id;
 
     membership_is [
@@ -179,8 +178,7 @@ primary_account_changes_memberhip: {
     membership_is [
         [$acct2_id, $user_id ],
         [$acct2_id, $user2_id],
-        [$acct2_id, $user2_id],
-    ], 'duplicate entries are ok';
+    ], 'no duplicate entries';
 
     $user2->primary_account($acct);
     membership_is [
@@ -211,10 +209,6 @@ deleting_account_removes_membership: {
 
 sub change_workspace_account {
     my ($w, $a) = @_;
-    # XXX: currently there's no API to change which account a workspace lives in
-    my $dbh = get_dbh;
-    my $sth = $dbh->prepare(
-        q{UPDATE "Workspace" SET account_id = ? WHERE workspace_id = ?});
-    $sth->execute($a->account_id, $w->workspace_id);
+    $ws->update( account_id => $a->account_id );
 }
 
