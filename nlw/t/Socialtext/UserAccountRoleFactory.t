@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 80;
+use Test::Socialtext tests => 84;
 use Test::Exception;
 
 ###############################################################################
@@ -319,7 +319,10 @@ delete_non_existing_uar: {
 ###############################################################################
 # TEST: ByUserId 
 by_user_id: {
+    # Adds user to a default account.
     my $user        = create_test_user();
+
+    my $default     = Socialtext::Account->Default();
     my $account_one = create_test_account_bypassing_factory();
     my $account_two = create_test_account_bypassing_factory();
 
@@ -337,21 +340,28 @@ by_user_id: {
     my $accounts = Socialtext::UserAccountRoleFactory->ByUserId( $user->user_id );
 
     isa_ok $accounts, 'Socialtext::MultiCursor', 'Got a list';
-    is $accounts->count, 2, '... of correct size';
+    is $accounts->count, 3, '... of correct size';
     
     my $q_account_one = $accounts->next();
-    isa_ok $q_account_one, 'Socialtext::UserAccountRole', 'Got first account';
+    isa_ok $q_account_one, 'Socialtext::UserAccountRole', 'Got account';
+    is $q_account_one->account_id, $default->account_id, '... with default account_id';
+
+    my $q_account_one = $accounts->next();
+    isa_ok $q_account_one, 'Socialtext::UserAccountRole', 'Got account';
     is $q_account_one->account_id, $account_one->account_id, '... with right account_id';
 
     my $q_account_two = $accounts->next();
-    isa_ok $q_account_two, 'Socialtext::UserAccountRole', 'Got second account';
+    isa_ok $q_account_two, 'Socialtext::UserAccountRole', 'Got account';
     is $q_account_two->account_id, $account_two->account_id, '... with right account_id';
 }
 
 ################################################################################
 # TEST: ByUserId -- passing in a closure.
 by_user_id_with_closure: {
+    # Adds user to the Default account.
     my $user = create_test_user();
+
+    my $default     = Socialtext::Account->Default();
     my $account_one = create_test_account_bypassing_factory();
     my $account_two = create_test_account_bypassing_factory();
 
@@ -372,15 +382,20 @@ by_user_id_with_closure: {
     );
 
     isa_ok $accounts, 'Socialtext::MultiCursor', 'Got a list';
-    is $accounts->count, 2, '... of correct size';
+    is $accounts->count, 3, '... of correct size';
     
     my $q_account_one = $accounts->next();
-    isa_ok $q_account_one, 'Socialtext::Account', 'Got first account';
+    isa_ok $q_account_one, 'Socialtext::Account', 'Got account';
+    is $q_account_one->name, $default->name, 
+        '... with right name';
+
+    my $q_account_one = $accounts->next();
+    isa_ok $q_account_one, 'Socialtext::Account', 'Got account';
     is $q_account_one->name, $account_one->name, 
         '... with right name';
 
     my $q_account_two = $accounts->next();
-    isa_ok $q_account_two, 'Socialtext::Account', 'Got second account';
+    isa_ok $q_account_two, 'Socialtext::Account', 'Got account';
     is $q_account_two->name, $account_two->name, 
         '... with right name';
 }
