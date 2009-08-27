@@ -383,8 +383,6 @@ sub generate_app_config {
 
         # Help find memory leaks in dev-envs
         $appconfig->set(ceqlotron_worker_loops => 1000);
-        $appconfig->set(
-            solr_base => 'http://localhost:8983/solr/' . $user->name);
     }
 
     File::Path::mkpath(
