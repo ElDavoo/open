@@ -1,19 +1,17 @@
 #!/usr/bin/perl
-
+# @COPYRIGHT@
 use strict;
 use warnings;
 
 use Socialtext::Workspace;
 use Socialtext::UserMetadata;
 use Socialtext::UserAccountRoleFactory;
-use Test::Socialtext qw/no_plan/;
+use Test::Socialtext tests => 16;
 
-fixtures( qw/db/ );
+fixtures( qw/db admin/ );
 
 # We'll need these in all our tests.
 my $factory = Socialtext::UserAccountRoleFactory->instance();
-my $ws      = create_test_workspace();
-my $hub     = Test::Socialtext::main_hub($ws->name);
 
 ################################################################################
 create_user_in_default_account: {
