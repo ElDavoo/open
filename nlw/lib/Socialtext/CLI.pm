@@ -412,6 +412,7 @@ sub import_account {
         name  => $opts{name},
         force => $opts{overwrite},
         hub   => $hub,
+        dir   => $dir,
     );
 
     for my $tarball (glob "$dir/*.1.tar.gz") {
@@ -429,6 +430,7 @@ sub import_account {
 
     $account->finish_import(
         hub => $hub,
+        dir => $dir,
     );
 
     $self->_success(

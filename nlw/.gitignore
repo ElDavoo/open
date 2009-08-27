@@ -321,3 +321,4 @@ t/wikitests/miki/signals.wiki
 bin/st-purge-json-proxy-cache
 t/wikitests/widgets/export-import.wiki
 lib/Socialtext/Rest/Gadgets/Common.pm
+t/widget/uploaded.xml

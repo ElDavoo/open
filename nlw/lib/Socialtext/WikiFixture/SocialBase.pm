@@ -1460,6 +1460,15 @@ sub st_purge_account_containers {
     ', $acct->account_id, $acct->account_id);
 }
 
+sub st_purge_uploaded_widgets {
+    my ($self, $acct_name) = @_;
+    my $acct = Socialtext::Account->new(name => $acct_name);
+    sql_execute('
+        DELETE FROM gadget
+         WHERE src IS NULL
+    ');
+}
+
 sub st_purge_widget {
     my ($self, $src) = @_;
     sql_execute('DELETE FROM gadget WHERE src = ?', $src);

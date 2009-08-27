@@ -176,8 +176,10 @@ sub primary_account {
 
         my $old_account = Socialtext::Account->new(
             account_id => $self->{primary_account_id} );
-        $old_account->remove_from_all_users_workspace(
-            user_id => $self->user_id );
+        if ($old_account) {
+            $old_account->remove_from_all_users_workspace(
+                user_id => $self->user_id );
+        }
 
         $self->_update_field('primary_account_id=?', $new_account->account_id);
         $self->{primary_account_id} = $new_account->account_id;

@@ -27,6 +27,7 @@ use YAML qw/DumpFile LoadFile/;
 use MIME::Base64 ();
 use namespace::clean;
 use Socialtext::JSON::Proxy::Helper;
+use File::Basename qw(dirname);
 
 Readonly our @ACCT_COLS => qw(
     account_id
@@ -318,7 +319,7 @@ sub export {
         plugins => [ $self->plugins_enabled ],
         (map { $_ => $self->$_ } grep { /^desktop_/ } @ACCT_COLS),
     };
-    $hub->pluggable->hook('nlw.export_account', $self, $data);
+    $hub->pluggable->hook('nlw.export_account', $self, $data, \%opts);
 
     DumpFile($export_file, $data);
     return $export_file;
@@ -400,7 +401,7 @@ sub import_file {
         }
     }
 
-    $hub->pluggable->hook('nlw.import_account', $account, $hash);
+    $hub->pluggable->hook('nlw.import_account', $account, $hash, \%opts);
     $account->{_import_hash} = $hash;
 
     # Create all the profiles after so that user references resolve.
@@ -431,7 +432,7 @@ sub finish_import {
         $self->update( all_users_workspace => $ws->workspace_id );
     }
 
-    $hub->pluggable->hook('nlw.finish_import_account', $self, $meta);
+    $hub->pluggable->hook('nlw.finish_import_account', $self, $meta, \%opts);
 }
 
 sub users {
