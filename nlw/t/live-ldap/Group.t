@@ -7,7 +7,7 @@ use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
 use Socialtext::Group::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 72;
+use Test::Socialtext tests => 81;
 
 # Force this to be synchronous.
 local $Socialtext::Group::Factory::Asynchronous = 0;
@@ -184,13 +184,19 @@ ldap_group_records_events_on_membership_change: {
         driver_unique_id => $group_dn,
     );
 
-    is_event_count 3;
+    is_event_count 6;
+    event_ok( event_class => 'account', action => 'create_role' );
+    next_log_like 'info', qr/ASSIGN,ACCOUNT_ROLE/, '... and shows in nlw.log';
     event_ok( event_class => 'group', action => 'create_role' );
     next_log_like 'info', qr/ASSIGN,GROUP_ROLE/, '... and shows in nlw.log';
 
+    event_ok( event_class => 'account', action => 'create_role' );
+    next_log_like 'info', qr/ASSIGN,ACCOUNT_ROLE/, '... and shows in nlw.log';
     event_ok( event_class => 'group', action => 'create_role' );
     next_log_like 'info', qr/ASSIGN,GROUP_ROLE/, '... and shows in nlw.log';
 
+    event_ok( event_class => 'account', action => 'create_role' );
+    next_log_like 'info', qr/ASSIGN,ACCOUNT_ROLE/, '... and shows in nlw.log';
     event_ok( event_class => 'group', action => 'create_role' );
     next_log_like 'info', qr/ASSIGN,GROUP_ROLE/, '... and shows in nlw.log';
 
