@@ -11,11 +11,7 @@ use Socialtext::JSON qw/decode_json/;
 use Socialtext::HTTP qw/:codes/;
 use t::RestTestTools qw/do_get_json do_post_form do_post_json is_status/;
 
-
-
-BEGIN {
-    use_ok 'Socialtext::Rest::Events';
-}
+use_ok 'Socialtext::Rest::Events';
 
 our $actor;
 
