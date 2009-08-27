@@ -3,8 +3,6 @@ package Socialtext::Rest;
 use strict;
 use warnings;
 
-use Socialtext::Hub;
-
 use unmocked 'Exporter';
 use unmocked 'Exporter::Heavy';
 use unmocked 'Test::More';
@@ -44,7 +42,10 @@ sub rest {
 }
 
 our @HUB_ARGS;
-sub hub { Socialtext::Hub->new(@HUB_ARGS) }
+sub hub {
+    require Socialtext::Hub;
+    Socialtext::Hub->new(@HUB_ARGS)
+}
 
 sub make_http_date { 'fake_date' }
 
