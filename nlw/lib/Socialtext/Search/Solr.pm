@@ -1,4 +1,5 @@
 package Socialtext::Search::Solr;
+# @COPYRIGHT@
 use Moose;
 use WebService::Solr;
 use namespace::clean -except => 'meta';

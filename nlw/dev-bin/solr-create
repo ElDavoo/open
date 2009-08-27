@@ -1,4 +1,5 @@
 #!/bin/bash
+# @COPYRIGHT@
 set -e
 #
 # Create a Solr core named after the current user.

@@ -1,4 +1,5 @@
 package Socialtext::Search::QueryParser;
+# @COPYRIGHT@
 use Moose;
 use namespace::clean -except => 'meta';
 
