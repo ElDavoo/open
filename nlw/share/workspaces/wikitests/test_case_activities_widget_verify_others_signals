@@ -32,9 +32,9 @@
 | wait_for_text_present_ok | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% | 30000 |
 | wait_for_text_present_ok | Other User Summary signal %%start_time%% | 30000 |
 
-| *Comment* | Test Case: Activities widget. Wait for automatic refresh to two minutes ago in Activity |  |
-| wait_for_text_present_ok | 2 minutes ago | 120000 |
-| select-frame | relative=parent |  |
+*Comment* | Test Case: Activities widget. Wait for automatic refresh to two minutes ago in Activity | |
+wait_for_text_present_ok | 2 minutes ago | 120000 |
+| select-frame | relative=parent | |
 
 | *Comment* | Test case: Activities Widget Verify Other's Signas. Check Dashboard, then wait for auto refresh |  |
 | open_ok | / |  |
@@ -53,6 +53,6 @@
 | wait_for_text_present_ok | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% | 30000 |
 | wait_for_text_present_ok | Other User Summary signal %%start_time%% | 30000 |
 
-| *Comment* | Test case: Activities Widget Verify Others. wait for auto refresh to two minutes ago |  |
-| wait_for_text_present_ok | 2 minutes ago | 120000 |
-| select-frame | relative=parent |  |
+*Comment* | Test case: Activities Widget Verify Others. wait for auto refresh to two minutes ago | |
+wait_for_text_present_ok | 2 minutes ago | 120000 |
+| select-frame | relative=parent | |

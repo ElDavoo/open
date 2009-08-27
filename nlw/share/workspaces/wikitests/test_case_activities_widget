@@ -12,7 +12,6 @@
 | set | diffws | diffws%%start_time%% |
 | set | overlapuser | overlapuser%%start_time%%@ken.socialtext.net |
 
-| *Comment* | Test Case: Activities Widget SETUP |  |  |
 | create-account | %%acct%% |  |  |
 | create-account | %%diffacct%% |  |  |
 | create-workspace | %%ws%% | %%acct%% |  |
@@ -31,12 +30,13 @@
 | include | [Test Case: Activities Widget Other User's Signals] |  |
 | include | [Test Case: Activities Widget Verify My Signals] |  |
 | include | [Test Case: Activities Widget Verify Others Signals] |  |
-| include | "Test Case: Activities Widget Conversations"[Test Case%3A Activities Widget Conversations] |  |
-| include | "Test Case: Activities Widget Tags and Tagging"[Test Case%3A Activities Widget Tags and Tagging] |  |
-| include | "Test Case: Activities Widget Follows and Following"[Test Case%3A Activities Widget Follows and Following] |  |
+| include | [Test Case: Activities Widget Conversations] |  |
+| include | [Test Case: Activities Widget Tags and Tagging] |  |
+| include | [Test Case: Activities Widget Follows and Following] |  |
 
 | *Comment* | Test Case: Activities Widget Teardown |  |
-| open_ok | / |  |
+| open_ok | /?dashboard |  |
+| wait_for_element_visible_ok | link=Add Content | 30000 |
 | st-empty-container |  |  |
 | st-admin | delete-workspace --w %%ws%% --no-export |  |
 | st-admin | delete-workspace --w %%diffws%% --no-export |  |

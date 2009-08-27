@@ -343,6 +343,99 @@ sub st_send_signal {
     my ($self, $username, $password) = @_;
 }
 
+=head2 st_single_widget_in_dashboard
+
+Clears dashboard, adds a single widget in location 1.  
+
+You pass in the link name in add content screen.
+
+=cut
+
+sub st_single_widget_in_dashboard {
+    my ($self, $linkid) = @_;
+    eval {
+        $self->st_empty_container();
+        $self->open_ok("/?dashboard");
+        $self->handle_command('wait_for_element_visible_ok','link=Add Content','30000');
+        $self->handle_command('click_and_wait','link=Add Content');
+        my $str = '//a[@id=' . "'" . $linkid . "'" . ']';
+        print "STR is $str\n";
+        $self->handle_command('wait_for_element_visible_ok', $str, 30000);
+        $self->handle_command('click_and_wait' ,$str); 
+        $self->handle_command('wait_for_text_present_ok', "Welcome", 30000);
+        $self->handle_command('text_like', 'st-editing-tools-edit', 'Welcome');
+        };
+        ok(!$@, 'st_single_widget_in_dashboard' );
+}
+
+
+=head 2 st_send_signal_via_activities_widget 
+
+Precondition: Open to /?dashboard with a named activities widget.  
+Precondition: Frame focus should be the entire dashboard
+Parameters: You pass in the activities widget name, signal text
+PostCondition: Signal is sent, Frame focus is back to entire dashboard
+=cut
+
+sub st_send_signal_via_activities_widget {
+    my ($self, $widgetname, $signaltosend) = @_;
+    #eval { 
+    $self->handle_command('st-select-widget-frame', $widgetname);
+    $self->handle_command('wait_for_element_visible_ok', 'expand-input', '30000');
+    $self->handle_command('click_ok', 'expand-input');
+    $self->handle_command('pause', '3000');
+    $self->handle_command('selectFrame', 'signalFrame');
+    $self->handle_command('wait_for_element_visible_ok', '//body', 10000);
+    $self->handle_command('type_ok' ,'//body', $signaltosend);
+    $self->handle_command('select-frame' ,'relative=parent');
+    $self->handle_command('wait_for_element_visible_ok' ,'post', 10000);
+    $self->handle_command('click_ok', 'post');
+    $self->handle_command('pause', 3000);
+    $self->handle_command('click_ok', 'expand-input');
+    $self->handle_command('select-frame','relative=parent'); 
+    #};
+    ok(!$@, 'st_send-signal_via_activities_widget');
+}
+
+=head2 st_verify_text_in_activities_wdiget
+Precondition: Open to /?dashboard with a named activities widget.  
+Precondition: Frame focus should be the entire dashboard
+Parameters: You paass in the activties widget name, text to look for
+PostCondition: Text is verified (or not), Frame focus is back to entire dashboard
+=cut
+
+sub st_verify_text_in_activities_widget {
+    my ($self, $widgetname, $linktofind) = @_;
+    #eval {
+        $self->handle_command('st-select-widget-frame', 'activities_widget');
+        $self->handle_command('wait_for_element_visible_ok', 'action', 10000);
+        $self->handle_command('pause', 10000);
+        $self->handle_command('wait_for_text_present_ok', $linktofind);
+        $self->handle_command('select-frame', 'relative=parent');
+    #}
+    #ok(!$@, 'st-verify-link-in-activities-widget');
+}
+
+=head2 st_verify_link_in_activities_wdiget
+Precondition: Open to /?dashboard with a named activities widget.  
+Precondition: Frame focus should be the entire dashboard
+Parameters: You paass in the activties widget name, link to look for
+PostCondition: Text is verified (or not), Frame focus is back to entire dashboard
+=cut
+
+sub st_verify_link_in_activities_widget {
+    my ($self, $widgetname, $linktofind) = @_;
+    #eval {
+        $self->handle_command('st-select-widget-frame', 'activities_widget');
+        $self->handle_command('wait_for_element_visible_ok', 'action', 10000);
+        $self->handle_command('pause', 10000);
+        $self->handle_command('wait_for_element_present_ok', $linktofind);
+        $self->handle_command('select-frame', 'relative=parent');
+    #};
+    #ok(!$@, 'st-verify-link-in-activities-widget');
+}
+      
+
 sub _adjust_location {
     my ($self, %params) = @_;
 

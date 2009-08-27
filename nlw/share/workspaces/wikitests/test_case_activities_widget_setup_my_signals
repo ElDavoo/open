@@ -19,65 +19,11 @@
 | click_and_wait | st-save-button-link |  |
 
 | *Comment* | Test Case: Activities Widget Setup My Signals. Get a fresh Activities widget |  |
-| open_ok | /?dashboard | 60000 |
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Activities'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Activities'] |  |
-
-| *Comment* | Test Case: Activities Widget Setup My Signals. Verify back at Dashboard with widget |  |
-| wait_for_text_present_ok | Welcome | 30000 |
-| text_like | st-editing-tools-edit | Welcome |
-| wait_for_text_present_ok | Activities | 30000 |
-
-| *Comment* | Test Case: Activities Widget Setup My Signals. Send four signals |  |
+| st-single-widget-in-dashboard | gallery-widget-Activities |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
 
-| *Comment* | Test Case: Activities Widget Setup. |  |
-| wait_for_element_visible_ok | expand-input | 30000 |
-| click_ok | expand-input |  |
-
-| *Comment* | Test Case: Activities Widget Setup My Signals. Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | She rocks in the treehouse %%start_time%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| *Comment* | Test Case: Activities Widget Setup My Signals. Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-
-| *Comment* | Test Case: Activities Widget Setup My Signals. Rockin and a bopin |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | Rockin and a bopin %%start_time%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| *Comment* | Test Case: Activities Widget Setup My Signals. Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-
-| *Comment* | Test Case: Activities Widget Setup My Signals. All the little birds |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | All the little birds %%start_time%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| *Comment* | Test Case: Activities Widget Setup My Signals. Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-
-| *Comment* | Test Case: Activities Widget Setup My Signals. Love to hear the robin going |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | Love to hear the robin going %%start_time%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| *Comment* | Test Case: Activities Widget Setup My Signals. Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-| select-frame | relative=parent |  |
+| st-send-signal-via-activities-widget | activities_widget | She rocks in the treehouse %%start_time%% |
+| st-send-signal-via-activities-widget | activities_widget | Rockin and a bopin %%start_time%% |
+| st-send-signal-via-activities-widget | activities_widget | All the little birds %%start_time%% |
+| st-send-signal-via-activities-widget | activities_widget | Love to hear the robin going %%start_time%% |
