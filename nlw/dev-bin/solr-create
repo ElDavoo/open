@@ -36,4 +36,4 @@ chown -R $USER:$DATA_GROUP $CORE_DIR
 chmod ug+w $CORE_DIR
 
 wget -q -O /dev/null "$SOLR_ADMIN?action=CREATE&name=$CORE&instanceDir=cores/$CORE"
-echo "Done ($?)"
+echo " - done, created $CORE ($?)"
