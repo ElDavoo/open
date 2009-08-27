@@ -62,39 +62,40 @@ ALTER TABLE ONLY group_account_role
             FOREIGN KEY (role_id)
             REFERENCES "Role" (role_id) ON DELETE CASCADE;
 
--- -- recreate account_user
--- DROP VIEW account_user;
--- 
--- CREATE VIEW account_user AS
---   SELECT explicit.user_id, explicit.account_id
---     FROM ( SELECT user_account_role.user_id AS user_id,
---                   user_account_role.account_id AS account_id
---              FROM user_account_role
---            UNION ALL
---            SELECT ugr.user_id, gar.account_id
---              FROM user_group_role ugr
---              JOIN group_account_role gar USING (group_id)
---           ) explicit;
--- 
--- -- recreate user_account
--- DROP VIEW user_account;
--- 
--- CREATE VIEW user_account AS
---   SELECT user_id,
---          primary_account_id AS account_id,
---          true AS is_primary
---     FROM "UserMetadata" um
---   UNION ALL
---   SELECT user_id,
---          account_id,
---          false AS is_primary
---     FROM account_user;
--- 
--- --- drop views; they're no longer needed!
--- DROP VIEW user_account_implicit;
--- DROP VIEW user_account_explicit;
--- DROP VIEW user_account_implicit_gwr;
--- DROP VIEW user_account_implicit_uwr;
+-- recreate account_user
+DROP VIEW account_user;
+
+CREATE VIEW account_user AS
+  SELECT explicit.user_id, explicit.account_id
+    FROM ( SELECT user_account_role.user_id AS user_id,
+                  user_account_role.account_id AS account_id
+             FROM user_account_role
+           UNION ALL
+           SELECT ugr.user_id, gar.account_id
+             FROM user_group_role ugr
+             JOIN group_account_role gar USING (group_id)
+          ) explicit;
+
+-- recreate user_account
+DROP VIEW user_account;
+
+CREATE VIEW user_account AS
+  SELECT user_id,
+         primary_account_id AS account_id,
+         true AS is_primary
+    FROM "UserMetadata" um
+  UNION ALL
+  SELECT user_id,
+         account_id,
+         false AS is_primary
+    FROM account_user;
+
+--- drop views; they're no longer needed!
+DROP VIEW user_account_implicit;
+DROP VIEW user_account_explicit;
+DROP VIEW user_account_implicit_gwr;
+DROP VIEW user_account_implicit_uwr;
+DROP VIEW account_user_no_groups;
 
 -- update the schema-version
 UPDATE "System"
