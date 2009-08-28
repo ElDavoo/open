@@ -21,10 +21,12 @@ exit;
 sub run_scripts {
     my $dir = shift;
     $Socialtext::System::SILENT_RUN = 1;
+    my $log = '/var/log/st-update.log';
     for my $script ( get_scripts($dir) ) {
         (my $name = $script) =~ s#.+/##;
+        my $command = (-w $log) ? "$script 2>&1 | tee -a $log" : $script;
         Socialtext::Timer->Continue($name);
-        shell_run($script);
+        shell_run($command);
         Socialtext::Timer->Pause($name);
     }
     st_timed_log('info', 'POSTINST', 'st-post-install',
