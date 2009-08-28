@@ -1,12 +1,16 @@
-# Redirect mobile browsers off to the miki/lite version of the page
+# Redirect mobile browsers off to the miki/m version of the page
 
-# rewrite: /:ws/?args => /lite/pages/:ws/?args
+# rewrite: /:ws/?args => /m/pages/:ws/?args
 RewriteCond     %{ENV:NLW_MOBILE_BROWSER}   1
-RewriteCond     %{REQUEST_URI}              !^/(lite|data)
-RewriteCond     %{REQUEST_URI}              !^/(index.cgi|challenge)
-RewriteRule     ^/([^/]+)/?$                /lite/page/$1/%{QUERY_STRING}       [R,L]                        
+RewriteRule     ^/$                         /m                               [R,L]                        
 
-# rewrite: /:ws/index.cgi?:page => /lite/pages/:ws/:page
+# rewrite: /:ws/?args => /m/pages/:ws/?args
+RewriteCond     %{ENV:NLW_MOBILE_BROWSER}   1
+RewriteCond     %{REQUEST_URI}              !^/(m|data)
+RewriteCond     %{REQUEST_URI}              !^/(index.cgi|challenge)
+RewriteRule     ^/([^/]+)/?$                /m/page/$1/%{QUERY_STRING}       [R,L]                        
+
+# rewrite: /:ws/index.cgi?:page => /m/pages/:ws/:page
 RewriteCond     %{ENV:NLW_MOBILE_BROWSER}   1
 RewriteCond     %{QUERY_STRING}             !action=
-RewriteRule     ^/([^/]+)/index.cgi$        /lite/page/$1/%{QUERY_STRING}?      [R,L]                            
+RewriteRule     ^/([^/]+)/index.cgi$        /m/page/$1/%{QUERY_STRING}?      [R,L]                            
