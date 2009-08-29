@@ -156,20 +156,18 @@
         # Insert filter
         SetOutputFilter DEFLATE
 
+        # Only compress HTML, JS and CSS
+        SetEnv gzip-only-text/html 1
+        SetEnvIfNoCase Request_URI \.(?:js|css)$ !gzip-only-text/html
+
         # Netscape 4.x has some problems...
-        BrowserMatch ^Mozilla/4 gzip-only-text/html
+        BrowserMatch ^Mozilla/4(?!.*\bMSIE\s+[789]) gzip-only-text/html
 
-        # Netscape 4.06-4.08 have some more problems
-        BrowserMatch ^Mozilla/4\.0[678] no-gzip
-
-        # MSIE masquerades as Netscape, but it is fine
-        BrowserMatch \bMSIE\s+[789] !no-gzip !gzip-only-text/html 
+        # Netscape 4.06-4.08 have problems with gzip in general
+        BrowserMatch ^Mozilla/4\.0[678](?!.*\bMSIE\s+[789]) no-gzip
 
         # Safari doesn't like compressed JS, so *only* compress HTML content
         BrowserMatch Safari gzip-only-text/html
-
-        # Don't compress images
-        SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
 
         # XXX: It would be better if no-gzip was set for any 204 No Content
         # response instead of matching on the DELETE request method.
