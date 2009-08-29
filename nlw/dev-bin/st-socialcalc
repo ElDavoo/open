@@ -6,7 +6,7 @@
 
 SCWS=`sudo st-admin enable-plugin --all-workspaces --p socialcalc 2>&1 | grep -o account`
 
-    if [ "$1" == "enable" ]; then 
+    if [ "$1" == "enable" ]; then
         if [ "$SCWS" ]; then
             echo ENABLING socialcalc for all workspaces using loop
             for i in `sudo st-admin list-workspaces` ; do sudo st-admin enable-plugin --w $i --plugin socialcalc ; done ;
