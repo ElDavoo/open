@@ -157,8 +157,7 @@
         SetOutputFilter DEFLATE
 
         # Only compress HTML, JS and CSS
-        SetEnv gzip-only-text/html 1
-        SetEnvIfNoCase Request_URI \.(?:js|css)$ !gzip-only-text/html
+        SetEnvIfNoCase Request_URI ^(?!.*\.(js|css)) gzip-only-text/html
 
         # Netscape 4.x has some problems...
         BrowserMatch ^Mozilla/4(?!.*\bMSIE\s+[789]) gzip-only-text/html
