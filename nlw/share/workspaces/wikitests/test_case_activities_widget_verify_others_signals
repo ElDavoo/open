@@ -46,7 +46,6 @@ wait_for_text_present_ok | 2 minutes ago | 120000 |
 | st-select-widget-frame | activities_widget |  |
 
 | *Comment* | Test case: Activities Widget. Signals should still be there |  |
-| is_selected_ok | action | label=signals |
 | wait_for_text_present_ok | woke up %%start_time%% | 30000 |
 | wait_for_text_present_ok | fell out of bed %%start_time%% | 30000 |
 | wait_for_text_present_ok | dragged a comb across my head %%start_time%% | 30000 |
@@ -54,5 +53,5 @@ wait_for_text_present_ok | 2 minutes ago | 120000 |
 | wait_for_text_present_ok | Other User Summary signal %%start_time%% | 30000 |
 
 *Comment* | Test case: Activities Widget Verify Others. wait for auto refresh to two minutes ago | |
-wait_for_text_present_ok | 2 minutes ago | 120000 |
+| wait_for_text_present_ok | 2 minutes ago | 120000 |
 | select-frame | relative=parent | |
