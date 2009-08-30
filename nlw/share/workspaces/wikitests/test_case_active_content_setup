@@ -180,6 +180,10 @@
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | open_ok | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| open_ok | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% |
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| open_ok | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% |
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
 
 | *Comment* | Test Case: Active Content Setup Login as %%conv_email%% |  |
 | open_ok | /%%acw%%/ |  |
@@ -198,6 +202,12 @@
 | wait_for_element_visible_ok | st-edit-button-link |  |
 | open_ok | /%%acw%%/?Active Content Edit %%start_time%% |  |
 | wait_for_element_visible_ok | st-edit-button-link |  |
+| open_ok | /%%acw%%/?Active Content Edit %%start_time%% |  |
+| wait_for_element_visible_ok | st-edit-button-link |  |
+| open_ok | /%%acw%%/?Active Content Edit %%start_time%% |  |
+| wait_for_element_visible_ok | st-edit-button-link |  |
+| open_ok | /%%acw%%/?Active Content Edit %%start_time%% |  |
+| wait_for_element_visible_ok | st-edit-button-link |  |
 
 | *Comment* | Test Case: Active Content Setup comment on a page |  |
 | open_ok | /%%acw%%/?Active Content Comment %%start_time%% |  |
@@ -206,6 +216,12 @@
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | %%conv_user%% comments |
 | click_ok | link=Save |  |
+| wait_for_element_visible_ok | link=Comment | 30000 |
+| open_ok | /%%acw%%/?Active Content Comment %%start_time%% |  |
+| wait_for_element_visible_ok | link=Comment | 30000 |
+| open_ok | /%%acw%%/?Active Content Comment %%start_time%% |  |
+| wait_for_element_visible_ok | link=Comment | 30000 |
+| open_ok | /%%acw%%/?Active Content Comment %%start_time%% |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 | open_ok | /%%acw%%/?Active Content Comment %%start_time%% |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
@@ -221,6 +237,14 @@
 | wait_for_element_visible_ok | st-tags-plusbutton-link | 30000 |
 | click_ok | st-tags-plusbutton-link |  |
 | wait_for_element_visible_ok | link=%%conv_user%% tags | 30000 |
+| open_ok | /%%acw%%/?Active Content Tag %%start_time%% |  |
+| wait_for_element_visible_ok | link=Add Tag | 30000 |
+| open_ok | /%%acw%%/?Active Content Tag %%start_time%% |  |
+| wait_for_element_visible_ok | link=Add Tag | 30000 |
+| open_ok | /%%acw%%/?Active Content Tag %%start_time%% |  |
+| wait_for_element_visible_ok | link=Add Tag | 30000 |
+| open_ok | /%%acw%%/?Active Content Tag %%start_time%% |  |
+| wait_for_element_visible_ok | link=Add Tag | 30000 |
 | open_ok | /%%acw%%/?Active Content Tag %%start_time%% |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
 
