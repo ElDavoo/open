@@ -23,13 +23,13 @@
 | wait_for_element_visible_ok | st-account-restrict-to-domain |  |
 | type_ok | st-account-restrict-to-domain | floodyflooy |
 | click_and_wait | st-account-restrict-submit |  |
-| wait_for_text_present_ok |  Domain (floodyflooy) is not valid. | 30000 |
+| wait_for_text_present_ok | Domain (floodyflooy) is not valid. | 30000 |
 | type_ok | st-account-restrict-to-domain | floodyflooy.notadomain |
 | click_and_wait | st-account-restrict-submit |  |
 | wait_for_text_present_ok | Domain (floodyflooy.notadomain) is not valid. | 30000 |
 | type_ok | st-account-restrict-to-domain | xndev.com |
 | click_and_wait | st-account-restrict-submit |  |
-| wait_for_text_present_ok |  Account updated | 30000 |
+| wait_for_text_present_ok | Account updated | 30000 |
 | st-admin | show-account-config --account %%restrict_acct%% | xndev.com |
 
 | *Comment* | Test case: Business Control Panel Socialtext Account exists |  |
@@ -154,8 +154,8 @@
 | click_and_wait | link=%%new_acct%% |  |
 | click_and_wait | link=Add User |  |
 | type_ok | email_address | bogus |
-| click_and_wait | add_user |  |
-| text_like | bogus is not a valid email address |  |
+| click_ok | //input[contains(@id,'add_user')] |  |
+| wait_for_text_present_ok | bogus is not a valid email address | 30000 |
 | type_ok | email_address | foo%%start_time%%@bar.com |
 | type_ok | first_name | firstname |
 | type_ok | last_name | lastname |
@@ -165,8 +165,8 @@
 | type_ok | work_phone | work phone |
 | type_ok | mobile_phone | mobile phone |
 | type_ok | home_phone | home phone |
-| click_and_wait | add_user |  |
-| text_like | Added user foo%%start_time%%@bar.com |  |
+| click_ok | //input[contains(@id,'add_user')] |  |
+| wait_for_text_present_ok | Added user foo%%start_time%%@bar.com | 30000 |
 | click_and_wait | link=Back |  |
 | wait_for_element_present_ok | link=firstname lastname <foo%%start_time%%@bar.com> |  |
 
