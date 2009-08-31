@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext;
-use Test::More qw(no_plan);
+use Test::More tests => 3;
 use Socialtext::Events;
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::System qw(shell_run);
