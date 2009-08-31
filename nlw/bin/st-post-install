@@ -10,10 +10,22 @@ use Socialtext::Log qw/st_timed_log/;
 use Socialtext::User;
 use Socialtext::System qw(shell_run);
 use Socialtext::Timer;
+use Socialtext::File;
+use Socialtext::AppConfig;
 use File::Spec::Functions qw(catfile);
 
 my $script_dir = get_build_setting("sharedir") . "/post-install";
 die "Could not find directory: $script_dir\n" unless -d $script_dir;
+
+# Use the same dumpfile for all updates. See ST::Schema::dump
+unless ( $ENV{ST_DB_DUMPFILE} ) {
+    my $dump_dir = Socialtext::File::catdir(
+        Socialtext::AppConfig->data_root_dir(), 'storage', 'db-backups' );
+    my $time = time;
+
+    $ENV{ST_DB_DUMPFILE} = Socialtext::File::catfile(
+        $dump_dir, "NLW-dump.$time.sql");
+}
 
 run_scripts($script_dir);
 exit;
