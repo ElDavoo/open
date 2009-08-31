@@ -145,6 +145,8 @@ variables as follows:
 
 =item db_signals
 
+=item db_groups
+
 =back
 
 =cut
@@ -153,7 +155,7 @@ sub big_db {
     my $self = shift;
     my @args = map { ("--$_" => $self->{"db_$_"}) }
         grep { exists $self->{"db_$_"} }
-        qw(accounts users pages events signals);
+        qw(accounts users pages events signals groups);
 
     Socialtext::System::shell_run('really-big-db.pl', @args);
 }

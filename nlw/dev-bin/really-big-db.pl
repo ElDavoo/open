@@ -311,6 +311,7 @@ sub maybe_commit {
     for (0 .. $USER_GROUP_ROLES) {
         # pick a random Group
         my $group_id = $groups[ rand(@groups) ];
+        last unless defined $group_id;
 
         # pick a random User (that isn't in the Group yet)
         unless (exists $available{$group_id}) {
@@ -344,6 +345,7 @@ sub maybe_commit {
     for (0 .. $GROUP_WORKSPACE_ROLES) {
         # pick a random Group
         my $group_id = $groups[ rand(@groups) ];
+        last unless defined $group_id;
 
         # pick random WS (that the Group isn't in yet)
         unless (exists $available{$group_id}) {
