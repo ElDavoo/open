@@ -12,9 +12,11 @@ Getopt::Long::Configure('pass_through');
 
 my $timeout;
 my $uniqkey;
+my $quiet;
 GetOptions(
     'timeout=i' => \$timeout,
     'uniqkey=s' => \$uniqkey,
+    'quiet'     => \$quiet,
 );
 
 my $cmd = shift;
@@ -31,7 +33,7 @@ my $job_h = Socialtext::JobCreator->insert(
     }
 );
 if ($job_h) {
-    print "job id ".$job_h->jobid."\n";
+    print "job id ".$job_h->jobid."\n" unless $quiet;
     exit 0;
 }
 else {
