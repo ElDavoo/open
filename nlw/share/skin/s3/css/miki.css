@@ -61,7 +61,10 @@ div.clear {
     padding: 3px 2px;
 }
 
-.tabs .letter_set,
+.tabs .letter_set {
+    white-space: normal;
+}
+
 .globalnav a,
 .tabs a {
     white-space: nowrap;

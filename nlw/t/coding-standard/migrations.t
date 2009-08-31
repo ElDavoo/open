@@ -4,11 +4,12 @@ use strict;
 use warnings;
 use Test::More;
 use Socialtext::Migration;
+use IO::All;
 
 my $migration_dir = 'share/migrations';
 my @migrations    = Socialtext::Migration::find_migrations($migration_dir);
 
-plan tests => scalar(@migrations) + 1;
+plan tests => scalar(@migrations)*5 + 1;
 
 Duplicate_migration_check: {
     my %nums_seen;
@@ -35,3 +36,17 @@ Un_named_migration_check: {
 
     is_deeply \@unnumbered, [], 'No un-numbered migrations';
 }
+
+Duplicate_migration_check: {
+    for my $d (@migrations) {
+        my $pre = io("$d->{dir}/pre-check");
+        ok $pre, "pre exists $d->{dir}";
+        unlike $pre, qr/ensure_socialtext_schema/,
+            'no ensure_socialtext_schema';
+        my $post = io("$d->{dir}/post-check");
+        ok $post, "post exists $d->{dir}";
+        unlike $post, qr/ensure_socialtext_schema/,
+            'no ensure_socialtext_schema';
+    }
+}
+

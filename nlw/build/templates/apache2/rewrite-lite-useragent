@@ -2,15 +2,15 @@
 
 # rewrite: /:ws/?args => /m/pages/:ws/?args
 RewriteCond     %{ENV:NLW_MOBILE_BROWSER}   1
-RewriteRule     ^/$                         /m                               [R,L]                        
+RewriteRule     ^/+$                        /m                               [R,L]                        
 
 # rewrite: /:ws/?args => /m/pages/:ws/?args
 RewriteCond     %{ENV:NLW_MOBILE_BROWSER}   1
 RewriteCond     %{REQUEST_URI}              !^/(m|data)
 RewriteCond     %{REQUEST_URI}              !^/(index.cgi|challenge)
-RewriteRule     ^/([^/]+)/?$                /m/page/$1/%{QUERY_STRING}       [R,L]                        
+RewriteRule     ^/+([^/]+)/*$               /m/page/$1/%{QUERY_STRING}       [R,L]                        
 
 # rewrite: /:ws/index.cgi?:page => /m/pages/:ws/:page
 RewriteCond     %{ENV:NLW_MOBILE_BROWSER}   1
 RewriteCond     %{QUERY_STRING}             !action=
-RewriteRule     ^/([^/]+)/index.cgi$        /m/page/$1/%{QUERY_STRING}?      [R,L]                            
+RewriteRule     ^/+([^/]+)/+index.cgi$      /m/page/$1/%{QUERY_STRING}?      [R,L]                            
