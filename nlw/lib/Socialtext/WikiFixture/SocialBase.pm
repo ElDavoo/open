@@ -21,6 +21,7 @@ use MIME::Types;
 use Cwd;
 use HTTP::Request::Common;
 use LWP::UserAgent;
+use Socialtext::l10n qw(loc);
 
 =head1 NAME
 
@@ -1442,15 +1443,16 @@ sub st_account_export_field_like {
 sub st_purge_account_gallery {
     my ($self, $acct_name) = @_;
     my $acct = Socialtext::Account->new(name => $acct_name);
-    sql_execute('
+    my $sth = sql_execute('
         DELETE FROM gallery WHERE account_id = ?
     ', $acct->account_id);
+    warn loc("# Deleted [quant,_1,gallery,galleries]", $sth->rows)."\n";
 }
 
 sub st_purge_account_containers {
     my ($self, $acct_name) = @_;
     my $acct = Socialtext::Account->new(name => $acct_name);
-    sql_execute('
+    my $sth = sql_execute('
         DELETE FROM container
          WHERE user_id
             IN (
@@ -1460,20 +1462,24 @@ sub st_purge_account_containers {
             )
             OR account_id = ?
     ', $acct->account_id, $acct->account_id);
+    warn loc("# Deleted [quant,_1,container]", $sth->rows)."\n";
 }
 
 sub st_purge_uploaded_widgets {
     my ($self, $acct_name) = @_;
     my $acct = Socialtext::Account->new(name => $acct_name);
-    sql_execute('
+    my $sth = sql_execute(q{
         DELETE FROM gadget
          WHERE src IS NULL
-    ');
+            OR src like 'file:/tmp/acct-%/%.xml'
+    });
+    warn loc("# Deleted [quant,_1,uploaded widget]", $sth->rows)."\n";
 }
 
 sub st_purge_widget {
     my ($self, $src) = @_;
-    sql_execute('DELETE FROM gadget WHERE src = ?', $src);
+    my $sth = sql_execute('DELETE FROM gadget WHERE src = ?', $src);
+    warn loc("# Deleted [quant,_1,widget]", $sth->rows)."\n";
 }
 
 sub enable_ws_plugin    { shift; _change_plugin('Workspace', 1, @_) }
