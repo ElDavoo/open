@@ -25,6 +25,7 @@ const read_only => 0; # cannot be disabled/enabled in the control panel
 
 field 'hub';
 field 'logged_in', -init => 1;
+field 'last';
 
 # perldoc Socialtext::URI for arguments
 #    path = '' & query => {}
