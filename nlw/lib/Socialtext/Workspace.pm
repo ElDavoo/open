@@ -426,6 +426,7 @@ sub update {
     my $old_title = $self->title();
 
     $self->_update(@_);
+    $self->cache->clear();
 
     if ( $self->title() ne $old_title ) {
         my ( $main, $hub ) = $self->_main_and_hub();
