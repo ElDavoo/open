@@ -4,7 +4,8 @@ use strict;
 use warnings;
 use base 'Exporter';
 
-our @EXPORT_OK = qw/get_contents set_contents catdir/;
+our @EXPORT_OK = qw/get_contents set_contents catdir
+                    get_contents_utf8 set_contents_utf8/;
 
 our %CONTENT;
 our %SYMLINK;
