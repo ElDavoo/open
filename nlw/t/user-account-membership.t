@@ -9,7 +9,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 2;
+use Test::Socialtext tests => 27;
 use Socialtext::SQL qw/get_dbh/;
 use Socialtext::User;
 use Socialtext::Account;
