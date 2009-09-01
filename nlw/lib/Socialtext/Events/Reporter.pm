@@ -167,7 +167,7 @@ sub _extract_tag {
             $row->{tag_uri} = $link_dictionary->format_link(
                 link => 'category',
                 workspace => $page->{workspace_name},
-                category => $page->{tag_name},
+                category => $row->{tag_name},
             );
         }
         elsif ($row->{person}) {
