@@ -36,6 +36,7 @@ LoadModule  setenvif_module         [% config.module_dir %]/mod_setenvif.so
 Port   [% config.backend_ports.http %]
 Listen [% config.backend_ports.http %]
 Listen [% config.backend_ports.https %]
+BindAddress 127.0.0.1
 
 [%- PROCESS 'shared/common.tt2' %]
 
