@@ -69,7 +69,9 @@ sub add_category {
     }
     if (!$exists) {
         push @{$self->{Category}}, $category;
+        return 1;
     }
+    return 0;
 }
 
 sub delete_category {
