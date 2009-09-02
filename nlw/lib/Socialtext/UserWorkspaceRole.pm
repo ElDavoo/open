@@ -3,6 +3,7 @@ package Socialtext::UserWorkspaceRole;
 
 use Moose;
 use Socialtext::Moose::SqlTable;
+use Socialtext::UserWorkspaceRoleFactory;
 
 # These will go away soon enough.
 use Socialtext::SQL qw( sql_execute sql_convert_to_boolean );
@@ -26,84 +27,30 @@ has_column is_selected => (
 has_table '"UserWorkspaceRole"';
 
 sub get {
-    my ( $class, %args ) = @_;
+    my $class = shift;
+    my %p     = @_;
 
-    my $sth;
-    my $sql = 'select * from "UserWorkspaceRole" where';
-    my $connector = '';
-    my @params = ();
-    if ($args{workspace_id}) {
-        $sql .= " $connector workspace_id = ?";
-        $connector = 'and';
-        push @params, $args{workspace_id};
-    }
-    if ($args{user_id}) {
-        $sql .= " $connector user_id = ?";
-        $connector = 'and';
-        push @params, $args{user_id};
-    }
-    $sth = sql_execute($sql, @params);
-
-    my $row = $sth->fetchrow_hashref();
-    return undef if (!defined($row));
-
-    return $class->_new_from_hash_ref($row);
-}
-
-sub _new_from_hash_ref {
-    my ( $class, $row ) = @_;
-    return $row unless $row;
-    return bless $row, $class;
+    return Socialtext::UserWorkspaceRoleFactory->Get(%p);
 }
 
 sub create {
     my $class = shift;
-    my %p = @_;
+    my %p     = @_;
 
-    my $self;
-
-    my @params = ();
-    my $sql = 'insert into "UserWorkspaceRole" (';
-    my $connector = '';
-    foreach ('workspace_id', 'user_id', 'role_id', 'is_selected') {
-        $sql .= "$connector $_";
-        $connector = ', ';
-        my $value = $p{$_};
-        $value = sql_convert_to_boolean($p{$_}, 't') if ($_ eq 'is_selected');
-        push @params, $value;
-    }
-    $sql .= ') values (';
-    $sql .= join(',', map {'?'} @params);
-    $sql .= ')';
-
-    sql_execute($sql, @params);
-
-    return $class->_new_from_hash_ref(\%p);
+    return Socialtext::UserWorkspaceRoleFactory->Create(\%p);
 }
 
 sub delete {
     my $self = shift;
 
-    my $sql =
-        'delete from "UserWorkspaceRole"'.
-        ' where workspace_id = ? and user_id = ?';
-    sql_execute($sql, $self->workspace_id, $self->user_id);
+    return Socialtext::UserWorkspaceRoleFactory->Delete($self);
 }
 
 sub update {
-    my $self = shift;
-    my $p    = shift;
+    my $self  = shift;
+    my $proto = shift;
 
-    my $sql =
-        'update "UserWorkspaceRole" '.
-        ' set role_id = ?, is_selected = ? where workspace_id = ? and user_id = ?';
-    sql_execute($sql, $p->{role_id}, sql_convert_to_boolean($p->{is_selected}), $self->workspace_id, $self->user_id);
-
-    foreach my $attr ( qw/role_id is_selected/ ) {
-        $self->meta->find_attribute_by_name($attr)->set_value(
-            $self, $p->{$attr},
-        );
-    }
+    Socialtext::UserWorkspaceRoleFactory->Update($self, $proto);
 }
 
 no Moose;
@@ -130,15 +77,6 @@ UserWorkspaceRole table. Each object represents a single row from the
 table.
 
 =head1 METHODS
-
-=over 4
-
-=item Socialtext::UserWorkspaceRole->_new_from_hash_ref(hash)
-
-Returns a new instantiation of the UWR object. Data members for the object
-are initialized from the hash reference passed to the method.
-
-=back
 
 =over 4
 
