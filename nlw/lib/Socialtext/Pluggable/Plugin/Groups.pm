@@ -81,7 +81,7 @@ sub export_group_users_for_workspace {
          WHERE u.workspace_id = ?
            AND u.user_id NOT IN
                (    SELECT uwr.user_id
-                      FROM "UserWorkspaceRole" uwr
+                      FROM user_workspace_role uwr
                      WHERE uwr.workspace_id = ?
                );
     };

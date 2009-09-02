@@ -72,7 +72,7 @@ sub List {
     my $sth = sql_execute(
         'SELECT wb.workspace_id FROM "WorkspaceBreadcrumb" wb'
         . ' WHERE wb.user_id=? '
-        . ' AND ( EXISTS (SELECT 1 FROM "UserWorkspaceRole" uwr'
+        . ' AND ( EXISTS (SELECT 1 FROM user_workspace_role uwr'
         . '         WHERE wb.user_id = uwr.user_id'
         . '           AND wb.workspace_id = uwr.workspace_id)'
         . '     OR EXISTS (SELECT 1 FROM "WorkspaceRolePermission" wrp'

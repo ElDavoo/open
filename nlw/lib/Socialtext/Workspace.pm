@@ -1738,8 +1738,8 @@ my %LimitAndSortSpec = (
                 . ' LIMIT ? OFFSET ?',
             user_count => 'SELECT "Workspace".*'
                 . ' FROM "Workspace",'
-                . ' (SELECT workspace_id, COUNT(DISTINCT("UserWorkspaceRole".user_id))'
-                . ' AS user_count FROM "UserWorkspaceRole" GROUP BY workspace_id) AS temp1'
+                . ' (SELECT workspace_id, COUNT(DISTINCT(user_workspace_role.user_id))'
+                . ' AS user_count FROM user_workspace_role GROUP BY workspace_id) AS temp1'
                 . ' WHERE temp1.workspace_id = "Workspace".workspace_id'
                 . " ORDER BY user_count $p{sort_order},"
                 . ' "Workspace".name ASC'
@@ -1810,8 +1810,8 @@ sub _WorkspaceCursor {
                 . ' LIMIT ? OFFSET ?',
             user_count => 'SELECT "Workspace".*'
                 . ' FROM "Workspace",'
-                . ' (SELECT workspace_id, COUNT(DISTINCT("UserWorkspaceRole".user_id))'
-                . ' AS user_count FROM "UserWorkspaceRole" GROUP BY workspace_id) AS temp1'
+                . ' (SELECT workspace_id, COUNT(DISTINCT(user_workspace_role.user_id))'
+                . ' AS user_count FROM user_workspace_role GROUP BY workspace_id) AS temp1'
                 . ' WHERE temp1.workspace_id = "Workspace".workspace_id'
                 . " AND \"Workspace\".account_id=?"
                 . " ORDER BY user_count $p{sort_order},"
@@ -1868,9 +1868,9 @@ sub _WorkspaceCursor {
             user_count => <<EOSQL,
 SELECT *
     FROM "Workspace" LEFT OUTER JOIN (
-        SELECT workspace_id, COUNT(DISTINCT("UserWorkspaceRole".user_id))
+        SELECT workspace_id, COUNT(DISTINCT(user_workspace_role.user_id))
             AS user_count
-            FROM "UserWorkspaceRole"
+            FROM user_workspace_role 
             GROUP BY workspace_id
         ) AS X USING (workspace_id)
     WHERE name $op ?
@@ -2695,7 +2695,7 @@ to false.
 =head2 $workspace->add_user( user => $user, role => $role )
 
 Adds the user to the workspace with the given role. If no role is
-specified, this defaults to "member". UserWorkspaceRole.is_selected
+specified, this defaults to "member". user_workspace_role.is_selected
 will be true for this user and workspace.
 
 =head2 $workspace->assign_role_to_user( user => $user, role => $role, is_selected => $bool )

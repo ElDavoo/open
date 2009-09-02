@@ -112,7 +112,7 @@ C<Socialtext::UserWorkspaceRole> objects.
 
 =item B<$factory-E<gt>Get(PARAMS)>
 
-Looks for an existing record in the "UserWorkspaceRole" table matching PARAMS
+Looks for an existing record in the user_workspace_role table matching PARAMS
 and returns a C<Socialtext::UserWorkspaceRole> representing that row, or undef
 if it can't find a match.
 
@@ -128,7 +128,7 @@ PARAMS I<must> contain:
 
 =item B<$factory-E<gt>CreateRecord(\%proto_uwr)>
 
-Create a new entry in the "UserWorkspaceRole" table, if possible, and return
+Create a new entry in the user_workspace_role table, if possible, and return
 the corresponding C<Socialtext::UserWorkspaceRole> object on success.
 
 C<\%proto_uwr> I<must> include the following:
@@ -145,7 +145,7 @@ C<\%proto_uwr> I<must> include the following:
 
 =item B<$factory-E<gt>Create(\%proto_uwr)>
 
-Create a new entry in the "UserWorkspaceRole" table, a simplfied wrapper
+Create a new entry in the user_workspace_role table, a simplfied wrapper
 around C<CreateRecord>.
 
 C<\%proto_uwr> I<must> include the following:

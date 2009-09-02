@@ -624,7 +624,7 @@ sub workspaces_with_selected {
 
     my $sth = sql_execute(<<EOSQL, $self->user_id);
 SELECT uwr.workspace_id
-    FROM "UserWorkspaceRole" uwr, "Workspace" w
+    FROM user_workspace_role uwr, "Workspace" w
     WHERE uwr.user_id=? AND uwr.workspace_id = w.workspace_id
     ORDER BY w.name
 EOSQL
@@ -652,11 +652,11 @@ EOSQL
     Readonly my $spec => { workspace => WORKSPACE_TYPE };
     sub workspace_is_selected {
         my $self = shift;
-        my %p = validate( @_, $spec );
+        my %p    = validate(@_, $spec);
 
         my $sth = sql_execute(
             'SELECT is_selected'
-            . ' FROM "UserWorkspaceRole"'
+            . ' FROM user_workspace_role'
             . ' WHERE user_id=? AND workspace_id=?',
             $self->user_id, $p{workspace}->workspace_id );
 
@@ -901,9 +901,9 @@ SELECT user_id
 EOSQL
             workspace_count => <<EOSQL,
 SELECT users.user_id,
-        COUNT(DISTINCT("UserWorkspaceRole".workspace_id)) AS workspace_count
-    FROM users LEFT OUTER JOIN "UserWorkspaceRole"
-        ON users.user_id = "UserWorkspaceRole".user_id
+        COUNT(DISTINCT(user_workspace_role.workspace_id)) AS workspace_count
+    FROM users LEFT OUTER JOIN user_workspace_role 
+        ON users.user_id = user_workspace_role.user_id
     GROUP BY users.user_id, users.driver_username
     ORDER BY workspace_count $p{sort_order},
              users.driver_username ASC
@@ -1037,7 +1037,7 @@ SELECT DISTINCT user_id,
         };
 
         my $uwr_table = $p{direct}
-            ? '"UserWorkspaceRole"'
+            ? 'user_workspace_role'
             : 'distinct_user_workspace_role';
         my $from = qq{
             users
@@ -1143,10 +1143,10 @@ SELECT DISTINCT users.user_id AS user_id,
 EOSQL
             workspace_count => <<EOSQL,
 SELECT users.user_id AS user_id,
-        COUNT(DISTINCT("UserWorkspaceRole".workspace_id)) AS aaaaa10000
+        COUNT(DISTINCT(user_workspace_role.workspace_id)) AS aaaaa10000
     FROM users AS users
-        LEFT OUTER JOIN "UserWorkspaceRole" AS "UserWorkspaceRole"
-            ON users.user_id = "UserWorkspaceRole".user_id
+        LEFT OUTER JOIN user_workspace_role AS user_workspace_role 
+            ON users.user_id = user_workspace_role.user_id
     WHERE users.driver_username LIKE ?
     GROUP BY users.user_id, users.driver_username
     ORDER BY aaaaa10000 ASC, users.driver_username $p{sort_order}
@@ -1805,7 +1805,7 @@ selected.
 =head2 $user->set_selected_workspaces( workspaces => [ $ws1, $ws2 ] );
 
 Given an array reference of C<Socialtext::Workspace> objects, this
-sets UserWorkspaceRole.is_selected for each workspace to true, and
+sets user_workspace_role.is_selected for each workspace to true, and
 false for all other workspaces of which the user is a member.
 
 =head2 $user->is_authenticated()

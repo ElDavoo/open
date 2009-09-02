@@ -186,13 +186,6 @@ CREATE TABLE "UserMetadata" (
     primary_account_id bigint
 );
 
-CREATE TABLE "UserWorkspaceRole" (
-    user_id bigint NOT NULL,
-    workspace_id bigint NOT NULL,
-    role_id integer NOT NULL,
-    is_selected boolean DEFAULT true NOT NULL
-);
-
 CREATE TABLE "Watchlist" (
     workspace_id bigint NOT NULL,
     user_id bigint NOT NULL,
@@ -315,10 +308,17 @@ CREATE TABLE group_workspace_role (
     role_id integer NOT NULL
 );
 
+CREATE TABLE user_workspace_role (
+    user_id bigint NOT NULL,
+    workspace_id bigint NOT NULL,
+    role_id integer NOT NULL,
+    is_selected boolean DEFAULT true NOT NULL
+);
+
 CREATE VIEW all_user_workspace AS
   SELECT my_workspaces.user_id, my_workspaces.workspace_id
-   FROM ( SELECT "UserWorkspaceRole".user_id, "UserWorkspaceRole".workspace_id
-           FROM "UserWorkspaceRole"
+   FROM ( SELECT user_workspace_role.user_id, user_workspace_role.workspace_id
+           FROM user_workspace_role
 UNION ALL 
          SELECT ugr.user_id, gwr.workspace_id
            FROM user_group_role ugr
@@ -326,8 +326,8 @@ UNION ALL
 
 CREATE VIEW all_user_workspace_role AS
   SELECT my_workspace_roles.user_id, my_workspace_roles.workspace_id, my_workspace_roles.role_id
-   FROM ( SELECT "UserWorkspaceRole".user_id, "UserWorkspaceRole".workspace_id, "UserWorkspaceRole".role_id
-           FROM "UserWorkspaceRole"
+   FROM ( SELECT user_workspace_role.user_id, user_workspace_role.workspace_id, user_workspace_role.role_id
+           FROM user_workspace_role
 UNION ALL 
          SELECT ugr.user_id, gwr.workspace_id, gwr.role_id
            FROM user_group_role ugr
@@ -809,10 +809,6 @@ ALTER TABLE ONLY "UserMetadata"
     ADD CONSTRAINT "UserMetadata_pkey"
             PRIMARY KEY (user_id);
 
-ALTER TABLE ONLY "UserWorkspaceRole"
-    ADD CONSTRAINT "UserWorkspaceRole_pkey"
-            PRIMARY KEY (user_id, workspace_id);
-
 ALTER TABLE ONLY "Watchlist"
     ADD CONSTRAINT "Watchlist_pkey"
             PRIMARY KEY (workspace_id, user_id, page_text_id);
@@ -993,6 +989,10 @@ ALTER TABLE ONLY user_group_role
     ADD CONSTRAINT user_group_role_pk
             PRIMARY KEY (user_id, group_id);
 
+ALTER TABLE ONLY user_workspace_role
+    ADD CONSTRAINT user_workspace_role_pkey
+            PRIMARY KEY (user_id, workspace_id);
+
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey
             PRIMARY KEY (user_id);
@@ -1026,9 +1026,6 @@ CREATE UNIQUE INDEX "UserMetadata___user_id"
 
 CREATE INDEX "UserMetadata_primary_account_id"
 	    ON "UserMetadata" (primary_account_id);
-
-CREATE INDEX "UserWorkspaceRole_workspace_id"
-	    ON "UserWorkspaceRole" (workspace_id);
 
 CREATE UNIQUE INDEX "Workspace___lower___name"
 	    ON "Workspace" (lower((name)::text));
@@ -1324,6 +1321,9 @@ CREATE INDEX user_plugin_pref_key_idx
 CREATE INDEX user_workspace_pref_idx
 	    ON user_workspace_pref (user_id, workspace_id);
 
+CREATE INDEX user_workspace_role__workspace_id
+	    ON user_workspace_role (workspace_id);
+
 CREATE UNIQUE INDEX users_driver_unique_id
 	    ON users (driver_key, driver_unique_id);
 
@@ -1451,11 +1451,6 @@ ALTER TABLE ONLY "WorkspaceRolePermission"
             FOREIGN KEY (role_id)
             REFERENCES "Role"(role_id) ON DELETE CASCADE;
 
-ALTER TABLE ONLY "UserWorkspaceRole"
-    ADD CONSTRAINT fk_2d35adae0767c6ef9bd03ed923bd2380
-            FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
-
 ALTER TABLE ONLY "UserMetadata"
     ADD CONSTRAINT fk_51604686f50dc445f1d697a101a6a5cb
             FOREIGN KEY (user_id)
@@ -1488,11 +1483,6 @@ ALTER TABLE ONLY "Watchlist"
 
 ALTER TABLE ONLY "WorkspaceCommentFormCustomField"
     ADD CONSTRAINT fk_84d598c9d334a863af733a2647d59189
-            FOREIGN KEY (workspace_id)
-            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY "UserWorkspaceRole"
-    ADD CONSTRAINT fk_c00a18f1daca90d376037f946a0b3894
             FOREIGN KEY (workspace_id)
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
@@ -1766,6 +1756,21 @@ ALTER TABLE ONLY user_workspace_pref
             FOREIGN KEY (workspace_id)
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY user_workspace_role
+    ADD CONSTRAINT user_workspace_role_role_id_fk
+            FOREIGN KEY (role_id)
+            REFERENCES "Role"(role_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_workspace_role
+    ADD CONSTRAINT user_workspace_role_user_id_fk
+            FOREIGN KEY (user_id)
+            REFERENCES users(user_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_workspace_role
+    ADD CONSTRAINT user_workspace_role_workspace_id_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY "UserEmailConfirmation"
     ADD CONSTRAINT useremailconfirmation_workpace_id_fk
             FOREIGN KEY (workspace_id)
@@ -1775,11 +1780,6 @@ ALTER TABLE ONLY "UserMetadata"
     ADD CONSTRAINT usermeta_account_fk
             FOREIGN KEY (primary_account_id)
             REFERENCES "Account"(account_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY "UserWorkspaceRole"
-    ADD CONSTRAINT userworkspacerole___role___role_id___role_id___n___1___1___0
-            FOREIGN KEY (role_id)
-            REFERENCES "Role"(role_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY "Watchlist"
     ADD CONSTRAINT watchlist_user_fk
@@ -1822,4 +1822,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '84');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '85');

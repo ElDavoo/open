@@ -363,7 +363,7 @@ sub visibility_sql {
 }
 
 my $VISIBLE_WORKSPACES = <<'EOSQL';
-    SELECT workspace_id FROM "UserWorkspaceRole" WHERE user_id = ?
+    SELECT workspace_id FROM user_workspace_role WHERE user_id = ?
     UNION ALL
     SELECT workspace_id
     FROM "WorkspaceRolePermission" wrp

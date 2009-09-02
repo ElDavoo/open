@@ -15,7 +15,7 @@ has_column is_selected => (
     is_required => 1,
 );
 
-has_table '"UserWorkspaceRole"';
+has_table 'user_workspace_role';
 
 sub update {
     my $self  = shift;

@@ -22,7 +22,7 @@ sub UsersByWorkspaceId {
     my $direct = $p{direct};
 
     my $uwr_table = $p{direct}
-        ? '"UserWorkspaceRole"'
+        ? 'user_workspace_role'
         : 'distinct_user_workspace_role';
 
     my $sql = qq{
@@ -53,7 +53,7 @@ sub CountUsersByWorkspaceId {
     my $direct = $p{direct};
 
     my $uwr_table = $p{direct}
-        ? '"UserWorkspaceRole"'
+        ? 'user_workspace_role'
         : 'all_user_workspace_role';
 
     my $sql = qq{
@@ -79,7 +79,7 @@ sub UserHasRoleInWorkspace {
     my $direct = exists $p{direct} ? $p{direct} : 0;
 
     my $uwr_table = $p{direct}
-        ? '"UserWorkspaceRole"'
+        ? 'user_workspace_role'
         : 'all_user_workspace_role';
 
     my $user_id = $user->user_id();
@@ -113,7 +113,7 @@ sub RolesForUserInWorkspace {
     my $ws_id   = $ws->workspace_id();
 
     my $uwr_table = $p{direct}
-        ? '"UserWorkspaceRole"'
+        ? 'user_workspace_role'
         : 'distinct_user_workspace_role';
 
     my $sql = qq{
@@ -163,7 +163,7 @@ sub RolesForUserInWorkspace {
         my $direct  = $p{direct};
 
         my $uwr_table = $p{direct}
-            ? '"UserWorkspaceRole"'
+            ? 'user_workspace_role'
             : 'distinct_user_workspace_role';
 
         my $exclude_clause = '';
@@ -201,7 +201,7 @@ sub RolesForUserInWorkspace {
         my $direct  = $p{direct};
 
         my $uwr_table = $p{direct}
-            ? '"UserWorkspaceRole"'
+            ? 'user_workspace_role'
             : 'all_user_workspace_role';
 
         my $exclude_clause = '';

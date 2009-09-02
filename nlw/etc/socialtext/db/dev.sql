@@ -26,7 +26,7 @@ CREATE OR REPLACE VIEW xuwr AS
     SELECT users.driver_username, 
            "Workspace".name AS workspace_name,
            "Role".name AS role_name
-        FROM "UserWorkspaceRole" uwr
+        FROM user_workspace_role uwr
             JOIN "Workspace" ON (uwr.workspace_id = "Workspace".workspace_id)
             JOIN "Role" ON (uwr.role_id = "Role".role_id)
             JOIN users USING (user_id);
