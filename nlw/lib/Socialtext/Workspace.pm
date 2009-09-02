@@ -1253,18 +1253,13 @@ sub email_passes_invitation_filter {
             workspace_id => $self->workspace_id,
         );
 
-        my $msg_action;
         if ($uwr) {
-            $msg_action = 'CHANGE,USER_ROLE';
-
             $uwr->update({
                 role_id     => $p{role}->role_id,
                 is_selected => $p{is_selected},
             });
         }
         else {
-            $msg_action = 'ASSIGN,USER_ROLE';
-
             Socialtext::UserWorkspaceRoleFactory->Create( {
                 user_id      => $p{user}->user_id,
                 workspace_id => $self->workspace_id,
@@ -1274,14 +1269,6 @@ sub email_passes_invitation_filter {
         }
 
         Socialtext::Cache->clear('authz_plugin');
-
-        st_log()->info($msg_action .  ','
-             . 'role:' . $p{role}->name . ','
-             . 'user:' . $p{user}->homunculus->username
-             . '(' . $p{user}->user_id . '),'
-             . 'workspace:' . $self->name . '('
-             . $self->workspace_id . '),'
-             . '[' . $timer->elapsed . ']');
 
         my $adapter = Socialtext::Pluggable::Adapter->new;
         $adapter->make_hub(Socialtext::User->SystemUser(), $self);
@@ -1334,13 +1321,6 @@ sub has_user {
 
         Socialtext::JSON::Proxy::Helper->ClearForUser($p{user}->user_id);
         Socialtext::Cache->clear('authz_plugin');
-
-        st_log()->info('REMOVE,USER_ROLE,'
-             . 'user:' . $p{user}->homunculus->username
-             . '(' . $p{user}->user_id . '),'
-             . 'workspace:' . $self->name . '('
-             . $self->workspace_id . '),'
-             . '[' . $timer->elapsed . ']');
 
         my $adapter = Socialtext::Pluggable::Adapter->new;
         $adapter->make_hub(Socialtext::User->SystemUser(), $self);

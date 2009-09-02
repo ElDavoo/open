@@ -107,6 +107,7 @@ REMOVE_USER:
     ok( ! $ws->has_user( $user ), 'user is no longer a member of the workspace' );
 
     my $log_msg = 'REMOVE,USER_ROLE,'
+        . 'role:workspace_admin,'
         . 'user:'
         . $user->username . '('
         . $user->user_id . '),'
