@@ -16,8 +16,13 @@ my %args;
 GetOptions( \%args,
     'class=s',
     'url=s',
+    'account-id=s',
+    'workspace-id=s',
 ) or die;
 
+$args{account_id} = delete $args{'account-id'} if $args{'account-id'};
+$args{workspace_id} = delete $args{'workspace-id'} if $args{'workspace-id'};
 
 print "Setting webhook on " . $r->server . "\n";
-print $r->put_webhook( %args ), "\n";
+$r->put_webhook( %args );
+print $r->response->status_line, "\n";
