@@ -4,7 +4,7 @@
 
 | *Comment* | Test Case: Signals Widget |  |
 | st-admin | update-page --workspace %%workspace%% --email %%email%% --page "Edit Summary Signal %%start_time%%" < %%wikitest_client_files%%wikitest_toc.txt | The "Edit Summary Signal %%start_time%%" page has been created. |
-|  st-admin |  enable-plugin --all-accounts --p signals |  |
+| st-admin | enable-plugin --all-accounts --p signals |  |
 
 | *Comment* | Test Case: Signals Widget. Create one edit summary from signal |  |
 | open_ok | /%%workspace%%/index.cgi?Edit Summary Signal %%start_time%% |  |
@@ -84,8 +84,15 @@
 | *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
 | pause | 3000 |  |
 
-| *Comment* | Test Case: Signals Widget. Verify signals in widget. Select signals. |  |
+| *Comment* | Test Case: Signals Widget. work around a bug in FF on galena. Select contributions. |  |
 
+| wait_for_element_visible_ok | action | 10000 |
+| select_ok | action | label=contributions |
+| is_selected_ok | action | label=contributions |
+| *Comment* | Test Case: Signals Widget. select_and_wait in iframe doesn't work. Use pause. |  |
+| pause | 10000 | I hate pause |
+
+| *Comment* | Test Case: Signals Widget. Verify signals in widget. Select signals. |  |
 | wait_for_element_visible_ok | action | 10000 |
 | select_ok | action | label=signals |
 | is_selected_ok | action | label=signals |
