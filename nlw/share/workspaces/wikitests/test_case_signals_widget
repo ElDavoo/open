@@ -31,7 +31,165 @@
 | include | [Test Case: Activities Widget Verify Main User] |
 | include | [Test Case: Activities Widget Verify Others Activities] |
 
-| *Comment* | Test Case: Activities Widget Teardown |  |
+| *Comment* | Test Case: Signals Widget |  |
+| st-admin | update-page --workspace %%workspace%% --email %%email%% --page "Edit Summary Signal %%start_time%%" < %%wikitest_client_files%%wikitest_toc.txt | The "Edit Summary Signal %%start_time%%" page has been created. |
+| st-admin | enable-plugin --all-accounts --p signals |  |
+
+| *Comment* | Test Case: Signals Widget. Create one edit summary from signal |  |
+| open_ok | /%%workspace%%/index.cgi?Edit Summary Signal %%start_time%% |  |
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| click_ok | st-edit-button-link |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| wait_for_element_present_ok | st-edit-summary-text-area | 30000 |
+| click_ok | st-edit-summary-text-area |  |
+| type_ok | st-edit-summary-text-area | Super Edit Summary From Signal %%start_time%% |
+| click_ok | st-edit-summary-signal-checkbox |  |
+| click_and_wait | st-save-button-link |  |
+
+| *Comment* | Test Case: Signals Widget. Get a fresh signals widget |  |
+| open_ok | /?dashboard | 60000 |
+| st-empty-container |  |  |
+| wait_for_element_visible_ok | link=Add Content | 30000 |
+| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Activities'] | 30000 |
+| click_and_wait | //a[@id='gallery-widget-Activities'] |  |
+
+| *Comment* | Test Case: Signals Widget. Verify back at Dashboard with widget |  |
+| wait_for_text_present_ok | Welcome | 30000 |
+| text_like | st-editing-tools-edit | Welcome |
+| wait_for_text_present_ok | Activities | 30000 |
+
+| *Comment* | Test Case: Signals Widget. Send four signals |  |
+| st-name-widget | 1 | signals_widget |
+| st-widget-title-like | signals_widget | Activities |
+| st-select-widget-frame | signals_widget |  |
+
+| *Comment* | Test Case: Signals Widget. She rocks in the treehouse |  |
+| wait_for_element_visible_ok | expand-input | 10000 |
+| click_ok | expand-input |  |
+| wait_for_element_visible_ok | signalFrame | 10000 |
+
+| *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | She rocks in the treehouse %%start_time%% |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | post | 10000 |
+| click_ok | post |  |
+| *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
+| pause | 3000 |  |
+
+| *Comment* | Test Case: Signals Widget. Rockin and a bopin |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | Rockin and a bopin %%start_time%% |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | post | 10000 |
+| click_ok | post |  |
+| *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
+| pause | 3000 |  |
+
+| *Comment* | Test Case: Signals Widget. All the little birds |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | All the little birds %%start_time%% |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | post | 10000 |
+| click_ok | post |  |
+| *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
+| pause | 3000 |  |
+
+| *Comment* | Test Case: Signals Widget. Love to hear the robin going |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | Love to hear the robin going %%start_time%% |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | post | 10000 |
+| click_ok | post |  |
+| *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
+| pause | 3000 |  |
+
+| *Comment* | Test Case: Signals Widget. work around a bug in FF on galena. Select contributions. |  |
+
+| wait_for_element_visible_ok | action | 10000 |
+| select_ok | action | label=contributions |
+| is_selected_ok | action | label=contributions |
+| *Comment* | Test Case: Signals Widget. select_and_wait in iframe doesn't work. Use pause. |  |
+| pause | 10000 | I hate pause |
+
+| *Comment* | Test Case: Signals Widget. Verify signals in widget. Select signals. |  |
+| wait_for_element_visible_ok | action | 10000 |
+| select_ok | action | label=signals |
+| is_selected_ok | action | label=signals |
+
+| *Comment* | Test Case: Signals Widget. select_and_wait in iframe doesn't work. Use pause. |  |
+| pause | 10000 | I hate pause |
+| wait_for_text_present_ok | She rocks in the treehouse %%start_time%% | 30000 |
+| wait_for_text_present_ok | Rockin and a bopin %%start_time%% | 30000 |
+| wait_for_text_present_ok | All the little birds %%start_time%% | 30000 |
+| wait_for_text_present_ok | Love to hear the robin going %%start_time%% | 30000 |
+| wait_for_text_present_ok | Signal %%start_time%% | 30000 |
+| text_like | //body | qr/Super.+Edit.+Summary.+From.+Signal.+%%start_time%%/ |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test case: Signals Widget. Wait for Signal to appear in Profile Activity |  |
+| click_and_wait | link=Profile |  |
+| wait_for_text_present_ok | Activity | 30000 |
+| st-name-widget | 4 | profile_activity |
+| st-select-widget-frame | profile_activity |  |
+
+| wait_for_text_present_ok | She rocks in the treehouse %%start_time%% | 120000 |
+| wait_for_text_present_ok | Rockin and a bopin %%start_time%% | 120000 |
+| wait_for_text_present_ok | All the little birds %%start_time%% | 120000 |
+| wait_for_text_present_ok | Love to hear the robin going %%start_time%% | 120000 |
+| wait_for_text_present_ok | Signal %%start_time%% | 120000 |
+| text_like | //body | qr/Super.+Edit.+Summary.+From.+Signal.+%%start_time%%/ |
+
+| *Comment* | Test Case: Signals widget. Wait for automatic refresh to one minute ago in Activity |  |
+| wait_for_text_present_ok | one minute ago | 120000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test case: Signals Widget. Check Dashboard, then wait for auto refresh |  |
+| open_ok | / |  |
+| wait_for_text_present_ok | Welcome | 30000 |
+| text_like | st-editing-tools-edit | Welcome |
+| wait_for_text_present_ok | Activities | 30000 |
+| st-name-widget | 1 | signals_widget |
+| st-widget-title-like | signals_widget | Activities |
+| st-select-widget-frame | signals_widget |  |
+
+| *Comment* | Test case: Signals Widget. Signals should still be there |  |
+| is_selected_ok | action | label=signals |
+| wait_for_text_present_ok | She rocks in the treehouse %%start_time%% | 10000 |
+| wait_for_text_present_ok | Rockin and a bopin %%start_time%% | 10000 |
+| wait_for_text_present_ok | All the little birds %%start_time%% | 10000 |
+| wait_for_text_present_ok | Love to hear the robin going %%start_time%% | 10000 |
+| wait_for_text_present_ok | Signal %%start_time%% | 10000 |
+| text_like | //body | qr/Super.+Edit.+Summary.+From.+Signal.+%%start_time%%/ |
+
+| *Comment* | Test case: Signals Widget. wait for auto refresh to two minutes ago |  |
+| wait_for_text_present_ok | 2 minutes ago | 120000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test case: Signals Widget. check for agreement with Signals page |  |
+| click_and_wait | link=Signals |  |
+
+| wait_for_element_present_ok | //iframe[@name='widget_2'] | 30000 |
+| st-name-widget | 3 | signal_activity |
+| st-select-widget-frame | signal_activity |  |
+
+| wait_for_text_present_ok | She rocks in the treehouse %%start_time%% | 10000 |
+| wait_for_text_present_ok | Rockin and a bopin %%start_time%% | 10000 |
+| wait_for_text_present_ok | All the little birds %%start_time%% | 10000 |
+| wait_for_text_present_ok | Love to hear the robin going %%start_time%% | 10000 |
+| wait_for_text_present_ok | Signal %%start_time%% | 10000 |
+| text_like | //body | qr/Super.+Edit.+Summary.+From.+Signal.+%%start_time%%/ |
+
+| *Comment* | Test Case: Signals Widget Teardown |  |
 | open_ok | / |  |
 | st-empty-container |  |  |
 | st-admin | delete-workspace --w %%ws%% --no-export |  |
