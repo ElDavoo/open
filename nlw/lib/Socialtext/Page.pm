@@ -771,7 +771,7 @@ sub _fire_webhooks {
     Socialtext::WebHook->Add_webhooks(
         class         => 'pagetag',
         account_ids   => [ $wksp->account->account_id ],
-        workspace_id  => [ $wksp->workspace_id ],
+        workspace_id  => $wksp->workspace_id,
         payload_thunk => sub {
             my $editor = Socialtext::User->new(
                 email_address => $self->metadata->From);

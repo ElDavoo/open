@@ -130,20 +130,21 @@ sub Add_webhooks {
     $p{account_ids} ||= [];
 
     eval {
-        warn "Looking for webhooks for $p{class}";
         my $hooks = $class->Find( class => $p{class} );
         for my $h (@$hooks) {
-            if (my $h_id = $h->{account_id}) {
+            if (my $h_acct_id = $h->{account_id}) {
                 my $hook_matches = 0;
                 for my $s_id (@{ $p{account_ids} }) {
-                    next unless $s_id == $h_id;
+                    next unless $s_id == $h_acct_id;
                     $hook_matches++;
                     last;
                 }
                 next unless $hook_matches;
             }
+            if (my $h_ws_id = $h->{workspace_id}) {
+                next unless $p{workspace_id} == $h_ws_id;
+            }
 
-            warn "Inserting webhook " . $h->url;
             Socialtext::JobCreator->insert(
                 'Socialtext::Job::WebHook' => {
                     hook => {
