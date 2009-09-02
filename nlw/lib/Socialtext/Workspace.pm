@@ -54,7 +54,7 @@ use Socialtext::Role;
 use Socialtext::URI;
 use Socialtext::MultiCursor;
 use Socialtext::User;
-use Socialtext::UserWorkspaceRole;
+use Socialtext::UserWorkspaceRoleFactory;
 use Socialtext::GroupWorkspaceRoleFactory;
 use Socialtext::WorkspaceBreadcrumb;
 use Socialtext::Page;
@@ -1248,7 +1248,7 @@ sub email_passes_invitation_filter {
             param_error 'Cannot explicitly assign a default role type to a user';
         }
 
-        my $uwr = Socialtext::UserWorkspaceRole->get(
+        my $uwr = Socialtext::UserWorkspaceRoleFactory->Get(
             user_id      => $p{user}->user_id,
             workspace_id => $self->workspace_id,
         );
@@ -1265,12 +1265,12 @@ sub email_passes_invitation_filter {
         else {
             $msg_action = 'ASSIGN,USER_ROLE';
 
-            Socialtext::UserWorkspaceRole->create(
+            Socialtext::UserWorkspaceRoleFactory->Create( {
                 user_id      => $p{user}->user_id,
                 workspace_id => $self->workspace_id,
                 role_id      => $p{role}->role_id,
                 is_selected  => $p{is_selected},
-            );
+            } );
         }
 
         Socialtext::Cache->clear('authz_plugin');
@@ -1323,14 +1323,14 @@ sub has_user {
         my %p = validate( @_, $spec );
         my $timer = Socialtext::Timer->new;
 
-        my $uwr = Socialtext::UserWorkspaceRole->get(
+        my $uwr = Socialtext::UserWorkspaceRoleFactory->Get(
            workspace_id => $self->workspace_id,
            user_id      => $p{user}->user_id,
         );
 
         return unless $uwr;
 
-        $uwr->delete;
+        Socialtext::UserWorkspaceRoleFactory->Delete($uwr);
 
         Socialtext::JSON::Proxy::Helper->ClearForUser($p{user}->user_id);
         Socialtext::Cache->clear('authz_plugin');

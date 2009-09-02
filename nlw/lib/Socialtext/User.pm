@@ -17,6 +17,7 @@ use Socialtext::UserMetadata;
 use Socialtext::User::Deleted;
 use Socialtext::User::EmailConfirmation;
 use Socialtext::User::Factory;
+use Socialtext::UserWorkspaceRoleFactory;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
 use Email::Address;
 use Class::Field 'field';
@@ -638,10 +639,10 @@ EOSQL
 
             return [
                 Socialtext::Workspace->new( workspace_id => $workspace_id ),
-                Socialtext::UserWorkspaceRole->get(
+                Socialtext::UserWorkspaceRoleFactory->Get(
                     user_id      => $self->user_id,
                     workspace_id => $workspace_id
-                    )
+                )
             ];
         }
     );
@@ -673,12 +674,12 @@ EOSQL
 
         my %selected = map { $_->workspace_id => 1 } @{ $p{workspaces} };
         while ( my $ws = $workspaces->next ) {
-            sql_execute(
-                'UPDATE "UserWorkspaceRole"'
-                . ' SET is_selected=?'
-                . ' WHERE user_id=? AND workspace_id=?',
-                $selected{ $ws->workspace_id } ? 1 : 0,
-                $self->user_id, $ws->workspace_id );
+            my $uwr = Socialtext::UserWorkspaceRoleFactory->Get(
+                user_id      => $self->user_id,
+                workspace_id => $ws->workspace_id
+            );
+            $uwr->update(
+                is_selected => ( $selected{ $ws->workspace_id } ? 1 : 0));
         }
     }
 }
