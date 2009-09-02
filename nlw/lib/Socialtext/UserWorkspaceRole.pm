@@ -1,17 +1,8 @@
-# @COPYRIGHT@
 package Socialtext::UserWorkspaceRole;
-
+# @COPYRIGHT@
 use Moose;
 use Socialtext::Moose::SqlTable;
-use Socialtext::UserWorkspaceRoleFactory;
-
-# These will go away soon enough.
-use Socialtext::SQL qw( sql_execute sql_convert_to_boolean );
-use Socialtext::Exceptions qw( rethrow_exception );
-
 use namespace::clean -except => 'meta';
-
-our $VERSION = '0.02';
 
 with qw(
     Socialtext::Moose::Has::RoleId
@@ -26,30 +17,11 @@ has_column is_selected => (
 
 has_table '"UserWorkspaceRole"';
 
-sub get {
-    my $class = shift;
-    my %p     = @_;
-
-    return Socialtext::UserWorkspaceRoleFactory->Get(%p);
-}
-
-sub create {
-    my $class = shift;
-    my %p     = @_;
-
-    return Socialtext::UserWorkspaceRoleFactory->Create(\%p);
-}
-
-sub delete {
-    my $self = shift;
-
-    return Socialtext::UserWorkspaceRoleFactory->Delete($self);
-}
-
 sub update {
     my $self  = shift;
     my $proto = shift;
 
+    require Socialtext::UserWorkspaceRoleFactory;
     Socialtext::UserWorkspaceRoleFactory->Update($self, $proto);
 }
 
