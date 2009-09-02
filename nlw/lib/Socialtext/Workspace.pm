@@ -1248,7 +1248,7 @@ sub email_passes_invitation_filter {
             param_error 'Cannot explicitly assign a default role type to a user';
         }
 
-        my $uwr = Socialtext::UserWorkspaceRole->new(
+        my $uwr = Socialtext::UserWorkspaceRole->get(
             user_id      => $p{user}->user_id,
             workspace_id => $self->workspace_id,
         );
@@ -1322,7 +1322,7 @@ sub has_user {
         my %p = validate( @_, $spec );
         my $timer = Socialtext::Timer->new;
 
-        my $uwr = Socialtext::UserWorkspaceRole->new(
+        my $uwr = Socialtext::UserWorkspaceRole->get(
            workspace_id => $self->workspace_id,
            user_id      => $p{user}->user_id,
         );

@@ -638,7 +638,7 @@ EOSQL
 
             return [
                 Socialtext::Workspace->new( workspace_id => $workspace_id ),
-                Socialtext::UserWorkspaceRole->new(
+                Socialtext::UserWorkspaceRole->get(
                     user_id      => $self->user_id,
                     workspace_id => $workspace_id
                     )

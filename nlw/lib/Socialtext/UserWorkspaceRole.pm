@@ -14,7 +14,7 @@ field 'workspace_id';
 field 'role_id';
 field 'is_selected';
 
-sub new {
+sub get {
     my ( $class, %args ) = @_;
 
     my $sth;
@@ -98,7 +98,7 @@ Socialtext::UserWorkspaceRole - A user's role in a specific workspace
 
 =head1 SYNOPSIS
 
-  my $uwr = Socialtext::UserWorkspaceRole->new(
+  my $uwr = Socialtext::UserWorkspaceRole->get(
       user_id      => $user_id,
       workspace_id => $workspace_id,
   );
@@ -122,7 +122,7 @@ are initialized from the hash reference passed to the method.
 
 =over 4
 
-=item Socialtext::UserWorkspaceRole->new(PARAMS)
+=item Socialtext::UserWorkspaceRole->get(PARAMS)
 
 Looks for an existing UserWorkspaceRole matching PARAMS and returns a
 C<Socialtext::UserWorkspaceRole> object representing that row if it
