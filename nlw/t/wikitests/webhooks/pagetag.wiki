@@ -1,0 +1,39 @@
+* Fixture: SocialRest
+
+| standard-test-setup |                   |     |                |
+| set-business-admin  | %%email_address%% | 1   |                |
+| edit-page           | %%workspace%%     | Foo | Sample Content |
+| clear-webhooks      |                   |     |                |
+
+# Tag a page, verify no webhooks fired
+
+| st-clear-jobs |               |     |                |
+| PUT | /data/workspaces/%%workspace%%/pages/Foo/tags/bar | | |
+| code-is | 201 |
+| job-count     | WebHook   | 0   |                |
+
+# Add a webhook, Tag a page, verify webhook fires
+
+| st-clear-jobs |               |     |                |
+| PUT_json | /data/webhooks | {"class":"pagetag","url":"http://example.com","workspace_id":"%%workspace_id%%"} |
+| code-is | 201 |
+| PUT | /data/workspaces/%%workspace%%/pages/Foo/tags/baz | | |
+| code-is | 201 |
+| job-count     | WebHook   | 1   |                |
+
+# Delete a tag, verify webhook fires
+| st-clear-jobs |               |     |                |
+| DELETE | /data/workspaces/%%workspace%%/pages/Foo/tags/baz | | |
+| code-is | 204 |
+| job-count     | WebHook   | 1   |                |
+
+# Tag a page in a different workspace
+| set              | ws2               | ws2-%%start_time%% |
+| create-workspace | %%ws2%%           |                    |
+| add-member       | %%email_address%% | %%ws2%%            |
+| edit-page           | %%ws2%%     | Foo2 | Sample Content |
+| st-clear-jobs |               |     |                |
+| PUT | /data/workspaces/%%ws2%%/pages/Foo/tags/baz | | |
+| code-is | 201 |
+| job-count     | WebHook   | 0   |                |
+
