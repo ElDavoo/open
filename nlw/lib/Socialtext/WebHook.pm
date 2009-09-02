@@ -124,5 +124,41 @@ sub Create {
     return $h;
 }
 
+sub Add_webhooks {
+    my $class = shift;
+    my %p = @_;
+    $p{account_ids} ||= [];
+
+    eval {
+        warn "Looking for webhooks for $p{class}";
+        my $hooks = $class->Find( class => $p{class} );
+        for my $h (@$hooks) {
+            if (my $h_id = $h->{account_id}) {
+                my $hook_matches = 0;
+                for my $s_id (@{ $p{account_ids} }) {
+                    next unless $s_id == $h_id;
+                    $hook_matches++;
+                    last;
+                }
+                next unless $hook_matches;
+            }
+
+            warn "Inserting webhook " . $h->url;
+            Socialtext::JobCreator->insert(
+                'Socialtext::Job::WebHook' => {
+                    hook => {
+                        id => $h->id,
+                        url => $h->url,
+                    },
+                    payload => $p{payload_thunk}->(),
+                },
+            );
+        }
+    };
+    if ($@) {
+        st_log->info("Error firing webhooks: '$@' " . ref($@));
+    }
+}
+
 __PACKAGE__->meta->make_immutable;
 1;
