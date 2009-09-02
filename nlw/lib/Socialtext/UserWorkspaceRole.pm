@@ -1,18 +1,29 @@
 # @COPYRIGHT@
 package Socialtext::UserWorkspaceRole;
 
-use strict;
-use warnings;
+use Moose;
+use Socialtext::Moose::SqlTable;
 
-use Class::Field 'field';
+# These will go away soon enough.
 use Socialtext::SQL qw( sql_execute sql_convert_to_boolean );
 use Socialtext::Exceptions qw( rethrow_exception );
+
+use namespace::clean -except => 'meta';
+
 our $VERSION = '0.02';
 
-field 'user_id';
-field 'workspace_id';
-field 'role_id';
-field 'is_selected';
+with qw(
+    Socialtext::Moose::Has::RoleId
+    Socialtext::Moose::Has::WorkspaceId
+    Socialtext::Moose::Has::UserId
+);
+
+has_column is_selected => (
+    is => 'ro', isa => 'Bool',
+    is_required => 1,
+);
+
+has_table '"UserWorkspaceRole"';
 
 sub get {
     my ( $class, %args ) = @_;
@@ -81,13 +92,22 @@ sub delete {
 
 sub update {
     my $self = shift;
+    my $p    = shift;
 
     my $sql =
         'update "UserWorkspaceRole" '.
         ' set role_id = ?, is_selected = ? where workspace_id = ? and user_id = ?';
-    sql_execute($sql, $self->role_id, sql_convert_to_boolean($self->is_selected), $self->workspace_id, $self->user_id);
+    sql_execute($sql, $p->{role_id}, sql_convert_to_boolean($p->{is_selected}), $self->workspace_id, $self->user_id);
+
+    foreach my $attr ( qw/role_id is_selected/ ) {
+        $self->meta->find_attribute_by_name($attr)->set_value(
+            $self, $p->{$attr},
+        );
+    }
 }
 
+no Moose;
+__PACKAGE__->meta->make_immutable;
 1;
 
 __END__

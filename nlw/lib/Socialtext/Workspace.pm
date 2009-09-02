@@ -1257,9 +1257,10 @@ sub email_passes_invitation_filter {
         if ($uwr) {
             $msg_action = 'CHANGE,USER_ROLE';
 
-            $uwr->role_id($p{role}->role_id);
-            $uwr->is_selected($p{is_selected});
-            $uwr->update();
+            $uwr->update({
+                role_id     => $p{role}->role_id,
+                is_selected => $p{is_selected},
+            });
         }
         else {
             $msg_action = 'ASSIGN,USER_ROLE';
