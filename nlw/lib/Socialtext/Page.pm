@@ -741,13 +741,15 @@ sub add_tags {
 
     if ( $self->hub->checker->check_permission('edit') ) {
         my $meta = $self->metadata;
+        my %tags_added;
         foreach my $tag (@tags) {
-            $meta->add_category($tag);
+            my $added = $meta->add_category($tag);
+            $tags_added{$tag} = 1;
         }
         $self->metadata->update( user => $self->hub->current_user );
         $self->metadata->RevisionSummary('');
         $self->store( user => $self->hub->current_user );
-        foreach my $tag (@tags) {
+        foreach my $tag (keys %tags_added) {
             Socialtext::Events->Record({
                 event_class => 'page',
                 action => 'tag_add',
@@ -755,7 +757,41 @@ sub add_tags {
                 tag_name => $tag,
             });
         }
+        $self->_fire_webhooks(
+            tags_added => [sort keys %tags_added],
+        );
     }
+}
+
+sub _fire_webhooks {
+    my $self = shift;
+    my %p = @_;
+    my $wksp = $self->hub->current_workspace;
+
+    Socialtext::WebHook->Add_webhooks(
+        class         => 'pagetag',
+        account_ids   => [ $wksp->account->account_id ],
+        workspace_id  => [ $wksp->workspace_id ],
+        payload_thunk => sub {
+            my $editor = Socialtext::User->new(
+                email_address => $self->metadata->From);
+            return {
+                tags_added   => $p{tags_added}   || [],
+                tags_deleted => $p{tags_deleted} || [],
+                workspace_name => $wksp->name,
+                page_id        => $self->id,
+                page_name      => $self->metadata->Subject,
+                page_uri       => $self->full_uri,
+                edit_summary   => $self->edit_summary,
+                tags           => $self->metadata->Category,
+                edit_time      => $self->metadata->Date,
+                editor         => {
+                    email => $editor->email_address,
+                    bfn   => $editor->best_full_name,
+                },
+            };
+        },
+    );
 }
 
 =head2 $page->delete_tag( $tag )
@@ -772,6 +808,9 @@ sub delete_tag {
         $self->metadata->delete_category($tag);
         $self->metadata->RevisionSummary('');
         $self->store( user => $self->hub->current_user );
+        $self->_fire_webhooks(
+            tags_deleted => [$tag],
+        );
     }
 }
 
