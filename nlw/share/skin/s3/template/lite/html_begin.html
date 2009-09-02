@@ -9,7 +9,7 @@
     </head>
     <body>
         <div style="display:none">
-            <strong>[% loc("Warning: Stylesheets are not enabled in your mobile device. In order to properly view Socialtext Mobile, you will need to enable stylesheets in your browser options.") %]</strong>
+            <strong>[% warning || loc("Warning: Stylesheets are not enabled in your mobile device. In order to properly view Socialtext Mobile, you will need to enable stylesheets in your browser options.") %]</strong>
             <br/>
         </div>
         <div class="logo"><img src="[% skin_uri('images/miki-logo.png') %]"></div>

@@ -1,26 +1,32 @@
 #!/bin/bash
 
+# detect whether running in dev env
+SUDO='sudo'
+if [ `hostname` == 'talc.socialtext.net' ] || [ `hostname` == 'topaz.socialtext.net' ]; then
+    SUDO=''
+fi
+
 # detect whether  --all-workspaces is enabled by trying it and
 # looking at the output.  If the ouput to stderr says you need an account,
 # then use the older loop  method of enabling socialcalc
 
-SCWS=`sudo st-admin enable-plugin --all-workspaces --p socialcalc 2>&1 | grep -o account`
+SCWS=`$SUDO st-admin enable-plugin --all-workspaces --p socialcalc 2>&1 | grep -o account`
 
     if [ "$1" == "enable" ]; then
         if [ "$SCWS" ]; then
             echo ENABLING socialcalc for all workspaces using loop
-            for i in `sudo st-admin list-workspaces` ; do sudo st-admin enable-plugin --w $i --plugin socialcalc ; done ;
+            for i in `$SUDO st-admin list-workspaces` ; do $SUDO st-admin enable-plugin --w $i --plugin socialcalc ; done ;
         else
             echo ENABLING socialcalc for all workspaces using --all-workspaces
-            sudo st-admin enable-plugin --all-workspaces --plugin socialcalc
+            $SUDO st-admin enable-plugin --all-workspaces --plugin socialcalc
         fi
     elif [ "$1" == "disable" ]; then
         if [ "$SCWS" ]; then
             echo DISABLING socialcalc for all workspaces using loop
-            for i in `sudo st-admin list-workspaces` ; do sudo st-admin disable-plugin --w $i --plugin socialcalc ; done ;
+            for i in `$SUDO st-admin list-workspaces` ; do $SUDO st-admin disable-plugin --w $i --plugin socialcalc ; done ;
         else
             echo DISABLING socialcalc for all workspaces using --all-workspaces
-            sudo st-admin disable-plugin --all-workspaces --plugin socialcalc
+            $SUDO st-admin disable-plugin --all-workspaces --plugin socialcalc
         fi
     else
         echo "Usage: st-socialcalc [enable|disable]"
