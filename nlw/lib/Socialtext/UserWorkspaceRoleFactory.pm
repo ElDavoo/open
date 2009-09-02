@@ -9,15 +9,15 @@ with qw/Socialtext::Moose::ObjectFactory/;
 sub Builds_sql_for {'Socialtext::UserWorkspaceRole'}
 
 sub EmitCreateEvent {
-
+    # No Events are recorded for this action
 }
 
 sub EmitDeleteEvent {
-
+    # No Events are recorded for this action
 }
 
 sub EmitUpdateEvent {
-
+    # No Events are recorded for this action
 }
 
 sub RecordCreateLogEntry {
