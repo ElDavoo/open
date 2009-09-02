@@ -426,8 +426,8 @@ sub _process_template {
     my $warning;
     my $ua = $ENV{HTTP_USER_AGENT};
     if (my ($version) = $ua =~ m{^BlackBerry[^/]+/(\S+) }) {
-        if ($version < 4.6) {
-            $warning = loc("Warning: Socialtext Mobile for BlackBerry requires v4.6 or higher");
+        if ($version < 4.5) {
+            $warning = loc("Warning: Socialtext Mobile requires BlackBerry OS v4.5 or higher");
         }
     }
 
