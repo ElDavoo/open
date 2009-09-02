@@ -34,8 +34,8 @@ LoadModule  setenvif_module         [% config.module_dir %]/mod_setenvif.so
 
 # What ports are we listening on?  
 Port   [% config.backend_ports.http %]
-Listen [% config.backend_ports.http %]
-Listen [% config.backend_ports.https %]
+Listen 127.0.0.1:[% config.backend_ports.http %]
+Listen 127.0.0.1:[% config.backend_ports.https %]
 
 [%- PROCESS 'shared/common.tt2' %]
 

@@ -423,9 +423,18 @@ sub _process_template {
         );
     }
 
+    my $warning;
+    my $ua = $ENV{HTTP_USER_AGENT};
+    if (my ($version) = $ua =~ m{^BlackBerry[^/]+/(\S+) }) {
+        if ($version < 4.6) {
+            $warning = loc("Warning: Socialtext Mobile for BlackBerry requires v4.6 or higher");
+        }
+    }
+
     my $user = $self->hub->current_user;
     return $self->hub->template->process(
         $template,
+        warning     => $warning,
         miki        => 1,
         user        => $self->hub->current_user,
         brand_stamp => $self->hub->main->version_tag,

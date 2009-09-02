@@ -369,7 +369,7 @@ sub st_single_widget_in_dashboard {
 }
 
 
-=head 2 st_send_signal_via_activities_widget 
+=head2 st_send_signal_via_activities_widget 
 
 Precondition: Open to /?dashboard with a named activities widget.  
 Precondition: Frame focus should be the entire dashboard

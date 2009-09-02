@@ -429,6 +429,11 @@ sub new_hub() {
     my $name     = shift or die "No name provided to new_hub\n";
     my $username = shift;
 
+    unless ( $username ) {
+        my $user = create_test_user();
+        $username = $user->username;
+    }
+
     Test::Socialtext::ensure_workspace_with_name($name);
 
     my $hub = Test::Socialtext::Environment->instance()->hub_for_workspace($name, $username);
