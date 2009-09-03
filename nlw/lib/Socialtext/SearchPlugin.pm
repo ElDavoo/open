@@ -216,7 +216,7 @@ sub search_for_term {
     my $result_set = $self->result_set;
     eval {
         my @rows = $self->_new_search(%query);
-        $self->title_search($search_term =~ s/^=//);
+        $self->title_search($search_term =~ s/^(?:=|title:)//);
         $self->hub->log->debug("hitcount " . scalar @rows);
         foreach my $row (@rows) {
             $self->hub->log->debug("hitrow $row->{page_uri}")
