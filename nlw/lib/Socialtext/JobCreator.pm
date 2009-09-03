@@ -2,6 +2,7 @@ package Socialtext::JobCreator;
 # @COPYRIGHT@
 use MooseX::Singleton;
 use Socialtext::TheSchwartz;
+use Socialtext::Search::AbstractFactory;
 use Carp qw/croak/;
 use Socialtext::Log qw/st_log/;
 use namespace::clean -except => 'meta';
@@ -71,38 +72,41 @@ sub index_page {
 
     my @job_ids;
 
+    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers(
+        $page->hub->current_workspace->name,
+    );
+
     my $wksp_id = $page->hub->current_workspace->workspace_id;
     my $page_id = $page->id;
-    my $main_job_id = $self->insert(
-        'Socialtext::Job::PageIndex' => {
-            workspace_id => $wksp_id,
-            page_id => $page_id,
-            search_config => $search_config,
-            job => {
-                priority => 63,
-                coalesce => "$wksp_id-$page_id",
-            },
-        }
-    );
-    my $solr_job_id = $self->insert(
-        'Socialtext::Job::PageIndex' => {
-            workspace_id => $wksp_id,
-            page_id => $page_id,
-            solr => 1,
-            job => {
-                priority => 63,
-                coalesce => "$wksp_id-$page_id",
-            },
-        }
-    );
-    push @job_ids, $main_job_id, $solr_job_id;
+    for my $indexer (@indexers) {
+        my $job_id = $self->insert(
+            'Socialtext::Job::PageIndex' => {
+                workspace_id => $wksp_id,
+                page_id => $page_id,
+                (ref($indexer) =~ m/solr/i ? (solr => 1)
+                                           : (search_config => $search_config)),
+                job => {
+                    priority => 63,
+                    coalesce => "$wksp_id-$page_id",
+                },
+            }
+        );
+        push @job_ids, $job_id;
+    }
 
     my $attachments = $page->hub->attachments->all( page_id => $page->id );
     foreach my $attachment (@$attachments) {
         next if $attachment->deleted();
-        my $job_id = $self->index_attachment($attachment, $search_config);
-        my $solr_job_id = $self->index_attachment($attachment, 'solr');
-        push @job_ids, $job_id, $solr_job_id;
+        for my $indexer (@indexers) {
+            my $job_id;
+            if (ref($indexer) =~ m/solr/i) {
+                $job_id = $self->index_attachment($attachment, 'solr');
+            }
+            else {
+                $job_id = $self->index_attachment($attachment, $search_config);
+            }
+            push @job_ids, $job_id;
+        }
     }
 
     return @job_ids;
