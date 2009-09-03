@@ -5,16 +5,22 @@
 | standard-test-setup |
 | set-searcher | Solr |
 
-| edit-page | %%workspace%% | Phrase 1 | Wise saying: The greatest achievement is selflessness. |
-| edit-page | %%workspace%% | Phrase 2 | The greatest worth is self-mastery. |
-| edit-page | %%workspace%% | Quote 3 | Wise saying: The greatest quality is seeking to serve others. |
-| edit-page | %%workspace%% | Quote 4 | The greatest precept is continual awareness. |
-| edit-page | %%workspace%% | Quote 5 | The greatest medicine is the emptiness of everything. |
-| edit-page | %%workspace%% | Wise Saying 6 | The greatest action is not conforming with the worlds ways. |
-| edit-page | %%workspace%% | Wise Saying 7 | The greatest magic is transmuting the passions. |
-| edit-page | %%workspace%% | Saying that are wise 8 | The greatest generosity is non-attachment. |
-| edit-page | %%workspace%% | Statement 9 | The greatest goodness is a peaceful mind. |
-| job-count | PageIndex | 9 |
+| edit-page | %%workspace%%                                          | Phrase 1               | Wise saying: The greatest achievement is selflessness.        |
+| edit-page | %%workspace%%                                          | Phrase 2               | The greatest worth is self-mastery.                           |
+| edit-page | %%workspace%%                                          | Quote 3                | Wise saying: The greatest quality is seeking to serve others. |
+| edit-page | %%workspace%%                                          | Quote 4                | The greatest precept is continual awareness.                  |
+| edit-page | %%workspace%%                                          | Quote 5                | The greatest medicine is the emptiness of everything.         |
+| edit-page | %%workspace%%                                          | Wise Saying 6          | The greatest action is not conforming with the worlds ways.   |
+| edit-page | %%workspace%%                                          | Wise Saying 7          | The greatest magic is transmuting the passions.               |
+| edit-page | %%workspace%%                                          | Saying that are wise 8 | The greatest generosity is non-attachment.                    |
+| edit-page | %%workspace%%                                          | Statement 9            | The greatest goodness is a peaceful mind.                     |
+| PUT       | /data/workspaces/%%workspace%%/pages/phrase_1/tags/quote |                        |                                                               |
+| code-is   | 201                                                    |                        |                                                               |
+| PUT       | /data/workspaces/%%workspace%%/pages/quote_3/tags/quote  |                        |                                                               |
+| code-is   | 201                                                    |                        |                                                               |
+| PUT       | /data/workspaces/%%workspace%%/pages/quote_4/tags/Socialtext+Weblog  |                        |                                                               |
+| code-is   | 201                                                    |                        |                                                               |
+| job-count | PageIndex                                              | 12                     |                                                               |
 
 | set              | ws2               | ws2-%%start_time%% |
 | create-workspace | %%ws2%%           |                    |
@@ -30,7 +36,7 @@
 | edit-page | %%ws2%% | Statement 9 | The greatest goodness is a peaceful mind. |
 
 
-| job-count | PageIndex | 18 |
+| job-count | PageIndex | 21 |
 | st-process-jobs | | |
 | job-count | PageIndex | 0 |
 
@@ -74,3 +80,20 @@
 | body-unlike | in <a href="/%%ws2%%">                                                  |
 | body-like | The greatest action is not conforming with the worlds ways. |
 | body-like | The greatest magic is transmuting the passions. |
+
+# Tag searches
+
+| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=tag%3Aquote |
+| code-is     | 200                                                                   |
+| body-like   | >Pages containing 'tag:quote'</h2>                                    |
+| body-like   | Showing 1 - 2 of 2 total                                              |
+| body-unlike | in <a href="/%%ws2%%">                                                |
+| body-like   | Wise saying: The greatest achievement is selflessness.                |
+| body-like   | Wise saying: The greatest quality is seeking to serve others.         |
+
+| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=tag%3A"Socialtext+Weblog" |
+| code-is     | 200                                                                   |
+| body-like   | >Pages containing 'tag:&quot;Socialtext Weblog&quot;'</h2>                                    |
+| body-like   | Showing 1 - 1 of 1 total                                              |
+| body-unlike | in <a href="/%%ws2%%">                                                |
+| body-like   | The greatest precept is continual awareness.                  |
