@@ -78,6 +78,8 @@ sub _search {
         {
             # fl = Fields to return
             fl => 'id score',
+            # qt = Query Type
+            qt => 'standard',
             # fq = Filter Query - superset of docs to return from
             fq => 'w:' . $self->workspace->workspace_id,
         }
