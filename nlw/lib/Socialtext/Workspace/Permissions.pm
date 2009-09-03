@@ -14,6 +14,7 @@ use Socialtext::Validate qw(
 use Socialtext::Permission qw( ST_EMAIL_IN_PERM ST_READ_PERM ST_EDIT_CONTROLS_PERM );
 use Socialtext::l10n qw(loc system_locale);
 use Socialtext::Exceptions qw( rethrow_exception );
+use Socialtext::Role;
 
 our %PermissionSets = (
     'public' => {

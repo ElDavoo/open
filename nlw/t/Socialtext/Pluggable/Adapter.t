@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-BEGIN { push @INC, 't/share/plugin/fakeplugin/lib' };
+use lib "$ENV{ST_SRC_BASE}/socialtext/nlw/t/share/plugin/fakeplugin/lib";
 
 use Socialtext::SQL;
 use Socialtext::Account;
@@ -11,11 +11,13 @@ use Socialtext::User;
 use mocked 'Socialtext::Registry';
 use mocked 'Socialtext::Hub', gtv => 'empty';
 use Socialtext::Pluggable::Adapter;
-use Test::Socialtext tests => 45;
+use Test::Socialtext tests => 46;
 
 ###############################################################################
 # Fixtures: db
 fixtures(qw( db ));
+
+ok $INC{'Socialtext/Pluggable/Plugin/FakePlugin.pm'}, "fake plugin loaded";
 
 my $adapt = Socialtext::Pluggable::Adapter->new;
 my $registry = Socialtext::Registry->new;
@@ -78,7 +80,7 @@ my $wksp = Socialtext::Workspace->create(
 my %things = (account => $acct, workspace => $wksp);
 
 sub set_plugin_scope {
-    my $scope = shift;
+    my $scope = shift || 'always';
     for my $p (qw(A B C)) {
         my $pclass = "Socialtext::Pluggable::Plugin::$p";
         $pclass->scope($scope);
@@ -132,7 +134,7 @@ for my $t (keys %things) {
     use warnings;
     use base 'Socialtext::Pluggable::Plugin';
     my $SCOPE;
-    sub scope { $SCOPE = $_[1] if @_ > 1; return $SCOPE };
+    sub scope { $SCOPE = $_[1] if @_ > 1; return $SCOPE || 'always' };
     sub register {}
     sub enables { qw(b) }
 }
@@ -143,7 +145,7 @@ for my $t (keys %things) {
     use warnings;
     use base 'Socialtext::Pluggable::Plugin';
     my $SCOPE;
-    sub scope { $SCOPE = $_[1] if @_ > 1; return $SCOPE };
+    sub scope { $SCOPE = $_[1] if @_ > 1; return $SCOPE || 'always' };
     sub register {}
     sub dependencies { qw(a c) }
 }
@@ -154,7 +156,7 @@ for my $t (keys %things) {
     use warnings;
     use base 'Socialtext::Pluggable::Plugin';
     my $SCOPE;
-    sub scope { $SCOPE = $_[1] if @_ > 1; return $SCOPE };
+    sub scope { $SCOPE = $_[1] if @_ > 1; return $SCOPE || 'always' };
     sub register {}
     sub dependencies { qw(b) } # circular dependency
 }
