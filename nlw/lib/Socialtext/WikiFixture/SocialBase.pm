@@ -1260,6 +1260,10 @@ sub clear_reports {
 Socialtext::System::shell_run("cd $ENV{ST_CURRENT}/socialtext-reports; ./setup-dev-env");
 }
 
+sub clear_webhooks {
+    sql_execute(q{DELETE FROM webhook});
+}
+
 =head2 header_isnt ( header, value )
 
 Asserts that a header in the response does not contain the specified value.
