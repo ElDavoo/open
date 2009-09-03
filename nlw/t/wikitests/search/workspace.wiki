@@ -1,0 +1,50 @@
+* Fixture: Search
+
+# Set up 2 workspaces with similar content
+
+| standard-test-setup |
+| set-searcher | Solr |
+
+| edit-page | %%workspace%% | Phrase 1 | The greatest achievement is selflessness. |
+| edit-page | %%workspace%% | Phrase 2 | The greatest worth is self-mastery. |
+| edit-page | %%workspace%% | Phrase 3 | The greatest quality is seeking to serve others. |
+| edit-page | %%workspace%% | Phrase 4 | The greatest precept is continual awareness. |
+| edit-page | %%workspace%% | Phrase 5 | The greatest medicine is the emptiness of everything. |
+| edit-page | %%workspace%% | Phrase 6 | The greatest action is not conforming with the worlds ways. |
+| edit-page | %%workspace%% | Phrase 7 | The greatest magic is transmuting the passions. |
+| edit-page | %%workspace%% | Phrase 8 | The greatest generosity is non-attachment. |
+| edit-page | %%workspace%% | Phrase 9 | The greatest goodness is a peaceful mind. |
+| job-count | PageIndex | 9 |
+
+| set              | ws2               | ws2-%%start_time%% |
+| create-workspace | %%ws2%%           |                    |
+| add-member       | %%email_address%% | %%ws2%%            |
+| edit-page | %%ws2%% | Phrase 1 | The greatest achievement is selflessness. |
+| edit-page | %%ws2%% | Phrase 2 | The greatest worth is self-mastery. |
+| edit-page | %%ws2%% | Phrase 3 | The greatest quality is seeking to serve others. |
+| edit-page | %%ws2%% | Phrase 4 | The greatest precept is continual awareness. |
+| edit-page | %%ws2%% | Phrase 5 | The greatest medicine is the emptiness of everything. |
+| edit-page | %%ws2%% | Phrase 6 | The greatest action is not conforming with the worlds ways. |
+| edit-page | %%ws2%% | Phrase 7 | The greatest magic is transmuting the passions. |
+| edit-page | %%ws2%% | Phrase 8 | The greatest generosity is non-attachment. |
+| edit-page | %%ws2%% | Phrase 9 | The greatest goodness is a peaceful mind. |
+
+
+| job-count | PageIndex | 18 |
+| st-process-jobs | | |
+| job-count | PageIndex | 0 |
+
+What I want to test:
+# only search results from the current workspace are returned
+
+| GET | /%%workspace%%/index.cgi?action=search&scope=&search_term=greatest |
+| code-is | 200 |
+| body-like | >Pages containing 'greatest'</h2> |
+| body-unlike | in <a href="/%%ws2%%">|
+| body-like | Showing 1 - 9 of 9 total |
+
+| GET | /%%ws2%%/index.cgi?action=search&scope=&search_term=greatest |
+| code-is | 200 |
+| body-like | >Pages containing 'greatest'</h2> |
+| body-unlike | in <a href="/%%workspace%%">|
+| body-like | Showing 1 - 9 of 9 total |
