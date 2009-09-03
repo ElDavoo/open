@@ -51,15 +51,16 @@ sub begin_search {
     my ( $self, $query_string, $authorizer ) = @_;
     _debug("Searching ".$self->ws_name." with query: $query_string");
 
+    my ($docs, $num_hits) = $self->_search($query_string);
+
     my $thunk = sub {
         _debug("Processing ".$self->ws_name." thunk");
         Socialtext::Timer->Continue('solr_begin');
-        my $docs = $self->_search($query_string);
         my $results = $self->_process_docs($docs);
         Socialtext::Timer->Continue('solr_begin');
         return $results;
     };
-    return ($thunk, -42);
+    return ($thunk, $num_hits);
 }
 
 # Parses the query string and returns the raw Solr hit results.
@@ -71,7 +72,16 @@ sub _search {
     _debug("Performing actual search for query in ".$self->ws_name);
 
     Socialtext::Timer->Continue('solr_raw');
-    my $response = $self->solr->search($query, {fl => 'id score'});
+
+    # See: http://wiki.apache.org/solr/CommonQueryParameters
+    my $response = $self->solr->search($query, 
+        {
+            # fl = Fields to return
+            fl => 'id score',
+            # fq = Filter Query - superset of docs to return from
+            fq => 'w:' . $self->workspace->workspace_id,
+        }
+    );
     my $docs = $response->docs;
     my $num_hits = $response->pager->total_entries();
     Socialtext::Timer->Pause('solr_raw');
@@ -82,7 +92,7 @@ sub _search {
         num_results => $num_hits
     ) if $num_hits > $hit_limit;
 
-    return $docs;
+    return ($docs, $num_hits);
 }
 
 # Either do nothing if the query's authorized, or throw NoSuchWorkspace or
