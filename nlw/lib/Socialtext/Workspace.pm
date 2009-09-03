@@ -405,9 +405,9 @@ sub _update_aliases_file {
 sub _enable_default_plugins {
     my $self = shift;
     require Socialtext::SystemSettings;
-    for (Socialtext::Pluggable::Adapter->plugins) {
-        next if $_->scope ne 'workspace';
-        my $plugin = $_->name;
+    for my $p (Socialtext::Pluggable::Adapter->plugins) {
+        next if $p->scope ne 'workspace';
+        my $plugin = $p->name;
         next if $plugin eq 'socialcalc'
             and $self->account->account_type eq 'Free 50';
         $self->enable_plugin($plugin)
