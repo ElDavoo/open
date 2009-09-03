@@ -5,15 +5,15 @@
 | standard-test-setup |
 | set-searcher | Solr |
 
-| edit-page | %%workspace%% | Phrase 1 | The greatest achievement is selflessness. |
+| edit-page | %%workspace%% | Phrase 1 | Wise saying: The greatest achievement is selflessness. |
 | edit-page | %%workspace%% | Phrase 2 | The greatest worth is self-mastery. |
-| edit-page | %%workspace%% | Phrase 3 | The greatest quality is seeking to serve others. |
-| edit-page | %%workspace%% | Phrase 4 | The greatest precept is continual awareness. |
-| edit-page | %%workspace%% | Phrase 5 | The greatest medicine is the emptiness of everything. |
-| edit-page | %%workspace%% | Phrase 6 | The greatest action is not conforming with the worlds ways. |
-| edit-page | %%workspace%% | Phrase 7 | The greatest magic is transmuting the passions. |
-| edit-page | %%workspace%% | Phrase 8 | The greatest generosity is non-attachment. |
-| edit-page | %%workspace%% | Phrase 9 | The greatest goodness is a peaceful mind. |
+| edit-page | %%workspace%% | Quote 3 | Wise saying: The greatest quality is seeking to serve others. |
+| edit-page | %%workspace%% | Quote 4 | The greatest precept is continual awareness. |
+| edit-page | %%workspace%% | Quote 5 | The greatest medicine is the emptiness of everything. |
+| edit-page | %%workspace%% | Wise Saying 6 | The greatest action is not conforming with the worlds ways. |
+| edit-page | %%workspace%% | Wise Saying 7 | The greatest magic is transmuting the passions. |
+| edit-page | %%workspace%% | Saying that are wise 8 | The greatest generosity is non-attachment. |
+| edit-page | %%workspace%% | Statement 9 | The greatest goodness is a peaceful mind. |
 | job-count | PageIndex | 9 |
 
 | set              | ws2               | ws2-%%start_time%% |
@@ -21,20 +21,19 @@
 | add-member       | %%email_address%% | %%ws2%%            |
 | edit-page | %%ws2%% | Phrase 1 | The greatest achievement is selflessness. |
 | edit-page | %%ws2%% | Phrase 2 | The greatest worth is self-mastery. |
-| edit-page | %%ws2%% | Phrase 3 | The greatest quality is seeking to serve others. |
-| edit-page | %%ws2%% | Phrase 4 | The greatest precept is continual awareness. |
-| edit-page | %%ws2%% | Phrase 5 | The greatest medicine is the emptiness of everything. |
-| edit-page | %%ws2%% | Phrase 6 | The greatest action is not conforming with the worlds ways. |
-| edit-page | %%ws2%% | Phrase 7 | The greatest magic is transmuting the passions. |
-| edit-page | %%ws2%% | Phrase 8 | The greatest generosity is non-attachment. |
-| edit-page | %%ws2%% | Phrase 9 | The greatest goodness is a peaceful mind. |
+| edit-page | %%ws2%% | Quote 3 | The greatest quality is seeking to serve others. |
+| edit-page | %%ws2%% | Quote 4 | The greatest precept is continual awareness. |
+| edit-page | %%ws2%% | Quote 5 | The greatest medicine is the emptiness of everything. |
+| edit-page | %%ws2%% | Saying 6 | The greatest action is not conforming with the worlds ways. |
+| edit-page | %%ws2%% | Saying 7 | The greatest magic is transmuting the passions. |
+| edit-page | %%ws2%% | Saying 8 | The greatest generosity is non-attachment. |
+| edit-page | %%ws2%% | Statement 9 | The greatest goodness is a peaceful mind. |
 
 
 | job-count | PageIndex | 18 |
 | st-process-jobs | | |
 | job-count | PageIndex | 0 |
 
-What I want to test:
 # only search results from the current workspace are returned
 
 | GET | /%%workspace%%/index.cgi?action=search&scope=&search_term=greatest |
@@ -48,3 +47,30 @@ What I want to test:
 | body-like | >Pages containing 'greatest'</h2> |
 | body-unlike | in <a href="/%%workspace%%">|
 | body-like | Showing 1 - 9 of 9 total |
+
+# Title searches
+
+| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=%3Dphrase |
+| code-is     | 200                                                                 |
+| body-like   | >Titles containing 'phrase'</h2>                                    |
+| body-like   | Showing 1 - 2 of 2 total                                            |
+| body-unlike | in <a href="/%%ws2%%">                                              |
+| body-like   | greatest achievement is selflessness                                |
+| body-like   | greatest worth is self-mastery                                      |
+
+| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=title%3Aquote |
+| code-is     | 200                                                                     |
+| body-like   | >Titles containing 'quote'</h2>                                         |
+| body-like   | Showing 1 - 3 of 3 total                                                |
+| body-unlike | in <a href="/%%ws2%%">                                                  |
+| body-like   | The greatest quality is seeking to serve others.                        |
+| body-like   | The greatest precept is continual awareness.                            |
+| body-like   | The greatest medicine is the emptiness of everything.                   |
+
+| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=%3D"wise+sayings" |
+| code-is     | 200                                                                     |
+| body-like   | >Titles containing '&quot;wise sayings&quot;'</h2>                                         |
+| body-like   | Showing 1 - 2 of 2 total                                                |
+| body-unlike | in <a href="/%%ws2%%">                                                  |
+| body-like | The greatest action is not conforming with the worlds ways. |
+| body-like | The greatest magic is transmuting the passions. |
