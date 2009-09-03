@@ -7,7 +7,6 @@ use Encode;
 # vaguely akin to RubyOnRails' "helpers"
 use Socialtext;
 use base 'Socialtext::Base';
-use Socialtext::Appliance::Config;
 use Socialtext::Search::Config;
 use Socialtext::Search::Set;
 use Socialtext::TT2::Renderer;
