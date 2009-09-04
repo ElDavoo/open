@@ -267,6 +267,18 @@ sub workspace_config {
     diag "Set workspace $ws_name config: $key to $val";
 }
 
+sub enable_account_plugin {
+    my $self = shift;
+    my $account_name = shift;
+    my $plugin = shift;
+
+    my $acct = Socialtext::Account->new(
+        name => $account_name,
+    );
+    $acct->enable_plugin($plugin);
+    diag "Enabled plugin $plugin in account $account_name";
+}
+
 sub disable_account_plugin {
     my $self = shift;
     my $account_name = shift;
