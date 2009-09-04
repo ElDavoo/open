@@ -3,9 +3,9 @@
 
 use strict;
 use warnings;
-use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
+# use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 80;
+use Test::Socialtext tests => 70;
 use Test::Exception;
 
 ###############################################################################
@@ -38,7 +38,7 @@ create_ugr: {
     my $role  = Socialtext::Role->new(name => 'guest');
 
     # create the UGR, make sure it got created with our info
-    clear_events();
+#     clear_events();
     clear_log();
     my $ugr   = Socialtext::UserGroupRoleFactory->Create( {
         user_id  => $user->user_id,
@@ -51,10 +51,10 @@ create_ugr: {
     is $ugr->role_id,  $role->role_id,   '... with provided role_id';
 
     # and that an Event was recorded
-    event_ok(
-        event_class => 'group',
-        action      => 'create_role',
-    );
+#     event_ok(
+#         event_class => 'group',
+#         action      => 'create_role',
+#     );
 
     # and that an entry was logged
     logged_like 'info', qr/ASSIGN,GROUP_ROLE/, '... creation was logged';
@@ -144,17 +144,17 @@ update_a_ugr: {
     isa_ok $ugr, 'Socialtext::UserGroupRole', 'created UGR';
 
     # update the UGR
-    clear_events();
+#     clear_events();
     clear_log();
     my $rc = $factory->Update($ugr, { role_id => $guest_role->role_id } );
     ok $rc, 'updated UGR';
     is $ugr->role_id, $guest_role->role_id, '... with updated role_id';
 
     # and that an Event was recorded
-    event_ok(
-        event_class => 'group',
-        action      => 'update_role',
-    );
+#     event_ok(
+#         event_class => 'group',
+#         action      => 'update_role',
+#     );
 
     # and that an entry was logged
     logged_like 'info', qr/CHANGE,GROUP_ROLE/, '... update was logged';
@@ -183,14 +183,14 @@ ignore_update_to_user_id_pkey: {
     isa_ok $ugr, 'Socialtext::UserGroupRole', 'created UGR';
 
     # update the UGR
-    clear_events();
+#     clear_events();
     clear_log();
     my $rc = $factory->Update($ugr, { user_id => $user_two->user_id } );
     ok $rc, 'updated UGR';
     is $ugr->user_id, $user_one->user_id, '... UGR has original user_id';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/GROUP_ROLE/, '... NO update was logged';
@@ -212,14 +212,14 @@ ignore_update_to_group_id_pkey: {
     isa_ok $ugr, 'Socialtext::UserGroupRole', 'created UGR';
 
     # update the UGR
-    clear_events();
+#     clear_events();
     clear_log();
     my $rc = $factory->Update($ugr, { group_id => $group_two->group_id } );
     ok $rc, 'updated UGR';
     is $ugr->group_id, $group_one->group_id, '... UGR has original group_id';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/GROUP_ROLE/, '... NO update was logged';
@@ -239,7 +239,7 @@ update_non_existing_ugr: {
     # but nothing actually got updated in the DB.
     #
     # This mimics the behaviour of ST::User and for ST::UserWorkspaceRole.
-    clear_events();
+#     clear_events();
     clear_log();
     lives_ok {
         Socialtext::UserGroupRoleFactory->Update(
@@ -249,7 +249,7 @@ update_non_existing_ugr: {
     } 'updating an non-existing UGR lives (but updates nothing)';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/GROUP_ROLE/, '... NO update was logged';
@@ -270,16 +270,16 @@ delete_ugr: {
     isa_ok $ugr, 'Socialtext::UserGroupRole', 'created UGR';
 
     # delete the UGR
-    clear_events();
+#     clear_events();
     clear_log();
     my $rc = $factory->Delete($ugr);
     ok $rc, 'deleted the UGR';
 
     # and that an Event was recorded
-    event_ok(
-        event_class => 'group',
-        action      => 'delete_role',
-    );
+#     event_ok(
+#         event_class => 'group',
+#         action      => 'delete_role',
+#     );
 
     # and that an entry was logged
     logged_like 'info', qr/REMOVE,GROUP_ROLE/, '... removal was logged';
@@ -303,14 +303,14 @@ delete_non_existing_ugr: {
     isa_ok $ugr, 'Socialtext::UserGroupRole';
 
     # Deleting a non-existing UGR fails, without throwing an exception
-    clear_events();
+#     clear_events();
     clear_log();
     my $factory = Socialtext::UserGroupRoleFactory->instance();
     my $rc      = $factory->Delete($ugr);
     ok !$rc, 'cannot delete a non-existing UGR';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/GROUP_ROLE/, '... NO removal was logged';

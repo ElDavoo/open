@@ -72,12 +72,12 @@ sub _emit_event {
                 : die "unable to determine event actor";
 
     # Record the event
-    Socialtext::Events->Record( {
-        event_class => 'workspace',
-        action      => $action,
-        actor       => $actor,
-        context     => $proto_gwr,
-    } );
+#     Socialtext::Events->Record( {
+#         event_class => 'workspace',
+#         action      => $action,
+#         actor       => $actor,
+#         context     => $proto_gwr,
+#     } );
 }
 
 sub _record_log_entry {

@@ -64,12 +64,12 @@ sub _emit_event {
     my ($self, $proto_uar, $action) = @_;
     my $actor = Socialtext::User->SystemUser();
     # Record the event
-    Socialtext::Events->Record( {
-        event_class => 'account',
-        action      => $action,
-        actor       => $actor,
-        context     => $proto_uar,
-    } );
+#     Socialtext::Events->Record( {
+#         event_class => 'account',
+#         action      => $action,
+#         actor       => $actor,
+#         context     => $proto_uar,
+#     } );
 }
 
 sub _record_log_entry {

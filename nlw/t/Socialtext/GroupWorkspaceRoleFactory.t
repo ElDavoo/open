@@ -3,9 +3,9 @@
 
 use strict;
 use warnings;
-use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
+# use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 80;
+use Test::Socialtext tests => 70;
 use Test::Exception;
 
 ###############################################################################
@@ -39,7 +39,7 @@ create_gwr: {
     my $role      = Socialtext::Role->new(name => 'guest');
 
     # create the GWR, make sure it got created with our info
-    clear_events();
+#     clear_events();
     clear_log();
     my $gwr   = Socialtext::GroupWorkspaceRoleFactory->Create( {
         group_id     => $group->group_id,
@@ -53,10 +53,10 @@ create_gwr: {
     is $gwr->role_id, $role->role_id, '... with provided role_id';
 
     # and that an Event was recorded
-    event_ok(
-        event_class => 'workspace',
-        action      => 'create_role',
-    );
+#     event_ok(
+#         event_class => 'workspace',
+#         action      => 'create_role',
+#     );
 
     # and that an entry was logged
     logged_like 'info', qr/ASSIGN,GROUP_WORKSPACE_ROLE/,
@@ -152,17 +152,18 @@ update_a_gwr: {
     isa_ok $gwr, 'Socialtext::GroupWorkspaceRole', 'created GWR';
 
     # update the GWR
-    clear_events();
+#     clear_events();
     clear_log();
+
     my $rc = $factory->Update($gwr, { role_id => $guest_role->role_id } );
     ok $rc, 'updated GWR';
     is $gwr->role_id, $guest_role->role_id, '... with updated role_id';
 
     # and that an Event was recorded
-    event_ok(
-        event_class => 'workspace',
-        action      => 'update_role',
-    );
+#     event_ok(
+#         event_class => 'workspace',
+#         action      => 'update_role',
+#     );
 
     # and that an entry was logged
     logged_like 'info', qr/CHANGE,GROUP_WORKSPACE_ROLE/,
@@ -193,14 +194,14 @@ ignore_update_to_group_id_pkey: {
     isa_ok $gwr, 'Socialtext::GroupWorkspaceRole', 'created GWR';
 
     # update the GWR
-    clear_events();
+#     clear_events();
     clear_log();
     my $rc = $factory->Update($gwr, { group_id => $group_two->group_id } );
     ok $rc, 'updated GWR';
     is $gwr->group_id, $group_one->group_id, '... GWR has original group_id';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/GROUP_WORKSPACE_ROLE/,
@@ -224,7 +225,7 @@ ignore_update_to_workspace_id_pkey: {
     isa_ok $gwr, 'Socialtext::GroupWorkspaceRole', 'created GWR';
 
     # update the GWR
-    clear_events();
+#     clear_events();
     clear_log();
     my $rc = $factory->Update($gwr, { workspace_id => $ws_two->workspace_id } );
     ok $rc, 'updated GWR';
@@ -232,7 +233,7 @@ ignore_update_to_workspace_id_pkey: {
         '... GWR has original workspace_id';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/GROUP_WORKSPACE_ROLE/,
@@ -253,7 +254,7 @@ update_non_existing_gwr: {
     # but nothing actually got updated in the DB.
     #
     # This mimics the behaviour of ST::User for ST::UserWorkspaceRole.
-    clear_events();
+#     clear_events();
     clear_log();
     lives_ok {
         Socialtext::GroupWorkspaceRoleFactory->Update(
@@ -263,7 +264,7 @@ update_non_existing_gwr: {
     } 'updating an non-existing GWR lives (but updates nothing)';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/GROUP_WORKSPACE_ROLE/,
@@ -286,16 +287,16 @@ delete_gwr: {
     isa_ok $gwr, 'Socialtext::GroupWorkspaceRole', 'created GWR';
 
     # delete the GWR
-    clear_events();
+#     clear_events();
     clear_log();
     my $rc = $factory->Delete($gwr);
     ok $rc, 'deleted the GWR';
 
     # and that an Event was recorded
-    event_ok(
-        event_class => 'workspace',
-        action      => 'delete_role',
-    );
+#     event_ok(
+#         event_class => 'workspace',
+#         action      => 'delete_role',
+#     );
 
     # and that an entry was logged
     logged_like 'info', qr/REMOVE,GROUP_WORKSPACE_ROLE/,
@@ -320,14 +321,14 @@ delete_non_existing_gwr: {
     isa_ok $gwr, 'Socialtext::GroupWorkspaceRole';
 
     # Deleting a non-existing GWR fails, without throwing an exception
-    clear_events();
+#     clear_events();
     clear_log();
     my $factory = Socialtext::GroupWorkspaceRoleFactory->instance();
     my $rc      = $factory->Delete($gwr);
     ok !$rc, 'cannot delete a non-existing GWR';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/GROUP_WORKSPACE_ROLE/,
