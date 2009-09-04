@@ -344,6 +344,18 @@ sub visibility_sql {
         push @parts, "(evt.event_class <> 'signal')";
     }
 
+    if (_options_include_class($opts, 'widget')
+        and $self->viewer->can_use_plugin('widgets') 
+    ) {
+        push @parts,
+            "( evt.event_class <> 'widget' OR".
+                $self->visible_exists('widgets','evt.actor_id',$opts,\@bind).
+            ')';
+    }
+    else {
+        push @parts, "(evt.event_class <> 'widget')";
+    }
+
     my $sql;
     $sql = "\n(\n".join(" AND ",@parts)."\n)\n";
 
