@@ -27,6 +27,7 @@ pod2usage(1) if ($help);
 pod2usage( -exitstatus=>0, -verbose=>2 ) if ($man);
 
 my $command = shift @ARGV;
+pod2usage(1) unless ($command);
 
 ###############################################################################
 # Get a hold of the system logger.
@@ -56,13 +57,8 @@ my %commands = (
         Socialtext::LDAP::Operations->LoadUsers(dryrun => $dryrun);
     },
 );
-
-if ( $command ) {
-    die "Unknown command, '$command'.\n" unless ($commands{$command});
-}
-else {
-    print "$0 requires a command\n\n";
-    pod2usage(1) unless $command;
+unless ($commands{$command}) {
+    die "Unknown command, '$command'.\n";
 }
 
 $commands{$command}->();
