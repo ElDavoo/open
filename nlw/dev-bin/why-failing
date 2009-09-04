@@ -37,7 +37,7 @@ pod2usage(-exitstatus => 0, -verbose => 2) if ($man);
 $unittest = shift @ARGV;
 pod2usage(1) unless ($unittest);
 
-$verbose += $dryrun;    # --dryrun implies --verbose
+$verbose += ( $dryrun ) ? $dryrun : 0;    # --dryrun implies --verbose
 
 ###############################################################################
 # Make sure that the failing test exists
