@@ -107,3 +107,8 @@
 | body-unlike | in <a href="/%%ws2%%">                                                |
 | body-like   | Wise saying: The greatest achievement is selflessness.        |
 
+| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=%3Dphrase+AND+tag%3Amonkey |
+| code-is     | 200                                                                   |
+| body-like   | >Pages matching 'title:phrase AND tag:monkey'</h2>                                    |
+| body-like   | Showing 1 - 0 of 0 total                                              |
+
