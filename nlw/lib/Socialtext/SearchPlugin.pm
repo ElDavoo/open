@@ -215,17 +215,17 @@ sub search_for_term {
     $self->result_set($self->new_result_set);
     my $result_set = $self->result_set;
     eval {
-        my @rows = $self->_new_search(%query);
+        my ($rows, $hit_count) = $self->_new_search(%query);
         $self->title_search(1) if $search_term =~ m/^(?:=|title:)/;
-        $self->hub->log->debug("hitcount " . scalar @rows);
-        foreach my $row (@rows) {
+        $self->hub->log->debug("hitcount " . scalar @$rows);
+        foreach my $row (@$rows) {
             $self->hub->log->debug("hitrow $row->{page_uri}")
                 if exists $row->{page_uri};
             $self->hub->log->debug("hitkeys @{[keys %$row]}");
         }
 
-        $result_set->{hits} = scalar @rows;
-        $result_set->{rows} = \@rows;
+        $result_set->{hits} = $hit_count;
+        $result_set->{rows} = $rows;
 
         $search_term =~ s/=(\S+|"[^"]+")/title:$1/g;
         $result_set->{display_title} = 
@@ -268,7 +268,7 @@ sub _new_search {
     Socialtext::Timer->Continue('search_on_behalf');
     $self->{_current_search_term} = $query{search_term};
     $self->{_current_scope} = $query{scope} || '_';
-    my @hits = search_on_behalf(
+    my ($hits, $hit_count) = search_on_behalf(
         $self->hub->current_workspace->name,
         $query{search_term},
         $query{scope},
@@ -278,13 +278,13 @@ sub _new_search {
     );
     Socialtext::Timer->Pause('search_on_behalf');
 
-    eval { $self->_load_pages_for_hits(\@hits) };
+    eval { $self->_load_pages_for_hits($hits) };
     warn $@ if $@;
 
     my %cache;
     my @results;
     Socialtext::Timer->Continue('hitrows');
-    for my $hit (@hits) {
+    for my $hit (@$hits) {
         my $key = $hit->composed_key;
         next if $cache{$key};
         my $row = $self->_make_row($hit);
@@ -297,7 +297,7 @@ sub _new_search {
     }
     Socialtext::Timer->Pause('hitrows');
 
-    return @results;
+    return \@results, $hit_count;
 }
 
 sub get_result_set {

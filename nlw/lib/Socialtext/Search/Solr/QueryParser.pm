@@ -21,4 +21,15 @@ extends 'Socialtext::Search::QueryParser';
 
 sub _build_searchable_fields { [qw/title tag body/] }
 
+around 'parse' => sub {
+    my ( $orig, $self, $query_string ) = @_;
+
+    $query_string = $orig->($self, $query_string);
+
+    if ($query_string =~ m/\*/) {
+        $query_string = "{!defType=lucene}$query_string";
+    }
+    return $query_string;
+};
+
 1;

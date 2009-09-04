@@ -123,15 +123,16 @@ sub _pages_for_search {
     my $self  = shift;
     my $query = shift;
 
-    my @pages = map { $self->hub->pages->new_from_name( $_->page_uri ) }
-        grep { $_->isa('Socialtext::Search::PageHit') }
-        search_on_behalf(
+    my ($hits, $hit_count) = search_on_behalf(
             $self->hub->current_workspace->name,
             $query,
             undef, # undefined scope
             $self->hub->current_user,
             sub { },   # FIXME: swallowing this error for now
             sub { } ); # FIXME: swallowing this error for now
+    my @pages = map { $self->hub->pages->new_from_name( $_->page_uri ) }
+        grep { $_->isa('Socialtext::Search::PageHit') }
+            @$hits;
 
     return \@pages;
 }

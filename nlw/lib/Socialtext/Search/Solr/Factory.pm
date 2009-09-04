@@ -8,6 +8,7 @@ use Socialtext::Search::Solr::Indexer;
 use Socialtext::Search::Solr::Searcher;
 use Socialtext::Search::Config;
 use Socialtext::AppConfig;
+use Socialtext::Exceptions;
 use base 'Socialtext::Search::AbstractFactory';
 
 =head1 NAME
@@ -46,6 +47,72 @@ sub _create {
     my $class = 'Socialtext::Search::Solr::' . $kind;
     return $class->new( ws_name => $ws_name );
 }
+
+sub search_on_behalf {
+    my $self               = shift;
+    my $workspaces         = shift;
+    my $query              = shift;
+    my $user               = shift;
+    my $no_such_ws_handler = shift;
+    my $authz_handler      = shift;
+
+    my $hit_threshold = Socialtext::AppConfig->search_warning_threshold || 500;
+
+    my ($thunk, $num_hits);
+    eval {
+        ($thunk, $num_hits) = $self->_search_workspaces($user, $workspaces, $query);
+    };
+    if (my $e = $@) {
+        die $e unless ref $e;
+        if ($e->isa('Socialtext::Exception::NoSuchWorkspace')) {
+            $e->rethrow unless defined $no_such_ws_handler;
+            $no_such_ws_handler->($e);
+        }
+        elsif ($e->isa('Socialtext::Exception::Auth')) {
+            $e->rethrow unless defined $authz_handler;
+            $authz_handler->($e) if defined $authz_handler;
+        }
+        elsif ($e->isa('Socialtext::Exception::TooManyResults')) {
+            $num_hits += $e->{num_results};
+        }
+        else {
+            $e->rethrow;
+        }
+    }
+
+    Socialtext::Exception::TooManyResults->throw(
+        num_results => $num_hits,
+    ) if $num_hits > $hit_threshold;
+
+    # Evaluate the thunk now that we're sure that the results are of
+    # reasonable size
+    my $hits = $thunk->();
+
+    # Re-rank all hits by the raw_hit's score (this bleeds some implementation)
+    my @ordered = sort { $b->hit->{score} cmp $a->hit->{score} } @$hits;
+    return \@ordered, $num_hits;
+}
+
+sub _search_workspaces {
+    my $self = shift;
+    my $user = shift;
+    my $workspaces = shift;
+    my $query = shift;
+
+    my $authorizer = $self->_make_authorizer($user);
+    for my $workspace (@$workspaces) {
+        unless ($authorizer->($workspace)) {
+            _debug("authorizer failed for $workspace");
+            Socialtext::Exception::Auth->throw;
+        }
+    }
+
+    # Searcher needs a workspace, which is kinda dumb in the case of
+    # inter-workspace search.
+    my $searcher = $self->create_searcher($workspaces->[0]);
+    return $searcher->begin_search($query, undef, $workspaces);
+}
+
 
 1;
 __END__

@@ -27,14 +27,15 @@ eval {
 isa_ok( $@, 'Socialtext::Exception::Auth', "auth exception on search foobar" );
 
 HIT: {
-    my @hits;
+    my $hits;
+    my $hit_count;
     eval {
-        @hits
+        ($hits, $hit_count)
             = search_on_behalf( 'help-en', 'link workspaces:foobar,help-en', '_',
             $user, sub { }, sub { } );
     };
     is( $@, '', "No exceptions thrown." );
-    for my $hit (@hits) {
+    for my $hit (@$hits) {
         if ($hit->workspace_name eq 'foobar') {
             fail('No foobar hits for guest user.');
             last HIT;

@@ -350,14 +350,15 @@ sub _search_get_items {
     my $count = shift;
 
     Socialtext::Timer->Continue('_search_get_items');
-    my @hits = grep { $_->isa('Socialtext::Search::PageHit') }
-                    search_on_behalf(
-                        $self->hub->current_workspace->name,
-                        $query,
-                        undef, # undefined scope
-                        $self->hub->current_user,
-                        sub { },   # FIXME: swallowing this error for now
-                        sub { } ); # FIXME: swallowing this error for now
+    my ($hits, $hit_count) = search_on_behalf(
+        $self->hub->current_workspace->name,
+        $query,
+        undef,    # undefined scope
+        $self->hub->current_user,
+        sub { },    # FIXME: swallowing this error for now
+        sub { }
+    );              # FIXME: swallowing this error for now
+    my @hits = grep { $_->isa('Socialtext::Search::PageHit') } @$hits;
 
     Socialtext::Exception::TooManyResults->throw(
         num_results => scalar(@hits),

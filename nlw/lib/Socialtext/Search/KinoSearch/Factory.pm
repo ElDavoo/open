@@ -11,6 +11,8 @@ use Socialtext::Search::KinoSearch::Indexer;
 use Socialtext::Search::KinoSearch::Searcher;
 use Socialtext::Search::Config;
 use Socialtext::AppConfig;
+use Socialtext::Exceptions;
+use Socialtext::System ();
 use base 'Socialtext::Search::AbstractFactory';
 
 # Rather than create an actual object (since there's no state), just return
@@ -50,6 +52,98 @@ sub _analyzer {
     my $self = shift;
     my $lang = system_locale();
     return Socialtext::Search::KinoSearch::Analyzer->new( language => $lang );
+}
+
+sub search_on_behalf {
+    my $self               = shift;
+    my $workspaces         = shift;
+    my $query              = shift;
+    my $user               = shift;
+    my $no_such_ws_handler = shift;
+    my $authz_handler      = shift;
+
+    my $hit_threshold = Socialtext::AppConfig->search_warning_threshold || 500;
+
+    # workspace search thunks hold open filehandles, so we need to impose a
+    # safety limit.
+    my $fh_threshold = Socialtext::System::open_filehandle_limit();
+    $fh_threshold *= 0.75;
+
+    my $total_hits = 0;
+    my @hits;
+    my @hit_thunks;
+
+    # sorting workspaces hopefully prevents KS deadlocks:
+    for my $workspace (sort @$workspaces) {
+        eval {
+            my ($thunk, $ws_hits) =
+                $self->_search_workspace($user, $workspace, $query);
+            $total_hits += $ws_hits;
+            # don't track any more thunks if we've exceeded the threshold
+            push @hit_thunks, $thunk if ($total_hits <= $hit_threshold);
+        };
+        if (my $e = $@) {
+            die $e unless ref $e;
+            if ($e->isa('Socialtext::Exception::NoSuchWorkspace')) {
+                $e->rethrow unless defined $no_such_ws_handler;
+                $no_such_ws_handler->($e);
+            }
+            elsif ($e->isa('Socialtext::Exception::Auth')) {
+                $e->rethrow unless defined $authz_handler;
+                $authz_handler->($e) if defined $authz_handler;
+            }
+            elsif ($e->isa('Socialtext::Exception::TooManyResults')) {
+                $total_hits += $e->{num_results};
+            }
+            else {
+                $e->rethrow;
+            }
+        }
+
+        if ($total_hits > $hit_threshold) {
+            # Throw away the results; we won't display them.
+            # Keep searching to get the grand total, however.
+            @hit_thunks = @hits = ();
+        }
+        elsif (Socialtext::System::open_filehandles() > $fh_threshold) {
+            # Evaluate the thunks to free up file handles
+            push @hits, map { @{ $_->() || [] } } @hit_thunks;
+            @hit_thunks = ();
+        }
+    }
+
+    Socialtext::Exception::TooManyResults->throw(
+        num_results => $total_hits,
+    ) if $total_hits > $hit_threshold;
+
+    # Evaluate the thunks now that we're sure that the results are of
+    # reasonable size
+    push @hits, map { @{ $_->() || [] } } @hit_thunks;
+    @hit_thunks = ();
+
+    # Re-rank all hits by the raw_hit's score (this bleeds some implementation)
+    return sort { $b->hit->{score} cmp $a->hit->{score} } @hits;
+}
+
+sub _search_workspace {
+    my $self = shift;
+    my ($user, $workspace, $query) = @_;
+
+    my $searcher = $self->create_searcher($workspace);
+    my $authorizer = $self->_make_authorizer($user);
+
+    my ($thunk, $ws_hits);
+    if ($searcher->can('begin_search')) {
+        ($thunk, $ws_hits) =
+            $searcher->begin_search($query, $authorizer);
+    }
+    else {
+        my @one_ws_hits = $searcher->search($query, $authorizer);
+        $thunk = sub { \@one_ws_hits };
+        $ws_hits = @one_ws_hits;
+    }
+
+    return ($thunk, $ws_hits);
 }
 
 1;

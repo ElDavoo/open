@@ -46,12 +46,14 @@
 | code-is | 200 |
 | body-like | >Pages matching 'greatest'</h2> |
 | body-unlike | in <a href="/%%ws2%%">|
+| body-like | in <a href="/%%workspace%%">|
 | body-like | Showing 1 - 9 of 9 total |
 
 | GET | /%%ws2%%/index.cgi?action=search&scope=&search_term=greatest |
 | code-is | 200 |
 | body-like | >Pages matching 'greatest'</h2> |
 | body-unlike | in <a href="/%%workspace%%">|
+| body-like | in <a href="/%%ws2%%">|
 | body-like | Showing 1 - 9 of 9 total |
 
 # Title searches
@@ -122,3 +124,35 @@
 | body-like   | Wise saying: The greatest achievement is selflessness.                |
 | body-like   | Wise saying: The greatest quality is seeking to serve others.         |
 
+# Wildcards! 
+
+| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=self |
+| code-is     | 200                                                            |
+| body-like   | >Pages matching 'self'</h2>                                    |
+| body-like   | Showing 1 - 1 of 1 total                                       |
+| body-unlike | in <a href="/%%ws2%%">                                         |
+| body-like   | The greatest worth is self-mastery.                            |
+
+| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=self* |
+| code-is     | 200                                                            |
+| body-like   | >Pages matching 'self*'</h2>                                    |
+| body-like   | Showing 1 - 2 of 2 total                                       |
+| body-unlike | in <a href="/%%ws2%%">                                         |
+| body-like   | Wise saying: The greatest achievement is selflessness.        |
+| body-like   | The greatest worth is self-mastery.                            |
+
+| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=ma?ic |
+| code-is     | 200                                                            |
+| body-like   | >Pages matching 'ma?ic'</h2>                                    |
+| body-like   | Showing 1 - 1 of 1 total                                       |
+| body-unlike | in <a href="/%%ws2%%">                                         |
+| body-like   | The greatest magic is transmuting the passions.        |
+
+# Search Scope!
+
+| GET       | /%%workspace%%/index.cgi?action=search&scope=*&search_term=greatest |
+| code-is   | 200                                                             |
+| body-like | >Pages matching 'greatest'</h2>                                     |
+| body-like | Showing 1 - 18 of 18 total                                        |
+| body-like | in <a href="/%%workspace%%">                                    |
+| body-like | in <a href="/%%ws2%%">                                          |

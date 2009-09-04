@@ -48,13 +48,14 @@ sub search {
 # Start a search, but don't process the results.  Return a thunk and a number
 # of hits.  The thunk returns an arrayref of processed results.
 sub begin_search {
-    my ( $self, $query_string, $authorizer ) = @_;
-    _debug("Searching ".$self->ws_name." with query: $query_string");
+    my ( $self, $query_string, $authorizer, $workspaces ) = @_;
+    my $ws_name = $workspaces ? join(',', @$workspaces) : $self->ws_name;
+    _debug("Searching $ws_name with query: $query_string");
 
-    my ($docs, $num_hits) = $self->_search($query_string);
+    my ($docs, $num_hits) = $self->_search($query_string, undef, $workspaces);
 
     my $thunk = sub {
-        _debug("Processing ".$self->ws_name." thunk");
+        _debug("Processing $ws_name thunk");
         Socialtext::Timer->Continue('solr_begin');
         my $results = $self->_process_docs($docs);
         Socialtext::Timer->Continue('solr_begin');
@@ -65,23 +66,30 @@ sub begin_search {
 
 # Parses the query string and returns the raw Solr hit results.
 sub _search {
-    my ( $self, $query_string, $authorizer ) = @_;
+    my ( $self, $query_string, $authorizer, $workspaces) = @_;
 
     my $query = $self->parse($query_string);
     $self->_authorize( $query, $authorizer );
-    _debug("Performing actual search for query in ".$self->ws_name);
 
     Socialtext::Timer->Continue('solr_raw');
+    my $ws_filter = join ' OR ', 
+        map { "w:$_" }
+            map { Socialtext::Workspace->new(name => $_)->workspace_id }
+                @$workspaces;
 
     # See: http://wiki.apache.org/solr/CommonQueryParameters
+    my $query_type = 'dismax';
+    $query_type = 'standard' if $query =~ m/\b[a-z_]+:/i;
+    $query_type = 'standard' if $query =~ m/\*|\?/;
     my $response = $self->solr->search($query, 
         {
             # fl = Fields to return
             fl => 'id score',
             # qt = Query Type
-            qt => 'standard',
+            qt => $query_type,
             # fq = Filter Query - superset of docs to return from
-            fq => 'w:' . $self->workspace->workspace_id,
+            fq => $ws_filter,
+            rows => 20,
         }
     );
     my $docs = $response->docs;

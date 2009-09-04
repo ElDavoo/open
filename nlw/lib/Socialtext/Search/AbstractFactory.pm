@@ -6,6 +6,10 @@ package Socialtext::Search::AbstractFactory;
 
 use Carp 'croak';
 use Socialtext::AppConfig;
+use Socialtext::Workspace;
+use Socialtext::Authz;
+use Socialtext::Exceptions;
+use Socialtext::Permission 'ST_READ_PERM';
 
 =head1 NAME
 
@@ -130,6 +134,27 @@ sub create_indexer {
         croak(__PACKAGE__, "::create_indexer called in a weird way");
     }
 }
+
+sub _make_authorizer {
+    my $self = shift;
+    my $user = shift;
+
+    return sub {
+        my ($workspace_name) = @_;
+        my $workspace = Socialtext::Workspace->new( name => $workspace_name );
+
+        if ( defined $workspace ) {
+            return Socialtext::Authz->new->user_has_permission_for_workspace(
+                user       => $user,
+                permission => ST_READ_PERM,
+                workspace  => $workspace );
+        } else {
+            Socialtext::Exception::NoSuchWorkspace->throw(
+                name => $workspace_name );
+        }
+    };
+}
+
 
 =head1 SEE ALSO
 

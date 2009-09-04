@@ -173,13 +173,15 @@ sub _searched_pages {
 
     my @page_ids;
     eval { 
-        @page_ids = map { $_->page_uri }
-            grep { $_->isa('Socialtext::Search::PageHit') } search_on_behalf(
+        my ($hits, $count) = search_on_behalf(
                 $self->hub->current_workspace->name,
                 $search_query,
                 undef,    # undefined scope
                 $self->hub->current_user
             );
+        @page_ids = map { $_->page_uri }
+            grep { $_->isa('Socialtext::Search::PageHit') } 
+                @$hits;
     };
     if ($@ and $@->isa('Socialtext::Exception::TooManyResults')) {
         if ($self->{_content_type} ne 'application/json') {
