@@ -15,11 +15,6 @@
         [% ELSE %]
         | <a href="/m/tag/[% ws.name %]/">[% loc('Tags') %]</a>
         [% END %]
-        [% IF section == 'tags' %]
-        | <span class="current">[% loc('Tags') %]</span>
-        [% ELSE %]
-        | <a href="/m/tag/[% ws.name %]/">[% loc('Tags') %]</a>
-        [% END %]
         [% IF section == 'search' %]
         | <span class="current">[% loc('Search') %]</span>
         [% ELSE %]

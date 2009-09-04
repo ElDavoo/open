@@ -3,9 +3,9 @@
 
 use strict;
 use warnings;
-use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
+# use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 84;
+use Test::Socialtext tests => 74;
 use Test::Exception;
 
 ###############################################################################
@@ -38,7 +38,7 @@ create_uar: {
     my $role    = Socialtext::Role->new(name => 'guest');
 
     # create the UAR, make sure it got created with our info
-    clear_events();
+#     clear_events();
     clear_log();
     my $uar   = Socialtext::UserAccountRoleFactory->Create( {
         user_id    => $user->user_id,
@@ -51,10 +51,10 @@ create_uar: {
     is $uar->role_id,  $role->role_id,         '... with provided role_id';
 
     # and that an Event was recorded
-    event_ok(
-        event_class => 'account',
-        action      => 'create_role',
-    );
+#     event_ok(
+#         event_class => 'account',
+#         action      => 'create_role',
+#     );
 
     # and that an entry was logged
     logged_like 'info', qr/ASSIGN,ACCOUNT_ROLE/, '... creation was logged';
@@ -144,17 +144,17 @@ update_a_uar: {
     isa_ok $uar, 'Socialtext::UserAccountRole', 'created UAR';
 
     # update the UAR
-    clear_events();
+#     clear_events();
     clear_log();
     my $rc = $factory->Update($uar, { role_id => $guest_role->role_id } );
     ok $rc, 'updated UAR';
     is $uar->role_id, $guest_role->role_id, '... with updated role_id';
 
     # and that an Event was recorded
-    event_ok(
-        event_class => 'account',
-        action      => 'update_role',
-    );
+#     event_ok(
+#         event_class => 'account',
+#         action      => 'update_role',
+#     );
 
     # and that an entry was logged
     logged_like 'info', qr/CHANGE,ACCOUNT_ROLE/, '... update was logged';
@@ -183,14 +183,14 @@ ignore_update_to_user_id_pkey: {
     isa_ok $uar, 'Socialtext::UserAccountRole', 'created UAR';
 
     # update the UAR
-    clear_events();
+#     clear_events();
     clear_log();
     my $rc = $factory->Update($uar, { user_id => $user_two->user_id } );
     ok $rc, 'updated UAR';
     is $uar->user_id, $user_one->user_id, '... UAR has original user_id';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/ACCOUNT_ROLE/, '... NO update was logged';
@@ -212,14 +212,14 @@ ignore_update_to_account_id_pkey: {
     isa_ok $uar, 'Socialtext::UserAccountRole', 'created UAR';
 
     # update the UAR
-    clear_events();
+#     clear_events();
     clear_log();
     my $rc = $factory->Update($uar, { account_id => $account_two->account_id } );
     ok $rc, 'updated UAR';
     is $uar->account_id, $account_one->account_id, '... UAR has original account_id';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/ACCOUNT_ROLE/, '... NO update was logged';
@@ -239,7 +239,7 @@ update_non_existing_uar: {
     # but nothing actually got updated in the DB.
     #
     # This mimics the behaviour of ST::User and for ST::UserWorkspaceRole.
-    clear_events();
+#     clear_events();
     clear_log();
     lives_ok {
         Socialtext::UserAccountRoleFactory->Update(
@@ -249,7 +249,7 @@ update_non_existing_uar: {
     } 'updating an non-existing UAR lives (but updates nothing)';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/ACCOUNT_ROLE/, '... NO update was logged';
@@ -270,16 +270,16 @@ delete_uar: {
     isa_ok $uar, 'Socialtext::UserAccountRole', 'created UAR';
 
     # delete the UAR
-    clear_events();
+#     clear_events();
     clear_log();
     my $rc = $factory->Delete($uar);
     ok $rc, 'deleted the UAR';
 
     # and that an Event was recorded
-    event_ok(
-        event_class => 'account',
-        action      => 'delete_role',
-    );
+#     event_ok(
+#         event_class => 'account',
+#         action      => 'delete_role',
+#     );
 
     # and that an entry was logged
     logged_like 'info', qr/REMOVE,ACCOUNT_ROLE/, '... removal was logged';
@@ -303,14 +303,14 @@ delete_non_existing_uar: {
     isa_ok $uar, 'Socialtext::UserAccountRole';
 
     # Deleting a non-existing UAR fails, without throwing an exception
-    clear_events();
+#     clear_events();
     clear_log();
     my $factory = Socialtext::UserAccountRoleFactory->instance();
     my $rc      = $factory->Delete($uar);
     ok !$rc, 'cannot delete a non-existing UAR';
 
     # and that *NO* Event was recorded
-    is_event_count(0);
+#     is_event_count(0);
 
     # and that *NO* entry was logged
     logged_not_like 'info', qr/ACCOUNT_ROLE/, '... NO removal was logged';
