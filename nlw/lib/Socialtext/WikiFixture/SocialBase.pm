@@ -107,6 +107,10 @@ sub http_user_pass {
     $self->{http} = Test::HTTP->new($name);
     $self->{http}->username($user) if $user;
     $self->{http}->password($pass) if $pass;
+
+    # store it locally too.
+    $self->{username} = $user if $user;
+    $self->{password} = $pass if $pass;
 }
 
 =head2 follow_redirects_for ( $methods )
