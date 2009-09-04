@@ -216,7 +216,7 @@ sub search_for_term {
     my $result_set = $self->result_set;
     eval {
         my @rows = $self->_new_search(%query);
-        $self->title_search($search_term =~ s/^(?:=|title:)//);
+        $self->title_search(1) if $search_term =~ m/^(?:=|title:)/;
         $self->hub->log->debug("hitcount " . scalar @rows);
         foreach my $row (@rows) {
             $self->hub->log->debug("hitrow $row->{page_uri}")
@@ -227,13 +227,9 @@ sub search_for_term {
         $result_set->{hits} = scalar @rows;
         $result_set->{rows} = \@rows;
 
-        if( $self->title_search ) {
-            $result_set->{display_title} = 
-                loc("Titles containing \'[_1]\'", $search_term);
-        } else {
-            $result_set->{display_title} = 
-                loc("Pages containing \'[_1]\'", $search_term);
-        }
+        $search_term =~ s/=(\S+|"[^"]+")/title:$1/g;
+        $result_set->{display_title} = 
+            loc("Pages matching \'[_1]\'", $search_term);
         $result_set->{predicate} = 'action=search';
 
         $self->write_result_set;
