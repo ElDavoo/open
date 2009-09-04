@@ -18,6 +18,8 @@ my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
 my $script_path = 'index.cgi';
 
 _get_workspace_list_for_template: {
+    Socialtext::Account->Clear_Default_Account_Cache();
+
     my $workspacelist   = $hub->helpers->_get_workspace_list_for_template;
     my $acct_default    = Socialtext::Account->Default();
     my $acct_socialtext = Socialtext::Account->Socialtext();
