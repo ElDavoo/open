@@ -112,3 +112,13 @@
 | body-like   | >Pages matching 'title:phrase AND tag:monkey'</h2>                                    |
 | body-like   | Showing 1 - 0 of 0 total                                              |
 
+# Stemming
+
+| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=tag%3Aquotes |
+| code-is     | 200                                                                   |
+| body-like   | >Pages matching 'tag:quotes'</h2>                                    |
+| body-like   | Showing 1 - 2 of 2 total                                              |
+| body-unlike | in <a href="/%%ws2%%">                                                |
+| body-like   | Wise saying: The greatest achievement is selflessness.                |
+| body-like   | Wise saying: The greatest quality is seeking to serve others.         |
+
