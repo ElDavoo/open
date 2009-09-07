@@ -91,7 +91,7 @@ sub _search {
             fq => $ws_filter,
             rows => 20,
             start => $opts{offset} || 0,
-            $self->_sort_opts($opts{order}, $opts{direction}),
+            $self->_sort_opts($opts{order}, $opts{direction}, $query_type),
         }
     );
     my $docs = $response->docs;
@@ -108,9 +108,10 @@ sub _search {
 }
 
 sub _sort_opts {
-    my $self = shift;
-    my $order = shift || '';
-    my $direction = shift || 'desc';
+    my $self       = shift;
+    my $order      = shift || '';
+    my $direction  = shift || 'desc';
+    my $query_type = shift;
 
     # Map the UI options into Solr fields
     my %sortable = (
@@ -120,7 +121,14 @@ sub _sort_opts {
         revision_count => 'revisions',
         create_time => 'created',
     );
-    return ('sort' => 'score, desc') unless $sortable{$order};
+
+    # If no valid sort order is supplied, then we use either a date sort or a
+    # score sort.
+    return ('sort' => $query_type eq 'standard' ? 'date desc' : 'score desc')
+        unless $sortable{$order};
+
+    # If a valid sort order is supplied, then we secondary sort by date,
+    # unless the primary sort is already date.
     my $sec_sort = $order eq 'Date' ? 'score desc' : 'date desc';
     return ('sort' => "$sortable{$order} $direction, $sec_sort");
 }
