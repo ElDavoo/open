@@ -113,8 +113,8 @@
     <table class="dataTable pagelist" cellspacing="0">
       [% FOREACH row = rows %]
         [% row = load_row_times(row) %]
-        [% IF loop.count - 1 < offset %][% NEXT %][% END %]
-        [% IF loop.count > last %][% BREAK %][% END %]
+        [% IF !partial_set AND loop.count - 1 < offset %][% NEXT %][% END %]
+        [% IF !partial_set AND loop.count > last %][% BREAK %][% END %]
         [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]
         <td width="30"><input type="checkbox" name="page_selected" class="st-listview-selectpage-checkbox" value="[% row.workspace_name %]:[% row.page_uri %]"/></td>
         <td>

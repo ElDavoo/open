@@ -134,6 +134,7 @@ sub search {
         search_term  => $self->uri_escape($search_term),
         html_escaped_search_term =>
             Socialtext::String::html_escape($search_term),
+        Socialtext::Search::AbstractFactory->GetFactory()->template_vars(),
     );
 
     st_log()
@@ -274,7 +275,8 @@ sub _new_search {
         $query{scope},
         $self->hub->current_user,
         sub { },    # FIXME: We'd rather message the user than ignore these.
-        sub { }     # FIXME: We'd rather message the user than ignore these.
+        sub { },    # FIXME: We'd rather message the user than ignore these.
+        offset => $self->cgi->offset,
     );
     Socialtext::Timer->Pause('search_on_behalf');
 

@@ -48,6 +48,19 @@ sub _create {
     return $class->new( ws_name => $ws_name );
 }
 
+=head2 $factory->template_vars()
+
+Returns a list of variables to pass to templates.
+
+=cut
+
+sub template_vars {
+    my $self = shift;
+    return (
+        partial_set => 1,
+    );
+}
+
 sub search_on_behalf {
     my $self               = shift;
     my $workspaces         = shift;
@@ -55,12 +68,14 @@ sub search_on_behalf {
     my $user               = shift;
     my $no_such_ws_handler = shift;
     my $authz_handler      = shift;
+    my %opts               = @_;
 
     my $hit_threshold = Socialtext::AppConfig->search_warning_threshold || 500;
 
     my ($thunk, $num_hits);
     eval {
-        ($thunk, $num_hits) = $self->_search_workspaces($user, $workspaces, $query);
+        ($thunk, $num_hits)
+            = $self->_search_workspaces($user, $workspaces, $query, %opts);
     };
     if (my $e = $@) {
         die $e unless ref $e;
@@ -110,7 +125,7 @@ sub _search_workspaces {
     # Searcher needs a workspace, which is kinda dumb in the case of
     # inter-workspace search.
     my $searcher = $self->create_searcher($workspaces->[0]);
-    return $searcher->begin_search($query, undef, $workspaces);
+    return $searcher->begin_search($query, undef, $workspaces, @_);
 }
 
 

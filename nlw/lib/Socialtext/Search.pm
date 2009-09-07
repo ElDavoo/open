@@ -16,12 +16,13 @@ sub search_on_behalf {
     my $user = shift;
     my $no_such_ws_handler = shift;
     my $authz_handler = shift;
+    my %opts = @_;
 
     my @workspaces = _enumerate_workspaces($scope, $user, $ws_name, \$query);
 
     my $factory = Socialtext::Search::AbstractFactory->GetFactory();
     return $factory->search_on_behalf(\@workspaces, $query, $user,
-        $no_such_ws_handler, $authz_handler);
+        $no_such_ws_handler, $authz_handler, %opts);
 }
 
 sub _enumerate_workspaces {

@@ -135,6 +135,17 @@ sub create_indexer {
     }
 }
 
+=head2 $factory->template_vars()
+
+Returns a list of variables to pass to templates.
+
+=cut
+
+sub template_vars {
+    my $self = shift;
+    return ();
+}
+
 sub _make_authorizer {
     my $self = shift;
     my $user = shift;

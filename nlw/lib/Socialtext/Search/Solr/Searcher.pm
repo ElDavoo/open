@@ -48,11 +48,11 @@ sub search {
 # Start a search, but don't process the results.  Return a thunk and a number
 # of hits.  The thunk returns an arrayref of processed results.
 sub begin_search {
-    my ( $self, $query_string, $authorizer, $workspaces ) = @_;
+    my ( $self, $query_string, $authorizer, $workspaces, %opts ) = @_;
     my $ws_name = $workspaces ? join(',', @$workspaces) : $self->ws_name;
     _debug("Searching $ws_name with query: $query_string");
 
-    my ($docs, $num_hits) = $self->_search($query_string, undef, $workspaces);
+    my ($docs, $num_hits) = $self->_search($query_string, undef, $workspaces, %opts);
 
     my $thunk = sub {
         _debug("Processing $ws_name thunk");
@@ -66,7 +66,7 @@ sub begin_search {
 
 # Parses the query string and returns the raw Solr hit results.
 sub _search {
-    my ( $self, $query_string, $authorizer, $workspaces) = @_;
+    my ( $self, $query_string, $authorizer, $workspaces, %opts) = @_;
 
     my $query = $self->parse($query_string);
     $self->_authorize( $query, $authorizer );
@@ -90,6 +90,7 @@ sub _search {
             # fq = Filter Query - superset of docs to return from
             fq => $ws_filter,
             rows => 20,
+            start => $opts{offset} || 0,
         }
     );
     my $docs = $response->docs;
