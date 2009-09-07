@@ -58,6 +58,7 @@ sub template_vars {
     my $self = shift;
     return (
         partial_set => 1,
+        no_user_sorting => 1,
     );
 }
 
