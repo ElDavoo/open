@@ -1,6 +1,6 @@
 * Fixture: Search
 
-# Set up 2 workspaces with similar content
+# Create lots of pages and then page through them
 
 | standard-test-setup |
 | set-searcher | Solr |
