@@ -122,7 +122,7 @@ sub search_on_behalf {
     @hit_thunks = ();
 
     # Re-rank all hits by the raw_hit's score (this bleeds some implementation)
-    return sort { $b->hit->{score} cmp $a->hit->{score} } @hits;
+    return [ sort { $b->hit->{score} cmp $a->hit->{score} } @hits ], $total_hits;
 }
 
 sub _search_workspace {
