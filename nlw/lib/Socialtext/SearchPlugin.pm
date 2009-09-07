@@ -90,6 +90,7 @@ sub direction_pref {
 sub search {
     my $self = shift;
     my $timer = Socialtext::Timer->new;
+    my $search_factory = Socialtext::Search::AbstractFactory->GetFactory();
 
     if (my $cgi_sortby = $self->cgi->sortby) {
         if (my $default_dir = $self->sortdir->{$cgi_sortby}) {
@@ -119,6 +120,18 @@ sub search {
         die "no search term?!";
     }
 
+    my %template_args = (
+        scope => $scope,
+        search_term  => $self->uri_escape($search_term),
+        html_escaped_search_term =>
+            Socialtext::String::html_escape($search_term),
+        $search_factory->template_vars(),
+    );
+
+    # Solr returns a partial set of results, so we never want the cached
+    # search results.
+    $self->dont_use_cached_result_set if $template_args{partial_set};
+
     $self->hub->log->debug("performing search for $search_term");
 
     # load the search result which may or may not be cached. 
@@ -127,14 +140,6 @@ sub search {
             search_term => $search_term,
             scope       => $scope,
         )
-    );
-
-    my %template_args = (
-        scope => $scope,
-        search_term  => $self->uri_escape($search_term),
-        html_escaped_search_term =>
-            Socialtext::String::html_escape($search_term),
-        Socialtext::Search::AbstractFactory->GetFactory()->template_vars(),
     );
 
     st_log()
