@@ -91,6 +91,7 @@ sub _search {
             fq => $ws_filter,
             rows => 20,
             start => $opts{offset} || 0,
+            $self->_sort_opts($opts{order}, $opts{direction}),
         }
     );
     my $docs = $response->docs;
@@ -104,6 +105,23 @@ sub _search {
     ) if $num_hits > $hit_limit;
 
     return ($docs, $num_hits);
+}
+
+sub _sort_opts {
+    my $self = shift;
+    my $order = shift || '';
+    my $direction = shift || 'desc';
+
+    # Map the UI options into Solr fields
+    my %sortable = (
+        Relevance => 'score',
+        Date => 'date',
+        Subject => 'plain_title',
+        revision_count => 'revisions',
+        create_time => 'created',
+    );
+    return () unless $sortable{$order};
+    return ('sort' => "$sortable{$order} $direction, score desc");
 }
 
 # Either do nothing if the query's authorized, or throw NoSuchWorkspace or

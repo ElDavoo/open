@@ -134,11 +134,14 @@ sub search {
 
     $self->hub->log->debug("performing search for $search_term");
 
-    # load the search result which may or may not be cached. 
+    # load the search result which may or may not be cached.
     $self->result_set(
         $self->get_result_set(
             search_term => $search_term,
             scope       => $scope,
+
+            # Solr searches are already sorted
+            pre_sorted  => $template_args{partial_set},
         )
     );
 
@@ -271,6 +274,9 @@ sub search_for_term {
 sub _new_search {
     my ( $self, %query ) = @_;
 
+    my $sortby = $self->sortby || $self->cgi->sortby || 'Date';
+    my $direction = $self->_direction || $self->sortdir->{$sortby};
+
     Socialtext::Timer->Continue('search_on_behalf');
     $self->{_current_search_term} = $query{search_term};
     $self->{_current_scope} = $query{scope} || '_';
@@ -281,7 +287,9 @@ sub _new_search {
         $self->hub->current_user,
         sub { },    # FIXME: We'd rather message the user than ignore these.
         sub { },    # FIXME: We'd rather message the user than ignore these.
-        offset => $self->cgi->offset,
+        offset => $self->cgi->offset || 0,
+        order => $sortby,
+        direction => $direction,
     );
     Socialtext::Timer->Pause('search_on_behalf');
 
@@ -318,6 +326,7 @@ sub get_result_set {
     else {
         $self->result_set($self->read_result_set());
     }
+    return $self->result_set if $query{pre_sorted};
     return $self->sorted_result_set(\%sortdir);
 }
 
