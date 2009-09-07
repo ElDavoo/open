@@ -9,10 +9,6 @@ use Socialtext::User;
 use Class::Field qw( const field );
 use Storable ();
 
-# XXX Rather than doing all this sortdir crap and the related
-# caching, we should get javascript sortable tables in there.
-# The question to answer with that, though, is if we would
-# need to degrade well in a non javascript situation?
 const sortdir => {
     Summary        => 'asc',
     Subject        => 'asc',
