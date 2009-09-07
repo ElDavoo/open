@@ -103,9 +103,7 @@ sub search_on_behalf {
     # reasonable size
     my $hits = $thunk->();
 
-    # Re-rank all hits by the raw_hit's score (this bleeds some implementation)
-    my @ordered = sort { $b->hit->{score} cmp $a->hit->{score} } @$hits;
-    return \@ordered, $num_hits;
+    return $hits, $num_hits;
 }
 
 sub _search_workspaces {
