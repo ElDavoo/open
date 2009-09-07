@@ -121,7 +121,8 @@ sub _sort_opts {
         create_time => 'created',
     );
     return ('sort' => 'score, desc') unless $sortable{$order};
-    return ('sort' => "$sortable{$order} $direction, score desc");
+    my $sec_sort = $order eq 'Date' ? 'score desc' : 'date desc';
+    return ('sort' => "$sortable{$order} $direction, $sec_sort");
 }
 
 # Either do nothing if the query's authorized, or throw NoSuchWorkspace or
