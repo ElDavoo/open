@@ -120,7 +120,7 @@ sub _sort_opts {
         revision_count => 'revisions',
         create_time => 'created',
     );
-    return () unless $sortable{$order};
+    return ('sort' => 'score, desc') unless $sortable{$order};
     return ('sort' => "$sortable{$order} $direction, score desc");
 }
 
