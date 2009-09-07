@@ -1889,12 +1889,6 @@ proto._do_link = function(widget_element) {
         }
     }
     else if (selection) {
-        // IE returns the actual selection element as a string, rather than
-        // just the selection element's HTML. Eew.
-        if ( Wikiwyg.is_ie ) {
-            selection = selection.replace( /<[^>]+>/g, '' );
-        }
-
         jQuery('#st-widget-page_title').val(selection);
         jQuery('#web-link-text').val(selection);
     }
