@@ -359,7 +359,7 @@ proto.get_selection_text = function() {
 
     if (selection != null) {
         this.__range = selection.createRange();
-        return this.__range.htmlText;
+        return Wikiwyg.htmlUnescape(this.__range.htmlText.replace( /<[^>]+>/g, '' ));
     }
     return '';
 }
