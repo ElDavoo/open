@@ -61,6 +61,17 @@ sub ByAccountId {
     );
 }
 
+sub All {
+    my $class = shift;
+    my %p     = @_;
+    my $sql = qq{
+        SELECT group_id
+          FROM groups
+         ORDER BY driver_group_name
+    };
+    return $class->_GroupCursor($sql, [], %p);
+}
+
 sub _GroupCursor {
     my ($class, $sql, $interpolations, %p) = @_;
 
@@ -375,6 +386,11 @@ Valid C<$key>s include:
 =item group_id
 
 =back
+
+=item B<Socialtext::Group-E<gt>All()>
+
+Returns a C<Socialtext::MultiCursor> containing all Groups, ordered by "Group
+Name".
 
 =item B<Socialtext::Group-E<gt>ByAccountId(account_id=E<gt>$acct_id)>
 

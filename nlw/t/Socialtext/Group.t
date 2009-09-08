@@ -3,8 +3,9 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 13;
+use Test::Socialtext tests => 20;
 use Test::Exception;
+use Socialtext::SQL qw/:exec/;
 
 ###############################################################################
 # Fixtures: db
@@ -72,6 +73,43 @@ query_groups_by_account_id: {
     $iter = $groups->next();
     isa_ok $iter, 'Socialtext::Group', '... second Group';
     is $iter->group_id, $group_one->group_id, '... ... which is Group ZZZ';
+
+    $iter = $groups->next();
+    ok !$iter, '... no more Groups';
+}
+
+###############################################################################
+# TEST: get all Groups
+query_all_groups: {
+    sql_execute('DELETE FROM groups');
+    my $account_a = create_test_account_bypassing_factory();
+    my $account_b = create_test_account_bypassing_factory();
+
+    # create some Groups, *not* in alphabetical order; so we know when we get
+    # them back that they're not just returned in "the order they were stuffed
+    # in", but are actually in a sorted order.
+    my $group_one = create_test_group(
+        account   => $account_b,
+        unique_id => 'Group BBB',
+    );
+    my $group_two = create_test_group(
+        account   => $account_a,
+        unique_id => 'Group AAA',
+    );
+
+    # query the Groups in the Account and make sure we got them back in the
+    # right order.
+    my $groups = Socialtext::Group->All();
+    isa_ok $groups, 'Socialtext::MultiCursor', 'got cursor of Groups';
+    is $groups->count(), 2, '... containing two Groups';
+
+    my $iter = $groups->next();
+    isa_ok $iter, 'Socialtext::Group', '... first Group';
+    is $iter->group_id, $group_two->group_id, '... ... which is Group AAA';
+
+    $iter = $groups->next();
+    isa_ok $iter, 'Socialtext::Group', '... second Group';
+    is $iter->group_id, $group_one->group_id, '... ... which is Group BBB';
 
     $iter = $groups->next();
     ok !$iter, '... no more Groups';
