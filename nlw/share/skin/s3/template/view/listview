@@ -72,11 +72,11 @@
               [% IF show_workspace %]
                 [% PROCESS sort_by_option name = loc('Workspace') field = 'Workspace' %]
               [% END %]
-              [% PROCESS sort_by_option name = loc('Last Edited By') field = 'username' %]
               [% IF ! no_user_sorting %]
+                [% PROCESS sort_by_option name = loc('Last Edited By') field = 'username' %]
                 [% PROCESS sort_by_option name = loc('Created By') field = 'creator' %]
-                [% PROCESS sort_by_option name = loc('Date Last Edited') field = 'Date' %]
               [% END %]
+              [% PROCESS sort_by_option name = loc('Date Last Edited') field = 'Date' %]
               [% PROCESS sort_by_option name = loc('Date Created') field = 'create_time' %]
               [% PROCESS sort_by_option name = loc('Revisions') field = 'revision_count' %]
           </select>
