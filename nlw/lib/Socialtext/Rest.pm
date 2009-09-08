@@ -289,6 +289,7 @@ Tells the client the current user is not authorized for the
 requested method on the resource.
 
 =cut
+
 sub not_authorized {
     my $self = shift;
 
