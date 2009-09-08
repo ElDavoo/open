@@ -110,8 +110,8 @@ sub http_user_pass {
     $self->{http}->password($pass) if $pass;
 
     # store it locally too.
-    $self->{username} = $user if $user;
-    $self->{password} = $pass if $pass;
+    $self->{http_username} = $user if $user;
+    $self->{http_password} = $pass if $pass;
 }
 
 =head2 follow_redirects_for ( $methods )
@@ -761,7 +761,7 @@ sub post_file {
     my $req = POST $self->{browser_url} . $uri,
         Content_Type => 'multipart/form-data',
         Content => \@vars;
-    $req->authorization_basic($self->{username}, $self->{password});
+    $req->authorization_basic($self->{http_username}, $self->{http_password});
     my $start = time();
     my $res = $ua->request($req);
     $self->{http}->response($res);
@@ -831,7 +831,7 @@ sub set_http_keepalive {
 
     # re-instantiate our Test::HTTP object
     delete $self->{http};
-    $self->http_user_pass($self->{username}, $self->{password});
+    $self->http_user_pass($self->{http_username}, $self->{http_password});
 }
 
 =head2 set_from_content ( name, regex )
