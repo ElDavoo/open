@@ -513,7 +513,6 @@ sub main_hub {
             created_by_user_id => $opts{user}->user_id,
             primary_account_id => $opts{account}->account_id,
         } );
-        return $group;
     }
 
     sub create_test_hub {

@@ -337,6 +337,7 @@ sub create_group {
         created_by_user_id => Socialtext::User->SystemUser->user_id,
     });
     diag "Created group $name (".$group->driver_unique_id.")" if $group;
+    $self->{group_id} = $group->group_id;
 }
 
 sub add_group_to_workspace {
