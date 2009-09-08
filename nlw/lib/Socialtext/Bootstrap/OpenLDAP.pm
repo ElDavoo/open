@@ -513,6 +513,8 @@ rootdn "$self->{root_dn}"
 rootpw "$self->{root_pw}"
 directory "$self->{datadir}"
 cachesize 50000
+index default pres,eq
+index objectClass,mail,cn
 # auth requirements
 $requires_auth
 # raw config additions
