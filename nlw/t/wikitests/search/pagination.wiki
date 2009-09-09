@@ -133,3 +133,7 @@
 | body-like | page 1041 |
 | body-like | page 1042 |
 | body-like | page 1043 |
+
+* Cleanup
+
+| set-searcher | KinoSearch |

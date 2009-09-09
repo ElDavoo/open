@@ -1,4 +1,4 @@
-* Fixture: SocialRest
+* Fixture: Search
 
 | set | workspace | big%%start_time%% |
 | create-workspace | %%workspace%% |
@@ -86,6 +86,11 @@
 | code-is | 200 |
 | json-parse |
 | json-like | {"hit_count":5,"message":"The search term you have entered is too general."} |
+
+
+* Test cleanup
+
+| st-config | set search_warning_threshold 500 |
 
 ^^ To test
 

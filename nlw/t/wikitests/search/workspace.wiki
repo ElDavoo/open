@@ -156,3 +156,7 @@
 | body-like | Showing 1 - 18 of 18 total                                        |
 | body-like | in <a href="/%%workspace%%">                                    |
 | body-like | in <a href="/%%ws2%%">                                          |
+
+* Cleanup
+
+| set-searcher | KinoSearch |

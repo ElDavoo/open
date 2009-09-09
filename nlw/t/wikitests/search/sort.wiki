@@ -57,8 +57,8 @@
 | body-like   | <a title="Last Page" href="?action=search;scope=_;orig_search_term=content;sortby=Subject;direction=desc;summaries=1;offset=20;limit=20">Last</a> |
 | body-like   | qr/page 1022.+page 1021.+page 1020.+page 1019.+page 1018.+page 1017.+page 1016.+page 1015.+page 1014.+page 1013.+page 1012.+page 1011/ |
 | body-like   | qr/page 1010.+page 1009.+page 1008.+page 1007.+Page 1006.+page 1005.+page 1004.+page 1003/ |
-| body-unlike | page 1002                                                                                                                                        | 
-| body-unlike | page 1001                                                                                                                                        | 
+| body-unlike | page 1002                                                                                                                                        |
+| body-unlike | page 1001                                                                                                                                        |
 
 # Edit some pages again and increase the revision count
 
@@ -83,3 +83,7 @@
 | body-like   | <a title="Last Page" href="?action=search;scope=_;orig_search_term=content;sortby=revision_count;direction=asc;summaries=1;offset=20;limit=20">Last</a> |
 | body-unlike   | page 1016 |
 | body-unlike   | page 1018 |
+
+* Cleanup
+
+| set-searcher | KinoSearch |
