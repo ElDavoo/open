@@ -341,10 +341,10 @@ sub create_group {
 }
 
 sub add_group_to_workspace {
-    my $self = shift;
+    my $self       = shift;
     my $group_name = shift;
-    my $ws_name = shift;
-    my $role_name = shift;
+    my $ws_name    = shift;
+    my $role_name  = shift;
 
     my $ws = Socialtext::Workspace->new(name => $ws_name);
 
@@ -388,8 +388,8 @@ sub add_group_to_account {
 }
 
 sub add_user_to_group {
-    my $self = shift;
-    my $user_name = shift;
+    my $self       = shift;
+    my $user_name  = shift;
     my $group_name = shift;
 
     my $group = Socialtext::Group->GetGroup(
@@ -403,8 +403,8 @@ sub add_user_to_group {
 }
 
 sub remove_user_from_group {
-    my $self = shift;
-    my $user_name = shift;
+    my $self       = shift;
+    my $user_name  = shift;
     my $group_name = shift;
 
     my $group = Socialtext::Group->GetGroup(
