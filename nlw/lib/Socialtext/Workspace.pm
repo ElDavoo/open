@@ -404,9 +404,6 @@ sub _update_aliases_file {
 
 sub _enable_default_plugins {
     my $self = shift;
-
-    return unless $self->real;
-
     require Socialtext::SystemSettings;
     for my $p (Socialtext::Pluggable::Adapter->plugins) {
         next if $p->scope ne 'workspace';
@@ -1109,9 +1106,6 @@ sub enable_plugin {
 
     my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
     $self->_check_plugin_scope($plugin);
-
-    die "Cannont enable plugins for the NoWorkspace Workspace\n"
-        unless $self->real;
 
     return if $self->is_plugin_enabled($plugin);
 
@@ -1948,9 +1942,7 @@ sub EnablePluginForAll {
     my $is_socialcalc = $plugin eq 'socialcalc';
     while ( my $ws = $workspaces->next() ) {
         next if $is_socialcalc and $ws->account->account_type eq 'Free 50';
-        next unless $ws->real;
-
-        eval { $ws->enable_plugin( $plugin ); };
+        $ws->enable_plugin( $plugin );
     }
     require Socialtext::SystemSettings;
     Socialtext::SystemSettings::set_system_setting( "$plugin-enabled-all", 1 );

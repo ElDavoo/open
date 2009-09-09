@@ -659,7 +659,7 @@ sub _post_update {
         my $wksps = $self->workspaces;
         while (my $w = $wksps->next) {
             $w->update(invitation_filter => '');
-            eval{ $w->enable_plugin('socialcalc'); };
+            $w->enable_plugin('socialcalc');
         }
     }
     elsif ($new->{account_type} eq 'Free 50') {
