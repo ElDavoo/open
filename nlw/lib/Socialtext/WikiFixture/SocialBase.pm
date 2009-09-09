@@ -365,6 +365,28 @@ sub add_group_to_workspace {
     }
 }
 
+sub add_group_to_account {
+    my $self         = shift;
+    my $group_name   = shift;
+    my $account_name = shift;
+
+    my $group = Socialtext::Group->GetGroup(
+        driver_group_name => $group_name,
+        primary_account_id => Socialtext::Account->Default->account_id,
+        created_by_user_id => Socialtext::User->SystemUser->user_id,
+    );
+
+    my $account = Socialtext::Account->new( name => $account_name );
+
+    require Socialtext::GroupAccountRoleFactory;
+    my $gar = Socialtext::GroupAccountRoleFactory->Create({
+        group_id   => $group->group_id,
+        account_id => $account->account_id,
+    });
+
+    diag "Added $group_name to $account_name";
+}
+
 sub add_user_to_group {
     my $self = shift;
     my $user_name = shift;
