@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 14;
 use Test::Exception;
 BEGIN { use_ok 'Socialtext::CLI'; }
 use t::Socialtext::CLITestUtils qw/is_last_exit/;
@@ -12,6 +12,12 @@ fixtures('db');
 
 my $aa = create_test_account("Account AAA $^T");
 my $ab = create_test_account("Account BBB $^T");
+
+no_groups: {
+    my $output = combined_from { eval { new_cli()->list_groups() } };
+    is_last_exit(1);
+    like $output, qr/No Groups found/i, "no groups found";
+}
 
 my ($ga, $gb);
 lives_ok { $ga = create_test_group(account => $ab, unique_id => 'Group A') };
