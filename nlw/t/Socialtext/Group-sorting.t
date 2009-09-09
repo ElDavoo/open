@@ -73,9 +73,7 @@ for my $method ('ByAccountId','All') {
         unique_id => 'Group BBB',
         user => $devvy,
     );
-    $g3_bbb->add_user(user => create_test_user(account=>$account));
-    create_test_workspace(account => $account)->add_group(group=>$g3_bbb);
-
+    # no users or workspaces
 
     is_sort driver_group_name => 'asc',  $g2_aaa, $g3_bbb, $g1_zzz;
     is_sort driver_group_name => 'desc', $g1_zzz, $g3_bbb, $g2_aaa;

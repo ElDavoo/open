@@ -84,15 +84,15 @@ sub All {
     my @cols = ('group_id');
     my $from = 'groups';
     if ($p{include_aggregates}) {
-        push @cols, 'user_count';
-        $from .= q{ JOIN (
+        push @cols, 'COALESCE(user_count,0) AS user_count';
+        $from .= q{ LEFT JOIN (
                 SELECT group_id, COUNT(distinct user_id) AS user_count
                 FROM user_group_role
                 GROUP BY group_id
             ) ugr USING (group_id) };
 
-        push @cols, 'workspace_count';
-        $from .= q{ JOIN (
+        push @cols, 'COALESCE(workspace_count,0) AS workspace_count';
+        $from .= q{ LEFT JOIN (
                 SELECT group_id, COUNT(distinct workspace_id) AS workspace_count
                 FROM group_workspace_role
                 GROUP BY group_id
