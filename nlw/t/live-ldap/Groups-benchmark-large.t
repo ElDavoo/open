@@ -16,7 +16,7 @@ unless ($ENV{NLW_BENCHMARK}) {
     plan skip_all =>
         'Set NLW_BENCHMARK=1 to run; this perf test takes ~30-45mins to run.';
 }
-plan no_plan => 1;
+plan tests => 8;
 
 ###############################################################################
 # Set the cache/async job settings for this benchmark.
