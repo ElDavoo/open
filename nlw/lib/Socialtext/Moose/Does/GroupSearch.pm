@@ -10,12 +10,14 @@ sub ByGroupId {
     my $self_or_class = shift;
     my $group_id      = shift;
     my $closure       = shift;
-    my $order         = $self_or_class->SqlSortOrder();
+    my %opts          = @_;
 
-    my $sth = $self_or_class->SqlSelect( {
-        where => { group_id => $group_id },
-        order => $order,
-    } );
+    $opts{order} = $self_or_class->SqlSortOrder()
+        unless $opts{order};
+
+    $opts{where}{group_id} = $group_id;
+
+    my $sth = $self_or_class->SqlSelect(\%opts);
     return $self_or_class->Cursor($sth, $closure);
 }
 
