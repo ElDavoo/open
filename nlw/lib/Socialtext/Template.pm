@@ -28,6 +28,7 @@ sub process {
         skin_path       => $self->hub->skin->skin_path,
         appconfig       => Socialtext::AppConfig->instance(),
         script_name     => Socialtext::AppConfig->script_name,
+        round           => sub { int($_[0] + 0.5) },
         @_,
     );
     $self->hub->preferences->init;
