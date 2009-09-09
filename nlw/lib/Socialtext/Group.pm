@@ -12,6 +12,7 @@ use Socialtext::Timer;
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::UserGroupRoleFactory;
+use Socialtext::GroupAccountRoleFactory;
 use Socialtext::GroupWorkspaceRoleFactory;
 use namespace::clean -except => 'meta';
 
@@ -44,7 +45,7 @@ has 'homunculus' => (
 has $_.'_count' => (
     is => 'rw', isa => 'Int',
     lazy_build => 1
-) for qw(user workspace);
+) for qw(user workspace account);
 
 ###############################################################################
 sub Drivers {
@@ -249,8 +250,16 @@ sub users {
     );
 }
 
+###############################################################################
 sub _build_user_count {
     return shift->users->count;
+}
+
+###############################################################################
+sub _build_account_count {
+    my $self = shift;
+    my $mc = Socialtext::GroupAccountRoleFactory->ByGroupId($self->group_id);
+    return $mc->count;
 }
 
 ###############################################################################
