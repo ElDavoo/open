@@ -61,17 +61,20 @@ sub DefaultRoleId {
 }
 
 sub _emit_event {
-    my ($self, $proto_ugr, $action) = @_;
-
-    # System managed groups are acted on by the System User.
-    #
-    # non-system managed groups are currently unscoped/unsupported.
-    my $group = Socialtext::Group->GetGroup(group_id => $proto_ugr->{group_id});
-    my $actor = $group->is_system_managed()
-                ? Socialtext::User->SystemUser()
-                : die "unable to determine event actor";
-
-    # Record the event
+# No-op until we implement recording events for membership changes.
+# Also: should $actor be the current_user from hub/rest?
+# Also: refactor this and GWRF's _emit_event into a Moose::Role?
+#     my ($self, $proto_ugr, $action) = @_;
+# 
+#     # System managed groups are acted on by the System User.
+#     #
+#     # non-system managed groups are currently unscoped/unsupported.
+#     my $group = Socialtext::Group->GetGroup(group_id => $proto_ugr->{group_id});
+#     my $actor = $group->is_system_managed()
+#                 ? Socialtext::User->SystemUser()
+#                 : die "unable to determine event actor";
+# 
+#     # Record the event
 #     Socialtext::Events->Record( {
 #         event_class => 'group',
 #         action      => $action,
