@@ -327,94 +327,96 @@ sub delete_user {
         time() . '@devnull.socialtext.net', $email);
 }
 
-sub create_group {
-    my $self = shift;
-    my $name = shift;
+{
+    sub create_group {
+        my $self = shift;
+        my $name = shift;
 
-    my $group = Socialtext::Group->Create({
-        driver_group_name => $name,
-        primary_account_id => Socialtext::Account->Default->account_id,
-        created_by_user_id => Socialtext::User->SystemUser->user_id,
-    });
-    diag "Created group $name (".$group->driver_unique_id.")" if $group;
-    $self->{group_id} = $group->group_id;
-}
-
-sub add_group_to_workspace {
-    my $self       = shift;
-    my $group_name = shift;
-    my $ws_name    = shift;
-    my $role_name  = shift;
-
-    my $ws = Socialtext::Workspace->new(name => $ws_name);
-
-    my $group = Socialtext::Group->GetGroup(
-        driver_group_name => $group_name,
-        primary_account_id => Socialtext::Account->Default->account_id,
-        created_by_user_id => Socialtext::User->SystemUser->user_id,
-    );
-
-    if ($role_name) {
-        my $role = Socialtext::Role->new(name => $role_name);
-        $ws->add_group( group => $group, role => $role );
-        diag "Added group $group_name to $ws_name with role $role_name";
+        my $group = Socialtext::Group->Create({
+            driver_group_name => $name,
+            primary_account_id => Socialtext::Account->Default->account_id,
+            created_by_user_id => Socialtext::User->SystemUser->user_id,
+        });
+        diag "Created group $name (".$group->driver_unique_id.")" if $group;
+        $self->{group_id} = $group->group_id;
     }
-    else {
-        $ws->add_group( group => $group );
-        diag "Added group $group_name to $ws_name";
+
+    sub add_group_to_workspace {
+        my $self       = shift;
+        my $group_name = shift;
+        my $ws_name    = shift;
+        my $role_name  = shift;
+
+        my $ws = Socialtext::Workspace->new(name => $ws_name);
+
+        my $group = Socialtext::Group->GetGroup(
+            driver_group_name => $group_name,
+            primary_account_id => Socialtext::Account->Default->account_id,
+            created_by_user_id => Socialtext::User->SystemUser->user_id,
+        );
+
+        if ($role_name) {
+            my $role = Socialtext::Role->new(name => $role_name);
+            $ws->add_group( group => $group, role => $role );
+            diag "Added group $group_name to $ws_name with role $role_name";
+        }
+        else {
+            $ws->add_group( group => $group );
+            diag "Added group $group_name to $ws_name";
+        }
     }
-}
 
-sub add_group_to_account {
-    my $self         = shift;
-    my $group_name   = shift;
-    my $account_name = shift;
+    sub add_group_to_account {
+        my $self         = shift;
+        my $group_name   = shift;
+        my $account_name = shift;
 
-    my $group = Socialtext::Group->GetGroup(
-        driver_group_name => $group_name,
-        primary_account_id => Socialtext::Account->Default->account_id,
-        created_by_user_id => Socialtext::User->SystemUser->user_id,
-    );
+        my $group = Socialtext::Group->GetGroup(
+            driver_group_name => $group_name,
+            primary_account_id => Socialtext::Account->Default->account_id,
+            created_by_user_id => Socialtext::User->SystemUser->user_id,
+        );
 
-    my $account = Socialtext::Account->new( name => $account_name );
+        my $account = Socialtext::Account->new( name => $account_name );
 
-    require Socialtext::GroupAccountRoleFactory;
-    my $gar = Socialtext::GroupAccountRoleFactory->Create({
-        group_id   => $group->group_id,
-        account_id => $account->account_id,
-    });
+        require Socialtext::GroupAccountRoleFactory;
+        my $gar = Socialtext::GroupAccountRoleFactory->Create({
+            group_id   => $group->group_id,
+            account_id => $account->account_id,
+        });
 
-    diag "Added $group_name to $account_name";
-}
+        diag "Added $group_name to $account_name";
+    }
 
-sub add_user_to_group {
-    my $self       = shift;
-    my $user_name  = shift;
-    my $group_name = shift;
+    sub add_user_to_group {
+        my $self       = shift;
+        my $user_name  = shift;
+        my $group_name = shift;
 
-    my $group = Socialtext::Group->GetGroup(
-        driver_group_name => $group_name,
-        primary_account_id => Socialtext::Account->Default->account_id,
-        created_by_user_id => Socialtext::User->SystemUser->user_id,
-    );
-    my $user = Socialtext::User->Resolve($user_name);
-    $group->add_user(user => $user);
-    diag "Added user $user_name to group $group_name";
-}
+        my $group = Socialtext::Group->GetGroup(
+            driver_group_name => $group_name,
+            primary_account_id => Socialtext::Account->Default->account_id,
+            created_by_user_id => Socialtext::User->SystemUser->user_id,
+        );
+        my $user = Socialtext::User->Resolve($user_name);
+        $group->add_user(user => $user);
+        diag "Added user $user_name to group $group_name";
+    }
 
-sub remove_user_from_group {
-    my $self       = shift;
-    my $user_name  = shift;
-    my $group_name = shift;
+    sub remove_user_from_group {
+        my $self       = shift;
+        my $user_name  = shift;
+        my $group_name = shift;
 
-    my $group = Socialtext::Group->GetGroup(
-        driver_group_name => $group_name,
-        primary_account_id => Socialtext::Account->Default->account_id,
-        created_by_user_id => Socialtext::User->SystemUser->user_id,
-    );
-    my $user = Socialtext::User->Resolve($user_name);
-    $group->remove_user(user => $user);
-    diag "Remove user $user_name from group $group_name";
+        my $group = Socialtext::Group->GetGroup(
+            driver_group_name => $group_name,
+            primary_account_id => Socialtext::Account->Default->account_id,
+            created_by_user_id => Socialtext::User->SystemUser->user_id,
+        );
+        my $user = Socialtext::User->Resolve($user_name);
+        $group->remove_user(user => $user);
+        diag "Remove user $user_name from group $group_name";
+    }
 }
 
 sub create_workspace {
