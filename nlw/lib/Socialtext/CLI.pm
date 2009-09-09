@@ -28,6 +28,7 @@ use Socialtext::Timer;
 use Socialtext::SystemSettings qw/get_system_setting set_system_setting/;
 use Socialtext::Pluggable::Adapter;
 use Socialtext::DaemonUtil;
+use Socialtext::Group;
 use Fatal qw/mkdir rmtree/;
 
 my %CommandAliases = (
@@ -2438,6 +2439,31 @@ sub set_profile_field {
     $self->_error($@) if $@;
     $self->_success(loc("Profile field '[_1]' updated for account '[_2]'",
                         $old_title, $acct->name));
+}
+
+sub list_groups {
+    my $self  = shift;
+
+    eval {
+        my $groups = Socialtext::Group->All(include_aggregates => 1);
+        die loc("No Groups found") if $groups->count == 0;
+        print loc("Displaying all groups")."\n\n";
+        print "| " . join(" | ",
+            loc("ID"), loc("Group Name"),
+            loc("# of Workspaces"), loc("# of Users"), loc("Primary Account"),
+            loc("Created"), loc("Created By")
+        ) . " |\n";
+
+        while (my $g = $groups->next) {
+            print "| " . join(" | ",
+                $g->group_id, $g->driver_group_name,
+                $g->workspace_count, $g->user_count, $g->primary_account->name,
+                $g->creation_datetime->ymd, $g->creator->username
+            ) . " |\n";
+        }
+    };
+    $self->_error($@) if $@;
+    $self->_success();
 }
 
 # Called by Socialtext::Ceqlotron
