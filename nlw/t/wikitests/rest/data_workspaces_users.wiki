@@ -20,7 +20,7 @@
 * Add that group to workpace A with role workspace_admin
 
 | set | group | %%start_time%% group! |
-| create-group           | %%group%% | %%account%%   |                 |
+| create-group           | %%group%% |               |                 |
 | add-group-to-workspace | %%group%% | %%workspace%% | workspace_admin |
 | add-user-to-group      | %%peon%%  | %%group%%       |                 |
 
@@ -60,7 +60,7 @@
 | json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"member","roles":["member"]}] |
 
 | set | group2 | %%start_time%% group two! |
-| create-group           | %%group2%% | %%account%%   |              |
+| create-group           | %%group2%% |               |              |
 | add-group-to-workspace | %%group2%% | %%workspace%% | impersonator |
 | add-user-to-group      | %%peon%%   | %%group%%     |              |
 | add-user-to-group      | %%peon%%   | %%group2%%    |              |
