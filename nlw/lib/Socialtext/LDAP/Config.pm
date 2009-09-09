@@ -192,6 +192,13 @@ Specifies the maximum depth to which LDAP referrals are followed.  Defaults to
 Specifies the TTL (in seconds) for data which is queried via this LDAP
 instance.  Defaults to "300" seconds.
 
+If you are using LDAP as a Group factory, it is recommended that you
+B<increase> this TTL value.  When Groups are fetched from LDAP, all of the
+Users in the Group are enumerated in order to verify that we have valid data
+for them.  Larger Groups contain more Users and thus take more time to
+enumerate/verify; please ensure that you have set a suitable value for the TTL
+based on your Group size.
+
 =item B<attr_map> (required)
 
 Maps Socialtext user attributes to their underlying LDAP representations.
