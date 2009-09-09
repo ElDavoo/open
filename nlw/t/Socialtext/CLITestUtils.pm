@@ -3,7 +3,7 @@ package t::Socialtext::CLITestUtils;
 use strict;
 use warnings;
 use base 'Exporter';
-our @EXPORT_OK = qw/expect_success expect_failure/;
+our @EXPORT_OK = qw/expect_success expect_failure is_last_exit/;
 use Test::More;
 
 BEGIN {
@@ -19,8 +19,10 @@ BEGIN {
 }
 
 our $LastExitVal;
-no warnings 'redefine';
-*Socialtext::CLI::_exit = sub { $LastExitVal = shift; die 'exited'; };
+{
+    no warnings 'redefine';
+    *Socialtext::CLI::_exit = sub { $LastExitVal = shift; die 'exited'; };
+}
 
 sub expect_success {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -57,6 +59,12 @@ sub expect_failure {
         $desc
     );
     warn "expect_failed: $@" if $@ and $@ !~ /exited/;
+    is( $LastExitVal, $error_code, "exited with exit code $error_code" );
+}
+
+sub is_last_exit {
+    my $error_code = shift;
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
     is( $LastExitVal, $error_code, "exited with exit code $error_code" );
 }
 
