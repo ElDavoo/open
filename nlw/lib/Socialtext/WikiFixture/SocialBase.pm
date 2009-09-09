@@ -328,14 +328,24 @@ sub delete_user {
 }
 
 {
+    # Groups *can't* be looked up by "group name" alone (as that's not
+    # guaranteed to actually be unique) (e.g. five guys all create a "Golfing
+    # Buddies" Group).
+    #
+    # We'll use _these_ values for identifying Groups that we create and
+    # lookup via the wikifixtures:
+    my %group_identifier = (
+        primary_account_id => Socialtext::Account->Default->account_id,
+        created_by_user_id => Socialtext::User->SystemUser->user_id,
+    );
+
     sub create_group {
         my $self = shift;
         my $name = shift;
 
         my $group = Socialtext::Group->Create({
             driver_group_name => $name,
-            primary_account_id => Socialtext::Account->Default->account_id,
-            created_by_user_id => Socialtext::User->SystemUser->user_id,
+            %group_identifier,
         });
         diag "Created group $name (".$group->driver_unique_id.")" if $group;
         $self->{group_id} = $group->group_id;
@@ -351,8 +361,7 @@ sub delete_user {
 
         my $group = Socialtext::Group->GetGroup(
             driver_group_name => $group_name,
-            primary_account_id => Socialtext::Account->Default->account_id,
-            created_by_user_id => Socialtext::User->SystemUser->user_id,
+            %group_identifier,
         );
 
         if ($role_name) {
@@ -373,8 +382,7 @@ sub delete_user {
 
         my $group = Socialtext::Group->GetGroup(
             driver_group_name => $group_name,
-            primary_account_id => Socialtext::Account->Default->account_id,
-            created_by_user_id => Socialtext::User->SystemUser->user_id,
+            %group_identifier,
         );
 
         my $account = Socialtext::Account->new( name => $account_name );
@@ -395,8 +403,7 @@ sub delete_user {
 
         my $group = Socialtext::Group->GetGroup(
             driver_group_name => $group_name,
-            primary_account_id => Socialtext::Account->Default->account_id,
-            created_by_user_id => Socialtext::User->SystemUser->user_id,
+            %group_identifier,
         );
         my $user = Socialtext::User->Resolve($user_name);
         $group->add_user(user => $user);
@@ -410,8 +417,7 @@ sub delete_user {
 
         my $group = Socialtext::Group->GetGroup(
             driver_group_name => $group_name,
-            primary_account_id => Socialtext::Account->Default->account_id,
-            created_by_user_id => Socialtext::User->SystemUser->user_id,
+            %group_identifier,
         );
         my $user = Socialtext::User->Resolve($user_name);
         $group->remove_user(user => $user);
