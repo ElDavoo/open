@@ -102,8 +102,8 @@ sub All {
         push @cols, 'users.email_address AS creator';
         $from .= q{ JOIN users ON (groups.created_by_user_id = user_id) };
     }
-    elsif ($ob eq 'account') {
-        push @cols, '"Account".name AS account';
+    elsif ($ob eq 'primary_account') {
+        push @cols, '"Account".name AS primary_account';
         $from .= q{ JOIN "Account" ON (groups.primary_account_id=account_id) };
     }
 

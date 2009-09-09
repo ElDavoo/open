@@ -98,8 +98,8 @@ for my $method ('ByAccountId','All') {
     is_sort workspace_count => 'desc', $g2_aaa, $g1_zzz, $g3_bbb;
 
     if ($method eq 'All') {
-        is_sort account => 'asc',  $g3_bbb, $g1_zzz, $g2_aaa;
-        is_sort account => 'desc', $g2_aaa, $g3_bbb, $g1_zzz;
+        is_sort primary_account => 'asc',  $g3_bbb, $g1_zzz, $g2_aaa;
+        is_sort primary_account => 'desc', $g2_aaa, $g3_bbb, $g1_zzz;
     }
 
     $g1_zzz->delete();
