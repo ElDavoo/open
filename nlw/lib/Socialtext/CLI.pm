@@ -2972,6 +2972,10 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   set-profile-field --name [--account] [--title --field-class --source]
                     [--hidden | --visible]
 
+  GROUPS
+
+  list-groups [--account]
+
   OTHER
 
   set-logo-from-file --workspace --file /path/to/file.jpg
@@ -3466,6 +3470,12 @@ If C<--hidden> and C<--visible> are omitted, C<--visible> is the default.  Using
 Changes an exiting profile field identified by name to have new properties.  Options that are omitted preserve the existing value of that property.  See add-profile-field above for more details.
 
 Note: A field's class cannot currently be changed to or from the 'relationship' class.
+
+=head2 list-groups [--account]
+
+Display an overview of Groups (in Socialtext wiki table format).  Includes the number of Workspaces each group belongs to.  Includes the number of Users that are members of each Group.
+
+If C<--account> is specified, limits the display to groups in association with that account.
 
 =head2 version
 
