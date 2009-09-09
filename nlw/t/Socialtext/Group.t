@@ -1,6 +1,5 @@
-#!/usr/bin/perl
+#!perl
 # @COPYRIGHT@
-
 use strict;
 use warnings;
 use Test::Socialtext tests => 20;

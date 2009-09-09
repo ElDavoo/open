@@ -10,6 +10,7 @@ use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
 use Socialtext::Timer;
 use Socialtext::SQL qw(:exec :time);
+use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::UserGroupRoleFactory;
 use Socialtext::GroupWorkspaceRoleFactory;
 use namespace::clean -except => 'meta';
@@ -40,6 +41,11 @@ has 'homunculus' => (
     )],
 );
 
+has $_.'_count' => (
+    is => 'rw', isa => 'Int',
+    lazy_build => 1
+) for qw(user workspace);
+
 ###############################################################################
 sub Drivers {
     my $drivers = Socialtext::AppConfig->group_factories();
@@ -50,39 +56,70 @@ sub Drivers {
 sub ByAccountId {
     my $class   = shift;
     my %p       = @_;
-    my $sql = qq{
-        SELECT group_id
-          FROM groups
-         WHERE primary_account_id = ?
-         ORDER BY driver_group_name;
-    };
-    return $class->_GroupCursor(
-        $sql, [qw( account_id )], %p
-    );
+    croak "needs an account_id" unless $p{account_id};
+    return $class->All(@_);
 }
 
 sub All {
     my $class = shift;
     my %p     = @_;
-    my $sql = qq{
-        SELECT group_id
-          FROM groups
-         ORDER BY driver_group_name
-    };
-    return $class->_GroupCursor($sql, [], %p);
-}
-
-sub _GroupCursor {
-    my ($class, $sql, $interpolations, %p) = @_;
 
     Socialtext::Timer->Continue('group_cursor');
 
-    my $sth    = sql_execute($sql, @p{ @{$interpolations} });
+    my $order;
+    my $ob = $p{order_by} || 'driver_group_name';
+    $p{sort_order} ||= 'ASC';
+    if ($ob =~ /^\w+$/ and $p{sort_order} =~ /^(?:ASC|DESC)$/i) {
+        $order = "$ob $p{sort_order}";
+        $order .= ", driver_group_name ASC"
+            unless ($ob eq 'driver_group_name' || $ob eq 'group_id');
+        $order .= ", group_id ASC" unless ($ob eq 'group_id');
+    }
+
+
+    my @where;
+    push @where, primary_account_id => $p{account_id} if $p{account_id};
+
+    my @cols = ('group_id');
+    my $from = 'groups';
+    if ($p{include_aggregates}) {
+        push @cols, 'user_count';
+        $from .= q{ JOIN (
+                SELECT group_id, COUNT(distinct user_id) AS user_count
+                FROM user_group_role
+                GROUP BY group_id
+            ) ugr USING (group_id) };
+
+        push @cols, 'workspace_count';
+        $from .= q{ JOIN (
+                SELECT group_id, COUNT(distinct workspace_id) AS workspace_count
+                FROM group_workspace_role
+                GROUP BY group_id
+            ) gwr USING (group_id) };
+    }
+
+    if ($ob eq 'creator') {
+        push @cols, 'users.email_address AS creator';
+        $from .= q{ JOIN users ON (groups.created_by_user_id = user_id) };
+    }
+    elsif ($ob eq 'account') {
+        push @cols, '"Account".name AS account';
+        $from .= q{ JOIN "Account" ON (groups.primary_account_id=account_id) };
+    }
+
+    my ($sql, @bind) = sql_abstract()->select(
+        \$from, \@cols, \@where, $order);
+
+    my $sth    = sql_execute($sql, @bind);
     my $cursor = Socialtext::MultiCursor->new(
-        iterables => [ $sth->fetchall_arrayref ],
+        iterables => [ $sth->fetchall_arrayref({}) ],
         apply => sub {
             my $row = shift;
-            return Socialtext::Group->GetGroup(group_id => $row->[0]);
+            my $group = Socialtext::Group->GetGroup(group_id=>$row->{group_id});
+            if ($p{include_aggregates}) {
+                $group->$_($row->{$_}) for qw(user_count workspace_count);
+            }
+            return $group;
         },
     );
 
@@ -200,9 +237,7 @@ sub GetProtoGroup {
 
 ###############################################################################
 # Base package for Socialtext Group infrastructure.
-sub base_package {
-    return __PACKAGE__;
-}
+use constant base_package => __PACKAGE__;
 
 ###############################################################################
 sub users {
@@ -211,6 +246,10 @@ sub users {
         $self->group_id,
         sub { shift->user(); },
     );
+}
+
+sub _build_user_count {
+    return shift->users->count;
 }
 
 ###############################################################################
@@ -284,7 +323,10 @@ sub workspaces {
     );
 }
 
-no Moose;
+sub _build_workspace_count {
+    return shift->workspaces->count;
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;
@@ -330,6 +372,10 @@ Socialtext::Group - Socialtext Group object
 
   # get the Role for a User in the Group
   $role = $group->role_for_user($user);
+
+  # get cached counts
+  $n = $group->user_count;
+  $n = $group->workspace_count;
 
 =head1 DESCRIPTION
 
@@ -413,6 +459,10 @@ can be found.
 
 Returns a C<Socialtext::MultiCursor> of Users who have a Role in this Group.
 
+=item B<$group-E<gt>user_count>
+
+Returns a B<cached> count of Users who have a Role in this Group
+
 =item B<$group-E<gt>add_user(user=E<gt>$user, role=E<gt>$role)>
 
 Adds a given C<$user> to the Group with the specified C<$role>.  If no
@@ -441,6 +491,10 @@ returns empty-handed.
 
 Returns a C<Socialtext::MultiCursor> of Workspaces that this Group has a Role
 in.
+
+=item B<$group-E<gt>workspace_count>
+
+Returns a B<cached> count of Workspaces in which this Group has a Role
 
 =item B<$group-E<gt>homunculus()>
 
