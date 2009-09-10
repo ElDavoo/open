@@ -389,6 +389,22 @@ sub delete_user {
         }
     }
 
+    sub remove_group_from_workspace {
+        my $self       = shift;
+        my $group_name = shift;
+        my $ws_name    = shift;
+
+        my $ws = Socialtext::Workspace->new(name => $ws_name);
+
+        my $group = Socialtext::Group->GetGroup(
+            driver_group_name => $group_name,
+            %group_identifier,
+        );
+
+        $ws->remove_group( group => $group );
+        diag "Removed group $group_name from $ws_name";
+    }
+
     sub add_group_to_account {
         my $self         = shift;
         my $group_name   = shift;
