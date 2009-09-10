@@ -426,6 +426,28 @@ sub delete_user {
         diag "Added $group_name to $account_name";
     }
 
+    sub remove_group_from_account {
+        my $self         = shift;
+        my $group_name   = shift;
+        my $account_name = shift;
+
+        my $group = Socialtext::Group->GetGroup(
+            driver_group_name => $group_name,
+            %group_identifier,
+        );
+
+        my $account = Socialtext::Account->new( name => $account_name );
+
+        require Socialtext::GroupAccountRoleFactory;
+        my $gar = Socialtext::GroupAccountRoleFactory->Get(
+            group_id   => $group->group_id,
+            account_id => $account->account_id,
+        );
+
+        Socialtext::GroupAccountRoleFactory->Delete($gar) if ($gar);
+        diag "Removed $group_name from $account_name";
+    }
+
     sub add_user_to_group {
         my $self       = shift;
         my $user_name  = shift;
