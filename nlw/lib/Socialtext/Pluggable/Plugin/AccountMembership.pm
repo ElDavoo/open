@@ -82,21 +82,15 @@ sub remove_user_account_role {
         return;
     }
 
-    # Sometimes we're passed a proper user object, sometimes it's a metadata
-    # object. Handle both cases here.
-    my $primary_account_id = ( $user->can('primary_account_id') )
-        ? $user->primary_account_id
-        : $user->{primary_account_id};
-
     # exit if the user still has a role in the account, or if its the primary
     # account.
-    return if $self->_has_role($user, $account)
-        || $primary_account_id == $account->account_id;
+    return if $self->_user_has_workspace_role($user, $account)
+        || $user->primary_account_id == $account->account_id;
 
     $factory->Delete($uar);
 }
 
-sub _has_role {
+sub _user_has_workspace_role {
     my $self    = shift;
     my $user    = shift;
     my $account = shift;

@@ -23,6 +23,7 @@ field 'created_by_user_id';
 field 'is_business_admin';
 field 'is_technical_admin';
 field 'is_system_created';
+field 'primary_account_id';
 
 sub create_if_necessary {
     my $class = shift;
@@ -103,7 +104,7 @@ sub create {
     );
 
     my $user = $class->new(user_id => $p{user_id});
-    my $acct = Socialtext::Account->new(account_id => $p{primary_account_id});
+    my $acct = Socialtext::Account->new(account_id => $user->primary_account_id);
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), undef);
@@ -175,14 +176,14 @@ sub primary_account {
             : Socialtext::Account->new( account_id => $new_account );
 
         my $old_account = Socialtext::Account->new(
-            account_id => $self->{primary_account_id} );
+            account_id => $self->primary_account_id );
         if ($old_account) {
             $old_account->remove_from_all_users_workspace(
                 user_id => $self->user_id );
         }
 
         $self->_update_field('primary_account_id=?', $new_account->account_id);
-        $self->{primary_account_id} = $new_account->account_id;
+        $self->primary_account_id($new_account->account_id);
 
         $new_account->add_to_all_users_workspace(
             user_id => $self->user_id );
@@ -196,7 +197,7 @@ sub primary_account {
         $adapter->hook('nlw.add_user_account_role', $new_account, $self);
     }
 
-    return Socialtext::Account->new(account_id => $self->{primary_account_id})
+    return Socialtext::Account->new(account_id => $self->primary_account_id)
             || Socialtext::Account->Unknown;
 }
 
