@@ -2442,10 +2442,20 @@ sub set_profile_field {
 }
 
 sub list_groups {
-    my $self  = shift;
+    my $self = shift;
+    my %opts = $self->_get_options('account:s');
+
+    my $account_id;
+    if ($opts{account}) {
+        my $account = $self->_load_account( $opts{account} );
+        $account_id = $account->account_id();
+    }
 
     eval {
-        my $groups = Socialtext::Group->All(include_aggregates => 1);
+        my $groups = Socialtext::Group->All(
+            include_aggregates => 1,
+            ($account_id ? (account_id => $account_id) : ()),
+        );
         die loc("No Groups found") if $groups->count == 0;
         print loc("Displaying all groups")."\n\n";
         print "| " . join(" | ",
