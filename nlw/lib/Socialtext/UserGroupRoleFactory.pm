@@ -5,10 +5,10 @@ use MooseX::Singleton;
 use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::Role;
-use namespace::clean -except => 'meta';
 use Carp qw/croak/;
 use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::SQL qw/:exec/;
+use namespace::clean -except => 'meta';
 
 with qw(
     Socialtext::Moose::ObjectFactory
