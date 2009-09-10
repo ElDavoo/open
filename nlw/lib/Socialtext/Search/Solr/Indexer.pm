@@ -145,6 +145,7 @@ sub _add_page_doc {
         # we specify it many times for inter-workspace search, and we face 
         # lengths on the URI limit.
         [w => $ws_id],
+        [w_title => $self->workspace->title],
         [doctype => 'page'], 
         [pagetype => $page->metadata->Type],
         [page_key => $self->page_key($page->id)],
@@ -234,6 +235,7 @@ sub _add_attachment_doc {
         # we specify it many times for inter-workspace search, and we face 
         # lengths on the URI limit.
         [w => $ws_id], 
+        [w_title => $self->workspace->title],
         [doctype => 'attachment'],
         [page_key => $key],
         [attach_id => $att->id],

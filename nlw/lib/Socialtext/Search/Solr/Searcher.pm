@@ -120,6 +120,7 @@ sub _sort_opts {
         Subject => 'plain_title',
         revision_count => 'revisions',
         create_time => 'created',
+        Workspace => 'w_title',
     );
 
     # If no valid sort order is supplied, then we use either a date sort or a
