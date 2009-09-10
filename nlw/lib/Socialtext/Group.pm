@@ -443,15 +443,72 @@ Valid C<$key>s include:
 
 =back
 
-=item B<Socialtext::Group-E<gt>All()>
+=item B<Socialtext::Group-E<gt>All(PARAMS)>
 
-Returns a C<Socialtext::MultiCursor> containing all Groups, ordered by "Group
-Name".
+Returns a C<Socialtext::MultiCursor> containing all Groups.
 
-=item B<Socialtext::Group-E<gt>ByAccountId(account_id=E<gt>$acct_id)>
+Accepts the following PARAMS:
+
+=over
+
+=item account_id => $account_id
+
+Restricts results to only contain those Groups that have the provided
+C<$account_id> as their Primary Account Id.
+
+=item order_by => $field
+
+Orders the results on the given C<$field>, which can be any one of:
+
+=over
+
+=item * any of the columns in the "groups" table,
+
+=item * "creator", the e-mail address of the creating User,
+
+=item * "primary_account", the name of the Group's Primary Account.
+
+=item * "user_count", the count of Users in the Group
+
+Requires that C<include_aggregates> be passed through (see below).
+
+=item * "workspace_count", the count of Workspaces the Group is a member of
+
+Requires that C<include_aggregates> be passed through (see below).
+
+=back
+
+By default, the Groups are returned ordered by their Group Name.
+
+=item sort_order => (ASC|DESC)
+
+Specifies that the Groups should be returned in ascending or descending order.
+
+=item include_aggregates => 1
+
+Specifies that the C<Socialtext::Group> objects returned should B<already>
+have their "user_count" and "workspace_count" attributes pre-calculated.
+
+By default, you'll get back Group objects that you could call to calculate the
+counts on, but if you know you're going to need this then you can optimize by
+asking for those aggregates to be pre-calculated.
+
+Having these aggregates pre-calculated B<also> allows for you to sort based on
+the aggregate values.
+
+=back
+
+=item B<Socialtext::Group-E<gt>ByAccountId(PARAMS)>
 
 Returns a C<Socialtext::MultiCursor> containing a list of all of the Groups
-that exist within the given Account, ordered by "Group Name".
+that have the specified Account as their Primary Account.
+
+Accepts the same PARAMS as C<All()> above, but B<requires> that an
+C<account_id> parameter be provided to specify the Primary Account Id that we
+should be pulling up Groups for.
+
+This method is basically a helper method for C<All()> above but which ensures
+that you've actually passed through an C<account_id> parameter.
 
 =item B<Socialtext::Group-E<gt>GetProtoGroup($key, $val)>
 
