@@ -214,9 +214,11 @@ sub maybe_commit {
         my $uname = "user-$user-$base\@ken.socialtext.net";
         # salted hash for 'password' as password 
         $user_sth->execute('Default', $uname, $uname, "sa3tHJ3/KuYvI", "First$user", "Last$user"); 
+
+        # choose a random primary account id
         my $priacctid = $accounts[rand(@accounts)];
         $user_meta_sth->execute( $uname, $priacctid );
-        # choose a random primary account id
+
         my ($user_id) = $dbh->selectrow_array(q{SELECT currval('users___user_id')});
         create_uar( $user_id, $priacctid );
 
