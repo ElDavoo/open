@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 14;
+use Test::Socialtext tests => 24;
 use Test::Exception;
 BEGIN { use_ok 'Socialtext::CLI'; }
 use t::Socialtext::CLITestUtils qw/is_last_exit/;
@@ -13,6 +13,7 @@ fixtures('db');
 my $aa = create_test_account_bypassing_factory("Account AAA $^T");
 my $ab = create_test_account_bypassing_factory("Account BBB $^T");
 
+################################################################################
 no_groups: {
     my $output = combined_from { eval { new_cli()->list_groups() } };
     is_last_exit(1);
@@ -26,6 +27,7 @@ lives_ok { $gb = create_test_group(account => $aa, unique_id => 'Group B') };
 my $gb_id = $gb->group_id;
 $ga->add_user(user => create_test_user());
 
+################################################################################
 list_all: {
 
     my $output = combined_from { eval { new_cli()->list_groups() } };
@@ -41,6 +43,7 @@ list_all: {
     like $lines[4], qr/^\| $gb_id \| Group B /, "second row is group b";
 }
 
+################################################################################
 list_account: {
     my $output = combined_from { eval {
         new_cli('--account' => "Account AAA $^T")->list_groups()
@@ -54,6 +57,38 @@ list_account: {
         'Created', 'Created By');
     is $lines[2], "| $hdr |", "correct header";
     like $lines[3], qr/^\| $gb_id \| Group B /, "first row is group b";
+}
+
+################################################################################
+show_group_config: {
+    # No group
+    my $output = combined_from {
+        eval { new_cli()->show_group_config() }
+    };
+    like $output, qr/requires a '--group' parameter\./,
+        'error message with missing param';
+
+    # Group doesn't exist
+    $output = combined_from {
+        eval { new_cli( '--group' => '0' )->show_group_config() }
+    };
+    like $output, qr/No group with ID \d+\./,
+        'error message with incorrect group id';
+
+    # Got a group
+    my $group = create_test_group();
+    $output = combined_from {
+        eval { new_cli('--group' => $group->group_id)->show_group_config() }
+    };
+
+    ok $output, 'got group settings...';
+    like $output, qr/Config for group \w+:/, '... with header';
+    like $output, qr/Group Name\s+: \w+/, '... with group name';
+    like $output, qr/Group ID\s+: \d+/, '... with group id';
+    like $output, qr/Number Of Users\s+: \d+/, '... with users';
+    like $output, qr/Primary Account ID\s+: \d+/, '... with account id';
+    like $output, qr/Primary Account Name\s+: \w+/, '... with account name';
+    like $output, qr/Source\s+: \w+/, '... with source';
 }
 
 sub new_cli { return Socialtext::CLI->new(argv => \@_) }

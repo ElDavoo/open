@@ -2468,6 +2468,51 @@ sub list_groups {
     $self->_success();
 }
 
+sub show_group_config {
+    my $self  = shift;
+    my $group = $self->_require_group();
+
+    my %group = (
+        'Group Name'           => $group->driver_name,
+        'Group ID'             => $group->group_id,
+        'Number Of Users'      => $group->user_count,
+        'Primary Account ID'   => $group->primary_account_id,
+        'Primary Account Name' => $group->primary_account->name,
+        'Source'               => $group->driver_key
+    );
+
+    my $msg = loc("Config for group [_1]:", $group->driver_name) . "\n\n";
+    $msg .= join("\n",
+        map { sprintf('%-21s: %s', $_, $group{$_}) } sort keys %group );
+
+    $self->_success( $msg );
+}
+
+sub _require_group {
+    my $self = shift;
+    my %opts = $self->_get_options('group:s');
+
+    $self->_error(
+        loc("The command you called ([_1]) requires a '--group' parameter.",
+            $self->{command}),
+    ) unless exists $opts{group};
+
+    return $self->{group} = $self->_load_group($opts{group});
+}
+
+sub _load_group {
+    my $self     = shift;
+    my $group_id = shift;
+
+    my $group = Socialtext::Group->GetGroup( group_id => $group_id );
+
+    $self->_error(
+        loc("No group with ID [_1].", $group_id)
+    ) unless $group;
+
+    return $group;
+}
+
 # Called by Socialtext::Ceqlotron
 sub from_input {
     my $self  = shift;
