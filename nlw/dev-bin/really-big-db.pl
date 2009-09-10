@@ -73,6 +73,23 @@ sub maybe_commit {
 }
 
 {
+    my $uar_sth = $dbh->prepare_cached( qq{
+        INSERT INTO user_account_role (
+            user_id, account_id, role_id
+        ) VALUES (
+            ?, ?, 3
+        );
+    } );
+    my %uars;
+    sub create_uar {
+        my ($user_id, $account_id) = @_;
+        unless ($uars{$user_id}{$account_id}++) {
+            $uar_sth->execute($user_id, $account_id);
+        }
+    }
+}
+
+{
     print "Creating $ACCOUNTS accounts with $ACCOUNTS workspaces";
 
     my $acct_sth = $dbh->prepare_cached(qq{
@@ -201,6 +218,8 @@ sub maybe_commit {
         $user_meta_sth->execute( $uname, $priacctid );
         # choose a random primary account id
         my ($user_id) = $dbh->selectrow_array(q{SELECT currval('users___user_id')});
+        create_uar( $user_id, $priacctid );
+
         push @users, $user_id;
         $writes += 3;
         maybe_commit();
@@ -228,7 +247,8 @@ sub maybe_commit {
         my $primary_ws = $workspaces[int(rand(@$workspaces))];
         $updt_sth->execute($ws_to_acct{$primary_ws}, $user_id);
         $assign_sth->execute($user_id, $primary_ws);
-        $writes += 2;
+        create_uar($user_id, $ws_to_acct{$primary_ws});
+        $writes += 3;
         $done{$primary_ws} = 1;
 
         my $assigned = 1;
@@ -241,7 +261,8 @@ sub maybe_commit {
 
             # assign a user to a workspace
             $assign_sth->execute($user_id, $ws_id);
-            $writes++;
+            create_uar($user_id, $ws_to_acct{$ws_id});
+            $writes += 2;
             $done{$ws_id} = 1;
             last if keys(%done) >= $number;
         }
