@@ -1620,24 +1620,28 @@ sub show_members {
 
     my %opts = do {
         local $self->{argv} = $self->{argv};
-        $self->_get_options("account:s", "workspace:s");
+        $self->_get_options("account:s", "workspace:s","group:s");
     };
 
-    if ($opts{account}) {
+    if ( exists $opts{account}) {
         return $self->_show_account_members();
     }
-    elsif ($opts{workspace}) {
+    elsif ( exists $opts{workspace}) {
         return $self->_show_workspace_members();
     }
-    else {
-        $self->_error(
-                "The command you called ($self->{command}) requires a workspace or an account\n"
-                . "to be specified.\n"
-                . "A workspace is identified by name with the --workspace option.\n"
-                . "An account is identified by name with the --account option.\n"
-        );
-        return;
+    elsif ( exists $opts{group}) {
+        return $self->_show_group_members();
     }
+
+    $self->_error(
+            "The command you called ($self->{command}) "
+            . "requires a workspace, account, or group \n"
+            . "to be specified.\n"
+            . "A workspace is identified by name with the --workspace option.\n"
+            . "An account is identified by name with the --account option.\n"
+            . "A group is identified by name with the --group option.\n"
+    );
+    return;
 }
 
 sub _show_account_members {
@@ -1672,6 +1676,29 @@ sub _show_workspace_members {
     }
 
     $self->_success($msg, "no indent");
+}
+
+sub _show_group_members {
+    my $self  = shift;
+    my $group = $self->_require_group();
+
+    require Socialtext::UserGroupRoleFactory;
+    my $ugrs = Socialtext::UserGroupRoleFactory->ByGroupId( $group->group_id );
+
+    my $msg = loc("Members of the [_1] group", $group->driver_name) . "\n\n";
+    $msg .= loc("| Email Address | First | Last | Role |") . "\n";
+
+    while ( my $ugr = $ugrs->next() ) {
+        $msg .= '| '
+            . join(' | ',
+                $ugr->user->email_address,
+                $ugr->user->first_name,
+                $ugr->user->last_name,
+                $ugr->role->name
+            ) . " |\n";
+    }
+
+    $self->_success($msg);
 }
 
 sub show_admins {

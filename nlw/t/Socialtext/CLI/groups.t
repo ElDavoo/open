@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 24;
+use Test::Socialtext tests => 28;
 use Test::Exception;
 BEGIN { use_ok 'Socialtext::CLI'; }
 use t::Socialtext::CLITestUtils qw/is_last_exit/;
@@ -91,5 +91,25 @@ show_group_config: {
     like $output, qr/Source\s+: \w+/, '... with source';
 }
 
+################################################################################
+show_group_members: {
+    my $group         = create_test_group();
+    my $user          = create_test_user();
+    my $email_address = $user->email_address;
+
+    $group->add_user( user => $user );
+
+    my $output = combined_from {
+        eval { new_cli( '--group' => $group->group_id )->show_members() }
+    };
+
+    ok $output, 'got output...';
+    like $output, qr/Members of the \w+ group/, '... with header';
+    like $output, qr/\| Email Address \| First \| Last \| Role \|/,
+        '... with fields';
+    like $output, qr/\Q$email_address\E/, '... with user';
+}
+
+################################################################################
 sub new_cli { return Socialtext::CLI->new(argv => \@_) }
 
