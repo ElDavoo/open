@@ -198,6 +198,64 @@ sub st_page_title {
     }
 }
 
+=head2 st_page_multi_view( $url, $numviews) 
+
+Looks at the page default_server/url numviews number of times. 
+
+Useful to canning up page views for reports, metrics widgets, etc.
+
+=cut
+
+sub st_page_multi_view {
+  my ($self, $url, $numviews) = @_;
+  for (my $idx=0; $idx<$numviews;$idx++) {
+      $self->{selenium}->open_ok($url);
+      $self->handle_command('wait_for_element_visible_ok','link=Edit','30000');
+  }
+}
+
+=head2 st_page_multi_watch( $numwatches) 
+
+Watch-On, Watch-Off, repeat.  Useful for metrics on pages, user activities, etc
+
+=cut
+
+sub st_page_multi_watch {
+  my ($self, $numwatches) = @_;
+  for (my $idx=0; $idx<$numwatches;$idx++) {
+     $self->st_watch_page(1);
+     $self->st_is_watched(1);
+     $self->st_watch_page(0);
+     $self->st_is_watched(0);
+  }
+}
+
+=head2 st_page_create ( $workspace, pagename )
+
+Creates a plain-english page at server/workspace/pagname and leaves you in view mode.  
+
+So if you pass in page name of "Super Matt", it will save as "Super Matt" and have
+a url of super_matt
+
+This is done through the GUI. (You may want to do this through the GUI if, say, you 
+want the output written to nlw.log)
+
+=cut
+
+sub st_create_wikipage {
+    my ($self, $workspace, $pagename)  = @_;
+    my $url = '/' . $workspace . '/?action=display;page_type=wiki;page_name=Untitled Page#edit';
+    $self->{selenium}->open_ok($url);
+    $self->handle_command('wait_for_element_visible_ok','link=Wiki Text',30000);
+    $self->handle_command('click_ok','link=Wiki Text');
+    $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea',30000);
+    $self->handle_command('wait_for_element_visible_ok','st-newpage-pagename-edit',30000);
+    $self->handle_command('type_ok','st-newpage-pagename-edit',$pagename);
+    $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
+    $self->handle_command('click_ok','st-save-button-link');
+    $self->handle_command('wait_for_element_visible_ok','st-edit-button-link',30000);                
+}
+
 =head2 st_search( $search_term, $expected_result_title )
 
 Performs a search, and then validates the result page has the correct title.

@@ -10,19 +10,10 @@
 | include | [Test Case: Active Content Setup] |  |
 
 | *Comment* | Test Case: Active Content Widget ADD THE WIDGET |  |
-| open_ok | /?dashboard | 60000 |
-| st-empty-container |  |  |
 | st-catchup-logs |  |  |
 | st-clear-json-cache |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | gallery-widget-Active Content | 30000 |
-| click_and_wait | gallery-widget-Active Content |  |
-
-| *Comment* | Test Case: Active Content Widget is the widget there? |  |
-| wait_for_element_visible_ok | //a[@class='close'] | 30000 |
+| st_single_widget_in_dashboard | gallery-widget-Active Content |  |
 | st-name-widget | 1 | active_content |
-| st-widget-title-like | active_content | Active Content |
 | st-widget-settings | active_content |  |
 | wait_for_element_visible_ok | up_workspace | 30000 |
 | click_ok | up_rotate |  |

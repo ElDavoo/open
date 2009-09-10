@@ -10,87 +10,28 @@
 | st-create-pages | %%acwnoresults%% | 20 |
 | open_ok | /%%acwnoresults%%/index.cgi?test_page_1 |  |
 | wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acwnoresults%%/index.cgi?test_page_2 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acwnoresults%%/index.cgi?test_page_2 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acwnoresults%%/index.cgi?test_page_2 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acwnoresults%%/index.cgi?test_page_2 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acwnoresults%%/index.cgi?test_page_2 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acwnoresults%%/index.cgi?test_page_2 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acwnoresults%%/index.cgi?test_page_2 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
+| st-page-multi-view | /%%acwnoresults%%/index.cgi?test_page_2 | 6 |
 | open_ok | /%%acwnoresults%%/index.cgi?test_page_3 |  |
 | wait_for_element_visible_ok | link=Edit | 30000 |
 | st-create-pages | %%acw%% | 21 |
 
-| open_ok | /%%acw%%/index.cgi?test_page_1 |  |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_1 | 1 |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_2 | 1 |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_3 | 1 |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_4 | 1 |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_5 | 1 |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_14 | 1 |
 | wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_2 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_3 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_4 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_5 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_14 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_15 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_15 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_15 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_16 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_16 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_16 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_17 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_17 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_17 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_18 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_18 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_18 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_19 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_19 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_19 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_20 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_20 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| open_ok | /%%acw%%/index.cgi?test_page_20 |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_15 | 3 |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_16 | 3 |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_17 | 3 |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_18 | 3 |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_19 | 3 |
+| st-page-multi-view | /%%acw%%/index.cgi?test_page_20 | 3 |
 
 | *Comment* | Test Case: Active Content Setup Create Tag page though GUI |  |
-| open_ok | /%%acw%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | Active Content Tag %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_ok | st-save-button-link |  |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| open_ok | /%%acw%%/index.cgi?Active Content Tag %%start_time%% |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| open_ok | /%%acw%%/index.cgi?Active Content Tag %%start_time%% |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| st-create-wikipage | %%acw%% | Active Content Tag %%start_time%% |
+| st-page-multi-view | /%%acw%%/index.cgi?Active Content Tag %%start_time%% | 2 |
 
 | *Comment* | Test Case: Active Content Setup Create Edit page though GUI |  |
 | open_ok | /%%acw%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
@@ -132,28 +73,10 @@
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_ok | st-save-button-link |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| st-page-multi-watch | 3 |
 | st-watch-page | 1 |  |
 | st-is-watched | 1 |  |
-| st-watch-page | 0 |  |
-| st-is-watched | 0 |  |
-| st-watch-page | 1 |  |
-| st-is-watched | 1 |  |
-| st-watch-page | 0 |  |
-| st-is-watched | 0 |  |
-| st-watch-page | 1 |  |
-| st-is-watched | 1 |  |
-| st-watch-page | 0 |  |
-| st-is-watched | 0 |  |
-| st-watch-page | 1 |  |
-| st-is-watched | 1 |  |
-| open_ok | /%%acw%%/index.cgi?Active Content Watch %%start_time%% |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| open_ok | /%%acw%%/index.cgi?Active Content Watch %%start_time%% |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| open_ok | /%%acw%%/index.cgi?Active Content Watch %%start_time%% |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| open_ok | /%%acw%%/index.cgi?Active Content Watch %%start_time%% |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| st-page-multi-view | /%%acw%%/index.cgi?Active Content Watch %%start_time%% | 4 |
 
 | *Comment* | Test Case: Active Content Setup Create Emailed page though GUI |  |
 | open_ok | /%%acw%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
@@ -174,16 +97,7 @@
 | type_ok | email_page_subject | Email subject %%start_time%% |
 | click_ok | email_send |  |
 | wait_for_element_not_visible_ok | st-email-lightbox | 30000 |
-| open_ok | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| open_ok | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| open_ok | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| open_ok | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| open_ok | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| st-page-multi-view | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% | 4 |
 
 | *Comment* | Test Case: Active Content Setup Login as %%conv_email%% |  |
 | open_ok | /%%acw%%/ |  |
@@ -198,16 +112,7 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | %%conv_user%% edits |
 | click_and_wait | link=Save |  |
-| open_ok | /%%acw%%/?Active Content Edit %%start_time%% |  |
-| wait_for_element_visible_ok | st-edit-button-link |  |
-| open_ok | /%%acw%%/?Active Content Edit %%start_time%% |  |
-| wait_for_element_visible_ok | st-edit-button-link |  |
-| open_ok | /%%acw%%/?Active Content Edit %%start_time%% |  |
-| wait_for_element_visible_ok | st-edit-button-link |  |
-| open_ok | /%%acw%%/?Active Content Edit %%start_time%% |  |
-| wait_for_element_visible_ok | st-edit-button-link |  |
-| open_ok | /%%acw%%/?Active Content Edit %%start_time%% |  |
-| wait_for_element_visible_ok | st-edit-button-link |  |
+| st-page-multi-view | /%%acw%%/?Active Content Edit %%start_time%% | 5 |
 
 | *Comment* | Test Case: Active Content Setup comment on a page |  |
 | open_ok | /%%acw%%/?Active Content Comment %%start_time%% |  |
@@ -217,16 +122,7 @@
 | type_ok | comment | %%conv_user%% comments |
 | click_ok | link=Save |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
-| open_ok | /%%acw%%/?Active Content Comment %%start_time%% |  |
-| wait_for_element_visible_ok | link=Comment | 30000 |
-| open_ok | /%%acw%%/?Active Content Comment %%start_time%% |  |
-| wait_for_element_visible_ok | link=Comment | 30000 |
-| open_ok | /%%acw%%/?Active Content Comment %%start_time%% |  |
-| wait_for_element_visible_ok | link=Comment | 30000 |
-| open_ok | /%%acw%%/?Active Content Comment %%start_time%% |  |
-| wait_for_element_visible_ok | link=Comment | 30000 |
-| open_ok | /%%acw%%/?Active Content Comment %%start_time%% |  |
-| wait_for_element_visible_ok | link=Comment | 30000 |
+| st-page-multi-view | /%%acw%%/?Active Content Comment %%start_time%% | 5 |
 
 | *Comment* | Test Case: Active Content Setup tag a page |  |
 | open_ok | /%%acw%%/?Active Content Tag %%start_time%% |  |
@@ -237,22 +133,9 @@
 | wait_for_element_visible_ok | st-tags-plusbutton-link | 30000 |
 | click_ok | st-tags-plusbutton-link |  |
 | wait_for_element_visible_ok | link=%%conv_user%% tags | 30000 |
-| open_ok | /%%acw%%/?Active Content Tag %%start_time%% |  |
-| wait_for_element_visible_ok | link=Add Tag | 30000 |
-| open_ok | /%%acw%%/?Active Content Tag %%start_time%% |  |
-| wait_for_element_visible_ok | link=Add Tag | 30000 |
-| open_ok | /%%acw%%/?Active Content Tag %%start_time%% |  |
-| wait_for_element_visible_ok | link=Add Tag | 30000 |
-| open_ok | /%%acw%%/?Active Content Tag %%start_time%% |  |
-| wait_for_element_visible_ok | link=Add Tag | 30000 |
-| open_ok | /%%acw%%/?Active Content Tag %%start_time%% |  |
-| wait_for_element_visible_ok | link=Add Tag | 30000 |
+| st-page-multi-view | /%%acw%%/?Active Content Tag %%start_time%% | 5 |
 
 | *Comment* | Test Case: Active Content Widget if you logout now, IE raises an authen dialog for no reason |  |
 | *Comment* | Try to find a workaround by leaving page |  |
 | open_ok | /%%acw%%/ |  |
 | wait_for_element_visible_ok | link=Dashboard | 30000 |
-
-st-logout | | |
-wait_for_element_visible_ok | link=Log in | 30000 |
-st-login | %%username%% | %%password%% |
