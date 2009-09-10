@@ -1997,15 +1997,7 @@ sub index_workspace {
         $self->_success("The $ws_name workspace has been indexed.");
     }
 
-    # Rather than call index_workspace on the indexer object (which is
-    # synchronous), we create jobs to trigger the appropriate
-    # indexer activity.
-    require Socialtext::JobCreator;
-    for my $page_id ( $hub->pages->all_ids() ) {
-        my $page = $hub->pages->new_page($page_id);
-        next if $page->deleted;
-        Socialtext::JobCreator->index_page($page, $search_config);
-    }
+    $hub->current_workspace->reindex_async($hub, $search_config);
 
     $self->_success( 'The '
             . $hub->current_workspace()->name()

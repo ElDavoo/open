@@ -431,6 +431,9 @@ sub update {
     if ( $self->title() ne $old_title ) {
         my ( $main, $hub ) = $self->_main_and_hub();
 
+        # Re-index all the pages, so Solr knows about the new title
+        $self->reindex_async($hub, 'live');
+
         my $page = $hub->pages->new_from_name($old_title);
 
         return unless $page->active();
@@ -791,6 +794,19 @@ sub NameIsValid {
                 . 'new_workspace:' . $p{name} . '('
                 . $self->workspace_id
                 . '),[' . $timer->elapsed . ']' );
+    }
+}
+
+sub reindex_async {
+    my $self = shift;
+    my $hub  = shift;
+    my $search_config = shift;
+
+    require Socialtext::JobCreator;
+    for my $page_id ( $hub->pages->all_ids() ) {
+        my $page = $hub->pages->new_page($page_id);
+        next if $page->deleted;
+        Socialtext::JobCreator->index_page($page, $search_config);
     }
 }
 
@@ -2377,6 +2393,10 @@ method.
 
 This renames a workspace in the DBMS, as well as on the filesystem and
 in the email aliases file.
+
+=head2 $workspace->reindex_async( $hub, $search_config )
+
+Asyncronously index the workspace content.
 
 =head2 $workspace->workspace_id()
 
