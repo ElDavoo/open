@@ -109,7 +109,7 @@ sub All {
     }
 
     my ($sql, @bind) = sql_abstract()->select(
-        \$from, \@cols, \@where, $order);
+        \$from, \@cols, \@where, $order, $p{limit}, $p{offset});
 
     my $sth    = sql_execute($sql, @bind);
     my $cursor = Socialtext::MultiCursor->new(

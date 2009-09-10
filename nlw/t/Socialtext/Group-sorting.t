@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 53;
+use Test::Socialtext tests => 61;
 use Test::Exception;
 use Socialtext::SQL qw/:exec/;
 
@@ -12,29 +12,37 @@ use_ok 'Socialtext::Group';
 
 my $account =  create_test_account_bypassing_factory("Account AAA $^T");
 my $account2 = create_test_account_bypassing_factory("Account BBB $^T");
-our $sort_method; # localized in test blocks
 my $devvy = create_test_user(email_address => "devvy$^T\@socialtext.com");
 my $nully = create_test_user(email_address => "nully$^T\@socialtext.com");
+
+# localized in test blocks
+our $sort_method;
+our $limit;
+our $offset;
 
 sub is_sort ($$@) {
     my $order_by = shift;
     my $sort_order = shift;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
+    my @params = (
+            order_by => $order_by,
+            sort_order => $sort_order,
+            include_aggregates => 1,
+            (defined $limit) ? (limit => $limit) : (),
+            (defined $offset) ? (offset => $offset) : (),
+    );
+
     my $sorted;
     if ($sort_method eq 'ByAccountId') {
         $sorted = Socialtext::Group->ByAccountId(
             account_id => $account->account_id,
-            order_by => $order_by,
-            sort_order => $sort_order,
-            include_aggregates => 1,
+            @params
         );
     }
     else {
         $sorted = Socialtext::Group->All(
-            order_by => $order_by,
-            sort_order => $sort_order,
-            include_aggregates => 1,
+            @params
         );
     }
     ok $sorted, "got result from $sort_method";
@@ -77,6 +85,13 @@ for my $method ('ByAccountId','All') {
 
     is_sort driver_group_name => 'asc',  $g2_aaa, $g3_bbb, $g1_zzz;
     is_sort driver_group_name => 'desc', $g1_zzz, $g3_bbb, $g2_aaa;
+    {   local $limit = 1;
+        is_sort driver_group_name => 'asc', $g2_aaa;
+    }
+    {   local $limit = 1;
+        local $offset = 1;
+        is_sort driver_group_name => 'asc', $g3_bbb;
+    }
 
     is_sort group_id => 'asc',  $g1_zzz, $g2_aaa, $g3_bbb;
     is_sort group_id => 'desc', $g3_bbb, $g2_aaa, $g1_zzz;
