@@ -2446,6 +2446,8 @@ sub list_groups {
     eval {
         my $groups = Socialtext::Group->All(
             include_aggregates => 1,
+            sort_order => 'desc',
+            order_by => 'user_count',
             ($account_id ? (account_id => $account_id) : ()),
         );
         die loc("No Groups found") if $groups->count == 0;
