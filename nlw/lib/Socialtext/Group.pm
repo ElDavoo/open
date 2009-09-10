@@ -430,18 +430,17 @@ C<Drivers()>.
 For more information on the required attributes for a Group, please refer to
 L<Socialtext::Group::Factory> and its C<Create()> method.
 
-=item B<Socialtext::Group-E<gt>GetGroup($key, $val)>
+=item B<Socialtext::Group-E<gt>GetGroup(\%proto_group)>
 
-Looks for a Group matching the given C<$key/$val> pair, and returns a
-C<Socialtext::Group> object for that Group if one exists.
+Looks for a Group matching the provided C<\%proto_group> key/value pairs, and
+returns a C<Socialtext::Group> object for that Group if one exists.
 
-Valid C<$key>s include:
+The C<\%proto_group> hash-ref B<must> contain sufficient information in order
+to I<uniquely> identify a single Group in the database.
 
-=over
-
-=item group_id
-
-=back
+Please refer to the primary and unique key definitions in
+C<Socialtext::Group::Homunculus> for more information on which sets of columns
+can be used to uniquely identify a Group record.
 
 =item B<Socialtext::Group-E<gt>All(PARAMS)>
 

@@ -522,7 +522,7 @@ data store.
 Factories consuming this Role B<MUST> implement this method to indicate if
 they should be cached or not.
 
-=item B<$factory-E<gt>GetGroupHomunculus(group_id =E<gt> $group_id)>
+=item B<$factory-E<gt>GetGroupHomunculus(%proto_group)>
 
 Retrieves the Group record from the local DB, turns it into a Group Homunculus
 object, and returns that Group Homunculus back to the caller.
