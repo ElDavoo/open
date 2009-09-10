@@ -6,7 +6,7 @@ use warnings;
 use Test::Socialtext tests => 6;
 use Socialtext::System qw/shell_run/;
 
-fixtures( 'admin_with_ordered_pages', 'foobar_with_ordered_pages' );
+fixtures(qw(clean admin_with_ordered_pages foobar_with_ordered_pages));
 
 BEGIN {
     use_ok( "Socialtext::SearchPlugin" );
