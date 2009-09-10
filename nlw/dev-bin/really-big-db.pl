@@ -90,6 +90,23 @@ sub maybe_commit {
 }
 
 {
+    my $gar_sth = $dbh->prepare_cached( qq{
+        INSERT INTO group_account_role (
+            group_id, account_id, role_id
+        ) VALUES (
+            ?, ?, 3
+        );
+    } );
+    my %gars;
+    sub create_gar {
+        my ($group_id, $account_id) = @_;
+        unless ($gars{$group_id}{$account_id}++) {
+            $gar_sth->execute($group_id, $account_id);
+        }
+    }
+}
+
+{
     print "Creating $ACCOUNTS accounts with $ACCOUNTS workspaces";
 
     my $acct_sth = $dbh->prepare_cached(qq{
@@ -308,13 +325,15 @@ sub maybe_commit {
         # create the Group
         my $group_name = "group-$group-$base";
         $create_group_sth->execute('Default', $group_name, $account, $user);
-        $writes ++;
 
         # re-query the Group's group_id
         my ($group_id) = $dbh->selectrow_array(q{
             SELECT currval('groups___group_id')
         });
+        create_gar( $group_id, $account );
+
         push @groups, $group_id;
+        $writes += 2;
         maybe_commit();
     }
     print " done!\n";
@@ -381,7 +400,8 @@ sub maybe_commit {
         # give the Group a Role in this Workspace
         if ($ws_id) {
             $gwr_sth->execute( $group_id, $ws_id );
-            $writes++;
+            create_gar( $group_id, $ws_to_acct{$ws_id} );
+            $writes += 2;
             maybe_commit();
         }
     }
