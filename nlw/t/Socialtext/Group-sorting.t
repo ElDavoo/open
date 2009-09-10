@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 61;
+use Test::Socialtext tests => 85;
 use Test::Exception;
 use Socialtext::SQL qw/:exec/;
 
@@ -34,9 +34,15 @@ sub is_sort ($$@) {
     );
 
     my $sorted;
-    if ($sort_method eq 'ByAccountId') {
+    if ($sort_method eq 'any_account') {
         $sorted = Socialtext::Group->ByAccountId(
             account_id => $account->account_id,
+            @params
+        );
+    }
+    elsif ($sort_method eq 'primary_account') {
+        $sorted = Socialtext::Group->All(
+            primary_account_id => $account->account_id,
             @params
         );
     }
@@ -53,7 +59,7 @@ sub is_sort ($$@) {
               "sorted by $order_by in $sort_order order";
 }
 
-for my $method ('ByAccountId','All') {
+for my $method ('any_account','primary_account','all') {
     local $sort_method = $method;
 
     # create some Groups, *not* in alphabetical order; so we know when we get

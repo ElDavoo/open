@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 22;
+use Test::Socialtext tests => 28;
 use Test::Exception;
 use Socialtext::SQL qw/:exec/;
 
@@ -83,12 +83,33 @@ query_groups_by_account_id: {
 
     $iter = $groups->next();
     ok !$iter, '... no more Groups';
+
+    add_explicit_role: {
+        Socialtext::GroupAccountRoleFactory->Create({
+            group_id => $other_group->group_id,
+            account_id => $account->account_id,
+        });
+
+        $groups = Socialtext::Group->ByAccountId(
+            account_id => $account->account_id
+        );
+        isa_ok $groups, 'Socialtext::MultiCursor', 'got cursor of Groups';
+        is $groups->count(), 3, '... containing 3 Groups now';
+    }
+
+    $group_one->delete();
+    $group_two->delete();
+    $other_group->delete();
+    $groups = Socialtext::Group->ByAccountId(
+        account_id => $account->account_id
+    );
+    isa_ok $groups, 'Socialtext::MultiCursor', 'got cursor of Groups';
+    is $groups->count(), 0, '... empty';
 }
 
 ###############################################################################
 # TEST: get all Groups
 query_all_groups: {
-    sql_execute('DELETE FROM groups');
     my $account_a = create_test_account_bypassing_factory();
     my $account_b = create_test_account_bypassing_factory();
 
@@ -123,6 +144,12 @@ query_all_groups: {
 
     $iter = $groups->next();
     ok !$iter, '... no more Groups';
+
+    by_primary_account: {
+        $groups = Socialtext::Group->All(primary_account_id => $account_b->account_id);
+        is $groups->count(), 1, '... containing one Group';
+        is $groups->next->group_id, $group_one->group_id, '... which is Group BBB';
+    }
 }
 
 ###############################################################################

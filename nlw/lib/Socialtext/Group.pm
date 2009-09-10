@@ -72,17 +72,24 @@ sub All {
     my $class = shift;
     my %p     = @_;
 
+    my $from = 'groups';
+    my @cols = ('group_id');
+    my @where;
+    my $order;
+
     Socialtext::Timer->Continue('group_cursor');
 
-    my $order;
     my $ob = $p{order_by} || 'driver_group_name';
     $p{sort_order} ||= 'ASC';
 
-    my @where;
-    push @where, primary_account_id => $p{account_id} if $p{account_id};
+    push @where, primary_account_id => $p{primary_account_id}
+        if $p{primary_account_id};
 
-    my @cols = ('group_id');
-    my $from = 'groups';
+    if ($p{account_id}) {
+        $from .= q{ JOIN group_account_role gar USING (group_id) };
+        push @where, 'gar.account_id' => $p{account_id};
+    }
+
     if ($p{_count_only}) {
         @cols = ('COUNT(group_id) as count');
         $order = undef; # force no ORDER BY
@@ -117,7 +124,8 @@ sub All {
         }
         elsif ($ob eq 'primary_account') {
             push @cols, '"Account".name AS primary_account';
-            $from .= q{ JOIN "Account" ON (groups.primary_account_id=account_id) };
+            $from .= q{ JOIN "Account" ON (
+                groups.primary_account_id="Account".account_id) };
         }
     }
 
