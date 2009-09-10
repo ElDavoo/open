@@ -10,8 +10,8 @@ use Test::Output qw(combined_from);
 
 fixtures('db');
 
-my $aa = create_test_account("Account AAA $^T");
-my $ab = create_test_account("Account BBB $^T");
+my $aa = create_test_account_bypassing_factory("Account AAA $^T");
+my $ab = create_test_account_bypassing_factory("Account BBB $^T");
 
 no_groups: {
     my $output = combined_from { eval { new_cli()->list_groups() } };
