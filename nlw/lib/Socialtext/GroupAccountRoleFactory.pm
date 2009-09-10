@@ -5,6 +5,9 @@ use MooseX::Singleton;
 use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::Role;
+use Carp qw/croak/;
+use Socialtext::SQL qw/:exec/;
+use Socialtext::SQL::Builder qw/sql_abstract/;
 use namespace::clean -except => 'meta';
 
 with qw(
@@ -12,6 +15,70 @@ with qw(
     Socialtext::Moose::Does::GroupSearch
     Socialtext::Moose::Does::AccountSearch
 );
+
+sub SortedResultSet {
+    my $self = shift;
+    my %opts = @_;
+
+    my @cols = (
+        'gar.group_id AS group_id',
+        'gar.account_id AS account_id',
+        'gar.role_id'
+    );
+
+    my $from = 'group_account_role gar';
+
+    my @where;
+    @where = ( 'gar.group_id' => $opts{group_id} ) if $opts{group_id};
+
+    my $order;
+    if ( my $ob = $opts{order_by} ) {
+
+        if ( lc $ob eq 'name' ) {
+            push @cols, '"Account".name AS name';
+            $from .= ' JOIN "Account" USING ( account_id )';
+            $order = 'name';
+        }
+        elsif ( lc $ob eq 'user_count' ) {
+            push @cols, 'roles.count AS count';
+            $from .= q{
+                LEFT JOIN (
+                   SELECT account_id,
+                          COALESCE( COUNT(user_id), 0 ) AS count
+                     FROM account_user
+                    GROUP BY account_id
+                ) roles USING ( account_id ) 
+            };
+            $order = 'count';
+        }
+        elsif ( lc $ob eq 'workspace_count' ) {
+            push @cols, 'ws.count AS count';
+            $from .= q{
+                LEFT JOIN (
+                    SELECT account_id,
+                           COALESCE( COUNT(workspace_id), 0 ) AS count
+                      FROM "Workspace"
+                     GROUP BY account_id
+                ) ws USING ( account_id )
+            };
+            $order = 'count';
+        }
+        else {
+            croak "Cannot sort GroupAccountRoles by '$ob'";
+        }
+
+        $order .= " $opts{sort_order}, ";
+    }
+
+    $order .= $self->SqlSortOrder();
+
+    my ($sql, @bind) = sql_abstract()->select(
+        \$from, \@cols, \@where, $order, $opts{limit}, $opts{offset});
+
+    my $sth = sql_execute($sql, @bind);
+    return $self->Cursor($sth);
+
+}
 
 sub Builds_sql_for { 'Socialtext::GroupAccountRole' }
 
