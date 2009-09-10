@@ -54,6 +54,12 @@ sub Drivers {
 }
 
 ###############################################################################
+sub Count {
+    my $class   = shift;
+    my %p       = @_;
+    return $class->All(@_, _count_only => 1);
+}
+
 sub ByAccountId {
     my $class   = shift;
     my %p       = @_;
@@ -70,48 +76,62 @@ sub All {
     my $order;
     my $ob = $p{order_by} || 'driver_group_name';
     $p{sort_order} ||= 'ASC';
-    if ($ob =~ /^\w+$/ and $p{sort_order} =~ /^(?:ASC|DESC)$/i) {
-        $order = "$ob $p{sort_order}";
-        $order .= ", driver_group_name ASC"
-            unless ($ob eq 'driver_group_name' || $ob eq 'group_id');
-        $order .= ", group_id ASC" unless ($ob eq 'group_id');
-    }
-
 
     my @where;
     push @where, primary_account_id => $p{account_id} if $p{account_id};
 
     my @cols = ('group_id');
     my $from = 'groups';
-    if ($p{include_aggregates}) {
-        push @cols, 'COALESCE(user_count,0) AS user_count';
-        $from .= q{ LEFT JOIN (
-                SELECT group_id, COUNT(distinct user_id) AS user_count
-                FROM user_group_role
-                GROUP BY group_id
-            ) ugr USING (group_id) };
-
-        push @cols, 'COALESCE(workspace_count,0) AS workspace_count';
-        $from .= q{ LEFT JOIN (
-                SELECT group_id, COUNT(distinct workspace_id) AS workspace_count
-                FROM group_workspace_role
-                GROUP BY group_id
-            ) gwr USING (group_id) };
+    if ($p{_count_only}) {
+        @cols = ('COUNT(group_id) as count');
+        $order = undef; # force no ORDER BY
     }
+    else {
+        if ($ob =~ /^\w+$/ and $p{sort_order} =~ /^(?:ASC|DESC)$/i) {
+            $order = "$ob $p{sort_order}";
+            $order .= ", driver_group_name ASC"
+                unless ($ob eq 'driver_group_name' || $ob eq 'group_id');
+            $order .= ", group_id ASC" unless ($ob eq 'group_id');
+        }
 
-    if ($ob eq 'creator') {
-        push @cols, 'users.email_address AS creator';
-        $from .= q{ JOIN users ON (groups.created_by_user_id = user_id) };
-    }
-    elsif ($ob eq 'primary_account') {
-        push @cols, '"Account".name AS primary_account';
-        $from .= q{ JOIN "Account" ON (groups.primary_account_id=account_id) };
+        if ($p{include_aggregates}) {
+            push @cols, 'COALESCE(user_count,0) AS user_count';
+            $from .= q{ LEFT JOIN (
+                    SELECT group_id, COUNT(distinct user_id) AS user_count
+                    FROM user_group_role
+                    GROUP BY group_id
+                ) ugr USING (group_id) };
+
+            push @cols, 'COALESCE(workspace_count,0) AS workspace_count';
+            $from .= q{ LEFT JOIN (
+                    SELECT group_id, COUNT(distinct workspace_id) AS workspace_count
+                    FROM group_workspace_role
+                    GROUP BY group_id
+                ) gwr USING (group_id) };
+        }
+
+        if ($ob eq 'creator') {
+            push @cols, 'users.email_address AS creator';
+            $from .= q{ JOIN users ON (groups.created_by_user_id = user_id) };
+        }
+        elsif ($ob eq 'primary_account') {
+            push @cols, '"Account".name AS primary_account';
+            $from .= q{ JOIN "Account" ON (groups.primary_account_id=account_id) };
+        }
     }
 
     my ($sql, @bind) = sql_abstract()->select(
         \$from, \@cols, \@where, $order, $p{limit}, $p{offset});
 
-    my $sth    = sql_execute($sql, @bind);
+    my $sth = sql_execute($sql, @bind);
+
+    Socialtext::Timer->Pause('group_cursor');
+
+    if ($p{_count_only}) {
+        my ($count) = $sth->fetchrow_array();
+        return $count;
+    }
+
     my $cursor = Socialtext::MultiCursor->new(
         iterables => [ $sth->fetchall_arrayref({}) ],
         apply => sub {
@@ -124,7 +144,6 @@ sub All {
         },
     );
 
-    Socialtext::Timer->Pause('group_cursor');
     return $cursor;
 }
 
@@ -495,6 +514,10 @@ asking for those aggregates to be pre-calculated.
 Having these aggregates pre-calculated B<also> allows for you to sort based on
 the aggregate values.
 
+=item limit => N, offset => N
+
+For paging through a long list of groups.
+
 =back
 
 =item B<Socialtext::Group-E<gt>ByAccountId(PARAMS)>
@@ -508,6 +531,11 @@ should be pulling up Groups for.
 
 This method is basically a helper method for C<All()> above but which ensures
 that you've actually passed through an C<account_id> parameter.
+
+=item B<Socialtext::Group-E<gt>Count(PARAMS)>
+
+Returns a count of Groups based on PARAMS (which are the same as for C<All()>
+above).
 
 =item B<Socialtext::Group-E<gt>GetProtoGroup($key, $val)>
 

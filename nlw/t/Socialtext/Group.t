@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 20;
+use Test::Socialtext tests => 22;
 use Test::Exception;
 use Socialtext::SQL qw/:exec/;
 
@@ -44,6 +44,7 @@ configured_group_factories: {
 # TEST: query Groups by Account Id
 query_groups_by_account_id: {
     my $account = create_test_account_bypassing_factory();
+    my $account2 = create_test_account_bypassing_factory();
 
     # create some Groups, *not* in alphabetical order; so we know when we get
     # them back that they're not just returned in "the order they were stuffed
@@ -56,6 +57,13 @@ query_groups_by_account_id: {
         account   => $account,
         unique_id => 'Group AAA',
     );
+    my $other_group = create_test_group(
+        account   => $account2,
+        unique_id => 'Group Other',
+    );
+
+    my $count = Socialtext::Group->Count(account_id => $account->account_id);
+    is $count, 2, "correct count for account-specific query";
 
     # query the Groups in the Account and make sure we got them back in the
     # right order.
@@ -95,6 +103,9 @@ query_all_groups: {
         account   => $account_a,
         unique_id => 'Group AAA',
     );
+
+    my $count = Socialtext::Group->Count();
+    is $count, 2, "correct count for wide-open query";
 
     # query the Groups in the Account and make sure we got them back in the
     # right order.
