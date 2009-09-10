@@ -5,6 +5,7 @@ use warnings;
 use base 'Socialtext::Pluggable::Plugin';
 use Socialtext::Log qw/st_log/;
 use Socialtext::UserAccountRoleFactory;
+use Socialtext::GroupAccountRoleFactory;
 
 # TEMPORARY
 use Socialtext::Role;
@@ -31,9 +32,13 @@ sub register {
 
     $class->add_hook('nlw.add_user_account_role'
         => 'add_user_account_role');
-
     $class->add_hook('nlw.remove_user_account_role'
         => 'remove_user_account_role');
+
+    $class->add_hook('nlw.add_group_account_role'
+        => 'add_group_account_role');
+    $class->add_hook('nlw.remove_group_account_role'
+        => 'remove_group_account_role');
 }
 
 sub add_user_account_role {
@@ -103,6 +108,71 @@ sub _has_role {
          WHERE "UserWorkspaceRole".user_id = ?
            AND "Workspace".account_id = ?
     }, $user->user_id, $account->account_id);
+
+    return ( $ws_count ) ? 1 : 0;
+}
+
+sub add_group_account_role {
+    my $self    = shift;
+    my $account = shift;
+    my $group   = shift;
+    my $factory = Socialtext::GroupAccountRoleFactory->instance();
+
+    my $gar = $factory->Get(
+        group_id   => $group->group_id,
+        account_id => $account->account_id
+    );
+
+    # group has a role, we're set.
+    return if $gar;
+
+    $gar = $factory->Create({
+        group_id   => $group->group_id,
+        role_id => Socialtext::Role->Affiliate->role_id,
+        account_id => $account->account_id,
+    });
+}
+
+sub remove_group_account_role {
+    my $self    = shift;
+    my $account = shift;
+    my $group   = shift;
+    my $factory = Socialtext::GroupAccountRoleFactory->instance();
+    
+    # Get GAR.
+    my $gar = $factory->Get(
+        group_id   => $group->group_id,
+        account_id => $account->account_id
+    );
+
+    # We should never be without a GAR here, so warn the system before
+    # returning.
+    unless ( $gar ) {
+        st_log->warning("group " . $group->group_id 
+            . " is missing role in account " . $account->account_id );
+        return;
+    }
+
+    # exit if the group still has a role in the account, or if its the primary
+    # account.
+    return if $self->_group_has_workspace_role($group, $account)
+        || $group->primary_account_id == $account->account_id;
+
+    $factory->Delete($gar);
+}
+
+sub _group_has_workspace_role {
+    my $self    = shift;
+    my $group   = shift;
+    my $account = shift;
+
+    my $ws_count = sql_singlevalue(q{
+        SELECT COUNT("Workspace".workspace_id)
+          FROM "Workspace"
+          JOIN group_workspace_role USING (workspace_id)
+         WHERE group_workspace_role.group_id = ?
+           AND "Workspace".account_id = ?
+    }, $group->group_id, $account->account_id);
 
     return ( $ws_count ) ? 1 : 0;
 }

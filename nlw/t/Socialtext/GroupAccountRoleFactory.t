@@ -337,19 +337,13 @@ delete_non_existing_gar: {
 ################################################################################
 # TEST: ByGroupId 
 by_group_id: {
-    my $user     = create_test_user();
     my $acct_one = create_test_account_bypassing_factory();
     my $acct_two = create_test_account_bypassing_factory();
-    my $group    = create_test_group();
+    my $group    = create_test_group(account => $acct_one);
 
-    # Create GARs
+    # Create a second, explicit GAR
     Socialtext::GroupAccountRoleFactory->Create( {
-        group_id     => $group->group_id,
-        account_id => $acct_one->account_id,
-    } );
-
-    Socialtext::GroupAccountRoleFactory->Create( {
-        group_id     => $group->group_id,
+        group_id   => $group->group_id,
         account_id => $acct_two->account_id,
     } );
 
@@ -373,17 +367,11 @@ by_group_id: {
 ################################################################################
 # TEST: ByGroupId -- passing in a closure.
 by_group_id_with_closure: {
-    my $user     = create_test_user();
     my $acct_one = create_test_account_bypassing_factory();
     my $acct_two = create_test_account_bypassing_factory();
-    my $group    = create_test_group();
+    my $group    = create_test_group(account => $acct_one);
 
-    # Create GARs
-    Socialtext::GroupAccountRoleFactory->Create( {
-        group_id   => $group->group_id,
-        account_id => $acct_one->account_id,
-    } );
-
+    # Create a second, explicit GAR
     Socialtext::GroupAccountRoleFactory->Create( {
         group_id   => $group->group_id,
         account_id => $acct_two->account_id,

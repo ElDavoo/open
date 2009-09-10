@@ -482,6 +482,12 @@ sub _update {
             $adapter->hook('nlw.remove_user_account_role', $old_account, $user);
             $adapter->hook( 'nlw.add_user_account_role', $self->account, $user);
         }
+
+        my $groups = $self->groups;
+        while (my $group = $groups->next) {
+            $adapter->hook( 'nlw.remove_group_account_role', $old_account, $group);
+            $adapter->hook( 'nlw.add_group_account_role', $self->account, $group);
+        }
     }
 
     return $self;

@@ -5,6 +5,7 @@ use MooseX::Singleton;
 use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::Role;
+use Socialtext::Pluggable::Adapter;
 use namespace::clean -except => 'meta';
 
 with qw(
@@ -51,6 +52,38 @@ sub SetDefaultValues {
     my ($self, $proto) = @_;
     $proto->{role_id} ||= $self->DefaultRoleId();
 }
+
+around 'Create' => sub {
+    my $next = shift;
+    my $gwr  = $next->(@_);
+
+    # auto-create GAR for the Group and the WS's Primary Account
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub(Socialtext::User->SystemUser());
+    $adapter->hook( 'nlw.add_group_account_role',
+        $gwr->workspace->account,
+        $gwr->group,
+    );
+
+    return $gwr;
+};
+
+around 'Delete' => sub {
+    my $next = shift;
+    my ($self, $instance) = @_;
+    my $did_delete = $next->($self, $instance);
+
+    # auto-teardown GAR for the Group and the WS's Primary Account
+    if ($did_delete) {
+        my $adapter = Socialtext::Pluggable::Adapter->new;
+        $adapter->make_hub(Socialtext::User->SystemUser());
+        $adapter->hook( 'nlw.remove_group_account_role',
+            $instance->workspace->account,
+            $instance->group,
+        );
+    }
+    return $did_delete;
+};
 
 sub DefaultRole {
     Socialtext::Role->Member();

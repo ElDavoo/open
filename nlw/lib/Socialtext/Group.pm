@@ -11,6 +11,7 @@ use Socialtext::MultiCursor;
 use Socialtext::Timer;
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::SQL::Builder qw(sql_abstract);
+use Socialtext::Pluggable::Adapter;
 use Socialtext::UserGroupRoleFactory;
 use Socialtext::GroupAccountRoleFactory;
 use Socialtext::GroupWorkspaceRoleFactory;
@@ -185,6 +186,14 @@ sub Create {
     # ask that factory to create the Group Homunculus
     my $homey = $factory->Create($proto_group);
     my $group = Socialtext::Group->new(homunculus => $homey);
+
+    # make sure the GAR gets created
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub(Socialtext::User->SystemUser());
+    $adapter->hook(
+        'nlw.add_group_account_role', $group->primary_account, $group,
+    );
+
     return $group;
 }
 
