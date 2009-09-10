@@ -6,12 +6,90 @@ use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::Role;
 use namespace::clean -except => 'meta';
+use Carp qw/croak/;
+use Socialtext::SQL::Builder qw/sql_abstract/;
+use Socialtext::SQL qw/:exec/;
 
 with qw(
     Socialtext::Moose::ObjectFactory
     Socialtext::Moose::Does::UserSearch
     Socialtext::Moose::Does::GroupSearch
 );
+
+sub SortedResultSet {
+    my $self = shift;
+    my %opts = @_;
+
+    my @cols = (
+        'ugr.user_id AS user_id',
+        'ugr.group_id AS group_id',
+        'ugr.role_id AS role_id'
+    );
+    my $from = 'user_group_role ugr';
+
+    my @where;
+    @where = ( 'ugr.group_id' => $opts{group_id} ) if $opts{group_id};
+
+    # Determine sort order, adding in table joins if needed.
+    my $order;
+    if ( my $ob = $opts{order_by} ) {
+
+        if ( lc $ob eq 'username' ) {
+            push @cols, 'users.driver_username';
+            $from .= ' JOIN users USING ( user_id )';
+            $order = 'users.driver_username';
+        }
+        elsif ( lc $ob eq 'role_name' ) {
+            push @cols, '"Role".name';
+            $from .= ' JOIN "Role" USING ( role_id )';
+            $order = '"Role".name';
+        }
+        elsif ( lc $ob eq 'source' ) {
+            push @cols, 'users.driver_key';
+            $from .= ' JOIN users USING ( user_id )';
+            $order = 'users.driver_key';
+        }
+        elsif ( lc $ob eq 'creation_datetime' ) {
+            push @cols, 'meta.creation_datetime';
+            $from .= ' JOIN "UserMetadata" meta USING ( user_id )';
+            $order = 'meta.creation_datetime';
+        }
+        elsif ( lc $ob eq 'workspace_count' ) {
+            push @cols, 'roles.count AS count';
+            $from .= q{
+                LEFT JOIN (
+                    SELECT user_id,
+                           COALESCE( COUNT(workspace_id), 0 ) as count
+                      FROM all_user_workspace
+                     GROUP BY user_id
+                ) roles USING ( user_id )
+            };
+            $order = 'count';
+        }
+        elsif ( lc $ob eq 'primary_account' ) {
+            push @cols, '"Account".name AS account_name';
+            $from .= q{
+                JOIN "UserMetadata" meta USING ( user_id )
+                JOIN "Account" ON meta.primary_account_id = "Account".account_id
+            };
+            $order = 'account_name';
+
+        }
+        else {
+            croak "Cannot sort UserGroupRoles by '$ob'";
+        }
+
+        $order .= " $opts{sort_order}, ";
+    }
+
+    $order .= $self->SqlSortOrder();
+
+    my ($sql, @bind) = sql_abstract()->select(
+        \$from, \@cols, \@where, $order, $opts{limit}, $opts{offset});
+
+    my $sth = sql_execute($sql, @bind);
+    return $self->Cursor($sth);
+}
 
 sub Builds_sql_for { 'Socialtext::UserGroupRole' }
 
