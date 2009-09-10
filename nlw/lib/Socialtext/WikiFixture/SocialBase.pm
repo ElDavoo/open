@@ -351,6 +351,20 @@ sub delete_user {
         $self->{group_id} = $group->group_id;
     }
 
+    sub delete_group {
+        my $self       = shift;
+        my $group_name = shift;
+
+        my $group = Socialtext::Group->GetGroup(
+            driver_group_name => $group_name,
+            %group_identifier,
+        );
+        if ($group) {
+            diag "Deleting group $group_name (".$group->driver_unique_id.")";
+            $group->delete();
+        }
+    }
+
     sub add_group_to_workspace {
         my $self       = shift;
         my $group_name = shift;
