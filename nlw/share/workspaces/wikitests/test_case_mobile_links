@@ -1,0 +1,96 @@
+| *Comment* | Test Case: Mobile |  |
+
+| *Comment* | Test Case: Mobile. This test is designed to run at the end of Sunshine Testcases only. |  |
+| *Comment* | It utilizes the data created by Sunshine Testcases. |  |
+
+Links: Activity People Workspaces All refresh Mine
+Lower links: Activity People Workspaces Log out
+Word but not Link: Signal, What are you working on, People I follow, Previous page, First page, Next page
+
+| open_ok | /m |  |
+
+| *Comment* | Test Case: Mobile. Links: Activity People Workspaces All refresh Mine |  |
+| wait_for_element_visible_ok | link=Activity | 3000 |
+| wait_for_element_visible_ok | link=People | 3000 |
+| wait_for_element_visible_ok | link=Workspaces | 3000 |
+| wait_for_element_visible_ok | link=All | 3000 |
+| wait_for_element_visible_ok | link=refresh | 3000 |
+| wait_for_element_visible_ok | link=Mine | 3000 |
+
+| *Comment* | Test Case: Mobile. Lower links: Activity People Workspaces Log out |  |
+| wait_for_element_visible_ok | `//a[@href='/m/activities'][1]` | 3000 |
+| wait_for_element_visible_ok | `//a[@href='/m/people'][1]` | 3000 |
+| wait_for_element_visible_ok | `//a[@href='/m/workspace_list'][1]` | 3000 |
+| wait_for_element_visible_ok | link=Log out | 3000 |
+
+| *Comment* | Test Case: Mobile. Word but not Link |  |
+| wait_for_text_present_ok | What are you working on | 3000 |
+| wait_for_text_present_ok | Signal | 3000 |
+| wait_for_text_present_ok | People I follow | 3000 |
+| wait_for_text_present_ok | Previous page | 3000 |
+| wait_for_text_present_ok | First page | 3000 |
+| wait_for_text_present_ok | Next page | 3000 |
+
+Clicks: Activity People Workspaces Signals All refresh Mine
+Verify each one unlinks and the others link
+
+| *Comment* | Test Case: Mobile. Verify each one unlinks and the others link |  |
+| click_and_wait | link=Activity |  |
+| wait_for_element_not_present_ok | link=Activity | 3000 |
+| wait_for_text_present_ok | Activity | 3000 |
+| click_and_wait | link=People |  |
+| wait_for_element_not_present_ok | link=People | 3000 |
+| wait_for_text_present_ok | People | 3000 |
+| click_and_wait | link=Workspaces |  |
+| wait_for_element_not_present_ok | link=Workspaces | 3000 |
+| wait_for_text_present_ok | Workspaces | 3000 |
+
+| click_and_wait | link=Signals |  |
+| wait_for_element_not_present_ok | link=Signals | 3000 |
+| wait_for_text_present_ok | Signals | 3000 |
+| click_and_wait | link=All |  |
+| wait_for_element_not_present_ok | link=All | 3000 |
+| wait_for_text_present_ok | All | 3000 |
+| click_and_wait | link=Mine |  |
+| wait_for_element_not_present_ok | link=Mine | 3000 |
+| wait_for_text_present_ok | Mine | 3000 |
+
+| *Comment* | Test Case: Mobile. Verify three different refresh links for Signals |  |
+| click_and_wait | link=All |  |
+| wait_for_element_visible_ok | link=refresh | 3000 |
+| text_like | //a[contains(@href,'all=1')] | refresh |
+| click_and_wait | link=People I follow |  |
+| wait_for_element_visible_ok | link=refresh | 3000 |
+| text_like | //a[contains(@href,'followed=1')] | refresh |
+| click_and_wait | link=Mine |  |
+| wait_for_element_visible_ok | link=refresh | 3000 |
+| text_like | //a[contains(@href,'mine=1')] | refresh |
+
+| *Comment* | Test Case: Mobile. Verify three different refresh links for Activity |  |
+| click_and_wait | link=Activity |  |
+| wait_for_element_visible_ok | link=refresh | 3000 |
+| text_like | //a[contains(@href,'activities')] | refresh |
+| click_and_wait | link=People I follow |  |
+| wait_for_element_visible_ok | link=refresh | 3000 |
+| text_like | //a[contains(@href,'activities?followed=1')] | refresh |
+| click_and_wait | link=All |  |
+| wait_for_element_visible_ok | link=refresh | 3000 |
+| text_like | //a[contains(@href,'activities?all=1')] | refresh |
+
+NOTE: A should be a link whenever you hit People
+
+| *Comment* | Test Case: Mobile. Verify three selected alpha links for People |  |
+| click_and_wait | link=People |  |
+| wait_for_element_visible_ok | link=B | 3000 |
+| text_like | link=B | B |
+| wait_for_element_visible_ok | link=Q | 3000 |
+| text_like | link=Q | Q |
+| wait_for_element_visible_ok | link=Z | 3000 |
+| text_like | link=Z | Z |
+
+| *Comment* | Test Case: Mobile. Verify %%title%% for Workspaces |  |
+| click_and_wait | link=Workspaces |  |
+| wait_for_element_visible_ok | link=Canonical Test Data Set | 3000 |
+| text_like | link=Canonical Test Data Set | Canonical Test Data Set |
+
+| *Comment* | Test Case: Mobile COMPLETED |  |
