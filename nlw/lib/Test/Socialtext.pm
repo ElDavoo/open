@@ -367,6 +367,7 @@ sub _teardown_cleanup {
     sub _remove_all_but_initial_objects {
         while (my ($key,$obj) = each %Objects) {
             my $iterator = $obj->{get_iterator}->();
+            Test::More::diag("CLEANUP: removing ${key}s");
             while (my $item = $iterator->next()) {
                 # remove all but the initial set of objects that were
                 # created and available at startup.
@@ -376,10 +377,6 @@ sub _teardown_cleanup {
                 # Delete it
                 if (Test::Socialtext::Environment->instance()->verbose) {
                     my $identifier = $obj->{identifier}->($item);
-                    Test::More::diag(
-                        "CLEANUP: removing $key '$identifier'; " .
-                        "your test left it behind"
-                    );
                 }
                 $obj->{delete_item}->($item);
             }
