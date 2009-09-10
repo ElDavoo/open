@@ -256,6 +256,49 @@ sub st_create_wikipage {
     $self->handle_command('wait_for_element_visible_ok','st-edit-button-link',30000);                
 }
 
+=head2 st_add_page_tag ( $url, $page, $tag) 
+
+Adds a tag to a wikipage through the GUI.
+
+First goes to server/$url (url should include workspace)
+
+The page must exist in order to have a tag added.
+
+=cut
+
+sub st_add_page_tag {
+   my ($self, $url, $tag) = @_;
+   $self->handle_command('open_ok',$url);
+   $self->handle_command('wait_for_element_visible_ok','link=Add Tag',30000);
+   $self->handle_command('click_ok','link=Add Tag'); 
+   $self->handle_command('wait_for_element_visible_ok','st-tags-field',30000);
+   $self->handle_command('type_ok', 'st-tags-field', $tag);
+   $self->handle_command('wait_for_element_visible_ok', 'st-tags-plusbutton-link', 30000);
+   $self->handle_command('click_ok','st-tags-plusbutton-link');
+   $self->handle_command('wait_for_element_visible_ok','link='.$tag, 30000);
+}
+
+=head2 st_email_page ($self, $url, $email_address) 
+
+Emails a page
+
+=cut
+
+sub st_email_page {
+    my ($self, $url, $email, $subject) = @_;
+    $self->handle_command('open_ok',$url);
+    $self->handle_command('wait_for_element_visible_ok','st-pagetools-email', 30000);
+    $self->handle_command('click_ok','st-pagetools-email');
+    $self->handle_command('wait_for_element_visible_ok','st-email-lightbox', 30000);
+    $self->handle_command('wait_for_element_visible_ok','email_recipient',30000);
+    $self->handle_command('type_ok', 'email_recipient', $email);
+    $self->handle_command('click_ok', 'email_add');
+    $self->handle_command('text_like', 'email_page_user_choices',$email);
+    $self->handle_command('type_ok', 'email_page_subject',$subject);
+    $self->handle_command('click_ok', 'email_send');
+    $self->handle_command('wait_for_element_not_visible_ok', 'st-email-lightbox',30000);
+}
+
 =head2 st_search( $search_term, $expected_result_title )
 
 Performs a search, and then validates the result page has the correct title.
