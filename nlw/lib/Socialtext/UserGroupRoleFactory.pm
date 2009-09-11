@@ -79,6 +79,7 @@ sub SortedResultSet {
             croak "Cannot sort UserGroupRoles by '$ob'";
         }
 
+        $opts{sort_order} ||= '';
         $order .= " $opts{sort_order}, ";
     }
 
