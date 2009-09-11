@@ -5,7 +5,7 @@ use strict;
 use warnings;
 # use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 70;
+use Test::Socialtext tests => 109;
 use Test::Exception;
 
 ###############################################################################
@@ -466,4 +466,291 @@ by_group_id_with_non_existing_group_id: {
 
     isa_ok $ugrs, 'Socialtext::MultiCursor', 'Got a list';
     ok !$ugrs->count(), '... with no results';
+}
+
+################################################################################
+sorted_by_username: {
+    my $gtermars = create_test_user( unique_id => 'gtermars' );
+    my $brandon  = create_test_user( unique_id => 'brandon' );
+    my $group    = create_test_group();
+
+    $group->add_user( user => $gtermars );
+    $group->add_user( user => $brandon );
+
+    is $group->user_count => 2, 'group has two users';
+
+    diag 'Sorting by username';
+
+    # Default sort
+    my $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id => $group->group_id,
+        order_by => 'username',
+    );
+
+    is $users->count => 2, 'Default sort returns 2 users..';
+    is_deeply [ $brandon->user_id, $gtermars->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Ascending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'username',
+        sort_order => 'asc',
+    );
+
+    is $users->count => 2, 'Ascending sort returns 2 users..';
+    is_deeply [ $brandon->user_id, $gtermars->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Descending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'username',
+        sort_order => 'desc',
+    );
+
+    is $users->count => 2, 'Descending sort returns 2 users..';
+    is_deeply [ $gtermars->user_id, $brandon->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+}
+
+################################################################################
+sorted_by_role_name: {
+    require Socialtext::Role;
+    my $member    = Socialtext::Role->Member();
+    my $affiliate = Socialtext::Role->Affiliate();
+
+    my $user1 = create_test_user();
+    my $user2 = create_test_user();
+    my $group = create_test_group();
+
+    $group->add_user( user => $user1, role => $member );
+    $group->add_user( user => $user2, role => $affiliate );
+
+    diag 'Sort by role_name';
+
+    # Default sort
+    my $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id => $group->group_id,
+        order_by => 'role_name',
+    );
+
+    is $users->count => 2, 'Default sort returns 2 users..';
+    is_deeply [ $user2->user_id, $user1->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Ascending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'role_name',
+        sort_order => 'asc',
+    );
+
+    is $users->count => 2, 'Ascending sort returns 2 users..';
+    is_deeply [ $user2->user_id, $user1->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Descending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'role_name',
+        sort_order => 'desc',
+    );
+
+    is $users->count => 2, 'Descending sort returns 2 users..';
+    is_deeply [ $user1->user_id, $user2->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+}
+
+################################################################################
+sorted_by_source: {
+    require Test::Socialtext::Bootstrap::OpenLDAP;
+    require Socialtext::User;
+
+    my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
+    ok $openldap->add_ldif('t/test-data/ldap/base_dn.ldif'), 'added base_dn';
+    ok $openldap->add_ldif('t/test-data/ldap/people.ldif'),  'added people';
+
+    my $user1 = Socialtext::User->new(email_address => 'john.doe@example.com');
+    my $user2 = create_test_user();
+    my $group = create_test_group();
+
+    $group->add_user( user => $user1 );
+    $group->add_user( user => $user2 );
+
+    diag 'Sort by source';
+
+    # Default sort
+    my $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id => $group->group_id,
+        order_by => 'source',
+    );
+
+    is $users->count => 2, 'Default sort returns 2 users..';
+    is_deeply [ $user2->user_id, $user1->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Ascending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'source',
+        sort_order => 'asc',
+    );
+
+    is $users->count => 2, 'Ascending sort returns 2 users..';
+    is_deeply [ $user2->user_id, $user1->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Descending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'source',
+        sort_order => 'desc',
+    );
+
+    is $users->count => 2, 'Descending sort returns 2 users..';
+    is_deeply [ $user1->user_id, $user2->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+}
+
+################################################################################
+sorted_by_creation_datetime: {
+    my $user1 = create_test_user();
+    sleep 1;    # sorry, I want to make sure create order is _really_ clear.
+    my $user2 = create_test_user();
+    my $group = create_test_group();
+
+    $group->add_user( user => $user2 );
+    $group->add_user( user => $user1 );
+
+    diag 'Sort by creation_datetime';
+
+    # Default sort
+    my $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id => $group->group_id,
+        order_by => 'creation_datetime',
+    );
+
+    is $users->count => 2, 'Default sort returns 2 users..';
+    is_deeply [ $user1->user_id, $user2->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Ascending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'creation_datetime',
+        sort_order => 'asc',
+    );
+
+    is $users->count => 2, 'Ascending sort returns 2 users..';
+    is_deeply [ $user1->user_id, $user2->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Descending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'creation_datetime',
+        sort_order => 'desc',
+    );
+
+    is $users->count => 2, 'Descending sort returns 2 users..';
+    is_deeply [ $user2->user_id, $user1->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+}
+
+################################################################################
+sort_by_workspace_count: {
+    my $user1 = create_test_user();
+    my $user2 = create_test_user();
+    my $ws1   = create_test_workspace();
+    my $ws2   = create_test_workspace();
+    my $group = create_test_group();
+
+    $ws1->add_user( user => $user1 );
+    $ws1->add_user( user => $user2 );
+
+    $ws2->add_user( user => $user1 );
+
+    $group->add_user( user => $user2 );
+    $group->add_user( user => $user1 );
+
+    diag 'Sort by workspace_count';
+
+    # Default sort
+    my $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id => $group->group_id,
+        order_by => 'workspace_count',
+    );
+
+    is $users->count => 2, 'Default sort returns 2 users..';
+    is_deeply [ $user2->user_id, $user1->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Ascending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'workspace_count',
+        sort_order => 'asc',
+    );
+
+    is $users->count => 2, 'Ascending sort returns 2 users..';
+    is_deeply [ $user2->user_id, $user1->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Descending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'workspace_count',
+        sort_order => 'desc',
+    );
+
+    is $users->count => 2, 'Descending sort returns 2 users..';
+    is_deeply [ $user1->user_id, $user2->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+}
+
+################################################################################
+sorted_by_primary_account: {
+    my $account1 = create_test_account_bypassing_factory('Development');
+    my $account2 = create_test_account_bypassing_factory('Sales');
+    my $user1 = create_test_user( account => $account1 );
+    my $user2 = create_test_user( account => $account2 );
+    my $group = create_test_group();
+
+    $group->add_user( user => $user2 );
+    $group->add_user( user => $user1 );
+
+    diag 'Sort by primary_account';
+
+    # Default sort
+    my $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id => $group->group_id,
+        order_by => 'primary_account',
+    );
+
+    is $users->count => 2, 'Default sort returns 2 users..';
+    is_deeply [ $user1->user_id, $user2->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Ascending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'primary_account',
+        sort_order => 'asc',
+    );
+
+    is $users->count => 2, 'Ascending sort returns 2 users..';
+    is_deeply [ $user1->user_id, $user2->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
+
+    # Descending sort
+    $users = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'primary_account',
+        sort_order => 'desc',
+    );
+
+    is $users->count => 2, 'Descending sort returns 2 users..';
+    is_deeply [ $user2->user_id, $user1->user_id ],
+        [ map { $_->{user_id} } $users->all() ], '... in correct order';
 }
