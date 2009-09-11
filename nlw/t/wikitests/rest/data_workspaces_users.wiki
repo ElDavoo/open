@@ -19,10 +19,11 @@
 * Add peon to some group
 * Add that group to workpace A with role workspace_admin
 
-| set | group | %%start_time%% group! |
-| create-group           | %%group%% |               |                 |
-| add-group-to-workspace | %%group%% | %%workspace%% | workspace_admin |
-| add-user-to-group      | %%peon%%  | %%group%%       |                 |
+| set                    | group         | %%start_time%% group! |                 |
+| create-group           | %%group%%     |                       |                 |
+| set                    | group_id1     | %%group_id%%          |                 |
+| add-group-to-workspace | %%group_id1%% | %%workspace%%         | workspace_admin |
+| add-user-to-group      | %%peon%%      | %%group_id1%%         |                 |
 
 | http-user-pass | %%admin%% | password |
 | GET | /data/workspaces/%%workspace%%/users | application/json|
@@ -50,7 +51,7 @@
 | json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"workspace_admin","roles":["workspace_admin"]}] |
 
 | add-member             | %%peon%% | %%workspace%% |
-| remove-user-from-group | %%peon%% | %%group%%     |
+| remove-user-from-group | %%peon%% | %%group_id1%%     |
 
 | http-user-pass | %%admin%% | password |
 | GET | /data/workspaces/%%workspace%%/users | application/json|
@@ -59,11 +60,12 @@
 | json-array-size | 3 |
 | json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"member","roles":["member"]}] |
 
-| set | group2 | %%start_time%% group two! |
-| create-group           | %%group2%% |               |              |
-| add-group-to-workspace | %%group2%% | %%workspace%% | impersonator |
-| add-user-to-group      | %%peon%%   | %%group%%     |              |
-| add-user-to-group      | %%peon%%   | %%group2%%    |              |
+| set                    | group2     | %%start_time%% group two! |              |
+| create-group           | %%group2%% |                           |              |
+| set                    | group_id2  | %%group_id%%              |              |
+| add-group-to-workspace | %%group_id2%% | %%workspace%%             | impersonator |
+| add-user-to-group      | %%peon%%   | %%group_id1%%                 |              |
+| add-user-to-group      | %%peon%%   | %%group_id2%%                |              |
 
 | http-user-pass | %%admin%% | password |
 | GET | /data/workspaces/%%workspace%%/users | application/json|
@@ -71,3 +73,13 @@
 | json-parse |
 | json-array-size | 3 |
 | json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"impersonator","roles":["member","workspace_admin","impersonator"]}] |
+
+| remove-group-from-workspace | %%group_id2%% | %%workspace%% |
+| remove-user-from-group | %%peon%% | %%group_id1%%     |
+
+| http-user-pass | %%admin%% | password |
+| GET | /data/workspaces/%%workspace%%/users | application/json|
+| code-is | 200 |
+| json-parse |
+| json-array-size | 3 |
+| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"member","roles":["member"]}] |
