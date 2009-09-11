@@ -1683,7 +1683,11 @@ sub _show_group_members {
     my $group = $self->_require_group();
 
     require Socialtext::UserGroupRoleFactory;
-    my $ugrs = Socialtext::UserGroupRoleFactory->ByGroupId( $group->group_id );
+    my $ugrs = Socialtext::UserGroupRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'username',
+        sort_order => 'desc',
+    );
 
     my $msg = loc("Members of the [_1] group", $group->driver_name) . "\n\n";
     $msg .= loc("| Email Address | First | Last | Role |") . "\n";
