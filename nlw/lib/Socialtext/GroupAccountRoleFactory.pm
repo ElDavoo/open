@@ -271,6 +271,29 @@ Returns the C<Socialtext::Role> object for the default Role being used.
 
 Get the ID for the default Role being used.
 
+=item B<$factory-E<gt>SortedResultSet( PARAMS )>
+
+Get a result set that is sorted by a particular field. The following options are accepted:
+
+=over
+
+=item * group_id =E<gt> $group_id - Select results only for a given group.
+
+=item * order_by =E<gt> $order - Can be one of a number of things:
+
+=over
+
+=item 'name' - Sort by GAR's Account name.
+
+=item 'user_count' - Sort by GAR's Account user_count.
+
+=item 'workspace_count' - Sort by GAR's Account workspace_count.
+
+=back
+
+=item * sort_order =E<gt> 'asc' or 'desc' - Sort results, the DB default will
+be used if not specified here.
+
 =back
 
 =head1 AUTHOR
