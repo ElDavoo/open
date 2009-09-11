@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 9;
+use Test::Socialtext tests => 13;
 
 ###############################################################################
 # Fixtures: db
@@ -59,4 +59,17 @@ group_count_is_correct_when_groups_removed: {
     # remove one of the Groups, make sure the count goes down
     $group_two->delete();
     is $account->group_count(), 1, 'Account has only one Group again';
+}
+
+###############################################################################
+add_group_to_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group();
+
+    my $gar = $account->add_group( group => $group );
+
+    isa_ok $gar => 'Socialtext::GroupAccountRole', 'created a GAR...';
+    is $gar->account_id => $account->account_id, '... with correct account';
+    is $gar->group_id => $group->group_id, '... with correct group';
+    is $gar->role->name => 'affiliate', '... with correct role';
 }

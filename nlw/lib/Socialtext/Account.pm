@@ -23,6 +23,7 @@ use Socialtext::Skin;
 use Socialtext::Timer;
 use Socialtext::Pluggable::Adapter;
 use Socialtext::AccountLogo;
+use Socialtext::GroupAccountRoleFactory;
 use YAML qw/DumpFile LoadFile/;
 use MIME::Base64 ();
 use namespace::clean;
@@ -199,6 +200,16 @@ sub workspaces {
 sub workspace_count {
     my $self = shift;
     return $self->workspaces->count();
+}
+
+sub add_group {
+    my $self  = shift;
+    my %opts  = @_;
+
+    return Socialtext::GroupAccountRoleFactory->Create({
+        group_id   => $opts{group}->group_id,
+        account_id => $self->account_id,
+    });
 }
 
 sub groups {
@@ -1165,6 +1176,10 @@ Change the skin for the account and its workspaces.
 
 Returns a cursor of the workspaces for this account, ordered by
 workspace name.
+
+=item $account->add_group( group => $group )
+
+Adds the group C<$group> as an Affiliate of the account.
 
 =item $account->group_count()
 
