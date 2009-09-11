@@ -374,15 +374,16 @@ sub add_group_to_workspace {
     my $ws    = Socialtext::Workspace->new(name      => $ws_name);
     my $group = Socialtext::Group->GetGroup(group_id => $group_id);
 
-    if ($role_name) {
-        my $role = Socialtext::Role->new(name => $role_name);
-        $ws->add_group( group => $group, role => $role );
-        diag "Added group $group_id to $ws_name with role $role_name";
-    }
-    else {
-        $ws->add_group( group => $group );
-        diag "Added group $group_id to $ws_name";
-    }
+    require Socialtext::GroupWorkspaceRoleFactory;
+    my $role = $role_name
+        ? Socialtext::Role->new(name => $role_name)
+        : Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
+
+    $ws->add_group( group => $group, role => $role );
+
+    diag 'Added ' . $group->driver_group_name . ' Group'
+       . " to $ws_name WS"
+       . ' with ' . $role->name . ' Role';
 }
 
 sub remove_group_from_workspace {
@@ -401,17 +402,25 @@ sub add_group_to_account {
     my $self         = shift;
     my $group_id     = shift || $self->{group_id};
     my $account_name = shift;
+    my $role_name    = shift;
 
     my $group   = Socialtext::Group->GetGroup(group_id => $group_id);
     my $account = Socialtext::Account->new(name        => $account_name);
 
     require Socialtext::GroupAccountRoleFactory;
-    my $gar = Socialtext::GroupAccountRoleFactory->Create({
+    my $role = $role_name
+        ? Socialtext::Role->new(name => $role_name)
+        : Socialtext::GroupAccountRoleFactory->DefaultRole();
+
+    Socialtext::GroupAccountRoleFactory->Create( {
         group_id   => $group_id,
         account_id => $account->account_id,
-    });
+        role_id    => $role->role_id,
+    } );
 
-    diag "Added group $group_id to $account_name";
+    diag 'Added ' . $group->driver_group_name . ' Group'
+       . " to $account_name Account"
+       . ' with ' . $role->name . ' Role';
 }
 
 sub remove_group_from_account {
@@ -436,11 +445,21 @@ sub add_user_to_group {
     my $self      = shift;
     my $user_name = shift;
     my $group_id  = shift || $self->{group_id};
+    my $role_name = shift;
 
     my $group = Socialtext::Group->GetGroup(group_id => $group_id);
     my $user  = Socialtext::User->Resolve($user_name);
-    $group->add_user(user => $user);
-    diag "Added user $user_name to group $group_id";
+
+    require Socialtext::UserGroupRoleFactory;
+    my $role = $role_name
+        ? Socialtext::Role->new(name => $role_name)
+        : Socialtext::UserGroupRoleFactory->DefaultRole();
+
+    $group->add_user( user => $user, role => $role );
+
+    diag "Added User $user_name"
+       . ' to ' . $group->driver_group_name . ' Group'
+       . ' with ' . $role->name . ' Role';
 }
 
 sub remove_user_from_group {
