@@ -5,7 +5,7 @@ use strict;
 use warnings;
 # use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 70;
+use Test::Socialtext tests => 94;
 use Test::Exception;
 
 ###############################################################################
@@ -483,4 +483,153 @@ by_account_id_with_non_existing_account_id: {
 
     isa_ok $groups, 'Socialtext::MultiCursor', 'Got a list';
     ok !$groups->count(), '... with no results';
+}
+
+################################################################################
+sorted_by_name: {
+    my $acct1 = create_test_account_bypassing_factory('Development');
+    my $acct2 = create_test_account_bypassing_factory('Sales');
+    my $acct3 = create_test_account_bypassing_factory('Default');
+    my $group = create_test_group(account => $acct3);
+
+    $acct1->add_group( group => $group );
+    $acct2->add_group( group => $group );
+
+    diag 'Sorted by name';
+
+    # Default sort order
+    my $accounts = Socialtext::GroupAccountRoleFactory->SortedResultSet(
+        group_id => $group->group_id,
+        order_by => 'name',
+    );
+
+    is $accounts->count => 3, 'Default order returns 2 accounts...';
+    is_deeply [ $acct3->account_id, $acct1->account_id, $acct2->account_id ],
+        [ map { $_->{account_id} } $accounts->all() ], '... in correct order';
+
+    # Ascending sort order
+    $accounts = Socialtext::GroupAccountRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'name',
+        sort_order => 'asc',
+    );
+
+    is $accounts->count => 3, 'Ascending order returns 2 accounts...';
+    is_deeply [ $acct3->account_id, $acct1->account_id, $acct2->account_id ],
+        [ map { $_->{account_id} } $accounts->all() ], '... in correct order';
+
+    # Descending sort order
+    $accounts = Socialtext::GroupAccountRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'name',
+        sort_order => 'desc',
+    );
+
+    is $accounts->count => 3, 'Descending order returns 2 accounts...';
+    is_deeply [ $acct2->account_id, $acct1->account_id, $acct3->account_id ],
+        [ map { $_->{account_id} } $accounts->all() ], '... in correct order';
+}
+
+################################################################################
+sorted_by_user_count: {
+    my $acct1 = create_test_account_bypassing_factory();
+    my $acct2 = create_test_account_bypassing_factory();
+    my $acct3 = create_test_account_bypassing_factory();
+    my $user1 = create_test_user( account => $acct1 );
+    my $user2 = create_test_user( account => $acct1 );
+    my $user3 = create_test_user( account => $acct2 );
+    my $group = create_test_group(account => $acct3);
+
+    $acct1->add_group( group => $group );
+    $acct2->add_group( group => $group );
+
+    is $acct1->user_count => 2, 'Account one has 2 users';
+    is $acct2->user_count => 1, 'Account two has 1 user';
+    is $acct3->user_count => 0, 'Account three has 0 users';
+
+    diag 'Sorted by user_count';
+
+    # Default sort order
+    my $accounts = Socialtext::GroupAccountRoleFactory->SortedResultSet(
+        group_id => $group->group_id,
+        order_by => 'user_count',
+    );
+
+    is $accounts->count => 3, 'Default order returns 3 accounts...';
+    is_deeply [ $acct2->account_id, $acct1->account_id, $acct3->account_id ],
+        [ map { $_->{account_id} } $accounts->all() ], '... in correct order';
+
+    # Ascending sort order
+    $accounts = Socialtext::GroupAccountRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'user_count',
+        sort_order => 'asc',
+    );
+
+    is $accounts->count => 3, 'Ascending order returns 3 accounts...';
+    is_deeply [ $acct2->account_id, $acct1->account_id, $acct3->account_id ],
+        [ map { $_->{account_id} } $accounts->all() ], '... in correct order';
+
+    # Descending sort order
+    $accounts = Socialtext::GroupAccountRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'user_count',
+        sort_order => 'desc',
+    );
+
+    is $accounts->count => 3, 'Descending order returns 3 accounts...';
+    is_deeply [ $acct3->account_id, $acct1->account_id, $acct2->account_id ],
+        [ map { $_->{account_id} } $accounts->all() ], '... in correct order';
+}
+
+################################################################################
+sorted_by_workspace_count: {
+    my $acct1 = create_test_account_bypassing_factory();
+    my $acct2 = create_test_account_bypassing_factory();
+    my $acct3 = create_test_account_bypassing_factory();
+    my $ws1   = create_test_workspace(account => $acct1);
+    my $ws2   = create_test_workspace(account => $acct1);
+    my $ws3   = create_test_workspace(account => $acct2);
+    my $group = create_test_group(account => $acct3);
+
+    $acct1->add_group( group => $group );
+    $acct2->add_group( group => $group );
+
+    is $acct1->workspace_count => 2, 'Account one has 2 workspaces';
+    is $acct2->workspace_count => 1, 'Account two has 1 workspace';
+    is $acct3->workspace_count => 0, 'Account three has 0 workspaces';
+
+    diag 'Sorted by workspace_count';
+
+    # Default sort order
+    my $accounts = Socialtext::GroupAccountRoleFactory->SortedResultSet(
+        group_id => $group->group_id,
+        order_by => 'workspace_count',
+    );
+
+    is $accounts->count => 3, 'Default order returns 3 accounts...';
+    is_deeply [ $acct2->account_id, $acct1->account_id, $acct3->account_id ],
+        [ map { $_->{account_id} } $accounts->all() ], '... in correct order';
+
+    # Ascending sort order
+    $accounts = Socialtext::GroupAccountRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'workspace_count',
+        sort_order => 'asc',
+    );
+
+    is $accounts->count => 3, 'Ascending order returns 3 accounts...';
+    is_deeply [ $acct2->account_id, $acct1->account_id, $acct3->account_id ],
+        [ map { $_->{account_id} } $accounts->all() ], '... in correct order';
+
+    # Descending sort order
+    $accounts = Socialtext::GroupAccountRoleFactory->SortedResultSet(
+        group_id   => $group->group_id,
+        order_by   => 'workspace_count',
+        sort_order => 'desc',
+    );
+
+    is $accounts->count => 3, 'Descending order returns 3 accounts...';
+    is_deeply [ $acct3->account_id, $acct1->account_id, $acct2->account_id ],
+        [ map { $_->{account_id} } $accounts->all() ], '... in correct order';
 }
