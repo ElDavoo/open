@@ -67,6 +67,7 @@ sub SortedResultSet {
             croak "Cannot sort GroupAccountRoles by '$ob'";
         }
 
+        $opts{sort_order} ||= '';
         $order .= " $opts{sort_order}, ";
     }
 
