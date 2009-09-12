@@ -1,7 +1,7 @@
 Note: Heavily dependent on the default content of current test-data workspace
 
 | *Comment* | Test case: Functional Search Tests easy searches |  |
-| st-search | =Jabber | Pages matching 'Jabber' |
+| st-search | =Jabber | Pages matching 'title:Jabber' |
 | st-result | 1 total |  |
 | st-result | jabber |
 | st-search | tag: carroll | Pages matching 'tag: carroll' |
@@ -67,26 +67,26 @@ Note: Heavily dependent on the default content of current test-data workspace
 Title searches
 
 | *Comment* | Test case: Functional Search Tests AND title searches |  |
-| st-search | =Jabber AND brillig | Pages matching 'Jabber AND brillig' |
+| st-search | =Jabber AND brillig | Pages matching 'title:Jabber AND brillig' |
 | st-result | 1 total |  |
 | st-result | jabber |
-| st-search | =Jabber AND NOT brillig | Pages matching 'Jabber AND NOT brillig' |
+| st-search | =Jabber AND NOT brillig | Pages matching 'title:Jabber AND NOT brillig' |
 | st-result | 0 total |  |
-| st-search | =Jabber AND tag:carroll | Pages matching 'Jabber AND tag:carroll' |
+| st-search | =Jabber AND tag:carroll | Pages matching 'title:Jabber AND tag:carroll' |
 | st-result | 1 total |  |
 | st-result | jabber |
-| st-search | =Jabber AND NOT tag:carroll | Pages matching 'Jabber AND NOT tag:carroll' |
+| st-search | =Jabber AND NOT tag:carroll | Pages matching 'title:Jabber AND NOT tag:carroll' |
 | st-result | 0 total |  |
-| st-search | =Jabber AND -tag:carroll | Pages matching 'Jabber AND -tag:carroll' |
+| st-search | =Jabber AND -tag:carroll | Pages matching 'title:Jabber AND -tag:carroll' |
 | st-result | 0 total |  |
-| st-search | ="beamish boy" AND tag:"carroll's poem" | Pages matching '"beamish boy" AND tag:"carroll's poem"' |
+| st-search | ="beamish boy" AND tag:"carroll's poem" | Pages matching 'title:"beamish boy" AND tag:"carroll's poem"' |
 | st-result | 1 total |  |
 | st-result | beamish boy |  |
 | *Comment* | Use equal sign and title as second component of search |  |
 | st-search | tag:carrol AND title:beamish | Pages matching 'tag:carrol AND title:beamish' |
 | st-result | 1 total |  |
 | st-result | beamish boy |  |
-| st-search | tag:carrol AND =beamish | Pages matching 'tag:carrol AND =beamish' |
+| st-search | tag:carrol AND title:beamish | Pages matching 'tag:carrol AND title:beamish' |
 | st-result | 1 total |  |
 | st-result | beamish boy |  |
 
@@ -125,7 +125,7 @@ Title searches
 | st-result | Jabberwocky |  |
 
 | *Comment* | Test case: Functional Search Tests OR title searches |  |
-| st-search | =jabberwocky OR brillig | Pages matching 'jabberwocky OR brillig' |
+| st-search | =jabberwocky OR brillig | Pages matching 'title:jabberwocky OR brillig' |
 | st-result | 2 total |  |
 | st-result | jabber |
 | st-result | Jabberwocky |
@@ -135,7 +135,7 @@ Title searches
 | st-result | Jabberwocky |
 | st-result | Slithy |
 | st-result | Wock |
-| st-search | ="beamish boy" OR tag:"carroll's poem" | Pages matching '"beamish boy" OR tag:"carroll's poem"' |
+| st-search | ="beamish boy" OR tag:"carroll's poem" | Pages matching 'title:"beamish boy" OR tag:"carroll's poem"' |
 | st-result | 2 total |  |
 | st-result | Jabberwocky |
 | st-result | beamish boy |
@@ -186,11 +186,11 @@ Title searches
 | st-result | Jabberwocky |  |
 | st-result | Wock |  |
 | st-result | Project Plans |  |
-| st-search | =jabber OR 1.2 | Pages matching 'jabber OR 1.2' |
+| st-search | =jabber OR 1.2 | Pages matching 'title:jabber OR 1.2' |
 | st-result | 2 total |  |
 | st-result | jabber |  |
 | st-result | Wock |  |
-| st-search | =jabber OR 100% | Pages matching 'jabber OR 100%' |
+| st-search | =jabber OR 100% | Pages matching 'title:jabber OR 100%' |
 | st-result | 4 total |  |
 | st-result | jabber |  |
 | st-result | Canonical Test Data Set |  |
@@ -218,7 +218,7 @@ Title searches
 | st-result | Jabberwocky |  |
 | st-result | Slithy |  |
 | st-result | wock |  |
-| st-search | ="vorpal sword" NOT tag:"carroll's poem" | Pages matching '"vorpal sword" NOT tag:"carroll's poem"' |
+| st-search | ="vorpal sword" NOT tag:"carroll's poem" | Pages matching 'title:"vorpal sword" NOT tag:"carroll's poem"' |
 | st-result | 1 total |  |
 | st-result | The Vorpal Sword |
 
@@ -245,7 +245,7 @@ Title searches
 | st-result | 2 total |  |
 | st-result | jabber |  |
 | st-result | Wock |  |
-| st-search | 1.2 NOT =jabber | Pages matching '1.2 NOT =jabber' |
+| st-search | 1.2 NOT =jabber | Pages matching '1.2 NOT title:jabber' |
 | st-result | 1 total |  |
 | st-result | Wock |  |
 | st-search | 1.2 NOT jabber | Pages matching '1.2 NOT jabber' |
@@ -257,7 +257,7 @@ Title searches
 | st-result | Jabberwocky |  |
 
 | *Comment* | Test case: Functional Search Tests Phrase title searches |  |
-| st-search | ="beamish boy" | Pages matching '"beamish boy"' |
+| st-search | ="beamish boy" | Pages matching 'title:"beamish boy"' |
 | st-result | 1 total |  |
 | st-result | beamish boy |  |
 | st-search | title:"beamish boy" | Pages matching 'title:"beamish boy"' |

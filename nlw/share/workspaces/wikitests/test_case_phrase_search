@@ -28,7 +28,7 @@ Note: Depends on the content of the test-data workspace, most notably the pages 
 | st-search | title:"test page: truth & falsity" | Pages matching 'title:"test page: truth & falsity"' |
 | st-result | 1 total |  |
 | st-result | Kinosearch test page: truth & falsity |  |
-| st-search | ="Kinosearch test page: strategy" | Pages matching '"Kinosearch test page: strategy"' |
+| st-search | ="Kinosearch test page: strategy" | Pages matching 'title:"Kinosearch test page: strategy"' |
 | st-result | 1 total |  |
 | st-result | Kinosearch test page: strategy |  |
 | st-search | title:"Kinosearch test page: strategy" | Pages matching 'title:"Kinosearch test page: strategy"' |
@@ -87,7 +87,7 @@ Note: Depends on the content of the test-data workspace, most notably the pages 
 | st-search | ":Sir John A. MacDonald" AND ":Publius Syrus" | Pages matching '":Sir John A. MacDonald" AND ":Publius Syrus"' |
 | st-result | 0 total |  |
 | *Comment* | confusing / incorrect search result page title -- already reported as {rt: 22619} |  |
-| st-search | ="Kinosearch test page:" AND =": truth" | Pages matching '"Kinosearch test page:" AND =": truth"' |
+| st-search | ="Kinosearch test page:" AND =": truth" | Pages matching 'title:"Kinosearch test page:" AND title:": truth"' |
 | st-result | 1 total |  |
 | st-result | Kinosearch test page: truth & falsity |  |
 | st-search | tag:"test_tag: cynicism" AND tag:"root: civil society: peace, order, & good government: politics" | Pages matching 'tag:"test_tag: cynicism" AND tag:"root: civil society: peace, order, & good government: politics"' |
@@ -113,7 +113,7 @@ Note: Depends on the content of the test-data workspace, most notably the pages 
 | st-result | 2 total |  |
 | st-result | Kinosearch test page: truth & falsity |  |
 | st-result | Kinosearch test page: strategy |  |
-| st-search | ":Albert Einstein" OR category:"wisdom" OR ="test page: strategy" | Pages matching '":Albert Einstein" OR category:"wisdom" OR ="test page: strategy"' |
+| st-search | ":Albert Einstein" OR category:"wisdom" OR ="test page: strategy" | Pages matching '":Albert Einstein" OR category:"wisdom" OR title:"test page: strategy" |
 | st-result | 2 total |  |
 | st-result | Kinosearch test page: truth & falsity |  |
 | st-result | Kinosearch test page: strategy |  |
@@ -127,7 +127,7 @@ Note: Depends on the content of the test-data workspace, most notably the pages 
 | st-result | 2 total |  |
 | st-result | Kinosearch test page: strategy |  |
 | st-result | Kinosearch test page: politics |  |
-| st-search | title:"Kinosearch test page:" -="& falsity" | Pages matching 'title:"Kinosearch test page:" -="& falsity"' |
+| st-search | title:"Kinosearch test page:" -="& falsity" | Pages matching 'title:"Kinosearch test page:" -title:"& falsity"' |
 | st-result | 2 total |  |
 | st-result | Kinosearch test page: strategy |  |
 | st-result | Kinosearch test page: politics |  |
