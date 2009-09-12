@@ -10,18 +10,18 @@
 
 | *Comment* | Test Case: Search Selector. Select My Workspaces in People context |  |
 | select_ok | st-search-action | label=Search My Workspaces: |
-| st-search | wiki | Pages containing 'wiki' |
+| st-search | wiki | Pages matching 'wiki' |
 | is_selected_ok | st-search-action | label=Search My Workspaces: |
 
 | *Comment* | Test Case: Search Selector. Enter Workspace context |  |
 | open-ok | /%%workspace%% |  |
 | is_selected_ok | st-search-action | label=Search This Workspace: |
-| st-search | wiki | Pages containing 'wiki' |
+| st-search | wiki | Pages matching 'wiki' |
 | is_selected_ok | st-search-action | label=Search This Workspace: |
 
 | *Comment* | Test Case: Search Selector. Select My Workspaces in WS context |  |
 | select_ok | st-search-action | label=Search My Workspaces: |
-| st-search | wiki | Pages containing 'wiki' |
+| st-search | wiki | Pages matching 'wiki' |
 | is_selected_ok | st-search-action | label=Search My Workspaces: |
 
 | *Comment* | Test Case: Search Selector. Select People in WS context |  |

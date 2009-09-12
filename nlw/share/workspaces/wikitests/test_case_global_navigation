@@ -61,7 +61,7 @@ TODO: find a way to check the best full name
 | text_like | st-search-form | qr/Search This Workspace:.*Search My Workspaces:.*Search People:/i |
 | type_ok | st-search-term | wiki |
 | click_and_wait | st-search-submit |  |
-| text_like | Pages containing 'wiki' |  |
+| text_like | Pages matching 'wiki' |  |
 
 | *Comment* | Test Case: Global Navigation Footer |  |
 | open_ok | /%%workspace%%/ |  |

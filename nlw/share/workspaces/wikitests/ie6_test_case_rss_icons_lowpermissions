@@ -34,7 +34,7 @@ It seems that Selenium cannot analyze the content of feed pages because they are
 | st-admin | index-workspace --workspace %%workspace%% --sync | The %%workspace%% workspace has been indexed. |
 
 | *Comment* | Test Case: RSS Icons LowPermissions search for the deleted page |  |
-| st-search | simple | Pages containing |
+| st-search | simple | Pages matching |
 | click_and_wait | //img[contains(@src,'rss.png')] |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 

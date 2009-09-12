@@ -4,24 +4,24 @@
 | *Comment* | Test Case: Sticky Search Preferences. Sort order |  |
 
 | *Comment* | Test Case: Sticky Search Preferences. Does Revisions stick? |  |
-| st-search | wiki | Pages containing 'wiki' |
+| st-search | wiki | Pages matching 'wiki' |
 | select_and_wait | sort-picker | label=Revisions |
-| st-search | workspace | Pages containing 'workspace' |
+| st-search | workspace | Pages matching 'workspace' |
 | is_selected_ok | sort-picker | label=Revisions |
 
 | *Comment* | Test Case: Sticky Search Preferences. Does Date stick? |  |
 | select_and_wait | sort-picker | label=Date Last Edited |
-| st-search | wiki | Pages containing 'wiki' |
+| st-search | wiki | Pages matching 'wiki' |
 | is_selected_ok | sort-picker | label=Date Last Edited |
 
 | *Comment* | Test Case: Sticky Search Preferences: Date Created |  |
 | select_and_wait | sort-picker | label=Date Created |
-| st-search | wiki | Pages containing 'wiki' |
+| st-search | wiki | Pages matching 'wiki' |
 | is_selected_ok | sort-picker | label=Date Created |
 
 | *Comment* | Test Case: Sticky Search Preferences: Created By |  |
 | select_and_wait | sort-picker | label=Created By |
-| st-search | wiki | Pages containing 'wiki' |
+| st-search | wiki | Pages matching 'wiki' |
 | is_selected_ok | sort-picker | label=Created By |
 
 | *Comment* | Test Case: Sticky Search Preferences. View preferences. Force Summaries view |  |
@@ -29,14 +29,14 @@
 
 | *Comment* | Test Case: Sticky Search Preferences. Recreate the search box because the URL made it disappear |  |
 | open_ok | /%%workspace%% |  |
-| st-search | wiki | Pages containing 'wiki' |
+| st-search | wiki | Pages matching 'wiki' |
 | wait_for_element_visible_ok | link=Titles | 30000 |
 | click_ok | link=Titles |  |
 | wait_for_element_visible_ok | link=Summaries | 30000 |
 | wait_for_element_not_present_ok | link=Titles | 5000 |
 
 | *Comment* | Test Case: Sticky Search Preferences. Does Titles view stick? |  |
-| st-search | workspace | Pages containing 'workspace' |
+| st-search | workspace | Pages matching 'workspace' |
 | select_and_wait | sort-picker | label=Revisions |
 | wait_for_element_visible_ok | link=Summaries | 30000 |
 | wait_for_element_not_present_ok | link=Titles | 5000 |
@@ -44,7 +44,7 @@
 | *Comment* | Test Case: Sticky Search Preferences. Does Summaries view stick? |  |
 | click_ok | link=Summaries |  |
 | wait_for_element_visible_ok | link=Titles | 30000 |
-| st-search | wiki | Pages containing 'wiki' |
+| st-search | wiki | Pages matching 'wiki' |
 | select_and_wait | sort-picker | label=Date Last Edited |
 | wait_for_element_visible_ok | link=Titles | 30000 |
 | wait_for_element_not_present_ok | link=Summaries | 5000 |
