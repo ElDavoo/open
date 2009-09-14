@@ -354,6 +354,24 @@ sub create_group {
     diag "Created group $group_name (".$group->driver_unique_id."), ID: $self->{group_id} (use the \%\%group_id\%\% var to access this)" if $group;
 }
 
+sub create_multi_groups {
+   my ($self, $name, $num) = @_;
+   for (my $idx=0; $idx<$num; $idx++) {
+       my $fullname = $name . $idx;
+       $self->handle_command('create-group','$fullname');
+   }
+}
+
+
+sub delete_multi_groups {
+    my ($self, $name, $num) = @_;
+    for (my $idx=0; $idx<$num; $idx++) {
+        my $fullname = $name . $idx;
+        $self->handle_command('delete-group','$fullname');
+    }
+}
+
+
 sub delete_group {
     my $self     = shift;
     my $group_id = shift || $self->{group_id};

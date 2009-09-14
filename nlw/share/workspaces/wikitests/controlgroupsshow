@@ -1,0 +1,70 @@
+| *Comment* | ControlGroupsShow |
+
+| set | workspace1 | ws-groupshow-1-%%start_time%% |
+| set | workspace2 | ws-groupshow-2-%%start_time%% |
+| set | workspace3 | ws-groupshow-3-%%start_time%% |
+| set | samplegroup1 | group-with-acct-1-%%start_time%% |
+| set | samplegroup2 | group-no-acct-2-%%start_time%% |
+| set | groupsacct | groups-acct-%%start_time%% |
+| set | gpt | 6000 |
+
+| *Comment* | SEE no groups |  |
+| open_ok | /nlw/control/group |  |  |
+| pause | %%gpt%% |  |  |
+| create-account | %%groupsacct%% |  |  |
+| create-group | %%samplegroup1%% | %%groupsacct%% | %%username%% |
+| create-group | %%samplegroup2%% |  |  |
+| create-workspace | %%workspace1%% | %%groupsacct%% |  |
+| create-workspace | %%workspace2%% | %%groupsacct%% |  |
+| create-workspace | %%workspace3%% | %%groupsacct%% |  |
+
+| *Comment* | SEE Two Groups Added |  |
+| open_ok | /nlw/control/group/ |  |
+| wait_for_element_visible_ok | link=%%samplegroup1%% | 30000 |
+| wait_for_element_visible_ok | link=%%samplegroup2%% | 30000 |
+| pause | %%gpt%% |  |
+
+| *Comment* | SEE Created Date is today |  |
+| click_ok | link=%%samplegroup1%% | 30000 |
+| pause | %%gpt%% |  |
+| *Comment* | SEE account is %%groupsacct%% |  |
+| *Comment* | SEE createdby is %%username%% |  |
+
+| *Comment* | SEE NO workspaces |  |
+| pause | %%gpt%% |  |
+| add-group-to-workspace | %%samplegroup1%% | %%workspace1%% |
+| add-group-to-workspace | %%samplegroup2%% | %%workspace1%% |
+| add-group-to-workspace | %%samplegroup3%% | %%workspace1%% |
+| add-group-to-workspace | %%samplegroup2%% | %%workspace1%% |
+| open_ok | /nlw/control/group/ |  |
+| wait_for_element_visible_ok | link=%%samplegroup1%% | 30000 |
+| click_ok | link=%%samplegroup1%% | 30000 |  |
+
+| *Comment* | See workspaces added |  |
+| pause | %%gpt%% |  |
+
+| *Comment* | SEE Sorted by # of workspaces, asc |
+
+| *Comment* | SEE Sorted by # of workspaces, desc |
+
+| *Comment* | SEE Sorted by Groups name, asc |
+
+| *Comment* | See Sorted by Group name, desc |
+
+| *Comment* | Sort by Group name - see reverse order |
+
+| *Comment* | Add a lot of groups ... |
+
+| create-multi-groups | biggrouplist | 55 |
+| open_ok | /control/group/ |  |
+| *Comment* | SEE PAGINATION ... |  |
+| pause | %%gpt%% |  |
+
+| *Comment* | Tearing Down Groups |
+| delete-multi-groups | lotsofgroups |
+| delete-group | %%samplegroup1%% |
+| delete-group | %%samplegroup2%% |
+| st-admin-export-workspace-ok | %%workspace1%% |
+| st-admin-export-workspace-ok | %%workspace2%% |
+
+| *Comment* | ControlGroupsShow COMPLETED |
