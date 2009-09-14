@@ -105,7 +105,7 @@ sub _build_hub {
 sub _build_indexer {
     my $self = shift;
 
-    my $ws = $self->workspace or return;
+    my $ws = $self->workspace;
 
     require Socialtext::Search::AbstractFactory;
     require Socialtext::Search::Solr::Factory;
@@ -116,9 +116,11 @@ sub _build_indexer {
             ? Socialtext::Search::Solr::Factory->new
             : Socialtext::Search::AbstractFactory->GetFactory;
 
+        my $config_type = $self->arg->{search_config} || 'live';
         $indexer = $factory->create_indexer(
-            $ws->name,
-            config_type => ($self->arg->{search_config} || 'live')
+            ($ws ? ($ws->name, config_type => $config_type)
+                 : ()
+            )
         );
     };
     unless ($indexer) {

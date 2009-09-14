@@ -18,7 +18,7 @@ Base class for other Solr classes.
 
 =cut
 
-has 'ws_name' => (is => 'ro', isa => 'Str', required => 1);
+has 'ws_name' => (is => 'ro', isa => 'Str');
 has 'workspace' => (is => 'ro', isa => 'Object', lazy_build => 1);
 has 'hub'       => (is => 'ro', isa => 'Object',           lazy_build => 1);
 has 'solr'      => (is => 'ro', isa => 'WebService::Solr', lazy_build => 1);
