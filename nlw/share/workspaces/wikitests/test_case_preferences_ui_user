@@ -242,7 +242,7 @@
 
 | *Comment* | Test Case: Preferences UI User Weblogs. Save without changing values |  |
 | is_selected_ok | weblog__weblog_depth | label=50 |
-| click_ok | link=Save |  |
+| click_and_wait | link=Save |  |
 | is_selected_ok | weblog__weblog_depth | label=50 |
 
 | *Comment* | Test Case: Preferences UI User Weblogs. Navigate away, come back, verify |  |
@@ -272,7 +272,7 @@
 
 | *Comment* | Test Case: Preferences UI User Syndicate. Save without changing values |  |
 | is_selected_ok | syndicate__syndication_depth | label=50 |
-| click_ok | link=Save |  |
+| click_and_wait | link=Save |  |
 | is_selected_ok | syndicate__syndication_depth | label=50 |
 
 | *Comment* | Test Case: Preferences UI User Syndicate. Navigate away, come back, verify |  |
