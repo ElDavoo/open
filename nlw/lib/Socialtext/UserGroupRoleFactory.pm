@@ -323,6 +323,8 @@ be used if not specified here.
 
 =back
 
+=back
+
 =head1 AUTHOR
 
 Socialtext, Inc.,  C<< <code@socialtext.com> >>
