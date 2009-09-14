@@ -19,7 +19,7 @@ Note: ticket inspiring this series of tests (amongst others:) {rt: 26849}
 | st-result | 1 total |  |
 | st-result | Another Salary |  |
 
-| st-search | ="Another Salary" | Pages matching '"Another Salary"' |
+| st-search | ="Another Salary" | Pages matching 'title:"Another Salary"' |
 | st-result | 1 total |  |
 | st-result | Another Salary |  |
 

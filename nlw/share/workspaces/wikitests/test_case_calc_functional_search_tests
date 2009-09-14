@@ -1,7 +1,7 @@
 Note: Heavily dependent on the default content of current test-data workspace
 
 | *Comment* | Test case: Calc Functional Search Tests easy searches |  |
-| st-search | =Payment | Pages matching 'Payment' |
+| st-search | =Payment | Pages matching 'title:Payment' |
 | st-result | 2 total |  |
 | st-result | House Payment |  |
 | st-result | Credit Card Payment |  |
@@ -70,20 +70,20 @@ Note: Heavily dependent on the default content of current test-data workspace
 Title searches
 
 | *Comment* | Test case: Calc Functional Search Tests AND title searches |  |
-| st-search | =Credit* AND spen* | Pages matching 'Credit* AND spen*' |
+| st-search | =Credit* AND spen* | Pages matching 'title:Credit* AND spen*' |
 | st-result | 1 total |  |
 | st-result | Credit Card Payment |  |
-| st-search | =Credit* AND NOT amou* | Pages matching 'Credit* AND NOT amou*' |
+| st-search | =Credit* AND NOT amou* | Pages matching 'title:Credit* AND NOT amou*' |
 | st-result | 0 total |  |
-| st-search | =Sala* AND tag:retirement | Pages matching 'Sala* AND tag:retirement' |
+| st-search | =Sala* AND tag:retirement | Pages matching 'title:Sala* AND tag:retirement' |
 | st-result | 2 total |  |
 | st-result | Salary |  |
 | st-result | Another Salary |  |
-| st-search | =Sala* AND NOT tag:retirement | Pages matching 'Sala* AND NOT tag:retirement' |
+| st-search | =Sala* AND NOT tag:retirement | Pages matching 'title:Sala* AND NOT tag:retirement' |
 | st-result | 0 total |  |
-| st-search | =Sala* AND -tag:retirement | Pages matching 'Sala* AND -tag:retirement' |
+| st-search | =Sala* AND -tag:retirement | Pages matching 'title:Sala* AND -tag:retirement' |
 | st-result | 0 total |  |
-| st-search | ="Another Salary" AND tag:"Bob The Bellhop" | Pages matching '"Another Salary" AND tag:"Bob The Bellhop"' |
+| st-search | ="Another Salary" AND tag:"Bob The Bellhop" | Pages matching 'title:"Another Salary" AND tag:"Bob The Bellhop"' |
 | st-result | 1 total |  |
 | st-result | Another Salary |  |
 | *Comment* | Use equal sign and title as second component of search |  |
@@ -91,7 +91,7 @@ Title searches
 | st-result | 2 total |  |
 | st-result | Salary |  |
 | st-result | Another Salary |  |
-| st-search | tag:retirement AND =Salary | Pages matching 'tag:retirement AND =Salary' |
+| st-search | tag:retirement AND =Salary | Pages matching 'tag:retirement AND title:Salary' |
 | st-result | 2 total |  |
 | st-result | Another Salary |  |
 
@@ -129,7 +129,7 @@ Title searches
 | st-result | Another Salary |  |
 
 | *Comment* | Test case: Calc Functional Search Tests OR title searches |  |
-| st-search | =Salary OR Month | Pages matching 'Salary OR Month' |
+| st-search | =Salary OR Month | Pages matching 'title:Salary OR Month' |
 | st-result | 5 total |  |
 | st-result | Salary |  |
 | st-result | Another Salary |  |
@@ -145,7 +145,7 @@ Title searches
 | st-result | Car Loan |  |
 | st-result | Credit Card Payment |  |
 
-| st-search | ="Another Salary" OR tag:"my next thirty years" | Pages matching '"Another Salary" OR tag:"my next thirty years"' |
+| st-search | ="Another Salary" OR tag:"my next thirty years" | Pages matching 'title:"Another Salary" OR tag:"my next thirty years"' |
 | st-result | 2 total |  |
 | st-result | House Payment |  |
 | st-result | Another Salary |  |
@@ -183,7 +183,7 @@ Title searches
 | st-result | Car Loan |  |
 | st-result | House Payment |  |
 | st-result | Credit Card Payment |  |
-| st-search | =Salary OR 5% | Pages matching 'Salary OR 5%' |
+| st-search | =Salary OR 5% | Pages matching 'title:Salary OR 5%' |
 | st-result | 2 total |  |
 | st-result | Salary |  |
 | st-result | Another Salary |  |
@@ -204,7 +204,7 @@ Title searches
 | st-search | salary NOT title:salary | Pages matching 'salary NOT title:salary' |
 | st-result | 0 total |  |
 
-| st-search | ="Another Salary" NOT tag:"foo" | Pages matching '"Another Salary" NOT tag:"foo"' |
+| st-search | ="Another Salary" NOT tag:"foo" | Pages matching 'title:"Another Salary" NOT tag:"foo"' |
 | st-result | 1 total |  |
 | st-result | Another Salary |
 
@@ -237,7 +237,7 @@ Title searches
 | st-result | 1 total |  |
 | st-result | House Payment |  |
 
-| st-search | 200 NOT =Salary | Pages matching '200 NOT =Salary' |
+| st-search | 200 NOT =Salary | Pages matching '200 NOT title:Salary' |
 | st-result | 1 total |  |
 | st-result | Credit Card Payment |  |
 
