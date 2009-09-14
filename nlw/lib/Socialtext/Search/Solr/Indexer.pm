@@ -1,6 +1,7 @@
 package Socialtext::Search::Solr::Indexer;
 # @COPYRIGHT@
 use Date::Parse qw(str2time);
+use DateTime::Format::Pg;
 use DateTime;
 use Moose;
 use MooseX::AttributeInflate;
@@ -270,6 +271,73 @@ sub _truncate {
     $$text_ref = substr( $$text_ref, 0, $max_size );
 }
 
+##################
+# Signal Handling
+##################
+
+sub index_signal {
+    my ( $self, $signal ) = @_;
+    return $self->delete_signal($signal) if $signal->is_hidden;
+    $self->_add_signal_doc($signal);
+    $self->_commit;
+}
+
+# Remove the signal from the index.
+sub delete_signal {
+    my ( $self, $signal ) = @_;
+    my $key = $signal->signal_id;
+    $self->solr->delete_by_query("signal_key:$key");
+    $self->_commit;
+}
+
+# Create a new Document object and set it's fields.  Then delete the document
+# from the index using 'key', which should be unique, and then add the
+# document to the index.  The 'key' is just the signal id.
+sub _add_signal_doc {
+    my $self = shift;
+    my $signal = shift;
+
+    Socialtext::Timer->Continue('solr_signal');
+
+    my $id = $signal->signal_id;
+    st_log->debug("Indexing signal doc $id");
+
+    my $ctime = _pg_date_to_iso($signal->at);
+    my $recip = $signal->recipient_id || 0;
+    my @user_topics = $signal->user_topics;
+    my @page_topics = $signal->page_topics;
+
+    Socialtext::Timer->Continue('solr_signal_body');
+    my $body = $signal->body;
+    _scrub_body(\$body);
+    Socialtext::Timer->Pause('solr_signal_body');
+
+    my @external_links = (); # NOT IMPLEMENTED
+
+    my @fields = (
+        [id => $id],
+        [w => 0],
+        [doctype => 'signal'], 
+        [signal_key => $id],
+        [date => $ctime], [created => $ctime],
+        [creator => $signal->user_id],
+        [body => $body],
+        [pvt => $recip ? 1 : 0],
+        [dm_recip => $recip],
+        (map { [a => $_] } @{ $signal->account_ids }),
+        [reply_to => $signal->in_reply_to->user_id],
+        (map { [mention => $_->user_id] } @user_topics ),
+        (map { [link_page_id => $_->page_id],
+               [link_wksp_id => $_->workspace_id],
+            } @page_topics),
+        (map { [link_external => $_] } @external_links),
+    );
+
+    $self->_add_doc(WebService::Solr::Document->new(@fields));
+
+    Socialtext::Timer->Pause('solr_signal');
+}
+
 #################
 # Miscellaneous 
 #################
@@ -295,6 +363,17 @@ sub _debug {
     my $msg = shift || "(no message)";
     $msg = __PACKAGE__ . ": $msg";
     st_log->debug($msg);
+}
+
+sub _pg_date_to_iso {
+    my $pgdate = shift;
+    my $dt = DateTime::Format::Pg->new(
+        server_tz => 'UTC',
+    );
+    my $utc_time = $dt->parse_timestamptz( $pgdate );
+    my $date = DateTime->from_epoch( epoch => $utc_time->epoch );
+    $date->set_time_zone('UTC');
+    return $date->iso8601 . 'Z';
 }
 
 sub _date_header_to_iso {

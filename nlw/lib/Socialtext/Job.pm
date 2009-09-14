@@ -35,6 +35,11 @@ has page => (
     lazy_build => 1,
 );
 
+has signal => (
+    is => 'ro', isa => 'Maybe[Socialtext::Signal]',
+    lazy_build => 1,
+);
+
 has user => (
     is => 'ro', isa => 'Maybe[Socialtext::User]',
     lazy_build => 1,
@@ -137,6 +142,20 @@ sub _build_page {
     my $msg = "Couldn't load page id=$page_id from the '" . 
         $hub->current_workspace->name .
         "' workspace: $@";
+    $self->failed($msg);
+    die $msg;
+}
+
+sub _build_signal {
+    my $self = shift;
+    my $signal_id = $self->arg->{signal_id};
+    return unless $signal_id;
+
+    require Socialtext::Signal;
+    my $signal = eval { Socialtext::Signal->Get( signal_id => $signal_id ) };
+    return $signal if $signal;
+
+    my $msg = "Couldn't load signal id=$signal_id";
     $self->failed($msg);
     die $msg;
 }
