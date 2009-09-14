@@ -21,8 +21,8 @@
 
 | *Comment* | Test Case: Activities Widget Verify Other Signals. Signals in widget. Select signals. |  |
 | st-select-widget-frame | activities_widget |  |
-| wait_for_element_visible_ok | action | 10000 |
-| select_ok | action | label=signals |
+| wait_for_element_present_ok | action-signals | 10000 |
+| click_ok | action-signals |  |
 
 | *Comment* | Test Case: Activities Widget Verify Other Signals. select_and_wait in iframe doesn't work. Use pause. |  |
 | pause | 10000 | I hate pause |

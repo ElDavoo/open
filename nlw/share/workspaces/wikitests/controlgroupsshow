@@ -36,9 +36,10 @@
 | add-group-to-workspace | %%group_id%% | %%workspace1%% |
 | add-group-to-workspace | %%group_id%% | %%workspace2%% |
 | add-group-to-workspace | %%group_id%% | %%workspace3%% |
+| add-user-to-group | %%username%% | %%group_id%% |
 | open_ok | /nlw/control/group/ |  |
 | wait_for_element_visible_ok | link=%%samplegroup2%% | 30000 |
-| click_ok | link=%%samplegroup1%% | 30000 |  |
+| click_ok | link=%%samplegroup1%% | 30000 |
 
 | *Comment* | See workspaces added |  |
 | pause | %%gpt%% |  |
@@ -60,8 +61,10 @@
 | open_ok | /control/group/ |  |
 | *Comment* | SEE PAGINATION ... |  |
 | pause | %%gpt%% |  |
-| pause | 60000 |  | *Comment* | Tearing Down Groups |
-| delete-created-groups |  |  |
+| pause | 60000 |
+
+| *Comment* | Tearing Down Groups |
+| delete-created-groups |  |
 | st-admin-export-workspace-ok | %%workspace1%% |
 | st-admin-export-workspace-ok | %%workspace2%% |
 
