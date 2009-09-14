@@ -53,5 +53,5 @@ wait_for_text_present_ok | 2 minutes ago | 120000 |
 | wait_for_text_present_ok | Other User Summary signal %%start_time%% | 30000 |
 
 *Comment* | Test case: Activities Widget Verify Others. wait for auto refresh to two minutes ago | |
-| wait_for_text_present_ok | 2 minutes ago | 120000 |
+| wait_for_text_present_ok | 3 minutes ago | 120000 |
 | select-frame | relative=parent | |
