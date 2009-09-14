@@ -76,7 +76,7 @@
 | type_ok | //body | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |  |
+| click_ok | post |  |
 | pause | 3000 |  |
 | select-frame | relative=parent |  |
 

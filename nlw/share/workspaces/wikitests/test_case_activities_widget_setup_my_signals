@@ -19,7 +19,7 @@
 | click_and_wait | st-save-button-link |  |
 
 | *Comment* | Test Case: Activities Widget Setup My Signals. Get a fresh Activities widget |  |
-| st-single-widget-in-dashboard | gallery-widget-Activities |
+| st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 
