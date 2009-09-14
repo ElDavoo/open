@@ -1,4 +1,7 @@
 | *Comment* | Test Case: Miki Pagination |  |  |
+
+| *Comment* | Test Case: Miki Pagination. ONLY WORKS WHEN INCLUDED FROM TEST CASE: MIKI |  |  |
+
 | set | baseusername | aaaabasemiki%%start_time%% |  |
 | create_user | %%baseusername%%01@ken.socialtext.net | %%password%% | %%mikiacct%% |
 | create_user | %%baseusername%%02@ken.socialtext.net | %%password%% | %%mikiacct%% |
@@ -44,14 +47,15 @@
 | create_user | %%baseusername%%42@ken.socialtext.net | %%password%% | %%mikiacct%% |
 
 | *Comment* | Test case: Miki Pagination - Test Letter Links |  |
-| click_ok | link=People |  |
+| wait_for_element_visible_ok | link=People | 30000 |  |
+| click_and_wait | link=People |  |
 | wait_for_element_visible_ok | link=B | 30000 |
-| click_ok | link=B |  |
+| click_and_wait | link=B |  |
 | wait_for_element_visible_ok | link=A | 30000 |
 | wait_for_element_visible_ok | link=C | 30000 |
 | wait_for_element_not_present_ok | link=B | 30000 |
 | text_like | No people |  |
-| click_ok | link=A |  |
+| click_and_wait | link=A |  |
 
 | *Comment* | Test case: Miki Pagination - First Page |  |
 | wait_for_element_not_present_ok | link=A | 30000 |
@@ -71,7 +75,8 @@
 | text_like | //body | First page |
 
 | *Comment* | Test case: Miki Pagination - Page Two |  |
-| click_ok | link=Next page >> | 30000 |
+| wait_for_element_visible_ok | link=Next page >> | 30000 |
+| click_and_wait | link=Next page >> |  |
 | wait_for_element_visible_ok | link=%%baseusername%%21 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%30 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%35 | 30000 |
@@ -83,7 +88,8 @@
 | wait_for_element_visible_ok | link=First page | 30000 |
 
 | *Comment* | Test case: Miki Pagination - Page Three |  |
-| click_ok | link=Next page >> |  |
+| wait_for_element_visible_ok | link=Next page >> | 30000 |
+| click_and_wait | link=Next page >> |  |
 | wait_for_element_visible_ok | link=%%baseusername%%41 | 30000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%01 | 30000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%21 | 30000 |
@@ -93,10 +99,10 @@
 | wait_for_element_not_present_ok | link=Next page >> | 30000 |
 | text_like | //body | Next page >> |
 | wait_for_element_visible_ok | link=First page | 30000 |
-| wait_for_element_visible_ok | link=<< Previous page | 30000 |
 
 | *Comment* | Test case: Miki Pagination - Back to Page 2 |  |
-| click_ok | link=<< Previous page |  |
+| wait_for_element_visible_ok | link=<< Previous page | 30000 |
+| click_and_wait | link=<< Previous page |  |
 | wait_for_element_visible_ok | link=%%baseusername%%21 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%30 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%35 | 30000 |
@@ -105,10 +111,10 @@
 | wait_for_element_not_present_ok | link=%%baseusername%%41 | 30000 |
 | wait_for_element_visible_ok | link=Next page >> | 30000 |
 | wait_for_element_visible_ok | link=<< Previous page | 30000 |
-| wait_for_element_visible_ok | link=First page | 30000 |
 
 | *Comment* | Test case: Miki Pagination - Back to page 1 |  |
-| click_ok | link=First page |  |
+| wait_for_element_visible_ok | link=First page | 30000 |
+| click_and_wait | link=First page |  |
 | wait_for_element_visible_ok | link=%%baseusername%%01 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%05 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%06 | 30000 |

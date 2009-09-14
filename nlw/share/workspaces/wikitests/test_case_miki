@@ -37,13 +37,14 @@
 | wait_for_element_visible_ok | st-signal-text | 30000 |
 | wait_for_element_visible_ok | st-signal-submit | 30000 |
 | type_ok | st-signal-text | %%signal1%% |
-| click_ok | st-signal-submit |  |
+| click_and_wait | st-signal-submit |  |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | wait_for_text_present_ok | less than a minute ago | 30000 |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 
 | *Comment* | Test case: Miki Log In as 'main' user, see global nav |  |
-| click_ok | link=Log out |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |
+| click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 | st-login | %%mikiuser%% | %%password%% |
 | open_ok | /m/ |  |
@@ -57,12 +58,12 @@
 | *Comment* | Test case: Miki As 'main' user, see old signals, send some |  |
 | wait_for_element_visible_ok | link=All | 30000 |
 | text_unlike | //body | %%signal1%% |
-| click_ok | link=All | 30000 |
+| click_and_wait | link=All | 30000 |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 
 | *Comment* | Test case: Find 'followed' user with MIKI search, click through, follow |  |
-| click_ok | link=People |  |
+| click_and_wait | link=People |  |
 | wait_for_element_visible_ok | st-search-text | 30000 |
 | type_ok | st-search-text | %%othershortuser%% |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
@@ -72,11 +73,11 @@
 
 | *Comment* | Test Case: Follow. Make %%mikiuser%% Follow %%othershortuser%% |  |
 | wait_for_element_visible_ok | link=Follow | 30000 |
-| click_ok | link=Follow |  |
+| click_and_wait | link=Follow |  |
 | wait_for_element_visible_ok | link=Stop Following | 30000 |
-| click_ok | link=Stop Following |  |
+| click_and_wait | link=Stop Following |  |
 | wait_for_element_visible_ok | link=Follow | 30000 |
-| click_ok | link=Follow |  |
+| click_and_wait | link=Follow |  |
 | wait_for_element_visible_ok | link=Stop Following | 30000 |
 | open_ok | /m/ |  |
 | wait_for_element_visible_ok | link=All | 30000 |
@@ -89,7 +90,7 @@
 
 | *Comment* | Test case: Miki Click 'Workspaces' in global nav |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
-| click_ok | link=Workspaces |  |
+| click_and_wait | link=Workspaces |  |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | wait_for_element_visible_ok | link=Signals | 30000 |
@@ -101,7 +102,7 @@
 | text_like | Workspaces you belong to: |  |
 
 | *Comment* | Test case: Miki Click 'Activity' in global nav |  |
-| click_ok | link=Activity |  |
+| click_and_wait | link=Activity |  |
 | wait_for_element_visible_ok | link=All | 30000 |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
 | wait_for_element_visible_ok | link=refresh | 30000 |
@@ -110,7 +111,7 @@
 | text_like | My Conversations |  |
 
 | *Comment* | Test case: Miki Click 'All' within 'Activity' in global nav |  |
-| click_ok | Link=All |  |
+| click_and_wait | Link=All |  |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
 | wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_element_visible_ok | link=My Conversations | 30000 |
@@ -119,17 +120,18 @@
 | text_like | All |  |
 
 | *Comment* | Test case: Miki Click 'People I follow' within 'Activity' in global nav |  |
-| click_ok | link=People I follow |  |
+| click_and_wait | link=People I follow |  |
 | wait_for_element_visible_ok | link=My Conversations | 30000 |
 | wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_element_visible_ok | link=People | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | People I follow |  |
-| click_ok | link=My Conversations |  |
+| click_and_wait | link=My Conversations |  |
 
 | *Comment* | Test Case: Miki change enabled-ness, see different global nav ftw. |  |
 | disable-acct-plugin | signals | %%mikiacct%% |
-| click_ok | link=Log out |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |
+| click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 | st-login | %%mikiuser%% | %%password%% |
 | open_ok | /m/ |  |
@@ -141,7 +143,8 @@
 | text_like | Workspaces you belong to: |  |
 | text_like | You have free access to view and |  |
 | text_like | contribute to any of these public wikis: |  |
-| click_ok | link=Log out |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |
+| click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 
 | *Comment* | Test Case: Miki traditional Miki verification as %%username%% |  |
