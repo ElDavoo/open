@@ -157,6 +157,23 @@ sub _send_page_notifications {
     return @job_ids;
 }
 
+sub index_signal {
+    my $self = shift;
+    my $signal = shift;
+
+    my $job_id = $self->insert(
+        'Socialtext::Job::SignalIndex' => {
+            solr => 1,
+            signal_id => $signal->signal_id,
+            job => {
+                priority => 70,
+                coalesce => $signal->signal_id,
+            },
+        }
+    );
+    return ($job_id);
+}
+
 
 __PACKAGE__->meta->make_immutable;
 1;
