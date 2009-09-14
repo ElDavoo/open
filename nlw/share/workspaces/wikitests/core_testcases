@@ -13,6 +13,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: Workspace Navigation]
 * [Test Case: Global Navigation]
 * [Test Case: Miki]
+* [Test Case: Miki Authentication]
 * [Test case: Invite Anonymous User]
 * [Test case: Self Register]
 * [Test case: Watchlist]

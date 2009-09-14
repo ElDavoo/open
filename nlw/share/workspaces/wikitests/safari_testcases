@@ -14,6 +14,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: Workspace Navigation]
 * [Test Case: Global Navigation]
 * [Test Case: Miki]
+* [Test Case: Miki Authentication]
 * [Test case: Invite Anonymous User]
 * [Test case: Self Register]
 * [Test case: Watchlist]
@@ -67,24 +68,26 @@ test env properly and are not testing the test-workspace
 * [Test Case: Email]
 * [Test Case: Email Attachment]
 * [Test Case: Email Spreadsheet]
-* [Test Case: Miki Authentication]
+* [Test Case: Signal to Networks]
+* [Test Case: Search Is Too General]
 
-* [Localization Testcases]
 * [Test case: Business Control Panel]
 * [Report Testcases]
-* [Test Case: Search Is Too General]
 
 LDAP Testcases will Enable LDAP and use a known LDAP user instead of a Default user where required
 
 * [LDAP Testcases]
 
 Removed Default User Testcases from Safari since one of those testcases requires high permissions and it is sufficient to test Default User Testcases in the other browsers.
+Removed Localization Testcases from Safari since they are tested sufficiently in other browsers.
 
 Profile testcases
 
 * [Profile Testcases]
 
 Widgets testcases
+
+NOTE: Safari Widgets Testcases may now be identical to Widgets Testcases, 2009-09-15
 
 * [Safari Widgets Testcases]
 * [Test Case: Gadgets Galore]
