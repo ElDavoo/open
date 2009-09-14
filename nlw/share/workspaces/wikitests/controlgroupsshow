@@ -3,17 +3,18 @@
 | set | workspace1 | ws-groupshow-1-%%start_time%% |
 | set | workspace2 | ws-groupshow-2-%%start_time%% |
 | set | workspace3 | ws-groupshow-3-%%start_time%% |
-| set | samplegroup1 | group-with-acct-1-%%start_time%% |
-| set | samplegroup2 | group-no-acct-2-%%start_time%% |
+| set | samplegroup1 | group-no-acct-2-%%start_time%% |
+| set | samplegroup2 | group-with-acct-1-%%start_time%% |
+
 | set | groupsacct | groups-acct-%%start_time%% |
 | set | gpt | 6000 |
 
-| *Comment* | SEE no groups |  |
+| *Comment* | SEE no groups |  |  |
 | open_ok | /nlw/control/group |  |  |
 | pause | %%gpt%% |  |  |
 | create-account | %%groupsacct%% |  |  |
-| create-group | %%samplegroup1%% | %%groupsacct%% | %%username%% |
-| create-group | %%samplegroup2%% |  |  |
+| create-group | %%samplegroup1%% |  |  |
+| create-group | %%samplegroup2%% | %%groupsacct%% | %%username%% |
 | create-workspace | %%workspace1%% | %%groupsacct%% |  |
 | create-workspace | %%workspace2%% | %%groupsacct%% |  |
 | create-workspace | %%workspace3%% | %%groupsacct%% |  |
@@ -32,12 +33,11 @@
 
 | *Comment* | SEE NO workspaces |  |
 | pause | %%gpt%% |  |
-| add-group-to-workspace | %%samplegroup1%% | %%workspace1%% |
-| add-group-to-workspace | %%samplegroup2%% | %%workspace1%% |
-| add-group-to-workspace | %%samplegroup3%% | %%workspace1%% |
-| add-group-to-workspace | %%samplegroup2%% | %%workspace1%% |
+| add-group-to-workspace | %%group_id%% | %%workspace1%% |
+| add-group-to-workspace | %%group_id%% | %%workspace2%% |
+| add-group-to-workspace | %%group_id%% | %%workspace3%% |
 | open_ok | /nlw/control/group/ |  |
-| wait_for_element_visible_ok | link=%%samplegroup1%% | 30000 |
+| wait_for_element_visible_ok | link=%%samplegroup2%% | 30000 |
 | click_ok | link=%%samplegroup1%% | 30000 |  |
 
 | *Comment* | See workspaces added |  |
@@ -52,18 +52,16 @@
 | *Comment* | See Sorted by Group name, desc |
 
 | *Comment* | Sort by Group name - see reverse order |
+| pause | 60000 |
 
 | *Comment* | Add a lot of groups ... |
 
-| create-multi-groups | biggrouplist | 55 |
+| create-multi-groups | biggrouplist | 65 |
 | open_ok | /control/group/ |  |
 | *Comment* | SEE PAGINATION ... |  |
 | pause | %%gpt%% |  |
-
-| *Comment* | Tearing Down Groups |
-| delete-multi-groups | lotsofgroups |
-| delete-group | %%samplegroup1%% |
-| delete-group | %%samplegroup2%% |
+| pause | 60000 |  | *Comment* | Tearing Down Groups |
+| delete-created-groups |  |  |
 | st-admin-export-workspace-ok | %%workspace1%% |
 | st-admin-export-workspace-ok | %%workspace2%% |
 

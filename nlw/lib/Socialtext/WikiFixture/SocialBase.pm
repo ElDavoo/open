@@ -351,6 +351,8 @@ sub create_group {
     # e.g. | set | my_group_id | %%group_id%% |
 
     $self->{group_id} = $group->group_id;
+    push @{$self->{created_groups}}, $group->group_id;
+    
     diag "Created group $group_name (".$group->driver_unique_id."), ID: $self->{group_id} (use the \%\%group_id\%\% var to access this)" if $group;
 }
 
@@ -358,17 +360,14 @@ sub create_multi_groups {
    my ($self, $name, $num) = @_;
    for (my $idx=0; $idx<$num; $idx++) {
        my $fullname = $name . $idx;
-       $self->handle_command('create-group','$fullname');
+       $self->handle_command('create-group',"$fullname");
    }
 }
 
 
-sub delete_multi_groups {
-    my ($self, $name, $num) = @_;
-    for (my $idx=0; $idx<$num; $idx++) {
-        my $fullname = $name . $idx;
-        $self->handle_command('delete-group','$fullname');
-    }
+sub delete_created_groups {
+    my $self = shift;
+    $self->handle_command('delete-group', $_) for (@{$self->{created_groups}});
 }
 
 
