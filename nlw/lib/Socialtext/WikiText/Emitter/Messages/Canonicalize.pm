@@ -47,12 +47,10 @@ sub user_as_id {
 sub user_as_username {
     my $self = shift;
     my $ast  = shift;
-
-    my $user_string = $ast->{user_string};
     my $account_id = $self->{callbacks}{account_id};
-    my $user = eval{ Socialtext::User->Resolve( $user_string ) };
 
-    return "{user: $user_string}" unless $user;
+    my $user = $self->_ast_to_user($ast);
+    return "{user: $ast->{user_string}}" unless $user;
 
     if ($user->primary_account_id == $account_id) {
         my $username = $user->username;
@@ -61,6 +59,12 @@ sub user_as_username {
     else {
         return $user->best_full_name;
     }
+}
+
+sub _ast_to_user {
+    my $self = shift;
+    my $ast = shift;
+    return eval{ Socialtext::User->Resolve( $ast->{user_string} ) };
 }
 
 1;
