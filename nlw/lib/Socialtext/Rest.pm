@@ -309,19 +309,6 @@ sub not_authorized {
     return 'User not authorized';
 }
 
-=head2 _user_is_business_admin_p()
-
-_Protected_
-
-Yet another way to check for a role, though this one works a bit better for checking
-if the current user is a business admin.
-
-=cut
-sub _user_is_business_admin_p {
-    my $self = shift;
-    return $self->user_can( 'is_business_admin' );
-}
-
 =head2 no_workspace()
 
 Informs the client that we can't operate because no valid workspace

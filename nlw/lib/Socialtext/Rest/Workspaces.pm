@@ -66,7 +66,7 @@ sub POST {
     my $self = shift;
     my $rest = shift;
 
-    unless ($self->_user_is_business_admin_p( ) ) {
+    unless ($self->user_can('is_business_admin')) {
         $rest->header(
                       -status => HTTP_401_Unauthorized,
                      );

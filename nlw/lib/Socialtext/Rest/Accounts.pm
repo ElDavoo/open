@@ -55,7 +55,7 @@ sub POST {
     my $new_account_name = $account_request_hash->{name};
     my $new_account_type = $account_request_hash->{type};
 
-    unless ($self->_user_is_business_admin_p( ) ) {
+    unless ($self->user_can('is_business_admin')) {
         $rest->header(
                       -status => HTTP_401_Unauthorized,
                      );

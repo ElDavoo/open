@@ -24,7 +24,7 @@ sub if_authorized {
 
     if ($method eq 'POST') {
         return $self->not_authorized
-            unless $self->_user_is_business_admin_p;
+            unless ($self->user_can('is_business_admin'));
     }
     elsif ($method eq 'GET') {
         return $self->not_authorized

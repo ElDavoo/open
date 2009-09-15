@@ -27,7 +27,7 @@ sub if_authorized {
         unless $self->allowed_methods =~ /\b\Q$method\E\b/;
 
     return $self->not_authorized
-        unless $self->_user_is_business_admin_p;
+        unless ($self->user_can('is_business_admin'));
 
     return $self->$call(@_);
 }

@@ -26,7 +26,7 @@ sub POST_json {
     my $rest = shift;
     my $data = decode_json( $rest->getContent() );
 
-    unless ( $self->_user_is_business_admin_p ) {
+    unless ($self->user_can('is_business_admin')) {
         $rest->header(
             -status => HTTP_401_Unauthorized,
         );
