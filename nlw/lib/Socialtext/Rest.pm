@@ -21,9 +21,9 @@ use Socialtext::URI;
 
 our $AUTOLOAD;
 
-field 'hub',  -init => '$self->main->hub';
-field 'main', -init => '$self->_new_main';
-field 'page', -init => '$self->hub->pages->new_from_uri($self->pname)';
+field 'hub',   -init => '$self->main->hub';
+field 'main',  -init => '$self->_new_main';
+field 'page',  -init => '$self->hub->pages->new_from_uri($self->pname)';
 field 'authz', -init => '$self->hub ? $self->hub->authz : Socialtext::Authz->new()';
 field 'workspace';
 field 'params' => {};
