@@ -21,6 +21,7 @@ my %css_files = (
     standard => [qw(screen.css screen.ie.css screen.ie6.css screen.ie7.css print.css print.ie.css)],
     popup    => [qw(popup.css popup.ie.css)],
     wikiwyg  => [qw(wikiwyg.css)],
+    mobile   => [qw(miki.css)],
 );
 
 sub class_id { 'skin' }
