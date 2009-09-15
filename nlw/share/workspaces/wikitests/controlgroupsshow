@@ -72,7 +72,7 @@
 | create-multi-groups | biggrouplist | 65 |
 | open_ok | /nlw/control/group/ |  |
 | *Comment* | SEE PAGINATION ... |  |
-| text_like | //body | Showing 1 - 50 of |  |
+| text_like | //body | Showing 1 - 50 of |
 | wait_for_element_visible_ok | link=2 | 30000 |
 | pause | %%gpt%% |  |
 | click_ok | link=2 |  |
