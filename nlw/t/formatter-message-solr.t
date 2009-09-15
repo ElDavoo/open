@@ -26,21 +26,21 @@ sub format {
 }
 
 __DATA__
-=== Asis phrase wikitext supported
+=== Asis phrase wikitext stripped
 --- wikitext: I mean to say {{hello goodbye}}.
---- solr: I mean to say {{hello goodbye}}.
+--- solr: I mean to say hello goodbye.
 
-=== Bold phrase wikitext supported
+=== Bold phrase wikitext stripped
 --- wikitext: I mean to say *hello* goodbye.
---- solr: I mean to say *hello* goodbye.
+--- solr: I mean to say hello goodbye.
 
-=== Italic phrase wikitext supported
+=== Italic phrase wikitext stripped
 --- wikitext: I mean to say _hello_ goodbye.
---- solr: I mean to say _hello_ goodbye.
+--- solr: I mean to say hello goodbye.
 
-=== Strikethrough phrase wikitext supported
+=== Strikethrough phrase wikitext stripped
 --- wikitext: I mean to say -hello- goodbye.
---- solr: I mean to say -hello- goodbye.
+--- solr: I mean to say hello goodbye.
 
 === User mentions are supported
 --- wikitext: Hi there {user: 42}!

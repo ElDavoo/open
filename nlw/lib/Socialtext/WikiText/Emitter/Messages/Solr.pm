@@ -7,10 +7,10 @@ use Socialtext::l10n qw/loc/;
 use Readonly;
 
 Readonly my %markup => (
-    asis => [ '{{', '}}' ],
-    b    => [ '*',  '*' ],
-    i    => [ '_',  '_' ],
-    del  => [ '-',  '-' ],
+    asis => [ '', '' ],
+    b    => [ '',  '' ],
+    i    => [ '',  '' ],
+    del  => [ '',  '' ],
     a    => [ '"',  '"<HREF>' ],
 );
 
