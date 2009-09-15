@@ -255,8 +255,6 @@ This test case is an aid to visually observing each screen type in the applicati
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
 
-include | [ControlGroupsShow] | |
+| include | [ControlGroupsShow] |  |
 
 | *Comment* | ControlShow COMPLETED |  |
-
-lude

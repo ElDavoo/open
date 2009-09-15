@@ -44,28 +44,55 @@
 | *Comment* | See workspaces added |  |
 | pause | %%gpt%% |  |
 
-| *Comment* | SEE Sorted by # of workspaces, asc |
+| *Comment* | SEE DEFAULT Sorted by # of users, desc |
+| open_ok | /nlw/control/group |
+| wait_for_element_visible_ok | link=Number of Users |
 
-| *Comment* | SEE Sorted by # of workspaces, desc |
+| click_ok | link=Number of Users |
+| *Comment* | SEE Sorted by # of users, asc |
+| pause | %%gpt%% |
 
-| *Comment* | SEE Sorted by Groups name, asc |
+| click_ok | link=ID |
+| *Comment* | SEE Sorted by Groups ID, asc |
+| pause | %%gpt%% |
 
-| *Comment* | See Sorted by Group name, desc |
+| click_ok | link=ID |
+| *Comment* | See Sorted by Group ID, desc |
+| pause | %%gpt%% |
 
-| *Comment* | Sort by Group name - see reverse order |
-| pause | 60000 |
+| click_ok | link=Name |
+| *Comment* | Sort by Group name desc |
+| pause | %%gpt%% |
 
-| *Comment* | Add a lot of groups ... |
+| click_ok | link=Name |
+| *Comment* | Sort by Group name asc |
+| pause | %%gpt%% |
 
+| *Comment* | Add a lot of groups ... |  |
 | create-multi-groups | biggrouplist | 65 |
-| open_ok | /control/group/ |  |
+| open_ok | /nlw/control/group/ |  |
 | *Comment* | SEE PAGINATION ... |  |
+| text_like | //body | Showing 1 - 50 of |  |
+| wait_for_element_visible_ok | link=2 | 30000 |
 | pause | %%gpt%% |  |
-| pause | 60000 |
+| click_ok | link=2 |  |
+| *Comment* | SEE PAGE 2 |  |
+| pause | %%gpt%% |  |
+
+| open_ok | /nlw/control/account |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%groupsacct%% |
+| wait_for_element_visible_ok | st-submit-search-by-name |  |
+| click_ok | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=%%groupsacct%% |  |
+| click_ok | link=%%groupsacct%% |  |
+
+| *Comment* | SCROLL DOWN; see %%username%% is a member, see %%groupsacct%% is a group |
+| pause | %%gpt%% |
 
 | *Comment* | Tearing Down Groups |
 | delete-created-groups |  |
-| st-admin-export-workspace-ok | %%workspace1%% |
-| st-admin-export-workspace-ok | %%workspace2%% |
+| st-admin | delete-workspace --no-export --w %%workspace1%% |
+| st-admin | delete-workspace --no-export --w %%workspace2%% |
 
 | *Comment* | ControlGroupsShow COMPLETED |
