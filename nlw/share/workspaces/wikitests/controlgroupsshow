@@ -46,9 +46,9 @@
 
 | *Comment* | SEE DEFAULT Sorted by # of users, desc |
 | open_ok | /nlw/control/group |
-| wait_for_element_visible_ok | link=Number of Users |
+| wait_for_element_visible_ok | link=Users |
 
-| click_ok | link=Number of Users |
+| click_ok | link=Users |
 | *Comment* | SEE Sorted by # of users, asc |
 | pause | %%gpt%% |
 
