@@ -24,6 +24,7 @@ our $AUTOLOAD;
 field 'hub',  -init => '$self->main->hub';
 field 'main', -init => '$self->_new_main';
 field 'page', -init => '$self->hub->pages->new_from_uri($self->pname)';
+field 'authz', -init => '$self->hub ? $self->hub->authz : Socialtext::Authz->new()';
 field 'workspace';
 field 'params' => {};
 field 'rest';
@@ -60,8 +61,8 @@ sub if_plugin_authorized {
     my $method = shift;
     my $perl_method = shift;
 
-    my $authz = $self->hub ? $self->hub->authz : Socialtext::Authz->new();
-    my $user = $self->rest->user;
+    my $authz = $self->authz;
+    my $user  = $self->rest->user;
     return $self->not_authorized
         unless $user
             and $user->is_authenticated
