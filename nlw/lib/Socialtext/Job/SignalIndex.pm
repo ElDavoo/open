@@ -17,3 +17,19 @@ sub do_work {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Job::SignalIndex - index a signal.
+
+=head1 SYNOPSIS
+
+    use Socialtext::JobCreator;
+
+    Socialtext::JobCreator->index_signal($signal);
+
+=head1 DESCRIPTION
+
+Schedule a job to be run by TheCeq which will index the signal using Solr.
+
+=cut
