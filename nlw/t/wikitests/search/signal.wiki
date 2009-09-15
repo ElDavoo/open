@@ -1,0 +1,16 @@
+* Fixture: Search
+
+# Send a signal, make sure a job is created
+
+| standard-test-setup |
+| set-searcher | Solr |
+
+| post-json       | /data/signals | {"signal":"Yes we can! {link: help-en [Foo]}"} |
+| code-is         | 201           |                                                |
+| job-count       | SignalIndex   | 1                                              |
+| st-process-jobs |               |                                                |
+| job-count       | SignalIndex   | 0                                              |
+
+^ Later
+
+* Make sure links are captured into the link field
