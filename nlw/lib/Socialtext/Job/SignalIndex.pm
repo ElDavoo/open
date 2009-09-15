@@ -7,10 +7,16 @@ extends 'Socialtext::Job';
 
 sub do_work {
     my $self    = shift;
-    my $signal  = $self->signal or return;
     my $indexer = $self->indexer or return;
+    my $signal_id = $self->arg->{signal_id};
+    my $signal  = $self->signal;
 
-    $indexer->index_signal($signal);
+    if ($signal) {
+        $indexer->index_signal($signal);
+    }
+    else {
+        $indexer->delete_signal($signal_id);
+    }
 
     $self->completed();
 }

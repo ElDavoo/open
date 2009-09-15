@@ -279,16 +279,15 @@ sub _truncate {
 
 sub index_signal {
     my ( $self, $signal ) = @_;
-    return $self->delete_signal($signal) if $signal->is_hidden;
+    return $self->delete_signal($signal->signal_id) if $signal->is_hidden;
     $self->_add_signal_doc($signal);
     $self->_commit;
 }
 
 # Remove the signal from the index.
 sub delete_signal {
-    my ( $self, $signal ) = @_;
-    my $key = $signal->signal_id;
-    $self->solr->delete_by_query("signal_key:$key");
+    my ( $self, $signal_id ) = @_;
+    $self->solr->delete_by_query("signal_key:$signal_id");
     $self->_commit;
 }
 
