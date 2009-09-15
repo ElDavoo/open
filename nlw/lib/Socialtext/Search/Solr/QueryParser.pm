@@ -19,7 +19,15 @@ Pre-parse Solr specific query options.
 
 extends 'Socialtext::Search::QueryParser';
 
-sub _build_searchable_fields { [qw/title tag body/] }
+sub _build_searchable_fields { 
+    [
+        # Page / attachment fields:
+        qw/title tag body w/,
+        # Signal fields:
+        qw/w doctype id creator body pvt dm_recip a reply_to mention
+           link_page_id link_wksp_id link_external/,
+    ]
+}
 
 around 'parse' => sub {
     my ( $orig, $self, $query_string ) = @_;

@@ -95,20 +95,19 @@ sub _search {
     my $query_type = 'dismax';
     $query_type = 'standard' if $query =~ m/\b[a-z_]+:/i;
     $query_type = 'standard' if $query =~ m/\*|\?/;
-    my $response = $self->solr->search($query, 
-        {
-            # fl = Fields to return
-            fl => 'id score doctype',
-            # qt = Query Type
-            qt => $query_type,
-            # fq = Filter Query - superset of docs to return from
-            ($filter_query ? (fq => $filter_query) : ()),
-            fq => $filter_query,
-            rows => 20,
-            start => $opts{offset} || 0,
-            $self->_sort_opts($opts{order}, $opts{direction}, $query_type),
-        }
-    );
+    my $query_hash = {
+        # fl = Fields to return
+        fl => 'id score doctype',
+        # qt = Query Type
+        qt => $query_type,
+        # fq = Filter Query - superset of docs to return from
+        ($filter_query ? (fq => $filter_query) : ()),
+        fq => $filter_query,
+        rows => 20,
+        start => $opts{offset} || 0,
+        $self->_sort_opts($opts{order}, $opts{direction}, $query_type),
+    };
+    my $response = $self->solr->search($query, $query_hash);
     my $docs = $response->docs;
     my $num_hits = $response->pager->total_entries();
     Socialtext::Timer->Pause('solr_raw');

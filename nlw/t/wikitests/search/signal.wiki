@@ -2,8 +2,11 @@
 
 # Send a signal, make sure a job is created
 
-| standard-test-setup |
-| set-searcher | Solr |
+| standard-test-setup |               |                                        |             |
+| set                 | recipient     | recip%%start_time%%@ken.socialtext.net |             |
+| create-user         | %%recipient%% | abc123                                 | %%account%% |
+| set_user_id         | recipient_id  | %%recipient%%                          |             |
+| set-searcher        | Solr          |                                        |             |
 
 | edit-page       | %%workspace%% | coolpage                                                               | Stupid plain content |
 | post-json       | /data/signals    | {"signal":"Stupid plain"}                                               |                      |
@@ -30,8 +33,72 @@
 | json-array-size | 1 |
 | body-like | Crime Breaking |
 
+# Create a DM, search as sender
+
+| post-json       | /data/signals          | {"signal":"first direct", "recipient":{"id":%%recipient_id%%}} |
+| code-is         | 201                    |                                                                |
+| job-count       | SignalIndex      | 1                                                                       |                      |
+| st-process-jobs |                  |                                                                         |                      |
+| job-count       | SignalIndex      | 0                                                                       |                      |
+
+# Now search for it
+
+| get             | /data/signals?q=direct | application/json                                               |
+| code-is         | 200                    |                                                                |
+| body-like       | first direct           |                                                                |
+| get             | /data/signals?q=pvt%3A1  | application/json                                               |
+| code-is         | 200                    |                                                                |
+| json-parse      |                        |                                                                |
+| json-array-size | 1                      |                                                                |
+| body-like       | first direct           |                                                                |
+
+# Create a DM, search as recipient
+
+| http-user-pass  | %%recipient%%          | abc123                                                          |
+| post-json       | /data/signals          | {"signal":"second direct", "recipient":{"id":%%user_id%%}}      |
+| code-is         | 201                    |                                                                 |
+| job-count       | SignalIndex      | 1                                                                       |                      |
+| st-process-jobs |                  |                                                                         |                      |
+| job-count       | SignalIndex      | 0                                                                       |                      |
+
+| http-user-pass  | %%username%%           | %%password%%                                                          |
+| get             | /data/signals?q=direct | application/json                                                |
+| code-is         | 200                    |                                                                 |
+| body-like       | first direct           |                                                                 |
+| body-like       | second direct          |                                                                 |
+| get             | /data/signals?q=pvt%3A1  | application/json                                                |
+| code-is         | 200                    |                                                                 |
+| json-parse      |                        |                                                                 |
+| json-array-size | 2                      |                                                                 |
+| body-like       | first direct           |                                                                 |
+| body-like       | second direct          |                                                                 |
+| get             | /data/signals?q=pvt%3A1+AND+first  | application/json                                                |
+| code-is         | 200                    |                                                                 |
+| json-parse      |                        |                                                                 |
+| json-array-size | 1                      |                                                                 |
+| body-like       | first direct           |                                                                 |
+| body-unlike       | second direct          |                                                                 |
 
 
 ^ Later
 
 * Make sure links are captured into the link field
+
+Signal text stuff:
+
+* mentions -> full names
+* !people profile link
+* !user_id number
+* wiki links -> label, page title, workspace name
+* !workspace title
+* external links
+* !html formatting
+
+Visibility Stuff:
+
+* only can view signals from your accounts
+* `pvt:1` -> only my private signals
+* `NOT pvt:1` -> no private signals
+* user_id of DM recipient
+* user_id of DM sender
+
