@@ -19,7 +19,7 @@
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
 | click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%restrict_acct%% | 30000 |
-| click_and_wait | link=%%restrict_acct%% |
+| click_and_wait | link=%%restrict_acct%% |  |
 | wait_for_element_visible_ok | st-account-restrict-to-domain |  |
 | type_ok | st-account-restrict-to-domain | floodyflooy |
 | click_and_wait | st-account-restrict-submit |  |
@@ -493,5 +493,7 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 | click_and_wait | //input[@value='Cancel'] |  |
 | wait_for_text_present_ok | Account Profile Fields | 30000 |
 | wait_for_text_not_present_ok | un-hide | 10000 |
+
+| include | [Test Case: Business Contro Panel Groups In Account] |
 
 | *Comment* | Test case: Business Control Panel COMPLETED |  |
