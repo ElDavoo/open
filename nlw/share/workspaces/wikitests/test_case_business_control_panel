@@ -244,14 +244,14 @@
 | click_and_wait | link=Name |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
 
-| click_and_wait | link=Number of Workspaces |  |
+| click_and_wait | link=Workspaces |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
-| click_and_wait | link=Number of Workspaces |  |
+| click_and_wait | link=Workspaces |  |
 | text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
 
-| click_and_wait | link=Number of Users |  |
+| click_and_wait | link=Users |  |
 | text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
-| click_and_wait | link=Number of Users |  |
+| click_and_wait | link=Users |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
 
 | *Comment* | Test case: Business Control Panel sorting Workspaces display |  |
@@ -264,11 +264,11 @@
 TODO: RESTORE THE FOLLOWING TWO TESTS AFTER {bz: 472} IS FIXED
 
 | *Comment* | RESTORE THE FOLLOWING TWO TESTS AFTER {bz: 472} IS FIXED |  |
-| click_and_wait | link=Number of Users |  |
+| click_and_wait | link=Users |  |
 
 text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ | |
 
-| click_and_wait | link=Number of Users |  |
+| click_and_wait | link=Users |  |
 
 text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ | |
 
@@ -295,9 +295,9 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 | click_and_wait | link=Name |  |
 | text_like | qr/0_sort_1_user1\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_3_user3\@%%start_time%%\.com/ |  |
 
-| click_and_wait | link=Number of Workspaces |  |
+| click_and_wait | link=Workspaces |  |
 | text_like | qr/0_sort_2_user1\@%%start_time%%\.com.+0_sort_3_user1\@%%start_time%%\.com.+0_sort_3_user2\@%%start_time%%\.com/ |  |
-| click_and_wait | link=Number of Workspaces |  |
+| click_and_wait | link=Workspaces |  |
 | text_like | qr/0_sort_3_user3\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_1_user1\@%%start_time%%\.com/ |  |
 
 | click_and_wait | link=Invited |  |
