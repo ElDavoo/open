@@ -60,3 +60,22 @@ sub _markup_node {
 }
 
 1;
+
+=head1 NAME
+
+Socialtext::WikiText::Emitter::Messages::Solr
+
+=head1 SYNOPSIS
+
+    use Socialtext::WikiText::Emitter::Messages::Solr
+
+    my $parser = Socialtext::WikiText::Parser::Messages->new(
+        receiver => Socialtext::WikiText::Emitter::Messages::Solr->new(),
+    );
+    my $body = $parser->parse($signal->body);
+
+=head1 DESCRIPTION
+
+Emit messages that can be passed to Solr for indexing.
+
+=cut
