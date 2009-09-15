@@ -42,19 +42,6 @@ sub new {
     Readonly my $spec => {
         user       => USER_TYPE,
     };
-    sub user_is_business_admin {
-        my $self = shift;
-        my %p = validate( @_, $spec );
-
-        return $p{user}->is_business_admin;
-    }
-}
-
-
-{
-    Readonly my $spec => {
-        user       => USER_TYPE,
-    };
     sub user_is_technical_admin {
         my $self = shift;
         my %p = validate( @_, $spec );
@@ -295,8 +282,6 @@ Requires the following PARAMS:
 =item * workspace - a workspace object
 
 =back
-
-=head2 $authz->user_is_business_admin( user => $user )
 
 =head2 $authz->user_is_technical_admin( user => $user )
 
