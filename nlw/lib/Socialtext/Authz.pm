@@ -38,18 +38,6 @@ sub new {
     }
 }
 
-{
-    Readonly my $spec => {
-        user       => USER_TYPE,
-    };
-    sub user_is_technical_admin {
-        my $self = shift;
-        my %p = validate( @_, $spec );
-
-        return $p{user}->is_technical_admin;
-    }
-}
-
 sub plugin_enabled_for_user {
     my $self = shift;
     my %p = @_;
@@ -282,11 +270,6 @@ Requires the following PARAMS:
 =item * workspace - a workspace object
 
 =back
-
-=head2 $authz->user_is_technical_admin( user => $user )
-
-Returns a boolean indicating whether the user has the named
-system-wide privilege.
 
 =head2 $authz->plugin_enabled_for_user(PARAMS)
 
