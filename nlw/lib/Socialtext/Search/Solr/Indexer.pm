@@ -18,6 +18,8 @@ use Socialtext::Search::ContentTypes;
 use Socialtext::Search::Utils;
 use Socialtext::File;
 use WebService::Solr;
+use Socialtext::WikiText::Parser::Messages;
+use Socialtext::WikiText::Emitter::Messages::Solr;
 use namespace::clean -except => 'meta';
 
 =head1 NAME
@@ -308,11 +310,12 @@ sub _add_signal_doc {
     my @page_topics = $signal->page_topics;
 
     Socialtext::Timer->Continue('solr_signal_body');
-    my $body = $signal->body;
+    my $body = $self->render_signal_body($signal);
     _scrub_body(\$body);
     Socialtext::Timer->Pause('solr_signal_body');
 
     my @external_links = (); # NOT IMPLEMENTED
+    my $in_reply_to = $signal->in_reply_to;
 
     my @fields = (
         [id => $id],
@@ -325,7 +328,7 @@ sub _add_signal_doc {
         [pvt => $recip ? 1 : 0],
         [dm_recip => $recip],
         (map { [a => $_] } @{ $signal->account_ids }),
-        [reply_to => $signal->in_reply_to->user_id],
+        ($in_reply_to ? [reply_to =>$in_reply_to->user_id] : ()),
         (map { [mention => $_->user_id] } @user_topics ),
         (map { [link_page_id => $_->page_id],
                [link_wksp_id => $_->workspace_id],
@@ -337,6 +340,30 @@ sub _add_signal_doc {
 
     Socialtext::Timer->Pause('solr_signal');
 }
+
+sub render_signal_body {
+    my $self = shift;
+    my $signal = shift;
+
+    my %links;
+    my $parser = Socialtext::WikiText::Parser::Messages->new(
+        receiver => Socialtext::WikiText::Emitter::Messages::Solr->new(
+            callbacks => {
+                noun_link => sub {
+                    my $ast = shift;
+                    my $type = $ast->{wafl_type};
+                    $links{$type} ||= [];
+                    push @{$links{$type}}, $ast;
+                }
+            },
+        ),
+    );
+    my $body = $parser->parse($signal->body);
+    warn "before: " . $signal->body;
+    warn "after: $body";
+    return $body;
+}
+
 
 #################
 # Miscellaneous 
