@@ -5,15 +5,32 @@
 | standard-test-setup |
 | set-searcher | Solr |
 
-| post-json       | /data/signals | {"signal":"Yes we can! {link: help-en [Foo]}"} |
-| code-is         | 201           |                                                |
-| post-json       | /data/signals | {"signal":"Hi {user: %%user_id%%}"} |
-| code-is         | 201           |                                                |
-| post-json       | /data/signals | {"signal":"Check out this site http://awesnob.com"} |
-| code-is         | 201           |                                                |
-| job-count       | SignalIndex   | 3                                              |
-| st-process-jobs |               |                                                |
-| job-count       | SignalIndex   | 0                                              |
+| edit-page       | %%workspace%% | coolpage                                                               | Stupid plain content |
+| post-json       | /data/signals    | {"signal":"Stupid plain"}                                               |                      |
+| code-is         | 201              |                                                                         |                      |
+| post-json       | /data/signals    | {"signal":"Simple Humbles Yes we can! {link: help-en [Foo]}"}           |                      |
+| code-is         | 201              |                                                                         |                      |
+| post-json       | /data/signals    | {"signal":"Crime Breaking Hi {user: %%user_id%%}"}                      |                      |
+| code-is         | 201              |                                                                         |                      |
+| post-json       | /data/signals    | {"signal":"Belligerant Pickles Check out this site http://awesnob.com"} |                      |
+| code-is         | 201              |                                                                         |                      |
+| job-count       | SignalIndex      | 4                                                                       |                      |
+| st-process-jobs |                  |                                                                         |                      |
+| job-count       | SignalIndex      | 0                                                                       |                      |
+
+| get       | /data/signals?q=stupid | application/json  |
+| code-is   | 200                             |   |
+| json-parse |
+| json-array-size | 1 |
+| json-like | [{"body":"Stupid plain"}] |
+
+| get       | /data/signals?q=%%username%% | application/json  |
+| code-is   | 200                             |   |
+| json-parse |
+| json-array-size | 1 |
+| body-like | Crime Breaking |
+
+
 
 ^ Later
 

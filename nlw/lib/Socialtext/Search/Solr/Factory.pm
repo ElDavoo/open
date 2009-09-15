@@ -45,7 +45,7 @@ sub _create {
     my ( $kind, $ws_name, %param ) = @_;
     
     my $class = 'Socialtext::Search::Solr::' . $kind;
-    return $class->new( ws_name => $ws_name );
+    return $class->new( $ws_name ? (ws_name => $ws_name) : () );
 }
 
 =head2 $factory->template_vars()

@@ -8,6 +8,7 @@ use Socialtext::Search::AbstractFactory;
 use Socialtext::Search::Solr::QueryParser;
 use Socialtext::Search::SimpleAttachmentHit;
 use Socialtext::Search::SimplePageHit;
+use Socialtext::Search::SignalHit;
 use Socialtext::Search::Utils;
 use Socialtext::AppConfig;
 use Socialtext::Exceptions;
@@ -49,13 +50,14 @@ sub search {
 # of hits.  The thunk returns an arrayref of processed results.
 sub begin_search {
     my ( $self, $query_string, $authorizer, $workspaces, %opts ) = @_;
-    my $ws_name = $workspaces ? join(',', @$workspaces) : $self->ws_name;
-    _debug("Searching $ws_name with query: $query_string");
+    my $name = $workspaces ? join(',', @$workspaces) : $self->ws_name;
+    $name ||= $opts{doctype} || 'unknown';
+    _debug("Searching $name with query: $query_string");
 
     my ($docs, $num_hits) = $self->_search($query_string, undef, $workspaces, %opts);
 
     my $thunk = sub {
-        _debug("Processing $ws_name thunk");
+        _debug("Processing $name thunk");
         Socialtext::Timer->Continue('solr_begin');
         my $results = $self->_process_docs($docs);
         Socialtext::Timer->Continue('solr_begin');
@@ -72,10 +74,22 @@ sub _search {
     $self->_authorize( $query, $authorizer );
 
     Socialtext::Timer->Continue('solr_raw');
-    my $ws_filter = join ' OR ', 
-        map { "w:$_" }
-            map { Socialtext::Workspace->new(name => $_)->workspace_id }
-                @$workspaces;
+    my $filter_query;
+    if ($workspaces and @$workspaces) {
+        $filter_query = "(doctype:attachment OR doctype:page) AND ("
+              . join(' OR ', map { "w:$_" }
+                map { Socialtext::Workspace->new(name => $_)->workspace_id }
+                    @$workspaces) . ")";
+    }
+    elsif ($opts{doctype}) {
+        $filter_query = "doctype:$opts{doctype}";
+        if ($opts{viewer}) {
+            my @accounts = $opts{viewer}->accounts(ids_only => 1);
+            $filter_query .= " AND ("
+                . join(' OR ', map { "a:$_" } @accounts)
+                . ")";
+        }
+    }
 
     # See: http://wiki.apache.org/solr/CommonQueryParameters
     my $query_type = 'dismax';
@@ -84,11 +98,12 @@ sub _search {
     my $response = $self->solr->search($query, 
         {
             # fl = Fields to return
-            fl => 'id score',
+            fl => 'id score doctype',
             # qt = Query Type
             qt => $query_type,
             # fq = Filter Query - superset of docs to return from
-            fq => $ws_filter,
+            ($filter_query ? (fq => $filter_query) : ()),
+            fq => $filter_query,
             rows => 20,
             start => $opts{offset} || 0,
             $self->_sort_opts($opts{order}, $opts{direction}, $query_type),
@@ -163,23 +178,35 @@ sub _process_docs {
 }
 
 sub _make_result {
-    my ( $self, $doc ) = @_;
-    my $key = $doc->value_for('id');
-    my ( $workspace_id, $page, $attachment ) = split /:/, $key, 3;
+    my ($self, $doc) = @_;
+    my $key     = $doc->value_for('id');
+    my $doctype = $doc->value_for('doctype');
+    my $score   = $doc->value_for('score');
 
-    my $ws = Socialtext::Workspace->new( workspace_id => $workspace_id );
-    my $ws_name = $ws->name;
+    if ($doctype eq 'signal') {
+        return Socialtext::Search::SignalHit->new(
+            score => $score,
+            signal_id => $key,
+        );
+    }
+    else {
+        my ($workspace_id, $page, $attachment) = split /:/, $key, 3;
 
-    my $hit = {
-        snippet => 'No worky',
-        key => $key,
-        score => $doc->value_for('score'),
-    };
+        my $ws = Socialtext::Workspace->new(workspace_id => $workspace_id);
+        my $ws_name = $ws->name;
 
-    return
-        defined $attachment
-        ? Socialtext::Search::SimpleAttachmentHit->new( $hit, $ws_name, $page, $attachment )
-        : Socialtext::Search::SimplePageHit->new( $hit, $ws_name, $page );
+        my $hit = {
+            snippet => 'No worky',
+            key     => $key,
+            score   => $doc->value_for('score'),
+        };
+
+        return
+            defined $attachment
+            ? Socialtext::Search::SimpleAttachmentHit->new($hit, $ws_name,
+            $page, $attachment)
+            : Socialtext::Search::SimplePageHit->new($hit, $ws_name, $page);
+    }
 }
 
 # Send a debugging message to syslog.
