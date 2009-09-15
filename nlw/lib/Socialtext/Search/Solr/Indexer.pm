@@ -310,11 +310,10 @@ sub _add_signal_doc {
     my @page_topics = $signal->page_topics;
 
     Socialtext::Timer->Continue('solr_signal_body');
-    my $body = $self->render_signal_body($signal);
+    my ($body, $external_links) = $self->render_signal_body($signal);
     _scrub_body(\$body);
     Socialtext::Timer->Pause('solr_signal_body');
 
-    my @external_links = (); # NOT IMPLEMENTED
     my $in_reply_to = $signal->in_reply_to;
 
     my @fields = (
@@ -333,7 +332,7 @@ sub _add_signal_doc {
         (map { [link_page_id => $_->page_id],
                [link_wksp_id => $_->workspace_id],
             } @page_topics),
-        (map { [link_external => $_] } @external_links),
+        (map { [link_external => $_] } @$external_links),
     );
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
@@ -345,21 +344,20 @@ sub render_signal_body {
     my $self = shift;
     my $signal = shift;
 
-    my %links;
+    my @links;
     my $parser = Socialtext::WikiText::Parser::Messages->new(
         receiver => Socialtext::WikiText::Emitter::Messages::Solr->new(
             callbacks => {
-                noun_link => sub {
+                href_link => sub {
                     my $ast = shift;
-                    my $type = $ast->{wafl_type};
-                    $links{$type} ||= [];
-                    push @{$links{$type}}, $ast;
+                    my $link = $ast->{attributes}{href};
+                    push @links, $link;
                 }
             },
         ),
     );
     my $body = $parser->parse($signal->body);
-    return $body;
+    return $body, \@links;
 }
 
 
