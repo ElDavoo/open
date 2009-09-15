@@ -359,8 +359,6 @@ sub render_signal_body {
         ),
     );
     my $body = $parser->parse($signal->body);
-    warn "before: " . $signal->body;
-    warn "after: $body";
     return $body;
 }
 
