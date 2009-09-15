@@ -54,30 +54,57 @@
 
 # Create a DM, search as recipient
 
-| http-user-pass  | %%recipient%%          | abc123                                                          |
-| post-json       | /data/signals          | {"signal":"second direct", "recipient":{"id":%%user_id%%}}      |
-| code-is         | 201                    |                                                                 |
-| job-count       | SignalIndex      | 1                                                                       |                      |
-| st-process-jobs |                  |                                                                         |                      |
-| job-count       | SignalIndex      | 0                                                                       |                      |
+| http-user-pass  | %%recipient%% | abc123                                                     |
+| post-json       | /data/signals | {"signal":"second direct", "recipient":{"id":%%user_id%%}} |
+| code-is         | 201           |                                                            |
+| job-count       | SignalIndex   | 1                                                          |
+| st-process-jobs |               |                                                            |
+| job-count       | SignalIndex   | 0                                                          |
 
-| http-user-pass  | %%username%%           | %%password%%                                                          |
-| get             | /data/signals?q=direct | application/json                                                |
-| code-is         | 200                    |                                                                 |
-| body-like       | first direct           |                                                                 |
-| body-like       | second direct          |                                                                 |
-| get             | /data/signals?q=pvt%3A1  | application/json                                                |
-| code-is         | 200                    |                                                                 |
-| json-parse      |                        |                                                                 |
-| json-array-size | 2                      |                                                                 |
-| body-like       | first direct           |                                                                 |
-| body-like       | second direct          |                                                                 |
-| get             | /data/signals?q=pvt%3A1+AND+first  | application/json                                                |
-| code-is         | 200                    |                                                                 |
-| json-parse      |                        |                                                                 |
-| json-array-size | 1                      |                                                                 |
-| body-like       | first direct           |                                                                 |
-| body-unlike       | second direct          |                                                                 |
+| http-user-pass  | %%username%%                          | %%password%%                  |
+| get             | /data/signals?q=direct                | application/json              |
+| code-is         | 200                                   |                               |
+| body-like       | first direct                          |                               |
+| body-like       | second direct                         |                               |
+| get             | /data/signals?q=pvt%3A1               | application/json              |
+| code-is         | 200                                   |                               |
+| json-parse      |                                       |                               |
+| json-array-size | 2                                     |                               |
+| body-like       | first direct                          |                               |
+| body-like       | second direct                         |                               |
+| get             | /data/signals?q=NOT+pvt%3A1           | application/json              |
+| code-is         | 200                                   |                               |
+| json-parse      |                                       |                               |
+| json-array-size | 4                                     |                               |
+| get             | /data/signals?q=pvt%3A0           | application/json              |
+| code-is         | 200                                   |                               |
+| json-parse      |                                       |                               |
+| json-array-size | 4                                     |                               |
+| get             | /data/signals?q=pvt%3A1+AND+first     | application/json              |
+| code-is         | 200                                   |                               |
+| json-parse      |                                       |                               |
+| json-array-size | 1                                     |                               |
+| body-like       | first direct                          |                               |
+| body-unlike     | second direct                         |                               |
+| get             | /data/signals?q=NOT+pvt%3A1+AND+first | application/json              |
+| code-is         | 200                                   |                               |
+| json-parse      |                                       |                               |
+| json-array-size | 0                                     |                               |
+| post-json       | /data/signals                         | {"signal":"not first public"} |
+| code-is         | 201                                   |                               |
+| job-count       | SignalIndex                           | 1                             |
+| st-process-jobs |                                       |                               |
+| job-count       | SignalIndex                           | 0                             |
+| get             | /data/signals?q=NOT+pvt%3A1+AND+first | application/json              |
+| code-is         | 200                                   |                               |
+| json-parse      |                                       |                               |
+| json-array-size | 1                                     |                               |
+| body-like       | not first public                      |                               |
+| get             | /data/signals?q=pvt%3A0+AND+first | application/json              |
+| code-is         | 200                                   |                               |
+| json-parse      |                                       |                               |
+| json-array-size | 1                                     |                               |
+| body-like       | not first public                      |                               |
 
 
 ^ Later
