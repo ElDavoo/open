@@ -3,12 +3,11 @@
 
 use strict;
 use warnings;
-
 use Test::Socialtext tests => 5;
-fixtures(qw( db ));
-
 use Socialtext::SearchPlugin;
 use Socialtext::Page;
+
+fixtures(qw( db ));
 
 my $hub = create_test_hub();
 
