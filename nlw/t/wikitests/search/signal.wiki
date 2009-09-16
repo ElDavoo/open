@@ -33,6 +33,12 @@
 | json-array-size | 1 |
 | body-like | Crime Breaking |
 
+| get             | /data/signals?q=link_external%3Aawesnob | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 1                                    |                  |
+| body-like       | http://awesnob.com |
+
 # Create a DM, search as sender
 
 | post-json       | /data/signals          | {"signal":"first direct", "recipient":{"id":%%recipient_id%%}} |
@@ -105,27 +111,79 @@
 | json-parse      |                                       |                               |
 | json-array-size | 1                                     |                               |
 | body-like       | not first public                      |                               |
+| get             | /data/signals?q=first | application/json              |
+| code-is         | 200                                   |                               |
+| json-parse      |                                       |                               |
+| json-array-size | 2                                     |                               |
+| body-like       | not first public                      |                               |
+| body-like       | first direct                          |                               |
 
+creator, dm_recip
+| get             | /data/signals?q=creator%3A%%user_id%%           | application/json |
+| code-is         | 200                                           |                  |
+| json-parse      |                                               |                  |
+| json-array-size | 6                                             |                  |
+| body-like       | Stupid plain                                  |                  |
+| body-like       | Simple Humbles                                |                  |
+| body-like       | Crime Breaking                                |                  |
+| body-like       | Belligerant Pickles                           |                  |
+| body-like       | not first public                              |                  |
+| body-like       | first direct                                  |                  |
+| get             | /data/signals?q=creator%3A%%user_id%%+AND+pvt%3A1 | application/json |
+| code-is         | 200                                           |                  |
+| json-parse      |                                               |                  |
+| json-array-size | 1                                             |                  |
+| body-like       | first direct                                  |                  |
+
+| get             | /data/signals?q=dm_recip%3A%%user_id%% | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 1                                    |                  |
+| body-like       | second direct                        |                  |
+
+| get             | /data/signals?q=a%3A%%account_id%% | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 7                                    |                  |
+
+# Test date searches
+
+| get             | /data/signals?q=created%3A%5B%2A+TO+NOW%5D | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 7                                    |                  |
+
+| post-json        | /data/signals | {"signal":"Hey there {user: %%recipient_id%%} how are you?"}   |
+| code-is          | 201           |                                                                |
+| get              | /data/signals | application/json                                               |
+| code-is          | 200           |                                                                |
+| set-from-content | signalid      | qr/"signal_id":"([^"]+)"/                                      |
+| http-user-pass   | %%recipient%% | abc123                                                         |
+| post-json        | /data/signals | {"signal":"i am superb!", "in_reply_to":{"signal_id":"%%signalid%%"}} |
+| code-is          | 201           |                                                                |
+| job-count        | SignalIndex   | 2                                                              |
+| st-process-jobs  |               |                                                                |
+| job-count        | SignalIndex   | 0                                                              |
+
+| http-user-pass  | %%username%%                             | %%password%%     |
+| get             | /data/signals?q=mention%3A%%recipient_id%% | application/json |
+| code-is         | 200                                      |                  |
+| json-parse      |                                          |                  |
+| json-array-size | 1                                        |                  |
+| body-like       | how are you |
+
+| get             | /data/signals?q=reply_to%3A%%user_id%% | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 1                                    |                  |
+| body-like       | superb |
+
+| get             | /data/signals?q=is_question%3A1 | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 1                                    |                  |
+| body-like       | how are you |
 
 ^ Later
 
-* Make sure links are captured into the link field
-
-Signal text stuff:
-
-* mentions -> full names
-* !people profile link
-* !user_id number
-* wiki links -> label, page title, workspace name
-* !workspace title
-* external links
-* !html formatting
-
-Visibility Stuff:
-
-* only can view signals from your accounts
-* `pvt:1` -> only my private signals
-* `NOT pvt:1` -> no private signals
-* user_id of DM recipient
-* user_id of DM sender
-
+# page_id and workspace name searches for links

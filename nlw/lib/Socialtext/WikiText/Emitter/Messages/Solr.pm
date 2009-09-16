@@ -55,8 +55,8 @@ sub _markup_node {
         else {
             $output =~ s/HREF/$ast->{attributes}{href}/;
         }
-        if (my $cb = $self->{callbacks}{href_link} and $offset = 0) {
-            $cb->($ast);
+        if ($self->{callbacks}{href_link} and $offset == 0) {
+            $self->{callbacks}{href_link}->($ast);
         }
     }
     $self->{output} .= $output;

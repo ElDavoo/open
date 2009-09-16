@@ -307,13 +307,13 @@ sub _add_signal_doc {
     my $recip = $signal->recipient_id || 0;
     my @user_topics = $signal->user_topics;
     my @page_topics = $signal->page_topics;
-
     Socialtext::Timer->Continue('solr_signal_body');
     my ($body, $external_links) = $self->render_signal_body($signal);
     _scrub_body(\$body);
     Socialtext::Timer->Pause('solr_signal_body');
 
     my $in_reply_to = $signal->in_reply_to;
+    my $is_question = $body =~ m/\?\s*$/ ? 1 : 0;
 
     my @fields = (
         [id => $id],
@@ -323,6 +323,7 @@ sub _add_signal_doc {
         [date => $ctime], [created => $ctime],
         [creator => $signal->user_id],
         [body => $body],
+        [is_question => $is_question],
         [pvt => $recip ? 1 : 0],
         [dm_recip => $recip],
         (map { [a => $_] } @{ $signal->account_ids }),
