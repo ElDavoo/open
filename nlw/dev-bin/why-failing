@@ -234,15 +234,18 @@ sub run_tests {
     my @results =
         grep {/Tests:.*Failed/} `prove -l -Q @tests $unittest 2>/dev/null`;
 
-    # count up the number of failures
-    my $failures = 0;
+    # find the failures from the unit test that we're running.  If _other_
+    # tests failed along the way we don't care.
     foreach my $line (@results) {
-        if ($line =~ /Tests:\s+\d+\s+Failed:\s+(\d+)/) {
-            $failures += $1;
+        if ($line =~ /^(\S+).*Tests:\s+\d+\s+Failed:\s+(\d+)/) {
+            my ($short_testname, $failed) = ($1, $2);
+            if ($unittest =~ /$short_testname/) {
+                return $failed;
+            }
         }
     }
 
-    return $failures;
+    return 0;
 }
 
 ###############################################################################
