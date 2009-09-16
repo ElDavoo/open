@@ -3,15 +3,21 @@
 
 use strict;
 use warnings;
-
 use Test::Socialtext tests => 5;
-fixtures( 'admin' );
 use Socialtext::SearchPlugin;
 use Socialtext::Page;
 
-my $hub = new_hub('admin');
+fixtures(qw( db ));
+
+my $hub = create_test_hub();
 
 my $Singapore = join '', map { chr($_) } 26032, 21152, 22369;
+
+my $regular_page = Socialtext::Page->new(hub=>$hub)->create(
+    title   => 'Start Here',
+    content => 'hello',
+    creator => $hub->current_user,
+);
 
 my $utf8_page = Socialtext::Page->new(hub=>$hub)->create(
     title => $Singapore,

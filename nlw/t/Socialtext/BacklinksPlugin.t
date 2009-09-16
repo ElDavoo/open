@@ -3,9 +3,9 @@
 
 use strict;
 use warnings;
-
 use Test::Socialtext tests => 29;
-fixtures( 'admin' );
+
+fixtures(qw( db ));
 
 =head1 DESCRIPTION
 
@@ -14,12 +14,11 @@ as pages are created and deleted.
 
 =cut
 
-my $path = 't/tmp/root/plugin/admin/backlinks';
 my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
-
-my $hub = new_hub('admin');
+my $hub       = create_test_hub();
 my $backlinks = $hub->backlinks;
-my $pages = $hub->pages;
+my $path      = $backlinks->plugin_directory();
+my $pages     = $hub->pages;
 
 # check the preference that allows backlinks to be shown
 my $user = Socialtext::User->create(
