@@ -8,7 +8,7 @@ use Pod::Usage;
 use LWP::Simple qw(get);
 use YAML qw();
 use File::Path qw(rmtree);
-use List::MoreUtils qw(before_incl last_index any);
+use List::MoreUtils qw(before last_index any);
 use File::Slurp qw(slurp);
 use Text::ParseWords qw(quotewords);
 
@@ -57,8 +57,8 @@ my @all_tests = @{ $order->{$testset} };
 # Build up a set of "candidate tests"; everything that we think ran since the
 # last "clean" or "destructive" fixture, leading up to the failing test.
 
-# everything before (and including) the failing test
-my @tests = before_incl { $_ eq $unittest } @all_tests;
+# everything before the failing test
+my @tests = before { $_ eq $unittest } @all_tests;
 unless (@tests) {
     die "Couldn't find '$unittest' in the YAML; has that test run yet?\n";
 }
@@ -93,7 +93,7 @@ if ($dryrun) {
 ###############################################################################
 # Make sure that the test runs cleanly on its own.
 status("Verifying test passes in clean environment");
-if (run_tests($unittest)) {
+if (run_tests()) {
     die "FAIL: test fails when run in clean environment.\n";
 }
 
@@ -232,7 +232,7 @@ sub run_tests {
 
     # run the tests
     my @results =
-        grep {/Tests:.*Failed/} `prove -l -Q @tests 2>/dev/null`;
+        grep {/Tests:.*Failed/} `prove -l -Q @tests $unittest 2>/dev/null`;
 
     # count up the number of failures
     my $failures = 0;
