@@ -9,6 +9,8 @@ use Socialtext::Workspace;
 use Sys::Hostname;
 use Test::More;
 use Test::Socialtext;
+use Test::Output qw(combined_from);
+use Text::ParseWords qw(shellwords);
 use Cwd;
 use Socialtext::AppConfig;
 
@@ -586,9 +588,9 @@ workspace tarballs before running the command.
 =cut
 
 sub st_admin {
-    my $self = shift;
+    my $self    = shift;
     my $options = shift || '';
-    my $verify = shift;
+    my $verify  = shift;
     $verify = $self->quote_as_regex($verify) if $verify;
 
     # If we're exporting a workspace, attempt to remove the tarball first
@@ -600,6 +602,47 @@ sub st_admin {
         }
     }
 
+    # Invocations with redirected input/output or pipes *needs* to be done
+    # against the shell, but simpler cmds can be done in-process.
+    #
+    # We also have to use a bad calling pattern for this which *isn't* OOP
+    # because we don't always have a '$self' that's derived from ST:WF:ST
+    # (although it may be derived from ST:WF:Base).
+    if ( grep { qr/[\|<>]/ } $options ) {
+        _st_admin_shell_out($self, $options, $verify);
+    }
+    else {
+        _st_admin_in_process($self, $options, $verify);
+    }
+}
+
+sub _st_admin_in_process {
+    my ($self, $options, $verify) = @_;
+
+    {
+        # over-ride "_exit()" so that we don't exit while running in-process
+        require Socialtext::CLI;
+        no warnings 'redefine';
+        *Socialtext::CLI::_exit = sub { };
+    }
+
+    my @argv = shellwords( $options );
+    my $cmd  = shift @argv;
+    $cmd =~ s/-/_/g;
+
+    my $output = combined_from {
+        eval { Socialtext::CLI->new( argv => \@argv )->$cmd() };
+    };
+    if ($verify) {
+        like $output, qr/$verify/s, "st-admin $options";
+    }
+    else {
+        diag "st-admin $options";
+    }
+}
+
+sub _st_admin_shell_out {
+    my ($self, $options, $verify) = @_;
     diag "st-admin $options";
     _run_command("st-admin $options", $verify);
 }
