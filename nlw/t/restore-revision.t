@@ -3,10 +3,10 @@
 
 use strict;
 use warnings;
-
 use Test::Socialtext tests => 24;
-fixtures(qw( db ));
 use Readonly;
+
+fixtures(qw( db ));
 
 my $hub = create_test_hub();
 isa_ok( $hub, 'Socialtext::Hub' ) or die;
