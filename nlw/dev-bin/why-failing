@@ -21,15 +21,17 @@ my $testrun  = 'current';
 my $testset  = 'socialtext';
 my $dryrun   = undef;
 my $unittest = undef;
+my @candidates;
 
 GetOptions(
-    'stci=s'   => \$stci_url,
-    'branch=s' => \$branch,
-    'run=s'    => \$testrun,
-    'dryrun'   => \$dryrun,
-    'verbose'  => \$verbose,
-    'help|?'   => \$help,
-    'man'      => \$man,
+    'stci=s'      => \$stci_url,
+    'branch=s'    => \$branch,
+    'run=s'       => \$testrun,
+    'dryrun'      => \$dryrun,
+    'verbose'     => \$verbose,
+    'candidate=s' => \@candidates,
+    'help|?'      => \$help,
+    'man'         => \$man,
 ) || pod2usage(1);
 pod2usage(1) if ($help);
 pod2usage(-exitstatus => 0, -verbose => 2) if ($man);
@@ -56,28 +58,29 @@ my @all_tests = @{ $order->{$testset} };
 ###############################################################################
 # Build up a set of "candidate tests"; everything that we think ran since the
 # last "clean" or "destructive" fixture, leading up to the failing test.
-
-# everything before the failing test
-my @candidates = before { $_ eq $unittest } @all_tests;
 unless (@candidates) {
-    die "Couldn't find '$unittest' in the YAML; has that test run yet?\n";
-}
+    # everything before the failing test
+    @candidates = before { $_ eq $unittest } @all_tests;
+    unless (@candidates) {
+        die "Couldn't find '$unittest' in the YAML; has that test run yet?\n";
+    }
 
-# remove tests that don't exist; could have leftovers from previous STCI run
-@candidates = grep { -e $_ } @candidates;
+    # remove tests that don't exist; could have leftovers from previous STCI run
+    @candidates = grep { -e $_ } @candidates;
 
-# remove everything that ran before the most recent 'clean' fixture
-my $last_clean = last_index { is_fixture_used_by_test('clean', $_) } @candidates;
-if ($last_clean > -1) {
-    @candidates = splice @candidates, $last_clean;
-}
+    # remove everything that ran before the most recent 'clean' fixture
+    my $last_clean = last_index { is_fixture_used_by_test('clean', $_) } @candidates;
+    if ($last_clean > -1) {
+        @candidates = splice @candidates, $last_clean;
+    }
 
-# remove everything that ran before (and including) the most recent
-# 'destructive' fixture
-my $last_destructive
-    = last_index { is_fixture_used_by_test('destructive', $_) } @candidates;
-if (($last_destructive > -1) && ($last_destructive < $#candidates)) {
-    @candidates = splice @candidates, $last_destructive + 1;
+    # remove everything that ran before (and including) the most recent
+    # 'destructive' fixture
+    my $last_destructive
+        = last_index { is_fixture_used_by_test('destructive', $_) } @candidates;
+    if (($last_destructive > -1) && ($last_destructive < $#candidates)) {
+        @candidates = splice @candidates, $last_destructive + 1;
+    }
 }
 
 # spit out information on the selected candidates
@@ -283,6 +286,7 @@ why-failing - find out why a unit test is failing
     --stci <url>        URL to STCI results (default Galena)
     --branch <branch>   Branch test is failing on (default 'master')
     --run <testrun>     Test run test is failing on (default 'current')
+    --candidate <test>  Specify candidate tests explicitly
     --dryrun            Dry-run; show candidates, but don't run tests
     --verbose           Display verbose output
     --help/-?           Display a brief usage statement
@@ -344,6 +348,14 @@ Defaults to "master".
 Specifies the test run whose results we should be examining.
 
 Defaults to "current", but "in-progress" is another viable option.
+
+=item B<--candidate E<lt>testE<gt>>
+
+Specifies the list of candidate tests.  If not specified, the list of
+candidate tests is calculated automatically.
+
+To specify multiple candidate tests, use this command line option multiple
+times, in order.
 
 =item B<--dryrun>
 
