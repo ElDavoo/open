@@ -33,7 +33,7 @@
 | json-array-size | 1 |
 | body-like | Crime Breaking |
 
-| get             | /data/signals?q=link_external%3Aawesnob | application/json |
+| get             | /data/signals?q=link%3Aawesnob | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
 | json-array-size | 1                                    |                  |
