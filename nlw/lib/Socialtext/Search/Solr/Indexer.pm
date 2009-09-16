@@ -20,6 +20,7 @@ use Socialtext::File;
 use WebService::Solr;
 use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::Solr;
+use Socialtext::String;
 use namespace::clean -except => 'meta';
 
 =head1 NAME
@@ -306,9 +307,8 @@ sub _add_signal_doc {
     my $ctime = _pg_date_to_iso($signal->at);
     my $recip = $signal->recipient_id || 0;
     my @user_topics = $signal->user_topics;
-    my @page_topics = $signal->page_topics;
     Socialtext::Timer->Continue('solr_signal_body');
-    my ($body, $external_links) = $self->render_signal_body($signal);
+    my ($body, $external_links, $page_links) = $self->render_signal_body($signal);
     _scrub_body(\$body);
     Socialtext::Timer->Pause('solr_signal_body');
 
@@ -329,9 +329,9 @@ sub _add_signal_doc {
         (map { [a => $_] } @{ $signal->account_ids }),
         ($in_reply_to ? [reply_to =>$in_reply_to->user_id] : ()),
         (map { [mention => $_->user_id] } @user_topics ),
-        (map { [link_page_id => $_->page_id],
-               [link_wksp_id => $_->workspace_id],
-            } @page_topics),
+        (map { [link_page_id => $_->[1]],
+               [link_wksp_id => $_->[0]],
+            } @$page_links),
         (map { [link => $_] } @$external_links),
     );
 
@@ -344,20 +344,26 @@ sub render_signal_body {
     my $self = shift;
     my $signal = shift;
 
-    my @links;
+    my @external_links;
+    my @page_links;
     my $parser = Socialtext::WikiText::Parser::Messages->new(
         receiver => Socialtext::WikiText::Emitter::Messages::Solr->new(
             callbacks => {
                 href_link => sub {
                     my $ast = shift;
                     my $link = $ast->{attributes}{href};
-                    push @links, $link;
-                }
+                    push @external_links, $link;
+                },
+                page_link => sub {
+                    my $ast = shift;
+                    my $pid = Socialtext::String::uri_unescape($ast->{page_id});
+                    push @page_links, [$ast->{workspace_id}, $pid];
+                },
             },
         ),
     );
     my $body = $parser->parse($signal->body);
-    return $body, \@links;
+    return $body, \@external_links, \@page_links;
 }
 
 

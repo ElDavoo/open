@@ -11,7 +11,7 @@
 | edit-page       | %%workspace%% | coolpage                                                               | Stupid plain content |
 | post-json       | /data/signals    | {"signal":"Stupid plain"}                                               |                      |
 | code-is         | 201              |                                                                         |                      |
-| post-json       | /data/signals    | {"signal":"Simple Humbles Yes we can! {link: help-en [Foo]}"}           |                      |
+| post-json       | /data/signals    | {"signal":"Simple Humbles Yes we can! {link: help-en [Start Here]}"}           |                      |
 | code-is         | 201              |                                                                         |                      |
 | post-json       | /data/signals    | {"signal":"Crime Breaking Hi {user: %%user_id%%}"}                      |                      |
 | code-is         | 201              |                                                                         |                      |
@@ -38,6 +38,24 @@
 | json-parse      |                                      |                  |
 | json-array-size | 1                                    |                  |
 | body-like       | http://awesnob.com |
+
+| get             | /data/signals?q=link_page_id%3Astart | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 1                                    |                  |
+| body-like       | Humbles |
+
+| get             | /data/signals?q=link_page_id%3Ahere | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 1                                    |                  |
+| body-like       | Humbles |
+
+| get             | /data/signals?q=link_wksp_id%3Ahelp-en | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 1                                    |                  |
+| body-like       | Humbles |
 
 # Create a DM, search as sender
 
@@ -184,6 +202,3 @@ creator, dm_recip
 | json-array-size | 1                                    |                  |
 | body-like       | how are you |
 
-^ Later
-
-# page_id and workspace name searches for links
