@@ -9,7 +9,7 @@ use strict;
 # hasn't been generated until _after_ the fixtures are set up).
 BEGIN { `dev-bin/make-test-fixture --fixture admin` }
 use Test::Socialtext tests => 15;
-fixtures( 'admin' );
+fixtures(qw( admin destructive ));
 
 no_diff;
 
