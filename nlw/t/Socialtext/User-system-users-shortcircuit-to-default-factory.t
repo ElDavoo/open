@@ -48,6 +48,11 @@ isa_ok $ldap_config, 'Socialtext::LDAP::Config', 'fake LDAP config';
 my $rc = Socialtext::LDAP::Config->save($ldap_config);
 ok $rc, 'LDAP configuration saved';
 
+END {
+    # remove LDAP config when we're done, so we don't pollute other tests
+    unlink Socialtext::LDAP::Config->config_filename();
+}
+
 ###############################################################################
 # see the fake LDAP user store to the user_factories
 my $factories = 'LDAP:fake-ldap;Default';
