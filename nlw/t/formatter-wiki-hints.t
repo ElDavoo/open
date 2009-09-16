@@ -2,6 +2,12 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
+
+# HACK: create test fixture *FIRST* before loading Test::Socialtext.  Test::ST
+# causes the Hub to get loaded, which in turn loads the ShortcutsPlugin that
+# we're testing here, which registers its config at *COMPILE TIME* (but which
+# hasn't been generated until _after_ the fixtures are set up).
+BEGIN { `dev-bin/make-test-fixture --fixture admin` }
 use Test::Socialtext tests => 15;
 fixtures( 'admin' );
 
