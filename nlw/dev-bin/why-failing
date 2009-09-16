@@ -8,7 +8,7 @@ use Pod::Usage;
 use LWP::Simple qw(get);
 use YAML qw();
 use File::Path qw(rmtree);
-use List::MoreUtils qw(before_incl last_index);
+use List::MoreUtils qw(before_incl last_index any);
 use File::Slurp qw(slurp);
 use Text::ParseWords qw(quotewords);
 
@@ -109,19 +109,17 @@ unless ($initial_failures) {
 verbose("... failures: $initial_failures");
 
 ###############################################################################
-# Run the tests, trying to remove ones that aren't contributing to the overall
-# failure count.  When we can't remove anything from the list, we're done.
-while (1) {
-    my @leftover = brute_force_test_removal(@tests);
-    last if (scalar(@leftover) == scalar(@tests));
-    @tests = @leftover;
-}
+# Do a binary search through the tests, removing ones that don't contribute to
+# the initial failure count.
+my %bisect_candidates = map { $_=>1 } @tests;
+bisect_test_removal( [@tests] );
+my @shortest_set = grep { exists $bisect_candidates{$_} } @tests;
 
 ###############################################################################
 # Display the set of tests we're left with; that's the minimal set of tests
 # needed to reproduce the failure.
 status("Shortest set of tests needed to reproduce failure:");
-status(map {"\t$_"} @tests);
+status(map {"\t$_"} @shortest_set);
 
 ###############################################################################
 # All done; exit peacefully.
@@ -129,28 +127,68 @@ exit;
 
 
 ###############################################################################
-# Tries to do a brute-force removal of unit tests, getting rid of anything
-# that isn't contributing directly to the failure.
-sub brute_force_test_removal {
-    my @tests  = @_;
-    my @to_run = @tests;
+# Bisect our way through the list of candidate tests, chucking out whole sets
+# of tests that aren't contributing to the initial failure count.
+#
+# Optimized for...
+# - breadth first traversal, so we can throw away larger chunks of tests as
+#   early as possible
+# - faster LHS/RHS selection; if LHS doesn't contribute to failures it *must*
+#   be in the RHS (so don't run it now, just recurse and bisect further)
+sub bisect_test_removal {
+    my @chunks = @_;
+    return unless @chunks;
 
-    status("Making pass at test removal");
-    foreach my $test (@to_run) {
-        verbose("... trying '$test'");
+    # Bisect each of the provided chunks of tests, breadth-first
+    my @remaining;
+    foreach my $chunk (@chunks) {
+        # skip this chunk if it doesn't contain any viable test candidates
+        next unless (any { exists $bisect_candidates{$_} } @{$chunk});
 
-        my @try_these = grep { $_ ne $test } @tests;
-        my $failures  = run_tests(@try_these);
+        # bisect the chunk
+        my @rhs = @{$chunk};
+        my @lhs = splice @rhs, 0, (scalar(@rhs) / 2);
 
-        if ($failures == $initial_failures) {
-            verbose("... ... failures unchanged; removing test");
-            @tests = @try_these;
-        }
-        else {
-            verbose("... ... failures changed ($failures); leaving in place");
+        # run each side, throwing out tests that aren't contributing
+      SIDE:
+        foreach my $side (\@lhs, \@rhs) {
+            # skip side if its empty
+            next unless @{$side};
+
+            # build list of tests to run, *ignoring* the ones on this side.
+            # List is *always* built up directly from the original set of
+            # candidate tests, trimming it down to just the ones we still care
+            # about.
+            my %ignore = map { $_ => 1 } @{$side};
+            my @to_run =
+                grep { !exists $ignore{$_} }
+                grep {  exists $bisect_candidates{$_} }
+                @tests;
+            verbose("... testing removal of:");
+            verbose("... ... $_") for @{$side};
+
+            # run the tests, throwing this side away if its not contributing
+            my $failures = run_tests(@to_run);
+            if ($failures == $initial_failures) {
+                verbose("... ... failures unchanged; removing tests");
+                delete $bisect_candidates{$_} for @{$side};
+
+                # if the LHS didn't contribute, we *know* its something in the
+                # RHS; add it to the list and move on without running it now.
+                if ($side == \@lhs) {
+                    push @remaining, \@rhs;
+                    last SIDE;
+                }
+            }
+            else {
+                verbose("... ... failures changed ($failures)");
+                push @remaining, $side if (@{$side} > 1);
+            }
         }
     }
-    return @tests;
+
+    # recurse, processing the remaining chunks breadth-first
+    bisect_test_removal(@remaining);
 }
 
 ###############################################################################
