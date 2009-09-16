@@ -431,15 +431,19 @@ sub _process_template {
         }
     }
 
+    my $skin_name  = shift;
+    my $skin_uri = Socialtext::Skin->new(name => 's3')->skin_uri();
+
     my $user = $self->hub->current_user;
     return $self->hub->template->process(
         $template,
         warning     => $warning,
         miki        => 1,
+        css         => $self->hub->skin->css_info,
         user        => $self->hub->current_user,
         brand_stamp => $self->hub->main->version_tag,
         static_path => Socialtext::Helpers::static_path,
-        skin_uri    => sub { $self->hub->skin->skin_uri($_[0]) },
+        skin_uri    => sub { "$skin_uri/$_[0]" },
         pluggable   => $self->hub->pluggable,
         user        => $user,
         minutes_ago => sub { int((time - str2time(shift)) / 60) },
