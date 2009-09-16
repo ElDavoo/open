@@ -58,31 +58,31 @@ my @all_tests = @{ $order->{$testset} };
 # last "clean" or "destructive" fixture, leading up to the failing test.
 
 # everything before the failing test
-my @tests = before { $_ eq $unittest } @all_tests;
-unless (@tests) {
+my @candidates = before { $_ eq $unittest } @all_tests;
+unless (@candidates) {
     die "Couldn't find '$unittest' in the YAML; has that test run yet?\n";
 }
 
 # remove tests that don't exist; could have leftovers from previous STCI run
-@tests = grep { -e $_ } @tests;
+@candidates = grep { -e $_ } @candidates;
 
 # remove everything that ran before the most recent 'clean' fixture
-my $last_clean = last_index { is_fixture_used_by_test('clean', $_) } @tests;
+my $last_clean = last_index { is_fixture_used_by_test('clean', $_) } @candidates;
 if ($last_clean > -1) {
-    @tests = splice @tests, $last_clean;
+    @candidates = splice @candidates, $last_clean;
 }
 
 # remove everything that ran before (and including) the most recent
 # 'destructive' fixture
 my $last_destructive
-    = last_index { is_fixture_used_by_test('destructive', $_) } @tests;
-if (($last_destructive > -1) && ($last_destructive < $#tests)) {
-    @tests = splice @tests, $last_destructive + 1;
+    = last_index { is_fixture_used_by_test('destructive', $_) } @candidates;
+if (($last_destructive > -1) && ($last_destructive < $#candidates)) {
+    @candidates = splice @candidates, $last_destructive + 1;
 }
 
 # spit out information on the selected candidates
 verbose("Candidate Tests:");
-map { verbose("... $_") } @tests;
+map { verbose("... $_") } @candidates;
 
 ###############################################################################
 # If we're just doing a dry-run, STOP!
@@ -101,19 +101,19 @@ if (run_tests()) {
 # Run the tests to verify failure and to count up the number of failing tests.
 status("Reproducing test failure");
 
-my $initial_failures = run_tests(@tests);
+my $initial_failures = run_tests(@candidates);
 unless ($initial_failures) {
     die "Selected candidate tests didn't produce failure:\n",
-        map {"\t$_\n"} @tests;
+        map {"\t$_\n"} @candidates;
 }
 verbose("... failures: $initial_failures");
 
 ###############################################################################
 # Do a binary search through the tests, removing ones that don't contribute to
 # the initial failure count.
-my %bisect_candidates = map { $_=>1 } @tests;
-bisect_test_removal( [@tests] );
-my @shortest_set = grep { exists $bisect_candidates{$_} } @tests;
+my %bisect_candidates = map { $_=>1 } @candidates;
+bisect_test_removal( [@candidates] );
+my @shortest_set = grep { exists $bisect_candidates{$_} } @candidates;
 
 ###############################################################################
 # Display the set of tests we're left with; that's the minimal set of tests
@@ -163,7 +163,7 @@ sub bisect_test_removal {
             my @to_run =
                 grep { !exists $ignore{$_} }
                 grep {  exists $bisect_candidates{$_} }
-                @tests;
+                @candidates;
             verbose("... testing removal of:");
             verbose("... ... $_") for @{$side};
 
