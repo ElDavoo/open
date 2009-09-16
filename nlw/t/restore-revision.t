@@ -5,10 +5,10 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 24;
-fixtures( 'admin' );
+fixtures(qw( db ));
 use Readonly;
 
-my $hub = new_hub('admin');
+my $hub = create_test_hub();
 isa_ok( $hub, 'Socialtext::Hub' ) or die;
 
 my $pages = $hub->pages;
