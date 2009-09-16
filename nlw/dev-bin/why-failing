@@ -48,17 +48,17 @@ unless (-e $unittest) {
 }
 
 ###############################################################################
-# Go get the YAML file outlining the order in which the tests were run.
-my $order_yaml = get("$stci_url/$branch/$testrun/test-order.yaml");
-die "Unable to get test order YAML file.\n" unless $order_yaml;
-
-my $order     = YAML::Load($order_yaml);
-my @all_tests = @{ $order->{$testset} };
-
-###############################################################################
 # Build up a set of "candidate tests"; everything that we think ran since the
 # last "clean" or "destructive" fixture, leading up to the failing test.
 unless (@candidates) {
+    # get the YAML file outlining the order in which the tests were run.
+    verbose("Fetching test order for $branch/$testrun...");
+    my $order_yaml = get("$stci_url/$branch/$testrun/test-order.yaml");
+    die "Unable to get test order YAML file.\n" unless $order_yaml;
+
+    my $order     = YAML::Load($order_yaml);
+    my @all_tests = @{ $order->{$testset} };
+
     # everything before the failing test
     @candidates = before { $_ eq $unittest } @all_tests;
     unless (@candidates) {
