@@ -332,7 +332,7 @@ sub _add_signal_doc {
         (map { [link_page_id => $_->page_id],
                [link_wksp_id => $_->workspace_id],
             } @page_topics),
-        (map { [link_external => $_] } @$external_links),
+        (map { [link => $_] } @$external_links),
     );
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
