@@ -329,8 +329,8 @@ sub _add_signal_doc {
         (map { [a => $_] } @{ $signal->account_ids }),
         ($in_reply_to ? [reply_to =>$in_reply_to->user_id] : ()),
         (map { [mention => $_->user_id] } @user_topics ),
-        (map { [link_page_id => $_->[1]],
-               [link_wksp_id => $_->[0]],
+        (map { [link_w => $_->[0]],
+               [link_page_key => $_->[1]],
             } @$page_links),
         (map { [link => $_] } @$external_links),
     );
@@ -356,8 +356,12 @@ sub render_signal_body {
                 },
                 page_link => sub {
                     my $ast = shift;
+                    my $wksp = Socialtext::Workspace->new(name => $ast->{workspace_id});
+                    return unless $wksp;
+                    my $wksp_id = $wksp->workspace_id;
                     my $pid = Socialtext::String::uri_unescape($ast->{page_id});
-                    push @page_links, [$ast->{workspace_id}, $pid];
+                    $pid = Socialtext::String::title_to_id($pid, 'no escape');
+                    push @page_links, [ $wksp_id, "$wksp_id:$pid" ];
                 },
             },
         ),

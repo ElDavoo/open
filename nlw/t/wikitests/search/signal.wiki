@@ -6,6 +6,8 @@
 | set                 | recipient     | recip%%start_time%%@ken.socialtext.net |             |
 | create-user         | %%recipient%% | abc123                                 | %%account%% |
 | set_user_id         | recipient_id  | %%recipient%%                          |             |
+| set                 | observer      | obser%%start_time%%@ken.socialtext.net |             |
+| create-user         | %%observer%%  | abc123                                 | %%account%% |
 | set-searcher        | Solr          |                                        |             |
 
 | edit-page       | %%workspace%% | coolpage                                                               | Stupid plain content |
@@ -27,6 +29,8 @@
 | json-array-size | 1 |
 | json-like | [{"body":"Stupid plain"}] |
 
+This matches because the user's Best Full Name is defaulting to the username:
+
 | get       | /data/signals?q=%%username%% | application/json  |
 | code-is   | 200                             |   |
 | json-parse |
@@ -39,19 +43,22 @@
 | json-array-size | 1                                    |                  |
 | body-like       | http://awesnob.com |
 
-| get             | /data/signals?q=link_page_id%3Astart | application/json |
+* link_page_key is exact only
+
+| get             | /data/signals?q=link_page_key%3Astart | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 0                                    |                  |
+
+| get             | /data/signals?q=link_page_key%3A1%3Astart_here | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
 | json-array-size | 1                                    |                  |
 | body-like       | Humbles |
 
-| get             | /data/signals?q=link_page_id%3Ahere | application/json |
-| code-is         | 200                                  |                  |
-| json-parse      |                                      |                  |
-| json-array-size | 1                                    |                  |
-| body-like       | Humbles |
+* Workspace id is numerical exact only
 
-| get             | /data/signals?q=link_wksp_id%3Ahelp-en | application/json |
+| get             | /data/signals?q=link_w%3A1 | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
 | json-array-size | 1                                    |                  |
@@ -135,6 +142,15 @@
 | json-array-size | 2                                     |                               |
 | body-like       | not first public                      |                               |
 | body-like       | first direct                          |                               |
+
+* Verify a third person in that account can't see the private signal.
+
+| http-user-pass | %%observer%%          | abc123           |
+| get            | /data/signals?q=direct | application/json |
+| code-is        | 200                    |                  |
+| body-unlike      | first direct           |                  |
+| body-unlike      | second direct          |                  |
+| http-user-pass | %%username%%           | %%password%%     |
 
 creator, dm_recip
 | get             | /data/signals?q=creator%3A%%user_id%%           | application/json |

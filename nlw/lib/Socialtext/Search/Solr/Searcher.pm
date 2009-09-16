@@ -85,9 +85,15 @@ sub _search {
         $filter_query = "doctype:$opts{doctype}";
         if ($opts{viewer}) {
             my @accounts = $opts{viewer}->accounts(ids_only => 1);
+            my $viewer_id = $opts{viewer}->user_id;
             $filter_query .= " AND ("
                 . join(' OR ', map { "a:$_" } @accounts)
                 . ")";
+            $filter_query = [
+                $filter_query,
+                "pvt:0 OR (pvt:1 AND "
+                    . "(dm_recip:$viewer_id OR creator:$viewer_id))",
+            ];
         }
     }
 
@@ -102,7 +108,6 @@ sub _search {
         qt => $query_type,
         # fq = Filter Query - superset of docs to return from
         ($filter_query ? (fq => $filter_query) : ()),
-        fq => $filter_query,
         rows => 20,
         start => $opts{offset} || 0,
         $self->_sort_opts($opts{order}, $opts{direction}, $query_type),
