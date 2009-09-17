@@ -207,11 +207,13 @@ const wafl_reference_parse =>
 
 sub html_start {
     my $self = shift;
-    return $self->error ? $self->SUPER::html_start(@_) : '' 
+    no warnings 'uninitialized';
+    return ($self->error or length $self->label) ? $self->SUPER::html_start(@_) : '' 
 };
 sub html_end {
     my $self = shift;
-    return $self->error ? $self->SUPER::html_end(@_) : '' 
+    no warnings 'uninitialized';
+    return ($self->error or length $self->label) ? $self->SUPER::html_end(@_) : '' 
 }
 
 sub html {
