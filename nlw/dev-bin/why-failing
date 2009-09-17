@@ -21,6 +21,7 @@ my $testrun  = 'current';
 my $testset  = 'socialtext';
 my $dryrun   = undef;
 my $unittest = undef;
+my $count_all_failures = undef;
 my @candidates;
 
 GetOptions(
@@ -30,6 +31,7 @@ GetOptions(
     'dryrun'      => \$dryrun,
     'verbose'     => \$verbose,
     'candidate=s' => \@candidates,
+    'all'         => \$count_all_failures,
     'help|?'      => \$help,
     'man'         => \$man,
 ) || pod2usage(1);
@@ -240,16 +242,20 @@ sub run_tests {
 
     # find the failures from the unit test that we're running.  If _other_
     # tests failed along the way we don't care.
+    my $total_failures = 0;
     foreach my $line (@results) {
         if ($line =~ /^(\S+).*Tests:\s+\d+\s+Failed:\s+(\d+)/) {
             my ($short_testname, $failed) = ($1, $2);
-            if ($unittest =~ /$short_testname/) {
+            if ($count_all_failures) {
+                $total_failures += $failed;
+            }
+            elsif ($unittest =~ /$short_testname/) {
                 return $failed;
             }
         }
     }
 
-    return 0;
+    return $total_failures;
 }
 
 ###############################################################################
@@ -288,6 +294,7 @@ why-failing - find out why a unit test is failing
     --branch <branch>   Branch test is failing on (default 'master')
     --run <testrun>     Test run test is failing on (default 'current')
     --candidate <test>  Specify candidate tests explicitly
+    --all               Count all failures, not just ones in test
     --dryrun            Dry-run; show candidates, but don't run tests
     --verbose           Display verbose output
     --help/-?           Display a brief usage statement
@@ -357,6 +364,17 @@ candidate tests is calculated automatically.
 
 To specify multiple candidate tests, use this command line option multiple
 times, in order.
+
+=item B<--all>
+
+When checking "did the test pass?", consider failures for I<all> of the tests
+that were run, not just the one we're checking.
+
+By default, we B<only> check for failures in the test we're looking at, and we
+ignore failures in the candidates.  With C<--all>, we also track failures in
+the candidates.
+
+Useful for helping hunt down chains of failures in a single run.
 
 =item B<--dryrun>
 
