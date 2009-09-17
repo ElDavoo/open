@@ -4,8 +4,6 @@
 use strict;
 use warnings;
 
-BEGIN { $ENV{NLW_LIVE_DANGEROUSLY} = 1 }
-
 use Test::Socialtext tests => 4;
 fixtures(qw( db ));
 use Socialtext::Pages;
