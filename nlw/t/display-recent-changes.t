@@ -6,7 +6,7 @@ use warnings;
 
 use mocked 'Apache::Cookie';
 use Test::Socialtext tests => 4;
-fixtures( 'admin' );
+fixtures( 'db' );
 use Socialtext::Pages;
 
 # XXX sigh, cgi->changes is checked to see if we should get the data
@@ -14,7 +14,7 @@ $ENV{GATEWAY_INTERFACE} = 1;
 $ENV{QUERY_STRING} = 'action=recent_changes;changes=recent';
 $ENV{REQUEST_METHOD} = 'GET';
 
-my $hub = new_hub('admin');
+my $hub = create_test_hub();
 $hub->preload;
 
 # make a change
