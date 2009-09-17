@@ -3,11 +3,11 @@
 
 use strict;
 use warnings;
-
 use mocked 'Apache::Cookie';
 use Test::Socialtext tests => 4;
-fixtures( 'db' );
 use Socialtext::Pages;
+
+fixtures( 'db' );
 
 # XXX sigh, cgi->changes is checked to see if we should get the data
 $ENV{GATEWAY_INTERFACE} = 1;

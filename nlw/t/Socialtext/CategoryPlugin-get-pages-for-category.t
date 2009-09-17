@@ -3,11 +3,11 @@
 
 use strict;
 use warnings;
-
 use Test::Socialtext tests => 4;
-fixtures(qw( db ));
 use Socialtext::Pages;
 use DateTime;
+
+fixtures(qw( db ));
 
 my $hub = create_test_hub();
 
