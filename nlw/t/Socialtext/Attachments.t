@@ -3,11 +3,11 @@
 
 use warnings;
 use strict;
-
 use Test::Socialtext tests => 20;
-fixtures(qw( db ));
 use Socialtext::Attachments;
 use Socialtext::User;
+
+fixtures(qw( db ));
 
 sub new_attachment {
     bless {}, 'Socialtext::Attachment'; # "new" does stuff this test doesn't need (now)
