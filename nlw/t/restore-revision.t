@@ -3,12 +3,12 @@
 
 use strict;
 use warnings;
-
 use Test::Socialtext tests => 24;
-fixtures( 'admin' );
 use Readonly;
 
-my $hub = new_hub('admin');
+fixtures(qw( db ));
+
+my $hub = create_test_hub();
 isa_ok( $hub, 'Socialtext::Hub' ) or die;
 
 my $pages = $hub->pages;
@@ -93,7 +93,7 @@ END_OF_RANT
 
     my $changes = $hub->recent_changes->get_recent_changes;
     my $row     = $changes->{rows}->[0];
-    use YAML; warn Dump($changes->{rows});
+    #use YAML; warn Dump($changes->{rows});
     is( $row->{Subject}, $TITLE, "most recently modified page is $TITLE" );
     is($row->{Revision}, 1, 'recent_changes revision number is restored.');
     is($row->{revision_count}, 3, 'recent_changes revision count is correct.');

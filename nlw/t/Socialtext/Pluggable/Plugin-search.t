@@ -11,6 +11,15 @@ fixtures(qw( admin no-ceq-jobs ));
 use_ok 'Socialtext::Pluggable::Plugin';
 
 my $hub = new_hub('admin');
+
+diag qq{
+
+If this test fails without *any* indication of what went wrong, we've likely
+dumped core while trying to extract text from an attachment in the 'admin'
+Workspace.
+
+};
+
 Socialtext::Search::AbstractFactory->GetFactory->create_indexer('admin')
     ->index_workspace('admin');
 ceqlotron_run_synchronously();

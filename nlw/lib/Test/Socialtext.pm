@@ -367,7 +367,9 @@ sub _teardown_cleanup {
     sub _remove_all_but_initial_objects {
         while (my ($key,$obj) = each %Objects) {
             my $iterator = $obj->{get_iterator}->();
-            Test::More::diag("CLEANUP: removing ${key}s");
+            if (Test::Socialtext::Environment->instance()->verbose) {
+                Test::More::diag("CLEANUP: removing ${key}s");
+            }
             while (my $item = $iterator->next()) {
                 # remove all but the initial set of objects that were
                 # created and available at startup.
@@ -382,7 +384,9 @@ sub _teardown_cleanup {
             }
         }
 
-        Test::More::diag("CLEANUP: removing all ceq jobs");
+        if (Test::Socialtext::Environment->instance()->verbose) {
+            Test::More::diag("CLEANUP: removing all ceq jobs");
+        }
         Socialtext::SQL::sql_begin_work();
         # OK to leave funcmap alone
         Socialtext::SQL::sql_execute(
