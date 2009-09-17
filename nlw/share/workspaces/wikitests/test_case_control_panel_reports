@@ -112,6 +112,11 @@ open_ok | /nlw/reports/workspace_growth.csv?workspace=growth_report_test&downloa
 | *Comment* | Test Case: Control Panel Reports (Account-level, Growth Report) |  |
 | open_ok | /nlw/control |  |
 | clickAndWait | link=Accounts |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%testingaccount%% |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| click_ok | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=%%testingaccount%% |  |
 | clickAndWait | link=%%testingaccount%% |  |
 | clickAndWait | link=Growth Reports |  |
 
@@ -203,3 +208,5 @@ text_like | Username\s*Dashboard Views\s*Dashboard Personalizations\s*People Vie
 | text_like | Reports Dashboard |  |
 
 | *Comment* | Test Case: Control Panel Reports COMPLETED |  |
+
+g
