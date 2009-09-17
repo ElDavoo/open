@@ -323,3 +323,4 @@ t/wikitests/widgets/export-import.wiki
 lib/Socialtext/Rest/Gadgets/Common.pm
 t/widget/uploaded.xml
 t/wikitests/widgets/events.wiki
+t/wikitests/socialcalc/ss-rountrip.wiki
