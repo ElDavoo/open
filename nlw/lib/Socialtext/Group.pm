@@ -165,6 +165,9 @@ sub Factory {
     if ($driver_key) {
         ($driver_name, $driver_id) = split /:/, $driver_key;
     }
+    else {
+        $driver_key = join ':', $driver_name, $driver_id;
+    }
 
     my $driver_class = join '::', $class->base_package(), $driver_name, 'Factory';
     eval "require $driver_class";

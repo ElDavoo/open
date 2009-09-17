@@ -7,7 +7,7 @@ use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Socialtext::Group::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 65;
+use Test::Socialtext tests => 69;
 
 # Force this to be synchronous.
 local $Socialtext::Group::Factory::Asynchronous = 0;
@@ -32,6 +32,17 @@ instantiate_ldap_group_factory: {
     my $openldap    = bootstrap_openldap();
     my $factory_key = $openldap->_as_factory();
     my $factory = Socialtext::Group->Factory(driver_key => $factory_key);
+    isa_ok $factory, 'Socialtext::Group::LDAP::Factory';
+}
+
+###############################################################################
+# TEST: instantiate LDAP Group Factory, by name+id
+instantiate_ldap_group_factory_by_name_and_id: {
+    my $openldap = bootstrap_openldap();
+    my $factory  = Socialtext::Group->Factory(
+        driver_name => 'LDAP',
+        driver_id   => $openldap->ldap_config->id(),
+    );
     isa_ok $factory, 'Socialtext::Group::LDAP::Factory';
 }
 
