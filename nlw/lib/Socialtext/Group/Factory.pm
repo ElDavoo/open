@@ -55,6 +55,7 @@ has 'cache_lifetime' => (
 # Methods we require downstream classes consuming this role to implement:
 requires 'Create';
 requires 'Update';
+requires 'Available';
 requires 'can_update_store';
 requires 'is_cacheable';
 requires '_build_cache_lifetime';
@@ -482,6 +483,67 @@ No default cache lifetime is provided or defined; you must implement the
 C<_build_cache_lifetime()> builder method in your concrete Factory
 implementation.
 
+=item B<$factory-E<gt>Available(PARAMS)>
+
+Returns a list-of-hash-refs containing information on the Groups that are
+available in the factories underlying data store.  The Groups I<aren't>
+instantiated into Group objects, they're I<not> vivified into the system, you
+B<just> get a data structure about Groups that exist.  Group data returned is
+ordered by "driver_group_name".
+
+By default, this method only returns Groups that have I<already> been loaded
+into Socialtext and are known to the system.  Use C<all=E<gt>1> to have the
+list also include Groups that exist in the underlying data store but that are
+I<not> yet known to Socialtext.
+
+This method accepts the following C<PARAMS>:
+
+=over
+
+=item all => 1
+
+Includes data on Groups that aren't yet known to Socialtext, but that do exist
+in the underlying data store.  By default, C<Available()> only returns Groups
+that I<have> been loaded into Socialtext.
+
+=back
+
+The hash-refs returned will have the following structure:
+
+=over
+
+=item driver_key
+
+The C<driver_key> for the Factory that contains the Group.
+
+=item driver_group_name
+
+The display name for the Group.
+
+=item driver_unique_id
+
+The unique identifier for the Group as it exists in the underlying data store.
+You can later use this C<driver_unique_id> to instantiate the Group.
+
+=item already_created
+
+True if the Group has already been vivified/loaded into Socialtext, false if
+the Group I<only> lives within the underlying data store (and has not yet been
+loaded into Socialtext).
+
+Unless you have specified C<all=E<gt>1> in your PARAMS, this will always be
+true.
+
+=item member_count
+
+The number of Users that exist in the Group in the underlying data store.
+
+For externally sourced Groups, this count may differ from the number of Users
+found in the locally cached copy of the Group; the member count returned here
+is the count according to the external store, I<not> the locally cached count.
+
+=back
+
 =item B<$factory-E<gt>Create(\%proto_group)>
 
 Attempts to create a new Group object in the data store, using the information
@@ -665,6 +727,8 @@ In order to consume this Group Factory Role and implement a concrete Group
 Factory, you need to provide implementations for the following methods:
 
 =over
+
+=item Available(PARAM)
 
 =item Create(\%proto_group)
 
