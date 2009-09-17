@@ -45,5 +45,3 @@ Get: {
         'pages returned in sequence';
     is scalar(@numbers), 10, 'got 10 pages';
 }
-
-
