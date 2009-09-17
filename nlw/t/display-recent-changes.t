@@ -15,7 +15,6 @@ $ENV{QUERY_STRING} = 'action=recent_changes;changes=recent';
 $ENV{REQUEST_METHOD} = 'GET';
 
 my $hub = create_test_hub();
-$hub->preload;
 
 # make a change
 {
