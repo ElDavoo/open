@@ -7,11 +7,11 @@ use warnings;
 BEGIN { $ENV{NLW_LIVE_DANGEROUSLY} = 1 }
 
 use Test::Socialtext tests => 4;
-fixtures( 'admin' );
+fixtures(qw( db ));
 use Socialtext::Pages;
 use DateTime;
 
-my $hub = new_hub('admin');
+my $hub = create_test_hub();
 
 # create pages
 {
