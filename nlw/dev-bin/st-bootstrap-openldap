@@ -131,7 +131,9 @@ Press ^C to abort.
 # to their default value.
 sub stop {
     # kill off any other running copy of st-bootstrap-openldap
-    _kill_running_copy_of_ourselves();
+    unless (_kill_running_copy_of_ourselves()) {
+        print "no OpenLDAP running; nothing to stop\n";
+    }
 
     # reset the (user|group)_factories back to the default
     my $appconfig = Socialtext::AppConfig->new();
@@ -228,13 +230,16 @@ sub _daemonize {
 ###############################################################################
 # Kills off a running copy of ourselves, *if* one is running.
 sub _kill_running_copy_of_ourselves {
-    my $pidfile = _pidfile();
+    my $pidfile  = _pidfile();
+    my $did_kill = 0;
 
     if (-e $pidfile) {
         my $pid = slurp($pidfile);
         if (_is_running($pid)) {
             print "killing off $0...\n";
             kill(2, $pid);
+            $did_kill ++;
+
             for (0 .. 5) {
                 sleep(1);
                 goto DONE_KILLING_OFF_SELF unless _is_running($pid);
@@ -253,6 +258,7 @@ sub _kill_running_copy_of_ourselves {
 
   DONE_KILLING_OFF_SELF:
     unlink $pidfile;
+    return $did_kill;
 }
 
 =head1 NAME
