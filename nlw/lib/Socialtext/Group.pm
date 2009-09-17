@@ -85,6 +85,9 @@ sub All {
     push @where, primary_account_id => $p{primary_account_id}
         if $p{primary_account_id};
 
+    push @where, driver_key => $p{driver_key}
+        if $p{driver_key};
+
     if ($p{account_id}) {
         $from .= q{ JOIN group_account_role gar USING (group_id) };
         push @where, 'gar.account_id' => $p{account_id};
@@ -493,6 +496,11 @@ Accepts the following PARAMS:
 
 Restricts results to only contain those Groups that have the provided
 C<$account_id> as their Primary Account Id.
+
+=item driver_key => $driver_key
+
+Restricts results to only contain those Groups that were created by the Group
+Factory identified by the given C<$driver_key>.
 
 =item order_by => $field
 

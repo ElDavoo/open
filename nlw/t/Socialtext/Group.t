@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 28;
+use Test::Socialtext tests => 30;
 use Test::Exception;
 use Socialtext::SQL qw/:exec/;
 
@@ -149,6 +149,14 @@ query_all_groups: {
         $groups = Socialtext::Group->All(primary_account_id => $account_b->account_id);
         is $groups->count(), 1, '... containing one Group';
         is $groups->next->group_id, $group_one->group_id, '... which is Group BBB';
+    }
+
+    by_driver_key: {
+        $groups = Socialtext::Group->All(driver_key => 'non-existent');
+        is $groups->count(), 0, 'Query by non-existent driver; zero Groups';
+
+        $groups = Socialtext::Group->All(driver_key => 'Default');
+        is $groups->count(), 2, 'Query by Default driver; two Groups';
     }
 }
 
