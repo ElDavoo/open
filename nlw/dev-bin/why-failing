@@ -43,6 +43,7 @@ $verbose += ( $dryrun ) ? $dryrun : 0;    # --dryrun implies --verbose
 
 ###############################################################################
 # Make sure that the failing test exists
+status("Testing: $unittest");
 unless (-e $unittest) {
     die "Can't find '$unittest'; did you 'cdnlw'?\n";
 }
@@ -122,7 +123,7 @@ my @shortest_set = grep { exists $bisect_candidates{$_} } @candidates;
 # Display the set of tests we're left with; that's the minimal set of tests
 # needed to reproduce the failure.
 status("Shortest set of tests needed to reproduce failure:");
-status(map {"\t$_"} @shortest_set);
+status(map {"\t$_"} @shortest_set, $unittest);
 
 ###############################################################################
 # All done; exit peacefully.
