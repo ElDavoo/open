@@ -5,7 +5,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 20;
-fixtures( 'admin' );
+fixtures(qw( db ));
 use Socialtext::Attachments;
 use Socialtext::User;
 
@@ -15,8 +15,8 @@ sub new_attachment {
 
 sub booleanize { $_[0] ? 1 : '' } # could be a filter
 
-my $hub = new_hub('admin');
-my $creator = Socialtext::User->new( username => 'devnull1@socialtext.com' );
+my $hub     = create_test_hub();
+my $creator = $hub->current_user();
 
 FILENAME_TEST: {
     my $a = new_attachment;
