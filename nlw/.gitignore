@@ -323,3 +323,8 @@ t/wikitests/widgets/export-import.wiki
 lib/Socialtext/Rest/Gadgets/Common.pm
 t/widget/uploaded.xml
 t/wikitests/widgets/events.wiki
+bin/json-proxy.scgi
+bin/generate-proxy-config
+etc/apache2/conf.d/apache2-jsonproxy.conf
+t/wikitests/socialcalc/ss-rountrip.wiki
+lib/Socialtext/JSON/Cache.pm
