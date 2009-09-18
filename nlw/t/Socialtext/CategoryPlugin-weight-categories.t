@@ -3,7 +3,6 @@
 
 use strict;
 use warnings;
-BEGIN { $ENV{NLW_LIVE_DANGEROUSLY} = 1 }
 use Test::Socialtext tests => 8;
 # This test suite *needs* to have no pages in the admin workspace when its
 # run.
