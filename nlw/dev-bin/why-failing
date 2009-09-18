@@ -202,13 +202,12 @@ sub bisect_test_removal {
 # is, false otherwise.
 sub is_fixture_used_by_test {
     my ($fixture, $test) = @_;
-    my %fixtures = fixtures_used_by_test($test);
+    my %fixtures = map { $_ => 1 } fixtures_used_by_test($test);
     return defined $fixtures{$fixture} ? 1 : 0;
 }
 
 ###############################################################################
-# Returns a hash of the fixtures that are used by the given unit test.  Hash
-# has some cruft in it, but we'll ignore that for now.
+# Returns a list of the fixtures that are used by the given unit test.
 sub fixtures_used_by_test {
     my $test = shift;
     my %fixtures;
@@ -225,7 +224,7 @@ sub fixtures_used_by_test {
         $fixtures{$word}++;
     }
 
-    return %fixtures;
+    return keys %fixtures;
 }
 
 ###############################################################################
