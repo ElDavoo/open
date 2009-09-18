@@ -235,6 +235,9 @@ ldap_group_records_events_on_membership_change: {
 #     is_event_count 1;
 #     event_ok( event_class => 'group', action => 'delete_role' );
     next_log_like 'info', qr/REMOVE,GROUP_ROLE/, '... and shows in nlw.log';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($motorhead);
 }
 
 ###############################################################################
@@ -257,4 +260,7 @@ group_lookup_reuses_ldap_connection: {
 
     is $Socialtext::LDAP::stats{connect}, 1,
         '... using only a *single* LDAP connection';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($hawkwind);
 }
