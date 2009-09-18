@@ -4,16 +4,14 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 8;
-# This test suite *needs* to have no pages in the admin workspace when its
-# run.
-fixtures('admin_no_pages');
 
 BEGIN {
     use_ok( "Socialtext::Page" );
 }
 
-my $hub = new_hub('admin');
+fixtures(qw( db ));
 
+my $hub   = create_test_hub();
 my $page1 = create_page_with_tags( 'one',   'tag1', 'tag2' );
 my $page2 = create_page_with_tags( 'two',   'tag1', 'tag3' );
 create_page_with_tags( 'three', 'tag1', 'tag4' );
