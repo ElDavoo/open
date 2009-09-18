@@ -11,7 +11,7 @@ use Test::Socialtext;
 BEGIN {
     require Socialtext::People::Profile;
     plan skip_all => 'People is not linked in' if ($@);
-    plan tests => 34;
+    plan tests => 35;
 }
 
 fixtures( 'db', 'destructive' );
@@ -27,19 +27,22 @@ our $LastExitVal;
 }
 
 ###############################################################################
-# bootstrap OpenLDAP; we'll use a single copy of this for *all* of the LDAP
-# tests we're going to run here.
-
-# ... bootstrap OpenLDAP
-my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
-isa_ok $openldap, 'Test::Socialtext::Bootstrap::OpenLDAP';
-
-# ... populate OpenLDAP
-ok $openldap->add_ldif('t/test-data/ldap/base_dn.ldif'), '.. added data: base_dn';
-ok $openldap->add_ldif('t/test-data/ldap/people.ldif'), '... added data: people';
+sub bootstrap_openldap {
+    my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
+    isa_ok $openldap, 'Test::Socialtext::Bootstrap::OpenLDAP';
+    ok $openldap->add_ldif('t/test-data/ldap/base_dn.ldif'),
+        '.. added data: base_dn';
+    ok $openldap->add_ldif('t/test-data/ldap/people.ldif'),
+        '... added data: people';
+    ok $openldap->add_ldif('t/test-data/ldap/groups-groupOfNames.ldif'),
+        '... added data: groups';
+    return $openldap;
+}
 
 ###############################################################################
 MASS_ADD_USERS: {
+    my $ldap = bootstrap_openldap();
+
     # mass-add an LDAP user
     # - is required for the 'update_ldap_user' test that comes below
     add_ldap_user: {
