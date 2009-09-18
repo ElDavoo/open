@@ -73,12 +73,6 @@ setup: {
     ok $ws_id;
 }
 
-END {
-    $ws->delete() if $ws;
-    $acct->delete() if $acct;
-    $acct2->delete() if $acct2;
-}
-
 sub membership_is {
     my $expected = shift;
     my $name = shift;
