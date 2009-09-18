@@ -161,15 +161,15 @@ create_group: {
         );
 
         # Verify that Group was created with correct Account
-        my $group = Socialtext::Group->GetProtoGroup(
+        my $proto = Socialtext::Group->GetProtoGroup(
             driver_unique_id => $motorhead_dn,
         );
-        ok $group, '... was vivified into DB';
-        is $group->{primary_account_id}, $def_acct->account_id,
+        ok $proto, '... was vivified into DB';
+        is $proto->{primary_account_id}, $def_acct->account_id,
             '... into default Primary Account';
 
         # CLEANUP
-        $group = Socialtext::Group->GetGroup($group);   # vivify to object
+        my $group = Socialtext::Group->GetGroup($proto);
         Test::Socialtext::Group->delete_recklessly( $group );
     }
 
@@ -206,15 +206,15 @@ create_group: {
         );
 
         # Verify that Group was created with correct Account
-        my $group = Socialtext::Group->GetProtoGroup(
+        my $proto = Socialtext::Group->GetProtoGroup(
             driver_unique_id => $motorhead_dn,
         );
-        ok $group, '... was vivified into DB';
-        is $group->{primary_account_id}, $test_acct->account_id,
+        ok $proto, '... was vivified into DB';
+        is $proto->{primary_account_id}, $test_acct->account_id,
             '... into explicit Primary Account';
 
         # CLEANUP
-        $group = Socialtext::Group->GetGroup($group);   # vivify to object
+        my $group = Socialtext::Group->GetGroup($proto);
         Test::Socialtext::Group->delete_recklessly( $group );
     }
 }
