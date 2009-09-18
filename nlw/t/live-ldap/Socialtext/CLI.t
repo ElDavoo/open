@@ -146,6 +146,9 @@ create_group: {
     my $def_acct_name = $def_acct->name();
     my $motorhead_dn  = 'cn=Motorhead,dc=example,dc=com';
 
+    # Group lookups should be done *in-process*
+    local $Socialtext::Group::Factory::Asynchronous = 0;
+
     create_group_default_account: {
         expect_success(
             sub {
