@@ -7,7 +7,7 @@ use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Socialtext::Group::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 83;
+use Test::Socialtext tests => 90;
 
 # Force this to be synchronous.
 local $Socialtext::Group::Factory::Asynchronous = 0;
@@ -70,6 +70,26 @@ retrieve_ldap_group: {
 
     $user = $users->next();
     is $user->username => 'eddie clarke', '... third user has correct name';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($motorhead);
+}
+
+###############################################################################
+# TEST: retrieve an LDAP Group, *into* a specific Account
+retrieve_ldap_group_explicit_account: {
+    my $openldap  = bootstrap_openldap();
+    my $account   = Socialtext::Account->Socialtext();
+    my $group_dn  = 'cn=Motorhead,dc=example,dc=com';
+    my $motorhead = Socialtext::Group->GetGroup(
+        driver_unique_id   => $group_dn,
+        primary_account_id => $account->account_id(),
+    );
+    isa_ok $motorhead, 'Socialtext::Group';
+    isa_ok $motorhead->homunculus, 'Socialtext::Group::LDAP';
+    is $motorhead->driver_group_name, 'Motorhead';
+    is $motorhead->primary_account_id, $account->account_id(),
+        '... created in explicit Account';
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($motorhead);

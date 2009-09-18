@@ -205,10 +205,15 @@ sub _lookup_group {
     }
 
     # Map the LDAP response back to a proto group
-    $proto_group = $self->_map_ldap_entry_to_proto($entry);
-    $proto_group->{driver_key} = $self->driver_key();
-    $proto_group->{members} = [ $entry->get_value( $attr_map->{member_dn} ) ];
-    return $proto_group;
+    my $response = $self->_map_ldap_entry_to_proto($entry);
+    $response->{driver_key} = $self->driver_key();
+    $response->{members}    = [ $entry->get_value( $attr_map->{member_dn} ) ];
+    foreach my $passthru (qw( primary_account_id )) {
+        if (defined $proto_group->{$passthru}) {
+            $response->{$passthru} ||= $proto_group->{$passthru};
+        }
+    }
+    return $response;
 }
 
 sub _update_group_members {
