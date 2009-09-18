@@ -3081,6 +3081,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   GROUPS
 
   list-groups [--account]
+  show-group-config --group
   create-group --ldap-dn [--account]
 
   OTHER
@@ -3583,6 +3584,11 @@ Note: A field's class cannot currently be changed to or from the 'relationship' 
 Display an overview of Groups (in Socialtext wiki table format).  Includes the number of Workspaces each group belongs to.  Includes the number of Users that are members of each Group.
 
 If C<--account> is specified, limits the display to groups in association with that account.
+
+=head2 show-group-config --group
+
+Show the Group configuration for the specified C<--group> (which must be
+provided as a Group Id).
 
 =head2 create-group --ldap-dn [--account]
 
