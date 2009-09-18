@@ -65,7 +65,7 @@ $users->{'t7@socialtext.net'}->{'type'} = 'new';
 process_month($dbh, $users, '2008-03-10', $workspace);
 
 $dbh->commit();
-
+$dbh->disconnect();
 
 sub process_month {
     my ($dbh, $users, $date, $workspace) = @_;
