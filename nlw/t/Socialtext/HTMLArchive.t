@@ -45,8 +45,8 @@ EOF
 my $archive = Socialtext::HTMLArchive->new( hub => $hub );
 
 my $dir = 't/tmp/junk';
-File::Path::rmtree($dir) if -d $dir;
 File::Path::mkpath( $dir, 0, 0755 );
+END { File::Path::rmtree($dir) if (defined $dir && -d $dir) }
 
 my $file_name = "$dir/admin-archive.zip";
 unlink $file_name;
