@@ -30,6 +30,31 @@ sub _update_group_members {
     return;
 }
 
+# Returns list of available Groups
+sub Available {
+    my $self = shift;
+
+    my $cursor = Socialtext::Group->All(
+        driver_key         => $self->driver_key,
+        order_by           => 'driver_group_name',
+        sort_order         => 'ASC',
+        include_aggregates => 1,
+    );
+
+    my @results;
+    while (my $group = $cursor->next) {
+        my $group_hash = {
+            driver_key          => $group->driver_key,
+            driver_group_name   => $group->driver_group_name,
+            driver_unique_id    => $group->driver_unique_id,
+            already_created     => 1,
+            member_count        => $group->{user_count},
+        };
+        push @results, $group_hash;
+    }
+    return @results;
+}
+
 # creates a new Group, and stores it in the data store
 sub Create {
     my ($self, $proto_group) = @_;
@@ -110,6 +135,14 @@ Returns true; the Default Group Factory B<is> updateable.
 =item B<$factory-E<gt>is_cacheable()>
 
 Returns false; the Default Group Factory is B<not> cacheable.
+
+=item B<$factory-E<gt>Available(PARAMS)>
+
+Returns a list of available Groups that have been created through this Factory
+instance.
+
+Implements C<Available()> as specified by C<Socialtext::Group::Factory>;
+please refer to L<Socialtext::Group::Factory> for more information.
 
 =item B<$factory-E<gt>Create(\%proto_group)>
 

@@ -3,7 +3,8 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 31;
+use Test::Socialtext tests => 34;
+use Test::Socialtext::Group;
 
 ###############################################################################
 # Fixtures: db
@@ -66,6 +67,9 @@ create_group: {
         '... created after our test started';
     ok $created_when < $test_finish,
         '... ... and before our test finished (so we must have created it)';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($group);
 }
 
 ###############################################################################
@@ -138,4 +142,51 @@ delete_group_record_without_id: {
     ok !$rc, 'deleting Group record fails when no group_id';
     like $@, qr/Cannot accurately identify unique record to delete/,
         '... throwing exception about no group_id';
+}
+
+###############################################################################
+# TEST: List available Groups
+available_groups: {
+    my $factory = Socialtext::Group::Default::Factory->new();
+    isa_ok $factory, 'Socialtext::Group::Default::Factory';
+
+    my $account = create_test_account_bypassing_factory();
+    my $creator = create_test_user(account => $account);
+
+    my $homey_1 = $factory->Create( {
+        driver_group_name   => 'Test Group One',
+        primary_account_id  => $account->account_id(),
+        created_by_user_id  => $creator->user_id(),
+    } );
+    my $group_1 = Socialtext::Group->new(homunculus => $homey_1);
+    $group_1->add_user( user => create_test_user() );
+    $group_1->add_user( user => create_test_user() );
+    $group_1->add_user( user => create_test_user() );
+
+    my $homey_2 = $factory->Create( {
+        driver_group_name   => 'Test Group Two',
+        primary_account_id  => $account->account_id(),
+        created_by_user_id  => $creator->user_id(),
+    } );
+    my $group_2 = Socialtext::Group->new(homunculus => $homey_2);
+    $group_2->add_user( user => create_test_user() );
+    $group_2->add_user( user => create_test_user() );
+
+    my @available = $factory->Available();
+    ok @available, 'Queried available Groups';
+    my @expected = (
+        {   driver_key          => 'Default',
+            driver_group_name   => 'Test Group One',
+            driver_unique_id    => $group_1->driver_unique_id,
+            already_created     => 1,
+            member_count        => $group_1->user_count(),
+        },
+        {   driver_key          => 'Default',
+            driver_group_name   => 'Test Group Two',
+            driver_unique_id    => $group_2->driver_unique_id,
+            already_created     => 1,
+            member_count        => $group_2->user_count(),
+        },
+    );
+    is_deeply \@available, \@expected, '... available Groups data ok';
 }
