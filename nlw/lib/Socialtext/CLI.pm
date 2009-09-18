@@ -2508,6 +2508,13 @@ sub create_group {
     my %opts    = $self->_get_options('ldap-dn:s');
     my $ldap_dn = $opts{'ldap-dn'};
 
+    # Check to make sure LDAP Group Factories have been configured.
+    unless (grep { /^LDAP:/ } Socialtext::Group->Drivers) {
+        $self->_error(
+            loc("No LDAP Group Factories configured; cannot create Group from LDAP.")
+        );
+    }
+
     # Check if Group already exists
     my $group = Socialtext::Group->GetProtoGroup(driver_unique_id => $ldap_dn);
     if ($group) {

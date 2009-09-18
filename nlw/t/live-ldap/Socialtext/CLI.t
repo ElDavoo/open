@@ -12,7 +12,7 @@ use Socialtext::Account;
 BEGIN {
     require Socialtext::People::Profile;
     plan skip_all => 'People is not linked in' if ($@);
-    plan tests => 49;
+    plan tests => 51;
 }
 
 fixtures( 'db', 'destructive' );
@@ -217,6 +217,20 @@ create_group: {
         $group = Socialtext::Group->GetGroup($group);   # vivify to object
         Test::Socialtext::Group->delete_recklessly( $group );
     }
+}
+
+###############################################################################
+create_group_no_ldap: {
+    my $motorhead_dn  = 'cn=Motorhead,dc=example,dc=com';
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--ldap-dn', $motorhead_dn],
+            )->create_group();
+        },
+        qr/\QNo LDAP Group Factories configured; cannot create Group from LDAP.\E/,
+        'create-group shows error if no LDAP Group Factories configured',
+    );
 }
 
 ###############################################################################
