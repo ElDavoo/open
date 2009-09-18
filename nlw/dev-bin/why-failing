@@ -8,7 +8,7 @@ use Pod::Usage;
 use LWP::Simple qw(get);
 use YAML qw();
 use File::Path qw(rmtree);
-use List::MoreUtils qw(before last_index any);
+use List::MoreUtils qw(before last_index any all uniq);
 use File::Slurp qw(slurp);
 use Text::ParseWords qw(quotewords);
 
@@ -84,6 +84,39 @@ unless (@candidates) {
     if (($last_destructive > -1) && ($last_destructive < $#candidates)) {
         @candidates = splice @candidates, $last_destructive + 1;
     }
+
+    # remove everything that ran before the last fixture conflict (which would
+    # cause 'clean' to get triggered automatically)
+    my %active_fixtures;
+    my @remaining;
+    foreach my $test (@candidates) {
+        my @fixtures = fixtures_used_by_test($test);
+
+        # if no change in active fixtures, add this test to list and move on.
+        if (all { exists $active_fixtures{$_} } @fixtures) {
+            push @remaining, $test;
+            next;
+        }
+
+        # get the exploded list of all fixtures needed for this test,
+        # including sub-fixtures.
+        my @subfixtures = uniq map { fixture_dependencies($_) } @fixtures;
+
+        # check for fixture conflicts, which would cause us to flush things
+        # out and start off fresh again.
+        foreach my $dep (@subfixtures) {
+            my @conflicts = fixture_conflicts($dep);
+            if (any { exists $active_fixtures{$_} } @conflicts) {
+                %active_fixtures = ();
+                @remaining       = ();
+            }
+        }
+
+        # add this test and its fixtures to the list
+        push @remaining, $test;
+        $active_fixtures{$_}++ foreach (@subfixtures);
+    }
+    @candidates = @remaining;
 }
 
 # spit out information on the selected candidates
@@ -225,6 +258,46 @@ sub fixtures_used_by_test {
     }
 
     return keys %fixtures;
+}
+
+###############################################################################
+# Returns an exploded list of the fixtures/sub-fixtures that are set up as
+# part of setting up the given fixture.
+sub fixture_dependencies {
+    my $fixture = shift;
+    my %subfixtures = ( $fixture => 1 );
+
+    # Read in YAML file for this fixture and recursively add dependencies to
+    # the fixture list.
+    my $filename = "t/Fixtures/$fixture/fixture.yaml";
+    if (-e $filename) {
+        my $yaml = YAML::LoadFile($filename);
+
+        if (exists $yaml->{fixtures}) {
+            foreach my $dep (@{$yaml->{fixtures}}) {
+                $subfixtures{$_}++ foreach fixture_dependencies($dep);
+            }
+        }
+    }
+
+    return keys %subfixtures;
+}
+
+###############################################################################
+# Returns a list of the fixtures that a given fixture conflicts with.
+sub fixture_conflicts {
+    my $fixture = shift;
+    my @conflicts;
+
+    my $filename = "t/Fixtures/$fixture/fixture.yaml";
+    if (-e $filename) {
+        my $yaml = YAML::LoadFile($filename);
+        if (exists $yaml->{conflicts}) {
+            @conflicts = @{$yaml->{conflicts}};
+        }
+    }
+
+    return @conflicts;
 }
 
 ###############################################################################
