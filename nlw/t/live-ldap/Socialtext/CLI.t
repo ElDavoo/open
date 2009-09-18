@@ -12,7 +12,7 @@ use Socialtext::Account;
 BEGIN {
     require Socialtext::People::Profile;
     plan skip_all => 'People is not linked in' if ($@);
-    plan tests => 45;
+    plan tests => 49;
 }
 
 fixtures( 'db', 'destructive' );
@@ -188,6 +188,33 @@ create_group: {
         );
 
         # CLEANUP
+        Test::Socialtext::Group->delete_recklessly( $group );
+    }
+
+    create_group_explicit_account: {
+        my $test_acct      = Socialtext::Account->Socialtext();
+        my $test_acct_name = $test_acct->name();
+
+        expect_success(
+            sub {
+                Socialtext::CLI->new(
+                    argv => ['--ldap-dn', $motorhead_dn, '--account', $test_acct_name],
+                )->create_group();
+            },
+            qr/\QThe Motorhead Group has been created in the $test_acct_name Account.\E/,
+            'create-group loads LDAP Group',
+        );
+
+        # Verify that Group was created with correct Account
+        my $group = Socialtext::Group->GetProtoGroup(
+            driver_unique_id => $motorhead_dn,
+        );
+        ok $group, '... was vivified into DB';
+        is $group->{primary_account_id}, $test_acct->account_id,
+            '... into explicit Primary Account';
+
+        # CLEANUP
+        $group = Socialtext::Group->GetGroup($group);   # vivify to object
         Test::Socialtext::Group->delete_recklessly( $group );
     }
 }
