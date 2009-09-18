@@ -297,7 +297,7 @@ available_ldap_groups: {
 
 ###############################################################################
 # TEST: List *ALL* available LDAP Groups
-available_ldap_groups: {
+all_available_ldap_groups: {
     my $openldap   = bootstrap_openldap();
     my $driver_key = $openldap->_as_factory();
     my $factory    = Socialtext::Group->Factory(driver_key => $driver_key);
