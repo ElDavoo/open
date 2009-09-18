@@ -52,6 +52,73 @@ sub can_update_store { 0 }
 # the LDAP store *is* cacheable
 sub is_cacheable { 1 }
 
+# Returns list of available Groups
+sub Available {
+    my $self = shift;
+    my %p    = @_;
+    my $all  = $p{all} || 0;
+
+    # Get our LDAP Group Attribute Map.  If we don't have one, we *can't* look
+    # up Groups, so just return right away.
+    my $attr_map = $self->ldap_config->group_attr_map();
+    return unless (%{$attr_map});
+
+    # Build up the LDAP search options
+    my @ldap_group_attrs =
+        map  { $attr_map->{$_} }
+        grep { $_ ne 'member_maps_to' }     # internal use, not an actual attr
+        keys %{$attr_map};
+
+    my %options = (
+        base    => $self->ldap_config->base(),
+        scope   => 'sub',
+        attrs   => [ @ldap_group_attrs ],
+        filter  => Socialtext::LDAP->BuildFilter(
+            global => $self->ldap_config->group_filter(),
+        ),
+    );
+
+    # Look up the list of Groups in LDAP
+    my $ldap = $self->ldap;
+    return unless $ldap;
+
+    my $mesg = $ldap->search( %options );
+    unless ($mesg) {
+        st_log->error( "ST::Group::LDAP::Factory: no suitable LDAP response" );
+        return;
+    }
+    if ($mesg->code) {
+        st_log->error( "ST::Group::LDAP::Factory: LDAP error while listing available Groups; " . $mesg->error() );
+        return;
+    }
+
+    # Extract the Groups from the LDAP response
+    my @available;
+    while (my $entry = $mesg->shift_entry()) {
+        my $proto        = $self->_map_ldap_entry_to_proto($entry);
+        my $exists_in_db = $self->_get_cached_group($proto);
+        my @members      = $entry->get_value($attr_map->{member_dn});
+
+        next unless (defined $exists_in_db || $all);
+
+        my $group = {
+            driver_key          => $self->driver_key(),
+            driver_group_name   => $proto->{driver_group_name},
+            driver_unique_id    => $proto->{driver_unique_id},
+            already_created     => defined $exists_in_db ? 1 : 0,
+            member_count        => scalar @members,
+        };
+
+        push @available, $group;
+    }
+
+    # Results have a pre-determined sort order
+    my @sorted =
+        sort { $a->{driver_group_name} cmp $b->{driver_group_name} }
+        @available;
+    return @sorted;
+}
+
 # empty stub; store is read-only, can't create a new Group in LDAP
 sub Create {
     # XXX: should we throw a warning here?

@@ -7,7 +7,7 @@ use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Socialtext::Group::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 69;
+use Test::Socialtext tests => 83;
 
 # Force this to be synchronous.
 local $Socialtext::Group::Factory::Asynchronous = 0;
@@ -263,4 +263,83 @@ group_lookup_reuses_ldap_connection: {
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($hawkwind);
+}
+
+###############################################################################
+# TEST: List available LDAP Groups
+available_ldap_groups: {
+    my $openldap   = bootstrap_openldap();
+    my $driver_key = $openldap->_as_factory();
+    my $factory    = Socialtext::Group->Factory(driver_key => $driver_key);
+    isa_ok $factory, 'Socialtext::Group::LDAP::Factory';
+
+    my $group_dn  = 'cn=Motorhead,dc=example,dc=com';
+    my $motorhead = Socialtext::Group->GetGroup(
+        driver_unique_id => $group_dn,
+    );
+    isa_ok $motorhead, 'Socialtext::Group';
+
+    my @available = $factory->Available();
+    ok @available, 'LDAP Factory has some available Groups';
+
+    my @expected = ( {
+        driver_key          => $driver_key,
+        driver_group_name   => 'Motorhead',
+        driver_unique_id    => 'cn=Motorhead,dc=example,dc=com',
+        already_created     => 1,
+        member_count        => 3,
+    } );
+    is_deeply \@available, \@expected, '... with correct data';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($motorhead);
+}
+
+###############################################################################
+# TEST: List *ALL* available LDAP Groups
+available_ldap_groups: {
+    my $openldap   = bootstrap_openldap();
+    my $driver_key = $openldap->_as_factory();
+    my $factory    = Socialtext::Group->Factory(driver_key => $driver_key);
+    isa_ok $factory, 'Socialtext::Group::LDAP::Factory';
+
+    my $group_dn  = 'cn=Motorhead,dc=example,dc=com';
+    my $motorhead = Socialtext::Group->GetGroup(
+        driver_unique_id => $group_dn,
+    );
+    isa_ok $motorhead, 'Socialtext::Group';
+
+    my @available = $factory->Available( all => 1 );
+    ok @available, 'LDAP Factory has some available Groups';
+
+    my @expected = (
+        {   driver_key          => $driver_key,
+            driver_group_name   => 'Circular A',
+            driver_unique_id    => 'cn=Circular A,dc=example,dc=com',
+            already_created     => 0,
+            member_count        => 2,
+        },
+        {   driver_key          => $driver_key,
+            driver_group_name   => 'Circular B',
+            driver_unique_id    => 'cn=Circular B,dc=example,dc=com',
+            already_created     => 0,
+            member_count        => 2,
+        },
+        {   driver_key          => $driver_key,
+            driver_group_name   => 'Hawkwind',
+            driver_unique_id    => 'cn=Hawkwind,dc=example,dc=com',
+            already_created     => 0,
+            member_count        => 2,
+        },
+        {   driver_key          => $driver_key,
+            driver_group_name   => 'Motorhead',
+            driver_unique_id    => 'cn=Motorhead,dc=example,dc=com',
+            already_created     => 1,
+            member_count        => 3,
+        },
+    );
+    is_deeply \@available, \@expected, '... with correct data';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($motorhead);
 }
