@@ -2511,7 +2511,11 @@ sub create_group {
     # Check if Group already exists
     my $group = Socialtext::Group->GetProtoGroup(driver_unique_id => $ldap_dn);
     if ($group) {
-        die "XXX: Group already exists";
+        $self->_error(
+            loc("The [_1] Group has already been added to the system.",
+                $group->{driver_group_name},
+            )
+        );
     }
 
     # Vivify the Group, thus loading it into ST.

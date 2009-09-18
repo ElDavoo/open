@@ -12,7 +12,7 @@ use Socialtext::Account;
 BEGIN {
     require Socialtext::People::Profile;
     plan skip_all => 'People is not linked in' if ($@);
-    plan tests => 43;
+    plan tests => 45;
 }
 
 fixtures( 'db', 'destructive' );
@@ -167,6 +167,24 @@ create_group: {
 
         # CLEANUP
         $group = Socialtext::Group->GetGroup($group);   # vivify to object
+        Test::Socialtext::Group->delete_recklessly( $group );
+    }
+
+    create_group_already_exists: {
+        my $group = Socialtext::Group->GetGroup(
+            driver_unique_id => $motorhead_dn,
+        );
+        expect_failure(
+            sub {
+                Socialtext::CLI->new(
+                    argv => ['--ldap-dn', $motorhead_dn],
+                )->create_group();
+            },
+            qr/\QThe Motorhead Group has already been added to the system.\E/,
+            'create-group fails to create duplicate LDAP Group',
+        );
+
+        # CLEANUP
         Test::Socialtext::Group->delete_recklessly( $group );
     }
 }
