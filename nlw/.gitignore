@@ -329,3 +329,4 @@ etc/apache2/conf.d/apache2-jsonproxy.conf
 t/wikitests/socialcalc/ss-rountrip.wiki
 lib/Socialtext/JSON/Cache.pm
 build/templates/apache2/conf.d/json-proxy.tt2
+etc/apache2/conf.d/json-proxy.conf

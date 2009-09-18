@@ -164,13 +164,18 @@ sub main {
                     => "$socialtext_conf_d/include-empty.conf",
                 $params, 0,
             ];
+    }
 
-        my $root = _get_template_root();
-        for my $include (glob("$root/apache2/conf.d/*.tt2")) {
-            my ($file) = $include =~ m{^$root/apache2/conf\.d/(.*)\.tt2$};
+    if (is_target_for('plugins')) {
+        my $params = apache2_params( \%dirs );
+        my $plugs = "$inc/../../plugins";
+        my $conf_d = "build/templates/apache2/conf.d";
+        for my $include (glob("$plugs/*/$conf_d/*.tt2")) {
+            my ($plugin, $file)
+                = $include =~ m{^$plugs/(.*)/$conf_d/(.*)\.tt2$};
             push @files, [
                 "apache2/conf.d/$file.tt2"
-                    => "$dirs{apache2_etc}/conf.d/$file.conf",
+                    => "$plugs/$plugin/etc/apache2/conf.d/$file.conf",
                 $params, 'overwrite',
             ]
         }
