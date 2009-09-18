@@ -7,11 +7,12 @@ use File::Slurp qw(write_file);
 use Test::Output;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext;
+use Socialtext::Account;
 
 BEGIN {
     require Socialtext::People::Profile;
     plan skip_all => 'People is not linked in' if ($@);
-    plan tests => 35;
+    plan tests => 43;
 }
 
 fixtures( 'db', 'destructive' );
@@ -137,6 +138,41 @@ MASS_ADD_USERS: {
         }
     }
 }
+
+###############################################################################
+create_group: {
+    my $ldap          = bootstrap_openldap();
+    my $def_acct      = Socialtext::Account->Default;
+    my $def_acct_name = $def_acct->name();
+    my $motorhead_dn  = 'cn=Motorhead,dc=example,dc=com';
+
+    create_group_default_account: {
+        expect_success(
+            sub {
+                Socialtext::CLI->new(
+                    argv => ['--ldap-dn', $motorhead_dn],
+                )->create_group();
+            },
+            qr/\QThe Motorhead Group has been created in the $def_acct_name Account.\E/,
+            'create-group loads LDAP Group',
+        );
+
+        # Verify that Group was created with correct Account
+        my $group = Socialtext::Group->GetProtoGroup(
+            driver_unique_id => $motorhead_dn,
+        );
+        ok $group, '... was vivified into DB';
+        is $group->{primary_account_id}, $def_acct->account_id,
+            '... into default Primary Account';
+
+        # CLEANUP
+        $group = Socialtext::Group->GetGroup($group);   # vivify to object
+        Test::Socialtext::Group->delete_recklessly( $group );
+    }
+}
+
+###############################################################################
+# All done; exit peacefully.
 exit;
 
 

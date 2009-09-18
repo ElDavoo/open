@@ -2501,6 +2501,32 @@ sub list_groups {
     $self->_success();
 }
 
+sub create_group {
+    my $self    = shift;
+    my $account = $self->_require_account('optional')
+        || Socialtext::Account->Default();
+    my %opts    = $self->_get_options('ldap-dn:s');
+    my $ldap_dn = $opts{'ldap-dn'};
+
+    # Check if Group already exists
+    my $group = Socialtext::Group->GetProtoGroup(driver_unique_id => $ldap_dn);
+    if ($group) {
+        die "XXX: Group already exists";
+    }
+
+    # Vivify the Group, thus loading it into ST.
+    $group = Socialtext::Group->GetGroup(
+        driver_unique_id   => $ldap_dn,
+        primary_account_id => $account->account_id,
+    );
+    $self->_success(
+        loc("The [_1] Group has been created in the [_2] Account.",
+            $group->driver_group_name,
+            $account->name,
+        )
+    );
+}
+
 sub show_group_config {
     my $self  = shift;
     my $group = $self->_require_group();
@@ -3055,6 +3081,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   GROUPS
 
   list-groups [--account]
+  create-group --ldap-dn [--account]
 
   OTHER
 
@@ -3556,6 +3583,12 @@ Note: A field's class cannot currently be changed to or from the 'relationship' 
 Display an overview of Groups (in Socialtext wiki table format).  Includes the number of Workspaces each group belongs to.  Includes the number of Users that are members of each Group.
 
 If C<--account> is specified, limits the display to groups in association with that account.
+
+=head2 create-group --ldap-dn [--account]
+
+Loads a Group from LDAP, as identified by the given C<--ldap-dn> into
+Socialtext, placing it in the specified C<--account>.  If no C<--account> is
+specified, the default system Account will be used.
 
 =head2 version
 
