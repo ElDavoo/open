@@ -17,6 +17,7 @@ use Test::Socialtext::Workspace;
 use Socialtext::Account;
 use Socialtext::Group;
 use Socialtext::User;
+use Socialtext::Cache;
 use YAML;
 use File::Temp qw/tempdir/;
 use File::Spec;
@@ -76,6 +77,11 @@ sub fixtures () {
     # set up the test environment, and all of its fixtures.
     my $env
         = Test::Socialtext::Environment->CreateEnvironment(fixtures => [@_]);
+
+    # purge any in-memory caches, so we reload them with any data that may
+    # have been created as part of setting up the fixtures.
+    Socialtext::Cache->clear();
+    Socialtext::Account->Clear_Default_Account_Cache();
 
     # check to see if the "DB" fixture is current (if so, we will want to
     # store and reset some state that's inside the DB)
