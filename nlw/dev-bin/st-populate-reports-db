@@ -12,7 +12,8 @@ my $host = hostname;
 
 
 #Touch and chmod the logs
-grant_write_permissions_to_local_logs($host);
+my $test_nlw = $ENV{HOME} . '/test_nlw.nlw';
+grant_write_permissions_to_local_logs($test_nlw, $host);
 
 
 #Create the account data
@@ -31,7 +32,6 @@ my $str = `$exec`;
 $str=~/Account ID: (\d*)\n/;
 my $account_id = $1;
 print "ID Is $account_id, host is $host\n";
-
 
 #Process the logs to catch up the changes
 #----------------------------------------------#
@@ -57,6 +57,7 @@ if (is_dev_env($host)) {
     $u = '-U nlw ';
 }
 
+
 my $delete_1 = 'psql ' . $u . $db . ' -c "delete from workspace_actions_by_user where account_id =' . $account_id . '; "';
 `$delete_1`;
 my $delete_2 = 'psql ' . $u . $db . ' -c "delete from nlw_log_actions where account_id =' . $account_id . '; "';
@@ -70,6 +71,7 @@ my $delete_5 = 'psql ' . $u . $db . ' -c "delete from people_actions_by_user whe
 `$delete_5`;
 my $delete_6 = 'psql ' . $u . $db . ' -c "delete from signal_actions_by_user where account_id =' . $account_id . '; "';
 `$delete_6`;
+
 
 #Data is deleted, now we can re-add the workspace reports
 #-----------------------------------------------#
@@ -85,9 +87,10 @@ system($populate_db);
 if (is_dev_env($host)) {
    `./st-consume-stub-reports`;
 } else {
-   `sudo /usr/bin/st-reports-import-nlw-data test_nlw.log`;
-   `sudo /usr/bin/st-reports-consume-nlw-log test_nlw.log`;
+   system('/usr/bin/st-reports-import-nlw-data --force ' . $test_nlw);
+   system('/usr/bin/st-reports-consume-nlw-log ' . $test_nlw);
 }
+
 
 st_reports_reduce($host);
 print "Completed Reports data set-up (If you saw no errors)\n";
@@ -123,21 +126,19 @@ sub is_dev_env {
 }
 
 sub grant_write_permissions_to_local_logs {  
-    my $host = shift;
-    `chmod 777 ./`;
-    #`rm test_access.log`;
-    `rm test_nlw.log`;
-    #`touch test_access.log`;
-    `touch test_nlw.log`;
-    #`chmod 666 test_access.log`;
-    `chmod 666 test_nlw.log`;
+    my ($test_nlw, $host) = @_;
+    system("chmod 777 $ENV{HOME}");
+    system("rm -f $test_nlw");
+    system("touch $test_nlw");
+    system("chmod 666 $test_nlw");
     if (is_dev_env($host)) {
-        `rm ~/.nlw/cache/logreader/test* >& /dev/null`;
+        `rm -f ~/.nlw/cache/logreader/test* >& /dev/null`;
         `st-admin give-accounts-admin --email devnull1\@socialtext.com`;
         `st-admin give-system-admin --email devnull1\@socialtext.com`;
     } else {
-        `sudo rm /var/cache/socialtext/logreader/test*`;
+        `sudo rm -f  /var/cache/socialtext/logreader/test*`;
         `sudo st-admin give-accounts-admin --email devnull1\@socialtext.com`;
         `sudo st-admin give-system-admin --email devnull1\@socialtext.com`;
-    }    
+    }
 }
+

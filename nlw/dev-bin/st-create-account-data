@@ -30,7 +30,8 @@ my @users = ('t_stub01@socialtext.com','t_stub02@socialtext.com','t_stub03@socia
 my $userObjs = create_users(\@users, \@wsObjects, $account_id);
 my $tm = localtime;
 my $stamp = $tm->year . "-" . $tm->mon . "-" . $tm->mday . "-" . $tm->hour . "-" . $tm->min . "-" . $tm->sec;
-my $nlw = "test_nlw.log"; 
+
+my $nlw = $ENV{HOME} . '/test_nlw.log'; 
 
 #----------------------------------------------------------#
 #  Create the Files and setup for import
@@ -45,7 +46,7 @@ print_views_edits_deletes(\@wsObjects, $userObjs, $nlw);
 #`$sql`;
 
 #----------------------------------------------------------#
-
+$dbh->disconnect();
 
 #---END MAIN ROUTINE SUBROUTINES FOLLOW
 
