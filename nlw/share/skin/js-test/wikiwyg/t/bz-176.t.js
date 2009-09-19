@@ -42,21 +42,21 @@ t.run_is('html', 'text');
 <a class="incipient" title="[click to create page]" href="index.cgi?action=display;is_incipient=1;page_name=a"><span style="font-weight: bold;">X</span></a>
 
 --- text
-*[X]*
+*"X"[a]*
 
 === A Bold with span (outer)
 --- html
 <span style="font-weight: bold;"><a class="incipient" title="[click to create page]" href="index.cgi?action=display;is_incipient=1;page_name=a">X</a></span>
 
 --- text
-*[X]*
+*"X"[a]*
 
 === A Bold with attr
 --- html
 <a style="font-weight: bold;" class="incipient" title="[click to create page]" href="index.cgi?action=display;is_incipient=1;page_name=a">X</a>
 
 --- text
-*[X]*
+*"X"[a]*
 
 
 */
