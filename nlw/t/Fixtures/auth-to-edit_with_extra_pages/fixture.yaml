@@ -7,4 +7,3 @@ workspaces:
 
 conflicts:
   - auth-to-edit
-  - auth-to-edit_with_ordered_pages
