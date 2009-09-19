@@ -7,7 +7,7 @@ use warnings;
 use Test::Socialtext tests => 2;
 use Socialtext::Role;
 use Socialtext::Permission qw/ST_LOCK_PERM/;
-fixtures( 'foobar', 'destructive' );
+fixtures( 'db', 'destructive' );
 
 version_0: {
     my $ws_name = 'version-zero';
