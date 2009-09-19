@@ -4,7 +4,8 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 19;
-fixtures( 'admin_no_pages' );
+fixtures(qw( db ));
+
 use_ok 'Socialtext::Encode';
 
 binmode STDERR, 'utf8'; # So diagnostics don't complain
@@ -26,8 +27,9 @@ binmode STDERR, 'utf8'; # So diagnostics don't complain
 # Set up the bogus-data-having page:
 use File::Copy;
 use File::Path;
-my $hub = new_hub('admin');
-my $bad_utf8_dir = 't/tmp/root/data/admin/bad_utf8';
+my $hub          = create_test_hub();
+my $ws_name      = $hub->current_workspace->name();
+my $bad_utf8_dir = "t/tmp/root/data/$ws_name/bad_utf8";
 File::Path::mkpath $bad_utf8_dir or die $!;
 copy "t/attachments/bad-8bit.txt", "$bad_utf8_dir/123.txt" or die $!;
 symlink "123.txt", "$bad_utf8_dir/index.txt";
