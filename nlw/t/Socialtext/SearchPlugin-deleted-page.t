@@ -6,7 +6,11 @@ use warnings;
 
 use Test::Socialtext tests => 11;
 use Test::Socialtext::Search;
-fixtures( 'no-ceq-jobs', 'admin' );
+
+fixtures(qw( db no-ceq-jobs ));
+
+my $hub = create_test_hub();
+Test::Socialtext->main_hub( $hub );
 
 {
     my $title = 'A Page with a Wacktastic Title';

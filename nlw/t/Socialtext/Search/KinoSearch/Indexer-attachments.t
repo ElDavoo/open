@@ -12,12 +12,10 @@ use Test::Socialtext::Search;
 use Socialtext::File;
 
 ###############################################################################
-# Fixtures: no-ceq-jobs admin_no_pages
+# Fixtures: db no-ceq-jobs
 # - we're an indexer test, so make sure there are *NO* Ceq jobs kicking around
 #   that could cause things to get indexed
-# - this test also expects that we've got *NO* pages in the WS
-fixtures(qw( no-ceq-jobs admin_no_pages ));
-
+fixtures(qw( db no-ceq-jobs ));
 
 my $wvtext_path = check_for_file_in_path('wvText');
 if ( !$wvtext_path ) {
@@ -31,7 +29,8 @@ if ( !$elinks_path ) {
 
 plan tests => (scalar blocks) * 12;
 
-my $hub = Test::Socialtext::Search::hub();
+my $hub = create_test_hub();
+Test::Socialtext->main_hub($hub);
 
 # test adding and indexing an attachment
 run {

@@ -11,11 +11,13 @@ use Test::Socialtext;
 use Test::Socialtext::Search;
 use Socialtext::Search::Config;
 
-fixtures(qw( admin no-ceq-jobs ));
+fixtures(qw( db no-ceq-jobs ));
 
 plan tests => 22;
 
-my $hub            = Test::Socialtext::Search::hub();
+my $hub = create_test_hub();
+Test::Socialtext->main_hub($hub);
+
 my $workspace_name = $hub->current_workspace->name;
 my $config = Socialtext::Search::Config->new;
 my $segments_file

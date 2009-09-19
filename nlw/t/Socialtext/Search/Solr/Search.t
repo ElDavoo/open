@@ -8,12 +8,14 @@ use IPC::Run qw(run timeout);
 use utf8;
 use Test::Socialtext::Search;
 use Test::Socialtext tests => 227;
-fixtures(qw( admin no-ceq-jobs ));
+fixtures(qw( db no-ceq-jobs ));
 
 use_ok("Socialtext::Search::Solr::Factory");
 
-our $workspace = 'admin';
-our $hub       = new_hub($workspace);
+my $hub = create_test_hub();
+Test::Socialtext->main_hub($hub);
+
+my $workspace = $hub->current_workspace->name();
 
 my $INDEXER;
 my $SEARCHER;

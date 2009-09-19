@@ -6,10 +6,11 @@ use warnings;
 
 use Test::Socialtext tests => 111;
 use Test::Socialtext::Search;
-# this test actually requires no pages in the workspace when we start testing.
-fixtures( 'admin_no_pages', 'no-ceq-jobs' );
 
-my $hub = Test::Socialtext::Search::hub();
+fixtures(qw( db no-ceq-jobs ));
+
+my $hub = create_test_hub();
+Test::Socialtext->main_hub( $hub );
 
 my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
 
