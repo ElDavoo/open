@@ -9,7 +9,7 @@ use mocked 'Socialtext::Events', qw( event_ok is_event_count );
 
 use Test::Socialtext tests => 36;
 
-fixtures( 'admin_no_pages' );
+fixtures( 'admin' );
 
 BEGIN {
     use_ok( 'Socialtext::EditPlugin' );
