@@ -6,4 +6,3 @@ workspaces:
 
 conflicts:
   - public_with_extra_pages
-  - public_with_ordered_pages

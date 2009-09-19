@@ -7,4 +7,3 @@ workspaces:
 
 conflicts:
   - public
-  - public_with_ordered_pages
