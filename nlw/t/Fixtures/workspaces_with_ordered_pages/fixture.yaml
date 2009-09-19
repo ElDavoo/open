@@ -1,7 +1,0 @@
-fixtures:
-  - db
-  - admin_with_ordered_pages
-  - foobar_with_ordered_pages
-  - auth-to-edit_with_ordered_pages
-  - help
-  - public_with_ordered_pages
