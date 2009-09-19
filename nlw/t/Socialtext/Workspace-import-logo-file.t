@@ -16,8 +16,7 @@ use Digest::MD5 ();
 plan tests => 2;
 fixtures(qw( db ));
 
-my $hub     = create_test_hub();
-my $ws      = $hub->current_workspace();
+my $ws      = create_test_workspace();
 my $ws_name = $ws->name();
 
 my $image = 't/attachments/socialtext-logo-30.gif';
@@ -39,8 +38,7 @@ $ws->delete();
 Socialtext::Workspace->ImportFromTarball( tarball => $tarball );
 
 {
-    my $hub = new_hub($ws_name, 'system-user');
-    my $ws  = $hub->current_workspace;
+    my $ws = Socialtext::Workspace->new(name => $ws_name);
 
     ok( $ws->logo_filename(),
         'check that workspace has a local logo file' );
