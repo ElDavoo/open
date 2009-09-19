@@ -10,5 +10,4 @@ workspaces:
 
 conflicts:
   - foobar
-  - foobar_no_pages
   - foobar_with_ordered_pages

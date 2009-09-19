@@ -1,5 +1,0 @@
-#!/bin/sh -e
-
-rm -rf t/tmp/root/data/foobar/*
-rm -rf t/tmp/root/plugin/foobar/*/*
-rm -rf t/tmp/ceq/*
