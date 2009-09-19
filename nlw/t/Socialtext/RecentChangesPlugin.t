@@ -14,22 +14,15 @@ use Socialtext::RecentChangesPlugin;
 use Socialtext::Hub;
 use DateTime;
 use DateTime::Duration;
-use Test::Socialtext tests => 66;
-fixtures( 'foobar_no_pages' );
+use Test::Socialtext tests => 64;
+
+fixtures(qw( db ));
 
 my $now = time;
 
-my $hub = new_hub('foobar', 'system-user');
+my $hub = create_test_hub();
+$hub->current_user( Socialtext::User->SystemUser );
 my $pages = $hub->pages;
-
-Delete_all_existing_pages: {
-    for my $p ($pages->all_active) {
-        $p->delete(user => $hub->current_user);
-    }
-}
-
-ok $hub->current_user, "some user is set";
-is $hub->current_workspace->name, "foobar", "current ws is foobar";
 
 my @p;
 $p[1] = "page one $$";
