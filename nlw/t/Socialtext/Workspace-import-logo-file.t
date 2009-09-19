@@ -14,38 +14,38 @@ BEGIN {
 use Digest::MD5 ();
 
 plan tests => 2;
-fixtures( 'admin', 'destructive' );
+fixtures(qw( db ));
 
-my $hub = new_hub('admin');
-
-my $admin = $hub->current_workspace();
+my $hub     = create_test_hub();
+my $ws      = $hub->current_workspace();
+my $ws_name = $ws->name();
 
 my $image = 't/attachments/socialtext-logo-30.gif';
-$admin->set_logo_from_file(
+$ws->set_logo_from_file(
     filename   => $image,
 );
 
 # We need to get this sum because the image is different from the
 # original when passed through Image::Magick, even if we don't end up
 # resizing it.
-my $md5 = md5_checksum( $admin->logo_filename() );
+my $md5 = md5_checksum( $ws->logo_filename() );
 
-my $tarball = $admin->export_to_tarball(dir => 't/tmp');
+my $tarball = $ws->export_to_tarball(dir => 't/tmp');
 
 # Deleting the user is important so that we know that both user and
 # workspace data is restored
-$admin->delete();
+$ws->delete();
 
 Socialtext::Workspace->ImportFromTarball( tarball => $tarball );
 
 {
-    my $hub = new_hub('admin');
-    my $admin = $hub->current_workspace;
+    my $hub = new_hub($ws_name, 'system-user');
+    my $ws  = $hub->current_workspace;
 
-    ok( $admin->logo_filename(),
+    ok( $ws->logo_filename(),
         'check that workspace has a local logo file' );
 
-    is( $md5, md5_checksum( $admin->logo_filename() ),
+    is( $md5, md5_checksum( $ws->logo_filename() ),
         'md5 checksum for original image and logo after import are the same' );
 }
 
