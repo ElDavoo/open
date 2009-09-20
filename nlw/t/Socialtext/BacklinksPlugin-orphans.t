@@ -7,7 +7,8 @@ use strict;
 use Socialtext::User;
 use Socialtext::Page;
 use Test::Socialtext tests => 6;
-fixtures( 'clean', 'admin' );
+
+fixtures(qw( db ));
 
 =head1 DESCRIPTION
 
@@ -16,7 +17,7 @@ displayed when they are deleted.
 
 =cut
 
-my $hub = new_hub('admin');
+my $hub = create_test_hub();
 my $backlinks = $hub->backlinks;
 my $pages = $hub->pages;
 
