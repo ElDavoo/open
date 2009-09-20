@@ -11,22 +11,17 @@ use Socialtext::Page;
 use Socialtext::File;
 use Socialtext::Workspace;
 use Test::Socialtext tests => 4;
-fixtures( 'clean', 'admin' );
+
+fixtures(qw( db ));
 
 BEGIN {
     use_ok( 'Socialtext::Page' );
 }
-my $acc = Socialtext::Account->Socialtext;
-my $ws_name = 'tolerance';
-my $ws = Socialtext::Workspace->create(
-    name       => $ws_name,
-    title      => 'Fault Tolerant Workspace',
-    account_id => $acc->account_id,
-    empty      => 1
-);
 
-my $hub = new_hub( $ws_name );
-my $data_path = Socialtext::Paths::page_data_directory( $ws->name );
+my $hub       = create_test_hub();
+my $data_path = Socialtext::Paths::page_data_directory(
+    $hub->current_workspace->name,
+);
 
 Dir_exists_with_no_files: {
     my $page_name = 'no_files';
