@@ -6,16 +6,12 @@ use warnings;
 use Socialtext::LDAP;
 use Socialtext::Workspace;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 21;
+use Test::Socialtext tests => 20;
 
 ###############################################################################
-# FIXTURE: foobar
-#
-# Need a test workspace available, and we'll choose "foobar" for no real
-# reason.
+# FIXTURE: db
 ###############################################################################
-our $TEST_WORKSPACE = 'foobar';
-fixtures( $TEST_WORKSPACE );
+fixtures(qw( db ));
 
 ###############################################################################
 # What happens if we have a user in an LDAP store and then take away that data
@@ -33,10 +29,8 @@ disappearing_ldap_user_store: {
     ok $openldap->add_ldif('t/test-data/ldap/base_dn.ldif'), '... added data: base_dn';
     ok $openldap->add_ldif('t/test-data/ldap/people.ldif'), '... added data: people';
 
-    # instantiate the user, and add them to the test workspace.
-    my $ws = Socialtext::Workspace->new( name => $TEST_WORKSPACE );
-    isa_ok $ws, 'Socialtext::Workspace', 'found workspace to test with';
-
+    # instantiate the user, and add them to a test workspace.
+    my $ws   = create_test_workspace();
     my $user = Socialtext::User->new( username => 'John Doe' );
     isa_ok $user, 'Socialtext::User', 'found user to test with';
     isa_ok $user->homunculus(), 'Socialtext::User::LDAP', '... which came from the LDAP store';
