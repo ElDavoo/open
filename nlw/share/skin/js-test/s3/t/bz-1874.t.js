@@ -17,7 +17,7 @@ t.runAsync([
 
     function() {
         t.open_iframe(
-            "/lite/page/admin/" + original,
+            "/m/page/admin/" + original,
             t.nextStep()
         );
     },
@@ -25,8 +25,8 @@ t.runAsync([
     function() { 
         t.like(
             $('a.smallEditButton', t.doc).attr('href'),
-            /\/lite\//,
-            "The edit link goes to /lite/ when viewed inside /lite/"
+            /\/m\//,
+            "The edit link goes to /m/ when viewed inside /m/"
         );
 
         t.endAsync();
