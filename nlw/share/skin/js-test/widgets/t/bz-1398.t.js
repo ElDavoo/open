@@ -25,9 +25,11 @@ t.runAsync([
             "Header and the gallery should be next to each other"
         );
 
-        t.is(
-            bottomOffset$('#contentContainer'),
-            t.$('#footer').offset().top,
+        t.ok(
+            (Math.abs(
+                bottomOffset$('#contentContainer')
+                - t.$('#footer').offset().top
+            ) <= 1),
             "Footer and the gallery should be next to each other"
         );
         t.endAsync();
