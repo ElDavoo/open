@@ -8,7 +8,7 @@ use Socialtext::UserMetadata;
 use Socialtext::UserAccountRoleFactory;
 use Test::Socialtext tests => 16;
 
-fixtures( qw/db admin/ );
+fixtures(qw( db ));
 
 # We'll need these in all our tests.
 my $factory = Socialtext::UserAccountRoleFactory->instance();
@@ -29,7 +29,7 @@ create_user_in_default_account: {
 ################################################################################
 user_in_non_default_account: {
     my $default = Socialtext::Account->Default;
-    my $account = create_test_account();
+    my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user(account => $account);
 
     my $uar = $factory->Get(
@@ -49,8 +49,8 @@ user_in_non_default_account: {
 
 ################################################################################
 change_user_account: {
-    my $old_account = create_test_account();
-    my $new_account = create_test_account();
+    my $old_account = create_test_account_bypassing_factory();
+    my $new_account = create_test_account_bypassing_factory();
     my $user        = create_test_user(account => $old_account);
 
     my $uar = $factory->Get(
@@ -81,8 +81,8 @@ change_user_account: {
 
 ################################################################################
 user_with_secondary_account: {
-    my $primary   = create_test_account();
-    my $secondary = create_test_account();
+    my $primary   = create_test_account_bypassing_factory();
+    my $secondary = create_test_account_bypassing_factory();
     my $user      = create_test_user( account => $primary );
     my $ws        = create_test_workspace( account => $secondary );
 
@@ -119,9 +119,9 @@ user_with_secondary_account: {
 
 ################################################################################
 workspace_changes_account: {
-    my $primary   = create_test_account();
-    my $secondary = create_test_account();
-    my $other     = create_test_account();
+    my $primary   = create_test_account_bypassing_factory();
+    my $secondary = create_test_account_bypassing_factory();
+    my $other     = create_test_account_bypassing_factory();
     my $user      = create_test_user( account => $primary );
     my $ws        = create_test_workspace( account => $secondary );
     
