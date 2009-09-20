@@ -58,7 +58,7 @@ my $page_one = Socialtext::Page->new( hub => $hub )->create(
 }
 
 {
-    my $page_one = Socialtext::Page->new( hub => $hub )->create(
+    my $orphan = Socialtext::Page->new( hub => $hub )->create(
         title   => 'Orphan Page',
         content => 'Orphan',
         creator => Socialtext::User->SystemUser,
