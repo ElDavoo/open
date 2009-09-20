@@ -12,7 +12,7 @@ use Socialtext::Workspace;
 use Test::Socialtext tests => 7;
 use Test::Warn;
 
-fixtures( 'clean', 'admin');
+fixtures(qw( db ));
 
 BEGIN {
   use_ok( 'Socialtext::Page::TablePopulator' );
