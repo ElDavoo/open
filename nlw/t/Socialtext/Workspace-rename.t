@@ -11,11 +11,11 @@ use Socialtext::Paths;
 use Socialtext::Account;
 use Socialtext::Workspace;
 
-# Fixtures: clean, help
+# Fixtures: help
 #
-# Need a clean environment to test against, so that we know that the workspace
-# we're renaming to isn't here yet.
-fixtures( 'clean', 'help' );
+# - Need "help" WS in place so that default pages get copied in to new
+#   Workspaces.
+fixtures(qw( help ));
 
 {
     my $ws = Socialtext::Workspace->create(
