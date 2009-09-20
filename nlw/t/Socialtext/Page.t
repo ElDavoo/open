@@ -5,7 +5,8 @@ use warnings;
 
 use DateTime;
 use Test::Socialtext tests => 44;
-fixtures( 'clean', 'admin' );
+
+fixtures(qw( db ));
 
 BEGIN {
     use_ok( 'Socialtext::Page' );
@@ -14,9 +15,8 @@ BEGIN {
 use Socialtext::l10n qw(loc);
 
 APPEND: {
-    my $hub = new_hub('admin');
-    my $page;
-    $page = Socialtext::Page->new( hub => $hub )->create(
+    my $hub = create_test_hub();
+    my $page = Socialtext::Page->new(hub => $hub)->create(
         title   => 'new page',
         content => 'First Paragraph',
         creator => $hub->current_user,
@@ -27,7 +27,7 @@ APPEND: {
 }
 
 RENAME: {
-    my $hub = new_hub('admin');
+    my $hub   = create_test_hub();
     my $page1 = Socialtext::Page->new( hub => $hub )->create(
         title   => 'My First Page',
         content => 'First Paragraph',
@@ -48,7 +48,7 @@ RENAME: {
 }
 
 RENAME_CLOBBER: {
-    my $hub = new_hub('admin');
+    my $hub   = create_test_hub();
     my $page1 = Socialtext::Page->new( hub => $hub )->create(
         title   => 'My First Page',
         content => 'First Paragraph',
@@ -69,7 +69,7 @@ RENAME_CLOBBER: {
 }
 
 RENAME_WITH_OVERLAPPING_IDS: {
-    my $hub = new_hub('admin');
+    my $hub  = create_test_hub();
     my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'I LOVE COWS SO MUCH I COULD SCREAM',
         content => 'COWS LOVE ME',
@@ -84,9 +84,8 @@ RENAME_WITH_OVERLAPPING_IDS: {
 }
 
 PREPEND: {
-    my $hub = new_hub('admin');
-    my $page;
-    $page = Socialtext::Page->new( hub => $hub )->create(
+    my $hub  = create_test_hub();
+    my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'new page',
         content => 'First Paragraph',
         creator => $hub->current_user,
@@ -97,9 +96,8 @@ PREPEND: {
 }
 
 LOAD_WITH_REVISION: {
-    my $hub = new_hub('admin');
-    my $page;
-    $page = Socialtext::Page->new( hub => $hub )->create(
+    my $hub  = create_test_hub();
+    my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'revision_page',
         content => 'First Paragraph',
         creator => $hub->current_user,
@@ -119,9 +117,8 @@ LOAD_WITH_REVISION: {
 }
 
 IS_RECENTLY_MODIFIED: {
-    my $hub = new_hub('admin');
-    my $page;
-    $page = Socialtext::Page->new( hub => $hub )->create(
+    my $hub  = create_test_hub();
+    my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'new page',
         content => 'new page',
         creator => $hub->current_user,
@@ -161,7 +158,7 @@ SET_TITLE_AND_NAME: {
 
 # Adapted from a failing test in t/restore-revision.t
 CREATE_PAGE: {
-    my $hub = new_hub('admin');
+    my $hub = create_test_hub();
     isa_ok( $hub, 'Socialtext::Hub' ) or die;
 
     my $lyrics = join( "", <DATA> );
@@ -176,7 +173,7 @@ CREATE_PAGE: {
 }
 
 NOW_WAFL_EXPANSION: {
-    my $hub = new_hub('admin');
+    my $hub = create_test_hub();
     isa_ok $hub, 'Socialtext::Hub';
 
     # create a new page, and track the time before+after the creation
@@ -199,8 +196,12 @@ NOW_WAFL_EXPANSION: {
 }
 
 MAX_ID_LENGTH: {
-    my $hub = new_hub('admin');
-    my $page = $hub->pages->new_from_name('Admin Wiki');
+    my $hub  = create_test_hub();
+    my $page = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'max id length test',
+        content => 'foo',
+        creator => $hub->current_user,
+    );
 
     eval {
         my $title = 'x' x 256;
@@ -251,7 +252,7 @@ BAD_PAGE_TITLE: {
 }
 
 INVALID_UTF8: {
-    my $hub = new_hub('admin');
+    my $hub = create_test_hub();
     eval {
         my $page = Socialtext::Page->new( hub => $hub )->create(
             title   => 'new page',
