@@ -62,8 +62,8 @@
                     <input name="up_[% pref.name %]" type="text" value="[% pref.value %]"/>
                 [% END %]
                 </td>
-            [% END %]
         </tr>
+        [% END %]
         <tr>
             <td colspan="2" class="widgetUserPrefsButtons">
                 <input id="st-savebutton-[% gadget.id %]" type='submit' value='save' class="searchButton st-savebutton"/>
