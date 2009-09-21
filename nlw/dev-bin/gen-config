@@ -166,21 +166,6 @@ sub main {
             ];
     }
 
-    if (is_target_for('plugins')) {
-        my $params = apache2_params( \%dirs );
-        my $plugs = "$inc/../../plugins";
-        my $conf_d = "build/templates/apache2/conf.d";
-        for my $include (glob("$plugs/*/$conf_d/*.tt2")) {
-            my ($plugin, $file)
-                = $include =~ m{^$plugs/(.*)/$conf_d/(.*)\.tt2$};
-            push @files, [
-                "apache2/conf.d/$file.tt2"
-                    => "$plugs/$plugin/etc/apache2/conf.d/$file.conf",
-                $params, 'overwrite',
-            ]
-        }
-    }
-
     if ( is_target_for('html') ) {
         my %config = (
             'server_admin' => get_build_setting('server-admin'),
