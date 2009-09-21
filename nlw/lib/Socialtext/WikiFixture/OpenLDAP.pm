@@ -2,7 +2,7 @@ package Socialtext::WikiFixture::OpenLDAP;
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext::Bootstrap::OpenLDAP;
+use Socialtext::Bootstrap::OpenLDAP;
 use Socialtext::AppConfig;
 use Socialtext::LDAP::Config;
 use Test::More;
@@ -13,19 +13,7 @@ sub init {
     my $self = shift;
 
     # bootstrap an OpenLDAP instance
-    $self->{ldap} = Test::Socialtext::Bootstrap::OpenLDAP->new();
-    my $ldap_cfg = $self->{ldap}->ldap_config();
-
-    # save LDAP config
-    Socialtext::LDAP::Config->save($ldap_cfg);
-
-    # hold onto the current user_factories (we'll reset when we're done)
-    my $appconfig = Socialtext::AppConfig->new();
-    $self->{user_factories} = $appconfig->user_factories();
-
-    # update the user_factories to include the LDAP directory
-    $appconfig->set( 'user_factories', "LDAP:" . $ldap_cfg->id() . ";Default" );
-    $appconfig->write();
+    $self->{ldap} = Socialtext::Bootstrap::OpenLDAP->new();
 
     # init our base class
     $self->SUPER::init(@_);
@@ -34,12 +22,8 @@ sub init {
 sub end_hook {
     my $self = shift;
 
-    # reset user_factories to their original state
-    if ($self->{user_factories}) {
-        my $appconfig = Socialtext::AppConfig->new();
-        $appconfig->set( 'user_factories', $self->{user_factories} );
-        $appconfig->write();
-    }
+    # tear down OpenLDAP instance, which cleans up after itself
+    $self->{ldap} = undef;
 
     # tear down our base class
     $self->SUPER::end_hook(@_);
@@ -130,14 +114,11 @@ are reset back to their initial state.
 
 =item B<init()>
 
-Over-ridden initialization routine, which bootstraps an OpenLDAP instance,
-saves out the LDAP configuration, and adds the LDAP directory as the primary
-user factory.
+Over-ridden initialization routine, which bootstraps an OpenLDAP instance.
 
 =item B<end_hook()>
 
-Over-ridden cleanup routine, which sets the user factories back to their
-initial state.
+Over-ridden cleanup routine, tears down the OpenLDAP instance.
 
 =item B<add_ldif_data($ldif)>
 
