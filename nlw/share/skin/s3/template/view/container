@@ -44,6 +44,8 @@
                 [% INCLUDE 'widget/element' gadget=gadget num=num %]
                 [% num = num + 1 %]
             [% END %]
+            [% FILTER decorate('container_column_' _ i _ '_end') %]
+            [% END %]
             </ul>
         [% END %]
     </div><!-- columnColumns END -->
