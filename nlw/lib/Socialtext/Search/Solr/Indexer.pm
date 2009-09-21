@@ -322,6 +322,7 @@ sub _add_signal_doc {
         [signal_key => $id],
         [date => $ctime], [created => $ctime],
         [creator => $signal->user_id],
+        [creator_name => $signal->user->best_full_name],
         [body => $body],
         [is_question => $is_question],
         [pvt => $recip ? 1 : 0],
