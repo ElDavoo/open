@@ -5,9 +5,11 @@ use strict;
 use warnings;
 # use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
+use File::Slurp qw(write_file);
+use Benchmark qw(timeit timestr);
 use Socialtext::Group::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 90;
+use Test::Socialtext tests => 102;
 
 # Force this to be synchronous.
 local $Socialtext::Group::Factory::Asynchronous = 0;
@@ -362,4 +364,85 @@ all_available_ldap_groups: {
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($motorhead);
+}
+
+###############################################################################
+# TEST: PERF test with *BIG* Groups
+perf_test_big_ldap_groups: {
+    SKIP: {
+        skip "Benchmark tests skipped; set NLW_BENCHMARK=1 to run them", 12
+            unless ($ENV{NLW_BENCHMARK});
+        diag "Benchmark tests running, this may take a while...";
+
+        # Fire up OpenLDAP
+        my $openldap = bootstrap_openldap();
+        my $t;
+
+        # Create a test set of Groups
+        # ... some of which are small
+        # ... some of which are *HUGE*
+        diag "Feeding Group data to OpenLDAP...";
+        $t = timeit(1, sub {
+            _add_group_to_ldap(ldap => $openldap, users => 20);
+            _add_group_to_ldap(ldap => $openldap, users => 50);
+            _add_group_to_ldap(ldap => $openldap, users => 70);
+            _add_group_to_ldap(ldap => $openldap, users => 2000);
+            _add_group_to_ldap(ldap => $openldap, users => 5000);
+            _add_group_to_ldap(ldap => $openldap, users => 20000);
+            _add_group_to_ldap(ldap => $openldap, users => 30000);
+            } );
+        diag "... " . timestr($t);
+
+        # how long does it take to do "$factory->available(all=>1)" ?
+        diag "Querying list of available Groups...";
+        $t = timeit(1, sub {
+            my $driver    = $openldap->_as_factory();
+            my $factory   = Socialtext::Group->Factory(driver_key => $driver);
+            my @available = $factory->Available(all => 1);
+
+            # check Group count (our Groups, plus default ones)
+            is scalar @available, 11, 'Right number of available Groups';
+
+            # make sure total User count matches up
+            my $total_expected = 57140;
+            my $total_users    = 0;
+            foreach my $group (@available) {
+                next unless ($group->{driver_group_name} =~ /Test Group/);
+                $total_users += $group->{member_count};
+            }
+            is $total_users, $total_expected, '... and correct number of test Users';
+        } );
+        diag "... " . timestr($t);
+    }
+
+    my $counter = 0;
+    sub _add_group_to_ldap {
+        my %opts  = @_;
+        my $ldap  = $opts{ldap};
+        my $users = $opts{users};
+
+        # create LDIF for this Group
+        # - note that we don't actually have to add inetOrgPerson entries for
+        #   each of the Users; we're not vivifying the Users but instead are
+        #   testing how long it takes to suck down the Group info from
+        #   OpenLDAP.
+        my $cn   = "Test Group " . $counter++;
+        my $dn   = "cn=$cn,dc=example,dc=com";
+        my $ldif = qq{
+dn: $dn
+objectClass: groupOfNames
+cn: $cn
+};
+        for (1 .. $users) {
+            my $user_cn = "User " . $counter++;
+            my $user_dn = "cn=$user_cn,dc=example,dc=com";
+            $ldif .= "member: $user_dn\n";
+        }
+
+        # add Group to OpenLDAP
+        my $filename = "t/tmp/ldap-list-group-perf.$$";
+        write_file($filename, $ldif);
+        ok $ldap->add_ldif($filename), "... adding Group w/$users Users";
+        unlink $filename;
+    }
 }
