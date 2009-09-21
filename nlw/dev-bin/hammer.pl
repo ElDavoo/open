@@ -15,11 +15,16 @@ use Guard;
 use JSON::XS;
 use Data::Dumper;
 use URI::Escape qw/uri_escape_utf8/;
+use List::Util qw/sum/;
 
 my $SERVER_ROOT = 'http://topaz.socialtext.net:22061';
 
 my $all_done = AE::cv;
-my $ticker = AE::timer 2,2,sub { print "tick\n" };
+our $phase_display = sub {print "nothing to report\n"};
+my $ticker = AE::timer 2,2, unblock_sub {
+    print "-" x 30,AnyEvent->now,"\n";
+    $phase_display->();
+};
 
 my %users = (
     'devnull1@socialtext.com' => 'd3vnu11l',
@@ -50,16 +55,20 @@ sub run_for_user ($$&) {
 }
 
 sub log_in_users {
-    my $logins = AE::cv;
-    my $login_timeout = AE::timer 60, 0, sub {
+    my $phase = AE::cv;
+    my $phase_timeout = AE::timer 60, 0, sub {
         $all_done->send;
-        $logins->croak('timed-out logging-in users');
+        $phase->croak('timed-out logging-in users');
     };
     print "logging-in users...\n";
 
-    my @running; # cancelling guards
+    my %guards; # cancelling guards
+    local $phase_display = sub {
+        print "logging in users, ".(scalar keys %guards)." remaining\n";
+    };
+
     for my $user (keys %users) {
-        $logins->begin;
+        $phase->begin;
 
         $user_state{$user} = {
             name => $user,
@@ -70,28 +79,29 @@ sub log_in_users {
         };
 
         run_for_user $user, "log-in $user", sub {
-            scope_guard { $logins->end if $logins };
-            print "logging in $user\n";
+            scope_guard { $phase->end if $phase };
+#             print "logging in $user\n";
             my $g2 = http_post "$SERVER_ROOT/nlw/submit/login",
                 "username=$user&password=$users{$user}",
                 cookie_jar => $user_state{$user}{cookie_jar},
                 recurse => 0,
                 timeout => 10,
                 Coro::rouse_cb;
-            push @running, $g2;
-            print "waiting for $user\n";
+            $guards{$user} = $g2;
+#             print "waiting for $user\n";
 
             my (undef, $headers) = Coro::rouse_wait;
+            delete $guards{$user};
             if (my $c = $headers->{'set-cookie'}) {
-                print "Got: $user\n";
+#                 print "logged-in: $user\n";
             }
             else {
-                print "Failed to log in $user\n";
-                $logins->croak('failed to log in '.$user);
+                warn "Failed to log in $user\n";
+                $phase->croak('failed to log in '.$user);
             }
         };
     }
-    $logins->recv;
+    $phase->recv;
     print "done logging in\n";
 }
 
@@ -102,14 +112,23 @@ sub simple_fetch_events {
         $phase->croak('timed-out fetching stuff');
     };
 
-    my @running; # cancelling guards
+    my %in_progress;
+    my %plan;
+    local $phase_display = sub {
+        my $total_u = scalar keys %in_progress;
+        my $outstanding = sum values %plan;
+        print "fetching, remaining: $total_u users, $outstanding requests\n";
+    };
+
     for my $user (keys %users) {
         $phase->begin;
         run_for_user $user, "fetcher for $user", sub {
             scope_guard { $phase->end if $phase };
-
+            Coro::AnyEvent::sleep rand(2.5); # fuzz offsets
+            $plan{$user} = 10;
             for (1..5) {
                 my $fetches = AE::cv;
+                my @fetch_guards;
                 for my $uri (
                     '/data/events?limit=5;accept=application/json',
                     '/data/signals?limit=5;accept=application/json',
@@ -122,19 +141,24 @@ sub simple_fetch_events {
                         cookie_jar => $user_state{$user}{cookie_jar},
                         sub { 
                             my (undef, $headers) = @_;
-                            print "finish $user @ $headers->{URL}\n";
+#                             print "finish $user\n";
+                            delete $in_progress{$user}{$url};
                             $fetches->end 
                         };
-                    print "sent $user @ $url\n";
-                    push @running, $fg;
+                    $in_progress{$user}{$url} = $fg;
+                    $plan{$user}--;
+#                     print "sent $user\n";
                 }
                 $fetches->recv;
+#                 print "pausing $user";
+                Coro::AnyEvent::sleep 5 if $plan{$user}; # simulate polling
             }
-            print "phase done for $user\n"
+#             print "+ phase done for $user\n";
+            delete $in_progress{$user};
         };
     }
     $phase->recv;
-    print "phase all done\n";
+#     print "++ phase all done\n";
 }
 
 async { $Coro::current->{desc} = 'main schedule';
