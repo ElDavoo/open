@@ -55,6 +55,11 @@
 
 | *Comment* | Test case: Business Control Panel validate plugins are disabled. |  |
 | *Comment* | Test case: Business Control Panel show new account |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%new_acct%% |
+| click_ok | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |  |
 | text_like | Custom Skins: Socialtext 3 default skin |  |
 | text_like | Socialtext People (click to enable) |  |
@@ -97,7 +102,11 @@
 | *Comment* | Test case: Business Control Panel Create a new workspace in the new account |  |
 | st-admin | create-workspace --name %%new_workspace%% --title %%new_workspace%% --account "%%new_acct%%" |  |
 | click_and_wait | link=Accounts |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%new_acct%% |
+| click_and_wait | st-submit-search-by-name |  |
 | click_and_wait | link=%%new_acct%% |  |
+| wait_for_element_visible_ok | link=%%new_workspace%% | 30000 |
 | click_and_wait | link=%%new_workspace%% |  |
 | text_like | %%new_workspace%% workspace |  |
 
@@ -118,11 +127,15 @@
 | st-submit |  |  |
 | click_and_wait | link=%%new_workspace%% |  |
 | text_like | %%new_workspace%% |  |
-| wait_for_element_visible_ok | account_id | 30000 |
-| select_ok | account_id | Socialtext |
+| wait_for_element_visible_ok | st-assign-to-account | 30000 |
+| type_ok | st-assign-to-account | Socialtext |
 | wait_for_element_visible_ok | st-assign-to-account-submit | 30000 |
 | click_and_wait | st-assign-to-account-submit |  |
 | text_like | The %%new_workspace%% workspace is now part of the Socialtext account. |  |
+| wait_for_element_visible_ok | name | 30000 |
+| type_ok | name | %%new_workspace%% |
+| st-submit |  |  |
+| wait_for_element_visible_ok | link=%%new_workspace%% | 30000 |
 | click_and_wait | link=%%new_workspace%% |  |
 | text_like | Account: Socialtext |  |
 
@@ -151,6 +164,11 @@
 
 | *Comment* | Test case: Business Control Panel exercise 'add user' button |  |
 | click_and_wait | link=Accounts |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%new_acct%% |
+| click_ok | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |  |
 | click_and_wait | link=Add User |  |
 | type_ok | email_address | bogus |
@@ -168,10 +186,15 @@
 | click_ok | //input[contains(@id,'add_user')] |  |
 | wait_for_text_present_ok | Added user foo%%start_time%%@bar.com | 30000 |
 | click_and_wait | link=Back |  |
-| wait_for_element_present_ok | link=firstname lastname <foo%%start_time%%@bar.com> |  |
+| wait_for_element_visible_ok | link=firstname lastname <foo%%start_time%%@bar.com> |  |
 
 | *Comment* | Test case: Business Control Panel reassign accounts for users and workspaces |  |
 | click_and_wait | link=Accounts |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%new_acct%% |
+| click_ok | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |  |
 | click_and_wait | link=Wiki CLI <%%cli_user%%> |  |
 | wait_for_element_visible_ok | link=%%new_acct%% |  |
@@ -190,12 +213,14 @@
 | click_and_wait | //input[@value='Remove Access to Socialtext System Management'] |  |
 | text_like | Removed Socialtext System Management access from %%cli_user%% |  |
 | text_like | Socialtext System Management Access? no |  |
-
-| select_ok | account_id | Socialtext |
+| wait_for_element_visible_ok | st-assign-to-account | 30000 |
+| type_ok | st-assign-to-account | Socialtext |
 | click_and_wait | //input[@value='Submit'] |  |
 | text_like | Primary Account: Socialtext |  |
-| select_ok | account_id | %%new_acct%% |
-| click_and_wait | //input[@value='Submit'] |  |
+| wait_for_element_visible_ok | st-assign-to-account | 30000 |
+| wait_for_element_visible_ok | st-assign-to-account-submit | 30000 |
+| type_ok | st-assign-to-account | %%new_acct%% |
+| click_and_wait | st-assign-to-account-submit |  |
 | text_like | Primary Account: %%new_acct%% |  |
 
 | *Comment* | Test case: Business Control Panel search for new user |  |
@@ -244,18 +269,23 @@
 | click_and_wait | link=Name |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
 
-| click_and_wait | link=Workspaces |  |
+| click_and_wait | //a[contains(@href,'account_sort_order=asc;account_order_by=workspace_count')] |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
-| click_and_wait | link=Workspaces |  |
+| click_and_wait | //a[contains(@href,'account_sort_order=desc;account_order_by=workspace_count')] |  |
+
 | text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
 
-| click_and_wait | link=Users |  |
+| click_and_wait | //a[contains(@href,'account_sort_order=asc;account_order_by=user_count')] |  |  |  |
 | text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
-| click_and_wait | link=Users |  |
+| click_and_wait | //a[contains(@href,'account_sort_order=desc;account_order_by=user_count')] |  |  |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
 
 | *Comment* | Test case: Business Control Panel sorting Workspaces display |  |
 | click_and_wait | link=Workspaces |  |
+| wait_for_element_visible_ok | name | 30000 |
+| wait_for_element_visible_ok | st-ws-search-submit | 30000 |
+| type_ok | name | %%start_time%% |
+| click_and_wait | st-ws-search-submit | 30000 |
 | click_and_wait | link=Name |  |
 | text_like | qr/0-sort-3-workspace3-%%start_time%%.+0-sort-2-workspace2-%%start_time%%.+0-sort-1-workspace1-%%start_time%%/ |  |
 | click_and_wait | link=Name |  |
@@ -264,11 +294,12 @@
 TODO: RESTORE THE FOLLOWING TWO TESTS AFTER {bz: 472} IS FIXED
 
 | *Comment* | RESTORE THE FOLLOWING TWO TESTS AFTER {bz: 472} IS FIXED |  |
-| click_and_wait | link=Users |  |
+| wait_for_element_visible_ok | //a[contains(@href,'workspace_sort_order=asc;workspace_order_by=user_count')] | 30000 |
+| click_and_wait | //a[contains(@href,'workspace_sort_order=asc;workspace_order_by=user_count')] |  |
 
 text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ | |
 
-| click_and_wait | link=Users |  |
+| click_and_wait | //a[contains(@href,'workspace_sort_order=desc;workspace_order_by=user_count')] |  |
 
 text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ | |
 
@@ -282,31 +313,33 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 | click_and_wait | link=Created |  |
 | text_like | qr/0-sort-1-workspace1-%%start_time%%.+0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%/ |  |
 
+| *Comment* | LOOK JERKY |  |
 | click_and_wait | link=Created By |  |
-| text_like | qr/devnull1.+system-user/ |  |
+| *Comment* | SORTED BY CREATED BY |  |
+| text_like | qr/system-user/ |  |
 | click_and_wait | link=Created By |  |
-| text_like | qr/system-user.+devnull1/ |  |
+| text_like | qr/system-user/ |  |
 
 | *Comment* | Test case: Business Control Panel sorting Users display |  |
+| click_and_wait | //a[contains(@href,'workspace_sort_order=asc;workspace_order_by=user_count')] |  |
 | click_and_wait | link=Users |  |
-
+| wait_for_element_visible_ok | username | 30000 |
+| wait_for_element_visible_ok | st-username-search-submit | 30000 |
+| type_ok | username | %%start_time%% |
+| click_and_wait | st-username-search-submit |  |
+| text_like | qr/0_sort_1_user1\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_3_user3\@%%start_time%%\.com/ |  |
 | click_and_wait | link=Name |  |
-| text_like | qr/two.+one/ |  |
-| click_and_wait | link=Name |  |
+| text_like | qr/0_sort_3_user3\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_1_user1\@%%start_time%%\.com/ |  |
+| click_and_wait | //a[contains(@href,'user_sort_order=asc;user_order_by=workspace_count')] |  |
+| text_like | qr/0_sort_3_user3\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_1_user1\@%%start_time%%\.com/ |  |
+| click_and_wait | //a[contains(@href,'user_sort_order=desc;user_order_by=workspace_count')] |  |
 | text_like | qr/0_sort_1_user1\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_3_user3\@%%start_time%%\.com/ |  |
 
-| click_and_wait | link=Workspaces |  |
-| text_like | qr/0_sort_2_user1\@%%start_time%%\.com.+0_sort_3_user1\@%%start_time%%\.com.+0_sort_3_user2\@%%start_time%%\.com/ |  |
-| click_and_wait | link=Workspaces |  |
-| text_like | qr/0_sort_3_user3\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_1_user1\@%%start_time%%\.com/ |  |
-
 | click_and_wait | link=Invited |  |
-| text_like | qr/one.+two/ |  |
-| click_and_wait | link=Invited |  |
-| text_like | qr/0_sort_3_user3\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_1_user1\@%%start_time%%\.com/ |  |
+| text_like | qr/0_sort_1_user1\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_3_user3\@%%start_time%%\.com/ |  |
 
 | click_and_wait | link=Invited By |  |
-| text_like | qr/devnull1.+system/ |  |
+| text_like | qr/system/ |  |
 
 | *Comment* | Test case: Business Control Panel check the elements on the page |  |
 | text_like | selected-users | 0 users selected |
