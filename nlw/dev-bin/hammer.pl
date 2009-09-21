@@ -72,7 +72,6 @@ sub log_in_users {
 
         $user_state{$user} = {
             name => $user,
-            password => $users{$user},
             CO_SLOT => {},
             KA_COUNT => {},
         };
@@ -80,9 +79,10 @@ sub log_in_users {
         run_for_user $user, "log-in $user", sub {
             scope_guard { $phase->end if $phase };
 #             print "logging in $user\n";
+            my $password = $users{$user} || 'password';
             my $post = "redirect_to=/&lite=&remember=1&".
                 "username=".uri_escape_utf8($user).
-                "&password=$users{$user}";
+                "&password=".uri_escape_utf8($password);
 #             warn "post: $post\n";
 
             my $g2 = http_post "$SERVER_ROOT/nlw/submit/login", $post,
