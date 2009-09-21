@@ -75,7 +75,6 @@ sub log_in_users {
             password => $users{$user},
             CO_SLOT => {},
             KA_COUNT => {},
-            cookie_jar => {},
         };
 
         run_for_user $user, "log-in $user", sub {
@@ -91,7 +90,6 @@ sub log_in_users {
                     'Content-Type' => 'application/x-www-form-urlencoded',
                     'Content-Length' => length($post),
                 },
-                cookie_jar => $user_state{$user}{cookie_jar},
                 timeout => 10,
                 Coro::rouse_cb;
             $guards{$user} = $g2;
@@ -101,9 +99,9 @@ sub log_in_users {
             delete $guards{$user};
 
             my $c = $headers->{'set-cookie'};
-            if ($c && $c =~ /NLW-user/) {
-#                 print "logged-in: $user\n";
-#                 print Dumper($user_state{$user}{cookie_jar});
+            if ($c && $c =~ /(NLW-user=[^;]+)/) {
+                $user_state{$user}{cookie} = $1;
+#                 print "logged-in: $user ($user_state{$user}{cookie})\n";
             }
             else {
                 warn "Failed to log in $user\n";
@@ -150,9 +148,11 @@ sub simple_fetch_events {
                         uri_escape_utf8("$SERVER_ROOT$uri") .
                         '&requestMethod=GET';
                     my $fg = http_get $url,
-                        cookie_jar => $user_state{$user}{cookie_jar},
                         recurse => 0,
                         timeout => 30,
+                        headers => {
+                            'Cookie' => $user_state{$user}{cookie}
+                        },
                         sub { 
                             my ($body, $headers) = @_;
 #                             print "finish $user $headers->{Status}\n";
