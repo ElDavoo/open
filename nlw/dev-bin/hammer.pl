@@ -81,19 +81,29 @@ sub log_in_users {
         run_for_user $user, "log-in $user", sub {
             scope_guard { $phase->end if $phase };
 #             print "logging in $user\n";
-            my $g2 = http_post "$SERVER_ROOT/nlw/submit/login",
-                "username=$user&password=$users{$user}",
+            my $post = "redirect_to=/&lite=&remember=1&".
+                "username=".uri_escape_utf8($user).
+                "&password=$users{$user}";
+#             warn "post: $post\n";
+
+            my $g2 = http_post "$SERVER_ROOT/nlw/submit/login", $post,
+                headers => { 
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Content-Length' => length($post),
+                },
                 cookie_jar => $user_state{$user}{cookie_jar},
-                recurse => 0,
                 timeout => 10,
                 Coro::rouse_cb;
             $guards{$user} = $g2;
-#             print "waiting for $user\n";
 
+#             print "waiting for $user\n";
             my (undef, $headers) = Coro::rouse_wait;
             delete $guards{$user};
-            if (my $c = $headers->{'set-cookie'}) {
+
+            my $c = $headers->{'set-cookie'};
+            if ($c && $c =~ /NLW-user/) {
 #                 print "logged-in: $user\n";
+#                 print Dumper($user_state{$user}{cookie_jar});
             }
             else {
                 warn "Failed to log in $user\n";
@@ -114,10 +124,12 @@ sub simple_fetch_events {
 
     my %in_progress;
     my %plan;
+    my $failed = 0;
     local $phase_display = sub {
         my $total_u = scalar keys %in_progress;
         my $outstanding = sum values %plan;
-        print "fetching, remaining: $total_u users, $outstanding requests\n";
+        print "fetching, remaining: $total_u users, ".
+            "$outstanding requests. ($failed failed)\n";
     };
 
     for my $user (keys %users) {
@@ -139,11 +151,19 @@ sub simple_fetch_events {
                         '&requestMethod=GET';
                     my $fg = http_get $url,
                         cookie_jar => $user_state{$user}{cookie_jar},
+                        recurse => 0,
+                        timeout => 30,
                         sub { 
-                            my (undef, $headers) = @_;
-#                             print "finish $user\n";
+                            my ($body, $headers) = @_;
+#                             print "finish $user $headers->{Status}\n";
+                            $failed++ unless $headers->{Status} =~ /^200/;
                             delete $in_progress{$user}{$url};
-                            $fetches->end 
+                            eval {
+                                my $wrapper = decode_json($body);
+                                my $data = decode_json($wrapper->{body});
+                                print "at: ".$data->[0]{at};
+                            };
+                            $fetches->end;
                         };
                     $in_progress{$user}{$url} = $fg;
                     $plan{$user}--;
@@ -159,6 +179,7 @@ sub simple_fetch_events {
     }
     $phase->recv;
 #     print "++ phase all done\n";
+    $phase_display->();
 }
 
 async { $Coro::current->{desc} = 'main schedule';
