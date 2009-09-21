@@ -147,6 +147,7 @@ create_group: {
     my $motorhead_dn  = 'cn=Motorhead,dc=example,dc=com';
 
     # Group lookups should be done *in-process*
+    no warnings 'once';
     local $Socialtext::Group::Factory::Asynchronous = 0;
 
     create_group_default_account: {
