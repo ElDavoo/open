@@ -83,8 +83,7 @@ sub dont_use_cached_result_set {
 
 sub _direction {
     my $self = shift;
-    return $self->cgi->direction
-        || $self->preferences->direction->value;
+    return $self->cgi->direction;
 }
 
 # XXX when we send a result set to the template

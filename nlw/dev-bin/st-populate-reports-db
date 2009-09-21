@@ -12,7 +12,7 @@ my $host = hostname;
 
 
 #Touch and chmod the logs
-my $test_nlw = $ENV{HOME} . '/test_nlw.nlw';
+my $test_nlw = $ENV{HOME} . '/test_nlw.log';
 grant_write_permissions_to_local_logs($test_nlw, $host);
 
 
@@ -87,7 +87,9 @@ system($populate_db);
 if (is_dev_env($host)) {
    `./st-consume-stub-reports`;
 } else {
-   system('/usr/bin/st-reports-import-nlw-data --force ' . $test_nlw);
+   # fast-forward the existing nlw.log file, not the test log file
+   system('/usr/bin/st-reports-import-nlw-data --force  /var/log/nlw.log');
+   # process and fast-forward the test log file
    system('/usr/bin/st-reports-consume-nlw-log ' . $test_nlw);
 }
 

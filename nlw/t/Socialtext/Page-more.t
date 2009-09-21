@@ -5,7 +5,6 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 25;
-
 # Fixtures:
 # - we're destructive; we create pages but don't clean up after ourselves.
 fixtures(qw( admin_with_extra_pages destructive ));

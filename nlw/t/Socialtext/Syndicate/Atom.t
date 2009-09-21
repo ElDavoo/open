@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 78;
-fixtures( 'admin_with_extra_pages' );
+fixtures(qw( admin_with_extra_pages destructive ));
 
 BEGIN {
     use_ok( 'Socialtext::Syndicate::Atom' );
