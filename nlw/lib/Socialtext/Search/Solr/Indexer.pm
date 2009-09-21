@@ -401,6 +401,7 @@ sub _debug {
 
 sub _pg_date_to_iso {
     my $pgdate = shift;
+    $pgdate =~ s/Z$//;
     my $dt = DateTime::Format::Pg->new(
         server_tz => 'UTC',
     );
