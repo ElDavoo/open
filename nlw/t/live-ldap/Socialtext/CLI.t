@@ -12,7 +12,7 @@ use Socialtext::Account;
 BEGIN {
     require Socialtext::People::Profile;
     plan skip_all => 'People is not linked in' if ($@);
-    plan tests => 51;
+    plan tests => 53;
 }
 
 fixtures( 'db', 'destructive' );
