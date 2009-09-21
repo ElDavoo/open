@@ -1,3 +1,42 @@
 | *Comment* | Test Case: Activities Widget Tags and Tagging |
 
+* Fixture: SocialWidgets
+
+| st-logoutin |  |
+
+| *Comment* | Test Case: Activities Widget Tags and Tagging Setup |  |
+| set | wrkspc | acwidg-tags-ws%%start_time%% |
+| set | taguser | awtuser%%start_time%%@ken.socialtext.next |
+| set | tagusershort | awtuser%%start_time%% |
+| st-admin | create-workspace --name %%wrkspc%% --title %%wrkspc%% |  |
+| st-admin | create-user --email %%taguser%% --password %%password%% |  |
+| st-admin | add-member --email %%username%% --workspace %%wrkspc%% |  |
+| st-admin | add-member --email %%taguser%% --workspace %%wrkspc%% |  |
+
+| *Comment* | Test Case: Activities Widget Tags and Tagging Tag A Page |
+| open_ok | /%%wrkspc%%/ |
+
+| *Comment* | Test Case: Activities Widget Tags and Tagging Tag A profile |  |
+| st-find-user | %%tagusershort%% |  |
+| wait_for_element_visible_ok | new_tag | 30000 |
+| type_ok | new_tag | addmetonewuser %%start_time%% |
+| click_ok | //input[@value='Add Tag'] |  |
+| wait_for_element_visible_ok | link=addmetonewuser %%start_time%% | 30000 |
+| text_like | link=addmetonewuser %%start_time%% | addmetonewuser %%start_time%% |
+
+| *Comment* | Test Case: Activities Widget Tags and Tagging Tag ME |
+
+| *Comment* | Test Case: Activities Widget Tags and Tagging Clear Cache, catchup logs |
+| st-clear-json-cache |  |
+
+| *Comment* | Test Case: Activities Widget Tags and Tagging Load Activity Widget |  |
+| open_ok | /?dashboard |  |
+| st-single-widget-in-dashboard | gallery-widget-Activities |  |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+
+| *Comment* | Test Case: Activities Widget Tags and Tagging Verify Tags in activities widget |
+
+st_verify_text_in_activities_widget | gallery-widget-Activities |
+
 | *Comment* | Test Case: Activities Widget Tags and Tagging TODO |
