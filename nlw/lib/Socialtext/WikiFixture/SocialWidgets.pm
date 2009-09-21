@@ -436,6 +436,26 @@ sub st_verify_link_in_activities_widget {
 }
       
 
+=head2 st_find_user ( $user_id ) 
+
+Pass in a unique value for the user before the at sign, and selenium will 
+search for it and click on that user.
+
+=cut
+sub st_find_user {
+    my ($self, $user_id) = @_;
+    $self->handle_command('open_ok','/?action=people');
+    $self->handle_command('wait_for_element_present_ok','st-search-action', 30000);
+    $self->handle_command('wait_for_element_present_ok', 'st-search-term', 30000);
+    $self->handle_command('wait_for_element_present_ok', 'st-search-submit', 30000);
+    $self->handle_command('select_ok', 'st-search-action', 'Search People:');
+    $self->handle_command('type_ok', 'st-search-term', $user_id);
+    $self->handle_command('click_and_wait', 'st-search-submit');
+    $self->handle_command('wait-for-element-visible-ok', "link=$user_id", 30000);
+    $self->handle_command('click_and_wait',"link=$user_id");
+    $self->handle_command('wait-for-element-visible-ok','new_tag',30000);
+}   
+
 sub _adjust_location {
     my ($self, %params) = @_;
 
