@@ -2530,6 +2530,13 @@ sub create_group {
         driver_unique_id   => $ldap_dn,
         primary_account_id => $account->account_id,
     );
+
+    unless ( $group ) {
+        $self->_error(
+            loc("Cannot find Group with DN '[_1]'.", $ldap_dn)
+        );
+    }
+
     $self->_success(
         loc("The [_1] Group has been created in the [_2] Account.",
             $group->driver_group_name,

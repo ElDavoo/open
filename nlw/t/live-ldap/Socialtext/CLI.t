@@ -218,6 +218,19 @@ create_group: {
         my $group = Socialtext::Group->GetGroup($proto);
         Test::Socialtext::Group->delete_recklessly( $group );
     }
+
+    create_group_nonexistent_dn: {
+        my $bad_dn = 'cn=Non-existent,dc=example,dc=com';
+        expect_failure(
+            sub {
+                Socialtext::CLI->new(
+                    argv => [ '--ldap-dn', $bad_dn ],
+                )->create_group();
+            },
+            qr/Cannot find Group with DN '$bad_dn'\./,
+            'create group with non-existent LDAP DN',
+        );
+    }
 }
 
 ###############################################################################
