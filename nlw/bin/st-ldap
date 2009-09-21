@@ -16,12 +16,14 @@ my ($help, $man);
 my $verbose = 0;
 my $force   = 0;
 my $dryrun  = 0;
+my $driver;
 GetOptions(
     'help|?'    => \$help,
     'man'       => \$man,
     'verbose'   => \$verbose,
     'force'     => \$force,
     'dryrun'    => \$dryrun,
+    'driver:s'  => \$driver,
 ) || pod2usage(1);
 pod2usage(1) if ($help);
 pod2usage( -exitstatus=>0, -verbose=>2 ) if ($man);
@@ -56,6 +58,9 @@ my %commands = (
     'load-users' => sub {
         Socialtext::LDAP::Operations->LoadUsers(dryrun => $dryrun);
     },
+    'list-groups' => sub {
+        Socialtext::LDAP::Operations->ListGroups(driver => $driver);
+    },
 );
 unless ($commands{$command}) {
     die "Unknown command, '$command'.\n";
@@ -88,6 +93,9 @@ st-ldap - Socialtext LDAP integration utility
     load-users      Loads Users from LDAP
         --dryrun        Dry-run; show Users, but don't add them
 
+    list-groups     Lists Groups known in the specified LDAP directory
+        --driver <id>   LDAP Group Factory id (from "group_factories")
+
     refresh-users   Refreshes user data from LDAP
         --force         Force refresh for all LDAP users
 
@@ -106,6 +114,7 @@ st-ldap - Socialtext LDAP integration utility
     st-ldap load-users
     st-ldap refresh-users --force --verbose
     st-ldap refresh-groups --force --verbose
+    st-ldap list-groups --driver my-ldap-directory
 
 =head1 DESCRIPTION
 
@@ -145,6 +154,23 @@ create F</etc/cron.daily/st-ldap-load-users> as follows:
 
   #!/bin/sh
   st-ldap load-users
+
+=item B<list-groups>
+
+Lists the Groups that are known to the specified LDAP Group Factory.
+
+=over
+
+=item B<--driver E<lt>idE<gt>>
+
+Specifies the ID for the LDAP Group Factory that you wish to list the Groups in
+(as was specified in the C<group_factories> configuration option listed in
+C<socialtext.conf>).
+
+If no C<--driver> is specified, Groups are listed for B<all> configured LDAP
+Group Factories.
+
+=back
 
 =item B<refresh-users>
 

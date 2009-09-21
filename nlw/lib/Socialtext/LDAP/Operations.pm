@@ -197,6 +197,54 @@ sub RefreshGroups {
 }
 
 ###############################################################################
+sub ListGroups {
+    my ($class, %opts) = @_;
+    my @driver_ids = $opts{driver} ? ($opts{driver}) : ();
+
+    # If no driver was provided, list the Groups for *all* drivers
+    unless (@driver_ids) {
+        @driver_ids =
+            map  { s/^LDAP://; $_ }
+            grep { /^LDAP:/ }
+            Socialtext::Group->Drivers();
+    }
+
+    # List the Groups in each of the LDAP Group Factory drivers
+    foreach my $id (@driver_ids) {
+        my $factory = Socialtext::Group->Factory(
+            driver_name => 'LDAP',
+            driver_id   => $id,
+        );
+
+        unless ( $factory ) {
+            warn "No factory for Driver '$id'\n";
+            next;
+        }
+
+        print "Factory: " . $factory->driver_id . "\n";
+
+        my @available = $factory->Available(all => 1);
+        if (@available) {
+            foreach my $listing (@available) {
+                # prettify this, rather than showing "0|1"
+                $listing->{already_created} =
+                    $listing->{already_created} ? 'yes' : 'no';
+
+                print "\tGroup: $listing->{driver_group_name}\n";
+                print "\t\tmembers : $listing->{member_count}\n";
+                print "\t\tcreated : $listing->{already_created}\n";
+                print "\t\tldap-dn : $listing->{driver_unique_id}\n";
+                print "\n";
+            }
+        }
+        else {
+            print "\tNo Groups found\n";
+        }
+        print "\n";
+    }
+}
+
+###############################################################################
 # Subroutine:   _get_user_factory($driver_key)
 ###############################################################################
 # Gets the LDAP user Factory to use for the given '$driver_key'.  Caches the
@@ -355,6 +403,22 @@ Supports the following options:
 
 Forces a refresh of the LDAP Group data regardless of whether our local cached
 copy is stale or not.  By default, only stale Groups are refreshed.
+
+=back
+
+=item B<Socialtext::LDAP::Operations-E<gt>ListGroups(%opts)>
+
+List Groups and their attributes. By default, we'll look up B<all> groups for
+B<all> drivers.
+
+Supports the following options:
+
+=over
+
+=item driver => <driver_id>
+
+Only lookup the groups for the given C<driver_id> (from the C<group_factory>
+option in the C<socialtext.conf> file).
 
 =back
 
