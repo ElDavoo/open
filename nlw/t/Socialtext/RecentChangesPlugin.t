@@ -145,11 +145,12 @@ sort_by_title: {
         result => [@title_desc],
         name => 'by title, desc'
     );
-    # Direction is sticky
+    # Direction is *not* sticky, but uses default direction
+    # - as per {bz: 3116}, RecentChanges does not have sticky sort
     changes_ok(
         cgi => {sortby => 'Subject'},
-        result => [@title_desc],
-        name => 'by title, default (sticky desc)'
+        result => [@title_asc],
+        name => 'by title, default (not sticky)',
     );
 }
 
@@ -164,10 +165,12 @@ sort_by_summary: {
         result => [@p[2,1,3]],
         name => 'by summary, desc'
     );
+    # Direction is *not* sticky, but uses default direction
+    # - as per {bz: 3116}, RecentChanges does not have sticky sort
     changes_ok(
         cgi => {sortby => 'Summary'},
-        result => [@p[2,1,3]],
-        name => 'by summary, default (sticky desc)'
+        result => [@p[3,1,2]],
+        name => 'by summary, default (not sticky)'
     );
 }
 
@@ -186,10 +189,12 @@ sort_by_username: {
         result => [@p[3,1,2]],
         name => 'by username, desc'
     );
+    # Direction is *not* sticky, but uses default direction
+    # - as per {bz: 3116}, RecentChanges does not have sticky sort
     changes_ok(
         cgi => {sortby => 'username'},
-        result => [@p[3,1,2]],
-        name => 'by username, default (sticky desc)'
+        result => [@p[2,1,3]],
+        name => 'by username, default (not sticky)'
     );
 }
 
