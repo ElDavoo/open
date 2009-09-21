@@ -1,0 +1,28 @@
+Make sure that we can load a Group from LDAP into Socialtext.
+
+* Fixtures: Socialtext
+
+| *Comment*   | Make sure page exists     | .            |
+| open-ok     | /nlw/control/group/create |              |
+| verify-text | //h1                      | Create Group |
+
+| *Comment* | Make sure no LDAP running, check for error message on page | .                                   |
+| st-ldap   | stop                                                       |                                     |
+| open-ok   | /nlw/control/group/create                                  |                                     |
+| text-like | //body                                                     | LDAP Group Factories not configured |
+
+| *Comment*   | Start up LDAP, should contain list of LDAP Group Factories | .                                   |
+| st-ldap     | start                                                      |                                     |
+| open-ok     | /nlw/control/group/create                                  |                                     |
+| text-unlike | //body                                                     | LDAP Group Factories not configured |
+| text-like   | css=li.factory a                                           | Bootstrapped, port                  |
+
+| *Comment*             | Expand out the first LDAP Group Factory, and see the Groups it contains | .                     |
+| click-and-wait        | css=li.factory a                                                        |                       |
+| text-like             | css=li.factory                                                          | Bootstrapped, port    |
+| is-element-present-ok | css=li.factory ul.group-list                                            |                       |
+| text-like             | css=ul.group-list li:first-child                                        | Hawkwind (2 members)  |
+| text-like             | css=ul.group-list li:first-child + li                                   | Motorhead (3 members) |
+
+| *Comment* | Shut down LDAP; we're done with it here |
+| st-ldap   | stop                                    |
