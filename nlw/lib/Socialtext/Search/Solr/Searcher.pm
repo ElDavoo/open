@@ -128,18 +128,19 @@ sub _search {
 
 sub _sort_opts {
     my $self       = shift;
-    my $order      = shift || '';
+    my $order      = lc(shift || '');
     my $direction  = shift || 'desc';
     my $query_type = shift;
 
     # Map the UI options into Solr fields
     my %sortable = (
-        Relevance => 'score',
-        Date => 'date',
-        Subject => 'plain_title',
+        relevance => 'score',
+        date => 'date',
+        subject => 'plain_title',
         revision_count => 'revisions',
         create_time => 'created',
-        Workspace => 'w_title',
+        workspace => 'w_title',
+        sender => 'creator_name',
     );
 
     # If no valid sort order is supplied, then we use either a date sort or a
@@ -149,7 +150,7 @@ sub _sort_opts {
 
     # If a valid sort order is supplied, then we secondary sort by date,
     # unless the primary sort is already date.
-    my $sec_sort = $order eq 'Date' ? 'score desc' : 'date desc';
+    my $sec_sort = $order eq 'date' ? 'score desc' : 'date desc';
     return ('sort' => "$sortable{$order} $direction, $sec_sort");
 }
 
