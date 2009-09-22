@@ -62,11 +62,11 @@ sub events {
     elsif ($args{all}) {
         $base_uri = "/m/$args{section}?all=1";
         if ($args{section} eq 'activities') {
-            $events = $reporter->get_events_activities($viewer, \%event_args);
+            $event_args{activity} = 'all-combined';
         }
-        else {
-            $events = $reporter->get_events(\%event_args);
-        }
+
+        $events = $reporter->get_events(\%event_args);
+
         $error = loc("There are no [_1] to display because none have been created.", $args{section}) unless @$events;
     }
     else {
