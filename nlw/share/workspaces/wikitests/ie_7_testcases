@@ -7,10 +7,10 @@
 
 * [Test Case: A Enable LDAP]
 
+* [Test case: Business Control Panel]
 * [Core Testcases]
 * [Calc Testcases]
 * [Localization Testcases]
-* [Test case: Business Control Panel]
 * [Report Testcases]
 
 LDAP Testcases will Enable LDAP and use a known LDAP user instead of a Default user where required
