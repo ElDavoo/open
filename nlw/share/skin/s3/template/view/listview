@@ -48,6 +48,19 @@
           [% INCLUDE element/search_form sid='search-again' %]
         </div>
       </div>
+    [% ELSIF search_timeout %]
+      <div id="tooManyResults">
+        <p>
+          [% loc('The search you have entered is too general.') %]
+        </p>
+        <p>
+          [% loc('Please use more specific words or add more search terms.') %]
+        </p>
+        <br />
+        <div id="inlineSearch">
+          [% INCLUDE element/search_form sid='search-again' %]
+        </div>
+      </div>
     [% ELSE %]
       [% IF listview_content_actions %][% PROCESS $listview_content_actions %][% END %]
       <form id="st-listview-form" method="post" action="index.cgi">

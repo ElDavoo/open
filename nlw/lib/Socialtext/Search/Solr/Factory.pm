@@ -96,10 +96,6 @@ sub search_on_behalf {
         }
     }
 
-    Socialtext::Exception::TooManyResults->throw(
-        num_results => $num_hits,
-    ) if $num_hits > $hit_threshold;
-
     # Evaluate the thunk now that we're sure that the results are of
     # reasonable size
     my $hits = $thunk->();

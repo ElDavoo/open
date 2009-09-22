@@ -71,7 +71,8 @@ sub begin_search {
 # Parses the query string and returns the raw Solr hit results.
 sub _search {
     my ( $self, $query_string, $authorizer, $workspaces, %opts) = @_;
-    $opts{limit} ||= $self->_default_rows;
+    $opts{limit}   ||= $self->_default_rows;
+    $opts{timeout} ||= Socialtext::AppConfig->search_time_threshold();
 
     my $query = $self->parse($query_string);
     $self->_authorize( $query, $authorizer );
@@ -108,25 +109,28 @@ sub _search {
     my $query_hash = {
         # fl = Fields to return
         fl => 'id score doctype',
+
         # qt = Query Type
         qt => $query_type,
+
         # fq = Filter Query - superset of docs to return from
         ($filter_query ? (fq => $filter_query) : ()),
-        rows => $opts{limit},
-        start => $opts{offset} || 0,
+        rows        => $opts{limit},
+        start       => $opts{offset} || 0,
+        timeAllowed => $opts{timeout},
         @sort,
     };
     my $response = $self->solr->search($query, $query_hash);
+
+    if ($response->content->{responseHeader}->{partialResults}) {
+        Socialtext::Exception::SearchTimeout->throw();
+    }
+
     my $docs = $response->docs;
     my $num_hits = $response->pager->total_entries();
     Socialtext::Timer->Pause('solr_raw');
 
     _debug("Found $num_hits matches");
-    my $hit_limit = Socialtext::AppConfig->search_warning_threshold;
-    Socialtext::Exception::TooManyResults->throw(
-        num_results => $num_hits
-    ) if $num_hits > $hit_limit;
-
     return ($docs, $num_hits);
 }
 

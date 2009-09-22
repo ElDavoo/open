@@ -264,6 +264,11 @@ sub search_for_term {
             $result_set->{search_term} = $search_term;
             $result_set->{scope} = $scope;
             $result_set->{too_many} = 1;
+        } elsif ($@->isa('Socialtext::Exception::SearchTimeout')) {
+            $result_set->{hits} = 0;
+            $result_set->{search_term} = $search_term;
+            $result_set->{scope} = $scope;
+            $result_set->{search_timeout} = 1;
         } else {
             $self->hub->log->warning("searchdie '$@'");
         }
