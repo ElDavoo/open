@@ -9,6 +9,7 @@ If Test Case: Verify Location fails, you have not configured your
 test env properly and are not testing the test-workspace
 
 * [Test Case: Verify Location]
+* [Test case: Business Control Panel]
 
 * [Test Case: Home]
 * [Test Case: Workspace Navigation]
@@ -71,7 +72,6 @@ test env properly and are not testing the test-workspace
 * [Test Case: Signal to Networks]
 * [Test Case: Search Is Too General]
 
-* [Test case: Business Control Panel]
 * [Report Testcases]
 
 LDAP Testcases will Enable LDAP and use a known LDAP user instead of a Default user where required
