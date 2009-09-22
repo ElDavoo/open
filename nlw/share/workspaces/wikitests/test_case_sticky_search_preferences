@@ -31,7 +31,7 @@
 | open_ok | /%%workspace%% |  |
 | st-search | wiki | Pages matching 'wiki' |
 | wait_for_element_visible_ok | link=Titles | 30000 |
-| click_ok | link=Titles |  |
+| click_and_wait | link=Titles |  |
 | wait_for_element_visible_ok | link=Summaries | 30000 |
 | wait_for_element_not_present_ok | link=Titles | 5000 |
 
@@ -42,7 +42,7 @@
 | wait_for_element_not_present_ok | link=Titles | 5000 |
 
 | *Comment* | Test Case: Sticky Search Preferences. Does Summaries view stick? |  |
-| click_ok | link=Summaries |  |
+| click_and_wait | link=Summaries |  |
 | wait_for_element_visible_ok | link=Titles | 30000 |
 | st-search | wiki | Pages matching 'wiki' |
 | select_and_wait | sort-picker | label=Date Last Edited |

@@ -8,7 +8,10 @@ use Test::Socialtext tests => 178;
 # Fixtures: admin_no_pages
 #
 # The tests below require that the workspace be empty when we start.
-fixtures( 'admin_no_pages' );
+#
+# We also stomp on the test-env and create new pages, which we don't cleanup
+# when we're done.
+fixtures(qw( admin_no_pages destructive ));
 
 use_ok('Socialtext::EmailReceiver::Factory');
 

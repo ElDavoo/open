@@ -14,22 +14,15 @@ use Socialtext::RecentChangesPlugin;
 use Socialtext::Hub;
 use DateTime;
 use DateTime::Duration;
-use Test::Socialtext tests => 66;
-fixtures( 'foobar_no_pages' );
+use Test::Socialtext tests => 64;
+
+fixtures(qw( db ));
 
 my $now = time;
 
-my $hub = new_hub('foobar', 'system-user');
+my $hub = create_test_hub();
+$hub->current_user( Socialtext::User->SystemUser );
 my $pages = $hub->pages;
-
-Delete_all_existing_pages: {
-    for my $p ($pages->all_active) {
-        $p->delete(user => $hub->current_user);
-    }
-}
-
-ok $hub->current_user, "some user is set";
-is $hub->current_workspace->name, "foobar", "current ws is foobar";
 
 my @p;
 $p[1] = "page one $$";
@@ -152,11 +145,12 @@ sort_by_title: {
         result => [@title_desc],
         name => 'by title, desc'
     );
-    # Direction is sticky
+    # Direction is *not* sticky, but uses default direction
+    # - as per {bz: 3116}, RecentChanges does not have sticky sort
     changes_ok(
         cgi => {sortby => 'Subject'},
-        result => [@title_desc],
-        name => 'by title, default (sticky desc)'
+        result => [@title_asc],
+        name => 'by title, default (not sticky)',
     );
 }
 
@@ -171,10 +165,12 @@ sort_by_summary: {
         result => [@p[2,1,3]],
         name => 'by summary, desc'
     );
+    # Direction is *not* sticky, but uses default direction
+    # - as per {bz: 3116}, RecentChanges does not have sticky sort
     changes_ok(
         cgi => {sortby => 'Summary'},
-        result => [@p[2,1,3]],
-        name => 'by summary, default (sticky desc)'
+        result => [@p[3,1,2]],
+        name => 'by summary, default (not sticky)'
     );
 }
 
@@ -193,10 +189,12 @@ sort_by_username: {
         result => [@p[3,1,2]],
         name => 'by username, desc'
     );
+    # Direction is *not* sticky, but uses default direction
+    # - as per {bz: 3116}, RecentChanges does not have sticky sort
     changes_ok(
         cgi => {sortby => 'username'},
-        result => [@p[3,1,2]],
-        name => 'by username, default (sticky desc)'
+        result => [@p[2,1,3]],
+        name => 'by username, default (not sticky)'
     );
 }
 
