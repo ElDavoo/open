@@ -1413,9 +1413,9 @@ sub role_for_group {
 }
 
 sub _gwr_for_group {
-    my $self = shift;
+    my $self  = shift;
     my $group = shift;
-    my $gwr = Socialtext::GroupWorkspaceRoleFactory->Get(
+    my $gwr   = Socialtext::GroupWorkspaceRoleFactory->Get(
         group_id     => $group->group_id,
         workspace_id => $self->workspace_id,
     );
