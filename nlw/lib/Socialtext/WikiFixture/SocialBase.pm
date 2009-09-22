@@ -1253,6 +1253,13 @@ sub edit_page {
     diag "Edited page [$page_name]/$workspace";
 }
 
+sub post_signal {
+    my $self = shift;
+    my $content = shift;
+    $self->post_json('/data/signals', encode_json( { signal => $content } ));
+    $self->code_is(201);
+}
+
 =head2 st_deliver_email( )
 
 Imitates sending an email to a workspace
