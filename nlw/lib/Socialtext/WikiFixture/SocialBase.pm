@@ -992,7 +992,7 @@ Clears the server cache for the widgets
 =cut
 
 sub st_clear_json_cache {
-    _run_command("purge-json-proxy-cache",'ignore output');   
+    _run_command("st-purge-json-proxy-cache",'ignore output');
 }
 
 =head2 st-clear-events
