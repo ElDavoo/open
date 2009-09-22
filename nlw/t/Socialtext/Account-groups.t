@@ -3,7 +3,9 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 13;
+use Test::Socialtext tests => 30;
+use Test::Exception;
+use Socialtext::GroupAccountRoleFactory;
 
 ###############################################################################
 # Fixtures: db
@@ -73,4 +75,96 @@ add_group_to_account: {
     is $gar->account_id => $account->account_id, '... with correct account';
     is $gar->group_id   => $group->group_id,     '... with correct group';
     is $gar->role->name => 'member', '... with correct role';
+}
+
+###############################################################################
+# TEST: Add Group to Account with explicit Role.
+add_group_to_account_explicit_role: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group();
+    my $role    = Socialtext::Role->Affiliate();
+
+    my $gar = $account->add_group( group => $group, role => $role );
+
+    isa_ok $gar => 'Socialtext::GroupAccountRole', 'created a GAR...';
+    is $gar->account_id => $account->account_id, '... with correct account';
+    is $gar->group_id   => $group->group_id,     '... with correct group';
+    is $gar->role->name => $role->name,          '... with correct role';
+}
+
+###############################################################################
+# TEST: Adding Group to Account over-writes existing Role; we don't "auto
+# upgrade", we *over-write*
+add_group_to_account_overwrites_existing_role: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group();
+    my $role1   = Socialtext::Role->Member();
+    my $role2   = Socialtext::Role->Affiliate();
+
+    my $gar = $account->add_group( group => $group, role => $role1 );
+    isa_ok $gar => 'Socialtext::GroupAccountRole', 'created a GAR...';
+    is $gar->role->name => $role1->name, '... with correct role';
+
+    $gar = $account->add_group( group => $group, role => $role2 );
+    isa_ok $gar => 'Socialtext::GroupAccountRole', 'created a GAR...';
+    is $gar->role->name => $role2->name, '... with correct role';
+}
+
+###############################################################################
+# TEST: Check if Group has a Role in an Account
+group_has_role_in_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group();
+
+    ok !$account->has_group($group), 'Group does not yet have Role in Account';
+    $account->add_group(group => $group);
+    ok  $account->has_group($group), '... Group has been added to Account';
+}
+
+###############################################################################
+# TEST: What Role does the Group have in the Account
+what_role_does_group_have_in_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group();
+
+    $account->add_group(group => $group);
+    is $account->group_count(), 1, 'Group was added to Account';
+
+    my $default_role = Socialtext::GroupAccountRoleFactory->DefaultRole();
+    my $groups_role  = $account->role_for_group($group);
+    is $groups_role->name, $default_role->name,
+        '... with Default GAR Role';
+}
+
+###############################################################################
+# TEST: Remove Group from Account
+remove_group_from_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group();
+
+    # Account should not (yet) have this Group
+    ok !$account->has_group($group), 'Group does not yet have Role in Account';
+
+    # Add the Group to the Account
+    $account->add_group(group => $group);
+    ok $account->has_group($group), '... Group has been added to Account';
+
+    # Remove the Group from the Account
+    $account->remove_group(group => $group);
+    ok !$account->has_group($group), '... Group has been removed from Account';
+}
+
+###############################################################################
+# TEST: Remove Group from Account, when the Group has *no* Role in the Account
+remove_non_member_group_from_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group();
+
+    # Account should not (yet) have this Group
+    ok !$account->has_group($group), 'Group does not yet have Role in Account';
+
+    # Removing a non-member Group from the Account shouldn't choke.  No
+    # errors, no warnings, no fatal exceptions... its basically a no-op.
+    lives_ok { $account->remove_group(group => $group) }
+        "... removing non-member Group from Account doesn't choke";
 }

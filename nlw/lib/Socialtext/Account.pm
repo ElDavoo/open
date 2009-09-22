@@ -7,6 +7,7 @@ use warnings;
 our $VERSION = '0.01';
 
 use Class::Field 'field';
+use Carp qw(croak);
 use Readonly;
 use Socialtext::Exceptions qw( data_validation_error );
 use Socialtext::Schema;
@@ -205,11 +206,47 @@ sub workspace_count {
 sub add_group {
     my $self  = shift;
     my %opts  = @_;
+    my $group = $opts{group} || croak "can't add_group without a 'group'";
+    my $role  = $opts{role} || Socialtext::GroupAccountRoleFactory->DefaultRole();
 
-    return Socialtext::GroupAccountRoleFactory->Create({
-        group_id   => $opts{group}->group_id,
-        account_id => $self->account_id,
-    });
+    my $gar = $self->_gar_for_group($group);
+    if ($gar) {
+        $gar->update( { role_id => $role->role_id } );
+    }
+    else {
+        $gar = Socialtext::GroupAccountRoleFactory->Create( {
+            group_id   => $group->group_id,
+            account_id => $self->account_id,
+            role_id    => $role->role_id,
+        } );
+    }
+    return $gar;
+}
+
+sub remove_group {
+    my $self  = shift;
+    my %opts  = @_;
+    my $group = $opts{group} || croak "can't remove_group without a 'group'";
+
+    my $gar = $self->_gar_for_group($group);
+    return unless $gar;
+
+    Socialtext::GroupAccountRoleFactory->Delete($gar);
+}
+
+sub has_group {
+    my $self  = shift;
+    my $group = shift;
+    my $gar   = $self->_gar_for_group($group);
+    return $gar ? 1 : 0;
+}
+
+sub role_for_group {
+    my $self  = shift;
+    my $group = shift;
+    my $gar   = $self->_gar_for_group($group);
+    return unless $gar;
+    return $gar->role();
 }
 
 sub groups {
@@ -223,6 +260,16 @@ sub groups {
 sub group_count {
     my $self = shift;
     return $self->groups->count();
+}
+
+sub _gar_for_group {
+    my $self  = shift;
+    my $group = shift;
+    my $gar   = Socialtext::GroupAccountRoleFactory->Get(
+        group_id   => $group->group_id,
+        account_id => $self->account_id,
+    );
+    return $gar;
 }
 
 sub to_hash {
@@ -1177,18 +1224,34 @@ Change the skin for the account and its workspaces.
 Returns a cursor of the workspaces for this account, ordered by
 workspace name.
 
-=item $account->add_group( group => $group )
+=item $account->add_group(group=>$group, role=>$role)
 
-Adds the group C<$group> as an Affiliate of the account.
+Adds the given C<$group> to the Account with the specified C<$role>.  If no
+C<$role> is provided, a default Role will be used instead.
 
-=item $account->group_count()
+=item $account->remove_group(group => $group)
 
-Returns a count of Groups that exist within this Account.
+Removes any Role that the given C<$group> may have in the Account.  If the
+Group has no Role in the Account, this method does nothing.
+
+=item $account->has_group($group)
+
+Checks to see if the given C<$group> has a Role in the Account, returning true
+if it does, false otherwise.
+
+=item $account->role_for_group($group)
+
+Returns the C<Socialtext::Role> object representing the Role that the given
+C<$group> has in this Account.
 
 =item $account->groups()
 
-Returns a cursor of the Groups that exist within this Account, ordered by
-Group name.
+Returns a cursor of C<Socialtext::Group> objects for Groups that have a Role
+in the Account, ordered by Group name.
+
+=item $account->group_count()
+
+Returns the count of Groups that have a Role in the Account.
 
 =item $account->users(PARAMS)
 
