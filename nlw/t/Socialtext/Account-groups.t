@@ -71,5 +71,5 @@ add_group_to_account: {
     isa_ok $gar => 'Socialtext::GroupAccountRole', 'created a GAR...';
     is $gar->account_id => $account->account_id, '... with correct account';
     is $gar->group_id => $group->group_id, '... with correct group';
-    is $gar->role->name => 'affiliate', '... with correct role';
+    is $gar->role->name => 'member', '... with correct role';
 }

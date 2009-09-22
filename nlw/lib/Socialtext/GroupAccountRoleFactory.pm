@@ -121,7 +121,7 @@ sub SetDefaultValues {
 }
 
 sub DefaultRole {
-    Socialtext::Role->Affiliate();
+    Socialtext::Role->Member();
 }
 
 sub DefaultRoleId {

@@ -4,7 +4,8 @@
 use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 94;
+use Socialtext::Role;
+use Test::Socialtext tests => 95;
 use Test::Exception;
 
 ###############################################################################
@@ -87,6 +88,15 @@ create_gar_with_default_role: {
     isa_ok $gar, 'Socialtext::GroupAccountRole', 'created GAR';
     is $gar->role_id, Socialtext::GroupAccountRoleFactory->DefaultRoleId(),
         '... with default role_id';
+}
+
+###############################################################################
+# TEST: Default Role
+create_default_role: {
+    my $role = Socialtext::Role->Member();
+    my $default = Socialtext::GroupAccountRoleFactory->DefaultRole();
+
+    is $role->role_id => $default->role_id, 'Default Role is Member';
 }
 
 ###############################################################################
