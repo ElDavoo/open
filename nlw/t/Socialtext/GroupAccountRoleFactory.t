@@ -3,7 +3,6 @@
 
 use strict;
 use warnings;
-# use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext tests => 94;
 use Test::Exception;
