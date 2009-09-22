@@ -780,6 +780,38 @@ sub deactivate_user {
 sub add_member {
     my $self = shift;
 
+    # Peek ahead at what ARGV options were provided, so we know what type of
+    # membership we need to create.  "_get_options()" is destructive to ARGV,
+    # though, so be sure to preserve+restore it.
+    my $argv = $self->{argv};
+    my %opts = $self->_get_options(
+        'username:s', 'email:s',
+        'group:s',
+    );
+    $self->{argv} = $argv;
+
+    # Depending on what opts/args we were given, attempt to create the right
+    # kind of thing+collection membership.
+    #
+    # NOTE: we're cheating a bit here in the checks, so that we're only
+    #       looking at the "thing" part of the equation (cuz we only have one
+    #       collection target for each thing at this point in time).
+    if ($opts{email} || $opts{username}) {
+        return $self->_add_user_as_member_to_workspace();
+    }
+    elsif ($opts{group}) {
+        return $self->_add_group_as_member_to_account();
+    }
+
+    # Whoa... invalid args.
+    $self->_error(
+        loc(
+            "The command you called ([_1]) is missing required arguments. Please refer to '[_1] --help' for correct usage.", $self->{command})
+    );
+}
+
+sub _add_user_as_member_to_workspace {
+    my $self = shift;
     my $user = $self->_require_user();
     my $ws   = $self->_require_workspace();
 
@@ -801,6 +833,32 @@ sub add_member {
             . ' is now a member of the '
             . $ws->name
             . ' workspace.' );
+}
+
+sub _add_group_as_member_to_account {
+    my $self    = shift;
+    my $group   = $self->_require_group();
+    my $account = $self->_require_account();
+
+    my $role = $account->role_for_group($group);
+
+    if ( $role && $role->name == 'Member' ) {
+        $self->_error(
+            loc("Group ([_1]) is already a member of Account ([_1])",
+                $group->driver_group_name,
+                $account->name
+            )
+        );
+    }
+
+    $account->add_group( group => $group );
+
+    $self->_success(
+        loc("Group ([_1]) has been added to Account ([_1])",
+            $group->driver_group_name,
+            $account->name
+        )
+    );
 }
 
 sub remove_member {
@@ -3101,6 +3159,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   list-groups [--account]
   show-group-config --group
   create-group --ldap-dn [--account]
+  add-member --group --account
 
   OTHER
 
@@ -3613,6 +3672,10 @@ provided as a Group Id).
 Loads a Group from LDAP, as identified by the given C<--ldap-dn> into
 Socialtext, placing it in the specified C<--account>.  If no C<--account> is
 specified, the default system Account will be used.
+
+=head2 add-member --group --account
+
+Given a group and an account, add the Group as a Member of the Account.
 
 =head2 version
 
