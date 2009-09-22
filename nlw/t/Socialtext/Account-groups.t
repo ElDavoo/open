@@ -62,6 +62,7 @@ group_count_is_correct_when_groups_removed: {
 }
 
 ###############################################################################
+# TEST: Add Group to Account with default Role.
 add_group_to_account: {
     my $account = create_test_account_bypassing_factory();
     my $group   = create_test_group();
@@ -70,6 +71,6 @@ add_group_to_account: {
 
     isa_ok $gar => 'Socialtext::GroupAccountRole', 'created a GAR...';
     is $gar->account_id => $account->account_id, '... with correct account';
-    is $gar->group_id => $group->group_id, '... with correct group';
+    is $gar->group_id   => $group->group_id,     '... with correct group';
     is $gar->role->name => 'member', '... with correct role';
 }
