@@ -2,29 +2,41 @@
 
 * Fixture: SocialWidgets
 
-| st-logoutin |  |
-
 | *Comment* | Test Case: Activities Widget Tags and Tagging Setup |  |
 | set | wrkspc | acwidg-tags-ws%%start_time%% |
 | set | taguser | awtuser%%start_time%%@ken.socialtext.next |
 | set | tagusershort | awtuser%%start_time%% |
+| set | pagename | heusser%%start_time%% |
+| set | personaltag | addtagtome %%start_time%% |
+| set | othertag | addmetonewuser %%start_time%% |
+| set | pagetag | add page tag |
+
 | st-admin | create-workspace --name %%wrkspc%% --title %%wrkspc%% |  |
 | st-admin | create-user --email %%taguser%% --password %%password%% |  |
 | st-admin | add-member --email %%username%% --workspace %%wrkspc%% |  |
 | st-admin | add-member --email %%taguser%% --workspace %%wrkspc%% |  |
 
-| *Comment* | Test Case: Activities Widget Tags and Tagging Tag A Page |
-| open_ok | /%%wrkspc%%/ |
+| st-logoutin |  |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Tag A profile |  |
 | st-find-user | %%tagusershort%% |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
-| type_ok | new_tag | addmetonewuser %%start_time%% |
+| type_ok | new_tag | %%othertag%% |
 | click_ok | //input[@value='Add Tag'] |  |
-| wait_for_element_visible_ok | link=addmetonewuser %%start_time%% | 30000 |
-| text_like | link=addmetonewuser %%start_time%% | addmetonewuser %%start_time%% |
+| wait_for_element_visible_ok | link=%%othertag%% | 30000 |
+| text_like | link=%%othertag%% | %%othertag%% |
 
-| *Comment* | Test Case: Activities Widget Tags and Tagging Tag ME |
+| *Comment* | Test Case: Activities Widget Tags and Tagging Tag ME |  |
+| open_ok | /?profile |  |
+| wait_for_element_visible_ok | new_tag | 30000 |
+| type_ok | new_tag | %%personaltag%% |
+| click_ok | //input[@value='Add Tag'] |  |
+| wait_for_element_visible_ok | link=%%personaltag%% | 30000 |
+| text_like | link=%%personaltag%% | %%personaltag%% |
+
+| *Comment* | Test Case: Activities Widget Tags and Tagging Tag A Page |  |
+| st-create-wikipage | %%wrkspc%% | %%pagename%% |
+| st-add-page-tag | /%%wrkspc%%/index.cgi?%%pagename%% | %%pagetag%% |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Clear Cache, catchup logs |
 | st-clear-json-cache |  |
@@ -37,6 +49,10 @@
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Verify Tags in activities widget |
 
-st_verify_text_in_activities_widget | gallery-widget-Activities |
+| st_verify_text_in_activities_widget | activities_widget | %%username%% |
+| st_verify_text_in_activities_widget | activities_widget | tagged %%pagename%% in %%wrkspc%% as %%pagetag%%. |
+| st_verify_text_in_activities_widget | activities_widget | edited %%pagename%% in %%wrkspc%%. |
+| st_verify_text_in_activities_widget | activities_widget | tagged themself %%personaltag%%. |
+| st_verify_text_in_activities_widget | activities_widget | tagged %%tagusershort%% %%othertag%%. |
 
-| *Comment* | Test Case: Activities Widget Tags and Tagging TODO |
+| *Comment* | Test Case: Activities Widget Tags and Tagging |
