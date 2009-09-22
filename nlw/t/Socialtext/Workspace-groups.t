@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 20;
+use Test::Socialtext tests => 22;
 use Test::Exception;
 use Socialtext::GroupWorkspaceRoleFactory;
 
@@ -26,9 +26,11 @@ workspace_with_no_groups: {
     my $workspace = create_test_workspace(user => $user);
 
     my $groups = $workspace->groups();
-
     isa_ok $groups, 'Socialtext::MultiCursor', 'got a list of Groups';
     is $groups->count(), 0, '... with the correct count';
+
+    my $count = $workspace->group_count();
+    is $count, 0, 'Group count is also correct (zero)';
 }
 
 ################################################################################
@@ -52,10 +54,12 @@ workspace_has_groups: {
     } );
 
     my $groups = $workspace->groups();
-
     isa_ok $groups, 'Socialtext::MultiCursor', 'got a list of groups';
     is $groups->count(), 2, '... with the correct count';
     isa_ok $groups->next(), 'Socialtext::Group', '... queried Group';
+
+    my $count = $workspace->group_count();
+    is $count, 2, 'Group count is also correct (the two Groups we added)';
 }
 
 ################################################################################

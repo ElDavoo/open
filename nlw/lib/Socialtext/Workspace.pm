@@ -1420,6 +1420,14 @@ sub groups {
     );
 }
 
+sub group_count {
+    my $self   = shift;
+    my $cursor = Socialtext::GroupWorkspaceRoleFactory->ByWorkspaceId(
+        $self->workspace_id,
+    );
+    return $cursor->count();
+}
+
 sub _gwr_for_group {
     my $self  = shift;
     my $group = shift;
@@ -2778,6 +2786,10 @@ C<$group> has in this Workspace.
 
 Returns a cursor of C<Socialtext::Group> objects for Groups that have a Role
 in the Workspace, ordered by Group name.
+
+=head2 $workspace->group_count()
+
+Returns the count of Groups that have a Role in the Workspace.
 
 =head2 $workspace->to_hash()
 
