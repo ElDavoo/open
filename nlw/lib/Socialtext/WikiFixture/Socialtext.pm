@@ -271,7 +271,11 @@ The page must exist in order to have a tag added.
 sub st_add_page_tag {
    my ($self, $url, $tag) = @_;
    $self->handle_command('open_ok',$url);
+   $self->handle_command('wait_for_element_visible_ok','st-pagetools-email', 30000);
    $self->handle_command('wait_for_element_visible_ok','link=Add Tag',30000);
+   $self->handle_command('wait_for_element_visible_ok','st-edit-button-link-bottom',30000);
+   $self->handle_command('wait_for_element_visible_ok','st-comment-button-link-bottom',30000);
+   $self->handle_command('pause', 3000);
    $self->handle_command('click_ok','link=Add Tag'); 
    $self->handle_command('wait_for_element_visible_ok','st-tags-field',30000);
    $self->handle_command('type_ok', 'st-tags-field', $tag);

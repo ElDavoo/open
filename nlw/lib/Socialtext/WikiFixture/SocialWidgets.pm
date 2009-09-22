@@ -407,9 +407,9 @@ PostCondition: Text is verified (or not), Frame focus is back to entire dashboar
 sub st_verify_text_in_activities_widget {
     my ($self, $widgetname, $linktofind) = @_;
     #eval {
-        $self->handle_command('st-select-widget-frame', 'activities_widget');
+        $self->handle_command('st-select-widget-frame', $widgetname);
         $self->handle_command('wait_for_element_visible_ok', 'action', 10000);
-        $self->handle_command('pause', 10000);
+        $self->handle_command('pause', 2000);
         $self->handle_command('wait_for_text_present_ok', $linktofind);
         $self->handle_command('select-frame', 'relative=parent');
     #}
@@ -455,6 +455,7 @@ sub st_find_user {
     $self->handle_command('click_and_wait',"link=$user_id");
     $self->handle_command('wait-for-element-visible-ok','new_tag',30000);
 }   
+
 
 sub _adjust_location {
     my ($self, %params) = @_;
