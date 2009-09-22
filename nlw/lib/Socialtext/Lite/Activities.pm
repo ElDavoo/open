@@ -67,7 +67,7 @@ sub events {
         else {
             $events = $reporter->get_events(\%event_args);
         }
-        $error = loc("There are no [_1] to display because none have been created any.", $args{section}) unless @$events;
+        $error = loc("There are no [_1] to display because none have been created.", $args{section}) unless @$events;
     }
     else {
         $base_uri = "/m/$args{section}";
