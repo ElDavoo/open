@@ -255,7 +255,7 @@ sub maybe_commit {
         WHERE user_id = ?
     });
     my $assign_sth = $dbh->prepare_cached(q{
-        INSERT INTO "UserWorkspaceRole" (user_id, workspace_id, role_id)
+        INSERT INTO user_workspace_role (user_id, workspace_id, role_id)
         VALUES (?, ?, 3)
     });
 
