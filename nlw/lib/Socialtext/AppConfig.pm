@@ -1180,6 +1180,15 @@ Default: 500
 
 =for code type => SCALAR_TYPE
 
+=head2 search_time_threshold
+
+The maximum number of milliseconds to wait for a search to finish.  This is 
+passed to Solr.
+
+Default: 10000
+
+=for code type => SCALAR_TYPE
+
 =head2 reports_summary_email
 
 Setting this causes the reports summary to be sent to the specified address.

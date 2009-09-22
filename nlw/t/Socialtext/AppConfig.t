@@ -30,7 +30,7 @@ BEGIN {
     delete $ENV{NLW_APPCONFIG};
 }
 
-plan tests => 63;
+plan tests => 65;
 
 my $user = getpwuid($>);
 
@@ -224,6 +224,8 @@ CHECK_ALL_METHODS: {
         unauthorized_returns_forbidden
         web_hostname
         web_services_proxy
+        search_warning_threshold
+        search_time_threshold
     );
 
     for my $method ( @methods ) {
