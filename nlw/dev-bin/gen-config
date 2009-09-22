@@ -164,6 +164,17 @@ sub main {
                     => "$socialtext_conf_d/include-empty.conf",
                 $params, 0,
             ];
+
+            my $template_root = _get_template_root();
+            my $conf_d = "$template_root/apache2/conf.d";
+            for my $include (glob("$conf_d/*.tt2")) {
+                (my $file = $include) =~ s{^$conf_d/(.*)\.tt2$}{$1};
+                push @files, [
+                    "apache2/conf.d/$file.tt2"
+                        => "$dirs{apache2_etc}/conf.d/$file.conf",
+                    $params, 'overwrite',
+                ]
+            }
     }
 
     if ( is_target_for('html') ) {
