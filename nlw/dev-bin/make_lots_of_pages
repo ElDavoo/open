@@ -28,6 +28,7 @@ GetOptions(
 
 die "No such attachment $attachment" if $attachment and !-f $attachment;
 
+my $words = load_words();
 
 my $overall_start = [gettimeofday];
 for ( 1 .. $pages ) {
@@ -36,7 +37,7 @@ for ( 1 .. $pages ) {
     my $start = [gettimeofday];
     $page = Socialtext::Page->new( hub => $hub )->create(
         title   => "Page $_",
-        content => 'First Paragraph',
+        content => _make_content($words, $_),
         creator => Socialtext::User->SystemUser,
         categories => random_tags(),
     );
@@ -63,6 +64,28 @@ sub random_tags {
     return [ map { "tag $_" } 1 .. $num ];
 }
 
+sub load_words {
+    open( my $fh, "/usr/share/dict/words");
+    local $/ = undef;
+    my $content = <$fh>;
+    my @words = split "\n", $content;
+    return \@words;
+}
+
+sub _make_content {
+    my $words = shift;
+    my $offset = shift;
+
+    my $content = '';
+    for (1 .. 1000) {
+        my $word = $offset + $_;
+        if ($word >= @$words) {
+            $word -= @$words;
+        }
+        $content .= $words->[$word] . ' ';
+    }
+    return $content;
+}
 
 sub usage {
     die <<EOT;
