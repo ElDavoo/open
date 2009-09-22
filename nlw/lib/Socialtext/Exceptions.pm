@@ -55,6 +55,13 @@ BEGIN {
             description => 'Too many search results returned.',
         },
 
+        'Socialtext::Exception::SearchTimeout' => {
+            isa         => 'Socialtext::Exception',
+            alias       => 'search_timeout',
+            fields      => [],
+            description => 'Search took too long.',
+        },
+
         'Socialtext::Exception::NoSuchPage' => {
             isa         => 'Socialtext::Exception',
             alias       => 'no_such_page_error',
