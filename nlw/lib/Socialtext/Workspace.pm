@@ -1412,6 +1412,14 @@ sub role_for_group {
     return $gwr->role();
 }
 
+sub groups {
+    my $self   = shift;
+    return Socialtext::GroupWorkspaceRoleFactory->ByWorkspaceId(
+        $self->workspace_id,
+        sub { shift->group },
+    );
+}
+
 sub _gwr_for_group {
     my $self  = shift;
     my $group = shift;
@@ -1422,13 +1430,6 @@ sub _gwr_for_group {
     return $gwr;
 }
 
-sub groups {
-    my $self   = shift;
-    my $groups = Socialtext::GroupWorkspaceRoleFactory->ByWorkspaceId(
-        $self->workspace_id,
-        sub { shift->group },
-    );
-}
 
 {
     Readonly my $spec => {
