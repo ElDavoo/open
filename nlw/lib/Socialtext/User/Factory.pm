@@ -338,6 +338,27 @@ sub ExpireUserRecord {
         # ensure that we're noting who created this User
         $self->_validate_assign_created_by($p) if ($is_create);
 
+        $self->_recreate_display_name($user, $p)
+            if $p->{first_name} or $p->{last_name} or $p->{email_address};
+    }
+
+    sub _recreate_display_name {
+        my $self = shift;
+        my $user = shift;
+        my $p    = shift;
+
+        my $first_name
+            = defined $p->{first_name} ? $p->{first_name} : $user->first_name;
+        my $last_name
+            = defined $p->{last_name} ? $p->{last_name} : $user->last_name;
+        my $email = defined $p->{email_address}
+            ? $p->{email_address} : $user->email_address;
+
+        my $name = join ' ', grep {defined $_} $first_name, $last_name;
+        unless ($name) {
+            ($name = $email) =~ s/@.+//;
+        }
+        $p->{display_name} = $name;
     }
 
     sub _validate_assign_user_id {

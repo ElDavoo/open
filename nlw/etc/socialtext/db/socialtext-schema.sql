@@ -741,7 +741,8 @@ CREATE TABLE users (
     last_name text DEFAULT '' NOT NULL,
     cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
     last_profile_update timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
-    is_profile_hidden boolean DEFAULT false NOT NULL
+    is_profile_hidden boolean DEFAULT false NOT NULL,
+    display_name text NOT NULL
 );
 
 CREATE SEQUENCE users___user_id
@@ -1800,4 +1801,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '86');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '87');

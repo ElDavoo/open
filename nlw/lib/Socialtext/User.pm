@@ -34,7 +34,7 @@ field 'homunculus';
 field 'metadata';
 
 my @user_store_interface =
-    qw( username email_address password first_name last_name );
+    qw( username email_address password first_name last_name display_name );
 my @user_metadata_interface =
     qw( creation_datetime last_login_datetime email_address_at_import
         created_by_user_id is_business_admin is_technical_admin
@@ -298,6 +298,7 @@ _delegate password => (to => 'homunculus');
 _delegate email_address => (to => 'homunculus');
 _delegate first_name => (to => 'homunculus', utf8ify => 1);
 _delegate last_name => (to => 'homunculus', utf8ify => 1);
+_delegate display_name => (to => 'homunculus', utf8ify => 1);
 _delegate password_is_correct => (to => 'homunculus');
 _delegate has_valid_password => (to => 'homunculus');
 _delegate driver_name => (to => 'homunculus');

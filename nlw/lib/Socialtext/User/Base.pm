@@ -17,6 +17,7 @@ Readonly our @fields => qw(
     first_name
     last_name
     password
+    display_name
 );
 Readonly our @other_fields => qw(
     driver_key
