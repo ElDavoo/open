@@ -23,6 +23,7 @@ my %TEST_USER = (
     last_name       => 'Last',
     password        => $password,
     driver_name     => 'Default',
+    display_name    => 'First Last',
 );
 
 ###############################################################################
@@ -96,7 +97,8 @@ to_hash: {
     isa_ok $user, 'Socialtext::User::Default';
 
     my $hashref = $user->to_hash();
-    my @fields  = qw(user_id username email_address first_name last_name password);
+    my @fields = qw(user_id username email_address first_name last_name 
+                    password display_name);
     my %expected = map { $_=>$TEST_USER{$_} } @fields;
     is_deeply $hashref, \%expected, 'converted user to hash, with right structure';
 }
