@@ -46,8 +46,8 @@ fi
 # Create the basic dev-env
 rm -rf $HOME/.nlw/
 PLUGINS=${PLUGINS:-widgets agile csskit dashboard people signals socialcalc apache socialpoint}
-dev-bin/link-plugins $PLUGINS
 st-make-all @clean all
+dev-bin/link-plugins $PLUGINS
 rm -f etc/socialtext/db/cache.*.sql
 set +e
 dev-bin/link-console

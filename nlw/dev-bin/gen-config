@@ -137,32 +137,44 @@ sub main {
     # ]
     if ( is_target_for( 'apache', 'apache2' ) ) {
         my $params = apache2_params( \%dirs );
+        my $socialtext_conf_d = "$dirs{apache2_etc}/socialtext-conf.d";
         push @files,
             [
-            'apache2/base.tt2' => "$dirs{apache2_etc}/${app_prefix}apache2.conf",
-            $params,
-            'overwrite',
+                'apache2/base.tt2'
+                    => "$dirs{apache2_etc}/${app_prefix}apache2.conf",
+                $params, 'overwrite',
             ],
             [
-            'apache2/nlw.tt2' => "$dirs{apache2_etc}/auto-generated.d/nlw.conf",
-            $params,
-            'overwrite',
+                'apache2/nlw.tt2'
+                    => "$dirs{apache2_etc}/auto-generated.d/nlw.conf",
+                $params, 'overwrite',
             ],
             [
-            'apache2/rewrite-lite-useragent' => "$dirs{apache2_etc}/socialtext-conf.d/rewrite-lite-useragent",
-            $params,
-            'overwrite',
+                'apache2/rewrite-lite-useragent'
+                    => "$socialtext_conf_d/rewrite-lite-useragent",
+                $params, 'overwrite',
             ],
             [
-            'apache2/empty.conf' => "$dirs{apache2_etc}/conf.d/socialtext-empty.conf",
-            $params,
-            0,
+                'apache2/empty.conf'
+                    => "$dirs{apache2_etc}/conf.d/socialtext-empty.conf",
+                $params, 0,
             ],
             [
-            'apache2/empty.conf' => "$dirs{apache2_etc}/socialtext-conf.d/include-empty.conf",
-            $params,
-            0,
+                'apache2/empty.conf'
+                    => "$socialtext_conf_d/include-empty.conf",
+                $params, 0,
             ];
+
+            my $template_root = _get_template_root();
+            my $conf_d = "$template_root/apache2/conf.d";
+            for my $include (glob("$conf_d/*.tt2")) {
+                (my $file = $include) =~ s{^$conf_d/(.*)\.tt2$}{$1};
+                push @files, [
+                    "apache2/conf.d/$file.tt2"
+                        => "$dirs{apache2_etc}/conf.d/$file.conf",
+                    $params, 'overwrite',
+                ]
+            }
     }
 
     if ( is_target_for('html') ) {
@@ -550,8 +562,9 @@ sub _frontend_ports {
 
 sub _backend_ports {
     return {
-        http    => Socialtext::HTTP::Ports->backend_http_port(),
-        https   => Socialtext::HTTP::Ports->backend_https_port(),
+        http       => Socialtext::HTTP::Ports->backend_http_port(),
+        https      => Socialtext::HTTP::Ports->backend_https_port(),
+        json_proxy => Socialtext::HTTP::Ports->json_proxy_port(),
     };
 }
 
