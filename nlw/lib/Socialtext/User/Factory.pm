@@ -347,12 +347,12 @@ sub ExpireUserRecord {
         my $user = shift;
         my $p    = shift;
 
-        my $first_name
-            = defined $p->{first_name} ? $p->{first_name} : $user->first_name;
-        my $last_name
-            = defined $p->{last_name} ? $p->{last_name} : $user->last_name;
-        my $email = defined $p->{email_address}
-            ? $p->{email_address} : $user->email_address;
+        my $first_name = defined $p->{first_name} ? $p->{first_name} 
+                            : $user ? $user->first_name : undef;
+        my $last_name  = defined $p->{last_name} ? $p->{last_name} 
+                            : $user ? $user->last_name : undef;
+        my $email = defined $p->{email_address} ? $p->{email_address} 
+                            : $user ? $user->email_address : undef;
 
         my $name = join ' ', grep {defined $_} $first_name, $last_name;
         unless ($name) {
