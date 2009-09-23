@@ -32,7 +32,6 @@
 | include | [Test Case: Activities Widget Verify Others Signals] |  |
 | include | [Test Case: Activities Widget Conversations] |  |
 | include | [Test Case: Activities Widget Tags and Tagging] |  |
-| include | [Test Case: Activities Widget Follows and Following] |  |
 
 | *Comment* | Test Case: Activities Widget Teardown |  |
 | open_ok | /?dashboard |  |

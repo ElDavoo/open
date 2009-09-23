@@ -284,6 +284,46 @@ sub st_add_page_tag {
    $self->handle_command('wait_for_element_visible_ok','link='.$tag, 30000);
 }
 
+
+=head2 st_comment_on_page ($workspace, $page, $comment)
+
+Opens up a specific page, clicks the comment button and leaves your note.
+
+=cut
+
+sub st_comment_on_page {
+    my ($self, $workspace, $page, $comment) = @_;
+    $self->handle_command('open_ok', '/' . $workspace . '/?' . $page);  
+    $self->handle_command('wait_for_element_visible_ok','st-comment-button-link-bottom', 30000);
+    $self->handle_command('click_ok','st-comment-button-link-bottom');     
+    $self->handle_command('wait_for_element_visible_ok','comment',30000);
+    $self->handle_command('type_ok', 'comment', $comment);
+    $self->handle_command('wait_for_element_visible_ok','link=Save',30000);
+    $self->handle_command('click_ok','link=Save');
+    $self->handle_command('wait_for_element_visible_ok','st-comment-button-link-bottom', 30000);
+}
+
+=head2 st_edit_page ($workspace, $page, $edit)
+
+Opens up a specific page for edit and types the code you suggest
+
+=cut
+
+sub st_edit_page {
+  my ($self, $workspace, $page, $text) = @_;
+  $self->handle_command('open_ok',  '/' . $workspace . '/?' . $page); 
+  $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000);  
+  $self->handle_command('click_ok','st-edit-button-link');
+  $self->handle_command('wait_for_element_visible_ok', 'link=Wiki Text',  30000);
+  $self->handle_command('click_ok','link=Wiki Text');
+  $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea',30000);
+  $self->handle_command('type_ok','wikiwyg_wikitext_textarea', $text);
+  $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
+  $self->handle_command('click_and_wait','st-save-button-link');
+   $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000); 
+}
+
+
 =head2 st_email_page ($self, $url, $email_address) 
 
 Emails a page

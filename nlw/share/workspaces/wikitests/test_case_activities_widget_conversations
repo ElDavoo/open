@@ -1,7 +1,49 @@
 | *Comment* | Test Case: Activities Widget Conversations |  |
 
-| *Comment* | Test Case: Activities Widget Conversations - Main User creates a page |  |
+* Fixture: SocialWidgets
 
-| *Comment* | Test Case: Activities Widget Conversations - Other User edits the page |  |
+| *Comment* | Test Case: Activities Widget Conversations SETUP |  |
+| set | wrkspc | act-conv-ws%%start_time%% |
+| set | convuser | convusershort%%start_time%%@ken.socialtext.net |
+| set | convusershort | convusershort%%start_time%% |
+| set | isolateduser | isolateduser%%start_time@ken.socialtext.net |
+| set | mypagename | mypage%%start_time%% |
+| set | mycommentedpagename | otherpage%%start_time%% |
+| set | commentpagename | commentpage-wid%%start_time%% |
+| set | watchedpagename | watchedpage-wid%%start_time%% |
+
+| st-admin | create-workspace --name %%wrkspc%% --title %%wrkspc%% |  |
+| st-admin | create-user --email %%convuser%% --password %%password%% |  |
+| st-admin | create-user --email %%isolateduser%% --password %%password%% |  |
+| st-admin | add-member --email %%username%% --workspace %%wrkspc%% |  |
+| st-admin | add-member --email %%convuser%% --workspace %%wrkspc%% |  |
+| st-admin | create-user --email %%isolateduser%% --password %%password%% |  |
+| st-admin | update-page --email %%isolateduser%% --workspace %%wrkspc%% --page %%mycommentedpagename%% < %%wikitest_client_files%%wikitest.txt | has been created |
+| st-admin | update-page --email %%isolateduser%% --workspace %%wrkspc%% --page %%watchedpagename%% < %%wikitest_client_files%%wikitest.txt | has been created |
+
+| *Comment* | Test Case: Activities Widget Conversations - Main User creates a page, comments on a page, watches a page |  |  |
+| st-logoutin | %%username%% | %%password%% |  |
+| st-create-wikipage | %%wrkspc%% | %%mypagename%% |  |
+| st-comment-on-page | %%wrkspc%% | %%mycommentedpagename%% | Leaving a comment |
+| open_ok | %%wrkspc%%/?%%watchedpagename%% |  |  |
+| wait_for_element_present_ok | st-watchlist-indicator | 30000 |  |
+| st-watch-page | 1 |  |
+
+| *Comment* | Test Case: Activities Widget Conversations - Other User edits the page |  |  |
+| st-logoutin | %%convuser%% | %%password%% |  |
+| st-edit-page | %%wrkspc%% | %%mypagename%% | this is an edit |
+| st-edit-page | %%wrkspc%% | %%mycommentedpagename%% | this is another comment |
+| st-comment-on-page | %%wrkspc%% | %%watchedpagename%% | Comment from a different user |
+
+| st-logoutin | %%username%% | %%password%% | st-clear-json-cache |  |
+
+| *Comment* | Test Case: Activities Widget Conversations - Load Activity Widget |  |
+| open_ok | /?dashboard |  |
+| st-single-widget-in-dashboard | gallery-widget-Activities |  |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+
+| *Comment* | Test Case: Activities Widget Conversations TODO Verify Edits and Comments |  |
+| *Comment* | Test Case: Activities Widget Conversations TODO Limit to my convos and verify Edits, Comments, and NOT PRESENTs |  |
 
 | *Comment* | Test Case: Activities Widget Verify Conversation |  |
