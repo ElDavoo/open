@@ -29,8 +29,8 @@ add_group_to_account: {
     my $output = combined_from( sub {
         Socialtext::CLI->new(
             argv => [
-                    '--group' => $group->group_id(),
-                    '--account' => $account->name(),
+                    '--group'   => $group->group_id,
+                    '--account' => $account->name,
                 ],
         )->add_member();
     } );
@@ -60,9 +60,9 @@ group_already_exists: {
     my $output = combined_from( sub {
         Socialtext::CLI->new(
             argv => [
-                    '--group' => $group->group_id(),
-                    '--account' => $account->name(),
-                ],
+                    '--group'   => $group->group_id,
+                    '--account' => $account->name,
+            ],
         )->add_member();
     } );
     like $output, qr/Group \(.+\) is already a member of Account \(.+\)/,
