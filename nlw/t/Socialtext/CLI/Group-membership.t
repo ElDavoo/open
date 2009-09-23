@@ -68,3 +68,44 @@ group_already_exists: {
     like $output, qr/Group \(.+\) is already a member of Account \(.+\)/,
         '... with correct message';
 }
+
+################################################################################
+# TEST: remove Group from Account
+remove_group_from_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group( account => $account );
+
+    ok 1, 'Remove Group from Account';
+    my $output = combined_from( sub {
+        Socialtext::CLI->new(
+            argv => [
+                '--group'   => $group->group_id,
+                '--account' => $account->name,
+            ],
+        )->remove_member();
+    } );
+
+    like $output, qr/Group \(.+\) has been removed from Account \(.+\)/,
+        '... with correct message';
+    is $account->has_group( $group ) => 0, '... group is no longer in account';
+}
+
+################################################################################
+# TEST: remove Group from Account, Group is not in Account
+group_is_not_in_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group();
+
+    ok 1, 'Remove Group that is not in Account';
+    my $output = combined_from( sub {
+        Socialtext::CLI->new(
+            argv => [
+                '--group'   => $group->group_id,
+                '--account' => $account->name,
+            ],
+        )->remove_member();
+    } );
+
+    like $output, qr/Group \(.+\) is not a member of Account \(.+\)/,
+        '... with correct message';
+}

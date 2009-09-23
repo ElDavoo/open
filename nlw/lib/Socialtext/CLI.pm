@@ -780,6 +780,24 @@ sub deactivate_user {
 sub add_member {
     my $self = shift;
 
+    my $operation_on = $self->_is_user_or_group_operation();
+
+    # Depending on what opts/args we were given, attempt to create the right
+    # kind of thing+collection membership.
+    #
+    # NOTE: we're cheating a bit here in the checks, so that we're only
+    #       looking at the "thing" part of the equation (cuz we only have one
+    #       collection target for each thing at this point in time).
+    if ($operation_on eq 'user') {
+        return $self->_add_user_as_member_to_workspace();
+    }
+
+    return $self->_add_group_as_member_to_account();
+}
+
+sub _is_user_or_group_operation {
+    my $self = shift;
+
     # Peek ahead at what ARGV options were provided, so we know what type of
     # membership we need to create.  "_get_options()" is destructive to ARGV,
     # though, so be sure to preserve+restore it.
@@ -790,24 +808,14 @@ sub add_member {
     );
     $self->{argv} = $argv;
 
-    # Depending on what opts/args we were given, attempt to create the right
-    # kind of thing+collection membership.
-    #
-    # NOTE: we're cheating a bit here in the checks, so that we're only
-    #       looking at the "thing" part of the equation (cuz we only have one
-    #       collection target for each thing at this point in time).
-    if ($opts{email} || $opts{username}) {
-        return $self->_add_user_as_member_to_workspace();
-    }
-    elsif ($opts{group}) {
-        return $self->_add_group_as_member_to_account();
+    unless ( $opts{group} || $opts{username} || $opts{email} ) {
+        $self->_error(
+            loc(
+                "The command you called ([_1]) requires a --user or a --group parameter. Refer to '[_1] --help' for correct usage.", $self->{command})
+        );
     }
 
-    # Whoa... invalid args.
-    $self->_error(
-        loc(
-            "The command you called ([_1]) is missing required arguments. Please refer to '[_1] --help' for correct usage.", $self->{command})
-    );
+    return ( $opts{group} ) ? 'group' : 'user';
 }
 
 sub _add_user_as_member_to_workspace {
@@ -864,6 +872,19 @@ sub _add_group_as_member_to_account {
 sub remove_member {
     my $self = shift;
 
+    my $operate_on = $self->_is_user_or_group_operation();
+
+    # Again, we're cheating a little bit here because we only have
+    # one operation for each "thing".
+    if ( $operate_on eq 'user' ) {
+        return $self->_remove_user_from_workspace();
+    }
+
+    return $self->_remove_group_from_account();
+}
+
+sub _remove_user_from_workspace {
+    my $self = shift;
     my $user = $self->_require_user();
     my $ws   = $self->_require_workspace();
 
@@ -881,6 +902,30 @@ sub remove_member {
             . $ws->name
             . ' workspace.' );
 
+}
+
+sub _remove_group_from_account {
+    my $self = shift;
+    my $group = $self->_require_group();
+    my $account = $self->_require_account();
+
+    unless ( $account->has_group($group) ) {
+        $self->_error(
+            loc("Group ([_1]) is not a member of Account ([_2])",
+                $group->driver_group_name,
+                $account->name,
+            )
+        );
+    }
+
+    $account->remove_group( group => $group );
+
+    $self->_success(
+        loc("Group ([_1]) has been removed from Account ([_2])",
+            $group->driver_group_name,
+            $account->name,
+        )
+    );
 }
 
 sub _make_role_toggler {
@@ -3160,6 +3205,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   show-group-config --group
   create-group --ldap-dn [--account]
   add-member --group --account
+  remove-member --group --account
 
   OTHER
 
@@ -3676,6 +3722,10 @@ specified, the default system Account will be used.
 =head2 add-member --group --account
 
 Given a group and an account, add the Group as a Member of the Account.
+
+=head2 remove-member --group --account
+
+Given a group and an account, remove the Group from the Account, if it exists.
 
 =head2 version
 
