@@ -229,10 +229,10 @@ sub maybe_commit {
     my $user_sth = $dbh->prepare_cached(qq{
         INSERT INTO users (
             user_id, driver_unique_id, driver_key, driver_username,
-            email_address, password, first_name, last_name
+            email_address, password, first_name, last_name, display_name
         ) VALUES (
             nextval('users___user_id'), currval('users___user_id'), ?, ?,
-            ?, ?, ?, ?
+            ?, ?, ?, ?, ?
         )
     });
 
@@ -248,7 +248,8 @@ sub maybe_commit {
     for (my $user=1; $user<=$USERS; $user++) {
         my $uname = "user-$user-$base\@ken.socialtext.net";
         # salted hash for 'password' as password 
-        $user_sth->execute('Default', $uname, $uname, "sa3tHJ3/KuYvI", "First$user", "Last$user"); 
+        $user_sth->execute('Default', $uname, $uname, "sa3tHJ3/KuYvI",
+            "First$user", "Last$user", "First$user Last$user");
 
         # choose a random primary account id
         my $priacctid = $accounts[rand(@accounts)];
