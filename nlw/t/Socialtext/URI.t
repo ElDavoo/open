@@ -15,6 +15,12 @@ my $appconfig   = Socialtext::AppConfig->new(file => $config_file);
 # Figure out what the hostname is we should expect in the results
 my $hostname = $appconfig->web_hostname();
 
+use Memoize qw(unmemoize);
+unmemoize 'Socialtext::URI::_scheme';
+unmemoize 'Socialtext::URI::_scheme_host_port';
+unmemoize 'Socialtext::HTTP::Ports::http_port';
+unmemoize 'Socialtext::HTTP::Ports::https_port';
+
 ###############################################################################
 # TEST: URI generation with explicit path
 uri_with_path: {
