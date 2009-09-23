@@ -15,6 +15,15 @@ fixtures(qw( base_config ));
 # SANITY CHECK: ST::AppConfig thinks we're in a dev-env (the default)
 ok !Socialtext::AppConfig->is_appliance(), 'sanity check; running in a dev-env, not an appliance';
 
+{
+    package Socialtext::HTTP::Ports;
+    Memoize::unmemoize $_ for qw(
+        http_port https_port
+        backend_http_port backend_https_port
+        json_proxy_port
+    );
+}
+
 ###############################################################################
 # TEST: default dev-env back-end HTTP port
 default_devenv_backend_http_port: {
