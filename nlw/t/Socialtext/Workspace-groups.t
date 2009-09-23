@@ -71,10 +71,7 @@ add_group_to_workspace_with_default_role: {
 
     # Add the Group to the Workspace
     $workspace->add_group(group => $group);
-
-    # Make sure the Group got added properly
-    my $groups = $workspace->groups();
-    is $groups->count(), 1, 'Group was added to Workspace';
+    is $workspace->group_count(), 1, 'Group was added to Workspace';
 
     # Make sure Group was given the default Role
     my $default_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
@@ -93,10 +90,7 @@ add_group_to_workspace_with_role: {
 
     # Add the Group to the Workspace
     $workspace->add_group(group => $group, role => $role);
-
-    # Make sure the Group got added properly
-    my $groups = $workspace->groups();
-    is $groups->count(), 1, 'Group was added to Workspace';
+    is $workspace->group_count(), 1, 'Group was added to Workspace';
 
     # Make sure Group has the correct Role
     my $groups_role  = $workspace->role_for_group($group);
