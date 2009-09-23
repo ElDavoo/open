@@ -844,7 +844,7 @@ sub _add_group_as_member_to_account {
 
     if ( $role && $role->name == 'Member' ) {
         $self->_error(
-            loc("Group ([_1]) is already a member of Account ([_1])",
+            loc("Group ([_1]) is already a member of Account ([_2])",
                 $group->driver_group_name,
                 $account->name
             )
@@ -854,7 +854,7 @@ sub _add_group_as_member_to_account {
     $account->add_group( group => $group );
 
     $self->_success(
-        loc("Group ([_1]) has been added to Account ([_1])",
+        loc("Group ([_1]) has been added to Account ([_2])",
             $group->driver_group_name,
             $account->name
         )
