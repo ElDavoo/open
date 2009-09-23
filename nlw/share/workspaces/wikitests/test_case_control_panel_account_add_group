@@ -6,6 +6,10 @@
 | create-group   | %%group%%             |                       |
 | create-account | %%account%%           |                       |
 
+| *Comment*   | Find add group link in account detail page |                         |
+| open-ok     | /nlw/control/account/%%account_id%%        |                         |
+| verify-text | //body                                     | Invite Group to Account |
+
 | *Comment*   | Visual inspection of add to account page      |                                     |
 | open-ok     | /nlw/control/account/%%account_id%%/add_group |                                     |
 | verify-text | //h1                                          | Add Group to Account                |
@@ -28,3 +32,4 @@
 | verify-text    | //h1                                          | %%account%% account                                  |
 | verify-text    | css=span.error                                | Group is already a member of the %%account%% Account |
 | verify-text    | //h2[4]                                       | Groups (1)                                          |
+
