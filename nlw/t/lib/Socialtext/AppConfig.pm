@@ -41,4 +41,6 @@ sub instance { Socialtext::AppConfig->new }
 
 sub _startup_user_is_human_user { 0 }
 
+sub web_services_proxy { '' }
+
 1;
