@@ -39,6 +39,8 @@ sub events {
 
     my %event_args = (
         ($args{event_class} ? (event_class => $args{event_class}) : ()),
+        ($args{action} ? (action => $args{action}) : ()),
+        ($args{signals} ? (signals => $args{signals}) : ()),
         offset => $pagenum * $page_size,
         count => $page_size + 1,
         with_my_signals => 1,
