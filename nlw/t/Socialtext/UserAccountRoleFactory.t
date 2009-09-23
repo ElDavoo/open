@@ -346,13 +346,13 @@ by_user_id: {
     isa_ok $q_account_one, 'Socialtext::UserAccountRole', 'Got account';
     is $q_account_one->account_id, $default->account_id, '... with default account_id';
 
-    my $q_account_one = $accounts->next();
-    isa_ok $q_account_one, 'Socialtext::UserAccountRole', 'Got account';
-    is $q_account_one->account_id, $account_one->account_id, '... with right account_id';
-
     my $q_account_two = $accounts->next();
     isa_ok $q_account_two, 'Socialtext::UserAccountRole', 'Got account';
-    is $q_account_two->account_id, $account_two->account_id, '... with right account_id';
+    is $q_account_two->account_id, $account_one->account_id, '... with right account_id';
+
+    my $q_account_three = $accounts->next();
+    isa_ok $q_account_three, 'Socialtext::UserAccountRole', 'Got account';
+    is $q_account_three->account_id, $account_two->account_id, '... with right account_id';
 }
 
 ################################################################################
@@ -389,14 +389,14 @@ by_user_id_with_closure: {
     is $q_account_one->name, $default->name, 
         '... with right name';
 
-    my $q_account_one = $accounts->next();
-    isa_ok $q_account_one, 'Socialtext::Account', 'Got account';
-    is $q_account_one->name, $account_one->name, 
-        '... with right name';
-
     my $q_account_two = $accounts->next();
     isa_ok $q_account_two, 'Socialtext::Account', 'Got account';
-    is $q_account_two->name, $account_two->name, 
+    is $q_account_two->name, $account_one->name, 
+        '... with right name';
+
+    my $q_account_three = $accounts->next();
+    isa_ok $q_account_three, 'Socialtext::Account', 'Got account';
+    is $q_account_three->name, $account_two->name, 
         '... with right name';
 }
 
