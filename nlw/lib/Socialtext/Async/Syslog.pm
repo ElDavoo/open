@@ -12,12 +12,11 @@ Socialtext::Async::Syslog - asynchronous syslog messages
     use Socialtext::Log;
     use Socialtext::Async::Syslog;
 
-    st_log(...); # no longer blocks!
+    st_log(...); # runs async
 
 =head1 DESCRIPTION
 
-Unblocks Sys::Syslog by using L<Coro::AIO>.  Uses a queue to maintain
-per-process message ordering.
+Unblocks Log::Dispatch as used by Socialtext.
 
 =cut
 
@@ -32,12 +31,13 @@ use Fcntl;
 use Log::Dispatch::Syslog ();
 use Log::Dispatch::File::Socialtext ();
 
+no warnings 'redefine';
+
 unless ($] eq '5.008007' || $Sys::Syslog::VERSION eq '0.09') {
     warn "CAUTION: ".__PACKAGE__." may not work with your version of perl!\n";
     warn "CAUTION: Please inspect how Sys::Syslog works to see if it's changed.\n";
 }
 
-no warnings 'redefine';
 *Sys::Syslog::_syslog_send_socket = \&send_to_syslog_aio;
 *Sys::Syslog::_syslog_send_stream = \&send_to_syslog_aio;
 
@@ -49,10 +49,7 @@ sub send_to_syslog_aio {
 
 
 my $orig_log_message = \&Log::Dispatch::Syslog::log_message;
-{
-    no warnings 'redefine';
-    *Log::Dispatch::Syslog::log_message = \&unblocked_syslog_message;
-}
+*Log::Dispatch::Syslog::log_message = \&unblocked_syslog_message;
 
 {
     my $mutex = Coro::Semaphore->new;
@@ -66,11 +63,8 @@ my $orig_log_message = \&Log::Dispatch::Syslog::log_message;
     }
 }
 
-{
-    no warnings 'redefine';
-    *Log::Dispatch::File::Socialtext::_open_file = \&dont_open_file;
-    *Log::Dispatch::File::Socialtext::log_message = \&aio_write_to_file;
-}
+*Log::Dispatch::File::Socialtext::_open_file = \&dont_open_file;
+*Log::Dispatch::File::Socialtext::log_message = \&aio_write_to_file;
 
 sub dont_open_file {
     my $self = shift;
