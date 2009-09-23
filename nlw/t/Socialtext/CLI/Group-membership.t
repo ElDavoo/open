@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Socialtext::GroupAccountRoleFactory;
-use Test::Socialtext qw(no_plan);
+use Test::Socialtext tests => 28;
 use Test::Output qw(combined_from);
 
 # Only need a DB.
@@ -108,4 +108,97 @@ group_is_not_in_account: {
 
     like $output, qr/Group \(.+\) is not a member of Account \(.+\)/,
         '... with correct message';
+}
+
+################################################################################
+# TEST: Group members are listed in Account membership list
+group_users_in_account_membership: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group( account => $account );
+    my $user    = create_test_user();
+    my $email   = $user->email_address;
+
+    $group->add_user( user => $user );
+    ok $group->has_user( $user ), 'User is in Group';
+
+    $account->add_group( group => $group );
+    ok $account->has_group( $group ), 'Group is in Account';
+
+    my $output = combined_from( sub {
+        Socialtext::CLI->new(
+            argv => [
+                '--account' => $account->name,
+            ],
+        )->show_members();
+    } );
+
+    like $output, qr/\Q$email\E/, 'Account lists group user';
+}
+
+################################################################################
+# TEST: Account users in Groups are de-duped
+group_users_in_account_membership_de_duped: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group( account => $account );
+    my $user    = create_test_user( account => $account );
+    my $email   = $user->email_address;
+
+    $group->add_user( user => $user );
+    ok $group->has_user( $user ), 'User is in Group';
+
+    $account->add_group( group => $group );
+    ok $account->has_group( $group ), 'Group is in Account';
+
+    my $output = combined_from( sub {
+        Socialtext::CLI->new(
+            argv => [
+                '--account' => $account->name,
+            ],
+        )->show_members();
+    } );
+
+    my @lines = grep { /\Q$email\E/ } split(/\n/, $output);
+    is scalar(@lines), 1, 'Users are de-duped';
+}
+
+################################################################################
+# TEST: Account users in Groups are not displayed
+group_users_in_account_membership_no_displayed: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group( account => $account );
+
+    my $user1  = create_test_user();
+    my $email1 = $user1->email_address;
+    $group->add_user( user => $user1 );
+    ok $group->has_user( $user1 ), 'User is in Group';
+
+    $account->add_group( group => $group );
+    ok $account->has_group( $group ), 'Group is in Account';
+
+    # create another user with a _direct_ account membership
+    my $user2 = create_test_user( account => $account );
+    my $email2 = $user2->email_address;
+
+    ok 1, 'All Account Users';
+    my $output = combined_from( sub {
+        Socialtext::CLI->new(
+            argv => [
+                '--account' => $account->name,
+            ],
+        )->show_members();
+    } );
+    like $output, qr/\Q$email1\E/, '... lists group user';
+    like $output, qr/\Q$email2\E/, '... lists direct user';
+
+    ok 1, 'Direct Account Users';
+    $output = combined_from( sub {
+        Socialtext::CLI->new(
+            argv => [
+                '--account' => $account->name,
+                '--direct',
+            ],
+        )->show_members();
+    } );
+    unlike $output, qr/\Q$email1\E/, '... does not list group user';
+    like $output, qr/\Q$email2\E/, '... lists direct user';
 }

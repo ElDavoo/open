@@ -1749,12 +1749,16 @@ sub show_members {
 
 sub _show_account_members {
     my $self = shift;
+    my %opts = $self->_get_options('direct');
+
     my $account = $self->_require_account();
 
     my $msg = "Members of the " . $account->name . " account\n\n";
     $msg .= "| Email Address | First | Last |\n";
 
-    my $user_cursor =  $account->users;
+    my $user_cursor =  $account->users(
+        primary_only => ( $opts{direct} ) ? 1 : 0,
+    );
 
     while (my $user = $user_cursor->next) {
         $msg .= '| ' . join(' | ', $user->email_address, $user->first_name, $user->last_name) . " |\n";
@@ -3382,6 +3386,9 @@ output.
 =head2 show-members [--workspace or --account]
 
 Prints a table of the workspace/account's members to standard output.
+
+When using the --account param, you may also pass --direct, which will cause
+show-wembers to only display members whose primary account is the account.
 
 =head2 show-admins --workspace
 
