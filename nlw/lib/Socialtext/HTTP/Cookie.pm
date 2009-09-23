@@ -38,9 +38,30 @@ sub cookie_name {
 }
 
 ###############################################################################
+our $MAC_secret; # prevent constantly loading socialtext.conf
 sub MAC_for_user_id {
     my ($class, $user_id) = @_;
-    return sha1_base64( $user_id, Socialtext::AppConfig->MAC_secret );
+    $MAC_secret ||= Socialtext::AppConfig->MAC_secret;
+    return sha1_base64( $user_id, $MAC_secret );
+}
+
+sub GetValidatedUserId {
+    my $class = shift;
+    my $name = USER_DATA_COOKIE();
+    my %user_data = get_value($name);
+    return $user_data{user_id}
+        if $user_data{user_id} and $user_data{MAC}
+            and $user_data{MAC} eq $class->MAC_for_user_id($user_data{user_id});
+    return 0;
+}
+
+sub get_value {
+    my $name = shift;
+    my $cookies = CGI::Cookie->raw_fetch;
+    my $value = $cookies->{$name} || '';
+    my @user_data = split(/[&;]/, $value);
+    push @user_data, undef if (@user_data % 2 == 1);
+    return @user_data;
 }
 
 1;

@@ -77,7 +77,7 @@ sub _handle_command {
     die "Unknown command for the fixture: ($command)\n";
 }
 
-=head2 set_nlw_cookie ( $username )
+=head2 set_nlw_cookie_for_user ( $username )
 
 Set the NLW cookie to a valid cookie for $username
 
@@ -89,8 +89,25 @@ sub set_nlw_cookie_for_user {
     require Socialtext::HTTP::Cookie;
     my $user_id = $user->user_id;
     my $mac = Socialtext::HTTP::Cookie->MAC_for_user_id($user_id);
+    $self->set_nlw_cookie($user_id, $mac);
+}
+
+=head2 set_nlw_cookie ( $user_id, $mac )
+
+Set the NLW cookie to a valid cookie for $username
+
+=cut
+sub set_nlw_cookie {
+    my ($self, $user_id, $mac) = @_;
     $self->{_cookie} = "NLW-user=user_id&$user_id&MAC&$mac";
 }
+
+=head2 clear_nlw_cookie ()
+
+Clear the NLW cookie
+
+=cut
+sub clear_nlw_cookie { $_[0]->{_cookie} = "" }
 
 =head2 http_user_pass ( $username, $password )
 
@@ -975,7 +992,7 @@ Clears the server cache for the widgets
 =cut
 
 sub st_clear_json_cache {
-    _run_command("purge-json-proxy-cache",'ignore output');   
+    _run_command("st-purge-json-proxy-cache",'ignore output');
 }
 
 =head2 st-clear-events

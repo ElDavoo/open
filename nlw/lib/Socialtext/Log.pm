@@ -97,10 +97,13 @@ sub st_timed_log {
                          keys %$times);
     $data->{timers} = $time if $time;
 
+    my $user_id = $user
+        ? (ref($user) ? $user->user_id : $user)
+        : 0;
     my $message = join(',',
         uc($command),
         uc($name),
-        'ACTOR_ID:' . ($user ? $user->user_id : 0),
+        "ACTOR_ID:$user_id",
         encode_json($data),
     );
 

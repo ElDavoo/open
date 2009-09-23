@@ -121,6 +121,11 @@
         ExpiresDefault "access plus 1 seconds"
     </LocationMatch>
 
+    [%- IF config.confd_exists %]
+        # include file for rewrite rules on this system
+        Include conf.d/apache2-*
+    [%- END %]
+
     # Cache attachments
     <LocationMatch "^/data/.*/attachments/.+/.+">
         ExpiresDefault "access plus 1 years"

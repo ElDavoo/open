@@ -7,12 +7,12 @@ Socialcalc enabled is required because we run Calc Testcases
 
 * [Test Case: A Enable LDAP]
 
-* [Core Testcases]
+* [Test case: Business Control Panel]
 
+* [Core Testcases]
 * [Test Case: RSS Icons]
 * [Test Case: Table Info]
 * [Test Case: Signal to Networks]
-* [Test case: Business Control Panel]
 
 * [Calc Testcases]
 * [File Testcases]

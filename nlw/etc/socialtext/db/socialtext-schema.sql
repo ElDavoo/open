@@ -552,17 +552,6 @@ CREATE TABLE job (
     "coalesce" varchar(255)
 );
 
-CREATE TABLE json_proxy_cache (
-    user_id bigint NOT NULL,
-    url text NOT NULL,
-    authz text,
-    content text,
-    "key" text NOT NULL,
-    "at" timestamptz DEFAULT now() NOT NULL,
-    refresh_interval interval DEFAULT '01:00:00'::interval NOT NULL,
-    expiry timestamptz NOT NULL
-);
-
 CREATE TABLE note (
     jobid bigint NOT NULL,
     notekey varchar(255) NOT NULL,
@@ -1250,12 +1239,6 @@ CREATE INDEX job_funcid_coalesce
 CREATE INDEX job_funcid_runafter
 	    ON job (funcid, run_after);
 
-CREATE INDEX json_proxy_cache_expiry_idx
-	    ON json_proxy_cache (expiry);
-
-CREATE UNIQUE INDEX json_proxy_cache_key_idx
-	    ON json_proxy_cache (user_id, "key");
-
 CREATE INDEX page_creator_time
 	    ON page (creator_id, create_time);
 
@@ -1586,11 +1569,6 @@ ALTER TABLE ONLY signal
             FOREIGN KEY (in_reply_to_id)
             REFERENCES signal(signal_id) ON DELETE CASCADE;
 
-ALTER TABLE ONLY json_proxy_cache
-    ADD CONSTRAINT json_proxy_cache_user_id_fk
-            FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
-
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_creator_id_fk
             FOREIGN KEY (creator_id)
@@ -1822,4 +1800,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '85');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '86');

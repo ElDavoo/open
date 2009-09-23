@@ -4,7 +4,7 @@ package Socialtext::HTTP::Ports;
 use strict;
 use warnings;
 use Socialtext::AppConfig;
-use Class::Field qw(const);
+use Memoize;
 
 ###############################################################################
 # Export our constants, so they can be used in our test suite
@@ -30,31 +30,42 @@ our %EXPORT_TAGS = (
 
 ###############################################################################
 # constant values
-const STANDARD_HTTP_PORT      => 80;
-const STANDARD_HTTPS_PORT     => 443;
-const STANDARD_BACKEND_PORT   => 8080;
-const PORTS_START_AT          => 20000;
-const SSL_PORT_DIFFERENCE     => 1000;
-const BACKEND_PORT_DIFFERENCE => 2000;
+use constant STANDARD_HTTP_PORT      => 80;
+use constant STANDARD_HTTPS_PORT     => 443;
+use constant STANDARD_BACKEND_PORT   => 8080;
+use constant PORTS_START_AT          => 20000;
+use constant SSL_PORT_DIFFERENCE     => 1000;
+use constant BACKEND_PORT_DIFFERENCE => 2000;
 
 ###############################################################################
+memoize 'http_port';
 sub http_port {
     return _env_var_http_port()                 # ENV var over-ride
         || _configured_http_port()              # ST::AppConfig
         || _default_http_port();                # default
 }
 
+memoize 'https_port';
 sub https_port {
     return _configured_https_port()             # ST::AppConfig
         || _default_https_port();               # default
 }
 
+memoize 'backend_http_port';
 sub backend_http_port {
     return _default_backend_http_port();        # default
 }
 
+memoize 'backend_https_port';
 sub backend_https_port {
     return _default_backend_https_port();       # default
+}
+
+memoize 'json_proxy_port';
+sub json_proxy_port {
+    return Socialtext::AppConfig->is_appliance()
+        ? _default_backend_http_port() + 1
+        : PORTS_START_AT() + 4000 + $>;
 }
 
 ###############################################################################

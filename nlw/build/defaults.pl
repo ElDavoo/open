@@ -185,6 +185,9 @@ DOC
 Location of the file where ceqlotron should log any exceptional errors.
 DOC
 
+        entry( 'jsonproxy-logfile' => '/var/log/json-proxy.log', << 'DOC' ),
+Location of the file where json-proxy should log any exceptional errors.
+DOC
 
         entry( 'apache-perl-moduledir' => apache_perl_moduledir(), <<'DOC' ),
 Directory that holds the modules for Apache 1 / mod_perl.

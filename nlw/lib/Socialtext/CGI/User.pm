@@ -24,7 +24,7 @@ sub get_current_user {
 
 sub _user_id_or_username {
     my $cookie_name = Socialtext::HTTP::Cookie->cookie_name();
-    my %user_data   = _get_cookie_value($cookie_name);
+    my %user_data   = Socialtext::HTTP::Cookie::get_value($cookie_name);
     return unless keys %user_data;
 
     my $mac = Socialtext::HTTP::Cookie->MAC_for_user_id( $user_data{user_id} );
@@ -34,15 +34,6 @@ sub _user_id_or_username {
     }
 
     return $user_data{user_id};
-}
-
-sub _get_cookie_value {
-    my $name = shift;
-    my $cookies = CGI::Cookie->raw_fetch;
-    my $value = $cookies->{$name} || '';
-    my @user_data = split(/[&;]/, $value);
-    push @user_data, undef if (@user_data % 2 == 1);
-    return @user_data;
 }
 
 1;

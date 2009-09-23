@@ -12,8 +12,6 @@ test env properly and are not testing the test-workspace
 * [Test Case: Home]
 * [Test Case: Workspace Navigation]
 * [Test Case: Global Navigation]
-* [Test Case: Miki]
-* [Test Case: Miki Authentication]
 * [Test case: Invite Anonymous User]
 * [Test case: Self Register]
 * [Test case: Watchlist]
@@ -90,6 +88,12 @@ test env properly and are not testing the test-workspace
 * [Test Case: User Settings no mojibake]
 
 * [Edit Contention Testcases]
+* [Mobile Testcases]
+
+Keep these Miki test cases at the end since they create a large number of users
+
+* [Test Case: Miki]
+* [Test Case: Miki Authentication]
 
 Put tests that don't use the browser here
 
