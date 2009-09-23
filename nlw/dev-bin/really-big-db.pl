@@ -33,7 +33,25 @@ GetOptions(
     'view-event-ratio|v=s' => \$VIEW_EVENT_RATIO,
     'signals|s=i' => \$SIGNALS,
     'base|b=s' => \$base,
-);
+) or usage();
+
+sub usage {
+    die <<EOT
+USAGE: $0 [options]
+
+WHERE options are:
+  --accounts=N
+  --users=N
+  --pages=N
+  --events=N
+  --groups=N
+  --group-ws-ratio=F
+  --group-user-ratio=F
+  --view-event-ratio=F
+  --signals=N
+  --base=S
+EOT
+}
 
 my $MAX_WS_ASSIGN = int($ACCOUNTS / 20); 
 my $PAGE_VIEW_EVENTS = int($VIEW_EVENT_RATIO * $EVENTS);
