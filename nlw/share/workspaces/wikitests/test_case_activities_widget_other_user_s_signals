@@ -80,10 +80,8 @@
 | pause | 3000 |  |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Activities Widget Other User. TODO: TAG Profile |  |
 | *Comment* | Test Case: Activities Widget Other User. TODO: Edit Page as conversation |  |
 | *Comment* | Test Case: Activities Widget Other User. TODO: Edit Page as edit |  |
 | *Comment* | Test Case: Activities Widget Other User. TODO: Comment on page as conversation |  |
 | *Comment* | Test Case: Activities Widget Other User. TODO: Comment on page as not conversation |  |
 | *Comment* | Test Case: Activities Widget Other User. TODO: Follow/Unfollow |  |
-| *Comment* | Test Case: Activities Widget Other User. TODO: Tag Page |  |
