@@ -1,0 +1,45 @@
+| *Comment* | Test Case: Mobile People |  |
+
+TODO: Follow/unFollow/Signals/Profile/Activity for a person
+
+| set | mu | `mu-%%start_time%%@ken.socialtext.net` |
+| set | fletter | M |
+| set | fname | Mobility |
+| set | lname | User-%%start_time%% |
+
+| *Comment* | Test Case: Mobile People create WS, add member |  |
+
+| create_user | %%mu%% | %%password%% | %%hostname%% | %%fname%% %%lname%% |
+
+| *Comment* | Test Case: Mobile People open Mobile, check for boilerplate |  |
+| open_ok | /m |  |
+| wait_for_element_visible_ok | link=Workspaces | 2000 |
+| wait_for_element_visible_ok | link=Activity | 2000 |
+| wait_for_element_visible_ok | link=People | 2000 |
+| wait_for_element_visible_ok | link=Log out | 2000 |
+| wait_for_element_not_present_ok | link=Signals | 2000 |
+
+| *Comment* | Test Case: Mobile People open Mobile People, check for UI |  |
+| click_and_wait | link=People |  |
+| wait_for_element_visible_ok | link=B | 2000 |
+| wait_for_element_visible_ok | link=Z | 2000 |
+| wait_for_element_not_present_ok | link=A | 2000 |
+| text_like | People Search |  |
+
+| *Comment* | Test Case: Mobile People search for myself |  |
+| type_ok | st-search-text | %%username%% |
+| click_ok | st-search-submit |  |
+| wait_for_element_visible_ok | link=%%username%% | 30000 |
+
+| *Comment* | Test Case: Mobile People search for %%mu%% |  |
+| type_ok | st-search-text | %%mu%% |
+| click_ok | st-search-submit |  |
+| wait_for_element_visible_ok | link=%%mu%% | 30000 |
+| wait_for_element_visible_ok | link=%%fname%% %%lname%% | 2000 |
+
+| *Comment* | Test Case: Mobile People %%mu%% in alpha list |  |
+| click_ok | link=%%fletter%% |  |
+| wait_for_element_visible_ok | link=%%mu%% | 30000 |
+| wait_for_element_visible_ok | link=%%fname%% %%lname%% | 2000 |
+
+| *Comment* | Test Case: Mobile People COMPLETED |  |
