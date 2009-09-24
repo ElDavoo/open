@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 26;
+use Test::Socialtext tests => 23;
 use Test::Exception;
 use Socialtext::UserGroupRoleFactory;
 
@@ -66,10 +66,8 @@ group_has_users_get_user_ids: {
     $group->add_user(user => $user_two);
 
     my $user_ids = $group->user_ids();
-    isa_ok $user_ids, 'Socialtext::MultiCursor', 'got cursor of User Ids';
-    is $user_ids->count(), 2, '... with correct count';
-    is $user_ids->next, $user_one->user_id, '... first User Id ok';
-    is $user_ids->next, $user_two->user_id, '... second User Id ok';
+    is_deeply $user_ids, [ $user_one->user_id, $user_two->user_id ],
+        'Got User Ids, in correct order';
 }
 
 ################################################################################
