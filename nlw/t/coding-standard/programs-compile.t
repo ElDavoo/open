@@ -20,6 +20,7 @@ BEGIN {
 # Put non-compiling program names in the passed in list,
 # so they are done as TODO tests.
 my @bin_programs = make_prog_list('bin/', qw(
+    json-proxy.scgi
 ));
 
 my @dev_bin_programs = make_prog_list('dev-bin/', qw(
