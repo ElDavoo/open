@@ -29,7 +29,7 @@ DROP FUNCTION make_display_name(text, text, text);
 
 -- update the schema-version
 UPDATE "System"
-   SET value = '86'
+   SET value = '87'
  WHERE field = 'socialtext-schema-version';
 
 COMMIT;
