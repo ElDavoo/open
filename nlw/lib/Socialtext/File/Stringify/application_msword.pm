@@ -12,10 +12,12 @@ use Socialtext::Log qw/st_log/;
 sub to_string {
     my ( $class, $filename ) = @_;
 
-    my ( undef, $temp_filename ) = File::Temp::tempfile(
-        Socialtext::File::temp_template_for('indexing_word_attachment'),
-        CLEANUP => 1,
+    my $tmp = File::Temp->new(
+        TEMPLATE =>
+            Socialtext::File::temp_template_for('indexing_word_attachment'),
     );
+    my $temp_filename = $tmp->filename;
+    $tmp->unlink_on_destroy(1);
 
     # If 'wvText' fails, fall back on the "any' mode.
     my $ignored = backtick('wvText', $filename, $temp_filename);

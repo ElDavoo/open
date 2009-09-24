@@ -9,6 +9,7 @@ use Socialtext::File::Stringify::Default;
 use Socialtext::Encode;
 use File::Temp qw/tempdir/;
 use File::chdir;
+use File::Path qw/rmtree/;
 
 sub to_string {
     my ( $class, $filename, $type ) = @_;
@@ -19,17 +20,24 @@ sub to_string {
     # some stringifiers emit a bunch of junk into the cwd/$HOME
     # (I'm looking at you, ELinks)
     my $tmpdir = tempdir(CLEANUP=>1);
-    local $ENV{HOME} = $tmpdir;
-    local $CWD = $tmpdir;
+    my $text;
+    {
+        local $ENV{HOME} = $tmpdir;
+        local $CWD = $tmpdir;
 
-    # default 5 minute timeout for backticked scripts
-    local $Socialtext::System::TIMEOUT = 300;
-    # default 2 GiB (minus 4kiB) virtual memory space for backticked scripts.
-    # subtract 4kiB so we don't overflow a 32-bit signed integer.
-    local $Socialtext::System::VMEM_LIMIT = (2 * 2**30) - 4096;
+        # default 5 minute timeout for backticked scripts
+        local $Socialtext::System::TIMEOUT = 300;
+        # default 2 GiB (minus 4kiB) virtual memory space for backticked scripts.
+        # subtract 4kiB so we don't overflow a 32-bit signed integer.
+        local $Socialtext::System::VMEM_LIMIT = (2 * 2**30) - 4096;
 
-    my $convert_class = $class->_get_converter_for_file( $filename, $type );
-    my $text = $convert_class->to_string($filename);
+        my $convert_class = $class->_get_converter_for_file( $filename, $type );
+        $text = $convert_class->to_string($filename);
+    }
+
+    # Proactively cleanup, to avoid temp files left by long running processes
+    rmtree $tmpdir;
+
     return Socialtext::Encode::ensure_is_utf8($text);
 }
 
