@@ -1150,7 +1150,7 @@ SELECT users.user_id AS user_id,
             ON users.user_id = user_workspace_role.user_id
     WHERE users.driver_username LIKE ?
     GROUP BY users.user_id, users.driver_username
-    ORDER BY aaaaa10000 ASC, users.driver_username $p{sort_order}
+    ORDER BY aaaaa10000 $p{sort_order}, users.display_name ASC
     LIMIT ? OFFSET ?
 EOSQL
             creation_datetime => <<EOSQL,
