@@ -23,9 +23,9 @@ my $UNPARSEABLE_CRUFT = "throw 1; < don't be evil' >";
 
 #my $SERVER_ROOT = 'http://topaz.socialtext.net:22061';
 my $SERVER_ROOT = 'http://dev7.socialtext.net';
+my $REFRESH = 30;
 
-$AnyEvent::HTTP::MAX_PER_HOST = 50;
-$AnyEvent::HTTP::MAX_PERSISTENT_PER_HOST = 50;
+$AnyEvent::HTTP::MAX_PER_HOST = $AnyEvent::HTTP::MAX_PERSISTENT_PER_HOST = 9999;
 
 my $all_done = AE::cv;
 our $phase_display = sub {print "nothing to report\n"};
@@ -43,8 +43,8 @@ my $ticker = AE::timer 2,2, unblock_sub {
 #     'q@q.q' => 'qwerty',
 # );
 my %users;
-for my $n (201..400) {
-    $users{"user-$n-61111\@ken.socialtext.net"} = 'password';
+for my $n (1..200) {
+    $users{"user-$n-48295\@ken.socialtext.net"} = 'password';
 }
 my %user_state;
 
@@ -117,7 +117,7 @@ sub log_in_users {
 #                 print "logged-in: $user ($user_state{$user}{cookie})\n";
             }
             else {
-                warn "Failed to log in $user\n";
+                warn "Failed to log in $user ($headers->{Status})\n";
                 $phase->croak('failed to log in '.$user);
             }
         };
@@ -136,6 +136,7 @@ sub simple_fetch_events {
     my %in_progress;
     my %plan;
     my $failed = 0;
+    my $timeout = 0;
     local $phase_display = sub {
         my $total_u = scalar keys %in_progress;
         my $outstanding = sum values %plan;
@@ -147,8 +148,11 @@ sub simple_fetch_events {
         $phase->begin;
         run_for_user $user, "fetcher for $user", sub {
             scope_guard { $phase->end if $phase };
-            Coro::AnyEvent::sleep rand(2.5); # fuzz offsets
+
             $plan{$user} = 10;
+            $in_progress{$user} = {};
+            Coro::AnyEvent::sleep rand($REFRESH); # fuzz offsets
+
             for (1..5) {
                 my $fetches = AE::cv;
                 my @fetch_guards;
@@ -160,10 +164,11 @@ sub simple_fetch_events {
                     my $req_url = $SERVER_ROOT.$uri;
                     my $url = "$SERVER_ROOT/nlw/proxy.scgi?url=" .
                         uri_escape_utf8($req_url).
-                        '&httpMethod=GET&postData=&contentType=JSON';
+                        '&httpMethod=GET&postData=&contentType=JSON'.
+                        '&refresh='.$REFRESH;
                     my $fg = http_get $url,
                         recurse => 0,
-                        timeout => 30,
+                        timeout => 60,
                         headers => {
                             'Cookie' => $user_state{$user}{cookie}
                         },
@@ -171,6 +176,7 @@ sub simple_fetch_events {
                             my ($body, $headers) = @_;
 #                             print "finish $user $headers->{Status}\n";
                             $failed++ unless $headers->{Status} =~ /^200/;
+                            $timeout++ if $headers->{Status} =~ /time/i;
                             delete $in_progress{$user}{$url};
 #                             eval {
 #                                 $body =~ s/^\Q$UNPARSEABLE_CRUFT\E//;
@@ -186,7 +192,7 @@ sub simple_fetch_events {
                 }
                 $fetches->recv;
 #                 print "pausing $user";
-                Coro::AnyEvent::sleep 5 if $plan{$user}; # simulate polling
+                Coro::AnyEvent::sleep 30 if $plan{$user}; # simulate polling
             }
 #             print "+ phase done for $user\n";
             delete $in_progress{$user};
