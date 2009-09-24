@@ -209,29 +209,26 @@ sub add_group {
     my $group = $opts{group} || croak "can't add_group without a 'group'";
     my $role  = $opts{role} || Socialtext::GroupAccountRoleFactory->DefaultRole();
 
-    my $gar = $self->_gar_for_group($group);
-    if ($gar) {
-        $gar->update( { role_id => $role->role_id } );
-    }
-    else {
-        $gar = Socialtext::GroupAccountRoleFactory->Create( {
-            group_id   => $group->group_id,
-            account_id => $self->account_id,
-            role_id    => $role->role_id,
-        } );
-    }
-    return $gar;
+    my $adapter = Socialtext::Pluggable::Adapter->new();
+    $adapter->make_hub( Socialtext::User->SystemUser() );
+    $adapter->hook(
+        'nlw.add_group_account_role', $self, $group, $role,
+    );
+    return $self->_gar_for_group($group);
 }
 
 sub remove_group {
     my $self  = shift;
     my %opts  = @_;
     my $group = $opts{group} || croak "can't remove_group without a 'group'";
+    my $role  = $opts{role} || Socialtext::GroupAccountRoleFactory->DefaultRole();
 
-    my $gar = $self->_gar_for_group($group);
-    return unless $gar;
-
-    Socialtext::GroupAccountRoleFactory->Delete($gar);
+    my $adapter = Socialtext::Pluggable::Adapter->new();
+    $adapter->make_hub( Socialtext::User->SystemUser() );
+    $adapter->hook(
+        'nlw.remove_group_account_role', $self, $group, $role,
+    );
+    return $self->_gar_for_group($group);
 }
 
 sub has_group {

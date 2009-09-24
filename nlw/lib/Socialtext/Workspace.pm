@@ -485,8 +485,14 @@ sub _update {
 
         my $groups = $self->groups;
         while (my $group = $groups->next) {
-            $adapter->hook( 'nlw.remove_group_account_role', $old_account, $group);
-            $adapter->hook( 'nlw.add_group_account_role', $self->account, $group);
+            $adapter->hook(
+                'nlw.remove_group_account_role',
+                $old_account, $group, Socialtext::Role->Affiliate(),
+            );
+            $adapter->hook(
+                'nlw.add_group_account_role',
+                $self->account, $group, Socialtext::Role->Affiliate(),
+            );
         }
     }
 

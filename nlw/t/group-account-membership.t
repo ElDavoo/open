@@ -81,23 +81,23 @@ via_primary_account: {
 
     my $gar = Socialtext::GroupAccountRoleFactory->Create({
         group_id => $group->group_id,
-        role_id => Socialtext::Role->Member->role_id,
+        role_id => Socialtext::Role->Affiliate->role_id,
         account_id => $acct2->account_id,
     });
     isa_ok $gar, 'Socialtext::GroupAccountRole', 'explicit GAR';
 
     account_role_count_is $acct => 1;
-    check_group_account_role $group, $acct, 'Affiliate',
-        "primary account is an affiliate relationship";
+    check_group_account_role $group, $acct, 'Member',
+        "primary account is Member relationship";
 
     account_role_count_is $acct2 => 1;
-    check_group_account_role $group, $acct2, 'Member',
-        "membership in the other account";
+    check_group_account_role $group, $acct2, 'Affiliate',
+        "secondary account is Affiliate relationship";
 
     Socialtext::GroupAccountRoleFactory->Delete($gar);
 
-    account_role_count_is($acct => 1, "affiliate role retained");
-    account_role_count_is($acct2 => 0, "member role removed");
+    account_role_count_is($acct => 1, "member role retained");
+    account_role_count_is($acct2 => 0, "affiliate role removed");
 }
 
 # watch account membership as we add and remove a group to/from a workspace

@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 30;
+use Test::Socialtext tests => 26;
 use Test::Exception;
 use Socialtext::GroupAccountRoleFactory;
 
@@ -90,24 +90,6 @@ add_group_to_account_explicit_role: {
     is $gar->account_id => $account->account_id, '... with correct account';
     is $gar->group_id   => $group->group_id,     '... with correct group';
     is $gar->role->name => $role->name,          '... with correct role';
-}
-
-###############################################################################
-# TEST: Adding Group to Account over-writes existing Role; we don't "auto
-# upgrade", we *over-write*
-add_group_to_account_overwrites_existing_role: {
-    my $account = create_test_account_bypassing_factory();
-    my $group   = create_test_group();
-    my $role1   = Socialtext::Role->Member();
-    my $role2   = Socialtext::Role->Affiliate();
-
-    my $gar = $account->add_group( group => $group, role => $role1 );
-    isa_ok $gar => 'Socialtext::GroupAccountRole', 'created a GAR...';
-    is $gar->role->name => $role1->name, '... with correct role';
-
-    $gar = $account->add_group( group => $group, role => $role2 );
-    isa_ok $gar => 'Socialtext::GroupAccountRole', 'created a GAR...';
-    is $gar->role->name => $role2->name, '... with correct role';
 }
 
 ###############################################################################

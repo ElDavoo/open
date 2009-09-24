@@ -63,6 +63,7 @@ around 'Create' => sub {
     $adapter->hook( 'nlw.add_group_account_role',
         $gwr->workspace->account,
         $gwr->group,
+        Socialtext::Role->Affiliate(),
     );
 
     return $gwr;
@@ -80,6 +81,7 @@ around 'Delete' => sub {
         $adapter->hook( 'nlw.remove_group_account_role',
             $instance->workspace->account,
             $instance->group,
+            Socialtext::Role->Affiliate(),
         );
     }
     return $did_delete;

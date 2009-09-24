@@ -74,7 +74,9 @@ group_already_exists: {
 # TEST: remove Group from Account
 remove_group_from_account: {
     my $account = create_test_account_bypassing_factory();
-    my $group   = create_test_group( account => $account );
+    my $group   = create_test_group();
+
+    $account->add_group(group => $group);
 
     ok 1, 'Remove Group from Account';
     my $output = combined_from( sub {

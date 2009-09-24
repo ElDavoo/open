@@ -205,7 +205,8 @@ sub Create {
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser());
     $adapter->hook(
-        'nlw.add_group_account_role', $group->primary_account, $group,
+        'nlw.add_group_account_role',
+        $group->primary_account, $group, Socialtext::Role->Member(),
     );
 
     return $group;
