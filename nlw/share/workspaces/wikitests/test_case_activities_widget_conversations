@@ -11,6 +11,8 @@
 | set | mycommentedpagename | otherpage%%start_time%% |
 | set | commentpagename | commentpage-wid%%start_time%% |
 | set | watchedpagename | watchedpage-wid%%start_time%% |
+| set | notconvpage | notconvo-page%%start_time%% |
+| set | notconvpagetwo | notconvo-pagetwo%%start_time%% |
 
 | st-admin | create-workspace --name %%wrkspc%% --title %%wrkspc%% |  |
 | st-admin | create-user --email %%convuser%% --password %%password%% |  |
@@ -23,17 +25,19 @@
 
 | *Comment* | Test Case: Activities Widget Conversations - Main User creates a page, comments on a page, watches a page |  |  |
 | st-logoutin | %%username%% | %%password%% |  |
-| st-create-wikipage | %%wrkspc%% | %%mypagename%% |  |
-| st-comment-on-page | %%wrkspc%% | %%mycommentedpagename%% | Leaving a comment |
-| open_ok | %%wrkspc%%/?%%watchedpagename%% |  |  |
+| st-create-wikipage | %%wrkspc%% | %%mypagename%% |
+| st-comment-on-page | /%%wrkspc%%/?%%mycommentedpagename%% | Leaving a comment |
+| open_ok | /%%wrkspc%%/?%%watchedpagename%% |  |  |
 | wait_for_element_present_ok | st-watchlist-indicator | 30000 |  |
 | st-watch-page | 1 |  |
 
-| *Comment* | Test Case: Activities Widget Conversations - Other User edits the page |  |  |
+| *Comment* | Test Case: Activities Widget Conversations - Other User edits, comments, creativing a conversation (plus two pages that are not conversations) |  |  |
 | st-logoutin | %%convuser%% | %%password%% |  |
-| st-edit-page | %%wrkspc%% | %%mypagename%% | this is an edit |
-| st-edit-page | %%wrkspc%% | %%mycommentedpagename%% | this is another comment |
-| st-comment-on-page | %%wrkspc%% | %%watchedpagename%% | Comment from a different user |
+| st-create-wikipage | %%wrkspace%% | %%notconvpage%% |
+| st-edit-page | /%%wrkspc%%/?%%mypagename%% | this is an edit |
+| st-edit-page | /%%wrkspc%%/?%%mycommentedpagename%% | this is another comment |
+| st-comment-on-page | /%%wrkspc%%/?%%watchedpagename%% | Comment from a different user |
+| st-create-wikipage | %%wrkspace%% | %%notconvpagetwo%% |
 
 | st-logoutin | %%username%% | %%password%% | st-clear-json-cache |  |
 
@@ -43,7 +47,15 @@
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 
+| st-widget-settings | activities_widget |  |
+| wait_for_element_visible_ok | up_limit | 30000 |
+| select-ok | up_limit | 25 |
+| wait_for_element_visible_ok | st-savebutton-%%activities_widget%% | 30000 |
+| click_ok | st-savebutton-%%activities_widget%% |  |
+
 | *Comment* | Test Case: Activities Widget Conversations TODO Verify Edits and Comments |  |
-| *Comment* | Test Case: Activities Widget Conversations TODO Limit to my convos and verify Edits, Comments, and NOT PRESENTs |  |
+| pause | 60000 |  |
+
+| *Comment* | Test Case: Activities Widget Conversations Changes to convos only, verify Edits, Comments, and NOT PRESENTs |  |
 
 | *Comment* | Test Case: Activities Widget Verify Conversation |  |

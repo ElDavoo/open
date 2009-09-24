@@ -285,15 +285,19 @@ sub st_add_page_tag {
 }
 
 
-=head2 st_comment_on_page ($workspace, $page, $comment)
+=head2 st_comment_on_page ($workspace, $url, $comment)
 
-Opens up a specific page, clicks the comment button and leaves your note.
+Opens up a specific page via $url, which should be of the form:
+
+/workspace/?page OR /workspace/index.cgi?page
+
+clicks the comment button and leaves your note.
 
 =cut
 
 sub st_comment_on_page {
-    my ($self, $workspace, $page, $comment) = @_;
-    $self->handle_command('open_ok', '/' . $workspace . '/?' . $page);  
+    my ($self, $url, $comment) = @_;
+    $self->handle_command('open_ok', $url);  
     $self->handle_command('wait_for_element_visible_ok','st-comment-button-link-bottom', 30000);
     $self->handle_command('click_ok','st-comment-button-link-bottom');     
     $self->handle_command('wait_for_element_visible_ok','comment',30000);
@@ -303,15 +307,19 @@ sub st_comment_on_page {
     $self->handle_command('wait_for_element_visible_ok','st-comment-button-link-bottom', 30000);
 }
 
-=head2 st_edit_page ($workspace, $page, $edit)
+=head2 st_edit_page ($workspace, $page, $text)
 
-Opens up a specific page for edit and types the code you suggest
+Opens up a specific page via $url, which should be of the form:
+
+/workspace?page or /workspace/index.cgi?page
+
+Then edits it and types the text you suggest
 
 =cut
 
 sub st_edit_page {
-  my ($self, $workspace, $page, $text) = @_;
-  $self->handle_command('open_ok',  '/' . $workspace . '/?' . $page); 
+  my ($self, $url, $text) = @_;
+  $self->handle_command('open_ok',  $url); 
   $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000);  
   $self->handle_command('click_ok','st-edit-button-link');
   $self->handle_command('wait_for_element_visible_ok', 'link=Wiki Text',  30000);
