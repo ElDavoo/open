@@ -1230,6 +1230,14 @@ Set this to the base URL for your solr instance.
 
 =for code type => SCALAR_TYPE
 
+=head2 json_proxy_backend_limit
+
+Set this to limit the number of HTTP connections made to the "back-end" (apache-perl).
+
+Default: 16
+
+=for code type => SCALAR_TYPE
+
 =head1 OTHER METHODS
 
 In addition to the methods available for each configuration variable,
