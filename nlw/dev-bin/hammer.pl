@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+# @COPYRIGHT@
 use warnings;
 use strict;
 
