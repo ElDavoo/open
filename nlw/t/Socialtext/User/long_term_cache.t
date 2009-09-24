@@ -105,6 +105,7 @@ autovivify_cache_value: {
         email_address       => $email,
         first_name          => 'Onlyuse',
         last_name           => 'Once',
+        display_name        => 'Onlyuse Once',
         password            => '*no-password*',
         last_profile_update => '-infinity',
         is_profile_hidden   => '0',
@@ -278,6 +279,7 @@ sub db_cache_ok {
         password            => '*no-password*',
         last_profile_update => '-infinity',
         is_profile_hidden   => '0',
+        display_name        => join(' ', @{ $TEST_USERS[$user_num] }{qw/gn sn/}),
     };
 }
 
