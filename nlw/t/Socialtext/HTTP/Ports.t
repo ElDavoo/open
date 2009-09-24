@@ -5,13 +5,6 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 12;
 use Socialtext::HTTP::Ports qw(:constants);
-use Memoize qw/unmemoize/;
-
-unmemoize(\&Socialtext::HTTP::Ports::http_port);
-unmemoize(\&Socialtext::HTTP::Ports::https_port);
-unmemoize(\&Socialtext::HTTP::Ports::backend_http_port);
-unmemoize(\&Socialtext::HTTP::Ports::backend_https_port);
-unmemoize(\&Socialtext::HTTP::Ports::json_proxy_port);
 
 ###############################################################################
 # Fixtures: base_config

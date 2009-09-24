@@ -3,10 +3,10 @@
 
 use strict;
 use warnings;
+use Test::Socialtext tests => 11;
 use Socialtext::Cache;
 use Socialtext::AppConfig;
 use Socialtext::URI;
-use Test::Socialtext tests => 11;
 
 # Create a config file to test with/against
 my $config_file = Test::Socialtext->setup_test_appconfig_dir();
