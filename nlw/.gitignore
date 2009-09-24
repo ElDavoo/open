@@ -332,3 +332,4 @@ build/templates/apache2/conf.d/json-proxy.tt2
 etc/apache2/conf.d/apache2-json-proxy.conf
 build/templates/apache2/conf.d/apache2-json-proxy.tt2
 t/wikitests/widgets/proxy-cache.wiki
+t/tmp/wikitest-logreader.state/nlw.log.state.lock
