@@ -294,6 +294,15 @@ sub users {
 }
 
 ###############################################################################
+sub user_ids {
+    my $self = shift;
+    return Socialtext::UserGroupRoleFactory->ByGroupId(
+        $self->group_id,
+        sub { shift->user_id() },
+    );
+}
+
+###############################################################################
 sub _build_user_count {
     return shift->users->count;
 }
@@ -410,6 +419,9 @@ Socialtext::Group - Socialtext Group object
 
   # get the Users in the Group
   $user_multicursor = $group->users();
+
+  # get the User Ids for the Users in the Group
+  $user_id_multicursor = $group->user_ids();
 
   # get the Workspaces the Group has access to
   $ws_multicursor = $group->workspaces();
@@ -581,6 +593,11 @@ can be found.
 =item B<$group-E<gt>users()>
 
 Returns a C<Socialtext::MultiCursor> of Users who have a Role in this Group.
+
+=item B<$group-E<gt>user_ids()>
+
+Returns a C<Socialtext::MultiCursor> containing the User Ids of the Users who
+have a Role in this Group.
 
 =item B<$group-E<gt>user_count>
 
