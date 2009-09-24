@@ -4,8 +4,8 @@
 
 | *Comment* | Test Case: Activities Widget Conversations SETUP |  |
 | set | wrkspc | act-conv-ws%%start_time%% |
-| set | convuser | convusershort%%start_time%%@ken.socialtext.net |
-| set | convusershort | convusershort%%start_time%% |
+| set | convuser | convuser%%start_time%%@ken.socialtext.net |
+| set | convusershort | convuser%%start_time%% |
 | set | isolateduser | isolateduser%%start_time@ken.socialtext.net |
 | set | mypagename | mypage%%start_time%% |
 | set | mycommentedpagename | otherpage%%start_time%% |
@@ -33,11 +33,11 @@
 
 | *Comment* | Test Case: Activities Widget Conversations - Other User edits, comments, creativing a conversation (plus two pages that are not conversations) |  |  |
 | st-logoutin | %%convuser%% | %%password%% |  |
-| st-create-wikipage | %%wrkspace%% | %%notconvpage%% |
+| st-create-wikipage | %%wrkspc%% | %%notconvpage%% |
 | st-edit-page | /%%wrkspc%%/?%%mypagename%% | this is an edit |
 | st-edit-page | /%%wrkspc%%/?%%mycommentedpagename%% | this is another comment |
 | st-comment-on-page | /%%wrkspc%%/?%%watchedpagename%% | Comment from a different user |
-| st-create-wikipage | %%wrkspace%% | %%notconvpagetwo%% |
+| st-create-wikipage | %%wrkspc%% | %%notconvpagetwo%% |
 
 | st-logoutin | %%username%% | %%password%% | st-clear-json-cache |  |
 
@@ -54,8 +54,34 @@
 | click_ok | st-savebutton-%%activities_widget%% |  |
 
 | *Comment* | Test Case: Activities Widget Conversations TODO Verify Edits and Comments |  |
-| pause | 60000 |  |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpagetwo%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+edited %%notconvpagetwo%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+%%notconvpagetwo%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%/ |
+
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+commented on %%watchedpagename%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mycommentedpagename%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpage%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
+
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpagetwo%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+commented on %%watchedpagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%mycommentedpagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%notconvpage%% in %%wrkspc%%.+%%short_username%%.+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%.+%%short_username%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
 
 | *Comment* | Test Case: Activities Widget Conversations Changes to convos only, verify Edits, Comments, and NOT PRESENTs |  |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_element_visible_ok | action | 30000 |
+| click_ok | feed-conversations |  |
+| wait_for_element_visible_ok | link=%%convusershort%% | 30000 |
+| select-frame | relative=parent |  |
+
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpagetwo%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+commented on %%watchedpagename%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mycommentedpagename%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpage%% in %%wrkspc%%/ |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%short_username%%+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%/ |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
 
 | *Comment* | Test Case: Activities Widget Verify Conversation |  |

@@ -397,7 +397,7 @@ sub st_send_signal_via_activities_widget {
     ok(!$@, 'st_send-signal_via_activities_widget');
 }
 
-=head2 st_verify_text_in_activities_wdiget
+=head2 st_verify_text_in_activities_widget ($self, $widgetname, $texttofind)
 Precondition: Open to /?dashboard with a named activities widget.  
 Precondition: Frame focus should be the entire dashboard
 Parameters: You paass in the activties widget name, text to look for
@@ -410,17 +410,34 @@ sub st_verify_text_in_activities_widget {
         $self->handle_command('st-select-widget-frame', $widgetname);
         $self->handle_command('wait_for_element_visible_ok', 'action', 10000);
         $self->handle_command('pause', 2000);
-        #If is regexp, 
+        #If is regexp,
         if ($texttofind=~/^qr\//) {
-            print("trying to find $texttofind\n");
             $self->handle_command('text_like','//body', $texttofind);
         } else {
             $self->handle_command('wait_for_text_present_ok', $texttofind);
         }
         $self->handle_command('select-frame', 'relative=parent');
     #}
-    #ok(!$@, 'st-verify-link-in-activities-widget');
 }
+
+=head st_text_unlike_in_activities_widget ($self, $widgetname, $betternotfindit)
+Precondition: open to /?dashboard with a named activitis widget
+Precondition: Frame focus should be entire dashboard
+Parameters: You pass in widget name, text to not find
+Postcondition: Text is unverified (or not), Frame focus is back on dashboard
+=cut
+
+sub st_text_unlike_in_activities_widget  {
+    my ($self, $widgetname, $notpresent) = @_;
+    $self->handle_command('st-select-widget-frame', $widgetname);
+    $self->handle_command('wait_for_element_visible_ok', 'action', 10000);
+    $self->handle_command('pause', 2000);
+    $self->handle_command('text_unlike','//body', $notpresent);
+    $self->handle_command('select-frame', 'relative=parent');
+}
+
+
+
 
 =head2 st_verify_link_in_activities_wdiget
 Precondition: Open to /?dashboard with a named activities widget.  
