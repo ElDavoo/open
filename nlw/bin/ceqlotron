@@ -14,7 +14,7 @@ use Socialtext::Cache;
 use Getopt::Long;
 use Pod::Usage;
 use Parallel::ForkManager;
-use POSIX qw(setsid _exit);
+use POSIX qw(setsid _exit floor);
 use Time::HiRes qw/sleep/;
 use Socialtext::DaemonUtil;
 
@@ -24,8 +24,14 @@ Socialtext::DaemonUtil->Check_and_drop_privs();
 my $PID_FILE = Socialtext::Paths::pid_file('ceqlotron');
 my $ProcManager;
 
-# Number of child processes we have running.
+# Factor for "how many of our max procs should be allowed to run long-running
+# jobs?"
+my $FactorLongRunningProcs = 0.25;
+
+# Number of child processes we have running, and how many of those are allowed
+# to process long-running Jobs?
 my $RunningChildren = 0;
+my %PidOfChildrenRunningLongJobs;
 
 # Whether or not an exit has been requested.
 my $ExitPlease = 0;
@@ -135,6 +141,7 @@ sub main_loop {
         # enter the ExitPlease state.
         #
         # This call otherwise blocks until a child-slot is available.
+        check_if_next_worker_can_run_long_jobs();
         my $started = $ProcManager->start;
 
         if ($started) {
@@ -149,7 +156,12 @@ sub main_loop {
         else {
             if (!$ExitPlease) {
                 st_log->debug("Ceqlotron worker: starting");
+
+                worker_can_run_long_jobs()
+                    ? Socialtext::Jobs->can_do_all
+                    : Socialtext::Jobs->can_do_short_jobs;
                 start_worker();
+
                 st_log->notice("Ceqlotron worker: exiting");
             }
             $ProcManager->finish();
@@ -285,7 +297,8 @@ sub load_jobs {
     require Socialtext::User;
     require Socialtext::Workspace;
 
-    Socialtext::Jobs->can_do_all(); # `requires` all Jobs, registers them
+    # `require` the Jobs, but don't register them yet
+    Socialtext::Jobs->load_all_jobs();
 }
 
 sub get_max_procs {
@@ -294,18 +307,46 @@ sub get_max_procs {
     return $max;
 }
 
+sub get_max_long_job_procs {
+    # How many procs are allowed to handle long-running Jobs?  All workers are
+    # allowed to handle short-lived jobs, but only _some_ are allowed to take
+    # care of longer lived jobs (so the long lived ones don't clog up the
+    # queue).
+    #
+    my $max      = get_max_procs();
+    my $max_long = floor($max * $FactorLongRunningProcs);
+    $max_long = 1 if (!$max_long || ($max_long <= 0));
+    return $max_long;
+}
+
+{
+    my $WorkerCanRunLongJobs = 0;
+    sub check_if_next_worker_can_run_long_jobs {
+        my $num_running_long_jobs = scalar keys %PidOfChildrenRunningLongJobs;
+        $WorkerCanRunLongJobs = ($num_running_long_jobs < get_max_long_job_procs()) ? 1 : 0;
+        return $WorkerCanRunLongJobs;
+    }
+    sub worker_can_run_long_jobs {
+        return $WorkerCanRunLongJobs;
+    }
+}
 sub start_proc_manager {
     $ProcManager = Parallel::ForkManager->new(
         get_max_procs()
     );
 
     $ProcManager->run_on_finish( sub {
+        my $pid = shift;
         $RunningChildren--;
+        delete $PidOfChildrenRunningLongJobs{$pid};
+        check_if_next_worker_can_run_long_jobs();
         return if $ExitPlease;
         st_log->debug("Ceqlotron master: join, concurrency now $RunningChildren");
     } );
     $ProcManager->run_on_start( sub { 
+        my $pid = shift;
         $RunningChildren++;
+        $PidOfChildrenRunningLongJobs{$pid}++ if worker_can_run_long_jobs();
         return if $ExitPlease;
         st_log->debug("Ceqlotron master: fork, concurrency now $RunningChildren");
     } );
