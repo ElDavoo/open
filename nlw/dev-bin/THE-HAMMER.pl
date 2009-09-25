@@ -23,7 +23,7 @@ my $UNPARSEABLE_CRUFT = "throw 1; < don't be evil' >";
 
 #my $SERVER_ROOT = 'http://topaz.socialtext.net:22061';
 my $SERVER_ROOT = 'http://dev7.socialtext.net';
-my $REFRESH = 30;
+my $REFRESH = 60;
 
 $AnyEvent::HTTP::MAX_PER_HOST = $AnyEvent::HTTP::MAX_PERSISTENT_PER_HOST = 9999;
 
@@ -43,7 +43,7 @@ my $ticker = AE::timer 2,2, unblock_sub {
 #     'q@q.q' => 'qwerty',
 # );
 my %users;
-for my $n (1..200) {
+for my $n (1..100) {
     $users{"user-$n-48295\@ken.socialtext.net"} = 'password';
 }
 my %user_state;
@@ -149,6 +149,9 @@ sub simple_fetch_events {
         run_for_user $user, "fetcher for $user", sub {
             scope_guard { $phase->end if $phase };
 
+            my $last_event = '';
+            my $last_signal = '';
+
             $plan{$user} = 10;
             $in_progress{$user} = {};
             Coro::AnyEvent::sleep rand($REFRESH); # fuzz offsets
@@ -156,36 +159,49 @@ sub simple_fetch_events {
             for (1..5) {
                 my $fetches = AE::cv;
                 my @fetch_guards;
-                for my $uri (
-                    '/data/events?limit=5;accept=application/json',
-                    '/data/signals?limit=5;accept=application/json',
-                ) {
+                my $events_uri = '/data/events?limit=6;accept=application/json';
+                $events_uri .= ";after=$last_event" if $last_event;
+                my $signals_uri = '/data/signals?limit=6;accept=application/json';
+                $signals_uri .= ";after=$last_signal" if $last_signal;
+
+                for my $uri ( $events_uri, $signals_uri ) {
                     $fetches->begin;
                     my $req_url = $SERVER_ROOT.$uri;
                     my $url = "$SERVER_ROOT/nlw/proxy.scgi?url=" .
                         uri_escape_utf8($req_url).
                         '&httpMethod=GET&postData=&contentType=JSON'.
                         '&refresh='.$REFRESH;
+                    my $cb = sub { 
+                        my ($body, $headers) = @_;
+#                         print "finish $user $uri $headers->{Status}\n";
+                        $failed++ unless $headers->{Status} =~ /^200/;
+                        $timeout++ if $headers->{Status} =~ /time/i;
+                        delete $in_progress{$user}{$url};
+                        eval {
+                            $body =~ s/^\Q$UNPARSEABLE_CRUFT\E//;
+                            my $wrapper = decode_json($body);
+                            my $data = decode_json($wrapper->{$req_url}{body});
+                            if ($data && $data->[0]) {
+                                if ($wrapper->{$req_url} =~ m#/data/events#) {
+                                    $last_event = $data->[0]{at};
+#                                     warn "event at: $last_event\n";
+                                }
+                                else {
+                                    $last_signal = $data->[0]{at};
+#                                     warn "signal at: $last_signal\n";
+                                }
+                            }
+                        };
+                        warn $@ if $@;
+                        $fetches->end;
+                    };
                     my $fg = http_get $url,
                         recurse => 0,
-                        timeout => 60,
+                        timeout => 120,
                         headers => {
                             'Cookie' => $user_state{$user}{cookie}
                         },
-                        sub { 
-                            my ($body, $headers) = @_;
-#                             print "finish $user $headers->{Status}\n";
-                            $failed++ unless $headers->{Status} =~ /^200/;
-                            $timeout++ if $headers->{Status} =~ /time/i;
-                            delete $in_progress{$user}{$url};
-#                             eval {
-#                                 $body =~ s/^\Q$UNPARSEABLE_CRUFT\E//;
-#                                 my $wrapper = decode_json($body);
-#                                 my $data = decode_json($wrapper->{$req_url}{body});
-#                                 warn "at: ".$data->[0]{at}."\n";
-#                             };
-                            $fetches->end;
-                        };
+                        $cb;
                     $in_progress{$user}{$url} = $fg;
                     $plan{$user}--;
 #                     print "sent $user\n";
@@ -214,6 +230,8 @@ async { $Coro::current->{desc} = 'main schedule';
     $all_done->send;
 }
 
+my $main_start = AnyEvent->time;
 print "main: waiting...\n";
 $all_done->recv;
-print "done\n";
+my $main_elapsed = AnyEvent->time - $main_start;
+print "done in $main_elapsed seconds\n";
