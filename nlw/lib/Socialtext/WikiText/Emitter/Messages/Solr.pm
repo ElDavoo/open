@@ -52,7 +52,7 @@ sub _markup_node {
 
     my $output = $markup->{$ast->{type}}->[$offset];
     if ($ast->{type} eq 'a') {
-        if ($ast->{text} eq $ast->{attributes}{href}) {
+        if (($ast->{text}||'') eq $ast->{attributes}{href}) {
             $output =~ s/\<HREF\>//;
         }
         else {
