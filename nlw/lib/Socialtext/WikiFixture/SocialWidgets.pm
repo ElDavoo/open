@@ -375,6 +375,7 @@ Precondition: Open to /?dashboard with a named activities widget.
 Precondition: Frame focus should be the entire dashboard
 Parameters: You pass in the activities widget name, signal text
 PostCondition: Signal is sent, Frame focus is back to entire dashboard
+
 =cut
 
 sub st_send_signal_via_activities_widget {
@@ -398,10 +399,12 @@ sub st_send_signal_via_activities_widget {
 }
 
 =head2 st_verify_text_in_activities_widget ($self, $widgetname, $texttofind)
+
 Precondition: Open to /?dashboard with a named activities widget.  
 Precondition: Frame focus should be the entire dashboard
 Parameters: You paass in the activties widget name, text to look for
 PostCondition: Text is verified (or not), Frame focus is back to entire dashboard
+
 =cut
 
 sub st_verify_text_in_activities_widget {
@@ -420,11 +423,13 @@ sub st_verify_text_in_activities_widget {
     #}
 }
 
-=head st_text_unlike_in_activities_widget ($self, $widgetname, $betternotfindit)
+=head2 st_text_unlike_in_activities_widget ($self, $widgetname, $betternotfindit)
+
 Precondition: open to /?dashboard with a named activitis widget
 Precondition: Frame focus should be entire dashboard
 Parameters: You pass in widget name, text to not find
 Postcondition: Text is unverified (or not), Frame focus is back on dashboard
+
 =cut
 
 sub st_text_unlike_in_activities_widget  {
