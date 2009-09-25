@@ -9,6 +9,8 @@ our $VERSION = '0.01';
 use Socialtext::AppConfig;
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
+use Socialtext::JobCreator;
+use Socialtext::Job::AccountInvite;
 use Socialtext::User;
 use Socialtext::l10n qw(system_locale loc);
 use Socialtext::EmailSender::Factory;
@@ -37,9 +39,9 @@ sub new {
     return $self;
 }
 
-sub send {
+sub queue {
     my $self = shift;
-    $self->_invite_one_user( );
+    $self->_invite_one_user();
 }
 
 sub _invite_one_user {
@@ -67,7 +69,15 @@ sub _invite_one_user {
     $user->primary_account($acct);
 
     $self->_log_action( "INVITE_USER_ACCOUNT", $user->email_address );
-    $self->invite_notify( $user );
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::AccountInvite',
+        {
+            account_id => $acct->account_id,
+            user_id    => $user->user_id,
+            sender_id  => $self->{from_user}->user_id,
+        }
+    );
 }
 
 sub invite_notify {
