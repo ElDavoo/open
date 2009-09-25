@@ -298,13 +298,13 @@ clicks the comment button and leaves your note.
 sub st_comment_on_page {
     my ($self, $url, $comment) = @_;
     $self->handle_command('open_ok', $url);  
-    $self->handle_command('wait_for_element_visible_ok','st-comment-button-link-bottom', 30000);
-    $self->handle_command('click_ok','st-comment-button-link-bottom');     
+    $self->handle_command('wait_for_element_visible_ok','st-comment-button-link', 30000);
+    $self->handle_command('click_ok','st-comment-button-link');
     $self->handle_command('wait_for_element_visible_ok','comment',30000);
     $self->handle_command('type_ok', 'comment', $comment);
     $self->handle_command('wait_for_element_visible_ok','link=Save',30000);
     $self->handle_command('click_ok','link=Save');
-    $self->handle_command('wait_for_element_visible_ok','st-comment-button-link-bottom', 30000);
+    $self->handle_command('wait_for_element_visible_ok','st-comment-button-link', 30000);
 }
 
 =head2 st_edit_page ($workspace, $page, $text)
