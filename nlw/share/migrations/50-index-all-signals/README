@@ -1,0 +1,4 @@
+This iteration creates signal indexing jobs for all existing signals.
+
+These jobs will be run by the ceqlotron at a lower priority than
+new content.
