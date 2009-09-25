@@ -62,6 +62,9 @@
     RewriteRule    /.*/base/(.+)                /static/skin/s2/$1  [R,L]
     RewriteRule    ^/static/[\.0-9]+/(.+)$      /static/$1          [PT,L]
 
+    # Redirect old CGI proxy URLs to the new SCGI version
+    RewriteRule     ^/nlw/plugin/[^/]+/widgets/proxy.cgi$  /nlw/proxy.scgi  [PT,L]
+
     RewriteRule    ^/nlw/plugin/[\.0-9]+/(.+)$  /nlw/plugin/$1      [PT,L]
     RewriteRule    ^/nlw/plugin/:[^/]+/(.+)$    /nlw/plugin/$1      [PT,L]
 
