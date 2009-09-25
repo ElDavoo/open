@@ -8,9 +8,7 @@
 | set | new_workspace | wksp-%%start_time%% |
 | set | cli_user | cli_%%start_time%%@ken.socialtext.net |
 
-| *Comment* | Test case: Business Control Panel should no longer be necessary to set-locale |  |
-
-| *Comment* | Set Up Restricted Account |  |
+| *Comment* | Test case: Business Control Panel Restrict domain |  |
 | set | restrict_acct | restrictedacc%%start_time%% |
 | st-admin | create-account --name %%restrict_acct%% |  |
 | open_ok | /nlw/control/account |  |
@@ -64,10 +62,7 @@
 | text_like | Custom Skins: Socialtext 3 default skin |  |
 | text_like | Socialtext People (click to enable) |  |
 | text_like | Socialtext Signals (click to enable) |  |
-
-| *Comment* | added check for Dashboard once {bz: 1782} was fixed |  |
-| st-admin | enable-plugin --p dashboard --acc "%%new_acct%%" | is now enabled |
-| text_like | Socialtext Dashboard |  |
+| text_like | Socialtext Dashboard (click to enable) |  |
 
 | *Comment* | Test case: Business Control Panel plugin one at a time, click the confirmation, validate that plugin is enabled. |  |
 | click_ok | toggle_plugin_people |  |
@@ -87,6 +82,11 @@
 | click_ok | toggle_plugin_signals |  |
 | verifyConfirmation | Socialtext Signals is a paid option. For more information about fees, contact your sales representative.\n\nPress 'OK' to enable this module or 'Cancel' to exit. |  |
 | wait_for_text_present_ok | Socialtext Signals (click to disable) | 20000 |
+
+| *Comment* | Test case: Business Control Panel. Enable Dashboard |  |
+| click_ok | toggle_plugin_dashboard |  |
+| verifyConfirmation | Socialtext Dashboard is a paid option. For more information about fees, contact your sales representative.\n\nPress 'OK' to enable this module or 'Cancel' to exit. |  |
+| wait_for_element_not_present_ok | toggle_plugin_dashboard |  |
 
 | *Comment* | Test case: Business Control Panel rename account |  |
 | click_and_wait | link=Rename Account |  |
@@ -263,6 +263,7 @@
 | type_ok | st-search-by-name | account %%start_time%% |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
 | click_and_wait | st-submit-search-by-name |  |
+
 | wait_for_element_visible_ok | link=0 sort 3 account %%start_time%% | 30000 |
 | click_and_wait | link=Name |  |
 | text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
