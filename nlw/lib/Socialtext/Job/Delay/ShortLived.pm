@@ -20,3 +20,27 @@ sub do_work {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Job::Delay::ShortLived - Test/sample Short-Lived Job
+
+=head1 SYNOPSIS
+
+  use Socialtext::JobCreator;
+
+  Socialtext::JobCreator->insert(
+    'Socialtext::Job::Delay::ShortLived',
+    { sleep => 1 },
+  );
+
+=head1 DESCRIPTION
+
+Schedules a Job which is "short running" and can run in B<any> of the
+available Workers.
+
+=head1 SEE ALSO
+
+L<Socialtext::Job::Delay::LongLived>.
+
+=cut

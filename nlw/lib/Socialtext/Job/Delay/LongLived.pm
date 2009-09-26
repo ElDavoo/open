@@ -20,3 +20,28 @@ sub do_work {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Job::Delay::LongLived - Test/sample Long-Lived Job
+
+=head1 SYNOPSIS
+
+  use Socialtext::JobCreator;
+
+  Socialtext::JobCreator->insert(
+    'Socialtext::Job::Delay::LongLived',
+    { sleep => 5 },
+  );
+
+=head1 DESCRIPTION
+
+Schedules a Job which is "long running" and as such only runs in a percentage
+of the available Workers (so that long-running Jobs don't inadvertently clog
+or stall the rest of the queue).
+
+=head1 SEE ALSO
+
+L<Socialtext::Job::Delay::ShortLived>.
+
+=cut
