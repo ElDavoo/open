@@ -1,45 +1,52 @@
 #!perl
 # @COPYRIGHT@
-use Test::Socialtext tests => 8;
 
 use strict;
 use warnings;
-use Socialtext::User;
+use Test::Socialtext tests => 6;
 
-fixtures('clean', 'workspaces');
+fixtures(qw( db ));
 
 BEGIN { use_ok('Socialtext::Search::Set') }
 
-my $devnull1
-    = Socialtext::User->new( email_address => 'devnull1@socialtext.com' );
-my $devnull2
-    = Socialtext::User->new( email_address => 'devnull2@socialtext.com' );
-
-Reuse_name_between_users: {
-    my $devnull1_set = Socialtext::Search::Set->create(
+###############################################################################
+# TEST: each user gets their own Search Set, even if they have same name
+distinct_search_sets: {
+    my $user_one = create_test_user();
+    my $set_one  = Socialtext::Search::Set->create(
         name => 'xyzzy',
-        user => $devnull1 );
-    isa_ok( $devnull1_set, 'Socialtext::Search::Set' );
+        user => $user_one,
+    );
+    isa_ok $set_one, 'Socialtext::Search::Set';
 
-    my $devnull2_set = Socialtext::Search::Set->create(
+    my $user_two = create_test_user();
+    my $set_two  = Socialtext::Search::Set->create(
         name => 'xyzzy',
-        user => $devnull2 );
-    isa_ok( $devnull2_set, 'Socialtext::Search::Set' );
+        user => $user_two,
+    );
+    isa_ok $set_two, 'Socialtext::Search::Set';
 
-    isnt( $devnull1_set->search_set_id, $devnull2_set->search_set_id,
-        'Different user sets with the same name have distinct ids.' );
+    isnt $set_one->search_set_id, $set_two->search_set_id,
+        'Different Users with same named Search Set have distince ids';
 }
 
-List_workspaces: {
-    my $devnull1_set = Socialtext::Search::Set->new(
+###############################################################################
+# TEST: List the Workspaces in a Search Set.
+list_workspaces: {
+    my $user = create_test_user();
+    my $set  = Socialtext::Search::Set->create(
         name => 'xyzzy',
-        user => $devnull1 );
-    $devnull1_set->add_workspace_name($_) for qw( foobar admin public );
-    my @workspace_names = $devnull1_set->workspace_names->all;
-    is( scalar @workspace_names, 3, "There are 3 workspace names.\n" );
+        user => $user,
+    );
+    isa_ok $set, 'Socialtext::Search::Set';
 
-    foreach my $name (qw( foobar admin public )) {
-        is((scalar grep { $_ eq $name } @workspace_names),
-            1, "$name is in the list.\n");
-    }
+    my $ws_one   = create_test_workspace();
+    my $ws_two   = create_test_workspace();
+    my $ws_three = create_test_workspace();
+    my @names    = map { $_->name } ($ws_one, $ws_two, $ws_three);
+
+    $set->add_workspace_name($_) for @names;
+
+    my @queried = $set->workspace_names->all;
+    is_deeply \@queried, \@names, 'correct list of Workspaces';
 }
