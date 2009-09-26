@@ -56,7 +56,7 @@
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%new_acct%% |
-| click_ok | st-submit-search-by-name |  |
+| click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |  |
 | text_like | Custom Skins: Socialtext 3 default skin |  |
@@ -167,7 +167,7 @@
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%new_acct%% |
-| click_ok | st-submit-search-by-name |  |
+| click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |  |
 | click_and_wait | link=Add User |  |
@@ -193,7 +193,7 @@
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%new_acct%% |
-| click_ok | st-submit-search-by-name |  |
+| click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |  |
 | click_and_wait | link=Wiki CLI <%%cli_user%%> |  |
