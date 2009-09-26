@@ -4,6 +4,7 @@ use warnings;
 use strict;
 use Socialtext::SQL qw/sql_execute/;
 use Socialtext::JSON qw/encode_json decode_json/;
+use Socialtext::Encode;
 
 sub new {
     my $class = shift;
@@ -103,7 +104,11 @@ sub record_event {
     local $p->{_checked_context};
     if (ref $p->{context}) {
         my $ctx = $p->{context};
-        $p->{context} = encode_json($p->{context});
+        for my $key (keys %$ctx) {
+            next if ref $ctx->{$key};
+            $ctx->{$key} = Socialtext::Encode::ensure_is_utf8($ctx->{$key});
+        }
+        $p->{context} = encode_json($ctx);
         $p->{_checked_context} = $ctx;
     }
 
