@@ -1435,8 +1435,8 @@ Clear out any queued jobs.
 =cut
 
 sub st_clear_jobs {
-    Socialtext::System::shell_run('ceq-rm .');
-    Socialtext::System::shell_run('-ceqlotron -f -o');
+    require Socialtext::Jobs;
+    Socialtext::Jobs->clear_jobs();
 }
 
 =head2 st-process-jobs
