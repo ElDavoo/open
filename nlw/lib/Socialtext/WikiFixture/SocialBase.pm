@@ -1446,7 +1446,11 @@ Run any queued jobs.
 =cut
 
 sub st_process_jobs {
-    Socialtext::System::shell_run('-ceqlotron -f -o');
+    # sleep a bit, to avoid race conditions w/jobs that don't have sub-second
+    # timings (e.g. the "email-notify" wikiD test.
+    CORE::sleep(1);
+
+    Test::Socialtext::ceqlotron_run_synchronously();
 }
 
 
