@@ -226,8 +226,18 @@ sub formatted_unlike() {
 
 sub ceqlotron_run_synchronously() {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    # Run all the jobs in TheCeq queue, *IN-PROCESS*
+    require Socialtext::Jobs;
+    Socialtext::Jobs->can_do_all();
+    while (my $job = Socialtext::Jobs->find_job_for_workers()) {
+        Socialtext::Jobs->work_once($job);
+        Socialtext::Cache->clear();
+        Socialtext::SQL::invalidate_dbh();
+    }
+
+    # Make sure the Job queue is empty.
     require Socialtext::SQL;
-    shell_run("$ENV{ST_CURRENT}/nlw/bin/ceqlotron -f -o");
     my $jobs_left = Socialtext::SQL::sql_singlevalue(q{
         SELECT COUNT(*) FROM job WHERE run_after < EXTRACT(epoch from now())
     });
