@@ -111,7 +111,7 @@ Creating_events: {
             sql => $insert_re,
             args => ['now', 'page', 'view', 2345, 
                      undef, 'example_page',  348798, undef, undef,
-                     '{"revision_id":"abcd","edit_summary":"awesome","revision_count":56}'],
+                     '{"revision_id":"abcd","edit_summary":"awesome","revision_count":"56"}'],
         );
         ok_no_more_sql();
     }
