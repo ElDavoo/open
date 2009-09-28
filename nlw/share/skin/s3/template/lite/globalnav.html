@@ -8,21 +8,34 @@
     [% END %]
 [% ELSE %]
 
-    [% FILTER decorate('lite_nav_activities') %]
-        [% IF section == 'activities' %]
-          <span class="current">[% loc('Activity') %]</span>
-        [% ELSE %]
-          <a href="/m/activities">[% loc('Activity') %]</a>
+
+    [% IF bottom %]
+        [% FILTER decorate('lite_nav_activities_bottom') %]
         [% END %]
-        |
+    [% ELSE %]
+        [% FILTER decorate('lite_nav_activities') %]
+        [% END %]
     [% END %]
 
-    [% FILTER decorate('lite_nav_workspaces') %]
-        [% IF section == 'workspaces' %]
-          <span class="current">[% loc('Workspaces') %]</span>
-        [% ELSE %]
-          <a href="/m/workspace_list">[% loc('Workspaces') %]</a>
+    [% IF section == 'activities' %]
+        <span class="current">[% loc('Activity') %]</span>
+    [% ELSE %]
+        <a id="[% IF bottom %]bottom-[% END %]mobile-activities" href="/m/activities">[% loc('Activity') %]</a>
+    [% END %]
+        |
+
+    [% IF bottom %]
+        [% FILTER decorate('lite_nav_workspaces_bottom') %]
         [% END %]
+    [% ELSE %]
+        [% FILTER decorate('lite_nav_workspaces') %]
+        [% END %]
+    [% END %]
+
+    [% IF section == 'workspaces' %]
+        <span class="current">[% loc('Workspaces') %]</span>
+    [% ELSE %]
+        <a id="[% IF bottom %]bottom-[% END %]mobile-workspace_list" href="/m/workspace_list">[% loc('Workspaces') %]</a>
     [% END %]
 
     [% IF bottom %]
