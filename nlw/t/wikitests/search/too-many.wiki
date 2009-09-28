@@ -1,5 +1,6 @@
 * Fixture: Search
 
+| set-searcher | KinoSearch |
 | set | workspace | big%%start_time%% |
 | create-workspace | %%workspace%% |
 | set | username | user%%start_time%%@ken.socialtext.net |
