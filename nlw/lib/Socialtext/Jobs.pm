@@ -38,6 +38,18 @@ sub can_do_all {
     $self->can_do($_) for $self->job_types;
 }
 
+sub can_do_long_jobs {
+    my $self = shift;
+    $self->load_all_jobs();
+    $self->can_do($_) for grep { $_->is_long_running() } $self->job_types;
+}
+
+sub can_do_short_jobs {
+    my $self = shift;
+    $self->load_all_jobs();
+    $self->can_do($_) for grep { !$_->is_long_running() } $self->job_types;
+}
+
 sub clear_jobs { sql_execute('DELETE FROM job') }
 
 sub job_to_string {

@@ -4,21 +4,25 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 4;
+use Test::Socialtext tests => 5;
 use Email::Send::Test;
 use Socialtext::Account;
 use Socialtext::User;
+use Socialtext::Jobs;
 
 BEGIN {
     use_ok( 'Socialtext::AccountInvitation' );
 }
 
-fixtures( 'db' );
+fixtures( qw(db no-ceq-jobs) );
 
 $Socialtext::EmailSender::Base::SendClass = 'Test';
 
 my $acct = create_test_account_bypassing_factory();
 my $from = create_test_user( unique_id => 'invitor', account => $acct );
+
+# Register worker
+Socialtext::Jobs->can_do('Socialtext::Job::AccountInvite');
 
 Simple_case: {
     my $invitee_email = 'invitee@example.com';
@@ -28,9 +32,12 @@ Simple_case: {
         invitee   => $invitee_email,
     );
 
-    eval { $invitation->send(); };
+    eval { $invitation->queue(); };
     my $e = $@;
     is $e, '', 'account invite sent';
+
+    my $job = Socialtext::Jobs->find_job_for_workers();
+    ok $job, 'got an invite job';
 
     my $invitee = Socialtext::User->new( email_address => $invitee_email );
     ok $invitee, 'user created';

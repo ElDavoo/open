@@ -7,6 +7,7 @@ use List::MoreUtils qw(uniq);
 use Socialtext::LDAP;
 use Socialtext::Log qw(st_log);
 use Socialtext::SQL qw(sql_execute);
+use Socialtext::Group;
 use Socialtext::User::LDAP::Factory;
 
 ###############################################################################

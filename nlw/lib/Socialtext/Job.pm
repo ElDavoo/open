@@ -5,6 +5,10 @@ use namespace::clean -except => 'meta';
 
 extends 'TheSchwartz::Moosified::Worker';
 
+# By default, jobs are deemed to be "short running".
+# XXX: this'd be *far* better done using MooseX::ClassAttribute
+sub is_long_running { 0 }
+
 has job => (
     is => 'rw', isa => 'TheSchwartz::Moosified::Job',
     handles => [qw(

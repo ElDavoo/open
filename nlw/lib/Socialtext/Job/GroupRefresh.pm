@@ -6,6 +6,10 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 
+# LDAP Group Refresh jobs are expected to be long running
+# XXX: this'd be *far* better done using MooseX::ClassAttribute
+sub is_long_running { 1 }
+
 has proto_group => (
     is => 'ro', isa => 'HashRef',
     lazy_build => 1,

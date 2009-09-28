@@ -13,8 +13,10 @@ use Socialtext::Timer;
 ###############################################################################
 # Skip this test entirely unless we're explicitly running benchmark tests.
 unless ($ENV{NLW_BENCHMARK}) {
-    plan skip_all =>
-        'Set NLW_BENCHMARK=1 to run; this perf test takes ~30-45mins to run.';
+    warn 'Set NLW_BENCHMARK=1 to run; this perf test takes ~30-45mins to run.';
+    plan tests => 1;
+    ok 1, 'Nothing to do here.';
+    exit;
 }
 plan tests => 8;
 

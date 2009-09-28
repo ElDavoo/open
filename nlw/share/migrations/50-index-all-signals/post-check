@@ -1,0 +1,21 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+use Socialtext::Jobs;
+use Socialtext::SQL qw/sql_singlevalue/;
+
+my $stats = Socialtext::Jobs->stat_jobs();
+my $queued_jobs = $stats->{'Socialtext::Job::SignalIndex'}{queued};
+
+my $signal_count = sql_singlevalue(<<EOT);
+SELECT COUNT(signal_id) FROM signal;
+EOT
+
+if ($queued_jobs >= $signal_count) {
+    print "Looks like we have signal jobs for all the signals.\n";
+    exit 0;
+}
+
+print "Looks like we didn't create SignalIndex jobs for every signal!\n";
+exit 1;

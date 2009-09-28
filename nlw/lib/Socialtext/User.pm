@@ -1149,7 +1149,7 @@ SELECT users.user_id AS user_id,
         LEFT OUTER JOIN user_workspace_role AS user_workspace_role 
             ON users.user_id = user_workspace_role.user_id
     WHERE users.driver_username LIKE ?
-    GROUP BY users.user_id, users.driver_username
+    GROUP BY users.user_id, users.display_name
     ORDER BY aaaaa10000 $p{sort_order}, users.display_name ASC
     LIMIT ? OFFSET ?
 EOSQL
@@ -1179,6 +1179,18 @@ SELECT DISTINCT(users.user_id) AS aaaaa10000,
     WHERE (users.user_id = "UserMetadata".user_id )
         AND (users.driver_username LIKE ? )
     ORDER BY creator.driver_username $p{sort_order},
+        users.driver_username ASC
+    LIMIT ? OFFSET ?
+EOSQL
+            primary_account => <<EOSQL,
+SELECT DISTINCT(users.user_id) AS aaaaa10000,
+        users.driver_username AS driver_username,
+        acct.name AS acct_name
+    FROM users
+        LEFT JOIN "UserMetadata" USING (user_id)
+        LEFT JOIN "Account" acct ON "UserMetadata".primary_account_id = acct.account_id
+    WHERE users.driver_username LIKE ? 
+    ORDER BY acct.name $p{sort_order},
         users.driver_username ASC
     LIMIT ? OFFSET ?
 EOSQL

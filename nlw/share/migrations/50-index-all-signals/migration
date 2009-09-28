@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+use Socialtext::Signal;
+use Socialtext::JobCreator;
+use Socialtext::SQL qw/sql_execute/;
+use Socialtext::Migration::Utils qw/ensure_socialtext_schema/;
+
+ensure_socialtext_schema(87);
+
+my $sth = sql_execute(<<EOT);
+SELECT signal_id FROM signal order by signal_id ASC
+EOT
+
+my $i = 0;
+while (my $row = $sth->fetchrow_arrayref) {
+    my $signal = Socialtext::Signal->Get(signal_id => $row->[0]);
+    Socialtext::JobCreator->index_signal($signal, priority => 60);
+    $i++;
+}
+
+print "Added $i SignalIndex jobs\n";
+exit 0;
