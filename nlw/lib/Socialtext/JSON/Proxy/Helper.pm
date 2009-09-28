@@ -6,17 +6,37 @@ use warnings;
 use File::Temp qw/mkdtemp/;
 use Socialtext::Paths;
 use Socialtext::AppConfig;
+use File::Find qw(find);
 
-sub ClearForUser {
+our $cache_dir = Socialtext::Paths::storage_directory('json_cache');
+
+sub ClearForUsers {
     my $class = shift;
-    my $user_id = shift;
-    PurgeCache();
+    my %user_ids = map { $_ => 1 } @_;
+
+    # Clear the small cache
+    my $pidfile = Socialtext::AppConfig->pid_file_dir . "/json-proxy.pid";
+    system "/sbin/start-stop-daemon --stop --quiet --oknodo --pidfile $pidfile --signal USR1";
+
+    # Purge each user's file-based cache
+    my $cache_dir = Socialtext::Paths::storage_directory('json_cache');
+    if (-d $cache_dir) {
+        find({
+            wanted => sub {
+                my $filename = $_;
+                my ($id) = $filename =~ m{\.(\d+)$};
+                if ($id and $user_ids{$id}) {
+                    unlink $filename;
+                }
+            }
+        }, $cache_dir);
+    }
 }
 
 sub ClearForAccount {
     my $class = shift;
     my $account_id = shift;
-    PurgeCache();
+    PurgeCache(); # just purge the entire cache
 }
 
 sub PurgeCache {
@@ -47,7 +67,7 @@ Socialtext::JSON::Proxy::Helper
 
   Socialtext::JSON::Proxy::Helper->PurgeCache
   # Deprecated:
-  Socialtext::JSON::Proxy::Helper->ClearForUser($user_id);
+  Socialtext::JSON::Proxy::Helper->ClearForUsers($user_id1, $user_id2);
   Socialtext::JSON::Proxy::Helper->ClearForAccount($account_id);
 
 =head1 DESCRIPTION

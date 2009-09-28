@@ -1212,7 +1212,7 @@ sub email_passes_invitation_filter {
         my %p    = validate( @_, $spec );
         my $user = $p{user};
 
-        Socialtext::JSON::Proxy::Helper->ClearForUser($user->user_id);
+        Socialtext::JSON::Proxy::Helper->ClearForUsers($user->user_id);
 
         $p{role} ||= Socialtext::Role->Member();
 
@@ -1325,7 +1325,7 @@ sub has_user {
 
         Socialtext::UserWorkspaceRoleFactory->Delete($uwr);
 
-        Socialtext::JSON::Proxy::Helper->ClearForUser($p{user}->user_id);
+        Socialtext::JSON::Proxy::Helper->ClearForUsers($p{user}->user_id);
         Socialtext::Cache->clear('authz_plugin');
 
         my $adapter = Socialtext::Pluggable::Adapter->new;
