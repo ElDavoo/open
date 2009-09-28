@@ -76,6 +76,7 @@ sub _invite_one_user {
             account_id => $acct->account_id,
             user_id    => $user->user_id,
             sender_id  => $self->{from_user}->user_id,
+            extra_text => $self->{extra_text},
         }
     );
 }
