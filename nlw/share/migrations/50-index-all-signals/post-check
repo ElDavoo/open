@@ -6,7 +6,7 @@ use Socialtext::Jobs;
 use Socialtext::SQL qw/sql_singlevalue/;
 
 my $stats = Socialtext::Jobs->stat_jobs();
-my $queued_jobs = $stats->{'Socialtext::Job::SignalIndex'}{queued};
+my $queued_jobs = $stats->{'Socialtext::Job::SignalIndex'}{queued} || 0;
 
 my $signal_count = sql_singlevalue(<<EOT);
 SELECT COUNT(signal_id) FROM signal;
