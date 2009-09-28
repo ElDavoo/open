@@ -18,10 +18,6 @@ has account => (
     lazy_build => 1,
 );
 
-has extra_text => (
-    is => 'ro', isa => 'Str'
-);
-
 sub _build_sender {
     my $self = shift;
     return Socialtext::User->new( user_id => $self->arg->{sender_id} );
@@ -48,7 +44,7 @@ sub do_work {
         Socialtext::AccountInvitation->new(
             account     => $account,
             from_user   => $self->sender,
-            extra_text  => $self->extra_text,
+            extra_text  => $self->arg->{extra_text},
         )->invite_notify($user);
     };
     if ( my $e = $@ ) {
