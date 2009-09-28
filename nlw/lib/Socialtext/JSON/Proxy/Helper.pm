@@ -23,7 +23,7 @@ sub PurgeCache {
     my $class = shift;
 
     my $pidfile = Socialtext::AppConfig->pid_file_dir . "/json-proxy.pid";
-    system "/sbin/start-stop-daemon --stop --quiet --oknodo --pidfile $pidfile --signal USR1";
+    system "/sbin/start-stop-daemon --stop --quiet --oknodo --pidfile $pidfile --signal USR1 >/dev/null 2>/dev/null";
 
     my $cache_dir = Socialtext::Paths::storage_directory('json_cache');
     if (-d $cache_dir) {

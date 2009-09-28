@@ -90,7 +90,16 @@ Socialtext.prepare_attachments_before_save = function() {
 }
 
 $(function() {
-    setTimeout(function() { $('#contentWarning').hide('slow') }, 10000);
+    if (document.getElementById('contentWarning')) {
+        setTimeout(function() {
+            /* The DOM may be entirely gone by this point, so first check we
+             * still have access to $ and to contentWarning.
+             */
+            if ((typeof $ != 'undefined') && document.getElementById('contentWarning')) {
+                $('#contentWarning').hide('slow')
+            }
+        }, 10000);
+    }
 
     // Fix the global nav for IE6
     $('#mainNav ul.level2').createSelectOverlap({noPadding: true});
