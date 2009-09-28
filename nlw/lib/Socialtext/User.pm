@@ -1182,6 +1182,18 @@ SELECT DISTINCT(users.user_id) AS aaaaa10000,
         users.driver_username ASC
     LIMIT ? OFFSET ?
 EOSQL
+            primary_account => <<EOSQL,
+SELECT DISTINCT(users.user_id) AS aaaaa10000,
+        users.driver_username AS driver_username,
+        acct.name AS acct_name
+    FROM users
+        LEFT JOIN "UserMetadata" USING (user_id)
+        LEFT JOIN "Account" acct ON "UserMetadata".primary_account_id = acct.account_id
+    WHERE users.driver_username LIKE ? 
+    ORDER BY acct.name $p{sort_order},
+        users.driver_username ASC
+    LIMIT ? OFFSET ?
+EOSQL
         );
 
         $p{username} = '%' . $p{username} . '%';
