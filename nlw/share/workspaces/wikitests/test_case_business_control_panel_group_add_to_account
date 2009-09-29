@@ -1,0 +1,38 @@
+* Fixtures: Socialtext
+
+| *Comment* | Test Case: Control Panel Group Add To Account |
+
+| *Comment* | create needed objects |  |
+| set | group | %%start_time%%group |
+| set | account | %%start_time%%account |
+| create-group | %%group%% |  |
+| create-account | %%account%% |  |
+
+| *Comment* | Visual inspection of add to account page |  |
+| open-ok | /nlw/control/group/%%group_id%%/add_to_account |  |
+| verify-text | //h1 | Add Group to Account |
+| verify-text | //p | Adding Group %%group%% (%%group_id%%) to an Account |
+| verify-text | //label | Send invitation email |
+
+| *Comment* | Add an account |  |
+| select-ok | //select | %%account%% |
+| click-and-wait | add-to-account |  |
+
+| *Comment* | Verify redirect, message |  |
+| verify-text | //h1 | %%group%% Group |
+| verify-text | css=span.message | Group is now a member of the %%account%% Account |
+| verify-text | //h4[2] | Accounts (2) |
+
+| *Comment* | Add account _again_ so we see a failure |  |
+| open-ok | /nlw/control/group/%%group_id%%/add_to_account |  |
+| select-ok | //select | %%account%% |
+| click-and-wait | add-to-account |  |
+| verify-text | //h1 | %%group%% Group |
+| verify-text | css=span.error | Group is already a member of the %%account%% Account |
+| verify-text | //h4[2] | Accounts (2) |
+
+| *Comment* | Test Case: Control Panel Group Add To Account TEARDOWN |
+
+| delete-group | %%group_id%% |
+
+| *Comment* | Test Case: Control Panel Group Add To Account COMPLETED |

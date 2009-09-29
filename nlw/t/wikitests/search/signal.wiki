@@ -218,3 +218,17 @@ creator, dm_recip
 | json-array-size | 1                                    |                  |
 | body-like       | how are you |
 
+
+# Testing searches with UTF8 characters
+
+| post-json        | /data/signals | {"signal":"I want to go to 日本 when I grow up."}   |
+| code-is          | 201           |                                                                |
+| job-count        | SignalIndex   | 1                                                              |
+| st-process-jobs  |               |                                                                |
+| job-count        | SignalIndex   | 0                                                              |
+
+| get             | /data/signals?q=日本 | application/json |
+| code-is         | 200                                      |                  |
+| json-parse      |                                          |                  |
+| json-array-size | 1                                        |                  |
+| body-like       | when I grow up |

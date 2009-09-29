@@ -37,6 +37,7 @@ S3_SOURCE_FILES= \
 		info.js \
 		Debug.js \
 		$(COMMON_JAVASCRIPT)/jquery-1.2.6.js \
+		$(COMMON_JAVASCRIPT)/utf8.js \
 		Class.js \
 		lightbox.js \
 		jquery-patch.js \
