@@ -2587,7 +2587,7 @@ sub list_groups {
             order_by => 'user_count',
             ($account_id ? (account_id => $account_id) : ()),
         );
-        die loc("No Groups found") if $groups->count == 0;
+        die loc("No Groups found") . "\n" if $groups->count == 0;
         print loc("Displaying all groups")."\n\n";
         print "| " . join(" | ",
             loc("ID"), loc("Group Name"),
