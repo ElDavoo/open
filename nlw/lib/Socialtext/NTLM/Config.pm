@@ -42,6 +42,16 @@ sub DefaultDomain {
     return $default->domain();
 }
 
+###############################################################################
+# Helper method, returning the name of the *fallback* NTLM domain to use.
+sub FallbackDomain {
+    my $class   = shift;
+    my @configs = $class->load();
+    my $default = $configs[1];
+    return unless $default;
+    return $default->domain();
+}
+
 1;
 
 =head1 NAME
@@ -96,6 +106,12 @@ in a list-ref context.
 Returns the name of the Default NTLM Domain that is to be used for NTLM
 authentication; e.g. if no NTLM Domain was provided in the NTLM handshake,
 what Domain should we attempt authentication against by default?
+
+=item B<Socialtext::NTLM::Config-E<gt>FallbackDomain()>
+
+Returns the name of the Fallback NTLM Domain that is to be used for NTLM
+authentication; e.g. if no NTLM Domain was provided in the NTLM handshake and
+its not the Default Domain, try this NTLM Domain as a second option.
 
 =back
 

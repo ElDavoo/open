@@ -6,7 +6,7 @@ use warnings;
 use YAML qw();
 use File::Slurp qw(write_file);
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 11;
+use Test::Socialtext tests => 14;
 
 use_ok( 'Socialtext::NTLM::Config' );
 
@@ -84,6 +84,40 @@ default_ntlm_domain_multiple_dcs: {
 
     my $domain = Socialtext::NTLM::Config->DefaultDomain();
     is $domain, 'SOCIALTEXT', 'NTLM Default Domain; multiple DCs';
+
+    unlink $filename;
+}
+
+###############################################################################
+# TEST: Get name of Fallback NTLM Domain, when *NO* NTLM config is present.
+fallback_ntlm_domain_no_config: {
+    my $filename = Socialtext::NTLM::Config->config_filename();
+    unlink $filename;
+
+    my $domain = Socialtext::NTLM::Config->FallbackDomain();
+    ok !$domain, 'NTLM Fallback Domain; no NTLM configuration';
+}
+
+###############################################################################
+# TEST: Get name of Fallback NTLM Domain, when only one DC is configured.
+fallback_ntlm_domain_single_dc: {
+    my $filename = Socialtext::NTLM::Config->config_filename();
+    write_file($filename, $yaml);
+
+    my $domain = Socialtext::NTLM::Config->FallbackDomain();
+    ok !$domain, 'NTLM Fallback Domain; one DC';
+
+    unlink $filename;
+}
+
+###############################################################################
+# TEST: Get name of Fallback NTLM Domain, when multiple DCs are configured.
+fallback_ntlm_domain_multiple_dcs: {
+    my $filename = Socialtext::NTLM::Config->config_filename();
+    write_file($filename, "---\n$yaml\n---\n$more_yaml");
+
+    my $domain = Socialtext::NTLM::Config->FallbackDomain();
+    is $domain, 'EXAMPLE', 'NTLM Fallback Domain; multiple DCs';
 
     unlink $filename;
 }
