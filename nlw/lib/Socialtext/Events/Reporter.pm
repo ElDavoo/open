@@ -200,6 +200,7 @@ sub _extract_signal {
     my $parser = Socialtext::WikiText::Parser::Messages->new(
        receiver => Socialtext::WikiText::Emitter::Messages::HTML->new(
            callbacks => {
+               link_dictionary => $self->link_dictionary,
                viewer => $self->viewer,
            },
        )
