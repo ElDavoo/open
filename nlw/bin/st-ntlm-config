@@ -176,6 +176,12 @@ C<st-ntlm-config> is a command line utility to help manage the NTLM
 configuration file for Socialtext, which is typically stored in
 F</etc/socialtext/ntlm.yaml>.
 
+Please note that order B<is> important within the F<ntlm.yaml> file, for
+determining what the "default" and "fallback" NTLM Domains are; first listed
+NTLM configuration is the default, second listed NTLM configuration is the
+fallback.  If the NTLM SSO handshake doesn't indicate the NTLM Domain to
+authenticate the User against, these will be used to attempt authentication.
+
 =head1 OPTIONS
 
 =over
