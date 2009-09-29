@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 30;
+use Test::Socialtext tests => 38;
 use Test::Exception;
 use Socialtext::SQL qw/:exec/;
 
@@ -105,6 +105,49 @@ query_groups_by_account_id: {
     );
     isa_ok $groups, 'Socialtext::MultiCursor', 'got cursor of Groups';
     is $groups->count(), 0, '... empty';
+}
+
+###############################################################################
+# TEST: query Groups by Workspace Id
+query_groups_by_ws_id: {
+    my $group1 = create_test_group( unique_id => "Group ZZZ" );
+    my $group2 = create_test_group( unique_id => "Group AAA" );
+    my $ws1    = create_test_workspace();
+    my $ws2    = create_test_workspace();
+
+    $ws1->add_group( group => $group1 );
+    ok $ws1->has_group( $group1 ), 'Group 1 is in WS 1';
+    $ws1->add_group( group => $group2 );
+    ok $ws1->has_group( $group2 ), 'Group 2 is in WS 2';
+
+    $ws2->add_group( group => $group1 );
+    ok $ws2->has_group( $group1 ), 'Group 1 is in WS 2';
+
+    workspace_one: {
+        my $groups = Socialtext::Group->All(
+            workspace_id => $ws1->workspace_id
+        );
+        is $groups->count => '2', 'found 2 Groups in WS 1...';
+
+        my $found = $groups->next();
+        is $found->group_id => $group2->group_id, '... with Group 2 first';
+        $found = $groups->next();
+        is $found->group_id => $group1->group_id, '... with Group 1 second';
+    }
+
+
+    workspace_two: {
+        my $groups = Socialtext::Group->All(
+            workspace_id => $ws2->workspace_id
+        );
+        is $groups->count => '1', 'found 1 Group in WS 2...';
+
+        my $found = $groups->next();
+        is $found->group_id => $group1->group_id, '... with Group 1 first';
+    }
+
+    Test::Socialtext::Group->delete_recklessly( $group1 );
+    Test::Socialtext::Group->delete_recklessly( $group2 );
 }
 
 ###############################################################################

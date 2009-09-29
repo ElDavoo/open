@@ -93,6 +93,11 @@ sub All {
         push @where, 'gar.account_id' => $p{account_id};
     }
 
+    if ($p{workspace_id}) {
+        $from .= q{ JOIN group_workspace_role gwro USING (group_id) };
+        push @where, 'gwro.workspace_id' => $p{workspace_id};
+    }
+
     if ($p{_count_only}) {
         @cols = ('COUNT(group_id) as count');
         $order = undef; # force no ORDER BY
