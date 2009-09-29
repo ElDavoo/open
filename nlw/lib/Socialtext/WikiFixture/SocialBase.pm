@@ -387,6 +387,14 @@ sub delete_created_groups {
     $self->handle_command('delete-group', $_) for (@{$self->{created_groups}});
 }
 
+sub delete_all_groups {
+    my $self = shift;
+
+    my $groups = Socialtext::Group->All();
+    while (my $g = $groups->next) {
+        $self->delete_group( $g->group_id );
+    }
+}
 
 sub delete_group {
     my $self     = shift;
