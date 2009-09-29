@@ -22,6 +22,8 @@ sub unset            { }
 sub add              { $HEADERS{$_[1]} = $_[2] }
 sub status           { }
 sub send_http_header { }
+sub auth_type        { }
+sub auth_name        { }
 
 sub instance {
     my $class = shift;
