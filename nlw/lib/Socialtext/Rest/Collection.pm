@@ -80,7 +80,6 @@ sub _make_getter {
 
         Socialtext::Timer->Continue("GET_$content_type");
         my $rv = eval { $self->if_authorized( 'GET', sub {
-            my $result;
             Socialtext::Timer->Continue('get_resource');
             my $resource = $self->get_resource($rest, $content_type);
             Socialtext::Timer->Pause('get_resource');
