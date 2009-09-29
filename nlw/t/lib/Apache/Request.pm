@@ -56,7 +56,7 @@ sub hostname {
 }
 
 # this can be extended to return more values depending on the key
-my %DIR_CONFIG = (
+our %DIR_CONFIG = (
     NLWHTTPSRedirect => 1,
 );
 sub dir_config {
