@@ -3123,7 +3123,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   add-permission --workspace --role --permission
   remove-permission --workspace --role --permission
   show-acls --workspace
-  show-members --workspace
+  show-members --workspace [--direct]
   show-admins --workspace
   show-impersonators --workspace
   set-workspace-config --workspace <key> <value>
@@ -3159,7 +3159,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   create-account --name [--type]
   list-accounts [--ids]
-  show-members --account
+  show-members --account [--direct]
   give-accounts-admin [--username or --email]
   remove-accounts-admin [--username or --email]
   give-system-admin [--username or --email]
@@ -3382,12 +3382,13 @@ workspace.
 Prints a table of the workspace's role/permissions matrix to standard
 output.
 
-=head2 show-members [--workspace or --account]
+=head2 show-members [--workspace or --account] [--direct]
 
 Prints a table of the workspace/account's members to standard output.
 
-When using the --account param, you may also pass --direct, which will cause
-show-wembers to only display members whose primary account is the account.
+You may also pass --direct, which will cause show-wembers to only display
+members who are directly associated with the workspace or account, eg _not_
+through a group membership.
 
 =head2 show-admins --workspace
 
