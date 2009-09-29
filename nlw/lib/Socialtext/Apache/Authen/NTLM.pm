@@ -40,6 +40,11 @@ sub get_config {
         $self->{smbbdc}{$domain} = join ' ', @{$backups};
     }
 
+    # set the default/fallback domains, in case the NTLM handshake doesn't
+    # indicate which one to use
+    $self->{defaultdomain}  = Socialtext::NTLM::Config->DefaultDomain();
+    $self->{fallbackdomain} = Socialtext::NTLM::Config->FallbackDomain();
+
     # debugging notes
     my $prefix = 'ST::Apache::Authen::NTLM:';
     st_log->debug( "$prefix default domain: " . $self->{defaultdomain} );
