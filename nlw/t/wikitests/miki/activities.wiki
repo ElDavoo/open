@@ -6,6 +6,8 @@
 | set | follow_empty | There are no activities to display, either because you aren't following anyone yet, or the people you're following haven't created any. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues. |
 | set | all_empty | There are no activities to display because none have been created. |
 
+| st-clear-events |
+
 | *Comment* | Error messages           |
 | get       | /m/activities            |
 | body-like | %%convos_empty%%         |
