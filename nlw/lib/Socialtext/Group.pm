@@ -386,6 +386,30 @@ sub workspaces {
     );
 }
 
+###############################################################################
+sub to_hash {
+    my $self = shift;
+    my %opts = @_;
+
+    my $hash = {
+        group_id => $self->group_id,
+        name => $self->driver_group_name,
+        user_count => $self->user_count,
+        workspace_count => $self->workspace_count,
+    };
+
+    if ($opts{show_members}) {
+        my $members = [];
+        my $user_cursor = $self->users;
+        while (my $u = $user_cursor->next) {
+            push @$members, $u->to_hash(minimal => 1);
+        }
+        $hash->{members} = $members;
+    }
+
+    return $hash;
+}
+
 sub _build_workspace_count {
     return shift->workspaces->count;
 }

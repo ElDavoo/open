@@ -42,23 +42,7 @@ sub _entity_hash {
     my $self  = shift;
     my $group = shift;
 
-    my $hash = {
-        group_id => $group->group_id,
-        name => $group->driver_group_name,
-        user_count => $group->user_count,
-        workspace_count => $group->workspace_count,
-    };
-
-    if ($self->{_show_members}) {
-        my $members = [];
-        my $user_cursor = $group->users;
-        while (my $u = $user_cursor->next) {
-            push @$members, $u->to_hash(minimal => 1);
-        }
-        $hash->{members} = $members;
-    }
-
-    return $hash;
+    return $group->to_hash( show_members => $self->{_show_members} );
 }
 
 sub GET_json {
