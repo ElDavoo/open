@@ -1853,9 +1853,8 @@ sub show_impersonators {
 sub _get_ws_users_cursor {
     my $self     = shift;
     my $ws       = shift;
-    my %opts     = $self->_get_options('indirect');
-    my $indirect = $opts{indirect} || 0;
-    return $ws->users_with_roles(direct => !$indirect);
+    my %opts     = $self->_get_options('direct');
+    return $ws->users_with_roles( %opts );
 }
 
 sub purge_page {

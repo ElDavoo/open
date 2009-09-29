@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Socialtext::GroupAccountRoleFactory;
-use Test::Socialtext tests => 31;
+use Test::Socialtext tests => 38;
 use Test::Output qw(combined_from);
 
 # Only need a DB.
@@ -230,4 +230,46 @@ group_users_in_account_membership_no_displayed: {
     } );
     unlike $output, qr/\Q$email1\E/, '... does not list group user';
     like $output, qr/\Q$email2\E/, '... lists direct user';
+}
+
+################################################################################
+# TEST: Workspace Users with direct Roles
+workspace_users_with_direct_roles: {
+    my $workspace = create_test_workspace();
+    my $group     = create_test_group();
+    my $user1     = create_test_user();
+    my $email1    = $user1->email_address;
+    my $user2     = create_test_user();
+    my $email2    = $user2->email_address;
+
+    $group->add_user( user => $user1 );
+    ok $group->has_user( $user1 ), 'User1 is in Group';
+
+    $workspace->add_user( user => $user2 );
+    ok $workspace->has_user( $user2 ), 'User2 is in Workspace';
+
+    $workspace->add_group( group => $group );
+    ok $workspace->has_group( $group ), 'Group is in Workspace';
+
+    my $output = combined_from( sub {
+        Socialtext::CLI->new(
+            argv => [
+                '--workspace' => $workspace->name,
+            ],
+        )->show_members();
+    } );
+    like $output, qr/\Q$email1\E/, '... lists group user without direct';
+    like $output, qr/\Q$email2\E/, '... lists direct user without direct';
+
+    $output = combined_from( sub {
+        Socialtext::CLI->new(
+            argv => [
+                '--workspace' => $workspace->name,
+                '--direct',
+            ],
+        )->show_members();
+    } );
+
+    unlike $output, qr/\Q$email1\E/, '... does not list group user with direct';
+    like $output, qr/\Q$email2\E/, '... lists direct user with direct';
 }
