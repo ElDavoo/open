@@ -1626,25 +1626,12 @@ sub _to_spreadsheet_plain_text {
     require Socialtext::Sheet;
     require Socialtext::Sheet::Renderer;
 
-    my $html = Socialtext::Sheet::Renderer->new(
+    my $text = Socialtext::Sheet::Renderer->new(
         sheet => Socialtext::Sheet->new(sheet_source => \$content),
         hub   => $self->hub,
-    )->sheet_to_html();
+    )->sheet_to_text();
 
-    $html =~ s/<td[^>]*><\/td>//sg;
-    $html =~ s/<tr[^>]*><\/tr>//sg;
-    $html =~ s/<td.*?>/ | /sg;
-    $html =~ s/<tr.*?>/| /sg;
-    $html =~ s/<\/tr.*?>/ |/sg;
-
-    $html =~ s/<.*?>//sg;
-    $html =~ s/&nbsp;/ /g;
-    $html =~ s/\s+/ /g;
-    $html =~ s/\|\s+(?=\|)//g;
-
-    # Since we are starting with HTML (for spreadsheets) things will
-    # already be escaped.
-    return Socialtext::String::html_unescape($html);
+    return $text;
 }
 
 # REVIEW: We should consider throwing exceptions here rather than return codes.

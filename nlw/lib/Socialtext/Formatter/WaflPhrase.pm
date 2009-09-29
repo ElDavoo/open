@@ -548,6 +548,8 @@ sub html {
     # inline a cell or range
 
     my $ws = Socialtext::Workspace->new( name => $workspace_name );
+    return $self->permission_error unless $ws;
+
     if ($ws->workspace_id == $self->hub->current_workspace->workspace_id) {
         my $page = $self->hub->pages->new_page($page_id);
         return $self->cell_value($page, $section_id);
@@ -555,7 +557,7 @@ sub html {
 
     # it's cross-workspace
     return $self->permission_error
-        unless $ws && $self->authz->user_has_permission_for_workspace(
+        unless $self->authz->user_has_permission_for_workspace(
             user       => $self->current_user,
             permission => ST_READ_PERM,
             workspace  => $ws,

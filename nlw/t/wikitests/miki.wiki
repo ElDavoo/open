@@ -2,6 +2,7 @@
 
 | standard-test-setup |
 
+| edit_page | %%workspace%% | otherpage | |
 | Comment   | Global nav should show on workspace all pages            |
 | GET       | /m/page/%%workspace%%/                                   |
 | code-is   | 200                                                      |
@@ -9,11 +10,14 @@
 | body-like | Workspaces                                               |
 | body-like | People                                                   |
 | body-like | Signals                                                  |
-| body-like | Activities                                               |
+| body-like | Activity                                                 |
 | body-like | Log out                                                  |
-| body-like | qr/href="\/m\/page\/%%workspace%%\/">%%workspace%%<\/a>/ |
-| body-like | qr/href="\/m\/changes\/%%workspace%%\/">What's new<\/a>/ |
+| body-like | qr/href="\/m\/changes\/%%workspace%%\/">What's New<\/a>/ |
 | body-like | qr/href="\/m\/search\/%%workspace%%\/">Search<\/a>/      |
+| GET       | /m/page/%%workspace%%/otherpage/                         |
+| code-is   | 200                                                      |
+| body-like | qr/href="\/m\/page\/%%workspace%%\/">%%workspace%%<\/a>/ |
+
 
 | GET       | /m/workspace_list               |
 | code-is   | 200                             |
@@ -32,8 +36,9 @@
 | body-like | People                   |
 | body-like | Signals                  |
 | body-like | Log out                  |
-| body-like | Filter by category       |
+| body-like | Tags                     |
 | body-like | %%workspace%%            |
+
 
 | Comment     | /lite/* should redirect to /m/* |                        |
 | GET         | /lite/page/%%workspace%%/       |                        |
@@ -54,6 +59,7 @@
 | code-is     | 302                                 |            |
 | header-like | Location                            | /m/signals |
 
+
 | Comment     | signals                  |                           |
 | GET         | /m/signals               |                           |
 | code-is     | 200                      |                           |
@@ -64,11 +70,11 @@
 | code-is     | 200                      |                           |
 | body-like   | What are you working on? |                           |
 | body-like   | I can haz /m             |                           |
-| body-like   | Newer</span>             |                           |
-| body-like   | Newest</span>            |                           |
-| body-unlike | Older &gt;&gt;</a>       |                           |
-| body-like   | Older &gt;&gt;</span>    |                           |
-| body-like   | Refresh                  |                           |
+| body-like   | &lt;&lt; Previous page</span>             |                           |
+| body-like   | First page</span>            |                           |
+| body-unlike | Next page &gt;&gt;</a>       |                           |
+| body-like   | Next page &gt;&gt;</span>    |                           |
+| body-like   | refresh                  |                           |
 
 | Comment     | Pagination               |                        |
 | post-json   | /data/signals            | {"signal":"signal '1'"}  |
@@ -108,10 +114,10 @@
 | body-like   | signal '12'              |
 | body-unlike | signal '11'              |
 | body-unlike | signal '10'              |
-| body-like   | Newer</span>             |
-| body-like   | Newest</span>            |
-| body-like   | Older &gt;&gt;</a>       |
-| body-like   | Refresh                  |
+| body-like   | Previous page</span>             |
+| body-like   | First page</span>            |
+| body-like   | Next page &gt;&gt;</a>       |
+| body-like   | refresh                  |
 | GET         | /m/signals/?page=1       |
 | code-is     | 200                      |
 | body-like   | What are you working on? |
@@ -126,10 +132,10 @@
 | body-like   | signal '3'               |
 | body-like   | signal '2'               |
 | body-unlike | signal '1'               |
-| body-like   | Newer</a>                |
-| body-like   | Newest</a>               |
-| body-like   | Older &gt;&gt;</a>       |
-| body-like   | Refresh                  |
+| body-like   | Previous page</a>                |
+| body-like   | First page</a>               |
+| body-like   | Next page &gt;&gt;</a>       |
+| body-like   | refresh                  |
 
 | Comment | Post a signal via miki |
 | POST_form | /m/signals | signal=o%20hai |
@@ -139,21 +145,21 @@
 | Comment     | Test the signals tabs         |
 | GET         | /m/signals                    |
 | code-is     | 200                           |
-| body-unlike | >My Colleagues</a>            |
-| body-like   | >My Colleagues</span>         |
+| body-unlike | >People I follow</a>            |
+| body-like   | >People I follow</span>         |
 | body-like   | >All</a>                      |
 | body-like   | >Mine</a>                     |
 
 | GET         | /m/signals/?all=1             |
 | code-is     | 200                           |
-| body-like   | >My Colleagues</a>            |
+| body-like   | >People I follow</a>            |
 | body-unlike | >All</a>                      |
 | body-like   | >All</span>                   |
 | body-like   | >Mine</a>                     |
 
 | GET         | /m/signals/?mine=1 |
 | code-is     | 200                           |
-| body-like   | >My Colleagues</a>            |
+| body-like   | >People I follow</a>            |
 | body-like   | >All</a>                      |
 | body-unlike | >Mine</a>                     |
 | body-like   | >Mine</span>                  |
@@ -162,7 +168,7 @@
 | GET       | /m/activities            |
 | code-is   | 200                      |
 | body-like | My Conversations |
-| body-like | People I Follow |
+| body-like | People I follow |
 | body-like | All |
 
 
