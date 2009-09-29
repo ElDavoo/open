@@ -389,6 +389,16 @@ sub groups {
 
 sub to_hash {
     my $self = shift;
+    my %args = @_;
+
+    if ($args{minimal}) {
+        return {
+            user_id => $self->user_id,
+            username => $self->username,
+            best_full_name => $self->best_full_name,
+        };
+    }
+
     my $hash = {};
     foreach my $attr ( @minimal_interface ) {
         my $value = $self->$attr;

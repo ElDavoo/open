@@ -42,12 +42,23 @@ sub _entity_hash {
     my $self  = shift;
     my $group = shift;
 
-    return +{
+    my $hash = {
         group_id => $group->group_id,
         name => $group->driver_group_name,
         user_count => $group->user_count,
         workspace_count => $group->workspace_count,
     };
+
+    if ($self->{_show_members}) {
+        my $members = [];
+        my $user_cursor = $group->users;
+        while (my $u = $user_cursor->next) {
+            push @$members, $u->to_hash(minimal => 1);
+        }
+        $hash->{members} = $members;
+    }
+
+    return $hash;
 }
 
 sub GET_json {
@@ -56,6 +67,7 @@ sub GET_json {
     Socialtext::Timer->Continue("GET_json");
     my $rv = eval { $self->if_authorized( 'GET', sub {
         Socialtext::Timer->Continue('get_resource');
+        $self->{_show_members} = $rest->query->param('show_members') ? 1 : 0;
         my $resource = $self->get_resource($rest);
         Socialtext::Timer->Pause('get_resource');
         $resource = [] unless (ref $resource && @$resource);
