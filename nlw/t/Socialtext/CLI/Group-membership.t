@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Socialtext::GroupAccountRoleFactory;
-use Test::Socialtext tests => 28;
+use Test::Socialtext tests => 31;
 use Test::Output qw(combined_from);
 
 # Only need a DB.
@@ -161,7 +161,33 @@ group_users_in_account_membership_de_duped: {
     } );
 
     my @lines = grep { /\Q$email\E/ } split(/\n/, $output);
-    is scalar(@lines), 1, 'Users are de-duped';
+    is scalar(@lines), 1, 'Users are de-duped for Account';
+}
+
+################################################################################
+# TEST: Workspace users in Groups are de-duped
+group_users_in_workspace_membership_de_duped: {
+    my $workspace = create_test_workspace();
+    my $user      = create_test_user();
+    my $group     = create_test_group();
+    my $email     = $user->email_address;
+
+    $workspace->add_user( user => $user );
+    ok $workspace->has_user( $user ), 'User is in Workspace';
+
+    $group->add_user( user => $user );
+    ok $group->has_user( $user ), 'User is in Group';
+
+    my $output = combined_from( sub {
+        Socialtext::CLI->new(
+            argv => [
+                '--workspace' => $workspace->name,
+            ],
+        )->show_members();
+    } );
+
+    my @lines = grep { /\Q$email\E/ } split(/\n/, $output);
+    is scalar(@lines), 1, 'Users are de-duped for Workspace';
 }
 
 ################################################################################
