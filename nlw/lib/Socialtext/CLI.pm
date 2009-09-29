@@ -1181,6 +1181,16 @@ sub _require_create_workspace_params {
     );
 }
 
+sub _load_workspace {
+    my ($self, $workspace_name) = @_;
+    my $workspace = Socialtext::Workspace->new( name => $workspace_name );
+    unless ($workspace) {
+        $self->_error(
+            loc('No workspace named "[_1]" could be found.', $workspace_name)
+        );
+    }
+}
+
 sub _load_account {
     my $self = shift;
     my $account_name = shift;
@@ -2446,10 +2456,7 @@ sub invite_user {
 
     $self->_error('You must specify a workspace')
         if (!$opts{workspace});
-    my $workspace = Socialtext::Workspace->new( name => $opts{workspace} );
-    unless ($workspace) {
-        $self->_error(qq|No workspace named "$opts{workspace}" could be found.| );
-    }
+    my $workspace = $self->_load_workspace($opts{workspace});
 
     $self->_error('You must specify an invitee email address')
         if (!$opts{email});
