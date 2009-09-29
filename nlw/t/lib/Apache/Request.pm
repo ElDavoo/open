@@ -2,6 +2,7 @@ package Apache::Request;
 # @COPYRIGHT@
 use strict;
 use warnings;
+use unmocked 'Test::MockObject';
 use base 'Exporter';
 our @EXPORT_OK = qw/get_log_reasons/;
 
@@ -64,6 +65,13 @@ our %DIR_CONFIG = (
 sub dir_config {
     my $self = shift;
     my $key = shift;
+
+    # If no Key was provided, we're expecting an object back that can be
+    # queried to get the DirConfig.
+    unless ($key) {
+        return Test::MockObject->new
+            ->mock( 'get' => sub { $self->dir_config(@_) } );
+    }
 
     return $DIR_CONFIG{$key};
 }
