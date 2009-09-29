@@ -411,6 +411,11 @@
             'application/json': [Socialtext::Rest::Groups, GET_json]
         '*':                    [Socialtext::Rest::Groups, bad_method]
 -
+    '/data/groups/:group_id':
+        'GET':
+            'application/json': [Socialtext::Rest::Group, GET_json]
+        '*':                    [Socialtext::Rest::Group, bad_method]
+-
     '/data/webhooks':
         'GET':
             'application/json': [Socialtext::Rest::WebHooks, GET_json]

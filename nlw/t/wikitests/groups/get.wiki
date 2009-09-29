@@ -1,0 +1,72 @@
+Tests for [Story: Groups ReST API]
+
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+# Create a new group, make sure it shows up
+
+| set          | group_name     | group%%start_time%% |              |
+| create-group | %%group_name%% | %%account%%         | %%username%% |
+
+## visible by Group Creator (Creator sees Groups he created or is a member of)
+
+| GET | /data/groups/%%group_id%% |
+| code-is | 200 |
+| header-like | Cache-Control | private |
+| json-parse | |
+| Body-like | "group_id":"%%group_id%%" |
+| Body-like | "name":"%%group_name%%" |
+| body-like | "user_count":"0" |
+| body-like | "workspace_count":"0" |
+| body-unlike | "members" |
+
+# Show members
+
+| GET | /data/groups/%%group_id%%?show_members=1 |
+| code-is | 200 |
+| header-like | Cache-Control | private |
+| json-parse | |
+| Body-like | "group_id":"%%group_id%%" |
+| Body-like | "name":"%%group_name%%" |
+| body-like | "user_count":"0" |
+| body-like | "workspace_count":"0" |
+| body-like | "members":[] |
+
+## ... visible by Business Admin (Business Admin can see all Groups)
+
+| set            | badmin     | badmin%%start_time%%@ken.socialtext.net |
+| create-user    | %%badmin%% | password                                |
+| http-user-pass | %%badmin%% | password                                |
+
+| set-business-admin | %%badmin%%                | 1       |
+| GET                | /data/groups/%%group_id%% |         |
+| code-is            | 200                       |         |
+| header-like        | Cache-Control             | private |
+| json-parse         |                           |         |
+| body-like          | "group_id":"%%group_id%%"          |         |
+
+| set-business-admin | %%badmin%%                | 0       |
+| GET                | /data/groups/%%group_id%% |         |
+| header-like        | Cache-Control             | private |
+| code-is            | 404                       |         |
+
+## visible by Group Members (Members see Groups they are members of)
+## *not* visible by other Users (can't see Groups you have no relationship to)
+
+| set            | jane     | jane%%start_time%%@ken.socialtext.net |
+| create-user    | %%jane%% | password                              |
+| http-user-pass | %%jane%% | password                              |
+
+| GET             | /data/groups/%%group_id%% |         |
+| code-is         | 404                       |         |
+| header-like     | Cache-Control             | private |
+
+| add-user-to-group | %%jane%%                  | %%group_id%% |
+| GET               | /data/groups/%%group_id%%              |              |
+| code-is           | 200                       |              |
+| header-like       | Cache-Control             | private      |
+| json-parse        |                           |              |
+| Body-like         | "group_id":"%%group_id%%" |              |
+| body-like         | "user_count":"1"          |              |
+
