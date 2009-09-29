@@ -32,6 +32,16 @@ sub init {
     }
 }
 
+###############################################################################
+# Helper method, returning the name of the *default* NTLM domain to use.
+sub DefaultDomain {
+    my $class   = shift;
+    my @configs = $class->load();
+    my $default = $configs[0];
+    return unless $default;
+    return $default->domain();
+}
+
 1;
 
 =head1 NAME
@@ -80,6 +90,12 @@ L<Socialtext::Base::Config>.
 Custom initialization routine.  Verifies that the configuration contains all
 of the required fields, and ensures that the C<backup> field is always treated
 in a list-ref context.
+
+=item B<Socialtext::NTLM::Config-E<gt>DefaultDomain()>
+
+Returns the name of the Default NTLM Domain that is to be used for NTLM
+authentication; e.g. if no NTLM Domain was provided in the NTLM handshake,
+what Domain should we attempt authentication against by default?
 
 =back
 
