@@ -2579,20 +2579,26 @@ sub set_profile_field {
 
 sub list_groups {
     my $self = shift;
-    my %opts = $self->_get_options('account:s');
+    my %opts = $self->_get_options('account:s', 'workspace:s');
 
-    my $account_id;
+    my %param;
     if ($opts{account}) {
         my $account = $self->_load_account( $opts{account} );
-        $account_id = $account->account_id();
+        $param{account_id} = $account->account_id();
+        $param{sort_order} = 'desc';
+        $param{order_by}   = 'user_count';
+    }
+    if ($opts{workspace}) {
+        my $workspace = $self->_load_workspace( $opts{workspace} );
+        $param{workspace_id} = $workspace->workspace_id();
+        $param{order_by}   = 'driver_group_name';
+        $param{sort_order} = 'asc';
     }
 
     eval {
         my $groups = Socialtext::Group->All(
             include_aggregates => 1,
-            sort_order => 'desc',
-            order_by => 'user_count',
-            ($account_id ? (account_id => $account_id) : ()),
+            %param,
         );
         die loc("No Groups found") . "\n" if $groups->count == 0;
         print loc("Displaying all groups")."\n\n";
@@ -3211,7 +3217,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   GROUPS
 
-  list-groups [--account]
+  list-groups [--account or --workspace]
   show-group-config --group
   create-group --ldap-dn [--account]
   add-member --group --account
@@ -3716,11 +3722,14 @@ Changes an exiting profile field identified by name to have new properties.  Opt
 
 Note: A field's class cannot currently be changed to or from the 'relationship' class.
 
-=head2 list-groups [--account]
+=head2 list-groups [--account or --workspace]
 
 Display an overview of Groups (in Socialtext wiki table format).  Includes the number of Workspaces each group belongs to.  Includes the number of Users that are members of each Group.
 
 If C<--account> is specified, limits the display to groups in association with that account.
+
+If C<--workspace> is specified, limits the display to groups in association
+with that workspace.
 
 =head2 show-group-config --group
 

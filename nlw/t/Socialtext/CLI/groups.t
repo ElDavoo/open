@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 28;
+use Test::Socialtext tests => 35;
 use Test::Exception;
 BEGIN { use_ok 'Socialtext::CLI'; }
 use t::Socialtext::CLITestUtils qw/is_last_exit/;
@@ -57,6 +57,38 @@ list_account: {
         'Created', 'Created By');
     is $lines[2], "| $hdr |", "correct header";
     like $lines[3], qr/^\| $gb_id \| Group B /, "first row is group b";
+}
+
+################################################################################
+list_workspace_group: {
+    my $group1 = create_test_group();
+    my $group1_id = $group1->group_id;
+
+    my $group2 = create_test_group();
+    my $group2_id = $group2->group_id;
+
+    my $ws = create_test_workspace();
+
+    $ws->add_group( group => $group1 );
+    ok $ws->has_group( $group1 ), 'Group 1 is in Workspace';
+
+    $ws->add_group( group => $group2 );
+    ok $ws->has_group( $group2 ), 'Group 2 is in Workspace';
+
+    my $output = combined_from { eval {
+        new_cli('--workspace' => $ws->name)->list_groups()
+    } };
+    is_last_exit(0);
+
+    #diag $output;
+    my @lines = split("\n",$output);
+    is scalar(@lines), 5, "two groups in workspace";
+    my $hdr = join (' | ',
+        'ID', 'Group Name', '# of Workspaces', '# of Users', 'Primary Account',
+        'Created', 'Created By');
+    is $lines[2], "| $hdr |", "correct header";
+    like $lines[3], qr/^\| $group1_id \| /, "first row is group 1";
+    like $lines[4], qr/^\| $group2_id \| /, "second row is group 2";
 }
 
 ################################################################################
