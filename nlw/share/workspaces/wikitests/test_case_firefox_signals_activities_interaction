@@ -1,4 +1,5 @@
-| *Comment* | Test Case: Signals/Activities Interaction |  |
+| *Comment* | Test Case: Firefox Signals/Activities Interaction |  |
+| *Comment* | Test Case: FIREFOX ONLY |  |
 
 * Fixture: SocialWidgets
 
@@ -78,13 +79,21 @@ enable-acct-plugin | signals | %%secondaryacct%% | |
 | *Comment* | Test Case: Signals/Activities Interaction Signal, Mention, Reply, Edit Summaries, Delete |  |
 | wait_for_element_visible_ok | expand-input | 10000 |
 | click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%mainuser%% simple signals |
+| wait_for_element_visible_ok | signalFrame | 10000 |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | %%mainuser%% simple signals |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 4000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%efriend%%} mention |
+| wait_for_element_visible_ok | signalFrame | 10000 |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | {user: %%efriend%%} mention |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
@@ -122,18 +131,28 @@ enable-acct-plugin | signals | %%secondaryacct%% | |
 | *Comment* | Test Case: Signals/Activities Interaction %%efollowed%% Signal, Mention, Reply, Edit Summaries, Delete |  |
 | wait_for_element_visible_ok | expand-input | 10000 |
 | click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%followed%% simple signal |
+| wait_for_element_visible_ok | signalFrame | 10000 |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | %%followed%% simple signal |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%emainuser%%} mention from %%followed%% |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | {user: %%emainuser%%} mention from %%followed%% |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | d {user: %%emainuser%%} direct from %%followed%% |
+| select-frame | relative=parent |  |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | d {user: %%emainuser%%} direct from %%followed%% |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
@@ -155,18 +174,28 @@ enable-acct-plugin | signals | %%secondaryacct%% | |
 | st-select-widget-frame | signals_widget |  |
 | wait_for_element_visible_ok | expand-input | 10000 |
 | click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%friend%% simple signal |
+| wait_for_element_visible_ok | signalFrame | 10000 |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | %%friend%% simple signal |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%emainuser%%} mention from %%friend%% |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | {user: %%emainuser%%} mention from %%friend%% |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | d {user: %%emainuser%%} direct from %%friend%% |
+| select-frame | relative=parent |  |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | d {user: %%emainuser%%} direct from %%friend%% |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
@@ -199,19 +228,28 @@ enable-acct-plugin | signals | %%secondaryacct%% | |
 | st-select-widget-frame | signals_widget |  |
 | wait_for_element_visible_ok | expand-input | 10000 |
 | click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%conversant%% simple signal |
+| wait_for_element_visible_ok | signalFrame | 10000 |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | %%conversant%% simple signal |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%emainuser%%} mention from %%conversant%% |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | {user: %%emainuser%%} mention from %%conversant%% |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | d {user: %%emainuser%%} direct from %%conversant%% |
+| select-frame | relative=parent |  |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | d {user: %%emainuser%%} direct from %%conversant%% |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
@@ -233,18 +271,28 @@ enable-acct-plugin | signals | %%secondaryacct%% | |
 | st-select-widget-frame | signals_widget |  |
 | wait_for_element_visible_ok | expand-input | 10000 |
 | click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%second%% simple signal |
+| wait_for_element_visible_ok | signalFrame | 10000 |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | %%second%% simple signal |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%emainuser%%} mention from %%second%% |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | {user: %%emainuser%%} mention from %%second%% |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | d {user: %%emainuser%%} direct from %%second%% |
+| select-frame | relative=parent |  |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | d {user: %%emainuser%%} direct from %%second%% |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
@@ -266,25 +314,35 @@ enable-acct-plugin | signals | %%secondaryacct%% | |
 | st-select-widget-frame | signals_widget |  |
 | wait_for_element_visible_ok | expand-input | 10000 |
 | click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%wsadmin%% simple signal |
+| wait_for_element_visible_ok | signalFrame | 10000 |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | %%wsadmin%% simple signal |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%emainuser%%} mention from %%wsadmin%% |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | {user: %%emainuser%%} mention from %%wsadmin%% |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | d {user: %%emainuser%%} direct from %%wsadmin%% |
+| select-frame | relative=parent |  |
+| pause | 3000 |  |
+| selectFrame | signalFrame |  |
+| wait_for_element_visible_ok | //body | 10000 |
+| type_ok | //body | d {user: %%emainuser%%} direct from %%wsadmin%% |
+| select-frame | relative=parent |  |
 | wait_for_element_visible_ok | post | 10000 |
 | click_ok | post |  |
 | pause | 3000 |  |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Signals/Activities Teardown |  |
+| *Comment* | Test Case: Firefox Signals/Activities Teardown |  |
 | open_ok | /?dashboard | 60000 |
 | st-catchup-logs |  |  |
 
-| *Comment* | Test Case: Signals/Activities Interaction |  |
+| *Comment* | Test Case: Firefox Signals/Activities Interaction |  |
