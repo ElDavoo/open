@@ -102,7 +102,7 @@ sub dispatch {
             $cmd->($_) for @apaches;
             $ceqlotron_command{$verb}->() if $ceqlotron_please;
             local $Socialtext::System::SILENT_RUN = 1;
-            shell_run "$jsonproxy $verb";
+            shell_run "$jsonproxy $verb" if $jsonproxy_please;
         }
         else {
             warn "nlwctl: Skipping unknown command '$verb'.\n";
