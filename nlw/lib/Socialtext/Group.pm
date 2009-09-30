@@ -404,15 +404,21 @@ sub to_hash {
     };
 
     if ($opts{show_members}) {
-        my $members = [];
-        my $user_cursor = $self->users;
-        while (my $u = $user_cursor->next) {
-            push @$members, $u->to_hash(minimal => 1);
-        }
-        $hash->{members} = $members;
+        $hash->{members} = $self->users_as_minimal_arrayref;
     }
 
     return $hash;
+}
+
+sub users_as_minimal_arrayref {
+    my $self = shift;
+
+    my $members = [];
+    my $user_cursor = $self->users;
+    while (my $u = $user_cursor->next) {
+        push @$members, $u->to_hash(minimal => 1);
+    }
+    return $members;
 }
 
 sub _build_workspace_count {
