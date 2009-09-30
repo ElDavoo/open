@@ -73,6 +73,18 @@ application/atom+xml and text/plain, respectively.
     *GET_text = _make_getter(resource_to_text => 'text/plain');
 }
 
+sub extra_headers {
+    my $self = shift;
+    my $resource = shift;
+
+    my $lm = $self->make_http_date(
+        $self->last_modified($resource)
+    );
+    return (
+        -Last_Modified => $lm,
+    );
+}
+
 sub _make_getter {
     my ( $perl_method, $content_type ) = @_;
     return sub {
@@ -85,15 +97,11 @@ sub _make_getter {
             Socialtext::Timer->Pause('get_resource');
             $resource = [] unless (ref $resource && @$resource);
 
-            my $lm = $self->make_http_date(
-                $self->last_modified($resource)
-            );
             my %new_headers = (
                 -status => HTTP_200_OK,
                 -type => $content_type . '; charset=UTF-8',
-                -Last_Modified => $lm,
                 # override those with:
-                $rest->header,
+                $self->extra_headers($resource), $rest->header,
             );
             $rest->header(%new_headers);
             return $self->$perl_method($resource);
@@ -102,6 +110,9 @@ sub _make_getter {
         if (my $e = $@) {
             if (Exception::Class->caught('Socialtext::Exception::Auth')) {
                 return $self->not_authorized;
+            }
+            elsif (Exception::Class->caught('Socialtext::Exception::NotFound')){
+                return $self->http_404($rest);
             }
             elsif (Exception::Class->caught(
                     'Socialtext::Exception::NoSuchWorkspace')) 
