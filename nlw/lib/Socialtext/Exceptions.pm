@@ -76,6 +76,13 @@ BEGIN {
             description => 'An attempt to access a non-existent workspace'
         },
 
+        'Socialtext::Exception::NotFound' => {
+            isa         => 'Socialtext::Exception',
+            alias       => 'not_found',
+            fields      => [qw( name )],
+            description => 'The specified resource was not found',
+        },
+
         'Socialtext::Exception::VirtualMethod' => {
             isa         => 'Socialtext::Exception',
             description =>
