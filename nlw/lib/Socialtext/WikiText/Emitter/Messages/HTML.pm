@@ -33,7 +33,7 @@ sub msg_format_link {
         workspace => $ast->{workspace_id},
         page_uri => $ast->{page_id},
     );
-    return qq{<a href="$url">$ast->{text}</a>};
+    return qq{<a href="${baseurl}$url">$ast->{text}</a>};
 }
 
 sub msg_format_user {
@@ -53,7 +53,7 @@ sub msg_format_user {
             link => 'people_profile',
             user_id => $user->user_id,
         );
-        return qq{<a href="$url">} . $user->guess_real_name . '</a>';
+        return qq{<a href="${baseurl}$url">} . $user->guess_real_name . '</a>';
     }
     else {
         return $user->guess_real_name;
