@@ -56,6 +56,7 @@ sub get_config {
     st_log->debug( "$prefix NTLMAuthoritative: " . $self->{ntlmauthoritative} );
     st_log->debug( "$prefix SplitDomainPrefix: " . $self->{splitdomainprefix} );
     foreach my $domain (sort keys %{$self->{smbpdc}}) {
+        next unless ($domain);  # skip blank/empty domains
         st_log->debug( "$prefix domain: $domain" );
         st_log->debug( "$prefix ... pdc: " . $self->{smbpdc}{$domain} );
         st_log->debug( "$prefix ... bdc: " . $self->{smbbdc}{$domain} );
