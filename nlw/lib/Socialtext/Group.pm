@@ -299,6 +299,16 @@ sub users {
 }
 
 ###############################################################################
+sub accounts {
+    my $self = shift;
+
+    return Socialtext::GroupAccountRoleFactory->ByGroupId(
+        $self->group_id,
+        sub { shift->account(); },
+    );
+}
+
+###############################################################################
 sub user_ids {
     my $self = shift;
     my $cursor = Socialtext::UserGroupRoleFactory->ByGroupId(
