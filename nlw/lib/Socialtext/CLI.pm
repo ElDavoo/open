@@ -1742,7 +1742,7 @@ sub show_members {
             . "to be specified.\n"
             . "A workspace is identified by name with the --workspace option.\n"
             . "An account is identified by name with the --account option.\n"
-            . "A group is identified by name with the --group option.\n"
+            . "A group is identified by group id with the --group option.\n"
     );
     return;
 }
