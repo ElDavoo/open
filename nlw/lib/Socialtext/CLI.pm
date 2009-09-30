@@ -909,6 +909,14 @@ sub _remove_group_from_account {
     my $group = $self->_require_group();
     my $account = $self->_require_account();
 
+    if ( $account->account_id == $group->primary_account_id ) {
+        $self->_error(
+            loc("Account [_1] is Group's Primary Account, cannot remove membership",
+                $account->name,
+            )
+        );
+    }
+
     unless ( $account->has_group($group) ) {
         $self->_error(
             loc("Group ([_1]) is not a member of Account ([_2])",
