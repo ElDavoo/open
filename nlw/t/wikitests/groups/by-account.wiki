@@ -97,3 +97,54 @@ Tests for [Story: Groups ReST API]
 | body-like         | "workspace_count":"0"             |              |
 | body-unlike       | %%jenny%%                         |              |
 
+
+# POST to /data/accounts/:accountid/groups to add group to account
+
+| set | account2 | acct2%%start_time%% |
+| create-account | %%account2%% |
+| set          | group2_name     | group2%%start_time%% |              |
+| create-group | %%group2_name%% | %%account2%%         | %%username%% |
+| set          | group2_id       | %%group_id%%        |              |
+
+# ... non-admin gets a 401 status code
+
+| http-user-pass     | %%jane%%                          | password          |
+| POST_json          | /data/accounts/%%account%%/groups | {"group_id":"%%group2_id%%"} |
+| code-is            | 401                               |                   |
+| GET             | /data/accounts/%%account%%/groups |         |
+| code-is         | 200                               |         |
+| header-like     | Cache-Control                     | private |
+| json-parse      |                                   |         |
+| json-array-size | 1                                 |         |
+| body-unlike       | "%%group2_id%%"                   |         |
+
+# ... Only account admin can do this (204)
+
+| set-business-admin | %%jane%%                          | 1                 |
+| POST_json          | /data/accounts/%%account%%/groups | {"group_id":"%%group2_id%%"} |
+| code-is         | 204                               |         |
+| GET             | /data/accounts/%%account%%/groups |         |
+| code-is         | 200                               |         |
+| header-like     | Cache-Control                     | private |
+| json-parse      |                                   |         |
+| json-array-size | 2                                 |         |
+| body-like       | "%%group2_id%%"                   |         |
+
+# ... group must exist or 400
+| POST_json | /data/accounts/%%account%%/groups | {"group_id":"999999"} |
+| code-is   | 400                               |                         |
+
+# ... account must exist or 404
+| POST_json | /data/accounts/fake-account/groups | {"group_id":"999999"} |
+| code-is   | 404                                |                         |
+
+# ... adding a group to account it already belongs to does not result in the group being included twice (409?)
+#
+
+| POST_json | /data/accounts/%%account%%/groups | {"group_id":"%%group2_id%%"} |
+| code-is   | 409                               |                                |
+| GET             | /data/accounts/%%account%%/groups |         |
+| code-is         | 200                               |         |
+| header-like     | Cache-Control                     | private |
+| json-parse      |                                   |         |
+| json-array-size | 2                                 |         |

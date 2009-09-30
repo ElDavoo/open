@@ -386,6 +386,8 @@
     '/data/accounts/:acct/groups':
         'GET':
             'application/json': [Socialtext::Rest::AccountGroups, GET_json]
+        'POST':
+            'application/json': [Socialtext::Rest::AccountGroups, POST_json]
         '*':                    [Socialtext::Rest::AccountGroups, bad_method]
 -
     '/data/accounts/:acct/logo':
