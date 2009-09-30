@@ -9,7 +9,9 @@
 | create-account | %%account%% |  |
 
 | *Comment* | Visual inspection of add to account page |  |
-| open-ok | /nlw/control/group/%%group_id%%/add_to_account |  |
+| open-ok | /nlw/control/group/%%group_id%% |  |
+| wait_for_element_visible_ok | link=Add Group To An Account | 3000 |
+| click_and_wait | link=Add Group To An Account |  |
 | verify-text | //h1 | Add Group to Account |
 | verify-text | //p | Adding Group %%group%% (%%group_id%%) to an Account |
 | verify-text | //label | Send invitation email |
