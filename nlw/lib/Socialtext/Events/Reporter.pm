@@ -365,13 +365,14 @@ sub visibility_sql {
 
 my $VISIBLE_WORKSPACES = <<'EOSQL';
     SELECT workspace_id FROM user_workspace_role WHERE user_id = ?
-    UNION ALL
+EOSQL
+
+my $PUBLIC_WORKSPACES = <<'EOSQL';
     SELECT workspace_id
     FROM "WorkspaceRolePermission" wrp
     JOIN "Role" r USING (role_id)
     JOIN "Permission" p USING (permission_id)
     WHERE
-        -- workspace vis
         r.name = 'guest' AND p.name = 'read'
 EOSQL
 
@@ -512,6 +513,9 @@ sub _build_standard_sql {
     unless ($self->{_skip_standard_opts}) {
         {
             my $visible_ws = $VISIBLE_WORKSPACES;
+            if ($self->{_include_public_ws}) {
+                $visible_ws .= ' UNION ALL '.$PUBLIC_WORKSPACES;
+            }
             my @bind = ($viewer_id);
             if ($opts->{account_id}) {
                 $visible_ws = _limit_ws_to_account($visible_ws);
@@ -691,6 +695,8 @@ sub get_events_activities {
     my $user = Socialtext::User->Resolve($maybe_user);
     my $user_id = $user->user_id;
 
+    $self->{_include_public_ws} = 1;
+
     my $user_ids;
     my @conditions;
     if (!$opts->{event_class}) {
@@ -808,19 +814,22 @@ sub _build_convos_sql {
 
     local $self->{_skip_standard_opts} = 1;
 
-    my $limit_public_to_contributed = <<EOSQL;
-        workspace_id IN
+    my @bind = ($user_id); # actor_id <> ?
+
+    my $visible_ws = qq{
+    $VISIBLE_WORKSPACES
+    UNION ALL
+    $PUBLIC_WORKSPACES
+        AND workspace_id IN
         (
             SELECT page_workspace_id AS workspace_id
             FROM event has_contrib
             WHERE has_contrib.event_class = 'page'
               AND is_page_contribution(has_contrib.action)
               AND has_contrib.actor_id = ?
-        ) AND
-EOSQL
-    (my $visible_ws = $VISIBLE_WORKSPACES) =~
-        s/-- workspace vis/$limit_public_to_contributed/;
-    my @bind = ($user_id); # actor_id <> ?
+        )
+    };
+
     push @bind, ($user_id) x 2; # ws visibility so far
 
     if ($filtered_opts->{account_id}) {

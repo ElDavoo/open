@@ -87,26 +87,28 @@ _Lawyer updates a page in public wiki._
 | http-user-pass | %%lawyer%% | password |
 | edit-page | %%public%% | start_here | DISCLAIMER: a lawÿer wrote this page |
 
-| Comment | Legal Client can see the public event |
+| Comment | Legal Client cannot see the public event |
 | http-user-pass | %%client%% | password |
 | get | /data/events| application/json |
 | code-is | 200 |
 | json-parse | |
-| json-array-size | 1 |
-| body-like | qr/"actor":{[^}]+"id":"?\Q%%lawyer_id%%\E/ |
+| json-array-size | 0 |
+
+| Comment | Legal Client can see the public event in /data/events/activities/<lawyer> |
 | get | /data/events/activities/%%lawyer%% | application/json |
 | code-is | 200 |
 | json-parse | |
 | json-array-size | 1 |
 | body-like | qr/"actor":{[^}]+"id":"?\Q%%lawyer_id%%\E/ |
 
-| Comment | Secretary can see the public event |
+| Comment | Secretary cannot see the public event in /data/events |
 | http-user-pass | %%secretary%% | password |
 | get | /data/events| application/json |
 | code-is | 200 |
 | json-parse | |
-| json-array-size | 1 |
-| body-like | qr/"actor":{[^}]+"id":"?\Q%%lawyer_id%%\E/ |
+| json-array-size | 0 |
+
+| Comment | Secretary can see the public event in /data/events/activities/<lawyer> |
 | get | /data/events/activities/%%lawyer%% | application/json |
 | code-is | 200 |
 | json-parse | |
