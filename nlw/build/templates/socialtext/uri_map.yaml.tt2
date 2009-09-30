@@ -378,6 +378,11 @@
             'application/json': [Socialtext::Rest::AccountWorkspaces, GET_json]
         '*':                    [Socialtext::Rest::AccountWorkspaces, bad_method]
 -
+    '/data/accounts/:acct/groups':
+        'GET':
+            'application/json': [Socialtext::Rest::AccountGroups, GET_json]
+        '*':                    [Socialtext::Rest::AccountGroups, bad_method]
+-
     '/data/accounts/:acct/logo':
         'GET':
             '*/*':       [Socialtext::Rest::AccountLogo, bad_type]
