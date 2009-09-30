@@ -909,6 +909,14 @@ sub _remove_group_from_account {
     my $group = $self->_require_group();
     my $account = $self->_require_account();
 
+    if ( $account->account_id == $group->primary_account_id ) {
+        $self->_error(
+            loc("Account [_1] is Group's Primary Account, cannot remove membership",
+                $account->name,
+            )
+        );
+    }
+
     unless ( $account->has_group($group) ) {
         $self->_error(
             loc("Group ([_1]) is not a member of Account ([_2])",
@@ -1752,7 +1760,7 @@ sub show_members {
             . "to be specified.\n"
             . "A workspace is identified by name with the --workspace option.\n"
             . "An account is identified by name with the --account option.\n"
-            . "A group is identified by name with the --group option.\n"
+            . "A group is identified by group id with the --group option.\n"
     );
     return;
 }

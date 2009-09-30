@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Socialtext::GroupAccountRoleFactory;
-use Test::Socialtext tests => 38;
+use Test::Socialtext tests => 41;
 use Test::Output qw(combined_from);
 
 # Only need a DB.
@@ -17,7 +17,7 @@ use_ok 'Socialtext::CLI';
 our $LastExitVal;
 {
     no warnings 'redefine';
-    *Socialtext::CLI::_exit = sub { $LastExitVal=shift; };
+    *Socialtext::CLI::_exit = sub { $LastExitVal=shift; die; };
 }
 
 ################################################################################
@@ -28,12 +28,14 @@ add_group_to_account: {
 
     ok 1, 'Group is added to Account';
     my $output = combined_from( sub {
-        Socialtext::CLI->new(
-            argv => [
-                    '--group'   => $group->group_id,
-                    '--account' => $account->name,
-                ],
-        )->add_member();
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                        '--group'   => $group->group_id,
+                        '--account' => $account->name,
+                    ],
+            )->add_member();
+        };
     } );
     like $output, qr/Group \(.+\) has been added to Account \(.+\)/,
         '... with correct message';
@@ -59,12 +61,14 @@ group_already_exists: {
 
     ok 1, 'Group is not added to Account';
     my $output = combined_from( sub {
-        Socialtext::CLI->new(
-            argv => [
-                    '--group'   => $group->group_id,
-                    '--account' => $account->name,
-            ],
-        )->add_member();
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                        '--group'   => $group->group_id,
+                        '--account' => $account->name,
+                ],
+            )->add_member();
+        };
     } );
     like $output, qr/Group \(.+\) is already a member of Account \(.+\)/,
         '... with correct message';
@@ -80,17 +84,44 @@ remove_group_from_account: {
 
     ok 1, 'Remove Group from Account';
     my $output = combined_from( sub {
-        Socialtext::CLI->new(
-            argv => [
-                '--group'   => $group->group_id,
-                '--account' => $account->name,
-            ],
-        )->remove_member();
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'   => $group->group_id,
+                    '--account' => $account->name,
+                ],
+            )->remove_member();
+        };
     } );
 
     like $output, qr/Group \(.+\) has been removed from Account \(.+\)/,
         '... with correct message';
     is $account->has_group( $group ) => 0, '... group is no longer in account';
+}
+
+################################################################################
+# TEST: remove Group from Primary Account
+remove_group_from_primary_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group( account => $account );
+
+    $account->add_group(group => $group);
+
+    ok 1, 'Remove Group from Primary Account';
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'   => $group->group_id,
+                    '--account' => $account->name,
+                ],
+            )->remove_member();
+        };
+    } );
+
+    like $output, qr/Account .+ is Group's Primary Account/,
+        '... with correct error message';
+    ok $account->has_group( $group ), '... group is still a member';
 }
 
 ################################################################################
@@ -101,12 +132,14 @@ group_is_not_in_account: {
 
     ok 1, 'Remove Group that is not in Account';
     my $output = combined_from( sub {
-        Socialtext::CLI->new(
-            argv => [
-                '--group'   => $group->group_id,
-                '--account' => $account->name,
-            ],
-        )->remove_member();
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'   => $group->group_id,
+                    '--account' => $account->name,
+                ],
+            )->remove_member();
+        };
     } );
 
     like $output, qr/Group \(.+\) is not a member of Account \(.+\)/,
@@ -128,11 +161,13 @@ group_users_in_account_membership: {
     ok $account->has_group( $group ), 'Group is in Account';
 
     my $output = combined_from( sub {
-        Socialtext::CLI->new(
-            argv => [
-                '--account' => $account->name,
-            ],
-        )->show_members();
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--account' => $account->name,
+                ],
+            )->show_members();
+        };
     } );
 
     like $output, qr/\Q$email\E/, 'Account lists group user';
@@ -153,11 +188,13 @@ group_users_in_account_membership_de_duped: {
     ok $account->has_group( $group ), 'Group is in Account';
 
     my $output = combined_from( sub {
-        Socialtext::CLI->new(
-            argv => [
-                '--account' => $account->name,
-            ],
-        )->show_members();
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--account' => $account->name,
+                ],
+            )->show_members();
+        };
     } );
 
     my @lines = grep { /\Q$email\E/ } split(/\n/, $output);
@@ -179,11 +216,13 @@ group_users_in_workspace_membership_de_duped: {
     ok $group->has_user( $user ), 'User is in Group';
 
     my $output = combined_from( sub {
-        Socialtext::CLI->new(
-            argv => [
-                '--workspace' => $workspace->name,
-            ],
-        )->show_members();
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--workspace' => $workspace->name,
+                ],
+            )->show_members();
+        };
     } );
 
     my @lines = grep { /\Q$email\E/ } split(/\n/, $output);
@@ -210,23 +249,27 @@ group_users_in_account_membership_no_displayed: {
 
     ok 1, 'All Account Users';
     my $output = combined_from( sub {
-        Socialtext::CLI->new(
-            argv => [
-                '--account' => $account->name,
-            ],
-        )->show_members();
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--account' => $account->name,
+                ],
+            )->show_members();
+        };
     } );
     like $output, qr/\Q$email1\E/, '... lists group user';
     like $output, qr/\Q$email2\E/, '... lists direct user';
 
     ok 1, 'Direct Account Users';
     $output = combined_from( sub {
-        Socialtext::CLI->new(
-            argv => [
-                '--account' => $account->name,
-                '--direct',
-            ],
-        )->show_members();
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--account' => $account->name,
+                    '--direct',
+                ],
+            )->show_members();
+        };
     } );
     unlike $output, qr/\Q$email1\E/, '... does not list group user';
     like $output, qr/\Q$email2\E/, '... lists direct user';
@@ -252,22 +295,26 @@ workspace_users_with_direct_roles: {
     ok $workspace->has_group( $group ), 'Group is in Workspace';
 
     my $output = combined_from( sub {
-        Socialtext::CLI->new(
-            argv => [
-                '--workspace' => $workspace->name,
-            ],
-        )->show_members();
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--workspace' => $workspace->name,
+                ],
+            )->show_members();
+        }
     } );
     like $output, qr/\Q$email1\E/, '... lists group user without direct';
     like $output, qr/\Q$email2\E/, '... lists direct user without direct';
 
     $output = combined_from( sub {
-        Socialtext::CLI->new(
-            argv => [
-                '--workspace' => $workspace->name,
-                '--direct',
-            ],
-        )->show_members();
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--workspace' => $workspace->name,
+                    '--direct',
+                ],
+            )->show_members();
+        };
     } );
 
     unlike $output, qr/\Q$email1\E/, '... does not list group user with direct';
