@@ -66,3 +66,10 @@ my $tmpl_dir = "share/template/control";
 unlink $tmpl_dir;
 symlink "$control_dir/$tmpl_dir", $tmpl_dir
     or die "Can't symlink $control_dir/$tmpl_dir => $tmpl_dir: $!";
+
+print "Linking in control wikitests...\n";
+my $wikitests = "t/wikitests/control";
+die "not a symlink" if -e $wikitests and not -l $wikitests;
+unlink $wikitests;
+symlink "$control_dir/$wikitests", $wikitests
+    or die "Can't symlink $control_dir/$wikitests => ${wikitests}: $!";
