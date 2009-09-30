@@ -1,0 +1,127 @@
+Tests for [Story: Groups ReST API]
+
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+# Lookup groups for a user
+
+| GET             | /data/users/%%user_id%%/groups |         |
+| code-is         | 200                               |         |
+| header-like     | Cache-Control                     | private |
+| json-parse      |                                   |         |
+| json-array-size | 0                                 |         |
+
+# Create a new group
+
+| set               | group1_name     | group%%start_time%% |              |
+| create-group      | %%group1_name%% | %%account%%         | %%username%% |
+| set               | group1_id      | %%group_id%%        |              |
+| add-user-to-group | %%username%%   | %%group_id%%        |              |
+
+# regular Users viewing their own data see _all_ of the Groups that they are a member of
+
+| GET             | /data/users/%%user_id%%/groups |         |
+| code-is         | 200                               |         |
+| header-like     | Cache-Control                     | private |
+| json-parse      |                                   |         |
+| json-array-size | 1                                 |         |
+| Body-like       | "group_id":"%%group_id%%"         |         |
+| Body-like       | "name":"%%group1_name%%"           |         |
+| body-like       | "user_count":"1"                  |         |
+| body-like       | "workspace_count":"0"             |         |
+| body-unlike     | "members"                         |         |
+
+# Create a new group, with a different user in it.
+
+| set          | group2_name     | group2%%start_time%% |              |
+| create-group | %%group2_name%% | %%account%%          | %%username%% |
+| set          | group2_id       | %%group_id%%         |              |
+
+| set               | jane     | jane%%start_time%%@ken.socialtext.net |
+| create-user       | %%jane%% | password                              |
+| add-user-to-group | %%jane%% | %%group2_id%%                         |
+
+# The creator should be able to see jane in the group2
+
+
+| GET             | /data/users/%%jane%%/groups |         |
+| code-is         | 200                         |         |
+| header-like     | Cache-Control               | private |
+| json-parse      |                             |         |
+| json-array-size | 1                           |         |
+| Body-like       | "group_id":"%%group2_id%%"  |         |
+| Body-like       | "name":"%%group2_name%%"    |         |
+| body-like       | "user_count":"1"            |         |
+| body-like       | "workspace_count":"0"       |         |
+| body-unlike     | "members"                   |         |
+
+## And again, with ?show_members=1
+
+| GET             | /data/users/%%jane%%/groups?show_members=1 |         |
+| code-is         | 200                                        |         |
+| header-like     | Cache-Control                              | private |
+| json-parse      |                                            |         |
+| json-array-size | 1                                          |         |
+| Body-like       | "group_id":"%%group2_id%%"                 |         |
+| Body-like       | "name":"%%group2_name%%"                   |         |
+| body-like       | "user_count":"1"                           |         |
+| body-like       | "workspace_count":"0"                      |         |
+| body-like       | "members"                                  |         |
+| body-like       | "%%jane%%"                                 |         |
+
+# Regular Users see only the Groups that they share in common with the requested User.
+# Jane should not be able to see %%username%%'s groups, as she is not in 
+# them, nor a group creator
+
+| http-user-pass  | %%jane%%                       | password |
+| GET             | /data/users/%%user_id%%/groups |          |
+| code-is         | 200                            |          |
+| header-like     | Cache-Control                  | private  |
+| json-parse      |                                |          |
+| json-array-size | 0                              |          |
+
+# But if we add her to one of %%username%%'s groups, she should see it.
+
+| add-user-to-group | %%jane%%                       | %%group1_id%% |
+| GET               | /data/users/%%user_id%%/groups |               |
+| code-is           | 200                            |               |
+| header-like       | Cache-Control                  | private       |
+| json-parse        |                                |               |
+| json-array-size   | 1                              |               |
+| body-like         | "group_id":"%%group1_id%%"     |               |
+
+
+# Business Admin sees _any_ User's data and _all_ of the Groups the User is a member of
+
+| set            | badmin     | badmin%%start_time%%@ken.socialtext.net |
+| create-user    | %%badmin%% | password                                |
+| http-user-pass | %%badmin%% | password                                |
+
+| set-business-admin | %%badmin%%                  | 1       |
+| GET                | /data/users/%%jane%%/groups |         |
+| code-is            | 200                         |         |
+| header-like        | Cache-Control               | private |
+| json-parse         |                             |         |
+| json-array-size    | 2                           |         |
+| Body-like          | "group_id":"%%group1_id%%"  |         |
+| Body-like          | "name":"%%group1_name%%"    |         |
+| body-like          | "user_count":"1"            |         |
+| body-like          | "workspace_count":"0"       |         |
+| Body-like          | "group_id":"%%group2_id%%"  |         |
+| Body-like          | "name":"%%group2_name%%"    |         |
+| body-like          | "user_count":"1"            |         |
+| body-like          | "workspace_count":"0"       |         |
+| body-unlike        | %%jane%%                    |         |
+
+| set-business-admin | %%badmin%%                  | 0       |
+| GET                | /data/users/%%jane%%/groups |         |
+| header-like        | Cache-Control               | private |
+| code-is            | 200                         |         |
+| json-parse         |                             |         |
+| json-array-size    | 0                           |         |
+
+# a user_id that doesn't exist == 404
+
+| GET     | /data/users/9999999/groups |
+| code-is | 404                        |

@@ -331,6 +331,11 @@
             'text/html':        *default
         '*':                    [Socialtext::Rest::User, bad_method]
 -
+    '/data/users/:username/groups':
+        'GET':
+            'application/json': [Socialtext::Rest::UserSharedGroups, GET_json]
+        '*':                    [Socialtext::Rest::UserSharedGroups, bad_method]
+-
     '/data/users/:username/shared_accounts/:otheruser':
         'GET':
             '*/*':     &default [Socialtext::Rest::UserSharedAccounts, GET_html]
