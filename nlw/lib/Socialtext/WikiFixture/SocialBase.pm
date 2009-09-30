@@ -237,8 +237,8 @@ sub create_account {
     my $ws = Socialtext::Workspace->new(name => 'admin');
     $acct->enable_plugin($_) for qw/people dashboard widgets signals/;
     $ws->enable_plugin($_) for qw/socialcalc/;
-    diag "Created account $name";
     $self->{account_id} = $acct->account_id;
+    diag "Created account $name ($self->{account_id})";
     return $acct;
 }
 
