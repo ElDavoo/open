@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 34;
+use Test::Socialtext tests => 36;
 use Test::Socialtext::Group;
 
 ###############################################################################
@@ -189,4 +189,14 @@ available_groups: {
         },
     );
     is_deeply \@available, \@expected, '... available Groups data ok';
+}
+
+###############################################################################
+# TEST: group_id must be numeric.
+group_id_must_be_numeric: {
+    my $factory = Socialtext::Group::Default::Factory->new();
+    isa_ok $factory, 'Socialtext::Group::Default::Factory';
+
+    my $group = $factory->GetGroupHomunculus( group_id => 'is_a_string' );
+    ok !$group, 'return undef if group_id is non-numberic';
 }

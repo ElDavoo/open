@@ -82,6 +82,8 @@ sub GetGroupHomunculus {
     # Only concern ourselves with valid Db Columns
     my $where = $self->FilterValidColumns( \%p );
 
+    return undef unless $self->_has_valid_column_data($where);
+
     # check DB for existing cached Group
     # ... if cached copy exists and is fresh, use that
     Socialtext::Timer->Continue('ldap_group_check_cache');
@@ -181,6 +183,10 @@ sub _make_me_a_job {
 sub _get_cached_group {
     my ($self, $where) = @_;
 
+    # XXX: This is a secret public method, so we have to do this
+    # check here, too. We should probably promote this in the future.
+    return undef unless $self->_has_valid_column_data($where);
+
     # fetch the Group from the DB
     my $sth = $self->SqlSelectOneRecord( {
         where => {
@@ -191,6 +197,18 @@ sub _get_cached_group {
 
     my $row = $sth->fetchrow_hashref();
     return $row;
+}
+
+# Validate user supplied data for lookups
+sub _has_valid_column_data {
+    my $self = shift;
+    my $data = shift;
+
+    if ( my $group_id = $data->{group_id} ) {
+        return 0 unless $group_id =~ qr/^\d+$/;
+    }
+
+    return 1;
 }
 
 # Checks to see if the cached Group data is fresh, using the cache lifetime
