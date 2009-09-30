@@ -66,28 +66,7 @@ sub _make_getter {
     };
 }
 
-# REVIEW: This is cut-paste from Socialtext::Rest::Collection.
-sub nonexistence_message { 'The requested resource does not exist.' }
-
-# REVIEW: This is cut-paste from Socialtext::Rest::Collection.
 sub last_modified { time }
-
-# REVIEW: This is cut-paste from Socialtext::Rest::Collection.
-sub http_404 {
-    my ( $self, $rest ) = @_;
-
-    $rest->header( -type   => 'text/plain',
-                   -status => HTTP_404_Not_Found, );
-    return $self->nonexistence_message;
-}
-
-sub http_400 {
-   my ( $self, $rest, $content ) = @_;
-
-    $rest->header( -type   => 'text/plain',
-                   -status => HTTP_400_Bad_Request, );
-    return $content || ""; 
-}
 
 # FIXME: No permissions checking here YET as its not used
 # and what permission to check may need to be passed in as
