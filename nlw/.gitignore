@@ -181,6 +181,7 @@ t/wikitests/people/rest/data_people_watchlist.wiki
 t/wikitests/people/rest/data_people.wiki
 t/wikitests/signals/
 t/wikitests/signals/data_signals.wiki
+t/wikitests/control
 etc/socialtext/uri_map.d/signals.yaml
 t/Socialtext/Signal
 t/share/uploaded-skin/
