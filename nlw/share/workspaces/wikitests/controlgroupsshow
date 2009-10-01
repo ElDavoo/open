@@ -48,15 +48,15 @@
 | open_ok | /nlw/control/group |
 | wait_for_element_visible_ok | link=Users |
 
-| click_ok | link=Users |
+| click_ok | group-sort-users |
 | *Comment* | SEE Sorted by # of users, asc |
 | pause | %%gpt%% |
 
-| click_ok | link=ID |
+| click_ok | group-sort-id |
 | *Comment* | SEE Sorted by Groups ID, asc |
 | pause | %%gpt%% |
 
-| click_ok | link=ID |
+| click_ok | group-sort-id |
 | *Comment* | See Sorted by Group ID, desc |
 | pause | %%gpt%% |
 
