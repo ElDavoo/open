@@ -463,14 +463,12 @@ sub _generate_help_workspace {
     return if Socialtext::Workspace->new( name => $ws_name );
 
     # Load up the workspace from a previous export.
-    my $st_admin = $self->env->nlw_dir . '/bin/st-admin';
-    _system_or_die(
-        $st_admin,
-        'import-workspace',
-        '--tarball',    $tarball,
-        '--overwrite',
+    my $ws = Socialtext::Workspace->ImportFromTarball(
+        name        => $ws_name,
+        tarball     => $tarball,
+        overwrite   => 1,
+        index_async => 1,
     );
-    my $ws = Socialtext::Workspace->new( name => $ws_name );
     $ws ->add_user(
         user => $user,
         role => Socialtext::Role->WorkspaceAdmin(),
