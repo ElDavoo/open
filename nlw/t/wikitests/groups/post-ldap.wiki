@@ -1,0 +1,31 @@
+Tests for [Story: Groups ReST API]
+
+* Fixture: SocialRest
+
+| standard-test-setup |         |                                  |
+| st-ldap             | start   |                                  |
+| set                 | ldap_dn | cn=Hawkwind,dc=socialtext,dc=com |
+
+# POST to /data/groups to add an LDAP group to the system
+# ... post takes ldap_dn and account id as parameters
+# ... ... json support only
+# ... Non-admin gets a 401
+
+| POST_json | /data/groups | {"ldap_dn":"%%ldap_dn%%","account_id":"%%account_id%%"} |
+| code-is | 401 |
+
+# ... admin gets a 201 (assuming success)                            |
+
+| set-business-admin | %%username%% | 1 |
+
+## Now post an existing ldap group
+
+| POST_json | /data/groups | {"ldap_dn":"%%ldap_dn%%","account_id":"%%account_id%%"} |
+| code-is   | 201          |                                                         |
+
+| GET         | /data/groups  |         |
+| code-is     | 200           |         |
+| header-like | Cache-Control | private |
+| body-like   | HawkWind      |         |
+
+# ... admin gets a 404? 406? status code if the group is not in LDAP

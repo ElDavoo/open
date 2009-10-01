@@ -3,6 +3,8 @@ package Socialtext::Rest::Groups;
 use Moose;
 extends 'Socialtext::Rest::Collection';
 use Socialtext::Group;
+use Socialtext::HTTP ':codes';
+use Socialtext::JSON qw/decode_json/;
 use namespace::clean -except => 'meta';
 
 # Anybody can see these, since they are just the list of workspaces the user
@@ -57,6 +59,78 @@ override extra_headers => sub {
     );
 };
 
+sub POST_json {
+    my $self = shift;
+    my $rest = shift;
+    my $data = decode_json( $rest->getContent() );
+
+    unless ($self->user_can('is_business_admin')) {
+        $rest->header(
+            -status => HTTP_401_Unauthorized,
+        );
+        return '';
+    }
+
+    unless ( defined $data and ref($data) eq 'HASH' ) {
+        $rest->header(
+            -status => HTTP_400_Bad_Request,
+        );
+        return '';
+    }
+
+    my $account_id = $data->{account_id};
+    unless ($account_id) {
+        $rest->header(
+            -status => HTTP_400_Bad_Request,
+        );
+        return "Missing an account_id";
+    }
+
+    my $account = Socialtext::Account->new(account_id => $account_id);
+    unless ($account) {
+        $rest->header(
+            -status => HTTP_400_Bad_Request,
+        );
+        return "account_id ($account_id) is not a valid account_id";
+    }
+
+    my $ldap_dn = $data->{ldap_dn};
+    unless ($ldap_dn) {
+        $rest->header(
+            -status => HTTP_400_Bad_Request,
+        );
+        return "Missing a ldap_dn";
+    }
+
+
+    # Check if Group already exists
+    my $proto = Socialtext::Group->GetProtoGroup(driver_unique_id => $ldap_dn);
+    if ($proto) {
+        $rest->header(
+            -status => HTTP_409_Conflict,
+        );
+        return "$ldap_dn is already a group";
+    }
+
+    # Vivify the Group, thus loading it into ST.
+    my $group = Socialtext::Group->GetGroup(
+        driver_unique_id   => $ldap_dn,
+        primary_account_id => $account->account_id,
+    );
+
+    unless ($group) {
+        $rest->header(
+            -status => HTTP_400_Bad_Request,
+        );
+        return "Could not create the group";
+    }
+
+
+    $rest->header(
+        -status => HTTP_201_Created,
+    );
+    return '';
+}
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;

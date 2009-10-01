@@ -421,6 +421,8 @@
     '/data/groups':
         'GET':
             'application/json': [Socialtext::Rest::Groups, GET_json]
+        'POST':
+            'application/json': [Socialtext::Rest::Groups, POST_json]
         '*':                    [Socialtext::Rest::Groups, bad_method]
 -
     '/data/groups/:group_id':
