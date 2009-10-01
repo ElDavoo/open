@@ -36,7 +36,7 @@ sub all {
 
     my @flatttened = map { $self->_all_rows($_) } @{ $self->iterables };
     return ( $self->apply )
-        ? map { $self->apply->($_) } @flatttened
+        ? grep { defined } map { $self->apply->($_) } @flatttened
         : @flatttened;
 }
 
