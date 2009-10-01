@@ -480,7 +480,7 @@ sub generate_config {
 EOF
             print {$fh} $buffer;
             close $fh;
-            print "Created $target\n";
+            print "Created $target\n" unless ($opts{quiet});
         }
     } # while files to process
 }
