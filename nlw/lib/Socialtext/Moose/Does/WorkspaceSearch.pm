@@ -10,11 +10,23 @@ sub ByWorkspaceId {
     my $self_or_class = shift;
     my $workspace_id  = shift;
     my $closure       = shift;
-    my $order         = $self_or_class->SqlSortOrder();
+    my $order         = shift; 
 
+    my $join;
+
+    if ($order) {
+        if ($self_or_class->isa('Socialtext::GroupWorkspaceRoleFactory')) {
+            $join = 'JOIN groups USING (group_id)';
+        }
+        elsif ($self_or_class->isa('Socialtext::UserWorkspaceRoleFactory')) {
+            $join = 'JOIN users USING (user_id)';
+        }
+    }
+    
     my $sth = $self_or_class->SqlSelect( {
         where => { workspace_id => $workspace_id },
-        order => $order,
+        order => $order || $self_or_class->SqlSortOrder(),
+        ($join ? (join => $join) : ()),
     } );
     return $self_or_class->Cursor($sth, $closure);
 }

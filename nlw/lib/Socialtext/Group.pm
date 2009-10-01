@@ -15,6 +15,7 @@ use Socialtext::Pluggable::Adapter;
 use Socialtext::UserGroupRoleFactory;
 use Socialtext::GroupAccountRoleFactory;
 use Socialtext::GroupWorkspaceRoleFactory;
+use Socialtext::GroupWorkspaceRole;
 use namespace::clean -except => 'meta';
 
 ###############################################################################
@@ -68,6 +69,13 @@ sub ByAccountId {
     return $class->All(@_);
 }
 
+sub ByWorkspaceId {
+    my $class   = shift;
+    my %p       = @_;
+    croak "needs a workspace_id" unless $p{workspace_id};
+    return $class->All(@_);
+}
+
 sub All {
     my $class = shift;
     my %p     = @_;
@@ -96,6 +104,11 @@ sub All {
     if ($p{workspace_id}) {
         $from .= q{ JOIN group_workspace_role gwro USING (group_id) };
         push @where, 'gwro.workspace_id' => $p{workspace_id};
+    }
+
+    if (!$p{_count_only} && ($p{account_id} || $p{workspace_id})) {
+        $from .= q{ JOIN "Role" rrr using (role_id) };
+        push @cols, 'rrr.name AS role_name';
     }
 
     if ($p{_count_only}) {
@@ -139,7 +152,6 @@ sub All {
 
     my ($sql, @bind) = sql_abstract()->select(
         \$from, \@cols, \@where, $order, $p{limit}, $p{offset});
-
     my $sth = sql_execute($sql, @bind);
 
     Socialtext::Timer->Pause('group_cursor');
@@ -149,16 +161,39 @@ sub All {
         return $count;
     }
 
-    my $cursor = Socialtext::MultiCursor->new(
-        iterables => [ $sth->fetchall_arrayref({}) ],
-        apply => sub {
+    my $apply;
+    if ($p{_apply_gwr}) {
+        my $ws = Socialtext::Workspace->new(workspace_id => $p{workspace_id});
+        $apply = sub {
+            my $row = shift;
+            my $role = Socialtext::Role->new(name => $row->{role_name});
+            my $group = Socialtext::Group->GetGroup(group_id=>$row->{group_id});
+            if ($p{include_aggregates}) {
+                $group->$_($row->{$_}) for qw(user_count workspace_count);
+            }
+            return Socialtext::GroupWorkspaceRole->new(
+                workspace_id => $ws->workspace_id,
+                group_id => $group->group_id,
+                role_id => $role->role_id,
+                workspace => $ws,
+                group => $group,
+                role => $role
+            );
+        };
+    }
+    else {
+        $apply = sub {
             my $row = shift;
             my $group = Socialtext::Group->GetGroup(group_id=>$row->{group_id});
             if ($p{include_aggregates}) {
                 $group->$_($row->{$_}) for qw(user_count workspace_count);
             }
             return $group;
-        },
+        };
+    }
+    my $cursor = Socialtext::MultiCursor->new(
+        iterables => [ $sth->fetchall_arrayref({}) ],
+        apply => $apply,
     );
 
     return $cursor;

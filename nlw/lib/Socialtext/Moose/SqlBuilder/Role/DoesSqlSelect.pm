@@ -20,8 +20,11 @@ sub SqlSelect {
     my $order  = $opts->{order};
     my $limit  = $opts->{limit};
     my $offset = $opts->{offset};
+    my $join   = $opts->{join};
 
     my $table   = $self->Sql_table_name();
+    $table = \"$table $join" if $join;
+
     my $builder = sql_abstract();
     my ($sql, @bindings) = $builder->select(
         $table, $cols, $where, $order, $limit, $offset
