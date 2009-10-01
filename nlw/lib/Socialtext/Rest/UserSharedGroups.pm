@@ -57,3 +57,19 @@ around get_resource => sub {
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+=head1 NAME
+
+Socialtext::Rest::UserSharedGroups - List the groups a user belongs to
+
+=head1 SYNOPSIS
+
+    GET /data/users/:username/groups
+
+=head1 DESCRIPTION
+
+View the list of groups a user is a member of, or has created.  Caller
+can only see groups they created or are also a member of.  Business admins
+can see all groups.
+
+=cut

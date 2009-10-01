@@ -32,3 +32,17 @@ sub _entity_hash { return $_[1] }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+=head1 NAME
+
+Socialtext::Rest::Group::Users - List users in a group
+
+=head1 SYNOPSIS
+
+    GET /data/groups/:group_id/users
+
+=head1 DESCRIPTION
+
+View the list of users in the specified group.
+
+=cut

@@ -33,3 +33,17 @@ sub _entity_hash {
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+=head1 NAME
+
+Socialtext::Rest::Group::Accounts - List accounts a group is in
+
+=head1 SYNOPSIS
+
+    GET /data/groups/:group_id/accounts
+
+=head1 DESCRIPTION
+
+View the list of accounts the specified group is in.
+
+=cut

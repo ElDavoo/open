@@ -28,3 +28,17 @@ sub get_resource {
 }
 
 1;
+
+=head1 NAME
+
+Socialtext::Rest::Group - Group resource handler
+
+=head1 SYNOPSIS
+
+    GET /data/groups/:group_id
+
+=head1 DESCRIPTION
+
+View the details of a group.
+
+=cut
