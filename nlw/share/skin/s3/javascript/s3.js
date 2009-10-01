@@ -413,7 +413,7 @@ $(function() {
     }
 
     // Currently, the pre edit hook will check for an edit contention.
-    Socialtext.pre_edit_hook = function (wikiwyg_launcher) {
+    Socialtext.pre_edit_hook = function (wikiwyg_launcher, cleanup_callback) {
         jQuery.ajax({
             type: 'GET',
             url: location.pathname,
@@ -445,7 +445,9 @@ $(function() {
                                 });
 
                                 $("#lightbox")
-                                    .one("lightbox-unload", function() { });
+                                    .one("lightbox-unload", function() {
+                                        if (cleanup_callback) cleanup_callback();
+                                    });
                             }
                         });
 
