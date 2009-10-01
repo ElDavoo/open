@@ -13,10 +13,7 @@ our $cache_dir = Socialtext::Paths::storage_directory('json_cache');
 sub ClearForUsers {
     my $class = shift;
     my %user_ids = map { $_ => 1 } @_;
-
-    # Clear the small cache
-    my $pidfile = Socialtext::AppConfig->pid_file_dir . "/json-proxy.pid";
-    system "/sbin/start-stop-daemon --stop --quiet --oknodo --pidfile $pidfile --signal USR1";
+    system "killall -USR1 json-proxy.scgi";
 
     # Purge each user's file-based cache
     my $cache_dir = Socialtext::Paths::storage_directory('json_cache');
