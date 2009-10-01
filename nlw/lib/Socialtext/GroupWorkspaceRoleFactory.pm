@@ -6,6 +6,8 @@ use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::Role;
 use Socialtext::Pluggable::Adapter;
+use Socialtext::SQL qw/:exec/;
+use Socialtext::SQL::Builder qw/sql_abstract/;
 use namespace::clean -except => 'meta';
 
 with qw(
@@ -13,6 +15,30 @@ with qw(
     Socialtext::Moose::Does::GroupSearch
     Socialtext::Moose::Does::WorkspaceSearch
 );
+
+sub SortedResultSet {
+    my $self = shift;
+    my %opts = @_;
+
+    my $order = $opts{order_by} || $self->SqlSortOrder();
+    my $from  = 'group_workspace_role gwr';
+    my @where = ();
+    my @cols = (
+        'gwr.group_id AS group_id',
+        'gwr.workspace_id AS workspace_id',
+        'gwr.role_id'
+    );
+
+    @where = ( 'gwr.group_id' => $opts{group_id} ) if $opts{group_id};
+    @where = ( 'gwr.workspace_id' => $opts{workspace_id} )
+        if $opts{workspace_id};
+
+    my ($sql, @bind) = sql_abstract()->select(
+        \$from, \@cols, \@where, $order, $opts{limit}, $opts{offset});
+
+    my $sth = sql_execute($sql, @bind);
+    return $self->Cursor($sth);
+}
 
 sub Builds_sql_for { 'Socialtext::GroupWorkspaceRole' }
 

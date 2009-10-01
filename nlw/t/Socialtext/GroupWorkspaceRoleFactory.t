@@ -5,7 +5,7 @@ use strict;
 use warnings;
 # use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 70;
+use Test::Socialtext tests => 76;
 use Test::Exception;
 
 ###############################################################################
@@ -28,6 +28,32 @@ get_factory_instance: {
 
     # its the *same* Factory
     is $instance_one, $instance_two, '... and its the same Factory';
+}
+
+###############################################################################
+# TEST: SortedResultSet with defaults.
+sorted_result_set_default: {
+    my $group1 = create_test_group( unique_id => "AAA" );
+    my $group2 = create_test_group( unique_id => "ZZZ" );
+    my $wksp   = create_test_workspace();
+
+    $wksp->add_group( group => $group1 );
+    ok $wksp->has_group( $group1 ), 'Group AAA is in Workspace';
+
+    $wksp->add_group( group => $group2 );
+    ok $wksp->has_group( $group2 ), 'Group ZZZ is in Workspace';
+
+    my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+        workspace_id => $wksp->workspace_id,
+    );
+    isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+    is $gwrs->count, '2', '... with 2 GWRs';
+
+    my $gwr = $gwrs->next();
+    is $gwr->group_id, $group1->group_id, '... with Group AAA first';
+
+    $gwr = $gwrs->next();
+    is $gwr->group_id, $group2->group_id, '... with Group ZZZ first';
 }
 
 ###############################################################################
