@@ -46,7 +46,7 @@ my @libs = qw(
 );
 
 for my $f (@libs) {
-    print "Linking in $f...\n";
+    print "Linking in $f...\n" unless ($ENV{QUIET});
     (my $dir = $f) =~ s#^(.+)/.+#$1#;
     unless (-d $dir) {
         mkpath $dir or die "Can't mkpath $dir: $!";
@@ -61,13 +61,13 @@ for my $f (@libs) {
     }
 }
 
-print "Linking in control templates...\n";
+print "Linking in control templates...\n" unless ($ENV{QUIET});
 my $tmpl_dir = "share/template/control";
 unlink $tmpl_dir;
 symlink "$control_dir/$tmpl_dir", $tmpl_dir
     or die "Can't symlink $control_dir/$tmpl_dir => $tmpl_dir: $!";
 
-print "Linking in control wikitests...\n";
+print "Linking in control wikitests...\n" unless ($ENV{QUIET});
 my $wikitests = "t/wikitests/control";
 die "not a symlink" if -e $wikitests and not -l $wikitests;
 unlink $wikitests;

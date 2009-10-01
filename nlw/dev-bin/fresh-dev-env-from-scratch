@@ -53,7 +53,7 @@ st-make-all @clean all
 dev-bin/link-plugins $PLUGINS
 rm -f etc/socialtext/db/cache.*.sql
 set +e
-dev-bin/link-console
+QUIET=1 dev-bin/link-console
 set -e
 dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --preserve --fixture base_config
@@ -72,8 +72,8 @@ echo "Linking in extra modules ..."
 # We set +e here so that if these fail, fdefs continues
 # otherwise everyone is forced to have all this code checked out
 set +e
-dev-bin/link-control-panel
-dev-bin/link-console
+QUIET=1 dev-bin/link-control-panel
+QUIET=1 dev-bin/link-console
 dev-bin/link-reports
 set -e
 

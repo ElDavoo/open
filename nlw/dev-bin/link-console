@@ -46,7 +46,7 @@ my @libs = qx(find $console_dir/lib -name '*.pm');
 for my $f (@libs) {
     chomp $f;
     $f =~ s#^\Q$console_dir\E/##;
-    print "Linking in $f...\n";
+    print "Linking in $f...\n" unless ($ENV{QUIET});
     (my $dir = $f) =~ s#^(.+)/.+#$1#;
     unless (-d $dir) {
         mkpath $dir or die "Can't mkpath $dir: $!";
@@ -65,7 +65,7 @@ my @tmpls = qx(find $console_dir/template -name '*.tmpl' -or -name '*.html');
 for my $f (@tmpls ) {
     chomp $f;
     $f =~ s#^\Q$console_dir\E/##;
-    print "Linking in $f...\n";
+    print "Linking in $f...\n" unless ($ENV{QUIET});
     (my $dir = $f) =~ s#^(.+)/.+#$1#;
     
     unless (-d "share/console-template/$dir") {
@@ -82,7 +82,7 @@ if (! -d $console_root) {
     mkpath $console_root or die "Can't mkpath $console_root: $!";
 }
 my $console_cgi = "$console_root/index.cgi";
-print "Linking in console cgi ($console_cgi) ...\n";
+print "Linking in console cgi ($console_cgi) ...\n" unless ($ENV{QUIET});
 unlink $console_cgi;
 set_contents($console_cgi, <<EOT);
 #!/bin/bash
