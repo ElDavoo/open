@@ -1,6 +1,9 @@
 #!/bin/bash -e
 # @COPYRIGHT@
 
+# "Minimal" build option, don't use ALL fixtures.
+getopts "m" MINIMAL || true
+
 if [ "$ST_CURRENT" != "" ]; then
     echo "Changing to $ST_CURRENT/nlw"
     cd $ST_CURRENT/nlw
@@ -54,7 +57,12 @@ dev-bin/link-console
 set -e
 dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --preserve --fixture base_config
-dev-bin/make-test-fixture --home_dir $HOME --preserve --fixture ALL
+
+FIXTURE='ALL'
+[ "$MINIMAL" == "m" ] && FIXTURE='admin'
+dev-bin/make-test-fixture --home_dir $HOME --preserve --fixture $FIXTURE
+
+
 bin/st-admin enable-plugin --all-accounts --plugin dashboard
 
 # Setup robots.txt file to prevent dev-env heat death
