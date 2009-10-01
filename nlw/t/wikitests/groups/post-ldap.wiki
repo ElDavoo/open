@@ -29,3 +29,7 @@ Tests for [Story: Groups ReST API]
 | body-like   | HawkWind      |         |
 
 # ... admin gets a 404? 406? status code if the group is not in LDAP
+
+| POST_json | /data/groups | {"ldap_dn":"cn=NoExisty,dc=socialtext,dc=com","account_id":"%%account_id%%"} |
+| code-is | 400 |
+
