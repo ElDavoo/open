@@ -8,7 +8,6 @@ use Socialtext::AppConfig;
 use Socialtext::HTTP::Ports;
 use URI::FromHash;
 use Socialtext::Cache;
-use Memoize;
 
 # Default scheme, which *is* over-ridden by at least one module (ST::CLI)
 our $default_scheme = 'http';
@@ -36,7 +35,6 @@ sub uri_object {
     URI::FromHash::uri_object( _scheme_host_port(), @_ );
 }
 
-memoize '_scheme_host_port';
 sub _scheme_host_port {
     my $scheme = _scheme();
     return (
@@ -46,7 +44,6 @@ sub _scheme_host_port {
     );
 }
 
-memoize '_scheme';
 sub _scheme {
     if (Socialtext::AppConfig->ssl_only) {
         # If SSL-only is enabled, *only* generate HTTPS URIs (regardless of how
