@@ -22,7 +22,7 @@ It should be the last testset in this run, but it will re-enable LDAP when it fi
 
 * [Default User Testcases]
 
-* [Test Case: Signals/Activities Interaction]
+* [Test Case: Signals Activities Interaction]
 * [Widgets Testcases]
 * [Test Case: Gadgets Galore]
 

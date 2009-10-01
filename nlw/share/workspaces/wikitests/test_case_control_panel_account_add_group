@@ -32,4 +32,3 @@
 | verify-text    | //h1                                          | %%account%% account                                  |
 | verify-text    | css=span.error                                | Group is already a member of the %%account%% Account |
 | verify-text    | //h2[4]                                       | Groups (1)                                          |
-
