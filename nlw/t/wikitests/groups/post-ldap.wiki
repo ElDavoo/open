@@ -3,6 +3,7 @@ Tests for [Story: Groups ReST API]
 * Fixture: SocialRest
 
 | standard-test-setup |         |                                  |
+| delete-all-groups | |
 | st-ldap             | start   |                                  |
 | set                 | ldap_dn | cn=Hawkwind,dc=socialtext,dc=com |
 
@@ -26,7 +27,7 @@ Tests for [Story: Groups ReST API]
 | GET         | /data/groups  |         |
 | code-is     | 200           |         |
 | header-like | Cache-Control | private |
-| body-like   | HawkWind      |         |
+| body-like   | Hawkwind      |         |
 
 # ... admin gets a 404? 406? status code if the group is not in LDAP
 
