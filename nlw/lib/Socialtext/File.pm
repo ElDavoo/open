@@ -56,8 +56,9 @@ Set the contents of a binary file.
 
 =head2 set_contents_binmode( $filename, $content, $binmode )
 
-Set the contents of a file, using the requested C<$binmode> (which will have
-C<:mmap> prepended to it).  See L<PerlIO>.
+Set the contents of a file, using the requested C<$binmode>.  If the binmode
+is omitted or is 'UTF-8', it will have C<:mmap> prepended to it.  See
+L<PerlIO>.
 
 =cut
 
@@ -65,7 +66,8 @@ sub set_contents_binmode {
     my $filename = shift;
     my $content  = shift;
     my $binmode  = shift || '';
-    $binmode = ":mmap$binmode";
+    $binmode = ":mmap$binmode"
+        if (length($binmode) == 0 or $binmode eq 'UTF-8');
 
     my $fh;
     open $fh, ">$binmode", $filename

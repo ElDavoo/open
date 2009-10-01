@@ -525,6 +525,13 @@ ul li a.genericBlueButton:hover {
 }
 
 
+ul li.flexButton.editing a.editButton, ul li.flexButton.editing a.editButton:hover {
+        visibility: hidden;
+}
+ul li.flexButton.editing {
+        background: url(../images/ajax-loader.gif) no-repeat left;
+}
+
 ul li.flexButton.disabled a.genericOrangeButton, ul li.flexButton.disabled a.genericOrangeButton:hover {
         visibility: hidden;
 }
