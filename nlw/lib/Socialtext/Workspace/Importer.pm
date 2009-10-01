@@ -29,11 +29,12 @@ Readonly my $MAX_VERSION => 1;
 
 {
     Readonly my $spec => {
-        name      => SCALAR_TYPE(optional => 1),
-        tarball   => FILE_TYPE,
-        overwrite => BOOLEAN_TYPE( default => 0 ),
-        noindex   => BOOLEAN_TYPE( default => 0 ),
-        hub       => OBJECT_TYPE,
+        name        => SCALAR_TYPE(optional => 1),
+        tarball     => FILE_TYPE,
+        overwrite   => BOOLEAN_TYPE(default => 0),
+        noindex     => BOOLEAN_TYPE(default => 0),
+        index_async => BOOLEAN_TYPE(default => 0),
+        hub         => OBJECT_TYPE,
     };
     sub new {
         my $class = shift;
@@ -61,13 +62,14 @@ Readonly my $MAX_VERSION => 1;
         my $tarball = Cwd::abs_path( $p{tarball} );
 
         return bless {
-            new_name  => $new_name,
-            old_name  => $old_name,
-            workspace => $ws,
-            tarball   => $tarball,
-            version   => $version,
-            noindex   => $p{noindex},
-            hub       => $p{hub},
+            new_name    => $new_name,
+            old_name    => $old_name,
+            workspace   => $ws,
+            tarball     => $tarball,
+            version     => $version,
+            noindex     => $p{noindex},
+            index_async => $p{index_async},
+            hub         => $p{hub},
             },
             $class;
     }
@@ -114,11 +116,17 @@ sub import_workspace {
         }
 
         unless ($self->{noindex}) {
-            chdir( $old_cwd );
-            my $idx = Socialtext::Search::AbstractFactory->GetFactory
-                ->create_indexer($self->{workspace}->name);
-            $idx->hub->current_user( Socialtext::User->SystemUser );
-            $idx->index_workspace( $self->{workspace}->name );
+            if ($self->{index_async}) {
+                $self->{hub}->current_workspace( $self->{workspace} );
+                $self->{workspace}->reindex_async( $self->{hub}, 'live' );
+            }
+            else {
+                chdir( $old_cwd );
+                my $idx = Socialtext::Search::AbstractFactory->GetFactory
+                    ->create_indexer($self->{workspace}->name);
+                $idx->hub->current_user( Socialtext::User->SystemUser );
+                $idx->index_workspace( $self->{workspace}->name );
+            }
         }
 
         st_log()
