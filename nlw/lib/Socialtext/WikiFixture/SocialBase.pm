@@ -1104,7 +1104,9 @@ Try to parse the body as JSON, remembering the result for additional tests.
 sub json_parse {
     my $self = shift;
     $self->{json} = undef;
-    $self->{json} = eval { decode_json($self->{http}->response->content) };
+    my $content = $self->{http}->response->content || '';
+    $content =~ s/^throw 1; < don't be evil' >\s*//ms;
+    $self->{json} = eval { decode_json($content) };
     ok !$@ && defined $self->{json} && ref($self->{json}) =~ /^ARRAY|HASH$/,
         $self->{http}->name . " parsed content" . ($@ ? " \$\@=$@" : "");
 }
