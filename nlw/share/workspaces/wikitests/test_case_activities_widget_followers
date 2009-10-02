@@ -1,0 +1,37 @@
+| *Comment* | Test Case: Activities Widget Followers MASSIVE TBD; JUST A SKELETON |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Activities Widget Followers Create Account and Three users |  |
+| set | shortfollow | following%%start_time%% |
+| set | followinguser | %%shortfollow%%@matt.socialtext.net |
+| set | shortnot | justme%%start_time%% |
+| set | notfollowinguser | %%shortnot%%@matt.socialtext.net |
+| set | shortloggedin | awf%%start_time%% |
+| set | loggedinuser | %%shortloggedin%%@matt.socialtext.net |
+| set | followws | follow-ws-%%start_time%% |
+| set | followacct | followacct%%start-time%% |
+| st-admin | create-account --name %%followacct%% |  |
+| st-admin | create-workspace --name %%followws%% --title %%followws%% --account %%followacct%% |  |
+| st-admin | create-user --email %%followinguser%% --password %%password%% --account %%followacct%% |  |
+| st-admin | add-member --workspace %%followws%% --email %%notfollowinguser%% |  |
+| st-admin | create-user --email %%notfollowinguser%% --password %%password%% --account %%followacct%% |  |
+| st-admin | add-member --workspace %%followws%% --email %%followinguser%% |  |
+| st-admin | create-user --email %loggedinuser%% --password %%password%% --account %%followacct%% |  |
+| st-admin | add-member --workspace %%followws%% --email %%loggedinuser%% |  |
+
+| *Comment* | Test Case: Activities Widget Login as %%followinguser%%, create a page and send a signal |  |
+| st-logoutin | %%followinguser%% |  |
+
+| *Comment* | Test Case: Activities Widget Login as %%notfollowinguser%%, create a page and send a signal |  |
+| st-logoutin | %%notfollowinguser%% |  |
+
+| *Comment* | Test Case: Activities Widget Login as %%loggedinuser%%, follow %%followinguser%%, see both activities | |
+| st-logoutin | %%loggedinuser%% |  |
+
+| *Comment* | Test Case: Activities Widget Login as %%loggedinuser%%, change dropdown to be followed, see only %%followinguser%%'s activities |  |
+
+| *Comment* | Test Case: Activities Widget Login as %%loggedinuser%%, change dropdown back to all, see all |  |
+
+| *Comment* | Test Case: Activities Widget Teardown |
+| st-admin | delete-workspace --workspace %%followws%% --no-export |
