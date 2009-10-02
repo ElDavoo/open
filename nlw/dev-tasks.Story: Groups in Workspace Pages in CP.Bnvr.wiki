@@ -1,0 +1,213 @@
+^ Summary
+
+Appliance Admins would like to see the Groups that have a Role in a Workspace. Similarly, they'd like to see which Workspaces a Group has a Role in.
+
+^ Prerequisites
+
+* -[Story: Actualize LDAP Group]-
+
+^ Details
+
+| *T-Shirt Estimate* | S,M,L,X |
+| *Points* | 2 |
+| *Estimator(s)* | @brandon ( needs another estimator ) |
+| *Lead Dev* | @brandon |
+| *Lead QA* | @matt |
+| *Category* |  |
+| *Priority* | 1 |
+| *Customer* | @adina |
+| *Notes* |  |
+
+^ Story Tests
+
+Group information needs to be made available within the Workspace pages in the CP (and vice-versa). Similarly, `st-admin` commands relating to the display of Workspace membership information should include information on Groups.
+
+^^ /nlw/control/workspace/<workspace_id>
+
+NOTE: This is taken from the pattern implemented in [Story: Groups in Account Pages in CP]
+
+| *Test*                                                                          | *Dev State* | *QA State* | *Notes* |
+| Table has a list of all Socialtext Groups in the Workspace                      | yes         |            |         |
+| Table is titled "Groups (<count>)"                                              | yes         |            |         |
+| ... and shows *only* those Groups that have a Role in this Workspace            | yes         |            |         |
+| Groups Table has the following columns, all of which are sortable...            | yes         |            |         |
+| ... ID                                                                          | yes         |            |         |
+| ... Name                                                                        | yes         |            |         |
+| ... Users                                                                       | yes         |            |         |
+| ... Workspaces                                                                  | yes         |            |         |
+| ... Primary Account                                                             | yes         |            |         |
+| ... Created                                                                     | yes         |            |         |
+| ... Created By                                                                  | yes         |            |         |
+| ... default sort order is "Name, ID"                                            | yes         |            |         |
+| "ID" column it the Group's Id ...                                               | yes         |            |         |
+| ... linking to the group's Detail Page, `/nlw/control/group/<group_id>`         | yes         |            |         |
+| "Name" column is the Group's name ...                                           | yes         |            |         |
+| ... linking to the group's Detail Page, `/nlw/control/group/<group_id>`         | yes         |            |         |
+| "Workspaces" is the number of Workspaces that the Group is a member of          | yes         |            |         |
+| "Primary Account" column is the name of the Group's Primary Account...          | yes         |            |         |
+| ... linking to the Group's Primary Account, `/nlw/control/account/<account_id>` | yes         |            |         |
+| "Created" column is the date on which the Group was created                     | yes         |            |         |
+| "Created By" column is the BFN and Email address of the Group's creator...      | yes         |            |         |
+| ... linking to the group's creator, `/nlw/control/user/<user_id>`               | yes         |            |         |
+| If there are > 50 groups, the table will be paged...                            | yes         |            |         |
+| ... with standard paging controls at the top and bottom of each page.           | yes         |            |         |
+| All text is localized                                                           | yes         |            |         |
+
+> There is a wikid test for this in the control repo: `t/wikitests/control/workspace_groups.wiki`
+> Please note: while we do verify that sorting is working, we don't exhaustively test every case.
+
+^^^ /nlw/control/group/<group_id>
+
+| *Test*                                                                              | *Dev State* | *QA State* | *Notes* |
+| Table has a list of all Workspaces a Group has a role in                            |             |            |         |
+| Table is titled "Workspaces (<count>)"                                              |             |            |         |
+| ... and shows *only* those Workspaces that the group has a role in                  |             |            |         |
+| Workspace Table has the following columns, all of which are sortable...             |             |            |         |
+| ... Name                                                                            |             |            |         |
+| ... Users                                                                           |             |            |         |
+| ... Account                                                                         |             |            |         |
+| ... Created                                                                         |             |            |         |
+| ... Created By                                                                      |             |            |         |
+| ... default sort order is "Name"                                                    |             |            |         |
+| "Name" column is the Workspace's name ...                                           |             |            |         |
+| ... linking to the Workspace's Detail Page, `/nlw/control/workspace/<workspace_id>` |             |            |         |
+| "Users" is the number of Users who have a role in that Workspace                    |             |            |         |
+| "Account" column is the name of the Workspaces's Account...                         |             |            |         |
+| ... linking to the Workspace's Account, `/nlw/control/account/<account_id>`         |             |            |         |
+| "Created" column is the date on which the Workspace was created                     |             |            |         |
+| "Created By" column is the BFN and Email address of the Workspace's creator...      |             |            |         |
+| ... linking to the Workspace's creator, `/nlw/control/user/<user_id>`               |             |            |         |
+| If there are > 50 Workspaces, the table will be paged...                            |             |            |         |
+| ... with standard paging controls at the top and bottom of each page.               |             |            |         |
+| All text is localized                                                               |             |            |         |
+
+^^ CLI
+
+| *Test*                                                                       | *Dev State* | *QA State* | *Notes* |
+| `st-admin show-members --workspace <ws_name>`                                | n/a         | n/a        |         |
+| ... includes a table listing the Users that have a Role in the WS            | yes         |            |         |
+| ... ... including Users with direct "User->Workspace Roles"                  | yes         |            |         |
+| ... ... including Users with indirect "User->Group->Workspace Roles"         | yes         |            |         |
+| ... ... and each User appears *once* and only once (list has been de-duped)  | yes         |            |         |
+| ... with a useful error message on failure ( eg. "Workspace does not exist") | yes         |            |         |
+| `st-admin show-members --workspace <ws_name> --direct`                       | n/a         | n/a        |         |
+| ... includes a table listing the Users that have a Role in the WS            | yes         |            |         |
+| ... ... including Users with direct "User->Workspace Roles"                  | yes         |            |         |
+| ... ... *not* including Users with indirect "User->Group->Workspace Roles"   | yes         |            |         |
+| ... with a useful error message on failure ( eg. "Group does not exist")     | yes         |            |         |
+| ... `st-admin help` has been updated to mention new command/options          | yes         |            |         |
+| `st-admin list-groups --workspace <ws_name>`                                 | n/a         | n/a        |         |
+| ... includes a table listing the Groups that have a Role in the WS           | yes         |            |         |
+| ... ... with columns "Group Id", "Group Name", "Role", "Workspaces", "Users" | yes         |            |         |
+| ... ... ordered by "Group Name asc, Group Id asc"                            | yes         |            |         |
+| ... with a useful error message on failure ( eg. "Group does not exist")     | yes         |            |         |
+| ... `st-admin help` has been updated to mention new command/options          | yes         |            |         |
+| All display text is localized                                                | yes         |            |         |
+
+> Test for CLI are located in: `t/Socialtext/CLI/Group-membership.t` and `t/Socialtext/CLI/groups.t`
+
+^^ Standard tests
+
+| *Test*                                                                          | *Dev State* | *QA State* | *Notes*                    |
+| All above story tests pass if an installation upgrades from an existing version |             |            | Not tested                 |
+| Developer has done `vest -r master` with this story's code                      |             |            |                            |
+| Developer has done `vest -r appliance; vest -u master` with this story's code   |             |            |                            |
+| Performance tests have been run against a copy of prod                          |             |            | This is *really* important |
+
+^ Questions That Need Answers
+
+* Created by column is sorted by how? First letter of first name? First letter of last name? There was a field we had called "best_sortable_name" - is this was we should use?
+
+^ Deployment
+
+_delete unneeded deployment cases, answer where appropriate_
+
+* _Are there any special deployment considerations? (e.g. appliances or our shared-hosting service)_
+* _What sign-off steps are needed with csm or support?_
+* _Anything QA should be aware of with respect to performance of key web calls?_
+* _Any database migrations?_
+* _Any additional diskspace considerations (including additional space for the DB)?_
+* _Are there any changes that will impact update times on appliances?_
+
+^ Technical Details
+
+_put any relevant programming information here, including implementation and automated testing details_
+
+^^ Assumptions
+
+_Put any relevant technical assumptions here, including a few details on the "ideal" technical solution that may be skipped in order to deliver the story sooner. This will capture important assumptions that may be revisited in future refactoring efforts._
+
+^^ Risks
+
+_describe any significant risks to the technical solution_
+
+^^ Make it work / demoable
+
+_detail the tasks needed to rapidly get this story to a demoable state for the customer._
+
+^^ Make it right
+
+_describe what needs to be done (tasks) to complete the story. Migrations and "spit'n'polish" go here_
+
+^^^ Make it faster / better
+
+_describe what should be done to optimize the performance of this story or have a better design through refactoring. Database indexes, code consolidation and abstraction are fine examples_
+
+^ Notes & comments
+
+While re-reviewing this Story with Brandon, we saw some great opportunity to clean up some of the CLI commands and make them easier to grok/digest now that we have a "Group" context to deal with.
+
+^^ CLI STUFF WE'RE NOT DOING YET
+
+^^^ Missing: show-groups "--account" option
+
+| *Test* | *Dev State* | *QA State* | *Notes* |
+| `st-admin show-groups --account <acct_name>` | n/a | n/a |  |
+| ... includes a table listing the Groups that have a Role in the Account |  |  |  |
+| ... ... with columns "Group Id", "Group Name", "Role" |  |  |  |
+| ... ... ordered by "Group Name asc, Group Id asc" |  |  |  |
+| ... with a useful error message on failure ( eg. "Group does not exist") |  |  |  |
+| `st-admin help` has been updated to mention new command/options |  |  |  |
+
+^^^ New: show-members "--role" option
+
+| *Test* | *Dev State* | *QA State* | *Notes* |
+| `st-admin show-members` accepts a `--role <role_name>` option |  |  |  |
+| ... which limits results to only those Users with the given Role in the collection |  |  |  |
+| ... ... if that collection is `--workspace <ws_name>` |  |  |  |
+| ... ... if that collection is `--account <acct_name>` |  |  |  |
+| ... ... if that collection is `--group <group_id>` |  |  |  |
+| ... which accepts `--role admin` as an alias for `--role workspace_admin` |  |  |  |
+| ... ... and which (ideally) is implemented at a lower-level than `ST::CLI` | n/a | n/a |  |
+| `st-admin help` has been updated to mention new command/options |  |  |  |
+
+^^^ Rename "show-members" to "show-users"
+
+We'd like to take a longer-term plan to rename the `st-admin show-members` command to `st-admin show-users`, so rename it all internally *but* make sure that if someone uses the `show-members` command that it passes through to `show-users`. (e.g. make `show-users` the new standard, but provide backwards compatibility for anything/anyone doing `show-members`)
+
+| *Test* | *Dev State* | *QA State* | *Notes* |
+| Rename the `show-members` command to `show-users` |  |  |  |
+| Alias `show-members` to call `show-users`, for backwards compatibility |  |  |  |
+| Update the POD in `st-admin` |  |  |  |
+| ... to reflect the rename |  |  |  |
+| ... and to note that `show-members` exists for backwards compatibility |  |  |  |
+
+^^^ Re-implement "show-admins" as helper version of "show-users"
+
+The updated `show-users` command now contains sufficient options to act as a replacement for `show-admins`
+
+| *Test* | *Dev State* | *QA State* | *Notes* |
+| Re-implement `show-admins` as a pass-thru to `show-users` |  |  |  |
+| ... forcably restricting on `--role admin` |  |  |  |
+| `st-admin help` has been updated to outline that this is how `show-admins` works |  |  |  |
+| ... and that its really just a short-hand helper method |  |  |  |
+
+^^^ Re-implement "show-impersonators" as helper version of "show-users"
+
+The updated `show-users` command now contains sufficient options to act as a replacement for `show-impersonators`
+
+| *Test* | *Dev State* | *QA State* | *Notes* |
+| Re-implement `show-impersonators` as a pass-thru to `show-users` |  |  |  |
+| ... forcably restricting on `--role impersonator` |  |  |  |
+| `st-admin help` has been updated to outline that this is how `show-impersonators` works |  |  |  |
+| ... and that its really just a short-hand helper method |  |  |  |

@@ -21,6 +21,8 @@ use YAML ();
 use YAML::Dumper;
 use Socialtext::Build qw( get_build_setting get_prefixed_dir );
 
+our $Auto_reload = 1;
+
 # We capture this at load time and then will later check
 # $Current_user->uid to see if the user _when the module was loaded_
 # was root. We do not want to check $> later because under mod_perl
@@ -368,6 +370,8 @@ sub _last_mod_time { $_[0]->instance->{last_mod_time} }
 sub _reload_if_modified {
     my $self = shift;
 
+    return unless $Auto_reload;
+
     return unless -f $self->{file};
 
     # We check size as well as last mod time because at least in the
@@ -661,6 +665,15 @@ config file to a new a file.
 We provide the directory where our configuration file can be found as
 a means to allow other configuration files to be retrieved at the same
 location.
+
+=head2 $Auto_reload
+
+By default, C<Socialtext::AppConfig> will automatically reload the
+configuration file if it detects that the file has been modified.
+
+By setting C<$Socialtext::AppConfig::Auto_reload=0> you can disable this, so
+that the configuration file is only loaded once (the first time C<instance()>
+or C<new()> is called).
 
 =head1 CONFIGURATION VARIABLES
 
