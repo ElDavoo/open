@@ -14,6 +14,7 @@ my $max_rss = 256 * 1024; # in kiB or MiB
 my $max_vsz = 512 * 1024; # in kiB or MiB
 my $max_fds = 512;
 my $signal  = 15; # SIGTERM
+my $tcp_port = 0;
 
 GetOptions(
     'help|?' => \$help,
@@ -24,6 +25,7 @@ GetOptions(
     'vsz=i'  => \$max_vsz,
     'fds=i'  => \$max_fds,
     'sig=i'  => \$signal,
+    'tcp=i'  => \$tcp_port,
 )
 or pod2usage(1);
 pod2usage(1) if $help;
@@ -49,7 +51,7 @@ sub recover {
     chomp $now;
     my $msg = shift;
     print "[$now] st-daemon-monitor: $pid $msg\n";
-    kill $signal, $pid;
+    kill $signal, $pid if $signal;
     print "[$now] st-daemon-monitor: running $init_cmd\n";
     # 1 == ran init ok, 2 == init bad?
     system("$init_cmd") and exit 2;
@@ -114,6 +116,11 @@ chomp $open_fd;
 
 if ($open_fd > $max_fds) {
     recover("has too many files open");
+}
+
+if ($tcp_port && $tcp_port !~ /\D/) {
+    my $netstat = `netstat --listening --numeric-ports -n -t | awk '{print \$4}' | egrep ':${tcp_port}\$'`;
+    recover("tcp port $tcp_port is not open") unless $netstat;
 }
 
 # all's well

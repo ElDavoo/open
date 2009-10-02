@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::More tests => 36;
+use Test::More tests => 46;
 use File::Temp qw/tempfile/;
 
 ok -x 'bin/st-daemon-monitor', "it's executable";
@@ -79,13 +79,17 @@ sub test_monitor ($$;$) {
     pass "done ($cranky; $mon_args)";
 }
 
-test_monitor('/bin/sleep 5','' => 'lives');
-test_monitor('/bin/sleep 5','--rss 32 --vsz 32 --fds 10' => 'lives');
+my $c = 'dev-bin/cranky.pl ';
+test_monitor($c.'--no-scgi',           '--tcp '.($>+26000)           );
+test_monitor($c.'--after 5 --no-scgi', ''                  => 'lives');
+test_monitor($c.'--after 5',           '--tcp '.($>+26000) => 'lives');
+
+test_monitor('/bin/sleep 5', ''                           => 'lives');
+test_monitor('/bin/sleep 5', '--rss 32 --vsz 32 --fds 10' => 'lives');
 
 test_monitor('/bin/true',''); # special case: harness will reap
 
-test_monitor('dev-bin/cranky.pl --ram 64',         '--rss 64');
-test_monitor('dev-bin/cranky.pl --ram 64',         '--vsz 128');
-test_monitor('dev-bin/cranky.pl --ram 64 --fds 64','--vsz 256 --fds 32');
-test_monitor('dev-bin/cranky.pl --fds 64',         '--vsz 256 --fds 32');
-
+test_monitor($c.'--ram 64',         '--rss 64');
+test_monitor($c.'--ram 64',         '--vsz 128');
+test_monitor($c.'--ram 64 --fds 64','--vsz 256 --fds 32');
+test_monitor($c.'--fds 64',         '--vsz 256 --fds 32');

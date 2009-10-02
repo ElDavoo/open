@@ -15,6 +15,7 @@ my $ram = 0; # in MiB
 my $fds = 0; # in MiB
 my $after = 60;
 my $run_scgi = 1;
+my $port = ($> + 26000);
 
 GetOptions(
     'help|?' => \$help,
@@ -23,6 +24,7 @@ GetOptions(
     'fds=i'  => \$fds,
     'after=i' => \$after,
     'scgi!'  => \$run_scgi,
+    'port=i' => \$port,
 )
 or pod2usage(2);
 pod2usage(1) if $help;
@@ -46,7 +48,6 @@ Go away!
 EOM
 $go_away =~ s/\n/\r\n/gsm;
 
-my $port = $> + 6000;
 our $server;
 if ($run_scgi) {
     $server = tcp_server '127.0.0.1', $port, unblock_sub {
@@ -59,6 +60,9 @@ if ($run_scgi) {
         $handle->on_error(sub { $handle->destroy });
         return;
     };
+}
+else {
+    warn "$0: no scgi\n";
 }
 
 our @sigs;
