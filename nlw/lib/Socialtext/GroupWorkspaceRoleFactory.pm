@@ -20,18 +20,59 @@ sub SortedResultSet {
     my $self = shift;
     my %opts = @_;
 
-    my $order = $opts{order_by} || $self->SqlSortOrder();
-    my $from  = 'group_workspace_role gwr';
-    my @where = ();
-    my @cols = (
+    my $from       = 'group_workspace_role gwr';
+    my @where      = ();
+    my @cols       = (
         'gwr.group_id AS group_id',
         'gwr.workspace_id AS workspace_id',
         'gwr.role_id'
     );
 
+    my $order = ( $opts{order_by} && $opts{order_by} =~ /^\w+$/ )
+        ? $opts{order_by}
+        : 'group_id';
+
+
     @where = ( 'gwr.group_id' => $opts{group_id} ) if $opts{group_id};
     @where = ( 'gwr.workspace_id' => $opts{workspace_id} )
         if $opts{workspace_id};
+
+    if ( $order eq 'name' ) {
+        push @cols, '"Workspace".name AS name';
+        $from .= qq{ JOIN "Workspace" USING (workspace_id) };
+    }
+    if ( $order eq 'user_count' ) {
+        push @cols, 'user_aggregate.count AS user_count';
+        $from .= q{
+            LEFT JOIN (
+                SELECT workspace_id,
+                       COALESCE( COUNT(user_id), 0 ) AS count
+                  FROM distinct_user_workspace_role
+              GROUP BY workspace_id
+            ) user_aggregate USING ( workspace_id )
+        };
+    }
+    if ( $order eq 'account_name' ) {
+        push @cols, '"Account".name AS account_name';
+        $from .= q{ JOIN "Workspace" USING ( workspace_id )
+                    JOIN "Account" USING ( account_id ) };
+    }
+    if ( $order eq 'creation_datetime' ) {
+        push @cols, '"Workspace".creation_datetime AS creation_datetime';
+        $from .= q{ JOIN "Workspace" USING ( workspace_id ) };
+    }
+    if ( $order eq 'creator' ) {
+        push @cols, 'users.display_name AS creator';
+        $from .= q{ JOIN "Workspace" USING ( workspace_id )
+                    JOIN users ON
+                         "Workspace".created_by_user_id = users.user_id };
+    }
+
+    $order .= ( $opts{sort_order} && ($opts{sort_order} =~ /^(a|de)sc$/) )
+        ? " $opts{sort_order}"
+        : ' ASC';
+
+    $order .= ", " . $self->SqlSortOrder();
 
     my ($sql, @bind) = sql_abstract()->select(
         \$from, \@cols, \@where, $order, $opts{limit}, $opts{offset});

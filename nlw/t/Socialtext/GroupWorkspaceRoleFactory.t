@@ -5,7 +5,7 @@ use strict;
 use warnings;
 # use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 76;
+use Test::Socialtext tests => 163;
 use Test::Exception;
 
 ###############################################################################
@@ -31,29 +31,439 @@ get_factory_instance: {
 }
 
 ###############################################################################
-# TEST: SortedResultSet with defaults.
-sorted_result_set_default: {
-    my $group1 = create_test_group( unique_id => "AAA" );
-    my $group2 = create_test_group( unique_id => "ZZZ" );
+# TEST: SortedResultSet default order 
+sorted_result_set_default_order: {
+    # Default is group_id, or the order they were created.
+    my $group1 = create_test_group();
+    my $group2 = create_test_group();
     my $wksp   = create_test_workspace();
 
     $wksp->add_group( group => $group1 );
-    ok $wksp->has_group( $group1 ), 'Group AAA is in Workspace';
+    ok $wksp->has_group( $group1 ), 'Group1 is in Workspace';
 
     $wksp->add_group( group => $group2 );
-    ok $wksp->has_group( $group2 ), 'Group ZZZ is in Workspace';
+    ok $wksp->has_group( $group2 ), 'Group2 is in Workspace';
 
-    my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
-        workspace_id => $wksp->workspace_id,
-    );
-    isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
-    is $gwrs->count, '2', '... with 2 GWRs';
+    default_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            workspace_id => $wksp->workspace_id,
+        );
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
 
-    my $gwr = $gwrs->next();
-    is $gwr->group_id, $group1->group_id, '... with Group AAA first';
+        my $gwr = $gwrs->next();
+        is $gwr->group_id, $group1->group_id, '... with Group 1 first';
 
-    $gwr = $gwrs->next();
-    is $gwr->group_id, $group2->group_id, '... with Group ZZZ first';
+        $gwr = $gwrs->next();
+        is $gwr->group_id, $group2->group_id, '... with Group 2 second';
+    }
+
+    asc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            sort_order   => 'asc',
+            workspace_id => $wksp->workspace_id,
+        );
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->group_id, $group1->group_id, '... with Group 1 first';
+
+        $gwr = $gwrs->next();
+        is $gwr->group_id, $group2->group_id, '... with Group 2 second';
+    }
+
+    desc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            sort_order   => 'desc',
+            workspace_id => $wksp->workspace_id,
+        );
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->group_id, $group2->group_id, '... with Group 2 first';
+
+        $gwr = $gwrs->next();
+        is $gwr->group_id, $group1->group_id, '... with Group 1 second';
+    }
+}
+
+###############################################################################
+# TEST: SortedResultSet 'name' order 
+sorted_result_set_name_order: {
+    # Default is group_id, or the order they were created.
+    my $group  = create_test_group();
+    my $wksp_a = create_test_workspace( unique_id => 'aaa' );
+    my $wksp_z = create_test_workspace( unique_id => 'zzz' );
+
+    $wksp_a->add_group( group => $group );
+    ok $wksp_a->has_group( $group ), 'Group is in Workspace A';
+
+    $wksp_z->add_group( group => $group );
+    ok $wksp_z->has_group( $group ), 'Group is in Workspace Z';
+
+    default_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            order_by => 'name',
+            group_id => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_a->workspace_id,
+            '... with Workspace A first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_z->workspace_id,
+            '... with Workspace Z second';
+    }
+
+    asc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            order_by   => 'name',
+            sort_order => 'asc',
+            group_id   => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_a->workspace_id,
+            '... with Workspace A first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_z->workspace_id,
+            '... with Workspace Z second';
+    }
+
+    desc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            order_by   => 'name',
+            sort_order => 'desc',
+            group_id   => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_z->workspace_id,
+            '... with Workspace Z first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_a->workspace_id,
+            '... with Workspace A second';
+    }
+}
+
+###############################################################################
+# TEST: SortedResultSet 'account_name' order 
+sorted_result_set_account_name_order: {
+    my $acct_a = create_test_account_bypassing_factory( 'AA' );
+    my $acct_b = create_test_account_bypassing_factory( 'BB' );
+    my $wksp_1 = create_test_workspace( account => $acct_a );
+    my $wksp_2 = create_test_workspace( account => $acct_b );
+    my $group  = create_test_group();
+
+    $wksp_1->add_group( group => $group );
+    ok $wksp_1->has_group( $group ), 'Group is in Workspace 1';
+
+    $wksp_2->add_group( group => $group );
+    ok $wksp_2->has_group( $group ), 'Group is in Workspace 2';
+
+    default_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            order_by => 'account_name',
+            group_id => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_1->workspace_id,
+            '... with Workspace 1 first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_2->workspace_id,
+            '... with Workspace 2 second';
+    }
+
+    asc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            sort_order => 'asc',
+            order_by   => 'account_name',
+            group_id   => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_1->workspace_id,
+            '... with Workspace 1 first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_2->workspace_id,
+            '... with Workspace 2 second';
+    }
+
+    desc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            sort_order => 'desc',
+            order_by   => 'account_name',
+            group_id   => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_2->workspace_id,
+            '... with Workspace 2 first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_1->workspace_id,
+            '... with Workspace 1 second';
+    }
+}
+
+###############################################################################
+# TEST: SortedResultSet 'creation_datetime' order 
+sorted_result_set_creation_datetime_order: {
+    my $wksp_1 = create_test_workspace();
+    sleep 1;  # be _sure_ create times will be different.
+    my $wksp_2 = create_test_workspace();
+    my $group  = create_test_group();
+
+    $wksp_1->add_group( group => $group );
+    ok $wksp_1->has_group( $group ), 'Group is in Workspace 1';
+
+    $wksp_2->add_group( group => $group );
+    ok $wksp_2->has_group( $group ), 'Group is in Workspace 2';
+
+    default_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            order_by => 'creation_datetime',
+            group_id => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_1->workspace_id,
+            '... with Workspace 1 first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_2->workspace_id,
+            '... with Workspace 2 second';
+    }
+
+    asc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            sort_order => 'asc',
+            order_by   => 'creation_datetime',
+            group_id   => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_1->workspace_id,
+            '... with Workspace 1 first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_2->workspace_id,
+            '... with Workspace 2 second';
+    }
+
+    desc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            sort_order => 'desc',
+            order_by   => 'creation_datetime',
+            group_id   => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_2->workspace_id,
+            '... with Workspace 2 first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_1->workspace_id,
+            '... with Workspace 1 second';
+    }
+}
+
+###############################################################################
+# TEST: SortedResultSet 'creator' order 
+sorted_result_set_creator: {
+    my $user_a = create_test_user( unique_id => 'a' );
+    my $user_b = create_test_user( unique_id => 'b' );
+    my $wksp_1 = create_test_workspace( user => $user_a );
+    my $wksp_2 = create_test_workspace( user => $user_b );
+    my $group  = create_test_group();
+
+    $wksp_1->add_group( group => $group );
+    ok $wksp_1->has_group( $group ), 'Group is in Workspace 1';
+
+    $wksp_2->add_group( group => $group );
+    ok $wksp_2->has_group( $group ), 'Group is in Workspace 2';
+
+    default_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            order_by => 'creator',
+            group_id => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_1->workspace_id,
+            '... with Workspace 1 first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_2->workspace_id,
+            '... with Workspace 2 second';
+    }
+
+    asc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            sort_order => 'asc',
+            order_by   => 'creator',
+            group_id   => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_1->workspace_id,
+            '... with Workspace 1 first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_2->workspace_id,
+            '... with Workspace 2 second';
+    }
+
+    desc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            sort_order => 'desc',
+            order_by   => 'creator',
+            group_id   => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_2->workspace_id,
+            '... with Workspace 2 first';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_1->workspace_id,
+            '... with Workspace 1 second';
+    }
+}
+###############################################################################
+# TEST: SortedResultSet 'user_count' order 
+sorted_result_set_user_count_order: {
+    my $group  = create_test_group();
+    my $wksp_a = create_test_workspace();
+    my $wksp_b = create_test_workspace();
+    my $user_1 = create_test_user();
+    my $user_2 = create_test_user();
+
+    # Workspace A has one user
+    $wksp_a->add_group( group => $group );
+    ok $wksp_a->has_group( $group ), 'Group is in Workspace A';
+    $wksp_a->add_user( user => $user_1 );
+    ok $wksp_a->has_user( $user_1 ), 'User 1 is in Workspace A';
+
+    # Workspace B has two users
+    $wksp_b->add_group( group => $group );
+    ok $wksp_b->has_group( $group ), 'Group is in Workspace B';
+    $wksp_b->add_user( user => $user_1 );
+    ok $wksp_b->has_user( $user_1 ), 'User 1 is in Workspace B';
+    $wksp_b->add_user( user => $user_2 );
+    ok $wksp_b->has_user( $user_2 ), 'User 2 is in Workspace B';
+
+    default_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            order_by => 'user_count',
+            group_id => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_a->workspace_id,
+            '... with Workspace A first';
+        is $gwr->workspace->user_count(), '1',
+            '.... ... with 1 user';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_b->workspace_id,
+            '... with Workspace B second';
+        is $gwr->workspace->user_count(), '2',
+            '.... ... with 2 users';
+    }
+
+    asc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            sort_order => 'asc',
+            order_by   => 'user_count',
+            group_id   => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_a->workspace_id,
+            '... with Workspace A first';
+        is $gwr->workspace->user_count(), '1',
+            '.... ... with 1 user';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_b->workspace_id,
+            '... with Workspace B second';
+        is $gwr->workspace->user_count(), '2',
+            '.... ... with 2 users';
+    }
+
+    desc_sort_order: {
+        my $gwrs = Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+            sort_order => 'desc',
+            order_by   => 'user_count',
+            group_id   => $group->group_id,
+        );
+
+        isa_ok $gwrs, 'Socialtext::MultiCursor', 'Got a multicursor';
+        is $gwrs->count, '2', '... with 2 GWRs';
+
+        my $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_b->workspace_id,
+            '... with Workspace B first';
+        is $gwr->workspace->user_count(), '2',
+            '.... ... with 2 user';
+
+        $gwr = $gwrs->next();
+        is $gwr->workspace_id, $wksp_a->workspace_id,
+            '... with Workspace A second';
+        is $gwr->workspace->user_count(), '1',
+            '.... ... with 1 users';
+    }
 }
 
 ###############################################################################
