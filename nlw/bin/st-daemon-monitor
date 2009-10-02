@@ -1,0 +1,120 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use warnings;
+use strict;
+
+use Getopt::Long;
+use Pod::Usage;
+
+my $man = 0;
+my $help = 0;
+my $pidfile;
+my $init_cmd;
+my $max_rss = 256 * 1024; # in kiB or MiB
+my $max_vsz = 512 * 1024; # in kiB or MiB
+my $max_fds = 512;
+my $signal  = 15; # SIGTERM
+
+GetOptions(
+    'help|?' => \$help,
+    man      => \$man,
+    'pidfile=s' => \$pidfile,
+    'init=s' => \$init_cmd,
+    'rss=i'  => \$max_rss,
+    'vsz=i'  => \$max_vsz,
+    'fds=i'  => \$max_fds,
+    'sig=i'  => \$signal,
+)
+or pod2usage(1);
+pod2usage(1) if $help;
+pod2usage(-exitstatus => 0, -verbose => 2) if $man;
+
+pos2usage(1) unless ($pidfile && -r $pidfile && $init_cmd);
+
+my ($pid) = slurp($pidfile);
+
+sub slurp {
+    local $@;
+    my @lines;
+    eval {
+        local(@ARGV) = (shift);
+        @lines = <>;
+    };
+    chomp @lines if @lines;
+    return @lines;
+}
+
+sub recover {
+    my $now = `/bin/date`;
+    chomp $now;
+    my $msg = shift;
+    print "[$now] st-daemon-monitor: $pid $msg\n";
+    kill $signal, $pid;
+    print "[$now] st-daemon-monitor: running $init_cmd\n";
+    # 1 == ran init ok, 2 == init bad?
+    system("$init_cmd") and exit 2;
+    exit 1;
+}
+
+sub to_MiB {
+    my $n = shift;
+    return 0 unless $n;
+    if ($n =~ s/ kB\s*//) {
+        $n /= 2**10;
+    }
+    elsif ($n =~ s/ mB\s*//i) {
+        $n = $n+0;
+    }
+    elsif ($n =~ s/ gB\s*//i) {
+        $n *= 2**10;
+    }
+    elsif ($n =~ s/ tB\s*//i) {
+        $n *= 2**20;
+    }
+    else {
+        $n = 2**31; # "really big number"
+    }
+    return $n;
+}
+
+if (!$pid) {
+    die "can't read pidfile";
+    exit 2;
+}
+
+my $there = -d "/proc/$pid";
+my @status = slurp("/proc/$pid/status") if $there;
+if (!$there or !@status) {
+    recover("is gone");
+}
+else {
+    my %status = map { split(/:\s+/,$_,2) } @status;
+
+    if ($status{State} =~ /\b(?:zombie|stopped)\b/i) {
+        recover("is zombified");
+    }
+
+    if (to_MiB($status{VmRSS}) > $max_rss) {
+        recover("is too big (RSS)");
+    }
+
+    if (to_MiB($status{VmSize}) > $max_vsz) {
+        recover("is too big (vsize)");
+    }
+}
+
+my $open_fd = eval {
+    `ls /proc/$pid/fd/ 2>/dev/null | wc -l`
+};
+
+if (!$open_fd) {
+    recover("can't read /proc/$pid/fd directory");
+}
+chomp $open_fd;
+
+if ($open_fd > $max_fds) {
+    recover("has too many files open");
+}
+
+# all's well
+exit 0;
