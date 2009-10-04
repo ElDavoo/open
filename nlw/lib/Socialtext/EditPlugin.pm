@@ -30,6 +30,7 @@ sub register {
     $registry->add(action => 'edit_start');
     $registry->add(action => 'edit_cancel');
     $registry->add(action => 'edit_check');
+    $registry->add(action => 'edit_contention_check');
 }
 
 sub edit_save {
@@ -319,7 +320,7 @@ sub _there_is_an_edit_contention {
     # If the revision ID we got wasn't a valid page revision,
     # there's contention.
     my @revisions = $page->all_revision_ids;
-    if (!grep (/^$original_revision$/, @revisions)) {
+    unless (grep { $_ eq $original_revision } @revisions) {
         return 1;
     }
     # Since the revision is different, pull the old page and check contents against the current page
@@ -377,6 +378,24 @@ sub edit_check {
     return encode_json(
         $page->edit_in_progress || {}
     );
+}
+
+# Accepts: Page name and the Revisino ID we based our edit on.
+# Returns: JSON representation if there has been another save since we edited.
+sub edit_contention_check {
+    my $self        = shift;
+    my $page_name   = $self->cgi->page_name;
+    my $page = $self->hub->pages->new_from_name($page_name);
+
+    if ($self->_there_is_an_edit_contention($page, $self->cgi->revision_id)) {
+        my $from = $page->metadata->From;
+        my $last_editor = Socialtext::User->new(email_address => $from);
+
+        return encode_json( $last_editor->to_hash(minimal => 1) );
+    }
+    else {
+        return '{}';
+    }
 }
 
 package Socialtext::Edit::CGI;
