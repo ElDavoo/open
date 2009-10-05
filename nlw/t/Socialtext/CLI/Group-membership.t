@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Socialtext::GroupAccountRoleFactory;
-use Test::Socialtext tests => 42;
+use Test::Socialtext tests => 64;
 use Test::Output qw(combined_from);
 
 # Only need a DB.
@@ -322,4 +322,139 @@ workspace_users_with_direct_roles: {
 
     unlike $output, qr/\Q$email1\E/, '... does not list group user with direct';
     like $output, qr/\Q$email2\E/, '... lists direct user with direct';
+}
+
+###############################################################################
+# TEST: remove a Group from a WS.
+remove_group_from_workspace: {
+    my $account   = create_test_account_bypassing_factory();
+    my $workspace = create_test_workspace(account => $account);
+    my $group     = create_test_group();
+
+    # Group shouldn't be a member of our Test Account yet
+    ok !$account->has_group($group), 'Group not in test Account (yet)';
+
+    # Add the Group to the WS, giving the Group a GAR in the test Account
+    $workspace->add_group(group => $group);
+    ok $workspace->has_group($group), '... added Group to test WS';
+    ok $account->has_group($group),   '... giving Group a Role in Account';
+
+    # Remove the Group from the WS
+    ok 1, 'Remove Group from Workspace';
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'     => $group->group_id,
+                    '--workspace' => $workspace->name,
+                ],
+            )->remove_member();
+        };
+    } );
+    like $output, qr/Group \(.+\) has been removed from Workspace \(.+\)/,
+        '... with correct message';
+
+    ok !$workspace->has_group($group), '... Group is no longer in test WS';
+    ok !$account->has_group($group),   '... and is no longer in test Account';
+}
+
+###############################################################################
+# TEST: remove a Group from a WS, Group still has other Role in Account
+remove_group_from_workspace_keep_gar: {
+    my $account = create_test_account_bypassing_factory();
+    my $ws_one  = create_test_workspace(account => $account);
+    my $ws_two  = create_test_workspace(account => $account);
+    my $group   = create_test_group();
+
+    # Group shouldn't be a member of our Test Account yet
+    ok !$account->has_group($group), 'Group not in test Account (yet)';
+
+    # Add the Group to both WSs, giving the Group a GAR in the test Account
+    $ws_one->add_group(group => $group);
+    $ws_two->add_group(group => $group);
+    ok $ws_one->has_group($group),  '... added Group to WS one';
+    ok $ws_two->has_group($group),  '... added Group to WS two';
+    ok $account->has_group($group), '... giving Group a Role in Account';
+
+    # Remove the Group from one of the WSs
+    ok 1, 'Remove Group from Workspace, when Group has other Role in Acct';
+    my $output = combined_from( sub {
+        eval {
+        Socialtext::CLI->new(
+            argv => [
+                '--group'     => $group->group_id,
+                '--workspace' => $ws_one->name,
+            ],
+        )->remove_member();
+        };
+    } );
+    like $output, qr/Group \(.+\) has been removed from Workspace \(.+\)/,
+        '... with correct message';
+
+    ok !$ws_one->has_group($group),  '... Group is no longer in WS one';
+    ok  $ws_two->has_group($group),  '... but is still in WS two';
+    ok  $account->has_group($group), '... and is still in Account';
+}
+
+###############################################################################
+# TEST: remove a Group from a WS, Group doesn't exist
+remove_bogus_group_from_workspace: {
+    my $workspace = create_test_workspace();
+    my $group_id  = 1234567890,
+
+    ok 1, 'Remove bogus Group from Workspace';
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'     => $group_id,
+                    '--workspace' => $workspace->name,
+                ],
+            )->remove_member();
+        };
+    } );
+    like $output, qr/No group with ID $group_id/,
+        '... fails with correct output';
+}
+
+###############################################################################
+# TEST: remove a Group from a WS, WS doesn't exist
+remove_group_from_bogus_workspace: {
+    my $group   = create_test_group();
+    my $ws_name = 'bogus-ws-that-doesnt-exist';
+
+    ok 1, 'Remove Group from bogus Workspace';
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'     => $group->group_id,
+                    '--workspace' => $ws_name,
+                ],
+            )->remove_member();
+        };
+    } );
+    like $output, qr/No workspace named "$ws_name" could be found/,
+        '... fails with correct message';
+}
+
+###############################################################################
+# TEST: remove a Group from a WS, Group isn't a member in the WS
+remove_nonmember_group_from_workspace: {
+    my $workspace = create_test_workspace();
+    my $group     = create_test_group();
+
+    ok 1, 'Remove non-member Group from Workspace';
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'     => $group->group_id,
+                    '--workspace' => $workspace->name,
+                ],
+            )->remove_member();
+        };
+    } );
+    like $output, qr/Group \(.+\) is not a member of Workspace \(.+\)/,
+        '... fails with correct message';
 }

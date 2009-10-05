@@ -912,11 +912,13 @@ sub remove_member {
     my $self = shift;
     my $type = $self->_type_of_entity_collection_operation( qw(
         user-workspace
+        group-workspace
         group-account
     ) );
     my %jump = (
-        'user-workspace' => sub { $self->_remove_user_from_workspace() },
-        'group-account'  => sub { $self->_remove_group_from_account() },
+        'user-workspace'  => sub { $self->_remove_user_from_workspace() },
+        'group-workspace' => sub { $self->_remove_group_from_workspace() },
+        'group-account'   => sub { $self->_remove_group_from_account() },
     );
     return $jump{$type}->();
 }
@@ -970,6 +972,30 @@ sub _remove_group_from_account {
         loc("Group ([_1]) has been removed from Account ([_2])",
             $group->driver_group_name,
             $account->name,
+        )
+    );
+}
+
+sub _remove_group_from_workspace {
+    my $self      = shift;
+    my $group     = $self->_require_group();
+    my $workspace = $self->_require_workspace();
+
+    unless ($workspace->has_group($group)) {
+        $self->_error(
+            loc("Group ([_1]) is not a member of Workspace ([_2])",
+                $group->driver_group_name,
+                $workspace->name,
+            )
+        );
+    }
+
+    $workspace->remove_group( group => $group );
+
+    $self->_success(
+        loc("Group ([_1]) has been removed from Workspace ([_2])",
+            $group->driver_group_name,
+            $workspace->name,
         )
     );
 }
@@ -3267,7 +3293,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   show-group-config --group
   create-group --ldap-dn [--account]
   add-member --group --account
-  remove-member --group --account
+  remove-member --group [--account or --workspace]
 
   OTHER
 
@@ -3792,9 +3818,10 @@ specified, the default system Account will be used.
 
 Given a group and an account, add the Group as a Member of the Account.
 
-=head2 remove-member --group --account
+=head2 remove-member --group [--account or --workspace]
 
-Given a group and an account, remove the Group from the Account, if it exists.
+Given a Group and an Account or Workspace, remove the Group from the Account
+or Workspace, if it exists.
 
 =head2 version
 
