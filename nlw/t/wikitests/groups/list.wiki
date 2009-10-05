@@ -56,10 +56,15 @@ Tests for [Story: Groups ReST API]
 ## visible by Group Members (Members see Groups they are members of)
 ## *not* visible by other Users (can't see Groups you have no relationship to)
 
-| set            | jane     | jane%%start_time%%@ken.socialtext.net |
-| create-user    | %%jane%% | password                              |
-| http-user-pass | %%jane%% | password                              |
+| set            | jane         | jane%%start_time%%@ken.socialtext.net        |
+| set            | bobemail     | bobfullname%%start_time%%@ken.socialtext.net |
+| set            | bobfirst     | bobfirst%%start_time%%                       |
+| set            | boblast      | boblast%%start_time%%                        |
+| create-user    | %%jane%%     | password                                     |
+| st-admin       | create-user --e %%bobemail%% --p password --first %%bobfirst%% --last %%boblast%%  |
+| http-user-pass | %%jane%%     | password                                     |
 
+| st-admin | 
 | GET                | /data/groups  |         |
 | code-is            | 200           |         |
 | header-like        | Cache-Control | private |
@@ -67,21 +72,25 @@ Tests for [Story: Groups ReST API]
 | json-array-size    | 0             |         |
 
 | add-user-to-group | %%jane%%                  | %%group_id%% |
+| add-user-to-group | %%bobemail%%              | %%group_id%% |
 | GET               | /data/groups              |              |
 | code-is           | 200                       |              |
 | header-like       | Cache-Control             | private      |
 | json-parse        |                           |              |
 | json-array-size   | 1                         |              |
 | Body-like         | "group_id":"%%group_id%%" |              |
-| body-like         | "user_count":"1"          |              |
+| body-like         | "user_count":"2"          |              |
 
-| GET             | /data/groups?show_members=1                        |         |
-| code-is         | 200                                                |         |
-| header-like     | Cache-Control                                      | private |
-| json-parse      |                                                    |         |
-| json-array-size | 1                                                  |         |
-| Body-like       | "group_id":"%%group_id%%"                          |         |
-| body-like       | "members":[{"best_full_name":"%%jane%%","user_id": |         |
-| body-like       | "username":"%%jane%%"}]                            |         |
+| GET             | /data/groups?show_members=1                                        |         |
+| code-is         | 200                                                                |         |
+| header-like     | Cache-Control                                                      | private |
+| json-parse      |                                                                    |         |
+| json-array-size | 1                                                                  |         |
+| Body-like       | "group_id":"%%group_id%%"                                          |         |
+| body-like       | "best_full_name":"%%bobfirst%% %%boblast%%","user_id":             |         |
+| body-like       | "best_full_name":"%%jane%%","user_id":                             |         |
+| body-like       | "username":"%%jane%%"                                              |         |
+| body-like       | "username":"%%bobemail%%"                                          |         |
+
 
 
