@@ -371,6 +371,71 @@ sub render_signal_body {
     return $body, \@external_links, \@page_links;
 }
 
+##################
+# Person Handling
+##################
+
+sub index_person {
+    my ( $self, $user ) = @_;
+    if ($user->is_deleted or $user->is_profile_hidden) {
+        return $self->delete_person($user->user_id);
+    }
+    $self->_add_person_doc($user);
+    $self->_commit;
+}
+
+# Remove the person from the index.
+sub delete_person {
+    my ( $self, $user_id ) = @_;
+    $self->solr->delete_by_query("person_key:$user_id");
+    $self->_commit;
+}
+
+# Create a new Document object and set it's fields.  Then delete the document
+# from the index using 'key', which should be unique, and then add the
+# document to the index.  The 'key' is just the user id.
+sub _add_person_doc {
+    my $self = shift;
+    my $user = shift;
+
+    Socialtext::Timer->Continue('solr_person');
+
+    my $profile = eval {
+        Socialtext::People::Profile->GetProfile($user);
+    };
+    warn "profile warning: $@";
+    if (!$profile) {
+        Socialtext::Timer->Pause('solr_person');
+        return;
+    }
+
+    my $id = $user->user_id;
+    st_log->debug("Indexing person $id");
+
+    my $mtime = _pg_date_to_iso($profile->last_update);
+    my @tags = map { [tag => $_] } keys %{$profile->tags};
+
+    my @fields = (
+        [id => $id],
+        [w => 0],
+        [a => $user->primary_account_id],
+        [doctype => 'person'], 
+        [person_key => $id],
+        [date => $mtime], 
+
+        @tags,
+        [num_tags => scalar @tags],
+
+        # TODO profile fields
+    );
+    use Data::Dumper;
+    warn Dumper \@fields;
+
+    $self->_add_doc(WebService::Solr::Document->new(@fields));
+
+    Socialtext::Timer->Pause('solr_person');
+}
+
 
 #################
 # Miscellaneous 

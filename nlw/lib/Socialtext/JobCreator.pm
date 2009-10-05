@@ -176,6 +176,25 @@ sub index_signal {
     return ($job_id);
 }
 
+sub index_person {
+    my $self = shift;
+    my $user = shift;
+    my %p = @_;
+    $p{priority} ||= 70;
+
+    my $job_id = $self->insert(
+        'Socialtext::Job::PersonIndex' => {
+            solr => 1,
+            user_id => $user->user_id,
+            job => {
+                priority => $p{priority},
+                coalesce => $user->user_id,
+            },
+        }
+    );
+    return ($job_id);
+}
+
 
 __PACKAGE__->meta->make_immutable;
 1;
