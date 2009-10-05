@@ -2238,6 +2238,19 @@ sub delete_search_index {
             . ' workspace has been deleted.' );
 }
 
+sub index_people {
+    my $self = shift;
+
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    unless ($adapter->plugin_exists('people')) {
+        $self->_error(loc("The People plugin is not installed."));
+    }
+
+    require Socialtext::People::Profile;
+    my $count = Socialtext::People::Profile->IndexPeople();
+    $self->_success( "Created $count PersonIndex jobs." );
+}
+
 sub send_email_notifications {
     my $self = shift;
 
@@ -3279,6 +3292,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   add-workspace-to-search-set --name --workspace [--username or --email]
   remove-workspace-from-search-set --name --workspace [--username or --email]
   list-workspaces-in-search-set --name [--username or --email]
+  index-people
 
   PROFILE (only available with Socialtext People)
 
@@ -3632,6 +3646,10 @@ Deletes the search index for the specified workspace.
 
 (Re-)indexes the specified attachment in the given workspace. The
 attachment must be specified by its id and its page's id.
+
+=head2 index-people
+
+(Re-)indexes all active people.
 
 =head2 create-search-set --name [--username or --email]
 
