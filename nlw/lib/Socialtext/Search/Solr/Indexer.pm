@@ -403,7 +403,6 @@ sub _add_person_doc {
     my $profile = eval {
         Socialtext::People::Profile->GetProfile($user);
     };
-    warn "profile warning: $@";
     if (!$profile) {
         Socialtext::Timer->Pause('solr_person');
         return;
@@ -426,10 +425,24 @@ sub _add_person_doc {
         @tags,
         [num_tags => scalar @tags],
 
-        # TODO profile fields
+        [first_name_pf_s => $user->first_name],
+        [last_name_pf_s => $user->last_name],
+        [email_address_pf_s => $user->email_address],
+        [username_pf_s => $user->username],
+        # allow fuzzy/stem searching on the full name, for fun.
+        [name_pf_t => $user->best_full_name],
     );
-    use Data::Dumper;
-    warn Dumper \@fields;
+
+    my $prof_fields = $profile->fields->to_hash;
+    for my $field ($profile->fields->all) {
+        my $solr_field = $field->solr_field_name;
+        if ($field->is_relationship) {
+            push @fields, [$solr_field => $profile->get_reln_id($field->name)];
+        }
+        else {
+            push @fields, [$solr_field => $profile->get_attr($field->name)];
+        }
+    }
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
 
