@@ -344,6 +344,14 @@ sub delete_user {
         time() . '@devnull.socialtext.net', $email);
 }
 
+sub deactivate_user {
+    my $self = shift;
+    my $email = shift;
+    my $user = Socialtext::User->Resolve($email);
+
+    $user->deactivate();
+}
+
 sub create_group {
     my $self         = shift;
     my $group_name   = shift;

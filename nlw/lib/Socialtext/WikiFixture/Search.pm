@@ -1,6 +1,7 @@
 package Socialtext::WikiFixture::Search;
 # @COPYRIGHT@
 use Socialtext::System qw/shell_run/;
+use Socialtext::People::Search;
 use Test::More;
 use Moose;
 
@@ -17,6 +18,21 @@ sub set_searcher {
 
     my $class = 'Socialtext::Search::' . $searcher . '::Factory';
     shell_run("st-config set search_factory_class $class");
+}
+
+sub search_people {
+    my $self = shift;
+    my $query = shift;
+    my $num_results = shift;
+
+    my $viewer = Socialtext::User->Resolve( $self->{http_username} );
+    my $ppl = Socialtext::People::Search->Search(
+        $query,
+        viewer => $viewer,
+    );
+
+    is scalar(@$ppl), $num_results, "search '$query' results: $num_results";
+
 }
 
 1;
