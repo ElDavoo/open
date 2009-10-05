@@ -1,0 +1,28 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+use Socialtext::Jobs;
+use Socialtext::SQL qw/sql_singlevalue/;
+use Socialtext::Account;
+
+my $deleted_account = Socialtext::Account->Deleted;
+
+my $stats = Socialtext::Jobs->stat_jobs();
+my $queued_jobs = $stats->{'Socialtext::Job::PersonIndex'}{queued} || 0;
+
+my $job_count = sql_singlevalue(<<EOT, $deleted_account->account_id);
+SELECT COUNT(user_id)
+FROM users
+JOIN "UserMetadata" USING (user_id)
+WHERE is_profile_hidden = 'false'
+  AND primary_account_id <> ?;
+EOT
+
+if ($queued_jobs >= $job_count) {
+    print "Looks like we have person jobs for all the people.\n";
+    exit 0;
+}
+
+print "Looks like we didn't create PersonIndex jobs for everyone!\n";
+exit 1;
