@@ -25,7 +25,7 @@ sub _build_searchable_fields {
         qw/title tag body w/,
         # Signal fields:
         qw/w doctype id creator body pvt dm_recip a reply_to mention
-           link_page_key link_w link date created is_question/,
+           link_page_key link_w link date created is_question creator_name/,
     ]
 }
 
