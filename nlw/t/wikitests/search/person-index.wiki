@@ -16,10 +16,16 @@
 
 # Change some data
 | http-user-pass | %%randy%% | password |
-| post-json | /data/people/%%randy%% | {"first_name":"f%%start_time%%", "last_name":"l%%start_time%%", "gtalk_sn":"gt%%start_time%%"} |
+| post-json | /data/people/%%randy%% | {"first_name":"f%%start_time%%", "last_name":"l%%start_time%%", "gtalk_sn":"gtx%%start_time%%"} |
 | code-is   | 204                    |                                                                                                |
-# _TODO_ - 2 jobs are created, b/c we modify profile and user data
-| job-count       | PersonIndex | 2                                      |
+| job-count       | PersonIndex | 1                                      |
+| st-process-jobs |             |                                        |
+| job-count       | PersonIndex | 0                                      |
+
+| http-user-pass | %%randy%% | password |
+| post-json | /data/people/%%randy%% | {"gtalk_sn":"gt%%start_time%%"} |
+| code-is   | 204                    |                                                                                                |
+| job-count       | PersonIndex | 1                                      |
 | st-process-jobs |             |                                        |
 | job-count       | PersonIndex | 0                                      |
 
@@ -34,14 +40,14 @@
 # Test UTF8 Characters
 | post-json       | /data/people/%%randy%% | {"first_name":"Frëddy"} |
 | code-is         | 204                    |                          |
-| job-count       | PersonIndex            | 2                        |
+| job-count       | PersonIndex            | 1                        |
 | st-process-jobs |                        |                          |
 | job-count       | PersonIndex            | 0                        |
 | search-people | Frëddy | 1 |
 
 # Deactivating a user makes them not searchable
 | deactivate-user | %%randy%%       |   |
-| job-count       | PersonIndex     | 2 |
+| job-count       | PersonIndex     | 1 |
 | st-process-jobs |                 |   |
 | job-count       | PersonIndex     | 0 |
 | search-people   | f%%start_time%% | 0 |

@@ -791,7 +791,6 @@ sub deactivate {
     }
 
     $self->primary_account(Socialtext::Account->Deleted());
-    $self->_index();
     return $self;
 }
 
