@@ -16,7 +16,7 @@ Note: Heavily dependent on the default content of current test-data workspace
 | st-result | 2 total |  |
 | st-result | House Payment |  |
 | st-result | Credit Card Payment |  |
-| st-search | 5.0% | Pages matching '5.0%' |
+| st-search | 0.05 | Pages matching '0.05' |
 | st-result | 2 total |  |
 | st-result | House Payment |  |
 | st-result | Car Loan |  |
@@ -121,10 +121,10 @@ Title searches
 | st-result | 2 total |  |
 | st-result | Salary |  |
 | st-result | Another Salary |  |
-| st-search | 5.0% AND 500 | Pages matching '5.0% AND 500' |
+| st-search | 0.05 AND 500 | Pages matching '0.05 AND 500' |
 | st-result | 1 total |  |
 | st-result | Car Loan |  |
-| st-search | tag:"Bob The Bellhop" AND 3.0% | Pages matching 'tag:"Bob The Bellhop" AND 3.0%' |
+| st-search | tag:"Bob The Bellhop" AND 0.03 | Pages matching 'tag:"Bob The Bellhop" AND 0.03' |
 | st-result | 1 total |  |
 | st-result | Another Salary |  |
 
@@ -183,10 +183,12 @@ Title searches
 | st-result | Car Loan |  |
 | st-result | House Payment |  |
 | st-result | Credit Card Payment |  |
-| st-search | =Salary OR 5% | Pages matching 'title:Salary OR 5%' |
-| st-result | 2 total |  |
+| st-search | =Salary OR 0.05 | Pages matching 'title:Salary OR 0.05' |
+| st-result | 4 total |  |
 | st-result | Salary |  |
 | st-result | Another Salary |  |
+| st-result | Car Loan |  |
+| st-result | House Payment |  |
 | st-search | tag:"my next thirty years" OR 600 | Pages matching 'tag:"my next thirty years" OR 600' |
 | st-result | 2 total |  |
 | st-result | House Payment |  |
