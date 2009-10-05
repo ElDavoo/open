@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Socialtext::GroupAccountRoleFactory;
-use Test::Socialtext tests => 41;
+use Test::Socialtext tests => 42;
 use Test::Output qw(combined_from);
 
 # Only need a DB.
@@ -214,6 +214,9 @@ group_users_in_workspace_membership_de_duped: {
 
     $group->add_user( user => $user );
     ok $group->has_user( $user ), 'User is in Group';
+
+    $workspace->add_group( group => $group );
+    ok $workspace->has_group( $group ), 'Group is in Workspace';
 
     my $output = combined_from( sub {
         eval {
