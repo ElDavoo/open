@@ -436,12 +436,15 @@ sub _add_person_doc {
     my $prof_fields = $profile->fields->to_hash;
     for my $field ($profile->fields->all) {
         my $solr_field = $field->solr_field_name;
+        my $value;
         if ($field->is_relationship) {
-            push @fields, [$solr_field => $profile->get_reln_id($field->name)];
+            $value = $profile->get_reln_id($field->name);
         }
         else {
-            push @fields, [$solr_field => $profile->get_attr($field->name)];
+            $value = $profile->get_attr($field->name);
         }
+        next unless defined $value;
+        push @fields, [$solr_field => $value];
     }
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
@@ -479,6 +482,8 @@ sub _debug {
 
 sub _pg_date_to_iso {
     my $pgdate = shift;
+    return '1970-01-01T00:00:00Z' if $pgdate eq '-infinity';
+    return '2038-01-01T00:00:00Z' if $pgdate eq 'infinity'; # XXX: Y2k38 bug
     $pgdate =~ s/Z$//;
     my $dt = DateTime::Format::Pg->new(
         server_tz => 'UTC',
