@@ -216,6 +216,8 @@ sub _post_create {
     if ( my $account = $self->primary_account ) {
         $account->add_to_all_users_workspace( user_id => $self->user_id );
     }
+
+    $self->_index();
 }
 
 sub SystemUser {
@@ -235,7 +237,9 @@ sub can_update_store {
 sub update_store {
     my $self = shift;
     my %p = @_;
-    return $self->homunculus->update( %p );
+    my $rv = $self->homunculus->update( %p );
+    $self->_index();
+    return $rv;
 }
 
 sub recently_viewed_workspaces {
@@ -787,7 +791,13 @@ sub deactivate {
     }
 
     $self->primary_account(Socialtext::Account->Deleted());
+    $self->_index();
     return $self;
+}
+
+sub _index {
+    require Socialtext::JobCreator;
+    Socialtext::JobCreator->index_person(shift);
 }
 
 # Class methods
