@@ -391,7 +391,10 @@ sub edit_contention_check {
         my $from = $page->metadata->From;
         my $last_editor = Socialtext::User->new(email_address => $from);
 
-        return encode_json( $last_editor->to_hash(minimal => 1) );
+        return encode_json( {
+            last_editor => $last_editor->to_hash(minimal => 1),
+            revision_id => $page->revision_id,
+        } );
     }
     else {
         return '{}';
