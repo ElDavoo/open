@@ -12,6 +12,7 @@ use File::Spec;
 use File::Temp;
 use File::Path qw/rmtree/;
 use File::Slurp qw(slurp);
+use List::MoreUtils qw(uniq);
 use Getopt::Long qw( :config pass_through );
 use Socialtext::AppConfig;
 use Pod::Usage;
@@ -779,43 +780,81 @@ sub deactivate_user {
 
 sub add_member {
     my $self = shift;
-
-    my $operation_on = $self->_is_user_or_group_operation();
-
-    # Depending on what opts/args we were given, attempt to create the right
-    # kind of thing+collection membership.
-    #
-    # NOTE: we're cheating a bit here in the checks, so that we're only
-    #       looking at the "thing" part of the equation (cuz we only have one
-    #       collection target for each thing at this point in time).
-    if ($operation_on eq 'user') {
-        return $self->_add_user_as_member_to_workspace();
-    }
-
-    return $self->_add_group_as_member_to_account();
+    my $type = $self->_type_of_entity_collection_operation( qw(
+        user-workspace
+        group-account
+    ) );
+    my %jump = (
+        'user-workspace' => sub { $self->_add_user_as_member_to_workspace() },
+        'group-account'  => sub { $self->_add_group_as_member_to_account() },
+    );
+    return $jump{$type}->();
 }
 
-sub _is_user_or_group_operation {
-    my $self = shift;
+sub _type_of_entity_collection_operation {
+    my $self     = shift;
+    my @possible = @_;
 
-    # Peek ahead at what ARGV options were provided, so we know what type of
-    # membership we need to create.  "_get_options()" is destructive to ARGV,
-    # though, so be sure to preserve+restore it.
-    my $argv = $self->{argv};
-    my %opts = $self->_get_options(
-        'username:s', 'email:s',
-        'group:s',
-    );
-    $self->{argv} = $argv;
-
-    unless ( $opts{group} || $opts{username} || $opts{email} ) {
-        $self->_error(
-            loc(
-                "The command you called ([_1]) requires a --user or a --group parameter. Refer to '[_1] --help' for correct usage.", $self->{command})
-        );
+    # Split up the possible combinations into the list of possible entities
+    # and collections
+    my (@entities, @collections);
+    foreach my $combination (@possible) {
+        my ($entity, $collection) = split /-/, $combination;
+        push @entities, $entity;
+        push @collections, $collection;
     }
 
-    return ( $opts{group} ) ? 'group' : 'user';
+    # Map the entity/collection types to the CLI options that could be used to
+    # get them.
+    my %cli_option_map = (
+        account   => ['account:s'],
+        group     => ['group:s'],
+        user      => ['username:s', 'email:s'],
+        workspace => ['workspace:s'],
+    );
+
+    my @cli_entities    = uniq map { @{ $cli_option_map{$_} } } @entities;
+    my @cli_collections = uniq map { @{ $cli_option_map{$_} } } @collections;
+
+    # Peek ahead at what ARGV options were provided, so we know what type of
+    # "entity/collection" command we're dealing with.
+    #
+    # _get_options() is destructive to ARGV, though, so be sure to
+    # preserve+restore it.
+    my $argv = $self->{argv};
+    my %opts = $self->_get_options(@cli_entities, @cli_collections);
+    $self->{argv} = $argv;
+
+    # March through the list of acceptable combinations and see if we've got
+    # sufficient args for any of them.
+    foreach my $combination (@possible) {
+        my ($entity, $collection) = split /-/, $combination;
+        my $has_entity =
+            grep { exists $opts{$_} }
+            map { s/:.*//; $_ }
+            @{$cli_option_map{$entity}};
+        my $has_collection =
+            grep { exists $opts{$_} }
+            map { s/:.*//; $_ }
+            @{$cli_option_map{$collection}};
+        return $combination if ($has_entity && $has_collection);
+    }
+
+    # Unable to find args to satisfy any of the combinations; throw error.
+    s/:.*// foreach @cli_entities;          # remove ":s"
+    s/^/--/ foreach @cli_entities;          # add leading "--"
+
+    s/:.*// foreach @cli_collections;       # remove ":s"
+    s/^/--/ foreach @cli_collections;       # add leading "--"
+
+    $self->_error(
+        loc(
+            "The command you called ([_1]) requires one of [_2] and one of [_3]",
+            $self->{command},
+            join(' ', @cli_entities),
+            join(' ', @cli_collections),
+        )
+    );
 }
 
 sub _add_user_as_member_to_workspace {
@@ -871,16 +910,15 @@ sub _add_group_as_member_to_account {
 
 sub remove_member {
     my $self = shift;
-
-    my $operate_on = $self->_is_user_or_group_operation();
-
-    # Again, we're cheating a little bit here because we only have
-    # one operation for each "thing".
-    if ( $operate_on eq 'user' ) {
-        return $self->_remove_user_from_workspace();
-    }
-
-    return $self->_remove_group_from_account();
+    my $type = $self->_type_of_entity_collection_operation( qw(
+        user-workspace
+        group-account
+    ) );
+    my %jump = (
+        'user-workspace' => sub { $self->_remove_user_from_workspace() },
+        'group-account'  => sub { $self->_remove_group_from_account() },
+    );
+    return $jump{$type}->();
 }
 
 sub _remove_user_from_workspace {
