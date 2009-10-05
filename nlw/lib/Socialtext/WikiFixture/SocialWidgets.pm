@@ -354,12 +354,12 @@ You pass in the link name in add content screen.
 sub st_single_widget_in_dashboard {
     my ($self, $linkid) = @_;
     eval {
-        $self->st_empty_container();
+        $self->open_ok("/?dashboard");
+        $self->handle_command('st-empty-container');
         $self->open_ok("/?dashboard");
         $self->handle_command('wait_for_element_visible_ok','link=Add Content','30000');
         $self->handle_command('click_and_wait','link=Add Content');
         my $str = '//a[@id=' . "'" . $linkid . "'" . ']';
-        print "STR is $str\n";
         $self->handle_command('wait_for_element_visible_ok', $str, 30000);
         $self->handle_command('click_and_wait' ,$str); 
         $self->handle_command('wait_for_text_present_ok', "Welcome", 30000);
