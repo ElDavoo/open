@@ -6,13 +6,13 @@
 
 | st-clear-jobs   |             |                                        |
 | set             | randy       | randy%%start_time%%@ken.socialtext.net |
-| create-user     | %%randy%%   | password                               |
+| create-user     | %%randy%%   | password                               | %%account%% |
 | job-count       | PersonIndex | 1                                      |
 | st-process-jobs |             |                                        |
 | job-count       | PersonIndex | 0                                      |
 
 # can search them?
-| search-people | %%start_time%% | 1 |
+| search-people | andy%%start_time%% | 1 |
 
 # Change some data
 | http-user-pass | %%randy%% | password |
@@ -44,6 +44,13 @@
 | st-process-jobs |                        |                          |
 | job-count       | PersonIndex            | 0                        |
 | search-people | Frëddy | 1 |
+
+
+| post-json       | /data/people/%%randy%%/tags | {"tag_name":"über"} |
+| job-count       | PersonIndex                | 1                    |
+| st-process-jobs |                            |                      |
+| job-count       | PersonIndex                | 0                    |
+
 
 # Deactivating a user makes them not searchable
 | deactivate-user | %%randy%%       |   |
