@@ -343,6 +343,9 @@ sub _vivify {
         # create User record, and update cached data
         $user_attrs{driver_username} = delete $user_attrs{username};    # map "object -> DB"
         $self->NewUserRecord(\%user_attrs);
+
+        Socialtext::JobCreator->index_person($user_attrs{user_id},
+            run_after => 10);
     }
 
     $user_attrs{username} = delete $user_attrs{driver_username};        # map "DB -> object"
