@@ -948,7 +948,9 @@ sub _add_group_to_workspace_as {
     $workspace->add_group( group => $group, role  => $new_role );
     $self->_success(
         loc("[_1] is now a [_2] of the [_3] Workspace",
-            $group->driver_group_name, $new_role->name, $workspace->name)
+            $group->driver_group_name,
+            $new_role->display_name,
+            $workspace->name)
     );
 }
 
