@@ -400,19 +400,8 @@ sub _add_person_doc {
 
     Socialtext::Timer->Continue('solr_person');
 
-    my $profile = eval {
-        Socialtext::People::Profile->GetProfile($user);
-    };
-    if (!$profile) {
-        Socialtext::Timer->Pause('solr_person');
-        return;
-    }
-
     my $id = $user->user_id;
     st_log->debug("Indexing person $id");
-
-    my $mtime = _pg_date_to_iso($profile->last_update);
-    my @tags = map { [tag => $_] } keys %{$profile->tags};
 
     my @fields = (
         [id => $id],
@@ -420,10 +409,6 @@ sub _add_person_doc {
         [a => $user->primary_account_id],
         [doctype => 'person'], 
         [person_key => $id],
-        [date => $mtime], 
-
-        @tags,
-        [num_tags => scalar @tags],
 
         [first_name_pf_s => $user->first_name],
         [last_name_pf_s => $user->last_name],
@@ -433,18 +418,29 @@ sub _add_person_doc {
         [name_pf_t => $user->best_full_name],
     );
 
-    my $prof_fields = $profile->fields->to_hash;
-    for my $field ($profile->fields->all) {
-        my $solr_field = $field->solr_field_name;
-        my $value;
-        if ($field->is_relationship) {
-            $value = $profile->get_reln_id($field->name);
+    my $profile = eval {
+        Socialtext::People::Profile->GetProfile($user);
+    };
+    if ($profile) {
+        my $mtime = _pg_date_to_iso($profile->last_update);
+        push @fields, [date => $mtime];
+
+        my @tags = map { [tag => $_] } keys %{$profile->tags};
+        push @fields, @tags, [num_tags => scalar @tags];
+
+        my $prof_fields = $profile->fields->to_hash;
+        for my $field ($profile->fields->all) {
+            my $solr_field = $field->solr_field_name;
+            my $value;
+            if ($field->is_relationship) {
+                $value = $profile->get_reln_id($field->name);
+            }
+            else {
+                $value = $profile->get_attr($field->name);
+            }
+            next unless defined $value;
+            push @fields, [$solr_field => $value];
         }
-        else {
-            $value = $profile->get_attr($field->name);
-        }
-        next unless defined $value;
-        push @fields, [$solr_field => $value];
     }
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
