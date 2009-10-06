@@ -337,3 +337,4 @@ t/tmp/wikitest-logreader.state/nlw.log.state.lock
 t/wikitests/widgets/proxy-timeout.wiki
 t/rest_files/sleeper.pl
 t/wikitests/widgets/proxy-links.wiki
+t/Socialtext/JSON/Proxy-ping.t

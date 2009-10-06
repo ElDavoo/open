@@ -136,56 +136,9 @@ if ($tcp_port && $tcp_port !~ /\D/) {
 #warn "checking scgi\n";
 
 if ($check_scgi) {
-    my $z = "\0";
-    my $ping = "CONTENT_LENGTH${z}0${z}SCGI${z}1${z}". # headers
-               "REQUEST_METHOD${z}GET${z}".
-               "REQUEST_URI${z}/ping${z}";
+    require Socialtext::SCGI;
+    my ($err, $response) = Socialtext::SCGI->Ping($tcp_port);
 
-   #warn "check scgi\n";
-    my $err;
-    my $response = '';
-    my $readline; $readline = sub {
-        #warn "readline\n";
-        my $h = shift;
-        my $data = shift;
-        $response .= "$data\015\012";
-        $h->push_read(line => $readline); # keep reading
-    };
-
-    {
-        my $cv = AE::cv;
-        my $t = AE::timer 10, 0, sub {$cv->croak('timeout timer')};
-
-        #warn "connecting... ".time;
-        my $h = AnyEvent::Handle->new(
-            connect => ['localhost', $tcp_port],
-            timeout => 10,
-            on_timeout => sub {$cv->croak('timeout handle')},
-            on_eof => sub { $cv->send },
-            on_error => sub {
-                my (undef, $fatal, $msg) = @_;
-                if (length($response) && $msg =~ /^Broken pipe/i) {
-                    $cv->send; # presume we're done
-                }
-                else {
-                    #warn "croak error";
-                    $cv->croak($msg);
-                }
-            },
-        );
-        scope_guard { $h->destroy };
-
-        $h->push_write(netstring => $ping);
-        $h->push_shutdown();
-
-        $h->push_read(line => $readline); # NB: recursive
-
-        #warn "waiting ".time;
-        eval { $cv->recv };
-        $err = $@ || '';
-        chomp $err;
-        #warn "done waiting ($err) ".time;
-    }
     if ($err || !$response) {
         recover("scgi server isn't responding? (error: $err)");
     }
