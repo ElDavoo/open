@@ -71,6 +71,7 @@ sub init {
     my $skin = 's3';
     if (defined($ws)) {
         $skin = $ws->skin_name() || 's3';
+        $self->{'workspace_id'} = $ws->workspace_id;
     }
   
     $self->{'skin'} = $skin;
