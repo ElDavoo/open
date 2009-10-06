@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Socialtext::GroupAccountRoleFactory;
-use Test::Socialtext tests => 96;
+use Test::Socialtext tests => 107;
 use Test::Output qw(combined_from);
 
 # Only need a DB.
@@ -686,4 +686,68 @@ group_is_already_admin_of_workspace: {
     } );
     like $output, qr/Group is already a workspace admin of Workspace/,
         'Group already has role error message';
+}
+
+###############################################################################
+# TEST: add a Group as admin to a WS
+add_group_as_admin_to_workspace: {
+    my $account   = create_test_account_bypassing_factory();
+    my $workspace = create_test_workspace(account => $account);
+    my $group     = create_test_group();
+
+    ok !$account->has_group( $group ), 
+        'Group does not have Role in Account';
+
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'     => $group->group_id,
+                    '--workspace' => $workspace->name,
+                ],
+            )->add_workspace_admin();
+        };
+    } );
+    like $output, qr/.+ is now a workspace admin of the .+ Workspace/,
+        'Group added as admin message';
+    my $role = $workspace->role_for_group( $group );
+    ok $role, 'Group has Role in Workspace';
+    is $role->name, Socialtext::Role->WorkspaceAdmin()->name,
+        '... Role is member';
+
+    $role = $account->role_for_group( $group );
+    ok $role, 'Group has Role in Account';
+    is $role->name, Socialtext::Role->Affiliate()->name,
+        '... Role is member';
+}
+
+###############################################################################
+# TEST: add a Group as admin to a WS, Group was already a member.
+add_group_as_admin_to_workspace: {
+    my $account   = create_test_account_bypassing_factory();
+    my $workspace = create_test_workspace(account => $account);
+    my $group     = create_test_group();
+
+    $workspace->add_group( group => $group );
+    my $role = $workspace->role_for_group( $group );
+    ok $role, 'Group has Role in Workspace';
+    is $role->name, Socialtext::Role->Member()->name,
+        '... Role is member';
+
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'     => $group->group_id,
+                    '--workspace' => $workspace->name,
+                ],
+            )->add_workspace_admin();
+        };
+    } );
+    like $output, qr/.+ is now a workspace admin of the .+ Workspace/,
+        'Group added as admin message';
+    $role = $workspace->role_for_group( $group );
+    ok $role, 'Group has Role in Workspace';
+    is $role->name, Socialtext::Role->WorkspaceAdmin()->name,
+        '... Role is admin';
 }

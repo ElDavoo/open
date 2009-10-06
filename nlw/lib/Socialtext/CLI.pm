@@ -1058,6 +1058,11 @@ sub add_workspace_admin {
                 Socialtext::Role->WorkspaceAdmin()
             )
         },
+        'group-workspace' => sub {
+            $self->_add_group_to_workspace_as(
+                Socialtext::Role->WorkspaceAdmin()
+            )
+        },
     );
     return $jump{$type}->();
 }
