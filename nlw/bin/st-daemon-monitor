@@ -5,6 +5,10 @@ use strict;
 
 use Getopt::Long;
 use Pod::Usage;
+use AnyEvent;
+use AnyEvent::Handle;
+use Coro::AnyEvent;
+use Guard qw/scope_guard/;
 
 my $man = 0;
 my $help = 0;
@@ -15,6 +19,7 @@ my $max_vsz = 512 * 1024; # in kiB or MiB
 my $max_fds = 512;
 my $signal  = 15; # SIGTERM
 my $tcp_port = 0;
+my $check_scgi = 0;
 
 GetOptions(
     'help|?' => \$help,
@@ -26,6 +31,7 @@ GetOptions(
     'fds=i'  => \$max_fds,
     'sig=i'  => \$signal,
     'tcp=i'  => \$tcp_port,
+    'scgi!'  => \$check_scgi,
 )
 or pod2usage(1);
 pod2usage(1) if $help;
@@ -50,7 +56,7 @@ sub recover {
     my $now = `/bin/date`;
     chomp $now;
     my $msg = shift;
-    print "[$now] st-daemon-monitor: $pid $msg\n";
+    print "[$now] st-daemon-monitor: PID=${pid} $msg\n";
     kill $signal, $pid if $signal;
     print "[$now] st-daemon-monitor: running $init_cmd\n";
     # 1 == ran init ok, 2 == init bad?
@@ -105,12 +111,14 @@ else {
     }
 }
 
+#warn "checking fds\n";
+
 my $open_fd = eval {
     `ls /proc/$pid/fd/ 2>/dev/null | wc -l`
 };
 
 if (!$open_fd) {
-    recover("can't read /proc/$pid/fd directory");
+    recover("is gone? can't read /proc/$pid/fd directory");
 }
 chomp $open_fd;
 
@@ -118,9 +126,73 @@ if ($open_fd > $max_fds) {
     recover("has too many files open");
 }
 
+#warn "checking port open\n";
+
 if ($tcp_port && $tcp_port !~ /\D/) {
     my $netstat = `netstat --listening --numeric-ports -n -t | awk '{print \$4}' | egrep ':${tcp_port}\$'`;
     recover("tcp port $tcp_port is not open") unless $netstat;
+}
+
+#warn "checking scgi\n";
+
+if ($check_scgi) {
+    my $z = "\0";
+    my $ping = "CONTENT_LENGTH${z}0${z}SCGI${z}1${z}". # headers
+               "REQUEST_METHOD${z}GET${z}".
+               "REQUEST_URI${z}/ping${z}";
+
+   #warn "check scgi\n";
+    my $err;
+    my $response = '';
+    my $readline; $readline = sub {
+        #warn "readline\n";
+        my $h = shift;
+        my $data = shift;
+        $response .= "$data\015\012";
+        $h->push_read(line => $readline); # keep reading
+    };
+
+    {
+        my $cv = AE::cv;
+        my $t = AE::timer 10, 0, sub {$cv->croak('timeout timer')};
+
+        #warn "connecting... ".time;
+        my $h = AnyEvent::Handle->new(
+            connect => ['localhost', $tcp_port],
+            timeout => 10,
+            on_timeout => sub {$cv->croak('timeout handle')},
+            on_eof => sub { $cv->send },
+            on_error => sub {
+                my (undef, $fatal, $msg) = @_;
+                if (length($response) && $msg =~ /^Broken pipe/i) {
+                    $cv->send; # presume we're done
+                }
+                else {
+                    #warn "croak error";
+                    $cv->croak($msg);
+                }
+            },
+        );
+        scope_guard { $h->destroy };
+
+        $h->push_write(netstring => $ping);
+        $h->push_shutdown();
+
+        $h->push_read(line => $readline); # NB: recursive
+
+        #warn "waiting ".time;
+        eval { $cv->recv };
+        $err = $@ || '';
+        chomp $err;
+        #warn "done waiting ($err) ".time;
+    }
+    if ($err || !$response) {
+        recover("scgi server isn't responding? (error: $err)");
+    }
+    if ($response !~ /Status: 200/sm) {
+        #warn "$hdrs\n";
+        recover("scgi server returned a non-200 response");
+    }
 }
 
 # all's well

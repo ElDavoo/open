@@ -2,10 +2,33 @@
 # @COPYRIGHT@
 use warnings FATAL => 'all';
 use strict;
+
+=head1 NAME
+
+cranky.pl - an ornery daemon
+
+=head1 SYNOPSIS
+
+  cranky.pl
+  cranky.pl --ram 512 --fds 256 --after 5 --serv scgi --scgi ok
+
+Options:
+  --help    brief help message
+  --man     full documentation
+  --ram     consume this much RAM (in MiB)
+  --fds     open at least this many file descriptors
+  --after   exit abruptly after this many seconds (Default: 60 seconds)
+  --serv    Run the specified dummy server
+  --scgi    Send this SCGI response ('ok' = 200, everything else = 403).
+
+=cut
+
 use Coro;
 use AnyEvent;
 use Coro::AnyEvent;
 use AnyEvent::Socket;
+use AnyEvent::Handle;
+use Guard;
 use Getopt::Long;
 use Pod::Usage;
 
@@ -14,8 +37,9 @@ my $help = 0;
 my $ram = 0; # in MiB
 my $fds = 0; # in MiB
 my $after = 60;
-my $run_scgi = 1;
+my $serv = 'stall';
 my $port = ($> + 26000);
+my $scgi_opts = '';
 
 GetOptions(
     'help|?' => \$help,
@@ -23,8 +47,9 @@ GetOptions(
     'ram=i'  => \$ram,
     'fds=i'  => \$fds,
     'after=i' => \$after,
-    'scgi!'  => \$run_scgi,
+    'serv=s'  => \$serv,
     'port=i' => \$port,
+    'scgi=s' => \$scgi_opts,
 )
 or pod2usage(2);
 pod2usage(1) if $help;
@@ -39,44 +64,66 @@ if ($after) {
     $death_clock = AE::timer $after, 0, sub { print "death!\n"; exit 9; };
 }
 
-my $go_away = <<'EOM';
-Status: 403 Go Away
+our $server;
+if ($serv eq 'stall') {
+    $server = tcp_server '127.0.0.1', $port, sub {
+        print "$0: stall connection\n";
+        my $fh = shift;
+        async {
+            scope_guard { close $fh };
+            Coro::AnyEvent::sleep 10;
+        };
+    };
+    print "$0: set up sink $server\n";
+}
+elsif ($serv eq 'scgi') {
+    require AnyEvent::SCGI;
+    $server = AnyEvent::SCGI::scgi_server('127.0.0.1', $port, unblock_sub {
+        eval {handle_scgi(@_)};
+        warn "$0: scgi error $@" if $@;
+    });
+}
+else {
+    print "$0: no server\n";
+}
+
+sub handle_scgi {
+    my ($handle, $env, $body, $fatal, $msg) = @_;
+    my $status = ($scgi_opts =~ /\bok\b?/) ? '200 OK' : '403 Go Away';
+    if ($handle && $env) {
+        my $go_away = <<"EOM";
+Status: $status
 Content-Type: text/plain
 Connection: close
 
 Go away!
 EOM
-$go_away =~ s/\n/\r\n/gsm;
-
-our $server;
-if ($run_scgi) {
-    $server = tcp_server '127.0.0.1', $port, unblock_sub {
-        my $fh = shift;
-        my $handle = AnyEvent::Handle->new(fh => $fh);
+        $go_away =~ s/\n/\015\012/gsm;
         $handle->push_write($go_away);
         $handle->push_shutdown();
         # important to make a closure here:
         $handle->on_drain(sub { $handle->destroy });
-        $handle->on_error(sub { $handle->destroy });
-        return;
-    };
-}
-else {
-    warn "$0: no scgi\n";
+    }
+    else {
+        die "$msg ($fatal)";
+    }
 }
 
 our @sigs;
+
+# For simulating a graceful shutdown:
 push @sigs, AE::signal 'HUP' => unblock_sub {
-    print "Got HUP\n";
+    print "$0: Got HUP\n";
     undef $server if $server;
     Coro::AnyEvent::sleep 2;
-    print "HUP done\n";
+    print "$0: HUP done\n";
     exit 1;
 };
-push @sigs, AE::signal 'USR1' => sub { print "Got USR1\n" };
-push @sigs, AE::signal 'USR2' => sub { print "Got USR2\n" };
-push @sigs, AE::signal 'TERM' => sub { print "Got TERM\n"; exit 3; };
-push @sigs, AE::signal 'INT'  => sub { print "Got INT\n";  exit 4; };
+
+push @sigs, AE::signal 'USR1' => sub { print "$0: Got USR1\n" };
+push @sigs, AE::signal 'USR2' => sub { print "$0: Got USR2\n" };
+push @sigs, AE::signal 'TERM' => sub { print "$0: Got TERM\n"; exit 3; };
+push @sigs, AE::signal 'INT'  => sub { print "$0: Got INT\n";  exit 4; };
 
 sub mem_hog {
     my $hog = 'z' x ($ram * MiB);
@@ -95,27 +142,11 @@ sub fd_hog {
 async \&mem_hog if $ram;
 async \&fd_hog if $fds;
 
-print "waiting\n";
+print "$0: waiting\n";
 AE::cv->recv; # wait forever
 
 __END__
 
-=head1 NAME
-
-cranky.pl - an ornery daemon
-
-=head1 SYNOPSIS
-
-  cranky.pl
-  cranky.pl --ram 512 --fds 256 --after 5 --scgi
-
-Options:
-  --help    brief help message
-  --man     full documentation
-  --ram     consume this much RAM (in MiB)
-  --fds     open at least this many file descriptors
-  --after   exit abruptly after this many seconds (Default: 5 seconds)
-  --sgci    Run a scgi socket that always sends 403s (Default: on)
 
 =head1 OPTIONS
 
@@ -138,14 +169,29 @@ Default: 0
 
 Exit with code "9" after this many seconds.  Use 0 to disable.
 
-Default: 5
+Default: 60
 
-=item B<--scgi> B<--no-scgi>
+=item B<--serv> kind
 
-Turn on (or off) the scgi socket.  Listens on port C<< $> + 6000 >> (your user
+Turn on a socket server.  Listens on port C<< $> + 6000 >> (your user
 ID plus 6000).
 
-Default: on
+Using C<--serv scgi> will receive SCGI requests and send an SCGI response.
+See C<--scgi>.
+
+Using C<--serv stall> will set up a "stalling" TCP server.  No response is
+given and requests are ignored.
+
+Using C<--serv none> will disable this feature.
+
+Default: stall
+
+=item B<--scgi> ok
+
+Controls the SCGI response.  An argument of "ok" will cause a "200 OK"
+response to be sent.  By default a "403 Go Away" response will be sent.
+
+Default: 403
 
 =item B<--help>
 
@@ -159,7 +205,9 @@ Prints the manual page and exits.
 
 =head1 DESCRIPTION
 
-The default invocation of cranky.pl will exit after 5 seconds with code 9.  During this time, it will listen on a TCP port of your user ID plus 6000.
+The default invocation of cranky.pl will exit after 5 seconds with code 9.
+During this time, it will listen on a TCP port of your user ID plus 6000.  The
+"stall" server will be used; any data written is ignored.
 
 =head2 Signals
 
@@ -181,7 +229,7 @@ Daemon exits with code 4.
 
 =item SIGHUP
 
-Closes the SCGI socket (if started), waits 2 seconds, then exits with code 1.
+Closes the server socket (if started), waits 2 seconds, then exits with code 1.
 
 =back
 

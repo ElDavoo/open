@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::More tests => 46;
+use Test::More tests => 66;
 use File::Temp qw/tempfile/;
 
 ok -x 'bin/st-daemon-monitor', "it's executable";
@@ -72,17 +72,15 @@ sub test_monitor ($$;$) {
 
     for (1..5) {
         last if waitpid($cranky_pid,1)==$cranky_pid; # non-blocking
-        kill 9, -$cranky_pid;
+        kill 9, $cranky_pid;
         last if waitpid($cranky_pid,1)==$cranky_pid; # non-blocking
+        diag "waiting for cranky...";
         sleep 1;
     }
     pass "done ($cranky; $mon_args)";
 }
 
 my $c = 'dev-bin/cranky.pl ';
-test_monitor($c.'--no-scgi',           '--tcp '.($>+26000)           );
-test_monitor($c.'--after 5 --no-scgi', ''                  => 'lives');
-test_monitor($c.'--after 5',           '--tcp '.($>+26000) => 'lives');
 
 test_monitor('/bin/sleep 5', ''                           => 'lives');
 test_monitor('/bin/sleep 5', '--rss 32 --vsz 32 --fds 10' => 'lives');
@@ -93,3 +91,30 @@ test_monitor($c.'--ram 64',         '--rss 64');
 test_monitor($c.'--ram 64',         '--vsz 128');
 test_monitor($c.'--ram 64 --fds 64','--vsz 256 --fds 32');
 test_monitor($c.'--fds 64',         '--vsz 256 --fds 32');
+
+socket_tests: {
+    # check for open port only; monitor doesn't try to connect
+
+    test_monitor($c.'--after 5 --serv none', ''                  => 'lives');
+    test_monitor($c.'--after 5 --serv none', '--tcp '.($>+26000)           );
+    test_monitor($c.'--after 5',             '--tcp '.($>+26000) => 'lives');
+
+    # socket timeout
+    test_monitor(
+        $c.'--serv stall',
+        '--scgi --tcp '.($>+26000)
+    );
+
+    # cranky should give a 403
+    test_monitor(
+        $c.'--serv scgi',
+        '--scgi --tcp '.($>+26000)
+    );
+
+    # cranky gives a 200
+    test_monitor(
+        $c.'--after 5 --serv scgi --scgi ok',
+        '--scgi --tcp '.($>+26000)
+        => 'lives'
+    );
+}
