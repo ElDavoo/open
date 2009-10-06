@@ -3,6 +3,7 @@
 
 use strict;
 use warnings;
+use mocked 'Socialtext::JobCreator';
 use Socialtext::AppConfig;
 use Socialtext::Hub;
 use Socialtext::User;
@@ -10,7 +11,7 @@ use Socialtext::LDAP;
 use Socialtext::LDAP::Config;
 use Socialtext::User::LDAP::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 502;
+use Test::Socialtext tests => 517;
 
 ###############################################################################
 # Fixtures:     db
@@ -25,6 +26,7 @@ our $changed_dn = 'cn=Test User,ou=terminated,dc=example,dc=com';
 
 our $email = 'TestUser@null.socialtext.com';
 our $changed_email = 'changed@null.socialtext.com';
+our $changed_given = 'Frank';
 
 our $username = 'Test Username';
 our $changed_username = 'changed username';
@@ -191,6 +193,37 @@ test_ldap_email_address_change: {
             },
         );
     }
+}
+
+###############################################################################
+# TEST: change the givenName
+test_ldap_givenName_change: {
+    my $user;   # queried user record will go here
+
+    # Helper method to change the User record
+    my $cb_change_given_name = sub {
+        my $ldap = shift;
+
+        @Socialtext::JobCreator::to_index = ();
+        
+        my $mesg = $ldap->modify($dn, replace => [givenName => $changed_given]);
+        ok !$mesg->is_error, 'updated e-mail address in LDAP';
+        $mesg->is_error && diag $mesg->error;
+
+        Socialtext::User->Resolve($username);
+        is scalar(@Socialtext::JobCreator::to_index), 1, 'an index job created';
+    };
+
+    # Go run all of our tests
+    test_ldap_data_changes(
+        title               => "Change given name",
+        lookup_before       => sub { $user = user_lookup(driver_unique_id => $dn) },
+        do_update           => $cb_change_given_name,
+        lookup_after        => sub { $user = user_lookup(driver_unique_id => $dn) },
+        expected_changes    => {
+            givenName => $changed_given,
+        },
+    );
 }
 
 ###############################################################################
