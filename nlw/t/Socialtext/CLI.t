@@ -489,7 +489,7 @@ ADD_REMOVE_WS_ADMIN: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->add_workspace_admin();
         },
-        qr/test\@example\.com is now a workspace admin for the foobar workspace\./,
+        qr/test\@example\.com is now a workspace admin of the foobar Workspace/,
         'success output from add-admin'
     );
 
@@ -507,7 +507,7 @@ ADD_REMOVE_WS_ADMIN: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->add_workspace_admin();
         },
-        qr/test\@example\.com is already a workspace admin for the foobar workspace\./,
+        qr/User is already a workspace admin of Workspace/,
         'add-admin when user is already a workspace admin'
     );
 
@@ -517,7 +517,7 @@ ADD_REMOVE_WS_ADMIN: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->remove_workspace_admin();
         },
-        qr/test\@example\.com is no longer a workspace admin for the foobar workspace\./,
+        qr/test\@example\.com is no longer a workspace admin of the foobar workspace\./,
         'success output from remove-admin'
     );
 
@@ -536,7 +536,7 @@ ADD_REMOVE_WS_ADMIN: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->remove_workspace_admin();
         },
-        qr/test\@example\.com is not a workspace admin for the foobar workspace\./,
+        qr/test\@example\.com is not a workspace admin of the foobar workspace\./,
         'remove-admin when user is not a workspace admin'
     );
 }

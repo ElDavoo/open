@@ -37,7 +37,7 @@ add_group_to_account: {
             )->add_member();
         };
     } );
-    like $output, qr/.+ is now a member in the .+ Account/,
+    like $output, qr/.+ is now a member of the .+ Account/,
         '... with correct message';
 
     my $gar = Socialtext::GroupAccountRoleFactory->Get(
@@ -684,6 +684,6 @@ group_is_already_admin_of_workspace: {
             )->add_member();
         };
     } );
-    like $output, qr/Group is already an admin of Workspace/,
+    like $output, qr/Group is already a workspace admin of Workspace/,
         'Group already has role error message';
 }

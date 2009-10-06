@@ -886,7 +886,7 @@ sub _add_user_to_workspace_as {
         # Do not allow the code to "downgrade" from admin to member,
         # the user has to use remove-workspace-admin for that.
         $self->_error(
-            loc("User is already an Admin of Workspace", $ws->name)
+            loc("User is already a workspace admin of Workspace", $ws->name)
         ) if $current_role->name eq Socialtext::Role->WorkspaceAdmin()->name
     }
 
@@ -919,7 +919,7 @@ sub _add_group_to_account_as {
     $account->add_group( group => $group, role => $new_role );
 
     $self->_success(
-        loc("[_1] is now a member in the [_2] Account",
+        loc("[_1] is now a member of the [_2] Account",
             $group->driver_group_name,
             $account->name
         )
@@ -941,7 +941,7 @@ sub _add_group_to_workspace_as {
 
         # Do not allow the code to "downgrade" from admin to member,
         # the user has to use remove-workspace-admin for that.
-        $self->_error( loc("Group is already an admin of Workspace") )
+        $self->_error( loc("Group is already a workspace admin of Workspace") )
             if $current_role->name eq Socialtext::Role->WorkspaceAdmin()->name;
     }
 
@@ -1044,6 +1044,22 @@ sub _remove_group_from_workspace {
     );
 }
 
+sub add_workspace_admin {
+    my $self = shift;
+    my $type = $self->_type_of_entity_collection_operation( qw(
+        user-workspace
+        group-workspace
+    ) );
+    my %jump = (
+        'user-workspace'  => sub {
+            $self->_add_user_to_workspace_as(
+                Socialtext::Role->WorkspaceAdmin()
+            )
+        },
+    );
+    return $jump{$type}->();
+}
+
 sub _make_role_toggler {
     my $rolename    = shift;
     my $add_p       = shift;
@@ -1070,7 +1086,7 @@ sub _make_role_toggler {
 
         if ( $add_p == ($ws->user_has_role( user => $user, role => $role ) || 0) ) {
             $self->_error( $user->username
-                    . " is $pre_failure $article $display_name for the "
+                    . " is $pre_failure $article $display_name of the "
                     . $ws->name
                     . ' workspace.' );
         }
@@ -1083,7 +1099,7 @@ sub _make_role_toggler {
         );
 
         $self->_success( $user->username
-                . " is $success $article $display_name for the "
+                . " is $success $article $display_name of the "
                 . $ws->name
                 . ' workspace.' );
         }
@@ -1091,7 +1107,6 @@ sub _make_role_toggler {
 
 {
     no warnings 'once';
-    *add_workspace_admin    = _make_role_toggler( 'workspace_admin', 1 );
     *remove_workspace_admin = _make_role_toggler( 'workspace_admin', 0 );
     *add_impersonator       = _make_role_toggler( 'impersonator',    1 );
     *remove_impersonator    = _make_role_toggler( 'impersonator',    0 );
