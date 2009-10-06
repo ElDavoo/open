@@ -783,10 +783,12 @@ sub add_member {
     my $type = $self->_type_of_entity_collection_operation( qw(
         user-workspace
         group-account
+        group-workspace
     ) );
     my %jump = (
-        'user-workspace' => sub { $self->_add_user_as_member_to_workspace() },
-        'group-account'  => sub { $self->_add_group_as_member_to_account() },
+        'user-workspace'  => sub { $self->_add_user_as_member_to_workspace() },
+        'group-account'   => sub { $self->_add_group_as_member_to_account() },
+        'group-workspace' => sub { $self->_add_group_as_member_to_workspace() },
     );
     return $jump{$type}->();
 }
@@ -905,6 +907,29 @@ sub _add_group_as_member_to_account {
             $group->driver_group_name,
             $account->name
         )
+    );
+}
+
+sub _add_group_as_member_to_workspace {
+    my $self      = shift;
+    my $group     = $self->_require_group();
+    my $workspace = $self->_require_workspace();
+
+    if ( $workspace->has_group($group) ) {
+        $self->_error(
+            loc("Group ([_1]) is already a member of Workspace ([_2])",
+                $group->driver_group_name, $workspace->name)
+        );
+    }
+
+    $workspace->add_group(
+        group => $group,
+        role  => Socialtext::Role->Member()
+    );
+
+    $self->_success(
+        loc("Group ([_1]) is now a member of Workspace ([_2])",
+            $group->driver_group_name, $workspace->name)
     );
 }
 
