@@ -29,6 +29,7 @@ Duplicate_migration_check: {
 Un_named_migration_check: {
     my %okay_unnumbered = map { $_ => 1 } qw/add-column/;
     my @unnumbered =
+        grep { !m/^ASIDE-/ }
         grep { !m/^XX-/ }
         grep { !$okay_unnumbered{$_} }
         grep { !m/^\d+-/ }
