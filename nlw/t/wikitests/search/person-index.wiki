@@ -46,11 +46,19 @@
 | search-people | Frëddy | 1 |
 
 
+# UTF8 in a tag
 | post-json       | /data/people/%%randy%%/tags | {"tag_name":"über"} |
-| job-count       | PersonIndex                | 1                    |
-| st-process-jobs |                            |                      |
-| job-count       | PersonIndex                | 0                    |
+| code-is         | 204                         |                      |
+| job-count       | PersonIndex                 | 1                    |
+| st-process-jobs |                             |                      |
+| job-count       | PersonIndex                 | 0                    |
 
+# UTF8 in a profile field
+| post-json       | /data/people/%%randy%% | {"gtalk_sn":"haxør"} |
+| code-is         | 204                    |                       |
+| job-count       | PersonIndex            | 1                     |
+| st-process-jobs |                        |                       |
+| job-count       | PersonIndex            | 0                     |
 
 # Deactivating a user makes them not searchable
 | deactivate-user | %%randy%%       |   |
