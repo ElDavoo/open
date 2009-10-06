@@ -178,17 +178,20 @@ sub index_signal {
 
 sub index_person {
     my $self = shift;
-    my $user = shift;
+    my $maybe_user = shift;
     my %p = @_;
     $p{priority} ||= 70;
+
+    my $user_id = ref($maybe_user) ? $maybe_user->user_id : $maybe_user;
 
     my $job_id = $self->insert(
         'Socialtext::Job::PersonIndex' => {
             solr => 1,
-            user_id => $user->user_id,
+            user_id => $user_id,
             job => {
                 priority => $p{priority},
-                coalesce => $user->user_id,
+                coalesce => $user_id,
+                ($p{run_after} ? (run_after => $p{run_after}) : ()),
             },
         }
     );
