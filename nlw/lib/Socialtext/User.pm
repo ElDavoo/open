@@ -6,7 +6,7 @@ use warnings;
 our $VERSION = '0.01';
 
 use Socialtext::Exceptions qw( data_validation_error param_error );
-use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE WORKSPACE_TYPE USER_TYPE SCALAR UNDEF);
+use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE WORKSPACE_TYPE USER_TYPE SCALAR UNDEF CODEREF);
 use Socialtext::AppConfig;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
@@ -1039,9 +1039,11 @@ EOSQL
         ),
         workspace_id => SCALAR_TYPE,
         direct => BOOLEAN_TYPE(default => undef),
+        apply => { type => CODEREF, optional => 1 },
+        ids_only => BOOLEAN_TYPE( default => 0),
     };
 
-    sub ByWorkspaceIdWithRoles {
+    sub ByWorkspaceId {
         # Returns an iterator of [Socialtext::User, Socialtext::Role] arrays
         my $class = shift;
         my %p = validate( @_, $spec );
@@ -1104,24 +1106,45 @@ $columns
 EOSQL
         );
 
+        $p{apply} ||= sub {
+            my $rows    = shift;
+            my $user_id = $rows->[0];
+            my $role_id = $rows->[1];
+
+            # short circuit to not hand back undefs in a list context
+            return undef if !$user_id;
+
+            return $p{ids_only}
+                ? $user_id
+                : Socialtext::User->new( user_id => $user_id );
+        };
+
         return $class->_UserCursor(
             $SQL{ $p{order_by} },
-            [qw( workspace_id limit offset )], %p,
-            apply => sub {
-                my $rows    = shift;
-                my $user_id = $rows->[0];
-                my $role_id = $rows->[1];
-
-                # short circuit to not hand back undefs in a list context
-                return undef if !$user_id;
-
-                return [
-                    Socialtext::User->new( user_id => $user_id ),
-                    Socialtext::Role->new( role_id => $role_id )
-                ];
-            },
+            [qw( workspace_id limit offset )],
+            %p,
         );
     }
+}
+
+sub ByWorkspaceIdWithRoles {
+    my ($class, %args) = @_;
+    return $class->ByWorkspaceId(
+        %args,
+        apply => sub {
+            my $rows    = shift;
+            my $user_id = $rows->[0];
+            my $role_id = $rows->[1];
+
+            # short circuit to not hand back undefs in a list context
+            return undef if !$user_id;
+
+            return [
+                Socialtext::User->new( user_id => $user_id ),
+                Socialtext::Role->new( role_id => $role_id )
+            ];
+        },
+    );
 }
 
 sub ByUserIds {

@@ -1365,6 +1365,20 @@ sub users {
     return Socialtext::Workspace::Roles->UsersByWorkspaceId(%p);
 }
 
+sub user_ids {
+    my $self = shift;
+    my %args = ref($_[0]) eq 'HASH' ? %{$_[0]} : @_;
+    Socialtext::Timer->Continue('acct_user_ids');
+    my $cursor = Socialtext::User->ByWorkspaceId(
+        workspace_id => $self->workspace_id,
+        ids_only   => 1,
+        %args,
+    );
+    my @user_ids = $cursor->all;
+    Socialtext::Timer->Pause('acct_user_ids');
+    return \@user_ids;
+}
+
 sub users_with_roles {
     my $self = shift;
     my %p = (@_==1) ? %{+shift} : @_;
