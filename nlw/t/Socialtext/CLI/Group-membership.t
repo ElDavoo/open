@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Socialtext::GroupAccountRoleFactory;
-use Test::Socialtext tests => 93;
+use Test::Socialtext tests => 96;
 use Test::Output qw(combined_from);
 
 # Only need a DB.
@@ -37,7 +37,7 @@ add_group_to_account: {
             )->add_member();
         };
     } );
-    like $output, qr/Group \(.+\) has been added to Account \(.+\)/,
+    like $output, qr/.+ is now a member in the .+ Account/,
         '... with correct message';
 
     my $gar = Socialtext::GroupAccountRoleFactory->Get(
@@ -70,7 +70,7 @@ group_already_exists: {
             )->add_member();
         };
     } );
-    like $output, qr/Group \(.+\) is already a member of Account \(.+\)/,
+    like $output, qr/Group is already a Member of Account/,
         '... with correct message';
 }
 
@@ -580,7 +580,7 @@ add_group_to_workspace: {
             )->add_member();
         };
     } );
-    like $output, qr/Group \(.+\) is now a member of Workspace \(.+\)/,
+    like $output, qr/.+ is now a member of the .+ Workspace/,
         '... succeeds with correct message';
 
     my $role = $workspace->role_for_group( $group );
@@ -656,6 +656,34 @@ group_is_already_member_of_workspace: {
             )->add_member();
         };
     } );
-    like $output, qr/Group \(.+\) is already a member of Workspace \(.+\)/,
+    like $output, qr/Group is already a member of Workspace/,
+        'Group already has role error message';
+}
+
+###############################################################################
+# TEST: add a Group to a WS, Group is already an admin in the WS
+group_is_already_admin_of_workspace: {
+    my $workspace = create_test_workspace();
+    my $group     = create_test_group();
+    my $admin     = Socialtext::Role->WorkspaceAdmin();
+
+    $workspace->add_group( group => $group, role => $admin );
+    my $role = $workspace->role_for_group( $group );
+
+    ok $role, 'Group has role in workspace';
+    is $role->name, $admin->name,
+        '... role is admin';
+
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'     => $group->group_id,
+                    '--workspace' => $workspace->name,
+                ],
+            )->add_member();
+        };
+    } );
+    like $output, qr/Group is already an admin of Workspace/,
         'Group already has role error message';
 }

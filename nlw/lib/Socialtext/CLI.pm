@@ -786,9 +786,15 @@ sub add_member {
         group-workspace
     ) );
     my %jump = (
-        'user-workspace'  => sub { $self->_add_user_as_member_to_workspace() },
-        'group-account'   => sub { $self->_add_group_as_member_to_account() },
-        'group-workspace' => sub { $self->_add_group_as_member_to_workspace() },
+        'user-workspace'  => sub {
+            $self->_add_user_to_workspace_as(Socialtext::Role->Member())
+        },
+        'group-account'   => sub {
+            $self->_add_group_to_account_as(Socialtext::Role->Member())
+        },
+        'group-workspace' => sub {
+            $self->_add_group_to_workspace_as(Socialtext::Role->Member())
+        },
     );
     return $jump{$type}->();
 }
@@ -859,77 +865,90 @@ sub _type_of_entity_collection_operation {
     );
 }
 
-sub _add_user_as_member_to_workspace {
-    my $self = shift;
-    my $user = $self->_require_user();
-    my $ws   = $self->_require_workspace();
+sub _add_user_to_workspace_as {
+    my $self         = shift;
+    my $new_role     = shift;
+    my $user         = $self->_require_user();
+    my $ws           = $self->_require_workspace();
+    my $current_role = $ws->role_for_user( user => $user);
 
     $self->_ensure_email_passes_filters(
         $user->email_address,
         { account => $ws->account, workspace => $ws },
     );
 
-    if ( $ws->has_user( $user ) ) {
-        $self->_error( $user->username
-                . ' is already a member of the '
-                . $ws->name
-                . ' workspace.' );
+    if ( $current_role ) {
+        $self->_error(
+            loc("User is already a [_1] of Workspace",
+                $current_role->display_name)
+        ) if $current_role->name eq $new_role->name;
+
+        # Do not allow the code to "downgrade" from admin to member,
+        # the user has to use remove-workspace-admin for that.
+        $self->_error(
+            loc("User is already an Admin of Workspace", $ws->name)
+        ) if $current_role->name eq Socialtext::Role->WorkspaceAdmin()->name
     }
 
-    $ws->add_user( user => $user );
-
-    $self->_success( $user->username
-            . ' is now a member of the '
-            . $ws->name
-            . ' workspace.' );
+    $ws->add_user( user => $user, role => $new_role );
+    $self->_success(
+        loc("[_1] is now a [_2] of the [_3] Workspace",
+        $user->username, $new_role->display_name, $ws->name)
+    );
 }
 
-sub _add_group_as_member_to_account {
-    my $self    = shift;
-    my $group   = $self->_require_group();
-    my $account = $self->_require_account();
+# We don't need to be magical here because there is no 'admin' role for
+# Groups within Accounts (yet).
+sub _add_group_to_account_as {
+    my $self     = shift;
+    my $new_role = shift;
+    my $group    = $self->_require_group();
+    my $account  = $self->_require_account();
 
-    my $role = $account->role_for_group($group);
+    my $current_role = $account->role_for_group($group);
 
-    if ( $role && $role->name == 'Member' ) {
+    if ( $current_role && $current_role->name == 'Member' ) {
         $self->_error(
-            loc("Group ([_1]) is already a member of Account ([_2])",
+            loc("Group is already a Member of Account",
                 $group->driver_group_name,
                 $account->name
             )
         );
     }
 
-    $account->add_group( group => $group );
+    $account->add_group( group => $group, role => $new_role );
 
     $self->_success(
-        loc("Group ([_1]) has been added to Account ([_2])",
+        loc("[_1] is now a member in the [_2] Account",
             $group->driver_group_name,
             $account->name
         )
     );
 }
 
-sub _add_group_as_member_to_workspace {
-    my $self      = shift;
-    my $group     = $self->_require_group();
-    my $workspace = $self->_require_workspace();
+sub _add_group_to_workspace_as {
+    my $self         = shift;
+    my $new_role     = shift;
+    my $group        = $self->_require_group();
+    my $workspace    = $self->_require_workspace();
+    my $current_role = $workspace->role_for_group($group);
 
-    if ( $workspace->has_group($group) ) {
+    if ( $current_role ) {
         $self->_error(
-            loc("Group ([_1]) is already a member of Workspace ([_2])",
-                $group->driver_group_name, $workspace->name)
-        );
+            loc("Group is already a [_1] of Workspace",
+                $current_role->display_name)
+        ) if $current_role->name eq $new_role->name;
+
+        # Do not allow the code to "downgrade" from admin to member,
+        # the user has to use remove-workspace-admin for that.
+        $self->_error( loc("Group is already an admin of Workspace") )
+            if $current_role->name eq Socialtext::Role->WorkspaceAdmin()->name;
     }
 
-    $workspace->add_group(
-        group => $group,
-        role  => Socialtext::Role->Member()
-    );
-
+    $workspace->add_group( group => $group, role  => $new_role );
     $self->_success(
-        loc("Group ([_1]) is now a member of Workspace ([_2])",
-            $group->driver_group_name, $workspace->name)
+        loc("[_1] is now a [_2] of the [_3] Workspace",
+            $group->driver_group_name, $new_role->name, $workspace->name)
     );
 }
 
