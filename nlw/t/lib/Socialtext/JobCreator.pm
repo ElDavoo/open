@@ -1,4 +1,6 @@
 package Socialtext::JobCreator;
+# @COPYRIGHT@
+
 use strict;
 use warnings;
 
