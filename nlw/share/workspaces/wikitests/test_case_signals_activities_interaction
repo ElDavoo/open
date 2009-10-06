@@ -79,24 +79,10 @@
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 1 | signals_widget |
 | st-widget-title-like | signals_widget | Activities |
-| st-select-widget-frame | signals_widget |  |
 
 | *Comment* | Test Case: Signals/Activities Interaction Signal, Mention, Reply, Edit Summaries, Delete |  |
-| wait_for_element_visible_ok | expand-input | 10000 |
-| click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%mainuser%% simple signals |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 4000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%efriend%%} mention |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-
-| *Comment* | Test Case: Signals Widget. Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-| select-frame | relative=parent |  |
+| st-send-signal-via-activities-widget | signals_widget | %%mainuser%% simple signals |
+| st-send-signal-via-activities-widget | signals_widget | {user: %%efriend%%} mention |
 
 | *Comment* | Test Case:Signals/Activities Interaction Start following %%followed%% |  |
 | wait_for_element_visible_ok | link=People | 30000 |
@@ -135,27 +121,11 @@
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 1 | signals_widget |
 | st-widget-title-like | signals_widget | Activities |
-| st-select-widget-frame | signals_widget |  |
 
 | *Comment* | Test Case: Signals/Activities Interaction %%efollowed%% Signal, Mention, Reply, Edit Summaries, Delete |  |
-| wait_for_element_visible_ok | expand-input | 10000 |
-| click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%followed%% simple signal |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%emainuser%%} mention from %%followed%% |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | d {user: %%emainuser%%} direct from %%followed%% |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| select-frame | relative=parent |  |
+| st-send-signal-via-activities-widget | signals_widget | %%followed%% simple signal |
+| st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%followed%% |
+| st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%followed%% |
 
 | *Comment* | Wait for frame to appear before proceeding |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
@@ -174,35 +144,12 @@
 | *Comment* | Test Case: Signals/Activities Interaction As %%efriend%% - just someone in my acct |  |
 
 | open_ok | /?dashboard | 60000 |
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Activities'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Activities'] |  |
-| wait_for_text_present_ok | Welcome | 30000 |
-| text_like | st-editing-tools-edit | Welcome |
-| wait_for_text_present_ok | Activities | 30000 |
+| st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | signals_widget |
 | st-widget-title-like | signals_widget | Activities |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_element_visible_ok | expand-input | 10000 |
-| click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%friend%% simple signal |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%emainuser%%} mention from %%friend%% |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | d {user: %%emainuser%%} direct from %%friend%% |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| select-frame | relative=parent |  |
+| st-send-signal-via-activities-widget | signals_widget | %%friend%% simple signal |
+| st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%friend%% |
+| st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%friend%% |
 
 | *Comment* | Wait for frame to appear before proceeding |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
@@ -233,44 +180,19 @@
 | click_ok | st-edit-summary-signal-checkbox |  |
 | click_and_wait | st-save-button-link |  |
 
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Activities'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Activities'] |  |
-
-| wait_for_text_present_ok | Welcome | 30000 |
-| text_like | st-editing-tools-edit | Welcome |
-| wait_for_text_present_ok | Activities | 30000 |
-
+| st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | signals_widget |
 | st-widget-title-like | signals_widget | Activities |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_element_visible_ok | expand-input | 10000 |
-| click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%conversant%% simple signal |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%emainuser%%} mention from %%conversant%% |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | d {user: %%emainuser%%} direct from %%conversant%% |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| select-frame | relative=parent |  |
+| st-send-signal-via-activities-widget | signals_widget | %%conversant%% simple signal |
+| st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%conversant%% |
+| st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%conversant%% |
 
 | *Comment* | Wait for frame to appear before proceeding |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 
 | *Comment* | logoutin hangs in IE. Try explicit %%esecond%% ... |
 
-| click_ok | link=Log out |
+| click_ok | link=Log out |  |
 | pause | 8000 | I HATE pause |
 | open_ok | /nlw/login.html |  |
 | wait_for_element_visible_ok | password | 30000 |
@@ -281,89 +203,11 @@
 
 | *Comment* | Test Case: Signals/Activities Interaction Signal from different account |  |
 
-| open_ok | /?dashboard | 60000 |
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Activities'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Activities'] |  |
-| wait_for_text_present_ok | Welcome | 30000 |
-| text_like | st-editing-tools-edit | Welcome |
-| wait_for_text_present_ok | Activities | 30000 |
+| st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | signals_widget |
 | st-widget-title-like | signals_widget | Activities |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_element_visible_ok | expand-input | 10000 |
-| click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%second%% simple signal |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%emainuser%%} mention from %%second%% |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | d {user: %%emainuser%%} direct from %%second%% |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| select-frame | relative=parent |  |
-
-| *Comment* | Wait for frame to appear before proceeding |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-
-| *Comment* | logoutin hangs in IE. Try explicit %%ewsadmin%% ... |
-
-| click_ok | link=Log out |
-| pause | 8000 | I HATE pause |
-| open_ok | /nlw/login.html |  |
-| wait_for_element_visible_ok | password | 30000 |
-| wait_for_element_visible_ok | username | 30000 |
-| type_ok | username | %%ewsadmin%% |
-| type_ok | password | %%password%% |
-| click_and_wait | login_btn |  |
-
-| *Comment* | Test Case: Signals/Activities Interaction As %%wsadmin%% - a workspace admin |  |
-
-| open_ok | /?dashboard | 60000 |
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Activities'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Activities'] |  |
-| wait_for_text_present_ok | Welcome | 30000 |
-| text_like | st-editing-tools-edit | Welcome |
-| wait_for_text_present_ok | Activities | 30000 |
-| st-name-widget | 1 | signals_widget |
-| st-widget-title-like | signals_widget | Activities |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_element_visible_ok | expand-input | 10000 |
-| click_ok | expand-input |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | %%wsadmin%% simple signal |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | {user: %%emainuser%%} mention from %%wsadmin%% |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 10000 |
-| type_ok | wikiwyg_wikitext_textarea | d {user: %%emainuser%%} direct from %%wsadmin%% |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| select-frame | relative=parent |  |
-
-| *Comment* | Wait for frame to appear before proceeding |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-
-| *Comment* | Test Case: Signals/Activities Teardown |  |
-| open_ok | /?dashboard | 60000 |
-| st-catchup-logs |  |  |
+| st-send-signal-via-activities-widget | signals_widget | %%second%% simple signal |
+| st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%second%% |
+| st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%second%% |
 
 | *Comment* | Test Case: Signals/Activities Interaction |  |
