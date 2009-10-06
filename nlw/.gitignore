@@ -338,3 +338,4 @@ t/wikitests/widgets/proxy-timeout.wiki
 t/rest_files/sleeper.pl
 t/wikitests/widgets/proxy-links.wiki
 t/Socialtext/JSON/Proxy-ping.t
+t/wikitests/people/rest/data_people_search.wiki
