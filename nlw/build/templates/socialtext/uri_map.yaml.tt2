@@ -299,6 +299,10 @@
             'application/json': [Socialtext::Rest::WorkspaceUsers, POST]
         '*':                    [Socialtext::Rest::WorkspaceUsers, bad_method]
 -
+    '/data/workspaces/:ws/groups/:group_id':
+        'DELETE':   [Socialtext::Rest::WorkspaceGroup, DELETE]
+        '*':        [Socialtext::Rest::WorkspaceGroup, bad_method]
+-
     '/data/workspaces/:ws':
         'GET':   
             '*/*':     &default [Socialtext::Rest::Workspace, GET_html]
