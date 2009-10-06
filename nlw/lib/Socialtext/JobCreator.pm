@@ -67,6 +67,7 @@ sub index_page {
     my $self = shift;
     my $page = shift;
     my $search_config = shift;
+    my %opts = @_;
 
     return if $page->is_bad_page_title($page->id);
 
@@ -86,7 +87,7 @@ sub index_page {
                 (ref($indexer) =~ m/solr/i ? (solr => 1)
                                            : (search_config => $search_config)),
                 job => {
-                    priority => 63,
+                    priority => $opts{priority} || 63,
                     coalesce => "$wksp_id-$page_id",
                 },
             }

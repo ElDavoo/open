@@ -818,7 +818,10 @@ sub reindex_async {
     for my $page_id ( $hub->pages->all_ids() ) {
         my $page = $hub->pages->new_page($page_id);
         next if $page->deleted;
-        Socialtext::JobCreator->index_page($page, $search_config);
+        Socialtext::JobCreator->index_page(
+            $page, $search_config,
+            priority => 62,
+        );
     }
 }
 
