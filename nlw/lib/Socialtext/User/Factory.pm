@@ -354,11 +354,12 @@ sub ExpireUserRecord {
         my $email = defined $p->{email_address} ? $p->{email_address} 
                             : $user ? $user->email_address : undef;
 
-        my $name = join ' ', grep {defined $_} $first_name, $last_name;
-        unless ($name) {
-            ($name = $email) =~ s/@.+//;
+        {
+            no warnings 'uninitialized';
+            my $name = join ' ', grep {length} $first_name, $last_name;
+            ($name = $email) =~ s/@.+// unless $name;
+            $p->{display_name} = $name;
         }
-        $p->{display_name} = $name;
     }
 
     sub _validate_assign_user_id {
