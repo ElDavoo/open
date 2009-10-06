@@ -311,6 +311,15 @@
         'DELETE':               [Socialtext::Rest::Workspace, DELETE]
         '*':                    [Socialtext::Rest::Workspace, bad_method]
 -
+    '/data/workspaces/:ws/groups':
+        'GET':
+            'application/json': [Socialtext::Rest::WorkspaceGroups, GET_json]
+            '*/*':     &default [Socialtext::Rest::WorkspaceGroups, GET_html]
+            'text/html':        *default
+        'POST':
+            'application/json': [Socialtext::Rest::WorkspaceGroups, POST_json]
+        '*':                    [Socialtext::Rest::WorkspaceGroups, bad_method]
+-
     '/data/workspaces':
         'GET':
             '*/*':     &default [Socialtext::Rest::Workspaces, GET_html]
