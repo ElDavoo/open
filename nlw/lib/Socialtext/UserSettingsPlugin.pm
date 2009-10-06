@@ -128,9 +128,11 @@ sub users_listall {
         if $self->cgi->Button;
 
     my @uwr = $self->hub->current_workspace->users_with_roles(direct => 1)->all;
+    my @gwr = $self->hub->current_workspace->groups_with_roles->all;
     my $settings_section = $self->template_process(
         'element/settings/users_listall_section',
         users_with_roles => \@uwr,
+        groups_with_roles => \@gwr,
         $self->status_messages_for_template,
     );
 

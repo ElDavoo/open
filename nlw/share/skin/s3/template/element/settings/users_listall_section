@@ -3,7 +3,7 @@
 [% perm_admin = hub.checker.check_permission('admin_workspace') %]
 [% INCLUDE element/settings/start %]
 <dl class="form">
-<dt><label>[% loc('Manage') %]</label></dt>
+<dt><label>[% loc('Manage Users') %]</label></dt>
 </dl>
 <table>
 <tr>
@@ -49,6 +49,33 @@
       [% END %]
       </td>
     [% END %]
+  </tr>
+[% END %]
+</table>
+
+<dl class="form">
+<dt><label>[% loc('Groups') %]</label></dt>
+</dl>
+<table>
+<tr>
+  <th>[% loc('Group name') %]</th>
+  <th>[% loc('Users') %]</th>
+  <th>[% loc('Role') %]</th>
+</tr>
+
+[% FOREACH gwr IN groups_with_roles %]
+  [% SET group = gwr.group %]
+  [% SET role = gwr.role %]
+  <tr>
+      <td class="text-align-center">
+        [% group.driver_group_name | html %]
+      </td>
+      <td>
+        [% group.user_count %]
+      </td>
+      <td>
+        [% role.name | html %]
+      </td>
   </tr>
 [% END %]
 </table>

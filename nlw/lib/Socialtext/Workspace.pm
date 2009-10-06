@@ -1379,6 +1379,13 @@ sub user_ids {
     return \@user_ids;
 }
 
+sub groups_with_roles {
+    my $self = shift;
+    my %p = (@_==1) ? %{+shift} : @_;
+    $p{workspace_id} = $self->workspace_id;
+    return Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(%p);
+}
+
 sub users_with_roles {
     my $self = shift;
     my %p = (@_==1) ? %{+shift} : @_;
