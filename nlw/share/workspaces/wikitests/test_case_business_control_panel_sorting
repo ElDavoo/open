@@ -1,0 +1,267 @@
+ *Comment* | Test case: Business Control Panel Sorting Set up data | |
+
+| st-admin | create-account --name "0 sort 1 account %%start_time%%" | was created |
+| st-admin | create-account --name "0 sort 2 account %%start_time%%" | was created |
+| st-admin | create-account --name "0 sort 3 account %%start_time%%" | was created |
+
+| st-admin | create-workspace --name 0-sort-1-workspace1-%%start_time%% --title "0 sort 1 workspace1 %%start_time%%" --account "0 sort 1 account %%start_time%%" |  |
+| st-admin | create-workspace --name 0-sort-2-workspace1-%%start_time%% --title "0 sort 2 workspace1 %%start_time%%" --account "0 sort 2 account %%start_time%%" |  |
+| st-admin | create-workspace --name 0-sort-3-workspace1-%%start_time%% --title "0 sort 3 workspace1 %%start_time%%" --account "0 sort 3 account %%start_time%%" |  |
+| st-admin | create-workspace --name 0-sort-2-workspace2-%%start_time%% --title "0 sort 2 workspace2 %%start_time%%" --account "0 sort 2 account %%start_time%%" |  |
+| st-admin | create-workspace --name 0-sort-3-workspace2-%%start_time%% --title "0 sort 3 workspace2 %%start_time%%" --account "0 sort 3 account %%start_time%%" |  |
+| st-admin | create-workspace --name 0-sort-3-workspace3-%%start_time%% --title "0 sort 3 workspace3 %%start_time%%" --account "0 sort 3 account %%start_time%%" |  |
+
+| st-admin | create-user --email 0_sort_1_user1@%%start_time%%.com --password sort1user1 --first-name "0 sort 11" --last-name "0 user 11" |
+| st-admin | create-user --email 0_sort_2_user1@%%start_time%%.com --password sort2user1 --first-name "0 sort 21" --last-name "0 user 21" |
+| st-admin | create-user --email 0_sort_3_user1@%%start_time%%.com --password sort3user1 --first-name "0 sort 31" --last-name "0 user 31" |
+| st-admin | create-user --email 0_sort_2_user2@%%start_time%%.com --password 0sort2user2 --first-name "0 sort 22" --last-name "0 user 22" |
+| st-admin | create-user --email 0_sort_3_user2@%%start_time%%.com --password 0sort3user2 --first-name "0 sort 22" --last-name "0 user 32" |
+| st-admin | create-user --email 0_sort_3_user3@%%start_time%%.com --password 0sort3user3 --first-name "0 sort 33" --last-name "0 user 33" |
+
+| st-admin | add-member --email 0_sort_1_user1@%%start_time%%.com --workspace 0-sort-1-workspace1-%%start_time%% |
+| st-admin | add-member --email 0_sort_2_user2@%%start_time%%.com --workspace 0-sort-1-workspace1-%%start_time%% |
+| st-admin | add-member --email 0_sort_3_user3@%%start_time%%.com --workspace 0-sort-1-workspace1-%%start_time%% |
+| st-admin | add-member --email 0_sort_2_user2@%%start_time%%.com --workspace 0-sort-2-workspace2-%%start_time%% |
+| st-admin | add-member --email 0_sort_3_user3@%%start_time%%.com --workspace 0-sort-2-workspace2-%%start_time%% |
+| st-admin | add-member --email 0_sort_3_user3@%%start_time%%.com --workspace 0-sort-3-workspace3-%%start_time%% |
+
+| *Comment* | Test case: Business Control Panel sorting Accounts display |  |
+| open_ok | /nlw/control/account |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | account %%start_time%% |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| click_and_wait | st-submit-search-by-name |  |
+
+| wait_for_element_visible_ok | link=0 sort 3 account %%start_time%% | 30000 |
+| click_and_wait | link=Name |  |
+| text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
+| click_and_wait | link=Name |  |
+| text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
+
+| click_and_wait | control-sort-workspace |  |
+| text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
+| click_and_wait | control-sort-workspace |  |
+| text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
+
+| click_and_wait | control-sort-user |  |  |  |
+| text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
+| click_and_wait | control-sort-user |  |  |  |
+| text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
+
+| *Comment* | Test Case: Business Control Panel Sorting Workspaces display |  |
+| click_and_wait | link=Workspaces |  |
+| wait_for_element_visible_ok | name | 30000 |
+| wait_for_element_visible_ok | st-ws-search-submit | 30000 |
+| type_ok | name | %%start_time%% |
+| click_and_wait | st-ws-search-submit | 30000 |
+| click_and_wait | link=Name |  |
+| text_like | qr/0-sort-3-workspace3-%%start_time%%.+0-sort-2-workspace2-%%start_time%%.+0-sort-1-workspace1-%%start_time%%/ |  |
+| click_and_wait | link=Name |  |
+| text_like | qr/0-sort-1-workspace1-%%start_time%%.+0-sort-2-workspace2-%%start_time%%.+0-sort-3-workspace3-%%start_time%%/ |  |
+
+TODO: RESTORE THE FOLLOWING TWO TESTS AFTER {bz: 472} IS FIXED
+
+| *Comment* | RESTORE THE FOLLOWING TWO TESTS AFTER {bz: 472} IS FIXED |  |
+| wait_for_element_visible_ok | workspace-sort-users | 30000 |
+| click_and_wait | //a[contains(@href,'workspace_sort_order=asc;workspace_order_by=user_count')] |  |
+
+text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ | |
+
+| click_and_wait | workspace-sort-users |  |
+
+text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ | |
+
+| click_and_wait | link=Account |  |
+| text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
+| click_and_wait | link=Account |  |
+| text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
+
+| click_and_wait | link=Created |  |
+| text_like | qr/0-sort-3-workspace3-%%start_time%%.+0-sort-2-workspace2-%%start_time%%.+0-sort-1-workspace1-%%start_time%%/ |  |
+| click_and_wait | link=Created |  |
+| text_like | qr/0-sort-1-workspace1-%%start_time%%.+0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%/ |  |
+
+| click_and_wait | link=Created By |  |
+| text_like | qr/system-user/ |  |
+| click_and_wait | link=Created By |  |
+| text_like | qr/system-user/ |  |
+
+| *Comment* | Test Case: Business Control Panel Sorting Users display |  |
+| click_and_wait | link=Users |  |
+| wait_for_element_visible_ok | username | 30000 |
+| wait_for_element_visible_ok | st-username-search-submit | 30000 |
+| type_ok | username | %%start_time%% |
+| click_and_wait | st-username-search-submit |  |
+| text_like | qr/0_sort_1_user1\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_3_user3\@%%start_time%%\.com/ |  |
+| click_and_wait | link=Name |  |
+| text_like | qr/0_sort_3_user3\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_1_user1\@%%start_time%%\.com/ |  |
+
+| click_and_wait | user-sort-workspaces |  |
+| text_like | qr/0.+0.+0.+0.+1.+1.+2.+3/ism |  |
+| click_and_wait | user-sort-workspaces |  |
+| text_like | qr/3.+2.+1.+1.+0.+0.+0/ism |  |
+
+| click_and_wait | link=Invited |  |
+| text_like | qr/0_sort_1_user1\@%%start_time%%\.com.+0_sort_2_user2\@%%start_time%%\.com.+0_sort_3_user3\@%%start_time%%\.com/ |  |
+
+| click_and_wait | link=Invited By |  |
+| text_like | qr/system/ |  |
+
+| click_and_wait | link=Primary Account |  |
+
+| *Comment* | Test Case: Business Control Panel Sorting check the elements on the page |  |
+| text_like | selected-users | 0 users selected |
+| text_like | clear-selected-users | Clear Selection |
+| text_like | invite-users | Invite to Workspace(s) |
+
+| *Comment* | Test Case: Business Control Panel Sorting all the users and none of the users. pause is necessary because number of users is unknown |  |
+| click_ok | toggle_all_users |  |
+| click_ok | toggle_all_users |  |
+| wait_for_text_present_ok | 0 users selected |  |
+| text_like | selected-users | 0 users selected |
+| *Comment* | Test case: Business Control Panel check Clear Selection |  |
+| click_ok | toggle_all_users |  |
+| click_ok | clear-selected-users |  |
+| wait_for_text_present_ok | 0 users selected |  |
+| text_like | selected-users | 0 users selected |
+
+| *Comment* | Test Case: Business Control Panel Sorting invite everyone to a workspace |  |
+| click_ok | invite-users |  |
+| verifyAlert | No users selected, please select at least one user and try again. |  |
+| click_ok | toggle_all_users |  |
+| click_and_wait | invite-users |  |
+
+| text_like | Title |  |
+| text_like | Name |  |
+| text_like | Account |  |
+| text_like | Administrators |  |
+| text_like | Available Workspaces |  |
+| text_like | Create a new workspace |  |
+| text_like | Invite To existing workspace(s) |  |
+
+| *Comment* | Test Case: Business Control Panel Sorting radio buttons create or invite |  |
+| wait_for_element_visible_ok | todo-invite | 30000 |
+| wait_for_element_visible_ok | todo-create | 30000 |
+
+| *Comment* | Test Case: Business Control Panel Sorting invite to new workspace |  |
+| check_ok | todo-invite |  |
+| is_checked_ok | todo-invite |  |
+| check_ok | todo-create |  |
+| is_checked_ok | todo-create |  |
+| select_ok | account_id | 0 sort 3 account %%start_time%% |
+
+| *Comment* | Test Case: Business Control Panel Sorting create admins |  |
+| addSelection | members | label=0_sort_2_user1@%%start_time%%.com |
+| addSelection | members | label=0_sort_3_user1@%%start_time%%.com |
+| click_ok | add-selected |  |
+| click_ok | remove-selected |  |
+| click_ok | add-all |  |
+| click_ok | remove-all |  |
+| addSelection | members | label=0_sort_3_user1@%%start_time%%.com |
+| click_ok | invite-button |  |
+| verifyAlert | Error: Workspace title is a required field. |  |
+| verifyAlert | Error: Workspace name is a required field. |  |
+| verifyAlert | You must choose at least one administrator. |  |
+
+| type_ok | workspace-title | ws-t%%start_time%% |
+| type_ok | workspace-name | ws-n%%start_time%% |
+| addSelection | members | label=0_sort_3_user1@%%start_time%%.com |
+| click_ok | add-selected |  |
+
+| click_ok | invite-button |  |
+| wait_for_page_to_load_ok | 120000 |  |
+| text_like | errors-and-messages | qr/Congratulations! You successfully created a new workspace with \d+ users. They will receive an invitation message with a link to ws-n%%start_time%%./ |
+
+| *Comment* | Test Case: Business Control Panel Sorting This section tests the custom Profile fields. |  |
+| click_and_wait | link=Accounts |  |
+| st-admin | enable-plugin --p people --account "0 sort 3 account %%start_time%%" |  |
+| click_and_wait | link=0 sort 3 account %%start_time%% |  |
+| wait_for_element_visible_ok | link=Profile Fields | 30000 |
+| click_and_wait | link=Profile Fields |  |
+
+| *Comment* | Test Case: Business Control Panel Sorting check all the Profile Fields info |  |
+| text_like | qr/Field Title.*Field Name.*Field Type.*Hidden.*Source.*Actions/ |  |
+| text_like | qr/AIM™.+(Edit).+aol_sn/ |  |
+| text_like | qr/Assistant.+(Edit).+assistant/ |  |
+| text_like | qr/Blog.+(Edit).+blog/ |  |
+| text_like | qr/Company.+(Edit).+company/ |  |
+| text_like | qr/Facebook™.+(Edit).+facebook_url/ |  |
+| text_like | qr/GTalk.+(Edit).+gtalk_sn/ |  |
+| text_like | qr/Home phone.+(Edit).+home_phone/ |  |
+| text_like | qr/Linkedin®.+(Edit).+linkedin_url/ |  |
+| text_like | qr/Location.+(Edit).+location/ |  |
+| text_like | qr/Mobile phone.+(Edit).+mobile_phone/ |  |
+| text_like | qr/Personal.+(Edit).+personal_url/ |  |
+| text_like | qr/Position.+(Edit).+position/ |  |
+| text_like | qr/Sametime®.+(Edit).+sametime_sn/ |  |
+| text_like | qr/Skype™.+(Edit).+skype_sn/ |  |
+| text_like | qr/Manager.+(Edit).+supervisor/ |  |
+| text_like | qr/Twitter.+(Edit).+twitter_sn/ |  |
+| text_like | qr/Work phone.+(Edit).+work_phone/ |  |
+| text_like | qr/Yahoo!™.+(Edit).+yahoo_sn/ |  |
+
+| *Comment* | Test Case: Business Control Panel Sorting check Save Field. We don't care about setting the fields back. Setting them at all proves the controls work, so no need to set them back. |  |
+| click_and_wait | link=Edit |  |
+| wait_for_element_visible_ok | field-title-input | 30000 |
+| text_like | qr/Field Title.+Field Name.+Data Source.+Field Type.+Hidden/ |  |
+
+| *Comment* | Test Case: Business Control Panel SortingIE 7 sometimes cacks on the very first field open, so retry it |  |
+| open_ok | /nlw/control/account |  |
+| wait_for_element_visible_ok | link=0 sort 3 account %%start_time%% | 60000 |
+| click_and_wait | link=0 sort 3 account %%start_time%% |  |
+| wait_for_element_visible_ok | link=Profile Fields | 30000 |
+| click_and_wait | link=Profile Fields |  |
+| wait_for_element_visible_ok | link=Edit | 30000 |
+| click_and_wait | link=Edit |  |
+| wait_for_element_visible_ok | field-title-input | 30000 |
+| text_like | qr/Field Title.+Field Name.+Data Source.+Field Type.+Hidden/ |  |
+
+| *Comment* | Test Case: Business Control Panel Sorting can fail in IE unless you fill in the field title |  |
+| type_ok | field-title-input | IE field |
+
+| wait_for_element_visible_ok | data-source-select | 30000 |
+| wait_for_element_visible_ok | field-type-select | 30000 |
+| select_ok | data-source-select | label=External |
+| select_ok | field-type-select | label=Regular |
+| wait_for_element_visible_ok | //input[@name='is_hidden' and @value='1'] | 30000 |
+| check_ok | //input[@name='is_hidden' and @value='1'] |  |
+| is_checked_ok | //input[@name='is_hidden' and @value='1'] |  |
+| wait_for_element_visible_ok | //input[@value='Save Field'] | 30000 |
+| click_and_wait | //input[@value='Save Field'] |  |
+| text_like | qr/Updated profile field.+This field is now hidden from users' profiles./ |  |
+| text_like | un-hide |  |
+
+| *Comment* | Test Case: Business Control Panel Sorting reopen UI to decouple from any previous failures |  |
+| click_and_wait | link=Accounts |  |
+| click_and_wait | link=0 sort 3 account %%start_time%% |  |
+| wait_for_element_visible_ok | link=Profile Fields | 30000 |
+| click_and_wait | link=Profile Fields |  |
+
+| *Comment* | Test Case: Business Control Panel Sorting make new custom fields |  |
+| wait_for_element_visible_ok | link=Create New Field | 30000 |
+| click_and_wait | link=Create New Field |  |
+| wait_for_element_visible_ok | field-title-input | 30000 |
+| wait_for_element_visible_ok | field-name-input | 30000 |
+| type_ok | field-title-input | ft %%start_time%% |
+| type_ok | field-name-input | fn_%%start_time%% |
+| wait_for_element_visible_ok | data-source-select | 30000 |
+| wait_for_element_visible_ok | field-type-select | 30000 |
+| select_ok | data-source-select | label=External |
+| select_ok | field-type-select | label=Contact |
+| wait_for_element_visible_ok | //input[@name='is_hidden' and @value='1'] | 30000 |
+| check_ok | //input[@name='is_hidden' and @value='1'] |  |
+| is_checked_ok | //input[@name='is_hidden' and @value='1'] |  |
+| wait_for_element_visible_ok | //input[@value='Create New Field'] | 30000 |
+| click_and_wait | //input[@value='Create New Field'] |  |
+| text_like | qr/Created profile field "ft %%start_time%%".+This field is now hidden from users' profiles./ |  |
+| text_like | qr/ft %%start_time%%.+fn_%%start_time%%.*Contact.*Yes.*External.*(un-hide)/ |  |
+
+| *Comment* | Test case: Business Control Panel Sorting TEARDOWN. Let %%username%% keep accounts admin privileges. |  |
+| st-admin | remove-system-admin --email %%email%% | no longer has system admin access |
+| st-admin | delete-workspace --workspace 0-sort-1-workspace1-%%start_time%% --no-export | workspace has been deleted |
+| st-admin | delete-workspace --workspace 0-sort-2-workspace1-%%start_time%% --no-export | workspace has been deleted |
+| st-admin | delete-workspace --workspace 0-sort-3-workspace1-%%start_time%% --no-export | workspace has been deleted |
+| st-admin | delete-workspace --workspace 0-sort-2-workspace2-%%start_time%% --no-export | workspace has been deleted |
+| st-admin | delete-workspace --workspace 0-sort-3-workspace2-%%start_time%% --no-export | workspace has been deleted |
+| st-admin | delete-workspace --workspace 0-sort-3-workspace3-%%start_time%% --no-export | workspace has been deleted |
+| st-admin | delete-workspace --workspace ws-n%%start_time%% --no-export | workspace has been deleted |

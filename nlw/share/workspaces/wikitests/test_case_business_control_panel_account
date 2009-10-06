@@ -1,0 +1,98 @@
+| *Comment* | Test case: Business Control Panel Account |  |
+| *Comment* | If there are too many users or workspaces to fit on a single display page, it will fail |  |
+
+| st-admin | give-accounts-admin --email %%email%% | %%username%% now has accounts admin access |
+
+| set | new_acct | acct %%start_time%% |
+| set | cli_user | cli_%%start_time%%@ken.socialtext.net |
+
+| *Comment* | Test case: Business Control Panel Account Restrict domain |  |
+| set | restrict_acct | restrictedacc%%start_time%% |
+| st-admin | create-account --name %%restrict_acct%% |  |
+| open_ok | /nlw/control/account |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%restrict_acct%% |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| click_and_wait | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=%%restrict_acct%% | 30000 |
+| click_and_wait | link=%%restrict_acct%% |  |
+| wait_for_element_visible_ok | st-account-restrict-to-domain |  |
+| type_ok | st-account-restrict-to-domain | floodyflooy |
+| click_and_wait | st-account-restrict-submit |  |
+| wait_for_text_present_ok | Domain (floodyflooy) is not valid. | 30000 |
+| type_ok | st-account-restrict-to-domain | floodyflooy.notadomain |
+| click_and_wait | st-account-restrict-submit |  |
+| wait_for_text_present_ok | Domain (floodyflooy.notadomain) is not valid. | 30000 |
+| type_ok | st-account-restrict-to-domain | xndev.com |
+| click_and_wait | st-account-restrict-submit |  |
+| wait_for_text_present_ok | Account updated | 30000 |
+| st-admin | show-account-config --account %%restrict_acct%% | xndev.com |
+
+| *Comment* | Test case: Business Control Panel Socialtext Account exists |  |
+| open_ok | /nlw/control/account |  |
+| text_like | Accounts |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | Socialtext |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| click_and_wait | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=Socialtext | 30000 |
+| click_and_wait | link=Socialtext |  |
+| text_like | Socialtext account |  |
+
+| *Comment* | Test case: Business Control Panel Account Create and verify new account |  |
+| click_and_wait | link=Accounts |  |
+| wait_for_element_visible_ok | st-new-account-name | 30000 |
+| type_ok | st-new-account-name | %%new_acct%% |
+| click_and_wait | st-submit-new-account-submit |  |
+| text_like | The %%new_acct%% account has been created. |  |
+| st-admin | disable-plugin --p dashboard --acc "%%new_acct%%" |  |
+| st-admin | disable-plugin --p people --acc "%%new_acct%%" |  |
+| st-admin | disable-plugin --p signals --acc "%%new_acct%%" |  |
+
+| *Comment* | Test case: Business Control Panel Account validate plugins are disabled. |  |
+| *Comment* | Test case: Business Control Panel Account show new account |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%new_acct%% |
+| click_and_wait | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
+| click_and_wait | link=%%new_acct%% |  |
+| text_like | Custom Skins: Socialtext 3 default skin |  |
+| text_like | Socialtext People (click to enable) |  |
+| text_like | Socialtext Signals (click to enable) |  |
+| text_like | Socialtext Dashboard (click to enable) |  |
+
+| *Comment* | Test case: Business Control Panel Account plugin one at a time, click the confirmation, validate that plugin is enabled. |  |
+| click_ok | toggle_plugin_people |  |
+| verifyConfirmation | Socialtext People is a paid option. For more information about fees, contact your sales representative.\n\nPress 'OK' to enable this module or 'Cancel' to exit. |  |
+| wait_for_text_present_ok | Socialtext People (click to disable) | 20000 |
+| *Comment* | As of 01/09, Signals is enabled when People is enabled |  |
+| text_like | Socialtext Signals (click to disable) |  |
+
+| click_ok | toggle_plugin_signals |  |
+| verifyConfirmation | You are about to disable Socialtext Signals \n\n Press 'OK' to disable this module or 'Cancel' to exit. |  |
+| wait_for_text_present_ok | Socialtext Signals (click to enable) | 20000 |
+
+| *Comment* | Test case: Business Control Panel Account go the other way |  |
+| click_ok | toggle_plugin_people |  |
+| verifyConfirmation | You are about to disable Socialtext People \n\n Press 'OK' to disable this module or 'Cancel' to exit. |  |
+| wait_for_text_present_ok | Socialtext People (click to enable) | 20000 |
+| click_ok | toggle_plugin_signals |  |
+| verifyConfirmation | Socialtext Signals is a paid option. For more information about fees, contact your sales representative.\n\nPress 'OK' to enable this module or 'Cancel' to exit. |  |
+| wait_for_text_present_ok | Socialtext Signals (click to disable) | 20000 |
+
+| *Comment* | Test case: Business Control Panel Account. Enable Dashboard |  |
+| click_ok | toggle_plugin_dashboard |  |
+| verifyConfirmation | Socialtext Dashboard is a paid option. For more information about fees, contact your sales representative.\n\nPress 'OK' to enable this module or 'Cancel' to exit. |  |
+| wait_for_element_not_present_ok | toggle_plugin_dashboard |  |
+
+| *Comment* | Test case: Business Control Panel Account rename account |  |
+| click_and_wait | link=Rename Account |  |
+| wait_for_element_visible_ok | st-new-name | 10000 |
+| type_ok | st-new-name | newacct%%start_time%% |
+| click_and_wait | //input[@value='Rename'] |  |
+| text_like | newacct%%start_time%% account |  |
+| click_and_wait | link=Rename Account |  |
+| type_ok | st-new-name | %%new_acct%% |
+| click_and_wait | //input[@value='Rename'] |  |
+| text_like | %%new_acct%% account |  |
