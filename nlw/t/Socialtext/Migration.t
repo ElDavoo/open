@@ -11,6 +11,7 @@ BEGIN {
     use_ok 'Socialtext::Migration';
 }
 
+my $test_dir = Socialtext::AppConfig->test_dir();
 my $migration_output_file = "/tmp/mig.$$";
 END { unlink $migration_output_file if $migration_output_file }
 
@@ -19,13 +20,13 @@ Normal_migrations: {
 
     # clear the migration file
     my $state_file = $m->migration_state_file;
-    like $state_file, qr(t/tmp/etc/socialtext/migration\.state$);
+    like $state_file, qr($test_dir/etc/socialtext/migration\.state$);
     unlink $state_file;
     is $m->migration_number, 0;
 
     # create migration scripts
     my $state_dir = $m->migration_script_dir;
-    like $state_dir, qr(t/tmp/share/migrations$);
+    like $state_dir, qr($test_dir/share/migrations$);
 
     First_migration: {
         setup_test_migration_scripts($state_dir, 1);

@@ -2,6 +2,7 @@ package Socialtext::Migration;
 # @COPYRIGHT@
 use strict;
 use warnings;
+use File::Spec;
 use Socialtext::AppConfig;
 use Socialtext::File qw/get_contents set_contents/;
 use Socialtext::System qw/shell_run/;
@@ -183,7 +184,7 @@ Returns the name of the directory containing migrations.
 
 sub migration_script_dir {
     my $share = $ENV{HARNESS_ACTIVE}
-        ? "t/tmp/share"
+        ? File::Spec->catdir(Socialtext::AppConfig->test_dir(), 'share')
         : Socialtext::AppConfig->new->code_base();
     return "$share/migrations";
 }
