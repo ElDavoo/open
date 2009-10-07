@@ -18,7 +18,10 @@ GetOptions( \%args,
     'url=s',
     'account-id=s',
     'workspace-id=s',
-) or die;
+) or usage();
+
+usage() unless %args;
+
 
 $args{account_id} = delete $args{'account-id'} if $args{'account-id'};
 $args{workspace_id} = delete $args{'workspace-id'} if $args{'workspace-id'};
@@ -26,3 +29,14 @@ $args{workspace_id} = delete $args{'workspace-id'} if $args{'workspace-id'};
 print "Setting webhook on " . $r->server . "\n";
 $r->put_webhook( %args );
 print $r->response->status_line, "\n";
+
+exit;
+
+sub usage {
+    die <<EOT
+USAGE: $0 --class=foo --url=foo
+
+--account-id=foo
+--workspace-id=foo
+EOT
+}
