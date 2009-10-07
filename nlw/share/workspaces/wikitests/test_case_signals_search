@@ -1,0 +1,110 @@
+| *Comment* | Test Case: Signals Search |
+
+* Fixture: SocialWidgets
+
+| enable-acct-plugin | signals | %%hostname%% |
+
+| *Comment* | Test Case: Signals Search. Two users, lexicographically orderable |  |
+| set | a_searchuser | `a-%%start_time%%@ken.socialtext.net` |
+| set | z_searchuser | `z-%%start_time%%@ken.socialtext.net` |
+| create_user | %%a_searchuser%% | %%password%% |
+| create_user | %%z_searchuser%% | %%password%% |
+| st-logoutin | %%a_searchuser%% | %%password%% |
+
+| *Comment* | Test Case: Signals Search. Get a fresh Activities widget |  |
+| open_ok | /?dashboard |  |
+| wait_for_element_visible_ok | link=Add Content | 30000 |
+| st-single-widget-in-dashboard | gallery-widget-Activities |  |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+
+| *Comment* | Test Case: Signals Search. Send 2 signals %%a_searchuser%% |  |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 01 |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 12 |
+
+| *Comment* | Test Case: Signals Search. Search 2 signals %%a_searchuser%% |  |
+| open_ok | /?signals |  |
+| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_visible_ok | st-search-term | 30000 |
+| is_selected_ok | st-search-action | id=st-search-signals |
+| type_ok | st-search-term | %%start_time%% |
+| click_and_wait | st-search-submit |  |
+
+| *Comment* | Test Case: Signals Search. Verify found 2 signals %%a_searchuser%% |  |
+| st-name-widget | 3 | searchwidget |
+| st-select-widget-frame | searchwidget |  |
+| text_like | Search results in all networks for '%%start_time%%' |  |
+| text_like | Sort Me %%start_time%% 12 |  |
+| text_like | Sort Me %%start_time%% 01 |  |
+| select_frame | relative=parent |
+
+| *Comment* | Test Case: Signals Search. login as %%z_searchuser%% |  |
+| st-logoutin | %%z_searchuser%% | %%password%% |  |
+
+| *Comment* | Test Case: Signals Search. Get a fresh %%z_searchuser%% Activities widget |  |
+| st-single-widget-in-dashboard | gallery-widget-Activities |  |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+
+| *Comment* | Test Case: Signals Search. Send 2 signals %%z_searchuser%% |  |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 21 |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 32 |
+
+| *Comment* | Test Case: Signals Search. Search 2 signals %%z_searchuser%% |  |
+| open_ok | /?signals |  |
+| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_visible_ok | st-search-term | 30000 |
+| is_selected_ok | st-search-action | id=st-search-signals |
+| type_ok | st-search-term | %%start_time%% |
+| click_and_wait | st-search-submit |  |
+
+| *Comment* | Test Case: Signals Search. Verify found 4 signals %%z_searchuser%% |  |
+| st-name-widget | 3 | searchwidget |
+| st-select-widget-frame | searchwidget |  |
+| text_like | Search results in all networks for '%%start_time%%' |  |
+| text_like | Sort Me %%start_time%% 32 |  |
+| text_like | Sort Me %%start_time%% 21 |  |
+| text_like | Sort Me %%start_time%% 12 |  |
+| text_like | Sort Me %%start_time%% 01` |  |
+
+| *Comment* | Test Case: Signals Search. Sort. SORT DOES NOT CAUSE PAGE LOAD |  |
+| select_ok | sort-picker | label=Sender |
+| pause | 8000 | I Hate Pause |
+| text-like | //body | qr/%%start_time%% 12.+%%start_time%% 01.+%%start_time%% 32.+%%start_time%% 21/ism |
+| text-like | //body | qr/%%a_searchuser%%.+%%z_searchuser%%/ism |
+| select_ok | sort-picker | label=Newest |
+| pause | 8000 | I Hate Pause |
+| text-like | //body | qr/%%start_time%% 32.+%%start_time%% 21.+%%start_time%% 12.+%%start_time%% 01/ism |
+| text-like | //body | qr/%%z_searchuser%%.+%%a_searchuser%%/ism |
+| select_ok | sort-picker | label=Oldest |
+| pause | 8000 | I Hate Pause |
+| text-like | //body | qr/%%start_time%% 01.+%%start_time%% 12.+%%start_time%% 21.+%%start_time%% 32/ism |
+| text-like | //body | qr/%%z_searchuser%%.+%%a_searchuser%%/ism |
+
+| select_frame | relative=parent |
+
+Figure out what relevance sort means and send a more relevant signal.
+Sort by relevance and see if it is on top
+
+Send enough more signals to cause pagination. Verify Older Newer Newest
+
+Verify Clear
+
+Maybe verify delete and re-search
+
+If Matt can write DeleteAllSignals then we can test for Oldest, but not with an arbitrary number of runs.
+
+| *Comment* | Test Case: Signals Search COMPLETED |
+
+^ END
+
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 02 |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 03 |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 04 |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 05 |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 06 |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 07 |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 08 |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 09 |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 10 |
+| st-send-signal-via-activities-widget | activities_widget | Sort Me %%start_time%% 11 |
