@@ -14,11 +14,13 @@ before 'do_work' => sub {
 after 'completed' => sub {
     my $self = shift;
 
-    my $key  = $self->job->coalesce;
+    my $main_job = $self->job;
+    my $key  = $main_job->coalesce;
     return unless $key;
 
-    my $class = $self->job->funcname;
-    my $client = $self->job->client;
+    my $class = $main_job->funcname;
+    my $client = $main_job->client;
+    my @ids;
     while (my $job = $client->find_job_with_coalescing_value($class, $key)) {
         # Avoid a race condition where a job could have _just_ been added.
         # Err on the side of caution: let jobs created in the same second
@@ -27,7 +29,9 @@ after 'completed' => sub {
 
         # Otherwise we can skip the extra work!
         $job->completed;
+        push @ids, $job->jobid;
     }
+    $main_job->arg->{coalesced} = scalar(@ids) if @ids;
 };
 
 no Moose::Role;
