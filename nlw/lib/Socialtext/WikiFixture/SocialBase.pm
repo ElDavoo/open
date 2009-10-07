@@ -1048,7 +1048,7 @@ sub _logreader {
     my $self = shift;
     return $self->{_logreader} ||= File::LogReader->new(
         filename  => "$ENV{HOME}/.nlw/log/nlw.log",
-        state_dir => 't/tmp/wikitest-logreader.state',
+        state_dir => "$ENV{HOME}/.nlw/wikitest-logreader.state",
     );
 }
 
