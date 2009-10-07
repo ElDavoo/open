@@ -2,17 +2,19 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::More tests => 80;
+use Test::More tests => 86;
 use File::Temp qw/tempfile/;
+use Time::HiRes ();
 
 ok -x 'bin/st-daemon-monitor', "it's executable";
 
 END {
+    local $?; # don't clobber it via system()
     # try to clean things up before we go
-    diag "pkill st-daemon-monitor";
-    system("pkill -9 st-daemon-monitor");
-    diag "pkill cranky.pl";
-    system("pkill -9 cranky.pl");
+    diag "cleanup: killall -9 st-daemon-monitor";
+    system("killall -9 st-daemon-monitor");
+    diag "cleanup: killall -9 cranky.pl";
+    system("killall -9 cranky.pl");
     unlink 't/tmp/mon';
 }
 
@@ -30,10 +32,13 @@ sub fork_and_exec {
 
 sub reap {
     my $pid = shift;
-    for (1..5) {
+    for (1..50) {
         return if (waitpid($pid,1) == $pid); # non-blocking
+        kill 9, $pid;
         kill 9, -$pid;
-        sleep 1;
+        return if (waitpid($pid,1) == $pid); # non-blocking
+        #diag("waiting for child process...");
+        Time::HiRes::sleep(0.1);
     }
     die "failed to reap $pid";
 }
@@ -55,20 +60,28 @@ sub test_monitor ($$;$) {
     print $fh $cranky_pid;
     close $fh;
 
+    my $reaped = 0;
     if ($cranky =~ m#^/bin/true#) {
         reap($cranky_pid);
+        $reaped = 1;
+    }
+    elsif ($cranky =~ m#^/bin/false#) {
+        reap($cranky_pid);
+        unlink $pidfile;
+        $reaped = 1;
     }
     else {
         sleep 1;
     }
 
-    my ($logfh,$logfile) = tempfile();
+    system("/bin/bash","-c",":> t/tmp/log/nlw.log");
+
     my $rc = system(
         "bin/st-daemon-monitor ".$mon_args.
-        qq{ --pidfile $pidfile --init "/bin/touch t/tmp/mon"}.
-        qq{>>$logfile}
+        qq{ --pidfile $pidfile --init "/bin/touch t/tmp/mon"}
     );
     my $exit = $rc >> 8;
+
     if ($process_lives) {
         is $exit, 0, "didn't kill the daemon";
         ok !-f 't/tmp/mon', "didn't run the init cmd";
@@ -78,24 +91,18 @@ sub test_monitor ($$;$) {
         ok -f 't/tmp/mon', "ran the init cmd";
     }
 
-    if ($cranky !~ m#^/bin/true#) {
-        for (1..5) {
-            last if waitpid($cranky_pid,1)==$cranky_pid; # non-blocking
-            kill 9, $cranky_pid;
-            last if waitpid($cranky_pid,1)==$cranky_pid; # non-blocking
-            diag "waiting for daemon...";
-            sleep 1;
-        }
+    if (!$reaped) {
+        reap($cranky_pid);
     }
     pass "done ($cranky; $mon_args)";
 
-    seek $logfh, 0, 0;
     $last_log = '';
-    {
+    eval {
         local $/;
+        open my $logfh, '<', 't/tmp/log/nlw.log';
         ($last_log) = <$logfh>;
-    }
-    close $logfh;
+        close $logfh;
+    };
 }
 
 sub logged_like ($) {
@@ -109,8 +116,13 @@ my $c = 'dev-bin/cranky.pl ';
 test_monitor('/bin/sleep 5', ''                           => 'lives');
 test_monitor('/bin/sleep 5', '--rss 32 --vsz 32 --fds 10' => 'lives');
 
-test_monitor('/bin/true',''); # special case: harness will reap
+# special case: harness will reap
+test_monitor('/bin/true','');
 logged_like qr/is (gone|zombified)/;
+
+# special case: harness will reap, remove pidfile
+test_monitor('/bin/false','');
+logged_like qr/can't read pidfile/;
 
 test_monitor($c.'--ram 64',         '--rss 64');
 logged_like qr/is too big \(RSS\)/i;
@@ -131,13 +143,6 @@ socket_tests: {
     logged_like qr/tcp port $port is not open/i;
     test_monitor($c.'--after 5',             "--tcp $port" => 'lives');
 
-    # socket timeout
-    test_monitor(
-        $c.'--serv stall',
-        "--scgi --tcp $port"
-    );
-    logged_like qr/timeout/;
-
     # cranky should give a 403
     test_monitor(
         $c.'--serv scgi',
@@ -151,6 +156,13 @@ socket_tests: {
         "--scgi --tcp $port"
         => 'lives'
     );
+
+    # socket timeout. Do this last since it's slow.
+    test_monitor(
+        $c.'--serv stall',
+        "--scgi --tcp $port"
+    );
+    logged_like qr/timeout/;
 }
 
 pass "all done";

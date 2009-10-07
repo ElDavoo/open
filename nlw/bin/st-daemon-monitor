@@ -2,13 +2,15 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-
+use FindBin;
+use lib "$FindBin::Bin/../lib";
 use Getopt::Long;
 use Pod::Usage;
 use AnyEvent;
 use AnyEvent::Handle;
 use Coro::AnyEvent;
 use Guard qw/scope_guard/;
+use Socialtext::Log qw/st_log/;
 
 my $man = 0;
 my $help = 0;
@@ -37,17 +39,19 @@ or pod2usage(1);
 pod2usage(1) if $help;
 pod2usage(-exitstatus => 0, -verbose => 2) if $man;
 
-pos2usage(1) unless ($pidfile && -r $pidfile && $init_cmd);
+pod2usage(1) unless ($pidfile && $init_cmd);
 
 my ($pid) = slurp($pidfile);
+$pid ||= 0;
 
 sub slurp {
+    my $filename = shift;
     local $@;
     my @lines;
-    eval {
-        local(@ARGV) = (shift);
-        @lines = <>;
-    };
+    if (open(my $fh, '<', $filename)) {
+        @lines = <$fh>;
+        close $fh;
+    }
     chomp @lines if @lines;
     return @lines;
 }
@@ -56,9 +60,9 @@ sub recover {
     my $now = `/bin/date`;
     chomp $now;
     my $msg = shift;
-    print "[$now] st-daemon-monitor: PID=${pid} $msg\n";
-    kill $signal, $pid if $signal;
-    print "[$now] st-daemon-monitor: running $init_cmd\n";
+    st_log()->error("PID=".($pid ? $pid : '?')." $msg");
+    kill $signal, $pid if ($signal && $pid);
+    st_log()->info("st-daemon-monitor: running $init_cmd");
     # 1 == ran init ok, 2 == init bad?
     system("$init_cmd") and exit 2;
     exit 1;
@@ -86,8 +90,7 @@ sub to_MiB {
 }
 
 if (!$pid) {
-    die "can't read pidfile";
-    exit 2;
+    recover("can't read pidfile");
 }
 
 my $there = -d "/proc/$pid";
