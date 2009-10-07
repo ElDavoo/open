@@ -12,6 +12,7 @@ use Carp;
 use Class::Field qw( field );
 use File::chdir;
 use File::Path;
+use Socialtext::AppConfig;
 use Socialtext::Workspace;
 use Socialtext::HTTP::Ports;
 use Test::More;
@@ -63,11 +64,12 @@ sub CreateEnvironment {
 
 sub new {
     my $class = shift;
+    my $test_dir = Cwd::abs_path( Socialtext::AppConfig->test_dir() );
 
     my $self = $class->SUPER::new(
         nlw_dir  => $nlw_dir,
-        root_dir => "$nlw_dir/t/tmp",
-        base_dir => "$nlw_dir/t/tmp/root",
+        root_dir => $test_dir,
+        base_dir => "$test_dir/root",
 
         # set by Module::Build for Test::Harness ...
         verbose => $ENV{TEST_VERBOSE},
@@ -91,7 +93,9 @@ sub new {
 
 sub _create_log_dir {
     my $self = shift;
-    my $log_dir = "$nlw_dir/t/tmp/log";
+    my $log_dir = File::Spec->catdir(
+        $self->root_dir(), 'log',
+    );
     mkpath $log_dir unless -d $log_dir;
 }
 
