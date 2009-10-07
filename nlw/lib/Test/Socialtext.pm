@@ -18,6 +18,7 @@ use Socialtext::Account;
 use Socialtext::Group;
 use Socialtext::User;
 use Socialtext::Cache;
+use Socialtext::AppConfig;
 use YAML;
 use File::Temp qw/tempdir/;
 use File::Spec;
@@ -268,7 +269,6 @@ sub setup_test_appconfig_dir {
     close $config_fh or die "Can't write to $config_file: $!";
     return $config_file if $opts{write_config_only};
 
-    require Socialtext::AppConfig;
     Socialtext::AppConfig->new(
         file => $config_file,
         _singleton => 1,
