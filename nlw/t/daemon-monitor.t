@@ -2,9 +2,11 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::More tests => 86;
+use Test::Socialtext tests => 86;
 use File::Temp qw/tempfile/;
 use Time::HiRes ();
+
+fixtures(qw( base_layout ));
 
 ok -x 'bin/st-daemon-monitor', "it's executable";
 
