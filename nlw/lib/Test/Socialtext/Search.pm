@@ -178,7 +178,7 @@ field_spec:
 
 EOY
 
-    open RAMPUP, ">" . File::Spec->catdir( $dir, "rampup.yaml" ) || die "I just can't! $!\n";
+    open RAMPUP, ">" . File::Spec->catfile( $dir, "rampup.yaml" ) || die "I just can't! $!\n";
     print RAMPUP $rampup_yaml;
     close RAMPUP;
 }
