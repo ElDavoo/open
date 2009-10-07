@@ -3,6 +3,7 @@
 
 use strict;
 use warnings;
+use Socialtext::AppConfig;
 
 warn "# generating the fixture\n" if $ENV{TEST_VERBOSE};
 #use lib "$ENV{NLW_DIR}/lib";
@@ -34,7 +35,10 @@ attr_map:
   last_name: sn
 EOY
 
-open LDAP, ">t/tmp/etc/socialtext/ldap.yaml" || die "I just can't! $!\n";
+my $cfgdir  = Socialtext::AppConfig->config_dir();
+my $cfgfile = File::Spec->catfile($cfgdir, 'ldap.yaml');
+
+open LDAP, ">$cfgfile" || die "I just can't! $!\n";
 print LDAP $ldap_yaml;
 close LDAP;
 
