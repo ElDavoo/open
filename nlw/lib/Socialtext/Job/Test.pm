@@ -6,6 +6,7 @@ use Time::HiRes qw/sleep/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
+with 'Socialtext::CoalescingJob';
 
 our $Work_count = 0;
 our $Retries = 0;

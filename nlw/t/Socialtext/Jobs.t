@@ -63,7 +63,7 @@ Process_a_job: {
     Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1);
     is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 1;
     is $Socialtext::Job::Test::Work_count, 0;
-   
+
     $jobs->can_do('Socialtext::Job::Test');
     $jobs->work_once();
 
@@ -240,4 +240,24 @@ Existing_untitled_page_jobs_fail: {
         like $failures[0], qr/Couldn't load page id=untitled_page/, 'no untitled_page for you';
         ok $handle->exit_status, "job permanently failed";
     }
+}
+
+coalescing_jobs: {
+    $jobs->clear_jobs();
+    $Socialtext::Job::Test::Work_count = 0;
+
+    Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1, job => {coalesce => 'AAA'});
+    Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1, job => {coalesce => 'AAA'});
+    Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1, job => {coalesce => 'BBB'});
+    Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1, job => {coalesce => 'BBB'});
+    sleep 1;
+
+    is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 4, 'start with all jobs';
+    is $Socialtext::Job::Test::Work_count, 0;
+   
+    $jobs->can_do('Socialtext::Job::Test');
+    $jobs->work_once();
+
+    is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 2, '2nd job completed due to coalescing key';
+    is $Socialtext::Job::Test::Work_count, 1, 'only 1 of the 2 jobs "ran"';
 }

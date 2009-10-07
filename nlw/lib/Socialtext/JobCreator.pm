@@ -50,17 +50,14 @@ sub index_attachment {
     );
 
     if ($search_config and $search_config eq 'solr') {
-        return $self->insert(
-            'Socialtext::Job::AttachmentIndex' => {
-                %job_args, solr => 1,
-            }
-        );
+        $job_args{job}{coalesce} .= "-solr";
+        $job_args{solr} = 1;
     }
-    return $self->insert(
-        'Socialtext::Job::AttachmentIndex' => {
-            %job_args, search_config => $search_config,
-        }
-    );
+    else {
+        $job_args{job}{coalesce} .= "-kino";
+        $job_args{search_config} = $search_config;
+    }
+    return $self->insert('Socialtext::Job::AttachmentIndex' => \%job_args);
 }
 
 sub index_page {
@@ -80,15 +77,15 @@ sub index_page {
     my $wksp_id = $page->hub->current_workspace->workspace_id;
     my $page_id = $page->id;
     for my $indexer (@indexers) {
+        my $solr = ref($indexer) =~ m/solr/i;
         my $job_id = $self->insert(
             'Socialtext::Job::PageIndex' => {
                 workspace_id => $wksp_id,
                 page_id => $page_id,
-                (ref($indexer) =~ m/solr/i ? (solr => 1)
-                                           : (search_config => $search_config)),
+                ($solr ? (solr => 1) : (search_config => $search_config)),
                 job => {
                     priority => $opts{priority} || 63,
-                    coalesce => "$wksp_id-$page_id",
+                    coalesce => (($solr ? 'solr' : 'kino') . "-$wksp_id-$page_id")
                 },
             }
         );
