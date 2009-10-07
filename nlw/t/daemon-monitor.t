@@ -5,6 +5,9 @@ use strict;
 use Test::Socialtext tests => 86;
 use File::Temp qw/tempfile/;
 use Time::HiRes ();
+use POSIX ();
+
+POSIX::setsid;
 
 fixtures(qw( base_layout ));
 
@@ -37,7 +40,6 @@ sub reap {
     for (1..50) {
         return if (waitpid($pid,1) == $pid); # non-blocking
         kill 9, $pid;
-        kill 9, -$pid;
         return if (waitpid($pid,1) == $pid); # non-blocking
         #diag("waiting for child process...");
         Time::HiRes::sleep(0.1);
