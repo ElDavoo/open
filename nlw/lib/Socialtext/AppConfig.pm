@@ -247,16 +247,15 @@ sub _default_locale {
 sub _user_root {
     if ( $ENV{HARNESS_ACTIVE} ) {
         my $dir;
+        my $test_dir = test_dir();
 
         # Under mod_perl, Apache will already have chdir'd to /
         if ( $ENV{MOD_PERL} ) {
             $dir = Apache->server_root_relative();
-            $dir =~ s{(.+t/tmp).*}{$1};
+            $dir =~ s{(.+$test_dir).*}{$1};
         }
         else {
-            $dir = Cwd::abs_path(
-                File::Spec->catdir( _user_checkout_dir(), 't', 'tmp' )
-            );
+            $dir = File::Spec->catdir( _user_checkout_dir(), $test_dir );
         }
 
         die "Cannot find the user root with the HARNESS_ACTIVE env var set\n"
