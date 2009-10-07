@@ -13,10 +13,18 @@ use constant NOISY => 0; # turn this on for diag()
 
 our $Ceq_bin = 'bin/ceqlotron';
 our $NLW_log_file = 't/tmp/log/nlw.log';
-system("touch $NLW_log_file");
-my $nlwlog;
-open $nlwlog, '<', $NLW_log_file
-    or die "can't open $NLW_log_file: $!";
+
+{
+    my $nlwlog;
+    sub _nlw_log {
+        unless ($nlwlog) {
+            system("touch $NLW_log_file");
+            open $nlwlog, '<', $NLW_log_file
+                or die "can't open $NLW_log_file: $!";
+        }
+        return $nlwlog;
+    }
+}
 
 sub ceq_config {
     my %args = @_;
@@ -44,13 +52,15 @@ sub ceq_start {
 }
 
 sub ceq_fast_forward {
-    while( <$nlwlog> ) { }
+    my $log = _nlw_log();
+    while( <$log> ) { }
     return;
 }
 
 sub ceq_get_log_until {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     my $cond_re = shift;
+    my $log   = _nlw_log();
     my $tries = 7;
     my @lines;
 
@@ -58,7 +68,7 @@ sub ceq_get_log_until {
         my $got_cond = 0;
 
         # keep reading until there's nothing left
-        while (my $line = <$nlwlog>) {
+        while (my $line = <$log>) {
             chomp $line;
             Test::Builder->new->diag("LOG: $line") if NOISY;
             push @lines, $line;
