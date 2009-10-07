@@ -219,6 +219,9 @@ sub _default_db_name {
     my $name = 'NLW_' . $StartupUser->name;
     $name .= '_testing' if $ENV{HARNESS_ACTIVE};
 
+    my $slot = test_slot();
+    $name .= "_$slot" if $slot;
+
     return $name;
 }
 
@@ -228,6 +231,9 @@ sub _default_solr_base {
 
     my $name = $StartupUser->name;
     $name .= '_testing' if $ENV{HARNESS_ACTIVE};
+
+    my $slot = test_slot();
+    $name .= "_$slot" if $slot;
 
     return "$base/$name";
 }

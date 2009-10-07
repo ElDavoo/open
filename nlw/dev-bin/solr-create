@@ -23,6 +23,9 @@ EXTRA=""
 if [ -n "$HARNESS_ACTIVE" ]; then
     EXTRA="_testing"
 fi
+if [ -n "$HARNESS_JOB_NUMBER" ]; then
+    EXTRA="_testing_$HARNESS_JOB_NUMBER"
+fi
 CORE="$USER$EXTRA"
 DEV_CONF="$ST_SRC_BASE/socialtext/appliance/socialtext-solr/conf"
 SOLR_ADMIN="http://localhost:8983/solr/admin/cores"
