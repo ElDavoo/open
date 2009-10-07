@@ -233,7 +233,9 @@ sub make_log_cb {
 sub do_fetch_events {
     my $self = shift;
     my $start = AnyEvent->time;
-    my $events = Socialtext::EventDaemon::Events->Get();
+    my $events = Socialtext::EventDaemon::Events->Get(
+        user_id => $self->validated_user_id,
+    );
     $self->response_body(\encode_json($events));
     $self->timers->{fetch} = AnyEvent->time - $start;
     return 1;
@@ -242,9 +244,8 @@ sub do_fetch_events {
 sub do_post_event {
     my $self = shift;
     my $start = AnyEvent->time;
-    my $events = Socialtext::EventDaemon::Events->Put(
-        decode_json(${$self->content}),
-    );
+    my $content = decode_json(${$self->content});
+    my $events = Socialtext::EventDaemon::Events->Put($content);
     $self->response_body(\'Added');
     $self->timers->{post} = AnyEvent->time - $start;
     return 1;

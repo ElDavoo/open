@@ -1019,7 +1019,18 @@ Delete all events
 =cut
 
 sub st_clear_events {
+    my $self = shift;
     sql_execute('DELETE FROM event');
+    $self->st_reload_event_daemon();
+}
+
+=head2 st-clear-webhooks
+
+Tell the event daemon to reload from the database
+
+=cut
+
+sub st_reload_event_daemon {
     my $pidfile = Socialtext::AppConfig->pid_file_dir . "/events.pid";
     if (-f $pidfile) {
         my $pid = Socialtext::File::get_contents($pidfile);

@@ -145,6 +145,7 @@ sub record_event {
     use HTTP::Request;
     use Socialtext::User;
     use Digest::SHA qw(sha1_base64);
+    delete $p->{_checked_context}; # eh?
     my $ua = LWP::UserAgent->new;
     my $url = 'http://localhost:22018/nlw/events.scgi';
     my $req = HTTP::Request->new(PUT => $url);
