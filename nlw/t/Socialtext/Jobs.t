@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 55;
+use Test::Socialtext tests => 59;
 use Test::Exception;
 
 fixtures('db', 'foobar');
