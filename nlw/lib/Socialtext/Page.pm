@@ -931,13 +931,10 @@ sub store {
         $metadata->Summary( $self->preview_text( $body ) );
 
         # WebHook Filter
-        eval {
-            $body = Socialtext::WebHook->Filter(
-                class => 'page-filter',
-                content => $body,
-            );
-        };
-        warn $@ if $@;
+        Socialtext::WebHook->Filter(
+            class => 'page.canonicalize',
+            ref => \$body,
+        );
 
         $metadata->Summary( $self->preview_text( $body ) );
         $self->content($body);

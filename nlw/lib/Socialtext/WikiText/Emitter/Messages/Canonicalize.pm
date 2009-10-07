@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base 'Socialtext::WikiText::Emitter::Messages::Base';
 use Socialtext::l10n qw/loc/;
+use Socialtext::WebHook;
 use Readonly;
 
 Readonly my %markup => (
@@ -15,6 +16,19 @@ Readonly my %markup => (
 );
 
 sub msg_markup_table { return \%markup }
+
+sub msg_format_unknown {
+    my $self = shift;
+    my $ast = shift;
+    my $wafl = "{$ast->{wafl_type}: $ast->{wafl_string}}";
+
+    Socialtext::WebHook->Filter(
+        class => "wafl.canonicalize.$ast->{wafl_type}",
+        ref => \$wafl,
+    );
+
+    return $wafl;
+}
 
 sub msg_format_link {
     my $self = shift;

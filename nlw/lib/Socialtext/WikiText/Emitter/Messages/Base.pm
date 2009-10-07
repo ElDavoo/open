@@ -41,10 +41,16 @@ sub insert {
         $self->{output} .= $self->msg_format_user($ast);
     }
     else {
-        $self->{output} .= "{$ast->{wafl_type}: $ast->{wafl_string}}";
+        $self->{output} .= $self->msg_format_unknown($ast);
     }
 
     return;
+}
+
+sub msg_format_unknown {
+    my $self = shift;
+    my $ast = shift;
+    return "{$ast->{wafl_type}: $ast->{wafl_string}}";
 }
 
 sub msg_markup_table { die 'subclass must override msg_markup_table' }

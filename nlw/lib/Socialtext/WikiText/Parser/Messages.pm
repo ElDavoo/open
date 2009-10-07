@@ -84,10 +84,11 @@ sub unknown_wafl {
     my $match = shift; 
     my $func = $match->{2};
     my $args = $match->{3};
-    my $output = "{$func";
-    $output .= ": $args" if $args;
-    $output .= '}';
-    $self->{receiver}->insert({output => $output});
+
+    $self->{receiver}->insert({
+        wafl_type   => $func,
+        wafl_string => $args,
+    });
 }
 
 1;

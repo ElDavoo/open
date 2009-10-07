@@ -4,7 +4,7 @@ use Moose;
 use Socialtext::Workspace;
 use Socialtext::SQL qw/sql_execute sql_singlevalue/;
 use Socialtext::SQL::Builder qw/sql_nextval/;
-use Carp qw/croak/;
+use Carp qw/carp croak/;
 use Socialtext::Page;
 use Socialtext::JSON qw/decode_json encode_json/;
 use Socialtext::Log qw(st_log);
@@ -67,6 +67,11 @@ sub Find {
         if (my $val = $args{$field}) {
             push @where, "$field = ?";
             push @bind, $val;
+        }
+
+        if (my $val_like = $args{$field . '_like'}) {
+            push @where, "$field LIKE ?";
+            push @bind, $val_like;
         }
     }
 
@@ -170,7 +175,11 @@ sub Filter {
     my $ua = LWP::UserAgent->new;
     $ua->agent('Socialtext/WebHook');
 
-    my $content = $p{content};
+    my $content = exists $p{content} ? $p{content} : ref($p{ref}) ? ${ $p{ref} } : do {
+        carp "No content nor ref specified for WebHook Filter";
+        return undef;
+    };
+
     my $hooks = $class->Find( class => $p{class} );
     for my $h (@$hooks) {
         st_log->info("Webhook filter: $h->{url}");
@@ -183,7 +192,13 @@ sub Filter {
             $content = $resp->content;
         }
     }
-    return $content;
+
+    if (ref $p{ref}) {
+        return(${ $p{ref} } = $content);
+    }
+    else {
+        return $content;
+    }
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -11,6 +11,8 @@ use Socialtext::Base;
 
 use Socialtext::AppConfig;
 use Socialtext::Statistics 'stat_call';
+use Socialtext::WebHook;
+use Socialtext::WebHook::WaflPhrase;
 
 sub class_id { 'formatter' }
 const class_title  => 'NLW Formatter';
@@ -119,6 +121,12 @@ sub _add_external_wafl {
 
     for my $wafl_id ( keys %$map ) {
         $table->{$wafl_id} = $map->{$wafl_id}->[1];
+    }
+
+    for my $hook (@{ Socialtext::WebHook->Find(class_like => 'wafl.to-html.%') || []}) {
+        my $class = $hook->class;
+        $class =~ s/^wafl\.to-html\.// or next;
+        $table->{$class} = 'Socialtext::WebHook::WaflPhrase';
     }
 }
 

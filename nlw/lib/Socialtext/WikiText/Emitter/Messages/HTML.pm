@@ -24,6 +24,16 @@ sub link_dictionary {
 
 sub msg_markup_table { return \%markup }
 
+sub msg_format_unknown {
+    my $self = shift;
+    my $ast = shift;
+
+    Socialtext::WebHook->Filter(
+        class => "wafl.to-html.$ast->{wafl_type}",
+        content => "{$ast->{wafl_type}: $ast->{wafl_string}}"
+    )
+}
+
 sub msg_format_link {
     my $self = shift;
     my $ast = shift;
