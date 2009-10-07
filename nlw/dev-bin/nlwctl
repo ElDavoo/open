@@ -9,6 +9,7 @@ use IO::File;
 use lib "$FindBin::Bin/../lib";
 
 use Getopt::Long;
+use Socialtext::AppConfig;
 use Socialtext::ApacheDaemon;
 use Socialtext::System;
 
@@ -118,7 +119,7 @@ sub _update_conf_file_for_tests {
         = 'etc/' . $apache->name . '/nlw-' . $apache->conf_filename;
     my $conf_file =
         $use_test_server
-        ? getcwd() . "/t/tmp/$conf_suffix"
+        ? Socialtext::AppConfig->test_dir() . "/$conf_suffix"
         : "$ENV{HOME}/.nlw/$conf_suffix";
 
     if ( ! -r $conf_file ) {
