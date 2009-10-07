@@ -577,10 +577,6 @@ sub interpolate_global_scalars {
     } @_;
 }
 
-sub tmp_nlwroot_path {
-    map { 't/tmp/' . $_ } @_;
-}
-
 # Regexps with the '#' character seem to get messed up.
 sub literal_lines_regexp {
     $self->assert_scalar(@_);
