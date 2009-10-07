@@ -1,0 +1,124 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+
+use EV;
+use Async::Interrupt ();
+use IO::AIO;
+use Coro;
+use Coro::AnyEvent;
+use AnyEvent;
+use FindBin qw($Bin);
+use lib "$Bin/../lib";
+use Socialtext::EventDaemon::Request;
+
+BEGIN {
+    my $log_path = '/var/log';
+    if ($0 ne '/usr/bin/event-daemon.scgi') {
+        use lib "$ENV{ST_CURRENT}/nlw/lib";
+        require Socialtext::Paths;
+        $log_path = Socialtext::Paths->log_directory()
+    }
+
+    no warnings 'once';
+    open LOGFH, '>>', "$log_path/event-daemon.log"
+        or die "can't open json proxy log for writing";
+    select LOGFH; $|=1;
+    open STDERR, '>&LOGFH';
+    select STDERR; $|=1;
+    open STDOUT, '>&LOGFH';
+    select STDOUT; $|=1;
+}
+
+use AnyEvent::SCGI;
+
+use Socialtext::AppConfig;
+use Socialtext::HTTP::Ports;
+
+use Getopt::Long;
+my $shutdown_delay = 2;
+GetOptions(
+    'shutdown-delay=i' => \$shutdown_delay,
+);
+
+sub handle_event_request {
+    my $handle = shift;
+    my $env = shift;
+    my $content_ref = shift;
+    unless($handle && $env) {
+        my $fatal = shift;
+        my $error = shift;
+        warn "Bad SCGI request: $error";
+        return;
+    }
+
+    # set up a default error handler
+    my $cleaner = sub { warn "cleaner\n"; $handle->destroy };
+    $handle->on_error($cleaner);
+
+    async {
+        $Coro::current->{desc} = 'Event Daemon request handler';
+        eval {
+            my $ed = Socialtext::EventDaemon::Request->new(
+                handle => $handle,
+                env => $env,
+                content => $content_ref,
+            );
+            $handle->on_error(sub {
+                my ($h,$fatal,$msg) = @_;
+                warn "AnyEvent::Handle error: $msg (".($fatal?"fatal":"non-fatal").")\n";
+                $ed->cancel($fatal,$msg);
+                # AnyEvent::Handle might destroy on error anyway, but just be paranoid.
+                $h->destroy;
+            });
+            $ed->handle_request();
+        };
+        if (my $e = $@) {
+            warn $e;
+            my $header = HTTP::Headers->new(
+                'Status' => '500 Event Daemon Error',
+                'Content-Type' => 'text/plain',
+                'Connection' => 'close',
+            );
+            $handle->push_write(
+                $header->as_string . "\r\nServer Error: $e\r\n"
+            );
+            $handle->push_shutdown;
+            $handle->on_drain($cleaner);
+        }
+
+        # all finished; set the error handler back to the safe default
+        $handle->on_error($cleaner);
+    };
+}
+
+my $port = Socialtext::HTTP::Ports->event_daemon_port;
+
+warn "Starting SCGI Server on port $port...\n";
+
+our $s = scgi_server '127.0.0.1', $port, \&handle_event_request;
+our $all_done = AE::cv;
+
+Socialtext::Log::st_log("info", "json-proxy started on localhost port $port");
+
+my $a1 = AE::signal 'TERM' => unblock_sub \&shutdown;
+my $a2 = AE::signal 'INT'  => unblock_sub \&shutdown;
+my $a3 = AE::signal 'HUP'  => unblock_sub \&shutdown;
+
+sub shutdown {
+    warn "Shutting down the SCGI Server...\n";
+    Socialtext::Log::st_log("warning" => "json-proxy shutting down");
+    undef $s;
+    Coro::AnyEvent::sleep $shutdown_delay if $shutdown_delay;
+    $all_done->send;
+}
+
+my $clear_on_usr1 = AE::signal 'USR1' => unblock_sub { 
+    Socialtext::Log::st_log("warning" => "json-proxy clearing small-object cache");
+    Socialtext::EventDaemon::Events->Reload();
+};
+
+$all_done->recv; # loop until signal, etc.
+warn "SCGI Server done\n";
+exit 0;

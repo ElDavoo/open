@@ -7,6 +7,7 @@ use Socialtext::User;
 use Socialtext::SQL qw/:exec :txn/;
 use Socialtext::JSON qw/decode_json encode_json/;
 use Socialtext::File;
+use Socialtext::AppConfig;
 use Socialtext::System qw();
 use Socialtext::HTTP::Ports;
 use Socialtext::Role;
@@ -1019,6 +1020,11 @@ Delete all events
 
 sub st_clear_events {
     sql_execute('DELETE FROM event');
+    my $pidfile = Socialtext::AppConfig->pid_file_dir . "/events.pid";
+    if (-f $pidfile) {
+        my $pid = Socialtext::File::get_contents($pidfile);
+        system "kill -USR1 $pid";
+    }
 }
 
 =head2 st-clear-webhooks

@@ -565,6 +565,7 @@ sub _backend_ports {
         http       => Socialtext::HTTP::Ports->backend_http_port(),
         https      => Socialtext::HTTP::Ports->backend_https_port(),
         json_proxy => Socialtext::HTTP::Ports->json_proxy_port(),
+        event_daemon => Socialtext::HTTP::Ports->event_daemon_port(),
     };
 }
 

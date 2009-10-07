@@ -1,0 +1,3 @@
+<IfModule mod_scgi.c>
+    SCGIMount /nlw/events.scgi 127.0.0.1:[% config.backend_ports.event_daemon %]
+</IfModule>

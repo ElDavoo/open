@@ -28,6 +28,7 @@ Verbs: (start is the default verb if none is specified)
 Options:
   -c                operate only on ceqlotron (there is no 'test' ceqlotron)
   -p                operate only on the json proxy
+  -e                operate only on the event daemon
   -t, --test        operate on live-test server rather than devel. server
   -1                operate only on Apache 1 instance
   -2                operate only on Apache 2 instance
@@ -46,6 +47,7 @@ my $apache1_please   = 0;
 my $apache2_please   = 0;
 my $ceqlotron_please = 0;
 my $jsonproxy_please = 0;
+my $eventdaemon_please = 0;
 
 my %OPTSPEC = (
     'test|t'    => \$use_test_server,
@@ -53,6 +55,7 @@ my %OPTSPEC = (
     'verbose|v' => \$Socialtext::ApacheDaemon::Verbose,
     c           => \$ceqlotron_please,
     p           => \$jsonproxy_please,
+    e           => \$eventdaemon_please,
     1           => \$apache1_please,
     2           => \$apache2_please,
 );
@@ -66,14 +69,18 @@ usage() if grep { $_ eq 'help' } @ARGV;
 my @verbs = @ARGV ? @ARGV : ('start');
 
 # If you don't specify any of -c, -1, or -2, you get them all.
-$ceqlotron_please = $apache2_please = $apache1_please = $jsonproxy_please = 1
-    unless ( $ceqlotron_please
-          || $apache2_please
-          || $apache1_please
-          || $jsonproxy_please );
+$ceqlotron_please = $apache2_please = $apache1_please
+    = $jsonproxy_please = $eventdaemon_please = 1
+        unless ( $ceqlotron_please
+              || $apache2_please
+              || $apache1_please
+              || $jsonproxy_please
+              || $eventdaemon_please );
 
 my $jsonproxy = "$FindBin::Bin/../../plugins/widgets/etc/init.d/json-proxy";
 $jsonproxy_please = 0 unless -e $jsonproxy;
+
+my $eventdaemon = "$FindBin::Bin/../etc/init.d/event-daemon";
 
 # This combination doesn't make sense.
 $ceqlotron_please = 0 if $use_test_server;
@@ -103,6 +110,7 @@ sub dispatch {
             $ceqlotron_command{$verb}->() if $ceqlotron_please;
             local $Socialtext::System::SILENT_RUN = 1;
             shell_run "$jsonproxy $verb" if $jsonproxy_please;
+            shell_run "$eventdaemon $verb" if $eventdaemon_please;
         }
         else {
             warn "nlwctl: Skipping unknown command '$verb'.\n";

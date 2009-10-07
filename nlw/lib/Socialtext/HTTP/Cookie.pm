@@ -7,6 +7,7 @@ use warnings;
 use Class::Field qw(const);
 use Digest::SHA qw(sha1_base64);
 use Socialtext::AppConfig;
+use CGI::Cookie;
 
 ###############################################################################
 # Allow some constant values to be exported

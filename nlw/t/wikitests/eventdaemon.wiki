@@ -1,0 +1,15 @@
+
+* Fixture: SocialRest
+
+| standard-test-setup     |                  |
+| st-clear-events         |                  |
+| set-nlw-cookie-for-user | %%username%%     |
+| get                     | /nlw/events.scgi |
+| code-is                 | 200              |
+| body-like               | []               |
+
+| post-json | /data/signals    | {"signal":"Hey guys"} |
+| get       | /nlw/events.scgi |                       |
+| code-is   | 200              |                       |
+| body-like | Hey guys         |                       |
+

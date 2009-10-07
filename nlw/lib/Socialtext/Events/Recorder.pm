@@ -140,6 +140,24 @@ sub record_event {
     my $sql = "INSERT INTO event ( $fields ) VALUES ( $placeholders )";
     sql_execute($sql, @values);
 
+    # XXX: Move this somewhere
+    use LWP::UserAgent;
+    use HTTP::Request;
+    use Socialtext::User;
+    use Digest::SHA qw(sha1_base64);
+    my $ua = LWP::UserAgent->new;
+    my $url = 'http://localhost:22018/nlw/events.scgi';
+    my $req = HTTP::Request->new(PUT => $url);
+    $req->content_type('application/json');
+    $req->content(encode_json($p));
+    my $user_id = Socialtext::User->SystemUser->user_id;
+    my $mac = sha1_base64($user_id, Socialtext::AppConfig->MAC_secret);
+    $req->header('Cookie', "NLW-user=user_id&$user_id&MAC&$mac");
+    my $res = $ua->request($req);
+    unless ($res->is_success) {
+        warn "Error posting to ${url}: " . $res->status_line;
+    }
+
     return; # don't leak the $sth returned from sql_execute
 }
 

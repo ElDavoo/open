@@ -1,0 +1,82 @@
+#!/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+SCRIPT=events.scgi
+DAEMON=/usr/bin/$SCRIPT
+NAME=events
+DESC="Socialtext Event Daemon"
+RUNDIR=/var/run/socialtext
+# language the wrapper script is written in:
+EXEC=/usr/bin/perl
+PROXY_USER=www-data
+RUN_AS="-c $PROXY_USER:$PROXY_USER"
+LOG_FILE=/var/log/events.log
+
+if [ "$0" == "/etc/init.d/event-daemon" ]; then
+    touch $LOG_FILE
+    chown $PROXY_USER $LOG_FILE
+else
+    DAEMON="$ST_CURRENT/nlw/bin/$SCRIPT"
+    RUNDIR="$HOME/.nlw/run"
+    LOG_FILE="$ST_CURRENT/.nlw/log/events.log"
+    RUN_AS=""
+    DAEMON_OPTS="--shutdown-delay 0"
+fi
+
+PIDFILE=$RUNDIR/$NAME.pid
+
+test -x $DAEMON || exit 0
+
+if [ -f /etc/default/event-daemon ] ; then
+    . /etc/default/event-daemon
+fi
+
+set -e
+
+. /lib/lsb/init-functions
+
+if [ -f $PIDFILE ]; then
+    if read pid < "$PIDFILE" && ! ps -p "$pid" > /dev/null 2>&1; then
+        echo "Invalid pid file will be removed."
+        rm -f $PIDFILE
+    fi
+fi
+
+case "$1" in
+    start)
+        log_begin_msg "Starting $DESC..."
+        start-stop-daemon --start --oknodo \
+            -m -b $RUN_AS \
+            --pidfile $PIDFILE \
+            --exec $EXEC \
+            --startas $DAEMON -- $DAEMON_OPTS
+        log_end_msg $?
+        ;;
+    stop)
+        log_begin_msg "Stopping $DESC..."
+        if [ -e $PIDFILE ]; then
+            start-stop-daemon --stop --oknodo \
+                --pidfile $PIDFILE \
+                --name $SCRIPT \
+                --exec $EXEC \
+                --retry 30
+            rm -f $PIDFILE
+        else
+            start-stop-daemon --stop --oknodo \
+                --name $SCRIPT \
+                --exec $EXEC \
+                --retry 30
+        fi
+        log_end_msg $?
+        ;; 
+    restart|force-reload)
+        $0 stop $*
+        $0 start $*
+        ;;
+    *)
+        N=/etc/init.d/$NAME
+        echo "Usage: $N {start|stop|restart|force-reload}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
