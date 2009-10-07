@@ -7,6 +7,8 @@ use Socialtext::SQL::Builder qw/sql_nextval/;
 use Carp qw/croak/;
 use Socialtext::Page;
 use Socialtext::JSON qw/decode_json encode_json/;
+use Socialtext::Log qw(st_log);
+use LWP::UserAgent;
 use namespace::clean -except => 'meta';
 
 has 'id'           => (is => 'ro', isa => 'Int', required => 1);
@@ -159,6 +161,29 @@ sub Add_webhooks {
     if ($@) {
         st_log->info("Error firing webhooks: '$@' " . ref($@));
     }
+}
+
+sub Filter {
+    my $class = shift;
+    my %p     = @_;
+
+    my $ua = LWP::UserAgent->new;
+    $ua->agent('Socialtext/WebHook');
+
+    my $content = $p{content};
+    my $hooks = $class->Find( class => $p{class} );
+    for my $h (@$hooks) {
+        st_log->info("Webhook filter: $h->{url}");
+        my $resp = $ua->post(
+            $h->{url},
+            { content => $content },
+        );
+        if ($resp->code == 200) {
+            st_log->info("Webhook filter success: $h->{url}");
+            $content = $resp->content;
+        }
+    }
+    return $content;
 }
 
 __PACKAGE__->meta->make_immutable;

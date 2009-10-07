@@ -929,6 +929,17 @@ sub store {
         $body =~ s/\n*\z/\n/;
         $metadata->Control('');
         $metadata->Summary( $self->preview_text( $body ) );
+
+        # WebHook Filter
+        eval {
+            $body = Socialtext::WebHook->Filter(
+                class => 'page-filter',
+                content => $body,
+            );
+        };
+        warn $@ if $@;
+
+        $metadata->Summary( $self->preview_text( $body ) );
         $self->content($body);
     }
     else {
