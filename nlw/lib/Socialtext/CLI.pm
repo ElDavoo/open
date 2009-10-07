@@ -3372,7 +3372,8 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   list-groups [--account or --workspace]
   show-group-config --group
   create-group --ldap-dn [--account]
-  add-member --group --account
+  add-member --group [ --account or --workspace ]
+  add-workspace-admin --group  --workspace
   remove-member --group [--account or --workspace]
 
   OTHER
@@ -3898,9 +3899,15 @@ Loads a Group from LDAP, as identified by the given C<--ldap-dn> into
 Socialtext, placing it in the specified C<--account>.  If no C<--account> is
 specified, the default system Account will be used.
 
-=head2 add-member --group --account
+=head2 add-member --group [--account or --workpsace]
 
-Given a group and an account, add the Group as a Member of the Account.
+Given a Group and an Account or Workspace, add the Group as a Member of the
+Account or Workspace, if it exists.
+
+=head2 add-workspace-admin --group --workpsace
+
+Given a Group and a Workspace, add the Group as an Admin of the Workspace, if
+it exists.
 
 =head2 remove-member --group [--account or --workspace]
 
