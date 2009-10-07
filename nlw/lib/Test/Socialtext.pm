@@ -80,7 +80,13 @@ our @EXPORT_OK = qw(
 
 our $DB_AVAILABLE = 0;
 sub fixtures () {
-    $ENV{NLW_CONFIG} = Cwd::cwd . '/t/tmp/etc/socialtext/socialtext.conf';
+    # point directly to where the config file is going to go; if we have to
+    # create it, we need to tell ST::AppConfig where its *supposed* to go.
+    my $testdir = Socialtext::AppConfig->test_dir();
+    my $cfgfile = File::Spec->catfile(
+        Cwd::cwd, $testdir, 'etc/socialtext/socialtext.conf'
+    );
+    $ENV{NLW_CONFIG} = $cfgfile;
 
     # set up the test environment, and all of its fixtures.
     my $env
