@@ -2164,8 +2164,8 @@ PLUGINS: {
 }
 
 EXPORT_ACCOUNTS: {
-    local $ENV{ST_EXPORT_DIR} = "t/tmp";
-    mkdir "t/tmp";
+    my $dir = Cwd::abs_path( File::Temp::tempdir( CLEANUP => 1 ) );
+    local $ENV{ST_EXPORT_DIR} = $dir;
     expect_failure(
         sub {
             Socialtext::CLI->new(
@@ -2192,7 +2192,7 @@ EXPORT_ACCOUNTS: {
         password      => 'password',
         primary_account_id => $jebus->account_id,
     );
-    my $export_dir = "t/tmp/jebus.id-" . $jebus->account_id . ".export";
+    my $export_dir = "$dir/jebus.id-" . $jebus->account_id . ".export";
     rmtree $export_dir;
     expect_success(
         sub {
