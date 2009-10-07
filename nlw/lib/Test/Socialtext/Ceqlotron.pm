@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Test::Builder ();
 use Socialtext::AppConfig;
+use Socialtext::Paths;
 use base 'Exporter';
 our $VERSION = 1.0;
 our @EXPORT = qw(ceq_config ceq_bin ceq_start ceq_kill
@@ -12,12 +13,15 @@ our @EXPORT = qw(ceq_config ceq_bin ceq_start ceq_kill
 use constant NOISY => 0; # turn this on for diag()
 
 our $Ceq_bin = 'bin/ceqlotron';
-our $NLW_log_file = 't/tmp/log/nlw.log';
 
 {
     my $nlwlog;
     sub _nlw_log {
         unless ($nlwlog) {
+            my $NLW_log_file = File::Spec->catfile(
+                Socialtext::Paths->log_directory(),
+                'nlw.log',
+            );
             system("touch $NLW_log_file");
             open $nlwlog, '<', $NLW_log_file
                 or die "can't open $NLW_log_file: $!";
