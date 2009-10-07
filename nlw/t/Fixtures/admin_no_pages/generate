@@ -1,5 +1,0 @@
-#!/bin/sh -e
-
-rm -rf t/tmp/root/data/admin/*
-rm -rf t/tmp/root/plugin/admin/*/*
-rm -rf t/tmp/ceq/*
