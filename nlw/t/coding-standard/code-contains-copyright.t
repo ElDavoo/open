@@ -85,14 +85,9 @@ while ( my $filename = $iter->() ) {
 }
 
 plan tests => scalar @checkers;
-unlink 't/tmp/missing-copyright.txt';
-open my $missing_fh, '>>', 't/tmp/missing-copyright.txt';
 
 for my $filename ( @checkers ) {
     my $text = read_file( $filename );
     my $has_copyright = ($text =~ /\@COPYRIGHT\@/) || ($text =~ /Copyright.+Socialtext/);
     ok( $has_copyright, $filename );
-    print $missing_fh "$filename\n" unless $has_copyright;
 }
-
-close $missing_fh;
