@@ -10,7 +10,7 @@
 *Users*
 
 | *Comment* | Test Case: Command Line Tests USERS Creating a new user - failure |  |
-| st-admin | create-user | qr/errors occurred when creating the new user.+ Username is a required field.+ password is required/ |
+| st-admin | create-user | qr/errors occurred when creating the new user.+ Username is a required field.+ password is required/ism |
 | st-admin | create-user --email | qr/errors occurred when creating the new user.+ Username is a required field.+ Email address is a required field.+ password is required/ |
 | st-admin | create-user --email %%cli_user%% | qr/A password is required to create a new user/ |
 | st-admin | create-user --email %%cli_user%% --password | qr/Passwords must be at least 6 characters long/ |
@@ -65,42 +65,42 @@ confirm-user
 | st-admin | change-password --email cli-%%start_time%%-not@ken.socialtext.net --password 654321 | No user with the email address "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
 
 | *Comment* | Test Case: Command Line Tests USERS Adding a member |  |
-| st-admin | add-member | qr/ The command you called \(add-member\) requires a \(--user\) or \(--group\) parameter. Refer to 'add-member \(--help)' for correct usage/ |
-| st-admin | add-member --user %%cli_user%% | qr/ The command you called \(add-member\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ |
+| st-admin | add-member | qr/ The command you called \(add-member\) requires a --user or --group parameter. Refer to 'add-member \(--help)' for correct usage/ism |
+| st-admin | add-member --user %%cli_user%% | qr/ The command you called \(add-member\) requires one of --username --email --group and one of --workspace --account/ism |
 | st-admin | add-member --user %%cli_user%% --workspace | qr/ The command you called \(add-member\) requires a workspace to be specified.+A workspace is identified by name with the --workspace option/ |
 | st-admin | add-member --user cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | No user with the username "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
-| st-admin | add-member --user %%cli_user%% --workspace no-%%start_time%% | No workspace named "no-%%start_time%%" could be found. |
-| st-admin | add-member --user %%cli_user%% --workspace %%workspace%% | %%cli_user%% is now a member of the %%workspace%% workspace. |
-| st-admin | add-member --user %%cli_user%% --workspace %%workspace%% | %%cli_user%% is already a member of the %%workspace%% workspace. |
+| st-admin | add-member --user %%cli_user%% --workspace no-%%start_time%% | qr/No workspace named "no-%%start_time%%" could be found./ism |
+| st-admin | add-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is now a member of the %%workspace%% workspace./ism |
+| st-admin | add-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is already a member of the %%workspace%% workspace./ism |
 
 | *Comment* | Test Case: Command Line Tests USERS Removing a member |  |
-| st-admin | remove-member | qr/ The command you called (remove-member) requires a \(--user\) or a \(--group\) parameter. Refer to 'remove-member \(--help)' for correct usage./ |
-| st-admin | remove-member --user %%cli_user%% | qr/ The command you called \(remove-member\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ |
-| st-admin | remove-member --user %%cli_user%% --workspace | qr/ The command you called \(remove-member\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ |
-| st-admin | remove-member --user cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | No user with the username "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
-| st-admin | remove-member --user %%cli_user%% --workspace no-%%start_time%% | No workspace named "no-%%start_time%%" could be found. |
-| st-admin | remove-member --user %%cli_user%% --workspace %%workspace%% | %%cli_user%% is no longer a member of the %%workspace%% workspace. |
-| st-admin | remove-member --user %%cli_user%% --workspace %%workspace%% | %%cli_user%% is not a member of the %%workspace%% workspace. |
+| st-admin | remove-member | qr/ The command you called (remove-member) requires a --user or a --group parameter. Refer to 'remove-member \(--help)' for correct usage./ism |
+| st-admin | remove-member --user %%cli_user%% | qr/The command you called \(remove-member\) requires one of --username --email --group and one of --workspace --account/ism |
+| st-admin | remove-member --user %%cli_user%% --workspace | qr/ The command you called \(remove-member\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ism |
+| st-admin | remove-member --user cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | qr/No user with the username "cli-%%start_time%%-not@ken.socialtext.net" could be found./ism |
+| st-admin | remove-member --user %%cli_user%% --workspace no-%%start_time%% | qr/No workspace named "no-%%start_time%%" could be found./ism |
+| st-admin | remove-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is no longer a member of the %%workspace%% workspace./ism |
+| st-admin | remove-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is not a member of the %%workspace%% workspace./ism |
 
 | *Comment* | Test Case: Command Line Tests USERS Adding a workspace admin |  |
-| st-admin | add-workspace-admin | qr/ The command you called \(add-workspace-admin\) requires a user to be specified.+A user can be identified by username \(--username\) or email address \(--email\)/ |
-| st-admin | add-workspace-admin --email | qr/ The command you called \(add-workspace-admin\) requires a user to be specified.+ A user can be identified by username \(--username\) or email address \(--email\)/ |
-| st-admin | add-workspace-admin --email %%cli_user%% | qr/ The command you called \(add-workspace-admin\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ |
-| st-admin | add-workspace-admin --email %%cli_user%% --workspace | qr/ The command you called \(add-workspace-admin\) requires a workspace to be specified.+A workspace is identified by name with the --workspace option/ |
-| st-admin | add-workspace-admin --email cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | No user with the email address "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
-| st-admin | add-workspace-admin --email %%cli_user%% --workspace no-%%start_time%% | No workspace named "no-%%start_time%%" could be found. |
-| st-admin | add-workspace-admin --email %%cli_user%% --workspace %%workspace%% | %%cli_user%% is now a workspace admin for the %%workspace%% workspace. |
-| st-admin | add-workspace-admin --email %%cli_user%% --workspace %%workspace%% | %%cli_user%% is already a workspace admin for the %%workspace%% workspace. |
+| st-admin | add-workspace-admin | qr/ The command you called \(add-workspace-admin\) requires a user to be specified.+A user can be identified by username \(--username\) or email address \(--email\)/ism |
+| st-admin | add-workspace-admin --email | qr/ The command you called \(add-workspace-admin\) requires a user to be specified.+ A user can be identified by username \(--username\) or email address \(--email\)/ism |
+| st-admin | add-workspace-admin --email %%cli_user%% | qr/ The command you called \(add-workspace-admin\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ism |
+| st-admin | add-workspace-admin --email %%cli_user%% --workspace | qr/ The command you called \(add-workspace-admin\) requires a workspace to be specified.+A workspace is identified by name with the --workspace option/ism |
+| st-admin | add-workspace-admin --email cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | qr/No user with the email address "cli-%%start_time%%-not@ken.socialtext.net" could be found/ism |
+| st-admin | add-workspace-admin --email %%cli_user%% --workspace no-%%start_time%% | qr/No workspace named "no-%%start_time%%" could be found/ism |
+| st-admin | add-workspace-admin --email %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is now a workspace admin for the %%workspace%% workspace/ism |
+| st-admin | add-workspace-admin --email %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is already a workspace admin for the %%workspace%% workspace./ism |
 
 | *Comment* | Test Case: Command Line Tests USERS Removing a workspace admin |  |
-| st-admin | remove-workspace-admin | qr/ The command you called \(remove-workspace-admin\) requires a user to be specified.+ A user can be identified by username \(--username\) or email address \(--email\)/ |
-| st-admin | remove-workspace-admin --email | qr/ The command you called \(remove-workspace-admin\) requires a user to be specified.+ A user can be identified by username \(--username\) or email address \(--email\)/ |
-| st-admin | remove-workspace-admin --email %%cli_user%% | qr/ The command you called \(remove-workspace-admin\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ |
-| st-admin | remove-workspace-admin --email %%cli_user%% --workspace | qr/ The command you called \(remove-workspace-admin\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ |
-| st-admin | remove-workspace-admin --email cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | No user with the email address "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
-| st-admin | remove-workspace-admin --email %%cli_user%% --workspace no-%%start_time%% | No workspace named "no-%%start_time%%" could be found. |
-| st-admin | remove-workspace-admin --email %%cli_user%% --workspace %%workspace%% | %%cli_user%% is no longer a workspace admin for the %%workspace%% workspace. |
-| st-admin | remove-workspace-admin --email %%cli_user%% --workspace %%workspace%% | %%cli_user%% is not a workspace admin for the %%workspace%% workspace. |
+| st-admin | remove-workspace-admin | qr/ The command you called \(remove-workspace-admin\) requires a user to be specified.+ A user can be identified by username \(--username\) or email address \(--email\)/ism |
+| st-admin | remove-workspace-admin --email | qr/ The command you called \(remove-workspace-admin\) requires a user to be specified.+ A user can be identified by username \(--username\) or email address \(--email\)/ism |
+| st-admin | remove-workspace-admin --email %%cli_user%% | qr/ The command you called \(remove-workspace-admin\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ism |
+| st-admin | remove-workspace-admin --email %%cli_user%% --workspace | qr/ The command you called \(remove-workspace-admin\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ism |
+| st-admin | remove-workspace-admin --email cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | qr/No user with the email address "cli-%%start_time%%-not@ken.socialtext.net" could be found/ism |
+| st-admin | remove-workspace-admin --email %%cli_user%% --workspace no-%%start_time%% | qr/No workspace named "no-%%start_time%%" could be found/ism |
+| st-admin | remove-workspace-admin --email %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is no longer a workspace admin for the %%workspace%% workspace/ism |
+| st-admin | remove-workspace-admin --email %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is not a workspace admin for the %%workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line Tests USERS Add impersonator |  |
 | st-admin | add-impersonator | qr/ The command you called \(add-impersonator\) requires a user to be specified.+A user can be identified by username \(--username\) or email address \(--email\)/ |
@@ -117,16 +117,16 @@ confirm-user
 | st-admin | remove-impersonator --email | qr/ The command you called \(remove-impersonator\) requires a user to be specified.+ A user can be identified by username \(--username\) or email address \(--email\)/ |
 | st-admin | remove-impersonator --email %%cli_user%% | qr/ The command you called \(remove-impersonator\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ |
 | st-admin | remove-impersonator --email %%cli_user%% --workspace | qr/ The command you called \(remove-impersonator\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ |
-| st-admin | remove-impersonator --email cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | No user with the email address "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
-| st-admin | remove-impersonator --email %%cli_user%% --workspace no-%%start_time%% | No workspace named "no-%%start_time%%" could be found. |
-| st-admin | remove-impersonator --email %%cli_user%% --workspace %%workspace%% | %%cli_user%% is no longer an impersonator for the %%workspace%% workspace. |
-| st-admin | remove-impersonator --email %%cli_user%% --workspace %%workspace%% | %%cli_user%% is not an impersonator for the %%workspace%% workspace. |
+| st-admin | remove-impersonator --email cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | qr/No user with the email address "cli-%%start_time%%-not@ken.socialtext.net" could be found/ism |
+| st-admin | remove-impersonator --email %%cli_user%% --workspace no-%%start_time%% | qr/No workspace named "no-%%start_time%%" could be found/ism |
+| st-admin | remove-impersonator --email %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is no longer an impersonator for the %%workspace%% workspace/ism |
+| st-admin | remove-impersonator --email %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is not an impersonator for the %%workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line Tests USERS disable-email-notify |  |
-| st-admin | add-member --email %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is now a member of the %%cmdline_workspace%% workspace. |
-| st-admin | disable-email-notify --email %%cli_user%% | qr/The command you called \(disable-email-notify\) requires a workspace to be specified./ |
-| st-admin | disable-email-notify --workspace %%cmdline_workspace%% | qr/The command you called \(disable-email-notify\) requires a user to be specified./ |
-| st-admin | disable-email-notify --email %%cli_user%% --workspace %%cmdline_workspace%% | Email notify has been disabled for %%cli_user%% in the %%cmdline_workspace%% workspace. |
+| st-admin | add-member --email %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now a member of the %%cmdline_workspace%% workspace/ism |
+| st-admin | disable-email-notify --email %%cli_user%% | qr/The command you called \(disable-email-notify\) requires a workspace to be specified/ism |
+| st-admin | disable-email-notify --workspace %%cmdline_workspace%% | qr/The command you called \(disable-email-notify\) requires a user to be specified/ism |
+| st-admin | disable-email-notify --email %%cli_user%% --workspace %%cmdline_workspace%% | qr/Email notify has been disabled for %%cli_user%% in the %%cmdline_workspace%% workspace/ism |
 
 set-locale
 
@@ -143,15 +143,15 @@ set-user-names
 
 | st-admin | set-user-names --email foo%%start_time%%@bar.com | User "foo%%start_time%%@bar.com" was updated. |
 
-| st-admin | set-user-names --email foo%%start_time%%@bar.com --first-name Foo --last-name Bar | User "foo%%start_time%%@bar.com" was updated. |
+| st-admin | set-user-names --email foo%%start_time%%@bar.com --first-name Foo --last-name Bar | qr/User "foo%%start_time%%@bar.com" was updated/ism |
 | st-admin | show-members --workspace %%cmdline_workspace%% | qr/Email Address.+First.+Last.+foo%%start_time%%\@bar.com.+Foo.+Bar/ |
 
 show-profile
 hide-profile
 
 | *Comment* | Test Case: Command Line USERS profile |  |
-| st-admin | hide-profile --email foo%%start_time%%@bar.com | The profile for "foo%%start_time%%@bar.com" is now hidden. |
-| st-admin | show-profile --email foo%%start_time%%@bar.com | The profile for "foo%%start_time%%@bar.com" is no longer hidden. |
+| st-admin | hide-profile --email foo%%start_time%%@bar.com | qr/The profile for "foo%%start_time%%@bar.com" is now hidden/ism |
+| st-admin | show-profile --email foo%%start_time%%@bar.com | qr/The profile for "foo%%start_time%%@bar.com" is no longer hidden/ism |
 
 | *Comment* | Test Case: Command Line USERS Teardown |  |
 | st-admin | delete-workspace --w %%cmdline_workspace%% --no-export |  |

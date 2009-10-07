@@ -42,6 +42,7 @@ Visit some individual pages in the workspace; add them to the watchlist. View wa
 
 | *Comment* | Test case: Watchlist has three pages |  |
 | click_and_wait | link=My Watchlist |  |
+| wait_for_element_visible_ok | contentContainer | 30000 |
 | text_like | contentContainer | Pages You're Watching |
 | text_like | contentContainer | AAA %%start_time%% |
 | text_like | contentContainer | BBB %%start_time%% |
@@ -92,6 +93,7 @@ Set up to check sorting. (↑) (↓)
 
 | *Comment* | Test case: Watchlist title sort |  |
 | select_and_wait | sort-picker | label=Title |
+| wait_for_element_visible_ok | contentContainer | 30000 |
 | text_like | contentContainer | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%/ |
 
 | *Comment* | label=Title (desc) |  |

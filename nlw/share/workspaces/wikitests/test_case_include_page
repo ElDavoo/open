@@ -4,7 +4,7 @@
 | set | title | Start here |
 
 | st-admin | create-workspace --name %%tcipw%% --title "Page Include Test" | A new workspace named "%%tcipw%%" was created. |
-| st-admin | add-member --w %%tcipw%% --e %%email%% | %%username%% is now a member of the %%tcipw%% workspace. |
+| st-admin | add-member --w %%tcipw%% --e %%email%% | qr/%%username%% is now a member of the %%tcipw%% workspace/ism |
 | st-admin | add-member --w %%tcipw%% --e devnull1@socialtext.com |  |
 
 Include a page. Test for included content. Test for edit button.
