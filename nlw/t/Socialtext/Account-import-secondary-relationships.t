@@ -4,6 +4,7 @@
 use strict;
 use warnings;
 use File::Path qw(rmtree);
+use File::Temp;
 use Test::Socialtext tests => 7;
 use Test::Socialtext::User;
 use Test::Socialtext::Account;
@@ -30,7 +31,7 @@ fixtures(qw( db ));
 
 ###############################################################################
 # Over-ride the root directory for Account exports
-$ENV{ST_EXPORT_DIR} = 't/tmp';
+$ENV{ST_EXPORT_DIR} = File::Temp::tempdir( CLEANUP => 1 );
 
 ###############################################################################
 # Set up some test Users, across multiple accounts.  One of these Users
