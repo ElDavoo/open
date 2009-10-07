@@ -9,6 +9,7 @@ use File::Spec;
 use Test::More;
 use Test::Socialtext ();
 use Test::Socialtext::Environment;
+use Socialtext::AppConfig;
 use Socialtext::Jobs;
 use Socialtext::Paths;
 
@@ -151,7 +152,10 @@ sub create_and_confirm_page {
 }
 
 sub turn_on_rampup {
-    my $dir = 't/tmp/etc/socialtext/search';
+    my $dir = File::Spec->catdir(
+        Socialtext::AppConfig->test_dir(),
+        'etc/socialtext/search',
+    );
     my $rampup_yaml = <<EOY;
 ---
 version: 9999
@@ -184,7 +188,11 @@ EOY
 }
 
 sub turn_off_rampup {
-    unlink 't/tmp/etc/socialtext/search/rampup.yaml';
+    my $cfgfile = File::Spec->catfile(
+        Socialtext::AppConfig->test_dir(),
+        'etc/socialtext/search/rampup.yaml',
+    );
+    unlink $cfgfile;
     #rmtree( File::Spec->catdir( Socialtext::Paths::system_plugin_directory, 'woot' ) );
 }
 
