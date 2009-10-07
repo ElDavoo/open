@@ -423,6 +423,16 @@ sub config_dir {
     }
 }
 
+sub test_slot {
+    return $ENV{HARNESS_JOB_NUMBER};
+}
+
+sub test_dir {
+    my $slot = test_slot();
+    my $base = 't/tmp';
+    return $slot ? "$base/$slot" : $base;
+}
+
 sub _find_config_file {
     my @dirs = _find_config_dirs();
     my @files = map { $_ . "/socialtext.conf" } @dirs;
