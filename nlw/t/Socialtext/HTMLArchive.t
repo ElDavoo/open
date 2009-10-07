@@ -3,8 +3,9 @@
 
 use warnings;
 use strict;
-
+use Socialtext::AppConfig;
 use Test::Socialtext;
+
 fixtures( 'admin' );
 
 use File::Path ();
@@ -42,9 +43,9 @@ EOF
     $hub->pages->current->store( user => $hub->current_user );
 }
 
-my $archive = Socialtext::HTMLArchive->new( hub => $hub );
-
-my $dir = 't/tmp/junk';
+my $archive  = Socialtext::HTMLArchive->new( hub => $hub );
+my $test_dir = Socialtext::AppConfig->test_dir();
+my $dir = "$test_dir/junk";
 File::Path::mkpath( $dir, 0, 0755 );
 END { File::Path::rmtree($dir) if (defined $dir && -d $dir) }
 
@@ -67,7 +68,7 @@ for my $f (
     ok -e $f, "$f exists";
 }
 
-my $html_file = 't/tmp/junk/welcome.htm';
+my $html_file = "$test_dir/junk/welcome.htm";
 open my $fh, '<', $html_file
   or die "Cannot read $html_file: $!";
 my $html = do { local $/; <$fh> };

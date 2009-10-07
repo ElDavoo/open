@@ -2,8 +2,9 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-
+use Socialtext::AppConfig;
 use Test::Socialtext tests => 19;
+
 fixtures(qw( db ));
 
 use_ok 'Socialtext::Encode';
@@ -29,7 +30,8 @@ use File::Copy;
 use File::Path;
 my $hub          = create_test_hub();
 my $ws_name      = $hub->current_workspace->name();
-my $bad_utf8_dir = "t/tmp/root/data/$ws_name/bad_utf8";
+my $test_dir     = Socialtext::AppConfig->test_dir();
+my $bad_utf8_dir = "$test_dir/root/data/$ws_name/bad_utf8";
 File::Path::mkpath $bad_utf8_dir or die $!;
 copy "t/attachments/bad-8bit.txt", "$bad_utf8_dir/123.txt" or die $!;
 symlink "123.txt", "$bad_utf8_dir/index.txt";

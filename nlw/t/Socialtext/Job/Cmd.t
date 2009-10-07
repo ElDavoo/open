@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 15;
 use Test::Socialtext::Ceqlotron;
+use Socialtext::AppConfig;
 
 BEGIN {
     use_ok 'Socialtext::Job::Cmd';
@@ -27,7 +28,7 @@ ceq_config(
 touch_a_file: {
     ceq_fast_forward();
 
-    my $touchfile = "t/tmp/job-cmd.$$";
+    my $touchfile    = Socialtext::AppConfig->test_dir() . "/job-cmd.$$";
     my $touch_handle = Socialtext::JobCreator->insert(
         'Socialtext::Job::Cmd',
         { 

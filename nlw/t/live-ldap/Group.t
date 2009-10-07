@@ -10,6 +10,7 @@ use Benchmark qw(timeit timestr);
 use Socialtext::Group::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 102;
+use Socialtext::AppConfig;
 
 # Force this to be synchronous.
 local $Socialtext::Group::Factory::Asynchronous = 0;
@@ -440,7 +441,8 @@ cn: $cn
         }
 
         # add Group to OpenLDAP
-        my $filename = "t/tmp/ldap-list-group-perf.$$";
+        my $test_dir = Socialtext::AppConfig->test_dir();
+        my $filename = "$test_dir/ldap-list-group-perf.$$";
         write_file($filename, $ldif);
         ok $ldap->add_ldif($filename), "... adding Group w/$users Users";
         unlink $filename;

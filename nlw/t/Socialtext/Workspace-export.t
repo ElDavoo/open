@@ -11,9 +11,11 @@ use File::Basename ();
 use File::Temp ();
 use YAML ();
 use Socialtext::Account;
+use Socialtext::AppConfig;
 
 my $hub = new_hub('admin');
 my $admin = $hub->current_workspace;
+my $test_dir = Socialtext::AppConfig->test_dir();
 
 Data_paths_exist: {
     ok( scalar ( grep { m{data/admin} } $admin->_data_dir_paths() ),
@@ -25,9 +27,9 @@ Data_paths_exist: {
 }
 
 Export_includes_meta_info: {
-   $admin->_dump_meta_to_yaml_file( 't/tmp' );
+   $admin->_dump_meta_to_yaml_file( $test_dir );
 
-   my $meta_file = 't/tmp/meta.yaml';
+   my $meta_file = "$test_dir/meta.yaml";
    ok(-f $meta_file, 'meta.yaml file exists');
 
    my $yaml = YAML::LoadFile( $meta_file );
@@ -40,9 +42,9 @@ Export_includes_logo_and_info: {
         filename   => $image,
     );
 
-    $admin->_dump_to_yaml_file( 't/tmp' );
+    $admin->_dump_to_yaml_file( $test_dir );
 
-    my $ws_file = 't/tmp/admin-info.yaml';
+    my $ws_file = "$test_dir/admin-info.yaml";
     ok( -f $ws_file, 'workspace data yaml dump exists' );
 
     my $ws_dump = YAML::LoadFile($ws_file);
@@ -56,9 +58,9 @@ Export_includes_logo_and_info: {
 }
 
 Export_users_dumped: {
-    $admin->_dump_users_to_yaml_file( 't/tmp' );
+    $admin->_dump_users_to_yaml_file( $test_dir );
 
-    my $users_file = 't/tmp/admin-users.yaml';
+    my $users_file = "$test_dir/admin-users.yaml";
     ok( -f $users_file, 'users data yaml dump exists' );
 
     my $users_dump = YAML::LoadFile($users_file);
@@ -72,9 +74,9 @@ Export_users_dumped: {
 }
 
 Export_permissions_dumped: {
-    $admin->_dump_permissions_to_yaml_file( 't/tmp' );
+    $admin->_dump_permissions_to_yaml_file( $test_dir );
 
-    my $users_file = 't/tmp/admin-permissions.yaml';
+    my $users_file = "$test_dir/admin-permissions.yaml";
     ok( -f $users_file, 'permissions data yaml dump exists' );
 
     my $perm_dump = YAML::LoadFile($users_file);

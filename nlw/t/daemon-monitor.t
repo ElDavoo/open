@@ -6,7 +6,8 @@ use Test::Socialtext tests => 123;
 use File::Temp qw/tempfile/;
 use Time::HiRes ();
 use POSIX ();
-use Cwd qw(abs_path);
+use Socialtext::AppConfig;
+use Socialtext::Paths;
 
 POSIX::setsid;
 
@@ -14,8 +15,10 @@ fixtures(qw( base_layout ));
 
 ok -x 'bin/st-daemon-monitor', "it's executable";
 
-our $touch_file = abs_path('t/tmp/mon');
-our $init_cmd = qq{/bin/touch $touch_file};
+our $test_dir   = Socialtext::AppConfig->test_dir();
+our $log_dir    = Socialtext::Paths->log_directory();
+our $touch_file = "$test_dir/mon";
+our $init_cmd   = qq{/bin/touch $touch_file};
 
 END {
     local $?; # don't clobber it via system()
@@ -60,7 +63,7 @@ sub test_monitor ($$;$) {
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
-    unlink 't/tmp/mon';
+    unlink $touch_file;
     pass "begin ($cranky; $mon_args)";
 
     my $cranky_pid = fork_and_exec($cranky);
@@ -82,7 +85,7 @@ sub test_monitor ($$;$) {
         sleep 1;
     }
 
-    system("/bin/bash","-c",":> t/tmp/log/nlw.log");
+    system("/bin/bash","-c",":> $log_dir/nlw.log");
 
     my $rc = system(
         "bin/st-daemon-monitor ".$mon_args.
@@ -92,11 +95,11 @@ sub test_monitor ($$;$) {
 
     if ($process_lives) {
         is $exit, 0, "didn't kill the daemon";
-        ok !-f 't/tmp/mon', "didn't run the init cmd";
+        ok !-f $touch_file, "didn't run the init cmd";
     }
     else {
         is $exit, 1, "killed the daemon";
-        ok -f 't/tmp/mon', "ran the init cmd";
+        ok -f $touch_file, "ran the init cmd";
     }
 
     if (!$reaped) {
@@ -107,7 +110,7 @@ sub test_monitor ($$;$) {
     $last_log = '';
     eval {
         local $/;
-        open my $logfh, '<', 't/tmp/log/nlw.log';
+        open my $logfh, '<', "$log_dir/nlw.log";
         ($last_log) = <$logfh>;
         close $logfh;
     };

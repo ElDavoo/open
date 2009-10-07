@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-
+use Socialtext::AppConfig;
 use Test::Socialtext;
 
 BEGIN {
@@ -16,6 +16,7 @@ use Digest::MD5 ();
 plan tests => 2;
 fixtures(qw( db ));
 
+my $test_dir = Socialtext::AppConfig->test_dir();
 my $ws      = create_test_workspace();
 my $ws_name = $ws->name();
 
@@ -29,7 +30,7 @@ $ws->set_logo_from_file(
 # resizing it.
 my $md5 = md5_checksum( $ws->logo_filename() );
 
-my $tarball = $ws->export_to_tarball(dir => 't/tmp');
+my $tarball = $ws->export_to_tarball(dir => $test_dir);
 
 # Deleting the user is important so that we know that both user and
 # workspace data is restored

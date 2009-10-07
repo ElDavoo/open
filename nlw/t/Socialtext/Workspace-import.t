@@ -3,10 +3,12 @@
 
 use strict;
 use warnings;
-
+use Socialtext::AppConfig;
 use Test::Socialtext tests => 16;
 use Test::Socialtext::User;
 fixtures( 'admin', 'destructive' );
+
+my $test_dir = Socialtext::AppConfig->test_dir();
 
 my $hub = new_hub('admin');
 
@@ -36,7 +38,7 @@ $page->update(
     user             => $user,
 );
 
-my $tarball = $admin->export_to_tarball(dir => 't/tmp');
+my $tarball = $admin->export_to_tarball(dir => $test_dir);
 
 $admin->delete();
 

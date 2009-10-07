@@ -7,12 +7,17 @@ use File::Slurp qw(write_file);
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 8;
+use Socialtext::AppConfig;
 
 ###############################################################################
 # FIXTURE: db
 #
 # Need Pg running, but we don't care what's in it.
 fixtures( 'db' );
+
+###############################################################################
+# Figure out what test directory we're running under.
+my $test_dir = Socialtext::AppConfig->test_dir();
 
 ###############################################################################
 # bootstrap a pair of OpenLDAP servers
@@ -25,11 +30,11 @@ isa_ok $rhs, 'Test::Socialtext::Bootstrap::OpenLDAP', 'referral RHS';
 ###############################################################################
 # generate some LDIF data that'll put the LDAP servers in an infinite referral
 # loop, and add that data to the directories
-generate_ldif('t/tmp/recurse-lhs.ldif', $rhs->host(), $rhs->port());
-ok $lhs->add_ldif('t/tmp/recurse-lhs.ldif'), 'added recursing LDIF to LHS';
+generate_ldif("$test_dir/recurse-lhs.ldif", $rhs->host(), $rhs->port());
+ok $lhs->add_ldif("$test_dir/recurse-lhs.ldif"), 'added recursing LDIF to LHS';
 
-generate_ldif('t/tmp/recurse-rhs.ldif', $lhs->host(), $lhs->port());
-ok $rhs->add_ldif('t/tmp/recurse-rhs.ldif'), 'added recursing LDIF to RHS';
+generate_ldif("$test_dir/recurse-rhs.ldif", $lhs->host(), $lhs->port());
+ok $rhs->add_ldif("$test_dir/recurse-rhs.ldif"), 'added recursing LDIF to RHS';
 
 ###############################################################################
 # remove the LDAP config for the referral *target*; we only need one of these

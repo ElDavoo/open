@@ -9,6 +9,7 @@ use File::Path 'mkpath';
 use Socialtext::Paths;
 use Socialtext::System qw/shell_run/;
 use Socialtext::Schema;
+use Socialtext::AppConfig;
 use Test::Socialtext;
 
 ###############################################################################
@@ -17,14 +18,15 @@ use Test::Socialtext;
 # - we're destructive; you'll want to recreate the DB when we're done
 fixtures(qw( clean base_layout destructive ));
 
+my $test_dir      = Socialtext::AppConfig->test_dir();
 my $real_dir      = 'etc/socialtext/db';
-my $fake_dir      = 't/tmp/etc/socialtext/db';
+my $fake_dir      = "$test_dir/etc/socialtext/db";
 my $log_dir       = Socialtext::Paths::log_directory();
 my $backup_dir    = Socialtext::Paths::storage_directory('db-backups');
 my $START_SCHEMA  = 2;
 my $latest_schema = $START_SCHEMA;
 
-# Set up directories and copy schema migrations into t/tmp
+# Set up directories and copy schema migrations into our test directory
 {
     mkpath $fake_dir unless -d $fake_dir;
     ($latest_schema) = reverse sort { $a <=> $b }
@@ -71,7 +73,7 @@ for ( $START_SCHEMA+1 .. $latest_schema ) {
 }
 
 # Now check that the final result is the same as socialtext-schema.sql
-my $generated_schema = 't/tmp/generated-schema.sql';
+my $generated_schema = "$test_dir/generated-schema.sql";
 shell_run "dump-schema $generated_schema";
 
 my $diff = qx{diff -du $generated_schema $real_dir/socialtext-schema.sql};

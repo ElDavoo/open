@@ -9,6 +9,7 @@ use Socialtext::SQL qw(:exec);
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext;
 use Socialtext::Timer;
+use Socialtext::AppConfig;
 
 ###############################################################################
 # Skip this test entirely unless we're explicitly running benchmark tests.
@@ -42,7 +43,8 @@ fixtures(qw( clean db destructive ));
 
 ###############################################################################
 # Temp file to hold the LDIF we generate for the benchmark.
-our $LDIF_FILE = "t/tmp/group-perf.$$.ldif";
+my $test_dir = Socialtext::AppConfig->test_dir();
+our $LDIF_FILE = "$test_dir/group-perf.$$.ldif";
 
 ###############################################################################
 # Create an LDIF file that contains a data set with a LARGE number of Users in
