@@ -30,7 +30,7 @@ BEGIN {
     delete $ENV{NLW_APPCONFIG};
 }
 
-plan tests => 65;
+plan tests => 68;
 
 my $user = getpwuid($>);
 
@@ -151,8 +151,21 @@ NOT_DEFAULT: {
 {
     # Call ->new() each time to make the module not re-use an existing
     # singleton.
-    like( Socialtext::AppConfig->new->data_root_dir, qr{t/tmp/root$},
-          'default data_root_dir ends in t/tmp/root' );
+    {
+        # have to call ->_default_data_root() directly, as ->new->data_root()
+        # only allows for calculation of the default _once_.
+        local $ENV{HARNESS_JOB_NUMBER} = 'x';
+        like( Socialtext::AppConfig->_default_data_root, qr{t/tmp/x/root$},
+            'default data_root_dir ends in t/tmp/x/root when HARNESS_JOB_NUMBER=x' );
+
+        local $ENV{HARNESS_JOB_NUMBER} = '';
+        like( Socialtext::AppConfig->_default_data_root, qr{t/tmp/root$},
+            'default data_root_dir ends in t/tmp/root when HARNESS_JOB_NUMBER is unset' );
+
+        local $ENV{HARNESS_ACTIVE} = 0;
+        like( Socialtext::AppConfig->_default_data_root, qr{\.nlw/root$},
+              'default data_root_dir ends in .nlw/root when HARNESS_ACTIVE=0' );
+    }
 
     isnt( Socialtext::AppConfig->new->code_base, '/usr/share/nlw',
           'default code_base is not /usr/share/nlw' );
@@ -160,24 +173,29 @@ NOT_DEFAULT: {
     like( Socialtext::AppConfig->new->admin_script, qr{(?!/local/)bin/st-admin$},
           'default admin_script ends in bin/st-admin, but is not */local/bin/st-admin' );
 
-    my $db_name = 'NLW_' . $user->name . '_testing';
-    is( Socialtext::AppConfig->new->db_name, $db_name,
-          "default db_name is $db_name" );
+    {
+        # have to call ->_default_db_name() directly, as ->new->db_name() only
+        # allows for calculation of the default _once_.
+        my $db_base = 'NLW_' . $user->name;
+
+        local $ENV{HARNESS_JOB_NUMBER} = 'x';
+        is( Socialtext::AppConfig->_default_db_name, "${db_base}_testing_x",
+            "default db_name is ${db_base}_testing_x when HARNESS_JOB_NUMBER=x" );
+
+        local $ENV{HARNESS_JOB_NUMBER} = '';
+        is( Socialtext::AppConfig->_default_db_name, "${db_base}_testing",
+            "default db_name is ${db_base}_testing when HARNESS_JOB_NUMBER is unset" );
+
+        local $ENV{HARNESS_ACTIVE} = 0;
+        is( Socialtext::AppConfig->_default_db_name, $db_base,
+            "default db_name is ${db_base} when HARNESS_ACTIVE=0" );
+    }
 
     is( Socialtext::AppConfig->new->db_user, $user->name,
           'default db_user is ' . $user->name );
 
     ok( -d File::Spec->catdir( Socialtext::AppConfig->_user_checkout_dir, 'share', 'skin', 's2', 'template' ),
         'the _user_checkout_dir/share Socialtext::AppConfig finds has a template subdir' );
-
-    {
-        local $ENV{HARNESS_ACTIVE} = 0;
-
-        # Cannot call ->new->data_root because the default is only
-        # calculated once
-        like( Socialtext::AppConfig->_default_data_root, qr{\.nlw/root$},
-              'default data_root_dir ends in .nlw/root when HARNESS_ACTIVE=0' );
-    }
 
     Socialtext::AppConfig->_set_startup_user(0);
     is( Socialtext::AppConfig->_default_data_root, '/var/www/socialtext',
