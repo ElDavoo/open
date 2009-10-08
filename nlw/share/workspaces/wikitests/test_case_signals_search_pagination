@@ -1,4 +1,4 @@
-| *Comment* | Test Case: Signals Search |
+| *Comment* | Test Case: Signals Search Pagination |
 
 * Fixture: SocialWidgets
 
@@ -15,67 +15,85 @@
 | create_user | %%a_username%% | %%password%% | %%hostname%% | %%a_name%% |
 | create_user | %%z_username%% | %%password%% | %%hostname%% | %%z_name%% |
 
-| st-logoutin | %%a_username%% | %%password%% |
+| *Comment* | Test Case: Signals Search. Send 22 signals %%a_username%% |  |
+| http-user-pass | %%a_username%% | %%password%% |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 01"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 02"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 03"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 04"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 05"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 06"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 07"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 08"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 09"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 10"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 11"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 12"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 13"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 14"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 15"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 16"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 17"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 18"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 19"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 20"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 21"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 22"} |
 
-| *Comment* | Test Case: Signals Search. Get a fresh Activities widget |  |
-| open_ok | /?dashboard |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| st-single-widget-in-dashboard | gallery-widget-Activities |  |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
+| *Comment* | Test Case: Signals Search. Send 22 signals %%z_username%% |  |
+| http-user-pass | %%z_username%% | %%password%% |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 41"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 42"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 43"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 44"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 45"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 46"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 47"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 48"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 49"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 50"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 51"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 52"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 53"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 54"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 55"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 56"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 57"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 58"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 59"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 60"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 61"} |
+| post-json | /data/signals | {"signal":"Pagination %%start_time%% 62"} |
 
-| *Comment* | Test Case: Signals Search. Send 2 signals %%a_username%% |  |
-| st-send-signal-via-activities-widget | activities_widget | NotAStopWord %%start_time%% 01 |
-| st-send-signal-via-activities-widget | activities_widget | NotAStopWord %%start_time%% 12 |
+| http-user-pass | %%email%% | %%password%% |
 
-| *Comment* | Test Case: Signals Search. Search 2 signals %%a_username%% |  |
+| *Comment* | Test Case: Signals Search. Search for paginated signals |  |
 | open_ok | /?signals |  |
 | wait_for_element_visible_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
-| type_ok | st-search-term | %%start_time%% |
+| type_ok | st-search-term | Pagination %%start_time%% |
 | click_and_wait | st-search-submit |  |
 | pause | 8000 | I hate pause |
 
-| *Comment* | Test Case: Signals Search. Verify found 2 signals %%a_username%% |  |
+| *Comment* | Test Case: Signals Search. Verify found newest Pagination %%start_time%% signals |  |
+| wait_for_element_visible_ok | sort-picker | 30000 |
+| select_ok | sort-picker | label=Newest |
+| pause | 8000 | I Hate Pause |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
-| text_like | Search results in all networks for '%%start_time%%' |  |
-| text_like | NotAStopWord %%start_time%% 12 |  |
-| text_like | NotAStopWord %%start_time%% 01 |  |
-| select_frame | relative=parent |  |
+| text_like | Search results in all networks for 'Pagination %%start_time%%' |  |
+| text_like | qr/Pagination %%start_time%% 62.+Pagination %%start_time%% 43/ism |  |
 
-| *Comment* | Test Case: Signals Search. login as %%z_username%% |  |
-| st-logoutin | %%z_username%% | %%password%% |
+| *Comment* | Test Case: Signals Search. Older >> |  |
+| wait_for_element_visible_ok | link=Older >> | 30000 |
+| click_ok | link=Older >> |  |
+| pause | 8000 | I Hate Pause |
+| text_like | qr/Pagination %%start_time%% 42.+Pagination %%start_time%% 05/ism |  |
+| pause | 8000 | I Hate Pause |
+| text_like | qr/Pagination %%start_time%% 04.+Pagination %%start_time%% 01/ism |  |
 
-| *Comment* | Test Case: Signals Search. Get a fresh %%z_username%% Activities widget |  |
-| open_ok | /?dashboard |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| st-single-widget-in-dashboard | gallery-widget-Activities |  |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-
-| *Comment* | Test Case: Signals Search. Send 2 signals %%z_username%% |  |
-| st-send-signal-via-activities-widget | activities_widget | NotAStopWord %%start_time%% 21 |
-| st-send-signal-via-activities-widget | activities_widget | NotAStopWord %%start_time%% 32 |
-
-| *Comment* | Test Case: Signals Search. Search 2 signals %%z_username%% |  |
-| open_ok | /?signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| wait_for_element_visible_ok | st-search-term | 30000 |
-| is_selected_ok | st-search-action | id=st-search-signals |
-| type_ok | st-search-term | %%start_time%% |
-| click_and_wait | st-search-submit |  |
-| pause | 8000 | I hate pause |
-
-| *Comment* | Test Case: Signals Search. Verify found 4 signals %%z_username%% |  |
-| st-name-widget | 3 | searchwidget |
-| st-select-widget-frame | searchwidget |  |
-| wait_for_text_present_ok | Search results in all networks for '%%start_time%%' | 30000 |
-| text_like | NotAStopWord %%start_time%% 32 |  |
-| text_like | NotAStopWord %%start_time%% 21 |  |
-| text_like | NotAStopWord %%start_time%% 12 |  |
-| text_like | NotAStopWord %%start_time%% 01 |  |
+^ END
 
 | *Comment* | Test Case: Signals Search. Sort. SORT DOES NOT CAUSE PAGE LOAD |  |
 | wait_for_element_visible_ok | sort-picker | 30000 |

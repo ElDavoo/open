@@ -51,6 +51,10 @@
 | set | network | 2 networks |
 | include | [Test Case: Signals Page] |  |
 
+| *Comment* | Test Case: Signal to Networks. Signals Search |  |
+| include | [Test Case: Signals Search] |  |
+| include | [Test Case: Signals Search Pagination] |  |
+
 | *Comment* | Test Case: Signal to Networks TEARDOWN |  |
 | st-admin | remove-member --e %%member%% --w help-en | is no longer a member |
 | st-admin | disable-plugin --account Socialtext --p signals |  |
