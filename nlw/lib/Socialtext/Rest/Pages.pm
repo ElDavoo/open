@@ -30,6 +30,8 @@ sub get_resource {
     my $minimal = $self->rest->query->param('minimal_pages');
     my $filter  = $self->rest->query->param('filter');
     my $count   = $self->rest->query->param('count') || 100;
+
+    # This is a performance path for page lookahead, which must be very fast
     if ($minimal and $content_type eq 'application/json' 
             and $filter and $filter =~ m#^\\b(.+)#) {
         my $page_filter = $1;
@@ -42,7 +44,11 @@ sub get_resource {
         );
     }
 
-    return $self->SUPER::get_resource();
+    my $search_query = $self->rest->query->param('q');
+    if (defined $search_query and length $search_query) {
+        return $self->SUPER::get_resource();
+    }
+    return [$self->_hashes_for_query];
 }
 
 sub resource_to_json { 
@@ -126,6 +132,7 @@ sub POST {
     return '';
 }
 
+
 sub _entity_hash {
     my $self   = shift;
     my $entity = shift;
@@ -133,14 +140,10 @@ sub _entity_hash {
     $entity->hash_representation();
 }
 
-# Generates an unordered, unsorted list of pages which satisfy the query
-# parameters.
 sub _entities_for_query {
     my $self = shift;
 
     Socialtext::Timer->Continue('entities_for_query');
-
-    # REVIEW: borrowing the 'q' name from google and others.  It's short.
     my $search_query = $self->rest->query->param('q');
     my @entities;
 
@@ -152,12 +155,20 @@ sub _entities_for_query {
         # We want it to return the *correct* 500.
         my $order_by = undef;
         my $order = $self->rest->query->param('order') || '';
+        my $offset = $self->rest->query->param('offset') || 0;
+        my $count = $self->rest->query->param('count') || 100;
+
         if ($order eq 'newest') {
             $order_by = 'last_edit_time DESC',
+        } 
+        elsif  ($order eq 'name') {
+            $order_by = 'name'
         }
         @entities = @{Socialtext::Model::Pages->All_active(
             workspace_id => $self->hub->current_workspace->workspace_id,
             order_by => $order_by,
+            count => $count, 
+            offset => $offset,
         ) || []};
     }
 

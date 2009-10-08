@@ -57,6 +57,8 @@ sub All_active {
     my $workspace_id = $p{workspace_id};
     my $no_tags      = $p{do_not_need_tags};
     my $order_by     = $p{order_by};
+    my $offset       = $p{offset};
+
     $limit = 500 unless defined $limit;
 
     Socialtext::Timer->Continue('All_active');
@@ -66,6 +68,7 @@ sub All_active {
         workspace_id => $workspace_id,
         do_not_need_tags => $no_tags,
         ($order_by ? (order_by => "page.$order_by") : ()),
+        offset       => $offset,
     );
     Socialtext::Timer->Pause('All_active');
     return $pages;
@@ -146,6 +149,7 @@ sub _fetch_pages {
         workspace_ids    => undef,
         order_by         => undef,
         limit            => undef,
+        offset           => undef,
         do_not_need_tags => 0,
         deleted_ok       => undef,
         @_,
@@ -190,6 +194,12 @@ sub _fetch_pages {
         push @{ $p{bind} }, $p{limit};
     }
 
+    my $offset = '';
+    if ( $p{offset} && $p{offset} != -1) {
+        $offset = 'OFFSET ?';
+        push @{ $p{bind} }, $p{offset};
+    }
+
     my $page_workspace_filter = $workspace_filter
                                    ? " AND page$workspace_filter"
                                    : '';
@@ -222,6 +232,7 @@ SELECT page.workspace_id,
       $p{where}
     $order_by
     $limit
+    $offset
 EOT
         @workspace_ids,
         @{ $p{bind} },

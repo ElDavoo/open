@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 99;
+use Test::More tests => 109;
 use Test::Exception;
 use mocked 'Socialtext::SQL', qw/:test/;
 use mocked 'Socialtext::Page';
@@ -274,6 +274,7 @@ All_active: {
             hub => 'hub',
             count => 20,
             workspace_id => 9,
+            offset => 15,
         );
         sql_ok(
             name => 'all_active',
@@ -282,8 +283,9 @@ $COMMON_SELECT
     WHERE NOT deleted 
       AND page.workspace_id = ? 
     LIMIT ?
+    OFFSET ?
 EOT
-            args => [9,20],
+            args => [9,20,15],
         );
         sql_ok(
             name => 'all_active',
@@ -476,6 +478,73 @@ $COMMON_SELECT
       AND page.workspace_id = ? 
 EOT
             args => [9],
+        );
+        sql_ok(
+            name => 'all_active',
+            sql => <<EOT,
+SELECT workspace_id, page_id, tag 
+    FROM page_tag 
+    WHERE page_tag.workspace_id = ?
+EOT
+            args => [9],
+        );
+        ok_no_more_sql();
+    }
+    DeepOffset: {
+        local @Socialtext::SQL::RETURN_VALUES = (
+            {
+                return => [{workspace_id => 9, page_id => 'page_id'}],
+            },
+        );
+        Socialtext::Model::Pages->All_active(
+            hub => 'hub',
+            count => 100,
+            workspace_id => 9,
+            offset => 765,
+        );
+        sql_ok(
+            name => 'all_active',
+            sql => <<EOT,
+$COMMON_SELECT
+    WHERE NOT deleted 
+      AND page.workspace_id = ? 
+    LIMIT ?
+    OFFSET ? 
+EOT
+            args => [9,100,765],
+        );
+        sql_ok(
+            name => 'all_active',
+            sql => <<EOT,
+SELECT workspace_id, page_id, tag 
+    FROM page_tag 
+    WHERE page_tag.workspace_id = ?
+EOT
+            args => [9],
+        );
+        ok_no_more_sql();
+    }
+    DeepOffsetUnlimited: {
+        local @Socialtext::SQL::RETURN_VALUES = (
+            {
+                return => [{workspace_id => 9, page_id => 'page_id'}],
+            },
+        );
+        Socialtext::Model::Pages->All_active(
+            hub => 'hub',
+            count => -1,
+            workspace_id => 9,
+            offset => 765,
+        );
+        sql_ok(
+            name => 'all_active',
+            sql => <<EOT,
+$COMMON_SELECT
+    WHERE NOT deleted 
+      AND page.workspace_id = ? 
+    OFFSET ? 
+EOT
+            args => [9,765],
         );
         sql_ok(
             name => 'all_active',

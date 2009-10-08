@@ -1,0 +1,48 @@
+Test case for `/data/events/workspaces/:ws/pages`
+
+Not a perfect test case since we aren't counting the actual number of total pages in the workspace
+
+* Fixture: SocialRest
+
+| standard-test-setup |
+| st-create-pages | %%workspace%% | 750 |
+
+| GET | /data/workspaces/%%workspace%%/pages | application/json |
+| code-is | 200|
+| json-parse |
+| json-array-size | 100 |
+
+| GET | /data/workspaces/%%workspace%%/pages?count=34 | application/json |
+| code-is | 200|
+| json-parse |
+| json-array-size | 34 |
+
+| GET | /data/workspaces/%%workspace%%/pages?count=34;offset=600 | application/json |
+| code-is | 200|
+| json-parse |
+| json-array-size | 34 |
+
+Not a complete test of the combination of ordering/limit/offset,but a stab
+| edit-page| %%workspace%% | pagenew1 | new |
+| sleep | 1.1 |
+| edit-page| %%workspace%% | pagenew2 | new |
+| sleep | 1.1 |
+| edit-page| %%workspace%% | pagenew3 | new |
+| sleep | 1.1 |
+| edit-page| %%workspace%% | pagenew4 | new |
+
+
+| GET | /data/workspaces/%%workspace%%/pages?order=newest;count=34 | application/json |
+| code-is | 200|
+| json-parse |
+| json-array-size | 34 |
+| body-like | qr/pagenew4.*pagenew3.*pagenew2.*pagenew1/ |
+
+| GET | /data/workspaces/%%workspace%%/pages?order=newest;count=34;offset=1 | application/json |
+| code-is | 200|
+| json-parse |
+| json-array-size | 34 |
+| body-like | qr/pagenew3.*pagenew2.*pagenew1/ |
+| body-unlike | pagenew4 |
+
+
