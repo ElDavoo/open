@@ -1,8 +1,10 @@
 | *Comment* | Test Case: LDAP Actualize Groups |
 
+| st-ldap | start |
+
 | *Comment* | Test Case: LDAP Actualize Groups Make sure page exists |  |
 | open-ok | /nlw/control/group/create |  |
-| verify-text | //h1 | Create Group |
+| wait-for-text-present-ok | Create Group | 30000 |
 
 | *Comment* | Test Case: LDAP Actualize Groups Make sure no LDAP running, check for error message on page |  |
 | st-ldap | stop |  |
@@ -13,14 +15,14 @@
 | st-ldap | start |  |
 | open-ok | /nlw/control/group/create |  |
 | text-unlike | //body | LDAP Group Factories not configured |
-| text-like | css=li.factory a | Bootstrapped, port |
+| wait-for-text-present-ok | Bootstrapped, port | 30000 |
 
 | *Comment* | Test Case: LDAP Actualize Groups Expand out the first LDAP Group Factory, and see the Groups it contains |  |
-| click-and-wait | css=li.factory a |  |
-| text-like | css=li.factory | Bootstrapped, port |
-| is-element-present-ok | css=li.factory ul.group-list |  |
-| text-like | css=ul.group-list li:first-child | Hawkwind (2 members) |
-| text-like | css=ul.group-list li:first-child + li | Motorhead (3 members) |
+
+| click-and-wait | //a[contains(@href,'?factory')] |  |
+| wait-for-text-present-ok | Bootstrapped, port | 30000 |
+| wait-for-text-present-ok | Hawkwind (2 members) | 30000 |
+| wait-for-text-present-ok | Motorhead (3 members) | 30000 |
 
 | *Comment* | Test Case: LDAP Actualize Groups TEARDOWN |
 | st-ldap | stop |

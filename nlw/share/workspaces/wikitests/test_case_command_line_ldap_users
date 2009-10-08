@@ -4,19 +4,19 @@
 | st-admin | create-workspace --name %%cmdline_workspace%% --title %%cmdline_workspace%% | A new workspace named "%%cmdline_workspace%%" was created. |
 
 | *Comment* | Test Case: Command Line LDAP user Add member |  |
-| st-admin | add-member --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is now a member of the %%cmdline_workspace%% workspace. |
+| st-admin | add-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now a member of the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Add workspace admin |  |
-| st-admin | add-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is now a workspace admin for the %%cmdline_workspace%% workspace. |
+| st-admin | add-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now a workspace admin of the %%cmdline_workspace%% workspace./ism |
 
 | *Comment* | Test Case: Command --usernameLine LDAP Remove workspace admin |  |
-| st-admin | remove-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is no longer a workspace admin for the %%cmdline_workspace%% workspace. |
+| st-admin | remove-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is no longer a workspace admin of the %%cmdline_workspace%% workspace./ism |
 
 | *Comment* | Test Case: Command Line LDAP user Add impersonator |  |
-| st-admin | add-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is now an impersonator for the %%cmdline_workspace%% workspace. |
+| st-admin | add-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is now an impersonator of the %%cmdline_workspace%% workspace. |
 
 | *Comment* | Test Case: Command Line LDAP user Remove impersonator |  |
-| st-admin | remove-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is no longer an impersonator for the %%cmdline_workspace%% workspace. |
+| st-admin | remove-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is no longer an impersonator of the %%cmdline_workspace%% workspace. |
 
 | *Comment* | Test Case: Command Line LDAP user Disable Email Notify |  |
 | st-admin | disable-email-notify --username %%cli_user%% --workspace %%cmdline_workspace%% | Email notify has been disabled for %%cli_user%% in the %%cmdline_workspace%% workspace. |
@@ -44,14 +44,14 @@
 | st-admin | remove-member --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is no longer a member of the %%cmdline_workspace%% workspace. |
 
 | *Comment* | Test Case: Command Line LDAP user Add member again |  |
-| st-admin | add-member --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is now a member of the %%cmdline_workspace%% workspace. |
+| st-admin | add-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now a member of the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user deactivate user TODO: add this back in when we can create a unique user to deactivate. This is causing TC: Verify LDAP Enabled to fail unnecessarily |  |
 
  st-admin | deactivate-user --username %%cli_user%% | qr/%%cli_user%% has been removed from workspaces.+%%cmdline_workspace%%(,.+%%workspace%%)?/ |
 
  *Comment* | Test Case: Command Line LDAP user Add member BACK to %%workspace%% | |
- st-admin | add-workspace-admin --username %%cli_user%% --workspace %%workspace%% | %%cli_user%% is now a workspace admin for the %%workspace%% workspace. |
+st-admin | add-workspace-admin --username %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is now a workspace admin of the %%workspace%% workspace./ism |
 
 | *Comment* | Test Case: Command Line LDAP USERS commands should fail |  |
 | st-admin | create-user --username %%cli_user%% | The username you provided, "%%cli_user%%", is already in use. |
@@ -62,6 +62,6 @@
 | st-admin | delete-workspace --workspace %%cmdline_workspace%% --no-export |  |
 
 | *Comment* | Test Case: Command Line LDAP user Add member BACK to %%workspace%% just in case needed |  |
-| st-admin | add-workspace-admin --username %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is .+ a workspace admin for the %%workspace%% workspace./ |
+| st-admin | add-workspace-admin --username %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is .+ a workspace admin of the %%workspace%% workspace./ism |
 
 | *Comment* | Test Case: Command Line: LDAP USERS COMPLETED |
