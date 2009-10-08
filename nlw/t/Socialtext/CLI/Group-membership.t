@@ -306,8 +306,10 @@ workspace_users_with_direct_roles: {
             )->show_members();
         }
     } );
-    like $output, qr/\Q$email1\E/, '... lists group user without direct';
-    like $output, qr/\Q$email2\E/, '... lists direct user without direct';
+    like $output, qr/\Q$email1\E/,
+        '... lists group user without direct membership';
+    like $output, qr/\Q$email2\E/,
+        '... lists direct user with indirect membership';
 
     $output = combined_from( sub {
         eval {
@@ -320,8 +322,10 @@ workspace_users_with_direct_roles: {
         };
     } );
 
-    unlike $output, qr/\Q$email1\E/, '... does not list group user with direct';
-    like $output, qr/\Q$email2\E/, '... lists direct user with direct';
+    unlike $output, qr/\Q$email1\E/,
+       '... does not list group user with indirect membership';
+    like $output, qr/\Q$email2\E/,
+        '... lists direct user with direct membership';
 }
 
 ###############################################################################
