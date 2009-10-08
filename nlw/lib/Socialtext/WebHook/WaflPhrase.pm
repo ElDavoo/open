@@ -18,6 +18,10 @@ sub html {
     return Socialtext::WebHook->Filter(
         class => "wafl.to-html." . $self->method,
         content => $self->wikitext,
+        extra_args => {
+            workspace => $self->hub->current_workspace->name,
+            page_id => $self->hub->pages->current->id,
+        },
     );
 }
 

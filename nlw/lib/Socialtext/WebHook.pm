@@ -181,11 +181,12 @@ sub Filter {
     };
 
     my $hooks = $class->Find( class => $p{class} );
+    st_log->info("Looking for hooks for $p{class}");
     for my $h (@$hooks) {
         st_log->info("Webhook filter: $h->{url}");
         my $resp = $ua->post(
             $h->{url},
-            { content => $content },
+            { content => $content, %{ $p{extra_args} || {}} },
         );
         if ($resp->code == 200) {
             st_log->info("Webhook filter success: $h->{url}");
