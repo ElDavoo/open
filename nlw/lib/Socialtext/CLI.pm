@@ -1923,13 +1923,13 @@ sub _show_workspace_members {
     my $msg = "Members of the " . $ws->name . " workspace\n\n";
     $msg .= "| Email Address | First | Last | Role |\n";
 
-    my $user_cursor = $self->_get_ws_users_cursor($ws);
-    my $entry;
-    while ($entry = $user_cursor->next) {
-        my ($user, $role) = @$entry;
+    my $user_cursor = Socialtext::Workspace::Roles->UsersByWorkspaceId(
+        workspace_id => $ws->workspace_id,
+    );
+    while (my $user = $user_cursor->next) {
+        my $role = $ws->role_for_user(user => $user);
         $msg .= '| ' . join(' | ', $user->email_address, $user->first_name, $user->last_name, $role->name) . " |\n";
     }
-
     $self->_success($msg, "no indent");
 }
 
