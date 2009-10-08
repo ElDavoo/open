@@ -335,6 +335,19 @@ sub create_user {
     return $user;
 }
 
+sub user_primary_account {
+    my $self = shift;
+    my $username = shift;
+    my $account_name = shift;
+
+    my $user = Socialtext::User->Resolve($username);
+    my $account = Socialtext::Account->new(name => $account_name);
+
+    $user->primary_account($account);
+    diag "Changed ${username}'s primary account to $account_name\n";
+}
+
+
 sub delete_user {
     my $self = shift;
     my $email = shift;

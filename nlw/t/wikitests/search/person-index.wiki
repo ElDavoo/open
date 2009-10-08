@@ -60,6 +60,14 @@
 | st-process-jobs |                        |                       |
 | job-count       | PersonIndex            | 0                     |
 
+# Changing a primary account re-indexes the user
+| set | account2 | acct2%%start_time%% |
+| create-account | %%account2%% |
+| user-primary-account | %%randy%% | %%account2%% |
+| job-count       | PersonIndex            | 1                     |
+| st-process-jobs |                        |                       |
+| job-count       | PersonIndex            | 0                     |
+
 # Deactivating a user makes them not searchable
 | deactivate-user | %%randy%%       |   |
 | job-count       | PersonIndex     | 1 |

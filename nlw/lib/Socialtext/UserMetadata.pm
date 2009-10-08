@@ -195,6 +195,12 @@ sub primary_account {
 
         $adapter->hook('nlw.remove_user_account_role', $old_account, $self);
         $adapter->hook('nlw.add_user_account_role', $new_account, $self);
+
+        my $deleted_acct = Socialtext::Account->Deleted;
+        if ($new_account->account_id != $deleted_acct->account_id) {
+            require Socialtext::JobCreator;
+            Socialtext::JobCreator->index_person( $self );
+        }
     }
 
     return Socialtext::Account->new(account_id => $self->primary_account_id)
