@@ -1330,6 +1330,17 @@ sub post_signal {
     $self->code_is(201);
 }
 
+sub post_signals {
+    my $self = shift;
+    my $count = shift or die;
+    my $message = shift or die;
+    my $offset = shift || 1200;
+
+    for my $i ($offset .. $offset+$count) {
+        $self->post_signal($message . " $i");
+    }
+}
+
 =head2 st_deliver_email( )
 
 Imitates sending an email to a workspace
