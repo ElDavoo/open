@@ -70,20 +70,22 @@ users_by_workspace_id: {
 
 ###############################################################################
 # TEST: Get Users with a Role in a given Workspace, when a User has _multiple_
-# Roles in the WS
+# *different* Roles in the WS
 users_by_workspace_id_multiple_group_roles: {
     my $system_user = Socialtext::User->SystemUser();
     my $workspace   = create_test_workspace(user => $system_user);
     my $user        = create_test_user();
     my $group_one   = create_test_group();
     my $group_two   = create_test_group();
+    my $role_member = Socialtext::Role->Member;
+    my $role_admin  = Socialtext::Role->WorkspaceAdmin;
 
     # User has multiple Roles in the WS via Group memberships
     $group_one->add_user(user => $user);
-    $workspace->add_group(group => $group_one);
+    $workspace->add_group(group => $group_one, role => $role_member);
 
     $group_two->add_user(user => $user);
-    $workspace->add_group(group => $group_two);
+    $workspace->add_group(group => $group_two, role => $role_admin);
 
     # Get the list of Users in the Workspace
     my $cursor = Socialtext::Workspace::Roles->UsersByWorkspaceId(

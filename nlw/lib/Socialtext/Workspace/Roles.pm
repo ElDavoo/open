@@ -26,7 +26,7 @@ sub UsersByWorkspaceId {
         : 'distinct_user_workspace_role';
 
     my $sql = qq{
-        SELECT user_id, driver_username
+        SELECT DISTINCT user_id, driver_username
           FROM users
           JOIN $uwr_table USING (user_id)
          WHERE workspace_id = ?
