@@ -24,7 +24,7 @@ use Readonly;
 #     PUT /data/signal/:signal/hide, DELETE /data/signal/:signal.
 # 11: iteration-2009-08-14 (release-3.5.11): GET /data/signals/:id
 # 12: iteration-2009-09-25 (release-3.6.2): GET /data/signals?q=...
-# 13: iteration-2009-10-09 (release-3.7.x): /data/groups
+# 13: iteration-2009-10-09 (release-3.7.x): /data/groups, GET /data/signals?direction=asc
 Readonly our $API_VERSION => 13;
 Readonly our $MTIME       => ( stat(__FILE__) )[9];
 
