@@ -1917,6 +1917,7 @@ sub _show_account_members {
 
 sub _show_workspace_members {
     my $self = shift;
+    my %opts = $self->_get_options('direct');
 
     my $ws = $self->_require_workspace();
 
@@ -1925,6 +1926,7 @@ sub _show_workspace_members {
 
     my $user_cursor = Socialtext::Workspace::Roles->UsersByWorkspaceId(
         workspace_id => $ws->workspace_id,
+        direct => $opts{direct} ? 1 : 0,
     );
     while (my $user = $user_cursor->next) {
         my $role = $ws->role_for_user(user => $user);
