@@ -3,10 +3,10 @@
 
 use strict;
 use warnings;
+use lib "$ENV{NLW_DIR}/lib";
 use Socialtext::AppConfig;
 
 warn "# generating the fixture\n" if $ENV{TEST_VERBOSE};
-#use lib "$ENV{NLW_DIR}/lib";
 
 my $ldap_yaml = <<EOY;
 ---
