@@ -1,4 +1,6 @@
 package Socialtext::CoalescingJob;
+# @COPYRIGHT@
+
 use Moose::Role;
 
 requires 'do_work';
