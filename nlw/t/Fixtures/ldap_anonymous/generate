@@ -6,8 +6,6 @@ use warnings;
 use lib "$ENV{NLW_DIR}/lib";
 use Socialtext::AppConfig;
 
-warn "# generating the fixture\n" if $ENV{TEST_VERBOSE};
-
 my $ldap_yaml = <<EOY;
 ---
 id: 0deadbeef0
