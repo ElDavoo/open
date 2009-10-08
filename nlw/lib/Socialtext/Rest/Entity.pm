@@ -30,6 +30,7 @@ sub attribute_table_row {
         $value = join('</td><td>', @$value);
     }
 
+    $value = '' unless defined $value;
     return "<tr><td>$name</td><td>$value</td></tr>\n";
 }
 
