@@ -229,6 +229,28 @@ sub standard_test_setup {
     $self->http_user_pass($user_name, $password);
 }
 
+=head2 st_create_pages($workspace, $numberpages)
+
+Creates $numpages number of pages in $workspace
+
+=cut
+
+sub st_create_pages {
+    my ($self, $workspace, $numberpages) = @_;
+    
+    my $user = Socialtext::User->new(username => $self->{'username'});
+    my $hub = new_hub($workspace);
+    for (my $idx=0; $idx<$numberpages;$idx++) {
+        my $title = "test page " . $idx;
+        Socialtext::Page->new(hub => $hub)->create(
+                                  title => $title,
+                                  content => 'This is a sample page',
+                                  creator => $user);
+    }
+    ok 1, "Created $numberpages of pages in $workspace";
+}
+
+
 sub create_account {
     my $self = shift;
     my $name = shift;

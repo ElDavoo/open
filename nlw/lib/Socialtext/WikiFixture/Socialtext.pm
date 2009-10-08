@@ -431,27 +431,6 @@ sub st_message {
                      $self->quote_as_regex($message));
 }
 
-=head2 st_create_pages($workspace, $numberpages)
-
-Creates $numpages number of pages in $workspace
-
-=cut
-
-sub st_create_pages {
-    my ($self, $workspace, $numberpages) = @_;
-    
-    my $user = Socialtext::User->new(username => $self->{'username'});
-    my $hub = new_hub($workspace);
-    for (my $idx=0; $idx<$numberpages;$idx++) {
-        my $title = "test page " . $idx;
-        Socialtext::Page->new(hub => $hub)->create(
-                                  title => $title,
-                                  content => 'This is a sample page',
-                                  creator => $user);
-    }
-    ok 1, "Created $numberpages of pages in $workspace";
-}
-
 
 
 =head2 st_watch_page( $watch_on, $page_name, $verify_only )
