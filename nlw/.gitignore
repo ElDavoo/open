@@ -339,3 +339,5 @@ t/rest_files/sleeper.pl
 t/wikitests/widgets/proxy-links.wiki
 t/Socialtext/JSON/Proxy-ping.t
 t/wikitests/people/rest/data_people_search.wiki
+t/Socialtext/JSON/Proxy-graceful.t
+t/rest_files/sleeper2.pl

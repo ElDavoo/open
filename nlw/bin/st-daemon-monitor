@@ -12,32 +12,55 @@ use Coro::AnyEvent;
 use Guard qw/scope_guard/;
 use Socialtext::Log qw/st_log/;
 
-my $man = 0;
-my $help = 0;
-my $pidfile;
-my $init_cmd;
-my $max_rss = 256 * 1024; # in kiB or MiB
-my $max_vsz = 512 * 1024; # in kiB or MiB
-my $max_fds = 512;
-my $signal  = 15; # SIGTERM
-my $tcp_port = 0;
-my $check_scgi = 0;
+our $man = 0;
+our $help = 0;
+our $pidfile;
+our $init_cmd;
+our $max_rss = 256; # in MiB
+our $max_vsz = 512; # in MiB
+our $max_fds = 512;
+our $signal  = 15; # SIGTERM
+our $tcp_port = 0;
+our $check_scgi = 0;
+our $config_prefix;
 
 GetOptions(
     'help|?' => \$help,
     man      => \$man,
     'pidfile=s' => \$pidfile,
     'init=s' => \$init_cmd,
+    'sig=i'  => \$signal,
     'rss=i'  => \$max_rss,
     'vsz=i'  => \$max_vsz,
     'fds=i'  => \$max_fds,
-    'sig=i'  => \$signal,
     'tcp=i'  => \$tcp_port,
     'scgi!'  => \$check_scgi,
+    'config=s' => \$config_prefix,
 )
 or pod2usage(1);
 pod2usage(1) if $help;
 pod2usage(-exitstatus => 0, -verbose => 2) if $man;
+
+if ($config_prefix) {
+    # read in the params from appliance.conf
+    require Socialtext::Appliance::Config;
+    my $conf = Socialtext::Appliance::Config->new;
+    no strict "refs";
+    for my $key (qw(
+        pidfile init signal max_rss max_vsz max_fds tcp_port check_scgi
+    )) {
+        my $val = $conf->value("monitor_${config_prefix}_$key");
+        next unless defined $val;
+        ${"$key"} = $val;
+    }
+    # allow relative paths
+    if ($pidfile !~ m#^/#) {
+        $pidfile = "/var/run/socialtext/$pidfile";
+    }
+    if ($init_cmd !~ m#^/#) {
+        $init_cmd = "/etc/init.d/$init_cmd";
+    }
+}
 
 pod2usage(1) unless ($pidfile && $init_cmd);
 
