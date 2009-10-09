@@ -1286,7 +1286,16 @@ sub post_signals {
     my $offset = shift || 1200;
 
     for my $i ($offset .. $offset+$count) {
-        $self->post_signal($message . " $i");
+        my $location = $self->post_signal($message . " $i");
+
+        # Rewind the date
+        sql_execute(<<EOT, "${i}s");
+UPDATE signal SET at = at - ?::interval 
+    WHERE signal_id = (
+        SELECT signal_id FROM signal 
+            ORDER BY at DESC LIMIT 1
+    )
+EOT
     }
 }
 
