@@ -209,4 +209,9 @@
 | st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%second%% |
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%second%% |
 
-| *Comment* | Test Case: Signals/Activities Interaction |  |
+| *Comment* | Test Case: Signals/Activities Interaction TEARDOWN |  |
+
+| st-admin | delete-workspace --no-export --w %%secondws%% | has been deleted |
+| st-admin | delete-workspace --no-export --w %%ws%% | has been deleted |
+
+| *Comment* | Test Case: Signals/Activities Interaction COMPLETED |  |

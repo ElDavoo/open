@@ -27,7 +27,7 @@
 | click_and_wait | link=%%new_acct%% |  |
 | click_and_wait | link=Add User |  |
 | type_ok | email_address | bogus |
-| click_and_wait | //input[contains(@id,'add_user')] |  |
+| click_ok | //input[contains(@id,'add_user')] |  |
 | wait_for_text_present_ok | bogus is not a valid email address | 30000 |
 | type_ok | email_address | foo%%start_time%%@bar.com |
 | type_ok | first_name | firstname |
@@ -38,7 +38,7 @@
 | type_ok | work_phone | work phone |
 | type_ok | mobile_phone | mobile phone |
 | type_ok | home_phone | home phone |
-| click_and_wait | //input[contains(@id,'add_user')] |  |
+| click_ok | //input[contains(@id,'add_user')] |  |
 | wait_for_text_present_ok | Added user foo%%start_time%%@bar.com | 30000 |
 | click_and_wait | link=Back |  |
 | wait_for_element_visible_ok | link=firstname lastname <foo%%start_time%%@bar.com> |  |
@@ -85,5 +85,8 @@
 | st-submit |  |  |
 | text_like | Showing 1 - 1 of 1 total. |  |
 
-| *Comment* | Test case: Business Control Panel User CLEANUP |  |
-| st-admin | delete-workspace --workspace %%new_workspace%% --no-export |  |
+| *Comment* | Test case: Business Control Panel User TEARDOWN |  |
+
+| st-admin | delete-workspace --workspace %%new_workspace%% --no-export | has been deleted |
+
+| *Comment* | Test case: Business Control Panel User COMPLETED |  |

@@ -84,4 +84,8 @@
 | st_text_unlike_in_activities_widget | activities_widget | qr/%%short_username%%+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%/ |
 | st_text_unlike_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
 
-| *Comment* | Test Case: Activities Widget Verify Conversation |  |
+| *Comment* | Test Case: Activities Widget Verify Conversation TEARDOWN |  |
+
+| st-admin | delete-workspace --no-export --w %%wrkspc%% | has been deleted |
+
+| *Comment* | Test Case: Activities Widget Verify Conversation COMPLETED |  |

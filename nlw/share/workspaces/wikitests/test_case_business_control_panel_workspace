@@ -61,5 +61,7 @@
 | text_like | Showing 1 - 1 of 1 total. |  |
 | wait_for_element_visible_ok | link=%%new_workspace%% | 30000 |
 
-| *Comment* | Test case: Business Control Panel Workspace CLEANUP |  |
+| *Comment* | Test case: Business Control Panel Workspace TEARDOWN |  |
 | st-admin | delete-workspace --workspace %%new_workspace%% --no-export |  |
+
+| *Comment* | Test case: Business Control Panel Workspace COMPLETED |  |
