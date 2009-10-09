@@ -28,6 +28,8 @@ NOTE: each of these test must manage its own plugin enables/disables, logins and
 * [Test Case: Verify Profile]
 * [Test Case: Tagging Profile]
 * [Test Case: Signal to Networks]
+* [Test Case: Signals Search]
+* [Test Case: Signals Search Pagination]
 * [Test Case: Follow]
 * [Test Case: People Dashboard Navigation]
 * [Test case: Signals Login Logout]
