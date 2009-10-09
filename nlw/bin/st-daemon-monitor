@@ -37,7 +37,7 @@ GetOptions(
     'scgi!'  => \$check_scgi,
     'config=s' => \$config_prefix,
 )
-or pod2usage(1);
+or pod2usage(-exitstatus => 1, -message => $?);
 pod2usage(1) if $help;
 pod2usage(-exitstatus => 0, -verbose => 2) if $man;
 
@@ -57,7 +57,10 @@ if ($config_prefix) {
     }
 }
 
-pod2usage(1) unless ($pidfile && $init_cmd);
+pod2usage(-exitstatus => 1, -message => "pidfile is required")
+    unless $pidfile;
+pod2usage(-exitstatus => 1, -message => "init command is required")
+    unless $init_cmd;
 
 if ($config_prefix) {
     # allow relative paths
