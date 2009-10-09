@@ -1285,7 +1285,7 @@ sub post_signals {
     my $message = shift or die;
     my $offset = shift || 1200;
 
-    for my $i ($offset .. $offset+$count) {
+    for my $i ($offset .. $offset+$count-1) {
         my $location = $self->post_signal($message . " $i");
 
         # Rewind the date
