@@ -15,109 +15,126 @@
 | create_user | %%a_username%% | %%password%% | %%hostname%% | %%a_name%% |
 | create_user | %%z_username%% | %%password%% | %%hostname%% | %%z_name%% |
 
-| *Comment* | Test Case: Signals Search. Send 22 signals %%a_username%% |  |
-| http-user-pass | %%a_username%% | %%password%% |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 01"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 02"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 03"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 04"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 05"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 06"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 07"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 08"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 09"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 10"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 11"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 12"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 13"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 14"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 15"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 16"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 17"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 18"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 19"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 20"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 21"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 22"} |
+| *Comment* | This test uses post-signals to rapidly create signals. |  |
+| *Comment* | It creates a set of signals that can be searched and will appear |  |
+| *Comment* | in linear time order in search results. |  |
+| *Comment* | BUT posted signals appear in inverted order in signals display, |  |
+| *Comment* | and more than 30 minutes old. FYI. |  |
 
-| *Comment* | Test Case: Signals Search. Send 22 signals %%z_username%% |  |
-| http-user-pass | %%z_username%% | %%password%% |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 41"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 42"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 43"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 44"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 45"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 46"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 47"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 48"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 49"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 50"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 51"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 52"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 53"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 54"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 55"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 56"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 57"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 58"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 59"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 60"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 61"} |
-| post-json | /data/signals | {"signal":"Pagination %%start_time%% 62"} |
+| *Comment* | Test Case: Signals Search. Send 22 signals %%a_username%% |  |  |
+| http-user-pass | %%a_username%% | %%password%% |  |
+| post-signals | 22 | Pagination %%start_time%% | 1 |
+
+| *Comment* | Test Case: Signals Search. Send 22 signals %%z_username%% |  |  |
+| http-user-pass | %%z_username%% | %%password%% |  |
+| post-signals | 22 | Pagination %%start_time%% | 41 |
+
+| *Comment* | Test Case: Signals Search. You have no choice but to wait until the Signals Indexer finishes. |  |  |
+| *Comment* | Test Case: Signals Search. If you don't you get partial search results |  |  |
+| *Comment* | Test Case: Signals Search. Pausing 30 seconds for Signals Indexing |  |  |
+| pause | 30000 |  |
 
 | http-user-pass | %%email%% | %%password%% |
 
-| *Comment* | Test Case: Signals Search. Search for paginated signals |  |
+| *Comment* | Test Case: Signals Search. Search for 44 Pagination %%start_time%% signals |  |
 | open_ok | /?signals |  |
 | wait_for_element_visible_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | Pagination %%start_time%% |
 | click_and_wait | st-search-submit |  |
-| pause | 8000 | I hate pause |
-
-| *Comment* | Test Case: Signals Search. Verify found newest Pagination %%start_time%% signals |  |
 | wait_for_element_visible_ok | sort-picker | 30000 |
 | select_ok | sort-picker | label=Newest |
-| pause | 8000 | I Hate Pause |
+| pause | 8000 | I hate Pause |
+
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
-| text_like | Search results in all networks for 'Pagination %%start_time%%' |  |
+
+| *Comment* | Test Case: Signals Search. Verify found Pagination %%start_time%% signals |  |
+| wait_for_text_present_ok | Search results in all networks for 'Pagination %%start_time%%' | 30000 |
+
+| wait_for_text_present_ok | Pagination %%start_time%% 43 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 44 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 45 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 46 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 47 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 48 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 49 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 50 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 51 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 52 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 53 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 54 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 55 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 56 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 57 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 58 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 59 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 60 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 61 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
 | text_like | qr/Pagination %%start_time%% 62.+Pagination %%start_time%% 43/ism |  |
 
 | *Comment* | Test Case: Signals Search. Older >> |  |
-| wait_for_element_visible_ok | link=Older >> | 30000 |
-| click_ok | link=Older >> |  |
-| pause | 8000 | I Hate Pause |
-| text_like | qr/Pagination %%start_time%% 42.+Pagination %%start_time%% 05/ism |  |
-| pause | 8000 | I Hate Pause |
-| text_like | qr/Pagination %%start_time%% 04.+Pagination %%start_time%% 01/ism |  |
+| wait_for_element_visible_ok | //span[@class='older nav-link active'] | 30000 |
+| click_ok | //span[@class='older nav-link active'] |  |
+| wait_for_element_visible_ok | //span[@class='newer nav-link active'] | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 5 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 42 | 30000 |
+| text_like | qr/Pagination %%start_time%% 42.+Pagination %%start_time%% 5/ism |  |
 
-^ END
+| *Comment* | Test Case: Signals Search. Older >> again |  |
+| click_ok | //span[@class='older nav-link active'] |  |
+| wait_for_element_not_present_ok | //span[@class='older nav-link active'] | 30000 |
+| wait_for_element_visible_ok | //span[@class='newer nav-link active'] | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 1 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 4 | 30000 |
+| text_like | qr/Pagination %%start_time%% 4.+Pagination %%start_time%% 1/ism |  |
+
+| *Comment* | Test Case: Signals Search. Newer >> |  |
+| click_ok | //span[@class='newer nav-link active'] |  |
+| wait_for_element_visible_ok | //span[@class='older nav-link active'] | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 5 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 42 | 30000 |
+| text_like | qr/Pagination %%start_time%% 42.+Pagination %%start_time%% 5/ism |  |
+
+| *Comment* | Test Case: Signals Search. Older >> once more |  |
+| click_ok | //span[@class='older nav-link active'] |  |
+| wait_for_element_not_present_ok | //span[@class='older nav-link active'] | 30000 |
+| wait_for_element_visible_ok | //span[@class='newest nav-link active'] | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 1 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 4 | 30000 |
+| text_like | qr/Pagination %%start_time%% 4.+Pagination %%start_time%% 1/ism |  |
+
+| *Comment* | Test Case: Signals Search. << Newest |  |
+| click_ok | //span[@class='newest nav-link active'] |  |
+| wait_for_element_not_present_ok | //span[@class='newest nav-link active'] | 30000 |
+| wait_for_element_present_ok | //span[@class='older nav-link active'] | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 43 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
+| text_like | qr/Pagination %%start_time%% 62.+Pagination %%start_time%% 43/ism |  |
 
 | *Comment* | Test Case: Signals Search. Sort. SORT DOES NOT CAUSE PAGE LOAD |  |
 | wait_for_element_visible_ok | sort-picker | 30000 |
 | select_ok | sort-picker | label=Sender |
-| pause | 8000 | I Hate Pause |
-| text-like | qr/%%start_time%% 12.+%%start_time%% 01.+%%start_time%% 32.+%%start_time%% 21/ism |  |
-| text-like | qr/%%a_name%%.+You/ism |  |
+| wait_for_text_present_ok | Pagination %%start_time%% 22 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 3 | 30000 |
+| text-like | qr/%%a_name%%.+%%start_time%% 22.+%%a_name%%.+%%start_time%% 3/ism |  |
 | select_ok | sort-picker | label=Newest |
-| pause | 8000 | I Hate Pause |
-| text-like | qr/%%start_time%% 32.+%%start_time%% 21.+%%start_time%% 12.+%%start_time%% 01/ism |  |
-| text-like | qr/You.+%%a_name%%/ism |  |
+| wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 43 | 30000 |
+| text-like | qr/%%z_name%%.+%%start_time%% 62.+%%z_name%%.+%%start_time%% 43/ism |  |
 | select_ok | sort-picker | label=Oldest |
-| pause | 8000 | I Hate Pause |
-| text-like | qr/%%start_time%% 01.+%%start_time%% 12.+%%start_time%% 21.+%%start_time%% 32/ism |  |
-| text-like | qr/%%a_name%%.+You/ism |  |
+| wait_for_text_present_ok | Pagination %%start_time%% 1 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 20 | 30000 |
+| text-like | qr/%%a_name%%.+%%start_time%% 1.+%%a_name%%.+%%start_time%% 20/ism |  |
 | select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Signals Search. Relevance. Send a more relevant signal AND a newer signal |  |
-| open_ok | /?dashboard |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-send-signal-via-activities-widget | activities_widget | MoreRelevant %%start_time%% %%start_time%% %%start_time%% |
-| st-send-signal-via-activities-widget | activities_widget | LessRelevant %%start_time%% |
+
+| post-signals | 1 | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 63 |
+| post-signals | 1 | LessRelevant %%start_time%% | 64 |
+| pause | 8000 | I hate Pause |
 
 | *Comment* | Test Case: Signals Search. Relevance. Find a more relevant signal |  |
 | open_ok | /?signals |  |
@@ -128,18 +145,23 @@
 | click_and_wait | st-search-submit |  |
 | pause | 8000 | I hate Pause |
 
+| *Comment* | Test Case: Signals Search. Search will sort by Oldest (sticky). This is good. |  |
+
 | *Comment* | Test Case: Signals Search. Verify found more relevant signal |  |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
 | wait_for_text_present_ok | Search results in all networks for '%%start_time%%' | 30000 |
 | select_ok | sort-picker | label=Relevance |
-| pause | 8000 | I Hate Pause |
-| text-like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 12/ism |  |
+| wait_for_text_present_ok | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
+| text-like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 62/ism |  |
 
 | *Comment* | Test Case: Signals Search. Verify relevant signal not newest signal |  |
 | select_ok | sort-picker | label=Newest |
-| pause | 8000 | I Hate Pause |
-| text-like | qr/LessRelevant %%start_time%%.+MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 12/ism |  |
+| wait_for_text_present_ok | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 30000 |
+| wait_for_text_present_ok | LessRelevant %%start_time%% | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
+| text-like | qr/LessRelevant %%start_time%%.+MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 62/ism |  |
 
 | *Comment* | Test Case: Signals Search. Delete irrelevant signal and search again |  |
 | click_ok | //a[@class='hideLink'] |  |
@@ -159,7 +181,7 @@
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
 | text_unlike | //body | LessRelevant %%start_time%% |
-| text_like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 12/ism |  |
+| text_like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 62/ism |  |
 
 | *Comment* | Test Case: Signals Search. Verify clear |  |
 | wait_for_element_visible_ok | link=clear search results | 30000 |
