@@ -1,0 +1,62 @@
+| *Comment* | Test Case: Business Control Panel Groups Add to Workspace |
+
+| *Comment* | Test Case: Business Control Panel Groups Add to Workspace SETUP |  |  |
+| *Comment* | Test Case: Business Control Panel Groups Add to Workspace Create a WS, a group, two users |  |  |
+| standard-test-setup |  |  |  |
+| st-admin | give-accounts-admin --username %%username%% |  |  |
+| set | agw-acct | agwacct%%start_time%% |  |
+| st-admin | create-account --name %%agw-acct%% |  |  |
+| set | group | groupa%%start_time%% |  |
+| create-group | %%group%% | %%agw-acct%% | %%username%% |
+
+| *Comment* | Test Case: Business Control Panel Groups Add to Workspace Test User In Group |  |
+| set | testuseringroup | testusering%%start_time%%@ken.socialtext.net |
+| create-user | %%testuseringroup%% | password |
+| add-user-to-group | %%testuseringroup%% | %%group_id%% |
+
+| *Comment* | Test Case: Business Control Panel Groups Add to Workspace Test User In Workspace |  |
+| set | testuserinworkspace | testuserinws%%start_time%%@ken.socialtext.net |
+| create-user | %%testuserinworkspace%% | password |
+| add-member | %%testuserinworkspace%% | %%workspace%% |
+
+| *Comment* | Visual inspection of add to workspace |  |
+| open-ok | /nlw/control/group/%%group_id%% |  |
+| wait_for_element_visible_ok | link=Add Group To A Workspace | 30000 |
+| wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
+| text_like | //body | Workspaces (0) |
+| text_like | //body | Users (1) |
+| click_and_wait | link=Add Group To A Workspace |  |
+| text_like | //body | qr/Add Group To Workspace/ism |
+| text_like | //body | Send invitation email |
+
+| *Comment* | Test Case: Control Panel Group Add To Workspace TBD Verify Checkboxes |
+
+| *Comment* | Add To a workspace |  |
+| select-ok | //select | %%workspace%% |
+| click-and-wait | st-add-group-to-workspace |  |
+
+| *Comment* | Verify redirect, message |  |
+| text_like | //body | %%group%% Group |
+| text_like | //body | qr/Group is now a member of the %%workspace%% workspace/ism |
+| text_like | //body | Workspaces (1) |
+| wait_for_element_visible_ok | link=%%workspace%% | 30000 |
+| text_like | //body | Users (1) |
+| wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
+
+| *Comment* | Add workspace /again/ so we see a failure |  |
+| open-ok | /nlw/control/group/%%group_id%% |  |
+| wait_for_element_visible_ok | link=Add Group To A Workspace | 3000 |
+| click_and_wait | link=Add Group To A Workspace |  |
+| select-ok | workspace_id | %%workspace%% |
+| click-and-wait | st-add-group-to-workspace |  |
+| text_like | //body | %%group%% Group |
+| text_like | //body | qr/Group is already a member of the %%workspace%% workspace/ism |
+| text_like | //body | Accounts (2) |
+
+| *Comment* | Test Case: Control Panel Group Add To Workspace TBD Add as admin |
+
+| *Comment* | Test Case: Control Panel Group Add To Workspace TEARDOWN |
+| st-admin | delete-workspace --workspace %%workspace%% --no-export |
+| delete-group | %%group_id%% |
+
+| *Comment* | Test Case: Control Panel Group Add To Account COMPLETED |

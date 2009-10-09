@@ -44,5 +44,7 @@
 | include | [Test Case: Business Control Panel Groups In Account] |
 | include | [Test Case: Business Control Panel Group Add To Account] |
 | include | [Test Case: Business Control Panel Groups in Workspace] |
+| include | [Test Case: Business Control Panel Group Add To Workspace] |
+| include | [Test Case: Business Control Panel Workspace Add Group] |
 
 | *Comment* | Test case: Business Control Panel COMPLETED |  |
