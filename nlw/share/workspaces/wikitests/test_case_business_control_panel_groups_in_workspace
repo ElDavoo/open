@@ -51,13 +51,13 @@
 | click_and_wait | group-sort-name |  |
 | text_like | //body | qr/%%g4_match%%.+%%g2_match%%.+%%g3_match%%.+%%g1_match%%/ism |
 
-| *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by id descending should order groups 1 2 3 4 |  |
-| click_and_wait | group-sort-id |  |
-| text_like | //body | qr/%%g4_match%%.+%%g3_match%%.+%%g2_match%%.+%%g1_match%%/ism |
-
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by id ascending should order groups 1 2 3 4 |  |
 | click_and_wait | group-sort-id |  |
 | text_like | //body | qr/%%g1_match%%.+%%g2_match%%.+%%g3_match%%.+%%g4_match%%/ism |
+
+| *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by id descending should order groups 1 2 3 4 |  |
+| click_and_wait | group-sort-id |  |
+| text_like | //body | qr/%%g4_match%%.+%%g3_match%%.+%%g2_match%%.+%%g1_match%%/ism |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Add Group |
 | open_ok | /nlw/control/workspace/%%workspace_id%% |
