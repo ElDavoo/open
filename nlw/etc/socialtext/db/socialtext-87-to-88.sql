@@ -10,7 +10,7 @@ BEGIN;
 -- in duplicate non-hidden widgets.
 
 -- FIX:
--- Delete all entries that are socialtext-shipped (global), hae removed set to
+-- Delete all entries that are socialtext-shipped (global), have removed set to
 -- FALSE, and are not in the default gallery (0)
 DELETE FROM gallery_gadget
  WHERE global
