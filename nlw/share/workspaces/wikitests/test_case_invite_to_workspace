@@ -24,7 +24,7 @@
 | wait_for_text_not_present_ok | Invite New Users | 30000 |
 
 | *Comment* | Test Case: Invite to Workspace Admin has straight invite link |  |
-| st-admin | add-workspace-admin --e %%username%% --w %%ws%% | %%username%% is now a workspace admin for the %%ws%% workspace |
+| st-admin | add-workspace-admin --e %%username%% --w %%ws%% | %%username%% is now a workspace admin of the %%ws%% workspace |
 | open_ok | /%%ws%% |  |
 | wait_for_element_visible_ok | link=Settings |  |
 | click_and_wait | link=Settings |  |

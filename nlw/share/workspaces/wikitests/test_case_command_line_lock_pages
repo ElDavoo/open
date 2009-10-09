@@ -9,7 +9,7 @@
 | st-admin | create-user --email %%cli_admin%% --password wikicli --first-name Wiki --last-name CLI | qr/A new user with the username "%%cli_admin%%" was created/ |
 | st-admin | add-member --email %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is now a member of the %%cmdline_workspace%% workspace. |
 | st-admin | add-member --email %%cli_admin%% --workspace %%cmdline_workspace%% | %%cli_admin%% is now a member of the %%cmdline_workspace%% workspace. |
-| st-admin | add-workspace-admin --email %%cli_admin%% --workspace %%cmdline_workspace%% | %%cli_admin%% is now a workspace admin for the %%cmdline_workspace%% workspace. |
+| st-admin | add-workspace-admin --email %%cli_admin%% --workspace %%cmdline_workspace%% | %%cli_admin%% is now a workspace admin of the %%cmdline_workspace%% workspace. |
 | st-admin | update-page --email %%email%% --workspace %%cmdline_workspace%% --page "Lockme Page 1 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "Lockme Page 1 %%start_time%%" page has been created. |
 | st-admin | update-page --email %%email%% --workspace %%cmdline_workspace%% --page "Lockme Page 2 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "Lockme Page 2 %%start_time%%" page has been created. |
 
