@@ -41,18 +41,25 @@ or pod2usage(1);
 pod2usage(1) if $help;
 pod2usage(-exitstatus => 0, -verbose => 2) if $man;
 
+# read in the params from appliance.conf
 if ($config_prefix) {
-    # read in the params from appliance.conf
-    require Socialtext::Appliance::Config;
+    eval "require Socialtext::Appliance::Config";
+    die "Can't use appliance config: $@" if $@;
+
     my $conf = Socialtext::Appliance::Config->new;
     no strict "refs";
     for my $key (qw(
-        pidfile init signal max_rss max_vsz max_fds tcp_port check_scgi
+        pidfile init_cmd signal max_rss max_vsz max_fds tcp_port check_scgi
     )) {
         my $val = $conf->value("monitor_${config_prefix}_$key");
         next unless defined $val;
         ${"$key"} = $val;
     }
+}
+
+pod2usage(1) unless ($pidfile && $init_cmd);
+
+if ($config_prefix) {
     # allow relative paths
     if ($pidfile !~ m#^/#) {
         $pidfile = "/var/run/socialtext/$pidfile";
@@ -61,8 +68,6 @@ if ($config_prefix) {
         $init_cmd = "/etc/init.d/$init_cmd";
     }
 }
-
-pod2usage(1) unless ($pidfile && $init_cmd);
 
 my ($pid) = slurp($pidfile);
 $pid ||= 0;
