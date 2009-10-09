@@ -14,6 +14,7 @@ sub _my_GET_any {
     if ($self->workspace->real == 0) {
         $rest->header(
             -status => HTTP_404_Not_Found,
+            -type => 'text/plain'
         );
         return "Default Workspace not found.";
     }
