@@ -3,7 +3,6 @@
 * Fixture: SocialWidgets
 
 | enable-acct-plugin | signals | %%hostname%% |
-| st-clear-signals |  |  |
 
 | *Comment* | Test Case: Signals Search. Two users, lexicographically orderable |  |
 
@@ -27,6 +26,7 @@
 
 | *Comment* | Test Case: Signals Search. Send 2 signals %%a_username%% |  |
 | st-send-signal-via-activities-widget | activities_widget | NotAStopWord %%start_time%% 01 |
+| pause | 3000 | pause between signaling with widget |
 | st-send-signal-via-activities-widget | activities_widget | NotAStopWord %%start_time%% 12 |
 
 | *Comment* | Test Case: Signals Search. Search 2 signals %%a_username%% |  |
@@ -58,6 +58,7 @@
 
 | *Comment* | Test Case: Signals Search. Send 2 signals %%z_username%% |  |
 | st-send-signal-via-activities-widget | activities_widget | NotAStopWord %%start_time%% 21 |
+| pause | 3000 | pause between signaling with widget |
 | st-send-signal-via-activities-widget | activities_widget | NotAStopWord %%start_time%% 32 |
 
 | *Comment* | Test Case: Signals Search. Search 2 signals %%z_username%% |  |
@@ -100,6 +101,7 @@
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st-send-signal-via-activities-widget | activities_widget | MoreRelevant %%start_time%% %%start_time%% %%start_time%% |
+| pause | 3000 | pause between signaling with widget |
 | st-send-signal-via-activities-widget | activities_widget | LessRelevant %%start_time%% |
 
 | *Comment* | Test Case: Signals Search. Relevance. Find a more relevant signal |  |
@@ -147,12 +149,10 @@
 | *Comment* | Test Case: Signals Search. Verify clear |  |
 | wait_for_element_visible_ok | link=clear search results | 30000 |
 
-WHY DOESN'T CLICK AND WAIT WORK HERE? TIMES OUT EVEN THOUGH THE PAGE LOADS ...
+WHY DOESN'T CLICK AND WAIT WORK HERE? MAYBE BECAUSE INSIDE FRAME ...
 
 | click_ok | link=clear search results |  |
 | pause | 8000 | I hate pause |
-| select_frame | relative=parent |  |
-
 | st-name-widget | 3 | searchwidget |
 | st-widget-title-like | searchwidget | Signals |
 

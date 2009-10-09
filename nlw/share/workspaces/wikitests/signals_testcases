@@ -2,12 +2,10 @@ A convenience testset for running all of our Signals tests
 
 Signals Widget
 
-* [Test Case: Activities Widget]
-
-Signals Page
-
-* [Test Case: Signals Page]
+Test Case: Activities Widget
 
 Signal to Networks
 
 * [Test Case: Signal to Networks]
+* [Test Case: Signals Search]
+* [Test Case: Signals Search Pagination]

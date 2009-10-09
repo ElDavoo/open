@@ -110,3 +110,6 @@
 | body-like | zzz |
 
 # Timeout
+
+| *Comment*    | Cleanup; put things back the way they were.  |
+| set-searcher | KinoSearch |

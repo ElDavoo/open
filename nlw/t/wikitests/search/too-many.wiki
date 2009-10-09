@@ -9,6 +9,9 @@
 | st-config | set search_warning_threshold 500 |
 | http-user-pass | %%username%% | password |
 
+| Comment      | The "too many" warnings are only applicable for KinoSearch |
+| set-searcher | KinoSearch                                                 |
+
 | Comment | search an empty workspace |
 | get | /%%workspace%%/index.cgi?action=search&scope=_&search_term=wiki |
 | code-is | 200 |
