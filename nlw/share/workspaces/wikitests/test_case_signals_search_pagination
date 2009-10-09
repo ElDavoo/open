@@ -191,7 +191,6 @@ WHY DOESN'T CLICK AND WAIT WORK HERE? TIMES OUT EVEN THOUGH THE PAGE LOADS ...
 
 | click_ok | link=clear search results |  |
 | pause | 8000 | I hate pause |
-| select_frame | relative=parent |  |
 
 | st-name-widget | 3 | searchwidget |
 | st-widget-title-like | searchwidget | Signals |
