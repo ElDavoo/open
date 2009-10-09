@@ -1,7 +1,7 @@
 package Socialtext::SCGI;
+use Moose;
+
 # @COPYRIGHT@
-use warnings;
-use strict;
 
 =head1 NAME
 
@@ -13,6 +13,9 @@ Socialtext::SCGI - Helper functions
   use Socialtext::SCGI;
   my ($err,$response) = Socialtext::SCGI->Ping(26061, 10);
   my $resp = HTTP::Message->parse($response);
+
+  my $client = Socialtext::SCGI->new(port => 26061);
+  my ($err,$response) = $client->get("/ping");
 
 =head1 DESCRIPTION
 
@@ -27,8 +30,13 @@ This module uses L<AnyEvent> to do non-blocking I/O.
 use AnyEvent;
 use AnyEvent::Handle;
 use Guard;
+use namespace::clean -except => 'meta';
 
-=head2 Ping $port[, $timeout]
+has 'port' => (is => 'ro', isa => 'Int', required => 1);
+has 'timeout' => (is => 'ro', isa => 'Num', required => 1, default => 10.0);
+has 'on_connect' => (is => 'ro', isa => 'CodeRef');
+
+=head2 Socialtext::SCGI->Ping $port[, $timeout]
 
 Connect to the specified SCGI port and send a request for "GET /ping" with a
 minimal "CGI" environment.
@@ -41,22 +49,44 @@ sub Ping {
     my $class = shift;
     my $port = shift || die 'Need a port to ping';
     my $timeout = shift || 10;
+    my $self = $class->new(
+        port => $port,
+        timeout => $timeout,
+    );
+    return $self->get("/ping");
+}
+
+=head2 $self->get $uri
+
+GET the specified URI.
+
+=cut
+
+sub get {
+    my $self = shift;
+    my $uri = shift;
+    my $more_env = shift;
 
     my $z = "\0";
-    my $ping = "CONTENT_LENGTH${z}0${z}SCGI${z}1${z}". # headers
+    my $nstr = "CONTENT_LENGTH${z}0${z}SCGI${z}1${z}". # headers
                "REQUEST_METHOD${z}GET${z}".
-               "REQUEST_URI${z}/ping${z}";
+               "REQUEST_URI${z}${uri}${z}";
+    if ($more_env) {
+        while (my ($k,$v) = each(%$more_env)) {
+            $nstr .= "$k$z$v$z";
+        }
+    }
 
     my $err;
     my $response = '';
 
     my $cv = AE::cv;
-    my $t = AE::timer $timeout, 0, sub {$cv->croak('timeout timer')};
+    my $t = AE::timer $self->timeout, 0, sub {$cv->croak('timeout timer')};
 
     #warn "connecting... ".time;
     my $h = AnyEvent::Handle->new(
-        connect => ['localhost', $port],
-        timeout => $timeout,
+        connect => ['localhost', $self->port],
+        timeout => $self->timeout,
         on_timeout => sub {$cv->croak('timeout handle')},
         on_eof => sub { $cv->send },
         on_error => sub {
@@ -69,10 +99,11 @@ sub Ping {
                 $cv->croak($msg);
             }
         },
+        on_connect => sub {$self->on_connect->() if $self->on_connect},
     );
     Guard::scope_guard(sub { $h->destroy });
 
-    $h->push_write(netstring => $ping);
+    $h->push_write(netstring => $nstr);
     $h->push_shutdown();
 
     # read the whole response, assuming "Connection: close"
@@ -85,4 +116,5 @@ sub Ping {
     return ($err, $response);
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
