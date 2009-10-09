@@ -12,12 +12,6 @@ use Coro::AnyEvent;
 use Guard qw/scope_guard/;
 use Socialtext::Log qw/st_log/;
 
-=head
-
-some pod
-
-=cut
-
 our $man = 0;
 our $help = 0;
 our $pidfile;
