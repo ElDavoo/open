@@ -12,6 +12,12 @@ use Coro::AnyEvent;
 use Guard qw/scope_guard/;
 use Socialtext::Log qw/st_log/;
 
+=head
+
+some pod
+
+=cut
+
 our $man = 0;
 our $help = 0;
 our $pidfile;
@@ -181,3 +187,29 @@ if ($check_scgi) {
 
 # all's well
 exit 0;
+
+=head1 NAME
+
+st-daemon-monitor - Monitor daemon processes
+
+=head1 SYNOPSIS
+
+  st-daemon-monitor --help
+
+  st-daemon-monitor --man (Full docs?)
+
+  st-daemon-monitor --config=proxy
+
+  st-daemon-monitor --pidfile <Filename> --init '<Cmd>' [Options]
+  
+
+  Options:
+    --sig <Int>         Signal to send before running init cmd (Default: 15)
+    --rss <Int>         RSS limit
+    --vsz <Int>         VSZ limit
+    --fds <Int>         FDS limit
+    --tcp <Port>        Check that the process is listingin on this port
+    --scgi              Ping scgi server on port passed as --tcp
+    --config <prefix>   Use /etc/socialtext/appliance.conf to read values
+
+=cut
