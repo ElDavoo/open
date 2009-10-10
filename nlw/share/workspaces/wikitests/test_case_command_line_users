@@ -29,8 +29,8 @@ deactivate-user
 | st-admin | clone-workspace --workspace test-data --target deactivate1%%start_time%% | The test-data workspace has been cloned to deactivate1%%start_time%%. |
 | st-admin | clone-workspace --workspace test-data --target deactivate2%%start_time%% | The test-data workspace has been cloned to deactivate2%%start_time%%. |
 
-| st-admin | add-member --email deactivate%%start_time%%@ken.socialtext.net --workspace deactivate1%%start_time%% | deactivate%%start_time%%@ken.socialtext.net is now a member of the deactivate1%%start_time%% workspace. |
-| st-admin | add-member --email deactivate%%start_time%%@ken.socialtext.net --workspace deactivate2%%start_time%% | deactivate%%start_time%%@ken.socialtext.net is now a member of the deactivate2%%start_time%% workspace. |
+| st-admin | add-member --email deactivate%%start_time%%@ken.socialtext.net --workspace deactivate1%%start_time%% | qr/deactivate%%start_time%%@ken.socialtext.net is now a member of the deactivate1%%start_time%% workspace/ism |
+| st-admin | add-member --email deactivate%%start_time%%@ken.socialtext.net --workspace deactivate2%%start_time%% | qr/deactivate%%start_time%%@ken.socialtext.net is now a member of the deactivate2%%start_time%% workspace/ism |
 
 | st-admin | deactivate-user --email deactivate%%start_time%%@ken.socialtext.net | deactivate%%start_time%%@ken.socialtext.net has been removed from workspaces deactivate1%%start_time%%, deactivate2%%start_time%% |
 
@@ -70,7 +70,7 @@ confirm-user
 | st-admin | add-member --user %%cli_user%% --workspace | qr/ The command you called \(add-member\) requires a workspace to be specified.+A workspace is identified by name with the --workspace option/ |
 | st-admin | add-member --user cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | No user with the username "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
 | st-admin | add-member --user %%cli_user%% --workspace no-%%start_time%% | qr/No workspace named "no-%%start_time%%" could be found./ism |
-| st-admin | add-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is now a member of the %%workspace%% workspace./ism |
+| st-admin | add-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is now a member of the %%workspace%% workspace/ism |
 | st-admin | add-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is already a member of the %%workspace%% workspace./ism |
 
 | *Comment* | Test Case: Command Line Tests USERS Removing a member |  |
@@ -109,7 +109,7 @@ confirm-user
 | st-admin | add-impersonator --email %%cli_user%% --workspace | qr/ The command you called \(add-impersonator\) requires a workspace to be specified.+A workspace is identified by name with the --workspace option/ |
 | st-admin | add-impersonator --email cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | No user with the email address "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
 | st-admin | add-impersonator --email %%cli_user%% --workspace no-%%start_time%% | No workspace named "no-%%start_time%%" could be found. |
-| st-admin | add-impersonator --email %%cli_user%% --workspace %%workspace%% | %%cli_user%% is now an impersonator of the %%workspace%% workspace. |
+| st-admin | add-impersonator --email %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is now an impersonator of the %%workspace%% workspace/ism |
 | st-admin | add-impersonator --email %%cli_user%% --workspace %%workspace%% | %%cli_user%% is already an impersonator of the %%workspace%% workspace. |
 
 | *Comment* | Test Case: Command Line Tests USERS Remove impersonator |  |
