@@ -5,7 +5,7 @@
 
 | *Comment* | Test Case: Recent Changes. Create a target workspace |  |
 | st-admin | create-workspace --name %%newspace%% --title "%%newtitle%%" --empty | A new workspace named "%%newspace%%" was created. |
-| st-admin | add-member --email %%email%% --workspace %%newspace%% | %%username%% is now a member of the %%newspace%% workspace. |
+| st-admin | add-member --email %%email%% --workspace %%newspace%% | %%username%% is now a member of the %%newspace%% Workspace. |
 
 | *Comment* | Test Case: Recent Changes. Create a page |  |
 | open_ok | /%%newspace%%/index.cgi?action=new_page |  |
