@@ -69,3 +69,5 @@
 | include | [Test Case: Active Member Actions] |  |
 | st-catchup-logs |  |  |
 | st-clear-json-cache |  |  |
+
+| *Comment* | Test Case: Active Members Setup COMPLETED |  |

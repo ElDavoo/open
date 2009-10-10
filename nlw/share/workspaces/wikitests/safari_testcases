@@ -9,7 +9,8 @@ If Test Case: Verify Location fails, you have not configured your
 test env properly and are not testing the test-workspace
 
 * [Test Case: Verify Location]
-* [Test case: Business Control Panel]
+
+* [Control Panel Testcases]
 
 * [Test Case: Home]
 * [Test Case: Workspace Navigation]

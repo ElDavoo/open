@@ -1,8 +1,7 @@
 | *Comment* | Test Case: Activities Widget Other User's Signals |
 
-| st-logoutin | %%othersignaluser%% | %%password%% |
-| st-admin | update-page --workspace %%ws%% --email %%othersignaluser%% --page "Other Edit Summary Signal %%start_time%%" < %%wikitest_client_files%%wikitest_toc.txt | The "Other Edit Summary Signal %%start_time%%" page has been created. |
 | st-admin | enable-plugin --all-accounts --p signals |  |
+| st-admin | update-page --workspace %%ws%% --email %%othersignaluser%% --page "Other Edit Summary Signal %%start_time%%" < %%wikitest_client_files%%wikitest_toc.txt | The "Other Edit Summary Signal %%start_time%%" page has been created. |
 
 | *Comment* | Test Case: Activities Widget Other User Signals. Create one edit summary from signal |  |
 | st-logoutin | %%signalsuser%% | %%password%% |
@@ -19,68 +18,17 @@
 | click_ok | st-edit-summary-signal-checkbox |  |
 | click_and_wait | st-save-button-link |  |
 
-| *Comment* | Test Case: Activities Widget Other User Signals. Get a fresh Activities widget |  |
-| open_ok | /?dashboard | 60000 |
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Activities'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Activities'] |  |
-
-| *Comment* | Test Case: Activities Widget Other User Signals. Verify back at Dashboard with widget |  |
-| wait_for_text_present_ok | Welcome | 30000 |
-| text_like | st-editing-tools-edit | Welcome |
-| wait_for_text_present_ok | Activities | 30000 |
-
 | *Comment* | Test Case: Activities Widget Other User Signals. Send four signals |  |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
 
-| *Comment* | Test Case: Activities Widget Setup. |  |
-| wait_for_element_visible_ok | expand-input | 10000 |
-| click_ok | expand-input |  |
-
-| *Comment* | Test Case: Activities Widget Other User Signals- signal woke up |  |
-| pause | 3000 |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | woke up %%start_time%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| *Comment* | Test Case: Activities Widget Other User's Signals - Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-
-| *Comment* | Test Case: Activities Widget Other User Signals. fell out of bed |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | fell out of bed %%start_time%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-
-| *Comment* | Test Case: Activities Widget Other User Sogmals. dragged a comb across my head |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | dragged a comb across my head %%start_time%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-
-| *Comment* | Test Case: Activities Widget Other User Signals. Love to hear the robin going |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| pause | 3000 |  |
-| select-frame | relative=parent |  |
+| http-user-pass | %%signalsuser%% | %%password%% |
+| post-signal | woke up %%start_time%% |
+| post-signal | fell out of bed %%start_time%% |
+| post-signal | dragged a comb across my head %%start_time%% |
+| post-signal | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% |
 
 | *Comment* | Test Case: Activities Widget Other User. TODO: Edit Page as conversation |  |
 | *Comment* | Test Case: Activities Widget Other User. TODO: Edit Page as edit |  |
 | *Comment* | Test Case: Activities Widget Other User. TODO: Comment on page as conversation |  |
 | *Comment* | Test Case: Activities Widget Other User. TODO: Comment on page as not conversation |  |
+
+| *Comment* | Test Case: Activities Widget Other User Signals. COMPLETED |  |

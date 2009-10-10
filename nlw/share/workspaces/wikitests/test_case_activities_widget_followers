@@ -11,6 +11,7 @@
 | set | loggedinuser | %%shortloggedin%%@matt.socialtext.net |
 | set | followws | follow-ws-%%start_time%% |
 | set | followacct | followacct%%start_time%% |
+
 | st-admin | create-account --name %%followacct%% |  |
 | st-admin | enable-plugin --account %%followacct%% --plugin dashboard |  |
 | st-admin | enable-plugin --account %%followacct%% --plugin people |  |
@@ -23,7 +24,7 @@
 | st-admin | create-user --email %%loggedinuser%% --password %%password%% --account %%followacct%% |  |
 | st-admin | add-member --workspace %%followws%% --email %%loggedinuser%% |  |
 
-| *Comment* | Test Case: Activities Widget Login as %%followinguser%%, create a page and send a signal |  |
+| *Comment* | Test Case: Activities Widget Followers Login as %%followinguser%%, create a page and send a signal |  |
 
 | st-logoutin | %%followinguser%% | %%password%% |
 | open_ok | /%%followws%%/ |  |
@@ -32,7 +33,7 @@
 | st-name-widget | 1 | activities_widget |
 | st-send-signal-via-activities-widget | activities_widget | You should see this %%start_time%% |
 
-| *Comment* | Test Case: Activities Widget Login as %%notfollowinguser%%, create a page and send a signal |  |
+| *Comment* | Test Case: Activities Widget Followers Login as %%notfollowinguser%%, create a page and send a signal |  |
 | st-logoutin | %%notfollowinguser%% | %%password%% |
 | open_ok | /%%followws%%/ |  |
 | st-create-wikipage | %%followws%% | donotseethispage |
@@ -40,7 +41,7 @@
 | st-name-widget | 1 | activities_widget |
 | st-send-signal-via-activities-widget | activities_widget | Signal from not a follower %%start_time%% |
 
-| *Comment* | Test Case: Activities Widget Login as %%loggedinuser%%, add widget, set length to 25 |  |
+| *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, add widget, set length to 25 |  |
 | st-logoutin | %%loggedinuser%% | %%password%% |
 | open_ok | /%%followws%%/ |  |
 | st-find-user | %%shortfollow%% |  |
@@ -55,13 +56,13 @@
 | select_ok | up_limit | 10 |
 | click_ok | st-savebutton-%%activities_widget%% |  |
 
-| *Comment* | Test Case: Activities Widget Login as %%loggedinuser%%, see all activities |  |
+| *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, see all activities |  |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+to %%followacct%%.+Signal from not a follower %%start_time%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+edited.+donotseethispage.+in.+%%followws%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to %%followacct%%.+You should see this %%start_time%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited pageone.+in %%followws%%/ |
 
-| *Comment* | Test Case: Activities Widget Login as %%loggedinuser%%, change dropdown back to followed, see only %%shortfollow%%'s activtvities |  |
+| *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, change dropdown back to followed, see only %%shortfollow%%'s activtvities |  |
 | st-select-widget-frame | activities_widget |  |
 | click_ok | feed-followed |  |
 | select-frame | relative=parent |
@@ -70,7 +71,7 @@
 | st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to %%followacct%%.+You should see this %%start_time%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited pageone.+in %%followws%%/ |
 
-| *Comment* | Test Case: Activities Widget Login as %%loggedinuser%%, see all activities |  |
+| *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, see all activities |  |
 | st-select-widget-frame | activities_widget |  |
 | click_ok | feed-everyone |  |
 | select-frame | relative=parent |
@@ -78,5 +79,6 @@
 | st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+edited donotseethispage.+in %%followws%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to %%followacct%%.+You should see this %%start_time%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited pageone.+in %%followws%%/ |
-| *Comment* | Test Case: Activities Widget Teardown |
+
+| *Comment* | Test Case: Activities Widget Followers Teardown |
 | st-admin | delete-workspace --workspace %%followws%% --no-export |
