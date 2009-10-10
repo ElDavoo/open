@@ -49,9 +49,9 @@
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%mastergroupsacct%% |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
-| click_ok | st-submit-search-by-name |  |
+| click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%mastergroupsacct%% | 30000 |
-| click_ok | link=%%mastergroupsacct%% |  |
+| click_and_wait | link=%%mastergroupsacct%% |  |
 | wait_for_text_present_ok | Users (4) | 30000 |
 | wait_for_text_present_ok | Groups (2) | 30000 |
 | wait_for_text_present_ok | Workspaces (0) | 30000 |
@@ -74,7 +74,7 @@
 
 | *Comment* | Test Case: Business Control Panel Groups In Account - Click on a group |  |
 | wait_for_element_visible_ok | link=%%samplegroup1%% | 30000 |
-| click_ok | link=%%samplegroup1%% |  |
+| click_and_wait | link=%%samplegroup1%% |  |
 | wait_for_text_present_ok | Users (3) | 30000 |
 | wait_for_text_present_ok | Accounts (2) | 30000 |
 | text_like | qr/Accounts.+%%isolatedacct%%.+%%mastergroupsacct%%/ |  |
