@@ -4380,3 +4380,7 @@ body#dashBoard div#controls div#controlsRight ul {
     border-bottom: 1px solid black;
     border-top: none;
 }
+
+table.st-ss th span {
+    display: none !important;
+}
