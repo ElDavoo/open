@@ -7,7 +7,7 @@
 | set | acct | agwadacct%%start_time%% |  |
 | st-admin | create-account --name %%acct%% |  |  |
 | set | group | groupa%%start_time%% |  |
-| create-group | %%group%% | %%agw-acct%% | %%username%% |
+| create-group | %%group%% | %%acct%% | %%username%% |
 | set | testuser | testuseragw%%start_time%%@ken.socialtext.net |  |
 
 | *Comment* | Test Case: Business Control Panel Groups Workspace Add Group TBD |

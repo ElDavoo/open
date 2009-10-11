@@ -3,6 +3,10 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Activities Widget Conversations SETUP |  |
+
+| set | actor | actor%%start_time%%@ken.socialtext.net |
+| set | actorshort | actor%%start_time%% |
+
 | set | wrkspc | act-conv-ws%%start_time%% |
 | set | convuser | convuser%%start_time%%@ken.socialtext.net |
 | set | convusershort | convuser%%start_time%% |
@@ -17,36 +21,39 @@
 | st-admin | create-workspace --name %%wrkspc%% --title %%wrkspc%% |  |
 | st-admin | create-user --email %%convuser%% --password %%password%% |  |
 | st-admin | create-user --email %%isolateduser%% --password %%password%% |  |
-| st-admin | add-member --email %%username%% --workspace %%wrkspc%% |  |
+| st-admin | create-user --email %%actor%% --password %%password%% |  |
+
+| st-admin | add-member --email %%actor%% --workspace %%wrkspc%% |  |
 | st-admin | add-member --email %%convuser%% --workspace %%wrkspc%% |  |
-| st-admin | create-user --email %%isolateduser%% --password %%password%% |  |
+
 | st-admin | update-page --email %%isolateduser%% --workspace %%wrkspc%% --page %%mycommentedpagename%% < %%wikitest_client_files%%wikitest.txt | has been created |
 | st-admin | update-page --email %%isolateduser%% --workspace %%wrkspc%% --page %%watchedpagename%% < %%wikitest_client_files%%wikitest.txt | has been created |
 
-| *Comment* | Test Case: Activities Widget Conversations - Main User creates a page, comments on a page, watches a page |  |  |
-| st-logoutin | %%username%% | %%password%% |  |
+| *Comment* | Test Case: Activities Widget Conversations - Main User creates a page, comments on a page, watches a page |  |
+| st-logoutin | %%actor%% | %%password%% |
+
 | st-create-wikipage | %%wrkspc%% | %%mypagename%% |
 | st-comment-on-page | /%%wrkspc%%/?%%mycommentedpagename%% | Leaving a comment |
-| open_ok | /%%wrkspc%%/?%%watchedpagename%% |  |  |
-| wait_for_element_present_ok | st-watchlist-indicator | 30000 |  |
+| open_ok | /%%wrkspc%%/?%%watchedpagename%% |  |
+| wait_for_element_present_ok | st-watchlist-indicator | 30000 |
 | st-watch-page | 1 |  |
 
-| *Comment* | Test Case: Activities Widget Conversations - Other User edits, comments, creativing a conversation (plus two pages that are not conversations) |  |  |
-| st-logoutin | %%convuser%% | %%password%% |  |
+| *Comment* | Test Case: Activities Widget Conversations - Other User edits, comments, creativing a conversation (plus two pages that are not conversations) |  |
+| st-logoutin | %%convuser%% | %%password%% |
+
 | st-create-wikipage | %%wrkspc%% | %%notconvpage%% |
 | st-edit-page | /%%wrkspc%%/?%%mypagename%% | this is an edit |
 | st-edit-page | /%%wrkspc%%/?%%mycommentedpagename%% | this is another comment |
 | st-comment-on-page | /%%wrkspc%%/?%%watchedpagename%% | Comment from a different user |
 | st-create-wikipage | %%wrkspc%% | %%notconvpagetwo%% |
 
-| st-logoutin | %%username%% | %%password%% | st-clear-json-cache |  |
+| st-logoutin | %%actor%% | %%password%% |
+| st-clear-json-cache |  |  |
 
 | *Comment* | Test Case: Activities Widget Conversations - Load Activity Widget |  |
-| open_ok | /?dashboard |  |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
-
 | st-widget-settings | activities_widget |  |
 | wait_for_element_visible_ok | up_limit | 30000 |
 | select-ok | up_limit | 25 |
@@ -54,6 +61,7 @@
 | click_ok | st-savebutton-%%activities_widget%% |  |
 
 | *Comment* | Test Case: Activities Widget Conversations TODO Verify Edits and Comments |  |
+
 | st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpagetwo%% in %%wrkspc%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+edited %%notconvpagetwo%% in %%wrkspc%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+%%notconvpagetwo%% in %%wrkspc%%/ |
@@ -64,10 +72,10 @@
 | st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mycommentedpagename%% in %%wrkspc%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpage%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%actorshort%%.+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%actorshort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
 
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpagetwo%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+commented on %%watchedpagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%mycommentedpagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%notconvpage%% in %%wrkspc%%.+%%short_username%%.+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%.+%%short_username%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpagetwo%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+commented on %%watchedpagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%mycommentedpagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%notconvpage%% in %%wrkspc%%.+%%actorshort%%.+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%.+%%actorshort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
 
 | *Comment* | Test Case: Activities Widget Conversations Changes to convos only, verify Edits, Comments, and NOT PRESENTs |  |
 | st-select-widget-frame | activities_widget |  |
@@ -81,8 +89,8 @@
 | st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mycommentedpagename%% in %%wrkspc%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
 | st_text_unlike_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpage%% in %%wrkspc%%/ |
-| st_text_unlike_in_activities_widget | activities_widget | qr/%%short_username%%+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%/ |
-| st_text_unlike_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%actorshort%%+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%/ |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%actorshort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
 
 | *Comment* | Test Case: Activities Widget Verify Conversation TEARDOWN |  |
 

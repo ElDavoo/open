@@ -8,6 +8,7 @@
 
 | *Comment* | Test Case: Verify Comment top comment button |  |
 | open_ok | /%%workspace%%/?Verify Comment %%start_time%% |  |
+| wait_for_element_visible_ok | st-comment-button-link | 30000 |
 | click_ok | st-comment-button-link |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment 1 %%start_time%% |
@@ -19,6 +20,7 @@
 | st-admin | set-user-names --e %%email%% --first Second --last Commenter | User "%%email%%" was updated |
 
 | *Comment* | Test Case: Verify Comment bottom Comment button |  |
+| wait_for_element_visible_ok | st-comment-button-link-bottom | 30000 |
 | click_ok | st-comment-button-link-bottom |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment 2 %%start_time%% |
@@ -29,6 +31,7 @@
 | text_like | update-attribution | Second Commenter |
 
 | *Comment* | Test Case: Verify Comment Cancel comment |  |
+| wait_for_element_visible_ok | st-comment-button-link-bottom | 30000 |
 | click_ok | st-comment-button-link-bottom |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment Cancel %%start_time%% |
@@ -39,4 +42,6 @@
 
 | *Comment* | Test Case: Verify Comment Teardown |  |
 | st-admin | purge-page --w %%workspace%% --p verify_comment_%%start_time%% | was purged |
-| st-admin | set-user-names --e %%email%% --first "" --last "" | User "%%email%%" was updated | *Comment* | Test Case: Verify Comment COMPLETED |
+| st-admin | set-user-names --e %%email%% --first "" --last "" | User "%%email%%" was updated |
+
+| *Comment* | Test Case: Verify Comment COMPLETED |

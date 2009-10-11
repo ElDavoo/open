@@ -83,9 +83,9 @@ confirm-user
 | st-admin | remove-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is not a member of the %%workspace%% workspace./ism |
 
 | *Comment* | Test Case: Command Line Tests USERS Adding a workspace admin |  |
-| st-admin | add-workspace-admin | qr/ The command you called \(add-workspace-admin\) requires a user to be specified.+A user can be identified by username \(--username\) or email address \(--email\)/ism |
-| st-admin | add-workspace-admin --email | qr/ The command you called \(add-workspace-admin\) requires a user to be specified.+ A user can be identified by username \(--username\) or email address \(--email\)/ism |
-| st-admin | add-workspace-admin --email %%cli_user%% | qr/ The command you called \(add-workspace-admin\) requires a workspace to be specified.+ A workspace is identified by name with the --workspace option/ism |
+| st-admin | add-workspace-admin | qr/The command you called (add-workspace-admin) requires one of --username --email --group and one of --workspace/ism |
+| st-admin | add-workspace-admin --email | qr/The command you called (add-workspace-admin) requires one of --username --email --group and one of --workspace/ism |
+| st-admin | add-workspace-admin --email %%cli_user%% | qr/The command you called (add-workspace-admin) requires one of --username --email --group and one of --workspace/ism |
 | st-admin | add-workspace-admin --email %%cli_user%% --workspace | qr/ The command you called \(add-workspace-admin\) requires a workspace to be specified.+A workspace is identified by name with the --workspace option/ism |
 | st-admin | add-workspace-admin --email cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | qr/No user with the email address "cli-%%start_time%%-not@ken.socialtext.net" could be found/ism |
 | st-admin | add-workspace-admin --email %%cli_user%% --workspace no-%%start_time%% | qr/No workspace named "no-%%start_time%%" could be found/ism |
