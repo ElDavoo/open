@@ -2,6 +2,8 @@
 
 | *Comment* | Test Case: Business Control Panel Groups Workspace Add Group SETUP |
 
+^ END
+
 | standard-test-setup |  |  |  |
 | st-admin | give-accounts-admin --username %%username%% |  |  |
 | set | acct | agwadacct%%start_time%% |  |
@@ -11,3 +13,5 @@
 | set | testuser | testuseragw%%start_time%%@ken.socialtext.net |  |
 
 | *Comment* | Test Case: Business Control Panel Groups Workspace Add Group TBD |
+
+TESTS THAT USE standard-test-setup NEED TO TEAR IT DOWN PROPERLY, DELETING ITS WORKSPACE
