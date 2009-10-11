@@ -22,7 +22,6 @@ Carefully set up the environment so the tests will run.
 | include | [Test case: User Resets Password] |  |
 | include | [Test case: Admin Resets Password] |  |
 | include | [Test Case: Set User Names] |  |
-| include | [Test Case: Verify Comment] |  |
 | include | [Test Case: Hidden Email Address for Public Wiki] |  |
 
 | *Comment* | Re-enable LDAP. Bring the LDAP user back to life |  |

@@ -1,3 +1,7 @@
+DECOMMISSIONED THIS TEST CASE BECAUSE WHEN IT BREAKS MOST OTHER TEST CASES FAIL AND BECAUSE COMMENT IS USED EXTENSIVELY THROUGHOUT THE TESTCASES
+
+^ END
+
 | *Comment* | Test Case: Verify Comment |
 | *Comment* | This is a Default User testcase because it uses set-user-names |
 

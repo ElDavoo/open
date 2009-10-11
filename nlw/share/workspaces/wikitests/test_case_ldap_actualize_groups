@@ -1,6 +1,6 @@
 | *Comment* | Test Case: LDAP Actualize Groups |
 
-| st-admin | give-accounts-admin --u %%username$$ | now has accounts admin access |
+| st-admin | give-accounts-admin --u %%username%% | now has accounts admin access |
 
 | st-ldap | start |
 
