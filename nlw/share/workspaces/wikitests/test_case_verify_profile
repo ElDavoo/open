@@ -99,14 +99,4 @@
 | text-like | This person belongs to no workspaces |  |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Verify Profile. Edit the homepage of this wiki to become Last Edited By. |  |
-| add-member | %%e_user%% | %%workspace%% |
-| open_ok | /%%workspace%% |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| click_ok | link=Edit |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| wait_for_element_visible_ok | link=Save | 30000 |
-| click_and_wait | link=Save |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-
 | *Comment* | Test Case: Verify Profile COMPLETED |  |

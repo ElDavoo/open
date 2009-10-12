@@ -10,6 +10,13 @@
 | set | fname | Profligate |
 | set | lname | Edisaurus |
 
+| set | avatar_page | Avatar Popup %%start_time%% |
+
+| *Comment* | Test Case: Verify Avatar. Edit a page as %%e_user%% to become Last Edited By. |  |
+| st-admin | update-page --email %%e_user%% --workspace %%workspace%% --page "%%avatar_page%%" < %%wikitest_client_files%%wikitest.txt | page has been created. |
+
+| open_ok | /%%workspace%%/?%%avatar_page%% |  |
+
 | *Comment* | Test Case: Verify Avatar Popup . Home page last edited by %%fname%% %%lname%% |  |
 | wait_for_element_visible_ok | //span[@id='update-attribution']//a | 30000 |
 | MouseOver | //span[@id='update-attribution']//a |  |
@@ -32,7 +39,7 @@
 | wait_for_element_visible_ok | link=Stop following this person | 30000 |
 
 | *Comment* | Test Case: Verify Avatar Popup. Stop following from pop up |  |
-| open_ok | /%%workspace%% |  |
+| open_ok | /%%workspace%%/?%%avatar_page%% |  |
 | wait_for_element_visible_ok | //span[@id='update-attribution']//a | 30000 |
 | MouseOver | //span[@id='update-attribution']//a |  |
 | wait_for_element_visible_ok | link=Stop following this person | 30000 |
