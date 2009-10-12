@@ -9,9 +9,11 @@
 
 | include | [Test Case: Active Content Setup] |  |
 
-| *Comment* | Test Case: Active Content Widget ADD THE WIDGET |  |
+| *Comment* | Test Case: Active Content Widget catchup logs and clear json cache |  |
 | st-catchup-logs |  |  |
 | st-clear-json-cache |  |  |
+
+| *Comment* | Test Case: Active Content Widget ADD THE WIDGET |  |
 | st_single_widget_in_dashboard | gallery-widget-Active Content |  |
 | st-name-widget | 1 | active_content |
 | st-widget-settings | active_content |  |

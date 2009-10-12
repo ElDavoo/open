@@ -21,10 +21,13 @@
 | *Comment* | Test Case: Activities Widget Other User Signals. Send four signals |  |
 
 | http-user-pass | %%signalsuser%% | %%password%% |
-| post-signal | woke up %%start_time%% |
-| post-signal | fell out of bed %%start_time%% |
-| post-signal | dragged a comb across my head %%start_time%% |
-| post-signal | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% |
+| post-signal | woke up %%start_time%% |  |
+| post-signal | fell out of bed %%start_time%% |  |
+| post-signal | dragged a comb across my head %%start_time%% |  |
+| post-signal | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% |  |
+
+| *Comment* | Test Case: Activities Widget Other User Signals. Wait for the Signals Indexer a while |  |
+| pause | 10000 |  |
 
 | *Comment* | Test Case: Activities Widget Other User. TODO: Edit Page as conversation |  |
 | *Comment* | Test Case: Activities Widget Other User. TODO: Edit Page as edit |  |

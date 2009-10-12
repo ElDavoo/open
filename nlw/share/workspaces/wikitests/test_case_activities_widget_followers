@@ -57,28 +57,28 @@
 | click_ok | st-savebutton-%%activities_widget%% |  |
 
 | *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, see all activities |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+to %%followacct%%.+Signal from not a follower %%start_time%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+edited.+donotseethispage.+in.+%%followws%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to %%followacct%%.+You should see this %%start_time%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited pageone.+in %%followws%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+to %%followacct%%.+Signal from not a follower %%start_time%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+edited.+donotseethispage.+in.+%%followws%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to %%followacct%%.+You should see this %%start_time%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited pageone.+in %%followws%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, change dropdown back to followed, see only %%shortfollow%%'s activtvities |  |
 | st-select-widget-frame | activities_widget |  |
 | click_ok | feed-followed |  |
 | select-frame | relative=parent |
-| st_text_unlike_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+to %%followacct%%.+Signal from not a follower %%start_time%%/ |
-| st_text_unlike_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+edited donotseethispage.+in.+%%followws%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to %%followacct%%.+You should see this %%start_time%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited pageone.+in %%followws%%/ |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+to %%followacct%%.+Signal from not a follower %%start_time%%/ism |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+edited donotseethispage.+in.+%%followws%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to %%followacct%%.+You should see this %%start_time%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited pageone.+in %%followws%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, see all activities |  |
 | st-select-widget-frame | activities_widget |  |
 | click_ok | feed-everyone |  |
 | select-frame | relative=parent |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+to %%followacct%%.+Signal from not a follower %%start_time%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+edited donotseethispage.+in %%followws%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to %%followacct%%.+You should see this %%start_time%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited pageone.+in %%followws%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+to %%followacct%%.+Signal from not a follower %%start_time%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+edited donotseethispage.+in %%followws%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to %%followacct%%.+You should see this %%start_time%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited pageone.+in %%followws%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers Teardown |
 | st-admin | delete-workspace --workspace %%followws%% --no-export |
