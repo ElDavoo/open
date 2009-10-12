@@ -9,6 +9,10 @@ Since it will delete all wikis, the plan server and plan workspace must be in a 
 
 It is intended to be called from [Signals Only Testcases]
 
+DOES MICROBLOGGING WORK IN A DEV ENV ?? IF SO:
+TODO: use `st-appliance-config set signals_only <1 or 0>` to actually test microblogging.
+TODO: verify No Dashboard in nav bar, all users workspace for at least default, login goes to Signals page
+
 | click_and_wait | link=Dashboard |  |
 | st-admin | enable-plugin --all-accounts --p signals |  |
 | st-admin | disable-plugin --all-accounts --p dashboard |  |

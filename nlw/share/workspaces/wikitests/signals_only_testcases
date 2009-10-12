@@ -31,6 +31,5 @@ NOTE: each of these test must manage its own plugin enables/disables, logins and
 * [Test Case: Signals Search]
 * [Test Case: Signals Search Pagination]
 * [Test Case: Follow]
-* [Test Case: People Dashboard Navigation]
 * [Test case: Signals Login Logout]
 * [Test Case: Invite people to your network]

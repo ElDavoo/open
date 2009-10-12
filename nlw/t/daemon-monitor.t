@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 86;
+use Test::Socialtext tests => 116;
 use File::Temp qw/tempfile/;
 use Time::HiRes ();
 use POSIX ();
@@ -48,6 +48,8 @@ sub reap {
 }
 
 my $last_log;
+my ($pid_fh,$pidfile) = tempfile();
+close $pid_fh;
 
 sub test_monitor ($$;$) {
     my $cranky = shift;
@@ -58,10 +60,10 @@ sub test_monitor ($$;$) {
 
     unlink 't/tmp/mon';
     pass "begin ($cranky; $mon_args)";
-    my ($fh,$pidfile) = tempfile();
 
     my $cranky_pid = fork_and_exec($cranky);
-    print $fh $cranky_pid;
+    open my $fh, '>', $pidfile;
+    print $fh $cranky_pid,$/;
     close $fh;
 
     my $reaped = 0;
@@ -138,9 +140,9 @@ logged_like qr/has too many files open/i;
 test_monitor($c.'--fds 64',         '--vsz 256 --fds 32');
 logged_like qr/has too many files open/i;
 
+my $port = $>+26000;
 socket_tests: {
     # check for open port only; monitor doesn't try to connect
-    my $port = $>+26000;
 
     test_monitor($c.'--after 5 --serv none', ''            => 'lives');
     test_monitor($c.'--after 5 --serv none', "--tcp $port"           );
@@ -161,11 +163,45 @@ socket_tests: {
         => 'lives'
     );
 
-    # socket timeout. Do this last since it's slow.
     test_monitor(
         $c.'--serv stall',
         "--scgi --tcp $port"
     );
+    logged_like qr/timeout/;
+}
+
+appliance_conf_tests: {
+    skip("Appliance::Config could not be loaded",19)
+        unless use_ok "Socialtext::Appliance::Config";
+
+    {
+        my $conf = Socialtext::Appliance::Config->new();
+        my %new_conf = (
+            monitor_proxy_max_rss    => 64,
+            monitor_proxy_max_vsz    => 128,
+            monitor_proxy_max_fds    => 32,
+            monitor_proxy_tcp_port   => $port,
+            monitor_proxy_check_scgi => 1,
+            monitor_proxy_init_cmd   => '/bin/touch tmp/mon',
+            monitor_proxy_pidfile    => $pidfile,
+        );
+        while (my ($k,$v) = each %new_conf) {
+            $conf->value($k,$v,'force');
+        }
+        $conf->save();
+    }
+
+    test_monitor($c.'--serv scgi --scgi ok','--config proxy' => 'lives');
+
+    test_monitor($c.'--serv scgi --scgi ok --ram 64','--config proxy');
+    logged_like qr/is too big \(RSS\)/i;
+    test_monitor($c.'--serv scgi --scgi ok --fds 64','--config proxy');
+    logged_like qr/too many files/i;
+
+    test_monitor($c.'--serv scgi --scgi 403','--config proxy');
+    logged_like qr/non-200/;
+
+    test_monitor($c.'--serv stall', '--config proxy');
     logged_like qr/timeout/;
 }
 

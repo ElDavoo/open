@@ -1,8 +1,16 @@
 #!/bin/bash -e
 # @COPYRIGHT@
 
-# "Minimal" build option, don't use ALL fixtures.
-getopts "m" MINIMAL || true
+# '-m' option ( minimal ) will set up ony 'admin' fixture, 'ALL' is default
+# '-b' option will set apache up with benchmark_mode = 1
+FIXTURE='ALL'
+BENCHMARK=0
+while getopts "mb" OPT; do
+  case $OPT in
+    b) BENCHMARK=1;;
+    m) FIXTURE=admin;;
+  esac
+done
 
 if [ "$ST_CURRENT" != "" ]; then
     echo "Changing to $ST_CURRENT/nlw"
@@ -58,9 +66,6 @@ QUIET=1 dev-bin/link-console
 set -e
 dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --preserve --fixture base_config
-
-FIXTURE='ALL'
-[ "$MINIMAL" == "m" ] && FIXTURE='admin'
 dev-bin/make-test-fixture --home_dir $HOME --preserve --fixture $FIXTURE
 
 
@@ -77,6 +82,8 @@ QUIET=1 dev-bin/link-control-panel
 QUIET=1 dev-bin/link-console
 dev-bin/link-reports
 set -e
+
+[ $BENCHMARK == 1 ] && st-config set benchmark_mode 1
 
 echo "Starting in dual-Apache mode";
 dev-bin/nlwctl start;

@@ -3,20 +3,24 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Setup |  |
-| set | wrkspc | acwidg-tags-ws%%start_time%% |
+
+| set | tagginguser | tagging%%start_time%%@ken.socialtext.next |
+| set | taggingusershort | tagging%%start_time%% |
 | set | taguser | awtuser%%start_time%%@ken.socialtext.next |
 | set | tagusershort | awtuser%%start_time%% |
-| set | pagename | heusser%%start_time%% |
-| set | personaltag | addtagtome %%start_time%% |
-| set | othertag | addmetonewuser %%start_time%% |
+| set | pagename | heusser-%%start_time%% |
+| set | personaltag | add tag to me %%start_time%% |
+| set | othertag | add me to new user %%start_time%% |
 | set | pagetag | add page tag |
+| set | wrkspc | acwidg-tags-ws%%start_time%% |
 
 | st-admin | create-workspace --name %%wrkspc%% --title %%wrkspc%% |  |
+| st-admin | create-user --email %%tagginguser%% --password %%password%% |  |
 | st-admin | create-user --email %%taguser%% --password %%password%% |  |
-| st-admin | add-member --email %%username%% --workspace %%wrkspc%% |  |
+| st-admin | add-member --email %%tagginguser%% --workspace %%wrkspc%% |  |
 | st-admin | add-member --email %%taguser%% --workspace %%wrkspc%% |  |
 
-| st-logoutin |  |
+| st-logoutin | %%tagginguser%% | %%password%% |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Tag A profile |  |
 | st-find-user | %%tagusershort%% |  |
@@ -49,11 +53,15 @@
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Verify Tags in activities widget |
 
-| st_verify_text_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+tagged %%pagename%% in %%wrkspc%% as %%pagetag%%.+%%short_username%%.+minute.+ago.+edited %%pagename%% in %%wrkspc%%.+%%short_username%%.+minute.+ago.+tagged themself %%personaltag%%.+%%short_username%%.+minute.+ago.+tagged %%tagusershort%% %%othertag%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%taggingusershort%%.+minute.+ago.+tagged %%pagename%% in %%wrkspc%% as %%pagetag%%.+%%taggingusershort%%.+minute.+ago.+edited %%pagename%% in %%wrkspc%%.+%%taggingusershort%%.+minute.+ago.+tagged themself %%personaltag%%.+%%taggingusershort%%.+minute.+ago.+tagged %%tagusershort%% %%othertag%%/ |
 
-| st_verify_text_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+tagged %%pagename%% in %%wrkspc%% as %%pagetag%%./ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+edited %%pagename%% in %%wrkspc%%./ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+tagged themself %%personaltag%%./ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%short_username%%.+minute.+ago.+tagged %%tagusershort%% %%othertag%%./ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%taggingusershort%%.+minute.+ago.+tagged %%pagename%% in %%wrkspc%% as %%pagetag%%./ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%taggingusershort%%.+minute.+ago.+edited %%pagename%% in %%wrkspc%%./ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%taggingusershort%%.+minute.+ago.+tagged themself %%personaltag%%./ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%taggingusershort%%.+minute.+ago.+tagged %%tagusershort%% %%othertag%%./ |
 
-| *Comment* | Test Case: Activities Widget Tags and Tagging |
+| *Comment* | Test Case: Activities Widget Tags and Tagging TEARDOWN |
+
+| st-admin | delete-workspace --no-export --w %%wrkspc%% | has been deleted |
+
+| *Comment* | Test Case: Activities Widget Tags and Tagging COMPLETED |

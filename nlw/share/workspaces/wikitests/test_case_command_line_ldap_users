@@ -7,19 +7,19 @@
 | st-admin | add-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now a member of the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Add workspace admin |  |
-| st-admin | add-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now a workspace admin of the %%cmdline_workspace%% workspace./ism |
+| st-admin | add-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now a workspace admin of the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command --usernameLine LDAP Remove workspace admin |  |
-| st-admin | remove-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is no longer a workspace admin of the %%cmdline_workspace%% workspace./ism |
+| st-admin | remove-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is no longer a workspace admin of the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Add impersonator |  |
-| st-admin | add-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is now an impersonator of the %%cmdline_workspace%% workspace. |
+| st-admin | add-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now an impersonator of the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Remove impersonator |  |
-| st-admin | remove-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is no longer an impersonator of the %%cmdline_workspace%% workspace. |
+| st-admin | remove-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is no longer an impersonator of the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Disable Email Notify |  |
-| st-admin | disable-email-notify --username %%cli_user%% --workspace %%cmdline_workspace%% | Email notify has been disabled for %%cli_user%% in the %%cmdline_workspace%% workspace. |
+| st-admin | disable-email-notify --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/Email notify has been disabled for %%cli_user%% in the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Set locale |  |
 | st-admin | set-locale --username %%cli_user%% --workspace %%cmdline_workspace%% --locale zz | l0c4l3 F0R %%cli_user%% iS N0W zz |
@@ -41,7 +41,7 @@
 | st-admin | update-page --username %%cli_user%% --workspace %%cmdline_workspace%% --page "page1 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "page1 %%start_time%%" page has been created. |
 
 | *Comment* | Test Case: Command Line LDAP user Remove member |  |
-| st-admin | remove-member --username %%cli_user%% --workspace %%cmdline_workspace%% | %%cli_user%% is no longer a member of the %%cmdline_workspace%% workspace. |
+| st-admin | remove-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is no longer a member of the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Add member again |  |
 | st-admin | add-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now a member of the %%cmdline_workspace%% workspace/ism |
@@ -51,7 +51,7 @@
  st-admin | deactivate-user --username %%cli_user%% | qr/%%cli_user%% has been removed from workspaces.+%%cmdline_workspace%%(,.+%%workspace%%)?/ |
 
  *Comment* | Test Case: Command Line LDAP user Add member BACK to %%workspace%% | |
-st-admin | add-workspace-admin --username %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is now a workspace admin of the %%workspace%% workspace./ism |
+st-admin | add-workspace-admin --username %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is now a workspace admin of the %%workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP USERS commands should fail |  |
 | st-admin | create-user --username %%cli_user%% | The username you provided, "%%cli_user%%", is already in use. |
@@ -62,6 +62,6 @@ st-admin | add-workspace-admin --username %%cli_user%% --workspace %%workspace%%
 | st-admin | delete-workspace --workspace %%cmdline_workspace%% --no-export |  |
 
 | *Comment* | Test Case: Command Line LDAP user Add member BACK to %%workspace%% just in case needed |  |
-| st-admin | add-workspace-admin --username %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is .+ a workspace admin of the %%workspace%% workspace./ism |
+| st-admin | add-workspace-admin --username %%cli_user%% --workspace %%workspace%% | a workspace admin |
 
 | *Comment* | Test Case: Command Line: LDAP USERS COMPLETED |

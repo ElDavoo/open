@@ -13,7 +13,6 @@
 
 | *Comment* | Test Case: RSS Feed Widget. Set the widget |  |
 | st-name-widget | 1 | rss_feed |
-| st-widget-title-like | rss_feed | RSS Viewer |
 | wait_for_text_present_ok | Socialtext blog | 30000 |
 | st-widget-title-like | rss_feed | Socialtext blog |
 | st-widget-settings | rss_feed |  |

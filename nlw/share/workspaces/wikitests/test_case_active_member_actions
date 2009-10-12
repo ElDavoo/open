@@ -1,5 +1,7 @@
 | *Comment* | Test Case: Active Members Widget |  |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Active Members - View Profile |  |
 | wait_for_element_visible_ok | link=Profile | 60000 |
 | click_and_wait | link=Profile |  |
@@ -24,7 +26,7 @@
 | click_ok | link=Save |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 
-| *Comment* | Test Case: Active Members - A couple Edits in workspac 2 |  |
+| *Comment* | Test Case: Active Members - A couple Edits in workspace 2 |  |
 | open_ok | /%%am_ws_2%%/ |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 | click_ok | link=Comment |  |
@@ -47,23 +49,8 @@
 | *Comment* | Test Case: Active Members - Signals |  |
 | open_ok | /?signals |  |
 | wait_for_text_present_ok | Send a Signal | 60000 |
-| *Comment* | Test Case: Active Members - four signals |  |
-| st-name-widget | 1 | signals_widget |
-| st-widget-title-like | signals_widget | Send a Signal |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_text_present_ok | Download Socialtext | 60000 |
-| wait_for_text_present_ok | Try out the | 60000 |
 
-| *Comment* | Test Case: Active Members - Once Upon A Time |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | Once Upon A Time %%start_time%% %%mark%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| *Comment* | Test Case: Signals Page. Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-| click_ok | post |  |
+| *Comment* | Test Case: Active Members - Signal Once Upon A Time |  |
+| post-signal | Once Upon A Time %%start_time%% %%mark%% |  |
 
-| *Comment* | The first signal fails if you don't wait a while. | I hate pause |
-| pause | 10000 |  |
-| select-frame | relative=parent |  |
+| *Comment* | Test Case: Active Members Actions COMPLETED |  |

@@ -1,8 +1,9 @@
 This testcase is run by the Continuous Integration (CI) process, usually as qa6 on talc.socialtext.net.
 Basically, it should track [Firefox Testcases]. Firefox Testcases itself is not run by CI because CI is not smart enough to handle multiple levels of test case inclusion - it fetches testcases manually and executes the tests that are "frontlinked" from each page. CI could get smarter by testing for tag:testset and recursing.
 
+Removed `Test case: Business Control Panel` as unnecessary overhead for CI
+
 * [Test Case: RSS Icons]
-* [Test case: Business Control Panel]
 * [Test Case: Gadgets Galore]
 * [Test Case: Table Info]
 * [Test Case: Signal to Networks]
