@@ -211,9 +211,10 @@ sub main {
         my $src_ver = _get_search_config_version(
             File::Spec->catdir( _get_template_root(), $search_template ) );
 
-        # This will set up the config for the postgres DB.
-        # but only for appliance builds.
         if (!$is_dev_install && $opts{appliance}) {
+
+            # This will set up the config for the postgres DB.
+            # but only for appliance builds.
             my %pg_conf;
             eval { 
                 require Socialtext::Appliance::Config;
@@ -227,6 +228,21 @@ sub main {
                 "$dirs{postgresql_base_dir}/postgresql.conf",
                 \%pg_conf,
                 'overwrite'
+            ];
+
+            # Set tmpreaper variables, the only non-default value for now is
+            # tmpreaper_protect_extra, which is added to fix {bz: 3205}.
+            my $tmpreaper_conf = {
+                tmpreaper_time              => '7d',
+                tmpreaper_protect_extra     => 'kinosearch_lockdir',
+                tmpreaper_dirs              => '/tmp/.',
+                tmpreaper_additionaloptions => '',
+            };
+            push @files, [
+                'tmpreaper/tmpreaper.conf.tt2',
+                "$dirs{etc}/tmpreaper.conf",
+                $tmpreaper_conf,
+                'overwrite',
             ];
         }
 
@@ -320,6 +336,7 @@ sub local_dirs {
 sub sitewide_dirs {
     return (
         socialtext_etc       => get_prefixed_dir('confdir'),
+        etc                  => '/etc',
         apache2_etc          => '/etc/apache2',
         apache2_log          => '/var/log/apache2',
         apache2_base_dir     => '/etc/apache2',
