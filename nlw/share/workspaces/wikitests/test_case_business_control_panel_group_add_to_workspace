@@ -59,7 +59,7 @@
 | click-and-wait | st-add-group-to-workspace |  |
 | text_like | //body | %%group%% Group |
 | text_like | //body | qr/Group is already a member of the %%ws%% workspace/ism |
-| text_like | //body | Accounts (2) |
+| text_like | //body | Accounts (1) |
 | text_like | //body | Workspaces (1) |
 
 | *Comment* | Test Case: Control Panel Group Add To Workspace Add as admin |  |
