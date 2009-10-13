@@ -198,6 +198,7 @@ sub primary_account {
 
         my $deleted_acct = Socialtext::Account->Deleted;
         if ($new_account->account_id != $deleted_acct->account_id) {
+            # Avoid double-indexing elsewhere in the code.
             require Socialtext::JobCreator;
             Socialtext::JobCreator->index_person( $self );
         }
