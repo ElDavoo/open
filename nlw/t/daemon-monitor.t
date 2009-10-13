@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 116;
+use Test::Socialtext tests => 123;
 use File::Temp qw/tempfile/;
 use Time::HiRes ();
 use POSIX ();
@@ -119,6 +119,10 @@ sub logged_like ($) {
     like $last_log, qr/$re/m, 'logged correctly';
 }
 
+my $update_procs = `/usr/bin/pgrep -f st-appliance-update`;
+is $update_procs, '', "no st-appliance-update is running before the test"
+    or die "shut down any st-appliance-update procs/vims before running this test";
+
 my $c = 'dev-bin/cranky.pl ';
 
 test_monitor('/bin/sleep 5', ''                           => 'lives');
@@ -205,6 +209,12 @@ appliance_conf_tests: {
 
     test_monitor($c.'--serv stall', '--config proxy');
     logged_like qr/timeout/;
+
+    my $fakepid = fork_and_exec(
+        q{/usr/bin/perl -e "sleep 5; st-appliance-update"});
+    test_monitor('/bin/false', '--config proxy' => 'lives');
+    kill 15, $fakepid;
+    reap($fakepid);
 }
 
 pass "all done";
