@@ -9,6 +9,7 @@ use Socialtext::Search::Solr::QueryParser;
 use Socialtext::Search::SimpleAttachmentHit;
 use Socialtext::Search::SimplePageHit;
 use Socialtext::Search::SignalHit;
+use Socialtext::Search::PersonHit;
 use Socialtext::Search::Utils;
 use Socialtext::AppConfig;
 use Socialtext::Exceptions;
@@ -88,16 +89,25 @@ sub _search {
     elsif ($opts{doctype}) {
         $filter_query = "doctype:$opts{doctype}";
         if ($opts{viewer}) {
-            my @accounts = $opts{viewer}->accounts(ids_only => 1);
-            my $viewer_id = $opts{viewer}->user_id;
+            my @account_ids;
+            if ($opts{account_ids}) {
+                @account_ids = @{ $opts{account_ids} };
+            }
+            else {
+                @account_ids = $opts{viewer}->accounts(ids_only => 1);
+            }
             $filter_query .= " AND ("
-                . join(' OR ', map { "a:$_" } @accounts)
+                . join(' OR ', map { "a:$_" } @account_ids)
                 . ")";
-            $filter_query = [
-                $filter_query,
-                "pvt:0 OR (pvt:1 AND "
-                    . "(dm_recip:$viewer_id OR creator:$viewer_id))",
-            ];
+
+            if ($opts{doctype} eq 'signal') {
+                my $viewer_id = $opts{viewer}->user_id;
+                $filter_query = [
+                    $filter_query,
+                    "pvt:0 OR (pvt:1 AND "
+                        . "(dm_recip:$viewer_id OR creator:$viewer_id))",
+                ];
+            }
         }
     }
 
@@ -200,6 +210,12 @@ sub _make_result {
         return Socialtext::Search::SignalHit->new(
             score => $score,
             signal_id => $key,
+        );
+    }
+    if ($doctype eq 'person') {
+        return Socialtext::Search::PersonHit->new(
+            score => $score,
+            user_id => $key,
         );
     }
     else {
