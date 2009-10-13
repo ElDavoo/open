@@ -5,7 +5,7 @@
 | set | acct | bcpwagacct%%start_time%% |  |
 | st-admin | create-account --name %%acct%% |  |  |
 | set | group | groupbcpwag%%start_time%% |  |
-| create-group | %%group%% | %%agw-acct%% | %%username%% |
+| create-group | %%group%% | %%acct%% | %%username%% |
 | set | testuser | testuserwag%%start_time%%@ken.socialtext.net |  |
 | create-user | %%testuser%% | %%password%% |  |
 | add-user-to-group | %%testuser%% | %%group_id%% |  |

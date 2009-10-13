@@ -11,9 +11,9 @@
 | create-workspace | %%workspaceforadmin%% | %%account%% |  |
 | st-admin | give-accounts-admin --username %%username%% |  |  |
 | set | agw-acct | agwacct%%start_time%% |  |
-| st-admin | create-account --name %%agw-acct%% |  |  |
+| st-admin | create-account --name %%account%% |  |  |
 | set | group | groupa%%start_time%% |  |
-| create-group | %%group%% | %%agw-acct%% | %%username%% |
+| create-group | %%group%% | %%account%% | %%username%% |
 
 | *Comment* | Test Case: Business Control Panel Groups Add to Workspace Test User In Group |  |
 | set | testuseringroup | testusering%%start_time%%@ken.socialtext.net |
@@ -62,7 +62,7 @@
 | text_like | //body | Accounts (2) |
 | text_like | //body | Workspaces (1) |
 
-| *Comment* | Test Case: Control Panel Group Add To Workspace Add as admin |
+| *Comment* | Test Case: Control Panel Group Add To Workspace Add as admin |  |
 | open-ok | /nlw/control/group/%%group_id%% |  |
 | wait_for_element_visible_ok | link=Add Group To A Workspace | 30000 |
 | wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
