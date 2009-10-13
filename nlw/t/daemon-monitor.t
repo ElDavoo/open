@@ -6,12 +6,16 @@ use Test::Socialtext tests => 116;
 use File::Temp qw/tempfile/;
 use Time::HiRes ();
 use POSIX ();
+use Cwd qw(abs_path);
 
 POSIX::setsid;
 
 fixtures(qw( base_layout ));
 
 ok -x 'bin/st-daemon-monitor', "it's executable";
+
+our $touch_file = abs_path('t/tmp/mon');
+our $init_cmd = qq{/bin/touch $touch_file};
 
 END {
     local $?; # don't clobber it via system()
@@ -20,10 +24,8 @@ END {
     system("killall -9 st-daemon-monitor");
     diag "cleanup: killall -9 cranky.pl";
     system("killall -9 cranky.pl");
-    unlink 't/tmp/mon';
+    unlink $touch_file;
 }
-
-our $init_cmd = '"/bin/touch t/tmp/mon"';
 
 sub fork_and_exec {
     my @cmd = @_;
@@ -84,7 +86,7 @@ sub test_monitor ($$;$) {
 
     my $rc = system(
         "bin/st-daemon-monitor ".$mon_args.
-        qq{ --pidfile $pidfile --init "/bin/touch t/tmp/mon"}
+        qq{ --pidfile $pidfile --init "$init_cmd"}
     );
     my $exit = $rc >> 8;
 
@@ -182,7 +184,7 @@ appliance_conf_tests: {
             monitor_proxy_max_fds    => 32,
             monitor_proxy_tcp_port   => $port,
             monitor_proxy_check_scgi => 1,
-            monitor_proxy_init_cmd   => '/bin/touch tmp/mon',
+            monitor_proxy_init_cmd   => $init_cmd,
             monitor_proxy_pidfile    => $pidfile,
         );
         while (my ($k,$v) = each %new_conf) {
