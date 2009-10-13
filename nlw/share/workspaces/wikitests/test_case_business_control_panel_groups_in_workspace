@@ -1,9 +1,12 @@
 | *Comment* | Test Case: Business Control Panel Groups in Workspace |
 
-| *Comment* | Test Case: Business Control Panel Groups in Workspace SETUP |
-
-| standard-test-setup |  |
-| st-admin | give-accounts-admin --username %%username%% |
+| *Comment* | Test Case: Business Control Panel Groups in Workspace SETUP |  |
+| set | ws | wscpgiw%%start_time%% |
+| set | account | acctbcpgiw%%start_time%% |
+| set | workspaceforadmin | wgiwadmin%%start_time%% |
+| create-account | %%account%% |  |
+| create-workspace | %%ws%% | %%account%% |
+| st-admin | give-accounts-admin --username %%username%% |  |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace SETUP Create 4 groups with names out of order |  |  |
 | set | group1 | groupa%%start_time%% |  |
@@ -21,11 +24,11 @@
 | set | group5 | groupe%%start_time%% |  |
 | create-group | %%group5%% | %%account%% | %%username%% |
 | set | group_id5 | %%group_id%% |  |
-| add-group-to-workspace | %%group_id1%% | %%workspace%% |  |
-| add-group-to-workspace | %%group_id2%% | %%workspace%% |  |
-| add-group-to-workspace | %%group_id3%% | %%workspace%% |  |
-| add-group-to-workspace | %%group_id4%% | %%workspace%% |  |
-| set | curly | curly%%start_time%%@ken.socialtext.net |
+| add-group-to-workspace | %%group_id1%% | %%ws%% |  |
+| add-group-to-workspace | %%group_id2%% | %%ws%% |  |
+| add-group-to-workspace | %%group_id3%% | %%ws%% |  |
+| add-group-to-workspace | %%group_id4%% | %%ws%% |  |
+| set | curly | curly%%start_time%%@ken.socialtext.net |  |
 | create-user | %%curly%% | password |  |
 | add-user-to-group | %%curly%% | %%group_id1%% |  |
 | add-user-to-group | %%curly%% | %%group_id2%% |  |
@@ -33,17 +36,19 @@
 | add-user-to-group | %%curly%% | %%group_id4%% |  |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Check for groups in workspace |  |
-| open_ok | /nlw/control/workspace/%%workspace_id%% | 30000 |
-| wait-for-text-present-ok | %%workspace%% workspace | 30000 |
+| open_ok | /nlw/control/workspace |  |
+| wait_for_element_visible_ok | name | 30000 |
+| type_ok | name | %%ws%% |
+| st-submit |  |  |
+| click_and_wait | link=%%ws%% |  |
+| wait-for-text-present-ok | %%ws%% workspace | 30000 |
 | wait-for-text-present-ok | Groups (4) | 30000 |
 | text_like | //body | qr/Group ID.+Name.+Users.+Workspaces.+Primary Account.+Created.+Creator.+Role/ism |
 
-| set | escaped_user | user-%%start_time%%\@ken\.socialtext\.net |
-
-| set | g1_match | %%group_id1%%.+%%group1%%.+1.+1.+%%account%%.+\d{4}-\d\d-\d\d.+%%escaped_user%%.+member |
-| set | g2_match | %%group_id2%%.+%%group2%%.+1.+1.+%%account%%.+\d{4}-\d\d-\d\d.+%%escaped_user%%.+member |
-| set | g3_match | %%group_id3%%.+%%group3%%.+1.+1.+%%account%%.+\d{4}-\d\d-\d\d.+%%escaped_user%%.+member |
-| set | g4_match | %%group_id4%%.+%%group4%%.+1.+1.+%%account%%.+\d{4}-\d\d-\d\d.+%%escaped_user%%.+member |
+| set | g1_match | %%group_id1%%.+%%group1%%.+1.+1.+%%account%%.+\d{4}-\d\d-\d\d.+member |
+| set | g2_match | %%group_id2%%.+%%group2%%.+1.+1.+%%account%%.+\d{4}-\d\d-\d\d.+member |
+| set | g3_match | %%group_id3%%.+%%group3%%.+1.+1.+%%account%%.+\d{4}-\d\d-\d\d.+member |
+| set | g4_match | %%group_id4%%.+%%group4%%.+1.+1.+%%account%%.+\d{4}-\d\d-\d\d.+member |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by name ascending should order groups 1 (a) 3 (b) 2 (c) 4 (d) |  |
 | text_like | //body | qr/%%g1_match%%.+%%g3_match%%.+%%g2_match%%.+%%g4_match%%/sm |
@@ -60,10 +65,15 @@
 | click_and_wait | group-sort-id |  |
 | text_like | //body | qr/%%g4_match%%.+%%g3_match%%.+%%g2_match%%.+%%g1_match%%/ism |
 
-| *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Add Group |
-| open_ok | /nlw/control/workspace/%%workspace_id%% |
+| *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Add Group Link |  |
+| open_ok | /nlw/control/workspace |  |
+| wait_for_element_visible_ok | name | 30000 |
+| type_ok | name | %%ws%% |
+| st-submit |  |  |
+| click_and_wait | link=%%ws%% |  |
 | wait_for_element_present_ok | link=Add Group To Workspace | 30000 |
-| click_and_wait | link=Add Group To Workspace |
-| wait_for_element_visible_ok | group_id |
+| click_and_wait | link=Add Group To Workspace |  |
+| wait_for_element_visible_ok | group_id | 30000 |
 
-IT LOOKS LIKE THIS TEST GOT CUT OFF !!!!!!!!
+| *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Add Group |
+| st-admin | delete-workspace --w %%ws%% --no-export |
