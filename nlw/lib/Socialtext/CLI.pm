@@ -487,6 +487,10 @@ sub set_user_names {
     my $user = $self->_require_user;
     my %opts = $self->_require_set_user_names_params(shift);
     
+    $self->_error(
+        loc("Remotely sourced Users cannot be updated via Socialtext.")
+    ) unless $user->can_update_store();
+
     my $result = $user->update_store(%opts);
     if ($result == 0) {
         $self->_error('First name and last name match the current names for the user; no change to "' . $user->username() . '".');

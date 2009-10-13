@@ -12,7 +12,7 @@ use Socialtext::Account;
 BEGIN {
     require Socialtext::People::Profile;
     plan skip_all => 'People is not linked in' if ($@);
-    plan tests => 53;
+    plan tests => 60;
 }
 
 fixtures( 'db', 'destructive' );
@@ -137,6 +137,27 @@ MASS_ADD_USERS: {
             is $profile->get_attr('home_phone'), 'home_phone', '... ... using original home_phone';
         }
     }
+}
+
+###############################################################################
+update_ldap_user_fails: {
+    my $ldap = bootstrap_openldap();
+    my $user = Socialtext::User->new(username => "John Doe");
+
+    isa_ok $user, 'Socialtext::User', 'got a user';
+
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => [
+                    '--username', 'John Doe',
+                    '--first-name', 'Sean',
+                ],
+            )->set_user_names();
+        },
+        qr/\QRemotely sourced Users cannot be updated via Socialtext.\E/,
+        '... who cannot have values updated'
+    );
 }
 
 ###############################################################################
