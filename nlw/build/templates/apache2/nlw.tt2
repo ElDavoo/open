@@ -146,6 +146,12 @@
         FileETag none
     </Location>
 
+    # {bz: 3202} - Don't cache SCGI Scripts!
+    <LocationMatch "/nlw/.+\.scgi">
+        ExpiresDefault "access plus 1 seconds"
+        FileETag none
+    </LocationMatch>
+
     [%- IF config.is_dev %]
         Redirect 301 /favicon.ico http://www.socialtext.net/favicon.ico
     [%- END %]

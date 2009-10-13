@@ -3,17 +3,17 @@
 
 | *Comment* | Test Case: Business Control Panel Groups Add to Workspace SETUP |  |  |
 | *Comment* | Test Case: Business Control Panel Groups Add to Workspace Create a WS, a group, two users |  |  |
-| set | workspace | wsgiw%%start_time%% |  |
+| set | ws | wsgiw%%start_time%% |  |
 | set | account | acctgiw%%start_time%% |  |
 | set | workspaceforadmin | wgiwadmin%%start_time%% |  |
 | create-account | %%account%% |  |  |
-| create-workspace | %%workspace%% | %%account%% |  |
+| create-workspace | %%ws%% | %%account%% |  |
 | create-workspace | %%workspaceforadmin%% | %%account%% |  |
 | st-admin | give-accounts-admin --username %%username%% |  |  |
 | set | agw-acct | agwacct%%start_time%% |  |
-| st-admin | create-account --name %%agw-acct%% |  |  |
+| st-admin | create-account --name %%account%% |  |  |
 | set | group | groupa%%start_time%% |  |
-| create-group | %%group%% | %%agw-acct%% | %%username%% |
+| create-group | %%group%% | %%account%% | %%username%% |
 
 | *Comment* | Test Case: Business Control Panel Groups Add to Workspace Test User In Group |  |
 | set | testuseringroup | testusering%%start_time%%@ken.socialtext.net |
@@ -23,7 +23,7 @@
 | *Comment* | Test Case: Business Control Panel Groups Add to Workspace Test User In Workspace |  |
 | set | testuserinworkspace | testuserinws%%start_time%%@ken.socialtext.net |
 | create-user | %%testuserinworkspace%% | password |
-| add-member | %%testuserinworkspace%% | %%workspace%% |
+| add-member | %%testuserinworkspace%% | %%ws%% |
 
 | *Comment* | Visual inspection of add to workspace |  |
 | open-ok | /nlw/control/group/%%group_id%% |  |
@@ -40,14 +40,14 @@
 | wait_for_element_visible_ok | invite-as-admins | 30000 |
 
 | *Comment* | Add To a workspace |  |
-| select-ok | //select | %%workspace%% |
+| select-ok | //select | %%ws%% |
 | click-and-wait | st-add-group-to-workspace |  |
 
 | *Comment* | Test Case: Control Panel Group Add to Workspace Verify redirect, message |  |
 | text_like | //body | %%group%% Group |
-| text_like | //body | qr/Group is now a member of the %%workspace%% workspace/ism |
+| text_like | //body | qr/Group is now a member of the %%ws%% workspace/ism |
 | text_like | //body | Workspaces (1) |
-| wait_for_element_visible_ok | link=%%workspace%% | 30000 |
+| wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | text_like | //body | Users (1) |
 | wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
 
@@ -55,14 +55,14 @@
 | open-ok | /nlw/control/group/%%group_id%% |  |
 | wait_for_element_visible_ok | link=Add Group To A Workspace | 3000 |
 | click_and_wait | link=Add Group To A Workspace |  |
-| select-ok | workspace_id | %%workspace%% |
+| select-ok | workspace_id | %%ws%% |
 | click-and-wait | st-add-group-to-workspace |  |
 | text_like | //body | %%group%% Group |
-| text_like | //body | qr/Group is already a member of the %%workspace%% workspace/ism |
+| text_like | //body | qr/Group is already a member of the %%ws%% workspace/ism |
 | text_like | //body | Accounts (2) |
 | text_like | //body | Workspaces (1) |
 
-| *Comment* | Test Case: Control Panel Group Add To Workspace Add as admin |
+| *Comment* | Test Case: Control Panel Group Add To Workspace Add as admin |  |
 | open-ok | /nlw/control/group/%%group_id%% |  |
 | wait_for_element_visible_ok | link=Add Group To A Workspace | 30000 |
 | wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
@@ -84,11 +84,11 @@
 | wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
 
 | *Comment* | Test Case: Control Panel Group Add To Workspace Verify membership via command line tools |  |
-| st-admin | show-members -w %%workspace%% | member |
+| st-admin | show-members -w %%ws%% | member |
 | st-admin | show-members -w %%workspaceforadmin%% | workspace_admin |
 
 | *Comment* | Test Case: Control Panel Group Add To Workspace TEARDOWN |
-| st-admin | delete-workspace --workspace %%workspace%% --no-export |
+| st-admin | delete-workspace --workspace %%ws%% --no-export |
 | st-admin | delete-workspace --workspace %%workspaceforadmin%% --no-export |
 | delete-group | %%group_id%% |
 

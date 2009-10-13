@@ -41,6 +41,15 @@ or pod2usage(-exitstatus => 1, -message => $?);
 pod2usage(1) if $help;
 pod2usage(-exitstatus => 0, -verbose => 2) if $man;
 
+{
+    my $update_running = `pgrep -f st-appliance-update`;
+    if ($update_running ne '') {
+        st_log()->debug("st-daemon-monitor: ".
+            "exiting because st-appliance-update is running");
+        exit 0;
+    }
+}
+
 # read in the params from appliance.conf
 if ($config_prefix) {
     eval "require Socialtext::Appliance::Config";
