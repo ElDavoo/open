@@ -1,6 +1,7 @@
 package Socialtext::WikiFixture::Search;
 # @COPYRIGHT@
 use Socialtext::System qw/shell_run/;
+use Socialtext::Encode;
 use Socialtext::People::Search;
 use Socialtext::AppConfig;
 use Socialtext::String;
@@ -44,7 +45,7 @@ sub people_search {
     my $query = shift;
     my $expected_results = shift;
 
-    $query = Socialtext::String::uri_escape($query);
+    $query = Socialtext::String::uri_escape(Socialtext::Encode::ensure_is_utf8($query));
     $self->comment("People search: '$query'");
 
     $self->get('/data/people?q=' . $query, 'application/json');
