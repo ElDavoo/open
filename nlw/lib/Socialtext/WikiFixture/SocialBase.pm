@@ -1754,6 +1754,20 @@ sub _run_command {
     }
 }
 
+sub set_profile_field {
+    my $self = shift;
+    my $user_name = shift;
+    my $field_name = shift;
+    my $field_value = shift;
+
+    my $user = Socialtext::User->Resolve( $user_name );
+    my $profile = Socialtext::People::Profile->GetProfile($user);
+    diag "Setting "
+        . $user->email_address
+        . " field $field_name to $field_value";
+    $profile->update_from_resource( {$field_name => $field_value} );
+    $profile->save;
+}
 
 
 1;
