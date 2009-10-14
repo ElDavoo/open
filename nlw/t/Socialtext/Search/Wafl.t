@@ -3,8 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 6;
-use Socialtext::System qw/shell_run/;
+use Test::Socialtext tests => 7;
 
 fixtures(qw(clean admin_with_ordered_pages foobar_with_ordered_pages));
 
@@ -14,7 +13,7 @@ BEGIN {
 
 my $workspace_hub = new_hub('admin');
 
-shell_run("$ENV{ST_CURRENT}/nlw/bin/ceqlotron -o -f");
+Test::Socialtext::ceqlotron_run_synchronously();
 
 my $order_doesnt_matter = 1;
 run {
