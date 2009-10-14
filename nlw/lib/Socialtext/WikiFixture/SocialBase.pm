@@ -154,7 +154,7 @@ sub follow_redirects_for {
 
 =head2 big_db
 
-Loads the database with records.  Configured through wiki 
+Loads the database with records.  Configured through wiki
 variables as follows:
 
 =over 4
@@ -238,7 +238,7 @@ Creates $numpages number of pages in $workspace
 
 sub st_create_pages {
     my ($self, $workspace, $numberpages) = @_;
-    
+
     my $user = Socialtext::User->new(username => $self->{'username'});
     my $hub = new_hub($workspace);
     for (my $idx=0; $idx<$numberpages;$idx++) {
@@ -413,7 +413,7 @@ sub create_group {
 
     $self->{group_id} = $group->group_id;
     push @{$self->{created_groups}}, $group->group_id;
-    
+
     diag "Created group $group_name (".$group->driver_unique_id."), ID: $self->{group_id} (use the \%\%group_id\%\% var to access this)" if $group;
 }
 
@@ -660,7 +660,7 @@ sub add_workspace_admin {
     my $user = Socialtext::User->Resolve($email);
     die "No such user $email" unless $user;
 
-    $ws->add_user( 
+    $ws->add_user(
         user => $user,
         role => Socialtext::Role->WorkspaceAdmin(),
     );
@@ -734,10 +734,10 @@ sub set_account_id {
 
 =head2 set_regex_escape( $varname, $value )
 
-Takes a value and places a regex-escaped value in a variable that should be used 
+Takes a value and places a regex-escaped value in a variable that should be used
 for the value of a *like command.
 
-This is convenient when you are constructing a string with / that needs escaping 
+This is convenient when you are constructing a string with / that needs escaping
 (the / needs escaping inside or outside of a qr//) for use with *like commands
 
 =cut
@@ -778,7 +778,7 @@ sub sleep {
 
 =head2 get ( uri, accept )
 
-GET a URI, with the specified accept type.  
+GET a URI, with the specified accept type.
 
 accept defaults to 'text/html'.
 
@@ -823,7 +823,7 @@ sub was_faster_than {
 
 =head2 delete ( uri, accept )
 
-DELETE a URI, with the specified accept type.  
+DELETE a URI, with the specified accept type.
 
 accept defaults to 'text/html'.
 
@@ -835,7 +835,7 @@ sub delete {
 
     $self->_delete($uri, [Accept => $accept]);
 }
-            
+
 
 =head2 code_is( code [, expected_message])
 
@@ -886,7 +886,7 @@ Post to the specified URI with header 'Content-Type=application/json'
 
 =cut
 
-sub post_json { 
+sub post_json {
     my $self = shift;
     my $uri = shift;
     $self->post($uri, 'Content-Type=application/json', @_);
@@ -920,7 +920,7 @@ sub post_file {
     my $filename = shift;
 
     my @vars = map { /^(.*)=(.*)$/ } split /;&/, $vars;
-    push @vars, ($filename_var, [$filename]); 
+    push @vars, ($filename_var, [$filename]);
 
     my $ua = LWP::UserAgent->new;
     my $req = POST $self->{browser_url} . $uri,
@@ -1039,7 +1039,7 @@ sub set_from_header {
 
 =head2 st_clear_cache
 
-Clears the server cache for the widgets 
+Clears the server cache for the widgets
 
 =cut
 
@@ -1166,7 +1166,7 @@ sub json_parse {
 =head2 json-like
 
 Confirm that the resulting body is a JSON object which is like (ignoring order
-for arrays/dicts) the value given. 
+for arrays/dicts) the value given.
 
 The comparison is as follows between the 'candidate' given as a param in the
 wikitest, and the value object derived from decoding hte json object from the
@@ -1186,12 +1186,12 @@ this fixture)
 
 
 sub json_like {
-    
+
     my $self = shift;
     my $candidate = shift;
 
     my $json = $self->{json};
-      
+
     if (not defined $json ) {
         fail $self->{http}->name . " no json result";
     }
@@ -1200,11 +1200,11 @@ sub json_like {
         fail $self->{http}->name . " failed to find or parse candidate " . ($@ ? " \$\@=$@" : "");
         return;
     }
-    
+
     my $result=0;
-    $result = eval {$self->_compare_json($parsed_candidate, $json)}; 
+    $result = eval {$self->_compare_json($parsed_candidate, $json)};
     if (!$@ && $result) {
-        ok !$@ && $result, 
+        ok !$@ && $result,
         $self->{http}->name . " compared content and candidate";
     } else {
         fail "$candidate\n and\n ".encode_json($json)."\n" . ($@ ? "\$\@=$@" : "");
@@ -1226,7 +1226,7 @@ sub _compare_json {
     }
     elsif (ref($json) eq 'ARRAY') {
         my $match = 1;
-        die "Expecting array for ". encode_json($candidate) . " with json ".encode_json($json) unless ref ($candidate) eq 'ARRAY'; 
+        die "Expecting array for ". encode_json($candidate) . " with json ".encode_json($json) unless ref ($candidate) eq 'ARRAY';
         foreach (@$candidate) {
             my $candobj=$_;
             my $exists = 0;
@@ -1235,10 +1235,10 @@ sub _compare_json {
             }
             $match &&= $exists;
         }
-        die "No match for candidate ".encode_json($candidate) . " with json ".encode_json($json) unless $match; 
+        die "No match for candidate ".encode_json($candidate) . " with json ".encode_json($json) unless $match;
     }
     elsif (ref($json) eq 'HASH') {
-        die  "Expecting hash for ". encode_json($candidate) . " with json ".encode_json($json) unless ref($candidate) eq 'HASH'; 
+        die  "Expecting hash for ". encode_json($candidate) . " with json ".encode_json($json) unless ref($candidate) eq 'HASH';
         my $match = 1;
         for my $key (keys %$candidate) {
             die "Can't find value for key '$key' in JSON ". encode_json($json)  unless defined($json->{$key});
@@ -1271,7 +1271,7 @@ sub json_array_size {
         fail $self->{http}->name . " json result is not an array";
     }
     else {
-        cmp_ok scalar(@$json), $comparator, $size, 
+        cmp_ok scalar(@$json), $comparator, $size,
             $self->{http}->name . " array is $comparator $size" ;
     }
 }
@@ -1303,7 +1303,7 @@ sub _get {
     $self->{_last_http_time} = time() - $start;
 }
 
-sub _delete {      
+sub _delete {
     my ($self, $uri, $opts) = @_;
     my $start = time();
     $self->{http}->delete( $self->{browser_url} . $uri, $opts );
@@ -1339,7 +1339,7 @@ sub post_signals {
 
     # All of the signals we send during this test script should be based back
     # from this start time
-    my $start_time = $self->{_post_signals_start_time} 
+    my $start_time = $self->{_post_signals_start_time}
                         ||= time() - 60 * 60 * 24 * 30;
 
     for my $i ($offset .. $offset+$count-1) {
@@ -1349,9 +1349,9 @@ sub post_signals {
         my $delta = time() - $signal_time;
         # Rewind the date
         sql_execute(<<EOT, "${delta}s");
-UPDATE signal SET at = at - ?::interval 
+UPDATE signal SET at = at - ?::interval
     WHERE signal_id = (
-        SELECT signal_id FROM signal 
+        SELECT signal_id FROM signal
             ORDER BY signal_id DESC LIMIT 1
     )
 EOT
@@ -1381,14 +1381,14 @@ sub deliver_email {
 
 sub deliver_email_result_is {
     my ($self, $result) = @_;
-    is $self->{_deliver_email_result}, $result, 
+    is $self->{_deliver_email_result}, $result,
         "Delivering email returns $result";
 }
 
 sub deliver_email_error_like {
     my ($self, $regex) = @_;
     $regex = $self->quote_as_regex($regex);
-    like $self->{_deliver_email_err}, $regex, 
+    like $self->{_deliver_email_err}, $regex,
         "Delivering email stderr matches $regex";
 }
 
@@ -1463,7 +1463,7 @@ sub faster_than {
 sub parse_logs {
     my $self = shift;
     my $file = shift;
-    
+
     die "File doesn't exist!" unless -e $file;
     my $report_perl = "$^X -I$ENV{ST_CURRENT}/socialtext-reports/lib"
         . " -I$ENV{ST_CURRENT}/nlw/lib $ENV{ST_CURRENT}/socialtext-reports";
@@ -1589,7 +1589,7 @@ sub st_fast_forward_jobs {
     my $s = $minutes * 60;
     sql_begin_work;
     sql_execute(q{
-        UPDATE job SET 
+        UPDATE job SET
             insert_time = insert_time - $1,
             run_after = run_after - $1,
             grabbed_until = grabbed_until - $1
@@ -1746,7 +1746,7 @@ sub _run_command {
     my $verify = shift || '';
     my $output = qx($command 2>&1);
     return if $verify eq 'ignore output';
-    
+
     if ($verify) {
         like $output, $verify, $command;
     }
@@ -1799,7 +1799,7 @@ sub add_profile_field {
     my $field_name = shift;
     my $field_title = shift;
     my $hidden = shift || 0;
-    
+
     my $account = Socialtext::Account->new(name => $account_name);
     my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class('people');
     $plugin_class->AddProfileField({
