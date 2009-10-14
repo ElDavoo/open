@@ -109,6 +109,11 @@ sub _search {
                         . "(dm_recip:$viewer_id OR creator:$viewer_id))",
                 ];
             }
+            elsif ($opts{doctype} eq 'person') {
+                if ($query !~ m/\w+:/) {
+                    $query = "name_pf_t:$query";
+                }
+            }
         }
     }
 
