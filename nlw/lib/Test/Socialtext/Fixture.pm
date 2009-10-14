@@ -71,9 +71,9 @@ sub _built_in_clean {
         $env->base_dir,
         $self->buildstamp_dir(),
     );
-    local $Socialtext::System::SILENT_RUN
-        = $self->env->verbose ? 0 : 1;
-    shell_run '-ceq-rm . 2> /dev/null';
+
+    require Socialtext::Jobs;
+    Socialtext::Jobs->clear_jobs();
     rmtree( \@to_clean );
 }
 
