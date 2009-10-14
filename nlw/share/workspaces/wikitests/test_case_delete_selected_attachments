@@ -13,7 +13,7 @@
 | *Comment* | Test Case: Delete Selected Attachments uploads wikitest.doc and wikitest.jpg |  |
 | st-admin | update-page --email %%email%% --workspace %%workspace%% --page "Delete Attachments %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
 
-| open-ok | /%%workspace%%/?Delete Attachments %%start_time%% |  |
+| open_ok | /%%workspace%%/?Delete Attachments %%start_time%% | 60000 |
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
 | click_ok | st-attachments-uploadbutton |  |
 | wait_for_element_visible_ok | st-attachments-attach-filename | 30000 |
@@ -40,7 +40,7 @@
 | text_like | contentContainer | qr/Delete Attachments %%start_time%%.+in %%title%%/ |
 
 | *Comment* | Open All Files |  |
-| open_ok | /%%workspace%%/index.cgi?action=attachments_listall |  |
+| open_ok | /%%workspace%%/index.cgi?action=attachments_listall | 60000 |
 | wait_for_element_visible_ok | //input[@value='Delete Selected Attachments'] | 30000 |
 
 | *Comment* | Test Case: Delete Selected Attachments delete wikitest.doc |  |
@@ -54,7 +54,7 @@
 | click_and_wait | //input[@value='Delete Selected Attachments'] |  |
 
 | *Comment* | Test Case: Delete Selected Attachments. See if wikitest.doc got deleted |  |
-| open_ok | /%%workspace%%/?Delete Attachments %%start_time%% | 30000 |
+| open_ok | /%%workspace%%/?Delete Attachments %%start_time%% | 60000 |
 | wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.jpg')] | 30000 |
 | text_like | //a[contains(@href,'original/wikitest.jpg')] | wikitest.jpg |
 | text_unlike | contentRight | wikitest.doc |

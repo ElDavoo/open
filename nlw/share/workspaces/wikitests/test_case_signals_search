@@ -20,6 +20,7 @@
 | *Comment* | Test Case: Signals Search. Send 2 signals %%a_username%% |  |
 | http-user-pass | %%a_username%% | %%password%% |
 | post-signal | NotAStopWord %%start_time%% 01 |
+| pause | 3000 |  |
 | post-signal | NotAStopWord %%start_time%% 12 |
 | pause | 10000 | wait for Signals Indexer to run |
 
@@ -46,6 +47,7 @@
 | *Comment* | Test Case: Signals Search. Send 2 signals %%z_username%% |  |
 | http-user-pass | %%z_username%% | %%password%% |
 | post-signal | NotAStopWord %%start_time%% 21 |
+| pause | 3000 |  |
 | post-signal | NotAStopWord %%start_time%% 32 |
 | pause | 10000 | wait for Signals Indexer to run |
 
@@ -86,6 +88,7 @@
 | *Comment* | Test Case: Signals Search. Relevance. Send a more relevant signal AND a newer signal |  |
 | http-user-pass | %%z_username%% | %%password%% |
 | post-signal | MoreRelevant %%start_time%% %%start_time%% %%start_time%% |
+| pause | 3000 |  |
 | post-signal | LessRelevant %%start_time%% |
 | pause | 10000 | wait for Signals Indexer to run |
 

@@ -1140,6 +1140,10 @@ sub _eval_password_change {
     my $user = shift;
     my $pw = shift;
 
+    $self->_error(
+        loc("Remotely sourced passwords cannot be updated via Socialtext.")
+     ) unless $user->can_update_store();
+
     eval { $user->update_store( password => $pw ) };
 
     if ( my $e

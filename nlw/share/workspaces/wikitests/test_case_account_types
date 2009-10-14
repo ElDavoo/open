@@ -27,13 +27,13 @@
 
 | *Comment* | Test Case: Account Types Create through GUI - No Account Type DropDown |  |
 | st-appliance-config | set is_socialtext_hosted 0 |  |
-| open_ok | /nlw/control/account |  |
+| open_ok | /nlw/control/account | 60000 |
 | wait_for_element_visible_ok | st-new-account-name | 30000 |
 | wait_for_element_not_present_ok | st-new-account-type | 30000 |
 
 | *Comment* | Test Case: Account Types Create through GUI - set is_hosted flag - YES Account Type DropDown |  |
 | st-appliance-config | set is_socialtext_hosted 1 |  |
-| open_ok | /nlw/control/account |  |
+| open_ok | /nlw/control/account | 60000 |
 | wait_for_element_visible_ok | st-submit-new-account-submit | 30000 |
 | wait_for_element_visible_ok | st-new-account-name | 30000 |
 | wait_for_element_visible_ok | st-new-account-type | 30000 |
@@ -50,7 +50,7 @@
 | wait_for_text_present_ok | Account type: Paid | 30000 |
 
 | *Comment* | Test Case: Account Types Create through GUI - set is_hosted flag - YES create a standard account |  |
-| open_ok | /nlw/control/account |  |
+| open_ok | /nlw/control/account | 60000 |
 | wait_for_element_visible_ok | st-submit-new-account-submit | 30000 |
 | wait_for_element_visible_ok | st-new-account-name | 30000 |
 | wait_for_element_visible_ok | st-new-account-type | 30000 |
