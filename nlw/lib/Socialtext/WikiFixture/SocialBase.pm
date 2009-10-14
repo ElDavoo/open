@@ -1798,6 +1798,7 @@ sub add_profile_field {
     my $account_name = shift;
     my $field_name = shift;
     my $field_title = shift;
+    my $hidden = shift || 0;
     
     my $account = Socialtext::Account->new(name => $account_name);
     my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class('people');
@@ -1805,6 +1806,7 @@ sub add_profile_field {
             account => $account,
             name => $field_name,
             title => $field_title,
+            is_hidden => $hidden,
         },
     );
     diag "Added profile field '$field_name' to $account_name";
