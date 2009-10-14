@@ -29,6 +29,9 @@ sub _build_field_map {
         family_name   => 'last_name_pf_s',
         email         => 'email_address_pf_s',
         email_address => 'email_address_pf_s',
+        url           => 'personal_url_pf_h',
+        facebook      => 'facebook_url_pf_h',
+        linkedin      => 'linkedin_url_pf_h',
         (map { $_ => $_ . "_sn_pf_s" } 
             qw/aol yahoo gtalk skype twitter sametime/),
     };
