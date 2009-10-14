@@ -10,6 +10,7 @@ use Socialtext::File;
 use Socialtext::System qw();
 use Socialtext::HTTP::Ports;
 use Socialtext::Role;
+use Socialtext::People::Profile qw/normalize_tag/;
 use File::LogReader;
 use File::Path qw(rmtree);
 use Test::More;
@@ -1766,6 +1767,29 @@ sub set_profile_field {
         . $user->email_address
         . " field $field_name to $field_value";
     $profile->update_from_resource( {$field_name => $field_value} );
+    $profile->save;
+}
+
+sub tag_profile {
+    my $self = shift;
+    my $user_name = shift;
+    my $tag = shift;
+
+    my $user = Socialtext::User->Resolve( $user_name );
+    my $profile = Socialtext::People::Profile->GetProfile($user);
+
+    my $tag_name = normalize_tag($tag);
+    my $tags = $profile->tags;
+    if ($tag_name =~ m/^-(.+)/) {
+        delete $tags->{$1};
+        diag "Removed tag $tag_name from " . $user->email_address;
+    }
+    else {
+        $tags->{$tag_name} = 1;
+        diag "Tagged " . $user->email_address . " with '$tag_name'";
+    }
+
+    $profile->tags($tags);
     $profile->save;
 }
 
