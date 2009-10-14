@@ -193,7 +193,39 @@ sub index_person {
             },
         }
     );
+
+    if ($p{name_is_changing}) {
+        eval { $self->_index_related_people($maybe_user, $user_id, %p); }
+    }
     return ($job_id);
+}
+
+sub _index_related_people {
+    my ($self, $maybe_user, $user_id, %p) = @_;
+    local $@; # don't propagate
+    my %to_reindex;
+    require Socialtext::People::Profile;
+    my $prof = Socialtext::People::Profile->GetProfile($maybe_user);
+    my @attr_names = $prof->fields->relationship_names();
+    for my $attr (@attr_names) {
+        my $user_id = $prof->get_reln_id($attr);
+        $to_reindex{$user_id} = 1 if $user_id;
+    }
+    for my $other_user_id (keys %to_reindex) {
+        eval {
+            $self->insert(
+                'Socialtext::Job::PersonIndex' => {
+                    solr => 1,
+                    user_id => $other_user_id,
+                    job => {
+                        priority => $p{priority},
+                        coalesce => $other_user_id,
+                        ($p{run_after} ? (run_after => $p{run_after}) : ()),
+                    },
+                }
+            );
+        };
+    }
 }
 
 

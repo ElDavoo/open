@@ -237,8 +237,10 @@ sub can_update_store {
 sub update_store {
     my $self = shift;
     my %p = @_;
+    my $old_name = $self->display_name;
     my $rv = $self->homunculus->update( %p );
-    $self->_index();
+    my $new_name = $self->display_name;
+    $self->_index(name_is_changing => ($old_name ne $new_name));
     return $rv;
 }
 
@@ -795,8 +797,9 @@ sub deactivate {
 }
 
 sub _index {
+    my $self = shift;
     require Socialtext::JobCreator;
-    Socialtext::JobCreator->index_person(shift);
+    Socialtext::JobCreator->index_person($self, @_);
 }
 
 # Class methods
