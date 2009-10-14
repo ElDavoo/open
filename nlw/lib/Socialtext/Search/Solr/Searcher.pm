@@ -75,7 +75,15 @@ sub _search {
     $opts{limit}   ||= $self->_default_rows;
     $opts{timeout} ||= Socialtext::AppConfig->search_time_threshold();
 
-    my $query = $self->parse($query_string);
+    my @account_ids;
+    if ($opts{account_ids}) {
+        @account_ids = @{ $opts{account_ids} };
+    }
+    else {
+        @account_ids = $opts{viewer}->accounts(ids_only => 1);
+    }
+
+    my $query = $self->parse($query_string, \@account_ids);
     $self->_authorize( $query, $authorizer );
 
     Socialtext::Timer->Continue('solr_raw');
@@ -89,13 +97,6 @@ sub _search {
     elsif ($opts{doctype}) {
         $filter_query = "doctype:$opts{doctype}";
         if ($opts{viewer}) {
-            my @account_ids;
-            if ($opts{account_ids}) {
-                @account_ids = @{ $opts{account_ids} };
-            }
-            else {
-                @account_ids = $opts{viewer}->accounts(ids_only => 1);
-            }
             $filter_query .= " AND ("
                 . join(' OR ', map { "a:$_" } @account_ids)
                 . ")";

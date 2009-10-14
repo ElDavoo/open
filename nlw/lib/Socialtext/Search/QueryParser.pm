@@ -1,6 +1,7 @@
 package Socialtext::Search::QueryParser;
 # @COPYRIGHT@
 use Moose;
+use Socialtext::People::Fields;
 use namespace::clean -except => 'meta';
 
 =head1 NAME
@@ -19,13 +20,15 @@ Base class for parsing search queries.
 =cut
 
 has 'searchable_fields' => (is => 'ro', isa => 'ArrayRef[Str]', lazy_build => 1);
+has 'field_map' => (is => 'ro', isa => 'HashRef[Str]', lazy_build => 1);
 
 sub parse {
     my $self = shift;
     my $query_string = shift;
+    my $account_ids = shift;
 
     # Fix the raw query string.  Mostly manipulating "field:"-like strings.
-    $query_string = $self->munge_raw_query_string($query_string);
+    $query_string = $self->munge_raw_query_string($query_string, $account_ids);
 
     return $query_string;
 }
@@ -33,7 +36,7 @@ sub parse {
 # Raw text manipulations like this are not 100% safe to do, but should be okay
 # considering their esoteric nature (i.e. dealing w/ fields).
 sub munge_raw_query_string {
-    my ( $self, $query ) = @_;
+    my ( $self, $query, $account_ids ) = @_;
 
     # Establish some field synonyms.
     $query =~ s/=/title:/g;        # Old style title search
@@ -42,12 +45,32 @@ sub munge_raw_query_string {
 
     # Find everything that looks like a field, but is not.  I.e. in "cow:foo"
     # we would find "cow:". 
-    my $field_map;
+    my $searchable_fields;
     my @non_fields;
-    while ( $query =~ /(\w+):/g ) {
+    my $field_map = $self->field_map;
+    while ($query =~ /(\w+):/g ) {
+        my ($field_start, $field_length) = ($-[1], $+[1] - $-[1]);
         my $maybe_field = $1;
-        $field_map ||= { map { $_ => 1 } @{ $self->searchable_fields } };
-        push @non_fields, $maybe_field unless $field_map->{$maybe_field};
+        $searchable_fields ||= { map { $_ => 1 } @{ $self->searchable_fields } };
+        # position -> position_pf_s
+        # myers_briggs -> myers_briggs_pf_s
+
+        if ($searchable_fields->{$maybe_field}) {
+            if (my $solr_field = $field_map->{$maybe_field}) {
+                substr($query, $field_start, $field_length) = $solr_field;
+            }
+        }
+        elsif ($account_ids and my $f = Socialtext::People::Fields->GetField(
+                                name => $maybe_field,
+                                account_id => $account_ids,
+                            )) {
+            substr($query, $field_start, $field_length) = $f->solr_field_name;
+            # Remember this field so we don't subsequently substitute it.
+            $searchable_fields->{$f->solr_field_name} = 1;
+        }
+        else {
+            push @non_fields, $maybe_field;
+        }
     }
 
     # If it looks like a field but is not then remove the ":".  This prevents
@@ -60,6 +83,7 @@ sub munge_raw_query_string {
     return $query;
 }
 
+sub _build_field_map { {} }
 
 __PACKAGE__->meta->make_immutable;
 1;

@@ -19,20 +19,36 @@ Pre-parse Solr specific query options.
 
 extends 'Socialtext::Search::QueryParser';
 
+sub _build_field_map {
+    my $self = shift;
+    return {
+        name          => 'name_pf_t',
+        first_name    => 'first_name_pf_s',
+        given_name    => 'first_name_pf_s',
+        last_name     => 'last_name_pf_s',
+        family_name   => 'last_name_pf_s',
+        email         => 'email_address_pf_s',
+        email_address => 'email_address_pf_s',
+    };
+}
+
 sub _build_searchable_fields { 
+    my $self = shift;
     [
         # Page / attachment fields:
         qw/title tag body w/,
         # Signal fields:
         qw/w doctype id creator body pvt dm_recip a reply_to mention
            link_page_key link_w link date created is_question creator_name/,
+        # People fields: (keys AND values)
+        %{ $self->field_map },
     ]
 }
 
 around 'parse' => sub {
-    my ( $orig, $self, $query_string ) = @_;
+    my ( $orig, $self, $query_string, @opts ) = @_;
 
-    $query_string = $orig->($self, $query_string);
+    $query_string = $orig->($self, $query_string, @opts);
 
     if ($query_string =~ m/\*/) {
         $query_string = "{!defType=lucene}$query_string";
