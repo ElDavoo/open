@@ -53,7 +53,7 @@ around 'parse' => sub {
     if ($query_string =~ m/\*/) {
         $query_string = "{!defType=lucene}$query_string";
     }
-    return $query_string;
+    return lc $query_string;
 };
 
 1;
