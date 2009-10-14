@@ -140,7 +140,7 @@ Visit in Firefox:
 | wait_for_element_visible_ok | link=Account Logo |  |
 | click_ok | link=Account Logo |  |
 | wait_for_element_visible_ok | new_logo_file |  |
-| type_ok | new_logo_file | %%wikitest_client_files%%wikitest.jpg |
+| type_ok | new_logo_file | %%wikitest_files%%wikitest.jpg |
 | wait_for_element_visible_ok | design_submit |  |
 | click_and_wait | design_submit |  |
 
