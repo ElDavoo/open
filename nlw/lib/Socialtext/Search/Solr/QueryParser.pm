@@ -42,6 +42,7 @@ sub _build_searchable_fields {
            link_page_key link_w link date created is_question creator_name/,
         # People fields: (keys AND values)
         %{ $self->field_map },
+        qw/phone/,
     ]
 }
 
