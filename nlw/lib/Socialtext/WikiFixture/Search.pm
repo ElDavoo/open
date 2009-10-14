@@ -3,6 +3,7 @@ package Socialtext::WikiFixture::Search;
 use Socialtext::System qw/shell_run/;
 use Socialtext::People::Search;
 use Socialtext::AppConfig;
+use Socialtext::String;
 use Test::More;
 use Moose;
 
@@ -36,6 +37,20 @@ sub search_people {
 
     is scalar(@$ppl), $num_results, "search '$query' results: $num_results";
 
+}
+
+sub people_search {
+    my $self = shift;
+    my $query = shift;
+    my $expected_results = shift;
+
+    $query = Socialtext::String::uri_escape($query);
+    $self->comment("People search: '$query'");
+
+    $self->get('/data/people?q=' . $query, 'application/json');
+    $self->code_is(200);
+    $self->json_parse();
+    $self->json_array_size($expected_results);
 }
 
 1;
