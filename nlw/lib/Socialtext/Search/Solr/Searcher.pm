@@ -84,6 +84,7 @@ sub _search {
     }
 
     my $query = $self->parse(lc($query_string), \@account_ids);
+    return ([], 0) if $query =~ m/^(?:\*|\?)/;
     $self->_authorize( $query, $authorizer );
 
     Socialtext::Timer->Continue('solr_raw');
