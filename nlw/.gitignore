@@ -342,3 +342,4 @@ t/wikitests/people/rest/data_people_search.wiki
 t/Socialtext/JSON/Proxy-graceful.t
 t/rest_files/sleeper2.pl
 t/wikitests/search/people.wiki
+t/lib/Socialtext/Gadgets/UserAgent.pm
