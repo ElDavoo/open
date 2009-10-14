@@ -3,12 +3,15 @@
 
 # '-m' option ( minimal ) will set up ony 'admin' fixture, 'ALL' is default
 # '-b' option will set apache up with benchmark_mode = 1
+# '-p' option will _not_ start up nlw in this script
 FIXTURE='ALL'
 BENCHMARK=0
-while getopts "mb" OPT; do
+PAUSE=0
+while getopts "mbp" OPT; do
   case $OPT in
     b) BENCHMARK=1;;
     m) FIXTURE=admin;;
+    p) PAUSE=1;;
   esac
 done
 
@@ -85,8 +88,12 @@ set -e
 
 [ $BENCHMARK == 1 ] && st-config set benchmark_mode 1
 
-echo "Starting in dual-Apache mode";
-dev-bin/nlwctl start;
+if [ $PAUSE == 0 ]; then
+    echo "Starting in dual-Apache mode"
+    dev-bin/nlwctl start
+else
+    echo "Skipping NLW startup, you need do it manually"
+fi
 
 st-widgets update-all
 st-widgets update-gallery
