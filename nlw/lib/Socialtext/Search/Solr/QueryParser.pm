@@ -51,15 +51,4 @@ sub _build_searchable_fields {
     ]
 }
 
-around 'parse' => sub {
-    my ( $orig, $self, $query_string, @opts ) = @_;
-
-    $query_string = $orig->($self, $query_string, @opts);
-
-    if ($query_string =~ m/\*/) {
-        $query_string = "{!defType=lucene}$query_string";
-    }
-    return lc $query_string;
-};
-
 1;

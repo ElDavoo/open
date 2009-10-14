@@ -83,7 +83,7 @@ sub _search {
         @account_ids = $opts{viewer}->accounts(ids_only => 1);
     }
 
-    my $query = $self->parse($query_string, \@account_ids);
+    my $query = $self->parse(lc($query_string), \@account_ids);
     $self->_authorize( $query, $authorizer );
 
     Socialtext::Timer->Continue('solr_raw');
