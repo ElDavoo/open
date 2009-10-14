@@ -1793,5 +1793,22 @@ sub tag_profile {
     $profile->save;
 }
 
+sub add_profile_field {
+    my $self = shift;
+    my $account_name = shift;
+    my $field_name = shift;
+    my $field_title = shift;
+    
+    my $account = Socialtext::Account->new(name => $account_name);
+    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class('people');
+    $plugin_class->AddProfileField({
+            account => $account,
+            name => $field_name,
+            title => $field_title,
+        },
+    );
+    diag "Added profile field '$field_name' to $account_name";
+}
+
 
 1;
