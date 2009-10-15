@@ -17,6 +17,7 @@ use Socialtext::Workspace;
 use Socialtext::JSON qw/decode_json/;
 use WebService::Solr;
 use namespace::clean -except => 'meta';
+use Encode;
 
 =head1 NAME
 
@@ -137,7 +138,7 @@ sub _search {
         timeAllowed => $opts{timeout},
         @sort,
     };
-    my $response = $self->solr->search($query, $query_hash);
+    my $response = $self->solr->search(Encode::encode_utf8($query), $query_hash);
 
     if ($response->content->{responseHeader}->{partialResults}) {
         Socialtext::Exception::SearchTimeout->throw();
