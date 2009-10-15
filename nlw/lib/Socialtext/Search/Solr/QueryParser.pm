@@ -34,6 +34,7 @@ sub _build_field_map {
         linkedin      => 'linkedin_url_pf_h',
         (map { $_ => $_ . "_sn_pf_s" } 
             qw/aol yahoo gtalk skype twitter sametime/),
+        manager       => 'supervisor_pf_t',
     };
 }
 
