@@ -25,7 +25,8 @@ use Readonly;
 # 11: iteration-2009-08-14 (release-3.5.11): GET /data/signals/:id
 # 12: iteration-2009-09-25 (release-3.6.2): GET /data/signals?q=...
 # 13: iteration-2009-10-09 (release-3.7.x): /data/groups, GET /data/signals?direction=asc
-Readonly our $API_VERSION => 13;
+# 14: iteration-2009-10-23 (release-3.8.x): GET /data/people?q=...
+Readonly our $API_VERSION => 14;
 Readonly our $MTIME       => ( stat(__FILE__) )[9];
 
 sub allowed_methods {'GET, HEAD'}
