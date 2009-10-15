@@ -331,7 +331,7 @@ sub _vivify {
         }
 
         # Update cached User record in DB
-        my $old_name = $cached_homey->display_name;
+        my $old_name = $cached_homey->{display_name};
         my $new_name = $user_attrs{display_name}; # set by Validate above
         $user_attrs{driver_username} = delete $user_attrs{username};    # map "object -> DB"
         $self->UpdateUserRecord(\%user_attrs);
