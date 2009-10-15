@@ -1,13 +1,8 @@
-| *Comment* | MikiShow. Mobile slideshow in iphonetester.com |  |
-| *Comment* | URL is %%browser_url%% |  |
-
-| open_ok | http://iphonetester.com/ |  |
-| wait_for_element_visible_ok | id=url | 30000 |
-| type_ok | url | %%browser_url%%/m |
-| click_ok | id=go |  |
-| selectFrame | id=iframe |  |
+| *Comment* | MikiShow. Watch the Mobile UI |  |
+| *Comment* | MikiShow expects to start at the Mobile home page |  |
 
 | set_default | pt | 5000 | defaults to five seconds |
+
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 
 | *Comment* | SEE MIKI Home |
@@ -63,5 +58,22 @@
 | pause | %%pt%% |
 
 | clickAndWait | link=Log out |
-| *Comment* | SEE MIKI Log out |
+| *Comment* | SEE MIKI Login page |
 | pause | %%pt%% |
+
+| clickAndWait | link=I don't know my password. |
+| *Comment* | SEE MIKI password reset page |
+| pause | %%pt%% |
+
+| clickAndWait | link=Log in to Socialtext |
+| *Comment* | SEE MIKI login |
+| pause | %%pt%% |
+
+| type_ok | username | %%username%% |
+| type_ok | password | %%password%% |
+| clickAndWait | //input[@value='Log in'] |  |
+
+| *Comment* | SEE MIKI logged in |
+| pause | %%pt%% |
+
+| *Comment* | MikShow COMPLETED |  |

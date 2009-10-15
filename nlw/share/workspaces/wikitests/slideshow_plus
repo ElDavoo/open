@@ -22,10 +22,17 @@ Visit in Firefox:
 
 | *Comment* | STARTING SlideShow Plus |  |
 
+| *Comment* | SEE Miki in iPhone simulator |  |
+| include | [MobileShow] |  |
+
 * a page RSS feed
 
 | open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |
+
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| wait_for_element_visible_ok | //img[contains(@src,'rss.png')] | 30000 |
 | click_ok | //img[contains(@src,'rss.png')] |  |
+
 | *Comment* | SEE page RSS feed |  |
 | *Comment* | Plus SEE Creator, Tags (if tags exist), Attachments(if attachments exist) |  |
 | pause | %%popup%% |  |
