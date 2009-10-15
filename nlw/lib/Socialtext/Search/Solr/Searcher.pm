@@ -112,7 +112,7 @@ sub _search {
                 ];
             }
             elsif ($opts{doctype} eq 'person') {
-                if ($query !~ m/\w+:/) {
+                if ($query !~ m/\w+\"?:/) {
                     $query = "name_pf_t:$query";
                 }
             }
