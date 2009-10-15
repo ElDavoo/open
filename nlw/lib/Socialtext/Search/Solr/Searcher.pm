@@ -111,8 +111,13 @@ sub _search {
                 ];
             }
             elsif ($opts{doctype} eq 'person') {
-                if ($query !~ m/\w+\"?:/) {
-                    $query = "name_pf_t:$query";
+                if ($query !~ m/\w+\"?:\s*(.+)/) {
+                    if ($query =~ m/\s+/) {
+                        $query = qq{name_pf_t:"$query"};
+                    }
+                    else {
+                        $query = qq{name_pf_t:$query};
+                    }
                 }
             }
         }
