@@ -138,6 +138,10 @@ div.clear {
     width: 100%;
     white-space: nowrap !important;
 }
+.destinationNetworks {
+    font-weight: bold;
+    white-space: nowrap !important;
+}
 
 .people_search {
     padding: 5px;
@@ -206,3 +210,4 @@ div.clear {
 .people_list .user_link {
     margin-bottom: 5px;
 }
+

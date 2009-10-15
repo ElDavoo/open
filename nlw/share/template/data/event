@@ -53,6 +53,11 @@
         <div class="metadata">
             [% actor %]
             [%- ago UNLESS no_ago -%]
+            [%- TRY -%]
+                [%- INCLUDE "data/events/${event_class}.meta" -%]
+            [%- CATCH -%]
+                <!-- no meta -->
+            [%- END -%]
         </div>
         <div class="eventText">
             [%- TRY -%]
