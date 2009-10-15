@@ -721,6 +721,17 @@ sub set_user_id {
     diag "Set variable $var_name to $self->{$var_name}";
 }
 
+sub set_user_bfn {
+    my $self = shift;
+    my $var_name = shift;
+    my $email = shift;
+
+    my $user = Socialtext::User->Resolve($email);
+    die "No such user $email" unless $user;
+    $self->{$var_name} = $user->best_full_name;
+    diag "Set variable $var_name to $self->{$var_name}";
+}
+
 sub set_account_id {
     my $self = shift;
     my $var_name = shift;
