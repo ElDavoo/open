@@ -450,6 +450,15 @@ Lightbox screens:
 | *Comment* | SlideShow GOODBYE EDIT Add Tags LIGHTBOX |  |
 | pause | %%pt%% |  |
 
+* Edit tips
+
+| wait_for_element_visible_ok | link=(?) |  |
+| click_ok | link=(?) |  |
+
+| *Comment* | SEE Edit Tips. DO NOT CLOSE |  |
+| pause | %%popup%% |  |
+| click_ok | st-ref-card-close |  |
+
 | click_ok | st-cancel-button-link |  |
 | *Comment* | SlideShow GOODBYE EDIT MODE |  |
 | pause | %%pt%% |  |
@@ -600,25 +609,12 @@ Lightbox screens:
 | *Comment* | SEE People tagged SlideShow %%start_time%% |  |
 | pause | %%pt%% |  |
 
-| *Comment* | Account Logo testing moved to Slideshow Plus |  |
-
+| *Comment* | Set up to SEE Miki in standard browser |  |
+| open_ok | /m |  |
 | include | [MikiShow] |  |
+
 | include | [ControlShow] |  |
 | include | [PaginateShow] |  |
-
-moved Edit Tips to end because FF on galena can't close it. Bug.
-
-| open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |
-| click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | link=(?) |  |
-| click_ok | link=(?) |  |
-
-| *Comment* | SEE Edit Tips |  |
-| pause | %%popup%% |  |
-| click_ok | st-ref-card-close |  |
 
 | *Comment* | moved Simple mode to end because Safari raises an alert |  |
 
