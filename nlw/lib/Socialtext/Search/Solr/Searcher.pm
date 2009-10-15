@@ -89,36 +89,28 @@ sub _search {
 
     Socialtext::Timer->Continue('solr_raw');
     my $filter_query;
+
+    # No $opts{doctype} indicates workspace search (legacy, could be changed)
     if ($workspaces and @$workspaces) {
+        # Pages and attachments in my workspaces.
         $filter_query = "(doctype:attachment OR doctype:page) AND ("
               . join(' OR ', map { "w:$_" }
                 map { Socialtext::Workspace->new(name => $_)->workspace_id }
                     @$workspaces) . ")";
     }
     elsif ($opts{doctype}) {
-        $filter_query = "doctype:$opts{doctype}";
+        $filter_query = ["doctype:$opts{doctype}"];
         if ($opts{viewer}) {
-            $filter_query .= " AND ("
+            # Only from accounts I (the viewer) have access to
+            $filter_query->[0] .= " AND ("
                 . join(' OR ', map { "a:$_" } @account_ids)
                 . ")";
 
             if ($opts{doctype} eq 'signal') {
+                # Find my public signals and private ones I sent or received
                 my $viewer_id = $opts{viewer}->user_id;
-                $filter_query = [
-                    $filter_query,
-                    "pvt:0 OR (pvt:1 AND "
+                push @$filter_query, "pvt:0 OR (pvt:1 AND "
                         . "(dm_recip:$viewer_id OR creator:$viewer_id))",
-                ];
-            }
-            elsif ($opts{doctype} eq 'person') {
-                if ($query !~ m/\w+\"?:\s*(.+)/) {
-                    if ($query =~ m/\s+/) {
-                        $query = qq{name_pf_t:"$query"};
-                    }
-                    else {
-                        $query = qq{name_pf_t:$query};
-                    }
-                }
             }
         }
     }
@@ -142,6 +134,7 @@ sub _search {
         timeAllowed => $opts{timeout},
         @sort,
     };
+    _debug("Solr query: $query");
     my $response = $self->solr->search($query, $query_hash);
 
     if ($response->content->{responseHeader}->{partialResults}) {
