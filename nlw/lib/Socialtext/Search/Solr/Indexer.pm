@@ -437,7 +437,10 @@ sub _add_person_doc {
                 if (my $other_user = Socialtext::User->new(user_id => $value)) {
                     my $bfn_field = $field->name . '_pf_t';
                     push @fields, [$bfn_field => $other_user->best_full_name ];
+                    my $uid_field = $field->name . '_pf_i';
+                    push @fields, [$uid_field => $other_user->user_id ];
                 }
+                next;
             }
             else {
                 $value = $profile->get_attr($field->name);

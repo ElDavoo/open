@@ -68,6 +68,9 @@ sub munge_raw_query_string {
             # Remember this field so we don't subsequently substitute it.
             $searchable_fields->{$f->solr_field_name} = 1;
         }
+        elsif ($maybe_field =~ m/_pf_[isth]$/) {
+            # Leave it alone, they probably know what they are doing
+        }
         else {
             push @non_fields, $maybe_field;
         }
