@@ -1770,6 +1770,23 @@ sub set_profile_field {
     $profile->save;
 }
 
+sub set_profile_relationship {
+    my $self = shift;
+    my $user_name = shift;
+    my $field_name = shift;
+    my $other_user_name = shift;
+
+    my $user = Socialtext::User->Resolve( $user_name );
+    my $otheruser = Socialtext::User->Resolve( $other_user_name );
+    my $profile = Socialtext::People::Profile->GetProfile($user);
+    diag "Setting "
+        . $user->email_address
+        . "'s $field_name field to " . $otheruser->email_address;
+
+    $profile->update_from_resource( {$field_name => { id => $otheruser->user_id} } );
+    $profile->save;
+}
+
 sub tag_profile {
     my $self = shift;
     my $user_name = shift;
