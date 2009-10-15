@@ -433,7 +433,11 @@ sub _add_person_doc {
             my $solr_field = $field->solr_field_name;
             my $value;
             if ($field->is_relationship) {
-                $value = $profile->get_reln_id($field->name);
+                $value = $profile->get_reln_id($field->name) or next;
+                if (my $other_user = Socialtext::User->new(user_id => $value)) {
+                    my $bfn_field = $field->name . '_pf_t';
+                    push @fields, [$bfn_field => $other_user->best_full_name ];
+                }
             }
             else {
                 $value = $profile->get_attr($field->name);
