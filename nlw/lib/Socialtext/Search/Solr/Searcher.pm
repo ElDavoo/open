@@ -141,7 +141,14 @@ sub _search {
     _debug("qt=$_") for @filter_query;
     my $response = $self->solr->search($query, $query_hash);
 
-    if ($response->content->{responseHeader}->{partialResults}) {
+    my $resp_headers = eval { $response->content->{responseHeader} };
+    if ($@) {
+        warn $@;
+        _debug("Search response error: $@");
+        return ([], 0);
+    }
+
+    if ($resp_headers->{partialResults}) {
         Socialtext::Exception::SearchTimeout->throw();
     }
 
