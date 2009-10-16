@@ -85,6 +85,7 @@ sub _search {
 
     $query_string = lc $query_string;
     $query_string =~ s/\b(and|or|not)\b/uc($1)/ge;
+    $query_string =~ s/\[([^\]]+)\]/'[' . uc($1) . ']'/ge;
 
     my $query = $self->parse($query_string, \@account_ids);
     return ([], 0) if $query =~ m/^(?:\*|\?)/;
