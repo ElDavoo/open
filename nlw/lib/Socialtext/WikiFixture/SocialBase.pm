@@ -251,6 +251,30 @@ sub st_create_pages {
     ok 1, "Created $numberpages of pages in $workspace";
 }
 
+=head2 st_search_for($searchtype, $searchvalue)
+
+Global nav search automation
+
+Assumes the selement 'st-search-element' is on the page, selects $searchtype
+
+Suggest searchs as of Oct 2009: 
+
+Search My Workspaces:
+Search People: 
+Search Signals:
+
+=cut
+
+sub st_search_for {
+    my ($self, $searchtype, $searchvalue) = @_;
+    $self->handle_command('wait_for_element_visible_ok','st-search-action',30000);
+    $self->handle_command('select_ok', 'st-search-action', $searchtype);
+    $self->handle_command('wait_for_element_visible_ok','st-search-term',30000);
+    $self->handle_command('type_ok','st-search-term',$searchvalue);
+    $self->handle_command('wait_for_element_visible_ok','st-search-submit',30000);
+    $self->handle_command('click_ok','st-search-submit');
+}
+
 
 sub create_account {
     my $self = shift;

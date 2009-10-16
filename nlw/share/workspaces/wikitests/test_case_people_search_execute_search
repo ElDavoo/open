@@ -1,0 +1,72 @@
+| *Comment* | Test Case: People Search Execute Search |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: People Search Execute Search For User #1 by first name |  |
+| open_ok | /?action=people |  |
+| st-search-for | Search People: | james |
+| wait_for_element_visible_ok | link=James Bach | 30000 |
+| wait_for_element_visible_ok | link-James Mcguire | 30000 |
+| text_like | //body | qr/Showing 1 - 2 of 2 total/ism |
+| text_unlike | //body | Michael Bolton |
+| text_unlike | //body | Joe Harter |
+| text_unlike | //body | Markus Gäèrtner |
+
+| *Comment* | Test Case: People Search Execute Search For User #1 by last name |  |
+| open_ok | / |  |
+| st-search-for | Search People: | mcguire |
+| wait_for_element_visible_ok | link=James Mcguire | 30000 |
+| text_like | //body | qr/Showing 1 - 1 of 1 total/ism |
+| text_unlike | //body | James Bach |
+| text_unlike | //body | Michael Bolton |
+| text_unlike | //body | Joe Harter |
+| text_unlike | //body | Markus Gäèrtner |
+
+| *Comment* | Test Case: People Search Execute Search For User #1 by email address |  |
+| open_ok | / |  |
+| st-search-for | Search People: | %%euserone%% |
+| wait_for_element_visible_ok | link=James Mcguire | 30000 |
+| text_like | //body | qr/Showing 1 - 1 of 1 total/ism |
+| text_unlike | //body | James Bach |
+| text_unlike | //body | Michael Bolton |
+| text_unlike | //body | Joe Harter |
+| text_unlike | //body | Markus Gäèrtner |
+
+| *Comment* | Test Case: People Search Execute Search For User #2 by location |  |
+| open_ok | / |  |
+| st-search-for | Search People: | Palo Alto |
+| wait_for_element_visible_ok | link=James Bach | 30000 |
+| text_like | //body | qr/Showing 1 - 1 of 1 total/ism |
+| text_unlike | //body | James Mcguire |
+| text_unlike | //body | Michael Bolton |
+| text_unlike | //body | Joe Harter |
+| text_unlike | //body | Markus Gäèrtner |
+
+| *Comment* | Test Case: People Search Execute Search For User #3 Extra Fields |  |
+| st-search-for | Search People: | defaultthree |
+| wait_for_element_visible_ok | link=Michael Bolton | 30000 |
+| text_like | //body | qr/Showing 1 - 1 of 1 total/ism |
+| text_unlike | //body | James Mcguire |
+| text_unlike | //body | James Bach |
+| text_unlike | //body | Joe Harter |
+| text_unlike | //body | Markus Gäèrtner |
+
+| *Comment* | Test Case: People Search Execute Search For User #4 by Last Name & UTF-8 |  |
+| st-search-for | Search People: | Gäèrtner |
+| wait_for_element_visible_ok | link=Markus Gäèrtner | 30000 |
+| text_like | //body | qr/Showing 1 - 1 of 1 total/ism |
+| text_unlike | //body | James Whitaker |
+| text_unlike | //body | James Bach |
+| text_unlike | //body | Joe Harter |
+| text_unlike | //body | Markus Gäèrtner |
+
+| *Comment* | Test Case: People Search Execute Search For User #5 Shouldn't show up |  |
+| st-search-for | Search People: | Harter |
+| text_unlike | //body | James Whitaker |
+| text_unlike | //body | James Bach |
+| text_unlike | //body | Joe Harter |
+| text_unlike | //body | Markus Gäèrtner |
+
+| *Comment* | Test Case: People Search Execute Search is done |
+
+| *Comment* | Test Case: People Search Execute Search |

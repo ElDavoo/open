@@ -1,0 +1,92 @@
+| *Comment* | Test Case: People Search |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: People Search SETUP |  |
+| set | ws | peoplesearchws%%start_time%% |
+| set | acct | peoplesearchacct%%start_time%% |
+| set | diffacct | diffacct%%start_time%% |
+| set | diffws | diffws%%start_time%% |
+| create-account | %%acct%% |  |
+| create-account | %%diffacct%% |  |
+| create-workspace | %%ws%% | %%acct%% |
+| create-workspace | %%diffws%% | %%diffacct%% |
+
+| *Comment* | Test Case: People Search User 1 and 2 are in same acct/ws |  |  |
+| set | userone | userone%%start_time%% |  |
+| set | euserone | %%userone%%@ken.socialtext.net |  |
+| create-user | %%euserone%% | %%password%% | %%acct%% |
+| add-member | %%euserone%% | %%ws%% |  |
+| set | usertwo | usertwo%%start_time%% |  |
+| set | eusertwo | %%usertwo%%@ken.socialtext.net |  |
+| create-user | %%eusertwo%% | %%password%% | %%acct%% |
+| add-member | %%eusertwo%% | %%ws%% |  |
+
+| *Comment* | Test Case: People Search User 3 is in same acct, different ws |  |  |
+| set | userthree | userthree%%start_time%% |  |
+| set | euserthree | %%userthree%%@ken.socialtext.net |  |
+| create-user | %%euserthree%% | %%password%% | %%acct%% |
+| add-member | %%euserthree%% | %%diffws%% |  |
+
+| *Comment* | Test Case: People Search User 4 is in different acct, overlapping ws |  |  |
+| set | userfour | userfour%%start_time%% |  |
+| set | euserfour | %%userfour%%@ken.socialtext.net |  |
+| create-user | %%euserfour%% | %%password%% | %%diffacct%% |
+| add-member | %%euserfour%% | %%ws%% |  |
+
+| *Comment* | Test Case: People Search User 5 is in different acct, different ws |  |  |
+| set | userfive | userfive%%start_time%% |  |
+| set | euserfive | %%userfive%%@ken.socialtext.net |  |
+| create-user | %%euserfive%% | %%password%% | %%diffacct%% |
+| add-member | %%euserfive%% | %%diffws%% |  |
+
+| *Comment* | Test Case: People Search Edit FIVE Profiles |  |
+| st-logoutin | %%euserone%% | %%password%% |
+| set | current_user | %%euserone%% |
+| set | location | Monteray, CA |
+| set | default_field | defaultone |
+| set | first | james |
+| set | last | mcguire |
+| include | [Test Case: People Search Edit A Profile] |  |
+
+| st-logoutin | %%eusertwo%% | %%password%% |
+| set | current_user | %%eusertwo%% |
+| set | Location | Palo Alto, CA |
+| set | default_field | defaulttwo |
+| set | first | james |
+| set | last | bach |
+| include | [Test Case: People Search Edit A Profile] |  |
+
+| st-logoutin | %%euserthree%% | %%password%% |
+| set | current_user | %%euserthree%% |
+| set | Location | Grand Rapids, MI |
+| set | default_field | defaultthree |
+| set | first | Michael |
+| set | last | Bolton |
+| include | [Test Case: People Search Edit A Profile] |  |
+
+| st-logoutin | %%euserfour%% | %%password%% |
+| set | current_user | %%euserfour%% |
+| set | location | South Bend, IN |
+| set | default_field | defaultfour |
+| set | first | Markus |
+| set | last | Gäèrtner |
+| include | [Test Case: People Search Edit A Profile] |  |
+
+| st-logoutin | %%euserfive%% | %%password%% |
+| set | current_user | %%euserfive%% |
+| set | first | Joe |
+| set | last | Harter |
+| set | default_field | defaultfive |
+| set | location | Oshkosh, WI |
+| include | [Test Case: People Search Edit A Profile] |  |
+
+| *Comment* | Test Case: People Search Login as User 1 |  |
+| st-logoutin | %%euserone%% | %%password%% |
+| include | [Test Case: People Search Execute Search] |  |
+
+| *Comment* | Test Case: People Search TearDown |
+| st-admin | delete-workspace --ws %%ws%% --no-export |
+| st-admin | delete-workspace --diffws %%ws%% --no-export |
+
+| *Comment* | Test Case: People Search COMPLETED |

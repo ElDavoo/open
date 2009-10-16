@@ -1,0 +1,51 @@
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: People Search Edit A Profile Access profile. |  |
+| wait_for_element_visible_ok | link=Profile | 60000 |
+| click_and_wait | link=Profile |  |
+
+| *Comment* | Test Case: People Search Edit A Profile Open for editing |  |
+| st-name-widget | 1 | profile |
+| st-select-widget-frame | profile |  |
+| wait_for_element_visible_ok | link=(Edit) | 60000 |
+| click_and_wait | link=(Edit) |  |
+
+| *Comment* | Test Case: People Search Edit A Profile Verify profile present. |  |
+| st-name-widget | 1 | profile_details |
+| st-select-widget-frame | profile_details |  |
+| wait_for_element_visible_ok | photo-upload-button | 60000 |
+| text_like | //body | Name |
+| text_like | //body | Organization |
+| text_like | //body | Contact |
+| text_like | //body | IM |
+| text_like | //body | Web |
+| text_like | //body | First Name |
+| text_like | //body | Last Name |
+
+| *Comment* | Test Case: People Search Edit A Profile Fill in all values |  |
+| type_ok | first_name | %%first%% |
+| type_ok | last_name | %%last%% |
+| type_ok | position | %%default_field%% |
+| type_ok | company | %%default_field%% |
+| type_ok | location | %%location%% |
+| type_ok | work_phone | %%default_field%% |
+| type_ok | mobile_phone | %%default_field%% |
+| type_ok | home_phone | %%default_field%% |
+| type_ok | aol_sn | %%default_field%% |
+| type_ok | yahoo_sn | %%default_field%% |
+| type_ok | gtalk_sn | %%default_field%% |
+| type_ok | skype_sn | %%default_field%% |
+| type_ok | sametime_sn | %%default_field%% |
+| type_ok | twitter_sn | %%default_field%% |
+| type_ok | blog | %%default_field%% |
+| type_ok | personal_url | %%default_field%% |
+| type_ok | linkedin_url | %%default_field%% |
+| type_ok | facebook_url | %%default_field%% |
+
+| *Comment* | Test Case: Edit Profile. Have to use click_ok and Pause for profile to save. |  |
+| click_ok | update_profile |  |
+| pause | 10000 |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |
+| wait_for_element_visible_ok | logout_btn | 30000 |
+
+| *Comment* | Test Case: People Search Edit a Profile |  |
