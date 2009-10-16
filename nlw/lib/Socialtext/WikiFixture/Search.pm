@@ -44,11 +44,18 @@ sub people_search {
     my $self = shift;
     my $query = shift;
     my $expected_results = shift;
+    my $other_params = shift;
+
+    if (defined($other_params)) {
+        $other_params = ";$other_params";
+    } else {
+        $other_params = '';
+    }
 
     $query = Socialtext::String::uri_escape(Socialtext::Encode::ensure_is_utf8($query));
     $self->comment("People search: '$query'");
 
-    $self->get('/data/people?q=' . $query, 'application/json');
+    $self->get('/data/people?q=' . $query.$other_params, 'application/json');
     $self->code_is(200);
     $self->json_parse();
     $self->json_array_size($expected_results);
