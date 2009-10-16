@@ -49,7 +49,7 @@ sub munge_raw_query_string {
     my @non_fields;
     my $field_map = $self->field_map;
     while ($query =~ /(\w+):/g ) {
-        my ($field_start, $field_length) = ($-[1], $+[1] - $-[1]);
+        my ($f_start, $f_length) = ($-[1], $+[1] - $-[1]);
         my $maybe_field = $1;
         $searchable_fields ||= { map { $_ => 1 } @{ $self->searchable_fields } };
         # position -> position_pf_s
@@ -57,21 +57,27 @@ sub munge_raw_query_string {
 
         if ($searchable_fields->{$maybe_field}) {
             if (my $solr_field = $field_map->{$maybe_field}) {
-                substr($query, $field_start, $field_length) = $solr_field;
+                substr($query, $f_start, $f_length) = $solr_field;
             }
-        }
-        elsif ($account_ids and my $f = Socialtext::People::Fields->GetField(
-                                name => $maybe_field,
-                                account_id => $account_ids,
-                            )) {
-            substr($query, $field_start, $field_length) = $f->solr_field_name;
-            # Remember this field so we don't subsequently substitute it.
-            $searchable_fields->{$f->solr_field_name} = 1;
         }
         elsif ($maybe_field =~ m/_pf_[isth]$/) {
             # Leave it alone, they probably know what they are doing
         }
         else {
+            # Last chance, check for profile fields
+            if ($account_ids and @$account_ids) {
+                my $f = Socialtext::People::Fields->GetField(
+                    name => $maybe_field,
+                    account_id => $account_ids,
+                );
+                if ($f) {
+                    # We found a profile field, so use it's solr name instead
+                    substr($query, $f_start, $f_length) = $f->solr_field_name;
+                    # Remember this field so we don't subsequently substitute it.
+                    $searchable_fields->{$f->solr_field_name} = 1;
+                    next;
+                }
+            }
             push @non_fields, $maybe_field;
         }
     }

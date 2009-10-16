@@ -79,7 +79,7 @@ sub _search {
     if ($opts{account_ids}) {
         @account_ids = @{ $opts{account_ids} };
     }
-    else {
+    elsif ($opts{viewer}) {
         @account_ids = $opts{viewer}->accounts(ids_only => 1);
     }
 
@@ -88,28 +88,28 @@ sub _search {
     $self->_authorize( $query, $authorizer );
 
     Socialtext::Timer->Continue('solr_raw');
-    my $filter_query;
+    my @filter_query;
 
     # No $opts{doctype} indicates workspace search (legacy, could be changed)
     if ($workspaces and @$workspaces) {
         # Pages and attachments in my workspaces.
-        $filter_query = "(doctype:attachment OR doctype:page) AND ("
+        push @filter_query, "(doctype:attachment OR doctype:page) AND ("
               . join(' OR ', map { "w:$_" }
                 map { Socialtext::Workspace->new(name => $_)->workspace_id }
                     @$workspaces) . ")";
     }
     elsif ($opts{doctype}) {
-        $filter_query = ["doctype:$opts{doctype}"];
+        push @filter_query, "doctype:$opts{doctype}";
         if ($opts{viewer}) {
             # Only from accounts I (the viewer) have access to
-            $filter_query->[0] .= " AND ("
+            $filter_query[0] .= " AND ("
                 . join(' OR ', map { "a:$_" } @account_ids)
                 . ")";
 
             if ($opts{doctype} eq 'signal') {
                 # Find my public signals and private ones I sent or received
                 my $viewer_id = $opts{viewer}->user_id;
-                push @$filter_query, "pvt:0 OR (pvt:1 AND "
+                push @filter_query, "pvt:0 OR (pvt:1 AND "
                         . "(dm_recip:$viewer_id OR creator:$viewer_id))",
             }
         }
@@ -128,13 +128,14 @@ sub _search {
         qt => $query_type,
 
         # fq = Filter Query - superset of docs to return from
-        ($filter_query ? (fq => $filter_query) : ()),
+        (@filter_query ? (fq => \@filter_query) : ()),
         rows        => $opts{limit},
         start       => $opts{offset} || 0,
         timeAllowed => $opts{timeout},
         @sort,
     };
     _debug("Solr query: $query");
+    _debug("qt=$_") for @filter_query;
     my $response = $self->solr->search($query, $query_hash);
 
     if ($response->content->{responseHeader}->{partialResults}) {
@@ -199,7 +200,7 @@ sub _process_docs {
         my $doc_id = $doc->value_for('id');
         next if exists $seen{ $doc_id };
         $seen{$doc_id} = 1;
-        push @results, $self->_make_result($doc);
+        push @results, grep { defined } $self->_make_result($doc);
     }
 
     return \@results;
@@ -211,6 +212,7 @@ sub _make_result {
     my $doctype = $doc->value_for('doctype');
     my $score   = $doc->value_for('score');
 
+    _debug("_make_result: $key $doctype $score");
     if ($doctype eq 'signal') {
         return Socialtext::Search::SignalHit->new(
             score => $score,
@@ -223,11 +225,14 @@ sub _make_result {
             user_id => $key,
         );
     }
-    else {
+    elsif ($doctype eq 'page' or $doctype eq 'attachment') {
         my ($workspace_id, $page, $attachment) = split /:/, $key, 3;
 
         my $ws = Socialtext::Workspace->new(workspace_id => $workspace_id);
-        my $ws_name = $ws->name;
+        unless ($ws) {
+            _debug("_make_result: No such workspace id=($workspace_id)");
+            return undef;
+        }
 
         my $hit = {
             snippet => 'No worky',
@@ -235,6 +240,7 @@ sub _make_result {
             score   => $doc->value_for('score'),
         };
 
+        my $ws_name = $ws->name;
         return
             defined $attachment
             ? Socialtext::Search::SimpleAttachmentHit->new($hit, $ws_name,
