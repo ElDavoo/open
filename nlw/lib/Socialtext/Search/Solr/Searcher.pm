@@ -83,7 +83,10 @@ sub _search {
         @account_ids = $opts{viewer}->accounts(ids_only => 1);
     }
 
-    my $query = $self->parse(lc($query_string), \@account_ids);
+    $query_string = lc $query_string;
+    $query_string =~ s/\b(and|or|not)\b/uc($1)/ge;
+
+    my $query = $self->parse($query_string, \@account_ids);
     return ([], 0) if $query =~ m/^(?:\*|\?)/;
     $self->_authorize( $query, $authorizer );
 
