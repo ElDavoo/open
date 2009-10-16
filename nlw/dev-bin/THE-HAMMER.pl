@@ -41,7 +41,7 @@ my $all_done = AE::cv;
 my %phase_state = ();
 our $phase_display = sub {print "nothing to report\n"};
 our $script_start = AnyEvent->time;
-my $ticker = AE::timer $TICKER_EVERY,$TICKER_EVERY, unblock_sub {
+my $ticker = AE::timer $TICKER_EVERY,$TICKER_EVERY, sub {
     print "-" x 30,(AnyEvent->now - $script_start)," ",$AnyEvent::HTTP::ACTIVE,"\n";
     $phase_display->();
     #Coro::Debug::command('ps');
@@ -177,8 +177,8 @@ sub send_proxy_get ($$&) {
         my ($body, $headers) = @_;
 
         my $delta_t = AnyEvent->time - $start_t;
-        $phase_state{req_time_sum} += $delta_t;
-        $phase_state{req_time_num} ++;
+        $phase_state{r_time_sum} += $delta_t;
+        $phase_state{r_num} ++;
 
         my $g = guard { $result_cb->(undef) };
         diag "++ got a result from proxy for",$user if TRACE;
@@ -343,8 +343,10 @@ sub simple_dashboard {
         parse_error => 0,
         posted_signals => 0,
         req_success => 0,
-        req_time_sum => 0.0,
-        req_time_num => 0,
+        r_time_sum => 0.0,
+        r_num => 0,
+        total_r_time_sum => 0.0,
+        total_r_num => 0,
         plan => {},
         in_progress => {},
     );
@@ -354,20 +356,26 @@ sub simple_dashboard {
         my $total_u = scalar keys %{$phase_state{in_progress}};
         my $outstanding = sum values %{$phase_state{plan}};
 
-        $phase_state{total_req_time_sum} += $phase_state{req_time_sum};
-        $phase_state{total_req_time_num} += $phase_state{req_time_num};
-        my $total_reqs = $phase_state{total_req_time_num} || 1;
-        my $total_resp_rate = ($phase_state{total_req_time_sum} / $total_reqs);
+        $phase_state{total_r_time_sum} += $phase_state{r_time_sum};
+        $phase_state{total_r_num} += $phase_state{r_num};
+        my $total_r = $phase_state{total_r_num} || 1;
+        my $total_r_time = ($phase_state{total_r_time_sum} / $total_r);
+        my $total_r_rate = ($total_r / (AnyEvent->now - $script_start));
 
-        my $reqs = $phase_state{req_time_num} || 1;
-        my $immediate_resp_rate = ($phase_state{req_time_sum} / $reqs);
-        $phase_state{req_time_sum} = 0.0;
-        $phase_state{req_time_num} = 0;
+        my $immed_r = $phase_state{r_num} || 1;
+        my $immed_r_time = ($phase_state{r_time_sum} / $immed_r);
+        my $immed_r_rate = $phase_state{r_num} / $TICKER_EVERY;
+        $phase_state{r_time_sum} = 0.0;
+        $phase_state{r_num} = 0;
+
 
         print "Simple dashboard phase\n";
         print "Average Response Time: ".
-            sprintf("%0.3f",$immediate_resp_rate)."s/r immed, ".
-            sprintf("%0.3f",$total_resp_rate)."s/r overall\n";
+            sprintf("%0.3f",$immed_r_time)."s/r immed, ".
+            sprintf("%0.3f",$total_r_time)."s/r overall\n";
+        print "Average Request Rate: ".
+            sprintf("%0.3f",$immed_r_rate)."r/s immed, ".
+            sprintf("%0.3f",$total_r_rate)."r/s overall\n";
         print "Remaining: $total_u users, $outstanding requests.\n";
         print "Success: $phase_state{posted_signals} signals, $phase_state{req_success} requests.\n";
         print "Errors: $phase_state{failed} failed, $phase_state{timeout} timeouts, $phase_state{parse_error} parse errors\n";
