@@ -45,16 +45,16 @@
 | set | current_user | %%euserone%% |
 | set | location | Monteray, CA |
 | set | default_field | defaultone |
-| set | first | james |
-| set | last | mcguire |
+| set | first | James |
+| set | last | Mcguire |
 | include | [Test Case: People Search Edit A Profile] |  |
 
 | st-logoutin | %%eusertwo%% | %%password%% |
 | set | current_user | %%eusertwo%% |
 | set | Location | Palo Alto, CA |
 | set | default_field | defaulttwo |
-| set | first | james |
-| set | last | bach |
+| set | first | James |
+| set | last | Bach |
 | include | [Test Case: People Search Edit A Profile] |  |
 
 | st-logoutin | %%euserthree%% | %%password%% |
