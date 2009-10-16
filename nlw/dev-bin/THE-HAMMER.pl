@@ -175,9 +175,8 @@ sub send_proxy_get ($$&) {
         my $g = guard { $result_cb->(undef) };
         diag "++ got a result from proxy for",$user if TRACE;
         delete $phase_state{in_progress}{$user}{$url};
-        return unless $headers;
 
-        if ($headers->{Status} ne '200') {
+        if (!$headers || !$headers->{Status} || $headers->{Status} ne '200') {
             $phase_state{failed}++;
             $phase_state{timeout}++ if $headers->{Reason} =~ /time/i;
             undef $body;
