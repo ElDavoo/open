@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 59;
+use Test::Socialtext tests => 65;
 use Test::Exception;
 
 fixtures('db', 'foobar');
@@ -250,7 +250,6 @@ coalescing_jobs: {
     Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1, job => {coalesce => 'AAA'});
     Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1, job => {coalesce => 'BBB'});
     Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1, job => {coalesce => 'BBB'});
-    sleep 1;
 
     is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 4, 'start with all jobs';
     is $Socialtext::Job::Test::Work_count, 0;
@@ -260,4 +259,29 @@ coalescing_jobs: {
 
     is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 2, '2nd job completed due to coalescing key';
     is $Socialtext::Job::Test::Work_count, 1, 'only 1 of the 2 jobs "ran"';
+   
+    $jobs->can_do('Socialtext::Job::Test');
+    $jobs->work_once();
+    is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 0, 'all done now';
+    is $Socialtext::Job::Test::Work_count, 2, 'only 2 of the 4 jobs "ran"';
+}
+
+coalescing_jobs_fail: {
+    $jobs->clear_jobs();
+    $Socialtext::Job::Test::Work_count = 0;
+    local $Socialtext::Job::Test::Retries = 0;
+
+    for (1..5) {
+        Socialtext::JobCreator->insert('Socialtext::Job::Test', 
+            test => 1, fail => 1, job => {coalesce => 'CCC'});
+    }
+
+    is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 5, 'start with all jobs';
+    is $Socialtext::Job::Test::Work_count, 0;
+   
+    $jobs->can_do('Socialtext::Job::Test');
+    $jobs->work_once();
+
+    is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 0, 'all jobs got failed';
+    is $Socialtext::Job::Test::Work_count, 0, 'no jobs got to work';
 }

@@ -15,6 +15,7 @@ has job => (
         arg
         permanent_failure
         failed
+        completed
     )],
 );
 
@@ -66,12 +67,6 @@ sub work {
         $job->failed($@, 255);
         die $@;
     }
-}
-
-# Make note: This is not delegated, so that before/after hooks will work.
-sub completed {
-    my $self = shift;
-    $self->job->completed();
 }
 
 sub _build_workspace {

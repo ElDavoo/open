@@ -6,7 +6,6 @@ use Time::HiRes qw/sleep/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
-with 'Socialtext::CoalescingJob';
 
 our $Work_count = 0;
 our $Retries = 0;
@@ -17,6 +16,9 @@ our $Last_ID;
 override 'max_retries' => sub { $ENV{TEST_JOB_RETRIES} || $Retries };
 override 'keep_exit_status_for' => sub { $Keep_exit_status_for };
 override 'grab_for' => sub { $Grab_for };
+
+# this wraps grab_for, so it needs to execute here
+with 'Socialtext::CoalescingJob';
 
 sub do_work {
     my $self = shift;
