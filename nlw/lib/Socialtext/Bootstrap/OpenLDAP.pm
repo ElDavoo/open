@@ -51,7 +51,7 @@ sub new {
     my ($class, %config) = @_;
 
     # extract parameters
-    my $port = $config{port} || _autodetect_port();
+    my $port = $config{port} || $class->_autodetect_port();
     my $self = {
         # generic parameters; could be factored to common base class
         name            => "Bootstrapped, port $port",
@@ -109,20 +109,14 @@ sub _ldap_root_dir {
 }
 
 sub _autodetect_port {
-    my %args = @_;
+    my $class = shift;
+    my %args  = @_;
 
     # attempts to auto-detect an empty port that we can listen on.
-    #
-    # calculated as:
-    #   <ports_start_at> + <user-id> + <ldap-port>
-    # and increments by 1000 each time we find that the port is already busy
-    # and that someone else is listening on it.
     verbose( "# finding empty port to run OpenLDAP on" );
     my $attempts = 0;
     while ($attempts < 10) {
-        my $port = Socialtext::HTTP::Ports->PORTS_START_AT()
-                 + $ports{'ldap'}
-                 + $<
+        my $port = $class->_base_port_number()
                  + ($attempts * 1000);
 
         # see if anyone is listening on this port
@@ -141,6 +135,15 @@ sub _autodetect_port {
         $attempts ++;
     }
     die "unable to find empty/available port for OpenLDAP";
+}
+
+sub _base_port_number {
+    # use a distinct port number for each User, so that they can all have
+    # their own copies of OpenLDAP bootstrapped.
+    my $port = Socialtext::HTTP::Ports->PORTS_START_AT()
+             + $ports{'ldap'}
+             + $<;
+    return $port;
 }
 
 my $slapd;
