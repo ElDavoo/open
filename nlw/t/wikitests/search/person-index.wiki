@@ -68,6 +68,15 @@
 | st-process-jobs |                        |                       |
 | job-count       | PersonIndex            | 0                     |
 
+# Tagging a user
+
+| post | /data/people/%%randy%%/tags | Content-Type=application/json | {"tag_name":"obamamama"} |
+| code-is | 204 |
+| job-count       | PersonIndex            | 1                     |
+| st-process-jobs |                        |                       |
+| job-count       | PersonIndex            | 0                     |
+
+
 # Deactivating a user makes them not searchable
 | deactivate-user | %%randy%%       |   |
 | job-count       | PersonIndex     | 1 |
