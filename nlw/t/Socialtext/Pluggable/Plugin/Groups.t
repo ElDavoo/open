@@ -369,7 +369,7 @@ restore_workspace: {
     isa_ok $creator, 'Socialtext::User', '... creator';
     is $creator->username, 'system-user', '... ... correct creating user';
 
-    my $gwr = $ws->role_for_group($group);
+    my $gwr = $ws->role_for_group(group => $group);
     is $gwr->name, 'guest', '... correct GWR';
 
     my $users = $group->users;
@@ -433,7 +433,7 @@ restore_workspace_with_existing_group: {
     my $creator = $group->creator;
     isnt $creator->username, 'carl', '... did not override creating user';
 
-    my $gwr = $ws->role_for_group($group);
+    my $gwr = $ws->role_for_group(group => $group);
     is $gwr->name, 'guest', '... correct GWR';
 
     my $users = $group->users;

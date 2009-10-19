@@ -113,7 +113,7 @@ what_role_does_group_have_in_account: {
     is $account->group_count(), 1, 'Group was added to Account';
 
     my $default_role = Socialtext::GroupAccountRoleFactory->DefaultRole();
-    my $groups_role  = $account->role_for_group($group);
+    my $groups_role  = $account->role_for_group(group => $group);
     is $groups_role->name, $default_role->name,
         '... with Default GAR Role';
 }

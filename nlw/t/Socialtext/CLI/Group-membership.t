@@ -587,12 +587,12 @@ add_group_to_workspace: {
     like $output, qr/.+ is now a member of the .+ Workspace/,
         '... succeeds with correct message';
 
-    my $role = $workspace->role_for_group( $group );
+    my $role = $workspace->role_for_group( group => $group );
     ok $role, '... Group has role';
     is $role->name, Socialtext::Role->Member()->name,
         '... ... that is a member';
 
-    $role = $account->role_for_group( $group );
+    $role = $account->role_for_group( group => $group );
     ok $role, "... Group has role in Workspace's Account";
     is $role->name, Socialtext::Role->Affiliate()->name,
         '... ... that is an affiliate';
@@ -644,7 +644,7 @@ group_is_already_member_of_workspace: {
     my $group     = create_test_group();
 
     $workspace->add_group( group => $group );
-    my $role = $workspace->role_for_group( $group );
+    my $role = $workspace->role_for_group( group => $group );
 
     ok $role, 'Group has role in workspace';
     is $role->name, Socialtext::Role->Member()->name,
@@ -672,7 +672,7 @@ group_is_already_admin_of_workspace: {
     my $admin     = Socialtext::Role->WorkspaceAdmin();
 
     $workspace->add_group( group => $group, role => $admin );
-    my $role = $workspace->role_for_group( $group );
+    my $role = $workspace->role_for_group( group => $group );
 
     ok $role, 'Group has role in workspace';
     is $role->name, $admin->name,
@@ -714,12 +714,12 @@ add_group_as_admin_to_workspace: {
     } );
     like $output, qr/.+ is now a workspace admin of the .+ Workspace/,
         'Group added as admin message';
-    my $role = $workspace->role_for_group( $group );
+    my $role = $workspace->role_for_group( group => $group );
     ok $role, 'Group has Role in Workspace';
     is $role->name, Socialtext::Role->WorkspaceAdmin()->name,
         '... Role is member';
 
-    $role = $account->role_for_group( $group );
+    $role = $account->role_for_group( group => $group );
     ok $role, 'Group has Role in Account';
     is $role->name, Socialtext::Role->Affiliate()->name,
         '... Role is member';
@@ -733,7 +733,7 @@ add_group_as_admin_to_workspace: {
     my $group     = create_test_group();
 
     $workspace->add_group( group => $group );
-    my $role = $workspace->role_for_group( $group );
+    my $role = $workspace->role_for_group( group => $group );
     ok $role, 'Group has Role in Workspace';
     is $role->name, Socialtext::Role->Member()->name,
         '... Role is member';
@@ -750,7 +750,7 @@ add_group_as_admin_to_workspace: {
     } );
     like $output, qr/.+ is now a workspace admin of the .+ Workspace/,
         'Group added as admin message';
-    $role = $workspace->role_for_group( $group );
+    $role = $workspace->role_for_group( group => $group );
     ok $role, 'Group has Role in Workspace';
     is $role->name, Socialtext::Role->WorkspaceAdmin()->name,
         '... Role is admin';
