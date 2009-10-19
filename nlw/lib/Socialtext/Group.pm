@@ -392,7 +392,7 @@ sub add_user {
 sub remove_user {
     my $self = shift;
     my %p    = @_;
-    my $user = $p{user} || croak "cannot remove_user with 'user' parameter";
+    my $user = $p{user} || croak "cannot remove_user without 'user' parameter";
 
     my $ugr = $self->_ugr_for_user($user);
     return unless $ugr;
