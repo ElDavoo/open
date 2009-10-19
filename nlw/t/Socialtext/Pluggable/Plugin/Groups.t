@@ -379,7 +379,7 @@ restore_workspace: {
     is $user->username, $test_user->username,
         '... ... correct User';
 
-    my $uwr = $group->role_for_user($user);
+    my $uwr = $group->role_for_user(user => $user);
     is $uwr->name, 'impersonator', '... correct UWR';
 }
 
@@ -443,7 +443,7 @@ restore_workspace_with_existing_group: {
     is $user->username, $test_user->username,
         '... ... correct User';
 
-    my $uwr = $group->role_for_user($user);
+    my $uwr = $group->role_for_user(user => $user);
     is $uwr->name, 'impersonator', '... correct UWR';
 }
 
