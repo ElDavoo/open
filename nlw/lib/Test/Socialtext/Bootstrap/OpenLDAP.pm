@@ -39,6 +39,17 @@ sub import {
     }
 }
 
+# Over-ridden method to find the starting port number for LDAP during
+# autodetection.  This over-ridden version takes into consideration that we
+# _could_ be running tests in parallel and as a result need to take our "test
+# slot" into consideration.
+sub _base_port_number {
+    my $class  = shift;
+    my $port   = $class->SUPER::_base_port_number();
+    my $offset = Socialtext::AppConfig->test_slot() * 100;
+    return $port + $offset;
+}
+
 1;
 
 =head1 NAME
