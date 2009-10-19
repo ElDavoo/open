@@ -3657,7 +3657,7 @@ table.pagelist.dataTable th div.selectall{
     vertical-align: middle;
 }
 
-table.pagelist.dataTable th div.sort {
+table.pagelist.dataTable th div.sort, div.peopleSort {
     float: right;
     margin-right: 8px;
     vertical-align: middle;
