@@ -69,16 +69,18 @@ sub munge_raw_query_string {
                     name => $maybe_field,
                     account_id => $account_ids,
                 );
-                my $show_it = 1;
-                if ($f->is_hidden) {
-                    $show_it = 0 unless $opts{show_hidden};
-                }
-                if ($f and $show_it) {
-                    # We found a profile field, so use it's solr name instead
-                    substr($query, $f_start, $f_length) = $f->solr_field_name;
-                    # Remember this field so we don't subsequently substitute it.
-                    $searchable_fields->{$f->solr_field_name} = 1;
-                    next;
+                if ($f) {
+                    my $show_it = 1;
+                    if ($f->is_hidden) {
+                        $show_it = 0 unless $opts{show_hidden};
+                    }
+                    if ($show_it) {
+                        # We found a profile field, so use it's solr name instead
+                        substr($query, $f_start, $f_length) = $f->solr_field_name;
+                        # Remember this field so we don't subsequently substitute it.
+                        $searchable_fields->{$f->solr_field_name} = 1;
+                        next;
+                    }
                 }
             }
             push @non_fields, $maybe_field;
