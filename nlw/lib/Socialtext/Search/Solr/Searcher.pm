@@ -57,7 +57,8 @@ sub begin_search {
     $name ||= $opts{doctype} || 'unknown';
     _debug("Searching $name with query: $query_string");
 
-    my ($docs, $num_hits) = $self->_search($query_string, undef, $workspaces, %opts);
+    my ($docs, $num_hits)
+        = $self->_search($query_string, undef, $workspaces, %opts);
 
     my $thunk = sub {
         _debug("Processing $name thunk");
@@ -87,7 +88,7 @@ sub _search {
     $query_string =~ s/\b(and|or|not)\b/uc($1)/ge;
     $query_string =~ s/\[([^\]]+)\]/'[' . uc($1) . ']'/ge;
 
-    my $query = $self->parse($query_string, \@account_ids);
+    my $query = $self->parse($query_string, \@account_ids, %opts);
     return ([], 0) if $query =~ m/^(?:\*|\?)/;
     $self->_authorize( $query, $authorizer );
 

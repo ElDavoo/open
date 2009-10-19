@@ -25,10 +25,9 @@ has 'field_map' => (is => 'ro', isa => 'HashRef[Str]', lazy_build => 1);
 sub parse {
     my $self = shift;
     my $query_string = shift;
-    my $account_ids = shift;
 
     # Fix the raw query string.  Mostly manipulating "field:"-like strings.
-    $query_string = $self->munge_raw_query_string($query_string, $account_ids);
+    $query_string = $self->munge_raw_query_string($query_string, @_);
 
     return $query_string;
 }
@@ -36,7 +35,7 @@ sub parse {
 # Raw text manipulations like this are not 100% safe to do, but should be okay
 # considering their esoteric nature (i.e. dealing w/ fields).
 sub munge_raw_query_string {
-    my ( $self, $query, $account_ids ) = @_;
+    my ( $self, $query, $account_ids, %opts) = @_;
 
     # Establish some field synonyms.
     $query =~ s/=/title:/g;        # Old style title search
@@ -70,7 +69,11 @@ sub munge_raw_query_string {
                     name => $maybe_field,
                     account_id => $account_ids,
                 );
-                if ($f) {
+                my $show_it = 1;
+                if ($f->is_hidden) {
+                    $show_it = 0 unless $opts{show_hidden};
+                }
+                if ($f and $show_it) {
                     # We found a profile field, so use it's solr name instead
                     substr($query, $f_start, $f_length) = $f->solr_field_name;
                     # Remember this field so we don't subsequently substitute it.
