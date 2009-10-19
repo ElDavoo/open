@@ -177,7 +177,7 @@ sub _sort_opts {
         create_time => 'created',
         workspace => 'w_title',
         sender => 'creator_name',
-        name => 'name_pf_t',
+        name => 'name_asort',
     );
 
     # If no valid sort order is supplied, then we use either a date sort or a
