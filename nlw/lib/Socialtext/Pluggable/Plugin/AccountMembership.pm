@@ -3,6 +3,7 @@ package Socialtext::Pluggable::Plugin::AccountMembership;
 use strict;
 use warnings;
 use base 'Socialtext::Pluggable::Plugin';
+use Class::Field qw(const);
 use Socialtext::Log qw/st_log/;
 use Socialtext::UserAccountRoleFactory;
 use Socialtext::GroupAccountRoleFactory;
@@ -11,6 +12,8 @@ use Socialtext::GroupAccountRoleFactory;
 use Socialtext::Role;
 use Socialtext::SQL::Builder qw/sql_insert/;
 use Socialtext::SQL qw/sql_singlevalue sql_execute/;
+
+const hidden => 1;
 
 =head1 NAME
 
