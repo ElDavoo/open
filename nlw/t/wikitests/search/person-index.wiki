@@ -12,7 +12,7 @@
 | job-count       | PersonIndex | 0                                      |
 
 # can search them?
-| search-people | andy%%start_time%% | 1 |
+| search-people | randy%%start_time%% | 1 |
 
 # Change some data
 | http-user-pass | %%randy%% | password |
@@ -30,12 +30,12 @@
 | job-count       | PersonIndex | 0                                      |
 
 # can search them?
-| search-people | andy%%start_time%% | 1 |
+| search-people | randy%%start_time%% | 1 |
 | search-people | f%%start_time%% | 1 |
 | search-people | l%%start_time%% | 1 |
 
-# Cannot search by gtalk
-| search-people | gt%%start_time%% | 0 |
+# Search by gtalk works too
+| search-people | gt%%start_time%% | 1 |
 
 # Test UTF8 Characters
 | post-json       | /data/people/%%randy%% | {"first_name":"Frëddy"} |

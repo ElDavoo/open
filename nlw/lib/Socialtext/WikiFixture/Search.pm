@@ -31,7 +31,7 @@ sub search_people {
     my $num_results = shift;
 
     my $viewer = Socialtext::User->Resolve( $self->{http_username} );
-    my $ppl = Socialtext::People::Search->Search(
+    my ($ppl, $num) = Socialtext::People::Search->Search(
         $query,
         viewer => $viewer,
     );
