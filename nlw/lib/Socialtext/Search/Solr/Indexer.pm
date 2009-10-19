@@ -426,7 +426,7 @@ sub _add_person_doc {
         push @fields, [date => $mtime];
 
         my @tags = map { [tag => $_] } keys %{$profile->tags};
-        push @fields, @tags, [num_tags => scalar @tags];
+        push @fields, @tags, [tag_count => scalar @tags];
 
         my $prof_fields = $profile->fields->to_hash;
         for my $field ($profile->fields->all) {
