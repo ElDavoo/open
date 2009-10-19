@@ -116,8 +116,6 @@
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | text_like | People I follow |  |
-| wait_for_element_not_present_ok | link=People I follow | 30000 |
-
 | include | [Test Case: Miki Pagination] |  |
 
 | *Comment* | Test case: Miki Click 'Workspaces' in global nav |  |

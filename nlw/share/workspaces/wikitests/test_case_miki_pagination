@@ -47,20 +47,30 @@
 | create_user | %%baseusername%%42@ken.socialtext.net | %%password%% | %%mikiacct%% |
 
 | *Comment* | Test case: Miki Pagination - Test Letter Links |  |
-| wait_for_element_visible_ok | link=People | 30000 |  |
+| wait_for_element_visible_ok | link=People | 30000 |
 | click_and_wait | link=People |  |
 | wait_for_element_visible_ok | link=B | 30000 |
 | click_and_wait | link=B |  |
 | wait_for_element_visible_ok | link=A | 30000 |
 | wait_for_element_visible_ok | link=C | 30000 |
 | wait_for_element_not_present_ok | link=B | 30000 |
-| text_like | No people |  |
+| click_and_wait | link=C |  |
+| wait_for_element_visible_ok | link=A | 30000 |
+| wait_for_element_visible_ok | link=B | 30000 |
+| wait_for_element_visible_ok | link=D | 30000 |
+| wait_for_element_visible_ok | link=E | 30000 |
+| wait_for_element_visible_ok | link=F | 30000 |
+| wait_for_element_visible_ok | link=G | 30000 |
+| wait_for_element_visible_ok | link=H | 30000 |
+| wait_for_element_visible_ok | link=I | 30000 |
+| wait_for_element_not_present_ok | link=C | 30000 |
+| pause | 90000 | indexer needs to cach up with those new users. Sorry. I don't see a way around it. |
 | click_and_wait | link=A |  |
 
 | *Comment* | Test case: Miki Pagination - First Page |  |
 | wait_for_element_not_present_ok | link=A | 30000 |
-| wait_for_element_visible_ok | link=B | 30000 |  |
-| wait_for_element_visible_ok | link=C | 30000 |  |
+| wait_for_element_visible_ok | link=B | 30000 |
+| wait_for_element_visible_ok | link=C | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%01 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%05 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%06 | 30000 |
