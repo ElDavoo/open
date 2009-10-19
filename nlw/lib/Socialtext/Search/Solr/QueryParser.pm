@@ -35,6 +35,9 @@ sub _build_field_map {
         (map { $_ => $_ . "_sn_pf_s" } 
             qw/aol yahoo gtalk skype twitter sametime/),
         manager       => 'supervisor_pf_t',
+        manager_id    => 'supervisor_pf_i',
+        supervisor_id => 'supervisor_pf_i',
+        assistant_id  => 'assistant_pf_i',
     };
 }
 
