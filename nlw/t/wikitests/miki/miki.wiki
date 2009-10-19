@@ -113,9 +113,9 @@
 | body-like   | signal '12'              |
 | body-unlike | signal '11'              |
 | body-unlike | signal '10'              |
-| body-like   | Previous page</span>             |
-| body-like   | First page</span>            |
-| body-like   | Next page &gt;&gt;</a>       |
+| body-like   | Previous page</span>     |
+| body-like   | First page</span>        |
+| body-like   | Next page &gt;&gt;</a>   |
 | body-like   | refresh                  |
 | GET         | /m/signals/?page=1       |
 | code-is     | 200                      |
@@ -131,9 +131,9 @@
 | body-like   | signal '3'               |
 | body-like   | signal '2'               |
 | body-unlike | signal '1'               |
-| body-like   | Previous page</a>                |
-| body-like   | First page</a>               |
-| body-like   | Next page &gt;&gt;</a>       |
+| body-like   | Previous page</a>        |
+| body-like   | First page</a>           |
+| body-like   | Next page &gt;&gt;</a>   |
 | body-like   | refresh                  |
 
 | Comment     | Post a signal via miki |                |
@@ -144,34 +144,34 @@
 | code-is     | 200                    |                |
 | body-like   | o hai                  |                |
 
-| Comment     | Test the signals tabs         |
-| GET         | /m/signals                    |
-| code-is     | 200                           |
-| body-unlike | >People I follow</a>            |
-| body-like   | >People I follow</span>         |
-| body-like   | >All</a>                      |
-| body-like   | >Mine</a>                     |
+| Comment     | Test the signals tabs |
+| GET         | /m/signals            |
+| code-is     | 200                   |
+| body-like   | >People I follow</a>  |
+| body-unlike | >All</a>              |
+| body-like   | >All</span>           |
+| body-like   | >Mine</a>             |
 
-| GET         | /m/signals/?all=1             |
-| code-is     | 200                           |
-| body-like   | >People I follow</a>            |
-| body-unlike | >All</a>                      |
-| body-like   | >All</span>                   |
-| body-like   | >Mine</a>                     |
+| GET         | /m/signals/?followed=1  |
+| code-is     | 200                     |
+| body-unlike | >People I follow</a>    |
+| body-like   | >People I follow</span> |
+| body-like   | >All</a>                |
+| body-like   | >Mine</a>               |
 
-| GET         | /m/signals/?mine=1 |
-| code-is     | 200                           |
-| body-like   | >People I follow</a>            |
-| body-like   | >All</a>                      |
-| body-unlike | >Mine</a>                     |
-| body-like   | >Mine</span>                  |
+| GET         | /m/signals/?mine=1   |
+| code-is     | 200                  |
+| body-like   | >People I follow</a> |
+| body-like   | >All</a>             |
+| body-unlike | >Mine</a>            |
+| body-like   | >Mine</span>         |
 
-| Comment   | activities               |
-| GET       | /m/activities            |
-| code-is   | 200                      |
+| Comment   | activities       |
+| GET       | /m/activities    |
+| code-is   | 200              |
 | body-like | My Conversations |
-| body-like | People I follow |
-| body-like | All |
+| body-like | People I follow  |
+| body-like | All              |
 
 
 ^^ TODO
