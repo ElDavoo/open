@@ -154,20 +154,22 @@ sub RolesForUserInWorkspace {
         direct        => BOOLEAN_TYPE(default => 0),
     };
     sub WorkspacesByUserId {
-        my $class   = shift;
-        my %p       = validate(@_, $spec);
-        my $user_id = $p{user_id};
-        my $limit   = $p{limit};
-        my $offset  = $p{offset};
-        my $direct  = $p{direct};
+        my $class      = shift;
+        my %p          = validate(@_, $spec);
+        my $user_id    = $p{user_id};
+        my $limit      = $p{limit};
+        my $offset     = $p{offset};
+        my $direct     = $p{direct};
+        my $exclude    = $p{exclude};
+        my $sort_order = $p{sort_order};
 
         my $uwr_table = $direct
             ? 'user_workspace_role'
             : 'distinct_user_workspace_role';
 
         my $exclude_clause = '';
-        if (@{ $p{exclude} }) {
-            my $wksps = join(',', @{ $p{exclude} });
+        if (@{$exclude}) {
+            my $wksps = join(',', @{$exclude});
             $exclude_clause = "AND workspace_id NOT IN ($wksps)";
         }
 
@@ -177,7 +179,7 @@ sub RolesForUserInWorkspace {
               JOIN $uwr_table USING (workspace_id)
              WHERE user_id = ?
              $exclude_clause
-             ORDER BY "Workspace".name $p{sort_order}
+             ORDER BY "Workspace".name $sort_order
              LIMIT ? OFFSET ?
         };
         my $sth = sql_execute( $sql, $user_id, $limit, $offset );
@@ -198,14 +200,15 @@ sub RolesForUserInWorkspace {
         my $limit   = $p{limit};
         my $offset  = $p{offset};
         my $direct  = $p{direct};
+        my $exclude = $p{exclude};
 
         my $uwr_table = $direct
             ? 'user_workspace_role'
             : 'all_user_workspace_role';
 
         my $exclude_clause = '';
-        if (@{ $p{exclude} }) {
-            my $wksps = join(',', @{ $p{exclude} });
+        if (@{$exclude}) {
+            my $wksps = join(',', @{$exclude});
             $exclude_clause = "AND workspace_id NOT IN ($wksps)";
         }
 
