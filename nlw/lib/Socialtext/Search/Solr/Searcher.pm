@@ -119,7 +119,7 @@ sub _search {
                         . "(dm_recip:$viewer_id OR creator:$viewer_id))",
             }
             if ($opts{doctype} eq 'people') {
-                $qf = 'name_pf_t^4 sounds_like^3.5 _pf_t^3 tag^2 all';
+                $qf = 'name_pf_t^4 sounds_like^3.5 _pf_rt^3 tag^2 all';
             }
         }
     }
