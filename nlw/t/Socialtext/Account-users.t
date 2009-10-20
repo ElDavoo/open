@@ -3,7 +3,8 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 8;
+use Test::Socialtext tests => 16;
+use Socialtext::Role;
 
 ###############################################################################
 # Fixtures: db
@@ -71,6 +72,36 @@ user_count_is_correct: {
 # 
 #     my $ids = $account->user_ids();
 #     is scalar(@{$ids}), 3, '... with three User Ids in it';
+}
+
+###############################################################################
+# TEST: Add User to Account with default Role.
+add_user_to_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user();
+    my $role    = Socialtext::UserAccountRoleFactory->DefaultRole();
+
+    my $uar = $account->add_user(user => $user);
+
+    isa_ok $uar => 'Socialtext::UserAccountRole', 'created a UAR...';
+    is $uar->account_id, $account->account_id, '... with correct Account';
+    is $uar->user_id,    $user->user_id,       '... with correct User';
+    is $uar->role->name, $role->name,          '... with correct role';
+}
+
+###############################################################################
+# TEST: Add User to Account with explicit Role.
+add_user_to_account_explicit_role: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user();
+    my $role    = Socialtext::Role->WorkspaceAdmin();
+
+    my $uar = $account->add_user(user => $user, role => $role);
+
+    isa_ok $uar => 'Socialtext::UserAccountRole', 'created a UAR...';
+    is $uar->account_id, $account->account_id, '... with correct Account';
+    is $uar->user_id,    $user->user_id,       '... with correct User';
+    is $uar->role->name, $role->name,          '... with correct role';
 }
 
 ###############################################################################

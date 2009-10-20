@@ -25,6 +25,7 @@ use Socialtext::Timer;
 use Socialtext::Pluggable::Adapter;
 use Socialtext::AccountLogo;
 use Socialtext::GroupAccountRoleFactory;
+use Socialtext::UserAccountRoleFactory;
 use YAML qw/DumpFile LoadFile/;
 use MIME::Base64 ();
 use namespace::clean;
@@ -515,6 +516,30 @@ sub user_ids {
     my @user_ids = $cursor->all;
     Socialtext::Timer->Pause('acct_user_ids');
     return \@user_ids;
+}
+
+sub add_user {
+    my $self = shift;
+    my %opts = @_;
+    my $user = $opts{user} || croak "can't add_user without a 'user'";
+    my $role = $opts{role} || Socialtext::UserAccountRoleFactory->DefaultRole();
+
+    my $adapter = Socialtext::Pluggable::Adapter->new();
+    $adapter->make_hub( Socialtext::User->SystemUser() );
+    $adapter->hook(
+        'nlw.add_user_account_role', $self, $user, $role,
+    );
+    return $self->_uar_for_user($user);
+}
+
+sub _uar_for_user {
+    my $self = shift;
+    my $user = shift;
+    my $uar  = Socialtext::UserAccountRoleFactory->Get(
+        user_id    => $user->user_id,
+        account_id => $self->account_id,
+    );
+    return $uar;
 }
 
 sub user_count {
@@ -1250,6 +1275,11 @@ in the Account, ordered by Group name.
 =item $account->group_count()
 
 Returns the count of Groups that have a Role in the Account.
+
+=item $account->add_user(user=>$user, role=>$role)
+
+Adds the given C<$user> to the Account with the specified C<$role>.  If no
+C<$role> is provided, a default Role will be used instead.
 
 =item $account->users(PARAMS)
 
