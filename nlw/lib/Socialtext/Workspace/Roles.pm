@@ -36,7 +36,7 @@ sub UsersByWorkspaceId {
     my $sth = sql_execute($sql, $ws_id);
     return Socialtext::MultiCursor->new(
         iterables => [ $sth->fetchall_arrayref ],
-        apply => sub {
+        apply     => sub {
             my $row = shift;
             return Socialtext::User->new(user_id => $row->[0]);
         },
@@ -89,13 +89,12 @@ sub UserHasRoleInWorkspace {
     my $sql = qq{
         SELECT 1
           FROM $uwr_table
-         WHERE user_id = ? AND workspace_id = ? AND role_id = ?
+         WHERE user_id = ?
+           AND workspace_id = ?
+           AND role_id = ?
          LIMIT 1
     };
-    my $is_ok = sql_singlevalue(
-        $sql,
-        $user_id, $ws_id, $role_id
-    );
+    my $is_ok = sql_singlevalue($sql, $user_id, $ws_id, $role_id);
     return $is_ok || 0;
 }
 
@@ -185,7 +184,7 @@ sub RolesForUserInWorkspace {
 
         return Socialtext::MultiCursor->new(
             iterables => [ $sth->fetchall_arrayref() ],
-            apply => sub {
+            apply     => sub {
                 my $row = shift;
                 return Socialtext::Workspace->new(workspace_id => $row->[0]);
             }
