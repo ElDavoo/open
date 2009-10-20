@@ -118,8 +118,8 @@ sub _search {
                 push @filter_query, "pvt:0 OR (pvt:1 AND "
                         . "(dm_recip:$viewer_id OR creator:$viewer_id))",
             }
-            if ($opts{doctype} eq 'people') {
-                $qf = 'name_pf_t^4 sounds_like^3.5 _pf_rt^3 tag^2 all';
+            if ($opts{doctype} eq 'person') {
+                $qf = 'name_pf_t^4 sounds_like^3.5 *_pf_rt^3 tag^2 all';
             }
         }
     }
