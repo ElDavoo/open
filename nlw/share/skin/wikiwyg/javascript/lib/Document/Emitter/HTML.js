@@ -1,4 +1,4 @@
-proto = new Subclass('Document.Emitter.Wikitext');
+proto = new Subclass('Document.Emitter.HTML');
 
 // XXX - Subclass not calling init for some reason....
 proto.init = function() {
@@ -77,15 +77,15 @@ proto.handle_text = function(text) {
 }
 
 proto.handle_h2 = function(text) {
-    var emitter = new Document.Emitter.Wikitext();
+    var emitter = new Document.Emitter.HTML();
     emitter.output = '';
     emitter.input = text;
     var output = emitter.emit_phrases();
-    return '^^ ' + output + '\n';
+    return '<h2>' + output + '</h2>\n';
 }
 
 proto.handle_p = function(text) {
-    var emitter = new Document.Emitter.Wikitext();
+    var emitter = new Document.Emitter.HTML();
     emitter.output = '';
     emitter.input = text;
     var output = emitter.emit_phrases();
@@ -94,15 +94,15 @@ proto.handle_p = function(text) {
 }
 
 proto.handle_i = function(text) {
-    var emitter = new Document.Emitter.Wikitext();
+    var emitter = new Document.Emitter.HTML();
     emitter.input = text;
     emitter.output = '';
     var output = emitter.emit_phrases();
-    return '_' + output + '_';
+    return '<i>' + output + '</i>';
 }
 
 proto.handle_ul = function(text) {
-    var emitter = new Document.Emitter.Wikitext();
+    var emitter = new Document.Emitter.HTML();
     emitter.input = text;
     emitter.output = '';
     var output = emitter.emit_blocks('ul');
@@ -110,7 +110,7 @@ proto.handle_ul = function(text) {
 }
 
 proto.handle_li = function(text) {
-    var emitter = new Document.Emitter.Wikitext();
+    var emitter = new Document.Emitter.HTML();
     emitter.input = text;
     emitter.output = '';
     var output = emitter.emit_phrases();
