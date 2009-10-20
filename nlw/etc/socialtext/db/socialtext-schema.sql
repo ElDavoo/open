@@ -576,6 +576,13 @@ CREATE TABLE page (
     locked boolean DEFAULT false NOT NULL
 );
 
+CREATE TABLE page_link (
+    from_workspace_id bigint NOT NULL,
+    from_page_id text NOT NULL,
+    to_workspace_id bigint NOT NULL,
+    to_page_id text NOT NULL
+);
+
 CREATE TABLE page_tag (
     workspace_id bigint NOT NULL,
     page_id text,
@@ -911,6 +918,10 @@ ALTER TABLE ONLY note
     ADD CONSTRAINT note_pkey
             PRIMARY KEY (jobid, notekey);
 
+ALTER TABLE ONLY page_link
+    ADD CONSTRAINT page_link_unique
+            UNIQUE (from_workspace_id, from_page_id, to_workspace_id, to_page_id);
+
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_pkey
             PRIMARY KEY (workspace_id, page_id);
@@ -1242,6 +1253,9 @@ CREATE INDEX job_funcid_runafter
 
 CREATE INDEX page_creator_time
 	    ON page (creator_id, create_time);
+
+CREATE INDEX page_link__to_page
+	    ON page_link (to_workspace_id, to_page_id);
 
 CREATE INDEX page_tag__page_ix
 	    ON page_tag (workspace_id, page_id);
@@ -1580,6 +1594,11 @@ ALTER TABLE ONLY page
             FOREIGN KEY (last_editor_id)
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
+ALTER TABLE ONLY page_link
+    ADD CONSTRAINT page_link__from_page_id_fk
+            FOREIGN KEY (from_workspace_id, from_page_id)
+            REFERENCES page(workspace_id, page_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY page_tag
     ADD CONSTRAINT page_tag_workspace_id_page_id_fkey
             FOREIGN KEY (workspace_id, page_id)
@@ -1801,4 +1820,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '88');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '89');
