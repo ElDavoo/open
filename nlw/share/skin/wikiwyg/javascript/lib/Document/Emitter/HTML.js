@@ -12,7 +12,11 @@ proto.begin_node = function(node) {
             return;
         }
         case 'html': {
-            this.output += '<img widget="'+node._html.replace(/&/g, '&amp;').replace(/"/g, '&quot;')+'" src="/data/wafl/Raw%20HTML%20section.%20Edit%20in%20Wiki%20Text%20mode.?uneditable=1" title="Raw HTML section. Edit in Wiki Text mode." />';
+            this.output += '<img widget="'+node._html.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'" src="/data/wafl/Raw%20HTML%20section.%20Edit%20in%20Wiki%20Text%20mode.?uneditable=1" title="Raw HTML section. Edit in Wiki Text mode." />';
+            return;
+        }
+        case 'waflparagraph': case 'waflphrase': {
+            this.output += '<img widget="{'+node._wafl.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'}" src="/data/wafl/'+encodeURIComponent(node._label)+'" />';
             return;
         }
         case 'a': {
@@ -37,7 +41,7 @@ proto.begin_node = function(node) {
 proto.end_node = function(node) {
     var tag = node.type;
     switch (tag) {
-        case 'asis': return; case 'br': case 'hr': case 'html': return;
+        case 'asis': case 'br': case 'hr': case 'html': case 'waflparagraph': case 'waflphrase': return;
         case 'line': {
             this.output += '<br />';
             return;

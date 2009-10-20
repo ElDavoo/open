@@ -6,10 +6,10 @@ proto.className = 'Document.Parser.Wikitext';
 proto.init = function() {}
 
 proto.create_grammar = function() {
-    var all_blocks = ['pre', 'html', 'hr', 'hx', 'ul', 'ol', 'blockquote', 'p', 'empty', 'else'];
+    var all_blocks = ['pre', 'html', 'hr', 'hx', 'waflparagraph', 'ul', 'ol', 'blockquote', 'p', 'empty', 'else'];
 
-    // Phrase TODO: wafl_phrase, wikilink, im
-    var all_phrases = ['asis', 'tt', 'b', 'i', 'del', 'a', 'file', 'mail']; // "a" includes "hyper" and "b_hyper"
+    // Phrase TODO: wikilink, im
+    var all_phrases = ['waflphrase', 'asis', 'a', 'mail', 'file', 'tt', 'b', 'i', 'del', 'a'];
 
     var re_huggy = function(brace1, brace2) {
         brace2 = '\\' + (brace2 || brace1);
@@ -98,25 +98,26 @@ proto.create_grammar = function() {
                 node.type = 'p';
             }
         },
-        /*
-        wafl_block: {
-            match: /(?:^\.([\w\-]+)\ *\n)((?:[^\n]*\n)*?)(?:\.\1\ *\n|$)/,
+        waflparagraph: {
+            match: /^\{(.*)\}[\ \t]*\n(?:\s*\n)?/,
             filter: function(node) {
-                node._wafl = node.text;
-                node.text = node[1];
+                node._wafl = node._label = node.text;
+                // node._function = node._wafl.replace(/[: ].*/, '');;
+                // node._options = node._wafl.replace(/^[^: ]*[: ]?/, '');
+                return '';
             }
         },
-        */
-        /*
         waflphrase: {
-            match: /(?:^|(?<=[\s\-]))(?:"(.+?)")?\{([\w-]+)(?=[\:\ \}])(?:\s*:)?\s*(.*?)\s*\}(?=[\W_]|$)/,
+            match: /(?:^|[\s\-])((?:"([^\n]+?)")?\{([\w-]+(?=[\:\ \}])(?:\s*:)?\s*[^\n]*?\s*)\}(?=[\W_]|$))/,
             filter: function(node) {
-                node._function = node[2];
-                node._options = node['3']
-                return(node['1'] || '');
-            }
+                node._wafl = node[2];
+                node._label = node[1] || node._wafl;
+                // node._function = node._wafl.replace(/[: ].*/, '');;
+                // node._options = node._wafl.replace(/^[^: ]*[: ]?/, '');
+                return '';
+            },
+            lookbehind: true
         },
-        */
         asis: {
             match: /(\{\{([^\n]*?)\}\}(\}*))/,
             filter: function(node) {
