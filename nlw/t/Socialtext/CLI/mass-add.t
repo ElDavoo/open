@@ -104,6 +104,7 @@ MASS_ADD_USERS: {
 
     update_users_from_csv: {
         my $acct = create_test_account_bypassing_factory();
+        $acct->enable_plugin('people');
 
         # create CSV file, using user from above test
         my $csvfile = Cwd::abs_path(
