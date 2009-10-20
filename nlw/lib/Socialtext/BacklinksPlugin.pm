@@ -8,6 +8,7 @@ use Socialtext::Model::Pages;
 use Socialtext::l10n qw(loc);
 use Socialtext::String();
 use Socialtext::Pageset;
+use Socialtext::PageLinks;
 use Fatal qw/opendir/;
 
 use base 'Socialtext::Query::Plugin';
@@ -177,44 +178,21 @@ sub all_backlinks {
 }
 
 sub all_backlink_pages_for_page {
-    my $self = shift;
-    my $page = shift;
-    my $new  = shift;
+    my $self      = shift;
+    my $page      = shift;
+    my $incipient = shift;
 
-    return $self->_all_linked_pages_for_page($page, 'backlink', $new);
+    my $links = Socialtext::PageLinks->new(hub => $self->hub, page => $page);
+    return $links->backlinks;
 }
 
 sub all_frontlink_pages_for_page {
-    my $self = shift;
-    my $page = shift;
-    my $new  = shift;
-
-    return $self->_all_linked_pages_for_page($page, 'frontlink', $new);
-}
-
-sub _all_linked_pages_for_page {
     my $self      = shift;
     my $page      = shift;
-    my $type      = shift;
     my $incipient = shift;
 
-    my $method = "_get_${type}_page_ids_for_page";
-
-    #my @pages = map { $self->hub->pages->new_page($_) } $self->$method($page);
-    my %args = (
-        hub => $self->hub,
-        workspace_id => $self->hub->current_workspace->workspace_id,
-        do_not_need_tags => 1,
-        no_die => 1,
-    );
-
-    my $page_ids = $self->$method($page);
-    my @pages;
-    for my $page_id (@$page_ids) {
-        my $page = Socialtext::Model::Pages->By_id(%args, page_id => $page_id);
-        $page ||= $self->hub->pages->new_page($page_id);
-        push @pages, $page;
-    }
+    my $links = Socialtext::PageLinks->new(hub => $self->hub, page => $page);
+    my @pages = $links->links;
 
     # REVIEW: meh, this is oogly, but it's done
     if ($incipient) {
@@ -302,43 +280,6 @@ sub _assert_database {
 sub _storage_directory {
     my $self = shift;
     return $self->plugin_directory;
-}
-
-# Get a list of page ids that link to a specific page. The ids are applicable
-# to the current workspace only
-# .RETURN. array of page ids
-sub _get_backlink_page_ids_for_page {
-    my $self = shift;
-    my $page = shift;
-
-    return $self->_link_hash->{$page->id}{back} || [];
-}
-
-sub _get_frontlink_page_ids_for_page {
-    my $self = shift;
-    my $page = shift;
-
-    return $self->_link_hash->{$page->id}{front} || [];
-}
-
-sub _link_hash {
-    my $self = shift;
-    return $self->{_link_hash} if $self->{_link_hash};
-
-    my $hash = {};
-    my $dir = $self->_storage_directory;
-    my $sep = $self->SEPARATOR;
-    opendir(my $dfh, $dir);
-    while (my $file = readdir($dfh)) {
-        next if $file =~ /^\.\.?$/;
-
-        my ($from, $to) = split $self->SEPARATOR, $file;
-        push @{ $hash->{$from}{front} }, $to;
-        push @{ $hash->{$to}{back} }, $from;
-    }
-    closedir $dfh;
-
-    return $self->{_link_hash} = $hash;
 }
 
 sub _write_link {

@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 29;
+use Test::Socialtext tests => 25;
 
 fixtures(qw( db ));
 
@@ -73,36 +73,22 @@ my $page_six = Socialtext::Page->new(hub => $hub)->create(
 );
 
 
-# Test _get_backlink_page_ids_for_page
+# Test all_backlink_pages_for_page
 {
-    my $link_ids = $backlinks->_get_backlink_page_ids_for_page($page_one);
-    is scalar(@$link_ids), 1, 'page one should only have one page that links to it';
-    $link_ids = $backlinks->_get_backlink_page_ids_for_page($page_two);
-    is scalar(@$link_ids), 1, 'page two should only have one page that links to it';
-    $link_ids = $backlinks->_get_backlink_page_ids_for_page($page_four);
-    is scalar(@$link_ids), 1, 'page four should have two pages that links to it';;
-    $link_ids = $backlinks->_get_backlink_page_ids_for_page($page_five);
-    is scalar(@$link_ids), 2, 'page five should have two pages that links to it';
-}
-
-# Test _get_frontlink_page_ids_for_page
-TEST_FRONTLINK_IDS: {
-    my $link_ids = $backlinks->_get_frontlink_page_ids_for_page($page_one);
-    is scalar(@$link_ids), 4,
-        'page one should have four pages that it links to';
-    $link_ids = $backlinks->_get_frontlink_page_ids_for_page($page_two);
-    is scalar(@$link_ids), 2,
-        'page two should have two page that it links to';
-    $link_ids = $backlinks->_get_frontlink_page_ids_for_page($page_four);
-    is scalar(@$link_ids), 1,
-        'page four should have one page that it links to';
-    $link_ids = $backlinks->_get_frontlink_page_ids_for_page($page_five);
-    is scalar(@$link_ids), 1,
-        'page five should have one page that it links to';
+    my @links = $backlinks->all_backlink_pages_for_page($page_one);
+    is scalar(@links), 1, 'page one should only have one page that links to it';
+    @links = $backlinks->all_backlink_pages_for_page($page_two);
+    is scalar(@links), 1, 'page two should only have one page that links to it';
+    @links = $backlinks->all_backlink_pages_for_page($page_four);
+    is scalar(@links), 1, 'page four should have two pages that links to it';;
+    @links = $backlinks->all_backlink_pages_for_page($page_five);
+    is scalar(@links), 2, 'page five should have two pages that links to it';
 }
 
 TEST_FRONTLINK_PAGES: {
-    check_frontlinks($page_one, ['page three', 'page two'], ['mr_chips', 'the_son']);
+    check_frontlinks(
+        $page_one, ['page three', 'page two'], ['mr_chips', 'the_son']
+    );
     check_frontlinks($page_two, ['page one']);
     check_frontlinks($page_three, []);
     check_frontlinks($page_four, ['page five']);
@@ -158,7 +144,6 @@ sub check_frontlinks {
     );
 
     if ($incipients) {
-        use YAML;
         my @pages = sort { $a->id cmp $b->id }
             $backlinks->all_frontlink_pages_for_page($page, 1);
         is_deeply(

@@ -4,7 +4,7 @@ use Socialtext::Paths;
 use File::Spec;
 use File::Basename qw(basename);
 use Socialtext::File;
-use Socialtext::Page;
+use Socialtext::Model::Pages;
 use namespace::clean -except => 'meta';
 
 has 'page' => (
@@ -18,32 +18,51 @@ has 'hub' => (
 );
 
 has 'links' => (
-    is => 'ro', isa => 'ArrayRef[Socialtext::Page]',
-    lazy_build => 1,
+    is => 'ro', isa => 'ArrayRef',
+    lazy_build => 1, auto_deref => 1
 );
 
 sub _build_links {
     my $self    = shift;
     my $page_id = $self->page->id;
-    my $hub = $self->hub;
     return [
-        map { Socialtext::Page->new(hub => $hub, id => $_->{to_page_id}) }
+        map { $self->_create_page($_->{to_workspace_id}, $_->{to_page_id}) }
         grep { $_->{from_page_id} eq $page_id }
         $self->filesystem_links 
     ];
 }
 
+sub _create_page {
+    my ($self, $workspace_id, $page_id) = @_;
+    my $page = Socialtext::Model::Pages->By_id(
+        hub => $self->hub,
+        workspace_id => $workspace_id,
+        do_not_need_tags => 1,
+        no_die => 1,
+        page_id => $page_id
+    );
+    unless ($page) {
+        # Incipient page:
+        my $old_workspace = $self->hub->current_workspace;
+        $self->hub->current_workspace(
+            Socialtext::Workspace->new(workspace_id => $workspace_id)
+        );
+        $page = Socialtext::Page->new(hub => $self->hub, id => $page_id);
+        $self->hub->current_workspace($old_workspace);
+    }
+    return $page;
+}
+
 has 'backlinks' => (
-    is => 'ro', isa => 'ArrayRef[Socialtext::Page]',
-    lazy_build => 1,
+    is => 'ro', isa => 'ArrayRef',
+    lazy_build => 1, auto_deref => 1
 );
 
 sub _build_backlinks {
     my $self    = shift;
     my $page_id = $self->page->id;
-    my $hub = $self->hub;
     return [
-        map { Socialtext::Page->new(hub => $hub, id => $_->{from_page_id}) }
+        map { $self->_create_page($_->{from_workspace_id}, $_->{from_page_id}) }
         grep { $_->{to_page_id} eq $page_id }
         $self->filesystem_links 
     ];
