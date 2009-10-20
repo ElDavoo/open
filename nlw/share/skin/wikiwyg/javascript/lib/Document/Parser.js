@@ -108,7 +108,9 @@ proto.subparse = function(func, match, type, filter) {
     /* The call could cause side effects to the match object. */
     var filtered_text = filter ? filter(match) : null;
 
-    this.receiver.begin_node(match.type || type);
+    match.type = match.type || type;
+
+    this.receiver.begin_node(match);
 
     var parser = eval('new ' + this.className + '()');
 
@@ -118,7 +120,7 @@ proto.subparse = function(func, match, type, filter) {
     // console.log("SEEDED: (" + type + ")" + parser.input);
     parser[func].call(parser, type);
     this.receiver.insert(parser.receiver);
-    this.receiver.end_node(match.type || type);
+    this.receiver.end_node(match);
 }
 
 //------------------------------------------------------------------------------
@@ -128,8 +130,9 @@ proto.subparse = function(func, match, type, filter) {
 //------------------------------------------------------------------------------
 
 proto.matched_block = function(text, end) {
+    text = text || RegExp.$2 || RegExp.$1;
     return {
-        'text': (text || RegExp.$1),
+        'text': text,
         'end': (end || RegExp.$1.length),
         '1': RegExp.$2,
         '2': RegExp.$3,

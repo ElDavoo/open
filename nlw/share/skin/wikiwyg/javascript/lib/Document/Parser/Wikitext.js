@@ -6,7 +6,8 @@ proto.className = 'Document.Parser.Wikitext';
 proto.init = function() {}
 
 proto.create_grammar = function() {
-    var all_blocks = ['pre', 'hx', 'p', 'empty', 'else'];
+    // Missing: wafl_block
+    var all_blocks = ['pre', 'hr', 'hx', 'p', 'empty_p', 'else'];
     var all_phrases = ['asis', 'tt', 'b', 'i', 'del'];
     var re_huggy = function(brace1, brace2) {
         brace2 = '\\' + (brace2 || brace1);
@@ -21,9 +22,11 @@ proto.create_grammar = function() {
         _all_blocks: all_blocks,
         _all_phrases: all_phrases,
         top: { blocks: all_blocks },
-        pre: { match: /^(((?=^|\n)\.pre\ *\n)((?:.*\n)*?)((?=^|\n)\.pre\ *\n)(?:\s*\n)?)/ },
+        pre: { match: /^(\.pre\ *\n((?:.*\n)*?)\.pre\ *\n(?:\s*\n)?)/ },
+        hr: { match: /^(--+(?:\s*\n)?)/ }
         hx: {
             match: /^((\^+) *(.*?)(\s+=+)?\s*?\n+)/,
+            phrases: all_phrases,
             filter: function(node) {
                 node.type = 'h' + node['1'].length;
                 return( node.text = node['2'] );
@@ -34,9 +37,9 @@ proto.create_grammar = function() {
             phrases: all_phrases,
             filter: function(node) { return node.text.replace(/\n$/, '') },
         },
-        empty: {
+        empty_p: {
             match: /^(\s*\n)/,
-            filter: function(node) { node.type = '' }
+            filter: function(node) { node.type = 'br' }
         },
         else: {
             match: /^((.*)\n)/,

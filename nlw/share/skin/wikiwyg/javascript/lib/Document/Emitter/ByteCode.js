@@ -3,13 +3,13 @@ Class('Document.Emitter.ByteCode(Document.Emitter)', function() {
 var proto = this.prototype;
 proto.className = 'Document.Emitter.ByteCode';
 
-proto.begin_node = function(tag) {
-    this.output += '+' + tag + '\n';
+proto.begin_node = function(node) {
+    this.output += '+' + node.type + '\n';
     return;
 }
 
-proto.end_node = function(tag) {
-    this.output += '-' + tag + '\n';
+proto.end_node = function(node) {
+    this.output += '-' + node.type + '\n';
     return;
 }
 
