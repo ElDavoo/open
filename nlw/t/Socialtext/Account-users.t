@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 16;
+use Test::Socialtext tests => 23;
 use Socialtext::Role;
 
 ###############################################################################
@@ -102,6 +102,49 @@ add_user_to_account_explicit_role: {
     is $uar->account_id, $account->account_id, '... with correct Account';
     is $uar->user_id,    $user->user_id,       '... with correct User';
     is $uar->role->name, $role->name,          '... with correct role';
+}
+
+###############################################################################
+# TEST: Check of User has a Role in an Account.
+user_has_role_in_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user();
+
+    ok !$account->has_user($user), 'User does not yet have Role in Account';
+    $account->add_user(user => $user);
+    ok $account->has_user($user), '... User has been added to Account';
+}
+
+###############################################################################
+# TEST: Remove User from Account.
+remove_user_from_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user();
+
+    # Account should not (yet) have this User
+    ok !$account->has_user($user), 'User does not yet have Role in Account';
+
+    # Add the User to the Account
+    $account->add_user(user => $user);
+    ok $account->has_user($user), '... User has been added to Account';
+
+    # Remove the User from the Account
+    $account->remove_user(user => $user);
+    ok !$account->has_user($user), '... User has been removed from Account';
+}
+
+###############################################################################
+# TEST: Cannot remove User from their Primary Account.
+cant_remove_user_from_primary_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user(account => $account);
+
+    # Account should already have this User
+    ok $account->has_user($user), 'User has Role in his Primary Account';
+
+    # Can't remove the User from his Primary Account
+    $account->remove_user(user => $user);
+    ok $account->has_user($user), '... User maintains Role in Primary Account';
 }
 
 ###############################################################################

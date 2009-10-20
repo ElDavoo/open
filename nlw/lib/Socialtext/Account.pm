@@ -26,6 +26,7 @@ use Socialtext::Pluggable::Adapter;
 use Socialtext::AccountLogo;
 use Socialtext::GroupAccountRoleFactory;
 use Socialtext::UserAccountRoleFactory;
+use Socialtext::Account::Roles;
 use YAML qw/DumpFile LoadFile/;
 use MIME::Base64 ();
 use namespace::clean;
@@ -532,6 +533,20 @@ sub add_user {
     return $self->_uar_for_user($user);
 }
 
+sub remove_user {
+    my $self = shift;
+    my %opts = @_;
+    my $user = $opts{user} || croak "can't remove_user without a 'user'";
+    my $role = $opts{role} || Socialtext::UserAccountRoleFactory->DefaultRole();
+
+    my $adapter = Socialtext::Pluggable::Adapter->new();
+    $adapter->make_hub( Socialtext::User->SystemUser() );
+    $adapter->hook(
+        'nlw.remove_user_account_role', $self, $user, $role,
+    );
+    return $self->_uar_for_user($user);
+}
+
 sub _uar_for_user {
     my $self = shift;
     my $user = shift;
@@ -560,10 +575,9 @@ sub has_user {
     my $self = shift;
     my $user = shift;
     Socialtext::Timer->Continue('acct_has_user');
-    my $has_user = sql_singlevalue(
-        'SELECT 1 FROM account_user WHERE account_id=? AND user_id=?',
-        $self->account_id,
-        $user->user_id,
+    my $has_user = Socialtext::Account::Roles->RolesForUserInAccount(
+        user    => $user,
+        account => $self,
     );
     Socialtext::Timer->Pause('acct_has_user');
     return $has_user ? 1 : 0;
@@ -1280,6 +1294,11 @@ Returns the count of Groups that have a Role in the Account.
 
 Adds the given C<$user> to the Account with the specified C<$role>.  If no
 C<$role> is provided, a default Role will be used instead.
+
+=item $account->remove_user(user=>$user, role=>$role)
+
+Removes the specified C<$role> Role that the the C<$user> has in this Account.
+If the User has no Role in the Account, this method does nothing.
 
 =item $account->users(PARAMS)
 
