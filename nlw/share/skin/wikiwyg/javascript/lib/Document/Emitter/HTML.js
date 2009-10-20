@@ -12,11 +12,11 @@ proto.begin_node = function(node) {
             return;
         }
         case 'a': {
-            this.output += '<a href="'+encodeURI(node._target)+'">';
+            this.output += '<a href="'+encodeURI(node._href)+'">';
             return;
         }
-        case 'wikilink': {
-            this.output += '<a href="'+encodeURI(node._target)+'">';
+        case 'file': {
+            this.output += '<a title="(network resource)" href="'+encodeURI(node._href)+'">';
             return;
         }
         case 'ul': case 'ol': case 'table': case 'tr': {
@@ -37,7 +37,7 @@ proto.end_node = function(node) {
         case 'br': case 'hr': {
             return;
         }
-        case 'wikilink': {
+        case 'file': {
             this.output += '</a>';
             return;
         }

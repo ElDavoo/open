@@ -60,6 +60,7 @@ proto.find_match = function(matched_func, type) {
     if (capture) {
         // console.log("Found match " + type + " - " + matched_func);
         var match = this[matched_func].call(this, capture, this.grammar[type].lookbehind);
+        match.type = this.grammar[type].type || type;
         // console.log(match);
         return match;
     }
@@ -86,7 +87,6 @@ proto.parse_phrases = function(container_type) {
 
             if (!match || (matched.begin < match.begin)) {
                 match = matched;
-                match.type = type;
                 if (match.begin == 0) break;
             }
         }
@@ -107,9 +107,9 @@ proto.parse_phrases = function(container_type) {
 
 proto.subparse = function(func, match, type, filter) {
     /* The call could cause side effects to the match object. */
-    var filtered_text = filter ? filter(match) : null;
+    match.type = type;
 
-    match.type = match.type || type;
+    var filtered_text = filter ? filter(match) : null;
 
     this.receiver.begin_node(match);
 
