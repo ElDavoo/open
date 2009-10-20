@@ -107,11 +107,12 @@ proto.parse_phrases = function(container_type) {
 
 proto.subparse = function(func, match, type, filter) {
     /* The call could cause side effects to the match object. */
-    match.type = type;
+    match.type = this.grammar[type].type;
+    if (match.type == null) match.type = type;
 
     var filtered_text = filter ? filter(match) : null;
 
-    this.receiver.begin_node(match);
+    if (match.type) this.receiver.begin_node(match);
 
     var parser = eval('new ' + this.className + '()');
 
@@ -121,7 +122,8 @@ proto.subparse = function(func, match, type, filter) {
     // console.log("SEEDED: (" + type + ")" + parser.input);
     parser[func].call(parser, type);
     this.receiver.insert(parser.receiver);
-    this.receiver.end_node(match);
+
+    if (match.type) this.receiver.end_node(match);
 }
 
 //------------------------------------------------------------------------------

@@ -7,9 +7,9 @@ proto.init = function() {}
 
 proto.create_grammar = function() {
     // Block TODO: wafl_block, blockquote, wafl_p, li/ul/ol
-    var all_blocks = ['pre', 'hr', 'hx', 'p', 'empty_p', 'else'];
+    var all_blocks = ['pre', 'hr', 'hx', 'ul', 'ol', 'p', 'empty', 'else'];
 
-    // Phrase TODO: wafl_phrase, wikilink, mail, im
+    // Phrase TODO: wafl_phrase, wikilink, im
     var all_phrases = ['asis', 'tt', 'b', 'i', 'del', 'a', 'file', 'mail']; // "a" includes "hyper" and "b_hyper"
 
     var re_huggy = function(brace1, brace2) {
@@ -17,8 +17,23 @@ proto.create_grammar = function() {
         brace1 = '\\' + brace1;
         return {
             match: new RegExp('(?:^|[^'+brace1+'\\w])('+brace1+'(?=\\S)(?!'+brace2+')(.*?)'+brace2+'(?=[^'+brace2+'\\w]|$))'),
-            phrases: all_phrases,
+            phrases: (brace1 == '\\`') ? null : all_phrases,
             lookbehind: true
+        };
+    };
+
+    var re_list = function(bullet, filter_out) {
+        var exclusion = new RegExp('(^|\n)' + filter_out + '\ *', 'g');
+        return {
+            match: new RegExp(
+                "^(" + bullet + "+\ .*\n" +
+                "(?:[\*\-\+\#]+\ .*\n)*" +
+                ")(?:\s*\n)?"
+            ),
+            blocks: ['ul', 'ol', 'subl', 'li'],
+            filter: function(node) {
+                return node.text.replace(exclusion, '$1');
+            }
         };
     };
 
@@ -26,6 +41,22 @@ proto.create_grammar = function() {
         _all_blocks: all_blocks,
         _all_phrases: all_phrases,
         top: { blocks: all_blocks },
+        ol: re_list('#', '[*#]'),
+        ul: re_list('[-+*]', '[-+*#]'),
+        subl: {
+            type: 'li',
+            match: /^((.*)\n[*#]+\ .*\n(?:[*#]+\ .*\n)*)(?:\s*\n)?/,
+            blocks: ['ul', 'ol', 'li2']
+        },
+        li: {
+            match: /(.*)\n/,
+            phrases: all_phrases
+        },
+        li2: {
+            type: '', // Do not emit begin/end node; just reparse
+            match: /(.*)\n/,
+            phrases: all_phrases
+        },
         pre: { match: /^\.pre\ *\n((?:.*\n)*?)\.pre\ *\n(?:\s*\n)?/ },
         hr: { match: /^--+(?:\s*\n)?/ },
         hx: {
@@ -33,7 +64,7 @@ proto.create_grammar = function() {
             phrases: all_phrases,
             filter: function(node) {
                 node.type = 'h' + node['1'].length;
-                return( node.text = node['2'] );
+                return node['2'];
             }
         },
         p: {
@@ -41,9 +72,9 @@ proto.create_grammar = function() {
             phrases: all_phrases,
             filter: function(node) { return node.text.replace(/\n$/, '') },
         },
-        empty_p: {
+        empty: {
             match: /^(\s*\n)/,
-            filter: function(node) { node.type = 'br' }
+            filter: function(node) { node.type = '' }
         },
         'else': {
             match: /^((.*)\n)/,
@@ -102,7 +133,7 @@ proto.create_grammar = function() {
                 node._href = "mailto:" + node.text.replace(/%/g, '%25');
             }
         },
-        tt: re_huggy('`'),
+        tt: re_huggy('`'), // Special-cased in re_huggy above to disallow subphrases
         b: re_huggy('*'),
         i: re_huggy('_'),
         del: re_huggy('-')
