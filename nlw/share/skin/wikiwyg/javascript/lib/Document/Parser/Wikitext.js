@@ -8,8 +8,8 @@ proto.init = function() {}
 proto.create_grammar = function() {
     var all_blocks = ['pre', 'html', 'hr', 'hx', 'waflparagraph', 'ul', 'ol', 'blockquote', 'p', 'empty', 'else'];
 
-    // Phrase TODO: wikilink, im
-    var all_phrases = ['waflphrase', 'asis', 'a', 'mail', 'file', 'tt', 'b', 'i', 'del', 'a'];
+    // Phrase TODO: im
+    var all_phrases = ['waflphrase', 'asis', 'wikilink', 'wikilink2', 'a', 'mail', 'file', 'tt', 'b', 'i', 'del', 'a'];
 
     var re_huggy = function(brace1, brace2) {
         brace2 = '\\' + (brace2 || brace1);
@@ -125,20 +125,25 @@ proto.create_grammar = function() {
                 return(node[1] + node[2]);
             }
         },
-        /*
         wikilink: {
-            type: 'a',
-            match: /(?:"([^"]*)"\s*)?(?:^|(?<=[_\W]))\[(?=[^\s\[\]])(.*?)\](?=[_\W]|$)/,
+            match: /(?:^|[_\W])(\[()(?=[^\s\[\]])(.*?)\](?=[_\W]|$))/,
             filter: function(node) {
-                node._href = node[2];
+                node._href = '?' + node[2];
+                return(node.text || node[2]);
+            },
+            lookbehind: true
+        },
+        wikilink2: {
+            type: 'wikilink',
+            match: /(?:"([^"]*)"\s*)(\[(?=[^\s\[\]])(.*?)\](?=[_\W]|$))/,
+            filter: function(node) {
+                node._href = '?' + node[2];
                 return(node[1] || node[2]);
             }
         },
-        */
         a: {
             match: /((?:"([^"]*)"\s*)?<?((?:http|https|ftp|irc|file):(?:\/\/)?[\;\/\?\:\@\&\=\+\$\,\[\]\#A-Za-z0-9\-\_\.\!\~\*\'\(\)]+[A-Za-z0-9\/#])>?)/,
             filter: function(node) {
-                // console.log(node);
                 node._href = node[2];
                 return(node[1] || node[2]);
             }

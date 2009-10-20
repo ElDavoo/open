@@ -19,7 +19,7 @@ proto.begin_node = function(node) {
             this.output += '<img widget="{'+node._wafl.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'}" src="/data/wafl/'+encodeURIComponent(node._label)+'" />';
             return;
         }
-        case 'a': {
+        case 'a': case 'wikilink': {
             this.output += '<a href="'+encodeURI(node._href)+'">';
             return;
         }
@@ -42,6 +42,10 @@ proto.end_node = function(node) {
     var tag = node.type;
     switch (tag) {
         case 'asis': case 'br': case 'hr': case 'html': case 'waflparagraph': case 'waflphrase': return;
+        case 'wikilink': {
+            this.output += '<a />';
+            return;
+        }
         case 'line': {
             this.output += '<br />';
             return;
