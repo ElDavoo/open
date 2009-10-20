@@ -197,8 +197,6 @@ sub RolesForUserInWorkspace {
         my $class   = shift;
         my %p       = validate(@_, $spec);
         my $user_id = $p{user_id};
-        my $limit   = $p{limit};
-        my $offset  = $p{offset};
         my $direct  = $p{direct};
         my $exclude = $p{exclude};
 
@@ -217,9 +215,8 @@ sub RolesForUserInWorkspace {
               FROM $uwr_table
              WHERE user_id = ?
              $exclude_clause
-             LIMIT ? OFFSET ?
         };
-        my $count = sql_singlevalue( $sql, $user_id, $limit, $offset );
+        my $count = sql_singlevalue( $sql, $user_id );
         return $count;
     }
 }
