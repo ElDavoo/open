@@ -6,7 +6,7 @@ proto.className = 'Document.Emitter.HTML';
 proto.begin_node = function(node) {
     var tag = node.type;
     switch (tag) {
-        case 'asis': return;
+        case 'asis': case 'line': return;
         case 'br': case 'hr': {
             this.output += '<'+tag+' />';
             return;
@@ -33,8 +33,9 @@ proto.begin_node = function(node) {
 proto.end_node = function(node) {
     var tag = node.type;
     switch (tag) {
-        case 'asis': return;
-        case 'br': case 'hr': {
+        case 'asis': return; case 'br': case 'hr': return;
+        case 'line': {
+            this.output += '<br />';
             return;
         }
         case 'file': {

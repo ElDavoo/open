@@ -6,8 +6,8 @@ proto.className = 'Document.Parser.Wikitext';
 proto.init = function() {}
 
 proto.create_grammar = function() {
-    // Block TODO: wafl_block, blockquote, wafl_p, li/ul/ol
-    var all_blocks = ['pre', 'hr', 'hx', 'ul', 'ol', 'p', 'empty', 'else'];
+    // Block TODO: wafl_block, wafl_p
+    var all_blocks = ['pre', 'hr', 'hx', 'ul', 'ol', 'blockquote', 'p', 'empty', 'else'];
 
     // Phrase TODO: wafl_phrase, wikilink, im
     var all_phrases = ['asis', 'tt', 'b', 'i', 'del', 'a', 'file', 'mail']; // "a" includes "hyper" and "b_hyper"
@@ -43,18 +43,27 @@ proto.create_grammar = function() {
         top: { blocks: all_blocks },
         ol: re_list('#', '[*#]'),
         ul: re_list('[-+*]', '[-+*#]'),
+        blockquote: {
+            match: /^((?:>[^\n]*\n)+)(?:\s*\n)?/,
+            blocks: ['blockquote', 'line'],
+            filter: function(node) { return node.text.replace(/(^|\n)>\ ?/g, '$1') }
+        },
+        line: {
+            match: /([^\n]*)\n/,
+            phrases: all_phrases
+        },
         subl: {
             type: 'li',
             match: /^((.*)\n[*#]+\ .*\n(?:[*#]+\ .*\n)*)(?:\s*\n)?/,
             blocks: ['ul', 'ol', 'li2']
         },
         li: {
-            match: /(.*)\n/,
+            match: /([^\n]*)\n/,
             phrases: all_phrases
         },
         li2: {
             type: '', // Do not emit begin/end node; just reparse
-            match: /(.*)\n/,
+            match: /([^\n]*)\n/,
             phrases: all_phrases
         },
         pre: { match: /^\.pre\ *\n((?:.*\n)*?)\.pre\ *\n(?:\s*\n)?/ },
@@ -70,7 +79,7 @@ proto.create_grammar = function() {
         p: {
             match: /^((?:(?!(?:(?:\^+|\#+|\*+|\-+) |\>|\.\w+\s*\n|\{[^\}]+\}\s*\n)).*\S.*\n)+(?:(?=^|\n)\s*\n)*)/,
             phrases: all_phrases,
-            filter: function(node) { return node.text.replace(/\n$/, '') },
+            filter: function(node) { return node.text.replace(/\n$/, '') }
         },
         empty: {
             match: /^(\s*\n)/,
