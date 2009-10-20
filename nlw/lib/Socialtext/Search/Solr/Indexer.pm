@@ -435,7 +435,7 @@ sub _add_person_doc {
             if ($field->is_relationship) {
                 $value = $profile->get_reln_id($field->name) or next;
                 if (my $other_user = Socialtext::User->new(user_id => $value)) {
-                    my $bfn_field = $field->name . '_pf_t';
+                    my $bfn_field = $field->name . '_pf_rt';
                     push @fields, [$bfn_field => $other_user->best_full_name ];
                     my $uid_field = $field->name . '_pf_i';
                     push @fields, [$uid_field => $other_user->user_id ];
