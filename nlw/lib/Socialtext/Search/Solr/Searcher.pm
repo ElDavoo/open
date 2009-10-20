@@ -94,6 +94,7 @@ sub _search {
 
     Socialtext::Timer->Continue('solr_raw');
     my @filter_query;
+    my $qf;
 
     # No $opts{doctype} indicates workspace search (legacy, could be changed)
     if ($workspaces and @$workspaces) {
@@ -117,6 +118,9 @@ sub _search {
                 push @filter_query, "pvt:0 OR (pvt:1 AND "
                         . "(dm_recip:$viewer_id OR creator:$viewer_id))",
             }
+            if ($opts{doctype} eq 'people') {
+                $qf = 'name_pf_t^4 sounds_like^3.5 _pf_t^3 tag^2 all';
+            }
         }
     }
 
@@ -131,6 +135,9 @@ sub _search {
 
         # qt = Query Type
         qt => $query_type,
+
+        # qf = Query Fields (Boost)
+        ($qf ? (qf => $qf) : ()),
 
         # fq = Filter Query - superset of docs to return from
         (@filter_query ? (fq => \@filter_query) : ()),
