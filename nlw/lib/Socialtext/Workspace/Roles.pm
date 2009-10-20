@@ -138,8 +138,8 @@ sub RolesForUserInWorkspace {
 # Get a MultiCursor of the Workspaces that a given User has a Role in (either
 # directly as an UWR, or indirectly as an UGR+GWR).
 #
-# The list of Users is de-duped; if the User has multiple Roles in a Workspace
-# they only appear _once_ in the resulting MultiCursor.
+# The list of Workspaces is de-duped; if the User has multiple Roles in a
+# Workspace they only appear _once_ in the resulting MultiCursor.
 {
     # order_by and sort_order are currently a part of the spec here,
     # but are not actually being used. This is so we can pass paging
@@ -233,12 +233,12 @@ Socialtext::Workspace::Roles - User/Workspace Role helper methods
 
   # Get Users that have _some_ Role in a WS
   $cursor = Socialtext::Workspace::Roles->UsersByWorkspaceId(
-    workspace_id => $ws_id
+    workspace_id => $ws_id,
   );
 
   # Get Count of Users that have _some_ Role in a WS
   $count = Socialtext::Workspace::Roles->CountUsersByWorkspaceId(
-    workspace_id => $ws_id
+    workspace_id => $ws_id,
   );
 
   # Most effective Role that User has in Workspace
@@ -255,12 +255,12 @@ Socialtext::Workspace::Roles - User/Workspace Role helper methods
 
   # List of all Workspaces that User has a Role in
   $cursor = Socialtext::Workspace::Roles->WorkspacesByUserId(
-    user_id => $user_id
+    user_id => $user_id,
   );
 
   # Get Count of Workspaces that User has _some_ Role in
   $count = Socialtext::Workspace::Roles->CountWorkspacesByUserId(
-    user_id => $user_id
+    user_id => $user_id,
   );
 
 =head1 DESCRIPTION
