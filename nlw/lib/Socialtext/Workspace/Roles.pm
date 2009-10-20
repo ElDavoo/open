@@ -19,9 +19,9 @@ sub UsersByWorkspaceId {
     my $class  = shift;
     my %p      = @_;
     my $ws_id  = $p{workspace_id};
-    my $direct = $p{direct};
+    my $direct = defined $p{direct} ? $p{direct} : 0;
 
-    my $uwr_table = $p{direct}
+    my $uwr_table = $direct
         ? 'user_workspace_role'
         : 'distinct_user_workspace_role';
 
@@ -50,9 +50,9 @@ sub CountUsersByWorkspaceId {
     my $class  = shift;
     my %p      = @_;
     my $ws_id  = $p{workspace_id};
-    my $direct = $p{direct};
+    my $direct = defined $p{direct} ? $p{direct} : 0;
 
-    my $uwr_table = $p{direct}
+    my $uwr_table = $direct
         ? 'user_workspace_role'
         : 'all_user_workspace_role';
 
@@ -76,9 +76,9 @@ sub UserHasRoleInWorkspace {
     my $user   = $p{user};
     my $role   = $p{role};
     my $ws     = $p{workspace};
-    my $direct = exists $p{direct} ? $p{direct} : 0;
+    my $direct = defined $p{direct} ? $p{direct} : 0;
 
-    my $uwr_table = $p{direct}
+    my $uwr_table = $direct
         ? 'user_workspace_role'
         : 'all_user_workspace_role';
 
@@ -102,16 +102,16 @@ sub UserHasRoleInWorkspace {
 # Get the list of Roles that this User has in the given Workspace (either
 # directly as UWRs, or indirectly as UGR+GWRs)
 sub RolesForUserInWorkspace {
-    my $class = shift;
-    my %p     = @_;
-    my $user  = $p{user};
-    my $ws    = $p{workspace};
-    my $direct = exists $p{direct} ? $p{direct} : 0;
+    my $class  = shift;
+    my %p      = @_;
+    my $user   = $p{user};
+    my $ws     = $p{workspace};
+    my $direct = defined $p{direct} ? $p{direct} : 0;
 
     my $user_id = $user->user_id();
     my $ws_id   = $ws->workspace_id();
 
-    my $uwr_table = $p{direct}
+    my $uwr_table = $direct
         ? 'user_workspace_role'
         : 'distinct_user_workspace_role';
 
@@ -151,7 +151,7 @@ sub RolesForUserInWorkspace {
         order_by      => SCALAR_TYPE(default   => 'name'),
         sort_order    => SCALAR_TYPE(default   => 'asc'),
         user_id       => SCALAR_TYPE,
-        direct        => BOOLEAN_TYPE(default => undef),
+        direct        => BOOLEAN_TYPE(default => 0),
     };
     sub WorkspacesByUserId {
         my $class   = shift;
@@ -161,7 +161,7 @@ sub RolesForUserInWorkspace {
         my $offset  = $p{offset};
         my $direct  = $p{direct};
 
-        my $uwr_table = $p{direct}
+        my $uwr_table = $direct
             ? 'user_workspace_role'
             : 'distinct_user_workspace_role';
 
@@ -199,7 +199,7 @@ sub RolesForUserInWorkspace {
         my $offset  = $p{offset};
         my $direct  = $p{direct};
 
-        my $uwr_table = $p{direct}
+        my $uwr_table = $direct
             ? 'user_workspace_role'
             : 'all_user_workspace_role';
 
