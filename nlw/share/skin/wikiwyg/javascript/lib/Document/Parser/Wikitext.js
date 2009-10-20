@@ -6,15 +6,19 @@ proto.className = 'Document.Parser.Wikitext';
 proto.init = function() {}
 
 proto.create_grammar = function() {
-    // Missing: wafl_block
+    // Block TODO: wafl_block, blockquote, wafl_p, li/ul/ol
     var all_blocks = ['pre', 'hr', 'hx', 'p', 'empty_p', 'else'];
-    var all_phrases = ['asis', 'tt', 'b', 'i', 'del'];
+
+    // Phrase TODO: wafl_phrase, wikilink, file, mail, im
+    var all_phrases = ['asis', 'tt', 'b', 'i', 'del', 'a']; // "a" includes "hyper" and "b_hyper"
+
     var re_huggy = function(brace1, brace2) {
         brace2 = '\\' + (brace2 || brace1);
         brace1 = '\\' + brace1;
         return {
             match: new RegExp('(?:^|[^'+brace1+'\\w])('+brace1+'(?=\\S)(?!'+brace2+')(.*?)'+brace2+'(?=[^'+brace2+'\\w]|$))'),
-            phrases: all_phrases
+            phrases: all_phrases,
+            lookbehind: true
         };
     };
 
@@ -22,8 +26,8 @@ proto.create_grammar = function() {
         _all_blocks: all_blocks,
         _all_phrases: all_phrases,
         top: { blocks: all_blocks },
-        pre: { match: /^(\.pre\ *\n((?:.*\n)*?)\.pre\ *\n(?:\s*\n)?)/ },
-        hr: { match: /^(--+(?:\s*\n)?)/ }
+        pre: { match: /^\.pre\ *\n((?:.*\n)*?)\.pre\ *\n(?:\s*\n)?/ },
+        hr: { match: /^--+(?:\s*\n)?/ },
         hx: {
             match: /^((\^+) *(.*?)(\s+=+)?\s*?\n+)/,
             phrases: all_phrases,
@@ -33,7 +37,7 @@ proto.create_grammar = function() {
             }
         },
         p: {
-            match: /^(((?=^|\n)(?!(?:(?:\^+|\#+|\*+|\-+) |\>|\.\w+\s*\n|\{[^\}]+\}\s*\n)).*\S.*\n)+((?=^|\n)\s*\n)*)/,
+            match: /^((?:(?!(?:(?:\^+|\#+|\*+|\-+) |\>|\.\w+\s*\n|\{[^\}]+\}\s*\n)).*\S.*\n)+(?:(?=^|\n)\s*\n)*)/,
             phrases: all_phrases,
             filter: function(node) { return node.text.replace(/\n$/, '') },
         },
@@ -41,7 +45,7 @@ proto.create_grammar = function() {
             match: /^(\s*\n)/,
             filter: function(node) { node.type = 'br' }
         },
-        else: {
+        'else': {
             match: /^((.*)\n)/,
             phrases: [],
             filter: function(node) {
@@ -52,8 +56,8 @@ proto.create_grammar = function() {
         waflphrase: {
             match: /(?:^|(?<=[\s\-]))(?:"(.+?)")?\{([\w-]+)(?=[\:\ \}])(?:\s*:)?\s*(.*?)\s*\}(?=[\W_]|$)/,
             filter: function(node) {
-                node.attributes.function = node['2'];
-                node.attributes.options = node['3']
+                node._function = node['2'];
+                node._options = node['3']
                 return(node['1'] || '');
             }
         },
@@ -70,19 +74,20 @@ proto.create_grammar = function() {
             type: 'a',
             match: /(?:"([^"]*)"\s*)?(?:^|(?<=[_\W]))\[(?=[^\s\[\]])(.*?)\](?=[_\W]|$)/,
             filter: function(node) {
-                node.attributes.target = node['2'];
-                return(node['1'] || node['2']);
-            }
-        },
-        a: {
-            type: 'a',
-            match: /(?:"([^"]*)"\s*)?<?((?:http|https|ftp|irc|file):(?://)?[\;\/\?\:\@\&\=\+\$\,\[\]\#A-Za-z0-9\-\_\.\!\~\*\'\(\)]+[A-Za-z0-9\/#])>?/,
-            filter: function(node) {
-                node.attributes.href = node['2'];
+                node._target = node['2'];
                 return(node['1'] || node['2']);
             }
         },
         */
+        a: {
+            type: 'a',
+            match: /((?:"([^"]*)"\s*)?<?((?:http|https|ftp|irc|file):(?:\/\/)?[\;\/\?\:\@\&\=\+\$\,\[\]\#A-Za-z0-9\-\_\.\!\~\*\'\(\)]+[A-Za-z0-9\/#])>?)/,
+            filter: function(node) {
+                console.log(node);
+                node._target = node['2'];
+                return(node['1'] || node['2']);
+            }
+        },
         tt: re_huggy('`'),
         b: re_huggy('*'),
         i: re_huggy('_'),

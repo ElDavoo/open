@@ -6,12 +6,17 @@ proto.className = 'Document.Emitter.HTML';
 proto.begin_node = function(node) {
     var tag = node.type;
     switch (tag) {
+        case 'asis': return;
         case 'br': case 'hr': {
             this.output += '<'+tag+' />';
             return;
         }
+        case 'a': {
+            this.output += '<a href="'+encodeURI(node._target)+'">';
+            return;
+        }
         case 'wikilink': {
-            this.output += '<a href="'+encodeURI(node.attributes.target)+'">';
+            this.output += '<a href="'+encodeURI(node._target)+'">';
             return;
         }
         case 'ul': case 'ol': case 'table': case 'tr': {
@@ -28,6 +33,7 @@ proto.begin_node = function(node) {
 proto.end_node = function(node) {
     var tag = node.type;
     switch (tag) {
+        case 'asis': return;
         case 'br': case 'hr': {
             return;
         }
@@ -49,8 +55,12 @@ proto.end_node = function(node) {
 }
 
 proto.text_node = function(text) {
-    this.output += text;
+    this.output += text
+        .replace(/&/g, '&amp;')
+        .replace(/>/g, '&gt;')
+        .replace(/</g, '&lt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
 }
-
 
 });

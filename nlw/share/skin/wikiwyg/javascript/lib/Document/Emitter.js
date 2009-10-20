@@ -3,7 +3,7 @@ Class('Document.Emitter', function() {
 var proto = this.prototype;
 proto.className = 'Document.Emitter';
 
-proto.new = function() {
+proto.instantiate = function() {
     return eval('new ' + this.className + '()');
 }
 

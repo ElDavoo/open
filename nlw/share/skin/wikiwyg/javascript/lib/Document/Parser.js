@@ -7,7 +7,7 @@ proto.className = 'Document.Parser';
 proto.init = function() {}
 
 proto.parse = function(input, receiver) {
-    this.input = input;
+    this.input = (input.search(/\n$/) == -1) ? input+"\n" : input;
     if (receiver) this.receiver = receiver;
     this.receiver.init();
     this.grammar = this.create_grammar();
@@ -56,9 +56,10 @@ proto.handle_match = function(type, match) {
 proto.find_match = function(matched_func, type) {
     var re = this.grammar[type].match;
     if (!re) throw 'no regexp for type: ' + type;
-    if (this.input.match(re)) {
+    var capture = this.input.match(re);
+    if (capture) {
         // console.log("Found match " + type + " - " + matched_func);
-        var match = this[matched_func].call(this);
+        var match = this[matched_func].call(this, capture, this.grammar[type].lookbehind);
         // console.log(match);
         return match;
     }
@@ -74,7 +75,7 @@ proto.find_match = function(matched_func, type) {
 //------------------------------------------------------------------------------
 proto.parse_phrases = function(container_type) {
     var types = this.grammar[container_type].phrases;
-    if (!types) { this.receiver.text_node(this.input); return }
+    if (!types) { this.receiver.text_node(this.input || ''); return }
     // console.log("INPUT: " + this.input);
     while (this.input.length) {
         var match = null;
@@ -91,12 +92,12 @@ proto.parse_phrases = function(container_type) {
         }
         if (!match) {
             // console.log("NO MATCH: " + this.input);
-            this.receiver.text_node(this.input);
+            this.receiver.text_node(this.input || '');
             break;
         }
         if (match.begin != 0) {
             // console.log("MATCH OFFSET:" + this.input + " (" + match.type + ")" + match.begin);
-            this.receiver.text_node(this.input.substr(0, match.begin));
+            this.receiver.text_node(this.input.substr(0, match.begin) || '');
             }
         this.input = this.input.substr(match.end);
         this.handle_match(match.type, match);
@@ -116,7 +117,7 @@ proto.subparse = function(func, match, type, filter) {
 
     parser.input = (filtered_text == null) ? match.text : filtered_text;
     parser.grammar = this.grammar;
-    parser.receiver = this.receiver.new();
+    parser.receiver = this.receiver.instantiate();
     // console.log("SEEDED: (" + type + ")" + parser.input);
     parser[func].call(parser, type);
     this.receiver.insert(parser.receiver);
@@ -129,27 +130,43 @@ proto.subparse = function(func, match, type, filter) {
 // These are the odds and ends called by the code above.
 //------------------------------------------------------------------------------
 
-proto.matched_block = function(text, end) {
-    text = text || RegExp.$2 || RegExp.$1;
+/* Blocks has no lookbehinds, so:
+ * All match begins at 0. The first capture is text; the next ones are various parts.
+ */
+proto.matched_block = function(capture) {
     return {
-        'text': text,
-        'end': (end || RegExp.$1.length),
-        '1': RegExp.$2,
-        '2': RegExp.$3,
-        '3': RegExp.$4
+        begin: capture.index,
+        text: capture[1],
+        end: capture[0].length,
+        1: capture[2],
+        2: capture[3],
+        3: capture[4]
     };
 }
 
-proto.matched_phrase = function() {
-    var text = RegExp.$2 || RegExp.$1;
-    var begin = this.input.indexOf(RegExp.$1);
+/* The first capture in a Phrases is the lookbehind. So:
+ */
+proto.matched_phrase = function(capture, lookbehind) {
+    if (lookbehind) {
+        var text = capture[2];
+        var begin = this.input.indexOf(capture[1]);
+        return {
+            text: text,
+            begin: begin,
+            end: (begin + capture[1].length),
+            1: RegExp.$2,
+            2: RegExp.$3,
+            3: RegExp.$4
+        };
+    }
+
     return {
-        'text': text,
-        'begin': begin,
-        'end': (begin + RegExp.$1.length),
-        '1': RegExp.$2,
-        '2': RegExp.$3,
-        '3': RegExp.$4
+        begin: capture.index,
+        text: capture[1],
+        end: capture.index + capture[0].length,
+        1: capture[2],
+        2: capture[3],
+        3: capture[4]
     };
 }
 
