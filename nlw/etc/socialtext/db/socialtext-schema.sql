@@ -302,6 +302,15 @@ UNION ALL
            FROM user_group_role ugr
       JOIN group_account_role gar USING (group_id)) explicit;
 
+CREATE VIEW all_user_account_role AS
+  SELECT my_acct_roles.user_id, my_acct_roles.account_id, my_acct_roles.role_id
+   FROM ( SELECT user_account_role.user_id, user_account_role.account_id, user_account_role.role_id
+           FROM user_account_role
+UNION ALL 
+         SELECT ugr.user_id, gar.account_id, gar.role_id
+           FROM user_group_role ugr
+      JOIN group_account_role gar USING (group_id)) my_acct_roles;
+
 CREATE TABLE group_workspace_role (
     group_id bigint NOT NULL,
     workspace_id bigint NOT NULL,
@@ -369,6 +378,11 @@ CREATE SEQUENCE default_gadget_id
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
+
+CREATE VIEW distinct_user_account_role AS
+  SELECT DISTINCT all_user_account_role.user_id, all_user_account_role.account_id, all_user_account_role.role_id
+   FROM all_user_account_role
+  ORDER BY all_user_account_role.user_id, all_user_account_role.account_id, all_user_account_role.role_id;
 
 CREATE VIEW distinct_user_workspace AS
   SELECT DISTINCT all_user_workspace.user_id, all_user_workspace.workspace_id
@@ -1820,4 +1834,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '89');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '90');
