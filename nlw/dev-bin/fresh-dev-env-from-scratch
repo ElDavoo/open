@@ -95,6 +95,8 @@ else
     echo "Skipping NLW startup, you need do it manually"
 fi
 
+st-admin enable-plugin --all-workspaces --plugin socialcalc
+
 st-widgets update-all
 st-widgets update-gallery
 
