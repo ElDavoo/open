@@ -11,6 +11,10 @@ proto.begin_node = function(node) {
             this.output += '<'+tag+' />';
             return;
         }
+        case 'html': {
+            this.output += '<img widget="'+node._html.replace(/&/g, '&amp;').replace(/"/g, '&quot;')+'" src="/data/wafl/Raw%20HTML%20section.%20Edit%20in%20Wiki%20Text%20mode.?uneditable=1" title="Raw HTML section. Edit in Wiki Text mode." />';
+            return;
+        }
         case 'a': {
             this.output += '<a href="'+encodeURI(node._href)+'">';
             return;
@@ -33,7 +37,7 @@ proto.begin_node = function(node) {
 proto.end_node = function(node) {
     var tag = node.type;
     switch (tag) {
-        case 'asis': return; case 'br': case 'hr': return;
+        case 'asis': return; case 'br': case 'hr': case 'html': return;
         case 'line': {
             this.output += '<br />';
             return;

@@ -6,8 +6,7 @@ proto.className = 'Document.Parser.Wikitext';
 proto.init = function() {}
 
 proto.create_grammar = function() {
-    // Block TODO: wafl_block, wafl_p
-    var all_blocks = ['pre', 'hr', 'hx', 'ul', 'ol', 'blockquote', 'p', 'empty', 'else'];
+    var all_blocks = ['pre', 'html', 'hr', 'hx', 'ul', 'ol', 'blockquote', 'p', 'empty', 'else'];
 
     // Phrase TODO: wafl_phrase, wikilink, im
     var all_phrases = ['asis', 'tt', 'b', 'i', 'del', 'a', 'file', 'mail']; // "a" includes "hyper" and "b_hyper"
@@ -54,7 +53,7 @@ proto.create_grammar = function() {
         },
         subl: {
             type: 'li',
-            match: /^((.*)\n[*#]+\ .*\n(?:[*#]+\ .*\n)*)(?:\s*\n)?/,
+            match: /^(([^\n]*)\n[*#]+\ [^\n]*\n(?:[*#]+\ [^\n]*\n)*)(?:\s*\n)?/,
             blocks: ['ul', 'ol', 'li2']
         },
         li: {
@@ -66,18 +65,25 @@ proto.create_grammar = function() {
             match: /([^\n]*)\n/,
             phrases: all_phrases
         },
-        pre: { match: /^\.pre\ *\n((?:.*\n)*?)\.pre\ *\n(?:\s*\n)?/ },
+        html: {
+            match: /^(\.html\ *\n(?:[^\n]*\n)*?\.html)\ *\n(?:\s*\n)?/,
+            filter: function(node) {
+                node._html = node.text;
+                return '';
+            }
+        },
+        pre: { match: /^\.pre\ *\n((?:[^\n]*\n)*?)\.pre\ *\n(?:\s*\n)?/ },
         hr: { match: /^--+(?:\s*\n)?/ },
         hx: {
-            match: /^((\^+) *(.*?)(\s+=+)?\s*?\n+)/,
+            match: /^((\^+) *([^\n]*?)(\s+=+)?\s*?\n+)/,
             phrases: all_phrases,
             filter: function(node) {
                 node.type = 'h' + node['1'].length;
-                return node['2'];
+                return node[2];
             }
         },
         p: {
-            match: /^((?:(?!(?:(?:\^+|\#+|\*+|\-+) |\>|\.\w+\s*\n|\{[^\}]+\}\s*\n)).*\S.*\n)+(?:(?=^|\n)\s*\n)*)/,
+            match: /^((?:(?!(?:(?:\^+|\#+|\*+|\-+) |\>|\.\w+\s*\n|\{[^\}]+\}\s*\n))[^\n]*\S[^\n]*\n)+(?:(?=^|\n)\s*\n)*)/,
             phrases: all_phrases,
             filter: function(node) { return node.text.replace(/\n$/, '') }
         },
@@ -86,27 +92,36 @@ proto.create_grammar = function() {
             filter: function(node) { node.type = '' }
         },
         'else': {
-            match: /^((.*)\n)/,
+            match: /^(([^\n]*)\n)/,
             phrases: [],
             filter: function(node) {
                 node.type = 'p';
             }
         },
         /*
+        wafl_block: {
+            match: /(?:^\.([\w\-]+)\ *\n)((?:[^\n]*\n)*?)(?:\.\1\ *\n|$)/,
+            filter: function(node) {
+                node._wafl = node.text;
+                node.text = node[1];
+            }
+        },
+        */
+        /*
         waflphrase: {
             match: /(?:^|(?<=[\s\-]))(?:"(.+?)")?\{([\w-]+)(?=[\:\ \}])(?:\s*:)?\s*(.*?)\s*\}(?=[\W_]|$)/,
             filter: function(node) {
-                node._function = node['2'];
+                node._function = node[2];
                 node._options = node['3']
                 return(node['1'] || '');
             }
         },
         */
         asis: {
-            match: /(\{\{(.*?)\}\}(\}*))/,
+            match: /(\{\{([^\n]*?)\}\}(\}*))/,
             filter: function(node) {
                 node.type = '';
-                return(node['1'] + node['2']);
+                return(node[1] + node[2]);
             }
         },
         /*
@@ -114,8 +129,8 @@ proto.create_grammar = function() {
             type: 'a',
             match: /(?:"([^"]*)"\s*)?(?:^|(?<=[_\W]))\[(?=[^\s\[\]])(.*?)\](?=[_\W]|$)/,
             filter: function(node) {
-                node._href = node['2'];
-                return(node['1'] || node['2']);
+                node._href = node[2];
+                return(node[1] || node[2]);
             }
         },
         */
@@ -123,14 +138,14 @@ proto.create_grammar = function() {
             match: /((?:"([^"]*)"\s*)?<?((?:http|https|ftp|irc|file):(?:\/\/)?[\;\/\?\:\@\&\=\+\$\,\[\]\#A-Za-z0-9\-\_\.\!\~\*\'\(\)]+[A-Za-z0-9\/#])>?)/,
             filter: function(node) {
                 // console.log(node);
-                node._href = node['2'];
-                return(node['1'] || node['2']);
+                node._href = node[2];
+                return(node[1] || node[2]);
             }
         },
         file: {
             match: /((?:"([^"]*)")?<(\\\\[^\s\>\)]+)>)/,
             filter: function(node) {
-                var href = node['2'].replace(/^\\\\/, '');
+                var href = node[2].replace(/^\\\\/, '');
                 node._href = "file://" + href.replace(/\\/g, '/');
                 return(node['1'] || href);
             }
