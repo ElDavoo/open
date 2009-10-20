@@ -42,15 +42,11 @@ proto.end_node = function(node) {
     var tag = node.type;
     switch (tag) {
         case 'asis': case 'br': case 'hr': case 'html': case 'waflparagraph': case 'waflphrase': return;
-        case 'wikilink': {
-            this.output += '<a />';
-            return;
-        }
         case 'line': {
             this.output += '<br />';
             return;
         }
-        case 'file': {
+        case 'file': case 'wikilink': {
             this.output += '</a>';
             return;
         }
