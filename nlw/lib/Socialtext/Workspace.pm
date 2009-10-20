@@ -479,8 +479,14 @@ sub _update {
 
         my $users = $self->users;
         while ( my $user = $users->next ) {
-            $adapter->hook('nlw.remove_user_account_role', $old_account, $user);
-            $adapter->hook('nlw.add_user_account_role', $self->account, $user);
+            $adapter->hook(
+                'nlw.remove_user_account_role',
+                $old_account, $user, Socialtext::Role->Affiliate(),
+            );
+            $adapter->hook(
+                'nlw.add_user_account_role',
+                $self->account, $user, Socialtext::Role->Affiliate(),
+            );
         }
 
         my $groups = $self->groups;
@@ -1283,7 +1289,9 @@ sub email_passes_invitation_filter {
         $adapter->make_hub(Socialtext::User->SystemUser(), $self);
 
         $adapter->hook(
-            'nlw.add_user_account_role', $self->account, $p{user});
+            'nlw.add_user_account_role',
+            $self->account, $p{user}, Socialtext::Role->Affiliate(),
+        );
     }
 }
 
@@ -1335,7 +1343,9 @@ sub has_user {
         $adapter->make_hub(Socialtext::User->SystemUser(), $self);
 
         $adapter->hook(
-            'nlw.remove_user_account_role', $self->account, $p{user});
+            'nlw.remove_user_account_role',
+            $self->account, $p{user}, Socialtext::Role->Affiliate(),
+        );
     }
 }
 
