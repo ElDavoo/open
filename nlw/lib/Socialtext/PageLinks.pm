@@ -23,48 +23,86 @@ has 'links' => (
 );
 
 sub _build_links {
-    my $self = shift;
-    my $links = [];
-    push @$links, $self->_filesystem_links;
-    push @$links, $self->_db_links;
-    return $links;
+    my $self    = shift;
+    my $page_id = $self->page->id;
+    my $hub = $self->hub;
+    return [
+        map { Socialtext::Page->new(hub => $hub, id => $_->{to_page_id}) }
+        grep { $_->{from_page_id} eq $page_id }
+        $self->filesystem_links 
+    ];
+}
+
+has 'backlinks' => (
+    is => 'ro', isa => 'ArrayRef[Socialtext::Page]',
+    lazy_build => 1,
+);
+
+sub _build_backlinks {
+    my $self    = shift;
+    my $page_id = $self->page->id;
+    my $hub = $self->hub;
+    return [
+        map { Socialtext::Page->new(hub => $hub, id => $_->{from_page_id}) }
+        grep { $_->{to_page_id} eq $page_id }
+        $self->filesystem_links 
+    ];
 }
 
 has 'workspace_directory' => (
     is => 'ro', isa => 'Str',
     lazy_build => 1,
 );
+
 sub _build_workspace_directory {
     my $self = shift;
-    my $dir = File::Spec->catdir(
+    return File::Spec->catdir(
         Socialtext::Paths::plugin_directory(
             $self->hub->current_workspace->name
         ), 'backlinks',
     );
-    Socialtext::File::ensure_directory($dir) unless -d $dir;
-    return $dir;
 }
 
-sub _filesystem_links {
+has 'filesystem_links' => (
+    is => 'ro', isa => 'ArrayRef[HashRef]',
+    lazy_build => 1, auto_deref => 1,
+);
+
+sub _build_filesystem_links {
     my $self = shift;
-    my $separator = '____';
-    my @pages;
+
     my $dir = $self->workspace_directory;
-    my $page_id = $self->page->id;
-    for my $file (glob("$dir/${page_id}${separator}*")) {
+    return unless -d $dir;
+
+    # get forward links and backlinks
+    my $separator    = '____';
+    my $workspace_id = $self->hub->current_workspace->workspace_id;
+    my $page_id      = $self->page->id;
+    my $glob = "$dir/{${page_id}${separator}*,*${separator}${page_id}}";
+
+    my @links;
+    for my $file (glob($glob)) {
         $file = basename($file);
         next if $file =~ /^\.\.?$/;
         my ($from, $to) = split $separator, $file;
-        push @pages, Socialtext::Page->new(hub => $self->hub, id => $to);
+
+        push @links, {
+            from_workspace_id => $workspace_id,
+            from_page_id      => $from,
+            to_workspace_id   => $workspace_id,
+            to_page_id        => $to,
+        };
     }
-    return @pages;
+    return \@links;
 }
 
-sub _db_links {
-}
+has 'db_links' => (
+    is => 'ro', isa => 'ArrayRef[HashRef]',
+    lazy_build => 1, auto_deref => 1,
+);
 
-sub backlinked_pages {
-    my $self = shift;
+sub _build_db_links {
+    return [];
 }
 
 __PACKAGE__->meta->make_immutable;

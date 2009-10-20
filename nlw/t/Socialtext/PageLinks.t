@@ -29,6 +29,14 @@ is $page1->content, "Some content\n", "setup page1 properly";
 Forward_links: {
     my $links = Socialtext::PageLinks->new(page => $page2, hub => $hub)->links;
     is @$links, 1, "one forward link";
-    is $links->[0]->id, $page1->id, "forward link page id";
-    is $links->[0]->content, $page1->content, "forward link page content";
+    is $links->[0]->id, $page1->id, "... with page id";
+    is $links->[0]->content, $page1->content, "... with page content";
+}
+
+Back_Links: {
+    my $backlinks
+        = Socialtext::PageLinks->new(page => $page1, hub => $hub)->backlinks;
+    is @$backlinks, 1, "one backlink";
+    is $backlinks->[0]->id, $page2->id, "... with page id";
+    is $backlinks->[0]->content, $page2->content, "... with page content";
 }
