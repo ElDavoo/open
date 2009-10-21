@@ -20,7 +20,7 @@
     <input value="[% page_title | html %]" type="text" id="st-copy-newname" name="new_title" size="34" />
     <br/>
 
-    [% loc('Keep categories') %]:
+    [% loc('Keep tags') %]:
     <input type="checkbox" name="keep_categories" id="keep_categories" value="1" checked="true" />
     <br />
 

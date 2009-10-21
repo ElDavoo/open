@@ -14,7 +14,7 @@
       <input id="st-duplicate-newname" type="text" name="new_title" value="" size="34" />
     </p>
     <p class="input">
-    <label for="keep_categories" class="duplicate-page-form-element">[% loc('Keep categories') %]:</label>
+    <label for="keep_categories" class="duplicate-page-form-element">[% loc('Keep tags') %]:</label>
       <input type="checkbox" name="keep_categories" value="1" checked="true" />
     </p>
     <p class="input">
