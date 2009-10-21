@@ -962,8 +962,8 @@ sub _log_edit_summary {
 
 sub _perform_store_actions {
     my $self = shift;
-    $self->hub->backlinks->update($self);
     $self->update_db_metadata();
+    $self->hub->backlinks->update($self);
     Socialtext::JobCreator->index_page($self);
     Socialtext::JobCreator->send_page_notifications($self);
     $self->_log_page_action();
