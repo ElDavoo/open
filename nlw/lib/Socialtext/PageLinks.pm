@@ -34,6 +34,7 @@ sub _build_links {
         grep { $_->{from_page_id} eq $page_id } $self->db_links,
         $self->filesystem_links;
     Socialtext::Timer->Pause('build_links');
+    return \@links;
 }
 
 has 'backlinks' => (
