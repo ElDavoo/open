@@ -9,7 +9,7 @@ proto.create_grammar = function() {
     var all_blocks = ['pre', 'html', 'hr', 'hx', 'waflparagraph', 'ul', 'ol', 'blockquote', 'p', 'empty', 'else'];
 
     // Phrase TODO: im
-    var all_phrases = ['waflphrase', 'asis', 'wikilink', 'wikilink2', 'a', 'mail', 'file', 'tt', 'b', 'i', 'del', 'a'];
+    var all_phrases = ['waflphrase', 'asis', 'wikilink', 'wikilink2', 'a', 'im', 'mail', 'file', 'tt', 'b', 'i', 'del', 'a'];
 
     var re_huggy = function(brace1, brace2) {
         brace2 = '\\' + (brace2 || brace1);
@@ -20,6 +20,27 @@ proto.create_grammar = function() {
             lookbehind: true
         };
     };
+
+    var im_types = {
+        yahoo: 'yahoo',
+        ymsgr: 'yahoo',
+        callto: 'callto',
+        callme: 'callto',
+        skype: 'callto',
+        aim: 'aim'
+    };
+
+    var im_label = {
+        aim: "AIM: %1",
+        yahoo: "Yahoo: %1",
+        callto: "Skype: %1"
+    };
+
+    var im_re = '(\\b(';
+    for (var key in im_types) {
+        im_re += key + '|';
+    }
+    im_re = im_re.replace(/\|$/, ')\\:([^\\s\\>\\)]+))');
 
     var re_list = function(bullet, filter_out) {
         var exclusion = new RegExp('(^|\n)' + filter_out + '\ *', 'g');
@@ -154,6 +175,14 @@ proto.create_grammar = function() {
                 var href = node[2].replace(/^\\\\/, '');
                 node._href = "file://" + href.replace(/\\/g, '/');
                 return(node['1'] || href);
+            }
+        },
+        im: {
+            match: (new RegExp(im_re)),
+            filter: function(node) {
+                node._wafl = node[1] + ': ' + node[2];
+                node._label = (im_label[im_types[node[1]]] || '%1').replace(/%1/g, node[2]);
+                return '';
             }
         },
         mail: {

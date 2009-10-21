@@ -1436,7 +1436,8 @@ sub has_group {
 
 sub role_for_group {
     my $self  = shift;
-    my $group = shift;
+    my %p     = @_;
+    my $group = $p{group} || croak "can't role_for_group without a 'group'";
     my $gwr   = $self->_gwr_for_group($group);
     return unless $gwr;
     return $gwr->role();
@@ -2807,7 +2808,7 @@ Group has no Role in the Workspace, this method does nothing.
 Checks to see if the given C<$group> has a Role in the Workspace, returning
 true if it does, false otherwise.
 
-=head2 $workspace->role_for_group($group)
+=head2 $workspace->role_for_group(group => $group)
 
 Returns the C<Socialtext::Role> object representing the Role that the given
 C<$group> has in this Workspace.

@@ -75,7 +75,7 @@ add_group_to_workspace_with_default_role: {
 
     # Make sure Group was given the default Role
     my $default_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
-    my $groups_role  = $workspace->role_for_group($group);
+    my $groups_role  = $workspace->role_for_group(group => $group);
     is $groups_role->role_id, $default_role->role_id,
         '... with Default GWR Role'
 }
@@ -93,7 +93,7 @@ add_group_to_workspace_with_role: {
     is $workspace->group_count(), 1, 'Group was added to Workspace';
 
     # Make sure Group has the correct Role
-    my $groups_role  = $workspace->role_for_group($group);
+    my $groups_role  = $workspace->role_for_group(group => $group);
     is $groups_role->role_id, $role->role_id, '... with provided Role'
 }
 
@@ -110,7 +110,7 @@ update_groups_role_in_workspace: {
 
     # Make sure the Group was given the Default Role
     my $default_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
-    my $groups_role  = $workspace->role_for_group($group);
+    my $groups_role  = $workspace->role_for_group(group => $group);
     is $groups_role->role_id, $default_role->role_id,
         '... with Default UGR Role';
 
@@ -118,7 +118,7 @@ update_groups_role_in_workspace: {
     $workspace->add_group(group => $group, role => $role);
 
     # Make sure Group had their Role updated
-    $groups_role = $workspace->role_for_group($group);
+    $groups_role = $workspace->role_for_group(group => $group);
     is $groups_role->role_id, $role->role_id, '... with updated Role';
 }
 
@@ -133,7 +133,7 @@ get_role_for_group: {
     $workspace->add_group(group => $group);
 
     # Get the Role for the Group
-    my $role = $workspace->role_for_group($group);
+    my $role = $workspace->role_for_group(group => $group);
     isa_ok $role, 'Socialtext::Role', 'queried Role';
 }
 

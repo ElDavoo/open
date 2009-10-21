@@ -342,7 +342,6 @@ my %im_types = (
     skype  => 'callto',
     callme => 'callto', 
     aim    => 'aim',
-    msn    => 'msn',
 );
 my $im_re = join '|', keys %im_types;
 const pattern_start => qr/\b(?:$im_re)\:[^\s\>\)]+/;

@@ -392,7 +392,7 @@ sub add_user {
 sub remove_user {
     my $self = shift;
     my %p    = @_;
-    my $user = $p{user} || croak "cannot remove_user with 'user' parameter";
+    my $user = $p{user} || croak "cannot remove_user without 'user' parameter";
 
     my $ugr = $self->_ugr_for_user($user);
     return unless $ugr;
@@ -411,7 +411,8 @@ sub has_user {
 ###############################################################################
 sub role_for_user {
     my $self = shift;
-    my $user = shift;
+    my %p    = @_;
+    my $user = $p{user} || croak "cannot role_for_user without 'user' parameter";
     my $ugr  = $self->_ugr_for_user($user);
     return unless $ugr;
     return $ugr->role();
@@ -518,7 +519,7 @@ Socialtext::Group - Socialtext Group object
   $exists = $group->has_user($user);
 
   # get the Role for a User in the Group
-  $role = $group->role_for_user($user);
+  $role = $group->role_for_user(user => $user);
 
   # get cached counts
   $n = $group->user_count;
@@ -703,7 +704,7 @@ has no Role in the Group, this method does nothing.
 Checks to see if the given C<$user> has a Role in this Group, returning true
 if the User has a Role, false otherwise.
 
-=item B<$group-E<gt>role_for_user($user)>
+=item B<$group-E<gt>role_for_user(user=E<gt>$user)>
 
 Returns a C<Socialtext::Role> object representing the Role that the given
 C<$user> has in this Group.  If the User has no Role in the Group, this method

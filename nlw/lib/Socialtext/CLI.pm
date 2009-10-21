@@ -909,7 +909,7 @@ sub _add_group_to_account_as {
     my $group    = $self->_require_group();
     my $account  = $self->_require_account();
 
-    my $current_role = $account->role_for_group($group);
+    my $current_role = $account->role_for_group(group => $group);
 
     if ( $current_role && $current_role->name == 'Member' ) {
         $self->_error(
@@ -935,7 +935,7 @@ sub _add_group_to_workspace_as {
     my $new_role     = shift;
     my $group        = $self->_require_group();
     my $workspace    = $self->_require_workspace();
-    my $current_role = $workspace->role_for_group($group);
+    my $current_role = $workspace->role_for_group(group => $group);
 
     if ( $current_role ) {
         $self->_error(

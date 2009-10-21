@@ -240,7 +240,8 @@ sub has_group {
 
 sub role_for_group {
     my $self  = shift;
-    my $group = shift;
+    my %opts  = @_;
+    my $group = $opts{group} || croak "can't role_for_group without a 'group'";
     my $gar   = $self->_gar_for_group($group);
     return unless $gar;
     return $gar->role();
@@ -1236,7 +1237,7 @@ Group has no Role in the Account, this method does nothing.
 Checks to see if the given C<$group> has a Role in the Account, returning true
 if it does, false otherwise.
 
-=item $account->role_for_group($group)
+=item $account->role_for_group(group => $group $group)
 
 Returns the C<Socialtext::Role> object representing the Role that the given
 C<$group> has in this Account.

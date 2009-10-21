@@ -14,7 +14,7 @@ groups_role_in_primary_account: {
     my $group   = create_test_group(account => $account);
     my $member  = Socialtext::Role->Member();
 
-    is $account->role_for_group($group)->name, $member->name,
+    is $account->role_for_group(group => $group)->name, $member->name,
         'Group has Member Role in Primary Account';
 }
 
@@ -28,7 +28,7 @@ groups_role_in_secondary_account: {
     my $affiliate = Socialtext::Role->Affiliate();
 
     $ws->add_group(group => $group);
-    is $account->role_for_group($group)->name, $affiliate->name,
+    is $account->role_for_group(group => $group)->name, $affiliate->name,
         'Group has Affiliate Role in Secondary Accounts';
 }
 
@@ -42,11 +42,11 @@ no_overwrite_of_member_role_in_account: {
     my $member = Socialtext::Role->Member();
 
     $acct->add_group(group => $group);
-    is $acct->role_for_group($group)->name, $member->name,
+    is $acct->role_for_group(group => $group)->name, $member->name,
         'Group has Member Role in test Account';
 
     $ws->add_group(group => $group);
-    is $acct->role_for_group($group)->name, $member->name,
+    is $acct->role_for_group(group => $group)->name, $member->name,
         '... added Group to WS in Account; Role in Account unchanged';
 }
 
@@ -60,16 +60,16 @@ no_teardown_of_member_role_in_account: {
     my $member = Socialtext::Role->Member();
 
     $acct->add_group(group => $group);
-    is $acct->role_for_group($group)->name, $member->name,
+    is $acct->role_for_group(group => $group)->name, $member->name,
         'Group has Member Role in test Account';
 
     $ws->add_group(group => $group);
     ok $ws->has_group($group), '... added Group to WS';
-    is $acct->role_for_group($group)->name, $member->name,
+    is $acct->role_for_group(group => $group)->name, $member->name,
         '... ... Role in its Account is unchanged';
 
     $ws->remove_group(group => $group);
-    is $acct->role_for_group($group)->name, $member->name,
+    is $acct->role_for_group(group => $group)->name, $member->name,
         '... Group removed from WS; Role in Account unchanged';
 }
 
@@ -84,11 +84,11 @@ role_upgrade: {
     my $affiliate = Socialtext::Role->Affiliate();
 
     $ws->add_group(group => $group);
-    is $acct->role_for_group($group)->name, $affiliate->name,
+    is $acct->role_for_group(group => $group)->name, $affiliate->name,
         'Group has Affiliate Role in secondary Account';
 
     $acct->add_group(group => $group);
-    is $acct->role_for_group($group)->name, $member->name,
+    is $acct->role_for_group(group => $group)->name, $member->name,
         '... adding Group to Account upgrades to Member Role';
 }
 
@@ -104,14 +104,14 @@ role_downgrade: {
     my $affiliate = Socialtext::Role->Affiliate();
 
     $ws->add_group(group => $group);
-    is $acct->role_for_group($group)->name, $affiliate->name,
+    is $acct->role_for_group(group => $group)->name, $affiliate->name,
         'Group has Affiliate Role in secondary Account';
 
     $acct->add_group(group => $group);
-    is $acct->role_for_group($group)->name, $member->name,
+    is $acct->role_for_group(group => $group)->name, $member->name,
         '... adding Group to Account upgrades to Member Role';
 
     $acct->remove_group(group => $group);
-    is $acct->role_for_group($group)->name, $affiliate->name,
+    is $acct->role_for_group(group => $group)->name, $affiliate->name,
         '... removing Group from Account downgrades to Affiliate Role';
 }

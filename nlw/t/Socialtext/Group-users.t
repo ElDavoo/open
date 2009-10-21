@@ -87,7 +87,7 @@ add_user_to_group_with_default_role: {
 
     # Make sure User was given the default Role
     my $default_role = Socialtext::UserGroupRoleFactory->DefaultRole();
-    my $users_role   = $group->role_for_user($user);
+    my $users_role   = $group->role_for_user(user => $user);
     is $users_role->role_id, $default_role->role_id,
         '... with Default UGR Role';
 }
@@ -109,7 +109,7 @@ add_user_to_group_with_role: {
     is $group->users->count(), 1, '... added User to Group';
 
     # Make sure User has correct Role
-    my $users_role   = $group->role_for_user($user);
+    my $users_role   = $group->role_for_user(user => $user);
     is $users_role->role_id, $role->role_id, '... with provided Role';
 }
 
@@ -125,7 +125,7 @@ update_users_role_in_group: {
 
     # Make sure the User was given the Default Role
     my $default_role = Socialtext::UserGroupRoleFactory->DefaultRole();
-    my $users_role   = $group->role_for_user($user);
+    my $users_role   = $group->role_for_user(user => $user);
     is $users_role->role_id, $default_role->role_id,
         'User has default Role in Group';
 
@@ -133,7 +133,7 @@ update_users_role_in_group: {
     $group->add_user(user => $user, role => $role);
 
     # Make sure User had their Role updated
-    $users_role = $group->role_for_user($user);
+    $users_role = $group->role_for_user(user => $user);
     is $users_role->role_id, $role->role_id, '... Role was updated';
 }
 
@@ -147,7 +147,7 @@ get_role_for_user: {
     $group->add_user(user => $user);
 
     # Get the Role for the User
-    my $role = $group->role_for_user($user);
+    my $role = $group->role_for_user(user => $user);
     isa_ok $role, 'Socialtext::Role', 'queried Role';
 }
 
