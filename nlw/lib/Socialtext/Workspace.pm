@@ -480,7 +480,7 @@ sub _update {
         my $users = $self->users;
         while ( my $user = $users->next ) {
             $adapter->hook('nlw.remove_user_account_role', $old_account, $user);
-            $adapter->hook( 'nlw.add_user_account_role', $self->account, $user);
+            $adapter->hook('nlw.add_user_account_role', $self->account, $user);
         }
 
         my $groups = $self->groups;
