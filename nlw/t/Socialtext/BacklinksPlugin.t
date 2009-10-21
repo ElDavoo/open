@@ -4,6 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 25;
+use Socialtext::SQL qw(sql_execute);
 
 fixtures(qw( db ));
 
@@ -17,7 +18,6 @@ as pages are created and deleted.
 my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
 my $hub       = create_test_hub();
 my $backlinks = $hub->backlinks;
-my $path      = $backlinks->plugin_directory();
 my $pages     = $hub->pages;
 
 # check the preference that allows backlinks to be shown
@@ -125,9 +125,12 @@ sub check_backlinks {
             'correct title in link');
     }
 
-    my $glob_path = $path . '/' . $page->id . '____*';
-    my @files = glob $glob_path;
-    is(scalar(@files), $count, "expect $count links in the files");
+    my $sth = sql_execute('
+        SELECT * FROM page_link
+         WHERE from_workspace_id = ?
+           AND from_page_id = ?
+    ', $hub->current_workspace->workspace_id, $page->id);
+    is($sth->rows, $count, "expect $count links in the files");
 }
 
 sub check_frontlinks {

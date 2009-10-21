@@ -5,6 +5,8 @@ use File::Spec;
 use File::Basename qw(basename);
 use Socialtext::File;
 use Socialtext::Model::Pages;
+use Socialtext::SQL::Builder qw(sql_insert_many);
+use Socialtext::SQL qw(sql_execute);
 use namespace::clean -except => 'meta';
 
 has 'page' => (
@@ -28,9 +30,65 @@ sub _build_links {
     return [
         map { $self->_create_page($_->{to_workspace_id}, $_->{to_page_id}) }
         grep { $_->{from_page_id} eq $page_id }
-        $self->filesystem_links 
+        $self->db_links, $self->filesystem_links,
     ];
 }
+
+has 'backlinks' => (
+    is => 'ro', isa => 'ArrayRef',
+    lazy_build => 1, auto_deref => 1
+);
+
+sub _build_backlinks {
+    my $self    = shift;
+    my $page_id = $self->page->id;
+    return [
+        map { $self->_create_page($_->{from_workspace_id}, $_->{from_page_id}) }
+        grep { $_->{to_page_id} eq $page_id }
+        $self->db_links, $self->filesystem_links,
+    ];
+}
+
+sub update {
+    my $self = shift;
+
+    my $workspace_id = $self->hub->current_workspace->workspace_id;
+    my $cur_workspace_name = $self->hub->current_workspace->name;
+    my $page_id = $self->page->id;
+    my $links = $self->page->get_units(
+        'wiki' => sub {
+            my $page_id = Socialtext::String::title_to_id($_[0]->title);
+            return +{ page_id => $page_id, workspace_id => $workspace_id};
+        },
+        'wafl_phrase' => sub {
+            my $unit = shift;
+            return unless $unit->method eq 'include';
+            $unit->arguments =~ $unit->wafl_reference_parse;
+            my ( $workspace_name, $page_title, $qualifier ) = ( $1, $2, $3 );
+            my $page_id = Socialtext::String::title_to_id($page_title);
+            my $w = Socialtext::Workspace->new(name => $workspace_name);
+            return +{
+                page_id => $page_id,
+                workspace_id => $w ? $w->workspace_id : $workspace_id,
+            };
+        }
+    );
+
+    sql_execute('
+        DELETE FROM page_link
+         WHERE from_workspace_id = ?
+           AND from_page_id = ?
+    ', $workspace_id, $page_id);
+
+    my %seen;
+    my @cols = qw(from_workspace_id from_page_id to_workspace_id to_page_id);
+    if (@$links) {
+        my @values = map {
+            [ $workspace_id, $page_id, $_->{workspace_id}, $_->{page_id} ]
+        } grep { not $seen{ $_->{workspace_id} }{ $_->{page_id} }++ } @$links;
+        sql_insert_many('page_link' => \@cols, \@values);
+    }
+} 
 
 sub _create_page {
     my ($self, $workspace_id, $page_id) = @_;
@@ -51,21 +109,6 @@ sub _create_page {
         $self->hub->current_workspace($old_workspace);
     }
     return $page;
-}
-
-has 'backlinks' => (
-    is => 'ro', isa => 'ArrayRef',
-    lazy_build => 1, auto_deref => 1
-);
-
-sub _build_backlinks {
-    my $self    = shift;
-    my $page_id = $self->page->id;
-    return [
-        map { $self->_create_page($_->{from_workspace_id}, $_->{from_page_id}) }
-        grep { $_->{to_page_id} eq $page_id }
-        $self->filesystem_links 
-    ];
 }
 
 has 'workspace_directory' => (
@@ -91,7 +134,7 @@ sub _build_filesystem_links {
     my $self = shift;
 
     my $dir = $self->workspace_directory;
-    return unless -d $dir;
+    return [] unless -d $dir;
 
     # get forward links and backlinks
     my $separator    = '____';
@@ -99,11 +142,22 @@ sub _build_filesystem_links {
     my $page_id      = $self->page->id;
     my $glob = "$dir/{${page_id}${separator}*,*${separator}${page_id}}";
 
+    # Build a hash table of db links in order to eliminate duplicate.
+    # This might be slightly inefficient, but only happens while we are moving
+    # over from filesystem links to database links.
+    my %in_db;
+    for my $l ($self->db_links) {
+        next unless $l->{from_workspace_id} eq $l->{to_workspace_id};
+        $in_db{ $l->{from_page_id} } = 1 unless $l->{to_page_id} eq $page_id;
+        $in_db{ $l->{to_page_id} } = 1 unless $l->{from_page_id} eq $page_id;
+    }
+
     my @links;
     for my $file (glob($glob)) {
         $file = basename($file);
         next if $file =~ /^\.\.?$/;
         my ($from, $to) = split $separator, $file;
+        next if $in_db{$from} or $in_db{$to};
 
         push @links, {
             from_workspace_id => $workspace_id,
@@ -121,7 +175,15 @@ has 'db_links' => (
 );
 
 sub _build_db_links {
-    return [];
+    my $self         = shift;
+    my $workspace_id = $self->hub->current_workspace->workspace_id;
+    my $page_id      = $self->page->id;
+    my $sth = sql_execute('
+        SELECT * FROM page_link
+         WHERE ( from_workspace_id = ? AND from_page_id = ? )
+            OR ( to_workspace_id = ? AND to_page_id = ? )
+    ', ($workspace_id, $page_id) x 2 );
+    return $sth->fetchall_arrayref({});
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -29,14 +29,6 @@ sub register {
     $registry->add(action => 'orphans_list' );
 }
 
-sub init {
-    my $self = shift;
-    $self->SUPER::init(@_);
-    mkdir $self->_storage_directory;
-    return unless $self->is_in_cgi;
-    $self->_assert_database;
-}
-
 sub show_backlinks {
     my $self = shift;
     my $p = $self->new_preference('show_backlinks');
@@ -136,41 +128,10 @@ sub update {
     # REVIEW this can probably come out in new style?
     my $current = $self->hub->pages->current;
 
-    $self->_clean_source_links($page);
-
-    my $links = $self->_get_links($page);
-    foreach my $found (@$links) {
-        my $link = Socialtext::String::title_to_id($found->{link});
-        $self->_write_link($page, $link);
-    }
+    Socialtext::PageLinks->new(hub => $self->hub, page => $page)->update;
 
     $self->hub->pages->current($current);
 }
-
-sub _get_links {
-    my $self = shift;
-    my $page = shift;
-
-    my $hub = $self->hub;
-
-    # XXX this borrows a lot of code from Socialtext::Formatter::WaflPhrase to
-    # avoid hub confusion
-    return $page->get_units(
-        'wiki' => sub {
-            return +{link => $_[0]->title};
-        },
-        'wafl_phrase' => sub {
-            my $unit = shift;
-            return unless $unit->method eq 'include';
-            $unit->arguments =~ $unit->wafl_reference_parse;
-            my ( $workspace_name, $page_title, $qualifier ) = ( $1, $2, $3 );
-            # don't write interwiki includes (yet)
-            return if (defined $workspace_name and $workspace_name ne $hub->current_workspace->name);
-            return +{ link => $page_title };
-        }
-    );
-} 
-
 
 sub all_backlinks {
     my $self = shift;
@@ -261,67 +222,6 @@ sub get_orphaned_pages {
         push( @$orphans, $page ) unless scalar(@$backlinks);
     }
     return $orphans;
-}
-
-sub _assert_database {
-    my $self = shift;
-    return unless Socialtext::File::directory_is_empty( $self->_storage_directory );
-
-    for my $page ($self->hub->pages->all) {
-        $self->update($page);
-    }
-
-    # avoid trying to initialize the backlinks directory if no pages actually
-    # have any backlinks while retaining "rm -f" compatibility:
-    Socialtext::File::set_contents(
-        $self->_storage_directory . '/.initialized', '');
-}
-
-sub _storage_directory {
-    my $self = shift;
-    return $self->plugin_directory;
-}
-
-sub _write_link {
-    my $self = shift;
-    my $page = shift;
-    my $destination_id = shift;
-    $self->_touch_index_file($page->id, $destination_id);
-}
-
-sub _touch_index_file {
-    my $self = shift;
-    my ($source, $dest) = @_;
-    # XXX hack to avoid overly long filenames. means for the time
-    # being that really long page names just don't get backlinks
-    if (length($source . $dest . $self->SEPARATOR) <= $self->MAX_FILE_LENGTH) {
-        my $file = $self->_get_filename($source, $dest);
-
-        Socialtext::File::update_mtime($file);
-    }
-}
-
-sub _clean_source_links {
-    my $self = shift;
-    my $page = shift;
-    my $source = $page->id;
-    my $chunk = $source . $self->SEPARATOR . '*';
-    $self->_clean_links($chunk);
-}
-
-sub _clean_links {
-    my $self = shift;
-    my $chunk = shift;
-    my $dir = $self->_storage_directory . '/';
-    my $path = $dir . $chunk;
-    unlink glob $path;
-}
-
-sub _get_filename {
-    my $self = shift;
-    my ($source, $dest) = @_;
-    my $dir = $self->_storage_directory;
-    "$dir/$source" . $self->SEPARATOR . $dest;
 }
 
 package Socialtext::Backlinks::CGI;
