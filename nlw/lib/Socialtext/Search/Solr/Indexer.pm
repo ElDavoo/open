@@ -512,23 +512,15 @@ sub _scrub_body {
 sub _commit {
     my $self = shift;
 
-    _debug("Preparing to finalize index.");
-    Socialtext::Timer->Continue('solr_commit');
-    my $docs = $self->_docs;
-    eval {
-        # First, explicitly delete all previously indexed content for
-        # this page
-        my %page_keys;
-        for my $d (@$docs) {
-            next unless $d->{page_key};
-            $page_keys{$d->{page_key}}++;
+    my $docs = $self->_docs || [];
 
-        }
-        Socialtext::Timer->Continue('solr_delete');
-        for my $key (keys %page_keys) {
-            $self->solr->delete_by_query("page_key:$key");
-        }
-        Socialtext::Timer->Pause('solr_delete');
+    Socialtext::Timer->Continue('solr_commit');
+    _debug("Preparing to finalize index.");
+
+    eval {
+        # there used to be code here to delete docs before adding them, but
+        # apparently this isn't necessary:
+        # http://lucene.apache.org/solr/tutorial.html#Updating+Data
 
         if (@$docs) {
             Socialtext::Timer->Continue('solr_add');
