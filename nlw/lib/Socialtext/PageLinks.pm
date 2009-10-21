@@ -5,6 +5,7 @@ use File::Spec;
 use File::Basename qw(basename);
 use Socialtext::File;
 use Socialtext::Model::Pages;
+use Socialtext::Timer;
 use Socialtext::SQL::Builder qw(sql_insert_many);
 use Socialtext::SQL qw(sql_execute);
 use namespace::clean -except => 'meta';
@@ -26,12 +27,13 @@ has 'links' => (
 
 sub _build_links {
     my $self    = shift;
+    Socialtext::Timer->Continue('build_links');
     my $page_id = $self->page->id;
-    return [
+    my @links =
         map { $self->_create_page($_->{to_workspace_id}, $_->{to_page_id}) }
-        grep { $_->{from_page_id} eq $page_id }
-        $self->db_links, $self->filesystem_links,
-    ];
+        grep { $_->{from_page_id} eq $page_id } $self->db_links,
+        $self->filesystem_links;
+    Socialtext::Timer->Pause('build_links');
 }
 
 has 'backlinks' => (
@@ -42,16 +44,19 @@ has 'backlinks' => (
 sub _build_backlinks {
     my $self    = shift;
     my $page_id = $self->page->id;
-    return [
+    Socialtext::Timer->Continue('build_backlinks');
+    my @backlinks =
         map { $self->_create_page($_->{from_workspace_id}, $_->{from_page_id}) }
         grep { $_->{to_page_id} eq $page_id }
-        $self->db_links, $self->filesystem_links,
-    ];
+        $self->db_links, $self->filesystem_links;
+    Socialtext::Timer->Pause('build_backlinks');
+    return \@backlinks;
 }
 
 sub update {
     my $self = shift;
 
+    Socialtext::Timer->Continue('update_page_links');
     my $workspace_id = $self->hub->current_workspace->workspace_id;
     my $cur_workspace_name = $self->hub->current_workspace->name;
     my $page_id = $self->page->id;
@@ -88,6 +93,7 @@ sub update {
         } grep { not $seen{ $_->{workspace_id} }{ $_->{page_id} }++ } @$links;
         sql_insert_many('page_link' => \@cols, \@values);
     }
+    Socialtext::Timer->Pause('update_page_links');
 } 
 
 sub _create_page {
@@ -136,6 +142,7 @@ sub _build_filesystem_links {
     my $dir = $self->workspace_directory;
     return [] unless -d $dir;
 
+    Socialtext::Timer->Continue('build_filesystem_links');
     # get forward links and backlinks
     my $separator    = '____';
     my $workspace_id = $self->hub->current_workspace->workspace_id;
@@ -166,6 +173,7 @@ sub _build_filesystem_links {
             to_page_id        => $to,
         };
     }
+    Socialtext::Timer->Pause('build_filesystem_links');
     return \@links;
 }
 
@@ -176,6 +184,7 @@ has 'db_links' => (
 
 sub _build_db_links {
     my $self         = shift;
+    Socialtext::Timer->Continue('build_db_links');
     my $workspace_id = $self->hub->current_workspace->workspace_id;
     my $page_id      = $self->page->id;
     my $sth = sql_execute('
@@ -183,7 +192,9 @@ sub _build_db_links {
          WHERE ( from_workspace_id = ? AND from_page_id = ? )
             OR ( to_workspace_id = ? AND to_page_id = ? )
     ', ($workspace_id, $page_id) x 2 );
-    return $sth->fetchall_arrayref({});
+    my $rows = $sth->fetchall_arrayref({});
+    Socialtext::Timer->Pause('build_db_links');
+    return $rows;
 }
 
 __PACKAGE__->meta->make_immutable;
