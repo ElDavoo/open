@@ -52,10 +52,10 @@ Forward_links: {
     is $links2->links->[0]->content, $page1->content, "... with content";
 
     is @{$links3->links}, 2, "page 3 has two forward link";
-    is $links3->links->[0]->id, $page1->id, "... first has page id";
-    is $links3->links->[0]->content, $page1->content, "... first has content";
-    is $links3->links->[0]->active, 1, "... first is not incipient";
-    is $links3->links->[1]->active, undef, "... second is incipient";
+    is $links3->links->[0]->active, undef, "... second is incipient";
+    is $links3->links->[1]->id, $page1->id, "... first has page id";
+    is $links3->links->[1]->content, $page1->content, "... first has content";
+    is $links3->links->[1]->active, 1, "... first is not incipient";
 }
 
 Back_Links: {
@@ -91,14 +91,19 @@ Filesystem_Links: {
            AND from_workspace_id = ?
     ', $page3->id, $hub->current_workspace->workspace_id);
 
+    # Recreate the PageLinks
+    my $links1 = Socialtext::PageLinks->new(page => $page1, hub => $hub);
+    my $links3 = Socialtext::PageLinks->new(page => $page3, hub => $hub);
+
     is $sth->rows, 2, "Three rows were deleted";
+    is scalar @{$links3->filesystem_links}, 2, "Both filesystem links";
 
     # Page 3's forward links still work in the filesystem
     is @{$links3->links}, 2, "page 3 still has two forward link";
-    is $links3->links->[0]->id, $page1->id, "... first has page id";
-    is $links3->links->[0]->content, $page1->content, "... first has content";
-    is $links3->links->[0]->active, 1, "... first is not incipient";
-    is $links3->links->[1]->active, undef, "... second is incipient";
+    is $links3->links->[0]->active, undef, "... second is incipient";
+    is $links3->links->[1]->id, $page1->id, "... first has page id";
+    is $links3->links->[1]->content, $page1->content, "... first has content";
+    is $links3->links->[1]->active, 1, "... first is not incipient";
 
     # Page 3's back links still work in the filesystem
     is @{$links1->backlinks}, 2, "page 1 still has two backlinks";
