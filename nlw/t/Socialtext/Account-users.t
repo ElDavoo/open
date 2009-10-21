@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 23;
+use Test::Socialtext tests => 25;
 use Socialtext::Role;
 
 ###############################################################################
@@ -113,6 +113,20 @@ user_has_role_in_account: {
     ok !$account->has_user($user), 'User does not yet have Role in Account';
     $account->add_user(user => $user);
     ok $account->has_user($user), '... User has been added to Account';
+}
+
+###############################################################################
+# TEST: What Role does the User have in the Account.
+what_role_does_user_have_in_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user();
+    my $role    = Socialtext::Role->WorkspaceAdmin();
+
+    $account->add_user(user => $user, role => $role);
+    is $account->user_count(), 1, 'User was added to Account';
+
+    my $q_role = $account->role_for_user(user => $user);
+    is $q_role->name, $role->name, '... with assigned Role';
 }
 
 ###############################################################################

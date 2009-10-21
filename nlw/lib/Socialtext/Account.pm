@@ -547,6 +547,15 @@ sub remove_user {
     return $self->_uar_for_user($user);
 }
 
+sub role_for_user {
+    my $self = shift;
+    my %opts = @_;
+    my $user = $opts{user} || croak "can't role_for_user without a 'user'";
+    my $uar  = $self->_uar_for_user($user);
+    return unless $uar;
+    return $uar->role();
+}
+
 sub _uar_for_user {
     my $self = shift;
     my $user = shift;
@@ -1299,6 +1308,11 @@ C<$role> is provided, a default Role will be used instead.
 
 Removes the specified C<$role> Role that the the C<$user> has in this Account.
 If the User has no Role in the Account, this method does nothing.
+
+=item $account->role_for_user(user => $user)
+
+Returns the C<Socialtext::Role> object representing the Role that the given
+C<$user> has in this Account.
 
 =item $account->users(PARAMS)
 
