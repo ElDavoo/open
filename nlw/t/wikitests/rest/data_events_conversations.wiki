@@ -219,6 +219,47 @@ When another person makes a contribution *after* your contribution, it should sh
 | body-like   | "tk":"221" |
 | body-unlike   | "tk":"230" |
 
+Allow filtering on the event actions.
+
+| comment         | get the conversations and check action filtering | |
+| http-user-pass  | %%user_c%%                            | qwerty |
+| get              | /data/events/conversations/%%user_c%%?action=comment | application/json |        |
+| code-is         | 200                                   |        |
+| json-parse      |                                       |        |
+| json-array-size | 7                                    |        |
+
+| comment     | check that the first user's events show up |
+| body-unlike | "tk":"100" |
+| body-unlike | "tk":"101" |
+| body-unlike | "tk":"105" |
+| body-unlike | "tk":"106" |
+| body-unlike | "tk":"107" |
+| body-unlike | "tk":"108" |
+| body-unlike | "tk":"109" |
+| body-unlike | "tk":"110" |
+| body-unlike | "tk":"111" |
+| body-unlike | "tk":"112" |
+| body-unlike | "tk":"113" |
+| body-unlike | "tk":"120" |
+| body-unlike | "tk":"121" |
+| body-unlike | "tk":"130" |
+
+| comment     | check that the second user's events show up |
+| body-unlike | "tk":"200" |
+| body-like | "tk":"201" |
+| body-like | "tk":"205" |
+| body-like | "tk":"206" |
+| body-like | "tk":"207" |
+| body-like | "tk":"208" |
+| body-like | "tk":"209" |
+| body-unlike | "tk":"210" |
+| body-unlike | "tk":"211" |
+| body-like | "tk":"212" |
+| body-unlike | "tk":"213" |
+| body-unlike | "tk":"220" |
+| body-unlike | "tk":"221" |
+| body-unlike | "tk":"230" |
+
 These tests look to see if limit/count and offset work correctly.  
 They are also demonstrating that the events are sorted in reverse by time.
 
