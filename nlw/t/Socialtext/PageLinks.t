@@ -4,6 +4,8 @@ use warnings;
 
 use Test::More qw(no_plan);
 use Test::Socialtext;
+use File::Path qw(mkpath);
+use Socialtext::SQL qw(sql_execute);
 
 fixtures('db');
 use_ok 'Socialtext::PageLinks';
@@ -12,31 +14,98 @@ my $hub = create_test_hub;
 
 # SETUP:
 my $page1 = Socialtext::Page->new( hub => $hub )->create(
-    title      => 'Some page',
+    title      => 'Page 1',
     content    => 'Some content',
     date       => DateTime->new( year => 2000, month => 2, day => 1 ),
     creator    => $hub->current_user,
 );
 my $page2 = Socialtext::Page->new( hub => $hub )->create(
-    title      => 'Some other page',
-    content    => 'a link to [Some page]',
+    title      => 'Page 2',
+    content    => 'a link to [Page 1]',
+    date       => DateTime->new( year => 2000, month => 2, day => 1 ),
+    creator    => $hub->current_user,
+);
+my $page3 = Socialtext::Page->new( hub => $hub )->create(
+    title      => 'Page 3',
+    content    => 'a link to [Page 1] and [incipient]',
+    date       => DateTime->new( year => 2000, month => 2, day => 1 ),
+    creator    => $hub->current_user,
+);
+my $page4 = Socialtext::Page->new( hub => $hub )->create(
+    title      => 'Page 4',
+    content    => 'Hi there [page 3]',
     date       => DateTime->new( year => 2000, month => 2, day => 1 ),
     creator    => $hub->current_user,
 );
 
+my $links1 = Socialtext::PageLinks->new(page => $page1, hub => $hub);
+my $links2 = Socialtext::PageLinks->new(page => $page2, hub => $hub);
+my $links3 = Socialtext::PageLinks->new(page => $page3, hub => $hub);
+
 is $page1->content, "Some content\n", "setup page1 properly";
 
 Forward_links: {
-    my $links = Socialtext::PageLinks->new(page => $page2, hub => $hub)->links;
-    is @$links, 1, "one forward link";
-    is $links->[0]->id, $page1->id, "... with page id";
-    is $links->[0]->content, $page1->content, "... with page content";
+    is @{$links1->links}, 0, "page 1 has no forward link";
+
+    is @{$links2->links}, 1, "page 2 has one forward link";
+    is $links2->links->[0]->id, $page1->id, "... with page id";
+    is $links2->links->[0]->content, $page1->content, "... with content";
+
+    is @{$links3->links}, 2, "page 3 has two forward link";
+    is $links3->links->[0]->id, $page1->id, "... first has page id";
+    is $links3->links->[0]->content, $page1->content, "... first has content";
+    is $links3->links->[0]->active, 1, "... first is not incipient";
+    is $links3->links->[1]->active, undef, "... second is incipient";
 }
 
 Back_Links: {
-    my $backlinks
-        = Socialtext::PageLinks->new(page => $page1, hub => $hub)->backlinks;
-    is @$backlinks, 1, "one backlink";
-    is $backlinks->[0]->id, $page2->id, "... with page id";
-    is $backlinks->[0]->content, $page2->content, "... with page content";
+    is @{$links1->backlinks}, 2, "page 1 has two backlinks";
+    is $links1->backlinks->[0]->id, $page2->id, "... with page id";
+    is $links1->backlinks->[0]->content, $page2->content, "... with content";
+    is $links1->backlinks->[1]->id, $page3->id, "... with page id";
+    is $links1->backlinks->[1]->content, $page3->content, "... with content";
+
+    is @{$links2->backlinks}, 0, "page 2 has no backlinks";
+
+    is @{$links3->backlinks}, 1, "page 3 has one backlink";
+    is $links3->backlinks->[0]->id, $page4->id, "... with page id";
+    is $links3->backlinks->[0]->content, $page4->content, "... with content";
 }
+
+Filesystem_Links: {
+    # unmigrate a few pages to use filesystem based links 
+    my $page_links = Socialtext::PageLinks->new(page => $page1, hub => $hub);
+    my $path = $page_links->workspace_directory();
+    mkpath($path);
+    my $sth = sql_execute('
+        SELECT * FROM page_link
+         WHERE from_page_id = ?
+           AND from_workspace_id = ?
+    ', $page3->id, $hub->current_workspace->workspace_id);
+    while (my $row = $sth->fetchrow_hashref) {
+        system "touch $path/$row->{from_page_id}____$row->{to_page_id}";
+    }
+    $sth = sql_execute('
+        DELETE FROM page_link
+         WHERE from_page_id = ?
+           AND from_workspace_id = ?
+    ', $page3->id, $hub->current_workspace->workspace_id);
+
+    is $sth->rows, 2, "Three rows were deleted";
+
+    # Page 3's forward links still work in the filesystem
+    is @{$links3->links}, 2, "page 3 still has two forward link";
+    is $links3->links->[0]->id, $page1->id, "... first has page id";
+    is $links3->links->[0]->content, $page1->content, "... first has content";
+    is $links3->links->[0]->active, 1, "... first is not incipient";
+    is $links3->links->[1]->active, undef, "... second is incipient";
+
+    # Page 3's back links still work in the filesystem
+    is @{$links1->backlinks}, 2, "page 1 still has two backlinks";
+    is $links1->backlinks->[0]->id, $page2->id, "... with page id";
+    is $links1->backlinks->[0]->content, $page2->content, "... with content";
+    is $links1->backlinks->[1]->id, $page3->id, "... with page id";
+    is $links1->backlinks->[1]->content, $page3->content, "... with content";
+}
+
+
