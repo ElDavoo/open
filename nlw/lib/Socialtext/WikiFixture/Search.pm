@@ -19,7 +19,7 @@ sub set_searcher {
     my $self     = shift;
     my $searcher = shift;
 
-    my $class  = 'Socialtext::Search::' . $searcher . '::Factory';
+    my $class  = 'Socialtext::Search::' . ucfirst($searcher) . '::Factory';
     my $config = Socialtext::AppConfig->new();
     $config->set( 'search_factory_class' => $class );
     $config->write();
