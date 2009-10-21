@@ -12,11 +12,13 @@ proto.begin_node = function(node) {
             return;
         }
         case 'html': {
-            this.output += '<img widget="'+node._html.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'" src="/data/wafl/Raw%20HTML%20section.%20Edit%20in%20Wiki%20Text%20mode.?uneditable=1" title="Raw HTML section. Edit in Wiki Text mode." />';
+            var onload = "if (typeof(ss) != 'undefined' && ss.editor) { var recalc = function () { try { ss.editor.DoPositionCalculations() } catch (e) { setTimeout(recalc, 500) } }; recalc() } if (!window.image_dimension_cache) window.image_dimension_cache = {};window.image_dimension_cache['/data/wafl/Raw%20HTML%20section.%20Edit%20in%20Wiki%20Text%20mode.?uneditable=1'] = [ this.offsetWidth, this.offsetHeight ]; this.style.width = this.offsetWidth + 'px'; this.style.height = this.offsetHeight + 'px'";
+            this.output += '<img widget="'+node._html.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'" src="/data/wafl/Raw%20HTML%20section.%20Edit%20in%20Wiki%20Text%20mode.?uneditable=1" title="Raw HTML section. Edit in Wiki Text mode." onload="'+onload+'" />';
             return;
         }
-        case 'waflparagraph': case 'waflphrase': {
-            this.output += '<img widget="{'+node._wafl.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'}" src="/data/wafl/'+encodeURIComponent(node._label)+'" />';
+        case 'waflparagraph': case 'waflphrase': case 'im': {
+            var onload = "if (typeof(ss) != 'undefined' && ss.editor) { var recalc = function () { try { ss.editor.DoPositionCalculations() } catch (e) { setTimeout(recalc, 500) } }; recalc() } if (!window.image_dimension_cache) window.image_dimension_cache = {};window.image_dimension_cache['/data/wafl/"+encodeURIComponent(node._label)+"'] = [ this.offsetWidth, this.offsetHeight ]; this.style.width = this.offsetWidth + 'px'; this.style.height = this.offsetHeight + 'px'";
+            this.output += '<img widget="{'+node._wafl.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'}" src="/data/wafl/'+encodeURIComponent(node._label)+'" onload="'+onload+'" />';
             return;
         }
         case 'a': case 'wikilink': {
@@ -41,7 +43,7 @@ proto.begin_node = function(node) {
 proto.end_node = function(node) {
     var tag = node.type;
     switch (tag) {
-        case 'asis': case 'br': case 'hr': case 'html': case 'waflparagraph': case 'waflphrase': return;
+        case 'asis': case 'br': case 'hr': case 'html': case 'waflparagraph': case 'waflphrase': case 'im': return;
         case 'line': {
             this.output += '<br />';
             return;
