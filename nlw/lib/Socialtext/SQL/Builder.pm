@@ -163,7 +163,8 @@ sub sql_insert_many {
     eval { 
         my $sth = $dbh->prepare($sql);
         for (@$rows) {
-            $sth->execute(@$_);
+            $sth->execute(@$_)
+                || die "execute failed: " . $sth->errstr . "\n";
         }
     };
     if ($@) {
