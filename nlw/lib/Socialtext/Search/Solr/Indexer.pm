@@ -144,7 +144,7 @@ sub _add_page_doc {
     Socialtext::Timer->Pause('solr_page_body');
 
     my @fields = (
-        [id => $id],
+        [id => $id], # composite of workspace and page
         # it is important to call this 'w' instead of 'workspace_id', because
         # we specify it many times for inter-workspace search, and we face 
         # lengths on the URI limit.
@@ -316,7 +316,7 @@ sub _add_signal_doc {
     my $is_question = $body =~ m/\?\s*$/ ? 1 : 0;
 
     my @fields = (
-        [id => $id],
+        [id => $id], # signal ids are just numbers
         [w => 0],
         [doctype => 'signal'], 
         [signal_key => $id],
@@ -400,15 +400,15 @@ sub _add_person_doc {
 
     Socialtext::Timer->Continue('solr_person');
 
-    my $id = $user->user_id;
-    st_log->debug("Indexing person $id");
+    my $user_id = $user->user_id;
+    st_log->debug("Indexing person $user_id");
 
     my @fields = (
-        [id => $id],
+        [id => "person:$user_id"], # prefix to avoid collision with signal IDs
         [w => 0],
         [a => $user->primary_account_id],
         [doctype => 'person'], 
-        [person_key => $id],
+        [person_key => $user_id],
 
         [first_name_pf_s => $user->first_name],
         [last_name_pf_s => $user->last_name],

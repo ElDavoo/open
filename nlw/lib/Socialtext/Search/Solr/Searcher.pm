@@ -240,9 +240,10 @@ sub _make_result {
         );
     }
     if ($doctype eq 'person') {
+        (my $user_id = $key) =~ s/^person://;
         return Socialtext::Search::PersonHit->new(
             score => $score,
-            user_id => $key,
+            user_id => $user_id,
         );
     }
     elsif ($doctype eq 'page' or $doctype eq 'attachment') {
@@ -255,7 +256,7 @@ sub _make_result {
         }
 
         my $hit = {
-            snippet => 'No worky',
+            snippet => 'Unknown page',
             key     => $key,
             score   => $doc->value_for('score'),
         };
