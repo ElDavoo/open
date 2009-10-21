@@ -156,8 +156,12 @@ sub _build_filesystem_links {
     my %in_db;
     for my $l ($self->db_links) {
         next unless $l->{from_workspace_id} eq $l->{to_workspace_id};
-        $in_db{ $l->{from_page_id} } = 1 unless $l->{to_page_id} eq $page_id;
-        $in_db{ $l->{to_page_id} } = 1 unless $l->{from_page_id} eq $page_id;
+        if ($l->{to_page_id} eq $page_id) {
+            $in_db{ $l->{from_page_id} } = 1;
+        }
+        elsif ($l->{to_page_id} eq $page_id) {
+            $in_db{ $l->{to_page_id} } = 1;
+        }
     }
 
     my @links;
