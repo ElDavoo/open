@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 370;
+use Test::Socialtext tests => 366;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -2217,23 +2217,3 @@ EXPORT_ACCOUNTS: {
         'importing a valid account',
     );
 }
-
-LIST_ACCOUNTS {
-    my @accounts = sort {lc($a) cmp lc($b)} 
-        qw( Deleted FooBar Fred jebus pluggy Socialtext Unknown ), hostname();
-    expect_success(
-        sub { Socialtext::CLI->new()->list_accounts(); },
-        (join '', map { "$_\n" } @accounts),
-        'list-accounts by name'
-    );
-
-    expect_success(
-        sub { Socialtext::CLI->new( argv => ['--ids'] )->list_accounts(); },
-        qr/\A(?:\d+\n){8}\z/,
-        'list-accounts by id'
-    );
-}
-
-
-exit;
-
