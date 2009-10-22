@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 348;
+use Test::Socialtext tests => 342;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -1238,43 +1238,6 @@ SET_WORKSPACE_CONFIG: {
         },
         qr/\QCannot change name after workspace creation.\E/,
         'set-workspace-config failure trying to set name'
-    );
-}
-
-RESET_ACCOUNT_CONFIG: {
-    my $account = Socialtext::Account->new( name => 'Socialtext' );
-    $account->update(skin_name => 's2');
-    my $ws = $account->workspaces->next();
-    $ws->update( skin_name => 'reds3' );
-    my $ws_name = $ws->name;
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --account Socialtext --skin s3 )
-                ]
-            )->reset_account_skin();
-        },
-        qr/\QThe skin for account Socialtext and its workspaces has been updated.\E/,
-        'reset-account-skin success'
-    );
-
-    is( Socialtext::Account->new( name => 'Socialtext' )->skin_name, 's3', 
-        'skin for Socialtext account has changed'
-    );
-    is ( Socialtext::Workspace->new( name => $ws_name )->skin_name, '', 
-        'skin for workspace has been cleared'
-    );
-
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --account Socialtext --skin )] )
-                ->reset_account_skin();
-        },
-        qr/\Q--skin requires a skin name to be specified\E/,
-        'reset-account-config failure with missing argument skin'
     );
 }
 
