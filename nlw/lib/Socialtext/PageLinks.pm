@@ -11,6 +11,15 @@ use Socialtext::SQL::Builder qw(sql_insert_many);
 use Socialtext::SQL qw(sql_execute);
 use namespace::clean -except => 'meta';
 
+sub WorkspaceDirectory {
+    my ($class, $workspace) = @_;
+    die "workspace name required" unless $workspace;
+    return File::Spec->catdir(
+        Socialtext::Paths::plugin_directory($workspace),
+        'backlinks',
+    );
+}
+
 has 'page' => (
     is => 'ro', isa => 'Socialtext::Page',
     required => 1,
@@ -126,11 +135,7 @@ has 'workspace_directory' => (
 
 sub _build_workspace_directory {
     my $self = shift;
-    return File::Spec->catdir(
-        Socialtext::Paths::plugin_directory(
-            $self->hub->current_workspace->name
-        ), 'backlinks',
-    );
+    return $self->WorkspaceDirectory($self->hub->current_workspace->name);
 }
 
 has 'filesystem_links' => (
