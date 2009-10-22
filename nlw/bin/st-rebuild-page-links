@@ -1,0 +1,16 @@
+#!/usr/bin/perl;
+use strict;
+use warnings;
+use Socialtext::JobCreator;
+use Getopt::Long;
+
+my $name;
+GetOptions('workspace=s' => \$name);
+die "USAGE: $0 --workspace <name>\n" unless $name;
+my $ws = Socialtext::Workspace->new(name => $name)
+    || die "There is no workspace named $name!\n";
+
+Socialtext::JobCreator->insert('Socialtext::Job::RebuildPageLinks', {
+    workspace_id => $ws->workspace_id,
+});
+1;
