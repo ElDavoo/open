@@ -7,7 +7,7 @@ use Cwd;
 use File::Path qw(rmtree);
 use File::Spec;
 use File::Temp qw(tempdir);
-use Test::Socialtext tests => 32;
+use Test::Socialtext tests => 40;
 use Socialtext::CLI;
 use Socialtext::SQL qw(:exec);
 use t::Socialtext::CLITestUtils qw(expect_success expect_failure);
@@ -246,4 +246,60 @@ import_account: {
 
     $imported = Socialtext::Account->new(name => $new_name);
     ok $imported, '... import was successful';
+}
+
+###############################################################################
+# TEST: Importing Account w/Groups recreates the Group's Primary Account if it
+# doesn't exist yet.
+import_account_recreates_group_primary_account: {
+    my $primary_acct = create_test_account_bypassing_factory();
+    my $primary_name = $primary_acct->name();
+
+    my $secondary_acct = create_test_account_bypassing_factory();
+    my $secondary_name = $secondary_acct->name();
+
+    my $group = create_test_group(account => $primary_acct);
+    $secondary_acct->add_group(group => $group);
+
+    my $export_dir = tempdir();
+
+    # Export the Secondary Account
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--account', $secondary_name, '--dir', $export_dir, '--force'],
+            )->export_account();
+        },
+        qr/$secondary_name account exported to/,
+        'Exported Secondary Account',
+    );
+
+    # PURGE both the Primary+Secondary Accounts
+    Test::Socialtext::Account->delete_recklessly($primary_acct);
+    my $requery_primary = Socialtext::Account->new(name => $primary_name);
+    ok !defined $requery_primary, '... Primary Account has been purged';
+
+    Test::Socialtext::Account->delete_recklessly($secondary_acct);
+    my $requery_secondary = Socialtext::Account->new(name => $secondary_name);
+    ok !defined $requery_secondary, '... Secondary Account has been purged';
+
+    # Import the Secondary Account
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--dir', $export_dir],
+            )->import_account();
+        },
+        qr/$secondary_name account imported/,
+        '... Secondary Account re-imported',
+    );
+
+    # VERIFY: the Primary Account should have been re-created
+    $requery_primary   = Socialtext::Account->new(name => $primary_name);
+    $requery_secondary = Socialtext::Account->new(name => $secondary_name);
+    ok defined $requery_primary,   '... Primary Account re-created';
+    ok defined $requery_secondary, '... Secondary Account re-created';
+
+    # CLEANUP
+    rmtree [$export_dir], 0;
 }
