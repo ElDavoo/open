@@ -5,6 +5,7 @@ use Socialtext::TheSchwartz;
 use Socialtext::Search::AbstractFactory;
 use Carp qw/croak/;
 use Socialtext::Log qw/st_log/;
+use Socialtext::Cache ();
 use namespace::clean -except => 'meta';
 
 has '_client' => (
@@ -182,17 +183,21 @@ sub index_person {
 
     my $user_id = ref($maybe_user) ? $maybe_user->user_id : $maybe_user;
 
-    my $job_id = $self->insert(
-        'Socialtext::Job::PersonIndex' => {
-            solr => 1,
-            user_id => $user_id,
-            job => {
-                priority => $p{priority},
-                coalesce => $user_id,
-                ($p{run_after} ? (run_after => $p{run_after}) : ()),
-            },
-        }
-    );
+    my $job_id;
+    unless ($self->_cache('personindex')->get($user_id)) {
+        $job_id = $self->insert(
+            'Socialtext::Job::PersonIndex' => {
+                solr => 1,
+                user_id => $user_id,
+                job => {
+                    priority => $p{priority},
+                    coalesce => $user_id,
+                    ($p{run_after} ? (run_after => $p{run_after}) : ()),
+                },
+            }
+        );
+        $self->_cache('personindex')->set($user_id,1);
+    }
 
     if ($p{name_is_changing}) {
         eval { $self->_index_related_people($maybe_user, $user_id, %p); }
@@ -212,6 +217,7 @@ sub _index_related_people {
         $to_reindex{$user_id} = 1 if $user_id;
     }
     for my $other_user_id (keys %to_reindex) {
+        next if $self->_cache('personindex')->get($other_user_id);
         eval {
             $self->insert(
                 'Socialtext::Job::PersonIndex' => {
@@ -224,10 +230,16 @@ sub _index_related_people {
                     },
                 }
             );
+            $self->_cache('personindex')->set($other_user_id,1);
         };
     }
 }
 
+sub _cache {
+    my $self = shift;
+    my $kind = shift;
+    return Socialtext::Cache->cache("jobcreator:$kind");
+}
 
 __PACKAGE__->meta->make_immutable;
 1;
