@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 58;
+use Test::Socialtext tests => 57;
 use Test::Exception;
 use Test::Socialtext::Account;
 use Test::Socialtext::User;
@@ -59,10 +59,11 @@ backup: {
 
     my $expected = [
         {
-            driver_group_name   => $group_one->driver_group_name,
-            created_by_username => $def_user->username,
-            role_name           => 'member',
-            users               => [
+            driver_group_name    => $group_one->driver_group_name,
+            created_by_username  => $def_user->username,
+            primary_account_name => $account->name,
+            role_name            => 'member',
+            users                => [
                 {
                     role_name => $ugr_role->name,
                     username  => $user_one->username,
@@ -70,10 +71,11 @@ backup: {
             ],
         },
         {
-            driver_group_name   => $group_three->driver_group_name,
-            created_by_username => $def_user->username,
-            role_name           => 'member',
-            users               => [
+            driver_group_name    => $group_three->driver_group_name,
+            created_by_username  => $def_user->username,
+            primary_account_name => $account->name,
+            role_name            => 'member',
+            users                => [
                 {
                     username  => $user_two->username,
                     role_name => $ugr_role->name,
@@ -136,6 +138,7 @@ backup: {
 basic_restore: {
     my $data_ref = {};
     my ($test_username, $test_creator_name, $test_group_name, $test_role_name);
+    my $test_acct_name;
 
     do_backup: {
         my $account = create_test_account_bypassing_factory();
@@ -143,7 +146,8 @@ basic_restore: {
         my $group   = create_test_group(account => $account);
         add_user_to_group($user, $group);
 
-        # hold onto the User's name, so we can check for it later after import
+        # hold onto a bunch of stuff, so we can compare later after import
+        $test_acct_name    = $account->name();
         $test_username     = $user->username();
         $test_creator_name = $group->creator->username();
         $test_group_name   = $group->driver_group_name();
@@ -185,8 +189,8 @@ basic_restore: {
 
     # Test group
     my $group = $groups->next;
-    is $group->primary_account_id, $account->account_id,
-        '... with correct primary account_id';
+    is $group->primary_account->name, $test_acct_name,
+        '... was re-imported with original Primary Account';
     is $group->driver_group_name, $test_group_name,
         '... with correct driver_group_name';
 
@@ -231,46 +235,59 @@ restore_no_groups: {
 }
 
 ################################################################################
-# TEST: restore when the Group already exists
+# TEST: restore when the Group already exists; merge membership lists
+# - two Accounts, with a shared Group
+# - after exporting one Accounts, Group membership changes
+# - on import, membership should be the union of "current" + "exported"
+# FYI, we *have* to keep one of the Accounts around so that we can match up
+# the Group on import (the Group's primary account is part of its unique key).
 restore_with_existing_group: {
+    my $default_ugr_role = Socialtext::UserGroupRoleFactory->DefaultRole;
+
+    ### SETUP
+
+    # Create a test Account and Group.
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group(account => $account);
+
+    # Add a User to the Group with a non-Default Role (so we can verify that
+    # it got restored properly later).  This user is going to have their Role
+    # changed after the export (but before the import), so we can verify that
+    # the import leaves existing memberships alone.
+    my $test_user_one = create_test_user();
+    my $test_role_one = Socialtext::Role->Guest();
+    $group->add_user(
+        user => $test_user_one,
+        role => $test_role_one,
+    );
+    isnt $test_role_one->name, $default_ugr_role->name,
+        'test Role is *not* the Default UGR Role';
+
+    # Add another User to the Group with a non-Default Role.  This user is
+    # going to be removed after the export (but before the import), so we can
+    # verify that Group membership gets merged
+    my $test_user_two = create_test_user();
+    my $test_role_two = Socialtext::Role->Impersonator();
+    $group->add_user(
+        user => $test_user_two,
+        role => $test_role_two,
+    );
+    isnt $test_role_two->name, $default_ugr_role->name,
+        'test Role is *not* the Default UGR Role';
+
+    ### BACKUP THE ACCOUNT
+
     my $data_ref = {};
-    my $test_group_name;
-    my ($test_user_one, $test_role_id_one);
-    my ($test_user_two, $test_role_id_two);
-    my $default_ugr_role_id = Socialtext::UserGroupRoleFactory->DefaultRoleId;
-
     do_backup: {
-        # create a Group to test with
-        my $account  = create_test_account_bypassing_factory();
-        my $group    = create_test_group(account => $account);
-        $test_group_name = $group->driver_group_name;
+        # Create a *new* Account and add the Group to it; we need to have an
+        # Account+Group to export, and in order to trigger the "merge" this
+        # has to be done by exporting a different Account (as the original
+        # Account needs to remain; primary account id is part of the Group
+        # unique key).
+        my $acct_to_export = create_test_account_bypassing_factory();
+        $acct_to_export->add_group(group => $group);
 
-        # add two Users to the Group, neither of which has the Default Role
-        # (so we can check that the Role was set properly).  We honestly don't
-        # care what Role it is, only that its not the Default Role.
-        $test_user_one    = create_test_user();
-        $test_role_id_one =
-            Socialtext::Role->new(name => 'guest')->role_id;
-        Socialtext::UserGroupRoleFactory->Create( {
-            group_id => $group->group_id,
-            user_id  => $test_user_one->user_id,
-            role_id  => $test_role_id_one,
-        } );
-        isnt $test_role_id_one, $default_ugr_role_id,
-            'test Role is *not* the Default UGR Role';
-
-        $test_user_two    = create_test_user();
-        $test_role_id_two =
-            Socialtext::Role->new(name => 'impersonator')->role_id;
-        Socialtext::UserGroupRoleFactory->Create( {
-            group_id => $group->group_id,
-            user_id  => $test_user_two->user_id,
-            role_id  => $test_role_id_two,
-        } );
-        isnt $test_role_id_two, $default_ugr_role_id,
-            'test Role is *not* the Default UGR Role';
-
-        # make backup data
+        # Export the Account
         my $plugin = Socialtext::Pluggable::Plugin::Groups->new();
         stdout_is {
             $plugin->export_groups_for_account($account, $data_ref);
@@ -279,59 +296,49 @@ restore_with_existing_group: {
         ### CLEANUP: nuke stuff in DB before we import
         ### - don't nuke the Users, though; the Account import is responsible
         ###   for setting that up _before_ we import Group data
-        $group->delete();
-        Test::Socialtext::Account->delete_recklessly($account);
+        Test::Socialtext::Account->delete_recklessly($acct_to_export);
 
-        # SANITY CHECK: Group/Account should *NOT* be in the DB any more
-        $group = Socialtext::Group->GetGroup(group_id => $group->group_id);
-        $account
-            = Socialtext::Account->new(account_id => $account->account_id);
-
-        ok !$group,   '... group has been deleted';
-        ok !$account, '... account has been deleted';
+        # SANITY CHECK: Account should *NOT* be in the DB any more
+        my $acct_exists = Socialtext::Account->new(
+            name => $acct_to_export->name,
+        );
+        ok !$acct_exists, '... Account has been deleted';
     }
 
-    # create an Account and then re-create the Group, so we can test import
-    # *merging*
-    my $account = create_test_account_bypassing_factory();
-    my $group   = create_test_group(
-        account   => $account,
-        unique_id => $test_group_name
+    ### CHANGE THE GROUP MEMBERSHIP
+
+    # change the Role for one of the Users (so we can verify that the import
+    # doesn't over-write their membership)
+    $test_role_one = Socialtext::Role->WorkspaceAdmin();
+    $group->add_user(
+        user => $test_user_one,
+        role => $test_role_one,
     );
 
-    # add one of the Users into the Group, but with a *different* Role than
-    # they were exported with (so we can verify that it doesn't get
-    # over-written).
-    my $new_role = Socialtext::Role->new(name => 'authenticated_user');
-    isnt $new_role->role_id, $test_role_id_one,
-        'new Role is *not* the Role the User was exported with';
-    Socialtext::UserGroupRoleFactory->Create( {
-        user_id  => $test_user_one->user_id,
-        group_id => $group->group_id,
-        role_id  => $new_role->role_id,
-    } );
+    # remove one of the test Users (so we can verify that the import merges
+    # the membership lists)
+    $group->remove_user(user => $test_user_two);
+    ok !$group->has_user($test_user_two), '... test User removed from Group';
 
-    # import the data that we just exported
-    my $plugin = Socialtext::Pluggable::Plugin::Groups->new();
+    ### RE-IMPORT THE ACCOUNT
+
+    my $imported_acct = create_test_account_bypassing_factory();
+    my $plugin        = Socialtext::Pluggable::Plugin::Groups->new();
     stdout_is {
-        $plugin->import_groups_for_account($account, $data_ref);
-    } "Importing all groups for account '".$account->name."'...\n";
+        $plugin->import_groups_for_account($imported_acct, $data_ref);
+    } "Importing all groups for account '".$imported_acct->name."'...\n";
+
+    ### CHECK THE RESULTS
 
     # CHECK: the User we'd added to the Group already has his Role untouched
-    my $ugr = Socialtext::UserGroupRoleFactory->Get(
-        user_id  => $test_user_one->user_id,
-        group_id => $group->group_id,
-    );
-    is $ugr->role_id, $new_role->role_id,
+    is $group->role_for_user(user => $test_user_one)->name,
+        $test_role_one->name,
         '... existing User had their UGR left as-is';
 
     # CHECK: the other User was added to the Group, with his original Role
-    $ugr = Socialtext::UserGroupRoleFactory->Get(
-        user_id  => $test_user_two->user_id,
-        group_id => $group->group_id,
-    );
-    is $ugr->role_id, $test_role_id_two,
-        '... missing User was added with their exported Role';
+    is $group->role_for_user(user => $test_user_two)->name,
+        $test_role_two->name,
+        '... missing User was added with the exported Role';
 }
 
 ###############################################################################

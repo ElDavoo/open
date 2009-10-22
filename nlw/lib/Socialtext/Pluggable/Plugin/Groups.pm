@@ -36,8 +36,9 @@ sub export_groups_for_account {
     while (my $group = $groups->next()) {
         my $role = $acct->role_for_group(group => $group);
         my $group_data = {
-            driver_group_name   => $group->driver_group_name,
-            created_by_username => $group->creator->username,
+            primary_account_name => $group->primary_account->name,
+            driver_group_name    => $group->driver_group_name,
+            created_by_username  => $group->creator->username,
             ($role ? (role_name=>$role->name) : ()),
         };
         $group_data->{users} = $self->_get_ugrs_for_export($group);
@@ -164,7 +165,7 @@ sub import_groups_for_workspace {
 
 sub _import_group {
     my $group_info = shift;
-    my $acct       = shift;
+    my $account    = shift;
 
     # Find the User who created the Group, falling back on the SystemUser
     # if they can't be found.  This matches the behaviour of Workspace
@@ -174,15 +175,32 @@ sub _import_group {
     );
     $creator ||= Socialtext::User->SystemUser;
 
+    # If the Group was exported along with the name of its Primary Account, it
+    # needs to be re-imported back into that Account.
+    #
+    # NOTE: earlier versions of Account exports did *not* include the Group's
+    # Primary Account, and for those cases we're going to import the Group
+    # into the Account that we were handed as a param.
+    if ($group_info->{primary_account_name}) {
+        # Group was exported with a Primary Account; go find/create it.
+        $account = Socialtext::Account->new(
+            name => $group_info->{primary_account_name},
+        );
+        unless ($account) {
+            $account = Socialtext::Account->create(
+                name => $group_info->{primary_account_name},
+            );
+        }
+    }
+
+    # Get/create the Group.
     my $group_params = {
         driver_group_name  => $group_info->{driver_group_name},
         created_by_user_id => $creator->user_id,
-        primary_account_id => $acct->account_id,
+        primary_account_id => $account->account_id,
     };
-    my $group = Socialtext::Group->GetGroup($group_params);
-
-    # Create it anew if it doesn't exist:
-    $group ||= Socialtext::Group->Create($group_params);
+    my $group = Socialtext::Group->GetGroup($group_params)
+             || Socialtext::Group->Create($group_params);
 
     return $group;
 }
