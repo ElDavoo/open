@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 356;
+use Test::Socialtext tests => 354;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -1241,19 +1241,6 @@ SET_WORKSPACE_CONFIG: {
     );
 }
 
-SHOW_ACCOUNT_CONFIG: {
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [
-                    qw/ --account Socialtext /
-                ]
-            )->show_account_config();
-        },
-        qr/modules_installed/,
-        'show-account-config success'
-    );
-}
 SET_ACCOUNT_CONFIG: {
     my $account = Socialtext::Account->new(name => 'Socialtext');
     my $ws      = $account->workspaces->next();

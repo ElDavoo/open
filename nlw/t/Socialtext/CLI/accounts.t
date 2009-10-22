@@ -7,7 +7,7 @@ use Cwd;
 use File::Path qw(rmtree);
 use File::Spec;
 use File::Temp qw(tempdir);
-use Test::Socialtext tests => 16;
+use Test::Socialtext tests => 18;
 use Socialtext::CLI;
 use Socialtext::SQL qw(:exec);
 use t::Socialtext::CLITestUtils qw(expect_success expect_failure);
@@ -47,6 +47,22 @@ list_accounts_by_id: {
         'list-accounts by id',
     );
 
+}
+
+###############################################################################
+# TEST: Show Account config
+show_account_config: {
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [
+                    qw/ --account Socialtext /
+                ]
+            )->show_account_config();
+        },
+        qr/modules_installed/,
+        'show-account-config success',
+    );
 }
 
 ###############################################################################
