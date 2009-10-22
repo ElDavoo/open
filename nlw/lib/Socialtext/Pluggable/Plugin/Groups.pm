@@ -30,16 +30,15 @@ sub export_groups_for_account {
     my $data_ref = shift;
     my @groups   = ();
 
-    print loc("Exporting all groups for account '[_1]'...", $acct->name ), "\n";
+    print loc("Exporting all groups for account '[_1]'...", $acct->name), "\n";
 
     my $groups = $acct->groups();
-
-    while ( my $group = $groups->next() ) {
+    while (my $group = $groups->next()) {
         my $group_data = {
-           driver_group_name => $group->driver_group_name,
-           created_by_username =>  $group->creator->username,
+            driver_group_name   => $group->driver_group_name,
+            created_by_username => $group->creator->username,
         };
-        $group_data->{users} = $self->_get_ugrs_for_export( $group );
+        $group_data->{users} = $self->_get_ugrs_for_export($group);
         push @groups, $group_data;
     }
 
@@ -54,13 +53,13 @@ sub import_groups_for_account {
 
     return unless @$groups;
 
-    print loc("Importing all groups for account '[_1]'...", $acct->name ), "\n";
+    print loc("Importing all groups for account '[_1]'...", $acct->name), "\n";
 
-    for my $group_info ( @$groups ) {
+    for my $group_info (@$groups) {
         my $group = _import_group($group_info, $acct);
 
         # Add all of the Users from the export into the Group
-        $self->_set_ugrs_on_import( $group, $group_info->{users} );
+        $self->_set_ugrs_on_import($group, $group_info->{users});
     }
 }
 
@@ -106,20 +105,20 @@ sub export_groups_for_workspace {
     my $data_ref = shift;
     my @groups   = ();
 
-    print loc("Exporting all groups for workspace '[_1]'...", $ws->name ), "\n";
+    print loc("Exporting all groups for workspace '[_1]'...", $ws->name), "\n";
 
     my $gwrs = Socialtext::GroupWorkspaceRoleFactory->ByWorkspaceId(
         $ws->workspace_id,
     );
 
-    while ( my $gwr = $gwrs->next() ) {
-        my $group = $gwr->group;
+    while (my $gwr = $gwrs->next()) {
+        my $group      = $gwr->group;
         my $group_data = {
             driver_group_name   => $group->driver_group_name,
             created_by_username => $group->creator->username,
             role_name           => $gwr->role->name,
         };
-        $group_data->{users} = $self->_get_ugrs_for_export( $group );
+        $group_data->{users} = $self->_get_ugrs_for_export($group);
         push @groups, $group_data;
     }
 
@@ -134,13 +133,13 @@ sub import_groups_for_workspace {
 
     return unless @$groups;
 
-    print loc("Importing all groups for workspace '[_1]'...", $ws->name ), "\n";
+    print loc("Importing all groups for workspace '[_1]'...", $ws->name), "\n";
 
-    for my $group_info ( @$groups ) {
+    for my $group_info (@$groups) {
         my $group = _import_group($group_info, $ws->account);
 
         # Add all of the Users from the export into the Group
-        $self->_set_ugrs_on_import( $group, $group_info->{users} );
+        $self->_set_ugrs_on_import($group, $group_info->{users});
 
         # Add the Group into the Workspace, using the default Role if we're
         # unable to find the Role that it used to have.
@@ -151,7 +150,7 @@ sub import_groups_for_workspace {
             warn loc("Missing/unknown Role '[_1]'; using default Role", $group_info->{role_name}) . "\n";
             $group_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
         }
-        $ws->add_group( group => $group, role => $group_role );
+        $ws->add_group(group => $group, role => $group_role);
     }
 }
 
@@ -163,7 +162,8 @@ sub _import_group {
     # if they can't be found.  This matches the behaviour of Workspace
     # imports (where we assign the WS to the SystemUser).
     my $creator = Socialtext::User->new(
-        username => $group_info->{created_by_username} );
+        username => $group_info->{created_by_username}
+    );
     $creator ||= Socialtext::User->SystemUser;
 
     my $group_params = {
@@ -172,6 +172,7 @@ sub _import_group {
         primary_account_id => $acct->account_id,
     };
     my $group = Socialtext::Group->GetGroup($group_params);
+
     # Create it anew if it doesn't exist:
     $group ||= Socialtext::Group->Create($group_params);
 
@@ -183,9 +184,9 @@ sub _get_ugrs_for_export {
     my $group = shift;
     my @users = ();
 
-    my $ugrs = Socialtext::UserGroupRoleFactory->ByGroupId( $group->group_id );
+    my $ugrs = Socialtext::UserGroupRoleFactory->ByGroupId($group->group_id);
 
-    while ( my $ugr = $ugrs->next() ) {
+    while (my $ugr = $ugrs->next()) {
         my $user = {
             username  => $ugr->user->username,
             role_name => $ugr->role->name,
@@ -201,12 +202,12 @@ sub _set_ugrs_on_import {
     my $group = shift;
     my $data  = shift;
 
-    for my $ugr_data ( @$data ) {
+    for my $ugr_data (@$data) {
         my $role = Socialtext::Role->new(name => $ugr_data->{role_name})
             || Socialtext::UserGroupRoleFactory->DefaultRole();
 
         # Get the User that we're creating the UGR for
-        my $user = Socialtext::User->new( username => $ugr_data->{username} );
+        my $user = Socialtext::User->new(username => $ugr_data->{username});
         next unless $user;
 
         # Don't over-write existing UGRs; if the User already has a Role in
@@ -214,7 +215,7 @@ sub _set_ugrs_on_import {
         next if ($group->has_user($user));
 
         # Create a new UGR for the User in this Group.
-        $group->add_user( user => $user, role => $role );
+        $group->add_user(user => $user, role => $role);
     }
 }
 
