@@ -1,4 +1,5 @@
 package Socialtext::PageLinks;
+# @COPYRIGHT@
 use Moose;
 use Socialtext::Paths;
 use File::Spec;
