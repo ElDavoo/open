@@ -101,6 +101,7 @@ sub import_workspace {
         $self->_fixup_page_symlinks();
         $self->_set_permissions();
         $self->_populate_db_metadata();
+        $self->_rebuild_page_links();
 
         for my $u (@users) {
             my ($username, $rolename, $indirect) = @{$u};
@@ -377,6 +378,13 @@ sub _populate_db_metadata {
         workspace_name => $self->{new_name} );
     $populator->populate( recreate => 1 );
     Socialtext::Timer->Pause('populate_db');
+}
+
+sub _rebuild_page_links {
+    my $self = shift;
+    Socialtext::JobCreator->insert('Socialtext::Job::RebuildPageLinks', {
+        workspace_id => $self->{workspace}->workspace_id,
+    });
 }
 
 sub _permissions_file { return $_[0]->{old_name} . '-permissions.yaml' }
