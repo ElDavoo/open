@@ -21,7 +21,7 @@ sub WorkspaceDirectory {
 }
 
 has 'page' => (
-    is => 'ro', isa => 'Socialtext::Page',
+    is => 'ro', isa => 'Socialtext::Page::Base',
     required => 1,
 );
 
