@@ -35,3 +35,26 @@ sub do_work {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Job::RebuildPageLinks - Rebuild a workspace's page links
+
+=head1 SYNOPSIS
+
+    use Socialtext::JobCreator;
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::RebuildPageLinks',
+        {
+            workspace_id => 1,
+        },
+    );
+
+=head1 DESCRIPTION
+
+Schedule a job to be run by TheCeq which will rebuild all of a workspace's
+links (including backlinks). The legacy filesystem based links are unlinked
+after all links have been updated or added to the database.
+
+=cut
