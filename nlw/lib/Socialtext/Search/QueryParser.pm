@@ -59,7 +59,7 @@ sub munge_raw_query_string {
                 substr($query, $f_start, $f_length) = $solr_field;
             }
         }
-        elsif ($maybe_field =~ m/_pf_[isth]$/) {
+        elsif ($maybe_field =~ m/_pfh?_[a-z]$/) { # e.g. _pf_i _pfh_i
             # Leave it alone, they probably know what they are doing
         }
         else {
