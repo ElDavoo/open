@@ -1,8 +1,9 @@
 #!/usr/bin/perl
+# @COPYRIGHT@
 use strict;
 use warnings;
 
-use Test::More qw(no_plan);
+use Test::More tests => 32;
 use Test::Socialtext;
 use File::Path qw(mkpath);
 use Socialtext::SQL qw(sql_execute);
