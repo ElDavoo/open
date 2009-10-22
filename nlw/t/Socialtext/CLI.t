@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 366;
+use Test::Socialtext tests => 364;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -2166,15 +2166,6 @@ PLUGINS: {
 EXPORT_ACCOUNTS: {
     my $dir = Cwd::abs_path( File::Temp::tempdir( CLEANUP => 1 ) );
     local $ENV{ST_EXPORT_DIR} = $dir;
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [ qw( --account no-existy ) ]
-            )->export_account();
-        },
-        qr/There is no account named "no-existy"/,
-        'exporting an invalid account',
-    );
     expect_success(
         sub {
             Socialtext::CLI->new( argv => [qw( --name jebus )] )

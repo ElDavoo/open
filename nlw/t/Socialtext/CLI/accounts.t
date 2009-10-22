@@ -3,10 +3,10 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 4;
+use Test::Socialtext tests => 6;
 use Socialtext::CLI;
 use Socialtext::SQL qw(:exec);
-use t::Socialtext::CLITestUtils qw(expect_success);
+use t::Socialtext::CLITestUtils qw(expect_success expect_failure);
 
 ###############################################################################
 # Fixtures: db
@@ -43,4 +43,19 @@ list_accounts_by_id: {
         'list-accounts by id',
     );
 
+}
+
+###############################################################################
+# TEST: Exporting a non-existent Account
+export_non_existent_account: {
+    my $bogus_account = 'no-existy';
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--account', $bogus_account],
+            )->export_account();
+        },
+        qr/There is no account named "$bogus_account"/,
+        'Exporting invalid account fails',
+    );
 }
