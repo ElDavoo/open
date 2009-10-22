@@ -7,7 +7,7 @@ use Cwd;
 use File::Path qw(rmtree);
 use File::Spec;
 use File::Temp qw(tempdir);
-use Test::Socialtext tests => 18;
+use Test::Socialtext tests => 24;
 use Socialtext::CLI;
 use Socialtext::SQL qw(:exec);
 use t::Socialtext::CLITestUtils qw(expect_success expect_failure);
@@ -62,6 +62,46 @@ show_account_config: {
         },
         qr/modules_installed/,
         'show-account-config success',
+    );
+}
+
+###############################################################################
+# TEST: Set Account config
+set_account_config: {
+    my $account   = create_test_account_bypassing_factory();
+    my $acct_name = $account->name();
+    $account->update(skin_name => 's2');
+
+    my $workspace = create_test_workspace(account => $account);
+    my $ws_name   = $workspace->name();
+    $workspace->update(skin_name => 's2');
+
+    # Change the skin name for the Account
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [ '--account', $acct_name, 'skin_name', 's3' ],
+            )->set_account_config();
+        },
+        qr/\QThe account config for $acct_name has been updated.\E/,
+        'set-account-config success',
+    );
+
+    my $requery_acct = Socialtext::Account->new(name => $acct_name);
+    my $requery_ws   = Socialtext::Workspace->new(name => $ws_name);
+    is $requery_acct->skin_name, 's3', '... Account skin_name updated';
+    is $requery_ws->skin_name, 's2',
+        '... set-account-config does not change Workspace skins';
+
+    # Change skin to invalid skin should fail
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => [ '--account', $acct_name, 'skin_name', 'ENOSUCHSKIN' ],
+            )->set_account_config();
+        },
+        qr/\QThe skin you specified, ENOSUCHSKIN, does not exist.\E/,
+        '... set-account-config failure with invalid skin',
     );
 }
 

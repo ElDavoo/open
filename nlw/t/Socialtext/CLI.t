@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 354;
+use Test::Socialtext tests => 348;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -1239,42 +1239,6 @@ SET_WORKSPACE_CONFIG: {
         qr/\QCannot change name after workspace creation.\E/,
         'set-workspace-config failure trying to set name'
     );
-}
-
-SET_ACCOUNT_CONFIG: {
-    my $account = Socialtext::Account->new(name => 'Socialtext');
-    my $ws      = $account->workspaces->next();
-    $ws->update(skin_name => 's2');
-    my $ws_name = $ws->name;
-    my $ws_skin = $ws->skin_name;
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --account Socialtext skin_name s3 )
-                ]
-            )->set_account_config();
-        },
-        qr/\QThe account config for Socialtext has been updated.\E/,
-        'set-account-config success'
-    );
-
-    is( Socialtext::Account->new( name => 'Socialtext')->skin_name, 's3',
-        'skin for Socialtext account has changed' );
-    is( Socialtext::Workspace->new(name => $ws_name)->skin_name,
-        $ws_skin,
-        'set-account-config does not change workspace skins' );
-
-     expect_failure(
-         sub {
-             Socialtext::CLI->new(
-                 argv => [qw( --account Socialtext skin_name ENOSUCHSKIN )] )
-                 ->set_account_config();
-         },
-         qr/\QThe skin you specified, ENOSUCHSKIN, does not exist.\E/,
-         'set-account-config failure with invalid skin'
-     );
 }
 
 RESET_ACCOUNT_CONFIG: {
