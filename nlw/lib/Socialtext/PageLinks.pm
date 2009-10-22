@@ -11,6 +11,22 @@ use Socialtext::SQL::Builder qw(sql_insert_many);
 use Socialtext::SQL qw(sql_execute);
 use namespace::clean -except => 'meta';
 
+=head1 NAME
+
+Socialtext::PageLinks
+
+=head1 SYNOPSIS
+
+my $page_links = Socialtext::PageLinks->new(page => $page);
+my @forward_links = $page_links->links;
+my @backlinks = $page_links->backlinks;
+
+=head1 DESCRIPTION
+
+Represents all of a page's links and backlinks
+
+=cut
+
 sub WorkspaceDirectory {
     my ($class, $workspace) = @_;
     die "workspace name required" unless $workspace;
