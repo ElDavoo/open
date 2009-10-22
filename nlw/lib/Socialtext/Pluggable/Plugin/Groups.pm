@@ -34,9 +34,11 @@ sub export_groups_for_account {
 
     my $groups = $acct->groups();
     while (my $group = $groups->next()) {
+        my $role = $acct->role_for_group(group => $group);
         my $group_data = {
             driver_group_name   => $group->driver_group_name,
             created_by_username => $group->creator->username,
+            ($role ? (role_name=>$role->name) : ()),
         };
         $group_data->{users} = $self->_get_ugrs_for_export($group);
         push @groups, $group_data;
@@ -57,6 +59,12 @@ sub import_groups_for_account {
 
     for my $group_info (@$groups) {
         my $group = _import_group($group_info, $acct);
+
+        # Give the Group an explicit Role in the Account
+        if ($group_info->{role_name}) {
+            my $role = Socialtext::Role->new(name => $group_info->{role_name});
+            $acct->add_group(group => $group, role => $role);
+        }
 
         # Add all of the Users from the export into the Group
         $self->_set_ugrs_on_import($group, $group_info->{users});

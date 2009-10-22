@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 57;
+use Test::Socialtext tests => 58;
 use Test::Exception;
 use Test::Socialtext::Account;
 use Test::Socialtext::User;
@@ -61,6 +61,7 @@ backup: {
         {
             'driver_group_name'   => $group_one->driver_group_name,
             'created_by_username' => $def_user->username,
+            'role_name'           => 'member',
             'users'               => [
                 {
                     'role_name' => $ugr_role->name,
@@ -71,6 +72,7 @@ backup: {
         {
             driver_group_name   => $group_three->driver_group_name,
             created_by_username => $def_user->username,
+            role_name           => 'member',
             users               => [
                 {
                     username  => $user_two->username,
@@ -187,6 +189,9 @@ basic_restore: {
         '... with correct primary account_id';
     is $group->driver_group_name, $test_group_name,
         '... with correct driver_group_name';
+
+    is $account->role_for_group(group => $group)->name, 'member',
+        '... with correct Role in the Account';
 
     # make sure that the creator exists
     my $creator = $group->creator;
