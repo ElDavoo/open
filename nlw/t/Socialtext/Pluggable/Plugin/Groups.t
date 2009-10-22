@@ -59,13 +59,13 @@ backup: {
 
     my $expected = [
         {
-            'driver_group_name'   => $group_one->driver_group_name,
-            'created_by_username' => $def_user->username,
-            'role_name'           => 'member',
-            'users'               => [
+            driver_group_name   => $group_one->driver_group_name,
+            created_by_username => $def_user->username,
+            role_name           => 'member',
+            users               => [
                 {
-                    'role_name' => $ugr_role->name,
-                    'username'  => $user_one->username,
+                    role_name => $ugr_role->name,
+                    username  => $user_one->username,
                 }
             ],
         },
