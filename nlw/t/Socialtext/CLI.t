@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 364;
+use Test::Socialtext tests => 356;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -2160,51 +2160,5 @@ PLUGINS: {
         },
         qr/The test plugin can not be set at the workspace scope/,
         'disable invalid plugin',
-    );
-}
-
-EXPORT_ACCOUNTS: {
-    my $dir = Cwd::abs_path( File::Temp::tempdir( CLEANUP => 1 ) );
-    local $ENV{ST_EXPORT_DIR} = $dir;
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv => [qw( --name jebus )] )
-                ->create_account();
-        },
-        qr/\QA new account named "jebus" was created.\E/,
-        'create-account success message'
-    );
-
-    # Now set up some export/import test data
-    my $jebus = Socialtext::Account->new(name => 'jebus');
-    my $export_user = Socialtext::User->create(
-        username      => "export",
-        email_address => "export\@example.com",
-        password      => 'password',
-        primary_account_id => $jebus->account_id,
-    );
-    my $export_dir = "$dir/jebus.id-" . $jebus->account_id . ".export";
-    rmtree $export_dir;
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [ qw( --account jebus ) ]
-            )->export_account();
-        },
-        qr/jebus account exported to /,
-        'exporting a valid account',
-    );
-
-    ok -d $export_dir, "$export_dir exists";
-    ok -e "$export_dir/account.yaml", "accounts yaml exists";
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [ '--dir', $export_dir, qw(--name Fred --overwrite --noindex), ]
-            )->import_account();
-        },
-        qr/Fred account imported\./,
-        'importing a valid account',
     );
 }
