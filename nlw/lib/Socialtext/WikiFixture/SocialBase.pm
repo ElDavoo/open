@@ -1864,5 +1864,30 @@ sub add_profile_field {
     diag "Added profile field '$field_name' to $account_name";
 }
 
+sub show_profile_field {
+    shift->_set_profile_field_hidden(0, @_);
+}
+
+sub hide_profile_field {
+    shift->_set_profile_field_hidden(1, @_);
+}
+
+sub _set_profile_field_hidden {
+    my $self = shift;
+    my $hidden = shift;
+    my $account_name = shift;
+    my $field_name = shift;
+
+    my $account = Socialtext::Account->new(name => $account_name);
+    my $fields = Socialtext::People::Fields->new(
+        account_id => $account->account_id,
+    );
+    my $field = $fields->by_name($field_name);
+    die "Couldn't find field $field_name" unless $field;
+
+    $field->is_hidden($hidden);
+    $field->save;
+}
+
 
 1;
