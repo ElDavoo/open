@@ -18,15 +18,23 @@ sub do_work {
 
     return $self->completed unless $ws->real;
 
-    $self->hub->log->info("Rebuilding page links for workspace: " . $ws->name);
+    my $ws_name = $ws->name;
+    $self->hub->log->info("Rebuilding page links for workspace: $ws_name");
 
     my @pages = $self->hub->pages->all;
     eval {
         for my $page (@pages) {
-            my $links = Socialtext::PageLinks->new(hub => $hub, page => $page);
-            $links->update;
+            # we will be parsing some really crufty old pages, so be careful
+            # and don't worry too much if some of them fail.
+            eval {
+                my $links = Socialtext::PageLinks->new(hub => $hub, page => $page);
+                $links->update;
+            };
+            if ($@) {
+                $self->hub->log->error("Error extracting links from $ws_name/$page");
+            }
         }
-        my $dir = Socialtext::PageLinks->WorkspaceDirectory($ws->name);
+        my $dir = Socialtext::PageLinks->WorkspaceDirectory($ws_name);
         if ($dir and -d $dir) {
             for my $file (glob("$dir/*"), "$dir/.initialized") {
                 next unless -f $file;
