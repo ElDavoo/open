@@ -13,6 +13,7 @@ use Test::Socialtext::Account;
 use t::Socialtext::CLITestUtils qw(expect_success);
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
+use Data::Dumper;
 
 ###############################################################################
 # Fixtures: db
@@ -26,6 +27,7 @@ my $WorkspaceAdmin = Socialtext::Role->WorkspaceAdmin();
 
 ###############################################################################
 # Helper function to export, flush, and re-import an Account.
+our $DumpRoles = 0;
 sub export_and_reimport_account {
     my %args            = @_;
     my $acct            = $args{account};
@@ -117,6 +119,15 @@ sub export_and_reimport_account {
     eq_or_diff \@imported_uwrs, \@uwrs, '... UserWorkspaceRoles preserved';
     eq_or_diff \@imported_gwrs, \@gwrs, '... GroupWorkspaceRoles preserved';
     eq_or_diff \@imported_ugrs, \@ugrs, '... UserGroupRoles preserved';
+
+    # (debugging) Dump the Roles
+    if ($DumpRoles) {
+        diag "GroupAccountRoles: "   . Dumper(\@gars);
+        diag "UserAccountRoles: "    . Dumper(\@uars);
+        diag "UserWorkspaceRoles: "  . Dumper(\@uwrs);
+        diag "GroupWorkspaceRoles: " . Dumper(\@gwrs);
+        diag "UserGroupRoles: "      . Dumper(\@ugrs);
+    }
 
     # CLEANUP: remove our temp directory
     rmtree([$export_base], 0);
