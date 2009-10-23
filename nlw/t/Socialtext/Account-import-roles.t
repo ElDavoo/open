@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 110;
+use Test::Socialtext tests => 120;
 use Test::Differences;
 use Socialtext::CLI;
 use Test::Socialtext::User;
@@ -426,6 +426,38 @@ account_import_preserves_doubly_indirect_role: {
     );
 }
 
+###############################################################################
+# TEST: preserve multiple indirect UARs
+#
+# User can have multiple *indirect* Roles in an Account through various means.
+account_import_preserves_multiple_indirect_uars: {
+    ok 1, 'TEST: Preserves multiple indirect UARs';
+    my $account   = create_test_account_bypassing_factory();
+    my $ws_one    = create_test_workspace(account => $account);
+    my $ws_two    = create_test_workspace(account => $account);
+    my $group_one = create_test_group();
+    my $group_two = create_test_group();
+    my $user      = create_test_user();
+
+    # Indirect Role: User->Group->Account
+    $account->add_group(group => $group_one);
+    $group_one->add_user(user => $user);
+
+    # Indirect Role: User->Workspace->Account
+    $ws_one->add_user(user => $user);
+
+    # Indirect Role: User->Group->Workspace->Account
+    $ws_two->add_group(group => $group_two);
+    $group_two->add_user(user => $user);
+
+    # Export and re-import the Account.
+    export_and_reimport_account(
+        account    => $account,
+        workspaces => [$ws_one, $ws_two],
+        groups     => [$group_one, $group_two],
+        users      => [$user],
+    );
+}
 
 
 
