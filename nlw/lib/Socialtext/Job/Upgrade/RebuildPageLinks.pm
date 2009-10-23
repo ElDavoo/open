@@ -16,7 +16,6 @@ sub do_work {
     $self->hub->log->info("Rebuilding page links for workspace: " . $ws->name);
 
     my @pages = $self->hub->pages->all;
-    return $self->completed unless @pages;
     eval {
         for my $page (@pages) {
             my $links = Socialtext::PageLinks->new(hub => $hub, page => $page);
@@ -24,9 +23,14 @@ sub do_work {
         }
         my $dir = Socialtext::PageLinks->WorkspaceDirectory($ws->name);
         if ($dir and -d $dir) {
-            unlink glob("$dir/*") or die "Can't rm * in $dir/: $!";
-            unlink "$dir/.initialized" or die "Can't rm $dir/.initialized: $!";
-            rmdir $dir or die "Can't rmdir $dir: $!";
+            for my $file (glob("$dir/*"), "$dir/.initialized") {
+                next unless -f $file;
+                unlink $file
+                    or $self->hub->log->error(
+                        "Could not unlink $file during backlink cleanup: $!");
+            }
+            rmdir $dir or $self->hub->log->error(
+                        "Could not rmdir $dir during backlink cleanup: $!");
         }
     };
     $self->hub->log->error($@) if $@;
