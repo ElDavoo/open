@@ -216,8 +216,11 @@ sub _build_db_links {
     my $page_id      = $self->page->id;
     my $sth = sql_execute('
         SELECT * FROM page_link
-         WHERE ( from_workspace_id = ? AND from_page_id = ? )
-            OR ( to_workspace_id = ? AND to_page_id = ? )
+         WHERE (
+                 ( from_workspace_id = ? AND from_page_id = ? )
+              OR ( to_workspace_id = ? AND to_page_id = ? )
+            )
+           AND to_workspace_id = from_workspace_id -- disable interworkspace
          ORDER BY from_workspace_id, to_workspace_id, from_page_id, to_page_id
     ', ($workspace_id, $page_id) x 2 );
     my $rows = $sth->fetchall_arrayref({});

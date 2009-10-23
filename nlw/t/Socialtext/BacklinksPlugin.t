@@ -129,6 +129,7 @@ sub check_backlinks {
         SELECT * FROM page_link
          WHERE from_workspace_id = ?
            AND from_page_id = ?
+           AND from_workspace_id = to_workspace_id -- no interworkspace links
     ', $hub->current_workspace->workspace_id, $page->id);
     is($sth->rows, $count, "expect $count links in the files");
 }
@@ -141,8 +142,9 @@ sub check_frontlinks {
 
     my @pages = sort { $a->title cmp $b->title }
         $backlinks->all_frontlink_pages_for_page($page);
+    my $actual = [map {$_->title } @pages];
     is_deeply(
-        [map {$_->title } @pages], $titles,
+        $actual, $titles,
         $page->title . " has the right front links"
     );
 
