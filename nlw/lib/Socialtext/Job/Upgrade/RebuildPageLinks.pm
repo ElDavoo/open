@@ -6,6 +6,11 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 
+# Re-parsing all the content for each page can take a long time, so
+# we should not allow many of these jobs to run at the same time so that we
+# do not stall the ceq queue
+sub is_long_running { 1 }
+
 sub do_work {
     my $self = shift;
     my $ws   = $self->workspace or return;
