@@ -344,3 +344,5 @@ t/rest_files/sleeper2.pl
 t/wikitests/socialcalc/recursion.wiki
 t/wikitests/test-data/socialcalc/recurse-1-2.ssheet
 t/wikitests/test-data/socialcalc/recurse-2-1.ssheet
+t/wikitests/test-data/socialcalc/recurse-3-4.ssheet
+t/wikitests/test-data/socialcalc/recurse-4-3.ssheet
