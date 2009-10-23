@@ -1,4 +1,4 @@
-#!/usr/bin/perl;
+#!/usr/bin/perl
 # @COPYRIGHT@
 use strict;
 use warnings;
