@@ -1317,8 +1317,8 @@ sub has_user {
         my $self = shift;
         my %p = validate( @_, $spec );
         return scalar Socialtext::Workspace::Roles->RolesForUserInWorkspace(
-            workspace => $self,
             %p,
+            workspace => $self,
         );
     }
 
@@ -1358,8 +1358,8 @@ sub has_user {
         my $self = shift;
         my %p = validate( @_, $spec );
         return Socialtext::Workspace::Roles->UserHasRoleInWorkspace(
-            workspace => $self,
             %p,
+            workspace => $self,
         );
     }
 }
@@ -1367,15 +1367,19 @@ sub has_user {
 sub user_count {
     my $self = shift;
     my %p = (@_==1) ? %{+shift} : @_;
-    $p{workspace_id} = $self->workspace_id;
-    return Socialtext::Workspace::Roles->CountUsersByWorkspaceId(%p);
+    return Socialtext::Workspace::Roles->CountUsersByWorkspaceId(
+        %p,
+        workspace_id => $self->workspace_id,
+    );
 }
 
 sub users {
     my $self = shift;
     my %p = (@_==1) ? %{+shift} : @_;
-    $p{workspace_id} = $self->workspace_id;
-    return Socialtext::Workspace::Roles->UsersByWorkspaceId(%p);
+    return Socialtext::Workspace::Roles->UsersByWorkspaceId(
+        %p,
+        workspace_id => $self->workspace_id,
+    );
 }
 
 sub user_ids {
@@ -1383,9 +1387,9 @@ sub user_ids {
     my %args = ref($_[0]) eq 'HASH' ? %{$_[0]} : @_;
     Socialtext::Timer->Continue('acct_user_ids');
     my $cursor = Socialtext::User->ByWorkspaceId(
-        workspace_id => $self->workspace_id,
-        ids_only   => 1,
         %args,
+        workspace_id => $self->workspace_id,
+        ids_only     => 1,
     );
     my @user_ids = $cursor->all;
     Socialtext::Timer->Pause('acct_user_ids');
@@ -1395,15 +1399,19 @@ sub user_ids {
 sub groups_with_roles {
     my $self = shift;
     my %p = (@_==1) ? %{+shift} : @_;
-    $p{workspace_id} = $self->workspace_id;
-    return Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(%p);
+    return Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
+        %p,
+        workspace_id => $self->workspace_id,
+    );
 }
 
 sub users_with_roles {
     my $self = shift;
     my %p = (@_==1) ? %{+shift} : @_;
-    $p{workspace_id} = $self->workspace_id;
-    return Socialtext::User->ByWorkspaceIdWithRoles(%p);
+    return Socialtext::User->ByWorkspaceIdWithRoles(
+        %p,
+        workspace_id => $self->workspace_id,
+    );
 }
 
 sub add_group {
