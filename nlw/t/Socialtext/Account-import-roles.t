@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 120;
+use Test::Socialtext tests => 130;
 use Test::Differences;
 use Socialtext::CLI;
 use Test::Socialtext::User;
@@ -438,6 +438,42 @@ account_import_preserves_multiple_indirect_uars: {
     my $group_one = create_test_group();
     my $group_two = create_test_group();
     my $user      = create_test_user();
+
+    # Indirect Role: User->Group->Account
+    $account->add_group(group => $group_one);
+    $group_one->add_user(user => $user);
+
+    # Indirect Role: User->Workspace->Account
+    $ws_one->add_user(user => $user);
+
+    # Indirect Role: User->Group->Workspace->Account
+    $ws_two->add_group(group => $group_two);
+    $group_two->add_user(user => $user);
+
+    # Export and re-import the Account.
+    export_and_reimport_account(
+        account    => $account,
+        workspaces => [$ws_one, $ws_two],
+        groups     => [$group_one, $group_two],
+        users      => [$user],
+    );
+}
+
+###############################################################################
+# TEST: preserve multiple direct and indirect UARs
+#
+# User can have both a *direct* and an *indirect* Role in an Account.
+account_import_preserves_direct_and_indirect_uars: {
+    ok 1, 'TEST: Preserves direct and indirect UARs';
+    my $account   = create_test_account_bypassing_factory();
+    my $ws_one    = create_test_workspace(account => $account);
+    my $ws_two    = create_test_workspace(account => $account);
+    my $group_one = create_test_group();
+    my $group_two = create_test_group();
+    my $user      = create_test_user();
+
+    # Direct Role: User->Account (as his Primary Account)
+    $user->primary_account( $account );
 
     # Indirect Role: User->Group->Account
     $account->add_group(group => $group_one);
