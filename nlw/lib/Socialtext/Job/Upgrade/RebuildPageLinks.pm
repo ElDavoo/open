@@ -1,4 +1,4 @@
-package Socialtext::Job::RebuildPageLinks;
+package Socialtext::Job::Upgrade::RebuildPageLinks;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::l10n qw/loc loc_lang system_locale/;
@@ -38,14 +38,14 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 
-Socialtext::Job::RebuildPageLinks - Rebuild a workspace's page links
+Socialtext::Job::Upgrade::RebuildPageLinks - Rebuild a workspace's page links
 
 =head1 SYNOPSIS
 
     use Socialtext::JobCreator;
 
     Socialtext::JobCreator->insert(
-        'Socialtext::Job::RebuildPageLinks',
+        'Socialtext::Job::Upgrade::RebuildPageLinks',
         {
             workspace_id => 1,
         },

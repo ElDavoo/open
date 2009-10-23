@@ -382,9 +382,10 @@ sub _populate_db_metadata {
 
 sub _rebuild_page_links {
     my $self = shift;
-    Socialtext::JobCreator->insert('Socialtext::Job::RebuildPageLinks', {
-        workspace_id => $self->{workspace}->workspace_id,
-    });
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::Upgrade::RebuildPageLinks',
+        { workspace_id => $self->{workspace}->workspace_id }
+    );
 }
 
 sub _permissions_file { return $_[0]->{old_name} . '-permissions.yaml' }

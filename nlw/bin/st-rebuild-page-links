@@ -10,7 +10,7 @@ die "USAGE: $0 --workspace <name>\n" unless $name;
 my $ws = Socialtext::Workspace->new(name => $name)
     || die "There is no workspace named $name!\n";
 
-Socialtext::JobCreator->insert('Socialtext::Job::RebuildPageLinks', {
+Socialtext::JobCreator->insert('Socialtext::Job::Upgrade::RebuildPageLinks', {
     workspace_id => $ws->workspace_id,
 });
 1;
