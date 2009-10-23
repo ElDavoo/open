@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 60;
+use Test::Socialtext tests => 70;
 use Test::Differences;
 use Socialtext::CLI;
 use Test::Socialtext::User;
@@ -218,6 +218,36 @@ account_import_preserves_direct_and_indirect_group_roles: {
         account    => $account,
         groups     => [$group],
         workspaces => [$workspace],
+    );
+}
+
+###############################################################################
+# TEST: Account export/import preserves multiple GWRs/GARs
+#
+# Group can have multiple *indirect* Roles in an Account.  Make sure that
+# they're all preserved across export/import.
+account_import_preserves_multiple_indirect_roles: {
+    ok 1, 'TEST: Preserves multiple GWRs/GARs';
+    my $account = create_test_account_bypassing_factory();
+    my $ws_one  = create_test_workspace(account => $account);
+    my $ws_two  = create_test_workspace(account => $account);
+    my $group   = create_test_group();
+
+    # Give the Group some Roles in multiple Workspaces
+    $ws_one->add_group(
+        group => $group,
+        role  => $Member,
+    );
+    $ws_two->add_group(
+        group => $group,
+        role  => $WorkspaceAdmin,
+    );
+
+    # Export and re-import the Account
+    export_and_reimport_account(
+        account    => $account,
+        groups     => [$group],
+        workspaces => [$ws_one, $ws_two],
     );
 }
 
