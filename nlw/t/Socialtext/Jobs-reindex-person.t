@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 24;
 use Test::Exception;
+use Socialtext::Cache ();
 
 fixtures('db', 'foobar');
 
@@ -44,6 +45,7 @@ lives_ok {
 } "set custom field and assistant";
 
 direct: {
+    Socialtext::Cache->clear;
     lives_ok { Socialtext::Jobs->clear_jobs() } 'cleared out all jobs';
 
     is scalar(Socialtext::JobCreator->list_jobs( funcname => 'Socialtext::Job::PersonIndex' )), 0;
@@ -58,6 +60,7 @@ direct: {
 }
 
 indirect: {
+    Socialtext::Cache->clear;
     lives_ok { Socialtext::Jobs->clear_jobs() } 'cleared out all jobs';
     is scalar(Socialtext::JobCreator->list_jobs( funcname => 'Socialtext::Job::PersonIndex' )), 0;
 
