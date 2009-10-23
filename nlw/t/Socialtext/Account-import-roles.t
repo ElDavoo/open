@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 70;
+use Test::Socialtext tests => 80;
 use Test::Differences;
 use Socialtext::CLI;
 use Test::Socialtext::User;
@@ -139,12 +139,25 @@ sub export_and_reimport_account {
 }
 
 ###############################################################################
-# TEST: Account export/import preserves GARs.
-#
-# Group can have a *direct* Role in an Account.  Make sure that the Role is
-# preserved across export/import.
-account_import_preserves_gars: {
-    ok 1, 'TEST: Preserves GARs';
+# TEST: Account export/import preserves GAR, when Group has this Account as
+# its Primary Account.
+account_import_preserves_gar_primary_account: {
+    ok 1, 'TEST: Preserves GARs; Groups Primary Account';
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group(account => $account);
+
+    # Export and re-import the Account; GAR should be preserved
+    export_and_reimport_account(
+        account => $account,
+        groups  => [$group],
+    );
+}
+
+###############################################################################
+# TEST: Account export/import preserves GAR, when Group has a Role in this
+# Account (but its not the Groups Primary Account).
+account_import_preserves_gar: {
+    ok 1, 'TEST: Preserves GARs; Group has Role in Account';
     my $account    = create_test_account_bypassing_factory();
     my $acct_name  = $account->name();
 
