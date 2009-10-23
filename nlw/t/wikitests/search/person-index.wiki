@@ -77,6 +77,8 @@
 | job-count       | PersonIndex            | 0                     |
 
 
+# This next test should come last
+
 # Deactivating a user makes them not searchable
 | deactivate-user | %%randy%%       |   |
 | job-count       | PersonIndex     | 1 |
