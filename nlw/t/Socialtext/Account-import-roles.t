@@ -40,11 +40,11 @@ sub export_and_reimport_account {
     my $export_dir  = File::Spec->catdir($export_base, 'account');
 
     # Build up the list of Roles that exist *before* the export/import
-    my @gars = _dump_gars($acct);
-    my @uars = _dump_uars($acct);
-    my @uwrs = _dump_uwrs($_) for @workspaces;
-    my @gwrs = _dump_gwrs($_) for @workspaces;
-    my @ugrs = _dump_ugrs($_) for @groups;
+    my @gars = map { _dump_gars($_) } $acct;
+    my @uars = map { _dump_uars($_) } $acct;
+    my @uwrs = map { _dump_uwrs($_) } @workspaces;
+    my @gwrs = map { _dump_gwrs($_) } @workspaces;
+    my @ugrs = map { _dump_ugrs($_) } @groups;
 
     # Export the Account
     expect_success(
@@ -107,11 +107,11 @@ sub export_and_reimport_account {
     }
 
     # Get the list of Roles that exist *after* the export/import
-    my @imported_gars = _dump_gars($imported_acct);
-    my @imported_uars = _dump_uars($imported_acct);
-    my @imported_uwrs = _dump_uwrs($_) for @imported_workspaces;
-    my @imported_gwrs = _dump_gwrs($_) for @imported_workspaces;
-    my @imported_ugrs = _dump_ugrs($_) for @imported_groups;
+    my @imported_gars = map { _dump_gars($_) } $imported_acct;
+    my @imported_uars = map { _dump_uars($_) } $imported_acct;
+    my @imported_uwrs = map { _dump_uwrs($_) } @imported_workspaces;
+    my @imported_gwrs = map { _dump_gwrs($_) } @imported_workspaces;
+    my @imported_ugrs = map { _dump_ugrs($_) } @imported_groups;
 
     # Role list *should* be the same after import
     eq_or_diff \@imported_gars, \@gars, '... GroupAccountRoles preserved';
