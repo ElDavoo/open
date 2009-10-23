@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 100;
+use Test::Socialtext tests => 110;
 use Test::Differences;
 use Socialtext::CLI;
 use Test::Socialtext::User;
@@ -396,6 +396,31 @@ account_import_preserves_user_indirect_role_through_group: {
     # Export and re-import the Account
     export_and_reimport_account(
         account    => $account,
+        groups     => [$group],
+        users      => [$user],
+    );
+}
+
+###############################################################################
+# TEST: preserve indirect UGR/GWR/GAR
+#
+# User can have a *doubly-indirect* Role in an Account by virtue of being a
+# member of a Group that has a Role in a Workspace in an Account.  Whew!
+account_import_preserves_doubly_indirect_role: {
+    ok 1, 'TEST: Preserves UGR/GWR/GARs (doubly-indirect)';
+    my $account   = create_test_account_bypassing_factory();
+    my $workspace = create_test_workspace(account => $account);
+    my $group     = create_test_group();
+    my $user      = create_test_user();
+
+    # Add the User to the Account through a Group-in-Workspace membership.
+    $workspace->add_group(group => $group);
+    $group->add_user(user => $user);
+
+    # Export and re-import the Account.
+    export_and_reimport_account(
+        account    => $account,
+        workspaces => [$workspace],
         groups     => [$group],
         users      => [$user],
     );
