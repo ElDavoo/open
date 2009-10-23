@@ -13,7 +13,7 @@ sub do_work {
 
     return $self->completed unless $ws->real;
 
-    loc_lang(system_locale());
+    $self->hub->log->info("Rebuilding page links for workspace: " . $ws->name);
 
     my @pages = $self->hub->pages->all;
     return $self->completed unless @pages;
