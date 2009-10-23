@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 80;
+use Test::Socialtext tests => 90;
 use Test::Differences;
 use Socialtext::CLI;
 use Test::Socialtext::User;
@@ -266,6 +266,21 @@ account_import_preserves_multiple_indirect_roles: {
         account    => $account,
         groups     => [$group],
         workspaces => [$ws_one, $ws_two],
+    );
+}
+
+###############################################################################
+# TEST: Account export/import preserves UAR, when User has this Account as its
+# Primary Account.
+account_import_preserves_uar_primary_account: {
+    ok 1, 'TEST: Preserves UARs; Users Primary Account';
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user(account => $account);
+
+    # Export and re-import the Account; UAR should be preserved
+    export_and_reimport_account(
+        account => $account,
+        users   => [$user],
     );
 }
 
