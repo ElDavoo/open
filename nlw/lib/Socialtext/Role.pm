@@ -89,6 +89,7 @@ sub new {
     else {
         return;
     }
+    return unless $val;
 
     my $role = _cache_fetch($role_key, $val);
     unless ($role) {
