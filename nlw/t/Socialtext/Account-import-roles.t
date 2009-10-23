@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 90;
+use Test::Socialtext tests => 100;
 use Test::Differences;
 use Socialtext::CLI;
 use Test::Socialtext::User;
@@ -378,6 +378,28 @@ account_import_preserves_uwr: {
     is $role->name, $orig_role->name, '... ... with *correct* Role';
 }
 
+###############################################################################
+# Test: preserve indirect UGR/GAR
+#
+# User can have an *indirect* Role in an Account by virtue of being a member
+# of a Group that happens to have a Role in the Account.  Make sure that Role
+# is preserved across export/import.
+account_import_preserves_user_indirect_role_through_group: {
+    ok 1, 'TEST: Preserves UGRs/GARs';
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group(account => $account);
+    my $user    = create_test_user();
+
+    # Add the User to the Account through a Group membership.
+    $group->add_user(user => $user);
+
+    # Export and re-import the Account
+    export_and_reimport_account(
+        account    => $account,
+        groups     => [$group],
+        users      => [$user],
+    );
+}
 
 
 
