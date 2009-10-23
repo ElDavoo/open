@@ -551,9 +551,10 @@ sub role_for_user {
     my $self = shift;
     my %opts = @_;
     my $user = $opts{user} || croak "can't role_for_user without a 'user'";
-    my $uar  = $self->_uar_for_user($user);
-    return unless $uar;
-    return $uar->role();
+    return scalar Socialtext::Account::Roles->RolesForUserInAccount(
+        %opts,
+        account => $self,
+    );
 }
 
 sub _uar_for_user {
@@ -1312,7 +1313,9 @@ If the User has no Role in the Account, this method does nothing.
 =item $account->role_for_user(user => $user)
 
 Returns the C<Socialtext::Role> object representing the Role that the given
-C<$user> has in this Account.
+C<$user> has in the Account (either directly, or which was inferred via Group
+or Workspace membership).  If the User has B<no> Role in the Account, this
+method returns false.
 
 =item $account->users(PARAMS)
 
