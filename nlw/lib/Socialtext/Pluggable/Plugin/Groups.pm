@@ -127,9 +127,10 @@ sub export_groups_for_workspace {
     while (my $gwr = $gwrs->next()) {
         my $group      = $gwr->group;
         my $group_data = {
-            driver_group_name   => $group->driver_group_name,
-            created_by_username => $group->creator->username,
-            role_name           => $gwr->role->name,
+            primary_account_name => $group->primary_account->name,
+            driver_group_name    => $group->driver_group_name,
+            created_by_username  => $group->creator->username,
+            role_name            => $gwr->role->name,
         };
         $group_data->{users} = $self->_get_ugrs_for_export($group);
         push @groups, $group_data;
