@@ -341,3 +341,6 @@ t/Socialtext/JSON/Proxy-ping.t
 t/wikitests/people/rest/data_people_search.wiki
 t/Socialtext/JSON/Proxy-graceful.t
 t/rest_files/sleeper2.pl
+t/wikitests/socialcalc/recursion.wiki
+t/wikitests/test-data/socialcalc/recurse-1-2.ssheet
+t/wikitests/test-data/socialcalc/recurse-2-1.ssheet
