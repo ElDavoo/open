@@ -7,6 +7,7 @@ proto.className = 'Document.Parser';
 proto.init = function() {}
 
 proto.parse = function(input, receiver) {
+    if (typeof input != 'string') return '';
     this.input = (input.search(/\n$/) == -1) ? input+"\n" : input;
     if (receiver) this.receiver = receiver;
     this.receiver.init();
