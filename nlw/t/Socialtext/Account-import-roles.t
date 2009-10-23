@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 50;
+use Test::Socialtext tests => 60;
 use Test::Differences;
 use Socialtext::CLI;
 use Test::Socialtext::User;
@@ -179,6 +179,33 @@ account_import_preserves_gwrs: {
     );
 
     # Export and re-import the Account; GWRs/GARs should be preserved
+    export_and_reimport_account(
+        account    => $account,
+        groups     => [$group],
+        workspaces => [$workspace],
+    );
+}
+
+###############################################################################
+# TEST: Account export/import preserves GARs + GWRs/GARs
+account_import_preserves_direct_and_indirect_group_roles: {
+    ok 1, 'TEST: Preserves GARs + GWRs/GARs';
+    my $account   = create_test_account_bypassing_factory();
+    my $acct_name = $account->name();
+
+    my $workspace = create_test_workspace(account => $account);
+    my $ws_name   = $workspace->name();
+
+    my $group     = create_test_group();
+
+    # Give the Group both a direct and an indirect Role in the Account.
+    $account->add_group(group => $group, role => $Member);
+    $workspace->add_group(group => $group);
+
+    # Export and re-import the Account; GWRs/GARs should be preserved
+    #
+    # Actually, it ends up looking more like "the Group has a *single* Role in
+    # the Account" (the highest effective one).
     export_and_reimport_account(
         account    => $account,
         groups     => [$group],
