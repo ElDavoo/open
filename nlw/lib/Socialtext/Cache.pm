@@ -1,5 +1,5 @@
 package Socialtext::Cache;
-
+# @COPYRIGHT@
 use strict;
 use warnings;
 use Socialtext::Cache::Hash;
