@@ -152,14 +152,12 @@ sub import_groups_for_workspace {
 
         # Add the Group into the Workspace, using the default Role if we're
         # unable to find the Role that it used to have.
-        my $group_role = Socialtext::Role->new(
-            name => $group_info->{role_name},
-        );
-        unless ($group_role) {
+        my $role = Socialtext::Role->new(name => $group_info->{role_name});
+        unless ($role) {
             warn loc("Missing/unknown Role '[_1]'; using default Role", $group_info->{role_name}) . "\n";
-            $group_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
+            $role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
         }
-        $ws->add_group(group => $group, role => $group_role);
+        $ws->add_group(group => $group, role => $role);
     }
 }
 
