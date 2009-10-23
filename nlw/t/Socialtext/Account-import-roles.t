@@ -134,7 +134,10 @@ sub export_and_reimport_account {
 }
 
 ###############################################################################
-# TEST: Account export/import preserves GARs
+# TEST: Account export/import preserves GARs.
+#
+# Group can have a *direct* Role in an Account.  Make sure that the Role is
+# preserved across export/import.
 account_import_preserves_gars: {
     ok 1, 'TEST: Preserves GARs';
     my $account    = create_test_account_bypassing_factory();
@@ -160,6 +163,10 @@ account_import_preserves_gars: {
 
 ###############################################################################
 # TEST: Account export/import preserves GWRs/GARs
+#
+# Group can have an *indirect* Role in an Account by virtue of being a member
+# in a Workspace that lives within the Account.  Make sure that the Role is
+# preserved across export/import.
 account_import_preserves_gwrs: {
     ok 1, 'TEST: Preserves GWRs/GARs';
     my $account    = create_test_account_bypassing_factory();
@@ -188,6 +195,10 @@ account_import_preserves_gwrs: {
 
 ###############################################################################
 # TEST: Account export/import preserves GARs + GWRs/GARs
+#
+# Group can have both a *direct* and an *indirect* Role in an Account.  By the
+# time it ends up in the DB its just a single GAR entry, but this test also
+# verifies that the GWR was properly preserved.
 account_import_preserves_direct_and_indirect_group_roles: {
     ok 1, 'TEST: Preserves GARs + GWRs/GARs';
     my $account   = create_test_account_bypassing_factory();
@@ -203,9 +214,6 @@ account_import_preserves_direct_and_indirect_group_roles: {
     $workspace->add_group(group => $group);
 
     # Export and re-import the Account; GWRs/GARs should be preserved
-    #
-    # Actually, it ends up looking more like "the Group has a *single* Role in
-    # the Account" (the highest effective one).
     export_and_reimport_account(
         account    => $account,
         groups     => [$group],
@@ -215,6 +223,15 @@ account_import_preserves_direct_and_indirect_group_roles: {
 
 ###############################################################################
 # TEST: preserve direct UAR
+#
+# User can have a *direct* Role in an Account (which as of 2009-10-22 is only
+# supported via their "Primary Account").  Make sure that the Role is
+# preserved across export/import.
+#
+# One day... we'll be able to add a User to a secondary Account with a direct
+# UAR.  This test is a placeholder for that; when we get there, this test will
+# break as a reminder that we need to make sure that export/import works
+# correct.
 account_import_preserves_uar: {
     ok 1, 'TEST: Preserves direct UAR';
     my $account   = create_test_account_bypassing_factory();
@@ -253,6 +270,10 @@ account_import_preserves_uar: {
 
 ###############################################################################
 # TEST: preserve indirect UWR
+#
+# User can have an *indirect* Role in an Account by virtue of being a member
+# in a Workspace that lives within the Account.  Make sure that the Role is
+# preserved across export/import.
 account_import_preserves_uwr: {
     ok 1, 'TEST: Preserves indirect UWR';
     my $account   = create_test_account_bypassing_factory();
