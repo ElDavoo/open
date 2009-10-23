@@ -62,14 +62,12 @@ sub import_groups_for_account {
         my $group = _import_group($group_info, $acct);
 
         # Give the Group an explicit Role in the Account
-        if ($group_info->{role_name}) {
-            my $role = Socialtext::Role->new(name => $group_info->{role_name});
-            unless ($role) {
-                warn loc("Missing/unknown Role '[_1]'; using default Role", $group_info->{role_name}) . "\n";
-                $role = Socialtext::GroupAccountRoleFactory->DefaultRole();
-            }
-            $acct->add_group(group => $group, role => $role);
+        my $role = Socialtext::Role->new(name => $group_info->{role_name});
+        unless ($role) {
+            warn loc("Missing/unknown Role '[_1]'; using default Role", $group_info->{role_name}) . "\n";
+            $role = Socialtext::GroupAccountRoleFactory->DefaultRole();
         }
+        $acct->add_group(group => $group, role => $role);
 
         # Add all of the Users from the export into the Group
         $self->_set_ugrs_on_import($group, $group_info->{users});
