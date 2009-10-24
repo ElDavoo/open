@@ -89,6 +89,7 @@ sub maybe_commit {
     $commits++;
     $writes = 0;
 }
+print "USING BASE $base\n";
 
 {
     my $uar_sth = $dbh->prepare_cached( qq{

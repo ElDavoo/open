@@ -22,11 +22,12 @@ use List::Util qw/sum/;
 use constant TRACE => 0;
 
 my $SERVER_ROOT = 'http://dev7.socialtext.net';
-my $REFRESH = 60;
-my $SIGNAL_EVERY = 2.0; # fractional seconds, 
+my $REFRESH = 60;       # integer seconds; widget refresh interval
+my $SIGNAL_EVERY = 5.0; # fractional seconds: per-user signal interval
+my $SIGNAL_CHANCE = 0.1; # probability of sending a signal instead of a full wait
 my $USER_ITERATIONS = 250;
-my $USER_COUNT = 300;
-my $USER_FMT = 'user-%d-84186@ken.socialtext.net';
+my $USER_COUNT = 75;
+my $USER_FMT = 'user-%d-42367@ken.socialtext.net';
 our $TICKER_EVERY = 5;
 
 #
@@ -35,6 +36,7 @@ our $TICKER_EVERY = 5;
 
 
 my $UNPARSEABLE_CRUFT = "throw 1; < don't be evil' >";
+my $proxy = "$SERVER_ROOT/nlw/proxy.scgi";
 $AnyEvent::HTTP::MAX_PER_HOST = $AnyEvent::HTTP::MAX_PERSISTENT_PER_HOST = 9999;
 
 my $all_done = AE::cv;
@@ -57,7 +59,7 @@ my %user_state;
 
 sub diag (@) {
     return unless TRACE; # although it's good to say "diag ... if TRACE" for speed
-    print join(' ',@_),$/;
+    warn join(' ',@_).$/;
 }
 
 sub run_for_user ($$&) {
@@ -129,51 +131,50 @@ sub log_in_users {
     print "done logging in\n";
 }
 
-sub post_signals {
-    my $signal_number = 0;
-    my $num_users = scalar keys %users;
-    Coro::AnyEvent::sleep(rand(1) * $SIGNAL_EVERY / 2.0); # fuzz startup
-    while (++$signal_number) {
-        diag "+ posting signal",$signal_number if TRACE;
-        my $user = $user_keys[int(rand($num_users))];
-        my $cookie = $user_state{$user}{cookie};
-        my $sig = '{"signal":"hey guys, signal '.$signal_number.' here"}';
-        my $len = do { use bytes; length($sig) };
+my $signal_number = 0;
 
-        $phase_state{in_progress}{$user}{'/data/signals'} = 1;
-        http_post $SERVER_ROOT.'/data/signals', $sig,
-            headers => {
-                'Accept'         => 'application/json; charset=UTF-8',
-                'Content-Type'   => 'application/json; charset=UTF-8',
-                'Content-Length' => $len,
-                'Cookie'         => $cookie,
-            },
-            Coro::rouse_cb;
-
-        my (undef, $headers) = Coro::rouse_wait;
-        diag "+ posted signal",$signal_number," status ",$headers->{Status} if TRACE;
-        delete $phase_state{in_progress}{$user}{'/data/signals'};
-        $phase_state{posted_signals}++;
-
-        Coro::AnyEvent::sleep($SIGNAL_EVERY);
-    }
-}
-
-sub send_proxy_get ($$&) {
+sub send_proxy_req ($$$$$$) {
     my $user = shift;
+    my $proxy_method = shift; # "outer" method: client -> apache2 -> proxy HTTP method
+    my $method = shift; # "inner" method: proxy -> apache-perl/internet HTTP method
     my $uri = shift;
+    my $body_ref = shift;
     my $result_cb = shift;
 
     my $req_url = $SERVER_ROOT.$uri;
-    my $url = "$SERVER_ROOT/nlw/proxy.scgi?url=" .
-        uri_escape_utf8($req_url).
-        '&httpMethod=GET&postData=&contentType=JSON&numEntries=99'.
+    my $payload = "url=".uri_escape_utf8($req_url).
+        '&httpMethod='.$method.'&contentType=JSON&numEntries=99'.
         '&getSummaries=false&gadget=local%3Awidgets%3Awhoknows'.
-        '&authz=&st=&signOwner=true&signViewer=true'.
-        '&refresh='.$REFRESH;
+        '&authz=&st=&signOwner=true&signViewer=true';
+
+    my $url = $proxy;
+
+    my %request_opts = (
+        recurse => 0,
+        timeout => 0,
+        headers => {
+            'Cookie' => $user_state{$user}{cookie},
+            'Accept' => 'application/json; charset=UTF-8',
+        },
+    );
+
+    if ($proxy_method ne 'GET') {
+        $payload .= '&refresh=0';
+        $payload .= "&postBody=".uri_escape_utf8($$body_ref);
+        $request_opts{body} = $payload;
+        $request_opts{headers}{'Content-Type'} =
+            'text/x-www-form-urlencoded; charset=UTF-8';
+        my $len = do { use bytes; length($request_opts{body}) };
+        $request_opts{headers}{'Content-Length'} = $len;
+    }
+    else {
+        $payload .= '&refresh='.$REFRESH;
+        $url .= "?$payload";
+    }
+    undef $payload;
 
     my $start_t = AnyEvent->time;
-    my $when_get_is_done = unblock_sub {
+    my $when_get_is_done = sub {
         my ($body, $headers) = @_;
 
         my $delta_t = AnyEvent->time - $start_t;
@@ -181,10 +182,10 @@ sub send_proxy_get ($$&) {
         $phase_state{r_num} ++;
 
         my $g = guard { $result_cb->(undef) };
-        diag "++ got a result from proxy for",$user if TRACE;
+        diag "++ got a result from proxy for",$user,'status:',$headers->{Status},"uri:",$uri if TRACE;
         delete $phase_state{in_progress}{$user}{$url};
 
-        if (!$headers || !$headers->{Status} || $headers->{Status} ne '200') {
+        if (!$headers || !$headers->{Status} || $headers->{Status} != 200) {
             $phase_state{failed}++;
             $phase_state{timeout}++ if $headers->{Reason} =~ /time/i;
             undef $body;
@@ -196,19 +197,16 @@ sub send_proxy_get ($$&) {
     };
 
     eval { 
-        $phase_state{plan}{$user}--;
 
         my $timeout = AE::timer $REFRESH,0, sub {
-            $when_get_is_done->(undef,{Stauts=>599,Reason=>'timeout'});
+            $when_get_is_done->(undef,{Status=>599,Reason=>'timeout'});
         };
 
-        my $fg = http_get $url,
-            recurse => 0,
-            headers => {
-                'Cookie' => $user_state{$user}{cookie},
-                'Accept' => 'application/json; charset=UTF-8',
-            },
+        my $fg = http_request $proxy_method, $url,
+            %request_opts,
             $when_get_is_done;
+
+        diag "sent";
 
         # hold on to the guards:
         $phase_state{in_progress}{$user}{$url} = [$fg,$timeout];
@@ -240,6 +238,7 @@ sub activities_widget_simulator {
     my $last_signal = '';
     my $signal_ids = [];
 
+    my $force_next_events_get;
     my $num_visible = 10;
     $phase_state{plan}{$user} = $USER_ITERATIONS * 2; # two uris per iteration
     $phase_state{in_progress}{$user} = {};
@@ -257,11 +256,14 @@ sub activities_widget_simulator {
 
         $fetches->begin;
         my $events_result;
-        send_proxy_get($user, $events_uri, sub {
-            diag "++ events result for",$user if TRACE;
-            $events_result = shift;
-            $fetches->end;
-        });
+        $phase_state{plan}{$user}--;
+        send_proxy_req($user, ($force_next_events_get ? 'POST' : 'GET'), 
+            'GET' => $events_uri, undef, sub {
+                diag "++ events result for",$user if TRACE;
+                $events_result = shift;
+                $fetches->end;
+            });
+        undef $force_next_events_get;
 
         # Probe for deleted signals.
         # If none are visible yet, call 
@@ -287,11 +289,13 @@ sub activities_widget_simulator {
 
         $fetches->begin;
         my $signals_result;
-        send_proxy_get($user, $signals_uri, sub {
-            diag "++ signals result for",$user if TRACE;
-            $signals_result = shift;
-            $fetches->end;
-        });
+        $phase_state{plan}{$user}--;
+        send_proxy_req($user, 'GET',
+            'GET' => $signals_uri, undef, sub {
+                diag "++ signals result for",$user if TRACE;
+                $signals_result = shift;
+                $fetches->end;
+            });
 
         $fetches->recv; # wait for both requests to return
 
@@ -325,9 +329,38 @@ sub activities_widget_simulator {
             }
         }
 
+        diag "+ polling done for",$user if TRACE;
+
+        last unless $phase_state{plan}{$user} > 0;
+        if (rand(1) <= $SIGNAL_CHANCE) {
+            my $signum = ++$signal_number;
+            diag "+ going to post signal",$signum if TRACE;
+
+            Coro::AnyEvent::sleep(rand($REFRESH)/2);
+            $force_next_events_get = 1;
+
+            diag "+ posting signal",$signum if TRACE;
+            my $sig = '{"signal":"hey guys, signal '.$signum.' here"}';
+
+            my $cb = Coro::rouse_cb;
+            send_proxy_req($user, POST => POST => '/data/signals', \$sig, $cb);
+            my $result = Coro::rouse_wait($cb);
+
+            if ($result) {
+                my (undef,$headers,undef) = @$result;
+                diag "+ posted signal",$signum," status ",$headers->{Status} if TRACE;
+                $phase_state{posted_signals}++;
+            }
+            else {
+                diag "+ failed signal",$signum if TRACE;
+                $phase_state{failed_signals}++;
+            }
+        }
+        else {
+            Coro::AnyEvent::sleep($REFRESH);
+        }
+
         diag "+ iteration done for",$user if TRACE;
-        Coro::AnyEvent::sleep($REFRESH)
-            if $phase_state{plan}{$user} > 0;
     }
 
     diag "+ phase done for",$user if TRACE;
@@ -342,6 +375,7 @@ sub simple_dashboard {
         timeout => 0,
         parse_error => 0,
         posted_signals => 0,
+        failed_signals => 0,
         req_success => 0,
         r_time_sum => 0.0,
         r_num => 0,
@@ -360,7 +394,7 @@ sub simple_dashboard {
         $phase_state{total_r_num} += $phase_state{r_num};
         my $total_r = $phase_state{total_r_num} || 1;
         my $total_r_time = ($phase_state{total_r_time_sum} / $total_r);
-        my $total_r_rate = ($total_r / (AnyEvent->now - $script_start));
+        my $total_r_rate = ($total_r / (AnyEvent->time - $script_start));
 
         my $immed_r = $phase_state{r_num} || 1;
         my $immed_r_time = ($phase_state{r_time_sum} / $immed_r);
@@ -378,26 +412,18 @@ sub simple_dashboard {
             sprintf("%0.3f",$total_r_rate)."r/s overall\n";
         print "Remaining: $total_u users, $outstanding requests.\n";
         print "Success: $phase_state{posted_signals} signals, $phase_state{req_success} requests.\n";
-        print "Errors: $phase_state{failed} failed, $phase_state{timeout} timeouts, $phase_state{parse_error} parse errors\n";
+        print "Errors: $phase_state{failed} failed, $phase_state{timeout} timeouts, $phase_state{parse_error} parse errors, $phase_state{failed_signals} failed signals\n";
     };
-
-    my $poster = async {
-        $Coro::current->{desc} = "signal poster";
-        eval { post_signals() };
-        warn "post_signals: $@\n" if $@;
-    };
-    scope_guard { $poster->throw("cancel"); };
 
     my @coros; # for keeping coro guards
     scope_guard { $_->throw("cancel") for @coros };
 
     for my $user (keys %users) {
         $phase->begin;
-        my $coro = run_for_user $user, "activities $user", sub {
+        push @coros, run_for_user($user, "activities $user", sub {
             scope_guard { $phase->end if $phase };
             activities_widget_simulator($user);
-        };
-        push @coros, $coro;
+        });
     }
 
     $phase->recv;
