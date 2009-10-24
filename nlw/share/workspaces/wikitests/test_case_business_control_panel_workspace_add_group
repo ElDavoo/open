@@ -22,16 +22,16 @@
 | click_and_wait | link=%%ws%% |  |
 
 | *Comment* | Test Case: Business Control Panel Groups Workspace Add Group Add the Group |  |
-| wait_for_element_visible_ok | link=Add Group To Workspace | 3000 |
+| wait_for_element_visible_ok | link=Add Group To Workspace | 30000 |
 | text_like | //body | Groups (0) |
 | click_and_wait | link=Add Group To Workspace |  |
 | wait_for_element_visible_ok | send-invite-message | 30000 |
 | wait_for_element_visible_ok | invite-as-admins | 30000 |
 | text_like | //body | qr/Add Group To Workspace/ism |
 | text_like | //body | Send invitation email |
-| wait_for_element_visible_ok | st-select-group-id | 3000 |
-| select-ok | st-select-group-id | Default,%%group%% |
-| click_and_wait | st-add-group-to-workspace |  |
+| wait_for_element_visible_ok | group_id | 30000 |
+| select-ok | group_id | Default,%%group%% |
+| click_and_wait | //input[@value='Add to Workspace'] |  |
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group Verify the add |  |
 | text_like | //body | qr/Group is now a member of the %%ws%% workspace/ism |
