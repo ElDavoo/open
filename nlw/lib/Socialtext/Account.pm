@@ -384,12 +384,9 @@ sub export {
 }
 
 sub users_as_hash {
-    my $self = shift;
-    my $user_iter = $self->users( primary_only => 1 );
-    my @users;
-    while ( my $u = $user_iter->next ) {
-        push @users, $self->_dump_user_to_hash($u);
-    }
+    my $self  = shift;
+    my $iter  = $self->users(primary_only => 1);
+    my @users = map { $self->_dump_user_to_hash($_) } $iter->all();
     return \@users;
 }
 
