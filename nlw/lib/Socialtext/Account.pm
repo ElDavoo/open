@@ -388,13 +388,19 @@ sub users_as_hash {
     my $user_iter = $self->users( primary_only => 1 );
     my @users;
     while ( my $u = $user_iter->next ) {
-        my $user_hash = $u->to_hash;
-        delete $user_hash->{user_id};
-        delete $user_hash->{primary_account_id};
-        $user_hash->{profile} = $self->_dump_profile($u);
-        push @users, $user_hash;
+        push @users, $self->_dump_user_to_hash($u);
     }
     return \@users;
+}
+
+sub _dump_user_to_hash {
+    my $self = shift;
+    my $user = shift;
+    my $hash = $user->to_hash;
+    delete $hash->{user_id};
+    delete $hash->{primary_account_id};
+    $hash->{profile} = $self->_dump_profile($user);
+    return $hash;
 }
 
 sub _dump_profile {
