@@ -87,7 +87,9 @@ sub export_and_reimport_account {
     );
 
     # Load up copies of all of the Accounts/Workspaces/Groups that exist after
-    # the export/import
+    # the export/import.  Yes, this is a bit ugly (especially for Groups,
+    # where on re-import, the unique key is going to change for the Group;
+    # primary_account_id changes).
     my $imported_acct = Socialtext::Account->new(name => $acct->name);
 
     my @imported_workspaces =
@@ -96,7 +98,10 @@ sub export_and_reimport_account {
 
     my @imported_groups;
     foreach my $group (@groups) {
-        my $primary_acct_id    = $group->primary_account_id;
+        my $primary_account = Socialtext::Account->new(
+            name => $group->primary_account->name,
+        );
+        my $primary_acct_id    = $primary_account->account_id;
         my $created_by_user_id = $group->created_by_user_id;
         my $group_name         = $group->driver_group_name;
         push @imported_groups, Socialtext::Group->GetGroup(
