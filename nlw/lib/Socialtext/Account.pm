@@ -383,6 +383,13 @@ sub export {
     return $export_file;
 }
 
+sub all_users_as_hash {
+    my $self  = shift;
+    my $iter  = $self->users();
+    my @users = map { $self->_dump_user_to_hash($_) } $iter->all();
+    return \@users;
+}
+
 sub users_as_hash {
     my $self  = shift;
     my $iter  = $self->users(primary_only => 1);
@@ -1250,6 +1257,11 @@ workspaces that use that skin.
 =item $account->is_system_created()
 
 Returns the given attribute for the account.
+
+=item $account->all_users_as_hash()
+
+Returns a list of all the Users that have a Role in this Account as a hash,
+suitable for serializing.
 
 =item $account->users_as_hash()
 
