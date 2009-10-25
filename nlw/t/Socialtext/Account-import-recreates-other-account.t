@@ -31,39 +31,15 @@ import_recreates_other_account: {
     # Give the User access to the Secondary Account
     $workspace->add_user(user => $user);
 
-    # Export the Account.
-    my $export_base = tempdir(CLEANUP => 1);
-    my $export_dir  = File::Spec->catdir($export_base, 'account');
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [
-                    '--account', $secondary_account->name,
-                    '--dir',     $export_dir,
-                ],
-            )->export_account();
+    # Export+reimport the Account
+    export_and_import_account(
+        account => $secondary_account,
+        flush   => sub {
+            Test::Socialtext::User->delete_recklessly($user);
+            Test::Socialtext::Workspace->delete_recklessly($workspace);
+            Test::Socialtext::Account->delete_recklessly($primary_account);
+            Test::Socialtext::Account->delete_recklessly($secondary_account);
         },
-        qr/account exported to/,
-        'Account exported',
-    );
-
-    # Flush our test data.
-    Test::Socialtext::User->delete_recklessly($user);
-    Test::Socialtext::Workspace->delete_recklessly($workspace);
-    Test::Socialtext::Account->delete_recklessly($primary_account);
-    Test::Socialtext::Account->delete_recklessly($secondary_account);
-    Socialtext::Cache->clear();
-
-    # Re-import the Account.
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => ['--dir', $export_dir],
-            )->import_account();
-        },
-        qr/account imported/,
-        '... Account re-imported',
     );
 
     # VERIFY: Both Accounts were re-created
@@ -88,6 +64,45 @@ import_recreates_other_account: {
     # VERIFY: User has Role in Secondary Account
     ok $q_workspace->has_user($q_user), '... User has Role in Workspace';
     ok $q_secondary->has_user($q_user), '... User has Role in Secondary Account';
+}
+
+###############################################################################
+# Helper function; export and re-import the Account.
+sub export_and_import_account {
+    my %args    = @_;
+    my $account = $args{account};
+    my $flush   = $args{flush} || sub { };
+
+    my $export_base = tempdir(CLEANUP => 1);
+    my $export_dir  = File::Spec->catdir($export_base, 'account');
+
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [
+                    '--account', $account->name,
+                    '--dir',     $export_dir,
+                ],
+            )->export_account();
+        },
+        qr/account exported to/,
+        'Account exported',
+    );
+
+    # Flush our test data.
+    $flush->();
+    Socialtext::Cache->clear();
+
+    # Re-import the Account.
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--dir', $export_dir],
+            )->import_account();
+        },
+        qr/account imported/,
+        '... Account re-imported',
+    );
 
     # CLEANUP
     rmtree [$export_base], 0;
