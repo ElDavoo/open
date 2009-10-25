@@ -370,7 +370,7 @@ sub export {
         is_system_created          => $self->is_system_created,
         skin_name                  => $self->skin_name,
         email_addresses_are_hidden => $self->email_addresses_are_hidden,
-        users                      => $self->users_as_hash,
+        users                      => $self->all_users_as_hash,
         logo                       => MIME::Base64::encode($$image_ref),
         allow_invitation           => $self->allow_invitation,
         all_users_workspace        => $all_users_workspace,
@@ -403,6 +403,7 @@ sub _dump_user_to_hash {
     my $hash = $user->to_hash;
     delete $hash->{user_id};
     delete $hash->{primary_account_id};
+    $hash->{primary_account_name} = $user->primary_account->name;
     $hash->{profile} = $self->_dump_profile($user);
     return $hash;
 }
@@ -461,8 +462,22 @@ sub import_file {
     for my $user_hash (@{ $hash->{users} }) {
         my $user = Socialtext::User->new( username => $user_hash->{username} );
         $user ||= Socialtext::User->Create_user_from_hash( $user_hash );
-        $user->primary_account($account);
 
+        # Assign the primary Account for this User, such that the User is
+        # imported *back into* the same Account he was exported from.  If that
+        # means having to create a blank/empty Account with that name, so be
+        # it.
+        my $pri_acct = $account;
+        my $pri_acct_name = $user_hash->{primary_account_name};
+        if ($pri_acct_name && ($pri_acct_name ne $hash->{name})) {
+            # User had a Primary Account that was *not* the Account that we're
+            # re-importing (possibly under a new name).
+            $pri_acct = Socialtext::Account->new(name => $pri_acct_name)
+                     || Socialtext::Account->create(name => $pri_acct_name);
+        }
+        $user->primary_account($pri_acct);
+
+        # Hang onto the profile so we can create it later.
         if (my $profile = delete $user_hash->{profile}) {
             $profile->{user} = $user;
             push @profiles, $profile;
