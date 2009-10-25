@@ -88,9 +88,9 @@ if (is_dev_env($host)) {
    `./st-consume-stub-reports`;
 } else {
    # fast-forward the existing nlw.log file, not the test log file
-   system('/usr/bin/st-reports-import-nlw-data --force  /var/log/nlw.log');
+   system('sudo /usr/bin/st-reports-import-nlw-data --force  /var/log/nlw.log');
    # process and fast-forward the test log file
-   system('/usr/bin/st-reports-consume-nlw-log ' . $test_nlw);
+   system('sudo /usr/bin/st-reports-consume-nlw-log ' . $test_nlw);
 }
 
 
