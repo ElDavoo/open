@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 111;
+use Test::Socialtext tests => 113;
 use Test::Socialtext::User;
 use Test::Exception;
 use Socialtext::File;
@@ -193,11 +193,13 @@ Exporting_account_people: {
     my $data = LoadFile($export_file);
     is $data->{name}, 'Test Account', 'name is in export';
     is $data->{is_system_created}, 0, 'is_system_created is in export';
-    is scalar(@{ $data->{users} }), 2, 'users exported in test account';
-    is $data->{users}[0]{username}, 'dummy2', 'user 1 username';
-    is $data->{users}[0]{email_address}, 'devnull2@example.com', 'user 1 email';
-    is $data->{users}[1]{username}, 'dummy3', 'user 2 username';
-    is $data->{users}[1]{email_address}, 'devnull3@example.com', 'user 2 email';
+    is scalar(@{ $data->{users} }), 3, 'users exported in test account';
+    is $data->{users}[0]{username}, 'dummy1', 'user 1 username';
+    is $data->{users}[0]{email_address}, 'devnull1@example.com', 'user 1 email';
+    is $data->{users}[1]{username}, 'dummy2', 'user 2 username';
+    is $data->{users}[1]{email_address}, 'devnull2@example.com', 'user 2 email';
+    is $data->{users}[2]{username}, 'dummy3', 'user 3 username';
+    is $data->{users}[2]{email_address}, 'devnull3@example.com', 'user 3 email';
 
     {
         use bytes;

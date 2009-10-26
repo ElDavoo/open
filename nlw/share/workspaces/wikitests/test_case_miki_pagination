@@ -53,7 +53,7 @@
 | click_and_wait | link=B |  |
 | wait_for_element_visible_ok | link=A | 30000 |
 | wait_for_element_visible_ok | link=C | 30000 |
-| wait_for_element_not_present_ok | link=B | 30000 |
+| wait_for_element_not_present_ok | link=B | 5000 |
 | click_and_wait | link=C |  |
 | wait_for_element_visible_ok | link=A | 30000 |
 | wait_for_element_visible_ok | link=B | 30000 |
@@ -63,12 +63,12 @@
 | wait_for_element_visible_ok | link=G | 30000 |
 | wait_for_element_visible_ok | link=H | 30000 |
 | wait_for_element_visible_ok | link=I | 30000 |
-| wait_for_element_not_present_ok | link=C | 30000 |
+| wait_for_element_not_present_ok | link=C | 5000 |
 | pause | 90000 | indexer needs to cach up with those new users. Sorry. I don't see a way around it. |
 | click_and_wait | link=A |  |
 
 | *Comment* | Test case: Miki Pagination - First Page |  |
-| wait_for_element_not_present_ok | link=A | 30000 |
+| wait_for_element_not_present_ok | link=A | 5000 |
 | wait_for_element_visible_ok | link=B | 30000 |
 | wait_for_element_visible_ok | link=C | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%01 | 30000 |
@@ -76,11 +76,11 @@
 | wait_for_element_visible_ok | link=%%baseusername%%06 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%07 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%20 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%21 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%41 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%21 | 5000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%41 | 5000 |
 | wait_for_element_visible_ok | link=Next page >> | 30000 |
-| wait_for_element_not_present_ok | link=<< Previous page | 30000 |
-| wait_for_element_not_present_ok | link=First page | 30000 |
+| wait_for_element_not_present_ok | link=<< Previous page | 5000 |
+| wait_for_element_not_present_ok | link=First page | 5000 |
 | text_like | //body | Next page >> |
 | text_like | //body | First page |
 
@@ -91,8 +91,8 @@
 | wait_for_element_visible_ok | link=%%baseusername%%30 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%35 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%40 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%01 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%41 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%01 | 5000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%41 | 5000 |
 | wait_for_element_visible_ok | link=Next page >> | 30000 |
 | wait_for_element_visible_ok | link=<< Previous page | 30000 |
 | wait_for_element_visible_ok | link=First page | 30000 |
@@ -101,12 +101,12 @@
 | wait_for_element_visible_ok | link=Next page >> | 30000 |
 | click_and_wait | link=Next page >> |  |
 | wait_for_element_visible_ok | link=%%baseusername%%41 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%01 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%21 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%30 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%35 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%40 | 30000 |
-| wait_for_element_not_present_ok | link=Next page >> | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%01 | 5000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%21 | 5000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%30 | 5000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%35 | 5000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%40 | 5000 |
+| wait_for_element_not_present_ok | link=Next page >> | 5000 |
 | text_like | //body | Next page >> |
 | wait_for_element_visible_ok | link=First page | 30000 |
 
@@ -117,8 +117,8 @@
 | wait_for_element_visible_ok | link=%%baseusername%%30 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%35 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%40 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%01 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%41 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%01 | 5000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%41 | 5000 |
 | wait_for_element_visible_ok | link=Next page >> | 30000 |
 | wait_for_element_visible_ok | link=<< Previous page | 30000 |
 
@@ -130,10 +130,10 @@
 | wait_for_element_visible_ok | link=%%baseusername%%06 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%07 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%20 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%21 | 30000 |
-| wait_for_element_not_present_ok | link=%%baseusername%%41 | 30000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%21 | 5000 |
+| wait_for_element_not_present_ok | link=%%baseusername%%41 | 5000 |
 | wait_for_element_visible_ok | link=Next page >> | 30000 |
-| wait_for_element_not_present_ok | link=<< Previous page | 30000 |
-| wait_for_element_not_present_ok | link=First page | 30000 |
+| wait_for_element_not_present_ok | link=<< Previous page | 5000 |
+| wait_for_element_not_present_ok | link=First page | 5000 |
 | text_like | //body | Next page >> |
 | text_like | //body | First page |

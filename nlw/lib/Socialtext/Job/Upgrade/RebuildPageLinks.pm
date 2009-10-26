@@ -6,6 +6,11 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 
+# Re-parsing all the content for each page can take a long time, so
+# we should not allow many of these jobs to run at the same time so that we
+# do not stall the ceq queue
+sub is_long_running { 1 }
+
 sub do_work {
     my $self = shift;
     my $ws   = $self->workspace or return;
@@ -13,15 +18,23 @@ sub do_work {
 
     return $self->completed unless $ws->real;
 
-    $self->hub->log->info("Rebuilding page links for workspace: " . $ws->name);
+    my $ws_name = $ws->name;
+    $self->hub->log->info("Rebuilding page links for workspace: $ws_name");
 
     my @pages = $self->hub->pages->all;
     eval {
         for my $page (@pages) {
-            my $links = Socialtext::PageLinks->new(hub => $hub, page => $page);
-            $links->update;
+            # we will be parsing some really crufty old pages, so be careful
+            # and don't worry too much if some of them fail.
+            eval {
+                my $links = Socialtext::PageLinks->new(hub => $hub, page => $page);
+                $links->update;
+            };
+            if ($@) {
+                $self->hub->log->error("Error extracting links from $ws_name/$page");
+            }
         }
-        my $dir = Socialtext::PageLinks->WorkspaceDirectory($ws->name);
+        my $dir = Socialtext::PageLinks->WorkspaceDirectory($ws_name);
         if ($dir and -d $dir) {
             for my $file (glob("$dir/*"), "$dir/.initialized") {
                 next unless -f $file;

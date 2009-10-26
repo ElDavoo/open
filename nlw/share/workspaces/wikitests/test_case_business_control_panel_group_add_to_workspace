@@ -41,7 +41,7 @@
 
 | *Comment* | Add To a workspace |  |
 | select-ok | //select | %%ws%% |
-| click-and-wait | st-add-group-to-workspace |  |
+| click-and-wait | //input[@value='Add to Workspace'] |  |
 
 | *Comment* | Test Case: Control Panel Group Add to Workspace Verify redirect, message |  |
 | text_like | //body | %%group%% Group |
@@ -56,7 +56,7 @@
 | wait_for_element_visible_ok | link=Add Group To A Workspace | 3000 |
 | click_and_wait | link=Add Group To A Workspace |  |
 | select-ok | workspace_id | %%ws%% |
-| click-and-wait | st-add-group-to-workspace |  |
+| click-and-wait | //input[@value='Add to Workspace'] |  |
 | text_like | //body | %%group%% Group |
 | text_like | //body | qr/Group is already a member of the %%ws%% workspace/ism |
 | text_like | //body | Accounts (1) |
@@ -75,7 +75,7 @@
 | check_ok | invite-as-admins |  |
 | is_checked_ok | invite-as-admins |  |
 | select-ok | //select | %%workspaceforadmin%% |
-| click-and-wait | st-add-group-to-workspace |  |
+| click-and-wait | //input[@value='Add to Workspace'] |  |
 | text_like | //body | %%group%% Group |
 | text_like | //body | qr/Group is now a member of the %%workspaceforadmin%% workspace/ism |
 | text_like | //body | Workspaces (2) |

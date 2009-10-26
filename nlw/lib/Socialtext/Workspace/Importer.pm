@@ -194,7 +194,7 @@ sub _create_workspace {
     for my $plugin (keys %{ $info->{plugins}}) {
         eval { $ws->enable_plugin($plugin) };
     }
-    $adapter->hook('nlw.import_workspace', $ws, $info->{plugins});
+    $adapter->hook('nlw.import_workspace', $ws, $info);
 
     $self->{workspace} = $ws;
 }

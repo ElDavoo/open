@@ -20,6 +20,8 @@ use Socialtext::Workspace;
 use Socialtext::l10n qw( loc );
 use Socialtext::String ();
 use Socialtext::SQL qw/sql_execute sql_format_timestamptz/;
+use Scalar::Util qw/blessed/;
+use Guard qw/scope_guard/;
 
 sub class_id { 'pages' }
 const class_title => 'NLW Pages';
@@ -363,42 +365,28 @@ sub page_in_workspace {
     return ($page->metadata->Revision and $page->active) ? $page : undef;
 }
 
-my $semaphore = {}; # for loop prevention
+my %in_progress = ();
 sub _render_in_workspace {
-    my $self           = shift;
-    my $page_id        = shift;
-    my $workspace_name = shift;
-    my $code           = shift;
+    my ($self, $page_id, $ws, $callback) = @_;
 
+    my $page_key = $ws->workspace_id . ":$page_id";
+    return if (exists $in_progress{$page_key});
+    $in_progress{$page_key} = 1;
+    scope_guard { delete $in_progress{$page_key} };
+
+    my $main;
     my $hub = $self->hub;
-    if ( $workspace_name ne $self->hub->current_workspace->name ) {
-        my $main = Socialtext->new();
-        $main->load_hub(
-            current_user      => Socialtext::User->SystemUser(),
-            current_workspace =>
-                Socialtext::Workspace->new( name => $workspace_name ),
-        );
+    if ($ws->workspace_id ne $self->hub->current_workspace->workspace_id) {
         my $original_hub = $hub;
-        $hub = $main->hub();
-        $hub->registry()->load();
+        ($main, $hub) = $ws->_main_and_hub($original_hub->current_user);
 
         my $link_dictionary = $original_hub->viewer->link_dictionary->clone;
         $link_dictionary->free($link_dictionary->interwiki);
         $hub->viewer->link_dictionary($link_dictionary);
     }
 
-    $hub->current_user( $self->hub->current_user );
-
-    my $semaphore_string = $hub->current_workspace->workspace_id . ":$page_id";
-    return '' if ( exists $semaphore->{$semaphore_string} );
-    $semaphore->{$semaphore_string}++;
-
-    my $target_page = $hub->pages->new_page($page_id);
-    my $html = $code->($target_page);
-
-    delete $semaphore->{$semaphore_string};
-
-    return $html;
+    $callback->($hub->pages->new_page($page_id));
+    return; # make above call void context
 }
 
 sub html_for_page_in_workspace {
@@ -406,14 +394,13 @@ sub html_for_page_in_workspace {
     my $page_id        = shift;
     my $workspace_name = shift;
 
-    return $self->_render_in_workspace(
-        $page_id,
-        $workspace_name,
-        sub {
-            my $page = shift;
-            return $page->to_html_or_default;
-        }
-    );
+    my $ws = Socialtext::Workspace->new(name => $workspace_name);
+    my $html;
+    $self->_render_in_workspace($page_id, $ws, sub {
+        my $page = shift;
+        $html = $page->to_html_or_default;
+    });
+    return $html;
 }
 
 # Grab the wikitext from a spreadsheet and put it in a page object.

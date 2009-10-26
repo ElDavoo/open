@@ -62,10 +62,12 @@ sub import_groups_for_account {
         my $group = _import_group($group_info, $acct);
 
         # Give the Group an explicit Role in the Account
-        if ($group_info->{role_name}) {
-            my $role = Socialtext::Role->new(name => $group_info->{role_name});
-            $acct->add_group(group => $group, role => $role);
+        my $role = Socialtext::Role->new(name => $group_info->{role_name});
+        unless ($role) {
+            warn loc("Missing/unknown Role '[_1]'; using default Role", $group_info->{role_name}) . "\n";
+            $role = Socialtext::GroupAccountRoleFactory->DefaultRole();
         }
+        $acct->add_group(group => $group, role => $role);
 
         # Add all of the Users from the export into the Group
         $self->_set_ugrs_on_import($group, $group_info->{users});
@@ -123,9 +125,10 @@ sub export_groups_for_workspace {
     while (my $gwr = $gwrs->next()) {
         my $group      = $gwr->group;
         my $group_data = {
-            driver_group_name   => $group->driver_group_name,
-            created_by_username => $group->creator->username,
-            role_name           => $gwr->role->name,
+            primary_account_name => $group->primary_account->name,
+            driver_group_name    => $group->driver_group_name,
+            created_by_username  => $group->creator->username,
+            role_name            => $gwr->role->name,
         };
         $group_data->{users} = $self->_get_ugrs_for_export($group);
         push @groups, $group_data;
@@ -152,14 +155,12 @@ sub import_groups_for_workspace {
 
         # Add the Group into the Workspace, using the default Role if we're
         # unable to find the Role that it used to have.
-        my $group_role = Socialtext::Role->new(
-            name => $group_info->{role_name},
-        );
-        unless ($group_role) {
+        my $role = Socialtext::Role->new(name => $group_info->{role_name});
+        unless ($role) {
             warn loc("Missing/unknown Role '[_1]'; using default Role", $group_info->{role_name}) . "\n";
-            $group_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
+            $role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
         }
-        $ws->add_group(group => $group, role => $group_role);
+        $ws->add_group(group => $group, role => $role);
     }
 }
 

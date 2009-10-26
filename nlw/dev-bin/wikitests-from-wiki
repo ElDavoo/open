@@ -14,11 +14,11 @@ echo "Using: $SERVER"
 
 
 if [ "$1" == "testcase" ] || [ "$1" == "" ] ; then
-    stu-local-copy -s $SERVER -w wikitests  -u devnull1@socialtext.com -p d3vnu11l --to $DIR --tag testcase
+    stu-local-copy -s $SERVER -w wikitests  --username devnull1@socialtext.com -p d3vnu11l --to $DIR --tag testcase
 fi
 
 if [ "$1" == "testset" ] || [ "$1" == "" ]; then
-    stu-local-copy -s $SERVER -w wikitests  -u devnull1@socialtext.com -p d3vnu11l --to $DIR --tag testset
+    stu-local-copy -s $SERVER -w wikitests  --username devnull1@socialtext.com -p d3vnu11l --to $DIR --tag testset
 fi
 
 echo "$DIR has been updated."

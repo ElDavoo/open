@@ -1,8 +1,9 @@
 | *Comment* | Starting Test Case: Sidebar: Incoming Links |  |
 
- Add a link to a non-existent page in an existing page | incipient page link appears in existing page | incipient page link has dotted underline
+Add a link to a non-existent page in an existing page | incipient page link appears in existing page | incipient page link has dotted underline
 Navigate to a page known to have zero incoming links | system displays "There are no pages that link to this page yet."
 
+| *Comment* | Test Case: Sidebar: Incoming Links. create TC Incoming Links %%start_time%% |  |
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -13,12 +14,14 @@ Navigate to a page known to have zero incoming links | system displays "There ar
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | clickAndWait | st-save-button-link |  |
 
+| *Comment* | Test Case: Sidebar: Incoming Links. no incoming links |  |
 | text_like | link=TC Incoming Links New Page %%start_time%% | TC Incoming Links New Page %%start_time%% |
 | text_like | contentRight | There are no pages that link to this page yet |
 
- Click non-existent link | new page appears ready for editing
+Click non-existent link | new page appears ready for editing
 edit and save new page | existing page appears in new page incoming links
 
+| *Comment* | Test Case: Sidebar: Incoming Links. create a backlink |  |
 | click_ok | link=TC Incoming Links New Page %%start_time%% |  |
 | wait_for_element_visible_ok | blank-radio | 20000 |
 | click_ok | blank-radio |  |
@@ -29,36 +32,41 @@ edit and save new page | existing page appears in new page incoming links
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | clickAndWait | st-save-button-link |  |
 
+| *Comment* | Test Case: Sidebar: Incoming Links. verify backlink |  |
 | text_like | link=TC Incoming Links %%start_time%% | TC Incoming Links %%start_time%% |
 
- navigate to and delete existing page | page is gone
+navigate to and delete existing page | page is gone
 navigate to new page | Incoming link to old page is gone
 
+| *Comment* | Test Case: Sidebar: Incoming Links. delete TC Incoming Links %%start_time%% |  |
 | clickAndWait | link=TC Incoming Links %%start_time%% |  |
 | click_ok | link=Delete Page |  |
 | wait_for_element_visible_ok | st-delete-deletelink | 20000 |
 | click_and_wait | st-delete-deletelink |  |
 
+| *Comment* | Test Case: Sidebar: Incoming Links. verify backlink gone |  |
 | open_ok | /%%workspace%%/?TC Incoming Links New Page %%start_time%% |  |
 | text_like | There are no pages that link to this page yet. |  |
 
-| *Comment* | Starting Test Case: Sidebar: Incoming Links Teardown |
-
+| *Comment* | Test Case: Sidebar: Incoming Links. delete TC Incoming Links New Page %%start_time%% |
 | click_ok | link=Delete Page |  |
 | wait_for_element_visible_ok | st-delete-deletelink | 20000 |
 | click_and_wait | st-delete-deletelink |  |
 
- Navigate to a page known to have incoming links | incoming links appear in sidepanel
-Navigate to a page known to have many incoming links | all incoming links appear in sidepanel | Help workspace central page is a good page
+Navigate to a page known to have incoming links | incoming links appear in sidepanel
+Navigate to a page known to have many incoming links | all incoming links appear in sidepanel
 
-| open_ok | /%%workspace%%/?Start Here |
-
-*Comment* Announcements and Links cannot be counted on since it is written by other tests
-
+| *Comment* | Test Case: Sidebar: Incoming Links. Verify existing backlinks |
+| open_ok | /%%workspace%%/?Start Here |  |
 | text_like | link=What else is here? | What else is here? |
 | text_like | link=Workspace Tour - Table of Contents | Workspace Tour - Table of Contents |
 
-| *Comment* | Test Case : Sidebar: Incoming Links Teardown |  |
+Help workspace central page is a good page
+| *Comment* | Test Case: Sidebar: Incoming Links. Verify existing backlinks in help |
+| open_ok | /help-en | |
+| text_like | link=Stop Words | Stop Words |
+
+| *Comment* | Test Case : Sidebar: Incoming Links TEARDOWN |  |
 | st-admin | purge-page --w %%workspace%% --page tc_incoming_links_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page tc_incoming_links_new_page_%%start_time%% | was purged |
 

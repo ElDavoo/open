@@ -364,13 +364,15 @@ sub _add_workspace_pages {
     }
 }
 
+# used by Socialtext::Pages too
 sub _main_and_hub {
     my $self = shift;
+    my $user = shift || Socialtext::User->SystemUser();
 
     my $main = Socialtext->new;
     my $hub = $main->load_hub(
         current_workspace => $self,
-        current_user      => Socialtext::User->SystemUser(),
+        current_user      => $user,
     );
     $hub->registry->load;
 

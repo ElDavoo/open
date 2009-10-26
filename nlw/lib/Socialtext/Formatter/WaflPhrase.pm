@@ -550,29 +550,24 @@ sub html {
     my $ws = Socialtext::Workspace->new( name => $workspace_name );
     return $self->permission_error unless $ws;
 
-    if ($ws->workspace_id == $self->hub->current_workspace->workspace_id) {
-        my $page = $self->hub->pages->new_page($page_id);
-        return $self->cell_value($page, $section_id);
+    if ($ws->workspace_id != $self->hub->current_workspace->workspace_id) {
+        return $self->permission_error
+            unless $self->authz->user_has_permission_for_workspace(
+                user       => $self->current_user,
+                permission => ST_READ_PERM,
+                workspace  => $ws,
+            );
     }
-
-    # it's cross-workspace
-    return $self->permission_error
-        unless $self->authz->user_has_permission_for_workspace(
-            user       => $self->current_user,
-            permission => ST_READ_PERM,
-            workspace  => $ws,
-        );
 
     my $content = $section_id;
     eval {
-        $self->hub->pages->_render_in_workspace(
-            $page_id, $workspace_name, sub {
-                my $page = shift;
-                $content = $self->cell_value($page, $section_id);
-                return; # don't pass content all the way up
-            }
-        );
+        # implements anti-recursion:
+        $self->hub->pages->_render_in_workspace($page_id, $ws, sub {
+            my $page = shift;
+            $content =  $self->cell_value($page, $section_id);
+        });
     };
+    warn "error rendering cell value: $@" if $@;
     return $content;
 }
 

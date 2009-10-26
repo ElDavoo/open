@@ -97,10 +97,9 @@
 | open | /console |  |
 | text_like | Socialtext Appliance |  |
 | click_and_wait | link=Setup |  |
-| is_text_present_ok | Internet Time Server |  |
+| is_text_present_ok | Time Server |  |
 | is_text_present_ok | Appliance clock when this screen was generated: |  |
-| is_text_present_ok | Internet Time Server |  |
-| is_text_present_ok | You can synchronize the appliance clock with another computer using the Internet Time protocol. The appliance must be able to contact that server via port 37. |  |
+| is_text_present_ok | You can synchronize the appliance clock with another computer using the NTP protocol. The appliance must be able to contact that server via port 123. |  |
 | is_text_present_ok | Apache Logs |  |
 
 | *Comment* | Test Case: Console Setup. Email server, appliance admin, initial workspace |  |
@@ -143,10 +142,12 @@
 | *Comment* | Test Case: Console Setup. time server |  |
 | type_ok | timeserver | mytimeserver |
 | click_and_wait | timeserver_config |  |
-| config_is | timeserver | mytimeserver |
+| is_text_present_ok | ntpdate check failed |  |
 | type_ok | timeserver |  |
 | click_and_wait | timeserver_config |  |
-| value_is | timeserver | ntp.ubuntu.org |
+| value_is | timeserver | ntp.ubuntu.com |
+| click_and_wait | timeserver_sync |  |
+| is_text_present_ok | Synchronized time with ntp.ubuntu.com |  |
 
 | *Comment* | Test Case: Console Setup. apache logs |  |
 | click_and_wait | apache_error_log |  |
@@ -161,7 +162,7 @@
 | type_ok | smarthost |  |
 | click_and_wait | config_email |  |
 
-| *Comment* | Test Case: Console Setup. make sure the default setting is ntp.ubuntu.org |  |
-| value_is | timeserver | ntp.ubuntu.org |
+| *Comment* | Test Case: Console Setup. make sure the default setting is ntp.ubuntu.com |  |
+| value_is | timeserver | ntp.ubuntu.com |
 
 | *Comment* | Test Case: Console Setup COMPLETED |  |

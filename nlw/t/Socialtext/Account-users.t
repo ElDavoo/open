@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 25;
+use Test::Socialtext tests => 28;
 use Socialtext::Role;
 
 ###############################################################################
@@ -116,17 +116,81 @@ user_has_role_in_account: {
 }
 
 ###############################################################################
-# TEST: What Role does the User have in the Account.
-what_role_does_user_have_in_account: {
+# TEST: Role For User - User's Primary Account
+role_for_user_primary_account: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user(account => $account);
+
+    # NOTE: when we change it so that a User defaults to being a "Member" of
+    # their Primary Account, this'll fail (at which point we update the test
+    # to do it on "Member", not "Affiliate").
+    my $role    = Socialtext::Role->Affiliate();
+
+    my $q_role = $account->role_for_user(user => $user);
+    is $q_role->name, $role->name, 'User has Affiliate Role in Primary Account';
+}
+
+###############################################################################
+# TEST: Role For User - Explicitly assigned Role
+role_for_user_explicit_role: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user();
     my $role    = Socialtext::Role->WorkspaceAdmin();
 
     $account->add_user(user => $user, role => $role);
-    is $account->user_count(), 1, 'User was added to Account';
 
     my $q_role = $account->role_for_user(user => $user);
-    is $q_role->name, $role->name, '... with assigned Role';
+    is $q_role->name, $role->name, 'User has assigned Role in Account';
+}
+
+###############################################################################
+# TEST: Role For User - indirect Role through Workspace membership
+role_for_user_indirect_via_workspace: {
+    my $account   = create_test_account_bypassing_factory();
+    my $workspace = create_test_workspace(account => $account);
+    my $user      = create_test_user();
+    my $Affiliate = Socialtext::Role->Affiliate();
+    my $Admin     = Socialtext::Role->WorkspaceAdmin();
+
+    $workspace->add_user(user => $user, role => $Admin);
+
+    my $q_role = $account->role_for_user(user => $user);
+    is $q_role->name, $Affiliate->name,
+        'User has Affiliate Role, via Workspace membership';
+}
+
+###############################################################################
+# TEST: Role For User - indirect Role through Group membership
+role_for_user_indirect_via_group: {
+    my $account   = create_test_account_bypassing_factory();
+    my $group     = create_test_group(account => $account);
+    my $user      = create_test_user();
+    my $Member    = Socialtext::Role->Member();
+    my $Admin     = Socialtext::Role->WorkspaceAdmin();
+
+    $group->add_user(user => $user, role => $Admin);
+
+    my $q_role = $account->role_for_user(user => $user);
+    is $q_role->name, $Member->name,
+        'User has Member Role, via Group membership';
+}
+
+###############################################################################
+# TEST: Role For User - indirect Role through Group->Workspace membership
+role_for_user_indirect_via_group_in_workspace: {
+    my $account   = create_test_account_bypassing_factory();
+    my $workspace = create_test_workspace(account => $account);
+    my $group     = create_test_group();
+    my $user      = create_test_user();
+    my $Affiliate = Socialtext::Role->Affiliate();
+    my $Admin     = Socialtext::Role->WorkspaceAdmin();
+
+    $workspace->add_group(group => $group, role => $Admin);
+    $group->add_user(user => $user, role => $Admin);
+
+    my $q_role = $account->role_for_user(user => $user);
+    is $q_role->name, $Affiliate->name,
+        'User has Affiliate Role, via Group in Workspace membership';
 }
 
 ###############################################################################

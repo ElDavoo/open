@@ -158,15 +158,15 @@
 | text_like | People I follow |  |
 | click_and_wait | link=My Conversations |  |
 
-| *Comment* | Test Case: Miki change enabled-ness, see different global nav ftw. |  |
+| *Comment* | Test Case: Miki change enabled-ness, see different global nav |  |
 | disable-acct-plugin | signals | %%mikiacct%% |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 | st-login | %%mikiuser%% | %%password%% |
 | open_ok | /m/ |  |
-| wait_for_element_visible_ok | link=Log out | 30000 |
-| wait_for_element_not_present_ok | link=Signals | 30000 |
+| wait_for_element_visible_ok | link=Workspaces | 30000 |
+|  click_and_wait |  link=Workspaces |  |
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | text_like | Workspaces |  |
 | text_like | Hello, %%mikiuser%% |  |

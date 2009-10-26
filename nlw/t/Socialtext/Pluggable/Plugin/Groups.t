@@ -96,10 +96,11 @@ backup: {
     } "Exporting all groups for workspace '" . $ws->name . "'...\n";
     $expected = [
         {
-            driver_group_name   => $group_three->driver_group_name,
-            created_by_username => $def_user->username,
-            role_name           => 'workspace_admin',
-            users               => [
+            driver_group_name    => $group_three->driver_group_name,
+            created_by_username  => $def_user->username,
+            role_name            => 'workspace_admin',
+            primary_account_name => $group_three->primary_account->name,
+            users                => [
                 {
                     username  => $user_two->username,
                     role_name => $ugr_role->name,
