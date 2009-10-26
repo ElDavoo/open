@@ -1,12 +1,12 @@
- *User Action* | *Expected Result* | *Comments*
-login as administrator | login successful
-go to Settings->Workspace Privacy | center panel displays workspace privacy setting screen
-Choose Setting: Public-join-to-edit and Save | permission set is saved.
-logout | browser navigates to Central page. Edit button is replaced with new "Edit" button.
-
 | *Comment* | Test Case: Workspace Privacy |  |
+
+| *Comment* | Test Case: Workspace Privacy. Make a scratch workspace |  |
+| set | wspriv | wspriv-%%start_time%% |
+| st-admin | create-workspace --n %%wspriv%% --t WSPRIV | was created |
+| st-admin | add-workspace-admin --u %%username%% --w %%wspriv%% | is now a |
+
 | *Comment* | Test Case: Workspace Privacy set login to edit |  |
-| open_ok | /%%workspace%%/?action=users_settings |  |
+| open_ok | /%%wspriv%%/?action=users_settings |  |
 | clickAndWait | link=Workspace Privacy |  |
 | click_ok | //input[@name='permission_set_name' and @value='public-join-to-edit'] |  |
 | clickAndWait | link=Save |  |
@@ -15,11 +15,7 @@ logout | browser navigates to Central page. Edit button is replaced with new "Ed
 | *Comment* | Test Case: Workspace Privacy verify login to edit button |  |
 | wait_for_element_visible_ok | link=Join | 30000 |
 
- Log in | login successful
-Go to Settings->Workspace Privacy and set permissions: Public-read-only | permission set is saved.
-logout | Browser navigates to central page. Edit and comment buttons are gone.
-
-| *Comment* | Test Case: Workspace Privacy login and edit |  |
+| *Comment* | Test Case: Workspace Privacy Join |  |
 | clickAndWait | link=Join |  |
 | wait_for_element_visible_ok | email_address | 30000 |
 | wait_for_element_visible_ok | password | 30000 |
@@ -28,9 +24,11 @@ logout | Browser navigates to central page. Edit and comment buttons are gone.
 | wait_for_element_visible_ok | first_name | 30000 |
 | wait_for_element_visible_ok | link=Click here to log in with an existing account. | 30000 |
 | click_and_wait | link=Click here to log in with an existing account. |  |
-| type_ok | username | %%username%% |
-| type_ok | password | %%password%% |
-| clickAndWait | login_btn |  |
+
+| *Comment* | Test Case: Workspace Privacy login and edit |  |
+| st-login |  |  |
+| open_ok | /%%wspriv%%/ |  |
+
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
@@ -53,15 +51,10 @@ logout | Browser navigates to central page. Edit and comment buttons are gone.
 | wait_for_element_not_present_ok | st-edit-button-link-bottom | 5000 |
 | wait_for_element_not_present_ok | st-comment-button-link-bottom | 5000 |
 
- log in | login successful
-go to Settings->Workspace Privacy and set Permissions: Public read and comment only. | permission set is saved.
-log out | central page appears. Comment button is present, but no edit button.
-
 | *Comment* | Test Case: Workspace Privacy set public comment only |  |
-| clickAndWait | link=Log in |  |
-| type_ok | username | %%username%% |
-| type_ok | password | %%password%% |
-| clickAndWait | login_btn |  |
+| st-login |  |  |
+| open_ok | /%%wspriv%%/ |  |
+
 | clickAndWait | link=Settings |  |
 | clickAndWait | link=Workspace Privacy |  |
 | click_ok | //input[@name='permission_set_name' and @value='public-comment-only'] |  |
@@ -74,15 +67,10 @@ log out | central page appears. Comment button is present, but no edit button.
 | wait_for_element_not_present_ok | st-edit-button-link-bottom | 5000 |
 | wait_for_element_present_ok | st-comment-button-link-bottom | 5000 |
 
-log in | login successful.
-go to Settings-> workspace privacy and set permissions: fully public | permission set is saved.
-logout | browser navigates to central page. Edit and comment buttons are present. | *Comment* | Setting privacy | |
-
 | *Comment* | Test Case: Workspace Privacy set public |  |
-| clickAndWait | link=Log in |  |
-| type_ok | username | %%username%% |
-| type_ok | password | %%password%% |
-| clickAndWait | login_btn |  |
+| st-login |  |  |
+| open_ok | /%%wspriv%%/ |  |
+
 | clickAndWait | link=Settings |  |
 | clickAndWait | link=Workspace Privacy |  |
 | click | //input[@name='permission_set_name' and @value='public'] |  |
@@ -95,16 +83,10 @@ logout | browser navigates to central page. Edit and comment buttons are present
 | wait_for_element_present_ok | st-edit-button-link-bottom | 5000 |
 | wait_for_element_present_ok | st-comment-button-link-bottom | 5000 |
 
- login | login successful
-go to Settings-> workspace privacy and set permissions: private | permission set is saved.
-logout | logged out
-Observe browser | should be redirected to the login screen
-
 | *Comment* | Test Case: Workspace Privacy set private |  |
-| clickAndWait | link=Log in |  |
-| type_ok | username | %%username%% |
-| type_ok | password | %%password%% |
-| clickAndWait | login_btn |  |
+| st-login |  |  |
+| open_ok | /%%wspriv%%/ |  |
+
 | clickAndWait | link=Settings |  |
 | clickAndWait | link=Workspace Privacy |  |
 | click_ok | //input[@name='permission_set_name' and @value='member-only'] |  |
@@ -119,17 +101,19 @@ Observe browser | should be redirected to the login screen
 
 | *Comment* | Test Case: Workspace Privacy email from guest/authenticated user |  |
 | st-login |  |  |
+| open_ok | /%%wspriv%%/ |  |
+
 | clickAndWait | link=Settings |  |
 | clickAndWait | link=Workspace Privacy |  |
 | click_ok | //input[@name='permission_set_name' and @value='member-only'] |  |
 | click_ok | //input[@name='guest_has_email_in' and @value='1'] |  |
 | clickAndWait | link=Save |  |
-| text_like | contentContainer | Anyone can send email to %%workspace%%. |
+| text_like | contentContainer | Anyone can send email to %%wspriv%%. |
 | click_ok | //input[@name='guest_has_email_in' and @value='0'] |  |
 | clickAndWait | link=Save |  |
-| text_like | contentContainer | Only registered users can send email to %%workspace%%. |
+| text_like | contentContainer | Only registered users can send email to %%wspriv%%. |
 
 | *Comment* | Test Case: Workspace Privacy Teardown |  |
-| st-admin | set-permissions --workspace %%workspace%% --permission member-only |  |
+| st-admin | delete-workspace --no-export --workspace %%wspriv%% | has been deleted |
 
 | *Comment* | Test Case: Workspace Privacy COMPLETED |  |
