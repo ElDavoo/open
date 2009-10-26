@@ -34,13 +34,9 @@ sub export_groups_for_account {
 
     my $groups = $acct->groups();
     while (my $group = $groups->next()) {
+        my $group_data = $group->serialize_for_export();
         my $role = $acct->role_for_group(group => $group);
-        my $group_data = {
-            primary_account_name => $group->primary_account->name,
-            driver_group_name    => $group->driver_group_name,
-            created_by_username  => $group->creator->username,
-            ($role ? (role_name=>$role->name) : ()),
-        };
+        $group_data->{role_name} = $role->name if ($role);
         $group_data->{users} = $self->_get_ugrs_for_export($group);
         push @groups, $group_data;
     }
@@ -124,13 +120,9 @@ sub export_groups_for_workspace {
 
     while (my $gwr = $gwrs->next()) {
         my $group      = $gwr->group;
-        my $group_data = {
-            primary_account_name => $group->primary_account->name,
-            driver_group_name    => $group->driver_group_name,
-            created_by_username  => $group->creator->username,
-            role_name            => $gwr->role->name,
-        };
-        $group_data->{users} = $self->_get_ugrs_for_export($group);
+        my $group_data = $group->serialize_for_export();
+        $group_data->{role_name} = $gwr->role->name;
+        $group_data->{users}     = $self->_get_ugrs_for_export($group);
         push @groups, $group_data;
     }
 

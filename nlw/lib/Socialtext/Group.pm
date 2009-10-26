@@ -468,6 +468,16 @@ sub users_as_minimal_arrayref {
     return $members;
 }
 
+sub serialize_for_export {
+    my $self = shift;
+    return {
+        # Convert IDs to "name"s for export
+        primary_account_name    => $self->primary_account->name,
+        driver_group_name       => $self->driver_group_name,
+        created_by_username     => $self->creator->username,
+    };
+}
+
 sub _build_workspace_count {
     return shift->workspaces->count;
 }
@@ -524,6 +534,9 @@ Socialtext::Group - Socialtext Group object
   # get cached counts
   $n = $group->user_count;
   $n = $group->workspace_count;
+
+  # serialize the Group metadata for export
+  $hash = $group->serialize_for_export();
 
 =head1 DESCRIPTION
 
@@ -718,6 +731,11 @@ in.
 =item B<$group-E<gt>workspace_count>
 
 Returns a B<cached> count of Workspaces in which this Group has a Role
+
+=item B<$group->serialize_for_export()>
+
+Serializes the Group metadata for export, and returns it to the caller as a
+hash-ref.
 
 =item B<$group-E<gt>homunculus()>
 
