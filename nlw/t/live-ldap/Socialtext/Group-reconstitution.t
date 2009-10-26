@@ -26,18 +26,15 @@ reconstitute_default_group_on_workspace_import: {
     $workspace->add_group(group => $group);
 
     # Export the Workspace
-    my $export_dir = tempdir(CLEANUP => 1);
-    my $tarball    = $workspace->export_to_tarball(dir => $export_dir);
-
-    # Flush; WS, Group, both Accounts
-    Test::Socialtext::Group->delete_recklessly($group);
-    Test::Socialtext::Workspace->delete_recklessly($workspace);
-    Test::Socialtext::Account->delete_recklessly($primary_account);
-    Test::Socialtext::Account->delete_recklessly($secondary_account);
-    Socialtext::Cache->clear();
-
-    # Import the Workspace
-    Socialtext::Workspace->ImportFromTarball(tarball => $tarball);
+    export_and_import_workspace(
+        workspace => $workspace,
+        flush     => sub {
+            Test::Socialtext::Group->delete_recklessly($group);
+            Test::Socialtext::Workspace->delete_recklessly($workspace);
+            Test::Socialtext::Account->delete_recklessly($primary_account);
+            Test::Socialtext::Account->delete_recklessly($secondary_account);
+        },
+    );
 
     # VERIFY: Group exists w/correctPrimary Account
     my $q_primary = Socialtext::Account->new(
@@ -50,9 +47,6 @@ reconstitute_default_group_on_workspace_import: {
     );
     isa_ok $q_group, 'Socialtext::Group',
         'Group reconstituted, w/correct Primary Account';
-
-    # CLEANUP
-    rmtree [$export_dir], 0;
 }
 
 ###############################################################################
@@ -71,26 +65,43 @@ merge_default_group_on_workspace_import: {
     $workspace->add_group(group => $group);
 
     # Export the Workspace
-    my $export_dir = tempdir(CLEANUP => 1);
-    my $tarball    = $workspace->export_to_tarball(dir => $export_dir);
+    export_and_import_workspace(
+        workspace => $workspace,
+        flush => sub {
+            # change Group membership, so we can verify that membership gets
+            # merged in properly
+            $group->remove_user(user => $user_one);
+            $group->add_user(user => $user_two);
 
-    # Change the Group membership, so we can verify that membership gets
-    # merged in.
-    $group->remove_user(user => $user_one);
-    $group->add_user(user => $user_two);
-
-    # Flush the Workspace we're re-importing
-    Test::Socialtext::Workspace->delete_recklessly($workspace);
-    Socialtext::Cache->clear();
-
-    # Import the Workspace
-    Socialtext::Workspace->ImportFromTarball(tarball => $tarball);
+            # flush workspace
+            Test::Socialtext::Workspace->delete_recklessly($workspace);
+        },
+    );
 
     # VERIFY: Group membership list was merged
     my @expected = map { $_->username } ($user_one, $user_two);
     my @received = map { $_->username } $group->users->all;
     eq_or_diff \@received, \@expected,
         'Group membership list merged on Workspace import';
+}
+
+
+###############################################################################
+# Helper method to export+reimport Workspace.
+sub export_and_import_workspace {
+    my %args = @_;
+    my $workspace = $args{workspace};
+    my $flush   = $args{flush} || sub { };
+
+    my $export_dir = tempdir(CLEANUP => 1);
+    my $tarball = $workspace->export_to_tarball(dir => $export_dir);
+
+    # Flush our test data.
+    $flush->();
+    Socialtext::Cache->clear();
+
+    # Re-import the Workspace.
+    Socialtext::Workspace->ImportFromTarball(tarball => $tarball);
 
     # CLEANUP
     rmtree [$export_dir], 0;
