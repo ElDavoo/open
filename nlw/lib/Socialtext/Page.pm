@@ -609,15 +609,57 @@ for examples.
 sub get_units {
     my $self    = shift;
     my %matches = @_;
+    my @units;
+
+    my $chunker = sub {
+        my $content_ref = shift;
+        _chunk_it_up( $content_ref, sub {
+            my $chunk_ref = shift;
+            $self->_get_units_for_chunk(\%matches, $chunk_ref, \@units);
+        });
+    };
+
+    my $content = $self->content;
+    if ($self->is_spreadsheet) {
+        require Socialtext::Sheet;
+        my $sheet = Socialtext::Sheet->new(sheet_source => \$content);
+        my $valueformats = $sheet->_sheet->{valueformats};
+        for my $cell_name (@{ $sheet->cells }) {
+            my $cell = $sheet->cell($cell_name);
+
+            my $tvf_num = $cell->textvalueformat
+                || $sheet->{defaulttextvalueformat};
+            next unless defined $tvf_num;
+            my $format = $valueformats->[$tvf_num];
+            next unless defined $format;
+            next unless $format =~ m/^text-wiki/;
+
+            # The Socialtext::Formatter::Parser expects this content
+            # to end in a newline.  Without it no links will be found for
+            # simple pages.
+            $content = $cell->datavalue . "\n";
+
+            $chunker->(\$content);
+        }
+    }
+    else {
+        $chunker->(\$content);
+    }
+
+    return \@units;
+}
+
+sub _get_units_for_chunk {
+    my $self = shift;
+    my $matches = shift;
+    my $content_ref = shift;
+    my $units = shift;
 
     my $parser = Socialtext::Formatter::Parser->new(
         table      => $self->hub->formatter->table,
         wafl_table => $self->hub->formatter->wafl_table
     );
-    my $parsed_unit = $parser->text_to_parsed( $self->content );
-
-    my @units;
-
+    my $parsed_unit = $parser->text_to_parsed( $$content_ref );
     {
         no warnings 'once';
         # When we use get_text to unwind the parse tree and give
@@ -631,15 +673,12 @@ sub get_units {
         my $sub = sub {
             my $unit         = shift;
             my $formatter_id = $unit->formatter_id;
-            if ( $matches{$formatter_id} ) {
-                push @units, $matches{$formatter_id}->($unit);
+            if ( $matches->{$formatter_id} ) {
+                push @$units, $matches->{$formatter_id}($unit);
             }
         };
         $self->traverse_page_units($parsed_unit->units, $sub);
     }
-
-
-    return \@units;
 }
 
 =head2 $page->traverse_page_units($units, $sub)
@@ -1577,20 +1616,30 @@ sub _to_plain_text {
         return $self->_to_spreadsheet_plain_text( $content );
     }
 
+    my $plain_text = '';
+    _chunk_it_up( \$content, sub {
+        my $chunk_ref = shift;
+        $plain_text 
+            .= $self->_to_socialtext_wikitext_parser_plain_text($$chunk_ref);
+    });
+    return $plain_text;
+}
+
+sub _chunk_it_up {
+    my $content_ref = shift;
+    my $callback    = shift;
+
     # The WikiText::Parser doesn't yet handle really large chunks,
     # so we should chunk this up ourself.
     my $chunk_start = 0;
     my $chunk_size  = 100 * 1024;
-    my $plain_text  = '';
     while (1) {
-        my $chunk = substr( $content, $chunk_start, $chunk_size );
+        my $chunk = substr( $$content_ref, $chunk_start, $chunk_size );
         last unless length $chunk;
         $chunk_start += length $chunk;
 
-        $plain_text
-            .= $self->_to_socialtext_wikitext_parser_plain_text($chunk);
+        $callback->(\$chunk);
     }
-    return $plain_text;
 }
 
 sub _to_socialtext_formatter_parser_plain_text {
