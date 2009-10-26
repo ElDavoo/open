@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 35;
+use Test::Socialtext tests => 45;
 use Test::Socialtext::User;
 use Test::Socialtext::Group;
 use Test::Socialtext::Workspace;
@@ -322,6 +322,56 @@ reconsitute_default_group_on_account_import: {
         'Group membership list merged on Account import';
 }
 
+###############################################################################
+# CASE: Have "LDAP" Group, export w/Account, flush, Group is found again in
+# LDAP, we just pull membership from LDAP (as we know any membership we import
+# is going to get thrown away).
+existing_ldap_group_on_account_import: {
+    local $Socialtext::Group::Factory::Asynchronous = 0;
+    my $openldap     = bootstrap_openldap();
+    my $dn_motorhead = 'cn=Motorhead,dc=example,dc=com';
+
+    my $primary_account = create_test_account_bypassing_factory();
+    my $group           = Socialtext::Group->GetGroup(
+        primary_account_id => $primary_account->account_id,
+        driver_unique_id   => $dn_motorhead,
+    );
+    ok $group, 'Loaded Group from LDAP';
+
+    my $secondary_account = create_test_account_bypassing_factory();
+
+    # Add the Group to the Account
+    $secondary_account->add_group(group => $group);
+
+    # Export the Account
+    export_and_import_account(
+        account => $secondary_account,
+        flush   => sub {
+            Test::Socialtext::Group->delete_recklessly($group);
+            Test::Socialtext::Account->delete_recklessly($primary_account);
+            Test::Socialtext::Account->delete_recklessly($secondary_account);
+        },
+    );
+
+    # VERIFY: Peek into DB and make sure that the Group was re-vivified
+    my $q_primary = Socialtext::Account->new(
+        name => $primary_account->name,
+    );
+    my %group_args = (
+        primary_account_id => $q_primary->account_id,
+        created_by_user_id => $group->created_by_user_id,
+        driver_group_name  => $group->driver_group_name,
+    );
+    my $q_group_proto = Socialtext::Group->GetProtoGroup(%group_args);
+    ok $q_group_proto, 'Group was re-vivified during import';
+
+    # VERIFY: Group has Role in Account
+    my $q_group     = Socialtext::Group->GetGroup(%group_args);
+    my $q_secondary = Socialtext::Account->new(
+        name => $secondary_account->name,
+    );
+    ok $q_secondary->has_group($q_group), '... and was given Role in Account';
+}
 
 ###############################################################################
 # Helper method to bootstrap OpenLDAP and feed it data.
