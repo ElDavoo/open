@@ -4,13 +4,14 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 18;
+use Test::Socialtext tests => 26;
 use Test::Socialtext::User;
 use Test::Socialtext::Group;
 use Test::Socialtext::Workspace;
 use Test::Socialtext::Account;
 use Test::Differences;
 use Socialtext::CLI;
+use Socialtext::Group::Factory;
 use t::Socialtext::CLITestUtils qw(expect_success);
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
@@ -205,6 +206,65 @@ existing_ldap_group_on_workspace_import: {
         name => $workspace->name,
     );
     ok $q_workspace->has_group($q_group), '... and was given Role in Workspace';
+}
+
+###############################################################################
+# CASE: Have "LDAP" Group, export w/Workspace, flush, Group is not found in
+# LDAP, but a matching "Default" Group is found in its original Primary
+# Account (e.g. possible reconstituted Group from the past).  Membership is
+# merged into the "Default" Group.
+merge_to_default_an_ldap_group_on_workspace_import: {
+    local $Socialtext::Group::Factory::Asynchronous = 0;
+    my $openldap     = bootstrap_openldap();
+    my $dn_motorhead = 'cn=Motorhead,dc=example,dc=com';
+
+    my $primary_account = create_test_account_bypassing_factory();
+    my $group           = Socialtext::Group->GetGroup(
+        primary_account_id => $primary_account->account_id,
+        driver_unique_id   => $dn_motorhead,
+    );
+    ok $group, 'Loaded Group from LDAP';
+    is $group->user_count, 3, '... Users loaded too';
+
+    my $secondary_account = create_test_account_bypassing_factory();
+    my $workspace = create_test_workspace(account => $secondary_account);
+
+    # Add the Group to the Workspace
+    $workspace->add_group(group => $group);
+
+    # Export the Workspace
+    my $new_group;
+    export_and_import_workspace(
+        workspace => $workspace,
+        flush => sub {
+            # flush the Group/Workspace
+            Test::Socialtext::Group->delete_recklessly($group);
+            Test::Socialtext::Workspace->delete_recklessly($workspace);
+
+            # create a new "Default" Group that the LDAP one will get merged
+            # into
+            $new_group = Socialtext::Group->Create( {
+                primary_account_id => $primary_account->account_id,
+                created_by_user_id => $group->created_by_user_id,
+                driver_group_name  => $group->driver_group_name,
+            } );
+            $new_group->add_user(user => create_test_user());
+
+            # turn off LDAP, so that we don't find the LDAP Group any more
+            undef $openldap;
+        },
+    );
+    ok $new_group, 'New "Default" Group created to be merged into';
+
+    # VERIFY: Group membership list was merged in
+    my $expected = 1 + $group->user_count;
+    is $new_group->user_count, $expected, '... LDAP membership list merged in';
+
+    # VERIFY: Group has Role in workspace
+    my $q_workspace = Socialtext::Workspace->new(
+        name => $workspace->name,
+    );
+    ok $q_workspace->has_group($new_group), '... and was given Role in Workspace';
 }
 
 ###############################################################################
