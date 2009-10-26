@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 7;
+use Test::Socialtext tests => 12;
 use Test::Socialtext::User;
 use Test::Socialtext::Group;
 use Test::Socialtext::Workspace;
@@ -121,6 +121,42 @@ reconsitute_default_group_on_account_import: {
     );
     isa_ok $q_group, 'Socialtext::Group',
         'Group reconstituted, w/correct Primary Account';
+}
+
+###############################################################################
+# CASE: Have "Default" Group, export w/Account, Group membership list is
+# merged on Account import.
+reconsitute_default_group_on_account_import: {
+    my $primary_account   = create_test_account_bypassing_factory();
+    my $group             = create_test_group(account => $primary_account);
+    my $user_one          = create_test_user(account => $primary_account);
+    my $user_two          = create_test_user(account => $primary_account);
+    my $secondary_account = create_test_account_bypassing_factory();
+    my $workspace = create_test_workspace(account => $secondary_account);
+
+    # Add the Group to the Workspace
+    $group->add_user(user => $user_one);
+    $workspace->add_group(group => $group);
+
+    # Export the Account
+    export_and_import_account(
+        account => $secondary_account,
+        flush   => sub {
+            # change Group membership, so we can verify that membership gets
+            # merged in properly
+            $group->remove_user(user => $user_one);
+            $group->add_user(user => $user_two);
+
+            # flush account
+            Test::Socialtext::Account->delete_recklessly($secondary_account);
+        },
+    );
+
+    # VERIFY: Group membership list was merged
+    my @expected = map { $_->username } ($user_one, $user_two);
+    my @received = map { $_->username } $group->users->all;
+    eq_or_diff \@received, \@expected,
+        'Group membership list merged on Account import';
 }
 
 
