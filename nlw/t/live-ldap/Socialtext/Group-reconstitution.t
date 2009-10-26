@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 57;
+use Test::Socialtext tests => 70;
 use Test::Socialtext::User;
 use Test::Socialtext::Group;
 use Test::Socialtext::Workspace;
@@ -429,6 +429,61 @@ merge_to_default_an_ldap_group_on_account_import: {
     );
     ok $q_secondary->has_group($new_group), '... and was given Role in Account';
 }
+
+###############################################################################
+# CASE: Have "LDAP" Group, export w/Account, flush, Group is not found in
+# LDAP, nor can a matching "Default" Group be found.  Group is re-constituted
+# as a Default Group, in its original Primary Account.
+reconstitute_as_default_group_an_ldap_group_on_account_import: {
+    local $Socialtext::Group::Factory::Asynchronous = 0;
+    my $openldap     = bootstrap_openldap();
+    my $dn_motorhead = 'cn=Motorhead,dc=example,dc=com';
+
+    my $primary_account = create_test_account_bypassing_factory();
+    my $group           = Socialtext::Group->GetGroup(
+        primary_account_id => $primary_account->account_id,
+        driver_unique_id   => $dn_motorhead,
+    );
+    ok $group, 'Loaded Group from LDAP';
+    is $group->user_count, 3, '... Users loaded too';
+
+    my $secondary_account = create_test_account_bypassing_factory();
+
+    # Add the Group to the Account
+    $secondary_account->add_group(group => $group);
+
+    # Export the Account
+    export_and_import_account(
+        account => $secondary_account,
+        flush => sub {
+            # flush the Group/Account
+            Test::Socialtext::Group->delete_recklessly($group);
+            Test::Socialtext::Account->delete_recklessly($secondary_account);
+
+            # turn off LDAP, so that we don't find the LDAP Group any more
+            undef $openldap;
+        },
+    );
+
+    # VERIFY: Group was reconstituted as a "Default" Group
+    my $q_group = Socialtext::Group->GetGroup(
+        primary_account_id => $group->primary_account_id,
+        created_by_user_id => $group->created_by_user_id,
+        driver_group_name  => $group->driver_group_name,
+    );
+    ok $q_group, 'Group was reconstituted';
+    is $q_group->driver_name, 'Default', '... as a Default Group';
+
+    # VERIFY: Group membership list was merged in
+    is $q_group->user_count, $group->user_count, '... LDAP members loaded';
+
+    # VERIFY: Group has Role in Account
+    my $q_secondary = Socialtext::Account->new(
+        name => $secondary_account->name,
+    );
+    ok $q_secondary->has_group($q_group), '... and was given Role in Account';
+}
+
 
 ###############################################################################
 # Helper method to bootstrap OpenLDAP and feed it data.
