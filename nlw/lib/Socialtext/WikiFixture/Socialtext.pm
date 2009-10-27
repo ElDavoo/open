@@ -740,6 +740,30 @@ sub st_config {
     _run_command("st-config $options", $verify);
 }
 
+=head2 st_appliance_config_set( $command_options )
+
+Runs `st-appliance-config set $command_options` in-process. Note that multiple
+keys and values can be passed, so long as each param is separated by
+whitespace.
+
+=cut
+
+sub st_appliance_config_set {
+    my $self    = shift;
+    my %options = split / +/, shift;
+
+    require Socialtext::Appliance::Config;
+
+    my $config = Socialtext::Appliance::Config->new();
+    for my $key ( keys %options ) {
+        $config->value( $key, $options{$key} );
+    }
+
+    $config->save();
+    diag "st-appliance-config set "
+        . join( ", ", map { "$_ $options{$_}" } keys %options ) . "\n";
+}
+
 =head2 st_admin_export_workspace_ok( $workspace )
 
 Verifies that a workspace tarball was created.
