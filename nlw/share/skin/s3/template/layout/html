@@ -67,11 +67,9 @@
             <li id="st-wikinav-setting"><a href="?action=users_settings">[% loc('Settings') %]</a></li>
             <li id="st-wikinav-help"><a href="/help/index.cgi" target="_blank">[% loc('Help') %]</a></li>
             [% IF user.is_guest %]
-              [% IF self_registration %]
+              [% IF self_registration AND NOT checker.check_permission('self_join') %]
                 <li id="st-wikinav-login"><a href="/challenge?[% wiki.uri | html %]">[% loc('Log in') %]</a></li>
-                [% UNLESS workspace_present AND checker.check_permission('self_join') %]
-                  <li class="last"><a href="/nlw/register.html?redirect_to=[% hub.current_workspace.uri %]">[% loc('Register') %]</a></li>
-                [% END %]
+                <li class="last"><a href="/nlw/register.html?redirect_to=[% hub.current_workspace.uri %]">[% loc('Register') %]</a></li>
               [% ELSE %]
                 <li id="st-wikinav-login" class="last"><a href="/challenge?[% wiki.uri | html %]">[% loc('Log in') %]</a></li>
               [% END %]
