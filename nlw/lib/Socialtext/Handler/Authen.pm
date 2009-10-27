@@ -215,6 +215,29 @@ sub login {
 
     st_log->info( "LOGIN: " . $user->email_address . " destination: $dest" );
 
+    if (my $target_ws_name = $self->{args}{workspace_name}) {
+        my $ws;
+        eval { $ws = Socialtext::Workspace->new( name => $target_ws_name) };
+        if ($ws) {
+            my $perms = $ws->permissions;
+            my $can_self_join = $perms->role_can( 
+                role => Socialtext::Role->Guest(),
+                permission => ST_SELF_JOIN_PERM
+            );
+            if ($can_self_join) {
+                $ws->add_user(
+                    user => $user, role => Socialtext::Role->Member()
+                );
+            }
+            else {
+                $self->session->add_error(
+                    loc("Self-join is disabled for [_1]", $target_ws_name)
+                );
+                return $self->_redirect($login_uri);
+            }
+        }
+    }
+
     $self->session->write;
     $self->redirect($dest);
 }

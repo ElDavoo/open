@@ -1,5 +1,9 @@
 [%# @COPYRIGHT@ -%]
 [%# vim: set et sts=2 sw=2: %]
 [% WRAPPER authen/wrapper title=loc('Register') %]
+  <dl class="form">
+    <dd>[% loc("Please fill in the following information to create a Socialtext account.") %]</dd>
+    <dd><a href="/nlw/login.html?redirect_to=[% redirect_to | html %]">[% loc('Click here to log in with an existing account.') %]</a></dd>
+  </dl>
   [% INCLUDE 'authen/element/register_form' %]
 [% END %]

@@ -7,32 +7,27 @@
 [% END %]
 
   <dl class="form">
-    <dd>[% loc("Please fill in the following information to create a Socialtext account.") %]</dd>
-    <dd><a href="/nlw/login.html?redirect_to=[% redirect_to | html %]">[% loc('Click here to log in with an existing account.') %]</a></dd>
-  </dl>
-
-  <dl class="form">
     <dt> <label for="email_address">[% loc('Email Address:') %]</label> </dt> </dt>
     <dd> <input id="email_address" name="email_address" type="text" size="30" value="" /> </dd>
   </dl>
 
   <dl class="form">
-    <dt <label for="password">[% loc('Password:') %]</label> </dt>
+    <dt><label for="password">[% loc('Password:') %]</label> </dt>
     <dd> <input id="password" name="password" type="password" size="30" value="" /> </dd>
   </dl>
 
   <dl class="form">
-    <dt <label for="password2">[% loc('Re-type Password:') %]</label> </dt>
+    <dt><label for="password2">[% loc('Re-type Password:') %]</label> </dt>
     <dd> <input id="password2" name="password2" type="password" size="30" value="" /> </dd>
   </dl>
 
   <dl class="form">
-    <dt <label for="first_name">[% loc('First Name:') %]</label> </dt>
+    <dt><label for="first_name">[% loc('First Name:') %]</label> </dt>
     <dd> <input id="first_name" name="first_name" type="text" size="30" value="" /> <i> [% loc('(Optional)') %]</i> </dd> 
   </dl>
 
   <dl class="form">
-    <dt <label for="last_name">[% loc('Last Name:') %]</label> </dt>
+    <dt><label for="last_name">[% loc('Last Name:') %]</label> </dt>
     <dd> <input id="last_name" name="last_name" type="text" size="30" value="" /> <i> [% loc('(Optional)') %]</i> </dd> 
   </dl>
 
@@ -48,5 +43,4 @@
     </ul>
     <div class="clear"></div>
   </div>
-
 </form>
