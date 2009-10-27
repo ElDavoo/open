@@ -106,6 +106,14 @@ sub handler ($$) {
                 warn $@ if $@;
             }
         }
+        if ( $uri eq 'join.html' ) {
+            my $redirect_to = $self->{args}{redirect_to} || '';
+            if (my $ws_name = $self->{args}{workspace_name}) {
+                if ($self->_add_user_to_workspace($user, $ws_name)) {
+                    return $self->_redirect($redirect_to);
+                }
+            }
+        }
 
         if ($self->{args}{workspace_name}) {
             $vars->{target_workspace} = Socialtext::Workspace->new(name => $self->{args}{workspace_name});
@@ -215,31 +223,37 @@ sub login {
 
     st_log->info( "LOGIN: " . $user->email_address . " destination: $dest" );
 
-    if (my $target_ws_name = $self->{args}{workspace_name}) {
-        my $ws;
-        eval { $ws = Socialtext::Workspace->new( name => $target_ws_name) };
-        if ($ws) {
-            my $perms = $ws->permissions;
-            my $can_self_join = $perms->role_can( 
-                role => Socialtext::Role->Guest(),
-                permission => ST_SELF_JOIN_PERM
-            );
-            if ($can_self_join) {
-                $ws->add_user(
-                    user => $user, role => Socialtext::Role->Member()
-                );
-            }
-            else {
-                $self->session->add_error(
-                    loc("Self-join is disabled for [_1]", $target_ws_name)
-                );
-                return $self->_redirect($login_uri);
-            }
-        }
+    if (my $ws_name = $self->{args}{workspace_name}) {
+        $self->_add_user_to_workspace($user, $ws_name)
+            or return $self->_redirect($login_uri);
     }
 
     $self->session->write;
     $self->redirect($dest);
+}
+
+# Add a user to a workspace that can "self join". Returns 1 on success.
+sub _add_user_to_workspace {
+    my ($self, $user, $ws_name) = @_;
+    my $ws = Socialtext::Workspace->new( name => $ws_name );
+    if ($ws and $user->is_authenticated) {
+        my $perms = $ws->permissions;
+        my $can_self_join = $perms->role_can( 
+            role => Socialtext::Role->Guest(),
+            permission => ST_SELF_JOIN_PERM
+        );
+        if ($can_self_join) {
+            $ws->add_user(
+                user => $user, role => Socialtext::Role->Member()
+            );
+            return 1;
+        }
+        else {
+            $self->session->add_error(
+                loc("Self-join is disabled for [_1]", $ws_name)
+            );
+        }
+    }
 }
 
 sub logout {
