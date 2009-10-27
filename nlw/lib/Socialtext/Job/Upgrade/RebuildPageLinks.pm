@@ -10,7 +10,7 @@ use namespace::clean -except => 'meta';
 extends 'Socialtext::Job';
 
 # This can take a while, especially for super huge workspaces
-override 'grab_for'             => sub {3600 * 8};
+override 'grab_for'             => sub {3600 * 16};
 
 # Re-parsing all the content for each page can take a long time, so
 # we should not allow many of these jobs to run at the same time so that we
