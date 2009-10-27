@@ -119,16 +119,7 @@ sub update {
     my $self = shift;
     my $page = shift;
 
-    $page = $self->hub->pages->page_with_spreadsheet_wikitext($page)
-        if $page->metadata->Type eq 'spreadsheet';
-
-    # XXX The formmatter uses current
-    # REVIEW this can probably come out in new style?
-    my $current = $self->hub->pages->current;
-
     Socialtext::PageLinks->new(hub => $self->hub, page => $page)->update;
-
-    $self->hub->pages->current($current);
 }
 
 sub all_backlinks {

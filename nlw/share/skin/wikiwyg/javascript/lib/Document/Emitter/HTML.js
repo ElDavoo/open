@@ -27,7 +27,7 @@ proto.begin_node = function(node) {
                     case 'medium': { width = '300'; break; }
                     case 'large':  { width = '600'; break; }
                 }
-                if (width) {
+                if (width && width.search(/^[.\d]+$/) == 0) {
                     width = ' width="'+width+'"';
                 }
                 if ((typeof $ != 'undefined') && $('#st-attachment-listing').size()) {
@@ -97,8 +97,8 @@ proto.text_node = function(text) {
         .replace(/&/g, '&amp;')
         .replace(/>/g, '&gt;')
         .replace(/</g, '&lt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&apos;');
+        .replace(/"/g, '&#34;')
+        .replace(/'/g, '&#39;');
 }
 
 });
