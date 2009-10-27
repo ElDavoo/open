@@ -97,8 +97,8 @@ proto.text_node = function(text) {
         .replace(/&/g, '&amp;')
         .replace(/>/g, '&gt;')
         .replace(/</g, '&lt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&apos;');
+        .replace(/"/g, '&#34;')
+        .replace(/'/g, '&#39;');
 }
 
 });
