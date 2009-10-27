@@ -13,6 +13,10 @@
       [% loc('Edit') %]
     </a>
   </li>
+[% ELSIF workspace_present AND checker.check_permission('self_join') %]
+  <li class="flexButton" id="st-wikinav-register">
+    <a title="[% loc('Join now to edit this page!') %]" class="editButton" href="/nlw/join.html?workspace_name=[% current_workspace.name%];redirect_to=[% current_workspace.uri %]">[% loc('Join to edit') %]</a>
+  </li>
 [% END %]
 [% END %]
 [% END %]
