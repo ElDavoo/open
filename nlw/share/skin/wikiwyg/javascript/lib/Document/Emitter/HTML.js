@@ -27,7 +27,7 @@ proto.begin_node = function(node) {
                     case 'medium': { width = '300'; break; }
                     case 'large':  { width = '600'; break; }
                 }
-                if (width) {
+                if (width && width.search(/^[.\d]+$/) == 0) {
                     width = ' width="'+width+'"';
                 }
                 if ((typeof $ != 'undefined') && $('#st-attachment-listing').size()) {
