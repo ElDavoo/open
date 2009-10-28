@@ -304,7 +304,18 @@
                 var li = self.$('<li></li>')
                     .css({ padding: '3px 5px' })
                     .appendTo(lookaheadList);
+                if (self.opts.getEntryThumbnail) {
+                    var src = self.opts.getEntryThumbnail(item); 
+                    $('<img/>')
+                        .css({
+                            'vertical-align': 'middle',
+                            'border': '1px solid #666'
+                        })
+                        .attr('src', src)
+                        .appendTo(li);
+                }
                 self.$('<a href="#"></a>')
+                    .css('margin-left', '5px')
                     .html(item.bolded_title)
                     .attr('value', i)
                     .click(function() {
