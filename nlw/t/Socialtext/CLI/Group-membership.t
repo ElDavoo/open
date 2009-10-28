@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Socialtext::GroupAccountRoleFactory;
-use Test::Socialtext tests => 107;
+use Test::Socialtext tests => 121;
 use Test::Output qw(combined_from);
 
 # Only need a DB.
@@ -755,3 +755,130 @@ add_group_as_admin_to_workspace: {
     is $role->name, Socialtext::Role->WorkspaceAdmin()->name,
         '... Role is admin';
 }
+
+###############################################################################
+# TEST: add a person in a Group to a WS, add Group to the ws, remove person,
+# person remains in ws, with special warning message
+group_member_remains_in_workspace: {
+    my $account   = create_test_account_bypassing_factory();
+    my $workspace = create_test_workspace(account => $account);
+    my $group     = create_test_group();
+    my $user    = create_test_user();
+    my $email   = $user->email_address;
+    my $member = Socialtext::Role->Member();
+    my $impersonator = Socialtext::Role->Impersonator();
+
+    $group->add_user( user => $user );
+    $workspace->add_user( user => $user );
+    $workspace->add_group( group => $group );
+    ok 1, 'Remove user in workspace directly and via group';
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--email'     => $email,
+                    '--workspace' => $workspace->name,
+                ],
+            )->remove_member();
+        };
+    } );
+    my $membername = $member->name;
+    like $output, qr/.+ is now a member of the .+ Workspace due to membership in a group/, 
+        '... with correct message';
+
+    my $role = $workspace->role_for_user( user => $user);
+    is $role->name => $member->name, 'User still has member role in workspace';
+
+    $workspace->remove_group( group => $group);
+    $workspace->add_group( group => $group, role => $impersonator );
+    $workspace->add_user( user => $user );
+    
+    $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--email'     => $email,
+                    '--workspace' => $workspace->name,
+                ],
+            )->remove_member();
+        };
+    } );
+    my $impersonatorname = $impersonator->name;
+    like $output, qr/.+ is now an impersonator of the .+ Workspace due to membership in a group/, 
+        '... with correct message';
+
+    $role = $workspace->role_for_user( user => $user);
+    is $role->name => $impersonator->name, 'User still has member role in workspace';
+    $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'     => $group->group_id,
+                    '--workspace' => $workspace->name,
+                ],
+            )->remove_member();
+        };
+    } );
+
+    like $output, qr/Group \(.+\) has been removed from Workspace \(.+\)/,
+        '... with correct message';
+    is $account->has_group( $group ) => 0, '... group is no longer in account';
+
+    ok !($workspace->role_for_user( user => $user)), ' ... user no longer in workspace';
+}
+
+###############################################################################
+# TEST: add a person as ws admin in a Group to a WS, add Group to the ws with 
+# admin role, remove person as ws admin, person remains w/admin role, 
+# with special warning message
+group_member_remains_admin_in_workspace: {
+    my $account   = create_test_account_bypassing_factory();
+    my $workspace = create_test_workspace(account => $account);
+    my $group     = create_test_group();
+    my $user      = create_test_user();
+    my $email     = $user->email_address;
+    my $admin     = Socialtext::Role->WorkspaceAdmin();
+
+
+
+    $group->add_user( user => $user );
+    $workspace->add_user( user => $user, role => $admin );
+    $workspace->add_group( group => $group, role => $admin );
+    ok 1, 'Remove user as ws-admin in workspace directly and via group';
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--email'     => $email,
+                    '--workspace' => $workspace->name,
+                ],
+            )->remove_workspace_admin();
+        };
+    } );
+
+    like $output, qr/.+ is now a workspace admin of the .+ Workspace due to membership in a group/, 
+        '... with correct message';
+
+    my $role = $workspace->role_for_user( user => $user);
+    is $role->name => $admin->name, 'User still has admin role in workspace';
+    
+    $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'     => $group->group_id,
+                    '--workspace' => $workspace->name,
+                ],
+            )->remove_member();
+        };
+    } );
+
+    like $output, qr/Group \(.+\) has been removed from Workspace \(.+\)/,
+        '... with correct message';
+    is $account->has_group( $group ) => 0, '... group is no longer in account';
+
+    is $workspace->role_for_user( user => $user)->name => 'member', ' ... user still a member in workspace';
+
+}
+
+

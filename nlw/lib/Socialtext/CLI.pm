@@ -1013,11 +1013,25 @@ sub _remove_user_from_workspace {
 
     $ws->remove_user( user => $user );
 
-    $self->_success( $user->username
-            . ' is no longer a member of the '
-            . $ws->name
-            . ' workspace.' );
-
+    my $wsrole   = $ws->role_for_user(user => $user);
+    if ($wsrole) {
+        my $role_displayname = $wsrole->display_name;
+        my $article  = $role_displayname =~ /^[aeiou]/ ? 'an' : 'a';
+        $self->_success( $user->username
+                . ' is now '
+                . $article
+                . ' ' 
+                . $role_displayname
+                . ' of the '
+                . $ws->name
+                . ' Workspace due to membership in a group' );
+    }
+    else {
+        $self->_success( $user->username
+                . ' is no longer a member of the '
+                . $ws->name
+                . ' workspace.' );
+    }
 }
 
 sub _remove_user_from_group {
@@ -1155,10 +1169,32 @@ sub _make_role_toggler {
             is_selected => $is_selected,
         );
 
-        $self->_success( $user->username
-                . " is $success $article $display_name of the "
-                . $ws->name
-                . ' workspace.' );
+        # special message for removing a role where membership in a group
+        # gives a higher membership level than what the user is left with
+        # after removing an explicit (UWR) role
+        my $current_user_role = $ws->role_for_user( user => $user);
+        my $current_rolename = $current_user_role->name;
+        my $current_role_display_name = $current_user_role->display_name;
+
+        if ((!$add_p)  && 
+            $current_user_role &&
+            ($current_rolename ne Socialtext::Role->Member->name)) {
+            $article  = $rolename =~ /^[aeiou]/ ? 'an' : 'a';
+            $self->_success( $user->username
+                    . ' is now '
+                    . $article
+                    . ' ' 
+                    . $current_role_display_name
+                    . ' of the '
+                    . $ws->name
+                    . ' Workspace due to membership in a group' );
+        } 
+        else {
+            $self->_success( $user->username
+                    . " is $success $article $display_name of the "
+                    . $ws->name
+                    . ' workspace.' );
+            }
         }
 }
 
