@@ -12,7 +12,7 @@ use Socialtext::Account;
 BEGIN {
     require Socialtext::People::Profile;
     plan skip_all => 'People is not linked in' if ($@);
-    plan tests => 74;
+    plan tests => 81;
 }
 
 fixtures( 'db', 'destructive' );
@@ -310,6 +310,35 @@ add_member_to_ldap_group: {
         qr/\QRemotely sourced Groups cannot be updated via Socialtext\E/,
         'Cannot add_member to an LDAP group'
     );
+
+    # Clean up after ourselves
+    Test::Socialtext::Group->delete_recklessly( $group );
+}
+
+###############################################################################
+remove_user_from_ldap_group: {
+    my $ldap  = bootstrap_openldap();
+    my $user  = create_test_user();
+    my $group = Socialtext::Group->GetGroup(
+        driver_unique_id => 'cn=Motorhead,dc=example,dc=com',
+    );
+
+    isa_ok $group, 'Socialtext::Group', 'Have an LDAP Group';
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group' => $group->group_id,
+                    '--email' => $user->email_address,
+                ],
+            )->remove_member();
+        },
+        qr/\QRemotely sourced Groups cannot be updated via Socialtext\E/,
+        'Cannot remove_member from an LDAP group'
+    );
+
+    # Clean up after ourselves
+    Test::Socialtext::Group->delete_recklessly( $group );
 }
 
 ###############################################################################

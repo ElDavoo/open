@@ -992,6 +992,7 @@ sub remove_member {
         'user-workspace'  => sub { $self->_remove_user_from_workspace() },
         'group-workspace' => sub { $self->_remove_group_from_workspace() },
         'group-account'   => sub { $self->_remove_group_from_account() },
+        'user-group'      => sub { $self->_remove_user_from_group() },
     );
     my $type = $self->_type_of_entity_collection_operation( keys %jump );
 
@@ -1017,6 +1018,27 @@ sub _remove_user_from_workspace {
             . $ws->name
             . ' workspace.' );
 
+}
+
+sub _remove_user_from_group {
+    my $self  = shift;
+    my $user  = $self->_require_user();
+    my $group = $self->_require_group();
+
+    $self->_error(
+        loc("Remotely sourced Groups cannot be updated via Socialtext.")
+    ) unless $group->can_update_store;
+
+    $self->_error(
+        loc("[_1] is not a member of the [_2] Group",
+            $user->username, $group->driver_group_name)
+    ) unless $group->has_user( $user );
+
+    $group->remove_user( user => $user );
+    $self->_success(
+        loc("[_1] is no longer a member of the [_2] Group",
+            $user->username, $group->driver_group_name)
+    );
 }
 
 sub _remove_group_from_account {
