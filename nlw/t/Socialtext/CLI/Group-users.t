@@ -1,0 +1,97 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+
+use Test::Socialtext tests => 10;
+use Test::Output qw(combined_from);
+
+# Only need a DB.
+fixtures(qw(db));
+
+use_ok 'Socialtext::CLI';
+
+###############################################################################
+# over-ride "_exit", so we can capture the exit code
+our $LastExitVal;
+{
+    no warnings 'redefine';
+    *Socialtext::CLI::_exit = sub { $LastExitVal=shift; die; };
+}
+
+###############################################################################
+add_user_to_group_as_member: {
+    my $group = create_test_group();
+    my $user  = create_test_user();
+
+    ok !$group->has_user( $user ), 'user is not in group.';
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group' => $group->group_id,
+                    '--email' => $user->email_address,
+                ],
+            )->add_member();
+        };
+    } );
+    like $output, qr/.+ is now a member of the .+ Group/,
+         'User added to Group message';
+
+    my $role = $group->role_for_user( user => $user );
+    ok $role, 'User has Role in Group';
+    is $role->name, Socialtext::Role->Member()->name,
+        '... Role is Member';
+
+    # User is already in group, return error.
+    $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group' => $group->group_id,
+                    '--email' => $user->email_address,
+                ],
+            )->add_member();
+        };
+    } );
+    like $output, qr/User is already a member of Group/,
+         'User added to Group message';
+}
+
+###############################################################################
+invalid_add_user_to_group_as_member: {
+    my $group = create_test_group();
+    my $user  = create_test_user();
+
+    # Invalid Email Address
+    is $group->users->count, 0, 'Group has no Users';
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group' => $group->group_id,
+                    '--email' => 'nosuchuser@example.com',
+                ],
+            )->add_member();
+        };
+    } );
+    like $output, qr/No user with the email address .+ could be found/,
+         'Invalid User message';
+    is $group->users->count, 0, '... Group still has no Users';
+
+    # Invalid Group Id
+    $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group' => 0,
+                    '--email' => $user->email_address,
+                ],
+            )->add_member();
+        };
+    } );
+    like $output, qr/No group with ID \d+/,
+         'Invalid Group message';
+}
+
+exit;

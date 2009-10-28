@@ -12,7 +12,7 @@ use Socialtext::Account;
 BEGIN {
     require Socialtext::People::Profile;
     plan skip_all => 'People is not linked in' if ($@);
-    plan tests => 67;
+    plan tests => 74;
 }
 
 fixtures( 'db', 'destructive' );
@@ -290,11 +290,31 @@ create_group_no_ldap: {
 }
 
 ###############################################################################
+add_member_to_ldap_group: {
+    my $ldap  = bootstrap_openldap();
+    my $user  = create_test_user();
+    my $group = Socialtext::Group->GetGroup(
+        driver_unique_id => 'cn=Motorhead,dc=example,dc=com',
+    );
+
+    isa_ok $group, 'Socialtext::Group', 'Have an LDAP Group';
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group' => $group->group_id,
+                    '--email' => $user->email_address,
+                ],
+            )->add_member();
+        },
+        qr/\QRemotely sourced Groups cannot be updated via Socialtext\E/,
+        'Cannot add_member to an LDAP group'
+    );
+}
+
+###############################################################################
 # All done; exit peacefully.
 exit;
-
-
-
 
 ###############################################################################
 # These functions copied directly from `t/Socialtext/CLI.t`

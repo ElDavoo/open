@@ -794,6 +794,9 @@ sub add_member {
         'group-workspace' => sub {
             $self->_add_group_to_workspace_as(Socialtext::Role->Member())
         },
+        'user-group' => sub {
+            $self->_add_user_to_group_as(Socialtext::Role->Member())
+        },
     );
     my $type = $self->_type_of_entity_collection_operation( keys %jump );
 
@@ -895,6 +898,34 @@ sub _add_user_to_workspace_as {
     $self->_success(
         loc("[_1] is now a [_2] of the [_3] Workspace",
         $user->username, $new_role->display_name, $ws->name)
+    );
+}
+
+# This is nearly identical to _add_user_to_workspace_as(), above. We should
+# definitely consider generalizing this code when we add
+# _add_user_to_account_as() in the near future.
+sub _add_user_to_group_as {
+    my $self         = shift;
+    my $new_role     = shift;
+    my $user         = $self->_require_user();
+    my $group        = $self->_require_group();
+    my $current_role = $group->role_for_user(user => $user);
+
+    $self->_error(
+        loc("Remotely sourced Groups cannot be updated via Socialtext.")
+    ) unless $group->can_update_store;
+
+    if ( $current_role ) {
+        $self->_error(
+            loc("User is already a [_1] of Group",
+                $current_role->display_name)
+        ) if $current_role->name eq $new_role->name;
+    }
+
+    $group->add_user( user => $user, role => $new_role );
+    $self->_success(
+        loc("[_1] is now a [_2] of the [_3] Group",
+            $user->username, $new_role->name, $group->driver_group_name)
     );
 }
 
