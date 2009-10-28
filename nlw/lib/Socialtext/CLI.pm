@@ -784,11 +784,6 @@ sub deactivate_user {
 
 sub add_member {
     my $self = shift;
-    my $type = $self->_type_of_entity_collection_operation( qw(
-        user-workspace
-        group-account
-        group-workspace
-    ) );
     my %jump = (
         'user-workspace'  => sub {
             $self->_add_user_to_workspace_as(Socialtext::Role->Member())
@@ -800,6 +795,8 @@ sub add_member {
             $self->_add_group_to_workspace_as(Socialtext::Role->Member())
         },
     );
+    my $type = $self->_type_of_entity_collection_operation( keys %jump );
+
     return $jump{$type}->();
 }
 
