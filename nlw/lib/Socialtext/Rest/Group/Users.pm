@@ -55,7 +55,7 @@ sub POST_json {
     # Group is not Socialtext sourced, we don't control its membership.
     unless ( $group->can_update_store ) {
         $rest->header( -status => HTTP_400_Bad_Request );
-        return '';
+        return 'Group membership cannot be changed';
     }
 
     my $username = $data->{username};
