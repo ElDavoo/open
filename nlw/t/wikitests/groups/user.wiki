@@ -1,0 +1,44 @@
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+# Set up our Business Admin
+
+| set                | badmin     | badmin%%start_time%%@ken.socialtext.net |
+| create-user        | %%badmin%% | password                                |
+| set-business-admin | %%badmin%% | 1                                       |
+| http-user-pass     | %%badmin%% | password                                |
+
+# Create a new Group, add some Users
+
+| set               | group_name     | group%%start_time%%                    |              |
+| create-group      | %%group_name%% | %%account%%                            | %%username%% |
+| set               | jules          | jules%%start_time%%@ken.socialtext.net |              |
+| create-user       | %%jules%%      | password                               |              |
+| add-user-to-group | %%jules%%      | %%group_id%%                           |              |
+| set               | jonas          | jonas%%start_time%%@ken.socialtext.net |              |
+| create-user       | %%jonas%%      | password                               |              |
+| add-user-to-group | %%jonas%%      | %%group_id%%                           |              |
+
+# Make sure that we're seeing what we're supposed to see
+
+| GET             | /data/groups/%%group_id%%/users |         |
+| code-is         | 200                             |         |
+| header-like     | Cache-Control                   | private |
+| json-parse      |                                 |         |
+| json-array-size | 2                               |         |
+| body-like       | %%jules%%                       |         |
+| body-like       | %%jonas%%                       |         |
+
+# Delete us some Users
+
+| DELETE          | /data/groups/%%group_id%%/users/%%jonas%% |         |
+| code-is         | 204                                       |         |
+| GET             | /data/groups/%%group_id%%/users           |         |
+| code-is         | 200                                       |         |
+| header-like     | Cache-Control                             | private |
+| json-parse      |                                           |         |
+| json-array-size | 1                                         |         |
+| body-like       | %%jules%%                                 |         |
+| body-unlike     | %%jonas%%                                 |         |
+

@@ -450,6 +450,11 @@
             'application/json': [Socialtext::Rest::Group::Users, POST_json]
         '*':                    [Socialtext::Rest::Group::Users, bad_method]
 -
+    '/data/groups/:group_id/users/:username':
+        'DELETE':
+            'application/json': [Socialtext::Rest::Group::User, DELETE]
+        '*':                    [Socialtext::Rest::Group::Users, bad_method]
+-
     '/data/groups/:group_id/accounts':
         'GET':
             'application/json': [Socialtext::Rest::Group::Accounts, GET_json]
