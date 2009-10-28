@@ -54,6 +54,8 @@
  */
 
 (function($){
+    var SELECTED_COLOR = '#CCC';
+    var BG_COLOR = '#EEE';
     var lookaheads = [];
 
     var hastyped = false;
@@ -228,7 +230,7 @@
                     zIndex: 3001,
                     position: 'absolute',
                     display: 'none', // Safari needs this explicitly: {bz: 2431}
-                    background: '#B4DCEC',
+                    background: BG_COLOR,
                     border: '1px solid black',
                     padding: '0px'
                 })
@@ -421,7 +423,7 @@
         jQuery('li.selected', this.lookahead)
             .removeClass('selected')
             .css({ background: '' });
-        el.addClass('selected').css({ background: '#7DBFDB' });
+        el.addClass('selected').css({ background: SELECTED_COLOR });
     }
 
     Lookahead.prototype.select_element = function (el, provisional) {
