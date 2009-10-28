@@ -359,11 +359,20 @@ const html_end   => "</td>\n";
 
 sub table_phrases { Socialtext::Formatter->all_phrases }
 
+sub _ceci_ne_pas_un_pipe {
+    my $text = shift;
+    $text =~ s/\|/\x{2502}/g;
+    return $text;
+}
+
 sub match {
     my $self = shift;
     my $text = shift;
 
-    return unless $text =~ /(\|(\s*(?:\{\{.*?\}\}|.)*?\s*)\| *)(.*)/sm;
+    # Replace escaped pipe characters with something that _looks_ like a
+    # pipe character to avoid an extremely rare core dump. {bz: 3247}
+    $text =~ s/{{(.*?)}}/'{{' . _ceci_ne_pas_un_pipe($1) . '}}'/eg;
+    return unless $text =~ /(\|(\s*.*?\s*)\| *)(.*)/sm;
 
     $self->start_offset( $-[1] );
     $self->end_offset( $3 eq "\n" ? $+[3] : $+[2] );
