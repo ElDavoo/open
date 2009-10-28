@@ -957,16 +957,13 @@ sub _add_group_to_workspace_as {
 
 sub remove_member {
     my $self = shift;
-    my $type = $self->_type_of_entity_collection_operation( qw(
-        user-workspace
-        group-workspace
-        group-account
-    ) );
     my %jump = (
         'user-workspace'  => sub { $self->_remove_user_from_workspace() },
         'group-workspace' => sub { $self->_remove_group_from_workspace() },
         'group-account'   => sub { $self->_remove_group_from_account() },
     );
+    my $type = $self->_type_of_entity_collection_operation( keys %jump );
+
     return $jump{$type}->();
 }
 
@@ -1049,10 +1046,6 @@ sub _remove_group_from_workspace {
 
 sub add_workspace_admin {
     my $self = shift;
-    my $type = $self->_type_of_entity_collection_operation( qw(
-        user-workspace
-        group-workspace
-    ) );
     my %jump = (
         'user-workspace'  => sub {
             $self->_add_user_to_workspace_as(
@@ -1065,6 +1058,9 @@ sub add_workspace_admin {
             )
         },
     );
+
+    my $type = $self->_type_of_entity_collection_operation( keys %jump );
+
     return $jump{$type}->();
 }
 
