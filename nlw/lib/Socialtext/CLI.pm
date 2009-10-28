@@ -3432,6 +3432,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   add-member [ --username or --email ] --group 
   add-workspace-admin --group  --workspace
   remove-member --group [--account or --workspace]
+  remove-member [ --username or --email ] --group
 
   OTHER
 
@@ -3974,6 +3975,10 @@ it exists.
 
 Given a Group and an Account or Workspace, remove the Group from the Account
 or Workspace, if it exists.
+
+=head2 remove-member [ --username or --email ] --group
+
+Given a User and a Group, remove the User from the Group.
 
 =head2 version
 
