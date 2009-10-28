@@ -65,6 +65,9 @@ my @TYPES = ('Standard', 'Free 50', 'Paid', 'Comped', 'Trial', 'Unknown');
 my %VALID_TYPE = map { $_ => 1 } @TYPES;
 sub Types { [ @TYPES ] }
 
+# For Account exports:
+Readonly my $EXPORT_VERSION => 1;
+
 Readonly my @RequiredAccounts => qw( Unknown Socialtext Deleted );
 sub EnsureRequiredDataIsPresent {
     my $class = shift;
@@ -366,6 +369,9 @@ sub export {
         : undef;
 
     my $data = {
+        # versioning
+        version                    => $EXPORT_VERSION,
+        # data
         name                       => $self->name,
         is_system_created          => $self->is_system_created,
         skin_name                  => $self->skin_name,
@@ -427,6 +433,15 @@ sub import_file {
     my $hub = $opts{hub};
 
     my $hash = LoadFile($import_file);
+
+    my $version = $hash->{version};
+    if ($version && ($version > $EXPORT_VERSION)) {
+        die loc(
+            "Cannot import an Account with a version greater than [_1]",
+            $EXPORT_VERSION
+        );
+    }
+
     my $name = $import_name || $hash->{name};
     my $account = $class->new(name => $name);
     if ($account) {
