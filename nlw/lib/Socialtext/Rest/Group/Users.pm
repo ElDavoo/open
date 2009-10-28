@@ -100,9 +100,10 @@ Socialtext::Rest::Group::Users - List users in a group
 =head1 SYNOPSIS
 
     GET /data/groups/:group_id/users
+    POST /data/groups/:group_id/users
 
 =head1 DESCRIPTION
 
-View the list of users in the specified group.
+Manage the list of users in the specified group.
 
 =cut
