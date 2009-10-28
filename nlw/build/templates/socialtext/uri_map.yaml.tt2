@@ -446,6 +446,8 @@
     '/data/groups/:group_id/users':
         'GET':
             'application/json': [Socialtext::Rest::Group::Users, GET_json]
+        'POST':
+            'application/json': [Socialtext::Rest::Group::Users, POST_json]
         '*':                    [Socialtext::Rest::Group::Users, bad_method]
 -
     '/data/groups/:group_id/accounts':

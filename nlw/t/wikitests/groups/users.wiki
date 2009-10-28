@@ -76,3 +76,42 @@ Tests for [Story: Groups ReST API]
 | body-like | %%jenny%% |
 | body-like | %%jane%% |
 
+
+## Add Users to Groups via ReST
+
+| set-business-admin | %%badmin%%        | 1           |              |
+| http-user-pass     | %%badmin%%        | password    |              |
+| create-group       | add%%start_time%% | %%account%% | %%username%% |
+
+| *Comment*   | Create the User, Add User to Group with defaults |                                        |
+| set         | jimmy                                            | jimmy%%start_time%%@ken.socialtext.net |
+| create-user | %%jimmy%%                                        | password                               |
+| POST_json   | /data/groups/%%group_id%%/users                  | {"username":"%%jimmy%%"}               |
+| code-is     | 201                                              |                                        |
+
+| *Comment*   | Create the User, Add User to Group with explicit role_name |                                               |
+| set         | jorge                                                      | jorge%%start_time%%@ken.socialtext.net        |
+| create-user | %%jorge%%                                                  | password                                      |
+| POST_json   | /data/groups/%%group_id%%/users                            | {"username":"%%jorge%%","role_name":"member"} |
+| code-is     | 201                                                        |                                               |
+
+| *Comment* | Add User to Group with bad json |    |
+| POST_json | /data/groups/%%group_id%%/users | {} |
+| code-is   | 400                             |    |
+
+| *Comment* | Add User to Group with bad username |                                       |
+| POST_json | /data/groups/%%group_id%%/users     | {"username":"nosuchuser@example.com"} |
+| code-is   | 400                                 |                                       |
+
+| *Comment* | Add User to Group with bad role_name |                                                        |
+| POST_json | /data/groups/%%group_id%%/users      | {"username":"%%jorge%%","role_name":"workspace_admin"} |
+| code-is   | 400                                  |                                                        |
+
+| *Comment*       | Verify Users are in Group         |         |
+| GET             | /data/groups/%%group_id%%/users |         |
+| code-is         | 200                             |         |
+| header-like     | Cache-Control                   | private |
+| json-parse      |                                 |         |
+| json-array-size | 2                               |         |
+| body-like       | %%jimmy%%                       |         |
+| body-like       | %%jorge%%                       |         |
