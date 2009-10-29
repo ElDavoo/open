@@ -409,13 +409,14 @@ sub import_account {
     );
 
     print loc("Importing users ..."), "\n";
-    my $account = Socialtext::Account->import_file(
+    my $account = eval { Socialtext::Account->import_file(
         file  => "$dir/account.yaml",
         name  => $opts{name},
         force => $opts{overwrite},
         hub   => $hub,
         dir   => $dir,
-    );
+    ) };
+    $self->_error($@) if ($@);
 
     for my $tarball (glob "$dir/*.1.tar.gz") {
         print loc("Importing workspace from $tarball ..."), "\n";
