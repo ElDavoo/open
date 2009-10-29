@@ -17,6 +17,7 @@ sub By_seconds_limit {
     my $limit         = $p{count} || $p{limit};
     my $tag           = $p{tag} || $p{category};
     my $hub           = $p{hub};
+    my $type          = $p{type};
 
     Socialtext::Timer->Continue('By_seconds_limit');
     my $where;
@@ -36,6 +37,7 @@ sub By_seconds_limit {
     my $pages = $class->_fetch_pages(
         hub => $hub,
         $workspace_ids ? ( workspace_ids => $workspace_ids ) : (),
+        type         => $type,
         where        => $where,
         limit        => $limit,
         tag          => $tag,
@@ -58,6 +60,7 @@ sub All_active {
     my $no_tags      = $p{do_not_need_tags};
     my $order_by     = $p{order_by};
     my $offset       = $p{offset};
+    my $type         = $p{type};
 
     $limit = 500 unless defined $limit;
 
@@ -69,6 +72,7 @@ sub All_active {
         do_not_need_tags => $no_tags,
         ($order_by ? (order_by => "page.$order_by") : ()),
         offset       => $offset,
+        type         => $type,
     );
     Socialtext::Timer->Pause('All_active');
     return $pages;
@@ -83,6 +87,7 @@ sub By_tag {
     my $tag          = $p{tag};
     my $order_by     = $p{order_by} || 'last_edit_time DESC';
     my $no_tags      = $p{do_not_need_tags};
+    my $type         = $p{type};
 
     Socialtext::Timer->Continue('By_category');
     my $pages = $class->_fetch_pages(
@@ -92,6 +97,7 @@ sub By_tag {
         tag          => $tag,
         order_by     => "page.$order_by",
         do_not_need_tags => $no_tags,
+        type         => $type,
     );
     Socialtext::Timer->Pause('By_category');
     return $pages;
@@ -162,6 +168,12 @@ sub _fetch_pages {
         $p{where} .= ' AND ' if $p{where};
         $p{where} .= 'LOWER(page_tag.tag) = LOWER(?)';
         push @{ $p{bind} }, $p{tag};
+    }
+
+    if ( $p{type} ) {
+        $p{where} .= ' AND ' if $p{where};
+        $p{where} .= 'page.page_type = ?';
+        push @{ $p{bind} }, $p{type};
     }
 
     my $deleted = '1=1';
