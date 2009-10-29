@@ -450,18 +450,22 @@ sub import_file {
         $account->delete;
     }
 
-    $account = $class->create(
-        name => $name,
-        is_system_created => $hash->{is_system_created},
-        skin_name => $hash->{skin_name},
+    my %acct_params = (
+        name                       => $name,
+        is_system_created          => $hash->{is_system_created},
+        skin_name                  => $hash->{skin_name},
         email_addresses_are_hidden => $hash->{email_addresses_are_hidden},
-        allow_invitation => (
+        allow_invitation           => (
             defined $hash->{allow_invitation}
-                ? $hash->{allow_invitation}
-                : 1
+            ? $hash->{allow_invitation}
+            : 1
         ),
-        (map { $hash->{$_} ? ($_ => $hash->{$_}) : () } grep { /^desktop_/ } @ACCT_COLS),
+        (
+            map { $hash->{$_} ? ($_ => $hash->{$_}) : () }
+                grep {/^desktop_/} @ACCT_COLS
+        ),
     );
+    $account = $class->create(%acct_params);
 
     if ($hash->{logo}) {
         print loc("Importing account logo ...") . "\n";
