@@ -292,6 +292,12 @@ sub delete_signal {
     $self->_commit;
 }
 
+sub delete_signals {
+    my $self = shift;
+    $self->solr->delete_by_query("doctype:signal");
+    $self->_commit;
+}
+
 # Create a new Document object and set it's fields.  Then delete the document
 # from the index using 'key', which should be unique, and then add the
 # document to the index.  The 'key' is just the signal id.
@@ -388,6 +394,12 @@ sub index_person {
 sub delete_person {
     my ( $self, $user_id ) = @_;
     $self->solr->delete_by_query("person_key:$user_id");
+    $self->_commit;
+}
+
+sub delete_people {
+    my $self = shift;
+    $self->solr->delete_by_query("doctype:person");
     $self->_commit;
 }
 
