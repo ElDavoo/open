@@ -5,6 +5,7 @@ use warnings;
 use Socialtext::Schema;
 use Socialtext::JobCreator;
 use Socialtext::Workspace;
+use List::MoreUtils qw(any);
 use base 'Exporter'; 
 our @EXPORT_OK = qw/socialtext_schema_version ensure_socialtext_schema
                     create_job_for_each_workspace create_job/;
@@ -25,13 +26,18 @@ sub ensure_socialtext_schema {
 }
 
 sub create_job_for_each_workspace {
-    my $class = shift || die 'A job class is mandatory';
-    my $prio  = shift || 31;
+    my ($class, $prio, %opts) = @_;
+    die 'A job class is mandatory' unless $class;
+    $prio ||= 31;
+    my $except = $opts{except} || [];
+
     my $job_class = 'Socialtext::Job::Upgrade::' . $class;
 
     my $all = Socialtext::Workspace->All;
     my $job_count = 0;
     while (my $ws = $all->next) {
+        my $name = $ws->name;
+        next if any { $_ eq $name } @$except;
         Socialtext::JobCreator->insert( $job_class,
             { 
                 workspace_id => $ws->workspace_id,
