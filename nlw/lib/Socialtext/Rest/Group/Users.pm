@@ -50,7 +50,10 @@ sub POST_json {
     }
 
     my $group = Socialtext::Group->GetGroup( group_id => $self->group_id );
-    die Socialtext::Exception::NotFound->new() unless $group;
+    unless ( $group ) {
+        $rest->header( -status => HTTP_404_Not_Found );
+        return 'Resource not found';
+    }
 
     # Group is not Socialtext sourced, we don't control its membership.
     unless ( $group->can_update_store ) {

@@ -95,6 +95,14 @@ Tests for [Story: Groups ReST API]
 | POST_json   | /data/groups/%%group_id%%/users                            | {"username":"%%jorge%%","role_name":"member"} |
 | code-is     | 201                                                        |                                               |
 
+## Error conditions
+
+| *Comment*   | Group doesn't exist  |                                               |
+| set         | jamie                | jamie%%start_time%%@ken.socialtext.net        |
+| create-user | %%jamie%%            | password                                      |
+| POST_json   | /data/groups/0/users | {"username":"%%jamie%%","role_name":"member"} |
+| code-is     | 404                  |                                               |
+
 | *Comment* | Add User to Group with bad json |    |
 | POST_json | /data/groups/%%group_id%%/users | {} |
 | code-is   | 400                             |    |
@@ -106,6 +114,8 @@ Tests for [Story: Groups ReST API]
 | *Comment* | Add User to Group with bad role_name |                                                        |
 | POST_json | /data/groups/%%group_id%%/users      | {"username":"%%jorge%%","role_name":"workspace_admin"} |
 | code-is   | 400                                  |                                                        |
+
+## Verify Users were added to Group
 
 | *Comment*       | Verify Users are in Group         |         |
 | GET             | /data/groups/%%group_id%%/users |         |
