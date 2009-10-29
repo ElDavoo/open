@@ -330,7 +330,7 @@ sub disable_plugin {
     my ($self, $plugin) = @_;
     $self->_check_plugin_scope($plugin);
 
-    # Don't even bother disabling deps if the plugin is already enabled
+    # Don't even bother disabling deps if the plugin is already disabled
     return unless $self->is_plugin_enabled($plugin);
     my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
 
