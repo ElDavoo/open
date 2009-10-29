@@ -7,6 +7,8 @@ use Socialtext::User;
 use namespace::clean -except => 'meta';
 extends 'Socialtext::Rest::Entity';
 
+sub allowed_methods {'DELETE'}
+
 sub DELETE {
     my $self = shift;
     my $rest = shift;
@@ -18,10 +20,11 @@ sub DELETE {
     }
 
     my $group = Socialtext::Group->GetGroup( group_id => $self->group_id );
-    die Socialtext::Exception::NotFound->new() unless $group;
-
-    my $user = Socialtext::User->new( username => $self->username );
-    die Socialtext::Exception::NotFound->new() unless $user;
+    my $user  = Socialtext::User->new( username => $self->username );
+    unless ( $group && $user ) {
+        $rest->header( -status => HTTP_404_Not_Found );
+        return 'Resource not found';
+    }
 
     # Group is not Socialtext sourced, we don't control its membership.
     unless ( $group->can_update_store ) {

@@ -19,7 +19,8 @@
 | set               | jonas          | jonas%%start_time%%@ken.socialtext.net |              |
 | create-user       | %%jonas%%      | password                               |              |
 | add-user-to-group | %%jonas%%      | %%group_id%%                           |              |
-
+| set | jacob | jacob%%start_time%%@ken.socialtext.net |
+| create-user       | %%jacob%%      | password                               |              |
 # Make sure that we're seeing what we're supposed to see
 
 | GET             | /data/groups/%%group_id%%/users |         |
@@ -42,3 +43,17 @@
 | body-like       | %%jules%%                                 |         |
 | body-unlike     | %%jonas%%                                 |         |
 
+
+# Check Error conditions
+
+| *Comment* | User is not in Group |
+| DELETE    | /data/groups/%%group_id%%/users/%%jacob%% |
+| code-is   | 400                            |
+
+| *Comment* | No Such User |
+| DELETE  | /data/groups/%%group_id%%/users/nosuchuser |
+| code-is | 404                                        |
+
+| *Comment* | No Such Group                  |
+| DELETE    | /data/groups/0/users/%%jules%% |
+| code-is   | 404                            |
