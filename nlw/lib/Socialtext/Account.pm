@@ -61,7 +61,7 @@ foreach my $column ( @ACCT_COLS ) {
     field $column;
 }
 
-my @TYPES = ('Standard', 'Free 50', 'Paid', 'Comped', 'Trial', 'Unknown');
+my @TYPES = ('Standard', 'Free 50', 'Placeholder', 'Paid', 'Comped', 'Trial', 'Unknown');
 my %VALID_TYPE = map { $_ => 1 } @TYPES;
 sub Types { [ @TYPES ] }
 
@@ -283,6 +283,11 @@ sub to_hash {
     return $hash;
 }
 
+sub is_placeholder {
+    my $self = shift;
+    return $self->account_type eq 'Placeholder';
+}
+
 sub is_plugin_enabled {
     my ($self, $plugin_name) = @_;
     my $authz = Socialtext::Authz->new();
@@ -444,14 +449,13 @@ sub import_file {
 
     my $name = $import_name || $hash->{name};
     my $account = $class->new(name => $name);
-    if ($account) {
+    if ($account && !$account->is_placeholder()) {
         die loc("Account [_1] already exists!", $name) . "\n" 
             unless $opts{force};
         $account->delete;
     }
 
     my %acct_params = (
-        name                       => $name,
         is_system_created          => $hash->{is_system_created},
         skin_name                  => $hash->{skin_name},
         email_addresses_are_hidden => $hash->{email_addresses_are_hidden},
@@ -465,7 +469,29 @@ sub import_file {
                 grep {/^desktop_/} @ACCT_COLS
         ),
     );
-    $account = $class->create(%acct_params);
+    if ($account && $account->is_placeholder) {
+        # "Placeholder" Accounts can be over-written at import; they were
+        # created as placeholders during the import of another Account.
+        #
+        # HOWEVER... don't pass through the "all_users_workspace" here, as we
+        # haven't imported any of the Workspaces yet.  When "finish_import()"
+        # gets called it'll get set.
+        #
+        # We also need to make sure that we update the Account Type to
+        # _something_, even if it wasn't explicit in the original export; by
+        # default, Accounts are of the "Standard" type.
+        $account->update(
+            account_type => 'Standard',
+            %acct_params,
+            all_users_workspace => undef,
+        );
+    }
+    else {
+        $account = $class->create(
+            %acct_params,
+            name => $name,
+        );
+    }
 
     if ($hash->{logo}) {
         print loc("Importing account logo ...") . "\n";
@@ -492,7 +518,10 @@ sub import_file {
             # User had a Primary Account that was *not* the Account that we're
             # re-importing (possibly under a new name).
             $pri_acct = Socialtext::Account->new(name => $pri_acct_name)
-                     || Socialtext::Account->create(name => $pri_acct_name);
+                     || Socialtext::Account->create(
+                            name         => $pri_acct_name,
+                            account_type => 'Placeholder',
+                        );
         }
         $user->primary_account($pri_acct);
 
