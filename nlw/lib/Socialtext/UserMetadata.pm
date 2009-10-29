@@ -193,7 +193,9 @@ sub primary_account {
         my $adapter = Socialtext::Pluggable::Adapter->new;
         $adapter->make_hub(Socialtext::User->SystemUser(), undef);
 
-        $adapter->hook('nlw.remove_user_account_role', $old_account, $self);
+        if ($old_account) {
+            $adapter->hook('nlw.remove_user_account_role', $old_account, $self);
+        }
         $adapter->hook('nlw.add_user_account_role', $new_account, $self);
 
         my $deleted_acct = Socialtext::Account->Deleted;
