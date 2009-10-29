@@ -2,8 +2,8 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Socialtext::People::Profile;
+use Socialtext::Migration::Utils qw/create_job/;
 
-my $i =  Socialtext::People::Profile->IndexPeople();
-print "Added $i PersonIndex jobs\n";
+create_job('ReindexPeople');
+
 exit 0;
