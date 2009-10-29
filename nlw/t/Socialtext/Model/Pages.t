@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 109;
+use Test::More tests => 121;
 use Test::Exception;
 use mocked 'Socialtext::SQL', qw/:test/;
 use mocked 'Socialtext::Page';
@@ -819,6 +819,96 @@ SELECT count(*)
       AND last_edit_time > ('now'::timestamptz - ?::interval)
 EOT
         args => [9, '100 seconds'],
+    );
+    ok_no_more_sql();
+}
+
+Limit_by_type: {
+    Socialtext::Model::Pages->Minimal_by_name(
+        workspace_id => 9,
+        page_filter  => 'monk',
+        type         => 'wiki',
+    );
+    sql_ok(
+        name => 'minimal_by_name',
+        sql => <<EOT,
+SELECT * FROM (
+SELECT page_id, 
+       name, 
+       last_edit_time AT TIME ZONE 'UTC' AS last_edit_time_utc, 
+       page_type
+    FROM page
+    WHERE NOT deleted 
+      AND workspace_id = ? 
+      AND name ~* ?
+      AND page_type = ?
+    ORDER BY last_edit_time
+) AS X ORDER BY name
+EOT
+        args => [9,'\\mmonk', 'wiki'],
+    );
+    ok_no_more_sql();
+
+
+    Socialtext::Model::Pages->By_tag(
+        workspace_id => 9,
+        limit => 33,
+        tag => 'foo',
+        do_not_need_tags => 1,
+        type => 'wiki',
+    );
+    sql_ok(
+        name => 'by_tag',
+        sql => <<EOT,
+$COMMON_SELECT
+    JOIN page_tag USING (page_id, workspace_id) 
+WHERE NOT deleted 
+  AND page.workspace_id = ? 
+  AND LOWER(page_tag.tag) = LOWER(?) AND page.page_type = ? ORDER BY page.last_edit_time DESC LIMIT ?
+EOT
+        args => [9,'foo','wiki',33],
+    );
+    ok_no_more_sql();
+
+    Socialtext::Model::Pages->By_seconds_limit(
+        seconds => 88,
+        where => 'cows fly',
+        count => 20,
+        tag => 'foo',
+        workspace_id => 9,
+        type => 'spreadsheet',
+    );
+    sql_ok(
+        name => 'by_seconds_limit',
+        sql => <<EOT,
+$COMMON_SELECT
+    JOIN page_tag USING (page_id, workspace_id) 
+WHERE NOT deleted
+  AND page.workspace_id = ? 
+  AND last_edit_time > 'now'::timestamptz - ?::interval 
+  AND LOWER(page_tag.tag) = LOWER(?) AND page.page_type = ? ORDER BY page.last_edit_time DESC LIMIT ?
+EOT
+        args => [9,'88 seconds','foo', 'spreadsheet', 20],
+    );
+    ok_no_more_sql();
+
+    Socialtext::Model::Pages->All_active(
+        hub => 'hub',
+        count => -1,
+        workspace_id => 9,
+        offset => 765,
+        type => 'wiki',
+    );
+    sql_ok(
+        name => 'all_active',
+        sql => <<EOT,
+$COMMON_SELECT
+WHERE NOT deleted 
+  AND page.workspace_id = ? 
+  AND page.page_type = ?
+OFFSET ? 
+EOT
+        args => [9,'wiki',765],
     );
     ok_no_more_sql();
 }

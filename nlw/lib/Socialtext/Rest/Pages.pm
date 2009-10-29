@@ -169,6 +169,7 @@ sub _entities_for_query {
             order_by => $order_by,
             count => $count, 
             offset => $offset,
+            type => $self->rest->query->param('type'),
         ) || []};
     }
 
