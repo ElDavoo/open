@@ -50,7 +50,8 @@
     [% END %]
   </head>
   <body id="[% id || 'socialtext-wiki' %]" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
-    [% FILTER decorate('body') %]
+    [% FILTER decorate('body_begin') %]
+    [% END %]
     <div id="mainWrap">
       <div id="header" class="st-wiki-nav">
         <div id="logo"><a href="/">[% loc('Socialtext') %]</a></div><!-- logo END -->
@@ -188,6 +189,7 @@
         </div><!-- footer END -->
       </div><!-- contentWrap END -->
     </div><!-- mainWrap END -->
+    [% FILTER decorate('body_end') %]
     [% END %]
   </body>
 </html>

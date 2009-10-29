@@ -1,4 +1,5 @@
 [%# @COPYRIGHT@ -%]
+[%- USE decorate -%]
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -8,6 +9,8 @@
     <meta name = "viewport" content = "width = device-width">
     </head>
     <body>
+        [% FILTER decorate('body_begin') %]
+        [% END %]
         <div style="display:none">
             <strong>[% warning || loc("Warning: Stylesheets are not enabled in your mobile device. In order to properly view Socialtext Mobile, you will need to enable stylesheets in your browser options.") %]</strong>
             <br/>
