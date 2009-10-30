@@ -12,6 +12,7 @@ my @dirs = qw(
     plugins/widgets
     plugins/signals
     plugins/dashboard
+    plugins/people
 );
 
 pod2usage() unless (@ARGV);
