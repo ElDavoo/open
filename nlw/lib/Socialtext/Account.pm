@@ -870,11 +870,10 @@ sub add_to_all_users_workspace {
 
     my $user = Socialtext::User->new(user_id => $p{user_id});
     die "User $p{user_id} doesn't exist" unless $user;
-    return if $user->is_system_created
-        || $user->primary_account_id != $self->account_id;
+    return if $user->is_system_created || !$self->has_user( $user );
 
     my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
-    return if $ws->has_user($user);
+    return if $ws->has_user($user, direct => 1);
 
     # Now according to {bz: 2896} we still need to check invitation_filter here.
     return unless $ws->email_passes_invitation_filter($user->email_address);
@@ -883,21 +882,6 @@ sub add_to_all_users_workspace {
         user => $user,
         role => Socialtext::Role->Member(),
     );
-}
-
-sub remove_from_all_users_workspace {
-    my $self  = shift;
-    my %p     = @_;
-    my $ws_id = $self->all_users_workspace;
-
-    return unless $ws_id and $p{user_id};
-
-    my $user = Socialtext::User->new( user_id => $p{user_id} );
-
-    die "User $p{user_id} doesn't exist" unless $user;
-
-    my $ws   = Socialtext::Workspace->new( workspace_id => $ws_id );
-    $ws->remove_user( user => $user );
 }
 
 sub Count {

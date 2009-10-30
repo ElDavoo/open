@@ -203,21 +203,9 @@ sub create {
     my $metadata = Socialtext::UserMetadata->create(%metadata_p);
     $user->metadata($metadata);
     $user->_update_profile();
-
-    $user->_post_create( %p );
+    $user->_index();
 
     return $user;
-}
-
-sub _post_create {
-    my $self = shift;
-    my %p    = @_;
-
-    if ( my $account = $self->primary_account ) {
-        $account->add_to_all_users_workspace( user_id => $self->user_id );
-    }
-
-    $self->_index();
 }
 
 sub SystemUser {
