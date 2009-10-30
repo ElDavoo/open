@@ -3563,7 +3563,7 @@ output.
 
 Prints a table of the workspace/account's members to standard output.
 
-You may also pass --direct, which will cause show-wembers to only display
+You may also pass --direct, which will cause show-members to only display
 members who are directly associated with the workspace or account, eg _not_
 through a group membership.
 
