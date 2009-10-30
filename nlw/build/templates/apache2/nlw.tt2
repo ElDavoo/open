@@ -147,7 +147,7 @@
     </Location>
 
     # {bz: 3202} - Don't cache SCGI Scripts!
-    <LocationMatch "/nlw/.+\.scgi">
+    <LocationMatch "/nlw/.+\.(ps|sc)gi">
         ExpiresDefault "access plus 1 seconds"
         FileETag none
     </LocationMatch>
