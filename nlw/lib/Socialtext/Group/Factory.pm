@@ -86,18 +86,18 @@ sub GetGroupHomunculus {
 
     # check DB for existing cached Group
     # ... if cached copy exists and is fresh, use that
-    Socialtext::Timer->Continue('ldap_group_check_cache');
+    Socialtext::Timer->Continue('group_check_cache');
     my $proto_group = $self->_get_cached_group($where);
-    Socialtext::Timer->Pause('ldap_group_check_cache');
+    Socialtext::Timer->Pause('group_check_cache');
     if ($proto_group && $self->_cached_group_is_fresh($proto_group)) {
         return $self->NewGroupHomunculus($proto_group);
     }
     # cache non-existent or stale, refresh from data store
     # ... if unable to refresh, return empty-handed; we know nothing about
     # this Group.
-    Socialtext::Timer->Continue('ldap_group_lookup');
+    Socialtext::Timer->Continue('group_lookup');
     my $refreshed = $self->_lookup_group($proto_group || $where);
-    Socialtext::Timer->Pause('ldap_group_lookup');
+    Socialtext::Timer->Pause('group_lookup');
     unless ($refreshed) {
 # XXX: what if?... we had an old cached group, but couldn't find it now?
         return;
@@ -152,9 +152,9 @@ sub GetGroupHomunculus {
         );
     }
     else {
-        Socialtext::Timer->Continue('ldap_group_membership_update');
+        Socialtext::Timer->Continue('group_membership_update');
         $self->_update_group_members($homey, $proto_group->{members});
-        Socialtext::Timer->Pause('ldap_group_membership_update');
+        Socialtext::Timer->Pause('group_membership_update');
     }
 
     return $homey;
