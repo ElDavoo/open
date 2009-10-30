@@ -1297,9 +1297,15 @@ sub email_passes_invitation_filter {
     }
 }
 
+# Calling this is a little nasty, $ws->has_user( $user, direct => 1 ), we
+# should consider changing this to a more standard
+# $ws->has_user( user => $user, direct => 1 ).
 sub has_user {
-    my $self = shift;
-    my $user = shift; # [in] User
+    my $self   = shift;
+    my $user   = shift;        # [in] User
+    my %p      = @_;
+    my $direct = $p{direct} || 0;
+
     # User has _some_ Role in the Workspace, that's *NOT* the Guest role.
     my $guest    = Socialtext::Role->Guest();
     my $has_user =
@@ -1307,6 +1313,7 @@ sub has_user {
         Socialtext::Workspace::Roles->RolesForUserInWorkspace(
             user      => $user,
             workspace => $self,
+            direct    => $direct,
         );
     return $has_user;
 }
