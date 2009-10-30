@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext qw/no_plan/;
+use Test::Socialtext tests => 10;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Socialtext::User;
 use Socialtext::Role;
