@@ -1359,10 +1359,11 @@ workspace name.
 Adds the given C<$group> to the Account with the specified C<$role>.  If no
 C<$role> is provided, a default Role will be used instead.
 
-=item $account->remove_group(group => $group)
+=item $account->remove_group(group => $group, role=>$role)
 
-Removes any Role that the given C<$group> may have in the Account.  If the
-Group has no Role in the Account, this method does nothing.
+Removes the given C<$role> that the given C<$group> may have in the Account.
+If no C<$role> is provided, a default Role will be used instead.  If the Group
+has no Role in the Account, this method does nothing.
 
 =item $account->has_group($group)
 
