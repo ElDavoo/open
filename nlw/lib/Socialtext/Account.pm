@@ -1370,7 +1370,7 @@ has no Role in the Account, this method does nothing.
 Checks to see if the given C<$group> has a Role in the Account, returning true
 if it does, false otherwise.
 
-=item $account->role_for_group(group => $group $group)
+=item $account->role_for_group(group => $group)
 
 Returns the C<Socialtext::Role> object representing the Role that the given
 C<$group> has in this Account.
