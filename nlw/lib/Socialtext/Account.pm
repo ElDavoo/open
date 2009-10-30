@@ -427,6 +427,7 @@ sub _dump_profile {
     return {} if $@;
 
     my $profile = Socialtext::People::Profile->GetProfile($user);
+    return {} unless $profile;
     return $profile->to_hash;
 }
 
