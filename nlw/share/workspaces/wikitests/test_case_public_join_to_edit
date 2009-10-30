@@ -15,8 +15,7 @@
 | wait_for_element_not_present_ok | link=Upload Files | 30000 |
 | wait_for_element_visible_ok | link=Log in | 30000 |
 | text_like | globalNav | Log in |
-| wait_for_element_visible_ok | link=Join | 30000 |
-| text_like | globalNav | Join |
+| wait_for_element_visible_ok | link=Join to edit | 30000 |
 
 | *Comment* | Test Case: Public Join to Edit. Verify buttons and links page bottom |  |
 | text_like | footerGlobal | Log in |
@@ -51,8 +50,13 @@
 | text_unlike | contentLeft | Manage All Users |
 | text_unlike | contentLeft | Invite New Users |
 
+| open_ok | /%%auth_w%%/index.cgi |  |
+| wait_for_element_visible_ok | link=Join to edit | 30000 |
+| click_ok | link=Join to edit | 30000 |
+| wait_for_element_visible_ok | link=Edit | 30000 |
 | st-logout |  |  |
 | wait_for_element_not_present_ok | link=Edit | 30000 |
+| wait_for_element_visible_ok | link=Join to edit | 30000 |
 
 | *Comment* | Test Case: Public Authenticate to Edit Teardown |
 | st-admin | delete-workspace -workspace %%auth_w%% --no-export |

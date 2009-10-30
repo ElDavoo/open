@@ -13,17 +13,15 @@
 | clickAndWait | link=Log out |  |
 
 | *Comment* | Test Case: Workspace Privacy verify login to edit button |  |
-| wait_for_element_visible_ok | link=Join | 30000 |
+| wait_for_element_visible_ok | link=Join to edit | 30000 |
 
 | *Comment* | Test Case: Workspace Privacy Join |  |
-| clickAndWait | link=Join |  |
+| clickAndWait | link=Join to edit |  |
 | wait_for_element_visible_ok | email_address | 30000 |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | password2 | 30000 |
 | wait_for_element_visible_ok | last_name | 30000 |
 | wait_for_element_visible_ok | first_name | 30000 |
-| wait_for_element_visible_ok | link=Click here to log in with an existing account. | 30000 |
-| click_and_wait | link=Click here to log in with an existing account. |  |
 
 | *Comment* | Test Case: Workspace Privacy login and edit |  |
 | st-login |  |  |
