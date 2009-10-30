@@ -170,14 +170,14 @@ Socialtext::GroupAccountRoleFactory - Factory for ST::GroupAccountRole objects
 
   # create a new GAR
   $gar = $factory->Create( {
-      group_id     => $group_id,
+      group_id   => $group_id,
       account_id => $account_id,
-      role_id      => $role_id,
+      role_id    => $role_id,
   } );
 
   # retrieve a GAR
   $gar = $factory->Get(
-      group_id     => $group_id,
+      group_id   => $group_id,
       account_id => $account_id,
   );
 
