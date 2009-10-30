@@ -3,5 +3,5 @@
 use strict;
 use warnings;
 
-print "Deprecated - nothing to check.\n";
+# We want to run this migration in all cases
 exit 0;

@@ -292,6 +292,12 @@ sub delete_signal {
     $self->_commit;
 }
 
+sub delete_signals {
+    my $self = shift;
+    $self->solr->delete_by_query("doctype:signal");
+    $self->_commit;
+}
+
 # Create a new Document object and set it's fields.  Then delete the document
 # from the index using 'key', which should be unique, and then add the
 # document to the index.  The 'key' is just the signal id.
@@ -301,8 +307,8 @@ sub _add_signal_doc {
 
     Socialtext::Timer->Continue('solr_signal');
 
-    my $id = $signal->signal_id;
-    st_log->debug("Indexing signal doc $id");
+    my $id = "signal:" . $signal->signal_id;
+    st_log->debug("Indexing doc $id");
 
     my $ctime = _pg_date_to_iso($signal->at);
     my $recip = $signal->recipient_id || 0;
@@ -316,10 +322,10 @@ sub _add_signal_doc {
     my $is_question = $body =~ m/\?\s*$/ ? 1 : 0;
 
     my @fields = (
-        [id => $id], # signal ids are just numbers
+        [id => $id],
         [w => 0],
         [doctype => 'signal'], 
-        [signal_key => $id],
+        [signal_key => $signal->signal_id],
         [date => $ctime], [created => $ctime],
         [creator => $signal->user_id],
         [creator_name => $signal->user->best_full_name],
@@ -391,6 +397,12 @@ sub delete_person {
     $self->_commit;
 }
 
+sub delete_people {
+    my $self = shift;
+    $self->solr->delete_by_query("doctype:person");
+    $self->_commit;
+}
+
 # Create a new Document object and set it's fields.  Then delete the document
 # from the index using 'key', which should be unique, and then add the
 # document to the index.  The 'key' is just the user id.
@@ -404,7 +416,7 @@ sub _add_person_doc {
     st_log->debug("Indexing person $user_id");
 
     my @fields = (
-        [id => "person:$user_id"], # prefix to avoid collision with signal IDs
+        [id => "person:$user_id"],
         [w => 0],
         [a => $user->primary_account_id],
         [doctype => 'person'], 

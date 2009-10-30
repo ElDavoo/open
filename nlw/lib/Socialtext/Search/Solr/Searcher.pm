@@ -234,9 +234,10 @@ sub _make_result {
 
     _debug("_make_result: $key $doctype $score");
     if ($doctype eq 'signal') {
+        (my $signal_id = $key) =~ s/^signal://;
         return Socialtext::Search::SignalHit->new(
             score => $score,
-            signal_id => $key,
+            signal_id => $signal_id,
         );
     }
     if ($doctype eq 'person') {
