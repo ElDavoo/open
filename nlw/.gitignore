@@ -349,3 +349,5 @@ t/wikitests/test-data/socialcalc/recurse-2-1.ssheet
 t/wikitests/test-data/socialcalc/recurse-3-4.ssheet
 t/wikitests/test-data/socialcalc/recurse-4-3.ssheet
 t/wikitests/miki/people.wiki
+lib/Socialtext/PSGI/json-proxy.psgi
+bin/st-plack-json-proxy
