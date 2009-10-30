@@ -547,7 +547,7 @@ sub import_file {
         print loc("Enabling account plugins ...") . "\n";
         for my $plugin_name (@{ $hash->{plugins} }) {
             unless (Socialtext::Pluggable::Adapter->plugin_exists($plugin_name)) {
-                print loc("... '[_1]' plugin missing; skipping", $plugin_name);
+                print loc("... '[_1]' plugin missing; skipping", $plugin_name) . "\n";
                 next;
             }
             $account->enable_plugin($plugin_name);
