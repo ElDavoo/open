@@ -93,12 +93,17 @@ proto.end_node = function(node) {
 }
 
 proto.text_node = function(text) {
-    this.output += text
-        .replace(/&/g, '&amp;')
-        .replace(/>/g, '&gt;')
-        .replace(/</g, '&lt;')
-        .replace(/"/g, '&#34;')
-        .replace(/'/g, '&#39;');
+    if (/[&<>"']/.test(text)) {
+        this.output += text
+            .replace(/&/g, '&amp;')
+            .replace(/>/g, '&gt;')
+            .replace(/</g, '&lt;')
+            .replace(/"/g, '&#34;')
+            .replace(/'/g, '&#39;');
+    }
+    else {
+        this.output += text
+    }
 }
 
 });
