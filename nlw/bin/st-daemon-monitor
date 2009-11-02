@@ -8,6 +8,8 @@ use Getopt::Long;
 use Pod::Usage;
 use AnyEvent;
 use AnyEvent::Handle;
+use AnyEvent::HTTP;
+use Coro;
 use Coro::AnyEvent;
 use Guard qw/scope_guard/;
 use Socialtext::Log qw/st_log/;
@@ -21,8 +23,9 @@ our $max_vsz = 512; # in MiB
 our $max_fds = 512;
 our $signal  = 15; # SIGTERM
 our $tcp_port = 0;
-our $check_scgi = 0;
+our $check_http = 0;
 our $config_prefix;
+our $stu = 'st-appliance-update';
 
 GetOptions(
     'help|?' => \$help,
@@ -34,15 +37,17 @@ GetOptions(
     'vsz=i'  => \$max_vsz,
     'fds=i'  => \$max_fds,
     'tcp=i'  => \$tcp_port,
-    'scgi!'  => \$check_scgi,
+    'http!'  => \$check_http,
     'config=s' => \$config_prefix,
+    # for testing only
+    'stu=s' => \$stu,
 )
 or pod2usage(-exitstatus => 1, -message => $?);
 pod2usage(1) if $help;
 pod2usage(-exitstatus => 0, -verbose => 2) if $man;
 
 {
-    my $update_running = `pgrep -f st-appliance-update`;
+    my $update_running = `pgrep -f $stu`;
     if ($update_running ne '') {
         st_log()->debug("st-daemon-monitor: ".
             "exiting because st-appliance-update is running");
@@ -58,7 +63,7 @@ if ($config_prefix) {
     my $conf = Socialtext::Appliance::Config->new;
     no strict "refs";
     for my $key (qw(
-        pidfile init_cmd signal max_rss max_vsz max_fds tcp_port check_scgi
+        pidfile init_cmd signal max_rss max_vsz max_fds tcp_port check_http
     )) {
         my $val = $conf->value("monitor_${config_prefix}_$key");
         next unless defined $val;
@@ -176,19 +181,27 @@ if ($tcp_port && $tcp_port !~ /\D/) {
     recover("tcp port $tcp_port is not open") unless $netstat;
 }
 
-#warn "checking scgi\n";
+#warn "checking http\n";
 
-if ($check_scgi) {
-    require Socialtext::SCGI;
-    my ($err, $response) = Socialtext::SCGI->Ping($tcp_port);
+if ($check_http) {
 
-    if ($err || !$response) {
-        recover("scgi server isn't responding? (error: $err)");
+    my $cv = AE::cv;
+    my $timer = AE::timer 10, 0, sub {
+        $cv->send(undef, {Status => 599, Reason => "timeout"});
+    };
+    my $h = http_request 'GET', "http://localhost:$tcp_port/ping",
+        timeout => 10,
+        sub { $cv->send(@_) };
+    my (undef, $headers) = $cv->recv;
+    my $status = $headers->{Status};
+    my $reason = $headers->{Reason} || '';
+    if ($status =~ /^59/) {
+        recover("psgi server isn't responding? (error: $status reason: $reason)");
     }
-    if ($response !~ /Status: 200/sm) {
-        #warn "$hdrs\n";
-        recover("scgi server returned a non-200 response");
+    elsif ($status ne '200') {
+        recover("psgi server returned a non-200 response");
     }
+
 }
 
 # all's well
@@ -215,7 +228,7 @@ st-daemon-monitor - Monitor daemon processes
     --vsz <Int>         VSZ limit
     --fds <Int>         FDS limit
     --tcp <Port>        Check that the process is listingin on this port
-    --scgi              Ping scgi server on port passed as --tcp
+    --http              Ping http server on port passed as --tcp
     --config <prefix>   Use /etc/socialtext/appliance.conf to read values
 
 =cut

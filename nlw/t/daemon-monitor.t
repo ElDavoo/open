@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 123;
+use Test::Socialtext tests => 143;
 use File::Temp qw/tempfile/;
 use Time::HiRes ();
 use POSIX ();
@@ -88,6 +88,7 @@ sub test_monitor ($$;$) {
         "bin/st-daemon-monitor ".$mon_args.
         qq{ --pidfile $pidfile --init "$init_cmd"}
     );
+    pass "Return code for stdm is $rc";
     my $exit = $rc >> 8;
 
     if ($process_lives) {
@@ -120,8 +121,8 @@ sub logged_like ($) {
 }
 
 my $update_procs = `/usr/bin/pgrep -f st-appliance-update`;
-is $update_procs, '', "no st-appliance-update is running before the test"
-    or die "shut down any st-appliance-update procs/vims before running this test";
+# is $update_procs, '', "no st-appliance-update is running before the test"
+#     or die "shut down any st-appliance-update procs/vims before running this test";
 
 my $c = 'dev-bin/cranky.pl ';
 
@@ -157,21 +158,21 @@ socket_tests: {
 
     # cranky should give a 403
     test_monitor(
-        $c.'--serv scgi',
-        "--scgi --tcp $port"
+        $c.'--serv http',
+        "--http --tcp $port"
     );
     logged_like qr/non-200/;
 
     # cranky gives a 200
     test_monitor(
-        $c.'--after 5 --serv scgi --scgi ok',
-        "--scgi --tcp $port"
+        $c.'--after 5 --serv http --http ok',
+        "--http --tcp $port"
         => 'lives'
     );
 
     test_monitor(
         $c.'--serv stall',
-        "--scgi --tcp $port"
+        "--http --tcp $port"
     );
     logged_like qr/timeout/;
 }
@@ -187,7 +188,7 @@ appliance_conf_tests: {
             monitor_proxy_max_vsz    => 128,
             monitor_proxy_max_fds    => 32,
             monitor_proxy_tcp_port   => $port,
-            monitor_proxy_check_scgi => 1,
+            monitor_proxy_check_http => 1,
             monitor_proxy_init_cmd   => $init_cmd,
             monitor_proxy_pidfile    => $pidfile,
         );
@@ -197,22 +198,23 @@ appliance_conf_tests: {
         $conf->save();
     }
 
-    test_monitor($c.'--serv scgi --scgi ok','--config proxy' => 'lives');
+    test_monitor($c.'--serv http --http ok','--config proxy' => 'lives');
 
-    test_monitor($c.'--serv scgi --scgi ok --ram 64','--config proxy');
+    test_monitor($c.'--serv http --http ok --ram 64','--config proxy');
     logged_like qr/is too big \(RSS\)/i;
-    test_monitor($c.'--serv scgi --scgi ok --fds 64','--config proxy');
+    test_monitor($c.'--serv http --http ok --fds 64','--config proxy');
     logged_like qr/too many files/i;
 
-    test_monitor($c.'--serv scgi --scgi 403','--config proxy');
+    test_monitor($c.'--serv http --http 403','--config proxy');
     logged_like qr/non-200/;
 
     test_monitor($c.'--serv stall', '--config proxy');
     logged_like qr/timeout/;
 
+
     my $fakepid = fork_and_exec(
-        q{/usr/bin/perl -e "sleep 5; st-appliance-update"});
-    test_monitor('/bin/false', '--config proxy' => 'lives');
+        qq{/usr/bin/perl -e "sleep 5; print 'zomg-$$-update'"});
+    test_monitor('/bin/false', "--config proxy --stu zomg-$$-update" => 'lives');
     kill 15, $fakepid;
     reap($fakepid);
 }

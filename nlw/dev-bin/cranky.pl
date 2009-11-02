@@ -10,7 +10,7 @@ cranky.pl - an ornery daemon
 =head1 SYNOPSIS
 
   cranky.pl
-  cranky.pl --ram 512 --fds 256 --after 5 --serv scgi --scgi ok
+  cranky.pl --ram 512 --fds 256 --after 5 --serv http --http ok
 
 Options:
   --help    brief help message
@@ -19,7 +19,7 @@ Options:
   --fds     open at least this many file descriptors
   --after   exit abruptly after this many seconds (Default: 60 seconds)
   --serv    Run the specified dummy server
-  --scgi    Send this SCGI response ('ok' = 200, everything else = 403).
+  --http    Send this http response ('ok' = 200, everything else = 403).
 
 =cut
 
@@ -39,7 +39,7 @@ my $fds = 0; # in MiB
 my $after = 60;
 my $serv = 'stall';
 my $port = ($> + 26000);
-my $scgi_opts = '';
+my $http_opts = '';
 
 GetOptions(
     'help|?' => \$help,
@@ -49,7 +49,7 @@ GetOptions(
     'after=i' => \$after,
     'serv=s'  => \$serv,
     'port=i' => \$port,
-    'scgi=s' => \$scgi_opts,
+    'http=s' => \$http_opts,
 )
 or pod2usage(2);
 pod2usage(1) if $help;
@@ -71,42 +71,49 @@ if ($serv eq 'stall') {
         my $fh = shift;
         async {
             scope_guard { close $fh };
-            Coro::AnyEvent::sleep 10;
+            Coro::AnyEvent::sleep 12.5;
         };
     };
     print "$0: set up sink $server\n";
 }
-elsif ($serv eq 'scgi') {
-    require AnyEvent::SCGI;
-    $server = AnyEvent::SCGI::scgi_server('127.0.0.1', $port, unblock_sub {
-        eval {handle_scgi(@_)};
-        warn "$0: scgi error $@" if $@;
-    });
+elsif ($serv eq 'http') {
+    $server = tcp_server '127.0.0.1', $port, unblock_sub {
+        my $fh = shift;
+        eval {
+            my $handle = AnyEvent::Handle->new(fh => $fh);
+            handle_http($handle);
+        };
+        warn "$0: httperror $@" if $@;
+    };
 }
 else {
     print "$0: no server\n";
 }
 
-sub handle_scgi {
-    my ($handle, $env, $body, $fatal, $msg) = @_;
-    my $status = ($scgi_opts =~ /\bok\b?/) ? '200 OK' : '403 Go Away';
-    if ($handle && $env) {
-        my $go_away = <<"EOM";
-Status: $status
+sub handle_http {
+    my $handle = shift;
+    my $status = ($http_opts =~ /\bok\b?/) ? '200 OK' : '403 Go Away';
+
+    # read until end of headers
+    my $cb = Coro::rouse_cb;
+    $handle->on_error($cb);
+    $handle->push_read(line => qr/\015\012\015\012/, $cb);
+    Coro::rouse_wait($cb);
+
+    my $go_away = <<"EOM";
+HTTP/1.0 $status
 Content-Type: text/plain
 Connection: close
 
 Go away!
 EOM
-        $go_away =~ s/\n/\015\012/gsm;
-        $handle->push_write($go_away);
-        $handle->push_shutdown();
-        # important to make a closure here:
-        $handle->on_drain(sub { $handle->destroy });
-    }
-    else {
-        die "$msg ($fatal)";
-    }
+    $go_away =~ s/\n/\015\012/gsm;
+    $handle->push_write($go_away);
+    $cb = Coro::rouse_cb;
+    $handle->on_drain($cb);
+    $handle->on_error($cb);
+    Coro::rouse_wait($cb);
+    $handle->destroy;
 }
 
 our @sigs;
@@ -176,8 +183,8 @@ Default: 60
 Turn on a socket server.  Listens on port C<< $> + 6000 >> (your user
 ID plus 6000).
 
-Using C<--serv scgi> will receive SCGI requests and send an SCGI response.
-See C<--scgi>.
+Using C<--serv http> will receive HTTP requests and send an HTTP response.
+See C<--http>.
 
 Using C<--serv stall> will set up a "stalling" TCP server.  No response is
 given and requests are ignored.
@@ -186,9 +193,9 @@ Using C<--serv none> will disable this feature.
 
 Default: stall
 
-=item B<--scgi> ok
+=item B<--http> ok
 
-Controls the SCGI response.  An argument of "ok" will cause a "200 OK"
+Controls the HTTP response.  An argument of "ok" will cause a "200 OK"
 response to be sent.  By default a "403 Go Away" response will be sent.
 
 Default: 403
