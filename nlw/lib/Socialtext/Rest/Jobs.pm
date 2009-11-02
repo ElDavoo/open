@@ -44,7 +44,9 @@ sub get_resource {
 
     my @job_stats;
     for my $type (keys %$stat) {
-        (my $shortname = $type) =~ s/^Socialtext::Job:://;
+        next unless $type =~ m/^Socialtext::Job::(.+)/;
+        my $shortname = $1;
+        next if $shortname =~ m/^Delay::/;
         push @job_stats, {name => $shortname, %{$stat->{$type}}}
     }
 
