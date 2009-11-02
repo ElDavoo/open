@@ -1320,7 +1320,8 @@ sub has_user {
 
 {
     Readonly my $spec => {
-        user => USER_TYPE,
+        user   => USER_TYPE,
+        direct => SCALAR_TYPE( default => 0 ),
     };
     sub role_for_user {
         my $self = shift;
