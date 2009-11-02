@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 32;
+use Test::Socialtext tests => 48;
 use Test::Exception;
 use Test::Warn;
 
@@ -219,4 +219,88 @@ user_with_indirect_account_role: {
     $role = $auw->role_for_user( user => $user );
     ok $role, 'User has Role in all users Workspace';
     is $role->role_id, $member->role_id, '... Role is member';
+}
+
+################################################################################
+group_has_role_in_auw_exists: {
+    my $acct   = create_test_account_bypassing_factory();
+    my $ws     = create_test_workspace(account => $acct);
+    my $group  = create_test_group(account => $acct);
+    my $user   = create_test_user();
+    my $member = Socialtext::Role->Member();
+
+    # Update AUW _before_ adding the group.
+    $acct->update( all_users_workspace => $ws->workspace_id );
+    is $acct->all_users_workspace, $ws->workspace_id,
+        'Account assigned all users workspace before adding groups';
+
+    # Add User to Group
+    $group->add_user( user => $user );
+    my $role = $group->role_for_user( user => $user );
+    ok $role, 'User has Role in Group';
+    is $role->role_id, $member->role_id, '... Role is Member';
+
+    # Check User's Role in the AUW
+    $role = $ws->role_for_user( user => $user, direct => 1 );
+    ok !$role, 'User does _not_ have a direct Role in AUW';
+
+    $role = $ws->role_for_user( user => $user );
+    ok $role, 'User has an indirect Role in AUW';
+}
+
+################################################################################
+group_has_role_in_auw_updated: {
+    my $acct   = create_test_account_bypassing_factory();
+    my $ws     = create_test_workspace(account => $acct);
+    my $group  = create_test_group(account => $acct);
+    my $user   = create_test_user();
+    my $member = Socialtext::Role->Member();
+
+    # Add User to Group
+    $group->add_user( user => $user );
+    my $role = $group->role_for_user( user => $user );
+    ok $role, 'User has Role in Group';
+    is $role->role_id, $member->role_id, '... Role is Member';
+
+    # Update the AUW _after_ adding the group.
+    $acct->update( all_users_workspace => $ws->workspace_id );
+    is $acct->all_users_workspace, $ws->workspace_id,
+        'Account has all users workspace updated after adding groups';
+
+    # Check User's Role in the AUW
+    $role = $ws->role_for_user( user => $user, direct => 1 );
+    ok !$role, 'User does _not_ have a direct Role in AUW';
+
+    $role = $ws->role_for_user( user => $user );
+    ok $role, 'User has an indirect Role in AUW';
+}
+
+################################################################################
+group_has_role_in_auw_when_added_to_account: {
+    my $acct   = create_test_account_bypassing_factory();
+    my $ws     = create_test_workspace(account => $acct);
+    my $group  = create_test_group();
+    my $user   = create_test_user();
+    my $member = Socialtext::Role->Member();
+
+    $acct->update( all_users_workspace => $ws->workspace_id );
+    is $acct->all_users_workspace, $ws->workspace_id,
+        'Account has all users workspace updated after adding groups';
+
+    # Add User to Group
+    $group->add_user( user => $user );
+    my $role = $group->role_for_user( user => $user );
+    ok $role, 'User has Role in Group';
+    is $role->role_id, $member->role_id, '... Role is Member';
+
+    # Add Group to Account
+    $acct->add_group( group => $group );
+    ok $acct->has_group( $group ), 'Group is added to Account';
+
+    # Check User's Role in the AUW
+    $role = $ws->role_for_user( user => $user, direct => 1 );
+    ok !$role, 'User does _not_ have a direct Role in AUW';
+
+    $role = $ws->role_for_user( user => $user );
+    ok $role, 'User has an indirect Role in AUW';
 }

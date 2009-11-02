@@ -72,7 +72,7 @@ sub add_user_account_role {
             role_id    => $role->role_id,
         } );
 
-        $account->add_to_all_users_workspace( user_id => $user->user_id );
+        $account->add_to_all_users_workspace( user => $user );
     }
 }
 
@@ -179,6 +179,7 @@ sub add_group_account_role {
             account_id  => $account->account_id,
             role_id     => $role->role_id,
         } );
+        $account->add_to_all_users_workspace( group => $group );
     }
 }
 

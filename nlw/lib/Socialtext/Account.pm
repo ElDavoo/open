@@ -831,10 +831,14 @@ sub _post_update {
     my $new  = shift;
 
     if ( $new->{all_users_workspace} ) {
-        my $users = $self->users();
-
+        my $users = $self->users( direct => 1 );
         while ( my $user = $users->next() ) {
-            $self->add_to_all_users_workspace( user_id => $user->user_id );
+            $self->add_to_all_users_workspace( user => $user );
+        }
+
+        my $groups = $self->groups();
+        while ( my $group = $groups->next() ) {
+            $self->add_to_all_users_workspace( group => $group );
         }
     }
 
@@ -868,24 +872,57 @@ sub _post_update {
 sub add_to_all_users_workspace {
     my $self  = shift;
     my %p     = @_;
-    my $ws_id = $self->all_users_workspace;
 
-    return unless $ws_id and $p{user_id};
+    if ( my $user = delete $p{user} ) {
+        $self->_user_to_all_users_workspace( $user );
+    }
+    elsif ( my $group = delete $p{group} ) {
+        $self->_group_to_all_users_workspace( $group );
+    }
+}
 
-    my $user = Socialtext::User->new(user_id => $p{user_id});
-    die "User $p{user_id} doesn't exist" unless $user;
-    return if $user->is_system_created || !$self->has_user( $user );
+sub _user_to_all_users_workspace {
+    my $self = shift;
+    my $user = shift;
+    my $auw  = $self->_get_all_users_workspace();
 
-    my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
-    return if $ws->has_user($user, direct => 1);
+    return unless $auw;
+
+    # Sometimes user metadata is passed in, we need a full fledged user.
+    if ( $user->isa('Socialtext::UserMetadata') ) {
+        $user = Socialtext::User->new( user_id => $user->user_id );
+    }
+
+    return if $user->is_system_created || !$self->has_user($user, direct => 1);
+    return if $auw->has_user($user, direct => 1);
 
     # Now according to {bz: 2896} we still need to check invitation_filter here.
-    return unless $ws->email_passes_invitation_filter($user->email_address);
+    return unless $auw->email_passes_invitation_filter($user->email_address);
 
-    $ws->assign_role_to_user(
+    $auw->assign_role_to_user(
         user => $user,
         role => Socialtext::Role->Member(),
     );
+}
+
+sub _group_to_all_users_workspace {
+    my $self  = shift;
+    my $group = shift;
+    my $auw   = $self->_get_all_users_workspace();
+
+    return unless $auw;
+    return if $auw->has_group( $group ) || !$self->has_group( $group );
+
+    $auw->add_group( group => $group );
+}
+
+sub _get_all_users_workspace {
+    my $self = shift;
+    my $ws_id = $self->all_users_workspace;
+
+    return unless $ws_id;
+    my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
+    return $ws;
 }
 
 sub Count {
