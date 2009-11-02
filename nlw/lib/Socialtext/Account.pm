@@ -659,13 +659,17 @@ sub user_count {
     return $count;
 }
 
+# Calling this is clunky, $acct->has_user($user, direct => 1), we should look
+# at refactoring into $acct->has_user(user => $user, direct => 1).
 sub has_user {
     my $self = shift;
     my $user = shift;
+    my %attr = @_;
     Socialtext::Timer->Continue('acct_has_user');
     my $has_user = Socialtext::Account::Roles->RolesForUserInAccount(
         user    => $user,
         account => $self,
+        %attr,
     );
     Socialtext::Timer->Pause('acct_has_user');
     return $has_user ? 1 : 0;
