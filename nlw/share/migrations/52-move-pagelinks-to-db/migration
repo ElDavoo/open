@@ -8,7 +8,7 @@ use Socialtext::Migration::Utils qw/ensure_socialtext_schema
 ensure_socialtext_schema(89); # Needs the page_link table
 
 create_job_for_each_workspace(
-    'RebuildPageLinks', 31,
+    'RebuildPageLinks', 30,
     except => [ qw(help-adminguide help-en help-jumpstart) ]
 );
 
