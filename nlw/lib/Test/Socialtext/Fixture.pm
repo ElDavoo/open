@@ -25,6 +25,8 @@ use Socialtext::AppConfig;
 use Test::Socialtext::User;
 use Socialtext::System qw(shell_run);
 
+our @DEFAULT_PLUGINS = qw(dashboard people signals);
+
 sub new {
     my $class = shift;
     my $self = {@_};
@@ -329,10 +331,7 @@ sub _create_user {
     # account
     my $account = $self->_default_account;
     my $adapter = Socialtext::Pluggable::Adapter->new;
-    $account->enable_plugin($_)
-        for grep { defined }
-            grep { $adapter->plugin_class($_)->scope eq 'account' }
-            $adapter->plugin_list;
+    $account->enable_plugin($_) for @DEFAULT_PLUGINS;
     $account->update(skin_name => 's3');
 
     my $user = Socialtext::User->new( username => $p{username} );
