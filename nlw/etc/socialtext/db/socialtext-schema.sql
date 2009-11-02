@@ -294,13 +294,12 @@ CREATE TABLE user_group_role (
 );
 
 CREATE VIEW account_user AS
-  SELECT explicit.user_id, explicit.account_id
-   FROM ( SELECT user_account_role.user_id, user_account_role.account_id
-           FROM user_account_role
+  SELECT user_account_role.user_id, user_account_role.account_id, true AS is_direct
+   FROM user_account_role
 UNION ALL 
-         SELECT ugr.user_id, gar.account_id
-           FROM user_group_role ugr
-      JOIN group_account_role gar USING (group_id)) explicit;
+ SELECT ugr.user_id, gar.account_id, false AS is_direct
+   FROM user_group_role ugr
+   JOIN group_account_role gar USING (group_id);
 
 CREATE VIEW all_user_account_role AS
   SELECT my_acct_roles.user_id, my_acct_roles.account_id, my_acct_roles.role_id
@@ -731,10 +730,10 @@ CREATE TABLE topic_signal_user (
 );
 
 CREATE VIEW user_account AS
-  SELECT um.user_id, um.primary_account_id AS account_id, true AS is_primary
+  SELECT um.user_id, um.primary_account_id AS account_id, true AS is_direct, true AS is_primary
    FROM "UserMetadata" um
 UNION ALL 
- SELECT account_user.user_id, account_user.account_id, false AS is_primary
+ SELECT account_user.user_id, account_user.account_id, account_user.is_direct, false AS is_primary
    FROM account_user;
 
 CREATE TABLE user_plugin_pref (
@@ -1834,4 +1833,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '90');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '91');
