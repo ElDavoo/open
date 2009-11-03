@@ -1965,10 +1965,10 @@ PLUGINS: {
                 argv => [
                     qw( --all-accounts --plugin test )
                 ]
-            )->disable_plugin();
+            )->enable_plugin();
         },
-        qr/The test plugin is now disabled for all accounts/,
-        'disable plugin for all account',
+        qr/The test plugin is now enabled for all accounts/,
+        'enable plugin for all account',
     );
     expect_success(
         sub {
@@ -1976,10 +1976,10 @@ PLUGINS: {
                 argv => [
                     qw( --all-accounts --plugin test )
                 ]
-            )->enable_plugin();
+            )->disable_plugin();
         },
-        qr/The test plugin is now enabled for all accounts/,
-        'enable plugin for all account',
+        qr/The test plugin is now disabled for all accounts/,
+        'disable plugin for all account',
     );
     expect_failure(
         sub {
