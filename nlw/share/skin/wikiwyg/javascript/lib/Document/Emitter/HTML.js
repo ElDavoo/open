@@ -3,6 +3,15 @@ Class('Document.Emitter.HTML(Document.Emitter)', function() {
 var proto = this.prototype;
 proto.className = 'Document.Emitter.HTML';
 
+proto.content = function() {
+    var len = this.output.length;
+    if (this.output.indexOf('</p>\n') == (this.output.length - 5)) {
+        // Single-paragraph; emit without the <p>...</p> tag
+        return this.output.substring(3, len-8);
+    }
+    return this.output;
+}
+
 proto.begin_node = function(node) {
     var tag = node.type;
     switch (tag) {
