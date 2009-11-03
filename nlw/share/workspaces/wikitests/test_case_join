@@ -27,9 +27,9 @@
 
 | *Comment* | Test Case: Join. Logged-in user joins immediately, primary account unchanged |  |
 | open_ok | /%%acct_ws%% |  |
-| wait_for_element_visible_ok | link=Join | 30000 |
+| wait_for_element_visible_ok | link=Join to edit | 30000 |
 | wait_for_element_not_present_ok | link=Edit | 5000 |
-| click_and_wait | link=Join |  |
+| click_and_wait | link=Join to edit |  |
 | location_like | /%%acct_ws%%/index.cgi |  |
 | wait_for_element_visible_ok | link=Edit | 5000 |
 | wait_for_element_visible_ok | link=Comment | 5000 |
@@ -39,14 +39,14 @@
 | st-logout |  |  |
 | st-config | set self_registration 0 | Wrote updated config file |
 | open_ok | /%%acct_ws%% |  |
-| wait_for_element_not_present_ok | link=Join | 5000 |
+| wait_for_element_not_present_ok | link=Join to edit | 5000 |
 | st-config | set self_registration 1 | Wrote updated config file |
 
 | *Comment* | Test Case: Join. New user joins and registers |  |
 | open_ok | /%%acct_ws%% |  |
-| wait_for_element_visible_ok | link=Join | 30000 |
+| wait_for_element_visible_ok | link=Join to edit | 30000 |
 | wait_for_element_not_present_ok | link=Edit | 5000 |
-| click_and_wait | link=Join |  |
+| click_and_wait | link=Join to edit |  |
 | wait_for_element_visible_ok | email_address | 30000 |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | password2 | 30000 |
