@@ -43,7 +43,7 @@ Dev_env: {
         MinSpareServers     => 2,
         MaxSpareServers     => 2,
         StartServers        => 2,
-        MaxClients          => 90,
+        MaxClients          => 150,
         MaxRequestsPerChild => 1000,
     );
 }
