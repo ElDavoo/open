@@ -2864,9 +2864,51 @@ sub list_groups {
 
 sub create_group {
     my $self    = shift;
-    my $account = $self->_require_account('optional')
+    my %opts    = $self->_get_options('ldap-dn:s', 'name:s', 'email:s');
+
+    $opts{account} = $self->_require_account('optional')
         || Socialtext::Account->Default();
-    my %opts    = $self->_get_options('ldap-dn:s');
+
+    return $self->_create_ldap_group(%opts) if $opts{'ldap-dn'};
+
+    my $name = $opts{name};
+    unless ($name) {
+        $self->_error(
+            loc("--name or --ldap-dn must be supplied to create a group.")
+        );
+    }
+
+    my $user = Socialtext::User->new(email_address => $opts{email})
+        || Socialtext::User->SystemUser;
+    my $account = $opts{account} || Socialtext::Account->Default;
+    my $group = eval {
+        Socialtext::Group->Create({
+            driver_group_name => $name,
+            primary_account_id => $account->account_id,
+            created_by_user_id => $user->user_id,
+        });
+    };
+    if (my $err = $@) {
+        if ($err =~ m/duplicate key violates/) {
+            $self->_error(
+                loc("The [_1] Group has already been added to the system.",
+                    $name,
+                )
+            );
+        }
+        $self->_error(loc("Error creating group: [_1]", $err));
+    }
+    $self->_success(
+        loc("[_1] Group has been created (Group Id: [_2])",
+            $group->driver_group_name,
+            $group->group_id,
+        )
+    );
+}
+
+sub _create_ldap_group {
+    my $self = shift;
+    my %opts = @_;
     my $ldap_dn = $opts{'ldap-dn'};
 
     # Check to make sure LDAP Group Factories have been configured.
@@ -2889,7 +2931,7 @@ sub create_group {
     # Vivify the Group, thus loading it into ST.
     my $group = Socialtext::Group->GetGroup(
         driver_unique_id   => $ldap_dn,
-        primary_account_id => $account->account_id,
+        primary_account_id => $opts{account}->account_id,
     );
 
     unless ( $group ) {
@@ -2901,7 +2943,7 @@ sub create_group {
     $self->_success(
         loc("The [_1] Group has been created in the [_2] Account.",
             $group->driver_group_name,
-            $account->name,
+            $opts{account}->name,
         )
     );
 }
@@ -3061,7 +3103,7 @@ sub _require_hub {
     my $self = shift;
 
     my $user = shift || Socialtext::User->SystemUser();
-    my $ws = $self->_require_workspace();
+    my $ws = shift || $self->_require_workspace();
     return $self->_make_hub($ws, $user);
 }
 
@@ -3986,11 +4028,19 @@ with that workspace.
 Show the Group configuration for the specified C<--group> (which must be
 provided as a Group Id).
 
-=head2 create-group --ldap-dn [--account]
+=head2 create-group (--ldap-dn or --name) [--account] [--email]
+
+Creates a new Socialtext Group.  If C<--name> is provided, a regular 
+group will be created.  If C<--ldap-dn> is provided, the group will
+be loaded from LDAP.
 
 Loads a Group from LDAP, as identified by the given C<--ldap-dn> into
-Socialtext, placing it in the specified C<--account>.  If no C<--account> is
-specified, the default system Account will be used.
+Socialtext, placing it in the specified C<--account>.  
+
+If no C<--account> is specified, the default system Account will be used.
+
+If no C<--email> is specified, regular groups will be created by the
+System User.
 
 =head2 add-member --group [--account or --workpsace]
 

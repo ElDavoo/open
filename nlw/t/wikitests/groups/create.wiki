@@ -1,0 +1,28 @@
+* Fixture: SocialRest
+
+Tests to create groups via REST and CLI.
+
+| standard-test-setup |
+
+* Create a group using the default account & user
+
+| set      | g1                         | g1-%%start_time%%                                              |
+| st-admin | create-group --name %%g1%% | %%g1%% Group has been created (Group Id:                       |
+| st-admin | list-groups                | qr/%%g1%% .\s+0 .\s+0 .\s+[\w\.]+ . [\d-]+ .\s+system-user/ |
+
+* Can't create a group with a duplicate name
+
+| st-admin | create-group --name %%g1%% | The %%g1%% Group has already been added to the system. |
+
+* Create with a specific account
+
+| set | g2 | g2-%%start_time%% |
+| st-admin | create-group --name %%g2%% --account %%account%% | %%g2%% Group has been created (Group Id:                        |
+| st-admin | list-groups                                      | qr/%%g2%% .\s+0 .\s+0 .\s+%%account%% . [\d-]+ .\s+system-user/ |
+
+* Create with a specific user
+
+| set | g3 | g3-%%start_time%% |
+| st-admin | create-group --name %%g3%% --email %%username%% | %%g3%% Group has been created (Group Id:                     |
+| st-admin | list-groups                                     | qr/%%g3%% .\s+0 .\s+0 .\s+[\w\.]+ . [\d-]+ .\s+user-%%start_time%%/ |
+
