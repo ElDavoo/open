@@ -49,7 +49,8 @@ sub get_results {
             lower(first_name) LIKE $1 OR
             lower(last_name) LIKE $1 OR
             lower(email_address) LIKE $1 OR
-            lower(driver_username) LIKE $1
+            lower(driver_username) LIKE $1 OR
+            lower(display_name) LIKE $1
         )
         AND EXISTS (
             SELECT 1
