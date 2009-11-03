@@ -96,3 +96,31 @@ sub _log_action {
 __PACKAGE__->meta->make_immutable;
 1;
 
+=head1 NAME
+
+Socialtext::Invitation - Base class for sending Invitation emails
+
+=head1 DESCRIPTION
+
+C<Socialtext::Invitation> is a base class that can be extended to send
+invitation emails to Users when they are added to different collections of
+users, such as Workspaces, Accounts, or Groups.
+
+=head1 SYNOPSIS
+
+    package Socialtext::MyInvitation;
+    use Moose;
+
+    extends 'Socialtext::Invitation';
+
+    ... # Your additional code
+
+=head1 AUTHOR
+
+Socialtext, Inc.,  C<< <code@socialtext.com> >>
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2009 Socialtext, Inc.,  All Rights Reserved.
+
+=cut

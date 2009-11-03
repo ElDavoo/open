@@ -37,3 +37,33 @@ sub _template_args {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::GroupInvitation - Send and invitation email when a user is added
+to a group
+
+=head1 DESCRIPTION
+
+C<Socialtext::GroupInvitation> provides methods for sending a User an
+invitationemail when he or she is added to a group.
+
+=head1 SYNOPSIS
+
+    use Socialtext::GroupInvitation;
+    my $invitation = Socialtext::GroupInvitation->new(
+        group      => $group,
+        from_user  => $inviting_user,
+        extra_text => 'Some extra text included in the email',
+    );
+    $invitation->invite_notify( $invited_user );
+
+=head1 AUTHOR
+
+Socialtext, Inc.,  C<< <code@socialtext.com> >>
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2009 Socialtext, Inc.,  All Rights Reserved.
+
+=cut
