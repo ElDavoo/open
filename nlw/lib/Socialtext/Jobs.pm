@@ -90,7 +90,9 @@ sub job_to_string {
         $string .= ";args=".join(',',@{$job->arg->{args} || []});
     }
 
-    $string .= ";priority=$prio" if my $prio = $job->priority;
+    if (my $prio = $job->priority) {
+        $string .= ";priority=$prio";
+    }
 
     if ($job->run_after > time) {
         my $when = strftime("%Y-%m-%d.%H:%M:%S", localtime($job->run_after));
