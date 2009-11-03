@@ -367,10 +367,9 @@ sub _invite_users {
             next;
         }
 
-        # XXX: Bug? If the user is already a member of the Workspace via a
-        # Group, you will _not_ be able to directly invite the User from here.
+        # Check for _direct_ membership here.
         my $invitee = Socialtext::User->new( email_address => $email );
-        if ($invitee && $ws->has_user($invitee)) {
+        if ($invitee && $ws->has_user($invitee, direct => 1)) {
             push @present, $email;
             next;
         }

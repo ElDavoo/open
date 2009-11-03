@@ -131,9 +131,7 @@ sub _add_page_doc {
     my $id = join(':',$ws_id,$page->id);
     st_log->debug("Indexing page doc $id");
 
-    my $mtime = _date_header_to_iso($page->metadata->Date);
     my $editor_id = $page->last_edited_by->user_id;
-    my $ctime = _date_header_to_iso($page->original_revision->metadata->Date);
     my $creator_id = $page->creator->user_id;
 
     my $revisions = $page->revision_count;
@@ -154,14 +152,18 @@ sub _add_page_doc {
         [pagetype => $page->metadata->Type],
         [page_key => $self->page_key($page->id)],
         [title => $page->title],
-        [date => $mtime],
-        [created => $ctime],
         [editor => $editor_id],
         [creator => $creator_id],
         [revisions => $revisions],
         [body => $body],
         map { [ tag => $_ ] } @{$page->metadata->Category},
     );
+    if (my $mtime = _date_header_to_iso($page->metadata->Date)) {
+        push @fields, [date => $mtime];
+    }
+    if (my $ctime = _date_header_to_iso($page->original_revision->metadata->Date)) {
+        push @fields, [created => $ctime];
+    }
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
 

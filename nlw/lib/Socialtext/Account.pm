@@ -427,6 +427,7 @@ sub _dump_profile {
     return {} if $@;
 
     my $profile = Socialtext::People::Profile->GetProfile($user);
+    return {} unless $profile;
     return $profile->to_hash;
 }
 
@@ -546,7 +547,7 @@ sub import_file {
         print loc("Enabling account plugins ...") . "\n";
         for my $plugin_name (@{ $hash->{plugins} }) {
             unless (Socialtext::Pluggable::Adapter->plugin_exists($plugin_name)) {
-                print loc("... '[_1]' plugin missing; skipping", $plugin_name);
+                print loc("... '[_1]' plugin missing; skipping", $plugin_name) . "\n";
                 next;
             }
             $account->enable_plugin($plugin_name);
@@ -658,13 +659,17 @@ sub user_count {
     return $count;
 }
 
+# Calling this is clunky, $acct->has_user($user, direct => 1), we should look
+# at refactoring into $acct->has_user(user => $user, direct => 1).
 sub has_user {
     my $self = shift;
     my $user = shift;
+    my %attr = @_;
     Socialtext::Timer->Continue('acct_has_user');
     my $has_user = Socialtext::Account::Roles->RolesForUserInAccount(
         user    => $user,
         account => $self,
+        %attr,
     );
     Socialtext::Timer->Pause('acct_has_user');
     return $has_user ? 1 : 0;
@@ -826,10 +831,14 @@ sub _post_update {
     my $new  = shift;
 
     if ( $new->{all_users_workspace} ) {
-        my $users = $self->users();
-
+        my $users = $self->users( direct => 1 );
         while ( my $user = $users->next() ) {
-            $self->add_to_all_users_workspace( user_id => $user->user_id );
+            $self->add_to_all_users_workspace( user => $user );
+        }
+
+        my $groups = $self->groups();
+        while ( my $group = $groups->next() ) {
+            $self->add_to_all_users_workspace( group => $group );
         }
     }
 
@@ -863,40 +872,57 @@ sub _post_update {
 sub add_to_all_users_workspace {
     my $self  = shift;
     my %p     = @_;
-    my $ws_id = $self->all_users_workspace;
 
-    return unless $ws_id and $p{user_id};
+    if ( my $user = delete $p{user} ) {
+        $self->_user_to_all_users_workspace( $user );
+    }
+    elsif ( my $group = delete $p{group} ) {
+        $self->_group_to_all_users_workspace( $group );
+    }
+}
 
-    my $user = Socialtext::User->new(user_id => $p{user_id});
-    die "User $p{user_id} doesn't exist" unless $user;
-    return if $user->is_system_created
-        || $user->primary_account_id != $self->account_id;
+sub _user_to_all_users_workspace {
+    my $self = shift;
+    my $user = shift;
+    my $auw  = $self->_get_all_users_workspace();
 
-    my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
-    return if $ws->has_user($user);
+    return unless $auw;
+
+    # Sometimes user metadata is passed in, we need a full fledged user.
+    if ( $user->isa('Socialtext::UserMetadata') ) {
+        $user = Socialtext::User->new( user_id => $user->user_id );
+    }
+
+    return if $user->is_system_created || !$self->has_user($user, direct => 1);
+    return if $auw->has_user($user, direct => 1);
 
     # Now according to {bz: 2896} we still need to check invitation_filter here.
-    return unless $ws->email_passes_invitation_filter($user->email_address);
+    return unless $auw->email_passes_invitation_filter($user->email_address);
 
-    $ws->assign_role_to_user(
+    $auw->assign_role_to_user(
         user => $user,
         role => Socialtext::Role->Member(),
     );
 }
 
-sub remove_from_all_users_workspace {
+sub _group_to_all_users_workspace {
     my $self  = shift;
-    my %p     = @_;
+    my $group = shift;
+    my $auw   = $self->_get_all_users_workspace();
+
+    return unless $auw;
+    return if $auw->has_group( $group ) || !$self->has_group( $group );
+
+    $auw->add_group( group => $group );
+}
+
+sub _get_all_users_workspace {
+    my $self = shift;
     my $ws_id = $self->all_users_workspace;
 
-    return unless $ws_id and $p{user_id};
-
-    my $user = Socialtext::User->new( user_id => $p{user_id} );
-
-    die "User $p{user_id} doesn't exist" unless $user;
-
-    my $ws   = Socialtext::Workspace->new( workspace_id => $ws_id );
-    $ws->remove_user( user => $user );
+    return unless $ws_id;
+    my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
+    return $ws;
 }
 
 sub Count {
@@ -1358,17 +1384,18 @@ workspace name.
 Adds the given C<$group> to the Account with the specified C<$role>.  If no
 C<$role> is provided, a default Role will be used instead.
 
-=item $account->remove_group(group => $group)
+=item $account->remove_group(group => $group, role=>$role)
 
-Removes any Role that the given C<$group> may have in the Account.  If the
-Group has no Role in the Account, this method does nothing.
+Removes the given C<$role> that the given C<$group> may have in the Account.
+If no C<$role> is provided, a default Role will be used instead.  If the Group
+has no Role in the Account, this method does nothing.
 
 =item $account->has_group($group)
 
 Checks to see if the given C<$group> has a Role in the Account, returning true
 if it does, false otherwise.
 
-=item $account->role_for_group(group => $group $group)
+=item $account->role_for_group(group => $group)
 
 Returns the C<Socialtext::Role> object representing the Role that the given
 C<$group> has in this Account.

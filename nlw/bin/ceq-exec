@@ -13,10 +13,12 @@ Getopt::Long::Configure('pass_through');
 my $timeout;
 my $uniqkey;
 my $quiet;
+my $priority;
 GetOptions(
-    'timeout=i' => \$timeout,
-    'uniqkey=s' => \$uniqkey,
-    'quiet'     => \$quiet,
+    'timeout=i'  => \$timeout,
+    'priority=i' => \$priority,
+    'uniqkey=s'  => \$uniqkey,
+    'quiet'      => \$quiet,
 );
 
 my $cmd = shift;
@@ -29,6 +31,7 @@ my $job_h = Socialtext::JobCreator->insert(
         ($timeout ? (timeout => $timeout) : ()),
         job => {
             ($uniqkey ? (uniqkey => $uniqkey) : ()),
+            ($priority ? (priority => $priority) : ()),
         }
     }
 );

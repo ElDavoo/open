@@ -203,21 +203,9 @@ sub create {
     my $metadata = Socialtext::UserMetadata->create(%metadata_p);
     $user->metadata($metadata);
     $user->_update_profile();
-
-    $user->_post_create( %p );
+    $user->_index();
 
     return $user;
-}
-
-sub _post_create {
-    my $self = shift;
-    my %p    = @_;
-
-    if ( my $account = $self->primary_account ) {
-        $account->add_to_all_users_workspace( user_id => $self->user_id );
-    }
-
-    $self->_index();
 }
 
 sub SystemUser {
@@ -958,13 +946,15 @@ EOSQL
     Readonly my $spec => {
         %LimitAndSortSpec,
         order_by => SCALAR_TYPE(
-            regex   => qr/^(?:username|creation_datetime|creator|primary_account)$/,
+            regex =>
+                qr/^(?:username|creation_datetime|creator|primary_account)$/,
             default => 'username',
         ),
-        account_id => SCALAR_TYPE,
-        primary_only => BOOLEAN_TYPE( default => 0 ),
-        exclude_hidden_people => BOOLEAN_TYPE( default => 0 ),
-        ids_only => BOOLEAN_TYPE( default => 0),
+        account_id            => SCALAR_TYPE,
+        primary_only          => BOOLEAN_TYPE(default => 0),
+        direct                => BOOLEAN_TYPE(default => 0),
+        exclude_hidden_people => BOOLEAN_TYPE(default => 0),
+        ids_only              => BOOLEAN_TYPE(default => 0),
     };
     sub ByAccountId {
         # Returns an iterator of Socialtext::User objects
@@ -983,6 +973,10 @@ EOSQL
         my $account_where = 'ua.account_id = ?';
         if ($p{primary_only}) {
             $account_where .= ' AND ua.is_primary';
+        }
+
+        if ($p{direct}) {
+            $account_where .= ' AND ua.is_direct';
         }
 
         my $exclude_hidden_clause = '';

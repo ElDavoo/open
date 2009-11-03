@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 16;
+use Test::Socialtext tests => 21;
 use Socialtext::User;
 
 ###############################################################################
@@ -82,6 +82,45 @@ users_only_with_primary_account: {
         [ map { $_->username } $results->all ],
         [ map { $_->username } $user_two ],
         'ByAccountId can restrict to only Users with this as primary account',
+    );
+}
+
+###############################################################################
+# User has a direct role ( eg, a UserAccountRole record, or is the user's
+# Primary Account ) or indirect only ( eg, GroupAccountRole record )
+users_with_a_direct_role: {
+    my $account    = create_test_account_bypassing_factory();
+    my $group      = create_test_group( account => $account );
+    my $user_one   = create_test_user( account => $account );
+    my $user_two   = create_test_user();
+    my $user_three = create_test_user();
+
+    $account->add_user( user => $user_two );
+
+    $group->add_user( user => $user_three );
+    ok $group->has_user( $user_three );
+
+    # Any Role
+    my $results = Socialtext::User->ByAccountId(
+        account_id => $account->account_id,
+    );
+    is $results->count(), 3, 'three Users have a Role';
+    is_deeply(
+        [ map { $_->username } $results->all ],
+        [ map { $_->username } ($user_one, $user_two, $user_three) ],
+        '... and it is Users one, two and three'
+    );
+
+    # Direct Role only
+    $results = Socialtext::User->ByAccountId(
+        account_id => $account->account_id,
+        direct     => 1,
+    );
+    is $results->count(), 2, 'two Users have a _direct_ Role';
+    is_deeply(
+        [ map { $_->username } $results->all ],
+        [ map { $_->username } ($user_one, $user_two) ],
+        '... and it is Users one and two'
     );
 }
 

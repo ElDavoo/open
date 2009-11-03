@@ -6,7 +6,7 @@ use warnings;
 use YAML qw(LoadFile);
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
-use Test::Socialtext tests => 18;
+use Test::Socialtext tests => 21;
 use Test::Deep;
 
 ###############################################################################
@@ -184,6 +184,26 @@ includes_users_with_only_indirect_group_workspace_role : {
         prefix  => 'Includes User w/Role via Group w/Role in Workspace',
         account => $account,
         groups  => [$group],
+        users   => [$user],
+    );
+}
+
+###############################################################################
+# TEST: Account export is possible when a User has a hidden People Profile.
+#
+# Test covers Bug #3261, where we'd attempt to call "$profile->to_hash()"
+# without actually having a Profile object to serialize.
+export_succeeds_when_profile_hidden: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user(account => $account);
+
+    $user->update_store(
+        is_profile_hidden   => 1,
+    );
+
+    account_export_contains(
+        prefix  => 'Includes User with hidden ST People Profile',
+        account => $account,
         users   => [$user],
     );
 }

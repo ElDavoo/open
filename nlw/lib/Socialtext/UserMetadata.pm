@@ -177,26 +177,20 @@ sub primary_account {
 
         my $old_account = Socialtext::Account->new(
             account_id => $self->primary_account_id );
-        if ($old_account) {
-            $old_account->remove_from_all_users_workspace(
-                user_id => $self->user_id );
-        }
 
         $self->_update_field('primary_account_id=?', $new_account->account_id);
         $self->primary_account_id($new_account->account_id);
-
-        $new_account->add_to_all_users_workspace(
-            user_id => $self->user_id );
 
         Socialtext::Cache->clear('authz_plugin');
 
         my $adapter = Socialtext::Pluggable::Adapter->new;
         $adapter->make_hub(Socialtext::User->SystemUser(), undef);
-
-        if ($old_account) {
-            $adapter->hook('nlw.remove_user_account_role', $old_account, $self);
-        }
         $adapter->hook('nlw.add_user_account_role', $new_account, $self);
+
+        # There's a weird codepath that will get here without an $old_account,
+        # so only call this code if $old_account exists.
+        $adapter->hook('nlw.remove_user_account_role', $old_account, $self)
+           if $old_account;
 
         my $deleted_acct = Socialtext::Account->Deleted;
         if ($new_account->account_id != $deleted_acct->account_id) {

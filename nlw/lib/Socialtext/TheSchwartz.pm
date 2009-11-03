@@ -3,6 +3,7 @@ package Socialtext::TheSchwartz;
 use Moose;
 use Socialtext::SQL qw/sql_execute get_dbh/;
 use TheSchwartz::Moosified;
+use Carp qw/croak/;
 use namespace::clean -except => 'meta';
 
 extends qw/TheSchwartz::Moosified/;
@@ -35,6 +36,7 @@ around 'insert' => sub {
     }
     else {
         my $job_class = shift;
+        croak "Invalid job class: $job_class" unless $job_class =~ m/::/;
         my $args = shift;
         my $opts = delete $args->{job} || {};
 
