@@ -7,7 +7,7 @@ proto.content = function() {
     var len = this.output.length;
     if (this.output.indexOf('</p>\n') == (this.output.length - 5)) {
         // Single-paragraph; emit without the <p>...</p> tag
-        return this.output.substring(3, len-8);
+        return this.output.substr(3, len-8);
     }
     return this.output;
 }
