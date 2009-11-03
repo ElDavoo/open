@@ -2846,18 +2846,16 @@ sub list_groups {
         );
         die loc("No Groups found") . "\n" if $groups->count == 0;
         print loc("Displaying all groups")."\n\n";
-        print "| " . join(" | ",
+        printf '| %4s | %20s | %7s | %7s | %15s | %10s | %20s |' . "\n",
             loc("ID"), loc("Group Name"),
-            loc("# of Workspaces"), loc("# of Users"), loc("Primary Account"),
-            loc("Created"), loc("Created By")
-        ) . " |\n";
+            loc("# Wksps"), loc("# Users"), loc("Primary Account"),
+            loc("Created"), loc("Created By");
 
         while (my $g = $groups->next) {
-            print "| " . join(" | ",
+            printf '| %4d | %20s | %7d | %7d | %15s | %10s | %20s |' . "\n",
                 $g->group_id, $g->driver_group_name,
                 $g->workspace_count, $g->user_count, $g->primary_account->name,
-                $g->creation_datetime->ymd, $g->creator->username
-            ) . " |\n";
+                $g->creation_datetime->ymd, $g->creator->username;
         }
     };
     $self->_error($@) if $@;
