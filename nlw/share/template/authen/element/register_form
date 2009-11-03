@@ -13,12 +13,12 @@
 
   <dl class="form">
     <dt><label for="password">[% loc('Password:') %]</label> </dt>
-    <dd> <input id="password" name="password" type="password" size="30" value="" /> </dd>
+    <dd> <input id="register_password" name="password" type="password" size="30" value="" /> </dd>
   </dl>
 
   <dl class="form">
     <dt><label for="password2">[% loc('Re-type Password:') %]</label> </dt>
-    <dd> <input id="password2" name="password2" type="password" size="30" value="" /> </dd>
+    <dd> <input id="register_password2" name="password2" type="password" size="30" value="" /> </dd>
   </dl>
 
   <dl class="form">
