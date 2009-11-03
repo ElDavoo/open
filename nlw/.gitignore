@@ -349,3 +349,11 @@ t/wikitests/test-data/socialcalc/recurse-2-1.ssheet
 t/wikitests/test-data/socialcalc/recurse-3-4.ssheet
 t/wikitests/test-data/socialcalc/recurse-4-3.ssheet
 t/wikitests/miki/people.wiki
+t/wikitests/control/account_detail_groups.wiki
+t/wikitests/control/account_detail_users.wiki
+t/wikitests/control/group_detail.wiki
+t/wikitests/control/paging.wiki
+t/wikitests/control/group.wiki
+t/wikitests/control/group_add_to_workspace.wiki
+t/wikitests/control/workspace_groups.wiki
+t/wikitests/control/group_membership.wiki
