@@ -855,6 +855,12 @@ sub st_click_reset_password {
     ok !$self->is_checked($chk_xpath), 'reset password checkbox not checked';
 }
 
+sub type_lookahead_ok {
+    my ($self, $locator, $text) = @_;
+    $self->wait_for_element_present_ok($locator);
+    $self->type_ok($locator, $text);
+    $self->{selenium}->do_command("keyUp", $locator, substr($text,-1));
+}
 
 sub _click_user_row {
     my ($self, $email, $method_name, $click_col) = @_;
