@@ -7,7 +7,7 @@ use Socialtext::URI;
 use Socialtext::JobCreator;
 use Socialtext::Job::AccountInvite;
 use Socialtext::User;
-use Socialtext::l10n qw(system_locale loc);
+use Socialtext::l10n qw(system_locale);
 use Socialtext::EmailSender::Factory;
 use namespace::clean -except => 'meta';
 

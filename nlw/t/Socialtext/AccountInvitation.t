@@ -29,10 +29,9 @@ Simple_case: {
     my $invitation = Socialtext::AccountInvitation->new(
         account   => $acct,
         from_user => $from,
-        invitee   => $invitee_email,
     );
 
-    eval { $invitation->queue(); };
+    eval { $invitation->queue($invitee_email); };
     my $e = $@;
     is $e, '', 'account invite sent';
 

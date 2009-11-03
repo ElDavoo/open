@@ -1,6 +1,7 @@
 package Socialtext::AccountInvitation;
 # @COPYRIGHT@
 use Moose;
+use Socialtext::l10n qw(loc);
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Invitation';
