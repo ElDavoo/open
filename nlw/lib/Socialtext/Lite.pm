@@ -391,7 +391,7 @@ sub _frame_page {
     my $attachments = $self->_get_attachments($page);
 
     $self->hub->viewer->link_dictionary($self->link_dictionary);
-    
+
     Socialtext::Timer->Continue('lite_page_html');
     my $html = $page->to_html_or_default;
     Socialtext::Timer->Pause('lite_page_html');
@@ -403,10 +403,9 @@ sub _frame_page {
         # XXX next two for attachments, because we are using legacy urls
         # for now
         page             => $page,
-        page_locked_for_user  => 
-            $page->locked && 
-            $self->hub->current_workspace->allows_page_locking &&
-            !$self->hub->checker->check_permission('lock'),
+        user_can_edit_page =>
+            $self->hub->checker->check_permission('edit') &&
+            $self->hub->checker->can_modify_locked($page),
         %args,
     );
 }
