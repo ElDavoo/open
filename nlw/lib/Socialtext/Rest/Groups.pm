@@ -4,7 +4,7 @@ use Moose;
 extends 'Socialtext::Rest::Collection';
 use Socialtext::Group;
 use Socialtext::HTTP ':codes';
-use Socialtext::JSON qw/decode_json/;
+use Socialtext::JSON qw/decode_json encode_json/;
 use namespace::clean -except => 'meta';
 
 # Anybody can see these, since they are just the list of workspaces the user
@@ -155,7 +155,7 @@ sub POST_json {
     $rest->header(
         -status => HTTP_201_Created,
     );
-    return '';
+    return encode_json($group->to_hash);
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
