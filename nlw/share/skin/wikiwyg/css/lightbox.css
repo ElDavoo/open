@@ -48,6 +48,11 @@
 
 .lightbox table {
     border-spacing: 0px;
+    border: none;
+}
+
+.lightbox table td {
+    border: none;
 }
 
 .lightbox .additional {
