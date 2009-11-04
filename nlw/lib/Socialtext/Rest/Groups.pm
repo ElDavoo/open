@@ -85,13 +85,8 @@ sub POST_json {
         return '';
     }
 
-    my $account_id = $data->{account_id};
-    unless ($account_id) {
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-        );
-        return "Missing an account_id";
-    }
+    my $account_id = $data->{account_id}
+        || Socialtext::Account->Default->account_id;
 
     my $account = Socialtext::Account->new(account_id => $account_id);
     unless ($account) {
