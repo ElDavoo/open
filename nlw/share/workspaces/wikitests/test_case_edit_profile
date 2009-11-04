@@ -15,6 +15,8 @@
 | st-admin | create-user --e %%e_user%% --p %%password%% |  |
 | st-admin | change-password --e %%e_user%% --p %%password%% |  |
 | st-admin | set-user-names --e %%e_user%% --f %%fname%% --l %%lname%% |  |
+| st-admin | create-user -e supervisor-%%start_time%%@ken.socialtext.net --p %%password%%- |  |
+| st-admin | create-user -e assistant-%%start_time%%@ken.socialtext.net --p %%password%%- |  |
 
 | *Comment* | Test Case: Edit Profile. Access profile. |  |
 | open_ok | /nlw/submit/logout |  |
@@ -72,9 +74,16 @@
 
 | *Comment* | Test Case: Edit Profile. Need to select users in a common account |  |
 | wait_for_element_visible_ok | field_supervisor | 30000 |
+| type-lookahead-ok | xpath=//div[@id='field_supervisor']/input[@class='relationship'] | supervisor %%start_time%% |
+| wait-for-element-present-ok | link=supervisor %%start_time%% |  |
+| pause | 60000 |  |
+| click-ok | link=supervisor |  |
 | wait_for_element_visible_ok | field_assistant | 30000 |
-| select_ok | field_supervisor | user one |
-| select_ok | field_assistant | user two |
+| type-lookahead-ok | xpath=//div[@id='field_assistant']/input[@class='relationship'] | assistant %%start_time%% |
+| wait-for-element-present-ok | link=supervisor %%start_time%% |  |
+| click-ok | link=supervisor |  |
+| pause | 1000 |  |
+| wait_for_element_visible_ok | field_assistant | 30000 |
 
 | *Comment* | Test Case: Edit Profile. Have to use click_ok and Pause for profile to save. |  |
 | click_ok | update_profile |  |
