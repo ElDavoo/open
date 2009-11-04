@@ -20,4 +20,15 @@ $.getScript = function (url, callback) {
     };
     head.appendChild(script);
 };
+
+$.fn.serializeHash = function() {
+    var hash = {};
+    $(this).each(function() {
+        $.each($(this).serializeArray(), function(i, el) {
+            hash[ el.name ] = el.value
+        });
+    });
+    return hash;
+};
+
 })(jQuery);
