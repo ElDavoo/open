@@ -31,8 +31,8 @@ This testcase traverses the UI to all the places that differ from the Default UI
 | click_and_wait | link=Register |  |
 | wait_for_element_visible_ok | email_address | 30000 |
 | type_ok | email_address | %%email%% |
-| type_ok | password | %%password%% |
-| type_ok | password2 | %%password%% |
+| type_ok | register_password | %%password%% |
+| type_ok | register_password2 | %%password%% |
 | click_and_wait | register_btn |  |
 | text-like | A user with this email address (%%email%%) already exists. |  |
 

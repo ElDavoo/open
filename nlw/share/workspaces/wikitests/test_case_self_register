@@ -4,8 +4,8 @@
 | text_like | Click here to log in with an existing account |  |
 | set | reg_email | reg_%%start_time%%@ken.socialtext.net |
 | type_ok | email_address | %%reg_email%% |
-| type_ok | password | password |
-| type_ok | password2 | password |
+| type_ok | register_password | password |
+| type_ok | register_password2 | password |
 | click_and_wait | register_btn |  |
 | st-message | An email confirming your registration has been sent to %%reg_email%% |  |
 

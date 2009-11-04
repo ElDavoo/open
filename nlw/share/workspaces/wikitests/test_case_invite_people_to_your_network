@@ -126,8 +126,8 @@ TODO: verify cannot actually issue invitations via URL
 | *Comment* | Test Case: Invite people. Choose a pwd and log in |  |
 | text_like | Choose Password |  |
 | text_like | qr/Username:\s+%%eto_ws_user%%/ |  |
-| type_ok | password | %%password%% |
-| type_ok | password2 | %%password%% |
+| type_ok | register_password | %%password%% |
+| type_ok | register_password2 | %%password%% |
 | click_and_wait | link=Register |  |
 
 | *Comment* | Test Case: Invite people. Go Home. No workspaces |  |

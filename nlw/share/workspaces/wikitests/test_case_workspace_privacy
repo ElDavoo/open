@@ -18,8 +18,8 @@
 | *Comment* | Test Case: Workspace Privacy Join |  |
 | clickAndWait | link=Join to edit |  |
 | wait_for_element_visible_ok | email_address | 30000 |
-| wait_for_element_visible_ok | password | 30000 |
-| wait_for_element_visible_ok | password2 | 30000 |
+| wait_for_element_visible_ok | register_password | 30000 |
+| wait_for_element_visible_ok | register_password2 | 30000 |
 | wait_for_element_visible_ok | last_name | 30000 |
 | wait_for_element_visible_ok | first_name | 30000 |
 
