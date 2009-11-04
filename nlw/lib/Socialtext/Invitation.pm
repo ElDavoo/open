@@ -16,7 +16,7 @@ has 'from_user' => (
     required => 1,
 );
 
-has 'viewer'  => (is => 'ro', isa => 'Socialtext::User',);
+has 'viewer'  => (is => 'ro', isa => 'Socialtext::Formatter::Viewer',);
 has 'extra_text' => (is => 'ro', isa => 'Maybe[Str]',);
 has 'extra_args' => (is => 'ro', isa => 'Hash', lazy_build => 1);
 
