@@ -48,13 +48,13 @@
 | wait_for_element_not_present_ok | link=Edit | 5000 |
 | click_and_wait | link=Join to edit |  |
 | wait_for_element_visible_ok | email_address | 30000 |
-| wait_for_element_visible_ok | password | 30000 |
-| wait_for_element_visible_ok | password2 | 30000 |
+| wait_for_element_visible_ok | register_password | 30000 |
+| wait_for_element_visible_ok | register_password2 | 30000 |
 | wait_for_element_visible_ok | first_name | 30000 |
 | wait_for_element_visible_ok | last_name | 30000 |
 | type_ok | email_address | %%to_ws_user%% |
-| type_ok | password | %%password%% |
-| type_ok | password2 | %%password%% |
+| type_ok | register_password | %%password%% |
+| type_ok | register_password2 | %%password%% |
 | type_ok | first_name | Donald |
 | type_ok | last_name | Duck |
 | wait_for_element_visible_ok | register_btn | 30000 |
