@@ -12,7 +12,7 @@ fixtures('db');
 
 my $aa = create_test_account_bypassing_factory("Account AAA $^T");
 my $ab = create_test_account_bypassing_factory("Account BBB $^T");
-
+my $header = qr/\|\s+ID\s+\|\s+Group Name\s+\|\s+# Wksps\s+\|\s+# Users\s+\|\s+Primary Account\s+\|\s+Created\s+\|\s+Created By\s+\|/;
 ################################################################################
 no_groups: {
     my $output = combined_from { eval { new_cli()->list_groups() } };
@@ -34,13 +34,11 @@ list_all: {
     is_last_exit(0);
     #diag $output;
     my @lines = split("\n",$output);
+
     is scalar(@lines), 5, "correct line count";
-    my $hdr = join (' | ',
-        'ID', 'Group Name', '# of Workspaces', '# of Users', 'Primary Account',
-        'Created', 'Created By');
-    is $lines[2], "| $hdr |", "correct header";
-    like $lines[3], qr/^\| $ga_id \| Group A /, "first row is group a";
-    like $lines[4], qr/^\| $gb_id \| Group B /, "second row is group b";
+    like $lines[2], $header, "correct header";
+    like $lines[3], qr/^\|\s+$ga_id\s+\|\s+Group A\s+/, "first row is group a";
+    like $lines[4], qr/^\|\s+$gb_id\s+\|\s+Group B\s+/, "second row is group b";
 }
 
 ################################################################################
@@ -51,12 +49,10 @@ list_account: {
     is_last_exit(0);
     #diag $output;
     my @lines = split("\n",$output);
+
     is scalar(@lines), 4, "only one group in account a";
-    my $hdr = join (' | ',
-        'ID', 'Group Name', '# of Workspaces', '# of Users', 'Primary Account',
-        'Created', 'Created By');
-    is $lines[2], "| $hdr |", "correct header";
-    like $lines[3], qr/^\| $gb_id \| Group B /, "first row is group b";
+    like $lines[2], $header, "correct header";
+    like $lines[3], qr/^\|\s+$gb_id\s+\|\s+Group B\s+/, "first row is group b";
 }
 
 ################################################################################
@@ -80,15 +76,12 @@ list_workspace_group: {
     } };
     is_last_exit(0);
 
-    #diag $output;
     my @lines = split("\n",$output);
+    
     is scalar(@lines), 5, "two groups in workspace";
-    my $hdr = join (' | ',
-        'ID', 'Group Name', '# of Workspaces', '# of Users', 'Primary Account',
-        'Created', 'Created By');
-    is $lines[2], "| $hdr |", "correct header";
-    like $lines[3], qr/^\| $group1_id \| /, "first row is group 1";
-    like $lines[4], qr/^\| $group2_id \| /, "second row is group 2";
+    like $lines[2], $header, "correct header";
+    like $lines[3], qr/^\|\s+$group1_id\s+\|\s+/, "first row is group 1";
+    like $lines[4], qr/^\|\s+$group2_id\s+\|\s+/, "first row is group 1";
 }
 
 ################################################################################
