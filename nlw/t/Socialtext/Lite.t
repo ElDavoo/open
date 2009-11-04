@@ -4,7 +4,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 41;
+use Test::Socialtext tests => 40;
 fixtures(qw( admin no-ceq-jobs ));
 
 use Socialtext::Page ();
@@ -152,9 +152,6 @@ like( $html,
 like( $html,
     qr{<pre>.*collide with me.*}ms,
     'content of contention info is right' );
-like( $html,
-    qr{\Q<a href="/m/page/admin/stronger_than_dust?action=edit">Edit},
-    'edit link is displayed' );
 like( $html,
     qr{<pre>.*&lt;h1&gt;Ho&lt;/h1&gt;.*</pre>}ms,
     'html in contention section is html escaped' );
