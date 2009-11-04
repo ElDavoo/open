@@ -68,7 +68,7 @@ sub POST_json {
         $rest->header(
             -status => HTTP_400_Bad_Request,
         );
-        return 'Bad JSON';
+        return "Bad JSON: $@";
     }
 
     unless ($self->user_can('is_business_admin')) {
