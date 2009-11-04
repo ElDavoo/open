@@ -431,6 +431,16 @@
             'text/x-yaml':      [Socialtext::Rest::ReportAdapter, GET_yaml]
         '*':                    [Socialtext::Rest::ReportAdapter, bad_method]
 -
+    '/data/group_drivers':
+        'GET':
+            'application/json': [Socialtext::Rest::GroupDrivers, GET_json]
+        '*':                    [Socialtext::Rest::GroupDrivers, bad_method]
+-
+    '/data/group_drivers/:driver_key/groups':
+        'GET':
+            'application/json': [Socialtext::Rest::GroupDriverGroups, GET_json]
+        '*':                    [Socialtext::Rest::GroupDriverGroups, bad_method]
+-
     '/data/groups':
         'GET':
             'application/json': [Socialtext::Rest::Groups, GET_json]
