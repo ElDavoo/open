@@ -9,6 +9,9 @@ proto.content = function() {
         // Single-paragraph; emit without the <p>...</p> tag
         return this.output.substr(3, len-8);
     }
+    else if (this.output.substr(-1) == '\n') {
+        return this.output.substr(0, len-1); // chomp
+    }
     return this.output;
 }
 
