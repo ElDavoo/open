@@ -31,6 +31,33 @@
         this.fn.showLightbox();
     };
 
+    $.pauseLightbox = function() {
+        var src = nlw_make_static_path('/skin/common/images/ajax-loader.gif');
+        var $cover = $('<div class="cover"></div>')
+            .css({
+                width: '100%',
+                opacity: "0.8",
+                filter: "alpha(opacity=80)",
+                position: 'absolute',
+                top: 0,
+                backgroundColor: '#DDD'
+            })
+            .height($('#lightbox').height())
+            .appendTo('#lightbox');
+        $('<img/>')
+            .attr('src', src)
+            .css({
+                position: 'absolute',
+                left: '50%',
+                top: '50%'
+            })
+            .appendTo('#lightbox .cover');
+    };
+
+    $.resumeLightbox = function() {
+        $('#lightbox .cover').remove();
+    };
+
     $.fn.showLightbox = function() {
         if (!$('#lightbox').size()) {
             $('<div id="lightbox" />')
