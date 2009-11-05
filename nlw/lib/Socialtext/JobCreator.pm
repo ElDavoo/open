@@ -51,6 +51,7 @@ sub index_attachment {
     );
 
     if ($search_config and $search_config eq 'solr') {
+        return; # XXX - turn OFF Solr indexing for attachment content.
         $job_args{job}{coalesce} .= "-solr";
         $job_args{solr} = 1;
     }
@@ -79,6 +80,8 @@ sub index_page {
     my $page_id = $page->id;
     for my $indexer (@indexers) {
         my $solr = ref($indexer) =~ m/solr/i;
+        next if $solr; # XXX - turn OFF Solr indexing for page content.
+
         my $job_id = $self->insert(
             'Socialtext::Job::PageIndex' => {
                 workspace_id => $wksp_id,
@@ -99,6 +102,7 @@ sub index_page {
         for my $indexer (@indexers) {
             my $job_id;
             if (ref($indexer) =~ m/solr/i) {
+                next; # XXX - turn OFF Solr indexing for attachment content.
                 $job_id = $self->index_attachment($attachment, 'solr');
             }
             else {
