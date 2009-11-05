@@ -185,7 +185,10 @@ sub All {
         $apply = sub {
             my $row = shift;
             my $group = Socialtext::Group->GetGroup(group_id=>$row->{group_id});
-            return unless $group;
+            unless ($group) {
+                warn "Couldn't fetch group_id: $row->{group_id}";
+                return unless $group;
+            }
             if ($p{include_aggregates}) {
                 $group->$_($row->{$_}) for qw(user_count workspace_count);
             }
