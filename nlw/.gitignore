@@ -357,4 +357,3 @@ t/wikitests/control/group.wiki
 t/wikitests/control/group_add_to_workspace.wiki
 t/wikitests/control/workspace_groups.wiki
 t/wikitests/control/group_membership.wiki
-test.test
