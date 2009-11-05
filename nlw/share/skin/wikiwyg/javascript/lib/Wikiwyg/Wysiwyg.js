@@ -2854,8 +2854,9 @@ proto.hookLookaheads = function() {
                          Socialtext.wiki_id;
                 return '/data/workspaces/' + ws + '/pages';
             },
-            args: {
-                pageType: 'wiki'
+            params: {
+                minimal_pages: 1,
+                type: 'wiki'
             },
             linkText: function (i) { return i.name }
         });
@@ -2867,8 +2868,9 @@ proto.hookLookaheads = function() {
                          Socialtext.wiki_id;
                 return '/data/workspaces/' + ws + '/pages';
             },
-            args: {
-                pageType: 'spreadsheet'
+            params: {
+                minimal_pages: 1,
+                type: 'spreadsheet'
             },
             linkText: function (i) { return i.name }
         });
