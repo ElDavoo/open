@@ -93,7 +93,7 @@ sub next {
 
     if (defined $next) {
         return (defined $self->apply) 
-            ? $self->apply->($next) 
+            ? $self->apply->($next) || $self->next
             : $next;
     }
     else {

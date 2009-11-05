@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 26;
+use Test::Socialtext tests => 29;
 
 BEGIN {
     use_ok( 'Socialtext::MultiCursor' );
@@ -98,4 +98,14 @@ mc_all_with_scalars: {
 
     my @result = $mc->all;
     is_deeply( \@result, [ 'one', 'two', 'three' ], 'All elements applied properly in scalar context');
+}
+
+mc_with_apply_that_returns_undef: {
+    my $mc = Socialtext::MultiCursor->new(
+        iterables => [1, 2, 3],
+        apply     => sub { $_[0] == 2 ? undef : $_[0] },
+    );
+    is $mc->next, 1;
+    is $mc->next, 3;
+    is $mc->next, undef;
 }
