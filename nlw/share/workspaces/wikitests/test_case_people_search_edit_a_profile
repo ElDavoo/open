@@ -22,25 +22,25 @@
 | text_like | //body | First Name |
 | text_like | //body | Last Name |
 
-| *Comment* | Test Case: People Search Edit A Profile Fill in all values |  |
-| type_ok | first_name | %%first%% |
-| type_ok | last_name | %%last%% |
-| type_ok | position | %%default_field%% |
-| type_ok | company | %%default_field%% |
-| type_ok | location | %%location%% |
-| type_ok | work_phone | %%default_field%% |
-| type_ok | mobile_phone | %%default_field%% |
-| type_ok | home_phone | %%default_field%% |
-| type_ok | aol_sn | %%default_field%% |
-| type_ok | yahoo_sn | %%default_field%% |
-| type_ok | gtalk_sn | %%default_field%% |
-| type_ok | skype_sn | %%default_field%% |
-| type_ok | sametime_sn | %%default_field%% |
-| type_ok | twitter_sn | %%default_field%% |
-| type_ok | blog | %%default_field%% |
-| type_ok | personal_url | %%default_field%% |
-| type_ok | linkedin_url | %%default_field%% |
-| type_ok | facebook_url | %%default_field%% |
+| *Comment* | Test Case: People Search Edit A Profile Fill in all values with unique strings |  |
+| type_ok | field_first_name | %%first%% |
+| type_ok | field_last_name | %%last%% |
+| type_ok | field_position | %%default_field%% position |
+| type_ok | field_company | %%default_field%% company |
+| type_ok | field_location | %%location%% |
+| type_ok | field_work_phone | %%default_field%% work |
+| type_ok | field_mobile_phone | %%default_field%% mobile |
+| type_ok | field_home_phone | %%default_field%% home |
+| type_ok | field_aol_sn | %%default_field%% aol |
+| type_ok | field_yahoo_sn | %%default_field%% yahoo |
+| type_ok | field_gtalk_sn | %%default_field%% gtalk |
+| type_ok | field_skype_sn | %%default_field%% skype |
+| type_ok | field_sametime_sn | %%default_field%% sametime |
+| type_ok | field_twitter_sn | %%default_field%% twitter |
+| type_ok | field_blog | %%default_field%% blog |
+| type_ok | field_personal_url | %%default_field%% personal |
+| type_ok | field_linkedin_url | %%default_field%% linkedin |
+| type_ok | field_facebook_url | %%default_field%% facebook |
 
 | *Comment* | Test Case: Edit Profile. Have to use click_ok and Pause for profile to save. |  |
 | click_ok | update_profile |  |
@@ -48,4 +48,4 @@
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | wait_for_element_visible_ok | logout_btn | 30000 |
 
-| *Comment* | Test Case: People Search Edit a Profile |  |
+| *Comment* | Test Case: People Search Edit a Profile COMPLETED |  |
