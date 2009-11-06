@@ -89,9 +89,34 @@
 | st-process-jobs           |                |                  |
 | job-count                 | PersonIndex    | 0                |
 
+# Changing a group's workspace & account re-index the group's users
+
+| set                         | g1          | g1%%start_time%% |        |
+| create-group                | %%g1%%      | %%account%%      |        |
+| set                         | g1id        | %%group_id%%     |        |
+| add-user-to-group           | %%randy%%   | %%g1id%%         |        |
+| job-count                   | PersonIndex | 1                |        |
+| st-process-jobs             |             |                  |        |
+| job-count                   | PersonIndex | 0                |        |
+| add-group-to-workspace      | %%g1id%%    | %%other_wksp%%   | member |
+| job-count                   | PersonIndex | 1                |        |
+| st-process-jobs             |             |                  |        |
+| job-count                   | PersonIndex | 0                |        |
+| add-group-to-workspace      | %%g1id%%    | %%other_wksp%%   | workspace_admin  |
+| job-count                   | PersonIndex | 0                |        |
+| remove-group-from-workspace | %%g1id%%    | %%other_wksp%%   |        |
+| job-count                   | PersonIndex | 1                |        |
+| st-process-jobs             |             |                  |        |
+| job-count                   | PersonIndex | 0                |        |
+| remove-user-from-group      | %%randy%% | %%g1id%% | |
+| job-count                   | PersonIndex | 1                |        |
+| st-process-jobs             |             |                  |        |
+| job-count                   | PersonIndex | 0                |        |
+
+
 # TODO - User A in acct A, wksp C, User B in acct B, wksp C, a can see b
 # TODO other membership changes?
-## role change: -user workspace-, -user group-, group wksp, -user account-, 
+## role change: -user workspace-, -user group-, -group wksp-, -user account-, 
 ##              group account
 ## primary acct change: -wksp-, -user-, group
 

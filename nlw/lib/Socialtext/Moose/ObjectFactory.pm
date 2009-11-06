@@ -48,13 +48,20 @@ sub PostChangeHook {
     my $action = shift;
     my $instance = shift;
 
-    if ($self->Builds_sql_for =~ /^Socialtext::User.+Role$/ and
-        $action ne 'update') 
-    {
+    return if $action eq 'update';
+
+    if ($self->Builds_sql_for =~ /^Socialtext::User.+Role$/) {
         # work, group, acct
         # index that user, unless it's just a membership role/attr change
         Socialtext::JobCreator->index_person($instance->user_id);
     }
+    elsif ($self->Builds_sql_for =~ /^Socialtext::Group.+Role$/) {
+        my $user_ids = $instance->group->users('id_only');
+        while (my $user_id = $user_ids->next) {
+            Socialtext::JobCreator->index_person($user_id);
+        }
+    }
+
 }
 
 sub CreateRecord {
