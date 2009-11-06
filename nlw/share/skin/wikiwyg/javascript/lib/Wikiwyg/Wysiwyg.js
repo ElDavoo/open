@@ -2433,8 +2433,12 @@ for (var i = 0; i < widgets_list.length; i++) {
             try {
                 this.currentWidget = this.parseWidget('{' + w + ': }');
                 this.currentWidget = this.setTitleAndId(this.currentWidget);
-                var selection = this.get_selection_text();
-                selection = selection.replace(/\\s+$/,'');
+                var selection = '';
+                try {
+                    selection = this.get_selection_text().replace(/\\s+$/,'');
+                } catch (e) {
+                    selection = '';
+                }
                 this.getWidgetInput(this.currentWidget, selection, true);
             } catch (E) {
                 // ignore error from parseWidget
