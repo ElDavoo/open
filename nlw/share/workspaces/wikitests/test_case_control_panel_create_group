@@ -14,7 +14,7 @@
 | set | user4 | %%user_id%% |
 
 | set | groupexists | group-%%start_time%% |
-| create-group | %%groupexists%% |
+| create-group | %%groupexists%% |  |
 | set | groupname | new-group-%%start_time%% |
 | set | CPgroupname | group-%%start_time%% |
 
@@ -60,10 +60,10 @@
 | text-like | //body | Users (4) |
 | text-like | //body | %%groupname%% |
 | text-like | //body | Created By: %%username%% |
-| wait_for_element_visible_ok | link=%%email1%% |
-| wait_for_element_visible_ok | link=%%email2%% |
-| wait_for_element_visible_ok | link=%%email3%% |
-| wait_for_element_visible_ok | link=%%email4%% |
+| wait_for_element_visible_ok | link=%%email1%% | 30000 |
+| wait_for_element_visible_ok | link=%%email2%% | 30000 |
+| wait_for_element_visible_ok | link=%%email3%% | 30000 |
+| wait_for_element_visible_ok | link=%%email4%% | 30000 |
 
 | *Comment* | Test Case: Control Panel Create Group - add members to existing group |  |
 | open_ok | /nlw/control/user |  |
@@ -71,6 +71,9 @@
 | wait_for_element_visible_ok | st-username-search-submit | 30000 |
 | type_ok | username | %%start_time%% |
 | click_and_wait | st-username-search-submit |  |
+| wait_for_element_visible_ok | link=Clear Selection | 30000 |
+| click_ok | link=Clear Selection |  |
+| wait_for_element_visible_ok | link=0 users selected | 30000 |
 | wait_for_element_visible_ok | %%user1%% | 30000 |
 | click_ok | %%user1%% |  |
 | wait_for_element_visible_ok | %%user2%% | 30000 |
@@ -82,22 +85,25 @@
 | wait_for_element_visible_ok | group-name | 30000 |
 | wait_for_element_visible_ok | todo-invite | 30000 |
 | check_ok | todo-invite |  |
-| wait_for_element_visible_ok | %%group_id%% |
-| click_ok | %%group_id%% |
+| wait_for_element_visible_ok | %%group_id%% | 30000 |
+| click_ok | %%group_id%% | 30000 |
 | wait_for_element_visible_ok | invite-button | 30000 |
+| pause | 30000 |  |
 | click_and_wait | invite-button |  |
-| text_like | //body | You successfully added 3 users to 1 group |
+
+* | wait_for_text_present_ok | You successfully added 3 users to 1 group | 30000 |
 
 | *Comment* | Test Case: Control Panel Groups Confirm Add |  |
-| open_ok | /group/%%group_id |  |
+| pause | 9000 |  |
+| open_ok | /nlw/control/group/%%group_id%% |  |
 | text-like | //body | Users (3) |
-| text-like | //body | %%group-exists%% |
+| text-like | //body | %%groupexists%% |
 | text-like | //body | Created By: %%username%% |
-| wait_for_element_visible_ok | link=%%email1%% |
-| wait_for_element_visible_ok | link=%%email2%% |
-| wait_for_element_visible_ok | link=%%email3%% |
+| wait_for_element_visible_ok | link=%%email1%% | 30000 |
+| wait_for_element_visible_ok | link=%%email2%% | 30000 |
+| wait_for_element_visible_ok | link=%%email3%% | 30000 |
 
-| *Comment* | Test Case: Control Panel Create Group Teardown |  |
-| delete_created_groups |
+| *Comment* | Test Case: Control Panel Create Group Teardown |
+| delete_created_groups |  |
 
 | *Comment* | Test case: Control Panel Create Group COMPLETED |  |
