@@ -394,6 +394,17 @@ sub user_primary_account {
     diag "Changed ${username}'s primary account to $account_name\n";
 }
 
+sub workspace_primary_account {
+    my $self = shift;
+    my $wksp_name = shift;
+    my $acct_name = shift;
+
+    my $wksp = Socialtext::Workspace->new(name => $wksp_name);
+    my $account = Socialtext::Account->new(name => $acct_name);
+
+    $wksp->update(account_id => $account->account_id);
+    diag "Changed ${wksp_name}'s primary account to $acct_name\n";
+}
 
 sub delete_user {
     my $self = shift;

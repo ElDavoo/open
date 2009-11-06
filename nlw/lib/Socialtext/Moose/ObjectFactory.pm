@@ -47,10 +47,13 @@ sub PostChangeHook {
     my $self = shift;
     my $action = shift;
     my $instance = shift;
-    if ($self->Builds_sql_for eq 'Socialtext::UserWorkspaceRole') {
+
+    if ($self->Builds_sql_for =~ /^Socialtext::User.+Role$/ and
+        $action ne 'update') 
+    {
+        # work, group, acct
         # index that user, unless it's just a membership role/attr change
-        Socialtext::JobCreator->index_person($instance->user_id)
-            unless $action eq 'update';
+        Socialtext::JobCreator->index_person($instance->user_id);
     }
 }
 
