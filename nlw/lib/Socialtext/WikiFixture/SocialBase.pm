@@ -406,6 +406,22 @@ sub workspace_primary_account {
     diag "Changed ${wksp_name}'s primary account to $acct_name\n";
 }
 
+sub group_primary_account {
+    die "XXX THIS IS NOT IMPLEMENTED!";
+    # Please update t/wikitests/search/person-index.wiki when you implement this
+
+
+    my $self = shift;
+    my $group_id  = shift || $self->{group_id};
+    my $acct_name = shift;
+
+    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+    my $account = Socialtext::Account->new(name => $acct_name);
+
+    $group->update(account_id => $account->account_id);
+    diag "Changed ${group_id}'s primary account to $acct_name\n";
+}
+
 sub delete_user {
     my $self = shift;
     my $email = shift;
@@ -533,11 +549,7 @@ sub add_group_to_account {
         ? Socialtext::Role->new(name => $role_name)
         : Socialtext::GroupAccountRoleFactory->DefaultRole();
 
-    Socialtext::GroupAccountRoleFactory->Create( {
-        group_id   => $group_id,
-        account_id => $account->account_id,
-        role_id    => $role->role_id,
-    } );
+    $account->add_group(group => $group, role => $role);
 
     diag 'Added ' . $group->driver_group_name . ' Group'
        . " to $account_name Account"

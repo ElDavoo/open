@@ -104,6 +104,19 @@
 | job-count                   | PersonIndex | 0                |        |
 | add-group-to-workspace      | %%g1id%%    | %%other_wksp%%   | workspace_admin  |
 | job-count                   | PersonIndex | 0                |        |
+
+| add-group-to-account      | %%g1id%%    | %%other_acct%% | member    |
+| job-count                 | PersonIndex | 1              |           |
+| st-process-jobs           |             |                |           |
+| job-count                 | PersonIndex | 0              |           |
+| add-group-to-account      | %%g1id%%    | %%other_acct%% | affiliate |
+| job-count                 | PersonIndex | 0              |           |
+| remove-group-from-account | %%g1id%%    | %%other_acct%% |           |
+| job-count                 | PersonIndex | 1              |           |
+| st-process-jobs           |             |                |           |
+| job-count                 | PersonIndex | 0              |           |
+
+
 | remove-group-from-workspace | %%g1id%%    | %%other_wksp%%   |        |
 | job-count                   | PersonIndex | 1                |        |
 | st-process-jobs             |             |                  |        |
@@ -114,11 +127,9 @@
 | job-count                   | PersonIndex | 0                |        |
 
 
+# 2 users in the group?
+
 # TODO - User A in acct A, wksp C, User B in acct B, wksp C, a can see b
-# TODO other membership changes?
-## role change: -user workspace-, -user group-, -group wksp-, -user account-, 
-##              group account
-## primary acct change: -wksp-, -user-, group
 
 # Tagging a user
 
