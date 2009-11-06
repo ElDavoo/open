@@ -420,7 +420,7 @@ sub _add_person_doc {
     my @fields = (
         [id => "person:$user_id"],
         [w => 0],
-        [a => $user->primary_account_id],
+        (map { [a => $_] } $user->accounts(ids_only => 1)),
         [doctype => 'person'], 
         [person_key => $user_id],
 

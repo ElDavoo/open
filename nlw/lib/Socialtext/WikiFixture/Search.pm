@@ -36,8 +36,12 @@ sub search_people {
         viewer => $viewer,
     );
 
-    is scalar(@$ppl), $num_results, "search '$query' results: $num_results";
-
+    my $count = @$ppl;
+    is $count, $num_results, "search '$query' results: $num_results";
+    if ($count != $num_results) {
+        use Data::Dumper;
+        warn Dumper $ppl;
+    }
 }
 
 sub people_search {

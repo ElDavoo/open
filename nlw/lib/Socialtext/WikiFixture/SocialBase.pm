@@ -1329,8 +1329,13 @@ sub json_array_size {
         fail $self->{http}->name . " json result is not an array";
     }
     else {
-        cmp_ok scalar(@$json), $comparator, $size,
+        my $count = @$json;
+        cmp_ok $count, $comparator, $size,
             $self->{http}->name . " array is $comparator $size" ;
+        if ($comparator = '==' and $count != $size) {
+            use Data::Dumper;
+            warn Dumper $json;
+        }
     }
 }
 
