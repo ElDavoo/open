@@ -7,7 +7,9 @@
 | st-clear-jobs   |             |                                        |
 | set             | randy       | randy%%start_time%%@ken.socialtext.net |
 | create-user     | %%randy%%   | password                               | %%account%% |
-| job-count       | PersonIndex | 1                                      |
+| set             | sandy       | sandy%%start_time%%@ken.socialtext.net |
+| create-user     | %%sandy%%   | password                               | %%account%% |
+| job-count       | PersonIndex | 2                                      |
 | st-process-jobs |             |                                        |
 | job-count       | PersonIndex | 0                                      |
 
@@ -95,30 +97,31 @@
 | create-group                | %%g1%%      | %%account%%      |        |
 | set                         | g1id        | %%group_id%%     |        |
 | add-user-to-group           | %%randy%%   | %%g1id%%         |        |
-| job-count                   | PersonIndex | 1                |        |
+| add-user-to-group           | %%sandy%%   | %%g1id%%         |        |
+| job-count                   | PersonIndex | 2                |        |
 | st-process-jobs             |             |                  |        |
 | job-count                   | PersonIndex | 0                |        |
 | add-group-to-workspace      | %%g1id%%    | %%other_wksp%%   | member |
-| job-count                   | PersonIndex | 1                |        |
+| job-count                   | PersonIndex | 2                |        |
 | st-process-jobs             |             |                  |        |
 | job-count                   | PersonIndex | 0                |        |
 | add-group-to-workspace      | %%g1id%%    | %%other_wksp%%   | workspace_admin  |
 | job-count                   | PersonIndex | 0                |        |
 
 | add-group-to-account      | %%g1id%%    | %%other_acct%% | member    |
-| job-count                 | PersonIndex | 1              |           |
+| job-count                 | PersonIndex | 2              |           |
 | st-process-jobs           |             |                |           |
 | job-count                 | PersonIndex | 0              |           |
 | add-group-to-account      | %%g1id%%    | %%other_acct%% | affiliate |
 | job-count                 | PersonIndex | 0              |           |
 | remove-group-from-account | %%g1id%%    | %%other_acct%% |           |
-| job-count                 | PersonIndex | 1              |           |
+| job-count                 | PersonIndex | 2              |           |
 | st-process-jobs           |             |                |           |
 | job-count                 | PersonIndex | 0              |           |
 
 
 | remove-group-from-workspace | %%g1id%%    | %%other_wksp%%   |        |
-| job-count                   | PersonIndex | 1                |        |
+| job-count                   | PersonIndex | 2                |        |
 | st-process-jobs             |             |                  |        |
 | job-count                   | PersonIndex | 0                |        |
 | remove-user-from-group      | %%randy%% | %%g1id%% | |
