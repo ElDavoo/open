@@ -13,6 +13,8 @@ use Socialtext::Search::Config;
 
 fixtures(qw( db no-ceq-jobs ));
 
+plan skip_all => 'Solr page & attachment indexing is turned off';
+
 plan tests => 19;
 
 my $hub = create_test_hub();

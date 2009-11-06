@@ -17,6 +17,7 @@ use Socialtext::File;
 #   that could cause things to get indexed
 fixtures(qw( db no-ceq-jobs ));
 
+plan skip_all => 'Solr page & attachment indexing is turned off';
 
 my $wvtext_path = check_for_file_in_path('wvText');
 if ( !$wvtext_path ) {
