@@ -68,6 +68,28 @@
 | st-process-jobs |                        |                       |
 | job-count       | PersonIndex            | 0                     |
 
+# Changing a user's accounts re-indexes the user
+
+| set                 | other_acct     | oa%%start_time%% |
+| create-account      | %%other_acct%% |                  |
+| set                 | other_wksp     | ow%%start_time%% |
+| create-workspace    | %%other_wksp%% | %%other_acct%%   |
+| add-member          | %%randy%%      | %%other_wksp%%   |
+| job-count           | PersonIndex    | 1                |
+| st-process-jobs     |                |                  |
+| job-count           | PersonIndex    | 0                |
+| add-workspace-admin | %%randy%%      | %%other_wksp%%   |
+| job-count           | PersonIndex    | 0                |
+| remove-member       | %%randy%%      | %%other_wksp%%   |
+| job-count           | PersonIndex    | 1                |
+| st-process-jobs     |                |                  |
+| job-count           | PersonIndex    | 0                |
+
+# TODO - User A in acct A, wksp C, User B in acct B, wksp C, a can see b
+# TODO other membership changes?
+## role change: -user workspace-, user group, group wksp, user account, group account
+## primary acct change: wksp, -user-, group
+
 # Tagging a user
 
 | post | /data/people/%%randy%%/tags | Content-Type=application/json | {"tag_name":"obamamama"} |

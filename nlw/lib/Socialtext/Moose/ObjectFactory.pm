@@ -43,6 +43,17 @@ sub Get {
     return $class->new($row);
 }
 
+sub PostChangeHook {
+    my $self = shift;
+    my $action = shift;
+    my $instance = shift;
+    if ($self->Builds_sql_for eq 'Socialtext::UserWorkspaceRole') {
+        # index that user, unless it's just a membership role/attr change
+        Socialtext::JobCreator->index_person($instance->user_id)
+            unless $action eq 'update';
+    }
+}
+
 sub CreateRecord {
     my ($self, $proto) = @_;
 
@@ -73,6 +84,7 @@ sub Create {
     $self->CreateRecord($proto);
 
     my $instance = $self->Get(%{$proto});
+    $self->PostChangeHook('create' => $instance);
     $self->RecordCreateLogEntry($instance, $timer);
     return $instance;
 }
@@ -125,6 +137,7 @@ sub Update {
                 $instance, $to_merge->{$attr},
             );
         }
+        $self->PostChangeHook('update' => $instance);
         $self->RecordUpdateLogEntry($instance, $timer);
     }
     return $instance;
@@ -148,7 +161,10 @@ sub Delete {
     my ($self, $instance) = @_;
     my $timer = Socialtext::Timer->new();
     my $did_delete = $self->DeleteRecord($instance->primary_key());
-    $self->RecordDeleteLogEntry($instance, $timer) if $did_delete;
+    if ($did_delete) {
+        $self->PostChangeHook('delete' => $instance);
+        $self->RecordDeleteLogEntry($instance, $timer);
+    }
     return $did_delete;
 }
 
