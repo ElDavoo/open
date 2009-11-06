@@ -379,6 +379,8 @@ sub create_user {
         )
     );
     diag "Created user ".$user->email_address. ", name ".$user->guess_real_name;
+    
+    $self->{user_id} = $user->user_id;
     return $user;
 }
 
