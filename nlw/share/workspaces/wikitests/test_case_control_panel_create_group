@@ -25,7 +25,7 @@
 | wait_for_element_visible_ok | st-groupname | 30000 |
 | wait_for_element_visible_ok | st-group-create-submit | 30000 |
 | type_ok | st-groupname | %%CPgroupname%% |
-| click_ok | st-group-create-submit |  |
+| click_and_wait | st-group-create-submit |  |
 | wait_for_element_visible_ok | link=Add Group To An Account | 30000 |
 | text_like | //body | Created By: %%username%% |
 | text_like | //body | %%CPgroupname%% |
@@ -46,7 +46,7 @@
 | wait_for_element_visible_ok | %%user4%% | 30000 |
 | click_ok | %%user4%% |  |
 | wait_for_element_visible_ok | link=Invite to Group(s) | 30000 |
-| click_ok | link=Invite to Group(s) |
+| click_and_wait | link=Invite to Group(s) |
 | wait_for_element_visible_ok | group-name | 30000 |
 | wait_for_element_visible_ok | todo-create | 30000 |
 | check_ok | todo-create |  |
@@ -81,24 +81,21 @@
 | wait_for_element_visible_ok | %%user3%% | 30000 |
 | click_ok | %%user3%% |  |
 | wait_for_element_visible_ok | link=Invite to Group(s) | 30000 |
-| click_ok | link=Invite to Group(s) |
+| click_and_wait | link=Invite to Group(s) |
 | wait_for_element_visible_ok | group-name | 30000 |
 | wait_for_element_visible_ok | todo-invite | 30000 |
-| check_ok | todo-invite |  |
+| click_ok | todo-invite |  |
+| pause | 1000 |  |
 | wait_for_element_visible_ok | %%group_id%% | 30000 |
-| click_ok | %%group_id%% | 30000 |
+| check_ok | %%group_id%% |  |
 | wait_for_element_visible_ok | invite-button | 30000 |
-| pause | 30000 |  |
 | click_and_wait | invite-button |  |
-
-* | wait_for_text_present_ok | You successfully added 3 users to 1 group | 30000 |
+| wait_for_text_present_ok | You successfully added 3 users to 1 group | 30000 |
 
 | *Comment* | Test Case: Control Panel Groups Confirm Add |  |
-| pause | 9000 |  |
 | open_ok | /nlw/control/group/%%group_id%% |  |
 | text-like | //body | Users (3) |
 | text-like | //body | %%groupexists%% |
-| text-like | //body | Created By: %%username%% |
 | wait_for_element_visible_ok | link=%%email1%% | 30000 |
 | wait_for_element_visible_ok | link=%%email2%% | 30000 |
 | wait_for_element_visible_ok | link=%%email3%% | 30000 |
