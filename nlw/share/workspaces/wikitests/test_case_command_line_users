@@ -65,8 +65,8 @@ confirm-user
 | st-admin | change-password --email cli-%%start_time%%-not@ken.socialtext.net --password 654321 | No user with the email address "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
 
 | *Comment* | Test Case: Command Line Tests USERS Adding a member |  |
-| st-admin | add-member | qr/The command you called \(add-member\) requires one of --username --email --group and one of --workspace --account/ism |
-| st-admin | add-member --user %%cli_user%% | qr/The command you called \(add-member\) requires one of --username --email --group and one of --workspace --account/ism |
+| st-admin | add-member | qr/The command you called \(add-member\) requires one of --username --email --group and one of --group --workspace --account/ism |
+| st-admin | add-member --user %%cli_user%% | qr/The command you called \(add-member\) requires one of --username --email --group and one of --group --workspace --account/ism |
 | st-admin | add-member --user %%cli_user%% --workspace | qr/The command you called \(add-member\) requires a workspace to be specified/ism |
 | st-admin | add-member --user cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | No user with the username "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
 | st-admin | add-member --user %%cli_user%% --workspace no-%%start_time%% | qr/No workspace named "no-%%start_time%%" could be found./ism |
@@ -74,8 +74,8 @@ confirm-user
 | st-admin | add-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is already a member of the %%workspace%% workspace./ism |
 
 | *Comment* | Test Case: Command Line Tests USERS Removing a member |  |
-| st-admin | remove-member | qr/The command you called \(remove-member\) requires one of --username --email --group and one of --workspace --account/ism |
-| st-admin | remove-member --user %%cli_user%% | qr/The command you called \(remove-member\) requires one of --username --email --group and one of --workspace --account/ism |
+| st-admin | remove-member | qr/The command you called \(remove-member\) requires one of --username --email --group and one of --group --workspace --account/ism |
+| st-admin | remove-member --user %%cli_user%% | qr/The command you called \(remove-member\) requires one of --username --email --group and one of --group --workspace --account/ism |
 | st-admin | remove-member --user %%cli_user%% --workspace | qr/The command you called \(remove-member\) requires a workspace to be specified/ism |
 | st-admin | remove-member --user cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | qr/No user with the username "cli-%%start_time%%-not@ken.socialtext.net" could be found./ism |
 | st-admin | remove-member --user %%cli_user%% --workspace no-%%start_time%% | qr/No workspace named "no-%%start_time%%" could be found./ism |
