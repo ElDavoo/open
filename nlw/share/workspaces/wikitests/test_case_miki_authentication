@@ -55,9 +55,7 @@ that follow it. So we do this test in a scratch workspace instead
 | location_like | /m/page/%%miki_space%%/ |  |
 
 | *Comment* | Test Case: Miki Authentication logged out - can't edit |  |
-| text_like | link=Edit | Edit |
-| click_and_wait | link=Edit |  |
-| text_unlike | //body | Cancel Edit |
+| wait_for_element_not_present_ok | link=Edit | 30000 |
 
 | click_and_wait | link=Log in |  |
 | type_ok | username | %%username%% |
