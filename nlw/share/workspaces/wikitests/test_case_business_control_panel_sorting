@@ -112,7 +112,8 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 | *Comment* | Test Case: Business Control Panel Sorting check the elements on the page |  |
 | text_like | selected-users | 0 users selected |
 | text_like | clear-selected-users | Clear Selection |
-| text_like | invite-users | Invite to Workspace(s) |
+| text_like | invite-users-wks | Invite to Workspace(s) |
+| text_like | invite-users-grp | Invite to Group(s) |
 
 | *Comment* | Test Case: Business Control Panel Sorting all the users and none of the users. pause is necessary because number of users is unknown |  |
 | click_ok | toggle_all_users |  |
@@ -126,10 +127,10 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 | text_like | selected-users | 0 users selected |
 
 | *Comment* | Test Case: Business Control Panel Sorting invite everyone to a workspace |  |
-| click_ok | invite-users |  |
+| click_ok | invite-users-wks |  |
 | verifyAlert | No users selected, please select at least one user and try again. |  |
 | click_ok | toggle_all_users |  |
-| click_and_wait | invite-users |  |
+| click_and_wait | invite-users-wks |  |
 
 | text_like | Title |  |
 | text_like | Name |  |
@@ -155,7 +156,7 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 | addSelection | members | label=0_sort_3_user1@%%start_time%%.com |
 | click_ok | add-selected |  |
 | click_ok | remove-selected |  |
-| click_ok | add-all |  |
+| click_ok | add-all | [test case business control panel sorting#] |
 | click_ok | remove-all |  |
 | addSelection | members | label=0_sort_3_user1@%%start_time%%.com |
 | click_ok | invite-button |  |
