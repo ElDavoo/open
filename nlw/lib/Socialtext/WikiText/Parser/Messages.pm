@@ -34,7 +34,7 @@ sub create_grammar {
     my $url_prefix = qr{(?:http|https|ftp|irc|file):(?:://)?};
     $grammar->{a}{match} = [
         qr{
-            "([^"]*)" \s*
+            (?:"([^"]*)"\s*)?
             < ($url_prefix [^>]+) >
         }x,
         qr{
