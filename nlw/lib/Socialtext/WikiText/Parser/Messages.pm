@@ -7,6 +7,11 @@ use base 'WikiText::Socialtext::Parser';
 
 use Socialtext::String ();
 
+my $reserved   = q{;/?:@&=+$,[]#};
+my $mark       = q{-_.!~*'()};
+my $unreserved = "A-Za-z0-9\Q$mark\E";
+my $uric       = quotemeta($reserved) . $unreserved . "%";
+
 sub create_grammar {
     my $self = shift;
     my $grammar = $self->SUPER::create_grammar();
@@ -25,6 +30,22 @@ sub create_grammar {
             s/\n/ /g; # Turn all newlines into spaces
         }
     };
+
+    my $url_prefix = qr{(?:http|https|ftp|irc|file):(?:://)?};
+    $grammar->{a}{match} = [
+        qr{
+            "([^"]*)" \s*
+            < ($url_prefix [^>]+) >
+        }x,
+        qr{
+            ()
+            (
+                $url_prefix
+                [$uric]+
+                [A-Za-z0-9/#]
+            )
+        }x,
+    ];
 
     $grammar->{asis}{filter} = sub {
         my $node = shift;
