@@ -330,10 +330,11 @@ use constant base_package => __PACKAGE__;
 ###############################################################################
 sub users {
     my $self = shift;
+    my $id_only = shift;
 
     return Socialtext::UserGroupRoleFactory->ByGroupId(
         $self->group_id,
-        sub { shift->user(); },
+        $id_only ? sub { shift->user_id } : sub { shift->user },
     );
 }
 
