@@ -1332,7 +1332,7 @@ sub json_array_size {
         my $count = @$json;
         cmp_ok $count, $comparator, $size,
             $self->{http}->name . " array is $comparator $size" ;
-        if ($comparator == '==' and $count != $size) {
+        if ($comparator eq '==' and $count != $size) {
             use Data::Dumper;
             warn Dumper $json;
         }
