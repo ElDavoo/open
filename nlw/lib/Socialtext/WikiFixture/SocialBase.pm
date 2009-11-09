@@ -396,6 +396,33 @@ sub user_primary_account {
     diag "Changed ${username}'s primary account to $account_name\n";
 }
 
+sub workspace_primary_account {
+    my $self = shift;
+    my $wksp_name = shift;
+    my $acct_name = shift;
+
+    my $wksp = Socialtext::Workspace->new(name => $wksp_name);
+    my $account = Socialtext::Account->new(name => $acct_name);
+
+    $wksp->update(account_id => $account->account_id);
+    diag "Changed ${wksp_name}'s primary account to $acct_name\n";
+}
+
+sub group_primary_account {
+    die "XXX THIS IS NOT IMPLEMENTED!";
+    # Please update t/wikitests/search/person-index.wiki when you implement this
+
+
+    my $self = shift;
+    my $group_id  = shift || $self->{group_id};
+    my $acct_name = shift;
+
+    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+    my $account = Socialtext::Account->new(name => $acct_name);
+
+    $group->update(account_id => $account->account_id);
+    diag "Changed ${group_id}'s primary account to $acct_name\n";
+}
 
 sub delete_user {
     my $self = shift;
@@ -524,11 +551,7 @@ sub add_group_to_account {
         ? Socialtext::Role->new(name => $role_name)
         : Socialtext::GroupAccountRoleFactory->DefaultRole();
 
-    Socialtext::GroupAccountRoleFactory->Create( {
-        group_id   => $group_id,
-        account_id => $account->account_id,
-        role_id    => $role->role_id,
-    } );
+    $account->add_group(group => $group, role => $role);
 
     diag 'Added ' . $group->driver_group_name . ' Group'
        . " to $account_name Account"
@@ -1308,8 +1331,13 @@ sub json_array_size {
         fail $self->{http}->name . " json result is not an array";
     }
     else {
-        cmp_ok scalar(@$json), $comparator, $size,
+        my $count = @$json;
+        cmp_ok $count, $comparator, $size,
             $self->{http}->name . " array is $comparator $size" ;
+        if ($comparator == '==' and $count != $size) {
+            use Data::Dumper;
+            warn Dumper $json;
+        }
     }
 }
 
