@@ -1,18 +1,18 @@
 Note: The current configuration of this test is only applicable to the current default configuration of test-data workspace
 
-Comment: The user action is search for the words with stemming enabled in KinoSearch. Create a dataset that will test the result.
+Comment: The user action is search for the words with stemming enabled. Create a dataset that will test the result.
 
 ----
 
  *user action* | *correct response* | *comment*
- wikis | find wiki and wikis | 
- fish, fishing, fisher, fishes | find all except fisher 
- stem, stemmer, stemming, stemmed | find all except stemmer 
- zig zigging zigzag | find all except zigzag 
- zigzag zigzagging | find all 
- worship worshipful worships | find all 
- wolf wolve wolves | find only wolf 
- whole wholehearted wholesale wholesome | find only whole
+wikis | find wiki and wikis |
+fish, fishing, fisher, fishes | find all except fisher
+stem, stemmer, stemming, stemmed | find all except stemmer
+zig zigging zigzag | find all except zigzag
+zigzag zigzagging | find all
+worship worshipful worships | find all
+wolf wolve wolves | find only wolf
+whole wholehearted wholesale wholesome | find only whole
 
 NOTE: every search should check for every search result
 
@@ -62,8 +62,6 @@ QUESTION: is this the correct result for "fisher"? The word "fisher" is on test 
 | st-result | Stemming test page 1 |  |
 | st-result | Stemming test page 2 |  |
 | st-result | jabber |  |
-
-QUESTION: is test-data correct for zig and zigging and zigzag?
 
 | st-search | zig | Pages matching 'zig' |
 | st-result | 0 total |  |

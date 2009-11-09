@@ -1,18 +1,19 @@
 | *Comment* | STARTING Test Case: Miki |  |
 
-| *Comment* | Test Case: Miki Create new account, workspace, user, add user |  |  |
-| set | ws | `miki-ws-%%start_time%%` |  |
-| set | mikiacct | mikiacct-%%start_time%% |  |
-| set | mikiuser | `mikiuser%%start_time%%@ken.socialtext.net` |  |
-| set | othermikiuser | `othermikiuser%%start_time%%@ken.socialtext.net` |  |
-| set | othershortuser | `othermikiuser%%start_time%%` |  |
-| create_account | %%mikiacct%% |  |  |
-| set | signal1 | hello from a different user at %%start_time%% |  |
-| set | signal2 | and I say goodbye from the main user at %%start_time%% |  |
+| *Comment* | Test Case: Miki Create new account, workspace, user, add user |  |
+| set | ws | `miki-ws-%%start_time%%` |
+| set | mikiacct | mikiacct-%%start_time%% |
+| set | mikiuser | `mikiuser%%start_time%%@ken.socialtext.net` |
+| set | othermikiuser | `othermikiuser%%start_time%%@ken.socialtext.net` |
+| set | othershortuser | `othermikiuser%%start_time%%` |
+
+| create_account | %%mikiacct%% |  |
+| set | signal1 | hello from a different user at %%start_time%% |
+| set | signal2 | and I say goodbye from the main user at %%start_time%% |
 | set | multisignal | You say potato, I say potatoe |
-| enable_acct_plugin | dashboard | %%mikiacct%% |  |
-| enable_acct_plugin | people | %%mikiacct%% |  |
-| enable_acct_plugin | signals | %%mikiacct%% |  |
+| enable_acct_plugin | dashboard | %%mikiacct%% |
+| enable_acct_plugin | people | %%mikiacct%% |
+| enable_acct_plugin | signals | %%mikiacct%% |
 
 | *Comment* | Test Case: Multiple Account Signal |  |
 | set | othermikiacct | `othermikiacct-%%start_time%%` |
@@ -46,7 +47,7 @@
 | text_like | What are you working on? |  |
 
 | *Comment* | Test case: Miki Send Signals |  |
-| text_like | //body | People I follow |  |
+| text_like | //body | People I follow |
 | wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_element_visible_ok | link=Mine | 30000 |
 | wait_for_element_visible_ok | st-signal-text | 30000 |
@@ -166,7 +167,7 @@
 | st-login | %%mikiuser%% | %%password%% |
 | open_ok | /m/ |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
-|  click_and_wait |  link=Workspaces |  |
+| click_and_wait | link=Workspaces |  |
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | text_like | Workspaces |  |
 | text_like | Hello, %%mikiuser%% |  |

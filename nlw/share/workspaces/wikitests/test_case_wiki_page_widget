@@ -47,6 +47,6 @@
 | *Comment* | Test Case: Wiki Page TEARDOWN |  |
 | select-frame | relative=parent |  |
 | st-empty-container |  |  |
-| st-admin | purge-page --workspace test-data --page wiki_page_%%start_time%% | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page wiki_page_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Wiki Page Widget COMPLETED |  |

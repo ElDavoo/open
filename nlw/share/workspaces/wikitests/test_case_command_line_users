@@ -5,7 +5,7 @@
 
 | *Comment* | Test Case: Command Line Tests USERS create workspaces |  |
 | set | cmdline_workspace | clw_%%start_time%% |
-| st-admin | create-workspace --name %%cmdline_workspace%% --title %%cmdline_workspace%% | A new workspace named "%%cmdline_workspace%%" was created. |
+| st-admin | create-workspace --name %%cmdline_workspace%% --title %%cmdline_workspace%% --empty | A new workspace named "%%cmdline_workspace%%" was created. |
 
 *Users*
 
@@ -26,16 +26,14 @@ deactivate-user
 
 | st-admin | deactivate-user | qr/The command you called \(deactivate-user\) requires a user to be specified/ism |
 | st-admin | create-user --email deactivate%%start_time%%@ken.socialtext.net --password 123456 --first-name deactivate --last-name deactivate | qr/A new user with the username "deactivate%%start_time&&@ken.socialtext.net" was created/ism |
-| st-admin | clone-workspace --workspace test-data --target deactivate1%%start_time%% | The test-data workspace has been cloned to deactivate1%%start_time%%. |
-| st-admin | clone-workspace --workspace test-data --target deactivate2%%start_time%% | The test-data workspace has been cloned to deactivate2%%start_time%%. |
+| st-admin | create-workspace --name aaa-deactivate-%%start_time%% --title "Deactivate %%start_time%%" --empty | qr/A new workspace named "aaa-deactivate-%%start_time%%" was created/ism |
 
-| st-admin | add-member --email deactivate%%start_time%%@ken.socialtext.net --workspace deactivate1%%start_time%% | qr/deactivate%%start_time%%@ken.socialtext.net is now a member of the deactivate1%%start_time%% workspace/ism |
-| st-admin | add-member --email deactivate%%start_time%%@ken.socialtext.net --workspace deactivate2%%start_time%% | qr/deactivate%%start_time%%@ken.socialtext.net is now a member of the deactivate2%%start_time%% workspace/ism |
+| st-admin | add-member --email deactivate%%start_time%%@ken.socialtext.net --workspace aaa-deactivate-%%start_time%% | qr/deactivate%%start_time%%@ken.socialtext.net is now a member of the aaa-deactivate-%%start_time%% workspace/ism |
+| st-admin | add-member --email deactivate%%start_time%%@ken.socialtext.net --workspace %%workspace%% | qr/deactivate%%start_time%%@ken.socialtext.net is now a member of the %%workspace%% workspace/ism |
 
-| st-admin | deactivate-user --email deactivate%%start_time%%@ken.socialtext.net | deactivate%%start_time%%@ken.socialtext.net has been removed from workspaces deactivate1%%start_time%%, deactivate2%%start_time%% |
+| st-admin | deactivate-user --email deactivate%%start_time%%@ken.socialtext.net | deactivate%%start_time%%@ken.socialtext.net has been removed from workspaces aaa-deactivate-%%start_time%%, %%workspace%% |
 
-| st-admin | delete-workspace --workspace deactivate1%%start_time%% --no-export | The deactivate1%%start_time%% workspace has been deleted. |
-| st-admin | delete-workspace --workspace deactivate2%%start_time%% --no-export | The deactivate2%%start_time%% workspace has been deleted. |
+| st-admin | delete-workspace --workspace aaa-deactivate-%%start_time%% --no-export | The aaa-deactivate-%%start_time%% workspace has been deleted. |
 
 invite-user
 confirm-user
