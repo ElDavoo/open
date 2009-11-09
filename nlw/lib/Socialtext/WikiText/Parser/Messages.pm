@@ -31,20 +31,10 @@ sub create_grammar {
         }
     };
 
-    my $url_prefix = qr{(?:http|https|ftp|irc|file):(?:://)?};
+    my $url_scheme = qr{(?:http|https|ftp|irc|file):(?://)?};
     $grammar->{a}{match} = [
-        qr{
-            (?:"([^"]*)"\s*)?
-            < ($url_prefix [^>]+) >
-        }x,
-        qr{
-            ()
-            (
-                $url_prefix
-                [$uric]+
-                [A-Za-z0-9/#]
-            )
-        }x,
+        qr{(?:"([^"]*)"\s*)? < ( $url_scheme [$uric ]+ ) >}x,
+        qr{()( $url_scheme [$uric]+ )}x,
     ];
 
     $grammar->{asis}{filter} = sub {
