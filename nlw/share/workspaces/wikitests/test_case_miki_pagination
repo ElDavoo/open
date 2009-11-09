@@ -64,7 +64,8 @@
 | wait_for_element_visible_ok | link=H | 30000 |
 | wait_for_element_visible_ok | link=I | 30000 |
 | wait_for_element_not_present_ok | link=C | 5000 |
-| pause | 90000 | indexer needs to cach up with those new users. Sorry. I don't see a way around it. |
+| *Comment* | Test case: Miki Pagination. Pausing 90 seconds for people indexing |  |
+| pause | 90000 |  |
 | click_and_wait | link=A |  |
 
 | *Comment* | Test case: Miki Pagination - First Page |  |
