@@ -239,7 +239,8 @@
             this.$('<ul></ul>')
                 .css({
                     listStyle: 'none',
-                    padding: '0'
+                    padding: '0',
+                    margin: '0'
                 })
                 .appendTo(this.lookahead);
 
