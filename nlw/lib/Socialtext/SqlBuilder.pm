@@ -1,4 +1,4 @@
-package Socialtext::Moose::SqlBuilder;
+package Socialtext::SqlBuilder;
 use Moose::Role;
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::SQL::Builder qw(sql_abstract);
@@ -204,14 +204,14 @@ no Moose::Role;
 
 =head1 NAME
 
-Socialtext::Moose::SqlBuilder - Syntactic sugar to define classes building SQL
+Socialtext::SqlBuilder - Syntactic sugar to define CRUD Sql
 
 =head1 SYNOPSIS
 
   package MyFactory;
   use Moose;
   use constant Builds_sql_for => 'MyClass';
-  with qw(Socialtext::Moose::SqlBuilder);
+  with qw(Socialtext::SqlBuilder);
 
   # filter to include only key/value pairs for valid columns
   $valid = MyFactory->FilterValidColumns( $data );

@@ -43,7 +43,7 @@ Socialtext::Moose::Does::WorkspaceSearch - Moose Role for searching by Workspace
   package MyClass;
   use Moose;
   with qw(
-    Socialtext::Moose::ObjectFactory
+    Socialtext::CRUDFactory
     Socialtext::Moose::Does::WorkspaceSearch
   );
 

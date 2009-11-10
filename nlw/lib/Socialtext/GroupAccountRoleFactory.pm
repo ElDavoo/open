@@ -11,7 +11,7 @@ use Socialtext::SQL::Builder qw/sql_abstract/;
 use namespace::clean -except => 'meta';
 
 with qw(
-    Socialtext::Moose::ObjectFactory
+    Socialtext::CRUDFactory
     Socialtext::Moose::Does::GroupSearch
     Socialtext::Moose::Does::AccountSearch
 );

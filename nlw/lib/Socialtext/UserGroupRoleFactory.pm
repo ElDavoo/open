@@ -11,7 +11,7 @@ use Socialtext::SQL qw/:exec/;
 use namespace::clean -except => 'meta';
 
 with qw(
-    Socialtext::Moose::ObjectFactory
+    Socialtext::CRUDFactory
     Socialtext::Moose::Does::UserSearch
     Socialtext::Moose::Does::GroupSearch
 );

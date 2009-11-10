@@ -4,7 +4,7 @@ use MooseX::Singleton;
 use Socialtext::Log qw(st_log);
 use namespace::clean -except => 'meta';
 
-with qw/Socialtext::Moose::ObjectFactory/;
+with qw/Socialtext::CRUDFactory/;
 
 sub Builds_sql_for {'Socialtext::UserWorkspaceRole'}
 

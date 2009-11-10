@@ -33,7 +33,7 @@ Socialtext::Moose::Does::GroupSearch - Moose Role for searching by Group
   package MyClass;
   use Moose;
   with qw(
-    Socialtext::Moose::ObjectFactory
+    Socialtext::CRUDFactory
     Socialtext::Moose::Does::GroupSearch
   );
 

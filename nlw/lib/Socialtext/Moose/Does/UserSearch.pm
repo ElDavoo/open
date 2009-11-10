@@ -31,7 +31,7 @@ Socialtext::Moose::Does::UserSearch - Moose Role for searching by User
   package MyClass;
   use Moose;
   with qw(
-    Socialtext::Moose::ObjectFactory
+    Socialtext::CRUDFactory
     Socialtext::Moose::Does::UserSearch
   );
 

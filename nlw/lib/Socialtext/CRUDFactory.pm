@@ -1,14 +1,13 @@
-package Socialtext::Moose::ObjectFactory;
+package Socialtext::CRUDFactory;
 # @COPYRIGHT@
 use Moose::Role;
 use List::Util qw(first);
 use Socialtext::Timer;
 use namespace::clean -except => 'meta';
 
-with qw(
-    Socialtext::Moose::SqlBuilder
-);
+with qw(Socialtext::SqlBuilder);
 
+requires 'Builds_sql_for'; # copied from SqlBuilder
 requires 'SetDefaultValues';
 
 requires 'EmitCreateEvent';
@@ -53,7 +52,6 @@ sub PostChangeHook {
             Socialtext::JobCreator->index_person($user_id);
         }
     }
-
 }
 
 sub CreateRecord {
@@ -194,21 +192,21 @@ no Moose::Role;
 
 =head1 NAME
 
-Socialtext::Moose::ObjectFactory - ObjectFactory Role for SQL stored objects
+Socialtext::CRUDFactory - Create, Retrieve, Update and Delete SQL-stored objects.
 
 =head1 SYNOPSIS
 
   package MyFactory;
   use Moose;
-  with qw(
-      Socialtext::Moose::ObjectFactory
-  );
+  with qw(Socialtext::CRUDFactory);
+  use constant Builds_sql_for => 'MyClass';
   ...
 
 =head1 DESCRIPTION
 
-C<Socialtext::Moose::ObjectFactory> provides a baseline Role for a Factory to
-create objects that are stored in a SQL DB.
+C<Socialtext::CRUDFactory> provides a baseline Role for a Factory to create,
+retrieve, update and delete objects that are stored in the SQL DB.  Database
+access is via L<Socialtext::SQL>.
 
 =head1 METHODS
 
@@ -281,6 +279,12 @@ In order to consume this role and create your own Object Factory,
 implementations for the following methods are required:
 
 =over
+
+=item Builds_sql_for
+
+Since this role extends the L<Socialtext::SqlBuilder> Role, it also requires
+the Build_sql_for constant.  This constant should return the name of the
+object that this factory works with.
 
 =item EmitCreateEvent($proto)
 

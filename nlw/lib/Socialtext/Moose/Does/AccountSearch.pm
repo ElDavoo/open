@@ -31,7 +31,7 @@ Socialtext::Moose::Does::AccountSearch - Moose Role for searching by Account
   package MyClass;
   use Moose;
   with qw(
-    Socialtext::Moose::ObjectFactory
+    Socialtext::CRUDFactory
     Socialtext::Moose::Does::AccountSearch
   );
 
