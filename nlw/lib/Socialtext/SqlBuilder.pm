@@ -259,7 +259,7 @@ Socialtext::SqlBuilder - Syntactic sugar to define CRUD Sql
 
 =head1 DESCRIPTION
 
-C<Socialtext::Moose::SqlBuilder> provides some additional syntactic sugar to
+C<Socialtext::SqlBuilder> provides some additional syntactic sugar to
 help make it easier to set up factory classes that need to build SQL to talk
 to an underlying DB.
 

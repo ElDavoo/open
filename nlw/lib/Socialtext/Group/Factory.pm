@@ -19,9 +19,7 @@ our $CacheEnabled = 1;
 # Do *NOT* disable this unless you know why you're doing a *SYNC* lookup
 our $Asynchronous = 1;
 
-with qw(
-    Socialtext::Moose::SqlBuilder
-);
+with qw(Socialtext::SqlBuilder);
 
 use constant Builds_sql_for => 'Socialtext::Group::Homunculus';
 
