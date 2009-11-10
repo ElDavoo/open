@@ -1,6 +1,5 @@
 package Socialtext::Group::Factory;
 # @COPYRIGHT@
-
 use Moose::Role;
 use Carp qw(croak);
 use List::Util qw(first);
@@ -22,15 +21,9 @@ our $Asynchronous = 1;
 
 with qw(
     Socialtext::Moose::SqlBuilder
-    Socialtext::Moose::SqlBuilder::Role::DoesSqlInsert
-    Socialtext::Moose::SqlBuilder::Role::DoesSqlSelect
-    Socialtext::Moose::SqlBuilder::Role::DoesSqlUpdate
-    Socialtext::Moose::SqlBuilder::Role::DoesSqlDelete
-    Socialtext::Moose::SqlBuilder::Role::DoesColumnFiltering
-    Socialtext::Moose::SqlBuilder::Role::DoesTypeCoercion
 );
 
-sub Builds_sql_for { 'Socialtext::Group::Homunculus' };
+use constant Builds_sql_for => 'Socialtext::Group::Homunculus';
 
 has 'driver_key' => (
     is => 'ro', isa => 'Str',

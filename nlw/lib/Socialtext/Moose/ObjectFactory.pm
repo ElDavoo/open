@@ -1,6 +1,5 @@
 package Socialtext::Moose::ObjectFactory;
 # @COPYRIGHT@
-
 use Moose::Role;
 use List::Util qw(first);
 use Socialtext::Timer;
@@ -8,15 +7,8 @@ use namespace::clean -except => 'meta';
 
 with qw(
     Socialtext::Moose::SqlBuilder
-    Socialtext::Moose::SqlBuilder::Role::DoesSqlInsert
-    Socialtext::Moose::SqlBuilder::Role::DoesSqlSelect
-    Socialtext::Moose::SqlBuilder::Role::DoesSqlUpdate
-    Socialtext::Moose::SqlBuilder::Role::DoesSqlDelete
-    Socialtext::Moose::SqlBuilder::Role::DoesColumnFiltering
-    Socialtext::Moose::SqlBuilder::Role::DoesTypeCoercion
 );
 
-requires 'Builds_sql_for';
 requires 'SetDefaultValues';
 
 requires 'EmitCreateEvent';
@@ -195,12 +187,6 @@ sub Cursor {
             return ( $closure ) ? $closure->($instance) : $instance;
         },
     );
-}
-
-sub _short_builds_sql_for {
-    my $self_or_class = shift;
-    my ($short) = ($self_or_class->Builds_sql_for() =~ /::(.+?)$/);
-    return $short;
 }
 
 no Moose::Role;
