@@ -612,6 +612,12 @@ CREATE TABLE person_watched_people__person (
     person_id2 integer NOT NULL
 );
 
+CREATE TABLE plugin_pref (
+    plugin text NOT NULL,
+    "key" text NOT NULL,
+    value text NOT NULL
+);
+
 CREATE TABLE profile_attribute (
     user_id bigint NOT NULL,
     profile_field_id bigint NOT NULL,
@@ -1288,6 +1294,9 @@ CREATE INDEX page_tag__workspace_tag_ix
 CREATE UNIQUE INDEX person_tag__name
 	    ON person_tag (name);
 
+CREATE INDEX plugin_pref_key_idx
+	    ON plugin_pref (plugin, "key");
+
 CREATE UNIQUE INDEX profile_field_name
 	    ON profile_field (account_id, name);
 
@@ -1833,4 +1842,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '91');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '92');
