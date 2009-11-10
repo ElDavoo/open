@@ -58,145 +58,126 @@ sub Sql_non_pkey_columns {
 }
 
 sub FilterValidColumns {
-    my $self  = shift;
+    my $class = shift;
     my $proto = shift;
     my %valid =
         map  { $_ => $proto->{$_} }
         grep { exists $proto->{$_} }
         map  { $_->name }
-        $self->Sql_columns;
+        $class->Sql_columns;
     return \%valid;
 }
 
 sub FilterPrimaryKeyColumns {
-    my $self  = shift;
+    my $class = shift;
     my $proto = shift;
     my %valid =
         map  { $_ => $proto->{$_} }
         grep { exists $proto->{$_} }
         map  { $_->name }
-        $self->Sql_pkey_columns;
+        $class->Sql_pkey_columns;
     return \%valid;
 }
 
 sub FilterNonPrimaryKeyColumns {
-    my $self  = shift;
+    my $class = shift;
     my $proto = shift;
     my %valid =
         map  { $_ => $proto->{$_} }
         grep { exists $proto->{$_} }
         map  { $_->name }
-        $self->Sql_non_pkey_columns;
+        $class->Sql_non_pkey_columns;
     return \%valid;
 }
 
 sub IdentifiesUniqueRecord {
-    my $self  = shift;
+    my $class = shift;
     my $where = shift;
 
-    foreach my $keyset ($self->Sql_unique_key_columns) {
+    foreach my $keyset ($class->Sql_unique_key_columns) {
         my $have_all_attrs = all { exists $where->{ $_->name } } @$keyset;
         return 1 if ($have_all_attrs);
     }
     return 0;
 }
 
-sub SqlSelect {
-    my $self = shift;
-    my $opts = shift;
+sub SqlExec {
+    my $class     = shift;
+    my $sa_method = shift;
+    # rest of args passed to $sa_method
 
-    my $cols   = $opts->{columns} || '*';
-    my $where  = $opts->{where};
-    my $order  = $opts->{order};
-    my $limit  = $opts->{limit};
-    my $offset = $opts->{offset};
-    my $join   = $opts->{join};
-
-    my $table   = $self->Table();
-    $table = \"$table $join" if $join;
-
-    my $builder = sql_abstract();
-    my ($sql, @bindings) = $builder->select(
-        $table, $cols, $where, $order, $limit, $offset
-    );
-
-    $self->_CoerceBindings(\@bindings);
+    my ($sql, @bindings) = sql_abstract()->$sa_method(@_);
+    $class->_CoerceBindings(\@bindings);
     return sql_execute($sql, @bindings);
+}
+
+sub SqlSelect {
+    my $class = shift;
+    my $opts  = shift;
+
+    my $table = $class->Table();
+    $table = \"$table $opts->{join}" if $opts->{join};
+
+    return $class->SqlExec('select' =>
+        $table, $opts->{columns} || '*',
+        $opts->{where}, $opts->{order}, $opts->{limit}, $opts->{offset}
+    );
 }
 
 sub SqlSelectOneRecord {
-    my $self = shift;
-    my $opts = shift;
+    my $class = shift;
+    my $opts  = shift;
 
     my $where = $opts->{where};
-    unless ($self->IdentifiesUniqueRecord($where)) {
+    unless ($class->IdentifiesUniqueRecord($where)) {
         croak "Cannot accurately identify unique record to retrieve; aborting";
     }
-    return $self->SqlSelect($opts);
+    return $class->SqlSelect($opts);
 }
 
 sub SqlInsert {
-    my $self  = shift;
+    my $class = shift;
     my $proto = shift;
-
-    my $table   = $self->Table();
-    my $builder = sql_abstract();
-    my ($sql, @bindings) = $builder->insert($table, $proto);
-
-    $self->_CoerceBindings(\@bindings);
-    return sql_execute($sql, @bindings);
+    return $class->SqlExec('insert' =>
+        $class->Table, $proto
+    );
 }
 
 sub SqlUpdate {
-    my $self = shift;
-    my $opts = shift;
+    my $class = shift;
+    my $opts  = shift;
 
-    my $values = $opts->{values};
-    my $where  = $opts->{where};
-
-    my $table   = $self->Table();
-    my $builder = sql_abstract();
-    my ($sql, @bindings) = $builder->update(
-        $table, $values, $where,
+    return $class->SqlExec('update' =>
+        $class->Table, $opts->{values}, $opts->{where}
     );
-
-    $self->_CoerceBindings(\@bindings);
-    return sql_execute($sql, @bindings);
 }
 
 sub SqlUpdateOneRecord {
-    my $self = shift;
-    my $opts = shift;
+    my $class = shift;
+    my $opts  = shift;
 
     my $where = $opts->{where};
-    unless ($self->IdentifiesUniqueRecord($where)) {
+    unless ($class->IdentifiesUniqueRecord($where)) {
         croak "Cannot accurately identify unique record to update; aborting";
     }
-    return $self->SqlUpdate($opts);
+    return $class->SqlUpdate($opts);
 }
 
 sub SqlDelete {
-    my $self  = shift;
+    my $class = shift;
     my $where = shift;
 
-    my $table   = $self->Table();
-    my $builder = sql_abstract();
-    my ($sql, @bindings) = $builder->delete(
-        $table, $where,
-    );
-
-    $self->_CoerceBindings(\@bindings);
-    return sql_execute($sql, @bindings);
+    return $class->SqlExec('delete' => $class->Table, $where);
 }
 
 sub SqlDeleteOneRecord {
-    my $self  = shift;
+    my $class = shift;
     my $where = shift;
 
-    unless ($self->IdentifiesUniqueRecord($where)) {
+    unless ($class->IdentifiesUniqueRecord($where)) {
         croak "Cannot accurately identify unique record to delete; aborting";
     }
-    return $self->SqlDelete($where);
+    return $class->SqlDelete($where);
 }
 
 no Moose::Role;
