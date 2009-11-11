@@ -189,6 +189,10 @@
         'POST':
             '*/*': [Socialtext::Rest::PageAttachments, POST]
         '*': [Socialtext::Rest::PageAttachments, bad_method]
+-
+    '/data/workspaces/:ws/pages/:pname/attachments/:filename':
+        'GET':
+            '*/*':     &default [Socialtext::Rest::PageAttachment, GET]
 - 
     '/data/workspaces/:ws/pages/:pname':
         'GET':

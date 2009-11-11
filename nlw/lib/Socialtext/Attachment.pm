@@ -582,4 +582,8 @@ sub purge {
     }
 }
 
+# Currently the ID is close to a timestamp, but this may change in future
+# implementations.
+sub timestampish { shift->id }
+
 1;
