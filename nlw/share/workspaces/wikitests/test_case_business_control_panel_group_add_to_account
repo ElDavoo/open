@@ -9,6 +9,7 @@
 | create-account | %%account%% |  |
 
 | *Comment* | Visual inspection of add to account page |  |
+| st-admin | give-accounts-admin --e %%email%% | now has accounts admin access |
 | open-ok | /nlw/control/group/%%group_id%% |  |
 | wait_for_element_visible_ok | link=Add Group To An Account | 3000 |
 | click_and_wait | link=Add Group To An Account |  |
@@ -36,5 +37,6 @@
 | *Comment* | Test Case: Control Panel Group Add To Account TEARDOWN |
 
 | delete-group | %%group_id%% |
+| st-admin | remove-accounts-admin --e %%email%% | no longer has accounts admin access |
 
 | *Comment* | Test Case: Control Panel Group Add To Account COMPLETED |
