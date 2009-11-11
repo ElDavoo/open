@@ -43,7 +43,7 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 
 | *Comment* | Test Case: Link Interface NOTE: this action MUST be verifyValue. Neither text_like nor verify_value_ok work correctly here |  |
-| verifyValue | wikiwyg_wikitext_textarea | `"TC: Link Interface"{link: test-data [Link Interface LinkMe %%start_time%%] section two}` |
+| verifyValue | wikiwyg_wikitext_textarea | `"TC: Link Interface"{link: %%workspace%% [Link Interface LinkMe %%start_time%%] section two}` |
 
 | *Comment* | Test Case: Link Interface Bogus Input |  |
 | *Comment* | Test Case: Link Interface moved this here so if the cancel fails, the test will fail |  |

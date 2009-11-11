@@ -26,6 +26,7 @@
 | st-admin | show-account-config --account %%badtype%% | There is no account named "%%badtype%%". |
 
 | *Comment* | Test Case: Account Types Create through GUI - No Account Type DropDown |  |
+| st-admin | give-accounts-admin --e %%email%% | has accounts admin access |
 | st-appliance-config | set is_socialtext_hosted 0 |  |
 | open_ok | /nlw/control/account | 60000 |
 | wait_for_element_visible_ok | st-new-account-name | 30000 |

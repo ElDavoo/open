@@ -1,0 +1,17 @@
+Third of three Firefox Subsets
+
+Let the first subset enable ldap
+Test Case: A Enable LDAP
+
+* [Report Testcases]
+* [LDAP Testcases]
+* [Default User Testcases]
+* [Test Case: People Dashboard Plugins]
+* [Test Case: People Dashboard Plugins Reset]
+* [Profile Testcases]
+* [Widgets Testcases]
+* [Test Case: Gadgets Galore]
+* [Test Case: Upload Update Gallery Widgets]
+* [Test Case: Add Remove Gallery Widgets]
+* [Test Case: Administer Dashboards]
+* [Test Case: Reset to Default Dashboard]

@@ -24,7 +24,7 @@
 | text_like | qr/Date\s*Unique Members\s*Unique Visitors\s*Unique Contributors\s*Pages\s*Page Views\s*Contributions/i |  |
 | text_like | Workspace Growth - |  |
 | open_ok | /webplugin/cgi/reports/report.cgi/user_workspace_usage/04-28-2008/-3months.json |  |
-| wait_for_text_present_ok | `["test-data","Canonical Test Data Set",` | 30000 |
+| wait_for_text_present_ok | `["%%workspace%%","Canonical Test Data Set",` | 30000 |
 | wait_for_text_present_ok | `[[` | 30000 |
 | wait_for_text_present_ok | `]]` | 30000 |
 | open | /%%workspace%% |  |
@@ -61,7 +61,7 @@
 | wait_for_text_present_ok | You are not allowed to view this report | 30000 |
 | open_ok | /webplugin/cgi/reports/report.cgi/user_workspace_usage/04-28-2008/-3months.json |  |
 | wait_for_text_present_ok | growth_report_test | 30000 |
-| text_like | `qr/\[\[\"test-data\",\"Canonical Test Data Set\",0,0\],/` |  |
+| text_like | `qr/\[\[\"%%workspace%%\",\"Canonical Test Data Set\",0,0\],/` |  |
 | text_like | `qr/\[\"growth_report_test\",\"growth_report_test\",\"46\",\"9\"\],/` |  |
 | text_like | `qr/\[\"%%workspace_two%%\",\"%%workspace_two%%\",0,0\]\]/` |  |
 

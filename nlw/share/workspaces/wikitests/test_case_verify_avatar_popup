@@ -12,6 +12,9 @@
 
 | set | avatar_page | Avatar Popup %%start_time%% |
 
+| *Comment* | Test Case: Verify Avatar Popup. Make %%e_user%% an authorized member of %%workspace%% |  |
+| st-admin | add-member --w %%workspace%% --e %%e_user%% |  |
+
 | *Comment* | Test Case: Verify Avatar. Edit a page as %%e_user%% to become Last Edited By. |  |
 | st-admin | update-page --email %%e_user%% --workspace %%workspace%% --page "%%avatar_page%%" < %%wikitest_client_files%%wikitest.txt | page has been created. |
 
@@ -46,5 +49,8 @@
 | click_ok | link=Stop following this person |  |
 | click_and_wait | link=%%fname%% %%lname%% | 30000 |
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
+
+| *Comment* | Test Case: Avatar Popup TEARDOWN |  |
+| st-admin | remove-member --w %%workspace%% --e %%e_user%% | is no longer a member |
 
 | *Comment* | Test Case: Avatar Popup COMPLETED |  |

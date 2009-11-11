@@ -14,32 +14,36 @@ TODO: Follow/unFollow/Signals/Profile/Activity for a person
 | *Comment* | Test Case: Mobile People open Mobile, check for boilerplate |  |
 | open_ok | /m |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
-| wait_for_element_visible_ok | link=Activity | 30000 |
-| wait_for_element_visible_ok | link=People | 30000 |
-| wait_for_element_visible_ok | link=Log out | 30000 |
-| wait_for_element_not_present_ok | link=Signals | 30000 |
+| wait_for_element_visible_ok | link=Activity | 2000 |
+| wait_for_element_visible_ok | link=People | 2000 |
+| wait_for_element_visible_ok | link=Log out | 2000 |
+| wait_for_element_not_present_ok | link=Signals | 2000 |
 
 | *Comment* | Test Case: Mobile People open Mobile People, check for UI |  |
 | click_and_wait | link=People |  |
-| wait_for_element_visible_ok | link=B | 2000 |
+| wait_for_element_visible_ok | link=B | 30000 |
 | wait_for_element_visible_ok | link=Z | 2000 |
 | wait_for_element_not_present_ok | link=A | 2000 |
 | text_like | People Search |  |
 
 | *Comment* | Test Case: Mobile People search for myself |  |
+| wait_for_element_visible_ok | st-search-text | 60000 |
+| wait_for_element_visible_ok | st-search-submit | 60000 |
 | type_ok | st-search-text | %%username%% |
 | click_and_wait | st-search-submit |  |
-| wait_for_element_visible_ok | link=%%username%% | 30000 |
+| wait_for_element_visible_ok | link=%%username%% | 60000 |
 
 | *Comment* | Test Case: Mobile People search for %%mu%% |  |
+| wait_for_element_visible_ok | st-search-text | 60000 |
+| wait_for_element_visible_ok | st-search-submit | 60000 |
 | type_ok | st-search-text | %%mu%% |
 | click_and_wait | st-search-submit |  |
-| wait_for_element_visible_ok | link=%%mu%% | 30000 |
+| wait_for_element_visible_ok | link=%%mu%% | 60000 |
 | wait_for_element_visible_ok | link=%%fname%% %%lname%% | 2000 |
 
 | *Comment* | Test Case: Mobile People %%mu%% in alpha list |  |
 | click_and_wait | link=%%fletter%% |  |
-| wait_for_element_visible_ok | link=%%mu%% | 30000 |
+| wait_for_element_visible_ok | link=%%mu%% | 60000 |
 | wait_for_element_visible_ok | link=%%fname%% %%lname%% | 2000 |
 
 | *Comment* | Test Case: Mobile People COMPLETED |  |

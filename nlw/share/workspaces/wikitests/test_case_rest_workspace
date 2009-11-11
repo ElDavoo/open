@@ -85,7 +85,7 @@ Test set up:
 | comment | get list of all workspaces |  |
 | get | /data/workspaces | application/json |
 | code-is | 200 |  |
-| body-like | "name":"test-data" |  |
+| body-like | "name":"%%workspace%%" |  |
 | body-like | "title":"%%title%%" |  |
 | body-like | "name":"%%wksp%%" |  |
 | body-like | "title":"W%%start_time%%" |  |
