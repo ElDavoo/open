@@ -40,13 +40,13 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_and_wait | st-save-button-link |  |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| wait_for_element_visible_ok | st-edit-button-link | 60000 |
 
 | st-logoutin |  |  |
 
 | *Comment* | Test Case: Mobile Activity. Word but not Link |  |
 | open_ok | /m/activities |  |
-| wait_for_text_present_ok | All | 3000 |
+| wait_for_text_present_ok | All | 30000 |
 | wait_for_text_present_ok | My Conversations | 3000 |
 | wait_for_text_present_ok | People I follow | 3000 |
 | wait_for_text_present_ok | Previous page | 3000 |
@@ -56,7 +56,7 @@
 | *Comment* | Test Case: Mobile Activity. Check All activity |  |
 | wait_for_element_present_ok | link=All | 3000 |
 | click_and_wait | link=All |  |
-| wait_for_element_visible_ok | link=Next page >> | 3000 |
+| wait_for_element_visible_ok | link=Next page >> | 30000 |
 | click_and_wait | link=Next page >> |  |
 | wait_for_element_visible_ok | link=Mobile Activity %%start_time%% 0001 | 3000 |
 | wait_for_element_visible_ok | link=<< Previous page | 3000 |
