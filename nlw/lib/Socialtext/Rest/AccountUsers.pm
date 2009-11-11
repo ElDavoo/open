@@ -10,7 +10,7 @@ use Socialtext::HTTP ':codes';
 use Socialtext::String;
 use Socialtext::User;
 
-sub allowed_methods { 'POST', 'GET' }
+sub allowed_methods { 'POST', 'GET', 'DELETE' }
 sub collection_name { 
     my $acct =  ( $_[0]->acct =~ /^\d+$/ ) 
             ? 'with ID ' . $_[0]->acct
@@ -24,56 +24,94 @@ sub ws { '' }
 sub POST_json {
     my $self = shift;
     my $rest = shift;
-    my $data = decode_json( $rest->getContent() );
 
     unless ($self->user_can('is_business_admin')) {
-        $rest->header(
-            -status => HTTP_401_Unauthorized,
-        );
-        return '';
-    }
-
-    unless ( defined $data->{email_address} ) {
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-        );
+        $rest->header( -status => HTTP_401_Unauthorized );
         return '';
     }
 
     my $account = Socialtext::Account->new( 
         name => Socialtext::String::uri_unescape( $self->acct ),
     );
-
     unless ( defined $account ) {
-        $rest->header(
-            -status => HTTP_404_Not_Found,
-        );
-        return '';
+        $rest->header( -status => HTTP_404_Not_Found );
+        return "Could not find that account.";
     }
 
-    my $user = Socialtext::User->new(
-        email_address => $data->{email_address},
-    );
-
-    unless ( defined $user ) {
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-        );
-        return '';
+    my $data = eval { decode_json( $rest->getContent ) };
+    if ($@) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "Could not parse JSON";
     }
 
-    eval{ $user->primary_account($account->account_id); };
+    my $user_id = $data->{email_address}
+        || $data->{username}
+        || $data->{user_id};
+    unless ( defined $user_id ) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "No email_address, username or user_id provided!";
+    }
+    my $user = eval { Socialtext::User->Resolve($user_id) };
+    if ($@ or !defined $user) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "Could not resolve the user: $user_id";
+    }
 
+    eval { $account->add_user(user => $user) };
     if ( $@ ) {
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-        );
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "Could not add user to the account: $@";
+    }
+
+    $rest->header( -status => HTTP_201_Created );
+    return '';
+}
+
+sub DELETE {
+    my ( $self, $rest ) = @_;
+
+    unless ($self->user_can('is_business_admin')) {
+        $rest->header( -status => HTTP_401_Unauthorized );
         return '';
     }
 
-    $rest->header(
-        -status => HTTP_200_OK,
+    my $account = Socialtext::Account->new( 
+        name => Socialtext::String::uri_unescape( $self->acct ),
     );
+    unless ( defined $account ) {
+        $rest->header( -status => HTTP_404_Not_Found );
+        return "Could not find that account.";
+    }
+
+    my $user_id = $self->username;
+    my $user = eval { Socialtext::User->Resolve($user_id) };
+    if ($@ or !defined $user) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "Could not resolve the user: $user_id";
+    }
+
+    if ($user->primary_account->account_id == $account->account_id) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "Cannot remove a user from their primary account.";
+    }
+
+    my @roles = Socialtext::Account::Roles->RolesForUserInAccount(
+        user => $user,
+        account => $account,
+        direct => "yes",
+    );
+    unless (@roles) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "User does not belong to this account.";
+    }
+
+    eval { $account->remove_user(user => $user) };
+    if ( $@ ) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "Could not remove user from the account: $@";
+    }
+
+    $rest->header( -status => HTTP_204_No_Content );
     return '';
 }
 

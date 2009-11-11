@@ -389,6 +389,9 @@
             'text/x-yaml':      [Socialtext::Rest::AccountUsers, GET_yaml]
         '*':                    [Socialtext::Rest::AccountUsers, bad_method]
 -
+    '/data/accounts/:acct/users/:username':
+        'DELETE':               [Socialtext::Rest::AccountUsers, DELETE]
+-
     '/data/accounts/:acct/workspaces':
         'GET':
             '*/*':              [Socialtext::Rest::AccountWorkspaces, bad_type]
