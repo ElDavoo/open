@@ -25,7 +25,7 @@
 | st-admin | add-workspace-admin --w %%to_ws%% --u %%username%% |  |
 | st-config | set self_registration 1 | Wrote updated config file |
 
-| *Comment* | Test Case: Join. Logged-in user joins immediately, primary account unchanged |  |
+| *Comment* | Test Case: Join. Logged-in user joins immediately. |  |
 | open_ok | /%%acct_ws%% |  |
 | wait_for_element_visible_ok | link=Join to edit | 30000 |
 | wait_for_element_not_present_ok | link=Edit | 5000 |
@@ -33,7 +33,6 @@
 | location_like | /%%acct_ws%%/index.cgi |  |
 | wait_for_element_visible_ok | link=Edit | 5000 |
 | wait_for_element_visible_ok | link=Comment | 5000 |
-| st-admin | get-user-account --u %%username%% | Primary account for "%%username%%" is %%hostname%%. |
 
 | *Comment* | Test Case: Join. Disable self register and verify |  |
 | st-logout |  |  |

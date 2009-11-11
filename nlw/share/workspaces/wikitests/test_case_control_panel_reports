@@ -148,6 +148,8 @@ open_ok | /nlw/reports/workspace_growth.csv?workspace=growth_report_test&downloa
 | *Comment* | Test case: Control Panel Reports (Account-level) Get Usage |  |
 | open_ok | /nlw/control |  |
 | click_and_wait | link=Accounts |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%testingaccount%% |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
 | click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%testingaccount%% |  |

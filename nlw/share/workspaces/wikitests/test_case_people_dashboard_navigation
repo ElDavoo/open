@@ -42,7 +42,7 @@ TO DO - Add testability hooks and confirm Grey Ghost Icon
 | *Comment* | Test Case: People Dashboard Navigation People. Last people page. |  |
 | wait_for_element_visible_ok | link=People | 30000 |
 | click_and_wait | link=People |  |
-| wait_for_element_visible_ok | link=%%new_email_find_me%% | 30000 |
+| wait_for_element_visible_ok | link=%%new_email_find_me%% | 60000 |
 | text_like | contentContainer | %%new_email_find_me%% |
 | text_like | contentContainer | %%new_email%% |
 

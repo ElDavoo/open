@@ -1,12 +1,9 @@
 | *Comment* | Test Case: Mobile Signals |  |
 
-| *Comment* | Test Case: Mobile Signals. This test is designed to run at the end of Sunshine Testcases only. |  |
-| *Comment* | It utilizes the data created by Sunshine Testcases. |  |
-
 | open_ok | /m/signals |  |
 
 | *Comment* | Test Case: Mobile Signals. Word but not Link |  |
-| wait_for_text_present_ok | What are you working on | 3000 |
+| wait_for_text_present_ok | What are you working on | 30000 |
 | wait_for_text_present_ok | Signals | 3000 |
 | wait_for_text_present_ok | People I follow | 3000 |
 | wait_for_text_present_ok | Previous page | 3000 |
@@ -14,6 +11,8 @@
 | wait_for_text_present_ok | Next page | 3000 |
 
 | *Comment* | Test Case: Mobile Signals. Send a signal |  |
+| wait_for_element_present_ok | st-signal-text | 3000 |
+| wait_for_element_present_ok | st-signal-submit | 3000 |
 | type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% Sig |
 | click_and_wait | st-signal-submit |  |
 | wait_for_text_present_ok | less than a minute ago | 3000 |
@@ -21,11 +20,11 @@
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 
 | click_and_wait | link=Mine |  |
-| wait_for_element_present_ok | link=%%short_username%% | 3000 |
+| wait_for_element_present_ok | link=%%short_username%% | 30000 |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 
 | click_and_wait | link=People I follow |  |
-| wait_for_element_present_ok | link=%%short_username%% | 3000 |
+| wait_for_element_present_ok | link=%%short_username%% | 30000 |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 
 | *Comment* | Test Case: Mobile Signals. Send 10 more signals |  |

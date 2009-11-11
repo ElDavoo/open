@@ -1,8 +1,5 @@
 | *Comment* | Test Case: Mobile Links |  |
 
-| *Comment* | Test Case: Mobile Links. This test is designed to run at the end of Sunshine Testcases only. |  |
-| *Comment* | It utilizes the data created by Sunshine Testcases. |  |
-
 Links: Activity People Workspaces All refresh Mine
 Lower links: Activity People Workspaces Log out
 Word but not Link: Signal, What are you working on, People I follow, Previous page, First page, Next page

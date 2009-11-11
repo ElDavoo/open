@@ -22,7 +22,8 @@
 | post-signal | NotAStopWord %%start_time%% 01 |
 | pause | 3000 |  |
 | post-signal | NotAStopWord %%start_time%% 12 |
-| pause | 10000 | wait for Signals Indexer to run |
+| *Comment* | Test Case: Signals Search. Pause 20 sec for Signals indexer |  |
+| pause | 20000 | wait for Signals Indexer to run |
 
 | *Comment* | Test Case: Signals Search. Search 2 signals %%a_username%% |  |
 | open_ok | /?signals |  |
@@ -30,8 +31,10 @@
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
-| pause | 8000 | I hate pause |
+| *Comment* | Test Case: Signals Search. Pause 20 sec for Search Results |  |
+| pause | 20000 | I hate pause |
 
 | *Comment* | Test Case: Signals Search. Verify found 2 signals %%a_username%% |  |
 | st-name-widget | 3 | searchwidget |

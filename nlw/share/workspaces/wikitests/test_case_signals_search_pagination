@@ -16,6 +16,10 @@
 | st-admin | create_user --e %%a_username%% --p %%password%% --account %%hostname%% --f "%%a_name%%" |  |
 | st-admin | create_user --e %%z_username%% --p %%password%% --account %%hostname%% --f "%%z_name%%" |  |
 
+| *Comment* | Test Case: Signals Pagination. There is always a /admin workspace in the default account |  |
+| *Comment* | Test Case: Signals Pagination. You don't know the account of the test-user, so add him to /admin so that he can see the Signals from %%a_username%% and %%z_username%% |  |
+| st-admin | add-member --w admin --e %%email%% |  |
+
 | *Comment* | This test uses post-signals to rapidly create signals. |  |
 | *Comment* | It creates a set of signals that can be searched and will appear |  |
 | *Comment* | in linear time order in search results. |  |
@@ -43,11 +47,13 @@
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | Pagination %%start_time%% |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
 | wait_for_element_visible_ok | sort-picker | 30000 |
 | select_ok | sort-picker | label=Newest |
-| pause | 8000 | I hate Pause |
 
+| *Comment* | Test Case: Signals Pagination. Pause 30 seconds for widget to populate. I hate pause |  |
+| pause | 30000 | I hate Pause |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
 
@@ -184,6 +190,9 @@
 | text_unlike | //body | LessRelevant %%start_time%% |
 | text_like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 62/ism |  |
 
+| *Comment* | Test Case: Signals Pagination. Remove %%email%% from /admin |  |
+| st-admin | remove-member --w admin --e %%email%% | is no longer a member |
+
 | *Comment* | Test Case: Signals Pagination. Verify clear |  |
 | wait_for_element_visible_ok | link=clear search results | 30000 |
 
@@ -194,7 +203,7 @@ WHY DOESN'T CLICK AND WAIT WORK HERE? TIMES OUT EVEN THOUGH THE PAGE LOADS ...
 
 | *Comment* | Test Case: Signals Pagination. IE and Safari hang here, so just exit for now. |  |
 
- st-name-widget | 3 | searchwidget |
+st-name-widget | 3 | searchwidget |
 st-widget-title-like | searchwidget | Signals |
 
 | *Comment* | Test Case: Signals Pagination COMPLETED |
