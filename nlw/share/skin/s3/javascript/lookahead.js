@@ -229,6 +229,8 @@
 
             var title = self.linkTitle(this);
             if (title.match(re)) {
+                if (self.opts.grep && !self.opts.grep(this)) return;
+
                 filtered.push({
                     bolded_title: title.replace(re, '<b>$1</b>'),
                     title: title,
