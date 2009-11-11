@@ -364,7 +364,6 @@ tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
 test:
-	$<
 	$(PROVE) -l $(shell find -L t -name '*.t' -not -regex '^t/live/.*' | sort)
 
 testplugin-%:
@@ -486,7 +485,6 @@ QUICK_TESTS = \
 	t/st-ntlm-config.t
 
 quicktest:
-	$<
 	$(PROVE) -l $(QUICK_TESTS)
 
 # cd into custom-workspace-config and make all
