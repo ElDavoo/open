@@ -422,6 +422,43 @@ ADD_REMOVE_MEMBER: {
     );
 }
 
+ADD_REMOVE_USER_TO_ACCOUNT: {
+    my $user    = create_test_user();
+    my $account = create_test_account();
+
+    ok !$account->has_user( $user ), 'user is not in account';
+
+    # Add a user as a member to the account.
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [ 
+                    '--account', $account->name,
+                    '--email',   $user->email_address,
+                ]
+            )->add_member(); 
+        },
+        qr/.+ is now a member of the .+ Account/,
+        'add-member with an --account and --user argument'
+    );
+    my $role = $account->role_for_user( user => $user );
+    is $role->display_name, 'member', '... user is added to account';
+
+    # User already has a role in the account.
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => [ 
+                    '--account', $account->name,
+                    '--email',   $user->email_address,
+                ]
+            )->add_member(); 
+        },
+        qr/.+ is already a .+ of Account/,
+        'add-member with an --account and --user fails, user is in account'
+    );
+}
+
 # need to set up the user to be in the right worksapces
 # and have the right perms so we can test that they go
 # away.

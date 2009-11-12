@@ -791,6 +791,7 @@ sub add_member {
         'group-account'   => sub { $self->_add_group_to_account_as($role) },
         'group-workspace' => sub { $self->_add_group_to_workspace_as($role) },
         'user-group'      => sub { $self->_add_user_to_group_as($role) },
+        'user-account'    => sub { $self->_add_user_to_account_as($role) },
     );
     my $type = $self->_type_of_entity_collection_operation( keys %jump );
 
@@ -863,9 +864,6 @@ sub _type_of_entity_collection_operation {
     );
 }
 
-# This is nearly identical to _add_user_to_workspace_as(), above. We should
-# definitely consider generalizing this code when we add
-# _add_user_to_account_as() in the near future.
 sub _add_user_to_group_as {
     my $self         = shift;
     my $new_role     = shift;
@@ -909,6 +907,27 @@ sub _add_group_to_account_as {
     $self->_success(
         loc("[_1] is now a member of the [_2] Account",
             $group->driver_group_name,
+            $account->name
+        )
+    );
+}
+
+sub _add_user_to_account_as {
+    my $self         = shift;
+    my $new_role     = shift;
+    my $user         = $self->_require_user();
+    my $account      = $self->_require_account();
+    my $current_role = $account->role_for_user(user => $user);
+
+    $self->_check_account_role(
+        cur_role => $current_role,
+        name     => $user->username,
+    );
+
+    $account->add_user( user => $user, role => $new_role );
+    $self->_success(
+        loc("[_1] is now a member of the [_2] Account",
+            $user->username,
             $account->name
         )
     );
@@ -3400,6 +3419,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   deactivate-user [--username or --email]
   change-password [--username or --email] --password
   add-member [--username or --email] --workspace
+  add-member [--username or --email] --account
   remove-member [--username or --email] --workspace
   add-workspace-admin [--username or --email] --workspace
   remove-workspace-admin [--username or --email] --workspace
@@ -3563,6 +3583,11 @@ Change the given user's password.
 
 Given a user and a workspace, this command adds the specified user to
 the given workspace.
+
+=head2 add-member [--username or --email] --account
+
+Given a user and an account, this command adds the specified user to
+the given account.
 
 =head2 remove-member [--username or --email] --workspace
 
