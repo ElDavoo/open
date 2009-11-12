@@ -1,0 +1,161 @@
+For: [Story: User can be member of multiple accounts]
+
+* Fixture: SocialRest
+
+| standard-test-setup |              |   |
+| set-business-admin  | %%username%% | 1 |
+
+| set | acct1      | %%account%%                                            |
+| set | acct1_id   | %%account_id%%                                         |
+| set | wksp1      | %%workspace%%                                          |
+| set | wksp1_id   | %%workspace_id%%                                       |
+| set | wksp1_json | {"workspace_id":"%%wksp1_id%%","name":"%%wksp1%%"}     |
+| set | acct1_data | "account_name":"%%acct1%%","account_id":"%%acct1_id%%" |
+| set | acct1_json | "is_primary":1,%%acct1_data%%                          |
+
+* member of account via primary account only
+
+| remove-member | %%username%%                      | %%wksp1%%        |
+| GET           | /data/users/%%username%%/accounts | application/json |
+| code-is       | 200                               |                  |
+| json-parse    |                                   |                  |
+| body-like     | "startIndex":1                    |                  |
+| body-like     | "itemsPerPage":20                 |                  |
+| body-like     | "totalResults":1                  |                  |
+| body-like     | "entry":[{%%acct1_json%%}]        |                  |
+
+* member of account via primary account & workspace membership
+
+| set | acct1_json | {"via_workspace":[%%wksp1_json%%],%%acct1_json%%} |
+
+| add-member | %%username%%                      | %%wksp1%%        |
+| GET        | /data/users/%%username%%/accounts | application/json |
+| code-is    | 200                               |                  |
+| json-parse |                                   |                  |
+| body-like  | "startIndex":1                    |                  |
+| body-like  | "itemsPerPage":20                 |                  |
+| body-like  | "totalResults":1                  |                  |
+| body-like  | "entry":[%%acct1_json%%]          |                  |
+
+* member of account via account membership
+
+| set            | acct2     | acct2-%%start_time%% |
+| create-account | %%acct2%% |                      |
+
+| set | acct2_id   | %%account_id%%                                         |
+| set | acct2_json | "account_name":"%%acct2%%","account_id":"%%acct2_id%%" |
+| set | acct2_json | {"is_primary":0,%%acct2_json%%}                        |
+| set | users_uri  | /data/accounts/%%acct2%%/users                         |
+
+| POST_json      | %%users_uri%% | {"username":"%%username%%"} |
+| code-is        | 201           |                             |
+
+| GET        | /data/users/%%username%%/accounts         | application/json |
+| code-is    | 200                                       |                  |
+| json-parse |                                           |                  |
+| body-like  | "startIndex":1                            |                  |
+| body-like  | "itemsPerPage":20                         |                  |
+| body-like  | "totalResults":2                          |                  |
+| body-like  | %%acct1_json%% |                  |
+| body-like  | %%acct2_json%% |                  |
+
+* member of account via workspace membership
+
+| set              | acct3        | acct3-%%start_time%% |
+| create-account   | %%acct3%%    |                      |
+| set              | acct3_id     | %%account_id%%       |
+| set              | wksp2        | wksp2-%%start_time%% |
+| create-workspace | %%wksp2%%    | %%acct3%%            |
+| set              | wksp2_id     | %%workspace_id%%     |
+| add-member       | %%username%% | %%wksp2%%            |
+
+| set | wksp2_json | {"workspace_id":"%%wksp2_id%%","name":"%%wksp2%%"}     |
+| set | acct3_json | "account_name":"%%acct3%%","account_id":"%%acct3_id%%" |
+| set | acct3_json | {"via_workspace":[%%wksp2_json%%],%%acct3_json%%}      |
+
+| GET        | /data/users/%%username%%/accounts | application/json |
+| code-is    | 200                               |                  |
+| json-parse |                                   |                  |
+| body-like  | "startIndex":1                    |                  |
+| body-like  | "itemsPerPage":20                 |                  |
+| body-like  | "totalResults":3                  |                  |
+| body-like  | %%acct1_json%%                    |                  |
+| body-like  | %%acct2_json%%                    |                  |
+| body-like  | %%acct3_json%%                    |                  |
+
+* member of account via a group
+
+| set               | acct4        | acct4-%%start_time%%  |
+| create-account    | %%acct4%%    |                       |
+| set               | acct4_id     | %%account_id%%        |
+| set               | group1       | group1-%%start_time%% |
+| create-group      | %%group1%%   | %%acct4%%             |
+| set               | group1_id    | %%group_id%%          |
+| add-user-to-group | %%username%% | %%group1_id%%         |
+
+| set | group1_json | {"group_id":"%%group1_id%%","name":"%%group1%%"}     |
+| set | acct4_grp  | "via_group":[%%group1_json%%]      |
+| set | acct4_json | {"is_primary":0,"account_name":"%%acct4%%",%%acct4_grp%% |
+| set | acct4_json | %%acct4_json%%,"account_id":"%%acct4_id%%"} |
+
+| GET        | /data/users/%%username%%/accounts | application/json |
+| code-is    | 200                               |                  |
+| json-parse |                                   |                  |
+| body-like  | "startIndex":1                    |                  |
+| body-like  | "itemsPerPage":20                 |                  |
+| body-like  | "totalResults":4                  |                  |
+| body-like  | %%acct1_json%%                    |                  |
+| body-like  | %%acct2_json%%                    |                  |
+| body-like  | %%acct3_json%%                    |                  |
+| body-like  | %%acct4_json%%                    |                  |
+
+* member of account via group & workspace
+
+| workspace-primary-account | %%wksp2%% | %%acct4%% |
+
+| set | acct4_json | {"via_workspace":[%%wksp2_json%%],"is_primary":0        |
+| set | acct4_json | %%acct4_json%%,"account_name":"%%acct4%%",%%acct4_grp%% |
+| set | acct4_json | %%acct4_json%%,"account_id":"%%acct4_id%%"}             |
+
+| GET         | /data/users/%%username%%/accounts | application/json |
+| code-is     | 200                               |                  |
+| json-parse  |                                   |                  |
+| body-like   | "startIndex":1                    |                  |
+| body-like   | "itemsPerPage":20                 |                  |
+| body-like   | "totalResults":3                  |                  |
+| body-like   | %%acct1_json%%                    |                  |
+| body-like   | %%acct2_json%%                    |                  |
+| body-unlike | %%acct3_json%%                    |                  |
+| body-like   | %%acct4_json%%                    |                  |
+
+* limit
+* offset
+* permissions
+* fetching account list via email_address, user_id
+
+^^ Format
+
+  {
+    "startIndex" : 1
+    "itemsPerPage" : 10
+    "totalResults" : 100,
+    "entry" : [
+      // member of the account (direct, primary account)
+      {"account_id":"3","account_name":"Blah","is_primary":1},  
+
+      // member of the account (direct, via account membership)
+      {"account_id":"4","account_name":"Blah","is_primary":0},  
+
+      // member of the account (secondary, via workspace)
+      {"account_id":"5","account_name":"Blah","via_workspace":[{"name":"Admin","workspace_id":"3"}]},  
+      {"account_id":"5","account_name":"Blah","is_primary":"0","via_workspace":[{"name":"Admin","workspace_id":"3"}]},  
+      {"account_id":"5","account_name":"Blah","is_primary":"1","via_workspace":[{"name":"Admin","workspace_id":"3"}]},  
+
+      // member of the account (via a group)
+      {"account_id":"6","account_name":"Blah","is_primary":"0","via_group":[{"name":"Foo","group_id":"7"}]},  
+
+      // member of several
+      {"account_id":7,"account_name":"Bling","is_primary":1,"via_workspace":[...],"via_group":[...]}
+    ]
+  }
+

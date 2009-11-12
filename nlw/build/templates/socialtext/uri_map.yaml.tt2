@@ -353,6 +353,11 @@
             'application/json': [Socialtext::Rest::UserSharedGroups, GET_json]
         '*':                    [Socialtext::Rest::UserSharedGroups, bad_method]
 -
+    '/data/users/:username/accounts':
+        'GET':
+            'application/json': [Socialtext::Rest::UserAccounts, GET_json]
+        '*':                    [Socialtext::Rest::UserAccounts, bad_method]
+-
     '/data/users/:username/shared_accounts/:otheruser':
         'GET':
             '*/*':     &default [Socialtext::Rest::UserSharedAccounts, GET_html]
