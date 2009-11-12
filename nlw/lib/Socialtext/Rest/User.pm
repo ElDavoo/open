@@ -40,10 +40,27 @@ sub get_resource {
         ) {
         return +{
             ( hgrep { $k ne 'password' } %{ $user->to_hash } ),
-            accounts => [ map { $_->hash_representation } $user->accounts ],
+            accounts   => [ map { $_->hash_representation } $user->accounts ],
+            workspaces => $self->_get_workspaces_for( $user ),
         };
     }
     return undef;
 }
 
+sub _get_workspaces_for {
+    my $self       = shift;
+    my $user       = shift;
+    my $ws_cursor  = $user->workspaces;
+    my @workspaces = ();
+
+    while ( my $ws = $ws_cursor->next() ) {
+        push @workspaces, {
+            name => $ws->name,
+            title => $ws->title,
+            workspace_id => $ws->workspace_id,
+        }
+    }
+
+    return \@workspaces;
+}
 1;
