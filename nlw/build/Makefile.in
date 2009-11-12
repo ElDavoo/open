@@ -485,7 +485,7 @@ QUICK_TESTS = \
 	t/st-ntlm-config.t
 
 quicktest:
-	$(PROVE) --merge --timer --jobs 4 $(QUICK_TESTS)
+	$(PROVE) --timer --jobs 4 $(QUICK_TESTS)
 
 # cd into custom-workspace-config and make all
 custom-workspaces:
