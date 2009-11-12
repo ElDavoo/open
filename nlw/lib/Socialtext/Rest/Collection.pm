@@ -95,7 +95,7 @@ sub _make_getter {
             Socialtext::Timer->Continue('get_resource');
             my $resource = $self->get_resource($rest, $content_type);
             Socialtext::Timer->Pause('get_resource');
-            $resource = [] unless (ref $resource && @$resource);
+            $resource = [] unless ref $resource;
 
             my %new_headers = (
                 -status => HTTP_200_OK,
