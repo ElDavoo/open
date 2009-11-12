@@ -34,7 +34,7 @@ INSTALLSCRIPT   = $(PREFIX)@BINDIR@
 
 # Perl location
 PERL = @PERL@
-PROVE = st-prove
+PROVE = st-prove --timer
 
 # Program locations
 STCTL          = $(PERL) dev-bin/nlwctl
@@ -485,7 +485,7 @@ QUICK_TESTS = \
 	t/st-ntlm-config.t
 
 quicktest:
-	$(PROVE) --timer --jobs 4 $(QUICK_TESTS)
+	$(PROVE) --jobs 4 $(QUICK_TESTS)
 
 # cd into custom-workspace-config and make all
 custom-workspaces:
