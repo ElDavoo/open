@@ -394,7 +394,7 @@ ADD_REMOVE_MEMBER: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->add_member();
         },
-        qr/User is already a member of Workspace/,
+        qr/.+ is already a member of Workspace/,
         'add-member when user is already a workspace member'
     );
 
@@ -507,7 +507,7 @@ ADD_REMOVE_WS_ADMIN: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->add_workspace_admin();
         },
-        qr/User is already a workspace admin of Workspace/,
+        qr/.+ is already a workspace admin of Workspace/,
         'add-admin when user is already a workspace admin'
     );
 

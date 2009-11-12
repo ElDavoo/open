@@ -70,7 +70,7 @@ group_already_exists: {
             )->add_member();
         };
     } );
-    like $output, qr/Group is already a Member of Account/,
+    like $output, qr/.+ is already a member of Account/,
         '... with correct message';
 }
 
@@ -660,7 +660,7 @@ group_is_already_member_of_workspace: {
             )->add_member();
         };
     } );
-    like $output, qr/Group is already a member of Workspace/,
+    like $output, qr/.+ is already a member of Workspace/,
         'Group already has role error message';
 }
 
