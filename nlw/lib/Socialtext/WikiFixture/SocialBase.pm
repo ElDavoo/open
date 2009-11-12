@@ -630,6 +630,7 @@ sub create_workspace {
         skip_default_pages => 1,
     );
     $ws->enable_plugin($_) for qw/socialcalc/;
+    $self->{workspace_id} = $ws->workspace_id;
     diag "Created workspace $name";
     return $ws;
 }
