@@ -128,6 +128,36 @@ For: [Story: User can be member of multiple accounts]
 | body-unlike | %%acct3_json%%                    |                  |
 | body-like   | %%acct4_json%%                    |                  |
 
+* Permissions - can only see your own if you are not a business admin
+
+| set | user2 | user2-%%start_time%%@ken.socialtext.net |
+
+| create-user        | %%user2%%                      | password |
+| GET                | /data/users/%%user2%%/accounts |          |
+| code-is            | 200                            |          |
+| set-business-admin | %%username%%                   | 0        |
+| GET                | /data/users/%%user2%%/accounts |          |
+| code-is            | 401                            |          |
+| set-business-admin | %%username%%                   | 1        |
+
+* Fetch via user_id
+
+| GET     | /data/users/%%user_id%%/accounts |
+| code-is | 200                              |
+
+^ Later
+
+| set            | acct2     | acct2-%%start_time%% |
+| create-account | %%acct2%% |                      |
+
+| set | acct2_id   | %%account_id%%                                         |
+| set | acct2_json | "account_name":"%%acct2%%","account_id":"%%acct2_id%%" |
+| set | acct2_json | {"is_primary":0,%%acct2_json%%}                        |
+| set | users_uri  | /data/accounts/%%acct2%%/users                         |
+
+| POST_json      | %%users_uri%% | {"username":"%%username%%"} |
+| code-is        | 201           |                             |
+
 * limit
 * offset
 * permissions

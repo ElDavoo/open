@@ -21,13 +21,18 @@ override get_resource => sub {
     my $rest   = $self->rest;
     my $viewer = $rest->user;
 
+    my $user = eval { Socialtext::User->Resolve($self->username) };
+    die Socialtext::Exception::NotFound->new() unless $user;
+
     unless ($viewer) {
         $rest->header( -status => HTTP_401_Unauthorized );
         return ();
     }
+    if (!$viewer->is_business_admin and $viewer->user_id != $user->user_id) {
+        $rest->header( -status => HTTP_401_Unauthorized );
+        return ();
 
-    my $user = eval { Socialtext::User->Resolve($self->username) };
-    die Socialtext::Exception::NotFound->new() unless $user;
+    }
 
     my @accounts;
     my %account_ids;
