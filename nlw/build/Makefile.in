@@ -34,7 +34,7 @@ INSTALLSCRIPT   = $(PREFIX)@BINDIR@
 
 # Perl location
 PERL = @PERL@
-PROVE = st-prove --timer
+PROVE = st-prove --timer --state=save
 
 # Program locations
 STCTL          = $(PERL) dev-bin/nlwctl
