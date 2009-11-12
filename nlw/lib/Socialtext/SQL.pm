@@ -57,7 +57,7 @@ our %EXPORT_TAGS = (
 our $DEBUG = 0;
 our $TRACE_SQL = 0;
 our $PROFILE_SQL = 0;
-our $Level = 0;
+our $Level = 2;
 
 protect_the_dbh: {
     my $DBH;
