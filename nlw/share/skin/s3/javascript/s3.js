@@ -415,10 +415,10 @@ $(function() {
     // Currently, the pre edit hook will check for an edit contention.
     Socialtext.pre_edit_hook = function (wikiwyg_launcher, cleanup_callback) {
         jQuery.ajax({
-            type: 'GET',
+            type: 'POST',
             url: location.pathname,
             data: {
-                action: 'edit_check',
+                action: 'edit_check_start',
                 page_name: Socialtext.wikiwyg_variables.page.title
             },
             dataType: 'json',
@@ -440,8 +440,18 @@ $(function() {
                                 $("#st-edit-check .continue")
                                     .one("click", function() {
 
+                                    jQuery.ajax({
+                                        type: 'POST',
+                                        url: location.pathname,
+                                        data: {
+                                            action: 'edit_start',
+                                            page_name: Socialtext.wikiwyg_variables.page.title,
+                                            revision_id: Socialtext.wikiwyg_variables.page.revision_id
+                                        }
+                                    });
+
+                                    $("#lightbox").unbind('lightbox-unload');
                                     $.hideLightbox();
-                                    wikiwyg_launcher();
                                 });
 
                                 $("#lightbox")
@@ -453,13 +463,10 @@ $(function() {
 
                     });
                 }
-                else {
-                    wikiwyg_launcher();
-                }
             }
         });
 
-
+        wikiwyg_launcher();
     }
 
     Socialtext._show_loading_animation = function () {
