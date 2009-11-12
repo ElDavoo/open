@@ -364,7 +364,7 @@ tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
 test:
-	$(PROVE) $(shell find -L t -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
+	$(PROVE) --jobs 4 $(shell find -L t -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
 
 testplugin-%:
 	$(PROVE) -s $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
