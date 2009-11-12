@@ -30,6 +30,7 @@ sub register {
     $registry->add(action => 'edit_start');
     $registry->add(action => 'edit_cancel');
     $registry->add(action => 'edit_check');
+    $registry->add(action => 'edit_check_start');
     $registry->add(action => 'edit_contention_check');
 }
 
@@ -369,6 +370,22 @@ sub _add_edit_event {
     return '';
 }
 
+sub edit_check_start {
+    my $self = shift;
+    my $page_name   = $self->cgi->page_name;
+    my $page = $self->hub->pages->new_from_name($page_name);
+
+    if (my $edit_in_progress = $page->edit_in_progress) {
+        # We have a contention; let the client handle it
+        return encode_json($edit_in_progress);
+    }
+
+    # We have no contention; start editing right away
+    $self->edit_start;
+
+    return encode_json({});
+}
+
 sub edit_check {
     my $self        = shift;
     my $page_name   = $self->cgi->page_name;
@@ -380,7 +397,7 @@ sub edit_check {
     );
 }
 
-# Accepts: Page name and the Revisino ID we based our edit on.
+# Accepts: Page name and the Revision ID we based our edit on.
 # Returns: JSON representation if there has been another save since we edited.
 sub edit_contention_check {
     my $self        = shift;
