@@ -12,30 +12,31 @@ For: [Story: User can be member of multiple accounts]
 | set | wksp1_json | {"workspace_id":"%%wksp1_id%%","name":"%%wksp1%%"}     |
 | set | acct1_data | "account_name":"%%acct1%%","account_id":"%%acct1_id%%" |
 | set | acct1_json | "is_primary":1,%%acct1_data%%                          |
+| set | user1_url  | /data/users/%%username%%/accounts |
 
 * member of account via primary account only
 
-| remove-member | %%username%%                      | %%wksp1%%        |
-| GET           | /data/users/%%username%%/accounts | application/json |
-| code-is       | 200                               |                  |
-| json-parse    |                                   |                  |
-| body-like     | "startIndex":1                    |                  |
-| body-like     | "itemsPerPage":20                 |                  |
-| body-like     | "totalResults":1                  |                  |
-| body-like     | "entry":[{%%acct1_json%%}]        |                  |
+| remove-member | %%username%%               | %%wksp1%%        |
+| GET           | %%user1_url%%              | application/json |
+| code-is       | 200                        |                  |
+| json-parse    |                            |                  |
+| body-like     | "startIndex":"1"           |                  |
+| body-like     | "itemsPerPage":"20"        |                  |
+| body-like     | "totalResults":"1"         |                  |
+| body-like     | "entry":[{%%acct1_json%%}] |                  |
 
 * member of account via primary account & workspace membership
 
 | set | acct1_json | {"via_workspace":[%%wksp1_json%%],%%acct1_json%%} |
 
-| add-member | %%username%%                      | %%wksp1%%        |
-| GET        | /data/users/%%username%%/accounts | application/json |
-| code-is    | 200                               |                  |
-| json-parse |                                   |                  |
-| body-like  | "startIndex":1                    |                  |
-| body-like  | "itemsPerPage":20                 |                  |
-| body-like  | "totalResults":1                  |                  |
-| body-like  | "entry":[%%acct1_json%%]          |                  |
+| add-member | %%username%%             | %%wksp1%%        |
+| GET        | %%user1_url%%            | application/json |
+| code-is    | 200                      |                  |
+| json-parse |                          |                  |
+| body-like  | "startIndex":"1"         |                  |
+| body-like  | "itemsPerPage":"20"      |                  |
+| body-like  | "totalResults":"1"       |                  |
+| body-like  | "entry":[%%acct1_json%%] |                  |
 
 * member of account via account membership
 
@@ -50,14 +51,14 @@ For: [Story: User can be member of multiple accounts]
 | POST_json      | %%users_uri%% | {"username":"%%username%%"} |
 | code-is        | 201           |                             |
 
-| GET        | /data/users/%%username%%/accounts         | application/json |
-| code-is    | 200                                       |                  |
-| json-parse |                                           |                  |
-| body-like  | "startIndex":1                            |                  |
-| body-like  | "itemsPerPage":20                         |                  |
-| body-like  | "totalResults":2                          |                  |
-| body-like  | %%acct1_json%% |                  |
-| body-like  | %%acct2_json%% |                  |
+| GET        | %%user1_url%%       | application/json |
+| code-is    | 200                 |                  |
+| json-parse |                     |                  |
+| body-like  | "startIndex":"1"    |                  |
+| body-like  | "itemsPerPage":"20" |                  |
+| body-like  | "totalResults":"2"  |                  |
+| body-like  | %%acct1_json%%      |                  |
+| body-like  | %%acct2_json%%      |                  |
 
 * member of account via workspace membership
 
@@ -73,15 +74,15 @@ For: [Story: User can be member of multiple accounts]
 | set | acct3_json | "account_name":"%%acct3%%","account_id":"%%acct3_id%%" |
 | set | acct3_json | {"via_workspace":[%%wksp2_json%%],%%acct3_json%%}      |
 
-| GET        | /data/users/%%username%%/accounts | application/json |
-| code-is    | 200                               |                  |
-| json-parse |                                   |                  |
-| body-like  | "startIndex":1                    |                  |
-| body-like  | "itemsPerPage":20                 |                  |
-| body-like  | "totalResults":3                  |                  |
-| body-like  | %%acct1_json%%                    |                  |
-| body-like  | %%acct2_json%%                    |                  |
-| body-like  | %%acct3_json%%                    |                  |
+| GET        | %%user1_url%%       | application/json |
+| code-is    | 200                 |                  |
+| json-parse |                     |                  |
+| body-like  | "startIndex":"1"    |                  |
+| body-like  | "itemsPerPage":"20" |                  |
+| body-like  | "totalResults":"3"  |                  |
+| body-like  | %%acct1_json%%      |                  |
+| body-like  | %%acct2_json%%      |                  |
+| body-like  | %%acct3_json%%      |                  |
 
 * member of account via a group
 
@@ -93,21 +94,21 @@ For: [Story: User can be member of multiple accounts]
 | set               | group1_id    | %%group_id%%          |
 | add-user-to-group | %%username%% | %%group1_id%%         |
 
-| set | group1_json | {"group_id":"%%group1_id%%","name":"%%group1%%"}     |
-| set | acct4_grp  | "via_group":[%%group1_json%%]      |
-| set | acct4_json | {"is_primary":0,"account_name":"%%acct4%%",%%acct4_grp%% |
-| set | acct4_json | %%acct4_json%%,"account_id":"%%acct4_id%%"} |
+| set | group1_json | {"group_id":"%%group1_id%%","name":"%%group1%%"}         |
+| set | acct4_grp   | "via_group":[%%group1_json%%]                            |
+| set | acct4_json  | {"is_primary":0,"account_name":"%%acct4%%",%%acct4_grp%% |
+| set | acct4_json  | %%acct4_json%%,"account_id":"%%acct4_id%%"}              |
 
-| GET        | /data/users/%%username%%/accounts | application/json |
-| code-is    | 200                               |                  |
-| json-parse |                                   |                  |
-| body-like  | "startIndex":1                    |                  |
-| body-like  | "itemsPerPage":20                 |                  |
-| body-like  | "totalResults":4                  |                  |
-| body-like  | %%acct1_json%%                    |                  |
-| body-like  | %%acct2_json%%                    |                  |
-| body-like  | %%acct3_json%%                    |                  |
-| body-like  | %%acct4_json%%                    |                  |
+| GET        | %%user1_url%%       | application/json |
+| code-is    | 200                 |                  |
+| json-parse |                     |                  |
+| body-like  | "startIndex":"1"    |                  |
+| body-like  | "itemsPerPage":"20" |                  |
+| body-like  | "totalResults":"4"  |                  |
+| body-like  | %%acct1_json%%      |                  |
+| body-like  | %%acct2_json%%      |                  |
+| body-like  | %%acct3_json%%      |                  |
+| body-like  | %%acct4_json%%      |                  |
 
 * member of account via group & workspace
 
@@ -117,16 +118,16 @@ For: [Story: User can be member of multiple accounts]
 | set | acct4_json | %%acct4_json%%,"account_name":"%%acct4%%",%%acct4_grp%% |
 | set | acct4_json | %%acct4_json%%,"account_id":"%%acct4_id%%"}             |
 
-| GET         | /data/users/%%username%%/accounts | application/json |
-| code-is     | 200                               |                  |
-| json-parse  |                                   |                  |
-| body-like   | "startIndex":1                    |                  |
-| body-like   | "itemsPerPage":20                 |                  |
-| body-like   | "totalResults":3                  |                  |
-| body-like   | %%acct1_json%%                    |                  |
-| body-like   | %%acct2_json%%                    |                  |
-| body-unlike | %%acct3_json%%                    |                  |
-| body-like   | %%acct4_json%%                    |                  |
+| GET         | %%user1_url%%       | application/json |
+| code-is     | 200                 |                  |
+| json-parse  |                     |                  |
+| body-like   | "startIndex":"1"    |                  |
+| body-like   | "itemsPerPage":"20" |                  |
+| body-like   | "totalResults":"3"  |                  |
+| body-like   | %%acct1_json%%      |                  |
+| body-like   | %%acct2_json%%      |                  |
+| body-unlike | %%acct3_json%%      |                  |
+| body-like   | %%acct4_json%%      |                  |
 
 * Permissions - can only see your own if you are not a business admin
 
@@ -145,23 +146,65 @@ For: [Story: User can be member of multiple accounts]
 | GET     | /data/users/%%user_id%%/accounts |
 | code-is | 200                              |
 
-^ Later
+* Limit & Offset
 
-| set            | acct2     | acct2-%%start_time%% |
-| create-account | %%acct2%% |                      |
+| set            | json_blob | {"username":"%%username%%"} |
+| set            | acct5                           | acct5-%%start_time%%  |
+| create-account | %%acct5%%                       |                       |
+| POST_json      | /data/accounts/%%acct5%%/users  | %%json_blob%%         |
+| code-is        | 201                             |                       |
+| set            | acct6                           | acct6-%%start_time%%  |
+| create-account | %%acct6%%                       |                       |
+| POST_json      | /data/accounts/%%acct6%%/users  | %%json_blob%%         |
+| code-is        | 201                             |                       |
+| set            | acct7                           | acct7-%%start_time%%  |
+| create-account | %%acct7%%                       |                       |
+| POST_json      | /data/accounts/%%acct7%%/users  | %%json_blob%%         |
+| code-is        | 201                             |                       |
+| set            | acct8                           | acct8-%%start_time%%  |
+| create-account | %%acct8%%                       |                       |
+| POST_json      | /data/accounts/%%acct8%%/users  | %%json_blob%%         |
+| code-is        | 201                             |                       |
+| set            | acct9                           | acct9-%%start_time%%  |
+| create-account | %%acct9%%                       |                       |
+| POST_json      | /data/accounts/%%acct9%%/users  | %%json_blob%%         |
+| code-is        | 201                             |                       |
+| set            | acct10                          | acct10-%%start_time%% |
+| create-account | %%acct10%%                      |                       |
+| POST_json      | /data/accounts/%%acct10%%/users | %%json_blob%%         |
+| code-is        | 201                             |                       |
 
-| set | acct2_id   | %%account_id%%                                         |
-| set | acct2_json | "account_name":"%%acct2%%","account_id":"%%acct2_id%%" |
-| set | acct2_json | {"is_primary":0,%%acct2_json%%}                        |
-| set | users_uri  | /data/accounts/%%acct2%%/users                         |
+| GET         | %%user1_url%%?limit=5 | application/json |
+| code-is     | 200                   |                  |
+| json-parse  |                       |                  |
+| body-like   | "startIndex":"1"      |                  |
+| body-like   | "itemsPerPage":"5"    |                  |
+| body-like   | "totalResults":"9"    |                  |
+| body-like   | %%acct1%%             |                  |
+| body-like   | %%acct2%%             |                  |
+| body-like   | %%acct4%%             |                  |
+| body-like   | %%acct5%%             |                  |
+| body-like   | %%acct6%%             |                  |
+| body-unlike | %%acct7%%             |                  |
+| body-unlike | %%acct8%%             |                  |
+| body-unlike | %%acct9%%             |                  |
+| body-unlike | %%acct10%%            |                  |
 
-| POST_json      | %%users_uri%% | {"username":"%%username%%"} |
-| code-is        | 201           |                             |
-
-* limit
-* offset
-* permissions
-* fetching account list via email_address, user_id
+| GET         | %%user1_url%%?limit=5;offset=5 | application/json |
+| code-is     | 200                |
+| json-parse  |                    |
+| body-like   | "startIndex":"6"   |
+| body-like   | "itemsPerPage":"5" |
+| body-like   | "totalResults":"9" |
+| body-unlike | %%acct1%%          |
+| body-unlike | %%acct2%%          |
+| body-unlike | %%acct4%%          |
+| body-unlike | %%acct5%%          |
+| body-unlike | %%acct6%%          |
+| body-like   | %%acct7%%          |
+| body-like   | %%acct8%%          |
+| body-like   | %%acct9%%          |
+| body-like   | %%acct10%%         |
 
 ^^ Format
 

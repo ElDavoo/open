@@ -80,7 +80,6 @@ override get_resource => sub {
     my $user_groups = $user->groups;
     while (my $grp = $user_groups->next) {
         my $acct_id = $grp->primary_account_id;
-        warn "Looking at group: " . $grp->driver_group_name;
         my $group_hash = {
             name => $grp->driver_group_name,
             group_id => $grp->group_id,
@@ -105,11 +104,16 @@ override get_resource => sub {
         warn "ERROR: $@";
     }
 
-
+    my $limit = $rest->query->param('limit') || 20;
+    my $offset = $rest->query->param('offset') || 0;
+    my $startIndex = $offset + 1;
+    my $total = @accounts;
+    @accounts = sort { $a->{account_id} <=> $b->{account_id} } @accounts;
+    @accounts = splice @accounts, $offset, $limit;
     return {
-        startIndex => 1,
-        itemsPerPage => 20,
-        totalResults => scalar(@accounts),
+        startIndex => "$startIndex",
+        itemsPerPage => "$limit",
+        totalResults => "$total",
         entry => \@accounts,
     };
 };
