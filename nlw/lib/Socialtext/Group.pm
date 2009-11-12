@@ -44,6 +44,9 @@ has 'homunculus' => (
     )],
 );
 
+# Use a naming convention similar to ST::USer for "what's this thing's name?"
+sub display_name { shift->driver_group_name; }
+
 has $_.'_count' => (
     is => 'rw', isa => 'Int',
     lazy_build => 1
