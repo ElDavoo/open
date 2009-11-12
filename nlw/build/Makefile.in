@@ -364,13 +364,13 @@ tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
 test:
-	$(PROVE) -l $(shell find -L t -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
+	$(PROVE) $(shell find -L t -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
 
 testplugin-%:
-	$(PROVE) -sl $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
+	$(PROVE) -s $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
 
 testlive:
-	$(PROVE) -l -r t/live
+	$(PROVE) -r t/live
 
 testall: test testlive
 
@@ -485,7 +485,7 @@ QUICK_TESTS = \
 	t/st-ntlm-config.t
 
 quicktest:
-	$(PROVE) --lib --merge --timer --jobs 4 $(QUICK_TESTS)
+	$(PROVE) --merge --timer --jobs 4 $(QUICK_TESTS)
 
 # cd into custom-workspace-config and make all
 custom-workspaces:
