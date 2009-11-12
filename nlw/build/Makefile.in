@@ -364,10 +364,10 @@ tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
 test:
-	$(PROVE) -l $(shell find -L t -name '*.t' -not -regex '^t/live/.*' | sort)
+	$(PROVE) -l $(shell find -L t -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
 
 testplugin-%:
-	$(PROVE) -sl $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | sort)
+	$(PROVE) -sl $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
 
 testlive:
 	$(PROVE) -l -r t/live
