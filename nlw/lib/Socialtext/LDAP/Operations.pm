@@ -88,12 +88,13 @@ sub LoadUsers {
 
         # query LDAP for User records that have e-mail addresses
         my $ldap = Socialtext::LDAP->new($cfg);
-        my $mesg = $ldap->search(
+        my %args = (
             base    => $cfg->base(),
             scope   => 'sub',
             filter  => "($mail_attr=*)",        # HAS an e-mail address
             attrs   => [$mail_attr],            # get their e-mails
         );
+        my $mesg = $ldap->search(%args);
 
         # fail/abort on *any* error (play it safe)
         unless ($mesg) {
