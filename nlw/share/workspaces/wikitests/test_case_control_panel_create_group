@@ -72,13 +72,14 @@
 
 | *Comment* | Test Case: Control Panel Create Group - add members via add members link |  |
 | wait_for_text_present_ok | Add users to %%groupname%% group | 30000 |
-| wait_for_element_visible_ok | link=Return to %%groupname%% group | 30000 |
+| wait_for_element_visible_ok | link=Return to %%groupname%% Group | 30000 |
 | wait_for_element_visible_ok | st-username-search-submit | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
-| wait_for_element_visible_ok | link=Add Users | 30000 |
+| wait_for_element_visible_ok | link=Add users | 30000 |
 | type_ok | username | %%start_time%% |
 | click_ok | st-username-search-submit |  |
 | wait_for_element_visible_ok | %%user5%% | 30000 |
+| pause | 3000 |  |
 | click_ok | %%user5%% |  |
 
 | *Comment* | Test Case: Control Panel Create Group - add members to existing group from USERS tab |  |
@@ -87,6 +88,9 @@
 | wait_for_element_visible_ok | st-username-search-submit | 30000 |
 | type_ok | username | %%start_time%% |
 | click_and_wait | st-username-search-submit |  |
+| pause | 1000 |  |
+| wait_for_element_visible_ok | link=Clear Selection | 30000 |
+| click_ok | link=Clear Selection |  |
 | wait_for_element_visible_ok | %%user1%% | 30000 |
 | click_ok | %%user1%% |  |
 | wait_for_element_visible_ok | %%user2%% | 30000 |
@@ -115,12 +119,14 @@
 | wait_for_element_visible_ok | st-group-remove-submit | 30000 |
 
 | *Comment* | Test Case: Control Panel Groups Remove from group |  |
-| wait_for_element_visible_ok | link=%%email1%% | 30000 |
-| click_ok | link=%%email1%% |  |
-| click_ok | link=%%email3%% |  |
-| click_and_wait | st-group-remove-submit |  |
-| verifyAlert | Are you sure you want to remove these users from this group? |  |
-| wait_for_text_present_ok | You have successfully removed 1 user from the %%groupexists%% Group. |
+| wait_for_element_visible_ok | member | 30000 |
+| click_ok | //input[@value='%%user1%%'] |  |
+| click_ok | //input[@value='%%user3%%'] |  |
+| click_ok | st-group-remove-submit |  |
+
+ verifyAlert | Are you sure you want to remove these users from this group?
+
+| wait_for_text_present_ok | You have successfully removed 2 users from the %%groupexists%% Group. | 30000 |
 | wait_for_element_not_present_ok | link=%%email1%% | 30000 |
 | wait_for_element_visible_ok | link=%%email2%% | 30000 |
 | wait_for_element_not_present_ok | link=%%email3%% | 30000 |
