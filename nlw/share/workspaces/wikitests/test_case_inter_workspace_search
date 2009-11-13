@@ -57,8 +57,9 @@
 | select_and_wait | sort-picker | label=Workspace |
 | st-result | qr/jabber.+test-data3/ |  |
 
-| *Comment* | Test Case: Inter Workspace Search Login to test-data ws and search again |  |
+| *Comment* | Test Case: Inter Workspace Search Login to %%workspace%% ws and search again |  |
 | st-login |  |  |
+| wait_for_element_visible_ok | st-search-action | 30000 |
 | select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 2 total |  |
@@ -118,6 +119,7 @@ st-result | qr/jabber.+test-data3.+jabber.+%%title%% | |
 | *Comment* | Add back test-data2, unsub from test-data3 via UI |  |
 | st-admin | clone-workspace --workspace test-data --target test-data2 --overwrite | The test-data workspace has been cloned to test-data2 |
 | st-admin | set-workspace-config --workspace test-data2 title test-data2 | The workspace config for test-data2 has been updated. |
+| st-admin | add-member --w test-data2 --e %%email%% |  |
 
 | st-login |  |  |
 | open_ok | /test-data3 |  |
@@ -125,7 +127,7 @@ st-result | qr/jabber.+test-data3.+jabber.+%%title%% | |
 | click_and_wait | link=Unsubscribe |  |
 | click_and_wait | Button |  |
 
-| open_ok | /test-data |  |
+| open_ok | /%%workspace%% |  |
 | select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 2 total |  |
