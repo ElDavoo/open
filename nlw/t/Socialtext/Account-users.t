@@ -120,14 +120,10 @@ user_has_role_in_account: {
 role_for_user_primary_account: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user(account => $account);
-
-    # NOTE: when we change it so that a User defaults to being a "Member" of
-    # their Primary Account, this'll fail (at which point we update the test
-    # to do it on "Member", not "Affiliate").
-    my $role    = Socialtext::Role->Affiliate();
+    my $role    = Socialtext::Role->Member();
 
     my $q_role = $account->role_for_user(user => $user);
-    is $q_role->name, $role->name, 'User has Affiliate Role in Primary Account';
+    is $q_role->name, $role->name, 'User has Member Role in Primary Account';
 }
 
 ###############################################################################

@@ -303,32 +303,26 @@ account_import_preserves_uar: {
     my $user      = create_test_user();
     my $user_name = $user->username();
 
-    TODO: {
-        my $uar_default = Socialtext::UserAccountRoleFactory->DefaultRole();
-        todo_skip q{Don't (yet) support "Add User to (secondary) Account"}, 13
-            if ($uar_default->name eq $Affiliate->name);
+    # give the User a direct Role in the Account
+    my $orig_role = $Member;
+    $account->add_user(user => $user, role => $orig_role);
 
-        # give the User a direct Role in the Account
-        my $orig_role = $Member;
-        $account->add_user(user => $user, role => $orig_role);
+    # Export and re-import the Account
+    export_and_reimport_account(
+        account => $account,
+        users   => [$user],
+    );
 
-        # Export and re-import the Account
-        export_and_reimport_account(
-            account => $account,
-            users   => [$user],
-        );
+    # User should have the correct Role in the Account
+    $account = Socialtext::Account->new(name => $acct_name);
+    isa_ok $account, 'Socialtext::Account', '... found re-imported Account';
 
-        # User should have the correct Role in the Account
-        $account = Socialtext::Account->new(name => $acct_name);
-        isa_ok $account, 'Socialtext::Account', '... found re-imported Account';
+    $user = Socialtext::User->new(username => $user_name);
+    isa_ok $user, 'Socialtext::User', '... found re-imported User';
 
-        $user = Socialtext::User->new(username => $user_name);
-        isa_ok $user, 'Socialtext::User', '... found re-imported User';
-
-        my $role = $account->role_for_user(user => $user);
-        ok defined $role, '... User has Role in Account';
-        is $role->name, $orig_role->name, '... ... with *correct* Role';
-    }
+    my $role = $account->role_for_user(user => $user);
+    ok defined $role, '... User has Role in Account';
+    is $role->name, $orig_role->name, '... ... with *correct* Role';
 }
 
 ###############################################################################

@@ -17,15 +17,12 @@ my $Member    = Socialtext::Role->Member();
 my $Admin     = Socialtext::Role->WorkspaceAdmin();
 
 ###############################################################################
-# TEST: User has an "Affiliate" Role in their Primary Account.
-#
-# XXX: when we change the UARFactory->DefaultRole() to allow for a User to be
-#      a "Member" in their Primary Account, this test will need updating.
+# TEST: User has an "Member" Role in their Primary Account.
 users_role_in_primary_account: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user(account => $account);
 
-    is $account->role_for_user(user => $user)->name, $Affiliate->name,
+    is $account->role_for_user(user => $user)->name, $Member->name,
         'User has Affiliate Role in Primary Account';
 }
 
