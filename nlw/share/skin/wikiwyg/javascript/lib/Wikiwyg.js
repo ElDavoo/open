@@ -1073,6 +1073,50 @@ this.addGlobal().setup_wikiwyg = function() {
     Wikiwyg.setup_newpage();
 
     ww.starting_edit = false;
+
+    ww.cancel_nlw_wikiwyg = function () {
+        ww.confirmed = true;
+        Attachments.delete_new_attachments();
+        if (Socialtext.new_page) {
+            window.location = '?action=homepage';
+        }
+        else if (location.href.match(/caller_action=weblog_display;?/)) {
+            location.href = 'index.cgi?action=weblog_redirect;start=' +
+                encodeURIComponent(location.href);
+            return false;
+        }
+        else if (jQuery.browser.msie) {
+            // Cheap-and-cheerful-but-not-fun workaround for {bz: 1261}.
+            // XXX TODO XXX - Implement a proper fix!
+            window.location.reload();
+        }
+
+        jQuery("#st-edit-mode-container").hide();
+        jQuery("#st-display-mode-container, #st-all-footers").show();
+
+        ww.cancelEdit();
+        ww.preview_link_reset();
+        jQuery("#st-pagetools, #st-editing-tools-display").show();
+        jQuery("#st-editing-tools-edit").hide();
+        jQuery("#st-page-maincontent").css('margin-right', '0px');
+
+        if (Page.element && Page.element.content) {
+            jQuery(Page.element.content).css("height", "100%");
+        }
+
+        // XXX WTF? ENOFUNCTION
+        //do_post_cancel_tidying();
+        ww.disableLinkConfirmations();
+
+        ww.is_editing = false;
+        ww.showScrollbars();
+
+        jQuery('#st-edit-summary-text-area').val('');
+        jQuery('#st-edit-summary-signal-checkbox').attr('checked', false);
+
+        Socialtext.ui_expand_off();
+    };
+
     ww.start_nlw_wikiwyg = function() {
         if (Socialtext.page_type == 'spreadsheet') return;
 
@@ -1084,7 +1128,7 @@ this.addGlobal().setup_wikiwyg = function() {
         // whether or not we launch wikiwyg. Do this so that we can make any
         // async web calls we need to in order to make that determination.
         if ( Socialtext.pre_edit_hook ) {
-            Socialtext.pre_edit_hook( ww._really_start_nlw_wikiwyg );
+            Socialtext.pre_edit_hook( ww._really_start_nlw_wikiwyg, ww.cancel_nlw_wikiwyg );
         }
         else {
             ww._really_start_nlw_wikiwyg();
@@ -1093,16 +1137,6 @@ this.addGlobal().setup_wikiwyg = function() {
 
     ww._really_start_nlw_wikiwyg = function() {
         ww.starting_edit = true;
-
-        jQuery.ajax({
-            type: 'POST',
-            url: location.pathname,
-            data: {
-                action: 'edit_start',
-                page_name: Socialtext.wikiwyg_variables.page.title,
-                revision_id: Socialtext.wikiwyg_variables.page.revision_id
-            }
-        });
 
         try {
             // if `Cancel` and then `Edit` buttons are clicked, we need
@@ -1234,48 +1268,10 @@ this.addGlobal().setup_wikiwyg = function() {
                 // If it's not confirmed somewhere else, do it right here.
                 if (ww.confirmed != true && !ww.confirmCancellation(loc("Are you sure you want to cancel?") ))
                     return false;
-                else
-                    ww.confirmed = true;
-            }
-            Attachments.delete_new_attachments();
-            if (Socialtext.new_page) {
-                window.location = '?action=homepage';
-            }
-            else if (location.href.match(/caller_action=weblog_display;?/)) {
-                location.href = 'index.cgi?action=weblog_redirect;start=' +
-                    encodeURIComponent(location.href);
-                return false;
-            }
-            else if (jQuery.browser.msie) {
-                // Cheap-and-cheerful-but-not-fun workaround for {bz: 1261}.
-                // XXX TODO XXX - Implement a proper fix!
-                window.location.reload();
             }
 
-            jQuery("#st-edit-mode-container").hide();
-            jQuery("#st-display-mode-container, #st-all-footers").show();
+            ww.cancel_nlw_wikiwyg();
 
-            ww.cancelEdit();
-            ww.preview_link_reset();
-            jQuery("#st-pagetools, #st-editing-tools-display").show();
-            jQuery("#st-editing-tools-edit").hide();
-            jQuery("#st-page-maincontent").css('margin-right', '0px');
-
-            if (Page.element && Page.element.content) {
-                jQuery(Page.element.content).css("height", "100%");
-            }
-
-            // XXX WTF? ENOFUNCTION
-            //do_post_cancel_tidying();
-            ww.disableLinkConfirmations();
-
-            ww.is_editing = false;
-            ww.showScrollbars();
-
-            jQuery('#st-edit-summary-text-area').val('');
-            jQuery('#st-edit-summary-signal-checkbox').attr('checked', false);
-
-            Socialtext.ui_expand_off();
         } catch(e) {}
         return false;
     });

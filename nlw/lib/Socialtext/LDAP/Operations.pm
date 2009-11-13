@@ -9,6 +9,11 @@ use Socialtext::Log qw(st_log);
 use Socialtext::SQL qw(sql_execute);
 use Socialtext::Group;
 use Socialtext::User::LDAP::Factory;
+use Net::LDAP::Control::Paged;
+use Net::LDAP::Constant qw(LDAP_CONTROL_PAGED);
+
+# Tweakable from *unit tests*
+our $LDAP_PAGE_SIZE = 500;
 
 ###############################################################################
 # Refreshes existing LDAP Users.
@@ -88,29 +93,39 @@ sub LoadUsers {
 
         # query LDAP for User records that have e-mail addresses
         my $ldap = Socialtext::LDAP->new($cfg);
-        my $mesg = $ldap->search(
-            base    => $cfg->base(),
-            scope   => 'sub',
-            filter  => "($mail_attr=*)",        # HAS an e-mail address
-            attrs   => [$mail_attr],            # get their e-mails
+        my $page = Net::LDAP::Control::Paged->new(size => $LDAP_PAGE_SIZE);
+        my %args = (
+            base     => $cfg->base(),
+            scope    => 'sub',
+            filter   => "($mail_attr=*)",       # HAS an e-mail address
+            attrs    => [$mail_attr],           # get their e-mails
+            callback => sub {
+                # gather the e-mails out of the response
+                my ($search, $entry) = @_;
+                push @emails, $entry->get_value($mail_attr) if $entry;
+            },
+            control  => [$page],
         );
 
-        # fail/abort on *any* error (play it safe)
-        unless ($mesg) {
-            my $ldap_id = $cfg->id();
-            st_log->error("no response from LDAP server '$ldap_id'; aborting");
-            return;
-        }
-        if ($mesg->code) {
-            my $err = $mesg->error();
-            st_log->error("error while searching for Users, aborting; $err");
-            return;
-        }
+        while (1) {
+            my $mesg = $ldap->search(%args);
 
-        # gather the e-mails out of the response
-        foreach my $rec ($mesg->entries()) {
-            my $email = $rec->get_value($mail_attr);
-            push @emails, $email;
+            # fail/abort on *any* error (play it safe)
+            unless ($mesg) {
+                my $ldap_id = $cfg->id();
+                st_log->error("no response from LDAP server '$ldap_id'; aborting");
+                return;
+            }
+            if ($mesg->code) {
+                my $err = $mesg->error();
+                st_log->error("error while searching for Users, aborting; $err");
+                return;
+            }
+
+            # get cookie from paged control so we can get next page of results
+            my ($resp) = $mesg->control(LDAP_CONTROL_PAGED) or last;
+            my $cookie = $resp->cookie() or last;
+            $page->cookie($cookie);
         }
     }
 
@@ -372,6 +387,18 @@ directories.
 Load is performed by searching for all records in your LDAP directory that
 have a valid e-mail address, and then loading each of those records into
 Socialtext.
+
+The search is performed using a "paged query", to try to accommodate large
+directories where we may have more Users to load than the directory wants to
+give us in a single search result set.
+
+If, however, you have more Users in your directory than the B<hard limit> in
+your directory, you're out of luck; without increasing the hard limit in the
+directory there I<isn't> going to be a way we can invoke a single search to
+get Users that'll let us march through the result set (paged or otherwise).
+Only solution here is to increase the hard limit, or use the C<base_dn/filter>
+configuration options to restrict our view on the LDAP directory to a smaller
+sub-set of Users.
 
 B<NOTE:> you B<must> have a C<filter> specified in your LDAP configurations
 before you can load Users into Socialtext.  This is required so that it forces

@@ -1,0 +1,30 @@
+| *Comment* | Test Case: Control Panel Add To Workspace |  |
+
+| set | email1 | group-1-%%start_time%%@ken.socialtext.com |
+| create_user | %%email1%% | %%password%% |
+| set | user1 | %%user_id%% |
+| set | email2 | group-2-%%start_time%%@ken.socialtext.com |
+| create_user | %%email2%% | %%password%% |
+| set | user2 | %%user_id%% |
+| set | email3 | group-3-%%start_time%%@ken.socialtext.com |
+| create_user | %%email3%% | %%password%% |
+| set | user3 | %%user_id%% |
+| set | email4 | group-4-%%start_time%%@ken.socialtext.com |
+| create_user | %%email4%% | %%password%% |
+| set | user4 | %%user_id%% |
+| set | email5 | group-5-%%start_time%%@ken.socialtext.com |
+| create_user | %%email5%% | %%password%% |
+| set | user5 | %%user_id%% |
+
+| set | addtows | add-to-ws-%%start_time%% |
+| create-workspace | %%addtows%% |  |
+
+| *Comment* | Test Case: Control Panel Add To Workspace - Add Via /CP UI |  |
+| open_ok | /nlw/control/user |  |
+| wait_for_element_visible_ok | link=Invite to Workspace(s) | 30000 |
+| click_ok | link=Invite to Workspace(s) |  |
+
+| *Comment* | Test Case: Control Panel Add To Workspac Teardown |  |
+| st-admin | delete-workspace --workspace %%addtows%% --no-export |  |
+
+| *Comment* | Test case: Control Panel Create Group COMPLETED |  |
