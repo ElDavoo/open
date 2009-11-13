@@ -6,11 +6,12 @@ Tests for [Story: Groups ReST API]
 
 # Lookup groups for a user
 
-| GET             | /data/users/%%user_id%%/groups |         |
-| code-is         | 200                               |         |
-| header-like     | Cache-Control                     | private |
-| json-parse      |                                   |         |
-| json-array-size | 0                                 |         |
+| GET             | /data/users/%%user_id%%/groups |             |
+| set             | main_user_id                   | %%user_id%% |
+| code-is         | 200                            |             |
+| header-like     | Cache-Control                  | private     |
+| json-parse      |                                |             |
+| json-array-size | 0                              |             |
 
 # Create a new group
 
@@ -40,10 +41,10 @@ Tests for [Story: Groups ReST API]
 
 | set               | jane     | jane%%start_time%%@ken.socialtext.net |
 | create-user       | %%jane%% | password                              |
+| set               | jane_id  | %%user_id%%                           |
 | add-user-to-group | %%jane%% | %%group2_id%%                         |
 
 # The creator should be able to see jane in the group2
-
 
 | GET             | /data/users/%%jane%%/groups |         |
 | code-is         | 200                         |         |
@@ -74,22 +75,22 @@ Tests for [Story: Groups ReST API]
 # Jane should not be able to see %%username%%'s groups, as she is not in 
 # them, nor a group creator
 
-| http-user-pass  | %%jane%%                       | password |
-| GET             | /data/users/%%user_id%%/groups |          |
-| code-is         | 200                            |          |
-| header-like     | Cache-Control                  | private  |
-| json-parse      |                                |          |
-| json-array-size | 0                              |          |
+| http-user-pass  | %%jane%%                            | password |
+| GET             | /data/users/%%main_user_id%%/groups |          |
+| code-is         | 200                                 |          |
+| header-like     | Cache-Control                       | private  |
+| json-parse      |                                     |          |
+| json-array-size | 0                                   |          |
 
 # But if we add her to one of %%username%%'s groups, she should see it.
 
-| add-user-to-group | %%jane%%                       | %%group1_id%% |
-| GET               | /data/users/%%user_id%%/groups |               |
-| code-is           | 200                            |               |
-| header-like       | Cache-Control                  | private       |
-| json-parse        |                                |               |
-| json-array-size   | 1                              |               |
-| body-like         | "group_id":"%%group1_id%%"     |               |
+| add-user-to-group | %%jane%%                            | %%group1_id%% |
+| GET               | /data/users/%%main_user_id%%/groups |               |
+| code-is           | 200                                 |               |
+| header-like       | Cache-Control                       | private       |
+| json-parse        |                                     |               |
+| json-array-size   | 1                                   |               |
+| body-like         | "group_id":"%%group1_id%%"          |               |
 
 
 # Business Admin sees _any_ User's data and _all_ of the Groups the User is a member of
