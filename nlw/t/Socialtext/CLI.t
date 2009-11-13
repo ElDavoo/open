@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 348;
+use Test::Socialtext tests => 358;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -424,7 +424,8 @@ ADD_REMOVE_MEMBER: {
 
 ADD_REMOVE_USER_TO_ACCOUNT: {
     my $user    = create_test_user();
-    my $account = create_test_account();
+    my $account = create_test_account_bypassing_factory();
+    my $member  = Socialtext::Role->Member();
 
     ok !$account->has_user( $user ), 'user is not in account';
 
@@ -442,7 +443,8 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
         'add-member with an --account and --user argument'
     );
     my $role = $account->role_for_user( user => $user );
-    is $role->display_name, 'member', '... user is added to account';
+    is $role->display_name, $member->display_name,
+        '... user is added to account';
 
     # User already has a role in the account.
     expect_failure(
@@ -457,6 +459,64 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
         qr/.+ is already a .+ of Account/,
         'add-member with an --account and --user fails, user is in account'
     );
+    $role = $account->role_for_user( user => $user );
+    is $role->display_name, $member->display_name,
+        '... user is still a member account';
+
+    #  Remove the member from the account.
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [ 
+                    '--account', $account->name,
+                    '--email',   $user->email_address,
+                ]
+            )->remove_member(); 
+        },
+        qr/.+ is no longer a member of .+/,
+        'remove-member with an --account and --user argument'
+    );
+    ok !$account->has_user( $user ), '... user is removed from account';
+
+    # User is already removed
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => [ 
+                    '--account', $account->name,
+                    '--email',   $user->email_address,
+                ]
+            )->remove_member(); 
+        },
+        qr/.+ is not a member of .+/,
+        'remove-member when user is no longer a member of the account'
+    );
+
+    # User has another role in the account.
+    my $workspace = create_test_workspace( account => $account );
+    $workspace->add_user( user => $user );
+    $account->add_user( user => $user );
+
+    #  Remove the user's _direct_ account role, still have an indirect role.
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [ 
+                    '--account', $account->name,
+                    '--email',   $user->email_address,
+                ]
+            )->remove_member(); 
+        },
+        qr/.+ is now a .+ of .+ due to membership in a group/,
+        'remove-member when user has an indirect role, too'
+    );
+    $role = $account->role_for_user( user => $user );
+    ok $role, 'user still has a role';
+    isnt $role->display_name, $member->display_name,
+        '... but it is not a member';
+
+    # Cleanup the workspace
+    Test::Socialtext::Workspace->delete_recklessly( $workspace );
 }
 
 # need to set up the user to be in the right worksapces

@@ -1018,10 +1018,20 @@ sub remove_member {
         'group-workspace' => sub { $self->_remove_group_from_workspace() },
         'group-account'   => sub { $self->_remove_group_from_account() },
         'user-group'      => sub { $self->_remove_user_from_group() },
+        'user-account'    => sub { $self->_remove_user_from_account() },
     );
     my $type = $self->_type_of_entity_collection_operation( keys %jump );
 
     return $jump{$type}->();
+}
+
+sub _remove_user_from_account {
+    my $self      = shift;
+    my $user      = $self->_require_user();
+    my $account = $self->_require_account();
+
+    # Fail on Primary Account!
+    $self->_remove_user_from_thing( $user, $account );
 }
 
 sub _remove_user_from_workspace {
@@ -1029,25 +1039,31 @@ sub _remove_user_from_workspace {
     my $user      = $self->_require_user();
     my $workspace = $self->_require_workspace();
 
-    unless ( $workspace->has_user( $user ) ) {
-        $self->_error( 
-            loc('[_1] is not a member of [_2]',
-                $user->username, $workspace->name)
-        );
-    }
+    $self->_remove_user_from_thing( $user, $workspace );
+}
 
-    $workspace->remove_user( user => $user );
-    my $role   = $workspace->role_for_user(user => $user);
+sub _remove_user_from_thing {
+    my $self   = shift;
+    my $user   = shift;
+    my $thing  = shift; # workspace or account
+    my $member = Socialtext::Role->Member();
+
+    $self->_error( 
+        loc('[_1] is not a member of [_2]', $user->username, $thing->name)
+    ) unless $thing->has_user( $user );
+
+    $thing->remove_user( user => $user, role => $member );
+    my $role   = $thing->role_for_user(user => $user);
     if ($role) {
         $self->_success( 
             loc('[_1] is now a [_2] of [_3] due to membership in a group',
-                $user->username, $role->display_name, $workspace->name)
+                $user->username, $role->display_name, $thing->name)
         );
     }
 
     $self->_success(
         loc('[_1] is no longer a member of [_2]',
-            $user->username, $workspace->name)
+            $user->username, $thing->name)
     );
 }
 
@@ -1084,26 +1100,7 @@ sub _remove_group_from_account {
         );
     }
 
-    unless ( $account->has_group($group) ) {
-        $self->_error(
-            loc("[_1] is not a member of [_2]",
-                $group->driver_group_name, $account->name)
-        );
-    }
-
-    $account->remove_group( group => $group );
-    my $role = $account->role_for_group( group => $group );
-    if ( $role ) {
-        $self->success(
-            loc('[_1] is now a [_2] of [_3] due to membership in a Group',
-                $group->display_name, $role->display_name, $account->name)
-        );
-    }
-
-    $self->_success(
-        loc("[_1] is no longer a member of [_2]",
-            $group->driver_group_name, $account->name)
-    );
+    $self->_remove_group_from_thing( $group, $account );
 }
 
 sub _remove_group_from_workspace {
@@ -1111,25 +1108,33 @@ sub _remove_group_from_workspace {
     my $group     = $self->_require_group();
     my $workspace = $self->_require_workspace();
 
-    unless ($workspace->has_group($group)) {
+    $self->_remove_group_from_thing( $group, $workspace );
+}
+
+sub _remove_group_from_thing {
+    my $self  = shift;
+    my $group = shift;
+    my $thing = shift;    # either a workspace or an account.
+
+    unless ($thing->has_group($group)) {
         $self->_error(
             loc("[_1] is not a member of [_2]",
-                $group->driver_group_name, $workspace->name)
+                $group->driver_group_name, $thing->name)
         );
     }
 
-    $workspace->remove_group( group => $group );
-    my $role   = $workspace->role_for_group( group => $group );
+    $thing->remove_group( group => $group );
+    my $role   = $thing->role_for_group( group => $group );
     if ($role) {
         $self->_success( 
             loc('[_1] is now a [_2] of [_3] due to membership in a Group',
-                $group->display_name, $role->display_name, $workspace->name)
+                $group->display_name, $role->display_name, $thing->name)
         );
     }
 
     $self->_success(
         loc('[_1] is no longer a member of [_2]',
-            $group->display_name, $workspace->name)
+            $group->display_name, $thing->name)
     );
 }
 
