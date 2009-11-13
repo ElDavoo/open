@@ -1025,38 +1025,30 @@ sub remove_member {
 }
 
 sub _remove_user_from_workspace {
-    my $self = shift;
-    my $user = $self->_require_user();
-    my $ws   = $self->_require_workspace();
+    my $self      = shift;
+    my $user      = $self->_require_user();
+    my $workspace = $self->_require_workspace();
 
-    unless ( $ws->has_user( $user ) ) {
-        $self->_error( $user->username
-                . ' is not a member of the '
-                . $ws->name
-                . ' workspace.' );
+    unless ( $workspace->has_user( $user ) ) {
+        $self->_error( 
+            loc('[_1] is not a member of [_2]',
+                $user->username, $workspace->name)
+        );
     }
 
-    $ws->remove_user( user => $user );
+    $workspace->remove_user( user => $user );
+    my $role   = $workspace->role_for_user(user => $user);
+    if ($role) {
+        $self->_success( 
+            loc('[_1] is now a [_2] of [_3] due to membership in a group',
+                $user->username, $role->display_name, $workspace->name)
+        );
+    }
 
-    my $wsrole   = $ws->role_for_user(user => $user);
-    if ($wsrole) {
-        my $role_displayname = $wsrole->display_name;
-        my $article  = $role_displayname =~ /^[aeiou]/ ? 'an' : 'a';
-        $self->_success( $user->username
-                . ' is now '
-                . $article
-                . ' ' 
-                . $role_displayname
-                . ' of the '
-                . $ws->name
-                . ' Workspace due to membership in a group' );
-    }
-    else {
-        $self->_success( $user->username
-                . ' is no longer a member of the '
-                . $ws->name
-                . ' workspace.' );
-    }
+    $self->_success(
+        loc('[_1] is no longer a member of [_2]',
+            $user->username, $workspace->name)
+    );
 }
 
 sub _remove_user_from_group {
@@ -1069,46 +1061,48 @@ sub _remove_user_from_group {
     ) unless $group->can_update_store;
 
     $self->_error(
-        loc("[_1] is not a member of the [_2] Group",
+        loc("[_1] is not a member of [_2]",
             $user->username, $group->driver_group_name)
     ) unless $group->has_user( $user );
 
     $group->remove_user( user => $user );
     $self->_success(
-        loc("[_1] is no longer a member of the [_2] Group",
+        loc("[_1] is no longer a member of [_2]",
             $user->username, $group->driver_group_name)
     );
 }
 
 sub _remove_group_from_account {
-    my $self = shift;
-    my $group = $self->_require_group();
+    my $self    = shift;
+    my $group   = $self->_require_group();
     my $account = $self->_require_account();
 
     if ( $account->account_id == $group->primary_account_id ) {
         $self->_error(
-            loc("Account [_1] is Group's Primary Account, cannot remove membership",
-                $account->name,
-            )
+            loc("[_1] is Group's Primary Account, cannot remove membership",
+                $account->name)
         );
     }
 
     unless ( $account->has_group($group) ) {
         $self->_error(
-            loc("Group ([_1]) is not a member of Account ([_2])",
-                $group->driver_group_name,
-                $account->name,
-            )
+            loc("[_1] is not a member of [_2]",
+                $group->driver_group_name, $account->name)
         );
     }
 
     $account->remove_group( group => $group );
+    my $role = $account->role_for_group( group => $group );
+    if ( $role ) {
+        $self->success(
+            loc('[_1] is now a [_2] of [_3] due to membership in a Group',
+                $group->display_name, $role->display_name, $account->name)
+        );
+    }
 
     $self->_success(
-        loc("Group ([_1]) has been removed from Account ([_2])",
-            $group->driver_group_name,
-            $account->name,
-        )
+        loc("[_1] is no longer a member of [_2]",
+            $group->driver_group_name, $account->name)
     );
 }
 
@@ -1119,20 +1113,23 @@ sub _remove_group_from_workspace {
 
     unless ($workspace->has_group($group)) {
         $self->_error(
-            loc("Group ([_1]) is not a member of Workspace ([_2])",
-                $group->driver_group_name,
-                $workspace->name,
-            )
+            loc("[_1] is not a member of [_2]",
+                $group->driver_group_name, $workspace->name)
         );
     }
 
     $workspace->remove_group( group => $group );
+    my $role   = $workspace->role_for_group( group => $group );
+    if ($role) {
+        $self->_success( 
+            loc('[_1] is now a [_2] of [_3] due to membership in a Group',
+                $group->display_name, $role->display_name, $workspace->name)
+        );
+    }
 
     $self->_success(
-        loc("Group ([_1]) has been removed from Workspace ([_2])",
-            $group->driver_group_name,
-            $workspace->name,
-        )
+        loc('[_1] is no longer a member of [_2]',
+            $group->display_name, $workspace->name)
     );
 }
 

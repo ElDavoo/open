@@ -404,7 +404,7 @@ ADD_REMOVE_MEMBER: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->remove_member();
         },
-        qr/test\@example\.com is no longer a member of the foobar workspace\./,
+        qr/test\@example\.com is no longer a member of foobar/,
         'success output from remove-member'
     );
 
@@ -417,7 +417,7 @@ ADD_REMOVE_MEMBER: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->remove_member();
         },
-        qr/test\@example\.com is not a member of the foobar workspace\./,
+        qr/test\@example\.com is not a member of foobar/,
         'remove-member when user is not a workspace member'
     );
 }

@@ -113,7 +113,7 @@ remove_member_from_group: {
             )->remove_member();
         };
     } );
-    like $output, qr/.+ is no longer a member of the .+ Group/,
+    like $output, qr/.+ is no longer a member of .+/,
          'Got success message';
     ok !$group->has_user( $user ), '... User is no longer in Group';
 
@@ -128,7 +128,7 @@ remove_member_from_group: {
             )->remove_member();
         };
     } );
-    like $output, qr/.+ is not a member of the .+ Group/,
+    like $output, qr/.+ is not a member of .+/,
         'Error trying to remove user again';
 }
 

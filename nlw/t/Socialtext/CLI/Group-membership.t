@@ -94,7 +94,7 @@ remove_group_from_account: {
         };
     } );
 
-    like $output, qr/Group \(.+\) has been removed from Account \(.+\)/,
+    like $output, qr/.+ is no longer a member of .+/,
         '... with correct message';
     is $account->has_group( $group ) => 0, '... group is no longer in account';
 }
@@ -119,7 +119,7 @@ remove_group_from_primary_account: {
         };
     } );
 
-    like $output, qr/Account .+ is Group's Primary Account/,
+    like $output, qr/.+ is Group's Primary Account/,
         '... with correct error message';
     ok $account->has_group( $group ), '... group is still a member';
 }
@@ -142,7 +142,7 @@ group_is_not_in_account: {
         };
     } );
 
-    like $output, qr/Group \(.+\) is not a member of Account \(.+\)/,
+    like $output, qr/.+ is not a member of .+/,
         '... with correct message';
 }
 
@@ -355,7 +355,7 @@ remove_group_from_workspace: {
             )->remove_member();
         };
     } );
-    like $output, qr/Group \(.+\) has been removed from Workspace \(.+\)/,
+    like $output, qr/.+ is no longer a member of .+/,
         '... with correct message';
 
     ok !$workspace->has_group($group), '... Group is no longer in test WS';
@@ -392,7 +392,7 @@ remove_group_from_workspace_keep_gar: {
         )->remove_member();
         };
     } );
-    like $output, qr/Group \(.+\) has been removed from Workspace \(.+\)/,
+    like $output, qr/.+ is no longer a member of .+/,
         '... with correct message';
 
     ok !$ws_one->has_group($group),  '... Group is no longer in WS one';
@@ -459,7 +459,7 @@ remove_nonmember_group_from_workspace: {
             )->remove_member();
         };
     } );
-    like $output, qr/Group \(.+\) is not a member of Workspace \(.+\)/,
+    like $output, qr/.+ is not a member of .+/,
         '... fails with correct message';
 }
 ###############################################################################
@@ -494,7 +494,7 @@ remove_group_from_workspace_keep_gar: {
         )->remove_member();
         };
     } );
-    like $output, qr/Group \(.+\) has been removed from Workspace \(.+\)/,
+    like $output, qr/.+ is no longer a member of .+/,
         '... with correct message';
 
     ok !$ws_one->has_group($group),  '... Group is no longer in WS one';
@@ -561,7 +561,7 @@ remove_nonmember_group_from_workspace: {
             )->remove_member();
         };
     } );
-    like $output, qr/Group \(.+\) is not a member of Workspace \(.+\)/,
+    like $output, qr/.+ is not a member of .+/,
         '... fails with correct message';
 }
 ###############################################################################
@@ -783,7 +783,7 @@ group_member_remains_in_workspace: {
         };
     } );
     my $membername = $member->name;
-    like $output, qr/.+ is now a member of the .+ Workspace due to membership in a group/, 
+    like $output, qr/.+ is now a member of .+ due to membership in a group/, 
         '... with correct message';
 
     my $role = $workspace->role_for_user( user => $user);
@@ -804,7 +804,7 @@ group_member_remains_in_workspace: {
         };
     } );
     my $impersonatorname = $impersonator->name;
-    like $output, qr/.+ is now an impersonator of the .+ Workspace due to membership in a group/, 
+    like $output, qr/.+ is now a impersonator of .+ due to membership in a group/, 
         '... with correct message';
 
     $role = $workspace->role_for_user( user => $user);
@@ -820,7 +820,7 @@ group_member_remains_in_workspace: {
         };
     } );
 
-    like $output, qr/Group \(.+\) has been removed from Workspace \(.+\)/,
+    like $output, qr/.+ is no longer a member of .+/,
         '... with correct message';
     is $account->has_group( $group ) => 0, '... group is no longer in account';
 
@@ -873,7 +873,7 @@ group_member_remains_admin_in_workspace: {
         };
     } );
 
-    like $output, qr/Group \(.+\) has been removed from Workspace \(.+\)/,
+    like $output, qr/.+ is no longer a member of .+/,
         '... with correct message';
     is $account->has_group( $group ) => 0, '... group is no longer in account';
 
