@@ -89,10 +89,15 @@ sub LoadUsers {
         # query LDAP for User records that have e-mail addresses
         my $ldap = Socialtext::LDAP->new($cfg);
         my %args = (
-            base    => $cfg->base(),
-            scope   => 'sub',
-            filter  => "($mail_attr=*)",        # HAS an e-mail address
-            attrs   => [$mail_attr],            # get their e-mails
+            base     => $cfg->base(),
+            scope    => 'sub',
+            filter   => "($mail_attr=*)",       # HAS an e-mail address
+            attrs    => [$mail_attr],           # get their e-mails
+            callback => sub {
+                # gather the e-mails out of the response
+                my ($search, $entry) = @_;
+                push @emails, $entry->get_value($mail_attr) if $entry;
+            },
         );
         my $mesg = $ldap->search(%args);
 
@@ -106,12 +111,6 @@ sub LoadUsers {
             my $err = $mesg->error();
             st_log->error("error while searching for Users, aborting; $err");
             return;
-        }
-
-        # gather the e-mails out of the response
-        foreach my $rec ($mesg->entries()) {
-            my $email = $rec->get_value($mail_attr);
-            push @emails, $email;
         }
     }
 
