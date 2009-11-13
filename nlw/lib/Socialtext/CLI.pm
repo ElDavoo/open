@@ -3423,6 +3423,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   add-member [--username or --email] --workspace
   add-member [--username or --email] --account
   remove-member [--username or --email] --workspace
+  remove-member [--username or --email] --account
   add-workspace-admin [--username or --email] --workspace
   remove-workspace-admin [--username or --email] --workspace
   add-impersonator [--username or --email] --workspace
@@ -3595,6 +3596,11 @@ the given account.
 
 Given a user and a workspace, this command removes the specified user
 from the given workspace.
+
+=head2 remove-member [--username or --email] --account
+
+Given a user and an account, this command removes the specified user
+from the given account.
 
 =head2 add-workspace-admin [--username or --email] --workspace
 
