@@ -15,16 +15,42 @@
 | set | email5 | group-5-%%start_time%%@ken.socialtext.com |
 | create_user | %%email5%% | %%password%% |
 | set | user5 | %%user_id%% |
-
-| set | addtows | add-to-ws-%%start_time%% |
-| create-workspace | %%addtows%% |  |
+| set | new_ws_title | new-add-to-ws-%%start_time%% |
 
 | *Comment* | Test Case: Control Panel Add To Workspace - Add Via /CP UI |  |
 | open_ok | /nlw/control/user |  |
 | wait_for_element_visible_ok | link=Invite to Workspace(s) | 30000 |
 | click_ok | link=Invite to Workspace(s) |  |
+| verifyAlert | No users selected, please select at least one user and try again. |  |
+| wait_for_element_visible_ok | username | 30000 |
+| wait_for_element_visible_ok | st-username-search-submit | 30000 |
+| type_ok | username | %%start_time%% |
+| click_and_wait | st-username-search-submit |  |
+| wait_for_element_visible_ok | %%user1%% | 30000 |
+| click_ok | %%user1%% |  |
+| wait_for_element_visible_ok | %%user2%% | 30000 |
+| click_ok | %%user2%% |  |
+| wait_for_element_visible_ok | %%user3%% | 30000 |
+| click_ok | %%user3%% |  |
+| wait_for_element_visible_ok | link=Invite to Workspace(s) | 30000 |
+| click_and_wait | link=Invite to Workspace(s) |  |
+| wait_for_element_visible_ok | workspace-title | 30000 |
+| type_ok | workspace-title | %%new_ws_title%% |
+| wait_for_element_visible_ok | workspace-name | 30000 |
+| type_ok | workspace-name | %%new_ws_title%% |
+| select_ok | account_id | Socialtext |
+| wait_for_element_visible_ok | members | 30000 |
+| select_ok | members | %%email1%% |
+| wait_for_element_visible_ok | add-selected | 30000 |
+| click_ok | add-selected |  |
+| wait_for_element_visible_ok | invite-button | 30000 |
+| click_and_wait | invite-button |  |
+| wait_for_text_present_ok | Congratulations! You successfully created a new workspace with 3 users. They will receive an invitation message with a link to %%new_ws_title%%. | 30000 |
+| wait_for_text_present_ok | %%new_ws_title%% workspace | 30000 |
+| wait_for_element_visible_ok | link=Usage Reports | 30000 |
+| wait_for_element_visible_ok | link=Growth Reports | 30000 |
 
 | *Comment* | Test Case: Control Panel Add To Workspac Teardown |  |
-| st-admin | delete-workspace --workspace %%addtows%% --no-export |  |
+| st-admin | delete-workspace --workspace %%new_ws_title%% --no-export |  |
 
 | *Comment* | Test case: Control Panel Create Group COMPLETED |  |
