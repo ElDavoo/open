@@ -1331,32 +1331,32 @@ sub has_user {
             workspace => $self,
         );
     }
+}
 
-    sub remove_user {
-        my $self = shift;
-        my %p = validate( @_, $spec );
-        my $timer = Socialtext::Timer->new;
+sub remove_user {
+    my $self  = shift;
+    my %p     = @_;
+    my $timer = Socialtext::Timer->new;
 
-        my $uwr = Socialtext::UserWorkspaceRoleFactory->Get(
-           workspace_id => $self->workspace_id,
-           user_id      => $p{user}->user_id,
-        );
+    my $uwr = Socialtext::UserWorkspaceRoleFactory->Get(
+       workspace_id => $self->workspace_id,
+       user_id      => $p{user}->user_id,
+    );
 
-        return unless $uwr;
+    return unless $uwr;
 
-        Socialtext::UserWorkspaceRoleFactory->Delete($uwr);
+    Socialtext::UserWorkspaceRoleFactory->Delete($uwr);
 
-        Socialtext::JSON::Proxy::Helper->ClearForUsers($p{user}->user_id);
-        Socialtext::Cache->clear('authz_plugin');
+    Socialtext::JSON::Proxy::Helper->ClearForUsers($p{user}->user_id);
+    Socialtext::Cache->clear('authz_plugin');
 
-        my $adapter = Socialtext::Pluggable::Adapter->new;
-        $adapter->make_hub(Socialtext::User->SystemUser(), $self);
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub(Socialtext::User->SystemUser(), $self);
 
-        $adapter->hook(
-            'nlw.remove_user_account_role',
-            $self->account, $p{user}, Socialtext::Role->Affiliate(),
-        );
-    }
+    $adapter->hook(
+        'nlw.remove_user_account_role',
+        $self->account, $p{user}, Socialtext::Role->Affiliate(),
+    );
 }
 
 {
