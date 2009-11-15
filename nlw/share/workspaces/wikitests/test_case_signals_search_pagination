@@ -1,4 +1,4 @@
-| *Comment* | Test Case: Signals Pagination Pagination |
+| *Comment* | Test Case: Signals Pagination |
 
 * Fixture: SocialWidgets
 
@@ -12,13 +12,17 @@
 | set | a_name | Antiphonal Signaller %%start_time%% |
 | set | z_name | Zany Replier %%start_time%% |
 
+| *Comment* | Test Case: Signals Pagination. You don't know the account of %%username%%, so we need a common account between all these users. |  |
+| st-admin | create-account --name ssp |  |
+| st-admin | enable-plugin --account ssp --p signals |  |
+| st-admin | create-workspace --account ssp --n ssp-%%start_time%% --t SSP --empty | was created |
+
 | *Comment* | Test Case: Signals Pagination. Use st-admin create-user since they may already exist |  |
 | st-admin | create_user --e %%a_username%% --p %%password%% --account %%hostname%% --f "%%a_name%%" |  |
 | st-admin | create_user --e %%z_username%% --p %%password%% --account %%hostname%% --f "%%z_name%%" |  |
-
-| *Comment* | Test Case: Signals Pagination. There is always a /admin workspace in the default account |  |
-| *Comment* | Test Case: Signals Pagination. You don't know the account of the test-user, so add him to /admin so that he can see the Signals from %%a_username%% and %%z_username%% |  |
-| st-admin | add-member --w admin --e %%email%% |  |
+| st-admin | add-member --w ssp-%%start_time%% --e %%email%% | is now a member |
+| st-admin | add-member --w ssp-%%start_time%% --e %%a_username%% | is now a member |
+| st-admin | add-member --w ssp-%%start_time%% --e %%z_username%% | is now a member |
 
 | *Comment* | This test uses post-signals to rapidly create signals. |  |
 | *Comment* | It creates a set of signals that can be searched and will appear |  |
@@ -190,8 +194,7 @@
 | text_unlike | //body | LessRelevant %%start_time%% |
 | text_like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 62/ism |  |
 
-| *Comment* | Test Case: Signals Pagination. Remove %%email%% from /admin |  |
-| st-admin | remove-member --w admin --e %%email%% | is no longer a member |
+| st-admin | delete-workspace --w ssp-%%start_time%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Signals Pagination. Verify clear |  |
 | wait_for_element_visible_ok | link=clear search results | 30000 |
