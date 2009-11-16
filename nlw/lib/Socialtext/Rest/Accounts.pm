@@ -27,7 +27,10 @@ sub _entities_for_query {
     my $user  = $rest->user();
     my $query = $rest->query->param('q') || '';
 
-    if ( $user->is_business_admin && $query eq 'all' ) {
+    # $query eq 'all' is preserved for backwards compatibility.
+    my $all = $rest->query->param('all') || $query eq 'all';
+
+    if ( $user->is_business_admin && $all ) {
         return ( Socialtext::Account->All()->all() );
     }
     return ( $user->accounts() );

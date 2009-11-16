@@ -1,8 +1,9 @@
 * Fixture: SocialRest
 
-| Standard-test-setup | | |
-| set | acct_name | test%%start_time%% |
-| set-business-admin | %%email_address%% | 1 |
+| Standard-test-setup |                   |                    |
+| set                 | primary_acct      | %%account%%        |
+| set                 | acct_name         | test%%start_time%% |
+| set-business-admin  | %%email_address%% | 1                  |
 
 | POST_json | /data/accounts | {"name":"%%acct_name%%","type":"Standard"} |
 | code-is | 201 |
@@ -10,3 +11,40 @@
 GETting /data/accounts/:account_id is not currently supported.
 
 | st-account-type-is | %%acct_name%% | Standard |
+
+# GET /data/accounts as a regular user
+
+| set-business-admin | %%email_address%% | 0 |
+
+| GET         | /data/accounts   |
+| code-is     | 200              |
+| body-like   | %%primary_acct%% |
+| body-unlike | %%acct_name%%    |
+
+# GET /data/accounts?all=1 as a regular user (should be ignored)
+
+| GET         | /data/accounts?all=1 |
+| code-is     | 200                  |
+| body-like   | %%primary_acct%%     |
+| body-unlike | %%acct_name%%        |
+
+# GET /data/accounts as a business admin
+
+| set-business-admin | %%email_address%% | 1 |
+
+| GET         | /data/accounts   |
+| code-is     | 200              |
+| body-like   | %%primary_acct%% |
+| body-unlike | %%acct_name%%    |
+
+# GET /data/accounts?all=1 as a business admin
+
+| GET       | /data/accounts?all=1 |
+| code-is   | 200                  |
+| body-like | %%primary_acct%%     |
+| body-like | %%acct_name%%        |
+
+# Filtering accounts as a business admin
+
+# (Optional) Filtering accounts as a regular user
+
