@@ -55,17 +55,26 @@ GETting /data/accounts/:account_id is not currently supported.
 
 | set-substr | acct_prefix | %%acct_name%% | 13 |
 
-| GET         | /data/accounts?all=1;filter=%%acct_prefix%% | application/json |
+| GET         | /data/accounts?all=1;filter=\b%%acct_prefix%% | application/json |
 | code-is     | 200                                         |                  |
 | body-unlike | %%primary_acct%%                            |                  |
 | body-like   | %%acct_name%%                               |                  |
+
+# \b matches start of string
+
+| GET         | /data/accounts?all=1;filter=\btest | application/json |
+| code-is     | 200                                |                  |
+| body-like   | %%acct_name%%                      |                  |
+| GET         | /data/accounts?all=1;filter=\best  | application/json |
+| code-is     | 200                                |                  |
+| body-unlike | %%acct_name%%                      |                  |
 
 # Filtering accounts as a regular user
 
 | set-business-admin | %%email_address%% | 0                |    |
 | set-substr         | acct_prefix       | %%primary_acct%% | 14 |
 
-| GET         | /data/accounts?filter=%%acct_prefix%% | application/json |
+| GET         | /data/accounts?filter=\b%%acct_prefix%% | application/json |
 | code-is     | 200                                         |                  |
 | body-like   | %%primary_acct%%                            |                  |
 | body-unlike | %%acct_name%%                               |                  |

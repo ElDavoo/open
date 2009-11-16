@@ -1142,7 +1142,10 @@ sub _where_by_name {
 
     # Turn our substring into a SQL pattern.
     $p->{name} =~ s/^\s+//; $p->{name} =~ s/\s+$//;
-    $p->{name} = "\%$p->{name}\%";
+    $p->{name} .= '%';
+    if (!($p->{name} =~ s/^\\b//)) {
+        $p->{name} = "\%$p->{name}";
+    }
 
     my $comparator = $p->{case_insensitive} ? 'ILIKE' : 'LIKE';
     return qq{ WHERE "Account".name $comparator ?};
