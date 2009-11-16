@@ -21,19 +21,45 @@ sub collection_name {
     'Accounts';
 }
 
+# We provide our own get_resources, so we can do filtering in the database
+sub get_resource {
+    my $self = shift;
+    my $rest = shift;
+
+    # If we're filtering, get that from the DB directly
+    my $filter = $self->rest->query->param('filter');
+    my $all    = $rest->query->param('all');
+
+    if ($filter and $all) {
+        my $offset = $self->rest->query->param('offset') || 0;
+        my $limit = $self->rest->query->param('count') ||
+                    $self->rest->query->param('limit') || 100;
+        return [ 
+            map { $_->hash_representation }
+                Socialtext::Account->All(
+                    name => $filter,
+                    case_insensitive => 1,
+                    offset => $offset,
+                    limit => $limit,
+                )->all()
+        ];
+    }
+    return $self->SUPER::get_resource();
+}
+
 sub _entities_for_query {
-    my $self  = shift;
-    my $rest  = $self->rest();
-    my $user  = $rest->user();
-    my $query = $rest->query->param('q') || '';
+    my $self   = shift;
+    my $rest   = $self->rest();
+    my $user   = $rest->user();
+    my $query  = $rest->query->param('q') || '';
 
     # $query eq 'all' is preserved for backwards compatibility.
     my $all = $rest->query->param('all') || $query eq 'all';
 
-    if ( $user->is_business_admin && $all ) {
-        return ( Socialtext::Account->All()->all() );
+    if ($user->is_business_admin and $all) {
+        return Socialtext::Account->All->all;
     }
-    return ( $user->accounts() );
+    return $user->accounts;
 }
 
 sub _entity_hash {

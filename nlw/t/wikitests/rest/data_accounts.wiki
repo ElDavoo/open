@@ -44,7 +44,28 @@ GETting /data/accounts/:account_id is not currently supported.
 | body-like | %%primary_acct%%     |
 | body-like | %%acct_name%%        |
 
+# Getting accounts as JSON
+
+| GET       | /data/accounts?all=1 | application/json |
+| code-is   | 200                  |                  |
+| body-like | %%primary_acct%%     |                  |
+| body-like | %%acct_name%%        |                  |
+
 # Filtering accounts as a business admin
 
-# (Optional) Filtering accounts as a regular user
+| set-substr | acct_prefix | %%acct_name%% | 13 |
 
+| GET         | /data/accounts?all=1;filter=%%acct_prefix%% | application/json |
+| code-is     | 200                                         |                  |
+| body-unlike | %%primary_acct%%                            |                  |
+| body-like   | %%acct_name%%                               |                  |
+
+# Filtering accounts as a regular user
+
+| set-business-admin | %%email_address%% | 0                |    |
+| set-substr         | acct_prefix       | %%primary_acct%% | 14 |
+
+| GET         | /data/accounts?all=1;filter=%%acct_prefix%% | application/json |
+| code-is     | 200                                         |                  |
+| body-like   | %%primary_acct%%                            |                  |
+| body-unlike | %%acct_name%%                               |                  |

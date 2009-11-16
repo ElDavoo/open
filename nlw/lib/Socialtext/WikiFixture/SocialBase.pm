@@ -1920,5 +1920,14 @@ sub _set_profile_field_hidden {
     $field->save;
 }
 
+sub set_substr {
+    my $self = shift;
+    my $dest_var = shift;
+    my $src_data = shift;
+    my $characters = shift;
+
+    $self->{$dest_var} = substr($src_data, 0, $characters);
+    diag "Set $dest_var to '$self->{$dest_var}'";
+}
 
 1;
