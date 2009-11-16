@@ -1030,10 +1030,21 @@ sub _remove_user_from_account {
     my $user      = $self->_require_user();
     my $account = $self->_require_account();
 
-    $self->_error(
-        loc("Cannot remove [_1] from [_2], it is the user's primary account",
-            $user->username, $account->name)
-    ) if $user->primary_account_id == $account->account_id;
+    if ( $user->primary_account_id == $account->account_id ) {
+        my $email   = $user->email_address;
+        my $account = $account->name;
+        my $msg     = join("\n",
+            loc("You cannot remove a user from their primary account."),
+            '',
+            loc("To do so, first assign them to a new primary account:"),
+            " * st-admin set-user-account --email $email --account <account-name>",
+            " * st-admin remove-member --email $email --account $account",
+            '',
+            loc("If you'd like to remove the user's system access, please do:"),
+            " * st-admin deactivate-user --email $email",
+        );
+        $self->_error($msg);
+    }
 
     $self->_remove_user_from_thing( $user, $account );
 }
@@ -1047,21 +1058,21 @@ sub _remove_user_from_workspace {
 }
 
 sub _remove_user_from_thing {
-    my $self   = shift;
-    my $user   = shift;
-    my $thing  = shift; # workspace or account
-    my $direct = $thing->role_for_user(user => $user, direct => 1);
-    my $member = Socialtext::Role->Member();
+    my $self    = shift;
+    my $user    = shift;
+    my $thing   = shift; # workspace or account
+    my $current = $thing->role_for_user(user => $user, direct => 1);
+    my $member  = Socialtext::Role->Member();
 
     $self->_error( 
-        loc('[_1] is not a direct member of [_2]',
+        loc('[_1] is not a member of [_2]',
             $user->username, $thing->name)
-    ) unless $direct;
+    ) unless $current;
 
     $self->_error(
         loc('[_1] does not have a [_2] role in [_3]',
             $user->username, $member->display_name, $thing->name)
-    ) if $direct->name ne $member->name;
+    ) if $current->name ne $member->name;
 
     $thing->remove_user( user => $user, role => $member );
 

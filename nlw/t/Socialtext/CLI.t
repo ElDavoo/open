@@ -417,7 +417,7 @@ ADD_REMOVE_MEMBER: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->remove_member();
         },
-        qr/test\@example\.com is not a direct member of foobar/,
+        qr/test\@example\.com is not a member of foobar/,
         'remove-member when user is not a workspace member'
     );
 }
@@ -441,7 +441,7 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
                 ]
             )->remove_member(); 
         },
-        qr/Cannot remove .+ from .+, it is the user's primary account/,
+        qr/You cannot remove a user from their primary account/,
         'cannot remove-member from their primary account'
     );
 
@@ -505,7 +505,7 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
                 ]
             )->remove_member(); 
         },
-        qr/.+ is not a direct member of .+/,
+        qr/.+ is not a member of .+/,
         'remove-member when user is no longer a member of the account'
     );
 
