@@ -68,6 +68,7 @@ sub GET {
             ($fh ? () : ('-X-Sendfile'  => $file)),
         );
     };
+    warn $@ if $@;
 
     # REVIEW: would be nice to be able to toss some kind of exception
     # all the way out to the browser

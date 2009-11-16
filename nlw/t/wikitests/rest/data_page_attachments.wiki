@@ -8,10 +8,20 @@
 | post      | %%url%%?name=test.txt      | %%hdrs%%         | Hi You      |
 | body-like |                            |                  |             |
 | get       | %%url%%                    | application/json |             |
+| code-is   | 200                        |                  |             |
 | body-like | content-type":"text/plain" |                  |             |
 | body-like | "name":"test.txt"          |                  |             |
 
 | set-from-content | file_url     | qr/"uri":"([^"]+)"/ |
 | get              | %%file_url%% |                     |
+| code-is          | 200          |                     |
 | body-like        | Hi You       |                     |
 | has-header       | Content-type | text/plain          |
+
+* Try out the permalink URL
+
+| get         | %%url%%/test.txt    |                     |
+| code-is     | 200                 |                     |
+| body-like   | Hi You              |                     |
+| has-header  | Content-type        | text/plain          |
+| header-like | Content-Disposition | filename="test.txt" |

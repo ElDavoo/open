@@ -17,7 +17,6 @@ sub _get_attachment {
     my $filename = $self->filename;
 
     my $page_id =  Socialtext::String::title_to_id($page_uri);
-    warn "Looking for pages: '$page_id'";
 
     my $attachments = $self->hub->attachments->all(page_id => $page_id);
     my $latest;
