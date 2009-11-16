@@ -106,9 +106,20 @@ override get_resource => sub {
 
     my $limit = $rest->query->param('limit') || 20;
     my $offset = $rest->query->param('offset') || 0;
+    my $order = $rest->query->param('order') || 'account_id';
+    my $reverse = $rest->query->param('reverse');
     my $startIndex = $offset + 1;
     my $total = @accounts;
-    @accounts = sort { $a->{account_id} <=> $b->{account_id} } @accounts;
+    if ($reverse) {
+        @accounts = $order eq 'account_id'
+            ? sort { $b->{$order} <=> $a->{$order} } @accounts
+            : sort { $b->{$order} cmp $a->{$order} } @accounts;
+    }
+    else {
+        @accounts = $order eq 'account_id'
+            ? sort { $a->{$order} <=> $b->{$order} } @accounts
+            : sort { $a->{$order} cmp $b->{$order} } @accounts;
+    }
     @accounts = splice @accounts, $offset, $limit;
     return {
         startIndex => "$startIndex",
