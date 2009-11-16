@@ -1050,20 +1050,27 @@ sub _remove_user_from_thing {
     my $self   = shift;
     my $user   = shift;
     my $thing  = shift; # workspace or account
+    my $direct = $thing->role_for_user(user => $user, direct => 1);
     my $member = Socialtext::Role->Member();
 
     $self->_error( 
-        loc('[_1] is not a member of [_2]', $user->username, $thing->name)
-    ) unless $thing->has_user( $user );
+        loc('[_1] is not a direct member of [_2]',
+            $user->username, $thing->name)
+    ) unless $direct;
+
+    $self->_error(
+        loc('[_1] does not have a [_2] role in [_3]',
+            $user->username, $member->display_name, $thing->name)
+    ) if $direct->name ne $member->name;
 
     $thing->remove_user( user => $user, role => $member );
-    my $role   = $thing->role_for_user(user => $user);
-    if ($role) {
-        $self->_success( 
-            loc('[_1] is now a [_2] of [_3] due to membership in a group',
-                $user->username, $role->display_name, $thing->name)
-        );
-    }
+
+    # Does the user still have a role in this thing indirectly?
+    my $role = $thing->role_for_user(user => $user);
+    $self->_success(
+        loc('[_1] is now a [_2] of [_3] due to membership in a group',
+            $user->username, $role->display_name, $thing->name)
+    ) if $role;
 
     $self->_success(
         loc('[_1] is no longer a member of [_2]',
