@@ -1,15 +1,14 @@
 package Socialtext::Rest::Accounts;
 # @COPYRIGHT@
-
-use warnings;
-use strict;
-
+use Moose;
 use Class::Field qw( const field );
 use Socialtext::JSON;
 use Socialtext::HTTP ':codes';
 use Socialtext::Account;
 use Socialtext::Exceptions;
-use base 'Socialtext::Rest::Collection';
+use namespace::clean -except => 'meta';
+
+extends 'Socialtext::Rest::Collection';
 
 sub allowed_methods {'GET, POST'}
 
@@ -21,16 +20,23 @@ sub collection_name {
     'Accounts';
 }
 
+after '_initialize' => sub {
+    my $self = shift;
+    $self->{FilterParameters}{filter} = 'account_name';
+};
+
 # We provide our own get_resources, so we can do filtering in the database
-sub get_resource {
+around 'get_resource' => sub {
+    my $orig = shift;
     my $self = shift;
     my $rest = shift;
+    my $user = $rest->user();
 
     # If we're filtering, get that from the DB directly
     my $filter = $self->rest->query->param('filter');
     my $all    = $rest->query->param('all');
 
-    if ($filter and $all) {
+    if ($user->is_business_admin and $filter and $all) {
         my $offset = $self->rest->query->param('offset') || 0;
         my $limit = $self->rest->query->param('count') ||
                     $self->rest->query->param('limit') || 100;
@@ -44,8 +50,10 @@ sub get_resource {
                 )->all()
         ];
     }
-    return $self->SUPER::get_resource();
-}
+
+    # Not filtering, so use the regular stack.
+    return $orig->($self, $rest);
+};
 
 sub _entities_for_query {
     my $self   = shift;
@@ -146,4 +154,5 @@ sub add_error {
     return 0;
 }
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;

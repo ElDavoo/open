@@ -65,7 +65,7 @@ GETting /data/accounts/:account_id is not currently supported.
 | set-business-admin | %%email_address%% | 0                |    |
 | set-substr         | acct_prefix       | %%primary_acct%% | 14 |
 
-| GET         | /data/accounts?all=1;filter=%%acct_prefix%% | application/json |
+| GET         | /data/accounts?filter=%%acct_prefix%% | application/json |
 | code-is     | 200                                         |                  |
 | body-like   | %%primary_acct%%                            |                  |
 | body-unlike | %%acct_name%%                               |                  |
