@@ -101,12 +101,39 @@ sub LoadUsers {
             },
         );
 
+        # grab Users by "first letter of their e-mail address", so that we
+        # reduce the chance of ever hitting an LDAP hard limit (where it'd
+        # simply be *impossible* for us to ask a single LDAP query to get back
+        # the list of Users, paged or otherwise).  Note, that substring
+        # searches by e-mail should be case IN-sensitive (thankfully).
+        #
+        # Once we're done grabbing the letters we're expecting, we'll need to
+        # do *one last* query to get "anyone else we may have missed"
+        # (basically "anything that wasn't matched by an earlier query").
+        my @ltrs = ('a'..'z', '0'..'9');
         eval {
             my $ldap = Socialtext::LDAP->new($cfg);
+            my @clauses;
+
+            # First, get everyone by the first letter of their e-mail address.
+            foreach my $ltr (@ltrs) {
+                my $filter = "($mail_attr=$ltr*)";
+                push @clauses, $filter;
+
+                $class->_paged_ldap_query(
+                    %query,
+                    ldap   => $ldap,
+                    filter => $filter,
+                );
+            }
+
+            # Then, get anyone that didn't match any of the above.
+            local $" = '';
+            my $filter = "(!(|@clauses))";
             $class->_paged_ldap_query(
                 %query,
-                ldap     => $ldap,
-                filter   => "($mail_attr=*)",    # HAS an e-mail address
+                ldap   => $ldap,
+                filter => $filter,
             );
         };
         if ($@) {
