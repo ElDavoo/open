@@ -5,16 +5,18 @@
 | set | fname | Profligate |
 | set | lname | Edisaurus |
 
-| *Comment* | Test Case: Tagging Profile. You don't know the account of %%username%%, so add him to /admin so that he can see the Signals from %%e_user%% |  |
-| *Comment* | Test Case: Tagging Profile. We need a common account between the logged in user and %%e_user%%. There is always a /admin workspace in the default account |  |
-| st-admin | add-member --w admin --e %%email%% |  |
-| st-admin | add-member --w admin --e %%e_user%% |  |
+| *Comment* | Test Case: Tagging Profile. You don't know the account of %%username%%, so we need a common account between the logged in user and %%e_user%%. |  |
+| st-admin | create-account --name tagging-profile |  |
+| st-admin | enable-plugin --account tagging-profile --p signals |  |
+| st-admin | create-workspace --account tagging-profile --n tp-%%start_time%% --t TP --empty | was created |
+| st-admin | add-member --w tp-%%start_time%% --e %%email%% | is now a member |
+| st-admin | add-member --w tp-%%start_time%% --e %%e_user%% | is now a member |
 
 | *Comment* | Starting Test Case: Tagging Profile. Log in %%username%% in case this is included from another profile test. |  |
 | click_and_wait | link=Dashboard |  |
 | st-logoutin |  |  |
 
-| *Comment* | Test Case: Tagging Profile. %%username%% may be in any account, and is secondarily in %%hostname%% via /admin membership. |  |
+| *Comment* | Test Case: Tagging Profile. %%username%% may be in any account, and is secondarily in tagging-profile. |  |
 | *Comment* | Test Case: Tagging Profile. fog tag added |  |
 | click_and_wait | link=Profile |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
@@ -53,6 +55,8 @@ text_like | 所以 | |
 | text_like | link=fog %%start_time%% | fog %%start_time%% |
 | *Comment* | Test Case: Tagging Profile clicking on a tag link causes Selenium to bomb, but opening tag link directly works. |  |
 | open_ok | /?action=people;tag=fog%20%%start_time%% |  |
+| wait_for_element_visible_ok | //select[@class='account-select'] | 30000 |
+| select_and_wait | //select[@class='account-select'] | All People |
 
 | *Comment* | Test Case: Tagging Profile list view: tag fog %%start_time%% |  |
 | text_like | All People Tagged 'fog %%start_time%%' |  |
@@ -78,6 +82,8 @@ text_like | 所以 | |
 | wait_for_element_visible_ok | link=fog %%start_time%% | 30000 |
 | text_like | link=fog %%start_time%% | fog %%start_time%% |
 | open_ok | /?action=people;tag=fog%20%%start_time%% |  |
+| wait_for_element_visible_ok | //select[@class='account-select'] | 30000 |
+| select_and_wait | //select[@class='account-select'] | All People |
 
 | *Comment* | Test Case: Tagging Profile list view: tag fog %%start_time%% two users |  |
 | text_like | All People Tagged 'fog %%start_time%%' |  |
@@ -91,7 +97,7 @@ text_like | 所以 | |
 | set | lname | The Tagger |
 
 | st-admin | create-user --e %%tag_user%% --p %%password%% --f "%%fname%%" --l "%%lname%%" | A new user with the username "%%tag_user%%" was created |
-| st-admin | add-member --w admin --e %%tag_user%% |  |
+| st-admin | add-member --w tp-%%start_time%% --e %%tag_user%% | is now a member |
 
 | st-logoutin | %%tag_user%% | %%password%% |
 | wait_for_element_visible_ok | link=Profile | 30000 |
@@ -126,9 +132,7 @@ text_like | link=%%fname%% %%lname%% | %%fname%% %%lname%% |
 
 | *Comment* | Test Case: Tagging Profile TEARDOWN |  |
 
-| st-admin | remove-member --w admin --e %%email%% | is no longer a member |
-| st-admin | remove-member --w admin --e %%e_user%% | is no longer a member |
-| st-admin | remove-member --w admin --e %%tag_user%% | is no longer a member |
+| st-admin | delete-workspace --no-export --w tp-%%start_time%% | has been deleted |
 
 | *Comment* | Test Case: Tagging Profile COMPLETED |  |
 

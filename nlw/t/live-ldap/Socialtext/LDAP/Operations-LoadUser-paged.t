@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext qw(no_plan);
+use Test::Socialtext tests => 5;
 use Socialtext::LDAP::Operations;
 use Net::LDAP::Constant qw(LDAP_SIZELIMIT_EXCEEDED);
 

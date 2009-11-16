@@ -1,34 +1,36 @@
-* Fixtures: Socialtext
+| *Comment* | Test Case: Control Panel Account Add Group |  |
 
-| *Comment*      | create needed objects |                       |
-| set            | group                 | %%start_time%%group   |
-| set            | account               | %%start_time%%account |
-| create-group   | %%group%%             |                       |
-| create-account | %%account%%           |                       |
+| *Comment* | create needed objects |  |
+| set | group | %%start_time%%group |
+| set | account | %%start_time%%account |
+| create-group | %%group%% |  |
+| create-account | %%account%% |  |
 
-| *Comment*   | Find add group link in account detail page |                         |
-| open-ok     | /nlw/control/account/%%account_id%%        |                         |
-| verify-text | //body                                     | Invite Group to Account |
+| *Comment* | Find add group link in account detail page |  |
+| open-ok | /nlw/control/account/%%account_id%% |  |
+| verify-text | //body | Invite Group to Account |
 
-| *Comment*   | Visual inspection of add to account page      |                                     |
-| open-ok     | /nlw/control/account/%%account_id%%/add_group |                                     |
-| verify-text | //h1                                          | Add Group to Account                |
-| verify-text | //p                                           | Adding Group to Account %%account%% |
-| verify-text | //label                                       | Send invitation email               |
+| *Comment* | Visual inspection of add to account page |  |
+| open-ok | /nlw/control/account/%%account_id%%/add_group |  |
+| verify-text | //h1 | Add Group to Account |
+| verify-text | //p | Adding Group to Account %%account%% |
+| verify-text | //label | Send invitation email |
 
-| *Comment*      | Add an account |                   |
-| select-ok      | //select       | Default,%%group%% |
-| click-and-wait | add-to-account |                   |
+| *Comment* | Add an account |  |
+| select-ok | //select | Default,%%group%% |
+| click-and-wait | add-to-account |  |
 
-| *Comment*   | Verify redirect, message |                                                  |
-| verify-text | //h1                     | %%account%% account                              |
-| verify-text | css=span.message         | Group is now a member of the %%account%% Account |
-| verify-text | //h2[4]                  | Groups (1)                                      |
+| *Comment* | Verify redirect, message |  |
+| verify-text | //h1 | %%account%% account |
+| verify-text | css=span.message | Group is now a member of the %%account%% Account |
+| verify-text | //h2[4] | Groups (1) |
 
-| *Comment*      | Add account _again_ so we see a failure       |                                                      |
-| open-ok        | /nlw/control/account/%%account_id%%/add_group |                                                      |
-| select-ok      | //select                                      | Default,%%group%%                                    |
-| click-and-wait | add-to-account                                |                                                      |
-| verify-text    | //h1                                          | %%account%% account                                  |
-| verify-text    | css=span.error                                | Group is already a member of the %%account%% Account |
-| verify-text    | //h2[4]                                       | Groups (1)                                          |
+| *Comment* | Add account _again_ so we see a failure |  |
+| open-ok | /nlw/control/account/%%account_id%%/add_group |  |
+| select-ok | //select | Default,%%group%% |
+| click-and-wait | add-to-account |  |
+| verify-text | //h1 | %%account%% account |
+| verify-text | css=span.error | Group is already a member of the %%account%% Account |
+| verify-text | //h2[4] | Groups (1) |
+
+| *Comment* | Test Case: Control Panel Account Add Group COMPLETED |  |

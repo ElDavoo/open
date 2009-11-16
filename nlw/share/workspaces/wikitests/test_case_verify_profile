@@ -55,9 +55,9 @@
 | text_like | qr/Facebook.+http\:\/\/facebook\/%%short_e_user%%/ |
 
 | text_like | Manager |
-| text_like | user one |
+| text_like | supervisor |
 | text_like | Assistant |
-| text_like | user two |
+| text_like | assistant |
 
 | *Comment* | Test Case: Verify Profile. PHOTO |  |
 | wait_for_element_present_ok | //img[@class='bigAvatar'] | 1000 |

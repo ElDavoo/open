@@ -4,7 +4,7 @@
 | st-clear-jobs |
 | clear-email |
 | st-admin | set-workspace-config -w %%workspace%% email_notify_is_enabled 1 |
-| set-user-id | user_id | %%username%% |
+| set-user-id | theuser_id | %%username%% |
 
 | set | pref_prefix | action=preferences_settings&preferences_class_id=email_notify&email_notify__notify_frequency |
 | set | pref_suffix | email_notify__links_only=condensed&email_notify__sort_order=name&Button=save                 |
@@ -43,7 +43,7 @@
 | st-process-jobs |                 |                              |
 | job-count       | EmailNotify     | 0                            |
 | job-count       | EmailNotifyUser | 1                            |
-| job-exists      | EmailNotifyUser | %%workspace_id%%-%%user_id%% |
+| job-exists      | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |
 | email-like      | __NO CONTENT!__ |                              |
 
 | Comment | move time to just before the user pref interval |
@@ -76,7 +76,7 @@
 | Comment | A "gap protector" job is filed to prevent missed pages |
 
 | job-count  | EmailNotifyUser | 1                            |
-| job-exists | EmailNotifyUser | %%workspace_id%%-%%user_id%% |
+| job-exists | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |
 
 | Comment | Edit another page to exercise the gap protector |
 
@@ -85,11 +85,11 @@
 | job-count       | EmailNotify     | 1                            |       |
 | job-exists      | EmailNotify     | %%workspace_id%%-bing        |       |
 | job-count       | EmailNotifyUser | 1                            |       |
-| job-exists      | EmailNotifyUser | %%workspace_id%%-%%user_id%% |       |
+| job-exists      | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |       |
 
 | st-process-jobs |                 |                              |
 | job-count       | EmailNotifyUser | 1                            |
-| job-exists      | EmailNotifyUser | %%workspace_id%%-%%user_id%% |
+| job-exists      | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |
 | job-count       | EmailNotify     | 0                            |
 | email-like      | __NO CONTENT!__ |                              |
 
@@ -99,7 +99,7 @@
 | st-process-jobs      |                 |                              |
 | job-count            | EmailNotify     | 0                            |
 | job-count            | EmailNotifyUser | 1                            |
-| job-exists           | EmailNotifyUser | %%workspace_id%%-%%user_id%% |
+| job-exists           | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |
 | email-like           | BING            |                              |
 
 | Comment | no gap protector after the next run; no modified pages found |
@@ -125,7 +125,7 @@ This also tests the email notify sort order and the display details prefs.
 | job-exists      | EmailNotify     | %%workspace_id%%-foo         |       |
 | st-process-jobs |                 |                              |       |
 | job-count       | EmailNotifyUser | 1                            |       |
-| job-exists      | EmailNotifyUser | %%workspace_id%%-%%user_id%% |       |
+| job-exists      | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |       |
 
 | post-form | /%%workspace%%/index.cgi | %%pref_prefix%%=0&%%pref_suffix%% |
 | code-is   | 200                      |                                   |
@@ -152,7 +152,7 @@ This also tests the email notify sort order and the display details prefs.
 | job-exists      | EmailNotify     | %%workspace_id%%-aaaa        |       |
 | st-process-jobs |                 |                              |       |
 | job-count       | EmailNotifyUser | 1                            |       |
-| job-exists      | EmailNotifyUser | %%workspace_id%%-%%user_id%% |       |
+| job-exists      | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |       |
 
 | post-form  | /%%workspace%%/index.cgi | %%pref_prefix%%=4320&%%pref_suffix%% |
 | code-is    | 200                      |                                      |
@@ -165,7 +165,7 @@ job doesn't run yet:
 | st-fast-forward-jobs | 1500            |                              |
 | st-process-jobs      |                 |                              |
 | job-count            | EmailNotifyUser | 1                            |
-| job-exists           | EmailNotifyUser | %%workspace_id%%-%%user_id%% |
+| job-exists           | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |
 | email-like           | __NO CONTENT!__ |                              |
 
 but after another few days or so:
@@ -202,7 +202,7 @@ Set things back to "normal"
 | job-exists      | EmailNotify     | %%workspace_id%%-foo         |       |
 | st-process-jobs |                 |                              |       |
 | job-count       | EmailNotifyUser | 1                            |       |
-| job-exists      | EmailNotifyUser | %%workspace_id%%-%%user_id%% |       |
+| job-exists      | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |       |
 
 | post-form  | /%%workspace%%/index.cgi | %%pref_prefix%%=5&%%pref_suffix%% |
 | code-is    | 200                      |                                   |
@@ -215,7 +215,7 @@ job doesn't run yet:
 | st-fast-forward-jobs | 3               |                              |
 | st-process-jobs      |                 |                              |
 | job-count            | EmailNotifyUser | 1                            |
-| job-exists           | EmailNotifyUser | %%workspace_id%%-%%user_id%% |
+| job-exists           | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |
 | email-like           | __NO CONTENT!__ |                              |
 
 but after another 3 mins or so:
@@ -250,7 +250,7 @@ Set things back to "normal"
 | st-process-jobs |                 |                              |
 | job-count       | EmailNotify     | 0                            |
 | job-count       | EmailNotifyUser | 1                            |
-| job-exists      | EmailNotifyUser | %%workspace_id%%-%%user_id%% |
+| job-exists      | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |
 | remove-member | %%email_address%% | %%workspace%% |
 | st-fast-forward-jobs | 1500            |   |
 | st-process-jobs      |                 |   |
