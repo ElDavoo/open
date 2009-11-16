@@ -191,6 +191,12 @@
 
         }
 
+        // Expand width to largest entry
+        $('li a', this.lookahead).each(function() {
+            if (width < $(this).width() + 20)
+                width = $(this).width() + 20;
+        });
+
         this.lookahead.css({
             width: width + 'px',
             left: left + 'px',
