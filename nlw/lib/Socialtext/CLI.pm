@@ -1030,7 +1030,11 @@ sub _remove_user_from_account {
     my $user      = $self->_require_user();
     my $account = $self->_require_account();
 
-    # Fail on Primary Account!
+    $self->_error(
+        loc("Cannot remove [_1] from [_2], it is the user's primary account",
+            $user->username, $account->name)
+    ) if $user->primary_account_id == $account->account_id;
+
     $self->_remove_user_from_thing( $user, $account );
 }
 
