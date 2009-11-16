@@ -2323,9 +2323,8 @@ sub index_people {
         $self->_error(loc("The People plugin is not installed."));
     }
 
-    require Socialtext::People::Profile;
-    my $count = Socialtext::People::Profile->IndexPeople();
-    $self->_success( "Created $count PersonIndex jobs." );
+    Socialtext::JobCreator->insert('Socialtext::Job::Upgrade::ReindexPeople');
+    $self->_success( "Scheduled people for re-indexing." );
 }
 
 sub send_email_notifications {
