@@ -91,18 +91,22 @@ sub LoadUsers {
         # get the LDAP attribute that contains the e-mail address
         my $mail_attr = $cfg->attr_map->{email_address};
 
-        # query LDAP for User records that have e-mail addresses
+        # the basic/unchanging parts of the query that we're going to ask
+        my %query = (
+            attrs    => [$mail_attr],        # get their e-mails
+            callback => sub {
+                # gather the e-mails out of the response
+                my ($search, $entry) = @_;
+                push @emails, $entry->get_value($mail_attr) if $entry;
+            },
+        );
+
         eval {
             my $ldap = Socialtext::LDAP->new($cfg);
             $class->_paged_ldap_query(
+                %query,
                 ldap     => $ldap,
                 filter   => "($mail_attr=*)",    # HAS an e-mail address
-                attrs    => [$mail_attr],        # get their e-mails
-                callback => sub {
-                    # gather the e-mails out of the response
-                    my ($search, $entry) = @_;
-                    push @emails, $entry->get_value($mail_attr) if $entry;
-                },
             );
         };
         if ($@) {
