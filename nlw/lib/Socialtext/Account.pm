@@ -416,6 +416,13 @@ sub _dump_user_to_hash {
     delete $hash->{primary_account_id};
     $hash->{primary_account_name} = $user->primary_account->name;
     $hash->{profile} = $self->_dump_profile($user);
+
+    my $user_accounts = $user->accounts;
+    for my $acct (@$user_accounts) {
+        my $uar = $acct->role_for_user(user => $user);
+        $hash->{roles}{$acct->name} = $uar->name;
+    }
+
     return $hash;
 }
 
@@ -523,6 +530,12 @@ sub import_file {
                             name         => $pri_acct_name,
                             account_type => 'Placeholder',
                         );
+
+            # User's primary account was different, so make sure to add their
+            # relationship to the account we're importing.
+            my $role_name = $user_hash->{roles}{$hash->{name}} || 'member';
+            my $acct_role = Socialtext::Role->new(name => $role_name);
+            $account->add_user(user => $user, role => $acct_role);
         }
         $user->primary_account($pri_acct);
 

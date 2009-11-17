@@ -291,10 +291,8 @@ account_import_preserves_uar_primary_account: {
 # supported via their "Primary Account").  Make sure that the Role is
 # preserved across export/import.
 #
-# One day... we'll be able to add a User to a secondary Account with a direct
-# UAR.  This test is a placeholder for that; when we get there, this test will
-# break as a reminder that we need to make sure that export/import works
-# correct.
+# Users can also have a membership in an Account, which should also be
+# preserved across export/import.
 account_import_preserves_uar: {
     ok 1, 'TEST: Preserves direct UAR';
     my $account   = create_test_account_bypassing_factory();
