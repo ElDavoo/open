@@ -36,7 +36,7 @@ sub queue {
     $user->set_confirmation_info()
         unless $user->has_valid_password();
 
-    $user->primary_account($acct);
+    $acct->add_user(user => $user);
 
     Socialtext::JobCreator->insert(
         'Socialtext::Job::AccountInvite',
