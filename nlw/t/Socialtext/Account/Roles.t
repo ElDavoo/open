@@ -31,9 +31,7 @@ get_role_for_user_primary_account: {
         account => $account,
     );
     isa_ok $role, 'Socialtext::Role', 'Users Role in his Primary Account';
-    # XXX: right now we *ONLY* support Users having an Affiliate UAR; when the
-    #      UARFactory->DefaultRole() changes, this'll need to be updated.
-    is $role->name, $Affiliate->name, '... is "Affiliate"';
+    is $role->name, $Member->name, '... is "Member"';
 }
 
 ###############################################################################
