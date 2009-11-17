@@ -30,6 +30,19 @@ sub _get_attachment {
     return $latest;
 }
 
-
-
 1;
+
+=head1 NAME
+
+Socialtext::Rest::PageAttachment - Grab the latest attachment by name
+
+=head1 SYNOPSIS
+
+    GET /data/workspaces/:ws/pages/:page/attachments/:attachment_name
+
+=head1 DESCRIPTION
+
+This module offers an attachment permalink capability.  You can specify
+the attachment by name, and the latest version of that attachment will be returned.
+
+=cut
