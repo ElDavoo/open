@@ -16,7 +16,7 @@ our %Users;
 sub new {
     my $class = shift;
     my $type = shift;
-    my $value = shift;
+    my $value = shift || '';
     if (defined $type) {
         if ($type eq 'username' and $value =~ m/^bad/) {
             return undef;
@@ -190,6 +190,10 @@ sub accounts {
 
     my @accounts = @{ $self->{accounts} || [] };
     return wantarray ? @accounts : \@accounts;
+}
+
+sub SystemUser {
+    return shift->new( username => 'system-user' );
 }
 
 1;

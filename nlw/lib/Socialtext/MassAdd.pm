@@ -148,11 +148,11 @@ sub add_user {
 
     my $user = eval { Socialtext::User->Resolve($args{username}) };
     if ($user) {
-        # Update the user's primary account if one is specified
+        # If an account is specified, add the user to that account.
         if ($self->{account} && 
             $user->primary_account_id != $self->{account}->account_id) 
         {
-            $user->primary_account($self->{account});
+            $self->{account}->add_user(user => $user);
             $changed_user++;
         }
     }

@@ -10,7 +10,7 @@ BEGIN {
         exit;
     }
     
-    plan tests => 108;
+    plan tests => 114;
 }
 
 use mocked 'Socialtext::People::Profile', qw(save_ok);
@@ -53,6 +53,32 @@ Add_from_hash: {
             'confirmation is not set';
         is delete $Socialtext::User::Sent_email{ronnie}, undef,
             'confirmation email not sent';
+    }
+
+    happy_path_with_account: {
+        my $default_acct_id = Socialtext::Account->Default->account_id;
+        my $user = Socialtext::User->new(
+            username => 'ronnie',
+            primary_account_id => $default_acct_id,
+        );
+        local $Socialtext::User::Users{ronnie} = $user;
+        my @successes;
+        my @failures;
+        my $acct = Socialtext::Account->create(name => "test-$$");
+        my $mass_add = Socialtext::MassAdd->new(
+            pass_cb => sub { push @successes, shift },
+            fail_cb => sub { push @failures,  shift },
+            account => $acct,
+        );
+        $mass_add->add_user(%userinfo);
+        is_deeply \@successes, ['Updated user ronnie'], 'success message ok';
+        logged_like 'info', qr/Updated user ronnie/, '... message also logged';
+        is_deeply \@failures, [], 'no failure messages';
+        is $user->{primary_account_id},
+            $default_acct_id, "did not update ronnie's primary_account";
+        my $uar = $acct->role_for_user(user => $user);
+        ok $uar;
+        is $uar->name, 'member', 'user got added to the account';
     }
 
     bad_profile_field: {
