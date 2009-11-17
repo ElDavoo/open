@@ -22,3 +22,21 @@ sub filter {
 }
 
 1;
+
+=head1 NAME
+
+Socialtext::Template::Plugin::minify - minify javascript on the fly
+
+=head1 SYNOPSIS
+
+    [% USE minify %]
+    [% FILTER minify %]
+    blah
+    [% END %]
+
+
+=head1 DESCRIPTION
+
+Use JavaScript::Minifier::XS to minify JS that is inline templates.
+
+=cut
