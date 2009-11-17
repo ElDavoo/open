@@ -3,6 +3,7 @@
 # Send a signal, make sure a job is created
 
 | standard-test-setup |               |                                        |             |
+| set | user1_id | %%user_id%% |
 | set                 | recipient     | recip%%start_time%%@ken.socialtext.net |             |
 | create-user         | %%recipient%% | abc123                                 | %%account%% |
 | set_user_id         | recipient_id  | %%recipient%%                          |             |
@@ -15,7 +16,7 @@
 | code-is         | 201              |                                                                         |                      |
 | post-json       | /data/signals    | {"signal":"Simple Humbles Yes we can! {link: help-en [Start Here]}"}           |                      |
 | code-is         | 201              |                                                                         |                      |
-| post-json       | /data/signals    | {"signal":"Crime Breaking Hi {user: %%user_id%%}"}                      |                      |
+| post-json       | /data/signals    | {"signal":"Crime Breaking Hi {user: %%user1_id%%}"}                      |                      |
 | code-is         | 201              |                                                                         |                      |
 | post-json       | /data/signals    | {"signal":"Belligerant Pickles Check out this site http://awesnob.com"} |                      |
 | code-is         | 201              |                                                                         |                      |
@@ -31,11 +32,11 @@
 
 This matches because the user's Best Full Name is defaulting to the username:
 
-| get       | /data/signals?q=%%username%% | application/json  |
-| code-is   | 200                             |   |
-| json-parse |
-| json-array-size | 1 |
-| body-like | Crime Breaking |
+| get             | /data/signals?q=%%username%% | application/json |
+| code-is         | 200                          |                  |
+| json-parse      |                              |                  |
+| json-array-size | 1                            |                  |
+| body-like       | Crime Breaking               |                  |
 
 | get             | /data/signals?q=link%3Aawesnob | application/json |
 | code-is         | 200                                  |                  |
@@ -86,7 +87,7 @@ This matches because the user's Best Full Name is defaulting to the username:
 # Create a DM, search as recipient
 
 | http-user-pass  | %%recipient%% | abc123                                                     |
-| post-json       | /data/signals | {"signal":"second direct", "recipient":{"id":%%user_id%%}} |
+| post-json       | /data/signals | {"signal":"second direct", "recipient":{"id":%%user1_id%%}} |
 | code-is         | 201           |                                                            |
 | job-count       | SignalIndex   | 1                                                          |
 | st-process-jobs |               |                                                            |
@@ -153,7 +154,7 @@ This matches because the user's Best Full Name is defaulting to the username:
 | http-user-pass | %%username%%           | %%password%%     |
 
 creator, dm_recip
-| get             | /data/signals?q=creator%3A%%user_id%%           | application/json |
+| get             | /data/signals?q=creator%3A%%user1_id%%           | application/json |
 | code-is         | 200                                           |                  |
 | json-parse      |                                               |                  |
 | json-array-size | 6                                             |                  |
@@ -163,13 +164,13 @@ creator, dm_recip
 | body-like       | Belligerant Pickles                           |                  |
 | body-like       | not first public                              |                  |
 | body-like       | first direct                                  |                  |
-| get             | /data/signals?q=creator%3A%%user_id%%+AND+pvt%3A1 | application/json |
+| get             | /data/signals?q=creator%3A%%user1_id%%+AND+pvt%3A1 | application/json |
 | code-is         | 200                                           |                  |
 | json-parse      |                                               |                  |
 | json-array-size | 1                                             |                  |
 | body-like       | first direct                                  |                  |
 
-| get             | /data/signals?q=dm_recip%3A%%user_id%% | application/json |
+| get             | /data/signals?q=dm_recip%3A%%user1_id%% | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
 | json-array-size | 1                                    |                  |
@@ -206,7 +207,7 @@ creator, dm_recip
 | json-array-size | 1                                        |                  |
 | body-like       | how are you |
 
-| get             | /data/signals?q=reply_to%3A%%user_id%% | application/json |
+| get             | /data/signals?q=reply_to%3A%%user1_id%% | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
 | json-array-size | 1                                    |                  |
