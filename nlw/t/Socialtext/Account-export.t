@@ -23,6 +23,10 @@ sub dump_user {
     delete $data->{primary_account_id};
     delete $data->{user_id};
     $data->{profile} = ignore();            # ignore PPL Profile in dumps
+
+    for my $acct ($user->accounts) {
+        $data->{roles}{ $acct->name } = $acct->role_for_user(user => $user)->name;
+    }
     return $data;
 }
 
