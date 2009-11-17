@@ -12,6 +12,3 @@ echo Updating widget gallery
 st-widgets update-gallery --verbose >> $TMP 2>&1
 
 echo logged to $TMP
-
-for i in $MAKEFILES ; do echo Making $i ; pushd `dirname $i` ; make clean all ; popd ; done ;
-st-widgets update-gallery --fork
