@@ -1,4 +1,4 @@
- *Comment* | Test case: Business Control Panel Sorting Set up data | |
+| *Comment* | Test case: Business Control Panel Sorting Set up data |  |
 
 | st-admin | create-account --name "0 sort 1 account %%start_time%%" | was created |
 | st-admin | create-account --name "0 sort 2 account %%start_time%%" | was created |
@@ -136,7 +136,6 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 | text_like | Name |  |
 | text_like | Account |  |
 | text_like | Administrators |  |
-| text_like | Available Workspaces |  |
 | text_like | Create a new workspace |  |
 | text_like | Invite To existing workspace(s) |  |
 
