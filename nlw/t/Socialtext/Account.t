@@ -221,7 +221,7 @@ Import_account: {
     );
     is $account->name, 'Imported account', 'new name was set';
     is $account->workspace_count, 0, "import doesn't import workspace data";
-    users_are($account, [qw/dummy2 dummy3/]);
+    users_are($account, [qw/dummy1 dummy2 dummy3/]);
 
     my $imported_logo_ref = $account->logo->load();
     ok $$imported_logo_ref eq $$logo_ref, 'logo identical on import';
