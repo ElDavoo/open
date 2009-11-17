@@ -34,6 +34,7 @@ sub link_directory {
             (my $to = $from) =~ s{^$fromdir}{$todir};
 
             if (-d $from) {
+                unlink $to if -l $to;
                 if (!-d $to) {
                     warn "Making directory $to\n";
                     unlink $to if -l $to;
