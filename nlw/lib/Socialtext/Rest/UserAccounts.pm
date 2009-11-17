@@ -134,16 +134,15 @@ __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 =head1 NAME
 
-Socialtext::Rest::UserSharedGroups - List the groups a user belongs to
+Socialtext::Rest::UserAccounts - List the accounts a user belongs to & why
 
 =head1 SYNOPSIS
 
-    GET /data/users/:username/groups
+    GET /data/users/:username/accounts
 
 =head1 DESCRIPTION
 
-View the list of groups a user is a member of, or has created.  Caller
-can only see groups they created or are also a member of.  Business admins
-can see all groups.
+View the list of accounts a user is a member of.  Caller can only see groups
+they created or are also a member of.  Business admins can see all groups.
 
 =cut
