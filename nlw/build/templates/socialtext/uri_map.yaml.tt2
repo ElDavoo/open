@@ -346,6 +346,8 @@
             'application/json': [Socialtext::Rest::User, GET_json]
             'text/x-yaml':      [Socialtext::Rest::User, GET_yaml]
             'text/html':        *default
+        'PUT':
+            'application/json': [Socialtext::Rest::User, PUT_json]
         '*':                    [Socialtext::Rest::User, bad_method]
 -
     '/data/users/:username/groups':
