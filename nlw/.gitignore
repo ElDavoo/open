@@ -358,3 +358,4 @@ t/wikitests/control/group_add_to_workspace.wiki
 t/wikitests/control/workspace_groups.wiki
 t/wikitests/control/group_membership.wiki
 .prove
+lib/Socialtext/Pluggable/Plugin/Groups.pm
