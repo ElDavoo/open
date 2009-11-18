@@ -494,6 +494,16 @@
             'application/json': [Socialtext::Rest::Group::Accounts, GET_json]
         '*':                    [Socialtext::Rest::Group::Accounts, bad_method]
 -
+    '/data/groups/:group_id/photo':
+        'GET':
+            '*/*':  &default  [Socialtext::Rest::Group::Photo, GET_photo]
+        '*':                  [Socialtext::Rest::Group::Photo, bad_method]
+-
+    '/data/groups/:group_id/small_photo':
+        'GET':
+            '*/*':  &default  [Socialtext::Rest::Group::Photo, GET_small_photo]
+        '*':                  [Socialtext::Rest::Group::Photo, bad_method]
+-
     '/data/webhooks':
         'GET':
             'application/json': [Socialtext::Rest::WebHooks, GET_json]
