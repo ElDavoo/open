@@ -91,41 +91,55 @@ sub LoadUsers {
         # get the LDAP attribute that contains the e-mail address
         my $mail_attr = $cfg->attr_map->{email_address};
 
-        # query LDAP for User records that have e-mail addresses
-        my $ldap = Socialtext::LDAP->new($cfg);
-        my $page = Net::LDAP::Control::Paged->new(size => $LDAP_PAGE_SIZE);
-        my %args = (
-            base     => $cfg->base(),
-            scope    => 'sub',
-            filter   => "($mail_attr=*)",       # HAS an e-mail address
-            attrs    => [$mail_attr],           # get their e-mails
+        # the basic/unchanging parts of the query that we're going to ask
+        my %query = (
+            attrs    => [$mail_attr],        # get their e-mails
             callback => sub {
                 # gather the e-mails out of the response
                 my ($search, $entry) = @_;
                 push @emails, $entry->get_value($mail_attr) if $entry;
             },
-            control  => [$page],
         );
 
-        while (1) {
-            my $mesg = $ldap->search(%args);
+        # grab Users by "first letter of their e-mail address", so that we
+        # reduce the chance of ever hitting an LDAP hard limit (where it'd
+        # simply be *impossible* for us to ask a single LDAP query to get back
+        # the list of Users, paged or otherwise).  Note, that substring
+        # searches by e-mail should be case IN-sensitive (thankfully).
+        #
+        # Once we're done grabbing the letters we're expecting, we'll need to
+        # do *one last* query to get "anyone else we may have missed"
+        # (basically "anything that wasn't matched by an earlier query").
+        my @ltrs = ('a'..'z', '0'..'9');
+        eval {
+            my $ldap = Socialtext::LDAP->new($cfg);
+            my @clauses;
 
-            # fail/abort on *any* error (play it safe)
-            unless ($mesg) {
-                my $ldap_id = $cfg->id();
-                st_log->error("no response from LDAP server '$ldap_id'; aborting");
-                return;
-            }
-            if ($mesg->code) {
-                my $err = $mesg->error();
-                st_log->error("error while searching for Users, aborting; $err");
-                return;
+            # First, get everyone by the first letter of their e-mail address.
+            foreach my $ltr (@ltrs) {
+                my $filter = "($mail_attr=$ltr*)";
+                push @clauses, $filter;
+
+                $class->_paged_ldap_query(
+                    %query,
+                    ldap   => $ldap,
+                    filter => $filter,
+                );
             }
 
-            # get cookie from paged control so we can get next page of results
-            my ($resp) = $mesg->control(LDAP_CONTROL_PAGED) or last;
-            my $cookie = $resp->cookie() or last;
-            $page->cookie($cookie);
+            # Then, get anyone that didn't match any of the above.
+            local $" = '';
+            my $filter = "(!(|@clauses))";
+            $class->_paged_ldap_query(
+                %query,
+                ldap   => $ldap,
+                filter => $filter,
+            );
+        };
+        if ($@) {
+            my $err = $@;
+            st_log->error($err);
+            return;
         }
     }
 
@@ -160,6 +174,45 @@ sub LoadUsers {
     }
     st_log->info("Successfully loaded $users_loaded out of $total_users total LDAP Users");
     return $users_loaded;
+}
+
+###############################################################################
+# Issue a paged LDAP query.
+sub _paged_ldap_query {
+    my ($class, %opts) = @_;
+    my $ldap   = $opts{ldap}   || die "_paged_ldap_query() requires 'ldap'";
+    my $filter = $opts{filter} || die "_paged_ldap_query() requires 'filter'";
+    my $attrs  = $opts{attrs}  || ['*'];
+    my $callback = $opts{callback} || die "_paged_ldap_query() requires 'callback'";
+
+    my $page = Net::LDAP::Control::Paged->new(size => $LDAP_PAGE_SIZE);
+    my %args = (
+        base     => $ldap->config->base(),
+        scope    => 'sub',
+        filter   => $filter,
+        attrs    => $attrs,
+        callback => $callback,
+        control  => [$page],
+    );
+
+    while (1) {
+        my $mesg = $ldap->search(%args);
+
+        # fail/abort on *any* error (play it safe)
+        unless ($mesg) {
+            my $ldap_id = $ldap->config->id();
+            die "no response from LDAP server '$ldap_id'; aborting\n";
+        }
+        if ($mesg->code) {
+            my $err = $mesg->error();
+            die "error while searching for Users, aborting; $err\n";
+        }
+
+        # get cookie from paged control so we can get next page of results
+        my ($resp) = $mesg->control(LDAP_CONTROL_PAGED) or last;
+        my $cookie = $resp->cookie() or last;
+        $page->cookie($cookie);
+    }
 }
 
 ###############################################################################
