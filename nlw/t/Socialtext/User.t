@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 37;
+use Test::Socialtext tests => 38;
 fixtures(qw( clean db ));
 use Socialtext::User;
 
@@ -40,6 +40,7 @@ my $new_user = Socialtext::User->create(
     email_address => 'devnull1@socialtext.com',
     password      => 'd3vnu11l'
 );
+$new_user->set_technical_admin(1);
 
 is( $new_user->creator->username, 'system-user',
     'Unidentified creators default to system-user.'
@@ -261,4 +262,9 @@ dont_load_workspace: {
     my $loaded = modules_loaded_by('Socialtext::User');
     ok  $loaded->{'Socialtext::User'}, 'ST::User loaded';
     ok !$loaded->{'Socialtext::Workspace'}, '... ST::Workspace lazy-loaded';
+}
+
+AllTechnicalUsers: {
+    my $users = Socialtext::User->AllTechnicalAdmins();
+    is $users->count, 1, 'found 1 technical user!';
 }

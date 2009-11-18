@@ -942,6 +942,18 @@ EOSQL
     }
 }
 
+sub AllTechnicalAdmins {
+    my $class = shift;
+
+    my $sql = <<EOSQL;
+SELECT user_id
+    FROM "UserMetadata"
+    WHERE is_technical_admin
+EOSQL
+
+    return $class->_UserCursor( $sql, [] );
+}
+
 {
     Readonly my $spec => {
         %LimitAndSortSpec,
