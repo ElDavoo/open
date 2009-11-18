@@ -411,7 +411,8 @@ CREATE TABLE event (
     person_id integer,
     tag_name text,
     signal_id bigint,
-    hidden boolean DEFAULT false
+    hidden boolean DEFAULT false,
+    group_id bigint
 );
 
 CREATE TABLE event_archive (
@@ -1123,6 +1124,10 @@ CREATE INDEX ix_event_event_class_action_at
 
 CREATE INDEX ix_event_event_class_at
 	    ON event (event_class, "at");
+
+CREATE INDEX ix_event_for_group
+	    ON event (group_id, "at")
+	    WHERE (event_class = 'group');
 
 CREATE INDEX ix_event_for_page
 	    ON event (page_workspace_id, page_id, "at")
@@ -1842,4 +1847,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '92');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '93');
