@@ -1,4 +1,6 @@
 [%- SWITCH event.action -%]
-    [%- CASE "add" -%]
+    [%- CASE "add_user" -%]
         [%- loc("added [_1] to [_2].", person, group ) -%]
+    [%- CASE "remove_user" -%]
+        [%- loc("removed [_1] from [_2].", person, group ) -%]
 [%- END -%]

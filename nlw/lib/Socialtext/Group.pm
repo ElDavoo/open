@@ -377,10 +377,10 @@ sub _build_account_count {
 
 ###############################################################################
 sub add_user {
-    my $self = shift;
-    my %p    = @_;
-    my $user = $p{user} || croak "cannot add_user without 'user' parameter";
-    my $role = $p{role} || Socialtext::UserGroupRoleFactory->DefaultRole();
+    my $self  = shift;
+    my %p     = @_;
+    my $user  = $p{user} || croak "cannot add_user without 'user' parameter";
+    my $role  = $p{role} || Socialtext::UserGroupRoleFactory->DefaultRole();
     my $actor = $p{actor} || Socialtext::User->SystemUser();
 
     my $ugr = $self->_ugr_for_user($user);
@@ -398,7 +398,7 @@ sub add_user {
     eval {
         Socialtext::Events->Record({
             event_class => 'group',
-            action => 'add',
+            action => 'add_user',
             actor => $actor,
             person => $user,
             group => $self,
@@ -414,11 +414,23 @@ sub remove_user {
     my $self = shift;
     my %p    = @_;
     my $user = $p{user} || croak "cannot remove_user without 'user' parameter";
+    my $actor = $p{actor} || Socialtext::User->SystemUser();
 
     my $ugr = $self->_ugr_for_user($user);
     return unless $ugr;
 
     Socialtext::UserGroupRoleFactory->Delete($ugr);
+
+    eval {
+        Socialtext::Events->Record({
+            event_class => 'group',
+            action => 'remove_user',
+            actor => $actor,
+            person => $user,
+            group => $self,
+        });
+    };
+    warn "Could not log event: $@" if $@;
 }
 
 ###############################################################################

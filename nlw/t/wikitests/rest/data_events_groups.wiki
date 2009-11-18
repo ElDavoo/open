@@ -6,31 +6,55 @@
 | code-is   | 404                        |
 | body-like | not found                  |
 
-| set          | g1     | g1-%%start_time%% |
-| create-group | %%g1%% |                   |
-| set          | g1_id  | %%group_id%%      |
+| set          | g1     | g1-%%start_time%%             |
+| create-group | %%g1%% |                               |
+| set          | g1_id  | %%group_id%%                  |
+| set          | g1_uri | /data/events/groups/%%g1_id%% |
 
 * not authorized to see this group - 403
 
-| GET_json          | /data/events/groups/%%group_id%% |           |
-| code-is           | 403                              |           |
+| GET_json | %%g1_uri%% |
+| code-is  | 403        |
 
-* no events in the group - 200, []
+* group with no events
 
-| add-user-to-group | %%username%%                     | %%g1_id%% |
-| GET_json          | /data/events/groups/%%group_id%% |           |
-| code-is           | 200                              |           |
-| json-parse        |                                  |           |
-| json-array-size   | 1                                |           |
-| body-like         | System User                      |           |
-| body-like | "group":{"name":"%%g1%%","id":"%%g1_id%%","uri":"/?group/%%g1_id%%"} |
-
-| GET       | /data/events/groups/%%group_id%% | text/plain |
-| code-is   | 200                              |            |
-| body-like | System User (less than a minute ago) added user %%start_time%% to %%g1%% |
+| set-business-admin | %%username%% | 1 |
+| GET_json           | %%g1_uri%%   |   |
+| code-is            | 200          |   |
+| json-parse         |              |   |
+| json-array-size    | 0            |   |
 
 * user added to group
+
+| set         | joey     | joey@%%start_time%%.ken.socialtext.net |
+| create-user | %%joey%% | password                               |
+
+| add-user-to-group | %%joey%%    | %%g1_id%% |
+| GET_json          | %%g1_uri%%  |           |
+| code-is           | 200         |           |
+| json-parse        |             |           |
+| json-array-size   | 1           |           |
+| body-like         | System User |           |
+| body-like | "group":{"name":"%%g1%%","id":"%%g1_id%%","uri":"/?group/%%g1_id%%"} |
+
+| GET     | %%g1_uri%% | text/plain |
+| code-is | 200        |            |
+| body-like | System User (less than a minute ago) added joey to %%g1%% |
+
 * user removed from group
+
+| remove-user-from-group | %%joey%% | %%g1_id%% |
+| GET_json          | %%g1_uri%%  |           |
+| code-is           | 200         |           |
+| json-parse        |             |           |
+| json-array-size   | 2           |           |
+
+| GET     | %%g1_uri%% | text/plain |
+| code-is | 200        |            |
+| body-like | System User (less than a minute ago) removed joey from %%g1%% |
+
+
+
 * group added to workspace
 * group removed from workspace
 * group details changed
