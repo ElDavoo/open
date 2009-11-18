@@ -53,6 +53,14 @@ sub plugin_enabled_for_user {
 
     return 1 if ($user->username eq $SystemUsername);
 
+    my $pclass = Socialtext::Pluggable::Adapter->plugin_class($plugin_name);
+    if ($pclass) {
+        if ($pclass->scope eq 'always') {
+            $cache->set($cache_key, 1);
+            return 1;
+        }
+    }
+
     my $sql = <<SQL;
         SELECT 1 
         FROM account_user JOIN account_plugin USING (account_id)
