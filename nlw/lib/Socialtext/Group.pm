@@ -6,12 +6,14 @@ use Carp qw(croak);
 use List::Util qw(first);
 use Socialtext::AppConfig;
 use Socialtext::Cache;
+use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
 use Socialtext::Timer;
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::Pluggable::Adapter;
+use Socialtext::User;
 use Socialtext::UserGroupRoleFactory;
 use Socialtext::GroupAccountRoleFactory;
 use Socialtext::GroupWorkspaceRoleFactory;
@@ -379,6 +381,7 @@ sub add_user {
     my %p    = @_;
     my $user = $p{user} || croak "cannot add_user without 'user' parameter";
     my $role = $p{role} || Socialtext::UserGroupRoleFactory->DefaultRole();
+    my $actor = $p{actor} || Socialtext::User->SystemUser();
 
     my $ugr = $self->_ugr_for_user($user);
     if ($ugr) {
@@ -391,6 +394,17 @@ sub add_user {
             role_id  => $role->role_id,
         } );
     }
+
+    eval {
+        Socialtext::Events->Record({
+            event_class => 'group',
+            action => 'add',
+            actor => $actor,
+            person => $user,
+            group => $self,
+        });
+    };
+    warn "Could not log event: $@" if $@;
 
     return $ugr;
 }
