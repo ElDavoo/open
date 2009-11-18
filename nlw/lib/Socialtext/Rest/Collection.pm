@@ -108,25 +108,23 @@ sub _make_getter {
         })};
         Socialtext::Timer->Pause("GET_$content_type");
         if (my $e = $@) {
-            if (Exception::Class->caught('Socialtext::Exception::Auth')) {
-                return $self->not_authorized;
+            my %error_handlers = (
+                'Auth'           => sub { $self->not_authorized },
+                'NotFound'       => sub { $self->http_404($rest) },
+                'NoSuchResource' => sub { $self->no_resource($e->name) },
+            );
+            for my $class_type (keys %error_handlers) {
+                my $class = 'Socialtext::Exception::' . $class_type;
+                if (Exception::Class->caught($class)) {
+                    return $error_handlers{$class_type}->();
+                }
             }
-            elsif (Exception::Class->caught('Socialtext::Exception::NotFound')){
-                return $self->http_404($rest);
-            }
-            elsif (Exception::Class->caught(
-                    'Socialtext::Exception::NoSuchWorkspace')) 
-            {
-                return $self->no_workspace($e->name);
-            }
-            elsif (Exception::Class->caught('Socialtext::Exception')) {
-                $e->rethrow;
-            }
-            else {
-                # Rely on error thrower to set HTTP headers properly.
-                my ($error) = split "\n", $e; # first line only
-                st_log->info("Rest Collection Error: $e");
-            }
+            $e->rethrow if Exception::Class->caught('Socialtext::Exception');
+
+            # Rely on error thrower to set HTTP headers properly.
+            my ($error) = split "\n", $e; # first line only
+            st_log->info("Rest Collection Error: $e");
+            warn "Rest Collection Error: $e\n";
         }
 
         return $rv;

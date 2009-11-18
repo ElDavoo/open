@@ -315,14 +315,28 @@ Informs the client that we can't operate because no valid workspace
 was created from the provided URI.
 
 =cut
+
 sub no_workspace {
     my $self = shift;
     my $ws = shift || $self->ws;
+    return $self->no_resource($ws);
+}
+
+=head2 no_resource()
+
+Informs the client that we can't operate because no valid resource
+was created or found from the provided URI.
+
+=cut
+
+sub no_resource {
+    my $self = shift;
+    my $resource_name = shift;
     $self->rest->header(
         -status => HTTP_404_Not_Found,
         -type   => 'text/plain',
     );
-    return $ws . ' not found';
+    return "$resource_name not found";
 }
 
 sub page_lock_permission_fail {

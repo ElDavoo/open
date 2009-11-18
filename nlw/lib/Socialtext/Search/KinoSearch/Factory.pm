@@ -84,7 +84,7 @@ sub search_on_behalf {
         };
         if (my $e = $@) {
             die $e unless ref $e;
-            if ($e->isa('Socialtext::Exception::NoSuchWorkspace')) {
+            if ($e->isa('Socialtext::Exception::NoSuchResource')) {
                 $e->rethrow unless defined $no_such_ws_handler;
                 $no_such_ws_handler->($e);
             }

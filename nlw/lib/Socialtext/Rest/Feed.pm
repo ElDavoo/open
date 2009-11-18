@@ -55,7 +55,7 @@ sub GET {
         Socialtext::Timer->Pause('GET_feed_as_xml');
     };
 
-    if (Exception::Class->caught('Socialtext::Exception::NoSuchPage')) {
+    if (Exception::Class->caught('Socialtext::Exception::NoSuchResource')) {
         $rest->header(
             -status => HTTP_404_Not_Found,
         );

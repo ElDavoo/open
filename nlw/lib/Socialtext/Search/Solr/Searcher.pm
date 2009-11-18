@@ -198,7 +198,7 @@ sub _sort_opts {
     return ('sort' => "$sortable{$order} $direction, $sec_sort");
 }
 
-# Either do nothing if the query's authorized, or throw NoSuchWorkspace or
+# Either do nothing if the query's authorized, or throw NoSuchResource or
 # Auth.
 sub _authorize {
     my ( $self, $query, $authorizer ) = @_;

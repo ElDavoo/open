@@ -7,7 +7,7 @@ use base 'Socialtext::Query::Plugin';
 
 use Class::Field qw( const );
 use Socialtext::AppConfig;
-use Socialtext::Exceptions qw( no_such_page_error );
+use Socialtext::Exceptions qw( no_such_resource_error );
 use Socialtext::Search 'search_on_behalf';
 use Socialtext::Syndicate::Feed;
 use Socialtext::Timer;
@@ -220,7 +220,7 @@ sub _syndicate_page_named {
 
     my $page = $self->hub->pages->new_from_name($name);
 
-    no_such_page_error name => $name, error => "$name does not exist"
+    no_such_resource_error name => $name, error => "$name does not exist"
         unless $page->active;
 
     Socialtext::Timer->Continue('_syndicate_page_named');

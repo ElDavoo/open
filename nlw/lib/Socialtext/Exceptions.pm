@@ -62,18 +62,11 @@ BEGIN {
             description => 'Search took too long.',
         },
 
-        'Socialtext::Exception::NoSuchPage' => {
+        'Socialtext::Exception::NoSuchResource' => {
             isa         => 'Socialtext::Exception',
-            alias       => 'no_such_page_error',
+            alias       => 'no_such_resource_error',
             fields      => [qw( name )],
-            description => 'An attempt to access a non-existent page'
-        },
-
-        'Socialtext::Exception::NoSuchWorkspace' => {
-            isa         => 'Socialtext::Exception',
-            alias       => 'no_such_workspace_error',
-            fields      => [qw( name )],
-            description => 'An attempt to access a non-existent workspace'
+            description => 'An attempt to access a non-existent resource'
         },
 
         'Socialtext::Exception::NotFound' => {
@@ -155,6 +148,8 @@ __END__
 Socialtext::Exceptions - The great new Socialtext::Exceptions!
 
 =head1 SYNOPSIS
+
+  Socialtext::Exception::NoSuchResource->throw(name => $name)
 
 =head1 EXPORT
 

@@ -160,7 +160,7 @@ sub _make_authorizer {
                 permission => ST_READ_PERM,
                 workspace  => $workspace );
         } else {
-            Socialtext::Exception::NoSuchWorkspace->throw(
+            Socialtext::Exception::NoSuchResource->throw(
                 name => $workspace_name );
         }
     };

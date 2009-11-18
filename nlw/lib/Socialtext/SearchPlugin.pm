@@ -249,7 +249,7 @@ sub search_for_term {
                     'search_help_field.html',
                 )
             );
-        } elsif ($@->isa('Socialtext::Exception::NoSuchWorkspace')) {
+        } elsif ($@->isa('Socialtext::Exception::NoSuchResource')) {
             $self->error_message(
                   "You tried to search on the workspace named '"
                 . $@->name

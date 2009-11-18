@@ -150,7 +150,7 @@ sub extract_page_args {
         my @names = split(',', $workspace_name);
         for my $name (@names) {
             my $ws = Socialtext::Workspace->new(name => $name);
-            Socialtext::Exception::NoSuchWorkspace->throw(name => $name)
+            Socialtext::Exception::NoSuchResource->throw(name => $name)
                 unless $ws;
             push @workspace_ids, $ws->workspace_id;
         }
