@@ -2453,9 +2453,8 @@ sub index_people {
         $self->_error(loc("The People plugin is not installed."));
     }
 
-    require Socialtext::People::Profile;
-    my $count = Socialtext::People::Profile->IndexPeople();
-    $self->_success( "Created $count PersonIndex jobs." );
+    Socialtext::JobCreator->insert('Socialtext::Job::Upgrade::ReindexPeople');
+    $self->_success( "Scheduled people for re-indexing." );
 }
 
 sub send_email_notifications {
@@ -2733,6 +2732,26 @@ sub set_customjs {
             '.'
         );
     }
+}
+
+sub rebuild_pagelinks {
+    my $self = shift;
+
+    my %opts = $self->_get_options( 'workspace:s' );
+    $self->_error('You must specify a workspace')
+        if (!$opts{workspace});
+    my $workspace = $self->_load_workspace($opts{workspace});
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::Upgrade::RebuildPageLinks',
+        {
+            workspace_id => $workspace->workspace_id,
+        },
+    );
+
+    my $ws_name = $workspace->name;
+    $self->_success("A job has been created to rebuild page links for the "
+        . "$ws_name workspace.");
 }
 
 sub invite_user {
@@ -3494,6 +3513,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   customjs --workspace
   set-customjs --workspace [--uri or --name]
   clear-customjs --workspace
+  rebuild-pagelinks --workspace
 
   INDEXING
 
@@ -3848,6 +3868,10 @@ Set the URI or name for the custom Javascript for a workspace.
 =head2 customjs --workspace
 
 Show the URI or name for the custom Javascript assigned to a workspace.
+
+=head2 rebuild-pagelinks --workspace
+
+Re-create the backlinks for the specified workspace.
 
 =head2 html-archive --workspace --file
 
