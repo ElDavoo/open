@@ -1,0 +1,30 @@
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+| GET_json  | /data/events/groups/999999 |
+| code-is   | 404                        |
+| body-like | not found                  |
+
+| set          | g1     | g1-%%start_time%% |
+| create-group | %%g1%% |                   |
+| set          | g1_id  | %%group_id%%      |
+
+* not authorized to see this group - 403
+
+| GET_json          | /data/events/groups/%%group_id%% |           |
+| code-is           | 403                              |           |
+
+* no events in the group - 200, []
+
+| add-user-to-group | %%username%%                     | %%g1_id%% |
+| GET_json          | /data/events/groups/%%group_id%% |           |
+| code-is           | 200                              |           |
+| json-parse        |                                  |           |
+| json-array-size   | 0                                |           |
+
+* user added to group
+* user removed from group
+* group added to workspace
+* group removed from workspace
+* group details changed
