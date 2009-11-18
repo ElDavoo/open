@@ -183,17 +183,17 @@ sub _searched_pages {
 
     Socialtext::Timer->Continue('searched_pages');
 
-    my @page_ids;
+    my %page_ids_by_workspace;
     eval { 
         my ($hits, $count) = search_on_behalf(
                 $self->hub->current_workspace->name,
                 $search_query,
-                undef,    # undefined scope
+                ($self->rest->query->param('scope') || '_'),
                 $self->hub->current_user
             );
-        @page_ids = map { $_->page_uri }
-            grep { $_->isa('Socialtext::Search::PageHit') } 
-                @$hits;
+        for my $hit (grep { $_->isa('Socialtext::Search::PageHit') } @$hits) {
+            push @{$page_ids_by_workspace{$hit->workspace_name} ||= []}, $hit->page_uri;
+        }
     };
     if ($@ and $@->isa('Socialtext::Exception::TooManyResults')) {
         if ($self->{_content_type} ne 'application/json') {
@@ -206,20 +206,25 @@ sub _searched_pages {
         return ();
     }
 
-    my $pages = Socialtext::Model::Pages->By_id(
-        hub              => $self->hub,
-        workspace_id     => $self->hub->current_workspace->workspace_id,
-        page_id          => \@page_ids,
-    );
+    my @all_pages;
+    for my $workspace_name (sort keys %page_ids_by_workspace) {
+        my $wksp = Socialtext::Workspace->new( name => $workspace_name ) or next;
+        my $pages = Socialtext::Model::Pages->By_id(
+            hub              => $self->hub,
+            workspace_id     => $wksp->workspace_id,
+            page_id          => $page_ids_by_workspace{$workspace_name}
+        );
 
+        if (ref $pages eq 'ARRAY') {
+            push @all_pages, @$pages;
+        }
+        else {
+            push @all_pages, $pages;
+        }
+    }
 
     Socialtext::Timer->Pause('searched_pages');
-    if (ref $pages eq 'ARRAY') {
-        return @$pages;
-    }
-    else {
-        return $pages;
-    }
+    return @all_pages;
 }
 
 sub _hub_for_hit {
