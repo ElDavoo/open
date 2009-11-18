@@ -1,0 +1,4 @@
+[%- SWITCH event.action -%]
+    [%- CASE "add" -%]
+        [%- loc("added [_1] to [_2].", person, group ) -%]
+[%- END -%]

@@ -24,6 +24,8 @@
     [%- END %]
     [%- MACRO workspace BLOCK -%]<a href="[% event.page.workspace_uri %]">[% event.page.workspace_title %]</a>
     [%- END -%]
+    [%- MACRO group BLOCK -%]<a href="[% event.group.uri %]">[% event.group.name %]</a>
+    [%- END -%]
     [%- MACRO ago BLOCK -%]
         [%- UNLESS miki -%]
             <span class="ago_raw" style="display:none">[% event.at %]</span>
@@ -37,6 +39,7 @@
     [%- MACRO person_tag GET event.tag_name %]
     [%- MACRO page GET event.page.name %]
     [%- MACRO workspace GET event.page.workspace_title %]
+    [%- MACRO group GET event.group.name %]
     [%- MACRO ago BLOCK -%] ([% ago_text(minutes_ago(event.at)) %]) [%- END -%]
 [%- END -%]
 

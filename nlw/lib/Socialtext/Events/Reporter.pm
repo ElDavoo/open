@@ -208,6 +208,22 @@ sub _extract_signal {
     $row->{context}{body} = $parser->parse($row->{context}{body});
 }
 
+sub _extract_group {
+    my $self = shift;
+    my $row = shift;
+    return unless $row->{group_id};
+    my $group_id = $row->{group_id};
+    my $group = Socialtext::Group->GetGroup(driver_unique_id => $group_id);
+    $row->{group} = {
+        name => $group->display_name,
+        id => $group_id,
+        uri => $self->link_dictionary->format_link(
+            link => 'group',
+            group_id => $group_id,
+        ),
+    };
+}
+
 sub decorate_event_set {
     my $self = shift;
     my $sth = shift;
@@ -220,6 +236,7 @@ sub decorate_event_set {
         $self->_extract_page($row);
         $self->_expand_context($row);
         $self->_extract_signal($row);
+        $self->_extract_group($row);
         $self->_extract_tag($row);
 
         delete $row->{person}
@@ -247,7 +264,8 @@ my $FIELDS = <<'EOSQL';
     w.name AS page_workspace_name,
         w.title AS page_workspace_title,
     tag_name AS tag_name,
-    context AS context
+    context AS context,
+    group_id AS group_id
 EOSQL
 
 my $SIGNAL_VIS_SQL = <<'EOSQL';

@@ -21,7 +21,13 @@
 | GET_json          | /data/events/groups/%%group_id%% |           |
 | code-is           | 200                              |           |
 | json-parse        |                                  |           |
-| json-array-size   | 0                                |           |
+| json-array-size   | 1                                |           |
+| body-like         | System User                      |           |
+| body-like | "group":{"name":"%%g1%%","id":"%%g1_id%%","uri":"/?group/%%g1_id%%"} |
+
+| GET       | /data/events/groups/%%group_id%% | text/plain |
+| code-is   | 200                              |            |
+| body-like | System User (less than a minute ago) added user %%start_time%% to %%g1%% |
 
 * user added to group
 * user removed from group
