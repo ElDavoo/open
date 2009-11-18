@@ -142,8 +142,8 @@ MASS_ADD_USERS: {
             '... last_name was updated';
         ok $user->password_is_correct('u_passw0rd'),
             '... password was updated';
-        is $user->primary_account->account_id, $acct->account_id,
-            'mass updated user changed account';
+        is $acct->role_for_user(user => $user)->name, 'member',
+            'mass updated user added to account';
 
         SKIP: {
             skip('Socialtext People is not installed', 2)
