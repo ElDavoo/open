@@ -158,7 +158,6 @@
          */
         var left = $(this.input).offset().left;
         var top = $(this.input).offset().top + $(this.input).height() + 10;
-        var width = $(this.input).width();
 
         if (this.window !== window) {
             // XXX: container specific
@@ -191,14 +190,7 @@
 
         }
 
-        // Expand width to largest entry
-        $('li a', this.lookahead).each(function() {
-            if (width < $(this).width() + 20)
-                width = $(this).width() + 20;
-        });
-
         this.lookahead.css({
-            width: width + 'px',
             left: left + 'px',
             top: top + 'px'
         });
@@ -271,7 +263,10 @@
                         .appendTo(li);
                 }
                 self.$('<a href="#"></a>')
-                    .css('margin-left', '5px')
+                    .css({
+                        marginLeft: '5px',
+                        whiteSpace: 'nowrap'
+                    })
                     .html(item.bolded_title)
                     .attr('value', i)
                     .click(function() {
