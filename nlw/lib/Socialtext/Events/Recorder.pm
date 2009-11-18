@@ -27,6 +27,7 @@ sub _unbox_objects {
     _translate_ref_to_id($p, 'workspace' => 'workspace_id');
     _translate_ref_to_id($p, 'target_workspace' => 'workspace_id');
     _translate_ref_to_id($p, 'target_page' => 'id');
+    _translate_ref_to_id($p, 'group' => 'group_id');
 
     # signal
     _translate_ref_to_id($p, 'signal' => 'signal_id');
@@ -71,6 +72,9 @@ sub _validate_insert_params {
         ) {
             die "body missing from context for signal event";
         }
+    }
+    elsif ($class eq 'group') {
+        die "group parameter is missing for group event" unless $p->{group};
     }
     else {
         die "must specify a both a page and a workspace OR leave both blank"
@@ -131,6 +135,7 @@ sub record_event {
         [ signal_id         => $p->{signal},      '?', ],
         [ tag_name          => $p->{tag_name},    '?', ],
         [ context           => $p->{context},     '?', ],
+        [ group_id          => $p->{group},       '?', ],
     );
 
     my $fields = join(', ', map {$_->[0]} @ins_map);
