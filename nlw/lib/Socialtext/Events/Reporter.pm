@@ -758,6 +758,26 @@ sub get_events_activities {
     return $evs;
 }
 
+sub get_events_group_activities {
+    my $self     = shift;
+    my $group    = shift;
+    my $group_id = $group->group_id;
+    my $opts     = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+
+    Socialtext::Timer->Continue('get_gactivity');
+
+    $self->add_condition(
+        q{event_class = 'group' AND group_id = ?}, $group_id
+    );
+
+    local $self->{_skip_standard_opts} = 1;
+    my $evs = $self->_get_events(@_);
+    Socialtext::Timer->Pause('get_gactivity');
+
+    return @$evs if wantarray;
+    return $evs;
+}
+
 sub _conversations_where {
     my $visible_ws = shift || $VISIBLE_WORKSPACES;
     return qq{
