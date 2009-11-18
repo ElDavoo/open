@@ -101,11 +101,15 @@ TODO: verify cannot actually issue invitations via URL
 | *Comment* | Test Case: Invite people. Verify the invitations |  |
 | text_like | Invite people to %%acct%% |  |
 | text_like | qr/The following 1 user was already a member of this Network:\s+%%eacct_user%%/ |  |
-| text_like | qr/The following 1 user was successfully invited into this Network:\s+%%eto_ws_user%%/ |  |
-| text_like | qr/The following 1 user was already a member of another Network:\s+%%eguest%%/ |  |
+| text_like | qr/The following 2 users were successfully invited into this Network:\s+%%eguest%%\s+%%eto_ws_user%%/ |  |
 | text_like | qr/The following 1 email address was invalid:\s+foo2bar.com/ |  |
 | click_and_wait | link=Invite more people |  |
 | text_like | Invite people to your network |  |
+
+| *Comment* | Test Case: Invite people. Check /control to make sure guest's account has not changed |  |
+| open_ok | /nlw/control/user?username=guest |
+| wait_for_element_visible_ok | link=Socialtext | 30000 |
+| pause | 60000 |
 
 | *Comment* | Test Case: Invite people. login as %%email%% so you can see the confirmation email |  |
 | st-logoutin |  |  |
