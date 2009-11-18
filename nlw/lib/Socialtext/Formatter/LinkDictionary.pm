@@ -133,6 +133,14 @@ field people_photo => '/data/people/%{user_id}/photo';
 field people_photo_small => '/data/people/%{user_id}/small_photo';
 field people_tag => '/?action=people;tag=%{tag_name}';
 
+=head2 group links
+
+{group_link} links to a group's profile.
+
+=cut
+
+field group => '/?group/%{group_id}';
+
 =head1 METHODS
 
 =head2 new
