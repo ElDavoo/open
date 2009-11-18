@@ -953,6 +953,18 @@ sub post_json {
     $self->post($uri, 'Content-Type=application/json', @_);
 }
 
+=head2 get_json( uri )
+
+GET the specified URI with header 'Content-Type=application/json'
+
+=cut
+
+sub get_json {
+    my $self = shift;
+    my $uri = shift;
+    $self->get($uri, 'application/json');
+}
+
 =head2 post_form( uri, body )
 
 Post to the specified URI with header 'Content-Type=application/x-www-form-urlencoded'
@@ -1222,6 +1234,9 @@ sub json_parse {
     $self->{json} = eval { decode_json($content) };
     ok !$@ && defined $self->{json} && ref($self->{json}) =~ /^ARRAY|HASH$/,
         $self->{http}->name . " parsed content" . ($@ ? " \$\@=$@" : "");
+    unless (defined $self->{json}) {
+        warn "Bad content: '$content'\n";
+    }
 }
 
 =head2 json-like
