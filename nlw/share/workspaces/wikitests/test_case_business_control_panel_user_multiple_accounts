@@ -1,0 +1,20 @@
+| *Comment* | Test Case: Business Control Panel User Multiple Accounts |
+
+| *Comment* | Test Case: Business Control Panel User Multiple Accounts Global Vars |  |
+| set | primacct | bcp-primacct-%%start_time%% |
+| set | acct2 | bcp-ma-acct2-%%start_time%% |
+| set | acct3 | bcp-ma-acct3-%%start_time%% |
+| set | newuser | bcp-ma-%%start_time%%@matt.socialtext.net |
+
+| *Comment* | Test Case: Business Control Panel User Multiple Accounts Setup |  |  |
+| create-account | %%primacct%% |  |  |
+| create-account | %%acct2%% |  |  |
+| create-account | %%acct3%% |  |  |
+| create-user | %%newuser%% | %%password%% | %%primacct%% |
+| set | userid | %%user_id%% |  |
+
+| *Comment* | Test Case: Business Control Panel User Multiple Accounts Find user |
+
+| *Comment* | Test Case: Business Control Panel User Multiple Accounts |
+
+| *Comment* | Test Case: Business Control Panel User Multiple Accounts COMPLETED |
