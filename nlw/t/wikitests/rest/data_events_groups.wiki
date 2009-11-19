@@ -78,4 +78,9 @@
 | code-is | 200        |            |
 | body-like | User (less than a minute ago) removed %%g1%% from %%workspace%% |
 
+^ Later on ...
+
 * group details changed
+* adding group to an account
+* removing group from an account
+
