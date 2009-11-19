@@ -33,6 +33,7 @@ use MIME::Types;
 use Socialtext;
 use Socialtext::AppConfig;
 use Socialtext::EmailAlias;
+use Socialtext::Events;
 use Socialtext::File;
 use Socialtext::File::Copy::Recursive qw(dircopy);
 use Socialtext::Helpers;
@@ -1428,7 +1429,8 @@ sub add_group {
     my $self  = shift;
     my %p     = @_;
     my $group = $p{group} || croak "can't add_group without a 'group'";
-    my $role  = $p{role}  || Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
+    my $role  = $p{role}  || Socialtext::GroupWorkspaceRoleFactory->DefaultRole;
+    my $actor = $p{actor} || Socialtext::User->SystemUser;
 
     my $gwr = $self->_gwr_for_group($group);
     if ($gwr) {
@@ -1441,6 +1443,19 @@ sub add_group {
             role_id      => $role->role_id,
         } );
     }
+
+    eval {
+        Socialtext::Events->Record({
+            event_class => 'group',
+            action => 'add_to_workspace',
+            actor => $actor,
+            group => $group,
+            context => {
+                workspace_id => $self->workspace_id,
+            },
+        });
+    };
+    warn "Could not log event: $@" if $@;
     return $gwr;
 }
 
@@ -1448,11 +1463,25 @@ sub remove_group {
     my $self  = shift;
     my %p     = @_;
     my $group = $p{group} || croak "can't remove_group without a 'group'";
+    my $actor = $p{actor} || Socialtext::User->SystemUser;
 
     my $gwr = $self->_gwr_for_group($group);
     return unless $gwr;
 
     Socialtext::GroupWorkspaceRoleFactory->Delete($gwr);
+
+    eval {
+        Socialtext::Events->Record({
+            event_class => 'group',
+            action => 'remove_from_workspace',
+            actor => $actor,
+            group => $group,
+            context => {
+                workspace_id => $self->workspace_id,
+            },
+        });
+    };
+    warn "Could not log event: $@" if $@;
 }
 
 sub has_group {

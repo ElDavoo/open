@@ -222,6 +222,18 @@ sub _extract_group {
             group_id => $group_id,
         ),
     };
+
+    if (my $ws_id = $row->{context}{workspace_id}) {
+        my $wksp = Socialtext::Workspace->new(workspace_id => $ws_id);
+        return unless $wksp;
+        $row->{page} = {
+            workspace_uri => $self->link_dictionary->format_link(
+                link => 'interwiki',
+                workspace => $wksp->name,
+            ),
+            workspace_title => $wksp->title,
+        };
+    }
 }
 
 sub decorate_event_set {

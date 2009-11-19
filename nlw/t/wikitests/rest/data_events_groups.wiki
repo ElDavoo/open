@@ -53,8 +53,29 @@
 | code-is | 200        |            |
 | body-like | System User (less than a minute ago) removed joey from %%g1%% |
 
-
-
 * group added to workspace
+
+| add-group-to-workspace | %%g1_id%% | %%workspace%% |
+| GET_json          | %%g1_uri%%  |           |
+| code-is           | 200         |           |
+| json-parse        |             |           |
+| json-array-size   | 3           |           |
+
+| GET     | %%g1_uri%% | text/plain |
+| code-is | 200        |            |
+| body-like | User (less than a minute ago) added %%g1%% to %%workspace%% |
+
 * group removed from workspace
+
+
+| remove-group-from-workspace | %%g1_id%% | %%workspace%% |
+| GET_json          | %%g1_uri%%  |           |
+| code-is           | 200         |           |
+| json-parse        |             |           |
+| json-array-size   | 4           |           |
+
+| GET     | %%g1_uri%% | text/plain |
+| code-is | 200        |            |
+| body-like | User (less than a minute ago) removed %%g1%% from %%workspace%% |
+
 * group details changed

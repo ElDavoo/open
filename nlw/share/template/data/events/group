@@ -3,4 +3,8 @@
         [%- loc("added [_1] to [_2].", person, group ) -%]
     [%- CASE "remove_user" -%]
         [%- loc("removed [_1] from [_2].", person, group ) -%]
+    [%- CASE "add_to_workspace" -%]
+        [%- loc("added [_1] to [_2].", group, workspace ) -%]
+    [%- CASE "remove_from_workspace" -%]
+        [%- loc("removed [_1] from [_2].", group, workspace ) -%]
 [%- END -%]
