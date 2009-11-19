@@ -20,7 +20,7 @@ has 'default_path' => (
 
 sub _build_default_path {
     my $self = shift;
-    my $img = ($self->size eq 'large') ? 'bigAvatar.png' : 'avatar.png';
+    my $img = ($self->size eq 'large') ? 'groupLarge.png' : 'groupSmall.png';
 
     # get the path to the image, on *disk*
     my $skin = Socialtext::Skin->new( name => 'common' );
