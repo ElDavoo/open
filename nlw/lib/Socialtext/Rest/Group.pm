@@ -22,6 +22,7 @@ sub get_resource {
                                     or $group->creator->user_id == $user->user_id) {
         return $group->to_hash(
             show_members => $rest->query->param('show_members') ? 1 : 0,
+            show_admins => $rest->query->param('show_admins') ? 1 : 0,
         );
     }
     return undef;

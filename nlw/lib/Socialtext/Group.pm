@@ -333,6 +333,16 @@ sub GetProtoGroup {
 use constant base_package => __PACKAGE__;
 
 ###############################################################################
+sub user_roles {
+    my $self = shift;
+    my $id_only = shift;
+
+    return Socialtext::UserGroupRoleFactory->ByGroupId(
+        $self->group_id, sub { shift },
+    );
+}
+
+###############################################################################
 sub users {
     my $self = shift;
     my $id_only = shift;
@@ -484,7 +494,10 @@ sub to_hash {
     };
 
     if ($opts{show_members}) {
-        $hash->{members} = $self->users_as_minimal_arrayref;
+        $hash->{members} = $self->users_as_minimal_arrayref('member');
+    }
+    if ($opts{show_admins}) {
+        $hash->{admins} = $self->users_as_minimal_arrayref('admin');
     }
 
     return $hash;
@@ -492,11 +505,15 @@ sub to_hash {
 
 sub users_as_minimal_arrayref {
     my $self = shift;
+    my $role_name = shift;
 
     my $members = [];
-    my $user_cursor = $self->users;
-    while (my $u = $user_cursor->next) {
-        push @$members, $u->to_hash(minimal => 1);
+    my $ugr_cursor = $self->user_roles;
+    while (my $ugr = $ugr_cursor->next) {
+        next if $role_name and $role_name ne $ugr->role->name;
+        my $hash = $ugr->user->to_hash(minimal => 1);
+        $hash->{role} = $ugr->role->name;
+        push @$members, $hash;
     }
     return $members;
 }
