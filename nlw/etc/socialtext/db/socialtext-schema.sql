@@ -350,8 +350,9 @@ CREATE TABLE container (
     name text DEFAULT '' NOT NULL,
     page_id text,
     layout_template text,
+    group_id bigint,
     CONSTRAINT container_scope_ptr
-            CHECK ((((((user_id IS NOT NULL) AND (account_id IS NULL)) AND (workspace_id IS NULL)) AND (page_id IS NULL)) OR ((((user_id IS NULL) AND (account_id IS NOT NULL)) AND (workspace_id IS NULL)) AND (page_id IS NULL))) OR (((user_id IS NULL) AND (account_id IS NULL)) AND (workspace_id IS NOT NULL)))
+            CHECK ((((((((user_id IS NOT NULL) AND (account_id IS NULL)) AND (group_id IS NULL)) AND (workspace_id IS NULL)) AND (page_id IS NULL)) OR (((((user_id IS NULL) AND (account_id IS NOT NULL)) AND (group_id IS NULL)) AND (workspace_id IS NULL)) AND (page_id IS NULL))) OR (((((user_id IS NULL) AND (account_id IS NULL)) AND (group_id IS NOT NULL)) AND (workspace_id IS NULL)) AND (page_id IS NULL))) OR ((((user_id IS NULL) AND (account_id IS NULL)) AND (group_id IS NULL)) AND (workspace_id IS NOT NULL)))
 );
 
 CREATE SEQUENCE container_id
@@ -1093,6 +1094,9 @@ CREATE INDEX ix_container_account_id
 CREATE INDEX ix_container_container_type
 	    ON container (container_type);
 
+CREATE INDEX ix_container_group_id
+	    ON container (group_id);
+
 CREATE INDEX ix_container_user_id
 	    ON container (user_id);
 
@@ -1425,6 +1429,11 @@ ALTER TABLE ONLY container
     ADD CONSTRAINT container_account_id_fk
             FOREIGN KEY (account_id)
             REFERENCES "Account"(account_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY container
+    ADD CONSTRAINT container_group_id_fk
+            FOREIGN KEY (group_id)
+            REFERENCES groups(group_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY container
     ADD CONSTRAINT container_page_id_fk
