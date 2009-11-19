@@ -4384,3 +4384,18 @@ body#dashBoard div#controls div#controlsRight ul {
 table.st-ss th span {
     display: none !important;
 }
+
+.groupsTitle {
+    position: static;
+    margin-top: 18px;
+    margin-left: 5px;
+}
+
+.groupsTitle .prefix {
+    background:#333;
+    color:#fff;
+    text-transform: uppercase;
+    margin-right:1em;
+    font-size: 10pt;
+    padding: 1px 5px;
+}
