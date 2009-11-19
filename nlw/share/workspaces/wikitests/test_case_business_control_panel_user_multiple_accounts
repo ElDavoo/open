@@ -14,7 +14,15 @@
 | set | userid | %%user_id%% |  |
 
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts Find user |
+| st-search-cp-users | %%start_time%% |  |
+| wait_for_element_visible_ok | link=%%primacct%% | 30000 |
 
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts |
+| open_ok | /nlw/control/user/%%user_id%% |  |
+| wait_for_text_present_ok | Add User to Account: | 30000 |
+| wait_for_element_visible_ok | addAccountLookahead | 30000 |
+| type_lookahead_ok | type_lookahead_ok | %%acct2%% |
+| wait_for_element_visible_ok | link=%%acct2%% | 30000 |
+| click_ok | link=%%acct2%% |  |
 
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts COMPLETED |

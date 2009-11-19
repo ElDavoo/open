@@ -275,6 +275,25 @@ sub st_search_for {
     $self->handle_command('click_ok','st-search-submit');
 }
 
+=head2 st_search_cp_users($searchfor)
+
+Control panel (USER) search automation
+
+For Future Work:
+Consdier adding second parameter, 'element', to cover 'groups','accounts','workspaces' etc.
+
+=cut
+
+sub st_search_cp_users {
+    my ($self, $searchfor) = @_;
+    $self->handle_command('open_ok', '/nlw/control/user');
+    $self->handle_command('wait_for_element_visible_ok','username',30000);
+    $self->handle_command('wait_for_element_visible_ok','st-username-search-submit',30000);
+    $self->handle_command('type_ok','username',$searchfor);
+    $self->handle_command('click_and_wait','st-username-search-submit');
+    my $str = "Users matching " . '"' . $searchfor . '"';
+    $self->handle_command('wait_for_text_present_ok',$searchfor,30000);
+}
 
 sub create_account {
     my $self = shift;
