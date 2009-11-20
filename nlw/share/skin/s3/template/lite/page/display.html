@@ -16,7 +16,7 @@
             <p>[% loc('Attachments for this page:') %]</p>
             <ul>
                 [% FOREACH row = attachments %]
-                    <li><a href="/[% ws.name %]/index.cgi/[% row.filename | uri %]?action=attachments_download;page_name=[% page.uri %];id=[% row.id %]">[% row.filename | html %]</a></li>
+                    <li><a href="/data/workspaces/[% ws.name %]/attachments/[% page.uri %]:[% row.id %]/original/[% row.filename | uri %]">[% row.filename | html %]</a></li>
                 [% END %]
             </ul>
         </div>
