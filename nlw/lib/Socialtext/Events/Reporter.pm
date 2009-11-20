@@ -796,9 +796,27 @@ sub get_events_group_activities {
 
     Socialtext::Timer->Continue('get_gactivity');
 
-    $self->add_condition(
-        q{event_class = 'group' AND group_id = ?}, $group_id
-    );
+    $self->add_condition(q{
+        ( event_class = 'group' AND group_id = ? )
+        OR (
+            event_class = 'page'
+            AND is_page_contribution(action)
+            AND (
+                SELECT TRUE
+                  FROM user_group_role
+                 WHERE user_id = e.actor_id
+                   AND group_id = ?
+                 LIMIT 1
+            )
+            AND (
+                SELECT TRUE
+                  FROM group_workspace_role
+                 WHERE e.page_workspace_id = workspace_id
+                   AND group_id = ?
+                 LIMIT 1
+            )
+        )
+    }, $group_id, $group_id, $group_id);
 
     local $self->{_skip_standard_opts} = 1;
     my $evs = $self->_get_events(@_);
