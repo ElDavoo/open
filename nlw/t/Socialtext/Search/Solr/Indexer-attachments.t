@@ -11,13 +11,16 @@ use Test::Socialtext;
 use Test::Socialtext::Search;
 use Socialtext::File;
 
+plan tests => 1;
+ok "Test removed until we decide to implement Solr WS Search";
+exit;
+
+
 ###############################################################################
 # Fixtures: db no-ceq-jobs
 # - we're an indexer test, so make sure there are *NO* Ceq jobs kicking around
 #   that could cause things to get indexed
 fixtures(qw( db no-ceq-jobs ));
-
-plan skip_all => 'Solr page & attachment indexing is turned off';
 
 my $wvtext_path = check_for_file_in_path('wvText');
 if ( !$wvtext_path ) {
