@@ -17,7 +17,7 @@
 | click_and_wait | link=%%new_workspace%% |  |
 | text_like | workspace admin |  |
 
-| *Comment* | Test case: Business Control Panel User exercise 'add user' button |  |
+| *Comment* | Test case: Business Control Panel User exercise 'add new user' button |  |
 | click_and_wait | link=Accounts |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
@@ -25,7 +25,7 @@
 | click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |  |
-| click_and_wait | link=Add User |  |
+| click_and_wait | link=Add New User |  |
 | type_ok | email_address | bogus |
 | click_and_wait | //input[contains(@id,'add_user')] |  |
 | wait_for_text_present_ok | bogus is not a valid email address | 30000 |
@@ -53,7 +53,7 @@
 | click_and_wait | link=%%new_acct%% |  |
 | click_and_wait | link=Wiki CLI <%%cli_user%%> |  |
 | wait_for_element_visible_ok | link=%%new_acct%% |  |
-| text_like | Primary Account: %%new_acct%% |  |
+| text_like | qr/%%new_acct%%.+Primary Account, Via Workspace %%%%new_workspace%%/ism |  |
 | text_like | Socialtext Accounts Access? no |  |
 | text_like | Socialtext System Management Access? no |  |
 | click_and_Wait | //input[@value='Give Access to Socialtext Accounts'] |  |
@@ -68,15 +68,6 @@
 | click_and_wait | //input[@value='Remove Access to Socialtext System Management'] |  |
 | text_like | Removed Socialtext System Management access from %%cli_user%% |  |
 | text_like | Socialtext System Management Access? no |  |
-| wait_for_element_visible_ok | account_id | 30000 |
-| select_ok | account_id | Socialtext |
-| click_and_wait | //input[@value='Submit'] |  |
-| text_like | Primary Account: Socialtext |  |
-| wait_for_element_visible_ok | account_id | 30000 |
-| select_ok | account_id | %%new_acct%% |
-| wait_for_element_visible_ok | st-assign-to-account-submit | 30000 |
-| click_and_wait | st-assign-to-account-submit |  |
-| text_like | Primary Account: %%new_acct%% |  |
 
 | *Comment* | Test case: Business Control Panel User Search |  |
 | click_and_wait | link=Users |  |
