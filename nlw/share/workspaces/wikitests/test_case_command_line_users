@@ -2,6 +2,11 @@
 
 | set | cli_user | `cli-%%start_time%%@ken.socialtext.net` |
 | set | cli_user_escaped | `cli-%%start_time%%\@ken.socialtext.net` |
+| set | new_cli_acct | new_cli_acct_%%start_time%% |
+| set | member_of_new_cli | `mbr-of-new-cli-%%start_time%%@ken.socialtext.net` |
+| create-account | %%new_cli_acct%% |  |
+
+| create-user | %%member_of_new_cli%% | %%password%% | %%new_cli_acct%% |
 
 | *Comment* | Test Case: Command Line Tests USERS create workspaces |  |
 | set | cmdline_workspace | clw_%%start_time%% |
@@ -65,22 +70,26 @@ confirm-user
 | st-admin | change-password --email cli-%%start_time%%-not@ken.socialtext.net --password 654321 | No user with the email address "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
 
 | *Comment* | Test Case: Command Line Tests USERS Adding a member |  |
-| st-admin | add-member | qr/The command you called \(add-member\) requires one of --username --email --group and one of --group --workspace --account/ism |
-| st-admin | add-member --user %%cli_user%% | qr/The command you called \(add-member\) requires one of --username --email --group and one of --group --workspace --account/ism |
+| st-admin | add-member | qr/The command you called \(add-member\) requires one of --username --email --group and one of --account --group --workspace/ism |
+| st-admin | add-member --user %%cli_user%% | qr/The command you called \(add-member\) requires one of --username --email --group and one of --account --group --workspace/ism |
 | st-admin | add-member --user %%cli_user%% --workspace | qr/The command you called \(add-member\) requires a workspace to be specified/ism |
 | st-admin | add-member --user cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | No user with the username "cli-%%start_time%%-not@ken.socialtext.net" could be found. |
 | st-admin | add-member --user %%cli_user%% --workspace no-%%start_time%% | qr/No workspace named "no-%%start_time%%" could be found./ism |
 | st-admin | add-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is now a member of the %%workspace%% workspace/ism |
 | st-admin | add-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is already a member of the %%workspace%% workspace./ism |
+| st-admin | add-member --user %%cli_user%% --account %%new_cli_acct%% | qr/%%cli_user%% is now a member of the %%new_cli_acct%% account/ism |
 
 | *Comment* | Test Case: Command Line Tests USERS Removing a member |  |
-| st-admin | remove-member | qr/The command you called \(remove-member\) requires one of --username --email --group and one of --group --workspace --account/ism |
-| st-admin | remove-member --user %%cli_user%% | qr/The command you called \(remove-member\) requires one of --username --email --group and one of --group --workspace --account/ism |
+| st-admin | remove-member | qr/The command you called \(remove-member\) requires one of --username --email --group and one of --account --group --workspace/ism |
+| st-admin | remove-member --user %%cli_user%% | qr/The command you called \(remove-member\) requires one of --username --email --group and one of --account --group --workspace/ism |
 | st-admin | remove-member --user %%cli_user%% --workspace | qr/The command you called \(remove-member\) requires a workspace to be specified/ism |
 | st-admin | remove-member --user cli-%%start_time%%-not@ken.socialtext.net --workspace %%workspace%% | qr/No user with the username "cli-%%start_time%%-not@ken.socialtext.net" could be found./ism |
 | st-admin | remove-member --user %%cli_user%% --workspace no-%%start_time%% | qr/No workspace named "no-%%start_time%%" could be found./ism |
 | st-admin | remove-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is no longer a member of the %%workspace%% workspace./ism |
 | st-admin | remove-member --user %%cli_user%% --workspace %%workspace%% | qr/%%cli_user%% is not a member of the %%workspace%% workspace./ism |
+| st-admin | remove-member --user %%cli_user%% --account %%new_cli_acct%% | qr/%%cli_user%% is no longer a member of %%new_cli_acct%%/ism |
+| st-admin | remove-member --user %%cli_user%% --account %%new_cli_acct%% | qr/%%cli_user%% is not a member of %%new_cli_acct%%/ism |
+| st-admin | remove-member --user %%member_of_new_cli%% --account %%new_cli_acct%% | qr/You cannot remove a user from their primary account/ism |
 
 | *Comment* | Test Case: Command Line Tests USERS Adding a workspace admin |  |
 | st-admin | add-workspace-admin | qr/The command you called \(add-workspace-admin\) requires one of --username --email --group and one of --workspace/ism |

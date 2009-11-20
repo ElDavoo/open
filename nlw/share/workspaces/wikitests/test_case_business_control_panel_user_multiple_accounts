@@ -9,11 +9,11 @@
 | create-account | %%primacct%% |  |  |
 | set | primacct_id | %%account_id%% |  |
 | create-account | %%acct2%% |  |  |
-| set | acct2_id | %%account_id%% |
+| set | acct2_id | %%account_id%% |  |
 | create-user | %%newuser%% | %%password%% | %%primacct%% |
 | set | userid | %%user_id%% |  |
 
-| *Comment* | Test Case: Business Control Panel User Multiple Accounts Find user |
+| *Comment* | Test Case: Business Control Panel User Multiple Accounts Find user |  |
 | st-search-cp-users | %%start_time%% |  |
 | wait_for_element_visible_ok | link=%%primacct%% | 30000 |
 
@@ -45,7 +45,7 @@
 | click_ok | //input[@type='button' and @value="Remove from account(s)"] |  |
 | wait_for_text_present_ok | Accounts (1) | 30000 |
 
-| *Comment* | Test Case: Business Control Panel User Multiple Accounts Find user |
+| *Comment* | Test Case: Business Control Panel User Multiple Accounts Find user |  |
 | st-search-cp-users | %%start_time%% |  |
 | wait_for_element_visible_ok | link=%%primacct%% | 30000 |
 
