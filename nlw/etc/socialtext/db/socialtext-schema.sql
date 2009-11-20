@@ -427,7 +427,8 @@ CREATE TABLE event_archive (
     person_id integer,
     tag_name text,
     signal_id bigint,
-    hidden boolean DEFAULT false
+    hidden boolean DEFAULT false,
+    group_id bigint
 );
 
 CREATE TABLE exitstatus (

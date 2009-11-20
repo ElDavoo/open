@@ -3,6 +3,9 @@ BEGIN;
 ALTER TABLE event
     ADD COLUMN group_id bigint;
 
+ALTER TABLE event_archive
+    ADD COLUMN group_id bigint;
+
 CREATE INDEX ix_event_for_group
     ON event (group_id, "at")
     WHERE (event_class = 'group');

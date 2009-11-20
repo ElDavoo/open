@@ -359,3 +359,5 @@ t/wikitests/control/workspace_groups.wiki
 t/wikitests/control/group_membership.wiki
 .prove
 lib/Socialtext/Pluggable/Plugin/Groups.pm
+t/wikitests/invite_to_network.wiki
+t/wikitests/people/rest/data_people_groups.wiki
