@@ -11,6 +11,10 @@ use Test::Socialtext;
 use Test::Socialtext::Search;
 use Socialtext::Search::Config;
 
+plan tests => 1;
+ok "Test removed until we decide to implement Solr WS Search";
+exit;
+
 fixtures(qw( db no-ceq-jobs ));
 
 plan skip_all => 'Solr page & attachment indexing is turned off';
