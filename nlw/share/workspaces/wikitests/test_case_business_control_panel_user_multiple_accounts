@@ -40,9 +40,9 @@
 
 | *Comment* | Test Case: Business Control Panel User Remove 2nd Account |  |
 | wait_for_element_visible_ok | //input[@type='button' and @value="Remove from account(s)"] | 30000 |
-| wait_for_element_visible_ok | %%acct2_id%% | 30000 |
-| click_ok | %%acct2_id%% |  |
-| click_and_wait | //input[@type='button' and @value="Remove from account(s)"] |  |
+| wait_for_element_visible_ok | userAccountTable-select-1 | 30000 |
+| click_ok | userAccountTable-select-1 |  |
+| click_ok | //input[@type='button' and @value="Remove from account(s)"] |  |
 | wait_for_text_present_ok | Accounts (1) | 30000 |
 
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts Find user |
