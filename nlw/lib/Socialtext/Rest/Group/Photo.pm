@@ -41,3 +41,17 @@ sub GET_small_photo {
 }
 
 1;
+
+=head1 NAME
+
+Socialtext::Rest::Group::Photo - Photo for a group
+
+=head1 SYNOPSIS
+
+    GET /data/groups/:group_id/photo
+
+=head1 DESCRIPTION
+
+View the photo for a group.
+
+=cut

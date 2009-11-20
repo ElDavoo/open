@@ -3,6 +3,11 @@ package Socialtext::Group::Photo;
 use Moose;
 use namespace::clean -except => 'meta';
 
+# XXX TODO:
+# Once we support user-created group photos, the should cache
+# using the same mechanism as profile photos.
+#
+
 sub Default {
     my $class = shift;
     my $obj = $class->new(@_);
@@ -45,3 +50,21 @@ sub _build_blob {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Group::Photo - the photo for a group.
+
+=head1 SYNOPSIS
+
+    my $photo = Socialtext::Group::Photo->new(
+        group_id => $group_id,
+        size => $size,
+    );
+    $photo->blob;
+
+=head1 DESCRIPTION
+
+Storage for a group's photo.
+
+=cut

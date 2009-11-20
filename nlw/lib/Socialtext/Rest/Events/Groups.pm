@@ -39,3 +39,17 @@ sub _group {
 }
 
 1;
+
+=head1 NAME
+
+Socialtext::Rest::Events::Groups - Activity stream for a group.
+
+=head1 SYNOPSIS
+
+    GET /data/events/groups/:group_id
+
+=head1 DESCRIPTION
+
+View the activity stream for the group.
+
+=cut
