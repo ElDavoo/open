@@ -801,15 +801,15 @@ sub get_events_group_activities {
         OR (
             event_class = 'page'
             AND is_page_contribution(action)
-            AND (
-                SELECT TRUE
+            AND EXISTS (
+                SELECT 1
                   FROM user_group_role
                  WHERE user_id = e.actor_id
                    AND group_id = ?
                  LIMIT 1
             )
-            AND (
-                SELECT TRUE
+            AND EXISTS (
+                SELECT 1
                   FROM group_workspace_role
                  WHERE e.page_workspace_id = workspace_id
                    AND group_id = ?
