@@ -3,8 +3,12 @@
 
 | st-admin | give-accounts-admin --email %%email%% | %%username%% now has accounts admin access |
 
-| set | new_acct | acct %%start_time%% |
-| set | cli_user | cli_%%start_time%%@ken.socialtext.net |
+| set | new_acct | acct %%start_time%% |  |
+| set | new_user | bcp-acct-%%start_time%%@ken.socialtext.net |  |
+| set | short_new | bcp-acct-%%start_time%% |  |
+| set | new_acct_2 | other_acct_%%start_time%% |  |
+| create-account | %%new_acct_2%% |  |  |
+| create-user | %%new_user%% | %%password%% | %%new_acct_2%% |
 
 | *Comment* | Test case: Business Control Panel Account Restrict domain |  |
 | set | restrict_acct | restrictedacc%%start_time%% |
@@ -61,6 +65,17 @@
 | text_like | Socialtext People (click to enable) |  |
 | text_like | Socialtext Signals (click to enable) |  |
 | text_like | Socialtext Dashboard (click to enable) |  |
+
+| *Comment* | Test case: Business Control Panel Account Add a user |  |
+| wait_for_element_visible_ok | addUserLookahead | 30000 |
+| wait_for_text_present_ok | Add Existing User: | 30000 |
+| wait_for_text_present_ok | Users (0) | 30000 |
+| type_lookahead_ok | addUserLookahead | %%short_username%% |
+| wait_for_element_visible_ok | link=%%short_username%% | 30000 |
+| click_ok | link=%%short_new%% |  |
+| wait_for_text_present_ok | Users (1) | 30000 |
+| wait_for_element_visible_ok | link=Primary Account | 30000 |
+| wait_for_element_visible_ok | link=%%new_acct_2%% | 30000 |
 
 | *Comment* | Test case: Business Control Panel Account plugin one at a time, click the confirmation, validate that plugin is enabled. |  |
 | click_ok | toggle_plugin_people |  |
