@@ -137,7 +137,7 @@ sub RolesForUserInWorkspace {
         reverse Socialtext::Role->SortByEffectiveness(roles => \@all_roles);
 
     $class->cache->set($cache_string => \@sorted);
-    return wantarray ? @sorted : shift @sorted;
+    return wantarray ? @sorted : $sorted[0];
 }
 
 ###############################################################################
