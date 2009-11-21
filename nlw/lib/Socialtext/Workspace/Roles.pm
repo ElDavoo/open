@@ -3,6 +3,7 @@ package Socialtext::Workspace::Roles;
 
 use strict;
 use warnings;
+use Socialtext::Cache;
 use Socialtext::MultiCursor;
 use Socialtext::SQL qw(:exec);
 use Socialtext::User;
@@ -106,10 +107,14 @@ sub RolesForUserInWorkspace {
     my %p      = @_;
     my $user   = $p{user};
     my $ws     = $p{workspace};
-    my $direct = defined $p{direct} ? $p{direct} : 0;
+    my $direct = defined $p{direct} ? 1 : 0;
 
     my $user_id = $user->user_id();
     my $ws_id   = $ws->workspace_id();
+    my $cache_string = "rfuiw-$user_id-$ws_id-$direct";
+    if (my $roles = $class->cache->get($cache_string)) {
+        return wantarray ? @$roles : $roles->[0];
+    }
 
     my $uwr_table = $direct
         ? 'user_workspace_role'
@@ -131,6 +136,7 @@ sub RolesForUserInWorkspace {
     my @sorted =
         reverse Socialtext::Role->SortByEffectiveness(roles => \@all_roles);
 
+    $class->cache->set($cache_string => \@sorted);
     return wantarray ? @sorted : shift @sorted;
 }
 
@@ -218,6 +224,13 @@ sub RolesForUserInWorkspace {
         };
         my $count = sql_singlevalue( $sql, $user_id );
         return $count;
+    }
+}
+
+{
+    my $cache;
+    sub cache {
+        return $cache ||= Socialtext::Cache->cache('ws_roles');
     }
 }
 
