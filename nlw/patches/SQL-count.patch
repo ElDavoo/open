@@ -1,0 +1,43 @@
+diff --git a/nlw/lib/Socialtext/Handler/Cleanup.pm b/nlw/lib/Socialtext/Handler/Cleanup.pm
+index 51a17d7..9de9da6 100644
+--- a/nlw/lib/Socialtext/Handler/Cleanup.pm
++++ b/nlw/lib/Socialtext/Handler/Cleanup.pm
+@@ -16,6 +16,16 @@ sub handler {
+ 
+     File::Temp::cleanup();
+ 
++    my %sql = %Socialtext::SQL::SQL_statements;
++    %Socialtext::SQL::SQL_statements = ();
++
++    for my $key (sort {$sql{$a} <=> $sql{$b}} keys %sql) {
++        my $short = substr($key, 0, 120);
++        warn "$short: $sql{$key}\n";
++    }
++    warn "SQL_count: $Socialtext::SQL::SQL_count\n\n";
++    $Socialtext::SQL::SQL_count = 0;
++
+     Socialtext::SQL::invalidate_dbh();
+ 
+     @Socialtext::Rest::EventsBase::ADD_HEADERS = ();
+diff --git a/nlw/lib/Socialtext/SQL.pm b/nlw/lib/Socialtext/SQL.pm
+index c340a37..e3cf4a2 100644
+--- a/nlw/lib/Socialtext/SQL.pm
++++ b/nlw/lib/Socialtext/SQL.pm
+@@ -284,9 +284,17 @@ sub sql_execute_array {
+     return $sth;
+ }
+ 
++our %SQL_statements;
++our $SQL_count = 0;
++
+ sub _sql_execute {
+     my ($statement, $exec_sub, $bind) = @_;
+ 
++    my $nice_stmt = $statement;
++    $nice_stmt =~ s/\s+/ /g;
++    $SQL_statements{$nice_stmt}++;
++    $SQL_count++;
++    
+     my $dbh = get_dbh();
+     Socialtext::Timer->Continue('sql_execute');
+ 
