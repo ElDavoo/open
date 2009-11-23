@@ -1459,6 +1459,7 @@ sub add_group {
         });
     };
     warn "Could not log event: $@" if $@;
+    Socialtext::Cache->clear('ws_roles');
     return $gwr;
 }
 
@@ -1485,6 +1486,7 @@ sub remove_group {
         });
     };
     warn "Could not log event: $@" if $@;
+    Socialtext::Cache->clear('ws_roles');
 }
 
 sub has_group {
