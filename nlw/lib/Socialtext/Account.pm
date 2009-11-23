@@ -9,6 +9,7 @@ our $VERSION = '0.01';
 use Class::Field 'field';
 use Carp qw(croak);
 use Readonly;
+use Socialtext::Cache;
 use Socialtext::Exceptions qw( data_validation_error );
 use Socialtext::Schema;
 use Socialtext::SQL qw( sql_execute sql_singlevalue);
@@ -714,12 +715,18 @@ sub new {
 sub _new_from_name {
     my ( $class, %p ) = @_;
 
+    if (my $acct = $class->cache->get("name:$p{name}")) {
+        return $acct;
+    }
     return $class->_new_from_where('name=?', $p{name});
 }
 
 sub _new_from_account_id {
     my ( $class, %p ) = @_;
 
+    if (my $acct = $class->cache->get("id:$p{account_id}")) {
+        return $acct;
+    }
     return $class->_new_from_where('account_id=?', $p{account_id});
 }
 
@@ -733,7 +740,11 @@ sub _new_from_where {
         @bindings );
     my $row = $sth->fetchrow_hashref;
     return unless $row;
-    return $class->new_from_hash_ref($row);
+
+    my $acct = $class->new_from_hash_ref($row);
+    $class->cache->set("name:" . $acct->name     => $acct);
+    $class->cache->set("id:" . $acct->account_id => $acct);
+    return $acct;
 }
 
 sub new_from_hash_ref {
@@ -799,6 +810,7 @@ sub delete {
 
     sql_execute( 'DELETE FROM "Account" WHERE account_id=?',
         $self->account_id );
+    Socialtext::Cache->clear('account');
 }
 
 sub update {
@@ -880,6 +892,8 @@ sub _post_update {
                   . "new_type='" . $new->{account_type} . "'";
         st_log()->info($msg);
     }
+
+    Socialtext::Cache->clear('account');
 }
 
 sub add_to_all_users_workspace {
@@ -1263,6 +1277,13 @@ sub email_passes_domain_filter {
         return 1;
     }
     return 0;
+}
+
+{
+    my $cache;
+    sub cache {
+        return $cache ||= Socialtext::Cache->cache('account');
+    }
 }
 
 1;

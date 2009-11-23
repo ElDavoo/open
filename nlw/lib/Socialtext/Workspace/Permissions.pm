@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Readonly;
 use List::Util qw(first);
+use Socialtext::Cache;
 use Socialtext::SQL qw( sql_execute sql_commit sql_rollback sql_begin_work
                         sql_in_transaction);
 use Socialtext::Validate qw(
@@ -135,6 +136,7 @@ sub new {
             sql_rollback() unless $in_transaction;
             rethrow_exception($e);
         }
+        Socialtext::Cache->clear('ws_perms');
     }
 
     sub _set_permissions {
@@ -293,6 +295,7 @@ EOSQL
         if ($@ and $@ !~ m/duplicate key/) {
             die $@;
         }
+        Socialtext::Cache->clear('ws_perms');
     }
 
     sub remove {
@@ -308,6 +311,7 @@ DELETE FROM "WorkspaceRolePermission"
 EOSQL
             $wksp->workspace_id, $p{role}->role_id,
             $p{permission}->permission_id);
+        Socialtext::Cache->clear('ws_perms');
     }
 
     sub role_can {
@@ -315,16 +319,24 @@ EOSQL
         my $wksp = $self->{wksp};
         my %p = validate( @_, $spec );
 
-        my $sth = sql_execute(<<EOSQL,
+        my $wksp_id = $wksp->workspace_id;
+        my $role_id = $p{role}->role_id;
+        my $perm_id = $p{permission}->permission_id;
+
+        my $cache_string = "$wksp_id-$role_id-$perm_id";
+        my $cached_perm = $self->cache->get($cache_string);
+        return $cached_perm ? 1 : 0 if defined $cached_perm;
+
+        my $sth = sql_execute(<<EOSQL, $wksp_id, $role_id, $perm_id);
 SELECT * FROM "WorkspaceRolePermission"
     WHERE workspace_id = ?
       AND role_id = ?
       AND permission_id = ?
 EOSQL
-            $wksp->workspace_id, $p{role}->role_id,
-            $p{permission}->permission_id);
 
-        my $perm = $sth->fetchall_arrayref->[0];
+        my $perm = $sth->fetchall_arrayref->[0] ? 1 : 0;
+
+        $self->cache->set($cache_string => $perm);
         return $perm ? 1 : 0;
     }
 }
@@ -425,6 +437,14 @@ sub SetNameIsValid {
 
     return $PermissionSets{$name} ? 1 : 0;
 }
+
+{
+    my $cache;
+    sub cache {
+        return $cache ||= Socialtext::Cache->cache('ws_perms');
+    }
+}
+
 
 1;
 

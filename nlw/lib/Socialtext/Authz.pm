@@ -43,38 +43,32 @@ sub plugin_enabled_for_user {
     my %p = @_;
     my $user = delete $p{user};
     my $plugin_name = delete $p{plugin_name};
+    return 1 if ($user->username eq $SystemUsername);
 
     my $user_id = $user->user_id;
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "user:$user_id\0$plugin_name";
-    
-    my $enabled = $cache->get($cache_key);
-    return $enabled if defined $enabled;
-
-    return 1 if ($user->username eq $SystemUsername);
-
-    my $pclass = Socialtext::Pluggable::Adapter->plugin_class($plugin_name);
-    if ($pclass) {
-        if ($pclass->scope eq 'always') {
-            $cache->set($cache_key, 1);
-            return 1;
-        }
+    my $cache_key = "user:$user_id";
+    if (my $enabled_plugins = $cache->get($cache_key)) {
+        return $enabled_plugins->{$plugin_name};
     }
 
+    my $pclass = Socialtext::Pluggable::Adapter->plugin_class($plugin_name);
+    return 1 if $pclass and $pclass->scope eq 'always';
+
     my $sql = <<SQL;
-        SELECT 1 
+        SELECT plugin
         FROM account_user JOIN account_plugin USING (account_id)
-        WHERE user_id = ? AND plugin = ? 
-        LIMIT 1
+        WHERE user_id = ?
 SQL
 
-    Socialtext::Timer->Continue('plugin_enabled_for_user');
-    $enabled = sql_singlevalue($sql, $user_id, $plugin_name) ? 1 : 0;
-    Socialtext::Timer->Pause('plugin_enabled_for_user');
+    my $sth = sql_execute($sql, $user_id);
+    my $enabled_plugins = {};
+    while (my $row = $sth->fetchrow_arrayref) {
+        $enabled_plugins->{$row->[0]} = 1;
+    }
 
-    #warn "PLUGIN $plugin_name ENABLED FOR ".$user->username."? $enabled\n";
-    $cache->set($cache_key, $enabled);
-    return $enabled;
+    $cache->set($cache_key, $enabled_plugins);
+    return $enabled_plugins->{$plugin_name} ? 1 : 0;
 }
 
 # is a plugin available in some common account between two users
@@ -143,24 +137,25 @@ sub plugin_enabled_for_user_in_account {
     my $account_id = ref($account) ? $account->account_id : $account;
 
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "user_acct:$user_id\0$account_id\0$plugin_name";
-    my $enabled = $cache->get($cache_key);
-    return $enabled if defined $enabled;
+    my $cache_key = "user_acct:$user_id\0$account_id";
+    if (my $enabled_plugins = $cache->get($cache_key)) {
+        return $enabled_plugins->{$plugin_name};
+    }
 
     my $sql = <<SQL;
-        SELECT 1 
+        SELECT plugin
         FROM account_user JOIN account_plugin USING (account_id)
-        WHERE user_id = ? AND account_id = ? AND plugin = ? 
-        LIMIT 1
+        WHERE user_id = ? AND account_id = ?
 SQL
 
-    Socialtext::Timer->Continue('plugin_enabled_for_user_in_account');
-    $enabled = sql_singlevalue($sql, $user_id, 
-                               $account_id, $plugin_name) ? 1 : 0;
-    Socialtext::Timer->Pause('plugin_enabled_for_user_in_account');
+    my $sth = sql_execute($sql, $user_id, $account_id);
+    my $enabled_plugins = {};
+    while (my $row = $sth->fetchrow_arrayref) {
+        $enabled_plugins->{$row->[0]} = 1;
+    }
 
-    $cache->set($cache_key, $enabled);
-    return ($enabled ? 1 : 0);
+    $cache->set($cache_key, $enabled_plugins);
+    return $enabled_plugins->{$plugin_name} ? 1 : 0;
 }
 
 # Is a plugin enabled for a particular account
@@ -208,23 +203,25 @@ sub plugin_enabled_for_workspace {
     my $workspace_id = ref($ws) ? $ws->workspace_id : $ws;
 
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "ws:$workspace_id\0$plugin_name";
-    my $enabled = $cache->get($cache_key);
-    return $enabled if defined $enabled;
+    my $cache_key = "ws:$workspace_id";
+    if (my $enabled_plugins = $cache->get($cache_key)) {
+        return $enabled_plugins->{$plugin_name};
+    }
 
     my $sql = <<SQL;
-        SELECT 1 
+        SELECT plugin
         FROM workspace_plugin
-        WHERE workspace_id = ? AND plugin = ? 
-        LIMIT 1
+        WHERE workspace_id = ?
 SQL
 
-    Socialtext::Timer->Continue('plugin_enabled_for_workspace');
-    $enabled = sql_singlevalue($sql, $workspace_id, $plugin_name) ? 1 : 0;
-    Socialtext::Timer->Pause('plugin_enabled_for_workspace');
+    my $sth = sql_execute($sql, $workspace_id);
+    my $enabled_plugins = {};
+    while (my $row = $sth->fetchrow_arrayref) {
+        $enabled_plugins->{$row->[0]} = 1;
+    }
 
-    $cache->set($cache_key, $enabled);
-    return ($enabled ? 1 : 0);
+    $cache->set($cache_key, $enabled_plugins);
+    return $enabled_plugins->{$plugin_name} ? 1 : 0;
 }
 
 1;

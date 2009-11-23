@@ -28,7 +28,10 @@ sub _entities_for_query {
             or $group->has_user($user);
 
     my $users = $group->users_as_minimal_arrayref();
-    return @$users;
+
+    # XXX: We should sort in the DB, but the GroupSearch role doesn't seem
+    # easily extendible for me to implement it there.
+    return sort { $a->{best_full_name} cmp $b->{best_full_name} } @$users;
 }
 
 sub _entity_hash { return $_[1] }

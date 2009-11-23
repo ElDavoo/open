@@ -9,6 +9,7 @@ our $VERSION = '0.02';
 use base 'Exporter';
 use Class::Field 'field';
 use Readonly;
+use Socialtext::Cache;
 use Socialtext::MultiCursor;
 use Socialtext::SQL 'sql_execute';
 use Socialtext::Validate qw( validate SCALAR_TYPE );
@@ -59,30 +60,32 @@ sub new {
 
 sub _new_from_name {
     my ( $class, %p ) = @_;
-
-    return $class->_new_from_where('name=?', $p{name});
+    return $class->_from_cache_or_db("name:$p{name}");
 }
 
 sub _new_from_permission_id {
     my ( $class, %p ) = @_;
-
-    return $class->_new_from_where('permission_id=?', $p{permission_id});
+    return $class->_from_cache_or_db("id:$p{permission_id}");
 }
 
-sub _new_from_where {
-    my ( $class, $where_clause, @bindings ) = @_;
+sub _from_cache_or_db {
+    my $class = shift;
+    my $cache_string = shift;
 
-    my $sth = sql_execute(
-        'SELECT permission_id, name'
-        . ' FROM "Permission"'
-        . " WHERE $where_clause",
-        @bindings );
-    my @rows = @{ $sth->fetchall_arrayref };
-    return @rows    ?   bless {
-                            permission_id => $rows[0][0],
-                            name          => $rows[0][1],
-                        }, $class
-                    :   undef;
+    my $perm = $class->cache->get($cache_string);
+    return $perm if $perm;
+
+    my $sth = sql_execute('SELECT permission_id, name FROM "Permission"');
+    my $rows = $sth->fetchall_arrayref({});
+    return undef unless @$rows;
+
+    for my $p (@$rows) {
+        my $perm = bless $p, $class;
+        $class->cache->set("id:$p->{permission_id}" => $perm);
+        $class->cache->set("name:$p->{name}"        => $perm);
+    }
+
+    return $class->cache->get($cache_string);
 }
 
 sub create {
@@ -128,6 +131,13 @@ sub All {
             return Socialtext::Permission->new( permission_id => $row->[0] );
         }
     );
+}
+
+{
+    my $cache;
+    sub cache {
+        return $cache ||= Socialtext::Cache->cache('permission');
+    }
 }
 
 1;

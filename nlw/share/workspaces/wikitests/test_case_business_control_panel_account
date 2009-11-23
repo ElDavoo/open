@@ -67,14 +67,14 @@
 | text_like | Socialtext Dashboard (click to enable) |  |
 
 | *Comment* | Test case: Business Control Panel Account Add a user |  |
+| *Comment* | Test case: Business Control Panel Account Add a user FAILS DUE TO {BZ 3270} |  |
 | wait_for_element_visible_ok | addUserLookahead | 30000 |
 | wait_for_text_present_ok | Add Existing User: | 30000 |
 | wait_for_text_present_ok | Users (0) | 30000 |
-| type_lookahead_ok | addUserLookahead | %%short_username%% |
-| wait_for_element_visible_ok | link=%%short_username%% | 30000 |
-| click_ok | link=%%short_new%% |  |
+| type_lookahead_ok | addUserLookahead | %%short_new%% |
+| wait_for_element_visible_ok | link=%%short_new%% | 30000 |
+| click_ok | link=%%new_user%% |  |
 | wait_for_text_present_ok | Users (1) | 30000 |
-| wait_for_element_visible_ok | link=Primary Account | 30000 |
 | wait_for_element_visible_ok | link=%%new_acct_2%% | 30000 |
 
 | *Comment* | Test case: Business Control Panel Account plugin one at a time, click the confirmation, validate that plugin is enabled. |  |

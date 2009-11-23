@@ -2,6 +2,7 @@ package Socialtext::User::EmailConfirmation;
 # @COPYRIGHT@
 use strict;
 use warnings;
+use Socialtext::Cache;
 use Socialtext::SQL qw/sql_execute/;
 use Socialtext::AppConfig;
 use Digest::SHA;
@@ -13,13 +14,25 @@ sub new {
     my ($class, $user_id) = @_;
     croak 'new requires user_id!' unless defined $user_id;
 
+    my $uec = $class->cache->get($user_id);
+    if (defined $uec) {
+        return unless $uec;
+        return $uec;
+    }
+
     my $sth = sql_execute(<<EOSQL, $user_id);
 SELECT * FROM "UserEmailConfirmation" WHERE user_id = ?
 EOSQL
 
     my $self = $sth->fetchrow_hashref();
+    unless ($self) {
+        $class->cache->set($user_id => 0);
+        return;
+    }
     return unless $self;
     bless $self, $class;
+
+    $class->cache->set($user_id => $self);
     return $self;
 }
 
@@ -29,11 +42,14 @@ sub create_or_update {
 
     my $self = $class->new($p{user_id});
     if ($self) {
-        return $self->_update(%p);
+        $self = $self->_update(%p);
     }
     else {
-        return $class->_create(%p);
+        $self = $class->_create(%p);
     }
+
+    $class->cache->set($p{user_id} => $self);
+    return $self;
 }
 
 sub _create {
@@ -88,6 +104,8 @@ EOSQL
     $self->{expiration_datetime} = $vals[0];
     $self->{is_password_change}  = $vals[1];
     $self->{workspace_id} = $vals[2];
+
+    $self->cache->set($user_id => $self);
     return $self;
 }
 
@@ -128,6 +146,7 @@ sub delete {
 DELETE FROM "UserEmailConfirmation"
     WHERE user_id = ?
 EOSQL
+    Socialtext::Cache->clear('email_conf');
 }
 
 # Reuse existing hashes before making new ones.  This helps avoid issues like
@@ -144,6 +163,13 @@ sub _generate_confirmation_hash {
 sub _expiration_datetime {
     my $expires = DateTime->now->add( days => 14 );
     return DateTime::Format::Pg->format_timestamptz($expires);
+}
+
+{
+    my $cache;
+    sub cache {
+        return $cache ||= Socialtext::Cache->cache('email_conf');
+    }
 }
 
 1;

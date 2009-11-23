@@ -93,10 +93,10 @@ Automated backup and restore testing
 | *Comment* | Test Case: Console Backup and Restore: help-en is there with reasonable content |  |
 | open_ok | /help-en |  |
 | text_like | Socialtext Documentation |  |
-| click_and_wait | link=Welcome |  |
-| text_like | st-page-titletext | Welcome |
+| wait_for_element_visible_ok | link=Finding your way around |  |
+| click_and_wait | link=Finding your way around |  |
 | click_and_wait | link=Socialtext Dashboard |  |
-| text_like | contentRight | Dashboard |
+| text_like | Many features are within easy reach |  |
 
 | *Comment* | Test Case: Console Backup and Restore: the RESTORED admin is there containing first new page and missing second new page |  |
 | st_login |  |  |
