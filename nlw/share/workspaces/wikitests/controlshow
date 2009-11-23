@@ -133,13 +133,13 @@ This test case is an aid to visually observing each screen type in the applicati
 | pause | %%pt%% |  |
 
 | click_and_wait | link=Back |  |
-| click_and_wait | link=Add User |  |
+| click_and_wait | link=Add New User |  |
 
 | *Comment* | SEE Add User Page |  |
 | pause | %%pt%% |  |
 
 | click_and_wait | link=Back |  |
-| click_and_wait | link=Add Users |  |
+| click_and_wait | link=Add Multiple Users |  |
 
 | *Comment* | SEE Add Users Page |  |
 | pause | %%pt%% |  |
