@@ -784,6 +784,10 @@ sub _enable_default_plugins {
                 "$plugin-enabled-all"
             );
     }
+
+    if ($self->account_type eq 'Free 50') {
+        $self->_enable_marketo_if_present;
+    }
 }
 
 sub _create_full {
@@ -877,12 +881,14 @@ sub _post_update {
             $w->update(invitation_filter => '');
             $w->enable_plugin('socialcalc');
         }
+        $self->_disable_marketo_if_present;
     }
     elsif ($new->{account_type} eq 'Free 50') {
         my $wksps = $self->workspaces;
         while (my $w = $wksps->next) {
             $w->disable_plugin('socialcalc');
         }
+        $self->_enable_marketo_if_present;
     }
 
     if ($old->{account_type} and $old->{account_type} ne $new->{account_type}) {
@@ -1277,6 +1283,22 @@ sub email_passes_domain_filter {
         return 1;
     }
     return 0;
+}
+
+sub _disable_marketo_if_present {
+    shift->_change_marketo_if_present('disable_plugin');
+}
+sub _enable_marketo_if_present {
+    shift->_change_marketo_if_present('enable_plugin');
+}
+
+sub _change_marketo_if_present {
+    my $self = shift;
+    my $method = shift;
+    my $adapter = Socialtext::Pluggable::Adapter->new();
+    if ($adapter->plugin_exists('marketo')) {
+        $self->$method('marketo');
+    }
 }
 
 {
