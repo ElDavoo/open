@@ -295,6 +295,7 @@ EOSQL
         if ($@ and $@ !~ m/duplicate key/) {
             die $@;
         }
+        Socialtext::Cache->clear('ws_perms');
     }
 
     sub remove {
@@ -310,6 +311,7 @@ DELETE FROM "WorkspaceRolePermission"
 EOSQL
             $wksp->workspace_id, $p{role}->role_id,
             $p{permission}->permission_id);
+        Socialtext::Cache->clear('ws_perms');
     }
 
     sub role_can {

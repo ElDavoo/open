@@ -1229,6 +1229,7 @@ sub email_passes_invitation_filter {
         $p{role} ||= Socialtext::Role->Member();
 
         $self->assign_role_to_user( is_selected => 1, %p );
+        Socialtext::Cache->clear('ws_roles');
 
         # This is needed because of older appliances where users were put in
         # one of three accounts that are not optimal:
@@ -1351,6 +1352,7 @@ sub remove_user {
 
     Socialtext::JSON::Proxy::Helper->ClearForUsers($p{user}->user_id);
     Socialtext::Cache->clear('authz_plugin');
+    Socialtext::Cache->clear('ws_roles');
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), $self);
