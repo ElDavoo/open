@@ -783,8 +783,8 @@ sub import_user_prefs {
 # Plugin Prefs
 
 sub set_plugin_prefs {
-    my ($self, %prefs) = @_;
-    my $plugin = $self->name;
+    my ($class, %prefs) = @_;
+    my $plugin = $class->name;
 
     my $qs = join ', ', ('?') x keys %prefs;
     sql_begin_work;
@@ -816,17 +816,16 @@ sub set_plugin_prefs {
     }
     sql_commit;
 
-    my $username  = $self->hub->current_user->username;
-    st_log()->info("$username changed their $plugin plugin preferences");
+    st_log()->info("Preferences for $plugin have been changed.");
 }
 
 sub get_plugin_prefs {
-    my $self = shift;
+    my $class = shift;
     my $sth = sql_execute('
         SELECT key, value
           FROM plugin_pref
          WHERE plugin = ?
-    ', $self->name);
+    ', $class->name);
     my %res;
     while (my $row = $sth->fetchrow_hashref) {
         $res{$row->{key}} = $row->{value};
@@ -835,16 +834,15 @@ sub get_plugin_prefs {
 }
 
 sub clear_plugin_prefs {
-    my $self = shift;
-    my $plugin = $self->name;
+    my $class = shift;
+    my $plugin = $class->name;
 
     sql_execute('
         DELETE FROM plugin_pref
          WHERE plugin = ?
     ', $plugin);
 
-    my $username  = $self->hub->current_user->username;
-    st_log()->info("$username cleared $plugin preferences");
+    st_log()->info("Preferences for $plugin have been cleared.");
 }
 
 
