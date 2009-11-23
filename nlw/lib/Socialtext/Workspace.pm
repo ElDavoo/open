@@ -1287,6 +1287,7 @@ sub email_passes_invitation_filter {
         }
 
         Socialtext::Cache->clear('authz_plugin');
+        Socialtext::Cache->clear('ws_roles');
 
         my $adapter = Socialtext::Pluggable::Adapter->new;
         $adapter->make_hub(Socialtext::User->SystemUser(), $self);
