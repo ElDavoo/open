@@ -810,6 +810,7 @@ sub delete {
 
     sql_execute( 'DELETE FROM "Account" WHERE account_id=?',
         $self->account_id );
+    Socialtext::Cache->clear('account');
 }
 
 sub update {
