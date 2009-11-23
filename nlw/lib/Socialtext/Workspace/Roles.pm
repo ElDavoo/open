@@ -107,7 +107,8 @@ sub RolesForUserInWorkspace {
     my %p      = @_;
     my $user   = $p{user};
     my $ws     = $p{workspace};
-    my $direct = defined $p{direct} ? 1 : 0;
+    my $direct = defined $p{direct} ? $p{direct} : 0;
+    $direct = $direct ? 1 : 0; # force to only 1 or 0
 
     my $user_id = $user->user_id();
     my $ws_id   = $ws->workspace_id();
