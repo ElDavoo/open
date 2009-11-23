@@ -743,7 +743,7 @@ sub set_user_prefs {
     sql_commit;
 
     my $username  = $self->hub->current_user->username;
-    st_log()->info("$username changed their $plugin plugin preferences");
+    st_log()->info("$username changed their $plugin user plugin preferences");
 }
 
 sub get_user_prefs {
@@ -779,6 +779,74 @@ sub import_user_prefs {
         }
     }
 }
+
+# Plugin Prefs
+
+sub set_plugin_prefs {
+    my ($self, %prefs) = @_;
+    my $plugin = $self->name;
+
+    my $qs = join ', ', ('?') x keys %prefs;
+    sql_begin_work;
+    eval {
+        sql_execute("
+            DELETE
+              FROM plugin_pref
+             WHERE plugin = ?
+               AND key IN ($qs)
+        ", $plugin, keys %prefs);
+
+        my @columns;
+        for my $key (keys %prefs) {
+            next unless defined $prefs{$key};
+            push @{$columns[0]}, $plugin;
+            push @{$columns[1]}, $key;
+            push @{$columns[2]}, $prefs{$key};
+        }
+
+        sql_execute_array('
+            INSERT INTO plugin_pref (
+                plugin, key, value
+            ) VALUES (?, ?, ?)
+        ', {}, @columns);
+    };
+    if (my $error = $@) {
+        sql_rollback;
+        die $error;
+    }
+    sql_commit;
+
+    my $username  = $self->hub->current_user->username;
+    st_log()->info("$username changed their $plugin plugin preferences");
+}
+
+sub get_plugin_prefs {
+    my $self = shift;
+    my $sth = sql_execute('
+        SELECT key, value
+          FROM plugin_pref
+         WHERE plugin = ?
+    ', $self->name);
+    my %res;
+    while (my $row = $sth->fetchrow_hashref) {
+        $res{$row->{key}} = $row->{value};
+    }
+    return \%res;
+}
+
+sub clear_plugin_prefs {
+    my $self = shift;
+    my $plugin = $self->name;
+
+    sql_execute('
+        DELETE FROM plugin_pref
+         WHERE plugin = ?
+    ', $plugin);
+
+    my $username  = $self->hub->current_user->username;
+    st_log()->info("$username cleared $plugin preferences");
+}
+
 
 sub sheet_renderer {
     my $self = shift;
