@@ -361,3 +361,4 @@ t/wikitests/control/group_membership.wiki
 lib/Socialtext/Pluggable/Plugin/Groups.pm
 t/wikitests/invite_to_network.wiki
 t/wikitests/people/rest/data_people_groups.wiki
+lib/Socialtext/Pluggable/Plugin/Marketo.pm
