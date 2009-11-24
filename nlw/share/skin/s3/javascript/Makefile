@@ -32,6 +32,9 @@ EDITOR_LIGHT_FILES= \
 ALL_EDITOR_FILES:=$(shell find $(WIKIWYG_ST) $(COMMON_JAVASCRIPT) -type f | grep -v .svn | grep -v editor.js | grep -v editor-light.js)
 ALL_JEMPLATE_PLUGINS:=$(shell find JemplatePlugin -name \*.js)
 
+JEMPLATES=$(wildcard template/*.tt2)
+JEMPLATES_COMPILED=Jemplates.js
+
 S3_SOURCE_FILES= \
 		timestamp.js \
 		info.js \
@@ -46,12 +49,14 @@ S3_SOURCE_FILES= \
 		jquery.selectOverlap.js \
 		Jemplate.js \
 		$(ALL_JEMPLATE_PLUGINS) \
+		$(JEMPLATES_COMPILED) \
 		loc.js \
 		cookie.js \
 		lookahead.js \
 		pageview.js \
 		email.js \
 		search.js \
+		nav-list.js \
 		s3.js \
 		people-avatar.js \
 
@@ -93,6 +98,12 @@ clean:
 .js-mini.js:
 	$(MINIFY) $< > $@
 
+-mini.js.js.gz:
+	gzip -c $< > $@
+
+Jemplate.js:
+	jemplate --runtime=jquery > $@
+
 $(PLUGIN_LIGHTBOXES):
 	# Do nothing. But this avoids us messing up plugin lightboxes in the
 	# folowing section
@@ -102,6 +113,9 @@ lightbox-%.js: st-lightbox.js lightbox/%.tt2 lightbox/%.js
 	for js in st-lightbox.js $(@:lightbox-%.js=lightbox/%.js); do \
 	    (echo "// BEGIN $$js"; cat $$js | perl -pe 's/\r//g') >> $@; \
 	done
+
+$(JEMPLATES_COMPILED): $(JEMPLATES)
+	jemplate --compile $(JEMPLATES) > $@
 
 $(EDITOR_FILE): lightbox-attachment.js $(ST_EDITOR_FILE)
 	rm -f $@;
@@ -118,12 +132,6 @@ $(EDITOR_FILE_MINI): $(EDITOR_FILE)
 
 $(EDITOR_LIGHT_FILE_MINI): $(EDITOR_LIGHT_FILE)
 	$(MINIFY) $< > $@
-
--mini.js.js.gz:
-	gzip -c $< > $@
-
-Jemplate.js:
-	jemplate --runtime=jquery > $@
 
 $(S3_FILE): $(S3_SOURCE_FILES) Makefile
 	rm -f $@;
