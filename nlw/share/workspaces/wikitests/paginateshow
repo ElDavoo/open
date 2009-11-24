@@ -34,13 +34,12 @@ This test case is an aid to visually observing each screen type in the applicati
 | click_ok | link=Next |  |
 | *Comment* | SEE NEXT clicked, Page 6 displayed |  |
 | wait_for_element_visible_ok | link=8 |  |
-| click_ok | link=Last |  |
 | pause | %%pt%% |  |
 
 | wait_for_element_visible_ok | link=Last | 30000 |
 | click_ok | link=Last |  |
 | *Comment* | SEE Results of clicking LAST link |  |
-| *Comment* | SEE Results of clicking LAST and next disabled, display is at end of list |  |
+| *Comment* | SEE Lastand Next disabled, display is at end of list |  |
 | pause | %%pt%% |
 
 | wait_for_element_visible_ok | link=Orphaned Pages |  |

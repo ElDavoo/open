@@ -824,7 +824,7 @@ group_member_remains_in_workspace: {
         '... with correct message';
     is $account->has_group( $group ) => 0, '... group is no longer in account';
 
-    ok !($workspace->role_for_user( user => $user)), ' ... user no longer in workspace';
+    ok !$workspace->role_for_user( user => $user), ' ... user no longer in workspace';
 }
 
 ###############################################################################

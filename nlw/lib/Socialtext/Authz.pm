@@ -49,11 +49,8 @@ sub plugin_enabled_for_user {
     my $cache = Socialtext::Cache->cache('authz_plugin');
     my $cache_key = "user:$user_id";
     if (my $enabled_plugins = $cache->get($cache_key)) {
-        return $enabled_plugins->{$plugin_name};
+        return $enabled_plugins->{$plugin_name} ? 1 : 0;
     }
-
-    my $pclass = Socialtext::Pluggable::Adapter->plugin_class($plugin_name);
-    return 1 if $pclass and $pclass->scope eq 'always';
 
     my $sql = <<SQL;
         SELECT plugin
@@ -139,7 +136,7 @@ sub plugin_enabled_for_user_in_account {
     my $cache = Socialtext::Cache->cache('authz_plugin');
     my $cache_key = "user_acct:$user_id\0$account_id";
     if (my $enabled_plugins = $cache->get($cache_key)) {
-        return $enabled_plugins->{$plugin_name};
+        return $enabled_plugins->{$plugin_name} ? 1 : 0;
     }
 
     my $sql = <<SQL;
@@ -205,7 +202,7 @@ sub plugin_enabled_for_workspace {
     my $cache = Socialtext::Cache->cache('authz_plugin');
     my $cache_key = "ws:$workspace_id";
     if (my $enabled_plugins = $cache->get($cache_key)) {
-        return $enabled_plugins->{$plugin_name};
+        return $enabled_plugins->{$plugin_name} ? 1 : 0;
     }
 
     my $sql = <<SQL;
