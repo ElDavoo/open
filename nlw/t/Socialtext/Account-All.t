@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 8;
+use Test::Socialtext tests => 9;
 use Sys::Hostname qw(hostname);
 use Socialtext::Account;
 
@@ -85,6 +85,18 @@ all_accounts_ordered_by_name: {
     is_deeply(
         \@accounts, \@expected,
         'All Accounts, ordered by name'
+    );
+}
+
+###############################################################################
+# TEST: All Accounts by type, ordered by name
+all_accounts_ordered_by_name: {
+    my $cursor   = Socialtext::Account->All( order_by => 'name', type => 'Standard' );
+    my @accounts = map { $_->name } $cursor->all();
+    my @expected = sort @BUILT_IN_ACCOUNTS;
+    is_deeply(
+        \@accounts, \@expected,
+        'All Accounts by type, ordered by name'
     );
 }
 

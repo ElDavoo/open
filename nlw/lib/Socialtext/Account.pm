@@ -997,6 +997,8 @@ sub CountByName {
         ),
         # For searching by account name
         name             => SCALAR_TYPE( default => undef ),
+        # For searching by account type
+        type             => SCALAR_TYPE( default => undef ),
         case_insensitive => SCALAR_TYPE( default => undef ),
     };
     sub All {
@@ -1029,6 +1031,10 @@ sub _All {
     if ($p{name}) {
         $where = _where_by_name(\%p);
         unshift @args, $p{name};
+    }
+    elsif ($p{type}) {
+        $where = q{ WHERE "Account".account_type = ? };
+        unshift @args, $p{type};
     }
 
     my $sth = sql_execute(
