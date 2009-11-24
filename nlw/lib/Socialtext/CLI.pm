@@ -329,6 +329,46 @@ sub list_plugins {
     print "$_\n" for $adapter->plugin_list;
 }
 
+sub set_plugin_pref {
+    my $self = shift;
+    my $plugin  = $self->_require_plugin;
+
+    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
+    $plugin_class->set_plugin_prefs(@{ $self->{argv} });
+    $self->_success(loc('Preferences for the [_1] plugin have been updated.',
+                        $plugin));
+}
+
+sub clear_plugin_prefs {
+    my $self = shift;
+    my $plugin  = $self->_require_plugin;
+
+    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
+    $plugin_class->clear_plugin_prefs();
+    $self->_success(loc('Preferences for the [_1] plugin have been cleared.',
+                        $plugin));
+}
+
+sub show_plugin_prefs {
+    my $self = shift;
+    my $plugin  = $self->_require_plugin;
+
+    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
+    my $prefs = $plugin_class->get_plugin_prefs();
+    my $msg = loc("Preferences for the [_1] plugin:", $plugin);
+    $msg .= "\n";
+    if (%$prefs) {
+        for my $key (sort keys %$prefs) {
+            $msg .= "  $key => $prefs->{$key}\n";
+        }
+    }
+    else {
+        $msg .= loc("No preferences set for the [_1] plugin.", $plugin);
+    }
+    $msg .= "\n";
+    $self->_success($msg);
+}
+
 sub _require_account {
     my $self     = shift;
     my $optional = shift;
@@ -3546,6 +3586,9 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
                  --plugin <name>
   disable-plugin [--account | --all-accounts | --workspace]
                  --plugin <name>
+  set-plugin-pref    --plugin <name> KEY VALUE
+  show-plugin-prefs  --plugin <name>
+  clear-plugin-prefs --plugin <name>
 
   EMAIL
 
@@ -4081,6 +4124,18 @@ Enabling for all accounts will also enable the plugin for accounts created in th
 Disable a plugin for the specified account (perhaps all) or workspace.
 
 Disabling for all accounts will also disable the plugin for accounts created in the future.
+
+=head2 set-plugin-pref --plugin PluginName KEY VALUE
+
+Sets a server-wide preference for the specified plugin.
+
+=head2 show-plugin-prefs --plugin PluginName
+
+Shows all preferences set for the specified plugin.
+
+=head2 clear-plugin-prefs --plugin PluginName
+
+Clears all preferences set for the specified plugin.
 
 =head2 add-profile-field --name [--account] [--title] [--field-class] [--source] [--visible | --hidden]
 

@@ -3,7 +3,6 @@
 | *Comment* | Test Case: Business Control Panel Groups In Account Create an isolated group with 3 users |  |
 | set | isolatedacct | cpisolated-acct-%%start_time%% |
 | create-account | %%isolatedacct%% | Socialtext |
-| enable-acct-plugin | groups | %%isolatedacct%% |
 | set | isouser1 | matt%%start_time%%@ken.socialtext.net |
 | set | e_isouser1 | matt%%start_time%%\@ken.socialtext.net |
 | st-admin | create-user --email %%isouser1%% --password %%password%% --account %%isolatedacct%% | was created |
@@ -23,7 +22,6 @@
 | *Comment* | Test Case: Business Control Panel Groups Create Master Account |  |
 | set | mastergroupsacct | cpgroups-acct-%%start_time%% |
 | create-account | %%mastergroupsacct%% |  |
-| enable-acct-plugin | groups | %%mastergroupsacct%% |
 
 | *Comment* | Test Case: Business Control Panel Groups In Account Create a group with 3 workspaces, 3 members |  |
 | set | samplegroup1 | groupws-acct-%%start_time%% |

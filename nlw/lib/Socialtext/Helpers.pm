@@ -206,107 +206,110 @@ sub _get_history_list_for_template
 
 sub global_template_vars {
     my $self = shift;
+    my $hub = $self->hub;
+    my $cur_ws = $hub->current_workspace;
+    my $cur_user = $hub->current_user;
 
     Socialtext::Timer->Continue('global_tt2_vars');
 
-    my $cur_ws = $self->hub->current_workspace;
-    my $cur_user = $self->hub->current_user;
+    # Thunk the hell out of as much as possible, so that we can avoid
+    # doing the work until we know we need it (inside the templates).
+    my %thunked;
+    my $thunker = sub {
+        my $name = shift;
+        my $sub  = shift;
+        return $name => sub { $thunked{$name} ||= $sub->() };
+    };
 
-    my $show_search_set = (
-        ( $cur_user->is_authenticated )
-            || ( $cur_user->is_guest
-            && Socialtext::AppConfig->interwiki_search_set )
-    );
-    my $snippet = Socialtext::Search::Config->new()->search_box_snippet;
-
-    my $renderer = Socialtext::TT2::Renderer->instance();
-
-    my $search_box = $renderer->render(
-        template => \$snippet,
-        paths => $self->hub->skin->template_paths,
-        vars => {
-            current_workspace => $cur_ws,
-            show_search_set   => $show_search_set,
-            search_sets       => [Socialtext::Search::Set->AllForUser(
-                $cur_user
-            )->all],
-        }
-    );
-
-    my $plugins_enabled = [
-        map { $_->name }
-        grep {
-            $cur_ws->is_plugin_enabled($_->name) ||
-            $cur_user->can_use_plugin($_->name)
-        } Socialtext::Pluggable::Adapter->plugins
-    ];
-    
-    my $plugins_enabled_for_current_workspace_account = [
-        map { $_->name }
-        grep {
-            $cur_ws->account->is_plugin_enabled($_->name)
-        } Socialtext::Pluggable::Adapter->plugins
-    ];
-    
-    my $logo = $self->hub->skin->dynamic_logo;
-
-    my $cookies = {};
-    eval { $cookies = Apache::Cookie->fetch() };
-
-    my $locale = $self->hub->display->preferences->locale;
+    my $locale = $hub->display->preferences->locale;
     my %result = (
-        firebug           => $self->hub->rest->query->param('firebug') || 0,
-        action            => $self->hub->cgi->action,
-        pluggable         => $self->hub->pluggable,
+        firebug           => $hub->rest->query->param('firebug') || 0,
+        action            => $hub->cgi->action,
+        pluggable         => $hub->pluggable,
+        checker           => $hub->checker,
         loc               => \&loc,
         loc_lang          => ($locale ? $locale->value : undef),
-        css               => $self->hub->skin->css_info,
-        user              => $self->_get_user_info,
-        wiki              => $self->_get_wiki_info,
-        checker           => $self->hub->checker,
         current_workspace => $cur_ws,
-        current_page      => $self->hub->pages->current,
-        home_is_dashboard =>
-            $cur_ws->homepage_is_dashboard,
-        homepage_weblog =>
-            $cur_ws->homepage_weblog,
+        current_page      => $hub->pages->current,
+        home_is_dashboard => $cur_ws->homepage_is_dashboard,
+        homepage_weblog => $cur_ws->homepage_weblog,
         workspace_present  => $cur_ws->real,
-        customjs           => $self->hub->skin->customjs,
         app_version        => Socialtext->product_version,
-        skin_name          => $self->hub->skin->skin_name,
-        search_box_snippet => $search_box,
-        miki_url           => $self->miki_path,
-        stax_info          => $self->hub->stax->hacks_info,
-        workspaceslist     => $self->_get_workspace_list_for_template,
-        default_workspace  => $self->default_workspace,
-        ui_is_expanded     => defined($cookies->{"ui_is_expanded"}),
-        plugins_enabled    => $plugins_enabled,
-        plugins_enabled_for_current_workspace_account => $plugins_enabled_for_current_workspace_account,
-        self_registration  => Socialtext::AppConfig->self_registration(),
-        time               => time,
-        dynamic_logo_url   => $logo,
-        $self->hub->pluggable->hooked_template_vars,
-        locking_enabled       => $self->hub->current_workspace->allows_page_locking,
-        can_lock              => $self->hub->checker->check_permission('lock'),
-        page_locked           => $self->hub->pages->current->locked,
-        page_locked_for_user  => 
-            $self->hub->pages->current->locked && 
-            $self->hub->current_workspace->allows_page_locking &&
-            !$self->hub->checker->check_permission('lock'),
-        role_for_user      => $cur_ws->role_for_user(user=>$cur_user) || undef,
-        signals_only       => $self->signals_only,
+        'time'             => time,
+        locking_enabled    => $hub->current_workspace->allows_page_locking,
+
+        $thunker->(css       => sub { $hub->skin->css_info }),
+        $thunker->(user      => sub { $self->_get_user_info }),
+        $thunker->(wiki      => sub { $self->_get_wiki_info }),
+        $thunker->(customjs  => sub { $hub->skin->customjs }),
+        $thunker->(skin_name => sub { $hub->skin->skin_name }),
+        $thunker->('search_box_snippet', sub { 
+            my $show_search_set = (
+                ( $cur_user->is_authenticated )
+                    || ( $cur_user->is_guest
+                    && Socialtext::AppConfig->interwiki_search_set )
+            );
+            my $snippet = Socialtext::Search::Config->new->search_box_snippet;
+            my $renderer = Socialtext::TT2::Renderer->instance();
+            return $renderer->render(
+                template => \$snippet,
+                paths => $hub->skin->template_paths,
+                vars => {
+                    current_workspace => $cur_ws,
+                    show_search_set   => $show_search_set,
+                    search_sets       => [Socialtext::Search::Set->AllForUser(
+                        $cur_user
+                    )->all],
+                }
+            );
+        }),
+        $thunker->(miki_url => sub { $self->miki_path }),
+        $thunker->(stax_info => sub { $hub->stax->hacks_info }),
+        $thunker->(workspaceslist => sub {
+                $self->_get_workspace_list_for_template }),
+        $thunker->(default_workspace => sub { $self->default_workspace }),
+        $thunker->(ui_is_expanded => sub {
+            my $cookies = eval { Apache::Cookie->fetch() } || {};
+            return defined $cookies->{ui_is_expanded};
+        }),
+        $thunker->('plugins_enabled' => sub {
+            return [
+                map { $_->name }
+                grep {
+                    $cur_ws->is_plugin_enabled($_->name) ||
+                    $cur_user->can_use_plugin($_->name)
+                } Socialtext::Pluggable::Adapter->plugins
+            ];
+        }),
+        $thunker->('plugins_enabled_for_current_workspace_account' => sub {
+            return [
+                map { $_->name }
+                grep {
+                    $cur_ws->account->is_plugin_enabled($_->name)
+                } Socialtext::Pluggable::Adapter->plugins
+            ]
+        }),
+
+        $thunker->(self_registration => sub {
+                Socialtext::AppConfig->self_registration }),
+        $thunker->(dynamic_logo_url => sub { $hub->skin->dynamic_logo }),
+        $thunker->(can_lock => sub { $hub->checker->check_permission('lock') }),
+        $thunker->(page_locked => sub { $hub->pages->current->locked }),
+        $thunker->(page_locked_for_user => sub {
+            $hub->pages->current->locked && 
+            $cur_ws->allows_page_locking &&
+            !$hub->checker->check_permission('lock')
+        }),
+        $thunker->(role_for_user => sub { 
+                $cur_ws->role_for_user(user => $cur_user) || undef }),
+        $thunker->(signals_only => sub { $self->signals_only }),
+        $thunker->(is_workspace_admin => sub {
+                $hub->checker->check_permission('admin_workspace') ? 1 : 0 }),
+
+        $hub->pluggable->hooked_template_vars,
     );
 
-    # We're disabling the history global nav functionality for now, until its
-    # truly global (cross workspace)
-#     if ($cur_ws->real) {
-#         $result{history} = $self->_get_history_list_for_template; 
-#     }
-
-    $result{is_workspace_admin}=1 if ($self->hub->checker->check_permission('admin_workspace'));
-
     Socialtext::Timer->Pause('global_tt2_vars');
-
     return %result;
 }
 

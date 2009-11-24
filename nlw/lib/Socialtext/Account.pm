@@ -9,6 +9,7 @@ our $VERSION = '0.01';
 use Class::Field 'field';
 use Carp qw(croak);
 use Readonly;
+use Socialtext::Cache;
 use Socialtext::Exceptions qw( data_validation_error );
 use Socialtext::Schema;
 use Socialtext::SQL qw( sql_execute sql_singlevalue);
@@ -714,12 +715,18 @@ sub new {
 sub _new_from_name {
     my ( $class, %p ) = @_;
 
+    if (my $acct = $class->cache->get("name:$p{name}")) {
+        return $acct;
+    }
     return $class->_new_from_where('name=?', $p{name});
 }
 
 sub _new_from_account_id {
     my ( $class, %p ) = @_;
 
+    if (my $acct = $class->cache->get("id:$p{account_id}")) {
+        return $acct;
+    }
     return $class->_new_from_where('account_id=?', $p{account_id});
 }
 
@@ -733,7 +740,11 @@ sub _new_from_where {
         @bindings );
     my $row = $sth->fetchrow_hashref;
     return unless $row;
-    return $class->new_from_hash_ref($row);
+
+    my $acct = $class->new_from_hash_ref($row);
+    $class->cache->set("name:" . $acct->name     => $acct);
+    $class->cache->set("id:" . $acct->account_id => $acct);
+    return $acct;
 }
 
 sub new_from_hash_ref {
@@ -773,6 +784,10 @@ sub _enable_default_plugins {
                 "$plugin-enabled-all"
             );
     }
+
+    if ($self->account_type eq 'Free 50') {
+        $self->_enable_marketo_if_present;
+    }
 }
 
 sub _create_full {
@@ -799,6 +814,7 @@ sub delete {
 
     sql_execute( 'DELETE FROM "Account" WHERE account_id=?',
         $self->account_id );
+    Socialtext::Cache->clear('account');
 }
 
 sub update {
@@ -865,12 +881,14 @@ sub _post_update {
             $w->update(invitation_filter => '');
             $w->enable_plugin('socialcalc');
         }
+        $self->_disable_marketo_if_present;
     }
     elsif ($new->{account_type} eq 'Free 50') {
         my $wksps = $self->workspaces;
         while (my $w = $wksps->next) {
             $w->disable_plugin('socialcalc');
         }
+        $self->_enable_marketo_if_present;
     }
 
     if ($old->{account_type} and $old->{account_type} ne $new->{account_type}) {
@@ -880,6 +898,8 @@ sub _post_update {
                   . "new_type='" . $new->{account_type} . "'";
         st_log()->info($msg);
     }
+
+    Socialtext::Cache->clear('account');
 }
 
 sub add_to_all_users_workspace {
@@ -977,6 +997,8 @@ sub CountByName {
         ),
         # For searching by account name
         name             => SCALAR_TYPE( default => undef ),
+        # For searching by account type
+        type             => SCALAR_TYPE( default => undef ),
         case_insensitive => SCALAR_TYPE( default => undef ),
     };
     sub All {
@@ -1009,6 +1031,10 @@ sub _All {
     if ($p{name}) {
         $where = _where_by_name(\%p);
         unshift @args, $p{name};
+    }
+    elsif ($p{type}) {
+        $where = q{ WHERE "Account".account_type = ? };
+        unshift @args, $p{type};
     }
 
     my $sth = sql_execute(
@@ -1263,6 +1289,29 @@ sub email_passes_domain_filter {
         return 1;
     }
     return 0;
+}
+
+sub _disable_marketo_if_present {
+    shift->_change_marketo_if_present('disable_plugin');
+}
+sub _enable_marketo_if_present {
+    shift->_change_marketo_if_present('enable_plugin');
+}
+
+sub _change_marketo_if_present {
+    my $self = shift;
+    my $method = shift;
+    my $adapter = Socialtext::Pluggable::Adapter->new();
+    if ($adapter->plugin_exists('marketo')) {
+        $self->$method('marketo');
+    }
+}
+
+{
+    my $cache;
+    sub cache {
+        return $cache ||= Socialtext::Cache->cache('account');
+    }
 }
 
 1;

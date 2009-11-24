@@ -92,8 +92,6 @@
 | type_ok | username | %%start_time%% |
 | click_and_wait | st-username-search-submit |  |
 | pause | 1000 |  |
-| wait_for_element_visible_ok | link=Clear Selection | 30000 |
-| click_ok | link=Clear Selection |  |
 | wait_for_element_visible_ok | %%user1%% | 30000 |
 | click_ok | %%user1%% |  |
 | wait_for_element_visible_ok | %%user2%% | 30000 |

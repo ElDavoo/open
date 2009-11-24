@@ -438,6 +438,7 @@ $(function() {
 
                                 var bootstrap = false;
                                 $("#st-edit-check .continue")
+                                    .removeClass('checked')
                                     .one("click", function() {
 
                                     jQuery.ajax({
@@ -450,13 +451,15 @@ $(function() {
                                         }
                                     });
 
-                                    $("#lightbox").unbind('lightbox-unload');
+                                    $("#st-edit-check .continue").addClass('checked');
                                     $.hideLightbox();
                                 });
 
                                 $("#lightbox")
                                     .one("lightbox-unload", function() {
-                                        if (cleanup_callback) cleanup_callback();
+                                        if (cleanup_callback && !$("#st-edit-check .continue").hasClass('checked')) {
+                                            cleanup_callback();
+                                        }
                                     });
                             }
                         });

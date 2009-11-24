@@ -6,14 +6,11 @@ use warnings;
 use base 'Socialtext::Plugin';
 
 use Class::Field qw( const field );
-use IO::File;
 use Socialtext::AppConfig;
 use Socialtext::Helpers;
-use Socialtext::HTTP qw/:codes/;
-use Socialtext::Exceptions;
 use Socialtext::TT2::Renderer;
 use Socialtext::l10n qw(loc system_locale);
-use Socialtext::BrowserDetect;
+use Socialtext::String;
 use Socialtext::Timer;
 use Socialtext::Pageset;
 use Memoize;
@@ -66,48 +63,13 @@ sub attachments_download {
         );
     }
 
-    my $file    = $attachment->full_path;
-    my $headers = $self->hub->headers;
-
-    # TODO: make 404 a real HTTP 404, this is more or less a placeholder
-    # to prevent an app error.
-    unless ( -e $file ) {
-        $headers->status( HTTP_404_Not_Found );
-        $headers->content_type( 'text/plain' );
-        return "The attachment you are looking for cannot be found.";
-    }
-
-    my $fh = IO::File->new($file, 'r');
-    die "Cannot read $file: $!" unless $fh;
-
-    my $mime_type = $attachment->mime_type;
-    my $charset = 'UTF-8';
-
-    if ( $mime_type =~ /^text/ ) {
-        $charset = $attachment->charset(system_locale());
-    }
-
-    # Add the headers for an attachment
-    my $filename = $attachment->filename;
-    
-    # XXX: should test with safari
-    if( Socialtext::BrowserDetect::ie() ) {
-        $filename = $self->uri_escape($filename);
-    }
-
-    $self->hub->headers->add_attachment(
-        filename => $filename,
-        len      => -s $file,
-        type     => $mime_type,
-        charset  => $charset,
-    );
-
-    # Erase Content-Disposition if we want the attachment inline.
-    if ( not $attachment->should_popup or $self->cgi->as_page ) {
-        $self->hub->headers->content_disposition(undef);
-    }
-    # return the glob so the framework can write it down
-    return $fh;
+    # Handle this all off to the REST API.
+    my $ws_name = $self->hub->current_workspace->name;
+    my $page_uri = $attachment->page_id;
+    my $filename = Socialtext::String::uri_escape( $attachment->filename );
+    my $attachment_uri = "/data/workspaces/$ws_name/attachments/$page_uri:$id/"
+                       . "original/$filename";
+    return $self->redirect($attachment_uri);
 }
 
 sub attachments_extract {

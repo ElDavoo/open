@@ -1,0 +1,29 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+use Socialtext::SQL qw/sql_singlevalue/;
+
+my $free_50_accts = sql_singlevalue(
+    q{SELECT count(*)
+        FROM "Account"
+        WHERE account_type = 'Free 50'}
+);
+
+my $free_50_markteos = sql_singlevalue(
+    q{SELECT count(*)
+        FROM "Account" JOIN account_plugin USING (account_id)
+        WHERE account_type = 'Free 50' AND plugin = 'marketo'}
+);
+
+if ($free_50_accts != $free_50_markteos) {
+    print "Found $free_50_accts Free 50 accounts, but $free_50_markteos "
+        . "accounts with marketo enabled.\n";
+    exit 1; # run migration
+}
+
+print "All Free 50 accounts now have marketo enabled. ($free_50_accts)\n";
+exit 0;
+
+
+
