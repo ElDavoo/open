@@ -64,11 +64,7 @@ sub CreateEnvironment {
 
 sub new {
     my $class = shift;
-    my $test_dir = File::Spec->catpath(
-        'This argument is ignored; see: perldoc File::Spec',
-        $nlw_dir,
-        Socialtext::AppConfig->test_dir(),
-    );
+    my $test_dir = Cwd::abs_path( Socialtext::AppConfig->test_dir() );
 
     my $self = $class->SUPER::new(
         nlw_dir  => $nlw_dir,
