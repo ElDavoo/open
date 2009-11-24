@@ -2112,6 +2112,11 @@ sub drop_breadcrumb {
     );
 }
 
+sub is_default {
+    my $self = shift;
+    return $self->name eq Socialtext::AppConfig->default_workspace;
+}
+
 sub Default {
     my $class = shift;
     my $default_name = Socialtext::AppConfig->default_workspace;

@@ -57,6 +57,7 @@ sub _entity_hash {
         # not really modified time, but it is the time we have
         modified_time => $workspace->creation_datetime,
         id => $workspace->workspace_id,
+        default => $workspace->is_default ? 1 : 0,
 
         # REVIEW: more?
     };
