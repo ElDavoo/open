@@ -1,0 +1,46 @@
+| *Comment* | Test Case: Groups Home |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Groups Home Setup |  |
+| set | nopermuser | nopermuser-%%start_time%%@matt.socialtext.net |
+| set | groupname | Group-%%start_time%% |
+| create_group | %%groupname%% |  |
+| set | wsname | grp-ws-%%start_time%% |
+| set | wsname2 | other-grp-ws-%%start_time%% |
+
+| st-admin | create-workspace --title %%wsname%% --name %%wsname%% |  |
+| st-admin | create-workspace --title %%wsname2%% --name %%wsname2%% |  |
+| st-admin | add-member --e %%username%% --group %%group_id%% |  |
+| st-admin | enable-plugin --all-accounts --plugin groups |  |
+| st-admin | add-member --workspace %%wsname%% --group %%group_id%% |  |
+| st-admin | add-member --workspace %%wsname2%% --group %%group_id%% |  |
+
+| *Comment* | Test Case: TODO Some Operations That should show up |  |
+
+| *Comment* | Test Case: Groups Home Open Groups Home Page |  |
+| open_ok | /?group/%%group_id%% |  |
+| wait_for_text_present_ok | %%groupname%% | 30000 |
+| st-name-widget | 1 | information_widget |
+| st-name-widget | 2 | workspaces_widget |
+| st-name-widget | 3 | activity |
+| st-name-widget | 4 | people |
+| st-select-widget-frame | information_widget |  |
+| wait_for_text_present_ok | %%groupname%% |  |
+| select-frame | relative=parent |  |
+
+| st-select-widget-frame | workspaces_widget |  |
+| wait_for_element_visible_ok | link=%%wsname%% |  |
+| wait_for_element_visible_ok | link=%%wsname2%% |  |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups Home TODO Check for previous work |
+
+| *Comment* | Test Case: Groups Check Lack of Permissions |  |
+| st-admin | create-user --e %%nopermuser%% --p %%password%% |  |
+| st-logoutin | %%nopermuser%% | %%password%% |
+| open_ok | /?group/%%group_id%% |  |
+| wait_for_text_present_ok | Error | 30000 |
+| wait_for_text_present_ok | You do not have permission to view this page | 30000 |
+
+| *Comment* | Test Case: Groups Home COMPLETED |  |
