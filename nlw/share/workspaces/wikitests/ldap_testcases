@@ -11,8 +11,6 @@ set | email_esc | devnull3\@socialtext.com |
 
 LDAP test cases must explicitly use the above ldap username, email, and pwd so LDAP Testcases can be called from tests where a Default user is logged in.
 
-* [Test Case: LDAP Actualize Groups]
-
 * [Test Case: A Enable LDAP]
 
 Test Case: Verify LDAP Enabled verifies the LDAP user screens for Login/Logout, Password Reset, Admin resets password, and self register
