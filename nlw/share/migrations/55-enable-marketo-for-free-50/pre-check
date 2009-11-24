@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+use Socialtext::SQL qw/sql_singlevalue/;
+
+my $free_50_accts = sql_singlevalue(
+    q{SELECT count(*) FROM "Account" where account_type = 'Free 50'}
+);
+
+if ($free_50_accts) {
+    print "Found $free_50_accts Free 50 accounts.\n";
+    exit 0; # run migration
+}
+
+print "No Free 50 accounts found.  Skipping migration.\n";
+exit 1;
+
+
+
