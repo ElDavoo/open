@@ -1,0 +1,18 @@
+[% IF data.size %]
+    [% FOR entry = data %]
+        [% IF entry.default %]
+            <li class="dropaction">
+                <a id="default-workspace-link" href="[% opts.href(entry) %]">
+                    [% opts.title(entry) %]&nbsp;([% loc('Default') %])
+                </a>
+            </li>
+            <li style="background-color: #eee;">&nbsp;</li>
+        [% ELSE %]
+            <li>
+                <a href="[% opts.href(entry) %]">[% opts.title(entry) %]</a>
+            </li>
+        [% END %]
+    [% END %]
+[% ELSE %]
+    <li class="emptynotice">[% opts.emptyMessage %]</li>
+[% END %]
