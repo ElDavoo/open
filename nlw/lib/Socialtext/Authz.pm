@@ -52,9 +52,6 @@ sub plugin_enabled_for_user {
         return $enabled_plugins->{$plugin_name} ? 1 : 0;
     }
 
-    my $pclass = Socialtext::Pluggable::Adapter->plugin_class($plugin_name);
-    return 1 if $pclass and $pclass->scope eq 'always';
-
     my $sql = <<SQL;
         SELECT plugin
         FROM account_user JOIN account_plugin USING (account_id)
