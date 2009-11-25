@@ -79,6 +79,7 @@ clean:
 	    info.js \
 	    timestamp.js \
 	    Jemplate.js \
+	    $(JEMPLATES_COMPILED) \
 	    $(LIGHTBOX_OUTPUT) \
 	    $(LIGHTBOX_OUTPUT_GZIPS) \
 	    $(S3_FILE) \
