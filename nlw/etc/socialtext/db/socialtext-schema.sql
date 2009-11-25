@@ -6,6 +6,55 @@ SET client_min_messages = warning;
 
 SET search_path = public, pg_catalog;
 
+CREATE FUNCTION bqarr_in(cstring) RETURNS query_int
+    AS '$libdir/_int', 'bqarr_in'
+    LANGUAGE c STRICT;
+
+CREATE FUNCTION bqarr_out(query_int) RETURNS cstring
+    AS '$libdir/_int', 'bqarr_out'
+    LANGUAGE c STRICT;
+
+CREATE TYPE query_int (
+    INTERNALLENGTH = variable,
+    INPUT = bqarr_in,
+    OUTPUT = bqarr_out,
+    ALIGNMENT = int4,
+    STORAGE = plain
+);
+
+CREATE FUNCTION _int_contained(integer[], integer[]) RETURNS boolean
+    AS '$libdir/_int', '_int_contained'
+    LANGUAGE c STRICT;
+
+
+CREATE FUNCTION _int_contains(integer[], integer[]) RETURNS boolean
+    AS '$libdir/_int', '_int_contains'
+    LANGUAGE c STRICT;
+
+
+CREATE FUNCTION _int_different(integer[], integer[]) RETURNS boolean
+    AS '$libdir/_int', '_int_different'
+    LANGUAGE c STRICT;
+
+
+CREATE FUNCTION _int_inter(integer[], integer[]) RETURNS integer[]
+    AS '$libdir/_int', '_int_inter'
+    LANGUAGE c STRICT;
+
+CREATE FUNCTION _int_overlap(integer[], integer[]) RETURNS boolean
+    AS '$libdir/_int', '_int_overlap'
+    LANGUAGE c STRICT;
+
+
+CREATE FUNCTION _int_same(integer[], integer[]) RETURNS boolean
+    AS '$libdir/_int', '_int_same'
+    LANGUAGE c STRICT;
+
+
+CREATE FUNCTION _int_union(integer[], integer[]) RETURNS integer[]
+    AS '$libdir/_int', '_int_union'
+    LANGUAGE c STRICT;
+
 CREATE FUNCTION auto_vivify_user_rollups() RETURNS "trigger"
     AS $$
     BEGIN
@@ -14,6 +63,11 @@ CREATE FUNCTION auto_vivify_user_rollups() RETURNS "trigger"
     END
 $$
     LANGUAGE plpgsql;
+
+CREATE FUNCTION boolop(integer[], query_int) RETURNS boolean
+    AS '$libdir/_int', 'boolop'
+    LANGUAGE c STRICT;
+
 
 CREATE FUNCTION cleanup_sessions() RETURNS "trigger"
     AS $$
@@ -26,6 +80,66 @@ CREATE FUNCTION cleanup_sessions() RETURNS "trigger"
     END
 $$
     LANGUAGE plpgsql;
+
+CREATE FUNCTION g_int_compress(internal) RETURNS internal
+    AS '$libdir/_int', 'g_int_compress'
+    LANGUAGE c;
+
+CREATE FUNCTION g_int_consistent(internal, integer[], integer) RETURNS boolean
+    AS '$libdir/_int', 'g_int_consistent'
+    LANGUAGE c;
+
+CREATE FUNCTION g_int_decompress(internal) RETURNS internal
+    AS '$libdir/_int', 'g_int_decompress'
+    LANGUAGE c;
+
+CREATE FUNCTION g_int_penalty(internal, internal, internal) RETURNS internal
+    AS '$libdir/_int', 'g_int_penalty'
+    LANGUAGE c STRICT;
+
+CREATE FUNCTION g_int_picksplit(internal, internal) RETURNS internal
+    AS '$libdir/_int', 'g_int_picksplit'
+    LANGUAGE c;
+
+CREATE FUNCTION g_int_same(integer[], integer[], internal) RETURNS internal
+    AS '$libdir/_int', 'g_int_same'
+    LANGUAGE c;
+
+CREATE FUNCTION g_int_union(internal, internal) RETURNS integer[]
+    AS '$libdir/_int', 'g_int_union'
+    LANGUAGE c;
+
+CREATE FUNCTION icount(integer[]) RETURNS integer
+    AS '$libdir/_int', 'icount'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION idx(integer[], integer) RETURNS integer
+    AS '$libdir/_int', 'idx'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION intarray_del_elem(integer[], integer) RETURNS integer[]
+    AS '$libdir/_int', 'intarray_del_elem'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION intarray_push_array(integer[], integer[]) RETURNS integer[]
+    AS '$libdir/_int', 'intarray_push_array'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION intarray_push_elem(integer[], integer) RETURNS integer[]
+    AS '$libdir/_int', 'intarray_push_elem'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION intset(integer) RETURNS integer[]
+    AS '$libdir/_int', 'intset'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION intset_subtract(integer[], integer[]) RETURNS integer[]
+    AS '$libdir/_int', 'intset_subtract'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION intset_union_elem(integer[], integer) RETURNS integer[]
+    AS '$libdir/_int', 'intset_union_elem'
+    LANGUAGE c IMMUTABLE STRICT;
 
 CREATE FUNCTION is_direct_signal(actor_id bigint, person_id bigint) RETURNS boolean
     AS $$
@@ -82,6 +196,15 @@ END;
 $$
     LANGUAGE plpgsql IMMUTABLE;
 
+CREATE FUNCTION querytree(query_int) RETURNS text
+    AS '$libdir/_int', 'querytree'
+    LANGUAGE c STRICT;
+
+CREATE FUNCTION rboolop(query_int, integer[]) RETURNS boolean
+    AS '$libdir/_int', 'rboolop'
+    LANGUAGE c STRICT;
+
+
 CREATE FUNCTION signal_sent() RETURNS "trigger"
     AS $$
     BEGIN
@@ -99,12 +222,156 @@ CREATE FUNCTION signal_sent() RETURNS "trigger"
 $$
     LANGUAGE plpgsql;
 
+CREATE FUNCTION sort(integer[], text) RETURNS integer[]
+    AS '$libdir/_int', 'sort'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION sort(integer[]) RETURNS integer[]
+    AS '$libdir/_int', 'sort'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION sort_asc(integer[]) RETURNS integer[]
+    AS '$libdir/_int', 'sort_asc'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION sort_desc(integer[]) RETURNS integer[]
+    AS '$libdir/_int', 'sort_desc'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION subarray(integer[], integer, integer) RETURNS integer[]
+    AS '$libdir/_int', 'subarray'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION subarray(integer[], integer) RETURNS integer[]
+    AS '$libdir/_int', 'subarray'
+    LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION uniq(integer[]) RETURNS integer[]
+    AS '$libdir/_int', 'uniq'
+    LANGUAGE c IMMUTABLE STRICT;
+
 CREATE AGGREGATE array_accum (
     BASETYPE = anyelement,
     SFUNC = array_append,
     STYPE = anyarray,
     INITCOND = '{}'
 );
+
+CREATE OPERATOR # (
+    PROCEDURE = icount,
+    RIGHTARG = integer[]
+);
+
+CREATE OPERATOR # (
+    PROCEDURE = idx,
+    LEFTARG = integer[],
+    RIGHTARG = integer
+);
+
+CREATE OPERATOR & (
+    PROCEDURE = _int_inter,
+    LEFTARG = integer[],
+    RIGHTARG = integer[],
+    COMMUTATOR = &
+);
+
+CREATE OPERATOR && (
+    PROCEDURE = _int_overlap,
+    LEFTARG = integer[],
+    RIGHTARG = integer[],
+    COMMUTATOR = &&,
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+CREATE OPERATOR + (
+    PROCEDURE = intarray_push_elem,
+    LEFTARG = integer[],
+    RIGHTARG = integer
+);
+
+CREATE OPERATOR + (
+    PROCEDURE = intarray_push_array,
+    LEFTARG = integer[],
+    RIGHTARG = integer[],
+    COMMUTATOR = +
+);
+
+CREATE OPERATOR - (
+    PROCEDURE = intarray_del_elem,
+    LEFTARG = integer[],
+    RIGHTARG = integer
+);
+
+CREATE OPERATOR - (
+    PROCEDURE = intset_subtract,
+    LEFTARG = integer[],
+    RIGHTARG = integer[]
+);
+
+CREATE OPERATOR @ (
+    PROCEDURE = _int_contains,
+    LEFTARG = integer[],
+    RIGHTARG = integer[],
+    COMMUTATOR = ~,
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+CREATE OPERATOR @@ (
+    PROCEDURE = boolop,
+    LEFTARG = integer[],
+    RIGHTARG = query_int,
+    COMMUTATOR = ~~,
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+CREATE OPERATOR | (
+    PROCEDURE = intset_union_elem,
+    LEFTARG = integer[],
+    RIGHTARG = integer
+);
+
+CREATE OPERATOR | (
+    PROCEDURE = _int_union,
+    LEFTARG = integer[],
+    RIGHTARG = integer[],
+    COMMUTATOR = |
+);
+
+CREATE OPERATOR ~ (
+    PROCEDURE = _int_contained,
+    LEFTARG = integer[],
+    RIGHTARG = integer[],
+    COMMUTATOR = @,
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+CREATE OPERATOR ~~ (
+    PROCEDURE = rboolop,
+    LEFTARG = query_int,
+    RIGHTARG = integer[],
+    COMMUTATOR = @@,
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+CREATE OPERATOR CLASS gist__int_ops
+    DEFAULT FOR TYPE integer[] USING gist AS
+    OPERATOR 3 &&(integer[],integer[]) ,
+    OPERATOR 6 =(anyarray,anyarray) RECHECK ,
+    OPERATOR 7 @(integer[],integer[]) ,
+    OPERATOR 8 ~(integer[],integer[]) ,
+    OPERATOR 20 @@(integer[],query_int) ,
+    FUNCTION 1 g_int_consistent(internal,integer[],integer) ,
+    FUNCTION 2 g_int_union(internal,internal) ,
+    FUNCTION 3 g_int_compress(internal) ,
+    FUNCTION 4 g_int_decompress(internal) ,
+    FUNCTION 5 g_int_penalty(internal,internal,internal) ,
+    FUNCTION 6 g_int_picksplit(internal,internal) ,
+    FUNCTION 7 g_int_same(integer[],integer[],internal);
 
 SET default_tablespace = '';
 
@@ -1857,4 +2124,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '93');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '94');
