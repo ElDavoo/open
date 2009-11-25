@@ -337,6 +337,7 @@ sub _get_user_info {
     return {
         username           => $user->guess_real_name,
         userid             => $user->username,
+        id                 => $user->user_id,
         email_address      => $user->email_address,
         is_guest           => $user->is_guest,
         is_business_admin  => $user->is_business_admin,
