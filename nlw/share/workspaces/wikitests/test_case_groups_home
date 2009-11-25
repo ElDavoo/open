@@ -3,6 +3,7 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Groups Home Setup |  |
+| set | short_nopermuser | nopermuser %%start_time%% |
 | set | nopermuser | nopermuser-%%start_time%%@matt.socialtext.net |
 | set | groupname | Group-%%start_time%% |
 | create_group | %%groupname%% |  |
@@ -29,12 +30,11 @@
 | wait_for_text_present_ok | %%groupname%% |  |
 | select-frame | relative=parent |  |
 
+| *Comment* | Test Case: Groups Home Check Workspaces Widget |
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_element_visible_ok | link=%%wsname%% |  |
 | wait_for_element_visible_ok | link=%%wsname2%% |  |
 | select-frame | relative=parent |  |
-
-| *Comment* | Test Case: Groups Home TODO Check for previous work |
 
 | *Comment* | Test Case: Groups Check Lack of Permissions |  |
 | st-admin | create-user --e %%nopermuser%% --p %%password%% |  |
@@ -42,5 +42,39 @@
 | open_ok | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | Error | 30000 |
 | wait_for_text_present_ok | You do not have permission to view this page | 30000 |
+
+| *Comment* | Test Case: Groups Add member, Check again |  |
+| st-admin | add-member --e %%nopermuser%% --group %%group_id%% |  |
+| open_ok | /?group/%%group_id%% |  |
+| wait_for_text_present_ok | %%groupname%% |  |
+| st-name-widget | 1 | information_widget |
+| st-name-widget | 2 | workspaces_widget |
+| st-name-widget | 3 | activity_widget |
+| st-name-widget | 4 | people_widget |
+
+| *Comment* | Test Case: Groups Home Check Information Widget With Granted Permissions |  |
+| st-select-widget-frame | information_widget |  |
+| wait_for_text_present_ok | %%groupname%% | 30000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups Home Check Workspaces Widget With Granted Permissions |  |
+| st-select-widget-frame | workspaces_widget |  |
+| wait_for_element_visible_ok | link=%%wsname%% | 30000 |
+| wait_for_element_visible_ok | link=%%wsname2%% | 30000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups Home Check Activity Widget With Granted Permissions TODO add checks for page edit, comment |  |
+| st-select-widget-frame | activity_widget |  |
+| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%short_nopermuser%% to %%groupname%%/ism |
+| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%groupname%% to %%wsname2%%/ism |
+| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%groupname%% to %%wsname%%/ism |
+| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%short_username%% to %%groupname%%/ism |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups Home Check People Widget With Granted Permissions |  |
+| st-select-widget-frame | people_widget |  |
+| text_like | //body | %%username%% |
+| text_like | //body | %%nopermuser%% |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups Home COMPLETED |  |
