@@ -1,17 +1,12 @@
 [% IF data.size %]
     [% FOR entry = data %]
-        [% IF entry.default %]
-            <li class="dropaction">
-                <a id="default-workspace-link" href="[% opts.href(entry) %]">
-                    [% opts.title(entry) %]&nbsp;([% loc('Default') %])
-                </a>
-            </li>
-            <li style="background-color: #eee;">&nbsp;</li>
-        [% ELSE %]
-            <li>
-                <a href="[% opts.href(entry) %]">[% opts.title(entry) %]</a>
-            </li>
-        [% END %]
+        <li>
+            <a [% IF opts.defaultId AND entry.default %] id="[% opts.defaultId %]"[% END %]href="[% opts.href(entry) %]">
+                [% IF opts.exists('icon') %]<img src="[% opts.icon(entry) %]"/>[% END %]
+                [% opts.title(entry) | label_ellipsis(30) %][% IF entry.default %] ([% loc("Default") %])[% END %]
+            </a>
+        </li>
+        [% IF entry.default %]<li style="background-color: #eee;">&nbsp;</li>[% END %]
     [% END %]
 [% ELSE %]
     <li class="emptynotice">[% opts.emptyMessage %]</li>
