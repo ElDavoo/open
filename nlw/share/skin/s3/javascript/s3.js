@@ -439,7 +439,8 @@ $(function() {
                                 var bootstrap = false;
                                 $("#st-edit-check .continue")
                                     .removeClass('checked')
-                                    .one("click", function() {
+                                    .unbind('click')
+                                    .click(function() {
 
                                     jQuery.ajax({
                                         type: 'POST',
@@ -460,6 +461,7 @@ $(function() {
                                         if (cleanup_callback && !$("#st-edit-check .continue").hasClass('checked')) {
                                             cleanup_callback();
                                         }
+                                        $('#st-edit-check').remove();
                                     });
                             }
                         });
