@@ -41,7 +41,7 @@ foreach my $maybe (
         '/tmp',
         ) {
     if (-d $maybe and -w $maybe) {
-        $nlw_dir = $maybe;
+        $nlw_dir = Cwd::abs_path($maybe);
         last;
     }
 }
@@ -65,11 +65,9 @@ sub CreateEnvironment {
 sub new {
     my $class = shift;
 
-    my $test_dir = Cwd::abs_path(
-        File::Spec->catdir(
-            $nlw_dir,
-            Socialtext::AppConfig->test_dir(),
-        )
+    my $test_dir = File::Spec->catdir(
+        $nlw_dir,
+        Socialtext::AppConfig->test_dir(),
     );
 
     my $self = $class->SUPER::new(
