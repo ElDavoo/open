@@ -1,0 +1,553 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use warnings;
+use strict;
+
+use Test::Socialtext tests => 102;
+use Test::Differences;
+use Test::Exception;
+use List::Util qw/shuffle/;
+use Socialtext::SQL qw/get_dbh/;
+BEGIN {
+    use_ok 'Socialtext::UserSet';
+}
+
+fixtures(qw(base_layout destructive));
+
+my $dbh = get_dbh();
+ok $dbh;
+$dbh->{AutoCommit} = 1;
+my $uset = Socialtext::UserSet->new(dbh => $dbh);
+
+my $member = Socialtext::Role->new(name => 'member')->role_id;
+my $guest = Socialtext::Role->new(name => 'guest')->role_id;
+
+sub reset_graph {
+    local $dbh->{RaiseError} = 1;
+    $dbh->do(q{ TRUNCATE user_set_include, user_set_path });
+}
+
+sub insert { $uset->add_role(@_); }
+sub del { $uset->remove_role(@_); }
+sub update { $uset->update_role(@_); }
+sub del_set { $uset->remove_set(@_); }
+
+sub connected { $uset->connected(@_) ? 1 : 0; }
+sub has_role { $uset->has_role(@_) ? 1 : 0; }
+
+reset_graph();
+
+bipartite: {
+    insert(2,3);
+    ok has_role(2,3,$member);
+
+    is connected(2,3), 1, "new edge is a path";
+    is connected(3,2), 0, "graph is directed";
+    is connected(2,4), 0;
+
+    insert(5,6);
+    is connected(5,6), 1, "new edge is a path";
+    is connected(6,5), 0, "directed";
+
+    is_graph_tc(
+        [2,3 => 2,3],
+        [5,6 => 5,6],
+    );
+    # 2 -> 3    5 -> 6
+
+    del(5,6);
+    dies_ok { del(5,6) } "second delete dies";
+    is connected(5,6), 0, "edge removed";
+    is connected(2,3), 1, "first one still there";
+
+    insert(5,6);
+}
+
+ingress: {
+    # 2 -> 3    5 -> 6
+    insert(1,2);
+    # 1 -> 2 -> 3    5 -> 6
+    is connected(1,2), 1, "new edge is a path";
+    is connected(2,1), 0, "directed";
+    is connected(1,3), 1, "ingres makes transitive path";
+    is connected(2,3), 1, "old path there still too";
+
+    is_graph_tc(
+        [1,3 => 1,2,3],
+        [1,2 => 1,2],
+        [2,3 => 2,3],
+        [5,6 => 5,6],
+    );
+
+    del(1,2);
+    is connected(1,2), 0, "new path removed";
+    is connected(1,3), 0, "no more transitive path on removal";
+    is connected(2,3), 1, "old path still there";
+
+    is_graph_tc(
+        [2,3 => 2,3],
+        [5,6 => 5,6],
+    );
+    # 2 -> 3    5 -> 6
+}
+
+egress: { 
+    # 2 -> 3    5 -> 6
+    insert(6,7);
+    # 2 -> 3    5 -> 6 -> 7
+    is connected(6,7), 1, "new edge is a path";
+    is connected(7,6), 0, "directed";
+    is connected(5,7), 1, "ingres makes transitive path";
+    is connected(5,6), 1, "old path there still too";
+
+    is_graph_tc(
+        [2,3 => 2,3],
+        [5,6 => 5,6],
+        [5,7 => 5,6,7],
+        [6,7 => 6,7],
+    );
+
+    del(6,7);
+    is connected(6,7), 0, "new path removed";
+    is connected(5,7), 0, "no more transitive path on removal";
+    is connected(5,6), 1, "old path still there";
+
+    is_graph_tc(
+        [2,3 => 2,3],
+        [5,6 => 5,6],
+    );
+    # 2 -> 3    5 -> 6
+}
+
+simple_join: { 
+    # 2 -> 3    5 -> 6
+    insert(3,5);
+    # 2 -> 3 -> 5 -> 6
+    is connected(3,5), 1, "new edge is a path";
+    is connected(5,3), 0, "directed";
+    is connected(2,6), 1, "joiner makes transitive path";
+    ok has_role(2,6 => $member), "joiner makes member role";
+
+    update(5,6 => $guest);
+    ok has_role(2,3 => $member);
+    ok has_role(2,5 => $member);
+    ok has_role(3,5 => $member);
+    ok has_role(2,6 => $guest), "guest role got updated";
+    ok has_role(3,6 => $guest), "guest role got updated";
+    ok has_role(5,6 => $guest), "guest role got updated";
+
+    is_graph_tc(
+        [2,3 => 2,3],
+        [2,5 => 2,3,5],
+        [2,6 => 2,3,5,6],
+
+        [3,5 => 3,5],
+        [3,6 => 3,5,6],
+
+        [5,6 => 5,6],
+    );
+
+    del(3,5);
+    is connected(3,5), 0, "new path removed";
+    is connected(2,6), 0, "no more transitive path on removal";
+
+    is_graph_tc(
+        [2,3 => 2,3],
+        [5,6 => 5,6],
+    );
+    # 2 -> 3    5 -> 6
+}
+
+the_x: { 
+    reset_graph();
+    insert(2,3);
+    insert(1,3);
+    insert(5,6);
+    insert(5,7);
+    #      1    7
+    #      V    ^
+    # 2 -> 3    5 -> 6
+    is_graph_tc(
+        [2,3 => 2,3],
+        [1,3 => 1,3],
+        [5,6 => 5,6],
+        [5,7 => 5,7],
+    );
+
+    insert(3,5);
+    #      1    7
+    #      V    ^
+    # 2 -> 3 -> 5 -> 6
+
+    is connected(3,5), 1, "new edge is a path";
+    is connected(5,3), 0, "directed";
+    is connected(2,6), 1, "joiner makes some transitive paths";
+    is connected(2,7), 1, "joiner makes some transitive paths";
+    is connected(1,6), 1, "joiner makes some transitive paths";
+    is connected(1,7), 1, "joiner makes some transitive paths";
+
+    update(5,7 => $guest);
+    ok has_role(5,7 => $guest);
+    ok has_role(3,7 => $guest);
+    ok has_role(1,7 => $guest);
+    ok has_role(2,7 => $guest);
+    ok has_role(5,6 => $member);
+    ok has_role(3,5 => $member);
+
+    is_graph_tc(
+        [1,3 => 1,3],
+        [1,5 => 1,3,5],
+        [1,6 => 1,3,5,6],
+        [1,7 => 1,3,5,7],
+
+        [2,3 => 2,3],
+        [2,5 => 2,3,5],
+        [2,6 => 2,3,5,6],
+        [2,7 => 2,3,5,7],
+
+        [3,5 => 3,5],
+        [3,6 => 3,5,6],
+        [3,7 => 3,5,7],
+
+        [5,6 => 5,6],
+        [5,7 => 5,7],
+    );
+
+    del(3,5);
+    is connected(3,5), 0, "new path removed";
+    is connected(2,6), 0, "joiner removal removes transitive paths";
+    is connected(2,7), 0, "joiner removal removes transitive paths";
+    is connected(1,6), 0, "joiner removal removes transitive paths";
+    is connected(1,7), 0, "joiner removal removes transitive paths";
+
+    is_graph_tc(
+        [2,3 => 2,3],
+        [1,3 => 1,3],
+        [5,6 => 5,6],
+        [5,7 => 5,7],
+    );
+
+    del(1,3);
+    del(5,7);
+    is_graph_tc(
+        [2,3 => 2,3],
+        [5,6 => 5,6],
+    );
+}
+
+triangle: {
+    reset_graph();
+    # 1 -> 2 -> 3
+    insert(1,2);
+    insert(2,3);
+
+    is_graph_tc(
+        [1,2 => 1,2],
+        [1,3 => 1,2,3],
+        [2,3 => 2,3],
+    );
+
+    # 1 -> 2 -> 3 -> 1
+    insert(3,1);
+
+    is_graph_tc(
+        [1,1 => 1,2,3,1],
+        [1,2 => 1,2],
+        [1,3 => 1,2,3],
+
+        [2,1 => 2,3,1],
+        [2,2 => 2,3,1,2],
+        [2,3 => 2,3],
+
+        [3,1 => 3,1],
+        [3,2 => 3,1,2],
+        [3,3 => 3,1,2,3],
+    );
+
+    ok has_role(1,1 => $member);
+    ok has_role(1,2 => $member);
+    ok has_role(1,3 => $member);
+
+    # bogus update has no effect, "1,1" is a virtual role:
+    dies_ok { update(1,1 => $guest) };
+    ok has_role(1,1 => $member), "bogus role update has no effect";
+    ok has_role(2,1 => $member), "bogus role update has no effect";
+    ok has_role(3,1 => $member), "bogus role update has no effect";
+
+    update(1,2 => $guest);
+    ok has_role(1,2 => $guest), "real role update, 1 in 2 is guest";
+    ok has_role(2,2 => $guest), "real role update, 2 in 2 is guest";
+    ok has_role(3,2 => $guest), "real role update, 3 in 2 is guest";
+    ok has_role(1,1 => $member), "1 in 1 remains member";
+    ok has_role(2,1 => $member), "2 in 1 remains member";
+    ok has_role(3,1 => $member), "3 in 1 remains member";
+    ok has_role(1,3 => $member), "1 in 3 remains member";
+    ok has_role(2,3 => $member), "2 in 3 remains member";
+    ok has_role(3,3 => $member), "3 in 3 remains member";
+
+    del(3,1);
+    is_graph_tc(
+        [1,2 => 1,2],
+        [1,3 => 1,2,3],
+        [2,3 => 2,3],
+    );
+
+    del(2,3);
+    is_graph_tc(
+        [1,2 => 1,2],
+    );
+
+    del(1,2);
+    is_graph_tc();
+}
+
+reset_graph();
+
+figure_eight: {
+    #       + --- 4
+    #       v     ^
+    # 1 --> 2 --> 3
+    # ^     |     
+    # 5 <---+
+
+    insert(1,2);
+    insert(2,3);
+    insert(3,4);
+    insert(4,2);
+
+    is_graph_tc(
+        [1,2 => 1,2],
+        [1,3 => 1,2,3],
+        [1,4 => 1,2,3,4],
+
+        [2,2 => 2,3,4,2],
+        [2,3 => 2,3],
+        [2,4 => 2,3,4],
+
+        [3,2 => 3,4,2],
+        [3,3 => 3,4,2,3],
+        [3,4 => 3,4],
+
+        [4,2 => 4,2],
+        [4,3 => 4,2,3],
+        [4,4 => 4,2,3,4],
+    );
+
+    insert(2,5);
+
+    is_graph_tc(
+        [1,2 => 1,2],
+        [1,3 => 1,2,3],
+        [1,4 => 1,2,3,4],
+        [1,5 => 1,2,5],
+
+        [2,2 => 2,3,4,2],
+        [2,3 => 2,3],
+        [2,4 => 2,3,4],
+        [2,5 => 2,5],
+
+        [3,2 => 3,4,2],
+        [3,3 => 3,4,2,3],
+        [3,4 => 3,4],
+        [3,5 => 3,4,2,5],
+
+        [4,2 => 4,2],
+        [4,3 => 4,2,3],
+        [4,4 => 4,2,3,4],
+        [4,5 => 4,2,5],
+    );
+
+    insert(5,1);
+
+    is_graph_tc(
+        [1,1 => 1,2,5,1],
+        [1,2 => 1,2],
+        [1,3 => 1,2,3],
+        [1,4 => 1,2,3,4],
+        [1,5 => 1,2,5],
+
+        [2,1 => 2,5,1],
+        [2,2 => 2,3,4,2], # top loop
+        [2,2 => 2,5,1,2], # bottom loop
+        [2,3 => 2,3],
+        [2,4 => 2,3,4],
+        [2,5 => 2,5],
+
+        [3,1 => 3,4,2,5,1],
+        [3,2 => 3,4,2],
+        [3,3 => 3,4,2,3],
+        [3,4 => 3,4],
+        [3,5 => 3,4,2,5],
+
+        [4,1 => 4,2,5,1],
+        [4,2 => 4,2],
+        [4,3 => 4,2,3],
+        [4,4 => 4,2,3,4],
+        [4,5 => 4,2,5],
+
+        [5,1 => 5,1],
+        [5,2 => 5,1,2],
+        [5,3 => 5,1,2,3],
+        [5,4 => 5,1,2,3,4],
+        [5,5 => 5,1,2,5],
+    );
+    print_tbls();
+
+    ok connected(2,2);
+    del(4,2);
+    ok connected(2,2);
+    del(5,1);
+    ok !connected(2,2);
+    is_graph_tc(
+        [1,2 => 1,2],
+        [1,3 => 1,2,3],
+        [1,4 => 1,2,3,4],
+        [1,5 => 1,2,5],
+        [2,3 => 2,3],
+        [2,4 => 2,3,4],
+        [2,5 => 2,5],
+        [3,4 => 3,4],
+    );
+
+    del(@$_) for shuffle([1,2],[2,3],[3,4],[2,5]);
+    is_graph_tc();
+}
+
+reset_graph();
+
+delete_accuracy: {
+    insert(1,2);
+    insert(2,1);
+    insert(1,21);
+    insert(11,21);
+    insert(11,12);
+    insert(111,121);
+
+    del(11,12);
+    is_graph_tc(
+        [1,2 => 1,2],
+        [1,1 => 1,2,1],
+        [2,1 => 2,1],
+        [2,2 => 2,1,2],
+        [2,21 => 2,1,21],
+        [1,21 => 1,21],
+        [11,21 => 11,21],
+        [111,121 => 111,121],
+    );
+
+    del(2,1);
+    is_graph_tc(
+        [1,2 => 1,2],
+        [1,21 => 1,21],
+        [11,21 => 11,21],
+        [111,121 => 111,121],
+    );
+
+    del(11,21);
+    is_graph_tc(
+        [1,2 => 1,2],
+        [1,21 => 1,21],
+        [111,121 => 111,121],
+    );
+}
+
+remove_set: {
+    reset_graph();
+    lives_ok {
+        insert(1,2);
+        insert(2,3);
+        insert(3,4);
+        insert(5,4);
+    } "created graph for testing set removal";
+    
+    is_graph_tc(
+        [1,2 => 1,2],
+        [1,3 => 1,2,3],
+        [1,4 => 1,2,3,4],
+        [2,3 => 2,3],
+        [2,4 => 2,3,4],
+        [3,4 => 3,4],
+        [5,4 => 5,4],
+    );
+
+    dies_ok {
+        del_set(7);
+    } "can't delete a set that doesn't exist";
+
+    lives_ok {
+        del_set(3);
+    } "deleted set 3";
+
+    is_graph_tc(
+        [1,2 => 1,2],
+        [5,4 => 5,4],
+    );
+}
+
+sub is_graph_tc {
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    my @expected_paths;
+    for my $pathref (@_) {
+        my ($path_start, $path_end, @vlist) = @$pathref;
+        my @segs = map {$vlist[$_].','.$vlist[$_+1]} (0..($#vlist-1));
+        push @expected_paths,"$path_start,$path_end : ".join(',',@vlist);
+    }
+    @expected_paths = sort(@expected_paths);
+
+    my $sth = $dbh->prepare(q{
+        SELECT from_set_id,into_set_id,vlist
+        FROM user_set_path
+    });
+    $sth->execute();
+    my @got_paths;
+    while (my $got_path = $sth->fetchrow_arrayref()) {
+        my ($from,$to,$vlist) = @$got_path;
+        $vlist = join(',',@$vlist);
+        push @got_paths, "$from,$to : $vlist";
+    }
+    @got_paths = sort @got_paths;
+    eq_or_diff \@got_paths, \@expected_paths, "table is as expected";
+}
+
+sub print_tbls {
+    my $view = $dbh->selectall_arrayref(q{
+        SELECT from_set_id,via_set_id,into_set_id,role.name,vlist
+        FROM user_set_path
+        JOIN "Role" role USING (role_id)
+        ORDER BY from_set_id ASC,into_set_id ASC
+    });
+    diag "maint table:";
+    diag "from\tvia\tinto\trole\tvlist";
+    for my $row (@$view) {
+        my $vlist = pop @$row;
+        push @$row, '{'.join(',',@$vlist).'}';
+        diag join("\t",@$row);
+    }
+
+    $view = $dbh->selectall_arrayref(q{
+        SELECT from_set_id,into_set_id,role.name
+        FROM user_set_include
+        JOIN "Role" role USING (role_id)
+        ORDER BY from_set_id ASC, into_set_id ASC
+    });
+    diag "real table:";
+    diag "from\tinto\trole";
+    for my $row (@$view) {
+        diag join("\t", @$row);
+    }
+
+    $view = $dbh->selectall_arrayref(q{
+        SELECT from_set_id,into_set_id,role.name
+        FROM user_set_include_tc
+        JOIN "Role" role USING (role_id)
+        ORDER BY from_set_id,into_set_id ASC
+    });
+    diag "transitive closure:";
+    diag "from\tinto\trole";
+    for my $row (@$view) {
+        diag join("\t", @$row);
+    }
+}
+
+$dbh->disconnect();
