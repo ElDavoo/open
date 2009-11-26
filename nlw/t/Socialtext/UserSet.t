@@ -12,7 +12,7 @@ BEGIN {
     use_ok 'Socialtext::UserSet';
 }
 
-fixtures(qw(base_layout destructive));
+fixtures(qw(db destructive));
 
 my $dbh = get_dbh();
 ok $dbh;
@@ -550,4 +550,3 @@ sub print_tbls {
     }
 }
 
-$dbh->disconnect();
