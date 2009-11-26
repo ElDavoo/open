@@ -2,6 +2,40 @@ BEGIN;
 
 -- Introduce the notion of user sets for permissioning.
 
+CREATE FUNCTION purge_user_set(to_purge integer) RETURNS boolean
+AS $$
+    BEGIN
+        LOCK user_set_include, user_set_path IN SHARE MODE;
+
+        DELETE FROM user_set_include
+        WHERE from_set_id = to_purge OR into_set_id = to_purge;
+
+        DELETE FROM user_set_path
+        WHERE vlist @ intset(to_purge);
+
+        DELETE FROM user_set_plugin_pref
+        WHERE user_set_id = to_purge;
+
+        DELETE FROM user_set_plugin
+        WHERE user_set_id = to_purge;
+
+        RETURN true;
+    END;
+$$ LANGUAGE plpgsql;
+
+CREATE FUNCTION on_user_set_delete() RETURNS "trigger"
+AS $$
+BEGIN
+    IF (TG_RELNAME = 'users') THEN
+        PERFORM purge_user_set(OLD.user_id::integer);
+    ELSE
+        PERFORM purge_user_set(OLD.user_set_id);
+    END IF;
+
+    RETURN NEW; -- proceed with the delete
+END;
+$$ LANGUAGE plpgsql;
+
 -- Include the "from" set with role in the "into" set.
 -- Contains the "real" roles in our system
 CREATE TABLE user_set_include (
@@ -71,6 +105,15 @@ CREATE SEQUENCE "user_set_id_seq"
 ALTER TABLE "Workspace" ADD COLUMN user_set_id integer NOT NULL DEFAULT nextval('user_set_id_seq');
 ALTER TABLE "Account" ADD COLUMN user_set_id integer NOT NULL DEFAULT nextval('user_set_id_seq');
 ALTER TABLE groups ADD COLUMN user_set_id integer NOT NULL DEFAULT nextval('user_set_id_seq');
+
+CREATE TRIGGER workspace_user_set_delete AFTER DELETE ON "Workspace"
+FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
+CREATE TRIGGER account_user_set_delete AFTER DELETE ON "Account"
+FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
+CREATE TRIGGER user_user_set_delete AFTER DELETE ON users
+FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
+CREATE TRIGGER group_user_set_delete AFTER DELETE ON groups
+FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
 CREATE TABLE user_set_plugin (
     user_set_id integer NOT NULL,

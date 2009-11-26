@@ -95,9 +95,8 @@ sub remove_set {
     die "node $n doesn't exist" unless $rows>0;
 
     $self->dbh->do(q{
-        DELETE FROM user_set_path
-        WHERE vlist @ $1::int[]
-    }, {}, "{$n}");
+        SELECT purge_user_set($1);
+    }, {}, $n);
     return;
 }
 

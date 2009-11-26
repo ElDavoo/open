@@ -196,6 +196,42 @@ END;
 $$
     LANGUAGE plpgsql IMMUTABLE;
 
+CREATE FUNCTION on_user_set_delete() RETURNS "trigger"
+    AS $$
+BEGIN
+    IF (TG_RELNAME = 'users') THEN
+        PERFORM purge_user_set(OLD.user_id::integer);
+    ELSE
+        PERFORM purge_user_set(OLD.user_set_id);
+    END IF;
+
+    RETURN NEW; -- proceed with the delete
+END;
+$$
+    LANGUAGE plpgsql;
+
+CREATE FUNCTION purge_user_set(to_purge integer) RETURNS boolean
+    AS $$
+    BEGIN
+        LOCK user_set_include, user_set_path IN SHARE MODE;
+
+        DELETE FROM user_set_include
+        WHERE from_set_id = to_purge OR into_set_id = to_purge;
+
+        DELETE FROM user_set_path
+        WHERE vlist @ intset(to_purge);
+
+        DELETE FROM user_set_plugin_pref
+        WHERE user_set_id = to_purge;
+
+        DELETE FROM user_set_plugin
+        WHERE user_set_id = to_purge;
+
+        RETURN true;
+    END;
+$$
+    LANGUAGE plpgsql;
+
 CREATE FUNCTION querytree(query_int) RETURNS text
     AS '$libdir/_int', 'querytree'
     LANGUAGE c STRICT;
@@ -1713,6 +1749,16 @@ CREATE INDEX webhook__class_workspace_ix
 CREATE INDEX webhook__workspace_class_ix
 	    ON webhook ("class");
 
+CREATE TRIGGER account_user_set_delete
+    AFTER DELETE ON "Account"
+    FOR EACH ROW
+    EXECUTE PROCEDURE on_user_set_delete();
+
+CREATE TRIGGER group_user_set_delete
+    AFTER DELETE ON groups
+    FOR EACH ROW
+    EXECUTE PROCEDURE on_user_set_delete();
+
 CREATE TRIGGER sessions_insert
     AFTER INSERT ON sessions
     FOR EACH STATEMENT
@@ -1723,10 +1769,20 @@ CREATE TRIGGER signal_insert
     FOR EACH ROW
     EXECUTE PROCEDURE signal_sent();
 
+CREATE TRIGGER user_user_set_delete
+    AFTER DELETE ON users
+    FOR EACH ROW
+    EXECUTE PROCEDURE on_user_set_delete();
+
 CREATE TRIGGER users_insert
     AFTER INSERT ON users
     FOR EACH ROW
     EXECUTE PROCEDURE auto_vivify_user_rollups();
+
+CREATE TRIGGER workspace_user_set_delete
+    AFTER DELETE ON "Workspace"
+    FOR EACH ROW
+    EXECUTE PROCEDURE on_user_set_delete();
 
 ALTER TABLE ONLY "Account"
     ADD CONSTRAINT account_all_users_workspace_fk

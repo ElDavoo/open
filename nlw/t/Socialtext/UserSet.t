@@ -484,6 +484,8 @@ remove_set: {
     );
 }
 
+reset_graph();
+
 sub is_graph_tc {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
