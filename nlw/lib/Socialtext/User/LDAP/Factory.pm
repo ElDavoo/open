@@ -167,7 +167,7 @@ sub lookup {
         return;
     }
     if ($mesg->code()) {
-        st_log->error( "ST::User::LDAP: LDAP error while finding user; " . $mesg->error() );
+        st_log->error( "ST::User::LDAP: LDAP error while finding user $key/$val; " . $mesg->error() );
         return;
     }
     if ($mesg->count() > 1) {
