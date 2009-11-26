@@ -187,11 +187,6 @@ sub primary_account {
         $adapter->make_hub(Socialtext::User->SystemUser(), undef);
         $adapter->hook('nlw.add_user_account_role', $new_account, $self);
 
-        # There's a weird codepath that will get here without an $old_account,
-        # so only call this code if $old_account exists.
-        $adapter->hook('nlw.remove_user_account_role', $old_account, $self)
-           if $old_account;
-
         my $deleted_acct = Socialtext::Account->Deleted;
         if ($new_account->account_id != $deleted_acct->account_id) {
             # Avoid double-indexing elsewhere in the code.
