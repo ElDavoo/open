@@ -30,6 +30,7 @@ Readonly our %all_fields => map {$_=>1} @all_fields;
 
 # set up our fields
 map { field $_ } @all_fields;
+sub user_set_id { $_[0]->user_id }
 
 sub new {
     my $class = shift;

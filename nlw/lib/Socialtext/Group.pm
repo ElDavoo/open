@@ -10,7 +10,7 @@ use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
 use Socialtext::Timer;
-use Socialtext::SQL qw(:exec :time);
+use Socialtext::SQL qw(get_dbh :exec :time);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::Pluggable::Adapter;
 use Socialtext::User;
@@ -48,13 +48,27 @@ has 'homunculus' => (
     )],
 );
 
+has 'user_set' => (
+    is => 'ro', isa => 'Socialtext::UserSet',
+    lazy_build => 1,
+);
+
 # Use a naming convention similar to ST::USer for "what's this thing's name?"
-sub display_name { shift->driver_group_name; }
+sub display_name { $_[0]->driver_group_name; }
 
 has $_.'_count' => (
     is => 'rw', isa => 'Int',
     lazy_build => 1
 ) for qw(user workspace account);
+
+sub _build_user_set {
+    my $self = shift;
+    return Socialtext::UserSet->new(
+        dbh => get_dbh(),
+        owner => $self,
+        owner_id => $self->user_set_id,
+    );
+}
 
 ###############################################################################
 sub Drivers {

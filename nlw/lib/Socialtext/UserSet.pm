@@ -1,10 +1,23 @@
 package Socialtext::UserSet;
 # @COPYRIGHT@
 use Moose;
+use Carp qw/croak/;
+use Socialtext::User;
 use namespace::clean -except => 'meta';
 
 has 'dbh' => (is => 'rw', isa => 'Object', required => 1);
 has 'trace' => (is => 'rw', isa => 'Bool', default => undef);
+
+has 'owner_id' => (is => 'rw', isa => 'Int');
+has 'owner' => (
+    is       => 'rw',
+# would really like this to work, but it doesn't.
+#     isa      => 'Socialtext::Workspace|Socialtext::Account|Socialtext::Group',
+    isa => 'Object',
+    weak_ref => 1
+);
+
+sub _object_role_method ($);
 
 =head1 NAME
 
@@ -20,17 +33,26 @@ Socialtext::UserSet - Nested collections of users
 
 =head1 DESCRIPTION
 
-Maintains a graph of memberships and its transitive closure to give a fast-lookup table for role resolution.
+Maintains a graph of memberships and its transitive closure to give a
+fast-lookup table for role resolution.
 
-A user-set is an abstraction for users, groups, workspaces and accounts.  With the exception of users, user-sets can be nested in other user-sets with an explicit role.  A user-set cannot be nested into itself.
+A user-set is an abstraction for users, groups, workspaces and accounts.  With
+the exception of users, user-sets can be nested in other user-sets with an
+explicit role.  A user-set cannot be nested into itself.
 
-A user is included in other user-sets using the user's ID number. We number all other user-set containers with IDs that don't overlap with users.
+A user is included in other user-sets using the user's ID number. We number
+all other user-set containers with IDs that don't overlap with users.
 
 =head1 METHODS
+
+For the C<_object_role> variants below, the C<$y> parameter is replaced by
+C<$self->owner_id>.
 
 =over 4
 
 =item add_role ($x,$y[,$role_id])
+
+=item add_object_role ($x,[,$role_id])
 
 Add this edge to the graph. Default C<$role_id> is 'member'.
 
@@ -39,13 +61,19 @@ Throws an exception if an edge is already present.
 =cut
 
 around 'add_role' => \&_modify_wrapper;
+_object_role_method 'add_object_role';
 sub add_role {
     my ($self,$x,$y,$role_id) = @_;
+    croak "Can't add things to users"
+        if Socialtext::User->new(user_id => $y);
+
     $role_id ||= Socialtext::Role->new(name=>'member')->role_id;
     $self->_insert($x,$y,$role_id);
 }
 
 =item remove_role ($x,$y)
+
+=item remove_object_role ($x)
 
 Remove this edge from the graph. 
 
@@ -54,12 +82,15 @@ Throws an exception if this edge doesn't exist.
 =cut
 
 around 'remove_role' => \&_modify_wrapper;
+_object_role_method 'remove_object_role';
 sub remove_role {
     my ($self, $x,$y) = @_;
     $self->_delete($x,$y);
 }
 
 =item update_role ($x,$y,$role_id)
+
+=item update_object_role ($x,$role_id)
 
 Update the role_id attached to this edge.  All paths containing this edge that need updating will also get updated.
 
@@ -68,6 +99,7 @@ Throws an exception if the edge doesn't exist.
 =cut
 
 around 'update_role' => \&_modify_wrapper;
+_object_role_method 'update_object_role';
 sub update_role {
     my ($self,$x,$y,$role_id) = @_;
     die "role_id is required" unless $role_id;
@@ -99,6 +131,7 @@ sub remove_set {
     }, {}, $n);
     return;
 }
+
 
 =item connected ($x,$y)
 
@@ -301,6 +334,22 @@ sub _query_wrapper {
     local $dbh->{RaiseError} = 1;
     local $dbh->{TraceLevel} = ($self->trace) ? 3 : $dbh->{TraceLevel};
     return $self->$code(@_);
+}
+
+sub _object_role_method ($) {
+    my $func = shift;
+    (my $call = $func) =~ s/_object//;
+    __PACKAGE__->meta->add_method(
+        $func => Moose::Meta::Method->wrap(
+            sub {
+                my ($self, $obj, $role_id) = @_;
+                die "must have owner_id" unless $self->owner_id;
+                $self->$call($obj->user_set_id => $self->owner_id, $role_id);
+            },
+            name         => $func,
+            package_name => __PACKAGE__
+        )
+    );
 }
 
 __PACKAGE__->meta->make_immutable();

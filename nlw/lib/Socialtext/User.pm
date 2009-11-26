@@ -287,6 +287,7 @@ EOCODE
 BEGIN {
 
 _delegate user_id => (to => 'homunculus');
+_delegate user_set_id => (to => 'homunculus');
 _delegate username => (to => 'homunculus');
 _delegate password => (to => 'homunculus');
 _delegate email_address => (to => 'homunculus');
