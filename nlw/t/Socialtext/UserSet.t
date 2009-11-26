@@ -13,27 +13,34 @@ BEGIN {
 }
 
 fixtures(qw(db destructive));
-
 my $dbh = get_dbh();
 ok $dbh;
 $dbh->{AutoCommit} = 1;
-my $uset = Socialtext::UserSet->new(dbh => $dbh);
+my $OFFSET = 1_000_000;
+my $uset = Socialtext::UserSet->new;
 
 my $member = Socialtext::Role->new(name => 'member')->role_id;
-my $guest = Socialtext::Role->new(name => 'guest')->role_id;
+my $guest  = Socialtext::Role->new(name => 'guest')->role_id;
 
 sub reset_graph {
     local $dbh->{RaiseError} = 1;
     $dbh->do(q{ TRUNCATE user_set_include, user_set_path });
 }
 
-sub insert { $uset->add_role(@_); }
-sub del { $uset->remove_role(@_); }
-sub update { $uset->update_role(@_); }
-sub del_set { $uset->remove_set(@_); }
+sub insert { $uset->add_role(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_); }
+sub del { $uset->remove_role(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_); }
+sub update {
+    $uset->update_role(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_);
+}
+sub del_set { $uset->remove_set(shift(@_) + $OFFSET, @_); }
 
-sub connected { $uset->connected(@_) ? 1 : 0; }
-sub has_role { $uset->has_role(@_) ? 1 : 0; }
+sub connected {
+    $uset->connected(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_) ? 1 : 0;
+}
+
+sub has_role {
+    $uset->has_role(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_) ? 1 : 0;
+}
 
 reset_graph();
 
@@ -497,15 +504,15 @@ sub is_graph_tc {
     }
     @expected_paths = sort(@expected_paths);
 
-    my $sth = $dbh->prepare(q{
-        SELECT from_set_id,into_set_id,vlist
+    my $sth = $dbh->prepare(qq{
+        SELECT from_set_id-$OFFSET,into_set_id-$OFFSET,vlist
         FROM user_set_path
     });
     $sth->execute();
     my @got_paths;
     while (my $got_path = $sth->fetchrow_arrayref()) {
         my ($from,$to,$vlist) = @$got_path;
-        $vlist = join(',',@$vlist);
+        $vlist = join(',',map { $_-$OFFSET} @$vlist);
         push @got_paths, "$from,$to : $vlist";
     }
     @got_paths = sort @got_paths;
@@ -513,8 +520,8 @@ sub is_graph_tc {
 }
 
 sub print_tbls {
-    my $view = $dbh->selectall_arrayref(q{
-        SELECT from_set_id,via_set_id,into_set_id,role.name,vlist
+    my $view = $dbh->selectall_arrayref(qq{
+        SELECT from_set_id-$OFFSET,via_set_id-$OFFSET,into_set_id-$OFFSET,role.name,vlist
         FROM user_set_path
         JOIN "Role" role USING (role_id)
         ORDER BY from_set_id ASC,into_set_id ASC
@@ -523,12 +530,12 @@ sub print_tbls {
     diag "from\tvia\tinto\trole\tvlist";
     for my $row (@$view) {
         my $vlist = pop @$row;
-        push @$row, '{'.join(',',@$vlist).'}';
+        push @$row, '{'.join(',',map {$_-$OFFSET} @$vlist).'}';
         diag join("\t",@$row);
     }
 
-    $view = $dbh->selectall_arrayref(q{
-        SELECT from_set_id,into_set_id,role.name
+    $view = $dbh->selectall_arrayref(qq{
+        SELECT from_set_id-$OFFSET,into_set_id-$OFFSET,role.name
         FROM user_set_include
         JOIN "Role" role USING (role_id)
         ORDER BY from_set_id ASC, into_set_id ASC
@@ -539,8 +546,8 @@ sub print_tbls {
         diag join("\t", @$row);
     }
 
-    $view = $dbh->selectall_arrayref(q{
-        SELECT from_set_id,into_set_id,role.name
+    $view = $dbh->selectall_arrayref(qq{
+        SELECT from_set_id-$OFFSET,into_set_id-$OFFSET,role.name
         FROM user_set_include_tc
         JOIN "Role" role USING (role_id)
         ORDER BY from_set_id,into_set_id ASC
