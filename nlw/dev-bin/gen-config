@@ -414,6 +414,8 @@ sub generate_app_config {
 sub _existing_or_new_secret {
     my $target = shift;
 
+    return "DEVSECRET39284792387409812734" if $is_dev_install;
+
     my $mac_file =
         File::Spec->catfile(
             File::Basename::dirname($target),
