@@ -3,9 +3,9 @@ package Socialtext::UserSet;
 use Moose;
 use Carp qw/croak/;
 use Socialtext::User;
+use Socialtext::SQL qw/get_dbh/;
 use namespace::clean -except => 'meta';
 
-has 'dbh' => (is => 'rw', isa => 'Object', required => 1);
 has 'trace' => (is => 'rw', isa => 'Bool', default => undef);
 
 has 'owner_id' => (is => 'rw', isa => 'Int');
@@ -25,7 +25,7 @@ Socialtext::UserSet - Nested collections of users
 
 =head1 SYNOPSIS
 
-  my $us = Socialtext::UserSet->new(dbh => $dbh);
+  my $us = Socialtext::UserSet->new;
   # include user-set 5 into user-set 6 with a member role
   $us->add_role(5,6,$member->role_id);
   ok $us->connected(5,6);
@@ -63,12 +63,12 @@ Throws an exception if an edge is already present.
 around 'add_role' => \&_modify_wrapper;
 _object_role_method 'add_object_role';
 sub add_role {
-    my ($self,$x,$y,$role_id) = @_;
+    my ($self, $dbh, $x, $y, $role_id) = @_;
     croak "Can't add things to users"
         if Socialtext::User->new(user_id => $y);
 
-    $role_id ||= Socialtext::Role->new(name=>'member')->role_id;
-    $self->_insert($x,$y,$role_id);
+    $role_id ||= Socialtext::Role->new(name => 'member')->role_id;
+    $self->_insert($dbh, $x, $y, $role_id);
 }
 
 =item remove_role ($x,$y)
@@ -84,8 +84,8 @@ Throws an exception if this edge doesn't exist.
 around 'remove_role' => \&_modify_wrapper;
 _object_role_method 'remove_object_role';
 sub remove_role {
-    my ($self, $x,$y) = @_;
-    $self->_delete($x,$y);
+    my ($self, $dbh, $x, $y) = @_;
+    $self->_delete($dbh, $x, $y);
 }
 
 =item update_role ($x,$y,$role_id)
@@ -101,13 +101,11 @@ Throws an exception if the edge doesn't exist.
 around 'update_role' => \&_modify_wrapper;
 _object_role_method 'update_object_role';
 sub update_role {
-    my ($self,$x,$y,$role_id) = @_;
+    my ($self, $dbh, $x, $y, $role_id) = @_;
     die "role_id is required" unless $role_id;
-    my $dbh = $self->dbh;
 
-#     diag "TC needs update on update";
-    $self->_delete($x,$y);
-    $self->_insert($x,$y,$role_id);
+    $self->_delete($dbh, $x, $y);
+    $self->_insert($dbh, $x, $y, $role_id);
 }
 
 =item remove_set ($n)
@@ -118,15 +116,15 @@ Removes all edges/roles involving node $n.
 
 around 'remove_set' => \&_modify_wrapper;
 sub remove_set {
-    my ($self,$n) = @_;
+    my ($self, $dbh, $n) = @_;
 
-    my $rows = $self->dbh->do(q{
+    my $rows = $dbh->do(q{
         DELETE FROM user_set_include
         WHERE from_set_id = $1 OR into_set_id = $1
     }, {}, $n);
     die "node $n doesn't exist" unless $rows>0;
 
-    $self->dbh->do(q{
+    $dbh->do(q{
         SELECT purge_user_set($1);
     }, {}, $n);
     return;
@@ -141,8 +139,8 @@ Asks "is $x connected to $y through at least one path?"
 
 around 'connected' => \&_query_wrapper;
 sub connected {
-    my ($self,$x,$y) = @_;
-    my ($connected) = $self->dbh->selectrow_array(q{
+    my ($self, $dbh, $x, $y) = @_;
+    my ($connected) = $dbh->selectrow_array(q{
         SELECT 1
         FROM user_set_include_tc
         WHERE from_set_id = $1 AND into_set_id = $2
@@ -159,9 +157,9 @@ Asks "is $x connected to $y where the effective role_id is $role_id?"
 
 around 'has_role' => \&_query_wrapper;
 sub has_role {
-    my ($self,$x,$y,$role_id) = @_;
+    my ($self, $dbh, $x, $y, $role_id) = @_;
     confess "role_id is required" unless $role_id;
-    my ($has_role) = $self->dbh->selectrow_array(q{
+    my ($has_role) = $dbh->selectrow_array(q{
         SELECT 1
         FROM user_set_include_tc
         WHERE from_set_id = $1 AND into_set_id = $2 AND role_id = $3
@@ -177,10 +175,7 @@ sub has_role {
 ###################################################
 
 sub _insert {
-    my ($self,$x,$y,$role_id) = @_;
-    my $dbh = $self->dbh;
-
-#     diag "inserting $x $y $role_id";
+    my ($self, $dbh, $x, $y, $role_id) = @_;
 
     $dbh->do(q{
         INSERT INTO user_set_include
@@ -276,9 +271,7 @@ sub _insert {
 }
 
 sub _delete {
-    my ($self,$x,$y) = @_;
-#     diag "deleting $x $y";
-    my $dbh = $self->dbh;
+    my ($self, $dbh, $x, $y) = @_;
 
     my $rows = $dbh->do(q{
         DELETE FROM user_set_include
@@ -306,13 +299,13 @@ sub _modify_wrapper {
     my $code = shift;
     my $self = shift;
 
-    my $dbh = $self->dbh;
+    my $dbh = get_dbh();
     local $dbh->{RaiseError} = 1;
     local $dbh->{TraceLevel} = ($self->trace) ? 3 : $dbh->{TraceLevel};
     $dbh->begin_work;
     eval {
         $dbh->do(q{LOCK user_set_include,user_set_path IN SHARE MODE});
-        $self->$code(@_);
+        $self->$code($dbh, @_);
         $dbh->commit;
     };
     if (my $e = $@) {
@@ -330,10 +323,10 @@ sub _query_wrapper {
 
     confess "requires x and y parameters" unless (@_ >= 2);
 
-    my $dbh = $self->dbh;
+    my $dbh = get_dbh();
     local $dbh->{RaiseError} = 1;
     local $dbh->{TraceLevel} = ($self->trace) ? 3 : $dbh->{TraceLevel};
-    return $self->$code(@_);
+    return $self->$code($dbh, @_);
 }
 
 sub _object_role_method ($) {

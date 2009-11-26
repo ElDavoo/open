@@ -3,9 +3,8 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 27;
+use Test::Socialtext tests => 56;
 use Test::Exception;
-use Socialtext::SQL qw/get_dbh/;
 BEGIN {
     use_ok 'Socialtext::Group';
     use_ok 'Socialtext::Workspace';
@@ -16,49 +15,20 @@ BEGIN {
 
 fixtures(qw(db));
 
-my $dbh = get_dbh();
 my $member = Socialtext::Role->new(name => 'member')->role_id;
 my $guest = Socialtext::Role->new(name => 'guest')->role_id;
 
 my $usr = create_test_user();
 
-api: {
-    my $grp = create_test_group();
-    ok $grp, "got a group";
-    ok $grp->user_set_id, "has a user_set_id";
-    my $uset = $grp->user_set;
-    is $uset->owner_id, $grp->user_set_id, "same set id";
-    is $uset->owner, $grp, "owner assigned";
-    is $uset->dbh, $dbh, "dbh assigned";
-
-    lives_ok {
-        $uset->add_object_role($usr, $member);
-    } "added user to the group";
-
-    ok  $uset->connected($usr->user_id,     $grp->user_set_id),
-        "user is in the group";
-    ok !$uset->connected($grp->user_set_id, $usr->user_id),
-        "doesn't mean the group is in the user";
-
-    ok $uset->has_role($usr->user_id, $grp->user_set_id, $member);
-
-    lives_ok {
-        $uset->update_object_role($usr, $guest);
-    } "role updated";
-    ok !$uset->has_role($usr->user_id, $grp->user_set_id, $member);
-    ok  $uset->has_role($usr->user_id, $grp->user_set_id, $guest);
-
-    lives_ok {
-        $uset->remove_object_role($usr);
-    } "role updated";
-    ok !$uset->has_role($usr->user_id, $grp->user_set_id, $member);
-    ok !$uset->has_role($usr->user_id, $grp->user_set_id, $guest);
-    ok !$uset->connected($usr->user_id, $grp->user_set_id);
+api_for_group: {
+    check_api_for_container(create_test_group());
+    check_api_for_container(create_test_account_bypassing_factory());
+    check_api_for_container(create_test_workspace());
 }
 
 Bad_cases: {
     my $usr2 = create_test_user();
-    my $uset = Socialtext::UserSet->new(dbh => $dbh);
+    my $uset = Socialtext::UserSet->new;
 
     my $user_id1 = $usr->user_id;
     my $user_id2 = $usr2->user_id;
@@ -79,3 +49,36 @@ Bad_cases: {
     fail "todo: adding group to a group is fine though";
 }
 
+
+sub check_api_for_container {
+    my $cont = shift;
+    ok $cont, "got a container";
+    ok $cont->user_set_id, "has a user_set_id";
+    my $uset = $cont->user_set;
+    is $uset->owner_id, $cont->user_set_id, "same set id";
+    is $uset->owner, $cont, "owner assigned";
+
+    lives_ok {
+        $uset->add_object_role($usr, $member);
+    } "added user to the container";
+
+    ok  $uset->connected($usr->user_id,     $cont->user_set_id),
+        "user is in the container";
+    ok !$uset->connected($cont->user_set_id, $usr->user_id),
+        "doesn't mean the container is in the user";
+
+    ok $uset->has_role($usr->user_id, $cont->user_set_id, $member);
+
+    lives_ok {
+        $uset->update_object_role($usr, $guest);
+    } "role updated";
+    ok !$uset->has_role($usr->user_id, $cont->user_set_id, $member);
+    ok  $uset->has_role($usr->user_id, $cont->user_set_id, $guest);
+
+    lives_ok {
+        $uset->remove_object_role($usr);
+    } "role updated";
+    ok !$uset->has_role($usr->user_id, $cont->user_set_id, $member);
+    ok !$uset->has_role($usr->user_id, $cont->user_set_id, $guest);
+    ok !$uset->connected($usr->user_id, $cont->user_set_id);
+}

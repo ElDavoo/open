@@ -1,21 +1,8 @@
-# @COPYRIGHT@
 package Socialtext::Workspace;
-
-use strict;
-use warnings;
+# @COPYRIGHT@
+use Moose;
 no warnings 'redefine';
 
-our $VERSION = '0.01';
-
-use Socialtext::Exceptions
-    qw( rethrow_exception param_error data_validation_error );
-use Socialtext::Validate qw(
-    validate validate_pos SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE
-    HANDLE_TYPE URI_TYPE USER_TYPE ROLE_TYPE PERMISSION_TYPE FILE_TYPE
-    DIR_TYPE UNDEF_TYPE
-);
-
-use Class::Field 'field';
 use Carp qw(croak);
 use Cwd ();
 use DateTime;
@@ -41,11 +28,7 @@ use Socialtext::Image;
 use Socialtext::l10n qw(loc system_locale);
 use Socialtext::Log qw( st_log );
 use Socialtext::Paths;
-use Socialtext::SQL qw(
-    sql_execute
-    sql_commit sql_rollback sql_begin_work
-    sql_singlevalue
-);
+use Socialtext::SQL qw(:exec :txn);
 use Socialtext::String;
 use Readonly;
 use Socialtext::Account;
@@ -67,9 +50,19 @@ use Socialtext::JSON::Proxy::Helper;
 use URI;
 use YAML;
 use Encode qw(decode_utf8);
+use Socialtext::Exceptions
+    qw( rethrow_exception param_error data_validation_error );
+use Socialtext::Validate qw(
+    validate validate_pos SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE
+    HANDLE_TYPE URI_TYPE USER_TYPE ROLE_TYPE PERMISSION_TYPE FILE_TYPE
+    DIR_TYPE UNDEF_TYPE
+);
 
-# workspace schema fields
-# FIXME: so god damned many. something is really wrong here
+use namespace::clean -except => 'meta';
+
+our $VERSION = '0.01';
+
+use constant ROLES => ('Socialtext::UserSetContainer');
 
 Readonly our @COLUMNS => (
     'workspace_id',
@@ -117,11 +110,13 @@ Readonly our @COLUMNS => (
 );
 
 
+use constant real => 1;
+
 # Hash for quick lookup of columns
 my %COLUMNS = map { $_ => 1 } @COLUMNS;
 
 foreach my $column (@COLUMNS) {
-    field $column;
+    has $column => (is => 'rw', isa => 'Any');
 }
 
 # for workspace exports:
@@ -834,8 +829,6 @@ sub reindex_async {
         );
     }
 }
-
-sub real { 1 }
 
 sub uri {
     my $self = shift;
@@ -2137,37 +2130,31 @@ sub Default {
     }
 }
 
+with(ROLES);
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 package Socialtext::NoWorkspace;
-use strict;
-use warnings;
-
-use base 'Socialtext::Workspace';
-use Class::Field qw(const);
+use Moose;
 use Socialtext::User;
 
-const name => '';
-const skin_name => '';
-const title => 'The NoWorkspace Workspace';
-const account_id => 1;
-const workspace_id => 0;
-const email_addresses_are_hidden => 0;
-const real => 0;
-const is_plugin_enabled => 0;
-const _set_workspace_option => 1;
-const drop_breadcrumb => undef;
+extends 'Socialtext::Workspace';
 
-sub created_by_user_id {
-    Socialtext::User->SystemUser->user_id;
-}
+has '+name'                       => (default => '');
+has '+skin_name'                  => (default => '');
+has '+title'                      => (default => 'The NoWorkspace Workspace');
+has '+account_id'                 => (default => 1);
+has '+workspace_id'               => (default => 0);
+has '+email_addresses_are_hidden' => (default => 0);
 
-sub new {
-    my $class = shift;
-    my $self = {};
-    bless $self, $class;
-    return $self;
-}
+use constant real              => 0;
+use constant is_plugin_enabled => 0;
+use constant drop_breadcrumb   => undef;
 
+sub created_by_user_id { Socialtext::User->SystemUser->user_id }
+
+sub new { return bless {}, __PACKAGE__ }
+
+__PACKAGE__->meta->make_immutable;
 1;
 
 __END__

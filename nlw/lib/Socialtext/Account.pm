@@ -1,12 +1,6 @@
 # @COPYRIGHT@
 package Socialtext::Account;
-
-use strict;
-use warnings;
-
-our $VERSION = '0.01';
-
-use Class::Field 'field';
+use Moose;
 use Carp qw(croak);
 use Readonly;
 use Socialtext::Cache;
@@ -30,9 +24,13 @@ use Socialtext::UserAccountRoleFactory;
 use Socialtext::Account::Roles;
 use YAML qw/DumpFile LoadFile/;
 use MIME::Base64 ();
-use namespace::clean;
 use Socialtext::JSON::Proxy::Helper;
 use File::Basename qw(dirname);
+use namespace::clean -except => 'meta';
+
+use constant ROLES => ('Socialtext::UserSetContainer');
+
+our $VERSION = '0.01';
 
 Readonly our @ACCT_COLS => qw(
     account_id
@@ -61,7 +59,7 @@ Readonly our @ACCT_COLS => qw(
 my %ACCT_COLS = map { $_ => 1 } @ACCT_COLS;
 
 foreach my $column ( @ACCT_COLS ) {
-    field $column;
+    has $column => (is => 'rw', isa => 'Any');
 }
 
 my @TYPES = ('Standard', 'Free 50', 'Placeholder', 'Paid', 'Comped', 'Trial', 'Unknown');
@@ -1319,6 +1317,8 @@ sub _change_marketo_if_present {
     }
 }
 
+with(ROLES);
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
 
 __END__
