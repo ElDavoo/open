@@ -766,10 +766,23 @@ sub deactivate {
         warn loc("Login information is controlled by the [_1] directory administrator.", $self->driver_name) . "\n\n";
     }
 
-    # remove the user from their workspaces
-    my $workspaces = $self->workspaces();
-    while ( my $workspace = $workspaces->next() ) {
-        $workspace->remove_user( user => $self );
+    # Add a user to the new primary _before_ deleting the old
+    $self->primary_account(Socialtext::Account->Deleted());
+
+    # Remove the user from all of the things that they have membership in.
+    my @containers = (
+        $self->workspaces->all(),
+        $self->accounts(),
+        # $self->groups(),
+    );
+
+    for my $container ( @containers ) {
+        # Skip deleted account, not strictly necessary since we refuse to
+        # remove users from thier primary accounts.
+        next if ( $container->isa('Socialtext::Account')
+            && $container->name eq 'Deleted' );
+
+        $container->remove_user( user => $self );
     }
 
     # remove them from control and console
@@ -780,8 +793,19 @@ sub deactivate {
         $self->set_technical_admin( 0 );
     }
 
-    $self->primary_account(Socialtext::Account->Deleted());
     return $self;
+}
+
+sub reactivate {
+    my $self    = shift;
+    my %p       = @_;
+    my $deleted = Socialtext::Account->Deleted();
+
+    die "Account is required" unless $p{account};
+
+    # Add the user to a new primary _before_ deleting the old
+    $self->primary_account( $p{account}->account_id );
+    $deleted->remove_user( user => $self );
 }
 
 sub _index {
