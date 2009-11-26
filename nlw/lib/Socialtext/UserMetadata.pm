@@ -25,6 +25,8 @@ field 'is_technical_admin';
 field 'is_system_created';
 field 'primary_account_id';
 
+sub user_set_id { $_[0]->user_id }
+
 sub create_if_necessary {
     my $class = shift;
     my $user = shift;
