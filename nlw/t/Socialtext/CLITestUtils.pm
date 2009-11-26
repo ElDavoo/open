@@ -3,7 +3,7 @@ package t::Socialtext::CLITestUtils;
 use strict;
 use warnings;
 use base 'Exporter';
-our @EXPORT_OK = qw/expect_success expect_failure is_last_exit/;
+our @EXPORT_OK = qw/expect_success expect_failure is_last_exit call_cli_argv/;
 use Test::More;
 
 BEGIN {
@@ -66,6 +66,33 @@ sub is_last_exit {
     my $error_code = shift;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     is( $LastExitVal, $error_code, "exited with exit code $error_code" );
+}
+
+=item call_cli_argv
+
+Returns a subref that will call the passed-in cli method (first arg) with
+given "argv" parameters.
+
+Intended for use with "expect_failure/_success". Example:
+
+  expect_failure(
+      call_cli_argv(enable_plugin => 
+          '--account' => $acct_name,
+          qw(--plugin foo)
+      ),
+      qr/Plugin foo does not exist!/,
+      'enable invalid plugin',
+  );
+
+=cut
+
+sub call_cli_argv {
+    my $method = shift;
+    my @argv = @_;
+    return sub {
+        my $cli = Socialtext::CLI->new(argv => \@argv);
+        $cli->$method;
+    }
 }
 
 1;
