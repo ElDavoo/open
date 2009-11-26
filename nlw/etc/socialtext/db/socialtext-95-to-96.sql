@@ -15,4 +15,8 @@ UPDATE container_type
         END
     );
 
+UPDATE "System"
+   SET value = '96'
+ WHERE field = 'socialtext-schema-version';
+
 COMMIT;

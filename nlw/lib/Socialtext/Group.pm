@@ -32,6 +32,7 @@ has 'homunculus' => (
         driver_id
         driver_unique_id
         driver_group_name
+        description
         primary_account_id
         primary_account
         creation_datetime
@@ -489,6 +490,7 @@ sub to_hash {
     my $hash = {
         group_id => $self->group_id,
         name => $self->driver_group_name,
+        description => $self->description,
         user_count => $self->user_count,
         workspace_count => $self->workspace_count,
     };
@@ -524,6 +526,7 @@ sub serialize_for_export {
         # Convert IDs to "name"s for export
         primary_account_name    => $self->primary_account->name,
         driver_group_name       => $self->driver_group_name,
+        description             => $self->description,
         created_by_username     => $self->creator->username,
     };
 }
@@ -812,6 +815,10 @@ Delegated to C<Socialtext::Group::Homunculus>.
 Delegated to C<Socialtext::Group::Homunculus>.
 
 =item B<$group-E<gt>driver_group_name()>
+
+Delegated to C<Socialtext::Group::Homunculus>.
+
+=item B<$group-E<gt>description()>
 
 Delegated to C<Socialtext::Group::Homunculus>.
 

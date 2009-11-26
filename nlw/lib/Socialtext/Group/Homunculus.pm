@@ -46,6 +46,10 @@ has_column 'driver_group_name' => (
     required => 1,
 );
 
+has_column 'description' => (
+    is => 'rw', isa => 'Maybe[Str]',
+);
+
 has_column 'primary_account_id' => (
     is => 'rw', isa => 'Int',
     writer => '_primary_account_id',

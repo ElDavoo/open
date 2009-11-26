@@ -820,7 +820,8 @@ CREATE TABLE groups (
     creation_datetime timestamptz DEFAULT now() NOT NULL,
     created_by_user_id bigint NOT NULL,
     cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
-    user_set_id integer DEFAULT nextval('user_set_id_seq'::regclass) NOT NULL
+    user_set_id integer DEFAULT nextval('user_set_id_seq'::regclass) NOT NULL,
+    description text
 );
 
 CREATE SEQUENCE groups___group_id
@@ -2173,4 +2174,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '95');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '97');

@@ -121,6 +121,7 @@ sub POST_json {
                 driver_group_name => $group_name,
                 primary_account_id => $account->account_id,
                 created_by_user_id => $self->rest->user->user_id,
+                description => $data->{description},
             });
         }
         else {

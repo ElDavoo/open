@@ -40,3 +40,13 @@ Tests to create groups via REST and CLI.
 | code-is            | 409          |                                                                         |
 | POST_json          | /data/groups | {"account_id"                         |
 | code-is            | 400          |                                                                         |
+
+* Create a group via REST with a description
+
+| set              | g5                          | g5-%%start_time%%                                                           |
+| POST_json        | /data/groups                | {"account_id":"%%account_id%%","name":"%%g5%%","description":"Hello World"} |
+| code-is          | 201                         |                                                                             |
+| set-from-content | group_id                    | qr/"group_id":"(\d+)"/                                                      |
+| GET-json         | /data/groups/%%group_id%%   |                                                                             |
+| code-is          | 200                         |                                                                             |
+| body-like        | "description":"Hello World" |                                                                             |
