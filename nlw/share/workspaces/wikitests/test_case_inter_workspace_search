@@ -6,12 +6,10 @@
 | st-admin | delete-workspace --workspace test-data2 --no-export |  |
 | st-admin | clone-workspace --workspace test-data --target test-data2 | The test-data workspace has been cloned to test-data2 |
 | st-admin | set-workspace-config --workspace test-data2 title test-data2 | The workspace config for test-data2 has been updated. |
-| st-admin | add-member --w test-data2 --e %%email%% |  |
 
 | st-admin | delete-workspace --workspace test-data3 --no-export |  |
 | st-admin | clone-workspace --workspace test-data --target test-data3 | The test-data workspace has been cloned to test-data3 |
 | st-admin | set-workspace-config --workspace test-data3 title test-data3 | The workspace config for test-data3 has been updated. |
-| st-admin | add-member --w test-data3 --e %%email%% |  |
 
 | *Comment* | Test Case: Inter Workspace Search Search all the workspaces where %%username%% is a member |  |
 | select_ok | st-search-action | label=Search My Workspaces: |
@@ -27,6 +25,7 @@
 | st-result | qr/jabber.+%%title%%/ |  |
 
 | *Comment* | Test Case: Inter Workspace Search Remove %%username%% from test-data2 and search again |  |
+| st-admin | remove-workspace-admin --workspace test-data2 --email %%email%% |  |
 | st-admin | remove-member --workspace test-data2 --email %%email%% |  |
 | select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
@@ -66,8 +65,6 @@
 | select_and_wait | sort-picker | label=Title |
 | select_and_wait | sort-picker | label=Workspace |
 
-st-result | qr/jabber.+test-data3.+jabber.+%%title%%/ | |
-
 | st-result | qr/jabber.+test-data3/ |  |
 | st-result | qr/jabber.+%%title%%/ |  |
 
@@ -81,8 +78,6 @@ st-result | qr/jabber.+test-data3.+jabber.+%%title%%/ | |
 | select_and_wait | sort-picker | label=Title |
 | select_and_wait | sort-picker | label=Workspace |
 
-st-result | qr/jabber.+test-data3.+jabber.+test-data2.+jabber.+%%title%%/ | |
-
 | st-result | qr/jabber.+test-data3/ |  |
 | st-result | qr/jabber.+test-data2/ |  |
 | st-result | qr/jabber.+%%title%%/ |  |
@@ -94,8 +89,6 @@ st-result | qr/jabber.+test-data3.+jabber.+test-data2.+jabber.+%%title%%/ | |
 | st-result | 2 total |  |
 | select_and_wait | sort-picker | label=Title |
 | select_and_wait | sort-picker | label=Workspace |
-
-st-result | qr/jabber.+test-data3.+jabber.+%%title%% | |
 
 | st-result | qr/jabber.+test-data3/ |  |
 | st-result | qr/jabber.+%%title%%/ |  |
@@ -119,7 +112,6 @@ st-result | qr/jabber.+test-data3.+jabber.+%%title%% | |
 | *Comment* | Add back test-data2, unsub from test-data3 via UI |  |
 | st-admin | clone-workspace --workspace test-data --target test-data2 --overwrite | The test-data workspace has been cloned to test-data2 |
 | st-admin | set-workspace-config --workspace test-data2 title test-data2 | The workspace config for test-data2 has been updated. |
-| st-admin | add-member --w test-data2 --e %%email%% |  |
 
 | st-login |  |  |
 | open_ok | /test-data3 |  |
@@ -133,8 +125,6 @@ st-result | qr/jabber.+test-data3.+jabber.+%%title%% | |
 | st-result | 2 total |  |
 | select_and_wait | sort-picker | label=Title |
 | select_and_wait | sort-picker | label=Workspace |
-
-st-result | qr/jabber.+test-data2.+jabber.+%%title%%/ | |
 
 | st-result | qr/jabber.+test-data2/ |  |
 | st-result | qr/jabber.+%%title%%/ |  |
@@ -165,8 +155,6 @@ st-result | qr/jabber.+test-data2.+jabber.+%%title%%/ | |
 | select_and_wait | sort-picker | label=Title |
 | select_and_wait | sort-picker | label=Workspace |
 | wait_for_element_visible_ok | sort-picker | 30000 |
-
-st-result | qr/jabber.+test-data2.+jabber.+%%title%%.+jabber.+From-Scratch/ | |
 
 | st-result | qr/jabber.+test-data2/ |  |
 | st-result | qr/jabber.+%%title%%/ |  |
