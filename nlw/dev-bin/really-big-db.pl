@@ -63,7 +63,9 @@ my $GROUP_WORKSPACE_ROLES = int($GROUPS * $GROUP_WS_RATIO);
 
 my $create_ts = '2007-01-01 00:00:00+0000';
 my @accounts;
+my %acct_to_uset;
 my @workspaces;
+my %ws_to_uset;
 my @users;
 my @groups;
 my %ws_to_acct;
@@ -128,6 +130,8 @@ print "USING BASE $base\n";
 {
     print "Creating $ACCOUNTS accounts with $ACCOUNTS workspaces";
 
+    my $uset_id_sth = $dbh->prepare(q{SELECT currval('user_set_id_seq')});
+
     my $acct_sth = $dbh->prepare_cached(qq{
         INSERT INTO "Account" (account_id, name)
         VALUES (nextval('"Account___account_id"'), ?)
@@ -144,7 +148,9 @@ print "USING BASE $base\n";
 
     for (my $i=1; $i<=$ACCOUNTS; $i++) {
         $acct_sth->execute("Test Account $base $i");
+        my ($acct_set_id) = do { $uset_id_sth->execute(); $uset_id_sth->fetchrow_array };
         $ws_sth->execute("test_workspace_${base}_$i", "Test Workspace $base $i");
+        my ($ws_set_id) = do { $uset_id_sth->execute(); $uset_id_sth->fetchrow_array };
         $writes += 2;
         
         my ($acct_id) = $dbh->selectrow_array(q{SELECT currval('"Account___account_id"')});
@@ -152,6 +158,8 @@ print "USING BASE $base\n";
         my ($ws_id) = $dbh->selectrow_array(q{SELECT currval('"Workspace___workspace_id"')});
         push @workspaces, $ws_id;
         $ws_to_acct{$ws_id} = $acct_id;
+        $acct_to_uset{$acct_id} = $acct_set_id;
+        $ws_to_uset{$ws_id} = $ws_set_id;
 
         maybe_commit();
     }
@@ -164,17 +172,14 @@ print "USING BASE $base\n";
     print "enable people & dashboard & signals for all of the accounts";
 
     my $pd_sth = $dbh->prepare_cached(qq{
-        INSERT INTO account_plugin (
-            account_id, plugin
-        ) VALUES (
-            ?, ?
-        )
+        INSERT INTO user_set_plugin (user_set_id, plugin)
+        VALUES (?, ?)
     });
 
     my $pd_enabled = int(@accounts ); # Assume every account has pd enabled
     foreach my $acct_id (@accounts[0 .. $pd_enabled-1]) {
         for my $plugin ( 'people', 'dashboard', 'widgets', 'signals' ) {
-            $pd_sth->execute( $acct_id, $plugin );
+            $pd_sth->execute( $acct_to_uset{$acct_id}, $plugin );
             $writes++;
         }
 

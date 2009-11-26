@@ -626,7 +626,7 @@ sub request {
 
 sub set_workspace_prefs {
     my ($self, %prefs) = @_;
-    my $workspace_id = $self->current_workspace_id || die "No workspace";
+    my $user_set_id = $self->current_workspace->user_set_id;
     my $plugin = $self->name;
 
     return unless %prefs;
@@ -636,25 +636,25 @@ sub set_workspace_prefs {
     sql_begin_work;
 
     eval {
-        sql_execute("
+        sql_execute(qq{
             DELETE
-              FROM workspace_plugin_pref
-             WHERE workspace_id = ?
+              FROM user_set_plugin_pref
+             WHERE user_set_id = ?
                AND plugin = ?
                AND key IN ($qs)
-        ", $workspace_id, $plugin, keys %prefs);
+       }, $user_set_id, $plugin, keys %prefs);
 
         my @columns;
         for my $key (keys %prefs) {
-            push @{$columns[0]}, $workspace_id;
+            push @{$columns[0]}, $user_set_id;
             push @{$columns[1]}, $plugin;
             push @{$columns[2]}, $key;
             push @{$columns[3]}, $prefs{$key};
         }
 
         sql_execute_array('
-            INSERT INTO workspace_plugin_pref (
-                workspace_id, plugin, key, value
+            INSERT INTO user_set_plugin_pref (
+                user_set_id, plugin, key, value
             ) VALUES (?, ?, ?, ?)
         ', {}, @columns);
     };
@@ -671,13 +671,13 @@ sub set_workspace_prefs {
 
 sub get_workspace_prefs {
     my $self = shift;
-    my $workspace_id = $self->current_workspace_id || die "No workspace";
+    my $user_set_id = $self->current_workspace->user_set_id;
     my $sth = sql_execute('
         SELECT key, value
-          FROM workspace_plugin_pref
-         WHERE workspace_id = ?
+          FROM user_set_plugin_pref
+         WHERE user_set_id = ?
            AND plugin = ?
-    ', $workspace_id, $self->name);
+    ', $user_set_id, $self->name);
     my %res;
     while (my $row = $sth->fetchrow_hashref) {
         $res{$row->{key}} = $row->{value};
@@ -687,14 +687,14 @@ sub get_workspace_prefs {
 
 sub clear_workspace_prefs {
     my $self = shift;
-    my $workspace_id = $self->current_workspace_id || die "No workspace";
+    my $user_set_id = $self->current_workspace->user_set_id;
     my $plugin = $self->name;
 
     sql_execute('
-        DELETE FROM workspace_plugin_pref
-         WHERE workspace_id = ?
+        DELETE FROM user_set_plugin_pref
+         WHERE user_set_id = ?
            AND plugin = ?
-    ', $workspace_id, $plugin);
+    ', $user_set_id, $plugin);
 
     my $username  = $self->hub->current_user->username;
     my $wksp_name = $self->hub->current_workspace->name;

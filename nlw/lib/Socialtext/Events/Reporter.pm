@@ -305,16 +305,22 @@ sub visible_exists {
     my $sql = qq{
        EXISTS (
             SELECT 1
-            FROM account_user viewer
-            JOIN account_plugin USING (account_id)
-            JOIN account_user othr USING (account_id)
-            WHERE plugin = '$plugin' AND viewer.user_id = ?
-              AND othr.user_id = $event_field
+            FROM user_set_path viewer_path
+            JOIN user_set_plugin plug
+                ON (viewer_path.into_set_id = user_set_id)
+            JOIN user_set_path othr_path
+                ON (viewer_path.into_set_id = othr_path.into_set_id)
+            WHERE view_path.from_set_id = ?
+              AND plug.plugin = '$plugin'
+              AND othr_path.from_set_id = $event_field
     };
     push @$bind_ref, $self->viewer->user_id;
 
     if ($account_id) {
-        $sql .= "\nAND account_id = ?\n";
+        my $acct = Socialtext::Account->new(account_id => $account_id);
+        my $user_set_id = $acct->user_set_id;
+
+        $sql .= "\nAND viewer_path.into_set_id = ?\n";
         push @$bind_ref, $account_id;
     }
 

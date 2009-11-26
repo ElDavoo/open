@@ -333,8 +333,10 @@ sub accounts {
     if ($plugin) {
         $sql = q{
             SELECT DISTINCT account_id 
-            FROM account_user JOIN account_plugin USING (account_id)
-            WHERE user_id = ? AND plugin = ?
+            FROM "Account"
+            JOIN user_set_plugin plug USING (account_id)
+            JOIN user_set_path path USING (plug.user_set_id = path.into_set_id)
+            WHERE path.from_set_id = ? AND plug.plugin = ?
         };
         push @args, $plugin;
     }

@@ -54,8 +54,9 @@ sub plugin_enabled_for_user {
 
     my $sql = <<SQL;
         SELECT plugin
-        FROM account_user JOIN account_plugin USING (account_id)
-        WHERE user_id = ?
+        FROM user_set_plugin plug
+        JOIN user_set_path path ON (plug.user_set_id = path.into_set_id)
+        WHERE path.from_set_id = ?
 SQL
 
     my $sth = sql_execute($sql, $user_id);
@@ -93,20 +94,20 @@ sub plugin_enabled_for_users {
     my $enabled = $cache->get($cache_key);
     return $enabled if defined $enabled;
 
-    # This reads "find all accounts with plugin X that are related to user A,
-    # then check each account to see if user B is in it".
+    # This reads "find all user sets with plugin X that are related to user A,
+    # then check each user_set to see if user B is also in it".
     # This should be faster on average than just joining r1 and r2 when using
     # LIMIT 1"
     my $sql = <<SQL;
-        SELECT account_id
-        FROM account_user r1
-        JOIN account_plugin p1 USING (account_id)
-        WHERE p1.plugin = ? AND r1.user_id = ?
+        SELECT 1
+        FROM user_set_path r1
+        JOIN user_set_plugin p1 ON (r.into_set_id = p1.user_set_id)
+        WHERE p1.plugin = ? AND r1.from_set_id = ?
           AND EXISTS (
                 SELECT 1
-                FROM account_user r2
-                WHERE r1.account_id = r2.account_id 
-                  AND r2.user_id = ?
+                FROM user_set_path r2
+                WHERE r1.into_set_id = r2.into_set_id 
+                  AND r2.from_set_id = ?
           )
         LIMIT 1
 SQL
@@ -141,8 +142,10 @@ sub plugin_enabled_for_user_in_account {
 
     my $sql = <<SQL;
         SELECT plugin
-        FROM account_user JOIN account_plugin USING (account_id)
-        WHERE user_id = ? AND account_id = ?
+        FROM user_set_plugin plug
+        JOIN "Account" USING (user_set_id)
+        JOIN user_set_path path ON (path.into_set_id = plug.user_set_id)
+        WHERE path.from_set_id = ? AND account_id = ?
 SQL
 
     my $sth = sql_execute($sql, $user_id, $account_id);
@@ -170,7 +173,8 @@ sub plugins_enabled_for_account {
     Socialtext::Timer->Continue('plugins_enabled_for_account');
     my $sth = sql_execute('
         SELECT plugin
-        FROM account_plugin
+        FROM user_set_plugin
+        JOIN "Account" USING (user_set_id)
         WHERE account_id = ?
     ', $account_id);
     $plugins = [ map { $_->[0] } @{$sth->fetchall_arrayref} ];
@@ -191,23 +195,23 @@ sub plugin_enabled_for_account {
     return 0;
 }
 
-sub plugin_enabled_for_workspace {
+sub plugins_enabled_for_workspace {
     my $self = shift;
     my %p = @_;
     my $ws = delete $p{workspace};
-    my $plugin_name = delete $p{plugin_name};
 
     my $workspace_id = ref($ws) ? $ws->workspace_id : $ws;
 
     my $cache = Socialtext::Cache->cache('authz_plugin');
     my $cache_key = "ws:$workspace_id";
     if (my $enabled_plugins = $cache->get($cache_key)) {
-        return $enabled_plugins->{$plugin_name} ? 1 : 0;
+        return {%$enabled_plugins};
     }
 
     my $sql = <<SQL;
         SELECT plugin
-        FROM workspace_plugin
+        FROM user_set_plugin
+        JOIN "Workspace" USING (user_set_id)
         WHERE workspace_id = ?
 SQL
 
@@ -218,6 +222,14 @@ SQL
     }
 
     $cache->set($cache_key, $enabled_plugins);
+    return {%$enabled_plugins};
+}
+
+sub plugin_enabled_for_workspace {
+    my $self = shift;
+    my %p = @_;
+    my $plugin_name = delete $p{plugin_name};
+    my $enabled_plugins = $self->plugins_enabled_for_workspace(%p);
     return $enabled_plugins->{$plugin_name} ? 1 : 0;
 }
 

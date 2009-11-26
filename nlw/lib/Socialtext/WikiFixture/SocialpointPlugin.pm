@@ -12,10 +12,10 @@ sub sp_password_is {
     my $workspace_name = shift;
     my $expected_pw = shift;
 
-    my $wksp_id = Socialtext::Workspace->new(name => $workspace_name)->workspace_id;
-    my $crypted_pw = sql_singlevalue(<<EOT, $wksp_id);
-SELECT value FROM workspace_plugin_pref
-    WHERE workspace_id = ?
+    my $user_set_id = Socialtext::Workspace->new(name => $workspace_name)->user_set_id;
+    my $crypted_pw = sql_singlevalue(<<EOT, $user_set_id);
+SELECT value FROM user_set_plugin_pref
+    WHERE user_set_id = ?
       AND plugin = 'socialpoint'
       AND key = 'password'
 EOT

@@ -54,6 +54,8 @@ Readonly our @ACCT_COLS => qw(
     desktop_text_color
     desktop_link_color
     desktop_highlight_color
+
+    user_set_id
 );
 
 my %ACCT_COLS = map { $_ => 1 } @ACCT_COLS;
@@ -117,7 +119,7 @@ sub Resolve {
 
 sub PluginsEnabledForAny {
     my $class = shift;
-    my $sth = sql_execute('SELECT distinct plugin FROM account_plugin');
+    my $sth = sql_execute('SELECT DISTINCT plugin FROM user_set_plugin JOIN "Account" USING (user_set_id)');
     return map{ $_->[0] } @{ $sth->fetchall_arrayref };
 }
 
@@ -316,8 +318,8 @@ sub enable_plugin {
     Socialtext::Pluggable::Adapter->EnablePlugin($plugin => $self);
 
     sql_execute(q{
-        INSERT INTO account_plugin VALUES (?,?)
-    }, $self->account_id, $plugin);
+        INSERT INTO user_set_plugin VALUES (?,?)
+    }, $self->user_set_id, $plugin);
 
     Socialtext::Cache->clear('authz_plugin');
     Socialtext::JSON::Proxy::Helper->ClearForAccount($self->account_id);
@@ -338,9 +340,9 @@ sub disable_plugin {
     Socialtext::Pluggable::Adapter->DisablePlugin($plugin => $self);
 
     sql_execute(q{
-        DELETE FROM account_plugin
-        WHERE account_id = ? AND plugin = ?
-    }, $self->account_id, $plugin);
+        DELETE FROM user_set_plugin
+        WHERE user_set_id = ? AND plugin = ?
+    }, $self->user_set_id, $plugin);
 
     Socialtext::Cache->clear('authz_plugin');
     Socialtext::JSON::Proxy::Helper->ClearForAccount($self->account_id);
@@ -723,6 +725,7 @@ sub _new_from_name {
 
 sub _new_from_account_id {
     my ( $class, %p ) = @_;
+    return unless defined $p{account_id};
 
     if (my $acct = $class->cache->get("id:$p{account_id}")) {
         return $acct;

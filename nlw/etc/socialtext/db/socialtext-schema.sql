@@ -546,11 +546,6 @@ CREATE TABLE account_logo (
     logo bytea NOT NULL
 );
 
-CREATE TABLE account_plugin (
-    account_id bigint NOT NULL,
-    plugin text NOT NULL
-);
-
 CREATE TABLE group_account_role (
     group_id bigint NOT NULL,
     account_id bigint NOT NULL,
@@ -1051,6 +1046,18 @@ CREATE VIEW user_set_include_tc AS
    FROM user_set_path
   ORDER BY user_set_path.from_set_id, user_set_path.via_set_id, user_set_path.into_set_id, user_set_path.role_id;
 
+CREATE TABLE user_set_plugin (
+    user_set_id integer NOT NULL,
+    plugin text NOT NULL
+);
+
+CREATE TABLE user_set_plugin_pref (
+    user_set_id integer NOT NULL,
+    plugin text NOT NULL,
+    "key" text NOT NULL,
+    value text NOT NULL
+);
+
 CREATE TABLE user_workspace_pref (
     user_id bigint NOT NULL,
     workspace_id bigint NOT NULL,
@@ -1094,18 +1101,6 @@ CREATE SEQUENCE webhook___webhook_id
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
-
-CREATE TABLE workspace_plugin (
-    workspace_id bigint NOT NULL,
-    plugin text NOT NULL
-);
-
-CREATE TABLE workspace_plugin_pref (
-    workspace_id bigint NOT NULL,
-    plugin text NOT NULL,
-    "key" text NOT NULL,
-    value text NOT NULL
-);
 
 ALTER TABLE ONLY "Account"
     ADD CONSTRAINT "Account_pkey"
@@ -1154,14 +1149,6 @@ ALTER TABLE ONLY "Workspace"
 ALTER TABLE ONLY account_logo
     ADD CONSTRAINT account_logo_pkey
             PRIMARY KEY (account_id);
-
-ALTER TABLE ONLY account_plugin
-    ADD CONSTRAINT account_plugin_pkey
-            PRIMARY KEY (account_id, plugin);
-
-ALTER TABLE ONLY account_plugin
-    ADD CONSTRAINT account_plugin_ukey
-            UNIQUE (plugin, account_id);
 
 ALTER TABLE ONLY container
     ADD CONSTRAINT container_pk
@@ -1315,6 +1302,10 @@ ALTER TABLE ONLY user_set_include
     ADD CONSTRAINT user_set_include_pkey
             PRIMARY KEY (from_set_id, into_set_id);
 
+ALTER TABLE ONLY user_set_plugin
+    ADD CONSTRAINT user_set_plugin_pkey
+            PRIMARY KEY (user_set_id, plugin);
+
 ALTER TABLE ONLY user_workspace_role
     ADD CONSTRAINT user_workspace_role_pkey
             PRIMARY KEY (user_id, workspace_id);
@@ -1322,14 +1313,6 @@ ALTER TABLE ONLY user_workspace_role
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey
             PRIMARY KEY (user_id);
-
-ALTER TABLE ONLY workspace_plugin
-    ADD CONSTRAINT workspace_plugin_pkey
-            PRIMARY KEY (workspace_id, plugin);
-
-ALTER TABLE ONLY workspace_plugin
-    ADD CONSTRAINT workspace_plugin_ukey
-            UNIQUE (plugin, workspace_id);
 
 CREATE UNIQUE INDEX "Account___name"
 	    ON "Account" (name);
@@ -1418,6 +1401,12 @@ CREATE INDEX idx_user_set_path_wholepath_and_role
 
 CREATE INDEX idx_user_set_path_wholepath_rev
 	    ON user_set_path (into_set_id, from_set_id);
+
+CREATE INDEX idx_user_set_plugin_pref
+	    ON user_set_plugin_pref (user_set_id, plugin);
+
+CREATE INDEX idx_user_set_plugin_pref_key
+	    ON user_set_plugin_pref (user_set_id, plugin, "key");
 
 CREATE INDEX ix_container_account_id
 	    ON container (account_id);
@@ -1678,6 +1667,9 @@ CREATE INDEX user_plugin_pref_idx
 CREATE INDEX user_plugin_pref_key_idx
 	    ON user_plugin_pref (user_id, plugin, "key");
 
+CREATE UNIQUE INDEX user_set_plugin_ukey
+	    ON user_set_plugin (plugin, user_set_id);
+
 CREATE INDEX user_workspace_pref_idx
 	    ON user_workspace_pref (user_id, workspace_id);
 
@@ -1720,12 +1712,6 @@ CREATE INDEX webhook__class_workspace_ix
 CREATE INDEX webhook__workspace_class_ix
 	    ON webhook ("class");
 
-CREATE INDEX workspace_plugin_pref_idx
-	    ON workspace_plugin_pref (workspace_id, plugin);
-
-CREATE INDEX workspace_plugin_pref_key_idx
-	    ON workspace_plugin_pref (workspace_id, plugin, "key");
-
 CREATE TRIGGER sessions_insert
     AFTER INSERT ON sessions
     FOR EACH STATEMENT
@@ -1748,11 +1734,6 @@ ALTER TABLE ONLY "Account"
 
 ALTER TABLE ONLY account_logo
     ADD CONSTRAINT account_logo_account_fk
-            FOREIGN KEY (account_id)
-            REFERENCES "Account"(account_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY account_plugin
-    ADD CONSTRAINT account_plugin_account_fk
             FOREIGN KEY (account_id)
             REFERENCES "Account"(account_id) ON DELETE CASCADE;
 
@@ -2121,6 +2102,11 @@ ALTER TABLE ONLY user_set_path
             FOREIGN KEY (role_id)
             REFERENCES "Role"(role_id) ON DELETE RESTRICT;
 
+ALTER TABLE ONLY user_set_plugin_pref
+    ADD CONSTRAINT user_set_plugin_pref_fk
+            FOREIGN KEY (user_set_id, plugin)
+            REFERENCES user_set_plugin(user_set_id, plugin) ON DELETE CASCADE;
+
 ALTER TABLE ONLY user_workspace_pref
     ADD CONSTRAINT user_workspace_pref_user_fk
             FOREIGN KEY (user_id)
@@ -2185,16 +2171,6 @@ ALTER TABLE ONLY "Workspace"
     ADD CONSTRAINT workspace_created_by_user_id_fk
             FOREIGN KEY (created_by_user_id)
             REFERENCES users(user_id) ON DELETE RESTRICT;
-
-ALTER TABLE ONLY workspace_plugin_pref
-    ADD CONSTRAINT workspace_plugin_pref_fk
-            FOREIGN KEY (workspace_id, plugin)
-            REFERENCES workspace_plugin(workspace_id, plugin) ON DELETE CASCADE;
-
-ALTER TABLE ONLY workspace_plugin
-    ADD CONSTRAINT workspace_plugin_workspace_fk
-            FOREIGN KEY (workspace_id)
-            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
 INSERT INTO "System" VALUES ('socialtext-schema-version', '95');

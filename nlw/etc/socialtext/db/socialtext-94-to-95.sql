@@ -72,6 +72,47 @@ ALTER TABLE "Workspace" ADD COLUMN user_set_id integer NOT NULL DEFAULT nextval(
 ALTER TABLE "Account" ADD COLUMN user_set_id integer NOT NULL DEFAULT nextval('user_set_id_seq');
 ALTER TABLE groups ADD COLUMN user_set_id integer NOT NULL DEFAULT nextval('user_set_id_seq');
 
+CREATE TABLE user_set_plugin (
+    user_set_id integer NOT NULL,
+    plugin text NOT NULL
+);
+ALTER TABLE ONLY user_set_plugin
+    ADD CONSTRAINT "user_set_plugin_pkey"
+    PRIMARY KEY (user_set_id, plugin);
+CREATE UNIQUE INDEX user_set_plugin_ukey ON user_set_plugin (plugin, user_set_id);
+
+CREATE TABLE user_set_plugin_pref (
+    user_set_id integer NOT NULL,
+    plugin text NOT NULL,
+    "key" text NOT NULL,
+    value text NOT NULL
+);
+ALTER TABLE ONLY user_set_plugin_pref
+    ADD CONSTRAINT user_set_plugin_pref_fk
+            FOREIGN KEY (user_set_id, plugin)
+            REFERENCES user_set_plugin(user_set_id,plugin) ON DELETE CASCADE;
+CREATE INDEX idx_user_set_plugin_pref ON user_set_plugin_pref (user_set_id, plugin);
+CREATE INDEX idx_user_set_plugin_pref_key ON user_set_plugin_pref (user_set_id, plugin,"key");
+
+INSERT INTO user_set_plugin
+SELECT user_set_id, plugin
+FROM "Account"
+NATURAL JOIN account_plugin;
+
+INSERT INTO user_set_plugin
+SELECT user_set_id, plugin
+FROM "Workspace"
+NATURAL JOIN workspace_plugin;
+
+INSERT INTO user_set_plugin_pref
+SELECT user_set_id, plugin, key, value
+FROM "Workspace"
+JOIN workspace_plugin_pref USING (workspace_id);
+
+DROP TABLE account_plugin;
+DROP TABLE workspace_plugin_pref;
+DROP TABLE workspace_plugin;
+
 UPDATE "System"
    SET value = '95'
  WHERE field = 'socialtext-schema-version';

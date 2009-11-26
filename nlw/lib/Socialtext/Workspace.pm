@@ -113,6 +113,7 @@ Readonly our @COLUMNS => (
     'uploaded_skin',
     'allows_skin_upload',
     'allows_page_locking',
+    'user_set_id',
 );
 
 
@@ -1113,13 +1114,8 @@ sub ping_uris {
 
 sub plugins_enabled {
     my ($self) = @_;
-    my $sql = q{
-        SELECT plugin
-          FROM workspace_plugin
-         WHERE workspace_id = ?
-    };
-    my $result = sql_execute( $sql, $self->workspace_id );
-    return map { $_->[0] } @{ $result->fetchall_arrayref };
+    my $authz = Socialtext::Authz->new();
+    return keys %{$authz->plugins_enabled_for_workspace(workspace => $self)};
 }
 
 sub is_plugin_enabled {
@@ -1153,8 +1149,8 @@ sub enable_plugin {
     Socialtext::Pluggable::Adapter->EnablePlugin($plugin => $self);
 
     sql_execute(q{
-        INSERT INTO workspace_plugin VALUES (?,?)
-    }, $self->workspace_id, $plugin);
+        INSERT INTO user_set_plugin VALUES (?,?)
+    }, $self->user_set_id, $plugin);
 
     Socialtext::Cache->clear('authz_plugin');
 
@@ -1175,9 +1171,9 @@ sub disable_plugin {
     Socialtext::Pluggable::Adapter->DisablePlugin($plugin => $self);
 
     sql_execute(q{
-        DELETE FROM workspace_plugin
-        WHERE workspace_id = ? AND plugin = ?
-    }, $self->workspace_id, $plugin);
+        DELETE FROM user_set_plugin
+        WHERE user_set_id = ? AND plugin = ?
+    }, $self->user_set_id, $plugin);
 
     Socialtext::Cache->clear('authz_plugin');
 
@@ -2068,7 +2064,7 @@ sub DisablePluginForAll {
 
 sub PluginsEnabledForAny {
     my $class = shift;
-    my $sth = sql_execute('SELECT distinct plugin FROM workspace_plugin');
+    my $sth = sql_execute('SELECT DISTINCT plugin FROM user_set_plugin JOIN "Workspace" USING (user_set_id)');
     return map { $_->[0] } @{ $sth->fetchall_arrayref };
 }
 
