@@ -206,6 +206,7 @@
 
 | *Comment* | Test Case: Miki TEARDOWN |  |
 | st-admin | delete_workspace --no-export --w %%ws%% | has been deleted |
+| st-admin | delete_workspace --no-export --w %%otherws%% | has been deleted |
 | *Comment* | Test Case: Miki END RT 26984 |  |
 
 | *Comment* | Test Case: Miki COMPLETED |  |
