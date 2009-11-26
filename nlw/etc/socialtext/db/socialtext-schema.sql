@@ -373,6 +373,13 @@ CREATE OPERATOR CLASS gist__int_ops
     FUNCTION 6 g_int_picksplit(internal,internal) ,
     FUNCTION 7 g_int_same(integer[],integer[],internal);
 
+CREATE SEQUENCE user_set_id_seq
+    START WITH 536870913
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -395,7 +402,8 @@ CREATE TABLE "Account" (
     allow_invitation boolean DEFAULT true NOT NULL,
     all_users_workspace bigint,
     account_type text DEFAULT 'Standard' NOT NULL,
-    restrict_to_domain text DEFAULT '' NOT NULL
+    restrict_to_domain text DEFAULT '' NOT NULL,
+    user_set_id integer DEFAULT nextval('user_set_id_seq'::regclass) NOT NULL
 );
 
 CREATE SEQUENCE "Account___account_id"
@@ -500,7 +508,8 @@ CREATE TABLE "Workspace" (
     cascade_css boolean DEFAULT true NOT NULL,
     uploaded_skin boolean DEFAULT false NOT NULL,
     allows_skin_upload boolean DEFAULT false NOT NULL,
-    allows_page_locking boolean DEFAULT false NOT NULL
+    allows_page_locking boolean DEFAULT false NOT NULL,
+    user_set_id integer DEFAULT nextval('user_set_id_seq'::regclass) NOT NULL
 );
 
 CREATE TABLE "WorkspaceBreadcrumb" (
@@ -814,7 +823,8 @@ CREATE TABLE groups (
     primary_account_id bigint NOT NULL,
     creation_datetime timestamptz DEFAULT now() NOT NULL,
     created_by_user_id bigint NOT NULL,
-    cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL
+    cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
+    user_set_id integer DEFAULT nextval('user_set_id_seq'::regclass) NOT NULL
 );
 
 CREATE SEQUENCE groups___group_id
@@ -1018,6 +1028,27 @@ CREATE TABLE user_plugin_pref (
     "key" text NOT NULL,
     value text NOT NULL
 );
+
+CREATE TABLE user_set_include (
+    from_set_id integer NOT NULL,
+    into_set_id integer NOT NULL,
+    role_id integer NOT NULL,
+    CONSTRAINT no_self_includes
+            CHECK (from_set_id <> into_set_id)
+);
+
+CREATE TABLE user_set_path (
+    from_set_id integer NOT NULL,
+    via_set_id integer NOT NULL,
+    into_set_id integer NOT NULL,
+    role_id integer NOT NULL,
+    vlist integer[] NOT NULL
+);
+
+CREATE VIEW user_set_include_tc AS
+  SELECT DISTINCT user_set_path.from_set_id, user_set_path.via_set_id, user_set_path.into_set_id, user_set_path.role_id
+   FROM user_set_path
+  ORDER BY user_set_path.from_set_id, user_set_path.via_set_id, user_set_path.into_set_id, user_set_path.role_id;
 
 CREATE TABLE user_workspace_pref (
     user_id bigint NOT NULL,
@@ -1279,6 +1310,10 @@ ALTER TABLE ONLY user_group_role
     ADD CONSTRAINT user_group_role_pk
             PRIMARY KEY (user_id, group_id);
 
+ALTER TABLE ONLY user_set_include
+    ADD CONSTRAINT user_set_include_pkey
+            PRIMARY KEY (from_set_id, into_set_id);
+
 ALTER TABLE ONLY user_workspace_role
     ADD CONSTRAINT user_workspace_role_pkey
             PRIMARY KEY (user_id, workspace_id);
@@ -1355,6 +1390,33 @@ CREATE UNIQUE INDEX groups_account_user_group_name
 
 CREATE UNIQUE INDEX groups_driver_unique_id
 	    ON groups (driver_key, driver_unique_id);
+
+CREATE UNIQUE INDEX idx_user_set_include_pkey_and_role
+	    ON user_set_include (from_set_id, into_set_id, role_id);
+
+CREATE UNIQUE INDEX idx_user_set_include_rev
+	    ON user_set_include (into_set_id, from_set_id);
+
+CREATE UNIQUE INDEX idx_user_set_include_rev_and_role
+	    ON user_set_include (into_set_id, from_set_id, role_id);
+
+CREATE INDEX idx_user_set_path_rev_and_role
+	    ON user_set_path (into_set_id, from_set_id, role_id);
+
+CREATE INDEX idx_user_set_path_via
+	    ON user_set_path (via_set_id, into_set_id);
+
+CREATE INDEX idx_user_set_path_vlist
+	    ON user_set_path USING gist (vlist);
+
+CREATE INDEX idx_user_set_path_wholepath
+	    ON user_set_path (from_set_id, into_set_id);
+
+CREATE INDEX idx_user_set_path_wholepath_and_role
+	    ON user_set_path (from_set_id, into_set_id, role_id);
+
+CREATE INDEX idx_user_set_path_wholepath_rev
+	    ON user_set_path (into_set_id, from_set_id);
 
 CREATE INDEX ix_container_account_id
 	    ON container (account_id);
@@ -2048,6 +2110,16 @@ ALTER TABLE ONLY user_plugin_pref
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY user_set_include
+    ADD CONSTRAINT user_set_include_role
+            FOREIGN KEY (role_id)
+            REFERENCES "Role"(role_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY user_set_path
+    ADD CONSTRAINT user_set_path_role
+            FOREIGN KEY (role_id)
+            REFERENCES "Role"(role_id) ON DELETE RESTRICT;
+
 ALTER TABLE ONLY user_workspace_pref
     ADD CONSTRAINT user_workspace_pref_user_fk
             FOREIGN KEY (user_id)
@@ -2124,4 +2196,4 @@ ALTER TABLE ONLY workspace_plugin
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '94');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '95');
