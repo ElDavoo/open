@@ -646,7 +646,8 @@ CREATE TABLE container_type (
     "global" boolean DEFAULT false,
     columns integer DEFAULT 3,
     title text,
-    purge_all_on_update boolean DEFAULT false
+    purge_all_on_update boolean DEFAULT false,
+    plugin text DEFAULT 'widgets'
 );
 
 CREATE SEQUENCE default_gadget_id
