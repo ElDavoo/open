@@ -25,7 +25,7 @@ use Socialtext::AppConfig;
 use Test::Socialtext::User;
 use Socialtext::System qw(shell_run);
 
-our @DEFAULT_PLUGINS = qw(dashboard people signals);
+our @DEFAULT_PLUGINS = qw(dashboard people signals groups);
 
 sub new {
     my $class = shift;
