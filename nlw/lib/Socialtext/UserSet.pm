@@ -67,7 +67,10 @@ sub add_role {
     croak "Can't add things to users"
         if Socialtext::User->new(user_id => $y);
 
-    $role_id ||= Socialtext::Role->new(name => 'member')->role_id;
+    $role_id ||= 'member';
+    if ($role_id =~ /\D/) {
+        $role_id = Socialtext::Role->new(name => $role_id)->role_id;
+    }
     $self->_insert($dbh, $x, $y, $role_id);
 }
 
@@ -159,6 +162,9 @@ around 'has_role' => \&_query_wrapper;
 sub has_role {
     my ($self, $dbh, $x, $y, $role_id) = @_;
     confess "role_id is required" unless $role_id;
+    if ($role_id =~ /\D/) {
+        $role_id = Socialtext::Role->new(name => $role_id)->role_id;
+    }
     my ($has_role) = $dbh->selectrow_array(q{
         SELECT 1
         FROM user_set_include_tc

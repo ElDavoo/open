@@ -27,6 +27,8 @@ Readonly my @RequiredRoles => (
     [ member             => 0 ],
     [ workspace_admin    => 0 ],
     [ impersonator       => 0 ],
+    [ member_workspace   => 0 ],
+    [ member_group       => 0 ],
 );
 sub EnsureRequiredDataIsPresent {
     my $class = shift;

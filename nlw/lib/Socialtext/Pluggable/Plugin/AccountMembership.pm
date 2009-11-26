@@ -64,6 +64,7 @@ sub add_user_account_role {
     if ($uar) {
         # upgrade an "Affiliate" Role to something else
         $uar->update( { role_id => $role->role_id } );
+        $account->user_set->update_object_role($user, $role->role_id);
     }
     else {
         $uar = $factory->Create( {
@@ -71,6 +72,7 @@ sub add_user_account_role {
             account_id => $account->account_id,
             role_id    => $role->role_id,
         } );
+        $account->user_set->add_object_role($user, $role->role_id);
 
         $account->add_to_all_users_workspace( user => $user );
     }
@@ -130,9 +132,11 @@ sub remove_user_account_role {
     # Role, otherwise we remove the Role outright.
     if ($self->_user_has_workspace_role($user, $account)) {
         $uar->update( { role_id => $affiliate->role_id } );
+        $account->user_set->update_object_role($user, $role->role_id);
     }
     else {
         $factory->Delete($uar);
+        $account->user_set->remove_object_role($user);
     }
 }
 
@@ -172,6 +176,7 @@ sub add_group_account_role {
     if ($gar) {
         # upgrade an "Affiliate" Role to something else
         $gar->update( { role_id => $role->role_id } );
+        $account->user_set->update_object_role($group, $role->role_id);
     }
     else {
         $gar = $factory->Create( {
@@ -179,8 +184,10 @@ sub add_group_account_role {
             account_id  => $account->account_id,
             role_id     => $role->role_id,
         } );
+        $account->user_set->add_object_role($group, $role->role_id);
         $account->add_to_all_users_workspace( group => $group );
     }
+
 }
 
 sub remove_group_account_role {
@@ -235,9 +242,11 @@ sub remove_group_account_role {
     # "Affiliate" Role, otherwise we remove the Role outright.
     if ($self->_group_has_workspace_role($group, $account)) {
         $gar->update( { role_id => $affiliate->role_id } );
+        $account->user_set->update_object_role($group, $affiliate->role_id);
     }
     else {
         $factory->Delete($gar);
+        $account->user_set->remove_object_role($group);
     }
 }
 

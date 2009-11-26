@@ -247,6 +247,8 @@ EOSQL
     $self->_update_aliases_file();
     $self->_enable_default_plugins();
 
+    $self->account->user_set->add_object_role($self, 'member_workspace');
+
     my $msg = 'CREATE,WORKSPACE,workspace:' . $self->name
               . '(' . $self->workspace_id . '),'
               . '[' . $timer->elapsed . ']';
@@ -2139,16 +2141,15 @@ use Socialtext::User;
 
 extends 'Socialtext::Workspace';
 
-has '+name'                       => (default => '');
-has '+skin_name'                  => (default => '');
-has '+title'                      => (default => 'The NoWorkspace Workspace');
-has '+account_id'                 => (default => 1);
-has '+workspace_id'               => (default => 0);
-has '+email_addresses_are_hidden' => (default => 0);
-
-use constant real              => 0;
-use constant is_plugin_enabled => 0;
-use constant drop_breadcrumb   => undef;
+use constant name                       => '';
+use constant skin_name                  => '';
+use constant title                      => 'The NoWorkspace Workspace';
+use constant account_id                 => 1;
+use constant workspace_id               => 0;
+use constant email_addresses_are_hidden => 0;
+use constant real                       => 0;
+use constant is_plugin_enabled          => 0;
+use constant drop_breadcrumb            => undef;
 
 sub created_by_user_id { Socialtext::User->SystemUser->user_id }
 
