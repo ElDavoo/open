@@ -3103,6 +3103,10 @@ div#mainNav ul.level2 li {
     border-bottom: 1px solid black;
 }
 
+div#mainNav ul.level2 li.last {
+    border-bottom: none;
+}
+
 div#mainNav ul.level2.withimage li {
     line-height: 30px; /* 27 pt image with 1px margin top/bottom + 1 px border-bottom*/
 }
@@ -3113,6 +3117,7 @@ div#mainNav ul.level2 li a {
     font-size: 10px;
     line-height: 20px;
     padding: 0px 0px 0px 3px;
+    background: none;
 }
 
 div#mainNav ul.level2 li.dropaction a,
@@ -3171,11 +3176,6 @@ div#mainNav ul.level2 {
     top: 3.0em; 
     left: -1px;
     background: white;
-}
-
-/* Overrides a style from styles.css line 206 */
-div#mainNav ul.level2 li a {
-    background: none;
 }
 
 /* WTF is the dropdownTick doing on the li element in styles.css? */
