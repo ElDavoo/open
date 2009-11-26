@@ -34,7 +34,7 @@
 | st-widget-title-like | active_members | Active Members |
 | st-widget-settings | active_members |  |
 | wait_for_element_visible_ok | up_account | 30000 |
-| click_ok | up_rotate |  |
+| uncheck_ok | up_rotate |  |
 | select_ok | up_account | %%am_acct_one%% |
 | click_ok | st-savebutton-%%active_members%% |  |
 | wait_for_element_not_visible_ok | up_account | 30000 |
@@ -85,6 +85,7 @@
 | wait_for_element_visible_ok | up_account | 30000 |
 | select_ok | up_account | %%am_acct_two%% |
 | select_ok | up_view | Viewed Profiles |
+| uncheck_ok | up_rotate |  |
 | click_ok | st-savebutton-%%active_members%% |  |
 | wait_for_element_not_visible_ok | up_account | 30000 |
 | st-select-widget-frame | active_members |  |

@@ -18,7 +18,7 @@
 | st-name-widget | 1 | active_content |
 | st-widget-settings | active_content |  |
 | wait_for_element_visible_ok | up_workspace | 30000 |
-| click_ok | up_rotate |  |
+| uncheck_ok | up_rotate |  |
 | select_ok | up_workspace | %%acw%% |
 | click_ok | st-savebutton-%%active_content%% |  |
 | wait_for_element_not_visible_ok | up_workspace | 30000 |
@@ -88,6 +88,7 @@
 | st-widget-settings | active_content |  |
 | wait_for_element_visible_ok | up_workspace | 30000 |
 | select_ok | up_workspace | %%acwnoresults%% |
+| uncheck_ok | up_rotate |  |
 | select_ok | up_view | Viewed Pages |
 | click_ok | st-savebutton-%%active_content%% |  |
 | wait_for_element_not_visible_ok | up_workspace | 30000 |
