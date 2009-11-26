@@ -11,7 +11,10 @@
             href: function(w) { return '/' + w.name },
             title: function(w) { return w.name },
             sort: function(a,b) {
-                return a.default ? -1 : b.default ? 1 : a.name > b.name 
+                if (a['default']) return -1;
+                if (b['default']) return 1;
+                if (a.name == b.name) return 0;
+                return (a.name < b.name) ? -1 : 1;
             },
             emptyMessage: loc("Currently, you are not a member of any workspaces.")
         });
