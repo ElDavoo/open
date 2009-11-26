@@ -75,7 +75,7 @@ sub _built_in_clean {
     );
 
     require Socialtext::Jobs;
-    Socialtext::Jobs->clear_jobs();
+    eval { Socialtext::Jobs->clear_jobs() };
     rmtree( \@to_clean );
 }
 
