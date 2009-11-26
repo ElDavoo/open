@@ -98,6 +98,10 @@ has 'factory' => (
     handles => [qw( can_update_store )],
 );
 
+has_column 'user_set_id' => (
+    is => 'rw', isa => 'Int',
+);
+
 has_unique_key ('driver_key','driver_unique_id');
 has_unique_key ('primary_account_id', 'created_by_user_id', 'driver_group_name');
 

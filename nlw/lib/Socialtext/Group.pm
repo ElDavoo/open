@@ -44,6 +44,7 @@ has 'homunculus' => (
         can_update_store
         update_store
         delete
+        user_set_id
     )],
 );
 
