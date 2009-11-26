@@ -106,7 +106,7 @@ workspace_membership: {
         [$default_id, $user_id ],
         [$acct_id,    $user_id ],
         [$default_id, $user2_id],
-    ], 'adding a user to a workspace adds an account membership';
+    ], 'adding a user to a workspace adds an implicit account membership';
 
     my $role = Socialtext::Role->new(name => 'impersonator');
     $ws->assign_role_to_user(user => $user, role => $role);
@@ -120,7 +120,7 @@ workspace_membership: {
     membership_is [
         [$default_id, $user_id ],
         [$default_id, $user2_id],
-    ], 'removing a user to a workspace removes the account membership';
+    ], 'removing a user to a workspace removes the implicit membership';
 }
 
 workspace_changes_account: {
@@ -129,7 +129,7 @@ workspace_changes_account: {
         [$default_id, $user_id ],
         [$default_id, $user2_id],
         [$acct_id,    $user2_id],
-    ], 'adding a user to a workspace adds an account membership';
+    ], 'adding a user to a workspace adds an implicit account membership';
 
     my $old_ws = $ws;
 
@@ -149,7 +149,7 @@ workspace_changes_account: {
     membership_is [
         [$default_id, $user_id ],
         [$default_id, $user2_id],
-    ], 'removing a user to a workspace removes the account membership';
+    ], 'removing a user to a workspace removes the implicit account membership';
 }
 
 primary_account_changes_memberhip: {
@@ -162,24 +162,40 @@ primary_account_changes_memberhip: {
 
     $user2->primary_account($acct);
     membership_is [
-        [$default_id, $user_id ],
-        [$acct_id,    $user2_id],
-        [$acct2_id,   $user2_id],
+        [$default_id,  $user_id ],
+        [$default_id,  $user2_id],
+        [$acct_id,     $user2_id],
+        [$acct2_id,    $user2_id],
     ], 'changing the primary account changes the account membership';
 
     $user->primary_account($acct2);
     $user2->primary_account($acct2);
     membership_is [
-        [$acct2_id, $user_id ],
-        [$acct2_id, $user2_id],
-    ], 'no duplicate entries';
+        [$default_id, $user_id ],
+        [$acct2_id,   $user_id ],
+        [$default_id, $user2_id],
+        [$acct_id,    $user2_id],
+        [$acct2_id,   $user2_id],
+    ], 'change both users primary account';
+}
 
+cleanup: {
+    # Reset Primary Accounts
+    $user->primary_account($acct);
     $user2->primary_account($acct);
+
+    # Remove unneeded explicit account roles
+    $default->remove_user( user => $user );
+    $acct2->remove_user( user => $user );
+    $default->remove_user( user => $user2 );
+    $acct2->remove_user( user => $user2 );
+
+    # Sanity check going forward
     membership_is [
-        [$acct2_id, $user_id ],
-        [$acct_id,  $user2_id],
-        [$acct2_id, $user2_id],
-    ], 'user 2 goes back to account 1';
+        [ $acct_id,  $user_id  ],
+        [ $acct_id,  $user2_id ],
+        [ $acct2_id, $user2_id ],
+    ], 'cleanup success, users maintain implicit account roles via workspace';
 }
 
 deleting_workspace_removes_membership: {
@@ -187,18 +203,15 @@ deleting_workspace_removes_membership: {
     $ws = undef;
 
     membership_is [
-        [$acct2_id, $user_id ],
+        [$acct_id,  $user_id ],
         [$acct_id,  $user2_id],
-    ], 'deleting workspace removes account membership';
+    ], 'deleting workspace removes implicit account membership';
 }
 
 deleting_account_removes_membership: {
     $acct->delete();
     $acct = undef;
-
-    membership_is [
-        [$acct2_id, $user_id ],
-    ], 'deleting account removes account membership';
+    membership_is [], 'deleting account removes account membership';
 }
 
 sub change_workspace_account {
