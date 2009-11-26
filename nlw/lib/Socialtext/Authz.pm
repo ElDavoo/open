@@ -101,7 +101,7 @@ sub plugin_enabled_for_users {
     my $sql = <<SQL;
         SELECT 1
         FROM user_set_path r1
-        JOIN user_set_plugin p1 ON (r.into_set_id = p1.user_set_id)
+        JOIN user_set_plugin p1 ON (r1.into_set_id = p1.user_set_id)
         WHERE p1.plugin = ? AND r1.from_set_id = ?
           AND EXISTS (
                 SELECT 1
