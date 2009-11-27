@@ -4216,6 +4216,21 @@ body#dashBoard div#controls div#controlsRight ul {
     margin: 0 10%
 }
 
+.container.create_group #col0,
+.container.create_group #col1,
+.container.create_group #col2 {
+    width: 30%;
+}
+
+.container.create_group .formButtons {
+    width: 100%;
+    clear: both;
+}
+.container.create_group .flexButtonBlue {
+    float: right;
+    margin: 4px;
+}
+
 .container.signals #col0 {
     width: 35%;
 }
