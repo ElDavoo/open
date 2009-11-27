@@ -2,7 +2,7 @@
 
 | *Comment* | Test Case: Search Too General: Create new workspace |  |
 | set | gws | general-workspace-%%start_time%% |
-| st-admin | create-workspace --name %%gws%% --title %%gws%% |  |
+| st-admin | create-workspace --name %%gws%% --title %%gws%% --empty |  |
 | st-admin | add-member --username %%username%% --workspace %%gws%% |  |
 
 | *Comment* | Test Case: Search Too General: Create 5 pages |  |

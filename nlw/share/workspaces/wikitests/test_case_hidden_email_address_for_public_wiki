@@ -82,7 +82,7 @@
 | text_unlike | contentContainer | %%he_regex%% |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki address in searched pages |  |
-| st-admin | index-workspace --workspace %%he_ws%% --sync |  |
+| st-admin | index-page --workspace %%he_ws%% --page hidden_email_%%start_time%% |  |
 | type_ok | st-search-term | Hidden Email Comment %%start_time%% |
 | click_and_wait | st-search-submit |  |
 | text_like | contentContainer | %%he_name%% |

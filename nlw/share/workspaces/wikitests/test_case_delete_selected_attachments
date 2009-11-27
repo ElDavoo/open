@@ -31,8 +31,8 @@
 | click_ok | st-attachments-attach-closebutton |  |
 
 | *Comment* | Test Case: Delete Selected Attachments Search the attachment and verify that it is present |  |
-| *Comment* | Indexing a page does not index its attachments, so you are stuck indexing the workspace |  |
-| st-admin | index-workspace --workspace %%workspace%% --sync |  |
+| *Comment* | Indexing a page does index its attachments |  |
+| st-admin | index-page --workspace %%workspace%% --page delete_attachments_%%start_time%% |  |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | Mudville |
 | click_and_wait | st-search-submit |  |
@@ -60,8 +60,8 @@
 | text_unlike | contentRight | wikitest.doc |
 
 | *Comment* | Test Case: Delete Selected Attachments Search page and verify that attachment is gone |  |
-| *Comment* | Deleting an attachment requires reindexing, so you are stuck indexing the workspace |  |
-| st-admin | index-workspace --workspace %%workspace%% --sync |  |
+| *Comment* | Deleting an attachment requires reindexing, so reindex the page |  |
+| st-admin | index-page --workspace %%workspace%% --page delete_attachments_%%start_time%% |  |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | Mudville |
 | click_and_wait | st-search-submit |  |
