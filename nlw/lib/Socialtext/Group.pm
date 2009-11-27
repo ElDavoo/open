@@ -32,6 +32,7 @@ has 'homunculus' => (
         driver_id
         driver_unique_id
         driver_group_name
+        display_name
         description
         primary_account_id
         primary_account
@@ -47,9 +48,6 @@ has 'homunculus' => (
         user_set_id
     )],
 );
-
-# Use a naming convention similar to ST::USer for "what's this thing's name?"
-sub display_name { $_[0]->driver_group_name; }
 
 has $_.'_count' => (
     is => 'rw', isa => 'Int',

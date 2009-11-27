@@ -45,6 +45,7 @@ has_column 'driver_group_name' => (
     writer => '_driver_group_name',
     required => 1,
 );
+*display_name = \&driver_group_name; # alias for API consistency
 
 has_column 'description' => (
     is => 'rw', isa => 'Maybe[Str]',

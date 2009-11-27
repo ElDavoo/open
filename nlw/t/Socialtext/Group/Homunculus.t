@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 20;
+use Test::Socialtext tests => 21;
 use Socialtext::Account;
 use Socialtext::User;
 
@@ -41,6 +41,8 @@ instantiation: {
     is $homey->driver_id, 'abc123', '... ... containing driver_id';
     is $homey->driver_group_name, $TEST_DATA{driver_group_name},
         '... with driver_group_name';
+    is $homey->display_name, $TEST_DATA{driver_group_name},
+        '... with display_name alias';
     is $homey->creation_datetime->epoch, $TEST_DATA{creation_datetime}->epoch,
         '... with creation_datetime';
     is $homey->cached_at->epoch, $TEST_DATA{cached_at}->epoch,
