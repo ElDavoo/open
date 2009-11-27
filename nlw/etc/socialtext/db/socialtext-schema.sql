@@ -902,7 +902,7 @@ CREATE TABLE groups (
     created_by_user_id bigint NOT NULL,
     cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
     user_set_id integer DEFAULT nextval('user_set_id_seq'::regclass) NOT NULL,
-    description text
+    description text DEFAULT '' NOT NULL
 );
 
 CREATE SEQUENCE groups___group_id

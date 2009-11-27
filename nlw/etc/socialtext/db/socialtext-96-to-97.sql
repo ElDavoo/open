@@ -1,7 +1,7 @@
 BEGIN;
 
 ALTER TABLE groups
-    ADD COLUMN description TEXT;
+    ADD COLUMN description TEXT NOT NULL DEFAULT '';
 
 ALTER TABLE container_type
     ADD COLUMN footer_template TEXT;
