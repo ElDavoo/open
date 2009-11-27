@@ -722,7 +722,8 @@ CREATE TABLE container_type (
     columns integer DEFAULT 3,
     title text,
     purge_all_on_update boolean DEFAULT false,
-    plugin text DEFAULT 'widgets'
+    plugin text DEFAULT 'widgets',
+    footer_template text
 );
 
 CREATE SEQUENCE default_gadget_id
