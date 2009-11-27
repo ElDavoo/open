@@ -4,6 +4,7 @@ use Moose;
 use Carp qw/croak/;
 use Socialtext::User;
 use Socialtext::SQL qw/get_dbh/;
+use Socialtext::Timer qw/time_scope/;
 use namespace::clean -except => 'meta';
 
 has 'trace' => (is => 'rw', isa => 'Bool', default => undef);
@@ -183,6 +184,8 @@ sub has_role {
 sub _insert {
     my ($self, $dbh, $x, $y, $role_id) = @_;
 
+    my $t = time_scope('uset_insert');
+
     $dbh->do(q{
         INSERT INTO user_set_include
         (from_set_id,into_set_id,role_id) VALUES ($1,$2,$3)
@@ -305,6 +308,7 @@ sub _modify_wrapper {
     my $code = shift;
     my $self = shift;
 
+    my $t = time_scope('uset_update');
     my $dbh = get_dbh();
     local $dbh->{RaiseError} = 1;
     local $dbh->{TraceLevel} = ($self->trace) ? 3 : $dbh->{TraceLevel};
@@ -327,6 +331,7 @@ sub _query_wrapper {
     my $code = shift;
     my $self = shift;
 
+    my $t = time_scope('uset_query');
     confess "requires x and y parameters" unless (@_ >= 2);
 
     my $dbh = get_dbh();
