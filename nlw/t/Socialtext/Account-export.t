@@ -42,6 +42,7 @@ sub dump_group {
         created_by_username  => $group->creator->username,
         role_name            => ignore(),
         users                => ignore(),
+        description          => ignore(),
     };
     return $data;
 }
