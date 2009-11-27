@@ -62,8 +62,6 @@ use namespace::clean -except => 'meta';
 
 our $VERSION = '0.01';
 
-use constant ROLES => ('Socialtext::UserSetContainer');
-
 Readonly our @COLUMNS => (
     'workspace_id',
     'name',
@@ -118,6 +116,8 @@ my %COLUMNS = map { $_ => 1 } @COLUMNS;
 foreach my $column (@COLUMNS) {
     has $column => (is => 'rw', isa => 'Any');
 }
+
+with 'Socialtext::UserSetContainer';
 
 # for workspace exports:
 Readonly my $EXPORT_VERSION => 1;
@@ -1107,76 +1107,14 @@ sub ping_uris {
     }
 }
 
-sub plugins_enabled {
-    my ($self) = @_;
-    my $authz = Socialtext::Authz->new();
-    return keys %{$authz->plugins_enabled_for_workspace(workspace => $self)};
-}
-
-sub is_plugin_enabled {
-    my ($self, $plugin_name) = @_;
-    my $authz = Socialtext::Authz->new();
-    return $authz->plugin_enabled_for_workspace(
-        plugin_name => $plugin_name,
-        workspace => $self,
-    );
-}
-
-sub _check_plugin_scope {
-    my $self = shift;
-    my $plugin = shift;
-    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
-    die loc("The [_1] plugin can not be set at the workspace scope",
-        $plugin) . "\n"
-        unless $plugin_class->scope eq 'workspace';
-}
-
-
-sub enable_plugin {
-    my ($self, $plugin) = @_;
+# Wrap methods in UserSetContainer.
+# Note that we need to say that we're enabling plugins at the workspace scope.
+around 'enable_plugin','disable_plugin' => sub {
+    my $code = shift;
+    my ($self,$plugin) = @_;
     return unless $self->real;
-
-    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
-    $self->_check_plugin_scope($plugin);
-
-    return if $self->is_plugin_enabled($plugin);
-
-    Socialtext::Pluggable::Adapter->EnablePlugin($plugin => $self);
-
-    sql_execute(q{
-        INSERT INTO user_set_plugin VALUES (?,?)
-    }, $self->user_set_id, $plugin);
-
-    Socialtext::Cache->clear('authz_plugin');
-
-    for my $dep ($plugin_class->dependencies, $plugin_class->enables) {
-        $self->enable_plugin($dep);
-    }
-}
-
-sub disable_plugin {
-    my ($self, $plugin) = @_;
-    return unless $self->real;
-    $self->_check_plugin_scope($plugin);
-
-    # Don't even bother disabling deps if the plugin is already enabled
-    return unless $self->is_plugin_enabled($plugin);
-    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
-
-    Socialtext::Pluggable::Adapter->DisablePlugin($plugin => $self);
-
-    sql_execute(q{
-        DELETE FROM user_set_plugin
-        WHERE user_set_id = ? AND plugin = ?
-    }, $self->user_set_id, $plugin);
-
-    Socialtext::Cache->clear('authz_plugin');
-
-    # Disable any reverse depended packages
-    for my $rdep ($plugin_class->reverse_dependencies) {
-        $self->disable_plugin($rdep);
-    }
-}
+    return $self->$code($plugin, 'workspace');
+};
 
 sub comment_form_custom_fields {
     my $self = shift;
@@ -2132,7 +2070,6 @@ sub Default {
     }
 }
 
-with(ROLES);
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 package Socialtext::NoWorkspace;

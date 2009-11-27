@@ -55,9 +55,6 @@ has $_.'_count' => (
 ) for qw(user workspace account);
 
 with 'Socialtext::UserSetContainer';
-has '+user_set' => ( # from UserSetContainer
-    handles => [qw(has_plugin)],
-);
 
 ###############################################################################
 sub Drivers {
@@ -540,9 +537,8 @@ sub _build_workspace_count {
 }
 
 __PACKAGE__->meta->make_immutable;
-
 1;
-
+__END__
 =head1 NAME
 
 Socialtext::Group - Socialtext Group object

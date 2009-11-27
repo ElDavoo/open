@@ -1,6 +1,5 @@
 # @COPYRIGHT@
 package Socialtext::Authz;
-
 use strict;
 use warnings;
 
@@ -8,10 +7,11 @@ our $VERSION = '0.02';
 
 use Readonly;
 use Socialtext::Validate qw( validate USER_TYPE PERMISSION_TYPE WORKSPACE_TYPE );
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_singlevalue sql_execute/;
 use Socialtext::Cache;
 use Socialtext::User::Default::Users qw(:system-user);
+use List::MoreUtils qw/any/;
 
 # In the future this might be a factory but for now we'll just make it
 # nice and simple
@@ -42,31 +42,11 @@ sub plugin_enabled_for_user {
     my $self = shift;
     my %p = @_;
     my $user = delete $p{user};
-    my $plugin_name = delete $p{plugin_name};
     return 1 if ($user->username eq $SystemUsername);
-
-    my $user_id = $user->user_id;
-    my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "user:$user_id";
-    if (my $enabled_plugins = $cache->get($cache_key)) {
-        return $enabled_plugins->{$plugin_name} ? 1 : 0;
-    }
-
-    my $sql = <<SQL;
-        SELECT plugin
-        FROM user_set_plugin plug
-        JOIN user_set_path path ON (plug.user_set_id = path.into_set_id)
-        WHERE path.from_set_id = ?
-SQL
-
-    my $sth = sql_execute($sql, $user_id);
-    my $enabled_plugins = {};
-    while (my $row = $sth->fetchrow_arrayref) {
-        $enabled_plugins->{$row->[0]} = 1;
-    }
-
-    $cache->set($cache_key, $enabled_plugins);
-    return $enabled_plugins->{$plugin_name} ? 1 : 0;
+    return $self->plugin_enabled_for_user_set(
+        %p,
+        user_set => $user->user_set_id,
+    );
 }
 
 # is a plugin available in some common account between two users
@@ -143,8 +123,8 @@ sub plugin_enabled_for_user_in_account {
     my $sql = <<SQL;
         SELECT plugin
         FROM user_set_plugin plug
-        JOIN "Account" USING (user_set_id)
-        JOIN user_set_path path ON (path.into_set_id = plug.user_set_id)
+        JOIN "Account" a USING (user_set_id)
+        JOIN user_set_path path ON (path.into_set_id = a.user_set_id)
         WHERE path.from_set_id = ? AND account_id = ?
 SQL
 
@@ -158,83 +138,38 @@ SQL
     return $enabled_plugins->{$plugin_name} ? 1 : 0;
 }
 
-# Is a plugin enabled for a particular account
-sub plugins_enabled_for_account {
+sub plugins_enabled_for_user_set {
     my $self = shift;
     my %p = @_;
-    my $account = delete $p{account};
-    my $account_id = ref($account) ? $account->account_id : $account;
+    my $t = time_scope 'plugins_for_uset';
+    my $user_set = delete $p{user_set};
+    my $user_set_id = ref($user_set) ? $user_set->user_set_id : $user_set;
 
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "acct:$account_id\0plugins";
+    my $cache_key = "uset:$user_set_id\0plugins";
     my $plugins = $cache->get($cache_key);
     return @$plugins if defined $plugins;
 
-    Socialtext::Timer->Continue('plugins_enabled_for_account');
     my $sth = sql_execute('
-        SELECT plugin
-        FROM user_set_plugin
-        JOIN "Account" USING (user_set_id)
-        WHERE account_id = ?
-    ', $account_id);
+        SELECT DISTINCT plugin
+        FROM user_set_plugin_tc
+        WHERE user_set_id = ?
+    ', $user_set_id);
     $plugins = [ map { $_->[0] } @{$sth->fetchall_arrayref} ];
-    Socialtext::Timer->Pause('plugins_enabled_for_account');
 
     $cache->set($cache_key, $plugins);
-    return @$plugins;
+    return @$plugins; # return copy
 }
 
-sub plugin_enabled_for_account {
+sub plugin_enabled_for_user_set {
     my $self = shift;
     my %p = @_;
     my $plugin_name = delete $p{plugin_name};
-    my @plugins = $self->plugins_enabled_for_account(%p);
-    for my $plugin (@plugins) {
-        return 1 if $plugin_name eq $plugin;
-    }
-    return 0;
-}
-
-sub plugins_enabled_for_workspace {
-    my $self = shift;
-    my %p = @_;
-    my $ws = delete $p{workspace};
-
-    my $workspace_id = ref($ws) ? $ws->workspace_id : $ws;
-
-    my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "ws:$workspace_id";
-    if (my $enabled_plugins = $cache->get($cache_key)) {
-        return {%$enabled_plugins};
-    }
-
-    my $sql = <<SQL;
-        SELECT plugin
-        FROM user_set_plugin
-        JOIN "Workspace" USING (user_set_id)
-        WHERE workspace_id = ?
-SQL
-
-    my $sth = sql_execute($sql, $workspace_id);
-    my $enabled_plugins = {};
-    while (my $row = $sth->fetchrow_arrayref) {
-        $enabled_plugins->{$row->[0]} = 1;
-    }
-
-    $cache->set($cache_key, $enabled_plugins);
-    return {%$enabled_plugins};
-}
-
-sub plugin_enabled_for_workspace {
-    my $self = shift;
-    my %p = @_;
-    my $plugin_name = delete $p{plugin_name};
-    my $enabled_plugins = $self->plugins_enabled_for_workspace(%p);
-    return $enabled_plugins->{$plugin_name} ? 1 : 0;
+    my @plugins = $self->plugins_enabled_for_user_set(%p);
+    return any { $_ eq $plugin_name } @plugins;
 }
 
 1;
-
 __END__
 
 =head1 NAME
@@ -254,11 +189,10 @@ Socialtext::Authz - API for permissions checks
 
 =head1 DESCRIPTION
 
-This class provides an API for checking if a user has a specific
-permission in a workspace. While this can be checked by using the
-C<Socialtext::Workspace> class's API, the goal of this layer is to
-provide an abstraction that can be used to implement authorization
-outside of the DBMS, for example by using LDAP.
+This class provides an API for checking if a user has specific permissions.
+While this can be checked by using the various object's class's API, the goal
+of this layer is to provide an abstraction that can be used to implement
+authorization outside of the DBMS, for example by using LDAP.
 
 =head1 METHODS
 
@@ -301,34 +235,6 @@ Requires the following PARAMS:
 
 =back
 
-=head2 $authz->plugin_enabled_for_account(PARAMS)
-
-Returns a boolean indicating whether a plugin is enabled for an account.
-
-Requires the following PARAMS:
-
-=over 8
-
-=item * account - a account object or id
-
-=item * plugin_name - the name of the plugin to check
-
-=back
-
-=head2 $authz->plugin_enabled_for_workspace(PARAMS)
-
-Returns a boolean indicating whether a plugin is enabled for a workspace.
-
-Requires the following PARAMS:
-
-=over 8
-
-=item * workspace - a workspace object or id
-
-=item * plugin_name - the name of the plugin to check
-
-=back
-
 =head2 $authz->plugin_enabled_for_users(PARAMS)
 
 Returns a boolean indicating if a plugin can be used for some interaction between two users.  Currently, this is implemented as a check to see if both users share any accounts where the plugin is enabled.  In the future, this may be expanded out to use an access-control mechanism that may or may not use user-specified access assertions.
@@ -363,24 +269,12 @@ Requires the following PARAMS:
 
 =back
 
-=head2 $authz->plugins_enabled_for_account(PARAMS)
-
-Get the plugins enabled for a specific account.
-
-Requires the following PARAM:
-
-=over 8
-
-=item * account - a C<Socialtext::Account> object
-
-=back
-
 =head1 AUTHOR
 
 Socialtext, C<< <code@socialtext.com> >>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2006 Socialtext, Inc. All Rights Reserved.
+Copyright 2009 Socialtext, Inc. All Rights Reserved.
 
 =cut
