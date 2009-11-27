@@ -86,6 +86,7 @@ sub POST_json {
     }
 
     my $account_id = $data->{account_id}
+        || $self->rest->user->primary_account_id
         || Socialtext::Account->Default->account_id;
 
     my $account = Socialtext::Account->new(account_id => $account_id);
