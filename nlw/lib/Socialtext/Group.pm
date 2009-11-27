@@ -54,7 +54,12 @@ has $_.'_count' => (
     lazy_build => 1
 ) for qw(user workspace account);
 
-with 'Socialtext::UserSetContainer';
+with 'Socialtext::UserSetContainer' => {
+    excludes => [qw(enable_plugin disable_plugin)],
+};
+
+sub enable_plugin { die "cannot enable a plugin for a group" }
+sub disable_plugin { die "cannot disable a plugin for a group" }
 
 ###############################################################################
 sub Drivers {

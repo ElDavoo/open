@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 40;
+use Test::Socialtext tests => 42;
 use Test::Exception;
 use Socialtext::SQL qw/:exec/;
 
@@ -213,10 +213,17 @@ instantiate_factory_bogus_driver_key: {
 
 ###############################################################################
 # TEST: Group display_name is an alias for driver_group_name
-aliase_display_name: {
+alias_display_name: {
     my $group = create_test_group( unique_id => 'Pilsbury' );
     is $group->driver_group_name, 'Pilsbury', 'got driver_group_name';
     is $group->driver_group_name, $group->display_name,
         '... display_name is the same';
 }
 
+###############################################################################
+# TEST: Can't enable plugins for groups
+enable_disable_plugin: {
+    my $group = create_test_group( unique_id => 'Meh' );
+    throws_ok { $group->enable_plugin('test') } qr/cannot enable/;
+    throws_ok { $group->disable_plugin('test') } qr/cannot disable/;
+}
