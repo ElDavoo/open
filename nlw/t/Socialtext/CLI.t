@@ -603,11 +603,11 @@ ADD_REMOVE_WS_ADMIN: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->add_workspace_admin();
         },
-        qr/test\@example\.com is now a workspace admin of the foobar Workspace/,
+        qr/test\@example\.com is now an admin of the foobar Workspace/,
         'success output from add-admin'
     );
 
-    my $admin_role = Socialtext::Role->WorkspaceAdmin();
+    my $admin_role = Socialtext::Role->Admin();
     ok(
         $ws->user_has_role( user => $user, role => $admin_role ),
         'user was added to workspace'
@@ -621,8 +621,8 @@ ADD_REMOVE_WS_ADMIN: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->add_workspace_admin();
         },
-        qr/.+ is already a workspace admin of Workspace/,
-        'add-admin when user is already a workspace admin'
+        qr/.+ is already an admin of Workspace/,
+        'add-admin when user is already an admin'
     );
 
     expect_success(
@@ -631,7 +631,7 @@ ADD_REMOVE_WS_ADMIN: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->remove_workspace_admin();
         },
-        qr/test\@example\.com is no longer a workspace admin of the foobar workspace\./,
+        qr/test\@example\.com is no longer an admin of the foobar workspace\./,
         'success output from remove-admin'
     );
 
@@ -650,8 +650,8 @@ ADD_REMOVE_WS_ADMIN: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->remove_workspace_admin();
         },
-        qr/test\@example\.com is not a workspace admin of the foobar workspace\./,
-        'remove-admin when user is not a workspace admin'
+        qr/test\@example\.com is not an admin of the foobar workspace\./,
+        'remove-admin when user is not an admin'
     );
 }
 

@@ -18,7 +18,7 @@ fixtures(qw( db ));
 my $Guest     = Socialtext::Role->Guest();
 my $Affiliate = Socialtext::Role->Affiliate();
 my $Member    = Socialtext::Role->Member();
-my $Admin     = Socialtext::Role->WorkspaceAdmin();
+my $Admin     = Socialtext::Role->Admin();
 
 ###############################################################################
 # TEST: Get Role for User; when its his Primary Account

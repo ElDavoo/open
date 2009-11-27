@@ -522,7 +522,7 @@ sub _get_full_name {
 }
 
 # REVIEW - in the old code, this always returned the unmasked address
-# if the viewing user was a workspace admin
+# if the viewing user was an admin
 sub _masked_email_address {
     my $self = shift;
     my $workspace = shift;

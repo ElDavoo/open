@@ -22,7 +22,7 @@ version_0: {
     my $ws = $hub->current_workspace;
 
     ok ($ws->permissions->role_can(
-        role => Socialtext::Role->WorkspaceAdmin(),
+        role => Socialtext::Role->Admin(),
         permission => ST_LOCK_PERM ), 
     'admin has the lock permission on v0 import.');
 }
@@ -38,7 +38,7 @@ version1: {
     my $ws = $hub->current_workspace;
 
     ok ($ws->permissions->role_can(
-        role => Socialtext::Role->WorkspaceAdmin(),
+        role => Socialtext::Role->Admin(),
         permission => ST_LOCK_PERM ), 
     'admin has the lock permission on v1 import.');
 }

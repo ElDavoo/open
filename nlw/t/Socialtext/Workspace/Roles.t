@@ -78,7 +78,7 @@ users_by_workspace_id_multiple_group_roles: {
     my $group_one   = create_test_group();
     my $group_two   = create_test_group();
     my $role_member = Socialtext::Role->Member;
-    my $role_admin  = Socialtext::Role->WorkspaceAdmin;
+    my $role_admin  = Socialtext::Role->Admin;
 
     # User has multiple Roles in the WS via Group memberships
     $group_one->add_user(user => $user);
@@ -148,7 +148,7 @@ count_users_by_workspace_id_multiple_group_roles: {
 user_has_role: {
     my $system_user = Socialtext::User->SystemUser();
     my $workspace   = create_test_workspace(user => $system_user);
-    my $role_admin  = Socialtext::Role->WorkspaceAdmin();
+    my $role_admin  = Socialtext::Role->Admin();
     my $role_member = Socialtext::Role->Member();
     my $role_guest  = Socialtext::Role->Guest();
     my $rc;
@@ -212,7 +212,7 @@ user_has_role: {
 get_roles_for_user_in_workspace: {
     my $system_user = Socialtext::User->SystemUser();
     my $workspace   = create_test_workspace(user => $system_user);
-    my $role_admin  = Socialtext::Role->WorkspaceAdmin();
+    my $role_admin  = Socialtext::Role->Admin();
     my $role_member = Socialtext::Role->Member();
     my $role_guest  = Socialtext::Role->Guest();
 

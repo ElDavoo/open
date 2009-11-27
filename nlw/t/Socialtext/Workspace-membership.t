@@ -72,7 +72,7 @@ CHANGE_USER_ROLE:
         )
     );
 
-    my $role = Socialtext::Role->WorkspaceAdmin();
+    my $role = Socialtext::Role->Admin();
     $ws->assign_role_to_user( user => $user, role => $role );
 
     is( $ws->role_for_user( user => $user )->role_id(), $role->role_id(),
@@ -107,7 +107,7 @@ REMOVE_USER:
     ok( ! $ws->has_user( $user ), 'user is no longer a member of the workspace' );
 
     my $log_msg = 'REMOVE,USER_ROLE,'
-        . 'role:workspace_admin,'
+        . 'role:admin,'
         . 'user:'
         . $user->username . '('
         . $user->user_id . '),'

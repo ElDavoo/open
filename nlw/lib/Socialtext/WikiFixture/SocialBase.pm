@@ -731,7 +731,7 @@ sub add_workspace_admin {
 
     $ws->add_user(
         user => $user,
-        role => Socialtext::Role->WorkspaceAdmin(),
+        role => Socialtext::Role->Admin(),
     );
     diag "Added user $email to $workspace as admin";
 }

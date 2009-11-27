@@ -390,8 +390,8 @@ EMAIL_NOTIFICATION_FROM_ADDRESS:
     is( $user->workspace_count, 1, 'devnull1 is in one workspace' );
     is( $user->workspaces()->next()->workspace_id(), $ws->workspace_id(),
         'devnull1 is in the workspace that was just created' );
-    ok( $ws->user_has_role( user => $user, role => Socialtext::Role->WorkspaceAdmin() ),
-        'devnull1 is a workspace admin in the workspace that was just created' );
+    ok( $ws->user_has_role( user => $user, role => Socialtext::Role->Admin() ),
+        'devnull1 is a admin in the workspace that was just created' );
 }
 
 {

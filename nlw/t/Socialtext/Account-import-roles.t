@@ -23,7 +23,7 @@ fixtures(qw( db ));
 # Grab short-hand versions of the Roles we're going to use
 my $Affiliate      = Socialtext::Role->Affiliate();
 my $Member         = Socialtext::Role->Member();
-my $WorkspaceAdmin = Socialtext::Role->WorkspaceAdmin();
+my $WorkspaceAdmin = Socialtext::Role->Admin();
 
 ###############################################################################
 # Helper function to export, flush, and re-import an Account.

@@ -221,7 +221,7 @@ EOSQL
         unless ( $creator->is_system_created ) {
             $self->add_user(
                 user => $creator,
-                role => Socialtext::Role->WorkspaceAdmin(),
+                role => Socialtext::Role->Admin(),
             );
         }
 
@@ -2675,7 +2675,7 @@ Check whether spreadsheets are enabled or not.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out
 
 =back
 
@@ -2689,7 +2689,7 @@ Check whether spreadsheets are enabled or not.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out
 
 =back
 
@@ -2703,7 +2703,7 @@ Check whether spreadsheets are enabled or not.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out
 
 =back
 
@@ -2717,7 +2717,7 @@ Check whether spreadsheets are enabled or not.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out
 
 =back
 
@@ -2731,7 +2731,7 @@ Check whether spreadsheets are enabled or not.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out
 
 =back
 
@@ -2745,7 +2745,7 @@ Check whether spreadsheets are enabled or not.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out
 
 =back
 
@@ -2759,7 +2759,7 @@ Check whether spreadsheets are enabled or not.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out
 
 =back
 
@@ -2773,7 +2773,7 @@ Check whether spreadsheets are enabled or not.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out
 
 =back
 

@@ -19,7 +19,7 @@ sort_by_effectiveness: {
     my $auth_user    = Socialtext::Role->AuthenticatedUser();
     my $affiliate    = Socialtext::Role->Affiliate();
     my $member       = Socialtext::Role->Member();
-    my $admin        = Socialtext::Role->WorkspaceAdmin();
+    my $admin        = Socialtext::Role->Admin();
     my $impersonator = Socialtext::Role->Impersonator();
 
     # sort the Roles by their effective privileges

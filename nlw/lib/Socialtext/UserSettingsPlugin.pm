@@ -110,7 +110,7 @@ sub get_admins {
     while ( my $tuple = $users_with_roles->next ) {
         my $user = $tuple->[0];
         my $role = $tuple->[1];
-        if ( $role->name eq 'workspace_admin' ) {
+        if ( $role->name eq 'admin' ) {
             push( @admins, $user->email_address );
         }
     }
@@ -189,7 +189,7 @@ sub _update_users_in_workspace {
             # solution is to replace the is/is not admin check with
             # something like a pull down or radio group which allows
             # for assigning of different roles.
-            next if $role->name ne 'workspace_admin'
+            next if $role->name ne 'admin'
                 and $role->name ne 'member';
 
             next if $should_be_admin{ $user->user_id() }
@@ -210,7 +210,7 @@ sub _update_users_in_workspace {
             if ( $should_be_admin{ $user->user_id } ) {
                 $ws->assign_role_to_user(
                     user        => $user,
-                    role        => Socialtext::Role->WorkspaceAdmin(),
+                    role        => Socialtext::Role->Admin(),
                     is_selected => $is_selected,
                 );
             }

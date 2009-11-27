@@ -60,7 +60,7 @@ sub get_results {
         $row->{role_name} = $sorted_role_names[-1];
         $row->{roles} = \@sorted_role_names;
         $row->{is_workspace_admin} =
-            any { $_ eq 'workspace_admin' } @sorted_role_names;
+            any { $_ eq 'admin' } @sorted_role_names;
     }
 
     return $rows;

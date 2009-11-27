@@ -47,7 +47,7 @@ backup: {
 
     # Load some users into the workspace (direct & transitive)
     my $ws = create_test_workspace(account => $account);
-    $ws->add_group( group => $group_three, role => Socialtext::Role->WorkspaceAdmin() );
+    $ws->add_group( group => $group_three, role => Socialtext::Role->Admin() );
     $ws->add_user(user => $user_one);
     $ws->add_user(user => $user_three);
 
@@ -98,7 +98,7 @@ backup: {
         {
             driver_group_name    => $group_three->driver_group_name,
             created_by_username  => $def_user->username,
-            role_name            => 'workspace_admin',
+            role_name            => 'admin',
             primary_account_name => $group_three->primary_account->name,
             users                => [
                 {
@@ -310,7 +310,7 @@ restore_with_existing_group: {
 
     # change the Role for one of the Users (so we can verify that the import
     # doesn't over-write their membership)
-    $test_role_one = Socialtext::Role->WorkspaceAdmin();
+    $test_role_one = Socialtext::Role->Admin();
     $group->add_user(
         user => $test_user_one,
         role => $test_role_one,

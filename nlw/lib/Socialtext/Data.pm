@@ -135,8 +135,8 @@ application to function.
 =item * Role
 
 This table is just a list of valid role names. There are only four
-roles, "guest", "authenticated_user" "member", and
-"workspace_admin". The name column is a candidate key.
+roles, "guest", "authenticated_user" "member", and "admin".
+The name column is a candidate key.
 
 The first two roles are "default roles", which means that are used in
 absence of an explicit role assignment. They cannot be explicitly

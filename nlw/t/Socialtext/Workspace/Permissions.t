@@ -16,7 +16,7 @@ fixtures(qw( db ));
 # TEST: See if User has a specific Permission in a "member-only" Workspace
 user_has_perm_in_member_only_ws: {
     my $system_user = Socialtext::User->SystemUser();
-    my $role_admin  = Socialtext::Role->WorkspaceAdmin();
+    my $role_admin  = Socialtext::Role->Admin();
     my $role_member = Socialtext::Role->Member();
     my $workspace   = create_test_workspace(user => $system_user);
     $workspace->permissions->set(set_name => 'member-only');
@@ -91,7 +91,7 @@ user_has_perm_in_member_only_ws: {
 # TEST: See if User has a specific Permission in a "public" Workspace
 user_has_perm_in_public_ws: {
     my $system_user = Socialtext::User->SystemUser();
-    my $role_admin  = Socialtext::Role->WorkspaceAdmin();
+    my $role_admin  = Socialtext::Role->Admin();
     my $role_member = Socialtext::Role->Member();
     my $workspace   = create_test_workspace(user => $system_user);
     $workspace->permissions->set(set_name => 'public');

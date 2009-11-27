@@ -1046,8 +1046,8 @@ sub _check_workspace_role {
         # Do not allow the code to "downgrade" from admin to member,
         # the user has to use remove-workspace-admin for that.
         $self->_error(
-            loc("Group is already a workspace admin of Workspace")
-        ) if $p{cur_role}->name eq Socialtext::Role->WorkspaceAdmin()->name;
+            loc("Group is already a admin of Workspace")
+        ) if $p{cur_role}->name eq Socialtext::Role->Admin()->name;
     }
 }
 
@@ -1205,12 +1205,12 @@ sub add_workspace_admin {
     my %jump = (
         'user-workspace'  => sub {
             $self->_add_user_to_workspace_as(
-                Socialtext::Role->WorkspaceAdmin()
+                Socialtext::Role->Admin()
             )
         },
         'group-workspace' => sub {
             $self->_add_group_to_workspace_as(
-                Socialtext::Role->WorkspaceAdmin()
+                Socialtext::Role->Admin()
             )
         },
     );
@@ -1289,7 +1289,7 @@ sub _make_role_toggler {
 
 {
     no warnings 'once';
-    *remove_workspace_admin = _make_role_toggler( 'workspace_admin', 0 );
+    *remove_workspace_admin = _make_role_toggler( 'admin', 0 );
     *add_impersonator       = _make_role_toggler( 'impersonator',    1 );
     *remove_impersonator    = _make_role_toggler( 'impersonator',    0 );
 }
@@ -2153,7 +2153,7 @@ sub show_admins {
     my $entry;
     while ($entry = $user_cursor->next) {
         my ($user, $role) = @$entry;
-        next if ($role->name ne 'workspace_admin');
+        next if ($role->name ne 'admin');
         $msg .= '| ' . join(' | ', $user->email_address, $user->first_name, $user->last_name) . " |\n";
     }
 

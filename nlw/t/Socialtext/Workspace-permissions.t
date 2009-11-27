@@ -55,7 +55,7 @@ fixtures(qw( clean db ));
             "guest's email_in permission is unchanged after second call to set_permissions()" );
 
         %p = (
-            role       => Socialtext::Role->WorkspaceAdmin(),
+            role       => Socialtext::Role->Admin(),
             permission => ST_LOCK_PERM,
         );
         my $admin_has_lock = $ws->permissions->role_can(%p);

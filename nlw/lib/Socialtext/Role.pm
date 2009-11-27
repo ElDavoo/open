@@ -25,7 +25,7 @@ Readonly my @RequiredRoles => (
     [ authenticated_user => 1 ],
     [ affiliate          => 0 ],
     [ member             => 0 ],
-    [ workspace_admin    => 0 ],
+    [ admin              => 0 ],
     [ impersonator       => 0 ],
     [ member_workspace   => 0 ],
     [ member_group       => 0 ],
@@ -181,8 +181,8 @@ sub Member {
     shift->new( name => 'member' );
 }
 
-sub WorkspaceAdmin {
-    shift->new( name => 'workspace_admin' );
+sub Admin {
+    shift->new( name => 'admin' );
 }
 
 sub Impersonator {
@@ -359,7 +359,7 @@ Returns the role's name, but with underscores replaced by spaces.
 
 =item Socialtext::Role->Member()
 
-=item Socialtext::Role->WorkspaceAdmin()
+=item Socialtext::Role->Admin()
 
 =item Socialtext::Role->Impersonator()
 

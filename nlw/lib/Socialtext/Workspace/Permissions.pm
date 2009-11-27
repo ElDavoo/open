@@ -24,7 +24,7 @@ our %PermissionSets = (
         affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
-        workspace_admin    => [ qw( read edit attachments comment delete
+        admin              => [ qw( read edit attachments comment delete
                                     email_in email_out admin_workspace lock ) ],
     },
     'member-only' => {
@@ -33,7 +33,7 @@ our %PermissionSets = (
         affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
-        workspace_admin    => [ qw( read edit attachments comment delete
+        admin              => [ qw( read edit attachments comment delete
                                     email_in email_out admin_workspace lock ) ],
     },
     'authenticated-user-only' => {
@@ -43,7 +43,7 @@ our %PermissionSets = (
         affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
-        workspace_admin    => [ qw( read edit attachments comment delete
+        admin              => [ qw( read edit attachments comment delete
                                     email_in email_out admin_workspace lock ) ],
     },
     'public-read-only' => {
@@ -52,7 +52,7 @@ our %PermissionSets = (
         affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
-        workspace_admin    => [ qw( read edit attachments comment delete
+        admin              => [ qw( read edit attachments comment delete
                                     email_in email_out admin_workspace lock ) ],
     },
     'public-comment-only' => {
@@ -61,7 +61,7 @@ our %PermissionSets = (
         affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
-        workspace_admin    => [ qw( read edit attachments comment delete
+        admin              => [ qw( read edit attachments comment delete
                                     email_in email_out admin_workspace lock ) ],
     },
     'public-join-to-edit' => {
@@ -70,7 +70,7 @@ our %PermissionSets = (
         affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
-        workspace_admin    => [ qw( read edit attachments comment delete
+        admin              => [ qw( read edit attachments comment delete
                                     email_in email_out admin_workspace lock ) ],
     },
     'intranet' => {
@@ -81,7 +81,7 @@ our %PermissionSets = (
         affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ], 
-        workspace_admin    => [ qw( read edit attachments comment delete
+        admin              => [ qw( read edit attachments comment delete
                                     email_in email_out admin_workspace lock ) ],
     },
 );
@@ -94,7 +94,7 @@ our %DeprecatedPermissionSets = (
         affiliate          => [],
         member             => [ qw( read edit attachments comment delete
                                     email_in email_out ) ],
-        workspace_admin    => [ qw( read edit attachments comment delete
+        admin              => [ qw( read edit attachments comment delete
                                     email_in email_out admin_workspace lock ) ],
     },
 );
@@ -475,7 +475,7 @@ C<impersonate> to the C<impersonator> role.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out, lock
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out, lock
 
 =back
 
@@ -489,7 +489,7 @@ C<impersonate> to the C<impersonator> role.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out, lock
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out, lock
 
 =back
 
@@ -503,7 +503,7 @@ C<impersonate> to the C<impersonator> role.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out, lock
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out, lock
 
 =back
 
@@ -517,7 +517,7 @@ C<impersonate> to the C<impersonator> role.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out, lock
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out, lock
 
 =back
 
@@ -531,7 +531,7 @@ C<impersonate> to the C<impersonator> role.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out, lock
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out, lock
 
 =back
 
@@ -545,7 +545,7 @@ C<impersonate> to the C<impersonator> role.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out, lock
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out, lock
 
 =back
 
@@ -559,7 +559,7 @@ C<impersonate> to the C<impersonator> role.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out, lock
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out, lock
 
 =back
 
@@ -573,7 +573,7 @@ C<impersonate> to the C<impersonator> role.
 
 =item o member - read, edit, attachments, comment, delete, email_in, email_out
 
-=item o workspace_admin - read, edit, attachments, comment, delete, email_in, email_out, lock
+=item o admin - read, edit, attachments, comment, delete, email_in, email_out, lock
 
 =back
 

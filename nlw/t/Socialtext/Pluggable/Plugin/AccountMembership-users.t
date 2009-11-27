@@ -14,7 +14,7 @@ fixtures(qw( db ));
 # Short-hand names for the Roles we're going to use
 my $Affiliate = Socialtext::Role->Affiliate();
 my $Member    = Socialtext::Role->Member();
-my $Admin     = Socialtext::Role->WorkspaceAdmin();
+my $Admin     = Socialtext::Role->Admin();
 
 ###############################################################################
 # TEST: User has an "Member" Role in their Primary Account.

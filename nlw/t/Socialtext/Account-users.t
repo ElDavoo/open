@@ -94,7 +94,7 @@ add_user_to_account: {
 add_user_to_account_explicit_role: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user();
-    my $role    = Socialtext::Role->WorkspaceAdmin();
+    my $role    = Socialtext::Role->Admin();
 
     my $uar = $account->add_user(user => $user, role => $role);
 
@@ -131,7 +131,7 @@ role_for_user_primary_account: {
 role_for_user_explicit_role: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user();
-    my $role    = Socialtext::Role->WorkspaceAdmin();
+    my $role    = Socialtext::Role->Admin();
 
     $account->add_user(user => $user, role => $role);
 
@@ -146,7 +146,7 @@ role_for_user_indirect_via_workspace: {
     my $workspace = create_test_workspace(account => $account);
     my $user      = create_test_user();
     my $Affiliate = Socialtext::Role->Affiliate();
-    my $Admin     = Socialtext::Role->WorkspaceAdmin();
+    my $Admin     = Socialtext::Role->Admin();
 
     $workspace->add_user(user => $user, role => $Admin);
 
@@ -162,7 +162,7 @@ role_for_user_indirect_via_group: {
     my $group     = create_test_group(account => $account);
     my $user      = create_test_user();
     my $Member    = Socialtext::Role->Member();
-    my $Admin     = Socialtext::Role->WorkspaceAdmin();
+    my $Admin     = Socialtext::Role->Admin();
 
     $group->add_user(user => $user, role => $Admin);
 
@@ -179,7 +179,7 @@ role_for_user_indirect_via_group_in_workspace: {
     my $group     = create_test_group();
     my $user      = create_test_user();
     my $Affiliate = Socialtext::Role->Affiliate();
-    my $Admin     = Socialtext::Role->WorkspaceAdmin();
+    my $Admin     = Socialtext::Role->Admin();
 
     $workspace->add_group(group => $group, role => $Admin);
     $group->add_user(user => $user, role => $Admin);

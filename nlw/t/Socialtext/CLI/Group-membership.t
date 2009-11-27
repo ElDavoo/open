@@ -669,7 +669,7 @@ group_is_already_member_of_workspace: {
 group_is_already_admin_of_workspace: {
     my $workspace = create_test_workspace();
     my $group     = create_test_group();
-    my $admin     = Socialtext::Role->WorkspaceAdmin();
+    my $admin     = Socialtext::Role->Admin();
 
     $workspace->add_group( group => $group, role => $admin );
     my $role = $workspace->role_for_group( group => $group );
@@ -688,7 +688,7 @@ group_is_already_admin_of_workspace: {
             )->add_member();
         };
     } );
-    like $output, qr/Group is already a workspace admin of Workspace/,
+    like $output, qr/Group is already an admin of Workspace/,
         'Group already has role error message';
 }
 
@@ -712,11 +712,11 @@ add_group_as_admin_to_workspace: {
             )->add_workspace_admin();
         };
     } );
-    like $output, qr/.+ is now a workspace admin of the .+ Workspace/,
+    like $output, qr/.+ is now an admin of the .+ Workspace/,
         'Group added as admin message';
     my $role = $workspace->role_for_group( group => $group );
     ok $role, 'Group has Role in Workspace';
-    is $role->name, Socialtext::Role->WorkspaceAdmin()->name,
+    is $role->name, Socialtext::Role->Admin()->name,
         '... Role is member';
 
     $role = $account->role_for_group( group => $group );
@@ -748,11 +748,11 @@ add_group_as_admin_to_workspace: {
             )->add_workspace_admin();
         };
     } );
-    like $output, qr/.+ is now a workspace admin of the .+ Workspace/,
+    like $output, qr/.+ is now an admin of the .+ Workspace/,
         'Group added as admin message';
     $role = $workspace->role_for_group( group => $group );
     ok $role, 'Group has Role in Workspace';
-    is $role->name, Socialtext::Role->WorkspaceAdmin()->name,
+    is $role->name, Socialtext::Role->Admin()->name,
         '... Role is admin';
 }
 
@@ -837,7 +837,7 @@ group_member_remains_admin_in_workspace: {
     my $group     = create_test_group();
     my $user      = create_test_user();
     my $email     = $user->email_address;
-    my $admin     = Socialtext::Role->WorkspaceAdmin();
+    my $admin     = Socialtext::Role->Admin();
 
 
 
@@ -856,7 +856,7 @@ group_member_remains_admin_in_workspace: {
         };
     } );
 
-    like $output, qr/.+ is now a workspace admin of the .+ Workspace due to membership in a group/, 
+    like $output, qr/.+ is now an admin of the .+ Workspace due to membership in a group/, 
         '... with correct message';
 
     my $role = $workspace->role_for_user( user => $user);

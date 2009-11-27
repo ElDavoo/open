@@ -356,7 +356,7 @@ sub _set_permissions {
 
         unless ( exists $meta->{has_lock} && $meta->{has_lock} ) {
             sql_execute( $sql, $self->{workspace}->workspace_id,
-                Socialtext::Role->new(name => 'workspace_admin')->role_id,
+                Socialtext::Role->new(name => 'admin')->role_id,
                 Socialtext::Permission->new(name => 'lock')->permission_id,
             );
         }

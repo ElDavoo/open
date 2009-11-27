@@ -406,7 +406,7 @@ sub _generate_workspaces {
         );
         $ws->add_user(
             user => $user_q,
-            role => Socialtext::Role->WorkspaceAdmin(),
+            role => Socialtext::Role->Admin(),
         );
 
         my $perms = $PermsForName{ $ws->name } || 'member-only';
@@ -448,7 +448,7 @@ sub _activate_impersonate_permission {
 
     $workspace->permissions->add(
         permission => Socialtext::Permission->new( name => 'impersonate' ),
-        role => Socialtext::Role->WorkspaceAdmin(),
+        role => Socialtext::Role->Admin(),
     );
 }
 
@@ -470,7 +470,7 @@ sub _generate_help_workspace {
     );
     $ws ->add_user(
         user => $user,
-        role => Socialtext::Role->WorkspaceAdmin(),
+        role => Socialtext::Role->Admin(),
     );
 }
 sub _unlink_existing_pages {
