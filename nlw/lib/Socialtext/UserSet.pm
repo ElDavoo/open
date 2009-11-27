@@ -143,6 +143,7 @@ Asks "is $x connected to $y through at least one path?"
 
 around 'connected' => \&_query_wrapper;
 sub connected {
+    confess "requires x and y parameters" unless (@_ >= 4);
     my ($self, $dbh, $x, $y) = @_;
     my ($connected) = $dbh->selectrow_array(q{
         SELECT 1
@@ -161,6 +162,7 @@ Asks "is $x connected to $y where the effective role_id is $role_id?"
 
 around 'has_role' => \&_query_wrapper;
 sub has_role {
+    confess "requires x and y parameters" unless (@_ >= 4);
     my ($self, $dbh, $x, $y, $role_id) = @_;
     confess "role_id is required" unless $role_id;
     if ($role_id =~ /\D/) {
@@ -184,6 +186,10 @@ Asks "does $n have OR is $n included in a set that has $plugin enabled?"
 around 'has_plugin' => \&_query_wrapper;
 sub has_plugin {
     my ($self, $dbh, $n, $plugin) = @_;
+    if (@_ == 3) {
+        $plugin = $n;
+        $n = $self->owner_id;
+    }
     confess "plugin is required" unless $plugin;
     my ($has_plugin) = $dbh->selectrow_array(q{
         SELECT 1
@@ -351,7 +357,6 @@ sub _query_wrapper {
     my $self = shift;
 
     my $t = time_scope('uset_query');
-    confess "requires x and y parameters" unless (@_ >= 2);
 
     my $dbh = get_dbh();
     local $dbh->{RaiseError} = 1;

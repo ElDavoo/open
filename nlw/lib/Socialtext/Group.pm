@@ -48,11 +48,6 @@ has 'homunculus' => (
     )],
 );
 
-has 'user_set' => (
-    is => 'ro', isa => 'Socialtext::UserSet',
-    lazy_build => 1,
-);
-
 # Use a naming convention similar to ST::USer for "what's this thing's name?"
 sub display_name { $_[0]->driver_group_name; }
 
@@ -61,14 +56,10 @@ has $_.'_count' => (
     lazy_build => 1
 ) for qw(user workspace account);
 
-sub _build_user_set {
-    my $self = shift;
-    return Socialtext::UserSet->new(
-        dbh => get_dbh(),
-        owner => $self,
-        owner_id => $self->user_set_id,
-    );
-}
+with 'Socialtext::UserSetContainer';
+has '+user_set' => ( # from UserSetContainer
+    handles => [qw(has_plugin)],
+);
 
 ###############################################################################
 sub Drivers {

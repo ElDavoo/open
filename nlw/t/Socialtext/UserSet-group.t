@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 9;
+use Test::Socialtext tests => 12;
 use Test::Exception;
 use Socialtext::SQL qw/get_dbh/;
 BEGIN {
@@ -16,17 +16,29 @@ fixtures(qw(db));
 
 my $member = Socialtext::Role->new(name => 'member')->role_id;
 
+my $acct = create_test_account_bypassing_factory();
 my $usr = create_test_user();
-my $grp = create_test_group();
+my $grp = create_test_group(account => $acct);
 ok $grp, "got a group";
 ok $grp->user_set_id, "has a user_set_id";
 
-my $dbh = get_dbh();
-my $uset = Socialtext::UserSet->new(dbh => $dbh);
-lives_ok { $uset->add_role($usr->user_id => $grp->user_set_id, $member); } "added role";
+plugin: {
+    my $uset = $grp->user_set;
+    ok $uset->connected($grp->user_set_id, $acct->user_set_id),
+        'group has some role in the account';
+    $acct->enable_plugin('test');
+    ok $grp->has_plugin('test'), 'has plugin enabled thru account';
+    $grp->primary_account->disable_plugin('test');
+    ok !$grp->has_plugin('test'), 'has plugin disabled thru account';
+}
 
-ok $uset->connected($usr->user_id => $grp->user_set_id), "user is a member";
+user_in_group: {
+    my $uset = Socialtext::UserSet->new();
+    lives_ok { $uset->add_role($usr->user_id => $grp->user_set_id, $member); } "added role";
 
-ok $dbh->do(q{DELETE FROM groups WHERE group_id = ?},{},$grp->group_id), "cause trigger to fire";
+    ok $uset->connected($usr->user_id => $grp->user_set_id), "user is a member";
 
-ok !$uset->connected($usr->user_id => $grp->user_set_id), "user no longer a member";
+    ok get_dbh()->do(q{DELETE FROM groups WHERE group_id = ?},{},$grp->group_id), "cause trigger to fire";
+
+    ok !$uset->connected($usr->user_id => $grp->user_set_id), "user no longer a member";
+}
