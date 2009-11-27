@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 27;
+use Test::Socialtext tests => 31;
 use Socialtext::Account;
 use Sys::Hostname;
 use Cwd;
@@ -75,14 +75,14 @@ account_plugins: {
         call_cli_argv(enable_plugin => 
             qw(--all-accounts --plugin dashboard)
         ),
-        qr/The test plugin is now enabled for all accounts/,
+        qr/The dashboard plugin is now enabled for all accounts/,
         'enable plugin for all account',
     );
     expect_success(
         call_cli_argv(disable_plugin => 
             qw(--all-accounts --plugin dashboard)
         ),
-        qr/The test plugin is now disabled for all accounts/,
+        qr/The dashboard plugin is now disabled for all accounts/,
         'disable plugin for all account',
     );
 }
