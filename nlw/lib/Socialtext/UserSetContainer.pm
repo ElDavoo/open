@@ -1,7 +1,7 @@
 package Socialtext::UserSetContainer;
 use Moose::Role;
 use Socialtext::UserSet;
-use namespace::autoclean -except => 'meta';
+use namespace::clean -except => 'meta';
 
 requires 'user_set_id';
 
