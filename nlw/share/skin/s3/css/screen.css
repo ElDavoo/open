@@ -4414,3 +4414,8 @@ table.st-ss th span {
     font-size: 10pt;
     padding: 1px 5px;
 }
+
+body#dashBoard #st-editing-tools-edit span.help {
+    font-size: 100%;
+    top: -9px;
+}
