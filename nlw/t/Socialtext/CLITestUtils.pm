@@ -68,6 +68,8 @@ sub is_last_exit {
     is( $LastExitVal, $error_code, "exited with exit code $error_code" );
 }
 
+=over 4
+
 =item call_cli_argv
 
 Returns a subref that will call the passed-in cli method (first arg) with
