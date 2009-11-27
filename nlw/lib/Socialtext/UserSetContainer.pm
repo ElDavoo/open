@@ -1,4 +1,5 @@
 package Socialtext::UserSetContainer;
+# @COPYRIGHT@
 use Moose::Role;
 use Socialtext::UserSet;
 use namespace::clean -except => 'meta';
