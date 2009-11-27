@@ -156,6 +156,63 @@ DROP TABLE account_plugin;
 DROP TABLE workspace_plugin_pref;
 DROP TABLE workspace_plugin;
 
+-- Add some convenience views
+
+-- e.g. WHERE viewer_id = ? AND other_id = ? AND plugin = 'people'
+CREATE VIEW users_share_plugin AS
+    SELECT v_path.from_set_id AS viewer_id, o_path.from_set_id AS other_id, into_set_id AS user_set_id, plugin
+    FROM user_set_path v_path
+    JOIN user_set_plugin plug ON (v_path.into_set_id = plug.user_set_id)
+    JOIN user_set_path o_path USING (into_set_id);
+
+-- e.g. WHERE viewer_id = ? AND plugin = 'people'
+CREATE VIEW user_use_plugin AS
+    SELECT from_set_id AS user_id, into_set_id AS user_set_id, plugin
+    FROM user_set_path
+    JOIN user_set_plugin ON (into_set_id = user_set_id);
+
+-- the "strict" flavour of these views check that the "from" set_id is
+-- actually a user
+
+CREATE VIEW user_sets_for_user AS
+    SELECT from_set_id AS user_id, into_set_id AS user_set_id
+    FROM user_set_path;
+
+CREATE VIEW user_sets_for_user_strict AS
+    SELECT from_set_id AS user_id, into_set_id AS user_set_id
+    FROM user_set_path
+    WHERE EXISTS (SELECT 1 FROM users WHERE users.user_id = from_set_id);
+
+CREATE VIEW accounts_for_user AS
+    SELECT *
+    FROM user_sets_for_user
+    JOIN "Account" USING (user_set_id);
+
+CREATE VIEW accounts_for_user_strict AS
+    SELECT *
+    FROM user_sets_for_user_strict
+    JOIN "Account" USING (user_set_id);
+
+CREATE VIEW groups_for_user AS
+    SELECT *
+    FROM user_sets_for_user
+    JOIN groups USING (user_set_id);
+
+CREATE VIEW groups_for_user_strict AS
+    SELECT *
+    FROM user_sets_for_user_strict
+    JOIN groups USING (user_set_id);
+
+CREATE VIEW workspaces_for_user AS
+    SELECT *
+    FROM user_sets_for_user
+    JOIN "Workspace" USING (user_set_id);
+
+CREATE VIEW workspaces_for_user_strict AS
+    SELECT *
+    FROM user_sets_for_user_strict
+    JOIN "Workspace" USING (user_set_id);
+
 UPDATE "System"
    SET value = '95'
  WHERE field = 'socialtext-schema-version';
