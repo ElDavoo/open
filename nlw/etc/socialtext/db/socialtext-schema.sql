@@ -1141,6 +1141,14 @@ CREATE TABLE user_set_plugin_pref (
     value text NOT NULL
 );
 
+CREATE VIEW user_set_plugin_tc AS
+  SELECT user_set_plugin.user_set_id, user_set_plugin.plugin
+   FROM user_set_plugin
+UNION ALL 
+ SELECT path.from_set_id AS user_set_id, plug.plugin
+   FROM user_set_path path
+   JOIN user_set_plugin plug ON path.into_set_id = plug.user_set_id;
+
 CREATE VIEW user_use_plugin AS
   SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_plugin.plugin
    FROM user_set_path

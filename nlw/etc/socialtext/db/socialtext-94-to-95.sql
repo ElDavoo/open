@@ -213,6 +213,16 @@ CREATE VIEW workspaces_for_user_strict AS
     FROM user_sets_for_user_strict
     JOIN "Workspace" USING (user_set_id);
 
+-- either this thing, or something this thing is connected to has this plugin
+-- usage:
+-- SELECT 1 FROM user_set_plugin_tc WHERE user_set_id = ? AND plugin = ? LIMIT 1
+CREATE VIEW user_set_plugin_tc AS
+    SELECT user_set_id, plugin FROM user_set_plugin
+    UNION ALL
+    SELECT from_set_id AS user_set_id, plugin
+    FROM user_set_path path
+    JOIN user_set_plugin plug ON (path.into_set_id = plug.user_set_id);
+
 UPDATE "System"
    SET value = '95'
  WHERE field = 'socialtext-schema-version';
