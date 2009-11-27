@@ -5,11 +5,12 @@ use warnings;
 
 use Time::HiRes qw( time );
 use Carp qw/croak/;
+use Guard ();
 
 use base qw/Exporter/;
 our $VERSION = 1.0;
 our @EXPORT = ();
-our @EXPORT_OK = qw(&time_this);
+our @EXPORT_OK = qw(&time_this &time_scope);
 
 our $Timings = {};
 
@@ -44,7 +45,6 @@ sub Pause {
     if (ref($Timings->{$timed}->{timer}) 
         && $Timings->{$timed}->{counter} <= 1) {
         $Timings->{$timed}->{counter}--;
-        #$Timings->{$timed}->{counter}--;
         $class->Stop($timed);
     }
 }
@@ -93,6 +93,12 @@ sub time_this(&$) {
     eval { $_[0]->() };
     __PACKAGE__->Pause($_[1]);
     croak $@ if $@;
+}
+
+sub time_scope($) {
+    my $name = shift;
+    __PACKAGE__->Continue($name);
+    return Guard::guard { __PACKAGE__->Pause($name) };
 }
 
 1;

@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 15;
+use Test::More tests => 19;
 use Test::Exception;
 use mocked 'Time::HiRes';
 
@@ -101,6 +101,25 @@ Time_this: {
     is $timings->{overall}, '5.000',
         "overall time equals 5 - $timings->{overall}";
     is $timings->{rock}, '2.000', "rock timings - $timings->{rock}";
+}
+
+Time_scope: {
+    Socialtext::Timer->Reset();
+
+    lives_ok {
+        my $t = Socialtext::Timer::time_scope('kick_it');
+        return 1;
+    } 'normal return';
+
+    dies_ok {
+        my $t = Socialtext::Timer::time_scope('kick_it');
+        die "ZOMG";
+    } 'exception';
+
+    my $timings = Socialtext::Timer->Report();
+    is $timings->{overall}, '5.000',
+        "overall time equals 5 - $timings->{overall}";
+    is $timings->{kick_it}, '2.000', "kick_it timings - $timings->{kick_it}";
 }
 
 exit;
