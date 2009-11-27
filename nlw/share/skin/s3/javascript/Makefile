@@ -35,6 +35,9 @@ ALL_JEMPLATE_PLUGINS:=$(shell find JemplatePlugin -name \*.js)
 JEMPLATES=$(wildcard template/*.tt2)
 JEMPLATES_COMPILED=Jemplates.js
 
+API_FILE=$(COMMON_JAVASCRIPT)/Socialtext/socialtext-api.js
+API_FILES=$(wildcard $(COMMON_JAVASCRIPT)/Socialtext/*)
+
 S3_SOURCE_FILES= \
 		timestamp.js \
 		info.js \
@@ -59,6 +62,7 @@ S3_SOURCE_FILES= \
 		nav-list.js \
 		s3.js \
 		people-avatar.js \
+		$(API_FILE) \
 
 LIGHTBOX_TEMPLATES=$(wildcard lightbox/*.tt2)
 LIGHTBOX_OUTPUT=$(LIGHTBOX_TEMPLATES:lightbox/%.tt2=lightbox-%.js)
@@ -93,6 +97,7 @@ clean:
 	    $(EDITOR_LIGHT_FILE_GZIP) \
 	    build-semaphore \
 	    Selection.htc \
+	    $(API_FILE) \
 
 .SUFFIXES: .js -mini.js .js.gz
 
@@ -108,6 +113,9 @@ Jemplate.js:
 $(PLUGIN_LIGHTBOXES):
 	# Do nothing. But this avoids us messing up plugin lightboxes in the
 	# folowing section
+		
+$(API_FILE): $(API_FILES)
+	cd $(COMMON_JAVASCRIPT)/Socialtext && make
 
 lightbox-%.js: st-lightbox.js lightbox/%.tt2 lightbox/%.js
 	jemplate --compile $(@:lightbox-%.js=lightbox/%.tt2) > $@; \

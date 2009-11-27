@@ -27,6 +27,7 @@ $.extend(Socialtext.Group.prototype, {
         if (this.ldap_dn) data.ldap_dn = this.ldap_dn;
         if (this.name) data.name = this.name;
         if (this.account_id) data.account_id = this.account_id;
+        if (this.description) data.description = this.description;
 
         $.ajax({
             url: '/data/groups',
