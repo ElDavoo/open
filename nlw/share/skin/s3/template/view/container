@@ -49,6 +49,11 @@
             </ul>
         [% END %]
     </div><!-- columnColumns END -->
+
+    [% IF container.footer_template %]
+        [% INCLUDE $container.footer_template %]
+    [% END %]
+
     <div class="clear"></div><!-- clear END -->
 </div><!-- contentContainer END -->
 
