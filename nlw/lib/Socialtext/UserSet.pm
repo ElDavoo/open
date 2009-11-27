@@ -175,6 +175,25 @@ sub has_role {
     return $has_role ? 1 : undef;
 }
 
+=item has_plugin ($n,$plugin)
+
+Asks "does $n have OR is $n included in a set that has $plugin enabled?"
+
+=cut
+
+around 'has_plugin' => \&_query_wrapper;
+sub has_plugin {
+    my ($self, $dbh, $n, $plugin) = @_;
+    confess "plugin is required" unless $plugin;
+    my ($has_plugin) = $dbh->selectrow_array(q{
+        SELECT 1
+        FROM user_set_plugin_tc
+        WHERE user_set_id = $1 AND plugin = $2
+        LIMIT 1
+    }, {}, $n, $plugin);
+    return $has_plugin ? 1 : undef;
+}
+
 =back
 
 =cut

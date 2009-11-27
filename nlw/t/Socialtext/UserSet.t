@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 102;
+use Test::Socialtext tests => 109;
 use Test::Differences;
 use Test::Exception;
 use List::Util qw/shuffle/;
@@ -40,6 +40,10 @@ sub connected {
 
 sub has_role {
     $uset->has_role(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_) ? 1 : 0;
+}
+
+sub has_plugin {
+    $uset->has_plugin(shift(@_) + $OFFSET, @_) ? 1 : 0;
 }
 
 reset_graph();
@@ -489,6 +493,22 @@ remove_set: {
         [1,2 => 1,2],
         [5,4 => 5,4],
     );
+}
+
+has_plugin: {
+    reset_graph();
+    insert(1,2);
+    insert(2,3);
+    $dbh->do(qq{INSERT INTO user_set_plugin VALUES (3+$OFFSET, 'testin')});
+    ok has_plugin(1,'testin'), "transitive connection to plugin";
+    ok has_plugin(2,'testin'), "transitive connection to plugin";
+    ok has_plugin(3,'testin'), "transitive connection to plugin";
+    del_set(2);
+    ok !has_plugin(1,'testin'), "transitive connection to plugin removed";
+    ok !has_plugin(2,'testin'), "transitive connection to plugin removed";
+    ok has_plugin(3,'testin'), "directly connected to plugin still";
+    $dbh->do(qq{DELETE FROM user_set_plugin WHERE user_set_id = 3+$OFFSET});
+    ok !has_plugin(3,'testin'), "plugin turned off";
 }
 
 reset_graph();
