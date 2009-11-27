@@ -71,7 +71,7 @@ sub POST_json {
         return "Bad JSON: $@";
     }
 
-    unless ($self->user_can('is_business_admin')) {
+    unless ($self->rest->user->is_authenticated) {
         $rest->header(
             -status => HTTP_401_Unauthorized,
         );

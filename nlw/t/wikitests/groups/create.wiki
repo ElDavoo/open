@@ -29,16 +29,21 @@ Tests to create groups via REST and CLI.
 
 * Create a group via REST
 
-| set                | g4           | g4-%%start_time%%                                                       |
-| POST_json          | /data/groups | {"account_id":"%%account_id%%","name":"%%g4%%"}                         |
-| code-is            | 401          |                                                                         |
-| set-business-admin | %%username%% | 1                                                                       |
+# Should get 401 as the guest user
+| http-user-pass |              |                                                 |
+| set            | g4           | g4-%%start_time%%                               |
+| POST_json      | /data/groups | {"account_id":"%%account_id%%","name":"%%g4%%"} |
+| code-is        | 401          |                                                 |
+
+# All other users should be able to create groups
+| http-user-pass     | %%username%% | %%password%%                                                            |
+| set-business-admin | %%username%% | 0                                                                       |
 | POST_json          | /data/groups | {"account_id":"%%account_id%%","name":"%%g4%%"}                         |
 | code-is            | 201          |                                                                         |
 | st-admin           | list-groups  | qr/%%g4%% .\s+0 .\s+0 .\s+%%account%% . [\d-]+ .\s+user-%%start_time%%/ |
 | POST_json          | /data/groups | {"account_id":"%%account_id%%","name":"%%g4%%"}                         |
 | code-is            | 409          |                                                                         |
-| POST_json          | /data/groups | {"account_id"                         |
+| POST_json          | /data/groups | {"account_id"                                                           |
 | code-is            | 400          |                                                                         |
 
 * Create a group via REST with a description
