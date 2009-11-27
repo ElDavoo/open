@@ -2010,9 +2010,12 @@ sub show_acls {
 
     # We want the Roles in a specific order; lowest-highest effectiveness,
     # with custom Roles appearing afterwards in alphabetical order.
-    my %all_roles = map { $_->name() => $_ } Socialtext::Role->All()->all();
+    my %all_roles = map { $_->name() => $_ } 
+        grep { Socialtext::Workspace::Permissions->IsValidRole($_) }
+        Socialtext::Role->All()->all();
     my @roles = map { delete $all_roles{$_} }
-        Socialtext::Role->DefaultRoleNames();
+        grep { exists $all_roles{$_} }
+        Socialtext::Role->DefaultRoleNames;
     push @roles, sort { $a->name() cmp $b->name() } values %all_roles;
 
     for my $role (@roles) {

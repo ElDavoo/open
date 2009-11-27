@@ -17,6 +17,10 @@ use Socialtext::l10n qw(loc system_locale);
 use Socialtext::Exceptions qw( rethrow_exception );
 use Socialtext::Role;
 
+our %AllowableRoles = map { $_ => 1 }
+    qw/guest authenticated_user affiliate member workspace_admin impersonator/;
+
+
 our %PermissionSets = (
     'public' => {
         guest              => [ qw( read edit comment ) ],
@@ -106,6 +110,11 @@ my @PermissionSetsLocalize = (loc('public'), loc('member-only'), loc('authentica
 $_->{impersonator} = [ 'impersonate', @{ $_->{member} } ]
     for (values %PermissionSets, values %DeprecatedPermissionSets);
 
+sub IsValidRole {
+    my $class = shift;
+    my $role  = shift;
+    return $AllowableRoles{ $role->name };
+}
 
 sub new {
     my $class = shift;
@@ -227,6 +236,7 @@ EOSQL
         # permissions (see authenticated-user-only).
         my $roles = Socialtext::Role->All();
         while ( my $role = $roles->next() ) {
+            next unless $AllowableRoles{$role->name};
             $set{ $role->name() } ||= [];
         }
 
@@ -251,7 +261,7 @@ EOSQL
         my @parts;
         # This particular string dumps nicely, the newlines are not
         # special or anything.
-        for my $role ( sort keys %{$set} ) {
+        for my $role ( sort keys %$set ) {
             my $string = "$role: ";
             # We explicitly ignore the email_in permission as applied
             # to guests when determining the set string so that it
