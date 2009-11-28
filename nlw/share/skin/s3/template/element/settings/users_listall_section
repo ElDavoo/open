@@ -35,7 +35,7 @@
       </td>
       <td>
       [% UNLESS user.is_deleted %]
-        <input type="checkbox" value="[% user.user_id %]" name="should_be_admin"[% IF role.name == 'workspace_admin' %] checked="checked"[% END %][% UNLESS hub.checker.check_permission('admin_workspace') %] disabled="disabled"[% END %] />
+        <input type="checkbox" value="[% user.user_id %]" name="should_be_admin"[% IF role.name == 'admin' %] checked="checked"[% END %][% UNLESS hub.checker.check_permission('admin_workspace') %] disabled="disabled"[% END %] />
       [% END %]
       </td>
     [% IF hub.checker.check_permission('admin_workspace') &&
