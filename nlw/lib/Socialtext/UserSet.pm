@@ -69,9 +69,8 @@ sub add_role {
         if Socialtext::User->new(user_id => $y);
 
     $role_id ||= 'member';
-    if ($role_id =~ /\D/) {
-        $role_id = Socialtext::Role->new(name => $role_id)->role_id;
-    }
+    _resolve_role(\$role_id);
+
     $self->_insert($dbh, $x, $y, $role_id);
 }
 
@@ -162,19 +161,36 @@ Asks "is $x connected to $y where the effective role_id is $role_id?"
 
 around 'has_role' => \&_query_wrapper;
 sub has_role {
-    confess "requires x and y parameters" unless (@_ >= 4);
-    my ($self, $dbh, $x, $y, $role_id) = @_;
+    my $self = shift;
+    return $self->_has_role('user_set_include_tc',@_);
+}
+
+=item has_direct_role ($x,$y,$role_id)
+
+Asks "is $x connected to $y where the immediate/direct role_id is $role_id?"
+
+=cut
+
+around 'has_direct_role' => \&_query_wrapper;
+sub has_direct_role {
+    my $self = shift;
+    return $self->_has_role('user_set_include',@_);
+}
+
+sub _has_role {
+    confess "requires x and y parameters" unless (@_ >= 5);
+    my ($self, $table, $dbh, $x, $y, $role_id) = @_;
     confess "role_id is required" unless $role_id;
-    if ($role_id =~ /\D/) {
-        $role_id = Socialtext::Role->new(name => $role_id)->role_id;
-    }
-    my ($has_role) = $dbh->selectrow_array(q{
+
+    _resolve_role(\$role_id);
+
+    my ($has_direct_role) = $dbh->selectrow_array(q{
         SELECT 1
-        FROM user_set_include_tc
+        FROM }.$table.q{
         WHERE from_set_id = $1 AND into_set_id = $2 AND role_id = $3
         LIMIT 1
     }, {}, $x, $y, $role_id);
-    return $has_role ? 1 : undef;
+    return $has_direct_role ? 1 : undef;
 }
 
 =item has_plugin ($n,$plugin)
@@ -378,6 +394,16 @@ sub _object_role_method ($) {
             package_name => __PACKAGE__
         )
     );
+}
+
+sub _resolve_role {
+    my $role = shift;
+    if (blessed($$role)) {
+        $$role = $$role->role_id;
+    }
+    elsif ($$role =~ /\D/) {
+        $$role = Socialtext::Role->new(name => $$role)->role_id;
+    }
 }
 
 __PACKAGE__->meta->make_immutable();

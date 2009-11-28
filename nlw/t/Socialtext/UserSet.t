@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 109;
+use Test::Socialtext tests => 113;
 use Test::Differences;
 use Test::Exception;
 use List::Util qw/shuffle/;
@@ -40,6 +40,10 @@ sub connected {
 
 sub has_role {
     $uset->has_role(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_) ? 1 : 0;
+}
+
+sub has_direct_role {
+    $uset->has_direct_role(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_) ? 1 : 0;
 }
 
 sub has_plugin {
@@ -509,6 +513,17 @@ has_plugin: {
     ok has_plugin(3,'testin'), "directly connected to plugin still";
     $dbh->do(qq{DELETE FROM user_set_plugin WHERE user_set_id = 3+$OFFSET});
     ok !has_plugin(3,'testin'), "plugin turned off";
+}
+
+direct: {
+    reset_graph();
+    insert(1,2);
+    insert(2,3);
+
+    ok has_role(1,3,$member);
+    ok !has_direct_role(1,3,$member);
+    ok has_direct_role(1,2,$member);
+    ok has_direct_role(2,3,$member);
 }
 
 reset_graph();
