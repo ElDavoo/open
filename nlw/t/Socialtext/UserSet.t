@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 113;
+use Test::Socialtext tests => 117;
 use Test::Differences;
 use Test::Exception;
 use List::Util qw/shuffle/;
@@ -36,6 +36,10 @@ sub del_set { $uset->remove_set(shift(@_) + $OFFSET, @_); }
 
 sub connected {
     $uset->connected(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_) ? 1 : 0;
+}
+
+sub directly_connected {
+    $uset->directly_connected(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_) ? 1 : 0;
 }
 
 sub has_role {
@@ -524,6 +528,11 @@ direct: {
     ok !has_direct_role(1,3,$member);
     ok has_direct_role(1,2,$member);
     ok has_direct_role(2,3,$member);
+
+    ok connected(1,3);
+    ok !directly_connected(1,3);
+    ok directly_connected(1,2);
+    ok directly_connected(2,3);
 }
 
 reset_graph();

@@ -142,15 +142,33 @@ Asks "is $x connected to $y through at least one path?"
 
 around 'connected' => \&_query_wrapper;
 sub connected {
-    confess "requires x and y parameters" unless (@_ >= 4);
-    my ($self, $dbh, $x, $y) = @_;
-    my ($connected) = $dbh->selectrow_array(q{
+    my $self = shift;
+    return $self->_connected('user_set_path',@_);
+}
+
+=item directly_connected ($x,$y)
+
+Asks "is $x directly connected to $y?"
+
+=cut
+
+around 'directly_connected' => \&_query_wrapper;
+sub directly_connected {
+    my $self = shift;
+    return $self->_connected('user_set_include',@_);
+}
+
+sub _connected {
+    confess "requires x and y parameters" unless (@_ >= 5);
+    my ($self, $table, $dbh, $x, $y) = @_;
+
+    my ($has_direct_role) = $dbh->selectrow_array(q{
         SELECT 1
-        FROM user_set_include_tc
+        FROM }.$table.q{
         WHERE from_set_id = $1 AND into_set_id = $2
         LIMIT 1
     }, {}, $x, $y);
-    return $connected ? 1 : undef;
+    return $has_direct_role ? 1 : undef;
 }
 
 =item has_role ($x,$y,$role_id)
@@ -162,7 +180,7 @@ Asks "is $x connected to $y where the effective role_id is $role_id?"
 around 'has_role' => \&_query_wrapper;
 sub has_role {
     my $self = shift;
-    return $self->_has_role('user_set_include_tc',@_);
+    return $self->_has_role('user_set_path',@_);
 }
 
 =item has_direct_role ($x,$y,$role_id)
