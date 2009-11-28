@@ -1242,19 +1242,17 @@ sub _make_role_toggler {
         my $display_name = $role->display_name();
 
         my $has_role = $ws->user_has_role(user => $user, role => $role);
-        if ($add_p == ($has_role || 0) ) {
-            if ($add_p) {
-                $self->_error(loc(
-                    "[_1] already has a '[_2]' role in the [_3] Workspace",
-                    $user->username, $role->name, $ws->name
-                ));
-            }
-            else {
-                $self->_error(loc(
-                    "[_1] does not have a '[_2]' role in the [_3] Workspace",
-                    $user->username, $role->name, $ws->name
-                ));
-            }
+        if ($add_p and $has_role) {
+            $self->_error(loc(
+                "[_1] already has a '[_2]' role in the [_3] Workspace",
+                $user->username, $role->name, $ws->name
+            ));
+        }
+        elsif (!$add_p and !$has_role) {
+            $self->_error(loc(
+                "[_1] does not have a '[_2]' role in the [_3] Workspace",
+                $user->username, $role->name, $ws->name
+            ));
         }
 
         my $is_selected = $user->workspace_is_selected( workspace => $ws );
@@ -1279,13 +1277,13 @@ sub _make_role_toggler {
             ));
         } 
         elsif ($add_p) {
-            $self->_error(loc(
+            $self->_success(loc(
                 "[_1] now has a '[_2]' role in the [_3] Workspace",
                 $user->username, $rolename, $ws->name
             ));
         }
         else {
-            $self->_error(loc(
+            $self->_success(loc(
                 "[_1] no longer has a '[_2]' role in the [_3] Workspace",
                 $user->username, $rolename, $ws->name
             ));
