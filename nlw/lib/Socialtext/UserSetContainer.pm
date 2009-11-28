@@ -2,6 +2,7 @@ package Socialtext::UserSetContainer;
 # @COPYRIGHT@
 use Moose::Role;
 use Socialtext::UserSet;
+use Socialtext::SQL qw(sql_execute);
 use namespace::clean -except => 'meta';
 
 requires 'user_set_id';
