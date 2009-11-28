@@ -70,7 +70,7 @@ group_already_exists: {
             )->add_member();
         };
     } );
-    like $output, qr/.+ is already a member of Account/,
+    like $output, qr/.+ already has a 'member' role in Account/,
         '... with correct message';
 }
 
@@ -584,7 +584,7 @@ add_group_to_workspace: {
             )->add_member();
         };
     } );
-    like $output, qr/.+ is now a member of the .+ Workspace/,
+    like $output, qr/.+ now has a 'member' role in the .+ Workspace/,
         '... succeeds with correct message';
 
     my $role = $workspace->role_for_group( group => $group );
@@ -660,7 +660,7 @@ group_is_already_member_of_workspace: {
             )->add_member();
         };
     } );
-    like $output, qr/.+ is already a member of Workspace/,
+    like $output, qr/.+ already has a 'member' role in Workspace/,
         'Group already has role error message';
 }
 
@@ -712,7 +712,7 @@ add_group_as_admin_to_workspace: {
             )->add_workspace_admin();
         };
     } );
-    like $output, qr/.+ is now an admin of the .+ Workspace/,
+    like $output, qr/.+ now has a 'admin' role in the .+ Workspace/,
         'Group added as admin message';
     my $role = $workspace->role_for_group( group => $group );
     ok $role, 'Group has Role in Workspace';
@@ -748,7 +748,7 @@ add_group_as_admin_to_workspace: {
             )->add_workspace_admin();
         };
     } );
-    like $output, qr/.+ is now an admin of the .+ Workspace/,
+    like $output, qr/.+ now has a 'admin' role in the .+ Workspace/,
         'Group added as admin message';
     $role = $workspace->role_for_group( group => $group );
     ok $role, 'Group has Role in Workspace';
@@ -783,7 +783,7 @@ group_member_remains_in_workspace: {
         };
     } );
     my $membername = $member->name;
-    like $output, qr/.+ is now a member of .+ due to membership in a group/, 
+    like $output, qr/.+ now has a 'member' role in .+ due to membership in a group/, 
         '... with correct message';
 
     my $role = $workspace->role_for_user( user => $user);
@@ -804,7 +804,7 @@ group_member_remains_in_workspace: {
         };
     } );
     my $impersonatorname = $impersonator->name;
-    like $output, qr/.+ is now a impersonator of .+ due to membership in a group/, 
+    like $output, qr/.+ now has a 'impersonator' role in .+ due to membership in a group/, 
         '... with correct message';
 
     $role = $workspace->role_for_user( user => $user);
@@ -856,7 +856,7 @@ group_member_remains_admin_in_workspace: {
         };
     } );
 
-    like $output, qr/.+ is now an admin of the .+ Workspace due to membership in a group/, 
+    like $output, qr/.+ now has a 'admin' role in the .+ Workspace due to membership in a group/, 
         '... with correct message';
 
     my $role = $workspace->role_for_user( user => $user);

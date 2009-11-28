@@ -917,7 +917,7 @@ sub _add_user_to_group_as {
 
     if ( $current_role ) {
         $self->_error(
-            loc("User is already a [_1] of Group",
+            loc("User already has a '[_1]' role in Group",
                 $current_role->display_name)
         ) if $current_role->name eq $new_role->name;
     }
@@ -980,7 +980,7 @@ sub _check_account_role {
 
     if ( $p{cur_role} && $p{cur_role}->name eq $member->name ) {
         $self->_error(
-            loc("[_1] is already a [_2] of Account",
+            loc("[_1] already has a '[_2]' role in Account",
                 $p{name}, $member->display_name)
         );
     }
@@ -1006,7 +1006,7 @@ sub _add_user_to_workspace_as {
 
     $ws->add_user( user => $user, role => $new_role );
     $self->_success(
-        loc("[_1] is now a [_2] of the [_3] Workspace",
+        loc("[_1] now has a '[_2]' role in the [_3] Workspace",
         $user->username, $new_role->display_name, $ws->name)
     );
 }
@@ -1026,7 +1026,7 @@ sub _add_group_to_workspace_as {
 
     $workspace->add_group( group => $group, role  => $new_role );
     $self->_success(
-        loc("[_1] is now a [_2] of the [_3] Workspace",
+        loc("[_1] now has a '[_2]' role in the [_3] Workspace",
             $group->driver_group_name,
             $new_role->display_name,
             $workspace->name)
@@ -1039,14 +1039,14 @@ sub _check_workspace_role {
 
     if ( $p{cur_role} ) {
         $self->_error(
-            loc("[_1] is already a [_2] of Workspace",
+            loc("[_1] already has a '[_2]' role in Workspace",
                 $p{name}, $p{cur_role}->display_name)
         ) if $p{cur_role}->name eq $p{new_role}->name;
 
         # Do not allow the code to "downgrade" from admin to member,
         # the user has to use remove-workspace-admin for that.
         $self->_error(
-            loc("Group is already a admin of Workspace")
+            loc("Group is already an admin of Workspace")
         ) if $p{cur_role}->name eq Socialtext::Role->Admin()->name;
     }
 }
@@ -1110,7 +1110,7 @@ sub _remove_user_from_thing {
     ) unless $current;
 
     $self->_error(
-        loc('[_1] does not have a [_2] role in [_3]',
+        loc("[_1] does not have a '[_2]' role in [_3]",
             $user->username, $member->display_name, $thing->name)
     ) if $current->name ne $member->name;
 
@@ -1119,7 +1119,7 @@ sub _remove_user_from_thing {
     # Does the user still have a role in this thing indirectly?
     my $role = $thing->role_for_user(user => $user);
     $self->_success(
-        loc('[_1] is now a [_2] of [_3] due to membership in a group',
+        loc("[_1] now has a '[_2]' role in [_3] due to membership in a group",
             $user->username, $role->display_name, $thing->name)
     ) if $role;
 
@@ -1189,7 +1189,7 @@ sub _remove_group_from_thing {
     my $role   = $thing->role_for_group( group => $group );
     if ($role) {
         $self->_success( 
-            loc('[_1] is now a [_2] of [_3] due to membership in a Group',
+            loc("[_1] now has a '[_2]' role in [_3] due to membership in a Group",
                 $group->display_name, $role->display_name, $thing->name)
         );
     }
@@ -1223,9 +1223,6 @@ sub add_workspace_admin {
 sub _make_role_toggler {
     my $rolename    = shift;
     my $add_p       = shift;
-    my $pre_failure = $add_p ? 'already' : 'not';
-    my $success     = $add_p ? 'now' : 'no longer';
-    my $article     = $rolename =~ /^[aeiou]/ ? 'an' : 'a';
 
     return sub {
         my $self = shift;
@@ -1244,11 +1241,20 @@ sub _make_role_toggler {
         my $role         = Socialtext::Role->new( name => $rolename );
         my $display_name = $role->display_name();
 
-        if ( $add_p == ($ws->user_has_role( user => $user, role => $role ) || 0) ) {
-            $self->_error( $user->username
-                    . " is $pre_failure $article $display_name of the "
-                    . $ws->name
-                    . ' workspace.' );
+        my $has_role = $ws->user_has_role(user => $user, role => $role);
+        if ($add_p == ($has_role || 0) ) {
+            if ($add_p) {
+                $self->_error(loc(
+                    "[_1] already has a '[_2]' role in the [_3] Workspace",
+                    $user->username, $role->name, $ws->name
+                ));
+            }
+            else {
+                $self->_error(loc(
+                    "[_1] does not have a '[_2]' role in the [_3] Workspace",
+                    $user->username, $role->name, $ws->name
+                ));
+            }
         }
 
         my $is_selected = $user->workspace_is_selected( workspace => $ws );
@@ -1268,23 +1274,23 @@ sub _make_role_toggler {
         if ((!$add_p)  && 
             $current_user_role &&
             ($current_rolename ne Socialtext::Role->Member->name)) {
-            $article  = $rolename =~ /^[aeiou]/ ? 'an' : 'a';
-            $self->_success( $user->username
-                    . ' is now '
-                    . $article
-                    . ' ' 
-                    . $current_role_display_name
-                    . ' of the '
-                    . $ws->name
-                    . ' Workspace due to membership in a group' );
+            $self->_error(loc(
+                "[_1] now has a '[_2]' role in the [_3] Workspace due to membership in a group", $user->username, $rolename, $ws->name
+            ));
         } 
-        else {
-            $self->_success( $user->username
-                    . " is $success $article $display_name of the "
-                    . $ws->name
-                    . ' workspace.' );
-            }
+        elsif ($add_p) {
+            $self->_error(loc(
+                "[_1] now has a '[_2]' role in the [_3] Workspace",
+                $user->username, $rolename, $ws->name
+            ));
         }
+        else {
+            $self->_error(loc(
+                "[_1] no longer has a '[_2]' role in the [_3] Workspace",
+                $user->username, $rolename, $ws->name
+            ));
+        }
+    }
 }
 
 {
