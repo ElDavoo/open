@@ -544,6 +544,7 @@ sub _build_workspace_count {
 __PACKAGE__->meta->make_immutable;
 1;
 __END__
+
 =head1 NAME
 
 Socialtext::Group - Socialtext Group object
