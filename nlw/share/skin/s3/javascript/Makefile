@@ -116,7 +116,7 @@ $(PLUGIN_LIGHTBOXES):
 	# folowing section
 		
 $(API_FILE): $(API_FILES)
-	cd $(COMMON_JAVASCRIPT)/Socialtext && make
+	$(MAKE) -C $(COMMON_JAVASCRIPT)/Socialtext
 
 lightbox-%.js: st-lightbox.js lightbox/%.tt2 lightbox/%.js
 	jemplate --compile $(@:lightbox-%.js=lightbox/%.tt2) > $@; \
