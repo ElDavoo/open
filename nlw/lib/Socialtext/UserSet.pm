@@ -136,7 +136,8 @@ sub remove_set {
 
 =item connected ($x,$y)
 
-Asks "is $x connected to $y through at least one path?"
+Asks "is $x connected to $y through at least one path?" which is the same
+question as "is $x contained somehow in $y?"
 
 =cut
 
@@ -148,7 +149,8 @@ sub connected {
 
 =item directly_connected ($x,$y)
 
-Asks "is $x directly connected to $y?"
+Asks "is $x directly connected to $y?" which is the same question as "is $x
+directly contained in $y"
 
 =cut
 
@@ -232,6 +234,41 @@ sub has_plugin {
         LIMIT 1
     }, {}, $n, $plugin);
     return $has_plugin ? 1 : undef;
+}
+
+=item roles ($x,$y)
+
+Get the list of distinct, possibly indirect role_ids for $x in $y.  Returns an empty list if none.
+
+=cut
+
+around 'roles' => \&_query_wrapper;
+sub roles {
+    my ($self, $dbh, $x, $y) = @_;
+    my $roles = $dbh->selectcol_arrayref(q{
+        SELECT DISTINCT role_id
+        FROM user_set_path
+        WHERE from_set_id = $1 AND into_set_id = $2
+        ORDER BY role_id ASC
+    }, {}, $x, $y);
+    return @{$roles || []};
+}
+
+=item direct_role ($x,$y)
+
+Get the direct role_id for $x in $y.  Returns undef if none.
+
+=cut
+
+around 'direct_role' => \&_query_wrapper;
+sub direct_role {
+    my ($self, $dbh, $x, $y) = @_;
+    my ($role) = $dbh->selectrow_array(q{
+        SELECT role_id
+        FROM user_set_include
+        WHERE from_set_id = $1 AND into_set_id = $2
+    }, {}, $x, $y);
+    return $role;
 }
 
 =back

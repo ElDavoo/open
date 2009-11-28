@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 117;
+use Test::More tests => 124;
 use Test::Differences;
 use Test::Exception;
 use List::Util qw/shuffle/;
@@ -52,6 +52,14 @@ sub has_direct_role {
 
 sub has_plugin {
     $uset->has_plugin(shift(@_) + $OFFSET, @_) ? 1 : 0;
+}
+
+sub roles {
+    $uset->roles(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_);
+}
+
+sub direct_role {
+    $uset->direct_role(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_);
 }
 
 reset_graph();
@@ -533,6 +541,23 @@ direct: {
     ok !directly_connected(1,3);
     ok directly_connected(1,2);
     ok directly_connected(2,3);
+}
+
+role_list: {
+    reset_graph();
+    insert(1,2, $member);
+    insert(2,3, $guest);
+    insert(1,3, $member);
+    insert(1,4, $member);
+
+    eq_or_diff [roles(1,3)],[sort {$a<=>$b} $member,$guest];
+    eq_or_diff [roles(2,3)],[$guest];
+    eq_or_diff [roles(1,4)],[$member];
+
+    is direct_role(1,3),$member;
+    is direct_role(2,3),$guest;
+    is direct_role(2,4),undef;
+    is direct_role(1,4),$member;
 }
 
 reset_graph();
