@@ -6,7 +6,7 @@ workspaces:
     title: Sale
     extra_pages: 1
     extra_users:
-      workspace_admin: [tester@socialtext.com]
+      admin: [tester@socialtext.com]
       member: [chester@socialtext.com]
 
   exchange:

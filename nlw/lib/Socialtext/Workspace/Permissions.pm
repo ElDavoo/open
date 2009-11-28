@@ -18,7 +18,7 @@ use Socialtext::Exceptions qw( rethrow_exception );
 use Socialtext::Role;
 
 our %AllowableRoles = map { $_ => 1 }
-    qw/guest authenticated_user affiliate member workspace_admin impersonator/;
+    qw/guest authenticated_user affiliate member admin impersonator/;
 
 
 our %PermissionSets = (
