@@ -1,4 +1,5 @@
 package Socialtext::Group;
+# @COPYRIGHT@
 use unmocked 'Moose';
 
 has 'group_id' => (is => 'rw', isa => 'Int', required => 1);
