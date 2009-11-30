@@ -109,6 +109,11 @@ sub import_workspace {
                 # If a User has an "indirect" Role, they have access to the
                 # Workspace from some other means (e.g. a Group Role), so
                 # don't add a Role for them here.
+
+                # Support backwards compatibility for old style
+                # 'workspace_admin'
+                $rolename = 'admin' if $rolename eq 'workspace_admin';
+
                 $self->{workspace}->add_user(
                     user => $username,
                     role => Socialtext::Role->new( name => $rolename ),
