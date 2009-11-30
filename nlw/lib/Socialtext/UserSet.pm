@@ -68,6 +68,7 @@ sub add_role {
     croak "Can't add things to users"
         if Socialtext::User->new(user_id => $y);
 
+
     $role_id ||= 'member';
     _resolve_role(\$role_id);
 

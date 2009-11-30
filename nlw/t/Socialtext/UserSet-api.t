@@ -27,24 +27,42 @@ api_for_group: {
 }
 
 Bad_cases: {
-    my $usr2 = create_test_user();
-    my $uset = Socialtext::UserSet->new;
+    Add_user_to_user: {
+        my $usr2 = create_test_user();
+        my $uset = Socialtext::UserSet->new;
 
-    my $user_id1 = $usr->user_id;
-    my $user_id2 = $usr2->user_id;
-    throws_ok {
-        $uset->add_role($user_id1, $user_id2, $member);
-    } qr/Can't add things to users/, "cannot add user to a user";
-    throws_ok {
-        $uset->remove_role($user_id1, $user_id2);
-    } qr/edge $user_id1,$user_id2/, "cannot remove user from a user";
-    throws_ok {
-        $uset->update_role($user_id1, $user_id2, $member);
-    } qr/edge $user_id1,$user_id2/, "cannot update user to a user";
+        my $user_id1 = $usr->user_id;
+        my $user_id2 = $usr2->user_id;
+        throws_ok {
+            $uset->add_role($user_id1, $user_id2, $member);
+        } qr/Can't add things to users/, "cannot add user to a user";
+        throws_ok {
+            $uset->remove_role($user_id1, $user_id2);
+        } qr/edge $user_id1,$user_id2/, "cannot remove user from a user";
+        throws_ok {
+            $uset->update_role($user_id1, $user_id2, $member);
+        } qr/edge $user_id1,$user_id2/, "cannot update user to a user";
+    }
 
+    Add_workspace_to_workspace: {
+        my $wksp1 = create_test_workspace();
+        my $wksp2 = create_test_workspace();
+        my $uset = Socialtext::UserSet->new;
+
+        my $uset_id1 = $wksp1->user_set_id;
+        my $uset_id2 = $wksp2->user_set_id;
+        throws_ok {
+            $uset->add_role($uset_id1, $uset_id2, $member);
+        } qr/Can't add workspaces to workspaces/, "cannot add wksp to a wksp";
+        throws_ok {
+            $uset->remove_role($uset_id1, $uset_id2);
+        } qr/edge $uset_id1,$uset_id2/, "cannot remove wksp from a wksp";
+        throws_ok {
+            $uset->update_role($uset_id1, $uset_id2, $member);
+        } qr/edge $uset_id1,$uset_id2/, "cannot update wksp to a wksp";
+    }
 
     # consider adding these
-    fail "todo: can't add workspace to workspace";
     fail "todo: can't add account to account";
     fail "todo: adding group to a group is fine though";
 }
