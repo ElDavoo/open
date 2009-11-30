@@ -4,9 +4,10 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 38;
+use Test::Socialtext tests => 59;
 fixtures(qw( clean db ));
 use Socialtext::User;
+use Socialtext::Role;
 
 my $user;
 
@@ -90,6 +91,74 @@ $user3->set_confirmation_info(is_password_change => 0);
 
 is( $user3->requires_confirmation, 1, 'user requires confirmation' );
 
+account_roles_for_created_user: {
+    my $member         = Socialtext::Role->Member();
+    my $base_id        = time . $$;
+    my $account        = Socialtext::Account->Default();
+    my $custom_account = create_test_account_bypassing_factory();
+
+    # Using the default account
+    my $default_user_email = "$base_id-default\@socialtext.net";
+    my $default_user = Socialtext::User->create(
+        username      => $default_user_email,
+        email_address => $default_user_email,
+        password      => 'unencrypted',
+        no_crypt      => 1,
+        created_by_user_id => $user->user_id,
+    );
+    my $role = $account->role_for_user( user => $default_user );
+
+    ok $role, 'newly created user has role in default account';
+    is $role->role_id, $member->role_id, '... role is member';
+
+    # Using a custom account
+    my $custom_user_email = "$base_id-custom\@socialtext.net";
+    my $custom_user = Socialtext::User->create(
+        username      => $custom_user_email,
+        email_address => $custom_user_email,
+        password      => 'unencrypted',
+        no_crypt      => 1,
+        created_by_user_id => $user->user_id,
+        primary_account_id => $custom_account->account_id,
+    );
+    $role = $custom_account->role_for_user( user => $custom_user );
+
+    ok $role, 'newly created user has role in custom account';
+    is $role->role_id, $member->role_id, '... role is member';
+    ok !$account->has_user( $user ),
+        'custom user does not have role in default account';
+}
+
+change_primary_account: {
+    my $member  = Socialtext::Role->Member();
+    my $account = Socialtext::Account->Default();
+    my $email   = time . $$ . '-change-account@socialtext.com';
+    my $user    = Socialtext::User->create(
+        username           => $email,
+        email_address      => $email,
+        password           => 'unencrypted',
+        no_crypt           => 1,
+        created_by_user_id => $user->user_id,
+    );
+
+    my $role = $account->role_for_user( user => $user );
+    ok $role, 'user has role in default account';
+    is $role->role_id, $member->role_id, '... role is member';
+
+    my $other_account = create_test_account_bypassing_factory();
+    $user->primary_account( $other_account );
+
+    # Check default account role is preserved
+    $role = $account->role_for_user( user => $user );
+    ok $role, 'user still has role in default account';
+    is $role->role_id, $member->role_id, '... role is member';
+
+    # Check for role in new account
+    $role = $other_account->role_for_user( user => $user );
+    ok $role, 'user still has role in default account';
+    is $role->role_id, $member->role_id, '... role is member';
+}
+
 email_hiding_by_account :
 {
     my $visible_account = Socialtext::Account->create(
@@ -120,6 +189,7 @@ email_hiding_by_account :
         email_address      => 'person.a@socialtext.com',
         password           => 'password',
         created_by_user_id => Socialtext::User->SystemUser->user_id,
+        primary_account_id => $hidden_account->account_id,
     );
 
     my $personB = Socialtext::User->create(
@@ -128,12 +198,8 @@ email_hiding_by_account :
         last_name          => 'B',
         email_address      => 'person.b@socialtext.com',
         created_by_user_id => Socialtext::User->SystemUser->user_id,
+        primary_account_id => $hidden_account->account_id,
     );
-
-    # primary = hidden == hidden
-
-    $personA->primary_account($hidden_account->account_id);
-    $personB->primary_account($hidden_account->account_id);
 
     is $personA->masked_email_address(user => $personB),
        'person.a@hidden',
@@ -141,6 +207,25 @@ email_hiding_by_account :
     is $personB->masked_email_address(user => $personA),
        'person.b@hidden',
        'primary = hidden == hidden';
+
+    # primary = hidden + visible == visible
+    $visible_account->add_user( user => $personA );
+    $visible_account->add_user( user => $personB );
+
+    is $personA->masked_email_address(user => $personB),
+       'person.a@socialtext.com',
+       'primary = hidden + visible == visible';
+    is $personB->masked_email_address(user => $personA),
+       'person.b@socialtext.com',
+       'primary = hidden + visible == visible';
+
+    # remove the users' membership from the account so we can test a secondary
+    # relationship.
+    $visible_account->remove_user( user => $personA );
+    ok !$visible_account->has_user( $personA );
+
+    $visible_account->remove_user( user => $personB );
+    ok !$visible_account->has_user( $personB );
 
     # primary = hidden + secondary = visible == visible
 
@@ -180,6 +265,8 @@ email_hiding_by_account :
 }
 
 deactivate_user: {
+    my $deleted = Socialtext::Account->Deleted();
+
     # create a user in a new account
     my $account = Socialtext::Account->create(name => "fuzz");
     my $user = Socialtext::User->create(
@@ -211,10 +298,30 @@ deactivate_user: {
     # deactivate them
     $user->deactivate;
     ok $user->is_deactivated;
-    is $user->primary_account_id, Socialtext::Account->Deleted()->account_id,
-        "user is moved to Deleted account";
+
+    # Check account membership
+    my @accounts = $user->accounts();
+    is scalar(@accounts), 1, 'user is in only one account';
+    my $test = pop @accounts;
+    is $test->account_id, $deleted->account_id, 
+        "user is a member of Deleted account";
+    is $user->primary_account_id, $deleted->account_id,
+        "user's primary account is Deleted account";
+
+    # Check workspaces, password
     is $user->workspace_count(), 0, "user was removed from their workspaces";
     is $user->password, '*password*', "user's password was 'deactivated'";
+
+    # "Reactivate" the user
+    my $new_account = create_test_account_bypassing_factory();
+    $user->reactivate( account => $new_account );
+
+    # Check user account membership
+    ok !$user->is_deactivated(), 'user was reactivated';
+    ok !$deleted->has_user( $user ), 'user is not in deleted account';
+    ok $new_account->has_user( $user ), 'user is in new account';
+    is $new_account->account_id, $user->primary_account_id,
+        '... which is their primary account';
 }
 
 user_workspaces: {

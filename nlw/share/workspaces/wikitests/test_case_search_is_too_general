@@ -2,7 +2,7 @@
 
 | *Comment* | Test Case: Search Too General: Create new workspace |  |
 | set | gws | general-workspace-%%start_time%% |
-| st-admin | create-workspace --name %%gws%% --title %%gws%% |  |
+| st-admin | create-workspace --name %%gws%% --title %%gws%% --empty |  |
 | st-admin | add-member --username %%username%% --workspace %%gws%% |  |
 
 | *Comment* | Test Case: Search Too General: Create 5 pages |  |
@@ -40,8 +40,8 @@
 | st-result | General Page 2 %%start_time%% |  |
 | st-result | General Page 1 %%start_time%% |  |
 
-| *Comment* | Test case: Search Is Too General Teardown |  |
-| st-admin | delete-workspace --w %%gws%% |  |
+| *Comment* | Test case: Search Is Too General TEARDOWN |  |
+| st-admin | delete-workspace --w %%gws%% --no-export | has been deleted |
 | st-config | set search_warning_threshold 500 |  |
 
 | *Comment* | Test case: Search Is Too General COMPLETED |  |

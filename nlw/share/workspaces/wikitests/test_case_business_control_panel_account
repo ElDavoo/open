@@ -1,11 +1,10 @@
 | *Comment* | Test case: Business Control Panel Account |  |
-| *Comment* | If there are too many users or workspaces to fit on a single display page, it will fail |  |
 
 | st-admin | give-accounts-admin --email %%email%% | %%username%% now has accounts admin access |
 
 | set | new_acct | acct %%start_time%% |  |
-| set | new_user | bcp-acct-%%start_time%%@ken.socialtext.net |  |
-| set | short_new | bcp-acct-%%start_time%% |  |
+| set | new_user | bcpuser%%start_time%%@ken.socialtext.net |  |
+| set | short_new | bcpuser%%start_time%% |  |
 | set | new_acct_2 | other_acct_%%start_time%% |  |
 | create-account | %%new_acct_2%% |  |  |
 | create-user | %%new_user%% | %%password%% | %%new_acct_2%% |
@@ -67,15 +66,19 @@
 | text_like | Socialtext Dashboard (click to enable) |  |
 
 | *Comment* | Test case: Business Control Panel Account Add a user |  |
-| *Comment* | Test case: Business Control Panel Account Add a user FAILS DUE TO {BZ 3270} |  |
-| wait_for_element_visible_ok | addUserLookahead | 30000 |
+| *Comment* | Test case: Business Control Panel Account don't use a hyphenated user so that BFN matches email |  |
 | wait_for_text_present_ok | Add Existing User: | 30000 |
 | wait_for_text_present_ok | Users (0) | 30000 |
+| wait_for_element_visible_ok | addUserLookahead | 30000 |
 | type_lookahead_ok | addUserLookahead | %%short_new%% |
-| wait_for_element_visible_ok | link=%%short_new%% | 30000 |
-| click_ok | link=%%new_user%% |  |
-| wait_for_text_present_ok | Users (1) | 30000 |
-| wait_for_element_visible_ok | link=%%new_acct_2%% | 30000 |
+
+| *Comment* | Test case: Business Control Panel Account THIS TEST FAILS SEE BZ 3349 |  |
+| *Comment* | Test case: Business Control Panel Account THIS TEST FAILS SEE BZ 3349 |  |
+| *Comment* | Test case: Business Control Panel Account THIS TEST FAILS SEE BZ 3349 |  |
+| wait_for_element_visible_ok | link=%%short_new%% | 5000 |
+| click_and_wait | link=%%short_new%% |  |
+| wait_for_text_present_ok | Users (1) | 5000 |
+| wait_for_element_visible_ok | link=%%new_acct_2%% | 5000 |
 
 | *Comment* | Test case: Business Control Panel Account plugin one at a time, click the confirmation, validate that plugin is enabled. |  |
 | click_ok | toggle_plugin_people |  |

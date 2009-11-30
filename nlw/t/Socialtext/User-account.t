@@ -14,8 +14,7 @@ my $now = time;
 st_admin("create-account --name acct_a_$now");
 my $acct_a = Socialtext::Account->new(name => "acct_a_$now");
 my $user1email = "user_1_$now\@ken.socialtext.net";
-st_admin("create-user --username user_1_$now --email $user1email --password foobar");
-st_admin("set-user-account --email $user1email --account acct_a_$now");
+st_admin("create-user --username user_1_$now --email $user1email --password foobar --account acct_a_$now");
 
 Check_just_one_account: {
     my $user = Socialtext::User->new(email_address => $user1email);
@@ -74,6 +73,7 @@ test_plugin_associations: {
 }
 
 st_admin("set-user-account --email $user1email --account acct_b_$now");
+st_admin("remove-member --email $user1email --account acct_a_$now");
 
 Back_to_one_account: {
     my $user = Socialtext::User->new(email_address => $user1email);

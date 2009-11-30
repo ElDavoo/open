@@ -27,9 +27,9 @@
 | *Comment* | Test Case: Email attachment email sending page to %%workspace%%@%%wikiemail%% |  |
 | click_ok | email_send |  |
 
-| *Comment* | Pausing 60 seconds for email delivery, then re-index |  |
+| *Comment* | Pausing 60 seconds for email delivery, then index page |  |
 | pause | 60000 |  |
-| st-admin | index-workspace --workspace %%workspace%% --sync |  |
+| st-admin | index-page --workspace %%workspace%% --page email_subject_%%start_time%% |  |
 
 | *Comment* | Test Case: Email attachment email Check Reception with HTML attachment |  |
 | open_ok | /%%workspace%%/index.cgi?Email subject %%start_time%% |  |

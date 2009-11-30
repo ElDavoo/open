@@ -6,7 +6,7 @@ use warnings;
 use Socialtext::Workspace;
 use Socialtext::UserMetadata;
 use Socialtext::UserAccountRoleFactory;
-use Test::Socialtext tests => 16;
+use Test::Socialtext tests => 17;
 
 fixtures(qw( db ));
 
@@ -52,6 +52,7 @@ change_user_account: {
     my $old_account = create_test_account_bypassing_factory();
     my $new_account = create_test_account_bypassing_factory();
     my $user        = create_test_user(account => $old_account);
+    my $member      = Socialtext::Role->Member();
 
     my $uar = $factory->Get(
         user_id    => $user->user_id,
@@ -69,7 +70,9 @@ change_user_account: {
         account_id => $old_account->account_id,
     );
 
-    ok !$old_uar, 'User no longer has role in old account';
+    ok $old_uar, 'User still has role in old account';
+    is $old_uar->role_id, $member->role_id, '... role is member';
+
 
     my $new_uar = $factory->Get(
         user_id    => $user->user_id,

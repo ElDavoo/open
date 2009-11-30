@@ -24,12 +24,14 @@
 | *Comment* | Test Case: Control Panel Create Group - create group via groups UI |  |
 | open_ok | nlw/control/group |  |
 | wait_for_element_visible_ok | link=Create Group | 30000 |
+
+| *Comment* | Test Case: Control Panel Create Group - open the lightbox |  |
 | click_ok | link=Create Group |  |
 | wait_for_element_visible_ok | st-groupname | 30000 |
 | wait_for_element_visible_ok | st-group-create-submit | 30000 |
 | type_ok | st-groupname | %%CPgroupname%% |
 
-| *Comment* | Test Case: Control Panel Create Group. Pause for JS load to complete. |  |
+| *Comment* | Test Case: Control Panel Create Group. Pause for lightbox JS load to complete. |  |
 | pause | 5000 |  |
 | click_and_wait | st-group-create-submit |  |
 | wait_for_element_visible_ok | link=Add Group To An Account | 30000 |
@@ -43,6 +45,8 @@
 | wait_for_element_visible_ok | st-username-search-submit | 30000 |
 | type_ok | username | %%start_time%% |
 | click_and_wait | st-username-search-submit |  |
+
+| *Comment* | Test Case: Control Panel Create Group - select four users |  |
 | wait_for_element_visible_ok | %%user1%% | 30000 |
 | click_ok | %%user1%% |  |
 | wait_for_element_visible_ok | %%user2%% | 30000 |
@@ -53,7 +57,6 @@
 | click_ok | %%user4%% |  |
 | wait_for_element_visible_ok | link=Invite to Group(s) | 30000 |
 | click_and_wait | link=Invite to Group(s) |  |
-| wait_for_element_visible_ok | group-name | 30000 |
 | wait_for_element_visible_ok | todo-create | 30000 |
 | check_ok | todo-create |  |
 | wait_for_element_visible_ok | group-name | 30000 |
@@ -78,20 +81,22 @@
 | wait_for_element_visible_ok | link=Return to %%groupname%% Group | 30000 |
 | wait_for_element_visible_ok | st-username-search-submit | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
-| wait_for_element_visible_ok | link=Add users | 30000 |
 | type_ok | username | %%start_time%% |
-| click_ok | st-username-search-submit |  |
+| click_and_wait | st-username-search-submit |  |
 | wait_for_element_visible_ok | %%user5%% | 30000 |
-| pause | 3000 |  |
 | click_ok | %%user5%% |  |
+| wait_for_element_visible_ok | link=Add users | 30000 |
+| click_and_wait | link=Add users |  |
+| text-like | //body | You successfully added 5 users to 1 group. |
 
 | *Comment* | Test Case: Control Panel Create Group - add members to existing group from USERS tab |  |
+
 | open_ok | /nlw/control/user |  |
 | wait_for_element_visible_ok | username | 30000 |
 | wait_for_element_visible_ok | st-username-search-submit | 30000 |
 | type_ok | username | %%start_time%% |
 | click_and_wait | st-username-search-submit |  |
-| pause | 1000 |  |
+| click_ok | link=Clear Selection |  |
 | wait_for_element_visible_ok | %%user1%% | 30000 |
 | click_ok | %%user1%% |  |
 | wait_for_element_visible_ok | %%user2%% | 30000 |
@@ -103,7 +108,7 @@
 | wait_for_element_visible_ok | group-name | 30000 |
 | wait_for_element_visible_ok | todo-invite | 30000 |
 | click_ok | todo-invite |  |
-| pause | 1000 |  |
+
 | wait_for_element_visible_ok | %%group_id%% | 30000 |
 | check_ok | %%group_id%% |  |
 | wait_for_element_visible_ok | invite-button | 30000 |
@@ -125,7 +130,7 @@
 | click_ok | //input[@value='%%user3%%'] |  |
 | click_ok | st-group-remove-submit |  |
 
- verifyAlert | Are you sure you want to remove these users from this group?
+ verifyAlert | Are you sure you want to remove these users from this group? | |
 
 | wait_for_text_present_ok | You have successfully removed 2 users from the %%groupexists%% Group. | 30000 |
 | wait_for_element_not_present_ok | link=%%email1%% | 30000 |

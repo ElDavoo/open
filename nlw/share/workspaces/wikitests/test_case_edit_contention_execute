@@ -16,8 +16,8 @@
 
 | *Comment* | Test Case: Edit Contention Execute. Test Return to Page View and Edit Anyway |  |
 | click_ok | link=Return to Page View |  |
-| wait_for_element_not_visible_ok | link=Edit Anyway | 30000 |
-| wait_for_element_not_visible_ok | link=Return to Page View | 30000 |
+| wait_for_element_not_present_ok | link=Edit Anyway | 10000 |
+| wait_for_element_not_present_ok | link=Return to Page View | 10000 |
 | click_ok | link=Edit |  |
 | wait_for_element_visible_ok | link=Edit Anyway | 30000 |
 | wait_for_element_visible_ok | link=Return to Page View | 30000 |
@@ -31,4 +31,5 @@
 | click_and_wait | link=Save |  |
 
 | *Comment* | Test Case: Edit Contention Execute. TEARDOWN. Teardown will be done by Test Case: Edit Contention Reset |  |
+
 | *Comment* | Test Case: Edit Contention Execute COMPLETED |  |

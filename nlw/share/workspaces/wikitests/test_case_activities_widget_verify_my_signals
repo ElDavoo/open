@@ -48,10 +48,6 @@
 | wait_for_text_present_ok | Signal %%start_time%% | 120000 |
 | text_like | //body | qr/Super.+Edit.+Summary.+From.+Signal.+%%start_time%%/ |
 
-*Comment* | Test Case: Activities widget Verify My Signals. Wait for automatic refresh to X minutes ago in Activity | |
-wait_for_text_present_ok | 3 minutes ago | 120000 |
-| select-frame | relative=parent | |
-
 | *Comment* | Test case: Activities Widget Verify My Signals. Check Dashboard, then wait for auto refresh |  |
 | open_ok | / |  |
 | wait_for_text_present_ok | Welcome | 30000 |

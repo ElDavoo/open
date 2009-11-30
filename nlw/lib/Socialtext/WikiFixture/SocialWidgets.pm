@@ -385,17 +385,19 @@ sub st_send_signal_via_activities_widget {
     $self->handle_command('wait_for_element_visible_ok', 'expand-input', '30000');
     $self->handle_command('click_ok', 'expand-input');
     $self->handle_command('pause', '3000');
-      
-    if ($ENV{'selenium_browser'}=~/iexplore/ig or $ENV{'selenium_browser'}=~/safari/ig) {
-        $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 10000);
-        $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$signaltosend);
-    } else {
+    my $browser =  $ENV{'selenium_browser'}; 
+    if ($browser=~/chrome/ig) {
         $self->handle_command('selectFrame', 'signalFrame');
         $self->handle_command('wait_for_element_visible_ok', '//body', 10000);
         $self->handle_command('type_ok' ,'//body', $signaltosend);
         $self->handle_command('select-frame' ,'relative=parent');
         $self->handle_command('wait_for_element_visible_ok' ,'post', 10000);
         $self->handle_command('click_ok', 'post');
+    } else {
+        $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 10000);
+        $self->handle_command('pause', '1000');
+        $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$signaltosend);
+        $self->handle_command('pause', '1000');
     }
     $self->handle_command('wait_for_element_visible_ok' ,'post', 10000);
     $self->handle_command('click_ok', 'post');                

@@ -128,7 +128,7 @@
 Find the same page using search, What's New list, and Revisions link. Observe revision count. | Count should be correct and identical in all three results
 
 | *Comment* | Test Case: Revisions: Checking revisions are correct when arriving at page from different paths |  |
-| st-admin | index-workspace --w %%workspace%% --sync |  |
+| st-admin | index-page --w %%workspace%% --page test_case_revisions_%%start_time%% |  |
 | type_ok | st-search-term | revision |
 | clickAndWait | st-search-submit |  |
 | wait_for_element_visible_ok | link=test case revisions %%start_time%% | 30000 |

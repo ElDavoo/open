@@ -98,8 +98,9 @@ sub create {
 
     $self->ValidateAndCleanData(undef, \%p);
 
-    $p{first_name}       ||= '';
-    $p{last_name}        ||= '';
+    $p{first_name}         ||= '';
+    $p{last_name}          ||= '';
+    $p{primary_account_id} ||= Socialtext::Account->Default()->account_id;
 
     $p{driver_key}       = $self->driver_key;
     $p{driver_unique_id} = $p{user_id};

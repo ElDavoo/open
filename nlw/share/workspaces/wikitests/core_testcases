@@ -10,6 +10,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: Verify Location]
 
 * [Test Case: Home]
+* [Test Case: Groups Home]
 * [Test Case: Workspace Navigation]
 * [Test Case: Global Navigation]
 * [Test case: Invite Anonymous User]

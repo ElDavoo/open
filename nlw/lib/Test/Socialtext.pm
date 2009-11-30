@@ -510,8 +510,8 @@ sub main_hub {
             username           => $opts{unique_id} . '@ken.socialtext.net',
             email_address      => $opts{unique_id} . '@ken.socialtext.net',
             created_by_user_id => $opts{created_by_user_id},
+            primary_account_id => $opts{account}->account_id,
         );
-        $user->primary_account($opts{account}->account_id);
         return $user;
     }
 
