@@ -81,6 +81,7 @@ CREATE INDEX idx_user_set_path_wholepath_and_role
     ON user_set_path (from_set_id,into_set_id,role_id);
 CREATE INDEX idx_user_set_path_rev_and_role
     ON user_set_path (into_set_id,from_set_id,role_id);
+-- TODO: partition indexes for users/non-users from_set_id
 
 -- Special index type to allow searching within an int[].  Requires the
 -- "intarray" postgres extension for 8.1
@@ -158,39 +159,30 @@ DROP TABLE workspace_plugin;
 
 -- Add some convenience views
 
--- e.g. WHERE viewer_id = ? AND other_id = ? AND plugin = 'people'
-CREATE VIEW users_share_plugin AS
-    SELECT v_path.from_set_id AS viewer_id, o_path.from_set_id AS other_id, into_set_id AS user_set_id, plugin
-    FROM user_set_path v_path
-    JOIN user_set_plugin plug ON (v_path.into_set_id = plug.user_set_id)
-    JOIN user_set_path o_path USING (into_set_id);
-
 -- e.g. WHERE viewer_id = ? AND plugin = 'people'
 CREATE VIEW user_use_plugin AS
     SELECT from_set_id AS user_id, into_set_id AS user_set_id, plugin
     FROM user_set_path
     JOIN user_set_plugin ON (into_set_id = user_set_id);
 
--- the "strict" flavour of these views check that the "from" set_id is
--- actually a user
+-- We can avoid doing a join by simply checking the value of the from_set_id;
+-- if it's not in the range reserved for containers, it must be a user.
 
 CREATE VIEW user_sets_for_user AS
     SELECT from_set_id AS user_id, into_set_id AS user_set_id
-    FROM user_set_path;
-
-CREATE VIEW user_sets_for_user_strict AS
-    SELECT from_set_id AS user_id, into_set_id AS user_set_id
     FROM user_set_path
-    WHERE EXISTS (SELECT 1 FROM users WHERE users.user_id = from_set_id);
+    WHERE from_set_id <= 536870912;
+
+-- e.g. WHERE viewer_id = ? AND other_id = ? AND plugin = 'people'
+CREATE VIEW users_share_plugin AS
+    SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, user_set_id, plugin
+    FROM user_sets_for_user v_path
+    JOIN user_set_plugin plug USING (user_set_id)
+    JOIN user_sets_for_user o_path USING (user_set_id);
 
 CREATE VIEW accounts_for_user AS
     SELECT *
     FROM user_sets_for_user
-    JOIN "Account" USING (user_set_id);
-
-CREATE VIEW accounts_for_user_strict AS
-    SELECT *
-    FROM user_sets_for_user_strict
     JOIN "Account" USING (user_set_id);
 
 CREATE VIEW groups_for_user AS
@@ -198,19 +190,9 @@ CREATE VIEW groups_for_user AS
     FROM user_sets_for_user
     JOIN groups USING (user_set_id);
 
-CREATE VIEW groups_for_user_strict AS
-    SELECT *
-    FROM user_sets_for_user_strict
-    JOIN groups USING (user_set_id);
-
 CREATE VIEW workspaces_for_user AS
     SELECT *
     FROM user_sets_for_user
-    JOIN "Workspace" USING (user_set_id);
-
-CREATE VIEW workspaces_for_user_strict AS
-    SELECT *
-    FROM user_sets_for_user_strict
     JOIN "Workspace" USING (user_set_id);
 
 -- either this thing, or something this thing is connected to has this plugin

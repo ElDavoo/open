@@ -305,14 +305,10 @@ sub visible_exists {
     my $sql = qq{
        EXISTS (
             SELECT 1
-            FROM user_set_path viewer_path
-            JOIN user_set_plugin plug
-                ON (viewer_path.into_set_id = user_set_id)
-            JOIN user_set_path othr_path
-                ON (viewer_path.into_set_id = othr_path.into_set_id)
-            WHERE view_path.from_set_id = ?
-              AND plug.plugin = '$plugin'
-              AND othr_path.from_set_id = $event_field
+            FROM users_share_plugin
+            WHERE viewer_id = ?
+              AND plugin = '$plugin'
+              AND other_id = $event_field
     };
     push @$bind_ref, $self->viewer->user_id;
 
