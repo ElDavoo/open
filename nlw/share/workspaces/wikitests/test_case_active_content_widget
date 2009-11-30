@@ -10,6 +10,8 @@
 | include | [Test Case: Active Content Setup] |  |
 
 | *Comment* | Test Case: Active Content Widget catchup logs and clear json cache |  |
+| *Comment* | Test Case: Active Content Widget on an appliance, wait 6 minutes |  |
+
 | st-catchup-logs |  |  |
 | st-clear-json-cache |  |  |
 
@@ -26,15 +28,23 @@
 | *Comment* | Test Case: Active Content Widget Check the content of Viewed |  |
 | st-select-widget-frame | active_content |  |
 | wait_for_element_visible_ok | link=Edited | 30000 |
-| text_like | //body | Viewed |
 | wait_for_element_visible_ok | link=Watched | 30000 |
 | wait_for_element_visible_ok | link=Emailed | 30000 |
-| wait_for_element_visible_ok | link=active-content-%%start_time%% | 30000 |
-| wait_for_element_visible_ok | link=Active Content Edit %%start_time%% | 30000 |
-| wait_for_element_visible_ok | link=Active Content Tag %%start_time%% | 30000 |
-| wait_for_element_visible_ok | link=Active Content Comment %%start_time%% | 30000 |
-| wait_for_element_visible_ok | link=Active Content Emailed %%start_time%% | 30000 |
-| wait_for_element_visible_ok | link=Active Content Watch %%start_time%% | 30000 |
+| text_like | //body | Viewed |
+
+| *Comment* | Test Case: Active Content Widget Use text_like //body to print contents of widget without crashing entire test. |  |
+| wait_for_element_visible_ok | link=Active Content Watch %%start_time%% | 5000 |
+| text_like | //body | Active Content Watch %%start_time%% |
+| wait_for_element_visible_ok | link=Active Content Emailed %%start_time%% | 5000 |
+| text_like | //body | Active Content Emailed %%start_time%% |
+| wait_for_element_visible_ok | link=active-content-%%start_time%% | 5000 |
+| text_like | //body | active-content-%%start_time%% |
+| wait_for_element_visible_ok | link=Active Content Edit %%start_time%% | 5000 |
+| text_like | //body | Active Content Edit %%start_time%% |
+| wait_for_element_visible_ok | link=Active Content Tag %%start_time%% | 5000 |
+| text_like | //body | Active Content Tag %%start_time%% |
+| wait_for_element_visible_ok | link=Active Content Comment %%start_time%% | 5000 |
+| text_like | //body | Active Content Comment %%start_time%% |
 
 | *Comment* | Test Case: Active Content Widget Check the content of Edited |  |
 | click_ok | link=Edited |  |

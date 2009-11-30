@@ -20,16 +20,14 @@
 
 | include | [Test Case: Active Members Setup] |  |
 
-| *Comment* | Test Case: Active Members Widget ADD THE WIDGET |  |
-| open_ok | /?dashboard | 60000 |
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | gallery-widget-Active Members | 30000 |
-| click_and_wait | gallery-widget-Active Members |  |
+| *Comment* | Test Case: Active Members Widget catchup logs and clear json cache |  |
+| *Comment* | Test Case: Active Members Widget on an appliance, wait 6 minutes |  |
 
-| *Comment* | Test Case: Active Members Widget is the widget there? |  |
-| wait_for_element_visible_ok | //a[@class='close'] | 30000 |
+| st-catchup-logs |  |  |
+| st-clear-json-cache |  |  |
+
+| *Comment* | Test Case: Active Members Widget ADD THE WIDGET |  |
+| st_single_widget_in_dashboard | gallery-widget-Active Members |  |
 | st-name-widget | 1 | active_members |
 | st-widget-title-like | active_members | Active Members |
 | st-widget-settings | active_members |  |
@@ -42,38 +40,41 @@
 | *Comment* | Test Case: Active Members Widget Check the content of Viewed |  |
 | st-select-widget-frame | active_members |  |
 | wait_for_element_visible_ok | link=Readers | 30000 |
-| text_like | //body | Viewed |
 | wait_for_element_visible_ok | link=Edits | 30000 |
 | wait_for_element_visible_ok | link=Signals | 30000 |
+| wait_for_element_not_present_ok | link=Viewed | 5000 |
+| text_like | //body | Viewed |
 
 | *Comment* | Test Case: Active Members Widget Check the content of Readers |  |
-| pause | 2000 |  |
 | click_ok | link=Readers |  |
-| pause | 2000 |  |
 | wait_for_element_visible_ok | link=Viewed | 30000 |
-| text_like | //body | Readers |
 | wait_for_element_visible_ok | link=Edits | 30000 |
 | wait_for_element_visible_ok | link=Signals | 30000 |
+| wait_for_element_not_present_ok | link=Readers | 5000 |
+| text_like | //body | Readers |
 
 | *Comment* | Test Case: Active Members Widget Check the content of Edits |  |
 | click_ok | link=Edits |  |
 | wait_for_element_visible_ok | link=Viewed | 30000 |
 | wait_for_element_visible_ok | link=Readers | 30000 |
-| text_like | //body | Edits |
 | wait_for_element_visible_ok | link=Signals | 30000 |
+| wait_for_element_not_present_ok | link=Edits | 5000 |
+| text_like | //body | Edits |
 
 | *Comment* | Test Case: Active Members Widget Check the content of Signals |  |
 | click_ok | link=Signals |  |
 | wait_for_element_visible_ok | link=Viewed | 30000 |
 | wait_for_element_visible_ok | link=Readers | 30000 |
 | wait_for_element_visible_ok | link=Edits | 30000 |
-| select-frame | relative=parent |  |
+| wait_for_element_not_present_ok | link=Signals | 5000 |
+| text_like | //body | Signals |
 
 | *Comment* | Test Case: Active Members Widget Different Accounts Details don't show up |  |
-| open_ok | /?dashboard |  |
-| st-name-widget | 1 | active_members |
-| st-select-widget-frame | active_members |  |
+| click_ok | link=Viewed |  |
+| wait_for_element_visible_ok | link=Readers | 30000 |
 | wait_for_element_visible_ok | link=Edits | 30000 |
+| wait_for_element_visible_ok | link=Signals | 30000 |
+| wait_for_element_not_present_ok | link=Viewed | 5000 |
 | text_like | //body | Viewed |
 | text_unlike | //body | test page 1 |
 | text_unlike | //body | test page 2 |
@@ -88,6 +89,7 @@
 | uncheck_ok | up_rotate |  |
 | click_ok | st-savebutton-%%active_members%% |  |
 | wait_for_element_not_visible_ok | up_account | 30000 |
+
 | st-select-widget-frame | active_members |  |
 | wait_for_element_visible_ok | link=Edits | 30000 |
 | text_like | //body | Viewed |
@@ -105,4 +107,5 @@
 | st-empty-container |  |  |
 | st-admin | delete-workspace --w %%am_ws_1%% --no-export |  |
 | st-admin | delete-workspace --w %%am_ws_2%% --no-export |  |
+
 | *Comment* | Test case: Active Members Widget COMPLETED |  |

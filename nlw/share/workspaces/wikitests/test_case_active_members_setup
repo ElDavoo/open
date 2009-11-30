@@ -26,7 +26,7 @@
 | add-member | %%view_edit_email%% | %%am_ws_2%% |  |
 | st-logoutin | %%view_edit_email%% | %%password%% |  |
 
-| *Comment* | Test Case: Active Members - Username Creates a page in %%am_ws_1%% |  |
+| *Comment* | Test Case: Active Members - %%view_edit_email%% Creates a page in %%am_ws_1%% |  |
 | open_ok | /%%am_ws_1%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -41,7 +41,7 @@
 | open_ok | /%%am_ws_1%%/index.cgi?%%createme_page1%% |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 
-| *Comment* | Test Case: Active Members - Username creates a page in %%am_ws_2%% |  |
+| *Comment* | Test Case: Active Members - %%view_edit_email%% creates a page in %%am_ws_2%% |  |
 | open_ok | /%%am_ws_2%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -59,15 +59,16 @@
 | *Comment* | Test Case: Active Members - Other users view profiles, view/edit pages, and send signals |  |
 | st-logoutin | %%members_email_1%% | %%password%% |
 | set | mark | step1 |
+| set | logged_in_as | %%members_email_1%% |
 | include | [Test Case: Active Member Actions] |  |
 | st-logoutin | %%members_email_2%% | %%password%% |
 | set | mark | step2 |
+| set | logged_in_as | %%members_email_2%% |
 | include | [Test Case: Active Member Actions] |  |
 | st-logoutin | %%members_email_3%% | %%password%% |
 | set | mark | step3 |
+| set | logged_in_as | %%members_email_3%% |
 | include | [Test Case: Active Member Actions] |  |
 | include | [Test Case: Active Member Actions] |  |
-| st-catchup-logs |  |  |
-| st-clear-json-cache |  |  |
 
 | *Comment* | Test Case: Active Members Setup COMPLETED |  |
