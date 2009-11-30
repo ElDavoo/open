@@ -257,6 +257,9 @@ sub Create {
     my $homey = $factory->Create($proto_group);
     my $group = Socialtext::Group->new(homunculus => $homey);
 
+    # Add the creator as an admin of this group
+    $group->add_user(role => Socialtext::Role->Admin, user => $group->creator);
+
     # make sure the GAR gets created
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser());

@@ -7,7 +7,7 @@ use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json encode_json/;
 use namespace::clean -except => 'meta';
 
-# Anybody can see these, since they are just the list of workspaces the user
+# Anybody can see these, since they are just the list of groups the user
 # has 'selected'.
 sub permission { +{} }
 
@@ -17,22 +17,11 @@ sub _entities_for_query {
     my $self = shift;
     my $user = $self->rest->user();
 
-    my $group_cursor = Socialtext::Group->All();
-    if ($user->is_business_admin) {
-        return $group_cursor->all;
+    if ($user->is_business_admin and $self->rest->query->param('all')) {
+        return Socialtext::Group->All->all;
     }
 
-    my @groups;
-    while (my $g = $group_cursor->next) {
-        eval {
-            if ($g->creator->user_id == $user->user_id 
-                    or $g->has_user($user)) {
-                push @groups, $g;
-            }
-        };
-        warn $@ if $@;
-    }
-    return @groups;
+    return $user->groups->all;
 }
 
 sub _entity_hash {
