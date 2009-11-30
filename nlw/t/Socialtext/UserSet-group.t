@@ -27,9 +27,9 @@ plugin: {
     ok $uset->connected($grp->user_set_id, $acct->user_set_id),
         'group has some role in the account';
     $acct->enable_plugin('test');
-    ok $grp->has_plugin('test'), 'has plugin enabled thru account';
+    ok $grp->is_plugin_enabled('test'), 'has plugin enabled thru account';
     $grp->primary_account->disable_plugin('test');
-    ok !$grp->has_plugin('test'), 'has plugin disabled thru account';
+    ok !$grp->is_plugin_enabled('test'), 'has plugin disabled thru account';
 }
 
 user_in_group: {
