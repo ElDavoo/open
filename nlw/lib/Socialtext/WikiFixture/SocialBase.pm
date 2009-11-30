@@ -1828,16 +1828,13 @@ sub st_catchup_logs {
        my $current_dir = cwd;
        my $new_dir =  $ENV{ST_CURRENT} . "/socialtext-reports/";
        chdir($new_dir);
-       my $str = $ENV{ST_CURRENT} . "/socialtext-reports/parse-dev-env-logs /var/log/nlw.log >/dev/null 2>&1";
+       my $str = $ENV{ST_CURRENT} . "/socialtext-reports/parse-dev-env-logs  >/dev/null 2>&1";
        system($str);
        chdir($current_dir);
    } else {
-      #On An Appliance
-      $self->pause(24000);
-      $self->pause(24000);
-      $self->pause(24000);
-      $self->pause(24000);
-      $self->pause(24000);
+      #On An Appliance. Wait six minutes. Log consumer cron job runs every
+      #five minutes.
+      $self->pause(360000);
    }
 }
 
