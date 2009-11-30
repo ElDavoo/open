@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::More tests => 124;
+use Test::Socialtext tests => 124;
 use Test::Differences;
 use Test::Exception;
 use List::Util qw/shuffle/;
