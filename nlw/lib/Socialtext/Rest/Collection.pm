@@ -233,7 +233,15 @@ is a hashref containing both values for both the 'uri' and 'name' keys.
 =cut
 
 # REVIEW: Does name need to be html escaped?
-sub element_list_item { "<li><a href='$_[1]->{uri}'>$_[1]->{name}</a></li>\n" }
+sub element_list_item { 
+    my $self = shift;
+    my $elem = shift;
+    $elem->{name} ||= '';
+    if ($elem->{uri}) {
+        return "<li><a href='$elem->{uri}'>$elem->{name}</a></li>\n" 
+    }
+    return "<li>{uri}'>$elem->{name}</li>\n" 
+}
 
 # FIXME: Add conversion of 'is_*' slots to 'true'/'false' values.
 sub resource_to_html {
