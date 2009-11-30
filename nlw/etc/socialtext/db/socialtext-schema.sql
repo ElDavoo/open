@@ -618,38 +618,12 @@ CREATE TABLE user_set_path (
 
 CREATE VIEW user_sets_for_user AS
   SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id
-   FROM user_set_path;
+   FROM user_set_path
+  WHERE user_set_path.from_set_id <= 536870912;
 
 CREATE VIEW accounts_for_user AS
   SELECT user_sets_for_user.user_set_id, user_sets_for_user.user_id, "Account".account_id, "Account".name, "Account".is_system_created, "Account".skin_name, "Account".email_addresses_are_hidden, "Account".is_exportable, "Account".desktop_logo_uri, "Account".desktop_header_gradient_top, "Account".desktop_header_gradient_bottom, "Account".desktop_bg_color, "Account".desktop_2nd_bg_color, "Account".desktop_text_color, "Account".desktop_link_color, "Account".desktop_highlight_color, "Account".allow_invitation, "Account".all_users_workspace, "Account".account_type, "Account".restrict_to_domain
    FROM user_sets_for_user
-   JOIN "Account" USING (user_set_id);
-
-CREATE TABLE users (
-    user_id bigint NOT NULL,
-    driver_key text NOT NULL,
-    driver_unique_id text NOT NULL,
-    driver_username text NOT NULL,
-    email_address text DEFAULT '' NOT NULL,
-    "password" text DEFAULT '*none*' NOT NULL,
-    first_name text DEFAULT '' NOT NULL,
-    last_name text DEFAULT '' NOT NULL,
-    cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
-    last_profile_update timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
-    is_profile_hidden boolean DEFAULT false NOT NULL,
-    display_name text NOT NULL
-);
-
-CREATE VIEW user_sets_for_user_strict AS
-  SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id
-   FROM user_set_path
-  WHERE (EXISTS ( SELECT 1
-           FROM users
-          WHERE users.user_id = user_set_path.from_set_id));
-
-CREATE VIEW accounts_for_user_strict AS
-  SELECT user_sets_for_user_strict.user_set_id, user_sets_for_user_strict.user_id, "Account".account_id, "Account".name, "Account".is_system_created, "Account".skin_name, "Account".email_addresses_are_hidden, "Account".is_exportable, "Account".desktop_logo_uri, "Account".desktop_header_gradient_top, "Account".desktop_header_gradient_bottom, "Account".desktop_bg_color, "Account".desktop_2nd_bg_color, "Account".desktop_text_color, "Account".desktop_link_color, "Account".desktop_highlight_color, "Account".allow_invitation, "Account".all_users_workspace, "Account".account_type, "Account".restrict_to_domain
-   FROM user_sets_for_user_strict
    JOIN "Account" USING (user_set_id);
 
 CREATE VIEW all_user_account_role AS
@@ -916,11 +890,6 @@ CREATE VIEW groups_for_user AS
    FROM user_sets_for_user
    JOIN groups USING (user_set_id);
 
-CREATE VIEW groups_for_user_strict AS
-  SELECT user_sets_for_user_strict.user_set_id, user_sets_for_user_strict.user_id, groups.group_id, groups.driver_key, groups.driver_unique_id, groups.driver_group_name, groups.primary_account_id, groups.creation_datetime, groups.created_by_user_id, groups.cached_at
-   FROM user_sets_for_user_strict
-   JOIN groups USING (user_set_id);
-
 CREATE TABLE job (
     jobid serial NOT NULL,
     funcid integer NOT NULL,
@@ -1162,6 +1131,21 @@ CREATE TABLE user_workspace_pref (
     pref_blob text NOT NULL
 );
 
+CREATE TABLE users (
+    user_id bigint NOT NULL,
+    driver_key text NOT NULL,
+    driver_unique_id text NOT NULL,
+    driver_username text NOT NULL,
+    email_address text DEFAULT '' NOT NULL,
+    "password" text DEFAULT '*none*' NOT NULL,
+    first_name text DEFAULT '' NOT NULL,
+    last_name text DEFAULT '' NOT NULL,
+    cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
+    last_profile_update timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
+    is_profile_hidden boolean DEFAULT false NOT NULL,
+    display_name text NOT NULL
+);
+
 CREATE SEQUENCE users___user_id
     INCREMENT BY 1
     NO MAXVALUE
@@ -1169,10 +1153,10 @@ CREATE SEQUENCE users___user_id
     CACHE 1;
 
 CREATE VIEW users_share_plugin AS
-  SELECT v_path.from_set_id AS viewer_id, o_path.from_set_id AS other_id, v_path.into_set_id AS user_set_id, plug.plugin
-   FROM user_set_path v_path
-   JOIN user_set_plugin plug ON v_path.into_set_id = plug.user_set_id
-   JOIN user_set_path o_path USING (into_set_id);
+  SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, v_path.user_set_id, plug.plugin
+   FROM user_sets_for_user v_path
+   JOIN user_set_plugin plug USING (user_set_id)
+   JOIN user_sets_for_user o_path USING (user_set_id);
 
 CREATE TABLE webhook (
     id bigint NOT NULL,
@@ -1193,11 +1177,6 @@ CREATE SEQUENCE webhook___webhook_id
 CREATE VIEW workspaces_for_user AS
   SELECT user_sets_for_user.user_set_id, user_sets_for_user.user_id, "Workspace".workspace_id, "Workspace".name, "Workspace".title, "Workspace".logo_uri, "Workspace".homepage_weblog, "Workspace".email_addresses_are_hidden, "Workspace".unmasked_email_domain, "Workspace".prefers_incoming_html_email, "Workspace".incoming_email_placement, "Workspace".allows_html_wafl, "Workspace".email_notify_is_enabled, "Workspace".sort_weblogs_by_create, "Workspace".external_links_open_new_window, "Workspace".basic_search_only, "Workspace".enable_unplugged, "Workspace".skin_name, "Workspace".custom_title_label, "Workspace".header_logo_link_uri, "Workspace".show_welcome_message_below_logo, "Workspace".show_title_below_logo, "Workspace".comment_form_note_top, "Workspace".comment_form_note_bottom, "Workspace".comment_form_window_height, "Workspace".page_title_prefix, "Workspace".email_notification_from_address, "Workspace".email_weblog_dot_address, "Workspace".comment_by_email, "Workspace".homepage_is_dashboard, "Workspace".creation_datetime, "Workspace".account_id, "Workspace".created_by_user_id, "Workspace".restrict_invitation_to_search, "Workspace".invitation_filter, "Workspace".invitation_template, "Workspace".customjs_uri, "Workspace".customjs_name, "Workspace".no_max_image_size, "Workspace".cascade_css, "Workspace".uploaded_skin, "Workspace".allows_skin_upload, "Workspace".allows_page_locking
    FROM user_sets_for_user
-   JOIN "Workspace" USING (user_set_id);
-
-CREATE VIEW workspaces_for_user_strict AS
-  SELECT user_sets_for_user_strict.user_set_id, user_sets_for_user_strict.user_id, "Workspace".workspace_id, "Workspace".name, "Workspace".title, "Workspace".logo_uri, "Workspace".homepage_weblog, "Workspace".email_addresses_are_hidden, "Workspace".unmasked_email_domain, "Workspace".prefers_incoming_html_email, "Workspace".incoming_email_placement, "Workspace".allows_html_wafl, "Workspace".email_notify_is_enabled, "Workspace".sort_weblogs_by_create, "Workspace".external_links_open_new_window, "Workspace".basic_search_only, "Workspace".enable_unplugged, "Workspace".skin_name, "Workspace".custom_title_label, "Workspace".header_logo_link_uri, "Workspace".show_welcome_message_below_logo, "Workspace".show_title_below_logo, "Workspace".comment_form_note_top, "Workspace".comment_form_note_bottom, "Workspace".comment_form_window_height, "Workspace".page_title_prefix, "Workspace".email_notification_from_address, "Workspace".email_weblog_dot_address, "Workspace".comment_by_email, "Workspace".homepage_is_dashboard, "Workspace".creation_datetime, "Workspace".account_id, "Workspace".created_by_user_id, "Workspace".restrict_invitation_to_search, "Workspace".invitation_filter, "Workspace".invitation_template, "Workspace".customjs_uri, "Workspace".customjs_name, "Workspace".no_max_image_size, "Workspace".cascade_css, "Workspace".uploaded_skin, "Workspace".allows_skin_upload, "Workspace".allows_page_locking
-   FROM user_sets_for_user_strict
    JOIN "Workspace" USING (user_set_id);
 
 ALTER TABLE ONLY "Account"
