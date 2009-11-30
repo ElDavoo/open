@@ -326,6 +326,8 @@ sub NewGroupRecord {
 
     # new Group records default to being cached _now_.
     $proto_group->{cached_at} ||= $self->Now();
+    delete $proto_group->{description} 
+        unless defined $proto_group->{description};
 
     # Only concern ourselves with valid Db Columns
     my $valid = $self->FilterValidColumns( $proto_group );
