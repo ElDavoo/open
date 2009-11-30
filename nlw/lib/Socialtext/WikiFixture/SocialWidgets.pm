@@ -385,7 +385,13 @@ sub st_send_signal_via_activities_widget {
     $self->handle_command('wait_for_element_visible_ok', 'expand-input', '30000');
     $self->handle_command('click_ok', 'expand-input');
     $self->handle_command('pause', '3000');
-    my $browser =  $ENV{'selenium_browser'}; 
+    my $browser;
+    if (defined($ENV{'selenium_browser'})) {
+       $browser = $ENV{'selenium_browser'};
+    }
+    else {
+       $browser = 'chrome';
+    }
     if ($browser=~/chrome/ig) {
         $self->handle_command('selectFrame', 'signalFrame');
         $self->handle_command('wait_for_element_visible_ok', '//body', 10000);
