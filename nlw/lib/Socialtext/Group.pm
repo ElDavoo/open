@@ -258,7 +258,8 @@ sub Create {
     my $group = Socialtext::Group->new(homunculus => $homey);
 
     # Add the creator as an admin of this group
-    $group->add_user(role => Socialtext::Role->Admin, user => $group->creator);
+    $group->add_user(role => Socialtext::Role->Admin, user => $group->creator)
+        unless $group->creator->is_system_created;
 
     # make sure the GAR gets created
     my $adapter = Socialtext::Pluggable::Adapter->new;
