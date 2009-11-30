@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 5;
+use Test::Socialtext tests => 6;
 fixtures(qw( clean db ));
 
 use Socialtext::User;
@@ -22,9 +22,11 @@ my $tarball = "t/test-data/export-tarballs/$ws_name.1.tar.gz";
 
 Socialtext::Workspace->ImportFromTarball( tarball => $tarball );
 
-# Make sure the workspace was imported
+# Make sure the workspace was imported with the correct permissions
 my $ws = Socialtext::Workspace->new( name => $ws_name );
 ok $ws, "$ws_name workspace was imported";
+is $ws->permissions->current_set_name, 'member-only',
+    'workspace permissions were correctly imported';
 
 # This user was a 'member' and should be imported as such
 member_user: {

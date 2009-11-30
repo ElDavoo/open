@@ -344,8 +344,13 @@ sub _set_permissions {
         my $sql =
             'INSERT INTO "WorkspaceRolePermission" (workspace_id, role_id, permission_id) VALUES (?,?,?)';
         for my $p (@$perms) {
+            # In older versions of workspace exports, the 'admin' role was
+            # called 'workspace_admin', make sure we're compatible with that.
+            my $role_name = ( $p->{role_name} eq 'workspace_admin' )
+                ? 'admin' : $p->{role_name};
+
+            my $role = Socialtext::Role->new(name => $role_name);
             my $permission = Socialtext::Permission->new(name => $p->{permission_name});
-            my $role = Socialtext::Role->new(name => $p->{role_name});
 
             next unless $permission and $role;
             sql_execute(
