@@ -115,11 +115,10 @@ sub Resolve {
     return $account;
 }
 
-sub PluginsEnabledForAny {
-    my $class = shift;
-    my $sth = sql_execute('SELECT DISTINCT plugin FROM user_set_plugin JOIN "Account" USING (user_set_id)');
-    return map{ $_->[0] } @{ $sth->fetchall_arrayref };
-}
+around 'PluginsEnabledForAll' => sub {
+    my $orig = shift;
+    return $orig->($_[0], 'Account');
+};
 
 sub EnablePluginForAll {
     my ($class, $plugin) = @_;
@@ -1543,9 +1542,9 @@ Returns a count of all accounts.
 Inserts required accounts into the DBMS if they are not present. See
 L<Socialtext::Data> for more details on required data.
 
-=item Socialtext::Account->PluginsEnabledForAny()
+=item Socialtext::Account->PluginsEnabledForAll()
 
-Plugin(s) enabled for any account
+Returns the list of plugin(s) enabled for all accounts.
 
 =item Socialtext::Account->EnablePluginForAll($plugin)
 

@@ -182,10 +182,10 @@ sub set_default_account {
 sub _enabled_plugins {
     my ($self, %opts) = @_;
     if ($opts{'all-accounts'}) {
-        return Socialtext::Account->PluginsEnabledForAny;
+        return Socialtext::Account->PluginsEnabledForAll;
     }
     if ($opts{'all-workspaces'}) {
-        return Socialtext::Workspace->PluginsEnabledForAny;
+        return Socialtext::Workspace->PluginsEnabledForAll;
     }
     elsif ($opts{workspace}) {
         my $workspace = Socialtext::Workspace->new( name => $opts{workspace} );
@@ -207,7 +207,7 @@ sub _plugin_after {
     my ($self, %opts) = @_;
     my $before = $self->{_plugin_before};
     my %after = map { $_ => 1 } $self->_enabled_plugins(%opts);
-
+    
     my $what = $opts{'all-accounts'} ? 'all accounts'
         : $opts{'all-workspaces'} ? 'all workspaces'
         : $opts{workspace} ? "workspace $opts{workspace}"

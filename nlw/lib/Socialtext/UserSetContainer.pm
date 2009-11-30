@@ -2,7 +2,7 @@ package Socialtext::UserSetContainer;
 # @COPYRIGHT@
 use Moose::Role;
 use Socialtext::UserSet;
-use Socialtext::SQL qw(sql_execute);
+use Socialtext::SQL qw(sql_execute sql_singlevalue);
 use Socialtext::l10n qw/loc/;
 use namespace::clean -except => 'meta';
 
@@ -88,6 +88,27 @@ sub _check_plugin_scope {
 
     die loc("The [_1] plugin can not be set at the [_2] scope", $plugin, $scope) . "\n"
         unless $plugin_class->scope eq $scope;
+}
+
+sub PluginsEnabledForAll {
+    my $class = shift;
+    my $table = shift;
+    my $sth = sql_execute(
+        q{SELECT field FROM "System" where field like '%-enabled-all'});
+    my @plugins = map { $_->[0] =~ m/(.+)-enabled-all/; $1 }
+                    @{ $sth->fetchall_arrayref };
+    my @enabled_for_all;
+    for my $plugin (@plugins) {
+        my $count = sql_singlevalue(<<EOT);
+SELECT count(*) FROM "$table"
+    WHERE user_set_id NOT IN (
+        SELECT user_set_id FROM user_set_plugin
+            WHERE plugin = '$plugin'
+    )
+EOT
+        push @enabled_for_all, $plugin if $count == 0;
+    }
+    return @enabled_for_all;
 }
 
 1;

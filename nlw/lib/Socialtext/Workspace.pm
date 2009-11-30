@@ -1995,11 +1995,10 @@ sub DisablePluginForAll {
     Socialtext::SystemSettings::set_system_setting( "$plugin-enabled-all", 0 );
 }
 
-sub PluginsEnabledForAny {
-    my $class = shift;
-    my $sth = sql_execute('SELECT DISTINCT plugin FROM user_set_plugin JOIN "Workspace" USING (user_set_id)');
-    return map { $_->[0] } @{ $sth->fetchall_arrayref };
-}
+around 'PluginsEnabledForAll' => sub {
+    my $orig = shift;
+    return $orig->($_[0], 'Account');
+};
 
 around 'plugins_enabled' => sub {
     my $orig = shift;
