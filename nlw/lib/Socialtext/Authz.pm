@@ -143,18 +143,28 @@ sub plugins_enabled_for_user_set {
     my %p = @_;
     my $t = time_scope 'plugins_for_uset';
     my $user_set = delete $p{user_set};
+    my $direct   = delete $p{direct} || 0;
     my $user_set_id = ref($user_set) ? $user_set->user_set_id : $user_set;
 
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "uset:$user_set_id\0plugins";
+    my $cache_key = "uset:$user_set_id\0plugins\0direct=$direct";
     my $plugins = $cache->get($cache_key);
     return @$plugins if defined $plugins;
 
-    my $sth = sql_execute('
-        SELECT DISTINCT plugin
-        FROM user_set_plugin_tc
-        WHERE user_set_id = ?
-    ', $user_set_id);
+    my $sql = <<EOT;
+SELECT DISTINCT plugin
+FROM user_set_plugin_tc
+WHERE user_set_id = ?
+EOT
+    if ($direct) {
+        $sql = <<EOT;
+SELECT DISTINCT plugin
+FROM user_set_plugin
+WHERE user_set_id = ?
+EOT
+    }
+
+    my $sth = sql_execute($sql, $user_set_id);
     $plugins = [ map { $_->[0] } @{$sth->fetchall_arrayref} ];
 
     $cache->set($cache_key, $plugins);

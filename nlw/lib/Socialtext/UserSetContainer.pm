@@ -22,9 +22,9 @@ sub _build_user_set {
 }
 
 sub plugins_enabled {
-    my ($self) = @_;
+    my $self = shift;
     my $authz = Socialtext::Authz->new();
-    return $authz->plugins_enabled_for_user_set(user_set => $self);
+    return $authz->plugins_enabled_for_user_set(user_set => $self, @_);
 }
 
 sub is_plugin_enabled {

@@ -2001,6 +2001,11 @@ sub PluginsEnabledForAny {
     return map { $_->[0] } @{ $sth->fetchall_arrayref };
 }
 
+around 'plugins_enabled' => sub {
+    my $orig = shift;
+    return $orig->(@_, direct => 1);
+};
+
 use constant RECENT_WORKSPACES => 10;
 sub read_breadcrumbs {
     my ( $self, $user ) = @_;
