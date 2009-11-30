@@ -23,6 +23,8 @@ proto.doExec = function(cmd) {
     };
 };
 
+proto.richtextModeIsReady = function () { return true }
+
 proto.wait_for_socialcalc = function(callback) {
     var t = this;
     this.$.poll(
