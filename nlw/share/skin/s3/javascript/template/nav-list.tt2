@@ -1,6 +1,6 @@
 [% IF data.size %]
     [% FOR entry = data %]
-        <li[% IF loop.last %] class="last"[% END %]>
+        <li[% IF loop.last || data.size == 1 %] class="last"[% END %]>
             <a [% IF opts.defaultId AND entry.default %] id="[% opts.defaultId %]"[% END %]href="[% opts.href(entry) %]">
                 [% IF opts.exists('icon') %]<img src="[% opts.icon(entry) %]"/>[% END %]
                 [% opts.title(entry) | label_ellipsis(30) %][% IF entry.default %] ([% loc("Default") %])[% END %]
