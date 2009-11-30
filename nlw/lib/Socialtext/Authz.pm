@@ -166,7 +166,7 @@ sub plugin_enabled_for_user_set {
     my %p = @_;
     my $plugin_name = delete $p{plugin_name};
     my @plugins = $self->plugins_enabled_for_user_set(%p);
-    return any { $_ eq $plugin_name } @plugins;
+    return (any { $_ eq $plugin_name } @plugins) ? 1 : 0;
 }
 
 1;
