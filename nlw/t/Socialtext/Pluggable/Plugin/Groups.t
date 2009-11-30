@@ -59,6 +59,7 @@ backup: {
 
     my $expected = [
         {
+            description          => '',
             driver_group_name    => $group_one->driver_group_name,
             created_by_username  => $def_user->username,
             primary_account_name => $account->name,
@@ -71,6 +72,7 @@ backup: {
             ],
         },
         {
+            description          => '',
             driver_group_name    => $group_three->driver_group_name,
             created_by_username  => $def_user->username,
             primary_account_name => $account->name,
@@ -96,6 +98,7 @@ backup: {
     } "Exporting all groups for workspace '" . $ws->name . "'...\n";
     $expected = [
         {
+            description          => '',
             driver_group_name    => $group_three->driver_group_name,
             created_by_username  => $def_user->username,
             role_name            => 'admin',
