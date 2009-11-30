@@ -281,7 +281,7 @@ my $FIELDS = <<'EOSQL';
 EOSQL
 
 my $SIGNAL_VIS_SQL = <<'EOSQL';
-    AND account_id IN (
+    AND user_set_id IN (
         SELECT account_id
         FROM signal_account sa
         WHERE sa.signal_id = evt.signal_id
