@@ -1,6 +1,6 @@
 <li class="submenu"><a id="st-wiki-subnav-link-workspaces" href="?action=workspaces_listall">[% loc("Workspaces") %]</a>
   <ul class="level2" id="global-workspace-list">
-    <li class="dropaction"><a href="?action=workspaces_listall">[% loc("All My Workspaces") %]...</a></li>
+    <li class="dropaction"><a href="?action=workspaces_listall">[% loc("All My Workspaces...") %]</a></li>
   [% IF user.is_guest %]
     <li class="emptynotice">[% loc("...lists the workspaces you belong to. You must be logged in to see your list.") %]</li>
   [% ELSE %]
