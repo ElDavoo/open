@@ -39,7 +39,7 @@ Tests for adding groups to a workspace
 # Add a group as an admin role
 | create-group | ga%%start_time%%                      |                                                     |
 | set          | gaid                                  | %%group_id%%                                        |
-| post-json    | /data/workspaces/%%workspace%%/groups | {"group_id":%%gaid%%,"role_name":"workspace_admin"} |
+| post-json    | /data/workspaces/%%workspace%%/groups | {"group_id":%%gaid%%,"role_name":"admin"} |
 | code-is      | 204                                   |                                                     |
 # verify
 | get       | /data/workspaces/%%workspace%%/groups | application/json |
