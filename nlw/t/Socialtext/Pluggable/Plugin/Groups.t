@@ -64,6 +64,7 @@ backup: {
             created_by_username  => $def_user->username,
             primary_account_name => $account->name,
             role_name            => 'member',
+            description          => '',
             users                => [
                 {
                     role_name => $ugr_role->name,
@@ -77,6 +78,7 @@ backup: {
             created_by_username  => $def_user->username,
             primary_account_name => $account->name,
             role_name            => 'member',
+            description          => '',
             users                => [
                 {
                     username  => $user_two->username,
@@ -102,6 +104,7 @@ backup: {
             driver_group_name    => $group_three->driver_group_name,
             created_by_username  => $def_user->username,
             role_name            => 'admin',
+            description          => '',
             primary_account_name => $group_three->primary_account->name,
             users                => [
                 {
