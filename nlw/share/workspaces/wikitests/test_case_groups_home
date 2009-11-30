@@ -30,7 +30,7 @@
 | wait_for_text_present_ok | %%groupname%% |  |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups Home Check Workspaces Widget |
+| *Comment* | Test Case: Groups Home Check Workspaces Widget |  |
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_element_visible_ok | link=%%wsname%% |  |
 | wait_for_element_visible_ok | link=%%wsname2%% |  |
@@ -76,5 +76,9 @@
 | text_like | //body | %%username%% |
 | text_like | //body | %%nopermuser%% |
 | select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups Home TEARDOWN |  |
+| st-admin | delete-workspace --w %%wsname%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%wsname2%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Groups Home COMPLETED |  |

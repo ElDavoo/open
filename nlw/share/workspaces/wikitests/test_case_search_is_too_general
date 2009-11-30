@@ -40,8 +40,8 @@
 | st-result | General Page 2 %%start_time%% |  |
 | st-result | General Page 1 %%start_time%% |  |
 
-| *Comment* | Test case: Search Is Too General Teardown |  |
-| st-admin | delete-workspace --w %%gws%% |  |
+| *Comment* | Test case: Search Is Too General TEARDOWN |  |
+| st-admin | delete-workspace --w %%gws%% --no-export | has been deleted |
 | st-config | set search_warning_threshold 500 |  |
 
 | *Comment* | Test case: Search Is Too General COMPLETED |  |

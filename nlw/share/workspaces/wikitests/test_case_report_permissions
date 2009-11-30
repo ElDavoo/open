@@ -72,7 +72,7 @@
 
 | st-admin | remove-member --email newuser_perm_3_%%start_time%%@matt.socialtext.net --workspace %%workspace%% |  |
 | st-admin | remove-member --email newuser_perm_3_%%start_time%%@matt.socialtext.net --workspace %%report_workspace%% |  |
-| st-admin | delete-workspace --workspace %%workspace_two%% |  |
+| st-admin | delete-workspace --workspace %%workspace_two%% --no-export | has been deleted |
 | st-admin | remove-accounts-admin --email %%email%% | %%username%% no longer has accounts admin access |
 
 | *Comment* | Test Case: Report Permissions COMPLETED |  |

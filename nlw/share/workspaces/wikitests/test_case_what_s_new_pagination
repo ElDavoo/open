@@ -43,8 +43,8 @@
 | wait_for_element_not_present_ok | link=Last | 30000 |
 | wait_for_element_not_present_ok | link=Next | 30000 |
 
-| *Comment* | Test case: What's New Pagination Teardown |  |
+| *Comment* | Test case: What's New Pagination TEARDOWN |  |
 
-| st-admin | delete-workspace --w %%pws%% |  |
+| st-admin | delete-workspace --w %%pws%% --no-export | has been deleted |
 
 | *Comment* | Test case: What's New Pagination COMPLETED |  |

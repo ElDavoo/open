@@ -33,7 +33,7 @@
 | wait_for_element_visible_ok | link=Clear Selection | 30000 |
 | click_ok | link=Clear Selection |  |
 
-| *Comment* | Test Case: Business Control Panel Invite Users to Existent Workspace TEARDOWN |
-| st-admin | delete-workspace --name %%new_ws_title%% --no-export |  |
+| *Comment* | Test Case: Business Control Panel Invite Users to Existent Workspace TEARDOWN |  |
+| st-admin | delete-workspace --w %%new_ws_title%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Business Control Panel Invite Users to Existent Workspace COMPLETED |
