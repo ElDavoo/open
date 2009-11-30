@@ -314,10 +314,8 @@ sub visible_exists {
 
     if ($account_id) {
         my $acct = Socialtext::Account->new(account_id => $account_id);
-        my $user_set_id = $acct->user_set_id;
-
-        $sql .= "\nAND viewer_path.into_set_id = ?\n";
-        push @$bind_ref, $account_id;
+        $sql .= "\nAND user_set_id = ?\n";
+        push @$bind_ref, $acct->user_set_id;
     }
 
     if ($plugin eq 'signals') {
