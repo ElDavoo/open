@@ -3,7 +3,7 @@ package Socialtext::UserSet;
 use Moose;
 use Carp qw/croak/;
 use Socialtext::User;
-use Socialtext::SQL qw/get_dbh/;
+use Socialtext::SQL qw/get_dbh :txn/;
 use Socialtext::Timer qw/time_scope/;
 use namespace::clean -except => 'meta';
 
@@ -408,15 +408,17 @@ sub _modify_wrapper {
     my $dbh = get_dbh();
     local $dbh->{RaiseError} = 1;
     local $dbh->{TraceLevel} = ($self->trace) ? 3 : $dbh->{TraceLevel};
-    $dbh->begin_work;
+    
+    my $in_txn = sql_in_transaction();
+    $dbh->begin_work unless $in_txn;
     eval {
         $dbh->do(q{LOCK user_set_include,user_set_path IN SHARE MODE});
         $self->$code($dbh, @_);
-        $dbh->commit;
+        $dbh->commit unless $in_txn;
     };
     if (my $e = $@) {
         local $@;
-        eval { $dbh->rollback };
+        eval { $dbh->rollback unless $in_txn };
         warn "during rollback: $@" if $@;
         confess $e;
     }
