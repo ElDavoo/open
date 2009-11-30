@@ -211,10 +211,7 @@ fixtures(qw( clean populated_rdbms ));
             map { [ $_->[0]->username, $_->[1]->name ] }
                 $users_with_roles->all()
         ],
-        [
-            map { my $u = "devnull$_\@urth.org"; [ $u, $roles{$u} ] }
-            2 .. 7, 1
-        ],
+        [ map { my $u = "devnull$_\@urth.org"; [ $u, $roles{$u} ] } 1 .. 7 ],
         'ByWorkspaceIdWithRoles() sorted by role_name',
     );
 }
