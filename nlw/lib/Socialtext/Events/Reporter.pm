@@ -282,8 +282,9 @@ EOSQL
 
 my $SIGNAL_VIS_SQL = <<'EOSQL';
     AND user_set_id IN (
-        SELECT account_id
+        SELECT user_set_id
         FROM signal_account sa
+        JOIN "Account" USING (account_id)
         WHERE sa.signal_id = evt.signal_id
     )
     AND (
