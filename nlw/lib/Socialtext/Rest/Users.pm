@@ -97,10 +97,10 @@ sub create_user_find {
 
     return Socialtext::User::Find->new(
         viewer => $self->rest->user,
-        limit => $limit,
+        limit  => $limit,
         offset => $offset,
         filter => $filter,
-    )
+    );
 }
 
 sub get_resource {
