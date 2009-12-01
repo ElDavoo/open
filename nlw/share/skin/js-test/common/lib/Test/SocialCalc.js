@@ -87,6 +87,8 @@ proto.endAsync = function() {
         t.asyncId = 0;
     }
 
+    t.win.confirm = function() { return true };
+
     if ((typeof t.$ != 'undefined') && t.$('#st-save-button-link').is(':visible')) {
         t.click('#st-save-button-link');
         t.poll( function() {
