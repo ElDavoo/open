@@ -142,7 +142,6 @@ sub _built_in_db {
 
     my $s = Socialtext::Schema->new(verbose => 1);
     $s->recreate(no_dump => 1);
-    _system_or_die("psql -f $schema_dir/dev.sql");
 
     _cache_initial_data($schema_src_dir);
 }
