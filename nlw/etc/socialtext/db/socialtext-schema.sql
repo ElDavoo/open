@@ -568,32 +568,6 @@ CREATE TABLE account_logo (
     logo bytea NOT NULL
 );
 
-CREATE TABLE group_account_role (
-    group_id bigint NOT NULL,
-    account_id bigint NOT NULL,
-    role_id bigint NOT NULL
-);
-
-CREATE TABLE user_account_role (
-    user_id bigint NOT NULL,
-    account_id bigint NOT NULL,
-    role_id integer
-);
-
-CREATE TABLE user_group_role (
-    user_id bigint NOT NULL,
-    role_id integer NOT NULL,
-    group_id bigint NOT NULL
-);
-
-CREATE VIEW account_user AS
-  SELECT user_account_role.user_id, user_account_role.account_id, true AS is_direct
-   FROM user_account_role
-UNION ALL 
- SELECT ugr.user_id, gar.account_id, false AS is_direct
-   FROM user_group_role ugr
-   JOIN group_account_role gar USING (group_id);
-
 CREATE TABLE user_set_path (
     from_set_id integer NOT NULL,
     via_set_id integer NOT NULL,
@@ -611,46 +585,6 @@ CREATE VIEW accounts_for_user AS
   SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00110000000000000000000000000000'::"bit"::integer AS account_id
    FROM user_sets_for_user
   WHERE user_sets_for_user.user_set_id >= B'00110000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'01000000000000000000000000000000'::"bit"::integer;
-
-CREATE VIEW all_user_account_role AS
-  SELECT my_acct_roles.user_id, my_acct_roles.account_id, my_acct_roles.role_id
-   FROM ( SELECT user_account_role.user_id, user_account_role.account_id, user_account_role.role_id
-           FROM user_account_role
-UNION ALL 
-         SELECT ugr.user_id, gar.account_id, gar.role_id
-           FROM user_group_role ugr
-      JOIN group_account_role gar USING (group_id)) my_acct_roles;
-
-CREATE TABLE group_workspace_role (
-    group_id bigint NOT NULL,
-    workspace_id bigint NOT NULL,
-    role_id integer NOT NULL
-);
-
-CREATE TABLE user_workspace_role (
-    user_id bigint NOT NULL,
-    workspace_id bigint NOT NULL,
-    role_id integer NOT NULL,
-    is_selected boolean DEFAULT true NOT NULL
-);
-
-CREATE VIEW all_user_workspace AS
-  SELECT my_workspaces.user_id, my_workspaces.workspace_id
-   FROM ( SELECT user_workspace_role.user_id, user_workspace_role.workspace_id
-           FROM user_workspace_role
-UNION ALL 
-         SELECT ugr.user_id, gwr.workspace_id
-           FROM user_group_role ugr
-      JOIN group_workspace_role gwr USING (group_id)) my_workspaces;
-
-CREATE VIEW all_user_workspace_role AS
-  SELECT my_workspace_roles.user_id, my_workspace_roles.workspace_id, my_workspace_roles.role_id
-   FROM ( SELECT user_workspace_role.user_id, user_workspace_role.workspace_id, user_workspace_role.role_id
-           FROM user_workspace_role
-UNION ALL 
-         SELECT ugr.user_id, gwr.workspace_id, gwr.role_id
-           FROM user_group_role ugr
-      JOIN group_workspace_role gwr USING (group_id)) my_workspace_roles;
 
 CREATE TABLE container (
     container_id bigint NOT NULL,
@@ -691,21 +625,6 @@ CREATE SEQUENCE default_gadget_id
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
-
-CREATE VIEW distinct_user_account_role AS
-  SELECT DISTINCT all_user_account_role.user_id, all_user_account_role.account_id, all_user_account_role.role_id
-   FROM all_user_account_role
-  ORDER BY all_user_account_role.user_id, all_user_account_role.account_id, all_user_account_role.role_id;
-
-CREATE VIEW distinct_user_workspace AS
-  SELECT DISTINCT all_user_workspace.user_id, all_user_workspace.workspace_id
-   FROM all_user_workspace
-  ORDER BY all_user_workspace.user_id, all_user_workspace.workspace_id;
-
-CREATE VIEW distinct_user_workspace_role AS
-  SELECT DISTINCT all_user_workspace_role.user_id, all_user_workspace_role.workspace_id, all_user_workspace_role.role_id
-   FROM all_user_workspace_role
-  ORDER BY all_user_workspace_role.user_id, all_user_workspace_role.workspace_id, all_user_workspace_role.role_id;
 
 CREATE TABLE error (
     error_time integer NOT NULL,
@@ -1069,13 +988,6 @@ CREATE TABLE topic_signal_user (
     user_id bigint NOT NULL
 );
 
-CREATE VIEW user_account AS
-  SELECT um.user_id, um.primary_account_id AS account_id, true AS is_direct, true AS is_primary
-   FROM "UserMetadata" um
-UNION ALL 
- SELECT account_user.user_id, account_user.account_id, account_user.is_direct, false AS is_primary
-   FROM account_user;
-
 CREATE TABLE user_plugin_pref (
     user_id bigint NOT NULL,
     plugin text NOT NULL,
@@ -1368,14 +1280,6 @@ ALTER TABLE ONLY topic_signal_user
     ADD CONSTRAINT topic_signal_user_pk
             PRIMARY KEY (signal_id, user_id);
 
-ALTER TABLE ONLY user_account_role
-    ADD CONSTRAINT user_account_role_pkey
-            PRIMARY KEY (user_id, account_id);
-
-ALTER TABLE ONLY user_group_role
-    ADD CONSTRAINT user_group_role_pk
-            PRIMARY KEY (user_id, group_id);
-
 ALTER TABLE ONLY user_set_include
     ADD CONSTRAINT user_set_include_pkey
             PRIMARY KEY (from_set_id, into_set_id);
@@ -1383,10 +1287,6 @@ ALTER TABLE ONLY user_set_include
 ALTER TABLE ONLY user_set_plugin
     ADD CONSTRAINT user_set_plugin_pkey
             PRIMARY KEY (user_set_id, plugin);
-
-ALTER TABLE ONLY user_workspace_role
-    ADD CONSTRAINT user_workspace_role_pkey
-            PRIMARY KEY (user_id, workspace_id);
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey
@@ -1440,12 +1340,6 @@ CREATE INDEX exitstatus_funcid
 
 CREATE INDEX gallery_gadget_gadget_id_idx
 	    ON gallery_gadget (gadget_id);
-
-CREATE INDEX group_account_role__account_id_ix
-	    ON group_account_role (account_id);
-
-CREATE INDEX group_workspace_role_workspace_id
-	    ON group_workspace_role (workspace_id);
 
 CREATE UNIQUE INDEX groups_account_user_group_name
 	    ON groups (primary_account_id, created_by_user_id, driver_group_name);
@@ -1733,12 +1627,6 @@ CREATE INDEX storage_key_value_viewer_ix
 	    ON "storage" ("key", value)
 	    WHERE (("key")::text = 'viewer');
 
-CREATE INDEX user_account_role__account_id_ix
-	    ON user_account_role (account_id);
-
-CREATE INDEX user_group_role_group_id
-	    ON user_group_role (group_id);
-
 CREATE INDEX user_plugin_pref_idx
 	    ON user_plugin_pref (user_id, plugin);
 
@@ -1750,9 +1638,6 @@ CREATE UNIQUE INDEX user_set_plugin_ukey
 
 CREATE INDEX user_workspace_pref_idx
 	    ON user_workspace_pref (user_id, workspace_id);
-
-CREATE INDEX user_workspace_role__workspace_id
-	    ON user_workspace_role (workspace_id);
 
 CREATE UNIQUE INDEX users_driver_unique_id
 	    ON users (driver_key, driver_unique_id);
@@ -2160,36 +2045,6 @@ ALTER TABLE ONLY topic_signal_user
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
-ALTER TABLE ONLY user_account_role
-    ADD CONSTRAINT user_account_role__account_fk
-            FOREIGN KEY (account_id)
-            REFERENCES "Account"(account_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY user_account_role
-    ADD CONSTRAINT user_account_role__role_fk
-            FOREIGN KEY (role_id)
-            REFERENCES "Role"(role_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY user_account_role
-    ADD CONSTRAINT user_account_role__user_fk
-            FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY user_group_role
-    ADD CONSTRAINT user_group_role_group_fk
-            FOREIGN KEY (group_id)
-            REFERENCES groups(group_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY user_group_role
-    ADD CONSTRAINT user_group_role_role_fk
-            FOREIGN KEY (role_id)
-            REFERENCES "Role"(role_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY user_group_role
-    ADD CONSTRAINT user_group_role_user_fk
-            FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
-
 ALTER TABLE ONLY user_plugin_pref
     ADD CONSTRAINT user_plugin_pref_user_fk
             FOREIGN KEY (user_id)
@@ -2217,21 +2072,6 @@ ALTER TABLE ONLY user_workspace_pref
 
 ALTER TABLE ONLY user_workspace_pref
     ADD CONSTRAINT user_workspace_pref_workspace_fk
-            FOREIGN KEY (workspace_id)
-            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY user_workspace_role
-    ADD CONSTRAINT user_workspace_role_role_id_fk
-            FOREIGN KEY (role_id)
-            REFERENCES "Role"(role_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY user_workspace_role
-    ADD CONSTRAINT user_workspace_role_user_id_fk
-            FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY user_workspace_role
-    ADD CONSTRAINT user_workspace_role_workspace_id_fk
             FOREIGN KEY (workspace_id)
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
