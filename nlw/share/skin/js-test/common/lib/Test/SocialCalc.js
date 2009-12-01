@@ -18,12 +18,20 @@ proto.curCell = function(coord) {
     return t.$('#st-spreadsheet-preview #cell_'+coord);
 }
 
-proto.doCheckCSS = function(attr, value, msg, coord) {
+proto._doCheck = function(meth, key, value, msg, coord) {
     var t = this;
     return function() {
-        t.is(t.curCell(coord).css(attr).replace(/^\s+|\s+$/g, ''), value, msg);
+        t.is(t.curCell(coord)[meth](key).replace(/^\s+|\s+$/g, ''), value, msg);
         t.callNextStep();
     };
+}
+
+proto.doCheckCSS = function(key, value, msg, coord) {
+    return this._doCheck('css', key, value, msg, coord);
+}
+
+proto.doCheckAttr = function(key, value, msg, coord) {
+    return this._doCheck('attr', key, value, msg, coord);
 }
 
 proto.doCheckText = function(text, msg, coord) {
@@ -33,7 +41,6 @@ proto.doCheckText = function(text, msg, coord) {
         t.callNextStep();
     };
 }
-
 
 proto.callNextStepOnReady = function() {
     var t = this;
