@@ -1,13 +1,11 @@
 #!perl
 # @COPYRIGHT@
-
 use strict;
 use warnings;
-
 use mocked 'Apache';
 use mocked 'Apache::Cookie';
 use Test::Socialtext tests => 23;
-fixtures( 'admin' );
+fixtures( 'clean', 'admin' );
 
 BEGIN {
     use_ok( 'Socialtext::EditPlugin' );

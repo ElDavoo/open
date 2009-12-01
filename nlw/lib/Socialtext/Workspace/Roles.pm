@@ -55,17 +55,17 @@ sub CountUsersByWorkspaceId {
     my $direct = defined $p{direct} ? $p{direct} : 0;
 
     my $uwr_table = $direct
-        ? 'user_workspace_role'
-        : 'all_user_workspace_role';
-
+        ? 'user_set_include'
+        : 'user_set_path';
+    my $ws_uset_id = $ws_id + 0x20000000;
     my $sql = qq{
-        SELECT COUNT(DISTINCT user_id)
-          FROM users
-          JOIN $uwr_table USING (user_id)
-         WHERE workspace_id = ?
+        SELECT COUNT(DISTINCT from_set_id)
+          FROM $uwr_table
+         WHERE into_set_id = ?
+           AND from_set_id <= 0x10000000;
     };
 
-    my $count = sql_singlevalue($sql, $ws_id);
+    my $count = sql_singlevalue($sql, $ws_uset_id);
     return $count;
 }
 
@@ -210,20 +210,21 @@ sub RolesForUserInWorkspace {
         my $direct  = $p{direct};
         my $exclude = $p{exclude};
 
-        my $uwr_table = $direct
-            ? 'user_workspace_role'
-            : 'all_user_workspace_role';
-
         my $exclude_clause = '';
-        if (@{$exclude}) {
-            my $wksps = join(',', @{$exclude});
-            $exclude_clause = "AND workspace_id NOT IN ($wksps)";
+        if (@$exclude) {
+            my $wksps = join(',', map { 0x20000000 + $_ } 
+                grep !/\D/, @$exclude);
+            $exclude_clause = "AND into_set_id NOT IN ($wksps)";
         }
 
+        my $uwr_table = $direct
+            ? 'user_set_include'
+            : 'user_set_path';
         my $sql = qq{
-            SELECT COUNT(DISTINCT workspace_id)
+            SELECT COUNT(DISTINCT(into_set_id))
               FROM $uwr_table
-             WHERE user_id = ?
+             WHERE from_set_id = ?
+               AND into_set_id BETWEEN x'20000001'::int AND x'30000000'::int
              $exclude_clause
         };
         my $count = sql_singlevalue( $sql, $user_id );
