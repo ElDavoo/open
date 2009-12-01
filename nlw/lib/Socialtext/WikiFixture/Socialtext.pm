@@ -654,10 +654,13 @@ sub _st_admin_in_process {
     my ($self, $options, $verify) = @_;
 
     {
-        # over-ride "_exit()" so that we don't exit while running in-process
+        # over-ride "_exit()" so that we don't exit while running in-process.
+        #
+        # We *do*, however, want to make sure that we stop whatever we're
+        # doing, so throw a fatal exception and get us outta there.
         require Socialtext::CLI;
         no warnings 'redefine';
-        *Socialtext::CLI::_exit = sub { };
+        *Socialtext::CLI::_exit = sub { die "\n" };
     }
 
     my @argv   = shellwords( $options );
