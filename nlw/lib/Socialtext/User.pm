@@ -629,72 +629,6 @@ sub workspace_count {
     return Socialtext::Workspace::Roles->CountWorkspacesByUserId(%p);
 }
 
-sub workspaces_with_selected {
-    my $self = shift;
-    require Socialtext::Workspace;      # lazy-load, to reduce startup impact
-
-    my $sth = sql_execute(<<EOSQL, $self->user_id);
-SELECT uwr.workspace_id
-    FROM user_workspace_role uwr, "Workspace" w
-    WHERE uwr.user_id=? AND uwr.workspace_id = w.workspace_id
-    ORDER BY w.name
-EOSQL
-
-    return Socialtext::MultiCursor->new(
-        iterables => [ $sth->fetchall_arrayref ],
-        apply     => sub {
-            my $row          = shift;
-            my $workspace_id = $row->[0];
-
-            return undef unless defined $workspace_id;
-
-            return [
-                Socialtext::Workspace->new( workspace_id => $workspace_id ),
-                Socialtext::UserWorkspaceRoleFactory->Get(
-                    user_id      => $self->user_id,
-                    workspace_id => $workspace_id
-                )
-            ];
-        }
-    );
-}
-
-{
-    Readonly my $spec => { workspace => WORKSPACE_TYPE };
-    sub workspace_is_selected {
-        my $self = shift;
-        my %p    = validate(@_, $spec);
-
-        my $sth = sql_execute(
-            'SELECT is_selected'
-            . ' FROM user_workspace_role'
-            . ' WHERE user_id=? AND workspace_id=?',
-            $self->user_id, $p{workspace}->workspace_id );
-
-        return $sth->fetchall_arrayref->[0][0];
-    }
-}
-
-{
-    Readonly my $spec => { workspaces => ARRAYREF_TYPE };
-    sub set_selected_workspaces {
-        my $self = shift;
-        my %p = validate( @_, $spec );
-
-        my $workspaces = $self->workspaces();
-
-        my %selected = map { $_->workspace_id => 1 } @{ $p{workspaces} };
-        while ( my $ws = $workspaces->next ) {
-            my $uwr = Socialtext::UserWorkspaceRoleFactory->Get(
-                user_id      => $self->user_id,
-                workspace_id => $ws->workspace_id
-            );
-            $uwr->update(
-                is_selected => ( $selected{ $ws->workspace_id } ? 1 : 0));
-        }
-    }
-}
-
 sub workspaces {
     my $self = shift;
     require Socialtext::Workspace;      # lazy-load, to reduce startup impact
@@ -1882,25 +1816,6 @@ ordered by workspace name.
 This is just a helper method to
 `Socialtext::Workspace::Roles->WorkspacesByUserId()`; please
 refer to L<Socialtext::Workspace::Roles> for more information.
-
-=head2 $user->workspaces_with_selected()
-
-Returns a cursor of the C<Socialtext::Workspace> and
-C<Socialtext::UserWorkspaceRole> object for the workspace of which the
-user is a member, ordered by workspace name.
-
-REVIEW - better name needed
-
-=head2 $user->workspace_is_selected( workspace => $workspace )
-
-Returns a boolean indicating whether or not the given workspace is
-selected.
-
-=head2 $user->set_selected_workspaces( workspaces => [ $ws1, $ws2 ] );
-
-Given an array reference of C<Socialtext::Workspace> objects, this
-sets user_workspace_role.is_selected for each workspace to true, and
-false for all other workspaces of which the user is a member.
 
 =head2 $user->is_authenticated()
 

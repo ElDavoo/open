@@ -1196,6 +1196,7 @@ sub _user_role_changed {
 }
 
 sub users_with_roles { shift->user_roles(@_) }
+sub groups_with_roles { shift->group_roles(@_) }
 
 sub groups_with_roles {
     my $self = shift;
