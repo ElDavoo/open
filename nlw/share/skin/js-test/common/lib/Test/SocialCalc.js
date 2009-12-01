@@ -9,6 +9,31 @@ proto.open_iframe_with_socialcalc = function(url, callback) {
     });
 }
 
+proto.curCell = function() {
+    var t = this;
+    if (t.$('#st-spreadsheet-edit #e-cell_A1').is(':visible')) {
+        return t.$('#st-spreadsheet-edit #e-cell_A1');
+    }
+    return t.$('#st-spreadsheet-preview #cell_A1');
+}
+
+proto.doCheckCSS = function(attr, value, msg) {
+    var t = this;
+    return function() {
+        t.is(t.curCell().css(attr).replace(/^\s+|\s+$/g, ''), value, msg);
+        t.callNextStep();
+    };
+}
+
+proto.doCheckText = function(text, msg) {
+    var t = this;
+    return function() {
+        t.is(t.curCell().text().replace(/^\s+|\s+$/g, ''), text, msg);
+        t.callNextStep();
+    };
+}
+
+
 proto.callNextStepOnReady = function() {
     var t = this;
     setTimeout(function(){
