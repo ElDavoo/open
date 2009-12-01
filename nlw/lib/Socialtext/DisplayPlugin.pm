@@ -174,8 +174,9 @@ sub display {
     my @new_attachments = ();
     my @new_tags = ();
     if ($is_new_page) {
+        my $page_type = $self->cgi->page_type || '';
         $page->metadata->Type(
-            $self->cgi->page_type eq 'spreadsheet' && 'spreadsheet' || 'wiki'
+            $page_type eq 'spreadsheet' && 'spreadsheet' || 'wiki'
         );
         push @new_tags, $self->_new_tags_to_add();
 

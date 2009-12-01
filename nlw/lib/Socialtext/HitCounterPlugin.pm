@@ -368,10 +368,9 @@ sub _users_for_stat {
 
 sub hit_counter_increment {
     my $self = shift;
+    my $action = $self->hub->action || '';
 
-    return
-        unless $self->hub->action eq 'display'
-        or $self->hub->action     eq 'display_page';
+    return unless $action eq 'display' or $action eq 'display_page';
 
     my $counter_dir = $self->_page_counter_dir(
         $self->hub->current_workspace->name,
