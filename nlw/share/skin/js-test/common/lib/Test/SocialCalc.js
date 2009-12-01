@@ -9,19 +9,53 @@ proto.open_iframe_with_socialcalc = function(url, callback) {
     });
 }
 
+proto.callNextStepOnReady = function() {
+    var t = this;
+    setTimeout(function(){
+        t.poll(function(){
+            return(!t.ss.editor.busy);
+        }, function(){
+            t.callNextStep();
+        })
+    }, 100);
+};
+
+proto.doClick = function(selector) {
+    var t = this;
+    return function() {
+        t.click(selector);
+        t.callNextStepOnReady();
+    }
+};
+
 proto.doExec = function(cmd) {
     var t = this;
     return function() {
         t.ss.editor.EditorScheduleSheetCommands(cmd);
-        setTimeout(function(){
-            t.poll(function(){
-                return(!t.ss.editor.busy);
-            }, function(){
-                t.callNextStep();
-            })
-        }, 100);
+        t.callNextStepOnReady();
     };
 };
+
+proto.endAsync = function() {
+    var t = this;
+    if (! t.asyncId)
+        throw("endAsync called out of order");
+
+    var doEndAsync = function() {
+        t.builder.endAsync(t.asyncId);
+        t.asyncId = 0;
+    }
+
+    if (t.$('#st-save-button-link').is(':visible')) {
+        t.click('#st-save-button-link');
+        t.poll( function() {
+            return t.$('#st-display-mode-container', t.win.document).is(':visible')
+        }, doEndAsync);
+    }
+    else {
+        doEndAsync();
+    }
+}
 
 proto.richtextModeIsReady = function () { return true }
 
