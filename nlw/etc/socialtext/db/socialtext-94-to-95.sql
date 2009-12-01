@@ -173,6 +173,11 @@ CREATE VIEW user_sets_for_user AS
     FROM user_set_path
     WHERE from_set_id <= 536870912;
 
+CREATE VIEW roles_for_user AS
+    SELECT from_set_id AS user_id, into_set_id AS user_set_id, role_id
+    FROM user_set_path
+    WHERE from_set_id <= 536870912;
+
 -- e.g. WHERE viewer_id = ? AND other_id = ? AND plugin = 'people'
 CREATE VIEW users_share_plugin AS
     SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, user_set_id, plugin

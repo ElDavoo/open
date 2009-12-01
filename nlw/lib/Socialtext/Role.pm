@@ -20,15 +20,16 @@ field 'used_as_default';
 
 # Built-in/default Roles, and whether they're required.  *IN ORDER* of implied
 # effectiveness, from lowest->highest effective privilege.
+# The flag indicates if this role is assignable.
 Readonly my @RequiredRoles => (
     [ guest              => 1 ],
     [ authenticated_user => 1 ],
     [ affiliate          => 0 ],
     [ member             => 0 ],
-    [ admin              => 0 ],
-    [ impersonator       => 0 ],
     [ member_workspace   => 0 ],
     [ member_group       => 0 ],
+    [ admin              => 0 ],
+    [ impersonator       => 0 ],
 );
 sub EnsureRequiredDataIsPresent {
     my $class = shift;

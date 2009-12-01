@@ -151,18 +151,12 @@ sub plugins_enabled_for_user_set {
     my $plugins = $cache->get($cache_key);
     return @$plugins if defined $plugins;
 
+    my $table = $direct ? 'user_set_plugin' : 'user_set_plugin_tc';
     my $sql = <<EOT;
-SELECT DISTINCT plugin
-FROM user_set_plugin_tc
-WHERE user_set_id = ?
+        SELECT DISTINCT plugin
+        FROM $table
+        WHERE user_set_id = ?
 EOT
-    if ($direct) {
-        $sql = <<EOT;
-SELECT DISTINCT plugin
-FROM user_set_plugin
-WHERE user_set_id = ?
-EOT
-    }
 
     my $sth = sql_execute($sql, $user_set_id);
     $plugins = [ map { $_->[0] } @{$sth->fetchall_arrayref} ];

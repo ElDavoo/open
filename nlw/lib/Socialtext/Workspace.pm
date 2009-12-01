@@ -1142,24 +1142,18 @@ sub email_passes_invitation_filter {
     return($email and $email =~ qr/$filter/);
 }
 
-{
-    Readonly my $spec => {
-       user => USER_TYPE,
-       role => ROLE_TYPE( default => undef ),
-    };
+after 'role_change_event' => sub {
+    my ($self,$actor,$change,$object,$role) = @_;
 
-    sub add_user {
-        my $self = shift;
-        my %p    = validate( @_, $spec );
-        my $user = $p{user};
+    if ($object->isa('Socialtext::User')) {
+        $self->_user_role_changed($actor,$change,$object,$role);
+    }
+};
 
-        Socialtext::JSON::Proxy::Helper->ClearForUsers($user->user_id);
+sub _user_role_changed {
+    my ($self,$actor,$change,$user,$role) = @_;
 
-        $p{role} ||= Socialtext::Role->Member();
-
-        $self->assign_role_to_user( is_selected => 1, %p );
-        Socialtext::Cache->clear('ws_roles');
-
+    if ($change eq 'add') {
         # This is needed because of older appliances where users were put in
         # one of three accounts that are not optimal:
         #
@@ -1168,190 +1162,39 @@ sub email_passes_invitation_filter {
         #  * General: There was not a good candidate account.
         #  * Unknown: This was an old default, move them if possible.
         #
-        # We assume that's not where we want them to be, so assigning a user
-        # to thier first workspace is a show of intent for which account they
-        # should be in.
+        # We assume that's not where we want them to be, so assigning a
+        # user to thier first workspace is a show of intent for which
+        # account they should be in.
         $user->primary_account($self->account)
-            if grep { $user->primary_account->name eq $_ }
+            if List::MoreUtils::any { $user->primary_account->name eq $_ }
             qw/Ambiguous General Unknown/;
-    }
-}
 
-{
-    Readonly my $spec => {
-       user        => USER_TYPE,
-       role        => ROLE_TYPE,
-       is_selected => BOOLEAN_TYPE( default => 0 ),
-    };
-    sub assign_role_to_user {
-        my $self = shift;
-        my %p = validate( @_, $spec );
-        my $timer = Socialtext::Timer->new;
-
-        if ( $p{user}->is_system_created ) {
-            param_error 'Cannot give a role to a system-created user';
-        }
-
-        if ( $p{role}->used_as_default ) {
-            param_error 'Cannot explicitly assign a default role type to a user';
-        }
-
-        my $uwr = Socialtext::UserWorkspaceRoleFactory->Get(
-            user_id      => $p{user}->user_id,
-            workspace_id => $self->workspace_id,
-        );
-
-        if ($uwr) {
-            $uwr->update({
-                role_id     => $p{role}->role_id,
-                is_selected => $p{is_selected},
-            });
-        }
-        else {
-            Socialtext::UserWorkspaceRoleFactory->Create( {
-                user_id      => $p{user}->user_id,
-                workspace_id => $self->workspace_id,
-                role_id      => $p{role}->role_id,
-                is_selected  => $p{is_selected},
-            } );
-        }
-
-        Socialtext::Cache->clear('authz_plugin');
-        Socialtext::Cache->clear('ws_roles');
-
+        # XXX: may have been added to more than just this account
         my $adapter = Socialtext::Pluggable::Adapter->new;
-        $adapter->make_hub(Socialtext::User->SystemUser(), $self);
-
+        $adapter->make_hub($actor, $self);
         $adapter->hook(
             'nlw.add_user_account_role',
-            $self->account, $p{user}, Socialtext::Role->Affiliate(),
+            $self->account, $user, Socialtext::Role->Affiliate(),
+        );
+    }
+    elsif ($change eq 'remove') {
+
+        # XXX: may have been added to more than just this account
+        my $adapter = Socialtext::Pluggable::Adapter->new;
+        $adapter->make_hub($actor, $self);
+        $adapter->hook(
+            'nlw.remove_user_account_role',
+            $self->account, $user, Socialtext::Role->Affiliate(),
         );
     }
 }
 
-# Calling this is a little nasty, $ws->has_user( $user, direct => 1 ), we
-# should consider changing this to a more standard
-# $ws->has_user( user => $user, direct => 1 ).
-sub has_user {
-    my $self   = shift;
-    my $user   = shift;        # [in] User
-    my %p      = @_;
-    my $direct = $p{direct} || 0;
-
-    # User has _some_ Role in the Workspace, that's *NOT* the Guest role.
-    my $guest    = Socialtext::Role->Guest();
-    my $has_user =
-        List::MoreUtils::any { $_->role_id != $guest->role_id }
-        Socialtext::Workspace::Roles->RolesForUserInWorkspace(
-            user      => $user,
-            workspace => $self,
-            direct    => $direct,
-        );
-    return $has_user;
-}
-
-{
-    Readonly my $spec => {
-        user   => USER_TYPE,
-        direct => SCALAR_TYPE( default => 0 ),
-    };
-    sub role_for_user {
-        my $self = shift;
-        my %p = validate( @_, $spec );
-        return scalar Socialtext::Workspace::Roles->RolesForUserInWorkspace(
-            %p,
-            workspace => $self,
-        );
-    }
-}
-
-sub remove_user {
-    my $self  = shift;
-    my %p     = @_;
-    my $timer = Socialtext::Timer->new;
-
-    my $uwr = Socialtext::UserWorkspaceRoleFactory->Get(
-       workspace_id => $self->workspace_id,
-       user_id      => $p{user}->user_id,
-    );
-
-    return unless $uwr;
-
-    Socialtext::UserWorkspaceRoleFactory->Delete($uwr);
-
-    Socialtext::JSON::Proxy::Helper->ClearForUsers($p{user}->user_id);
-    Socialtext::Cache->clear('authz_plugin');
-    Socialtext::Cache->clear('ws_roles');
-
-    my $adapter = Socialtext::Pluggable::Adapter->new;
-    $adapter->make_hub(Socialtext::User->SystemUser(), $self);
-
-    $adapter->hook(
-        'nlw.remove_user_account_role',
-        $self->account, $p{user}, Socialtext::Role->Affiliate(),
-    );
-}
-
-{
-    Readonly my $spec => {
-       user        => USER_TYPE,
-       role        => ROLE_TYPE,
-    };
-    sub user_has_role {
-        my $self = shift;
-        my %p = validate( @_, $spec );
-        return Socialtext::Workspace::Roles->UserHasRoleInWorkspace(
-            %p,
-            workspace => $self,
-        );
-    }
-}
-
-sub user_count {
-    my $self = shift;
-    my %p = (@_==1) ? %{+shift} : @_;
-    return Socialtext::Workspace::Roles->CountUsersByWorkspaceId(
-        %p,
-        workspace_id => $self->workspace_id,
-    );
-}
-
-sub users {
-    my $self = shift;
-    my %p = (@_==1) ? %{+shift} : @_;
-    return Socialtext::Workspace::Roles->UsersByWorkspaceId(
-        %p,
-        workspace_id => $self->workspace_id,
-    );
-}
-
-sub user_ids {
-    my $self = shift;
-    my %args = ref($_[0]) eq 'HASH' ? %{$_[0]} : @_;
-    Socialtext::Timer->Continue('acct_user_ids');
-    my $cursor = Socialtext::User->ByWorkspaceId(
-        %args,
-        workspace_id => $self->workspace_id,
-        ids_only     => 1,
-    );
-    my @user_ids = $cursor->all;
-    Socialtext::Timer->Pause('acct_user_ids');
-    return \@user_ids;
-}
+sub users_with_roles { shift->user_roles(@_) }
 
 sub groups_with_roles {
     my $self = shift;
     my %p = (@_==1) ? %{+shift} : @_;
     return Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
-        %p,
-        workspace_id => $self->workspace_id,
-    );
-}
-
-sub users_with_roles {
-    my $self = shift;
-    my %p = (@_==1) ? %{+shift} : @_;
-    return Socialtext::User->ByWorkspaceIdWithRoles(
         %p,
         workspace_id => $self->workspace_id,
     );

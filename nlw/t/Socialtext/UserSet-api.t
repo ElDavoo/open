@@ -86,6 +86,7 @@ sub check_api_for_container {
         "doesn't mean the container is in the user";
 
     ok $uset->has_role($usr->user_id, $cont->user_set_id, $member);
+    ok $uset->has_direct_role($usr->user_id, $cont->user_set_id, $member);
 
     lives_ok {
         $uset->update_object_role($usr, $guest);

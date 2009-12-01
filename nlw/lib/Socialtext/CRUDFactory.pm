@@ -47,10 +47,8 @@ sub PostChangeHook {
         Socialtext::JobCreator->index_person($instance->user_id);
     }
     elsif ($self->Builds_sql_for =~ /^Socialtext::Group.+Role$/) {
-        my $user_ids = $instance->group->users('id_only');
-        while (my $user_id = $user_ids->next) {
-            Socialtext::JobCreator->index_person($user_id);
-        }
+        my $user_ids = $instance->group->user_ids;
+        Socialtext::JobCreator->index_person($_) for @$user_ids;
     }
 }
 

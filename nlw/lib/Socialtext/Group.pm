@@ -258,8 +258,13 @@ sub Create {
     my $group = Socialtext::Group->new(homunculus => $homey);
 
     # Add the creator as an admin of this group
-    $group->add_user(role => Socialtext::Role->Admin, user => $group->creator)
-        unless $group->creator->is_system_created;
+    my $creator = $group->creator;
+    unless ($creator->is_system_created) {
+        $group->add_user(
+            role => Socialtext::Role->Admin,
+            user => $creator,
+        );
+    }
 
     # make sure the GAR gets created
     my $adapter = Socialtext::Pluggable::Adapter->new;
@@ -344,44 +349,23 @@ sub GetProtoGroup {
 use constant base_package => __PACKAGE__;
 
 ###############################################################################
-sub user_roles {
-    my $self = shift;
-    my $id_only = shift;
-
-    return Socialtext::UserGroupRoleFactory->ByGroupId(
-        $self->group_id, sub { shift },
-    );
-}
-
-###############################################################################
-sub users {
-    my $self = shift;
-    my $id_only = shift;
-
-    return Socialtext::UserGroupRoleFactory->ByGroupId(
-        $self->group_id,
-        $id_only ? sub { shift->user_id } : sub { shift->user },
-    );
-}
-
-###############################################################################
 sub accounts {
     my $self = shift;
 
-    return Socialtext::GroupAccountRoleFactory->ByGroupId(
-        $self->group_id,
-        sub { shift->account(); },
+    # all accounts with direct membership
+    my $sth = sql_execute(q{
+        SELECT DISTINCT account_id
+        FROM user_set_include
+        JOIN "Account" ON (into_set_id = user_set_id)
+        WHERE from_set_id = ?
+    }, $self->user_set_id);
+    my $ids = $sth->fetchall_arrayref || [];
+    return Socialtext::MultiCursor->new(
+        iterables => [map { $_->[0] } @$ids],
+        apply     => sub {
+            return Socialtext::Account->new(account_id => $_[0]);
+        },
     );
-}
-
-###############################################################################
-sub user_ids {
-    my $self = shift;
-    my $cursor = Socialtext::UserGroupRoleFactory->ByGroupId(
-        $self->group_id,
-        sub { shift->user_id() },
-    );
-    return [ $cursor->all ];
 }
 
 ###############################################################################
@@ -396,101 +380,19 @@ sub _build_account_count {
     return $mc->count;
 }
 
-###############################################################################
-sub add_user {
-    my $self  = shift;
-    my %p     = @_;
-    my $user  = $p{user} || croak "cannot add_user without 'user' parameter";
-    my $role  = $p{role} || Socialtext::UserGroupRoleFactory->DefaultRole();
-    my $actor = $p{actor} || Socialtext::User->SystemUser();
-
-    my $ugr = $self->_ugr_for_user($user);
-    if ($ugr) {
-        $ugr->update( { role_id => $role->role_id } );
-    }
-    else {
-        $ugr = Socialtext::UserGroupRoleFactory->Create( {
-            user_id  => $user->user_id,
-            group_id => $self->group_id,
-            role_id  => $role->role_id,
-        } );
-    }
-
-    eval {
+after 'role_change_event' => sub {
+    my ($self,$actor,$change,$thing,$role) = @_;
+    if ($thing->isa('Socialtext::User') && $change ne 'update') {
+        my $ev_action = $change.'_user';
         Socialtext::Events->Record({
             event_class => 'group',
-            action => 'add_user',
+            action => $ev_action,
             actor => $actor,
-            person => $user,
+            person => $thing,
             group => $self,
         });
-    };
-    warn "Could not log event: $@" if $@;
-
-    return $ugr;
-}
-
-###############################################################################
-sub remove_user {
-    my $self = shift;
-    my %p    = @_;
-    my $user = $p{user} || croak "cannot remove_user without 'user' parameter";
-    my $actor = $p{actor} || Socialtext::User->SystemUser();
-
-    my $ugr = $self->_ugr_for_user($user);
-    return unless $ugr;
-
-    Socialtext::UserGroupRoleFactory->Delete($ugr);
-
-    eval {
-        Socialtext::Events->Record({
-            event_class => 'group',
-            action => 'remove_user',
-            actor => $actor,
-            person => $user,
-            group => $self,
-        });
-    };
-    warn "Could not log event: $@" if $@;
-}
-
-###############################################################################
-sub has_user {
-    my $self = shift;
-    my $user = shift;
-    my $ugr  = $self->_ugr_for_user($user);
-    return $ugr ? 1 : 0;
-}
-
-###############################################################################
-sub role_for_user {
-    my $self = shift;
-    my %p    = @_;
-    my $user = $p{user} || croak "cannot role_for_user without 'user' parameter";
-    my $ugr  = $self->_ugr_for_user($user);
-    return unless $ugr;
-    return $ugr->role();
-}
-
-###############################################################################
-sub user_has_role {
-    my $self = shift;
-    my %p    = @_;
-    my $ugr  = $self->_ugr_for_user($p{user});
-
-    return ( $ugr && $ugr->role_id == $p{role}->role_id ) ? 1 : 0;
-}
-
-###############################################################################
-sub _ugr_for_user {
-    my $self = shift;
-    my $user = shift;
-    my $ugr  = Socialtext::UserGroupRoleFactory->Get(
-        user_id  => $user->user_id,
-        group_id => $self->group_id,
-    );
-    return $ugr;
-}
+    }
+};
 
 ###############################################################################
 sub workspaces {
@@ -535,15 +437,21 @@ sub users_as_minimal_arrayref {
     my $self = shift;
     my $role_name = shift;
 
-    my $members = [];
-    my $ugr_cursor = $self->user_roles;
-    while (my $ugr = $ugr_cursor->next) {
-        next if $role_name and $role_name ne $ugr->role->name;
-        my $hash = $ugr->user->to_hash(minimal => 1);
-        $hash->{role} = $ugr->role->name;
-        push @$members, $hash;
+    my @members;
+    my $cursor = $self->user_roles();
+    while (my $ur = $cursor->next) {
+        my ($user,$role) = @$ur;
+        my $hash = $user->to_hash(minimal => 1);
+        $hash->{role} = $role->name;
+        push @members, $hash;
     }
-    return $members;
+
+    # FIXME: this really should be filtering at the DB query level
+    if ($role_name) {
+        @members = grep { $_->{role} eq $role_name } @members;
+    }
+
+    return \@members;
 }
 
 sub serialize_for_export {

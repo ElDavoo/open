@@ -183,6 +183,7 @@ sub _update_users_in_workspace {
 
             my $user = $tuple->[0];
             my $role = $tuple->[1];
+            my $make_admin = $should_be_admin{$user->user_id};
 
             # REVIEW - this is a hack to prevent us from removing the
             # impersonator role from users in this loop. The real
@@ -192,35 +193,23 @@ sub _update_users_in_workspace {
             next if $role->name ne 'admin'
                 and $role->name ne 'member';
 
-            next if $should_be_admin{ $user->user_id() }
+            next if $make_admin
                 and $ws->permissions->user_can(
                     user       => $user,
                     permission => ST_ADMIN_WORKSPACE_PERM,
                 );
 
-            next if not $should_be_admin{ $user->user_id() }
+            next if not $make_admin
                 and not $ws->permissions->user_can(
                     user       => $user,
                     permission => ST_ADMIN_WORKSPACE_PERM,
                 );
 
-            my $is_selected = $user->workspace_is_selected(
-                workspace => $self->hub()->current_workspace() );
-
-            if ( $should_be_admin{ $user->user_id } ) {
-                $ws->assign_role_to_user(
-                    user        => $user,
-                    role        => Socialtext::Role->Admin(),
-                    is_selected => $is_selected,
-                );
-            }
-            else {
-                $ws->assign_role_to_user(
-                    user        => $user,
-                    role        => Socialtext::Role->Member(),
-                    is_selected => $is_selected,
-                );
-            }
+            $ws->assign_role_to_user(
+                user => $user,
+                role => ($make_admin ? Socialtext::Role->Admin()
+                                     : Socialtext::Role->Member()),
+            );
         }
     }
     else {

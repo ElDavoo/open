@@ -557,109 +557,24 @@ sub finish_import {
     $hub->pluggable->hook('nlw.finish_import_account', $self, $meta, \%opts);
 }
 
-sub users {
-    my $self = shift;
-    my %args = ref($_[0]) eq 'HASH' ? %{$_[0]} : @_;
-    Socialtext::Timer->Continue('acct_users');
-    my $cursor = Socialtext::User->ByAccountId(
-        account_id => $self->account_id,
-        %args,
-    );
-    Socialtext::Timer->Pause('acct_users');
-    return $cursor;
-}
+after 'role_change_event' => sub {
+    my ($self,$actor,$change,$thing,$role) = @_;
 
-sub user_ids {
-    my $self = shift;
-    my %args = ref($_[0]) eq 'HASH' ? %{$_[0]} : @_;
-    Socialtext::Timer->Continue('acct_user_ids');
-    my $cursor = Socialtext::User->ByAccountId(
-        account_id => $self->account_id,
-        ids_only   => 1,
-        %args,
-    );
-    my @user_ids = $cursor->all;
-    Socialtext::Timer->Pause('acct_user_ids');
-    return \@user_ids;
-}
+    my $to_hook;
 
-sub add_user {
-    my $self = shift;
-    my %opts = @_;
-    my $user = $opts{user} || croak "can't add_user without a 'user'";
-    my $role = $opts{role} || Socialtext::UserAccountRoleFactory->DefaultRole();
+    if ($change eq 'add') {
+        $to_hook = 'nlw.add_user_account_role';
+    }
+    elsif ($change eq 'remove') {
+        $to_hook = 'nlw.remove_user_account_role';
+    }
 
-    my $adapter = Socialtext::Pluggable::Adapter->new();
-    $adapter->make_hub( Socialtext::User->SystemUser() );
-    $adapter->hook(
-        'nlw.add_user_account_role', $self, $user, $role,
-    );
-    return $self->_uar_for_user($user);
-}
-
-sub remove_user {
-    my $self = shift;
-    my %opts = @_;
-    my $user = $opts{user} || croak "can't remove_user without a 'user'";
-    my $role = $opts{role} || Socialtext::UserAccountRoleFactory->DefaultRole();
-
-    my $adapter = Socialtext::Pluggable::Adapter->new();
-    $adapter->make_hub( Socialtext::User->SystemUser() );
-    $adapter->hook(
-        'nlw.remove_user_account_role', $self, $user, $role,
-    );
-    return $self->_uar_for_user($user);
-}
-
-sub role_for_user {
-    my $self = shift;
-    my %opts = @_;
-    my $user = $opts{user} || croak "can't role_for_user without a 'user'";
-    return scalar Socialtext::Account::Roles->RolesForUserInAccount(
-        %opts,
-        account => $self,
-    );
-}
-
-sub _uar_for_user {
-    my $self = shift;
-    my $user = shift;
-    my $uar  = Socialtext::UserAccountRoleFactory->Get(
-        user_id    => $user->user_id,
-        account_id => $self->account_id,
-    );
-    return $uar;
-}
-
-sub user_count {
-    my $self = shift;
-    Socialtext::Timer->Continue('acct_user_count');
-    my %args = ref($_[0]) eq 'HASH' ? %{$_[0]} : @_;
-    my $cursor = Socialtext::User->ByAccountId(
-        account_id => $self->account_id,
-        ids_only   => 1,
-        %args,
-    );
-    my $count = $cursor->count();
-    Socialtext::Timer->Pause('acct_user_count');
-    return $count;
-}
-
-# Calling this is clunky, $acct->has_user($user, direct => 1), we should look
-# at refactoring into $acct->has_user(user => $user, direct => 1).
-sub has_user {
-    my $self = shift;
-    my $user = shift;
-    my %attr = @_;
-    Socialtext::Timer->Continue('acct_has_user');
-    my $has_user = Socialtext::Account::Roles->RolesForUserInAccount(
-        user    => $user,
-        account => $self,
-        %attr,
-    );
-    Socialtext::Timer->Pause('acct_has_user');
-    return $has_user ? 1 : 0;
-}
+    if ($to_hook) {
+        my $adapter = Socialtext::Pluggable::Adapter->new();
+        $adapter->make_hub( Socialtext::User->SystemUser() );
+        $adapter->hook($to_hook, $self, $thing, $role);
+    }
+};
 
 sub Unknown    { $_[0]->new( name => 'Unknown' ) }
 sub Socialtext { $_[0]->new( name => 'Socialtext' ) }
@@ -833,15 +748,16 @@ sub _post_update {
     my $old  = shift;
     my $new  = shift;
 
-    if ( $new->{all_users_workspace} ) {
-        my $users = $self->users( direct => 1 );
-        while ( my $user = $users->next() ) {
-            $self->add_to_all_users_workspace( user => $user );
+    if ($new->{all_users_workspace}) {
+        my $o;
+        my $users = $self->users(direct => 1);
+        while ($o = $users->next()) {
+            $self->add_to_all_users_workspace(object => $o);
         }
 
-        my $groups = $self->groups();
-        while ( my $group = $groups->next() ) {
-            $self->add_to_all_users_workspace( group => $group );
+        my $groups = $self->groups(direct => 1);
+        while ($o = $groups->next()) {
+            $self->add_to_all_users_workspace(object => $o);
         }
     }
 
@@ -877,59 +793,23 @@ sub _post_update {
 }
 
 sub add_to_all_users_workspace {
-    my $self  = shift;
-    my %p     = @_;
+    my ($self, %p) = @_;
 
-    if ( my $user = delete $p{user} ) {
-        $self->_user_to_all_users_workspace( $user );
-    }
-    elsif ( my $group = delete $p{group} ) {
-        $self->_group_to_all_users_workspace( $group );
-    }
-}
-
-sub _user_to_all_users_workspace {
-    my $self = shift;
-    my $user = shift;
-    my $auw  = $self->_get_all_users_workspace();
+    my $auw_id = $self->all_users_workspace;
+    return unless $auw_id;
+    my $auw  = Socialtext::Workspace->new(workspace_id => $auw_id);
 
     return unless $auw;
 
-    # Sometimes user metadata is passed in, we need a full fledged user.
-    if ( $user->isa('Socialtext::UserMetadata') ) {
-        $user = Socialtext::User->new( user_id => $user->user_id );
-    }
+    my $o = delete $p{object};
 
-    return if $user->is_system_created || !$self->has_user($user, direct => 1);
-    return if $auw->has_user($user, direct => 1);
+    # Now according to {bz: 2896} we still need to check invitation_filter
+    # here.
+    return if ($o->isa('Socialtext::User') &&
+               !$auw->email_passes_invitation_filter($o->email_address));
 
-    # Now according to {bz: 2896} we still need to check invitation_filter here.
-    return unless $auw->email_passes_invitation_filter($user->email_address);
-
-    $auw->assign_role_to_user(
-        user => $user,
-        role => Socialtext::Role->Member(),
-    );
-}
-
-sub _group_to_all_users_workspace {
-    my $self  = shift;
-    my $group = shift;
-    my $auw   = $self->_get_all_users_workspace();
-
-    return unless $auw;
-    return if $auw->has_group( $group ) || !$self->has_group( $group );
-
-    $auw->add_group( group => $group );
-}
-
-sub _get_all_users_workspace {
-    my $self = shift;
-    my $ws_id = $self->all_users_workspace;
-
-    return unless $ws_id;
-    my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
-    return $ws;
+    return if $auw->user_set->object_directly_connected($o);
+    $auw->add_role(object => $o, role => $p{role});
 }
 
 sub Count {

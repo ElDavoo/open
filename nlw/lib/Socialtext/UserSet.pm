@@ -18,7 +18,9 @@ has 'owner' => (
     weak_ref => 1
 );
 
+# defined below:
 sub _object_role_method ($);
+sub _object_owner_method ($);
 
 =head1 NAME
 
@@ -156,6 +158,7 @@ directly contained in $y"
 =cut
 
 around 'directly_connected' => \&_query_wrapper;
+_object_role_method 'object_directly_connected';
 sub directly_connected {
     my $self = shift;
     return $self->_connected('user_set_include',@_);
@@ -188,11 +191,14 @@ sub has_role {
 
 =item has_direct_role ($x,$y,$role_id)
 
+=item has_direct_object_role ($x,$y,$role_id)
+
 Asks "is $x connected to $y where the immediate/direct role_id is $role_id?"
 
 =cut
 
 around 'has_direct_role' => \&_query_wrapper;
+_object_role_method 'has_direct_object_role';
 sub has_direct_role {
     my $self = shift;
     return $self->_has_role('user_set_include',@_);
@@ -216,11 +222,14 @@ sub _has_role {
 
 =item has_plugin ($n,$plugin)
 
+=item object_has_plugin ($plugin)
+
 Asks "does $n have OR is $n included in a set that has $plugin enabled?"
 
 =cut
 
 around 'has_plugin' => \&_query_wrapper;
+_object_owner_method 'object_has_plugin';
 sub has_plugin {
     my ($self, $dbh, $n, $plugin) = @_;
     if (@_ == 3) {
@@ -239,11 +248,14 @@ sub has_plugin {
 
 =item roles ($x,$y)
 
+=item object_roles ($x)
+
 Get the list of distinct, possibly indirect role_ids for $x in $y.  Returns an empty list if none.
 
 =cut
 
 around 'roles' => \&_query_wrapper;
+_object_role_method 'object_roles';
 sub roles {
     my ($self, $dbh, $x, $y) = @_;
     my $roles = $dbh->selectcol_arrayref(q{
@@ -257,11 +269,14 @@ sub roles {
 
 =item direct_role ($x,$y)
 
+=item direct_object_role ($x)
+
 Get the direct role_id for $x in $y.  Returns undef if none.
 
 =cut
 
 around 'direct_role' => \&_query_wrapper;
+_object_role_method 'direct_object_role';
 sub direct_role {
     my ($self, $dbh, $x, $y) = @_;
     my ($role) = $dbh->selectrow_array(q{
@@ -270,6 +285,115 @@ sub direct_role {
         WHERE from_set_id = $1 AND into_set_id = $2
     }, {}, $x, $y);
     return $role;
+}
+
+=item user_count ($n)
+
+=item direct_user_count ($n)
+
+=item object_user_count ()
+
+=item direct_object_user_count ()
+
+Get number of distinct users in the specified user-set.
+
+=cut
+
+around 'user_count' => \&_query_wrapper;
+_object_owner_method 'object_user_count';
+sub user_count {
+    my ($self, $dbh, $n) = @_;
+    my ($count) = $dbh->selectrow_array(q{
+        SELECT COUNT(DISTINCT user_id)
+        FROM user_sets_for_user
+        WHERE user_set_id = $1
+    }, {}, $n);
+    return $count;
+}
+
+around 'direct_user_count' => \&_query_wrapper;
+_object_owner_method 'direct_object_user_count';
+sub direct_user_count {
+    my ($self, $dbh, $n) = @_;
+    my ($count) = $dbh->selectrow_array(q{
+        SELECT COUNT(DISTINCT from_set_id) AS user_ids
+        FROM user_set_include
+        WHERE into_set_id = $1
+    }, {}, $n);
+    return $count;
+}
+
+=item user_ids ($n)
+
+=item direct_user_ids ($n)
+
+=item object_user_ids ()
+
+=item direct_object_user_ids ()
+
+Get the distinct users' ids in the specified user-set.
+
+=cut
+
+around 'user_ids' => \&_query_wrapper;
+_object_owner_method 'object_user_ids';
+sub user_ids {
+    my ($self, $dbh, $n) = @_;
+    my $ids = $dbh->selectcol_arrayref(q{
+        SELECT DISTINCT user_id
+        FROM user_sets_for_user
+        WHERE user_set_id = $1
+    }, {}, $n);
+    return $ids;
+}
+
+around 'direct_user_ids' => \&_query_wrapper;
+_object_owner_method 'direct_object_user_ids';
+sub direct_user_ids {
+    my ($self, $dbh, $n) = @_;
+    my $ids = $dbh->selectcol_arrayref(q{
+        SELECT DISTINCT from_set_id AS user_id
+        FROM user_set_include
+        WHERE into_set_id = $1
+    }, {}, $n);
+    return $ids;
+}
+
+=item user_roles ($n)
+
+=item direct_user_roles ($n)
+
+=item object_user_roles ()
+
+=item direct_object_user_roles ()
+
+Get the distinct user-role combinations in the specified user-set.
+
+=cut
+
+around 'user_roles' => \&_query_wrapper;
+_object_owner_method 'object_user_roles';
+sub user_roles {
+    my ($self, $dbh, $n) = @_;
+    my $rows = $dbh->selectall_arrayref(q{
+        SELECT DISTINCT user_id, role_id
+        FROM roles_for_user
+        WHERE into_set_id = $1
+    }, {}, $n);
+    return $rows;
+}
+
+around 'direct_user_roles' => \&_query_wrapper;
+_object_owner_method 'direct_object_user_roles';
+sub direct_user_roles {
+    my ($self, $dbh, $n) = @_;
+    my $rows = $dbh->selectcol_arrayref(q{
+        SELECT DISTINCT from_set_id AS user_id, role_id
+        FROM user_set_include
+        WHERE into_set_id = $1
+          AND from_set_id <= 536870912
+    }, {}, $n);
+    return $rows;
 }
 
 =back
@@ -440,13 +564,29 @@ sub _query_wrapper {
 
 sub _object_role_method ($) {
     my $func = shift;
-    (my $call = $func) =~ s/_object//;
+    (my $call = $func) =~ s/object_//;
     __PACKAGE__->meta->add_method(
         $func => Moose::Meta::Method->wrap(
             sub {
                 my ($self, $obj, $role_id) = @_;
                 die "must have owner_id" unless $self->owner_id;
                 $self->$call($obj->user_set_id => $self->owner_id, $role_id);
+            },
+            name         => $func,
+            package_name => __PACKAGE__
+        )
+    );
+}
+
+sub _object_owner_method ($) {
+    my $func = shift;
+    (my $call = $func) =~ s/object_//;
+    __PACKAGE__->meta->add_method(
+        $func => Moose::Meta::Method->wrap(
+            sub {
+                my ($self) = @_;
+                die "must have owner_id" unless $self->owner_id;
+                $self->$call($self->owner_id);
             },
             name         => $func,
             package_name => __PACKAGE__
