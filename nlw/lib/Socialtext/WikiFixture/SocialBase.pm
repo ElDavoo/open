@@ -10,7 +10,7 @@ use Socialtext::File;
 use Socialtext::System qw();
 use Socialtext::HTTP::Ports;
 use Socialtext::Role;
-use Socialtext::People::Profile qw/normalize_tag/;
+use Socialtext::People::Profile
 use File::LogReader;
 use File::Path qw(rmtree);
 use Test::More;
@@ -1892,7 +1892,7 @@ sub tag_profile {
     my $user = Socialtext::User->Resolve( $user_name );
     my $profile = Socialtext::People::Profile->GetProfile($user);
 
-    my $tag_name = normalize_tag($tag);
+    my $tag_name = Socialtext::People::Profile::normalize_tag($tag);
     my $tags = $profile->tags;
     if ($tag_name =~ m/^-(.+)/) {
         delete $tags->{$1};
