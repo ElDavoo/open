@@ -642,7 +642,7 @@ sub st_admin {
     # We also have to use a bad calling pattern for this which *isn't* OOP
     # because we don't always have a '$self' that's derived from ST:WF:ST
     # (although it may be derived from ST:WF:Base).
-    if ( grep { qr/[\|<>]/ } $options ) {
+    if ($options =~ /[\|<>]/) {
         _st_admin_shell_out($self, $options, $verify);
     }
     else {
@@ -660,12 +660,10 @@ sub _st_admin_in_process {
         *Socialtext::CLI::_exit = sub { };
     }
 
-    my @argv = shellwords( $options );
-    my $cmd  = shift @argv;
-    $cmd =~ s/-/_/g;
-
+    my @argv   = shellwords( $options );
     my $output = combined_from {
-        eval { Socialtext::CLI->new( argv => \@argv )->$cmd() };
+        eval { Socialtext::CLI->new( argv => \@argv )->run };
+        if ($@) { warn $@ };
     };
     if ($verify) {
         like $output, qr/$verify/s, "st-admin $options";
