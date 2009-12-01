@@ -347,7 +347,7 @@ sub accounts {
     else {
         $sql = q{
             SELECT DISTINCT account_id 
-            FROM account_user WHERE user_id = ?
+            FROM accounts_for_user WHERE user_id = ?
         };
     }
 
