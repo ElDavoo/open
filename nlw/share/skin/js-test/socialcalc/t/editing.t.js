@@ -6,10 +6,8 @@ t.plan(9);
 
 var doCheckText = function(text, msg) {
     return function() {
-        setTimeout(function() {
-            t.is(t.$('#st-spreadsheet-edit #e-cell_A1').text().replace(/\s/g, ''), text, msg);
-            t.callNextStep();
-        }, 1000);
+        t.is(t.$('#st-spreadsheet-edit #e-cell_A1').text().replace(/\s/g, ''), text, msg);
+        t.callNextStep();
     };
 }
 

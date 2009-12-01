@@ -24,8 +24,10 @@ proto.doClick = function(selector) {
     var t = this;
     return function() {
         t.click(selector);
-        t.callNextStepOnReady();
-    }
+        setTimeout(function() {
+            t.callNextStepOnReady();
+        }, 500);
+    };
 };
 
 proto.doExec = function(cmd) {
