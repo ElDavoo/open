@@ -140,8 +140,8 @@
 *Privacy features and workspace skin are tested in separate test cases.*
 
 | *Comment* | Test Case: Settings: Admin Teardown |  |
-| st-admin | delete-workspace --workspace newspace-%%start_time%% --no-export |  |
-| st-admin | delete-workspace --workspace newspace-clone-%%start_time%% --no-export |  |
+| st-admin | delete-workspace --workspace newspace-%%start_time%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace newspace-clone-%%start_time%% --no-export | has been deleted |
 | st-admin | remove-member --email invite_%%start_time%%@ken.socialtext.net --workspace %%workspace%% |  |
 
 | *Comment* | Test Case: Settings: Admin COMPLETED |

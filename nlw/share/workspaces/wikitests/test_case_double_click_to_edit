@@ -8,6 +8,6 @@
 | text_like | st-editing-title | Editing: DCTE %%start_time%% |
 
 | *Comment* | Test Case: Double Click to Edit TEARDOWN |  |
-| st-admin | purge-page --w %%workspace%% --p dcte_%%start_time%% | purged |
+| st-admin | purge-page --w %%workspace%% --p dcte_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Double Click to Edit COMPLETED |  |

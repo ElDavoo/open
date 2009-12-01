@@ -59,7 +59,7 @@ st-admin | add-workspace-admin --username %%cli_user%% --workspace %%workspace%%
 | st-admin | set-user-names --username %%cli_user%% --first-name CLI --last-name USER | qr/Remotely sourced Users cannot be updated via Socialtext/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Teardown |  |
-| st-admin | delete-workspace --workspace %%cmdline_workspace%% --no-export |  |
+| st-admin | delete-workspace --workspace %%cmdline_workspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Command Line LDAP user Add member BACK to %%workspace%% just in case needed |  |
 | st-admin | add-workspace-admin --username %%cli_user%% --workspace %%workspace%% | a workspace admin |

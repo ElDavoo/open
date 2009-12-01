@@ -107,6 +107,6 @@ This test case is an aid to visually observing each screen type in the applicati
 | *Comment* | SEE Only 5 pages displayed at a time, display is at end of list |  |
 | pause | %%pt%% |  |
 
-| st-admin | delete-workspace --w %%pws%% |  |
+| st-admin | delete-workspace --w %%pws%% | has been deleted |
 
 | *Comment* | PaginateShow COMPLETED |  |

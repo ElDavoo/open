@@ -108,6 +108,6 @@
 | st-watch-page | 0 |  |
 
 | *Comment* | Test Case: Edit Summaries teardown |  |
-| st-admin | purge-page --workspace %%workspace%% --page edit_summaries_%%start_time%% | page was purged |
+| st-admin | purge-page --workspace %%workspace%% --page edit_summaries_%%start_time%% | was purged |
 
 | *Comment* | Test case: Edit Summaries COMPLETED |  |  |

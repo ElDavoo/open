@@ -81,4 +81,4 @@
 | st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited pageone.+in %%followws%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers Teardown |
-| st-admin | delete-workspace --workspace %%followws%% --no-export |
+| st-admin | delete-workspace --workspace %%followws%% --no-export | has been deleted |

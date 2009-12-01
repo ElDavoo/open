@@ -258,10 +258,10 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 
 | *Comment* | Test case: Business Control Panel Sorting TEARDOWN. Let %%username%% keep accounts admin privileges. |  |
 | st-admin | remove-system-admin --email %%email%% | no longer has system admin access |
-| st-admin | delete-workspace --workspace 0-sort-1-workspace1-%%start_time%% --no-export | workspace has been deleted |
-| st-admin | delete-workspace --workspace 0-sort-2-workspace1-%%start_time%% --no-export | workspace has been deleted |
-| st-admin | delete-workspace --workspace 0-sort-3-workspace1-%%start_time%% --no-export | workspace has been deleted |
-| st-admin | delete-workspace --workspace 0-sort-2-workspace2-%%start_time%% --no-export | workspace has been deleted |
-| st-admin | delete-workspace --workspace 0-sort-3-workspace2-%%start_time%% --no-export | workspace has been deleted |
-| st-admin | delete-workspace --workspace 0-sort-3-workspace3-%%start_time%% --no-export | workspace has been deleted |
-| st-admin | delete-workspace --workspace ws-n%%start_time%% --no-export | workspace has been deleted |
+| st-admin | delete-workspace --workspace 0-sort-1-workspace1-%%start_time%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace 0-sort-2-workspace1-%%start_time%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace 0-sort-3-workspace1-%%start_time%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace 0-sort-2-workspace2-%%start_time%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace 0-sort-3-workspace2-%%start_time%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace 0-sort-3-workspace3-%%start_time%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace ws-n%%start_time%% --no-export | has been deleted |

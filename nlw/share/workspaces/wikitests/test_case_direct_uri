@@ -28,6 +28,6 @@
 | text_like | contentRight | %%start_time%%@ken.socialtext.net |
 
 | *Comment* | Test Case: Direct URI Teardown |  |
-| st-admin | delete-workspace --workspace duri-%%start_time%% --no-export |  |
+| st-admin | delete-workspace --workspace duri-%%start_time%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Direct URI COMPLETED |

@@ -35,6 +35,6 @@
 | text_unlike | contentLeft | Manage All Users |
 
 | *Comment* | Test Case: Authenticated-User-Only Teardown |  |
-| st-admin | delete-workspace --workspace %%auth_w%% --no-export |  |
+| st-admin | delete-workspace --workspace %%auth_w%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Authenticated-User-Only COMPLETED |

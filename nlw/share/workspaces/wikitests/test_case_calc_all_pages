@@ -112,6 +112,6 @@ For some reason, IE 6 blows up when open_ok is used in some places. We avoid it.
 
 | *Comment* | Test Case: Calc All Pages Teardown. No need to login again. |  |
 
-| st-admin | delete-workspace --workspace %%new_ws%% --no-export | The %%new_ws%% workspace has been deleted. |
+| st-admin | delete-workspace --workspace %%new_ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Calc All Pages COMPLETED |  |

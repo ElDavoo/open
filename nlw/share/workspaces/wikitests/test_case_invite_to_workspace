@@ -73,6 +73,6 @@
 | text_like | qr/Your request to invite the following users has been sent\s+%%eemailbad2%%/ |  |
 
 | *Comment* | Test Case: Invite to Workspace TEARDOWN |
-| st-admin | delete-workspace --workspace %%ws%% --no-export |
+| st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Invite to Workspace COMPLETED |

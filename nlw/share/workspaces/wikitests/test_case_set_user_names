@@ -41,6 +41,6 @@ Dashboard: observe Welcome message | go to Settings->My settings and change user
 | *Comment* | Test Case: Set User Names Teardown (just in case) |  |
 | st-admin | set-permissions --w %%workspace%% --p member-only | The permissions for the %%workspace%% workspace have been changed to member-only |
 | st-admin | set-user-names --e %%email%% --first "" --last "" | User "%%username%%" was updated |
-| st-admin | purge-page --w %%workspace%% --page set_user_%%start_time%% | purged |
+| st-admin | purge-page --w %%workspace%% --page set_user_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Set User Names COMPLETED |  |

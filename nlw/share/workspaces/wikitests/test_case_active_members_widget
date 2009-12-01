@@ -105,7 +105,7 @@
 | *Comment* | Test case: Active Members Widget TEARDOWN |  |
 | select-frame | relative=parent |  |
 | st-empty-container |  |  |
-| st-admin | delete-workspace --w %%am_ws_1%% --no-export |  |
-| st-admin | delete-workspace --w %%am_ws_2%% --no-export |  |
+| st-admin | delete-workspace --w %%am_ws_1%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%am_ws_2%% --no-export | has been deleted |
 
 | *Comment* | Test case: Active Members Widget COMPLETED |  |

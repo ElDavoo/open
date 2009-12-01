@@ -35,8 +35,8 @@ Open Recently Viewed list view
 
 | *Comment* | Test Case: Recently Viewed. Tearing down Recently Viewed data |  |
 
-| st-admin | purge-page --workspace %%workspace%% --page rv_page_1_%%start_time%% |
-| st-admin | purge-page --workspace %%workspace%% --page rv_page_2_%%start_time%% |
-| st-admin | purge-page --workspace %%workspace%% --page rv_page_3_%%start_time%% |
+| st-admin | purge-page --workspace %%workspace%% --page rv_page_1_%%start_time%% | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page rv_page_2_%%start_time%% | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page rv_page_3_%%start_time%% | was purged |
 
 | *Comment* | Test Case Recently Viewed COMPLETED |  |

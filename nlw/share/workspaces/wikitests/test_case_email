@@ -181,7 +181,7 @@ TODO: find a way to test user chooser
 | *Comment* | Test Case: Email Teardown |  |
 | st-admin | remove-member --email %%start_time%%_one@ken.socialtext.net --workspace %%workspace%% |  |
 | st-admin | remove-member --email %%start_time%%_two@ken.socialtext.net --workspace %%workspace%% |  |
-| st-admin | purge-page --w %%workspace%% --page email_title_%%start_time%% | page was purged |
-| st-admin | purge-page --w %%workspace%% --page email_subject_%%start_time%% | page was purged |
+| st-admin | purge-page --w %%workspace%% --page email_title_%%start_time%% | was purged |
+| st-admin | purge-page --w %%workspace%% --page email_subject_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Email COMPLETED |

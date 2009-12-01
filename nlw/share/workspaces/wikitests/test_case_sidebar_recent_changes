@@ -88,13 +88,13 @@
 
 | *Comment* | Test Case: SRC: Teardown |  |
 
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_1 | qr/The side-%%start_time%%-1 page was purged/ |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_2 | qr/The side-%%start_time%%-2 page was purged/ |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_3 | qr/The side-%%start_time%%-3 page was purged/ |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_4 | qr/The side-%%start_time%%-4 page was purged/ |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_5 | qr/The side-%%start_time%%-5 page was purged/ |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_6 | qr/The side-%%start_time%%-6 page was purged/ |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_7 | qr/The side-%%start_time%%-7 page was purged/ |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_8 | qr/The side-%%start_time%%-8 page was purged/ |
+| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_1 | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_2 | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_3 | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_4 | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_5 | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_6 | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_7 | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_8 | was purged |
 
 | *Comment* | START Test Case: Sidebar: Recent Changes COMPLETED |  |

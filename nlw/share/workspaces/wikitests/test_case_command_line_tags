@@ -83,6 +83,6 @@ tag-search
 TODO: When {bz 2704} is fixed, add stemming tests
 
 | *Comment* | Test Case: Command Line Tests TAGS Teardown |  |
-| st-admin | delete-workspace --w %%cmd_tag_workspace%% --no-export |  |
+| st-admin | delete-workspace --w %%cmd_tag_workspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Command Line Tests TAGS COMPLETED |  |

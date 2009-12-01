@@ -53,6 +53,6 @@
 | text_like | errors-and-messages | To set your preferences for a workspace, you must be logged in. |
 
 | *Comment* | Test Case: Intranet Teardown |  |
-| st-admin | delete-workspace --workspace %%auth_w%% --no-export |  |
+| st-admin | delete-workspace --workspace %%auth_w%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Intranet COMPLETED |

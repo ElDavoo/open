@@ -52,6 +52,6 @@
 
 | *Comment* | Test Case: Created By Sorting. TEARDOWN |  |
 
-| st-admin | delete-workspace --workspace %%sws%% --no-export |  |
+| st-admin | delete-workspace --workspace %%sws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Created By Sorting COMPLETED |

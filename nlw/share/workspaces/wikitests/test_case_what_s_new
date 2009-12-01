@@ -74,7 +74,7 @@
 | text_like | contentContainer | qr/hey whats new %%start_time%% 0001.+hey whats new %%start_time%% 0003/ |
 
 | *Comment* | Test Case: What's New delete page |  |
-| st-admin | purge-page --w %%workspace%% --p hey_whats_new_%%start_time%%_0004 | purged |
+| st-admin | purge-page --w %%workspace%% --p hey_whats_new_%%start_time%%_0004 | was purged |
 
 | open_ok | /%%workspace%%/index.cgi?action=recent_changes |  |
 | text_unlike | contentContainer | hey whats new %%start_time%% 0004 |
@@ -86,9 +86,9 @@
 
 | *Comment* | Test Case: What's New Teardown |  |
 
-| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0001 | page was purged |
-| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0002 | page was purged |
-| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0003 | page was purged |
-| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0005 | page was purged |
+| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0001 | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0002 | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0003 | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0005 | was purged |
 
 | *Comment* | Test Case: What's New COMPLETED |  |

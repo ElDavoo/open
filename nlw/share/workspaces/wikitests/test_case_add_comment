@@ -43,6 +43,6 @@
 TODO: write an entire new test for Add Comment editing buttons similar to Insert Menu test
 
 | *Comment* | Test Case: Add Comment Teardown |  |
-| st-admin | purge-page --w %%workspace%% --p comment_test_page_%%start_time%% | The Comment Test Page %%start_time%% page was purged from the %%workspace%% workspace. |
+| st-admin | purge-page --w %%workspace%% --p comment_test_page_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Add Comment COMPLETED |

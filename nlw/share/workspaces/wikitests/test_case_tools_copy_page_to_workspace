@@ -112,6 +112,6 @@ TODO: come back and finish this test when {bz: 1039} is fixed. Can't seem to cli
 | *Comment* | Test Case: Tools: Copy Page to Workspace Teardown |  |
 
 | st-admin | purge-page --w %%workspace%% --page copy_this_page_%%start_time%% | was purged |
-| st-admin | delete-workspace --workspace %%newspace%% --no-export | The %%newspace%% workspace has been deleted. |
+| st-admin | delete-workspace --workspace %%newspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace COMPLETED |

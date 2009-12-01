@@ -27,7 +27,7 @@ Note: Cannot automate attachments, test is slightly reduced
 | text_like | st-page-titletext | Duplicate of Dupe Spreadsheet %%start_time%% |
 
 | *Comment* | Test Case: Calc Tools: Duplicate Page Teardown |  |
-| st-admin | purge-page --w %%workspace%% --page dupe_spreadsheet_%%start_time%% |  |
-| st-admin | purge-page --w %%workspace%% --page duplicate_of_dupe_spreadsheet_%%start_time%% |  |
+| st-admin | purge-page --w %%workspace%% --page dupe_spreadsheet_%%start_time%% | was purged |
+| st-admin | purge-page --w %%workspace%% --page duplicate_of_dupe_spreadsheet_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Calc Tools: Duplicate Spreadsheet COMPLETED |  |

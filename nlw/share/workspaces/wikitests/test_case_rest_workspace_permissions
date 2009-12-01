@@ -109,6 +109,6 @@ Test set up:
 | body-unlike | intranet |  |
 
 | comment | Test Case" REST Workspace Permissions Teardown |  |
-| st-admin | delete-workspace --w %%wksp%% --no-export | deleted |
+| st-admin | delete-workspace --w %%wksp%% --no-export | has been deleted |
 
 | comment | Test Case" REST Workspace Permissions COMPLETED |  |

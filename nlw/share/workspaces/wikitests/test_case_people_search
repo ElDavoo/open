@@ -86,7 +86,7 @@
 | include | [Test Case: People Search Execute Search] |  |
 
 | *Comment* | Test Case: People Search TearDown |
-| st-admin | delete-workspace --ws %%ws%% --no-export |
-| st-admin | delete-workspace --diffws %%ws%% --no-export |
+| st-admin | delete-workspace --ws %%ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --diffws %%ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: People Search COMPLETED |

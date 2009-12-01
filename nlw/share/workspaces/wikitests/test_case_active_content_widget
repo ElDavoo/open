@@ -117,7 +117,7 @@
 | *Comment* | Test case: Active Content Widget TEARDOWN |  |
 | select-frame | relative=parent |  |
 | st-empty-container |  |  |
-| st-admin | delete-workspace --w %%acw%% --no-export |  |
-| st-admin | delete-workspace --w %%acwnoresults%% --no-export |  |
+| st-admin | delete-workspace --w %%acw%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%acwnoresults%% --no-export | has been deleted |
 
 | *Comment* | Test case: Active Content Widget COMPLETED |  |

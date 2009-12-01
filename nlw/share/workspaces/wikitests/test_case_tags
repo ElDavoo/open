@@ -131,8 +131,8 @@ Go to All Tags | The tag from the deleted page should not appear in list.
 | text_unlike | contentContainer | Tag 2 %%start_time%% |
 
 | *Comment* | Test Case: Tags Teardown |  |
-| st-admin | purge-page --w %%workspace%% --page tag_1_content_title_%%start_time%% | page was purged |
-| st-admin | purge-page --w %%workspace%% --page tag_12_content_title_%%start_time%% | page was purged |
-| st-admin | purge-page --w %%workspace%% --page tag_2_content_title_%%start_time%% | page was purged |
+| st-admin | purge-page --w %%workspace%% --page tag_1_content_title_%%start_time%% | was purged |
+| st-admin | purge-page --w %%workspace%% --page tag_12_content_title_%%start_time%% | was purged |
+| st-admin | purge-page --w %%workspace%% --page tag_2_content_title_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Tags COMPLETED |

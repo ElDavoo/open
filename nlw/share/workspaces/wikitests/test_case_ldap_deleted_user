@@ -50,6 +50,6 @@ Also, you need base_dn.ldif in your wikitest_client_files directory.
 
 | *Comment* | Teardown: remove the user and the new page we created |  |
 | st-admin | remove-member --email %%test_email%% --workspace %%workspace%% | no longer a member |
-| st-admin | purge-page --workspace %%workspace%% --page "eraseme_%%start_time%%" | page was purged |
+| st-admin | purge-page --workspace %%workspace%% --page "eraseme_%%start_time%%" | was purged |
 
 | *Comment* | Test Case: LDAP Deleted User COMPLETED |  |

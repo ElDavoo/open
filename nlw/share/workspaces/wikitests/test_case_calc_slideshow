@@ -334,6 +334,6 @@
 | pause | 10000 |  |
 
 | *Comment* | Test Case: Calc Slideshow Teardown |  |
-| st-admin | purge-page --w %%workspace%% --page calc_slideshow_%%start_time%% |  |
+| st-admin | purge-page --w %%workspace%% --page calc_slideshow_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Calc Slideshow COMPLETED |  |

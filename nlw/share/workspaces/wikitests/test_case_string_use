@@ -196,10 +196,10 @@ Set default values if they are not defined by the caller
 | text_like | contentContainer | qr/does not have any headers/ |
 
 | *Comment* | Test Case: String Use: Teardown |  |
-| st-admin | purge-page --w %%workspace%% --page %%test_id%%_pad | The %%test_string%% pad page was purged from the %%workspace%% workspace. |
-| st-admin | purge-page --w %%workspace%% --page %%test_id%%_dupe | The %%test_string%% dupe page was purged from the %%workspace%% workspace. |
-| st-admin | purge-page --w %%workspace%% --page %%test_id%%_rename | The %%test_string%% rename page was purged from the %%workspace%% workspace. |
-| st-admin | purge-page --w %%workspace%% --page %%test_id%%_title | The %%test_string%% title page was purged from the %%workspace%% workspace. |
+| st-admin | purge-page --w %%workspace%% --page %%test_id%%_pad | was purged |
+| st-admin | purge-page --w %%workspace%% --page %%test_id%%_dupe | was purged |
+| st-admin | purge-page --w %%workspace%% --page %%test_id%%_rename | was purged |
+| st-admin | purge-page --w %%workspace%% --page %%test_id%%_title | was purged |
 
 | *Comment* | Test Case: String Use RETURNING |
 

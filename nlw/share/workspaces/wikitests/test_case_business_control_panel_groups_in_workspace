@@ -76,4 +76,4 @@
 | wait_for_element_visible_ok | group_id | 30000 |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Add Group |
-| st-admin | delete-workspace --w %%ws%% --no-export |
+| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |

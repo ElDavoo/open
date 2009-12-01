@@ -124,7 +124,7 @@
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar Teardown |  |
 
-| st-admin | purge-page --w %%workspace%% --page tc_hide_sidebar_spreadsheet1_%%start_time%% | The TC Hide Sidebar Spreadsheet1 %%start_time%% page was purged from the %%workspace%% workspace. |
-| st-admin | purge-page --w %%workspace%% --page tc_hide_sidebar_spreadsheet2_%%start_time%% | The TC Hide Sidebar Spreadsheet2 %%start_time%% page was purged from the %%workspace%% workspace. |
+| st-admin | purge-page --w %%workspace%% --page tc_hide_sidebar_spreadsheet1_%%start_time%% | was purged |
+| st-admin | purge-page --w %%workspace%% --page tc_hide_sidebar_spreadsheet2_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar COMPLETED |  |

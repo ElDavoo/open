@@ -59,6 +59,6 @@
 | wait_for_element_visible_ok | link=Join to edit | 30000 |
 
 | *Comment* | Test Case: Public Authenticate to Edit Teardown |
-| st-admin | delete-workspace -workspace %%auth_w%% --no-export |
+| st-admin | delete-workspace -workspace %%auth_w%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Public Authenticate to Edit COMPLETED |

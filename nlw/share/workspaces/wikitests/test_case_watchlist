@@ -77,7 +77,7 @@ Remove all pages from watchlist; watchlist displays "No watchlist for USER ID in
 | *Comment* | Test case: Watchlist delete page |  |
 | text_like | contentContainer | Watchlist %%start_time%% |
 | st-is-watched | 1 | Watchlist %%start_time%% |
-| st-admin | purge-page --w %%workspace%% --page watchlist_%%start_time%% | purged |
+| st-admin | purge-page --w %%workspace%% --page watchlist_%%start_time%% | was purged |
 | click_and_wait | link=My Watchlist |  |
 | text_unlike | contentContainer | Watchlist %%start_time%% |
 
@@ -194,10 +194,10 @@ Last Edited By sort
 | text_like | contentContainer | qr/BBB %%start_time%%.+AAA %%start_time%%.+CCC %%start_time%%.+New Watchlist %%start_time%%/ |
 
 | *Comment* | Test case: Watchlist Teardown |  |
-| st_admin | purge-page --w %%workspace%% --page aaa_%%start_time%% | purged |
-| st_admin | purge-page --w %%workspace%% --page bbb_%%start_time%% | purged |
-| st_admin | purge-page --w %%workspace%% --page ccc_%%start_time%% | purged |
-| st_admin | purge-page --w %%workspace%% --page new_watchlist_%%start_time%% | purged |
+| st_admin | purge-page --w %%workspace%% --page aaa_%%start_time%% | was purged |
+| st_admin | purge-page --w %%workspace%% --page bbb_%%start_time%% | was purged |
+| st_admin | purge-page --w %%workspace%% --page ccc_%%start_time%% | was purged |
+| st_admin | purge-page --w %%workspace%% --page new_watchlist_%%start_time%% | was purged |
 
 | *Comment* | Test case: Watchlist COMPLETED |
 
