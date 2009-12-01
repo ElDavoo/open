@@ -122,7 +122,7 @@ role_for_user_primary_account: {
     my $user    = create_test_user(account => $account);
     my $role    = Socialtext::Role->Member();
 
-    my $q_role = $account->role_for_user(user => $user);
+    my $q_role = $account->role_for_user($user);
     is $q_role->name, $role->name, 'User has Member Role in Primary Account';
 }
 
@@ -135,7 +135,7 @@ role_for_user_explicit_role: {
 
     $account->add_user(user => $user, role => $role);
 
-    my $q_role = $account->role_for_user(user => $user);
+    my $q_role = $account->role_for_user($user);
     is $q_role->name, $role->name, 'User has assigned Role in Account';
 }
 
@@ -150,7 +150,7 @@ role_for_user_indirect_via_workspace: {
 
     $workspace->add_user(user => $user, role => $Admin);
 
-    my $q_role = $account->role_for_user(user => $user);
+    my $q_role = $account->role_for_user($user);
     is $q_role->name, $Affiliate->name,
         'User has Affiliate Role, via Workspace membership';
 }
@@ -166,7 +166,7 @@ role_for_user_indirect_via_group: {
 
     $group->add_user(user => $user, role => $Admin);
 
-    my $q_role = $account->role_for_user(user => $user);
+    my $q_role = $account->role_for_user($user);
     is $q_role->name, $Member->name,
         'User has Member Role, via Group membership';
 }
@@ -184,7 +184,7 @@ role_for_user_indirect_via_group_in_workspace: {
     $workspace->add_group(group => $group, role => $Admin);
     $group->add_user(user => $user, role => $Admin);
 
-    my $q_role = $account->role_for_user(user => $user);
+    my $q_role = $account->role_for_user($user);
     is $q_role->name, $Affiliate->name,
         'User has Affiliate Role, via Group in Workspace membership';
 }

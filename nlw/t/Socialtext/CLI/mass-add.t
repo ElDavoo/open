@@ -142,7 +142,7 @@ MASS_ADD_USERS: {
             '... last_name was updated';
         ok $user->password_is_correct('u_passw0rd'),
             '... password was updated';
-        is $acct->role_for_user(user => $user)->name, 'member',
+        is $acct->role_for_user($user)->name, 'member',
             'mass updated user added to account';
 
         SKIP: {

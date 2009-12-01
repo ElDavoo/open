@@ -301,7 +301,7 @@ sub global_template_vars {
             !$hub->checker->check_permission('lock')
         }),
         $thunker->(role_for_user => sub { 
-                $cur_ws->role_for_user(user => $cur_user) || undef }),
+                $cur_ws->role_for_user($cur_user) || undef }),
         $thunker->(signals_only => sub { $self->signals_only }),
         $thunker->(is_workspace_admin => sub {
                 $hub->checker->check_permission('admin_workspace') ? 1 : 0 }),

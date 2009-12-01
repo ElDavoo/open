@@ -22,7 +22,7 @@ users_role_in_primary_account: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user(account => $account);
 
-    is $account->role_for_user(user => $user)->name, $Member->name,
+    is $account->role_for_user($user)->name, $Member->name,
         'User has Affiliate Role in Primary Account';
 }
 
@@ -35,7 +35,7 @@ users_role_in_secondary_account: {
     my $user    = create_test_user();
 
     $ws->add_user(user => $user);
-    is $account->role_for_user(user => $user)->name, $Affiliate->name,
+    is $account->role_for_user($user)->name, $Affiliate->name,
         'User has Affiliate Role in Secondary Accounts';
 }
 
@@ -49,11 +49,11 @@ no_overwrite_of_member_role_in_account: {
     my $user    = create_test_user();
 
     $account->add_user(user => $user, role => $Member);
-    is $account->role_for_user(user => $user)->name, $Member->name,
+    is $account->role_for_user($user)->name, $Member->name,
         'User has Member Role in test Account';
 
     $ws->add_user(user => $user, role => $Admin);
-    is $account->role_for_user(user => $user)->name, $Member->name,
+    is $account->role_for_user($user)->name, $Member->name,
         '... added User to WS in Account; Role in Account unchanged';
 }
 
@@ -67,16 +67,16 @@ no_teardown_of_member_role_in_account: {
     my $user    = create_test_user();
 
     $account->add_user(user => $user, role => $Member);
-    is $account->role_for_user(user => $user)->name, $Member->name,
+    is $account->role_for_user($user)->name, $Member->name,
         'User has Member Role in test Account';
 
     $ws->add_user(user => $user, role => $Admin);
     ok $ws->has_user($user), '... added User to WS';
-    is $account->role_for_user(user => $user)->name, $Member->name,
+    is $account->role_for_user($user)->name, $Member->name,
         '... ... Role in its Account is unchanged';
 
     $ws->remove_user(user => $user);
-    is $account->role_for_user(user => $user)->name, $Member->name,
+    is $account->role_for_user($user)->name, $Member->name,
         '... User removed from WS; Role in Account unchanged';
 }
 
@@ -89,11 +89,11 @@ role_upgrade: {
     my $user    = create_test_user();
 
     $ws->add_user(user => $user);
-    is $account->role_for_user(user => $user)->name, $Affiliate->name,
+    is $account->role_for_user($user)->name, $Affiliate->name,
         'User has Affiliate Role in secondary Account';
 
     $account->add_user(user => $user, role => $Member);
-    is $account->role_for_user(user => $user)->name, $Member->name,
+    is $account->role_for_user($user)->name, $Member->name,
         '... adding User to Account upgrades to Member Role';
 }
 
@@ -107,14 +107,14 @@ role_downgrade: {
     my $user    = create_test_user();
 
     $ws->add_user(user => $user);
-    is $account->role_for_user(user => $user)->name, $Affiliate->name,
+    is $account->role_for_user($user)->name, $Affiliate->name,
         'User has Affiliate Role in secondary Account';
 
     $account->add_user(user => $user, role => $Member);
-    is $account->role_for_user(user => $user)->name, $Member->name,
+    is $account->role_for_user($user)->name, $Member->name,
         '... adding User to Account upgrades to Member Role';
 
     $account->remove_user(user => $user, role => $Member);
-    is $account->role_for_user(user => $user)->name, $Affiliate->name,
+    is $account->role_for_user($user)->name, $Affiliate->name,
         '... removing User from Account downgrades to Affiliate Role';
 }

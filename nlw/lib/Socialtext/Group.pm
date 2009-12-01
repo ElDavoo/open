@@ -516,7 +516,7 @@ Socialtext::Group - Socialtext Group object
   $exists = $group->has_user($user);
 
   # get the Role for a User in the Group
-  $role = $group->role_for_user(user => $user);
+  $role = $group->role_for_user($user);
 
   # get cached counts
   $n = $group->user_count;
@@ -704,7 +704,7 @@ has no Role in the Group, this method does nothing.
 Checks to see if the given C<$user> has a Role in this Group, returning true
 if the User has a Role, false otherwise.
 
-=item B<$group-E<gt>role_for_user(user=E<gt>$user)>
+=item B<$group-E<gt>role_for_user($user)>
 
 Returns a C<Socialtext::Role> object representing the Role that the given
 C<$user> has in this Group.  If the User has no Role in the Group, this method

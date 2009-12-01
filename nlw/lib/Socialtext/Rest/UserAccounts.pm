@@ -41,7 +41,7 @@ override get_resource => sub {
     for my $acct (@$user_accounts) {
         my $acct_id = $acct->account_id;
         
-        my $uar = $acct->role_for_user(user => $user);
+        my $uar = $acct->role_for_user($user);
         my $acct_hash = {
             account_id => $acct_id,
             account_name => $acct->name,

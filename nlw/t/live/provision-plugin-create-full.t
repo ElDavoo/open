@@ -66,7 +66,7 @@ $live->log_in();
     is( $user->first_name(), 'Devin', 'check user first name' );
     is( $user->last_name(), 'Nullington', 'check user last name' );
 
-    my $role = $ws->role_for_user( user => $user );
+    my $role = $ws->role_for_user($user);
     is( $role->name(), 'workspace_admin', 'new user is admin for new workspace' );
     ok( $user->requires_confirmation(), 'user requires confirmation' );
 }

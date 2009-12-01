@@ -84,7 +84,7 @@ sub POST_json {
         return "Invalid role name $role_name";
     }
 
-    my $role_for_user = $group->role_for_user( user => $user );
+    my $role_for_user = $group->role_for_user($user );
     if ($role_for_user && $role_for_user->name eq $role_name) {
         $rest->header( -status => HTTP_400_Bad_Request );
         return "User $username already has Role $role_name";

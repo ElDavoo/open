@@ -786,7 +786,7 @@ group_member_remains_in_workspace: {
     like $output, qr/.+ now has a 'member' role in .+ due to membership in a group/, 
         '... with correct message';
 
-    my $role = $workspace->role_for_user( user => $user);
+    my $role = $workspace->role_for_user($user);
     is $role->name => $member->name, 'User still has member role in workspace';
 
     $workspace->remove_group( group => $group);
@@ -807,7 +807,7 @@ group_member_remains_in_workspace: {
     like $output, qr/.+ now has a 'impersonator' role in .+ due to membership in a group/, 
         '... with correct message';
 
-    $role = $workspace->role_for_user( user => $user);
+    $role = $workspace->role_for_user($user);
     is $role->name => $impersonator->name, 'User still has member role in workspace';
     $output = combined_from( sub {
         eval {
@@ -824,7 +824,7 @@ group_member_remains_in_workspace: {
         '... with correct message';
     is $account->has_group( $group ) => 0, '... group is no longer in account';
 
-    ok !$workspace->role_for_user( user => $user), ' ... user no longer in workspace';
+    ok !$workspace->role_for_user($user), ' ... user no longer in workspace';
 }
 
 ###############################################################################
@@ -859,7 +859,7 @@ group_member_remains_admin_in_workspace: {
     like $output, qr/.+ now has a 'admin' role in the .+ Workspace due to membership in a group/, 
         '... with correct message';
 
-    my $role = $workspace->role_for_user( user => $user);
+    my $role = $workspace->role_for_user($user);
     is $role->name => $admin->name, 'User still has admin role in workspace';
     
     $output = combined_from( sub {
@@ -877,7 +877,7 @@ group_member_remains_admin_in_workspace: {
         '... with correct message';
     is $account->has_group( $group ) => 0, '... group is no longer in account';
 
-    is $workspace->role_for_user( user => $user)->name => 'member', ' ... user still a member in workspace';
+    is $workspace->role_for_user($user)->name => 'member', ' ... user still a member in workspace';
 
 }
 

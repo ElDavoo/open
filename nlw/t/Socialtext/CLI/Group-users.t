@@ -38,7 +38,7 @@ add_user_to_group_as_member: {
     like $output, qr/.+ is now a member of the .+ Group/,
          'User added to Group message';
 
-    my $role = $group->role_for_user( user => $user );
+    my $role = $group->role_for_user($user);
     ok $role, 'User has Role in Group';
     is $role->name, Socialtext::Role->Member()->name,
         '... Role is Member';

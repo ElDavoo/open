@@ -318,7 +318,7 @@ account_import_preserves_uar: {
     $user = Socialtext::User->new(username => $user_name);
     isa_ok $user, 'Socialtext::User', '... found re-imported User';
 
-    my $role = $account->role_for_user(user => $user);
+    my $role = $account->role_for_user($user);
     ok defined $role, '... User has Role in Account';
     is $role->name, $orig_role->name, '... ... with *correct* Role';
 }
@@ -348,7 +348,7 @@ account_import_preserves_uwr: {
     $workspace->add_user(user => $user, role => $Member);
 
     # User should now be in the test Account
-    my $orig_role = $account->role_for_user(user => $user);
+    my $orig_role = $account->role_for_user($user);
     ok defined $orig_role , '... User now has a Role in the Account';
 
     # Export and re-import the Account; UWRs/UARs should be preserved
@@ -365,7 +365,7 @@ account_import_preserves_uwr: {
     $user = Socialtext::User->new(username => $user_name);
     isa_ok $user, 'Socialtext::User', '... found re-imported User';
 
-    my $role = $account->role_for_user(user => $user);
+    my $role = $account->role_for_user($user);
     ok defined $role, '... User has Role in Account';
     is $role->name, $orig_role->name, '... ... with *correct* Role';
 }
@@ -530,7 +530,7 @@ sub _dump_uars {
             push @uars, {
                 user    => $user->username,
                 account => $account->name,
-                role    => $account->role_for_user(user => $user)->name,
+                role    => $account->role_for_user($user)->name,
             };
         }
     }
@@ -546,7 +546,7 @@ sub _dump_uwrs {
             push @uwrs, {
                 user      => $user->username,
                 workspace => $workspace->name,
-                role      => $workspace->role_for_user(user => $user)->name,
+                role      => $workspace->role_for_user($user)->name,
             };
         }
     }
@@ -578,7 +578,7 @@ sub _dump_ugrs {
             push @ugrs, {
                 user  => $user->username,
                 group => $group->driver_group_name,
-                role  => $group->role_for_user(user => $user)->name,
+                role  => $group->role_for_user($user)->name,
             };
         }
     }

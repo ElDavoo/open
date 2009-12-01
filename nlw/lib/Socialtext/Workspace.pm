@@ -2591,7 +2591,7 @@ method changes that role.
 Returns a boolean indicating whether or not the user has an explicitly
 assigned role for this workspace.
 
-=head2 $workspace->role_for_user( user => $user )
+=head2 $workspace->role_for_user($user)
 
 Returns the most effective C<Socialtext::Role> that this user has in the
 workspace (which was either assigned to them explicitly, or was inferred via

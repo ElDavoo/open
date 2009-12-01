@@ -909,7 +909,7 @@ sub _add_user_to_group_as {
     my $new_role     = shift;
     my $user         = $self->_require_user();
     my $group        = $self->_require_group();
-    my $current_role = $group->role_for_user(user => $user);
+    my $current_role = $group->role_for_user($user);
 
     $self->_error(
         loc("Remotely sourced Groups cannot be updated via Socialtext.")
@@ -957,7 +957,7 @@ sub _add_user_to_account_as {
     my $new_role     = shift;
     my $user         = $self->_require_user();
     my $account      = $self->_require_account();
-    my $current_role = $account->role_for_user(user => $user);
+    my $current_role = $account->role_for_user($user);
 
     $self->_check_account_role(
         cur_role => $current_role,
@@ -991,7 +991,7 @@ sub _add_user_to_workspace_as {
     my $new_role     = shift;
     my $user         = $self->_require_user();
     my $ws           = $self->_require_workspace();
-    my $current_role = $ws->role_for_user( user => $user);
+    my $current_role = $ws->role_for_user($user);
 
     $self->_ensure_email_passes_filters(
         $user->email_address,
@@ -1101,7 +1101,7 @@ sub _remove_user_from_thing {
     my $self    = shift;
     my $user    = shift;
     my $thing   = shift; # workspace or account
-    my $current = $thing->role_for_user(user => $user, direct => 1);
+    my $current = $thing->role_for_user($user, direct => 1);
     my $member  = Socialtext::Role->Member();
 
     $self->_error( 
@@ -1117,7 +1117,7 @@ sub _remove_user_from_thing {
     $thing->remove_user( user => $user, role => $member );
 
     # Does the user still have a role in this thing indirectly?
-    my $role = $thing->role_for_user(user => $user);
+    my $role = $thing->role_for_user($user);
     $self->_success(
         loc("[_1] now has a '[_2]' role in [_3] due to membership in a group",
             $user->username, $role->display_name, $thing->name)
@@ -1265,7 +1265,7 @@ sub _make_role_toggler {
         # special message for removing a role where membership in a group
         # gives a higher membership level than what the user is left with
         # after removing an explicit (UWR) role
-        my $current_user_role = $ws->role_for_user( user => $user);
+        my $current_user_role = $ws->role_for_user($user);
         my $current_rolename = $current_user_role->name;
         my $current_role_display_name = $current_user_role->display_name;
 
@@ -2115,7 +2115,7 @@ sub _show_workspace_members {
         direct => $opts{direct} ? 1 : 0,
     );
     while (my $user = $user_cursor->next) {
-        my $role = $ws->role_for_user(user => $user);
+        my $role = $ws->role_for_user($user);
         $msg .= '| ' . join(' | ', $user->email_address, $user->first_name, $user->last_name, $role->name) . " |\n";
     }
     $self->_success($msg, "no indent");

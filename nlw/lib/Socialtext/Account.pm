@@ -393,7 +393,7 @@ sub _dump_user_to_hash {
 
     my $user_accounts = $user->accounts;
     for my $acct (@$user_accounts) {
-        my $uar = $acct->role_for_user(user => $user);
+        my $uar = $acct->role_for_user($user);
         $hash->{roles}{$acct->name} = $uar->name;
     }
 
@@ -1344,7 +1344,7 @@ C<$role> is provided, a default Role will be used instead.
 Removes the specified C<$role> Role that the the C<$user> has in this Account.
 If the User has no Role in the Account, this method does nothing.
 
-=item $account->role_for_user(user => $user)
+=item $account->role_for_user($user)
 
 Returns the C<Socialtext::Role> object representing the Role that the given
 C<$user> has in the Account (either directly, or which was inferred via Group

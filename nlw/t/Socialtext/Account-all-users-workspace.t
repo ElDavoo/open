@@ -175,7 +175,7 @@ user_primary_account_change: {
     my $user = create_test_user( account => $old_acct );
 
     # make sure User is in all users Workspace
-    my $role = $old_ws->role_for_user( user => $user );
+    my $role = $old_ws->role_for_user($user);
     ok $role, 'User has Role in old all users Workspace';
     is $role->role_id, $member->role_id, '... Role is member';
 
@@ -185,12 +185,12 @@ user_primary_account_change: {
        'User is in new primary Account';
 
     # make sure User is in new all users Workspace
-    $role = $new_ws->role_for_user( user => $user );
+    $role = $new_ws->role_for_user($user);
     ok $role, 'User has Role in new all users Workspace';
     is $role->role_id, $member->role_id, '... Role is member';
 
     # make sure User is still in the _old_ all users Workspace
-    $role = $old_ws->role_for_user( user => $user );
+    $role = $old_ws->role_for_user($user);
     ok $role, 'User still has Role in old all users Workspace';
     is $role->role_id, $member->role_id, '... Role is member';
 }
@@ -212,11 +212,11 @@ user_with_indirect_account_role: {
     $ws->add_user( user => $user, role => $member );
 
     # Verify the the User has a Role in the Account
-    my $role = $acct->role_for_user( user => $user );
+    my $role = $acct->role_for_user($user);
     ok $role, 'User has Role in Account';
 
     # User was also added to all users Workspace
-    $role = $auw->role_for_user( user => $user );
+    $role = $auw->role_for_user($user);
     ok $role, 'User has Role in all users Workspace';
     is $role->role_id, $member->role_id, '... Role is member';
 }
@@ -236,15 +236,15 @@ group_has_role_in_auw_exists: {
 
     # Add User to Group
     $group->add_user( user => $user );
-    my $role = $group->role_for_user( user => $user );
+    my $role = $group->role_for_user($user);
     ok $role, 'User has Role in Group';
     is $role->role_id, $member->role_id, '... Role is Member';
 
     # Check User's Role in the AUW
-    $role = $ws->role_for_user( user => $user, direct => 1 );
+    $role = $ws->role_for_user($user, direct => 1 );
     ok !$role, 'User does _not_ have a direct Role in AUW';
 
-    $role = $ws->role_for_user( user => $user );
+    $role = $ws->role_for_user($user);
     ok $role, 'User has an indirect Role in AUW';
 }
 
@@ -258,7 +258,7 @@ group_has_role_in_auw_updated: {
 
     # Add User to Group
     $group->add_user( user => $user );
-    my $role = $group->role_for_user( user => $user );
+    my $role = $group->role_for_user($user);
     ok $role, 'User has Role in Group';
     is $role->role_id, $member->role_id, '... Role is Member';
 
@@ -268,10 +268,10 @@ group_has_role_in_auw_updated: {
         'Account has all users workspace updated after adding groups';
 
     # Check User's Role in the AUW
-    $role = $ws->role_for_user( user => $user, direct => 1 );
+    $role = $ws->role_for_user($user, direct => 1 );
     ok !$role, 'User does _not_ have a direct Role in AUW';
 
-    $role = $ws->role_for_user( user => $user );
+    $role = $ws->role_for_user($user);
     ok $role, 'User has an indirect Role in AUW';
 }
 
@@ -289,7 +289,7 @@ group_has_role_in_auw_when_added_to_account: {
 
     # Add User to Group
     $group->add_user( user => $user );
-    my $role = $group->role_for_user( user => $user );
+    my $role = $group->role_for_user($user);
     ok $role, 'User has Role in Group';
     is $role->role_id, $member->role_id, '... Role is Member';
 
@@ -298,9 +298,9 @@ group_has_role_in_auw_when_added_to_account: {
     ok $acct->has_group( $group ), 'Group is added to Account';
 
     # Check User's Role in the AUW
-    $role = $ws->role_for_user( user => $user, direct => 1 );
+    $role = $ws->role_for_user($user, direct => 1 );
     ok !$role, 'User does _not_ have a direct Role in AUW';
 
-    $role = $ws->role_for_user( user => $user );
+    $role = $ws->role_for_user($user);
     ok $role, 'User has an indirect Role in AUW';
 }

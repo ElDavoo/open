@@ -459,7 +459,7 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
         qr/.+ is now a member of the .+ Account/,
         'add-member with an --account and --user argument'
     );
-    my $role = $account->role_for_user( user => $user1 );
+    my $role = $account->role_for_user($user1);
     is $role->display_name, $member->display_name,
         '... user is added to account';
 
@@ -476,7 +476,7 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
         qr/.+ already has a 'member' role in Account/,
         'add-member with an --account and --user fails, user is in account'
     );
-    $role = $account->role_for_user( user => $user1 );
+    $role = $account->role_for_user($user1);
     is $role->display_name, $member->display_name,
         '... user is still a member account';
 
@@ -527,7 +527,7 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
         qr/.+ now has a 'affiliate' role in .+ due to membership in a group/,
         'remove-member when user has an indirect role, too'
     );
-    $role = $account->role_for_user( user => $user1 );
+    $role = $account->role_for_user($user1);
     ok $role, 'user still has a role';
     isnt $role->display_name, $member->display_name,
         '... but it is not a member';

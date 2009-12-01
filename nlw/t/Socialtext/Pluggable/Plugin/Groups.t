@@ -338,12 +338,12 @@ restore_with_existing_group: {
     ### CHECK THE RESULTS
 
     # CHECK: the User we'd added to the Group already has his Role untouched
-    is $group->role_for_user(user => $test_user_one)->name,
+    is $group->role_for_user($test_user_one)->name,
         $test_role_one->name,
         '... existing User had their UGR left as-is';
 
     # CHECK: the other User was added to the Group, with his original Role
-    is $group->role_for_user(user => $test_user_two)->name,
+    is $group->role_for_user($test_user_two)->name,
         $test_role_two->name,
         '... missing User was added with the exported Role';
 }
@@ -398,7 +398,7 @@ restore_workspace: {
     is $user->username, $test_user->username,
         '... ... correct User';
 
-    my $uwr = $group->role_for_user(user => $user);
+    my $uwr = $group->role_for_user($user);
     is $uwr->name, 'impersonator', '... correct UWR';
 }
 
@@ -462,7 +462,7 @@ restore_workspace_with_existing_group: {
     is $user->username, $test_user->username,
         '... ... correct User';
 
-    my $uwr = $group->role_for_user(user => $user);
+    my $uwr = $group->role_for_user($user);
     is $uwr->name, 'impersonator', '... correct UWR';
 }
 

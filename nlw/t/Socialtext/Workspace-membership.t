@@ -42,7 +42,7 @@ ADD_USER:
 
     my $role = Socialtext::Role->Member();
 
-    is( $ws->role_for_user( user => $user )->role_id(), $role->role_id(),
+    is( $ws->role_for_user($user)->role_id(), $role->role_id(),
         'user has the member role in the workspace' );
 
     # When we add a user to thier first workspace, we reassign thier account.
@@ -75,7 +75,7 @@ CHANGE_USER_ROLE:
     my $role = Socialtext::Role->Admin();
     $ws->assign_role_to_user( user => $user, role => $role );
 
-    is( $ws->role_for_user( user => $user )->role_id(), $role->role_id(),
+    is( $ws->role_for_user($user)->role_id(), $role->role_id(),
         'user has the admin role in the workspace' );
 
     my $log_msg = 'CHANGE,USER_ROLE,role:'

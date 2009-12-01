@@ -106,7 +106,7 @@ account_roles_for_created_user: {
         no_crypt      => 1,
         created_by_user_id => $user->user_id,
     );
-    my $role = $account->role_for_user( user => $default_user );
+    my $role = $account->role_for_user($default_user);
 
     ok $role, 'newly created user has role in default account';
     is $role->role_id, $member->role_id, '... role is member';
@@ -121,7 +121,7 @@ account_roles_for_created_user: {
         created_by_user_id => $user->user_id,
         primary_account_id => $custom_account->account_id,
     );
-    $role = $custom_account->role_for_user( user => $custom_user );
+    $role = $custom_account->role_for_user($custom_user);
 
     ok $role, 'newly created user has role in custom account';
     is $role->role_id, $member->role_id, '... role is member';
@@ -141,7 +141,7 @@ change_primary_account: {
         created_by_user_id => $user->user_id,
     );
 
-    my $role = $account->role_for_user( user => $user );
+    my $role = $account->role_for_user($user);
     ok $role, 'user has role in default account';
     is $role->role_id, $member->role_id, '... role is member';
 
@@ -149,12 +149,12 @@ change_primary_account: {
     $user->primary_account( $other_account );
 
     # Check default account role is preserved
-    $role = $account->role_for_user( user => $user );
+    $role = $account->role_for_user($user);
     ok $role, 'user still has role in default account';
     is $role->role_id, $member->role_id, '... role is member';
 
     # Check for role in new account
-    $role = $other_account->role_for_user( user => $user );
+    $role = $other_account->role_for_user($user);
     ok $role, 'user still has role in default account';
     is $role->role_id, $member->role_id, '... role is member';
 }

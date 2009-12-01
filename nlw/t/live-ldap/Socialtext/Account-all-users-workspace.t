@@ -45,7 +45,7 @@ user_vivified_into_all_users_workspace: {
     is $user->primary_account_id, $account->account_id,
         'User has default account as primary Account';
 
-    my $role = $ws->role_for_user( user => $user );
+    my $role = $ws->role_for_user($user);
     ok $role, 'User has Role in all users Workspace';
     is $role->role_id, $member->role_id, '... Role is Member';
 

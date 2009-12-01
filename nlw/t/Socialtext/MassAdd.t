@@ -76,7 +76,7 @@ Add_from_hash: {
         is_deeply \@failures, [], 'no failure messages';
         is $user->{primary_account_id},
             $default_acct_id, "did not update ronnie's primary_account";
-        my $uar = $acct->role_for_user(user => $user);
+        my $uar = $acct->role_for_user($user);
         ok $uar;
         is $uar->name, 'member', 'user got added to the account';
     }

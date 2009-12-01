@@ -114,7 +114,7 @@ fixtures(qw( clean populated_rdbms ));
     my %roles;
     while ( my $user = $users->next() ) {
         $roles{ $user->username }
-            = $ws->role_for_user( user => $user )->name();
+            = $ws->role_for_user($user)->name();
     }
 
     my $ws_id = $ws->workspace_id;
