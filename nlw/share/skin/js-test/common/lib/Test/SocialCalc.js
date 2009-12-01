@@ -81,7 +81,7 @@ proto.endAsync = function() {
         t.asyncId = 0;
     }
 
-    if (t.$('#st-save-button-link').is(':visible')) {
+    if ((typeof t.$ != 'undefined') && t.$('#st-save-button-link').is(':visible')) {
         t.click('#st-save-button-link');
         t.poll( function() {
             return t.$('#st-display-mode-container', t.win.document).is(':visible')
