@@ -23,18 +23,19 @@ sub UsersByWorkspaceId {
     my $direct = defined $p{direct} ? $p{direct} : 0;
 
     my $uwr_table = $direct
-        ? 'user_workspace_role'
-        : 'distinct_user_workspace_role';
+        ? 'user_set_include'
+        : 'user_set_path';
+    my $ws_uset_id = $ws_id + 0x20000000;
 
     my $sql = qq{
         SELECT DISTINCT user_id, driver_username
-          FROM users
-          JOIN $uwr_table USING (user_id)
-         WHERE workspace_id = ?
+          FROM $uwr_table
+          JOIN users ON (from_set_id = user_id)
+         WHERE into_set_id = ?
          ORDER BY driver_username
     };
 
-    my $sth = sql_execute($sql, $ws_id);
+    my $sth = sql_execute($sql, $ws_uset_id);
     return Socialtext::MultiCursor->new(
         iterables => [ $sth->fetchall_arrayref ],
         apply     => sub {
@@ -118,15 +119,16 @@ sub RolesForUserInWorkspace {
     }
 
     my $uwr_table = $direct
-        ? 'user_workspace_role'
-        : 'distinct_user_workspace_role';
-
+        ? 'user_set_include'
+        : 'user_set_path';
+    my $ws_uset_id = $ws_id + 0x20000000;
     my $sql = qq{
-        SELECT role_id
-        FROM $uwr_table
-        WHERE user_id = ? AND workspace_id = ?
+        SELECT DISTINCT role_id
+          FROM $uwr_table
+         WHERE from_set_id = ?
+           AND into_set_id = ?
     };
-    my $sth = sql_execute($sql, $user_id, $ws_id);
+    my $sth = sql_execute($sql, $user_id, $ws_uset_id);
 
     # turn the results into a list of Roles
     my @all_roles =
@@ -171,22 +173,23 @@ sub RolesForUserInWorkspace {
         my $sort_order = $p{sort_order};
 
         my $uwr_table = $direct
-            ? 'user_workspace_role'
-            : 'distinct_user_workspace_role';
+            ? 'user_set_include'
+            : 'user_set_path';
 
         my $exclude_clause = '';
-        if (@{$exclude}) {
-            my $wksps = join(',', @{$exclude});
-            $exclude_clause = "AND workspace_id NOT IN ($wksps)";
+        if (@$exclude) {
+            my $wksps
+                = join(',', map { $_ + 0x20000000 } grep !/\D/, @$exclude);
+            $exclude_clause = "AND into_set_id NOT IN ($wksps)";
         }
 
         my $sql = qq{
-            SELECT "Workspace".workspace_id
-              FROM "Workspace"
-              JOIN $uwr_table USING (workspace_id)
-             WHERE user_id = ?
+            SELECT w.workspace_id
+              FROM "Workspace" w
+              JOIN $uwr_table ON (w.user_set_id = into_set_id)
+             WHERE from_set_id = ?
              $exclude_clause
-             ORDER BY "Workspace".name $sort_order
+             ORDER BY w.name $sort_order
              LIMIT ? OFFSET ?
         };
         my $sth = sql_execute( $sql, $user_id, $limit, $offset );
