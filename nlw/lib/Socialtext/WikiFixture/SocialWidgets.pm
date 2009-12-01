@@ -380,34 +380,27 @@ PostCondition: Signal is sent, Frame focus is back to entire dashboard
 
 sub st_send_signal_via_activities_widget {
     my ($self, $widgetname, $signaltosend) = @_;
-     
+    my $browser = $ENV{'selenium_browser'} || 'chrome';
+
     $self->handle_command('st-select-widget-frame', $widgetname);
     $self->handle_command('wait_for_element_visible_ok', 'expand-input', '30000');
     $self->handle_command('click_ok', 'expand-input');
-    $self->handle_command('pause', '3000');
-    my $browser;
-    if (defined($ENV{'selenium_browser'})) {
-       $browser = $ENV{'selenium_browser'};
-    }
-    else {
-       $browser = 'chrome';
-    }
-    if ($browser=~/chrome/ig) {
+    $self->handle_command('pause', '3000'); # to let the widget frame open
+
+    if ($browser=~/chrome|firefox/ig) {
         $self->handle_command('selectFrame', 'signalFrame');
-        $self->handle_command('wait_for_element_visible_ok', '//body', 10000);
+        $self->handle_command('wait_for_element_visible_ok', '//body', 5000);
         $self->handle_command('type_ok' ,'//body', $signaltosend);
         $self->handle_command('select-frame' ,'relative=parent');
-        $self->handle_command('wait_for_element_visible_ok' ,'post', 10000);
-        $self->handle_command('click_ok', 'post');
     } else {
-        $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 10000);
-        $self->handle_command('pause', '1000');
+        $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 5000);
         $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$signaltosend);
-        $self->handle_command('pause', '1000');
     }
-    $self->handle_command('wait_for_element_visible_ok' ,'post', 10000);
-    $self->handle_command('click_ok', 'post');                
-    $self->handle_command('pause', 3000);
+
+    $self->handle_command('wait_for_element_visible_ok' ,'post', 5000);
+    $self->handle_command('click_ok', 'post');
+
+    $self->handle_command('pause', 3000); # must wait before signaling again
     $self->handle_command('click_ok', 'expand-input');
     $self->handle_command('select-frame','relative=parent'); 
     
