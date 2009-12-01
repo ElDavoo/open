@@ -340,20 +340,18 @@ Emails a page
 =cut
 
 sub st_email_page {
-    my ($self, $url, $email, $subject) = @_;
+    my ($self, $url, $email) = @_;
     $self->handle_command('open_ok',$url);
     $self->handle_command('wait_for_element_visible_ok','st-pagetools-email', 30000);
     $self->handle_command('pause', 2000);
     $self->handle_command('click_ok','st-pagetools-email');
     $self->handle_command('wait_for_element_visible_ok','st-email-lightbox', 30000);
     $self->handle_command('wait_for_element_visible_ok','email_recipient', 30000);
-    $self->handle_command('wait_for_element_visible_ok','email_add', 30000);
-    $self->handle_command('wait_for_element_visible_ok','email_send', 30000);
-    $self->handle_command('wait_for_element_visible_ok','email_page_subject', 30000);
     $self->handle_command('type_ok', 'email_recipient', $email);
+    $self->handle_command('wait_for_element_visible_ok','email_add', 30000);
     $self->handle_command('click_ok', 'email_add');
-    $self->handle_command('text_like', 'email_page_user_choices',$email);
-    $self->handle_command('type_ok', 'email_page_subject',$subject);
+    $self->handle_command('text_like', 'email_page_user_choices', $email);
+    $self->handle_command('wait_for_element_visible_ok','email_send', 30000);
     $self->handle_command('click_ok', 'email_send');
     $self->handle_command('wait_for_element_not_visible_ok', 'st-email-lightbox',30000);
 }

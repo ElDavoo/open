@@ -51,7 +51,9 @@
 
 | *Comment* | Test Case: Active Content Setup Create Emailed page though GUI |  |  |
 | st-create-wikipage | %%acw%% | Active Content Emailed %%start_time%% |  |
-| st-email-page | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% | %%workspace%%@%%wikiemail%% | Email subject %%start_time%% |
+
+| *Comment* | Test Case: Active Content Setup Email the page to itself just to create an Email event |  |  |
+| st-email-page | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% | %%workspace%%@%%wikiemail%% |  |
 | st-page-multi-view | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% | 4 |  |
 
 | *Comment* | Test Case: Active Content Setup Login as %%conv_email%% |  |
