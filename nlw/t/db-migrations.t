@@ -76,6 +76,6 @@ for ( $START_SCHEMA+1 .. $latest_schema ) {
 my $generated_schema = "$test_dir/generated-schema.sql";
 shell_run "dump-schema $generated_schema";
 
-my $diff = qx{diff -du $generated_schema $real_dir/socialtext-schema.sql};
+my $diff = qx{diff -du $real_dir/socialtext-schema.sql $generated_schema};
 is $diff, '', "Zero length diff";
 
