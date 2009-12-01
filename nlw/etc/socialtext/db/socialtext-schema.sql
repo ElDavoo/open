@@ -26,16 +26,13 @@ CREATE FUNCTION _int_contained(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_contained'
     LANGUAGE c STRICT;
 
-
 CREATE FUNCTION _int_contains(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_contains'
     LANGUAGE c STRICT;
 
-
 CREATE FUNCTION _int_different(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_different'
     LANGUAGE c STRICT;
-
 
 CREATE FUNCTION _int_inter(integer[], integer[]) RETURNS integer[]
     AS '$libdir/_int', '_int_inter'
@@ -45,11 +42,9 @@ CREATE FUNCTION _int_overlap(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_overlap'
     LANGUAGE c STRICT;
 
-
 CREATE FUNCTION _int_same(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_same'
     LANGUAGE c STRICT;
-
 
 CREATE FUNCTION _int_union(integer[], integer[]) RETURNS integer[]
     AS '$libdir/_int', '_int_union'
@@ -67,7 +62,6 @@ $$
 CREATE FUNCTION boolop(integer[], query_int) RETURNS boolean
     AS '$libdir/_int', 'boolop'
     LANGUAGE c STRICT;
-
 
 CREATE FUNCTION cleanup_sessions() RETURNS "trigger"
     AS $$
@@ -239,7 +233,6 @@ CREATE FUNCTION querytree(query_int) RETURNS text
 CREATE FUNCTION rboolop(query_int, integer[]) RETURNS boolean
     AS '$libdir/_int', 'rboolop'
     LANGUAGE c STRICT;
-
 
 CREATE FUNCTION signal_sent() RETURNS "trigger"
     AS $$
