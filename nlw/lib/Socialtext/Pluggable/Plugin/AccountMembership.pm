@@ -85,33 +85,10 @@ sub add_group_account_role {
     my $account = shift;
     my $group   = shift;
     my $role    = shift || Socialtext::GroupAccountRoleFactory->DefaultRole();
-    my $factory = Socialtext::GroupAccountRoleFactory->instance();
 
-    # If we've got a non-Affiliate GAR (e.g. an explicit one; Affiliate is
-    # only for secondary relationships), stop here; we've got a Role already.
-    my $gar = $factory->Get(
-        group_id   => $group->group_id,
-        account_id => $account->account_id
-    );
-    my $role_affiliate = Socialtext::Role->Affiliate();
-    return if ($gar && ($gar->role->name ne $role_affiliate->name));
-
-    # Update/Create the GAR as necessary
-    if ($gar) {
-        # upgrade an "Affiliate" Role to something else
-        $gar->update( { role_id => $role->role_id } );
-        $account->user_set->update_object_role($group, $role->role_id);
-    }
-    else {
-        $gar = $factory->Create( {
-            group_id    => $group->group_id,
-            account_id  => $account->account_id,
-            role_id     => $role->role_id,
-        } );
-        $account->user_set->add_object_role($group, $role->role_id);
+    if ($account->user_set->object_directly_connected($group)) {
         $account->add_to_all_users_workspace(object => $group);
     }
-
 }
 
 sub remove_group_account_role {
@@ -120,58 +97,8 @@ sub remove_group_account_role {
     my $group   = shift;
     my $role    = shift || Socialtext::GroupAccountRoleFactory->DefaultRole();
     my $factory = Socialtext::GroupAccountRoleFactory->instance();
-    
-    # Get GAR.
-    my $gar = $factory->Get(
-        group_id   => $group->group_id,
-        account_id => $account->account_id
-    );
 
-    # We should never be without a GAR here, so warn the system before
-    # returning.
-    unless ( $gar ) {
-        st_log->warning("group " . $group->group_id 
-            . " is missing role in account " . $account->account_id );
-        return;
-    }
-
-    # Can't ever remove a Role in a Group's Primary Account.
-    return if ($account->account_id == $group->primary_account_id);
-
-    # When removing a Group's Role in an Account, we need to consider that we
-    # may be downgrading the Group from an explicit "Member" Role to a
-    # secondary/implicit "Affiliate" Role (e.g. I'm still a member in a WS in
-    # the Account, so I'm still affiliated with the Account).
-    #
-    # Truth table for this boils down as follows:
-    #       has\remove  |   member        affiliate
-    #       -----------------------------------------
-    #       member      |   downgrade       n/a
-    #       affiliate   |   downgrade     downgrade
-    #
-    # Looking at the above table, the *only* case we need to check for is the
-    # "n/a"; all other cases get handled the same except that one.  And, in
-    # the "n/a" case, we just "do nothing".
-    my $member    = Socialtext::Role->Member();
-    my $affiliate = Socialtext::Role->Affiliate();
-    if (   ($gar->role->name eq $member->name)
-        && ($role->name eq $affiliate->name))
-    {
-        # has a Member Role, asked to remove Affiliate Role; no-op.
-        return;
-    }
-
-    # All other cases get handled as "downgrade"; if the Group has a
-    # membership in any of the WSs in the Account they get to maintain an
-    # "Affiliate" Role, otherwise we remove the Role outright.
-    if ($self->_group_has_workspace_role($group, $account)) {
-        $gar->update( { role_id => $affiliate->role_id } );
-        $account->user_set->update_object_role($group, $affiliate->role_id);
-    }
-    else {
-        $factory->Delete($gar);
-        $account->user_set->remove_object_role($group);
-    }
+    # no-op
 }
 
 sub _group_has_workspace_role {

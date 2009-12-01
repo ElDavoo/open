@@ -7,7 +7,7 @@ use Socialtext::Timer;
 use DateTime::Format::Pg;
 use DBI;
 use base 'Exporter';
-use Carp qw/carp croak cluck/;
+use Carp qw/confess carp croak cluck/;
 
 =head1 NAME
 
@@ -247,7 +247,7 @@ sub sql_execute {
     if (my $err = $@) {
         my $msg = "Error during sql_execute():\n$statement\n";
         $msg .= _list_bindings($bind);
-        croak "${msg}Error: $err";
+        confess "${msg}Error: $err";
     }
     return $sth;
 }

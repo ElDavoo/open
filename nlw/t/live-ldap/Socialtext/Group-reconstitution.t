@@ -16,6 +16,8 @@ use t::Socialtext::CLITestUtils qw(expect_success);
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
 
+fixtures("db");
+
 ###############################################################################
 # CASE: Have "Default" Group, export w/Workspace, flush, Group is
 # re-constituted on Workspace import, into its original Primary Account.

@@ -233,12 +233,15 @@ sub remove_group {
     my $group = $opts{group} || croak "can't remove_group without a 'group'";
     my $role  = $opts{role} || Socialtext::GroupAccountRoleFactory->DefaultRole();
 
+    die "can't remove a group from its primary account"
+        if $group->primary_account_id = $self->account_id;
+    $self->user_set->remove_object_role($group);
+
     my $adapter = Socialtext::Pluggable::Adapter->new();
     $adapter->make_hub( Socialtext::User->SystemUser() );
     $adapter->hook(
         'nlw.remove_group_account_role', $self, $group, $role,
     );
-    return $self->_gar_for_group($group);
 }
 
 sub has_group {

@@ -468,22 +468,27 @@ sub _update {
         push @bindings, $value;
     }
 
-    if (@updates) {
-        my $set_clause = join ', ', @updates;
-        sql_execute(
-            'UPDATE "Workspace"'
-            . " SET $set_clause WHERE workspace_id=?",
-            @bindings, $self->workspace_id);
+    return unless @updates;
 
-        while (my ($column, $value) = each %p) {
-            $self->$column($value);
-        }
+    my $set_clause = join ', ', @updates;
+    sql_execute(
+        'UPDATE "Workspace"'
+        . " SET $set_clause WHERE workspace_id=?",
+        @bindings, $self->workspace_id);
+
+    while (my ($column, $value) = each %p) {
+        $self->$column($value);
     }
 
-    if ( $old_account->account_id != $self->account_id ) {
+    my $new_account = $self->account;
+    if ( $old_account->account_id != $new_account->account_id ) {
         my $adapter = Socialtext::Pluggable::Adapter->new;
         $adapter->make_hub(Socialtext::User->SystemUser(), $self);
 
+        $old_account->user_set->remove_object_role($self);
+        $new_account->user_set->add_object_role($self => 'member_workspace');
+
+        warn "this shouldn't be passing 'affiliate' as the role; the real effective role should be used";
         my $users = $self->users;
         while ( my $user = $users->next ) {
             $adapter->hook(
