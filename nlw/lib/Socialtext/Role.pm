@@ -226,7 +226,7 @@ sub SortByEffectiveness {
     my $roles_aref = $p{roles} || [];
 
     # turn the list-ref of Roles into a hash-ref for easier manipulation
-    my %to_sort = map { $_->name => $_ } @{$roles_aref};
+    my %to_sort = map { $_->name => $_ } @$roles_aref;
 
     # order the built-in/default Roles
     my @builtin_sorted;

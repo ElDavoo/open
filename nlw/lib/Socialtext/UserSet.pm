@@ -249,7 +249,8 @@ sub has_plugin {
 
 =item object_roles ($x)
 
-Get the list of distinct, possibly indirect role_ids for $x in $y.  Returns an empty list if none.
+Get the list of distinct, possibly indirect role_ids for $x in $y.  Returns an
+empty list if none.
 
 =cut
 

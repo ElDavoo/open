@@ -296,15 +296,16 @@ sub role_for_user {
     my $uset = $self->user_set;
     croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
     if ($p{direct}) {
-        return $uset->direct_role($user->user_set_id => $self->user_set_id);
+        return $uset->direct_object_role($user);
     }
     else {
-        my @roles = $uset->roles($user->user_set_id => $self->user_set_id);
+        my @role_ids = $uset->object_roles($user);
         # FIXME: this sort function is lame; it doesn't consider permissions
         # at all and it uses hash params pointlessly.
+        my @roles = map { Socialtext::Role->new(role_id => $_) } @role_ids;
         @roles = Socialtext::Role->SortByEffectiveness(roles => \@roles);
         return @roles if wantarray;
-        return $roles[1];
+        return $roles[0];
     }
 }
 
