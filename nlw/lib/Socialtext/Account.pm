@@ -7,6 +7,7 @@ use Socialtext::Cache;
 use Socialtext::Exceptions qw( data_validation_error );
 use Socialtext::Schema;
 use Socialtext::SQL qw( sql_execute sql_singlevalue);
+use Socialtext::SQL::Builder qw(sql_nextval);
 use Socialtext::Helpers;
 use Socialtext::String;
 use Socialtext::User;
