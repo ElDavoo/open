@@ -418,7 +418,7 @@ EOSQL
 
         # get the list of Roles this User has in the WS, falling back to a
         # default Role if the User has no explicit Role in the WS
-        my @roles = $ws->role_for_user(user => $user) || $user->default_role;
+        my @roles = $ws->role_for_user($user) || $user->default_role;
 
         # check if any of those Roles have the specified Permission
         my $has_permission = first {
