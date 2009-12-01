@@ -16,7 +16,7 @@ t.runAsync([
     t.doClick('#st-italic-button-link'),
     t.doCheckCSS('font-style', 'italic', 'Italic'),
     t.doClick('#st-cell-borders-button-link'),
-    t.doCheckCSS('border', '1px solid rgb(0, 0, 0)', 'Border On'),
+    t.doCheckCSS('border', '1px solid rgb(0,0,0)', 'Border On'),
     t.doClick('#st-cell-borders-button-link'),
     t.doCheckCSS('border', '', 'Border Off'),
 
@@ -39,12 +39,12 @@ t.runAsync([
     },
 
     t.doCheckCSS('font-family', 'Verdana,Arial,Helvetica,sans-serif', 'Set Font'),
-    t.doCheckCSS('font-size', '37.3333px', 'Set Size'),
+    t.doCheckCSS('font-size', true, 'Set Size'),
     t.doCheckText('1,234', 'Set Format'),
 
     function() {
-        t.is(t.$('#st-spreadsheet-preview #cell_A1').css('color'), 'rgb(255, 0, 0)', 'Text Color');
-        t.is(t.$('#st-spreadsheet-preview #cell_A1').css('background-color'), 'rgb(204, 0, 0)', 'Background Color');
+        t.is(t.$('#st-spreadsheet-preview #cell_A1').css('color').replace(/,\s+/g, ','), 'rgb(255,0,0)', 'Text Color');
+        t.is(t.$('#st-spreadsheet-preview #cell_A1').css('background-color').replace(/,\s+/g, ','), 'rgb(204,0,0)', 'Background Color');
         t.pass('Swap Color'); // Passed implicitly by color/bgcolor above
         t.endAsync();
     }

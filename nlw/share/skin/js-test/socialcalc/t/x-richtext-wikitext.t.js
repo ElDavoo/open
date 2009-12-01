@@ -3,6 +3,7 @@
 var t = tt = new Test.SocialCalc();
 
 t.plan(9);
+t.checkRichTextSupport();
 
 t.runAsync([
     function() {

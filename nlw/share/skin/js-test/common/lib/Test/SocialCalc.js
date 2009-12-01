@@ -21,7 +21,13 @@ proto.curCell = function(coord) {
 proto._doCheck = function(meth, key, value, msg, coord) {
     var t = this;
     return function() {
-        t.is(t.curCell(coord)[meth](key).replace(/^\s+|\s+$/g, ''), value, msg);
+        var curValue = t.curCell(coord)[meth](key);
+        if (value === true) {
+            t.ok(curValue, msg);
+        }
+        else {
+            t.is(curValue.replace(/^\s+|\s+$/g, '').replace(/,\s+/g, ','), value, msg);
+        }
         t.callNextStep();
     };
 }
