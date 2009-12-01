@@ -10,8 +10,6 @@
 | include | [Test Case: Active Content Setup] |  |
 
 | *Comment* | Test Case: Active Content Widget catchup logs and clear json cache |  |
-| *Comment* | Test Case: Active Content Widget on an appliance, wait 6 minutes |  |
-
 | st-catchup-logs |  |  |
 | st-clear-json-cache |  |  |
 

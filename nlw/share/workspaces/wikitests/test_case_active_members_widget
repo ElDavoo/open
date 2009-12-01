@@ -21,8 +21,6 @@
 | include | [Test Case: Active Members Setup] |  |
 
 | *Comment* | Test Case: Active Members Widget catchup logs and clear json cache |  |
-| *Comment* | Test Case: Active Members Widget on an appliance, wait 6 minutes |  |
-
 | st-catchup-logs |  |  |
 | st-clear-json-cache |  |  |
 
