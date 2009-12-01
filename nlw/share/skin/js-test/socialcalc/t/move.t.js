@@ -9,9 +9,21 @@ t.runAsync([
         t.open_iframe_with_socialcalc("/admin/index.cgi?action=display;page_type=spreadsheet;page_name="+t.gensym()+"#edit", t.nextStep());
     },
 
+    t.doExec("set A1 text t test"),
+
     function() {
-        t.pass('Fill Down');
-        t.pass('Fill Right');
+        t.ss.editor.RangeAnchor();
+        t.ss.editor.RangeExtend('B2');
+        t.click('#move-toggle');
+        t.callNextStep();
+    },
+
+    t.doClick('#st-filldown-button-link'),
+    t.doCheckText('test', 'Fill Down', 'A2'),
+    t.doClick('#st-fillright-button-link'),
+    t.doCheckText('test', 'Fill Right', 'B2'),
+
+    function() {
         t.pass('Insert Row Below');
         t.pass('Insert Row Above');
         t.pass('Insert Col Left');

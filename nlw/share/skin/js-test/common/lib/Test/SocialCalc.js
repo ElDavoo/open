@@ -9,26 +9,27 @@ proto.open_iframe_with_socialcalc = function(url, callback) {
     });
 }
 
-proto.curCell = function() {
+proto.curCell = function(coord) {
     var t = this;
-    if (t.$('#st-spreadsheet-edit #e-cell_A1').is(':visible')) {
-        return t.$('#st-spreadsheet-edit #e-cell_A1');
+    coord = coord || 'A1';
+    if (t.$('#st-spreadsheet-edit #e-cell_'+coord).is(':visible')) {
+        return t.$('#st-spreadsheet-edit #e-cell_'+coord);
     }
-    return t.$('#st-spreadsheet-preview #cell_A1');
+    return t.$('#st-spreadsheet-preview #cell_'+coord);
 }
 
-proto.doCheckCSS = function(attr, value, msg) {
+proto.doCheckCSS = function(attr, value, msg, coord) {
     var t = this;
     return function() {
-        t.is(t.curCell().css(attr).replace(/^\s+|\s+$/g, ''), value, msg);
+        t.is(t.curCell(coord).css(attr).replace(/^\s+|\s+$/g, ''), value, msg);
         t.callNextStep();
     };
 }
 
-proto.doCheckText = function(text, msg) {
+proto.doCheckText = function(text, msg, coord) {
     var t = this;
     return function() {
-        t.is(t.curCell().text().replace(/^\s+|\s+$/g, ''), text, msg);
+        t.is(t.curCell(coord).text().replace(/^\s+|\s+$/g, ''), text, msg);
         t.callNextStep();
     };
 }
