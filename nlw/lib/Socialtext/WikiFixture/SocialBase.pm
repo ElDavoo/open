@@ -1832,9 +1832,12 @@ sub st_catchup_logs {
        system($str);
        chdir($current_dir);
    } else {
-      #On An Appliance. Wait six minutes. Log consumer cron job runs every
-      #five minutes.
-      $self->pause(360000);
+       # call the log consumer
+       # Note: THIS ONLY WORKS AFTER RUNNING st-appliance-wikitests to set it
+       # up
+       #
+       my $str = "/usr/sbin/st-appliance-reports-consume-nlw-log /var/log/nlw.log";
+       system($str);
    }
 }
 
