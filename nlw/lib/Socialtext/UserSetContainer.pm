@@ -1,6 +1,7 @@
 package Socialtext::UserSetContainer;
 # @COPYRIGHT@
 use Moose::Role;
+use Carp qw/croak/;
 use Socialtext::UserSet;
 use Socialtext::SQL qw(sql_execute sql_singlevalue);
 use Socialtext::l10n qw/loc/;
@@ -9,7 +10,6 @@ use Socialtext::Exceptions qw/param_error/;
 use Socialtext::Cache ();
 use Socialtext::MultiCursor;
 use Socialtext::Timer qw/time_scope/;
-use Try::Tiny;
 use List::MoreUtils qw/any/;
 use namespace::clean -except => 'meta';
 
@@ -118,6 +118,7 @@ EOT
         push @enabled_for_all, $plugin if $count == 0;
     }
     return @enabled_for_all;
+}
 
 sub role_default {
     my ($self,$thing) = @_;
@@ -134,17 +135,15 @@ sub add_role {
         unless blessed($role);
 
     $self->role_change_check($p{actor},'add',$thing,$role);
-    try {
-        $self->user_set->add_object_role($thing, $role);
-    }
-    catch {
-        if ($_ =~ /constraint/i) {
+    eval { $self->user_set->add_object_role($thing, $role) };
+    if ($@) {
+        if ($@ =~ /constraint/i) {
             die "could not add role: object already exists with some role";
         }
-        die $_;
-    };
+        die $@;
+    }
 
-    try { $self->role_change_event($p{actor},'add',$thing,$role) };
+    eval { $self->role_change_event($p{actor},'add',$thing,$role) };
     return;
 }
 
@@ -170,7 +169,7 @@ sub assign_role {
         $uset->add_object_role($thing, $role);
     }
 
-    try { $self->role_change_event($p{actor},$change,$thing,$role) };
+    eval { $self->role_change_event($p{actor},$change,$thing,$role) };
     return;
 }
 
@@ -181,18 +180,16 @@ sub remove_role {
 
     my $thing = $p{object};
     $self->role_change_check($p{actor},'remove',$thing);
-    try {
-        $self->user_set->remove_object_role($thing);
-    }
-    catch {
-        if ($_ =~ /edge \d+,\d+ does not exist/) {
+    eval { $self->user_set->remove_object_role($thing) };
+    if ($@) {
+        if ($@ =~ /edge \d+,\d+ does not exist/) {
             die "object not in this user set, ".
                 "set:".$self->user_set_id." obj:".$thing->user_set_id;
         }
-        die $_;
-    };
+        die $@;
+    }
 
-    try { $self->role_change_event($p{actor},'remove',$thing) };
+    eval { $self->role_change_event($p{actor},'remove',$thing) };
     return;
 }
 
@@ -246,7 +243,7 @@ sub add_user {
     my ($self,%p) = @_;
     my $actor = $p{actor} || Socialtext::User->SystemUser;
     my $user = $p{user};
-    die "must supply a user" unless ($user && $user->isa('Socialtext::User'));
+    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
     $self->add_role(
         actor => $actor,
         object => $user,
@@ -257,7 +254,7 @@ sub add_user {
 sub assign_role_to_user {
     my ($self,%p) = @_;
     my $user = $p{user};
-    die "must supply a user" unless ($user && $user->isa('Socialtext::User'));
+    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
     my $actor = $p{actor} || Socialtext::User->SystemUser;
     $self->assign_role(
         actor => $actor,
@@ -270,26 +267,26 @@ sub remove_user {
     my ($self, %p) = @_;
     my $uset = $self->user_set;
     my $user = $p{user};
-    die "must supply a user" unless ($user && $user->isa('Socialtext::User'));
+    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
     my $actor = $p{actor} || Socialtext::User->SystemUser;
 
-    try {
+    eval {
         $self->remove_role(
             actor => $actor,
             object => $user,
             role => $p{role},
         );
-    }
-    catch {
-        return if ($_ =~ /object not in this user set/);
-        die $_;
     };
+    if ($@) {
+        return if ($@ =~ /object not in this user set/);
+        die $@;
+    }
 }
 
 sub has_user {
     my ($self, $user, %p) = @_;
     my $uset = $self->user_set;
-    die "must supply a user" unless ($user && $user->isa('Socialtext::User'));
+    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
     my $meth = $p{direct} ? 'directly_connected' : 'connected';
     return $uset->$meth($user->user_set_id => $self->user_set_id);
 }
@@ -297,7 +294,7 @@ sub has_user {
 sub role_for_user {
     my ($self, $user, %p) = @_;
     my $uset = $self->user_set;
-    die "must supply a user" unless ($user && $user->isa('Socialtext::User'));
+    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
     if ($p{direct}) {
         return $uset->direct_role($user->user_set_id => $self->user_set_id);
     }
@@ -314,9 +311,9 @@ sub role_for_user {
 sub user_has_role {
     my ($self,%p) = @_;
     my $user = $p{user};
-    die "must supply a user" unless ($user && $user->isa('Socialtext::User'));
+    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
     my $role = $p{role};
-    die "must supply a user" unless ($role && $role->isa('Socialtext::Role'));
+    croak "must supply a user" unless ($role && $role->isa('Socialtext::Role'));
     my @roles = $self->user_set->roles($user->user_set_id => $self->user_set_id);
     return any {$_ eq $role} @roles;
 }
@@ -363,10 +360,10 @@ sub user_roles {
             ];
         },
     );
-
 }
 
 1;
+
 __END__
 
 =head1 NAME
