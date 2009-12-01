@@ -21,6 +21,11 @@ t.runAsync([
         t.ok(t.$('#st-save-revision-button-link'), 'Restore Revision (disabled for new spreadsheets)');
         t.ok(t.$('#st-edit-revision-button-link'), 'Edit Revision (disabled for new spreadsheets)');
 
+        t.click('#st-save-button-link');
+        t.callNextStepOn('#st-display-mode-container');
+    },
+
+    function() {
         t.endAsync();
     }
 ]);
