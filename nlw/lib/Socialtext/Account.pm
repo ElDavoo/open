@@ -279,6 +279,40 @@ sub _gar_for_group {
     return $gar;
 }
 
+sub _primary_user_ids {
+    my $self = shift;
+    my $sth = sql_execute(q{
+        SELECT DISTINCT user_id
+        FROM "UserMetadata"
+        WHERE primary_account_id = ?
+    }, $self->account_id);
+    my @ids = map { $_->[0] } @{$sth->fetchall_arrayref || []};
+    return \@ids;
+}
+
+around 'user_ids' => sub {
+    my $call = shift;
+    my ($self,%p) = @_;
+    return $call->(@_) unless $p{primary_only};
+    
+    my $t = time_scope('acct_user_ids');
+    return $self->_primary_user_ids();
+};
+
+around 'users' => sub {
+    my $call = shift;
+    my ($self,%p) = @_;
+    return $call->(@_) unless $p{primary_only};
+    
+    my $t = time_scope('acct_users');
+    return Socialtext::MultiCursor->new(
+        iterables => $self->_primary_user_ids(),
+        apply     => sub {
+            return Socialtext::User->new(user_id => $_[0]);
+        },
+    );
+};
+
 sub to_hash {
     my $self = shift;
     my $hash = {
