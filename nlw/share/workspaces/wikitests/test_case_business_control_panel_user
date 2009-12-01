@@ -3,8 +3,9 @@
 | set | new_workspace | user-test%%start_time%% |
 | set | cli_user | cli_user_test%%start_time%%@ken.socialtext.net |
 
-| st-admin | create-account --name '%%new_acct%%' |
-| st-admin | create-workspace --name %%new_workspace%% --title %%new_workspace%% --account '%%new_acct%%' |
+| st-admin | create-account --name '%%new_acct%%' | was created |
+| st-admin | create-workspace --name %%new_workspace%% --title %%new_workspace%% --account '%%new_acct%%' | was created |
+| st-admin | give-system-admin --e %%username%% | now has |
 
 | *Comment* | Test case: Business Control Panel create a user, add as admin, verify admin |  |
 | open_ok | /nlw/control/user |  |
@@ -51,7 +52,9 @@
 | click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |  |
+| wait_for_element_visible_ok | link=Wiki CLI <%%cli_user%%> | 30000 |
 | click_and_wait | link=Wiki CLI <%%cli_user%%> |  |
+| wait_for_text_present_ok | Relationship | 30000 |
 | wait_for_element_visible_ok | link=%%new_acct%% |  |
 | text_like | qr/%%new_acct%%.+Primary Account, Via Workspace: %%new_workspace%%/ism |  |
 | text_like | Socialtext Accounts Access? no |  |
