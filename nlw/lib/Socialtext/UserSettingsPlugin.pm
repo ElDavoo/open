@@ -321,8 +321,16 @@ sub users_search {
     }
 
     if (@users && $filter) {
-        @users = grep { $_ if ($_->{email_address} =~ qr/$filter/) } @users;
+        @users = grep { $_ if ($_->{email_address} =~ qr/$filter/) } 
+                    @users;
     }
+
+    # Grep out de-activated users.  This makes our search much slower b/c we
+    # need to instantiate each user to check if they're deactivated.
+    @users = grep { 
+        my $user = Socialtext::User->new(email_address => $_->{email_address});
+        $user && !$user->is_deactivated
+    } @users;
 
     my $settings_section = $self->template_process(
         'element/settings/users_invite_search_section',
