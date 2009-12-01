@@ -827,6 +827,8 @@ sub st_open_confirmation_uri {
     my ($self, $email) = @_;
 
     require Socialtext::User;
+    require Socialtext::Cache;
+    Socialtext::Cache->clear('email_conf');
     my $uri = Socialtext::User->new(username => $email)->confirmation_uri();
     # strip off host part
     $uri =~ s#.+(/nlw/submit/confirm)#$1#;
