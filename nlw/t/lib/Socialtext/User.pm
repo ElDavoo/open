@@ -82,9 +82,11 @@ sub is_business_admin { $_[0]->{is_business_admin} || 0 }
 sub is_profile_hidden { $_[0]->{is_profile_hidden} || 0 }
 
 sub is_deactivated { $_[0]->{is_deactivated} || 0 }
+sub is_system_created { $_[0]->{is_system_created} || 0 }
 
 
 sub user_id { $_[0]->{user_id} || 1 }
+sub user_set_id { $_[0]->user_id }
 
 sub username { $_[0]->{username} || 'oneusername' }
 sub password { $_[0]->{password} || 'default-pass' }
