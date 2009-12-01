@@ -29,6 +29,7 @@ use Socialtext::l10n qw(loc system_locale);
 use Socialtext::Log qw( st_log );
 use Socialtext::Paths;
 use Socialtext::SQL qw(:exec :txn);
+use Socialtext::SQL::Builder qw(sql_nextval);
 use Socialtext::String;
 use Readonly;
 use Socialtext::Account;
@@ -206,16 +207,21 @@ sub create {
         sql_begin_work();
 
         $class->_validate_and_clean_data(\%p);
+        delete $p{workspace_id};
+        delete $p{user_set_id};
         my $keys = join(',', sort keys %p);
         my $vals = join(',', map {'?'} keys %p);
 
-        my $sql = <<EOSQL;
-INSERT INTO "Workspace" ( workspace_id, $keys )
-    VALUES (nextval('"Workspace___workspace_id"'), $vals)
-EOSQL
-        sql_execute($sql, map { $p{$_} } sort keys %p);
+        my $ws_id = sql_nextval('"Workspace___workspace_id"');
+        my $user_set_id = $ws_id + 0x20000000;
 
-        $self = $class->new( name => $p{name} );
+        my $sql = <<EOSQL;
+INSERT INTO "Workspace" ( workspace_id, user_set_id, $keys )
+    VALUES (?, ?, $vals)
+EOSQL
+        sql_execute($sql, $ws_id, $user_set_id, map { $p{$_} } sort keys %p);
+
+        $self = $class->new(workspace_id => $ws_id);
 
         my $creator = $self->creator;
         unless ( $creator->is_system_created ) {

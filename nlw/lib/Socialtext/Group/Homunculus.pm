@@ -100,11 +100,12 @@ has 'factory' => (
 );
 
 has_column 'user_set_id' => (
-    is => 'rw', isa => 'Int',
+    is => 'rw', isa => 'Int', default => sub { shift->group_id + 0x10000000 }
 );
 
 has_unique_key ('driver_key','driver_unique_id');
 has_unique_key ('primary_account_id', 'created_by_user_id', 'driver_group_name');
+has_unique_key ('user_set_id');
 
 sub _set_driver_key {
     my $self = shift;

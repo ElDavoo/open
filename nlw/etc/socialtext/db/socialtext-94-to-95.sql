@@ -93,19 +93,26 @@ CREATE VIEW user_set_include_tc AS
   SELECT DISTINCT from_set_id, via_set_id, into_set_id, role_id
   FROM user_set_path;
 
--- Now add a user_set_id to "container" objects
--- 0x20000001 = 536870913
+-- Map regular ID fields into a user_set_id.  Give each range ~268 million
+-- numbers.
 
-CREATE SEQUENCE "user_set_id_seq"
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    START WITH 536870913
-    CACHE 1; -- will be inserting a bunch per txn
+-- HANDY WHERE CLAUSES:
+-- users: from_set_id <= x'10000000'::int;
+-- groups: from_set_id BETWEEN x'10000001'::int AND x'20000000'::int;
+-- workspaces: from_set_id BETWEEN x'20000001'::int AND x'30000000'::int;
+-- accounts: from_set_id BETWEEN x'30000001'::int AND x'40000000'::int;
 
-ALTER TABLE "Workspace" ADD COLUMN user_set_id integer NOT NULL DEFAULT nextval('user_set_id_seq');
-ALTER TABLE "Account" ADD COLUMN user_set_id integer NOT NULL DEFAULT nextval('user_set_id_seq');
-ALTER TABLE groups ADD COLUMN user_set_id integer NOT NULL DEFAULT nextval('user_set_id_seq');
+ALTER TABLE groups ADD COLUMN user_set_id integer;
+UPDATE groups SET user_set_id = group_id + x'10000000'::int;
+ALTER TABLE groups ALTER COLUMN user_set_id SET NOT NULL;
+
+ALTER TABLE "Workspace" ADD COLUMN user_set_id integer;
+UPDATE "Workspace" SET user_set_id = workspace_id + x'20000000'::int;
+ALTER TABLE "Workspace" ALTER COLUMN user_set_id SET NOT NULL;
+
+ALTER TABLE "Account" ADD COLUMN user_set_id integer;
+UPDATE "Account" SET user_set_id = account_id + x'30000000'::int;
+ALTER TABLE "Account" ALTER COLUMN user_set_id SET NOT NULL;
 
 CREATE TRIGGER workspace_user_set_delete AFTER DELETE ON "Workspace"
 FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
@@ -171,12 +178,12 @@ CREATE VIEW user_use_plugin AS
 CREATE VIEW user_sets_for_user AS
     SELECT from_set_id AS user_id, into_set_id AS user_set_id
     FROM user_set_path
-    WHERE from_set_id <= 536870912;
+    WHERE from_set_id <= x'10000000'::int;
 
 CREATE VIEW roles_for_user AS
     SELECT from_set_id AS user_id, into_set_id AS user_set_id, role_id
     FROM user_set_path
-    WHERE from_set_id <= 536870912;
+    WHERE from_set_id <= x'10000000'::int;
 
 -- e.g. WHERE viewer_id = ? AND other_id = ? AND plugin = 'people'
 CREATE VIEW users_share_plugin AS
@@ -185,20 +192,20 @@ CREATE VIEW users_share_plugin AS
     JOIN user_set_plugin plug USING (user_set_id)
     JOIN user_sets_for_user o_path USING (user_set_id);
 
-CREATE VIEW accounts_for_user AS
-    SELECT *
-    FROM user_sets_for_user
-    JOIN "Account" USING (user_set_id);
-
 CREATE VIEW groups_for_user AS
-    SELECT *
+    SELECT user_id, user_set_id, (user_set_id - x'10000000'::int) AS group_id
     FROM user_sets_for_user
-    JOIN groups USING (user_set_id);
+    WHERE user_set_id BETWEEN x'10000001'::int AND x'20000000'::int;
 
 CREATE VIEW workspaces_for_user AS
-    SELECT *
+    SELECT user_id, user_set_id, (user_set_id - x'20000000'::int) AS workspace_id
     FROM user_sets_for_user
-    JOIN "Workspace" USING (user_set_id);
+    WHERE user_set_id BETWEEN x'20000001'::int AND x'30000000'::int;
+
+CREATE VIEW accounts_for_user AS
+    SELECT user_id, user_set_id, (user_set_id - x'30000000'::int) AS account_id
+    FROM user_sets_for_user
+    WHERE user_set_id BETWEEN x'30000001'::int AND x'40000000'::int;
 
 -- either this thing, or something this thing is connected to has this plugin
 -- usage:
@@ -209,6 +216,7 @@ CREATE VIEW user_set_plugin_tc AS
     SELECT from_set_id AS user_set_id, plugin
     FROM user_set_path path
     JOIN user_set_plugin plug ON (path.into_set_id = plug.user_set_id);
+
 
 UPDATE "System"
    SET value = '95'

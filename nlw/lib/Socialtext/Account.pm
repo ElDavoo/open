@@ -682,15 +682,17 @@ sub _enable_default_plugins {
 sub _create_full {
     my ( $class, %p ) = @_;
 
-    my @keys = keys %p;
-    my $fields = join ',', @keys;
-    my $values = join ',', map { '?' } @keys;
-    my @bind = map { $p{$_} } @keys;
+    my $id = sql_nextval('"Account___account_id"');
+    $p{account_id} = $id;
+    $p{user_set_id} = $id + 0x30000000;
+
+    my $fields = join ',', keys %p;
+    my $values = '?,' x keys %p;
+    chop $values;
 
     sql_execute(qq{
-        INSERT INTO "Account" (account_id, $fields)
-            VALUES (nextval(\'"Account___account_id"\'),$values)
-    },@bind);
+        INSERT INTO "Account" ($fields) VALUES ($values)
+    },map { $p{$_} } keys %p);
 }
 
 sub delete {

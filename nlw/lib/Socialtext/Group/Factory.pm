@@ -322,7 +322,9 @@ sub NewGroupRecord {
 
     # make sure that the Group has a "group_id"
     $proto_group->{group_id} ||= $self->NewGroupId();
-    $proto_group->{user_set_id} = sql_nextval('user_set_id_seq');
+
+    # force a 1:1 relationship between group_id and user_set_id
+    $proto_group->{user_set_id} = $proto_group->{group_id} + 0x10000000;
 
     # new Group records default to being cached _now_.
     $proto_group->{cached_at} ||= $self->Now();

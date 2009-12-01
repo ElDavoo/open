@@ -402,13 +402,6 @@ CREATE OPERATOR CLASS gist__int_ops
     FUNCTION 6 g_int_picksplit(internal,internal) ,
     FUNCTION 7 g_int_same(integer[],integer[],internal);
 
-CREATE SEQUENCE user_set_id_seq
-    START WITH 536870913
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -432,7 +425,7 @@ CREATE TABLE "Account" (
     all_users_workspace bigint,
     account_type text DEFAULT 'Standard' NOT NULL,
     restrict_to_domain text DEFAULT '' NOT NULL,
-    user_set_id integer DEFAULT nextval('user_set_id_seq'::regclass) NOT NULL
+    user_set_id integer NOT NULL
 );
 
 CREATE SEQUENCE "Account___account_id"
@@ -538,7 +531,7 @@ CREATE TABLE "Workspace" (
     uploaded_skin boolean DEFAULT false NOT NULL,
     allows_skin_upload boolean DEFAULT false NOT NULL,
     allows_page_locking boolean DEFAULT false NOT NULL,
-    user_set_id integer DEFAULT nextval('user_set_id_seq'::regclass) NOT NULL
+    user_set_id integer NOT NULL
 );
 
 CREATE TABLE "WorkspaceBreadcrumb" (
@@ -612,12 +605,12 @@ CREATE TABLE user_set_path (
 CREATE VIEW user_sets_for_user AS
   SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id
    FROM user_set_path
-  WHERE user_set_path.from_set_id <= 536870912;
+  WHERE user_set_path.from_set_id <= B'00010000000000000000000000000000'::"bit"::integer;
 
 CREATE VIEW accounts_for_user AS
-  SELECT user_sets_for_user.user_set_id, user_sets_for_user.user_id, "Account".account_id, "Account".name, "Account".is_system_created, "Account".skin_name, "Account".email_addresses_are_hidden, "Account".is_exportable, "Account".desktop_logo_uri, "Account".desktop_header_gradient_top, "Account".desktop_header_gradient_bottom, "Account".desktop_bg_color, "Account".desktop_2nd_bg_color, "Account".desktop_text_color, "Account".desktop_link_color, "Account".desktop_highlight_color, "Account".allow_invitation, "Account".all_users_workspace, "Account".account_type, "Account".restrict_to_domain
+  SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00110000000000000000000000000000'::"bit"::integer AS account_id
    FROM user_sets_for_user
-   JOIN "Account" USING (user_set_id);
+  WHERE user_sets_for_user.user_set_id >= B'00110000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'01000000000000000000000000000000'::"bit"::integer;
 
 CREATE VIEW all_user_account_role AS
   SELECT my_acct_roles.user_id, my_acct_roles.account_id, my_acct_roles.role_id
@@ -874,7 +867,7 @@ CREATE TABLE groups (
     creation_datetime timestamptz DEFAULT now() NOT NULL,
     created_by_user_id bigint NOT NULL,
     cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
-    user_set_id integer DEFAULT nextval('user_set_id_seq'::regclass) NOT NULL,
+    user_set_id integer NOT NULL,
     description text DEFAULT '' NOT NULL
 );
 
@@ -885,9 +878,9 @@ CREATE SEQUENCE groups___group_id
     CACHE 1;
 
 CREATE VIEW groups_for_user AS
-  SELECT user_sets_for_user.user_set_id, user_sets_for_user.user_id, groups.group_id, groups.driver_key, groups.driver_unique_id, groups.driver_group_name, groups.primary_account_id, groups.creation_datetime, groups.created_by_user_id, groups.cached_at
+  SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00010000000000000000000000000000'::"bit"::integer AS group_id
    FROM user_sets_for_user
-   JOIN groups USING (user_set_id);
+  WHERE user_sets_for_user.user_set_id >= B'00010000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'00100000000000000000000000000000'::"bit"::integer;
 
 CREATE TABLE job (
     jobid serial NOT NULL,
@@ -989,6 +982,11 @@ CREATE TABLE profile_relationship (
     profile_field_id bigint NOT NULL,
     other_user_id bigint NOT NULL
 );
+
+CREATE VIEW roles_for_user AS
+  SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_path.role_id
+   FROM user_set_path
+  WHERE user_set_path.from_set_id <= B'00010000000000000000000000000000'::"bit"::integer;
 
 CREATE TABLE rollup_user_signal (
     user_id bigint NOT NULL,
@@ -1174,9 +1172,9 @@ CREATE SEQUENCE webhook___webhook_id
     CACHE 1;
 
 CREATE VIEW workspaces_for_user AS
-  SELECT user_sets_for_user.user_set_id, user_sets_for_user.user_id, "Workspace".workspace_id, "Workspace".name, "Workspace".title, "Workspace".logo_uri, "Workspace".homepage_weblog, "Workspace".email_addresses_are_hidden, "Workspace".unmasked_email_domain, "Workspace".prefers_incoming_html_email, "Workspace".incoming_email_placement, "Workspace".allows_html_wafl, "Workspace".email_notify_is_enabled, "Workspace".sort_weblogs_by_create, "Workspace".external_links_open_new_window, "Workspace".basic_search_only, "Workspace".enable_unplugged, "Workspace".skin_name, "Workspace".custom_title_label, "Workspace".header_logo_link_uri, "Workspace".show_welcome_message_below_logo, "Workspace".show_title_below_logo, "Workspace".comment_form_note_top, "Workspace".comment_form_note_bottom, "Workspace".comment_form_window_height, "Workspace".page_title_prefix, "Workspace".email_notification_from_address, "Workspace".email_weblog_dot_address, "Workspace".comment_by_email, "Workspace".homepage_is_dashboard, "Workspace".creation_datetime, "Workspace".account_id, "Workspace".created_by_user_id, "Workspace".restrict_invitation_to_search, "Workspace".invitation_filter, "Workspace".invitation_template, "Workspace".customjs_uri, "Workspace".customjs_name, "Workspace".no_max_image_size, "Workspace".cascade_css, "Workspace".uploaded_skin, "Workspace".allows_skin_upload, "Workspace".allows_page_locking
+  SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00100000000000000000000000000000'::"bit"::integer AS workspace_id
    FROM user_sets_for_user
-   JOIN "Workspace" USING (user_set_id);
+  WHERE user_sets_for_user.user_set_id >= B'00100000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'00110000000000000000000000000000'::"bit"::integer;
 
 ALTER TABLE ONLY "Account"
     ADD CONSTRAINT "Account_pkey"
