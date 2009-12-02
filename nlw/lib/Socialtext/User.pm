@@ -337,26 +337,27 @@ sub accounts {
 
     if ($plugin) {
         $sql = q{
-            SELECT DISTINCT account_id
-            FROM "Account"
-            JOIN user_set_plugin plug
-                ON ("Account".user_set_id = plug.user_set_id)
+            SELECT DISTINCT user_set_id
+            FROM user_set_plugin plug
             JOIN user_set_path path
                 ON (plug.user_set_id = path.into_set_id)
             WHERE path.from_set_id = ?
               AND plug.plugin = ?
+              AND plug.user_set_id > x'30000000'::int
         };
         push @args, $plugin;
     }
     else {
         $sql = q{
-            SELECT DISTINCT account_id 
-            FROM accounts_for_user WHERE user_id = ?
+            SELECT DISTINCT into_set_id 
+            FROM user_set_path 
+            WHERE from_set_id = ?
+              AND into_set_id > x'30000000'::int
         };
     }
 
     my $sth = sql_execute($sql, @args);
-    my @account_ids = map {$_->[0]} @{$sth->fetchall_arrayref()};
+    my @account_ids = map {$_->[0] - 0x30000000} @{$sth->fetchall_arrayref()};
     if ($p{ids_only}) {
         Socialtext::Timer->Pause('user_accts');
         return (wantarray ? @account_ids : \@account_ids);
