@@ -6,6 +6,8 @@ use Socialtext::File;
 use Socialtext::Group;
 use Socialtext::Group::Photo;
 use Socialtext::HTTP ':codes';
+use Socialtext::JSON qw/encode_json/;
+use Socialtext::Role;
 
 use base 'Socialtext::Rest';
 
@@ -44,6 +46,58 @@ sub _get_photo {
         -type          => 'image/png',
     );
     return $photo;
+}
+
+sub POST_photo {
+    my $self  = shift;
+    my $rest  = shift;
+    my $group = $self->group;
+    my $user  = $rest->user;
+    my $admin = Socialtext::Role->Admin();
+
+    # This actually returns application/json, but that messes with the
+    # JSONView firefox addon, making the iframe source unparseable since it
+    # captures the json data and formats it in pretty html.
+    $rest->header(-type => 'text/plain');
+
+    return $self->_post_failure(
+        $rest, HTTP_404_Not_Found, 'group does not exist'
+    ) unless $group;
+
+    return $self->_post_failure(
+        $rest, HTTP_401_Unauthorized, 'must be a group admin'
+    ) unless $group->user_has_role(user => $user, role => $admin);
+
+    my $file = $rest->query->{'photo-local'};
+    return $self->_post_failure(
+        $rest, HTTP_400_Bad_Request, 'photo-local is a required argument'
+    ) unless $file;
+    
+    eval {
+        my $fh = $file->[0];
+        my $blob = do { local $/; <$fh> };
+        $group->photo->set( \$blob );
+    };
+    if ( $@ ) {
+        return $self->_post_failure(
+            $rest, HTTP_400_Bad_Request, 'could not save image');
+    }
+
+    $rest->header($rest->header(), -status => HTTP_201_Created);
+    return encode_json({
+        status => 'success',
+        message => 'photo uploaded'
+    });
+}
+
+sub _post_failure {
+    my $self    = shift;
+    my $rest    = shift;
+    my $status  = shift;
+    my $message = shift;
+
+    $rest->header($rest->header(), -status => $status);
+    return encode_json( {status => 'failure', message => $message} );
 }
 
 sub GET_photo {

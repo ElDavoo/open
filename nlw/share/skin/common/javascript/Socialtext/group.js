@@ -17,6 +17,11 @@ Socialtext.Group.GetDriverGroups = function(driver_key, callback) {
 Socialtext.Group.prototype = new Socialtext.Base();
 
 $.extend(Socialtext.Group.prototype, {
+    url: function(rest) {
+        rest = rest || '';
+        return '/data/groups/' + this.group_id + rest;
+    },
+
     create: function(callback) {
         var self = this;
         if (!this.name && !this.ldap_dn) {

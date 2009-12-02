@@ -497,6 +497,8 @@
     '/data/groups/:group_id/photo':
         'GET':
             '*/*':  &default  [Socialtext::Rest::Group::Photo, GET_photo]
+        'POST':
+            '*/*':            [Socialtext::Rest::Group::Photo, POST_photo]
         '*':                  [Socialtext::Rest::Group::Photo, bad_method]
 -
     '/data/groups/:group_id/small_photo':
