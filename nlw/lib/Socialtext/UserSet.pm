@@ -135,7 +135,6 @@ sub remove_set {
     return;
 }
 
-
 =item connected ($x,$y)
 
 =item object_connected ($x)
@@ -290,42 +289,6 @@ sub direct_role {
         WHERE from_set_id = $1 AND into_set_id = $2
     }, {}, $x, $y);
     return $role;
-}
-
-=item user_count ($n)
-
-=item direct_user_count ($n)
-
-=item object_user_count ()
-
-=item direct_object_user_count ()
-
-Get number of distinct users in the specified user-set.
-
-=cut
-
-around 'user_count' => \&_query_wrapper;
-_object_owner_method 'object_user_count';
-sub user_count {
-    my ($self, $dbh, $n) = @_;
-    my ($count) = $dbh->selectrow_array(q{
-        SELECT COUNT(DISTINCT user_id)
-        FROM user_sets_for_user
-        WHERE user_set_id = $1
-    }, {}, $n);
-    return $count;
-}
-
-around 'direct_user_count' => \&_query_wrapper;
-_object_owner_method 'direct_object_user_count';
-sub direct_user_count {
-    my ($self, $dbh, $n) = @_;
-    my ($count) = $dbh->selectrow_array(q{
-        SELECT COUNT(DISTINCT from_set_id) AS user_ids
-        FROM user_set_include
-        WHERE into_set_id = $1
-    }, {}, $n);
-    return $count;
 }
 
 =back
