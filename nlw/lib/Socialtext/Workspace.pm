@@ -1344,11 +1344,8 @@ sub _dump_user_workspace_prefs {
     my $dir  = shift;
 
     my $ws_dir = "$dir/user/" . $self->name;
-    my $users_with_roles = $self->users_with_roles;
-    while ( my $elem = $users_with_roles->next ) {
-        my $user = $elem->[0];
-        last unless $user;
-
+    my $users = $self->users(direct => 1);
+    while ( my $user = $users->next ) {
         my $prefs = Socialtext::PreferencesPlugin->Prefs_for_user($user, $self);
         next unless keys %$prefs;
 
@@ -1367,17 +1364,13 @@ sub _dump_users_to_yaml_file {
 
     my $file = Socialtext::File::catfile( $dir, $name . '-users.yaml' );
 
-    my $users_with_roles = $self->users_with_roles(direct => 1);
+    my $user_roles = $self->user_roles(direct => 1);
     my @dump;
-    while ( 1 ) {
-        my $elem = $users_with_roles->next;
-        my $user = $elem->[0];
-        my $role = $elem->[1];
-        last unless defined $user;
+    while (my $pair = $user_roles->next) {
+        my ($user, $role) = @$pair;
 
         my $dumped_user = $self->_dump_user_to_hash( $user );
         $dumped_user->{role_name} = $role->name;
-
         push @dump, $dumped_user;
     }
 
@@ -2533,7 +2526,7 @@ Passthrough to C<Socialtext::Workspace::Roles-E<gt>UsersByWorkspaceId()>.
 Refer to L<Socialtext::Workspace::Roles> for more information on acceptable
 parameters.
 
-=head2 $workspace->users_with_roles()
+=head2 $workspace->user_roles()
 
 Returns a cursor of pairs of C<Socialtext::User> and
 C<Socialtext::Role> objects for users in the the
