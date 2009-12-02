@@ -10,7 +10,7 @@ use Socialtext::File;
 use Socialtext::System qw();
 use Socialtext::HTTP::Ports;
 use Socialtext::Role;
-use Socialtext::People::Profile
+use Socialtext::People::Profile;
 use File::LogReader;
 use File::Path qw(rmtree);
 use Test::More;
