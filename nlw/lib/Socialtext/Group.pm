@@ -493,6 +493,13 @@ sub workspaces {
 }
 
 ###############################################################################
+sub photo {
+    my $self = shift;
+    require Socialtext::Group::Photo;
+    return Socialtext::Group::Photo->new( group => $self );
+}
+
+###############################################################################
 sub to_hash {
     my $self = shift;
     my %opts = @_;
