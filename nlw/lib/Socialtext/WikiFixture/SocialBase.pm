@@ -1022,7 +1022,6 @@ sub post_file {
     my $start = time();
     my $res = $ua->request($req);
     $self->{http}->response($res);
-    die $res->status_line unless $res->is_success;
     $self->{_last_http_time} = time() - $start;
 }
 
