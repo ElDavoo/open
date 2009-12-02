@@ -210,7 +210,8 @@ sub _role_change_checker {
     my $o = $p{object};
     param_error "object parameter must be blessed" unless blessed $o;
     unless ($o->isa('Socialtext::User') ||
-            $o->isa('Socialtext::UserSetContainer'))
+            $o->isa('Socialtext::UserSetContainer') ||
+            $o->isa('Socialtext::UserMetadata'))
     {
         param_error "object parameter must be a Socialtext::User or Socialtext::UserSetContainer";
     }
@@ -265,13 +266,17 @@ for my $thingy_type (
         ? sub { Socialtext::User->new(user_id => $_[0]) }
         : sub { Socialtext::Group->GetGroup(group_id => $_[0]) };
 
+    my $thing_checker = ($thing_name eq 'user')
+        ? sub { my $o = shift; $o && ($o->isa($thing_class) 
+                        or $o->isa('Socialtext::UserMetadata')) }
+        : sub { my $o = shift; $o && $o->isa($thing_class) };
+
     # grep: add_user add_group
     _mk_method "add_$thing_name" => sub {
         my ($self,%p) = @_;
         my $actor = $p{actor} || Socialtext::User->SystemUser;
         my $o = $p{$thing_name};
-        confess "must supply a $thing_name"
-            unless ($o && $o->isa($thing_class));
+        confess "must supply a $thing_name" unless $thing_checker->($o);
 
         $self->add_role(
             actor  => $actor,
@@ -285,8 +290,7 @@ for my $thingy_type (
         my ($self,%p) = @_;
         my $actor = $p{actor} || Socialtext::User->SystemUser;
         my $o = $p{$thing_name};
-        confess "must supply a $thing_name"
-            unless ($o && $o->isa($thing_class));
+        confess "must supply a $thing_name" unless $thing_checker->($o);
 
         $self->assign_role(
             actor  => $actor,
@@ -295,13 +299,12 @@ for my $thingy_type (
         );
     };
 
-    # grep: remove_user remove_group
+    # grep: sub remove_user sub remove_group
     _mk_method "remove_$thing_name" => sub {
         my ($self,%p) = @_;
         my $actor = $p{actor} || Socialtext::User->SystemUser;
         my $o = $p{$thing_name};
-        confess "must supply a $thing_name"
-            unless ($o && $o->isa($thing_class));
+        confess "must supply a $thing_name" unless $thing_checker->($o);
 
         eval {
             $self->remove_role(
@@ -319,8 +322,7 @@ for my $thingy_type (
     # grep: has_user has_group
     _mk_method "has_$thing_name" => sub {
         my ($self,$o,%p) = @_;
-        confess "must supply a $thing_name"
-            unless ($o && $o->isa($thing_class));
+        confess "must supply a $thing_name" unless $thing_checker->($o);
         if ($p{direct}) {
             return $self->user_set->object_directly_connected($o);
         }
@@ -332,8 +334,7 @@ for my $thingy_type (
     # grep: role_for_user role_for_group
     _mk_method "role_for_$thing_name" => sub {
         my ($self,$o,%p) = @_;
-        confess "must supply a $thing_name"
-            unless ($o && $o->isa($thing_class));
+        confess "must supply a $thing_name" unless $thing_checker->($o);
         if ($p{direct}) {
             return $self->user_set->direct_object_role($o);
         }
@@ -352,8 +353,7 @@ for my $thingy_type (
     _mk_method "${thing_name}_has_role" => sub {
         my ($self,%p) = @_;
         my $o = $p{$thing_name};
-        confess "must supply a $thing_name"
-            unless ($o && $o->isa($thing_class));
+        confess "must supply a $thing_name" unless $thing_checker->($o);
         my $role = $p{role};
         confess "must supply a role"
             unless ($role && $role->isa('Socialtext::Role'));
