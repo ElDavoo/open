@@ -3,7 +3,7 @@ package Socialtext::Rest::Group::Photo;
 use strict;
 use warnings;
 use Socialtext::File;
-use Socialtext::Group::Photo;
+use Socialtext::Group;
 
 use base 'Socialtext::Rest';
 
@@ -12,11 +12,7 @@ sub _get_photo {
     my $rest = shift;
     my $size = shift || 'large';
 
-    # slurp in the default avatar image
-    my $photo = Socialtext::Group::Photo->new(
-        group_id => $self->group_id,
-        size => $size,
-    );
+    my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
 
     # send the default photo back, but such that it'll get re-requested again
     # once per page.
@@ -27,7 +23,7 @@ sub _get_photo {
         -cache_control => 'no-cache, no-store',
         -type          => 'image/png',
     );
-    return $photo->blob;
+    return $group->photo->$size;
 }
 
 sub GET_photo {
@@ -49,6 +45,7 @@ Socialtext::Rest::Group::Photo - Photo for a group
 =head1 SYNOPSIS
 
     GET /data/groups/:group_id/photo
+    GET /data/groups/:group_id/small_photo
 
 =head1 DESCRIPTION
 
