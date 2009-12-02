@@ -2188,7 +2188,7 @@ sub _get_ws_users_cursor {
     my $self     = shift;
     my $ws       = shift;
     my %opts     = $self->_get_options('direct');
-    return $ws->users_with_roles( %opts );
+    return $ws->user_roles( %opts );
 }
 
 sub purge_page {
