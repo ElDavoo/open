@@ -665,6 +665,11 @@ sub _st_admin_in_process {
         *Socialtext::CLI::_exit = sub { die "\n" };
     }
 
+    # clear any in-memory caches that exist, so that we pick up changes that
+    # _may_ have been made outside of this process.
+    Socialtext::Cache->clear();
+
+    # Run st-admin, in process.
     my @argv   = shellwords( $options );
     my $output = combined_from {
         eval { Socialtext::CLI->new( argv => \@argv )->run };
