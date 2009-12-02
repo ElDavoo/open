@@ -70,7 +70,7 @@ sub reset {
 sub count {
     my ( $self ) = @_;
 
-    return sum(map { $self->_count($_) } @{$self->iterables});
+    return sum(map { $self->_count($_) } @{$self->iterables}) || 0;
 }
 
 sub _count {
