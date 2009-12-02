@@ -866,6 +866,12 @@ CREATE SEQUENCE gallery_id
     NO MINVALUE
     CACHE 1;
 
+CREATE TABLE group_photo (
+    group_id integer NOT NULL,
+    "large" bytea,
+    small bytea
+);
+
 CREATE TABLE groups (
     group_id bigint NOT NULL,
     driver_key text NOT NULL,
@@ -981,8 +987,8 @@ CREATE SEQUENCE profile_field___profile_field_id
 
 CREATE TABLE profile_photo (
     user_id integer NOT NULL,
-    photo_image bytea,
-    small_photo_image bytea
+    "large" bytea,
+    small bytea
 );
 
 CREATE TABLE profile_relationship (
@@ -1282,6 +1288,10 @@ ALTER TABLE ONLY gallery
 ALTER TABLE ONLY group_account_role
     ADD CONSTRAINT group_account_role_pkey
             PRIMARY KEY (group_id, account_id);
+
+ALTER TABLE ONLY group_photo
+    ADD CONSTRAINT group_photo_pkey
+            PRIMARY KEY (group_id);
 
 ALTER TABLE ONLY group_workspace_role
     ADD CONSTRAINT group_workspace_role_pk
@@ -1999,6 +2009,11 @@ ALTER TABLE ONLY group_account_role
             FOREIGN KEY (role_id)
             REFERENCES "Role"(role_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY group_photo
+    ADD CONSTRAINT group_photo_group_id_fk
+            FOREIGN KEY (group_id)
+            REFERENCES groups(group_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY group_workspace_role
     ADD CONSTRAINT group_workspace_role_group_fk
             FOREIGN KEY (group_id)
@@ -2270,4 +2285,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '97');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '98');
