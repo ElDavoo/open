@@ -3,51 +3,64 @@ package Socialtext::Group::Photo;
 use Moose;
 use namespace::clean -except => 'meta';
 
-# XXX TODO:
-# Once we support user-created group photos, the should cache
-# using the same mechanism as profile photos.
-#
+use constant ROLES => ('Socialtext::Avatar');
 
-sub Default {
-    my $class = shift;
-    my $obj = $class->new(@_);
-}
+# Required by Socialtext::Avatar:
+use constant cache         => 'group-photo';
+use constant table         => 'group_photo';
+use constant id_column     => 'group_id';
+use constant default_skin  => 'common';
+use constant default_large => 'groupLarge.png';
+use constant default_small => 'groupSmall.png';
 
-has 'size' => (
-    is => 'rw', isa => 'Str',
-    default => 'large',
+has 'group' => (
+    is => 'ro', isa => 'Socialtext::Group',
+    required => 1,
+    handles => [ 'group_id' ],
 );
 
-has 'default_path' => (
-    is => 'ro', isa => 'Str',
+has 'id' => (
+    is => 'ro', isa => 'Int',
     lazy_build => 1,
 );
 
-sub _build_default_path {
+sub _build_id {
     my $self = shift;
-    my $img = ($self->size eq 'large') ? 'groupLarge.png' : 'groupSmall.png';
+    return $self->group_id;
+}
 
-    # get the path to the image, on *disk*
-    my $skin = Socialtext::Skin->new( name => 'common' );
-    my $loc = File::Spec->catfile(
-        $skin->skin_path,
-        "images/$img",
+# The rest is copied from ST::People::ProfilePhoto
+has 'large' => (
+    is => 'rw', isa => 'ScalarRef',
+    lazy_build => 1,
+);
+sub _build_large { $_[0]->load('large') }
+
+has 'small' => (
+    is => 'rw', isa => 'ScalarRef',
+    lazy_build => 1,
+);
+sub _build_small { $_[0]->load('small') }
+
+has 'versions' => (
+    is => 'ro', isa => 'ArrayRef',
+    default => sub {[qw( small large )]},
+    auto_deref => 1,
+);
+
+sub resize {
+    my ($self, $size, $file) = @_;
+    my $width = $size eq 'small' ? 27 : 62;
+    Socialtext::Image::extract_rectangle(
+        image_filename => $file,
+        width => $width,
+        height => $width,
     );
-    die "image '$loc' not found!" unless (-e $loc);
-
-    return $loc;
 }
 
-has 'blob' => (
-    is => 'rw',
-    lazy_build => 1,
-);
+with(ROLES);
 
-sub _build_blob {
-    my $self = shift;
-    return scalar Socialtext::File::get_contents_binary($self->default_path);
-}
-
+no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
 
@@ -57,11 +70,8 @@ Socialtext::Group::Photo - the photo for a group.
 
 =head1 SYNOPSIS
 
-    my $photo = Socialtext::Group::Photo->new(
-        group_id => $group_id,
-        size => $size,
-    );
-    $photo->blob;
+    my $photo = Socialtext::Group::Photo->new( group => $group );
+    $photo->large;
 
 =head1 DESCRIPTION
 
