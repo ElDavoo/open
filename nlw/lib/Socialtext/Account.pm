@@ -213,75 +213,10 @@ sub workspace_count {
     return $self->workspaces->count();
 }
 
-sub add_group {
-    my $self  = shift;
-    my %opts  = @_;
-    my $group = $opts{group} || croak "can't add_group without a 'group'";
-    my $role  = $opts{role} || Socialtext::GroupAccountRoleFactory->DefaultRole();
-
-    my $adapter = Socialtext::Pluggable::Adapter->new();
-    $adapter->make_hub( Socialtext::User->SystemUser() );
-    $adapter->hook(
-        'nlw.add_group_account_role', $self, $group, $role,
-    );
-    return $self->_gar_for_group($group);
-}
-
-sub remove_group {
-    my $self  = shift;
-    my %opts  = @_;
-    my $group = $opts{group} || croak "can't remove_group without a 'group'";
-    my $role  = $opts{role} || Socialtext::GroupAccountRoleFactory->DefaultRole();
-
-    die "can't remove a group from its primary account"
-        if $group->primary_account_id = $self->account_id;
-    $self->user_set->remove_object_role($group);
-
-    my $adapter = Socialtext::Pluggable::Adapter->new();
-    $adapter->make_hub( Socialtext::User->SystemUser() );
-    $adapter->hook(
-        'nlw.remove_group_account_role', $self, $group, $role,
-    );
-}
-
-sub has_group {
-    my $self  = shift;
-    my $group = shift;
-    my $gar   = $self->_gar_for_group($group);
-    return $gar ? 1 : 0;
-}
-
-sub role_for_group {
-    my $self  = shift;
-    my %opts  = @_;
-    my $group = $opts{group} || croak "can't role_for_group without a 'group'";
-    my $gar   = $self->_gar_for_group($group);
-    return unless $gar;
-    return $gar->role();
-}
-
-sub groups {
-    my $self = shift;
-    return Socialtext::Group->ByAccountId(
-        account_id => $self->account_id,
-        @_
-    );
-}
-
-sub group_count {
-    my $self = shift;
-    return $self->groups->count();
-}
-
-sub _gar_for_group {
-    my $self  = shift;
-    my $group = shift;
-    my $gar   = Socialtext::GroupAccountRoleFactory->Get(
-        group_id   => $group->group_id,
-        account_id => $self->account_id,
-    );
-    return $gar;
-}
+around 'groups','group_count' => sub {
+    my $code = shift;
+    $code->(direct => 1,@_);
+};
 
 sub _primary_user_ids {
     my $self = shift;
@@ -566,11 +501,21 @@ after 'role_change_event' => sub {
 
     my $to_hook;
 
-    if ($change eq 'add') {
-        $to_hook = 'nlw.add_user_account_role';
+    if ($thing->isa('Socialtext::User') {
+        if ($change eq 'add') {
+            $to_hook = 'nlw.add_user_account_role';
+        }
+        elsif ($change eq 'remove') {
+            $to_hook = 'nlw.remove_user_account_role';
+        }
     }
-    elsif ($change eq 'remove') {
-        $to_hook = 'nlw.remove_user_account_role';
+    elsif ($thing->isa('Socialtext::Workspace')) {
+        if ($change eq 'add') {
+            $to_hook = 'nlw.add_group_account_role';
+        }
+        elsif ($change eq 'remove') {
+            $to_hook = 'nlw.remove_group_account_role';
+        }
     }
 
     if ($to_hook) {

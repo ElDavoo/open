@@ -138,18 +138,23 @@ sub remove_set {
 
 =item connected ($x,$y)
 
+=item object_connected ($x)
+
 Asks "is $x connected to $y through at least one path?" which is the same
 question as "is $x contained somehow in $y?"
 
 =cut
 
 around 'connected' => \&_query_wrapper;
+_object_role_method 'object_connected';
 sub connected {
     my $self = shift;
     return $self->_connected('user_set_path',@_);
 }
 
 =item directly_connected ($x,$y)
+
+=item object_directly_connected ($x)
 
 Asks "is $x directly connected to $y?" which is the same question as "is $x
 directly contained in $y"
@@ -190,7 +195,7 @@ sub has_role {
 
 =item has_direct_role ($x,$y,$role_id)
 
-=item has_direct_object_role ($x,$y,$role_id)
+=item has_direct_object_role ($x,$role_id)
 
 Asks "is $x connected to $y where the immediate/direct role_id is $role_id?"
 
@@ -321,79 +326,6 @@ sub direct_user_count {
         WHERE into_set_id = $1
     }, {}, $n);
     return $count;
-}
-
-=item user_ids ($n)
-
-=item direct_user_ids ($n)
-
-=item object_user_ids ()
-
-=item direct_object_user_ids ()
-
-Get the distinct users' ids in the specified user-set.
-
-=cut
-
-around 'user_ids' => \&_query_wrapper;
-_object_owner_method 'object_user_ids';
-sub user_ids {
-    my ($self, $dbh, $n) = @_;
-    my $ids = $dbh->selectcol_arrayref(q{
-        SELECT DISTINCT user_id
-        FROM user_sets_for_user
-        WHERE user_set_id = $1
-    }, {}, $n);
-    return $ids;
-}
-
-around 'direct_user_ids' => \&_query_wrapper;
-_object_owner_method 'direct_object_user_ids';
-sub direct_user_ids {
-    my ($self, $dbh, $n) = @_;
-    my $ids = $dbh->selectcol_arrayref(q{
-        SELECT DISTINCT from_set_id AS user_id
-        FROM user_set_include
-        WHERE into_set_id = $1
-    }, {}, $n);
-    return $ids;
-}
-
-=item user_roles ($n)
-
-=item direct_user_roles ($n)
-
-=item object_user_roles ()
-
-=item direct_object_user_roles ()
-
-Get the distinct user-role combinations in the specified user-set.
-
-=cut
-
-around 'user_roles' => \&_query_wrapper;
-_object_owner_method 'object_user_roles';
-sub user_roles {
-    my ($self, $dbh, $n) = @_;
-    my $rows = $dbh->selectall_arrayref(q{
-        SELECT DISTINCT user_id, role_id
-        FROM roles_for_user
-        WHERE into_set_id = $1
-    }, {}, $n);
-    return $rows;
-}
-
-around 'direct_user_roles' => \&_query_wrapper;
-_object_owner_method 'direct_object_user_roles';
-sub direct_user_roles {
-    my ($self, $dbh, $n) = @_;
-    my $rows = $dbh->selectcol_arrayref(q{
-        SELECT DISTINCT from_set_id AS user_id, role_id
-        FROM user_set_include
-        WHERE into_set_id = $1
-          AND from_set_id <= 536870912
-    }, {}, $n);
-    return $rows;
 }
 
 =back

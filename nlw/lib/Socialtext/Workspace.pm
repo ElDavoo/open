@@ -1159,6 +1159,9 @@ after 'role_change_event' => sub {
     if ($object->isa('Socialtext::User')) {
         $self->_user_role_changed($actor,$change,$object,$role);
     }
+    elsif ($object->isa('Socialtext::Group')) {
+        $self->_group_role_changed($actor,$change,$object,$role);
+    }
 };
 
 sub _user_role_changed {
@@ -1200,121 +1203,23 @@ sub _user_role_changed {
     }
 }
 
-sub users_with_roles { shift->user_roles(@_) }
-sub groups_with_roles { shift->group_roles(@_) }
+sub _group_role_changed {
+    my ($self,$actor,$change,$group,$role) = @_;
 
-sub groups_with_roles {
-    my $self = shift;
-    my %p = (@_==1) ? %{+shift} : @_;
-    return Socialtext::GroupWorkspaceRoleFactory->SortedResultSet(
-        %p,
-        workspace_id => $self->workspace_id,
-    );
-}
-
-sub add_group {
-    my $self  = shift;
-    my %p     = @_;
-    my $group = $p{group} || croak "can't add_group without a 'group'";
-    my $role  = $p{role}  || Socialtext::GroupWorkspaceRoleFactory->DefaultRole;
-    my $actor = $p{actor} || Socialtext::User->SystemUser;
-
-    my $gwr = $self->_gwr_for_group($group);
-    if ($gwr) {
-        $gwr->update( { role_id => $role->role_id } );
-    }
-    else {
-        $gwr = Socialtext::GroupWorkspaceRoleFactory->Create( {
-            group_id     => $group->group_id,
-            workspace_id => $self->workspace_id,
-            role_id      => $role->role_id,
-        } );
-    }
-
-    eval {
+    if ($change eq 'add' || $change eq 'remove') {
+        my $action = $change eq 'add'
+                ? 'add_to_workspace'
+                : 'remove_from_workspace',
         Socialtext::Events->Record({
             event_class => 'group',
-            action => 'add_to_workspace',
+            action => $action,
             actor => $actor,
             group => $group,
             context => {
                 workspace_id => $self->workspace_id,
             },
         });
-    };
-    warn "Could not log event: $@" if $@;
-    Socialtext::Cache->clear('ws_roles');
-    return $gwr;
 }
-
-sub remove_group {
-    my $self  = shift;
-    my %p     = @_;
-    my $group = $p{group} || croak "can't remove_group without a 'group'";
-    my $actor = $p{actor} || Socialtext::User->SystemUser;
-
-    my $gwr = $self->_gwr_for_group($group);
-    return unless $gwr;
-
-    Socialtext::GroupWorkspaceRoleFactory->Delete($gwr);
-
-    eval {
-        Socialtext::Events->Record({
-            event_class => 'group',
-            action => 'remove_from_workspace',
-            actor => $actor,
-            group => $group,
-            context => {
-                workspace_id => $self->workspace_id,
-            },
-        });
-    };
-    warn "Could not log event: $@" if $@;
-    Socialtext::Cache->clear('ws_roles');
-}
-
-sub has_group {
-    my $self  = shift;
-    my $group = shift;
-    my $gwr   = $self->_gwr_for_group($group);
-    return $gwr ? 1 : 0;
-}
-
-sub role_for_group {
-    my $self  = shift;
-    my %p     = @_;
-    my $group = $p{group} || croak "can't role_for_group without a 'group'";
-    my $gwr   = $self->_gwr_for_group($group);
-    return unless $gwr;
-    return $gwr->role();
-}
-
-sub groups {
-    my $self   = shift;
-    return Socialtext::GroupWorkspaceRoleFactory->ByWorkspaceId(
-        $self->workspace_id,
-        sub { shift->group },
-    );
-}
-
-sub group_count {
-    my $self   = shift;
-    my $cursor = Socialtext::GroupWorkspaceRoleFactory->ByWorkspaceId(
-        $self->workspace_id,
-    );
-    return $cursor->count();
-}
-
-sub _gwr_for_group {
-    my $self  = shift;
-    my $group = shift;
-    my $gwr   = Socialtext::GroupWorkspaceRoleFactory->Get(
-        group_id     => $group->group_id,
-        workspace_id => $self->workspace_id,
-    );
-    return $gwr;
-}
-
 
 {
     Readonly my $spec => {
@@ -2616,11 +2521,7 @@ role.
 =head2 $workspace->user_count()
 
 Returns the number of users with an explicitly assigned role in the
-workspace.
-
-Passthrough to C<Socialtext::Workspace::Roles-E<gt>CountUsersByWorkspaceId()>.
-Refer to L<Socialtext::Workspace::Roles> for more information on acceptable
-parameters.
+workspace (possibly via a group; pass C<< direct => 1 >> to limit to direct workspace roles).
 
 =head2 $workspace->users()
 
@@ -2633,12 +2534,9 @@ parameters.
 
 =head2 $workspace->users_with_roles()
 
-Returns a cursor of C<Socialtext::User> and
-C<Socialtext::UserWorkspaceRole> objects for users in the the
+Returns a cursor of pairs of C<Socialtext::User> and
+C<Socialtext::Role> objects for users in the the
 workspace, ordered by username.
-
-Passthrough to C<Socialtext::User-E<gt>ByWorkspaceIdWithRoles()>.  Refer to
-L<Socialtext::User> for more information on acceptable parameters.
 
 =head2 $workspace->add_group(group=>$group, role=>$role)
 
@@ -2658,7 +2556,7 @@ true if it does, false otherwise.
 =head2 $workspace->role_for_group(group => $group)
 
 Returns the C<Socialtext::Role> object representing the Role that the given
-C<$group> has in this Workspace.
+C<$group> has in this Workspace.  In a list context, returns all effective roles.
 
 =head2 $workspace->groups()
 

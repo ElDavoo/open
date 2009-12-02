@@ -239,128 +239,193 @@ sub role_change_event {
     }
 }
 
-sub add_user {
-    my ($self,%p) = @_;
-    my $actor = $p{actor} || Socialtext::User->SystemUser;
-    my $user = $p{user};
-    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
-    $self->add_role(
-        actor => $actor,
-        object => $user,
-        role => $p{role},
+sub _mk_method ($&) {
+    my $func = shift;
+    my $call = shift;
+    __PACKAGE__->meta->add_method(
+        $func => Moose::Meta::Method->wrap(
+            $call,
+            name         => $func,
+            package_name => __PACKAGE__
+        )
     );
 }
 
-sub assign_role_to_user {
-    my ($self,%p) = @_;
-    my $user = $p{user};
-    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
-    my $actor = $p{actor} || Socialtext::User->SystemUser;
-    $self->assign_role(
-        actor => $actor,
-        object => $user,
-        role => $p{role},
-    );
-}
+for my $thingy_type (
+    [user => 'Socialtext::User'],
+    [group => 'Socialtext::Group'])
+{
+    my ($thing_name,$thing_class) = @$thingy_type;
+    my $id_filter = ($thing_name eq 'user')
+        ? " < x'10000001'::int"
+        : " BETWEEN x'10000001'::int AND x'20000000'::int";
+    my $id_offset = ($thing_name eq 'user') ? 0 : 0x10000000;
 
-sub remove_user {
-    my ($self, %p) = @_;
-    my $uset = $self->user_set;
-    my $user = $p{user};
-    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
-    my $actor = $p{actor} || Socialtext::User->SystemUser;
+    my $realize_thing = ($thing_name eq 'user')
+        ? sub { Socialtext::User->new(user_id => $_[0]) }
+        : sub { Socialtext::Group->GetGroup(group_id => $_[0]) };
 
-    eval {
-        $self->remove_role(
-            actor => $actor,
-            object => $user,
-            role => $p{role},
+    # grep: add_user add_group
+    _mk_method "add_$thing_name" => sub {
+        my ($self,%p) = @_;
+        my $actor = $p{actor} || Socialtext::User->SystemUser;
+        my $o = $p{$thing_name};
+        confess "must supply a $thing_name"
+            unless ($o && $o->isa($thing_class));
+
+        $self->add_role(
+            actor  => $actor,
+            object => $o,
+            role   => $p{role},
         );
     };
-    if ($@) {
-        return if ($@ =~ /object not in this user set/);
-        die $@;
-    }
-}
 
-sub has_user {
-    my ($self, $user, %p) = @_;
-    my $uset = $self->user_set;
-    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
-    my $meth = $p{direct} ? 'directly_connected' : 'connected';
-    return $uset->$meth($user->user_set_id => $self->user_set_id);
-}
+    # grep: assign_role_to_user assign_role_to_group
+    _mk_method "assign_role_to_$thing_name" => sub {
+        my ($self,%p) = @_;
+        my $actor = $p{actor} || Socialtext::User->SystemUser;
+        my $o = $p{$thing_name};
+        confess "must supply a $thing_name"
+            unless ($o && $o->isa($thing_class));
 
-sub role_for_user {
-    my ($self, $user, %p) = @_;
-    my $uset = $self->user_set;
-    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
-    if ($p{direct}) {
-        return $uset->direct_object_role($user);
-    }
-    else {
-        my @role_ids = $uset->object_roles($user);
-        # FIXME: this sort function is lame; it doesn't consider permissions
-        # at all and it uses hash params pointlessly.
-        my @roles = map { Socialtext::Role->new(role_id => $_) } @role_ids;
-        @roles = Socialtext::Role->SortByEffectiveness(roles => \@roles);
-        return @roles if wantarray;
-        return $roles[0];
-    }
-}
+        $self->assign_role(
+            actor  => $actor,
+            object => $o,
+            role   => $p{role},
+        );
+    };
 
-sub user_has_role {
-    my ($self,%p) = @_;
-    my $user = $p{user};
-    croak "must supply a user" unless ($user && $user->isa('Socialtext::User'));
-    my $role = $p{role};
-    croak "must supply a user" unless ($role && $role->isa('Socialtext::Role'));
-    my @roles = $self->user_set->roles($user->user_set_id => $self->user_set_id);
-    return any {$_ eq $role} @roles;
-}
+    # grep: remove_user remove_group
+    _mk_method "remove_$thing_name" => sub {
+        my ($self,%p) = @_;
+        my $actor = $p{actor} || Socialtext::User->SystemUser;
+        my $o = $p{$thing_name};
+        confess "must supply a $thing_name"
+            unless ($o && $o->isa($thing_class));
 
-sub user_count {
-    my ($self,%p) = @_;
-    my $t = time_scope('uset_user_count');
-    my $meth = $p{direct} ? 'direct_object_user_count' : 'object_user_count';
-    return $self->user_set->$meth();
-}
+        eval {
+            $self->remove_role(
+                actor  => $actor,
+                object => $o,
+                role   => $p{role},
+            );
+        };
+        if ($@) {
+            return if ($@ =~ /object not in this user.set/);
+            die $@;
+        }
+    };
 
-sub user_ids {
-    my ($self,%p) = @_;
-    my $t = time_scope('uset_user_ids');
-    my $meth = $p{direct} ? 'direct_object_user_ids' : 'object_user_ids';
-    my $ids = $self->user_set->$meth();
-    return $ids;
-}
+    # grep: has_user has_group
+    _mk_method "has_$thing_name" => sub {
+        my ($self,$o,%p) = @_;
+        confess "must supply a $thing_name"
+            unless ($o && $o->isa($thing_class));
+        if ($p{direct}) {
+            return $self->user_set->object_directly_connected($o);
+        }
+        else {
+            return $self->user_set->object_connected($o);
+        }
+    };
 
-sub users {
-    my ($self,%p) = @_;
-    my $t = time_scope('uset_users');
-    my $meth = $p{direct} ? 'direct_object_user_ids' : 'object_user_ids';
-    my $ids = $self->user_set->$meth();
-    return Socialtext::MultiCursor->new(
-        iterables => $ids,
-        apply     => sub {
-            return Socialtext::User->new(user_id => $_[0]);
-        },
-    );
-}
+    # grep: role_for_user role_for_group
+    _mk_method "role_for_$thing_name" => sub {
+        my ($self,$o,%p) = @_;
+        confess "must supply a $thing_name"
+            unless ($o && $o->isa($thing_class));
+        if ($p{direct}) {
+            return $self->user_set->direct_object_role($o);
+        }
+        else {
+            my @role_ids = $self->user_set->object_roles($o);
+            # FIXME: this sort function is lame; it doesn't consider permissions
+            # at all and it uses hash params pointlessly.
+            my @roles = map { Socialtext::Role->new(role_id => $_) } @role_ids;
+            @roles = Socialtext::Role->SortByEffectiveness(roles => \@roles);
+            return @roles if wantarray;
+            return $roles[0];
+        }
+    };
 
-sub user_roles {
-    my ($self,%p) = @_;
-    my $t = time_scope('uset_user_roles');
-    my $meth = $p{direct} ? 'direct_object_user_roles' : 'object_user_roles';
-    my $rows = $self->user_set->$meth();
-    return Socialtext::MultiCursor->new(
-        iterables => $rows,
-        apply     => sub {
-            return [
-                Socialtext::User->new(user_id => $_[0]),
-                Socialtext::Role->new(role_id => $_[1]),
-            ];
-        },
-    );
+    # grep: user_has_role group_has_role
+    _mk_method "${thing_name}_has_role" => sub {
+        my ($self,%p) = @_;
+        my $o = $p{$thing_name};
+        confess "must supply a $thing_name"
+            unless ($o && $o->isa($thing_class));
+        my $role = $p{role};
+        confess "must supply a role"
+            unless ($role && $role->isa('Socialtext::Role'));
+        my $role_id = $role->role_id;
+
+        my @role_ids = $self->user_set->object_roles($o);
+        return any {$_ eq $role_id} @role_ids;
+    };
+
+    # grep: user_count group_count
+    _mk_method "${thing_name}_count" => sub {
+        my ($self,%p) = @_;
+        my $t = time_scope("uset_${thing_name}_count");
+        my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
+        my $count = sql_singlevalue(qq{
+            SELECT COUNT(DISTINCT(from_set_id))
+            FROM $table
+            WHERE from_set_id $id_filter
+              AND into_set_id = ?
+        }, $self->user_set_id);
+    };
+
+    # grep: user_ids group_ids
+    _mk_method "${thing_name}_ids" => sub {
+        my ($self,%p) = @_;
+        my $t = time_scope("uset_${thing_name}_ids");
+        my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
+        my $sth = sql_execute(qq{
+            SELECT DISTINCT from_set_id
+            FROM $table
+            WHERE from_set_id $id_filter
+              AND into_set_id = ?
+        }, $self->user_set_id);
+        return [map { $_->[0] - $id_offset } @{$sth->fetchall_arrayref || []}];
+    };
+
+    # grep: users groups
+    _mk_method "${thing_name}s" => sub {
+        my ($self,%p) = @_;
+        my $t = time_scope("uset_${thing_name}s");
+        my $meth = "${thing_name}_ids";
+        my $ids = $self->$meth(@_);
+        return Socialtext::MultiCursor->new(
+            iterables => $ids,
+            apply     => $realize_thing,
+        );
+    };
+
+    # grep: user_roles group_roles
+    _mk_method "${thing_name}_roles" => sub {
+        my ($self,%p) = @_;
+        my $t = time_scope("uset_${thing_name}_roles");
+
+        my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
+        my $sth = sql_execute(qq{
+            SELECT DISTINCT from_set_id, role_id
+            FROM $table
+            WHERE from_set_id $id_filter
+              AND into_set_id = ?
+        }, $self->user_set_id);
+        my $rows = $sth->fetchall_arrayref();
+        return Socialtext::MultiCursor->new(
+            iterables => $rows,
+            apply     => sub {
+                my $row = shift;
+                return [
+                    $realize_thing->($row->[0]),
+                    Socialtext::Role->new(role_id => $row->[1]),
+                ];
+            },
+        );
+    };
 }
 
 1;
