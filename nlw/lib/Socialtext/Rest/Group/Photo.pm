@@ -118,6 +118,8 @@ Socialtext::Rest::Group::Photo - Photo for a group
 
 =head1 SYNOPSIS
 
+    POST /data/groups/:group_id/photo
+
     GET /data/groups/:group_id/photo
     GET /data/groups/:group_id/small_photo
 
