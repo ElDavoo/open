@@ -202,6 +202,10 @@ sub create {
     $metadata_p{email_address_at_import} = $user->email_address;
     my $metadata = Socialtext::UserMetadata->create(%metadata_p);
     $user->metadata($metadata);
+
+    my $creator = Socialtext::User->new(user_id => $p{created_by_user_id});
+    $user->primary_account->add_user(user => $user, actor => $creator);
+
     $user->_update_profile();
     $user->_index();
 
