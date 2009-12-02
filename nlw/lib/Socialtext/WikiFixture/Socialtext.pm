@@ -637,12 +637,13 @@ sub st_admin {
     }
 
     # Invocations with redirected input/output or pipes *needs* to be done
-    # against the shell, but simpler cmds can be done in-process.
+    # against the shell, but simpler cmds can be done in-process.  Also have
+    # to watch out for "st-admin help", which *has* to be shelled out for.
     #
     # We also have to use a bad calling pattern for this which *isn't* OOP
     # because we don't always have a '$self' that's derived from ST:WF:ST
     # (although it may be derived from ST:WF:Base).
-    if ($options =~ /[\|<>]/) {
+    if ($options =~ /[\|<>]|help/) {
         _st_admin_shell_out($self, $options, $verify);
     }
     else {
