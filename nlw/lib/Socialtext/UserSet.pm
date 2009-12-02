@@ -500,6 +500,7 @@ sub _object_role_method ($) {
         $func => Moose::Meta::Method->wrap(
             sub {
                 my ($self, $obj, $role_id) = @_;
+                _resolve_role(\$role_id);
                 die "must have owner_id" unless $self->owner_id;
                 $self->$call($obj->user_set_id => $self->owner_id, $role_id);
             },
@@ -530,7 +531,7 @@ sub _resolve_role {
     if (blessed($$role)) {
         $$role = $$role->role_id;
     }
-    elsif ($$role =~ /\D/) {
+    elsif (defined $$role and $$role =~ /\D/) {
         $$role = Socialtext::Role->new(name => $$role)->role_id;
     }
 }

@@ -991,7 +991,7 @@ sub _add_user_to_workspace_as {
     my $new_role     = shift;
     my $user         = $self->_require_user();
     my $ws           = $self->_require_workspace();
-    my $current_role = $ws->role_for_user($user);
+    my $current_role = $ws->role_for_user($user, direct => 1);
 
     $self->_ensure_email_passes_filters(
         $user->email_address,
@@ -1004,7 +1004,7 @@ sub _add_user_to_workspace_as {
         name     => $ws->name,
     );
 
-    $ws->add_user( user => $user, role => $new_role );
+    $ws->assign_role_to_user( user => $user, role => $new_role );
     $self->_success(
         loc("[_1] now has a '[_2]' role in the [_3] Workspace",
         $user->username, $new_role->display_name, $ws->name)
@@ -1255,11 +1255,9 @@ sub _make_role_toggler {
             ));
         }
 
-        my $is_selected = $user->workspace_is_selected( workspace => $ws );
         $ws->assign_role_to_user(
             user        => $user,
             role        => $add_p ? $role : Socialtext::Role->Member,
-            is_selected => $is_selected,
         );
 
         # special message for removing a role where membership in a group

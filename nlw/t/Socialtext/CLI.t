@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 331;
+use Test::Socialtext tests => 329;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -524,7 +524,7 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
                 ]
             )->remove_member(); 
         },
-        qr/.+ now has a 'affiliate' role in .+ due to membership in a group/,
+        qr/.+ now has a 'member workspace' role in .+ due to membership in a group/,
         'remove-member when user has an indirect role, too'
     );
     $role = $account->role_for_user($user1);
@@ -612,8 +612,6 @@ ADD_REMOVE_WS_ADMIN: {
         $ws->user_has_role( user => $user, role => $admin_role ),
         'user was added to workspace'
     );
-    ok( $user->workspace_is_selected( workspace => $ws ),
-        'workspace is still in selected list' );
 
     expect_failure(
         sub {
@@ -641,8 +639,6 @@ ADD_REMOVE_WS_ADMIN: {
         $ws->user_has_role( user => $user, role => $member_role ),
         'user is now a workspace member, but not an admin'
     );
-    ok( $user->workspace_is_selected( workspace => $ws ),
-        'workspace is still in selected list' );
 
     expect_failure(
         sub {

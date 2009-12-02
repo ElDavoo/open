@@ -285,7 +285,7 @@ for my $thingy_type (
         );
     };
 
-    # grep: assign_role_to_user assign_role_to_group
+    # grep: sub assign_role_to_user sub assign_role_to_group
     _mk_method "assign_role_to_$thing_name" => sub {
         my ($self,%p) = @_;
         my $actor = $p{actor} || Socialtext::User->SystemUser;
@@ -331,12 +331,13 @@ for my $thingy_type (
         }
     };
 
-    # grep: role_for_user role_for_group
+    # grep: sub role_for_user sub role_for_group
     _mk_method "role_for_$thing_name" => sub {
         my ($self,$o,%p) = @_;
         confess "must supply a $thing_name" unless $thing_checker->($o);
         if ($p{direct}) {
-            return $self->user_set->direct_object_role($o);
+            my $role_id = $self->user_set->direct_object_role($o);
+            return Socialtext::Role->new(role_id => $role_id);
         }
         else {
             my @role_ids = $self->user_set->object_roles($o);
