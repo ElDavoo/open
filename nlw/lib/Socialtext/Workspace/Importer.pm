@@ -104,7 +104,7 @@ sub import_workspace {
         $self->_rebuild_page_links();
 
         for my $u (@users) {
-            my ($username, $rolename, $indirect) = @{$u};
+            my ($user, $rolename, $indirect) = @{$u};
             unless ($indirect) {
                 # If a User has an "indirect" Role, they have access to the
                 # Workspace from some other means (e.g. a Group Role), so
@@ -114,8 +114,8 @@ sub import_workspace {
                 # 'workspace_admin'
                 $rolename = 'admin' if $rolename eq 'workspace_admin';
 
-                $self->{workspace}->add_user(
-                    user => $username,
+                $self->{workspace}->assign_role_to_user(
+                    user => $user,
                     role => Socialtext::Role->new( name => $rolename ),
                 );
             }
