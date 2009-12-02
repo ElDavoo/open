@@ -1,6 +1,6 @@
 (function($){
 
-Socialtext = Socialtext || {};
+if (typeof(Socialtext) == 'undefined') Socialtext = {};
 Socialtext.Base = function() {};
 
 Socialtext.Base.prototype = {
