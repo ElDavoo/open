@@ -473,6 +473,15 @@ sub role_for_user {
 }
 
 ###############################################################################
+sub user_has_role {
+    my $self = shift;
+    my %p    = @_;
+    my $ugr  = $self->_ugr_for_user($p{user});
+
+    return ( $ugr && $ugr->role_id == $p{role}->role_id ) ? 1 : 0;
+}
+
+###############################################################################
 sub _ugr_for_user {
     my $self = shift;
     my $user = shift;
