@@ -10,6 +10,7 @@ use Socialtext::HTTP ':codes';
 use Socialtext::User;
 use Socialtext::Exceptions;
 use Socialtext::User::Find;
+use Socialtext::User::Find::All;
 
 use base 'Socialtext::Rest::Collection';
 
@@ -94,8 +95,14 @@ sub create_user_find {
     my $offset = $self->rest->query->param('offset') || 0;
 
     my $filter = $self->rest->query->param('filter');
+    my $all    = $self->rest->query->param('all') || 0;
 
-    return Socialtext::User::Find->new(
+    # Who implements the User Finder class we need?
+    my $finder_class
+        = $all ? 'Socialtext::User::Find::All' : 'Socialtext::User::Find';
+
+    # Instantiate the User Finder
+    return $finder_class->new(
         viewer => $self->rest->user,
         limit  => $limit,
         offset => $offset,
