@@ -34,20 +34,13 @@ sub GET_image {
     my $acct = ($acct_id) ?
         Socialtext::Account->new(account_id => $acct_id) :
         Socialtext::Account->Default();
-
-    my $logo = $acct->logo;
-    my $image_ref = eval { $logo->load(); };
-    warn "Get Logo: $@" if $@;
-
-    eval { $logo->cache_image() };
-    warn "Cache Logo: $@" if $@;
-
+    my $logo = $acct->logo->logo;
     $rest->header(
         -type          => 'image/png',
         -pragma        => 'no-cache',
         -cache_control => 'no-cache, no-store',
     );
-    return $$image_ref;
+    return $$logo;
 }
 
 1;

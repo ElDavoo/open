@@ -149,10 +149,14 @@ sub skin_name {
     return $self->{skin_name} || get_system_setting('default-skin');
 }
 
-sub logo {
+has 'logo' => (
+    is => 'ro', isa => 'Socialtext::AccountLogo',
+    lazy_build => 1,
+);
+
+sub _build_logo {
     my $self = shift;
-    $self->{logo} ||= Socialtext::AccountLogo->new(account => $self);
-    return $self->{logo};
+    return Socialtext::AccountLogo->new(account => $self);
 }
 
 sub custom_workspace_skins {
@@ -303,7 +307,6 @@ sub export {
 
     my $export_file = $opts{file} || "$dir/account.yaml";
 
-    my $image_ref = $self->logo->load();
     my $all_users_workspace = ( $self->all_users_workspace )
         ? Socialtext::Workspace->new(
             workspace_id =>$self->all_users_workspace )->name()
@@ -318,7 +321,7 @@ sub export {
         skin_name                  => $self->skin_name,
         email_addresses_are_hidden => $self->email_addresses_are_hidden,
         users                      => $self->all_users_as_hash,
-        logo                       => MIME::Base64::encode($$image_ref),
+        logo                       => MIME::Base64::encode($self->logo->logo),
         allow_invitation           => $self->allow_invitation,
         all_users_workspace        => $all_users_workspace,
         plugins                    => [ $self->plugins_enabled ],
@@ -441,7 +444,7 @@ sub import_file {
         print loc("Importing account logo ...") . "\n";
         eval {
             my $image = MIME::Base64::decode($hash->{logo});
-            $account->logo->save_image(\$image);
+            $account->logo->set(\$image);
             delete $hash->{logo};
         };
         warn "Could not import account logo: $@" if $@;
