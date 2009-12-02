@@ -1190,7 +1190,7 @@ body#dashBoard div.widget div.widgetHeader h4 {
 }
 
 body#dashBoard div.widget.tan div.widgetHeader h4 {
-	margin-left: 18px;
+	margin-left: 12px;
 	color: #0c5a9c;
 	border-bottom: #dedede 2px solid;
 	width: 90%;
@@ -1226,6 +1226,8 @@ body#dashBoard div.widgetContent p {
 }
 
 body#dashBoard div.widget.tan div.widgetContent {
+        padding-left: 5px;
+        padding-right: 5px;
 	padding-bottom: 10px;
 }
 
