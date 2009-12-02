@@ -6,6 +6,9 @@ use Socialtext::SQL qw/get_dbh :txn/;
 use Socialtext::Timer qw/time_scope/;
 use namespace::clean -except => 'meta';
 
+extends 'Exporter';
+our $VERSION = 1.0;
+
 has 'trace' => (is => 'rw', isa => 'Bool', default => undef);
 
 has 'owner_id' => (is => 'rw', isa => 'Int');
@@ -15,6 +18,39 @@ has 'owner' => (
 #     isa      => 'Socialtext::Workspace|Socialtext::Account|Socialtext::Group',
     isa => 'Object',
     weak_ref => 1
+);
+
+use constant USER_OFFSET    => 0;
+use constant USER_END       => 0x10000000;
+use constant PG_USER_OFFSET => 0;
+use constant PG_USER_FILTER => " <= x'10000000'::int";
+
+use constant GROUP_OFFSET    => 0x10000000;
+use constant GROUP_END       => 0x20000000;
+use constant PG_GROUP_OFFSET => "x'10000000'::int";
+use constant PG_GROUP_FILTER => " BETWEEN x'10000001'::int AND x'20000000'::int";
+
+use constant WKSP_OFFSET    => 0x20000000;
+use constant WKSP_END       => 0x30000000;
+use constant PG_WKSP_OFFSET => "x'20000000'::int";
+use constant PG_WKSP_FILTER => " BETWEEN x'20000001'::int AND x'30000000'::int";
+
+use constant ACCT_OFFSET    => 0x30000000;
+use constant ACCT_END       => 0x40000000;
+use constant PG_ACCT_OFFSET => "x'30000000'::int";
+use constant PG_ACCT_FILTER => " > x'30000000'::int";
+
+our @all_consts = qw(
+    USER_OFFSET USER_END PG_USER_OFFSET PG_USER_FILTER
+    GROUP_OFFSET GROUP_END PG_GROUP_OFFSET PG_GROUP_FILTER
+    WKSP_OFFSET WKSP_END PG_WKSP_OFFSET PG_WKSP_FILTER
+    ACCT_OFFSET ACCT_END PG_ACCT_OFFSET PG_ACCT_FILTER
+);
+our @EXPORT = ();
+our @EXPORT_OK = (@all_consts);
+our @EXPORT_TAGS = (
+    'all' => \@EXPORT_OK,
+    'const' => \@all_consts,
 );
 
 # defined below:
