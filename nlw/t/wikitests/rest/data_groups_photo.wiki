@@ -1,0 +1,43 @@
+* Fixture: SocialRest
+# We can do little more than check return codes in this test. Still it's better than nothing.
+
+# Setup: Create a Group that we can use
+| set               | group       | %%start_time%%group-photo       |
+| set               | user        | %%start_time%%user@in-group.com |
+| create-group      | %%group%%   |                                 |
+| create-user       | %%user%%    | password                        |
+| add-user-to-group | %%user_id%% |                                 |
+
+# We do not have access to the group
+
+| *Comment* | Unauthorized                          |           |
+| GET       | /data/groups/%%group_id%%/photo       |           |
+| code-is   | 401                                   |           |
+| header-is | Content-type                          | image/png |
+| GET       | /data/groups/%%group_id%%/small_photo |           |
+| code-is   | 401                                   |           |
+| header-is | Content-type                          | image/png |
+
+# The Group does not exist
+
+| *Comment* | Not Found                  |           |
+| GET       | /data/groups/0/photo       |           |
+| code-is   | 404                        |           |
+| header-is | Content-type               | image/png |
+| GET       | /data/groups/0/small_photo |           |
+| code-is   | 404                        |           |
+| header-is | Content-type               | image/png |
+
+# User is in Group
+
+| *Comment*      | OK                                    |           |
+| http-user-pass | %%user%%                              | password  |
+| GET            | /data/groups/%%group_id%%/photo       |           |
+| code-is        | 200                                   |           |
+| header-is      | Content-type                          | image/png |
+| GET            | /data/groups/%%group_id%%/small_photo |           |
+| code-is        | 200                                   |           |
+| header-is      | Content-type                          | image/png |
+
+# Good to have for later:
+## | POST-file | /data/gadgets | method=file | file | t/widget/uploaded.xml |
