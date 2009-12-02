@@ -6,8 +6,8 @@ use Socialtext::SQL qw/get_dbh :txn/;
 use Socialtext::Timer qw/time_scope/;
 use namespace::clean -except => 'meta';
 
-extends 'Exporter';
 our $VERSION = 1.0;
+extends 'Exporter';
 
 has 'trace' => (is => 'rw', isa => 'Bool', default => undef);
 
@@ -48,7 +48,7 @@ our @all_consts = qw(
 );
 our @EXPORT = ();
 our @EXPORT_OK = (@all_consts);
-our @EXPORT_TAGS = (
+our %EXPORT_TAGS = (
     'all' => \@EXPORT_OK,
     'const' => \@all_consts,
 );
