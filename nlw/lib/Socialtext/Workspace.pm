@@ -1209,7 +1209,7 @@ sub _group_role_changed {
     if ($change eq 'add' || $change eq 'remove') {
         my $action = $change eq 'add'
                 ? 'add_to_workspace'
-                : 'remove_from_workspace',
+                : 'remove_from_workspace';
         Socialtext::Events->Record({
             event_class => 'group',
             action => $action,
@@ -1219,6 +1219,7 @@ sub _group_role_changed {
                 workspace_id => $self->workspace_id,
             },
         });
+    }
 }
 
 {
