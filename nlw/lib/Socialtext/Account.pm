@@ -501,7 +501,7 @@ after 'role_change_event' => sub {
 
     my $to_hook;
 
-    if ($thing->isa('Socialtext::User') {
+    if ($thing->isa('Socialtext::User')) {
         if ($change eq 'add') {
             $to_hook = 'nlw.add_user_account_role';
         }
