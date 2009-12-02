@@ -395,7 +395,7 @@ for my $thingy_type (
         my ($self,%p) = @_;
         my $t = time_scope("uset_${thing_name}s");
         my $meth = "${thing_name}_ids";
-        my $ids = $self->$meth(@_);
+        my $ids = $self->$meth(%p);
         return Socialtext::MultiCursor->new(
             iterables => $ids,
             apply     => $realize_thing,
@@ -416,7 +416,7 @@ for my $thingy_type (
         }, $self->user_set_id);
         my $rows = $sth->fetchall_arrayref();
         return Socialtext::MultiCursor->new(
-            iterables => $rows,
+            iterables => [$rows],
             apply     => sub {
                 my $row = shift;
                 return [
