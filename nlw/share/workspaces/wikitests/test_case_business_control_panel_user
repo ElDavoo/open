@@ -54,8 +54,13 @@
 | click_and_wait | link=%%new_acct%% |  |
 | wait_for_element_visible_ok | link=Wiki CLI <%%cli_user%%> | 30000 |
 | click_and_wait | link=Wiki CLI <%%cli_user%%> |  |
+
+| *Comment* | Test case: Business Control Panel User wait for JS to build account table |  |
 | wait_for_text_present_ok | Relationship | 30000 |
-| wait_for_element_visible_ok | link=%%new_acct%% |  |
+| wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
+| wait_for_element_visible_ok | link=%%new_workspace%% | 30000 |
+
+| *Comment* | Test case: Business Control Panel User test account table |  |
 | text_like | qr/%%new_acct%%.+Primary Account, Via Workspace: %%new_workspace%%/ism |  |
 | text_like | Socialtext Accounts Access? no |  |
 | text_like | Socialtext System Management Access? no |  |

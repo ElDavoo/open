@@ -29,6 +29,7 @@
 | type_ok | st-account-restrict-to-domain | xndev.com |
 | click_and_wait | st-account-restrict-submit |  |
 | wait_for_text_present_ok | Account updated | 30000 |
+| verifyValue | st-account-restrict-to-domain | xndev.com |
 | st-admin | show-account-config --account %%restrict_acct%% | xndev.com |
 
 | *Comment* | Test case: Business Control Panel Socialtext Account exists |  |
