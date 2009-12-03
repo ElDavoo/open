@@ -15,6 +15,7 @@ Socialcalc enabled is required because we run Calc Testcases
 * [Test Case: Signal to Networks]
 * [Test Case: Signals Search]
 * [Test Case: Signals Search Pagination]
+* [Test Case: Signals Activities Interaction]
 * [Calc Testcases]
 * [File Testcases]
 * [Localization Testcases]
