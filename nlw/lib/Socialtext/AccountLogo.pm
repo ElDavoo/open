@@ -6,7 +6,6 @@ use File::Temp qw/tempfile/;
 use Socialtext::File;
 use Socialtext::Skin;
 use Socialtext::Paths;
-use Socialtext::UploadedImage;
 use Socialtext::Image;
 use namespace::clean -except => 'meta';
 
