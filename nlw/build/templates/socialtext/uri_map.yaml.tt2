@@ -437,6 +437,18 @@
         'GET':
             '*/*':              [Socialtext::Rest::Wafl, GET_image]
 -
+    '/data/uploads':
+        'GET':
+            '*/*':     &default [Socialtext::Rest::Uploads, GET_html]
+            'text/html':        *default
+            'application/json': [Socialtext::Rest::Uploads, GET_json]
+        'POST':
+            '*/*':              [Socialtext::Rest::Uploads, POST_file]
+-
+    '/data/uploads/:id':
+        'GET':
+            '*/*':              [Socialtext::Rest::Upload, GET]
+-
     '/data/report/top_content/:start/:duration':
         'GET':
             'application/json': [Socialtext::Rest::Report::TopContent, GET_json]
