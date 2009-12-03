@@ -11,6 +11,7 @@ use Socialtext::SQL::Builder qw(sql_nextval);
 use Socialtext::Helpers;
 use Socialtext::String;
 use Socialtext::User;
+use Socialtext::UserSet qw/:const/;
 use Socialtext::MultiCursor;
 use Socialtext::Validate qw( validate SCALAR_TYPE );
 use Socialtext::Log qw( st_log );
@@ -940,30 +941,15 @@ sub _AllByUserCount {
     }
 
     my $sql = qq{
-        SELECT "Account".*,
-               COUNT(DISTINCT account_user.user_id) AS user_count
+        SELECT "Account".*, COALESCE(user_count,0) AS user_count
           FROM "Account"
-          LEFT OUTER JOIN account_user USING (account_id)
+          LEFT OUTER JOIN (
+            SELECT into_set_id, COUNT(DISTINCT(from_set_id)) AS user_count
+              FROM user_set_path
+             WHERE from_set_id } . PG_USER_FILTER . qq{
+             GROUP BY into_set_id
+          ) AS X ON (user_set_id = into_set_id)
           $where
-         GROUP BY "Account".account_id,
-                  "Account".name,
-                  "Account".is_system_created,
-                  "Account".skin_name,
-                  "Account".account_type,
-                  "Account".restrict_to_domain,
-                  "Account".email_addresses_are_hidden,
-                  "Account".is_exportable,
-                  "Account".desktop_logo_uri,
-                  "Account".desktop_header_gradient_top,
-                  "Account".desktop_header_gradient_bottom,
-                  "Account".desktop_bg_color,
-                  "Account".desktop_2nd_bg_color,
-                  "Account".desktop_text_color,
-                  "Account".desktop_link_color,
-                  "Account".desktop_highlight_color,
-                  "Account".allow_invitation,
-                  "Account".all_users_workspace,
-                  "Account".user_set_id
          ORDER BY user_count $p{sort_order}, "Account".name ASC
          LIMIT ? OFFSET ?
     };

@@ -4,6 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 9;
+use Test::Differences;
 use Sys::Hostname qw(hostname);
 use Socialtext::Account;
 
@@ -34,7 +35,7 @@ all_accounts_default_order: {
     my $cursor   = Socialtext::Account->All();
     my @accounts = map { $_->name } $cursor->all();
     my @expected = sort @BUILT_IN_ACCOUNTS;
-    is_deeply(
+    eq_or_diff(
         \@accounts, \@expected,
         'All Accounts, default order'
     );
@@ -46,7 +47,7 @@ all_accounts_default_order_limited: {
     my $cursor   = Socialtext::Account->All( limit => 2 );
     my @accounts = map { $_->name } $cursor->all();
     my @expected = (sort @BUILT_IN_ACCOUNTS)[0,1];
-    is_deeply(
+    eq_or_diff(
         \@accounts, \@expected,
         'All Accounts, default order, limited'
     );
@@ -58,7 +59,7 @@ all_accounts_default_order_limit_offset: {
     my $cursor   = Socialtext::Account->All( limit => 2, offset => 1 );
     my @accounts = map { $_->name } $cursor->all();
     my @expected = (sort @BUILT_IN_ACCOUNTS)[1,2];
-    is_deeply(
+    eq_or_diff(
         \@accounts, \@expected,
         'All Accounts, default order, limit and offset'
     );
@@ -70,7 +71,7 @@ all_accounts_default_order_descending: {
     my $cursor   = Socialtext::Account->All( sort_order => 'DESC' );
     my @accounts = map { $_->name } $cursor->all();
     my @expected = reverse sort @BUILT_IN_ACCOUNTS;
-    is_deeply(
+    eq_or_diff(
         \@accounts, \@expected,
         'All Accounts, default order, DESC'
     );
@@ -82,7 +83,7 @@ all_accounts_ordered_by_name: {
     my $cursor   = Socialtext::Account->All( order_by => 'name' );
     my @accounts = map { $_->name } $cursor->all();
     my @expected = sort @BUILT_IN_ACCOUNTS;
-    is_deeply(
+    eq_or_diff(
         \@accounts, \@expected,
         'All Accounts, ordered by name'
     );
@@ -94,7 +95,7 @@ all_accounts_ordered_by_name: {
     my $cursor   = Socialtext::Account->All( order_by => 'name', type => 'Standard' );
     my @accounts = map { $_->name } $cursor->all();
     my @expected = sort @BUILT_IN_ACCOUNTS;
-    is_deeply(
+    eq_or_diff(
         \@accounts, \@expected,
         'All Accounts by type, ordered by name'
     );
@@ -130,7 +131,7 @@ all_accounts_ordered_by_workspace_count: {
         map { Socialtext::Account->new(name => $_) }
         (@BUILT_IN_ACCOUNTS, @account_names);
 
-    is_deeply(
+    eq_or_diff(
         \@accounts, \@expected,
         'All Accounts, ordered by workspace_count'
     );
@@ -189,7 +190,7 @@ all_accounts_ordered_by_user_count: {
         map { Socialtext::Account->new(name => $_) }
         (@BUILT_IN_ACCOUNTS, @account_names);
 
-    is_deeply(
+    eq_or_diff(
         \@accounts, \@expected,
         'All Accounts, ordered by user_count'
     );
