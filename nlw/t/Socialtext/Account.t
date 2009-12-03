@@ -6,6 +6,7 @@ use warnings;
 use Test::Socialtext tests => 113;
 use Test::Socialtext::User;
 use Test::Exception;
+use Test::Differences;
 use Socialtext::File;
 use MIME::Base64 ();
 use YAML qw/LoadFile/;
@@ -40,9 +41,9 @@ my $socialtext = Socialtext::Account->Socialtext;
 isa_ok( $socialtext, 'Socialtext::Account' );
 ok( $socialtext->is_system_created, 'Unknown account is system-created' );
 users_are($socialtext, ['system-user', 'guest']);
-is_deeply [ sort @{$socialtext->user_ids} ],
-  [ sort (Socialtext::User->SystemUser->user_id, 
-          Socialtext::User->Guest->user_id) ],
+eq_or_diff [ sort @{$socialtext->user_ids} ],
+  [ sort {$a <=> $b} Socialtext::User->SystemUser->user_id, 
+          Socialtext::User->Guest->user_id ],
   'user_ids() works';
 
 eval { Socialtext::Account->create( name => 'Test Account' ) };
@@ -79,7 +80,7 @@ Rudimentary_Plugin_Test: {
    $socialtext->enable_plugin( 'dashboard' );
    is('1', $socialtext->is_plugin_enabled('dashboard'), 'dashboard enabled.');
    my %enabled = map { $_ => 1 } $socialtext->plugins_enabled;
-   is_deeply( \%enabled, { widgets => 1, dashboard => 1 }, 'enabled.');
+   eq_or_diff( \%enabled, { widgets => 1, dashboard => 1 }, 'enabled.');
    $socialtext->disable_plugin( 'dashboard' );
    is('0', $socialtext->is_plugin_enabled('dashboard'), 'dashboard disabled.');
 }
@@ -154,9 +155,9 @@ Account_skins: {
         'reset_skin sets the skins of account workspaces'
     );
 
-    is_deeply( [], $test->custom_workspace_skins, 'custom workspace skins is empty.');
+    eq_or_diff( [], $test->custom_workspace_skins, 'custom workspace skins is empty.');
     $ws->update( skin_name => 's3' );
-    is_deeply( ['s3'], $test->custom_workspace_skins, 'custom workspace skins updated.');
+    eq_or_diff( ['s3'], $test->custom_workspace_skins, 'custom workspace skins updated.');
     my $mess = $test->custom_workspace_skins( include_workspaces => 1 );
     is( $ws_name, $mess->{s3}[0]{name}, 'custom skins with workspaces.');
 }
@@ -359,7 +360,7 @@ sub users_are {
     # check user list
 
     my $count = $account->user_count(
-        primary_only          => $primary_only,
+        direct          => $primary_only,
         exclude_hidden_people => $exclude_hidden_people,
     );
     is $count, scalar(@$users), 
@@ -367,7 +368,7 @@ sub users_are {
 
     for my $order_by (qw( username creation_datetime creator )) {
         my $mc = $account->users(
-            primary_only => $primary_only,
+            direct => $primary_only,
             exclude_hidden_people => $exclude_hidden_people,
             order_by => $order_by,
         );
