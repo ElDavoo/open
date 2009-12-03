@@ -26,13 +26,16 @@ CREATE FUNCTION _int_contained(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_contained'
     LANGUAGE c STRICT;
 
+
 CREATE FUNCTION _int_contains(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_contains'
     LANGUAGE c STRICT;
 
+
 CREATE FUNCTION _int_different(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_different'
     LANGUAGE c STRICT;
+
 
 CREATE FUNCTION _int_inter(integer[], integer[]) RETURNS integer[]
     AS '$libdir/_int', '_int_inter'
@@ -42,9 +45,11 @@ CREATE FUNCTION _int_overlap(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_overlap'
     LANGUAGE c STRICT;
 
+
 CREATE FUNCTION _int_same(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_same'
     LANGUAGE c STRICT;
+
 
 CREATE FUNCTION _int_union(integer[], integer[]) RETURNS integer[]
     AS '$libdir/_int', '_int_union'
@@ -62,6 +67,7 @@ $$
 CREATE FUNCTION boolop(integer[], query_int) RETURNS boolean
     AS '$libdir/_int', 'boolop'
     LANGUAGE c STRICT;
+
 
 CREATE FUNCTION cleanup_sessions() RETURNS "trigger"
     AS $$
@@ -233,6 +239,7 @@ CREATE FUNCTION querytree(query_int) RETURNS text
 CREATE FUNCTION rboolop(query_int, integer[]) RETURNS boolean
     AS '$libdir/_int', 'rboolop'
     LANGUAGE c STRICT;
+
 
 CREATE FUNCTION signal_sent() RETURNS "trigger"
     AS $$
@@ -1188,17 +1195,9 @@ ALTER TABLE ONLY gallery
     ADD CONSTRAINT gallery_pk
             PRIMARY KEY (gallery_id);
 
-ALTER TABLE ONLY group_account_role
-    ADD CONSTRAINT group_account_role_pkey
-            PRIMARY KEY (group_id, account_id);
-
 ALTER TABLE ONLY group_photo
     ADD CONSTRAINT group_photo_pkey
             PRIMARY KEY (group_id);
-
-ALTER TABLE ONLY group_workspace_role
-    ADD CONSTRAINT group_workspace_role_pk
-            PRIMARY KEY (group_id, workspace_id);
 
 ALTER TABLE ONLY groups
     ADD CONSTRAINT groups_group_id_pk
@@ -1870,40 +1869,10 @@ ALTER TABLE ONLY gallery_gadget
             FOREIGN KEY (gadget_id)
             REFERENCES gadget(gadget_id) ON DELETE CASCADE;
 
-ALTER TABLE ONLY group_account_role
-    ADD CONSTRAINT group_account_role__account_fk
-            FOREIGN KEY (account_id)
-            REFERENCES "Account"(account_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY group_account_role
-    ADD CONSTRAINT group_account_role__group_fk
-            FOREIGN KEY (group_id)
-            REFERENCES groups(group_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY group_account_role
-    ADD CONSTRAINT group_account_role__role_fk
-            FOREIGN KEY (role_id)
-            REFERENCES "Role"(role_id) ON DELETE CASCADE;
-
 ALTER TABLE ONLY group_photo
     ADD CONSTRAINT group_photo_group_id_fk
             FOREIGN KEY (group_id)
             REFERENCES groups(group_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY group_workspace_role
-    ADD CONSTRAINT group_workspace_role_group_fk
-            FOREIGN KEY (group_id)
-            REFERENCES groups(group_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY group_workspace_role
-    ADD CONSTRAINT group_workspace_role_role_fk
-            FOREIGN KEY (role_id)
-            REFERENCES "Role"(role_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY group_workspace_role
-    ADD CONSTRAINT group_workspace_role_workspace_fk
-            FOREIGN KEY (workspace_id)
-            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY groups
     ADD CONSTRAINT groups_created_by_user_id_fk
@@ -2116,4 +2085,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '98');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '99');
