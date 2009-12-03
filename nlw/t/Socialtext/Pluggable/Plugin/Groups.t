@@ -25,17 +25,16 @@ backup: {
     my $data_ref = {};
     my $def_user = Socialtext::User->SystemUser;
     my $ugr_role = Socialtext::UserGroupRoleFactory->DefaultRole();
-    my $gwr_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
 
     # create dummy data.
     my $account   = create_test_account_bypassing_factory();
     my $group_one = create_test_group(account => $account);
     my $user_one  = create_test_user();
-    add_user_to_group($user_one, $group_one);
+    $group_one->add_user(user => $user_one);
 
     # this group will _not_ be in the backup; it's not in the account.
     my $group_two    = create_test_group();
-    add_user_to_group( $user_one, $group_two);
+    $group_two->add_user(user => $user_one);
 
     # this Group will be in the backups (Account, and Workspace)
     my $user_two    = create_test_user();
@@ -151,17 +150,14 @@ basic_restore: {
         my $account = create_test_account_bypassing_factory();
         my $user    = create_test_user();
         my $group   = create_test_group(account => $account);
-        add_user_to_group($user, $group);
+        $group->add_user(user => $user);
 
         # hold onto a bunch of stuff, so we can compare later after import
         $test_acct_name    = $account->name();
         $test_username     = $user->username();
         $test_creator_name = $group->creator->username();
         $test_group_name   = $group->driver_group_name();
-        $test_role_name = Socialtext::UserGroupRoleFactory->Get(
-            user_id  => $user->user_id(),
-            group_id => $group->group_id(),
-        )->role->name();
+        $test_role_name    = $group->role_for_user($user)->name;
 
         # make backup data
         my $plugin = Socialtext::Pluggable::Plugin::Groups->new();
@@ -201,7 +197,7 @@ basic_restore: {
     is $group->driver_group_name, $test_group_name,
         '... with correct driver_group_name';
 
-    is $account->role_for_group(group => $group)->name, 'member',
+    is $account->role_for_group($group)->name, 'member',
         '... with correct Role in the Account';
 
     # make sure that the creator exists
@@ -218,11 +214,8 @@ basic_restore: {
     is $user->username, $test_username, '... ... is test User';
 
     # User has the correct Role in the Group
-    my $ugr = Socialtext::UserGroupRoleFactory->Get(
-        user_id  => $user->user_id,
-        group_id => $group->group_id,
-    );
-    is $ugr->role->name(), $test_role_name, '... correct Role in Group';
+    is $group->role_for_user($user)->name(), $test_role_name,
+        '... correct Role in Group';
 }
 
 ################################################################################
@@ -262,7 +255,7 @@ restore_with_existing_group: {
     # changed after the export (but before the import), so we can verify that
     # the import leaves existing memberships alone.
     my $test_user_one = create_test_user();
-    my $test_role_one = Socialtext::Role->Guest();
+    my $test_role_one = Socialtext::Role->Admin();
     $group->add_user(
         user => $test_user_one,
         role => $test_role_one,
@@ -317,7 +310,7 @@ restore_with_existing_group: {
     # change the Role for one of the Users (so we can verify that the import
     # doesn't over-write their membership)
     $test_role_one = Socialtext::Role->Admin();
-    $group->add_user(
+    $group->assign_role_to_user(
         user => $test_user_one,
         role => $test_role_one,
     );
@@ -356,7 +349,7 @@ restore_workspace: {
         groups => [ {
             driver_group_name   => 'Test Group Name',
             created_by_username => 'system-user',
-            role_name           => 'guest',             # not the default Role
+            role_name           => 'admin',             # not the default Role
             users => [
                 {
                     username    => $test_user->username,
@@ -388,8 +381,8 @@ restore_workspace: {
     isa_ok $creator, 'Socialtext::User', '... creator';
     is $creator->username, 'system-user', '... ... correct creating user';
 
-    my $gwr = $ws->role_for_group(group => $group);
-    is $gwr->name, 'guest', '... correct GWR';
+    my $gwr = $ws->role_for_group($group);
+    is $gwr->name, 'admin', '... correct GWR';
 
     my $users = $group->users;
     is $users->count, 1, '... contains a User';
@@ -412,7 +405,7 @@ restore_workspace_with_existing_group: {
         groups => [ {
             driver_group_name   => $group_name,
             created_by_username => 'carl',              # non-existent User
-            role_name           => 'guest',             # not the default Role
+            role_name           => 'admin',             # not the default Role
             users => [
                 {
                     username    => $test_user->username,
@@ -452,8 +445,8 @@ restore_workspace_with_existing_group: {
     my $creator = $group->creator;
     isnt $creator->username, 'carl', '... did not override creating user';
 
-    my $gwr = $ws->role_for_group(group => $group);
-    is $gwr->name, 'guest', '... correct GWR';
+    my $gwr = $ws->role_for_group($group);
+    is $gwr->name, 'admin', '... correct GWR';
 
     my $users = $group->users;
     is $users->count, 1, '... now contains a User';
@@ -464,16 +457,4 @@ restore_workspace_with_existing_group: {
 
     my $uwr = $group->role_for_user($user);
     is $uwr->name, 'impersonator', '... correct UWR';
-}
-
-###############################################################################
-# Helper method, to add a User to a Group.
-sub add_user_to_group {
-    my $user  = shift;
-    my $group = shift;
-
-    Socialtext::UserGroupRoleFactory->Create({
-        user_id  => $user->user_id, 
-        group_id => $group->group_id,
-    });
 }
