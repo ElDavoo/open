@@ -5,7 +5,7 @@ use Carp qw/croak/;
 use Socialtext::UserSet;
 use Socialtext::SQL qw(sql_execute sql_singlevalue);
 use Socialtext::l10n qw/loc/;
-use Socialtext::UserSet ();
+use Socialtext::UserSet qw(:const);
 use Socialtext::Exceptions qw/param_error/;
 use Socialtext::Cache ();
 use Socialtext::MultiCursor;
@@ -260,7 +260,11 @@ for my $thing_name (qw(user group)) {
 
     my $realize_thing = ($thing_name eq 'user')
         ? sub { Socialtext::User->new(user_id => $_[0]) }
-        : sub { Socialtext::Group->GetGroup(group_id => $_[0]) };
+        : sub {
+            my $gid = shift;
+            $gid -= GROUP_OFFSET if $gid > GROUP_OFFSET;
+            return Socialtext::Group->GetGroup(group_id => $gid)
+        };
 
     my $thing_checker = ($thing_name eq 'user')
         ? sub { $_[0] && blessed($_[0]) && ($_[0]->isa('Socialtext::User') or $_[0]->isa('Socialtext::UserMetadata')) }
@@ -463,7 +467,7 @@ Socialtext::UserSetContainer - Role for things containing UserSets
 
 =head1 DESCRIPTION
 
-Adds a C<user_set> attribute to your class that automatically constructs the 
+Adds a C<user_set> attribute to your class that automatically constructs the
 L<Socialtext::UserSet> object for this container.
 
 Requires that the base class has a C<user_set_id> accessor.
