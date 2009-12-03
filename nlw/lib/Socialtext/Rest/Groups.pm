@@ -5,6 +5,7 @@ extends 'Socialtext::Rest::Collection';
 use Socialtext::Group;
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json encode_json/;
+use Socialtext::File;
 use namespace::clean -except => 'meta';
 
 # Anybody can see these, since they are just the list of groups the user
@@ -137,10 +138,17 @@ sub POST_json {
         return "Could not create the group";
     }
 
+    if (my $photo_id = $data->{photo_id}) {
+        eval {
+            my $blob = scalar Socialtext::File::get_contents_binary(
+                "$Socialtext::Rest::Uploads::UPLOAD_DIR/$photo_id"
+            );
+            $group->photo->set(\$blob);
+        };
+        warn "Error setting profile photo: $@" if $@;
+    }
 
-    $rest->header(
-        -status => HTTP_201_Created,
-    );
+    $rest->header( -status => HTTP_201_Created );
     return encode_json($group->to_hash);
 }
 
