@@ -17,6 +17,7 @@ use Socialtext::UserMetadata;
 use Socialtext::User::Deleted;
 use Socialtext::User::EmailConfirmation;
 use Socialtext::User::Factory;
+use Socialtext::UserSet qw/:const/;
 use Socialtext::UserWorkspaceRoleFactory;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
 use Email::Address;
@@ -879,16 +880,20 @@ SELECT user_id
     ORDER BY driver_username $p{sort_order}
     LIMIT ? OFFSET ?
 EOSQL
-            workspace_count => <<EOSQL,
-SELECT users.user_id,
-        COUNT(DISTINCT(user_workspace_role.workspace_id)) AS workspace_count
-    FROM users LEFT OUTER JOIN user_workspace_role 
-        ON users.user_id = user_workspace_role.user_id
-    GROUP BY users.user_id, users.driver_username
+            workspace_count => qq{
+SELECT users.user_id, COALESCE(workspace_count,0) AS workspace_count
+    FROM users
+    LEFT JOIN (
+        SELECT from_set_id AS user_id,
+            COUNT(DISTINCT(into_set_id)) AS workspace_count
+          FROM user_set_path
+         WHERE into_set_id } . PG_WKSP_FILTER . qq{
+        GROUP BY from_set_id
+    ) temp1 USING (user_id)
     ORDER BY workspace_count $p{sort_order},
              users.driver_username ASC
     LIMIT ? OFFSET ?
-EOSQL
+},
             user_id => <<EOSQL,
 SELECT user_id
     FROM users
@@ -1037,11 +1042,17 @@ SELECT DISTINCT user_id,
         };
 
         my $uwr_table = $p{direct}
-            ? 'user_workspace_role'
-            : 'distinct_user_workspace_role';
+            ? 'user_set_include'
+            : 'user_set_path';
         my $from = qq{
             users
-            JOIN $uwr_table USING (user_id)
+            JOIN (
+                SELECT from_set_id AS user_id,
+                       into_set_id - }.PG_WKSP_OFFSET.qq{ AS workspace_id,
+                       role_id
+                  FROM $uwr_table
+                 WHERE into_set_id }.PG_WKSP_FILTER.qq{
+            ) uwr USING (user_id)
             JOIN "Role" USING (role_id)
         };
 
@@ -1162,17 +1173,20 @@ SELECT DISTINCT users.user_id AS user_id,
     ORDER BY users.driver_username $p{sort_order}
     LIMIT ? OFFSET ?
 EOSQL
-            workspace_count => <<EOSQL,
-SELECT users.user_id AS user_id,
-        COUNT(DISTINCT(user_workspace_role.workspace_id)) AS aaaaa10000
+            workspace_count => qq{
+SELECT users.user_id AS user_id, workspace_count
     FROM users AS users
-        LEFT OUTER JOIN user_workspace_role AS user_workspace_role 
-            ON users.user_id = user_workspace_role.user_id
+    LEFT JOIN (
+        SELECT from_set_id AS user_id,
+            COUNT(DISTINCT(into_set_id)) AS workspace_count
+          FROM user_set_path
+         WHERE into_set_id } . PG_WKSP_FILTER . qq{
+        GROUP BY from_set_id
+    ) temp1 USING (user_id)
     WHERE users.driver_username LIKE ?
-    GROUP BY users.user_id, users.display_name
-    ORDER BY aaaaa10000 $p{sort_order}, users.display_name ASC
+    ORDER BY workspace_count $p{sort_order}, users.display_name ASC
     LIMIT ? OFFSET ?
-EOSQL
+    },
             creation_datetime => <<EOSQL,
 SELECT DISTINCT users.user_id AS user_id,
                 users.driver_key AS driver_key,
