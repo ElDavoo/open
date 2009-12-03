@@ -1,12 +1,6 @@
-# @COPYRIGHT@
 package Socialtext::UserMetadata;
-
-use strict;
-use warnings;
-
-our $VERSION = '0.01';
-
-use Class::Field 'field';
+# @COPYRIGHT@
+use Moose;
 use Socialtext::Cache;
 use Socialtext::Exceptions qw( data_validation_error param_error );
 use Socialtext::SQL 'sql_execute';
@@ -14,16 +8,19 @@ use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE
                              WORKSPACE_TYPE );
 use DateTime;
 use DateTime::Format::Pg;
+use namespace::clean -except => 'meta';
 
-field 'user_id';
-field 'creation_datetime';
-field 'last_login_datetime';
-field 'email_address_at_import';
-field 'created_by_user_id';
-field 'is_business_admin';
-field 'is_technical_admin';
-field 'is_system_created';
-field 'primary_account_id';
+our $VERSION = '0.01';
+
+has 'user_id'                 => (is => 'rw', isa => 'Int');
+has 'creation_datetime'       => (is => 'rw', isa => 'Str');
+has 'last_login_datetime'     => (is => 'rw', isa => 'Str');
+has 'email_address_at_import' => (is => 'rw', isa => 'Str');
+has 'created_by_user_id'      => (is => 'rw', isa => 'Int');
+has 'is_business_admin'       => (is => 'rw', isa => 'Bool');
+has 'is_technical_admin'      => (is => 'rw', isa => 'Bool');
+has 'is_system_created'       => (is => 'rw', isa => 'Bool');
+has 'primary_account_id'      => (is => 'rw', isa => 'Int');
 
 sub user_set_id { $_[0]->user_id }
 
@@ -221,6 +218,7 @@ sub _validate_and_clean_data {
     data_validation_error errors => \@errors if @errors;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
 
 __END__
