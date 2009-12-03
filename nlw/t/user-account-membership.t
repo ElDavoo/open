@@ -10,8 +10,10 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 27;
+use Test::Differences;
 use Socialtext::SQL qw/get_dbh/;
 use Socialtext::User;
+use Socialtext::UserSet qw/:const/;
 use Socialtext::Account;
 use Socialtext::Workspace;
 
@@ -21,6 +23,8 @@ my($user, $user_id, $user2, $user2_id);
 my($ws, $ws_id);
 my($default, $default_id);
 my($acct, $acct_id, $acct2, $acct2_id);
+
+sub membership_is ($$);
 
 setup: {
     $user = Socialtext::User->create(
@@ -71,26 +75,6 @@ setup: {
     ok $ws;
     $ws_id = $ws->workspace_id;
     ok $ws_id;
-}
-
-sub membership_is {
-    my $expected = shift;
-    my $name = shift;
-
-    local $Test::Builder::Level = ($Test::Builder::Level||0) + 1;
-
-    my $dbh = get_dbh;
-
-    my $membership_sth = $dbh->prepare(q{
-        SELECT account_id, user_id FROM account_user
-        WHERE user_id IN (?,?)
-        ORDER BY user_id, account_id
-    });
-    $membership_sth->execute($user_id, $user2_id);
-    my $got = $membership_sth->fetchall_arrayref;
-    use Data::Dumper;
-    is_deeply $got, $expected, $name
-        or warn Dumper($got);
 }
 
 baseline: {
@@ -163,7 +147,6 @@ primary_account_changes_memberhip: {
     $user2->primary_account($acct);
     membership_is [
         [$default_id,  $user_id ],
-        [$default_id,  $user2_id],
         [$acct_id,     $user2_id],
         [$acct2_id,    $user2_id],
     ], 'changing the primary account changes the account membership';
@@ -171,10 +154,7 @@ primary_account_changes_memberhip: {
     $user->primary_account($acct2);
     $user2->primary_account($acct2);
     membership_is [
-        [$default_id, $user_id ],
         [$acct2_id,   $user_id ],
-        [$default_id, $user2_id],
-        [$acct_id,    $user2_id],
         [$acct2_id,   $user2_id],
     ], 'change both users primary account';
 }
@@ -217,5 +197,29 @@ deleting_account_removes_membership: {
 sub change_workspace_account {
     my ($w, $a) = @_;
     $ws->update( account_id => $a->account_id );
+}
+
+sub membership_is {
+    my $expected = shift;
+    my $name = shift;
+
+    local $Test::Builder::Level = ($Test::Builder::Level||0) + 1;
+
+    my $dbh = get_dbh;
+
+    my $membership_sth = $dbh->prepare(q{
+        SELECT into_set_id - }.PG_ACCT_OFFSET.q{ as account_id, from_set_id AS user_id
+          FROM user_set_path
+         WHERE into_set_id }.PG_ACCT_FILTER.q{
+           AND from_set_id IN (?,?)
+         GROUP BY user_id, account_id
+         ORDER BY user_id, account_id
+    });
+    $membership_sth->execute($user_id, $user2_id)
+        || die "execute failed: " . $membership_sth->errstr . "\n";
+    my $got = $membership_sth->fetchall_arrayref;
+    use Data::Dumper;
+    eq_or_diff $got, $expected, $name
+        or warn Dumper($got);
 }
 
