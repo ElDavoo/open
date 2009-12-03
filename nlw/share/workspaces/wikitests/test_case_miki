@@ -95,12 +95,14 @@
 
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 
-| *Comment* | Test case: Find 'followed' user with MIKI search, click through, follow |  |
+| *Comment* | Test case: Miki Find 'followed' user with MIKI search, click through, follow |  |
+| pause | 30000 | guarentee the_ceq is finished indexing new usernames |
 | click_and_wait | link=People |  |
 | wait_for_element_visible_ok | st-search-text | 30000 |
 | type_ok | st-search-text | %%othershortuser%% |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
+| *Comment* | Test Case: Miki This will fail due to {bz 3364} |  |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | click_and_wait | link=%%othershortuser%% |  |
 
