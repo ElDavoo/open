@@ -4,6 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 44;
+use Test::Differences;
 
 ###############################################################################
 # Fixtures: db
@@ -266,14 +267,14 @@ get_roles_for_user_in_workspace: {
         $workspace->add_group(group => $group_one, role => $role_member);
 
         $group_two->add_user(user => $user);
-        $workspace->add_group(group => $group_two, role => $role_guest);
+        $workspace->add_group(group => $group_two, role => $role_admin);
 
         # SCALAR: highest effective Role
         my $role = Socialtext::Workspace::Roles->RolesForUserInWorkspace(
             user      => $user,
             workspace => $workspace,
         );
-        is $role->role_id, $role_member->role_id,
+        is $role->role_id, $role_admin->role_id,
             'Users highest effective Role in the WS';
 
         # LIST: all Roles, ordered from highest->lowest
@@ -282,9 +283,9 @@ get_roles_for_user_in_workspace: {
             workspace => $workspace,
         );
         is scalar @roles, 2, 'User has multiple Roles in the WS';
-        is $roles[0]->role_id, $role_member->role_id,
+        is $roles[0]->role_id, $role_admin->role_id,
             '... first Role has higher effectiveness';
-        is $roles[1]->role_id, $role_guest->role_id,
+        is $roles[1]->role_id, $role_member->role_id,
             '... second Role has lower effectiveness';
     }
 }
@@ -325,7 +326,7 @@ workspaces_by_user_id: {
         isa_ok $cursor, 'Socialtext::MultiCursor',
             'list of Workspaces that User has access to';
         is $cursor->count(), 3, '... each WS appears *ONCE* in the list';
-        is_deeply(
+        eq_or_diff(
             [ map { $_->name } $cursor->all ],
             [ sort map { $_->name } ($ws_one, $ws_two, $ws_three) ],
             '... WS returned ordered by name'

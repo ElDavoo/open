@@ -7,6 +7,7 @@ use Socialtext::Cache;
 use Socialtext::MultiCursor;
 use Socialtext::SQL qw(:exec);
 use Socialtext::User;
+use Socialtext::UserSet qw/:const/;
 use Socialtext::Validate qw(validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE);
 use Readonly;
 
@@ -62,8 +63,7 @@ sub CountUsersByWorkspaceId {
         SELECT COUNT(DISTINCT from_set_id)
           FROM $uwr_table
          WHERE into_set_id = ?
-           AND from_set_id <= 0x10000000;
-    };
+           AND from_set_id }.PG_USER_FILTER;
 
     my $count = sql_singlevalue($sql, $ws_uset_id);
     return $count;
@@ -81,22 +81,22 @@ sub UserHasRoleInWorkspace {
     my $direct = defined $p{direct} ? $p{direct} : 0;
 
     my $uwr_table = $direct
-        ? 'user_workspace_role'
-        : 'all_user_workspace_role';
+        ? 'user_set_include'
+        : 'user_set_path';
 
     my $user_id = $user->user_id();
     my $role_id = $role->role_id();
-    my $ws_id   = $ws->workspace_id();
+    my $ws_set_id = $ws->user_set_id();
 
     my $sql = qq{
         SELECT 1
           FROM $uwr_table
-         WHERE user_id = ?
-           AND workspace_id = ?
+         WHERE from_set_id = ?
+           AND into_set_id = ?
            AND role_id = ?
          LIMIT 1
     };
-    my $is_ok = sql_singlevalue($sql, $user_id, $ws_id, $role_id);
+    my $is_ok = sql_singlevalue($sql, $user_id, $ws_set_id, $role_id);
     return $is_ok || 0;
 }
 
@@ -189,6 +189,7 @@ sub RolesForUserInWorkspace {
               JOIN $uwr_table ON (w.user_set_id = into_set_id)
              WHERE from_set_id = ?
              $exclude_clause
+             GROUP BY w.workspace_id, w.name
              ORDER BY w.name $sort_order
              LIMIT ? OFFSET ?
         };
