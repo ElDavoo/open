@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use Socialtext::User;
 use Test::Socialtext tests => 30;
+use Test::Differences;
 
 ###############################################################################
 # Fixtures: clean populated_rdbms
@@ -52,7 +53,7 @@ fixtures(qw( clean populated_rdbms ));
     );
 
     $users = Socialtext::User->All( order_by => 'workspace_count' );
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $users->all() ],
         [
             'guest', 'system-user',
@@ -233,7 +234,7 @@ fixtures(qw( clean populated_rdbms ));
     my $group_two = create_test_group(account => $ws->account);
     $ws->add_group(
         group => $group_two,
-        role  => Socialtext::Role->Guest,
+        role  => Socialtext::Role->Admin,
     );
 
     # create some other Users and give them access to the WS
@@ -261,7 +262,7 @@ fixtures(qw( clean populated_rdbms ));
             [ $user_uwr->username,     'member' ],
             [ $user_uwr_gwr->username, 'impersonator' ],
             [ $user_uwr_gwr->username, 'member' ],
-            [ $user_gwr_gwr->username, 'guest' ],
+            [ $user_gwr_gwr->username, 'admin' ],
             [ $user_gwr_gwr->username, 'impersonator' ],
         ],
         'ByWorkspaceIdWithRoles() with Groups, default ordering'
@@ -278,7 +279,7 @@ fixtures(qw( clean populated_rdbms ));
                 $users_with_roles->all()
         ],
         [
-            [ $user_gwr_gwr->username, 'guest' ],
+            [ $user_gwr_gwr->username, 'admin' ],
             [ $user_gwr_gwr->username, 'impersonator' ],
             [ $user_uwr_gwr->username, 'impersonator' ],
             [ $user_uwr_gwr->username, 'member' ],
@@ -297,7 +298,7 @@ fixtures(qw( clean populated_rdbms ));
                 $users_with_roles->all()
         ],
         [
-            [ $user_gwr_gwr->username, 'guest' ],
+            [ $user_gwr_gwr->username, 'admin' ],
             [ $user_gwr_gwr->username, 'impersonator' ],
             [ $user_uwr_gwr->username, 'impersonator' ],
             [ $user_uwr_gwr->username, 'member' ],
@@ -319,7 +320,7 @@ fixtures(qw( clean populated_rdbms ));
             [ $user_uwr->username,     'member' ],
             [ $user_uwr_gwr->username, 'impersonator' ],
             [ $user_uwr_gwr->username, 'member' ],
-            [ $user_gwr_gwr->username, 'guest' ],
+            [ $user_gwr_gwr->username, 'admin' ],
             [ $user_gwr_gwr->username, 'impersonator' ],
         ],
         'ByWorkspaceIdWithRoles() with Groups, creator ordering'
@@ -335,7 +336,7 @@ fixtures(qw( clean populated_rdbms ));
                 $users_with_roles->all()
         ],
         [
-            [ $user_gwr_gwr->username, 'guest' ],
+            [ $user_gwr_gwr->username, 'admin' ],
             [ $user_uwr_gwr->username, 'impersonator' ],
             [ $user_gwr_gwr->username, 'impersonator' ],
             [ $user_uwr->username,     'member' ],
