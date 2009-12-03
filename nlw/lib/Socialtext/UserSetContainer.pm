@@ -138,7 +138,7 @@ sub add_role {
     eval { $self->user_set->add_object_role($thing, $role) };
     if ($@) {
         if ($@ =~ /constraint/i) {
-            die "could not add role: object already exists with some role";
+            confess "could not add role: object already exists with some role";
         }
         die $@;
     }
