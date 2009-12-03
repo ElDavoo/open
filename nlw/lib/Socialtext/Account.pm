@@ -498,6 +498,19 @@ sub finish_import {
     $hub->pluggable->hook('nlw.finish_import_account', $self, $meta, \%opts);
 }
 
+after 'role_change_check' => sub {
+    my $self = shift;
+    my $actor = shift;
+    my $action = shift;
+    my $thing = shift;
+
+    if ($action eq 'remove' and $thing->isa('Socialtext::User')) {
+        if ($self->account_id == $thing->primary_account_id) {
+            die "Cannot remove a user from their primary account!";
+        }
+    }
+};
+
 after 'role_change_event' => sub {
     my ($self,$actor,$change,$thing,$role) = @_;
 
