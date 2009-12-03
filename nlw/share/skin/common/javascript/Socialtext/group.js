@@ -33,6 +33,7 @@ $.extend(Socialtext.Group.prototype, {
         if (this.name) data.name = this.name;
         if (this.account_id) data.account_id = this.account_id;
         if (this.description) data.description = this.description;
+        if (this.photo_id) data.photo_id = this.photo_id;
 
         $.ajax({
             url: '/data/groups',
