@@ -1525,14 +1525,19 @@ my %LimitAndSortSpec = (
                 . ' WHERE created_by_user_id=user_id'
                 . " ORDER BY driver_username $p{sort_order}, name ASC"
                 . ' LIMIT ? OFFSET ?',
-            user_count => 'SELECT "Workspace".*'
-                . ' FROM "Workspace",'
-                . ' (SELECT workspace_id, COUNT(DISTINCT(user_workspace_role.user_id))'
-                . ' AS user_count FROM user_workspace_role GROUP BY workspace_id) AS temp1'
-                . ' WHERE temp1.workspace_id = "Workspace".workspace_id'
-                . " ORDER BY user_count $p{sort_order},"
-                . ' "Workspace".name ASC'
-                . ' LIMIT ? OFFSET ?',
+            user_count => <<EOT,
+SELECT "Workspace".*
+    FROM "Workspace",
+    (
+        SELECT into_set_id, 
+               COUNT(DISTINCT(from_set_id))
+            AS user_count FROM user_set_path GROUP BY into_set_id
+    ) AS temp1
+    WHERE temp1.into_set_id = "Workspace".user_set_id
+    ORDER BY user_count $p{sort_order},
+    "Workspace".name ASC
+    LIMIT ? OFFSET ?
+EOT
         );
 
         return $class->_WorkspaceCursor(
@@ -1599,9 +1604,10 @@ sub _WorkspaceCursor {
                 . ' LIMIT ? OFFSET ?',
             user_count => 'SELECT "Workspace".*'
                 . ' FROM "Workspace",'
-                . ' (SELECT workspace_id, COUNT(DISTINCT(user_workspace_role.user_id))'
-                . ' AS user_count FROM user_workspace_role GROUP BY workspace_id) AS temp1'
-                . ' WHERE temp1.workspace_id = "Workspace".workspace_id'
+                . ' (SELECT into_set_id, COUNT(DISTINCT(from_set_id))'
+                . ' AS user_count FROM user_set_path GROUP BY into_set_id) '
+                . ' AS temp1'
+                . ' WHERE temp1.into_set_id = "Workspace".user_set_id'
                 . " AND \"Workspace\".account_id=?"
                 . " ORDER BY user_count $p{sort_order},"
                 . ' "Workspace".name ASC'
@@ -1656,12 +1662,13 @@ sub _WorkspaceCursor {
                 . ' LIMIT ? OFFSET ?',
             user_count => <<EOSQL,
 SELECT *
-    FROM "Workspace" LEFT OUTER JOIN (
-        SELECT workspace_id, COUNT(DISTINCT(user_workspace_role.user_id))
+    FROM "Workspace"
+    LEFT OUTER JOIN (
+        SELECT into_set_id, COUNT(DISTINCT(from_set_id))
             AS user_count
-            FROM user_workspace_role 
-            GROUP BY workspace_id
-        ) AS X USING (workspace_id)
+            FROM user_set_path 
+            GROUP BY into_set_id
+        ) AS X ON (user_set_id = into_set_id)
     WHERE name $op ?
     ORDER BY user_count $p{sort_order}, "Workspace".name ASC
     LIMIT ? OFFSET ?
