@@ -7,7 +7,17 @@ use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
 use Socialtext::File;
 use Socialtext::Rest::Uploads;
+use Socialtext::People::ProfilePhoto;
+use Socialtext::Group::Photo;
+use Socialtext::AccountLogo;
 use File::Type;
+use File::Temp qw(tempfile);
+
+my %RESIZERS = (
+    profile => 'Socialtext::People::ProfilePhoto',
+    group   => 'Socialtext::Group::Photo',
+    account => 'Socialtext::AccountLogo',
+);
 
 sub permission      { +{} }
 sub allowed_methods {'GET'}
@@ -32,8 +42,28 @@ sub GET {
 
     my $mime = File::Type->new->mime_type($file);
 
+    # Support image resizing /?resize=group:small will resize for a
+    # Socialtext::Group::Photo using the small version
+    my $blob;
+    if (my $resize = $rest->query->param('resize')) {
+        my ($resizer, $version) = split ':', $resize;
+        die "You can only resize images" unless $mime =~ m{^image/};
+        die "Bad resize string: $resize" unless $resizer and $version;
+        my $rclass = $RESIZERS{$resizer} || die "Unknown resizer: $resizer";
+
+        my $temp;
+        (undef, $temp) = tempfile('/tmp/resizeXXXXXX', OPEN => 0);
+        link $file, $temp;
+        $rclass->Resize($version, $temp);
+        $blob = Socialtext::File::get_contents_binary($temp);
+        unlink $temp;
+    }
+    else {
+        $blob = Socialtext::File::get_contents_binary($file);
+    }
+
     $rest->header( 'Content-type' => $mime );
-    return Socialtext::File::get_contents_binary($file);
+    return $blob;
 }
 
 1;
