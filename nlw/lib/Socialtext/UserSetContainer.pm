@@ -323,7 +323,7 @@ for my $thing_name (qw(user group)) {
         }
     };
 
-    # grep: has_user has_group
+    # grep: sub has_user sub has_group
     _mk_method "has_$thing_name" => sub {
         my ($self,$o,%p) = @_;
         confess "must supply a $thing_name" unless $thing_checker->($o);
