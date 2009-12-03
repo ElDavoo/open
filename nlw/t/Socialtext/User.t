@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 59;
+use Test::Socialtext tests => 58;
 fixtures(qw( clean db ));
 use Socialtext::User;
 use Socialtext::Role;
@@ -301,10 +301,7 @@ deactivate_user: {
 
     # Check account membership
     my @accounts = $user->accounts();
-    is scalar(@accounts), 1, 'user is in only one account';
-    my $test = pop @accounts;
-    is $test->account_id, $deleted->account_id, 
-        "user is a member of Deleted account";
+    is scalar(@accounts), 0, 'deactivated user is in zero accounts';
     is $user->primary_account_id, $deleted->account_id,
         "user's primary account is Deleted account";
 
