@@ -188,8 +188,8 @@ sub primary_account {
 
         my $deleted_acct = Socialtext::Account->Deleted;
         if ($new_account->account_id != $deleted_acct->account_id) {
-            # Update account membership
-            $old_account->remove_user(user => $self);
+            # Update account membership. Business logic says to keep
+            # the user as a member of the old account.
             $new_account->add_user(user => $self);
 
             # Avoid double-indexing elsewhere in the code.
