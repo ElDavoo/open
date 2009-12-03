@@ -46,7 +46,8 @@ sub import {
 sub _base_port_number {
     my $class  = shift;
     my $port   = $class->SUPER::_base_port_number();
-    my $offset = Socialtext::AppConfig->test_slot() * 100;
+    my $slot   = Socialtext::AppConfig->test_slot() || 0;
+    my $offset = $slot * 100;
     return $port + $offset;
 }
 
