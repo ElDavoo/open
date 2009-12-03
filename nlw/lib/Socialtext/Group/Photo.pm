@@ -13,6 +13,16 @@ use constant default_skin  => 'common';
 use constant default_large => 'groupLarge.png';
 use constant default_small => 'groupSmall.png';
 
+sub Resize {
+    my ($class, $size, $file) = @_;
+    my $width = $size eq 'small' ? 27 : 62;
+    Socialtext::Image::extract_rectangle(
+        image_filename => $file,
+        width => $width,
+        height => $width,
+    );
+}
+
 has 'group' => (
     is => 'ro', isa => 'Socialtext::Group',
     required => 1,
@@ -47,16 +57,6 @@ has 'versions' => (
     default => sub {[qw( small large )]},
     auto_deref => 1,
 );
-
-sub resize {
-    my ($self, $size, $file) = @_;
-    my $width = $size eq 'small' ? 27 : 62;
-    Socialtext::Image::extract_rectangle(
-        image_filename => $file,
-        width => $width,
-        height => $width,
-    );
-}
 
 with(ROLES);
 

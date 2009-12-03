@@ -23,7 +23,7 @@ sub DefaultPhoto {
     return \$blob;
 }
 
-requires qw(cache table versions id_column id resize default_skin);
+requires qw(cache table versions id_column id Resize default_skin);
 
 has 'cache_dir' => (
     is => 'ro', isa => 'Str',
@@ -49,7 +49,7 @@ sub set {
             print $fh $$blob_ref;
             close $fh or die "Invalid image: $!";
 
-            $self->resize($version, $filename);
+            $self->Resize($version, $filename);
 
             my $contents = Socialtext::File::get_contents_binary($filename);
             $self->$version(\$contents);

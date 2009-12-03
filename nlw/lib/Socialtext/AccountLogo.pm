@@ -18,6 +18,15 @@ use constant id_column => 'account_id';
 use constant default_logo => 'logo.png';
 use constant default_skin => 'common';
 
+sub Resize {
+    my ($class, $size, $file) = @_;
+    Socialtext::Image::resize(
+        filename => $file,
+        max_width => 201,
+        max_height => 36,
+    );
+}
+
 has 'account' => (
     is => 'ro', isa => 'Socialtext::Account',
     required => 1,
@@ -41,15 +50,6 @@ sub _build_synonyms {
     my $self = shift;
     my $default = Socialtext::Account->Default();
     return $default->account_id == $self->account_id ? [0] : [];
-}
-
-sub resize {
-    my ($self, $size, $file) = @_;
-    Socialtext::Image::resize(
-        filename => $file,
-        max_width => 201,
-        max_height => 36,
-    );
 }
 
 has 'versions' => (
