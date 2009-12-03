@@ -151,16 +151,16 @@ sub _new {
 
     my $sth;
     if (my $name = lc $args{name}) {
-        if (my $user = $class->cache->get("name:$name")) {
-            return $user;
+        if (my $ws = $class->cache->get("name:$name")) {
+            return $ws;
         }
         $sth = sql_execute(
             qq{SELECT * FROM "Workspace" WHERE LOWER(name) = ?}, $name,
         );
     }
     elsif (my $id = $args{workspace_id}) {
-        if (my $user = $class->cache->get("id:$id")) {
-            return $user;
+        if (my $ws = $class->cache->get("id:$id")) {
+            return $ws;
         }
         $sth = sql_execute(
             qq{SELECT * FROM "Workspace" WHERE workspace_id = ?}, $id,
