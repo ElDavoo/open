@@ -708,8 +708,9 @@ sub Deleted    { $_[0]->new( name => 'Deleted' ) }
 sub new {
     my ( $class, %p ) = @_;
 
-    return exists $p{name} ? $class->_new_from_name(%p)
-                           : $class->_new_from_account_id(%p);
+    return defined $p{name}       ? $class->_new_from_name(%p)
+         : defined $p{account_id} ? $class->_new_from_account_id(%p)
+         : undef;
 }
 
 sub _new_from_name {
