@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 use Socialtext::File;
-use Test::Socialtext qw/no_plan/;
+use Test::Socialtext tests => 12;
 
 fixtures('db');
 
