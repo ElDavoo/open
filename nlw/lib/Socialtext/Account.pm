@@ -18,7 +18,7 @@ use Socialtext::Log qw( st_log );
 use Socialtext::l10n qw(loc);
 use Socialtext::SystemSettings qw( get_system_setting );
 use Socialtext::Skin;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::Pluggable::Adapter;
 use Socialtext::AccountLogo;
 use Socialtext::GroupAccountRoleFactory;
