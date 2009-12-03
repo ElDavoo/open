@@ -200,7 +200,7 @@ sub _role_change_checker {
     if ($p{role}) {
         param_error "role parameter must be a Socialtext::Role"
             unless (blessed $p{role} && $p{role}->isa('Socialtext::Role'));
-        param_error 'Cannot explicitly assign a default role type to a user'
+        param_error 'Cannot explicitly assign a default role: '.$p{role}->name
             if $p{role}->used_as_default;
     }
 
