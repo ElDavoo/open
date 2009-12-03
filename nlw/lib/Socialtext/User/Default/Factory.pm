@@ -35,12 +35,17 @@ sub _create_default_user {
         password         => '*no-password*',
         no_crypt         => 1,
     );
+    my $account = Socialtext::Account->Socialtext;
     Socialtext::UserMetadata->create(
         user_id            => $id,
         created_by_user_id => $created_by,
         is_system_created  => 1,
-        primary_account_id => Socialtext::Account->Socialtext->account_id(),
+        primary_account_id => $account->account_id(),
     );
+
+    # Use a lower-level API b/c the user is not a Socialtext::User
+    $account->user_set->add_object_role($system_user,
+        Socialtext::Role->new(name => 'member'));
 
     return $id;
 }
