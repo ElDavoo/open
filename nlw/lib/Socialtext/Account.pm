@@ -216,7 +216,7 @@ sub workspace_count {
 
 around 'groups','group_count' => sub {
     my $code = shift;
-    $code->(direct => 1,@_);
+    $code->(@_, direct => 1);
 };
 
 sub _primary_user_ids {
