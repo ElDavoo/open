@@ -97,7 +97,7 @@
 
 | *Comment* | Test Case : Hide sidebar Teardown |  |
 
-| st-admin | purge-page --w %%workspace%% --page tc_hide_sidebar_1_%%start_time%% | The TC Hide Sidebar 1 %%start_time%% page was purged from the %%workspace%% workspace. |
-| st-admin | purge-page --w %%workspace%% --page tc_hide_sidebar_2_%%start_time%% | The TC Hide Sidebar 2 %%start_time%% page was purged from the %%workspace%% workspace. |
+| st-admin | purge-page --w %%workspace%% --page tc_hide_sidebar_1_%%start_time%% | was purged |
+| st-admin | purge-page --w %%workspace%% --page tc_hide_sidebar_2_%%start_time%% | was purged |
 
 | *Comment* | Test Case : Hide sidebar COMPLETED |  |

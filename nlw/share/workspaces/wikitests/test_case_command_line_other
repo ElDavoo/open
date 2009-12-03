@@ -83,6 +83,6 @@ help
 | st-admin | help | qr/Socialtext::CLI.+USERS.+WORKSPACES.+INDEXING.+ACCOUNTS.+EMAIL.+OTHER.+Copyright.+Socialtext/ |
 
 | *Comment* | Test Case: Command Line Tests OTHER Teardown |  |
-| st-admin | delete-workspace --w %%cmdline_workspace%% --no-export |  |
+| st-admin | delete-workspace --w %%cmdline_workspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Command Line Tests OTHER COMPLETED |  |

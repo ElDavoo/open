@@ -32,8 +32,8 @@ It seems that Selenium cannot analyze the content of feed pages because they are
 | *Comment* | Test Case: RSS Icons . Force index since this is testing for indexed pages that have been deleted. |  |
 | st-admin | index-workspace --workspace %%workspace%% --sync | The %%workspace%% workspace has been indexed. |
 | *Comment* | Test Case: RSS Icons . Purge the page you just indexed |  |
-| st-admin | purge-page --workspace %%workspace%% --page rss_icons_%%start_time%% | The RSS Icons %%start_time%% page was purged from the %%workspace%% workspace. |
-| st-admin | purge-page --workspace %%workspace%% --page %E7%89%9B%E6%84%9B%E6%88%91 | qr/The .+ page was purged from the %%workspace%% workspace/ |
+| st-admin | purge-page --workspace %%workspace%% --page rss_icons_%%start_time%% | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page %E7%89%9B%E6%84%9B%E6%88%91 | was purged |
 | st-admin | index-workspace --workspace %%workspace%% --sync | The %%workspace%% workspace has been indexed. |
 
 | *Comment* | Test Case: RSS Icons search for the deleted page |  |

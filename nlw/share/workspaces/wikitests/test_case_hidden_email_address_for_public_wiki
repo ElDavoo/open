@@ -96,6 +96,6 @@
 | text_like | contentContainer | %%he_hidden%% |
 
 | *Comment* | Test Case: Hidden Email Address for Public wiki Teardown |  |
-| st-admin | delete-workspace --workspace %%he_ws%% --no-export | deleted |
+| st-admin | delete-workspace --workspace %%he_ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Hidden Email Address for Public wiki COMPLETED |

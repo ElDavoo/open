@@ -136,11 +136,11 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 removed weblog name length test. There is no reason to limit weblog names to 28 chars
 
 | *Comment* | Test Case: Weblogs Teardown |  |
-| st-admin | purge-page --w %%workspace%% --page post_1_%%start_time%% | page was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_test_%%start_time%%_weblog | page was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_testx_%%start_time%%_weblog | page was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_x%%start_time%%_blog | page was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_y%%start_time%%_weblog | page was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_z%%start_time%%_weblog | page was purged |
+| st-admin | purge-page --w %%workspace%% --page post_1_%%start_time%% | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_test_%%start_time%%_weblog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_testx_%%start_time%%_weblog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_x%%start_time%%_blog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_y%%start_time%%_weblog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_z%%start_time%%_weblog | was purged |
 
 | *Comment* | Test Case: Weblogs COMPLETED |

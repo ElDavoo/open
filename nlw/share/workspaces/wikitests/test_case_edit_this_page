@@ -229,6 +229,6 @@
 | click_ok | st-ref-card-close |  |
 
 | *Comment* | Test Case: Edit This Page teardown |  |
-| st-admin | purge-page --workspace %%workspace%% --page edit_this_page_%%start_time%% | page was purged |
+| st-admin | purge-page --workspace %%workspace%% --page edit_this_page_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Edit This Page COMPLETED |  |

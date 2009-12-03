@@ -156,11 +156,11 @@ Automated backup and restore testing
 | text_like | contentContainer | Backup Restore %%workspace%% content %%start_time%% |
 
 | *Comment* | Test Case: Console Backup and Restore: Teardown |  |
-| st-admin | delete-workspace --no-export --w empty-%%start_time%% | The empty-%%start_time%% workspace has been deleted. |
+| st-admin | delete-workspace --no-export --w empty-%%start_time%% | has been deleted |
 | st-admin | purge-page --w admin --p backup_restore_%%start_time%% | was purged |
 | st-admin | purge-page --w admin --p backup_restore_3_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Console Backup and Restore: empty-2 should already be gone. Tear it down anyway. |  |
-| st-admin | delete-workspace --no-export --w empty-2-%%start_time%% |  |
+| st-admin | delete-workspace --no-export --w empty-2-%%start_time%% | has been deleted |
 
 | *Comment* | Test Case: Console Backup and Restore COMPLETED |  |

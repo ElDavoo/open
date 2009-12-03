@@ -108,6 +108,6 @@
 
 | *Comment* | Test Case: Business Control Panel Groups In Account TEARDOWN |
 | delete-created-groups |  |
-| st-admin | delete-workspace --no-export --w %%workspace1%% |
-| st-admin | delete-workspace --no-export --w %%workspace2%% |
-| st-admin | delete-workspace --no-export --w %%workspace3%% |
+| st-admin | delete-workspace --no-export --w %%workspace1%% | has been deleted |
+| st-admin | delete-workspace --no-export --w %%workspace2%% | has been deleted |
+| st-admin | delete-workspace --no-export --w %%workspace3%% | has been deleted |

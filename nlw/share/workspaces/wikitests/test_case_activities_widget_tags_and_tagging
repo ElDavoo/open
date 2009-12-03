@@ -4,10 +4,13 @@
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Setup |  |
 
-| set | tagginguser | tagging%%start_time%%@ken.socialtext.next |
-| set | taggingusershort | tagging%%start_time%% |
-| set | taguser | awtuser%%start_time%%@ken.socialtext.next |
-| set | tagusershort | awtuser%%start_time%% |
+
+TODO: there seems to be some weirdness indexing usernames that end in a string of numbers. Come back and look at that.  Meanwhile, put letters after the numbers.
+
+| set | tagginguser | tagging%%start_time%%foobar@ken.socialtext.next |
+| set | taggingusershort | tagging%%start_time%%foobar |
+| set | taguser | awtuser%%start_time%%barfoo@ken.socialtext.next |
+| set | tagusershort | awtuser%%start_time%%barfoo |
 | set | pagename | heusser-%%start_time%% |
 | set | personaltag | add tag to me %%start_time%% |
 | set | othertag | add me to new user %%start_time%% |
@@ -21,6 +24,9 @@
 | st-admin | add-member --email %%taguser%% --workspace %%wrkspc%% |  |
 
 | st-logoutin | %%tagginguser%% | %%password%% |
+
+| *Comment* | WAIT UNTIL NEWLY CREATED USERS ARE INDEXED |  |
+| pause | 10000 |  |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Tag A profile |  |
 | st-find-user | %%tagusershort%% |  |

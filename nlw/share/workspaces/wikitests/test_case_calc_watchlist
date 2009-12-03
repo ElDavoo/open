@@ -79,7 +79,7 @@ Remove all pages from watchlist; watchlist displays "No watchlist for USER ID in
 | *Comment* | Test case: Watchlist delete page |  |
 | text_like | contentContainer | watchlist spreadsheet %%start_time%% |
 | st-is-watched | 1 | watchlist spreadsheet %%start_time%% |
-| st-admin | purge-page --w %%workspace%% --page watchlist_spreadsheet_%%start_time%% | purged |
+| st-admin | purge-page --w %%workspace%% --page watchlist_spreadsheet_%%start_time%% | was purged |
 | click_and_wait | link=My Watchlist |  |
 | text_unlike | contentContainer | watchlist spreadsheet %%start_time |
 
@@ -193,10 +193,10 @@ Last Edited By sort
 
 cleanup so that Watchlist does not fill up
 
-| st-admin | purge-page --w %%workspace%% --p watchlist_aaa_spreadsheet_%%start_time%% |
-| st-admin | purge-page --w %%workspace%% --p watchlist_bbb_spreadsheet_%%start_time%% |
-| st-admin | purge-page --w %%workspace%% --p watchlist_ccc_spreadsheet_%%start_time%% |
-| st-admin | purge-page --w %%workspace%% --p watchlist_newpage_spreadsheet_%%start_time%% |
+| st-admin | purge-page --w %%workspace%% --p watchlist_aaa_spreadsheet_%%start_time%% | was purged |
+| st-admin | purge-page --w %%workspace%% --p watchlist_bbb_spreadsheet_%%start_time%% | was purged |
+| st-admin | purge-page --w %%workspace%% --p watchlist_ccc_spreadsheet_%%start_time%% | was purged |
+| st-admin | purge-page --w %%workspace%% --p watchlist_newpage_spreadsheet_%%start_time%% | was purged |
 | *Comment* | Test case: Calc Watchlist COMPLETED |
 
 ^ Remaining todo:

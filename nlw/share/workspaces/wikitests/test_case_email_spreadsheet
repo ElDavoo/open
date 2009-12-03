@@ -33,6 +33,6 @@
 
 | *Comment* | Test Case: Email Spreadsheet Teardown |  |
 
-| st-admin | purge-page --w %%workspace%% --page email_spreadsheet_%%start_time%% | page was purged |
+| st-admin | purge-page --w %%workspace%% --page email_spreadsheet_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Email Spreadsheet COMPLETED |

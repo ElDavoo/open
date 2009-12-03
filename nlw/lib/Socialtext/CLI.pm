@@ -3542,7 +3542,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   set-workspace-config --workspace <key> <value>
   show-workspace-config --workspace
   create-workspace --name --title --account [--empty] [--clone-pages-from]
-  delete-workspace --workspace [--dir] [no-export]
+  delete-workspace --workspace [--dir] [--no-export]
   export-workspace --workspace [--dir] [--name]
   import-workspace --tarball [--overwrite] [--name] [--noindex]
   clone-workspace --workspace --target [--overwrite]

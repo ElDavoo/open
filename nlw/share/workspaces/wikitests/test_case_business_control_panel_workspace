@@ -62,6 +62,6 @@
 | wait_for_element_visible_ok | link=%%new_workspace%% | 30000 |
 
 | *Comment* | Test case: Business Control Panel Workspace TEARDOWN |  |
-| st-admin | delete-workspace --workspace %%new_workspace%% --no-export |  |
+| st-admin | delete-workspace --workspace %%new_workspace%% --no-export | has been deleted |
 
 | *Comment* | Test case: Business Control Panel Workspace COMPLETED |  |

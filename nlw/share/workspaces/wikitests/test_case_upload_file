@@ -71,6 +71,6 @@
 | text_like | st-page-content | MODIFY THE CONTENT OF Upload File %%start_time%% |
 
 | *Comment* | Test Case: Upload File Teardown |  |
-| st-admin | purge-page --w %%workspace%% --page upload_file_%%start_time%% | The Upload File %%start_time%% page was purged from the %%workspace%% workspace. |
+| st-admin | purge-page --w %%workspace%% --page upload_file_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Upload File COMPLETED |

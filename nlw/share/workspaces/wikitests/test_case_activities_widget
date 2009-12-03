@@ -38,8 +38,8 @@
 | open_ok | /?dashboard |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | st-empty-container |  |  |
-| st-admin | delete-workspace --w %%ws%% --no-export |  |
-| st-admin | delete-workspace --w %%diffws%% --no-export |  |
+| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%diffws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Activities Widget COMPLETED |  |
 

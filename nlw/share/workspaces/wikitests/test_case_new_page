@@ -51,7 +51,7 @@
 | text_like | st-editing-title | np %%start_time%% 3 |
 | text_unlike | //body | Export to CSV |  | *Comment* | Test Case: New Page. Teardown |  |
 
-| st-admin | purge-page --workspace %%workspace%% --page np_%%start_time%%_2 | page was purged |
-| st-admin | purge-page --workspace %%workspace%% --page np_%%start_time%% | page was purged |
+| st-admin | purge-page --workspace %%workspace%% --page np_%%start_time%%_2 | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page np_%%start_time%% | was purged |
 
 | *Comment* | Test Case: New Page COMPLETED |  |

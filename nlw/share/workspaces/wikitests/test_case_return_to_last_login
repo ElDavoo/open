@@ -136,7 +136,7 @@
 | text_like | st-wiki-title | Dashboard: AAA %%start_time%% |
 | st_logout |  |  |
 | text_like | support_link | qr/.+\@.*\.?socialtext\..../ |
-| st-admin | delete-workspace --workspace aaa-%%start_time%% --no-export |  |
+| st-admin | delete-workspace --workspace aaa-%%start_time%% --no-export | has been deleted |
 | type_ok | username | %%login_user%% |
 | type_ok | password | test%%start_time%% |
 | clickAndWait | login_btn |  |
@@ -144,9 +144,9 @@
 | st_logout |  |  |
 
 | *Comment* | Test Case: Return to last login teardown |  |
-| st-admin | delete-workspace --w aaa-public-%%start_time%% --no-export |  |
-| st-admin | delete-workspace --w private-%%start_time%% --no-export |  |
-| st-admin | delete-workspace --w public-%%start_time%% --no-export |  |
-| st-admin | delete-workspace --w login-to-edit-%%start_time%% --no-export |  |
+| st-admin | delete-workspace --w aaa-public-%%start_time%% --no-export | has been deleted |
+| st-admin | delete-workspace --w private-%%start_time%% --no-export | has been deleted |
+| st-admin | delete-workspace --w public-%%start_time%% --no-export | has been deleted |
+| st-admin | delete-workspace --w login-to-edit-%%start_time%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Return to last login COMPLETED. |  |

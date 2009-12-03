@@ -21,8 +21,6 @@
 | include | [Test Case: Active Members Setup] |  |
 
 | *Comment* | Test Case: Active Members Widget catchup logs and clear json cache |  |
-| *Comment* | Test Case: Active Members Widget on an appliance, wait 6 minutes |  |
-
 | st-catchup-logs |  |  |
 | st-clear-json-cache |  |  |
 
@@ -105,7 +103,7 @@
 | *Comment* | Test case: Active Members Widget TEARDOWN |  |
 | select-frame | relative=parent |  |
 | st-empty-container |  |  |
-| st-admin | delete-workspace --w %%am_ws_1%% --no-export |  |
-| st-admin | delete-workspace --w %%am_ws_2%% --no-export |  |
+| st-admin | delete-workspace --w %%am_ws_1%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%am_ws_2%% --no-export | has been deleted |
 
 | *Comment* | Test case: Active Members Widget COMPLETED |  |

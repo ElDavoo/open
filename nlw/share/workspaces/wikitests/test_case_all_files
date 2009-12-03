@@ -126,6 +126,6 @@
 | text_like | contentContainer | qr/All Files %%start_time%% 1.+All Files %%start_time%% 2/ |
 
 | *Comment* | Test Case: All Files Teardown |  |
-| st-admin | delete-workspace --workspace %%new_ws%% --no-export | The %%new_ws%% workspace has been deleted. |
+| st-admin | delete-workspace --workspace %%new_ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: All Files COMPLETED |

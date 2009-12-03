@@ -51,6 +51,6 @@
 | wait_for_element_visible_ok | link=Growth Reports | 30000 |
 
 | *Comment* | Test Case: Control Panel Add To Workspac Teardown |  |
-| st-admin | delete-workspace --workspace %%new_ws_title%% --no-export |  |
+| st-admin | delete-workspace --workspace %%new_ws_title%% --no-export | has been deleted |
 
 | *Comment* | Test case: Control Panel Create Group COMPLETED |  |

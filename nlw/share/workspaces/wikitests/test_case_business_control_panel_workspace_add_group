@@ -52,4 +52,4 @@
 | text_like | //body | Groups (0) |
 
 | *Comment* | Test Case: Business Control Panel Groups Workspace Add Group TEARDOWN |
-| st-admin | delete-workspace --workspace %%ws%% --no-export |
+| st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |

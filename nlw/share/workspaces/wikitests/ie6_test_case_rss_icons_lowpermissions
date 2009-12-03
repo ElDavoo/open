@@ -14,7 +14,7 @@ It seems that Selenium cannot analyze the content of feed pages because they are
 | st-admin | update-page --email %%email%% --workspace %%workspace%% --page "RSS Icons %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "RSS Icons %%start_time%%" page has been created |
 
 | *Comment* | Test Case: RSS Icons LowPermissions purge the Chinese page in case it is already there. |  |
-| st-admin | purge-page --workspace %%workspace%% --page %E7%89%9B%E6%84%9B%E6%88%91 |  |
+| st-admin | purge-page --workspace %%workspace%% --page %E7%89%9B%E6%84%9B%E6%88%91 | was purged |
 
 | *Comment* | Test Case: RSS Icons LowPermissions page with Chinese chars in title can't do from command line |  |
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
@@ -29,8 +29,8 @@ It seems that Selenium cannot analyze the content of feed pages because they are
 | *Comment* | Test Case: RSS Icons LowPermissions. Force index since this is testing for indexed pages that have been deleted. |  |
 | st-admin | index-workspace --workspace %%workspace%% --sync | The %%workspace%% workspace has been indexed. |
 | *Comment* | Test Case: RSS Icons LowPermissions. Purge the page you just indexed |  |
-| st-admin | purge-page --workspace %%workspace%% --page rss_icons_%%start_time%% | The RSS Icons %%start_time%% page was purged from the %%workspace%% workspace. |
-| st-admin | purge-page --workspace %%workspace%% --page %E7%89%9B%E6%84%9B%E6%88%91 | qr/The .+ page was purged from the %%workspace%% workspace/ |
+| st-admin | purge-page --workspace %%workspace%% --page rss_icons_%%start_time%% | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page %E7%89%9B%E6%84%9B%E6%88%91 | was purged |
 | st-admin | index-workspace --workspace %%workspace%% --sync | The %%workspace%% workspace has been indexed. |
 
 | *Comment* | Test Case: RSS Icons LowPermissions search for the deleted page |  |

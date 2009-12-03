@@ -158,6 +158,6 @@ Tests where remove should fail
 | code-is | 403 |  |
 
 | comment | Test case: REST Users Teardown |  |
-| st-admin | delete-workspace --w %%wksp%% --no-export | deleted |
+| st-admin | delete-workspace --w %%wksp%% --no-export | has been deleted |
 
 | comment | Test case: REST Users COMPLETED |  |

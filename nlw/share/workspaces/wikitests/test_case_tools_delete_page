@@ -64,7 +64,7 @@
 | text_like | contentContainer | New Content %%start_time%% |
 
 | *Comment* | Tools: Delete Page: Teardown |  |
-| st-admin | purge-page --workspace %%workspace%% --page delete_page_%%start_time%% | page was purged |
-| st-admin | purge-page --workspace %%workspace%% --page backlink_page_%%start_time%% | page was purged |
+| st-admin | purge-page --workspace %%workspace%% --page delete_page_%%start_time%% | was purged |
+| st-admin | purge-page --workspace %%workspace%% --page backlink_page_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Tools: Delete Page COMPLETED |

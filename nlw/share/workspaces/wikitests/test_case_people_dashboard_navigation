@@ -3,9 +3,36 @@
 | *Comment* | STARTING Test Case: People Dashboard Navigation |  |
 
 | *Comment* | Test Case: People Dashboard Navigation - Create user, make sure they show up in people list |  |
-| set | new_email | `0_aaa_%%start_time%%@ken.socialtext.net` |
-| set | new_email_find_me | `0 aaa %%start_time%%` |
-| set | new_email_prefix | `0_aaa_` |
+| *Comment* | NOTE: Tried to use Chinese chars in usernames because they always sort last, but FF on galena displays mojibake! |  |
+| *Comment* | This test will fail if zzz does not sort absolutely last |  |
+
+| set | baseusername | `zzzz_%%start_time%%_` |
+| set | new_email | `%%baseusername%%99@ken.socialtext.net` |
+| set | new_email_find_me | zzzz %%start_time%% 99 |
+| set | new_email_prefix | `zzzz_` |
+
+| *Comment* | Test Case: People Dashboard Navigation - force a Last link |  |  |
+| create_user | %%baseusername%%01@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%02@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%03@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%04@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%05@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%06@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%07@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%08@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%09@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%10@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%11@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%12@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%13@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%14@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%15@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%16@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%17@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%18@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%19@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%20@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%baseusername%%21@ken.socialtext.net | %%password%% | %%hostname%% |
 
 | st-admin | create_user --email %%new_email%% --password %%password%% |  |
 | open_ok | / |  |
@@ -39,26 +66,38 @@ TO DO - Add testability hooks and confirm Grey Ghost Icon
 | wait_for_element_visible_ok | //a[@id='gallery-widget-LabPixies ToDo'] | 30000 |
 | text_like | Displays a single page from any of your workspaces within a Socialtext Widget. |  |
 
-| *Comment* | Test Case: People Dashboard Navigation People. Last people page. |  |
-| wait_for_element_visible_ok | link=People | 30000 |
-| click_and_wait | link=People |  |
-| wait_for_element_visible_ok | link=%%new_email_find_me%% | 60000 |
-| text_like | contentContainer | %%new_email_find_me%% |
-| text_like | contentContainer | %%new_email%% |
+| *Comment* | Test Case: People Dashboard Navigation People. Last people page. Set filter to All not %%hostname%% |  |
+| open_ok | /?action=people |  |
+| wait_for_element_visible_ok | //select[@class='account-select'] | 30000 |
+| select_ok | //select[@class='account-select'] | label=All People |
+| wait_for_element_visible_ok | link=Last | 30000 |
+| click_and_wait | link=Last |  |
+
+| *Comment* | Test Case: People Dashboard Navigation People. Verify %%new_email_find_me%% on Last page |  |
+| wait_for_element_visible_ok | link=%%new_email_find_me%% | 30000 |
+| wait_for_text_present_ok | %%new_email_find_me%% | 30000 |
+| wait_for_text_present_ok | %%new_email%% | 30000 |
 
 | *Comment* | Test Case: People Dashboard Navigation People. Search for %%new_email_prefix%% |  |
 | type_ok | st-search-term | %%new_email_prefix%% |
 | click_and_wait | st-search-submit |  |
-| text_like | qr/People matching \'%%new_email_prefix%%\'/ |
-| text_like | contentContainer | %%new_email_find_me%% |
-| text_like | contentContainer | %%new_email%% |
+
+| *Comment* | Test Case: People Dashboard Navigation People. Get the search display right |  |
+| wait_for_element_visible_ok | sort-picker | 30000 |
+| select_ok | sort-picker | label=Name |
+| pause | 10000 |  |
+| wait_for_element_visible_ok | link=Last | 30000 |
+| click_and_wait | link=Last |  |
+
+| wait_for_text_present_ok | People matching '%%new_email_prefix%%' | 30000 |
+| wait_for_text_present_ok | %%new_email_find_me%% | 30000 |
+| wait_for_text_present_ok | %%new_email%% | 30000 |
 
 | *Comment* | Test Case: People Dashboard Navigation People. empty search |  |
 | type_ok | st-search-term | pastafazool |
 | click_and_wait | st-search-submit |  |
 | text_like | qr/People matching \'pastafazool\'/ |  |
-| text_unlike | contentContainer | %%new_email_find_me%% |
-| text_unlike | contentContainer | %%new_email%% |
+| text_like | Showing 1 - 0 of 0 total |  |
 
 | *comment* | Test Case: People Dashboard Navigation TEARDOWN |  |
 

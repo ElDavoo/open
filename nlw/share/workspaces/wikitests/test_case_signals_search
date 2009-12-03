@@ -19,9 +19,9 @@
 
 | *Comment* | Test Case: Signals Search. Send 2 signals %%a_username%% |  |
 | http-user-pass | %%a_username%% | %%password%% |
-| post-signal | NotAStopWord %%start_time%% 01 |
+| post-signal | NotAStopWord %%start_time%% 01 |  |
 | pause | 3000 |  |
-| post-signal | NotAStopWord %%start_time%% 12 |
+| post-signal | NotAStopWord %%start_time%% 12 |  |
 | *Comment* | Test Case: Signals Search. Pause 20 sec for Signals indexer |  |
 | pause | 20000 | wait for Signals Indexer to run |
 
@@ -49,9 +49,9 @@
 
 | *Comment* | Test Case: Signals Search. Send 2 signals %%z_username%% |  |
 | http-user-pass | %%z_username%% | %%password%% |
-| post-signal | NotAStopWord %%start_time%% 21 |
+| post-signal | NotAStopWord %%start_time%% 21 |  |
 | pause | 3000 |  |
-| post-signal | NotAStopWord %%start_time%% 32 |
+| post-signal | NotAStopWord %%start_time%% 32 |  |
 | pause | 10000 | wait for Signals Indexer to run |
 
 | *Comment* | Test Case: Signals Search. Search 2 signals %%z_username%% |  |
@@ -90,9 +90,9 @@
 
 | *Comment* | Test Case: Signals Search. Relevance. Send a more relevant signal AND a newer signal |  |
 | http-user-pass | %%z_username%% | %%password%% |
-| post-signal | MoreRelevant %%start_time%% %%start_time%% %%start_time%% |
+| post-signal | MoreRelevant %%start_time%% %%start_time%% %%start_time%% |  |
 | pause | 3000 |  |
-| post-signal | LessRelevant %%start_time%% |
+| post-signal | LessRelevant %%start_time%% |  |
 | pause | 10000 | wait for Signals Indexer to run |
 
 | *Comment* | Test Case: Signals Search. Relevance. Find a more relevant signal |  |
@@ -120,6 +120,7 @@
 | *Comment* | Test Case: Signals Search. Delete irrelevant signal and search again |  |
 | click_ok | //a[@class='hideLink'] |  |
 | verifyConfirmation | Are you sure you want to delete this Signal?\nYou cannot undelete it. |  |
+| wait_for_text_not_present_ok | LessRelevant %%start_time%% | 10000 |
 | select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Signals Search. You must open Signals to clear out hidden deleted signal |  |

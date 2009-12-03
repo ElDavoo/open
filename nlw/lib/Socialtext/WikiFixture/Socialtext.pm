@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base 'Socialtext::WikiFixture::SocialBase';
 use base 'Socialtext::WikiFixture::Selenese';
+use Socialtext::Cache;
 use Socialtext::System qw/shell_run/;
 use Socialtext::Workspace;
 use Sys::Hostname;
@@ -340,20 +341,18 @@ Emails a page
 =cut
 
 sub st_email_page {
-    my ($self, $url, $email, $subject) = @_;
+    my ($self, $url, $email) = @_;
     $self->handle_command('open_ok',$url);
     $self->handle_command('wait_for_element_visible_ok','st-pagetools-email', 30000);
     $self->handle_command('pause', 2000);
     $self->handle_command('click_ok','st-pagetools-email');
     $self->handle_command('wait_for_element_visible_ok','st-email-lightbox', 30000);
     $self->handle_command('wait_for_element_visible_ok','email_recipient', 30000);
-    $self->handle_command('wait_for_element_visible_ok','email_add', 30000);
-    $self->handle_command('wait_for_element_visible_ok','email_send', 30000);
-    $self->handle_command('wait_for_element_visible_ok','email_page_subject', 30000);
     $self->handle_command('type_ok', 'email_recipient', $email);
+    $self->handle_command('wait_for_element_visible_ok','email_add', 30000);
     $self->handle_command('click_ok', 'email_add');
-    $self->handle_command('text_like', 'email_page_user_choices',$email);
-    $self->handle_command('type_ok', 'email_page_subject',$subject);
+    $self->handle_command('text_like', 'email_page_user_choices', $email);
+    $self->handle_command('wait_for_element_visible_ok','email_send', 30000);
     $self->handle_command('click_ok', 'email_send');
     $self->handle_command('wait_for_element_not_visible_ok', 'st-email-lightbox',30000);
 }
@@ -639,12 +638,13 @@ sub st_admin {
     }
 
     # Invocations with redirected input/output or pipes *needs* to be done
-    # against the shell, but simpler cmds can be done in-process.
+    # against the shell, but simpler cmds can be done in-process.  Also have
+    # to watch out for "st-admin help", which *has* to be shelled out for.
     #
     # We also have to use a bad calling pattern for this which *isn't* OOP
     # because we don't always have a '$self' that's derived from ST:WF:ST
     # (although it may be derived from ST:WF:Base).
-    if ( grep { qr/[\|<>]/ } $options ) {
+    if ($options =~ /[\|<>]|help/) {
         _st_admin_shell_out($self, $options, $verify);
     }
     else {
@@ -656,18 +656,24 @@ sub _st_admin_in_process {
     my ($self, $options, $verify) = @_;
 
     {
-        # over-ride "_exit()" so that we don't exit while running in-process
+        # over-ride "_exit()" so that we don't exit while running in-process.
+        #
+        # We *do*, however, want to make sure that we stop whatever we're
+        # doing, so throw a fatal exception and get us outta there.
         require Socialtext::CLI;
         no warnings 'redefine';
-        *Socialtext::CLI::_exit = sub { };
+        *Socialtext::CLI::_exit = sub { die "\n" };
     }
 
-    my @argv = shellwords( $options );
-    my $cmd  = shift @argv;
-    $cmd =~ s/-/_/g;
+    # clear any in-memory caches that exist, so that we pick up changes that
+    # _may_ have been made outside of this process.
+    Socialtext::Cache->clear();
 
+    # Run st-admin, in process.
+    my @argv   = shellwords( $options );
     my $output = combined_from {
-        eval { Socialtext::CLI->new( argv => \@argv )->$cmd() };
+        eval { Socialtext::CLI->new( argv => \@argv )->run };
+        if ($@) { warn $@ };
     };
     if ($verify) {
         like $output, qr/$verify/s, "st-admin $options";

@@ -37,6 +37,6 @@
 | text_unlike | contentRight | Second Content %%start_time%% |
 
 | *Comment* | Test Case: Weblog Archive and Navigation teardown |  |
-| st-admin | purge-page --w %%workspace%% --page navigation_for_recent_changes | page was purged |
+| st-admin | purge-page --w %%workspace%% --page navigation_for_recent_changes | was purged |
 
 | *Comment* | Test Case: Weblog Archive and Navigation COMPLETED |

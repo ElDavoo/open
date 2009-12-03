@@ -19,17 +19,17 @@ TODO: verify No Dashboard in nav bar, all users workspace for at least default, 
 | st-logout |  |  |
 
 | *Comment* | Test Case: Setup Signals Only. Delete dev env workspaces |  |
-| st-admin | delete-workspace --no-export --w admin |  |
-| st-admin | delete-workspace --no-export --w a_test_stub_ws |  |
-| st-admin | delete-workspace --no-export --w auth-to-edit |  |
-| st-admin | delete-workspace --no-export --w b_test_stub_ws |  |
-| st-admin | delete-workspace --no-export --w exchange |  |
-| st-admin | delete-workspace --no-export --w foobar |  |
-| st-admin | delete-workspace --no-export --w growth_report_test |  |
-| st-admin | delete-workspace --no-export --w public |  |
-| st-admin | delete-workspace --no-export --w sale |  |
-| st-admin | delete-workspace --no-export --w wikitests |  |
-| st-admin | delete-workspace --no-export --w test-data |  |
+| st-admin | delete-workspace --no-export --w admin | has been deleted |
+| st-admin | delete-workspace --no-export --w a_test_stub_ws | has been deleted |
+| st-admin | delete-workspace --no-export --w auth-to-edit | has been deleted |
+| st-admin | delete-workspace --no-export --w b_test_stub_ws | has been deleted |
+| st-admin | delete-workspace --no-export --w exchange | has been deleted |
+| st-admin | delete-workspace --no-export --w foobar | has been deleted |
+| st-admin | delete-workspace --no-export --w growth_report_test | has been deleted |
+| st-admin | delete-workspace --no-export --w public | has been deleted |
+| st-admin | delete-workspace --no-export --w sale | has been deleted |
+| st-admin | delete-workspace --no-export --w wikitests | has been deleted |
+| st-admin | delete-workspace --no-export --w test-data | has been deleted |
 
 | *Comment* | Test Case: Setup Signals Only. remove devnull1 from Help spaces |  |
 | st-admin | remove-member --w help-en --e devnull1@socialtext.com |  |

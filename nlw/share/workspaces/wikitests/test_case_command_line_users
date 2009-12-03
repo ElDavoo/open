@@ -40,7 +40,7 @@ deactivate-user
 
 | st-admin | deactivate-user --email deactivate%%start_time%%@ken.socialtext.net | qr/deactivate%%start_time%%@ken.socialtext.net has been removed from workspaces.+aaa-deactivate-%%start_time%%.+%%workspace%%/ism |
 
-| st-admin | delete-workspace --workspace aaa-deactivate-%%start_time%% --no-export | The aaa-deactivate-%%start_time%% workspace has been deleted. |
+| st-admin | delete-workspace --workspace aaa-deactivate-%%start_time%% --no-export | has been deleted |
 
 invite-user
 confirm-user
@@ -163,6 +163,6 @@ hide-profile
 | st-admin | show-profile --email foo%%start_time%%@bar.com | qr/The profile for "foo%%start_time%%@bar.com" is no longer hidden/ism |
 
 | *Comment* | Test Case: Command Line USERS Teardown |  |
-| st-admin | delete-workspace --w %%cmdline_workspace%% --no-export |  |
+| st-admin | delete-workspace --w %%cmdline_workspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Command Line: USERS COMPLETED |  |

@@ -92,6 +92,6 @@
 | text_like | qr/Page 3.+Page 5.+Page 4.+Page 2.+Page 1/ |  |
 
 | *Comment* | Test Case: Recent Changes Teardown |  |
-| st-admin | delete-workspace --workspace %%newspace%% --no-export | The %%newspace%% workspace has been deleted. |
+| st-admin | delete-workspace --workspace %%newspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Recent Changes COMPLETED |

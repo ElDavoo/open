@@ -94,7 +94,7 @@ These tests are from "Story: Add Backlink to IBM Lotus Connections via REST"<htt
 
 | comment | Test case: REST Workspace Create a workspace with a customjs_uri |  |
 
-| st-admin | delete-workspace --w %%wksp%% --no-export | deleted |
+| st-admin | delete-workspace --w %%wksp%% --no-export | has been deleted |
 | set | wksp | c%%start_time%% |
 | post | /data/workspaces | Content-Type=application/json | { "name":"%%wksp%%", "title":"W%%start_time%%", "account_id":"%%account_id%%", "customjs_uri":"/monkey.js" } |
 | code-is | 201 |  |
@@ -223,6 +223,6 @@ Business admin can't read the workspace's json, so we will add the user as a wor
 | code_is | 404 |  |
 
 | comment | Test case: REST Workspace Teardown |  |
-| st-admin | delete-workspace --w %%wksp%% --no-export | deleted |
+| st-admin | delete-workspace --w %%wksp%% --no-export | has been deleted |
 
 | comment | Test case: REST Workspace COMPLETED |  |

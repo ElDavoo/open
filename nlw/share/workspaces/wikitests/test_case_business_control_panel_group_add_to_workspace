@@ -88,8 +88,8 @@
 | st-admin | show-members -w %%workspaceforadmin%% | workspace_admin |
 
 | *Comment* | Test Case: Control Panel Group Add To Workspace TEARDOWN |
-| st-admin | delete-workspace --workspace %%ws%% --no-export |
-| st-admin | delete-workspace --workspace %%workspaceforadmin%% --no-export |
+| st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace %%workspaceforadmin%% --no-export | has been deleted |
 | delete-group | %%group_id%% |
 
 | *Comment* | Test Case: Control Panel Group Add To Workspace COMPLETED |

@@ -11,12 +11,11 @@ Verifies a fix for:
 | set | utf8_last_name | 太郎 |
 
 | *Comment* | Create test user |  |
-| set | test_username | %%start_time%%@ken.socialtext.net |
-| set | test_password | %%start_time%% |
+| set | test_username | usnm_%%start_time%%@ken.socialtext.net |
 
-| st-admin | create-user --email %%test_username%% --password %%test_password%% |  |
+| st-admin | create-user --email %%test_username%% --password %%password%% |  |
 | st-admin | add-member --email %%test_username%% --workspace %%workspace%% |  |
-| st-logoutin | %%test_username%% | %%test_password%% |
+| st-logoutin | %%test_username%% | %%password%% |
 
 | *Comment* | Use the "My Settings" page to set utf-8 first/last name |  |
 | open-ok | /%%workspace%%/index.cgi?action=users_settings |  |
@@ -35,4 +34,7 @@ Verifies a fix for:
 | value_is | first_name | %%utf8_first_name%% |
 | value_is | last_name | %%utf8_last_name%% |
 
-| *Comment* | COMPLETED Test Case: user settings no mojibake |
+| *Comment* | Test Case: user settings no mojibake TEARDOWN |
+| st-admin | set-user-names --email %%test_username%% --f "" --l "" |
+
+| *Comment* | Test Case: user settings no mojibake COMPLETED |

@@ -109,6 +109,6 @@ edit a page to include a link to an orphan page | link appears in page
 | text_like | contentContainer | orphan %%start_time%% 0001 |
 
 | *Comment* | Test Case: Orphans List. Tearing down orphans list data |  |
-| st-admin | delete-workspace --workspace %%ws%% --no-export | The %%ws%% workspace has been deleted. |
+| st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case Orphans List COMPLETED |  |

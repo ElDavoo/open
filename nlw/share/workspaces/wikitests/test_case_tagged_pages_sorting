@@ -237,6 +237,6 @@ SEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSE
 
 | *Comment* | Test Case: Tagged Page Sorting. Teardown |  |
 
-| st-admin | delete-workspace --workspace %%sorting_workspace%% --no-export |  |
+| st-admin | delete-workspace --workspace %%sorting_workspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Tagged Page Sorting COMPLETED |

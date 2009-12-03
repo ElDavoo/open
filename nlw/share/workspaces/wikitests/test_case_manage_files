@@ -117,7 +117,7 @@
 | text_like | Not stooping from its sphere |  |
 
 | *Comment* | Test Case: Manage Files Teardown |  |
-| st-admin | purge-page --workspace %%workspace%% --page manage_files_%%start_time%% | page was purged |
+| st-admin | purge-page --workspace %%workspace%% --page manage_files_%%start_time%% | was purged |
 | st-admin | remove-member --email %%manage_files_user_2%% --workspace %%workspace%% | is no longer a member |
 
 | *Comment* | Test Case: Manage Files COMPLETED |

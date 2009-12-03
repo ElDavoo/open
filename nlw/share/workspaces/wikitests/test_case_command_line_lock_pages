@@ -38,6 +38,6 @@ locked-pages
 | st-admin | can-lock-pages --email %%cli_admin%% --workspace %%cmdline_workspace%% | User '%%cli_admin%%' cannot lock a page. |
 
 | *Comment* | STARTING Test Case: Command Line LOCK PAGES Teardown |  |
-| st-admin | delete-workspace --w %%cmdline_workspace%% --no-export |  |
+| st-admin | delete-workspace --w %%cmdline_workspace%% --no-export | has been deleted |
 
 | *Comment* | STARTING Test Case: Command Line LOCK PAGES COMPLETED |  |

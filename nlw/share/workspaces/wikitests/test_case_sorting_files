@@ -190,6 +190,6 @@ click_and_wait | //div[@id='contentRight']/form/ul[2]/li[1]/a | |
 | text_like | contentContainer | qr/27kb.+24kb.+30kb.+42bytes/ |
 
 | *Comment* | Test Case: Sorting Files Teardown |  |
-| st-admin | delete-workspace --workspace %%sorting_workspace%% --no-export |  |
+| st-admin | delete-workspace --workspace %%sorting_workspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Sorting Files COMPLETED |
