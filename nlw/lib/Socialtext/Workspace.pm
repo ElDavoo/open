@@ -702,6 +702,9 @@ sub _validate_and_clean_data {
         delete $p->{$k} unless $COLUMNS{$k};
         delete $p->{$k} unless defined $p->{$k};
     }
+
+    # You should never update the user_set_id
+    delete $p->{user_set_id};
 }
 
 
@@ -1301,7 +1304,8 @@ sub _dump_to_yaml_file {
     my $file = Socialtext::File::catfile( $dir, $name . '-info.yaml' );
 
     my %dump;
-    for my $c ( grep { $_ ne 'workspace_id' } @COLUMNS ) {
+    my %do_not_dump = map { $_ => 1 } qw/workspace_id user_set_id/;
+    for my $c ( grep { !$do_not_dump{$_} } @COLUMNS ) {
         $dump{$c} = $self->$c();
     }
     $dump{creator_username} = $self->creator->username;
