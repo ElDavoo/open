@@ -354,7 +354,7 @@ for my $thing_name (qw(user group)) {
         }
     };
 
-    # grep: user_has_role group_has_role
+    # grep: sub user_has_role sub group_has_role
     _mk_method "${thing_name}_has_role" => sub {
         my ($self,%p) = @_;
         my $o = $p{$thing_name};
@@ -368,7 +368,7 @@ for my $thing_name (qw(user group)) {
         return any {$_ eq $role_id} @role_ids;
     };
 
-    # grep: user_count group_count
+    # grep: sub user_count sub group_count
     _mk_method "${thing_name}_count" => sub {
         my ($self,%p) = @_;
         my $t = time_scope("uset_${thing_name}_count");
@@ -382,7 +382,7 @@ for my $thing_name (qw(user group)) {
         }, $self->user_set_id);
     };
 
-    # grep: user_ids group_ids
+    # grep: sub user_ids sub group_ids
     _mk_method "${thing_name}_ids" => sub {
         my ($self,%p) = @_;
         my $t = time_scope("uset_${thing_name}_ids");
@@ -397,7 +397,7 @@ for my $thing_name (qw(user group)) {
         return [map { $_->[0] - $id_offset } @{$sth->fetchall_arrayref || []}];
     };
 
-    # grep: users groups
+    # grep: sub users sub groups
     _mk_method "${thing_name}s" => sub {
         my ($self,%p) = @_;
         my $t = time_scope("uset_${thing_name}s");
@@ -409,7 +409,7 @@ for my $thing_name (qw(user group)) {
         );
     };
 
-    # grep: user_roles group_roles
+    # grep: sub user_roles sub group_roles
     _mk_method "${thing_name}_roles" => sub {
         my ($self,%p) = @_;
         my $t = time_scope("uset_${thing_name}_roles");
