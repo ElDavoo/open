@@ -387,10 +387,12 @@ sub shared_accounts {
 
 sub groups {
     my $self = shift;
-    return Socialtext::UserGroupRoleFactory->ByUserId( 
-        $self->user_id,
-        sub { shift->group(); },
-    );
+    my $sth = sql_execute(q{
+        SELECT DISTINCT group_id
+        FROM user_set_path
+        WHERE from_set_id = ?
+          AND into_set_id }.PG_GROUP_FILTER.{
+    });
 }
 
 sub to_hash {

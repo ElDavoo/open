@@ -24,6 +24,7 @@ use Socialtext::AccountLogo;
 use Socialtext::GroupAccountRoleFactory;
 use Socialtext::UserAccountRoleFactory;
 use Socialtext::Account::Roles;
+use Socialtext::UserSet qw/:const/;
 use YAML qw/DumpFile LoadFile/;
 use MIME::Base64 ();
 use Socialtext::JSON::Proxy::Helper;
@@ -810,22 +811,25 @@ sub CountByName {
     sub All {
         my $class = shift;
         my %p = validate( @_, $spec );
+        my $t = time_scope('acct_all');
 
-        Socialtext::Timer->Continue('acct_all');
-
-        my $mc;
+        my $sth;
         if ( $p{order_by} eq 'name' ) {
-            $mc = $class->_All( %p );
+            $sth = $class->_All( %p );
         }
         elsif ( $p{order_by} eq 'workspace_count' ) {
-            $mc = $class->_AllByWorkspaceCount( %p );
+            $sth = $class->_AllByWorkspaceCount( %p );
         }
         elsif ( $p{order_by} eq 'user_count' ) {
-            $mc = $class->_AllByUserCount( %p );
+            $sth = $class->_AllByUserCount( %p );
         }
 
-        Socialtext::Timer->Pause('acct_all');
-        return $mc;
+        return Socialtext::MultiCursor->new(
+            iterables => [ $sth->fetchall_arrayref({}) ],
+            apply => sub {
+                return Socialtext::Account->new_from_hash_ref($_[0]);
+            }
+        );
     }
 }
 
@@ -843,20 +847,13 @@ sub _All {
         unshift @args, $p{type};
     }
 
-    my $sth = sql_execute(
+    return sql_execute(
         'SELECT *'
         . ' FROM "Account"'
         . $where
         . " ORDER BY name $p{sort_order}"
         . ' LIMIT ? OFFSET ?' ,
         @args );
-
-    return Socialtext::MultiCursor->new(
-        iterables => [ $sth->fetchall_arrayref({}) ],
-        apply => sub {
-            return Socialtext::Account->new_from_hash_ref($_[0]);
-        }
-    );
 }
 
 # There's a _tiny_ chance that there could be more than one matching
@@ -892,42 +889,19 @@ sub _AllByWorkspaceCount {
         unshift @args, $p{name};
     }
 
-    my $sql = qq{
-        SELECT "Account".*,
-               COUNT("Workspace".workspace_id) AS workspace_count
-          FROM "Account"
-          LEFT OUTER JOIN "Workspace" USING (account_id)
-          $where
-         GROUP BY "Account".account_id,
-                  "Account".name,
-                  "Account".is_system_created,
-                  "Account".skin_name,
-                  "Account".account_type,
-                  "Account".restrict_to_domain,
-                  "Account".email_addresses_are_hidden,
-                  "Account".is_exportable,
-                  "Account".desktop_logo_uri,
-                  "Account".desktop_header_gradient_top,
-                  "Account".desktop_header_gradient_bottom,
-                  "Account".desktop_bg_color,
-                  "Account".desktop_2nd_bg_color,
-                  "Account".desktop_text_color,
-                  "Account".desktop_link_color,
-                  "Account".desktop_highlight_color,
-                  "Account".allow_invitation,
-                  "Account".all_users_workspace,
-                  "Account".user_set_id
-         ORDER BY workspace_count $p{sort_order}, "Account".name ASC
-         LIMIT ? OFFSET ?
-    };
-    my $sth = sql_execute($sql, @args);
 
-    return Socialtext::MultiCursor->new(
-        iterables => [ $sth->fetchall_arrayref({}) ],
-        apply => sub {
-            return Socialtext::Account->new_from_hash_ref($_[0]);
-        }
-    );
+    my $sql = qq{
+        SELECT a.*, COALESCE(workspace_count,0) AS workspace_count
+        FROM "Account" a
+        LEFT JOIN (
+            SELECT account_id, COUNT(DISTINCT(workspace_id)) AS workspace_count
+            FROM "Workspace"
+            GROUP BY account_id
+        ) wa USING (account_id)
+        ORDER BY workspace_count $p{sort_order}, a.name ASC
+        LIMIT ? OFFSET ?
+    };
+    return sql_execute($sql, @args);
 }
 
 sub _AllByUserCount {
@@ -953,14 +927,7 @@ sub _AllByUserCount {
          ORDER BY user_count $p{sort_order}, "Account".name ASC
          LIMIT ? OFFSET ?
     };
-    my $sth = sql_execute( $sql, @args );
-
-    return Socialtext::MultiCursor->new(
-        iterables => [ $sth->fetchall_arrayref({}) ],
-        apply => sub {
-            return Socialtext::Account->new_from_hash_ref($_[0]);
-        }
-    );
+    return sql_execute($sql, @args);
 }
 
 sub ByName {
