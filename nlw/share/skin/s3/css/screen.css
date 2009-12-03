@@ -4409,7 +4409,7 @@ table.st-ss th span {
 }
 
 .groupsTitle .prefix {
-    background:#333;
+    background:#999;
     color:#fff;
     text-transform: uppercase;
     margin-right:1em;
@@ -4417,7 +4417,8 @@ table.st-ss th span {
     padding: 1px 5px;
 }
 
-body#dashBoard #st-editing-tools-edit span.help {
+body#dashBoard #st-editing-tools-edit span.help,
+body#dashBoard #st-editing-tools-edit span.prefix {
     font-size: 100%;
     top: -9px;
 }
