@@ -270,6 +270,11 @@ for my $thing_name (qw(user group)) {
         ? sub { $_[0] && blessed($_[0]) && ($_[0]->isa('Socialtext::User') or $_[0]->isa('Socialtext::UserMetadata')) }
         : sub { $_[0] && blessed($_[0]) && $_[0]->isa('Socialtext::Group') };
 
+    my $from_set_filter = $thing_name eq 'user' ? q{
+        AND from_set_id NOT IN (
+            SELECT user_id FROM users WHERE is_profile_hidden)
+            } : '';
+
     # grep: sub add_user sub add_group
     _mk_method "add_$thing_name" => sub {
         my ($self,%p) = @_;
@@ -373,6 +378,7 @@ for my $thing_name (qw(user group)) {
             FROM $table
             WHERE from_set_id $id_filter
               AND into_set_id = ?
+              $from_set_filter
         }, $self->user_set_id);
     };
 
@@ -386,6 +392,7 @@ for my $thing_name (qw(user group)) {
             FROM $table
             WHERE from_set_id $id_filter
               AND into_set_id = ?
+              $from_set_filter
         }, $self->user_set_id);
         return [map { $_->[0] - $id_offset } @{$sth->fetchall_arrayref || []}];
     };
