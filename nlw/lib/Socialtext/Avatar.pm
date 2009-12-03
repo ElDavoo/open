@@ -1,4 +1,6 @@
 package Socialtext::Avatar;
+# @COPYRIGHT@
+
 use Moose::Role;
 
 use DBD::Pg qw/:pg_types/;

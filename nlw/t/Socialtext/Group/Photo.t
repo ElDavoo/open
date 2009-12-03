@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+# @COPYRIGHT@
+
 # this is _very_ similar to t/Socialtext/People/Profilephoto.
 use strict;
 use warnings;
