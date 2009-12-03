@@ -2123,23 +2123,18 @@ sub _show_group_members {
     my $self  = shift;
     my $group = $self->_require_group();
 
-    require Socialtext::UserGroupRoleFactory;
-    my $ugrs = Socialtext::UserGroupRoleFactory->SortedResultSet(
-        group_id   => $group->group_id,
-        order_by   => 'username',
-        sort_order => 'desc',
-    );
-
+    my $urs = $group->user_roles();
     my $msg = loc("Members of the [_1] group", $group->driver_name) . "\n\n";
     $msg .= loc("| Email Address | First | Last | Role |") . "\n";
 
-    while ( my $ugr = $ugrs->next() ) {
+    while ( my $ur = $urs->next() ) {
+        my ($user,$role) = @$ur;
         $msg .= '| '
             . join(' | ',
-                $ugr->user->email_address,
-                $ugr->user->first_name,
-                $ugr->user->last_name,
-                $ugr->role->name
+                $user->email_address,
+                $user->first_name,
+                $user->last_name,
+                $role->name
             ) . " |\n";
     }
 
