@@ -18,6 +18,7 @@ use Socialtext::UserGroupRoleFactory;
 use Socialtext::GroupAccountRoleFactory;
 use Socialtext::GroupWorkspaceRoleFactory;
 use Socialtext::GroupWorkspaceRole;
+use Socialtext::UserSet qw/:const/;
 use namespace::clean -except => 'meta';
 
 ###############################################################################
@@ -109,17 +110,23 @@ sub All {
         if $p{driver_key};
 
     if ($p{account_id}) {
-        $from .= q{ JOIN group_account_role gar USING (group_id) };
-        push @where, 'gar.account_id' => $p{account_id};
+        $from .= q{
+            JOIN user_set_include_tc atc
+            ON (user_set_id = atc.from_set_id)
+        };
+        push @where, 'atc.into_set_id' => $p{account_id} + ACCT_OFFSET;
     }
 
     if ($p{workspace_id}) {
-        $from .= q{ JOIN group_workspace_role gwro USING (group_id) };
-        push @where, 'gwro.workspace_id' => $p{workspace_id};
+        $from .= q{
+            JOIN user_set_include_tc wtc
+            ON (user_set_id = wtc.from_set_id)
+        };
+        push @where, 'wtc.into_set_id' => $p{workspace_id} + WKSP_OFFSET;
     }
 
     if (!$p{_count_only} && ($p{account_id} || $p{workspace_id})) {
-        $from .= q{ JOIN "Role" rrr using (role_id) };
+        $from .= q{ JOIN "Role" rrr USING (role_id) };
         push @cols, 'rrr.name AS role_name';
     }
 
@@ -137,18 +144,26 @@ sub All {
 
         if ($p{include_aggregates}) {
             push @cols, 'COALESCE(user_count,0) AS user_count';
-            $from .= q{ LEFT JOIN (
-                    SELECT group_id, COUNT(distinct user_id) AS user_count
-                    FROM user_group_role
-                    GROUP BY group_id
-                ) ugr USING (group_id) };
+            $from .= q{
+                LEFT JOIN (
+                    SELECT into_set_id AS user_set_id,
+                        COUNT(DISTINCT from_set_id) AS user_count
+                    FROM user_set_path
+                    WHERE from_set_id }.PG_USER_FILTER.q{
+                    GROUP BY user_set_id
+                ) gu_count USING (user_set_id)
+            };
 
             push @cols, 'COALESCE(workspace_count,0) AS workspace_count';
-            $from .= q{ LEFT JOIN (
-                    SELECT group_id, COUNT(distinct workspace_id) AS workspace_count
-                    FROM group_workspace_role
-                    GROUP BY group_id
-                ) gwr USING (group_id) };
+            $from .= q{
+                LEFT JOIN (
+                    SELECT from_set_id AS user_set_id,
+                        COUNT(DISTINCT into_set_id) AS workspace_count
+                    FROM user_set_path
+                    WHERE into_set_id }.PG_WKSP_FILTER.q{
+                    GROUP BY user_set_id
+                ) gw_count USING (user_set_id)
+            };
         }
 
         if ($ob eq 'creator') {

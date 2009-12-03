@@ -210,10 +210,10 @@ sub _role_change_checker {
     my $o = $p{object};
     param_error "object parameter must be blessed" unless blessed $o;
     unless ($o->isa('Socialtext::User') ||
-            $o->isa('Socialtext::UserSetContainer') ||
+            $o->does('Socialtext::UserSetContainer') ||
             $o->isa('Socialtext::UserMetadata'))
     {
-        param_error "object parameter must be a Socialtext::User or Socialtext::UserSetContainer";
+        param_error "object parameter must be a Socialtext::User, Socialtext::UserMetadata or implement role Socialtext::UserSetContainer";
     }
 
     if ($o->isa('Socialtext::User') && $o->is_system_created) {
@@ -252,11 +252,7 @@ sub _mk_method ($&) {
     );
 }
 
-for my $thingy_type (
-    [user => 'Socialtext::User'],
-    [group => 'Socialtext::Group'])
-{
-    my ($thing_name,$thing_class) = @$thingy_type;
+for my $thing_name (qw(user group)) {
     my $id_filter = ($thing_name eq 'user')
         ? " < x'10000001'::int"
         : " BETWEEN x'10000001'::int AND x'20000000'::int";
@@ -267,11 +263,10 @@ for my $thingy_type (
         : sub { Socialtext::Group->GetGroup(group_id => $_[0]) };
 
     my $thing_checker = ($thing_name eq 'user')
-        ? sub { my $o = shift; $o && ($o->isa($thing_class) 
-                        or $o->isa('Socialtext::UserMetadata')) }
-        : sub { my $o = shift; $o && $o->isa($thing_class) };
+        ? sub { $_[0] && blessed($_[0]) && ($_[0]->isa('Socialtext::User') or $_[0]->isa('Socialtext::UserMetadata')) }
+        : sub { $_[0] && blessed($_[0]) && $_[0]->isa('Socialtext::Group') };
 
-    # grep: add_user add_group
+    # grep: sub add_user sub add_group
     _mk_method "add_$thing_name" => sub {
         my ($self,%p) = @_;
         my $actor = $p{actor} || Socialtext::User->SystemUser;
