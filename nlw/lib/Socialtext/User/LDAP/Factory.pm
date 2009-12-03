@@ -369,9 +369,27 @@ sub Search {
     return unless $term;
     $term = escape_filter_value($term);
 
+    # Searchable fields (matching up with those that are searched in the DB in
+    # ST::User::Default::Factory).
+    #
+    # Note that we specifically do *NOT* search any "dn"-like fields (e.g. dn,
+    # ou, etc); some LDAP directories don't allow for sub-string searches to
+    # be done against those fields (and its easier for us to just ignore the
+    # obvious ones than to query LDAP for the schemas and figure out which
+    # ones they are).
+    my @searchable_attrs = qw(
+        username
+        email_address
+        first_name
+        last_name
+    );
+
     # build up the LDAP search filter
     my $attr_map = $self->attr_map;
-    my %search   = map { $_ => "*$term*" } values %$attr_map;
+    my %search   =
+        map { $_ => "*$term*" }
+        map { $attr_map->{$_} }
+        @searchable_attrs;
     my $filter   = Socialtext::LDAP->BuildFilter(
         global => $self->ldap_config->filter(),
         search => \%search,
