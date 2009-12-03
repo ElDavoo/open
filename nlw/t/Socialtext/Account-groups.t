@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 26;
+use Test::Socialtext tests => 20;
 use Test::Exception;
 use Socialtext::GroupAccountRoleFactory;
 
@@ -69,12 +69,11 @@ add_group_to_account: {
     my $account = create_test_account_bypassing_factory();
     my $group   = create_test_group();
 
-    my $gar = $account->add_group( group => $group );
+    $account->add_group( group => $group );
 
-    isa_ok $gar => 'Socialtext::GroupAccountRole', 'created a GAR...';
-    is $gar->account_id => $account->account_id, '... with correct account';
-    is $gar->group_id   => $group->group_id,     '... with correct group';
-    is $gar->role->name => 'member', '... with correct role';
+    is $account->group_count(), 1, 'Group was added to Account';
+    is $account->role_for_group($group)->name, 'member',
+        '... group is a member after add_group()';
 }
 
 ###############################################################################
@@ -82,14 +81,13 @@ add_group_to_account: {
 add_group_to_account_explicit_role: {
     my $account = create_test_account_bypassing_factory();
     my $group   = create_test_group();
-    my $role    = Socialtext::Role->Affiliate();
+    my $role    = Socialtext::Role->Admin();
 
-    my $gar = $account->add_group( group => $group, role => $role );
+    $account->add_group( group => $group, role => $role );
 
-    isa_ok $gar => 'Socialtext::GroupAccountRole', 'created a GAR...';
-    is $gar->account_id => $account->account_id, '... with correct account';
-    is $gar->group_id   => $group->group_id,     '... with correct group';
-    is $gar->role->name => $role->name,          '... with correct role';
+    is $account->group_count(), 1, 'Group was added to Account';
+    is $account->role_for_group($group)->name, 'admin',
+        '... group is a admin after add_group()';
 }
 
 ###############################################################################
@@ -101,21 +99,6 @@ group_has_role_in_account: {
     ok !$account->has_group($group), 'Group does not yet have Role in Account';
     $account->add_group(group => $group);
     ok  $account->has_group($group), '... Group has been added to Account';
-}
-
-###############################################################################
-# TEST: What Role does the Group have in the Account
-what_role_does_group_have_in_account: {
-    my $account = create_test_account_bypassing_factory();
-    my $group   = create_test_group();
-
-    $account->add_group(group => $group);
-    is $account->group_count(), 1, 'Group was added to Account';
-
-    my $default_role = Socialtext::GroupAccountRoleFactory->DefaultRole();
-    my $groups_role  = $account->role_for_group(group => $group);
-    is $groups_role->name, $default_role->name,
-        '... with Default GAR Role';
 }
 
 ###############################################################################
