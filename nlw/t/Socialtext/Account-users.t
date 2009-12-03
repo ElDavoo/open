@@ -3,8 +3,9 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 28;
+use Test::Socialtext tests => 23;
 use Socialtext::Role;
+use Test::Exception;
 
 ###############################################################################
 # Fixtures: db
@@ -81,12 +82,10 @@ add_user_to_account: {
     my $user    = create_test_user();
     my $role    = Socialtext::UserAccountRoleFactory->DefaultRole();
 
-    my $uar = $account->add_user(user => $user);
+    $account->add_user(user => $user);
 
-    isa_ok $uar => 'Socialtext::UserAccountRole', 'created a UAR...';
-    is $uar->account_id, $account->account_id, '... with correct Account';
-    is $uar->user_id,    $user->user_id,       '... with correct User';
-    is $uar->role->name, $role->name,          '... with correct role';
+    my $result = $account->role_for_user($user);
+    is $result->name, $role->name, '... with correct role';
 }
 
 ###############################################################################
@@ -96,12 +95,10 @@ add_user_to_account_explicit_role: {
     my $user    = create_test_user();
     my $role    = Socialtext::Role->Admin();
 
-    my $uar = $account->add_user(user => $user, role => $role);
+    $account->add_user(user => $user, role => $role);
 
-    isa_ok $uar => 'Socialtext::UserAccountRole', 'created a UAR...';
-    is $uar->account_id, $account->account_id, '... with correct Account';
-    is $uar->user_id,    $user->user_id,       '... with correct User';
-    is $uar->role->name, $role->name,          '... with correct role';
+    my $result = $account->role_for_user($user);
+    is $result->name, $role->name, '... with correct role';
 }
 
 ###############################################################################
@@ -145,14 +142,13 @@ role_for_user_indirect_via_workspace: {
     my $account   = create_test_account_bypassing_factory();
     my $workspace = create_test_workspace(account => $account);
     my $user      = create_test_user();
-    my $Affiliate = Socialtext::Role->Affiliate();
     my $Admin     = Socialtext::Role->Admin();
 
     $workspace->add_user(user => $user, role => $Admin);
 
     my $q_role = $account->role_for_user($user);
-    is $q_role->name, $Affiliate->name,
-        'User has Affiliate Role, via Workspace membership';
+    is $q_role->name, 'member_workspace',
+        'User has member_workspace Role, via Workspace membership';
 }
 
 ###############################################################################
@@ -178,15 +174,14 @@ role_for_user_indirect_via_group_in_workspace: {
     my $workspace = create_test_workspace(account => $account);
     my $group     = create_test_group();
     my $user      = create_test_user();
-    my $Affiliate = Socialtext::Role->Affiliate();
     my $Admin     = Socialtext::Role->Admin();
 
     $workspace->add_group(group => $group, role => $Admin);
     $group->add_user(user => $user, role => $Admin);
 
     my $q_role = $account->role_for_user($user);
-    is $q_role->name, $Affiliate->name,
-        'User has Affiliate Role, via Group in Workspace membership';
+    is $q_role->name, 'member_workspace',
+        'User has member_workspace Role, via Group in Workspace membership';
 }
 
 ###############################################################################
@@ -217,7 +212,8 @@ cant_remove_user_from_primary_account: {
     ok $account->has_user($user), 'User has Role in his Primary Account';
 
     # Can't remove the User from his Primary Account
-    $account->remove_user(user => $user);
+    throws_ok { $account->remove_user(user => $user) }
+        qr/Cannot remove a user from their primary account/;
     ok $account->has_user($user), '... User maintains Role in Primary Account';
 }
 
