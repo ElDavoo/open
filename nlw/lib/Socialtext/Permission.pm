@@ -54,8 +54,9 @@ sub _setup_exports {
 sub new {
     my ( $class, %p ) = @_;
 
-    return exists $p{name} ? $class->_new_from_name(%p)
-                           : $class->_new_from_permission_id(%p);
+    return defined $p{name}          ? $class->_new_from_name(%p)
+         : defined $p{permission_id} ? $class->_new_from_permission_id(%p)
+         : undef;
 }
 
 sub _new_from_name {
