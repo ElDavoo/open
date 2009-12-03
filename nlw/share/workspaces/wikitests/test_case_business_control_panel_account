@@ -106,12 +106,16 @@
 | wait_for_element_not_present_ok | toggle_plugin_dashboard |  |
 
 | *Comment* | Test case: Business Control Panel Account rename account |  |
+| wait_for_element_visible_ok | link=Rename Account | 5000 |
 | click_and_wait | link=Rename Account |  |
 | wait_for_element_visible_ok | st-new-name | 10000 |
 | type_ok | st-new-name | newacct%%start_time%% |
 | click_and_wait | //input[@value='Rename'] |  |
 | text_like | newacct%%start_time%% account |  |
+| wait_for_element_visible_ok | link=Rename Account | 5000 |
 | click_and_wait | link=Rename Account |  |
 | type_ok | st-new-name | %%new_acct%% |
 | click_and_wait | //input[@value='Rename'] |  |
 | text_like | %%new_acct%% account |  |
+
+| *Comment* | Test case: Business Control Panel Account COMPLETED |  |
