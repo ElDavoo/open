@@ -11,7 +11,6 @@ sub Classes {
                Role
                User::Default::Factory
                UserMetadata
-               UserWorkspaceRole
                Workspace
                Pluggable::Adapter
              );

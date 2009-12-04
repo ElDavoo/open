@@ -5,8 +5,6 @@ use warnings;
 use base 'Socialtext::Pluggable::Plugin';
 use Class::Field qw(const);
 use Socialtext::Log qw/st_log/;
-use Socialtext::UserAccountRoleFactory;
-use Socialtext::GroupAccountRoleFactory;
 
 # TEMPORARY
 use Socialtext::Role;
@@ -48,7 +46,7 @@ sub add_user_account_role {
     my $self    = shift;
     my $account = shift;
     my $user    = shift;
-    my $role    = shift || Socialtext::UserAccountRoleFactory->DefaultRole();
+    my $role    = shift;
 
     if ($account->user_set->object_directly_connected($user)) {
         $account->add_to_all_users_workspace(object => $user);
@@ -59,7 +57,7 @@ sub remove_user_account_role {
     my $self    = shift;
     my $account = shift;
     my $user    = shift;
-    my $role    = shift || Socialtext::UserAccountRoleFactory->DefaultRole();
+    my $role    = shift;
 
     # no-op
 }
@@ -84,7 +82,7 @@ sub add_group_account_role {
     my $self    = shift;
     my $account = shift;
     my $group   = shift;
-    my $role    = shift || Socialtext::GroupAccountRoleFactory->DefaultRole();
+    my $role    = shift;
 
     if ($account->user_set->object_directly_connected($group)) {
         $account->add_to_all_users_workspace(object => $group);
@@ -95,26 +93,9 @@ sub remove_group_account_role {
     my $self    = shift;
     my $account = shift;
     my $group   = shift;
-    my $role    = shift || Socialtext::GroupAccountRoleFactory->DefaultRole();
-    my $factory = Socialtext::GroupAccountRoleFactory->instance();
+    my $role    = shift;
 
     # no-op
-}
-
-sub _group_has_workspace_role {
-    my $self    = shift;
-    my $group   = shift;
-    my $account = shift;
-
-    my $ws_count = sql_singlevalue(q{
-        SELECT COUNT("Workspace".workspace_id)
-          FROM "Workspace"
-          JOIN group_workspace_role USING (workspace_id)
-         WHERE group_workspace_role.group_id = ?
-           AND "Workspace".account_id = ?
-    }, $group->group_id, $account->account_id);
-
-    return ( $ws_count ) ? 1 : 0;
 }
 
 1;

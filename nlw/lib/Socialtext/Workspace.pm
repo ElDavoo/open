@@ -40,8 +40,6 @@ use Socialtext::URI;
 use Socialtext::MultiCursor;
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
-use Socialtext::UserWorkspaceRoleFactory;
-use Socialtext::GroupWorkspaceRoleFactory;
 use Socialtext::WorkspaceBreadcrumb;
 use Socialtext::Page;
 use Socialtext::Workspace::Permissions;

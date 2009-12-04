@@ -14,10 +14,6 @@ use Socialtext::SQL qw(get_dbh :exec :time);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::Pluggable::Adapter;
 use Socialtext::User;
-use Socialtext::UserGroupRoleFactory;
-use Socialtext::GroupAccountRoleFactory;
-use Socialtext::GroupWorkspaceRoleFactory;
-use Socialtext::GroupWorkspaceRole;
 use Socialtext::UserSet qw/:const/;
 use namespace::clean -except => 'meta';
 
@@ -198,14 +194,14 @@ sub All {
             if ($p{include_aggregates}) {
                 $group->$_($row->{$_}) for qw(user_count workspace_count);
             }
-            return Socialtext::GroupWorkspaceRole->new(
+            return {
                 workspace_id => $ws->workspace_id,
                 group_id => $group->group_id,
                 role_id => $role->role_id,
                 workspace => $ws,
                 group => $group,
                 role => $role
-            );
+            };
         };
     }
     else {
@@ -389,17 +385,8 @@ sub accounts {
     );
 }
 
-###############################################################################
-sub _build_user_count {
-    return shift->users->count;
-}
-
-###############################################################################
-sub _build_account_count {
-    my $self = shift;
-    my $mc = Socialtext::GroupAccountRoleFactory->ByGroupId($self->group_id);
-    return $mc->count;
-}
+sub _build_user_count    { shift->users->count }
+sub _build_account_count { shift->accounts->count }
 
 after 'role_change_event' => sub {
     my ($self,$actor,$change,$thing,$role) = @_;
@@ -418,10 +405,7 @@ after 'role_change_event' => sub {
 ###############################################################################
 sub workspaces {
     my $self = shift;
-    return Socialtext::GroupWorkspaceRoleFactory->ByGroupId(
-        $self->group_id,
-        sub { shift->workspace },
-    );
+    die "Implement me: multi-cursor selecting workspace_ids for this group";
 }
 
 ###############################################################################

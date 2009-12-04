@@ -21,8 +21,6 @@ use Socialtext::Skin;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::Pluggable::Adapter;
 use Socialtext::AccountLogo;
-use Socialtext::GroupAccountRoleFactory;
-use Socialtext::UserAccountRoleFactory;
 use Socialtext::Account::Roles;
 use Socialtext::UserSet qw/:const/;
 use YAML qw/DumpFile LoadFile/;

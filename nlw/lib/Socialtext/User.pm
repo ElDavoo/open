@@ -18,7 +18,6 @@ use Socialtext::User::Deleted;
 use Socialtext::User::EmailConfirmation;
 use Socialtext::User::Factory;
 use Socialtext::UserSet qw/:const/;
-use Socialtext::UserWorkspaceRoleFactory;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
 use Email::Address;
 use Class::Field 'field';
