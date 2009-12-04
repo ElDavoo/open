@@ -485,6 +485,7 @@ sub main_hub {
 
 my @Added_accounts;
 my @Added_users;
+my @Added_groups;
 {
     my $counter = 0;
     sub create_unique_id {
@@ -549,6 +550,8 @@ my @Added_users;
             created_by_user_id => $opts{user}->user_id,
             primary_account_id => $opts{account}->account_id,
         } );
+        push @Added_groups, $group->group_id;
+        return $group;
     }
 
     sub create_test_hub {
@@ -577,6 +580,14 @@ sub dump_roles {
         for my $u (@Added_users) {
             my $user = Socialtext::User->new(user_id => $u);
             print "  * ($u) " . $user->username . "\n";
+        }
+    }
+    if (@Added_groups) {
+        print "Added groups:\n";
+        for my $g (@Added_groups) {
+            my $group = Socialtext::Group->GetGroup(group_id => $g);
+            my $name = $group ? $group->driver_group_name : 'deleted';
+            print "  * ($g) $name\n";
         }
     }
     if (@Added_accounts) {
