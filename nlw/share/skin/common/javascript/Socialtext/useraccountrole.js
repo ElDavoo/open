@@ -43,7 +43,7 @@ $.extend(Socialtext.UserAccountRole.prototype, {
                 "Via [quant,_1,Workspace]: [_2]",
                 this.via_workspace.length,
                 $.map(this.via_workspace, function (w) {
-                    var href = "/nlw/control/account/" + w.workspace_id;
+                    var href = "/nlw/control/workspace/" + w.workspace_id;
                     return '<a href="' + href + '">' + w.name + '</a>';
                 }).join(", ")
             ));
