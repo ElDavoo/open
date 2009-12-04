@@ -59,6 +59,7 @@ our @EXPORT = qw(
     formatted_like
     formatted_unlike
     modules_loaded_by
+    dump_roles
 );
 
 our @EXPORT_OK = qw(
@@ -482,6 +483,8 @@ sub main_hub {
     return $main_hub;
 }
 
+my @Added_accounts;
+my @Added_users;
 {
     my $counter = 0;
     sub create_unique_id {
@@ -492,12 +495,14 @@ sub main_hub {
 
     sub create_test_account {
         my $unique_id = shift || create_unique_id;
+        push @Added_accounts, $unique_id;
         my $hub       = main_hub();
         return $hub->account_factory->create( name => $unique_id );
     }
 
     sub create_test_account_bypassing_factory {
         my $unique_id = shift || create_unique_id;
+        push @Added_accounts, $unique_id;
         return Socialtext::Account->create(name => $unique_id);
     }
 
@@ -512,6 +517,7 @@ sub main_hub {
             created_by_user_id => $opts{created_by_user_id},
             primary_account_id => $opts{account}->account_id,
         );
+        push @Added_users, $user->user_id;
         return $user;
     }
 
@@ -561,6 +567,32 @@ sub SSS() {
     my $sh = $ENV{SHELL} || 'sh';
     system("$sh > `tty`");
     return @_;
+}
+
+# Provide a whole bunch of common diagnostics about our objects
+sub dump_roles {
+    print "\nRole Dump\n=========\n";
+    if (@Added_users) {
+        print "Added users:\n";
+        for my $u (@Added_users) {
+            my $user = Socialtext::User->new(user_id => $u);
+            print "  * ($u) " . $user->username . "\n";
+        }
+    }
+    if (@Added_accounts) {
+        print "Added accounts\n";
+        for my $name (@Added_accounts) {
+            my $acct = Socialtext::Account->new(name => $name);
+            my $acct_id = $acct->account_id();
+            my $acct_users = $acct->users;
+            my $count = $acct_users->count();
+            print "  * ($acct_id) $name ($count users)\n";
+            while (my $u = $acct_users->next) {
+                print "    - (" . $u->user_id . ") " . $u->username . "\n";
+            }
+        }
+    }
+    print "=========\n\n";
 }
 
 package Test::Socialtext::Filter;
