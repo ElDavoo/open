@@ -80,12 +80,11 @@ user_count_is_correct: {
 add_user_to_account: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user();
-    my $role    = Socialtext::UserAccountRoleFactory->DefaultRole();
 
     $account->add_user(user => $user);
 
     my $result = $account->role_for_user($user);
-    is $result->name, $role->name, '... with correct role';
+    is $result->name, 'member', '... with correct role';
 }
 
 ###############################################################################
