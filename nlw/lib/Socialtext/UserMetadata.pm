@@ -190,7 +190,10 @@ sub primary_account {
         if ($new_account->account_id != $deleted_acct->account_id) {
             # Update account membership. Business logic says to keep
             # the user as a member of the old account.
-            $new_account->add_user(user => $self);
+            $new_account->assign_role_to_user(
+                user => $self,
+                role => Socialtext::Role->Member,
+            );
 
             # Avoid double-indexing elsewhere in the code.
             require Socialtext::JobCreator;
