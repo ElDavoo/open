@@ -123,11 +123,13 @@ sub POST_json {
         }
     };
     if (my $err = $@) {
+        warn $err;
         if ($err =~ m/duplicate key violates/) {
             $rest->header( -status => HTTP_409_Conflict );
             return "Error creating group: $name already exists.";
         }
         $rest->header( -status => HTTP_400_Bad_Request );
+        $err =~ s{ at /\S+ line .*}{};
         return "Error creating group: $err";
     }
 
