@@ -388,11 +388,19 @@ sub shared_accounts {
 sub groups {
     my $self = shift;
     my $sth = sql_execute(q{
-        SELECT DISTINCT group_id
+        SELECT DISTINCT(into_set_id) AS group_id
         FROM user_set_path
         WHERE from_set_id = ?
-          AND into_set_id }.PG_GROUP_FILTER.{
-    });
+          AND into_set_id }.PG_GROUP_FILTER
+    , $self->user_set_id);
+
+    return Socialtext::MultiCursor->new(
+        iterables => [ $sth->fetchall_arrayref ],
+        apply => sub {
+            my $row = shift;
+            return Socialtext::Group->GetGroup( group_id => $row->[0] );
+        }
+    );
 }
 
 sub to_hash {
