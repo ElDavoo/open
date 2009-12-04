@@ -182,10 +182,6 @@ sub primary_account {
 
         Socialtext::Cache->clear('authz_plugin');
 
-        my $adapter = Socialtext::Pluggable::Adapter->new;
-        $adapter->make_hub(Socialtext::User->SystemUser(), undef);
-        $adapter->hook('nlw.add_user_account_role', $new_account, $self);
-
         my $deleted_acct = Socialtext::Account->Deleted;
         if ($new_account->account_id != $deleted_acct->account_id) {
             # Update account membership. Business logic says to keep
@@ -199,6 +195,10 @@ sub primary_account {
             require Socialtext::JobCreator;
             Socialtext::JobCreator->index_person( $self );
         }
+
+        my $adapter = Socialtext::Pluggable::Adapter->new;
+        $adapter->make_hub(Socialtext::User->SystemUser(), undef);
+        $adapter->hook('nlw.add_user_account_role', $new_account, $self);
     }
 
     return Socialtext::Account->new(account_id => $self->primary_account_id)
