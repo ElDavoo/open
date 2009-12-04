@@ -41,17 +41,8 @@ workspace_has_groups: {
     my $group_one = create_test_group();
     my $group_two = create_test_group();
 
-    # Create GWRs, giving the Group a default Role
-    # - we do this via GWR as we haven't tested the other helper methods yet
-    Socialtext::GroupWorkspaceRoleFactory->Create( {
-        group_id     => $group_one->group_id,
-        workspace_id => $workspace->workspace_id,
-    } );
-
-    Socialtext::GroupWorkspaceRoleFactory->Create( {
-        group_id     => $group_two->group_id,
-        workspace_id => $workspace->workspace_id,
-    } );
+    $workspace->add_group(group => $group_one);
+    $workspace->add_group(group => $group_two);
 
     my $groups = $workspace->groups();
     isa_ok $groups, 'Socialtext::MultiCursor', 'got a list of groups';
@@ -75,7 +66,7 @@ add_group_to_workspace_with_default_role: {
 
     # Make sure Group was given the default Role
     my $default_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
-    my $groups_role  = $workspace->role_for_group(group => $group);
+    my $groups_role  = $workspace->role_for_group($group);
     is $groups_role->role_id, $default_role->role_id,
         '... with Default GWR Role'
 }
@@ -86,14 +77,14 @@ add_group_to_workspace_with_role: {
     my $user      = create_test_user();
     my $workspace = create_test_workspace(user => $user);
     my $group     = create_test_group();
-    my $role      = Socialtext::Role->Guest();
+    my $role      = Socialtext::Role->Admin();
 
     # Add the Group to the Workspace
     $workspace->add_group(group => $group, role => $role);
     is $workspace->group_count(), 1, 'Group was added to Workspace';
 
     # Make sure Group has the correct Role
-    my $groups_role  = $workspace->role_for_group(group => $group);
+    my $groups_role  = $workspace->role_for_group($group);
     is $groups_role->role_id, $role->role_id, '... with provided Role'
 }
 
@@ -103,22 +94,22 @@ update_groups_role_in_workspace: {
     my $user      = create_test_user();
     my $workspace = create_test_workspace(user => $user);
     my $group     = create_test_group();
-    my $role      = Socialtext::Role->Guest();
+    my $role      = Socialtext::Role->Admin();
 
     # Add the Group to the Workspace, with Default Role
     $workspace->add_group(group => $group);
 
     # Make sure the Group was given the Default Role
     my $default_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
-    my $groups_role  = $workspace->role_for_group(group => $group);
+    my $groups_role  = $workspace->role_for_group($group);
     is $groups_role->role_id, $default_role->role_id,
         '... with Default UGR Role';
 
     # Update the Group's Role
-    $workspace->add_group(group => $group, role => $role);
+    $workspace->assign_role_to_group(group => $group, role => $role);
 
     # Make sure Group had their Role updated
-    $groups_role = $workspace->role_for_group(group => $group);
+    $groups_role = $workspace->role_for_group($group);
     is $groups_role->role_id, $role->role_id, '... with updated Role';
 }
 
@@ -133,7 +124,7 @@ get_role_for_group: {
     $workspace->add_group(group => $group);
 
     # Get the Role for the Group
-    my $role = $workspace->role_for_group(group => $group);
+    my $role = $workspace->role_for_group($group);
     isa_ok $role, 'Socialtext::Role', 'queried Role';
 }
 
