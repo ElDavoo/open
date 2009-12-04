@@ -133,9 +133,7 @@ sub add_role {
     $self->_role_change_checker(\%p);
 
     my $thing = $p{object};
-    my $role = $p{role} || $self->role_default($thing);
-    $role = Socialtext::Role->new(name => $role)
-        unless blessed($role);
+    my $role  = $p{role};
 
     $self->role_change_check($p{actor},'add',$thing,$role);
     eval { $self->user_set->add_object_role($thing, $role) };
@@ -157,9 +155,7 @@ sub assign_role {
     $self->_role_change_checker(\%p);
 
     my $thing = $p{object};
-    my $role = $p{role} || $self->role_default($thing);
-    $role = Socialtext::Role->new(name => $role)
-        unless blessed($role);
+    my $role = $p{role};
 
     my $uset = $self->user_set;
     my $change;
@@ -204,6 +200,15 @@ sub _role_change_checker {
     my ($self,$p) = @_;
 
     if ($p->{role}) {
+        $p->{role} ||= $self->role_default($p->{object});
+        if (!blessed $p->{role}) {
+            if ($p->{role} =~ /\D/) {
+                $p->{role} = Socialtext::Role->new(name => $p->{role})
+            }
+            else {
+                $p->{role} = Socialtext::Role->new(role_id => $p->{role})
+            }
+        }
         param_error "role parameter must be a Socialtext::Role"
             unless (blessed $p->{role} && $p->{role}->isa('Socialtext::Role'));
         param_error 'Cannot explicitly assign a default role: '.$p->{role}->name
