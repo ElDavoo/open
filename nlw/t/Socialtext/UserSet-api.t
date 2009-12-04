@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 56;
+use Test::Socialtext tests => 64;
 use Test::Exception;
 BEGIN {
     use_ok 'Socialtext::Group';
@@ -47,24 +47,76 @@ Bad_cases: {
     Add_workspace_to_workspace: {
         my $wksp1 = create_test_workspace();
         my $wksp2 = create_test_workspace();
-        my $uset = Socialtext::UserSet->new;
 
-        my $uset_id1 = $wksp1->user_set_id;
-        my $uset_id2 = $wksp2->user_set_id;
+        my $error = qr/Workspace user_sets cannot/;
         throws_ok {
-            $uset->add_role($uset_id1, $uset_id2, $member);
-        } qr/Can't add workspaces to workspaces/, "cannot add wksp to a wksp";
+            $wksp1->add_role(
+                actor => Socialtext::User->SystemUser,
+                object => $wksp2,
+                role => $member,
+            );
+        } $error, "cannot add wksp to a wksp";
         throws_ok {
-            $uset->remove_role($uset_id1, $uset_id2);
-        } qr/edge $uset_id1,$uset_id2/, "cannot remove wksp from a wksp";
+            $wksp1->assign_role(
+                actor => Socialtext::User->SystemUser,
+                object => $wksp2,
+                role => $member,
+            );
+        } $error, "cannot remove wksp from a wksp";
         throws_ok {
-            $uset->update_role($uset_id1, $uset_id2, $member);
-        } qr/edge $uset_id1,$uset_id2/, "cannot update wksp to a wksp";
+            $wksp1->remove_role(
+                actor => Socialtext::User->SystemUser,
+                object => $wksp2,
+            );
+        } $error, "cannot update wksp to a wksp";
     }
 
-    # consider adding these
-    fail "todo: can't add account to account";
-    fail "todo: adding group to a group is fine though";
+    Add_account_to_account: {
+        my $acct1 = create_test_account_bypassing_factory();
+        my $acct2 = create_test_account_bypassing_factory();
+
+        my $error = qr/Account user_sets cannot/;
+        throws_ok {
+            $acct1->add_role(
+                actor => Socialtext::User->SystemUser,
+                object => $acct2,
+                role => $member,
+            );
+        } $error, "cannot add acct to a acct";
+        throws_ok {
+            $acct1->assign_role(
+                actor => Socialtext::User->SystemUser,
+                object => $acct2,
+                role => $member,
+            );
+        } $error, "cannot remove acct from a acct";
+    }
+
+    Add_group_to_group: {
+        my $grp1 = create_test_group();
+        my $grp2 = create_test_group();
+
+        lives_ok {
+            $grp1->add_role(
+                actor => Socialtext::User->SystemUser,
+                object => $grp2,
+                role => $member,
+            );
+        } "can add grp to a grp";
+        lives_ok {
+            $grp1->assign_role(
+                actor => Socialtext::User->SystemUser,
+                object => $grp2,
+                role => $member,
+            );
+        } "can remove grp from a grp";
+        lives_ok {
+            $grp1->remove_role(
+                actor => Socialtext::User->SystemUser,
+                object => $grp2,
+            );
+        } "can update grp to a grp";
+    }
 }
 
 

@@ -1090,6 +1090,13 @@ sub _change_marketo_if_present {
     }
 }
 
+after role_change_check => sub {
+    my ($self,$actor,$change,$thing,$role) = @_;
+    if ($thing->isa(ref($self))) {
+        die "Account user_sets cannot contain other accounts.";
+    }
+};
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
 

@@ -1846,6 +1846,13 @@ sub Default {
     }
 }
 
+after role_change_check => sub {
+    my ($self,$actor,$change,$thing,$role) = @_;
+    if ($thing->isa(ref($self))) {
+        die "Workspace user_sets cannot contain other workspaces.";
+    }
+};
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 package Socialtext::NoWorkspace;
