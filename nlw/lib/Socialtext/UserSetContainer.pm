@@ -10,6 +10,8 @@ use Socialtext::Exceptions qw/param_error/;
 use Socialtext::Cache ();
 use Socialtext::MultiCursor;
 use Socialtext::Timer qw/time_scope/;
+use Socialtext::Log qw/st_log/;
+use Time::HiRes qw/time/;
 use List::MoreUtils qw/any/;
 use namespace::clean -except => 'meta';
 
@@ -125,10 +127,11 @@ sub role_default {
     return Socialtext::Role->Member;
 }
 
-before 'add_role' => \&_role_change_checker;
 sub add_role {
-    my $self = shift;
-    my %p = @_;
+    my ($self,%p) = @_;
+    my $t = time();
+    $self->_role_change_checker(\%p);
+
     my $thing = $p{object};
     my $role = $p{role} || $self->role_default($thing);
     $role = Socialtext::Role->new(name => $role)
@@ -144,13 +147,15 @@ sub add_role {
     }
 
     eval { $self->role_change_event($p{actor},'add',$thing,$role) };
+    eval { $self->_log_role_change($p{actor},'add',$thing,$role,$t) };
     return;
 }
 
-before 'assign_role' => \&_role_change_checker;
 sub assign_role {
-    my $self = shift;
-    my %p = @_;
+    my ($self,%p) = @_;
+    my $t = time;
+    $self->_role_change_checker(\%p);
+
     my $thing = $p{object};
     my $role = $p{role} || $self->role_default($thing);
     $role = Socialtext::Role->new(name => $role)
@@ -170,44 +175,45 @@ sub assign_role {
     }
 
     eval { $self->role_change_event($p{actor},$change,$thing,$role) };
+    eval { $self->_log_role_change($p{actor},$change,$thing,$role,$t) };
     return;
 }
 
-before 'remove_role' => \&_role_change_checker;
 sub remove_role {
-    my $self = shift;
-    my %p = @_;
+    my ($self,%p) = @_;
+    my $t = time;
+    $self->_role_change_checker(\%p);
 
     my $thing = $p{object};
     $self->role_change_check($p{actor},'remove',$thing);
-    eval { $self->user_set->remove_object_role($thing) };
-    if ($@) {
-        if ($@ =~ /edge \d+,\d+ does not exist/) {
-            die "object not in this user set, ".
-                "set:".$self->user_set_id." obj:".$thing->user_set_id;
-        }
-        die $@;
+    my $role_id = $self->user_set->direct_object_role($thing);
+    unless ($role_id) {
+        die "object not in this user set, ".
+            "set:".$self->user_set_id." obj:".$thing->user_set_id;
     }
 
-    eval { $self->role_change_event($p{actor},'remove',$thing) };
-    return;
+    $self->user_set->remove_object_role($thing);
+
+    my $role_removed = Socialtext::Role->new(role_id => $role_id);
+    eval { $self->role_change_event($p{actor},'remove',$thing,$role_removed) };
+    eval { $self->_log_role_change($p{actor},'remove',$thing,$role_removed,$t) };
+    return $role_removed;
 }
 
 sub _role_change_checker {
-    my $self = shift;
-    my %p = @_;
+    my ($self,$p) = @_;
 
-    if ($p{role}) {
+    if ($p->{role}) {
         param_error "role parameter must be a Socialtext::Role"
-            unless (blessed $p{role} && $p{role}->isa('Socialtext::Role'));
-        param_error 'Cannot explicitly assign a default role: '.$p{role}->name
-            if $p{role}->used_as_default;
+            unless (blessed $p->{role} && $p->{role}->isa('Socialtext::Role'));
+        param_error 'Cannot explicitly assign a default role: '.$p->{role}->name
+            if $p->{role}->used_as_default;
     }
 
     param_error "requires an actor parameter that's a Socialtext::User"
-        unless (blessed($p{actor}) && $p{actor}->isa('Socialtext::User'));
+        unless (blessed($p->{actor}) && $p->{actor}->isa('Socialtext::User'));
 
-    my $o = $p{object};
+    my $o = $p->{object};
     param_error "object parameter must be blessed" unless blessed $o;
     unless ($o->isa('Socialtext::User') ||
             $o->does('Socialtext::UserSetContainer') ||
@@ -219,6 +225,52 @@ sub _role_change_checker {
     if ($o->isa('Socialtext::User') && $o->is_system_created) {
         param_error 'Cannot give a role to a system-created user';
     }
+}
+
+my %_change_to_log_action = (
+    add => 'ASSIGN',
+    update => 'CHANGE',
+    remove => 'REMOVE',
+);
+
+sub _log_role_change {
+    my ($self,$actor,$change,$thing,$role,$start) = @_;
+
+    my $r_name = $role->name;
+    my $action = $_change_to_log_action{$change};
+    my ($t_short, $t_id) = _log_identifier_for_thing($thing);
+    my ($c_short, $c_id) = _log_identifier_for_thing($self);
+    my (undef,    $a_id) = _log_identifier_for_thing($actor);
+
+    my $msg = $action . ',' . uc($t_short) . '_ROLE,'.
+        "role:$r_name,${t_short}:$t_id,${c_short}:$c_id,".
+        "actor:$a_id,".
+        '['.(time-$start).']';
+    st_log()->info($msg);
+}
+
+sub _log_identifier_for_thing {
+    my $thing = shift;
+
+    if ($thing->isa('Socialtext::User') ||
+        $thing->isa('Socialtext::UserMetadata'))
+    {
+        my $uname = $thing->can('username') ? $thing->username : '?';
+        return 'user', $uname.'('.$thing->user_id.')';
+    }
+    elsif ($thing->isa('Socialtext::Group')) {
+        return 'group', $thing->driver_group_name.'('.$thing->group_id.')';
+    }
+    elsif ($thing->isa('Socialtext::Workspace')) {
+        return 'workspace', $thing->name.'('.$thing->workspace_id.')';
+    }
+    elsif ($thing->isa('Socialtext::Account')) {
+        return 'account', $thing->name.'('.$thing->account_id.')';
+    }
+    elsif ($thing->does('Socialtext::UserSetContainer')) {
+        return 'user-set', '('.$thing->user_set_id.')';
+    }
+    die "unrecognized object type for logging: $thing";
 }
 
 sub role_change_check {
@@ -306,8 +358,9 @@ for my $thing_name (qw(user group)) {
         my $o = $p{$thing_name};
         confess "must supply a $thing_name" unless $thing_checker->($o);
 
+        my $removed;
         eval {
-            $self->remove_role(
+            $removed = $self->remove_role(
                 actor  => $actor,
                 object => $o,
                 role   => $p{role},
@@ -317,6 +370,7 @@ for my $thing_name (qw(user group)) {
             return if ($@ =~ /object not in this user.set/);
             die $@;
         }
+        return $removed;
     };
 
     # grep: sub has_user sub has_group

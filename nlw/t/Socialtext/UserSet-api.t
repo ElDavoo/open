@@ -16,7 +16,7 @@ BEGIN {
 fixtures(qw(db));
 
 my $member = Socialtext::Role->new(name => 'member')->role_id;
-my $guest = Socialtext::Role->new(name => 'guest')->role_id;
+my $admin = Socialtext::Role->new(name => 'admin')->role_id;
 
 my $usr = create_test_user();
 
@@ -89,15 +89,15 @@ sub check_api_for_container {
     ok $uset->has_direct_role($usr->user_id, $cont->user_set_id, $member);
 
     lives_ok {
-        $uset->update_object_role($usr, $guest);
+        $uset->update_object_role($usr, $admin);
     } "role updated";
     ok !$uset->has_role($usr->user_id, $cont->user_set_id, $member);
-    ok  $uset->has_role($usr->user_id, $cont->user_set_id, $guest);
+    ok  $uset->has_role($usr->user_id, $cont->user_set_id, $admin);
 
     lives_ok {
         $uset->remove_object_role($usr);
     } "role updated";
     ok !$uset->has_role($usr->user_id, $cont->user_set_id, $member);
-    ok !$uset->has_role($usr->user_id, $cont->user_set_id, $guest);
+    ok !$uset->has_role($usr->user_id, $cont->user_set_id, $admin);
     ok !$uset->connected($usr->user_id, $cont->user_set_id);
 }
