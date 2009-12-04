@@ -1,7 +1,7 @@
 * HighPermissions
 
 | *Comment* | Test Case: Delete Selected Attachments |  |
-| *Comment* | wikitest files should be in %%wikitest_files%% on the browser server |  |
+| *Comment* | wikitest files should be in %%wikitest_client_files%% on the browser server |  |
 | *Comment* | *This test only works if selenium_browser has higher powers, i.e. *chrome for firefox* |  |
 
 | *Comment* | Test Case: Delete Selected Attachments needs to sort using time in seconds |  |
@@ -30,9 +30,13 @@
 | wait_for_element_visible_ok | st-attachments-attach-closebutton | 30000 |
 | click_ok | st-attachments-attach-closebutton |  |
 
-| *Comment* | Test Case: Delete Selected Attachments Search the attachment and verify that it is present |  |
 | *Comment* | Indexing a page does index its attachments |  |
 | st-admin | index-page --workspace %%workspace%% --page delete_attachments_%%start_time%% |  |
+
+| *Comment* | NOT SUPPOSED TO NEED PAUSE after synchronous index call, but you do |  |
+| pause | 10000 |  |
+
+| *Comment* | Test Case: Delete Selected Attachments Search the attachment and verify that it is present |  |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | Mudville |
 | click_and_wait | st-search-submit |  |
@@ -59,9 +63,13 @@
 | text_like | //a[contains(@href,'original/wikitest.jpg')] | wikitest.jpg |
 | text_unlike | contentRight | wikitest.doc |
 
-| *Comment* | Test Case: Delete Selected Attachments Search page and verify that attachment is gone |  |
 | *Comment* | Deleting an attachment requires reindexing, so reindex the page |  |
 | st-admin | index-page --workspace %%workspace%% --page delete_attachments_%%start_time%% |  |
+
+| *Comment* | NOT SUPPOSED TO NEED PAUSE after synchronous index call, but you do |  |
+| pause | 10000 |  |
+
+| *Comment* | Test Case: Delete Selected Attachments Search page and verify that attachment is gone |  |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | Mudville |
 | click_and_wait | st-search-submit |  |

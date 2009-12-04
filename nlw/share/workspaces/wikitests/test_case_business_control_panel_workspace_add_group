@@ -1,4 +1,4 @@
-| *Comment* | Test Case: Business Control Panel Groups Workspace Add Group |
+| *Comment* | Test Case: Business Control Panel Groups Workspace Add Group |  |
 
 | *Comment* | Test Case: Business Control Panel Groups Workspace Add Group SETUP |  |  |
 | st-admin | give-accounts-admin --username %%username%% |  |  |
@@ -53,3 +53,5 @@
 
 | *Comment* | Test Case: Business Control Panel Groups Workspace Add Group TEARDOWN |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
+
+| *Comment* | Test Case: Business Control Panel Groups Workspace Add Group COMPLETED |  |

@@ -265,3 +265,5 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 | st-admin | delete-workspace --workspace 0-sort-3-workspace2-%%start_time%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace 0-sort-3-workspace3-%%start_time%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace ws-n%%start_time%% --no-export | has been deleted |
+
+| *Comment* | Test case: Business Control Panel Sorting COMPLETED |  |

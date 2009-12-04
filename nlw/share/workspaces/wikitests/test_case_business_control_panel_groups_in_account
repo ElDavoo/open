@@ -111,3 +111,5 @@
 | st-admin | delete-workspace --no-export --w %%workspace1%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%workspace2%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%workspace3%% | has been deleted |
+
+| *Comment* | Test Case: Business Control Panel Groups In Account COMPLETED |
