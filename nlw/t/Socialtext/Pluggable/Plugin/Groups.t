@@ -7,7 +7,6 @@ use Test::Exception;
 use Test::Socialtext::Account;
 use Test::Socialtext::User;
 use Test::Output;
-use Socialtext::UserGroupRoleFactory;
 use Socialtext::Role;
 use File::Temp qw/tempdir/;
 use YAML qw/LoadFile/;
@@ -24,7 +23,6 @@ fixtures(qw/db/);
 backup: {
     my $data_ref = {};
     my $def_user = Socialtext::User->SystemUser;
-    my $ugr_role = Socialtext::UserGroupRoleFactory->DefaultRole();
 
     # create dummy data.
     my $account   = create_test_account_bypassing_factory();
@@ -66,7 +64,7 @@ backup: {
             description          => '',
             users                => [
                 {
-                    role_name => $ugr_role->name,
+                    role_name => 'member',
                     username  => $user_one->username,
                 }
             ],
@@ -76,16 +74,16 @@ backup: {
             driver_group_name    => $group_three->driver_group_name,
             created_by_username  => $def_user->username,
             primary_account_name => $account->name,
-            role_name            => 'member',
+            role_name            => 'member_workspace',
             description          => '',
             users                => [
                 {
                     username  => $user_two->username,
-                    role_name => $ugr_role->name,
+                    role_name => 'member',
                 },
                 {
                     username  => $user_three->username,
-                    role_name => $ugr_role->name,
+                    role_name => 'member',
                 },
             ],
         }
@@ -108,11 +106,11 @@ backup: {
             users                => [
                 {
                     username  => $user_two->username,
-                    role_name => $ugr_role->name,
+                    role_name => 'member',
                 },
                 {
                     username  => $user_three->username,
-                    role_name => $ugr_role->name,
+                    role_name => 'member',
                 },
             ],
         }
@@ -127,10 +125,10 @@ backup: {
         is scalar(@$dumped), 3, 'got two dumped users';
 
         is $dumped->[0]{username}, $user_one->username, 'correct username';
-        is $dumped->[0]{role_name}, $ugr_role->name, 'correct role';
+        is $dumped->[0]{role_name}, 'member', 'correct role';
 
         is $dumped->[1]{username}, $user_three->username, 'correct username';
-        is $dumped->[1]{role_name}, $ugr_role->name, 'correct direct role';
+        is $dumped->[1]{role_name}, 'member', 'correct direct role';
         ok !exists($dumped->[1]{indirect}), 'role is via some group somewhere';
 
         is $dumped->[2]{username}, $user_two->username, 'correct username';
@@ -242,10 +240,6 @@ restore_no_groups: {
 # FYI, we *have* to keep one of the Accounts around so that we can match up
 # the Group on import (the Group's primary account is part of its unique key).
 restore_with_existing_group: {
-    my $default_ugr_role = Socialtext::UserGroupRoleFactory->DefaultRole;
-
-    ### SETUP
-
     # Create a test Account and Group.
     my $account = create_test_account_bypassing_factory();
     my $group   = create_test_group(account => $account);
@@ -260,7 +254,7 @@ restore_with_existing_group: {
         user => $test_user_one,
         role => $test_role_one,
     );
-    isnt $test_role_one->name, $default_ugr_role->name,
+    isnt $test_role_one->name, 'member',
         'test Role is *not* the Default UGR Role';
 
     # Add another User to the Group with a non-Default Role.  This user is
@@ -272,7 +266,7 @@ restore_with_existing_group: {
         user => $test_user_two,
         role => $test_role_two,
     );
-    isnt $test_role_two->name, $default_ugr_role->name,
+    isnt $test_role_two->name, 'member',
         'test Role is *not* the Default UGR Role';
 
     ### BACKUP THE ACCOUNT
