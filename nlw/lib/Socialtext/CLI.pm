@@ -936,7 +936,7 @@ sub _add_group_to_account_as {
     my $new_role     = shift;
     my $group        = $self->_require_group();
     my $account      = $self->_require_account();
-    my $current_role = $account->role_for_group(group => $group);
+    my $current_role = $account->role_for_group($group);
 
     $self->_check_account_role(
         cur_role => $current_role,
@@ -1016,7 +1016,7 @@ sub _add_group_to_workspace_as {
     my $new_role     = shift;
     my $group        = $self->_require_group();
     my $workspace    = $self->_require_workspace();
-    my $current_role = $workspace->role_for_group(group => $group);
+    my $current_role = $workspace->role_for_group($group);
 
     $self->_check_workspace_role(
         cur_role => $current_role,
@@ -1024,7 +1024,7 @@ sub _add_group_to_workspace_as {
         name     => $group->driver_group_name,
     );
 
-    $workspace->add_group( group => $group, role  => $new_role );
+    $workspace->assign_role_to_group( group => $group, role  => $new_role );
     $self->_success(
         loc("[_1] now has a '[_2]' role in the [_3] Workspace",
             $group->driver_group_name,
@@ -1186,7 +1186,7 @@ sub _remove_group_from_thing {
     }
 
     $thing->remove_group( group => $group );
-    my $role   = $thing->role_for_group( group => $group );
+    my $role   = $thing->role_for_group($group);
     if ($role) {
         $self->_success( 
             loc("[_1] now has a '[_2]' role in [_3] due to membership in a Group",
