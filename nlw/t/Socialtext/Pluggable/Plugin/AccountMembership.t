@@ -12,7 +12,7 @@ fixtures(qw( db ));
 
 ###############################################################################
 # Short-hand names for the Roles we're going to use
-my $Affiliate = Socialtext::Role->Affiliate();
+my $Member_workspace = Socialtext::Role->Member_workspace();
 my $Member    = Socialtext::Role->Member();
 
 ###############################################################################
@@ -26,7 +26,7 @@ groups_role_in_primary_account: {
 }
 
 ###############################################################################
-# TEST: Group has an "Affiliate" Role in any secondary Account that it happens
+# TEST: Group has an "Member_workspace" Role in any secondary Account that it happens
 # to have a Workspace membership in.
 groups_role_in_secondary_account: {
     my $account = create_test_account_bypassing_factory();
@@ -34,8 +34,8 @@ groups_role_in_secondary_account: {
     my $group   = create_test_group();
 
     $ws->add_group(group => $group);
-    is $account->role_for_group($group)->name, $Affiliate->name,
-        'Group has Affiliate Role in Secondary Accounts';
+    is $account->role_for_group($group)->name, $Member_workspace->name,
+        'Group has Member_workspace Role in Secondary Accounts';
 }
 
 ###############################################################################
@@ -51,7 +51,7 @@ no_overwrite_of_member_role_in_account: {
         'Group has Member Role in test Account';
 
     $ws->add_group(group => $group);
-    is $account->role_for_group($group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member_workspace->name,
         '... added Group to WS in Account; Role in Account unchanged';
 }
 
@@ -69,7 +69,7 @@ no_teardown_of_member_role_in_account: {
 
     $ws->add_group(group => $group);
     ok $ws->has_group($group), '... added Group to WS';
-    is $account->role_for_group($group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member_workspace->name,
         '... ... Role in its Account is unchanged';
 
     $ws->remove_group(group => $group);
@@ -78,7 +78,7 @@ no_teardown_of_member_role_in_account: {
 }
 
 ###############################################################################
-# TEST: Group is "Member" of a WS, giving them an Affiliate Role in the WS's
+# TEST: Group is "Member" of a WS, giving them an Member_workspace Role in the WS's
 # Account.  Adding the Group to that Account upgrades their GAR to "Member".
 role_upgrade: {
     my $account = create_test_account_bypassing_factory();
@@ -86,17 +86,17 @@ role_upgrade: {
     my $group   = create_test_group();
 
     $ws->add_group(group => $group);
-    is $account->role_for_group($group)->name, $Affiliate->name,
-        'Group has Affiliate Role in secondary Account';
+    is $account->role_for_group($group)->name, $Member_workspace->name,
+        'Group has Member_workspace Role in secondary Account';
 
     $account->add_group(group => $group);
-    is $account->role_for_group($group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member_workspace->name,
         '... adding Group to Account upgrades to Member Role';
 }
 
 ###############################################################################
 # TEST: Group is "Member" of a WS _and_ its Account.  Removing the Group from
-# the Account downgrades its "Member" Role to "Affiliate" (because the Group
+# the Account downgrades its "Member" Role to "Member_workspace" (because the Group
 # still has a Role in the Workspace).
 role_downgrade: {
     my $account = create_test_account_bypassing_factory();
@@ -104,14 +104,14 @@ role_downgrade: {
     my $group   = create_test_group();
 
     $ws->add_group(group => $group);
-    is $account->role_for_group($group)->name, $Affiliate->name,
-        'Group has Affiliate Role in secondary Account';
+    is $account->role_for_group($group)->name, $Member_workspace->name,
+        'Group has Member_workspace Role in secondary Account';
 
     $account->add_group(group => $group);
-    is $account->role_for_group($group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member_workspace->name,
         '... adding Group to Account upgrades to Member Role';
 
     $account->remove_group(group => $group);
-    is $account->role_for_group($group)->name, $Affiliate->name,
-        '... removing Group from Account downgrades to Affiliate Role';
+    is $account->role_for_group($group)->name, $Member_workspace->name,
+        '... removing Group from Account downgrades to Member_workspace Role';
 }
