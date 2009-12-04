@@ -1,7 +1,6 @@
 package Socialtext::UserSet;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::User;
 use Socialtext::SQL qw/get_dbh :txn/;
 use Socialtext::Timer qw/time_scope/;
 use namespace::clean -except => 'meta';
@@ -102,7 +101,7 @@ _object_role_method 'add_object_role';
 around 'add_role' => \&_modify_wrapper;
 sub add_role {
     my ($self, $dbh, $x, $y, $role_id) = @_;
-
+    require Socialtext::User;
     confess "Can't add things to users"
         if Socialtext::User->new(user_id => $y);
 
