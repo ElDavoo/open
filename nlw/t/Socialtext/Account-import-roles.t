@@ -513,7 +513,7 @@ sub _dump_gars {
             push @gars, {
                 group   => $group->driver_group_name,
                 account => $account->name,
-                role    => $account->role_for_group(group => $group)->name,
+                role    => $account->role_for_group($group)->name,
             };
         }
     }
@@ -562,7 +562,7 @@ sub _dump_gwrs {
             push @gwrs, {
                 group     => $group->driver_group_name,
                 workspace => $workspace->name,
-                role      => $workspace->role_for_group(group => $group)->name,
+                role      => $workspace->role_for_group($group)->name,
             };
         }
     }
