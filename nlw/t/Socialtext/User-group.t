@@ -4,7 +4,6 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 6;
-use Socialtext::UserGroupRoleFactory;
 
 ###############################################################################
 # Fixtures: db
