@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 124;
+use Test::Socialtext tests => 129;
 use Test::Differences;
 use Test::Exception;
 use List::Util qw/shuffle/;
@@ -20,7 +20,9 @@ my $OFFSET = 1_000_000;
 my $uset = Socialtext::UserSet->new;
 
 my $member = Socialtext::Role->new(name => 'member')->role_id;
+ok $member;
 my $guest  = Socialtext::Role->new(name => 'guest')->role_id;
+ok $guest;
 
 sub reset_graph {
     local $dbh->{RaiseError} = 1;
@@ -86,12 +88,18 @@ bipartite: {
     dies_ok { del(5,6) } "second delete dies";
     is connected(5,6), 0, "edge removed";
     is connected(2,3), 1, "first one still there";
-
-    insert(5,6);
 }
 
 ingress: {
+    reset_graph();
     # 2 -> 3    5 -> 6
+    insert(2,3);
+    insert(5,6);
+    is_graph_tc(
+        [2,3 => 2,3],
+        [5,6 => 5,6],
+    );
+
     insert(1,2);
     # 1 -> 2 -> 3    5 -> 6
     is connected(1,2), 1, "new edge is a path";
@@ -119,7 +127,15 @@ ingress: {
 }
 
 egress: { 
+    reset_graph();
+    insert(2,3);
+    insert(5,6);
     # 2 -> 3    5 -> 6
+    is_graph_tc(
+        [2,3 => 2,3],
+        [5,6 => 5,6],
+    );
+    
     insert(6,7);
     # 2 -> 3    5 -> 6 -> 7
     is connected(6,7), 1, "new edge is a path";
@@ -147,7 +163,15 @@ egress: {
 }
 
 simple_join: { 
+    reset_graph();
+    insert(2,3);
+    insert(5,6);
     # 2 -> 3    5 -> 6
+    is_graph_tc(
+        [2,3 => 2,3],
+        [5,6 => 5,6],
+    );
+
     insert(3,5);
     # 2 -> 3 -> 5 -> 6
     is connected(3,5), 1, "new edge is a path";
