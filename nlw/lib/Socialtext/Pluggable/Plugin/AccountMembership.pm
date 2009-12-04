@@ -48,7 +48,7 @@ sub add_user_account_role {
     my $user    = shift;
     my $role    = shift;
 
-    if ($account->user_set->object_directly_connected($user)) {
+    if ($account->user_set->object_connected($user)) {
         $account->add_to_all_users_workspace(object => $user);
     }
 }
@@ -84,7 +84,7 @@ sub add_group_account_role {
     my $group   = shift;
     my $role    = shift;
 
-    if ($account->user_set->object_directly_connected($group)) {
+    if ($account->user_set->object_connected($group)) {
         $account->add_to_all_users_workspace(object => $group);
     }
 }
