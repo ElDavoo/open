@@ -85,10 +85,7 @@ query_groups_by_account_id: {
     ok !$iter, '... no more Groups';
 
     add_explicit_role: {
-        Socialtext::GroupAccountRoleFactory->Create({
-            group_id => $other_group->group_id,
-            account_id => $account->account_id,
-        });
+        $account->add_group(group => $other_group);
 
         $groups = Socialtext::Group->ByAccountId(
             account_id => $account->account_id
