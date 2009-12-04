@@ -101,9 +101,7 @@ _object_role_method 'add_object_role';
 around 'add_role' => \&_modify_wrapper;
 sub add_role {
     my ($self, $dbh, $x, $y, $role_id) = @_;
-    require Socialtext::User;
-    confess "Can't add things to users"
-        if Socialtext::User->new(user_id => $y);
+    confess "can't add things to users" if ($y <= USER_END);
 
     $role_id ||= 'member';
     _resolve_role(\$role_id);
@@ -143,6 +141,7 @@ _object_role_method 'update_object_role';
 sub update_role {
     my ($self, $dbh, $x, $y, $role_id) = @_;
     die "role_id is required" unless $role_id;
+    confess "can't add things to users" if ($y <= USER_END);
 
     $self->_delete($dbh, $x, $y);
     $self->_insert($dbh, $x, $y, $role_id);
