@@ -30,8 +30,8 @@ sub new {
         my $self = shift;
         my %p = validate( @_, $spec );
 
-        return
-            $p{workspace}->permissions->user_can(
+        return 0 unless $p{workspace}->real;
+        return $p{workspace}->permissions->user_can(
                 user       => $p{user},
                 permission => $p{permission},
             );
