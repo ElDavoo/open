@@ -16,20 +16,17 @@ sub RolesForUserInAccount {
     my $account = $p{account};
     my $direct  = defined $p{direct} ? $p{direct} : 0;
 
-    my $user_id = $user->user_id();
-    my $acct_id = $account->account_id();
-
     my $uar_table = $direct
-        ? 'user_account_role'
-        : 'distinct_user_account_role';
+        ? 'user_set_include'
+        : 'user_set_path';
 
     my $sql = qq{
         SELECT role_id
           FROM $uar_table
-         WHERE user_id = ?
-           AND account_id = ?
+         WHERE from_set_id = ?
+           AND into_set_id = ?
     };
-    my $sth = sql_execute($sql, $user_id, $acct_id);
+    my $sth = sql_execute($sql, $user->user_id, $account->user_set_id);
 
     # turn the results into a list of Roles
     my @all_roles =
