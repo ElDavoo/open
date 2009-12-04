@@ -147,6 +147,7 @@ primary_account_changes_memberhip: {
     $user2->primary_account($acct);
     membership_is [
         [$default_id,  $user_id ],
+        [$default_id,  $user2_id],
         [$acct_id,     $user2_id],
         [$acct2_id,    $user2_id],
     ], 'changing the primary account changes the account membership';
@@ -154,7 +155,10 @@ primary_account_changes_memberhip: {
     $user->primary_account($acct2);
     $user2->primary_account($acct2);
     membership_is [
+        [$default_id, $user_id ],
         [$acct2_id,   $user_id ],
+        [$default_id, $user2_id],
+        [$acct_id,    $user2_id],
         [$acct2_id,   $user2_id],
     ], 'change both users primary account';
 }
