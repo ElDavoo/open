@@ -15,8 +15,7 @@ fixtures(qw( db ));
 
 ###############################################################################
 # Short-hand access to some Roles.
-my $Guest     = Socialtext::Role->Guest();
-my $Affiliate = Socialtext::Role->Affiliate();
+my $Member_wksp = Socialtext::Role->Member_workspace();
 my $Member    = Socialtext::Role->Member();
 my $Admin     = Socialtext::Role->Admin();
 
@@ -51,7 +50,7 @@ get_role_for_user_explicit_uar: {
 }
 
 ###############################################################################
-# TEST: Get Role for User; UserWorkspaceRole, with affiliate UserAccountRole
+# TEST: Get Role for User; UserWorkspaceRole, with Member_wksp UserAccountRole
 get_role_for_user_uwr: {
     my $account   = create_test_account_bypassing_factory();
     my $workspace = create_test_workspace(account => $account);
@@ -64,7 +63,7 @@ get_role_for_user_uwr: {
         account => $account,
     );
     isa_ok $role, 'Socialtext::Role', 'Users secondary Role in Account';
-    is $role->name, $Affiliate->name, '... is the "Affiliate" Role';
+    is $role->name, $Member_wksp->name, '... is the "Member_wksp" Role';
 }
 
 ###############################################################################
@@ -86,7 +85,7 @@ get_role_for_user_gar: {
 }
 
 ###############################################################################
-# TEST: Get Role for User; UserGroupRole, GroupWorkspaceRole, with affiliate
+# TEST: Get Role for User; UserGroupRole, GroupWorkspaceRole, with Member_wksp
 # GroupAccountRole
 get_role_for_user_gwr: {
     my $account   = create_test_account_bypassing_factory();
@@ -102,7 +101,7 @@ get_role_for_user_gwr: {
         account => $account,
     );
     isa_ok $role, 'Socialtext::Role', 'Users indirect Role in Account';
-    is $role->name, $Affiliate->name, '... is the "Affiliate" Role';
+    is $role->name, $Member_wksp->name, '... is the "Member_wksp" Role';
 }
 
 ###############################################################################
@@ -115,14 +114,14 @@ get_roles_for_user_uar_and_gar: {
     $account->add_group(group => $group, role => $Member);
     $group->add_user(user => $user, role => $Admin);
 
-    $account->add_user(user => $user, role => $Guest);
+    $account->add_user(user => $user, role => $Admin);
 
     my @roles = Socialtext::Account::Roles->RolesForUserInAccount(
         user    => $user,
         account => $account,
     );
     my @received = map { $_->name } @roles;
-    my @expected = map { $_->name } ($Member, $Guest);
+    my @expected = map { $_->name } ($Admin, $Member);
     eq_or_diff \@received, \@expected, 'Users Roles in Account (UAR, GAR)';
 }
 
