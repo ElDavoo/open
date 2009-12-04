@@ -523,7 +523,7 @@ after 'role_change_event' => sub {
             $to_hook = 'nlw.remove_user_account_role';
         }
     }
-    elsif ($thing->isa('Socialtext::Workspace')) {
+    elsif ($thing->isa('Socialtext::Group')) {
         if ($change eq 'add') {
             $to_hook = 'nlw.add_group_account_role';
         }
