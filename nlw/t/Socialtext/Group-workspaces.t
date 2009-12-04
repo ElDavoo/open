@@ -1,10 +1,8 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
-
 use strict;
 use warnings;
 use Test::Socialtext tests => 6;
-use Socialtext::GroupWorkspaceRoleFactory;
 
 ###############################################################################
 # Fixtures: db
