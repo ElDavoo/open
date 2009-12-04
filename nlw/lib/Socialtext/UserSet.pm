@@ -332,24 +332,36 @@ sub direct_role {
 
 ###################################################
 
-sub _insert {
-    my ($self, $dbh, $x, $y, $role_id) = @_;
+sub _create_insert_temp {
+    my ($self, $dbh, $bulk) = @_;
 
-    my $t = time_scope('uset_insert');
-
-    $dbh->do(q{
-        INSERT INTO user_set_include
-        (from_set_id,into_set_id,role_id) VALUES ($1,$2,$3)
-    }, {}, $x, $y, $role_id);
-    
-    $dbh->do(q{
+    my $on_commit = $bulk ? 'DELETE ROWS' : 'DROP';
+    $dbh->do(qq{
         CREATE TEMPORARY TABLE to_copy (
             new_start int,
             new_via int,
             new_end int,
             new_vlist integer[]
-        ) ON COMMIT DROP;
+        ) WITHOUT OIDS ON COMMIT $on_commit;
     });
+}
+
+sub _insert {
+    my ($self, $dbh, $x, $y, $role_id, $bulk) = @_;
+
+    my $t = time_scope('uset_insert');
+
+    if ($bulk) {
+        $dbh->do(q{TRUNCATE TABLE to_copy});
+    }
+    else {
+        $dbh->do(q{
+            INSERT INTO user_set_include
+            (from_set_id,into_set_id,role_id) VALUES ($1,$2,$3)
+        }, {}, $x, $y, $role_id);
+        
+        $self->_create_insert_temp($dbh);
+    }
 
     # create the union of
     # 1) a path for (x,y)
@@ -357,45 +369,53 @@ sub _insert {
     # 3) paths that end with x; append (x,y) to these paths
     # 4) pairs of paths joined by (x,y); paths that can be merged
 
-    $dbh->do(q#
+    $dbh->do(q{
         INSERT INTO to_copy
+        SELECT DISTINCT * FROM (
+            SELECT
+                $1::integer new_start,
+                $1::integer new_via,
+                $2::integer new_end,
+                $5::int[] new_vlist
 
-        SELECT
-            $1::integer,
-            $1::integer,
-            $2::integer,
-            $5::int[]
+            UNION ALL
 
-        UNION
+            SELECT
+                $1::integer AS new_start,
+                via_set_id AS new_via,
+                into_set_id AS new_end,
+                $3::int[] + vlist AS new_vlist
+            FROM user_set_path
+            WHERE from_set_id = $2::integer
 
-        SELECT DISTINCT
-            $1::integer AS new_start,
-            via_set_id AS new_via,
-            into_set_id AS new_end,
-            $3::int[] + vlist
-        FROM user_set_path
-        WHERE from_set_id = $2::integer
+            UNION ALL
 
-        UNION
+            SELECT
+                from_set_id AS new_start,
+                into_set_id AS new_via,
+                $2::integer AS new_end,
+                vlist + $4::int[] AS new_vlist
+            FROM user_set_path
+            WHERE into_set_id = $1::integer
 
-        SELECT DISTINCT
-            from_set_id AS new_start,
-            into_set_id AS new_via,
-            $2::integer AS new_end,
-            vlist + $4::int[]
-        FROM user_set_path
-        WHERE into_set_id = $1::integer
+            UNION ALL
 
-        UNION
-
-        SELECT DISTINCT
-            before.from_set_id,
-            after.vlist[icount(after.vlist) - 1] AS new_via,
-            after.into_set_id,
-            before.vlist + after.vlist
-        FROM user_set_path before, user_set_path after
-        WHERE before.into_set_id = $1 AND after.from_set_id = $2
-    #, {}, $x, $y, "{$x}", "{$y}", "{$x,$y}");
+            SELECT
+                before.from_set_id AS new_start,
+                after.vlist[icount(after.vlist) - 1] AS new_via,
+                after.into_set_id AS new_end,
+                before.vlist + after.vlist AS new_vlist
+            FROM user_set_path before, user_set_path after
+            WHERE before.into_set_id = $1 AND after.from_set_id = $2
+        ) new_paths
+        WHERE (
+            new_start = new_end AND
+            icount(new_vlist) - 1  = icount(uniq(sort(new_vlist)))
+        )
+        OR (
+            icount(new_vlist) = icount(uniq(sort(new_vlist)))
+        )
+    }, {}, $x, $y, "{$x}", "{$y}", "{$x,$y}");
 
     # There should be no duplicated vertices in the vertex list for each path.
     # The exception is for "reflexive" paths in which case we allow for one
@@ -410,18 +430,7 @@ sub _insert {
             new_end AS into_set_id,
             usi.role_id AS role_id,
             new_vlist AS vlist
-        FROM (
-            SELECT *
-            FROM to_copy
-            WHERE (
-                new_start = new_end AND
-                icount(new_vlist) - 1  = icount(uniq(sort(new_vlist)))
-            )
-            OR
-            (
-                icount(new_vlist) = icount(uniq(sort(new_vlist)))
-            )
-        ) cpy
+        FROM to_copy cpy
         JOIN user_set_include usi ON (
             usi.from_set_id = cpy.new_via AND
             usi.into_set_id = cpy.new_end
