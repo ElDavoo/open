@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 48;
+use Test::Socialtext tests => 51;
 use Test::Exception;
 use Test::Warn;
 
@@ -76,6 +76,10 @@ user_not_in_account: {
     my $ws         = create_test_workspace(account => $acct);
     my $user       = create_test_user();
 
+    my $ws_users = $ws->users;
+    isa_ok $ws_users, 'Socialtext::MultiCursor';
+    is $ws_users->count, 0, '... starts with 0 users';
+
     # Make the workspace the all account workspace.
     $acct->update( all_users_workspace => $ws->workspace_id );
 
@@ -83,9 +87,9 @@ user_not_in_account: {
     # if they do not already have a role in the account.
     # User still can be added with $ws->add_user(), a 'legal' way of doing
     # this.
-    $acct->add_to_all_users_workspace( user_id => $user->user_id );
+    $acct->add_to_all_users_workspace( object => $user );
 
-    my $ws_users = $ws->users;
+    $ws_users = $ws->users;
     isa_ok $ws_users, 'Socialtext::MultiCursor';
     is $ws_users->count, 0, '... with no users';
 }
@@ -296,6 +300,7 @@ group_has_role_in_auw_when_added_to_account: {
     # Add Group to Account
     $acct->add_group( group => $group );
     ok $acct->has_group( $group ), 'Group is added to Account';
+    ok $acct->has_user( $user ), 'User is added to Account';
 
     # Check User's Role in the AUW
     $role = $ws->role_for_user($user, direct => 1 );
