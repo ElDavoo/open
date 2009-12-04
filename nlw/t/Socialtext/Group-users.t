@@ -5,7 +5,6 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 23;
 use Test::Exception;
-use Socialtext::UserGroupRoleFactory;
 
 ################################################################################
 # Fixtures: db
@@ -36,20 +35,10 @@ group_has_users: {
     my $user_one = create_test_user();
     my $user_two = create_test_user();
 
-    # Create UGRs, giving the user a default role.
-    # - we do this via UGR as we haven't tested the other helper methods yet
-    Socialtext::UserGroupRoleFactory->Create( {
-        user_id  => $user_one->user_id,
-        group_id => $group->group_id,
-    } );
-
-    Socialtext::UserGroupRoleFactory->Create( {
-        user_id  => $user_two->user_id,
-        group_id => $group->group_id,
-    } );
+    $group->add_user(user => $user_one);
+    $group->add_user(user => $user_two);
 
     my $users = $group->users();
-
     isa_ok $users, 'Socialtext::MultiCursor', 'got a list of users';
     is $users->count(), 2, '... with the correct count';
     isa_ok $users->next(), 'Socialtext::User', '... queried User';
@@ -86,7 +75,7 @@ add_user_to_group_with_default_role: {
     is $group->users->count(), 1, '... added User to Group';
 
     # Make sure User was given the default Role
-    my $default_role = Socialtext::UserGroupRoleFactory->DefaultRole();
+    my $default_role = Socialtext::Role->Member;
     my $users_role   = $group->role_for_user($user);
     is $users_role->role_id, $default_role->role_id,
         '... with Default UGR Role';
@@ -97,7 +86,7 @@ add_user_to_group_with_default_role: {
 add_user_to_group_with_role: {
     my $group = create_test_group();
     my $user  = create_test_user();
-    my $role  = Socialtext::Role->Guest();
+    my $role  = Socialtext::Role->Admin();
 
     # Group should be empty (have no Users)
     is $group->users->count(), 0, 'Group has no Users in it (yet)';
@@ -118,19 +107,19 @@ add_user_to_group_with_role: {
 update_users_role_in_group: {
     my $group = create_test_group();
     my $user  = create_test_user();
-    my $role  = Socialtext::Role->Guest();
+    my $role  = Socialtext::Role->Admin();
 
     # Add the User to the Group, with Default Role
     $group->add_user(user => $user);
 
     # Make sure the User was given the Default Role
-    my $default_role = Socialtext::UserGroupRoleFactory->DefaultRole();
+    my $default_role = Socialtext::Role->Member;
     my $users_role   = $group->role_for_user($user);
     is $users_role->role_id, $default_role->role_id,
         'User has default Role in Group';
 
     # Update the User's Role
-    $group->add_user(user => $user, role => $role);
+    $group->assign_role_to_user(user => $user, role => $role);
 
     # Make sure User had their Role updated
     $users_role = $group->role_for_user($user);
