@@ -584,12 +584,34 @@ sub dump_roles {
         for my $name (@Added_accounts) {
             my $acct = Socialtext::Account->new(name => $name);
             my $acct_id = $acct->account_id();
+
             my $acct_users = $acct->users;
-            my $count = $acct_users->count();
-            print "  * ($acct_id) $name ($count users)\n";
+            my $user_count = $acct_users->count();
+            my $acct_ws = $acct->workspaces;
+            my $wksp_count = $acct_ws->count;
+            print "  * ($acct_id) $name ($user_count users) "
+                . "($wksp_count wksps)\n";
+
             while (my $u = $acct_users->next) {
-                print "    - (" . $u->user_id . ") " . $u->username . "\n";
+                my $role_id = $acct->user_set->direct_object_role($u);
+                my $role = $role_id
+                    ? Socialtext::Role->new(role_id => $role_id)->name
+                    : 'unknown role';
+                my $name = $u->username;
+                my $id = $u->user_id;
+                print "    U ($id) $name ($role)\n";
             }
+
+            while (my $w = $acct_ws->next) {
+                my $role_id = $acct->user_set->direct_object_role($w);
+                my $role = $role_id
+                    ? Socialtext::Role->new(role_id => $role_id)->name
+                    : 'unknown role';
+                my $name = $w->name;
+                my $id = $w->workspace_id;
+                print "    W ($id) $name ($role)\n";
+            }
+
         }
     }
     print "=========\n\n";
