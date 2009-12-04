@@ -399,6 +399,7 @@ for my $thing_name (qw(user group)) {
             # at all and it uses hash params pointlessly.
             my @roles = map { Socialtext::Role->new(role_id => $_) } @role_ids;
             @roles = Socialtext::Role->SortByEffectiveness(roles => \@roles);
+            @roles = reverse @roles;
             return @roles if wantarray;
             return $roles[0];
         }
