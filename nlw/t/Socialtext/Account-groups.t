@@ -1,11 +1,9 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
-
 use strict;
 use warnings;
 use Test::Socialtext tests => 20;
 use Test::Exception;
-use Socialtext::GroupAccountRoleFactory;
 
 ###############################################################################
 # Fixtures: db
