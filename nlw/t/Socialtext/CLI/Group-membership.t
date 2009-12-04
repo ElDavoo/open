@@ -2,10 +2,9 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-
-use Socialtext::GroupAccountRoleFactory;
-use Test::Socialtext tests => 121;
+use Test::Socialtext tests => 119;
 use Test::Output qw(combined_from);
+use Carp qw/confess/;
 
 # Only need a DB.
 fixtures(qw(db));
@@ -17,7 +16,7 @@ use_ok 'Socialtext::CLI';
 our $LastExitVal;
 {
     no warnings 'redefine';
-    *Socialtext::CLI::_exit = sub { $LastExitVal=shift; die; };
+    *Socialtext::CLI::_exit = sub { $LastExitVal=shift; die };
 }
 
 ################################################################################
@@ -40,16 +39,8 @@ add_group_to_account: {
     like $output, qr/.+ is now a member of the .+ Account/,
         '... with correct message';
 
-    my $gar = Socialtext::GroupAccountRoleFactory->Get(
-        group_id => $group->group_id,
-        account_id => $account->account_id,
-    );
-    isa_ok $gar => 'Socialtext::GroupAccountRole';
-    is $gar->group_id => $group->group_id,
-        '... with correct group';
-    is $gar->account_id => $account->account_id,
-        '... with correct account';
-    is $gar->role_id => Socialtext::Role->Member()->role_id,
+    my $role = $account->role_for_group($group);
+    is $role->role_id => Socialtext::Role->Member()->role_id,
        '... with correct role';
 }
 
@@ -105,8 +96,6 @@ remove_group_from_primary_account: {
     my $account = create_test_account_bypassing_factory();
     my $group   = create_test_group( account => $account );
 
-    $account->add_group(group => $group);
-
     ok 1, 'Remove Group from Primary Account';
     my $output = combined_from( sub {
         eval {
@@ -154,11 +143,11 @@ group_users_in_account_membership: {
     my $user    = create_test_user();
     my $email   = $user->email_address;
 
+    ok $account->has_group( $group ), 'Group is in Account';
+
     $group->add_user( user => $user );
     ok $group->has_user( $user ), 'User is in Group';
 
-    $account->add_group( group => $group );
-    ok $account->has_group( $group ), 'Group is in Account';
 
     my $output = combined_from( sub {
         eval {
@@ -181,11 +170,10 @@ group_users_in_account_membership_de_duped: {
     my $user    = create_test_user( account => $account );
     my $email   = $user->email_address;
 
+    ok $account->has_group( $group ), 'Group is in Account';
+
     $group->add_user( user => $user );
     ok $group->has_user( $user ), 'User is in Group';
-
-    $account->add_group( group => $group );
-    ok $account->has_group( $group ), 'Group is in Account';
 
     my $output = combined_from( sub {
         eval {
@@ -237,14 +225,12 @@ group_users_in_workspace_membership_de_duped: {
 group_users_in_account_membership_no_displayed: {
     my $account = create_test_account_bypassing_factory();
     my $group   = create_test_group( account => $account );
+    ok $account->has_group( $group ), 'Group is in Account';
 
     my $user1  = create_test_user();
     my $email1 = $user1->email_address;
     $group->add_user( user => $user1 );
     ok $group->has_user( $user1 ), 'User is in Group';
-
-    $account->add_group( group => $group );
-    ok $account->has_group( $group ), 'Group is in Account';
 
     # create another user with a _direct_ account membership
     my $user2 = create_test_user( account => $account );
@@ -587,15 +573,15 @@ add_group_to_workspace: {
     like $output, qr/.+ now has a 'member' role in the .+ Workspace/,
         '... succeeds with correct message';
 
-    my $role = $workspace->role_for_group( group => $group );
+    my $role = $workspace->role_for_group($group);
     ok $role, '... Group has role';
     is $role->name, Socialtext::Role->Member()->name,
         '... ... that is a member';
 
-    $role = $account->role_for_group( group => $group );
+    $role = $account->role_for_group($group);
     ok $role, "... Group has role in Workspace's Account";
-    is $role->name, Socialtext::Role->Affiliate()->name,
-        '... ... that is an affiliate';
+    is $role->name, 'member_workspace',
+        '... ... that is a member_workspace';
 }
 
 ###############################################################################
@@ -644,7 +630,7 @@ group_is_already_member_of_workspace: {
     my $group     = create_test_group();
 
     $workspace->add_group( group => $group );
-    my $role = $workspace->role_for_group( group => $group );
+    my $role = $workspace->role_for_group($group);
 
     ok $role, 'Group has role in workspace';
     is $role->name, Socialtext::Role->Member()->name,
@@ -672,7 +658,7 @@ group_is_already_admin_of_workspace: {
     my $admin     = Socialtext::Role->Admin();
 
     $workspace->add_group( group => $group, role => $admin );
-    my $role = $workspace->role_for_group( group => $group );
+    my $role = $workspace->role_for_group($group);
 
     ok $role, 'Group has role in workspace';
     is $role->name, $admin->name,
@@ -714,15 +700,14 @@ add_group_as_admin_to_workspace: {
     } );
     like $output, qr/.+ now has a 'admin' role in the .+ Workspace/,
         'Group added as admin message';
-    my $role = $workspace->role_for_group( group => $group );
+    my $role = $workspace->role_for_group($group);
     ok $role, 'Group has Role in Workspace';
     is $role->name, Socialtext::Role->Admin()->name,
         '... Role is member';
 
-    $role = $account->role_for_group( group => $group );
+    $role = $account->role_for_group($group);
     ok $role, 'Group has Role in Account';
-    is $role->name, Socialtext::Role->Affiliate()->name,
-        '... Role is member';
+    is $role->name, 'member_workspace', '... Role is member';
 }
 
 ###############################################################################
@@ -733,7 +718,7 @@ add_group_as_admin_to_workspace: {
     my $group     = create_test_group();
 
     $workspace->add_group( group => $group );
-    my $role = $workspace->role_for_group( group => $group );
+    my $role = $workspace->role_for_group($group);
     ok $role, 'Group has Role in Workspace';
     is $role->name, Socialtext::Role->Member()->name,
         '... Role is member';
@@ -748,9 +733,10 @@ add_group_as_admin_to_workspace: {
             )->add_workspace_admin();
         };
     } );
+    warn $@ if $@;
     like $output, qr/.+ now has a 'admin' role in the .+ Workspace/,
         'Group added as admin message';
-    $role = $workspace->role_for_group( group => $group );
+    $role = $workspace->role_for_group($group);
     ok $role, 'Group has Role in Workspace';
     is $role->name, Socialtext::Role->Admin()->name,
         '... Role is admin';
@@ -839,11 +825,15 @@ group_member_remains_admin_in_workspace: {
     my $email     = $user->email_address;
     my $admin     = Socialtext::Role->Admin();
 
-
-
     $group->add_user( user => $user );
-    $workspace->add_user( user => $user, role => $admin );
     $workspace->add_group( group => $group, role => $admin );
+    {
+        my $role = $workspace->role_for_user($user);
+        is $role->name, 'admin', 'user has admin via group';
+    }
+
+
+    $workspace->add_user( user => $user, role => $admin );
     ok 1, 'Remove user as ws-admin in workspace directly and via group';
     my $output = combined_from( sub {
         eval {
@@ -856,6 +846,7 @@ group_member_remains_admin_in_workspace: {
         };
     } );
 
+    warn $@ if $@;
     like $output, qr/.+ now has a 'admin' role in the .+ Workspace due to membership in a group/, 
         '... with correct message';
 

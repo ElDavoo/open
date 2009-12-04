@@ -21,7 +21,7 @@ groups_role_in_primary_account: {
     my $account = create_test_account_bypassing_factory();
     my $group   = create_test_group(account => $account);
 
-    is $account->role_for_group(group => $group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member->name,
         'Group has Member Role in Primary Account';
 }
 
@@ -34,7 +34,7 @@ groups_role_in_secondary_account: {
     my $group   = create_test_group();
 
     $ws->add_group(group => $group);
-    is $account->role_for_group(group => $group)->name, $Affiliate->name,
+    is $account->role_for_group($group)->name, $Affiliate->name,
         'Group has Affiliate Role in Secondary Accounts';
 }
 
@@ -47,11 +47,11 @@ no_overwrite_of_member_role_in_account: {
     my $group   = create_test_group();
 
     $account->add_group(group => $group);
-    is $account->role_for_group(group => $group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member->name,
         'Group has Member Role in test Account';
 
     $ws->add_group(group => $group);
-    is $account->role_for_group(group => $group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member->name,
         '... added Group to WS in Account; Role in Account unchanged';
 }
 
@@ -64,16 +64,16 @@ no_teardown_of_member_role_in_account: {
     my $group   = create_test_group();
 
     $account->add_group(group => $group);
-    is $account->role_for_group(group => $group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member->name,
         'Group has Member Role in test Account';
 
     $ws->add_group(group => $group);
     ok $ws->has_group($group), '... added Group to WS';
-    is $account->role_for_group(group => $group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member->name,
         '... ... Role in its Account is unchanged';
 
     $ws->remove_group(group => $group);
-    is $account->role_for_group(group => $group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member->name,
         '... Group removed from WS; Role in Account unchanged';
 }
 
@@ -86,11 +86,11 @@ role_upgrade: {
     my $group   = create_test_group();
 
     $ws->add_group(group => $group);
-    is $account->role_for_group(group => $group)->name, $Affiliate->name,
+    is $account->role_for_group($group)->name, $Affiliate->name,
         'Group has Affiliate Role in secondary Account';
 
     $account->add_group(group => $group);
-    is $account->role_for_group(group => $group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member->name,
         '... adding Group to Account upgrades to Member Role';
 }
 
@@ -104,14 +104,14 @@ role_downgrade: {
     my $group   = create_test_group();
 
     $ws->add_group(group => $group);
-    is $account->role_for_group(group => $group)->name, $Affiliate->name,
+    is $account->role_for_group($group)->name, $Affiliate->name,
         'Group has Affiliate Role in secondary Account';
 
     $account->add_group(group => $group);
-    is $account->role_for_group(group => $group)->name, $Member->name,
+    is $account->role_for_group($group)->name, $Member->name,
         '... adding Group to Account upgrades to Member Role';
 
     $account->remove_group(group => $group);
-    is $account->role_for_group(group => $group)->name, $Affiliate->name,
+    is $account->role_for_group($group)->name, $Affiliate->name,
         '... removing Group from Account downgrades to Affiliate Role';
 }
