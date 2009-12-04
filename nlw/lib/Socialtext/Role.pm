@@ -166,29 +166,13 @@ sub display_name {
     return join ' ', split /_/, $_[0]->name;
 }
 
-sub Guest {
-    shift->new( name => 'guest' );
-}
-
-sub AuthenticatedUser {
-    shift->new( name => 'authenticated_user' );
-}
-
-sub Affiliate {
-    shift->new( name => 'affiliate' );
-}
-
-sub Member {
-    shift->new( name => 'member' );
-}
-
-sub Admin {
-    shift->new( name => 'admin' );
-}
-
-sub Impersonator {
-    shift->new( name => 'impersonator' );
-}
+sub Guest             { shift->new(name => 'guest') }
+sub AuthenticatedUser { shift->new(name => 'authenticated_user') }
+sub Affiliate         { shift->new(name => 'affiliate') }
+sub Member            { shift->new(name => 'member') }
+sub Member_workspace  { shift->new(name => 'member_workspace') }
+sub Admin             { shift->new(name => 'admin') }
+sub Impersonator      { shift->new(name => 'impersonator') }
 
 sub DefaultRoleNames {
     return map { $_->[0] } @RequiredRoles;
