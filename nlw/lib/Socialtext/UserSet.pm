@@ -213,7 +213,7 @@ sub _connected {
         WHERE from_set_id = $1 AND into_set_id = $2
         LIMIT 1
     }, {}, $x, $y);
-    return $has_direct_role ? 1 : undef;
+    return $has_direct_role ? 1 : 0;
 }
 
 =item has_role ($x,$y,$role_id)
