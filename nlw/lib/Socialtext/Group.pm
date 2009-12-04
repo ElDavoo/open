@@ -405,7 +405,17 @@ after 'role_change_event' => sub {
 ###############################################################################
 sub workspaces {
     my $self = shift;
-    die "Implement me: multi-cursor selecting workspace_ids for this group";
+
+    my $sth = sql_execute( q{
+            SELECT into_set_id - }.PG_WKSP_OFFSET.q{ as workspace_id
+              FROM user_set_path
+             WHERE from_set_id = ?
+               AND into_set_id }.PG_WKSP_FILTER.q{
+        }, $self->user_set_id);
+    return Socialtext::MultiCursor->new(
+        iterables => $sth->fetchall_arrayref(),
+        apply => sub { Socialtext::Workspace->new(workspace_id => shift) },
+    );
 }
 
 ###############################################################################
