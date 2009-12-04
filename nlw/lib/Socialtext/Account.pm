@@ -774,7 +774,11 @@ sub add_to_all_users_workspace {
                !$auw->email_passes_invitation_filter($o->email_address));
 
     return if $auw->user_set->object_directly_connected($o);
-    $auw->add_role(object => $o, role => $p{role});
+    $auw->add_role(
+        actor => $p{actor} || Socialtext::User->SystemUser,
+        object => $o, 
+        role => $p{role},
+    );
 }
 
 sub Count {
