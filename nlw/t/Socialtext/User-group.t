@@ -35,19 +35,10 @@ user_has_groups: {
     my $group_one = create_test_group();
     my $group_two = create_test_group();
 
-    # Create UGRs, giving the user a default role.
-    Socialtext::UserGroupRoleFactory->Create( {
-        user_id  => $me->user_id,
-        group_id => $group_one->group_id,
-    } );
-
-    Socialtext::UserGroupRoleFactory->Create( {
-        user_id  => $me->user_id,
-        group_id => $group_two->group_id,
-    } );
+    $group_one->add_user(user => $me);
+    $group_two->add_user(user => $me);
 
     my $groups = $me->groups();
-
     isa_ok $groups, 'Socialtext::MultiCursor', 'got a list of groups';
     is $groups->count(), 2, '... with the correct count';
     isa_ok $groups->next(), 'Socialtext::Group', '...';
