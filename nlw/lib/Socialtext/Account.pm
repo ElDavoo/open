@@ -763,15 +763,19 @@ sub add_to_all_users_workspace {
     my $auw_id = $self->all_users_workspace;
     return unless $auw_id;
     my $auw  = Socialtext::Workspace->new(workspace_id => $auw_id);
-
     return unless $auw;
 
     my $o = delete $p{object};
 
-    # Now according to {bz: 2896} we still need to check invitation_filter
-    # here.
-    return if ($o->isa('Socialtext::User') &&
-               !$auw->email_passes_invitation_filter($o->email_address));
+    if ($o->isa('Socialtext::User')) {
+        # Now according to {bz: 2896} we still need to check invitation_filter
+        # here.
+        return if !$auw->email_passes_invitation_filter($o->email_address);
+
+        # User cannot be added via this api if they do not already have a role
+        # in this account
+        return unless $self->role_for_user($o);
+    }
 
     return if $auw->user_set->object_directly_connected($o);
     $auw->add_role(
