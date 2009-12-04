@@ -187,3 +187,21 @@ sub load {
 
 no Moose::Role;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Avatar - Role for storing user/group/account avatars.
+
+=head1 SYNOPSIS
+
+  use constant ROLES => ('Socialtext::Avatar');
+  ...
+  with(ROLES);
+
+=head1 DESCRIPTION
+
+Saves the image blob to the database and to a cached version on disk.
+
+=cut
