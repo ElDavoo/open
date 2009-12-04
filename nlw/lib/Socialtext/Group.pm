@@ -106,24 +106,19 @@ sub All {
         if $p{driver_key};
 
     if ($p{account_id}) {
-        $from .= q{
-            JOIN user_set_include_tc atc
-            ON (user_set_id = atc.from_set_id)
-        };
-        push @where, 'atc.into_set_id' => $p{account_id} + ACCT_OFFSET;
+        push @where, \[q{user_set_id IN (
+                            SELECT from_set_id
+                              FROM user_set_path 
+                             WHERE into_set_id = ?)
+                         }, $p{account_id} + ACCT_OFFSET];
     }
 
     if ($p{workspace_id}) {
-        $from .= q{
-            JOIN user_set_include_tc wtc
-            ON (user_set_id = wtc.from_set_id)
-        };
-        push @where, 'wtc.into_set_id' => $p{workspace_id} + WKSP_OFFSET;
-    }
-
-    if (!$p{_count_only} && ($p{account_id} || $p{workspace_id})) {
-        $from .= q{ JOIN "Role" rrr USING (role_id) };
-        push @cols, 'rrr.name AS role_name';
+        push @where, \[q{user_set_id IN (
+                            SELECT from_set_id
+                              FROM user_set_path
+                             WHERE into_set_id = ?)
+                        }, $p{workspace_id} + WKSP_OFFSET];
     }
 
     if ($p{_count_only}) {
@@ -133,8 +128,10 @@ sub All {
     else {
         if ($ob =~ /^\w+$/ and $p{sort_order} =~ /^(?:ASC|DESC)$/i) {
             $order = "$ob $p{sort_order}";
-            $order .= ", driver_group_name ASC"
-                unless ($ob eq 'driver_group_name' || $ob eq 'group_id');
+            push @cols, 'driver_group_name';
+            unless ($ob eq 'driver_group_name' || $ob eq 'group_id') {
+                $order .= ", driver_group_name ASC";
+            }
             $order .= ", group_id ASC" unless ($ob eq 'group_id');
         }
 

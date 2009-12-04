@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 85;
 use Test::Exception;
+use Test::Differences;
 use Socialtext::SQL qw/:exec/;
 
 fixtures(qw(db));
@@ -54,7 +55,7 @@ sub is_sort ($$@) {
     ok $sorted, "got result from $sort_method";
 
     my @all = $sorted->all;
-    is_deeply [ map { $_->group_id } @all ],
+    eq_or_diff [ map { $_->group_id } @all ],
               [ map { $_->group_id } (@_) ],
               "sorted by $order_by in $sort_order order";
 }
