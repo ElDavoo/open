@@ -4,6 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 21;
+use Test::Differences;
 use Socialtext::User;
 
 ###############################################################################
@@ -20,7 +21,8 @@ users_with_primary_account: {
     my $results = Socialtext::User->ByAccountId(
         account_id => $account->account_id,
     );
-    is_deeply(
+    dump_roles();
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } $user ],
         'ByAccountId includes Users with access as a primary account',
@@ -48,7 +50,7 @@ users_with_secondary_account: {
     my $results = Socialtext::User->ByAccountId(
         account_id => $account_two->account_id,
     );
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } ($user_one, $user_two) ],
         'ByAccountId includes Users with access as a secondary account',
@@ -76,9 +78,9 @@ users_only_with_primary_account: {
     # get the Users in the second Account; should be *both* Users
     my $results = Socialtext::User->ByAccountId(
         account_id   => $account_two->account_id,
-        primary_only => 1,
+        direct => 1,
     );
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } $user_two ],
         'ByAccountId can restrict to only Users with this as primary account',
@@ -105,7 +107,7 @@ users_with_a_direct_role: {
         account_id => $account->account_id,
     );
     is $results->count(), 3, 'three Users have a Role';
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } ($user_one, $user_two, $user_three) ],
         '... and it is Users one, two and three'
@@ -117,7 +119,7 @@ users_with_a_direct_role: {
         direct     => 1,
     );
     is $results->count(), 2, 'two Users have a _direct_ Role';
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } ($user_one, $user_two) ],
         '... and it is Users one and two'
@@ -144,7 +146,7 @@ include_hidden_people: {
             account_id   => $account->account_id,
         );
         is $results->count(), 2, 'ByAccountId includes hidden people by default';
-        is_deeply(
+        eq_or_diff(
             [ map { $_->username } $results->all ],
             [ map { $_->username } ($user_one, $user_two) ],
             '... and its the Users/order we expected',
@@ -176,7 +178,7 @@ exclude_hidden_people: {
             exclude_hidden_people => 1,
         );
         is $results->count(), 1, 'ByAccountId can exclude hidden people';
-        is_deeply(
+        eq_or_diff(
             [ map { $_->username } $results->all ],
             [ map { $_->username } ($user_visible) ],
             '... and its the User we expected',
@@ -197,7 +199,7 @@ limit_number_of_results: {
         limit      => 1,
     );
     is $results->count(), 1, 'ByAccountId can limit number of results';
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } ($user_one) ],
         '... and its the User we expect',
@@ -210,7 +212,7 @@ limit_number_of_results: {
         offset     => 1,
     );
     is $results->count(), 1, 'ByAccountId can offset results';
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } ($user_two) ],
         '... and its the User we expect',
@@ -232,7 +234,7 @@ order_by_username: {
         account_id => $account->account_id,
         order_by => 'username',
     );
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } @sorted ],
         'ByAccountId can order by "username"',
@@ -256,7 +258,7 @@ order_by_username_desc: {
         order_by   => 'username',
         sort_order => 'DESC',
     );
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } @sorted ],
         'ByAccountId can order by "username", in DESCending order',
@@ -280,7 +282,7 @@ order_by_creation_datetime: {
         account_id => $account->account_id,
         order_by   => 'creation_datetime',
     );
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } @sorted ],
         'ByAccountId can order by "creation_datetime" (DESCending)',
@@ -313,7 +315,7 @@ ordered_by_creator: {
         account_id => $account->account_id,
         order_by   => 'creator',
     );
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } @sorted ],
         'ByAccountId can order by "creator"',
@@ -345,7 +347,7 @@ order_by_primary_account: {
         account_id => $account_one->account_id,
         order_by   => 'primary_account',
     );
-    is_deeply(
+    eq_or_diff(
         [ map { $_->username } $results->all ],
         [ map { $_->username } @sorted ],
         'ByAccountId can order by "primary_account"',

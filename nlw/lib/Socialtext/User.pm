@@ -939,7 +939,6 @@ EOSQL
             default => 'username',
         ),
         account_id            => SCALAR_TYPE,
-        primary_only          => BOOLEAN_TYPE(default => 0),
         direct                => BOOLEAN_TYPE(default => 0),
         exclude_hidden_people => BOOLEAN_TYPE(default => 0),
         ids_only              => BOOLEAN_TYPE(default => 0),
@@ -949,63 +948,77 @@ EOSQL
         my $class = shift;
         my %p = validate( @_, $spec );
 
-        $p{apply} =
-            $p{ids_only}
+        croak 'ByAccountId primary_only flag has been removed. Update the code.'
+            if exists $p{primary_only};
+
+        $p{apply} = $p{ids_only}
             ? sub { shift->[0] }
             : sub { Socialtext::User->new(user_id => shift->[0]) };
 
         # We're supposed to default to DESCending if we're creation_datetime.
         $p{sort_order} ||= $p{order_by} eq 'creation_datetime' ? 'DESC' : 'ASC';
 
-        my @bind = qw( account_id limit offset );
-        my $account_where = 'ua.account_id = ?';
-        if ($p{primary_only}) {
-            $account_where .= ' AND ua.is_primary';
-        }
-
-        if ($p{direct}) {
-            $account_where .= ' AND ua.is_direct';
-        }
+        my @bind = qw( user_set_id limit offset );
+        $p{user_set_id} = $p{account_id} + ACCT_OFFSET;
+        my $uar_table = $p{direct}
+            ? 'user_set_include'
+            : 'user_set_path';
 
         my $exclude_hidden_clause = '';
         if ($p{exclude_hidden_people}) {
-            $exclude_hidden_clause = 'AND NOT u.is_profile_hidden';
+            $exclude_hidden_clause = 'WHERE NOT is_profile_hidden';
         }
 
         Readonly my %SQL => (
             creation_datetime => <<EOSQL,
-SELECT DISTINCT u.user_id, um.creation_datetime, u.driver_username
-  FROM user_account ua
-  JOIN users u USING (user_id)
-  JOIN "UserMetadata" um USING (user_id)
- WHERE ($account_where) $exclude_hidden_clause
- ORDER BY um.creation_datetime $p{sort_order}, u.driver_username ASC
+SELECT DISTINCT(user_id), creation_datetime, driver_username
+  FROM users
+  JOIN (
+      SELECT from_set_id AS user_id
+        FROM $uar_table
+       WHERE into_set_id = ?
+  ) uar USING (user_id)
+  JOIN "UserMetadata" USING (user_id)
+  $exclude_hidden_clause
+ ORDER BY creation_datetime $p{sort_order}, driver_username ASC
  LIMIT ? OFFSET ?
 EOSQL
             creator => <<EOSQL,
-SELECT DISTINCT ua.user_id, u2.driver_username AS creator_name, u.driver_username
-  FROM user_account ua
-  JOIN users u USING (user_id)
+SELECT DISTINCT u.user_id, u2.driver_username AS creator_name, u.driver_username
+  FROM users u
+  JOIN (
+      SELECT from_set_id AS user_id
+        FROM $uar_table
+       WHERE into_set_id = ?
+  ) uar USING (user_id)
   JOIN "UserMetadata" um USING (user_id)
   LEFT JOIN users u2 ON (um.created_by_user_id = u2.user_id)
- WHERE ($account_where) $exclude_hidden_clause
+  $exclude_hidden_clause
  ORDER BY u2.driver_username $p{sort_order}, u.driver_username ASC
  LIMIT ? OFFSET ?
 EOSQL
-            username => <<EOSQL,
-SELECT DISTINCT ua.user_id, u.driver_username
-  FROM user_account ua
-  JOIN users u USING (user_id)
- WHERE ($account_where) $exclude_hidden_clause
- ORDER BY u.driver_username $p{sort_order}
+            username => qq{
+SELECT DISTINCT(user_id), driver_username
+  FROM users
+  JOIN (
+      SELECT from_set_id AS user_id
+        FROM $uar_table
+       WHERE into_set_id = ?
+  ) uar USING (user_id)
+  $exclude_hidden_clause
+ ORDER BY driver_username $p{sort_order}
  LIMIT ? OFFSET ?
-EOSQL
+},
             primary_account => <<EOSQL,
-SELECT DISTINCT ua.user_id, acct.name, u.driver_username
-  FROM user_account ua
-  JOIN users u USING (user_id)
-  JOIN "Account" acct USING (account_id)
- WHERE ($account_where) $exclude_hidden_clause
+SELECT DISTINCT u.user_id, acct.name, u.driver_username
+  FROM users u
+  JOIN (
+      SELECT from_set_id AS user_id, into_set_id AS account_set_id
+        FROM $uar_table
+       WHERE into_set_id = ?
+  ) uar USING (user_id)
+  JOIN "Account" acct ON (acct.user_set_id = account_set_id)
+  $exclude_hidden_clause
  ORDER BY acct.name $p{sort_order}, u.driver_username ASC
  LIMIT ? OFFSET ?
 EOSQL
