@@ -11,6 +11,7 @@ use Class::Field qw/field/;
 use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::HTML;
 use Socialtext::Formatter::LinkDictionary;
+use Socialtext::UserSet qw/:const/;
 use namespace::clean -except => 'meta';
 
 has 'viewer' => (
@@ -394,9 +395,9 @@ sub visibility_sql {
     return $sql,@bind;
 }
 
-my $VISIBLE_WORKSPACES = <<'EOSQL';
-    SELECT workspace_id FROM user_workspace_role WHERE user_id = ?
-EOSQL
+my $VISIBLE_WORKSPACES = q{
+    SELECT into_set_id - }.PG_WKSP_OFFSET.q{ AS workspace_id FROM user_set_include_tc WHERE from_set_id = ?
+};
 
 my $PUBLIC_WORKSPACES = <<'EOSQL';
     SELECT workspace_id
