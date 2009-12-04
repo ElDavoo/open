@@ -260,11 +260,7 @@ for my $thing_name (qw(user group)) {
 
     my $realize_thing = ($thing_name eq 'user')
         ? sub { Socialtext::User->new(user_id => $_[0]) }
-        : sub {
-            my $gid = shift;
-            $gid -= GROUP_OFFSET if $gid > GROUP_OFFSET;
-            return Socialtext::Group->GetGroup(group_id => $gid)
-        };
+        : sub { Socialtext::Group->GetGroup(group_id => $_[0]) };
 
     my $thing_checker = ($thing_name eq 'user')
         ? sub { $_[0] && blessed($_[0]) && ($_[0]->isa('Socialtext::User') or $_[0]->isa('Socialtext::UserMetadata')) }

@@ -300,6 +300,9 @@ sub GetGroup {
     my $class = shift;
     my %p = (@_==1) ? %{+shift} : @_;
 
+    $p{group_id} -= GROUP_OFFSET
+        if exists $p{group_id} and $p{group_id} > GROUP_OFFSET;
+
     # Allow for lookups by "Group Id" to be cached.
     if ((scalar keys %p == 1) && (exists $p{group_id})) {
         my $cached = $class->cache->get($p{group_id});
