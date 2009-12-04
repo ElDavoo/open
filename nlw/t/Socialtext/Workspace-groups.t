@@ -5,7 +5,6 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 22;
 use Test::Exception;
-use Socialtext::GroupWorkspaceRoleFactory;
 
 ###############################################################################
 # Fixtures: db
@@ -65,7 +64,7 @@ add_group_to_workspace_with_default_role: {
     is $workspace->group_count(), 1, 'Group was added to Workspace';
 
     # Make sure Group was given the default Role
-    my $default_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
+    my $default_role = Socialtext::Role->Member;
     my $groups_role  = $workspace->role_for_group($group);
     is $groups_role->role_id, $default_role->role_id,
         '... with Default GWR Role'
@@ -100,7 +99,7 @@ update_groups_role_in_workspace: {
     $workspace->add_group(group => $group);
 
     # Make sure the Group was given the Default Role
-    my $default_role = Socialtext::GroupWorkspaceRoleFactory->DefaultRole();
+    my $default_role = Socialtext::Role->Member;
     my $groups_role  = $workspace->role_for_group($group);
     is $groups_role->role_id, $default_role->role_id,
         '... with Default UGR Role';
