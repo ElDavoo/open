@@ -285,6 +285,7 @@ sub export {
             workspace_id =>$self->all_users_workspace )->name()
         : undef;
 
+    my $logo_ref = $self->logo->logo;
     my $data = {
         # versioning
         version                    => $EXPORT_VERSION,
@@ -294,7 +295,7 @@ sub export {
         skin_name                  => $self->skin_name,
         email_addresses_are_hidden => $self->email_addresses_are_hidden,
         users                      => $self->all_users_as_hash,
-        logo                       => MIME::Base64::encode($self->logo->logo),
+        logo                       => MIME::Base64::encode($$logo_ref),
         allow_invitation           => $self->allow_invitation,
         all_users_workspace        => $all_users_workspace,
         plugins                    => [ $self->plugins_enabled ],

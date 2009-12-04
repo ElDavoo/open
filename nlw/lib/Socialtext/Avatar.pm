@@ -118,10 +118,9 @@ sub _save_db {
             );
         }
         else {
-            my $cols = join ", ", $self->versions;
-            $sth = $dbh->prepare("
-                INSERT INTO $table ($cols, $id_column) VALUES (?,?,?)
-            ");
+            my $cols = join ', ', $self->versions, $id_column;
+            my $ques = join ', ', map('?', 0 .. scalar @{$self->versions});
+            $sth = $dbh->prepare("INSERT INTO $table ($cols) VALUES ($ques)");
         }
 
         my $n = 1;
