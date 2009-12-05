@@ -312,7 +312,7 @@ sub export {
 
 sub all_users_as_hash {
     my $self  = shift;
-    my $iter  = $self->users();
+    my $iter  = $self->users(show_hidden => 1);
     my @users = map { $self->_dump_user_to_hash($_) } $iter->all();
     return \@users;
 }
