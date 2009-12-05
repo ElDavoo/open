@@ -1356,7 +1356,7 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
         /* Turn visual LIs (bullet chars) into real LIs */
         var cur;
         while (cur = $(dom).find(
-            'p.ListParagraphCxSpFirst:first, p.MsoListParagraphCxSpFirst:first, p.MsoListParagraph:first'
+            'p.ListParagraphCxSpFirst:first, p.MsoListParagraphCxSpFirst:first, p.MsoListParagraph:first, p.ListParagraph:first'
         )[0]) {
             $(cur).replaceWith( self.build_msoffice_list(cur) );
         }
