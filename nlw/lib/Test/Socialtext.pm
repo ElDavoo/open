@@ -19,6 +19,8 @@ use Socialtext::Group;
 use Socialtext::User;
 use Socialtext::Cache;
 use Socialtext::AppConfig;
+use Socialtext::SQL qw/:exec/;
+use Socialtext::UserSet qw/:const/;
 use YAML;
 use File::Temp qw/tempdir/;
 use File::Spec;
@@ -600,8 +602,20 @@ sub dump_roles {
             my $user_count = $acct_users->count();
             my $acct_ws = $acct->workspaces;
             my $wksp_count = $acct_ws->count;
+            my $acct_groups = $acct->groups;
+            my $group_count = $acct_groups->count;
             print "  * ($acct_id) $name ($user_count users) "
-                . "($wksp_count wksps)\n";
+                . "($wksp_count wksps) "
+                . "($group_count groups)\n";
+
+
+            my $sth = sql_execute(q{
+                SELECT from_set_id FROM user_set_path
+                 WHERE into_set_id = ?
+                 }, $acct->user_set_id,
+            );
+            my $rows = $sth->fetchall_arrayref();
+            my %related_user_sets = map { $_->[0] => 1 } @$rows;
 
             while (my $u = $acct_users->next) {
                 my $role_id = $acct->user_set->direct_object_role($u);
@@ -611,6 +625,10 @@ sub dump_roles {
                 my $name = $u->username;
                 my $id = $u->user_id;
                 print "    U ($id) $name ($role)\n";
+                
+                if (! delete $related_user_sets{$u->user_set_id}) {
+                    warn "      (THIS USER WAS NOT RELATED?!)\n";
+                }
             }
 
             while (my $w = $acct_ws->next) {
@@ -621,8 +639,48 @@ sub dump_roles {
                 my $name = $w->name;
                 my $id = $w->workspace_id;
                 print "    W ($id) $name ($role)\n";
+                
+                if (! delete $related_user_sets{$w->user_set_id}) {
+                    warn "      (THIS WORKSPACE WAS NOT RELATED?!)\n";
+                }
             }
 
+            while (my $g = $acct_groups->next) {
+                my $role_id = $acct->user_set->direct_object_role($g);
+                my $role = $role_id
+                    ? Socialtext::Role->new(role_id => $role_id)->name
+                    : 'unknown role';
+                my $name = $g->driver_group_name;
+                my $id = $g->group_id;
+                print "    G ($id) $name ($role)\n";
+                
+                if (! delete $related_user_sets{$g->user_set_id}) {
+                    warn "      (THIS GROUP WAS NOT RELATED?!)\n";
+                }
+            }
+
+            if (keys %related_user_sets) {
+                warn "Other additional related user sets:\n";
+                for my $set_id (sort keys %related_user_sets) {
+                    if ($set_id <= USER_END) {
+                        warn "  User: $set_id\n";
+                    }
+                    elsif ($set_id <= GROUP_END) {
+                        $set_id -= GROUP_OFFSET;
+                        warn "  Group: $set_id\n";
+                    }
+                    elsif ($set_id <= WKSP_END) {
+                        $set_id -= WKSP_OFFSET;
+                        warn "  Workspace: $set_id\n";
+                    }
+                    elsif ($set_id <= ACCT_END) {
+                        $set_id -= ACCT_OFFSET;
+                        warn "  Account $set_id\n";
+                    }
+                    else { die "Unknown user_set_id: $set_id" }
+                }
+            }
+                  
         }
     }
     print "=========\n\n";
