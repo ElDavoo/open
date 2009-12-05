@@ -215,7 +215,10 @@ sub workspace_count {
 
 around 'groups','group_count' => sub {
     my $code = shift;
-    $code->(@_, direct => 1);
+    my $self = shift;
+    my %p = @_;
+    $p{direct} = 1 unless exists $p{direct};
+    $code->($self, %p);
 };
 
 sub _primary_user_ids {
