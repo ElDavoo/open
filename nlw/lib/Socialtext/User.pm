@@ -389,7 +389,7 @@ sub groups {
     my $sth = sql_execute(q{
         SELECT DISTINCT(into_set_id) AS group_id, driver_group_name
         FROM user_set_path
-        JOIN groups on into_set_id = group_id + }.PG_GROUP_OFFSET.q{
+        JOIN groups ON into_set_id = user_set_id
         WHERE from_set_id = ?
           AND into_set_id }.PG_GROUP_FILTER.q{
         ORDER BY driver_group_name
