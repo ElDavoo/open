@@ -429,12 +429,13 @@ for my $thing_name (qw(user group)) {
         my ($self,%p) = @_;
         my $t = time_scope("uset_${thing_name}_count");
         my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
+        my $filter = $p{show_hidden} ? '' : $from_set_filter;
         my $count = sql_singlevalue(qq{
             SELECT COUNT(DISTINCT(from_set_id))
             FROM $table
             WHERE from_set_id $id_filter
               AND into_set_id = ?
-              $from_set_filter
+              $filter
         }, $self->user_set_id);
     };
 
@@ -443,12 +444,13 @@ for my $thing_name (qw(user group)) {
         my ($self,%p) = @_;
         my $t = time_scope("uset_${thing_name}_ids");
         my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
+        my $filter = $p{show_hidden} ? '' : $from_set_filter;
         my $sth = sql_execute(qq{
             SELECT DISTINCT from_set_id
             FROM $table
             WHERE from_set_id $id_filter
               AND into_set_id = ?
-              $from_set_filter
+              $filter
         }, $self->user_set_id);
         return [map { $_->[0] - $id_offset } @{$sth->fetchall_arrayref || []}];
     };
