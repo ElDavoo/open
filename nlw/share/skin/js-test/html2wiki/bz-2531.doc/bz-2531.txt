@@ -5,6 +5,7 @@ Successful Farming Proposed Survey Questions
 ** Own but rent out (absentee owner)
 ** Employed on a farm or ranch
 ** Agribusiness (occupation)
+
 # Corn (specify acres)
 ** Total corn acres: _____
 ** BT corn (corn Borer) acres:_____
@@ -60,4 +61,5 @@ Successful Farming Proposed Survey Questions
 ** New Holland
 ** AGCO
 ** Other __________________
+
 

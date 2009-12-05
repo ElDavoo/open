@@ -660,6 +660,10 @@ proto.strip_msword_gunk = function(html) {
             }
         ).
         replace(
+            /(<P[^>]*style="[^>"]*mso-list:\s*l\d[^>"]*"[^>]*)class="?MsoNormal"?/ig,
+            '$1class="MsoListParagraphCxSpMiddle"'
+        ).
+        replace(
             /<!--\[if\s+!supportLists\]-->([\w\W]*?)<!(--)?\[endif\]-->/ig, function(m, $1) {
                 return '<!--[SocialtextBulletBegin]-->' + $1 + '<!--[SocialtextBulletEnd]-->';
             }
@@ -1307,6 +1311,10 @@ proto.build_msoffice_list = function(top) {
         )[0]) {
             var $cur = $(cur);
             if ($cur.hasClass('_st_walked')) continue;
+            if (parseInt($cur.css('text-indent') || '0') == 0 && ($cur.text().search(/\S/) == -1)) {
+                toRemove.push($cur);
+                continue;
+            }
 
             var topIndent = self._css_to_px($top.css('margin-left')) || 0;
             var curIndent = self._css_to_px($cur.css('margin-left')) || 0;
@@ -1348,7 +1356,7 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
         /* Turn visual LIs (bullet chars) into real LIs */
         var cur;
         while (cur = $(dom).find(
-            'p.ListParagraphCxSpFirst:first, p.MsoListParagraphCxSpFirst:first'
+            'p.ListParagraphCxSpFirst:first, p.MsoListParagraphCxSpFirst:first, p.MsoListParagraph:first'
         )[0]) {
             $(cur).replaceWith( self.build_msoffice_list(cur) );
         }
