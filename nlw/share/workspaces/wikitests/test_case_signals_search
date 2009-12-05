@@ -60,6 +60,7 @@
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
 | pause | 8000 | I hate pause |
 
@@ -101,6 +102,7 @@
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
 | pause | 8000 | I hate Pause |
 
@@ -129,13 +131,14 @@
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
 | pause | 8000 | I hate pause |
 
 | *Comment* | Test Case: Signals Search. Verify irrelevant signal deleted |  |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
-| text_unlike | //body | LessRelevant %%start_time%% |
+| wait_for_text_not_present_ok | LessRelevant %%start_time%% | 10000 |
 | text_like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 12/ism |  |
 
 | *Comment* | Test Case: Signals Search. Verify clear |  |
