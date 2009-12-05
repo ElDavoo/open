@@ -602,7 +602,7 @@ sub dump_roles {
             my $user_count = $acct_users->count();
             my $acct_ws = $acct->workspaces;
             my $wksp_count = $acct_ws->count;
-            my $acct_groups = $acct->groups;
+            my $acct_groups = $acct->groups(direct => 0);
             my $group_count = $acct_groups->count;
             print "  * ($acct_id) $name ($user_count users) "
                 . "($wksp_count wksps) "
