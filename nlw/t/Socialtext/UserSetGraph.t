@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
 use Test::More tests=>3;
 use Test::LectroTest::Compat;
 use Test::Differences;
