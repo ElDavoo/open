@@ -1346,6 +1346,9 @@ CREATE UNIQUE INDEX groups_account_user_group_name
 CREATE UNIQUE INDEX groups_driver_unique_id
 	    ON groups (driver_key, driver_unique_id);
 
+CREATE UNIQUE INDEX groups_user_set_id
+	    ON groups (user_set_id);
+
 CREATE UNIQUE INDEX idx_user_set_include_pkey_and_role
 	    ON user_set_include (from_set_id, into_set_id, role_id);
 

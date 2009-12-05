@@ -105,6 +105,7 @@ CREATE VIEW user_set_include_tc AS
 ALTER TABLE groups ADD COLUMN user_set_id integer;
 UPDATE groups SET user_set_id = group_id + x'10000000'::int;
 ALTER TABLE groups ALTER COLUMN user_set_id SET NOT NULL;
+CREATE UNIQUE INDEX groups_user_set_id ON groups (user_set_id);
 
 ALTER TABLE "Workspace" ADD COLUMN user_set_id integer;
 UPDATE "Workspace" SET user_set_id = workspace_id + x'20000000'::int;
