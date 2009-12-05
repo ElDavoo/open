@@ -6,7 +6,7 @@ use warnings;
 use YAML qw(LoadFile);
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
-use Test::Socialtext tests => 21;
+use Test::Socialtext tests => 25;
 use Test::Deep;
 
 ###############################################################################
@@ -184,6 +184,11 @@ includes_users_with_only_indirect_group_workspace_role : {
 
     $workspace->add_group(group => $group);
     $group->add_user(user => $user);
+
+    ok $workspace->has_group($group), 'workspace has group';
+    ok $workspace->has_user($user), 'workspace has user';
+    ok $account->has_group($group), 'account has group';
+    ok $account->has_user($user), 'account has user';
 
     account_export_contains(
         prefix  => 'Includes User w/Role via Group w/Role in Workspace',
