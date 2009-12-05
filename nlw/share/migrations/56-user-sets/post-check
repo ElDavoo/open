@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use Socialtext::SQL qw/get_dbh/;
+use Test::More tests => 6;
+
+my ($mig_state) = $dbh->selectrow_array(qq{
+    SELECT value FROM "System" WHERE field = 'migration-56'
+});
+is $mig_state, 3, "all phases of the migration completed";
+
+my @tables = qw(
+   user_account_role
+   group_account_role
+   group_workspace_role
+   user_group_role
+   user_workspace_role
+);
+for my $table (@tables) {
+    my ($count) = $dbh->selectrow_array(qq{
+        SELECT COUNT(1) FROM $table
+        WHERE role_id NOT IN (
+            SELECT role_id FROM "Role" WHERE name = 'affiliate' LIMIT 1
+        )
+    });
+    is $count, 0, "role entries for $table all migrated";
+}
+
+ok 0, 'write more tests';
+
+exit 1;

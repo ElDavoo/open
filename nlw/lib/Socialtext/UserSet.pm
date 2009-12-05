@@ -331,6 +331,7 @@ sub direct_role {
 
 ###################################################
 
+# used in the migration:
 sub _create_insert_temp {
     my ($self, $dbh, $bulk) = @_;
 
@@ -354,13 +355,14 @@ sub _insert {
         $dbh->do(q{TRUNCATE TABLE to_copy});
     }
     else {
-        $dbh->do(q{
-            INSERT INTO user_set_include
-            (from_set_id,into_set_id,role_id) VALUES ($1,$2,$3)
-        }, {}, $x, $y, $role_id);
-        
         $self->_create_insert_temp($dbh);
     }
+
+    my $include_sth = $dbh->prepare_cached(q{
+        INSERT INTO user_set_include
+        (from_set_id,into_set_id,role_id) VALUES ($1,$2,$3)
+    }, {});
+    $include_sth->execute($x, $y, $role_id);
 
     # create the union of
     # 1) a path for (x,y)
@@ -368,18 +370,18 @@ sub _insert {
     # 3) paths that end with x; append (x,y) to these paths
     # 4) pairs of paths joined by (x,y); paths that can be merged
 
-    $dbh->do(q{
+    my $compute_sth = $dbh->prepare_cached(q{
         INSERT INTO to_copy
         SELECT DISTINCT * FROM (
-            SELECT
-                $1::integer new_start,
-                $1::integer new_via,
-                $2::integer new_end,
-                $5::int[] new_vlist
+            SELECT DISTINCT
+                $1::int AS new_start,
+                $1::int AS new_via,
+                $2::int AS new_end,
+                $5::int[] AS new_vlist
 
             UNION ALL
 
-            SELECT
+            SELECT DISTINCT
                 $1::integer AS new_start,
                 via_set_id AS new_via,
                 into_set_id AS new_end,
@@ -389,7 +391,7 @@ sub _insert {
 
             UNION ALL
 
-            SELECT
+            SELECT DISTINCT
                 from_set_id AS new_start,
                 into_set_id AS new_via,
                 $2::integer AS new_end,
@@ -399,7 +401,7 @@ sub _insert {
 
             UNION ALL
 
-            SELECT
+            SELECT DISTINCT
                 before.from_set_id AS new_start,
                 after.vlist[icount(after.vlist) - 1] AS new_via,
                 after.into_set_id AS new_end,
@@ -414,14 +416,15 @@ sub _insert {
         OR (
             icount(new_vlist) = icount(uniq(sort(new_vlist)))
         )
-    }, {}, $x, $y, "{$x}", "{$y}", "{$x,$y}");
+    }, {});
+    $compute_sth->execute($x, $y, "{$x}", "{$y}", "{$x,$y}");
 
     # There should be no duplicated vertices in the vertex list for each path.
     # The exception is for "reflexive" paths in which case we allow for one
     # and only one duplicate.
     # This has the effect of "pruning" the maintenance table to reduce the
     # number of redundant paths that were generated 
-    $dbh->do(q{
+    my $finalize_sth = $dbh->prepare_cached(q{
         INSERT INTO user_set_path
         SELECT
             new_start AS from_set_id,
@@ -435,7 +438,9 @@ sub _insert {
             usi.into_set_id = cpy.new_end
         )
     });
+    $finalize_sth->execute();
 
+    return;
 }
 
 sub _delete {
