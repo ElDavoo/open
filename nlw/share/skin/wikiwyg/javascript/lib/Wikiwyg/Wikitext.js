@@ -1297,10 +1297,10 @@ proto.build_msoffice_list = function(top) {
         }
 
         firstHtml = firstHtml.replace(
-            /<!--\[SocialtextBulletBegin\]-->([\w\W]*?)<!--\[SocialtextBulletEnd\]-->/, ''
+            /<!--\[SocialtextBulletBegin\]-->(?:<\w[^>]*>)*([\w\W]*?)<!--\[SocialtextBulletEnd\]-->/, ''
         );
         var bulletText = RegExp.$1;
-        var listType = $(bulletText).text().match(/^\d+\./) ? 'ol' : 'ul';
+        var listType = bulletText.match(/^\w+\./) ? 'ol' : 'ul';
 
         var cur = top;
         var newHtml = '<li>' + firstHtml + '</li>';
