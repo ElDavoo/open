@@ -113,7 +113,7 @@ sub _format_results {
     unless ($rows and @$rows) {
         my $title = $self->wafl_query_title;
         my $link = $self->wafl_query_link;
-        $results->{error} = "<a href='$link'>$title</a> does not contain any results";
+        $results->{error} = qq[<a href="$link">$title</a> does not contain any results];
         return;
     }
 
