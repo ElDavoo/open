@@ -206,6 +206,8 @@
 					totalCells = (table.tBodies[0].rows[0] && table.tBodies[0].rows[0].cells.length) || 0,
 					parsers = table.config.parsers, 
 					cache = {row: [], normalized: []};
+
+				if (!parsers) return cache;
 				
 					for (var i=0;i < totalRows; ++i) {
 					
