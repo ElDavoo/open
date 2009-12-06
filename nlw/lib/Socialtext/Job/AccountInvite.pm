@@ -49,6 +49,10 @@ sub do_work {
 
         # {bz: 3357} - Somehow the constructor does not set layout of $invitation
         # properly; manually re-assign the fields until we get a cycle to investigate.
+        #
+        # We know that if "use Socialtext::AccountInvitation;" is put to the
+        # beginning of ceqlotron, then the constructor works properly; but the
+        # actual root cause is yet to be found.
         $invitation->{from_user} = $self->sender;
         $invitation->{extra_text} = $self->arg->{extra_text};
 
