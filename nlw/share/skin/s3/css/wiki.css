@@ -22,7 +22,7 @@
     padding: 3px 0px;
 }
 
-.wiki td, .wiki th {
+.wiki table.formatter_table td, .wiki table.formatter_table th {
     vertical-align: top;
 }
 
@@ -232,17 +232,17 @@ html .wiki a:hover {
 /* Tables
 -------------------------------------------------------------- */
 
-.wiki table {
+.wiki table.formatter_table {
     border-collapse: collapse;
     margin-bottom: 1.4em;
     width: auto;
 }
-.wiki th {
+.wiki table.formatter_table th {
     font-weight: bold;
     background: #CCC;
 }
-.wiki th,
-.wiki td {
+.wiki table.formatter_table th,
+.wiki table.formatter_table td {
     border: 1px solid black;
     padding: 0.2em;
 }
@@ -251,13 +251,13 @@ html .wiki a:hover {
     border: none;
     padding: 0.2em;
 }
-.wiki tr.even td {
+.wiki table.formatter_table tr.even td {
     background: #E5ECF9;
 }
-.wiki tfoot {
+.wiki table.formatter_table tfoot {
     font-style: italic;
 }
-.wiki caption {
+.wiki table.formatter_table caption {
     background: #eee;
 }
 
