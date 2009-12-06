@@ -37,7 +37,7 @@ sub do_work {
     unless ( $account->has_user($user) ) {
         my $msg = "User " . $user->user_id 
             . " is not in account " . $account->account_id;
-        $self->fail($msg, 255);
+        $self->failed($msg, 255);
     }
 
     eval {
@@ -48,7 +48,7 @@ sub do_work {
         )->invite_notify($user);
     };
     if ( my $e = $@ ) {
-        $self->fail($e, 255);
+        $self->failed($e, 255);
     }
 
     $self->completed();
