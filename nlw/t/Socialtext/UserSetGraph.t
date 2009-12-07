@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
+use strict;
+use warnings;
 use Test::More tests=>3;
 use Test::LectroTest::Compat;
 use Test::Differences;
@@ -100,7 +102,12 @@ eq_or_diff([
 "all non-reflexive edges are in the tcg_nr graph (tgc_nr is a subset of uset)");
 }
 
+exit;
+
 package graph_gen;
+use strict;
+use warnings;
+
 sub generate {
     my $OFFSET = 0x10000001;
     my ($first, $second);
@@ -111,4 +118,3 @@ sub generate {
         }
     return [$first, $second];
 };
-
