@@ -2508,11 +2508,10 @@ to false.
 Adds the user to the workspace with the given role. If no role is
 specified, this defaults to "member".
 
-=head2 $workspace->assign_role_to_user( user => $user, role => $role, is_selected => $bool )
+=head2 $workspace->assign_role_to_user( user => $user, role => $role )
 
-Assigns the specified role to the given user. The value of is_selected
-defaults to 0. If the user already has a role for this workspace, this
-method changes that role.
+Assigns the specified role to the given user. If the user already has a role
+for this workspace, this method changes that role.
 
 =head2 $workspace->has_user( $user )
 

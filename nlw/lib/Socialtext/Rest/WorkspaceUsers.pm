@@ -116,7 +116,7 @@ sub _POST {
         
             $workspace->add_user( user => $user,
                                   role => $role );
-            $workspace->assign_role_to_user( user => $user, role => $role, is_selected => 1 );
+            $workspace->assign_role_to_user( user => $user, role => $role );
         }
     };
     
