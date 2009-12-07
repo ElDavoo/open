@@ -45,18 +45,10 @@ CREATE TABLE user_set_include (
     CONSTRAINT no_self_includes CHECK (from_set_id <> into_set_id)
 );
 ALTER TABLE ONLY user_set_include
-    ADD CONSTRAINT user_set_include_role
-            FOREIGN KEY (role_id)
-            REFERENCES "Role"(role_id) ON DELETE RESTRICT;
-ALTER TABLE ONLY user_set_include
     ADD CONSTRAINT "user_set_include_pkey"
     PRIMARY KEY (from_set_id, into_set_id);
 CREATE UNIQUE INDEX idx_user_set_include_rev
     ON user_set_include (into_set_id,from_set_id);
-CREATE UNIQUE INDEX idx_user_set_include_pkey_and_role
-    ON user_set_include (from_set_id,into_set_id,role_id);
-CREATE UNIQUE INDEX idx_user_set_include_rev_and_role
-    ON user_set_include (into_set_id,from_set_id,role_id);
 
 -- This is the "maintenance" table for the transitive closure on the
 -- user_set_include table above.
@@ -67,26 +59,10 @@ CREATE TABLE user_set_path (
     role_id integer NOT NULL, -- the role on that "last hop" in the destination set
     vlist integer[] NOT NULL
 );
-ALTER TABLE ONLY user_set_path
-    ADD CONSTRAINT user_set_path_role
-            FOREIGN KEY (role_id)
-            REFERENCES "Role"(role_id) ON DELETE RESTRICT;
 CREATE INDEX idx_user_set_path_wholepath
     ON user_set_path (from_set_id,into_set_id);
-CREATE INDEX idx_user_set_path_via
-    ON user_set_path (via_set_id,into_set_id);
 CREATE INDEX idx_user_set_path_wholepath_rev
     ON user_set_path (into_set_id,from_set_id);
-CREATE INDEX idx_user_set_path_wholepath_and_role
-    ON user_set_path (from_set_id,into_set_id,role_id);
-CREATE INDEX idx_user_set_path_rev_and_role
-    ON user_set_path (into_set_id,from_set_id,role_id);
--- TODO: partition indexes for users/non-users from_set_id
-
--- Special index type to allow searching within an int[].  Requires the
--- "intarray" postgres extension for 8.1
-CREATE INDEX idx_user_set_path_vlist
-    ON user_set_path USING gist (vlist gist__int_ops);
 
 -- The transitive closure on user_set_include
 CREATE VIEW user_set_include_tc AS
