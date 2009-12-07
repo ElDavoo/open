@@ -660,8 +660,12 @@ proto.strip_msword_gunk = function(html) {
             }
         ).
         replace(
-            /(<P[^>]*style="[^>"]*mso-list:\s*l\d[^>"]*"[^>]*)class="?MsoNormal"?/ig,
-            '$1class="MsoListParagraphCxSpMiddle"'
+            /(<P[^>]*style="[^>"]*mso-list:\s*l\d[^>"]*"[^>]* class="?)MsoNormal\b/ig,
+            '$1MsoListParagraphCxSpMiddle'
+        ).
+        replace(
+            /(<P[^>]* class="?)MsoNormal\b([^>]*>\s*<!--\[if\s+!supportLists\]-->)/ig,
+            '$1MsoListParagraphCxSpMiddle$2'
         ).
         replace(
             /<!--\[if\s+!supportLists\]-->([\w\W]*?)<!(--)?\[endif\]-->/ig, function(m, $1) {
