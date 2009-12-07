@@ -34,6 +34,19 @@ my $stamp = $tm->year . "-" . $tm->mon . "-" . $tm->mday . "-" . $tm->hour . "-"
 my $nlw = $ENV{HOME} . '/test_nlw.log'; 
 
 #Six-month date-switch
+#-------------------------------------------------------------------------------#
+# The month-day switch - every six months the log files will fail to import
+# because the relative-year has shift.
+# 
+# To fix this:
+# 1) Switch the comments immedialetly following this block
+# 2) Search for 'sub get_month_day' -> then switch it's comments
+# 3) Run test_case_control_panel_reports, get to the errors and pause it
+# 4) You'll notice that the rates of hits - but not the amount - have changed.
+# 5) For account-growth report, change the months forward six months
+# 6) For account-usage report, change the quarter ending to Feb 31 or July 31
+#    (Same month ending as @dates last month, below
+#-------------------------------------------------------------------------------#
 #my @dates = ('Dec 30','Dec 11','Jan 10','Jan 11','Jan 12', 'Jan 13', 'Feb 01');
 my @dates = ('Apr 30', 'May 11', 'Jun 10', 'Jun 11', 'Jun 12', 'Jun 13', 'Jul 01');
 #----------------------------------------------------------#
