@@ -794,6 +794,7 @@ sub get_events_group_activities {
     my $self     = shift;
     my $group    = shift;
     my $group_id = $group->group_id;
+    my $group_set_id = $group->user_set_id;
     my $opts     = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
 
     Socialtext::Timer->Continue('get_gactivity');
@@ -805,20 +806,20 @@ sub get_events_group_activities {
             AND is_page_contribution(action)
             AND EXISTS (
                 SELECT 1
-                  FROM user_group_role
-                 WHERE user_id = e.actor_id
-                   AND group_id = ?
+                  FROM user_set_path
+                 WHERE from_set_id = e.actor_id
+                   AND into_set_id = ?
                  LIMIT 1
             )
             AND EXISTS (
                 SELECT 1
-                  FROM group_workspace_role
-                 WHERE e.page_workspace_id = workspace_id
-                   AND group_id = ?
+                  FROM user_set_path
+                 WHERE e.page_workspace_id = into_set_id - }.PG_WKSP_OFFSET.q{
+                   AND from_set_id = ?
                  LIMIT 1
             )
         )
-    }, $group_id, $group_id, $group_id);
+    }, $group_id, $group_set_id, $group_set_id);
 
     local $self->{_skip_standard_opts} = 1;
     my $evs = $self->_get_events(@_);
