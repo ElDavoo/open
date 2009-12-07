@@ -101,7 +101,7 @@ _object_role_method 'add_object_role';
 around 'add_role' => \&_modify_wrapper;
 sub add_role {
     my ($self, $dbh, $x, $y, $role_id) = @_;
-    confess "can't add things to users" if ($y <= USER_END);
+    confess "can't add things to users ($x to $y)" if ($y <= USER_END);
 
     $role_id ||= 'member';
     _resolve_role(\$role_id);
@@ -141,7 +141,7 @@ _object_role_method 'update_object_role';
 sub update_role {
     my ($self, $dbh, $x, $y, $role_id) = @_;
     die "role_id is required" unless $role_id;
-    confess "can't add things to users" if ($y <= USER_END);
+    confess "can't add things to users ($x to $y)" if ($y <= USER_END);
 
     $self->_delete($dbh, $x, $y);
     $self->_insert($dbh, $x, $y, $role_id);
@@ -358,7 +358,7 @@ sub _insert {
         $self->_create_insert_temp($dbh);
     }
 
-    my $include_sth = $dbh->prepare_cached(q{
+    my $include_sth = $dbh->prepare(q{
         INSERT INTO user_set_include
         (from_set_id,into_set_id,role_id) VALUES ($1,$2,$3)
     }, {});
@@ -370,7 +370,7 @@ sub _insert {
     # 3) paths that end with x; append (x,y) to these paths
     # 4) pairs of paths joined by (x,y); paths that can be merged
 
-    my $compute_sth = $dbh->prepare_cached(q{
+    my $compute_sth = $dbh->prepare(q{
         INSERT INTO to_copy
         SELECT DISTINCT * FROM (
             SELECT DISTINCT

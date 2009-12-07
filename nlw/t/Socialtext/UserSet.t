@@ -9,14 +9,14 @@ use Test::Exception;
 use List::Util qw/shuffle/;
 use Socialtext::SQL qw/get_dbh/;
 BEGIN {
-    use_ok 'Socialtext::UserSet';
+    use_ok 'Socialtext::UserSet', qw/:const/;
 }
 
 fixtures(qw(db destructive));
 my $dbh = get_dbh();
 ok $dbh;
 $dbh->{AutoCommit} = 1;
-my $OFFSET = 1_000_000;
+my $OFFSET = GROUP_OFFSET + 1_000_000;
 my $uset = Socialtext::UserSet->new;
 
 my $member = Socialtext::Role->new(name => 'member')->role_id;
