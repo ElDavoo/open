@@ -40,6 +40,21 @@ sub _build_cache_dir {
     return $cache_dir;
 }
 
+has 'default' => (
+    is => 'rw', isa => 'Bool',
+    lazy_build => 1,
+    reader => 'is_default',
+);
+
+sub _build_default {
+    my $self = shift;
+    my $table = $self->table;
+    my $id_column = $self->id_column;
+    return !sql_singlevalue(
+        "SELECT 1 FROM $table WHERE $id_column = ?", $self->id
+    );
+}
+
 sub set {
     my $self = shift;
     my $blob_ref = shift;
@@ -60,6 +75,7 @@ sub set {
 
         $self->_save_db(%blobs);
         $self->_save_cache(%blobs);
+        $self->default(0);
     };
     # check if there were any problems with the image format
     if ($@) {
@@ -167,6 +183,7 @@ sub _save_cache {
 
 sub load {
     my ($self, $version) = @_;
+    die "version required" unless $version;
 
     my $table = $self->table;
     my $id_column = $self->id_column;
@@ -178,6 +195,8 @@ sub load {
     $sth->bind_columns(\$blob);
     $sth->fetch();
     $sth->finish();
+
+    $self->is_default(1) unless $blob;
 
     my $blob_ref = $blob ? \$blob : $self->DefaultPhoto($version);
     $self->_save_cache($version => $blob_ref);

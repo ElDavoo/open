@@ -168,23 +168,23 @@ $mock_adapter->mock('hook', sub {});
 my $mock_hub = Test::MockObject->new({});
 $mock_hub->mock('pluggable', sub { $mock_adapter });
 
-ok $test->logo->is_default_logo, 'logo is default';
+ok $test->logo->is_default, 'logo is default';
 
 my $logo_ref;
 Set_a_logo: {
     my $orig_logo = Socialtext::File::get_contents_binary(
         "t/test-data/discoverppl.jpg");
-    lives_ok { $test->logo->save_image(\$orig_logo) } 'set the account logo';
-    $logo_ref = $test->logo->uploaded->image_ref;
+    lives_ok { $test->logo->set(\$orig_logo) } 'set the account logo';
+    $logo_ref = $test->logo->logo;
     ok $logo_ref, 'logo ref was set';
-    ok !$test->logo->is_default_logo, 'logo is no longer the default';
+    ok !$test->logo->is_default, 'logo is no longer the default';
 }
 
 Load_a_logo: {
     my $account = Socialtext::Account->new(name => $test->name);
-    my $loaded_ref = $account->logo->load();
-    ok $loaded_ref, 'able to reload logo';
-    ok $$loaded_ref eq $$logo_ref, '... identical to uploaded logo';
+    my $blob_ref = $account->logo->logo();
+    ok $blob_ref, 'able to reload logo';
+    ok $$blob_ref eq $$logo_ref, '... identical to uploaded logo';
 }
 
 my $export_file;
@@ -224,7 +224,7 @@ Import_account: {
     is $account->workspace_count, 0, "import doesn't import workspace data";
     users_are($account, [qw/dummy1 dummy2 dummy3/]);
 
-    my $imported_logo_ref = $account->logo->load();
+    my $imported_logo_ref = $account->logo->logo();
     ok $$imported_logo_ref eq $$logo_ref, 'logo identical on import';
 }
 
