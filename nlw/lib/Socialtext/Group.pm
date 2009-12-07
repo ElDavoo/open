@@ -272,6 +272,7 @@ sub Create {
         $group->add_user(
             role => Socialtext::Role->Admin,
             user => $creator,
+            actor => $creator,
         );
     }
 
