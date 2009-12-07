@@ -358,19 +358,26 @@ sub _insert {
         $self->_create_insert_temp($dbh);
     }
 
-    my $include_sth = $dbh->prepare(q{
+    my $prep_method = $bulk ? 'prepare_cached' : 'prepare';
+
+    $dbh->do(q{
         INSERT INTO user_set_include
         (from_set_id,into_set_id,role_id) VALUES ($1,$2,$3)
-    }, {});
-    $include_sth->execute($x, $y, $role_id);
+    }, {}, $x, $y, $role_id);
 
-    # create the union of
+    # Create the union of
     # 1) a path for (x,y)
     # 2) paths that start with y; prepend (x,y) to these paths
     # 3) paths that end with x; append (x,y) to these paths
     # 4) pairs of paths joined by (x,y); paths that can be merged
+    #
+    # There should be no duplicated vertices in the vertex list for each path.
+    # The exception is for "reflexive" paths in which case we allow for one
+    # and only one duplicate. This has the effect of "pruning" the maintenance
+    # table to reduce the number of redundant paths that were generated.
+    # This is implemented as the outer WHERE clause in the query below.
 
-    my $compute_sth = $dbh->prepare(q{
+    my $compute_sth = $dbh->$prep_method(q{
         INSERT INTO to_copy
         SELECT DISTINCT * FROM (
             SELECT DISTINCT
@@ -419,12 +426,7 @@ sub _insert {
     }, {});
     $compute_sth->execute($x, $y, "{$x}", "{$y}", "{$x,$y}");
 
-    # There should be no duplicated vertices in the vertex list for each path.
-    # The exception is for "reflexive" paths in which case we allow for one
-    # and only one duplicate.
-    # This has the effect of "pruning" the maintenance table to reduce the
-    # number of redundant paths that were generated 
-    my $finalize_sth = $dbh->prepare_cached(q{
+    my $finalize_sth = $dbh->$prep_method(q{
         INSERT INTO user_set_path
         SELECT
             new_start AS from_set_id,

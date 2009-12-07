@@ -1,12 +1,19 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
+use warnings;
+use strict;
+use lib 'lib';
 use Socialtext::SQL qw/get_dbh/;
-use Test::More tests => 6;
+use Socialtext::UserSet qw/:const/;
+use Test::More tests => 7;
+
+my $dbh = get_dbh();
+local $dbh->{RaiseError} = 1;
 
 my ($mig_state) = $dbh->selectrow_array(qq{
     SELECT value FROM "System" WHERE field = 'migration-56'
 });
-is $mig_state, 3, "all phases of the migration completed";
+is $mig_state, 4, "all phases of the migration completed";
 
 my @tables = qw(
    user_account_role
@@ -23,6 +30,21 @@ for my $table (@tables) {
         )
     });
     is $count, 0, "role entries for $table all migrated";
+}
+
+{
+    my ($count) = $dbh->selectrow_array(q{
+        SELECT COUNT(DISTINCT um.user_id)
+          FROM "UserMetadata" um
+         WHERE um.primary_account_id NOT IN (
+            SELECT into_set_id - }.PG_ACCT_OFFSET.q{
+              FROM user_set_include
+             WHERE from_set_id = um.user_id 
+               AND into_set_id }.PG_ACCT_FILTER.q{
+               AND role_id IN (SELECT role_id FROM "Role" WHERE name = 'member')
+         )
+    });
+    is $count, 0, "all users have a direct member role in their primary account";
 }
 
 ok 0, 'write more tests';

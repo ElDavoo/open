@@ -70,11 +70,23 @@ if ($mig_state == 1) {
     set_migration_state($mig_state+1);
 }
 if ($mig_state == 2) {
+    # must happen after the migrate_table() phase
+    generate_user_primary_account_roles();
+    set_migration_state($mig_state+1);
+}
+if ($mig_state == 3) {
+    # could happen before the user_primary_account_roles phase
     generate_workspace_account_roles();
     set_migration_state($mig_state+1);
 }
 
-print "Migration complete!\n";
+if ($mig_state == 4) {
+    print "Migration complete!\n";
+}
+else {
+    die "migration failed.\n";
+}
+
 exit 0;
 
 sub load_migration_state {
@@ -132,8 +144,9 @@ sub fast_track {
     my @columns = @{$tables{$fast_track}};
     my @pg_offsets = map { $pg_offset_for_column{$_} } @columns;
 
-    print "fast-tracking $fast_track ...\n";
+    print "Fast-tracking $fast_track\n";
     $dbh->begin_work;
+    print "... includes\n";
     $dbh->do(qq{
         INSERT INTO user_set_include (from_set_id, into_set_id, role_id)
         SELECT 
@@ -144,7 +157,7 @@ sub fast_track {
         WHERE role_id <> $affiliate_id
     });
 
-    print "bulk paths for $fast_track ...\n";
+    print "... paths\n";
     $dbh->do(qq{
         INSERT INTO user_set_path
             (from_set_id, via_set_id, into_set_id, role_id, vlist)
@@ -156,9 +169,15 @@ sub fast_track {
         FROM user_set_include
     });
 
-    print "finishing fast-track of $fast_track ...\n";
+    print "... cleanup\n";
+    $dbh->do(qq{
+        DELETE FROM $fast_track
+        WHERE role_id <> $affiliate_id
+    });
+
+    print "... committing\n";
     $dbh->commit;
-    print "done fast-track\n";
+    print "Done fast-track of $fast_track\n";
 }
 
 sub migrate_table {
@@ -261,4 +280,39 @@ sub generate_workspace_account_roles {
     }
 
     print "Done generating workspace-account roles\n";
+}
+
+sub generate_user_primary_account_roles {
+    my $base_q = q{
+        FROM "UserMetadata" um
+        JOIN "Account" a ON (um.primary_account_id = a.account_id)
+        LEFT JOIN user_set_include usi ON
+            (from_set_id = um.user_id AND into_set_id = a.user_set_id)
+        WHERE usi.from_set_id IS NULL
+    };
+
+    my $count = $dbh->selectrow_array(q{ SELECT COUNT(DISTINCT um.user_id) }.$base_q);
+    return unless $count;
+
+    print "Generating user-account roles\n";
+    $dbh->begin_work;
+
+    print "... includes\n";
+    $dbh->do(qq{
+        INSERT INTO user_set_include (from_set_id, into_set_id, role_id)
+        SELECT um.user_id, a.user_set_id, $member_id
+        $base_q
+    });
+
+    print "... paths\n";
+    $dbh->do(qq{
+        INSERT INTO user_set_path
+        (from_set_id, via_set_id, into_set_id, role_id, vlist)
+        SELECT um.user_id, a.user_set_id, a.user_set_id, $member_id,
+            ARRAY[um.user_id, a.user_set_id]::int[]
+        $base_q
+    });
+
+    $dbh->commit;
+    print "Done generating user-account roles\n";
 }
