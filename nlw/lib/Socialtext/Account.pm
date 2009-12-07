@@ -650,7 +650,7 @@ sub _create_full {
 
     my $id = sql_nextval('"Account___account_id"');
     $p{account_id} = $id;
-    $p{user_set_id} = $id + 0x30000000;
+    $p{user_set_id} = $id + ACCT_OFFSET;
 
     my $fields = join ',', keys %p;
     my $values = '?,' x keys %p;
