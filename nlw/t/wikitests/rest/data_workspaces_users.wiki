@@ -32,6 +32,7 @@
 | json-array-size | 3 |
 | json-like | [{"username":"%%username%%","role_name":"admin"},{"username":"%%admin%%","role_name":"admin"},{"username":"%%peon%%","role_name":"admin","roles":["member","admin"]}] |
 
+| remove-member | %%peon%% | %%workspace%% |
 | add-member | %%peon%% | %%workspace%% | impersonator |
 
 | http-user-pass | %%admin%% | password |
