@@ -196,7 +196,7 @@ sub load {
     $sth->fetch();
     $sth->finish();
 
-    $self->is_default(1) unless $blob;
+    $self->default(1) unless $blob;
 
     my $blob_ref = $blob ? \$blob : $self->DefaultPhoto($version);
     $self->_save_cache($version => $blob_ref);
