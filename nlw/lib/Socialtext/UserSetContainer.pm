@@ -1,7 +1,7 @@
 package Socialtext::UserSetContainer;
 # @COPYRIGHT@
 use Moose::Role;
-use Carp qw/croak/;
+use Carp qw/croak cluck/;
 use Socialtext::UserSet;
 use Socialtext::SQL qw(sql_execute sql_singlevalue);
 use Socialtext::l10n qw/loc/;
@@ -139,7 +139,7 @@ sub add_role {
     eval { $self->user_set->add_object_role($thing, $role) };
     if ($@) {
         if ($@ =~ /constraint/i) {
-            confess "could not add role: object already exists with some role";
+            cluck "could not add role: object already exists with some role";
         }
         die $@;
     }
