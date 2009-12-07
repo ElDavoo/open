@@ -32,7 +32,7 @@ for my $t_html (<*.t.html>) {
 
 my $tmpl = <DATA>;
 
-# For each test/browser combination in input dir, create a correspond test
+# For each test/browser combination in input directory, create a corresponding test
 for my $dir (sort keys %subdirs) {
     for my $input (<$dir/*.html>) {
         my $wikitext = $subdirs{$dir};
