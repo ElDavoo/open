@@ -5,13 +5,20 @@ use strict;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 use Socialtext::SQL qw/get_dbh/;
+use Socialtext::SQL::Builder qw/sql_nextval/;
+use Socialtext::UserSet qw/:const/;
+use Socialtext::Account;
+use Socialtext::Group;
+use Socialtext::Workspace;
+use Socialtext::User;
+use Socialtext::Role;
 use List::Util qw(shuffle);
 use Getopt::Long;
 
 my $ACCOUNTS = 200;
 my $USERS = 5000; # _Must_ be bigger than $ACCOUNTS - should be more than 10x to get secondary account variations
 my $PAGES = 1000;
-my $WRITES_PER_COMMIT = 5000;
+my $WRITES_PER_COMMIT = 1000;
 my $EVENTS = 500_000;
 my $GROUPS = 10_000;        # Expected case is "number of groups >= number of users"
 my $GROUP_WS_RATIO = 10;        # How many WS's should each Group be added to
@@ -21,6 +28,8 @@ my $SIGNALS = 100_000;
 
 my $now = time;
 my $base = substr("$now",-5);
+
+my $member_id = Socialtext::Role->Member->role_id;
 
 GetOptions(
     'accounts|a=i' => \$ACCOUNTS,
@@ -93,36 +102,28 @@ sub maybe_commit {
 }
 print "USING BASE $base\n";
 
+Socialtext::Account->Default->user_set->_create_insert_temp($dbh, 'bulk');
+
 {
-    my $uar_sth = $dbh->prepare_cached( qq{
-        INSERT INTO user_account_role (
-            user_id, account_id, role_id
-        ) VALUES (
-            ?, ?, 3
-        );
-    } );
     my %uars;
     sub create_uar {
         my ($user_id, $account_id) = @_;
         unless ($uars{$user_id}{$account_id}++) {
-            $uar_sth->execute($user_id, $account_id);
+            my $acct = Socialtext::Account->new(account_id => $account_id);
+            $acct->user_set->_insert($dbh, $user_id, $account_id, $member_id,
+                'bulk');
         }
     }
 }
 
 {
-    my $gar_sth = $dbh->prepare_cached( qq{
-        INSERT INTO group_account_role (
-            group_id, account_id, role_id
-        ) VALUES (
-            ?, ?, 3
-        );
-    } );
     my %gars;
     sub create_gar {
         my ($group_id, $account_id) = @_;
         unless ($gars{$group_id}{$account_id}++) {
-            $gar_sth->execute($group_id, $account_id);
+            my $acct = Socialtext::Account->new(account_id => $account_id);
+            $acct->user_set->_insert($dbh, $group_id, $account_id, $member_id,
+                'bulk');
         }
     }
 }
@@ -130,33 +131,37 @@ print "USING BASE $base\n";
 {
     print "Creating $ACCOUNTS accounts with $ACCOUNTS workspaces";
 
-    my $uset_id_sth = $dbh->prepare(q{SELECT currval('user_set_id_seq')});
-
     my $acct_sth = $dbh->prepare_cached(qq{
-        INSERT INTO "Account" (account_id, name)
-        VALUES (nextval('"Account___account_id"'), ?)
+        INSERT INTO "Account" (account_id, name, user_set_id)
+        VALUES (?, ?, ?)
     });
     my $ws_sth = $dbh->prepare_cached(qq{
         INSERT INTO "Workspace" (
             workspace_id, name, title, 
-            account_id, created_by_user_id, skin_name
+            account_id, created_by_user_id, skin_name, user_set_id
         ) VALUES (
-            nextval('"Workspace___workspace_id"'), ?, ?,
-            currval('"Account___account_id"'), 1, 's3'
+            ?, ?, ?,
+            ?, 1, 's3', ?
         )
     });
 
     for (my $i=1; $i<=$ACCOUNTS; $i++) {
-        $acct_sth->execute("Test Account $base $i");
-        my ($acct_set_id) = do { $uset_id_sth->execute(); $uset_id_sth->fetchrow_array };
-        $ws_sth->execute("test_workspace_${base}_$i", "Test Workspace $base $i");
-        my ($ws_set_id) = do { $uset_id_sth->execute(); $uset_id_sth->fetchrow_array };
-        $writes += 2;
-        
-        my ($acct_id) = $dbh->selectrow_array(q{SELECT currval('"Account___account_id"')});
+        # Create an account
+        my $acct_id = sql_nextval('"Account___account_id"');
+        my $acct_set_id = $acct_id + ACCT_OFFSET;
+        $acct_sth->execute($acct_id, "Test Account $base $i", $acct_set_id);
         push @accounts, $acct_id;
-        my ($ws_id) = $dbh->selectrow_array(q{SELECT currval('"Workspace___workspace_id"')});
+
+        # Create a workspace
+        my $ws_id = sql_nextval('"Workspace___workspace_id"');
+        my $ws_set_id = $ws_id + WKSP_OFFSET;
+        $ws_sth->execute(
+            $ws_id, "test_workspace_${base}_$i", "Test Workspace $base $i",
+            $acct_id, $ws_set_id,
+        );
         push @workspaces, $ws_id;
+        
+        $writes += 2;
         $ws_to_acct{$ws_id} = $acct_id;
         $acct_to_uset{$acct_id} = $acct_set_id;
         $ws_to_uset{$ws_id} = $ws_set_id;
@@ -197,10 +202,10 @@ print "USING BASE $base\n";
     my $ws_sth = $dbh->prepare_cached(qq{
         INSERT INTO "Workspace" (
             workspace_id, name, title, 
-            account_id, created_by_user_id, skin_name
+            account_id, created_by_user_id, skin_name, user_set_id
         ) VALUES (
-            nextval('"Workspace___workspace_id"'), ?, ?,
-            ?, 1, 's3'
+            ?, ?, ?,
+            ?, 1, 's3', ?
         )
     });
 
@@ -216,9 +221,10 @@ print "USING BASE $base\n";
 
         for (my $j=0; $j<$m; $j++) {
             $name++;
-            $ws_sth->execute("test_workspace_${base}_$name", "Test Workspace $base $name", $acct_id);
+            my $ws_id = sql_nextval('"Workspace___workspace_id"');
+            $ws_sth->execute($ws_id, "test_workspace_${base}_$name",
+                "Test Workspace $base $name", $acct_id, $ws_id + WKSP_OFFSET);
             $writes++;
-            my ($ws_id) = $dbh->selectrow_array(q{SELECT currval('"Workspace___workspace_id"')});
             push @workspaces, $ws_id;
             $ws_to_acct{$ws_id} = $acct_id;
             maybe_commit();
@@ -253,15 +259,19 @@ print "USING BASE $base\n";
 
     for (my $user=1; $user<=$USERS; $user++) {
         my $uname = "user-$user-$base\@ken.socialtext.net";
+        warn "Creating $uname";
         # salted hash for 'password' as password 
         $user_sth->execute('Default', $uname, $uname, "sa3tHJ3/KuYvI",
             "First$user", "Last$user", "First$user Last$user");
+        warn "inserting meta";
 
         # choose a random primary account id
         my $priacctid = $accounts[rand(@accounts)];
         $user_meta_sth->execute( $uname, $priacctid );
 
+        warn "Getting user_id";
         my ($user_id) = $dbh->selectrow_array(q{SELECT currval('users___user_id')});
+        warn "Creating uar";
         create_uar( $user_id, $priacctid );
 
         push @users, $user_id;
@@ -279,18 +289,16 @@ print "USING BASE $base\n";
         SET primary_account_id = ?
         WHERE user_id = ?
     });
-    my $assign_sth = $dbh->prepare_cached(q{
-        INSERT INTO user_workspace_role (user_id, workspace_id, role_id)
-        VALUES (?, ?, 3)
-    });
-
     sub assign_random_workspaces {
         my ($user_id, $number, $workspaces) = @_;
         my %done;
+        warn "assign_random_workspaces to $user_id ($number)";
 
         my $primary_ws = $workspaces[int(rand(@$workspaces))];
         $updt_sth->execute($ws_to_acct{$primary_ws}, $user_id);
-        $assign_sth->execute($user_id, $primary_ws);
+        my $ws = Socialtext::Workspace->new(workspace_id => $primary_ws);
+        $ws->user_set->_insert($dbh, $user_id, $primary_ws, $member_id,
+            'bulk');
         create_uar($user_id, $ws_to_acct{$primary_ws});
         $writes += 3;
         $done{$primary_ws} = 1;
@@ -304,7 +312,9 @@ print "USING BASE $base\n";
             next if $done{$ws_id};
 
             # assign a user to a workspace
-            $assign_sth->execute($user_id, $ws_id);
+            my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
+            $ws->user_set->_insert($dbh, $user_id, $ws_id, $member_id,
+                'bulk');
             create_uar($user_id, $ws_to_acct{$ws_id});
             $writes += 2;
             $done{$ws_id} = 1;
@@ -366,13 +376,6 @@ print "USING BASE $base\n";
 
 {
     print "Assigning $USER_GROUP_ROLES User->Group Roles";
-    my $ugr_sth = $dbh->prepare_cached(qq{
-        INSERT INTO user_group_role(
-            user_id, group_id, role_id
-        ) VALUES (
-            ?, ?, 3
-        );
-    } );
     my %available;
 
     for (0 .. $USER_GROUP_ROLES) {
@@ -390,7 +393,9 @@ print "USING BASE $base\n";
 
         # give the User a Role in this Group
         if ($user_id) {
-            $ugr_sth->execute( $user_id, $group_id );
+            my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+            $group->user_set->_insert($dbh, $user_id, $group_id, $member_id,
+                'bulk');
             $writes++;
             maybe_commit();
         }
@@ -400,13 +405,6 @@ print "USING BASE $base\n";
 
 {
     print "Assigning $GROUP_WORKSPACE_ROLES Group->Workspace Roles";
-    my $gwr_sth = $dbh->prepare_cached(qq{
-        INSERT INTO group_workspace_role (
-            group_id, workspace_id, role_id
-        ) VALUES (
-            ?, ?, 3
-        );
-    } );
     my %available;
 
     for (0 .. $GROUP_WORKSPACE_ROLES) {
@@ -424,7 +422,10 @@ print "USING BASE $base\n";
 
         # give the Group a Role in this Workspace
         if ($ws_id) {
-            $gwr_sth->execute( $group_id, $ws_id );
+            my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
+            $ws->user_set->_insert($dbh, $group_id, $ws_id, $member_id,
+                'bulk');
+
             create_gar( $group_id, $ws_to_acct{$ws_id} );
             $writes += 2;
             maybe_commit();
