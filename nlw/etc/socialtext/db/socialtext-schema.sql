@@ -1319,6 +1319,9 @@ CREATE UNIQUE INDEX "Workspace___lower___name"
 CREATE INDEX "Workspace_account_id"
 	    ON "Workspace" (account_id);
 
+CREATE UNIQUE INDEX account_user_set_id
+	    ON "Account" (user_set_id);
+
 CREATE INDEX error_funcid_errortime
 	    ON error (funcid, error_time);
 
@@ -1676,6 +1679,9 @@ CREATE INDEX webhook__class_workspace_ix
 
 CREATE INDEX webhook__workspace_class_ix
 	    ON webhook ("class");
+
+CREATE UNIQUE INDEX workspace_user_set_id
+	    ON "Workspace" (user_set_id);
 
 CREATE TRIGGER account_user_set_delete
     AFTER DELETE ON "Account"

@@ -6,6 +6,12 @@ DROP TABLE group_workspace_role CASCADE;
 DROP TABLE user_group_role;
 DROP TABLE user_workspace_role CASCADE;
 
+-- user_set_id indexes for groups/workspaces/accounts
+
+CREATE UNIQUE INDEX groups_user_set_id ON groups (user_set_id);
+CREATE UNIQUE INDEX workspace_user_set_id ON "Workspace" (user_set_id);
+CREATE UNIQUE INDEX account_user_set_id ON "Account" (user_set_id);
+
 -- indexes for user_set_include
 
 CREATE UNIQUE INDEX idx_user_set_include_pkey_and_role
