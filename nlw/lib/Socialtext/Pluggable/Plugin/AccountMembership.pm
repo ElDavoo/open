@@ -70,8 +70,8 @@ sub _user_has_workspace_role {
     my $ws_count = sql_singlevalue(q{
         SELECT COUNT("Workspace".workspace_id)
           FROM "Workspace"
-          JOIN user_workspace_role USING (workspace_id)
-         WHERE user_workspace_role.user_id = ?
+          JOIN user_set_path ON (workspace_id + }.PG_WKSP_OFFSET.q{ = into_set_id)
+         WHERE from_set_id = ?
            AND "Workspace".account_id = ?
     }, $user->user_id, $account->account_id);
 

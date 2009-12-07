@@ -2506,8 +2506,7 @@ to false.
 =head2 $workspace->add_user( user => $user, role => $role )
 
 Adds the user to the workspace with the given role. If no role is
-specified, this defaults to "member". user_workspace_role.is_selected
-will be true for this user and workspace.
+specified, this defaults to "member".
 
 =head2 $workspace->assign_role_to_user( user => $user, role => $role, is_selected => $bool )
 
