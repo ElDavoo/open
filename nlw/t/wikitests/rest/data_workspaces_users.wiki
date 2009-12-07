@@ -4,7 +4,7 @@
 
 | set | admin | admin%%start_time%%@q.q |
 | create-user | %%admin%% | password | %%account%% |
-| add-member | %%admin%% | %%workspace%% | workspace_admin |
+| add-member | %%admin%% | %%workspace%% | admin |
 | set | peon | peon%%start_time%%@q.q |
 | create-user | %%peon%% | password | %%account%% |
 | add-member | %%peon%% | %%workspace%% | member |
@@ -14,15 +14,15 @@
 | code-is | 200 |
 | json-parse |
 | json-array-size | 3 |
-| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"member","roles":["member"]}] |
+| json-like | [{"username":"%%username%%","role_name":"admin"},{"username":"%%admin%%","role_name":"admin"},{"username":"%%peon%%","role_name":"member","roles":["member"]}] |
 
 * Add peon to some group
-* Add that group to workpace A with role workspace_admin
+* Add that group to workpace A with role admin
 
 | set                    | group         | %%start_time%% group! |                 |
 | create-group           | %%group%%     |                       |                 |
 | set                    | group_id1     | %%group_id%%          |                 |
-| add-group-to-workspace | %%group_id1%% | %%workspace%%         | workspace_admin |
+| add-group-to-workspace | %%group_id1%% | %%workspace%%         | admin |
 | add-user-to-group      | %%peon%%      | %%group_id1%%         |                 |
 
 | http-user-pass | %%admin%% | password |
@@ -30,7 +30,7 @@
 | code-is | 200 |
 | json-parse |
 | json-array-size | 3 |
-| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"workspace_admin","roles":["member","workspace_admin"]}] |
+| json-like | [{"username":"%%username%%","role_name":"admin"},{"username":"%%admin%%","role_name":"admin"},{"username":"%%peon%%","role_name":"admin","roles":["member","admin"]}] |
 
 | add-member | %%peon%% | %%workspace%% | impersonator |
 
@@ -39,7 +39,7 @@
 | code-is | 200 |
 | json-parse |
 | json-array-size | 3 |
-| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"impersonator","roles":["workspace_admin","impersonator"]}] |
+| json-like | [{"username":"%%username%%","role_name":"admin"},{"username":"%%admin%%","role_name":"admin"},{"username":"%%peon%%","role_name":"impersonator","roles":["admin","impersonator"]}] |
 
 | remove-member | %%peon%% | %%workspace%% |
 
@@ -48,7 +48,7 @@
 | code-is | 200 |
 | json-parse |
 | json-array-size | 3 |
-| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"workspace_admin","roles":["workspace_admin"]}] |
+| json-like | [{"username":"%%username%%","role_name":"admin"},{"username":"%%admin%%","role_name":"admin"},{"username":"%%peon%%","role_name":"admin","roles":["admin"]}] |
 
 | add-member             | %%peon%% | %%workspace%% |
 | remove-user-from-group | %%peon%% | %%group_id1%%     |
@@ -58,7 +58,7 @@
 | code-is | 200 |
 | json-parse |
 | json-array-size | 3 |
-| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"member","roles":["member"]}] |
+| json-like | [{"username":"%%username%%","role_name":"admin"},{"username":"%%admin%%","role_name":"admin"},{"username":"%%peon%%","role_name":"member","roles":["member"]}] |
 
 | set                    | group2     | %%start_time%% group two! |              |
 | create-group           | %%group2%% |                           |              |
@@ -72,7 +72,7 @@
 | code-is | 200 |
 | json-parse |
 | json-array-size | 3 |
-| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"impersonator","roles":["member","workspace_admin","impersonator"]}] |
+| json-like | [{"username":"%%username%%","role_name":"admin"},{"username":"%%admin%%","role_name":"admin"},{"username":"%%peon%%","role_name":"impersonator","roles":["member","admin","impersonator"]}] |
 
 | remove-group-from-workspace | %%group_id2%% | %%workspace%% |
 | remove-user-from-group | %%peon%% | %%group_id1%%     |
@@ -82,4 +82,4 @@
 | code-is | 200 |
 | json-parse |
 | json-array-size | 3 |
-| json-like | [{"username":"%%username%%","role_name":"workspace_admin"},{"username":"%%admin%%","role_name":"workspace_admin"},{"username":"%%peon%%","role_name":"member","roles":["member"]}] |
+| json-like | [{"username":"%%username%%","role_name":"admin"},{"username":"%%admin%%","role_name":"admin"},{"username":"%%peon%%","role_name":"member","roles":["member"]}] |

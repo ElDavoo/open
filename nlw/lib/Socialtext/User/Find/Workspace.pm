@@ -16,7 +16,8 @@ sub get_results {
 
     my $sql = q{
         SELECT user_id, first_name, last_name,
-               email_address, driver_username, "Role".name AS role_name
+               email_address, driver_username,
+               array_accum(DISTINCT "Role".name) AS role_names
         FROM user_set_path
         JOIN users ON (from_set_id = user_id)
         JOIN "Role" USING(role_id)
@@ -33,6 +34,7 @@ sub get_results {
             lower(email_address) LIKE $1 OR
             lower(driver_username) LIKE $1
           )
+        GROUP BY user_id, first_name, last_name, email_address, driver_username
         ORDER BY last_name ASC, first_name ASC
         LIMIT $4 OFFSET $5
     };
@@ -45,7 +47,17 @@ sub get_results {
 
     my $rows = $sth->fetchall_arrayref({}) || [];
     for my $row (@$rows) {
-        $row->{is_workspace_admin} = $row->{role_name} eq 'admin';
+        my @roles = map { Socialtext::Role->new(name => $_) }
+            @{$row->{role_names} || []};
+
+        my @sorted_role_names = map { $_->name }
+            Socialtext::Role->SortByEffectiveness(roles => \@roles);
+
+        delete $row->{role_names};
+        $row->{role_name} = $sorted_role_names[-1];
+        $row->{roles} = \@sorted_role_names;
+        $row->{is_workspace_admin} =
+            any { $_ eq 'admin' } @sorted_role_names;
     }
 
     return $rows;
