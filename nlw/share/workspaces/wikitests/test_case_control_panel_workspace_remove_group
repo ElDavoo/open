@@ -1,25 +1,25 @@
-Test that a Group can be removed from a Workspace using the Control Panel.
+| *Comment* | Test Case: Control Panel Workspace, Remove Group |  |
 
-* Fixture: Socialtext
+| *Comment* | Test setup | . |
+| set | group_name | g%%start_time%% |
+| create-group | %%group_name%% |  |
+| add-group-to-workspace | %%group_id%% | %%workspace%% |
+| set | workspace_url | /nlw/control/workspace/%%workspace_id%% |
 
-| *Comment*              | Test setup     | .                                       |
-| set                    | group_name     | g%%start_time%%                         |
-| create-group           | %%group_name%% |                                         |
-| add-group-to-workspace | %%group_id%%   | %%workspace%%                           |
-| set                    | workspace_url  | /nlw/control/workspace/%%workspace_id%% |
+| *Comment* | We should see the Group on the "Workspace Details" page | . |
+| open-ok | %%workspace_url%% |  |
+| text-like | group_roles | %%group_name%% |
 
-| *Comment* | We should see the Group on the "Workspace Details" page | .              |
-| open-ok   | %%workspace_url%%                                       |                |
-| text-like | group_roles                                             | %%group_name%% |
+| *Comment* | Remove Group from the Workspace | . |
+| open-ok | %%workspace_url%% |  |
+| check-ok | `css=#group_roles input[type='radio'][value='%%group_id%%']` |  |
+| click-and-wait | st-remove-group-from-workspace-submit |  |
+| confirmation-like | Are you sure you want to remove this Group from the %%workspace%% Workspace? |  |
+| location-like | %%workspace_url%% |  |
+| text-like | errors-and-messages | %%group_name%% Group has been removed from the Workspace |
 
-| *Comment*         | Remove Group from the Workspace                                              | .                                                        |
-| open-ok           | %%workspace_url%%                                                            |                                                          |
-| check-ok          | css=#group_roles input[type='radio'][value='%%group_id%%']                   |                                                          |
-| click-and-wait    | st-remove-group-from-workspace-submit                                        |                                                          |
-| confirmation-like | Are you sure you want to remove this Group from the %%workspace%% Workspace? |                                                          |
-| location-like     | %%workspace_url%%                                                            |                                                          |
-| text-like         | errors-and-messages                                                          | %%group_name%% Group has been removed from the Workspace |
+| *Comment* | Group should no longer appear on the "Workspace Details" page | . |
+| open-ok | %%workspace_url%% |  |
+| text-unlike | group_roles | %%group_name%% |
 
-| *Comment*   | Group should no longer appear on the "Workspace Details" page | .              |
-| open-ok     | %%workspace_url%%                                             |                |
-| text-unlike | group_roles                                                   | %%group_name%% |
+| *Comment* | Test Case: Control Panel Workspace, Remove Group COMPLETED |  |

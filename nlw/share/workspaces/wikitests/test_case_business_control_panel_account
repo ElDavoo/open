@@ -72,10 +72,6 @@
 | wait_for_text_present_ok | Users (0) | 30000 |
 | wait_for_element_visible_ok | addUserLookahead | 30000 |
 | type_lookahead_ok | addUserLookahead | %%short_new%% |
-
-| *Comment* | Test case: Business Control Panel Account THIS TEST FAILS SEE BZ 3349 |  |
-| *Comment* | Test case: Business Control Panel Account THIS TEST FAILS SEE BZ 3349 |  |
-| *Comment* | Test case: Business Control Panel Account THIS TEST FAILS SEE BZ 3349 |  |
 | wait_for_element_visible_ok | link=%%short_new%% | 5000 |
 | click_and_wait | link=%%short_new%% |  |
 | wait_for_text_present_ok | Users (1) | 5000 |

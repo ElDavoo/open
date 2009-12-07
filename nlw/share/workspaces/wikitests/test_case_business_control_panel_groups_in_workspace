@@ -76,4 +76,10 @@
 | wait_for_element_visible_ok | group_id | 30000 |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Add Group |
+
+TODO: why does this TC end abruptly with a comment ?
+
+| *Comment* | Test Case: Business Control Panel Groups in Workspace TEARDOWN |
 | st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
+
+| *Comment* | Test Case: Business Control Panel Groups in Workspace COMPLETED |
