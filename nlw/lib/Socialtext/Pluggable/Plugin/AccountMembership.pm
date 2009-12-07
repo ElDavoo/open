@@ -5,6 +5,7 @@ use warnings;
 use base 'Socialtext::Pluggable::Plugin';
 use Class::Field qw(const);
 use Socialtext::Log qw/st_log/;
+use Socialtext::UserSet qw(PG_WKSP_OFFSET);
 
 # TEMPORARY
 use Socialtext::Role;
