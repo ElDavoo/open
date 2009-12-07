@@ -52,7 +52,7 @@ backup: {
     my $plugin = Socialtext::Pluggable::Plugin::Groups->new();
     stdout_is {
         $plugin->export_groups_for_account($account, $data_ref);
-    } "Exporting all groups for account '".$account->name."'...\n";
+    } "Exporting all groups (2) for account '".$account->name."'...\n";
 
     my $expected = [
         {
@@ -161,7 +161,7 @@ basic_restore: {
         my $plugin = Socialtext::Pluggable::Plugin::Groups->new();
         stdout_is {
             $plugin->export_groups_for_account($account, $data_ref);
-        } "Exporting all groups for account '".$account->name."'...\n";
+        } "Exporting all groups (1) for account '".$account->name."'...\n";
 
         ### CLEANUP: nuke stuff in DB before we import
         ### - we can't nuke the User; the Account import is responsible for
@@ -285,7 +285,7 @@ restore_with_existing_group: {
         my $plugin = Socialtext::Pluggable::Plugin::Groups->new();
         stdout_is {
             $plugin->export_groups_for_account($account, $data_ref);
-        } "Exporting all groups for account '".$account->name."'...\n";
+        } "Exporting all groups (1) for account '".$account->name."'...\n";
 
         ### CLEANUP: nuke stuff in DB before we import
         ### - don't nuke the Users, though; the Account import is responsible
