@@ -11,6 +11,9 @@ use unmocked 'Socialtext::Account';
 our $WORKSPACES = [ [ 1 ] ];
 our %CAN_USE_PLUGIN = ();
 
+# Copied from the real UserSet.pm
+use constant USER_END => 0x10000000;
+
 our %Users;
 
 sub new {
