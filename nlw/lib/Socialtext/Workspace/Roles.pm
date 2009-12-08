@@ -225,7 +225,7 @@ sub RolesForUserInWorkspace {
             SELECT COUNT(DISTINCT(into_set_id))
               FROM $uwr_table
              WHERE from_set_id = ?
-               AND into_set_id }.PG_WKSP_FILTER.q{
+               AND into_set_id }.PG_WKSP_FILTER.qq{
              $exclude_clause
         };
         my $count = sql_singlevalue( $sql, $user_id );
