@@ -40,11 +40,18 @@ sub do_work {
     }
 
     eval {
-        Socialtext::GroupInvitation->new(
+        my $invitation = Socialtext::GroupInvitation->new(
             group      => $group,
             from_user  => $self->sender,
             extra_text => $self->arg->{extra_text},
-        )->invite_notify($user);
+        );
+
+        # {bz: 3357} - Somehow the constructor does not set layout of $invitation
+        # properly; manually re-assign the fields until we get a cycle to investigate.
+        $invitation->{from_user} = $self->sender;
+        $invitation->{extra_text} = $self->arg->{extra_text};
+
+        $invitation->invite_notify($user);
     };
     if ( my $e = $@ ) {
         $self->failed($e, 255);

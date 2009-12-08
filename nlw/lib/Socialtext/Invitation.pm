@@ -34,7 +34,7 @@ sub invite_notify {
         requires_confirmation => $user->requires_confirmation,
         confirmation_uri      => $user->confirmation_uri || '',
         host                  => Socialtext::AppConfig->web_hostname(),
-        inviting_user         => $self->{from_user}->best_full_name,
+        inviting_user         => $self->from_user->best_full_name,
         app_name              => $app_name,
         forgot_password_uri   =>
             Socialtext::URI::uri(path => '/nlw/forgot_password.html'),
@@ -85,7 +85,7 @@ sub _log_action {
     my $extra  = shift;
     my $name = $self->_name;
     my $page_name = '';
-    my $user_name = $self->{from_user}->user_id;
+    my $user_name = $self->from_user->user_id;
     my $log_msg = "$action : $name : $page_name : $user_name";
     if ($extra) {
         $log_msg .= " : $extra";
