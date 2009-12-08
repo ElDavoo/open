@@ -4,6 +4,7 @@ use Moose::Role;
 use Carp qw(croak);
 use List::Util qw(first);
 use Socialtext::Date;
+use Socialtext::UserSet qw/:const/;
 use Socialtext::Exceptions qw(data_validation_error);
 use Socialtext::Group::Homunculus;
 use Socialtext::Log qw(st_log);
