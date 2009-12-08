@@ -191,6 +191,7 @@ Socialtext::Log - MOCKED Socialtext::Log
 
   logged_is   $level, $msg, $test_name;
   logged_like $level, qr/msg/, $test_name;
+  logged_not_like $level, qr/msg/, $test_name;
 
   next_log_is   $level, $msg, $test_name;
   next_log_like $level, qr/msg/, $test_name;
@@ -283,6 +284,15 @@ using the specified log level.  Returns true if it was logged, false otherwise.
 
 The current implementation does not scale especially well, so use this sparingly
 if you need to search through hundreds of logged messages.
+
+=item B<logged_not_like($level, $regex)>
+
+Checks to make sure that a message matching the given regex was B<not> logged
+at some point using the specified log level.  Returns false if it was logged,
+true otherwise.
+
+The current implementation does not scale especially well, so use this
+sparingly if you need to search through hundreds of logged messages.
 
 =back
 
