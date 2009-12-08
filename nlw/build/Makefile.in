@@ -475,7 +475,6 @@ QUICK_TESTS = \
 	t/Socialtext/User/LDAP.t \
 	t/Socialtext/UserPreferencesPlugin.t \
 	t/Socialtext/UserSettingsPlugin-email-address-parse.t \
-	t/Socialtext/UploadedImage.t \
 	t/Socialtext/Validate.t \
 	t/Socialtext/WebApp.t \
 	t/Socialtext/WikiFixture/Socialtext.t \
