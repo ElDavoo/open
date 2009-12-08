@@ -1001,7 +1001,7 @@ sub _add_user_to_workspace_as {
     $self->_check_workspace_role(
         cur_role => $current_role,
         new_role => $new_role,
-        name     => $ws->name,
+        name     => $user->username,
     );
 
     $ws->assign_role_to_user( user => $user, role => $new_role );
