@@ -3,6 +3,7 @@ package Socialtext::UserMetadata;
 use Moose;
 use Socialtext::Cache;
 use Socialtext::Exceptions qw( data_validation_error param_error );
+use Socialtext::Role;
 use Socialtext::SQL 'sql_execute';
 use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE 
                              WORKSPACE_TYPE );
@@ -104,6 +105,23 @@ sub create {
 
     my $user = $class->new(user_id => $p{user_id});
     my $acct = Socialtext::Account->new(account_id => $user->primary_account_id);
+
+    # Add the User to their Primary Account.
+    #
+    # Watch out, though... unit-tests may set up crazy scenarios where we've
+    # got User Homunculus objects that have *no* UserMetadata, and that during
+    # cleanup we try to instantiate a User object (which in turn tries to
+    # create a new UserMetadata object for said User).  That User, though, may
+    # have Roles in the Account already (so don't create a new one if the User
+    # has one already).
+    unless ($acct->has_user($user)) {
+        $acct->add_user(
+            user  => $user,
+            actor => $user->creator,
+            role  => Socialtext::Role->Member(),
+        );
+        $acct->add_to_all_users_workspace(object => $user);
+    }
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), undef);

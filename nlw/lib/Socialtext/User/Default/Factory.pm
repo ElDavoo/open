@@ -43,10 +43,6 @@ sub _create_default_user {
         primary_account_id => $account->account_id(),
     );
 
-    # Use a lower-level API b/c the user is not a Socialtext::User
-    $account->user_set->add_object_role($system_user,
-        Socialtext::Role->new(name => 'member'));
-
     return $id;
 }
 
