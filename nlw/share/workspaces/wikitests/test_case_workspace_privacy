@@ -3,7 +3,7 @@
 | *Comment* | Test Case: Workspace Privacy. Make a scratch workspace |  |
 | set | wspriv | wspriv-%%start_time%% |
 | st-admin | create-workspace --n %%wspriv%% --t WSPRIV | was created |
-| st-admin | add-workspace-admin --u %%username%% --w %%wspriv%% | is now a |
+| st-admin | add-workspace-admin --u %%username%% --w %%wspriv%% | qr/now has.+admin.+role/ism |
 
 | *Comment* | Test Case: Workspace Privacy set login to edit |  |
 | open_ok | /%%wspriv%%/?action=users_settings |  |

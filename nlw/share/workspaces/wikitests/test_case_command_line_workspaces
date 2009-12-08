@@ -46,35 +46,35 @@
 | st-admin | add-permission --workspace %%cmdline_workspace%% --role guest --permission admin_workspace | qr/The admin_workspace permission has been granted to the guest role in the %%cmdline_workspace%% workspace/ |
 | st-admin | add-permission --workspace %%cmdline_workspace%% --role authenticated_user --permission attachments | qr/The attachments permission has been granted to the authenticated user role in the %%cmdline_workspace%% workspace/ |
 | st-admin | add-permission --workspace %%cmdline_workspace%% --role member --permission comment | qr/The comment permission has been granted to the member role in the %%cmdline_workspace%% workspace/ |
-| st-admin | add-permission --workspace %%cmdline_workspace%% --role workspace_admin --permission delete | qr/The delete permission has been granted to the workspace admin role in the %%cmdline_workspace%% workspace/ |
+| st-admin | add-permission --workspace %%cmdline_workspace%% --role admin --permission delete | qr/The delete permission has been granted to the admin role in the %%cmdline_workspace%% workspace/ |
 | st-admin | add-permission --workspace %%cmdline_workspace%% --role guest --permission edit | qr/The edit permission has been granted to the guest role in the %%cmdline_workspace%% workspace/ |
 | st-admin | add-permission --workspace %%cmdline_workspace%% --role authenticated_user --permission edit_controls | qr/The edit_controls permission has been granted to the authenticated user role in the %%cmdline_workspace%% workspace/ |
 | st-admin | add-permission --workspace %%cmdline_workspace%% --role member --permission email_in | qr/The email_in permission has been granted to the member role in the %%cmdline_workspace%% workspace/ |
-| st-admin | add-permission --workspace %%cmdline_workspace%% --role workspace_admin --permission email_out | qr/The email_out permission has been granted to the workspace admin role in the %%cmdline_workspace%% workspace/ |
+| st-admin | add-permission --workspace %%cmdline_workspace%% --role admin --permission email_out | qr/The email_out permission has been granted to the admin role in the %%cmdline_workspace%% workspace/ |
 | st-admin | add-permission --workspace %%cmdline_workspace%% --role guest --permission read | qr/The read permission has been granted to the guest role in the %%cmdline_workspace%% workspace/ |
 
 | *Comment* | Test Case: Command Line Tests WORKSPACES ...and stick with the created permissions for remove-permissions w/o checking error conditions |  |
 | st-admin | remove-permission --workspace %%cmdline_workspace%% --role guest --permission admin_workspace | qr/The admin_workspace permission has been revoked from the guest role in the %%cmdline_workspace%% workspace/ |
 | st-admin | remove-permission --workspace %%cmdline_workspace%% --role authenticated_user --permission attachments | qr/The attachments permission has been revoked from the authenticated user role in the %%cmdline_workspace%% workspace/ |
 | st-admin | remove-permission --workspace %%cmdline_workspace%% --role member --permission comment | qr/The comment permission has been revoked from the member role in the %%cmdline_workspace%% workspace/ |
-| st-admin | remove-permission --workspace %%cmdline_workspace%% --role workspace_admin --permission delete | qr/The delete permission has been revoked from the workspace admin role in the %%cmdline_workspace%% workspace/ |
+| st-admin | remove-permission --workspace %%cmdline_workspace%% --role admin --permission delete | qr/The delete permission has been revoked from the admin role in the %%cmdline_workspace%% workspace/ |
 | st-admin | remove-permission --workspace %%cmdline_workspace%% --role guest --permission edit | qr/The edit permission has been revoked from the guest role in the %%cmdline_workspace%% workspace/ |
 | st-admin | remove-permission --workspace %%cmdline_workspace%% --role authenticated_user --permission edit_controls | qr/The edit_controls permission has been revoked from the authenticated user role in the %%cmdline_workspace%% workspace/ |
 | st-admin | remove-permission --workspace %%cmdline_workspace%% --role member --permission email_in | qr/The email_in permission has been revoked from the member role in the %%cmdline_workspace%% workspace/ |
-| st-admin | remove-permission --workspace %%cmdline_workspace%% --role workspace_admin --permission email_out | qr/The email_out permission has been revoked from the workspace admin role in the %%cmdline_workspace%% workspace/ |
+| st-admin | remove-permission --workspace %%cmdline_workspace%% --role admin --permission email_out | qr/The email_out permission has been revoked from the admin role in the %%cmdline_workspace%% workspace/ |
 | st-admin | remove-permission --workspace %%cmdline_workspace%% --role guest --permission read | qr/The read permission has been revoked from the guest role in the %%cmdline_workspace%% workspace/ |
 
 | *Comment* | Test Case: Command Line Tests WORKSPACES show-acls |  |
 | st-admin | show-acls | qr/The command you called \(show-acls\) requires a workspace to be specified/ |
 
 | *Comment* | Test Case: Command Line Tests this is a pretty powerful test, but it's flaw is that it will not fail when too many permissions are set |  |
-| st-admin | show-acls --workspace %%cmdline_workspace%% | qr/permission set name: custom.+guest.+authenticated user.+member.+workspace admin.+impersonator.+admin_workspace.+X.+attachments.+X.+X.+X.+X.+comment.+X.+X.+X.+X.+delete.+X.+X.+X.+X.+edit.+X.+X.+X.+X.+edit_controls.+email_in.+X.+X.+X.+email_out.+X.+X.+X.+X.+impersonate.+X.+read.+X.+X.+X.+X.+request_invite/ |
+| st-admin | show-acls --workspace %%cmdline_workspace%% | qr/permission set name: custom.+guest.+authenticated user.+member.+admin.+impersonator.+admin_workspace.+X.+attachments.+X.+X.+X.+X.+comment.+X.+X.+X.+X.+delete.+X.+X.+X.+X.+edit.+X.+X.+X.+X.+edit_controls.+email_in.+X.+X.+X.+email_out.+X.+X.+X.+X.+impersonate.+X.+read.+X.+X.+X.+X.+request_invite/ |
 
 | *Comment* | Test Case: Command Line Tests WORKSPACES check acls for public, member-only workspace |  |
 | st-admin | set-permissions --workspace %%cmdline_workspace%% --permissions public | qr/The permissions for the %%cmdline_workspace%% workspace have been changed to public/ |
-| st-admin | show-acls --workspace %%cmdline_workspace%% | qr/permission set name: public.+guest.+authenticated user.+member.+workspace admin.+impersonator.+admin_workspace.+X.+attachments.+X.+X.+X.+comment.+X.+X.+X.+X.+X.+delete.+X.+X.+X.+edit.+X.+X.+X.+X.+X.+edit_controls.+email_in.+X.+X.+X.+X.+email_out.+X.+X.+X.+impersonate.+X.+read.+X.+X.+X.+X.+X.+request_invite/ |
+| st-admin | show-acls --workspace %%cmdline_workspace%% | qr/permission set name: public.+guest.+authenticated user.+member.+admin.+impersonator.+admin_workspace.+X.+attachments.+X.+X.+X.+comment.+X.+X.+X.+X.+X.+delete.+X.+X.+X.+edit.+X.+X.+X.+X.+X.+edit_controls.+email_in.+X.+X.+X.+X.+email_out.+X.+X.+X.+impersonate.+X.+read.+X.+X.+X.+X.+X.+request_invite/ |
 | st-admin | set-permissions --workspace %%cmdline_workspace%% --permissions member-only | qr/The permissions for the %%cmdline_workspace%% workspace have been changed to member-only/ |
-| st-admin | show-acls --workspace %%cmdline_workspace%% | qr/permission set name: member-only.+guest.+authenticated user.+member.+workspace admin.+impersonator.+admin_workspace.+X.+attachments.+X.+X.+X.+comment.+X.+X.+X.+delete.+X.+X.+X.+edit.+X.+X.+X.+edit_controls.+email_in.+X.+X.+X.+X.+email_out.+X.+X.+X.+impersonate.+X.+read.+X.+X.+X.+request_invite/ |
+| st-admin | show-acls --workspace %%cmdline_workspace%% | qr/permission set name: member-only.+guest.+authenticated user.+member.+admin.+impersonator.+admin_workspace.+X.+attachments.+X.+X.+X.+comment.+X.+X.+X.+delete.+X.+X.+X.+edit.+X.+X.+X.+edit_controls.+email_in.+X.+X.+X.+X.+email_out.+X.+X.+X.+impersonate.+X.+read.+X.+X.+X.+request_invite/ |
 
 show-members
 
