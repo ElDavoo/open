@@ -912,16 +912,18 @@ sub _AllByWorkspaceCount {
         unshift @args, $p{name};
     }
 
-
     my $sql = qq{
-        SELECT a.*, COALESCE(workspace_count,0) AS workspace_count
-        FROM "Account" a
+        SELECT "Account".*, 
+               COALESCE(workspace_count,0) AS workspace_count
+        FROM "Account"
         LEFT JOIN (
-            SELECT account_id, COUNT(DISTINCT(workspace_id)) AS workspace_count
+            SELECT account_id, 
+                   COUNT(DISTINCT(workspace_id)) AS workspace_count
             FROM "Workspace"
             GROUP BY account_id
         ) wa USING (account_id)
-        ORDER BY workspace_count $p{sort_order}, a.name ASC
+        $where
+        ORDER BY workspace_count $p{sort_order}, "Account".name ASC
         LIMIT ? OFFSET ?
     };
     return sql_execute($sql, @args);
