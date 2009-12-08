@@ -4,6 +4,7 @@ package Socialtext::Log;
 use strict;
 use warnings;
 use base 'Exporter';
+use unmocked 'List::MoreUtils', qw(after_incl);
 use unmocked 'Test::MockObject';
 use unmocked 'Test::Builder';
 
@@ -16,6 +17,8 @@ our @EXPORT = qw(
     logged_is
     logged_like
     logged_not_like
+    no_errors_logged_ok
+    no_warnings_logged_ok
     );
 
 our @EXPORT_OK = qw(
@@ -170,6 +173,46 @@ sub _generic_log_like {
     $Test->ok($no_match_result, $name);
 }
 
+sub no_errors_logged_ok(;$) {
+    _generic_level_not_logged_ok('error', @_);
+}
+
+sub no_warnings_logged_ok(;$) {
+    _generic_level_not_logged_ok('warning', @_);
+}
+
+sub _generic_level_not_logged_ok {
+    my ($level, $name) = @_;
+    $name ||= "nothing logged at '$level' or higher";
+
+    # create a lookup table for all of the log levels that are >= the one that
+    # we're looking for.
+    my %looking_for =
+        map { $_ => 1 }
+        after_incl { $_ eq $level }
+        qw(debug info notice warning error critical alert emergency);
+
+    # gather up any entries that were logged at these levels
+    my @found;
+    my $offset = 0;
+    while (1) {
+        $offset ++;
+        my $sub = st_log->call_pos($offset);
+        last unless $sub;
+
+        if (exists $looking_for{$sub}) {
+            my @args = st_log->call_args($offset);
+            push @found, [$sub, @args];
+        }
+    }
+
+    $Test->ok(!@found, $name);
+    foreach my $entry (@found) {
+        my ($level, undef, $msg) = @{$entry};
+        $Test->diag("\t'$level' logged: $msg");
+    }
+}
+
 1;
 
 =head1 NAME
@@ -197,6 +240,9 @@ Socialtext::Log - MOCKED Socialtext::Log
   next_log_like $level, qr/msg/, $test_name;
 
   ($level, $msg) = next_log();
+
+  no_warnings_logged_ok 'no warnings logged';
+  no_errors_logged_ok 'no errors logged';
 
 =head1 DESCRIPTION
 
@@ -293,6 +339,14 @@ true otherwise.
 
 The current implementation does not scale especially well, so use this
 sparingly if you need to search through hundreds of logged messages.
+
+=item B<no_errors_logged_ok($msg)>
+
+Checks to make sure that no errors (or greater) were logged.
+
+=item B<no_warnings_logged_ok($msg)>
+
+Checks to make sure that no warnings (or greater) were logged.
 
 =back
 
