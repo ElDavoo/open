@@ -252,7 +252,7 @@ EOSQL
     $self->_update_aliases_file();
     $self->_enable_default_plugins();
 
-    $self->account->user_set->add_object_role($self, 'member_workspace');
+    $self->account->user_set->add_object_role($self, 'member');
 
     my $msg = 'CREATE,WORKSPACE,workspace:' . $self->name
               . '(' . $self->workspace_id . '),'
@@ -485,7 +485,7 @@ sub _update {
         $adapter->make_hub(Socialtext::User->SystemUser(), $self);
 
         $old_account->user_set->remove_object_role($self);
-        $new_account->user_set->add_object_role($self => 'member_workspace');
+        $new_account->user_set->add_object_role($self => 'member');
 
         warn "this shouldn't be passing 'affiliate' as the role; the real effective role should be used";
         my $users = $self->users;

@@ -74,7 +74,7 @@ backup: {
             driver_group_name    => $group_three->driver_group_name,
             created_by_username  => $def_user->username,
             primary_account_name => $account->name,
-            role_name            => 'member_workspace',
+            role_name            => 'member',
             description          => '',
             users                => [
                 {

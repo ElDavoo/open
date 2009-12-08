@@ -16,7 +16,7 @@ use_ok 'Socialtext::CLI';
 our $LastExitVal;
 {
     no warnings 'redefine';
-    *Socialtext::CLI::_exit = sub { $LastExitVal=shift; die };
+    *Socialtext::CLI::_exit = sub { $LastExitVal=shift; die "cli-died" };
 }
 
 ################################################################################
@@ -570,7 +570,7 @@ add_group_to_workspace: {
             )->add_member();
         };
     } );
-    like $output, qr/.+ now has a 'member' role in the .+ Workspace/,
+    like $output, qr/.+ now has the 'member' role in the .+ Workspace/,
         '... succeeds with correct message';
 
     my $role = $workspace->role_for_group($group);
@@ -580,8 +580,8 @@ add_group_to_workspace: {
 
     $role = $account->role_for_group($group);
     ok $role, "... Group has role in Workspace's Account";
-    is $role->name, 'member_workspace',
-        '... ... that is a member_workspace';
+    is $role->name, 'member',
+        '... ... that is a member';
 }
 
 ###############################################################################
@@ -698,7 +698,7 @@ add_group_as_admin_to_workspace: {
             )->add_workspace_admin();
         };
     } );
-    like $output, qr/.+ now has a 'admin' role in the .+ Workspace/,
+    like $output, qr/.+ now has the 'admin' role in the .+ Workspace/,
         'Group added as admin message';
     my $role = $workspace->role_for_group($group);
     ok $role, 'Group has Role in Workspace';
@@ -707,7 +707,7 @@ add_group_as_admin_to_workspace: {
 
     $role = $account->role_for_group($group);
     ok $role, 'Group has Role in Account';
-    is $role->name, 'member_workspace', '... Role is member';
+    is $role->name, 'member', '... Role is member';
 }
 
 ###############################################################################
@@ -734,7 +734,7 @@ add_group_as_admin_to_workspace: {
         };
     } );
     warn $@ if $@;
-    like $output, qr/.+ now has a 'admin' role in the .+ Workspace/,
+    like $output, qr/.+ now has the 'admin' role in the .+ Workspace/,
         'Group added as admin message';
     $role = $workspace->role_for_group($group);
     ok $role, 'Group has Role in Workspace';
@@ -769,7 +769,7 @@ group_member_remains_in_workspace: {
         };
     } );
     my $membername = $member->name;
-    like $output, qr/.+ now has a 'member' role in .+ due to membership in a group/, 
+    like $output, qr/.+ now has the 'member' role in .+ due to membership in a group/, 
         '... with correct message';
 
     my $role = $workspace->role_for_user($user);
@@ -790,7 +790,7 @@ group_member_remains_in_workspace: {
         };
     } );
     my $impersonatorname = $impersonator->name;
-    like $output, qr/.+ now has a 'impersonator' role in .+ due to membership in a group/, 
+    like $output, qr/.+ now has the 'impersonator' role in .+ due to membership in a group/, 
         '... with correct message';
 
     $role = $workspace->role_for_user($user);
@@ -847,7 +847,7 @@ group_member_remains_admin_in_workspace: {
     } );
 
     warn $@ if $@;
-    like $output, qr/.+ now has a 'admin' role in the .+ Workspace due to membership in a group/, 
+    like $output, qr/.+ now has the 'admin' role in the .+ Workspace due to membership in a group/, 
         '... with correct message';
 
     my $role = $workspace->role_for_user($user);

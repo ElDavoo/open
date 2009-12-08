@@ -12,6 +12,9 @@ use Test::Exception;
 # - Need a DB, but don't care what's in it
 fixtures(qw( db ));
 
+my $Member = Socialtext::Role->Member();
+my $Admin  = Socialtext::Role->Admin();
+
 ###############################################################################
 # TEST: a newly created Account has *no* Users in it
 new_account_has_no_users: {
@@ -92,12 +95,11 @@ add_user_to_account: {
 add_user_to_account_explicit_role: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user();
-    my $role    = Socialtext::Role->Admin();
 
-    $account->add_user(user => $user, role => $role);
+    $account->add_user(user => $user, role => $Admin);
 
     my $result = $account->role_for_user($user);
-    is $result->name, $role->name, '... with correct role';
+    is $result->name, $Admin->name, '... with correct role';
 }
 
 ###############################################################################
@@ -116,10 +118,9 @@ user_has_role_in_account: {
 role_for_user_primary_account: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user(account => $account);
-    my $role    = Socialtext::Role->Member();
 
     my $q_role = $account->role_for_user($user);
-    is $q_role->name, $role->name, 'User has Member Role in Primary Account';
+    is $q_role->name, $Member->name, 'User has Member Role in Primary Account';
 }
 
 ###############################################################################
@@ -127,12 +128,11 @@ role_for_user_primary_account: {
 role_for_user_explicit_role: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user();
-    my $role    = Socialtext::Role->Admin();
 
-    $account->add_user(user => $user, role => $role);
+    $account->add_user(user => $user, role => $Admin);
 
     my $q_role = $account->role_for_user($user);
-    is $q_role->name, $role->name, 'User has assigned Role in Account';
+    is $q_role->name, $Admin->name, 'User has assigned Role in Account';
 }
 
 ###############################################################################
@@ -141,13 +141,12 @@ role_for_user_indirect_via_workspace: {
     my $account   = create_test_account_bypassing_factory();
     my $workspace = create_test_workspace(account => $account);
     my $user      = create_test_user();
-    my $Admin     = Socialtext::Role->Admin();
 
     $workspace->add_user(user => $user, role => $Admin);
 
     my $q_role = $account->role_for_user($user);
-    is $q_role->name, 'member_workspace',
-        'User has member_workspace Role, via Workspace membership';
+    is $q_role->name, $Member->name,
+        'User has member Role, via Workspace membership, not admin';
 }
 
 ###############################################################################
@@ -156,14 +155,12 @@ role_for_user_indirect_via_group: {
     my $account   = create_test_account_bypassing_factory();
     my $group     = create_test_group(account => $account);
     my $user      = create_test_user();
-    my $Member    = Socialtext::Role->Member();
-    my $Admin     = Socialtext::Role->Admin();
 
     $group->add_user(user => $user, role => $Admin);
 
     my $q_role = $account->role_for_user($user);
     is $q_role->name, $Member->name,
-        'User has Member Role, via Group membership';
+        'User has Member Role, via Group membership, not admin';
 }
 
 ###############################################################################
@@ -173,14 +170,13 @@ role_for_user_indirect_via_group_in_workspace: {
     my $workspace = create_test_workspace(account => $account);
     my $group     = create_test_group();
     my $user      = create_test_user();
-    my $Admin     = Socialtext::Role->Admin();
 
     $workspace->add_group(group => $group, role => $Admin);
     $group->add_user(user => $user, role => $Admin);
 
     my $q_role = $account->role_for_user($user);
-    is $q_role->name, 'member_workspace',
-        'User has member_workspace Role, via Group in Workspace membership';
+    is $q_role->name, $Member->name,
+        'User has member Role, via Group in Workspace membership, not admin';
 }
 
 ###############################################################################

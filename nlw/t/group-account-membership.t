@@ -94,7 +94,7 @@ via_primary_account: {
     $acct2->remove_group(group => $group);
 
     account_role_count_is($acct => 1, "member role retained");
-    account_role_count_is($acct2 => 0, "affiliate role removed");
+    account_role_count_is($acct2 => 0, "member role removed");
 }
 
 # watch account membership as we add and remove a group to/from a workspace
@@ -105,14 +105,14 @@ via_workspace: {
 
     account_role_count_is $acct => 1, "only workspace role initially";
 
-    $ws->add_group(group => $group);
+    $ws->add_group(group => $group, role => 'admin');
 
     account_role_count_is $acct => 2;
-    check_group_account_role $group, $acct, 'member_workspace',
-        "group is an affiliate through the workspace";
+    check_group_account_role $group, $acct, 'member',
+        "group is a member through the workspace";
 
     $ws->remove_group(group => $group);
 
     account_role_count_is $acct => 1, 
-        "removing group workspace role removes the affiliate role";
+        "removing group workspace role removes the member role";
 }

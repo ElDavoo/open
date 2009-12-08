@@ -15,7 +15,6 @@ fixtures(qw( db ));
 
 ###############################################################################
 # Short-hand access to some Roles.
-my $Member_wksp = Socialtext::Role->Member_workspace();
 my $Member    = Socialtext::Role->Member();
 my $Admin     = Socialtext::Role->Admin();
 
@@ -50,7 +49,7 @@ get_role_for_user_explicit_uar: {
 }
 
 ###############################################################################
-# TEST: Get Role for User; UserWorkspaceRole, with Member_wksp UserAccountRole
+# TEST: Get Role for User; UserWorkspaceRole, with member UserAccountRole
 get_role_for_user_uwr: {
     my $account   = create_test_account_bypassing_factory();
     my $workspace = create_test_workspace(account => $account);
@@ -63,7 +62,7 @@ get_role_for_user_uwr: {
         account => $account,
     );
     isa_ok $role, 'Socialtext::Role', 'Users secondary Role in Account';
-    is $role->name, $Member_wksp->name, '... is the "Member_wksp" Role';
+    is $role->name, $Member->name, '... is the "member" Role';
 }
 
 ###############################################################################
@@ -85,7 +84,7 @@ get_role_for_user_gar: {
 }
 
 ###############################################################################
-# TEST: Get Role for User; UserGroupRole, GroupWorkspaceRole, with Member_wksp
+# TEST: Get Role for User; UserGroupRole, GroupWorkspaceRole, with member
 # GroupAccountRole
 get_role_for_user_gwr: {
     my $account   = create_test_account_bypassing_factory();
@@ -101,7 +100,7 @@ get_role_for_user_gwr: {
         account => $account,
     );
     isa_ok $role, 'Socialtext::Role', 'Users indirect Role in Account';
-    is $role->name, $Member_wksp->name, '... is the "Member_wksp" Role';
+    is $role->name, $Member->name, '... is the "member" Role';
 }
 
 ###############################################################################

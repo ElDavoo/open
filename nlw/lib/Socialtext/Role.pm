@@ -26,8 +26,6 @@ Readonly my @RequiredRoles => (
     [ authenticated_user => 1 ],
     [ affiliate          => 0 ],
     [ member             => 0 ],
-    [ member_workspace   => 0 ],
-    [ member_group       => 0 ],
     [ admin              => 0 ],
     [ impersonator       => 0 ],
 );
@@ -170,7 +168,6 @@ sub Guest             { shift->new(name => 'guest') }
 sub AuthenticatedUser { shift->new(name => 'authenticated_user') }
 sub Affiliate         { shift->new(name => 'affiliate') }
 sub Member            { shift->new(name => 'member') }
-sub Member_workspace  { shift->new(name => 'member_workspace') }
 sub Admin             { shift->new(name => 'admin') }
 sub Impersonator      { shift->new(name => 'impersonator') }
 

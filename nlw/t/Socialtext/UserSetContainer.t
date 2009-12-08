@@ -32,7 +32,7 @@ my $test_ws = create_test_workspace();
 ok($default_acct->user_set->has_role(
         $test_ws->user_set_id,
         $default_acct->user_set_id,
-        Socialtext::Role->Member_workspace->role_id,
+        Socialtext::Role->Member->role_id,
     ), 'account has the wksp');
 
 {
