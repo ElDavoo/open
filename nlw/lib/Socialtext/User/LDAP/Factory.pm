@@ -9,6 +9,7 @@ use base qw(Socialtext::User::Factory);
 use Class::Field qw(field const);
 use Socialtext::LDAP;
 use Socialtext::User::LDAP;
+use Socialtext::UserMetadata;
 use Socialtext::Log qw(st_log);
 use Socialtext::SQL qw(sql_selectrow);
 use Net::LDAP::Util qw(escape_filter_value);
@@ -352,6 +353,14 @@ sub _vivify {
         $user_attrs{driver_username} = delete $user_attrs{username};    # map "object -> DB"
         $self->NewUserRecord(\%user_attrs);
 
+        # set up the UserMetadata for the new User record.
+        my $user_metadata = Socialtext::UserMetadata->create(
+            user_id                 => $user_attrs{user_id},
+            email_address_at_import => $user_attrs{email_address},
+            created_by_user_id      => Socialtext::User->SystemUser->user_id,
+        );
+
+        # trigger an initial indexing of the User record
         Socialtext::JobCreator->index_person($user_attrs{user_id},
             run_after => 10);
     }
