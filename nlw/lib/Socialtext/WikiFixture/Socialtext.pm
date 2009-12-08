@@ -671,6 +671,7 @@ sub _st_admin_in_process {
 
     # Run st-admin, in process.
     my @argv   = shellwords( $options );
+    local @ARGV = @argv;
     my $output = combined_from {
         eval { Socialtext::CLI->new( argv => \@argv )->run };
         if ($@) { warn $@ };
