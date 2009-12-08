@@ -3,7 +3,8 @@
 use warnings;
 use strict;
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 22;
+use Test::Socialtext tests => 27;
+use Test::More;
 BEGIN { 
     use_ok 'Socialtext::UserSet', qw/:const/;
     use_ok 'Socialtext::UserSetContainer';
@@ -15,10 +16,24 @@ my $uid = $user->user_id;
 my $uname = $user->username;
 my $admin = Socialtext::Role->Admin;
 my $member = Socialtext::Role->Member;
+my $default_acct = Socialtext::Account->Default;
+ok($default_acct->has_user($user), 'account has the user');
+is($default_acct->role_for_user($user)->role_id,
+    $member->role_id, 'user is a member in acct');
 
 my $grp = create_test_group();
 my $gid = $grp->group_id;
 my $gname = $grp->driver_group_name;
+ok($default_acct->has_group($grp), 'account has the group');
+is($default_acct->role_for_group($grp)->role_id,
+    $member->role_id, 'group is a member in acct');
+
+my $test_ws = create_test_workspace();
+ok($default_acct->user_set->has_role(
+        $test_ws->user_set_id,
+        $default_acct->user_set_id,
+        Socialtext::Role->Member_workspace->role_id,
+    ), 'account has the wksp');
 
 {
     package Container;
