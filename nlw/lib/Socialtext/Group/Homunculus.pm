@@ -6,6 +6,7 @@ use Socialtext::Moose::SqlTable;
 use Socialtext::MooseX::Types::Pg;
 use Socialtext::Account;
 use Socialtext::User;
+use Socialtext::UserSet qw/:const/;
 use Socialtext::Group;
 use namespace::clean -except => 'meta';
 
