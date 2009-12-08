@@ -1,7 +1,5 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
-use strict;
-use warnings;
 use Test::More tests=>3;
 use Test::LectroTest::Compat;
 use Test::Differences;
@@ -25,7 +23,7 @@ my $OFFSET = 0x10000001;
 my @vertices = $OFFSET..($OFFSET+255);
 my %edges; 
 my ($first, $second);
-for (1..200) {
+for (1..300) {
     $first = $second = $OFFSET;
     while (($first == $second) || 
         $edges{"$first/$second"}) {
@@ -43,15 +41,20 @@ my $graphb = $graph->deep_copy;
 
 #warn "done generating Graph object";
 
+my $dbh = Socialtext::SQL::get_dbh();
 my $us = Socialtext::UserSet->new;
+$dbh->begin_work;
+$us->_create_insert_temp($dbh,'bulk');
 my $memberroleid = Socialtext::Role->Member->role_id;
 my $counter=0;
 my $start = Time::HiRes::time;
 for my $set (values %edges) {
     $counter++;
     #warn "$counter\n" unless ($counter % 10);
-    $us->add_role($set->[0],$set->[1],$memberroleid); 
+    #$us->add_role($set->[0],$set->[1],$memberroleid); 
+    $us->_insert($dbh,$set->[0],$set->[1],$memberroleid,'bulk');
 }
+$dbh->commit;
 diag("Took ". (Time::HiRes::time - $start) . " to generate user_sets in db");
 #warn "Done creating user_sets";
 
@@ -105,8 +108,8 @@ eq_or_diff([
 exit;
 
 package graph_gen;
-use strict;
-use warnings;
+
+my %testpairs;
 
 sub generate {
     my $OFFSET = 0x10000001;
