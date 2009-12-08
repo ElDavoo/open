@@ -3,6 +3,9 @@
 use warnings;
 use strict;
 
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+
 #
 # produce an anonymized dump of the user graph in the database.
 # Correct as of schema version 94.
