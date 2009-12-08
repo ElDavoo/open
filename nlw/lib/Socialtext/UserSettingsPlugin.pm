@@ -105,7 +105,7 @@ sub get_admins {
     my $self = shift;
     my $workspace = $self->hub->current_workspace;
     my @admins;
-    my $users_with_roles = $workspace->users_with_roles(direct => 1);
+    my $users_with_roles = $workspace->user_roles(direct => 1);
 
     while ( my $tuple = $users_with_roles->next ) {
         my $user = $tuple->[0];
@@ -127,7 +127,7 @@ sub users_listall {
     $self->_update_users_in_workspace()
         if $self->cgi->Button;
 
-    my @uwr = $self->hub->current_workspace->users_with_roles(direct => 1)->all;
+    my @uwr = $self->hub->current_workspace->user_roles(direct => 1)->all;
     my @gwr = $self->hub->current_workspace->groups_with_roles->all;
     my $settings_section = $self->template_process(
         'element/settings/users_listall_section',
@@ -177,7 +177,7 @@ sub _update_users_in_workspace {
     if ( keys %should_be_admin ) {
 
         my $users_with_roles
-            = $self->hub->current_workspace->users_with_roles(direct => 1);
+            = $self->hub->current_workspace->user_roles(direct => 1);
 
         while ( my $tuple = $users_with_roles->next ) {
 

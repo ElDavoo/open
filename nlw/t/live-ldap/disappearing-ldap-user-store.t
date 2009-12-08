@@ -41,7 +41,7 @@ disappearing_ldap_user_store: {
 
     # enumerate the users in the test workspace; one of them should be an
     # "LDAP" user.
-    my $cursor  = $ws->users_with_roles();
+    my $cursor  = $ws->user_roles();
     my @entries = map { $_->[0] } $cursor->all();
     ok @entries, 'got list of users in the workspace';
 
@@ -58,7 +58,7 @@ disappearing_ldap_user_store: {
 
     # enumerate the users in the test workspace again; we should still be able
     # to do so, but now the user from the LDAP store is a "Deleted" user.
-    $cursor  = $ws->users_with_roles();
+    $cursor  = $ws->user_roles();
     @entries = map { $_->[0] } $cursor->all();
     ok @entries, 'got list of users in the workspace';
 
