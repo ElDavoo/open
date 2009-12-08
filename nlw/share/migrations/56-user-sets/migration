@@ -160,9 +160,8 @@ sub fast_track {
     print "... paths\n";
     $dbh->do(qq{
         INSERT INTO user_set_path
-            (from_set_id, via_set_id, into_set_id, role_id, vlist)
+            (from_set_id, into_set_id, role_id, vlist)
         SELECT from_set_id,
-            from_set_id AS via_set_id,
             into_set_id,
             role_id,
             ARRAY[from_set_id,into_set_id]::int[] AS vlist
@@ -307,8 +306,8 @@ sub generate_user_primary_account_roles {
     print "... paths\n";
     $dbh->do(qq{
         INSERT INTO user_set_path
-        (from_set_id, via_set_id, into_set_id, role_id, vlist)
-        SELECT um.user_id, a.user_set_id, a.user_set_id, $member_id,
+        (from_set_id, into_set_id, role_id, vlist)
+        SELECT um.user_id, a.user_set_id, $member_id,
             ARRAY[um.user_id, a.user_set_id]::int[]
         $base_q
     });
