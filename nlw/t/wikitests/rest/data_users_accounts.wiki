@@ -14,7 +14,7 @@ For: [Story: User can be member of multiple accounts]
 | set | acct1_json | "is_primary":1,%%acct1_data%%                          |
 | set | user1_url  | /data/users/%%username%%/accounts |
 
-* member of account via primary account only
+| comment | member of account via primary account only |
 
 | remove-member | %%username%%               | %%wksp1%%        |
 | GET           | %%user1_url%%              | application/json |
@@ -25,7 +25,7 @@ For: [Story: User can be member of multiple accounts]
 | body-like     | "totalResults":"1"         |                  |
 | body-like     | "entry":[{%%acct1_json%%}] |                  |
 
-* member of account via primary account & workspace membership
+| comment | member of account via primary account & workspace membership |
 
 | set | acct1_json | {"via_workspace":[%%wksp1_json%%],%%acct1_json%%} |
 
@@ -38,7 +38,7 @@ For: [Story: User can be member of multiple accounts]
 | body-like  | "totalResults":"1"       |                  |
 | body-like  | "entry":[%%acct1_json%%] |                  |
 
-* member of account via account membership
+| comment | member of account via account membership |
 
 | set            | acct2     | acct2-%%start_time%% |
 | create-account | %%acct2%% |                      |
@@ -60,7 +60,7 @@ For: [Story: User can be member of multiple accounts]
 | body-like  | %%acct1_json%%      |                  |
 | body-like  | %%acct2_json%%      |                  |
 
-* member of account via workspace membership
+| comment | member of account via workspace membership |
 
 | set              | acct3        | acct3-%%start_time%% |
 | create-account   | %%acct3%%    |                      |
@@ -80,11 +80,11 @@ For: [Story: User can be member of multiple accounts]
 | body-like  | "startIndex":"1"    |                  |
 | body-like  | "itemsPerPage":"20" |                  |
 | body-like  | "totalResults":"3"  |                  |
-| body-like  | %%acct1_json%%      |                  |
-| body-like  | %%acct2_json%%      |                  |
-| body-like  | %%acct3_json%%      |                  |
+| json-like  | {"entry":[%%acct1_json%%]}      |                  |
+| json-like  | {"entry":[%%acct2_json%%]}      |                  |
+| json-like  | {"entry":[%%acct3_json%%]}     |                  |
 
-* member of account via a group
+| comment | member of account via a group |
 
 | set               | acct4        | acct4-%%start_time%%  |
 | create-account    | %%acct4%%    |                       |
@@ -105,12 +105,12 @@ For: [Story: User can be member of multiple accounts]
 | body-like  | "startIndex":"1"    |                  |
 | body-like  | "itemsPerPage":"20" |                  |
 | body-like  | "totalResults":"4"  |                  |
-| body-like  | %%acct1_json%%      |                  |
-| body-like  | %%acct2_json%%      |                  |
-| body-like  | %%acct3_json%%      |                  |
-| body-like  | %%acct4_json%%      |                  |
+| json-like  | {"entry":[%%acct1_json%%]}     |                  |
+| json-like  | {"entry":[%%acct2_json%%]}     |                  |
+| json-like  | {"entry":[%%acct3_json%%]}     |                  |
+| json-like  | {"entry":[%%acct4_json%%]}     |                  |
 
-* member of account via group & workspace
+| comment | member of account via group & workspace |
 
 | workspace-primary-account | %%wksp2%% | %%acct4%% |
 
@@ -129,7 +129,7 @@ For: [Story: User can be member of multiple accounts]
 | body-unlike | %%acct3_json%%      |                  |
 | body-like   | %%acct4_json%%      |                  |
 
-* Permissions - can only see your own if you are not a business admin
+| comment | Permissions - can only see your own if you are not a business admin |
 
 | set | user2 | user2-%%start_time%%@ken.socialtext.net |
 
@@ -141,12 +141,12 @@ For: [Story: User can be member of multiple accounts]
 | code-is            | 401                            |          |
 | set-business-admin | %%username%%                   | 1        |
 
-* Fetch via user_id
+| comment | Fetch via user_id |
 
 | GET     | /data/users/%%user_id%%/accounts |
 | code-is | 200                              |
 
-* Limit & Offset
+| comment | Limit & Offset |
 
 | set            | json_blob | {"username":"%%username%%"} |
 | set            | acct5                           | acct5-%%start_time%%  |

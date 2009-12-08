@@ -38,16 +38,13 @@ override get_resource => sub {
     my %account_ids;
 
     my $user_accounts = $user->accounts;
+    my $pri_acct = $user->primary_account_id;
     for my $acct (@$user_accounts) {
         my $acct_id = $acct->account_id;
-        
-        my $uar = $acct->role_for_user($user);
         my $acct_hash = {
             account_id => $acct_id,
             account_name => $acct->name,
-            ($uar->name eq 'member' ? 
-                (is_primary => ($user->primary_account_id == $acct_id ? 1 : 0))
-                : ()),
+            is_primary => ($acct_id == $pri_acct ? 1 : 0),
         };
         push @accounts, $acct_hash;
         $account_ids{$acct_id} = $acct_hash;
