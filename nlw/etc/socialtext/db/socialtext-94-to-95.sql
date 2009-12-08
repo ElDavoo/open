@@ -81,15 +81,6 @@ CREATE TABLE user_set_path_component (
     user_set_path_id integer NOT NULL,
     user_set_id integer NOT NULL
 );
-ALTER TABLE ONLY user_set_path_component
-    ADD CONSTRAINT "user_set_path_component_pkey"
-    PRIMARY KEY (user_set_path_id, user_set_id);
-CREATE UNIQUE INDEX idx_uspc_set_and_id
-    ON user_set_path_component (user_set_id, user_set_path_id);
-ALTER TABLE ONLY user_set_path_component
-    ADD CONSTRAINT user_set_path_component_part
-            FOREIGN KEY (user_set_path_id)
-            REFERENCES user_set_path(user_set_path_id) ON DELETE CASCADE;
 
 -- Update user_set_path_component on every insert into user_set_path.
 
