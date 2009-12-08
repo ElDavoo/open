@@ -79,8 +79,8 @@ if ($mig_state == 3) {
     generate_workspace_account_roles();
     set_migration_state($mig_state+1);
 }
-
 if ($mig_state == 4) {
+    ensure_socialtext_schema(99);
     print "Migration complete!\n";
 }
 else {
