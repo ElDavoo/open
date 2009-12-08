@@ -11,7 +11,11 @@ AS $$
         WHERE from_set_id = to_purge OR into_set_id = to_purge;
 
         DELETE FROM user_set_path
-        WHERE vlist @ intset(to_purge);
+        WHERE user_set_path_id IN (
+            SELECT user_set_path_id
+              FROM user_set_path_component
+             WHERE user_set_id = to_purge
+        );
 
         DELETE FROM user_set_plugin_pref
         WHERE user_set_id = to_purge;
@@ -52,21 +56,72 @@ CREATE UNIQUE INDEX idx_user_set_include_rev
 
 -- This is the "maintenance" table for the transitive closure on the
 -- user_set_include table above.
+CREATE SEQUENCE user_set_path_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE NO MINVALUE CACHE 1;
 CREATE TABLE user_set_path (
+    user_set_path_id integer NOT NULL DEFAULT nextval('user_set_path_id_seq'),
     from_set_id integer NOT NULL, -- Start
-    via_set_id integer NOT NULL, -- the "last hop"
     into_set_id integer NOT NULL, -- End
     role_id integer NOT NULL, -- the role on that "last hop" in the destination set
     vlist integer[] NOT NULL
 );
+ALTER TABLE ONLY user_set_path
+    ADD CONSTRAINT "user_set_path_pkey"
+    PRIMARY KEY (user_set_path_id);
 CREATE INDEX idx_user_set_path_wholepath
     ON user_set_path (from_set_id,into_set_id);
 CREATE INDEX idx_user_set_path_wholepath_rev
     ON user_set_path (into_set_id,from_set_id);
 
+-- GiST indexing of vlist is sucky slow :(
+-- Use a simple normalized table lookup 'user_set_path_component' instead.
+
+CREATE TABLE user_set_path_component (
+    user_set_path_id integer NOT NULL,
+    user_set_id integer NOT NULL
+);
+ALTER TABLE ONLY user_set_path_component
+    ADD CONSTRAINT "user_set_path_component_pkey"
+    PRIMARY KEY (user_set_path_id, user_set_id);
+CREATE UNIQUE INDEX idx_uspc_set_and_id
+    ON user_set_path_component (user_set_id, user_set_path_id);
+ALTER TABLE ONLY user_set_path_component
+    ADD CONSTRAINT user_set_path_component_part
+            FOREIGN KEY (user_set_path_id)
+            REFERENCES user_set_path(user_set_path_id) ON DELETE CASCADE;
+
+-- Update user_set_path_component on every insert into user_set_path.
+
+CREATE FUNCTION on_user_set_path_insert() RETURNS "trigger"
+AS $$
+DECLARE
+    upper_bound int;
+BEGIN
+    IF (NEW.from_set_id <> NEW.into_set_id) THEN
+        -- regular path; consume all vlist elements
+        upper_bound := array_upper(NEW.vlist,1);
+    ELSE
+        -- reflexive path; ignore the last element since it's the same as the
+        -- first element
+        upper_bound := array_upper(NEW.vlist,1)-1;
+    END IF;
+
+    -- Make a row for each vlist entry.
+    FOR i IN array_lower(NEW.vlist,1) .. upper_bound LOOP
+        INSERT INTO user_set_path_component (user_set_path_id, user_set_id)
+        VALUES (NEW.user_set_path_id, NEW.vlist[i]);
+    END LOOP;
+    RETURN NEW; -- proceed with the insert
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER user_set_path_insert AFTER INSERT ON user_set_path
+FOR EACH ROW EXECUTE PROCEDURE on_user_set_path_insert();
+
 -- The transitive closure on user_set_include
 CREATE VIEW user_set_include_tc AS
-  SELECT DISTINCT from_set_id, via_set_id, into_set_id, role_id
+  SELECT DISTINCT from_set_id, into_set_id, role_id
   FROM user_set_path;
 
 -- Map regular ID fields into a user_set_id.  Give each range ~268 million

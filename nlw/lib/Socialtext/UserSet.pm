@@ -339,9 +339,8 @@ sub _create_insert_temp {
     $dbh->do(qq{
         CREATE TEMPORARY TABLE to_copy (
             new_start int,
-            new_via int,
             new_end int,
-            new_vlist integer[]
+            new_vlist int[]
         ) WITHOUT OIDS ON COMMIT $on_commit;
     });
 }
@@ -382,7 +381,6 @@ sub _insert {
         SELECT DISTINCT * FROM (
             SELECT DISTINCT
                 $1::int AS new_start,
-                $1::int AS new_via,
                 $2::int AS new_end,
                 $5::int[] AS new_vlist
 
@@ -390,7 +388,6 @@ sub _insert {
 
             SELECT DISTINCT
                 $1::integer AS new_start,
-                via_set_id AS new_via,
                 into_set_id AS new_end,
                 $3::int[] + vlist AS new_vlist
             FROM user_set_path
@@ -400,7 +397,6 @@ sub _insert {
 
             SELECT DISTINCT
                 from_set_id AS new_start,
-                into_set_id AS new_via,
                 $2::integer AS new_end,
                 vlist + $4::int[] AS new_vlist
             FROM user_set_path
@@ -410,7 +406,6 @@ sub _insert {
 
             SELECT DISTINCT
                 before.from_set_id AS new_start,
-                after.vlist[icount(after.vlist) - 1] AS new_via,
                 after.into_set_id AS new_end,
                 before.vlist + after.vlist AS new_vlist
             FROM user_set_path before, user_set_path after
@@ -429,15 +424,15 @@ sub _insert {
     my $finalize_sth = $dbh->$prep_method(q{
         INSERT INTO user_set_path
         SELECT
+            nextval('user_set_path_id_seq') AS user_set_path_id,
             new_start AS from_set_id,
-            new_via AS via_set_id,
             new_end AS into_set_id,
             usi.role_id AS role_id,
             new_vlist AS vlist
         FROM to_copy cpy
         JOIN user_set_include usi ON (
-            usi.from_set_id = cpy.new_via AND
-            usi.into_set_id = cpy.new_end
+            usi.into_set_id = cpy.new_end AND
+            usi.from_set_id = cpy.new_vlist[icount(cpy.new_vlist)-1]
         )
     });
     $finalize_sth->execute();
@@ -455,17 +450,18 @@ sub _delete {
 
     die "edge $x,$y does not exist" unless $rows>0;
 
-    # There must be a GiST index on "vlist" for this to be fast.
-    # The "contains" operator ("@") only checks for presence of x and y.
-    # So, re-check that the vertex list element after x is indeed y.
-    # NOTE: this only works if we disallow reflexive (x==y) edges in the input
-    # table.
-    # Recall that pg arrays are 1-based, not 0-based like C or Perl.
+    # delete paths that contain this edge
     $dbh->do(q{
         DELETE FROM user_set_path
-        WHERE vlist @ $1::int[]
-          AND vlist[idx(vlist,$2) + 1] = $3
-    }, {}, "{$x,$y}",$x,$y);
+        WHERE user_set_path_id IN (
+            SELECT user_set_path_id
+              FROM user_set_path_component c1
+              JOIN user_set_path_component c2 USING (user_set_path_id)
+             WHERE c1.user_set_id = $1
+               AND c2.user_set_id = $2
+        )
+        AND vlist[idx(vlist,$1)+1] = $2
+    }, {}, $x,$y);
 
     return $rows+0;
 }

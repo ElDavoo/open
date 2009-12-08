@@ -14,6 +14,7 @@ CREATE UNIQUE INDEX account_user_set_id ON "Account" (user_set_id);
 
 -- indexes for user_set_include
 
+-- the "user_set_include_tc" view will use this index:
 CREATE UNIQUE INDEX idx_user_set_include_pkey_and_role
     ON user_set_include (from_set_id,into_set_id,role_id);
 CREATE UNIQUE INDEX idx_user_set_include_rev_and_role
@@ -26,13 +27,6 @@ CREATE INDEX idx_user_set_path_wholepath_and_role
     ON user_set_path (from_set_id,into_set_id,role_id);
 CREATE INDEX idx_user_set_path_rev_and_role
     ON user_set_path (into_set_id,from_set_id,role_id);
-CREATE INDEX idx_user_set_path_via
-    ON user_set_path (via_set_id,into_set_id);
--- Special index type to allow searching within an int[].  Requires the
--- "intarray" postgres extension for 8.1
-CREATE INDEX idx_user_set_path_vlist
-    ON user_set_path USING gist (vlist gist__int_ops);
--- TODO: partition indexes for users/non-users from_set_id
 
 -- constraints
 

@@ -210,6 +210,30 @@ END;
 $$
     LANGUAGE plpgsql;
 
+CREATE FUNCTION on_user_set_path_insert() RETURNS "trigger"
+    AS $$
+DECLARE
+    upper_bound int;
+BEGIN
+    IF (NEW.from_set_id <> NEW.into_set_id) THEN
+        -- regular path; consume all vlist elements
+        upper_bound := array_upper(NEW.vlist,1);
+    ELSE
+        -- reflexive path; ignore the last element since it's the same as the
+        -- first element
+        upper_bound := array_upper(NEW.vlist,1)-1;
+    END IF;
+
+    -- Make a row for each vlist entry.
+    FOR i IN array_lower(NEW.vlist,1) .. upper_bound LOOP
+        INSERT INTO user_set_path_component (user_set_path_id, user_set_id)
+        VALUES (NEW.user_set_path_id, NEW.vlist[i]);
+    END LOOP;
+    RETURN NEW; -- proceed with the insert
+END;
+$$
+    LANGUAGE plpgsql;
+
 CREATE FUNCTION purge_user_set(to_purge integer) RETURNS boolean
     AS $$
     BEGIN
@@ -219,7 +243,11 @@ CREATE FUNCTION purge_user_set(to_purge integer) RETURNS boolean
         WHERE from_set_id = to_purge OR into_set_id = to_purge;
 
         DELETE FROM user_set_path
-        WHERE vlist @ intset(to_purge);
+        WHERE user_set_path_id IN (
+            SELECT user_set_path_id
+              FROM user_set_path_component
+             WHERE user_set_id = to_purge
+        );
 
         DELETE FROM user_set_plugin_pref
         WHERE user_set_id = to_purge;
@@ -575,9 +603,15 @@ CREATE TABLE account_logo (
     logo bytea NOT NULL
 );
 
+CREATE SEQUENCE user_set_path_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
 CREATE TABLE user_set_path (
+    user_set_path_id integer DEFAULT nextval('user_set_path_id_seq'::regclass) NOT NULL,
     from_set_id integer NOT NULL,
-    via_set_id integer NOT NULL,
     into_set_id integer NOT NULL,
     role_id integer NOT NULL,
     vlist integer[] NOT NULL
@@ -1011,9 +1045,14 @@ CREATE TABLE user_set_include (
 );
 
 CREATE VIEW user_set_include_tc AS
-  SELECT DISTINCT user_set_path.from_set_id, user_set_path.via_set_id, user_set_path.into_set_id, user_set_path.role_id
+  SELECT DISTINCT user_set_path.from_set_id, user_set_path.into_set_id, user_set_path.role_id
    FROM user_set_path
-  ORDER BY user_set_path.from_set_id, user_set_path.via_set_id, user_set_path.into_set_id, user_set_path.role_id;
+  ORDER BY user_set_path.from_set_id, user_set_path.into_set_id, user_set_path.role_id;
+
+CREATE TABLE user_set_path_component (
+    user_set_path_id integer NOT NULL,
+    user_set_id integer NOT NULL
+);
 
 CREATE TABLE user_set_plugin (
     user_set_id integer NOT NULL,
@@ -1283,6 +1322,14 @@ ALTER TABLE ONLY user_set_include
     ADD CONSTRAINT user_set_include_pkey
             PRIMARY KEY (from_set_id, into_set_id);
 
+ALTER TABLE ONLY user_set_path_component
+    ADD CONSTRAINT user_set_path_component_pkey
+            PRIMARY KEY (user_set_path_id, user_set_id);
+
+ALTER TABLE ONLY user_set_path
+    ADD CONSTRAINT user_set_path_pkey
+            PRIMARY KEY (user_set_path_id);
+
 ALTER TABLE ONLY user_set_plugin
     ADD CONSTRAINT user_set_plugin_pkey
             PRIMARY KEY (user_set_id, plugin);
@@ -1364,12 +1411,6 @@ CREATE UNIQUE INDEX idx_user_set_include_rev_and_role
 CREATE INDEX idx_user_set_path_rev_and_role
 	    ON user_set_path (into_set_id, from_set_id, role_id);
 
-CREATE INDEX idx_user_set_path_via
-	    ON user_set_path (via_set_id, into_set_id);
-
-CREATE INDEX idx_user_set_path_vlist
-	    ON user_set_path USING gist (vlist);
-
 CREATE INDEX idx_user_set_path_wholepath
 	    ON user_set_path (from_set_id, into_set_id);
 
@@ -1384,6 +1425,9 @@ CREATE INDEX idx_user_set_plugin_pref
 
 CREATE INDEX idx_user_set_plugin_pref_key
 	    ON user_set_plugin_pref (user_set_id, plugin, "key");
+
+CREATE UNIQUE INDEX idx_uspc_set_and_id
+	    ON user_set_path_component (user_set_id, user_set_path_id);
 
 CREATE INDEX ix_container_account_id
 	    ON container (account_id);
@@ -1702,6 +1746,11 @@ CREATE TRIGGER signal_insert
     AFTER INSERT ON signal
     FOR EACH ROW
     EXECUTE PROCEDURE signal_sent();
+
+CREATE TRIGGER user_set_path_insert
+    AFTER INSERT ON user_set_path
+    FOR EACH ROW
+    EXECUTE PROCEDURE on_user_set_path_insert();
 
 CREATE TRIGGER user_user_set_delete
     AFTER DELETE ON users
@@ -2032,6 +2081,11 @@ ALTER TABLE ONLY user_set_include
     ADD CONSTRAINT user_set_include_role
             FOREIGN KEY (role_id)
             REFERENCES "Role"(role_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY user_set_path_component
+    ADD CONSTRAINT user_set_path_component_part
+            FOREIGN KEY (user_set_path_id)
+            REFERENCES user_set_path(user_set_path_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY user_set_path
     ADD CONSTRAINT user_set_path_role

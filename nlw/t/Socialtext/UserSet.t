@@ -26,7 +26,9 @@ ok $guest;
 
 sub reset_graph {
     local $dbh->{RaiseError} = 1;
-    $dbh->do(q{ TRUNCATE user_set_include, user_set_path });
+    $dbh->do(q{
+        TRUNCATE user_set_include, user_set_path, user_set_path_component
+    });
 }
 
 sub insert { $uset->add_role(shift(@_) + $OFFSET, shift(@_) + $OFFSET, @_); }
@@ -614,13 +616,13 @@ sub is_graph_tc {
 
 sub print_tbls {
     my $view = $dbh->selectall_arrayref(qq{
-        SELECT from_set_id-$OFFSET,via_set_id-$OFFSET,into_set_id-$OFFSET,role.name,vlist
+        SELECT from_set_id-$OFFSET,into_set_id-$OFFSET,role.name,vlist
         FROM user_set_path
         JOIN "Role" role USING (role_id)
         ORDER BY from_set_id ASC,into_set_id ASC
     });
     diag "maint table:";
-    diag "from\tvia\tinto\trole\tvlist";
+    diag "from\tinto\trole\tvlist";
     for my $row (@$view) {
         my $vlist = pop @$row;
         push @$row, '{'.join(',',map {$_-$OFFSET} @$vlist).'}';
