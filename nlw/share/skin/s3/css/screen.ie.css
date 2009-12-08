@@ -119,7 +119,7 @@ div#st-pagetools ul ul li {
  * expression that checks for a scrollbar may fix this.
  */
 div#mainNav ul.level2 li {
-    width: 18em; 
+    width: 20em; 
 }
 
 /* These two are not perfect in IE6 because it does not have a max-selector. */

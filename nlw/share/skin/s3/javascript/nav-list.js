@@ -21,7 +21,6 @@ $.fn.navList = function(opts) {
             });
         }
     });
-
 };
 
 })(jQuery);
