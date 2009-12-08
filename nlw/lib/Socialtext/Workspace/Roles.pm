@@ -26,7 +26,7 @@ sub UsersByWorkspaceId {
     my $uwr_table = $direct
         ? 'user_set_include'
         : 'user_set_path';
-    my $ws_uset_id = $ws_id + 0x20000000;
+    my $ws_uset_id = $ws_id + WKSP_OFFSET;
 
     my $sql = qq{
         SELECT DISTINCT user_id, driver_username
@@ -58,7 +58,7 @@ sub CountUsersByWorkspaceId {
     my $uwr_table = $direct
         ? 'user_set_include'
         : 'user_set_path';
-    my $ws_uset_id = $ws_id + 0x20000000;
+    my $ws_uset_id = $ws_id + WKSP_OFFSET;
     my $sql = qq{
         SELECT COUNT(DISTINCT from_set_id)
           FROM $uwr_table
@@ -121,7 +121,7 @@ sub RolesForUserInWorkspace {
     my $uwr_table = $direct
         ? 'user_set_include'
         : 'user_set_path';
-    my $ws_uset_id = $ws_id + 0x20000000;
+    my $ws_uset_id = $ws_id + WKSP_OFFSET;
     my $sql = qq{
         SELECT DISTINCT role_id
           FROM $uwr_table
@@ -179,7 +179,7 @@ sub RolesForUserInWorkspace {
         my $exclude_clause = '';
         if (@$exclude) {
             my $wksps
-                = join(',', map { $_ + 0x20000000 } grep !/\D/, @$exclude);
+                = join(',', map { $_ + WKSP_OFFSET } grep !/\D/, @$exclude);
             $exclude_clause = "AND into_set_id NOT IN ($wksps)";
         }
 
@@ -213,7 +213,7 @@ sub RolesForUserInWorkspace {
 
         my $exclude_clause = '';
         if (@$exclude) {
-            my $wksps = join(',', map { 0x20000000 + $_ } 
+            my $wksps = join(',', map { WKSP_OFFSET + $_ } 
                 grep !/\D/, @$exclude);
             $exclude_clause = "AND into_set_id NOT IN ($wksps)";
         }
@@ -225,7 +225,7 @@ sub RolesForUserInWorkspace {
             SELECT COUNT(DISTINCT(into_set_id))
               FROM $uwr_table
              WHERE from_set_id = ?
-               AND into_set_id BETWEEN x'20000001'::int AND x'30000000'::int
+               AND into_set_id }.PG_WKSP_FILTER.q{
              $exclude_clause
         };
         my $count = sql_singlevalue( $sql, $user_id );

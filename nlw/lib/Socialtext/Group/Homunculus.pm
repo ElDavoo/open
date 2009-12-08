@@ -100,7 +100,7 @@ has 'factory' => (
 );
 
 has_column 'user_set_id' => (
-    is => 'rw', isa => 'Int', default => sub { shift->group_id + 0x10000000 }
+    is => 'rw', isa => 'Int', default => sub { shift->group_id + GROUP_OFFSET }
 );
 
 has_unique_key ('driver_key','driver_unique_id');

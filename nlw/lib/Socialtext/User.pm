@@ -343,8 +343,7 @@ sub accounts {
                 ON (plug.user_set_id = path.into_set_id)
             WHERE path.from_set_id = ?
               AND plug.plugin = ?
-              AND plug.user_set_id > x'30000000'::int
-        };
+              AND plug.user_set_id > }.PG_ACCT_OFFSET;
         push @args, $plugin;
     }
     else {
@@ -352,12 +351,11 @@ sub accounts {
             SELECT DISTINCT into_set_id 
             FROM user_set_path 
             WHERE from_set_id = ?
-              AND into_set_id > x'30000000'::int
-        };
+              AND into_set_id > }.PG_ACCT_OFFSET;
     }
 
     my $sth = sql_execute($sql, @args);
-    my @account_ids = map {$_->[0] - 0x30000000} @{$sth->fetchall_arrayref()};
+    my @account_ids = map {$_->[0] - ACCT_OFFSET} @{$sth->fetchall_arrayref()};
     if ($p{ids_only}) {
         Socialtext::Timer->Pause('user_accts');
         return (wantarray ? @account_ids : \@account_ids);

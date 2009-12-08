@@ -324,7 +324,7 @@ sub NewGroupRecord {
     $proto_group->{group_id} ||= $self->NewGroupId();
 
     # force a 1:1 relationship between group_id and user_set_id
-    $proto_group->{user_set_id} = $proto_group->{group_id} + 0x10000000;
+    $proto_group->{user_set_id} = $proto_group->{group_id} + GROUP_OFFSET;
 
     # new Group records default to being cached _now_.
     $proto_group->{cached_at} ||= $self->Now();

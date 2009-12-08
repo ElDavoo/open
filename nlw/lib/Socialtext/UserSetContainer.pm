@@ -310,10 +310,8 @@ sub _mk_method ($&) {
 }
 
 for my $thing_name (qw(user group)) {
-    my $id_filter = ($thing_name eq 'user')
-        ? " < x'10000001'::int"
-        : " BETWEEN x'10000001'::int AND x'20000000'::int";
-    my $id_offset = ($thing_name eq 'user') ? 0 : 0x10000000;
+    my $id_filter = ($thing_name eq 'user') ? PG_USER_FILTER : PG_GROUP_FILTER;
+    my $id_offset = ($thing_name eq 'user') ? USER_OFFSET : GROUP_OFFSET;
 
     my $realize_thing = ($thing_name eq 'user')
         ? sub { Socialtext::User->new(user_id => $_[0]) }

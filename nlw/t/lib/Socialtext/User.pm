@@ -22,7 +22,7 @@ sub new {
             return undef;
         }
         elsif ($type eq 'user_id') {
-            return undef if $value =~ m/^\d+$/ and $value >= 0x10000000;
+            return undef if $value =~ m/^\d+$/ and $value >= USER_END;
             if (exists $Users{$value}) {
                 # warn "RETURNING cached user for $value";
                 return $Users{$value};

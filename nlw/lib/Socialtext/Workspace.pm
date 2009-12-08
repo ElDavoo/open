@@ -212,7 +212,7 @@ sub create {
         my $vals = join(',', map {'?'} keys %p);
 
         my $ws_id = sql_nextval('"Workspace___workspace_id"');
-        my $user_set_id = $ws_id + 0x20000000;
+        my $user_set_id = $ws_id + WKSP_OFFSET;
 
         my $sql = <<EOSQL;
 INSERT INTO "Workspace" ( workspace_id, user_set_id, $keys )
