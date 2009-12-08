@@ -64,8 +64,8 @@
 </tr>
 
 [% FOREACH gwr IN groups_with_roles %]
-  [% SET group = gwr.group %]
-  [% SET role = gwr.role %]
+  [% SET group = gwr.0 %]
+  [% SET role = gwr.1 %]
   <tr>
       <td class="text-align-center">
         [% group.driver_group_name | html %]
