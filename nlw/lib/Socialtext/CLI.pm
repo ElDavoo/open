@@ -1006,7 +1006,7 @@ sub _add_user_to_workspace_as {
 
     $ws->assign_role_to_user( user => $user, role => $new_role );
     $self->_success(
-        loc("[_1] now has a '[_2]' role in the [_3] Workspace",
+        loc("[_1] now has the '[_2]' role in the [_3] Workspace",
         $user->username, $new_role->display_name, $ws->name)
     );
 }
@@ -1026,7 +1026,7 @@ sub _add_group_to_workspace_as {
 
     $workspace->assign_role_to_group( group => $group, role  => $new_role );
     $self->_success(
-        loc("[_1] now has a '[_2]' role in the [_3] Workspace",
+        loc("[_1] now has the '[_2]' role in the [_3] Workspace",
             $group->driver_group_name,
             $new_role->display_name,
             $workspace->name)
@@ -1119,7 +1119,7 @@ sub _remove_user_from_thing {
     # Does the user still have a role in this thing indirectly?
     my $role = $thing->role_for_user($user);
     $self->_success(
-        loc("[_1] now has a '[_2]' role in [_3] due to membership in a group",
+        loc("[_1] now has the '[_2]' role in [_3] due to membership in a group",
             $user->username, $role->display_name, $thing->name)
     ) if $role;
 
@@ -1189,7 +1189,7 @@ sub _remove_group_from_thing {
     my $role   = $thing->role_for_group($group);
     if ($role) {
         $self->_success( 
-            loc("[_1] now has a '[_2]' role in [_3] due to membership in a Group",
+            loc("[_1] now has the '[_2]' role in [_3] due to membership in a Group",
                 $group->display_name, $role->display_name, $thing->name)
         );
     }
@@ -1271,12 +1271,12 @@ sub _make_role_toggler {
             $current_user_role &&
             ($current_rolename ne Socialtext::Role->Member->name)) {
             $self->_error(loc(
-                "[_1] now has a '[_2]' role in the [_3] Workspace due to membership in a group", $user->username, $rolename, $ws->name
+                "[_1] now has the '[_2]' role in the [_3] Workspace due to membership in a group", $user->username, $rolename, $ws->name
             ));
         } 
         elsif ($add_p) {
             $self->_success(loc(
-                "[_1] now has a '[_2]' role in the [_3] Workspace",
+                "[_1] now has the '[_2]' role in the [_3] Workspace",
                 $user->username, $rolename, $ws->name
             ));
         }
