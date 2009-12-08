@@ -35,13 +35,13 @@ Bad_cases: {
         my $user_id2 = $usr2->user_id;
         throws_ok {
             $uset->add_role($user_id1, $user_id2, $member);
-        } qr/Can't add things to users/, "cannot add user to a user";
+        } qr/can't add things to users/, "cannot add user to a user";
         throws_ok {
             $uset->remove_role($user_id1, $user_id2);
         } qr/edge $user_id1,$user_id2/, "cannot remove user from a user";
         throws_ok {
             $uset->update_role($user_id1, $user_id2, $member);
-        } qr/edge $user_id1,$user_id2/, "cannot update user to a user";
+        } qr/can't add things to users/, "cannot update user to a user";
     }
 
     Add_workspace_to_workspace: {
