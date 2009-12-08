@@ -220,19 +220,25 @@ ldap_group_records_events_on_membership_change: {
 
 #     is_event_count 6;
 #     event_ok( event_class => 'account', action => 'create_role' );
-    next_log_like 'info', qr/ASSIGN,ACCOUNT_ROLE/, '... and shows in nlw.log';
+    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*account:/,
+        '... User/Account role assignment logged in nlw.log';
 #     event_ok( event_class => 'group', action => 'create_role' );
-    next_log_like 'info', qr/ASSIGN,GROUP_ROLE/, '... and shows in nlw.log';
+    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*group:/,
+        '... User/Group role assignment logged in nlw.log';
 
 #     event_ok( event_class => 'account', action => 'create_role' );
-    next_log_like 'info', qr/ASSIGN,ACCOUNT_ROLE/, '... and shows in nlw.log';
+    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*account:/,
+        '... User/Account role assignment logged in nlw.log';
 #     event_ok( event_class => 'group', action => 'create_role' );
-    next_log_like 'info', qr/ASSIGN,GROUP_ROLE/, '... and shows in nlw.log';
+    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*group:/,
+        '... User/Group role assignment logged in nlw.log';
 
 #     event_ok( event_class => 'account', action => 'create_role' );
-    next_log_like 'info', qr/ASSIGN,ACCOUNT_ROLE/, '... and shows in nlw.log';
+    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*account:/,
+        '... User/Account role assignment logged in nlw.log';
 #     event_ok( event_class => 'group', action => 'create_role' );
-    next_log_like 'info', qr/ASSIGN,GROUP_ROLE/, '... and shows in nlw.log';
+    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*group:/,
+        '... User/Group role assignment logged in nlw.log';
 
     # expire the Group, so subsequent lookups will cause it to get refreshed
     $motorhead->expire();
@@ -257,7 +263,8 @@ ldap_group_records_events_on_membership_change: {
 
 #     is_event_count 1;
 #     event_ok( event_class => 'group', action => 'delete_role' );
-    next_log_like 'info', qr/REMOVE,GROUP_ROLE/, '... and shows in nlw.log';
+    next_log_like 'info', qr/REMOVE,USER_ROLE,.*group:/,
+        '... User/Group role removal logged in nlw.log';
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($motorhead);
