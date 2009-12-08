@@ -13,12 +13,9 @@
       <label>[% loc('Workspace Name') %]</label>
     </th>
   </tr>
-[% WHILE (wws = workspaces.next) %]
-  [% SET workspace = wws.0;
-   SET uwr = wws.1 %]
+[% WHILE (workspace = workspaces.next) %]
   <tr>
     <td>
-      <input type="hidden" name="selected_workspace_id" value="[% workspace.workspace_id %]"[% IF uwr.is_selected %] checked="checked"[% END %] />
       <a href="/[% workspace.name %]/">[% workspace.title %]</a>
     </td>
     <td>[% workspace.name %]</td>

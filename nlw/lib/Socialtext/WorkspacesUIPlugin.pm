@@ -49,7 +49,7 @@ sub workspaces_listall {
 
     my $settings_section = $self->template_process(
         'element/settings/workspaces_listall_section',
-        workspaces=> $self->hub->current_user->workspaces,
+        workspaces => $self->hub->current_user->workspaces,
         $self->status_messages_for_template,
     );
 
