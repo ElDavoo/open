@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 14;
+use Test::Socialtext tests => 16;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Socialtext::User;
 use Socialtext::Role;
@@ -38,7 +38,8 @@ user_vivified_into_all_users_workspace: {
 
     # First, a "Default" User (so we know it works)
     my $user = create_test_user(account => $account);
-    isa_ok $user, 'Socialtext::User', 'got a Default User';
+    isa_ok $user, 'Socialtext::User', 'test Default User';
+    isa_ok $user->homunculus, 'Socialtext::User::Default', '... a Default User';
 
     is $user->primary_account_id, $account->account_id,
         '... User has correct Primary Account';
@@ -51,7 +52,8 @@ user_vivified_into_all_users_workspace: {
     $user = Socialtext::User->new(
         email_address => 'ray.parker@example.com',
     );
-    isa_ok $user, 'Socialtext::User', 'got an LDAP User';
+    isa_ok $user, 'Socialtext::User', 'test LDAP User';
+    isa_ok $user->homunculus, 'Socialtext::User::LDAP', '... an LDAP User';
 
     is $user->primary_account_id, $account->account_id,
         '... User has correct Primary Account';
