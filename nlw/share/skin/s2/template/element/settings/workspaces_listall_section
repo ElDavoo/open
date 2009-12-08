@@ -9,7 +9,7 @@
   <th width="50%" class="text-align-left">[% loc('Workspace Title') %]</th>
   <th class="text-align-left">[% loc('Workspace Name') %]</th>
 </tr>
-[% WHILE (wws = workspaces_with_selected.next) %]
+[% WHILE (wws = workspaces.next) %]
   [% SET workspace = wws.0;
      SET uwr = wws.1 %]
   <tr>

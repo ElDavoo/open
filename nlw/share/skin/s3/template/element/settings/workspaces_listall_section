@@ -13,7 +13,7 @@
       <label>[% loc('Workspace Name') %]</label>
     </th>
   </tr>
-[% WHILE (wws = workspaces_with_selected.next) %]
+[% WHILE (wws = workspaces.next) %]
   [% SET workspace = wws.0;
    SET uwr = wws.1 %]
   <tr>

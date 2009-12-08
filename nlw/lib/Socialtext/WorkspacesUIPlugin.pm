@@ -39,9 +39,9 @@ sub register {
 
 sub workspaces_listall {
     my $self = shift;
-    if ( $self->hub()->current_user()->is_guest() ) {
-        Socialtext::Challenger->Challenge( type    =>
-                                                'settings_requires_account' );
+    if ($self->hub()->current_user()->is_guest()) {
+        Socialtext::Challenger->Challenge(
+            type => 'settings_requires_account');
     }
 
     $self->_update_selected_workspaces()
@@ -49,8 +49,7 @@ sub workspaces_listall {
 
     my $settings_section = $self->template_process(
         'element/settings/workspaces_listall_section',
-        workspaces_with_selected =>
-            $self->hub->current_user->workspaces_with_selected,
+        workspaces=> $self->hub->current_user->workspaces,
         $self->status_messages_for_template,
     );
 
