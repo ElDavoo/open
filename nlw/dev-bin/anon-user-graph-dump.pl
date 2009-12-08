@@ -5,7 +5,7 @@ use strict;
 
 #
 # produce an anonymized dump of the user graph in the database.
-# Correct as of schema version 96.
+# Correct as of schema version 94.
 #
 # Usage: sudo -u www-data ./anon-user-graph-dump.pl | bzip2 -c - > anon-user-graph.yaml.bz2
 #
