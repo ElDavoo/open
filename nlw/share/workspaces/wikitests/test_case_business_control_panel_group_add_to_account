@@ -23,7 +23,7 @@
 
 | *Comment* | Verify redirect, message |  |
 | verify-text | //h1 | %%group%% Group |
-| verify-text | css=span.message | Group is now a member of the %%account%% Account |
+| verify-text | css=span.message | Group now has a 'member' role in the %%account%% Account |
 | verify-text | //h4[2] | Accounts (2) |
 
 | *Comment* | Add account _again_ so we see a failure |  |

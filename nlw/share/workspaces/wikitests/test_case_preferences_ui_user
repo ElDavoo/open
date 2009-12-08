@@ -11,7 +11,7 @@
 | workspace-config | %%new_ws%% | email_notify_is_enabled | 1 |  |
 
 | *Comment* | Test Case: Preferences UI User. use st-admin to avoid workspace administration |  |
-| st-admin | add_member --e %%new_user%% --w %%new_ws%% | is now a member |
+| st-admin | add_member --e %%new_user%% --w %%new_ws%% | now has a 'member' role in the |
 
 | *Comment* | Test Case: Preferences UI User login to %%new_ws%% |  |
 | st-logout |  |  |
@@ -62,7 +62,7 @@
 
 | *Comment* | Test Case: Preferences UI User: Signals does appear if signals is disabled for account but is enabled for another acct |  |
 | st-admin | enable-plugin --plugin signals --account %%hostname%% |  |
-| st-admin | add-member --email %%new_user%% --workspace %%workspace%% | is now a member |
+| st-admin | add-member --email %%new_user%% --workspace %%workspace%% | now has a 'member' role in the |
 | disable_account_plugin | %%new_account%% | signals |
 | click_and_wait | link=Settings |  |
 | wait_for_element_present_ok | link=Private Messages | 10000 |

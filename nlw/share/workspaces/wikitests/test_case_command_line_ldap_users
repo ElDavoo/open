@@ -4,7 +4,7 @@
 | st-admin | create-workspace --name %%cmdline_workspace%% --title %%cmdline_workspace%% | A new workspace named "%%cmdline_workspace%%" was created. |
 
 | *Comment* | Test Case: Command Line LDAP user Add member |  |
-| st-admin | add-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now a member of the %%cmdline_workspace%% workspace/ism |
+| st-admin | add-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% now has a 'member' role in the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Add workspace admin |  |
 | st-admin | add-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now a workspace admin of the %%cmdline_workspace%% workspace/ism |
@@ -13,7 +13,7 @@
 | st-admin | remove-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is no longer a workspace admin of the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Add impersonator |  |
-| st-admin | add-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now an impersonator of the %%cmdline_workspace%% workspace/ism |
+| st-admin | add-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% already has a 'impersonator' role in the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Remove impersonator |  |
 | st-admin | remove-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is no longer an impersonator of the %%cmdline_workspace%% workspace/ism |
@@ -44,7 +44,7 @@
 | st-admin | remove-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is no longer a member of %%cmdline_workspace%%/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Add member again |  |
-| st-admin | add-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is now a member of the %%cmdline_workspace%% workspace/ism |
+| st-admin | add-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% now has a 'member' role in the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user deactivate user TODO: add this back in when we can create a unique user to deactivate. This is causing TC: Verify LDAP Enabled to fail unnecessarily |  |
 

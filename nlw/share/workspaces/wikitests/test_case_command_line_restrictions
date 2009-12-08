@@ -21,7 +21,7 @@
 | st-admin | create-user --email %%emailbad2%% --password %%password%% --account %%acc_name2%% | A new user with the username "%%emailbad2%%" was created. |
 | st-admin | create-user --email %%emailok2%% --password %%password%% --account %%acc_name2%% | A new user with the username "%%emailok2%%" was created. |
 | st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acc_name2%% | A new workspace named "%%ws%%" was created. |
-| st-admin | add-member --email %%emailok2%% --workspace %%ws%% | qr/%%emailok2%% is now a member of the %%ws%% workspace/ism |
+| st-admin | add-member --email %%emailok2%% --workspace %%ws%% | qr/%%emailok2%% now has a 'member' role in the %%ws%% workspace/ism |
 | st-admin | invite-user --email %%emailbad%% --workspace %%ws%% --from %%emailok2%% | An invite has been sent to "%%emailbad%%" to join the "%%ws%%" workspace. |
 | st-admin | set-workspace-config -w %%ws%% invitation_filter %%domain%% | The workspace config for %%ws%% has been updated. |
 | st-admin | invite-user --email %%emailbad2%% --workspace %%ws%% --from %%emailok2%% | The email address, %%emailbad2%%, does not match the workspace invitation filter %%domain%%. |

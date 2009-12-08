@@ -20,9 +20,9 @@
 | *Comment* | Test Case: Signals Pagination. Use st-admin create-user since they may already exist |  |
 | st-admin | create_user --e %%a_username%% --p %%password%% --account %%hostname%% --f "%%a_name%%" |  |
 | st-admin | create_user --e %%z_username%% --p %%password%% --account %%hostname%% --f "%%z_name%%" |  |
-| st-admin | add-member --w ssp-%%start_time%% --e %%email%% | is now a member |
-| st-admin | add-member --w ssp-%%start_time%% --e %%a_username%% | is now a member |
-| st-admin | add-member --w ssp-%%start_time%% --e %%z_username%% | is now a member |
+| st-admin | add-member --w ssp-%%start_time%% --e %%email%% | now has a 'member' role in the |
+| st-admin | add-member --w ssp-%%start_time%% --e %%a_username%% | now has a 'member' role in the |
+| st-admin | add-member --w ssp-%%start_time%% --e %%z_username%% | now has a 'member' role in the |
 
 | *Comment* | This test uses post-signals to rapidly create signals. |  |
 | *Comment* | It creates a set of signals that can be searched and will appear |  |

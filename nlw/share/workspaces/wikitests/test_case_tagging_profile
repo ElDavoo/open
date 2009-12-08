@@ -9,8 +9,8 @@
 | st-admin | create-account --name tagging-profile |  |
 | st-admin | enable-plugin --account tagging-profile --p signals |  |
 | st-admin | create-workspace --account tagging-profile --n tp-%%start_time%% --t TP --empty | was created |
-| st-admin | add-member --w tp-%%start_time%% --e %%email%% | is now a member |
-| st-admin | add-member --w tp-%%start_time%% --e %%e_user%% | is now a member |
+| st-admin | add-member --w tp-%%start_time%% --e %%email%% | now has a 'member' role in the |
+| st-admin | add-member --w tp-%%start_time%% --e %%e_user%% | now has a 'member' role in the |
 
 | *Comment* | Starting Test Case: Tagging Profile. Log in %%username%% in case this is included from another profile test. |  |
 | click_and_wait | link=Dashboard |  |
@@ -97,7 +97,7 @@ text_like | 所以 | |
 | set | lname | The Tagger |
 
 | st-admin | create-user --e %%tag_user%% --p %%password%% --f "%%fname%%" --l "%%lname%%" | A new user with the username "%%tag_user%%" was created |
-| st-admin | add-member --w tp-%%start_time%% --e %%tag_user%% | is now a member |
+| st-admin | add-member --w tp-%%start_time%% --e %%tag_user%% | now has a 'member' role in the |
 
 | st-logoutin | %%tag_user%% | %%password%% |
 | wait_for_element_visible_ok | link=Profile | 30000 |

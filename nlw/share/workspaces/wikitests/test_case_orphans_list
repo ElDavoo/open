@@ -15,7 +15,7 @@ Create a page by a different user
 
 | set | orphan_email | `aaa.orphan.%%start_time%%@ken.socialtext.net` |
 | st-admin | create-user --e %%orphan_email%% --p 123456 |  |
-| st-admin | add-member --w %%ws%% --e %%orphan_email%% | is now a member |
+| st-admin | add-member --w %%ws%% --e %%orphan_email%% | now has a 'member' role in the |
 | st-admin | update-page --email %%orphan_email%% --workspace %%ws%% --page "orphan %%start_time%% 0004" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0004" page has been created. |
 
 "What's New -> Orphans List"<http://.../> | list of links to orphan pages appears

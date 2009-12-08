@@ -45,7 +45,7 @@
 
 | *Comment* | Test Case: Control Panel Group Add to Workspace Verify redirect, message |  |
 | text_like | //body | %%group%% Group |
-| text_like | //body | qr/Group is now a member of the %%ws%% workspace/ism |
+| text_like | //body | qr/Group now has a 'member' role in the %%ws%% workspace/ism |
 | text_like | //body | Workspaces (1) |
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | text_like | //body | Users (1) |
@@ -77,7 +77,7 @@
 | select-ok | //select | %%workspaceforadmin%% |
 | click-and-wait | //input[@value='Add to Workspace'] |  |
 | text_like | //body | %%group%% Group |
-| text_like | //body | qr/Group is now a member of the %%workspaceforadmin%% workspace/ism |
+| text_like | //body | qr/Group now has a 'member' role in the %%workspaceforadmin%% workspace/ism |
 | text_like | //body | Workspaces (2) |
 | wait_for_element_visible_ok | link=%%workspaceforadmin%% | 30000 |
 | text_like | //body | Users (1) |
