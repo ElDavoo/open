@@ -186,8 +186,8 @@ sub All {
         my $ws = Socialtext::Workspace->new(workspace_id => $p{workspace_id});
         $apply = sub {
             my $row = shift;
-            my $role = Socialtext::Role->new(name => $row->{role_name});
             my $group = Socialtext::Group->GetGroup(group_id=>$row->{group_id});
+            my $role = $ws->role_for_group($group);
             if ($p{include_aggregates}) {
                 $group->$_($row->{$_}) for qw(user_count workspace_count);
             }
