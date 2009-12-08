@@ -133,7 +133,7 @@ sub add_role {
     $self->_role_change_checker(\%p);
 
     my $thing = $p{object};
-    my $role  = $p{role};
+    my $role  = $p{role} || $self->role_default($thing);
 
     $self->role_change_check($p{actor},'add',$thing,$role);
     eval { $self->user_set->add_object_role($thing, $role) };
@@ -155,7 +155,7 @@ sub assign_role {
     $self->_role_change_checker(\%p);
 
     my $thing = $p{object};
-    my $role = $p{role};
+    my $role = $p{role} || $self->role_default($thing);
 
     my $uset = $self->user_set;
     my $change;
