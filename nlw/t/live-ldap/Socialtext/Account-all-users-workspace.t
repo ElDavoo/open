@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 10;
+use Test::Socialtext tests => 14;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Socialtext::User;
 use Socialtext::Role;
@@ -36,18 +36,29 @@ user_vivified_into_all_users_workspace: {
     is $account->all_users_workspace, $ws->workspace_id,
         'set all users Workspace';
 
-    # Vivify an LDAP User
-    my $user = Socialtext::User->new(
-        email_address => 'ray.parker@example.com');
-    isa_ok $user, 'Socialtext::User', 'got an LDAP User';
+    # First, a "Default" User (so we know it works)
+    my $user = create_test_user(account => $account);
+    isa_ok $user, 'Socialtext::User', 'got a Default User';
 
-    # Verify that the user is in the account and the all Users Workspace.
     is $user->primary_account_id, $account->account_id,
-        'User has default account as primary Account';
+        '... User has correct Primary Account';
 
     my $role = $ws->role_for_user($user);
-    ok $role, 'User has Role in all users Workspace';
-    is $role->role_id, $member->role_id, '... Role is Member';
+    ok $role, '... User has Role in All Users Workspace';
+    is $role->name, $member->name, '... ... the Member role';
+
+    # Then, do it with an "LDAP" User (so we know it works for LDAP Users)
+    $user = Socialtext::User->new(
+        email_address => 'ray.parker@example.com',
+    );
+    isa_ok $user, 'Socialtext::User', 'got an LDAP User';
+
+    is $user->primary_account_id, $account->account_id,
+        '... User has correct Primary Account';
+
+    $role = $ws->role_for_user($user);
+    ok $role, '... User has Role in All Users Workspace';
+    is $role->name, $member->name, '... ... the Member role';
 
     # Teardown
     $account->update( all_users_workspace => undef );
