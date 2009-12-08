@@ -9,7 +9,7 @@ use Test::Socialtext::Bootstrap::OpenLDAP;
 use Socialtext::User;
 use Socialtext::Role;
 
-fixtures( 'db', 'destructive' );
+fixtures(qw( db ));
 
 ###############################################################################
 sub bootstrap_openldap {
