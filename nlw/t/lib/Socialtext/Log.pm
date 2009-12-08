@@ -17,6 +17,7 @@ our @EXPORT = qw(
     logged_is
     logged_like
     logged_not_like
+    nothing_logged_ok
     no_errors_logged_ok
     no_warnings_logged_ok
     );
@@ -173,6 +174,12 @@ sub _generic_log_like {
     $Test->ok($no_match_result, $name);
 }
 
+sub nothing_logged_ok(;$) {
+    my $name = shift;
+    $name ||= "nothing logged";
+    _generic_level_not_logged_ok('debug', $name);
+}
+
 sub no_errors_logged_ok(;$) {
     _generic_level_not_logged_ok('error', @_);
 }
@@ -243,6 +250,8 @@ Socialtext::Log - MOCKED Socialtext::Log
 
   no_warnings_logged_ok 'no warnings logged';
   no_errors_logged_ok 'no errors logged';
+
+  nothing_logged_ok 'nothing logged at all';
 
 =head1 DESCRIPTION
 
@@ -347,6 +356,10 @@ Checks to make sure that no errors (or greater) were logged.
 =item B<no_warnings_logged_ok($msg)>
 
 Checks to make sure that no warnings (or greater) were logged.
+
+=item B<nothing_logged_ok($msg)>
+
+Checks to make sure that I<nothing> has been logged, at all.
 
 =back
 
