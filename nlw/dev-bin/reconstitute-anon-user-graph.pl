@@ -1,7 +1,8 @@
 #!/usr/bin/perl
 use warnings;
 use strict;
-use lib 'lib';
+use FindBin;
+use lib "$FindBin::Bin/../lib";
 use Socialtext::SQL qw/get_dbh/;
 use YAML::Syck qw/LoadFile/;
 use List::MoreUtils qw/zip/;
@@ -16,7 +17,7 @@ use List::MoreUtils qw/zip/;
 # etc/socialtext/db/socialtext-schema.sql` prior to running this script.
 #
 
-my $input_file = shift || '/home/stash/anon-user-graph2.www.yaml';
+my $input_file = (@ARGV && shift @ARGV) || '/home/stash/anon-user-graph2.www.yaml';
 
 my %tables;
 {
