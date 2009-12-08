@@ -1824,13 +1824,15 @@ sub drop_breadcrumb {
 
 sub is_default {
     my $self = shift;
-    return $self->name eq Socialtext::AppConfig->default_workspace;
+    my $default_name = Socialtext::AppConfig->default_workspace;
+    return unless $default_name;
+
+    return $self->name eq $default_name;
 }
 
 sub Default {
     my $class = shift;
     my $default_name = Socialtext::AppConfig->default_workspace;
-
     return unless $default_name;
 
     local $@;
