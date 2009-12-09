@@ -9,6 +9,10 @@ Tests for creating a workspace via the REST API
 | st-admin       | give-accounts-admin --email %%username%% |                                    |
 | set | workspace | w%%start_time%% |
 
+| Comment | Can't query a Workspace that hasn't been created yet |
+| GET | /data/workspaces/%%workspace%% |
+| code-is | 404 |
+
 | Comment | Add a regular workspace |                               |                                                                     |
 | POST    | /data/workspaces        | Content-Type=application/json | {"name":"%%workspace%%", "title":"%%workspace%%", "account_id":"1"} |
 | code-is    | 201                                            |                               |
