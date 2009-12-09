@@ -145,6 +145,7 @@ sub fast_track {
 
     print "Fast-tracking $fast_track\n";
     $dbh->begin_work;
+
     print "... includes\n";
     $dbh->do(qq{
         INSERT INTO user_set_include (from_set_id, into_set_id, role_id)
@@ -295,19 +296,19 @@ sub generate_user_primary_account_roles {
     print "Generating user-account roles\n";
     $dbh->begin_work;
 
-    print "... includes\n";
-    $dbh->do(qq{
-        INSERT INTO user_set_include (from_set_id, into_set_id, role_id)
-        SELECT um.user_id, a.user_set_id, $member_id
-        $base_q
-    });
-
     print "... paths\n";
     $dbh->do(qq{
         INSERT INTO user_set_path
         (from_set_id, into_set_id, role_id, vlist)
         SELECT um.user_id, a.user_set_id, $member_id,
             ARRAY[um.user_id, a.user_set_id]::int[]
+        $base_q
+    });
+
+    print "... includes\n";
+    $dbh->do(qq{
+        INSERT INTO user_set_include (from_set_id, into_set_id, role_id)
+        SELECT um.user_id, a.user_set_id, $member_id
         $base_q
     });
 

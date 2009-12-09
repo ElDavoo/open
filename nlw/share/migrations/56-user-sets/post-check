@@ -5,7 +5,7 @@ use strict;
 use lib 'lib';
 use Socialtext::SQL qw/get_dbh/;
 use Socialtext::UserSet qw/:const/;
-use Test::More tests => 10;
+use Test::More tests => 15;
 
 my $dbh = get_dbh();
 local $dbh->{RaiseError} = 1;
@@ -84,5 +84,62 @@ my ($count) = $dbh->selectrow_array(q{
     )
 });
 is $count, 0, "no 'affiliate' roles found";
+
+my ($missing) = $dbh->selectrow_array(q{
+    SELECT COUNT(i)
+    FROM user_set_include i
+    LEFT JOIN user_set_path p USING (from_set_id,into_set_id)
+    WHERE p.from_set_id IS NULL
+});
+is $missing, 0, "all includes are present in the path table";
+
+my ($extra_paths) = $dbh->selectrow_array(q{
+    SELECT COUNT(p)
+      FROM user_set_path p
+      LEFT JOIN user_set_include i USING (from_set_id, into_set_id)
+     WHERE i.from_set_id IS NULL
+       AND icount(p.vlist) <= 2
+});
+is $extra_paths, 0, "the path table has no extra paths";
+
+my ($missing_components) = $dbh->selectrow_array(q{
+    SELECT COUNT(p)
+      FROM user_set_path p
+      LEFT JOIN user_set_path_component c USING (user_set_path_id)
+     WHERE c.user_set_path_id IS NULL
+});
+is $missing_components, 0, "the path_component table has no paths without components";
+
+my ($missing_trans_wksp_roles) = $dbh->selectrow_array(q{
+    SELECT COUNT(DISTINCT i.from_set_id)
+      FROM user_set_include i
+      JOIN "Workspace" w
+        ON (i.into_set_id - }.PG_WKSP_OFFSET.q{ = workspace_id )
+     WHERE i.into_set_id }.PG_WKSP_FILTER.q{
+       AND NOT EXISTS (
+        SELECT 1
+          FROM user_set_path p
+         WHERE p.from_set_id = i.from_set_id
+           AND p.into_set_id = w.account_id + }.PG_ACCT_OFFSET.q{
+           AND icount(p.vlist) = 3 AND p.vlist @ intset(w.user_set_id)
+      )
+});
+is $missing_trans_wksp_roles, 0, "sets have account roles due to workspace membership";
+
+my ($missing_trans_group_roles) = $dbh->selectrow_array(q{
+    SELECT COUNT(DISTINCT i.from_set_id)
+      FROM user_set_include i
+      JOIN groups g
+        ON (i.into_set_id - }.PG_GROUP_OFFSET.q{ = group_id )
+     WHERE i.into_set_id }.PG_GROUP_FILTER.q{
+       AND NOT EXISTS (
+        SELECT 1
+          FROM user_set_path p
+         WHERE p.from_set_id = i.from_set_id
+           AND p.into_set_id = g.primary_account_id + }.PG_ACCT_OFFSET.q{
+           AND icount(p.vlist) = 3 AND p.vlist @ intset(g.user_set_id)
+      )
+});
+is $missing_trans_group_roles, 0, "sets have account roles due to group membership";
 
 exit 0;
