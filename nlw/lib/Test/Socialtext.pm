@@ -20,6 +20,7 @@ use Socialtext::User;
 use Socialtext::Cache;
 use Socialtext::AppConfig;
 use Socialtext::SQL qw/:exec/;
+use Socialtext::Timer;
 use Socialtext::UserSet qw/:const/;
 use YAML;
 use File::Temp qw/tempdir/;
@@ -283,6 +284,24 @@ sub setup_test_appconfig_dir {
         _singleton => 1,
     );
     return $config_file;
+}
+
+# Show a timer report when the test is finished
+END { _timer_report() }
+sub _timer_report {
+    return unless ($ENV{TEST_VERBOSE});
+
+    diag "\nSocialtext::Timer report\n";
+    my $report = Socialtext::Timer->Report();
+    if (%{$report}) {
+        foreach my $key (sort { $report->{$b} <=> $report->{$a} } keys %{$report}) {
+            my $str = sprintf( '%30s => %0.4f', $key, $report->{$key} );
+            diag $str;
+        }
+    }
+    else {
+        diag "\treport empty; no timers called";
+    }
 }
 
 # store initial state, so we can revert back to this (as best we can) at the
