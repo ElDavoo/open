@@ -61,7 +61,7 @@ group_already_exists: {
             )->add_member();
         };
     } );
-    like $output, qr/.+ already has the role of 'member' in Account/,
+    like $output, qr/.+ already has the role of 'member' in the \S+ Account/,
         '... with correct message';
 }
 
@@ -646,7 +646,7 @@ group_is_already_member_of_workspace: {
             )->add_member();
         };
     } );
-    like $output, qr/.+ already has the role of 'member' in Workspace/,
+    like $output, qr/.+ already has the role of 'member' in the \S+ Workspace/,
         'Group already has role error message';
 }
 
@@ -674,7 +674,7 @@ group_is_already_admin_of_workspace: {
             )->add_member();
         };
     } );
-    like $output, qr/Group already has the role of 'admin' of Workspace/,
+    like $output, qr/Group already has the role of 'admin' in the \S+ Workspace/,
         'Group already has role error message';
 }
 
