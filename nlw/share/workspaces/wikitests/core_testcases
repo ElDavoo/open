@@ -109,9 +109,6 @@ Put tests that don't use the browser here
 * [Test Case: Command Line: LOCK PAGES]
 * [Test Case: Command Line: TAGS]
 * [Test Case: Workspace Config Preservation]
-* [Test Case: REST Workspace]
-* [Test Case: REST Users]
-* [Test Case: REST Workspace Permissions]
 
 Return to last login fails when People and Dashboard are installed. Keep the test because
 we may test in a mode where People and Dashboard are not installed.
