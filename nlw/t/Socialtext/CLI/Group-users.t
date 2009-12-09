@@ -54,7 +54,7 @@ add_user_to_group_as_member: {
             )->add_member();
         };
     } );
-    like $output, qr/User already has a 'member' role in Group/,
+    like $output, qr/User already has the role of 'member' in Group/,
          'User added to Group message';
 }
 
