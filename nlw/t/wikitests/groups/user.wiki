@@ -27,7 +27,7 @@
 | code-is         | 200                             |         |
 | header-like     | Cache-Control                   | private |
 | json-parse      |                                 |         |
-| json-array-size | 2                               |         |
+| json-array-size | 3                               |         |
 | body-like       | %%jules%%                       |         |
 | body-like       | %%jonas%%                       |         |
 
@@ -39,7 +39,7 @@
 | code-is         | 200                                       |         |
 | header-like     | Cache-Control                             | private |
 | json-parse      |                                           |         |
-| json-array-size | 1                                         |         |
+| json-array-size | 2                                         |         |
 | body-like       | %%jules%%                                 |         |
 | body-unlike     | %%jonas%%                                 |         |
 
