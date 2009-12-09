@@ -3,7 +3,7 @@
 | *Comment* | Test Case: Command Line TAGS Setup |  |
 | set | cmd_tag_workspace | c_tag_ws_%%start_time%% |
 | st-admin | create-workspace --name %%cmd_tag_workspace%% --title %%cmd_tag_workspace%% --empty | A new workspace named "%%cmd_tag_workspace%%" was created |
-| st-admin | add-member --email %%email%% --workspace %%cmd_tag_workspace%% | qr/now has a 'member' role in the %%cmd_tag_workspace%% workspace/ism |
+| st-admin | add-member --email %%email%% --workspace %%cmd_tag_workspace%% | qr/now has the role of 'member' in the %%cmd_tag_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line TAGS Create Page 1 |  |
 | open_ok | /%%cmd_tag_workspace%%/index.cgi?action=new_page |  |

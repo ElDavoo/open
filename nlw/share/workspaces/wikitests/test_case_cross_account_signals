@@ -44,8 +44,8 @@ Create users in accounts
 
 Secondary WS in secondary account
 
-| st-admin | add-member --w %%s_ws%% --e %%a_user%% | now has a 'member' role in the |
-| st-admin | add-member --w %%s_ws%% --e %%b_user%% | now has a 'member' role in the |
+| st-admin | add-member --w %%s_ws%% --e %%a_user%% | now has the role of 'member' in the |
+| st-admin | add-member --w %%s_ws%% --e %%b_user%% | now has the role of 'member' in the |
 
 First user to signal
 

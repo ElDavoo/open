@@ -34,7 +34,7 @@
 | click_and_wait | //input[@value='Add to Workspace'] |  |
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group Verify the add |  |
-| text_like | //body | qr/Group now has a 'member' role in the %%ws%% workspace/ism |
+| text_like | //body | qr/Group now has the role of 'member' in the %%ws%% workspace/ism |
 | text_like | //body | Groups (1) |
 | wait_for_element_visible_ok | link=%%group%% | 30000 |
 | st-admin | show-members -w %%ws%% | member |

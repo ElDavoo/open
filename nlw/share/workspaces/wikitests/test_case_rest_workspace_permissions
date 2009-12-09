@@ -27,7 +27,7 @@ Test set up:
 
 | comment | TODO: remove the following line when perms are consistent for all admins |  |
 | comment | Test case: REST Workspace Permissions do GET to make sure it worked |  |
-| st-admin | add-workspace-admin --email %%email%% --workspace %%wksp%% | now has a 'admin' role |
+| st-admin | add-workspace-admin --email %%email%% --workspace %%wksp%% | now has the role of 'admin' |
 | get | /data/workspaces/%%wksp%% | application/json |
 | code-is | 200 |  |
 | body-like | public |  |
@@ -39,7 +39,7 @@ Test set up:
 
 | comment | TODO: remove the following line when perms are consistent for all admins |  |
 | comment | Test case: REST Workspace Permissions do GET to make sure it worked |  |
-| st-admin | add-workspace-admin --email %%email%% --workspace %%wksp%% | now has a 'admin' role |
+| st-admin | add-workspace-admin --email %%email%% --workspace %%wksp%% | now has the role of 'admin' |
 | get | /data/workspaces/%%wksp%% | application/json |
 | code-is | 200 |  |
 | body-like | authenticated-user-only |  |
@@ -55,7 +55,7 @@ Test set up:
 
 | comment | TODO: remove the following line when perms are consistent for all admins |  |
 | comment | Test case: REST Workspace Permissions do GET to make sure it worked |  |
-| st-admin | add-workspace-admin --email %%email%% --workspace %%wksp%% | now has a 'admin' role |
+| st-admin | add-workspace-admin --email %%email%% --workspace %%wksp%% | now has the role of 'admin' |
 | get | /data/workspaces/%%wksp%% | application/json |
 | code-is | 200 |  |
 | body-like | member-only |  |
@@ -68,7 +68,7 @@ Test set up:
 
 | comment | TODO: remove the following line when perms are consistent for all admins |  |
 | comment | Test case: REST Workspace do GET to make sure it worked |  |
-| st-admin | add-workspace-admin --email %%email%% --workspace %%wksp%% | now has a 'admin' role |
+| st-admin | add-workspace-admin --email %%email%% --workspace %%wksp%% | now has the role of 'admin' |
 | get | /data/workspaces/%%wksp%% | application/json |
 | code-is | 200 |  |
 | body-like | public-read-only |  |

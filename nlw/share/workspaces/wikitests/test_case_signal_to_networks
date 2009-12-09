@@ -32,7 +32,7 @@
 | include | [Test Case: Signals Page] |  |
 
 | *Comment* | Test Case: Signal to Networks. Setup plugins for Socialtext account |  |
-| st-admin | add-member --e %%member%% --w help-en | now has a 'member' role in the |
+| st-admin | add-member --e %%member%% --w help-en | now has the role of 'member' in the |
 | st-admin | disable-plugin --account Socialtext --p dashboard |  |
 | st-admin | enable-plugin --account Socialtext --p signals |  |
 

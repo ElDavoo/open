@@ -132,9 +132,9 @@ Visit in Firefox:
 | st-admin | create-account --name %%logo_acc%% --title %%logo_acc%% | A new account named "%%logo_acc%%" was created. |
 | st-admin | create-user --email %%logo_user%% --password %%password%% --account %%logo_acc%% | qr/A new user with the username "%%logo_user%%" was created./ism |
 | st-admin | create-workspace --name %%logo_ws%% --title %%logo_ws%% --account %%logo_acc%% | qr/A new workspace named "%%logo_ws%%" was created./ism |
-| st-admin | add-member --email %%logo_user%% --workspace %%logo_ws%% | qr/%%logo_user%% now has a 'member' role in the %%logo_ws%% workspace./ism |
-| st-admin | add-member --email %%logo_user%% --workspace %%workspace%% | qr/%%logo_user%% now has a 'member' role in the %%workspace%% workspace./ism |
-| st-admin | add-member --email %%username%% --workspace %%logo_ws%% | qr/%%username%% now has a 'member' role in the %%logo_ws%% workspace./ism |
+| st-admin | add-member --email %%logo_user%% --workspace %%logo_ws%% | qr/%%logo_user%% now has the role of 'member' in the %%logo_ws%% workspace./ism |
+| st-admin | add-member --email %%logo_user%% --workspace %%workspace%% | qr/%%logo_user%% now has the role of 'member' in the %%workspace%% workspace./ism |
+| st-admin | add-member --email %%username%% --workspace %%logo_ws%% | qr/%%username%% now has the role of 'member' in the %%logo_ws%% workspace./ism |
 | st-admin | give-accounts-admin --email %%logo_user%% | %%logo_user%% now has accounts admin access |
 | st-admin | enable-plugin --plugin dashboard --account %%logo_acc%% |  |
 

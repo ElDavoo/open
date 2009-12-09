@@ -10,7 +10,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 1 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-1 | %%ldapPwd%% | %%ldapName%%-1 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-1 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-1 | now has the role of 'member' in the |  | A |
 | st-admin | export-workspace --w %%ldapWS%% | has been exported |  | AX |
 | st-admin-export-workspace-ok | %%ldapWS%% |  |  |  |
 | st-admin | delete-workspace --w %%ldapWS%% --no-export | has been deleted |  |  |
@@ -27,7 +27,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 2 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-2 | %%ldapPwd%% | %%ldapName%%-2 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-2 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-2 | now has the role of 'member' in the |  | A |
 | st-admin | export-workspace --w %%ldapWS%% | has been exported |  | AX |
 | st-admin-export-workspace-ok | %%ldapWS%% |  |  |  |
 | st-admin | delete-workspace --w %%ldapWS%% --no-export | has been deleted |  |  |
@@ -45,7 +45,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 3 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-3 | %%ldapPwd%% | %%ldapName%%-3 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-3 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-3 | now has the role of 'member' in the |  | A |
 | st-admin | export-workspace --w %%ldapWS%% | has been exported |  | AX |
 | st-admin-export-workspace-ok | %%ldapWS%% |  |  |  |
 | st-admin | delete-workspace --w %%ldapWS%% --no-export | has been deleted |  |  |
@@ -63,7 +63,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 4 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-4 | %%ldapPwd%% | %%ldapName%%-4 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-4 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-4 | now has the role of 'member' in the |  | A |
 | st-admin | export-workspace --w %%ldapWS%% | has been exported |  | AX |
 | st-admin-export-workspace-ok | %%ldapWS%% |  |  |  |
 | st-admin | delete-workspace --w %%ldapWS%% --no-export | has been deleted |  |  |
@@ -82,7 +82,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 5 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-5 | %%ldapPwd%% | %%ldapName%%-5 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-5 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-5 | now has the role of 'member' in the |  | A |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | AX |
 | st-ldap-delete-user | %%ldapUser%%-5 |  |  | B |
 | st-admin | import-workspace --t %%ldapTarball%% | has been imported |  | BI |
@@ -97,7 +97,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 6 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-6 | %%ldapPwd%% | %%ldapName%%-6 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-6 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-6 | now has the role of 'member' in the |  | A |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | AX |
 | st-ldap-delete-user | %%ldapUser%%-6 |  |  | B |
 | st-admin | import-workspace --t %%ldapTarball%% | has been imported |  | BI |
@@ -113,7 +113,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 7 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-7 | %%ldapPwd%% | %%ldapName%%-7 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-7 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-7 | now has the role of 'member' in the |  | A |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | AX |
 | st-ldap-delete-user | %%ldapUser%%-7 |  |  | B |
 | st-admin | import-workspace --t %%ldapTarball%% | has been imported |  | BI |
@@ -130,7 +130,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 8 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-8 | %%ldapPwd%% | %%ldapName%%-8 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-8 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-8 | now has the role of 'member' in the |  | A |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | AX |
 | st-ldap-delete-user | %%ldapUser%%-8 |  |  | B |
 | st-ldap-add-user | %%ldapUser%%-8 | %%ldapPwd%% | %%ldapName%%-8 | C |
@@ -146,7 +146,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 9 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-9 | %%ldapPwd%% | %%ldapName%%-9 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-9 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-9 | now has the role of 'member' in the |  | A |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | AX |
 | st-ldap-delete-user | %%ldapUser%%-9 |  |  | B |
 | st-ldap-add-user | %%ldapUser%%-9 | %%ldapPwd%% | %%ldapName%%-9 | C |
@@ -163,7 +163,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 10 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-10 | %%ldapPwd%% | %%ldapName%%-10 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-10 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-10 | now has the role of 'member' in the |  | A |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | AX |
 | st-ldap-delete-user | %%ldapUser%%-10 |  |  | B |
 | st-ldap-add-user | %%ldapUser%%-10 | %%ldapPwd%% | %%ldapName%%-10 | C |
@@ -180,7 +180,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 11 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-11 | %%ldapPwd%% | %%ldapName%%-11 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-11 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-11 | now has the role of 'member' in the |  | A |
 | st-ldap-delete-user | %%ldapUser%%-11 |  |  | B |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | B X |
 | st-admin | import-workspace --t %%ldapTarball%% | has been imported |  | BI |
@@ -195,7 +195,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 12 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-12 | %%ldapPwd%% | %%ldapName%%-12 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-12 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-12 | now has the role of 'member' in the |  | A |
 | st-ldap-delete-user | %%ldapUser%%-12 |  |  | B |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | B X |
 | st-admin | import-workspace --t %%ldapTarball%% | has been imported |  | BI |
@@ -212,7 +212,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 13 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-13 | %%ldapPwd%% | %%ldapName%%-13 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-13 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-13 | now has the role of 'member' in the |  | A |
 | st-ldap-delete-user | %%ldapUser%%-13 |  |  | B |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | B X |
 | st-admin | import-workspace --t %%ldapTarball%% | has been imported |  | BI |
@@ -229,7 +229,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 14 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-14 | %%ldapPwd%% | %%ldapName%%-14 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-14 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-14 | now has the role of 'member' in the |  | A |
 | st-ldap-delete-user | %%ldapUser%%-14 |  |  | B |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | BX |
 | st-ldap-add-user | %%ldapUser%%-14 | %%ldapPwd%% | %%ldapName%%-14 | C |
@@ -245,7 +245,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 15 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-15 | %%ldapPwd%% | %%ldapName%%-15 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-15 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-15 | now has the role of 'member' in the |  | A |
 | st-ldap-delete-user | %%ldapUser%%-15 |  |  | B |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | BX |
 | st-ldap-add-user | %%ldapUser%%-15 | %%ldapPwd%% | %%ldapName%%-15 | C |
@@ -262,7 +262,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 16 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-16 | %%ldapPwd%% | %%ldapName%%-16 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-16 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-16 | now has the role of 'member' in the |  | A |
 | st-ldap-delete-user | %%ldapUser%%-16 |  |  | B |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | BX |
 | st-ldap-add-user | %%ldapUser%%-16 | %%ldapPwd%% | %%ldapName%%-16 | C |
@@ -279,7 +279,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 17 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-17 | %%ldapPwd%% | %%ldapName%%-17 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-17 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-17 | now has the role of 'member' in the |  | A |
 | st-ldap-delete-user | %%ldapUser%%-17 |  |  | B |
 | st-ldap-add-user | %%ldapUser%%-17 | %%ldapPwd%% | %%ldapName%%-17 | C |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | C X |
@@ -295,7 +295,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 18 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-18 | %%ldapPwd%% | %%ldapName%%-18 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-18 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-18 | now has the role of 'member' in the |  | A |
 | st-ldap-delete-user | %%ldapUser%%-18 |  |  | B |
 | st-ldap-add-user | %%ldapUser%%-18 | %%ldapPwd%% | %%ldapName%%-18 | C |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | C X |
@@ -312,7 +312,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 19 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-19 | %%ldapPwd%% | %%ldapName%%-19 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-19 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-19 | now has the role of 'member' in the |  | A |
 | st-ldap-delete-user | %%ldapUser%%-19 |  |  | B |
 | st-ldap-add-user | %%ldapUser%%-19 | %%ldapPwd%% | %%ldapName%%-19 | C |
 | st-admin | delete-workspace --w %%ldapWS%% | has been deleted |  | CX |
@@ -329,7 +329,7 @@
 
 | *Comment* | Test Case: LDAP User Export Import - 20 |  |  |  |
 | st-ldap-add-user | %%ldapUser%%-20 | %%ldapPwd%% | %%ldapName%%-20 |  |
-| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-20 | now has a 'member' role in the |  | A |
+| st-admin | add-member --w %%ldapWS%% --u %%ldapUser%%-20 | now has the role of 'member' in the |  | A |
 | st-ldap-delete-user | %%ldapUser%%-12 |  |  | B |
 | st-ldap-add-user | %%ldapUser%%-20 | %%ldapPwd%% | %%ldapName%%-20 | C |
 | st-ldap-delete-user | %%ldapUser%%-12 |  |  | D |

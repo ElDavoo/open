@@ -7,8 +7,8 @@
 | st-admin | create-workspace --name %%cmdline_workspace%% --title %%cmdline_workspace%% | qr/A new workspace named "%%cmdline_workspace%%" was created/ism |
 | st-admin | create-user --email %%cli_user%% --password wikicli --first-name Wiki --last-name CLI | qr/A new user with the username "%%cli_user%%" was created/ism |
 | st-admin | create-user --email %%cli_admin%% --password wikicli --first-name Wiki --last-name CLI | qr/A new user with the username "%%cli_admin%%" was created/ism |
-| st-admin | add-member --email %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% now has a 'member' role in the %%cmdline_workspace%% workspace/ism |
-| st-admin | add-member --email %%cli_admin%% --workspace %%cmdline_workspace%% | qr/%%cli_admin%% now has a 'member' role in the %%cmdline_workspace%% workspace/ism |
+| st-admin | add-member --email %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% now has the role of 'member' in the %%cmdline_workspace%% workspace/ism |
+| st-admin | add-member --email %%cli_admin%% --workspace %%cmdline_workspace%% | qr/%%cli_admin%% now has the role of 'member' in the %%cmdline_workspace%% workspace/ism |
 | st-admin | add-workspace-admin --email %%cli_admin%% --workspace %%cmdline_workspace%% | qr/%%cli_admin%% is now a workspace admin of the %%cmdline_workspace%% workspace/ism |
 | st-admin | update-page --email %%email%% --workspace %%cmdline_workspace%% --page "Lockme Page 1 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "Lockme Page 1 %%start_time%%" page has been created. |
 | st-admin | update-page --email %%email%% --workspace %%cmdline_workspace%% --page "Lockme Page 2 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "Lockme Page 2 %%start_time%%" page has been created. |
