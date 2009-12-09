@@ -394,7 +394,7 @@ ADD_REMOVE_MEMBER: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->add_member();
         },
-        qr/.+ already has the role of 'member' in Workspace/,
+        qr/.+ already has the role of 'member' in the foobar Workspace/,
         'add-member when user is already a workspace member'
     );
 
@@ -404,7 +404,7 @@ ADD_REMOVE_MEMBER: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->remove_member();
         },
-        qr/test\@example\.com is no longer a member of foobar/,
+        qr/test\@example\.com no longer has the role of 'member' in foobar/,
         'success output from remove-member'
     );
 
@@ -473,7 +473,7 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
                 ]
             )->add_member(); 
         },
-        qr/.+ already has the role of 'member' in Account/,
+        qr/.+ already has the role of 'member' in the \S+ Account/,
         'add-member with an --account and --user fails, user is in account'
     );
     $role = $account->role_for_user($user1);
@@ -490,7 +490,7 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
                 ]
             )->remove_member(); 
         },
-        qr/.+ is no longer a member of .+/,
+        qr/.+ no longer has the role of 'member' .+/,
         'remove-member with an --account and --user argument'
     );
     ok !$account->has_user( $user1 ), '... user is removed from account';
@@ -619,7 +619,7 @@ ADD_REMOVE_WS_ADMIN: {
                 argv => [qw( --username test@example.com --workspace foobar )]
             )->add_workspace_admin();
         },
-        qr/.+ already has the role of 'admin' in Workspace/,
+        qr/.+ already has the role of 'admin' in the foobar Workspace/,
         'add-admin when user is already an admin'
     );
 

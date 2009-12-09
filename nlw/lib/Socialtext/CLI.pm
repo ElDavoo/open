@@ -917,15 +917,15 @@ sub _add_user_to_group_as {
 
     if ( $current_role ) {
         $self->_error(
-            loc("User already has the role of '[_1]' in Group",
-                $current_role->display_name)
+            loc("User already has the role of '[_1]' in the [_2] Group",
+                $current_role->display_name, $group->display_name)
         ) if $current_role->name eq $new_role->name;
     }
 
     $group->add_user( user => $user, role => $new_role );
     $self->_success(
         loc("[_1] is now a [_2] of the [_3] Group",
-            $user->username, $new_role->name, $group->driver_group_name)
+            $user->username, $new_role->name, $group->display_name)
     );
 }
 
@@ -939,8 +939,9 @@ sub _add_group_to_account_as {
     my $current_role = $account->role_for_group($group);
 
     $self->_check_account_role(
-        cur_role => $current_role,
-        name     => $group->driver_group_name,
+        cur_role  => $current_role,
+        name      => $group->driver_group_name,
+        acct_name => $account->name,
     );
 
     $account->add_group( group => $group, role => $new_role );
@@ -960,8 +961,9 @@ sub _add_user_to_account_as {
     my $current_role = $account->role_for_user($user);
 
     $self->_check_account_role(
-        cur_role => $current_role,
-        name     => $user->username,
+        cur_role  => $current_role,
+        name      => $user->username,
+        acct_name => $account->name,
     );
 
     $account->add_user( user => $user, role => $new_role );
@@ -980,8 +982,8 @@ sub _check_account_role {
 
     if ( $p{cur_role} && $p{cur_role}->name eq $member->name ) {
         $self->_error(
-            loc("[_1] already has the role of '[_2]' in Account",
-                $p{name}, $member->display_name)
+            loc("[_1] already has the role of '[_2]' in the [_3] Account",
+                $p{name}, $member->display_name, $p{acct_name})
         );
     }
 }
@@ -1002,6 +1004,7 @@ sub _add_user_to_workspace_as {
         cur_role => $current_role,
         new_role => $new_role,
         name     => $user->username,
+        ws_name  => $ws->name,
     );
 
     $ws->assign_role_to_user( user => $user, role => $new_role );
@@ -1022,6 +1025,7 @@ sub _add_group_to_workspace_as {
         cur_role => $current_role,
         new_role => $new_role,
         name     => $group->driver_group_name,
+        ws_name  => $workspace->name,
     );
 
     $workspace->assign_role_to_group( group => $group, role  => $new_role );
@@ -1039,14 +1043,14 @@ sub _check_workspace_role {
 
     if ( $p{cur_role} ) {
         $self->_error(
-            loc("[_1] already has the role of '[_2]' in Workspace",
-                $p{name}, $p{cur_role}->display_name)
+            loc("[_1] already has the role of '[_2]' in the [_3] Workspace",
+                $p{name}, $p{cur_role}->display_name, $p{ws_name})
         ) if $p{cur_role}->name eq $p{new_role}->name;
 
         # Do not allow the code to "downgrade" from admin to member,
         # the user has to use remove-workspace-admin for that.
         $self->_error(
-            loc("Group already has the role of 'admin' of Workspace")
+            loc("Group already has the role of 'admin' in the [_1] Workspace", $p{ws_name})
         ) if $p{cur_role}->name eq Socialtext::Role->Admin()->name;
     }
 }
@@ -1124,7 +1128,7 @@ sub _remove_user_from_thing {
     ) if $role;
 
     $self->_success(
-        loc('[_1] is no longer a member of [_2]',
+        loc("[_1] no longer has the role of 'member' in [_2]",
             $user->username, $thing->name)
     );
 }
