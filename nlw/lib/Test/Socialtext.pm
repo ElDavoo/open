@@ -63,6 +63,8 @@ our @EXPORT = qw(
     formatted_unlike
     modules_loaded_by
     dump_roles
+    timer_clear
+    timer_report
 );
 
 our @EXPORT_OK = qw(
@@ -287,11 +289,16 @@ sub setup_test_appconfig_dir {
 }
 
 # Show a timer report when the test is finished
-END { _timer_report() }
-sub _timer_report {
+END { timer_report() }
+
+sub timer_clear {
+    Socialtext::Timer->Reset();
+}
+
+sub timer_report {
     return unless ($ENV{TEST_VERBOSE});
 
-    diag "\nSocialtext::Timer report\n";
+    diag "Socialtext::Timer report\n";
     my $report = Socialtext::Timer->Report();
     if (%{$report}) {
         foreach my $key (sort { $report->{$b} <=> $report->{$a} } keys %{$report}) {
