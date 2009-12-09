@@ -1,0 +1,35 @@
+Test case for `/data/workspaces`; the Workspace list
+
+* Fixture: SocialRest
+
+| standard-test-setup |
+| set | wksp | workspace_%%start_time%% |
+
+| *Comment* | Can't query a Workspace that doesn't exist |
+| GET       | /data/workspaces/%%wksp%%                  |
+| code-is   | 404                                        |
+
+| *Comment* | Workspace name validation                               |                  |
+| GET       | /data/workspaces/aa                                     | text/html        |
+| code-is   | 400                                                     |                  |
+| GET       | /data/workspaces/aa                                     | application/json |
+| code-is   | 400                                                     |                  |
+| body-like | Workspace name must be between 3 and 30 characters long |                  |
+
+| *Comment*        | Get list of Workspaces that are visible to a User |                              |             |
+| set              | peon                                              | peon_%%start_time%%@q.q      |             |
+| create-user      | %%peon%%                                          | password                     | %%account%% |
+| set              | ws_one                                            | peon_ws_one_%%start_time%%   |             |
+| set              | ws_two                                            | peon_ws_two_%%start_time%%   |             |
+| set              | ws_three                                          | peon_ws_three_%%start_time%% |             |
+| create-workspace | %%ws_one%%                                        | %%account%%                  |             |
+| create-workspace | %%ws_two%%                                        | %%account%%                  |             |
+| create-workspace | %%ws_three%%                                      | %%account%%                  |             |
+| add-member       | %%peon%%                                          | %%ws_one%%                   |             |
+| add-member       | %%peon%%                                          | %%ws_two%%                   |             |
+| http-user-pass   | %%peon%%                                          | password                     |             |
+| GET              | /data/workspaces                                  | application/json             |             |
+| code-is          | 200                                               |                              |             |
+| body-like        | "name":"%%ws_one%%"                               |                              |             |
+| body-like        | "name":"%%ws_two%%"                               |                              |             |
+| body-unlike      | "name":"%%ws_three%%"                             |                              |             |
