@@ -47,3 +47,10 @@ Tests for creating a workspace via the REST API
 | set | workspace | w%%start_time%%w3 |
 | POST    | /data/workspaces        | Content-Type=application/json | {"name":"%%workspace%%", "title":"%%workspace%%", "account_id":"1"} |
 | code-is | 401 |  |
+
+| Comment  | System Admin cannot create a Workspace     |                               |                                                                     |
+| st-admin | give-system-admin --email %%username%%     |                               |                                                                     |
+| st-admin | remove-accounts-admin --email %%username%% |                               |                                                                     |
+| set      | workspace                                  | w%%start_time%%w4             |                                                                     |
+| POST     | /data/workspaces                           | Content-Type=application/json | {"name":"%%workspace%%", "title":"%%workspace%%", "account_id":"1"} |
+| code-is  | 401                                        |                               |                                                                     |
