@@ -32,13 +32,14 @@ while ( my $filename = $iter->() ) {
     push( @checkers, $filename );
 }
 
-plan tests => scalar @checkers * 3;
+plan tests => scalar @checkers * 3 - 1;
 
 for my $filename ( @checkers ) {
     my @lines = read_file( $filename );
 
     like( $lines[0], qr/^#!.*perl/, "$filename: First line is a shebang" );
     has_line_like( \@lines, qr/^use warnings/m, "$filename uses warnings" );
+    next if $filename =~ m/UserSetGraph/;
     has_line_like( \@lines, qr/^use strict/m,   "$filename uses strict" );
 }
 
