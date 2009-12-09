@@ -488,17 +488,6 @@ account_import_preserves_direct_and_indirect_uars: {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 ###############################################################################
 ###############################################################################
 ### HELPER METHODS
@@ -508,7 +497,7 @@ sub _dump_gars {
     my $account = shift;
     my @gars;
     if ($account) {
-        my $cursor  = $account->groups();
+        my $cursor  = $account->groups(direct => 0);
         while (my $group = $cursor->next) {
             push @gars, {
                 group   => $group->driver_group_name,
