@@ -128,7 +128,9 @@ sub role_default {
 }
 
 sub add_role {
-    my ($self,%p) = @_;
+    my $self = shift;
+    my %p = (@_==1) ? %{$_[0]} : @_;
+ 
     my $t = time();
     $self->_role_change_checker(\%p);
 
@@ -150,7 +152,9 @@ sub add_role {
 }
 
 sub assign_role {
-    my ($self,%p) = @_;
+    my $self = shift;
+    my %p = (@_==1) ? %{$_[0]} : @_;
+ 
     my $t = time;
     $self->_role_change_checker(\%p);
 
@@ -176,7 +180,9 @@ sub assign_role {
 }
 
 sub remove_role {
-    my ($self,%p) = @_;
+    my $self = shift;
+    my %p = (@_==1) ? %{$_[0]} : @_;
+ 
     my $t = time;
     $self->_role_change_checker(\%p);
 
@@ -328,7 +334,9 @@ for my $thing_name (qw(user group)) {
 
     # grep: sub add_user sub add_group
     _mk_method "add_$thing_name" => sub {
-        my ($self,%p) = @_;
+        my $self = shift;
+        my %p = (@_==1) ? %{$_[0]} : @_;
+ 
         my $actor = $p{actor} || Socialtext::User->SystemUser;
         my $o = $p{$thing_name};
         confess "must supply a $thing_name" unless $thing_checker->($o);
@@ -342,7 +350,9 @@ for my $thing_name (qw(user group)) {
 
     # grep: sub assign_role_to_user sub assign_role_to_group
     _mk_method "assign_role_to_$thing_name" => sub {
-        my ($self,%p) = @_;
+        my $self = shift;
+        my %p = (@_==1) ? %{$_[0]} : @_;
+ 
         my $actor = $p{actor} || Socialtext::User->SystemUser;
         my $o = $p{$thing_name};
         confess "must supply a $thing_name" unless $thing_checker->($o);
@@ -356,7 +366,9 @@ for my $thing_name (qw(user group)) {
 
     # grep: sub remove_user sub remove_group
     _mk_method "remove_$thing_name" => sub {
-        my ($self,%p) = @_;
+        my $self = shift;
+        my %p = (@_==1) ? %{$_[0]} : @_;
+ 
         my $actor = $p{actor} || Socialtext::User->SystemUser;
         my $o = $p{$thing_name};
         confess "must supply a $thing_name" unless $thing_checker->($o);
@@ -378,7 +390,10 @@ for my $thing_name (qw(user group)) {
 
     # grep: sub has_user sub has_group
     _mk_method "has_$thing_name" => sub {
-        my ($self,$o,%p) = @_;
+        my $self = shift;
+        my $o = shift;
+        my %p = (@_==1) ? %{$_[0]} : @_;
+ 
         confess "must supply a $thing_name" unless $thing_checker->($o);
         if ($p{direct}) {
             return $self->user_set->object_directly_connected($o);
@@ -390,7 +405,10 @@ for my $thing_name (qw(user group)) {
 
     # grep: sub role_for_user sub role_for_group
     _mk_method "role_for_$thing_name" => sub {
-        my ($self,$o,%p) = @_;
+        my $self = shift;
+        my $o = shift;
+        my %p = (@_==1) ? %{$_[0]} : @_;
+ 
         confess "must supply a $thing_name" unless $thing_checker->($o);
         if ($p{direct}) {
             my $role_id = $self->user_set->direct_object_role($o);
@@ -410,7 +428,9 @@ for my $thing_name (qw(user group)) {
 
     # grep: sub user_has_role sub group_has_role
     _mk_method "${thing_name}_has_role" => sub {
-        my ($self,%p) = @_;
+        my $self = shift;
+        my %p = (@_==1) ? %{$_[0]} : @_;
+ 
         my $o = $p{$thing_name};
         confess "must supply a $thing_name" unless $thing_checker->($o);
         my $role = $p{role};
@@ -424,7 +444,9 @@ for my $thing_name (qw(user group)) {
 
     # grep: sub user_count sub group_count
     _mk_method "${thing_name}_count" => sub {
-        my ($self,%p) = @_;
+        my $self = shift;
+        my %p = (@_==1) ? %{$_[0]} : @_;
+ 
         my $t = time_scope("uset_${thing_name}_count");
         my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
         my $filter = $p{show_hidden} ? '' : $from_set_filter;
@@ -439,7 +461,9 @@ for my $thing_name (qw(user group)) {
 
     # grep: sub user_ids sub group_ids
     _mk_method "${thing_name}_ids" => sub {
-        my ($self,%p) = @_;
+        my $self = shift;
+        my %p = (@_==1) ? %{$_[0]} : @_;
+ 
         my $t = time_scope("uset_${thing_name}_ids");
         my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
         my $filter = $p{show_hidden} ? '' : $from_set_filter;
@@ -455,7 +479,9 @@ for my $thing_name (qw(user group)) {
 
     # grep: sub users sub groups
     _mk_method "${thing_name}s" => sub {
-        my ($self,%p) = @_;
+        my $self = shift;
+        my %p = (@_==1) ? %{$_[0]} : @_;
+ 
         my $t = time_scope("uset_${thing_name}s");
         my $meth = "${thing_name}_ids";
         my $ids = $self->$meth(%p);
@@ -467,7 +493,9 @@ for my $thing_name (qw(user group)) {
 
     # grep: sub user_roles sub group_roles
     _mk_method "${thing_name}_roles" => sub {
-        my ($self,%p) = @_;
+        my $self = shift;
+        my %p = (@_==1) ? %{$_[0]} : @_;
+ 
         my $t = time_scope("uset_${thing_name}_roles");
 
         my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
