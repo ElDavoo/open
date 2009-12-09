@@ -1,0 +1,36 @@
+Tests the ReST representations for Users
+
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+| *Comment* | As HTML                                                        |
+| GET       | /data/users/%%username%%                                       |
+| code-is   | 200                                                            |
+| body-like | <tr><td>email_address</td><td>%%username%%</td></tr>           |
+| body-like | <tr><td>username</td><td>%%username%%</td></tr>                |
+| body-like | <tr><td>first_name</td><td></td></tr>                          |
+| body-like | <tr><td>last_name</td><td></td></tr>                           |
+| body-like | <tr><td>creator_username</td><td>system-user</td></tr>         |
+| body-like | <tr><td>created_by_user_id</td><td>1</td></tr>                 |
+| body-like | <tr><td>primary_account_name</td><td>%%account%%</td></tr>     |
+| body-like | <tr><td>is_system_created</td><td>0</td></tr>                  |
+| body-like | <tr><td>is_business_admin</td><td>0</td></tr>                  |
+| body-like | <tr><td>is_technical_admin</td><td>0</td></tr>                 |
+| body-like | <tr><td>email_address_at_import</td><td>%%username%%</td></tr> |
+| body-like | <tr><td>last_login_datetime</td><td>-infinity</td></tr>        |
+
+| *Comment* | As JSON                                  |                  |
+| GET       | /data/users/%%username%%                 | application/json |
+| body-like | "email_address":"%%username%%"           |                  |
+| body_like | "username":"%%username%%"                |                  |
+| body_like | "first_name":""                          |                  |
+| body_like | "last_name":""                           |                  |
+| body_like | "creator_username":"system-user"         |                  |
+| body_like | "created_by_user_id":"1"                 |                  |
+| body_like | "primary_account_name":"%%account%%"     |                  |
+| body_like | "is_system_created":"0"                  |                  |
+| body_like | "is_business_admin":"0"                  |                  |
+| body_like | "is_technical_admin":"0"                 |                  |
+| body_like | "email_address_at_import":"%%username%%" |                  |
+| body_like | "last_login_datetime":"-infinity"        |                  |

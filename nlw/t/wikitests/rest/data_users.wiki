@@ -2,8 +2,6 @@ Test cases for the "user directory" ReST API.
 
 `/data/users?filter=` should search visible users (i.e. users with which the viewer shares an account) matching the specified filter text.
 
-*NOTE*: `POST` functionality is covered in "live" unit tests
-
 * Fixture: SocialRest
 
 | Comment | set up users and accounts |
