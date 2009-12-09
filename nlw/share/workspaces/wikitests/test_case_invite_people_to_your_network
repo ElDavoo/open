@@ -20,7 +20,10 @@
 | st-admin | create-user --email %%emailok%% --password %%password%% --account %%rest_acct%% |  |
 | st-config | set allow_network_invitation 1 |  |
 | st-admin | enable-plugin --account %%rest_acct%% --plugin people |  |
-| st-admin | enable-plugin --account %%rest_acct%% --plugin dashboard |  |
+
+THIS TEST SHOULD NOT USE DASHBOARD
+
+ st-admin | enable-plugin --account %%rest_acct%% --plugin dashboard | |
 
 | st-logoutin | %%emailok%% | %%password%% |
 | open_ok | / |  |
@@ -59,8 +62,8 @@
 | st-admin | create-workspace --name %%to_ws%% --title "IPN %%to_ws%%" --account "%%acct%%" --empty | created |
 
 | *Comment* | Test Case: Invite people. Define a user in an entirely different account |  |
-| set | social | `social@ken.socialtext.net` |
-| set | esocial | `social\@ken.socialtext.net` |
+| set | social | `ipn-social-%%start_time%%@ken.socialtext.net` |
+| set | esocial | `ipn-social-%%start_time%%\@ken.socialtext.net` |
 | st-admin | create-user --e %%social%% --p %%password%% --acc Socialtext |  |
 
 | *Comment* | Test Case: Invite people. Add the test user to the new workspace so he can login and click the new user's verification link |  |
@@ -102,19 +105,26 @@ TODO: verify cannot actually issue invitations via URL
 
 | *Comment* | Test Case: Invite people. Verify the invitations |  |
 | text_like | Invite people to %%acct%% |  |
-| text_like | qr/The following 1 user was already a member of this Network:\s+%%eacct_user%%/ |  |
-| text_like | qr/The following 2 users were successfully invited into this Network:\s+%%esocial%%\s+%%eto_ws_user%%/ |  |
+| text_like | qr/The following 1 user was already a member of this Network:\s+%%eacct_user%%/ism |  |
+| text_like | qr/The following 2 users were successfully invited into this Network:.+%%esocial%%/ism |  |
+| text_like | qr/The following 2 users were successfully invited into this Network:.+%%eto_ws_user%%/ism |  |
 | text_like | qr/The following 1 email address was invalid:\s+foo2bar.com/ |  |
 | click_and_wait | link=Invite more people |  |
 | text_like | Invite people to your network |  |
 
 | *Comment* | Test Case: Invite people. Check /control to make sure esocial's account has not changed |  |
-| open_ok | /nlw/control/user?username=social |
+| st-admin | give-accounts-admin --e %%acct_user%% | now has accounts admin |
+| open_ok | /nlw/control/user?username=%%social%% |
 | wait_for_element_visible_ok | link=Socialtext | 30000 |
-| pause | 60000 |
+| text_like | qr/Socialtext.+Primary Account/ism |  |
+| open_ok | / |  |
+| st-logoutin |  |  |
+
+| *Comment* | Test Case: Invite people. Pause 30 seconds for invitation email delivery |  |
+| pause | 30000 |
 
 | *Comment* | Test Case: Invite people. login as %%email%% so you can see the confirmation email |  |
-| st-logoutin |  |  |
+
 | open_ok | /%%to_ws%%/?action=recent_changes |  |
 | wait_for_element_visible_ok | link=I'm inviting you into the %%acct%% network | 30000 |
 | click_and_wait | link=I'm inviting you into the %%acct%% network |  |
@@ -126,7 +136,7 @@ TODO: verify cannot actually issue invitations via URL
 | click_ok | //a[contains(@href,'confirm_email')] |  |
 
 | *Comment* | Test Case: Invite people. Choose Password opens in new window |  |
-| pause | 30000 |  |
+| pause | 15000 |  |
 | selectWindow | Choose Password |  |
 
 | *Comment* | Test Case: Invite people. Choose a pwd and log in |  |
@@ -166,5 +176,6 @@ TODO: verify cannot actually issue invitations via URL
 
 | *Comment* | Test Case: Invite people TEARDOWN |  |
 | st-admin | delete-workspace --w %%to_ws%% --no-export | has been deleted |
+| st-admin | remove-accounts-admin --e %%acct_user%% | no longer has accounts admin |
 
 | *Comment* | Test Case: Invite people COMPLETED |  |

@@ -5,7 +5,7 @@
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Create a target workspace |  |
 | st-admin | create-workspace --name %%newspace%% --title "%%newtitle%%" | was created |
-| st-admin | add-member --email %%email%% --workspace %%newspace%% | a member of |
+| st-admin | add-member --email %%email%% --workspace %%newspace%% | now has the role of 'member' |
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Create a page and a tag to copy |  |
 | open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=Copy%20Page%20Spreadsheet%20%%start_time%%#edit |  |
@@ -31,7 +31,7 @@
 | type_ok | st-copy-newname | New Copy Page Spreadsheet %%start_time%% |
 | click_ok | st-copy-savelink |  |
 
-| *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Should return to the same WS, 
+| *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Should return to the same WS,
 NOT the target WS |  |
 | location_like | /%%workspace%%/index.cgi?copy_page_spreadsheet_%%start_time%% |  |
 | wait_for_element_visible_ok | contentRight | 30000 |

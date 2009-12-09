@@ -65,10 +65,10 @@
 
 | *Comment* | Test Case: Groups Home Check Activity Widget With Granted Permissions TODO add checks for page edit, comment |  |
 | st-select-widget-frame | activity_widget |  |
-| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%short_nopermuser%% to %%groupname%%/ism |
-| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%groupname%% to %%wsname2%%/ism |
-| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%groupname%% to %%wsname%%/ism |
-| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%short_username%% to %%groupname%%/ism |
+| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%short_nopermuser%% to.+%%groupname%%/ism |
+| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%groupname%% to.+%%wsname2%%/ism |
+| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%groupname%% to.+%%wsname%%/ism |
+| text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%short_username%% to.+%%groupname%%/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups Home Check People Widget With Granted Permissions |  |

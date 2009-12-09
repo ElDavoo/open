@@ -34,12 +34,11 @@
 | add-member | %%emainuser%% | %%secondws%% |  |
 | add-member | %%esecond%% | %%secondws%% |  |
 | add-member | %%efollowed%% | %%ws%% |  |
-| add-member | %%ewsadmin%% | %%ws%% |  |
+| add_workspace_admin | %%ewsadmin%% | %%ws%% |  |
 | st-admin | enable-plugin --plugin people --account %%acct%% |  |  |
 | st-admin | enable-plugin --plugin signals --account %%acct%% |  |  |
 | st-admin | enable-plugin --plugin people --account %%secondaryacct%% |  |  |
 | st-admin | enable-plugin --plugin signals --account %%secondaryacct%% |  |  |
-| add_workspace_admin | %%ewsadmin%% | %%ws%% |  |
 
 | *Comment* | logoutin hangs in IE. Try explicit %%emainuser%% ... |
 
@@ -67,7 +66,6 @@
 | click_and_wait | st-save-button-link |  |
 
 | *Comment* | Test Case: Signals/Activities Add Activities widget |  |
-| open_ok | /?dashboard | 60000 |
 | st-empty-container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
@@ -109,7 +107,6 @@
 
 | *Comment* | Test Case: Signals/Activities Interaction As someone I follow |  |
 
-| open_ok | /?dashboard | 60000 |
 | st-empty-container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
@@ -142,7 +139,6 @@
 
 | *Comment* | Test Case: Signals/Activities Interaction As %%efriend%% - just someone in my acct |  |
 
-| open_ok | /?dashboard | 60000 |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | signals_widget |
 | st-widget-title-like | signals_widget | Activities |
