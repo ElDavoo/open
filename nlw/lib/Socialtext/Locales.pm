@@ -45,9 +45,7 @@ sub available_locales {
 
     use utf8;
     return {
-        'en' => _display_locale(loc('English'), 'English'),
-        'ja' => _display_locale(loc('Japanese'), '日本語'),
-        'it' => _display_locale(loc('Italian'), 'Italiano'),
+        'en' => _display_locale(loc('English'), 'English')
     };
 }
 
