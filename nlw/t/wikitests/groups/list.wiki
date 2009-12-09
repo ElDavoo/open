@@ -27,7 +27,7 @@ Tests for [Story: Groups ReST API]
 | json-array-size | 1 |
 | Body-like | "group_id":"%%group_id%%" |
 | Body-like | "name":"%%group_name%%" |
-| body-like | "user_count":"0" |
+| body-like | "user_count":"1" |
 | body-like | "workspace_count":"0" |
 
 # Group Visibility Rules
@@ -38,20 +38,20 @@ Tests for [Story: Groups ReST API]
 | create-user    | %%badmin%% | password                                |
 | http-user-pass | %%badmin%% | password                                |
 
-| set-business-admin | %%badmin%%       | 1       |
-| GET                | /data/groups     |         |
-| code-is            | 200              |         |
-| header-like        | Cache-Control    | private |
-| json-parse         |                  |         |
-| json-array-size    | 1                |         |
-| body-like          | "user_count":"0" |         |
+| set-business-admin | %%badmin%%         | 1       |
+| GET                | /data/groups?all=1 |         |
+| code-is            | 200                |         |
+| header-like        | Cache-Control      | private |
+| json-parse         |                    |         |
+| json-array-size    | 1                  |         |
+| body-like          | "user_count":"1"   |         |
 
-| set-business-admin | %%badmin%%    | 0       |
-| GET                | /data/groups  |         |
-| code-is            | 200           |         |
-| header-like        | Cache-Control | private |
-| json-parse         |               |         |
-| json-array-size    | 0             |         |
+| set-business-admin | %%badmin%%         | 0       |
+| GET                | /data/groups?all=1 |         |
+| code-is            | 200                |         |
+| header-like        | Cache-Control      | private |
+| json-parse         |                    |         |
+| json-array-size    | 0                  |         |
 
 ## visible by Group Members (Members see Groups they are members of)
 ## *not* visible by other Users (can't see Groups you have no relationship to)
@@ -79,7 +79,7 @@ Tests for [Story: Groups ReST API]
 | json-parse        |                           |              |
 | json-array-size   | 1                         |              |
 | Body-like         | "group_id":"%%group_id%%" |              |
-| body-like         | "user_count":"2"          |              |
+| body-like         | "user_count":"3"          |              |
 
 | GET             | /data/groups?show_members=1                                        |         |
 | code-is         | 200                                                                |         |
