@@ -102,7 +102,7 @@ $(function() {
     }
 
     // Fix the global nav for IE6
-    $('#mainNav ul.level2').createSelectOverlap({noPadding: true});
+    //$('#mainNav ul.level2').createSelectOverlap({noPadding: true});
 
     $('table.sort')
         .each(function() { Socialtext.make_table_sortable(this) });

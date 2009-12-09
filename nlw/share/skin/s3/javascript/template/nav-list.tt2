@@ -1,13 +1,15 @@
-[% IF data.size %]
-    [% FOR entry = data %]
-        <li[% IF loop.last || data.size == 1 %] class="last"[% END %]>
+[%- IF data.size -%]
+    [%- FOR entry = data -%]
+        <li>
             <a [% IF opts.defaultId AND entry.default %] id="[% opts.defaultId %]"[% END %]href="[% opts.href(entry) %]">
-                [% IF opts.exists('icon') %]<img src="[% opts.icon(entry) %]"/>[% END %]
-                [% opts.title(entry) | label_ellipsis(20) | html_encode %][% IF entry.default %] ([% loc("Default") %])[% END %]
+                [%- IF opts.exists('icon') -%]
+                    <img src="[% opts.icon(entry) %]"/>
+                [%- END -%]
+                [%- opts.title(entry) | label_ellipsis(20) | html_encode %][% IF entry.default %] ([% loc("Default") %])[% END -%]
             </a>
         </li>
-        [% IF entry.default %]<li style="background-color: #eee;">&nbsp;</li>[% END %]
-    [% END %]
-[% ELSE %]
+        [%- IF entry.default %]<li style="background-color: #eee;">&nbsp;</li>[% END -%]
+    [%- END -%]
+[%- ELSE -%]
     <li class="emptynotice">[% opts.emptyMessage %]</li>
-[% END %]
+[%- END -%]

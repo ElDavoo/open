@@ -3180,6 +3180,11 @@ div#mainNav ul.level2 {
     background: white;
 }
 
+div#mainNav ul.level2 li {
+    position: static;
+    float: none;
+}
+
 /* WTF is the dropdownTick doing on the li element in styles.css? */
 div#mainNav ul.level1>li>a { 
     background: url(../images/dropdownTick.png) no-repeat center right;
