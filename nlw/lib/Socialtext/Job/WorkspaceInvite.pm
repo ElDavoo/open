@@ -39,7 +39,7 @@ sub do_work {
     unless ( $workspace->has_user($user) ) {
         my $msg = "User " . $user->user_id 
             . " is not in workspace " . $workspace->workspace_id;
-        $self->failed($msg, 255);
+        return $self->failed($msg, 255);
     }
 
     eval {
@@ -57,7 +57,7 @@ sub do_work {
         $invitation->invite_notify($user);
     };
     if ( my $e = $@ ) {
-        $self->failed($e, 255);
+        return $self->failed($e, 255);
     }
 
     $self->completed();
