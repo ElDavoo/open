@@ -106,7 +106,7 @@ sub All {
         if $p{driver_key};
 
     if ($p{account_id}) {
-        push @where, \[q{user_set_id IN (
+        push @where, \[q{groups.user_set_id IN (
                             SELECT from_set_id
                               FROM user_set_path 
                              WHERE into_set_id = ?)
@@ -114,7 +114,7 @@ sub All {
     }
 
     if ($p{workspace_id}) {
-        push @where, \[q{user_set_id IN (
+        push @where, \[q{groups.user_set_id IN (
                             SELECT from_set_id
                               FROM user_set_path
                              WHERE into_set_id = ?)
