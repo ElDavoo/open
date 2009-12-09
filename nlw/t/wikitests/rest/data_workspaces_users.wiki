@@ -125,6 +125,12 @@
 | POST           | /data/workspaces/%%workspace%%/users   | Content-Type=application/json | { } |
 | code-is        | 400                                    |                               |     |
 
+| *Comment*      | Workspace Admin can promote an existing Member to a WS Admin |                               |                                               |
+| add-member     | %%peon%%                                                     | %%workspace%%                 |                                               |
+| http-user-pass | %%admin%%                                                    | password                      |                                               |
+| POST           | /data/workspaces/%%workspace%%/users                         | Content-Type=application/json | { "username":"%%peon%%", "rolename":"admin" } |
+| code-is        | 201                                                          |                               |                                               |
+
 | *Comment*      | Workspace Admin can remove a User from a Workspace |               |
 | add-member     | %%peon%%                                           | %%workspace%% |
 | http-user-pass | %%admin%%                                          | password      |
