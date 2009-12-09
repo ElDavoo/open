@@ -2,5 +2,5 @@
 | *Comment* | Always makes default LDAP user devnull3 a workspace admin in the test workspace |  |
 
 | st-ldap | start | openldap running |
-| st-admin | add-workspace-admin --username devnull3 --w %%workspace%% | qr/.+ is .+ a workspace admin of the %%workspace%% workspace/ism |
+| st-admin | add-workspace-admin --username devnull3 --w %%workspace%% | qr/has the 'admin' role/ism |
 | *Comment* | Enable LDAP: COMPLETED |  |

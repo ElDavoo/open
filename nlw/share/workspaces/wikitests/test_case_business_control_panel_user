@@ -16,7 +16,8 @@
 | type_ok | name | %%new_workspace%% |
 | st-submit |  |  |
 | click_and_wait | link=%%new_workspace%% |  |
-| text_like | workspace admin |  |
+| text_like | admin |  |
+| text_unlike | member |  |
 
 | *Comment* | Test case: Business Control Panel User exercise 'add new user' button |  |
 | click_and_wait | link=Accounts |  |
