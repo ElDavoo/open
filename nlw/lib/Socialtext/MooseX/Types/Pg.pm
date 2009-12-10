@@ -1,9 +1,10 @@
 package Socialtext::MooseX::Types::Pg;
-
+# @COPYRIGHT@
 use strict;
 use warnings;
 use Moose::Util::TypeConstraints;
 use Socialtext::SQL qw(:time);
+use namespace::clean -except => 'meta';
 
 subtype 'Pg.DateTime'
     => as 'DateTime';
@@ -37,7 +38,7 @@ Socialtext::MooseX::Types::Pg - Moose type definitions for PostgreSQL
   use Socialtext::MooseX::Types::Pg;
 
   has 'when' => (
-    is => 'rw', isa => 'Pg.DateTime',
+    is => 'rw', isa => 'Pg.DateTime', coerce => 1
   );
 
 =head1 DESCRIPTION
