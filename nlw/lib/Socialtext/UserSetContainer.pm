@@ -301,6 +301,20 @@ sub role_change_event {
     if ($thing->isa('Socialtext::User')) {
         require Socialtext::JSON::Proxy::Helper;
         Socialtext::JSON::Proxy::Helper->ClearForUsers($thing->user_id);
+
+        if ($change ne 'update') {
+            require Socialtext::JobCreator;
+            Socialtext::JobCreator->index_person( $thing );
+        }
+    }
+    elsif ($thing->isa('Socialtext::Group')) {
+        if ($change ne 'update') { 
+            require Socialtext::JobCreator;
+            my $users = $thing->users;
+            while (my $user = $users->next) {
+                Socialtext::JobCreator->index_person( $user );
+            }
+        }
     }
 }
 
