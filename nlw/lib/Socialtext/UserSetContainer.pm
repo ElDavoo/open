@@ -3,9 +3,10 @@ package Socialtext::UserSetContainer;
 use Moose::Role;
 use Carp qw/croak/;
 use Socialtext::UserSet;
-use Socialtext::SQL qw(sql_execute sql_singlevalue);
+use Socialtext::SQL qw/:exec/;
+use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::l10n qw/loc/;
-use Socialtext::UserSet qw(:const);
+use Socialtext::UserSet qw/:const/;
 use Socialtext::Exceptions qw/param_error/;
 use Socialtext::Cache ();
 use Socialtext::MultiCursor;
@@ -517,6 +518,161 @@ for my $thing_name (qw(user group)) {
             },
         );
     };
+}
+
+sub sorted_user_roles {
+    my ($self, %opts) = @_;
+ 
+    my $base_table = $opts{direct} ? 'user_set_include' : 'user_set_include_tc';
+    my @cols = ('user_id', 'role_id');
+    my $from = q{
+        (
+            SELECT DISTINCT
+                from_set_id AS user_id,
+                into_set_id AS user_set_id,
+                role_id
+              FROM }.$base_table.q{
+             WHERE from_set_id }.PG_USER_FILTER.q{
+        ) uxr
+    };
+ 
+    my @where = ('uxr.user_set_id' => $self->user_set_id);
+
+    $opts{sort_order} ||= 'ASC';
+    my $sort_order
+        = ($opts{sort_order} =~ /^ASC|DESC$/i) ? uc $opts{sort_order} : 'ASC';
+ 
+    # Determine sort order, adding in table joins if needed.
+    my $order = "user_id ASC, role_id ASC";
+    if (my $ob = lc $opts{order_by}) {
+        my $sort;
+        if ($ob eq 'username') {
+            push @cols, 'users.driver_username';
+            $from .= ' JOIN users USING (user_id)';
+            $sort = 'users.driver_username';
+        }
+        elsif ($ob eq 'display_name' || $ob eq 'best_full_name') {
+            push @cols, 'users.display_name';
+            $from .= ' JOIN users USING (user_id)';
+            $sort = 'users.display_name';
+        }
+        elsif ($ob eq 'role_name') {
+            push @cols, '"Role".name';
+            $from .= ' JOIN "Role" USING (role_id)';
+            $sort = '"Role".name';
+        }
+        elsif ($ob eq 'source') {
+            push @cols, 'users.driver_key';
+            $from .= ' JOIN users USING (user_id)';
+            $sort = 'users.driver_key';
+        }
+        elsif ($ob eq 'creation_datetime') {
+            push @cols, 'meta.creation_datetime';
+            $from .= ' JOIN "UserMetadata" meta USING (user_id)';
+            $sort = 'meta.creation_datetime';
+        }
+        elsif ($ob eq 'workspace_count') {
+            push @cols, 'COALESCE(wses.count,0) AS count';
+            $from .= q{
+                LEFT JOIN (
+                    SELECT from_set_id AS user_id,
+                           COUNT(DISTINCT into_set_id) AS count
+                      FROM user_set_path
+                     WHERE into_set_id }.PG_WKSP_FILTER.q{
+                     GROUP BY user_id
+                ) wses USING ( user_id )
+            };
+            $sort = 'count';
+        }
+        elsif ($ob eq 'group_count') {
+            push @cols, 'COALESCE(grps.count,0) AS count';
+            $from .= q{
+                LEFT JOIN (
+                    SELECT from_set_id AS user_id,
+                           COUNT(DISTINCT into_set_id) AS count
+                      FROM user_set_path
+                     WHERE into_set_id }.PG_GROUP_FILTER.q{
+                     GROUP BY user_id
+                ) grps USING ( user_id )
+            };
+            $sort = 'count';
+        }
+        elsif ($ob eq 'account_count') {
+            push @cols, 'COALESCE(accts.count,0) AS count';
+            $from .= q{
+                LEFT JOIN (
+                    SELECT from_set_id AS user_id,
+                           COUNT(DISTINCT into_set_id) AS count
+                      FROM user_set_path
+                     WHERE into_set_id }.PG_ACCT_FILTER.q{
+                     GROUP BY user_id
+                ) accts USING ( user_id )
+            };
+            $sort = 'count';
+        }
+        elsif ($ob eq 'primary_account') {
+            push @cols, '"Account".name AS account_name';
+            $from .= q{
+                JOIN "UserMetadata" meta USING ( user_id )
+                JOIN "Account"
+                  ON meta.primary_account_id = "Account".account_id
+            };
+            $sort = 'account_name';
+        }
+        else {
+            croak "Cannot sort users in a group by '$ob'";
+        }
+ 
+        $order = "$sort $sort_order, $order";
+    }
+ 
+    my ($sql, @bind) = sql_abstract()->select(
+        \$from, \@cols, \@where, $order, $opts{limit}, $opts{offset});
+ 
+    my $sth = sql_execute($sql, @bind);
+    my $rows = $sth->fetchall_arrayref({});
+    my $apply;
+
+    my @add_to_row;
+
+    if ($self->isa('Socialtext::Group')) {
+        @add_to_row = (group_id => $self->group_id);
+        push @add_to_row, (group => $self) unless $opts{raw};
+    }
+    elsif ($self->isa('Socialtext::Workspace')) {
+        @add_to_row = (workspace_id => $self->workspace_id);
+        push @add_to_row, (workspace => $self) unless $opts{raw};
+    }
+    elsif ($self->isa('Socialtext::Account')) {
+        @add_to_row = (account_id => $self->account_id);
+        push @add_to_row, (account => $self) unless $opts{raw};
+    }
+    else {
+        @add_to_row = (user_set_id => $self->user_set_id);
+        push @add_to_row, (user_set => $self) unless $opts{raw};
+    }
+
+    if ($opts{raw}) {
+        $apply = sub { 
+            my $row = shift;
+            return {%$row,@add_to_row};
+        };
+    }
+    else {
+        $apply = sub {
+            my $row = shift;
+            return {
+                %$row,
+                user => Socialtext::User->new(user_id => $row->{user_id}),
+                role => Socialtext::Role->new(role_id => $row->{role_id}),
+                @add_to_row,
+            };
+        };
+    }
+    return Socialtext::MultiCursor->new(
+        iterables => [$rows],
+        apply => $apply,
+    );
 }
 
 1;
