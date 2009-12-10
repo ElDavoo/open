@@ -2,13 +2,8 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Socialtext::Account;
+use Socialtext::SQL qw/get_dbh/;
 use Socialtext::System qw/shell_run/;
-use Memoize qw/unmemoize/;
-
-# We need to re-load the list of plugins after we install marketo,
-# so un-memoize this function.
-unmemoize('Socialtext::Pluggable::Adapter::plugins');
 
 if ($>) {
     print "Not running as root - skipping marketo plugin install.\n";
@@ -18,15 +13,27 @@ else {
     shell_run("st-appliance-install-plugin marketo");
 }
 
-# Make sure the marketo module is loaded before we use it
-require Socialtext::Pluggable::Plugin::Marketo;
+my $dbh = get_dbh();
+my $accts = $dbh->selectall_arrayref(q{
+    SELECT a.account_id,
+           a.name
+      FROM "Account" a
+     WHERE account_type = 'Free 50'
+       AND NOT EXISTS (
+         SELECT 1 FROM account_plugin
+          WHERE account_id = a.account_id
+            AND plugin = 'marketo'
+     )
+});
 
-my $accts = Socialtext::Account->All(
-    order_by => 'name',
-    type => 'Free 50',
-);
-while (my $acct = $accts->next) {
-    print "Enabling marketo for: " . $acct->name . "\n";
-    $acct->enable_plugin('marketo');
+my $ins_sth = $dbh->prepare(q{
+    INSERT INTO account_plugin (account_id, plugin) VALUES (?,?)
+});
+
+for my $acct (@$accts) {
+    my ($id, $name) = @$acct;
+    print "Enabling Marketo for account: $name\n";
+    $ins_sth->execute($id, 'marketo');
 }
+
 exit 0;
