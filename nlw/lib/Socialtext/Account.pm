@@ -769,7 +769,9 @@ sub add_to_all_users_workspace {
     return unless $auw;
 
     my $o = delete $p{object};
-
+    if ($o->isa('Socialtext::UserMetadata')) {
+        $o = Socialtext::User->new(user_id => $o->user_id);
+    }
     if ($o->isa('Socialtext::User')) {
         # Now according to {bz: 2896} we still need to check invitation_filter
         # here.
