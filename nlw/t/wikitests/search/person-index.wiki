@@ -2,7 +2,7 @@
 
 | standard-test-setup |
 
-# Test person indexing
+| Comment |  Test person indexing |
 
 | st-clear-jobs   |             |                                        |
 | set             | randy       | randy%%start_time%%@ken.socialtext.net |
@@ -13,10 +13,10 @@
 | st-process-jobs |             |                                        |
 | job-count       | PersonIndex | 0                                      |
 
-# can search them?
+| Comment |  can search them? |
 | search-people | randy%%start_time%% | 1 |
 
-# Change some data
+| Comment |  Change some data |
 | http-user-pass | %%randy%% | password |
 | post-json | /data/people/%%randy%% | {"first_name":"f%%start_time%%", "last_name":"l%%start_time%%", "gtalk_sn":"gtx%%start_time%%"} |
 | code-is   | 204                    |                                                                                                |
@@ -31,15 +31,15 @@
 | st-process-jobs |             |                                        |
 | job-count       | PersonIndex | 0                                      |
 
-# can search them?
+| Comment |  can search them? |
 | search-people | randy%%start_time%% | 1 |
 | search-people | f%%start_time%% | 1 |
 | search-people | l%%start_time%% | 1 |
 
-# Search by gtalk works too
+| Comment |  Search by gtalk works too |
 | search-people | gt%%start_time%% | 1 |
 
-# Test UTF8 Characters
+| Comment |  Test UTF8 Characters |
 | post-json       | /data/people/%%randy%% | {"first_name":"Frëddy"} |
 | code-is         | 204                    |                          |
 | job-count       | PersonIndex            | 1                        |
@@ -48,21 +48,21 @@
 | search-people | Frëddy | 1 |
 
 
-# UTF8 in a tag
+| Comment |  UTF8 in a tag |
 | post-json       | /data/people/%%randy%%/tags | {"tag_name":"über"} |
 | code-is         | 204                         |                      |
 | job-count       | PersonIndex                 | 1                    |
 | st-process-jobs |                             |                      |
 | job-count       | PersonIndex                 | 0                    |
 
-# UTF8 in a profile field
+| Comment |  UTF8 in a profile field |
 | post-json       | /data/people/%%randy%% | {"gtalk_sn":"haxør"} |
 | code-is         | 204                    |                       |
 | job-count       | PersonIndex            | 1                     |
 | st-process-jobs |                        |                       |
 | job-count       | PersonIndex            | 0                     |
 
-# Changing a primary account re-indexes the user
+| Comment |  Changing a primary account re-indexes the user |
 | set | account2 | acct2%%start_time%% |
 | create-account | %%account2%% |
 | user-primary-account | %%randy%% | %%account2%% |
@@ -70,7 +70,7 @@
 | st-process-jobs |                        |                       |
 | job-count       | PersonIndex            | 0                     |
 
-# Changing a user's accounts re-indexes the user
+| Comment |  Changing a user's accounts re-indexes the user |
 
 | set                       | other_acct     | oa%%start_time%% |
 | create-account            | %%other_acct%% |                  |
@@ -91,7 +91,7 @@
 | st-process-jobs           |                |                  |
 | job-count                 | PersonIndex    | 0                |
 
-# Changing a group's workspace & account re-index the group's users
+| Comment |  Changing a group's workspace & account re-index the group's users |
 
 | set                         | g1          | g1%%start_time%% |        |
 | create-group                | %%g1%%      | %%account%%      |        |
@@ -130,7 +130,7 @@
 | job-count                   | PersonIndex | 0                |        |
 
 
-# User A in acct A, wksp C, User B in acct B, wksp C, a can search for b
+| Comment |  User A in acct A, wksp C, User B in acct B, wksp C, a can search for b |
 
 | set              | domain          | ken.socialtext.net         |           |
 | set              | usera           | a%%start_time%%@%%domain%% |           |
@@ -154,10 +154,10 @@
 | people-search    | email:%%usera%% | 1                          |           |
 
 
-# 2 users in the group?
+| Comment |  2 users in the group? |
 
 
-# Tagging a user
+| Comment |  Tagging a user |
 
 | http-user-pass | %%randy%% | password |
 | post | /data/people/%%randy%%/tags | Content-Type=application/json | {"tag_name":"obamamama"} |
@@ -167,9 +167,9 @@
 | job-count       | PersonIndex            | 0                     |
 
 
-# This next test should come last
+| Comment |  This next test should come last |
 
-# Deactivating a user makes them not searchable
+| Comment |  Deactivating a user makes them not searchable |
 | deactivate-user | %%randy%%       |   |
 | job-count       | PersonIndex     | 1 |
 | st-process-jobs |                 |   |
