@@ -4,6 +4,11 @@ use strict;
 use warnings;
 use Socialtext::Account;
 use Socialtext::System qw/shell_run/;
+use Memoize qw/unmemoize/;
+
+# We need to re-load the list of plugins after we install marketo,
+# so un-memoize this function.
+unmemoize('Socialtext::Pluggable::Adapter::plugins');
 
 if ($>) {
     print "Not running as root - skipping marketo plugin install.\n";
