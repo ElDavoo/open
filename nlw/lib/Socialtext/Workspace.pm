@@ -498,6 +498,9 @@ sub _update {
                 'nlw.add_user_account_role',
                 $self->account, $user, Socialtext::Role->Affiliate(),
             );
+
+            require Socialtext::JobCreator;
+            Socialtext::JobCreator->index_person($user);
         }
 
         my $groups = $self->groups;
