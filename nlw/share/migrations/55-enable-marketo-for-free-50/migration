@@ -18,6 +18,9 @@ else {
     shell_run("st-appliance-install-plugin marketo");
 }
 
+# Make sure the marketo module is loaded before we use it
+require 'Socialtext::Pluggable::Plugin::Marketo';
+
 my $accts = Socialtext::Account->All(
     order_by => 'name',
     type => 'Free 50',
