@@ -19,7 +19,7 @@ else {
 }
 
 # Make sure the marketo module is loaded before we use it
-require 'Socialtext::Pluggable::Plugin::Marketo';
+require Socialtext::Pluggable::Plugin::Marketo;
 
 my $accts = Socialtext::Account->All(
     order_by => 'name',
