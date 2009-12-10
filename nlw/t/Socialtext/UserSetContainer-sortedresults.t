@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 99;
+use Test::Socialtext tests => 35;
 use List::MoreUtils qw/all none/;
 use Scalar::Util qw/blessed/;
 
@@ -148,3 +148,4 @@ sorted_users_on_an_account: {
     is_deeply [ map {$_->{user_id}} @all ], [
         $uid1,$uid6,$uid5,$uid3,$uid4,$uid2], 'sorted users on account';
 }
+
