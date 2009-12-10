@@ -79,6 +79,7 @@ sub POST_photo {
         $group->photo->set( \$blob );
     };
     if ( $@ ) {
+        warn $@;
         return $self->_post_failure(
             $rest, HTTP_400_Bad_Request, 'could not save image');
     }

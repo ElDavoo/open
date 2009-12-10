@@ -61,7 +61,7 @@ sub POST_file {
     eval {
         my $fh = $file->[0];
         my $blob = do { local $/; <$fh> };
-        mkdir $UPLOAD_DIR unless -d $UPLOAD_DIR;
+        mkdir($UPLOAD_DIR, 0777) unless -d $UPLOAD_DIR;
         my $temp = "$UPLOAD_DIR/$uuid";
         Socialtext::File::set_contents_binary($temp, $blob);
     };
