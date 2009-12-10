@@ -57,10 +57,12 @@ sub POST_json {
         return "Could not resolve the user: $user_id";
     }
 
-    eval { $account->add_user(user => $user) };
-    if ( $@ ) {
-        $rest->header( -status => HTTP_400_Bad_Request );
-        return "Could not add user to the account: $@";
+    if (! $account->has_user($user)) {
+        eval { $account->add_user(user => $user) };
+        if ( $@ ) {
+            $rest->header( -status => HTTP_400_Bad_Request );
+            return "Could not add user to the account: $@";
+        }
     }
 
     $rest->header( -status => HTTP_201_Created );
