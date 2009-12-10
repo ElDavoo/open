@@ -362,8 +362,7 @@ Tester One</a></span>            <span class="ago_raw" style="display:none">2009
 | code-is        | 403                                                                |                  |
 | st-admin       | enable-plugin --plugin people --account Socialtext                 |                  |
 
-^^ TODO Test
-
 The following additional tests should be created:
 
-* POST an event using form data
+^^ TODO: POST an event using form data
+

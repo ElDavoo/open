@@ -206,7 +206,7 @@ For: [Story: User can be member of multiple accounts]
 | body-like   | %%acct9%%          |
 | body-like   | %%acct10%%         |
 
-^^ Format
+# Format
 
   {
     "startIndex" : 1

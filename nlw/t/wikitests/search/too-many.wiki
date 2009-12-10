@@ -96,9 +96,7 @@
 
 | st-config | set search_warning_threshold 500 |
 
-^^ To test
-
-* rest api search
-* rest api scope:*
-* rest api workspaces:*
-* json search
+^^ TODO: rest api search
+^^ TODO: rest api scope:*
+^^ TODO: rest api workspaces:*
+^^ TODO: json search

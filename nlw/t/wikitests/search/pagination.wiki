@@ -1,6 +1,8 @@
 * Fixture: Search
 
-^ Skipped while Solr Page & Attachment indexing is disabled.
+| Comment | Skip tests |
+
+^ SKIP: while Solr Page & Attachment indexing is disabled.
 
 # Create lots of pages and then page through them
 
