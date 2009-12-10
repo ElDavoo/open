@@ -536,7 +536,7 @@ sub add_group_to_workspace {
         ? Socialtext::Role->new(name => $role_name)
         : undef;
 
-    $ws->add_group( group => $group, role => $role );
+    $ws->assign_role_to_group( group => $group, role => $role );
 
     diag 'Added ' . $group->driver_group_name . ' Group'
        . " to $ws_name WS"
@@ -568,7 +568,7 @@ sub add_group_to_account {
         ? Socialtext::Role->new(name => $role_name)
         : undef;
 
-    $account->add_group(group => $group, role => $role);
+    $account->assign_role_to_group(group => $group, role => $role);
 
     diag 'Added ' . $group->driver_group_name . ' Group'
        . " to $account_name Account"
@@ -720,7 +720,7 @@ sub add_workspace_admin {
     my $user = Socialtext::User->Resolve($email);
     die "No such user $email" unless $user;
 
-    $ws->add_user(
+    $ws->assign_role_to_user(
         user => $user,
         role => Socialtext::Role->Admin(),
     );
