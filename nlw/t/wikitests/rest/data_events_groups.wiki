@@ -39,7 +39,7 @@
 
 | GET     | %%g1_uri%% | text/plain |
 | code-is | 200        |            |
-| body-like | System User (less than a minute ago) added joey to %%g1%% |
+| body-like | System User (less than a minute ago) added joey to the group %%g1%% |
 
 * user removed from group
 
@@ -51,7 +51,7 @@
 
 | GET     | %%g1_uri%% | text/plain |
 | code-is | 200        |            |
-| body-like | System User (less than a minute ago) removed joey from %%g1%% |
+| body-like | System User (less than a minute ago) removed joey from the group %%g1%% |
 
 * group added to workspace
 
@@ -63,7 +63,7 @@
 
 | GET     | %%g1_uri%% | text/plain |
 | code-is | 200        |            |
-| body-like | User (less than a minute ago) added %%g1%% to %%workspace%% |
+| body-like | User (less than a minute ago) added %%g1%% to the workspace %%workspace%% |
 
 * group removed from workspace
 
@@ -76,10 +76,9 @@
 
 | GET     | %%g1_uri%% | text/plain |
 | code-is | 200        |            |
-| body-like | User (less than a minute ago) removed %%g1%% from %%workspace%% |
+| body-like | User (less than a minute ago) removed %%g1%% from the workspace %%workspace%% |
 
-^ Later on ...
-
+Later on ...
 * group details changed
 * adding group to an account
 * removing group from an account
