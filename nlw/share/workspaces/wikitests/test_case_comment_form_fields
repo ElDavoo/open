@@ -4,7 +4,7 @@
 
 | *Comment* | Test Case: Comment Form Fields COMPLETED |  |
 
-^ END
+^ DONE_TESTING
 
 | st-admin | set-comment-form-custom-fields --workspace %%workspace%% field1 field2 |  |
 

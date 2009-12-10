@@ -344,7 +344,7 @@
 | location_like | %%ldapWS%%/index.cgi |  |  |  |
 | st-logout |  |  |  |  |
 
-^ END
+^ DONE_TESTING
 
 ^^^ LDAP User states
 

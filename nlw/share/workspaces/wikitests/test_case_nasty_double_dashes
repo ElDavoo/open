@@ -31,7 +31,7 @@ The only way to tell things went wrong was to know that the final result should 
 
 | *Comment* | Test Case: Nasty Double Dashes COMPLETED |  |
 
-^^ END
+^ DONE_TESTING
 
 This is what is printed out by the tester when you force the test to fail so you can see the string it is matching against
 

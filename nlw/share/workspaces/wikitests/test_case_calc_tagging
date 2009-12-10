@@ -154,7 +154,7 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 | *Comment* | Test Case: Calc Tagging COMPLETED |  |
 
-^ END
+^ DONE_TESTING
 
 | type_ok | st-tags-field | Foster City %%start_time%% |
 | wait_for_element_present_ok | st-tags-plusbutton-link | 20000 |

@@ -19,7 +19,7 @@
 
 | *Comment* | Test case: Servername redirect to default ws COMPLETED |  |
 
-^ END
+^ DONE_TESTING
 
 TODO: implement some of these other tests:
 

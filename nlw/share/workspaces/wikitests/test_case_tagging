@@ -191,6 +191,7 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 | *Comment* | Test Case : Tagging COMPLETED |  |
 
+^ DONE_TESTING
 ^ END
 
 TODO: find a way to test lookahead

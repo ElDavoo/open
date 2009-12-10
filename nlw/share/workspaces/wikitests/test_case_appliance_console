@@ -181,6 +181,8 @@
 
 | *Comment* | Test Case: Appliance Console COMPLETED |  |
 
+^ DONE_TESTING
+
 ^ Test Description
 
 These tests should be refactored into executable tests:

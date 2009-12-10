@@ -201,6 +201,7 @@ Last Edited By sort
 
 | *Comment* | Test case: Watchlist COMPLETED |
 
+^ DONE_TESTING
 ^ Remaining TODO:
 
 | Figure out a way to check which element of a dropdown menu is currently selected, text_like does not do this | Check dropdown menu functionality in Settings-&gt;Watchlist |  |

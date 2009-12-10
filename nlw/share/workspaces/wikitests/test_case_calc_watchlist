@@ -199,6 +199,8 @@ cleanup so that Watchlist does not fill up
 | st-admin | purge-page --w %%workspace%% --p watchlist_newpage_spreadsheet_%%start_time%% | was purged |
 | *Comment* | Test case: Calc Watchlist COMPLETED |
 
+^ DONE_TESTING
+
 ^ Remaining todo:
 
 | Figure out a way to check which element of a dropdown menu is currently selected, text_like does not do this | Check dropdown menu functionality in Settings->Watchlist |  |

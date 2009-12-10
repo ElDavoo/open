@@ -129,7 +129,7 @@ TODO: make blank, template, and copied spreadsheets if Selenium can handle it
 
 | *Comment* | Test Case: Create Content. COMPLETED |  |
 
-^ END
+^ DONE_TESTING
 
 | st-admin | enable-plugin --w %%workspace%% --plugin socialcalc | The socialcalc plugin is now enabled for workspace %%workspace%% |
 

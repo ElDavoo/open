@@ -6,6 +6,7 @@
 
 | *Comment* | Test Case: Return to last login COMPLETED. |  |
 
+^ DONE_TESTING
 ^ END UNTIL WE TEST A CONFIGURATION WITHOUT People and Dashboard
 
 | *Comment* | Create a test user, workspaces, give that user permissions to workspaces |  |
