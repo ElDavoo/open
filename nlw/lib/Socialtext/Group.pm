@@ -9,12 +9,13 @@ use Socialtext::Cache;
 use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw(get_dbh :exec :time);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::Pluggable::Adapter;
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
+use Socialtext::UserSetPerspective;
 use namespace::clean -except => 'meta';
 
 ###############################################################################
@@ -51,9 +52,10 @@ has $_.'_count' => (
     lazy_build => 1
 ) for qw(user workspace account);
 
-with 'Socialtext::UserSetContainer' => {
-    excludes => [qw(enable_plugin disable_plugin)],
-};
+with 'Socialtext::UserSetContained',
+     'Socialtext::UserSetContainer' => {
+        excludes => [qw(enable_plugin disable_plugin)],
+     };
 
 sub enable_plugin { die "cannot enable a plugin for a group" }
 sub disable_plugin { die "cannot disable a plugin for a group" }
@@ -93,8 +95,7 @@ sub All {
     my @cols = ('group_id');
     my @where;
     my $order;
-
-    Socialtext::Timer->Continue('group_cursor');
+    my $t = time_scope('group_cursor');
 
     my $ob = $p{order_by} || 'driver_group_name';
     $p{sort_order} ||= 'ASC';
@@ -173,8 +174,6 @@ sub All {
     my ($sql, @bind) = sql_abstract()->select(
         \$from, \@cols, \@where, $order, $p{limit}, $p{offset});
     my $sth = sql_execute($sql, @bind);
-
-    Socialtext::Timer->Pause('group_cursor');
 
     if ($p{_count_only}) {
         my ($count) = $sth->fetchrow_array();
@@ -276,14 +275,15 @@ sub Create {
         );
     }
 
+    # This bypassing logging & event generation:
     $pri_account->user_set->add_object_role($group, Socialtext::Role->Member);
 
     # make sure the GAR gets created
     my $adapter = Socialtext::Pluggable::Adapter->new;
-    $adapter->make_hub(Socialtext::User->SystemUser());
+    $adapter->make_hub(Socialtext::User->SystemUser);
     $adapter->hook(
         'nlw.add_group_account_role',
-        $pri_account, $group, Socialtext::Role->Member(),
+        $pri_account, $group, Socialtext::Role->Member,
     );
 
     return $group;

@@ -70,6 +70,8 @@ has 'metadata' => (
     )],
 );
 
+with 'Socialtext::UserSetContained';
+
 my @minimal_interface = qw(
     user_id username email_address password first_name last_name
     display_name creation_datetime last_login_datetime
