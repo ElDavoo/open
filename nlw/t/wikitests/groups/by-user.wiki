@@ -13,11 +13,16 @@ Tests for [Story: Groups ReST API]
 | json-parse      |                                |             |
 | json-array-size | 0                              |             |
 
-# Create a new group
+# Create a new group, and put a User in it
 
 | set               | group1_name     | group%%start_time%% |              |
 | create-group      | %%group1_name%% | %%account%%         | %%username%% |
 | set               | group1_id      | %%group_id%%        |              |
+
+| set               | dave     | dave%%start_time%%@ken.socialtext.net |
+| create-user       | %%dave%% | password                              |
+| set               | dave_id  | %%user_id%%                           |
+| add-user-to-group | %%dave%% | %%group1_id%%                         |
 
 # regular Users viewing their own data see _all_ of the Groups that they are a member of
 
@@ -28,7 +33,7 @@ Tests for [Story: Groups ReST API]
 | json-array-size | 1                                 |         |
 | Body-like       | "group_id":"%%group_id%%"         |         |
 | Body-like       | "name":"%%group1_name%%"           |         |
-| body-like       | "user_count":"1"                  |         |
+| body-like       | "user_count":"2"                  |         |
 | body-like       | "workspace_count":"0"             |         |
 | body-unlike     | "members"                         |         |
 
@@ -52,7 +57,7 @@ Tests for [Story: Groups ReST API]
 | json-array-size | 1                           |         |
 | Body-like       | "group_id":"%%group2_id%%"  |         |
 | Body-like       | "name":"%%group2_name%%"    |         |
-| body-like       | "user_count":"1"            |         |
+| body-like       | "user_count":"2"            |         |
 | body-like       | "workspace_count":"0"       |         |
 | body-unlike     | "members"                   |         |
 
@@ -65,32 +70,31 @@ Tests for [Story: Groups ReST API]
 | json-array-size | 1                                          |         |
 | Body-like       | "group_id":"%%group2_id%%"                 |         |
 | Body-like       | "name":"%%group2_name%%"                   |         |
-| body-like       | "user_count":"1"                           |         |
+| body-like       | "user_count":"2"                           |         |
 | body-like       | "workspace_count":"0"                      |         |
 | body-like       | "members"                                  |         |
 | body-like       | "%%jane%%"                                 |         |
 
 # Regular Users see only the Groups that they share in common with the requested User.
-# Jane should not be able to see %%username%%'s groups, as she is not in 
-# them, nor a group creator
+# Jane should be able to see %%group2%% but *not* %%group1%% (as she's only
+# been added to %%group2%%).  As a result, Jane *can't* see Dave
 
 | http-user-pass  | %%jane%%                            | password |
 | GET             | /data/users/%%main_user_id%%/groups |          |
 | code-is         | 200                                 |          |
 | header-like     | Cache-Control                       | private  |
 | json-parse      |                                     |          |
-| json-array-size | 0                                   |          |
+| json-array-size | 1                                   |          |
+| body-like       | "group_id":"%%group2_id%%"          |          |
 
-# But if we add her to one of %%username%%'s groups, she should see it.
-
-| add-user-to-group | %%jane%%                            | %%group1_id%% |
-| GET               | /data/users/%%main_user_id%%/groups |               |
-| code-is           | 200                                 |               |
-| header-like       | Cache-Control                       | private       |
-| json-parse        |                                     |               |
-| json-array-size   | 1                                   |               |
-| body-like         | "group_id":"%%group1_id%%"          |               |
-
+| GET             | /data/users/%%main_user_id%%/groups?show_members=1 |         |
+| code-is         | 200                                                |         |
+| header-like     | Cache-Control                                      | private |
+| json-parse      |                                                    |         |
+| json-array-size | 1                                                  |         |
+| body-like       | "group_id":"%%group2_id%%"                         |         |
+| body-like       | "members"                                          |         |
+| body-unlike     | %%dave%%                                           |         |
 
 # Business Admin sees _any_ User's data and _all_ of the Groups the User is a member of
 
@@ -103,14 +107,10 @@ Tests for [Story: Groups ReST API]
 | code-is            | 200                         |         |
 | header-like        | Cache-Control               | private |
 | json-parse         |                             |         |
-| json-array-size    | 2                           |         |
-| Body-like          | "group_id":"%%group1_id%%"  |         |
-| Body-like          | "name":"%%group1_name%%"    |         |
-| body-like          | "user_count":"1"            |         |
-| body-like          | "workspace_count":"0"       |         |
+| json-array-size    | 1                           |         |
 | Body-like          | "group_id":"%%group2_id%%"  |         |
 | Body-like          | "name":"%%group2_name%%"    |         |
-| body-like          | "user_count":"1"            |         |
+| body-like          | "user_count":"2"            |         |
 | body-like          | "workspace_count":"0"       |         |
 | body-unlike        | %%jane%%                    |         |
 
