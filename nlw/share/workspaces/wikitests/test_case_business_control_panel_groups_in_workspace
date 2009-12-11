@@ -45,10 +45,10 @@
 | wait-for-text-present-ok | Groups (4) | 30000 |
 | text_like | //body | qr/Group ID.+Name.+Users.+Workspaces.+Primary Account.+Created.+Creator.*Role/ism |
 
-| set | g1_match | %%group_id1%%.*%%group1%%.*1.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
-| set | g2_match | %%group_id2%%.*%%group2%%.*1.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
-| set | g3_match | %%group_id3%%.*%%group3%%.*1.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
-| set | g4_match | %%group_id4%%.*%%group4%%.*1.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
+| set | g1_match | %%group_id1%%.*%%group1%%.*2.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
+| set | g2_match | %%group_id2%%.*%%group2%%.*2.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
+| set | g3_match | %%group_id3%%.*%%group3%%.*2.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
+| set | g4_match | %%group_id4%%.*%%group4%%.*2.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by name ascending should order groups 1 (a) 3 (b) 2 (c) 4 (d) |  |
 | text_like | //body | qr/%%g1_match%%.+%%g3_match%%.+%%g2_match%%.+%%g4_match%%/sm |
