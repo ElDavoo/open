@@ -460,22 +460,27 @@ sub _role_view_sql_normalizer {
     my %p = @_;
     $p{direct} ||= 0;
     $p{mux_roles} ||= 0;
+    $p{omit_roles} ||= 0;
     return join("\t", map {$_=>$p{$_}} keys %p);
 }
 
 memoize 'RoleViewSQL', NORMALIZER => '_role_view_sql_normalizer';
 sub RoleViewSQL {
     my ($class,%p) = @_;
-    my $from = $p{from} or die "must supply from";
-    my $into = $p{into} or die "must supply into";
-    my $from_alias = $p{from_alias};
-    my $into_alias = $p{into_alias};
-    my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
-    my $alias = $p{alias} || "${from}_${into}_roles";
-    my $mux_roles = $p{mux_roles} || 0;
+    my $from = delete $p{from} or die "must supply from";
+    my $into = delete $p{into} or die "must supply into";
+    my $from_alias = delete $p{from_alias};
+    my $into_alias = delete $p{into_alias};
+    my $table = (delete $p{direct}) ? 'user_set_include' : 'user_set_path';
+    my $alias = (delete $p{alias}) || "${from}_${into}_roles";
+    my $mux_roles = (delete $p{mux_roles}) || 0;
+    my $omit_roles = (delete $p{omit_roles}) || 0;
 
     die "users makes no sense as 'into'" if $into eq 'users';
     die "accounts makes no sense as 'from'" if $from eq 'accounts';
+    die "unrecognized RoleViewSQL option: ".(keys %p)[0]
+        if keys %p;
+    die "can't omit and mux roles" if ($mux_roles && $omit_roles);
 
     my @filter;
 
@@ -513,6 +518,16 @@ sub RoleViewSQL {
         };
     }
     else {
+        return qq{
+            (
+                SELECT DISTINCT
+                    from_set_id AS $from_alias,
+                    into_set_id AS $into_alias
+                  FROM $table
+                 WHERE $filter
+            ) $alias
+        } if $omit_roles;
+
         return qq{
             (
                 SELECT DISTINCT
