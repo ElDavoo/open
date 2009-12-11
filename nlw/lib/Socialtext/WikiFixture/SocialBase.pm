@@ -685,15 +685,9 @@ sub add_member {
     my $user = Socialtext::User->Resolve($email);
     die "No such user $email" unless $user;
 
-    if ($role_name) {
-        my $role = Socialtext::Role->new(name => $role_name);
-        $ws->add_user( user => $user, role => $role );
-        diag "Added user $email to $workspace with role $role_name";
-    }
-    else {
-        $ws->add_user( user => $user );
-        diag "Added user $email to $workspace";
-    }
+    my $role = Socialtext::Role->new(name => $role_name || 'member');
+    $ws->assign_role_to_user( user => $user, role => $role );
+    diag "Added user $email to $workspace with role " . $role->name;
 }
 
 sub remove_member {
