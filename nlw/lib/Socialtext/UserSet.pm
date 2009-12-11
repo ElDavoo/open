@@ -450,8 +450,11 @@ To use a different from or into column alias, pass in C<< from_alias =>
 To limit the result to direct relationships only, use C<< direct => 1 >>.
 Otherwise, both direct and indirect roles will be returned.
 
-To aggregate all roles for a relationship into an array, pass in C<< mux_roles
-=> 1 >>.  The roles will be unique and sorted ascending by ID.
+To aggregate all roles for a relationship into an array, pass in 
+C<< mux_roles => 1 >>.  The roles will be unique and sorted ascending by ID.
+
+To omit the roles, and just return the distinct relationships, pass in
+C<< omit_roles => 1>>.  Cannot be combined with mux_roles.
 
 =cut
 
