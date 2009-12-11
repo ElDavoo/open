@@ -107,7 +107,6 @@ Readonly our @COLUMNS => (
     'user_set_id',
 );
 
-
 use constant real => 1;
 
 # Hash for quick lookup of columns
@@ -117,7 +116,10 @@ foreach my $column (@COLUMNS) {
     has $column => (is => 'rw', isa => 'Any');
 }
 
-with 'Socialtext::UserSetContainer';
+with 'Socialtext::UserSetContainer',
+     'Socialtext::UserSetContained' => {
+        excludes => [qw(sorted_workspace_roles)]
+     };
 
 # for workspace exports:
 Readonly my $EXPORT_VERSION => 1;
