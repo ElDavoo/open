@@ -560,10 +560,12 @@ print "\n";
     my %useraccounts = ();
     my @signalusers = ();
     my $ua_sth= $dbh->prepare_cached(q{
-        SELECT DISTINCT account_id 
-                FROM account_user JOIN account_plugin USING (account_id)
-                WHERE user_id = ? AND plugin = 'signals'
-                });
+        SELECT DISTINCT(into_set_id) - }.PG_ACCT_OFFSET.q{ 
+          FROM user_set_path path
+          JOIN user_set_plugin plug ON (path.into_set_id = plug.user_set_id)
+         WHERE plugin = 'signals'
+           AND from_set_id = ?
+        });
 
     for (my $user=1; $user<=$USERS; $user++) {
         my @accountids=();
