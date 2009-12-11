@@ -1,0 +1,147 @@
+package Socialtext::UserSetPerspective;
+# @COPYRIGHT@
+use Moose;
+use Socialtext::UserSet qw/:const/;
+use Socialtext::MultiCursor;
+use Socialtext::SQL qw/sql_execute/;
+use Socialtext::SQL::Builder qw/sql_abstract/;
+use namespace::clean -except => 'meta';
+
+has 'cols' => (
+    is => 'ro', isa => 'ArrayRef',
+    required => 1,
+    auto_deref => 1,
+);
+
+has 'subsort'     => (is => 'ro', isa => 'Str', required => 1);
+has 'always_join' => (is => 'ro', isa => 'Maybe[Str]');
+
+has 'view'        => (
+    is => 'ro', isa => 'ArrayRef',
+    required => 1,
+    auto_deref => 1,
+);
+
+has 'order_by' => (is => 'ro', isa => 'CodeRef', required => 1);
+has 'apply'    => (is => 'ro', isa => 'CodeRef', required => 1);
+
+has 'aggregates' => (
+    is => 'ro', isa => 'HashRef[ArrayRef]',
+    default => sub { +{} },
+);
+
+sub get_order_by {
+    my ($self, $ob) = @_;
+    my ($join,$sort,@cols);
+
+    if ($ob =~ /^role(?:_name)?$/) {
+        push @cols, '"Role".name';
+        $join = ' JOIN "Role" USING (role_id)';
+        $sort = '"Role".name';
+    }
+    else {
+        eval {
+            ($join,$sort,@cols) = $self->order_by->($ob);
+        };
+        confess $@ if $@;
+    }
+    return ($join,$sort,@cols);
+}
+
+sub get_cursor {
+    my ($self,$opts) = @_;
+
+    die "where is a required option and must be an ArrayRef"
+        unless ($opts->{where} && ref($opts->{where}) eq 'ARRAY');
+
+    my @cols = $self->cols;
+    my $from = Socialtext::UserSet->RoleViewSQL(
+        $self->view,
+        ($opts->{direct} ? (direct => 1) : ()),
+    );
+    $from .= $self->always_join if $self->always_join;
+
+    my @where = @{$opts->{where}};
+    my %aggregates;
+
+    $opts->{sort_order} ||= 'ASC';
+    my $sort_order = ($opts->{sort_order} =~ /^ASC|DESC$/i)
+        ? uc $opts->{sort_order} : 'ASC';
+
+    my $order = $self->subsort;
+    if (my $ob = lc $opts->{order_by}) {
+        my ($join,$sort,@extra_cols);
+        if (exists $self->aggregates->{$ob}) {
+            $aggregates{$ob} = 1;
+            $sort = $ob;
+        }
+        else {
+            ($join,$sort,@extra_cols) = $self->get_order_by($ob);
+            $from .= $join if $join;
+            push @cols, @extra_cols;
+        }
+
+        $order = "$sort $sort_order, ".$self->subsort;
+    }
+
+    if ($opts->{include_aggregates}) {
+        $aggregates{$_} = 1 for keys %{$self->aggregates};
+    }
+
+    if (%aggregates) {
+        for my $agg (keys %aggregates) {
+            my $agg_conf = $self->aggregates->{$agg};
+            my ($col,$query) = Socialtext::UserSet->AggregateSQL(@$agg_conf);
+            push @cols, "$col AS $agg";
+            $from .= $query;
+        }
+    }
+
+    my ($sql, @bind) = sql_abstract()->select(
+        \$from, \@cols, \@where, $order, $opts->{limit}, $opts->{offset});
+ 
+    my $sth = sql_execute($sql, @bind);
+    my $rows = $sth->fetchall_arrayref({});
+    $rows = $self->decorate_result($opts,$rows);
+
+    my $apply = $opts->{raw} ? sub { $_[0] } : $self->apply;
+    return Socialtext::MultiCursor->new(
+        iterables => [$rows],
+        apply => $apply,
+    );
+}
+
+sub decorate_result {
+    my ($self,$opts,$rows) = @_;
+
+    my $thing = $opts->{thing};
+    if ($thing && blessed($thing)) {
+        my @add_all;
+        if ($thing->isa('Socialtext::Group')) {
+            @add_all = (group_id => $thing->group_id);
+            push @add_all, (group => $thing) unless $opts->{raw};
+        }
+        elsif ($thing->isa('Socialtext::Workspace')) {
+            @add_all = (workspace_id => $thing->workspace_id);
+            push @add_all, (workspace => $thing) unless $opts->{raw};
+        }
+        elsif ($thing->isa('Socialtext::Account')) {
+            @add_all = (account_id => $thing->account_id);
+            push @add_all, (account => $thing) unless $opts->{raw};
+        }
+        elsif ($thing->isa('Socialtext::User')) {
+            @add_all = (user_id => $thing->user_id);
+            push @add_all, (user => $thing) unless $opts->{raw};
+        }
+        else {
+            @add_all = (user_set_id => $thing->user_set_id);
+            push @add_all, (user_set => $thing) unless $opts->{raw};
+        }
+        $rows = [map { +{%$_, @add_all} } @$rows];
+    }
+    return $rows;
+}
+
+__PACKAGE__->meta->make_immutable;
+1;
+__END__
