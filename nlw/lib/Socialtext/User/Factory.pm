@@ -18,6 +18,8 @@ use Socialtext::User::Default::Users qw(:system-user :guest-user);
 use Socialtext::l10n qw(loc);
 use Email::Valid;
 use Readonly;
+use Scalar::Util qw/blessed/;
+use Carp qw/confess/;
 
 field 'driver_name';
 field 'driver_id';
@@ -42,9 +44,9 @@ sub NewHomunculus {
     my $p = shift;
 
     # create a copy of the parameters for our new User homunculus object
-    my %user = map { $_ => $p->{$_} } @Socialtext::User::Base::all_fields;
+    my %user = %$p;
 
-    die "homunculi need to have a user_id, driver_key and driver_unique_id"
+    confess "homunculi need to have a user_id, driver_key and driver_unique_id"
         unless ($user{user_id} && $user{driver_key} && $user{driver_unique_id});
 
     # bless the user object to the right class
@@ -54,6 +56,7 @@ sub NewHomunculus {
     eval "require $driver_class";
     die "Couldn't load ${driver_class}: $@" if $@;
 
+    # Assumes a non-strict constructor
     my $homunculus = $driver_class->new(\%user);
 
     if ($p->{extra_attrs} && $homunculus->can('extra_attrs')) {
@@ -64,10 +67,10 @@ sub NewHomunculus {
     # the User driver (Default, LDAP, etc) and where the resulting password is
     # *NOT* of any use.  No point keeping a bunk/bogus/useless password
     # around.
-    if ($homunculus->password eq '*no-password*') {
-        if ($p->{password} && ($p->{password} ne $homunculus->password)) {
-            delete $homunculus->{password};
-        }
+    if ($homunculus->password eq '*no-password*' &&
+        $p->{password} && $p->{password} ne '*no-password*')
+    {
+        $homunculus->password(undef);
     }
 
     # return the new homunculus; we're done.
@@ -254,7 +257,6 @@ sub ExpireUserRecord {
     sub ValidateAndCleanData {
         my ($self, $user, $p) = @_;
         my @errors;
-        my @buffer;
 
         # are we "creating a new user", or "updating an existing user"?
         my $is_create = defined $user ? 0 : 1;
@@ -281,8 +283,7 @@ sub ExpireUserRecord {
             # field is required if either (a) we're creating a new User
             # record, or (b) we were given a value to update with
             if ($is_create or exists $p->{$field}) {
-                @buffer = $self->_validate_check_required_field($field, $p);
-                push @errors, @buffer if (@buffer);
+                push @errors, $self->_validate_check_required_field($field, $p);
             }
         }
 
@@ -292,24 +293,20 @@ sub ExpireUserRecord {
             # or (b) we're changing the value for an existing User.
             if (defined $p->{$field}) {
                 if ($is_create or ($p->{$field} ne $user->{$field})) {
-                    @buffer = $self->_validate_check_unique_value($field, $p);
-                    push @errors, @buffer if (@buffer);
+                    push @errors, $self->_validate_check_unique_value($field, $p);
                 }
             }
         }
 
         # Ensure that any provided e-mail address is valid
-        @buffer = $self->_validate_email_is_valid($p);
-        push @errors, @buffer if (@buffer);
+        push @errors, $self->_validate_email_is_valid($p);
 
         # Ensure that any provided password is valid
-        @buffer = $self->_validate_password_is_valid($p);
-        push @errors, @buffer if (@buffer);
+        push @errors, $self->_validate_password_is_valid($p);
 
         # When creating a new User, we MAY require that a password be provided
         if (delete $p->{require_password} and $is_create) {
-            @buffer = $self->_validate_password_is_required($p);
-            push @errors, @buffer if (@buffer);
+            push @errors, $self->_validate_password_is_required($p);
         }
 
         # Can't change the username/email for a system-created User
@@ -340,6 +337,7 @@ sub ExpireUserRecord {
 
         $self->_recreate_display_name($user, $p)
             if $p->{first_name} or $p->{last_name} or $p->{email_address};
+
     }
 
     sub _recreate_display_name {

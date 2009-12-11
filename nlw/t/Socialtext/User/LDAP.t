@@ -25,22 +25,8 @@ my %TEST_USER = (
 ###############################################################################
 # Instantiation with no parameters; should fail
 instantiation_no_parameters: {
-    my $user = Socialtext::User::LDAP->new();
+    my $user = eval { Socialtext::User::LDAP->new() };
     ok !defined $user, 'instantiation, no parameters';
-}
-
-###############################################################################
-# Instantiation via data HASH
-instantiation_via_hash: {
-    my $user = Socialtext::User::LDAP->new( %TEST_USER );
-    isa_ok $user, 'Socialtext::User::LDAP', 'instantiation via hash';
-}
-
-###############################################################################
-# Instantiation via data HASH-REF
-instantiation_via_hashref: {
-    my $user = Socialtext::User::LDAP->new( { %TEST_USER } );
-    isa_ok $user, 'Socialtext::User::LDAP', 'instantiation via hash-ref';
 }
 
 ###############################################################################
@@ -55,6 +41,10 @@ ldap_users_always_have_valid_passwords: {
 # LDAP users have restricted/hidden passwords
 ldap_users_have_restricted_passwords: {
     my $user = Socialtext::User::LDAP->new(%TEST_USER);
+    isa_ok $user, 'Socialtext::User::LDAP';
+    is $user->password(), '*no-password*', 'LDAP users have restricted passwords';
+
+    $user = Socialtext::User::LDAP->new(%TEST_USER, password => 'sekret');
     isa_ok $user, 'Socialtext::User::LDAP';
     is $user->password(), '*no-password*', 'LDAP users have restricted passwords';
 }

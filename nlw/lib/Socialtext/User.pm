@@ -1,7 +1,6 @@
-# @COPYRIGHT@
 package Socialtext::User;
-use strict;
-use warnings;
+# @COPYRIGHT@
+use Moose;
 
 our $VERSION = '0.01';
 
@@ -20,36 +19,65 @@ use Socialtext::User::Factory;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
 use Email::Address;
-use Class::Field 'field';
 use Socialtext::l10n qw(system_locale loc);
 use Socialtext::EmailSender::Factory;
 use Socialtext::User::Cache;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Carp qw/croak/;
-use base qw( Socialtext::MultiPlugin );
-
 use Readonly;
 
-field 'homunculus';
-field 'metadata';
-
-my @user_store_interface =
-    qw( username email_address password first_name last_name display_name );
-my @user_metadata_interface =
-    qw( creation_datetime last_login_datetime email_address_at_import
-        created_by_user_id is_business_admin is_technical_admin
-        is_system_created primary_account_id );
-my @minimal_interface
-    = ( 'user_id', @user_store_interface, @user_metadata_interface );
-
-sub minimal_interface {
-    my $class = shift;
-    return @minimal_interface;
+BEGIN {
+    extends 'Socialtext::Base','Socialtext::MultiPlugin';
 }
 
-sub base_package {
-    return __PACKAGE__;
-}
+has 'homunculus' => (
+    is => 'ro', isa => 'Socialtext::User::Base',
+    required => 1,
+    handles => [qw(
+        user_id
+        user_set_id
+        username
+        password
+        email_address
+        first_name
+        last_name
+        display_name
+        password_is_correct
+        has_valid_password
+        driver_name
+        is_profile_hidden
+    )],
+);
+
+has 'metadata' => (
+    is => 'rw', isa => 'Socialtext::UserMetadata',
+    writer => '_set_metadata',
+    handles => [qw(
+        email_address_at_import
+        creation_datetime
+        last_login_datetime
+        created_by_user_id
+        is_business_admin
+        is_technical_admin
+        is_system_created
+        set_technical_admin
+        set_business_admin
+        record_login
+        creation_datetime_object
+        last_login_datetime_object
+        creator
+        primary_account_id
+    )],
+);
+
+my @minimal_interface = qw(
+    user_id username email_address password first_name last_name
+    display_name creation_datetime last_login_datetime
+    email_address_at_import created_by_user_id is_business_admin
+    is_technical_admin is_system_created primary_account_id
+);
+
+sub base_package { return __PACKAGE__ }
 
 sub _drivers {
     my $class = shift;
@@ -159,26 +187,22 @@ sub _update_profile {
 
 sub new {
     my $class = shift;
-    my $user = bless {}, $class;
+    my $t = time_scope('user_new');
 
-    Socialtext::Timer->Continue('user_new');
     my $homunculus = $class->new_homunculus(@_);
-    Socialtext::Timer->Pause('user_new');
-    return undef unless $homunculus;
+    return unless $homunculus;
 
-    Socialtext::Timer->Continue('user_new');
+    my $self = $class->meta->new_object(homunculus => $homunculus);
+    my $um = Socialtext::UserMetadata->create_if_necessary($self);
+    $self->_set_metadata($um);
+    $self->_update_profile();
 
-    $user->homunculus($homunculus);
-    $user->metadata(Socialtext::UserMetadata->create_if_necessary($user));
-    $user->_update_profile();
-
-    Socialtext::Timer->Pause('user_new');
-
-    return $user;
+    return $self;
 }
 
 sub create {
     my $class = shift;
+    my $t = time_scope('user_create');
 
     # username email_address password first_name last_name
     my %p = @_;
@@ -193,15 +217,13 @@ sub create {
         }
     }
 
-
-    my $user = bless {}, $class;
-    $user->homunculus($homunculus);
+    my $user = $class->meta->new_object(homunculus => $homunculus);
 
     # scribble UserMetadata
     my %metadata_p = %p; # copy
     $metadata_p{email_address_at_import} = $user->email_address;
     my $metadata = Socialtext::UserMetadata->create(%metadata_p);
-    $user->metadata($metadata);
+    $user->_set_metadata($metadata);
 
     $user->_update_profile();
     $user->_index();
@@ -264,62 +286,6 @@ sub recently_viewed_workspaces {
     return @viewed;
 }
 
-sub _delegate {
-    my $method = shift;
-    my %opts = @_;
-    my $new_method;
-    my $delegated = $opts{to} || 'homunculus';
-    if ($opts{utf8ify}) {
-        $new_method = eval <<EOCODE;
-            sub {
-                my \$f = \$_[0]->$delegated->$method( \@_[ 1 .. \$#_ ] );
-                Encode::_utf8_on(\$f) unless Encode::is_utf8(\$f);
-                return \$f;
-            }
-EOCODE
-    }
-    else {
-        $new_method = eval "sub { \$_[0]->$delegated->$method(\@_[1..\$#_]) }";
-    }
-    no strict qw/refs/;
-    *{$method} = $new_method;
-}
-
-BEGIN {
-
-_delegate user_id => (to => 'homunculus');
-_delegate user_set_id => (to => 'homunculus');
-_delegate username => (to => 'homunculus');
-_delegate password => (to => 'homunculus');
-_delegate email_address => (to => 'homunculus');
-_delegate first_name => (to => 'homunculus', utf8ify => 1);
-_delegate last_name => (to => 'homunculus', utf8ify => 1);
-_delegate display_name => (to => 'homunculus', utf8ify => 1);
-_delegate password_is_correct => (to => 'homunculus');
-_delegate has_valid_password => (to => 'homunculus');
-_delegate driver_name => (to => 'homunculus');
-_delegate is_profile_hidden => (to => 'homunculus');
-
-_delegate email_address_at_import => (to => 'metadata');
-_delegate creation_datetime => (to => 'metadata');
-_delegate last_login_datetime => (to => 'metadata');
-_delegate created_by_user_id => (to => 'metadata');
-_delegate is_business_admin => (to => 'metadata');
-_delegate is_technical_admin => (to => 'metadata');
-_delegate is_system_created => (to => 'metadata');
-_delegate set_technical_admin => (to => 'metadata');
-_delegate set_business_admin => (to => 'metadata');
-_delegate record_login => (to => 'metadata');
-_delegate creation_datetime_object => (to => 'metadata');
-_delegate last_login_datetime_object => (to => 'metadata');
-_delegate creator => (to => 'metadata');
-_delegate primary_account => (to => 'metadata');
-
-}
-
-sub primary_account_id {
-    $_[0]->primary_account->account_id;
-}
 
 sub accounts {
     my $self = shift;
@@ -436,9 +402,9 @@ sub Create_user_from_hash {
     $creator ||= Socialtext::User->SystemUser();
 
     my %create;
-    for my $c (@minimal_interface) {
-        $create{$c} = Encode::encode_utf8( $info->{$c} )
-            if exists $info->{$c};
+    for my $attr (@minimal_interface) {
+        $create{$attr} = Encode::encode_utf8( $info->{$attr} )
+            if exists $info->{$attr};
     }
 
     # Bug 342 - some backups have been created with users
@@ -684,7 +650,7 @@ sub is_guest {
 }
 
 sub is_deleted {
-    return ref $_[0]->homunculus eq 'Socialtext::User::Deleted';
+    return $_[0]->homunculus->isa('Socialtext::User::Deleted');
 }
 
 sub default_role {
@@ -738,11 +704,11 @@ sub deactivate {
     }
 
     # remove them from control and console
-    if ($self->is_business_admin()) {
-        $self->set_business_admin( 0 );
+    if ($self->is_business_admin) {
+        $self->set_business_admin(0);
     }
-    if ($self->is_technical_admin()) {
-        $self->set_technical_admin( 0 );
+    if ($self->is_technical_admin) {
+        $self->set_technical_admin(0);
     }
 
     return $self;
@@ -1571,6 +1537,51 @@ sub profile_is_visible_to {
     return $people->ProfileIsVisibleTo($self, $viewer);
 }
 
+sub primary_account {
+    my $self = shift;
+
+    if (@_==0) {
+        return Socialtext::Account->new(account_id => $self->primary_account_id)
+            || Socialtext::Account->Unknown;
+    }
+
+    require Socialtext::Account;
+
+    my $new_account = shift;
+    $new_account = Socialtext::Account->new(account_id => $new_account)
+        unless ref($new_account);
+
+    my $old_account = Socialtext::Account->new(
+        account_id => $self->primary_account_id );
+
+    $self->metadata->set_primary_account_id($new_account->account_id);
+
+    Socialtext::Cache->clear('authz_plugin');
+
+    my $deleted_acct = Socialtext::Account->Deleted;
+    if ($new_account->account_id != $deleted_acct->account_id) {
+        # Update account membership. Business logic says to keep
+        # the user as a member of the old account.
+        unless ($new_account->has_user($self, direct => 1)) {
+            $new_account->add_user(
+                user => $self, # use a default role
+            );
+        }
+
+        # Avoid double-indexing elsewhere in the code.
+        require Socialtext::JobCreator;
+        Socialtext::JobCreator->index_person( $self );
+    }
+
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub(Socialtext::User->SystemUser(), undef);
+    $adapter->hook('nlw.add_user_account_role', $new_account, $self);
+
+    return $new_account;
+}
+
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+no Moose;
 1;
 
 __END__
@@ -1905,10 +1916,6 @@ Returns a boolean indicating whether the user's avatar should be hidden or visib
 Returns a boolean indicating whether the user's profile should be visible to
 the specified viewer.
 
-=head2 Socialtext::User->minimal_interface()
-
-Returns the minimal keys necessary for User Factory plugins to implement.
-
 =head2 Socialtext::User->Guest()
 
 Returns the user object for the "guest user", which is used when an
@@ -2115,6 +2122,14 @@ Create and return an Socialtext::User::EmailConfirmation object for the user.
 =head2 $user->send_confirmation_completed_signal()
 
 If possible, send a signal to the system saying that the user has been confirmed.
+
+=head2 $user->primary_account([$acct])
+
+Returns a C<Socialtext::Account> object for the primary account this 
+user is assigned to.
+
+Passing in a new account will change this user's primary account.  The user
+will retain whatever Role they had in the old account.
 
 =head1 AUTHOR
 

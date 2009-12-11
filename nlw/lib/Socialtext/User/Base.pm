@@ -1,13 +1,28 @@
 package Socialtext::User::Base;
 # @COPYRIGHT@
-use strict;
-use warnings;
-
-use Class::Field qw(field);
+use Moose;
 use Readonly;
 use Socialtext::SQL qw(sql_parse_timestamptz);
 use Socialtext::Validate qw(validate SCALAR_TYPE);
 use Socialtext::l10n qw(loc);
+use Socialtext::MooseX::Types::Pg;
+use Socialtext::MooseX::Types::UniStr;
+use namespace::clean -except => 'meta';
+
+has 'user_id' => (is => 'rw', isa => 'Int', writer => '_set_user_id');
+sub user_set_id { $_[0]->user_id }
+
+has 'username'          => (is => 'rw', isa => 'Str');
+has 'email_address'     => (is => 'rw', isa => 'Str');
+has 'first_name'        => (is => 'rw', isa => 'UniStr', coerce => 1);
+has 'last_name'         => (is => 'rw', isa => 'UniStr', coerce => 1);
+has 'password'          => (is => 'rw', isa => 'Maybe[Str]');
+has 'display_name'      => (is => 'rw', isa => 'UniStr', coerce => 1);
+has 'driver_key'        => (is => 'rw', isa => 'Str');
+has 'driver_unique_id'  => (is => 'rw', isa => 'Str');
+has 'cached_at'         => (is => 'rw', isa => 'Pg.DateTime',
+                            coerce => 1, required => 1);
+has 'is_profile_hidden' => (is => 'rw', isa => 'Bool');
 
 # All fields/attributes that a "Socialtext::User::*" has.
 Readonly our @fields => qw(
@@ -27,31 +42,6 @@ Readonly our @other_fields => qw(
 );
 Readonly our @all_fields => (@fields, @other_fields);
 Readonly our %all_fields => map {$_=>1} @all_fields;
-
-# set up our fields
-map { field $_ } @all_fields;
-sub user_set_id { $_[0]->user_id }
-
-sub new {
-    my $class = shift;
-
-    # SANITY CHECK; have inbound parameters
-    return unless @_;
-
-    # instantiate based on given parameters (as HASH or HASH-REF)
-    my $self = (@_ > 1) ? {@_} : $_[0];
-    bless $self, $class;
-
-    if (!$self->{cached_at}) {
-        warn "no cached_at";
-        return;
-    }
-    if (!ref($self->{cached_at})) {
-        $self->{cached_at} = sql_parse_timestamptz($self->{cached_at});
-    }
-
-    return $self;
-}
 
 sub driver_name {
     my $self = shift;
@@ -98,6 +88,7 @@ sub expire {
     }
 }
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
 
 =head1 NAME

@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 329;
+use Test::Socialtext tests => 321;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -12,7 +12,7 @@ use Cwd;
 BEGIN { use_ok 'Socialtext::CLI' }
 use t::Socialtext::CLITestUtils qw/expect_failure expect_success/;
 
-fixtures( 'workspaces_with_extra_pages', 'destructive' );
+fixtures('workspaces_with_extra_pages', 'destructive');
 
 our $NEW_WORKSPACE = 'new-ws-' . $<;
 our $NEW_WORKSPACE2 = 'new-ws2-'. $<;
@@ -534,61 +534,6 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
 
     # Cleanup the workspace
     Test::Socialtext::Workspace->delete_recklessly( $workspace );
-}
-
-# need to set up the user to be in the right worksapces
-# and have the right perms so we can test that they go
-# away.
-DEACTIVATE_USER: {
-    # need to create a user
-    my $user = Socialtext::User->new( username  => 'test2@example.com' );
-    $user->set_technical_admin( 1 );
-    $user->set_business_admin( 1 );
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [qw( --username test2@example.com --workspace foobar )] )
-                ->add_workspace_admin();
-        },
-        qr/test2\@example\.com now has the role of 'admin' in the .+ Workspace/,
-        'test2 added as admin user'
-    );
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [qw( --username test2@example.com --workspace admin )] )
-                ->add_member();
-        },
-        qr/test2\@example\.com now has the role of 'member' in the/,
-        'test2 added as member'
-    );
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username test2@example.com )]
-            )->deactivate_user();
-        },
-        qr/test2\@example\.com has been removed from workspaces admin, foobar, Removed Business Admin, Removed Technical Admin/,
-        'test2 was removed from the correct workspaces'
-    );
-
-    is(Socialtext::Account->Deleted()->account_id, $user->primary_account_id,
-        "deactivated user moved into the Deleted account");
-
-    $user = Socialtext::User->new( username  => 'guest' );
-
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username guest )]
-            )->deactivate_user();
-        },
-        qr/You may not deactivate/,
-        'The guest user cannot be deactivated',
-    );
 }
 
 ADD_REMOVE_WS_ADMIN: {
@@ -2016,3 +1961,14 @@ SHOW_IMPERSONATORS: {
     );
 }
 
+# Dear developer:
+#
+# Please consider making a new CLI-$feature.t test rather than
+# appending to this one. The fixtures required for this test are rather
+# heavyweight. You may wish to clone t/Socialtext/CLI-deactivate.t; it's a
+# good example.
+#
+# Sincerely,
+# ~stash
+
+pass 'done';

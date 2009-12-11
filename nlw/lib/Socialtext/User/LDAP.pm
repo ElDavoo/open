@@ -1,22 +1,21 @@
 package Socialtext::User::LDAP;
 # @COPYRIGHT@
-
-use strict;
-use warnings;
+use Moose;
 use Socialtext::LDAP;
-use base qw(Socialtext::User::Base);
-use Class::Field qw/field/;
+use namespace::clean -except => 'meta';
+
+extends 'Socialtext::User::Base';
 
 our $VERSION = '0.03';
 
-field 'extra_attrs';
+has 'extra_attrs' => (is => 'rw', isa => 'Any');
+has '+password' => (default => '*no-password*');
 
-sub password {
-    return '*no-password*';
-}
+use constant has_valid_password  => 1;
 
-sub has_valid_password {
-    return 1;
+sub BUILD {
+    my $self = shift;
+    $self->password('*no-password*'); # force the default
 }
 
 sub password_is_correct {

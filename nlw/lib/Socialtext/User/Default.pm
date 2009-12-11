@@ -1,24 +1,20 @@
-# @COPYRIGHT@
 package Socialtext::User::Default;
-
-use strict;
-use warnings;
-
-our $VERSION = '0.02';
-
+# @COPYRIGHT@
+use Moose;
+our $VERSION = '0.03';
+use Socialtext::User::Base;
 use Socialtext::String;
-use Socialtext::User;
 use DateTime::Infinite;
-use Digest::SHA ();
-use base qw(Socialtext::User::Base);
+use Digest::SHA;
+use Encode;
+use namespace::clean -except => 'meta';
 
-sub new {
-    my $class = shift;
-    return unless @_;
+BEGIN { extends 'Socialtext::User::Base' }
 
-    my $args = (@_ > 1) ? {@_} : $_[0];
-    $args->{cached_at} ||= DateTime::Infinite::Future->new;
-    return $class->SUPER::new($args);
+has '+cached_at' => (builder => '_build_cached_at', lazy => 1);
+
+sub _build_cached_at {
+    return DateTime::Infinite::Future->new;
 }
 
 sub _factory {
@@ -38,10 +34,7 @@ sub update {
 }
 
 sub has_valid_password {
-    my $self = shift;
-
-    return 1
-        if $self->password ne '*none*';
+    return 1 if shift->password ne '*none*';
 }
 
 sub password_is_correct {
@@ -105,6 +98,7 @@ sub expire {
     return;
 }
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
 
 __END__

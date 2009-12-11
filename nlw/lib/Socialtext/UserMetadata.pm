@@ -16,8 +16,8 @@ our $VERSION = '0.01';
 has 'user_id'                 => (is => 'rw', isa => 'Int');
 has 'creation_datetime'       => (is => 'rw', isa => 'Str');
 has 'last_login_datetime'     => (is => 'rw', isa => 'Str');
-has 'email_address_at_import' => (is => 'rw', isa => 'Str');
-has 'created_by_user_id'      => (is => 'rw', isa => 'Int');
+has 'email_address_at_import' => (is => 'rw', isa => 'Maybe[Str]');
+has 'created_by_user_id'      => (is => 'rw', isa => 'Maybe[Int]');
 has 'is_business_admin'       => (is => 'rw', isa => 'Bool');
 has 'is_technical_admin'      => (is => 'rw', isa => 'Bool');
 has 'is_system_created'       => (is => 'rw', isa => 'Bool');
@@ -29,8 +29,7 @@ sub create_if_necessary {
     my $class = shift;
     my $user = shift;
 
-    my $md = $class->new( user_id => $user->user_id );
-
+    my $md = $class->new(user_id => $user->user_id);
     return $md if $md;
 
     # If we're here, it's because either:
@@ -38,8 +37,6 @@ sub create_if_necessary {
     #    our own system
     #  - we're bootstrapping the system with the system-user
 
-    # REVIEW: 'system-user' should probably be gathered from 
-    # Socialtext::User, rather than hard-coded here.
     my $created_by_user_id = $user->username eq 'system-user'
         ? undef
         : Socialtext::User->SystemUser->user_id;
@@ -52,9 +49,22 @@ sub create_if_necessary {
 }
 
 # turn a user into a hash suitable for JSON and
-# such things.  Returns our very object, which 
-# should alreaby be loaded with our data
-sub to_hash { shift }
+# such things.
+sub to_hash {
+    my $self = shift;
+    my %hash = map { $_ => $self->$_ } qw(
+        user_id
+        creation_datetime
+        last_login_datetime
+        email_address_at_import
+        created_by_user_id
+        is_business_admin
+        is_technical_admin
+        is_system_created
+        primary_account_id
+    );
+    return \%hash;
+}
 
 sub _cache {
     return Socialtext::Cache->cache('user_metadata');
@@ -67,19 +77,19 @@ sub new {
     my $key   = $p{user_id};
 
     my $metadata = $cache->get($key);
-    unless ($metadata) {
+    my $got = defined $metadata;
+    if (!$got) {
         my $sth = sql_execute(
             'SELECT * FROM "UserMetadata" WHERE user_id=?',
-            $p{user_id},
+            $key
         );
-
         $metadata = $sth->fetchrow_hashref;
-        return undef unless $metadata;
-        bless $metadata, $class;
-
-        $cache->set( $key, $metadata );
+        return unless $metadata;
     }
-    return $metadata;
+
+    my $self = $class->meta->new_object(%$metadata);
+    $cache->set($key, $metadata) unless $got;
+    return $self;
 }
 
 sub create {
@@ -103,8 +113,8 @@ sub create {
         $p{primary_account_id},
     );
 
-    my $user = $class->new(user_id => $p{user_id});
-    my $acct = Socialtext::Account->new(account_id => $user->primary_account_id);
+    # re-fetches out of the db
+    my $self = $class->new(user_id => $p{user_id});
 
     # Add the User to their Primary Account.
     #
@@ -114,26 +124,28 @@ sub create {
     # create a new UserMetadata object for said User).  That User, though, may
     # have Roles in the Account already (so don't create a new one if the User
     # has one already).
-    unless ($acct->has_user($user)) {
+    my $acct = Socialtext::Account->new(
+        account_id => $self->primary_account_id);
+    unless ($acct->has_user($self, direct => 1)) {
         $acct->add_user(
-            user  => $user,
-            actor => $user->creator,
+            user  => $self,
+            actor => $self->creator,
             role  => Socialtext::Role->Member(),
         );
-        $acct->add_to_all_users_workspace(object => $user);
+        $acct->add_to_all_users_workspace(object => $self);
     }
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), undef);
-    $adapter->hook( 'nlw.add_user_account_role', $acct, $user );
+    $adapter->hook('nlw.add_user_account_role', $acct, $self);
 
-    return $user;
+    return $self;
 }
 
-# "update" methods: set_technical_admin, set_business_admin
+# "update" methods: set_technical_admin, set_business_admin,
+# set_primary_account_id
 sub set_technical_admin {
-    my ( $self, $value ) = @_;
-
+    my ($self, $value) = @_;
     $self->_update_field('is_technical_admin=?', $value);
     $self->is_technical_admin( $value );
     return $self;
@@ -141,9 +153,15 @@ sub set_technical_admin {
 
 sub set_business_admin {
     my ( $self, $value ) = @_;
-
     $self->_update_field('is_business_admin=?', $value);
     $self->is_business_admin( $value );
+    return $self;
+}
+
+sub set_primary_account_id {
+    my ($self,$value) = @_;
+    $self->_update_field('primary_account_id=?', $value);
+    $self->primary_account_id($value);
     return $self;
 }
 
@@ -152,6 +170,7 @@ sub record_login { shift->_update_field('last_login_datetime=CURRENT_TIMESTAMP')
 sub _update_field {
     my $self = shift;
     my $field = shift;
+    $self->_cache->remove($self->user_id);
     sql_execute(
         qq{UPDATE "UserMetadata" SET $field WHERE user_id=?},
         @_, $self->user_id );
@@ -179,48 +198,6 @@ sub creator {
     }
 
     return Socialtext::User->new( user_id => $created_by_user_id );
-}
-
-sub primary_account {
-    my $self = shift;
-    my $new_account = shift;
-
-    require Socialtext::Account;
-
-    if ($new_account) {
-        $new_account = ref($new_account)
-            ? $new_account
-            : Socialtext::Account->new( account_id => $new_account );
-
-        my $old_account = Socialtext::Account->new(
-            account_id => $self->primary_account_id );
-
-        $self->_update_field('primary_account_id=?', $new_account->account_id);
-        $self->primary_account_id($new_account->account_id);
-
-        Socialtext::Cache->clear('authz_plugin');
-
-        my $deleted_acct = Socialtext::Account->Deleted;
-        if ($new_account->account_id != $deleted_acct->account_id) {
-            # Update account membership. Business logic says to keep
-            # the user as a member of the old account.
-            $new_account->assign_role_to_user(
-                user => $self,
-                role => Socialtext::Role->Member,
-            );
-
-            # Avoid double-indexing elsewhere in the code.
-            require Socialtext::JobCreator;
-            Socialtext::JobCreator->index_person( $self );
-        }
-
-        my $adapter = Socialtext::Pluggable::Adapter->new;
-        $adapter->make_hub(Socialtext::User->SystemUser(), undef);
-        $adapter->hook('nlw.add_user_account_role', $new_account, $self);
-    }
-
-    return Socialtext::Account->new(account_id => $self->primary_account_id)
-            || Socialtext::Account->Unknown;
 }
 
 sub _validate_and_clean_data {
@@ -342,11 +319,6 @@ has never logged in.
 
 Returns a C<Socialtext::User> object for the user which created this
 user.
-
-=head2 $md->primary_account()
-
-Returns a C<Socialtext::Account> object for the primary account this 
-user is assigned to.
 
 =head1 AUTHOR
 
