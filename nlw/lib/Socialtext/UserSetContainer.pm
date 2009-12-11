@@ -709,32 +709,50 @@ Socialtext::UserSetContainer - Role for things containing UserSets
 
 =head1 SYNOPSIS
 
-  package MyContainer;
-  use Moose;
-  has 'user_set_id' => (..., isa => 'Int');
-  with 'Socialtext::UserSetContainer';
+    package MyContainer;
+    use Moose;
+    has 'user_set_id' => (..., isa => 'Int');
+    with 'Socialtext::UserSetContainer';
+    
+    my $o = MyContainer->new(); # or w/e
+    my $uset = $o->user_set;
+    
+    $o->is_plugin_enabled('people');
+    $o->enable_plugin('people');
+    $o->disable_plugin('people');
+    
+    # fails if a direct role already exists
+    $o->add_role( # also in _user and _group flavours
+        actor  => $user,
+        object => $some_user_or_set,
+        role   => Socialtext::Role->Member,
+    );
 
-  my $o = MyContainer->new(); # or w/e
-  my $uset = $o->user_set;
+    # force a role, pre-existing or not
+    $o->assign_role( # also in _user and _group flavours
+        actor  => $user,
+        object => $some_user_or_set,
+        role   => Socialtext::Role->Admin,
+    );
 
-  $o->is_plugin_enabled('people');
-  $o->enable_plugin('people');
-  $o->disable_plugin('people');
-
-  $o->add_role(
-    actor => $user,
-    object => $some_user_or_set,
-    role => Socialtext::Role->Member,
-  );
-  $o->assign_role(
-    actor => $user,
-    object => $some_user_or_set,
-    role => Socialtext::Role->Admin,
-  );
-  $o->remove_role(
-    actor => $user,
-    object => $some_user_or_set,
-  );
+    $o->remove_role( # also in _user and _group flavours
+        actor  => $user,
+        object => $some_user_or_set,
+    );
+    
+    $o->has_user($user);
+    $o->has_group($group);
+    $o->has_user($user, direct => 1);
+    $o->has_group($group, direct => 1);
+    
+    my @roles = $o->role_for_user($user);
+    my $role = $o->role_for_user($user, direct => 1);
+    my @roles = $o->role_for_group($group);
+    my $role = $o->role_for_group($group, direct => 1);
+    
+    # Perspectives:
+    my $mc = $o->sorted_group_roles(...); # groups in this container
+    my $mc = $o->sorted_user_roles(...); # users in this container
 
 =head1 DESCRIPTION
 

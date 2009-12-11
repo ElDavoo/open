@@ -151,3 +151,31 @@ sub _sorted_account_roles_apply {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Socialtext::UserSetContained - Role for "contained" user-set classes
+
+=head1 SYNOPSIS
+
+    package MyContained;
+    use Moose;
+    has 'user_set_id' => (..., isa => 'Int');
+    with 'Socialtext::UserSetContainer';
+    
+    my $o = MyContained->new;
+    
+    # workspaces this set is contained in
+    my $mc = $o->sorted_workspace_roles(...);
+    # accounts this set is contained in
+    my $mc = $o->sorted_account_roles(...);
+
+=head1 DESCRIPTION
+
+Role for applying methods common to all "Contained" user-sets.  
+
+L<Socialtext::Workspace> partially applies this role; it excludes the
+'sorted_workspace_roles' method.
+
+=cut
