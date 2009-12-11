@@ -114,22 +114,17 @@ sub _POST {
                 die "both username, rolename must be valid\n";
             }
         
-            $workspace->add_user( user => $user,
-                                  role => $role );
             $workspace->assign_role_to_user( user => $user, role => $role );
         }
     };
     
     if ( my $e = Exception::Class->caught('Socialtext::Exception::DataValidation') ) {
-        $rest->header(
-                      -status => HTTP_400_Bad_Request,
-                      -type   => 'text/plain' );
+        warn $e;
+        $rest->header(-status => HTTP_400_Bad_Request, -type => 'text/plain');
         return join( "\n", $e->messages );
     } elsif ( $@ ) {
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-            -type   => 'text/plain' );
-        # REVIEW: what kind of system logging should we be doing here?
+        warn $@;
+        $rest->header(-status => HTTP_400_Bad_Request, -type => 'text/plain');
         return "$@";
     }
 
