@@ -2,7 +2,6 @@ package Socialtext::UserSetContainer;
 # @COPYRIGHT@
 use Moose::Role;
 use Carp qw/croak/;
-use Socialtext::UserSet;
 use Socialtext::SQL qw/:exec/;
 use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::l10n qw/loc/;
@@ -537,18 +536,11 @@ for my $thing_name (qw(user group)) {
 sub sorted_user_roles {
     my ($self, %opts) = @_;
  
-    my $base_table = $opts{direct} ? 'user_set_include' : 'user_set_include_tc';
     my @cols = ('user_id', 'role_id');
-    my $from = q{
-        (
-            SELECT DISTINCT
-                from_set_id AS user_id,
-                into_set_id AS user_set_id,
-                role_id
-              FROM }.$base_table.q{
-             WHERE from_set_id }.PG_USER_FILTER.q{
-        ) uxr
-    };
+    my $from = Socialtext::UserSet->RoleViewSQL(
+        from  => 'users', into   => 'where',
+        alias => 'uxr',   direct => $opts{direct},
+    );
  
     my @where = ('uxr.user_set_id' => $self->user_set_id);
 
@@ -586,45 +578,30 @@ sub sorted_user_roles {
             $sort = 'meta.creation_datetime';
         }
         elsif ($ob eq 'workspace_count') {
-            push @cols, 'COALESCE(wses.count,0) AS count';
-            $from .= q{
-                LEFT JOIN (
-                    SELECT from_set_id AS user_id,
-                           COUNT(DISTINCT into_set_id) AS count
-                      FROM user_set_path
-                     WHERE into_set_id }.PG_WKSP_FILTER.q{
-                     GROUP BY user_id
-                ) wses USING ( user_id )
-            };
+            my ($col,$query) = Socialtext::UserSet->AggregateSQL(
+                into => 'workspaces', using => 'user_id',
+            );
+            push @cols, "$col AS count";
+            $from .= $query;
             $sort = 'count';
         }
         elsif ($ob eq 'group_count') {
-            push @cols, 'COALESCE(grps.count,0) AS count';
-            $from .= q{
-                LEFT JOIN (
-                    SELECT from_set_id AS user_id,
-                           COUNT(DISTINCT into_set_id) AS count
-                      FROM user_set_path
-                     WHERE into_set_id }.PG_GROUP_FILTER.q{
-                     GROUP BY user_id
-                ) grps USING ( user_id )
-            };
+            my ($col,$query) = Socialtext::UserSet->AggregateSQL(
+                into => 'groups', using => 'user_id',
+            );
+            push @cols, "$col AS count";
+            $from .= $query;
             $sort = 'count';
         }
         elsif ($ob eq 'account_count') {
-            push @cols, 'COALESCE(accts.count,0) AS count';
-            $from .= q{
-                LEFT JOIN (
-                    SELECT from_set_id AS user_id,
-                           COUNT(DISTINCT into_set_id) AS count
-                      FROM user_set_path
-                     WHERE into_set_id }.PG_ACCT_FILTER.q{
-                     GROUP BY user_id
-                ) accts USING ( user_id )
-            };
+            my ($col,$query) = Socialtext::UserSet->AggregateSQL(
+                into => 'accounts', using => 'user_id',
+            );
+            push @cols, "$col AS count";
+            $from .= $query;
             $sort = 'count';
         }
-        elsif ($ob eq 'primary_account') {
+        elsif ($ob eq 'primary_account' or $ob eq 'account') {
             push @cols, '"Account".name AS account_name';
             $from .= q{
                 JOIN "UserMetadata" meta USING ( user_id )

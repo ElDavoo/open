@@ -105,7 +105,7 @@ sorted_users: {
         sort_order => 'desc',
         direct => 1,
     );
-    is $cursor->count, 4;
+    is $cursor->count, 4, 'username desc';
     @all = $cursor->all();
     ok all(sub { blessed $_->{user} }, @all), "lots of user objects";
     ok all(sub { blessed $_->{role} }, @all), "lots of role objects";
