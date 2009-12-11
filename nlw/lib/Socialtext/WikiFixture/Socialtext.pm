@@ -10,7 +10,7 @@ use Socialtext::Workspace;
 use Sys::Hostname;
 use Test::More;
 use Test::Socialtext;
-use Test::Output qw(combined_from);
+use Test::Output qw(stdout_from);
 use Text::ParseWords qw(shellwords);
 use Cwd;
 use Socialtext::AppConfig;
@@ -672,7 +672,12 @@ sub _st_admin_in_process {
     # Run st-admin, in process.
     my @argv   = shellwords( $options );
     local @ARGV = @argv;
-    my $output = combined_from {
+    my $output = '';
+    $output .= stdout_from {
+        local $SIG{__WARN__} = sub {
+            warn $_[0];
+            $output .= $_[0];
+        };
         eval { Socialtext::CLI->new( argv => \@argv )->run };
         if ($@) { warn $@ };
     };
