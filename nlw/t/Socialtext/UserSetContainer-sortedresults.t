@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 58;
+use Test::Socialtext tests => 61;
 use Test::Differences;
 use List::MoreUtils qw/all none/;
 use Scalar::Util qw/blessed/;
