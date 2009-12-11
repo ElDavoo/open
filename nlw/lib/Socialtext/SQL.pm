@@ -133,7 +133,7 @@ Forces the DBI connection to close.  Useful for scripts to avoid deadlocks.
             _dump_txn_stack($DBH);
         }
         $DBH->disconnect if $DBH;
-        $DBH = undef;
+        undef $DBH;
         return;
     }
 

@@ -509,14 +509,14 @@ sub RoleViewSQL {
 sub _create_insert_temp {
     my ($self, $dbh, $bulk) = @_;
 
-    my $on_commit = $bulk ? 'DELETE ROWS' : 'DROP';
     $dbh->do(qq{
         CREATE TEMPORARY TABLE to_copy (
             new_start int,
             new_end int,
             new_vlist int[]
-        ) WITHOUT OIDS ON COMMIT $on_commit;
+        ) WITHOUT OIDS ON COMMIT DELETE ROWS
     });
+    $dbh->{'private_Socialtext::UserSet_insert_temp'} = 1;
 }
 
 sub _insert {
@@ -524,7 +524,7 @@ sub _insert {
 
     my $t = time_scope('uset_insert');
 
-    if ($bulk) {
+    if ($dbh->{'private_Socialtext::UserSet_insert_temp'}) {
         $dbh->do(q{TRUNCATE TABLE to_copy});
     }
     else {
