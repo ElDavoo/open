@@ -51,6 +51,6 @@
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
 
 | *Comment* | Test Case: Avatar Popup TEARDOWN |  |
-| st-admin | remove-member --w %%workspace%% --e %%e_user%% | is no longer a member |
+| st-admin | remove-member --w %%workspace%% --e %%e_user%% | no longer has the role of 'member' |
 
 | *Comment* | Test Case: Avatar Popup COMPLETED |  |

@@ -50,7 +50,7 @@
 | click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%mastergroupsacct%% | 30000 |
 | click_and_wait | link=%%mastergroupsacct%% |  |
-| wait_for_text_present_ok | Users (4) | 30000 |
+| wait_for_text_present_ok | Users (5) | 30000 |
 | wait_for_text_present_ok | Groups (2) | 30000 |
 | wait_for_text_present_ok | Workspaces (0) | 30000 |
 | text_like | qr/Users.+%%e_isouser3%%.+%%e_groupsuser1%%.+%%e_isouser2%%.+%%e_isouser1%%.+Groups/ |  |
@@ -59,13 +59,13 @@
 | *Comment* | Test Case: Business Control Panel Groups In Account SORT By Number of Workspaces |  |
 | wait_for_element_visible_ok | group-sort-workspaces | 30000 |
 | click_and_wait | group-sort-workspaces |  |
-| wait_for_text_present_ok | Users (4) | 30000 |
+| wait_for_text_present_ok | Users (5) | 30000 |
 | wait_for_text_present_ok | Workspaces (0) | 30000 |
 | wait_for_text_present_ok | Groups (2) | 30000 |
 | text_like | qr/Groups.+%%samplegroup1%%.+%%groupwithmember%%/ |  |
 | wait_for_element_visible_ok | group-sort-workspaces | 3000 |
 | click_and_wait | group-sort-workspaces |  |
-| wait_for_text_present_ok | Users (4) | 30000 |
+| wait_for_text_present_ok | Users (5) | 30000 |
 | wait_for_text_present_ok | Workspaces (0) | 30000 |
 | wait_for_text_present_ok | Groups (2) | 30000 |
 | text_like | qr/Groups.+%%groupwithmember%%.+%%samplegroup1%%/ |  |

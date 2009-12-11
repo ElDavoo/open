@@ -42,7 +42,7 @@
 | st-admin | update-page --username %%cli_user%% --workspace %%cmdline_workspace%% --page "page1 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "page1 %%start_time%%" page has been created. |
 
 | *Comment* | Test Case: Command Line LDAP user Remove member |  |
-| st-admin | remove-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% is no longer a member of %%cmdline_workspace%%/ism |
+| st-admin | remove-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% no longer has the role of 'member' in %%cmdline_workspace%%/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Add member again |  |
 | st-admin | add-member --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% now has the role of 'member' in the %%cmdline_workspace%% workspace/ism |

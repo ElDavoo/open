@@ -37,7 +37,12 @@
 | wait_for_element_visible_ok | link=Add Group To An Account | 30000 |
 | text_like | //body | Created By: %%username%% |
 | text_like | //body | %%CPgroupname%% |
-| text_like | //body | Users (0) |
+
+| *Comment* | Test Case: Control Panel Create Group. %%email%% is group admin. Group is assigned to account %%hostname%% |  |
+| text_like | //body | Users (1) |
+| text_like | //body | Accounts (1) |
+| wait_for_element_visible_ok | link=%%email%% | 10000 |
+| wait_for_element_visible_ok | link=%%hostname%% | 10000 |
 
 | *Comment* | Test Case: Control Panel Create Group - create group via members |  |
 | open_ok | /nlw/control/user |  |
@@ -66,7 +71,7 @@
 
 | *Comment* | Test case: Control Panel Create Group Contains new members |  |
 | text-like | //body | You successfully added 4 users to 1 group. |
-| text-like | //body | Users (4) |
+| text-like | //body | Users (5) |
 | text-like | //body | %%groupname%% |
 | text-like | //body | Created By: %%username%% |
 | wait_for_element_visible_ok | link=%%email1%% | 30000 |
