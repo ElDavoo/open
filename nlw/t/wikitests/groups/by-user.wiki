@@ -18,7 +18,6 @@ Tests for [Story: Groups ReST API]
 | set               | group1_name     | group%%start_time%% |              |
 | create-group      | %%group1_name%% | %%account%%         | %%username%% |
 | set               | group1_id      | %%group_id%%        |              |
-| add-user-to-group | %%username%%   | %%group_id%%        |              |
 
 # regular Users viewing their own data see _all_ of the Groups that they are a member of
 
