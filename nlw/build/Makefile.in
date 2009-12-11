@@ -368,6 +368,10 @@ test:
 	    $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort) \
 	    $(shell find -L t/wikitests/ -name '*.wiki')
 
+testwikid:
+	$(PROVE) --jobs 4 \
+	    $(shell find -L t/wikitests/ -name '*.wiki')
+
 testplugin-%:
 	$(PROVE) -s $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
 
