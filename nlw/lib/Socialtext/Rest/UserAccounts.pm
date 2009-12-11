@@ -58,42 +58,23 @@ override get_resource => sub {
             workspace_id => $wksp->workspace_id,
         };
 
-        if (my $acct_hash = $account_ids{$acct_id}) {
-            push @{ $acct_hash->{via_workspace} }, $wksp_hash;
-        }
-        else {
-            my $acct = $wksp->account;
-            my $acct_hash = {
-                account_id => $acct_id,
-                account_name => $acct->name,
-                via_workspace => [$wksp_hash],
-            };
-            push @accounts, $acct_hash;
-            $account_ids{$acct_id} = $acct_hash;
-        }
+        my $acct_hash = $account_ids{$acct_id};
+        push @{ $acct_hash->{via_workspace} }, $wksp_hash;
     }
 
     eval { 
     my $user_groups = $user->groups;
     while (my $grp = $user_groups->next) {
-        my $acct_id = $grp->primary_account_id;
         my $group_hash = {
             name => $grp->driver_group_name,
             group_id => $grp->group_id,
         };
+        my $grp_accts = $grp->accounts;
+        while (my $acct = $grp_accts->next) {
+            my $acct_id = $acct->account_id;
 
-        if (my $acct_hash = $account_ids{$acct_id}) {
+            my $acct_hash = $account_ids{$acct_id};
             push @{ $acct_hash->{via_group} }, $group_hash;
-        }
-        else {
-            my $acct = $grp->primary_account;
-            my $acct_hash = {
-                account_id => $acct_id,
-                account_name => $acct->name,
-                via_group => [$group_hash],
-            };
-            push @accounts, $acct_hash;
-            $account_ids{$acct_id} = $acct_hash;
         }
     }
     };
