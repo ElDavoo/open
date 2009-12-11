@@ -310,7 +310,7 @@ Tester One</a></span>            <span class="ago_raw" style="display:none">2009
 | get              | /data/people/%%tester1_id%%           | application/json                                                                               |
 | code-is          | 200                                   |                                                                                                |
 | has-header       | Cache-Control                         | qr/private/                                                                                    |
-| set-from-content | actor_id                              | qr/"id":"(\d+)"/                                                                               |
+| set-from-content | actor_id                              | qr/"id":(\d+)/                                                                               |
 | get              | /data/events?limit=1                  | application/json                                                                               |
 | code-is          | 200                                   |                                                                                                |
 | has-header       | Cache-Control                         | qr/private/                                                                                    |
