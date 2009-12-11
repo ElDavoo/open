@@ -183,6 +183,8 @@ Socialtext::UserSetPerspective - Declare an object's view of other user-sets
       $opts{raw} ||= 0;
       # always include aggregates as columns (named after attributes)
       $opts{include_aggregates} ||= 0;
+      # direct (1) or transitive (0)?
+      $opts{direct} ||= 0;
 
       # paging and sorting controls
       $opts{order_by} ||= 'name'; # subsort used if not specified
