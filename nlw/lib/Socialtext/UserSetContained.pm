@@ -52,7 +52,6 @@ sub _sorted_workspace_roles_apply {
         %$row,
         workspace => Socialtext::Workspace->new(
             workspace_id => $row->{workspace_id}),
-        role => Socialtext::Role->new(role_id => $row->{role_id}),
     };
 }
 
@@ -61,7 +60,6 @@ sub _sorted_workspace_roles_apply {
     cols => [
         'user_set_id',
         'user_set_id - '.PG_WKSP_OFFSET.' AS workspace_id',
-        'role_id'
     ],
     subsort => "user_set_id ASC, role_id ASC",
     view => [
@@ -113,7 +111,6 @@ sub _sorted_account_roles_apply {
     return {
         %$row,
         account => Socialtext::Account->new(account_id => $row->{account_id}),
-        role => Socialtext::Role->new(role_id => $row->{role_id}),
     };
 }
 
@@ -122,7 +119,6 @@ sub _sorted_account_roles_apply {
     cols => [
         'user_set_id',
         'user_set_id - '.PG_ACCT_OFFSET.' AS account_id',
-        'role_id'
     ],
     subsort => "user_set_id ASC, role_id ASC",
     view => [

@@ -583,13 +583,12 @@ sub _sorted_user_roles_apply {
     return {
         %$row,
         user => Socialtext::User->new(user_id => $row->{user_id}),
-        role => Socialtext::Role->new(role_id => $row->{role_id}),
     };
 }
 
 {
     my $perspective = Socialtext::UserSetPerspective->new(
-    cols    => [ 'user_id', 'role_id' ],
+    cols => [ 'user_id' ],
     subsort => "user_id ASC, role_id ASC",
     view => [
         from  => 'users',
@@ -662,7 +661,6 @@ sub _sorted_group_roles_apply {
     return {
         %$row,
         group => Socialtext::Group->GetGroup(group_id => $row->{group_id}),
-        role => Socialtext::Role->new(role_id => $row->{role_id}),
     };
 }
 
@@ -671,7 +669,6 @@ sub _sorted_group_roles_apply {
     cols => [
         'user_set_id',
         'user_set_id - '.PG_GROUP_OFFSET.' AS group_id',
-        'role_id'
     ],
     subsort => "user_set_id ASC, role_id ASC",
     view => [

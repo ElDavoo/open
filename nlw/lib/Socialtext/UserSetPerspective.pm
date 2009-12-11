@@ -58,10 +58,7 @@ sub get_cursor {
 
     my $mux = $opts->{mux_roles};
     my @cols = $self->cols;
-    if ($mux) {
-        @cols = grep !/role_id/,@cols;
-        push @cols, 'role_ids';
-    }
+    push @cols, ($mux ? 'role_ids' : 'role_id');
 
     my $from = Socialtext::UserSet->RoleViewSQL(
         $self->view,
@@ -118,7 +115,23 @@ sub get_cursor {
     my $rows = $sth->fetchall_arrayref({});
     $rows = $self->decorate_result($opts,$rows);
 
-    my $apply = $opts->{raw} ? sub { $_[0] } : $self->apply;
+    my $apply_cb = $self->apply;
+    my $apply = $opts->{raw}
+        ? sub { $_[0] }
+        : sub {
+            my $row = shift;
+            if ($mux) {
+                $row->{roles} = [
+                    map { Socialtext::Role->new(role_id => $_) }
+                    @{$row->{role_ids}}
+                ];
+            }
+            else {
+                $row->{role} = 
+                    Socialtext::Role->new(role_id => $row->{role_id});
+            }
+            return $apply_cb->($row);
+        };
     return Socialtext::MultiCursor->new(
         iterables => [$rows],
         apply => $apply,
@@ -170,7 +183,7 @@ Socialtext::UserSetPerspective - Declare an object's view of other user-sets
   my $perspective = Socialtext::UserSetPerspective->new(
     # see code for exact usage.
     # good examples are in UserSetContained and UserSetContainer
-    cols => [ 'user_id', 'role_id' ],
+    cols => [ 'user_id' ],
     subsort => 'user_id ASC, role_id ASC',
     view => [
         from => 'users',
