@@ -1,7 +1,5 @@
 This page sets a cookie in your browser that will temporarily set the repository skin server-wide for you.
 
-*WARNING:* If you set your skin to something that doesn't exist, there is a nasty error and you'll need to reset your skin by pasting this url into your location bar: javascript:document.cookie='socialtext-skin=; path=/' OR by clearing cookies.
-
 *Add a skin to this page* by putting the NEWSKIN in the skins repository or at nlw/share/skin/ in your dev env, then adding the line
 
 'NEWSKIN',
@@ -114,7 +112,6 @@ function set_skin (skin) {
         'samg',
         'santaclaravhh',
         'scalevp',
-        'secretmachines',
         'securian',
         'seriesa',
         'sift',
