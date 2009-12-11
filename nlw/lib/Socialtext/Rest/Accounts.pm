@@ -154,5 +154,18 @@ sub add_error {
     return 0;
 }
 
+sub SORTS {
+    return +{
+        alpha => sub {
+            $Socialtext::Rest::Collection::a->{account_name}
+                cmp $Socialtext::Rest::Collection::b->{account_name};
+        },
+        newest => sub {
+            $Socialtext::Rest::Collection::b->{modified_time} <=>
+                $Socialtext::Rest::Collection::a->{modified_time};
+        },
+    };
+}
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
