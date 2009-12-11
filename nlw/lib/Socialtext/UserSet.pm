@@ -335,7 +335,8 @@ relation to some other user_set.  See UserSet-query.t for options.
 
 Returns a C<($col, $query)> pair, where $col is a string that identifies the
 aggregation result for use as an item in a select statement (perhaps by
-appending " AS foo" to label it) and $query is a query fragment of the form C<LEFT JOIN (...) bar USING (user_set_id)>.
+appending " AS foo" to label it) and $query is a query fragment of the form
+C<LEFT JOIN (...) bar USING (user_set_id)>.
 
 A C<from> or C<into> parameter is mandatory. Specifying from accounts (which
 can't be included in anything) and into users (which can't contain anything)
@@ -443,9 +444,14 @@ convenient for joining.
 
 To specify the sub-select alias, pass in C<< alias => 'q' >>.
 
-To use a different from or into column alias, pass in C<< from_alias => 'group_set_id' >>.
+To use a different from or into column alias, pass in C<< from_alias =>
+'group_set_id' >>.
 
-To limit the result to direct relationships only, use C<< direct => 1 >>. Otherwise, both direct and indirect roles will be returned.
+To limit the result to direct relationships only, use C<< direct => 1 >>.
+Otherwise, both direct and indirect roles will be returned.
+
+To aggregate all roles for a relationship into an array, pass in C<< mux_roles
+=> 1 >>.  The roles will be unique and sorted ascending by ID.
 
 =cut
 
@@ -453,6 +459,7 @@ sub _role_view_sql_normalizer {
     my $ignore = shift;
     my %p = @_;
     $p{direct} ||= 0;
+    $p{mux_roles} ||= 0;
     return join("\t", map {$_=>$p{$_}} keys %p);
 }
 
@@ -465,6 +472,7 @@ sub RoleViewSQL {
     my $into_alias = $p{into_alias};
     my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
     my $alias = $p{alias} || "${from}_${into}_roles";
+    my $mux_roles = $p{mux_roles} || 0;
 
     die "users makes no sense as 'into'" if $into eq 'users';
     die "accounts makes no sense as 'from'" if $from eq 'accounts';
@@ -487,16 +495,35 @@ sub RoleViewSQL {
     }
 
     my $filter = join(' AND ',@filter);
-    return qq{
-        (
-            SELECT DISTINCT
-                from_set_id AS $from_alias,
-                into_set_id AS $into_alias,
-                role_id
-              FROM $table
-             WHERE $filter
-        ) $alias
-    };
+    if ($mux_roles) {
+        my $group = 'from_set_id, into_set_id';
+        if (@filter == 1 && $filter[0] =~ /^into/) {
+            $group = 'into_set_id, from_set_id';
+        }
+        return qq{
+            (
+                SELECT
+                    from_set_id AS $from_alias,
+                    into_set_id AS $into_alias,
+                    uniq(sort(array_accum(role_id)::int[])) AS role_ids
+                  FROM $table
+                 WHERE $filter
+                 GROUP BY $group
+            ) $alias
+        };
+    }
+    else {
+        return qq{
+            (
+                SELECT DISTINCT
+                    from_set_id AS $from_alias,
+                    into_set_id AS $into_alias,
+                    role_id
+                  FROM $table
+                 WHERE $filter
+            ) $alias
+        };
+    }
 }
 
 =back

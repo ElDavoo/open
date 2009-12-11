@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::More tests => 18;
+use Test::More tests => 20;
 use Test::Differences;
 use Socialtext::UserSet;
 
@@ -187,5 +187,41 @@ view_basics: {
               FROM user_set_path
              WHERE into_set_id > x'30000000'::int
         ) where_accounts_roles
+    });
+
+    $query = Socialtext::UserSet->RoleViewSQL(
+        into => 'groups',
+        from => 'users',
+        mux_roles => 1,
+    );
+    eq_or_diff squash($query), squash(q{
+        (
+            SELECT
+                from_set_id AS user_id,
+                into_set_id AS user_set_id,
+                uniq(sort(array_accum(role_id)::int[])) AS role_ids
+              FROM user_set_path
+             WHERE from_set_id <= x'10000000'::int AND into_set_id BETWEEN x'10000001'::int AND x'20000000'::int
+             GROUP BY from_set_id, into_set_id
+        ) users_groups_roles
+    });
+
+    $query = Socialtext::UserSet->RoleViewSQL(
+        into => 'groups',
+        from => 'container',
+        from_alias => 'user_set_id',
+        mux_roles => 1,
+    );
+    # note changed GROUP BY order
+    eq_or_diff squash($query), squash(q{
+        (
+            SELECT
+                from_set_id AS user_set_id,
+                into_set_id AS into_set_id,
+                uniq(sort(array_accum(role_id)::int[])) AS role_ids
+              FROM user_set_path
+             WHERE into_set_id BETWEEN x'10000001'::int AND x'20000000'::int
+             GROUP BY into_set_id, from_set_id
+        ) container_groups_roles
     });
 }
