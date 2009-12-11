@@ -145,3 +145,65 @@ sub decorate_result {
 __PACKAGE__->meta->make_immutable;
 1;
 __END__
+
+=head1 NAME
+
+Socialtext::UserSetPerspective - Declare an object's view of other user-sets
+
+=head1 SYNOPSIS
+
+  use Socialtext::UserSetPerspective;
+  my $perspective = Socialtext::UserSetPerspective->new(
+    # see code for exact usage.
+    # good examples are in UserSetContained and UserSetContainer
+    cols => [ 'user_id', 'role_id' ],
+    subsort => 'user_id ASC, role_id ASC',
+    view => [
+        from => 'users',
+        into => 'container',
+        alias => 'ucroles'
+    ],
+    aggregates => {
+        # allow a workspace count per-user
+        workspace_count => [ into => 'workspaces', using => 'user_id' ],
+    },
+    order_by => \&_generate_order_by,
+    apply => \&_apply_function_for_multicursor,
+  );
+
+  sub sorted_user_roles {
+      my ($self,%opts) = @_;
+      # optional object; inlined into every row (id only in raw mode)
+      $opts{thing} = $self;
+
+      # SQL::Abstract where-clause syntax:
+      $opts{where} = ['ucroles.into_set_id' => $self->user_set_id];
+
+      # don't call the apply method when true; just return raw rows then
+      $opts{raw} ||= 0;
+      # always include aggregates as columns (named after attributes)
+      $opts{include_aggregates} ||= 0;
+
+      # paging and sorting controls
+      $opts{order_by} ||= 'name'; # subsort used if not specified
+      $opts{sort_order} ||= 'ASC'; # default ASC, applied to order_by only
+      $opts{limit} ||= 0;
+      $opts{offset} ||= 0;
+
+      return $perspective->get_cursor(\%opts);
+  }
+
+=head1 DESCRIPTION
+
+Generates paged and sorted L<Socialtext::MultiCursor> using
+L<Socialtext::UserSet>, L<SQL::Abstract>, and L<Socialtext::SQL>.
+
+The usage for the 'view' argument is in L<Socialtext::UserSet>'s
+C<RoleViewSQL> method. A C<< direct => 1 >> argument can be passed in via the
+%opts hash to control querying direct vs. transitive relationships.
+
+The usage for the 'aggregates' argument is in L<Socialtext::UserSet>'s
+C<AggregateSQL>.  All aggregates are automatically "order_by" clauses and
+don't need to be handled by the C<order_by> callback.
+
+=cut
