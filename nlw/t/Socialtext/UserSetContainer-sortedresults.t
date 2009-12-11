@@ -212,6 +212,18 @@ sorted_groups_on_an_account: {
         ($b_pri->name) x 3, ($a_pri->name) x 2 ];
     eq_or_diff [ map {$_->{group_id}} @all ], [ map { $_->group_id }
         $group, $group3, $group3, $group2, $group4];
+
+    $cursor = $acct->sorted_group_roles(
+        order_by => 'display_name',
+        raw => 1,
+        mux_roles => 1,
+    );
+    is $cursor->count, 4, 'sorted groups by name on account, mux roles';
+    @all = $cursor->all();
+    eq_or_diff [ map {$_->{group_id}} @all ], [ map { $_->group_id }
+        $group2, $group3, $group4, $group];
+    eq_or_diff [ map {$_->{role_ids}} @all ], [
+        [$Member_id], [$Member_id,$Admin_id], [$Admin_id], [$Member_id]];
 }
 
 accounts_for_group: {

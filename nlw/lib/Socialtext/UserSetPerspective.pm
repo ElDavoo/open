@@ -31,10 +31,12 @@ has 'aggregates' => (
 );
 
 sub get_order_by {
-    my ($self, $ob) = @_;
+    my ($self, $ob, $opts) = @_;
     my ($join,$sort,@cols);
 
     if ($ob =~ /^role(?:_name)?$/) {
+        # need a subselect string-concatenation-aggregate join to sort
+        die "can't sort by role name when multiplexing roles yet" if $opts->{mux_roles};
         push @cols, '"Role".name';
         $join = ' JOIN "Role" USING (role_id)';
         $sort = '"Role".name';
@@ -54,10 +56,17 @@ sub get_cursor {
     die "where is a required option and must be an ArrayRef"
         unless ($opts->{where} && ref($opts->{where}) eq 'ARRAY');
 
+    my $mux = $opts->{mux_roles};
     my @cols = $self->cols;
+    if ($mux) {
+        @cols = grep !/role_id/,@cols;
+        push @cols, 'role_ids';
+    }
+
     my $from = Socialtext::UserSet->RoleViewSQL(
         $self->view,
         ($opts->{direct} ? (direct => 1) : ()),
+        ($mux ? (mux_roles => 1) : ()),
     );
     $from .= $self->always_join if $self->always_join;
 
@@ -69,6 +78,11 @@ sub get_cursor {
         ? uc $opts->{sort_order} : 'ASC';
 
     my $order = $self->subsort;
+
+    # Remove role_id out of the order by; it's always ASC in an array when
+    # muxing.
+    $order =~ s/(?:\s*,\s+)role_id\s*(?:ASC|DESC)?(\s*,)?/$1/i if $mux;
+
     if (my $ob = lc $opts->{order_by}) {
         my ($join,$sort,@extra_cols);
         if (exists $self->aggregates->{$ob}) {
@@ -76,12 +90,12 @@ sub get_cursor {
             $sort = $ob;
         }
         else {
-            ($join,$sort,@extra_cols) = $self->get_order_by($ob);
+            ($join,$sort,@extra_cols) = $self->get_order_by($ob,$opts);
             $from .= $join if $join;
             push @cols, @extra_cols;
         }
 
-        $order = "$sort $sort_order, ".$self->subsort;
+        $order = "$sort $sort_order, $order";
     }
 
     if ($opts->{include_aggregates}) {
