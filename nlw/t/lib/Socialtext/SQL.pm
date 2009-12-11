@@ -210,6 +210,13 @@ sub execute {
     push @{ $Socialtext::SQL::SQL[-1]{args} }, \@_;
 }
 
+sub bind_columns {
+    my $self = shift;
+}
+sub fetch {
+    my $self = shift;
+}
+
 sub bind_param {
     my $self = shift;
     my $p_num = shift;
