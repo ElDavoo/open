@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::More tests => 14;
+use Test::More tests => 18;
 use Test::Differences;
 use Socialtext::UserSet;
 
@@ -13,7 +13,7 @@ sub squash ($) {
     return $s;
 }
 
-basics: {
+agg_basics: {
     my ($col,$query) = Socialtext::UserSet->AggregateSQL(
         from => 'users',
     );
@@ -75,7 +75,7 @@ different_agg: {
     });
 }
 
-using: {
+agg_using: {
     my ($col,$query) = Socialtext::UserSet->AggregateSQL(
         into => 'all',
         using => 'my_foo_id',
@@ -92,7 +92,7 @@ using: {
     });
 }
 
-direct_also_label: {
+agg_direct_also_label: {
     my ($col,$query) = Socialtext::UserSet->AggregateSQL(
         into => 'workspaces',
         direct => 1,
@@ -122,5 +122,70 @@ direct_also_label: {
              WHERE into_set_id BETWEEN x'20000001'::int AND x'30000000'::int
              GROUP BY user_set_id
         ) bleargh USING (user_set_id)
+    });
+}
+
+view_basics: {
+    my $query = Socialtext::UserSet->RoleViewSQL(
+        into => 'workspaces',
+        from => 'blah',
+    );
+    eq_or_diff squash($query), squash(q{
+        (
+            SELECT DISTINCT
+                from_set_id AS from_set_id,
+                into_set_id AS into_set_id,
+                role_id
+              FROM user_set_path
+             WHERE into_set_id BETWEEN x'20000001'::int AND x'30000000'::int
+        ) blah_workspaces_roles
+    });
+
+    $query = Socialtext::UserSet->RoleViewSQL(
+        into => 'groups',
+        from => 'users',
+        direct => 1,
+    );
+    eq_or_diff squash($query), squash(q{
+        (
+            SELECT DISTINCT
+                from_set_id AS user_id,
+                into_set_id AS user_set_id,
+                role_id
+              FROM user_set_include
+             WHERE from_set_id <= x'10000000'::int AND into_set_id BETWEEN x'10000001'::int AND x'20000000'::int
+        ) users_groups_roles
+    });
+
+    $query = Socialtext::UserSet->RoleViewSQL(
+        into => 'groups',
+        from => 'users',
+        direct => 1,
+        alias => 'ugr',
+    );
+    eq_or_diff squash($query), squash(q{
+        (
+            SELECT DISTINCT
+                from_set_id AS user_id,
+                into_set_id AS user_set_id,
+                role_id
+              FROM user_set_include
+             WHERE from_set_id <= x'10000000'::int AND into_set_id BETWEEN x'10000001'::int AND x'20000000'::int
+        ) ugr
+    });
+
+    $query = Socialtext::UserSet->RoleViewSQL(
+        into => 'accounts',
+        from => 'where',
+    );
+    eq_or_diff squash($query), squash(q{
+        (
+            SELECT DISTINCT
+                from_set_id AS from_set_id,
+                into_set_id AS into_set_id,
+                role_id
+              FROM user_set_path
+             WHERE into_set_id > x'30000000'::int
+        ) where_accounts_roles
     });
 }

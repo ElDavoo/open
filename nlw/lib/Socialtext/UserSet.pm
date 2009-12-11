@@ -343,7 +343,7 @@ will throw exceptions.
 
 To change the column in the USING clause, pass in C<< using => 'my_id' >>.
 
-To specify the table alias, pass in C<< label => 'my_id' >>.
+To specify the sub-select alias, pass in C<< alias => 'q' >>.
 
 To use a different aggregate function, use C<< agg => 'array_accum' >>.
 
@@ -368,6 +368,7 @@ my %plural_to_filter = (
     workspaces => PG_WKSP_FILTER,
     all => ' IS NOT NULL',
 );
+
 sub _aggregate_sql_normalizer {
     my $ignore = shift;
     my %p = @_;
@@ -380,8 +381,7 @@ sub _aggregate_sql_normalizer {
 
 memoize 'AggregateSQL', NORMALIZER => '_aggregate_sql_normalizer';
 sub AggregateSQL {
-    my $class = shift;
-    my %p = @_;
+    my ($class,%p) = @_;
 
     my $query;
 
@@ -429,6 +429,74 @@ sub AggregateSQL {
 
     my $column = ($agg eq 'COUNT') ? "COALESCE($alias.agg,0)" : "$alias.agg";
     return ($column,$query);
+}
+
+=item RoleViewSQL(into => ..., from => ..., ...)
+
+Generates a sub-select "view" for the named user sets.  Set names are
+"users","groups","workspaces", and "accounts".  From accounts and into users
+makes no sense and will throw an exception.
+
+Passing in C<< from => 'users' >> will make the from_alias default to
+C<user_id>, since user_set_ids will be equivalent to user_ids.  This is
+convenient for joining.
+
+To specify the sub-select alias, pass in C<< alias => 'q' >>.
+
+To use a different from or into column alias, pass in C<< from_alias => 'group_set_id' >>.
+
+To limit the result to direct relationships only, use C<< direct => 1 >>. Otherwise, both direct and indirect roles will be returned.
+
+=cut
+
+sub _role_view_sql_normalizer {
+    my $ignore = shift;
+    my %p = @_;
+    $p{direct} ||= 0;
+    return join("\t", map {$_=>$p{$_}} keys %p);
+}
+
+memoize 'RoleViewSQL', NORMALIZER => '_role_view_sql_normalizer';
+sub RoleViewSQL {
+    my ($class,%p) = @_;
+    my $from = $p{from} or die "must supply from";
+    my $into = $p{into} or die "must supply into";
+    my $from_alias = $p{from_alias};
+    my $into_alias = $p{into_alias};
+    my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
+    my $alias = $p{alias} || "${from}_${into}_roles";
+
+    die "users makes no sense as 'into'" if $into eq 'users';
+    die "accounts makes no sense as 'from'" if $from eq 'accounts';
+
+    my @filter;
+
+    if (!$from_alias and !$into_alias and $from eq 'users') {
+        $from_alias = 'user_id';
+        $into_alias = 'user_set_id';
+    }
+
+    $from_alias ||= 'from_set_id';
+    if ($plural_to_filter{$from}) {
+        push @filter, 'from_set_id'.$plural_to_filter{$from};
+    }
+
+    $into_alias ||= 'into_set_id';
+    if ($plural_to_filter{$into}) {
+        push @filter, 'into_set_id'.$plural_to_filter{$into};
+    }
+
+    my $filter = join(' AND ',@filter);
+    return qq{
+        (
+            SELECT DISTINCT
+                from_set_id AS $from_alias,
+                into_set_id AS $into_alias,
+                role_id
+              FROM $table
+             WHERE $filter
+        ) $alias
+    };
 }
 
 =back
