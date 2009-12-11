@@ -1,0 +1,126 @@
+#!perl
+# @COPYRIGHT@
+use warnings;
+use strict;
+
+use Test::More tests => 14;
+use Test::Differences;
+use Socialtext::UserSet;
+
+sub squash ($) {
+    my $s = shift;
+    $s =~ s/[ \t]+/ /mg;
+    return $s;
+}
+
+basics: {
+    my ($col,$query) = Socialtext::UserSet->AggregateSQL(
+        from => 'users',
+    );
+    is $col, 'COALESCE(from_users_count.agg,0)';
+    eq_or_diff squash($query), squash(q{
+        LEFT JOIN (
+            SELECT into_set_id AS user_set_id,
+                   COUNT(DISTINCT from_set_id) AS agg
+              FROM user_set_path
+             WHERE from_set_id <= x'10000000'::int
+             GROUP BY user_set_id
+        ) from_users_count USING (user_set_id)
+    });
+
+    ($col,$query) = Socialtext::UserSet->AggregateSQL(
+        into => 'workspaces',
+    );
+    is $col, 'COALESCE(into_workspaces_count.agg,0)';
+    eq_or_diff squash($query), squash(q{
+        LEFT JOIN (
+            SELECT from_set_id AS user_set_id,
+                   COUNT(DISTINCT into_set_id) AS agg
+              FROM user_set_path
+             WHERE into_set_id BETWEEN x'20000001'::int AND x'30000000'::int
+             GROUP BY user_set_id
+        ) into_workspaces_count USING (user_set_id)
+    });
+}
+
+different_agg: {
+    my ($col,$query) = Socialtext::UserSet->AggregateSQL(
+        into => 'accounts',
+        agg => 'array_accum'
+    );
+    is $col, 'into_accounts_array_accum.agg';
+    eq_or_diff squash($query), squash(q{
+        LEFT JOIN (
+            SELECT from_set_id AS user_set_id,
+                   array_accum(DISTINCT into_set_id) AS agg
+              FROM user_set_path
+             WHERE into_set_id > x'30000000'::int
+             GROUP BY user_set_id
+        ) into_accounts_array_accum USING (user_set_id)
+    });
+
+    ($col,$query) = Socialtext::UserSet->AggregateSQL(
+        into => 'groups',
+        agg => 'AVG'
+    );
+    is $col, 'into_groups_avg.agg';
+    eq_or_diff squash($query), squash(q{
+        LEFT JOIN (
+            SELECT from_set_id AS user_set_id,
+                   AVG(DISTINCT into_set_id) AS agg
+              FROM user_set_path
+             WHERE into_set_id BETWEEN x'10000001'::int AND x'20000000'::int
+             GROUP BY user_set_id
+        ) into_groups_avg USING (user_set_id)
+    });
+}
+
+using: {
+    my ($col,$query) = Socialtext::UserSet->AggregateSQL(
+        into => 'all',
+        using => 'my_foo_id',
+    );
+    is $col, 'COALESCE(into_all_count.agg,0)';
+    eq_or_diff squash($query), squash(q{
+        LEFT JOIN (
+            SELECT from_set_id AS my_foo_id,
+                   COUNT(DISTINCT into_set_id) AS agg
+              FROM user_set_path
+             WHERE into_set_id IS NOT NULL
+             GROUP BY my_foo_id
+        ) into_all_count USING (my_foo_id)
+    });
+}
+
+direct_also_label: {
+    my ($col,$query) = Socialtext::UserSet->AggregateSQL(
+        into => 'workspaces',
+        direct => 1,
+    );
+    is $col, 'COALESCE(into_workspaces_count.agg,0)';
+    eq_or_diff squash($query), squash(q{
+        LEFT JOIN (
+            SELECT from_set_id AS user_set_id,
+                   COUNT(DISTINCT into_set_id) AS agg
+              FROM user_set_include
+             WHERE into_set_id BETWEEN x'20000001'::int AND x'30000000'::int
+             GROUP BY user_set_id
+        ) into_workspaces_count USING (user_set_id)
+    });
+
+    ($col,$query) = Socialtext::UserSet->AggregateSQL(
+        into => 'workspaces',
+        alias => 'bleargh',
+        direct => 1,
+    );
+    is $col, 'COALESCE(bleargh.agg,0)';
+    eq_or_diff squash($query), squash(q{
+        LEFT JOIN (
+            SELECT from_set_id AS user_set_id,
+                   COUNT(DISTINCT into_set_id) AS agg
+              FROM user_set_include
+             WHERE into_set_id BETWEEN x'20000001'::int AND x'30000000'::int
+             GROUP BY user_set_id
+        ) bleargh USING (user_set_id)
+    });
+}

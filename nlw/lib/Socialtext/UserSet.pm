@@ -3,6 +3,7 @@ package Socialtext::UserSet;
 use Moose;
 use Socialtext::SQL qw/get_dbh :txn/;
 use Socialtext::Timer qw/time_scope/;
+use Memoize;
 use namespace::clean -except => 'meta';
 
 our $VERSION = 1.0;
@@ -323,6 +324,111 @@ sub direct_role {
         WHERE from_set_id = $1 AND into_set_id = $2
     }, {}, $x, $y);
     return $role;
+}
+
+=item AggregateSQL(into => 'groups'|'workspaces'|'accounts', ...)
+
+=item AggregateSQL(from => 'users'|'groups'|'workspaces', ...)
+
+Generates SQL C<LEFT JOIN> query segments for counting some user_set in
+relation to some other user_set.  See UserSet-query.t for options.
+
+Returns a C<($col, $query)> pair, where $col is a string that identifies the
+aggregation result for use as an item in a select statement (perhaps by
+appending " AS foo" to label it) and $query is a query fragment of the form C<LEFT JOIN (...) bar USING (user_set_id)>.
+
+A C<from> or C<into> parameter is mandatory. Specifying from accounts (which
+can't be included in anything) and into users (which can't contain anything)
+will throw exceptions.
+
+To change the column in the USING clause, pass in C<< using => 'my_id' >>.
+
+To specify the table alias, pass in C<< label => 'my_id' >>.
+
+To use a different aggregate function, use C<< agg => 'array_accum' >>.
+
+To limit the result to direct relationships only, use C<< direct => 1 >>.
+
+Example for C<< from => 'users' >>
+
+        LEFT JOIN (
+            SELECT into_set_id AS user_set_id,
+                   COUNT(DISTINCT from_set_id) AS agg
+              FROM user_set_path
+             WHERE from_set_id <= x'10000000'::int
+             GROUP BY user_set_id
+        ) from_users_count USING (user_set_id)
+
+=cut
+
+my %plural_to_filter = (
+    accounts => PG_ACCT_FILTER,
+    groups => PG_GROUP_FILTER,
+    users => PG_USER_FILTER,
+    workspaces => PG_WKSP_FILTER,
+    all => ' IS NOT NULL',
+);
+sub _aggregate_sql_normalizer {
+    my $ignore = shift;
+    my %p = @_;
+    $p{direct} ||= 0;
+    $p{agg} ||= 'COUNT';
+    $p{using} ||= 'user_set_id';
+    $p{alias} ||= '';
+    return join("\t", map {$_=>$p{$_}} keys %p);
+}
+
+memoize 'AggregateSQL', NORMALIZER => '_aggregate_sql_normalizer';
+sub AggregateSQL {
+    my $class = shift;
+    my %p = @_;
+
+    my $query;
+
+    my $alias = $p{alias};
+    my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
+    my $agg = $p{agg} || 'COUNT';
+    my $using = $p{using} || 'user_set_id';
+    my ($this,$that);
+
+    if (my $into = $p{into}) {
+        $alias ||= "into_${into}_".lc $agg;
+        die "can't query into users" if $into eq 'users';
+        my $filter = $plural_to_filter{$into};
+        die "no such filter $into" unless $filter;
+
+        $query = qq{
+            LEFT JOIN (
+                SELECT from_set_id AS $using,
+                       $agg(DISTINCT into_set_id) AS agg
+                  FROM $table
+                 WHERE into_set_id $filter
+                 GROUP BY $using
+            ) $alias USING ($using)
+        };
+    }
+    elsif (my $from = $p{from}) {
+        $alias ||= "from_${from}_".lc $agg;
+        die "can't query from accounts" if $from eq 'accounts';
+        my $filter = $plural_to_filter{$from};
+        die "no such filter $from" unless $filter;
+
+        $query = qq{
+            LEFT JOIN (
+                SELECT into_set_id AS $using,
+                       $agg(DISTINCT from_set_id) AS agg
+                  FROM $table
+                 WHERE from_set_id $filter
+                 GROUP BY $using
+            ) $alias USING ($using)
+        };
+    }
+    else {
+        die "need to supply 'from' or 'into' relationship";
+    }
+
+    my $column = ($agg eq 'COUNT') ? "COALESCE($alias.agg,0)" : "$alias.agg";
+    return ($column,$query);
 }
 
 =back
