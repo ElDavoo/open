@@ -30,11 +30,10 @@
 | http-user-pass     | %%username%%                                                                               | password        |
 | get                | /%%workspace%%/index.cgi?%%workspace%%                                                     |                 |
 | code-is            | 200                                                                                        |                 |
-| body-like          | id="default-workspace-link"                                                                |                 |
 
-| Comment   | ... user clicks "home" - they navigate to dashboard        |
-| body-like | qr/<a id="st-home-link" href="\/\?dashboard">\s*Dashboard<\/a>/ |
-| body-like | id="default-workspace-link"                                |
+| Comment     | ... user clicks "home" - they navigate to dashboard |             |
+| get         | /?dashboard                                         |             |
+| code-is     | 200                                                 |             |
 
 | Comment            | User's primary account has dashboard disabled.                                                                |                   |
 | st-admin           | disable-plugin --plugin dashboard --account %%account%%                                                       |                   |
@@ -59,7 +58,6 @@
 
 | Comment   | ... user clicks home. they navigate to the default workspace |                |
 | body-like | qr/<a id="st-home-link" href="\/">\s*Dashboard<\/a>/              |                |
-| body-like | id="default-workspace-link"                                  |                |
 | get       | /                                                            |                |
 | code-is   | 302                                                          |                |
 | header-is | Location                                                     | /%%workspace%% |
@@ -89,10 +87,9 @@
 | code-is     | 302                                        |                              |
 | header-like | Location                                   | qr/\?action=workspace_list$/ |
 
-| Comment     | root: user sent to dashboard, no default-workspace-link |
-| get         | /                                                       |
-| code-is     | 200                                                     |
-| body-unlike | id="default-workspace-link"                             |
+| Comment | root: user sent to dashboard, no default workspace redirect |
+| get     | /                                                           |
+| code-is | 200                                                         |
 
 | Comment   | CLEANUP: un-set `default_workspace` |
 | st-config | set default_workspace ''            |
