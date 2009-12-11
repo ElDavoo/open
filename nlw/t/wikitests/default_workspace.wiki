@@ -38,7 +38,6 @@
 
 | Comment            | User's primary account has dashboard disabled.                                                                |                   |
 | st-admin           | disable-plugin --plugin dashboard --account %%account%%                                                       |                   |
-| Comment            | shell-run                                                                                                     | nlwctl -1 restart |
 | Comment            | ... the default workspace is public. user navigates to $servername and is navigated to the default workspace. |                   |
 | http-user-pass     |                                                                                                               |                   |
 | set-ws-permissions | %%workspace%%                                                                                                 | public            |
