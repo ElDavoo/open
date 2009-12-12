@@ -49,6 +49,18 @@ override extra_headers => sub {
     );
 };
 
+sub create_error {
+    my ($self, $err, $group_name) = @_;
+    warn $err;
+    if ($err =~ m/duplicate key violates/) {
+        $self->rest->header( -status => HTTP_409_Conflict );
+        return "Error creating group: $group_name already exists.";
+    }
+    $self->rest->header( -status => HTTP_400_Bad_Request );
+    $err =~ s{ at /\S+ line .*}{};
+    return "Error creating group: $err";
+}
+
 sub POST_json {
     my $self = shift;
     my $rest = shift;
@@ -89,48 +101,52 @@ sub POST_json {
 
     my $group;
     my $name = $data->{ldap_dn} || $data->{name};
-    eval {
-        if (my $ldap_dn = $data->{ldap_dn}) {
-            # Check if Group already exists
-            my $proto = Socialtext::Group->GetProtoGroup(driver_unique_id => $ldap_dn);
-            if ($proto) {
-                $rest->header(
-                    -status => HTTP_409_Conflict,
-                );
-                return "$ldap_dn is already a group";
-            }
+    if (my $ldap_dn = $data->{ldap_dn}) {
+        unless ($self->rest->user->is_business_admin) {
+            warn "NOT ADMIN";
+            $rest->header(
+                -status => HTTP_401_Unauthorized,
+            );
+            return "hmm";
+        }
 
-            # Vivify the Group, thus loading it into ST.
+        # Check if Group already exists
+        my $proto = eval {
+            Socialtext::Group->GetProtoGroup(driver_unique_id => $ldap_dn);
+        };
+        if ($proto) {
+            $rest->header(
+                -status => HTTP_409_Conflict,
+            );
+            return "$ldap_dn is already a group";
+        }
+
+        # Vivify the Group, thus loading it into ST.
+        eval {
             $group = Socialtext::Group->GetGroup(
                 driver_unique_id   => $ldap_dn,
                 primary_account_id => $account->account_id,
             );
-        }
-        elsif (my $group_name = $data->{name}) {
-            # Regular Socialtext Group
+        };
+        return $self->create_error($@, $name) if $@;
+    }
+    elsif (my $group_name = $data->{name}) {
+        # Regular Socialtext Group
+        eval {
             $group = Socialtext::Group->Create({
                 driver_group_name => $group_name,
                 primary_account_id => $account->account_id,
                 created_by_user_id => $self->rest->user->user_id,
                 description => $data->{description},
             });
-        }
-        else {
-            $rest->header(
-                -status => HTTP_400_Bad_Request,
-            );
-            return "Either ldap_dn or name is required to create a group.";
-        }
-    };
-    if (my $err = $@) {
-        warn $err;
-        if ($err =~ m/duplicate key violates/) {
-            $rest->header( -status => HTTP_409_Conflict );
-            return "Error creating group: $name already exists.";
-        }
-        $rest->header( -status => HTTP_400_Bad_Request );
-        $err =~ s{ at /\S+ line .*}{};
-        return "Error creating group: $err";
+        };
+        return $self->create_error($@, $name) if $@;
+    }
+    else {
+        $rest->header(
+            -status => HTTP_400_Bad_Request,
+        );
+        return "Either ldap_dn or name is required to create a group.";
     }
 
     unless ($group) {

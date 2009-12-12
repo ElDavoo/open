@@ -13,6 +13,7 @@ Tests for [Story: Groups ReST API]
 # ... Non-admin gets a 401
 
 | POST_json | /data/groups | {"ldap_dn":"%%ldap_dn%%","account_id":"%%account_id%%"} |
+| body-is | hmm |
 | code-is | 401 |
 
 # ... admin gets a 201 (assuming success)                            |
@@ -24,10 +25,10 @@ Tests for [Story: Groups ReST API]
 | POST_json | /data/groups | {"ldap_dn":"%%ldap_dn%%","account_id":"%%account_id%%"} |
 | code-is   | 201          |                                                         |
 
-| GET         | /data/groups  |         |
-| code-is     | 200           |         |
-| header-like | Cache-Control | private |
-| body-like   | Hawkwind      |         |
+| GET         | /data/groups?all=1 |         |
+| code-is     | 200                |         |
+| header-like | Cache-Control      | private |
+| body-like   | Hawkwind           |         |
 
 # ... admin gets a 404? 406? status code if the group is not in LDAP
 
