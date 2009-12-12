@@ -10,22 +10,24 @@
 | set | wsname | grp-ws-%%start_time%% |
 | set | wsname2 | other-grp-ws-%%start_time%% |
 
-| st-admin | create-workspace --title %%wsname%% --name %%wsname%% |  |
-| st-admin | create-workspace --title %%wsname2%% --name %%wsname2%% |  |
-| st-admin | add-member --e %%username%% --group %%group_id%% |  |
+| st-admin | create-workspace --title %%wsname%% --name %%wsname%% | was created |
+| st-admin | create-workspace --title %%wsname2%% --name %%wsname2%% | was created |
+| st-admin | add-member --e %%username%% --group %%group_id%% | is now a member of the |
 | st-admin | enable-plugin --all-accounts --plugin groups |  |
-| st-admin | add-member --workspace %%wsname%% --group %%group_id%% |  |
-| st-admin | add-member --workspace %%wsname2%% --group %%group_id%% |  |
+| st-admin | add-member --workspace %%wsname%% --group %%group_id%% | now has the role of 'member' |
+| st-admin | add-member --workspace %%wsname2%% --group %%group_id%% | now has the role of 'member' |
 
 | *Comment* | Test Case: TODO Some Operations That should show up |  |
 
 | *Comment* | Test Case: Groups Home Open Groups Home Page |  |
 | open_ok | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | %%groupname%% | 30000 |
+
 | st-name-widget | 1 | information_widget |
 | st-name-widget | 2 | workspaces_widget |
 | st-name-widget | 3 | activity |
 | st-name-widget | 4 | people |
+
 | st-select-widget-frame | information_widget |  |
 | wait_for_text_present_ok | %%groupname%% |  |
 | select-frame | relative=parent |  |
@@ -37,16 +39,17 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups Check Lack of Permissions |  |
-| st-admin | create-user --e %%nopermuser%% --p %%password%% |  |
+| st-admin | create-user --e %%nopermuser%% --p %%password%% | was created |
 | st-logoutin | %%nopermuser%% | %%password%% |
 | open_ok | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | Error | 30000 |
 | wait_for_text_present_ok | You do not have permission to view this page | 30000 |
 
 | *Comment* | Test Case: Groups Add member, Check again |  |
-| st-admin | add-member --e %%nopermuser%% --group %%group_id%% |  |
+| st-admin | add-member --e %%nopermuser%% --group %%group_id%% | is now a member of the |
 | open_ok | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | %%groupname%% |  |
+
 | st-name-widget | 1 | information_widget |
 | st-name-widget | 2 | workspaces_widget |
 | st-name-widget | 3 | activity_widget |
@@ -65,6 +68,8 @@
 
 | *Comment* | Test Case: Groups Home Check Activity Widget With Granted Permissions TODO add checks for page edit, comment |  |
 | st-select-widget-frame | activity_widget |  |
+| wait_for_text_present_ok | %%groupname%% | 30000 |
+| wait_for_text_present_ok | minute | 30000 |
 | text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%short_nopermuser%% to.+%%groupname%%/ism |
 | text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%groupname%% to.+%%wsname2%%/ism |
 | text_like | //body | qr/System User.+\d+.+minute.+ago.+added.+%%groupname%% to.+%%wsname%%/ism |
@@ -73,8 +78,8 @@
 
 | *Comment* | Test Case: Groups Home Check People Widget With Granted Permissions |  |
 | st-select-widget-frame | people_widget |  |
-| text_like | //body | %%username%% |
-| text_like | //body | %%nopermuser%% |
+| wait_for_text_present_ok | %%username%% | 30000 |
+| wait_for_text_present_ok | %%nopermuser%% | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups Home TEARDOWN |  |

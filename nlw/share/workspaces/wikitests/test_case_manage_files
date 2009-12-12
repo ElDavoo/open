@@ -118,6 +118,6 @@
 
 | *Comment* | Test Case: Manage Files Teardown |  |
 | st-admin | purge-page --workspace %%workspace%% --page manage_files_%%start_time%% | was purged |
-| st-admin | remove-member --email %%manage_files_user_2%% --workspace %%workspace%% | is no longer a member |
+| st-admin | remove-member --email %%manage_files_user_2%% --workspace %%workspace%% | no longer has the role of 'member' |
 
 | *Comment* | Test Case: Manage Files COMPLETED |

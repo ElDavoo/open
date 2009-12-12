@@ -52,7 +52,7 @@
 | include | [Test Case: Signals Page] |  |
 
 | *Comment* | Test Case: Signal to Networks TEARDOWN |  |
-| st-admin | remove-member --e %%member%% --w help-en | is no longer a member |
+| st-admin | remove-member --e %%member%% --w help-en | no longer has the role of 'member' |
 | st-admin | disable-plugin --account Socialtext --p signals |  |
 
 | *Comment* | Test Case: Signal to Networks COMPLETED |  |

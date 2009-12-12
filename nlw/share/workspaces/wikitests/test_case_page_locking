@@ -43,7 +43,7 @@
 
 | *Comment* | Test Case: Page Locking TEARDOWN |  |
 | st-admin | purge-page --w %%ws%% --page pl_%%start_time%% | was purged |
-| st-admin | remove-member --e %%member%% --w %%ws%% | is no longer |
+| st-admin | remove-member --e %%member%% --w %%ws%% | no longer has the role of 'member' |
 | st-admin | set-workspace-config --w %%workspace%% allows_page_locking 0 | updated |
 
 | *Comment* | Test Case: Page Locking COMPLETED |  |

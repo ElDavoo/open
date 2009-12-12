@@ -66,7 +66,7 @@
 | disable_account_plugin | %%new_account%% | signals |
 | click_and_wait | link=Settings |  |
 | wait_for_element_present_ok | link=Private Messages | 10000 |
-| st-admin | remove-member --email %%new_user%% --workspace %%workspace%% | no longer a member |
+| st-admin | remove-member --email %%new_user%% --workspace %%workspace%% | no longer has the role of 'member' |
 
 | *Comment* | Test Case: Preferences UI User: Signals does not appear if signals plugin is disabled for account |  |
 | open_ok | /%%new_ws%%/?action=users_settings |  |
@@ -84,7 +84,7 @@
 | text_like | contentRight | %%title%% |
 | text_like | contentRight | %%workspace%% |
 | text_unlike | contentRight | help-en |
-| st-admin | remove-member --w %%workspace%% --e %%new_user%% | is no longer |
+| st-admin | remove-member --w %%workspace%% --e %%new_user%% | no longer has the role of 'member' |
 | click_and_wait | link=My Workspaces |  |
 | text_like | contentRight | %%new_ws%% |
 | text_unlike | contentRight | %%workspace%% |
