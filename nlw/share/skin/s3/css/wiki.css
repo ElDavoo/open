@@ -22,8 +22,11 @@
     padding: 3px 0px;
 }
 
-.wiki table.formatter_table td, .wiki table.formatter_table th {
+.wiki table td, .wiki th {
     vertical-align: top;
+}
+.wiki table.st-ss td, .wiki table.st-ss th {
+    vertical-align: inherit;
 }
 
 
@@ -232,33 +235,56 @@ html .wiki a:hover {
 /* Tables
 -------------------------------------------------------------- */
 
-.wiki table.formatter_table {
+.wiki table {
     border-collapse: collapse;
     margin-bottom: 1.4em;
     width: auto;
 }
-.wiki table.formatter_table th {
+.wiki table.st-ss {
+    border-collapse: inherit;
+    margin-bottom: inherit;
+    width: inherit;
+}
+.wiki table th {
     font-weight: bold;
     background: #CCC;
 }
-.wiki table.formatter_table th,
-.wiki table.formatter_table td {
+.wiki table.st-ss th {
+    font-weight: inherit;
+    background: inherit;
+}
+.wiki table th,
+.wiki table td {
     border: 1px solid black;
     padding: 0.2em;
+}
+.wiki table.st-ss th,
+.wiki table.st-ss td {
+    border: inherit;
+    padding: inherit;
 }
 .wiki table.borderless th,
 .wiki table.borderless td {
     border: none;
     padding: 0.2em;
 }
-.wiki table.formatter_table tr.even td {
+.wiki table tr.even td {
     background: #E5ECF9;
 }
-.wiki table.formatter_table tfoot {
+.wiki table tfoot {
     font-style: italic;
 }
-.wiki table.formatter_table caption {
+.wiki table caption {
     background: #eee;
+}
+.wiki table.st-ss tr.even td {
+    background: inherit;
+}
+.wiki table.st-ss tfoot {
+    font-style: inherit;
+}
+.wiki table.st-ss caption {
+    background: inherit;
 }
 
 
