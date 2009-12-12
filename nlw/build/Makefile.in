@@ -257,6 +257,7 @@ mecab:
 
 favicon: install-ok $(DATA_ROOT_DIR)
 	$(INSTALL_ST) share/favicon.ico $(DATA_ROOT_DIR)/favicon.ico
+	$(INSTALL_ST) share/apple-touch-icon.png $(DATA_ROOT_DIR)/apple-touch-icon.png
 
 install-init-d: install-ok etc/init.d/ceqlotron
 	$(INSTALL_ROOT) \

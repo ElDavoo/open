@@ -153,7 +153,8 @@
     </LocationMatch>
 
     [%- IF config.is_dev %]
-        Redirect 301 /favicon.ico http://www.socialtext.net/favicon.ico
+        RewriteRule ^/favicon.ico$ /static/favicon.ico [R,L]
+        RewriteRule ^/apple-touch-icon.png$ /static/apple-touch-icon.png [R,L]
     [%- END %]
 
     # Force IE8 to emulate IE7, to avoid IE8 rendering issues.
