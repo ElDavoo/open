@@ -87,7 +87,6 @@ test env properly and are not testing the test-workspace
 * [Test Case: Join]
 * [Test Case: What's New Pagination]
 * [Test Case: User Settings no mojibake]
-* [Test Case: People Search]
 
 * [Edit Contention Testcases]
 * [Mobile Testcases]
