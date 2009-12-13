@@ -1210,6 +1210,11 @@ proto.do_attach = Wikiwyg.Wikitext.make_do('attach');
 proto.do_image = Wikiwyg.Wikitext.make_do('image');
 
 proto.convertWikitextToHtml = function(wikitext, func) {
+    // TODO: This could be as simple as:
+    //    func((new Document.Parser.Wikitext()).parse(wikitext, new Document.Emitter.HTML()));
+    // But we need to ensure newer wikitext features, such has (sortable) tables,
+    // are supported in the Document.Parser library first.
+
     var uri = location.pathname;
     var postdata = 'action=wikiwyg_wikitext_to_html;content=' +
         encodeURIComponent(wikitext);

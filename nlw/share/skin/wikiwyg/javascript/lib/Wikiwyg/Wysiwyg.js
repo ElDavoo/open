@@ -826,6 +826,11 @@ proto.on_pasted = function(html) {
 // XXX - Lightboxing causes insert to be in wrong place
 //     jQuery.showLightbox({ html: "pasting...", overlayBackground: "transparent", speed: 1 });
 
+    // TODO: This could be as simple as:
+    //    html = ((new Document.Parser.Wikitext()).parse(wikitext, new Document.Emitter.HTML()));
+    // But we need to ensure newer wikitext features, such has (sortable) tables,
+    // are supported in the Document.Parser library first.
+
     jQuery.ajax({
         type: 'post',
         url: 'index.cgi',
