@@ -130,7 +130,6 @@
     RewriteRule    !^/static                -           [C]
     RewriteRule    !^/logos                 -           [C]
     RewriteRule    !^/favicon\.ico          -           [C]
-    RewriteRule    !^/apple-touch-icon\.png -           [C]
     RewriteRule    !^/nlw/.*.scgi           -           [C]
 [%- IF config.is_appliance || config.is_dev %]
     RewriteRule    !^/console               -           [C]
