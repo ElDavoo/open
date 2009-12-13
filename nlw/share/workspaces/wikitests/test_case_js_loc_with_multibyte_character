@@ -1,1 +1,7 @@
 | *Comment* | Test Case: JS Loc with Multibyte Character JA locale NO LONGER SUPPORTED |  |
+ st-admin | set-locale --email %%email%% --locale ja --workspace %%workspace%% |  |
+ open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+ wait_for_element_visible_ok | st-newpage-pagename-edit |
+ verifyValue | st-newpage-pagename-edit | タイトルなし |
+ st-admin | set-locale --email %%email%% --locale en --workspace %%workspace%% |  |
+| *Comment* | Test Case: Js Loc with Multibyte character COMPLETED |  |
