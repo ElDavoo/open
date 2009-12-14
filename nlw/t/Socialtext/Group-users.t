@@ -14,11 +14,6 @@ fixtures(qw( db ));
 use_ok 'Socialtext::Group';
 
 ################################################################################
-# NOTE: this behaviour is more extensively tested in
-# t/Socialtext/UserGroupRoleFactory.t
-################################################################################
-
-################################################################################
 # TEST: Group has no Users; it's a lonely, lonely group.
 group_with_no_users: {
     my $group = create_test_group();
