@@ -1,0 +1,18 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+
+for my $f (glob("/etc/rc?.d/?20ceqlotron")) {
+    (my $new_f = $f) =~ s/20/90/;
+    print "  Renaming $f to $new_f\n";
+    rename $f => $new_f or warn "Could not rename $f to $new_f: $!";
+}
+
+for my $f (glob("/etc/rc?.d/?90socialtext-solr")) {
+    (my $new_f = $f) =~ s/90/89/;
+    print "  Renaming $f to $new_f\n";
+    rename $f => $new_f or warn "Could not rename $f to $new_f: $!";
+}
+
+exit 0;
