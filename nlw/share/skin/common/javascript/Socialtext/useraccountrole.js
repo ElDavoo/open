@@ -28,7 +28,7 @@ $.extend(Socialtext.UserAccountRole.prototype, {
         });
     },
 
-    toString: function() {
+    stringify: function() {
         var roles = [];
         if (this.is_primary != undefined) {
             if (this.is_primary) {
