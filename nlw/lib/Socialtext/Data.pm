@@ -139,7 +139,7 @@ The name column is a candidate key.
 
 The first two roles are "default roles", which means that are used in
 absence of an explicit role assignment. They cannot be explicitly
-assigned to a user in the UserWorkspaceRole table.
+assigned to a User.
 
 All of these roles must be present in the DBMS for the application to
 function.
@@ -147,15 +147,6 @@ function.
 Note that business and technical admin privileges are granted through
 the "User.is_business_admin" and "User.is_technical_admin" columns,
 not through a role.
-
-=item * UserWorkspaceRole
-
-This table associates a user with a workspace and a role. A user can
-only have one role at a time in workspace.
-
-A user always has a default role for a workspace, either guest or
-authenticated_user, and this never needs to be explicitly assigned via
-this table.
 
 =item * WorkspaceRolePermission
 
@@ -180,11 +171,10 @@ related to any other table in the schema.
 
 =head2 Schema Notes
 
-It is possible to join the UserWorkspaceRole and
-WorkspaceRolePermission tables on workspace_id and role_id (togther),
-but they are not actually related via a foreign key. This join allows
-for a single query to determine if a user has a specific permission in
-a workspace.
+It is possible to join the User Set and WorkspaceRolePermission tables on
+workspace_id and role_id (togther), but they are not actually related via a
+foreign key. This join allows for a single query to determine if a user has a
+specific permission in a workspace.
 
 =head1 AUTHOR
 
