@@ -600,7 +600,7 @@ sub add_user_to_group {
         ? Socialtext::Role->new(name => $role_name)
         : undef;
 
-    $group->add_user( user => $user, role => $role );
+    $group->assign_role_to_user( user => $user, role => $role );
 
     diag "Added User $user_name"
        . ' to ' . $group->driver_group_name . ' Group'
