@@ -454,7 +454,7 @@ To aggregate all roles for a relationship into an array, pass in
 C<< mux_roles => 1 >>.  The roles will be unique and sorted ascending by ID.
 
 To omit the roles, and just return the distinct relationships, pass in
-C<< omit_roles => 1>>.  Cannot be combined with mux_roles.
+C<< omit_roles => 1 >>.  Cannot be combined with mux_roles.
 
 =cut
 
