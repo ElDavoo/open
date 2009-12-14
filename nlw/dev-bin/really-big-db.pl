@@ -110,8 +110,10 @@ Socialtext::Account->Default->user_set->_create_insert_temp($dbh, 'bulk');
         my ($user_id, $account_id) = @_;
         unless ($uars{$user_id}{$account_id}++) {
             my $acct = Socialtext::Account->new(account_id => $account_id);
-            $acct->user_set->_insert($dbh, $user_id, $account_id, $member_id,
-                'bulk');
+            $acct->user_set->_insert(
+                $dbh, $user_id, $account_id + ACCT_OFFSET, $member_id,
+                'bulk'
+            );
         }
     }
 }
@@ -122,8 +124,10 @@ Socialtext::Account->Default->user_set->_create_insert_temp($dbh, 'bulk');
         my ($group_id, $account_id) = @_;
         unless ($gars{$group_id}{$account_id}++) {
             my $acct = Socialtext::Account->new(account_id => $account_id);
-            $acct->user_set->_insert($dbh, $group_id, $account_id, $member_id,
-                'bulk');
+            $acct->user_set->_insert(
+                $dbh, $group_id, $account_id + ACCT_OFFSET, $member_id,
+                'bulk'
+            );
         }
     }
 }
@@ -209,7 +213,7 @@ Socialtext::Account->Default->user_set->_create_insert_temp($dbh, 'bulk');
         )
     });
 
-    print "Assigning $ACCOUNTS more workspaces to random accounts (geometric dist.)";
+    print "Assigning $ACCOUNTS more workspaces to random accounts (geometric dist.)\n";
     while ($n > 0) {
         $m = int($n / 2.0);
         $m = 1 if $m <= 0;
@@ -259,26 +263,23 @@ Socialtext::Account->Default->user_set->_create_insert_temp($dbh, 'bulk');
 
     for (my $user=1; $user<=$USERS; $user++) {
         my $uname = "user-$user-$base\@ken.socialtext.net";
-        warn "Creating $uname";
+        print '.';
         # salted hash for 'password' as password 
         $user_sth->execute('Default', $uname, $uname, "sa3tHJ3/KuYvI",
             "First$user", "Last$user", "First$user Last$user");
-        warn "inserting meta";
 
         # choose a random primary account id
         my $priacctid = $accounts[rand(@accounts)];
         $user_meta_sth->execute( $uname, $priacctid );
 
-        warn "Getting user_id";
         my ($user_id) = $dbh->selectrow_array(q{SELECT currval('users___user_id')});
-        warn "Creating uar";
         create_uar( $user_id, $priacctid );
 
         push @users, $user_id;
         $writes += 3;
         maybe_commit();
     }
-    print " done!\n";
+    print "\n done!\n";
 }
 
 {
@@ -292,13 +293,14 @@ Socialtext::Account->Default->user_set->_create_insert_temp($dbh, 'bulk');
     sub assign_random_workspaces {
         my ($user_id, $number, $workspaces) = @_;
         my %done;
-        warn "assign_random_workspaces to $user_id ($number)";
 
         my $primary_ws = $workspaces[int(rand(@$workspaces))];
         $updt_sth->execute($ws_to_acct{$primary_ws}, $user_id);
         my $ws = Socialtext::Workspace->new(workspace_id => $primary_ws);
-        $ws->user_set->_insert($dbh, $user_id, $primary_ws, $member_id,
-            'bulk');
+        $ws->user_set->_insert(
+            $dbh, $user_id, $primary_ws + WKSP_OFFSET, $member_id,
+            'bulk'
+        );
         create_uar($user_id, $ws_to_acct{$primary_ws});
         $writes += 3;
         $done{$primary_ws} = 1;
@@ -313,8 +315,10 @@ Socialtext::Account->Default->user_set->_create_insert_temp($dbh, 'bulk');
 
             # assign a user to a workspace
             my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
-            $ws->user_set->_insert($dbh, $user_id, $ws_id, $member_id,
-                'bulk');
+            $ws->user_set->_insert(
+                $dbh, $user_id, $ws_id + WKSP_OFFSET, $member_id,
+                'bulk'
+            );
             create_uar($user_id, $ws_to_acct{$ws_id});
             $writes += 2;
             $done{$ws_id} = 1;
@@ -394,8 +398,10 @@ Socialtext::Account->Default->user_set->_create_insert_temp($dbh, 'bulk');
         # give the User a Role in this Group
         if ($user_id) {
             my $group = Socialtext::Group->GetGroup(group_id => $group_id);
-            $group->user_set->_insert($dbh, $user_id, $group_id, $member_id,
-                'bulk');
+            $group->user_set->_insert(
+                $dbh, $user_id, $group_id + GROUP_OFFSET, $member_id,
+                'bulk'
+            );
             $writes++;
             maybe_commit();
         }
@@ -423,8 +429,10 @@ Socialtext::Account->Default->user_set->_create_insert_temp($dbh, 'bulk');
         # give the Group a Role in this Workspace
         if ($ws_id) {
             my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
-            $ws->user_set->_insert($dbh, $group_id, $ws_id, $member_id,
-                'bulk');
+            $ws->user_set->_insert(
+                $dbh, $group_id, $ws_id + WKSP_OFFSET, $member_id,
+                'bulk'
+            );
 
             create_gar( $group_id, $ws_to_acct{$ws_id} );
             $writes += 2;
