@@ -177,6 +177,7 @@
 | *Comment* | Test Case: Signals Pagination. Delete irrelevant signal and search again |  |
 | click_ok | //a[@class='hideLink'] |  |
 | verifyConfirmation | Are you sure you want to delete this Signal?\nYou cannot undelete it. |  |
+| wait_for_text_not_present_ok | LessRelevant %%start_time%% | 10000 |
 | select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Signals Pagination. You must open Signals to clear out hidden deleted signal |  |

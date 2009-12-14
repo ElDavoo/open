@@ -27,7 +27,7 @@
 
 | *Comment* | Remove member, see if workspace is gone |  |
 | *Comment* | The widget name is %%myworkspace%% |  |
-| st-admin | remove-member --username %%username%% --workspace workspacewidget-%%start_time%% | is no longer a member |
+| st-admin | remove-member --username %%username%% --workspace workspacewidget-%%start_time%% | no longer has the role of 'member' |
 | st-logout |  |  |
 | st-clear-json-cache |  |  |
 | st-login |  |  |

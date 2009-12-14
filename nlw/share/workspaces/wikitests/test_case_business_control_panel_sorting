@@ -148,26 +148,35 @@ text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_t
 | is_checked_ok | todo-invite |  |
 | check_ok | todo-create |  |
 | is_checked_ok | todo-create |  |
-| select_ok | account_id | 0 sort 3 account %%start_time%% |
 
 | *Comment* | Test Case: Business Control Panel Sorting create admins |  |
 | addSelection | members | label=0_sort_2_user1@%%start_time%%.com |
 | addSelection | members | label=0_sort_3_user1@%%start_time%%.com |
 | click_ok | add-selected |  |
 | click_ok | remove-selected |  |
-| click_ok | add-all | [test case business control panel sorting#] |
+| click_ok | add-all |  |
 | click_ok | remove-all |  |
+
+| *Comment* | Test Case: Business Control Panel Sorting verify alerts |  |
 | addSelection | members | label=0_sort_3_user1@%%start_time%%.com |
 | click_ok | invite-button |  |
 | verifyAlert | Error: Workspace title is a required field. |  |
 | verifyAlert | Error: Workspace name is a required field. |  |
+| verifyAlert | Error: The account is a required field. |  |
 | verifyAlert | You must choose at least one administrator. |  |
 
+| *Comment* | Test Case: Business Control Panel Sorting choose ws title and name |  |
 | type_ok | workspace-title | ws-t%%start_time%% |
 | type_ok | workspace-name | ws-n%%start_time%% |
 | addSelection | members | label=0_sort_3_user1@%%start_time%%.com |
 | click_ok | add-selected |  |
 
+| *Comment* | Test Case: Business Control Panel Sorting choose account |  |
+| type_lookahead_ok | accountLookahead | 0 sort 3 account %%start_time%% |
+| wait_for_element_visible_ok | link=0 sort 3 account %%start_time%% | 30000 |
+| click_ok | link=0 sort 3 account %%start_time%% |  |
+
+| *Comment* | Test Case: Business Control Panel Sorting invite |  |
 | click_ok | invite-button |  |
 | wait_for_page_to_load_ok | 120000 |  |
 | text_like | errors-and-messages | qr/Congratulations! You successfully created a new workspace with \d+ users. They will receive an invitation message with a link to ws-n%%start_time%%./ |
