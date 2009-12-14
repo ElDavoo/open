@@ -1,4 +1,5 @@
 #!/bin/sh
+# @COPYRIGHT@
 table=${1:-users} # users default
 db=${2:-${PGDATABASE}}
 echo "listing for $table (database: $db)"
