@@ -88,8 +88,8 @@ users_only_with_primary_account: {
 }
 
 ###############################################################################
-# User has a direct role ( eg, a UserAccountRole record, or is the user's
-# Primary Account ) or indirect only ( eg, GroupAccountRole record )
+# User has a direct role ( eg, a User/Account Role record, or is the user's
+# Primary Account ) or indirect only ( eg, Group/Account Role record )
 users_with_a_direct_role: {
     my $account    = create_test_account_bypassing_factory();
     my $group      = create_test_group( account => $account );

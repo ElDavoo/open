@@ -119,19 +119,19 @@ sub export_and_reimport_account {
     my @imported_ugrs = map { _dump_ugrs($_) } @imported_groups;
 
     # Role list *should* be the same after import
-    eq_or_diff \@imported_gars, \@gars, '... GroupAccountRoles preserved';
-    eq_or_diff \@imported_uars, \@uars, '... UserAccountRoles preserved';
-    eq_or_diff \@imported_uwrs, \@uwrs, '... UserWorkspaceRoles preserved';
-    eq_or_diff \@imported_gwrs, \@gwrs, '... GroupWorkspaceRoles preserved';
-    eq_or_diff \@imported_ugrs, \@ugrs, '... UserGroupRoles preserved';
+    eq_or_diff \@imported_gars, \@gars, '... Group/Account Roles preserved';
+    eq_or_diff \@imported_uars, \@uars, '... User/Account Roles preserved';
+    eq_or_diff \@imported_uwrs, \@uwrs, '... User/Workspace Roles preserved';
+    eq_or_diff \@imported_gwrs, \@gwrs, '... Group/Workspace Roles preserved';
+    eq_or_diff \@imported_ugrs, \@ugrs, '... User/Group Roles preserved';
 
     # (debugging) Dump the Roles
     if ($DumpRoles) {
-        diag "GroupAccountRoles: "   . Dumper(\@gars);
-        diag "UserAccountRoles: "    . Dumper(\@uars);
-        diag "UserWorkspaceRoles: "  . Dumper(\@uwrs);
-        diag "GroupWorkspaceRoles: " . Dumper(\@gwrs);
-        diag "UserGroupRoles: "      . Dumper(\@ugrs);
+        diag "Group/Account Roles: "   . Dumper(\@gars);
+        diag "User/Account Roles: "    . Dumper(\@uars);
+        diag "User/Workspace Roles: "  . Dumper(\@uwrs);
+        diag "Group/Workspace Roles: " . Dumper(\@gwrs);
+        diag "User/Group Roles: "      . Dumper(\@ugrs);
     }
 
     # CLEANUP: remove our temp directory

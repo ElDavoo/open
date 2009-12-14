@@ -33,7 +33,7 @@ get_role_for_user_primary_account: {
 }
 
 ###############################################################################
-# TEST: Get Role for User; explicit UserAccountRole
+# TEST: Get Role for User; explicit User/Account Role
 get_role_for_user_explicit_uar: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user();
@@ -45,11 +45,11 @@ get_role_for_user_explicit_uar: {
         account => $account,
     );
     isa_ok $role, 'Socialtext::Role', 'Users explicit Role in Account';
-    is $role->name, $Admin->name, '... is the assigned UserAccountRole';
+    is $role->name, $Admin->name, '... is the assigned User/Account Role';
 }
 
 ###############################################################################
-# TEST: Get Role for User; UserWorkspaceRole, with member UserAccountRole
+# TEST: Get Role for User; User/Workspace Role, with member User/Account Role
 get_role_for_user_uwr: {
     my $account   = create_test_account_bypassing_factory();
     my $workspace = create_test_workspace(account => $account);
@@ -66,7 +66,7 @@ get_role_for_user_uwr: {
 }
 
 ###############################################################################
-# TEST: Get Role for User; UserGroupRole and explicit GroupAccountRole
+# TEST: Get Role for User; User/Group Role and explicit Group/Account Role
 get_role_for_user_gar: {
     my $account = create_test_account_bypassing_factory();
     my $group   = create_test_group();
@@ -80,12 +80,12 @@ get_role_for_user_gar: {
         account => $account,
     );
     isa_ok $role, 'Socialtext::Role', 'Users indirect Role in Account';
-    is $role->name, $Admin->name, '... is the assigned GroupAccountRole';
+    is $role->name, $Admin->name, '... is the assigned Group/Account Role';
 }
 
 ###############################################################################
-# TEST: Get Role for User; UserGroupRole, GroupWorkspaceRole, with member
-# GroupAccountRole
+# TEST: Get Role for User; User/Group Role, Group/Workspace Role, with member
+# Group/Account Role
 get_role_for_user_gwr: {
     my $account   = create_test_account_bypassing_factory();
     my $workspace = create_test_workspace(account => $account);
@@ -104,7 +104,7 @@ get_role_for_user_gwr: {
 }
 
 ###############################################################################
-# TEST: Get Roles for User; explicit UserAccountRole and a GroupAccountRole
+# TEST: Get Roles for User; explicit User/Account Role and a Group/Account Role
 get_roles_for_user_uar_and_gar: {
     my $account = create_test_account_bypassing_factory();
     my $group   = create_test_group();
@@ -125,7 +125,7 @@ get_roles_for_user_uar_and_gar: {
 }
 
 ###############################################################################
-# TEST: Get Roles for User; multiple GroupAccountRoles
+# TEST: Get Roles for User; multiple Group/Account Roles
 get_roles_for_user_multiple_gars: {
     my $account     = create_test_account_bypassing_factory();
     my $group_one   = create_test_group();
