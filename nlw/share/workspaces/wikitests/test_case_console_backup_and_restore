@@ -90,14 +90,6 @@ Automated backup and restore testing
 | wait_for_element_visible_ok | link=Refresh file list | 30000 |
 | text_unlike | //body | Restore in progress |
 
-| *Comment* | Test Case: Console Backup and Restore: help-en is there with reasonable content |  |
-| open_ok | /help-en |  |
-| text_like | Socialtext Documentation |  |
-| wait_for_element_visible_ok | link=Finding your way around |  |
-| click_and_wait | link=Finding your way around |  |
-| click_and_wait | link=Socialtext Dashboard |  |
-| text_like | Many features are within easy reach |  |
-
 | *Comment* | Test Case: Console Backup and Restore: the RESTORED admin is there containing first new page and missing second new page |  |
 | st_login |  |  |
 | open_ok | /admin/index.cgi?action=recent_changes |  |
@@ -154,6 +146,13 @@ Automated backup and restore testing
 | open_ok | /%%workspace%%/index.cgi?action=recent_changes |  |
 | click_and_wait | link=Backup Restore %%workspace%% %%start_time%% |  |
 | text_like | contentContainer | Backup Restore %%workspace%% content %%start_time%% |
+
+| *Comment* | Test Case: Console Backup and Restore: help-en is there with reasonable content |  |
+| open_ok | /help-en |  |
+| text_like | Socialtext Documentation |  |
+| wait_for_element_visible_ok | link=Finding your way around |  |
+| click_and_wait | link=Finding your way around |  |
+| wait_for_text_present_ok | Many features are within easy reach | 10000 |
 
 | *Comment* | Test Case: Console Backup and Restore: Teardown |  |
 | st-admin | delete-workspace --no-export --w empty-%%start_time%% | has been deleted |

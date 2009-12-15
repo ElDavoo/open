@@ -13,11 +13,6 @@ fixtures(qw/db/);
 use_ok 'Socialtext::User';
 
 ################################################################################
-# NOTE: this behaviour is more extensively tested in
-# t/Socialtext/UserGroupRoleFactory.t
-################################################################################
-
-################################################################################
 # TEST: User is in no groups
 user_has_no_groups: {
     my $me = create_test_user();

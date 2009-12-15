@@ -699,7 +699,14 @@ $(function() {
                 var clWidth = $('#contentLeft').get(0).scrollWidth;
                 var crWidth = $('#contentRight').width();
 
-                $('#mainWrap').width( clWidth + crWidth + 50 );
+                var newWidth = clWidth + crWidth + 50;
+
+                /* {bz: 3395}
+                 * Enforce the #mainWrap min-width expression in screen.ie.css
+                 */
+                if ($.browser.msie && newWidth < 950) newWidth = 950;
+
+                $('#mainWrap').width(newWidth);
 
                 cl.css('min-width', clWidth + 'px');
                 cl.css('max-width', (clWidth + crWidth) + 'px');

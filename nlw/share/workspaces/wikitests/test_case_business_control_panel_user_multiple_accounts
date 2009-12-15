@@ -12,6 +12,7 @@
 | set | acct2_id | %%account_id%% |  |
 | create-user | %%newuser%% | %%password%% | %%primacct%% |
 | set | userid | %%user_id%% |  |
+| st-admin | give-accounts-admin --e %%email%% | | |
 
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts Find user |  |
 | st-search-cp-users | %%start_time%% |  |
@@ -29,6 +30,8 @@
 | text_like | //body | qr/%%primacct%%.+Primary Account.+%%acct2%%.+Member of Account/ |
 | wait_for_element_visible_ok | link=Name | 30000 |
 | click_ok | link=Name |  |
+
+| *Comment* | Test Case: Business Control Panel User. Sort does not cause page load.  Pause.  |  |
 | pause | 3000 | Yes, pause is bad. Wait for javascript. text_like doesn't have a wait_for; wait_for_text_present_ok doesn't do regexps |
 | text_like | //body | qr/%%acct2%%.+Member of Account.+%%primacct%%.+Primary Account/ |
 | wait_for_element_visible_ok | link=Name | 30000 |

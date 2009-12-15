@@ -46,6 +46,15 @@
 
 | *Comment* | Test Case: Control Panel Create Group - create group via members |  |
 | open_ok | /nlw/control/user |  |
+
+| *Comment* | Test Case: Control Panel Create Group - dumb hack 1 to avoid alert - select all, then clear all |  |
+| wait_for_element_visible_ok | toggle_all_users |  |
+| check_ok | toggle_all_users |  |
+| is_checked_ok | toggle_all_users |  |
+| wait_for_element_visible_ok | link=Clear Selection |  |
+| click_ok | link=Clear Selection |  |
+| wait_for_text_present_ok | 0 users selected | 30000 |
+
 | wait_for_element_visible_ok | username | 30000 |
 | wait_for_element_visible_ok | st-username-search-submit | 30000 |
 | type_ok | username | %%start_time%% |
@@ -70,16 +79,25 @@
 | click_and_wait | invite-button |  |
 
 | *Comment* | Test case: Control Panel Create Group Contains new members |  |
-| text-like | //body | You successfully added 4 users to 1 group. |
-| text-like | //body | Users (5) |
-| text-like | //body | %%groupname%% |
-| text-like | //body | Created By: %%username%% |
 | wait_for_element_visible_ok | link=%%email1%% | 30000 |
 | wait_for_element_visible_ok | link=%%email2%% | 30000 |
 | wait_for_element_visible_ok | link=%%email3%% | 30000 |
 | wait_for_element_visible_ok | link=%%email4%% | 30000 |
+| text_like | //body | You successfully added 4 users to 1 group. |
+| text_like | //body | Users (5) |
+| text_like | //body | %%groupname%% |
+| text_like | //body | Created By: %%username%% |
+
 | wait_for_element_visible_ok | link=Add Users | 30000 |
 | click_and_wait | link=Add Users | 30000 |
+
+| *Comment* | Test Case: Control Panel Create Group - dumb hack 2 to avoid alert - select all, then clear all |  |
+| wait_for_element_visible_ok | toggle_all_users |  |
+| check_ok | toggle_all_users |  |
+| is_checked_ok | toggle_all_users |  |
+| wait_for_element_visible_ok | link=Clear Selection |  |
+| click_ok | link=Clear Selection |  |
+| wait_for_text_present_ok | 0 users selected | 30000 |
 
 | *Comment* | Test Case: Control Panel Create Group - add members via add members link |  |
 | wait_for_text_present_ok | Add users to %%groupname%% group | 30000 |
@@ -92,16 +110,24 @@
 | click_ok | %%user5%% |  |
 | wait_for_element_visible_ok | link=Add users | 30000 |
 | click_and_wait | link=Add users |  |
-| text-like | //body | You successfully added 5 users to 1 group. |
+| wait_for_text_present_ok | You successfully added 1 user to 1 group. | 30000 |
 
 | *Comment* | Test Case: Control Panel Create Group - add members to existing group from USERS tab |  |
 
 | open_ok | /nlw/control/user |  |
+
+| *Comment* | Test Case: Control Panel Create Group - dumb hack 3 to avoid alert - select all, then clear all |  |
+| wait_for_element_visible_ok | toggle_all_users |  |
+| check_ok | toggle_all_users |  |
+| is_checked_ok | toggle_all_users |  |
+| wait_for_element_visible_ok | link=Clear Selection |  |
+| click_ok | link=Clear Selection |  |
+| wait_for_text_present_ok | 0 users selected | 30000 |
+
 | wait_for_element_visible_ok | username | 30000 |
 | wait_for_element_visible_ok | st-username-search-submit | 30000 |
 | type_ok | username | %%start_time%% |
 | click_and_wait | st-username-search-submit |  |
-| click_ok | link=Clear Selection |  |
 | wait_for_element_visible_ok | %%user1%% | 30000 |
 | click_ok | %%user1%% |  |
 | wait_for_element_visible_ok | %%user2%% | 30000 |
@@ -122,12 +148,12 @@
 
 | *Comment* | Test Case: Control Panel Groups Confirm Add |  |
 | open_ok | /nlw/control/group/%%group_id%% |  |
-| text-like | //body | Users (3) |
-| text-like | //body | %%groupexists%% |
 | wait_for_element_visible_ok | link=%%email1%% | 30000 |
 | wait_for_element_visible_ok | link=%%email2%% | 30000 |
 | wait_for_element_visible_ok | link=%%email3%% | 30000 |
 | wait_for_element_visible_ok | st-group-remove-submit | 30000 |
+| text_like | //body | Users (3) |
+| text_like | //body | %%groupexists%% |
 
 | *Comment* | Test Case: Control Panel Groups Remove from group |  |
 | wait_for_element_visible_ok | member | 30000 |
@@ -138,9 +164,9 @@
  verifyAlert | Are you sure you want to remove these users from this group? | |
 
 | wait_for_text_present_ok | You have successfully removed 2 users from the %%groupexists%% Group. | 30000 |
-| wait_for_element_not_present_ok | link=%%email1%% | 30000 |
 | wait_for_element_visible_ok | link=%%email2%% | 30000 |
-| wait_for_element_not_present_ok | link=%%email3%% | 30000 |
+| wait_for_element_not_present_ok | link=%%email1%% | 5000 |
+| wait_for_element_not_present_ok | link=%%email3%% | 5000 |
 
 | *Comment* | Test Case: Control Panel Create Group Teardown |
 | delete_created_groups |  |

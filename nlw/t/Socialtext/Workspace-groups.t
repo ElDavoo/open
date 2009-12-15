@@ -14,11 +14,6 @@ fixtures(qw( db ));
 use_ok 'Socialtext::Workspace';
 
 ################################################################################
-# NOTE: this behaviour is more extensively tested in
-# t/Socialtext/GroupWorkspaceRoleFactory.t
-################################################################################
-
-################################################################################
 # TEST: Workspace has no Groups with Roles in it
 workspace_with_no_groups: {
     my $user      = create_test_user();

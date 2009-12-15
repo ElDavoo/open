@@ -5,22 +5,22 @@ Test case to make sure that the order of first/last name on the "My Settings" pa
 
 This test case assumes a logged in user.
 
-| *Comment* | STARTING Test case: User Settings - First/Last locale order |
+| *Comment* | Test case: User Settings - First/Last locale order - JA locale is no longer supported |
 
-| *Comment* | in "ja" locale, its "last, first name" ordering |  |
-| st-admin | set-locale --workspace %%workspace%% --username %%username%% --locale ja |  |
-| open_ok | /%%workspace%%/index.cgi?action=users_settings |  |
+ *Comment* | in "ja" locale, its "last, first name" ordering |  |
+ st-admin | set-locale --workspace %%workspace%% --username %%username%% --locale ja |  |
+ open_ok | /%%workspace%%/index.cgi?action=users_settings |  |
 
-| wait_for_element_visible_ok | `xpath=(//form[@name='settings']//input[@type='text'])` | 30000 |
-| attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[1]@name` | last_name |
-| attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[2]@name` | first_name |
+ wait_for_element_visible_ok | `xpath=(//form[@name='settings']//input[@type='text'])` | 30000 |
+ attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[1]@name` | last_name |
+ attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[2]@name` | first_name |
 
-| *Comment* | in "en" locale, its "first, last name" ordering |  |
-| st-admin | set-locale --workspace %%workspace%% --username %%username%% --locale en |  |
-| open_ok | /%%workspace%%/index.cgi?action=users_settings |  |
+ *Comment* | in "en" locale, its "first, last name" ordering |  |
+ st-admin | set-locale --workspace %%workspace%% --username %%username%% --locale en |  |
+ open_ok | /%%workspace%%/index.cgi?action=users_settings |  |
 
-| wait_for_element_visible_ok | `xpath=(//form[@name='settings']//input[@type='text'])` | 30000 |
-| attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[1]@name` | first_name |
-| attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[2]@name` | last_name |
+ wait_for_element_visible_ok | `xpath=(//form[@name='settings']//input[@type='text'])` | 30000 |
+ attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[1]@name` | first_name |
+ attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[2]@name` | last_name |
 
-| *Comment* | Test case: User Settings COMPLETED |  |
+ *Comment* | Test case: User Settings - First/Last locale order  COMPLETED |  |

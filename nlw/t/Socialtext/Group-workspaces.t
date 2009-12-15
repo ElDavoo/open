@@ -12,11 +12,6 @@ fixtures(qw( db ));
 use_ok 'Socialtext::Group';
 
 ################################################################################
-# NOTE: this behaviour is more extensively tested in
-# t/Socialtext/GroupWorkspaceRoleFactory.t
-################################################################################
-
-################################################################################
 # TEST: Group is in no Workspaces; has no GWRs
 group_with_no_workspaces: {
     my $group      = create_test_group();
