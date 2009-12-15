@@ -365,3 +365,4 @@ lib/Socialtext/Pluggable/Plugin/Marketo.pm
 t/Socialtext/People/ProfilePhoto.t
 t/wikitests/signals/targets.wiki
 lib/Socialtext/Rest/Signals/Targets.pm
+t/wikitests/signals/data_signals-groups.wiki
