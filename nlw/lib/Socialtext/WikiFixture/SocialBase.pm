@@ -618,6 +618,37 @@ sub remove_user_from_group {
     diag "Remove user $user_name from group $group_id";
 }
 
+sub add_user_to_account {
+    my $self      = shift;
+    my $user_name = shift;
+    my $account  = shift;
+    my $role_name = shift || '';
+
+    my $user  = Socialtext::User->Resolve($user_name);
+    my $acct = Socialtext::Account->new(name => $account);
+
+    my $role = $role_name
+        ? Socialtext::Role->new(name => $role_name)
+        : undef;
+
+    $acct->assign_role_to_user( user => $user, role => $role );
+
+    diag "Added User $user_name"
+       . ' to ' . $acct->name . ' Account'
+       . ' with ' . $role_name . ' Role';
+}
+
+sub remove_user_from_account {
+    my $self      = shift;
+    my $user_name = shift;
+    my $account   = shift;
+
+    my $user  = Socialtext::User->Resolve($user_name);
+    my $acct = Socialtext::Account->new(name => $account);
+    $account->remove_user(user => $user);
+    diag "Remove user $user_name from account $account";
+}
+
 sub create_workspace {
     my $self = shift;
     my $name = shift;
