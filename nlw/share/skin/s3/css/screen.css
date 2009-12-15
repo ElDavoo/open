@@ -182,7 +182,7 @@ div#mainNav {
 
 div#mainNav ul {
 	float: left;
-	width: 50%;
+	width: auto;
 	}
 	
 div#mainNav ul li {
