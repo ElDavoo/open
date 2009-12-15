@@ -374,11 +374,21 @@ sub disable_account_plugin {
 
 sub create_user {
     my $self = shift;
+    my $arg_count = @_;
     my $email = shift;
     my $password = shift;
     my $account = shift;
     my $name = shift || ' ';
     my $username = shift || $email;
+
+    # Special mode that DTRT
+    if ($arg_count == 1) {
+        my $name = $email;
+        $email = $name . $self->{start_time} . '@ken.socialtext.net';
+        $password = 'password';
+        $username = $email;
+        $self->{$name} = $email;
+    }
 
     my ($first_name,$last_name) = split(' ',$name,2);
     $first_name ||= '';
@@ -400,6 +410,7 @@ sub create_user {
     diag "Created user ".$user->email_address. ", name ".$user->guess_real_name;
     
     $self->{user_id} = $user->user_id;
+    $self->{"${name}_id"} = $user->user_id;
     return $user;
 }
 
