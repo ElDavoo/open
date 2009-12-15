@@ -9,6 +9,4 @@
  [% PROCESS element/main_nav/subnav/invite %]
 
 </ul>
-<div id="workSpaceLink">
- &nbsp; 
-</div><!-- workSpaceLink END -->
+<div id="mainNavRight"></div>
