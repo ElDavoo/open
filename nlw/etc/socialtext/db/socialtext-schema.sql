@@ -996,7 +996,7 @@ CREATE SEQUENCE signal_id_seq
 
 CREATE TABLE signal_user_set (
     signal_id bigint NOT NULL,
-    user_set_id bigint NOT NULL
+    user_set_id integer NOT NULL
 );
 
 CREATE TABLE "storage" (
@@ -1599,8 +1599,20 @@ CREATE INDEX ix_signal_user_at
 CREATE INDEX ix_signal_user_set
 	    ON signal_user_set (signal_id);
 
-CREATE UNIQUE INDEX ix_signal_user_set_user_set
+CREATE UNIQUE INDEX ix_signal_user_set_rev
 	    ON signal_user_set (user_set_id, signal_id);
+
+CREATE INDEX ix_signal_uset_accounts
+	    ON signal_user_set (signal_id, user_set_id)
+	    WHERE (user_set_id > (B'00110000000000000000000000000000'::"bit")::integer);
+
+CREATE INDEX ix_signal_uset_groups
+	    ON signal_user_set (signal_id, user_set_id)
+	    WHERE ((user_set_id >= (B'00010000000000000000000000000001'::"bit")::integer) AND (user_set_id <= (B'00100000000000000000000000000000'::"bit")::integer));
+
+CREATE INDEX ix_signal_uset_wksps
+	    ON signal_user_set (signal_id, user_set_id)
+	    WHERE ((user_set_id >= (B'00100000000000000000000000000001'::"bit")::integer) AND (user_set_id <= (B'00110000000000000000000000000000'::"bit")::integer));
 
 CREATE INDEX ix_topic_signal_page_forward
 	    ON topic_signal_page (workspace_id, page_id);
@@ -2143,4 +2155,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '99');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '100');

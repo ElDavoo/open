@@ -24,8 +24,23 @@ INSERT INTO signal_user_set (signal_id, user_set_id)
 CREATE INDEX ix_signal_user_set
     ON signal_user_set (signal_id);
 
-CREATE UNIQUE INDEX ix_signal_user_set_user_set
+CREATE UNIQUE INDEX ix_signal_user_set_rev
     ON signal_user_set (user_set_id, signal_id);
+
+-- optimize certain aggregate subselects and for filtering signals
+-- related to a particular group/account
+CREATE INDEX ix_signal_uset_groups
+    ON signal_user_set (signal_id, user_set_id)
+    WHERE user_set_id BETWEEN x'10000001'::int AND x'20000000'::int;
+
+CREATE INDEX ix_signal_uset_wksps
+    ON signal_user_set (signal_id, user_set_id)
+    WHERE user_set_id BETWEEN x'20000001'::int AND x'30000000'::int;
+
+CREATE INDEX ix_signal_uset_accounts
+    ON signal_user_set (signal_id, user_set_id)
+    WHERE user_set_id > x'30000000'::int;
+
 
 DROP TABLE signal_account;
 
