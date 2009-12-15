@@ -336,6 +336,7 @@ sub _add_signal_doc {
         [pvt => $recip ? 1 : 0],
         [dm_recip => $recip],
         (map { [a => $_] } @{ $signal->account_ids }),
+        (map { [g => $_] } @{ $signal->group_ids }),
         ($in_reply_to ? [reply_to =>$in_reply_to->user_id] : ()),
         (map { [mention => $_->user_id] } @user_topics ),
         (map { [link_w => $_->[0]],
