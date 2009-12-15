@@ -1065,6 +1065,7 @@ div.messageBox div.messageBoxBottomLeft em a {
 div#contentColumns div#contentRight	{
 	width: 25%;
 	float: right;
+        padding-right: 15px;
 }
 
 body#dashBoard div#contentColumns div#contentRight	{
