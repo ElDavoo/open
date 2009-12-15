@@ -988,16 +988,16 @@ CREATE TABLE signal (
     hidden boolean DEFAULT false
 );
 
-CREATE TABLE signal_account (
-    signal_id bigint NOT NULL,
-    account_id bigint NOT NULL
-);
-
 CREATE SEQUENCE signal_id_seq
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
+
+CREATE TABLE signal_user_set (
+    signal_id bigint NOT NULL,
+    user_set_id bigint NOT NULL
+);
 
 CREATE TABLE "storage" (
     user_id bigint NOT NULL,
@@ -1294,13 +1294,13 @@ ALTER TABLE ONLY sessions
     ADD CONSTRAINT sessions_pkey
             PRIMARY KEY (id);
 
-ALTER TABLE ONLY signal_account
-    ADD CONSTRAINT signal_account_pkey
-            PRIMARY KEY (signal_id, account_id);
-
 ALTER TABLE ONLY signal
     ADD CONSTRAINT signal_pkey
             PRIMARY KEY (signal_id);
+
+ALTER TABLE ONLY signal_user_set
+    ADD CONSTRAINT signal_user_set_pkey
+            PRIMARY KEY (signal_id, user_set_id);
 
 ALTER TABLE ONLY "System"
     ADD CONSTRAINT system_pkey
@@ -1581,12 +1581,6 @@ CREATE INDEX ix_rollup_user_signal_user
 CREATE INDEX ix_session_last_updated
 	    ON sessions (last_updated);
 
-CREATE INDEX ix_signal_account
-	    ON signal_account (signal_id);
-
-CREATE UNIQUE INDEX ix_signal_account_account
-	    ON signal_account (account_id, signal_id);
-
 CREATE INDEX ix_signal_at
 	    ON signal ("at");
 
@@ -1601,6 +1595,12 @@ CREATE INDEX ix_signal_reply
 
 CREATE INDEX ix_signal_user_at
 	    ON signal (user_id, "at");
+
+CREATE INDEX ix_signal_user_set
+	    ON signal_user_set (signal_id);
+
+CREATE UNIQUE INDEX ix_signal_user_set_user_set
+	    ON signal_user_set (user_set_id, signal_id);
 
 CREATE INDEX ix_topic_signal_page_forward
 	    ON topic_signal_page (workspace_id, page_id);
@@ -2027,16 +2027,6 @@ ALTER TABLE ONLY rollup_user_signal
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
-ALTER TABLE ONLY signal_account
-    ADD CONSTRAINT signal_account_fk
-            FOREIGN KEY (signal_id)
-            REFERENCES signal(signal_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY signal_account
-    ADD CONSTRAINT signal_account_signal_fk
-            FOREIGN KEY (account_id)
-            REFERENCES "Account"(account_id) ON DELETE CASCADE;
-
 ALTER TABLE ONLY signal
     ADD CONSTRAINT signal_recipient_fk
             FOREIGN KEY (recipient_id)
@@ -2046,6 +2036,11 @@ ALTER TABLE ONLY signal
     ADD CONSTRAINT signal_user_id_fk
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY signal_user_set
+    ADD CONSTRAINT signal_user_set_signal_fk
+            FOREIGN KEY (signal_id)
+            REFERENCES signal(signal_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY tag_people__person_tags
     ADD CONSTRAINT tag_people_fk
