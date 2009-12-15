@@ -69,8 +69,22 @@ sub plugin_enabled_for_users {
         );
     }
 
+    return $self->plugin_enabled_for_user_sets(
+        actor_id => $actor_id,
+        user_set_id => $user_id,
+        plugin_name => $plugin_name,
+    );
+}
+
+sub plugin_enabled_for_user_sets {
+    my $self        = shift;
+    my %p           = @_;
+    my $actor_id    = $p{actor_id};
+    my $user_set_id = $p{user_set_id};
+    my $plugin_name = $p{plugin_name};
+
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "users:$user_id\0$actor_id\0$plugin_name";
+    my $cache_key = "user_sets:$user_set_id\0$actor_id\0$plugin_name";
     my $enabled = $cache->get($cache_key);
     return $enabled if defined $enabled;
 
@@ -94,11 +108,10 @@ SQL
 
     Socialtext::Timer->Continue('plugin_enabled_for_users');
     $enabled = sql_singlevalue($sql, $plugin_name,
-                               $actor_id, $user_id) ? 1 : 0;
+                               $actor_id, $user_set_id) ? 1 : 0;
     Socialtext::Timer->Pause('plugin_enabled_for_users');
 
     $cache->set($cache_key, $enabled);
-    #warn "PLUGIN $plugin_name ENABLED FOR ".$actor->username." and ". $user->username ."? $enabled\n";
     return $enabled;
 }
 
