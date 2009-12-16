@@ -3429,7 +3429,10 @@ sub _success {
         and not $self->{ceqlotron};
 
     my $data = {
-        args => join ' ', @ARGV,
+        # This *NEEDS* to be the original ARGV, not $self->{argv}, so we can
+        # show the full set of args we were given; $self->{argv} is not
+        # guaranteed to be preserved.
+        args => join(' ', @ARGV),
     };
     st_timed_log(
         'info', 'CLI', $self->{command},
