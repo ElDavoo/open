@@ -79,3 +79,7 @@ shell_run "dump-schema $generated_schema";
 my $diff = qx{diff -du $real_dir/socialtext-schema.sql $generated_schema};
 is $diff, '', "Zero length diff";
 
+if ($ENV{INSTALL_SCHEMA} eq 'please') {
+    shell_run("cp $generated_schema $real_dir/socialtext-schema.sql");
+}
+
