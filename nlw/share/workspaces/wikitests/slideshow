@@ -618,6 +618,7 @@ Lightbox screens:
 
 | include | [ControlShow] |  |
 | include | [PaginateShow] |  |
+| include | [GroupsHomeShow] |  |
 
 | *Comment* | moved Simple mode to end because Safari raises an alert |  |
 | open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |

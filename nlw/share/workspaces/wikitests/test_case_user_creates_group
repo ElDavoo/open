@@ -1,0 +1,24 @@
+| *Comment* | Test Case: User Creates Group |
+
+| *Comment* | Test Case: User Creates Group Setup |  |
+| set | newacctname | ucg-acct-%%start_time%% |
+| set | newwws | ucg-ws-%%start_time%% |
+
+| create-workspace | %%newws%% | %%newacctname%% |
+
+| *Comment* | Test Case: User Create Group disabled, try create group |  |
+| st-admin | disable-plugin --plugin groups --all-accounts | The groups plugin is now disabled for all accounts |
+| open | /?create_group |  |
+| text_like | //body | Unable to view container |
+
+| *Comment* | Test Case: User Creates Group enabled, create group | |
+| st-admin | enable-plugin --plugin groups --all-accounts | The groups plugin is now enabled for all accounts |
+| open | /?create_group |  |
+| text_like | //body | Create A Group |
+| wait_for_element_visible_ok | link=? | 30000 |
+| wait_for_element_visible_ok | create-group | 30000 |
+
+| *Comment* | Test Case: User Creates Group TearDown |  |
+| st-admin | delete-workspace --w %%newws%% --no-export |  |
+
+| *Comment* | Test Case: User Creates Group |
