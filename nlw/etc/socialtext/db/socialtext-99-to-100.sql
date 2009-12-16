@@ -89,6 +89,14 @@ AS $$
 $$
     LANGUAGE plpgsql;
 
+-- same as users_share_plugin, except that the two users can share a user_set
+-- that is transitively connected to some plugin (e.g. they share a group,
+-- and that group's account has signals enabled)
+CREATE VIEW users_share_plugin_tc AS
+    SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, user_set_id, plugin
+    FROM user_sets_for_user v_path
+    JOIN user_set_plugin_tc plug USING (user_set_id)
+    JOIN user_sets_for_user o_path USING (user_set_id);
 
 UPDATE "System"
    SET value = '100'

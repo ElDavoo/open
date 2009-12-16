@@ -1132,6 +1132,12 @@ CREATE VIEW users_share_plugin AS
    JOIN user_set_plugin plug USING (user_set_id)
    JOIN user_sets_for_user o_path USING (user_set_id);
 
+CREATE VIEW users_share_plugin_tc AS
+  SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, v_path.user_set_id, plug.plugin
+   FROM user_sets_for_user v_path
+   JOIN user_set_plugin_tc plug USING (user_set_id)
+   JOIN user_sets_for_user o_path USING (user_set_id);
+
 CREATE TABLE webhook (
     id bigint NOT NULL,
     creator_id bigint NOT NULL,
