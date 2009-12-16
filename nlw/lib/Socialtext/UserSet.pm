@@ -3,6 +3,7 @@ package Socialtext::UserSet;
 use Moose;
 use Socialtext::SQL qw/get_dbh :txn/;
 use Socialtext::Timer qw/time_scope/;
+use List::MoreUtils qw/part/;
 use Memoize;
 use namespace::clean -except => 'meta';
 
@@ -47,9 +48,9 @@ our @all_consts = qw(
     ACCT_OFFSET ACCT_END PG_ACCT_OFFSET PG_ACCT_FILTER
 );
 our @EXPORT = ();
-our @EXPORT_OK = (@all_consts);
+our @EXPORT_OK = (@all_consts,'user_set_id_partition');
 our %EXPORT_TAGS = (
-    'all' => \@EXPORT_OK,
+    'all' => [@EXPORT_OK,'user_set_id_partition'],
     'const' => \@all_consts,
 );
 
@@ -80,6 +81,33 @@ explicit role.  A user-set cannot be nested into itself.
 
 A user is included in other user-sets using the user's ID number. We number
 all other user-set containers with IDs that don't overlap with users.
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item user_set_id_partition ($ids)
+
+Given an arrayref of user_set_ids, return the partitioned set, mapped into user, group, workspace and account IDs.
+
+  my ($users,$groups,$wses,$accts) = user_set_id_partition($ids);
+
+=cut
+
+sub user_set_id_partition {
+    my $ids = shift;
+    my ($users,$groups,$wses,$accts) = part {
+        # each id range is 0x10000000 wide (28 bits over)
+        $_ >> 28 & 0xf
+    } @$ids;
+
+    return [ map { $_ - USER_OFFSET  } @{ $users  || [] } ],
+           [ map { $_ - GROUP_OFFSET } @{ $groups || [] } ],
+           [ map { $_ - WKSP_OFFSET  } @{ $wses   || [] } ],
+           [ map { $_ - ACCT_OFFSET  } @{ $accts  || [] } ];
+}
+
+=back
 
 =head1 METHODS
 
