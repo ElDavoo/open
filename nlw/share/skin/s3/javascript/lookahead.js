@@ -213,7 +213,13 @@
     };
 
     Lookahead.prototype.filterRE = function (val) {
-        return new RegExp('\\b(' + val + ')', 'ig');
+        var pattern = '(' + val + ')';
+
+        if (/^\w/.test(val)) {
+            pattern = "\\b" + pattern;
+        }
+
+        return new RegExp(pattern, 'ig');
     };
     
     Lookahead.prototype.filterData = function (val, data) {
