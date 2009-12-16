@@ -349,21 +349,25 @@ sub shared_accounts {
 
 sub groups {
     my $self = shift;
+    my %p = @_;
+
     my $sth = sql_execute(q{
-        SELECT DISTINCT(into_set_id) AS group_id, driver_group_name
+        SELECT DISTINCT(group_id) AS group_id, driver_group_name
         FROM user_set_path
         JOIN groups ON into_set_id = user_set_id
         WHERE from_set_id = ?
-          AND into_set_id }.PG_GROUP_FILTER.q{
         ORDER BY driver_group_name
     }, $self->user_set_id);
 
+    my $apply = $p{ids_only}
+        ? sub { $_[0][0] }
+        : sub {
+            return Socialtext::Group->GetGroup( group_id => $_[0][0] );
+        };
+
     return Socialtext::MultiCursor->new(
         iterables => [ $sth->fetchall_arrayref ],
-        apply => sub {
-            my $row = shift;
-            return Socialtext::Group->GetGroup( group_id => $row->[0] );
-        }
+        apply => $apply,
     );
 }
 
