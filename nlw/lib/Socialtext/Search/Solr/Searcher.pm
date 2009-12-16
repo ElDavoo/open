@@ -84,6 +84,14 @@ sub _search {
         @account_ids = $opts{viewer}->accounts(ids_only => 1);
     }
 
+    my @group_ids;
+    if ($opts{group_ids}) {
+        @group_ids = @{ $opts{group_ids} };
+    }
+    elsif ($opts{viewer}) {
+        @group_ids = $opts{viewer}->groups(ids_only => 1)->all;
+    }
+
     $query_string = lc $query_string;
     $query_string =~ s/\b(and|or|not)\b/uc($1)/ge;
     $query_string =~ s/\[([^\]]+)\]/'[' . uc($1) . ']'/ge;
@@ -107,10 +115,12 @@ sub _search {
     elsif ($opts{doctype}) {
         push @filter_query, "doctype:$opts{doctype}";
         if ($opts{viewer}) {
-            # Only from accounts I (the viewer) have access to
-            $filter_query[0] .= " AND ("
-                . join(' OR ', map { "a:$_" } @account_ids)
-                . ")";
+            # Only from accounts and groups the viewer has a connection to
+            my $nets = join(' OR ',
+                (map { "a:$_" } @account_ids),
+                (map { "g:$_" } @group_ids),
+            );
+            $filter_query[$#filter_query] .= " AND ($nets)";
 
             if ($opts{doctype} eq 'signal') {
                 # Find my public signals and private ones I sent or received
