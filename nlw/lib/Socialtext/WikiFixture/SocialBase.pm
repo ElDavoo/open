@@ -660,7 +660,7 @@ sub remove_user_from_account {
 
     my $user  = Socialtext::User->Resolve($user_name);
     my $acct = Socialtext::Account->new(name => $account);
-    $account->remove_user(user => $user);
+    $acct->remove_user(user => $user);
     diag "Remove user $user_name from account $account";
 }
 
