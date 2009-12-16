@@ -44,6 +44,10 @@ sub init {
     $self->{backend_http_port}  = Socialtext::HTTP::Ports->backend_http_port();
     $self->{backend_https_port} = Socialtext::HTTP::Ports->backend_https_port();
 
+    my $def = Socialtext::Account->Default;
+    $self->{default_account} = $def->name;
+    $self->{default_account_id} = $def->account_id;
+
     # Set up the Test::HTTP object initially
     $self->http_user_pass($self->{username}, $self->{password});
 }
