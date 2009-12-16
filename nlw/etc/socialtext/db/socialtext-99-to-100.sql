@@ -65,6 +65,22 @@ AS $$
         DELETE FROM user_set_plugin
         WHERE user_set_id = to_purge;
 
+        -- Signals that will have zero user-sets after we delete to_purge need
+        -- to also get purged.  Otherwise these signals become visible to
+        -- everyone.
+        DELETE FROM signal
+        WHERE signal_id IN (
+            SELECT signal_id
+              FROM signal_user_set sus1
+             WHERE sus1.user_set_id = to_purge
+               AND NOT EXISTS (
+                   SELECT 1
+                     FROM signal_user_set sus2
+                    WHERE sus1.signal_id = sus2.signal_id
+                      AND sus2.user_set_id <> to_purge
+               )
+         );
+
         DELETE FROM signal_user_set
         WHERE user_set_id = to_purge;
 
