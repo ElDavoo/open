@@ -959,7 +959,8 @@ sub code_is {
     $self->{http}->status_code_is($code);
     if ($self->{http}->response->code != $code) {
         warn "Response message: "
-            . ($self->{http}->response->message || 'None')
+            . ($self->{http}->response->message || 'None') . ', '
+            . ($self->{http}->response->content || 'No content')
             . " url(" . $self->{http}->request->url . ")";
     }
     if ($msg) {
