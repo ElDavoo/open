@@ -232,13 +232,15 @@
             if (filtered.length >= self.opts.count) return;
 
             var title = self.linkTitle(this);
-            if (self.opts.grep && !self.opts.grep(this)) return;
+            if (title.match(re)) {
+                if (self.opts.grep && !self.opts.grep(this)) return;
 
-            filtered.push({
-                bolded_title: title.replace(re, '<b>$1</b>'),
-                title: title,
-                value: self.linkValue(this)
-            });
+                filtered.push({
+                    bolded_title: title.replace(re, '<b>$1</b>'),
+                    title: title,
+                    value: self.linkValue(this)
+                });
+            }
         });
 
         return filtered;
