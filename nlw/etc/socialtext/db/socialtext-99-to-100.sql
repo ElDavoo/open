@@ -41,8 +41,38 @@ CREATE INDEX ix_signal_uset_accounts
     ON signal_user_set (signal_id, user_set_id)
     WHERE user_set_id > x'30000000'::int;
 
-
 DROP TABLE signal_account;
+
+-- modify the purge_user_set function to remove the signal_user_set entry
+CREATE OR REPLACE FUNCTION purge_user_set(to_purge integer) RETURNS boolean
+AS $$
+    BEGIN
+        LOCK user_set_include, user_set_path IN SHARE MODE;
+
+        DELETE FROM user_set_include
+        WHERE from_set_id = to_purge OR into_set_id = to_purge;
+
+        DELETE FROM user_set_path
+        WHERE user_set_path_id IN (
+            SELECT user_set_path_id
+              FROM user_set_path_component
+             WHERE user_set_id = to_purge
+        );
+
+        DELETE FROM user_set_plugin_pref
+        WHERE user_set_id = to_purge;
+
+        DELETE FROM user_set_plugin
+        WHERE user_set_id = to_purge;
+
+        DELETE FROM signal_user_set
+        WHERE user_set_id = to_purge;
+
+        RETURN true;
+    END;
+$$
+    LANGUAGE plpgsql;
+
 
 UPDATE "System"
    SET value = '100'

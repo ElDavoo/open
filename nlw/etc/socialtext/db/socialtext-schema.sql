@@ -255,6 +255,9 @@ CREATE FUNCTION purge_user_set(to_purge integer) RETURNS boolean
         DELETE FROM user_set_plugin
         WHERE user_set_id = to_purge;
 
+        DELETE FROM signal_user_set
+        WHERE user_set_id = to_purge;
+
         RETURN true;
     END;
 $$
