@@ -8,13 +8,12 @@ use namespace::clean -except => 'meta';
 
 subtype 'UniStr'
     => as 'Str';
+    => where { Encode::is_utf8($_) };
 
 coerce 'UniStr'
     => from 'Str'
     => via {
-        my $v = $_;
-        Encode::_utf8_on($v) unless Encode::is_utf8($v);
-        return $v;
+        Encode::decode_utf8($_); # This is no-op if _is_utf8 is on.
     };
 
 coerce 'Str'
