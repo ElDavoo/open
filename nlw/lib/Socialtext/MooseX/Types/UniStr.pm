@@ -7,7 +7,7 @@ use Encode ();
 use namespace::clean -except => 'meta';
 
 subtype 'UniStr'
-    => as 'Str';
+    => as 'Str'
     => where { Encode::is_utf8($_) };
 
 coerce 'UniStr'
