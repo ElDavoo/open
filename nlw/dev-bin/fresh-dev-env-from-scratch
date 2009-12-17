@@ -3,15 +3,18 @@
 
 # '-m' option ( minimal ) will set up ony 'admin' fixture, 'ALL' is default
 # '-b' option will set apache up with benchmark_mode = 1
+# '-w' option will _not_ upadte widgets/galleries, also implies '-b'
 # '-p' option will _not_ start up nlw in this script
 FIXTURE='ALL'
 BENCHMARK=0
 PAUSE=0
-while getopts "mbp" OPT; do
+UPDATE_WIDGETS=1
+while getopts "mbpw" OPT; do
   case $OPT in
     b) BENCHMARK=1;;
     m) FIXTURE=admin;;
     p) PAUSE=1;;
+    w) UPDATE_WIDGETS=0;BENCHMARK=1;;
   esac
 done
 
@@ -96,8 +99,10 @@ fi
 
 st-admin enable-plugin --all-workspaces --plugin socialcalc
 
-st-widgets update-all
-st-widgets update-gallery
+if [ $UPDATE_WIDGETS == 1 ]; then
+    st-widgets update-all
+    st-widgets update-gallery
+fi
 
 # Clean up dead symlinks
 find -L -type l -delete
