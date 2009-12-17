@@ -366,3 +366,4 @@ t/Socialtext/People/ProfilePhoto.t
 t/wikitests/signals/targets.wiki
 lib/Socialtext/Rest/Signals/Targets.pm
 t/wikitests/signals/data_signals-groups.wiki
+t/wikitests/groups/groups-ui-requires-people.wiki
