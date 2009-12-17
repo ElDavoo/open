@@ -58,6 +58,7 @@ has_column 'primary_account_id' => (
     trigger => \&_set_primary_account_id,
     required => 1,
 );
+*account_id = \&primary_account_id; # alias for API consistency
 
 has 'primary_account' => (
     is => 'ro', isa => 'Socialtext::Account',

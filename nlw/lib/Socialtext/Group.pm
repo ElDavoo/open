@@ -32,6 +32,7 @@ has 'homunculus' => (
         display_name
         description
         primary_account_id
+        account_id
         primary_account
         creation_datetime
         created_by_user_id
