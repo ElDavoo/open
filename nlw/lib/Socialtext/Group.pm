@@ -59,6 +59,9 @@ with 'Socialtext::UserSetContained',
 sub enable_plugin { die "cannot enable a plugin for a group" }
 sub disable_plugin { die "cannot disable a plugin for a group" }
 
+# Basic implementation for now.
+sub allow_invitation { shift->can_update_store() }
+
 ###############################################################################
 sub Drivers {
     my $drivers = Socialtext::AppConfig->group_factories();
