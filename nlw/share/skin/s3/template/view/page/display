@@ -144,6 +144,7 @@
       <div id="st-page-content">[% page.content %]</div>
     </div>
     <div id="contentRight">
+    [% FILTER decorate('sideboxes') %]
       <div class="widget">
         <div class="widgetHeader">
         <h4>[% loc('Tags') %]</h4>
@@ -296,6 +297,7 @@
         <div class="widgetBottom"><div class="widgetBottomRight"></div></div><!-- widgetBottom END -->
       </div><!-- widget END -->
       [% END %]
+    [% END %]
     </div><!-- contentRight -->
   </div>
 
