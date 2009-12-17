@@ -221,6 +221,19 @@ around 'groups','group_count' => sub {
     $code->($self, %p);
 };
 
+sub invite {
+    my $self = shift;
+    my %p    = @_;  # passed straight through.
+
+    require Socialtext::AccountInvitation;
+    return Socialtext::AccountInvitation->new(
+        account    => $self,
+        from_user  => $p{from_user},
+        extra_text => $p{extra_text},
+        viewer     => $p{viewer},
+    );
+}
+
 sub _primary_user_ids {
     my $self = shift;
     my $sth = sql_execute(q{
