@@ -1,9 +1,11 @@
 | *Comment* | Test Case: User Creates Group |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: User Creates Group Setup |  |
 | set | newacctname | ucg-acct-%%start_time%% |
 | set | newwws | ucg-ws-%%start_time%% |
-
+| set | groupname | ἀπὸ τὸ Ἄξιον ἐστί %%starttime%% |
 | create-workspace | %%newws%% | %%newacctname%% |
 
 | *Comment* | Test Case: User Create Group disabled, try create group |  |
@@ -11,12 +13,40 @@
 | open | /?create_group |  |
 | text_like | //body | Unable to view container |
 
-| *Comment* | Test Case: User Creates Group enabled, create group | |
+| *Comment* | Test Case: User Creates Group enabled, create group |  |
 | st-admin | enable-plugin --plugin groups --all-accounts | The groups plugin is now enabled for all accounts |
 | open | /?create_group |  |
 | text_like | //body | Create A Group |
 | wait_for_element_visible_ok | link=? | 30000 |
-| wait_for_element_visible_ok | create-group | 30000 |
+| wait_for_element_visible_ok | st-create-group | 30000 |
+
+| *Comment* | Actually Create a Group |
+| st-name-widget | 1 | create_group |
+| st-select-widget | create_group |
+| wait_for_element_visible_ok | name | 30000 |
+| wait_for_element_visible_ok | description | 30000 |
+| wait_for_element_visible_ok | upload | 30000 |
+| wait_for_element_visible_ok | reset | 30000 |
+| type_ok | name | %%groupname%% |
+| type_ok | description | Стоял он, дум великих полн, |
+| type_ok | upload | %%wikitest_files%%wikitest.jpg |
+| pause | 20000 |
+| select-frame | relative=parent |  |
+
+| wait_for_element_visible_ok | st-create-group | 30000 |
+| click_and_wait | st-create-group |
+
+| *Comment* | Inspect New Group Page |  |
+
+| *Comment* | Create Identical Group Name, see error |  |
+
+| *Comment* | Test the cancel button, go to Dashboard |
+| open | /?create_group |  |
+| wait_for_element_visible_ok | link=? | 30000 |
+| wait_for_element_visible_ok | st-create-group | 30000 |
+| wait_for_element_visible_ok | st-cancel-create-group | 30000 |
+| click_and_wait | st-cancel-create-group |  |
+| text_like | Welcome |  |
 
 | *Comment* | Test Case: User Creates Group TearDown |  |
 | st-admin | delete-workspace --w %%newws%% --no-export |  |
