@@ -647,7 +647,7 @@ sub dump_roles {
                 my $role_id = $acct->user_set->direct_object_role($u);
                 my $role = $role_id
                     ? Socialtext::Role->new(role_id => $role_id)->name
-                    : 'unknown role';
+                    : 'indirect role';
                 my $name = $u->username;
                 my $id = $u->user_id;
                 print "    U ($id) $name ($role)\n";
@@ -661,7 +661,7 @@ sub dump_roles {
                 my $role_id = $acct->user_set->direct_object_role($w);
                 my $role = $role_id
                     ? Socialtext::Role->new(role_id => $role_id)->name
-                    : 'unknown role';
+                    : 'indirect role';
                 my $name = $w->name;
                 my $id = $w->workspace_id;
                 print "    W ($id) $name ($role)\n";
@@ -669,19 +669,35 @@ sub dump_roles {
                 if (! delete $related_user_sets{$w->user_set_id}) {
                     warn "      (THIS WORKSPACE WAS NOT RELATED?!)\n";
                 }
+
+                my $users = $w->users;
+                while (my $u = $users->next) {
+                    my $name = $u->username;
+                    my $id = $u->user_id;
+                    my $role = $w->role_for_user($u)->name;
+                    print "      U ($id) $name ($role)\n";
+                }
             }
 
             while (my $g = $acct_groups->next) {
                 my $role_id = $acct->user_set->direct_object_role($g);
                 my $role = $role_id
                     ? Socialtext::Role->new(role_id => $role_id)->name
-                    : 'unknown role';
+                    : 'indirect role';
                 my $name = $g->driver_group_name;
                 my $id = $g->group_id;
                 print "    G ($id) $name ($role)\n";
                 
                 if (! delete $related_user_sets{$g->user_set_id}) {
                     warn "      (THIS GROUP WAS NOT RELATED?!)\n";
+                }
+
+                my $users = $g->users;
+                while (my $u = $users->next) {
+                    my $name = $u->username;
+                    my $id = $u->user_id;
+                    my $role = $g->role_for_user($u)->name;
+                    print "      U ($id) $name ($role)\n";
                 }
             }
 
