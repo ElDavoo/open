@@ -1,4 +1,4 @@
-Test account_id=N filtering for the /data/events ReST API.
+Test group_id=N filtering for the /data/events ReST API.
 
 * Fixture: SocialRest
 
@@ -7,47 +7,59 @@ Test account_id=N filtering for the /data/events ReST API.
 | standard-test-setup | b                                      |
 | standard-test-setup | c                                      |
 
-| comment | make them share an account | |
-| add-member | %%a_username%% | %%b_workspace%% |
-| add-member | %%b_username%% | %%a_workspace%% |
+# User A is in Group A, Workspace A,B
+# User B is in group A,B,C, workspace A,B,C
+# User C is in group C, workspace C
 
-| comment | a and c are disjoint |
-| add-member | %%b_username%% | %%c_workspace%% |
+| comment                | make them share an groups |                 |
+| add-group-to-workspace | %%a_group_id%%            | %%b_workspace%% |
+| add-group-to-workspace | %%b_group_id%%            | %%a_workspace%% |
+| add-user-to-group      | %%b_username%%            | %%a_group_id%%  |
+| add-user-to-group      | %%b_username%%            | %%c_group_id%%  |
 
+| comment                | a and c are disjoint |                 |
+| add-group-to-workspace | %%b_group_id%%       | %%c_workspace%% |
 
+| dump-roles |
 
 Set up events
 
 | st-clear-events |
 
-| comment         | set up some test pages |            |             |
-| http-user-pass  | %%a_username%%         | a_password |             |
-| edit-page       | %%a_workspace%%        | X01        | x01-content |
-| edit-page       | %%b_workspace%%        | X02        | x02-content |
-| http-user-pass  | %%c_username%%         | c_password |             |
-| edit-page       | %%c_workspace%%        | X03        | x03-content |
+| comment        | set up test page edits, page events, people events and signal events |            |             |
+| http-user-pass | %%a_username%%                                                       | a_password |             |
+| edit-page      | %%a_workspace%%                                                      | X01        | x01-content |
+| edit-page      | %%b_workspace%%                                                      | X02        | x02-content |
+| http-user-pass | %%c_username%%                                                       | c_password |             |
+| edit-page      | %%c_workspace%%                                                      | X03        | x03-content |
 
-| comment | two page events (as another user so page convos works) |
 | http-user-pass | %%b_username%% | b_password |
 | post-json | /data/events | {"context":{"tk":"1a"},"page":{"id":"x01", "workspace_name":"%%a_workspace%%"},"action":"edit_save","event_class":"page","actor":{"id":"%%b_user_id%%"}} |
+| code-is | 201 |
 | post-json | /data/events | {"context":{"tk":"1b"},"page":{"id":"x02", "workspace_name":"%%b_workspace%%"},"action":"edit_save","event_class":"page","actor":{"id":"%%b_user_id%%"}} |
+| code-is | 201 |
 | post-json | /data/events | {"context":{"tk":"1c"},"page":{"id":"x03", "workspace_name":"%%c_workspace%%"},"action":"edit_save","event_class":"page","actor":{"id":"%%b_user_id%%"}} |
+| code-is | 201 |
 
-| comment | two people events |
 | http-user-pass | %%a_username%% | a_password |
 | post-json | /data/events | {"context":{"tk":"2a"},"person":{"id":"%%a_user_id%%"},"actor":{"id":"%%a_user_id%%"},"action":"edit_save","event_class":"person"}   |
+| code-is | 201 |
 | http-user-pass | %%b_username%% | b_password |
 | post-json | /data/events | {"context":{"tk":"2b"},"person":{"id":"%%b_user_id%%"},"actor":{"id":"%%b_user_id%%"},"action":"edit_save","event_class":"person"} |
+| code-is | 201 |
 | http-user-pass | %%c_username%% | c_password |
 | post-json | /data/events | {"context":{"tk":"2c"},"person":{"id":"%%c_user_id%%"},"actor":{"id":"%%c_user_id%%"},"action":"edit_save","event_class":"person"} |
+| code-is | 201 |
 
 | http-user-pass | %%b_username%% | b_password |
 | post-json | /data/signals | {"signal":"tk 3abc!"} |
-| post-json | /data/signals | {"signal":"tk 3a!","account_ids":[%%a_account_id%%]} |
-| post-json | /data/signals | {"signal":"tk 3b!","account_ids":[%%b_account_id%%]} |
-| post-json | /data/signals | {"signal":"tk 3c!","account_ids":[%%c_account_id%%]} |
-
-
+| code-is | 201 |
+| post-json | /data/signals | {"signal":"tk 3a!","group_ids":[%%a_group_id%%]} |
+| code-is | 201 |
+| post-json | /data/signals | {"signal":"tk 3b!","group_ids":[%%b_group_id%%]} |
+| code-is | 201 |
+| post-json | /data/signals | {"signal":"tk 3c!","group_ids":[%%c_group_id%%]} |
+| code-is | 201 |
 
 
 | comment         | check event setup |                  |
@@ -56,6 +68,7 @@ Set up events
 | code-is         | 200               |                  |
 | json-parse      |                   |                  |
 | json-array-size | 13                |                  |
+
 | body-like       | 1a                |                  |
 | body-like       | 1b                |                  |
 | body-like       | 1c                |                  |
@@ -66,7 +79,6 @@ Set up events
 | body-like       | 3a!               |                  |
 | body-like       | 3b!               |                  |
 | body-like       | 3c!               |                  |
-
 
 
 `/data/events/conversations`
@@ -83,21 +95,17 @@ Set up events
 | body-like       | "tk":"1a"    |                  |
 | body-like       | "tk":"1b"    |                  |
 
-| comment | convo events, user=a, filter=a |
-| get | %%a_convos%%?account_id=%%a_account_id%% | application/json |
-| code-is         | 200       |
-| json-parse      |           |
-| json-array-size | 1         |
-| body-like       | "tk":"1a" |
-| body-unlike     | "tk":"1b" |
+| comment         | convo events, user=a, filter=a       |                  |
+| get             | %%a_convos%%?group_id=%%a_group_id%% | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 2                                    |                  |
+| body-like       | "tk":"1a"                            |                  |
+| body-like       | "tk":"1b"                            |                  |
 
 | comment | convo events, user=a, filter=b |
-| get | %%a_convos%%?account_id=%%b_account_id%% | application/json |
-| code-is         | 200       |
-| json-parse      |           |
-| json-array-size | 1         |
-| body-unlike     | "tk":"1a" |
-| body-like       | "tk":"1b" |
+| get             | %%a_convos%%?group_id=%%b_group_id%% | application/json |
+| code-is         | 403                                  |                  |
 
 
 
@@ -105,34 +113,35 @@ Set up events
 
 | comment | page contrib events, user=a, filter=a |
 | http-user-pass | %%a_username%% | a_password |
-| get | /data/events?account_id=%%a_account_id%%;event_class=page;contributions=1 | application/json |
+| get | /data/events?group_id=%%a_group_id%%;event_class=page;contributions=1 | application/json |
 | code-is         | 200       |
 | json-parse      |           |
-| json-array-size | 2         |
+| json-array-size | 4         |
 | body-like       | "tk":"1a" |
-| body-like       | X01 |
-| body-unlike     | X02 |
-| body-unlike     | "tk":"1b" |
+| body-like       | "tk":"1b" |
+| body-unlike       | X03 |
 | body-unlike     | "tk":"1c" |
 
 | comment | page contrib events, user=b, filter=b |
 | http-user-pass | %%b_username%% | b_password |
-| get | /data/events?account_id=%%b_account_id%%;event_class=page;contributions=1 | application/json |
+| get | /data/events?group_id=%%b_group_id%%;event_class=page;contributions=1 | application/json |
 | code-is         | 200       |
 | json-parse      |           |
-| json-array-size | 2         |
-| body-unlike     | "tk":"1a" |
+| json-array-size | 6         |
+| body-like       | "tk":"1a" |
 | body-like       | "tk":"1b" |
-| body-unlike     | "tk":"1c" |
+| body-like     | "tk":"1c" |
 
 | comment | page contrib events, user=b, filter=c |
 | http-user-pass | %%b_username%% | b_password |
-| get | /data/events?account_id=%%c_account_id%%;event_class=page;contributions=1 | application/json |
+| get | /data/events?group_id=%%c_group_id%%;event_class=page;contributions=1 | application/json |
 | code-is         | 200       |
 | json-parse      |           |
 | json-array-size | 2         |
 | body-unlike     | "tk":"1a" |
 | body-unlike     | "tk":"1b" |
+| body-unlike     | X01       |
+| body-unlike     | X02       |
 | body-like       | "tk":"1c" |
 
 
@@ -141,12 +150,12 @@ Set up events
 
 | comment | general events, user=a, filter=a |
 | http-user-pass | %%a_username%% | a_password |
-| get | /data/events?account_id=%%a_account_id%% | application/json |
+| get | /data/events?group_id=%%a_group_id%% | application/json |
 | code-is         | 200       |
 | json-parse      |           |
-| json-array-size | 6         |
+| json-array-size | 8         |
 | body-like       | "tk":"1a" |
-| body-unlike     | "tk":"1b" |
+| body-like     | "tk":"1b" |
 | body-unlike     | "tk":"1c" |
 | body-like       | "tk":"2a" |
 | body-like       | "tk":"2b" |
@@ -158,25 +167,44 @@ Set up events
 
 | comment | general events, user=b, filter=b |
 | http-user-pass | %%b_username%% | b_password |
-| get | /data/events?account_id=%%b_account_id%% | application/json |
+| get | /data/events?group_id=%%b_group_id%% | application/json |
 | code-is         | 200       |
 | json-parse      |           |
-| json-array-size | 6         |
-| body-unlike | "tk":"1a"  |
+| json-array-size | 9         |
+| body-like | "tk":"1a"  |
 | body-like   | "tk":"1b"  |
-| body-unlike | "tk":"1c"  |
-| body-like   | "tk":"2a"  |
+| body-like | "tk":"1c"  |
+| body-unlike   | "tk":"2a"  |
 | body-like   | "tk":"2b"  |
-User c is only in account c, so that edit event won't show:
 | body-unlike   | "tk":"2c"  |
 | body-like   | "tk 3abc!" |
 | body-unlike | "tk 3a!"   |
 | body-like   | "tk 3b!"   |
 | body-unlike | "tk 3c!"   |
 
+| comment | general events, user=b, filter=b, user a in group b |
+| add-user-to-group | %%a_username%% | %%b_group_id%% |
+| http-user-pass | %%b_username%% | b_password |
+| get | /data/events?group_id=%%b_group_id%% | application/json |
+| code-is         | 200       |
+| json-parse      |           |
+| json-array-size | 11         |
+| body-like | "tk":"1a"  |
+| body-like   | "tk":"1b"  |
+| body-like | "tk":"1c"  |
+| body-like   | "tk":"2a"  |
+| body-like   | "tk":"2b"  |
+| body-unlike   | "tk":"2c"  |
+| body-like   | "tk 3abc!" |
+| body-unlike | "tk 3a!"   |
+| body-like   | "tk 3b!"   |
+| body-unlike | "tk 3c!"   |
+| body-like   | "action":"add_user" |
+| remove-user-from-group | %%a_username%% | %%b_group_id%% |
+
 | comment | signal events, user=b, filter=b |
 | http-user-pass | %%b_username%% | b_password |
-| get | /data/events?account_id=%%b_account_id%%;event_class=signal | application/json |
+| get | /data/events?group_id=%%b_group_id%%;event_class=signal | application/json |
 | code-is         | 200       |
 | json-parse      |           |
 | json-array-size | 2         |
@@ -187,7 +215,6 @@ User c is only in account c, so that edit event won't show:
 | body-like   | "tk 3b!"   |
 | body-unlike | "tk 3c!"   |
 
-
 `/data/events/activities`
 
 | comment | a viewing b's profile, no filter |
@@ -195,25 +222,9 @@ User c is only in account c, so that edit event won't show:
 | get | /data/events/activities/%%b_username%% | application/json |
 | code-is         | 200        |
 | json-parse      |            |
-| json-array-size | 6          |
+| json-array-size | 5          |
 | body-like       | "tk":"1a"  |
 | body-like       | "tk":"1b"  |
-| body-unlike     | "tk":"1c"  |
-| body-unlike     | "tk":"2a"  |
-| body-like       | "tk":"2b"  |
-| body-unlike     | "tk":"2c"  |
-| body-like       | "tk 3abc!" |
-| body-like       | "tk 3a!"   |
-| body-like       | "tk 3b!"   |
-| body-unlike     | "tk 3c!"   |
-
-| comment | a viewing b's profile, filter acct a |
-| get | /data/events/activities/%%b_username%%?account_id=%%a_account_id%% | application/json |
-| code-is         | 200        |
-| json-parse      |            |
-| json-array-size | 4          |
-| body-like       | "tk":"1a"  |
-| body-unlike     | "tk":"1b"  |
 | body-unlike     | "tk":"1c"  |
 | body-unlike     | "tk":"2a"  |
 | body-like       | "tk":"2b"  |
@@ -221,20 +232,24 @@ User c is only in account c, so that edit event won't show:
 | body-like       | "tk 3abc!" |
 | body-like       | "tk 3a!"   |
 | body-unlike       | "tk 3b!"   |
-| body-unlike       | "tk 3c!"   |
+| body-unlike     | "tk 3c!"   |
 
-| comment | a viewing b's profile, filter acct b |
-| get | /data/events/activities/%%b_username%%?account_id=%%b_account_id%% | application/json |
+| comment | a viewing b's profile, filter group a |
+| get | /data/events/activities/%%b_username%%?group_id=%%a_group_id%% | application/json |
 | code-is         | 200        |
 | json-parse      |            |
-| json-array-size | 4          |
-| body-unlike     | "tk":"1a"  |
-| body-like       | "tk":"1b"  |
+| json-array-size | 5          |
+| body-like       | "tk":"1a"  |
+| body-like     | "tk":"1b"  |
 | body-unlike     | "tk":"1c"  |
 | body-unlike     | "tk":"2a"  |
 | body-like       | "tk":"2b"  |
 | body-unlike     | "tk":"2c"  |
 | body-like       | "tk 3abc!" |
-| body-unlike     | "tk 3a!"   |
-| body-like       | "tk 3b!"   |
+| body-like       | "tk 3a!"   |
+| body-unlike     | "tk 3b!"   |
 | body-unlike     | "tk 3c!"   |
+
+| comment | a viewing b's profile, filter group b |
+| get | /data/events/activities/%%b_username%%?group_id=%%b_group_id%% | application/json |
+| code-is         | 403        |

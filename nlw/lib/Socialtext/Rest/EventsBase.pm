@@ -8,7 +8,7 @@ use Socialtext::Events;
 use Socialtext::Events::Reporter;
 use Socialtext::User;
 use Socialtext::Workspace;
-use Socialtext::Exceptions;
+use Socialtext::Exceptions qw/auth_error/;
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::Timer;
 use Socialtext::l10n 'loc';
@@ -74,6 +74,7 @@ sub if_authorized {
 sub _bunch_of {
     my $q = shift;
     my $name = shift;
+    my $checker = shift;
     my @result;
 
     for my $param ($name,"$name!") {
@@ -89,6 +90,7 @@ sub _bunch_of {
             }
         }
         $param =~ tr/./_/;
+        $checker->($val) if $checker;
         push @result, $param => $val;
     }
     return @result;
@@ -108,6 +110,7 @@ sub _one {
 sub extract_common_args {
     my $self = shift;
     my $q = $self->rest->query;
+    my $viewer = Socialtext::User->Resolve($self->rest->user);
     my @args;
 
     my $count = $q->param('count') || 
@@ -125,6 +128,13 @@ sub extract_common_args {
         _one($q,'after'),
         _one($q, 'activity'),
         _bunch_of($q,'account_id'),
+        _bunch_of($q,'group_id', sub {
+                # is the viewer IN this group?
+                my $group_id = shift;
+                my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+                auth_error "you are not a member of group $group_id"
+                    unless $group->has_user($viewer);
+            }),
         _bunch_of($q,'event_class'),
         _bunch_of($q,'action'),
         _bunch_of($q,'tag_name'),

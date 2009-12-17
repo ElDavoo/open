@@ -301,22 +301,25 @@ sub visible_exists {
     my $opts = shift;
     my $bind_ref = shift;
 
-    my $account_id = $opts->{account_id};
-
     my $sql = qq{
        EXISTS (
             SELECT 1
-            FROM users_share_plugin
+            FROM users_share_plugin_tc
             WHERE viewer_id = ?
               AND plugin = '$plugin'
               AND other_id = $event_field
     };
     push @$bind_ref, $self->viewer->user_id;
 
+    my $account_id = $opts->{account_id};
+    my $group_id = $opts->{group_id};
     if ($account_id) {
-        my $acct = Socialtext::Account->new(account_id => $account_id);
         $sql .= "\nAND user_set_id = ?\n";
-        push @$bind_ref, $acct->user_set_id;
+        push @$bind_ref, $account_id + ACCT_OFFSET;
+    }
+    elsif ($group_id) {
+        $sql .= "\nAND user_set_id = ?\n";
+        push @$bind_ref, $group_id + GROUP_OFFSET;
     }
 
     if ($plugin eq 'signals') {
@@ -414,6 +417,20 @@ sub _limit_ws_to_account {
         FROM ( $visible_ws ) visws
         WHERE workspace_id IN (
             SELECT workspace_id FROM "Workspace" WHERE account_id = ?
+        )
+    };
+}
+
+sub _limit_ws_to_group {
+    my $visible_ws = shift || $VISIBLE_WORKSPACES;
+    return qq{
+        SELECT workspace_id
+        FROM ( $visible_ws ) visgrp
+        WHERE workspace_id + }.PG_WKSP_OFFSET .q{ IN (
+            SELECT into_set_id
+              FROM user_set_path
+             WHERE from_set_id = ?
+               AND into_set_id }.PG_WKSP_FILTER.q{
         )
     };
 }
@@ -551,6 +568,10 @@ sub _build_standard_sql {
             if ($opts->{account_id}) {
                 $visible_ws = _limit_ws_to_account($visible_ws);
                 push @bind, $opts->{account_id};
+            }
+            elsif ($opts->{group_id}) {
+                $visible_ws = _limit_ws_to_group($visible_ws);
+                push @bind, $opts->{group_id} + GROUP_OFFSET;
             }
             my $can_use_this_ws = qq{
                 page_workspace_id IS NULL OR
@@ -700,7 +721,7 @@ sub get_events_page_contribs {
     );
     local $self->{_skip_visibility} = 1;
     my $filtered_opts = _filter_opts($opts, 
-        qw(limit count offset before after action followed account_id)
+        qw(limit count offset before after action followed account_id group_id)
     );
     my ($sql, $args) = $self->_build_standard_sql($filtered_opts);
 
@@ -878,7 +899,7 @@ sub _build_convos_sql {
 
     # filter the options to a subset of what's usually allowed
     my $filtered_opts = _filter_opts($opts, qw(
-       action actor_id page_workspace_id page_id tag_name account_id
+       action actor_id page_workspace_id page_id tag_name account_id group_id
        before after limit count offset
     ));
 
@@ -905,6 +926,10 @@ sub _build_convos_sql {
     if ($filtered_opts->{account_id}) {
         $visible_ws = _limit_ws_to_account($visible_ws);
         push @bind, $filtered_opts->{account_id};
+    }
+    elsif ($filtered_opts->{group_id}) {
+        $visible_ws = _limit_ws_to_group($visible_ws);
+        push @bind, $filtered_opts->{group_id} + GROUP_OFFSET;
     }
 
     my $conv_where = _conversations_where($visible_ws);
