@@ -7,6 +7,7 @@ use base 'Exporter';
 use unmocked 'List::MoreUtils', qw(after_incl);
 use unmocked 'Test::MockObject';
 use unmocked 'Test::Builder';
+use unmocked 'Socialtext::JSON', qw(encode_json);
 
 our @EXPORT = qw(
     clear_log
@@ -61,7 +62,22 @@ sub new {
 }
 
 sub st_timed_log {
-    return;
+    my $method  = shift;
+    my $command = shift;
+    my $name    = shift;
+    my $user    = shift;
+    my $data    = shift || {};
+
+    my $user_id = $user
+        ? (ref($user) ? $user->user_id : $user)
+        : 0;
+    my $message = join(',',
+        uc($command),
+        uc($name),
+        "ACTOR_ID:$user_id",
+        encode_json($data),
+    );
+    return st_log($method, $message);
 }
 
 ###############################################################################
