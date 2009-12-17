@@ -203,7 +203,7 @@ sub stress_for {
     Socialtext::System::shell_run('torture', @args);
 }
 
-=head2 standard_test_setup
+=head2 standard-test-setup
 
 Set up a new account, workspace and user to work with.
 
@@ -217,10 +217,13 @@ sub standard_test_setup {
     my $wksp_name = shift || "${prefix}wksp-$self->{start_time}";
     my $user_name = shift || "${prefix}user-$self->{start_time}\@ken.socialtext.net";
     my $password  = shift || "${prefix}password";
+    my $group_name = shift || "${prefix}group";
 
-    my $acct = $self->create_account($acct_name);
-    my $wksp = $self->create_workspace($wksp_name, $acct_name);
-    my $user = $self->create_user($user_name, $password, $acct->name);
+    my $acct  = $self->create_account($acct_name);
+    my $wksp  = $self->create_workspace($wksp_name, $acct_name);
+    my $user  = $self->create_user($user_name, $password, $acct->name);
+    my $group = $self->create_group($group_name, $acct_name, $user_name);
+    $wksp->add_group(group => $group);
     $self->add_workspace_admin($user_name, $wksp_name);
 
     $self->{"${prefix}account"} = $acct_name;
@@ -231,6 +234,8 @@ sub standard_test_setup {
     $self->{"${prefix}username"} = $user_name;
     $self->{"${prefix}user_id"} = $user->user_id;
     $self->{"${prefix}password"} = $password;
+    $self->{"${prefix}group"} = $group_name;
+    $self->{"${prefix}group_id"} = $self->{group_id};
     $self->http_user_pass($user_name, $password);
 }
 
@@ -502,6 +507,7 @@ sub create_group {
     push @{$self->{created_groups}}, $group->group_id;
 
     diag "Created group $group_name (".$group->driver_unique_id."), ID: $self->{group_id} (use the \%\%group_id\%\% var to access this)" if $group;
+    return $group;
 }
 
 sub create_multi_groups {
