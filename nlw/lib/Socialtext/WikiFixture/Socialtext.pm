@@ -10,7 +10,7 @@ use Socialtext::Workspace;
 use Sys::Hostname;
 use Test::More;
 use Test::Socialtext;
-use Test::Output qw(stdout_from);
+use IO::Scalar;
 use Text::ParseWords qw(shellwords);
 use Cwd;
 use Socialtext::AppConfig;
@@ -637,23 +637,28 @@ sub st_admin {
         }
     }
 
+    # Explode out the command line options to a list.
+    my @argv = shellwords($options);
+
     # Invocations with redirected input/output or pipes *needs* to be done
     # against the shell, but simpler cmds can be done in-process.  Also have
     # to watch out for "st-admin help", which *has* to be shelled out for.
-    #
-    # We also have to use a bad calling pattern for this which *isn't* OOP
-    # because we don't always have a '$self' that's derived from ST:WF:ST
-    # (although it may be derived from ST:WF:Base).
-    if ($options =~ /[\|<>]|help/) {
-        _st_admin_shell_out($self, $options, $verify);
+    my ($out, $err) = ($options =~ /[\|<>]|help/)
+        ? _st_admin_shell_out(@argv)
+        : _st_admin_in_process(@argv);
+
+    if ($verify) {
+        my $combined = $out . $err;
+        like $combined, qr/$verify/s, "st-admin $options";
     }
     else {
-        _st_admin_in_process($self, $options, $verify);
+        diag "st-admin $options";
     }
+    diag $err if ($err && ($err ne "\n"));
 }
 
 sub _st_admin_in_process {
-    my ($self, $options, $verify) = @_;
+    my @argv = @_;
 
     {
         # over-ride "_exit()" so that we don't exit while running in-process.
@@ -669,30 +674,30 @@ sub _st_admin_in_process {
     # _may_ have been made outside of this process.
     Socialtext::Cache->clear();
 
-    # Run st-admin, in process.
-    my @argv   = shellwords( $options );
+    # Set up the real @ARGV so that ST::CLI can do proper logging
     local @ARGV = @argv;
-    my $output = '';
-    $output .= stdout_from {
-        local $SIG{__WARN__} = sub {
-            warn $_[0];
-            $output .= $_[0];
-        };
-        eval { Socialtext::CLI->new( argv => \@argv )->run };
+
+    # Run st-admin in process, capturing STDOUT/STDERR individually.
+    #
+    # Unfortunately, Test::Output doesn't let us capture them both separately
+    # but simultaneously. :(
+    my ($out, $err) = ('', '');
+    {
+        my $fh_out = IO::Scalar->new(\$out);
+        my $fh_err = IO::Scalar->new(\$err);
+        local *STDOUT = $fh_out;
+        local *STDERR = $fh_err;
+        eval { Socialtext::CLI->new(argv => \@argv)->run };
         if ($@) { warn $@ };
-    };
-    if ($verify) {
-        like $output, qr/$verify/s, "st-admin $options";
     }
-    else {
-        diag "st-admin $options";
-    }
+    return ($out, $err);
 }
 
 sub _st_admin_shell_out {
-    my ($self, $options, $verify) = @_;
-    diag "st-admin $options";
-    _run_command("st-admin $options", $verify);
+    my @argv = @_;
+    my ($in, $out, $err);
+    IPC::Run::run ['st-admin', @argv], \$in, \$out, \$err;
+    return ($out, $err);
 }
 
 #=head2 st_appliance_config($command_options)
