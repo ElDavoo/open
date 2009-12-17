@@ -4,9 +4,7 @@
 
 | *Comment* | Test Case: User Creates Group Setup |  |
 | set | newacctname | ucg-acct-%%start_time%% |
-| set | newwws | ucg-ws-%%start_time%% |
-| set | groupname | ἀπὸ τὸ Ἄξιον ἐστί %%starttime%% |
-| create-workspace | %%newws%% | %%newacctname%% |
+| set | groupname | ἀπὸ τὸ Ἄξιον ἐστί %%start_time%% |
 
 | *Comment* | Test Case: User Create Group disabled, try create group |  |
 | st-admin | disable-plugin --plugin groups --all-accounts | The groups plugin is now disabled for all accounts |
@@ -16,13 +14,13 @@
 | *Comment* | Test Case: User Creates Group enabled, create group |  |
 | st-admin | enable-plugin --plugin groups --all-accounts | The groups plugin is now enabled for all accounts |
 | open | /?create_group |  |
-| text_like | //body | Create A Group |
+| text_like | //body | Create a Group |
 | wait_for_element_visible_ok | link=? | 30000 |
-| wait_for_element_visible_ok | st-create-group | 30000 |
+| wait_for_element_visible_ok | create-group | 30000 |
 
-| *Comment* | Actually Create a Group |
+| *Comment* | Actually Create a Group |  |
 | st-name-widget | 1 | create_group |
-| st-select-widget | create_group |
+| st-select-widget-frame | create_group |  |
 | wait_for_element_visible_ok | name | 30000 |
 | wait_for_element_visible_ok | description | 30000 |
 | wait_for_element_visible_ok | upload | 30000 |
@@ -30,20 +28,42 @@
 | type_ok | name | %%groupname%% |
 | type_ok | description | Стоял он, дум великих полн, |
 | type_ok | upload | %%wikitest_files%%wikitest.jpg |
-| pause | 20000 |
+| pause | 20000 |  |
 | select-frame | relative=parent |  |
 
-| wait_for_element_visible_ok | st-create-group | 30000 |
-| click_and_wait | st-create-group |
+| wait_for_element_visible_ok | create-group | 30000 |
+| click_and_wait | create-group |
 
 | *Comment* | Inspect New Group Page |  |
 
-| *Comment* | Create Identical Group Name, see error |  |
+# information
+# workspaces
+# activities
+# people
+#
 
-| *Comment* | Test the cancel button, go to Dashboard |
+| *Comment* | Create Identical Group Name, see error |  |
 | open | /?create_group |  |
 | wait_for_element_visible_ok | link=? | 30000 |
-| wait_for_element_visible_ok | st-create-group | 30000 |
+| wait_for_element_visible_ok | create-group | 30000 |
+| st-name-widget | 1 | create_group |
+| st-select-widget-frame | create_group |  |
+| wait_for_element_visible_ok | name | 30000 |
+| wait_for_element_visible_ok | description | 30000 |
+| type_ok | name | %%groupname%% |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| click_ok | create-group |  |
+| pause | 25000 | I know, you hate pause |
+| st-select-widget-frame | create_group |  |
+| *Comment* | Does not work (yet) due to {bz 3409} |  |
+| text_like | //body | Error creating group: %%groupname%% already exists. |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test the cancel button, go to Dashboard |  |
+| open | /?create_group |  |
+| wait_for_element_visible_ok | link=? | 30000 |
+| wait_for_element_visible_ok | create-group | 30000 |
 | wait_for_element_visible_ok | st-cancel-create-group | 30000 |
 | click_and_wait | st-cancel-create-group |  |
 | text_like | Welcome |  |
