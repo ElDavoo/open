@@ -3417,6 +3417,11 @@ sub _get_options {
 
     $self->{argv} = [@ARGV];
 
+    if (exists $opts{password}) {
+        # if args contained a password, we need to sanitize before logging
+        $self->{_args_contained_password}=1;
+    }
+
     return %opts;
 }
 
@@ -3432,7 +3437,10 @@ sub _success {
         # This *NEEDS* to be the original ARGV, not $self->{argv}, so we can
         # show the full set of args we were given; $self->{argv} is not
         # guaranteed to be preserved.
-        args => join(' ', @ARGV),
+        #
+        # It also needs to be sanitized, so that we don't accidentally log a
+        # password provided on the CLI to nlw.log
+        args => join(' ', $self->_sanitize_args(@ARGV)),
     };
     st_timed_log(
         'info', 'CLI', $self->{command},
@@ -3453,6 +3461,22 @@ sub _error {
         and not $self->{ceqlotron};
 
     _exit( $self->{ceqlotron} ? 0 : 1 );
+}
+
+sub _sanitize_args {
+    my $self = shift;
+    my @argv = @_;
+
+    if ($self->{_args_contained_password}) {
+        my $found_pw = 0;
+        @argv = map {
+            s/./x/g if ($found_pw);         # blank out password
+            $found_pw = ($_ =~ /^--?p/);    # does next field contain password?
+            $_;                             # return (possibly mangled) arg
+        } @argv;
+    }
+
+    return @argv;
 }
 
 # This exists so it can be overridden by tests and from_input.
