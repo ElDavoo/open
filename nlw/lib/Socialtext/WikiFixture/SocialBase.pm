@@ -393,7 +393,9 @@ sub create_user {
     # Special mode that DTRT
     if ($arg_count == 1) {
         my $name = $email;
-        $email = $name . $self->{start_time} . '@ken.socialtext.net';
+        unless ($email =~ /@/) {
+            $email = $name . $self->{start_time} . '@ken.socialtext.net';
+        }
         $password = 'password';
         $username = $email;
         $self->{$name} = $email;
