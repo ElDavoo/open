@@ -90,10 +90,11 @@ Intended for use with "expect_failure/_success". Example:
 
 sub call_cli_argv {
     my $method = shift;
-    my @argv = @_;
+    my $argv   = [$method, @_];
     return sub {
-        my $cli = Socialtext::CLI->new(argv => \@argv);
-        $cli->$method;
+        local @ARGV = @{$argv};
+        my $cli = Socialtext::CLI->new(argv => $argv);
+        $cli->run();
     }
 }
 
