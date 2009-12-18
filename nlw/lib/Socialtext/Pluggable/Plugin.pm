@@ -34,7 +34,6 @@ field 'rest';
 field 'declined';
 field 'last';
 
-const priority => 100;
 const scope => 'account';
 const hidden => 1; # hidden to admins
 const read_only => 0; # cannot be disabled/enabled in the control panel
@@ -175,12 +174,14 @@ sub current_workspace { $_[0]->hub->current_workspace }
 sub current_workspace_id { $_[0]->current_workspace->workspace_id }
 
 sub add_hook {
-    my ($self,$hook,$method) = @_;
+    my ($self,$hook,$method,%opts) = @_;
     my $class = ref($self) || $self;
-    push @{$hooks{$class}}, {
-        method => $method,
-        name => $hook,
-        class => $class,
+    push @{ $hooks{$class} }, {
+        method   => $method,
+        name     => $hook,
+        class    => $class,
+        priority => 50,
+        %opts,
     };
 }
 

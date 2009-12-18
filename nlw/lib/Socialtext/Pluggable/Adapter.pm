@@ -121,10 +121,7 @@ sub make {
 sub register {
     my ($self,$registry) = @_;
 
-    my @plugins = sort { $b->priority <=> $a->priority }
-                  $self->plugins;
-
-    for my $plugin (@plugins) {
+    for my $plugin ($self->plugins) {
         for my $hook ($plugin->hooks) {
             # this hook could have been "registered" before;  avoid
             # registering it again here
@@ -239,7 +236,7 @@ sub hook {
     my @output;
     if ( my $hooks = $hooks{$name} ) {
         return unless ref $hooks eq 'ARRAY';
-        for my $hook (@$hooks) {
+        for my $hook (sort { $a->{priority} <=> $b->{priority} } @$hooks) {
             my $method = $hook->{method};
             my $plugin = $self->plugin_object($hook->{class});
             my $type = $hook->{type};
