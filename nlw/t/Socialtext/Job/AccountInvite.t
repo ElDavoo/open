@@ -13,7 +13,7 @@ fixtures( qw(db no-ceq-jobs) );
 no warnings 'once';
 $Socialtext::EmailSender::Base::SendClass = 'Test';
 
-my $class = 'Socialtext::Job::AccountInvite';
+my $class = 'Socialtext::Job::Invite';
 use_ok $class;
 
 # Register workers
