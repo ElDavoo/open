@@ -7,7 +7,7 @@ use Socialtext::JSON qw(encode_json);
 use Exception::Class;
 use Socialtext::AppConfig;
 use Socialtext::Gadgets::Container;
-use Socialtext::Gadgets::Util qw(share_path plugin_dir template_paths);
+use Socialtext::Gadgets::Util qw(share_path plugin_dir);
 use namespace::clean -except => 'meta';
 
 our $prod_ver = Socialtext->product_version;
@@ -16,6 +16,18 @@ our $code_base = Socialtext::AppConfig->code_base;
 use constant 'entity_name' => 'Container';
 
 requires 'container';
+
+has 'template_paths' => (
+    is => 'ro', isa => 'ArrayRef',
+    lazy_build => 1,
+);
+sub _build_template_paths {
+    my $ self = shift;
+    return [
+        @{Socialtext::Gadgets::Util::template_paths()},
+        @{$self->hub->skin->template_paths},
+    ];
+}
 
 sub authorized_to_view {
     my $self = shift;
@@ -44,35 +56,35 @@ sub GET {
         return 'Unauthorized';
     }
 
-    # XXX:
-    #my $target;
-    if ($self->rest->query->{target_id}) {
-        die 'XXX: Implement this'
-    #    my $target_container = $self->container(id => $cgi_vars{target_id});
-    #    $target = $target_container->template_vars;
-    }
-
     $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
+    return $self->get_html;
+}
 
+sub get_html {
+    my $self = shift;
+    return $self->render_template('view/container', {
+        container => $self->container->template_vars
+    });
+}
+
+sub render_template {
+    my ($self, $template, $vars) = @_;
     my $renderer = Socialtext::TT2::Renderer->instance;
-    my $template_paths = template_paths;
     return $renderer->render(
-        template => "view/container",
-        paths => [ @{$self->hub->skin->template_paths}, @$template_paths ],
-        vars => $self->template_vars,
+        template => $template,
+        paths => $self->template_paths,
+        vars => {
+            %{$self->template_vars},
+            %$vars,
+        },
     );
 }
 
 sub template_vars {
     my $self = shift;
-    my %template_vars = $self->hub->helpers->global_template_vars;
+    my %global_vars = $self->hub->helpers->global_template_vars;
     return {
-        viewer => $self->rest->user->username,
-        container => $self->container->template_vars,
         #target => $target,
-        pref_list => sub {
-            $self->_get_pref_list;
-        },
         share => share_path,
         workspaces => [$self->hub->current_user->workspaces->all],
         as_json => sub {
@@ -84,22 +96,8 @@ sub template_vars {
 
             return $json;
         },
-        %template_vars,
-        $self->{_action_plugin} ?
-            (action_plugin => $self->{_action_plugin}) : (),
+        %global_vars,
     };
-}
-
-sub _get_pref_list {
-    my $self = shift;
-    my $prefs = $self->hub->preferences_object->objects_by_class;
-    my @pref_list = map {
-        $_->{title} =~ s/ /&nbsp;/g;
-        $_;
-        } grep { $prefs->{ $_->{id} } }
-        grep { $_->{id} ne 'search' } # hide search prefs screen
-        @{ $self->hub->registry->lookup->plugins };
-    return \@pref_list;
 }
 
 1;
