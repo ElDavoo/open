@@ -487,6 +487,8 @@ sub serialize_for_export {
         driver_group_name       => $self->driver_group_name,
         description             => $self->description,
         created_by_username     => $self->creator->username,
+        group_id                => $self->group_id, 
+        # (group_id is used to stitch together signals on import )
     };
 }
 

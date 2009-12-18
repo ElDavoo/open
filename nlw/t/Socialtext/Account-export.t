@@ -6,7 +6,7 @@ use warnings;
 use YAML qw(LoadFile);
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
-use Test::Socialtext tests => 25;
+use Test::Socialtext tests => 29;
 use Test::Deep;
 
 ###############################################################################
@@ -37,12 +37,28 @@ sub dump_group {
     return unless $group;
 
     my $data = {
+        group_id             => $group->group_id,
         primary_account_name => $group->primary_account->name,
         driver_group_name    => $group->driver_group_name,
         created_by_username  => $group->creator->username,
         role_name            => ignore(),
         users                => ignore(),
         description          => ignore(),
+    };
+    return $data;
+}
+
+sub dump_signal {
+    my $signal = shift;
+    return unless $signal;
+
+    my $data = {
+        body => $signal->body,
+        at => ignore(),
+        hidden => $signal->is_hidden,
+        signal_id => ignore(),
+        username => $signal->user->username,
+        group_ids => $signal->group_ids,
     };
     return $data;
 }
@@ -55,6 +71,7 @@ sub account_export_contains {
     my $account = $args{account};
     my $groups  = $args{groups} || [];
     my $users   = $args{users}  || [];
+    my $signals = $args{signals}|| [];
     my $prefix  = $args{prefix};
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -70,12 +87,15 @@ sub account_export_contains {
     # expecting are actually in it.
     my @expected_users  = map { dump_user($_) } @{$users};
     my @expected_groups = map { dump_group($_) } @{$groups};
+    my @expected_signals = map { dump_signal($_) } @{$signals};
 
     my $results = LoadFile($filename);
     $results->{groups} ||= [];
 
     cmp_deeply $results->{users},  \@expected_users,  "$prefix - User list";
     cmp_deeply $results->{groups}, \@expected_groups, "$prefix - Group list";
+    cmp_deeply $results->{signals}, \@expected_signals, "$prefix - Signal list"
+        if @expected_signals;
 
     # CLEANUP
     rmtree [$tempdir], 0;
@@ -215,5 +235,28 @@ export_succeeds_when_profile_hidden: {
         prefix  => 'Includes User with hidden ST People Profile',
         account => $account,
         users   => [$user],
+    );
+}
+
+# Test that signals to a group in this account is included.
+Export_signals_to_group: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user(account => $account);
+    my $group     = create_test_group();
+    $group->add_user(user => $user);
+    $account->add_group(group => $group);
+
+    my $sig = Socialtext::Signal->Create(
+        body => 'o hai',
+        group_ids => [$group->group_id],
+        user_id => $user->user_id,
+    );
+
+    account_export_contains(
+        prefix  => 'Includes User with hidden ST People Profile',
+        account => $account,
+        users   => [$user],
+        groups  => [$group],
+        signals => [$sig],
     );
 }
