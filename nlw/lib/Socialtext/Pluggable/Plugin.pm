@@ -746,6 +746,130 @@ sub set_user_prefs {
     st_log()->info("$username changed their $plugin user plugin preferences");
 }
 
+sub set_page_prefs {
+    my $self    = shift;
+    my %p = (
+        workspace_name => undef,
+        page_id => undef,
+        prefs => {},
+        @_
+    );
+
+    my $user_id = $self->hub->current_user->user_id || die "No user";
+    my $plugin = $self->name;
+    my $qs = join ', ', ('?') x keys %{$p{prefs}};
+    my $ws = Socialtext::Workspace->new(name => $p{workspace_name}) or return undef;
+    my $ws_id = $ws->workspace_id;
+    my $auth_check = Socialtext::Authz::SimpleChecker->new(
+        user => $self->hub->current_user,
+        workspace => $ws,
+    );
+
+    my $hub = $self->_hub_for_workspace($ws);
+    return undef unless defined($hub);
+    return undef unless $auth_check->check_permission('comment');
+
+    sql_begin_work;
+
+    eval {
+        sql_execute("
+            DELETE
+              FROM page_plugin_pref
+             WHERE plugin = ?
+               AND workspace_id = ?
+               AND page_id = ?
+               AND key IN ($qs)
+        ", $plugin, $ws_id, $p{page_id} , keys %{$p{prefs}});
+
+        my @columns;
+        for my $key (keys %{$p{prefs}}) {
+            next unless defined $p{prefs}->{$key};
+            push @{$columns[0]}, $plugin;
+            push @{$columns[1]}, $ws_id;
+            push @{$columns[2]}, $p{page_id};
+            push @{$columns[3]}, $key;
+            push @{$columns[4]}, $p{prefs}->{$key};
+        }
+
+        sql_execute_array('
+            INSERT INTO page_plugin_pref (
+                plugin, workspace_id, page_id, key, value
+            ) VALUES (?, ?, ?, ?, ?)
+        ', {}, @columns);
+    };
+    if (my $error = $@) {
+        sql_rollback;
+        die $error;
+    }
+    sql_commit;
+
+    my $username  = $self->hub->current_user->username;
+    st_log()->info("$username changed $plugin plugin preferences");
+}
+
+sub set_user_page_prefs {
+    my $self    = shift;
+    my %p = (
+        workspace_name => undef,
+        page_id => undef,
+        prefs => {},
+        @_
+    );
+
+    my $user_id = $self->hub->current_user->user_id || die "No user";
+    my $plugin = $self->name;
+    my $qs = join ', ', ('?') x keys %{$p{prefs}};
+    my $ws = Socialtext::Workspace->new(name => $p{workspace_name}) or return undef;
+    my $ws_id = $ws->workspace_id;
+    my $auth_check = Socialtext::Authz::SimpleChecker->new(
+        user => $self->hub->current_user,
+        workspace => $ws,
+    );
+
+    my $hub = $self->_hub_for_workspace($ws);
+    return undef unless defined($hub);
+    return undef unless $auth_check->check_permission('comment');
+
+    sql_begin_work;
+
+    eval {
+        sql_execute("
+            DELETE
+              FROM user_page_plugin_pref
+             WHERE user_id = ?
+               AND plugin = ?
+               AND workspace_id = ?
+               AND page_id = ?
+               AND key IN ($qs)
+        ", $user_id, $plugin, $ws_id, $p{page_id} , keys %{$p{prefs}});
+
+        my @columns;
+        for my $key (keys %{$p{prefs}}) {
+            next unless defined $p{prefs}->{$key};
+            push @{$columns[0]}, $user_id;
+            push @{$columns[1]}, $plugin;
+            push @{$columns[2]}, $ws_id;
+            push @{$columns[3]}, $p{page_id};
+            push @{$columns[4]}, $key;
+            push @{$columns[5]}, $p{prefs}->{$key};
+        }
+
+        sql_execute_array('
+            INSERT INTO user_page_plugin_pref (
+                user_id, plugin, workspace_id, page_id, key, value
+            ) VALUES (?, ?, ?, ?, ?, ?)
+        ', {}, @columns);
+    };
+    if (my $error = $@) {
+        sql_rollback;
+        die $error;
+    }
+    sql_commit;
+
+    my $username  = $self->hub->current_user->username;
+    st_log()->info("$username changed their $plugin user plugin preferences");
+}
+
 sub get_user_prefs {
     my $self = shift;
     my $user_id = $self->hub->current_user->user_id || die "No user";
@@ -755,6 +879,75 @@ sub get_user_prefs {
          WHERE user_id = ?
            AND plugin = ?
     ', $user_id, $self->name);
+    my %res;
+    while (my $row = $sth->fetchrow_hashref) {
+        $res{$row->{key}} = $row->{value};
+    }
+    return \%res;
+}
+
+sub get_page_prefs {
+    my $self    = shift;
+    my %p = (
+        workspace_name => undef,
+        page_id => undef,
+        @_,
+    );
+    
+    my $user_id = $self->hub->current_user->user_id || die "No user";
+    my $ws = Socialtext::Workspace->new(name => $p{workspace_name}) or return undef;
+    my $ws_id = $ws->workspace_id;
+    my $auth_check = Socialtext::Authz::SimpleChecker->new(
+        user => $self->hub->current_user,
+        workspace => $ws,
+    );
+
+    my $hub = $self->_hub_for_workspace($ws);
+    return undef unless defined($hub);
+    return undef unless $auth_check->check_permission('read');
+
+    my $sth = sql_execute('
+        SELECT key, value
+          FROM page_plugin_pref
+         WHERE plugin = ?
+           AND workspace_id = ?
+           AND page_id = ?
+    ', $self->name, $ws_id, $p{page_id});
+    my %res;
+    while (my $row = $sth->fetchrow_hashref) {
+        $res{$row->{key}} = $row->{value};
+    }
+    return \%res;
+}
+
+sub get_user_page_prefs {
+    my $self    = shift;
+    my %p = (
+        workspace_name => undef,
+        page_id => undef,
+        @_,
+    );
+    
+    my $user_id = $self->hub->current_user->user_id || die "No user";
+    my $ws = Socialtext::Workspace->new(name => $p{workspace_name}) or return undef;
+    my $ws_id = $ws->workspace_id;
+    my $auth_check = Socialtext::Authz::SimpleChecker->new(
+        user => $self->hub->current_user,
+        workspace => $ws,
+    );
+
+    my $hub = $self->_hub_for_workspace($ws);
+    return undef unless defined($hub);
+    return undef unless $auth_check->check_permission('read');
+
+    my $sth = sql_execute('
+        SELECT key, value
+          FROM user_page_plugin_pref
+         WHERE user_id = ?
+           AND plugin = ?
+           AND workspace_id = ?
+           AND page_id = ?
+    ', $user_id, $self->name, $ws_id, $p{page_id});
     my %res;
     while (my $row = $sth->fetchrow_hashref) {
         $res{$row->{key}} = $row->{value};

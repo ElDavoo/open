@@ -26,16 +26,13 @@ CREATE FUNCTION _int_contained(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_contained'
     LANGUAGE c STRICT;
 
-
 CREATE FUNCTION _int_contains(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_contains'
     LANGUAGE c STRICT;
 
-
 CREATE FUNCTION _int_different(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_different'
     LANGUAGE c STRICT;
-
 
 CREATE FUNCTION _int_inter(integer[], integer[]) RETURNS integer[]
     AS '$libdir/_int', '_int_inter'
@@ -45,11 +42,9 @@ CREATE FUNCTION _int_overlap(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_overlap'
     LANGUAGE c STRICT;
 
-
 CREATE FUNCTION _int_same(integer[], integer[]) RETURNS boolean
     AS '$libdir/_int', '_int_same'
     LANGUAGE c STRICT;
-
 
 CREATE FUNCTION _int_union(integer[], integer[]) RETURNS integer[]
     AS '$libdir/_int', '_int_union'
@@ -67,7 +62,6 @@ $$
 CREATE FUNCTION boolop(integer[], query_int) RETURNS boolean
     AS '$libdir/_int', 'boolop'
     LANGUAGE c STRICT;
-
 
 CREATE FUNCTION cleanup_sessions() RETURNS "trigger"
     AS $$
@@ -286,7 +280,6 @@ CREATE FUNCTION querytree(query_int) RETURNS text
 CREATE FUNCTION rboolop(query_int, integer[]) RETURNS boolean
     AS '$libdir/_int', 'rboolop'
     LANGUAGE c STRICT;
-
 
 CREATE FUNCTION signal_sent() RETURNS "trigger"
     AS $$
@@ -904,6 +897,14 @@ CREATE TABLE page_link (
     to_page_id text NOT NULL
 );
 
+CREATE TABLE page_plugin_pref (
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    plugin text NOT NULL,
+    "key" text NOT NULL,
+    value text NOT NULL
+);
+
 CREATE TABLE page_tag (
     workspace_id bigint NOT NULL,
     page_id text,
@@ -1046,6 +1047,15 @@ CREATE TABLE topic_signal_page (
 CREATE TABLE topic_signal_user (
     signal_id bigint NOT NULL,
     user_id bigint NOT NULL
+);
+
+CREATE TABLE user_page_plugin_pref (
+    user_id bigint NOT NULL,
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    plugin text NOT NULL,
+    "key" text NOT NULL,
+    value text NOT NULL
 );
 
 CREATE TABLE user_plugin_pref (
@@ -2174,4 +2184,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '100');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '101');
