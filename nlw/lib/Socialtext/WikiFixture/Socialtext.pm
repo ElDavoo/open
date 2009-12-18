@@ -14,6 +14,8 @@ use IO::Scalar;
 use Text::ParseWords qw(shellwords);
 use Cwd;
 use Socialtext::AppConfig;
+use File::Slurp qw(slurp);
+use List::MoreUtils qw(before after);
 
 =head1 NAME
 
@@ -696,7 +698,16 @@ sub _st_admin_in_process {
 sub _st_admin_shell_out {
     my @argv = @_;
     my ($in, $out, $err);
-    IPC::Run::run ['st-admin', @argv], \$in, \$out, \$err;
+
+    # Doing a shell input redirect requires a bit more effort, so grab the
+    # standard command stuff and the redirect bits separately
+    my @standard = before { $_ eq '<' } @argv;
+    my ($file)   = after  { $_ eq '<' } @argv;
+    $in = slurp($file) if ($file);
+
+    # Run the command, capturing output.
+    IPC::Run::run ['st-admin', @standard], \$in, \$out, \$err;
+
     return ($out, $err);
 }
 
