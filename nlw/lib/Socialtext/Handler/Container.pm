@@ -43,28 +43,50 @@ sub authorized_to_edit {
         and $self->rest->user->can_use_plugin($self->container->plugin);
 }
 
+sub redirect {
+    my $self = shift;
+    $self->rest->header(
+        -status => HTTP_302_Found,
+        -Location => '/',
+    );
+    return '';
+}
+
+sub unauthorized {
+    my $self = shift;
+    $self->redirect('/');
+    return 'Unauthorized';
+}
+
 sub GET {
     my ($self, $rest) = @_;
-
     loc_lang( $self->hub->best_locale );
-
-    unless ($self->authorized_to_view) {
-        $self->rest->header(
-            -status => HTTP_302_Found,
-            -Location => '/',
-        );
-        return 'Unauthorized';
-    }
-
+    return $self->unauthorized unless $self->authorized_to_view;
     $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
     return $self->get_html;
 }
 
 sub get_html {
     my $self = shift;
-    return $self->render_template('view/container', {
-        container => $self->container->template_vars
-    });
+    my $query = $self->rest->query;
+    if ($query->{add_widget}) {
+        return $self->unauthorized unless $self->authorized_to_edit;
+        return $self->install_gadget;
+    }
+    else {
+        return $self->render_template('view/container', {
+            container => $self->container->template_vars
+        });
+    }
+}
+
+sub install_gadget {
+    my $self = shift;
+    $self->container->install_gadget(
+        src => $self->rest->query->{src},
+        gadget_id => $self->rest->query->{gadget_id}->[0],
+    );
+    return $self->redirect('/st/dashboard');
 }
 
 sub render_template {
