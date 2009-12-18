@@ -10,8 +10,6 @@ my %hook_types;
 
 use base 'Socialtext::Plugin';
 use Carp;
-use Socialtext::Workspace;
-use Socialtext::l10n qw/loc_lang/;
 use Fcntl ':flock';
 use File::chdir;
 use Socialtext::HTTP ':codes';
@@ -51,55 +49,22 @@ for my $plugin (__PACKAGE__->plugins) {
     Carp::confess "Error registering plugin '$plugin': $@" if $@;
 }
 
-sub AUTOLOAD {
-    my ($self,$rest_handler,$args) = @_;
-    my $type = ref($self)
-        or return; # it's a class method call
-
-    my $name = $AUTOLOAD;
-    $name =~ s/.*://;    # strip fully-qualified portion
-    return if $name eq 'DESTROY';
-    
-    my ($hook_name) = $name =~ /_rest_hook_(.*)/;
-    die "Not a REST hook call '$name'\n" unless $hook_name;
-
-    $self->make_hub($rest_handler->user);
-
-    $self->{_rest_handler} = $rest_handler;
-
-    return $self->hook($hook_name, $args);
-}
-
-sub handler {
-    my ($self, $rest) = @_;
-    my $t = time;
-
-    $self->make_hub($rest->user) unless $self->hub;
-    loc_lang( $self->hub->best_locale );
-
-    my $res;
-    my $action;
-    if (($action = $rest->query->param('action'))) {
-        eval { $res = $self->hub->process };
-        if (my $e = $@) {
-            my $redirect_class = 'Socialtext::WebApp::Exception::Redirect';
-            if (Exception::Class->caught($redirect_class)) {
-                 $rest->header(
-                     -status => HTTP_302_Found,
-                     -Location => $e->message,
-                 );
-                 return '';
-            }
-        }
-        $rest->header(-type => 'text/html; charset=UTF-8', # default
-                      $self->hub->rest->header);
+{
+    # $main Needs to be in global scope so it stays around for the life of the
+    # request.  This is due to Class::Field's -weak reference from the hub to
+    # the $main.
+    my $main;
+    sub make_hub {
+        my ($self,$user,$ws) = @_;
+        $main = Socialtext->new;
+        $main->load_hub(
+            current_user => $user,
+            current_workspace => $ws || Socialtext::NoWorkspace->new,
+        );
+        $main->hub->registry->load;
+        $main->debug;
+        $self->hub( $self->{made_hub} = $main->hub );
     }
-    else {
-        $action = 'root';
-        $res = $self->hook('root', $rest);
-        $rest->header($self->hub->rest->header);
-    }
-    return $res;
 }
 
 sub _CallPluginClassMethod {
@@ -127,24 +92,6 @@ sub EnablePlugin {
 sub DisablePlugin {
     my $class   = shift;
     $class->_CallPluginClassMethod('DisablePlugin',@_);
-}
-
-{
-    # $main Needs to be in global scope so it stays around for the life of the
-    # request.  This is due to Class::Field's -weak reference from the hub to
-    # the $main.
-    my $main;
-    sub make_hub {
-        my ($self,$user,$ws) = @_;
-        $main = Socialtext->new;
-        $main->load_hub(
-            current_user => $user,
-            current_workspace => $ws || Socialtext::NoWorkspace->new,
-        );
-        $main->hub->registry->load;
-        $main->debug;
-        $self->hub( $self->{made_hub} = $main->hub );
-    }
 }
 
 sub class_id { 'pluggable' };
