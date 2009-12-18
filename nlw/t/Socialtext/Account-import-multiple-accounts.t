@@ -4,9 +4,8 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 16;
+use Test::Socialtext::Account qw/export_account import_account_ok/;
 use Socialtext::CLI;
-use t::Socialtext::CLITestUtils qw(expect_success);
-use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
 
 ###############################################################################
@@ -83,38 +82,3 @@ cross_account_reference_import_possible: {
     rmtree [$pri_export, $sec_export], 0;
 }
 
-
-sub export_account {
-    my $account = shift;
-
-    my $export_base = tempdir(CLEANUP => 1);
-    my $export_dir   = File::Spec->catdir($export_base, 'account');
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [
-                    '--account' => $account->name,
-                    '--dir'     => $export_dir,
-                ],
-            )->export_account();
-        },
-        qr/account exported to/,
-        'Account exported',
-    );
-
-    return $export_dir;
-}
-
-sub import_account_ok {
-    my $export_dir = shift;
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => ['--dir' => $export_dir],
-            )->import_account();
-        },
-        qr/account imported/,
-        '... Account re-imported',
-    );
-}

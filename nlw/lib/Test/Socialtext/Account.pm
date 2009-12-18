@@ -1,8 +1,13 @@
 package Test::Socialtext::Account;
 # @COPYRIGHT@
-
 use strict;
 use warnings;
+use Exporter;
+use Socialtext::CLI;
+use File::Temp qw(tempdir);
+use t::Socialtext::CLITestUtils qw(expect_success);
+
+our @EXPORT_OK = qw/delete_recklessly import_account_ok export_account/;
 
 sub delete_recklessly {
     my ($class, $account) = @_;
@@ -29,6 +34,41 @@ sub delete_recklessly {
     Socialtext::SQL::disconnect_dbh();
 
     $account->delete;
+}
+
+sub export_account {
+    my $account = shift;
+
+    my $export_base = tempdir(CLEANUP => 1);
+    my $export_dir   = File::Spec->catdir($export_base, 'account');
+
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [
+                    '--account' => $account->name,
+                    '--dir'     => $export_dir,
+                ],
+            )->export_account();
+        },
+        qr/account exported to/,
+        'Account exported',
+    );
+
+    return $export_dir;
+}
+
+sub import_account_ok {
+    my $export_dir = shift;
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--dir' => $export_dir],
+            )->import_account();
+        },
+        qr/account imported/,
+        '... Account re-imported',
+    );
 }
 
 1;
