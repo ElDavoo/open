@@ -196,6 +196,21 @@ END;
 $$
     LANGUAGE plpgsql IMMUTABLE;
 
+CREATE FUNCTION materialize_event_view() RETURNS "trigger"
+    AS $$
+BEGIN
+    IF NEW.event_class = 'page' AND is_page_contribution(NEW.action) THEN
+        INSERT INTO event_page_contrib
+        (at,action,actor_id,context,page_id,page_workspace_id,tag_name)
+        VALUES
+        (NEW.at,NEW.action,NEW.actor_id,NEW.context,
+         NEW.page_id,NEW.page_workspace_id,NEW.tag_name);
+    END IF;
+    RETURN NEW;
+END
+$$
+    LANGUAGE plpgsql;
+
 CREATE FUNCTION on_user_set_delete() RETURNS "trigger"
     AS $$
 BEGIN
@@ -701,6 +716,16 @@ CREATE TABLE event_archive (
     signal_id bigint,
     hidden boolean DEFAULT false,
     group_id bigint
+);
+
+CREATE TABLE event_page_contrib (
+    "at" timestamptz NOT NULL,
+    "action" text NOT NULL,
+    actor_id integer NOT NULL,
+    context text,
+    page_id text NOT NULL,
+    page_workspace_id bigint NOT NULL,
+    tag_name text
 );
 
 CREATE TABLE exitstatus (
@@ -1436,6 +1461,27 @@ CREATE UNIQUE INDEX idx_uspc_set_and_id
 CREATE INDEX ix_container_container_type
 	    ON container (container_type);
 
+CREATE INDEX ix_epc_action_at
+	    ON event_page_contrib ("action", "at");
+
+CREATE INDEX ix_epc_actor_at
+	    ON event_page_contrib (actor_id, "at");
+
+CREATE INDEX ix_epc_actor_page_at
+	    ON event_page_contrib (actor_id, page_workspace_id, page_id, "at");
+
+CREATE INDEX ix_epc_at
+	    ON event_page_contrib ("at");
+
+CREATE INDEX ix_epc_workspace_at
+	    ON event_page_contrib (page_workspace_id, "at");
+
+CREATE INDEX ix_epc_workspace_page
+	    ON event_page_contrib (page_workspace_id, page_id);
+
+CREATE INDEX ix_epc_workspace_page_at
+	    ON event_page_contrib (page_workspace_id, page_id, "at");
+
 CREATE INDEX ix_event_action_at
 	    ON event ("action", "at");
 
@@ -1737,6 +1783,11 @@ CREATE TRIGGER group_user_set_delete
     AFTER DELETE ON groups
     FOR EACH ROW
     EXECUTE PROCEDURE on_user_set_delete();
+
+CREATE TRIGGER materialize_event_view_on_insert
+    AFTER INSERT ON event
+    FOR EACH ROW
+    EXECUTE PROCEDURE materialize_event_view();
 
 CREATE TRIGGER sessions_insert
     AFTER INSERT ON sessions
@@ -2114,4 +2165,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '101');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '102');
