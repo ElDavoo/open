@@ -21,7 +21,6 @@ sql_execute(q{
          WHERE at < ?::timestamptz
 }, $when);
 
-sql_execute(q{
-    DELETE FROM event
-     WHERE at < ?::timestamptz
-}, $when);
+for my $t (qw(event event_page_contrib)) {
+    sql_execute(qq{DELETE FROM $t WHERE at < ?::timestamptz}, $when);
+}
