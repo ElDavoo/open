@@ -1065,6 +1065,9 @@ div.messageBox div.messageBoxBottomLeft em a {
 div#contentColumns div#contentRight	{
 	width: 25%;
 	float: right;
+}
+
+body#contentPage div#contentColumns div#contentRight	{
         padding-right: 15px;
 }
 
