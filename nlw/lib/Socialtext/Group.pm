@@ -30,6 +30,7 @@ has 'homunculus' => (
         driver_unique_id
         driver_group_name
         display_name
+        name
         description
         primary_account_id
         account_id
