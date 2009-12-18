@@ -14,6 +14,9 @@ has 'group' => (
     required => 1,
 );
 
+sub object { shift->group }
+sub id_hash { return (group_id => shift->group->group_id) }
+
 sub _name {
     my $self = shift;
     return $self->group->driver_group_name;

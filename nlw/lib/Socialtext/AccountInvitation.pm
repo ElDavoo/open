@@ -13,42 +13,8 @@ has 'account' => (
     required => 1,
 );
 
-sub queue {
-    my $self      = shift;
-    my $invitee   = shift;
-    my %user_args = @_;
-
-    my $acct = $self->account;
-    my $user = Socialtext::User->new(
-        email_address => $invitee
-    );
-
-    $user ||= Socialtext::User->create(
-        username => $invitee,
-        email_address => $invitee,
-        created_by_user_id => $self->from_user->user_id,
-        primary_account_id => $acct->account_id,
-        %user_args,
-    );
-
-    $user->set_confirmation_info()
-        unless $user->has_valid_password();
-
-    $acct->assign_role_to_user(
-        user => $user,
-        role => Socialtext::Role->Member()
-    );
-
-    Socialtext::JobCreator->insert(
-        'Socialtext::Job::Invite',
-        {
-            account_id      => $acct->account_id,
-            user_id         => $user->user_id,
-            sender_id       => $self->from_user->user_id,
-            extra_text      => $self->extra_text,
-        }
-    );
-}
+sub object { shift->account }
+sub id_hash { return (account_id => shift->account->account_id) }
 
 sub _name {
     my $self = shift;

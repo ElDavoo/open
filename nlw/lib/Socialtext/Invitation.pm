@@ -19,6 +19,43 @@ has 'viewer'  => (is => 'ro', isa => 'Socialtext::Formatter::Viewer',);
 has 'extra_text' => (is => 'ro', isa => 'Maybe[Str]',);
 has 'extra_args' => (is => 'ro', isa => 'Hash', lazy_build => 1);
 
+sub queue {
+    my $self      = shift;
+    my $invitee   = shift;
+    my %user_args = @_;
+
+    my $object = $self->object;
+    my $user = Socialtext::User->new(
+        email_address => $invitee
+    );
+
+    $user ||= Socialtext::User->create(
+        username => $invitee,
+        email_address => $invitee,
+        created_by_user_id => $self->from_user->user_id,
+        primary_account_id => $object->account_id,
+        %user_args,
+    );
+
+    $user->set_confirmation_info()
+        unless $user->has_valid_password();
+
+    $object->assign_role_to_user(
+        user => $user,
+        role => Socialtext::Role->Member()
+    );
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::Invite',
+        {
+            user_id         => $user->user_id,
+            sender_id       => $self->from_user->user_id,
+            extra_text      => $self->extra_text,
+            $self->id_hash(),
+        }
+    );
+}
+
 sub invite_notify {
     my $self       = shift;
     my $user       = shift;
