@@ -35,12 +35,34 @@
 | click_and_wait | create-group |
 
 | *Comment* | Inspect New Group Page |  |
+| wait_for_text_present_ok | %%groupname%% | 30000 |
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| text_like | //body | %%username%% |
+| text_like | //body | Administrator |
+| select-frame | relative=parent |  |
 
-# information
-# workspaces
-# activities
-# people
-#
+| st-name-widget | 2 | workspaces_widget |
+| st-widget-title-like | workspaces_widget | Workspaces |
+| st-select-widget-frame | workspaces_widget |  |
+| wait_for_text_present_ok | This group is not a member of any workspaces | 30000 |
+| select-frame | relative=parent |  |
+
+| st-name-widget | 3 | activity_widget |
+| st-widget-title-like | activity_widget | Activity |
+| st-select-widget-frame | activity_widget |  |
+| wait_for_text_present_ok | View RSS feed for %%groupname%% | 30000 |
+| text_like | //body | %%short_username%% |
+| text_like | //body | joined the group %%groupname%% |
+| select-frame | relative=parent |  |
+
+| st-name-widget | 4 | people_widget |
+| st-widget-title-like | people_widget | People |
+| st-select-widget-frame | people_widget |  |
+| wait_for_text_present_ok | %%username%% | 30000 |
+| wait_for_element_visible_ok | link=%%username%% | 30000 |
+| select-frame | relative=parent |  |
 
 | *Comment* | Create Identical Group Name, see error |  |
 | open | /?create_group |  |
