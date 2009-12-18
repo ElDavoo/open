@@ -73,7 +73,7 @@ sub invite {
         group      => $self,
         from_user  => $p{from_user},
         extra_text => $p{extra_text},
-        viewer     => $p{viewer},
+        ($p{viewer} ? (viewer => $p{viewer}) : ()),
     );
 }
 
