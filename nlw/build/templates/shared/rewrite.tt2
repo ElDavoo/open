@@ -76,6 +76,15 @@
     RewriteRule    ^/my/$       http://www.socialtext.net/
 [%- END %]
 
+    # Old style container rewrites
+    RewriteCond    %{QUERY_STRING} ^signals\/q\/(.+)$
+    RewriteRule    ^/$ /st/signals?q=%1 [R,L]
+    RewriteCond    %{QUERY_STRING} ^([^=]+)$
+    RewriteRule    ^/$ /st/%1? [R,L]
+
+    # Temporary redirect to dashboard
+    RewriteRule    ^/$ /st/dashboard [R,L]
+
     RewriteRule    ^/control/   /nlw/control/  [R,L]
 
     # backwards compat for old-style /foo/member/index.cgi links
