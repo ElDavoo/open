@@ -59,7 +59,7 @@ fi
 
 # Create the basic dev-env
 rm -rf $HOME/.nlw/
-PLUGINS=${PLUGINS:-widgets agile csskit dashboard people signals socialcalc apache socialpoint control groups}
+PLUGINS=${PLUGINS:-widgets agile csskit dashboard people signals socialcalc apache socialpoint control groups pagevotes}
 st-make-all @clean
 st-make-all @all
 dev-bin/link-plugins $PLUGINS
