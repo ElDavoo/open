@@ -1185,7 +1185,7 @@ Delete all events
 =cut
 
 sub st_clear_events {
-    sql_execute('DELETE FROM event');
+    sql_execute('TRUNCATE event, event_page_contrib, event_archive');
 }
 
 =head2 st-clear-webhooks
