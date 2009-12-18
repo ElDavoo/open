@@ -252,6 +252,7 @@ sub st_create_wikipage {
     my ($self, $workspace, $pagename)  = @_;
     my $url = '/' . $workspace . '/?action=display;page_type=wiki;page_name=Untitled Page#edit';
     $self->{selenium}->open_ok($url);
+    $self->handle_command('set_Speed',3000);
     $self->handle_command('wait_for_element_visible_ok','link=Wiki Text',30000);
     $self->handle_command('click_ok','link=Wiki Text');
     $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea',30000);
@@ -260,6 +261,7 @@ sub st_create_wikipage {
     $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
     $self->handle_command('click_ok','st-save-button-link');
     $self->handle_command('wait_for_element_visible_ok','st-edit-button-link',30000);                
+    $self->handle_command('set_Speed',0);
 }
 
 =head2 st_add_page_tag ( $url, $page, $tag) 
@@ -275,17 +277,18 @@ The page must exist in order to have a tag added.
 sub st_add_page_tag {
    my ($self, $url, $tag) = @_;
    $self->handle_command('open_ok',$url);
+   $self->handle_command('set_Speed',3000);
    $self->handle_command('wait_for_element_visible_ok','st-pagetools-email', 30000);
    $self->handle_command('wait_for_element_visible_ok','link=Add Tag',30000);
    $self->handle_command('wait_for_element_visible_ok','st-edit-button-link-bottom',30000);
    $self->handle_command('wait_for_element_visible_ok','st-comment-button-link-bottom',30000);
-   $self->handle_command('pause', 3000);
    $self->handle_command('click_ok','link=Add Tag'); 
    $self->handle_command('wait_for_element_visible_ok','st-tags-field',30000);
    $self->handle_command('type_ok', 'st-tags-field', $tag);
    $self->handle_command('wait_for_element_visible_ok', 'st-tags-plusbutton-link', 30000);
    $self->handle_command('click_ok','st-tags-plusbutton-link');
    $self->handle_command('wait_for_element_visible_ok','link='.$tag, 30000);
+   $self->handle_command('set_Speed',0);
 }
 
 
@@ -325,6 +328,7 @@ Then edits it and types the text you suggest
 
 sub st_edit_page {
   my ($self, $url, $text) = @_;
+  $self->handle_command('set_Speed',3000);
   $self->handle_command('open_ok',  $url); 
   $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000);  
   $self->handle_command('click_ok','st-edit-button-link');
@@ -334,7 +338,8 @@ sub st_edit_page {
   $self->handle_command('type_ok','wikiwyg_wikitext_textarea', $text);
   $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
   $self->handle_command('click_and_wait','st-save-button-link');
-   $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000); 
+  $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000); 
+  $self->handle_command('set_Speed',0);
 }
 
 
