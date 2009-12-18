@@ -1,4 +1,4 @@
-package Socialtext::Job::AccountInvite;
+package Socialtext::Job::Invite;
 # @COPYRIGHT@
 use Socialtext::User;
 use Socialtext::Account;
@@ -82,14 +82,14 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 
-Socialtext::Job::AccountInvite - Send an invite to a user for an account.
+Socialtext::Job::Invite - Send an invite to a user for a user set container.
 
 =head1 SYNOPSIS
 
     use Socialtext::JobCreator;
 
     Socialtext::JobCreator->insert(
-        'Socialtext::Job::AccountInvite',
+        'Socialtext::Job::Invite',
         {
             account_id => 1,
             user_id    => 13,
