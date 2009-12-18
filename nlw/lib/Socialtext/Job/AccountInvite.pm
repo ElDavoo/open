@@ -2,6 +2,8 @@ package Socialtext::Job::AccountInvite;
 # @COPYRIGHT@
 use Socialtext::User;
 use Socialtext::Account;
+use Socialtext::Workspace;
+use Socialtext::Group;
 use Socialtext::AccountInvitation;
 use Moose;
 use namespace::clean -except => 'meta';
@@ -13,36 +15,45 @@ has sender => (
     lazy_build => 1,
 );
 
-has account => (
-    is => 'ro', isa => 'Socialtext::Account',
-    lazy_build => 1,
-);
-
 sub _build_sender {
     my $self = shift;
     return Socialtext::User->new( user_id => $self->arg->{sender_id} );
 }
 
-sub _build_account {
+# Can be either an account, a workspace, or a group.
+has object => (
+    is => 'ro', isa => 'Socialtext::UserSetContainer',
+    lazy_build => 1,
+);
+sub _build_object {
     my $self = shift;
-    return Socialtext::Account->new( account_id => $self->arg->{account_id} );
+
+    if (my $acct_id = $self->arg->{account_id}) {
+        return Socialtext::Account->new(account_id => $acct_id);
+    }
+    elsif (my $ws_id = $self->arg->{workspace_id}) {
+        return Socialtext::Workspace->new(workspace_id => $ws_id);
+    }
+    elsif (my $group_id = $self->arg->{group_id}) {
+        return Socialtext::Group->new(group_id => $group_id);
+    }
+
+    return undef;
 }
 
 sub do_work {
     my $self = shift;
 
-    my $account = $self->account;
-    my $user    = $self->user;
+    my $object = $self->object;
+    my $user   = $self->user;
 
-    unless ( $account->has_user($user) ) {
-        my $msg = "User " . $user->user_id 
-            . " is not in account " . $account->account_id;
+    unless ( $object->has_user($user) ) {
+        my $msg = "User " . $user->user_id . " is not in object";
         return $self->failed($msg, 255);
     }
 
     eval {
-        my $invitation = Socialtext::AccountInvitation->new(
-            account     => $account,
+        my $invitation = $object->invite(
             from_user   => $self->sender,
             extra_text  => $self->arg->{extra_text},
         );
