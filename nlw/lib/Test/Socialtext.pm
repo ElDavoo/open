@@ -296,7 +296,7 @@ sub timer_clear {
 }
 
 sub timer_report {
-    return unless ($ENV{TEST_VERBOSE});
+    return unless ($ENV{TEST_VERBOSE} and not $ENV{NO_TIMER_REPORT});
 
     diag "Socialtext::Timer report\n";
     my $report = Socialtext::Timer->Report();
