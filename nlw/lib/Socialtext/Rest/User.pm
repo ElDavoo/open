@@ -18,6 +18,7 @@ sub accounts { undef };
 sub attribute_table_row {
     my ($self, $name, $value) = @_;
     return '' if $name eq 'accounts';
+    return '' if $name eq 'groups';
     return $self->SUPER::attribute_table_row($name, $value);
 }
 
@@ -37,7 +38,14 @@ sub get_resource {
         ) {
         return +{
             ( hgrep { $k ne 'password' } %{ $user->to_hash } ),
-            accounts => [ map { $_->hash_representation } $user->accounts ],
+            accounts => [
+                map { $_->hash_representation(user_count=>1) }
+                $user->accounts
+            ],
+            groups => [
+                map { $_->to_hash(plugins=>1, show_account_ids=>1) }
+                $user->groups->all
+            ],
         };
     }
     return undef;

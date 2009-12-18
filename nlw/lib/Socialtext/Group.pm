@@ -364,7 +364,7 @@ use constant base_package => __PACKAGE__;
 
 ###############################################################################
 sub accounts {
-    my $self = shift;
+    my ($self, %p) = @_;
 
     # all accounts with direct membership
     my $sth = sql_execute(q{
@@ -375,9 +375,9 @@ sub accounts {
     }, $self->user_set_id);
     my $ids = $sth->fetchall_arrayref || [];
     return Socialtext::MultiCursor->new(
-        iterables => [map { $_->[0] } @$ids],
-        apply     => sub {
-            return Socialtext::Account->new(account_id => $_[0]);
+        iterables => [$ids],
+        apply     => $p{ids_only} ? sub {$_[0][0]} : sub {
+            return Socialtext::Account->new(account_id => $_[0][0]);
         },
     );
 }
@@ -440,6 +440,15 @@ sub to_hash {
     }
     if ($opts{show_admins}) {
         $hash->{admins} = $self->users_as_minimal_arrayref('admin');
+    }
+    if ($opts{plugins}) {
+        $hash->{plugins} = [ sort $self->plugins_enabled ],
+    }
+    if ($opts{show_account_ids}) {
+        $hash->{primary_account_id} = $self->primary_account_id;
+        $hash->{account_ids} = [
+            $self->accounts(ids_only => 1)->all
+        ];
     }
 
     return $hash;

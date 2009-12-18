@@ -1044,14 +1044,20 @@ sub _validate_and_clean_data {
 }
 
 sub hash_representation {
-    my $self = shift;
-    return {
+    my ($self,%p) = @_;
+    my $hash = {
         account_name    => $self->name,
         account_id      => $self->account_id,
         plugins_enabled => [ sort $self->plugins_enabled ],
-        (map { $_ => $self->$_ } grep { /^desktop_/ } @ACCT_COLS),
     };
-}  
+    unless ($p{no_desktop}) {
+        $hash->{$_} = $self->$_ for (grep /^desktop_/,@ACCT_COLS);
+    }
+    if ($p{user_count}) {
+        $hash->{user_count} = $self->user_count;
+    }
+    return $hash;
+}
 
 sub is_using_account_logo_as_desktop_logo {
     my $self = shift;

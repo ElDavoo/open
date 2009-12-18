@@ -4,6 +4,13 @@ Tests the ReST representations for Users
 
 | standard-test-setup |
 
+| create-user         | bob      |              |
+| add-user-to-account | %%bob%%  | %%account%%  |
+| create-user         | carl     |              |
+| add-user-to-group   | %%carl%% | %%group_id%% |
+| create-user         | dave     |              |
+| add-user-to-group   | %%dave%% | %%group_id%% |
+
 | *Comment* | As HTML                                                        |
 | GET       | /data/users/%%username%%                                       |
 | code-is   | 200                                                            |
@@ -19,6 +26,8 @@ Tests the ReST representations for Users
 | body-like | <tr><td>is_technical_admin</td><td>0</td></tr>                 |
 | body-like | <tr><td>email_address_at_import</td><td>%%username%%</td></tr> |
 | body-like | <tr><td>last_login_datetime</td><td>-infinity</td></tr>        |
+| body-unlike | <tr><td>accounts |
+| body-unlike | <tr><td>groups |
 
 | *Comment* | As JSON                                  |                  |
 | GET       | /data/users/%%username%%                 | application/json |
@@ -34,3 +43,6 @@ Tests the ReST representations for Users
 | body_like | "is_technical_admin":"0"                 |                  |
 | body_like | "email_address_at_import":"%%username%%" |                  |
 | body_like | "last_login_datetime":"-infinity"        |                  |
+
+| json-parse |
+| json-like | {"accounts":[{"account_name":"%%account%%","user_count":"4"}],"groups":[{"name":"%%group%%","primary_account_id":"%%account_id%%","account_ids":[%%account_id%%],"user_count":"3"}]} |
