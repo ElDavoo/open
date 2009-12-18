@@ -2,22 +2,13 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-
-use Test::Socialtext tests => 16;
+use Test::Socialtext tests => 15;
 use Test::Output qw(combined_from);
+use Socialtext::CLI;
+use t::Socialtext::CLITestUtils;
 
 # Only need a DB.
 fixtures(qw(db));
-
-use_ok 'Socialtext::CLI';
-
-###############################################################################
-# over-ride "_exit", so we can capture the exit code
-our $LastExitVal;
-{
-    no warnings 'redefine';
-    *Socialtext::CLI::_exit = sub { $LastExitVal=shift; die; };
-}
 
 ###############################################################################
 add_user_to_group_as_member: {

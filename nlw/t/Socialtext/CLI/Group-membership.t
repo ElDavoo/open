@@ -2,22 +2,14 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 119;
+use Test::Socialtext tests => 118;
 use Test::Output qw(combined_from);
 use Carp qw/confess/;
+use Socialtext::CLI;
+use t::Socialtext::CLITestUtils;
 
 # Only need a DB.
 fixtures(qw(db));
-
-use_ok 'Socialtext::CLI';
-
-###############################################################################
-# over-ride "_exit", so we can capture the exit code
-our $LastExitVal;
-{
-    no warnings 'redefine';
-    *Socialtext::CLI::_exit = sub { $LastExitVal=shift; die "cli-died" };
-}
 
 ################################################################################
 # TEST: add group to account
