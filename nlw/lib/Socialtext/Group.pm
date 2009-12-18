@@ -63,6 +63,19 @@ sub disable_plugin { die "cannot disable a plugin for a group" }
 # Basic implementation for now.
 sub allow_invitation { shift->can_update_store() }
 
+sub invite {
+    my $self = shift;
+    my %p    = @_;  # passed straight through.
+
+    require Socialtext::GroupInvitation;
+    return Socialtext::GroupInvitation->new(
+        group      => $self,
+        from_user  => $p{from_user},
+        extra_text => $p{extra_text},
+        viewer     => $p{viewer},
+    );
+}
+
 ###############################################################################
 sub Drivers {
     my $drivers = Socialtext::AppConfig->group_factories();
