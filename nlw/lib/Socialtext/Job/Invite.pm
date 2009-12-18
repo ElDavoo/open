@@ -35,7 +35,7 @@ sub _build_object {
         return Socialtext::Workspace->new(workspace_id => $ws_id);
     }
     elsif (my $group_id = $self->arg->{group_id}) {
-        return Socialtext::Group->new(group_id => $group_id);
+        return Socialtext::Group->GetGroup(group_id => $group_id);
     }
 
     return undef;
