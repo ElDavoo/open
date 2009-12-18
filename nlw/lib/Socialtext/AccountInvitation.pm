@@ -14,13 +14,11 @@ has 'account' => (
 );
 
 sub queue {
-    my $self   = shift;
-    my $invitee = shift;
+    my $self      = shift;
+    my $invitee   = shift;
     my %user_args = @_;
 
-    my $acct   = $self->account;
-    my $domain = $acct->restrict_to_domain;
-
+    my $acct = $self->account;
     my $user = Socialtext::User->new(
         email_address => $invitee
     );
@@ -36,16 +34,18 @@ sub queue {
     $user->set_confirmation_info()
         unless $user->has_valid_password();
 
-    $acct->assign_role_to_user(user => $user,
-        role => Socialtext::Role->new(name => 'member'));
+    $acct->assign_role_to_user(
+        user => $user,
+        role => Socialtext::Role->Member()
+    );
 
     Socialtext::JobCreator->insert(
-        'Socialtext::Job::AccountInvite',
+        'Socialtext::Job::Invite',
         {
-            account_id => $acct->account_id,
-            user_id    => $user->user_id,
-            sender_id  => $self->from_user->user_id,
-            extra_text => $self->extra_text,
+            account_id      => $acct->account_id,
+            user_id         => $user->user_id,
+            sender_id       => $self->from_user->user_id,
+            extra_text      => $self->extra_text,
         }
     );
 }
