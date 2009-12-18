@@ -1,13 +1,13 @@
 package Socialtext::Events::Reporter;
 # @COPYRIGHT@
 use Moose;
+use Clone qw/clone/;
 use Socialtext::Encode ();
 use Socialtext::SQL qw/sql_execute/;
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::User;
 use Socialtext::Pluggable::Adapter;
 use Socialtext::Timer;
-use Class::Field qw/field/;
 use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::HTML;
 use Socialtext::Formatter::LinkDictionary;
@@ -23,46 +23,68 @@ has 'link_dictionary' => (
     lazy_build => 1,
 );
 
-sub _build_link_dictionary { Socialtext::Formatter::LinkDictionary->new }
+has 'table' => (
+    is => 'rw', isa => 'Str', default => 'event',
+    init_arg => undef,
+);
 
-sub new {
-    my $class = shift;
-    $class = ref($class) || $class;
-    return bless {
-        @_,
-        _conditions => [],
-        _condition_args => [],
-        _outer_conditions => [],
-        _outer_condition_args => [],
-    }, $class;
+{
+    my @field_list = (
+        [at_utc => "at AT TIME ZONE 'UTC' || 'Z'"],
+        (map { [$_=>$_] } qw(
+            at event_class action actor_id
+            tag_name context
+            person_id signal_id group_id
+        )),
+        [page_id => 'page.page_id'],
+        [page_name => 'page.name'],
+        [page_type => 'page.page_type'],
+        [page_workspace_name => 'w.name'],
+        [page_workspace_title => 'w.title'],
+    );
+    has 'field_list' => (
+        is => 'rw', isa => 'ArrayRef',
+        default => sub { clone \@field_list }, # copy it
+        lazy => 1, auto_deref => 1,
+        init_arg => undef,
+    );
 }
+
+has $_ => (is => 'rw', isa => 'ArrayRef', default => sub {[]})
+    for (qw(_condition_args _outer_condition_args));
+has $_ => (is => 'rw', isa => 'ArrayRef', default => sub {['1=1']})
+    for (qw(_conditions _outer_conditions));
+has $_ => (is => 'rw', isa => 'Bool', default => undef, init_arg => undef)
+    for (qw(_skip_visibility _skip_standard_opts _include_public_ws));
+
+sub _build_link_dictionary { Socialtext::Formatter::LinkDictionary->new }
 
 sub add_condition {
     my $self = shift;
     my $cond = shift;
-    push @{$self->{_conditions}}, $cond;
-    push @{$self->{_condition_args}}, @_;
+    push @{$self->_conditions}, $cond;
+    push @{$self->_condition_args}, @_;
 }
 
 sub prepend_condition {
     my $self = shift;
     my $cond = shift;
-    unshift @{$self->{_conditions}}, $cond;
-    unshift @{$self->{_condition_args}}, @_;
+    unshift @{$self->_conditions}, $cond;
+    unshift @{$self->_condition_args}, @_;
 }
 
 sub add_outer_condition {
     my $self = shift;
     my $cond = shift;
-    push @{$self->{_outer_conditions}}, $cond;
-    push @{$self->{_outer_condition_args}}, @_;
+    push @{$self->_outer_conditions}, $cond;
+    push @{$self->_outer_condition_args}, @_;
 }
 
 sub prepend_outer_condition {
     my $self = shift;
     my $cond = shift;
-    unshift @{$self->{_outer_conditions}}, $cond;
-    unshift @{$self->{_outer_condition_args}}, @_;
+    unshift @{$self->_outer_conditions}, $cond;
+    unshift @{$self->_outer_condition_args}, @_;
 }
 
 our @QueryOrder = qw(
@@ -262,24 +284,6 @@ sub decorate_event_set {
 
     return $result;
 }
-
-my $FIELDS = <<'EOSQL';
-    at AT TIME ZONE 'UTC' || 'Z' AS at_utc,
-    at AS at,
-    event_class AS event_class,
-    action AS action,
-    actor_id AS actor_id,
-    person_id AS person_id,
-    signal_id AS signal_id,
-    page.page_id as page_id,
-        page.name AS page_name,
-        page.page_type AS page_type,
-    w.name AS page_workspace_name,
-        w.title AS page_workspace_title,
-    tag_name AS tag_name,
-    context AS context,
-    group_id AS group_id
-EOSQL
 
 my $SIGNAL_VIS_SQL = <<'EOSQL';
     AND user_set_id IN (
@@ -558,10 +562,10 @@ sub _build_standard_sql {
 
     $self->_process_before_after($opts);
 
-    unless ($self->{_skip_standard_opts}) {
+    unless ($self->_skip_standard_opts) {
         {
             my $visible_ws = $VISIBLE_WORKSPACES;
-            if ($self->{_include_public_ws}) {
+            if ($self->_include_public_ws) {
                 $visible_ws .= ' UNION ALL '.$PUBLIC_WORKSPACES;
             }
             my @bind = ($viewer_id);
@@ -574,13 +578,16 @@ sub _build_standard_sql {
                 push @bind, $opts->{group_id} + GROUP_OFFSET;
             }
             my $can_use_this_ws = qq{
-                page_workspace_id IS NULL OR
-                page_workspace_id IN ( $visible_ws )
+                -- start "can_use_this_ws"
+                page_workspace_id IS NULL OR page_workspace_id IN (
+                    $visible_ws
+                )
+                -- end "can_use_this_ws"
             };
             $self->prepend_condition($can_use_this_ws => @bind);
         }
 
-        unless ($self->{_skip_visibility}) {
+        unless ($self->_skip_visibility) {
             $self->add_outer_condition(
                 $self->visibility_sql($opts)
             );
@@ -616,16 +623,27 @@ sub _build_standard_sql {
 
     my ($limit_stmt, @limit_args) = $self->_limit_and_offset($opts);
 
-    my $where = join("\n  AND ",
-                     map {"($_)"} ('1=1',@{$self->{_conditions}},'NOT hidden'));
-    my $outer_where = join("\n  AND ",
-                           map {"($_)"} ('1=1',@{$self->{_outer_conditions}},'NOT hidden'));
+    my $table = $self->table;
+    if ($table ne 'event_page_contrib') {
+        # event_page_contrib doesn't have a hidden column
+        $self->add_condition('NOT hidden');
+        $self->add_outer_condition('NOT hidden');
+    }
+
+    # strange code indentation is for SQL alignment
+    my $where = join("
+          AND ",map {"($_)"} @{$self->_conditions});
+    my $outer_where = join("
+      AND ", map {"($_)"} @{$self->_outer_conditions});
+
+    my $fields = join(",\n\t", map { "$_->[1] AS $_->[0]" } $self->field_list);
 
     my $sql = <<EOSQL;
-SELECT $FIELDS FROM (
+SELECT $fields
+  FROM (
     SELECT evt.* FROM (
         SELECT e.*
-        FROM event e
+        FROM $table e
         WHERE $where
         ORDER BY at DESC
     ) evt
@@ -636,12 +654,12 @@ SELECT $FIELDS FROM (
 LEFT JOIN page ON (outer_e.page_workspace_id = page.workspace_id AND
                    outer_e.page_id = page.page_id)
 LEFT JOIN "Workspace" w ON (outer_e.page_workspace_id = w.workspace_id)
-
--- the JOINs above mess up the order. Fortunately, the re-sort isn't too hideous after LIMIT-ing
+-- the JOINs above mess up the "ORDER BY at DESC".
+-- Fortunately, the re-sort isn't too hideous after LIMIT-ing
 ORDER BY outer_e.at DESC
 EOSQL
 
-    return $sql, [@{$self->{_condition_args}}, @{$self->{_outer_condition_args}}, @limit_args];
+    return $sql, [@{$self->_condition_args}, @{$self->_outer_condition_args}, @limit_args];
 }
 
 sub _get_events {
@@ -712,14 +730,32 @@ sub get_events {
     return $self->_get_events($opts);
 }
 
+# Switches the query generator to use the `event_page_contrib` table rather
+# than the usual `event` table.  The usual non-page event visibility checks
+# are also turned off; the query can only ever return page events with this
+# table.
+sub use_event_page_contrib {
+    my $self = shift;
+
+    $self->table('event_page_contrib');
+    for my $field ($self->field_list) {
+        my ($k,$defn) = @$field;
+        if ($k eq 'event_class') {
+            $defn = "'page'";
+        }
+        elsif ($k =~ /^(?:person_id|signal_id|group_id)$/) {
+            $defn = "NULL";
+        }
+        $field->[1] = $defn;
+    }
+    $self->_skip_visibility(1);
+}
+
 sub get_events_page_contribs {
     my $self = shift;
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
 
-    $self->add_condition(
-        q{event_class = 'page' AND is_page_contribution(action)}
-    );
-    local $self->{_skip_visibility} = 1;
+    $self->use_event_page_contrib();
     my $filtered_opts = _filter_opts($opts, 
         qw(limit count offset before after action followed account_id group_id)
     );
@@ -747,7 +783,7 @@ sub get_events_activities {
     my $user = Socialtext::User->Resolve($maybe_user);
     my $user_id = $user->user_id;
 
-    $self->{_include_public_ws} = 1;
+    $self->_include_public_ws(1);
 
     my $user_ids;
     my @conditions;
@@ -841,7 +877,7 @@ sub get_events_group_activities {
         )
     }, $group_id, $group_set_id, $group_set_id);
 
-    local $self->{_skip_standard_opts} = 1;
+    $self->_skip_standard_opts(1);
     my $evs = $self->_get_events(@_);
     Socialtext::Timer->Pause('get_gactivity');
 
@@ -852,11 +888,11 @@ sub get_events_group_activities {
 sub _conversations_where {
     my $visible_ws = shift || $VISIBLE_WORKSPACES;
     return qq{
-        event_class = 'page'
-        AND is_page_contribution(action)
-        AND e.actor_id <> ?
-        AND page_workspace_id IN ( $visible_ws )
-        AND (
+        e.actor_id <> ?
+        AND page_workspace_id IN (
+            $visible_ws
+        ) -- end page_workspace_id IN
+        AND ( -- start convos clause
             -- it's in my watchlist
             EXISTS (
                 SELECT 1
@@ -875,19 +911,17 @@ sub _conversations_where {
                   AND p.creator_id = ?
             )
             OR
-            -- they contributed to it after i did
+            -- they contributed to it after i did. targets the
+            -- ix_epc_actor_page_at index.
             EXISTS (
                 SELECT 1
-                FROM event my_contribs
-                WHERE my_contribs.event_class = 'page'
-                  AND is_page_contribution(my_contribs.action)
-                  AND my_contribs.actor_id = ?
-                  AND my_contribs.page_workspace_id
-                        = e.page_workspace_id
+                FROM event_page_contrib my_contribs
+                WHERE my_contribs.actor_id = ?
+                  AND my_contribs.page_workspace_id = e.page_workspace_id
                   AND my_contribs.page_id = e.page_id
                   AND my_contribs.at < e.at
             )
-        )
+        ) -- end convos clause
     };
 }
 
@@ -897,31 +931,28 @@ sub _build_convos_sql {
 
     my $user_id = $opts->{user_id};
 
+    $self->use_event_page_contrib();
+    $self->_skip_standard_opts(1);
+
     # filter the options to a subset of what's usually allowed
     my $filtered_opts = _filter_opts($opts, qw(
        action actor_id page_workspace_id page_id tag_name account_id group_id
        before after limit count offset
     ));
 
-    local $self->{_skip_standard_opts} = 1;
-
-    my @bind = ($user_id); # actor_id <> ?
+    my @bind = ($user_id); # the `actor_id <> ?` part of the big convos SQL
 
     my $visible_ws = qq{
     $VISIBLE_WORKSPACES
     UNION ALL
     $PUBLIC_WORKSPACES
-        AND workspace_id IN
-        (
+        AND workspace_id IN (
             SELECT page_workspace_id AS workspace_id
-            FROM event has_contrib
-            WHERE has_contrib.event_class = 'page'
-              AND is_page_contribution(has_contrib.action)
-              AND has_contrib.actor_id = ?
+            FROM event_page_contrib has_contrib
+            WHERE has_contrib.actor_id = ?
         )
     };
-
-    push @bind, ($user_id) x 2; # ws visibility so far
+    push @bind, ($user_id) x 2; # for $visible_ws
 
     if ($filtered_opts->{account_id}) {
         $visible_ws = _limit_ws_to_account($visible_ws);
@@ -997,8 +1028,8 @@ sub get_page_contention_events {
     my $self = shift;
     my $opts = (@_==1) ? shift : {@_};
     
-    local $self->{_skip_standard_opts} = 1;
-    local $self->{_skip_visibility} = 1;
+    $self->_skip_standard_opts(1);
+    $self->_skip_visibility(1);
     $opts->{event_class} = 'page';
     $opts->{action} = [qw(edit_start edit_cancel)];
     my ($sql, $args) = $self->_build_standard_sql($opts);
@@ -1011,6 +1042,6 @@ sub get_page_contention_events {
     my $result = $self->decorate_event_set($sth);
     return $result;
 }
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 
 1;
