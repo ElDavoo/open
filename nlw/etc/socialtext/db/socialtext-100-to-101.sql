@@ -34,6 +34,9 @@ ALTER TABLE container
     DROP COLUMN account_id,
     ALTER COLUMN user_set_id SET NOT NULL;
 
+CREATE UNIQUE INDEX container__type_name_set
+    ON container(container_type, name, user_set_id);
+
 -- Done
 
 UPDATE "System"

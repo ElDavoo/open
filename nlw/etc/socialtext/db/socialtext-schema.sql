@@ -1370,6 +1370,9 @@ CREATE INDEX "Workspace_account_id"
 CREATE UNIQUE INDEX account_user_set_id
 	    ON "Account" (user_set_id);
 
+CREATE UNIQUE INDEX container__type_name_set
+	    ON container (container_type, name, user_set_id);
+
 CREATE INDEX error_funcid_errortime
 	    ON error (funcid, error_time);
 
