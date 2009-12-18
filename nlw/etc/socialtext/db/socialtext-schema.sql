@@ -649,15 +649,9 @@ CREATE VIEW accounts_for_user AS
 CREATE TABLE container (
     container_id bigint NOT NULL,
     container_type text NOT NULL,
-    user_id bigint,
-    workspace_id bigint,
-    account_id bigint,
     name text DEFAULT '' NOT NULL,
-    page_id text,
     layout_template text,
-    group_id bigint,
-    CONSTRAINT container_scope_ptr
-            CHECK ((((((((user_id IS NOT NULL) AND (account_id IS NULL)) AND (group_id IS NULL)) AND (workspace_id IS NULL)) AND (page_id IS NULL)) OR (((((user_id IS NULL) AND (account_id IS NOT NULL)) AND (group_id IS NULL)) AND (workspace_id IS NULL)) AND (page_id IS NULL))) OR (((((user_id IS NULL) AND (account_id IS NULL)) AND (group_id IS NOT NULL)) AND (workspace_id IS NULL)) AND (page_id IS NULL))) OR ((((user_id IS NULL) AND (account_id IS NULL)) AND (group_id IS NULL)) AND (workspace_id IS NOT NULL)))
+    user_set_id integer NOT NULL
 );
 
 CREATE SEQUENCE container_id
@@ -665,20 +659,6 @@ CREATE SEQUENCE container_id
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
-
-CREATE TABLE container_type (
-    container_type text NOT NULL,
-    path_args text[],
-    links_template text,
-    hello_template text,
-    last_update timestamptz DEFAULT now() NOT NULL,
-    "global" boolean DEFAULT false,
-    columns integer DEFAULT 3,
-    title text,
-    purge_all_on_update boolean DEFAULT false,
-    plugin text DEFAULT 'widgets',
-    footer_template text
-);
 
 CREATE SEQUENCE default_gadget_id
     INCREMENT BY 1
@@ -1211,10 +1191,6 @@ ALTER TABLE ONLY container
     ADD CONSTRAINT container_pk
             PRIMARY KEY (container_id);
 
-ALTER TABLE ONLY container_type
-    ADD CONSTRAINT container_type_pk
-            PRIMARY KEY (container_type);
-
 ALTER TABLE ONLY exitstatus
     ADD CONSTRAINT exitstatus_pkey
             PRIMARY KEY (jobid);
@@ -1454,23 +1430,8 @@ CREATE INDEX idx_user_set_plugin_pref_key
 CREATE UNIQUE INDEX idx_uspc_set_and_id
 	    ON user_set_path_component (user_set_id, user_set_path_id);
 
-CREATE INDEX ix_container_account_id
-	    ON container (account_id);
-
 CREATE INDEX ix_container_container_type
 	    ON container (container_type);
-
-CREATE INDEX ix_container_group_id
-	    ON container (group_id);
-
-CREATE INDEX ix_container_user_id
-	    ON container (user_id);
-
-CREATE INDEX ix_container_user_id_type
-	    ON container (container_type, user_id);
-
-CREATE INDEX ix_container_workspace_id
-	    ON container (workspace_id);
 
 CREATE INDEX ix_event_action_at
 	    ON event ("action", "at");
@@ -1814,36 +1775,6 @@ ALTER TABLE ONLY account_logo
             FOREIGN KEY (account_id)
             REFERENCES "Account"(account_id) ON DELETE CASCADE;
 
-ALTER TABLE ONLY container
-    ADD CONSTRAINT container_account_id_fk
-            FOREIGN KEY (account_id)
-            REFERENCES "Account"(account_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY container
-    ADD CONSTRAINT container_group_id_fk
-            FOREIGN KEY (group_id)
-            REFERENCES groups(group_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY container
-    ADD CONSTRAINT container_page_id_fk
-            FOREIGN KEY (workspace_id, page_id)
-            REFERENCES page(workspace_id, page_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY container
-    ADD CONSTRAINT container_type_fk
-            FOREIGN KEY (container_type)
-            REFERENCES container_type(container_type) ON DELETE CASCADE;
-
-ALTER TABLE ONLY container
-    ADD CONSTRAINT container_user_id_fk
-            FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY container
-    ADD CONSTRAINT container_workspace_id_fk
-            FOREIGN KEY (workspace_id)
-            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
-
 ALTER TABLE ONLY event
     ADD CONSTRAINT event_actor_id_fk
             FOREIGN KEY (actor_id)
@@ -2180,4 +2111,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '100');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '101');

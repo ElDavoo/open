@@ -21,10 +21,10 @@ sub delete_recklessly {
              WHERE container_id IN (
                 SELECT container_id
                   FROM container
-                 WHERE account_id = ?
+                 WHERE user_set_id = ?
              )
          )
-    }, $account->account_id);
+    }, $account->user_set_id);
 
     Socialtext::SQL::disconnect_dbh();
 
