@@ -751,6 +751,12 @@ sub is_deactivated {
         == Socialtext::Account->Deleted()->account_id;
 }
 
+# is User data sourced internally (eg. Default), or externally (eg. LDAP)
+sub is_externally_sourced {
+    my $self = shift;
+    return ($self->driver_name eq 'Default') ? 0 : 1;
+}
+
 # revoke a user's access to everything
 sub deactivate {
     my $self = shift;
