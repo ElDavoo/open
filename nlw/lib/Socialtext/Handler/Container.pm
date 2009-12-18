@@ -17,63 +17,32 @@ use constant 'entity_name' => 'Container';
 
 requires 'container';
 
-has 'viewer' => (
-    is => 'ro', isa => 'Socialtext::User',
-    lazy_build => 1,
-);
-
-sub _build_viewer {
-    my $self = shift;
-    return $self->rest->user;
-}
-
 sub authorized_to_view {
     my $self = shift;
-    return 1 if $self->viewer->can_use_plugin($self->container->plugin);
+    return 1
+        if $self->rest->user->is_authenticated
+        and $self->rest->user->can_use_plugin($self->container->plugin);
 }
 
 sub authorized_to_edit {
     my $self = shift;
-    return 1 if $self->viewer->can_use_plugin($self->container->plugin);
+    return 1
+        if $self->rest->user->is_authenticated
+        and $self->rest->user->can_use_plugin($self->container->plugin);
 }
 
 sub GET {
     my ($self, $rest) = @_;
 
-    unless ($self->authorized_to_view) {
-        $self->rest->header( -status => HTTP_401_Unauthorized );
-        return 'Unauthorized';
-    }
-
     loc_lang( $self->hub->best_locale );
 
-    my $res = '';
-    if (my $action = $rest->query->param('action')) {
-        warn "Action...";
-        eval { $res = $self->hub->process };
-        if (my $e = $@) {
-            my $redirect_class = 'Socialtext::WebApp::Exception::Redirect';
-            if (Exception::Class->caught($redirect_class)) {
-                 $rest->header(
-                     -status => HTTP_302_Found,
-                     -Location => $e->message,
-                 );
-                 return '';
-            }
-        }
-        $rest->header(-type => 'text/html; charset=UTF-8', # default
-                      $self->hub->rest->header);
+    unless ($self->authorized_to_view) {
+        $self->rest->header(
+            -status => HTTP_302_Found,
+            -Location => '/',
+        );
+        return 'Unauthorized';
     }
-    else {
-        $res = $self->render_container;
-    }
-    return $res;
-}
-
-# Rendering
-
-sub render_container {
-    my $self = shift;
 
     # XXX:
     #my $target;

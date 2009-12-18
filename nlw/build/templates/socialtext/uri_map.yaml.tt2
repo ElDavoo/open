@@ -615,6 +615,9 @@
 -
     '/:ws/index.cgi':
         '*':                    [Socialtext::Rest::App, handler]
+-
+    '/':
+        '*':                    [Socialtext::Handler::Default, handler]
 # -
 #     '/hydra':
 #         'GET':                  [Socialtext::Rest::Hydra, GET]

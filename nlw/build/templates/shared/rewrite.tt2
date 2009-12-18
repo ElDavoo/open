@@ -82,9 +82,6 @@
     RewriteCond    %{QUERY_STRING} ^([^=]+)$
     RewriteRule    ^/$ /st/%1? [R,L]
 
-    # Temporary redirect to dashboard
-    RewriteRule    ^/$ /st/dashboard [R,L]
-
     RewriteRule    ^/control/   /nlw/control/  [R,L]
 
     # backwards compat for old-style /foo/member/index.cgi links
