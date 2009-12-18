@@ -29,7 +29,7 @@
 [% END %]
 </div>
 
-[% FILTER decorate('container_action', container.type, container.owner) %] 
+[% FILTER decorate('container_action', container.type, container.owner.username) %] 
 [% END %] 
 [% FILTER decorate('container_action_script', container.type) %] 
 [% END %] 

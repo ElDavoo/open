@@ -1,6 +1,5 @@
-<li [% UNLESS gadget.is_authorized %]style="display:none" [% END %]id="[% gadget.id %]-li" class="[% gadget.fixed ? "fixed" : "draggable" %]">
+<li id="[% gadget.id %]-li" class="[% gadget.fixed ? "fixed" : "draggable" %]">
 <div class="[% IF gadget.fixed %]tan[% ELSE %]regular[% END %] widget" id="[% gadget.id %]">
-[% IF gadget.is_authorized %]
     <div class="widgetHeader">
         <div class="widgetHeaderTitle">
             <h4 id="[% gadget.id %]-title" class="widgetHeaderTitleBox">
@@ -49,6 +48,5 @@
         [% END %]
     </div><!-- widgetContent END -->
     <div class="widgetBottom"><div class="widgetBottomRight"></div></div><!-- widgetBottom END -->                                
-[% END %]
 </div><!-- widget END -->
 </li>
