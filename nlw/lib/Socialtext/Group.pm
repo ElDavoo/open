@@ -481,7 +481,7 @@ sub to_hash {
         $hash->{admins} = $self->users_as_minimal_arrayref('admin');
     }
     if ($opts{plugins}) {
-        $hash->{plugins} = [ sort $self->plugins_enabled ],
+        $hash->{plugins_enabled} = [ sort $self->plugins_enabled ],
     }
     if ($opts{show_account_ids}) {
         $hash->{primary_account_id} = $self->primary_account_id;
