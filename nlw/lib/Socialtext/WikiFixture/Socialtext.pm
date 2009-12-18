@@ -640,10 +640,10 @@ sub st_admin {
     # Explode out the command line options to a list.
     my @argv = shellwords($options);
 
-    # Invocations with redirected input/output or pipes *needs* to be done
-    # against the shell, but simpler cmds can be done in-process.  Also have
-    # to watch out for "st-admin help", which *has* to be shelled out for.
-    my ($out, $err) = ($options =~ /[\|<>]|help/)
+    # Invocations with redirected input *needs* to be done against the shell,
+    # but other commands can be done in-process.  Also have to watch out for
+    # "st-admin help", which *has* to be shelled out for.
+    my ($out, $err) = ($options =~ /<|^\s*-*help/)
         ? _st_admin_shell_out(@argv)
         : _st_admin_in_process(@argv);
 
