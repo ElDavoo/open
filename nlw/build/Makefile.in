@@ -368,6 +368,10 @@ test:
 	    $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort) \
 	    $(shell find -L t/wikitests/ -name '*.wiki')
 
+testunit:
+	$(PROVE) --jobs 4 \
+	    $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
+
 testwikid:
 	$(PROVE) --jobs 4 \
 	    $(shell find -L t/wikitests/ -name '*.wiki')
