@@ -5,6 +5,7 @@ use warnings;
 
 use YAML;
 use Test::Exception;
+use Test::Differences;
 use File::Path 'mkpath';
 use Socialtext::Paths;
 use Socialtext::System qw/shell_run/;
@@ -49,7 +50,7 @@ my $latest_schema = $START_SCHEMA;
     }
 }
 
-plan tests => ($latest_schema - $START_SCHEMA) + 1;
+plan tests => ($latest_schema - $START_SCHEMA) + 2;
 
 # Set up the initial database
 diag "loading config...\n";
@@ -83,3 +84,18 @@ if ($ENV{INSTALL_SCHEMA}) {
     shell_run("cp $generated_schema $real_dir/socialtext-schema.sql");
 }
 
+# don't load until here
+require Socialtext::SQL;
+
+my $column_sql = q{
+    SELECT column_name,data_type
+    FROM information_schema.columns
+    WHERE table_name = ?
+    ORDER BY column_name ASC
+};
+my $orig_cols = Socialtext::SQL::sql_execute(
+    $column_sql,'event')->fetchall_arrayref();
+my $archive_cols = Socialtext::SQL::sql_execute(
+    $column_sql,'event_archive')->fetchall_arrayref();
+eq_or_diff($orig_cols,$archive_cols,
+    'event and event_archive have basically the same columns');
