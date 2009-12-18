@@ -98,6 +98,7 @@ else
 fi
 
 st-admin enable-plugin --all-workspaces --plugin socialcalc
+st-admin enable-plugin --all-accounts --plugin groups
 
 if [ $UPDATE_WIDGETS == 1 ]; then
     st-widgets update-all
