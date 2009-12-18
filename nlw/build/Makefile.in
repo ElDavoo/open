@@ -34,7 +34,11 @@ INSTALLSCRIPT   = $(PREFIX)@BINDIR@
 
 # Perl location
 PERL = @PERL@
+
+# Testing
 PROVE = nice st-prove --timer --state=save
+UNIT_TESTS  = $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
+WIKID_TESTS = $(shell find -L t/wikitests/ -name '*.wiki')
 
 # Program locations
 STCTL          = $(PERL) dev-bin/nlwctl
@@ -364,17 +368,13 @@ tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
 test:
-	$(PROVE) --jobs 4 \
-	    $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort) \
-	    $(shell find -L t/wikitests/ -name '*.wiki')
+	$(PROVE) --jobs 4 $(UNIT_TESTS) $(WIKID_TESTS)
 
 testunit:
-	$(PROVE) --jobs 4 \
-	    $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
+	$(PROVE) --jobs 4 $(UNIT_TESTS)
 
 testwikid:
-	$(PROVE) --jobs 4 \
-	    $(shell find -L t/wikitests/ -name '*.wiki')
+	$(PROVE) --jobs 4 $(WIKID_TESTS)
 
 testplugin-%:
 	$(PROVE) -s $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
