@@ -387,3 +387,4 @@ lib/Socialtext/Gadgets/Container/AccountDashboard.pm
 lib/Socialtext/Handler/Container/AccountDashboard.pm
 lib/Socialtext/Gadgets/Container/EditProfile.pm
 lib/Socialtext/Handler/Container/EditProfile.pm
+t/Socialtext/Account-import-signals.t
