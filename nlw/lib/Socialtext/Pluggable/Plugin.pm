@@ -21,6 +21,7 @@ use Socialtext::Pluggable::Adapter;
 use Socialtext::String ();
 use Socialtext::SQL qw(:txn :exec);
 use Socialtext::Log qw/st_log/;
+use Socialtext::MultiCursor;
 my $prod_ver = Socialtext->product_version;
 
 # Class Methods
@@ -463,6 +464,42 @@ sub get_revision {
         return undef;
     }
     return $revision;
+}
+
+sub get_user_page_prefs_for_page {
+    my $self = shift;
+    my %p = (
+        workspace_name => undef,
+        page_id        => undef,
+        plugin_id      => undef,
+        key            => undef,
+        @_
+    );
+
+    my $workspace = Socialtext::Workspace->new( name => $p{workspace_name} );
+    return undef if (!defined($workspace));
+    my $auth_check = Socialtext::Authz::SimpleChecker->new(
+        user => $self->hub->current_user,
+        workspace => $workspace,
+    );
+    my $hub = $self->_hub_for_workspace($workspace);
+    return undef unless defined($hub);
+    return undef unless $auth_check->check_permission('read');
+
+    my $sth = sql_execute(qq!
+        SELECT driver_username AS username,
+               value AS $p{key}
+          FROM user_page_plugin_pref
+          JOIN users USING (user_id)
+         WHERE workspace_id = ?
+           AND page_id = ?
+           AND plugin = ?
+           AND key = ?
+    !, $workspace->workspace_id, $p{page_id}, $p{plugin_id}, $p{key});
+
+    return Socialtext::MultiCursor->new(
+        iterables => [ $sth->fetchall_arrayref({}) ],
+    );
 }
 
 sub get_page {
