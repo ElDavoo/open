@@ -11,7 +11,7 @@ Tests for [Story: Groups ReST API]
 | code-is         | 200                            |             |
 | header-like     | Cache-Control                  | private     |
 | json-parse      |                                |             |
-| json-array-size | 0                              |             |
+| json-array-size | 1                              |             |
 
 # Create a new group, and put a User in it
 
