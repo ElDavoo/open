@@ -488,6 +488,7 @@ sub get_user_page_prefs_for_page {
 
     my $sth = sql_execute(qq!
         SELECT driver_username AS username,
+               display_name,
                value AS $p{key}
           FROM user_page_plugin_pref
           JOIN users USING (user_id)
@@ -495,10 +496,13 @@ sub get_user_page_prefs_for_page {
            AND page_id = ?
            AND plugin = ?
            AND key = ?
+         ORDER BY display_name
     !, $workspace->workspace_id, $p{page_id}, $p{plugin_id}, $p{key});
 
     return Socialtext::MultiCursor->new(
-        iterables => [ $sth->fetchall_arrayref({}) ],
+        iterables => [ 
+                $sth->fetchall_arrayref({})
+        ],
     );
 }
 
