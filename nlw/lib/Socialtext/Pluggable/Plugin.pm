@@ -689,11 +689,13 @@ sub set_workspace_prefs {
             push @{$columns[3]}, $prefs{$key};
         }
 
-        sql_execute_array('
-            INSERT INTO user_set_plugin_pref (
-                user_set_id, plugin, key, value
-            ) VALUES (?, ?, ?, ?)
-        ', {}, @columns);
+        if (scalar @columns) {
+            sql_execute_array('
+                INSERT INTO user_set_plugin_pref (
+                    user_set_id, plugin, key, value
+                ) VALUES (?, ?, ?, ?)
+            ', {}, @columns);
+        }
     };
     if (my $error = $@) {
         sql_rollback;
@@ -767,11 +769,13 @@ sub set_user_prefs {
             push @{$columns[3]}, $prefs{$key};
         }
 
-        sql_execute_array('
-            INSERT INTO user_plugin_pref (
-                user_id, plugin, key, value
-            ) VALUES (?, ?, ?, ?)
-        ', {}, @columns);
+        if (scalar @columns) {
+            sql_execute_array('
+                INSERT INTO user_plugin_pref (
+                    user_id, plugin, key, value
+                ) VALUES (?, ?, ?, ?)
+            ', {}, @columns);
+        }
     };
     if (my $error = $@) {
         sql_rollback;
@@ -828,11 +832,13 @@ sub set_page_prefs {
             push @{$columns[4]}, $p{prefs}->{$key};
         }
 
-        sql_execute_array('
-            INSERT INTO page_plugin_pref (
-                plugin, workspace_id, page_id, key, value
-            ) VALUES (?, ?, ?, ?, ?)
-        ', {}, @columns);
+        if (scalar @columns) {
+            sql_execute_array('
+                INSERT INTO page_plugin_pref (
+                    plugin, workspace_id, page_id, key, value
+                ) VALUES (?, ?, ?, ?, ?)
+            ', {}, @columns);
+        }
     };
     if (my $error = $@) {
         sql_rollback;
@@ -891,11 +897,13 @@ sub set_user_page_prefs {
             push @{$columns[5]}, $p{prefs}->{$key};
         }
 
-        sql_execute_array('
-            INSERT INTO user_page_plugin_pref (
-                user_id, plugin, workspace_id, page_id, key, value
-            ) VALUES (?, ?, ?, ?, ?, ?)
-        ', {}, @columns);
+        if (scalar @columns) {
+            sql_execute_array('
+                INSERT INTO user_page_plugin_pref (
+                    user_id, plugin, workspace_id, page_id, key, value
+                ) VALUES (?, ?, ?, ?, ?, ?)
+            ', {}, @columns);
+        }
     };
     if (my $error = $@) {
         sql_rollback;
@@ -1034,11 +1042,13 @@ sub set_plugin_prefs {
             push @{$columns[2]}, $prefs{$key};
         }
 
-        sql_execute_array('
-            INSERT INTO plugin_pref (
-                plugin, key, value
-            ) VALUES (?, ?, ?)
-        ', {}, @columns);
+        if (scalar @columns) {
+            sql_execute_array('
+                INSERT INTO plugin_pref (
+                    plugin, key, value
+                ) VALUES (?, ?, ?)
+            ', {}, @columns);
+        }
     };
     if (my $error = $@) {
         sql_rollback;
