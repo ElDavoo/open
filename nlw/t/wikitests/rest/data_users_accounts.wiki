@@ -3,6 +3,7 @@ For: [Story: User can be member of multiple accounts]
 * Fixture: SocialRest
 
 | standard-test-setup |              |   |
+| remove-user-from-group | %%username%% | %%group_id%% |
 | set-business-admin  | %%username%% | 1 |
 
 | set | acct1      | %%account%%                                            |
