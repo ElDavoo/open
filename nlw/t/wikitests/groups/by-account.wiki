@@ -3,6 +3,7 @@ Tests for [Story: Groups ReST API]
 * Fixture: SocialRest
 
 | standard-test-setup |
+| delete-group | %%group_id%% |
 
 # Verify no groups show up when fresh
 
