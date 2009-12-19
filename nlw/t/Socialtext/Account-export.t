@@ -59,6 +59,7 @@ sub dump_signal {
         signal_id => ignore(),
         username => $signal->user->username,
         group_ids => $signal->group_ids,
+        account_ids => $signal->account_ids,
     };
     return $data;
 }
