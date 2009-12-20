@@ -86,8 +86,6 @@ $plugin->hub($hub);
           "prefs are user scoped";
 
     $hub->current_user($user1);
-#     lives_ok { $plugin->set_user_page_prefs($ws->name, 'something', number => 38) }
-#              "set_user_prefs(number => SCALAR)";
 }
 
 # Settings are page scoped
@@ -140,6 +138,14 @@ $plugin->hub($hub);
         page_id        => 'something',
     );
     is_deeply $expected, {}, "prefs are plugin scoped";
+}
+
+{
+   my $expected = $plugin->delete_user_page_prefs_for_page(
+       workspace_name => $ws->name,
+       page_id => 'something',
+   );
+   is $expected,1, 'prefs deleted for a page';
 }
 
 package Socialtext::Pluggable::Plugin::Prefsetter;

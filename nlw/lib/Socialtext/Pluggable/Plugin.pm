@@ -969,6 +969,35 @@ sub get_page_prefs {
     return \%res;
 }
 
+sub delete_user_page_prefs_for_page {
+    my $self    = shift;
+    my %p = (
+        workspace_name => undef,
+        page_id => undef,
+        @_,
+    );
+    
+    my $user_id = $self->hub->current_user->user_id || die "No user";
+    my $ws = Socialtext::Workspace->new(name => $p{workspace_name}) or return undef;
+    my $ws_id = $ws->workspace_id;
+    my $auth_check = Socialtext::Authz::SimpleChecker->new(
+        user => $self->hub->current_user,
+        workspace => $ws,
+    );
+
+    my $hub = $self->_hub_for_workspace($ws);
+    return undef unless defined($hub);
+    return undef unless $auth_check->check_permission('admin_workspace');
+
+    sql_execute('
+        DELETE FROM user_page_plugin_pref
+         WHERE plugin = ?
+           AND workspace_id = ?
+           AND page_id = ?
+    ', $self->name, $ws_id, $p{page_id});
+    return 1;
+}
+
 sub get_user_page_prefs {
     my $self    = shift;
     my %p = (
