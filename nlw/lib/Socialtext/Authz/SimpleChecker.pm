@@ -11,8 +11,8 @@ has 'user' => (
     required => 1,
 );
 
-has 'workspace' => (
-    is => 'ro', isa => 'Socialtext::Workspace',
+has 'container' => (
+    is => 'ro', isa => 'Object',
     required => 1,
 );
 
@@ -33,11 +33,10 @@ sub check_permission {
     my $self = shift;
     my $perm = shift;
 
-
     return $self->authz->user_has_permission_for_workspace(
         user       => $self->user,
         permission => Socialtext::Permission->new( name => $perm ),
-        workspace  => $self->workspace,
+        workspace  => $self->container,
     );
 }
 
@@ -45,7 +44,7 @@ sub can_modify_locked {
     my $self = shift;
     my $page = shift;
 
-    return 1 unless ($self->workspace->allows_page_locking);
+    return 1 unless ($self->container->allows_page_locking);
     return 1 unless ($page->locked);
     return $self->check_permission('lock');
 }

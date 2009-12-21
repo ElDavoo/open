@@ -448,7 +448,7 @@ sub get_revision {
     return undef if (!defined($workspace));
     my $auth_check = Socialtext::Authz::SimpleChecker->new(
         user => $self->hub->current_user,
-        workspace => $workspace,
+        container => $workspace,
     );
     my $hub = $self->_hub_for_workspace($workspace);
     return undef unless defined($hub);
@@ -485,7 +485,7 @@ sub get_page {
     return undef if (!defined($workspace));
     my $auth_check = Socialtext::Authz::SimpleChecker->new(
         user => $self->hub->current_user,
-        workspace => $workspace,
+        container => $workspace,
     );
     my $hub = $self->_hub_for_workspace($workspace);
     return undef unless defined($hub);

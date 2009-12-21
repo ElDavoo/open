@@ -498,7 +498,7 @@ sub _make_hub {
 
     my $checker = Socialtext::Authz::SimpleChecker->new(
         user       => $user,
-        workspace  => $workspace,
+        container  => $workspace,
     );
 
     return $socialtext->hub if $checker->check_permission($permission);
@@ -513,7 +513,7 @@ sub _is_super_admin {
 
     my $checker = Socialtext::Authz::SimpleChecker->new(
         user       => $user,
-        workspace  => $workspace,
+        container  => $workspace,
     );
 
     return $checker->check_permission('impersonate');
@@ -591,7 +591,7 @@ sub _has_permission {
 
     my $checker = Socialtext::Authz::SimpleChecker->new(
         user       => $user,
-        workspace  => $workspace,
+        container  => $workspace,
     );
 
     return $checker->check_permission($permission_name);

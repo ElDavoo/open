@@ -31,7 +31,7 @@ field 'authz' =>
       -init => 'Socialtext::Authz->new';
 field 'checker' =>
       -init => 'Socialtext::Authz::SimpleChecker->new
-                    ( user => $self->current_user, workspace => $self->current_workspace )';
+                    ( user => $self->current_user, container => $self->current_workspace )';
 
 field 'current_workspace';
 field 'current_user';

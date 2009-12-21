@@ -151,7 +151,7 @@ sub _check_on_behalf_of {
 
     my $checker      = Socialtext::Authz::SimpleChecker->new(
         user      => $current_user,
-        workspace => $workspace,
+        container => $workspace,
     );
 
     if ($checker->check_permission('impersonate')) {

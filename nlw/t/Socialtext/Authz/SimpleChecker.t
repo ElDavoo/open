@@ -109,7 +109,7 @@ page_locking: {
 
     my $checker = Socialtext::Authz::SimpleChecker->new(
         user      => $hub->current_user,
-        workspace => $hub->current_workspace,
+        container => $hub->current_workspace,
     );
 
     is $checker->can_modify_locked($page), 1,
@@ -125,8 +125,8 @@ sub perms_as_expected {
     my $expected = shift;
 
     my $checker = Socialtext::Authz::SimpleChecker->new(
-        user => $user,
-        workspace => $ws,
+        user      => $user,
+        container => $ws,
     );
 
     for my $perm ( keys %$expected ) {
