@@ -390,3 +390,4 @@ lib/Socialtext/Handler/Container/EditProfile.pm
 t/Socialtext/Account-import-signals.t
 lib/Socialtext/Gadgets/Owned.pm
 etc/socialtext/uri_map.d/groups.yaml
+lib/Socialtext/Gadgets/Container/BaseDashboard.pm
