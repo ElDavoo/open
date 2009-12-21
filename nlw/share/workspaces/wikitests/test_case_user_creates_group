@@ -90,7 +90,4 @@
 | click_and_wait | st-cancel-create-group |  |
 | text_like | Welcome |  |
 
-| *Comment* | Test Case: User Creates Group TearDown |  |
-| st-admin | delete-workspace --w %%newws%% --no-export |  |
-
 | *Comment* | Test Case: User Creates Group |
