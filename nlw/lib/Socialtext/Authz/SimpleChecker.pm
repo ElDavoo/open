@@ -1,58 +1,57 @@
-# @COPYRIGHT@
 package Socialtext::Authz::SimpleChecker;
+# @COPYRIGHT@
+use Moose;
 
-use strict;
-use warnings;
-
-our $VERSION = '0.01';
-
-use Readonly;
 use Socialtext::Authz;
 use Socialtext::Permission;
-use Socialtext::Validate qw( validate USER_TYPE WORKSPACE_TYPE );
+use namespace::clean -except => 'meta';
 
+has 'user' => (
+    is => 'ro', isa => 'Socialtext::User',
+    required => 1,
+);
 
-{
-    Readonly my $spec => {
-        user       => USER_TYPE,
-        workspace  => WORKSPACE_TYPE,
-    };
-    sub new {
-        my $class = shift;
-        my %p = validate( @_, $spec );
+has 'workspace' => (
+    is => 'ro', isa => 'Socialtext::Workspace',
+    required => 1,
+);
 
-        my $authz = Socialtext::Authz->new();
+has 'authz' => (
+    is => 'ro', isa => 'Socialtext::Authz',
+    lazy_build => 1,
+);
+sub _build_authz {
+    return Socialtext::Authz->new();
+};
 
-        return bless { %p, authz => $authz }, $class;
-    }
-}
+has 'version' => (
+    is => 'ro', isa => 'Str',
+    default => sub { '0.01' },
+);
 
 sub check_permission {
     my $self = shift;
     my $perm = shift;
 
-    return $self->{has_perm}{$perm}
-        if exists $self->{has_perm}{$perm};
 
-    $self->{has_perm}{$perm} =
-        $self->{authz}->user_has_permission_for_workspace(
-            user       => $self->{user},
-            permission => Socialtext::Permission->new( name => $perm ),
-            workspace  => $self->{workspace},
-        );
-
-    return $self->{has_perm}{$perm};
+    return $self->authz->user_has_permission_for_workspace(
+        user       => $self->user,
+        permission => Socialtext::Permission->new( name => $perm ),
+        workspace  => $self->workspace,
+    );
 }
 
 sub can_modify_locked {
     my $self = shift;
     my $page = shift;
 
-    return 1 unless ($self->{workspace}->allows_page_locking);
+    return 1 unless ($self->workspace->allows_page_locking);
     return 1 unless ($page->locked);
     return $self->check_permission('lock');
 }
 
+no Moose;
+__PACKAGE__->meta->make_immutable;
 1;
 
 __END__
