@@ -55,7 +55,7 @@ override 'GET_json' => sub {
 
             push @users, {
                 title          => $user->guess_real_name,
-                uri            => $shared ? "/?profile/$user_id" : undef,
+                uri            => $shared ? "/st/profile/$user_id" : undef,
                 is_person      => 1,
                 user_id        => $user_id,
                 count          => $count,

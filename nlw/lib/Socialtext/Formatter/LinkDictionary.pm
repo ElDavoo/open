@@ -128,7 +128,7 @@ field image    => '/data/workspaces/%{workspace}/attachments/%{page_uri}:%{id}/%
 
 =cut
 
-field people_profile => '/?profile/%{user_id}';
+field people_profile => '/st/profile/%{user_id}';
 field people_photo => '/data/people/%{user_id}/photo';
 field people_photo_small => '/data/people/%{user_id}/small_photo';
 field people_tag => '/?action=people;tag=%{tag_name}';

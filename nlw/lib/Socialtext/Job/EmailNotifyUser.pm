@@ -44,7 +44,7 @@ sub do_work {
         include_editor   => $self->_links_only($prefs),
         email_time       => $tz->get_time_user($email_time) ,
         email_date       => $tz->get_dateonly_user($email_time) ,
-        base_profile_uri => Socialtext::URI::uri(path => '?profile/'),
+        base_profile_uri => Socialtext::URI::uri(path => 'st/profile/'),
         $self->_extra_template_vars(),
     );
 
