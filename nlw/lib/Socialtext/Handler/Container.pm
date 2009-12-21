@@ -22,7 +22,7 @@ has 'template_paths' => (
     lazy_build => 1,
 );
 sub _build_template_paths {
-    my $ self = shift;
+    my $self = shift;
     return [
         @{Socialtext::Gadgets::Util::template_paths()},
         @{$self->hub->skin->template_paths},
@@ -44,10 +44,10 @@ sub authorized_to_edit {
 }
 
 sub redirect {
-    my $self = shift;
+    my ($self, $url) = @_;
     $self->rest->header(
         -status => HTTP_302_Found,
-        -Location => '/',
+        -Location => $url,
     );
     return '';
 }
@@ -106,7 +106,6 @@ sub template_vars {
     my $self = shift;
     my %global_vars = $self->hub->helpers->global_template_vars;
     return {
-        #target => $target,
         share => share_path,
         workspaces => [$self->hub->current_user->workspaces->all],
         as_json => sub {

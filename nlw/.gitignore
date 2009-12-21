@@ -388,3 +388,4 @@ lib/Socialtext/Handler/Container/AccountDashboard.pm
 lib/Socialtext/Gadgets/Container/EditProfile.pm
 lib/Socialtext/Handler/Container/EditProfile.pm
 t/Socialtext/Account-import-signals.t
+lib/Socialtext/Gadgets/Owned.pm
