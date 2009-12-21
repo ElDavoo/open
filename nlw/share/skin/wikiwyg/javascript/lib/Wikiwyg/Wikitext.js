@@ -272,19 +272,28 @@ proto.insert_widget = function (widget_string) {
      *
      * Changed use spaces mainly for signals, but it shouldn't break {bz: 1116}.
      */
-    this.insert_text_at_cursor(' ' + widget_string + ' ');
+    this.insert_text_at_cursor(widget_string + ' ', { assert_preceding_wordbreak: true });
 }
 
-proto.insert_text_at_cursor = function(text) {
+proto.insert_text_at_cursor = function(text, opts) {
     var t = this.area;
+    var do_insert_from_parts = function (pre, mid, post) {
+        if (opts && opts.assert_preceding_wordbreak && /\w$/.test(pre)) {
+            return pre + ' ' + mid + post;
+        }
+        else {
+            return pre + mid + post;
+        }
+    };
 
     if (this.old_range) {
         this.old_range.text = text;
         return;
     }
 
+
     if (Wikiwyg.is_ie && typeof(this.start) != 'undefined' && typeof(this.finish) != 'undefined') {
-        t.value = this.start + text + this.finish;
+        t.value = do_insert_from_parts(this.start, text, this.finish);
         return false;
     }
 
@@ -300,7 +309,7 @@ proto.insert_text_at_cursor = function(text) {
 
     var before = t.value.substr(0, selection_start);
     var after = t.value.substr(selection_end, t.value.length);
-    t.value = before + text + after;
+    t.value = do_insert_from_parts(before, text, after);
 
     this.area.focus();
     var end = selection_end + text.length;
