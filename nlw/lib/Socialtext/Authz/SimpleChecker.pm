@@ -13,7 +13,7 @@ has 'user' => (
 );
 
 has 'container' => (
-    is => 'ro', isa => 'Object',
+    is => 'ro', does => 'Socialtext::UserSetContainer',
     required => 1,
 );
 
@@ -31,20 +31,21 @@ has 'version' => (
 );
 
 sub check_permission {
-    my $self = shift;
-    my $perm = shift;
+    my $self       = shift;
+    my $perm_name  = shift;
+    my $permission = Socialtext::Permission->new(name => $perm_name),
 
     if ($self->container->isa('Socialtext::Workspace')) {
         return $self->authz->user_has_permission_for_workspace(
             user       => $self->user,
-            permission => Socialtext::Permission->new( name => $perm ),
+            permission => $permission,
             workspace  => $self->container,
         );
     }
     elsif ($self->container->isa('Socialtext::Group')) {
         return $self->authz->user_has_permission_for_group(
             user       => $self->user,
-            permission => Socialtext::Permission->new( name => $perm ),
+            permission => $permission,
             group      => $self->container,
         );
     }

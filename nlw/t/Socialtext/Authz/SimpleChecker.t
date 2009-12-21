@@ -1,16 +1,17 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
 
-use Test::Socialtext tests => 48;
+use Test::Socialtext tests => 50;
+use Test::Exception;
 use Socialtext::Role;
-use Socialtext::Permission;
 
 fixtures('db');
 
 use_ok 'Socialtext::Authz::SimpleChecker';
 
-my $ws    = create_test_workspace();
-my $group = create_test_group();
+my $ws      = create_test_workspace();
+my $group   = create_test_group();
+my $account = create_test_account();
 
 my $admin_user  = create_test_user();
 my $member_user = create_test_user();
@@ -34,6 +35,29 @@ is $result->role_id, $member_role->role_id, 'member has correct role';
 
 $result = $ws->role_for_user( $guest_user, {direct => 1});
 ok !$result, 'guest has no role in workspace';
+
+################################################################################
+# pass a non-UserSetContainer
+illegal_role: {
+    dies_ok {
+        Socialtext::Authz::SimpleChecker->new(
+            user      => $admin_user,
+            container => $member_user,
+        );
+    } 'dies when wrong type of object is passed.';
+}
+
+################################################################################
+# pass an illegal UserSetContainer
+illegal_container: {
+    dies_ok {
+        my $checker = Socialtext::Authz::SimpleChecker->new(
+            user      => $admin_user,
+            container => $account,
+        );
+        $checker->check_permission('write');
+    } 'dies when wrong type of container is passed.';
+}
 
 ################################################################################
 # Groups always return true
