@@ -65,8 +65,8 @@ my $connected = Property {
     my $us = Socialtext::UserSet->new;
     my $from = $x->[0];
     my $to = $x->[1];
-    my $usresult = $us->has_role($from, $to, $memberroleid);
-    my $grresult = $graph->is_reachable($from, $to); #|| $graph->has_vertex($from, $to);
+    my $usresult = $us->has_role($from, $to, $memberroleid) || 0;
+    my $grresult = $graph->is_reachable($from, $to) || 0; #|| $graph->has_vertex($from, $to);
     my $success=($usresult == $grresult);
     
     diag ("FAILED:", 
@@ -114,9 +114,8 @@ my %testpairs;
 
 sub generate {
     my $OFFSET = 0x10000001;
-    my ($first, $second);
-        while (($first == $second) || 
-            $testpairs{"$first/$second"}) {
+    my ($first, $second) = (0, 0);
+        while (($first == $second) || $testpairs{"$first/$second"}) {
             $first = $OFFSET+int(rand(256));
             $second = $OFFSET+int(rand(256));
         }
