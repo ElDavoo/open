@@ -140,7 +140,7 @@ sub _check_on_behalf_of {
     return unless $behalf_user;
 
     # if we are in a non-real workspace, error out
-    unless ($workspace->real()) {
+    unless ($workspace and $workspace->real()) {
         st_log->info(
             $current_user->username, 'tried to impersonate',
             $behalf_user,                'without workspace'
