@@ -212,6 +212,8 @@ Set up a new account, workspace and user to work with.
 sub standard_test_setup {
     my $self = shift;
     my $prefix = shift || '';
+    my $option = shift || '';
+    my $no_group = $option eq 'no-group';
     $prefix .= '_' if $prefix;
     my $acct_name = shift || "${prefix}acct-$self->{start_time}";
     my $wksp_name = shift || "${prefix}wksp-$self->{start_time}";
@@ -222,8 +224,6 @@ sub standard_test_setup {
     my $acct  = $self->create_account($acct_name);
     my $wksp  = $self->create_workspace($wksp_name, $acct_name);
     my $user  = $self->create_user($user_name, $password, $acct->name);
-    my $group = $self->create_group($group_name, $acct_name, $user_name);
-    $wksp->add_group(group => $group);
     $self->add_workspace_admin($user_name, $wksp_name);
 
     $self->{"${prefix}account"} = $acct_name;
@@ -234,8 +234,13 @@ sub standard_test_setup {
     $self->{"${prefix}username"} = $user_name;
     $self->{"${prefix}user_id"} = $user->user_id;
     $self->{"${prefix}password"} = $password;
-    $self->{"${prefix}group"} = $group_name;
-    $self->{"${prefix}group_id"} = $self->{group_id};
+
+    unless ($no_group) {
+        my $group = $self->create_group($group_name, $acct_name, $user_name);
+        $wksp->add_group(group => $group);
+        $self->{"${prefix}group"} = $group_name;
+        $self->{"${prefix}group_id"} = $self->{group_id};
+    }
     $self->http_user_pass($user_name, $password);
 }
 
