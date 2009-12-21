@@ -122,3 +122,20 @@ sub template_vars {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Handler::Container - role for all containers
+
+=head1 SYNOPSIS
+
+  package Socialtext::Handler::Container::Group;
+  with 'Socialtext::Handler::Container';
+
+=head1 DESCRIPTION
+
+Handles the normal handler stuff for containers.
+
+=cut

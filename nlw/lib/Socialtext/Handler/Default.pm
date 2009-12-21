@@ -81,3 +81,19 @@ sub redirect {
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Handler::Default - root handler, redirects to other handlers
+
+=head1 SYNOPSIS
+
+  Used by the URI map to handle /
+
+=head1 DESCRIPTION
+
+Handles /, redirects to appropriate places for each user.
+
+=cut
