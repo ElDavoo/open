@@ -1,4 +1,5 @@
 package Socialtext::Handler::Default;
+# @COPYRIGHT@
 use Moose;
 use Socialtext;
 use Socialtext::BrowserDetect;

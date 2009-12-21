@@ -1,4 +1,5 @@
 package Socialtext::Handler::Container;
+# @COPYRIGHT@
 use Moose::Role;
 use Socialtext::HTTP ':codes';
 use Socialtext::Workspace;
