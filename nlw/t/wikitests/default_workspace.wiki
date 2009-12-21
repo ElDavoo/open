@@ -32,7 +32,7 @@
 | code-is            | 200                                                                                        |                 |
 
 | Comment     | ... user clicks "home" - they navigate to dashboard |             |
-| get         | /?dashboard                                         |             |
+| get         | /st/dashboard                                         |             |
 | code-is     | 200                                                 |             |
 
 | Comment            | User's primary account has dashboard disabled.                                                                |                   |
@@ -89,7 +89,8 @@
 
 | Comment | root: user sent to dashboard, no default workspace redirect |
 | get     | /                                                           |
-| code-is | 200                                                         |
+| code-is | 302                                                         |
+| header-is | Location                                   | /st/dashboard |
 
 | Comment   | CLEANUP: un-set `default_workspace` |
 | st-config | set default_workspace ''            |
