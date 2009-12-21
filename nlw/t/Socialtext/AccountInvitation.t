@@ -9,6 +9,7 @@ use Email::Send::Test;
 use Socialtext::Account;
 use Socialtext::User;
 use Socialtext::Jobs;
+use Socialtext::Job::Invite;
 
 BEGIN {
     use_ok( 'Socialtext::AccountInvitation' );
@@ -22,7 +23,7 @@ my $acct = create_test_account_bypassing_factory();
 my $from = create_test_user( unique_id => 'invitor', account => $acct );
 
 # Register worker
-Socialtext::Jobs->can_do('Socialtext::Job::AccountInvite');
+Socialtext::Jobs->can_do('Socialtext::Job::Invite');
 
 Simple_case: {
     my $invitee_email = 'invitee@example.com';
