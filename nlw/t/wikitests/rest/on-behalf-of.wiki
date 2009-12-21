@@ -31,9 +31,15 @@ Test case for on-behalf-of functionality
 | body-like | <em>contributed by <span class="nlw_phrase">        |                                                          |                    |
 | body-like | <!-- wiki: {user: q@q.q} --></span>                 |                                                          |                    |
 
+| set | public_ws | pub%%start_time%% |
+| create-workspace | %%public_ws%% |
+| st-admin | set-permissions --workspace %%public_ws%% --permissions public |
+
 | Comment        | When user is guest challenge when on-behalf-user used public | .          |
 | http-user-pass | | |
-| get            | /data/workspaces/public/pages?on-behalf-of=devnull2@socialtext.com | application/json |
+| get            | /data/workspaces/%%public_ws%%/pages?on-behalf-of=devnull2@socialtext.com | application/json |
+| code-is        | 401 | |
+| get            | /data/workspaces/non-existent/pages?on-behalf-of=devnull2@socialtext.com | application/json |
 | code-is        | 401 | |
 
 | Comment        | When user is guest challenge when on-behalf-user used admin | .          |
