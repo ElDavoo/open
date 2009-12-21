@@ -964,12 +964,14 @@ Check that the return code is correct.
 
 sub code_is {
     my ($self, $code, $msg) = @_;
-    $self->{http}->status_code_is($code);
-    if ($self->{http}->response->code != $code) {
-        warn "Response message: "
-            . ($self->{http}->response->message || 'None') . ', '
-            . ($self->{http}->response->content || 'No content')
-            . " url(" . $self->{http}->request->url . ")";
+    my $http = $self->{http};
+    my $resp = $http->response;
+    $http->status_code_is($code);
+    if ($resp->code != $code) {
+        warn "Response message: " . ($resp->message || 'None') ."\n";
+        warn "Content: " . ($resp->content || 'No content') . "\n"
+            unless $resp->code == 200;
+        warn "url(" . $http->request->url . ")\n";
     }
     if ($msg) {
         like $self->{http}->response->content(), $self->quote_as_regex($msg),
