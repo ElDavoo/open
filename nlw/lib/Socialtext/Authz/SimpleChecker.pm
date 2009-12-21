@@ -33,16 +33,23 @@ sub check_permission {
     my $self = shift;
     my $perm = shift;
 
-    return $self->authz->user_has_permission_for_workspace(
-        user       => $self->user,
-        permission => Socialtext::Permission->new( name => $perm ),
-        workspace  => $self->container,
-    );
+    if ($self->container->isa('Socialtext::Workspace')) {
+        return $self->authz->user_has_permission_for_workspace(
+            user       => $self->user,
+            permission => Socialtext::Permission->new( name => $perm ),
+            workspace  => $self->container,
+        );
+    }
+
+    croak 'container may only be a Workspace';
 }
 
 sub can_modify_locked {
     my $self = shift;
     my $page = shift;
+
+    croak 'container may only be a Workspace'
+        unless $self->container->isa('Socialtext::Workspace');
 
     return 1 unless ($self->container->allows_page_locking);
     return 1 unless ($page->locked);
