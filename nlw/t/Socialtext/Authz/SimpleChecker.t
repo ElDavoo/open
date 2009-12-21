@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
 
-use Test::Socialtext tests => 44;
+use Test::Socialtext tests => 48;
 use Socialtext::Role;
 use Socialtext::Permission;
 
@@ -9,7 +9,8 @@ fixtures('db');
 
 use_ok 'Socialtext::Authz::SimpleChecker';
 
-my $ws = create_test_workspace();
+my $ws    = create_test_workspace();
+my $group = create_test_group();
 
 my $admin_user  = create_test_user();
 my $member_user = create_test_user();
@@ -35,11 +36,22 @@ $result = $ws->role_for_user( $guest_user, {direct => 1});
 ok !$result, 'guest has no role in workspace';
 
 ################################################################################
+# Groups always return true
+groups_always_return_true: {
+    perms_as_expected($admin_user, $group, {
+        read                   => 1,
+        write                  => 1,
+        invite                 => 1,
+        super_monkey_death_car => 1,
+    });
+}
+
+################################################################################
 # Admin, Default setup
 admin_user_with_default: {
     diag('Admin user...');
 
-    perms_as_expected($admin_user, {
+    perms_as_expected($admin_user, $ws, {
         read => 1,
         edit => 1,
         attachments => 1,
@@ -61,7 +73,7 @@ admin_user_with_default: {
 member_user_with_default: {
     diag('Member user...');
 
-    perms_as_expected($member_user, {
+    perms_as_expected($member_user, $ws, {
         read => 1,
         edit => 1,
         attachments => 1,
@@ -83,7 +95,7 @@ member_user_with_default: {
 guest_user_with_default: {
     diag('Guest user...');
 
-    perms_as_expected($guest_user, {
+    perms_as_expected($guest_user, $ws, {
         read => 0,
         edit => 0,
         attachments => 0,
@@ -121,12 +133,13 @@ exit;
 ################################################################################
 
 sub perms_as_expected {
-    my $user     = shift;
-    my $expected = shift;
+    my $user      = shift;
+    my $container = shift;
+    my $expected  = shift;
 
     my $checker = Socialtext::Authz::SimpleChecker->new(
         user      => $user,
-        container => $ws,
+        container => $container,
     );
 
     for my $perm ( keys %$expected ) {

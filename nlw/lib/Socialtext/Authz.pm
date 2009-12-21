@@ -36,6 +36,20 @@ sub user_has_permission_for_workspace {
         );
 }
 
+# This is a null operation for now. It'll be useful when we start implementing
+# actual permissions for groups in the very near future.
+sub user_has_permission_for_group {
+    my $self = shift;
+    my %p = (
+        permission => undef,
+        group      => undef,
+        user       => undef,
+        @_
+    );
+
+    return 1;
+}
+
 sub plugin_enabled_for_user {
     my $self = shift;
     my %p = @_;

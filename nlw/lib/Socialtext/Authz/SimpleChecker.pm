@@ -2,6 +2,7 @@ package Socialtext::Authz::SimpleChecker;
 # @COPYRIGHT@
 use Moose;
 
+use Carp qw/croak/;
 use Socialtext::Authz;
 use Socialtext::Permission;
 use namespace::clean -except => 'meta';
@@ -40,8 +41,15 @@ sub check_permission {
             workspace  => $self->container,
         );
     }
+    elsif ($self->container->isa('Socialtext::Group')) {
+        return $self->authz->user_has_permission_for_group(
+            user       => $self->user,
+            permission => Socialtext::Permission->new( name => $perm ),
+            group      => $self->container,
+        );
+    }
 
-    croak 'container may only be a Workspace';
+    croak 'container may only be a Workspace or Group';
 }
 
 sub can_modify_locked {
@@ -102,7 +110,7 @@ Requires the following PARMS:
 
 =item * user - a user object
 
-=item * workspace - a workspace object
+=item * container - a workspace or group object
 
 =back
 
@@ -114,14 +122,6 @@ whether the object's user has that permission for the object's workspace.
 =head2 $checker->can_modify_locked($page)
 
 Given a page, returns true if the page can be locked or unlocked.
-
-=head1 CACHING
-
-This object will cache the results of a lookup for a particular
-permission. This helps speed up a single request, because we check the
-same permission many times. However, it does mean that this object
-should not be long-lived. As long as a new one is created for each web
-request (or CLI interaction, etc.) the caching should be safe.
 
 =head1 AUTHOR
 
