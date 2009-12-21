@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
 
-use Test::Socialtext tests => 43;
+use Test::Socialtext tests => 44;
 use Socialtext::Role;
 use Socialtext::Permission;
 
@@ -99,6 +99,23 @@ guest_user_with_default: {
         self_join => 0,
     });
 }
+
+################################################################################
+# Allows Page Locking
+page_locking: {
+    my $hub = Test::Socialtext::new_hub($ws->name, $admin_user->username);
+    my $page = $hub->pages->new_page_from_any('test page');
+    $page->metadata->update( user => $hub->current_user );
+
+    my $checker = Socialtext::Authz::SimpleChecker->new(
+        user      => $hub->current_user,
+        workspace => $hub->current_workspace,
+    );
+
+    is $checker->can_modify_locked($page), 1,
+        'admin could modify a locked page';
+}
+
 
 exit;
 ################################################################################
