@@ -20,22 +20,20 @@ sub new {
     return bless {}, $class;
 }
 
-{
-    Readonly my $spec => {
-        user       => USER_TYPE,
-        permission => PERMISSION_TYPE,
-        workspace  => WORKSPACE_TYPE,
-    };
-    sub user_has_permission_for_workspace {
-        my $self = shift;
-        my %p = validate( @_, $spec );
+sub user_has_permission_for_workspace {
+    my $self = shift;
+    my %p = (
+        workspace  => undef,
+        permission => undef,
+        user       => undef,
+        @_
+    );
 
-        return 0 unless $p{workspace}->real;
-        return $p{workspace}->permissions->user_can(
-                user       => $p{user},
-                permission => $p{permission},
-            );
-    }
+    return 0 unless $p{workspace}->real;
+    return $p{workspace}->permissions->user_can(
+            user       => $p{user},
+            permission => $p{permission},
+        );
 }
 
 sub plugin_enabled_for_user {
