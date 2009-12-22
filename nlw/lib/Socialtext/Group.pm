@@ -78,6 +78,25 @@ sub invite {
 }
 
 ###############################################################################
+# Sticking this here for now; eventually we'll refactor this out into
+# something more like ST::UserSetContainer::Permissions (so we can slurp in
+# ST:WS:Perms), but we're not getting there today.
+sub user_can {
+    my $self = shift;
+    my %p    = @_;
+    my $user = $p{user}       || die "no 'user' provided";
+    my $perm = $p{permission} || die "no 'permission' provided";
+
+    require Socialtext::Authz;
+    my $authz = Socialtext::Authz->new();
+    return $authz->user_has_permission_for_group(
+        group      => $self,
+        user       => $user,
+        permission => $perm,
+    );
+}
+
+###############################################################################
 sub Drivers {
     my $drivers = Socialtext::AppConfig->group_factories();
     return split /;/, $drivers;
