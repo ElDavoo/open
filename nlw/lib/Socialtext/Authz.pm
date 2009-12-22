@@ -139,7 +139,8 @@ sub plugin_enabled_for_user_in_account {
 
     my $cache = Socialtext::Cache->cache('authz_plugin');
     my $cache_key = "user_acct:$user_id\0$account_id";
-    if (my $enabled_plugins = $cache->get($cache_key)) {
+    my $enabled_plugins = {};
+    if ($enabled_plugins = $cache->get($cache_key)) {
         return $enabled_plugins->{$plugin_name} ? 1 : 0;
     }
 
@@ -152,7 +153,6 @@ sub plugin_enabled_for_user_in_account {
 SQL
 
     my $sth = sql_execute($sql, $user_id, $account_id);
-    my $enabled_plugins = {};
     while (my $row = $sth->fetchrow_arrayref) {
         $enabled_plugins->{$row->[0]} = 1;
     }
