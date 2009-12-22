@@ -1,0 +1,40 @@
+
+* Fixture: SocialRest
+
+# Setup
+
+| standard-test-setup |
+
+| set               | group_name            | Cool Group %%start_time%% |
+| create-group      | --name %%group_name%% |                           |
+| add-user-to-group | %%username%%          | %%group_id%%              |
+
+# Test /st urls
+
+| GET       | /st/dashboard                       |
+| code-is   | 200                                 |
+| body-like | <title>Socialtext Dashboard</title> |
+
+| GET       | /st/profile/%%user_id%%          |
+| code-is   | 200                              |
+| body-like | <title>Socialtext People</title> |
+
+| GET       | /st/edit_profile                 |
+| code-is   | 200                              |
+| body-like | <title>Socialtext People</title> |
+
+| GET       | /st/signals?q=monkeys             |
+| code-is   | 200                               |
+| body-like | <title>Socialtext Signals</title> |
+
+| GET       | /st/signals                       |
+| code-is   | 200                               |
+| body-like | <title>Socialtext Signals</title> |
+
+| GET       | /st/group/%%group_id%%           |
+| code-is   | 200                              |
+| body-like | <title>Socialtext Groups</title> |
+
+| GET       | /st/create_group                 |
+| code-is   | 200                              |
+| body-like | <title>Socialtext Groups</title> |
