@@ -2,7 +2,7 @@
 [%- DEFAULT
     sid = 'search'
 -%]
-<form id="st-[%sid%]-form" action="index.cgi" method="get" name="SearchForm">
+<form id="st-[%sid%]-form" action="[% IF current_workspace; "/$current_workspace.name"; ELSE; "/"; END %]" method="get" name="SearchForm">
   [% IF user.is_guest %]
 
   <label for="st-[%sid%]-term">[% loc("Search this workspace:") %]</label>
