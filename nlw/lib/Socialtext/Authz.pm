@@ -34,18 +34,34 @@ sub user_has_permission_for_workspace {
         );
 }
 
-# This is a null operation for now. It'll be useful when we start implementing
-# actual permissions for groups in the very near future.
-sub user_has_permission_for_group {
-    my $self = shift;
-    my %p = (
-        permission => undef,
-        group      => undef,
-        user       => undef,
-        @_
+# Hardcode the permissions matrix in here for now. When it comes time to
+# actually implement a permissions backend, we'll have a definition for the
+# default group permissions here.
+{
+    # Warning: permissions here must also exist in the ST::Permission module.
+    my %matrix = (
+        admin  => [qw/invite read/],
+        member => [],
+        guest  => [],
     );
 
-    return 1;
+    sub user_has_permission_for_group {
+        my $self = shift;
+        my %p = (
+            permission => undef,
+            group      => undef,
+            user       => undef,
+            @_
+        );
+
+        my $role = $p{group}->role_for_user($p{user});
+        my $role_name = $role ? $role->name : 'guest';
+        my $set = $matrix{$role_name};
+
+        return 0 unless $p{permission};
+        return 0 unless $set;
+        return (any { $_ eq $p{permission}->name } @$set) ? 1 : 0;
+    }
 }
 
 sub plugin_enabled_for_user {

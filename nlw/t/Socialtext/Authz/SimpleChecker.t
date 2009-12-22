@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
 
-use Test::Socialtext tests => 50;
+use Test::Socialtext tests => 53;
 use Test::Exception;
 use Socialtext::Role;
 
@@ -11,7 +11,7 @@ use_ok 'Socialtext::Authz::SimpleChecker';
 
 my $ws      = create_test_workspace();
 my $group   = create_test_group();
-my $account = create_test_account();
+my $account = create_test_account_bypassing_factory();
 
 my $admin_user  = create_test_user();
 my $member_user = create_test_user();
@@ -26,15 +26,23 @@ my $result;
 # Add users to workspace, verify roles.
 
 $ws->add_user( user => $admin_user, role => $admin_role );
-$result = $ws->role_for_user( $admin_user, {direct => 1});
-is $result->role_id, $admin_role->role_id, 'admin has correct role';
+$result = $ws->role_for_user( $admin_user);
+is $result->role_id, $admin_role->role_id, 'admin has correct role in ws';
+$group->add_user( user => $admin_user, role => $admin_role );
+$result = $ws->role_for_user( $admin_user);
+is $result->role_id, $admin_role->role_id, 'admin has correct role in group';
 
 $ws->add_user( user => $member_user, role => $member_role );
-$result = $ws->role_for_user( $member_user, {direct => 1});
-is $result->role_id, $member_role->role_id, 'member has correct role';
+$result = $ws->role_for_user( $member_user);
+is $result->role_id, $member_role->role_id, 'member has correct role in ws';
+$group->add_user( user => $member_user, role => $member_role );
+$result = $group->role_for_user( $member_user);
+is $result->role_id, $member_role->role_id, 'member has correct role in group';
 
-$result = $ws->role_for_user( $guest_user, {direct => 1});
-ok !$result, 'guest has no role in workspace';
+$result = $ws->role_for_user( $guest_user);
+ok !$result, 'guest has no role in ws';
+$result = $group->role_for_user( $guest_user);
+ok !$result, 'guest has no role in group';
 
 ################################################################################
 # pass a non-UserSetContainer
@@ -60,13 +68,13 @@ illegal_container: {
 }
 
 ################################################################################
-# Groups always return true
-groups_always_return_true: {
+# Basic Groups checking
+basic_groups: {
     perms_as_expected($admin_user, $group, {
         read                   => 1,
-        write                  => 1,
+        write                  => 0,
         invite                 => 1,
-        super_monkey_death_car => 1,
+        super_monkey_death_car => 0,
     });
 }
 

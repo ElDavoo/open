@@ -20,7 +20,7 @@ field 'name';
 # FIXME: This belongs elsewhere, in fixture creation code, perhaps
 Readonly my @RequiredPermissions => qw(
     read edit attachments comment delete email_in email_out edit_controls
-    admin_workspace request_invite impersonate lock self_join
+    admin_workspace request_invite impersonate lock self_join invite
 );
 sub EnsureRequiredDataIsPresent {
     my $class = shift;
