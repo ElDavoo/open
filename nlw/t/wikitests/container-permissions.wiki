@@ -1,40 +1,246 @@
 
 * Fixture: SocialRest
 
-# Setup
+| *Comment* | Setup |
 
 | standard-test-setup |
 
-| set               | group_name            | Cool Group %%start_time%% |
-| create-group      | --name %%group_name%% |                           |
-| add-user-to-group | %%username%%          | %%group_id%%              |
+| set          | group_name     | Cool Group %%start_time%% |              |
+| create-group | %%group_name%% | %%account%%               | %%username%% |
 
-# Test /st urls
+| set         | domain     | ken.socialtext.net         |             |
+| set         | friend     | f%%start_time%%@%%domain%% |             |
+| create-user | %%friend%% | password                   | %%account%% |
+
+| create-account | oa%%start_time%% |                             |
+| set            | stranger         | s%%start_time%%@%%domain%%  |
+| create-user    | %%stranger%%     | password | oa%%start_time%% |
+
+| st-admin | enable-plugin --plugin dashboard --account oa%%start_time%% |
+| st-admin | enable-plugin --plugin people --account oa%%start_time%%    |
+| st-admin | enable-plugin --plugin groups --account oa%%start_time%%    |
+
+| st-admin | enable-plugin --plugin dashboard --account %%account%% |
+| st-admin | enable-plugin --plugin people --account %%account%%    |
+| st-admin | enable-plugin --plugin groups --account %%account%%    |
+
+### Dashboard ###
+
+| *Comment* | unauthenticated access |
+
+| http-user-pass |
+
+| GET            | /st/dashboard |   |
+| code-is        | 302           |   |
+| header-is      | Location      | / |
+
+| http-user-pass | %%username%% | %%password%% |
+
+| *Comment* | dashboard plugin disabled |
+| st-admin | disable-plugin --plugin dashboard --account %%account%% |
+
+| GET     | /st/dashboard           |
+| code-is | 403                     |
+
+| st-admin | enable-plugin --plugin dashboard --account %%account%% |
+
+####################
+| *Comment* | /st/dashboard |
 
 | GET       | /st/dashboard                       |
 | code-is   | 200                                 |
 | body-like | <title>Socialtext Dashboard</title> |
 
-| GET       | /st/profile/%%user_id%%          |
-| code-is   | 200                              |
-| body-like | <title>Socialtext People</title> |
+####################
+| *Comment* | moving dashboard widgets |
+
+| GET-json         | /st/dashboard |                                 |
+| set-from-content | g1            | qr/\[\[(\d+),\d+],.*/           |
+| set-from-content | g2            | qr/\[\[\d+,(\d+)],.*/           |
+| set-from-content | rem           | qr/\[\[\d+,\d+],(.*)/           |
+| PUT-json         | /st/dashboard | [[{"id":%%g2%%},{"id":%%g1%%}]] |
+| code-is          | 200           |                                 |
+
+####################
+| *Comment* | deleting gadgets |
+
+| DELETE  | /st/dashboard/gadgets/%%g1%% |
+| code-is | 200                          |
+
+### Profile Pages ###
+
+| *Comment* | unauthenticated access |
+
+| http-user-pass |
+
+| GET       | /st/profile/%%friend%% |   |
+| code-is   | 302                    |   |
+| header-is | Location               | / |
+
+| http-user-pass | %%username%% | %%password%% |
+
+####################
+| *Comment* | people plugin disabled |
+
+| st-admin | disable-plugin --plugin people --account %%account%% |
+
+| GET     | /st/profile/%%friend%% |
+| code-is | 403                    |
+
+| st-admin | enable-plugin --plugin people --account %%account%% |
+
+####################
+| *Comment* | a friend's profile |
+
+| GET       | /st/profile/%%friend%%             |
+| code-is   | 200                                |
+| body-like | <title>Socialtext People</title>   |
+
+####################
+| *Comment* | a stranger's profile |
+
+| GET     | /st/profile/%%stranger%% |
+| code-is | 403                      |
+
+####################
+| *Comment* | writing to a friend's profile |
+
+| GET-json         | /st/profile/%%friend%% |                          |
+| set-from-content | g1                     | qr/\[\[(\d+),\d+],.*/    |
+| set-from-content | g2                     | qr/\[\[\d+,(\d+)],.*/    |
+| set-from-content | rem                    | qr/\[\[\d+,\d+],(.*)/    |
+| PUT-json         | /st/profile/%%friend%% | [[%%g2%%,%%g1%%],%%rem%% |
+| code-is          | 403                    |                          |
+
+####################
+| *Comment* | writing to a stranger's profile |
+
+| GET-json         | /st/profile/%%stranger%% |                          |
+| set-from-content | g1                       | qr/\[\[(\d+),\d+],.*/    |
+| set-from-content | g2                       | qr/\[\[\d+,(\d+)],.*/    |
+| set-from-content | rem                      | qr/\[\[\d+,\d+],(.*)/    |
+| PUT-json         | /st/profile/%%stranger%% | [[%%g2%%,%%g1%%],%%rem%% |
+| code-is          | 403                      |                          |
+
+
+### Edit profile ###
+
+| *Comment* | unauthenticated access |
+
+| http-user-pass |
+
+| GET       | /st/edit_profile |   |
+| code-is   | 302              |   |
+| header-is | Location         | / |
+
+| http-user-pass | %%username%% | %%password%% |
+
+####################
+| *Comment* | people plugin disabled |
+
+| st-admin | disable-plugin --plugin people --account %%account%% |
+
+| GET     | /st/edit_profile |
+| code-is | 403              |
+
+| st-admin | enable-plugin --plugin people --account %%account%% |
+
+####################
+| *Comment* | /st/edit_profile |
 
 | GET       | /st/edit_profile                 |
 | code-is   | 200                              |
 | body-like | <title>Socialtext People</title> |
 
-| GET       | /st/signals?q=monkeys             |
-| code-is   | 200                               |
-| body-like | <title>Socialtext Signals</title> |
+### Signals ###
+
+| *Comment* | unauthenticated access |
+
+| http-user-pass |
+
+| GET       | /st/signals |   |
+| code-is   | 302         |   |
+| header-is | Location    | / |
+
+| http-user-pass | %%username%% | %%password%% |
+
+####################
+| *Comment* | signals plugin disabled |
+
+| st-admin | disable-plugin --plugin signals --account %%account%% |
+
+| GET     | /st/signals |
+| code-is | 403         |
+
+| st-admin | enable-plugin --plugin signals --account %%account%% |
+
+####################
+| *Comment* | /st/signals |
 
 | GET       | /st/signals                       |
 | code-is   | 200                               |
 | body-like | <title>Socialtext Signals</title> |
 
+### Groups ###
+
+| *Comment* | unauthenticated access |
+
+| http-user-pass |
+
+| GET       | /st/group/%%group_id%% |   |
+| code-is   | 302                    |   |
+| header-is | Location               | / |
+
+| http-user-pass | %%username%% | %%password%% |
+
+####################
+| *Comment* | groups plugin disabled |
+
+| st-admin | disable-plugin --plugin groups --account %%account%% |
+
+| GET     | /st/group/%%group_id%% |
+| code-is | 403                    |
+
+| st-admin | enable-plugin --plugin groups --account %%account%% |
+
+####################
+| *Comment* | /st/group/%%group_id%% |
+
 | GET       | /st/group/%%group_id%%           |
 | code-is   | 200                              |
 | body-like | <title>Socialtext Groups</title> |
 
-| GET       | /st/create_group                 |
-| code-is   | 200                              |
-| body-like | <title>Socialtext Groups</title> |
+####################
+| *Comment* | a group you are not a member of |
+
+| remove-user-from-group | %%username%%           | %%group_id%% |
+| GET                    | /st/group/%%group_id%% |              |
+| code-is                | 403                    |              |
+
+### Create Group ###
+| *Comment* | unauthenticated access |
+
+| http-user-pass |
+
+| GET       | /st/create_group |   |
+| code-is   | 302              |   |
+| header-is | Location         | / |
+
+| http-user-pass | %%username%% | %%password%% |
+
+####################
+| *Comment* | groups plugin disabled |
+
+| st-admin  | disable-plugin --plugin groups --account %%account%% |
+
+| GET     | /st/create_group |
+| code-is | 403              |
+
+| st-admin | enable-plugin --plugin groups --account %%account%% |
+
+####################
+| *Comment* | /st/create_group |
+
+| GET       | /st/create_group                  |
+| code-is   | 200                               |
+| body-like | <title>Socialtext Groups</title>  |
