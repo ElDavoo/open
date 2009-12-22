@@ -392,3 +392,8 @@ lib/Socialtext/Gadgets/Owned.pm
 etc/socialtext/uri_map.d/groups.yaml
 lib/Socialtext/Gadgets/Container/BaseDashboard.pm
 t/wikitests/widgets/permissions.wiki
+lib/Socialtext/Rest/Gadgets/ContainerGadget.pm
+lib/Socialtext/Rest/Gadgets/ContainerGadgets.pm
+lib/Socialtext/Handler/Container/Dashboard/Gadgets.pm
+lib/Socialtext/Handler/Container/Dashboard/Gadget.pm
+lib/Socialtext/Handler/Gadget/Dashboard.pm
