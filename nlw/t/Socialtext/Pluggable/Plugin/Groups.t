@@ -62,6 +62,7 @@ backup: {
             primary_account_name => $account->name,
             role_name            => 'member',
             description          => '',
+            group_id             => $group_one->group_id,
             users                => [
                 {
                     role_name => 'member',
@@ -76,6 +77,7 @@ backup: {
             primary_account_name => $account->name,
             role_name            => 'member',
             description          => '',
+            group_id             => $group_three->group_id,
             users                => [
                 {
                     username  => $user_two->username,
@@ -103,6 +105,7 @@ backup: {
             role_name            => 'admin',
             description          => '',
             primary_account_name => $group_three->primary_account->name,
+            group_id             => $group_three->group_id,
             users                => [
                 {
                     username  => $user_two->username,
