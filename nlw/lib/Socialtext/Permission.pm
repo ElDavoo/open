@@ -17,7 +17,6 @@ use Socialtext::Validate qw( validate SCALAR_TYPE );
 field 'permission_id';
 field 'name';
 
-# FIXME: This belongs elsewhere, in fixture creation code, perhaps
 Readonly my @RequiredPermissions => qw(
     read edit attachments comment delete email_in email_out edit_controls
     admin_workspace request_invite impersonate lock self_join invite
@@ -37,12 +36,7 @@ _setup_exports();
 sub _setup_exports {
     our @EXPORT_OK = ();
 
-    Readonly my @ExportedPermissions => qw(
-        read edit attachments comment delete email_in email_out edit_controls
-        request_invite admin_workspace lock self_join
-    );
-
-    foreach my $name (@ExportedPermissions) {
+    foreach my $name (@RequiredPermissions) {
         my $symbol = uc "ST_${name}_PERM";
 
         eval "sub $symbol() { Socialtext::Permission->new( name => '$name' ) }";
