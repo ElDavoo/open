@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
 
+use strict;
+use warnings;
 use Test::Socialtext tests => 52;
 use Test::Exception;
 use Socialtext::Role;
