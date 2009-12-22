@@ -616,6 +616,9 @@
     '/:ws/index.cgi':
         '*':                    [Socialtext::Rest::App, handler]
 -
+    '/index.cgi':
+        '*':                    [Socialtext::Handler::Default, handler]
+-
     '/':
         '*':                    [Socialtext::Handler::Default, handler]
 # -
