@@ -15,7 +15,7 @@ use Test::Socialtext tests => 46;
 
 ###############################################################################
 # Fixtures: db
-fixtures(qw( db ));
+fixtures(qw( db destructive ));
 
 ok $INC{'Socialtext/Pluggable/Plugin/FakePlugin.pm'}, "fake plugin loaded";
 
