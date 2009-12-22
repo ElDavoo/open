@@ -82,8 +82,9 @@ sub get_html {
     $self->if_authorized_to_view(sub {
         my $query = $self->rest->query;
         if ($query->{add_widget}) {
-            return '' unless $self->authorized_to_edit;
-            return $self->install_gadget;
+            $self->if_authorized_to_edit(sub {
+                return $self->install_gadget;
+            });
         }
         else {
             return $self->render_template('view/container', {
