@@ -1,9 +1,13 @@
 package Socialtext::Handler::Gadget;
 # @COPYRIGHT@
 use Moose::Role;
+use Socialtext::JSON qw(encode_json decode_json);
+use Socialtext::HTTP qw(:codes);
 use namespace::clean -except => 'meta';
 
-requires 'container';
+requires qw(container if_authorized_to_edit if_authorized_to_view);
+
+sub ws {}
 
 has 'gadget' => (
     is => 'ro', isa => 'Maybe[Socialtext::Gadgets::GadgetInstance]',
@@ -14,6 +18,15 @@ sub _build_gadget {
     my $self = shift;
     return $self->container->get_gadget_instance($self->gadget_instance_id);
 }
+
+around 'if_authorized_to_view' => sub {
+    my ($orig, $self, $cb) = @_;
+    unless ($self->gadget) {
+        $self->rest->header(-status => HTTP_404_Not_Found);
+        return 'No gadget';
+    }
+    return $orig->($self, $cb);
+};
 
 sub GET_json {
     my $self = shift;
