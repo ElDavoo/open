@@ -88,10 +88,14 @@ sub set_plugin_scope {
 }
 
 for my $t (keys %things) {
+    warn "Setting plugin scope for $t";
     set_plugin_scope($t);
 
+    warn "Disabling plugins a, b and c for $t";
     $things{$t}->disable_plugin($_) for qw(a b c);
+    warn "Enabling plugin a for $t";
     $things{$t}->enable_plugin('a');
+    warn "done";
     ok $things{$t}->is_plugin_enabled('a'), "enabling a enables a";
     ok $things{$t}->is_plugin_enabled('b'), "enabling a enables b";
     ok $things{$t}->is_plugin_enabled('c'), "enabling a enables b -> c";
