@@ -3,6 +3,9 @@
 # Send a signal, make sure a job is created
 
 | standard-test-setup |               |                                        |             |
+| set | group1_id | %%group_id%% |
+| set | account1_id | %%account_id%% |
+
 | set                 | user1_id      | %%user_id%%                            |             |
 | set                 | recipient     | recip%%start_time%%@ken.socialtext.net |             |
 | create-user         | %%recipient%% | abc123                                 | %%account%% |
@@ -10,7 +13,13 @@
 | set                 | observer      | obser%%start_time%%@ken.socialtext.net |             |
 | create-user         | %%observer%%  | abc123                                 | %%account%% |
 | set-searcher        | Solr          |                                        |             |
-| add-user-to-group   | %%recipient%% | %%group_id%%                           |             |
+| add-user-to-group   | %%recipient%% | %%group1_id%%                           |             |
+
+| Comment | Create another group & account for testing |
+| create-group | g2-%%start_time%% |
+| set | group2_id | %%group_id%% |
+| create-account | acct2-%%start_time%% |
+| set | account2_id | %%account_id%% |
 
 | edit-page       | %%workspace%% | coolpage                                                               | Stupid plain content |
 | post-json       | /data/signals    | {"signal":"Stupid plain"}                                               |                      |
@@ -177,15 +186,35 @@ creator, dm_recip
 | json-array-size | 1                                    |                  |
 | body-like       | second direct                        |                  |
 
-| get             | /data/signals?q=a%3A%%account_id%% | application/json |
+| get             | /data/signals?q=a%3A%%account1_id%% | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
 | json-array-size | 7                                    |                  |
 
-| get             | /data/signals?q=g%3A%%group_id%% | application/json |
+| get             | /data/signals?q=stupid;accounts=%%account1_id%% | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 1                                    |                  |
+
+| get             | /data/signals?q=stupid;accounts=%%account2_id%% | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 0                                    |                  |
+
+| get             | /data/signals?q=g%3A%%group1_id%% | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
 | json-array-size | 7                                    |                  |
+
+| get             | /data/signals?q=stupid;groups=%%group1_id%% | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 1                                    |                  |
+
+| get             | /data/signals?q=stupid;groups=%%group2_id%% | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 0                                    |                  |
 
 # Test date searches
 
