@@ -1,0 +1,70 @@
+
+* Fixture: SocialRest
+
+# Setup
+
+| standard-test-setup |
+
+| set               | group_name            | Cool Group %%start_time%% |
+| create-group      | --name %%group_name%% |                           |
+| add-user-to-group | %%username%%          | %%group_id%%              |
+
+# Redirects
+
+| GET         | /?dashboard |                      |
+| code-is     | 302         |                      |
+| header-like | Location    | qr/\/st\/dashboard$/ |
+
+| GET         | /?profile/%%user_id%% |                                 |
+| code-is     | 302                   |                                 |
+| header-like | Location              | qr/\/st\/profile\/%%user_id%%$/ |
+
+| GET         | /?edit_profile |                         |
+| code-is     | 302            |                         |
+| header-like | Location       | qr/\/st\/edit_profile$/ |
+
+| GET         | /?signals/q/monkeys |                               |
+| code-is     | 302                 |                               |
+| header-like | Location            | qr/\/st\/signals\?q=monkeys$/ |
+
+| GET         | /?signals |                    |
+| code-is     | 302       |                    |
+| header-like | Location  | qr/\/st\/signals$/ |
+
+| GET         | /?group/%%group_id%% |                                |
+| code-is     | 302                  |                                |
+| header-like | Location             | qr/\/st\/group\/%%group_id%%$/ |
+
+| GET         | /?create_group |                         |
+| code-is     | 302            |                         |
+| header-like | Location       | qr/\/st\/create_group$/ |
+
+# Test /st urls
+
+| GET       | /st/dashboard                       |
+| code-is   | 200                                 |
+| body-like | <title>Socialtext Dashboard</title> |
+
+| GET       | /st/profile/%%user_id%%          |
+| code-is   | 200                              |
+| body-like | <title>Socialtext People</title> |
+
+| GET       | /st/edit_profile                 |
+| code-is   | 200                              |
+| body-like | <title>Socialtext People</title> |
+
+| GET       | /st/signals?q=monkeys             |
+| code-is   | 200                               |
+| body-like | <title>Socialtext Signals</title> |
+
+| GET       | /st/signals                       |
+| code-is   | 200                               |
+| body-like | <title>Socialtext Signals</title> |
+
+| GET       | /st/group/%%group_id%%           |
+| code-is   | 200                              |
+| body-like | <title>Socialtext Groups</title> |
+
+| GET       | /st/create_group                 |
+| code-is   | 200                              |
+| body-like | <title>Socialtext Groups</title> |
