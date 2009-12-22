@@ -145,6 +145,7 @@ sub sync {
             }
         }
         else {
+            $self->_add_required_data;
             $self->_display("No updates necessary.\n");
             return;
         }
