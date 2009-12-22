@@ -397,3 +397,5 @@ lib/Socialtext/Rest/Gadgets/ContainerGadgets.pm
 lib/Socialtext/Handler/Container/Dashboard/Gadgets.pm
 lib/Socialtext/Handler/Container/Dashboard/Gadget.pm
 lib/Socialtext/Handler/Gadget/Dashboard.pm
+lib/Socialtext/Handler/Gadget/Profile.pm
+lib/Socialtext/Handler/Gadget/Signals.pm
