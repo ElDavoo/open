@@ -1,0 +1,66 @@
+| *Comment* | Test Case: User Groups UI |
+
+| *Comment* | Test Case: User Groups UI Create an account and workspace |  |
+| set | grps_acct | user-groups-ui-%%start_time%% |
+| set | grps_ws | user-groups-ws-%%start_time%% |
+| create-account | %%grps_acct%% |  |
+| create-workspace | %%grps_ws%% | %%grps_acct%% |
+
+| *Comment* | Test Case: User Groups UI Create a group |  |
+| set | groupname | user-groups-ui-%%start_time%% |
+| create_group | %%groupname%% |  |
+
+| *Comment* | Test Case: User Groups UI Create TWO Users |  |
+| *Comment* | Test Case: User Groups UI Create is not member of group |  |
+| set | group_member | user-groupsui-%%start_time%%@matt.socialtext.net |
+| set | not_group_member | notmember%%start_time%%@matt.socialtext.net |
+| set | escaped_not_group | notmember%%start_time%%\@matt.socialtext.net |
+| create-user | %%group_member%% | %%password%% |
+| create-user | %%not_group_member%% | %%password%% |
+| add-user-to-group | %%group_member%% | %%group_id%% |
+
+| *Comment* | Test Case: User Groups UI Groups plugin is required for Groups |  |
+| st-admin | disable-plugin --plugin groups --all-accounts |  |
+| st-logoutin | %%not_group_member%% | %%password%% |
+| open_ok | /?dashboard |  |
+| wait_for_element_not_present_ok | link=Groups | 30000 |
+| st-admin | enable-plugin --plugin groups --all-accounts |  |
+
+| *Comment* | Test Case: User Groups UI People is required for Groups |  |
+| st-admin | disable-plugin --plugin people --all-accounts |  |
+| st-logoutin | %%not_group_member%% | %%password%% |
+| open_ok | /?dashboard |  |
+| wait_for_element_not_present_ok | link=Groups | 30000 |
+
+| *Comment* | Test Case: User Groups UI Add People INDIRECTLY |  |
+| st-admin | enable-plugin --plugin people --account %%grps_acct%% |  |
+| add_member | %%not_group_member%% | %%grps_ws%% |
+| open_ok | /?dashboard |  |
+| wait_for_element_visible_ok | link=Groups | 30000 |
+
+| *Comment* | Test Case: User Groups UI Add People DIRECTLY |  |
+| st-admin | enable-plugin --plugin people --all-accounts |  |
+| st-logoutin | %%group_member%% |  |
+| open_ok | /?dashboard |  |
+| wait_for_element_visible_ok | link=Groups | 30000 |
+
+| *Comment* | Test Case: User Groups UI Signal from group home |
+| open_ok | /?group/%%group_id%% |  |
+| *Comment* | Test Case: Send Signal to group |
+| *Comment* | Test Case: User Groups UI | *Comment* | Test Case: User Groups UI Edit an Existing Group |
+| open_ok | /?group/%%group_id%% |  |
+| *Comment* | Test Case: User Groups UI Click Edit Button |
+| *Comment* | Test Case: User Groups UI Change Values, Click Save |
+| *Comment* | Test Case: User Groups UI See Changes |
+
+| *Comment* | Test Case: User Groups UI Signal to Group |
+
+| *Comment* | Test Case: User Group UI User invites colleagues to account-group |
+
+| *Comment* | Test Case: User Groups UI Search Signals By Group |
+
+| *Comment* | Test Case: User Groups UI Teardown |
+| delete-group | %%group_id%% |
+| st-admin | delete-workspace --w %%grps_ws%% --no-export |
+
+| *Comment* | Test Case: User Groups UI COMPLETE

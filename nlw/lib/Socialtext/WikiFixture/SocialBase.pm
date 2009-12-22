@@ -1690,6 +1690,17 @@ sub shell_run {
     Socialtext::System::shell_run(join ' ', @_);
 }
 
+
+=head2 st-setup_a_group(group_name, opt_user_to_add, opt_user_to_create) 
+
+=cut
+
+sub st_setup_a_group {
+  my ($self, $group_name, $user_to_add, $user_to_create);
+  
+}
+
+
 sub body_unlike {
     my ($self, $expected) = @_;
     my $body = $self->{http}->response->content;
