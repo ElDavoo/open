@@ -1487,7 +1487,7 @@ sub send_confirmation_completed_signal {
 
     my $user_wafl = '{user: '.$self->user_id.'}';
     my $body =
-        loc('[_1] just joined the [_2] network. Hi everybody!', $user_wafl, $self->primary_account->name);
+        loc('[_1] just joined the [_2] group. Hi everybody!', $user_wafl, $self->primary_account->name);
     eval {
         $signals->Send({
             user => $self,

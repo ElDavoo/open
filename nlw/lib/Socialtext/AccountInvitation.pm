@@ -23,7 +23,7 @@ sub _name {
 
 sub _subject {
     my $self = shift;
-    loc("I'm inviting you into the [_1] network", $self->account->name);
+    loc("I'm inviting you into the [_1] group", $self->account->name);
 }
 
 sub _template_type { 'account' }
