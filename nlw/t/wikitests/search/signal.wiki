@@ -3,13 +3,14 @@
 # Send a signal, make sure a job is created
 
 | standard-test-setup |               |                                        |             |
-| set | user1_id | %%user_id%% |
+| set                 | user1_id      | %%user_id%%                            |             |
 | set                 | recipient     | recip%%start_time%%@ken.socialtext.net |             |
 | create-user         | %%recipient%% | abc123                                 | %%account%% |
 | set_user_id         | recipient_id  | %%recipient%%                          |             |
 | set                 | observer      | obser%%start_time%%@ken.socialtext.net |             |
 | create-user         | %%observer%%  | abc123                                 | %%account%% |
 | set-searcher        | Solr          |                                        |             |
+| add-user-to-group   | %%recipient%% | %%group_id%%                           |             |
 
 | edit-page       | %%workspace%% | coolpage                                                               | Stupid plain content |
 | post-json       | /data/signals    | {"signal":"Stupid plain"}                                               |                      |
@@ -177,6 +178,11 @@ creator, dm_recip
 | body-like       | second direct                        |                  |
 
 | get             | /data/signals?q=a%3A%%account_id%% | application/json |
+| code-is         | 200                                  |                  |
+| json-parse      |                                      |                  |
+| json-array-size | 7                                    |                  |
+
+| get             | /data/signals?q=g%3A%%group_id%% | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
 | json-array-size | 7                                    |                  |

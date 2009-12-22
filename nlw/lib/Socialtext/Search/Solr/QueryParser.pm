@@ -47,7 +47,7 @@ sub _build_searchable_fields {
         # Page / attachment fields:
         qw/title tag body w/,
         # Signal fields:
-        qw/w doctype id creator body pvt dm_recip a reply_to mention
+        qw/w doctype id creator body pvt dm_recip a g reply_to mention
            link_page_key link_w link date created is_question creator_name/,
         # People fields: (keys AND values)
         %{ $self->field_map },
