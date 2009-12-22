@@ -33,7 +33,7 @@ has 'version' => (
 sub check_permission {
     my $self       = shift;
     my $perm_name  = shift;
-    my $permission = Socialtext::Permission->new(name => $perm_name),
+    my $permission = Socialtext::Permission->new(name => $perm_name);
 
     if ($self->container->isa('Socialtext::Workspace')) {
         return $self->authz->user_has_permission_for_workspace(
