@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
 
-use Test::Socialtext tests => 53;
+use Test::Socialtext tests => 52;
 use Test::Exception;
 use Socialtext::Role;
 
@@ -43,17 +43,6 @@ $result = $ws->role_for_user( $guest_user);
 ok !$result, 'guest has no role in ws';
 $result = $group->role_for_user( $guest_user);
 ok !$result, 'guest has no role in group';
-
-################################################################################
-# pass a non-UserSetContainer
-illegal_role: {
-    dies_ok {
-        Socialtext::Authz::SimpleChecker->new(
-            user      => $admin_user,
-            container => $member_user,
-        );
-    } 'dies when wrong type of object is passed.';
-}
 
 ################################################################################
 # pass an illegal UserSetContainer

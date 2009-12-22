@@ -13,7 +13,7 @@ has 'user' => (
 );
 
 has 'container' => (
-    is => 'ro', does => 'Socialtext::UserSetContainer',
+    is => 'ro', isa => 'Object',
     required => 1,
 );
 
