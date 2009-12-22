@@ -5,8 +5,6 @@ use warnings;
 
 our $VERSION = '0.02';
 
-use Readonly;
-use Socialtext::Validate qw( validate USER_TYPE PERMISSION_TYPE WORKSPACE_TYPE );
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_singlevalue sql_execute/;
 use Socialtext::Cache;
