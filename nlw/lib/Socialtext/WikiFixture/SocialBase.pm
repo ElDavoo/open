@@ -1691,13 +1691,62 @@ sub shell_run {
 }
 
 
-=head2 st-setup_a_group(group_name, opt_user_to_add, opt_user_to_create) 
+=head2 st-setup_a_group(group_name, optional $create_and_add_account, optional $create_ws, optional $add_ws_to_group)
+optional fields are BINARY - blank (0) or true (1)
 
+Guarentted work:
+  Create a group named $group_name, populate %%group_id%% with the group id 
+  Create a user, populate %%grp-user%% with that user.  Use %%pasword%% as the password 
+  Add that user to group $group_name
+
+If true, they create:
+ create_and_add_account - creates account %%grp-acct%%; the group and user will be members of said account
+ create_ws - create a workspace named %%grp-ws%%.  If create_and_add_account is true, the ws will be a member of the account
+ add_ws_to_group - will add %%grp_ws%% to the group
+
+PS: If you've got a more OO, less structured way to do this, I'd be all ears.  
+    It feels awkward as is.
+ 
 =cut
 
 sub st_setup_a_group {
-  my ($self, $group_name, $user_to_add, $user_to_create);
-  
+     my ($self, $create_and_add_account, $create_ws, $add_ws_to_group) = @_;
+     $self->handle_command('set','grp-user','grp-user-%%start_time%%@matt.socialtext.net');
+     $self->handle_command('set','grp_user_escaped','grp-user%%start_time%%\@matt.socialtext.net');
+     $self->handle_command('set','grp_name', 'grp-name-%%start_time%%');
+    
+     print "step1\n";
+     #Create the user, the account, and possible the group
+     if (defined($create_and_add_account) && ($create_and_add_account) ) {
+         $self->handle_command('set','grp_acct','gr-act-%%start_time%%');
+         print "step2\n";
+         $self->handle_command('create_account','%%grp_acct%%');
+         print "step3\n";
+         $self->handle_command('create_user','%%grp_user%%','%%password%%','%%grp_acct%%');
+         print "step4\n";
+         $self->handle_command('create_group','%%grp_name%%','%%grp_acct%%');
+         print "step5\n";
+     } else {
+         $self->handle_command('create_user','%%grp_user%%','%%password%%');
+         $self->handle_command('create_group','%%grp_name%%');
+         $self->handle_command('add-user-to-group','%%grp_user%%','%%group_id%%');
+     }
+ 
+     my $account = '';
+     #Create Workspace if requested
+     if (defined($create_ws) && ($create_ws) ) { 
+         $self->handle_command('set','grp_ws','grp-ws-%%start_time%%');
+         if (defined($create_and_add_account) && ($create_and_add_account) ) {
+             $account = '%%grp_acct%%';
+         }
+         $self->handle_command('create_workspace','%%grp_ws%%',$account);
+     }
+ 
+     #Add Workspace To Group if requested
+     if (defined($add_ws_to_group) &&  ($add_ws_to_group) ) {
+         $self->handle_command('add-group-to-workspace', '%%group_id%%', '%%grp-ws%%', $account);
+     }
+     
 }
 
 
