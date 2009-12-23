@@ -122,6 +122,7 @@ sub template_vars {
     my $self = shift;
     my %global_vars = $self->hub->helpers->global_template_vars;
     return {
+        params => { $self->rest->query->Vars },
         share => share_path,
         workspaces => [$self->hub->current_user->workspaces->all],
         as_json => sub {
