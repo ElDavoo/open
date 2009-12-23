@@ -422,6 +422,7 @@ sub _add_person_doc {
         [id => "person:$user_id"],
         [w => 0],
         (map { [a => $_] } $user->accounts(ids_only => 1)),
+        (map { [g => $_] } $user->groups(ids_only => 1)->all),
         [doctype => 'person'], 
         [person_key => $user_id],
 
