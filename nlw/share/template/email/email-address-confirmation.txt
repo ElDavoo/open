@@ -1,4 +1,4 @@
-[% loc('Welcome to')%] [% IF target_workspace %][% loc("the [_1] Workspace in the [_2] Network at ", target_workspace.title, account_name) %][% END %][% PROCESS system_name %].
+[% loc('Welcome to')%] [% IF target_workspace %][% loc("the [_1] Workspace in the [_2] Group at ", target_workspace.title, account_name) %][% END %][% PROCESS system_name %].
 
 [% IF target_workspace %]
 [% loc('Your profile has been added to the [_1] directory.', account_name) %]
