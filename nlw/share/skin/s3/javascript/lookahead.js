@@ -458,7 +458,12 @@
 
     Lookahead.prototype.onchange = function () {
         var self = this;
-        if (this._loading_lookahead) return;
+        if (this._loading_lookahead) {
+            this._change_queued = true;
+            return;
+        }
+
+        this._change_queued = false;
 
         var val = $(this.input).val();
         if (!val) {
@@ -489,12 +494,20 @@
             success: function (data) {
                 self.storeCache(val, data);
                 self._loading_lookahead = false;
+                if (self._change_queued) {
+                    self.onchange();
+                    return;
+                }
                 self.displayData(
                     self.filterData(val, data)
                 );
             },
             error: function (xhr, textStatus, errorThrown) {
                 self._loading_lookahead = false;
+                if (self._change_queued) {
+                    self.onchange();
+                    return;
+                }
                 var $error = this.$('<span"></span>')
                     .addClass("st-suggestion-warning");
                 this.$('<li></li>')
