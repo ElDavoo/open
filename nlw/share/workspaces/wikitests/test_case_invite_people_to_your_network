@@ -93,8 +93,8 @@ TODO: verify cannot actually issue invitations via URL
 
 | *Comment* | Test Case: Invite people. Invite UI |  |
 | click_and_wait | st-wiki-subnav-link-invite |  |
-| wait_for_element_visible_ok | account_id | 30000 |
-| select_ok | account_id | %%acct%% (primary) |
+| wait_for_element_visible_ok | object_id | 30000 |
+| select_ok | object_id | %%acct%% (primary) |
 
 | *Comment* | Test Case: Invite people. Invite four users to this network |  |
 | *Comment* | existing member, brand new user, %%email%% in another network, and a malformed email addr |  |
@@ -164,9 +164,9 @@ TODO: verify cannot actually issue invitations via URL
 
 | *Comment* | Test Case: Invite people. Invite UI for new user |  |
 | click_and_wait | st-wiki-subnav-link-invite |  |
-| wait_for_element_visible_ok | account_id | 30000 |
-| select_ok | account_id | label=%%acct%% (primary) |
-| is_selected_ok | account_id | label=%%acct%% (primary) |
+| wait_for_element_visible_ok | object_id | 30000 |
+| select_ok | object_id | label=%%acct%% (primary) |
+| is_selected_ok | object_id | label=%%acct%% (primary) |
 
 | *Comment* | Test Case: Invite people. Invite guest user |  |
 | type_ok | users_new_ids | guest@socialtext.net |

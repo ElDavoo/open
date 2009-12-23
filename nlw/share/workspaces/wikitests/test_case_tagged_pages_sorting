@@ -35,10 +35,10 @@ Create unique sort order for each sort:
 4th date, page 1, user 2, 4 revisions
 
 | *Comment* | 1st date, page 2, user 3, 5 revisions |  |
-| st-admin | update-page --page "Search Sort 2" --email %%user_3%% --workspace %%sorting_workspace%%< %%wikitest_client_files%%wikitest.txt | The "Search Sort 2" page has been created. |
-| st-admin | update-page --page "Search Sort 2" --email %%user_3%% --workspace %%sorting_workspace%%< %%wikitest_client_files%%wikitest.txt | The "Search Sort 2" page has been updated. |
-| st-admin | update-page --page "Search Sort 2" --email %%user_3%% --workspace %%sorting_workspace%%< %%wikitest_client_files%%wikitest.txt | The "Search Sort 2" page has been updated. |
-| st-admin | update-page --page "Search Sort 2" --email %%user_3%% --workspace %%sorting_workspace%%< %%wikitest_client_files%%wikitest.txt | The "Search Sort 2" page has been updated. |
+| st-admin | update-page --page "Search Sort 2" --email %%user_3%% --workspace %%sorting_workspace%% < %%wikitest_client_files%%wikitest.txt | The "Search Sort 2" page has been created. |
+| st-admin | update-page --page "Search Sort 2" --email %%user_3%% --workspace %%sorting_workspace%% < %%wikitest_client_files%%wikitest.txt | The "Search Sort 2" page has been updated. |
+| st-admin | update-page --page "Search Sort 2" --email %%user_3%% --workspace %%sorting_workspace%% < %%wikitest_client_files%%wikitest.txt | The "Search Sort 2" page has been updated. |
+| st-admin | update-page --page "Search Sort 2" --email %%user_3%% --workspace %%sorting_workspace%% < %%wikitest_client_files%%wikitest.txt | The "Search Sort 2" page has been updated. |
 
 | st-logout |  |  |
 | open_ok | /%%sorting_workspace%%/?Search Sort 2 |  |
@@ -60,7 +60,7 @@ Create unique sort order for each sort:
 | text_like | link=Tagged Page %%start_time%% | Tagged Page %%start_time%% |
 
 | *Comment* | 2nd date, page 3, user 4, 2 revisions |  |
-| st-admin | update-page --page "Search Sort 3" --email %%user_4%% --workspace %%sorting_workspace%%< %%wikitest_client_files%%wikitest.txt | The "Search Sort 3" page has been created. |
+| st-admin | update-page --page "Search Sort 3" --email %%user_4%% --workspace %%sorting_workspace%% < %%wikitest_client_files%%wikitest.txt | The "Search Sort 3" page has been created. |
 
 | st-logout |  |  |
 | open_ok | /%%sorting_workspace%%/?Search Sort 3 |  |
@@ -80,8 +80,8 @@ Create unique sort order for each sort:
 | text_like | link=Tagged Page %%start_time%% | Tagged Page %%start_time%% |
 
 | *Comment* | 3rd date, page 4, user 1, 3 revisions |  |
-| st-admin | update-page --page "Search Sort 4" --email %%user_1%% --workspace %%sorting_workspace%%< %%wikitest_client_files%%wikitest.txt | The "Search Sort 4" page has been created. |
-| st-admin | update-page --page "Search Sort 4" --email %%user_1%% --workspace %%sorting_workspace%%< %%wikitest_client_files%%wikitest.txt | The "Search Sort 4" page has been updated. |
+| st-admin | update-page --page "Search Sort 4" --email %%user_1%% --workspace %%sorting_workspace%% < %%wikitest_client_files%%wikitest.txt | The "Search Sort 4" page has been created. |
+| st-admin | update-page --page "Search Sort 4" --email %%user_1%% --workspace %%sorting_workspace%% < %%wikitest_client_files%%wikitest.txt | The "Search Sort 4" page has been updated. |
 
 | st-logout |  |  |
 | open_ok | /%%sorting_workspace%%/?Search Sort 4 |  |
@@ -101,9 +101,9 @@ Create unique sort order for each sort:
 | text_like | link=Tagged Page %%start_time%% | Tagged Page %%start_time%% |
 
 | *Comment* | 4th date, page 1, user 2, 4 revisions |  |
-| st-admin | update-page --page "Search Sort 1" --email %%user_2%% --workspace %%sorting_workspace%%< %%wikitest_client_files%%wikitest.txt | The "Search Sort 1" page has been created. |
-| st-admin | update-page --page "Search Sort 1" --email %%user_2%% --workspace %%sorting_workspace%%< %%wikitest_client_files%%wikitest.txt | The "Search Sort 1" page has been updated. |
-| st-admin | update-page --page "Search Sort 1" --email %%user_2%% --workspace %%sorting_workspace%%< %%wikitest_client_files%%wikitest.txt | The "Search Sort 1" page has been updated. |
+| st-admin | update-page --page "Search Sort 1" --email %%user_2%% --workspace %%sorting_workspace%% < %%wikitest_client_files%%wikitest.txt | The "Search Sort 1" page has been created. |
+| st-admin | update-page --page "Search Sort 1" --email %%user_2%% --workspace %%sorting_workspace%% < %%wikitest_client_files%%wikitest.txt | The "Search Sort 1" page has been updated. |
+| st-admin | update-page --page "Search Sort 1" --email %%user_2%% --workspace %%sorting_workspace%% < %%wikitest_client_files%%wikitest.txt | The "Search Sort 1" page has been updated. |
 
 | st-logout |  |  |
 | open_ok | /%%sorting_workspace%%/?Search Sort 1 |  |
