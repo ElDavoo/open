@@ -399,3 +399,8 @@ lib/Socialtext/Handler/Container/Dashboard/Gadget.pm
 lib/Socialtext/Handler/Gadget/Dashboard.pm
 lib/Socialtext/Handler/Gadget/Profile.pm
 lib/Socialtext/Handler/Gadget/Signals.pm
+t/wikitests/dashboard/container-permissions.wiki
+t/wikitests/dashboard/gallery.wiki
+t/wikitests/groups/container-permissions.wiki
+t/wikitests/people/container-permissions.wiki
+t/wikitests/signals/container-permissions.wiki
