@@ -15,6 +15,7 @@ Socialtext::WikiFixture::SocialWidgets - Test the Widgets using Selenium
 =cut
 
 our $VERSION = '0.01';
+our $speed = '2000';
 
 =head1 DESCRIPTION
 
@@ -221,6 +222,8 @@ This assumes that the currently selected frame is the "parent" container frame.
 sub st_widget_title_like {
     my ($self, $logical, $opt1) = @_;
     $self->{selenium}->text_like_ok("//span[\@class='widgetHeaderTitleText' and \@id='".$self->{_widgets}{$logical}."-title-text']", $opt1);
+    ok( !$@, "st-widget-title-like" );
+
 }
 
 =head2 st_widget_body_like ( logical_name, regex )
@@ -368,6 +371,43 @@ sub st_single_widget_in_dashboard {
         ok(!$@, 'st_single_widget_in_dashboard' );
 }
 
+=head2 st_send_signal_via_profile_widget
+
+Precondition: Open to a user profile with a named profile widget.
+Precondition: Frame focus should be the entire profile
+Parameters: You pass in the profile widget name, signal text, and optional private flag
+PostCondition: Signal is sent, Frame focus is back to entire profile
+
+=cut
+
+sub st_send_signal_via_profile_widget {
+    my ($self, $widgetname, $signaltosend, $private) = @_;
+    my $browser = $ENV{'selenium_browser'} || 'chrome';
+    $self->handle_command('set_Speed', $speed);
+    $self->handle_command('st-select-widget-frame', $widgetname);
+
+    if ($browser=~/chrome|firefox/ig) {
+        $self->handle_command('selectFrame', 'signalFrame');
+        $self->handle_command('wait_for_element_visible_ok', '//body', 5000);
+        $self->handle_command('type_ok' ,'//body', $signaltosend);
+        $self->handle_command('select-frame' ,'relative=parent');
+    } else {
+        $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 5000);
+        $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$signaltosend);
+    }
+
+    if ($private) {
+        $self->handle_command('check_ok', 'private');
+    }
+
+    $self->handle_command('wait_for_element_visible_ok' ,'post', 5000);
+    $self->handle_command('click_ok', 'post');
+
+    $self->handle_command('select-frame','relative=parent');
+    $self->handle_command('set_Speed',0);
+
+    ok(!$@, 'st_send-signal_via_profile_widget');
+}
 
 =head2 st_send_signal_via_activities_widget 
 
@@ -404,7 +444,7 @@ sub st_send_signal_via_activities_widget {
     $self->handle_command('click_ok', 'expand-input');
     $self->handle_command('select-frame','relative=parent'); 
     
-    ok(!$@, 'st_send-signal_via_activities_widget');
+    ok(!$@, 'st_send_signal_via_activities_widget');
 }
 
 =head2 st_verify_text_in_activities_widget ($self, $widgetname, $texttofind)
@@ -430,6 +470,36 @@ sub st_verify_text_in_activities_widget {
         }
         $self->handle_command('select-frame', 'relative=parent');
     #}
+
+    ok(!$@, 'st_verify_text_in_activities_widget');
+}
+
+=head2 st_verify_text_in_widget ($self, $widgetname, $texttofind)
+
+Precondition: A named widget.
+Precondition: Frame focus should be the entire page
+Parameters: You paass in the widget name, text to look for
+PostCondition: Text is verified (or not), Frame focus is back to entire page
+
+=cut
+
+sub st_verify_text_in_widget {
+    my ($self, $widgetname, $texttofind) = @_;
+    #eval {
+        $self->handle_command('set_Speed', $speed);
+        $self->handle_command('st-select-widget-frame', $widgetname);
+        $self->handle_command('pause', 2000);
+        #If is regexp,
+        if ($texttofind=~/^qr\//) {
+            $self->handle_command('text_like','//body', $texttofind);
+        } else {
+            $self->handle_command('wait_for_text_present_ok', $texttofind);
+        }
+        $self->handle_command('select-frame', 'relative=parent');
+  #}
+    $self->handle_command('set_Speed',0);
+
+    ok(!$@, 'st_verify_text_in_widget');
 }
 
 =head2 st_text_unlike_in_activities_widget ($self, $widgetname, $betternotfindit)
@@ -448,6 +518,7 @@ sub st_text_unlike_in_activities_widget  {
     $self->handle_command('pause', 2000);
     $self->handle_command('text_unlike','//body', $notpresent);
     $self->handle_command('select-frame', 'relative=parent');
+    ok(!$@, 'st_text_unlike_in_activities_widget');
 }
 
 
@@ -469,7 +540,7 @@ sub st_verify_link_in_activities_widget {
         $self->handle_command('wait_for_element_present_ok', $linktofind);
         $self->handle_command('select-frame', 'relative=parent');
     #};
-    #ok(!$@, 'st-verify-link-in-activities-widget');
+    ok(!$@, 'st-verify-link-in-activities-widget');
 }
       
 
@@ -491,6 +562,7 @@ sub st_find_user {
     $self->handle_command('wait-for-element-visible-ok', "link=$user_id", 30000);
     $self->handle_command('click_and_wait',"link=$user_id");
     $self->handle_command('wait-for-element-visible-ok','new_tag',30000);
+    ok(!$@, 'st-find-user');
 }   
 
 
