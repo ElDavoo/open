@@ -46,7 +46,7 @@ This test case is an aid to visually observing each screen type in the applicati
 | click_and_wait | link=%%hostname%% |  |
 
 | *Comment* | SEE /Rename Account/Enable Export User Data |  |
-| *Comment* | SEE /Profile Fields/Disable Invitation to Network |  |
+| *Comment* | SEE /Profile Fields/Disable Invitation to Group |  |
 | pause | %%pt%% |  |
 
 | *Comment* | SEE Reports |  |
@@ -72,18 +72,18 @@ This test case is an aid to visually observing each screen type in the applicati
 | click_and_wait | link=Back |  |
 
 | click_ok | link=Enable Export User Data |  |
-| click_ok | link=Disable Invitation to Network |  |
+| click_ok | link=Disable Invitation to Group |  |
 | *Comment* | ` ` |  |
 | *Comment* | SEE Disable Export User Data |  |
-| *Comment* | SEE Enable Invitation to network |  |
+| *Comment* | SEE Enable Invitation to Group |  |
 | *Comment* | ` ` |  |
 | pause | %%pt%% |  |
 
 | click_ok | link=Disable Export User Data |  |
-| click_ok | link=Enable Invitation to Network |  |
+| click_ok | link=Enable Invitation to Group |  |
 | *Comment* | ` ` |  |
 | *Comment* | SEE Enable Export User Data |  |
-| *Comment* | SEE Disable Invitation to Network |  |
+| *Comment* | SEE Disable Invitation to Group |  |
 | *Comment* | ` ` |  |
 | pause | %%pt%% |  |
 
