@@ -5,6 +5,8 @@ use Sys::Hostname;
 use Cwd;
 use File::Basename;
 
+require 'reports-functions.pl';
+
 chdir( File::Basename::dirname($0));
 
 #Globals
@@ -12,8 +14,11 @@ my $host = hostname;
 
 
 #Touch and chmod the logs
-my $test_nlw = $ENV{HOME} . '/test_nlw.log';
-grant_write_permissions_to_local_logs($test_nlw, $host);
+my $userid = `whoami`;
+chomp($userid);
+print "User ID is '$userid' \n\n";
+my $test_nlw = get_nlw_filename();
+setup_local_logs($test_nlw, $host);
 
 
 #Create the account data
@@ -46,9 +51,7 @@ if (!(is_dev_env($host))) {
 #But we will insert older, fake id's into the DB
 #So we'll delete these
 #----------------------------------------------#
-my $userid = `whoami`;
-chomp($userid);
-print "User ID is '$userid' \n\n";
+
 my $u = '';
 my $db = 'NLW_reports';
 if (is_dev_env($host)) {
@@ -127,9 +130,8 @@ sub is_dev_env {
     }
 }
 
-sub grant_write_permissions_to_local_logs {  
+sub setup_local_logs {  
     my ($test_nlw, $host) = @_;
-    system("chmod 777 $ENV{HOME}");
     system("rm -f $test_nlw");
     system("touch $test_nlw");
     system("chmod 666 $test_nlw");

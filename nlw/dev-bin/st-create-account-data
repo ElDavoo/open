@@ -11,6 +11,9 @@ use Socialtext::User;
 use Socialtext::Role;
 use Time::localtime;
 
+require "reports-functions.pl";
+
+
 my $dbh = get_dbh();
 
 #---Globals
@@ -31,7 +34,7 @@ my $userObjs = create_users(\@users, \@wsObjects, $account_id);
 my $tm = localtime;
 my $stamp = $tm->year . "-" . $tm->mon . "-" . $tm->mday . "-" . $tm->hour . "-" . $tm->min . "-" . $tm->sec;
 
-my $nlw = $ENV{HOME} . '/test_nlw.log'; 
+my $nlw = get_nlw_filename(); 
 
 #Six-month date-switch
 #-------------------------------------------------------------------------------#
