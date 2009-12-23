@@ -2,6 +2,7 @@ package Socialtext::WikiFixture::SocialBase;
 # @COPYRIGHT@
 use strict;
 use warnings;
+use Carp qw(cluck);
 use Socialtext::Account;
 use Socialtext::User;
 use Socialtext::SQL qw/:exec :txn/;
@@ -315,7 +316,7 @@ sub create_account {
 
     my $acct = create_test_account_bypassing_factory($name);
     my $ws = Socialtext::Workspace->new(name => 'admin');
-    $acct->enable_plugin($_) for qw/people dashboard widgets signals/;
+    $acct->enable_plugin($_) for qw/people dashboard widgets signals groups/;
     $ws->enable_plugin($_) for qw/socialcalc/;
     $self->{account_id} = $acct->account_id;
     diag "Created account $name ($self->{account_id})";
@@ -409,7 +410,7 @@ sub create_user {
     my ($first_name,$last_name) = split(' ',$name,2);
     $first_name ||= '';
     $last_name ||= '';
-
+    
     my $user = Socialtext::User->create(
         email_address => $email,
         username      => $username,
@@ -1700,9 +1701,9 @@ Guarentted work:
   Add that user to group $group_name
 
 If true, they create:
- create_and_add_account - creates account %%grp-acct%%; the group and user will be members of said account
- create_ws - create a workspace named %%grp-ws%%.  If create_and_add_account is true, the ws will be a member of the account
- add_ws_to_group - will add %%grp_ws%% to the group
+ create_and_add_account - creates account %%group-acct%%; the group and user will be members of said account
+ create_ws - create a workspace named %%group-ws%%.  If create_and_add_account is true, the ws will be a member of the account
+ add_ws_to_group - will add %%group_ws%% to the group
 
 PS: If you've got a more OO, less structured way to do this, I'd be all ears.  
     It feels awkward as is.
@@ -1711,40 +1712,42 @@ PS: If you've got a more OO, less structured way to do this, I'd be all ears.
 
 sub st_setup_a_group {
      my ($self, $create_and_add_account, $create_ws, $add_ws_to_group) = @_;
-     $self->handle_command('set','grp-user','grp-user-%%start_time%%@matt.socialtext.net');
-     $self->handle_command('set','grp_user_escaped','grp-user%%start_time%%\@matt.socialtext.net');
-     $self->handle_command('set','grp_name', 'grp-name-%%start_time%%');
+     $self->handle_command('set','grp_user','grp-user-%%start_time%%@matt.socialtext.net');
+     $self->handle_command('set','group_user_escaped','grp-user%%start_time%%\@matt.socialtext.net');
+     $self->handle_command('set','group_name', 'grp-name-%%start_time%%');
     
      print "step1\n";
      #Create the user, the account, and possible the group
      if (defined($create_and_add_account) && ($create_and_add_account) ) {
-         $self->handle_command('set','grp_acct','gr-act-%%start_time%%');
+         $self->handle_command('set','group_act','grp-acct-%%start_time%%');
          print "step2\n";
-         $self->handle_command('create_account','%%grp_acct%%');
-         print "step3\n";
-         $self->handle_command('create_user','%%grp_user%%','%%password%%','%%grp_acct%%');
+         
+         $self->handle_command('st-admin','create_account --name %%group_act%%',' was created');
+         print "step3 NOW HANDLE COMAND create_user\n";
+         $self->handle_command('create_group','%%group_name%%','%%group_act%%');
          print "step4\n";
-         $self->handle_command('create_group','%%grp_name%%','%%grp_acct%%');
+         $self->handle_command('st-admin','create_user --e %%group_user%% --p %%password%% --a %%group_act%%',' was created');
          print "step5\n";
+         return;
      } else {
-         $self->handle_command('create_user','%%grp_user%%','%%password%%');
-         $self->handle_command('create_group','%%grp_name%%');
-         $self->handle_command('add-user-to-group','%%grp_user%%','%%group_id%%');
+         $self->handle_command('create_user','%%group_user%%','%%password%%');
+         $self->handle_command('create_group','%%group_name%%');
+         $self->handle_command('add-user-to-group','%%group_user%%','%%group_id%%');
      }
- 
+
      my $account = '';
      #Create Workspace if requested
      if (defined($create_ws) && ($create_ws) ) { 
-         $self->handle_command('set','grp_ws','grp-ws-%%start_time%%');
+         $self->handle_command('set','group_ws','group-ws-%%start_time%%');
          if (defined($create_and_add_account) && ($create_and_add_account) ) {
-             $account = '%%grp_acct%%';
+             $account = '%%group_act%%';
          }
-         $self->handle_command('create_workspace','%%grp_ws%%',$account);
+         $self->handle_command('create_workspace','%%group_ws%%',$account);
      }
- 
+
      #Add Workspace To Group if requested
      if (defined($add_ws_to_group) &&  ($add_ws_to_group) ) {
-         $self->handle_command('add-group-to-workspace', '%%group_id%%', '%%grp-ws%%', $account);
+         $self->handle_command('st-admin','add-member --group %%group_id%% --workspace %%group-ws%%','now has the role of');
      }
      
 }
