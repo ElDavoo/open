@@ -63,7 +63,7 @@ process_job: {
         '... ... to recipient';
     like $body, qr/<p>\s+Thanks,\s+<\/p>\s+<p>\s+\Q$invitor_email\E/,
        '... ... from sender';
-    like $body, qr/join the \Q$account_name\E network/,
+    like $body, qr/join the \Q$account_name\E group/,
        '... ... into account';
 
     $job = Socialtext::Jobs->find_job_for_workers();

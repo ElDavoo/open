@@ -10,7 +10,7 @@
 
 <p>
 [% SET acct_name = account_name | html %]
-[% loc("I'm inviting you to join the [_1] network at [_2].", acct_name, host) %]
+[% loc("I'm inviting you to join the [_1] group at [_2].", acct_name, host) %]
 [% UNLESS requires_confirmation %]
 [% loc('Sign in using the information below:') %]
 [% END %]
@@ -34,7 +34,7 @@
 [% IF appconfig.is_default('user_factories') %]
 [% IF app_name; a = 'a'; ELSE; a = 'an'; END %]
 <p>
-[% loc("Because you already have [_1] [_2] account, the password is the same as the password you use for your other [_3] networks.", a, app_name, app_name) %]
+[% loc("Because you already have [_1] [_2] account, the password is the same as the password you use for your other [_3] groups.", a, app_name, app_name) %]
 [% loc("If you don't remember it, follow this link to select a new password:") %]
 [% forgot_password_uri %]
 
