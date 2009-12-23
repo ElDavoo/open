@@ -83,9 +83,11 @@ sub invite {
 # ST:WS:Perms), but we're not getting there today.
 sub user_can {
     my $self = shift;
-    my %p    = @_;
-    my $user = $p{user}       || die "no 'user' provided";
-    my $perm = $p{permission} || die "no 'permission' provided";
+    my %p    = (
+        user       => undef,
+        permission => undef,
+        @_
+    );
 
     require Socialtext::Authz;
     my $authz = Socialtext::Authz->new();
