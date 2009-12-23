@@ -1751,7 +1751,7 @@ sub body_like {
 
     my $re_expected = $self->quote_as_regex($expected);
 
-    if ($ENV{TEST_LESS_VERBOSE}) {
+    if ($ENV{TEST_LESS_VERBOSE} and length($body) > 3000 ) {
         ok $body =~ $re_expected,
             $self->{http}->name() . " body-like $re_expected";
     }
@@ -1767,7 +1767,7 @@ sub body_unlike {
 
     my $re_expected = $self->quote_as_regex($expected);
 
-    if ($ENV{TEST_LESS_VERBOSE}) {
+    if ($ENV{TEST_LESS_VERBOSE} and length($body) > 3000 ) {
         ok $body !~ $re_expected,
             $self->{http}->name() . " body-unlike $re_expected";
     }
