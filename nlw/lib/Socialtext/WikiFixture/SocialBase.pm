@@ -1720,17 +1720,18 @@ sub st_setup_a_group {
      #Create the user, the account, and possible the group
      if (defined($create_and_add_account) && ($create_and_add_account) ) {
          $self->handle_command('set','group_acct','group-acct-%%start_time%%');
-         
          $self->handle_command('st-admin','create_account --name %%group_acct%%',' was created');
-         $self->handle_command('st-admin','create_group --name %%group_name%% --account %%group_acct%%', 'has been created');
+         #$self->handle_command('st-admin','create_group --name %%group_name%% --account %%group_acct%%', 'has been created');
+         $self->handle_command('create_group','%%group_name%%','%%group_acct%%');
          $self->handle_command('st-admin','create_user --e %%group_user%% --p %%password%% --a %%group_acct%%','was created');
-     } else {
+     } 
+    else {
          $self->handle_command('st-admin', 'create_user --e %%group_user%% --p %%password%%', 'was created');
-         $self->handle_command('st-admin', 'create_group --name %%%group_name%%','has been created');
+    #    $self->handle_command('st-admin', 'create_group --name %%%group_name%%','has been created');
+         $self->handle_command('create_group','%%group_name%%','%%group_acct%%');
          $self->handle_command('st-admin', 'add-member --e %%group_user%% --g %%group_id%%','is now a member of');
      }
 
-     my $account = '';
      #Create Workspace if requested
      if (defined($create_ws) && ($create_ws) ) { 
          $self->handle_command('set','group_ws','group-ws-%%start_time%%');
@@ -1743,9 +1744,8 @@ sub st_setup_a_group {
 
      #Add Workspace To Group if requested
      if (defined($add_ws_to_group) &&  ($add_ws_to_group) ) {
-         $self->handle_command('st-admin','add-member --group %%group_id%% --workspace %%group-ws%%','now has the role of');
+         $self->handle_command('st-admin','add-member --group %%group_id%% --workspace %%group_ws%%','now has the role of');
      }
-     
 }
 
 

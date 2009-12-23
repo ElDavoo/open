@@ -1,6 +1,6 @@
 | *Comment* | Test Case: Groups UI Signal from group home |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
-| st-logoutin | %%grp_user%% | %%password%% |  |
+| st-logoutin | %%group_user%% | %%password%% |  |
 | open_ok | /?group/%%group_id%% |  |  |
 
 | *Comment* | Test Case: Groups UI Signal to group |
@@ -14,6 +14,6 @@
 
 | *Comment* | Test Case: Groups UI Signal from group home teardown |
 | delete-group | %%group_id%% |
-| st-admin | delete-workspace --w %%grp_ws%% --no-export |
+| st-admin | delete-workspace --w %%group_ws%% --no-export |
 
 | *Comment* | Test Case: Groups UI Signal from group home COMPLETED |
