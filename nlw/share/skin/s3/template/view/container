@@ -24,10 +24,8 @@
     </div><!-- controlsRight END -->
 </div><!-- controls END -->
 
-<div class="notice">
 [% FILTER decorate('notice') %]
 [% END %]
-</div>
 
 [% FILTER decorate('container_action', container.type, container.owner.username) %] 
 [% END %] 
