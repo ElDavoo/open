@@ -60,10 +60,7 @@ sub _munge_command_and_opts {
     $command =~ s/-/_/g;
     $command =~ s/^\*(.+)\*$/$1/;
 
-    if ($command eq 'body_like') {
-        $opts[0] = $self->quote_as_regex($opts[0]);
-    }
-    elsif ($command =~ m/_like$/) {
+    if ($command ne 'body_like' and $command =~ m/_like$/) {
         $opts[1] = $self->quote_as_regex($opts[1]);
     }
 
@@ -1748,14 +1745,36 @@ sub st_setup_a_group {
      }
 }
 
+sub body_like {
+    my ($self, $expected) = @_;
+    my $body = $self->{http}->response->content;
+
+    my $re_expected = $self->quote_as_regex($expected);
+
+    if ($ENV{TEST_LESS_VERBOSE}) {
+        ok $body =~ $re_expected,
+            $self->{http}->name() . " body-like $re_expected";
+    }
+    else {
+        like $body, $re_expected,
+            $self->{http}->name() . " body-like $re_expected";
+    }
+}
 
 sub body_unlike {
     my ($self, $expected) = @_;
     my $body = $self->{http}->response->content;
 
     my $re_expected = $self->quote_as_regex($expected);
-    unlike $body, $re_expected,
-        $self->{http}->name() . " body-unlike $re_expected";
+
+    if ($ENV{TEST_LESS_VERBOSE}) {
+        ok $body !~ $re_expected,
+            $self->{http}->name() . " body-unlike $re_expected";
+    }
+    else {
+        unlike $body, $re_expected,
+            $self->{http}->name() . " body-unlike $re_expected";
+    }
 }
 
 sub job_count {
