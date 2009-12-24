@@ -62,7 +62,7 @@
 | st-select-widget-frame | searchwidget |  |
 
 | *Comment* | Test Case: Signals Pagination. Verify found Pagination %%start_time%% signals |  |
-| wait_for_text_present_ok | Search results in all networks for 'Pagination %%start_time%%' | 30000 |
+| wait_for_text_present_ok | Search results in all groups for 'Pagination %%start_time%%' | 30000 |
 
 | wait_for_text_present_ok | Pagination %%start_time%% 43 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 44 | 30000 |
@@ -161,7 +161,7 @@
 | *Comment* | Test Case: Signals Pagination. Verify found more relevant signal |  |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
-| wait_for_text_present_ok | Search results in all networks for '%%start_time%%' | 30000 |
+| wait_for_text_present_ok | Search results in all groups for '%%start_time%%' | 30000 |
 | select_ok | sort-picker | label=Relevance |
 | wait_for_text_present_ok | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |

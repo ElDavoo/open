@@ -60,16 +60,16 @@
 | text_like | //body | qr/%%othershortuser%%.+minute.+to %%mikiacct%%.+%%signal1%%/ism |
 
 | *Comment* | Test case: Miki Send MULTI Signals |  |
-| select_ok | st-select-account | All Networks |
+| select_ok | st-select-account | All Groups |
 | select_ok | st-select-account | %%mikiacct%% (primary) |
 | select_ok | st-select-account | %%othermikiacct%% |
-| select_ok | st-select-account | All Networks |
+| select_ok | st-select-account | All Groups |
 | type_ok | st-signal-text | %%multisignal%% |
 | click_and_wait | st-signal-submit |  |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | wait_for_text_present_ok | less than a minute ago | 30000 |
 | wait_for_text_present_ok | %%multisignal%% | 30000 |
-| text_like | //body | qr/%%othershortuser%%.+minute.+to 2 networks.+%%multisignal%%/ism |
+| text_like | //body | qr/%%othershortuser%%.+minute.+to 2 groups.+%%multisignal%%/ism |
 
 | *Comment* | Test case: Miki Log In as 'main' user, see global nav |  |
 | wait_for_element_visible_ok | link=Log out | 30000 |

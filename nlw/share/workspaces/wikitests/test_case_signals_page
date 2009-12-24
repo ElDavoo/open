@@ -5,7 +5,7 @@
 | *Comment* | Test Case: Signals Page |  |
 
 | set-default | mark | single |
-| set-default | network | %%hostname%% |
+| set-default | group | %%hostname%% |
 
 | *Comment* | Test Case: Signals Page. Get to the Signals page. Wait for the widget to fully load |  |
 |  st-admin |  enable-plugin --all-accounts --p signals |  |
@@ -74,7 +74,7 @@
 | wait_for_text_present_ok | I Remember Long Ago %%start_time%% %%mark%% | 120000 |
 | wait_for_text_present_ok | Way Back In History %%start_time%% %%mark%% | 120000 |
 | wait_for_text_present_ok | I May Be Kinda Slow %%start_time%% %%mark%% | 120000 |
-| text_like | //body | qr/You.+to.+%%network%%/ism |
+| text_like | //body | qr/You.+to.+%%group%%/ism |
 
 | *Comment* | Test Case: Signals widget. Wait for automatic refresh to "one minute ago" in page |  |
 | wait_for_text_present_ok | one minute ago | 120000 |

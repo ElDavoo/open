@@ -39,7 +39,7 @@
 | *Comment* | Test Case: Signals Search. Verify found 2 signals %%a_username%% |  |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
-| text_like | Search results in all networks for '%%start_time%%' |  |
+| text_like | Search results in all groups for '%%start_time%%' |  |
 | text_like | NotAStopWord %%start_time%% 12 |  |
 | text_like | NotAStopWord %%start_time%% 01 |  |
 | select_frame | relative=parent |  |
@@ -67,7 +67,7 @@
 | *Comment* | Test Case: Signals Search. Verify found 4 signals %%z_username%% |  |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
-| wait_for_text_present_ok | Search results in all networks for '%%start_time%%' | 30000 |
+| wait_for_text_present_ok | Search results in all groups for '%%start_time%%' | 30000 |
 | text_like | NotAStopWord %%start_time%% 32 |  |
 | text_like | NotAStopWord %%start_time%% 21 |  |
 | text_like | NotAStopWord %%start_time%% 12 |  |
@@ -109,7 +109,7 @@
 | *Comment* | Test Case: Signals Search. Verify found more relevant signal |  |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
-| wait_for_text_present_ok | Search results in all networks for '%%start_time%%' | 30000 |
+| wait_for_text_present_ok | Search results in all groups for '%%start_time%%' | 30000 |
 | select_ok | sort-picker | label=Relevance |
 | pause | 8000 | I Hate Pause |
 | text-like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 12/ism |  |
