@@ -404,3 +404,6 @@ t/wikitests/dashboard/gallery.wiki
 t/wikitests/groups/container-permissions.wiki
 t/wikitests/people/container-permissions.wiki
 t/wikitests/signals/container-permissions.wiki
+t/Socialtext/Gadgets/Container-reinstall.t
+t/lib/Socialtext/Gadgets/Util.pm
+t/share/plugin/fakeplugin
