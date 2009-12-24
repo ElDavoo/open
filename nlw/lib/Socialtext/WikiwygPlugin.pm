@@ -452,19 +452,19 @@ sub widget_is_uneditable {
     return $self->widgets_definition->{widget}{ $widget->{id} }{uneditable};
 }
 
-my @font_table = grep {
-    -f Socialtext::AppConfig->code_base . '/fonts/' . $_->{font}
-} YAML::LoadFile(
-    Socialtext::AppConfig->code_base . '/fonts/config.yaml'
-);
-die "Invalid font table in 'fonts/config.yaml'"
-    unless @font_table and $font_table[0]->{default};
-unshift @font_table, 'dummy first entry';
+my @font_table;
+my $code_base = Socialtext::AppConfig->code_base;
+if (-f "$code_base/fonts/config.yaml") {
+    @font_table = grep { -f "$code_base/fonts/$_->{font}" }
+                  YAML::LoadFile( "$code_base/fonts/config.yaml");
+    die "Invalid font table in 'fonts/config.yaml'"
+        unless @font_table and $font_table[0]->{default};
+    unshift @font_table, 'dummy first entry';
+}
 
-my $font_path = Socialtext::AppConfig->code_base .  '/fonts';
-my $widgets_path = Socialtext::AppConfig->code_base . '/widgets';
+my $font_path = "$code_base/fonts";
+my $widgets_path = "$code_base/widgets";
 my $max = 300;
-#my $height = 18;
 my $height = 19;
 my $ellipsis = '...';
 

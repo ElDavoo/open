@@ -7,16 +7,25 @@ use base 'Socialtext::MockBase';
 our $DEFAULT_WORKSPACE = 'default';
 our $CODE_BASE = '/codebase';
 our $SCRIPT_NAME = '/scripts';
+our $CUSTOM_HTTP_PORT = 12345;
 
 sub db_connect_params {
     my %params = (
-        db_name => "NLW_$ENV{USER}_testing",
+        db_name => db_name(),
         user => $ENV{USER},
     );
     return wantarray ? %params : \%params;
 }
 
+sub db_name { "NLW_$ENV{USER}_testing" }
+
+sub is_appliance { 0 }
+
+sub shortcuts_file {}
+
 sub syslog_level { 1 }
+
+sub ssl_only { 0 }
 
 sub default_workspace { $DEFAULT_WORKSPACE }
 
@@ -36,11 +45,27 @@ sub locale { 'en' }
 sub debug { 0 }
 
 sub web_hostname { 'mock_web_hostname' }
-sub custom_http_port { 'custom_http_port' }
+sub custom_http_port { $CUSTOM_HTTP_PORT }
 sub instance { Socialtext::AppConfig->new }
 
 sub _startup_user_is_human_user { 0 }
 
 sub web_services_proxy { '' }
+
+sub test_slot {
+    return $ENV{HARNESS_JOB_NUMBER};
+}
+
+sub test_dir {
+    my $slot = test_slot();
+    my $base = 't/tmp';
+    return $slot ? "$base/$slot" : $base;
+}
+
+sub _cache_root_dir { test_dir . "/cache" }
+
+sub Options {}
+
+sub pid_file_dir { test_dir . "/run" }
 
 1;
