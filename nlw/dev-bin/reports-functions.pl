@@ -1,4 +1,4 @@
-
+# @COPYRIGHT@
 sub get_nlw_dir {
     my $userid = `whoami`;
     chomp($userid);
