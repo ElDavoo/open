@@ -366,3 +366,7 @@ t/Socialtext/People/ProfilePhoto.t
 t/wikitests/signals/targets.wiki
 lib/Socialtext/Rest/Signals/Targets.pm
 t/wikitests/signals/data_signals-groups.wiki
+lib/Socialtext/PageVotes/Rest.pm
+lib/Socialtext/Pluggable/Plugin/PageVotes.pm
+t/wikitests/data_workspace_page_pagevotes.wiki
+etc/socialtext/uri_map.d/pagevotes.yaml

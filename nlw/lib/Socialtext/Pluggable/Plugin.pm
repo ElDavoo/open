@@ -22,6 +22,7 @@ use Socialtext::String ();
 use Socialtext::SQL qw(:txn :exec);
 use Socialtext::Log qw/st_log/;
 use Socialtext::MultiCursor;
+
 my $prod_ver = Socialtext->product_version;
 
 # Class Methods
@@ -412,6 +413,22 @@ sub created_at {
     return undef if (!defined($page));
     my $original_revision = $page->original_revision;
     return $original_revision->datetime_for_user;
+}
+
+sub format_time_for_user {
+    my $self = shift;
+    my %p = (
+        workspace_name => undef,
+        'time' => undef,
+        @_
+    );
+
+    my $workspace = Socialtext::Workspace->new( name => $p{workspace_name} );
+    return undef if (!defined($workspace));
+    my $hub = $self->_hub_for_workspace($workspace);
+    return undef unless defined($hub);
+    $hub->current_user($self->hub->current_user);
+    return $hub->timezone->date_local($p{'time'});
 }
 
 sub created_by {
