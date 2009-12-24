@@ -23,7 +23,7 @@
 
 | *Comment* | Unauthorized, POST              |                                |             |                          |
 | POST-file | /data/groups/%%group_id%%/photo | method=file                    | photo-local | t/widget/creepy_goat.jpg |
-| code-is   | 401                             |                                |             |                          |
+| code-is   | 403                             |                                |             |                          |
 | header-is | Content-type                    | text/plain; charset=ISO-8859-1 |             |                          |
 | body-like | must be a group admin           |                                |             |                          |
 
@@ -56,7 +56,7 @@
 
 | *Comment* | Member of Group, POST           |                                |             |                          |
 | POST-file | /data/groups/%%group_id%%/photo | method=file                    | photo-local | t/widget/creepy_goat.jpg |
-| code-is   | 401                             |                                |             |                          |
+| code-is   | 403                             |                                |             |                          |
 | header-is | Content-type                    | text/plain; charset=ISO-8859-1 |             |                          |
 | body-like | must be a group admin           |                                |             |                          |
 

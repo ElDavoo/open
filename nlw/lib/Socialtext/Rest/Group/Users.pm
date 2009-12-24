@@ -5,6 +5,7 @@ extends 'Socialtext::Rest::Groups';
 use Socialtext::Group;
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json/;
+use Socialtext::Permission qw/ST_READ_PERM/;
 use Socialtext::User;
 use namespace::clean -except => 'meta';
 
@@ -22,10 +23,14 @@ sub _entities_for_query {
     my $group = Socialtext::Group->GetGroup(group_id => $group_id);
     die Socialtext::Exception::NotFound->new() unless $group;
 
+    my $can_read = $group->user_can(
+        user => $user,
+        permission => ST_READ_PERM,
+    );
     die Socialtext::Exception::NotFound->new()
         unless $user->is_business_admin
             or $group->creator->user_id == $user->user_id
-            or $group->has_user($user);
+            or $can_read;
 
     my $users = $group->users_as_minimal_arrayref();
 

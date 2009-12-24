@@ -19,7 +19,7 @@ field 'name';
 
 Readonly my @RequiredPermissions => qw(
     read edit attachments comment delete email_in email_out edit_controls
-    admin_workspace request_invite impersonate lock self_join invite
+    admin_workspace request_invite impersonate lock self_join admin 
 );
 sub EnsureRequiredDataIsPresent {
     my $class = shift;

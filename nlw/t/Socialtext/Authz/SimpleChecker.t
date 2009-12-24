@@ -63,8 +63,8 @@ illegal_container: {
 basic_groups: {
     perms_as_expected($admin_user, $group, {
         read                   => 1,
-        write                  => 0,
-        invite                 => 1,
+        edit                   => 1,
+        admin                  => 1,
         super_monkey_death_car => 0,
     });
 }

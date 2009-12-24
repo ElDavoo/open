@@ -40,8 +40,8 @@ sub user_has_permission_for_workspace {
 {
     # Warning: permissions here must also exist in the ST::Permission module.
     my %matrix = (
-        admin  => [qw/invite read/],
-        member => [],
+        admin  => [qw/admin read edit/],
+        member => [qw/read edit/],
         guest  => [],
     );
 

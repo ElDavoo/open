@@ -5,6 +5,7 @@ use warnings;
 use base 'Socialtext::Rest::Entity';
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
+use Socialtext::Permission qw(ST_READ_PERM);
 use Socialtext::Group;
 
 sub permission      { +{} }
@@ -17,9 +18,12 @@ sub get_resource {
     my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
     return undef unless $group;
 
+    my $can_read = $group->user_can(
+        user => $self->rest->user,
+        permission => ST_READ_PERM,
+    );
     my $user = $self->rest->user;
-    if (   $user->is_business_admin or $group->has_user($user)
-                                    or $group->creator->user_id == $user->user_id) {
+    if ($user->is_business_admin or $can_read) {
         return $group->to_hash(
             show_members => $rest->query->param('show_members') ? 1 : 0,
             show_admins => $rest->query->param('show_admins') ? 1 : 0,

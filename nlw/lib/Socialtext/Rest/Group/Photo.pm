@@ -6,6 +6,7 @@ use Socialtext::File;
 use Socialtext::Group;
 use Socialtext::Group::Photo;
 use Socialtext::HTTP ':codes';
+use Socialtext::Permission qw(ST_ADMIN_PERM ST_READ_PERM);
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::Role;
 
@@ -25,7 +26,11 @@ sub _get_photo {
 
     my ($photo, $status);
     if ( $group ) {
-        if ( $group->has_user($user) ) {
+        my $can_read = $group->user_can(
+            user => $user,
+            permission => ST_READ_PERM,
+        );
+        if ($can_read) {
             $status = HTTP_200_OK;
             $photo  = $group->photo->$size;
         }
@@ -53,7 +58,6 @@ sub POST_photo {
     my $rest  = shift;
     my $group = $self->group;
     my $user  = $rest->user;
-    my $admin = Socialtext::Role->Admin();
 
     # This actually returns application/json, but that messes with the
     # JSONView firefox addon, making the iframe source unparseable since it
@@ -66,7 +70,16 @@ sub POST_photo {
 
     return $self->_post_failure(
         $rest, HTTP_401_Unauthorized, 'must be a group admin'
-    ) unless $group->user_has_role(user => $user, role => $admin);
+    ) unless $user->is_authenticated;
+
+    my $can_admin = $group->user_can(
+        user => $user,
+        permission => ST_ADMIN_PERM,
+    );
+
+    return $self->_post_failure(
+        $rest, HTTP_403_Forbidden, 'must be a group admin'
+    ) unless $can_admin;
 
     my $file = $rest->query->{'photo-local'};
     return $self->_post_failure(
