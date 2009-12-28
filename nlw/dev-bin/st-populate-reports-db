@@ -5,9 +5,8 @@ use Sys::Hostname;
 use Cwd;
 use File::Basename;
 
-require 'reports-functions.pl';
-
 chdir( File::Basename::dirname($0));
+require 'reports-functions.pl';
 
 #Globals
 my $host = hostname;

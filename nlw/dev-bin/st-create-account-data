@@ -11,7 +11,8 @@ use Socialtext::User;
 use Socialtext::Role;
 use Time::localtime;
 
-require "reports-functions.pl";
+
+require 'reports-functions.pl';
 
 
 my $dbh = get_dbh();
