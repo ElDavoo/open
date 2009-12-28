@@ -8,11 +8,13 @@ our $DEFAULT_WORKSPACE = 'default';
 our $CODE_BASE = '/codebase';
 our $SCRIPT_NAME = '/scripts';
 our $CUSTOM_HTTP_PORT = 12345;
+our $CONFIG_DIR = '/config_dir';
 
 sub db_connect_params {
     my %params = (
         db_name => db_name(),
         user => $ENV{USER},
+        schema_name => 'socialtext',
     );
     return wantarray ? %params : \%params;
 }
@@ -38,7 +40,7 @@ sub group_factories { 'Default' }
 sub data_root_dir { '/datadir' }
 
 sub stats { 'stats' }
-sub config_dir { '/config_dir' }
+sub config_dir { $CONFIG_DIR }
 sub template_compile_dir { 't/tmp' }
 
 sub locale { 'en' }
@@ -48,7 +50,9 @@ sub web_hostname { 'mock_web_hostname' }
 sub custom_http_port { $CUSTOM_HTTP_PORT }
 sub instance { Socialtext::AppConfig->new }
 
-sub _startup_user_is_human_user { 0 }
+sub _startup_user_is_human_user { 1 }
+
+sub _user_root { "$ENV{HOME}/.nlw" }
 
 sub web_services_proxy { '' }
 
