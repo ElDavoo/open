@@ -3,24 +3,20 @@
 * [Test Case: Groups in Global Nav]
 * [Test Case: Groups UI Signal from group home]
 
-| *Comment* | Test Case: User Groups UI Signal from group home |
-| open_ok | /?group/%%group_id%% |
-| *Comment* | Test Case: Send Signal to group |
-| *Comment* | Test Case: User Groups UI |
-| *Comment* | Test Case: User Groups UI Edit an Existing Group |
-| open_ok | /?group/%%group_id%% |
-| *Comment* | Test Case: User Groups UI Click Edit Button |
-| *Comment* | Test Case: User Groups UI Change Values, Click Save |
-| *Comment* | Test Case: User Groups UI See Changes |
+| *Comment* | Test Case: User Groups UI Send Signal to group |
 
-| *Comment* | Test Case: User Groups UI Signal to Group |
+* [Test Case: Groups UI Send Signal to Group]
+
+| *Comment* | Test Case: User Groups UI Edit an Existing Group |
+
+* [Test Case: Groups UI Edit an Existing Group]
 
 | *Comment* | Test Case: User Group UI User invites colleagues to account-group |
 
+* [Test Case: Groups UI Invite Colleages to account-group]
+
 | *Comment* | Test Case: User Groups UI Search Signals By Group |
 
-| *Comment* | Test Case: User Groups UI Teardown |
-| delete-group | %%group_id%% |
-| st-admin | delete-workspace --w %%grps_ws%% --no-export |
+* [Test Case: Groups UI Search Signals by Group]
 
-| *Comment* | Test Case: User Groups UI COMPLETE
+| *Comment* | Test Case: User Groups UI COMPLETE |

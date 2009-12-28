@@ -1,0 +1,11 @@
+| *Comment* | Test Case: Groups UI Search Signals by Group |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group Setup |  |  |
+| st-setup-a-group | 1 | 1 | 1 |
+| st-logoutin | %%group_user%% | %%password%% |  |
+| open_ok | /?group/%%group_id%% |  |  |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group Teardown |
+| delete-group | %%group_id%% |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group COMPLETED |

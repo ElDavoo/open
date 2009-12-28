@@ -1,18 +1,17 @@
 | *Comment* | Test Case: Groups UI Signal from group home |  |  |
+
+| *Comment* | Test Case: Groups UI Signal from group home SETUP |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
 | st-logoutin | %%group_user%% | %%password%% |  |
 | open_ok | /?group/%%group_id%% |  |  |
 
-| *Comment* | Test Case: Groups UI Signal to group |
-| *Comment* | Test Case: Groups UI Groups UI |
-| *Comment* | Test Case: Groups UI Groups UI Edit an Existing Group |
-| open_ok | /?group/%%group_id%% |
+| *Comment* | Test Case: Groups UI Signal from group home - Send Signal |
 
-| *Comment* | Test Case: Groups UI Groups UI Click Edit Button |
-| *Comment* | Test Case: Groups UI Groups UI Change Values, Click Save |
-| *Comment* | Test Case: Groups UI Groups UI Refresh, see Changes |
+| *Comment* | Test Case: Groups UI Signal from group home - Check for Signal in Group Activities |
 
-| *Comment* | Test Case: Groups UI Signal from group home teardown |
+| *Comment* | Test Case: Groups UI Signal from group home - Check for Signal in Activities Widget |
+
+| *Comment* | Test Case: Groups UI Signal from group home Teardown |
 | delete-group | %%group_id%% |
 | st-admin | delete-workspace --w %%group_ws%% --no-export |
 

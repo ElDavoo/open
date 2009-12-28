@@ -1,0 +1,11 @@
+| *Comment* | Groups UI Send Signal to Group |
+
+| *Comment* | Groups UI Send Signal to Group Setup |  |  |
+| st-setup-a-group | 1 | 1 | 1 |
+| st-logoutin | %%group_user%% | %%password%% |  |
+| open_ok | /?group/%%group_id%% |  |  |
+
+| *Comment* | Groups UI Send Signal to Group Teardown |
+| delete-group | %%group_id%% |
+
+| *Comment* | Groups UI Send Signal to Group COMPLETED |

@@ -1,0 +1,19 @@
+| *Comment* | Test Case: Groups UI Edit an Existing Group |
+
+| *Comment* | Test Case: Groups UI Edit an Existing Group Setup |  |  |
+| st-setup-a-group | 1 | 1 | 1 |
+| st-logoutin | %%group_user%% | %%password%% |  |
+| open_ok | /?group/%%group_id%% |  |  |
+
+| *Comment* | Test Case: Groups UI Edit an Existing Group Go to the page |
+
+| *Comment* | Test Case: Groups UI Edit an Existing Group Click Edit |
+
+| *Comment* | Test Case: Groups UI Edit an Existing Group Change the Values & Click Save |
+
+| *Comment* | Test Case: Groups UI Edit an Existing Group See the new values |
+
+| *Comment* | Test Case: Groups UI Edit an Existing Group Teardown |
+| delete-group | %%group_id%% |
+
+| *Comment* | Test Case: Groups UI Edit an Existing Group COMPLETED |
