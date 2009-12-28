@@ -56,11 +56,13 @@ sub user_has_permission_for_workspace {
 
         my $role = $p{group}->role_for_user($p{user});
         my $role_name = $role ? $role->name : 'guest';
-        my $set = $matrix{$role_name};
 
         return 0 unless $p{permission};
+        my $pname = ref($p{permission}) ? $p{permission}->name : $p{permission};
+
+        my $set = $matrix{$role_name};
         return 0 unless $set;
-        return (any { $_ eq $p{permission}->name } @$set) ? 1 : 0;
+        return (any { $_ eq $pname } @$set) ? 1 : 0;
     }
 }
 
