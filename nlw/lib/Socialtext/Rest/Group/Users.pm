@@ -52,7 +52,10 @@ sub POST_json {
         return '';
     }
 
-    unless ( defined $data and ref($data) eq 'HASH' ) {
+    # Support posting a single user, or an array of users
+    $data = [$data] if defined $data and ref($data) eq 'HASH';
+
+    unless ( defined $data and ref($data) eq 'ARRAY' ) {
         $rest->header( -status => HTTP_400_Bad_Request );
         return '';
     }
@@ -69,33 +72,43 @@ sub POST_json {
         return 'Group membership cannot be changed';
     }
 
-    my $username = $data->{username};
-    unless ( $username ) {
-        $rest->header( -status => HTTP_400_Bad_Request );
-        return 'Missing a username';
+    # Build a list of user roles so we can check for problems before we
+    # actually add the roles
+    my @user_roles;
+    for my $roledata (@$data) {
+        my $username = $roledata->{username};
+
+        my $name_or_id = $roledata->{user_id} || $roledata->{username};
+        unless ( $name_or_id ) {
+            $rest->header( -status => HTTP_400_Bad_Request );
+            return 'Missing a username or user_id';
+        }
+
+        my $user = eval { Socialtext::User->Resolve($name_or_id) };
+        unless ( $user ) {
+            $rest->header( -status => HTTP_400_Bad_Request );
+            return "User with $name_or_id does not exist";
+        }
+
+        # Note: We only have 'member' roles for Groups for now.
+        my $role_name = $roledata->{role_name} || 'member';
+        my $role = Socialtext::Role->new( name => $role_name );
+        unless ( $role && $role->name ) {
+            $rest->header( -status => HTTP_400_Bad_Request );
+            return "Invalid role name $role_name";
+        }
+
+        my $role_for_user = $group->role_for_user($user);
+        if ($role_for_user && $role_for_user->name eq $role_name) {
+            $rest->header( -status => HTTP_400_Bad_Request );
+            return "User $name_or_id already has Role $role_name";
+        }
+
+        push @user_roles, [$user, $role];
     }
 
-    my $user = Socialtext::User->new( username => $username );
-    unless ( $user ) {
-        $rest->header( -status => HTTP_400_Bad_Request );
-        return "User with $username does not exist";
-    }
-
-    # Note: We only have 'member' roles for Groups for now.
-    my $role_name = $data->{role_name} || 'member';
-    my $role = Socialtext::Role->new( name => $role_name );
-    unless ( $role && $role->name eq 'member' ) {
-        $rest->header( -status => HTTP_400_Bad_Request );
-        return "Invalid role name $role_name";
-    }
-
-    my $role_for_user = $group->role_for_user($user );
-    if ($role_for_user && $role_for_user->name eq $role_name) {
-        $rest->header( -status => HTTP_400_Bad_Request );
-        return "User $username already has Role $role_name";
-    }
-
-    $group->add_user( user => $user, role => $role );
+    # Now add all the roles
+    $group->add_user( user => $_->[0], role => $_->[1] ) for @user_roles;
 
     $rest->header( -status => HTTP_201_Created );
     return '';

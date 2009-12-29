@@ -106,6 +106,15 @@ Tests for [Story: Groups ReST API]
 | POST_json   | /data/groups/%%group_id%%/users                            | {"username":"%%jorge%%","role_name":"member"} |
 | code-is     | 201                                                        |                                               |
 
+| *Comment*   | Create the User, Add User to Group with defaults |                                                                        |
+| set         | bill                                             | bill%%start_time%%@ken.socialtext.net                                  |
+| create-user | %%bill%%                                         | password                                                               |
+| set         | ted                                              | ted%%start_time%%@ken.socialtext.net                                   |
+| create-user | %%ted%%                                          | password                                                               |
+| set-user-id | ted_id                                           | %%ted%%                                                                |
+| POST_json   | /data/groups/%%group_id%%/users                  | [{"username":"%%bill%%"},{"user_id":"%%ted_id%%","role_name":"admin"}] |
+| code-is     | 201                                              |                                                                        |
+
 ## Error conditions
 
 | *Comment*   | Group doesn't exist  |                                               |
@@ -128,11 +137,13 @@ Tests for [Story: Groups ReST API]
 
 ## Verify Users were added to Group
 
-| *Comment*       | Verify Users are in Group         |         |
+| *Comment*       | Verify Users are in Group       |         |
 | GET             | /data/groups/%%group_id%%/users |         |
 | code-is         | 200                             |         |
 | header-like     | Cache-Control                   | private |
 | json-parse      |                                 |         |
-| json-array-size | 3                               |         |
+| json-array-size | 5                               |         |
 | body-like       | %%jimmy%%                       |         |
 | body-like       | %%jorge%%                       |         |
+| body-like       | %%bill%%                        |         |
+| body-like       | %%ted%%                         |         |

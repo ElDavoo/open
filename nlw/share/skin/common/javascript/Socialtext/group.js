@@ -47,6 +47,20 @@ $.extend(Socialtext.Group.prototype, {
             },
             error: this.errorCallback(callback)
         });
+    },
+
+    addUsers: function(userList, callback) {
+        $.ajax({
+            url: this.url('/users'),
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: $.toJSON(userList),
+            success: function() {
+                if (callback) callback();
+            },
+            error: this.errorCallback(callback)
+        });
     }
 });
 
