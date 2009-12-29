@@ -3554,7 +3554,9 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-member [--username or --email] --workspace
   remove-member [--username or --email] --account
   add-workspace-admin [--username or --email] --workspace
+  add-group-admin [--username or --email] --group
   remove-workspace-admin [--username or --email] --workspace
+  remove-group-admin [--username or --email] --group
   add-impersonator [--username or --email] --workspace
   remove-impersonator [--username or --email] --workspace
   disable-email-notify [--username or --email] --workspace
@@ -3669,8 +3671,10 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   add-member --group [ --account or --workspace ]
   add-member [ --username or --email ] --group 
   add-workspace-admin --group  --workspace
+  add-group-admin --group [ --username or --email ]
   remove-member --group [--account or --workspace]
   remove-member [ --username or --email ] --group
+  remove-group-admin --group [ --username or --email ]
 
   OTHER
 
@@ -3740,11 +3744,22 @@ from the given account.
 Given a user and a workspace, this command makes the specified user an
 admin for the given workspace.
 
+=head2 add-group-admin [--username or --email] --group
+
+Given a user and a group, this command makes the specified user an
+admin for the given group.
+
 =head2 remove-workspace-admin [--username or --email] --workspace
 
 Given a user and a workspace, this command remove admin privileges for
 the specified user in the given workspace, and makes them a normal
 workspace member.
+
+=head2 remove-group-admin [--username or --email] --group
+
+Given a user and a group, this command remove admin privileges for
+the specified user in the given group, and makes them a normal
+group member.
 
 =head2 add-impersonator [--username or --email] --workspace
 
@@ -4243,6 +4258,11 @@ Given a Group and a User, add the User as a Member of the Group.
 Given a Group and a Workspace, add the Group as an Admin of the Workspace, if
 it exists.
 
+=head2 add-group-admin [--username or --email] --group
+
+Given a user and a group, this command makes the specified user an
+admin for the given group.
+
 =head2 remove-member --group [--account or --workspace]
 
 Given a Group and an Account or Workspace, remove the Group from the Account
@@ -4251,6 +4271,12 @@ or Workspace, if it exists.
 =head2 remove-member [ --username or --email ] --group
 
 Given a User and a Group, remove the User from the Group.
+
+=head2 remove-group-admin [--username or --email] --group
+
+Given a user and a group, this command remove admin privileges for
+the specified user in the given group, and makes them a normal
+group member.
 
 =head2 version
 
