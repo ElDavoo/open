@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 10;
+use Test::More tests => 12;
 use Test::Socialtext;
 use Socialtext::Account;
 use Socialtext::User;
@@ -18,12 +18,12 @@ $hub->current_user($user1);
 my $plugin = Socialtext::Pluggable::Plugin::Prefsetter->new;
 $plugin->hub($hub);
 
-# Get/Set
-{
+Getter_setter: {
     lives_ok {
         $plugin->set_user_prefs(
             number => 43,
             string => 'hi',
+            'ref' => ['ignored'],
         );
     } "set_user_prefs";
 
@@ -42,10 +42,14 @@ $plugin->hub($hub);
               { number => 44, string => 'hi', other => 'ho' },
               'get_user_prefs';
 
+    lives_ok {
+        $plugin->clear_user_prefs();
+    } "clear_user_prefs";
+
+    is_deeply $plugin->get_user_prefs, {}, 'get_user_prefs after clear';
 }
 
-# settings are user scoped
-{
+User_scoped: {
     lives_ok { $plugin->set_user_prefs(number => 38) }
              "set_user_prefs(number => SCALAR)";
     $hub->current_user($user2);
@@ -59,15 +63,14 @@ $plugin->hub($hub);
              "set_user_prefs(number => SCALAR)";
 }
 
-# No user
-{
+No_user: {
     $hub->current_user(undef);
 
     dies_ok { $plugin->get_user_prefs } "user is required"
 }
 
-# Plugin scope
-{
+Plugin_scoped: {
+    # depends on the setup in "User_scoped" above
     my $other_plugin = Socialtext::Pluggable::Plugin::Other->new;
     $other_plugin->hub($hub);
     $hub->current_user($user1);

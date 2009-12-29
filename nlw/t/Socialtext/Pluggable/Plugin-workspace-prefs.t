@@ -20,14 +20,14 @@ $workspace2->enable_plugin('other');
 my $plugin = Socialtext::Pluggable::Plugin::Prefsetter->new;
 $plugin->hub($hub);
 
-# Get/Set
-{
+Getter_setter: {
     $hub->current_workspace($workspace1);
 
     lives_ok {
         $plugin->set_workspace_prefs(
             number => 43,
             string => 'hi',
+            ignored => [qw(some ref value)],
         );
     } "set_workspace_prefs";
 
@@ -54,8 +54,7 @@ $plugin->hub($hub);
               'clear_workspace_prefs';
 }
 
-# settings are workspace scoped
-{
+Workspace_scoped: {
     $hub->current_workspace($workspace2);
     lives_ok { $plugin->set_workspace_prefs(number => 32) }
              "set_workspace_prefs(number => SCALAR)";
@@ -64,15 +63,13 @@ $plugin->hub($hub);
               "prefs are workspace scoped";
 }
 
-# No workspace
-{
+No_workspace: {
     $hub->current_workspace(undef);
 
     dies_ok { $plugin->get_workspace_prefs } "workspace is required"
 }
 
-# Plugin scope
-{
+Plugin_scope: {
     my $other_plugin = Socialtext::Pluggable::Plugin::Other->new;
     $other_plugin->hub($hub);
     $hub->current_workspace($workspace1);

@@ -26,6 +26,8 @@ $plugin->clear_plugin_prefs;
         $plugin->set_plugin_prefs(
             number => 43,
             string => 'hi',
+            array => ['some','crap'], # will be ignored
+            object => $user1, # ditto
         );
     } "set_plugin_prefs";
 
@@ -37,6 +39,7 @@ $plugin->clear_plugin_prefs;
         $plugin->set_plugin_prefs(
             number => 44,
             other => 'ho',
+            array => ['more','crap'],
         );
     } "set_plugin_prefs with a subset";
 

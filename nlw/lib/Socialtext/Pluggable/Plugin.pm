@@ -17,10 +17,10 @@ use URI::Escape qw(uri_escape);
 use Socialtext::Formatter::Parser;
 use Socialtext::Cache;
 use Socialtext::Authz::SimpleChecker;
-use Socialtext::Pluggable::Adapter;
 use Socialtext::String ();
 use Socialtext::SQL qw(:txn :exec);
 use Socialtext::Log qw/st_log/;
+use Socialtext::PrefsTable;
 my $prod_ver = Socialtext->product_version;
 
 # Class Methods
@@ -44,6 +44,7 @@ sub enables {} # Enable only dependencies
 sub reverse_dependencies {
     my $class = shift;
     my @rdeps;
+    require Socialtext::Pluggable::Adapter;
     for my $pclass (Socialtext::Pluggable::Adapter->plugins) {
         for my $dep ($pclass->dependencies) {
             push @rdeps, $pclass->name if $dep eq $class->name;
@@ -202,7 +203,7 @@ sub hooks {
 sub content_types {
     my $self = shift;
     my $class = ref($self) || $self;
-    return $content_types{$class}
+    return $content_types{$class};
 }
 
 # Object Methods
@@ -625,154 +626,85 @@ sub request {
 
 # Workspace Plugin Prefs
 
-sub set_workspace_prefs {
-    my ($self, %prefs) = @_;
-    my $user_set_id = $self->current_workspace->user_set_id;
-    my $plugin = $self->name;
-
-    return unless %prefs;
-
-    my $qs = join ', ', ('?') x keys %prefs;
-
-    sql_begin_work;
-
-    eval {
-        sql_execute(qq{
-            DELETE
-              FROM user_set_plugin_pref
-             WHERE user_set_id = ?
-               AND plugin = ?
-               AND key IN ($qs)
-       }, $user_set_id, $plugin, keys %prefs);
-
-        my @columns;
-        for my $key (keys %prefs) {
-            push @{$columns[0]}, $user_set_id;
-            push @{$columns[1]}, $plugin;
-            push @{$columns[2]}, $key;
-            push @{$columns[3]}, $prefs{$key};
+sub _workspace_plugin_pt {
+    my $self = shift;
+    return Socialtext::PrefsTable->new(
+        table    => 'user_set_plugin_pref',
+        identity => {
+            plugin      => $self->name,
+            user_set_id => $self->current_workspace->user_set_id,
         }
+    );
+}
 
-        sql_execute_array('
-            INSERT INTO user_set_plugin_pref (
-                user_set_id, plugin, key, value
-            ) VALUES (?, ?, ?, ?)
-        ', {}, @columns);
-    };
-    if (my $error = $@) {
-        sql_rollback;
-        die $error;
-    }
-    sql_commit;
-
+sub set_workspace_prefs {
+    my $self = shift;
+    return unless @_;
+    $self->_workspace_plugin_pt->set(@_);
     my $username  = $self->hub->current_user->username;
     my $wksp_name = $self->hub->current_workspace->name;
-    st_log()->info("$username changed $plugin preferences for $wksp_name");
+    st_log()->info("$username changed ".$self->name." preferences for $wksp_name");
 }
 
 sub get_workspace_prefs {
     my $self = shift;
-    my $user_set_id = $self->current_workspace->user_set_id;
-    my $sth = sql_execute('
-        SELECT key, value
-          FROM user_set_plugin_pref
-         WHERE user_set_id = ?
-           AND plugin = ?
-    ', $user_set_id, $self->name);
-    my %res;
-    while (my $row = $sth->fetchrow_hashref) {
-        $res{$row->{key}} = $row->{value};
-    }
-    return \%res;
+    return $self->_workspace_plugin_pt->get();
 }
 
 sub clear_workspace_prefs {
     my $self = shift;
-    my $user_set_id = $self->current_workspace->user_set_id;
-    my $plugin = $self->name;
-
-    sql_execute('
-        DELETE FROM user_set_plugin_pref
-         WHERE user_set_id = ?
-           AND plugin = ?
-    ', $user_set_id, $plugin);
+    $self->_workspace_plugin_pt->clear();
 
     my $username  = $self->hub->current_user->username;
     my $wksp_name = $self->hub->current_workspace->name;
-    st_log()->info("$username cleared $plugin preferences for $wksp_name");
+    st_log()->info("$username cleared ".$self->name." preferences for $wksp_name");
 }
 
 # User Plugin Prefs
 
-sub set_user_prefs {
-    my ($self, %prefs) = @_;
+sub _user_plugin_pt {
+    my $self = shift;
     my $user_id = $self->hub->current_user->user_id || die "No user";
-    my $plugin = $self->name;
-
-    my $qs = join ', ', ('?') x keys %prefs;
-
-    sql_begin_work;
-
-    eval {
-        sql_execute("
-            DELETE
-              FROM user_plugin_pref
-             WHERE user_id = ?
-               AND plugin = ?
-               AND key IN ($qs)
-        ", $user_id, $plugin, keys %prefs);
-
-        my @columns;
-        for my $key (keys %prefs) {
-            next unless defined $prefs{$key};
-            push @{$columns[0]}, $user_id;
-            push @{$columns[1]}, $plugin;
-            push @{$columns[2]}, $key;
-            push @{$columns[3]}, $prefs{$key};
+    return Socialtext::PrefsTable->new(
+        table    => 'user_plugin_pref',
+        identity => {
+            plugin  => $self->name,
+            user_id => $user_id,
         }
+    );
+}
 
-        sql_execute_array('
-            INSERT INTO user_plugin_pref (
-                user_id, plugin, key, value
-            ) VALUES (?, ?, ?, ?)
-        ', {}, @columns);
-    };
-    if (my $error = $@) {
-        sql_rollback;
-        die $error;
-    }
-    sql_commit;
+sub set_user_prefs {
+    my $self = shift;
+    return unless @_;
+    $self->_user_plugin_pt->set(@_);
 
     my $username  = $self->hub->current_user->username;
-    st_log()->info("$username changed their $plugin user plugin preferences");
+    st_log()->info(
+        "$username changed their ".$self->name." user plugin preferences");
 }
 
 sub get_user_prefs {
     my $self = shift;
-    my $user_id = $self->hub->current_user->user_id || die "No user";
-    my $sth = sql_execute('
-        SELECT key, value
-          FROM user_plugin_pref
-         WHERE user_id = ?
-           AND plugin = ?
-    ', $user_id, $self->name);
-    my %res;
-    while (my $row = $sth->fetchrow_hashref) {
-        $res{$row->{key}} = $row->{value};
-    }
-    return \%res;
+    $self->_user_plugin_pt->get(@_);
+}
+
+sub clear_user_prefs {
+    my $self = shift;
+    $self->_user_plugin_pt->clear();
+
+    my $username  = $self->hub->current_user->username;
+    st_log()->info(
+        "cleared ".$self->name." plugin preferences for user $username");
 }
 
 sub export_user_prefs {
-    my $self = shift;
-    my $hash = shift;
-
+    my ($self,$hash) = @_;
     $hash->{$self->name} = $self->get_user_prefs();
 }
 
 sub import_user_prefs {
-    my $self = shift;
-    my $hash = shift;
+    my ($self,$hash) = @_;
 
     if (my $prefs = $hash->{$self->name}) {
         if (ref($prefs) eq 'HASH' and keys %$prefs) {
@@ -783,67 +715,33 @@ sub import_user_prefs {
 
 # Plugin Prefs
 
-sub set_plugin_prefs {
-    my ($class, %prefs) = @_;
-    my $plugin = $class->name;
-
-    my $qs = join ', ', ('?') x keys %prefs;
-    sql_begin_work;
-    eval {
-        sql_execute("
-            DELETE
-              FROM plugin_pref
-             WHERE plugin = ?
-               AND key IN ($qs)
-        ", $plugin, keys %prefs);
-
-        my @columns;
-        for my $key (keys %prefs) {
-            next unless defined $prefs{$key};
-            push @{$columns[0]}, $plugin;
-            push @{$columns[1]}, $key;
-            push @{$columns[2]}, $prefs{$key};
+sub _plugin_pt {
+    my $class = shift;
+    return Socialtext::PrefsTable->new(
+        table    => 'plugin_pref',
+        identity => {
+            plugin  => $class->name,
         }
+    );
+}
 
-        sql_execute_array('
-            INSERT INTO plugin_pref (
-                plugin, key, value
-            ) VALUES (?, ?, ?)
-        ', {}, @columns);
-    };
-    if (my $error = $@) {
-        sql_rollback;
-        die $error;
-    }
-    sql_commit;
-
-    st_log()->info("Preferences for $plugin have been changed.");
+sub set_plugin_prefs {
+    my $class = shift;
+    return unless @_;
+    $class->_plugin_pt->set(@_);
+    st_log()->info("Preferences for ".$class->name." have been changed.");
 }
 
 sub get_plugin_prefs {
     my $class = shift;
-    my $sth = sql_execute('
-        SELECT key, value
-          FROM plugin_pref
-         WHERE plugin = ?
-    ', $class->name);
-    my %res;
-    while (my $row = $sth->fetchrow_hashref) {
-        $res{$row->{key}} = $row->{value};
-    }
-    return \%res;
+    return $class->_plugin_pt->get();
 }
 
 sub clear_plugin_prefs {
     my $class = shift;
-    my $plugin = $class->name;
+    return $class->_plugin_pt->clear();
 
-    sql_execute('
-        DELETE FROM plugin_pref
-         WHERE plugin = ?
-    ', $plugin);
-
-    st_log()->info("Preferences for $plugin have been cleared.");
+    st_log()->info("Preferences for ".$class->name." have been cleared.");
 }
 
 
