@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 15;
+use Test::Socialtext tests => 24;
 use Test::Output qw(combined_from);
 use Socialtext::CLI;
 use t::Socialtext::CLITestUtils;
@@ -155,5 +155,80 @@ invalid_remove_member_from_group: {
     } );
     like $output, qr/No group with ID \d+/,
          'Got no group error message';
+}
+
+###############################################################################
+# user one has no role in the group, user two is already a member. Make sure
+# that we can make them each an admin.
+add_admin_to_group: {
+    my $group    = create_test_group();
+    my $user_one = create_test_user();
+    my $user_two = create_test_user();
+    my $admin    = Socialtext::Role->Admin();
+    my $member   = Socialtext::Role->Member();
+    my $role;
+
+    ok !$group->has_user($user_one), 'user_one is not in group';
+
+    $group->assign_role_to_user(user => $user_two, role => $member);
+    $role = $group->role_for_user($user_two);
+    ok $role && $role->role_id == $member->role_id,
+        'user_two is in group as member';
+
+    for my $user ($user_one, $user_two) {
+        my $output = combined_from( sub {
+            eval {
+                Socialtext::CLI->new(
+                    argv => [
+                        '--group' => $group->group_id,
+                        '--email' => $user->username,
+                    ],
+                )->add_group_admin();
+            };
+        } );
+
+        # Correct CLI output
+        like $output, qr/.+ is now a admin of the .+ Group/,
+             'got correct message';
+
+        # User is an admin
+        $role = $group->role_for_user($user);
+        ok $role && $role->role_id == $admin->role_id,
+            $user->username . ' is a group admin';
+    }
+}
+
+################################################################################
+remove_admin_from_group: {
+    my $group  = create_test_group();
+    my $user   = create_test_user();
+    my $admin  = Socialtext::Role->Admin();
+    my $member = Socialtext::Role->Member();
+    my $role;
+
+    $group->assign_role_to_user(user => $user, role => $admin);
+    $role = $group->role_for_user($user);
+    ok $role && $role->role_id == $admin->role_id,
+        'user is an admin in group';
+
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group' => $group->group_id,
+                    '--email' => $user->username,
+                ],
+            )->remove_group_admin();
+        };
+    } );
+
+    # Correct CLI output
+    like $output, qr/.+ is now a member of .+/,
+         'got correct message';
+
+    # User is a member
+    $role = $group->role_for_user($user);
+    ok $role && $role->role_id == $member->role_id,
+        $user->username . ' is still a member';
 }
 exit;

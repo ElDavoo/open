@@ -1168,15 +1168,19 @@ sub _remove_user_from_group {
             user => $user,
             role => Socialtext::Role->Member(),
         );
+        $self->_success(
+            loc("[_1] is now a member of [_2]",
+                $user->username, $group->driver_group_name)
+        );
     }
     else {
         $group->remove_user( user => $user );
+        $self->_success(
+            loc("[_1] is no longer a member of [_2]",
+                $user->username, $group->driver_group_name)
+        );
     }
 
-    $self->_success(
-        loc("[_1] is no longer a member of [_2]",
-            $user->username, $group->driver_group_name)
-    );
 }
 
 sub _remove_group_from_account {
