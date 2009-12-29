@@ -1721,6 +1721,7 @@ sub st_setup_a_group {
          #$self->handle_command('st-admin','create_group --name %%group_name%% --account %%group_acct%%', 'has been created');
          $self->handle_command('create_group','%%group_name%%','%%group_acct%%');
          $self->handle_command('st-admin','create_user --e %%group_user%% --p %%password%% --a %%group_acct%%','was created');
+         $self->handle_command('st-admin', 'add-member --e %%group_user%% --g %%group_id%%','is now a member of');
      } 
     else {
          $self->handle_command('st-admin', 'create_user --e %%group_user%% --p %%password%%', 'was created');

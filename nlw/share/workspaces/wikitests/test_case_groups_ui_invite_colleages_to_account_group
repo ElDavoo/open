@@ -3,7 +3,10 @@
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group Setup |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
 | st-logoutin | %%group_user%% | %%password%% |  |
-| open_ok | /?group/%%group_id%% |  |  |
+| open_ok | /st/group/%%group_id%% |  |  |
+| wait_for_element_visible_ok | link=Invite! | 30000 |  |
+| click_and_wait | link=Invite! | 30000 |  |
+| pause | 60000 |  |  |
 
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group Teardown |
 | delete-group | %%group_id%% |
