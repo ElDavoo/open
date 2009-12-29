@@ -1592,6 +1592,48 @@ sub primary_account {
     return $new_account;
 }
 
+sub accounts_and_groups {
+    my ($self,%p) = @_;
+    $p{plugin} ||= 'people';
+    my $t = time_scope('ang_user');
+
+    my $group_count = 0;
+    my %acct_group_set;
+
+    my @accounts = sort { lc($a->name) cmp lc($b->name)} 
+        @{$self->accounts(plugin => $p{plugin})};
+    for my $acct (@accounts) {
+        # List groups this user is in that are directly-connected to the
+        # account.
+        # Assume that by membership in the account, the group has access to
+        # that plugin too.
+        my $sth = sql_execute(q{
+            SELECT group_id, LOWER(driver_group_name) AS gn
+             FROM (
+                   SELECT DISTINCT u2g.into_set_id AS user_set_id
+                   FROM user_set_path u2g, user_set_include g2a
+                   -- "user is in a group..."
+                   WHERE u2g.from_set_id = ? -- user
+                     AND u2g.into_set_id }.PG_GROUP_FILTER.q{
+                   -- ".. and that group is directly in this account"
+                     AND g2a.from_set_id = u2g.into_set_id
+                     AND g2a.into_set_id = ?
+              ) gi
+              JOIN groups g USING (user_set_id)
+             ORDER BY gn ASC
+        }, $self->user_set_id, $acct->user_set_id);
+
+        my @groups;
+        for my $row (@{ $sth->fetchall_arrayref() || [] }) {
+            $group_count++;
+            push @groups, Socialtext::Group->GetGroup(group_id => $row->[0]);
+        }
+        $acct_group_set{$acct->account_id} = \@groups;
+    }
+
+    return (\@accounts,\%acct_group_set,$group_count);
+}
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 no Moose;
 1;
@@ -2142,6 +2184,13 @@ user is assigned to.
 
 Passing in a new account will change this user's primary account.  The user
 will retain whatever Role they had in the old account.
+
+=head2 $user->accounts_and_groups([plugin => 'someplugin'])
+
+Returns three items: the list of accounts this user can see under the
+specified plugin, a hash of lists of groups under each of those accounts that
+the user is connected to, and finally a count of account-group combinations in
+the result.  C<plugin> defaults to 'people'.
 
 =head1 AUTHOR
 
