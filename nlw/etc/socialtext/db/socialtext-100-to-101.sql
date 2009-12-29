@@ -37,6 +37,13 @@ ALTER TABLE container
 CREATE UNIQUE INDEX container__type_name_set
     ON container(container_type, name, user_set_id);
 
+UPDATE gadget
+   SET plugin = 'widgets'
+ WHERE plugin IS NULL;
+
+ALTER TABLE gadget
+ALTER COLUMN plugin SET DEFAULT 'widgets';
+
 -- Done
 
 UPDATE "System"
