@@ -1718,6 +1718,8 @@ sub st_setup_a_group {
      if (defined($create_and_add_account) && ($create_and_add_account) ) {
          $self->handle_command('set','group_acct','group-acct-%%start_time%%');
          $self->handle_command('st-admin','create_account --name %%group_acct%%',' was created');
+         $self->handle_command('st-admin','enable-plugin --account %%group_acct%% --plugin people');
+         $self->handle_command('st-admin','enable-plugin --account %%group_acct%% --plugin groups');
          #$self->handle_command('st-admin','create_group --name %%group_name%% --account %%group_acct%%', 'has been created');
          $self->handle_command('create_group','%%group_name%%','%%group_acct%%');
          $self->handle_command('st-admin','create_user --e %%group_user%% --p %%password%% --a %%group_acct%%','was created');
