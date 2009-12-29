@@ -97,3 +97,21 @@ sub _log_gadget_metadata {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Handler::Gadget - role for all gadgets
+
+=head1 SYNOPSIS
+
+  package Socialtext::Handler::Gadget::Dashboard;
+  extends 'Socialtext::Handler::Container::Dashboard';
+  with 'Socialtext::Handler::Gadget';
+
+=head1 DESCRIPTION
+
+Handles the normal handler stuff for container gadgets.
+
+=cut
