@@ -904,12 +904,19 @@ sub _type_of_entity_collection_operation {
     );
 }
 
+sub add_group_admin {
+    my $self  = shift;
+    my $admin = Socialtext::Role->Admin();
+
+    $self->_add_user_to_group_as($admin);
+}
+
 sub _add_user_to_group_as {
     my $self         = shift;
     my $new_role     = shift;
     my $user         = $self->_require_user();
     my $group        = $self->_require_group();
-    my $current_role = $group->role_for_user($user);
+    my $current_role = $group->role_for_user($user, {direct => 1});
 
     $self->_error(
         loc("Remotely sourced Groups cannot be updated via Socialtext.")
@@ -1133,8 +1140,15 @@ sub _remove_user_from_thing {
     );
 }
 
+sub remove_group_admin {
+    my $self = shift;
+    return $self->_remove_user_from_group(downgrade => 1);
+}
+
 sub _remove_user_from_group {
     my $self  = shift;
+    my %p = (downgrade => 0, @_);
+
     my $user  = $self->_require_user();
     my $group = $self->_require_group();
 
@@ -1142,12 +1156,23 @@ sub _remove_user_from_group {
         loc("Remotely sourced Groups cannot be updated via Socialtext.")
     ) unless $group->can_update_store;
 
+    my $role = $group->role_for_user( $user, {direct => 1});
+
     $self->_error(
         loc("[_1] is not a member of [_2]",
             $user->username, $group->driver_group_name)
-    ) unless $group->has_user( $user );
+    ) unless $role;
 
-    $group->remove_user( user => $user );
+    if ($role->name eq 'admin' && $p{downgrade}) {
+        $group->assign_role_to_user(
+            user => $user,
+            role => Socialtext::Role->Member(),
+        );
+    }
+    else {
+        $group->remove_user( user => $user );
+    }
+
     $self->_success(
         loc("[_1] is no longer a member of [_2]",
             $user->username, $group->driver_group_name)
