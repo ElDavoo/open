@@ -922,7 +922,7 @@ sub _add_user_to_group_as {
         ) if $current_role->name eq $new_role->name;
     }
 
-    $group->add_user( user => $user, role => $new_role );
+    $group->assign_role_to_user( user => $user, role => $new_role );
     $self->_success(
         loc("[_1] is now a [_2] of the [_3] Group",
             $user->username, $new_role->name, $group->display_name)
