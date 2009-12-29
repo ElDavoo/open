@@ -1,5 +1,11 @@
 [% USE decorate %]
-[%- DEFAULT
+[%-
+# Allow grep/ack to find this file:
+#
+# st-search-form st-search-term st-search-action st-search-this-ws
+# st-search-all-ws st-search-submit
+#
+DEFAULT
     sid = 'search'
 -%]
 <form id="st-[%sid%]-form" action="[% IF current_workspace; "/$current_workspace.name"; ELSE; "/"; END %]" method="get" name="SearchForm">
