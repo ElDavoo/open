@@ -1,5 +1,7 @@
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group Setup |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
 | st-logoutin | %%group_user%% | %%password%% |  |
@@ -21,17 +23,21 @@
 | st-admin | add-group-admin --e %%group_user%% --g %%group_id%% | is now a admin of the |
 | open_ok | /?action=invite |  |
 | text_like | //body | ... %%group_name%% |
-| pause | 60000 |  |
-| select_ok | object_id | account_id=%%group_acct%% |
-| select_ok | object_id | group_id=%%group_id%% |
+| select_ok | object_id | ... %%group_name%% (1 user) |
 | wait_for_element_present_ok | users_new_ids | 30000 |
 | type_ok | users_new_ids | %%to_ws_user%% |
 | click_ok | link=Invite |  |
 | wait_for_element_visible_ok | Link=Invite more people | 30000 |
-| text_like | qr/The following 1 user was successfully invited into this Group:\s+%%eto_ws_user%%/ |  |
+| text_like | qr/The following 1 user was successfully invited into this Group:\s+%%eto_ws_user%%/i |  |
 
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group CHECK Activity for group, SEE NEW MEMBER (TODO) |
 | open_ok | /st/group/%%group_id%% |  |  |
+| st-name-widget | 3 | activity_widget |
+| st-widget-title-like | activity_widget | Activity |
+| st-select-widget-frame | activity_widget |  |
+| wait_for_text_present_ok | View RSS feed for %%group_name%% | 30000 |
+| text_like | //body | added %%to_ws%% to the group %%group_name%% |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group Pause 30 seconds for invitation email delivery |  |
 | pause | 30000 |
@@ -44,7 +50,7 @@
 
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group REMOVE admin, do no see "... group_name" |  |  |
 | open_ok | /st/group/%%group_id%% |  |  |
-| st-admin | remove-group-admin --e %%group_user%% --g %%group_id |  |  |
+| st-admin | remove-group-admin --e %%group_user%% --g %%group_id%% |  |  |
 | wait_for_element_visible_ok | link=Invite! | 30000 |  |
 | click_and_wait | link=Invite! | 30000 |  |
 | text_like | //body | Invite people to your group |  |
