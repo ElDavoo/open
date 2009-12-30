@@ -71,6 +71,7 @@ sub Types { [ @TYPES ] }
 Readonly my $EXPORT_VERSION => 1;
 
 Readonly my @RequiredAccounts => qw( Unknown Socialtext Deleted );
+sub RequiredAccounts { @RequiredAccounts }
 sub EnsureRequiredDataIsPresent {
     my $class = shift;
 
