@@ -22,7 +22,7 @@ $.extend(Socialtext.Group.prototype, {
         return '/data/groups/' + this.group_id + rest;
     },
 
-    create: function(callback) {
+    request: function(type, url, callback) {
         var self = this;
         if (!this.name && !this.ldap_dn) {
             throw new Error(loc("LDAP DN or group name required"));
@@ -36,8 +36,8 @@ $.extend(Socialtext.Group.prototype, {
         if (this.photo_id) data.photo_id = this.photo_id;
 
         $.ajax({
-            url: '/data/groups',
-            type: 'post',
+            url: url,
+            type: type,
             dataType: 'json',
             contentType: 'application/json',
             data: $.toJSON(data),
@@ -47,6 +47,19 @@ $.extend(Socialtext.Group.prototype, {
             },
             error: this.errorCallback(callback)
         });
+    },
+
+    create: function(callback) {
+        this.request('POST', '/data/groups', callback);
+    },
+
+    save: function(callback) {
+        if (this.group_id) {
+            this.request('PUT', this.url(), callback);
+        }
+        else {
+            this.create(callback);
+        }
     },
 
     addUsers: function(userList, callback) {

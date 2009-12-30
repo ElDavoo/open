@@ -9,8 +9,12 @@ FILES=\
 	user.js \
 	workspace.js \
 
+all: $(OUTPUT)
+
+clean:
+	rm -f $(OUTPUT)
+
 $(OUTPUT): $(FILES) Makefile
-	rm -f $@;
 	for js in $(FILES); do \
 	    (echo "// BEGIN $$js"; cat $$js | perl -pe 's/\r//g') >> $@; \
 	done
