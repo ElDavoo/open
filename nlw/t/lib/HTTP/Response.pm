@@ -31,6 +31,13 @@ sub content {
     return $self->{_content} || $self->{_msg};
 }
 
+sub decoded_content { shift->content }
+
+sub code {
+    my $self = shift;
+    return $self->{_rc};
+}
+
 {
     no warnings 'redefine';
     sub is_success ($) {
