@@ -1750,7 +1750,7 @@ sub st_setup_a_group {
 
 sub body_like {
     my ($self, $expected) = @_;
-    my $body = $self->{http}->response->content;
+    my $body = $self->{http}->_decoded_content;
 
     my $re_expected = $self->quote_as_regex($expected);
 
@@ -1766,7 +1766,7 @@ sub body_like {
 
 sub body_unlike {
     my ($self, $expected) = @_;
-    my $body = $self->{http}->response->content;
+    my $body = $self->{http}->_decoded_content;
 
     my $re_expected = $self->quote_as_regex($expected);
 
