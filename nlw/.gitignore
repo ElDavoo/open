@@ -407,3 +407,5 @@ t/wikitests/signals/container-permissions.wiki
 t/Socialtext/Gadgets/Container-reinstall.t
 t/lib/Socialtext/Gadgets/Util.pm
 t/share/plugin/fakeplugin
+lib/Socialtext/Gadgets/Container/EditGroup.pm
+lib/Socialtext/Handler/Container/EditGroup.pm
