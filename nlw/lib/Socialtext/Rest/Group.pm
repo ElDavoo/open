@@ -67,14 +67,20 @@ sub PUT_json {
         description => $data->{description} || "",
     });
 
-    if (my $photo_id = $data->{photo_id}) {
-        eval {
-            my $blob = scalar Socialtext::File::get_contents_binary(
-                "$Socialtext::Rest::Uploads::UPLOAD_DIR/$photo_id"
-            );
-            $group->photo->set(\$blob);
-        };
-        warn "Error setting profile photo: $@" if $@;
+    my $photo_id = $data->{photo_id};
+    if (defined $photo_id) {
+        if ($photo_id) {
+            eval {
+                my $blob = scalar Socialtext::File::get_contents_binary(
+                    "$Socialtext::Rest::Uploads::UPLOAD_DIR/$photo_id"
+                );
+                $group->photo->set(\$blob);
+            };
+            warn "Error setting profile photo: $@" if $@;
+        }
+        else {
+            $group->photo->purge;
+        }
     }
 
     return undef;
