@@ -70,7 +70,7 @@
 | text_like | //body | %%group_acct%% (5 People) |
 | text_like | //body | %%other_acct%% (3 People) |
 
-| select_and_wait | //select[@class='account-select'] | &nbsp;...&nbsp;%%group_name%% (4 People) |
+| select_and_wait | //select[@class='account-select'] | index=3 |
 | text_like | contentContainer | qr/Showing 1 - 4 of 4 total/ism |
 | text_like | contentContainer | qr/%%member1_short%%%/ism |
 | text_like | contentContainer | qr/%%member2_short%%/ism |
