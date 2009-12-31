@@ -489,32 +489,10 @@ sub _update {
         $old_account->user_set->remove_object_role($self);
         $new_account->user_set->add_object_role($self => 'member');
 
-        warn "this shouldn't be passing 'affiliate' as the role; the real effective role should be used";
         my $users = $self->users;
         while ( my $user = $users->next ) {
-            $adapter->hook(
-                'nlw.remove_user_account_role',
-                $old_account, $user, Socialtext::Role->Affiliate(),
-            );
-            $adapter->hook(
-                'nlw.add_user_account_role',
-                $self->account, $user, Socialtext::Role->Affiliate(),
-            );
-
             require Socialtext::JobCreator;
             Socialtext::JobCreator->index_person($user);
-        }
-
-        my $groups = $self->groups;
-        while (my $group = $groups->next) {
-            $adapter->hook(
-                'nlw.remove_group_account_role',
-                $old_account, $group, Socialtext::Role->Affiliate(),
-            );
-            $adapter->hook(
-                'nlw.add_group_account_role',
-                $self->account, $group, Socialtext::Role->Affiliate(),
-            );
         }
     }
 

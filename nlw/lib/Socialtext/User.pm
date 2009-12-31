@@ -1557,8 +1557,6 @@ sub primary_account {
             || Socialtext::Account->Unknown;
     }
 
-    require Socialtext::Account;
-
     my $new_account = shift;
     $new_account = Socialtext::Account->new(account_id => $new_account)
         unless ref($new_account);
@@ -1584,10 +1582,6 @@ sub primary_account {
         require Socialtext::JobCreator;
         Socialtext::JobCreator->index_person( $self );
     }
-
-    my $adapter = Socialtext::Pluggable::Adapter->new;
-    $adapter->make_hub(Socialtext::User->SystemUser(), undef);
-    $adapter->hook('nlw.add_user_account_role', $new_account, $self);
 
     return $new_account;
 }
