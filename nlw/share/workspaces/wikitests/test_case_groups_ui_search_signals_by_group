@@ -1,9 +1,38 @@
 | *Comment* | Test Case: Groups UI Search Signals by Group |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Groups UI Search Signals by Group Setup |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
-| st-logoutin | %%group_user%% | %%password%% |  |
-| open_ok | /?group/%%group_id%% |  |  |
+| enable-acct-plugin | signals | %%group_acct |  |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group. Create Group Mbr and Non-Group Mbr |  |  |
+| set | grp_mbr_short | gui_search_mbr_%%start_time%% |
+| set | non_grp_mbr_short | gui_search_non_%%start_time%% |
+| set | grp_mbr | %%grp_mbr_short%%@matt.socialtext.net |
+| set | non_grp_mbr | %%non_mbr_short%%@matt.socialtext.net |
+| st-admin | create-user --e %%grp_mbr%% --p %%password%% --account %%group_acct%% | created |
+| st-admin | create-user --e %%grp_mbr%% --p %%password%% --account %%group_acct%% | created |
+| st-admin | add-member --group %%group_id%% --email %%grp_mbr%% | is now a member of the %%group_name%% Group |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group. Send 2 signals %%grp_mbr%% |  |
+| http-user-pass | %%grp_mbr%% | %%password%% |
+| post-signal | SearchForThis %%start_time%% 01 |  |
+| pause | 3000 |  |
+| post-signal | SearchForThis %%start_time%% 12 |  |
+| *Comment* | Test Case: Signals Search. Pause 20 sec for Signals indexer |  |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group. Send 2 signals %%non_grp_mbr%% |  |
+| http-user-pass | %%non_grp_mbr%% | %%password%% |
+| post-signal | SearchForThis %%start_time%% 20 |  |
+| pause | 3000 |  |
+| post-signal | SearchForThis %%start_time%% 25 |  |
+| *Comment* | Test Case: Signals Search. Pause 20 sec for Signals indexer |  |
+| pause | 20000 | wait for Signals Indexer to run |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group. Search within group ... and not. |  |
+| st-logoutin | %%group_user%% | %%password%% |
+| open_ok | /?signals |
 
 | *Comment* | Test Case: Groups UI Search Signals by Group Teardown |
 | delete-group | %%group_id%% |

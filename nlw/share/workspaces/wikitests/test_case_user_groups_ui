@@ -1,12 +1,12 @@
 Done:
 
 * [Test Case: Groups in Global Nav]
-* [Test Case: Groups UI Signal from group home]
+* [Test Case: Groups UI Invite Colleages to account-group]
 * [Test Case: Groups UI Filter Search Results by Group]
 
 ToDo:
 
 * [Test Case: Groups UI Send Signal to Group]
+* [Test Case: Groups UI Signal from group home]
 * [Test Case: Groups UI Edit an Existing Group]
-* [Test Case: Groups UI Invite Colleages to account-group]
 * [Test Case: Groups UI Search Signals by Group]
