@@ -285,18 +285,21 @@ sub decorate_event_set {
     return $result;
 }
 
-my $SIGNAL_VIS_SQL = <<'EOSQL';
+sub signal_vis_sql {
+    my $self = shift;
+    my $evtable = shift|| 'evt';
+    return qq{ 
     AND user_set_id IN (
         SELECT user_set_id
         FROM signal_user_set sua
-        WHERE sua.signal_id = evt.signal_id
+        WHERE sua.signal_id = $evtable.signal_id
     )
     AND (
-        evt.person_id IS NULL
-        OR evt.person_id = ?
-        OR evt.actor_id = ?
-    )
-EOSQL
+        $evtable.person_id IS NULL
+        OR $evtable.person_id = ?
+        OR $evtable.actor_id = ?
+    )};
+};
 
 sub visible_exists {
     my $self = shift;
@@ -304,6 +307,7 @@ sub visible_exists {
     my $event_field = shift;
     my $opts = shift;
     my $bind_ref = shift;
+    my $evt_table = shift || 'evt';
 
     my $sql = qq{
        EXISTS (
@@ -327,7 +331,7 @@ sub visible_exists {
     }
 
     if ($plugin eq 'signals') {
-        $sql .= $SIGNAL_VIS_SQL;
+        $sql .= $self->signal_vis_sql($evt_table); 
         push @$bind_ref, ($self->viewer->user_id) x 2;
     }
 
@@ -855,6 +859,12 @@ sub get_events_group_activities {
 
     Socialtext::Timer->Continue('get_gactivity');
 
+    my @binds = ();
+    my $groupvissql = $self->visible_exists('signals','e.actor_id', 
+        {
+            group_id => $group_id
+        }, 
+        \@binds, 'e');
     $self->add_condition(q{
         ( event_class = 'group' AND group_id = ? )
         OR (
@@ -875,7 +885,10 @@ sub get_events_group_activities {
                  LIMIT 1
             )
         )
-    }, $group_id, $group_set_id, $group_set_id);
+       OR (
+        }.$groupvissql.q{
+        )
+    }, $group_id, $group_set_id, $group_set_id, @binds);
 
     $self->_skip_standard_opts(1);
     my $evs = $self->_get_events(@_);

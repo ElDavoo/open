@@ -78,6 +78,18 @@
 | code-is | 200        |            |
 | body-like | User (less than a minute ago) removed %%g1%% from the workspace %%workspace%% |
 
+
+* signal sent to group
+| http-user-pass    | %%joey%%                                                     | password                                         |
+| add-user-to-group | %%joey%%                                                     | %%g1_id%%                                        |
+| post-json         | /data/signals                                                | {"signal":"hi there", "group_ids":["%%g1_id%%"]} |
+| code-is           | 201                                                          |                                                  |
+| GET_json          | %%g1_uri%%                                                   |                                                  |
+| code-is           | 200                                                          |                                                  |
+| json-parse        |                                                              |                                                  |
+| json-array-size   | 6                                                            |                                                  |
+| json-like         | [{"context":{"body":"hi there", "group_ids":["%%g1_id%%"]}}] |                                                  |
+
 Later on ...
 * group details changed
 * adding group to an account
