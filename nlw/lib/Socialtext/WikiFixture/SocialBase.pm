@@ -60,7 +60,7 @@ sub _munge_command_and_opts {
     $command =~ s/-/_/g;
     $command =~ s/^\*(.+)\*$/$1/;
 
-    if ($command ne 'body_like' and $command =~ m/_like$/) {
+    if ($command !~ /^body_(?:un)?like$/ and $command =~ /_(?:un)?like$/) {
         $opts[1] = $self->quote_as_regex($opts[1]);
     }
 
@@ -1386,6 +1386,7 @@ sub _compare_json {
         die "No match for candidate ".encode_json($candidate) . " with json ".encode_json($json) unless $match;
     }
 }
+
 =head2 json-array-size
 
 Confirm that the resulting body is a JSON array of length X.
@@ -2089,6 +2090,87 @@ sub set_substr {
 
     $self->{$dest_var} = substr($src_data, 0, $characters);
     diag "Set $dest_var to '$self->{$dest_var}'";
+}
+
+sub _select_json_path {
+    my ($self,$path,$o) = @_;
+
+    return $o if $path eq '';
+
+    my ($subpath,$subobj);
+    my ($key,$idx);
+    # .foo
+    # ['foo']
+    if ($path =~ /^\.([a-zA-Z][a-zA-Z0-9_]+)(.*?)$/ or
+        $path =~ /^\['(.+?)'\](.*?)$/) 
+    {
+        ($key,$subpath) = ($1,$2);
+        die "missing: expected hash\n" unless ('HASH' eq ref($o));
+        die "missing: no such key $key\n" unless (exists $o->{$key});
+        $subobj = $o->{$key};
+    }
+    # [10]
+    elsif ($path =~ /^\[(\d+)\](.*?)$/) {
+        ($idx,$subpath) = ($1,$2);
+        die "missing: expected array\n" unless ('ARRAY' eq ref($o));
+        die "missing: array out of bounds\n" if ($idx > $#$o);
+        $subobj = $o->[$idx];
+    }
+    else {
+        die "can't parse simple path expression: >>>$path<<<\n";
+    }
+
+    return $self->_select_json_path($subpath, $subobj);
+}
+
+sub _json_path_test {
+    my ($self, $test, $path, $expected) = @_;
+
+    my $comment = $self->{http}->{name}." json_path_$test path=$path";
+
+    $path =~ s/^\$//; # remove leading $
+
+    unless ($self->{json}) {
+        fail $self->{http}->name." did you forget to json-parse?";
+        return;
+    }
+
+    my $sel = eval { $self->_select_json_path($path, $self->{json}) };
+    if (my $e = $@) {
+        if ($test eq 'missing') {
+            return like $e, qr/^missing/, $comment;
+        }
+        fail $comment;
+        diag $e;
+        return;
+    }
+
+    if ($test eq 'is') {
+        return is $sel, $expected, $comment;
+    }
+    elsif ($test eq 'isnt') {
+        return isnt $sel, $expected, $comment;
+    }
+    elsif ($test eq 'like') {
+        return like $sel, $expected, $comment;
+    }
+    elsif ($test eq 'unlike') {
+        return unlike $sel, $expected, $comment;
+    }
+    elsif ($test eq 'exists') {
+        pass $comment;
+        return 1;
+    }
+}
+
+{
+    no strict 'refs';
+    for my $test (qw(is isnt like unlike exists missing)) {
+        *{"json_path_$test"} = sub {
+            my $self = shift;
+            $self->_json_path_test($test,@_);
+        };
+    }
 }
 
 1;
