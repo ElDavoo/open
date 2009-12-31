@@ -54,6 +54,8 @@ sub user_has_permission_for_workspace {
             @_
         );
 
+        return 1 if $p{user}->is_business_admin;
+
         my $role = $p{group}->role_for_user($p{user});
         my $role_name = $role ? $role->name : 'guest';
 
