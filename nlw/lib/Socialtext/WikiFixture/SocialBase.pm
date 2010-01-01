@@ -1342,11 +1342,13 @@ sub json_like {
 
     my $result=0;
     $result = eval {$self->_compare_json($parsed_candidate, $json)};
-    if (!$@ && $result) {
-        ok !$@ && $result,
-        $self->{http}->name . " compared content and candidate";
-    } else {
-        fail "$candidate\n and\n ".encode_json($json)."\n" . ($@ ? "\$\@=$@" : "");
+    my $e = $@;
+    ok !$e && $result,
+    $self->{http}->name . " compared content and candidate";
+    unless (!$e && $result) {
+        diag "Failure:   $e";
+        diag "Candidate: $candidate\n";
+        diag "Got:       ".encode_json($json)."\n";
     }
 }
 
@@ -1358,32 +1360,31 @@ sub _compare_json {
 
     die "Candidate is undefined" unless defined $candidate;
     die "JSON is undefined" unless defined $json;
-    die encode_json($json) . " is not a VAL/SCALAR/HASH/ARRAY" unless ref($json) =~ /^|SCALAR|HASH|ARRAY$/;
     if (ref($json) eq 'SCALAR' || ref($json) eq '') {
-        die "Type of $json and $candidate are not both values" unless (ref($json) eq ref($candidate));
-        die "No match for \n$candidate\nAND\n$json\n" unless ($json eq $candidate);
+        die "Types of json and candidate disagree"
+            unless (ref($json) eq ref($candidate));
+        die "No match for candidate $candidate, got $json" unless ($json eq $candidate);
     }
     elsif (ref($json) eq 'ARRAY') {
         my $match = 1;
-        die "Expecting array for ". encode_json($candidate) . " with json ".encode_json($json) unless ref ($candidate) eq 'ARRAY';
-        foreach (@$candidate) {
-            my $candobj=$_;
+        die "Expecting array" unless ref ($candidate) eq 'ARRAY';
+        for my $candobj (@$candidate) {
             my $exists = 0;
-            foreach (@$json) {
-                $exists ||= eval {$self->_compare_json($candobj, $_)};
+            for my $gotobj (@$json) {
+                $exists ||= eval {$self->_compare_json($candobj, $gotobj)};
             }
             $match &&= $exists;
         }
-        die "No match for candidate ".encode_json($candidate) . " with json ".encode_json($json) unless $match;
+        die "No match for array candidates" unless $match;
     }
     elsif (ref($json) eq 'HASH') {
-        die  "Expecting hash for ". encode_json($candidate) . " with json ".encode_json($json) unless ref($candidate) eq 'HASH';
+        die  "Expecting hash" unless ref($candidate) eq 'HASH';
         my $match = 1;
         for my $key (keys %$candidate) {
-            die "Can't find value for key '$key' in JSON ". encode_json($json)  unless defined($json->{$key});
+            die "Can't find value for key '$key' in JSON" unless defined($json->{$key});
             $match &&= $self->_compare_json($candidate->{$key}, $json->{$key});
         }
-        die "No match for candidate ".encode_json($candidate) . " with json ".encode_json($json) unless $match;
+        die "No match for hash candidates" unless $match;
     }
 }
 
@@ -2105,15 +2106,15 @@ sub _select_json_path {
         $path =~ /^\['(.+?)'\](.*?)$/) 
     {
         ($key,$subpath) = ($1,$2);
-        die "missing: expected hash\n" unless ('HASH' eq ref($o));
+        die "missing: expected hash\n" unless (ref($o) eq 'HASH');
         die "missing: no such key $key\n" unless (exists $o->{$key});
         $subobj = $o->{$key};
     }
     # [10]
     elsif ($path =~ /^\[(\d+)\](.*?)$/) {
         ($idx,$subpath) = ($1,$2);
-        die "missing: expected array\n" unless ('ARRAY' eq ref($o));
-        die "missing: array out of bounds\n" if ($idx > $#$o);
+        die "missing: expected array\n" unless (ref($o) eq 'ARRAY');
+        die "missing: array index $idx is out of bounds\n" if ($idx > $#$o);
         $subobj = $o->[$idx];
     }
     else {
@@ -2126,7 +2127,7 @@ sub _select_json_path {
 sub _json_path_test {
     my ($self, $test, $path, $expected) = @_;
 
-    my $comment = $self->{http}->{name}." json_path_$test path=$path";
+    my $comment = $self->{http}->{name}." json_path_$test, path $path";
 
     $path =~ s/^\$//; # remove leading $
 
@@ -2161,11 +2162,21 @@ sub _json_path_test {
         pass $comment;
         return 1;
     }
+    elsif ($test eq 'size') {
+        if ('ARRAY' ne ref($sel)) {
+            fail $comment. ' - selection is not an array';
+            return;
+        }
+        return is scalar(@$sel), $expected, $comment;
+    }
+
+    fail $comment;
+    return;
 }
 
 {
     no strict 'refs';
-    for my $test (qw(is isnt like unlike exists missing)) {
+    for my $test (qw(is isnt like unlike exists missing size)) {
         *{"json_path_$test"} = sub {
             my $self = shift;
             $self->_json_path_test($test,@_);
