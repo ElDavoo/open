@@ -2141,9 +2141,11 @@ sub _json_path_test {
         if ($test eq 'missing') {
             return like $e, qr/^missing/, $comment;
         }
-        fail $comment;
-        diag $e;
-        return;
+        diag "path selection error: $e";
+        if ($test eq 'exists') {
+            fail $comment;
+            return;
+        }
     }
 
     if ($test eq 'is') {
