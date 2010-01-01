@@ -351,13 +351,25 @@ sub groups {
     my $self = shift;
     my %p = @_;
 
-    my $sth = sql_execute(q{
+    my @bind = ($self->user_set_id);
+    my $add_where = '';
+    if ($p{plugin}) {
+        $add_where = q{
+          AND user_set_id IN (
+            SELECT user_set_id
+              FROM user_set_plugin_tc
+             WHERE plugin = ?
+          )
+        };
+        push @bind, $p{plugin};
+    }
+
+    my $sth = sql_execute(qq{
         SELECT DISTINCT(group_id) AS group_id, driver_group_name
         FROM user_set_path
         JOIN groups ON into_set_id = user_set_id
-        WHERE from_set_id = ?
-        ORDER BY driver_group_name
-    }, $self->user_set_id);
+        WHERE from_set_id = ? $add_where
+    },@bind);
 
     my $apply = $p{ids_only}
         ? sub { $_[0][0] }
