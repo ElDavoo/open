@@ -94,13 +94,14 @@ TODO: verify cannot actually issue invitations via URL
 | *Comment* | Test Case: Invite people. Invite UI |  |
 | click_and_wait | st-wiki-subnav-link-invite |  |
 | wait_for_element_visible_ok | object_id | 30000 |
-| select_ok | object_id | %%acct%% (primary) |
+| select_ok | object_id | index=0 |
+| is_selected_ok | object_id | index=0 |
 
-| *Comment* | Test Case: Invite people. Invite four users to this group |  |
-| *Comment* | existing member, brand new user, %%email%% in another group, and a malformed email addr |  |
+| *Comment* | Test Case: Invite people. Invite four users to this Group |  |
+| *Comment* | existing member, brand new user, %%email%% in another Group, and a malformed email addr |  |
 | type_ok | users_new_ids | %%acct_user%%\n%%to_ws_user%%\n%%social%%\nfoo2bar.com |
 | check_ok | append_invitation |  |
-| type_ok | invitation_text | Here is an invitation from %%acct_user%% to join my %%acct%% group. w00t! |
+| type_ok | invitation_text | Here is an invitation from %%acct_user%% to join my %%acct%% Group. w00t! |
 | click_and_wait | link=Invite |  |
 
 | *Comment* | Test Case: Invite people. Verify the invitations |  |
@@ -110,7 +111,7 @@ TODO: verify cannot actually issue invitations via URL
 | text_like | qr/The following 2 users were successfully invited into this Group:.+%%eto_ws_user%%/ism |  |
 | text_like | qr/The following 1 email address was invalid:\s+foo2bar.com/ |  |
 | click_and_wait | link=Invite more people |  |
-| text_like | Invite people to your group |  |
+| text_like | qr/Invite people to your group/ism |  |
 
 | *Comment* | Test Case: Invite people. Check /control to make sure esocial's account has not changed |  |
 | st-admin | give-accounts-admin --e %%acct_user%% | now has accounts admin |
@@ -131,7 +132,7 @@ TODO: verify cannot actually issue invitations via URL
 
 | *Comment* | Test Case: Invite people. click the confirmation link |  |
 | *Comment* | e.g. `http://talc.socialtext.net:22004/nlw/submit/confirm_email?hash=9XMPtamvY4oV4xJKpZgq%2B3iRVVc` |  |
-| text_like | Here is an invitation from %%acct_user%% to join my %%acct%% group. w00t! |  |
+| text_like | Here is an invitation from %%acct_user%% to join my %%acct%% Group. w00t! |  |
 | wait_for_element_visible_ok | //a[contains(@href,'confirm_email')] | 30000 |
 | click_ok | //a[contains(@href,'confirm_email')] |  |
 
@@ -165,8 +166,8 @@ TODO: verify cannot actually issue invitations via URL
 | *Comment* | Test Case: Invite people. Invite UI for new user |  |
 | click_and_wait | st-wiki-subnav-link-invite |  |
 | wait_for_element_visible_ok | object_id | 30000 |
-| select_ok | object_id | label=%%acct%% (primary) |
-| is_selected_ok | object_id | label=%%acct%% (primary) |
+| select_ok | object_id | index=0 |
+| is_selected_ok | object_id | index=0 |
 
 | *Comment* | Test Case: Invite people. Invite guest user |  |
 | type_ok | users_new_ids | guest@socialtext.net |

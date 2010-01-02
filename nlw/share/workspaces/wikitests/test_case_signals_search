@@ -22,8 +22,8 @@
 | post-signal | NotAStopWord %%start_time%% 01 |  |
 | pause | 3000 |  |
 | post-signal | NotAStopWord %%start_time%% 12 |  |
-| *Comment* | Test Case: Signals Search. Pause 20 sec for Signals indexer |  |
-| pause | 20000 | wait for Signals Indexer to run |
+| *Comment* | Test Case: Signals Search. Process Jobs |  |
+| st_process_jobs |  |  |
 
 | *Comment* | Test Case: Signals Search. Search 2 signals %%a_username%% |  |
 | open_ok | /?signals |  |
@@ -33,13 +33,13 @@
 | type_ok | st-search-term | %%start_time%% |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
-| *Comment* | Test Case: Signals Search. Pause 20 sec for Search Results |  |
-| pause | 20000 | I hate pause |
+| *Comment* | Test Case: Signals Search. Process Jobs |  |
+| st_process_jobs |  |  |
 
 | *Comment* | Test Case: Signals Search. Verify found 2 signals %%a_username%% |  |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
-| text_like | Search results in all groups for '%%start_time%%' |  |
+| text_like | qr/Search results.+for '%%start_time%%'/ism |  |
 | text_like | NotAStopWord %%start_time%% 12 |  |
 | text_like | NotAStopWord %%start_time%% 01 |  |
 | select_frame | relative=parent |  |
@@ -52,7 +52,8 @@
 | post-signal | NotAStopWord %%start_time%% 21 |  |
 | pause | 3000 |  |
 | post-signal | NotAStopWord %%start_time%% 32 |  |
-| pause | 10000 | wait for Signals Indexer to run |
+| *Comment* | Test Case: Signals Search. Process Jobs |  |
+| st_process_jobs |  |  |
 
 | *Comment* | Test Case: Signals Search. Search 2 signals %%z_username%% |  |
 | open_ok | /?signals |  |
@@ -67,7 +68,9 @@
 | *Comment* | Test Case: Signals Search. Verify found 4 signals %%z_username%% |  |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
-| wait_for_text_present_ok | Search results in all groups for '%%start_time%%' | 30000 |
+
+| wait_for_text_present_ok | Search results  | 30000 |
+| text_like | qr/Search results.+for '%%start_time%%'/ism |  |
 | text_like | NotAStopWord %%start_time%% 32 |  |
 | text_like | NotAStopWord %%start_time%% 21 |  |
 | text_like | NotAStopWord %%start_time%% 12 |  |
@@ -94,7 +97,8 @@
 | post-signal | MoreRelevant %%start_time%% %%start_time%% %%start_time%% |  |
 | pause | 3000 |  |
 | post-signal | LessRelevant %%start_time%% |  |
-| pause | 10000 | wait for Signals Indexer to run |
+| *Comment* | Test Case: Signals Search. Process Jobs |  |
+| st_process_jobs |  |  |
 
 | *Comment* | Test Case: Signals Search. Relevance. Find a more relevant signal |  |
 | open_ok | /?signals |  |
@@ -109,7 +113,8 @@
 | *Comment* | Test Case: Signals Search. Verify found more relevant signal |  |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
-| wait_for_text_present_ok | Search results in all groups for '%%start_time%%' | 30000 |
+| wait_for_text_present_ok | Search results | 30000 |
+| text_like | qr/Search results.+for '%%start_time%%'/ism |  |
 | select_ok | sort-picker | label=Relevance |
 | pause | 8000 | I Hate Pause |
 | text-like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 12/ism |  |

@@ -96,7 +96,7 @@
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 
 | *Comment* | Test case: Miki Find 'followed' user with MIKI search, click through, follow |  |
-| pause | 30000 | guarentee the_ceq is finished indexing new usernames |
+| st_process_jobs | | |
 | click_and_wait | link=People |  |
 | wait_for_element_visible_ok | st-search-text | 30000 |
 | type_ok | st-search-text | %%othershortuser%% |

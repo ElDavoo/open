@@ -27,5 +27,5 @@
 | post-signal | All the little birds %%start_time%% |  |
 | post-signal | Love to hear the robin going %%start_time%% |  |
 
-| *Comment* | Test Case: Activities Widget Setup My Signals. Wait for the Signals Indexer a while |  |
-| pause | 10000 |  |
+| *Comment* | Test Case: Activities Widget Setup My Signals. Process jobs |  |
+| st_process_jobs |  |  |
