@@ -1,4 +1,5 @@
 package Socialtext::PrefsTable;
+# @COPYRIGHT@
 use Moose;
 use Socialtext::SQL qw/:exec :txn/;
 use Socialtext::SQL::Builder qw/sql_abstract/;
