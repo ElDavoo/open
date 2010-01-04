@@ -162,17 +162,22 @@ sub _send_page_notifications {
 
 sub index_signal {
     my $self = shift;
-    my $signal = shift;
+    my $signal_or_id = shift;
     my %p = @_;
     $p{priority} ||= 70;
+
+    # accept either a signal object or a signal id.
+    my $id = (ref($signal_or_id) && $signal_or_id->isa('Socialtext::Signal'))
+        ? $signal_or_id->signal_id
+        : $signal_or_id;
 
     my $job_id = $self->insert(
         'Socialtext::Job::SignalIndex' => {
             solr => 1,
-            signal_id => $signal->signal_id,
+            signal_id => $id,
             job => {
                 priority => $p{priority},
-                coalesce => $signal->signal_id,
+                coalesce => $id,
             },
         }
     );
