@@ -70,9 +70,9 @@
 | text_like | //body | %%group_acct%% (5 People) |
 | text_like | //body | %%other_acct%% (3 People) |
 
-| select_and_wait | //select[@class='account-select'] | index=3 |
+| select_and_wait | //select[@class='account-select'] | index=2 |
 | text_like | contentContainer | qr/Showing 1 - 4 of 4 total/ism |
-| text_like | contentContainer | qr/%%member1_short%%%/ism |
+| text_like | contentContainer | qr/%%member1_short%%/ism |
 | text_like | contentContainer | qr/%%member2_short%%/ism |
 | text_like | contentContainer | qr/%%member3_short%%/ism |
 | text_like | contentContainer | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
@@ -86,17 +86,16 @@
 | click_ok | st-search-submit |  |
 | wait_for_text_present_ok | People matching 'member' | 30000 |
 | text_like | contentContainer | qr/Showing 1 - 3 of 3 total/ism |
-| text_like | contentContainer | qr/%%member1_short%%%/ism |
+| text_like | contentContainer | qr/%%member1_short%%/ism |
 | text_like | contentContainer | qr/%%member2_short%%/ism |
 | text_like | contentContainer | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
 
-| *Comment* | Test Case: Groups UI Filter Search Results by Group Search - Change account, see different, filtered results |  |
 | *Comment* | Test Case: Groups UI Filter Search Results by Group Search - Two users contain 'member', one does not |  |
 | select_and_wait | //select[@class='account-select'] | %%other_acct%% (3 People) |
 | wait_for_text_present_ok | People matching 'member' | 30000 |
 | text_like | contentContainer | qr/Showing 1 - 2 of 2 total/ism |
 | text_like | contentContainer | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
-| text_like | contentContainer | qr/%%other_acct_mbr%%/ism |
+| text_like | contentContainer | qr/%%other_acct_mbr_short%%/ism |
 
 | *Comment* | Test Case: Groups UI Filter Search Results by Group Teardown |
 | delete-group | %%group_id%% |
