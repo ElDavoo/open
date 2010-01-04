@@ -5,6 +5,8 @@ use Socialtext::Account;
 use Socialtext::Group;
 use Socialtext::Role;
 use Socialtext::User;
+use Socialtext::JobCreator;
+use Socialtext::Signal;
 use Socialtext::SQL qw/sql_execute/;
 use List::MoreUtils qw/any/;
 use namespace::clean(except => 'meta');
@@ -157,11 +159,26 @@ sub _xfer_signals {
     my $from     = delete $p{from};
     my $to_group = delete $p{to_group};
 
+    # get a list of signal_id's that we're gonna update.
+    my $result = sql_execute(q{
+        SELECT signal_id
+          FROM signal_user_set
+         WHERE user_set_id = ?
+    }, $from->user_set_id);
+    my $sigs_to_index = $result->fetchall_arrayref({});
+
+    # update the signals
     sql_execute(q{
         UPDATE signal_user_set
            SET user_set_id = ?
          WHERE user_set_id = ?
     }, $to_group->user_set_id, $from->user_set_id);
+
+    # re-index the updated signals.
+    my $creator = Socialtext::JobCreator->new();
+    for my $proto ( @$sigs_to_index ) {
+        $creator->index_signal($proto->{signal_id});
+    }
 }
 
 sub _xfer_groups {

@@ -3,14 +3,19 @@
 use strict;
 use warnings;
 use Socialtext::Signal;
+use Socialtext::Jobs;
+use Socialtext::Job::SignalIndex;
 use List::MoreUtils qw/any/;
 
-use Test::Socialtext tests => 4;
+use Test::Socialtext tests => 5;
 
 $ENV{TEST_LESS_VERBOSE} = 1;
-fixtures('db');
+fixtures( qw(db no-ceq-jobs) );
 
 use_ok 'Socialtext::Account::Transformer';
+
+# Register workers
+Socialtext::Jobs->can_do('Socialtext::Job::SignalIndex');
 
 my $into_account = create_test_account_bypassing_factory();
 
@@ -31,6 +36,10 @@ simple: {
     my $transformer = Socialtext::Account::Transformer->new(
         into_account_name => $into_account->name);
     my $group = $transformer->acct2group(account_name => $old_account->name);
+
+    my $job = Socialtext::Jobs->find_job_for_workers();
+    ok $job && $job->funcname eq 'Socialtext::Job::SignalIndex',
+        'got a signal index job for the signal';
 
     # freshen signal
     my $fresh = Socialtext::Signal->Get(
