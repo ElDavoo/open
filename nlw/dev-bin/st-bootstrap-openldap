@@ -403,6 +403,7 @@ mail: lemmy@socialtext.com
 gn: Lemmy
 sn: Kilmister
 cn: Lemmy Kilmister
+userPassword: ld@pu53r
 
 dn: cn=Phil Taylor,dc=socialtext,dc=com
 objectClass: inetOrgPerson
@@ -410,6 +411,7 @@ mail: phil@socialtext.com
 gn: Phil
 sn: Taylor
 cn: Phil Taylor
+userPassword: ld@pu53r
 
 dn: cn=Eddie Clarke,dc=socialtext,dc=com
 objectClass: inetOrgPerson
@@ -417,6 +419,7 @@ mail: eddie@socialtext.com
 gn: Eddie
 sn: Clarke
 cn: Eddie Clarke
+userPassword: ld@pu53r
 
 dn: cn=Hawkwind,dc=socialtext,dc=com
 objectClass: groupOfNames
@@ -430,3 +433,4 @@ mail: michael@socialtext.com
 gn: Michael
 sn: Moorcock
 cn: Michael Moorcock
+userPassword: ld@pu53r
