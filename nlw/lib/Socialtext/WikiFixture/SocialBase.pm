@@ -12,6 +12,8 @@ use Socialtext::System qw();
 use Socialtext::HTTP::Ports;
 use Socialtext::Role;
 use Socialtext::People::Profile;
+use Socialtext::UserSet qw(ACCT_OFFSET);
+use Socialtext::Cache;
 use File::LogReader;
 use File::Path qw(rmtree);
 use Test::More;
@@ -848,6 +850,8 @@ sub set_account_id {
     my $var_name = shift;
     my $acct_name = shift;
 
+    Socialtext::Cache->clear('account');
+
     my $acct = Socialtext::Account->new(name => $acct_name);
     die "No such user $acct_name" unless $acct;
     $self->{$var_name} = $acct->account_id;
@@ -1039,6 +1043,18 @@ sub post_form {
     my $self = shift;
     my $uri = shift;
     $self->post($uri, 'Content-Type=application/x-www-form-urlencoded', @_);
+}
+
+=head2 put_form( uri, body )
+
+Post to the specified URI with header 'Content-Type=application/x-www-form-urlencoded'
+
+=cut
+
+sub put_form {
+    my $self = shift;
+    my $uri = shift;
+    $self->put($uri, 'Content-Type=application/x-www-form-urlencoded', @_);
 }
 
 =head2 post_file( uri, post_vars, filename_var filename )
@@ -1906,14 +1922,14 @@ sub st_purge_account_containers {
     my $acct = Socialtext::Account->new(name => $acct_name);
     my $sth = sql_execute('
         DELETE FROM container
-         WHERE user_id
+         WHERE user_set_id
             IN (
                 SELECT user_id
                   FROM "UserMetadata"
-                 WHERE primary_account_id = ?
+                 WHERE primary_account_id = $1
             )
-            OR account_id = ?
-    ', $acct->account_id, $acct->account_id);
+            OR user_set_id = ' . ACCT_OFFSET . ' + $1
+    ', $acct->account_id);
     warn loc("# Deleted [quant,_1,container]", $sth->rows)."\n";
 }
 
