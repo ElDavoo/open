@@ -3,7 +3,7 @@ package Socialtext::Handler::Container;
 use Moose::Role;
 use Socialtext::HTTP ':codes';
 use Socialtext::Workspace;
-use Socialtext::l10n qw/loc_lang/;
+use Socialtext::l10n qw/loc_lang loc/;
 use Socialtext::JSON qw(encode_json decode_json);
 use Exception::Class;
 use Socialtext::AppConfig;
@@ -16,7 +16,12 @@ our $code_base = Socialtext::AppConfig->code_base;
 
 use constant 'entity_name' => 'Container';
 
-requires 'container';
+requires '_build_container';
+
+has 'container' => (
+    is => 'ro', isa => 'Maybe[Socialtext::Gadgets::Container]',
+    lazy_build => 1,
+);
 
 has 'template_paths' => (
     is => 'ro', isa => 'ArrayRef',
@@ -32,19 +37,10 @@ sub _build_template_paths {
 
 sub if_authorized_to_view {
     my ($self, $cb) = @_;
-
-    unless ($self->rest->user->is_authenticated) {
-        $self->redirect('/');
-        return '';
-    }
-    unless ($self->container) {
-        $self->rest->header(-status => HTTP_404_Not_Found);
-        return 'No container with with that id';
-    }
-    unless ($self->rest->user->can_use_plugin($self->container->plugin)) {
-        return $self->forbidden;
-    }
-
+    return $self->not_authenticated unless $self->rest->user->is_authenticated;
+    return $self->not_found unless $self->container;
+    return $self->forbidden
+        unless $self->rest->user->can_use_plugin($self->container->plugin);
     return $cb->();
 }
 
@@ -53,10 +49,27 @@ sub if_authorized_to_edit {
     return $self->if_authorized_to_view($cb);
 }
 
+sub not_authenticated {
+    my $self = shift;
+    $self->redirect('/');
+    return '';
+}
+
+sub not_found {
+    my $self = shift;
+    $self->rest->header(-status => HTTP_404_Not_Found);
+    return $self->error(loc("404 Not Found"));
+}
+
 sub forbidden {
     my $self = shift;
     $self->rest->header(-status => HTTP_403_Forbidden);
-    return 'Forbidden';
+    return $self->error(loc("403 Forbidden: You do not have access to view this page"));
+}
+
+sub error {
+    my ($self, $error) = @_;
+    return $self->render_template('view/error', { error_string => $error });
 }
 
 sub redirect {
@@ -77,6 +90,16 @@ sub GET {
     });
 }
 
+has 'uri' => (
+    is => 'ro', isa => 'Str',
+    lazy_build => 1,
+);
+
+sub _build_uri {
+    my ($uri) = $ENV{REQUEST_URI} =~ m{^([^?]+)};
+    return $uri;
+}
+
 sub get_html {
     my $self = shift;
     $self->if_authorized_to_view(sub {
@@ -84,6 +107,18 @@ sub get_html {
         if ($query->{add_widget}) {
             $self->if_authorized_to_edit(sub {
                 return $self->install_gadget;
+            });
+        }
+        elsif ($query->{clear}) {
+            $self->if_authorized_to_edit(sub {
+                $self->container->delete_gadgets;
+                return $self->redirect($self->uri);
+            });
+        }
+        elsif ($query->{reset}) {
+            $self->if_authorized_to_edit(sub {
+                $self->container->delete;
+                return $self->redirect($self->uri);
             });
         }
         else {
