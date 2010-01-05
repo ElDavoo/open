@@ -409,3 +409,4 @@ t/lib/Socialtext/Gadgets/Util.pm
 t/share/plugin/fakeplugin
 lib/Socialtext/Gadgets/Container/EditGroup.pm
 lib/Socialtext/Handler/Container/EditGroup.pm
+t/wikitests/control/transform_accounts.wiki

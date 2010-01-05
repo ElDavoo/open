@@ -4,12 +4,14 @@
 
 | *Comment* | Test Case: User Creates Group Setup |  |
 | set | newacctname | ucg-acct-%%start_time%% |
-| set | groupname | ἀπὸ τὸ Ἄξιον ἐστί %%start_time%% |
+| set | groupname | ucg group %%start_time%% |
 
-| *Comment* | Test Case: User Create Group disabled, try create group |  |
+ set | groupname | ἀπὸ τὸ Ἄξιον ἐστί %%start_time%% |
+
+| *Comment* | Test Case: User Creates Group disabled, try create group |  |
 | st-admin | disable-plugin --plugin groups --all-accounts | The groups plugin is now disabled for all accounts |
 | open | /?create_group |  |
-| text_like | //body | Unable to view container |
+| text_like | //body | You do not have access to view this page |
 
 | *Comment* | Test Case: User Creates Group enabled, create group |  |
 | st-admin | enable-plugin --plugin groups --all-accounts | The groups plugin is now enabled for all accounts |
@@ -18,7 +20,7 @@
 | wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
 
-| *Comment* | Actually Create a Group |  |
+| *Comment* | Test Case: User Creates Group. Actually Create a Group |  |
 | st-name-widget | 1 | create_group |
 | st-select-widget-frame | create_group |  |
 | wait_for_element_visible_ok | name | 30000 |
@@ -27,14 +29,14 @@
 | wait_for_element_visible_ok | reset | 30000 |
 | type_ok | name | %%groupname%% |
 | type_ok | description | Стоял он, дум великих полн, |
-| type_ok | upload | %%wikitest_files%%wikitest.jpg |
+| type_ok | upload | %%wikitest_client_files%%wikitest.jpg |
 | pause | 20000 |  |
 | select-frame | relative=parent |  |
 
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |
 
-| *Comment* | Inspect New Group Page |  |
+| *Comment* | Test Case: User Creates Group. Inspect New Group Page |  |
 | wait_for_text_present_ok | %%groupname%% | 30000 |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
@@ -49,7 +51,11 @@
 | wait_for_text_present_ok | This group is not a member of any workspaces | 30000 |
 | select-frame | relative=parent |  |
 
-| st-name-widget | 3 | activity_widget |
+| st-name-widget | 3 | signal_widget |
+| st-widget-title-like | signal_widget | Signal to group '%%groupname%%' |
+| *Comment* | Test Case: User Creates Group. TODO: Send and verify Signal to group widget |  |
+
+| st-name-widget | 4 | activity_widget |
 | st-widget-title-like | activity_widget | Activity |
 | st-select-widget-frame | activity_widget |  |
 | wait_for_text_present_ok | View RSS feed for %%groupname%% | 30000 |
@@ -57,14 +63,14 @@
 | text_like | //body | joined the group %%groupname%% |
 | select-frame | relative=parent |  |
 
-| st-name-widget | 4 | people_widget |
+| st-name-widget | 5 | people_widget |
 | st-widget-title-like | people_widget | People |
 | st-select-widget-frame | people_widget |  |
 | wait_for_text_present_ok | %%username%% | 30000 |
 | wait_for_element_visible_ok | link=%%username%% | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Create Identical Group Name, see error |  |
+| *Comment* | Test Case: User Creates Group. Create Identical Group Name, see error |  |
 | open | /?create_group |  |
 | wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
@@ -82,7 +88,7 @@
 | text_like | //body | Error creating group: %%groupname%% already exists. |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test the cancel button, go to Dashboard |  |
+| *Comment* | Test Case: User Creates Group. Test the cancel button, go to Dashboard |  |
 | open | /?create_group |  |
 | wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
@@ -90,4 +96,4 @@
 | click_and_wait | st-cancel-create-group |  |
 | text_like | Welcome |  |
 
-| *Comment* | Test Case: User Creates Group |
+| *Comment* | Test Case: User Creates Group COMPLETED |
