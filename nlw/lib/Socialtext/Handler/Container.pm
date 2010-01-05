@@ -147,11 +147,9 @@ sub get_html {
 
 sub install_gadget {
     my $self = shift;
+    my %params =$self->rest->query->Vars;
     $self->if_authorized_to_edit(sub {
-        $self->container->install_gadget(
-            src => $self->rest->query->{src},
-            gadget_id => $self->rest->query->{gadget_id}->[0],
-        );
+        $self->container->install_gadget(%params);
         return $self->redirect($self->uri);
     });
 }
