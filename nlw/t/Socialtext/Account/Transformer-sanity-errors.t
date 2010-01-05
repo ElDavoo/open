@@ -6,7 +6,7 @@ use Socialtext::Account;
 use Socialtext::Group;
 use Socialtext::User;
 
-use Test::Socialtext qw/no_plan/;
+use Test::Socialtext tests => 8;
 
 fixtures('db');
 
