@@ -10,7 +10,7 @@
             </h4>
         </div>
         <div class="widgetHeaderButtons">
-        [% IF container.name == "editing" || !gadget.fixed %]
+        [% IF editing || !gadget.fixed %]
             <a class="close" href="#" onclick="gadgets.container.remove('[% gadget.id %]'); return false"></a>
             <a class="minimize" href="#" onclick="gadgets.container.minimize('[% gadget.id %]'); return false"></a>
             [% IF gadget.minimized %]
@@ -26,7 +26,7 @@
             [% IF gadget.has_prefs %]
                 <a class="settings" href="#" id="st-widget-settings[% gadget.id %]" onclick="gadgets.container.toggleSetup('[% gadget.id %]'); return false"></a>
             [% END %]
-            [% IF account %]
+            [% IF editing %]
                 <a class="fix [% gadget.fixed ? "fixed" : "unfixed" %]" href="#" onclick="gadgets.container.fix('[% gadget.id %]'); return false"></a>
             [% END %]
         [% END %]
