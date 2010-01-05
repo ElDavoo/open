@@ -55,16 +55,24 @@ sub not_authenticated {
     return '';
 }
 
+sub invalid {
+    my $self = shift;
+    my $msg  = shift || loc('Bad Request');
+    $self->rest->header(-status => HTTP_400_Bad_Request);
+    return $self->error($msg);
+}
+
 sub not_found {
     my $self = shift;
     $self->rest->header(-status => HTTP_404_Not_Found);
-    return $self->error(loc("404 Not Found"));
+    return $self->error(loc("Not Found"));
 }
 
 sub forbidden {
     my $self = shift;
     $self->rest->header(-status => HTTP_403_Forbidden);
-    return $self->error(loc("403 Forbidden: You do not have access to view this page"));
+    my $msg = loc("Forbidden: You do not have permission to view this page");
+    return $self->error($msg);
 }
 
 sub error {
@@ -136,7 +144,7 @@ sub install_gadget {
             src => $self->rest->query->{src},
             gadget_id => $self->rest->query->{gadget_id}->[0],
         );
-        return $self->redirect('/st/dashboard');
+        return $self->redirect($self->uri);
     });
 }
 
@@ -200,7 +208,7 @@ sub PUT_layout {
     });
 }
 
-# XXX is this used?
+# Used in wikitests
 sub GET_layout {
     my $self = shift;
     my $gadgets = $self->container->gadgets;
@@ -210,7 +218,6 @@ sub GET_layout {
     }
     return encode_json(\@cols);
 }
-
 
 1;
 
