@@ -98,6 +98,14 @@ sub GET {
     });
 }
 
+sub DELETE {
+    my $self = shift;
+    $self->if_authorized_to_edit(sub {
+        $self->container->delete;
+        return '';
+    });
+}
+
 has 'uri' => (
     is => 'ro', isa => 'Str',
     lazy_build => 1,
