@@ -26,7 +26,7 @@
             [% IF gadget.has_prefs %]
                 <a class="settings" href="#" id="st-widget-settings[% gadget.id %]" onclick="gadgets.container.toggleSetup('[% gadget.id %]'); return false"></a>
             [% END %]
-            [% IF container.name == "editing" %]
+            [% IF account %]
                 <a class="fix [% gadget.fixed ? "fixed" : "unfixed" %]" href="#" onclick="gadgets.container.fix('[% gadget.id %]'); return false"></a>
             [% END %]
         [% END %]
