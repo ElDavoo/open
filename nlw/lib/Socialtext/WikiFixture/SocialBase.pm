@@ -1712,8 +1712,8 @@ optional fields are BINARY - blank (0) or true (1)
 
 Guarentted work:
   Create a group named $group_name, populate %%group_id%% with the group id 
-  Create a variable %%group_user
-  Create the user %group_user%% with that user.  Use %%password%% as the password 
+  Create a variable %%group_user%%
+  Create the user %%group_user%% with that user.  Use %%password%% as the password 
   Add that user to group $group_name
 
 If true, they create:
