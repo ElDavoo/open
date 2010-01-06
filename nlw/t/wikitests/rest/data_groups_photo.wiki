@@ -2,15 +2,18 @@
 # We can do little more than check return codes in this test. Still it's better than nothing.
 
 # Setup: Create a Group that we can use
-| set               | group       | %%start_time%%group-photo         |       |
-| set               | admin       | %%start_time%%admin@in-group.com  |       |
-| set               | member      | %%start_time%%member@in-group.com |       |
-| create-group      | %%group%%   |                                   |       |
-| create-user       | %%admin%%   | password                          |       |
-| add-user-to-group | %%user_id%% | %%group_id%%                      | admin |
-| create-user       | %%member%%  | password                          |       |
-| add-user-to-group | %%user_id%% | %%group_id%%                      |       |
+| set | group     | %%start_time%%group-photo            |
+| set | admin     | %%start_time%%admin@in-group.com     |
+| set | member    | %%start_time%%member@in-group.com    |
+| set | nonmember | %%start_time%%nonmember@in-group.com |
+| create-user       | %%nonmember%% | password     |       |
+| create-group      | %%group%%     |              |       |
+| create-user       | %%admin%%     | password     |       |
+| add-user-to-group | %%user_id%%   | %%group_id%% | admin |
+| create-user       | %%member%%    | password     |       |
+| add-user-to-group | %%user_id%%   | %%group_id%% |       |
 
+| http-user-pass | %%nonmember%% | password |
 # We do not have access to the group
 
 | *Comment* | Unauthorized, GET                     |           |
@@ -26,7 +29,6 @@
 | code-is   | 403                             |                                |             |                          |
 | header-is | Content-type                    | text/plain; charset=ISO-8859-1 |             |                          |
 | body-like | must be a group admin           |                                |             |                          |
-
 # The Group does not exist
 
 | *Comment* | No Group, GET              |           |
