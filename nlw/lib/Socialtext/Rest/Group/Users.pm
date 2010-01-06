@@ -68,10 +68,9 @@ sub POST_json {
         return '';
     }
 
-    # Support posting a single user, or an array of users
-    $data = [$data] if defined $data and ref($data) eq 'HASH';
+    my $data = _parse_data($data);
 
-    unless ( defined $data and ref($data) eq 'ARRAY' ) {
+    unless (defined $data) {
         $rest->header( -status => HTTP_400_Bad_Request );
         return '';
     }
@@ -79,7 +78,7 @@ sub POST_json {
     # Build a list of user roles so we can check for problems before we
     # actually add the roles
     my @user_roles;
-    for my $roledata (@$data) {
+    for my $roledata (@{ $data->{users} }) {
         my $username = $roledata->{username};
 
         my $name_or_id = $roledata->{user_id} || $roledata->{username};
@@ -116,6 +115,34 @@ sub POST_json {
 
     $rest->header( -status => HTTP_201_Created );
     return '';
+}
+
+sub _parse_data {
+    my $data = shift;
+
+    return unless defined $data;
+
+    # This is the "new" format, it's a hashref with users index.
+    if (ref($data) eq 'HASH' && $data->{users}) {
+        $data->{send_message} ||= 0;
+        $data->{additional_message} ||= '';
+        return $data;
+    }
+
+    warn "deprecated JSON passed to /data/groups/:group_id/users\n";
+
+    # Support posting a single user, or an array of users
+    my $users = (ref($data) eq 'HASH') ? [$data] : $data;
+
+    # We still may have passed bad data, return if we don't have an arrayref
+    # at this point.
+    return undef unless ref($users) eq 'ARRAY';
+
+    return +{
+        users => $users,
+        invite => 0,
+        additional_message => '',
+    };
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

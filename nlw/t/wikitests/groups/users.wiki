@@ -144,6 +144,19 @@ Tests for [Story: Groups ReST API]
 | POST_json | /data/groups/%%group_id%%/users      | {"username":"%%jorge%%","role_name":"workspace_admin"} |
 | code-is   | 400                                  |                                                        |
 
+## Alternate invite format
+
+| *Comment*   | Add more users to invite |                                         |
+| set         | hank                     | hank%%start_time%%@ken.socialtext.net   |
+| create-user | %%hank%%                 | password                                |
+| set         | hank_id                  | %%user_id%%                             |
+| set         | harley                   | harley%%start_time%%@ken.socialtext.net |
+| create-user | %%harley%%               | password                                |
+
+| *Comment* | Alternate invite format         |                                                                                                            |
+| POST_json | /data/groups/%%group_id%%/users | {"users":[{"username":"%%harley%%"},{"user_id":"%%hank_id%%"}],"send_message":1,"additional_message":"hi"} |
+| code-is   | 201                             |                                                                                                            |
+
 ## Verify Users were added to Group
 
 | *Comment*       | Verify Users are in Group       |         |
@@ -151,9 +164,12 @@ Tests for [Story: Groups ReST API]
 | code-is         | 200                             |         |
 | header-like     | Cache-Control                   | private |
 | json-parse      |                                 |         |
-| json-array-size | 6                               |         |
+| json-array-size | 8                               |         |
 | body-like       | %%jonas%%                       |         |
 | body-like       | %%jimmy%%                       |         |
 | body-like       | %%jorge%%                       |         |
 | body-like       | %%bill%%                        |         |
 | body-like       | %%ted%%                         |         |
+| body-like       | %%harley%%                      |         |
+| body-like       | %%hank%%                        |         |
+
