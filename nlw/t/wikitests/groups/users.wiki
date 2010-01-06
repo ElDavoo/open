@@ -153,9 +153,11 @@ Tests for [Story: Groups ReST API]
 | set         | harley                   | harley%%start_time%%@ken.socialtext.net |
 | create-user | %%harley%%               | password                                |
 
-| *Comment* | Alternate invite format         |                                                                                                            |
-| POST_json | /data/groups/%%group_id%%/users | {"users":[{"username":"%%harley%%"},{"user_id":"%%hank_id%%"}],"send_message":1,"additional_message":"hi"} |
-| code-is   | 201                             |                                                                                                            |
+| *Comment*     | Alternate invite format         |                                                                                                            |
+| st-clear-jobs |                                 |                                                                                                            |
+| POST_json     | /data/groups/%%group_id%%/users | {"users":[{"username":"%%harley%%"},{"user_id":"%%hank_id%%"}],"send_message":1,"additional_message":"hi"} |
+| code-is       | 201                             |                                                                                                            |
+| job-count     | GroupInvite                     | 2                                                                                                          |
 
 ## Verify Users were added to Group
 

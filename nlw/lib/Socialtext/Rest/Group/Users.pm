@@ -7,6 +7,7 @@ use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::Permission qw/ST_READ_PERM ST_ADMIN_PERM/;
 use Socialtext::User;
+use Socialtext::JobCreator;
 use namespace::clean -except => 'meta';
 
 # Anybody can see these, since they are just the list of workspaces the user
@@ -42,10 +43,10 @@ sub _entities_for_query {
 sub _entity_hash { return $_[1] }
 
 sub POST_json {
-    my $self = shift;
-    my $rest = shift;
-    my $user = $rest->user;
-    my $data = decode_json( $rest->getContent() );
+    my $self    = shift;
+    my $rest    = shift;
+    my $invitor = $rest->user;
+    my $data    = decode_json($rest->getContent());
 
     my $group = Socialtext::Group->GetGroup( group_id => $self->group_id );
     unless ( $group ) {
@@ -60,7 +61,7 @@ sub POST_json {
     }
 
     my $can_admin = $group->user_can(
-        user       => $user,
+        user       => $invitor,
         permission => ST_ADMIN_PERM
     );
     unless ($self->user_can('is_business_admin') || $can_admin) {
@@ -68,7 +69,7 @@ sub POST_json {
         return '';
     }
 
-    my $data = _parse_data($data);
+    $data = _parse_data($data);
 
     unless (defined $data) {
         $rest->header( -status => HTTP_400_Bad_Request );
@@ -87,13 +88,12 @@ sub POST_json {
             return 'Missing a username or user_id';
         }
 
-        my $user = eval { Socialtext::User->Resolve($name_or_id) };
-        unless ( $user ) {
+        my $invitee = eval { Socialtext::User->Resolve($name_or_id) };
+        unless ( $invitee ) {
             $rest->header( -status => HTTP_400_Bad_Request );
             return "User with $name_or_id does not exist";
         }
 
-        # Note: We only have 'member' roles for Groups for now.
         my $role_name = $roledata->{role_name} || 'member';
         my $role = Socialtext::Role->new( name => $role_name );
         unless ( $role && $role->name ) {
@@ -101,17 +101,30 @@ sub POST_json {
             return "Invalid role name $role_name";
         }
 
-        my $role_for_user = $group->role_for_user($user);
+        my $role_for_user = $group->role_for_user($invitee);
         if ($role_for_user && $role_for_user->name eq $role_name) {
             $rest->header( -status => HTTP_400_Bad_Request );
             return "User $name_or_id already has Role $role_name";
         }
 
-        push @user_roles, [$user, $role];
+        push @user_roles, [$invitee, $role];
     }
 
-    # Now add all the roles
-    $group->add_user( user => $_->[0], role => $_->[1] ) for @user_roles;
+    for my $to_add (@user_roles) {
+        $group->add_user(user => $to_add->[0], role => $to_add->[1]);
+        if ($data->{send_message}) {
+            Socialtext::JobCreator->insert(
+                'Socialtext::Job::GroupInvite',
+                {   
+                    group_id   => $group->group_id,
+                    user_id    => $to_add->[0]->user_id,
+                    sender_id  => $invitor->user_id,
+                    $data->{additional_message}
+                        ?  (extra_text => $data->{additional_message}) : (),
+                },
+            );
+        }
+    }
 
     $rest->header( -status => HTTP_201_Created );
     return '';
@@ -125,7 +138,6 @@ sub _parse_data {
     # This is the "new" format, it's a hashref with users index.
     if (ref($data) eq 'HASH' && $data->{users}) {
         $data->{send_message} ||= 0;
-        $data->{additional_message} ||= '';
         return $data;
     }
 
@@ -139,9 +151,8 @@ sub _parse_data {
     return undef unless ref($users) eq 'ARRAY';
 
     return +{
-        users => $users,
-        invite => 0,
-        additional_message => '',
+        users        => $users,
+        send_message => 0,
     };
 }
 
