@@ -5,7 +5,7 @@ extends 'Socialtext::Rest::Groups';
 use Socialtext::Group;
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json/;
-use Socialtext::Permission qw/ST_READ_PERM/;
+use Socialtext::Permission qw/ST_READ_PERM ST_ADMIN_PERM/;
 use Socialtext::User;
 use namespace::clean -except => 'meta';
 
@@ -44,21 +44,8 @@ sub _entity_hash { return $_[1] }
 sub POST_json {
     my $self = shift;
     my $rest = shift;
+    my $user = $rest->user;
     my $data = decode_json( $rest->getContent() );
-
-    # Only a Business Admin has permission to do this right now.
-    unless ($self->user_can('is_business_admin')) {
-        $rest->header( -status => HTTP_401_Unauthorized );
-        return '';
-    }
-
-    # Support posting a single user, or an array of users
-    $data = [$data] if defined $data and ref($data) eq 'HASH';
-
-    unless ( defined $data and ref($data) eq 'ARRAY' ) {
-        $rest->header( -status => HTTP_400_Bad_Request );
-        return '';
-    }
 
     my $group = Socialtext::Group->GetGroup( group_id => $self->group_id );
     unless ( $group ) {
@@ -70,6 +57,23 @@ sub POST_json {
     unless ( $group->can_update_store ) {
         $rest->header( -status => HTTP_400_Bad_Request );
         return 'Group membership cannot be changed';
+    }
+
+    my $can_admin = $group->user_can(
+        user       => $user,
+        permission => ST_ADMIN_PERM
+    );
+    unless ($self->user_can('is_business_admin') || $can_admin) {
+        $rest->header( -status => HTTP_401_Unauthorized );
+        return '';
+    }
+
+    # Support posting a single user, or an array of users
+    $data = [$data] if defined $data and ref($data) eq 'HASH';
+
+    unless ( defined $data and ref($data) eq 'ARRAY' ) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return '';
     }
 
     # Build a list of user roles so we can check for problems before we

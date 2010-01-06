@@ -115,6 +115,15 @@ Tests for [Story: Groups ReST API]
 | POST_json   | /data/groups/%%group_id%%/users                  | [{"username":"%%bill%%"},{"user_id":"%%ted_id%%","role_name":"admin"}] |
 | code-is     | 201                                              |                                                                        |
 
+## Ted is an Admin, make sure he can invite users to the group w/rest.
+
+| *Comment*      | Group Admin invites a User to the Group |                                        |
+| http-user-pass | %%ted%%                                 | password                               |
+| set            | jonas                                   | jonas%%start_time%%@ken.socialtext.net |
+| create-user    | %%jonas%%                               | password                               |
+| POST_json      | /data/groups/%%group_id%%/users         | {"username":"%%jonas%%"}               |
+| code-is        | 201                                     |                                        |
+
 ## Error conditions
 
 | *Comment*   | Group doesn't exist  |                                               |
@@ -142,7 +151,8 @@ Tests for [Story: Groups ReST API]
 | code-is         | 200                             |         |
 | header-like     | Cache-Control                   | private |
 | json-parse      |                                 |         |
-| json-array-size | 5                               |         |
+| json-array-size | 6                               |         |
+| body-like       | %%jonas%%                       |         |
 | body-like       | %%jimmy%%                       |         |
 | body-like       | %%jorge%%                       |         |
 | body-like       | %%bill%%                        |         |
