@@ -2217,6 +2217,12 @@ sub _json_path_test {
     return;
 }
 
+sub st_widgets {
+    my $self    = shift;
+    my $options = shift || '';
+    Socialtext::System::shell_run('st-widgets', $options);
+}
+
 {
     no strict 'refs';
     for my $test (qw(is isnt like unlike exists missing size)) {
