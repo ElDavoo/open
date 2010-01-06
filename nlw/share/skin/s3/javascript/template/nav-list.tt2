@@ -5,7 +5,7 @@
                 [%- IF opts.exists('icon') -%]
                     <img src="[% opts.icon(entry) %]"/>
                 [%- END -%]
-                [%- opts.title(entry) | label_ellipsis(20) | html_encode %][% IF entry.default %] ([% loc("Default") %])[% END -%]
+                [%- opts.title(entry) | label_ellipsis(25) | html_encode %][% IF entry.default %] ([% loc("Default") %])[% END -%]
             </a>
         </li>
         [%- IF entry.default %]<li style="background-color: #eee;">&nbsp;</li>[% END -%]
