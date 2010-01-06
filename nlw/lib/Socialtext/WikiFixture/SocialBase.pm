@@ -858,6 +858,25 @@ sub set_account_id {
     diag "Set variable $var_name to $self->{$var_name}";
 }
 
+sub set_gadget_id {
+    my $self     = shift;
+    my $var_name = shift;
+    my $src      = shift;
+    $self->{$var_name} = sql_singlevalue(
+        'SELECT gadget_id FROM gadget WHERE src = ?', $src
+    );
+    diag "Set variable $var_name to $self->{$var_name}";
+}
+
+sub set_latest_gadget_instance_id {
+    my $self = shift;
+    my $var_name = shift;
+    $self->{$var_name} = sql_singlevalue(
+        'SELECT MAX(gadget_instance_id) FROM gadget_instance'
+    );
+    diag "Set variable $var_name to $self->{$var_name}";
+}
+
 =head2 set_regex_escape( $varname, $value )
 
 Takes a value and places a regex-escaped value in a variable that should be used
