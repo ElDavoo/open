@@ -71,8 +71,8 @@ set +e
 QUIET=1 dev-bin/link-console
 set -e
 dev-bin/make-test-fixture --home_dir $HOME --fixture clean
-dev-bin/make-test-fixture --home_dir $HOME --preserve --fixture base_config
-dev-bin/make-test-fixture --home_dir $HOME --preserve --fixture $FIXTURE
+dev-bin/make-test-fixture --home_dir $HOME --fixture base_config
+dev-bin/make-test-fixture --home_dir $HOME --fixture $FIXTURE
 
 
 bin/st-admin enable-plugin --all-accounts --plugin dashboard
