@@ -5,7 +5,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 9;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 BEGIN {
     use_ok( 'Socialtext::Page' );

@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 8;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 BEGIN {
     use_ok( "Socialtext::WeblogArchive" );

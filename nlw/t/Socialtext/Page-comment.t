@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 
 use Test::Socialtext tests => 1;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 use Socialtext::l10n qw(loc loc_lang);
 
 use Readonly;

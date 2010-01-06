@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 15;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 BEGIN {
     use_ok( 'Socialtext::Formatter::Phrase' );

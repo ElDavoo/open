@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 5;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 filters {
     wiki => ['format'],

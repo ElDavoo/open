@@ -6,7 +6,7 @@ use warnings;
 use Test::Socialtext tests => 6;
 
 use_ok('Socialtext::EmailReceiver::Factory');
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 my $hub = new_hub('admin');
 isa_ok( $hub, 'Socialtext::Hub' );

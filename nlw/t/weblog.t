@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 13;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 use DateTime;
 use Socialtext::Pages;

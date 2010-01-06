@@ -8,11 +8,11 @@ use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 12;
 
 ###############################################################################
-# FIXTURE: admin
+# FIXTURE: admin_no_pages
 #
 # - Need a workspace to invite Users to, but don't care what it is
 ###############################################################################
-fixtures(qw( admin ));
+fixtures(qw( admin_no_pages ));
 
 ###############################################################################
 # We're *testing*, so don't send out any real e-mail messages.

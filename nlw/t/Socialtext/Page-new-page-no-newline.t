@@ -5,7 +5,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 plan tests => 5;
 

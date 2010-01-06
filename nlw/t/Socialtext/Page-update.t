@@ -7,7 +7,7 @@ use DateTime;
 
 use Test::Socialtext tests => 20;
 use Socialtext::SQL;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 BEGIN {
     use_ok( 'Socialtext::Page' );

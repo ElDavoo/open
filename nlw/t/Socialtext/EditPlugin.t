@@ -5,7 +5,7 @@ use warnings;
 use mocked 'Apache';
 use mocked 'Apache::Cookie';
 use Test::Socialtext tests => 23;
-fixtures( 'clean', 'admin' );
+fixtures(qw( clean admin_no_pages ));
 
 BEGIN {
     use_ok( 'Socialtext::EditPlugin' );

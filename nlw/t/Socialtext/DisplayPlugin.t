@@ -6,7 +6,7 @@ use warnings;
 use mocked 'Apache::Cookie';
 use mocked 'Socialtext::CGI';
 use Test::Socialtext tests => 8;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 BEGIN {
     use_ok( 'Socialtext::DisplayPlugin' );

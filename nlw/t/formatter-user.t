@@ -6,9 +6,9 @@ use Test::Socialtext tests => 4;
 use Test::Socialtext::User;
 
 ###############################################################################
-# Fixtures: admin
+# Fixtures: admin_no_pages
 # - need the 'admin' WS around; (formatted_like uses it)
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 ###############################################################################
 ### TEST DATA

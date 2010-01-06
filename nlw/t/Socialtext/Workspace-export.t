@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 32;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 use File::Basename ();
 use File::Temp ();

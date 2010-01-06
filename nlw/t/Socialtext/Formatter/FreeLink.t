@@ -8,7 +8,7 @@ use warnings;
 binmode (STDOUT, ":utf8");
 binmode (STDERR, ":utf8");
 use Test::Socialtext tests => 2;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 use Encode qw(decode);
 
 my $hub = new_hub('admin');

@@ -5,7 +5,7 @@ use warnings;
 use Test::Socialtext tests => 7;
 use Socialtext::AppConfig;
 
-fixtures('admin');
+fixtures(qw( admin_no_pages ));
 
 BEGIN {
     use_ok 'Socialtext::l10n', qw(loc loc_lang best_locale system_locale);

@@ -14,7 +14,7 @@ BEGIN {
     use_ok( 'Socialtext::SyndicatePlugin' );
 }
 
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 # REVIEW: See t/syndicate-page.t for a less regular expression intensive
 # way to do feed tests

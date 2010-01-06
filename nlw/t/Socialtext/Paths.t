@@ -6,7 +6,7 @@ use Socialtext::AppConfig;
 use Test::Socialtext tests => 6;
 
 BEGIN { use_ok("Socialtext::Paths") }
-fixtures('admin');
+fixtures(qw( admin_no_pages ));
 
 my $test_dir = Socialtext::AppConfig->test_dir();
 

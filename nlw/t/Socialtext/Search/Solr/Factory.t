@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 3;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 BEGIN {
     use_ok( "Socialtext::Search::Solr::Factory" );

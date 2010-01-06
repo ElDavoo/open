@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 my @tests = (
     [ "{soap bogus_service bogus method}" =>

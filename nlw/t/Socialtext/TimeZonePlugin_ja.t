@@ -6,7 +6,7 @@ use warnings;
 use utf8;
 
 use Test::Socialtext;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 BEGIN {
     unless ( eval { require DateTime::Format::HTTP; 1 } ) {

@@ -11,11 +11,11 @@ use Test::Socialtext tests => 10;
 use Test::Socialtext::User;
 
 ###############################################################################
-# Fixtures: admin
+# Fixtures: admin_no_pages
 #
 # Need _some_ workspace created, so that we've got a User to extract
 # credentials for.
-fixtures('admin');
+fixtures(qw( admin_no_pages ));
 
 ###############################################################################
 ### TEST DATA

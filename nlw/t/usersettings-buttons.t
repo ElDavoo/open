@@ -6,7 +6,7 @@ use warnings;
 
 use mocked 'Apache::Cookie';
 use Test::Socialtext;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 my @tests = (
   [ qr{\Q<a class="genericOrangeButton" id="-savelink" href="#" onclick="document.forms['settings'].submit(); return false">\E\s+Save\s+</a>},

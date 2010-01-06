@@ -10,7 +10,7 @@ use Socialtext::User;
 use Socialtext::Workspace;
 use Socialtext::String ();
 
-fixtures('admin');
+fixtures(qw( admin_no_pages ));
 
 my $workspace  = 'admin';
 my $user       = Socialtext::User->SystemUser;

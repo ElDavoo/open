@@ -9,10 +9,10 @@ use warnings;
 use Test::Socialtext tests => 20;
 
 ###############################################################################
-# Fixtures: admin destructive
+# Fixtures: admin_no_pages destructive
 # - we test against the Admin workspace
 # - we knowingly stomp on the test-env, so mark it as needing cleanup
-fixtures(qw( admin destructive ));
+fixtures(qw( admin_no_pages destructive ));
 
 use_ok( "Socialtext::WorkspacesUIPlugin" );
 

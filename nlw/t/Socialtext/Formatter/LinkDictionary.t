@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 31;
-fixtures( 'admin' );
+fixtures(qw( admin_no_pages ));
 
 use Socialtext::Formatter::LinkDictionary;
 
