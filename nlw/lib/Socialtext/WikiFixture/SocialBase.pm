@@ -1737,7 +1737,7 @@ optional fields are BINARY - blank (0) or true (1)
 
 Guarentted work:
   Create a group named $group_name, populate %%group_id%% with the group id 
-  Create a variable %%group_user%%
+  Create a variable %%group_user%% also %%group_short%%
   Create the user %%group_user%% with that user.  Use %%password%% as the password 
   Add that user to group $group_name
 
@@ -1755,6 +1755,7 @@ sub st_setup_a_group {
      my ($self, $create_and_add_account, $create_ws, $add_ws_to_group) = @_;
      $self->handle_command('set','group_user','group-member-user-%%start_time%%@matt.socialtext.net');
      $self->handle_command('set','group_user_escaped','group-user%%start_time%%\@matt.socialtext.net');
+     $self->handle_command('set','group_user_short','group member user %%start_time%%');
      $self->handle_command('set','group_name', 'group-name-%%start_time%%');
     
      #Create the user, the account, and possible the group

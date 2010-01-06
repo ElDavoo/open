@@ -1,15 +1,64 @@
 | *Comment* | Test Case: Groups UI Signal from group home |  |  |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Groups UI Signal from group home SETUP |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
 | st-logoutin | %%group_user%% | %%password%% |  |
 | open_ok | /?group/%%group_id%% |  |  |
 
-| *Comment* | Test Case: Groups UI Signal from group home - Send Signal |
+| *Comment* | Test Case: Groups UI Signal from group SELECT Signal, Send Signal, Verify |  |
+| st-name-widget | 3 | signals_widget |
+| st-name-widget | 4 | activity_widget |
+| set | mysignal_1 | You say you've seen seven wonders |
+| set | mysignal_2 | ... and your bird can sing! |
+| st-send-signal-via-profile-widget | signals_widget | %%mysignal_1%% |
+| st-send-signal-via-profile-widget | signals_widget | %%mysignal_2%% |
+| st_verify_text_in_activities_widget | activity_widget | %%mysignal_1%% |
+| st_verify_text_in_activities_widget | activity_widget | qr/You.+minute.+ago to %%group_name%%/ |
+| st_verify_text_in_activities_widget | activity_widget | %%mysignal_2%% |
 
-| *Comment* | Test Case: Groups UI Signal from group home - Check for Signal in Group Activities |
+| *Comment* | Test Case: Groups UI Signal from group home Verify Signal in ?Signal Page |  |
+| open_ok | /st/signals |  |
+| st-name-widget | 3 | signals_widget |
+| wait_for_element_visible_ok | network-select | 30000 |
+| select_ok | network-select | index=0 |
+| st_verify_text_in_activities_widget | signals_widget | %%mysignal_1%% |
+| st_verify_text_in_activities_widget | signals_widget | qr/You.+minute.+ago to %%group_name%%/ |
+| st_verify_text_in_activities_widget | signals_widget | %%mysignal_2%% |
 
-| *Comment* | Test Case: Groups UI Signal from group home - Check for Signal in Activities Widget |
+| *Comment* | Test Case: Groups UI Signal from group home - Set Account to no signals, do not see signal option |  |
+| st-admin | disable-plugin --plugin signals --account %%group_acct%% |  |
+| open_ok | /?group/%%group_id%% |  |
+| st-name-widget | 3 | signals_widget |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_element_not_present_ok | post | 30000 |
+| wait_for_element_not_present_ok | wikiwyg_wikitext_textarea | 30000 |
+| select-frame | relative=parent |  |
+| st-admin | enable-plugin --plugin signals --account %%group_acct%% |  |
+
+| *Comment* | Test Case: Groups UI Signal from group home - Login as non group member, do not see signal |
+| st-admin | add-member --workspace %%group_ws%% --email %%username%% |  |
+| st-logoutin |  |  |
+| open_ok | /st/signals |  |
+| st-name-widget | 3 | signals_widget |
+| wait_for_element_visible_ok | network-select | 30000 |
+| select_ok | network-select | index=0 |
+| st-name-widget | 3 | signals_widget |
+| st_text_unlike_in_activities_widget | signals_widget | %%mysignal_1%% |
+| st_text_unlike_in_activities_widget | signals_widget | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
+| st_text_unlike_in_activities_widget | signals_widget | %%mysignal_2%% |
+
+| *Comment* | Test Case: Groups UI Signal from group home - Add group, see signal |
+| st-admin | add-member --group %%group_id%% --email %%username%% |  |
+| open_ok | /st/signals |  |
+| st-name-widget | 3 | signals_widget |
+| wait_for_element_visible_ok | network-select | 30000 |
+| select_ok | network-select | index=0 |
+| st-name-widget | 3 | signals_widget |
+| st_verify_text_in_activities_widget | signals_widget | %%mysignal_1%% |
+| st_verify_text_in_activities_widget | signals_widget | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
+| st_verify_text_in_activities_widget | signals_widget | %%mysignal_2%% |
 
 | *Comment* | Test Case: Groups UI Signal from group home Teardown |
 | delete-group | %%group_id%% |

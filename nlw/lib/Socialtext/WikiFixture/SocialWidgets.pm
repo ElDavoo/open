@@ -460,8 +460,7 @@ sub st_verify_text_in_activities_widget {
     my ($self, $widgetname, $texttofind) = @_;
     #eval {
         $self->handle_command('st-select-widget-frame', $widgetname);
-        $self->handle_command('wait_for_element_visible_ok', 'action', 10000);
-        $self->handle_command('pause', 2000);
+        $self->handle_command('pause', 3000);
         #If is regexp,
         if ($texttofind=~/^qr\//) {
             $self->handle_command('text_like','//body', $texttofind);
@@ -514,8 +513,7 @@ Postcondition: Text is unverified (or not), Frame focus is back on dashboard
 sub st_text_unlike_in_activities_widget  {
     my ($self, $widgetname, $notpresent) = @_;
     $self->handle_command('st-select-widget-frame', $widgetname);
-    $self->handle_command('wait_for_element_visible_ok', 'action', 10000);
-    $self->handle_command('pause', 2000);
+    $self->handle_command('pause', 3000);
     $self->handle_command('text_unlike','//body', $notpresent);
     $self->handle_command('select-frame', 'relative=parent');
     ok(!$@, 'st_text_unlike_in_activities_widget');
