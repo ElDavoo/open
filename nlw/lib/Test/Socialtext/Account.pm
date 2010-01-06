@@ -5,7 +5,7 @@ use warnings;
 use Exporter;
 use Socialtext::CLI;
 use File::Temp qw(tempdir);
-use t::Socialtext::CLITestUtils qw(expect_success);
+use Test::Socialtext::CLIUtils qw(expect_success);
 
 our @EXPORT_OK = qw/delete_recklessly import_account_ok export_account/;
 

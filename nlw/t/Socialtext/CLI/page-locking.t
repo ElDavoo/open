@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 32;
 use Socialtext::CLI;
-use t::Socialtext::CLITestUtils qw/expect_success expect_failure/;
+use Test::Socialtext::CLIUtils qw/expect_success expect_failure/;
 
 fixtures( 'admin', 'destructive' );
 

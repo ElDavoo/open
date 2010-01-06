@@ -7,7 +7,7 @@ use Socialtext::Account;
 use File::Slurp qw(write_file);
 
 BEGIN { use_ok 'Socialtext::CLI' }
-use t::Socialtext::CLITestUtils qw/expect_failure expect_success/;
+use Test::Socialtext::CLIUtils qw/expect_failure expect_success/;
 
 fixtures( 'db' );
 

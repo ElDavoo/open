@@ -6,7 +6,7 @@ use warnings;
 use IPC::Run;
 
 use Test::Socialtext tests => 11;
-use t::Socialtext::CLITestUtils qw/expect_failure expect_success/;
+use Test::Socialtext::CLIUtils qw/expect_failure expect_success/;
 
 use Socialtext::Permission qw/ST_READ_PERM ST_EDIT_PERM 
                               ST_ATTACHMENTS_PERM

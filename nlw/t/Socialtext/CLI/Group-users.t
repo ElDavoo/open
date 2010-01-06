@@ -5,7 +5,7 @@ use warnings;
 use Test::Socialtext tests => 24;
 use Test::Output qw(combined_from);
 use Socialtext::CLI;
-use t::Socialtext::CLITestUtils;
+use Test::Socialtext::CLIUtils;
 
 # Only need a DB.
 fixtures(qw(db));

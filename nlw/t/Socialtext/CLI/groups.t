@@ -5,7 +5,7 @@ use strict;
 use Test::Socialtext tests => 35;
 use Test::Exception;
 BEGIN { use_ok 'Socialtext::CLI'; }
-use t::Socialtext::CLITestUtils qw/is_last_exit/;
+use Test::Socialtext::CLIUtils qw/is_last_exit/;
 use Test::Output qw(combined_from);
 
 fixtures('db');

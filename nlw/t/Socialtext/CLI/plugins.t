@@ -8,7 +8,7 @@ use Sys::Hostname;
 use Cwd;
 
 BEGIN { use_ok 'Socialtext::CLI' }
-use t::Socialtext::CLITestUtils qw/expect_failure expect_success call_cli_argv/;
+use Test::Socialtext::CLIUtils qw/expect_failure expect_success call_cli_argv/;
 
 fixtures('db');
 

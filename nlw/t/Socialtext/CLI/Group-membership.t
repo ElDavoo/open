@@ -6,7 +6,7 @@ use Test::Socialtext tests => 118;
 use Test::Output qw(combined_from);
 use Carp qw/confess/;
 use Socialtext::CLI;
-use t::Socialtext::CLITestUtils;
+use Test::Socialtext::CLIUtils;
 
 # Only need a DB.
 fixtures(qw(db));

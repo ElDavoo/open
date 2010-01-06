@@ -7,7 +7,7 @@ use Test::Socialtext tests => 12;
 use Socialtext::CLI;
 use Test::Socialtext::Account;
 use Test::Output qw(combined_from);
-use t::Socialtext::CLITestUtils qw(expect_success);
+use Test::Socialtext::CLIUtils qw(expect_success);
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
 use YAML qw(LoadFile DumpFile);

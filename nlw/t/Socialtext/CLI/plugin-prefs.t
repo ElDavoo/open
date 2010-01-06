@@ -10,7 +10,7 @@ use File::Temp qw(tempdir);
 use Test::Socialtext tests => 12;
 use Socialtext::CLI;
 use Socialtext::SQL qw(:exec);
-use t::Socialtext::CLITestUtils qw(expect_success expect_failure);
+use Test::Socialtext::CLIUtils qw(expect_success expect_failure);
 
 # Fixtures: db
 fixtures(qw( db ));

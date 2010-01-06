@@ -1,4 +1,4 @@
-package t::Socialtext::CLITestUtils;
+package Test::Socialtext::CLIUtils;
 # @COPYRIGHT@
 use strict;
 use warnings;

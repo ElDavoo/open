@@ -6,7 +6,7 @@ use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext tests => 12;
 use Socialtext::CLI;
-use t::Socialtext::CLITestUtils qw(expect_success call_cli_argv);
+use Test::Socialtext::CLIUtils qw(expect_success call_cli_argv);
 
 fixtures(qw( db ));
 

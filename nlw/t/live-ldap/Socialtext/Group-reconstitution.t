@@ -12,7 +12,7 @@ use Test::Socialtext::Account;
 use Test::Differences;
 use Socialtext::CLI;
 use Socialtext::Group::Factory;
-use t::Socialtext::CLITestUtils qw(expect_success);
+use Test::Socialtext::CLIUtils qw(expect_success);
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
 

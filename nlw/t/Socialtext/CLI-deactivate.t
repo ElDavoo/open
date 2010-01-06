@@ -5,7 +5,7 @@ use strict;
 use Test::Socialtext tests => 14;
 
 BEGIN { use_ok 'Socialtext::CLI' }
-use t::Socialtext::CLITestUtils qw/expect_failure expect_success/;
+use Test::Socialtext::CLIUtils qw/expect_failure expect_success/;
 
 fixtures('db');
 

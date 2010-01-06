@@ -10,7 +10,7 @@ use Test::Socialtext::User;
 use Test::Socialtext::Group;
 use Test::Socialtext::Workspace;
 use Test::Socialtext::Account;
-use t::Socialtext::CLITestUtils qw(expect_success);
+use Test::Socialtext::CLIUtils qw(expect_success);
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
 use Data::Dumper;
