@@ -1527,6 +1527,11 @@ sub can_use_plugin {
     );
 }
 
+sub is_plugin_enabled {
+    my $self = shift;
+    $self->can_use_plugin(@_);
+}
+
 sub can_use_plugin_with {
     my ($self, $plugin_name, $buddy) = @_;
 
