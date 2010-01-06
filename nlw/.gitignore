@@ -342,7 +342,6 @@ t/Socialtext/JSON/Proxy-graceful.t
 t/rest_files/sleeper2.pl
 t/wikitests/search/people.wiki
 t/lib/Socialtext/Gadgets/UserAgent.pm
-t/wikitests/miki/signals-toaccount.wiki
 t/wikitests/socialcalc/recursion.wiki
 t/wikitests/test-data/socialcalc/recurse-1-2.ssheet
 t/wikitests/test-data/socialcalc/recurse-2-1.ssheet
@@ -411,3 +410,4 @@ lib/Socialtext/Gadgets/Container/EditGroup.pm
 lib/Socialtext/Handler/Container/EditGroup.pm
 t/wikitests/control/transform_accounts.wiki
 t/wikitests/dashboard/manage.wiki
+t/wikitests/miki/signals-to-network.wiki
