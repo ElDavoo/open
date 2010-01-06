@@ -220,7 +220,7 @@ sub GET_layout {
     my $gadgets = $self->container->gadgets;
     my @cols;
     for (sort { $a->row <=> $b->row } @$gadgets) {
-        push @{$cols[$_->col]}, $_->gadget_instance_id+0;
+        push @{ $cols[ $_->col ] }, $_->as_hash;
     }
     return encode_json(\@cols);
 }
