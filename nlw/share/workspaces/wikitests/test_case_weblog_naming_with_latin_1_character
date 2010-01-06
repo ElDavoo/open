@@ -1,0 +1,20 @@
+This test provoked by {bz: 3442} - creating a blog name with a Latin-1 char causes weblogs to fail
+
+| *Comment* | Test Case: Weblog naming with Latin-1 character |  |
+| *Comment* | This testcase will fail and then cause all subsequent users of the Weblogs link to fail |  |
+| *Comment* | To restore the dev env to working weblogs, executed these two commands |  |
+| *Comment* | st-admin delete-tag  --w %%workspace%% --search claus |  |
+| *Comment* | rm ~/.nlw/root/plugin/%%workspace%%/weblog/cache.db |  |
+
+| *Comment* | Test Case: Weblog naming: Make a blog with a Latin-1 char in its name |  |
+| open_ok | /%%workspace%%/?action=users_settings |  |
+| click_and_wait | link=Create New Weblog |  |
+| type_ok | weblog_title | claus´ blog %%start_time%% |
+| click_and_wait | link=Save |  |
+| text_like | st-editing-tools-edit | claus´ blog %%start_time%% |
+| open_ok | /%%workspace%% |  |
+| click_and_wait | link=Weblogs |  |
+
+| wait_for_text_present_ok | claus´ blog %%start_time%% | 10000 |
+
+| *Comment* | Test Case: Weblog naming with Latin-1 character COMPLETED |  |
