@@ -1576,9 +1576,15 @@ sub deliver_email_error_like {
 sub set_from_json {
     my $self = shift;
     my $var  = shift;
-    my $key  = shift;
+    my @keys = @_;
 
-    $self->{$var} = $self->{json}{$key};
+    my $cur = $self->{json};
+    for (@keys) {
+        return unless ref $cur;
+        $cur = ref $cur eq 'HASH' ? $cur->{$_} : $cur->[$_];
+    }
+    $self->{$var} = $cur;
+    diag "Set variable $var to $self->{$var}";
 }
 
 sub set_from_subject {
