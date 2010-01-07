@@ -99,3 +99,18 @@ sub call_cli_argv {
 }
 
 1;
+
+=head1 NAME
+
+    Test::Socialtext::CLIUtils -- Commandline test utils
+
+=head1 DESCRIPTION
+
+    Test utilities that aid in writing st-admin unit tests.
+
+=head1 SYNOPSIS
+
+    use Test::Socialtext::CLIUtils qw/expect_success
+        expect_failure is_last_exit call_cli_argv/;
+
+=cut
