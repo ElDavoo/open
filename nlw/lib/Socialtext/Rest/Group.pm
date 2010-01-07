@@ -53,6 +53,11 @@ sub PUT_json {
         return 'You must be an admin to edit this group';
     }
 
+    unless ( $group->can_update_store ) {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return loc('Group membership cannot be changed');
+    }
+
     my $data = eval { decode_json( $rest->getContent ) };
 
     if (!$data or ref($data) ne 'HASH') {
