@@ -3672,6 +3672,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   list-groups [--account or --workspace]
   show-group-config --group
   create-group --ldap-dn [--account]
+  show-members --group 
   add-member --group [ --account or --workspace ]
   add-member [ --username or --email ] --group 
   add-workspace-admin --group  --workspace
@@ -4253,7 +4254,11 @@ System User.
 Given a Group and an Account or Workspace, add the Group as a Member of the
 Account or Workspace, if it exists.
 
-=head2 add-member [ --username or --email ] --group 
+=head2 show-members --group
+
+Given a Group, list its members.
+
+=head2 add-member [ --username or --email ] --group
 
 Given a Group and a User, add the User as a Member of the Group.
 
