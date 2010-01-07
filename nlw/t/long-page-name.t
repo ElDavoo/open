@@ -4,9 +4,9 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 7;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
-my $hub   = new_hub('admin');
+my $hub   = new_hub('empty');
 my $pages = $hub->pages;
 
 my $x255 = 'x' x 255;

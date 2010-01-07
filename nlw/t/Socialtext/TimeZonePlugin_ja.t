@@ -6,7 +6,7 @@ use warnings;
 use utf8;
 
 use Test::Socialtext;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 BEGIN {
     unless ( eval { require DateTime::Format::HTTP; 1 } ) {
@@ -18,7 +18,7 @@ use DateTime;
 use Socialtext::TimeZonePlugin;
 
 my $zones = Socialtext::TimeZonePlugin->zones;
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 my $prefs = $hub->preferences_object;
 
 my $tz = $hub->timezone;

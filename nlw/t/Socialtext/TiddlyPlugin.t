@@ -5,7 +5,7 @@ use warnings;
 
 use mocked 'Apache';
 use Test::Socialtext tests => 17;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 BEGIN {
     use_ok('Socialtext::TiddlyPlugin');
@@ -13,7 +13,7 @@ BEGIN {
 }
 
 my $Title = "Hey, it is a page";
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
 #### Test the units
 
@@ -65,7 +65,7 @@ like $attribute{'created'}, qr{\d{12}},
 is $attribute{'tags'},        'love [[hope charity]]',  'tiddler lists correct tags';
 is $attribute{'wikiformat'},  'socialtext', 'Wiki format socialtext';
 like $attribute{'server.host'}, qr{^https?://},   'server.host looks like a uri';
-is $attribute{'server.workspace'}, 'admin', 'tiddler has the right workspace';
+is $attribute{'server.workspace'}, 'empty', 'tiddler has the right workspace';
 is $attribute{'server.page.id'},   $page->uri,  'page.id is set to uri';
 is $attribute{'server.page.name'}, $Title, 'page.name is set to title';
 is $attribute{'server.page.revision'}, $page->revision_id,

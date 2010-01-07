@@ -4,14 +4,14 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 12;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 filters {
     wiki => 'format',
     match => 'wrap_html',
 };
 
-my $viewer = new_hub('admin')->viewer;
+my $viewer = new_hub('empty')->viewer;
 
 run_is wiki => 'match';
 

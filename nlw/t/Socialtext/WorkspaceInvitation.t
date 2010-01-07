@@ -21,16 +21,16 @@ BEGIN {
     use_ok( 'Socialtext::WorkspaceInvitation' );
 }
 
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 $Socialtext::EmailSender::Base::SendClass = 'Test';
 
-my $admin_workspace = Socialtext::Workspace->new( name => 'admin' );
+my $workspace = Socialtext::Workspace->new( name => 'empty' );
 my $current_user    = Socialtext::User->new( username => 'devnull1@socialtext.com' );
 
 Can_send_without_exception: {
     my $invitation = Socialtext::WorkspaceInvitation->new(
-        workspace => $admin_workspace,
+        workspace => $workspace,
         from_user => $current_user,
         invitee   => 'devnull7@socialtext.com',
     );
@@ -44,7 +44,7 @@ my @cases = ( { label        => 'non-appliance',
                 is_appliance => 0,
                 username     => 'devnull8@socialtext.com',
                 tests        => [ qr/From: devnull1\@socialtext\.com/,
-                                  qr/to join Admin Wiki/,
+                                  qr/to join Empty Wiki/,
                                   qr{/submit/confirm_email},
                                 ],
               },
@@ -77,7 +77,7 @@ for my $c (@cases) {
     Email::Send::Test->clear;
 
     my $invitation = Socialtext::WorkspaceInvitation->new(
-        workspace => $admin_workspace,
+        workspace => $workspace,
         from_user => $current_user,
         invitee   => $c->{username},
     );
@@ -92,7 +92,7 @@ for my $c (@cases) {
     }
 
     my $user = Socialtext::User->Resolve( $c->{username} );
-    is $user->primary_account_id, $admin_workspace->account_id,
+    is $user->primary_account_id, $workspace->account_id,
        'invited user primary_account_id matches workspace';
 
     my @emails = Email::Send::Test->emails;
@@ -103,7 +103,7 @@ for my $c (@cases) {
     }
 };
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 my $viewer = $hub->viewer;
 ok( $viewer, "viewer acquired" );
 {
@@ -118,7 +118,7 @@ Another paragraph.
 EOF
 
     my $invitation = Socialtext::WorkspaceInvitation->new(
-        workspace  => $admin_workspace,
+        workspace  => $workspace,
         from_user  => $current_user,
         invitee    => 'devnull9@socialtext.com',
         extra_text => $extra_text,

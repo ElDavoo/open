@@ -14,12 +14,12 @@ BEGIN {
     use_ok( 'Socialtext::SyndicatePlugin' );
 }
 
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 # REVIEW: See t/syndicate-page.t for a less regular expression intensive
 # way to do feed tests
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
 # We have to call syndicate off the hub to initialize Socialtext::CGI :(
 my $syndicator = $hub->syndicate;

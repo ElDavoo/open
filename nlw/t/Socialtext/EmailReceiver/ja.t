@@ -10,9 +10,9 @@ use Socialtext::Workspace;
 use_ok('Socialtext::EmailReceiver::Factory');
 
 ###############################################################################
-# Fixtures: admin_no_pages
+# Fixtures: empty
 # - need *some* Workspace, so the "devnull1" User has been created
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 my $test_locale = 'ja';
 my $wksp = Socialtext::Workspace->create(

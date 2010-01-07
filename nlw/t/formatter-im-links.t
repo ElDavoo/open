@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 my @tests =
     ( [ "An aim link aim:foobar\n" =>

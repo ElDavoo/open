@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 32;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 use File::Basename ();
 use File::Temp ();
@@ -13,21 +13,21 @@ use YAML ();
 use Socialtext::Account;
 use Socialtext::AppConfig;
 
-my $hub = new_hub('admin');
-my $admin = $hub->current_workspace;
+my $hub = new_hub('empty');
+my $ws  = $hub->current_workspace;
 my $test_dir = Socialtext::AppConfig->test_dir();
 
 Data_paths_exist: {
-    ok( scalar ( grep { m{data/admin} } $admin->_data_dir_paths() ),
+    ok( scalar ( grep { m{data/empty} } $ws->_data_dir_paths() ),
         '_data_dir_paths() includes pages' );
-    ok( scalar ( grep { m{plugin/admin} } $admin->_data_dir_paths() ),
+    ok( scalar ( grep { m{plugin/empty} } $ws->_data_dir_paths() ),
         '_data_dir_paths() includes plugin' );
-    ok( scalar ( grep { m{user/admin} } $admin->_data_dir_paths() ),
+    ok( scalar ( grep { m{user/empty} } $ws->_data_dir_paths() ),
         '_data_dir_paths() includes user' );
 }
 
 Export_includes_meta_info: {
-   $admin->_dump_meta_to_yaml_file( $test_dir );
+   $ws->_dump_meta_to_yaml_file( $test_dir );
 
    my $meta_file = "$test_dir/meta.yaml";
    ok(-f $meta_file, 'meta.yaml file exists');
@@ -38,13 +38,13 @@ Export_includes_meta_info: {
 
 Export_includes_logo_and_info: {
     my $image ='t/attachments/socialtext-logo-30.gif';
-    $admin->set_logo_from_file(
+    $ws->set_logo_from_file(
         filename   => $image,
     );
 
-    $admin->_dump_to_yaml_file( $test_dir );
+    $ws->_dump_to_yaml_file( $test_dir );
 
-    my $ws_file = "$test_dir/admin-info.yaml";
+    my $ws_file = "$test_dir/empty-info.yaml";
     ok( -f $ws_file, 'workspace data yaml dump exists' );
 
     my $ws_dump = YAML::LoadFile($ws_file);
@@ -53,14 +53,14 @@ Export_includes_logo_and_info: {
         'account_name is Socialtext in workspace dump' );
     is( $ws_dump->{creator_username}, 'devnull1@socialtext.com',
         'check creator name in workspace dump' );
-    is( $ws_dump->{logo_filename}, File::Basename::basename( $admin->logo_filename() ),
+    is( $ws_dump->{logo_filename}, File::Basename::basename( $ws->logo_filename() ),
         'check logo filename' );
 }
 
 Export_users_dumped: {
-    $admin->_dump_users_to_yaml_file( $test_dir );
+    $ws->_dump_users_to_yaml_file( $test_dir );
 
-    my $users_file = "$test_dir/admin-users.yaml";
+    my $users_file = "$test_dir/empty-users.yaml";
     ok( -f $users_file, 'users data yaml dump exists' );
 
     my $users_dump = YAML::LoadFile($users_file);
@@ -74,9 +74,9 @@ Export_users_dumped: {
 }
 
 Export_permissions_dumped: {
-    $admin->_dump_permissions_to_yaml_file( $test_dir );
+    $ws->_dump_permissions_to_yaml_file( $test_dir );
 
-    my $users_file = "$test_dir/admin-permissions.yaml";
+    my $users_file = "$test_dir/empty-permissions.yaml";
     ok( -f $users_file, 'permissions data yaml dump exists' );
 
     my $perm_dump = YAML::LoadFile($users_file);
@@ -90,26 +90,26 @@ Export_permissions_dumped: {
 Export_tarball_format: {
     my $dir = File::Temp::tempdir( CLEANUP => 1 );
 
-    my $tarball = $admin->export_to_tarball( dir => $dir);
+    my $tarball = $ws->export_to_tarball( dir => $dir);
     ok( -f $tarball, 'tarball exists' );
 
     system( 'tar', 'xzf', $tarball, '-C', $dir )
         and die "Cannot untar $tarball: $!";
 
     for my $data_dir ( qw( data plugin user ) ) {
-        my $d = "$dir/$data_dir/admin";
+        my $d = "$dir/$data_dir/empty";
         ok( -d $d, "$d is in tarball" );
     }
 
-    ok( -f "$dir/admin-info.yaml", 'workspace yaml dump file is in tarball' );
-    ok( -f "$dir/admin-users.yaml", 'users yaml dump file is in tarball' );
-    ok( -f "$dir/admin-permissions.yaml", 'permissions yaml dump file is in tarball' );
+    ok( -f "$dir/empty-info.yaml", 'workspace yaml dump file is in tarball' );
+    ok( -f "$dir/empty-users.yaml", 'users yaml dump file is in tarball' );
+    ok( -f "$dir/empty-permissions.yaml", 'permissions yaml dump file is in tarball' );
     ok( -f "$dir/meta.yaml", 'Export meta file is in tarball' );
 }
 
 Export_to_different_name: {
     my $dir = File::Temp::tempdir( CLEANUP => 1 );
-    my $tarball = $admin->export_to_tarball(name => 'monkey', dir => $dir);
+    my $tarball = $ws->export_to_tarball(name => 'monkey', dir => $dir);
     like $tarball, qr/monkey/, 'tarball named like a monkey';
     ok( -f $tarball, 'tarball exists' );
 

@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Test::Socialtext;
 
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 filters { regexps => [qw'lines chomp make_regexps'] };
 plan tests => 1 * (map { ($_->regexps) } blocks);

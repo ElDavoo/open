@@ -5,7 +5,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 BEGIN {
     unless ( eval { require Email::Send::Test; 1 } ) {
@@ -16,7 +16,7 @@ BEGIN {
 plan tests => 7;
 $Socialtext::EmailSender::Base::SendClass = 'Test';
 
-my $hub    = new_hub('admin');
+my $hub    = new_hub('empty');
 my $bugs   = $hub->bugs;
 
 # XXX the hub needs a rest object, so we need a mock rest object
@@ -38,10 +38,10 @@ my $bugs   = $hub->bugs;
     is( $emails[0]->header('From'), 'noreply@socialtext.com',
         'Email is from proper sender' );
     like( $emails[0]->header('Subject'),
-          qr/Application error in admin for devnull1\@socialtext.com on/,
+          qr/Application error in empty for devnull1\@socialtext.com on/,
           'Subject is correct' );
     like( $emails[0]->body,
-          qr/_15_workspace:\s+admin/, 'workspace is correct' );
+          qr/_15_workspace:\s+empty/, 'workspace is correct' );
     like( $emails[0]->body,
           qr/_30_user_id:\s+devnull1\@socialtext.com/, 'workspace is correct' );
     like( $emails[0]->body,

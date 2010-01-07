@@ -5,14 +5,14 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 1;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 use Socialtext::Pages;
 
 filters {
     wiki => 'format',
 };
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 my $viewer = $hub->viewer;
 
 # for user wafl

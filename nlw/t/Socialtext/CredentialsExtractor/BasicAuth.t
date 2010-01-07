@@ -10,12 +10,7 @@ use Socialtext::AppConfig;
 use Test::Socialtext tests => 10;
 use Test::Socialtext::User;
 
-###############################################################################
-# Fixtures: admin_no_pages
-#
-# Need _some_ workspace created, so that we've got a User to extract
-# credentials for.
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 ###############################################################################
 ### TEST DATA

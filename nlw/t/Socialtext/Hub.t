@@ -5,9 +5,9 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 2;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
 my $p2 = Socialtext::User->create(
     username => "user2-$$",

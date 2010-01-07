@@ -6,14 +6,14 @@ use warnings;
 use utf8;
 
 use Test::Socialtext tests => 21;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 BEGIN {
     use_ok( 'Socialtext::WeblogPlugin' );
 }
 
 WEBLOG_CACHE: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
 
     $hub->weblog->current_weblog('socialtext blog');
     $hub->weblog->update_current_weblog();
@@ -22,7 +22,7 @@ WEBLOG_CACHE: {
 }
 
 CREATE_WEBLOG: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
 
     my $category = $hub->weblog->create_weblog('foo');
     check_category($hub, $category, 'foo Weblog');
@@ -54,7 +54,7 @@ sub check_category {
 }
 
 WEBLOG_TITLE_IS_VALID: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
    
     #
     # Check length boundary conditions.
@@ -78,7 +78,7 @@ WEBLOG_TITLE_IS_VALID: {
 }
 
 WEBLOG_NAME_TO_ID: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
 
     #
     # Check creating the page object.

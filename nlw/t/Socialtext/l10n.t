@@ -5,14 +5,14 @@ use warnings;
 use Test::Socialtext tests => 7;
 use Socialtext::AppConfig;
 
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 BEGIN {
     use_ok 'Socialtext::l10n', qw(loc loc_lang best_locale system_locale);
 }
 
 set_system_locale('en');
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
 Default_to_english: {
     is loc('Welcome'), 'Welcome';

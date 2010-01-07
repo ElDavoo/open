@@ -5,7 +5,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 my $url = 'http://www.burningchrome.com/~cdent/mt/index2.xml';
 my $bogus_url = 'http://www.burningchrome/~cdent/mt/index3.xml';
@@ -19,7 +19,7 @@ my @tests = (
 my $test_count = scalar @tests + 6;
 plan tests => $test_count;
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 my $viewer = $hub->viewer;
 my $fetchrss = $hub->fetchrss;
 

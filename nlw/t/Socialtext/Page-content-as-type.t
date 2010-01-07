@@ -5,13 +5,13 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 9;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 BEGIN {
     use_ok( 'Socialtext::Page' );
 }
 
-my $hub       = new_hub('admin');
+my $hub       = new_hub('empty');
 my $page_name = 'sample page';
 my $content   =<<'EOF';
 This is not your time.

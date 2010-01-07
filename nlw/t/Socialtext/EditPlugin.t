@@ -5,7 +5,7 @@ use warnings;
 use mocked 'Apache';
 use mocked 'Apache::Cookie';
 use Test::Socialtext tests => 23;
-fixtures(qw( clean admin_no_pages ));
+fixtures(qw( clean empty ));
 
 BEGIN {
     use_ok( 'Socialtext::EditPlugin' );
@@ -14,7 +14,7 @@ BEGIN {
 my @revision_ids;
 my $save_revision_id;
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 my $page;
 $page = Socialtext::Page->new( hub => $hub )->create(
     title   => 'revision_page',
@@ -31,7 +31,7 @@ $page = Socialtext::Page->new( hub => $hub )->create(
 $save_revision_id = $page->revision_id;
 
 EDIT_CONTENT: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
     my $cgi = $hub->rest->query;
     $cgi->param('page_name', 'revision_page');
     $cgi->param('revision_id', $revision_ids[0]);
@@ -53,7 +53,7 @@ EDIT_CONTENT: {
 }
 
 EDIT: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
     my $cgi = $hub->rest->query;
     $cgi->param('page_name', 'revision_page');
     $cgi->param('revision_id', $revision_ids[-1]);
@@ -68,7 +68,7 @@ EDIT: {
 }
 
 EDIT_CONTENT_contention: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
     my $cgi = $hub->rest->query;
     $cgi->param('page_name', 'revision_page');
     $cgi->param('revision_id', $revision_ids[0]);
@@ -88,7 +88,7 @@ EDIT_CONTENT_contention: {
 }
 
 EDIT_CONTENT_contention_other_than_content: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
     my $cgi = $hub->rest->query;
     $cgi->param('page_name', 'revision_page');
     $cgi->param('revision_id', $revision_ids[0]);
@@ -113,7 +113,7 @@ EDIT_CONTENT_contention_other_than_content: {
 }
 
 _EDIT_CONTENTION_SCREEN: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
     my $cgi = $hub->rest->query;
     $cgi->param('page_name', 'revision_page');
     $cgi->param('revision_id', $revision_ids[0]);
@@ -130,14 +130,14 @@ _EDIT_CONTENTION_SCREEN: {
 }
 
 _THERE_IS_AN_EDIT_CONTENTION_revision_ids_the_same: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
     my $page = Socialtext::Page->new(hub => $hub, id => 'revision_page')->load;
     my $return = $hub->edit->_there_is_an_edit_contention($page, $page->revision_id);
     is($return, 0, 'No edit contention');
 }
 
 _THERE_IS_AN_EDIT_CONTENTION_different_revision_ids_different_content: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
     my $page = Socialtext::Page->new(hub => $hub, id => 'revision_page')->load;
     $page->content('Different Content');
 
@@ -146,7 +146,7 @@ _THERE_IS_AN_EDIT_CONTENTION_different_revision_ids_different_content: {
 }
 
 _THERE_IS_AN_EDIT_CONTENTION_different_revision_ids_same_content: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
     my $page = Socialtext::Page->new(hub => $hub, id => 'revision_page')->load;
     $page->content('Same Content');
     $page->store(user => $hub->current_user);
@@ -158,7 +158,7 @@ _THERE_IS_AN_EDIT_CONTENTION_different_revision_ids_same_content: {
 }
 
 SAVE: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
     my $cgi = $hub->rest->query;
     $cgi->param('page_name', 'save_page');
     $cgi->param('revision_id', $save_revision_id);
@@ -181,7 +181,7 @@ SAVE: {
 }
 
 SAVE_contention: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
     my $cgi = $hub->rest->query;
     $cgi->param('page_name', 'save_page');
     $cgi->param('revision_id', $save_revision_id);

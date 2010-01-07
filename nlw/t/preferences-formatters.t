@@ -4,12 +4,12 @@ use strict;
 use warnings;
 
 use Test::Socialtext;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 delimiters('===', '+++');
 plan tests => 1 * blocks;
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
 run_is object => 'html';
 

@@ -7,12 +7,7 @@ use Socialtext::WorkspaceInvitation;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 12;
 
-###############################################################################
-# FIXTURE: admin_no_pages
-#
-# - Need a workspace to invite Users to, but don't care what it is
-###############################################################################
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 ###############################################################################
 # We're *testing*, so don't send out any real e-mail messages.
@@ -22,7 +17,7 @@ $Socialtext::EmailSender::Base::SendClass = 'Test';
 # TEST: make sure that inviting a new LDAP User to a Workspace auto-vivifies
 # an LDAP User record (instead of creating a new Default User record).
 inviting_ldap_user_vivifies_ldap_user_record: {
-    my $workspace     = Socialtext::Workspace->new(name => 'admin');
+    my $workspace     = Socialtext::Workspace->new(name => 'empty');
     my $system_user   = Socialtext::User->SystemUser();
     my $email_address = 'john.doe@example.com';
 
@@ -66,7 +61,7 @@ inviting_ldap_user_vivifies_ldap_user_record: {
 # TODO: make sure that inviting an LDAP User by *e-mail alias* auto-vivifies
 # an LDAP User record (instead of creating a new Default User record).
 inviting_ldap_user_by_email_alias_vivifies_ldap_user_record: {
-    my $workspace     = Socialtext::Workspace->new(name => 'admin');
+    my $workspace     = Socialtext::Workspace->new(name => 'empty');
     my $system_user   = Socialtext::User->SystemUser();
     my $email_address = 'john.doe@example.com';
     my $aliased_email = 'jdoe@example.com';

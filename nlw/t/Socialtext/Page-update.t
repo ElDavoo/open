@@ -7,14 +7,14 @@ use DateTime;
 
 use Test::Socialtext tests => 20;
 use Socialtext::SQL;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 BEGIN {
     use_ok( 'Socialtext::Page' );
     use_ok( 'Socialtext::String' );
 }
 
-my $hub       = new_hub('admin');
+my $hub       = new_hub('empty');
 my $page_name = 'update page ' . time();
 my $content1  = 'one content';
 my $content2  = 'two content';

@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty ));
 
 plan tests => scalar blocks;
 
@@ -14,7 +14,7 @@ filters {
     match => [qw(chomp regexp)],
 };
 
-my $hub  = new_hub('admin');
+my $hub  = new_hub('empty');
 my $viewer  = $hub->viewer;
 
 run_like text => 'match';

@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 1;
-fixtures(qw( admin_no_pages ));
+fixtures(qw( empty destructive ));
 
 use Socialtext::Attachments;
 
@@ -13,9 +13,9 @@ use Socialtext::Attachments;
 # archives. See t/archive.t for more extensive tests of how we handle
 # various types of archive files.
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
-my $page = $hub->pages()->new_from_name('Quick Start');
+my $page = $hub->pages()->new_from_name('dummy page');
 $hub->pages()->current($page);
 
 my $zip = 't/attachments/flat-bundle.zip';
