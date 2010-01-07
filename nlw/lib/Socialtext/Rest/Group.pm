@@ -5,9 +5,10 @@ use warnings;
 use base 'Socialtext::Rest::Entity';
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
+use Socialtext::l10n qw(loc);
 use Socialtext::Permission qw(ST_READ_PERM ST_ADMIN_PERM);
 use Socialtext::Group;
-use Socialtext::Exceptions;
+use Socialtext::SQL ':txn';
 
 sub permission      { +{} }
 sub allowed_methods {'GET, PUT'}
@@ -88,27 +89,54 @@ sub PUT_json {
 }
 
 sub POST_to_trash {
-    my $self = shift;
-    my $rest = shift;
-    my $user = $rest->user;
+    my $self  = shift;
+    my $rest  = shift;
+    my $actor = $rest->user;
 
     my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
     unless ($group) {
-        $self->rest->header( -status => HTTP_404_Not_Found );
-        return "Group not found";
+        $self->rest->header(-status => HTTP_404_Not_Found);
+        return loc('Group not found');
     }
 
     my $can_admin = $group->user_can(
-        user => $user,
+        user => $actor,
         permission => ST_ADMIN_PERM,
     );
-    unless ($user->is_business_admin || $can_admin) {
-        $rest->header( -status => HTTP_403_Forbidden );
-        return 'You must be an admin to edit this group';
+    unless ($actor->is_business_admin || $can_admin) {
+        $rest->header(-status => HTTP_403_Forbidden);
+        return loc('You must be an admin to edit this group');
     }
 
+    unless ( $group->can_update_store ) {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return loc('Group membership cannot be changed');
+    }
 
-    $rest->header( -status => HTTP_204_No_Content );
+    my $data = decode_json($rest->getContent);
+    $data = (ref($data) eq 'HASH') ? [$data] : $data;
+
+    unless ($data) {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return loc('Malformed JSON passed to resource');
+    }
+
+    sql_begin_work();
+    eval {
+        for my $item (@$data) {
+            my $name_or_id = $item->{user_id} || $item->{username};
+            my $condemned = Socialtext::User->Resolve($name_or_id);
+            $group->remove_user(user => $condemned, actor => $actor);
+        }
+    };
+    if ($@) {
+        sql_rollback();
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return loc('Could not process request');
+    }
+
+    sql_commit();
+    $rest->header(-status => HTTP_200_OK);
     return '';
 }
 

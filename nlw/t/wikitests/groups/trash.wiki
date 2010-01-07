@@ -2,32 +2,82 @@
 
 | standard-test-setup |
 
-## Create A group, add an admin and a couple of users.
-
-| *Comment*         | Set up Group, membership |                                        |       |
-| set               | group_name               | group%%start_time%%                    |       |
-| create-group      | %%group_name%%           | %%account%%                            |       |
-| set               | admin                    | admin%%start_time%%@ken.socialtext.net |       |
-| create-user       | %%admin%%                | password                               |       |
-| set               | admin_id                 | %%user_id%%                            |       |
-| add-user-to-group | %%admin_id%%             | %%group_id%%                           | admin |
-## Possible member names: mercury, plutonium, lead, zinc, copper, cobalt
+## Setup: Create a group, add an admin and a some users.
+| *Comment*         | Set up Group, membership |                                            |       |
+| set               | group_name               | group%%start_time%%                        |       |
+| create-group      | %%group_name%%           | %%account%%                                |       |
+| set               | admin                    | admin%%start_time%%@ken.socialtext.net     |       |
+| create-user       | %%admin%%                | password                                   |       |
+| set               | admin_id                 | %%user_id%%                                |       |
+| add-user-to-group | %%admin_id%%             | %%group_id%%                               | admin |
+| set               | mercury                  | mercury%%start_time%%@ken.socialtext.net   |       |
+| create-user       | %%mercury%%              | password                                   |       |
+| set               | mercury_id               | %%user_id%%                                |       |
+| add-user-to-group | %%mercury_id%%           | %%group_id%%                               |       |
+| set               | zinc                     | zinc%%start_time%%@ken.socialtext.net      |       |
+| create-user       | %%zinc%%                 | password                                   |       |
+| set               | zinc_id                  | %%user_id%%                                |       |
+| add-user-to-group | %%zinc_id%%              | %%group_id%%                               |       |
+| set               | cobalt                   | cobalt%%start_time%%@ken.socialtext.net    |       |
+| create-user       | %%cobalt%%               | password                                   |       |
+| set               | cobalt_id                | %%user_id%%                                |       |
+| add-user-to-group | %%cobalt_id%%            | %%group_id%%                               |       |
+| set               | lead                     | lead%%start_time%%@ken.socialtext.net      |       |
+| create-user       | %%lead%%                 | password                                   |       |
+| set               | lead_id                  | %%user_id%%                                |       |
+| add-user-to-group | %%lead_id%%              | %%group_id%%                               |       |
+| set               | copper                   | copper%%start_time%%@ken.socialtext.net    |       |
+| create-user       | %%copper%%               | password                                   |       |
+| set               | copper_id                | %%user_id%%                                |       |
+| add-user-to-group | %%copper_id%%            | %%group_id%%                               |       |
+| set               | plutonium                | plutonium%%start_time%%@ken.socialtext.net |       |
+| create-user       | %%plutonium%%            | password                                   |       |
+| set               | plutonium_id             | %%user_id%%                                |       |
+| add-user-to-group | %%plutonium_id%%         | %%group_id%%                               |       |
+################################################################################
 
 ## POST, Group Not Found
-
 | *Comment* | POST, Group Not Found |                 |
 | POST-json | /data/groups/0/trash  | {"user_id":"1"} |
 | code-is   | 404                   |                 |
 
 ## POST, User is not an Admin
+| *Comment* | POST, User devnull1 does not have admin privs |                 |
+| POST-json | /data/groups/%%group_id%%/trash               | {"user_id":"1"} |
+| code-is   | 403                                           |                 |
 
-| *Comment* | POST, Group Not Found |                 |
-| POST-json | /data/groups/%%group_id%%/trash  | {"user_id":"1"} |
-| code-is   | 403                   |                 |
+## Log in as a Group admin
+| *Comment*      | Log in as a Group admin |          |
+| http-user-pass | %%admin%%               | password |
 
-## Test POST
+## Check Group for proper membership
+| *Comment*       | Check Group for proper membership |
+| GET-json        | /data/groups/%%group_id%%/users   |
+| code-is         | 200                               |
+| json-parse      |                                   |
+| json-array-size | 7                                 |
 
-| *Comment*      | Test POST                       |                 |
-| http-user-pass | %%admin%%                       | password        |
-| POST-json      | /data/groups/%%group_id%%/trash | {"user_id":"1"} |
-| code-is        | 204                             |                 |
+## Delete one user using user_id
+| *Comment* | Delete one user using user_id   |                              |
+| POST-json | /data/groups/%%group_id%%/trash | {"user_id":"%%mercury_id%%"} |
+| code-is   | 200                             |                              |
+
+## Delete one user using username 
+| *Comment* | Delete one user using username  |                         |
+| POST-json | /data/groups/%%group_id%%/trash | {"username":"%%zinc%%"} |
+| code-is   | 200                             |                         |
+
+## Delete multiple users
+| *Comment* | Delete multiple users           |                                                                                   |
+| POST-json | /data/groups/%%group_id%%/trash | [{"username":"%%cobalt%%"},{"user_id":"%%lead_id%%"},{"user_id":"%%copper_id%%"}] |
+| code-is   | 200                             |                                                                                   |
+
+## Bad request for multiple delete doesn't delete anyone
+| *Comment*       | Bad request for multiple delete doesn't delete anyone |                                                           |
+| POST-json       | /data/groups/%%group_id%%/trash                       | [{"username":"%%plutonium%%"},{"username":"enosuchname"}] |
+| code-is         | 400                                                   |                                                           |
+| body-like       | Could not process request                             |                                                           |
+| GET-json        | /data/groups/%%group_id%%/users                       |                                                           |
+| code-is         | 200                                                   |                                                           |
+| json-parse      |                                                       |                                                           |
+| json-array-size | 2                                                     |                                                           |
