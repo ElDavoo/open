@@ -44,7 +44,7 @@
 | st-logoutin | %%nopermuser%% | %%password%% |
 | open_ok | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | Error | 30000 |
-| wait_for_text_present_ok | You do not have access to view this page | 30000 |
+| wait_for_text_present_ok | You do not have permission to view this page | 30000 |
 
 | *Comment* | Test Case: Groups Add member, Check again |  |
 | st-admin | add-member --e %%nopermuser%% --group %%group_id%% | is now a member of the |
