@@ -259,7 +259,7 @@ proto.setup_one_widget = function(params, callback) {
         $("input.iframe_location").val(url);
     }
 
-    self.open_iframe("/?action=gallery;type=dashboard", setup_widget);
+    self.open_iframe("/st/dashboard?gallery=1", setup_widget);
 }
 
 proto.getWidget = function(widget_name, callback) {
