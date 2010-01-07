@@ -7,6 +7,7 @@ use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
 use Socialtext::Permission qw(ST_READ_PERM ST_ADMIN_PERM);
 use Socialtext::Group;
+use Socialtext::Exceptions;
 
 sub permission      { +{} }
 sub allowed_methods {'GET, PUT'}
@@ -89,6 +90,23 @@ sub PUT_json {
 sub POST_to_trash {
     my $self = shift;
     my $rest = shift;
+    my $user = $rest->user;
+
+    my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
+    unless ($group) {
+        $self->rest->header( -status => HTTP_404_Not_Found );
+        return "Group not found";
+    }
+
+    my $can_admin = $group->user_can(
+        user => $user,
+        permission => ST_ADMIN_PERM,
+    );
+    unless ($user->is_business_admin || $can_admin) {
+        $rest->header( -status => HTTP_403_Forbidden );
+        return 'You must be an admin to edit this group';
+    }
+
 
     $rest->header( -status => HTTP_204_No_Content );
     return '';

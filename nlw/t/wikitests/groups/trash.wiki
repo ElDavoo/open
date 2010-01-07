@@ -13,8 +13,21 @@
 | add-user-to-group | %%admin_id%%             | %%group_id%%                           | admin |
 ## Possible member names: mercury, plutonium, lead, zinc, copper, cobalt
 
+## POST, Group Not Found
+
+| *Comment* | POST, Group Not Found |                 |
+| POST-json | /data/groups/0/trash  | {"user_id":"1"} |
+| code-is   | 404                   |                 |
+
+## POST, User is not an Admin
+
+| *Comment* | POST, Group Not Found |                 |
+| POST-json | /data/groups/%%group_id%%/trash  | {"user_id":"1"} |
+| code-is   | 403                   |                 |
+
 ## Test POST
 
-| *Comment* | Test POST                       |                 |
-| POST-json | /data/groups/%%group_id%%/trash | {"user_id":"1"} |
-| code-is   | 204                             |                 |
+| *Comment*      | Test POST                       |                 |
+| http-user-pass | %%admin%%                       | password        |
+| POST-json      | /data/groups/%%group_id%%/trash | {"user_id":"1"} |
+| code-is        | 204                             |                 |
