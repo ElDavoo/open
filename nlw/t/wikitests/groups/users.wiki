@@ -52,6 +52,7 @@ Tests for [Story: Groups ReST API]
 
 | set            | badmin     | badmin%%start_time%%@ken.socialtext.net |
 | create-user    | %%badmin%% | password                                |
+| set            | badmin_id  | %%user_id%%                             |
 | http-user-pass | %%badmin%% | password                                |
 
 | set-business-admin | %%badmin%%                | 1       |
@@ -97,8 +98,15 @@ Tests for [Story: Groups ReST API]
 | *Comment*   | Create the User, Add User to Group with defaults |                                        |
 | set         | jimmy                                            | jimmy%%start_time%%@ken.socialtext.net |
 | create-user | %%jimmy%%                                        | password                               |
+| set         | jimmy_id                                         | %%user_id%%                            |
 | POST_json   | /data/groups/%%group_id%%/users                  | {"username":"%%jimmy%%"}               |
 | code-is     | 201                                              |                                        |
+
+## Verify that the user's role was created with the correct attrs
+| *Comment* | Verify that the user's role was created with the correct attrs |
+| GET-json  | /data/events/groups/%%group_id%%                               |
+| code-is   | 200                                                            |
+| body-like | qr/%%badmin_id%%.+added.+%%jimmy_id%%/s                        |
 
 | *Comment*   | Create the User, Add User to Group with explicit role_name |                                               |
 | set         | jorge                                                      | jorge%%start_time%%@ken.socialtext.net        |
