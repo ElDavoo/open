@@ -8,6 +8,7 @@ use Socialtext::JSON qw/decode_json/;
 use Socialtext::Permission qw/ST_READ_PERM ST_ADMIN_PERM/;
 use Socialtext::User;
 use Socialtext::JobCreator;
+use Socialtext::l10n qw(loc);
 use namespace::clean -except => 'meta';
 
 # Anybody can see these, since they are just the list of workspaces the user
@@ -85,26 +86,26 @@ sub POST_json {
         my $name_or_id = $roledata->{user_id} || $roledata->{username};
         unless ( $name_or_id ) {
             $rest->header( -status => HTTP_400_Bad_Request );
-            return 'Missing a username or user_id';
+            return loc('Missing a username or user_id');
         }
 
         my $invitee = eval { Socialtext::User->Resolve($name_or_id) };
         unless ( $invitee ) {
             $rest->header( -status => HTTP_400_Bad_Request );
-            return "User with $name_or_id does not exist";
+            return loc("User [_1] does not exist",$name_or_id);
         }
 
         my $role_name = $roledata->{role_name} || 'member';
         my $role = Socialtext::Role->new( name => $role_name );
         unless ( $role && $role->name ) {
             $rest->header( -status => HTTP_400_Bad_Request );
-            return "Invalid role name $role_name";
+            return loc("Invalid Role name '[_1]'.", $role_name);
         }
 
         my $role_for_user = $group->role_for_user($invitee);
-        if ($role_for_user && $role_for_user->name eq $role_name) {
+        if ($role_for_user) {
             $rest->header( -status => HTTP_400_Bad_Request );
-            return "User $name_or_id already has Role $role_name";
+            return loc("User '[_1]' already has the Role of '[_2]' in this Group.", $invitee->guess_real_name, $role_for_user->name);
         }
 
         push @user_roles, [$invitee, $role];
