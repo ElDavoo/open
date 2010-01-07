@@ -9,9 +9,9 @@
  set | groupname | ἀπὸ τὸ Ἄξιον ἐστί %%start_time%% |
 
 | *Comment* | Test Case: User Creates Group disabled, try create group |  |
-| st-admin | disable-plugin --plugin groups --all-accounts | The groups plugin is now disabled for all accounts |
+| st-admin | disable-plugin --plugin groups --all-accounts |  |
 | open | /?create_group |  |
-| text_like | //body | You do not have access to view this page |
+| text_like | //body | You do not have permission to view this page |
 
 | *Comment* | Test Case: User Creates Group enabled, create group |  |
 | st-admin | enable-plugin --plugin groups --all-accounts | The groups plugin is now enabled for all accounts |
