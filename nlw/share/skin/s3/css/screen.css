@@ -4215,15 +4215,18 @@ body#dashBoard div#controls div#controlsRight ul {
 
 .container.create_group #col0,
 .container.create_group #col1,
-.container.create_group #col2 {
-    width: 30%;
+.container.create_group #col2,
+.container.edit_group #col0,
+.container.edit_group #col1,
+.container.edit_group #col2 {
+    width: 32%;
 }
 
-.container.create_group .formButtons {
+.container .formButtons {
     width: 100%;
     clear: both;
 }
-.container.create_group .flexButtonBlue {
+.container .flexButtonBlue {
     float: right;
     margin: 4px;
 }
