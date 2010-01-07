@@ -491,6 +491,11 @@
             'application/json': [Socialtext::Rest::Group, PUT_json]
         '*':                    [Socialtext::Rest::Group, bad_method]
 -
+    '/data/groups/:group_id/trash':
+        'POST':
+            'application/json': [Socialtext::Rest::Group, POST_to_trash]
+        '*':                    [Socialtext::Rest::Group, bad_method]
+-
     '/data/groups/:group_id/users':
         'GET':
             'application/json': [Socialtext::Rest::Group::Users, GET_json]

@@ -86,6 +86,14 @@ sub PUT_json {
     return undef;
 }
 
+sub POST_to_trash {
+    my $self = shift;
+    my $rest = shift;
+
+    $rest->header( -status => HTTP_204_No_Content );
+    return '';
+}
+
 1;
 
 =head1 NAME

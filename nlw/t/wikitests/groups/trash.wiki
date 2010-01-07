@@ -1,0 +1,20 @@
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+## Create A group, add an admin and a couple of users.
+
+| *Comment*         | Set up Group, membership |                                        |       |
+| set               | group_name               | group%%start_time%%                    |       |
+| create-group      | %%group_name%%           | %%account%%                            |       |
+| set               | admin                    | admin%%start_time%%@ken.socialtext.net |       |
+| create-user       | %%admin%%                | password                               |       |
+| set               | admin_id                 | %%user_id%%                            |       |
+| add-user-to-group | %%admin_id%%             | %%group_id%%                           | admin |
+## Possible member names: mercury, plutonium, lead, zinc, copper, cobalt
+
+## Test POST
+
+| *Comment* | Test POST                       |                 |
+| POST-json | /data/groups/%%group_id%%/trash | {"user_id":"1"} |
+| code-is   | 204                             |                 |
