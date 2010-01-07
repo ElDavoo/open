@@ -62,7 +62,7 @@ $.extend(Socialtext.Group.prototype, {
         }
     },
 
-    addUsers: function(userList, callback) {
+    addMembers: function(userList, callback) {
         $.ajax({
             url: this.url('/users'),
             type: 'post',
