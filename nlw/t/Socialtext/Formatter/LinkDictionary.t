@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 31;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 use Socialtext::Formatter::LinkDictionary;
 
@@ -22,7 +22,7 @@ my %DEFAULTLINKS = (
     image => '/data/workspaces/%{workspace}/attachments/%{page_uri}:%{id}/%{size}/%{filename}',
 );
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
 # confirm the default object is correctly created
 {
@@ -68,19 +68,19 @@ my $hub = new_hub('admin');
 
 # format something with the default dictionary
 {
-    my $text = "\n[hello moto]\n{link admin [junkie] farter}\n";
+    my $text = "\n[hello moto]\n{link empty [junkie] farter}\n";
 
     my $html = $hub->viewer->text_to_html($text);
 
     like( $html, qr{"index.cgi\?[^"]+page_name=hello%20moto"},
         'free link formats as expected' );
-    like( $html, qr{"/admin/index.cgi\?junkie#farter"},
+    like( $html, qr{"/empty/index.cgi\?junkie#farter"},
         'interwiki link formats as expected' );
 }
 
 # format something with the lite dictionary
 {
-    my $text = "\n[hello moto]\n{link admin [junkie] farter}\n";
+    my $text = "\n[hello moto]\n{link empty [junkie] farter}\n";
 
     my $viewer = $hub->viewer;
     $viewer->link_dictionary(Socialtext::Formatter::LiteLinkDictionary->new());
@@ -89,7 +89,7 @@ my $hub = new_hub('admin');
 
     like( $html, qr{hello%20moto\?action=edit},
         'free link formats as expected' );
-    like( $html, qr{"/m/page/admin/junkie#farter"},
+    like( $html, qr{"/m/page/empty/junkie#farter"},
         'interwiki link formats as expected' );
 }
 

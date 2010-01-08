@@ -6,7 +6,7 @@ use warnings;
 
 BEGIN {
     use Test::Socialtext tests => 3;
-    fixtures('admin');
+    fixtures(qw( empty ));
     use_ok( 'Socialtext::Handler::REST' );
 }
 

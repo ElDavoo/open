@@ -379,9 +379,7 @@ sub _generate_workspaces {
         is_technical_admin => 1,
     );
 
-    # Why do we _always_ generate the help workspace?
-    $self->_generate_help_workspace( $creator, "help-en" );
-
+    # Create all of our Workspaces.
     print STDERR "# workspaces: " if $self->env->verbose;
     while ( my ( $name, $spec ) = each %{ $self->config->{workspaces} } ) {
         print STDERR "$name... " if $self->env->verbose;

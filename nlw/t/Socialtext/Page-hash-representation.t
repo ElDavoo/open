@@ -5,14 +5,14 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 12;
-fixtures('admin');
+fixtures(qw( empty ));
 
 BEGIN {
     use_ok( 'Socialtext::Page' );
     use_ok( 'Socialtext::String' );
 }
 
-my $hub       = new_hub('admin');
+my $hub       = new_hub('empty');
 my $page_name = 'update page ' . time();
 my $content1  = 'one content';
 my $page_id   = Socialtext::String::title_to_id($page_name);
@@ -43,7 +43,7 @@ my $page_id   = Socialtext::String::title_to_id($page_name);
         'modified time looks like an epoch time';
     like $hash->{revision_id}, qr{^\d{14}$},
         'revision_id is correctly formatted';
-    like $hash->{page_uri}, qr{/admin/index.cgi\?$page_id},
+    like $hash->{page_uri}, qr{/empty/index.cgi\?$page_id},
         'page_uri contains index.cgi';
 
     # update the page

@@ -5,7 +5,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext;
-fixtures('admin');
+fixtures(qw( empty ));
 
 my @tests =
     ( [ qq|"A label"[SomePage]\n| =>

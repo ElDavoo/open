@@ -5,8 +5,10 @@ use warnings;
 use base 'Socialtext::Rest::Entity';
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
+use Socialtext::l10n qw(loc);
 use Socialtext::Permission qw(ST_READ_PERM ST_ADMIN_PERM);
 use Socialtext::Group;
+use Socialtext::SQL ':txn';
 
 sub permission      { +{} }
 sub allowed_methods {'GET, PUT'}
@@ -35,23 +37,16 @@ sub get_resource {
 sub PUT_json {
     my ($self, $rest) = @_;
 
-    my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
-    unless ($group) {
-        $self->rest->header( -status => HTTP_404_Not_Found );
-        return "Group not found";
-    }
-
-    my $can_admin = $group->user_can(
-        user => $self->rest->user,
-        permission => ST_ADMIN_PERM,
+    my $error = $self->_has_request_error(
+        permissions => [ST_ADMIN_PERM],
     );
-    my $user = $self->rest->user;
-    unless ($user->is_business_admin or $can_admin) {
-        $rest->header( -status => HTTP_403_Forbidden );
-        return 'You must be an admin to edit this group';
+    if ($error) {
+        $rest->header(-status => $error->{status});
+        return $error->{message};
     }
 
-    my $data = eval { decode_json( $rest->getContent ) };
+    my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
+    my $data  = eval { decode_json( $rest->getContent ) };
 
     if (!$data or ref($data) ne 'HASH') {
         $rest->header( -status => HTTP_400_Bad_Request );
@@ -84,6 +79,83 @@ sub PUT_json {
     }
 
     return undef;
+}
+
+sub _has_request_error {
+    my $self = shift;
+    my %p    = (
+        permissions => undef,
+        @_
+    );
+    my $rest = $self->rest;
+    my $user = $rest->user;
+
+    my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
+    return +{
+        status  => HTTP_404_Not_Found,
+        message => loc('Group not found')
+    } unless ($group);
+
+    my $user_has_permission = 0;
+    for my $perm (@{ $p{permissions} }) {
+        my $can = $group->user_can(
+            user       => $user,
+            permission => $perm
+        );
+        $user_has_permission = 1 if $can;
+    };
+    return +{
+        status  => HTTP_403_Forbidden,
+        message => loc('You do not have permission')
+    } unless ($user_has_permission || $user->is_business_admin);
+
+    return +{
+        status => HTTP_400_Bad_Request,
+        message => loc('Group membership cannot be changed'),
+    } unless $group->can_update_store;
+
+    return undef;
+}
+
+sub POST_to_trash {
+    my $self  = shift;
+    my $rest  = shift;
+    my $actor = $rest->user;
+
+    my $error = $self->_has_request_error(
+        permissions => [ST_ADMIN_PERM]
+    );
+    if ($error) {
+        $rest->header(-status => $error->{status});
+        return $error->{message};
+    }
+
+    my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
+    my $data  = eval{ decode_json($rest->getContent) };
+    $data = (ref($data) eq 'HASH') ? [$data] : $data;
+
+    unless ($data) {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return loc('Malformed JSON passed to resource');
+    }
+
+    sql_begin_work();
+    eval {
+        for my $item (@$data) {
+            my $name_or_id = $item->{user_id} || $item->{username};
+            my $condemned = Socialtext::User->Resolve($name_or_id);
+            $group->remove_user(user => $condemned, actor => $actor);
+        }
+    };
+    if ($@) {
+        sql_rollback();
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return loc('Could not process request');
+    }
+
+    sql_commit();
+    $rest->header(-status => HTTP_200_OK);
+    return '';
 }
 
 1;

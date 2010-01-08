@@ -5,14 +5,14 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 15;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 BEGIN {
     use_ok( 'Socialtext::Formatter::Phrase' );
 }
 
 UNITS_IN_FREELINKS: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
 
     my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'page one',
@@ -29,7 +29,7 @@ UNITS_IN_FREELINKS: {
 }
 
 PLAIN_HYPERLINK: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
 
     my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'page one',
@@ -54,7 +54,7 @@ PLAIN_HYPERLINK: {
 }
 
 ANCHOR_IN_HYPERLINK: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
 
     my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'page one',
@@ -69,7 +69,7 @@ ANCHOR_IN_HYPERLINK: {
 }
 
 ITALIC_HYPERLINK: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
 
     my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'page one',
@@ -83,7 +83,7 @@ ITALIC_HYPERLINK: {
 }
 
 PUNCTUATION_AT_END_OF_HYPERLINK: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
 
     my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'page one',
@@ -127,7 +127,7 @@ PUNCTUATION_AT_END_OF_HYPERLINK: {
 }
 
 MAILTO_HYPERLINK: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
 
     my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'page one',
@@ -152,7 +152,7 @@ MAILTO_HYPERLINK: {
 }
 
 Image_links: {
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
 
     my %image_urls = (
         jpeg => 'http://example.com/monkey.jpg',

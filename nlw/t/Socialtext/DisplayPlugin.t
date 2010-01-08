@@ -6,14 +6,14 @@ use warnings;
 use mocked 'Apache::Cookie';
 use mocked 'Socialtext::CGI';
 use Test::Socialtext tests => 8;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 BEGIN {
     use_ok( 'Socialtext::DisplayPlugin' );
     use_ok( 'Socialtext::Page' );
 }
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
 # Make sure the display action returns the "furniture" we expect it to.
 DISPLAY: {

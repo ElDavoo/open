@@ -23,7 +23,6 @@ GetOptions(
     'home_dir:s'    => \$home_dir,
     'root_dir:s'    => \$root_dir,
     'base_dir:s'    => \$base_dir,
-    'preserve'      => \$ENV{NLW_LIVE_DANGEROUSLY},
     'fixture:s'     => \@fixtures,
     'help|?'        => \$help,
     'man'           => \$man,
@@ -69,7 +68,6 @@ make-test-fixture - Sets up a test fixture
     --home_dir <dir>        Home directory to base dev-env off of
     --base_dir <dir>        NLW base directory
     --root_dir <dir>        NLW root directory
-    --preserve              Preserve existing fixtures
     --help/-?               Brief help message
     --man                   Full documentation
 
@@ -90,9 +88,6 @@ fixtures, either for testing or for the purposes of setting up a dev-env.
 Specifies the fixture to be created.  Can be specified more than once on the
 command line.
 
-B<NOTE:> unless you are also specifying the C<--preserve> option, the "clean"
-fixture will be pre-pended to the list of fixtures to be created.
-
 =item B<--home_dir E<lt>dirE<gt>>
 
 Specifies the base home directory from which a dev-env is to be configured.
@@ -109,11 +104,6 @@ Specifies the NLW base directory.  Defaults to F<t/tmp>.
 =item B<--root_dir E<lt>dirE<gt>>
 
 Specifies the NLW root directory.  Defaults to F<t/tmp/root>.
-
-=item B<--preserve>
-
-Preserves any fixtures that have already been created, by setting
-C<NLW_LIVE_DANGEROUSLY=1> into the environment.
 
 =item B<--help/-?>
 

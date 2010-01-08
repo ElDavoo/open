@@ -112,7 +112,11 @@ sub POST_json {
     }
 
     for my $to_add (@user_roles) {
-        $group->add_user(user => $to_add->[0], role => $to_add->[1]);
+        $group->add_user(
+            user  => $to_add->[0],
+            role  => $to_add->[1],
+            actor => $invitor,
+        );
         if ($data->{send_message}) {
             Socialtext::JobCreator->insert(
                 'Socialtext::Job::GroupInvite',

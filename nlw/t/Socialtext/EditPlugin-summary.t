@@ -9,7 +9,7 @@ use mocked 'Socialtext::Events', qw( event_ok is_event_count );
 
 use Test::Socialtext tests => 36;
 
-fixtures(qw( admin destructive ));
+fixtures(qw( empty destructive ));
 
 BEGIN {
     use_ok( 'Socialtext::EditPlugin' );
@@ -18,7 +18,7 @@ BEGIN {
 
 my $save_revision_id;
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 my $user  = $hub->current_user;
 $user->update_store(
     first_name => "Master",
@@ -92,7 +92,7 @@ edit_summary_signal: {
 
     signal_ok (
         viewer => $hub->current_user,
-        body => '"where you at, dog" (edited {link: admin [Save Page]} in Admin Wiki)',
+        body => '"where you at, dog" (edited {link: empty [Save Page]} in Empty Wiki)',
         signaler => $hub->current_user,
         msg => 'normal length edit summary'
     );
@@ -117,7 +117,7 @@ long_edit_summary_signal: {
 
     signal_ok (
         viewer => $hub->current_user,
-        body => '"' . 'ten chars!' x 13 . 'we are..." (edited {link: admin [Save Page]} in Admin Wiki)',
+        body => '"' . 'ten chars!' x 13 . 'we are..." (edited {link: empty [Save Page]} in Empty Wiki)',
         signaler => $hub->current_user,
         msg => 'edit summary over max signal length'
     );
@@ -140,7 +140,7 @@ no_edit_summary_signal: {
 
     signal_ok (
         viewer => $user,
-        body => 'wants you to know about an edit of {link: admin [Save Page]} in Admin Wiki',
+        body => 'wants you to know about an edit of {link: empty [Save Page]} in Empty Wiki',
         signaler => $user,
         msg => 'edit summary over max signal length'
     );
@@ -205,7 +205,7 @@ sub setup_page {
         signal_edit_summary => 0,
         original_page_id => ''
     );
-    my $hub = new_hub('admin');
+    my $hub = new_hub('empty');
     my $cgi = $hub->rest->query;
     map { $cgi->param($_, $opts{$_} || $defaults{$_}) } keys %defaults;
     return $hub;

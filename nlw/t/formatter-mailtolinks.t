@@ -5,12 +5,12 @@ use warnings;
 use strict;
 
 use Test::Socialtext;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 filters { regexps => [qw'lines chomp make_regexps'] };
 plan tests => 1 * (map { ($_->regexps) } blocks);
 
-my $viewer = new_hub('admin')->viewer;
+my $viewer = new_hub('empty')->viewer;
 
 run {
     my $block = shift;

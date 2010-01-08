@@ -6,7 +6,7 @@ use warnings;
 
 use mocked 'Apache::Cookie';
 use Test::Socialtext;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 my @tests = (
   [ qr{\Q<a class="genericOrangeButton" id="-savelink" href="#" onclick="document.forms['settings'].submit(); return false">\E\s+Save\s+</a>},
@@ -21,7 +21,7 @@ $ENV{GATEWAY_INTERFACE} = 1;
 $ENV{QUERY_STRING} = 'action=users_settings';
 $ENV{REQUEST_METHOD} = 'GET';
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
 my $settings = $hub->user_settings;
 my $result = $settings->users_settings;

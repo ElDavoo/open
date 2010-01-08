@@ -27,9 +27,6 @@ field 'fixtures' => [];
 field 'fixture_objects' => [];
 field 'nlw_dir';
 
-# Live dangerously by default - Safety Third!
-$ENV{NLW_LIVE_DANGEROUSLY} = 1;
-
 my $Self;
 
 # NLW directory for the current branch, under which tests are run.
@@ -79,12 +76,6 @@ sub new {
         verbose => $ENV{TEST_VERBOSE},
         @_,
     );
-
-    # unless we're testing dangerously (and quickly), make sure that we clean
-    # everything out before starting a new test.
-    unless ($ENV{NLW_LIVE_DANGEROUSLY}) {
-        unshift @{$self->{fixtures}}, 'clean';
-    }
 
     $self->_create_log_dir;
     $self->_clean_if_last_test_was_destructive;

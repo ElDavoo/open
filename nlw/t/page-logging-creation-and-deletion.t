@@ -10,9 +10,9 @@ use Socialtext::User;
 use Socialtext::Workspace;
 use Socialtext::String ();
 
-fixtures('admin');
+fixtures(qw( empty ));
 
-my $workspace  = 'admin';
+my $workspace  = 'empty';
 my $user       = Socialtext::User->SystemUser;
 
 # edit_content, delete_page, and rename_page are magical.

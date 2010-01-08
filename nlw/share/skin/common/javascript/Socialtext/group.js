@@ -62,17 +62,39 @@ $.extend(Socialtext.Group.prototype, {
         }
     },
 
-    addUsers: function(userList, callback) {
+    addMembers: function(userList, callback) {
         $.ajax({
             url: this.url('/users'),
             type: 'post',
             dataType: 'json',
             contentType: 'application/json',
             data: $.toJSON(userList),
-            success: function() {
-                if (callback) callback();
-            },
+            success: function() { if (callback) callback({}) },
             error: this.errorCallback(callback)
+        });
+    },
+
+    removeMembers: function(userList, callback) {
+        $.ajax({
+            url: this.url('/trash'),
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: $.toJSON(userList),
+            success: function() { if (callback) callback({}) },
+            error: this.errorCallback(callback)
+        });
+    },
+
+    hasMember: function(username, callback) {
+        if (!this.group_id) {
+            callback(false);
+        }
+        $.ajax({
+            url: this.url('/users/' + username),
+            type: 'HEAD',
+            success: function() { if (callback) callback(true) },
+            error:   function() { if (callback) callback(false) }
         });
     }
 });

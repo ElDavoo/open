@@ -3,11 +3,11 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 13;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 use DateTime;
 use Socialtext::Pages;
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
 basics_and_ordering: { 
     my $first_post = Socialtext::Page->new( hub => $hub )->create(

@@ -1,5 +1,6 @@
 fixtures:
   - db
+  - help
 
 workspaces:
   public:

@@ -5,13 +5,13 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 2;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 filters {
     wiki => 'format',
 };
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 my $viewer = $hub->viewer;
 
 run_is wiki => 'match';

@@ -5,10 +5,7 @@ use warnings;
 use Test::Socialtext tests => 4;
 use Test::Socialtext::User;
 
-###############################################################################
-# Fixtures: admin
-# - need the 'admin' WS around; (formatted_like uses it)
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 ###############################################################################
 ### TEST DATA

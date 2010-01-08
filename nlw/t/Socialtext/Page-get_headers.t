@@ -5,7 +5,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 6;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 use Socialtext::Page;
 
@@ -29,7 +29,7 @@ wow
 
 EOF
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 my $page = Socialtext::Page->new(hub => $hub)->create(
     title => 'our test page',
     content => $content,

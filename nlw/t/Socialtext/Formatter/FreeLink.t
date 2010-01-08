@@ -8,10 +8,10 @@ use warnings;
 binmode (STDOUT, ":utf8");
 binmode (STDERR, ":utf8");
 use Test::Socialtext tests => 2;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 use Encode qw(decode);
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
 # When we pass in Latin-1 the parser does the right thing.  Everything works
 # okay without any magic.  This test confirms that.

@@ -13,7 +13,7 @@ use Socialtext::User;
 
 BEGIN {
     plan tests => 4;
-    fixtures('admin');
+    fixtures(qw( empty ));
     use_ok( 'Socialtext::Handler' );
 }
 

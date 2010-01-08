@@ -6,13 +6,13 @@ use warnings;
 use YAML;
 use Test::Socialtext tests => 106;
 
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 BEGIN {
     use_ok( 'Socialtext::WikiwygPlugin' );
 }
 
-my $admin  = new_hub('admin');
+my $hub       = new_hub('empty');
 my $yaml_path = Socialtext::AppConfig->code_base .
                 '/skin/wikiwyg/javascript/Widgets.yaml';
 
@@ -30,7 +30,7 @@ SET_FIELDS_with_search: {
             },
         },
     };
-    $admin->wikiwyg->set_fields($widget, $args, $widgets);
+    $hub->wikiwyg->set_fields($widget, $args, $widgets);
     is( $widget->{workspace_id}, 'workspace', 'workspace_id set' );
     is( $widget->{search_term}, 'magic phrase', 'search_term set' );
     is( $widget->{search_type}, 'text', 'text search type' );
@@ -50,7 +50,7 @@ SET_FIELDS_with_category_search: {
             },
         },
     };
-    $admin->wikiwyg->set_fields($widget, $args, $widgets);
+    $hub->wikiwyg->set_fields($widget, $args, $widgets);
     is( $widget->{workspace_id}, 'workspace', 'workspace_id set' );
     is( $widget->{search_term}, 'cat1', 'search_term set' );
     is( $widget->{search_type}, 'category', 'category search type' );
@@ -70,7 +70,7 @@ SET_FIELDS_1: {
             },
         },
     };
-    $admin->wikiwyg->set_fields($widget, $args, $widgets);
+    $hub->wikiwyg->set_fields($widget, $args, $widgets);
     is( $widget->{workspace_id}, 'workspace', 'workspace_id set' );
     is( $widget->{page_title}, 'page', 'page_title set' );
 }
@@ -94,7 +94,7 @@ SET_FIELDS_2: {
             'workspace-value' => '^(?:(\S+);)?\s*(.*?)?\s*$',
         }
     };
-    $admin->wikiwyg->set_fields($widget, $args, $widgets);
+    $hub->wikiwyg->set_fields($widget, $args, $widgets);
     is( $widget->{workspace_id}, 'workspace', 'workspace_id set' );
     is( $widget->{page_title}, 'page', 'page_title set' );
     is( $widget->{image_name}, 'filename', 'image_name set' );
@@ -114,7 +114,7 @@ SET_FIELDS_3: {
             'workspace-value' => '^(?:(\S+);)?\s*(.*?)?\s*$',
         }
     };
-    $admin->wikiwyg->set_fields($widget, $args, $widgets);
+    $hub->wikiwyg->set_fields($widget, $args, $widgets);
     is( $widget->{skype_id}, 'testuser', 'skype_id set' );
 }
 
@@ -131,7 +131,7 @@ PARSE_WIDGET_full: {
         },
     };
     my $wafl = "{toc_full}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'toc', '*full* widget id' );
     is( $widget->{full}, '1', 'full flag is true' );
 }
@@ -149,7 +149,7 @@ PARSE_WIDGET_not_full: {
         },
     };
     my $wafl = "{toc}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{full}, '0', 'full flag is false' );
 }
 
@@ -166,7 +166,7 @@ PARSE_WIDGET_toc_blank: {
         },
     };
     my $wafl = "{toc}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'toc', 'plain toc' );
     is( $widget->{workspace_id}, '', 'plain toc workspace_id' );
     is( $widget->{page_title}, '', 'plain toc page_title' );
@@ -185,7 +185,7 @@ PARSE_WIDGET_toc_alternate_page: {
         },
     };
     my $wafl = "{toc: [Test Page]}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'toc', 'alt page toc id' );
     is(  $widget->{page_title}, 'Test Page', 'alt page toc page_title' );
 }
@@ -193,7 +193,7 @@ PARSE_WIDGET_toc_alternate_page: {
 PARSE_WIDGET_tag: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '"label"{tag: workspace; tag}';
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'tag', 'tag widget id' );
     is( $widget->{workspace_id}, 'workspace', 'tag workspace_id' );
     is( $widget->{tag_name}, 'tag', 'tag name' );
@@ -203,7 +203,7 @@ PARSE_WIDGET_tag: {
 PARSE_WIDGET_section: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '{section: name}';
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'section', 'section widget id' );
     is( $widget->{section_name}, 'name', 'section name' );
 }
@@ -211,7 +211,7 @@ PARSE_WIDGET_section: {
 PARSE_WIDGET_image: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '"label"{image: workspace [page] name}';
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'image', 'image widget id' );
     is( $widget->{label}, 'label', 'image has label' );
     is( $widget->{workspace_id}, 'workspace', 'image workspace id' );
@@ -222,7 +222,7 @@ PARSE_WIDGET_image: {
 PARSE_WIDGET_file: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '"label"{file: workspace [page] name}';
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'file', 'file widget id' );
     is( $widget->{label}, 'label', 'file has label' );
     is( $widget->{workspace_id}, 'workspace', 'file workspace id' );
@@ -233,7 +233,7 @@ PARSE_WIDGET_file: {
 PARSE_WIDGET_weblog: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '"label"{weblog: workspace; name}';
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'weblog', 'weblog widget id' );
     is( $widget->{label}, 'label', 'weblog has label' );
     is( $widget->{workspace_id}, 'workspace', 'weblog workspace id' );
@@ -243,7 +243,7 @@ PARSE_WIDGET_weblog: {
 PARSE_WIDGET_search: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '{search: <workspace> term}';
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'search', 'search widget id' );
     is( $widget->{workspace_id}, 'workspace', 'search workspace id' );
     is( $widget->{search_term}, 'term', 'search term' );
@@ -253,7 +253,7 @@ PARSE_WIDGET_search: {
 PARSE_WIDGET_include: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '{include: workspace [page]}';
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'include', 'include widget id' );
     is( $widget->{workspace_id}, 'workspace', 'include workspace id' );
     is( $widget->{page_title}, 'page', 'include page' );
@@ -262,7 +262,7 @@ PARSE_WIDGET_include: {
 PARSE_WIDGET_new_form_page: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '{new_form_page: name text}';
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'new_form_page', 'new_form_page widget id' );
     is( $widget->{form_name}, 'name', 'new_form_page form name' );
     is( $widget->{form_text}, 'text', 'new_form_page text' );
@@ -271,7 +271,7 @@ PARSE_WIDGET_new_form_page: {
 PARSE_WIDGET_fetchrss: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "{fetchrss: url}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'fetchrss', 'fetchrss widget id' );
     is( $widget->{rss_url}, 'url', 'fetchrss url' );
 }
@@ -279,7 +279,7 @@ PARSE_WIDGET_fetchrss: {
 PARSE_WIDGET_fetchatom: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "{fetchatom: url}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'fetchatom', 'fetchatom widget id' );
     is( $widget->{atom_url}, 'url', 'fetchatom url' );
 }
@@ -287,7 +287,7 @@ PARSE_WIDGET_fetchatom: {
 PARSE_WIDGET_googlesoap: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "{googlesoap: term}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'googlesoap', 'googlesoap widget id' );
     is( $widget->{search_term}, 'term', 'googlesoap search' );
 }
@@ -295,7 +295,7 @@ PARSE_WIDGET_googlesoap: {
 PARSE_WIDGET_recent_changes: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "{recent_changes: workspace}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'recent_changes', 'recent_changes widget id' );
     is( $widget->{workspace_id}, 'workspace', 'recent_changes workspace' );
     is( $widget->{full}, '0', 'recent_changes defaults to not full' );
@@ -304,7 +304,7 @@ PARSE_WIDGET_recent_changes: {
 PARSE_WIDGET_tag_list: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "{tag_list: <workspace> name}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'tag_list', 'tag_list widget id' );
     is( $widget->{workspace_id}, 'workspace', 'tag_list workspace' );
     is( $widget->{tag_name}, 'name', 'tag_list name' );
@@ -314,7 +314,7 @@ PARSE_WIDGET_tag_list: {
 PARSE_WIDGET_weblog_list: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "{weblog_list: <workspace> name}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'weblog_list', 'weblog_list widget id' );
     is( $widget->{workspace_id}, 'workspace', 'weblog_list workspace' );
     is( $widget->{weblog_name}, 'name', 'weblog_list name' );
@@ -324,7 +324,7 @@ PARSE_WIDGET_weblog_list: {
 PARSE_WIDGET_aim: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "{aim: name}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'aim', 'aim widget id' );
     is( $widget->{aim_id}, 'name', 'aim user id' );
 }
@@ -332,7 +332,7 @@ PARSE_WIDGET_aim: {
 PARSE_WIDGET_aim: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "aim:testuser";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'aim', 'aim widget id' );
     is( $widget->{aim_id}, 'testuser', 'aim user id' );
 }
@@ -340,7 +340,7 @@ PARSE_WIDGET_aim: {
 PARSE_WIDGET_yahoo: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "{yahoo: name}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'yahoo', 'yahoo widget id' );
     is( $widget->{yahoo_id}, 'name', 'yahoo user id' );
 }
@@ -348,7 +348,7 @@ PARSE_WIDGET_yahoo: {
 PARSE_WIDGET_skype: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "{skype: name}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'skype', 'skype widget id' );
     is( $widget->{skype_id}, 'name', 'skype user id' );
 }
@@ -356,7 +356,7 @@ PARSE_WIDGET_skype: {
 PARSE_WIDGET_user: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "{user: name}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'user', 'user widget id' );
     is( $widget->{user_email}, 'name', 'user user id' );
 }
@@ -364,7 +364,7 @@ PARSE_WIDGET_user: {
 PARSE_WIDGET_date: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = "{date: D T TZ}";
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'date', 'date widget id' );
     is( $widget->{date_string}, 'D T TZ', 'date date string' );
 }
@@ -372,7 +372,7 @@ PARSE_WIDGET_date: {
 PARSE_WIDGET_asis: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '{{_text_}}';
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'asis', 'asis widget id' );
     is( $widget->{asis_content}, '_text_', 'asis asis_content' );
 }
@@ -380,7 +380,7 @@ PARSE_WIDGET_asis: {
 PARSE_WIDGET_interworkspace_link: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '"label"{link: workspace [page] section}';
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'link2', 'link2 widget id' );
     is( $widget->{label}, 'label', 'link2 has label' );
     is( $widget->{workspace_id}, 'workspace', 'link2 workspace id' );
@@ -391,7 +391,7 @@ PARSE_WIDGET_interworkspace_link: {
 PARSE_WIDGET_link2: {
     my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '"label"{link: [page] section}';
-    my $widget = $admin->wikiwyg->parse_widget($wafl, $widgets);
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'link2', 'link2 widget id' );
     is( $widget->{label}, 'label', 'link2 has label' );
     is( $widget->{workspace_id}, '', 'link2 workspace id is blank' );
@@ -406,9 +406,9 @@ RESOLVE_SYNONYMS: {
             def => '456',
         },
     };
-    my $cleanedup = $admin->wikiwyg->resolve_synonyms('abc', $widgets);
+    my $cleanedup = $hub->wikiwyg->resolve_synonyms('abc', $widgets);
     is( $cleanedup, '123', 'resolve synonym' );
-    $cleanedup = $admin->wikiwyg->resolve_synonyms('dabc', $widgets);
+    $cleanedup = $hub->wikiwyg->resolve_synonyms('dabc', $widgets);
     is( $cleanedup, 'dabc', 'no synonym match' );
 }
 
@@ -420,9 +420,9 @@ IS_MULTIPLE: {
             plain => '456',
         },
     };
-    my $bool = $admin->wikiwyg->is_multiple('link', $widgets);
+    my $bool = $hub->wikiwyg->is_multiple('link', $widgets);
     is( $bool, 1, 'link is a multiple' );
-    $bool = $admin->wikiwyg->is_multiple('plain', $widgets);
+    $bool = $hub->wikiwyg->is_multiple('plain', $widgets);
     is( $bool, 0, 'plain is not a multiple' );
 }
 
@@ -434,9 +434,9 @@ GET_FIRST_MULTIPLE: {
             plain => '456',
         },
     };
-    my $id = $admin->wikiwyg->get_first_multiple('link', $widgets);
+    my $id = $hub->wikiwyg->get_first_multiple('link', $widgets);
     isnt( $id, 'link', 'id returned from first multiple for link is a multiple' );
-    $id = $admin->wikiwyg->get_first_multiple('plain', $widgets);
+    $id = $hub->wikiwyg->get_first_multiple('plain', $widgets);
     is( $id, 'plain', 'plain has no multiple so the id is returned' );
 }
 
@@ -460,45 +460,45 @@ MAP_MULTIPLE_SAME_WIDGETS: {
         id => 'c1',
         'f1' => 'has value',
     };
-    my $id = $admin->wikiwyg->map_multiple_same_widgets($widget, $widgets);
+    my $id = $hub->wikiwyg->map_multiple_same_widgets($widget, $widgets);
     is( $id, 'c1', 'c1 widget with f1 maps to c1' );
 
     $widget = {
         id => 'c2',
         'f1' => 'has value',
     };
-    $id = $admin->wikiwyg->map_multiple_same_widgets($widget, $widgets);
+    $id = $hub->wikiwyg->map_multiple_same_widgets($widget, $widgets);
     is( $id, 'c1', 'c2 widget with f1 maps to c1' );
 
     $widget->{f1} = '';
-    $id = $admin->wikiwyg->map_multiple_same_widgets($widget, $widgets);
+    $id = $hub->wikiwyg->map_multiple_same_widgets($widget, $widgets);
     is( $id, 'c2', 'widget without f1 maps to c2' );
 
     $widget->{id} = 'c2';
-    $id = $admin->wikiwyg->map_multiple_same_widgets($widget, $widgets);
+    $id = $hub->wikiwyg->map_multiple_same_widgets($widget, $widgets);
     is( $id, 'c2', 'c2 widget without f1 maps to c2' );
 }
 
 WIDGET_IMAGE_TEXT: {
     my $wafl = '{image: workspace [page] name}';
-    my $text = $admin->wikiwyg->widget_image_text($wafl);
+    my $text = $hub->wikiwyg->widget_image_text($wafl);
     is($text, 'image: name', 'image text is the name of the image');
 }
 
 WIDGET_IMAGE_TEXT_with_label: {
     my $wafl = '"label"{image: workspace [page] name}';
-    my $text = $admin->wikiwyg->widget_image_text($wafl);
+    my $text = $hub->wikiwyg->widget_image_text($wafl);
     is($text, 'image: label', 'image text is the label');
 }
 
 WIDGET_IMAGE_TEXT_no_brace: {
     my $wafl = 'aim:name';
-    my $text = $admin->wikiwyg->widget_image_text($wafl);
+    my $text = $hub->wikiwyg->widget_image_text($wafl);
     is($text, 'AIM: name', 'no brace wafl has correct text');
 }
 
 WIDGET_IMAGE_TEXT_synonym: {
     my $wafl = 'ymsgr:name';
-    my $text = $admin->wikiwyg->widget_image_text($wafl);
+    my $text = $hub->wikiwyg->widget_image_text($wafl);
     is($text, 'Yahoo! IM: name', 'synonym wafl has correct text');
 }

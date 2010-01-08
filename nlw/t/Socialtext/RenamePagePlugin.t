@@ -6,12 +6,12 @@ use warnings;
 
 use mocked 'Apache::Cookie';
 use Test::Socialtext tests => 8;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
-my $admin = new_hub('admin');
+my $hub = new_hub('empty');
 
 {
-    my $plugin = $admin->rename_page;
+    my $plugin = $hub->rename_page;
 
     my $html = $plugin->rename_popup();
     ok ($html =~ /Rename/, 'Got us a rename box');

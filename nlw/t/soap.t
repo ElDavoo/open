@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 my @tests = (
     [ "{soap bogus_service bogus method}" =>
@@ -18,7 +18,7 @@ my @tests = (
 
 plan tests => scalar @tests;
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 my $viewer = $hub->viewer;
 
 SKIP: {

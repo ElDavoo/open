@@ -41,7 +41,7 @@
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
-| wait_for_element_visible_ok | st-select-account | 30000 |
+| wait_for_element_visible_ok | st-select-network | 30000 |
 | text_like | //body | Signal to |
 | text_like | Signals |  |
 | text_like | What are you working on? |  |
@@ -60,10 +60,10 @@
 | text_like | //body | qr/%%othershortuser%%.+minute.+to %%mikiacct%%.+%%signal1%%/ism |
 
 | *Comment* | Test case: Miki Send MULTI Signals |  |
-| select_ok | st-select-account | All Groups |
-| select_ok | st-select-account | %%mikiacct%% (primary) |
-| select_ok | st-select-account | %%othermikiacct%% |
-| select_ok | st-select-account | All Groups |
+| select_ok | st-select-network | all my groups |
+| select_ok | st-select-network | %%mikiacct%% (primary, 2 users) |
+| select_ok | st-select-network | %%othermikiacct%% (2 users) |
+| select_ok | st-select-network | all my groups |
 | type_ok | st-signal-text | %%multisignal%% |
 | click_and_wait | st-signal-submit |  |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
@@ -83,7 +83,7 @@
 | wait_for_element_visible_ok | link=People | 30000 |
 | text_like | //body | Signals |
 | text_like | //body | What are you working on? |
-| wait_for_element_visible_ok | st-select-account | 30000 |
+| wait_for_element_visible_ok | st-select-network | 30000 |
 | text_like | //body | Signal to |
 
 | *Comment* | Test case: Miki As 'main' user, see old signals, send some |  |
@@ -96,13 +96,13 @@
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 
 | *Comment* | Test case: Miki Find 'followed' user with MIKI search, click through, follow |  |
-| st_process_jobs | | |
+| st_process_jobs |  |  |
 | click_and_wait | link=People |  |
 | wait_for_element_visible_ok | st-search-text | 30000 |
 | type_ok | st-search-text | %%othershortuser%% |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
-| *Comment* | Test Case: Miki This will fail due to {bz 3364} |  |
+
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | click_and_wait | link=%%othershortuser%% |  |
 

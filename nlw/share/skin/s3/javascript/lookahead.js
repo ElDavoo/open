@@ -260,7 +260,7 @@
                     .appendTo(lookaheadList);
                 if (self.opts.getEntryThumbnail) {
                     var src = self.opts.getEntryThumbnail(item); 
-                    $('<img/>')
+                    self.$('<img/>')
                         .css({
                             'vertical-align': 'middle',
                             'border': '1px solid #666'

@@ -3,6 +3,7 @@
 var t = new Test.Visual();
 
 t.plan(1);
+t.skipAll("{bz: 3113}: The Recent Conversations widget is no more, superceded by Activities.");
 
 t.runAsync([
     function() {

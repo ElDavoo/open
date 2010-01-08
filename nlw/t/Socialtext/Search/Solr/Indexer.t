@@ -6,7 +6,6 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 2;
-fixtures( 'admin' );
 
 BEGIN {
     use_ok("Socialtext::Search::Solr::Indexer");

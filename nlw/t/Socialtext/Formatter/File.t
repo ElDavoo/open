@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 2;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 # Confirm that we can create tables of contents of 
 # the current page, of another page in the same workspace,
@@ -17,9 +17,9 @@ use Socialtext::Pages;
 my $FILE  = 'rock#it.txt';
 my $IMAGE = 'sit#start.png';
 
-my $admin  = new_hub('admin');
+my $hub = new_hub('empty');
 
-my $page_one = Socialtext::Page->new( hub => $admin )->create(
+my $page_one = Socialtext::Page->new( hub => $hub )->create(
     title   => 'aa page yo',
     content => <<'EOF',
 
@@ -29,22 +29,22 @@ Shoots brah, I'm going to attach me something here
 {image sit#start.png}
 
 EOF
-    creator => $admin->current_user,
+    creator => $hub->current_user,
 );
 
 # attach those bad boys
-$admin->pages->current($page_one);
+$hub->pages->current($page_one);
 attach($FILE);
 attach($IMAGE);
 
 my $html_one
-    = $admin->pages->new_from_name('aa page yo')->to_html_or_default();
+    = $hub->pages->new_from_name('aa page yo')->to_html_or_default();
 
 like $html_one,
-     qr{/data/workspaces/admin/attachments/aa_page_yo:[\d-]+/original/rock%23it\.txt"},
+     qr{/data/workspaces/empty/attachments/aa_page_yo:[\d-]+/original/rock%23it\.txt"},
      'url for rock#it.txt is escaped';
 like $html_one,
-     qr{/data/workspaces/admin/attachments/aa_page_yo:[\d-]+/scaled/sit%23start\.png"},
+     qr{/data/workspaces/empty/attachments/aa_page_yo:[\d-]+/scaled/sit%23start\.png"},
      'url for sit#start.png is escaped';
 exit;
 
@@ -53,10 +53,10 @@ sub attach {
     my $filename = shift;
     my $path = 't/attachments/' . $filename;
     open my $fh, '<', $path or die "unable to open $path $!";
-    $admin->attachments->create(
+    $hub->attachments->create(
         filename => $filename,
         fh => $fh,
-        creator => $admin->current_user,
+        creator => $hub->current_user,
     );
 }
 

@@ -5,11 +5,11 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 3;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 filters { wiki => 'format' };
 
-my $viewer = new_hub('admin')->viewer;
+my $viewer = new_hub('empty')->viewer;
 isa_ok( $viewer, 'Socialtext::Formatter::Viewer' );
 
 run_is wiki => 'html';

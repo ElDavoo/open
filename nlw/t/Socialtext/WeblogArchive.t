@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 8;
-fixtures( 'admin' );
+fixtures(qw( empty ));
 
 BEGIN {
     use_ok( "Socialtext::WeblogArchive" );
@@ -20,7 +20,7 @@ my %months = (
     December => 12,
 );
 
-my $hub = new_hub('admin');
+my $hub = new_hub('empty');
 
 create_pages();
 
