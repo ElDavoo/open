@@ -1,0 +1,70 @@
+Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450}.
+
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+## Create a new group, add it to a couple of workspaces
+| *Comment*              | Setup        |                                        |       |
+| set                    | admin        | admin%%start_time%%@ken.socialtext.net |       |
+| create-user            | %%admin%%    | password                               |       |
+| set                    | group        | group%%start_time%%                    |       |
+| create-group           | %%group%%    |                                        |       |
+| add-user-to-group      | %%admin%%    | %%group_id%%                           | admin |
+| set                    | gold         | gold%%start_time%%                     |       |
+| create-workspace       | %%gold%%     |                                        |       |
+| set                    | gold_id      | %%workspace_id%%                       |       |
+| add-group-to-workspace | %%group_id%% | %%gold%%                               |       |
+| set                    | silver       | silver%%start_time%%                   |       |
+| create-workspace       | %%silver%%   |                                        |       |
+| set                    | silver_id    | %%workspace_id%%                       |       |
+| add-group-to-workspace | %%group_id%% | %%silver%%                             |       |
+| set                    | bronze       | bronze%%start_time%%                   |       |
+| create-workspace       | %%bronze%%   |                                        |       |
+| set                    | bronze_id    | %%workspace_id%%                       |       |
+| add-group-to-workspace | %%group_id%% | %%bronze%%                             |       |
+################################################################################
+
+## GET, user is not authorized
+| *Comment* | GET, user is not authorized          |
+| GET       | /data/groups/%%group_id%%/workspaces |
+| code-is   | 403                                  |
+
+## Log in as group admin
+| *Comment*      | Log in as group admin |          |
+| http-user-pass | %%admin%%             | password |
+
+## GET HTML, workspaces are in order
+| *Comment* | GET HTML, workspaces are in order     |
+| GET       | /data/groups/%%group_id%%/workspaces  |
+| code-is   | 200                                   |
+| body-like | <h1>Group Workspaces</h1>             |
+| body-like | qr/%%bronze%%.+%%gold%%.+%%silver%%/s |
+
+## GET JSON, workspaces are in order
+| *Comment*       | GET JSON, workspaces are in order    |                             |
+| GET-json        | /data/groups/%%group_id%%/workspaces |                             |
+| code-is         | 200                                  |                             |
+| json-parse      |                                      |                             |
+| json-array-size | 3                                    |                             |
+
+## Verify that bronze is first w/correct info
+| *Comment*    | GET JSON; Verify that bronze is first w/correct info |                             |
+| json-path-is | $[0].name                                            | %%bronze%%                  |
+| json-path-is | $[0].title                                           | %%bronze%%                  |
+| json-path-is | $[0].id                                              | %%bronze_id%%               |
+| json-path-is | $[0].uri                                             | /data/workspaces/%%bronze%% |
+
+## Verify that gold is second w/correct info
+| *Comment*    | GET JSON; Verify that gold is second w/correct info |                           |
+| json-path-is | $[1].name                                           | %%gold%%                  |
+| json-path-is | $[1].title                                          | %%gold%%                  |
+| json-path-is | $[1].id                                             | %%gold_id%%               |
+| json-path-is | $[1].uri                                            | /data/workspaces/%%gold%% |
+
+## Verify that silver is last w/correct info
+| *Comment*    | GET JSON; Verify that silver is last w/correct info |                             |
+| json-path-is | $[2].name                                           | %%silver%%                  |
+| json-path-is | $[2].title                                          | %%silver%%                  |
+| json-path-is | $[2].id                                             | %%silver_id%%               |
+| json-path-is | $[2].uri                                            | /data/workspaces/%%silver%% |
