@@ -85,6 +85,7 @@
 | wait_for_element_visible_ok | link=%%followed%% | 30000 |
 | click_and_wait | link=%%followed%% |  |
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
+| pause | 5000 | needed for IE7 |
 | click_ok | link=Follow this person |  |
 | wait_for_element_visible_ok | link=Stop following this person | 30000 |
 
