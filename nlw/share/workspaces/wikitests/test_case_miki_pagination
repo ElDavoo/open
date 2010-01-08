@@ -64,8 +64,9 @@
 | wait_for_element_visible_ok | link=H | 30000 |
 | wait_for_element_visible_ok | link=I | 30000 |
 | wait_for_element_not_present_ok | link=C | 5000 |
-| *Comment* | Test case: Miki Pagination. Pausing 90 seconds for people indexing |  |
-| pause | 90000 |  |
+
+| *Comment* | Test case: Miki Pagination. Process jobs |  |
+| st_process_jobs |  |  |
 | click_and_wait | link=A |  |
 
 | *Comment* | Test case: Miki Pagination - First Page |  |

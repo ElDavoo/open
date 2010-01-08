@@ -24,11 +24,11 @@
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | `^ Atom\n{fetchrss: http://www.socialtext.com/blog/atom.xml}\n{fetchrss: http://www.socialtext.com/blog/atom.xml abstract}\n{fetchrss: http://www.socialtext.com/blog/atom.xml summary}\n{fetchrss: http://www.socialtext.com/blog/atom.xml full}` |
+| type_ok | wikiwyg_wikitext_textarea | `^ Atom\n{fetchrss: http://www.atomenabled.org/atom.xml}\n{fetchrss: http://www.atomenabled.org/atom.xml abstract}\n{fetchrss: http://www.atomenabled.org/atom.xml summary}\n{fetchrss: http://www.atomenabled.org/atom.xml full}` |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_and_wait | st-save-button-link |  |
 | wait_for_text_present_ok | Atom | 120000 |
-| text_like | qr/Socialtext blog.+Socialtext blog.+Socialtext blog.+Socialtext blog/ims |  |
+| text_like | qr/AtomEnabled\.org.+AtomEnabled\.org.+AtomEnabled\.org.+AtomEnabled\.org/ims |  |
 
 | *Comment* | Test Case: Connections. RSS 2.0 |
 | click_ok | link=Edit |  |
