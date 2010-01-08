@@ -218,6 +218,7 @@ sub _fcgi_finished {
     if ($shutdown) {
         shutdown($self->{fh}, 2); # total shutdown
         $self->{fcgi_real_drain}->($self) if $self->{fcgi_real_drain};
+        return $self->destroy;
     }
     delete $self->{fcgi_reqs}{MANAGEMENT_REQ_ID+0};
     return;
@@ -281,22 +282,20 @@ sub _fcgi_drain {
             unless $req_id == MANAGEMENT_REQ_ID; # not the control req
 
         if (my $cb = $req->{completion_cb}) {
-            $cb->(0);
             $req->{completion_cb_guard}->cancel();
+            $cb->(0);
         }
 
         unless ($req->{flags} & FCGI_KEEP_CONN) {
             # last request on the socket
-            $self->_fcgi_finished(1);
-            return;
+            return $self->_fcgi_finished(1);
         }
     }
 
     if (!@$q) {
         if ($self->{_eof}) {
             # no more output, read-side of socket went EOF
-            $self->_fcgi_finished(1);
-            return;
+            return $self->_fcgi_finished(1);
         }
 
         $self->{fcgi_wq} = []; # reallocate queue to prevent perl leaks
