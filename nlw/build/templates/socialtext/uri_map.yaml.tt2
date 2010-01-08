@@ -515,6 +515,12 @@
             'application/json': [Socialtext::Rest::Group::Accounts, GET_json]
         '*':                    [Socialtext::Rest::Group::Accounts, bad_method]
 -
+    '/data/groups/:group_id/workspaces':
+        'GET':
+            'text/html':        [Socialtext::Rest::Group::Workspaces, GET_html]
+            'application/json': [Socialtext::Rest::Group::Workspaces, GET_json]
+        '*':                    [Socialtext::Rest::Group::Workspaces, bad_method]
+-
     '/data/groups/:group_id/photo':
         'GET':
             '*/*':  &default  [Socialtext::Rest::Group::Photo, GET_photo]
