@@ -6,6 +6,7 @@ use strict;
 use AnyEvent::Handle;
 use Protocol::FastCGI qw/:all/;
 use Carp qw/croak confess/;
+use Guard qw/guard/;
 use base 'AnyEvent::Handle';
 
 # regular callbacks
@@ -57,6 +58,8 @@ sub _fcgi_new_req {
         flags  => $flags,
         ended  => undef,
         obj    => undef,
+        completion_cb => undef,
+        completion_cb_guard => undef,
     };
 }
 
@@ -94,7 +97,10 @@ sub _fcgi_reader {
         my $begin = $self->{on_fcgi_begin};
         if ($begin) {
             my ($comp_cb,$obj) = $begin->($self,$req_id,$role,$flags);
-            $req->{completion_cb} = $comp_cb;
+            if ($comp_cb) {
+                $req->{completion_cb} = $comp_cb;
+                $req->{completion_cb_guard} = guard { $comp_cb->(1) };
+            }
             $req->{obj} = $obj;
             delete $self->{fcgi_reqs}{$req_id} if $req->{ended};
         }
@@ -167,8 +173,6 @@ sub _fcgi_dispatch_record {
         if (my $cb = $self->{on_fcgi_abort}) {
             $cb->($self,$req_id);
         }
-        # call with true value for "cancelled"
-        $req->{completion_cb}->(1) if $req->{completion_cb};
         delete $self->{fcgi_reqs}{$req_id};
     }
     elsif ($type == FCGI_END_REQUEST) {
@@ -275,7 +279,11 @@ sub _fcgi_drain {
     if (my $req = $self->{fcgi_reqs}{$req_id}) {
         delete $self->{fcgi_reqs}{$req_id}
             unless $req_id == MANAGEMENT_REQ_ID; # not the control req
-        $req->{completion_cb}->(0) if $req->{completion_cb};
+
+        if (my $cb = $req->{completion_cb}) {
+            $cb->(0);
+            $req->{completion_cb_guard}->cancel();
+        }
 
         unless ($req->{flags} & FCGI_KEEP_CONN) {
             # last request on the socket
