@@ -86,6 +86,7 @@ Intended for use with "expect_failure/_success". Example:
       'enable invalid plugin',
   );
 
+=back
 =cut
 
 sub call_cli_argv {
@@ -99,14 +100,15 @@ sub call_cli_argv {
 }
 
 1;
+__END__
 
 =head1 NAME
 
-    Test::Socialtext::CLIUtils -- Commandline test utils
+Test::Socialtext::CLIUtils -- Commandline test utils
 
 =head1 DESCRIPTION
 
-    Test utilities that aid in writing st-admin unit tests.
+Test utilities that aid in writing st-admin unit tests.
 
 =head1 SYNOPSIS
 
