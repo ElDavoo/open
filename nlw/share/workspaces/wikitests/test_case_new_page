@@ -11,7 +11,8 @@
 | *Comment* | Test Case: New Page. try to save with existing page title | np %%start_time%% |
 | type_ok | st-newpage-pagename-edit | np %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_ok | st-save-button-link |  |
+
+| click_ok | st-save-button-link | |
 
 | *Comment* | Test Case: New Page. Page Already Exists |  |
 | *Comment* | Test Case: New Page. Use duplicate option different |  |
