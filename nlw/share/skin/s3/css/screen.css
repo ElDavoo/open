@@ -3821,11 +3821,6 @@ body div#globalNav div input.searchText {
     float: left;
 }
 
-/* Capitalize all guess_real_name fields in People: {bz: 1784} */
-.realName {
-    text-transform: capitalize;
-}
-
 body#dashBoard #st-editing-tools-edit #lastsignal {
     position: static;
     display: block;
