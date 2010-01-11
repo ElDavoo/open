@@ -38,6 +38,7 @@ sub _entity_hash {
     my ($self, $group) = @_;
     return $group->to_hash(
         show_members => $self->{_show_members},
+        show_account_ids => 1,
         plugins => 1
     );
 }
