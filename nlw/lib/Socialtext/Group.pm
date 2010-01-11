@@ -128,7 +128,7 @@ sub ByWorkspaceId {
 sub All {
     my $class = shift;
     my %p     = @_;
-
+    
     my $from = 'groups';
     my @cols = ('group_id');
     my @where;
@@ -206,6 +206,18 @@ sub All {
             push @cols, '"Account".name AS primary_account';
             $from .= q{ JOIN "Account" ON (
                 groups.primary_account_id="Account".account_id) };
+        }
+        elsif ($ob eq 'role_name') {
+            push @cols, 'role_name';
+            $from .= q{
+                LEFT JOIN (
+                    SELECT from_set_id AS user_set_id,
+                           name AS role_name
+                      FROM user_set_path
+                      JOIN "Role" USING (role_id)
+                     WHERE into_set_id } . PG_WKSP_FILTER . q{
+                ) gw_role USING (user_set_id)
+            };
         }
     }
 

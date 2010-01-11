@@ -2161,7 +2161,6 @@ div.goTo {
 /* Done overloads */
 
 #globalNav form {
-    width: 480px;
     text-align: right;
 }
 
@@ -3819,11 +3818,6 @@ body div#globalNav div input.searchText {
     border-color: gray;
     border-width: 0px 0px 0px 8px;
     float: left;
-}
-
-/* Capitalize all guess_real_name fields in People: {bz: 1784} */
-.realName {
-    text-transform: capitalize;
 }
 
 body#dashBoard #st-editing-tools-edit #lastsignal {

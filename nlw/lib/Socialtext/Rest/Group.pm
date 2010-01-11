@@ -34,6 +34,18 @@ sub get_resource {
     return undef;
 }
 
+sub create_error {
+    my ($self, $err, $group_name) = @_;
+    warn $err;
+    if ($err =~ m/duplicate key violates/) {
+        $self->rest->header( -status => HTTP_409_Conflict );
+        return "Error updating group: $group_name already exists.";
+    }
+    $self->rest->header( -status => HTTP_400_Bad_Request );
+    $err =~ s{ at /\S+ line .*}{};
+    return "Error updating group: $err";
+}
+
 sub PUT_json {
     my ($self, $rest) = @_;
 
@@ -57,10 +69,13 @@ sub PUT_json {
         return 'Name is required';
     }
 
-    $group->update_store({
-        driver_group_name => $data->{name},
-        description => $data->{description} || "",
-    });
+    eval {
+        $group->update_store({
+            driver_group_name => $data->{name},
+            description => $data->{description} || "",
+        });
+    };
+    return $self->create_error($@, $data->{name}) if $@;
 
     my $photo_id = $data->{photo_id};
     if (defined $photo_id) {

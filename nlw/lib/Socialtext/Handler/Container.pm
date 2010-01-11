@@ -51,7 +51,8 @@ sub if_authorized_to_edit {
 
 sub not_authenticated {
     my $self = shift;
-    $self->redirect('/');
+    my $redirect_to = $self->rest->request->parsed_uri->unparse;
+    $self->redirect("/nlw/login.html?redirect_to=$redirect_to");
     return '';
 }
 

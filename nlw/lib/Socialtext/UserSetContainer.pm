@@ -563,6 +563,15 @@ sub _sorted_user_roles_order_by {
         $join = ' JOIN "UserMetadata" meta USING (user_id)';
         $sort = 'meta.creation_datetime';
     }
+    elsif ($ob eq 'creator') {
+        push @cols, 'creator.display_name AS creator';
+        $join = q{
+            JOIN "UserMetadata" meta USING (user_id)
+            JOIN (SELECT user_id, display_name FROM users) creator
+              ON meta.created_by_user_id = creator.user_id
+        };
+        $sort = 'creator';
+    }
     elsif ($ob =~ /^(?:primary_)?account(?:_name)?$/) {
         push @cols, 'a.name AS account_name';
         $join = q{
@@ -589,7 +598,7 @@ sub _sorted_user_roles_apply {
 
 {
     my $perspective = Socialtext::UserSetPerspective->new(
-    cols => [ 'user_id' ],
+    cols => [ 'uxr.user_id AS user_id' ],
     subsort => "user_id ASC, role_id ASC",
     view => [
         from  => 'users',
