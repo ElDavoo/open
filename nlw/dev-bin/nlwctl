@@ -8,6 +8,11 @@ use FindBin;
 use IO::File;
 use lib "$FindBin::Bin/../lib";
 
+BEGIN {
+    # Avoid using local::lib
+    delete $ENV{PERL5LIB};
+}
+
 use Getopt::Long;
 use Socialtext::AppConfig;
 use Socialtext::ApacheDaemon;
@@ -39,12 +44,12 @@ END_OF_HELP
     exit 0;
 }
 
-my ( %apache_command, %ceqlotron_command, $apache2, $apache_perl );
+my ( %apache_command, %ceqlotron_command, $nginx, $apache_perl );
 
 # Options
 my $use_test_server  = 0;
 my $apache1_please   = 0;
-my $apache2_please   = 0;
+my $nginx_please     = 0;
 my $ceqlotron_please = 0;
 my $jsonproxy_please = 0;
 
@@ -55,7 +60,8 @@ my %OPTSPEC = (
     c           => \$ceqlotron_please,
     p           => \$jsonproxy_please,
     1           => \$apache1_please,
-    2           => \$apache2_please,
+    2           => \$nginx_please,
+    n           => \$nginx_please,
 );
 
 Getopt::Long::Configure('bundling');
@@ -67,9 +73,9 @@ usage() if grep { $_ eq 'help' } @ARGV;
 my @verbs = @ARGV ? @ARGV : ('start');
 
 # If you don't specify any of -c, -1, or -2, you get them all.
-$ceqlotron_please = $apache2_please = $apache1_please = $jsonproxy_please = 1
+$ceqlotron_please = $nginx_please = $apache1_please = $jsonproxy_please = 1
     unless ( $ceqlotron_please
-          || $apache2_please
+          || $nginx_please
           || $apache1_please
           || $jsonproxy_please );
 
@@ -80,9 +86,9 @@ $jsonproxy_please = 0 unless -e $jsonproxy;
 $ceqlotron_please = 0 if $use_test_server;
 
 my @apaches;
-if ( $apache2_please ) {
-    $apache2     = Socialtext::ApacheDaemon->new( name => 'apache2' );
-    push @apaches, $apache2;
+if ( $nginx_please ) {
+    $nginx     = Socialtext::ApacheDaemon->new( name => 'nginx' );
+    push @apaches, $nginx;
 }
 if ( $apache1_please ) {
     $apache_perl = Socialtext::ApacheDaemon->new( name => 'apache-perl' );
@@ -116,7 +122,7 @@ sub _update_conf_file_for_tests {
     my $apache = shift;
 
     my $conf_suffix
-        = 'etc/' . $apache->name . '/nlw-' . $apache->conf_filename;
+        = 'etc/' . $apache->name . '/' . $apache->conf_filename;
     my $conf_file =
         $use_test_server
         ? Socialtext::AppConfig->test_dir() . "/$conf_suffix"
