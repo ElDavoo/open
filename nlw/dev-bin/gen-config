@@ -60,9 +60,7 @@ foreach my $maybe (
 # configure that may be overridden in the call to gen-config.
 
 my %passthru = (
-    'socialtext-open'   => 'i',
     'apache-status'     => 's',
-    'apache2-moduledir' => 's',
     'apache-perl-moduledir' => 's',
     'dev'               => 'i',
 );
@@ -102,13 +100,10 @@ if ( $opts{dev} ) {
 # production _is_ different from staging
 my $is_production = $opts{production} || ($hostname eq 'www.socialtext.net');
 my $is_appliance  = $ENV{IS_APPLIANCE} || $opts{appliance}  || (-d '/usr/local/socialtext/appliance');
-my $socialtext_open = $opts{'socialtext-open'};
 
 my $app_prefix;
 if ($is_dev_install) {
     $app_prefix = 'nlw-';
-} elsif ($socialtext_open) {
-    $app_prefix = 'st-';
 } else {
     $app_prefix = '';
 }
@@ -135,43 +130,52 @@ sub main {
     #     config parameters
     #     whether or not to overwrite existing
     # ]
-    if ( is_target_for( 'apache', 'apache2' ) ) {
-        my $params = apache2_params( \%dirs );
-        my $socialtext_conf_d = "$dirs{apache2_etc}/socialtext-conf.d";
+    if ( is_target_for( 'apache', 'nginx' ) ) {
+        my $params = nginx_params( \%dirs );
+        my $socialtext_conf_d = "$dirs{nginx_etc}/socialtext-conf.d";
         push @files,
             [
-                'apache2/base.tt2'
-                    => "$dirs{apache2_etc}/${app_prefix}apache2.conf",
+                'nginx/base.nginx'
+                    => "$dirs{nginx_etc}/${app_prefix}nginx.conf",
                 $params, 'overwrite',
             ],
             [
-                'apache2/nlw.tt2'
-                    => "$dirs{apache2_etc}/auto-generated.d/nlw.conf",
+                'nginx/nlw.nginx'
+                    => "$dirs{nginx_etc}/auto-generated.d/nlw.conf",
                 $params, 'overwrite',
             ],
             [
-                'apache2/rewrite-lite-useragent'
-                    => "$socialtext_conf_d/rewrite-lite-useragent",
+                'nginx/proxy.nginx' => "$dirs{nginx_etc}/proxy.conf",
                 $params, 'overwrite',
             ],
             [
-                'apache2/empty.conf'
-                    => "$dirs{apache2_etc}/conf.d/socialtext-empty.conf",
+                'nginx/mime.nginx' => "$dirs{nginx_etc}/mime.conf",
+                $params, 'overwrite',
+            ],
+# TODO
+#            [
+#                'apache2/rewrite-lite-useragent'
+#                    => "$socialtext_conf_d/rewrite-lite-useragent",
+#                $params, 'overwrite',
+#            ],
+            [
+                'nginx/empty.conf'
+                    => "$dirs{nginx_etc}/conf.d/socialtext-empty.conf",
                 $params, 0,
             ],
             [
-                'apache2/empty.conf'
+                'nginx/empty.conf'
                     => "$socialtext_conf_d/include-empty.conf",
                 $params, 0,
             ];
 
             my $template_root = _get_template_root();
-            my $conf_d = "$template_root/apache2/conf.d";
-            for my $include (glob("$conf_d/*.tt2")) {
-                (my $file = $include) =~ s{^$conf_d/(.*)\.tt2$}{$1};
+            my $conf_d = "$template_root/nginx/conf.d";
+            for my $include (glob("$conf_d/*.nginx")) {
+                (my $file = $include) =~ s{^$conf_d/(.*)\.nginx$}{$1};
                 push @files, [
-                    "apache2/conf.d/$file.tt2"
-                        => "$dirs{apache2_etc}/conf.d/$file.conf",
+                    "nginx/conf.d/$file.tt2"
+                        => "$dirs{nginx_etc}/conf.d/$file.conf",
                     $params, 'overwrite',
                 ]
             }
@@ -189,7 +193,7 @@ sub main {
            unless ( -e "$static_dir/html/502.standard.html" || -l "$static_dir/html/502.standard.html" );
     }
 
-    if ( is_target_for( 'apache', 'apache-perl' ) ) {
+    if ( is_target_for( 'apache', 'nginx', 'apache-perl' ) ) {
         my $params = apache_perl_params( \%dirs );
         push @files,
             [
@@ -294,7 +298,7 @@ sub main {
     generate_app_config( \%dirs ) if is_target_for("app") && !$opts{stdout};
     generate_config( @files );
     copy_static_files( \%dirs )
-        if is_target_for( "ssl", "apache", "apache2", "apache-perl" );
+        if is_target_for( "ssl", "apache", "nginx", "apache-perl" );
 }
 
 sub _get_search_config_version {
@@ -313,9 +317,9 @@ sub local_dirs {
     %dirs = (
         %dirs,
         socialtext_etc => "$dirs{etc}/socialtext",
-        apache2_etc => "$dirs{etc}/apache2",
-        apache2_log => File::Spec->catfile( $root_dir, 'log', 'apache2' ),
-        apache2_base_dir => "$dirs{etc}/apache2",
+        nginx_etc => "$dirs{etc}/nginx",
+        nginx_log => File::Spec->catfile( $root_dir, 'log', 'nginx' ),
+        nginx_base_dir => "$dirs{etc}/nginx",
         apache_perl_etc  => "$dirs{etc}/apache-perl",
         apache_perl_log  =>
             File::Spec->catfile( $root_dir, 'log', 'apache-perl' ),
@@ -328,7 +332,7 @@ sub local_dirs {
         File::Path::mkpath( $dirs{$dir}, 0, 0755 ) if $dir =~ /$rx/i;
     }
     File::Path::mkpath( $dirs{etc}, 0, 0755 ) if is_target_for('app');
-    File::Path::mkpath( $dirs{ssl_base}, 0, 0755 ) if is_target_for('apache');
+    File::Path::mkpath( $dirs{ssl_base}, 0, 0755 ) if is_target_for('apache', 'nginx');
 
     return %dirs;
 }
@@ -337,9 +341,9 @@ sub sitewide_dirs {
     return (
         socialtext_etc       => get_prefixed_dir('confdir'),
         etc                  => '/etc',
-        apache2_etc          => '/etc/apache2',
-        apache2_log          => '/var/log/apache2',
-        apache2_base_dir     => '/etc/apache2',
+        nginx_etc          => '/etc/nginx',
+        nginx_log          => '/var/log/nginx',
+        nginx_base_dir     => '/etc/nginx',
         postgresql_base_dir  => '/etc/postgresql/8.1/main',
         apache_perl_etc      => get_prefixed_dir('httpd_confdir'),
         apache_perl_log      => get_prefixed_dir('httpd_logdir'),
@@ -369,7 +373,7 @@ sub generate_app_config {
     }
     $source_file ||= $output_file;
 
-    my %config = %{apache2_params( \%dirs )};
+    my %config = %{nginx_params( \%dirs )};
 
     if ( $config{is_dev} ) {
         my $frontend_ports = _frontend_ports();
@@ -483,6 +487,8 @@ sub generate_config {
             my $time = scalar localtime;
             File::Path::mkpath( File::Basename::dirname($target), $opts{verbose}, 0755 );
             open my $fh, ">", $target or die "Cannot write to $target: $!";
+            my $vim = "ft=apache";
+            $vim = "ft=nginx" if $source =~ m/nginx/;
             print ${fh} <<"EOF" unless $config->{no_genconfig_header};
 #
 # WARNING: DO NOT EDIT THIS FILE
@@ -494,7 +500,7 @@ sub generate_config {
 # Generated $time by the $source template
 # \$ $command_line
 #
-# vim: ft=apache ro
+# vim: $vim ro
 #
 EOF
             print {$fh} $buffer;
@@ -504,26 +510,24 @@ EOF
     } # while files to process
 }
 
-sub apache2_params {
+sub nginx_params {
     my %dirs = %{+shift};
 
-    my $confd = "$dirs{apache2_etc}/conf.d";
+    my $confd = "$dirs{nginx_etc}/conf.d";
     my %config = (
         standard_params( \%dirs ),
-        base_dir        => $dirs{apache2_base_dir},
-        log_dir         => $dirs{apache2_log},
+        base_dir        => $dirs{nginx_base_dir},
+        log_dir         => $dirs{nginx_log},
         lock_dir        => $dirs{lock},
-        apache2_etc_dir => $dirs{apache2_etc},
+        nginx_etc_dir => $dirs{nginx_etc},
         confd_exists    => -d $confd,
         hostname_conf_exists => -f "$confd/hostname.conf",
         redirect_to_ssl => -f "$confd/redirect-to-ssl",
-        module_dir      => get_build_setting( 'apache2-moduledir' ),
         nlw_config_file => File::Spec->catfile( $dirs{socialtext_etc}, 'socialtext.conf' ),
         appliance_config_file => File::Spec->catfile( $dirs{socialtext_etc}, 'appliance.conf' ),
         app_prefix      => $app_prefix,
         log_prefix      => 'nlw',
         nlw_server_aliases  => [],
-        apache_short_name   => 'apache2',
         nlw_uri_is_ssl     => $opts{'force-ssl-login'},
     );
 
@@ -531,6 +535,7 @@ sub apache2_params {
         $config{user}  = $user->name;
         $config{group} = scalar getgrgid( $user->gid );
 
+        # XXX FIXME
         $config{servers} = {
             min_spare               => 2,
             max_spare               => 2,
@@ -539,6 +544,7 @@ sub apache2_params {
             keep_alive_timeout      => 6,
             keep_alive_max_req      => 50,
             max_requests_per_child  => 0,
+            worker_processes        => 1,
         };
 
         $config{use_canonical_name} = 'Off';
@@ -564,6 +570,7 @@ sub apache2_params {
             keep_alive_timeout     => 6,
             keep_alive_max_req     => 50,
             max_requests_per_child => 0,
+            worker_processes       => 1,
         };
         $config{use_canonical_name} = 'On';
     }
@@ -732,7 +739,6 @@ sub standard_params {
         is_dev          => _bool($is_dev_install),
         is_production   => _bool($is_production),
         is_appliance    => _bool($is_appliance),
-        socialtext_open => _bool($socialtext_open),
         apache_status   => $opts{'apache-status'},
         server_admin    => get_build_setting('server-admin'),
     );
@@ -831,14 +837,11 @@ Options:
 
 --quiet       Don't print anything to STDOUT
 
---socialtext-open=[0|1]
-              Configure as the open source release.
-
---target      One of: app, apache, apache2, apache-perl, ssl
+--target      One of: app, apache, nginx, apache-perl, ssl
                  app - generate just the YAML in /etc/Socialtext
-                 apache - generate apache2 and apache-perl and ssl confs
-                 apache2 - just the apache2 stuff
+                 apache - generate nginx and apache-perl and ssl confs
                  apache-perl - just the apache stuff
+                 nginx - just the nginx stuff
                  ssl - just the SSL certs
 
 END_OF_HELP
