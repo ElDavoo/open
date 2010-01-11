@@ -1,0 +1,131 @@
+    # Deny all TRACE requests
+    if ($request_method = TRACE) {
+      return 403;
+    }
+
+[%- IF config.confd_exists %]
+    # include file for rewrite rules on this system
+    include conf.d/rewrite*;
+[%- END %]
+
+    # unconditionally include local socialtext add-on rewrite rules on this system
+    include socialtext-conf.d/rewrite*;
+
+[%- IF config.nlw_uri_is_ssl && !for_ssl_vhost %]
+    [%- colon_port = config.ports.https == 443 ? '' : ':' _ config.ports.https -%]
+    rewrite /nlw.* https://[% config.nlw_server_hostname %][% colon_port %]$1 break;
+[%- END %]
+
+    # make sure user agents that don't do gzipped javascript use
+    # the uncompressed version - Note SAFARI!!!
+    # ALSO notice that this RewriteRule is NOT the last one in the chain
+# TODO
+#    if ($http_user_agent ~* Safari) {
+#        rewrite ^(.*)\.js\.gz$ $1.js;
+#    }
+#    if ($http_accept_encoding !~ gzip) {
+        rewrite ^(.*)\.js\.gz$ $1.js;
+#    }
+
+    # We support /static/wsdl for backward compat., but WSDLs are not static
+    # files.  This rewrites the URL so it'll get sent to the backend.
+    rewrite ^/static/wsdl/(.+)   /wsdl/$1 redirect;
+
+    # Rewrite /noauth feeds to /feed, don't escape args!
+    rewrite ^/noauth/feed/(.+)   /feed/$1 redirect;
+
+    # this first one is only here for sake of doc-pages, everything
+    # else should use /static
+    rewrite    /.*/base/(.+)           /static/skin/s2/$1 redirect;
+    rewrite    ^/static/[\.0-9]+/(.+)$ /static/$1         last;
+
+    rewrite    ^/nlw/[\.0-9]+/(.+\.scgi)$      /nlw/$1    last;
+
+    # Redirect old CGI proxy URLs to the new SCGI version
+    rewrite    ^/nlw/plugin/[^/]+/widgets/proxy.cgi$  /nlw/proxy.scgi  last;
+
+    rewrite    ^/nlw/plugin/[\.0-9]+/(.+)$  /nlw/plugin/$1      last;
+    rewrite    ^/nlw/plugin/:[^/]+/(.+)$    /nlw/plugin/$1      last;
+
+    rewrite    ^/ig/ifpc_relay              /nlw/plugin/widgets/ifpc_relay.html redirect;
+
+[%- IF not (config.is_appliance) %]
+    rewrite    ^/my/$       http://[% config.nlw_server_hostname %] last;
+[%- END %]
+
+    # Old style container rewrites
+    if ($args ~ ^signals\/q\/(.+)) {
+        set $signals_q $1;
+        rewrite ^/$ /st/signals?q=$signals_q last;
+    }
+    if ($args ~ ^([^=]+)$) {
+        set $container $1;
+        rewrite ^/$ /st/$container? redirect;
+    }
+
+    rewrite ^/control/   /nlw/control/  redirect;
+
+    # Fix {bz: 2963} where extra slashes are added during /:ws/?:pname rewrite
+    rewrite ^/lite/+page/+([^/]+)/+(.*)  /m/page/$1/$2  redirect;
+
+    rewrite    ^/lite(/?.*)$     /m$1        last;
+    rewrite    ^/m/a$            /m/activities last;
+    rewrite    ^/m/s$            /m/signals    last;
+    rewrite    ^/m/p$            /m/people     last;
+    rewrite    ^/m/w$            /m/workspace_list     last;
+    rewrite    ^/m/$             /m          last;
+    rewrite    ^/m/page/([^/]+)$ /m/page/$1/ last;
+
+    # I don't think I need any of this
+#    RewriteRule    !^/m$            -   [C]
+#    RewriteRule    !^/data(/.*)?$   -   [C]
+#    RewriteRule    !^/nlw           -   [C]
+#    RewriteRule    !^/challenge     -   [C]
+#    RewriteRule    !^/logos         -   [C]
+#    RewriteRule    !^/favicon\.ico  -   [C]
+#    RewriteRule    ^/([^/\.]+)/?$  /$1/index.cgi  [R,L,NE]
+
+    rewrite    ^/([^/\.]+)/emailprefs\??(.*)$ "/$1/index.cgi?action=preferences_settings&preferences_class_id=email_notify;$2" last;
+    rewrite    ^/([^/\.]+)/watchlistprefs\??(.*)$ "/$1/index.cgi?action=preferences_settings&preferences_class_id=watchlist;$2" last;
+
+    rewrite    ^/nlw/control/?$         /nlw/control/index.html  last;
+    rewrite    ^(/nlw/control/[^/]+)/$  $1 last;
+
+# XXX Is this needed?
+    # Transform ? in REST strings into doubly-encoded %3F, and rely on
+    # Socialtext::Handler::REST to turn them back.
+    # REVIEW: Maybe use a PUA character here instead?
+[% FOREACH i = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1] %]
+#    rewrite    ^/data/(.*)
+    [%- FOREACH j = [1..i] -%]
+\?(.*)
+    [%- END -%]
+   http://localhost:[% apache_perl_port %]/data/$1
+    [%- FOREACH j = [1..i] -%]
+\%3F$[% j+1 %]
+    [%- END -%]
+  last;
+[%- END %]
+
+    set $to_backend 1;
+    if ($uri ~ ^/nlw/plugin) {
+        set $to_backend 0;
+    }
+    if ($uri ~ ^/logos) {
+        set $to_backend 0;
+    }
+    if ($uri ~ ^/favicon\.ico$) {
+        set $to_backend 0;
+    }
+[%- IF config.is_appliance || config.is_dev %]
+    # TODO set up /console here
+[%- END %]
+
+    if ($to_backend) {
+        rewrite ^/([^/]+)/?$ /$1/index.cgi break;
+    }
+    location / {
+        proxy_pass http://localhost:[% apache_perl_port %];
+        # Rewrite upstream redirects correctly
+        proxy_redirect http://[% config.nlw_server_hostname %]/ /;
+    }
