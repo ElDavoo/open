@@ -99,13 +99,11 @@ sub _built_in_base_config {
 
     my $testing = $ENV{HARNESS_ACTIVE} ? '--testing' : '';
     my $gen_config = $env->nlw_dir . '/dev-bin/gen-config';
-    my $socialtext_open = get_build_setting('socialtext-open');
 
     _system_or_die(
         $gen_config,
         '--quiet',
         '--root',           $env->root_dir,
-        '--socialtext-open=' . $socialtext_open,
         '--dev=0',    # Don't create the files in ~/.nlw
         $testing,
     );
