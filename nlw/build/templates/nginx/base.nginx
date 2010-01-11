@@ -1,0 +1,55 @@
+[% IF !config.is_dev %]
+  user       [% config.user %] [% config.group %];
+[% END %]
+pid        [% config.pid_dir %]/[% config.app_prefix %]nginx.pid;
+
+worker_processes [% config.servers.worker_processes %];
+[%- IF config.is_dev %]
+error_log [% config.log_dir %]/[% config.app_prefix %]error.log debug;
+[%- ELSE %]
+error_log [% config.log_dir %]/error.log;
+[%- END %]
+ 
+worker_rlimit_nofile 8192;
+events {
+  worker_connections  4096;
+}
+ 
+http {
+  keepalive_requests [% config.servers.keep_alive_max_req %];
+  keepalive_timeout  [% config.servers.keep_alive_timeout %];
+
+  default_type application/octet-stream;
+  log_format   main '$remote_addr - $remote_user [$time_local]  $status '
+    '"$request" $body_bytes_sent "$http_referer" '
+    '"$http_user_agent" "$http_x_forwarded_for"';
+  [%- IF config.is_dev %]
+  access_log [% config.log_dir %]/[% config.app_prefix %]access.log;
+  [%- ELSE %]
+  access_log [% config.log_dir %]/access.log;
+  [%- END %]
+  sendfile     on;
+  tcp_nopush   on;
+ 
+  include [% config.nginx_etc_dir %]/proxy.conf;
+  include [% config.nginx_etc_dir %]/mime.conf;
+  include [% config.nginx_etc_dir %]/auto-generated.d/*.conf;
+}
+
+# TODO:
+# mime types
+# hostname lookups off
+# browsermatch - nokeepalive (from common.tt2)
+#  include    conf/mime.types;
+# Review: worker_rlimit_nofile 8192;
+
+# Rewrite mobile browsers
+# FastCGI json proxy
+# conf.d/redirect-to-ssl
+# rewrite /nlw/reports -> webplugin
+# rewrite robots.txt
+
+# include conf.d/rewrite*
+# include socialtext-conf.d/rewrite*
+
+

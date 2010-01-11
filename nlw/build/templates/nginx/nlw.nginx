@@ -1,0 +1,171 @@
+[%# This macro defines the main chunk of the nginx config.  We load this chunk into
+  # Virtual host blocks below... %]
+[%- MACRO server_common( apache_perl_port, for_ssl_vhost) BLOCK %]
+[%- IF config.is_appliance AND config.hostname_conf_exists %]
+    include /etc/nginx/conf.d/hostname.conf;
+[%- ELSE %]
+    server_name [% config.nlw_web_hostname %] [% FOREACH alias in config.nlw_server_aliases %][% alias %][% END %];
+[%- END %][%# is_appliance %]
+
+    root [% config.data_root_dir %];
+    error_page 502 /static/html/502.html;
+
+[%- IF config.is_appliance || config.is_dev %]
+    [%- SET console_base = '/var/www/console' -%]
+    [%- IF config.is_dev %]
+        [%- console_base = config.data_root_dir _ '/console' -%]
+    [%- END %]
+#    Alias /console/ [% console_base %]/
+#
+#    <Directory [% console_base %]>
+#        Options FollowSymlinks
+#    </Directory>
+#
+#    AddHandler cgi-script .cgi
+#    <Location /console>
+#        DirectoryIndex index.html index.cgi
+#        SetHandler cgi-script
+#        Options ExecCGI
+#    </Location>
+[%- END %]
+
+    [%- BLOCK image_cache %]
+        # image cache: [% cache_name %]
+        set $matcher "$request_method$uri";
+        set $cache_match "no-match";
+        if ($matcher ~* GET[% rest_pattern %]) {
+            set $cache_match $1;
+        }
+        if (-f [% config.cache_dir %]/[% cache_name %]/$cache_match[% file_suffix %]) {
+          rewrite [% rest_pattern %] /nlw/[% cache_name %]/$cache_match[%file_suffix%] break;
+        }
+
+        [%- IF alias %]
+            location /nlw/[% cache_name %] {
+              root [% config.cache_dir %]/[% cache_name %];
+              expires -1;
+              add_header Cache-Control "public, must-revalidate, max-age=0, pre-check=0, post-check=0";
+              add_header X-Cache "HIT from [% cache_name %]";
+            }
+        [%- END %]
+    [%- END %]
+
+    [% PROCESS image_cache cache_name="avatar"           rest_pattern="^/data/people/([^/]+)/photo"             file_suffix="-large.png" alias=0 %]
+    [% PROCESS image_cache cache_name="avatar"           rest_pattern="^/data/people/([^/]+)/small_photo"       file_suffix="-small.png" alias=1 %]
+    [% PROCESS image_cache cache_name="wafl"             rest_pattern="^/data/wafl/(.*)"                        file_suffix=".png"       alias=1 %]
+    [% PROCESS image_cache cache_name="account_logo"     rest_pattern="^/data/accounts/([^/]+)/logo"            file_suffix="-logo.png"  alias=1 %]
+    [% PROCESS image_cache cache_name="widget_thumbnail" rest_pattern="^/data/gadgets/gadget/([^/]+)/thumbnail" file_suffix=".png"       alias=1 %]
+
+[%# The rewrite file must come before any of the redirect confs below %]
+[% PROCESS 'nginx/rewrite.nginx' %]
+
+    location ~ ^/static/(.+) {
+        alias [% config.static_dir %]/$1;
+        expires 1y;
+    }
+
+[% IF 0 %]
+    # webplugin drop-ins should go in
+    # [% config.data_root_dir %]/webplugin/PLUGIN-NAME
+    # two directories are expected there, a cgi directory scripts
+    # and a static directory for static files
+    # URI paths would be /webplugin/cgi/PLUGIN-NAME/script.cgi for scripts
+    #     or /webplugin/PLUGIN-NAME/foo.html for static files and resources
+    ScriptAliasMatch ^/webplugin/cgi/([^/]+)(.*) [% config.data_root_dir %]/webplugin/$1/cgi$2
+    <LocationMatch "^/webplugin/cgi/[^/+].*">   
+        Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+        Order allow,deny
+        Allow from all
+    </LocationMatch>   
+
+    AliasMatch ^/webplugin/([^/]+)(.*) [% config.data_root_dir %]/webplugin/$1/static$2
+    <LocationMatch "^/webplugin/[^/+].*.*"> 
+        Options -MultiViews +SymLinksIfOwnerMatch
+        Order allow,deny
+        Allow from all
+    </LocationMatch>
+[% END %]
+
+    location ~ ^/nlw/plugin/([^/]+)/(.+) {
+        alias [% config.static_dir %]/plugin/$1/share/$2;
+        expires 1y;
+    }
+
+    [%- IF config.confd_exists %]
+        # include file for rewrite rules on this system
+        include conf.d/nginx-*;
+    [%- END %]
+
+    # Cache attachments
+    location ~ ^/data/.*/attachments/.+/.+ {
+        expires 1y;
+    }
+
+    # DON'T cache RPC relay
+    location /nlw/plugin/widgets/rpc_relay.html {
+        expires 1s;
+    }
+    location /nlw/plugin/widgets/ifpc_relay.html {
+        expires 1s;
+    }
+    location /ig/ifpc_relay {
+        expires 1s;
+    }
+
+    [%- IF config.is_dev %]
+        location /favicon.ico {
+            root [% config.static_dir %];
+        }
+    [%- END %]
+
+    # Force IE8 to emulate IE7, to avoid IE8 rendering issues.
+    add_header X-UA-Compatible IE=EmulateIE7;
+
+    # Enable run-time compression of everything *except* images
+    gzip             on;
+    gzip_min_length  1000;
+    gzip_proxied     expired no-cache no-store private auth;
+    gzip_types       text/plain application/x-javascript text/css;
+    gzip_disable     "MSIE [1-6]\.";
+    gzip_disable     "Mozilla/4(?!.*\bMSIE\s+[789])";
+    gzip_disable     "Mozilla/4\.0[678](?!.*\bMSIE\s+[789])";
+
+    location ~ \.js$ {
+      # Safari doesn't like compressed JS, so *only* compress HTML content
+      gzip_disable     "Safari";
+    }
+[% END %][%# server_common %]
+
+[%- MACRO server_redirect(redirect_port, redirect_scheme) BLOCK %]
+    if ($request_method = TRACE) {
+      return 403;
+    }
+    rewrite ^(.*) [% redirect_scheme %]://[% config.nlw_web_hostname %]:[% redirect_port %]$1;
+[% END %]
+
+[%# ######################################
+  # Real code starts 
+  # ###################################### %]
+
+server {
+    listen [% config.frontend_ports.http %];
+    [%- IF config.ssl_only %]
+        [%- server_redirect( config.frontend_ports.https, 'https' ) -%]
+    [%- ELSE %]
+        [%- server_common( config.backend_ports.http, 0 ) -%]
+    [%- END %]
+}
+
+[%- IF config.ssl_only OR config.use_ssl %]
+server {
+    [%#- Have SSL enabled server too %]
+    listen [% config.frontend_ports.https %];
+    ssl on;
+    ssl_certificate [% config.ssl_base_dir %]/certs/[% config.nlw_server_hostname %].crt;
+    ssl_certificate_key [% config.ssl_base_dir %]/private/[% config.nlw_server_hostname %].key;
+
+    ssl_ciphers HIGH:MEDIUM:!ADH;
+
+    [% server_common( config.backend_ports.http, 1 ) %]
+}
+[%- END %]
