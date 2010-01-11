@@ -10,8 +10,6 @@ use namespace::clean -except => 'meta';
 sub permission { +{} }
 sub collection_name { 'Group Workspaces' }
 
-sub _entity_hash { $_[1] }
-
 sub _entities_for_query {
     my $self = shift;
     my $group_id = $self->group_id;
