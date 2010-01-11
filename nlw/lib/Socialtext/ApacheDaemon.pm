@@ -26,11 +26,11 @@ Readonly my $TOTAL_SECONDS_TO_WAIT            => 25;
 
 Readonly my $BIN_DIR => '/usr/sbin';
 Readonly my %BINARY => (
-    'apache2'     => 'apache2',
+    'nginx'     => 'nginx',
     'apache-perl' => 'apache',
 );
 Readonly my %ENV_OVERRIDE => (
-    'apache2'     => 'NLW_APACHE2_PATH',
+    'nginx'     => 'NLW_NGINX_PATH',
     'apache-perl' => 'NLW_APACHE_PATH',
 );
 
@@ -49,7 +49,7 @@ sub new {
 }
 
 sub conf_filename {
-    return $_[0]->name eq 'apache2' ? 'apache2.conf' : 'httpd.conf';
+    return $_[0]->name eq 'nginx' ? 'nlw-nginx.conf' : 'nlw-httpd.conf';
 }
 
 sub start {
@@ -57,8 +57,7 @@ sub start {
 
     my $httpd_conf = $self->conf_file;
     -e $httpd_conf or die "$httpd_conf doesn't exist!\n";
-    return $self->hup
-        if $self->is_running;
+    return $self->hup if $self->is_running;
     if ( -f $self->pid_file ) {
         warn "Looks like we have a stale pid file (removing).\n";
         unlink $self->pid_file;
@@ -273,16 +272,38 @@ sub _binary_default {
 
 sub short_binary { return File::Basename::basename( $_[0]->binary ) }
 
-sub get_start_command { return ($_[0]->binary, '-f', $_[0]->conf_file) }
+sub get_start_command { 
+    my $self = shift;
+    my $binary = $self->binary;
+    if ($binary =~ m/nginx/) {
+        return ($binary, '-c', $self->conf_file);
+    }
+    return ($binary, '-f', $self->conf_file);
+}
 
 sub ports {
     my $self = shift;
 
-    my %ports =
-        map { $_ => 1 }
-        grep { defined $_ }
-        map { /^\s*(?:Listen|Port)\s+(?:[\d\.]*:)?(\d+)/ ? $1 : undef }
-        Socialtext::File::get_contents($self->conf_file);
+    my %ports;
+    my $conf_file = $self->conf_file;
+    if ($self->name eq 'nginx') {
+        $conf_file =~ s/nlw-nginx\.conf$/auto-generated.d\/nlw.conf/;
+        %ports =
+            map { $_ => 1 }
+            grep { defined $_ }
+            map { /^\s*listen\s+(?:[\d\.]*:)?(\d+);\s*$/i ? $1 : undef }
+            Socialtext::File::get_contents($conf_file);
+    }
+    else {
+        %ports =
+            map { $_ => 1 }
+            grep { defined $_ }
+            map { /^\s*(?:Listen|Port)\s+(?:[\d\.]*:)?(\d+)/i ? $1 : undef }
+            Socialtext::File::get_contents($conf_file);
+    }
+    unless (%ports) {
+        die "Could not find any ports in $conf_file";
+    }
     return sort keys %ports;
 }
 
@@ -322,13 +343,15 @@ sub pid {
 }
 
 sub pid_file {
-    return $_[0]->parse_from_config_file('PidFile');
+    return $_[0]->parse_from_config_file(qr/Pid(?:File)?/i);
 }
 
 sub is_running {
     my $self = shift;
+    my $pid = $self->pid;
 
-    return -f $self->pid_file and kill 0, $self->pid;
+    return 0 unless $pid;
+    return -f $self->pid_file and kill 0, $pid;
 }
 
 sub servers_running_on_this_port {
@@ -369,11 +392,18 @@ sub servers_running_on_this_port {
 
 sub parse_from_config_file {
     my $self = shift;
-
     my $looking_for = shift;
-    Socialtext::File::get_contents( $self->conf_file ) =~ /^$looking_for\s*(\S+)/m
-        or die "Couldn't find $looking_for in " . $self->conf_file;
-    return $1;
+    my $conf_file = $self->conf_file;
+
+    if ($looking_for =~ m/pid/i) {
+        $conf_file =~ s#auto-generated\.d/nlw\.conf#nlw-nginx.conf#;
+    }
+    Socialtext::File::get_contents( $conf_file ) =~ /^$looking_for\s*(\S+)/m
+        or return '';
+    #    or die "Couldn't find $looking_for in " . $conf_file;
+    my $pid_file = $1;
+    $pid_file =~ s/;$//;
+    return $pid_file;
 }
 
 1;
