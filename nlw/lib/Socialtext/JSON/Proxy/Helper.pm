@@ -35,9 +35,18 @@ sub ClearForUsers {
     }
 }
 
+# XXX: Purging the entire JSON cache is not a good idea here, instead we 
+# should create a job that purges the cache for all group or account members
+
 sub ClearForAccount {
     my $class = shift;
     my $account_id = shift;
+    PurgeCache(); # just purge the entire cache
+}
+
+sub ClearForGroup {
+    my $class = shift;
+    my $group_id = shift;
     PurgeCache(); # just purge the entire cache
 }
 

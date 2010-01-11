@@ -105,6 +105,6 @@ st-make-all - Runs all makes in Socialtext
     st-make-all clean
     st-make-all clean all
     quiet: st-make-all @clean all
-    quite, nodie: st-make-all @-clean all
+    quiet, nodie: st-make-all @-clean all
 
 =cut

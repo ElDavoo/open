@@ -41,7 +41,7 @@ sub _entities_for_query {
 
 sub _entity_hash {
     my ($self, $account) = @_;
-    $account->hash_representation;
+    $account->hash_representation(user_count => 1);
 }
 
 1;

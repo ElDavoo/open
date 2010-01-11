@@ -362,6 +362,11 @@
 -
     '/data/users/:username/groups':
         'GET':
+            'application/json': [Socialtext::Rest::UserGroups, GET_json]
+        '*':                    [Socialtext::Rest::UserGroups, bad_method]
+-
+    '/data/users/:username/shared_groups/:otheruser':
+        'GET':
             'application/json': [Socialtext::Rest::UserSharedGroups, GET_json]
         '*':                    [Socialtext::Rest::UserSharedGroups, bad_method]
 -

@@ -5,12 +5,16 @@
 # '-b' option will set apache up with benchmark_mode = 1
 # '-w' option will _not_ upadte widgets/galleries, also implies '-b'
 # '-p' option will _not_ start up nlw in this script
+# '-h' option will import the help-en wiki
+
+HELPEN=0
 FIXTURE='ALL'
 BENCHMARK=0
 PAUSE=0
 UPDATE_WIDGETS=1
-while getopts "mbpw" OPT; do
+while getopts "hmbpw" OPT; do
   case $OPT in
+    h) HELPEN=1;;
     b) BENCHMARK=1;;
     m) FIXTURE=admin_no_pages;;
     p) PAUSE=1;;
@@ -74,9 +78,6 @@ dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --fixture base_config
 dev-bin/make-test-fixture --home_dir $HOME --fixture $FIXTURE
 
-
-bin/st-admin enable-plugin --all-accounts --plugin dashboard
-
 # Setup robots.txt file to prevent dev-env heat death
 perl -le 'print "User-agent: *\nDisallow: /"' > ~/.nlw/root/docroot/robots.txt
 
@@ -90,6 +91,8 @@ set -e
 
 [ $BENCHMARK == 1 ] && st-config set benchmark_mode 1
 
+[ $HELPEN == 1 ] && st-admin import-workspace --tarball $ST_CURRENT/nlw/share/l10n/help/help-en.tar.gz
+
 if [ $PAUSE == 0 ]; then
     echo "Starting in dual-Apache mode"
     dev-bin/nlwctl start
@@ -97,7 +100,10 @@ else
     echo "Skipping NLW startup, you need do it manually"
 fi
 
+
 st-admin enable-plugin --all-workspaces --plugin socialcalc
+st-admin enable-plugin --all-accounts --plugin dashboard
+st-admin enable-plugin --all-accounts --plugin signals
 st-admin enable-plugin --all-accounts --plugin groups
 
 if [ $UPDATE_WIDGETS == 1 ]; then

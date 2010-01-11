@@ -47,6 +47,7 @@
 | st-find-user | %%shortfollow%% |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
+| pause | 5000 | needed for IE7. Serious. Sorry about that. |
 | click_ok | link=Follow this person |  |
 | wait_for_element_visible_ok | link=Stop following this person | 30000 |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |

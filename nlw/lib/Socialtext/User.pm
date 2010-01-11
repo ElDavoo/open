@@ -344,7 +344,20 @@ sub is_in_account {
 sub shared_accounts {
     my ($self, $user) = @_;
     my %mine = map { $_->account_id => 1 } $self->accounts;
-    return grep { $mine{$_->account_id} } $user->accounts;
+    my @accounts = grep { $mine{$_->account_id} } $user->accounts;
+    return (wantarray ? @accounts : \@accounts);
+}
+
+sub shared_groups {
+    my ($self, $user) = @_;
+
+    my $group_cursor = $self->groups;
+    
+    my @shared_groups;
+    while (my $g = $group_cursor->next) {
+        push @shared_groups, $g if $g->has_user($user);
+    }
+    return (wantarray ? @shared_groups : \@shared_groups);
 }
 
 sub groups {
@@ -1827,6 +1840,11 @@ Returns a list reference in scalar context.
 =head2 $user->groups()
 
 Returns a C<Socialtext::MultiCursor> of groups that this user has a role in.
+
+=head2 $user->shared_groups( $user2 )
+
+Returns a list of the groups where both $user and $user2 are members.
+Returns a list reference in scalar context.
 
 =head2 $user->to_hash()
 
