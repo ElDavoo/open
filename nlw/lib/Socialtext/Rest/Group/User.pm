@@ -20,7 +20,9 @@ sub DELETE {
     }
 
     my $group = Socialtext::Group->GetGroup( group_id => $self->group_id );
-    my $user  = Socialtext::User->Resolve($self->user);
+    my $user = eval {
+        Socialtext::User->Resolve($self->user);
+    };
     unless ($group and $user) {
         $rest->header( -status => HTTP_404_Not_Found );
         return 'Resource not found';
