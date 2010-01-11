@@ -11,40 +11,35 @@ extends 'Socialtext::Rest::Collection';
 sub permission { +{ GET => undef } }
 sub entity_name { "User " . $_[0]->username . " groups" }
 
+# Same logic as UserSharedAccounts - refactor later?
 sub authorized_to_view {
     my ($self, $user) = @_;
     my $acting_user = $self->rest->user;
-    return $user;
+    return $user
+        && (   $acting_user->is_business_admin()
+            || ( $user->username eq $acting_user->username )
+        );
 }
 
 sub _entities_for_query {
-    my $self   = shift;
-    my $rest   = $self->rest;
-    my $viewer = $rest->user;
+    my $self = shift;
+    my $user = Socialtext::User->new( username => $self->username );
+    my $other = Socialtext::User->new( username => $self->otheruser );
 
-    unless ($viewer) {
-        $rest->header( -status => HTTP_401_Unauthorized );
+    unless ($self->authorized_to_view($user)) {
+        $self->rest->header( -status => HTTP_401_Unauthorized );
         return ();
     }
 
-    my $other = eval { Socialtext::User->Resolve($self->username) };
-    die Socialtext::Exception::NotFound->new() unless $other;
-
-    my $group_cursor = $other->groups;
-    return $group_cursor->all() if $viewer->is_business_admin;
-    
-    my @shared_groups;
-    while (my $g = $group_cursor->next) {
-        push @shared_groups, $g 
-            if $g->has_user($viewer) or $g->creator->user_id == $viewer->user_id;
-    }
-
-    return @shared_groups;
+    return $user->shared_groups($other);
 }
 
 sub _entity_hash {
     my ($self, $group) = @_;
-    return $group->to_hash( show_members => $self->{_show_members} );
+    return $group->to_hash(
+        show_members => $self->{_show_members},
+        plugins => 1
+    );
 }
 
 around get_resource => sub {
@@ -64,12 +59,14 @@ Socialtext::Rest::UserSharedGroups - List the groups a user belongs to
 
 =head1 SYNOPSIS
 
-    GET /data/users/:username/groups
+    GET /data/users/:username/shared_groups/:otheruser
 
 =head1 DESCRIPTION
 
-View the list of groups a user is a member of, or has created.  Caller
-can only see groups they created or are also a member of.  Business admins
-can see all groups.
+View the list of groups a user shares with another user.
+
+Caller can only see groups they share with other users.
+
+Business admins can see every user's shared groups with other users.
 
 =cut
