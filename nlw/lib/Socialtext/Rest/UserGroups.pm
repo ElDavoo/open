@@ -35,8 +35,9 @@ sub _entities_for_query {
     
     my @shared_groups;
     while (my $g = $group_cursor->next) {
-        push @shared_groups, $g->to_hash(plugins_enabled => 1)
-            if $g->has_user($viewer) or $g->creator->user_id == $viewer->user_id;
+        push @shared_groups, $g
+            if $g->has_user($viewer)
+            or $g->creator->user_id == $viewer->user_id;
     }
 
     return @shared_groups;
@@ -44,7 +45,10 @@ sub _entities_for_query {
 
 sub _entity_hash {
     my ($self, $group) = @_;
-    return $group->to_hash( show_members => $self->{_show_members} );
+    return $group->to_hash(
+        plugins_enabled => 1,
+        show_members => $self->{_show_members},
+    );
 }
 
 around get_resource => sub {
