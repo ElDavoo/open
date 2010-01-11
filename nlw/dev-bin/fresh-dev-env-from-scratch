@@ -77,6 +77,7 @@ set -e
 dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --fixture base_config
 dev-bin/make-test-fixture --home_dir $HOME --fixture $FIXTURE
+[ $HELPEN == 1 ] && dev-bin/make-test-fixture --home_dir $HOME --fixture help
 
 # Setup robots.txt file to prevent dev-env heat death
 perl -le 'print "User-agent: *\nDisallow: /"' > ~/.nlw/root/docroot/robots.txt
@@ -90,8 +91,6 @@ dev-bin/link-reports
 set -e
 
 [ $BENCHMARK == 1 ] && st-config set benchmark_mode 1
-
-[ $HELPEN == 1 ] && st-admin import-workspace --tarball $ST_CURRENT/nlw/share/l10n/help/help-en.tar.gz
 
 if [ $PAUSE == 0 ]; then
     echo "Starting in dual-Apache mode"
