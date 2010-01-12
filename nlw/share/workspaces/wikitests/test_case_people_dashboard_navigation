@@ -48,7 +48,7 @@ TO DO - Add testability hooks and confirm Grey Ghost Icon
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Activities'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Workspaces'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wiki Page'] | 30000 |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-One Image'] | 30000 |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Image'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-RSS Viewer'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Workspace Tags'] | 30000 |
 

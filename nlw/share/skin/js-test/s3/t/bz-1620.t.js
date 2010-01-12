@@ -2,6 +2,9 @@
 
 var t = new Test.Visual();
 
+if ($.browser.mozilla && $.browser.version.match(/^1\.([0-8]\.|9\.0)/))
+    t.skipAll("Gecko 1.9.0.x hijacks RSS target into _top; skipping this test.");
+
 t.plan(1);
 
 t.runAsync([

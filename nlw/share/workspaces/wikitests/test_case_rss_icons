@@ -38,6 +38,7 @@ It seems that Selenium cannot analyze the content of feed pages because they are
 
 | *Comment* | Test Case: RSS Icons search for the deleted page |  |
 | st-search | simple | Pages matching |
+| wait_for_element_visible_ok | //img[contains(@src,'rss.png')] | 30000  |
 | click_and_wait | //img[contains(@src,'rss.png')] |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 
@@ -46,11 +47,13 @@ Search result. Single Page. What's New. Watchlist. All Pages. Weblogs.
 
 | *Comment* | Test Case: RSS Icons Start Here page |  |
 | open_ok | /%%workspace%%/?Start Here |  |
+| wait_for_element_visible_ok | //img[contains(@src,'rss.png')] | 30000  |
 | click_and_wait | //img[contains(@src,'rss.png')] |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 
 | *Comment* | Test Case: RSS Icons What's New |  |
 | open_ok | /%%workspace%%/?action=recent_changes |  |
+| wait_for_element_visible_ok | //img[contains(@src,'rss.png')] | 30000  |
 | click_and_wait | //img[contains(@src,'rss.png')] |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 
@@ -59,6 +62,7 @@ Search result. Single Page. What's New. Watchlist. All Pages. Weblogs.
 | click_ok | link=Watch |  |
 | open_ok | /%%workspace%%/?action=recent_changes |  |
 | click_and_wait | link=Your Watchlist |  |
+| wait_for_element_visible_ok | //img[contains(@src,'rss.png')] | 30000  |
 | click_and_wait | //img[contains(@src,'rss.png')] |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 | open_ok | /%%workspace%%/?Start here |  |
@@ -67,12 +71,14 @@ Search result. Single Page. What's New. Watchlist. All Pages. Weblogs.
 | *Comment* | Test Case: RSS Icons All Pages |  |
 | open_ok | /%%workspace%%/?action=recent_changes |  |
 | click_and_wait | link=All Pages |  |
+| wait_for_element_visible_ok | //img[contains(@src,'rss.png')] | 30000  |
 | click_and_wait | //img[contains(@src,'rss.png')] |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 
 | *Comment* | Test Case: RSS Icons Weblogs |  |
 | open_ok | /%%workspace%%/ |  |
 | click_and_wait | link=Weblogs |  |
+| wait_for_element_visible_ok | //img[contains(@src,'rss.png')] | 30000  |
 | click_and_wait | //img[contains(@src,'rss.png')] |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 

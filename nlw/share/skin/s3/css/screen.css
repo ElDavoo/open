@@ -4257,7 +4257,7 @@ body#dashBoard div#controls div#controlsRight ul {
     border-bottom: 1px solid black;
     width: 50%;
     float: left;
-    padding: 0 0 10px 0;
+    padding: 10px 0 5px 0;
     font-size: 10pt;
 }
 
