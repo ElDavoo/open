@@ -9,10 +9,6 @@ if (jQuery.browser.msie)
 
 t.runAsync([
     function() {
-        t.login({}, t.nextStep());
-    },
-
-    function() {
         $.ajax({
             url: "/data/workspaces/help-en/pages/socialtext_releases_simple_editing/tags/測",
             type: 'PUT',
@@ -42,6 +38,6 @@ t.runAsync([
             t.endAsync();
         }, 2500);
     }
-]);
+], 600000);
 
 })(jQuery);

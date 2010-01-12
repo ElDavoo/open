@@ -9,10 +9,6 @@ if (jQuery.browser.msie)
 
 t.runAsync([
     function() {
-        t.login({}, t.nextStep());
-    },
-
-    function() {
         t.setup_one_widget(
             {
                 name: 'Workspaces',
@@ -63,6 +59,6 @@ t.runAsync([
 
         t.endAsync();
     }
-]);
+], 600000);
 
 })(jQuery);

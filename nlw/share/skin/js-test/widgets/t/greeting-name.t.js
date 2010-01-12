@@ -6,10 +6,6 @@ t.plan(1);
 
 t.runAsync([
     function() {
-        t.login({}, t.nextStep());
-    },
-
-    function() {
         t.create_anonymous_user_and_login({workspace: 'admin'}, t.nextStep());
     },
 
@@ -29,6 +25,6 @@ t.runAsync([
         );
         t.endAsync();
     }
-]);
+], 600000);
 
 })(jQuery);

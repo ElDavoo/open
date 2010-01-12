@@ -8,10 +8,6 @@ t.skipAll("{bz: 3113}: NOTE: ToDo widget has changed recently, and is <snip> unw
 
 t.runAsync([
     function() {
-        t.login({}, t.nextStep());
-    },
-
-    function() {
         t.setup_one_widget(
             {
                 name: 'LabPixies ToDo',
@@ -30,6 +26,6 @@ t.runAsync([
 
         t.endAsync();
     }
-]);
+], 600000);
 
 })(jQuery);

@@ -101,6 +101,6 @@ for (var i = 0, l = testData.length; i < l; i++) {
 steps.push(function() { t.login({}, t.nextStep()); });
 steps.push(function() { t.endAsync(); });
 
-t.runAsync(steps, testData.length * 60000);
+t.runAsync(steps, testData.length * 600000);
 
 })(jQuery);

@@ -14,8 +14,7 @@ t.runAsync([
         t.endAsync();
         return;
         
-
-        t.login({}, t.nextStep());
+        t.callNextStep();
     },
 
     function() {
@@ -61,6 +60,6 @@ t.runAsync([
             }
         });
     }
-]);
+], 600000);
 
 })(jQuery);
