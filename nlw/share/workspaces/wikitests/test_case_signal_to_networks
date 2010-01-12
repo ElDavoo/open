@@ -44,7 +44,7 @@
 | wait_for_element_visible_ok | network-select | 30000 |
 
 | *Comment* | Test Case: Signal to Networks. Select signals to All My Groups |  |
-| select_ok | network-select | label=All My groups |
+| select_ok | network-select | label=All My Groups |
 
 | *Comment* | Test Case: Signal to Networks. Signal to All Groups |  |
 | set | mark | All |
