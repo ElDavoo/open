@@ -152,12 +152,11 @@ sub main {
                 'nginx/mime.nginx' => "$dirs{nginx_etc}/mime.conf",
                 $params, 'overwrite',
             ],
-# TODO
-#            [
-#                'apache2/rewrite-lite-useragent'
-#                    => "$socialtext_conf_d/rewrite-lite-useragent",
-#                $params, 'overwrite',
-#            ],
+            [
+                'nginx/rewrite-lite-useragent'
+                    => "$socialtext_conf_d/rewrite-lite-useragent",
+                $params, 'overwrite',
+            ],
             [
                 'nginx/empty.conf'
                     => "$dirs{nginx_etc}/conf.d/socialtext-empty.conf",

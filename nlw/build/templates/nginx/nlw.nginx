@@ -134,6 +134,10 @@
       # Safari doesn't like compressed JS, so *only* compress HTML content
       gzip_disable     "Safari";
     }
+
+    # Unconditionally include local Socialtext-provided add-ons
+    include [% config.nginx_etc_dir %]/socialtext-conf.d/include-*.conf;
+
 [% END %][%# server_common %]
 
 [%- MACRO server_redirect(redirect_port, redirect_scheme) BLOCK %]
