@@ -6,7 +6,7 @@ t.plan(1);
 
 t.runAsync([
     function() {
-        t.open_iframe("/?action=gallery", t.nextStep(), {w: 640});
+        t.open_iframe("/st/dashboard?gallery=1", t.nextStep(), {w: 640});
     },
             
     function() { 
