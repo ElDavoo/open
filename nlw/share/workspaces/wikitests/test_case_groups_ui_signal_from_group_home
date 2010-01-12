@@ -37,7 +37,7 @@
 | select-frame | relative=parent |  |
 | st-admin | enable-plugin --plugin signals --account %%group_acct%% |  |
 
-| *Comment* | Test Case: Groups UI Signal from group home - Login as non group member, do not see signal |
+| *Comment* | Test Case: Groups UI Signal from group home - Login as non group member, do not see signal |  |
 | st-admin | add-member --workspace %%group_ws%% --email %%username%% |  |
 | st-logoutin |  |  |
 | open_ok | /st/signals |  |
@@ -49,7 +49,7 @@
 | st_text_unlike_in_activities_widget | signals_widget | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
 | st_text_unlike_in_activities_widget | signals_widget | %%mysignal_2%% |
 
-| *Comment* | Test Case: Groups UI Signal from group home - Add group, see signal |
+| *Comment* | Test Case: Groups UI Signal from group home - Add group, see signal |  |
 | st-admin | add-member --group %%group_id%% --email %%username%% |  |
 | open_ok | /st/signals |  |
 | st-name-widget | 3 | signals_widget |

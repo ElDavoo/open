@@ -1,11 +1,68 @@
 | *Comment* | Groups UI Send Signal to Group |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Groups UI Send Signal to Group Setup |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
-| st-logoutin | %%group_user%% | %%password%% |  |
-| open_ok | /?group/%%group_id%% |  |  |
+| *Comment* | Created user: %%group_user%% Account: %%group_acct%% and Workspace: %%group_ws%% |  |  |
+
+| set | signal_1 | This goes to all members of account %%start_time%% |
+| set | signal_2 | This goes to just the group |
+| st-logoutin | %%group_user%% | %%password%% |
+| set | ssg_user | ssg-user-%%start_time%%@matt.socialtext.net |
+| set | ssg_user_bestfull | ssg user %%start_time%% |
+| st-admin | create_user --email %%ssg_user%% --password %%password%% --account %%group_acct%% |  |
+| st-admin | add-member --email %%ssg_user%% --group %%group_id%% |  |
+| set | ssg_non_member | ssg-non-member-%%start_time%%@matt.socialtext.net |
+| set | ssg_non_member_bestfull | ssg non member %%start_time%% |
+| st-admin | create_user --email %%ssg_non_member%% --password %%password%% --account %%group_acct%% |  |
+
+| *Comment* | Groups UI Send Signal to Group SEND SIGNAL TO ACCOUNT %%group_acct%% |  |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | network-select | 30000 |
+| select_ok | network-select | index=1 |
+| st-name-widget | 1 | signal_sender |
+| st-name-widget | 3 | signal_receptor |
+| select_ok | network-select | index=1 |
+| st_send_signal_via_profile_widget | signal_sender | %%signal_1%% |
+| st_verify_text_in_activities_widget | signal_receptor | qr/You.+minute.+ago to %%group_acct%%/ |
+| st_verify_text_in_activities_widget | signal_receptor | %%signal_1%% |
+
+| *Comment* | Groups UI Send Signal to Group SEND SIGNAL TO GROUP |  |
+| select_ok | network-select | index=2 |
+| st_send_signal_via_profile_widget | signal_sender | %%signal_2%% |
+| st_verify_text_in_activities_widget | signal_receptor | %%signal_2%% |
+| st_verify_text_in_activities_widget | signal_receptor | qr/You.+minute.+ago to %%group_name%%/ |
+
+| *Comment* | Groups UI Send Signal to Group Verify Member of %%group_name%% Sees everything |  |
+| st-logoutin | %%ssg_user%% | %%password%% |
+| open_ok | /st/signals |  |
+| st-name-widget | 1 | signal_sender |
+| st-name-widget | 3 | signal_receptor |
+| select_ok | network-select | index=2 |
+| st_verify_text_in_activities_widget | signal_receptor | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
+| st_verify_text_in_activities_widget | signal_receptor | %%signal_2%% |
+
+| select_ok | network-select | index=0 |
+| st_verify_text_in_activities_widget | signal_receptor | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
+| st_verify_text_in_activities_widget | signal_receptor | %%signal_1%% |
+| st_verify_text_in_activities_widget | signal_receptor | %%signal_2%% |
+| st_verify_text_in_activities_widget | signal_receptor | qr/%%group_user_short%%.+minute.+ago to %%group_acct%%/ |
+| select_ok | network-select | index=1 |
+| st_verify_text_in_activities_widget | signal_receptor | %%signal_1%% |
+| st_text_unlike_in_activities_widget | signal_receptor | %%signal_2%% |
+
+| *Comment* | Groups UI Send Signal to Group Verify non-member of %%group_name%% sees only account signals |  |
+| st-logoutin | %%ssg_non_member%% | %%password%% |
+| open_ok | /st/signals |  |
+| st-name-widget | 3 | signal_receptor |
+| st_verify_text_in_activities_widget | signal_receptor | qr/%%group_user_short%%.+minute.+ago to %%group_acct%%/ |
+| st_text_unlike_in_activities_widget | signal_receptor | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
+| st_text_unlike_in_activities_widget | signal_receptor | %%signal_2%% |
+| st_verify_text_in_activities_widget | signal_receptor | %%signal_1%% |
 
 | *Comment* | Groups UI Send Signal to Group Teardown |
 | delete-group | %%group_id%% |
+| st-admin | delete-workspace --workspace %%group_ws%% |
 
 | *Comment* | Groups UI Send Signal to Group COMPLETED |

@@ -2,6 +2,7 @@
 
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI SETUP - create a new group, two users |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
+| Comment | Test Case: Groups UI Acct 2 Group Web UI Created %%group_user%% %%group_acct%% %%group_ws%% |  |  |
 
 | set | to_acct | gui-to-acct-%%start_time%% |
 | set | group_acct_two | grps-acct-two-%%start_time%% |
@@ -43,7 +44,7 @@
 | text_like | //body | Users (1) |
 | wait_for_element_visible_ok | link=%%group_user%% | 30000 |
 
-| *Comment* | Test Case: Groups UI Acct 2 Group Web UI - without accts admin, see error |  |
+| *Comment* | Test Case: Groups UI Acct 2 Group Web UI - Overlapping acct from/to, see error |  |
 | open_ok | /nlw/control/accounts/transform |  |
 | wait_for_element_visible_ok | primary_name | 30000 |
 | wait_for_element_visible_ok | st-submit-transform | 30000 |
@@ -64,5 +65,6 @@
 
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI Teardown |
 | delete-group | %%group_id%% |
+| st-admin | delete-workspace --w %%group_ws%% --no-export |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group COMPLETED |
