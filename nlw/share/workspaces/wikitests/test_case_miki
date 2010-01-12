@@ -60,10 +60,10 @@
 | text_like | //body | qr/%%othershortuser%%.+minute.+to %%mikiacct%%.+%%signal1%%/ism |
 
 | *Comment* | Test case: Miki Send MULTI Signals |  |
-| select_ok | st-select-network | all my groups |
+| select_ok | st-select-network | All My Groups |
 | select_ok | st-select-network | %%mikiacct%% (primary, 2 users) |
 | select_ok | st-select-network | %%othermikiacct%% (2 users) |
-| select_ok | st-select-network | all my groups |
+| select_ok | st-select-network | All My Groups |
 | type_ok | st-signal-text | %%multisignal%% |
 | click_and_wait | st-signal-submit |  |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
