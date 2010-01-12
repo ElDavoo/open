@@ -33,16 +33,17 @@
         # image cache: [% cache_name %]
         set $matcher "$request_method$uri";
         set $cache_match "no-match";
-        if ($matcher ~* GET[% rest_pattern %]) {
+        if ($matcher ~* ^GET[% rest_pattern %]) {
             set $cache_match $1;
         }
         if (-f [% config.cache_dir %]/[% cache_name %]/$cache_match[% file_suffix %]) {
-          rewrite [% rest_pattern %] /nlw/[% cache_name %]/$cache_match[%file_suffix%] break;
+          rewrite ^[% rest_pattern %] /[% cache_name %]/$cache_match[%file_suffix%];
         }
 
         [%- IF alias %]
-            location /nlw/[% cache_name %] {
-              root [% config.cache_dir %]/[% cache_name %];
+            location /[% cache_name %] {
+              internal;
+              root [% config.cache_dir %];
               expires -1;
               add_header Cache-Control "public, must-revalidate, max-age=0, pre-check=0, post-check=0";
               add_header X-Cache "HIT from [% cache_name %]";
@@ -50,11 +51,11 @@
         [%- END %]
     [%- END %]
 
-    [% PROCESS image_cache cache_name="avatar"           rest_pattern="^/data/people/([^/]+)/photo"             file_suffix="-large.png" alias=0 %]
-    [% PROCESS image_cache cache_name="avatar"           rest_pattern="^/data/people/([^/]+)/small_photo"       file_suffix="-small.png" alias=1 %]
-    [% PROCESS image_cache cache_name="wafl"             rest_pattern="^/data/wafl/(.*)"                        file_suffix=".png"       alias=1 %]
-    [% PROCESS image_cache cache_name="account_logo"     rest_pattern="^/data/accounts/([^/]+)/logo"            file_suffix="-logo.png"  alias=1 %]
-    [% PROCESS image_cache cache_name="widget_thumbnail" rest_pattern="^/data/gadgets/gadget/([^/]+)/thumbnail" file_suffix=".png"       alias=1 %]
+    [% PROCESS image_cache cache_name="avatar"           rest_pattern="/data/people/([^/]+)/photo"             file_suffix="-large.png" alias=0 %]
+    [% PROCESS image_cache cache_name="avatar"           rest_pattern="/data/people/([^/]+)/small_photo"       file_suffix="-small.png" alias=1 %]
+    [% PROCESS image_cache cache_name="wafl"             rest_pattern="/data/wafl/(.*)"                        file_suffix=".png"       alias=1 %]
+    [% PROCESS image_cache cache_name="account_logo"     rest_pattern="/data/accounts/([^/]+)/logo"            file_suffix="-logo.png"  alias=1 %]
+    [% PROCESS image_cache cache_name="widget_thumbnail" rest_pattern="/data/gadgets/gadget/([^/]+)/thumbnail" file_suffix=".png"       alias=1 %]
 
 [%# The rewrite file must come before any of the redirect confs below %]
 [% PROCESS 'nginx/rewrite.nginx' %]
