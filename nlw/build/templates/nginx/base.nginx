@@ -5,7 +5,7 @@ pid        [% config.pid_dir %]/[% config.app_prefix %]nginx.pid;
 
 worker_processes [% config.servers.worker_processes %];
 [%- IF config.is_dev %]
-error_log [% config.log_dir %]/[% config.app_prefix %]error.log debug;
+error_log [% config.log_dir %]/[% config.app_prefix %]error.log notice;
 [%- ELSE %]
 error_log [% config.log_dir %]/error.log;
 [%- END %]
@@ -37,10 +37,6 @@ http {
 }
 
 # TODO:
-# mime types
-# hostname lookups off
-# browsermatch - nokeepalive (from common.tt2)
-#  include    conf/mime.types;
 # Review: worker_rlimit_nofile 8192;
 
 # Rewrite mobile browsers
