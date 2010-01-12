@@ -87,15 +87,17 @@ $.extend(Socialtext.Group.prototype, {
     },
 
     hasMember: function(username, callback) {
-        if (!this.group_id) {
+        if (!Number(this.group_id)) {
             callback(false);
         }
-        $.ajax({
-            url: this.url('/users/' + username),
-            type: 'HEAD',
-            success: function() { if (callback) callback(true) },
-            error:   function() { if (callback) callback(false) }
-        });
+        else {
+            $.ajax({
+                url: this.url('/users/' + username),
+                type: 'HEAD',
+                success: function() { if (callback) callback(true) },
+                error:   function() { if (callback) callback(false) }
+            });
+        }
     }
 });
 
