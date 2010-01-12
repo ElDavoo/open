@@ -238,9 +238,6 @@ proto.setup_one_widget = function(params, callback) {
 
 
     var setup_widget = function() {
-        var url = self.$('div.title:contains(' + name + ')').nextAll('ul.widgetButton')
-            .find('a').attr('href').replace( /^\/*/, '/' );
-
         $(self.iframe).one("load", function() {
             var widget = self._get_widget();
             if (params.noPoll) {
@@ -254,6 +251,9 @@ proto.setup_one_widget = function(params, callback) {
             );
 
         });
+
+        var $anchor = self.$('div.title:contains(' + name + ')').nextAll('ul.widgetButton').find('a');
+        var url = $anchor.attr('href').replace( /^\/*/, '/st/dashboard' );
 
         self.iframe.contentWindow.location = url;
         $("input.iframe_location").val(url);
