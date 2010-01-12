@@ -93,7 +93,7 @@
 
     [%- IF config.confd_exists %]
         # include file for rewrite rules on this system
-        include conf.d/nginx-*;
+        include conf.d/rewrite-*;
     [%- END %]
 
     # Cache attachments
