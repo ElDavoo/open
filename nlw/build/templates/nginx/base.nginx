@@ -34,18 +34,14 @@ http {
   include [% config.nginx_etc_dir %]/proxy.conf;
   include [% config.nginx_etc_dir %]/mime.conf;
   include [% config.nginx_etc_dir %]/auto-generated.d/*.conf;
+  include [% config.nginx_etc_dir %]/conf.d/*.conf;
 }
 
 # TODO:
 # Review: worker_rlimit_nofile 8192;
 
-# Rewrite mobile browsers
 # FastCGI json proxy
 # conf.d/redirect-to-ssl
 # rewrite /nlw/reports -> webplugin
-# rewrite robots.txt
-
-# include conf.d/rewrite*
-# include socialtext-conf.d/rewrite*
 
 
