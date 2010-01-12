@@ -24,7 +24,7 @@ my $OFFSET = 0x10000001;
 my @vertices = $OFFSET..($OFFSET+255);
 my %edges; 
 my ($first, $second);
-for (1..300) {
+for (1..100) {
     $first = $second = $OFFSET;
     while (($first == $second) || 
         $edges{"$first/$second"}) {
