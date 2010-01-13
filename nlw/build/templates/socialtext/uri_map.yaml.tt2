@@ -338,6 +338,16 @@
             'application/json': [Socialtext::Rest::WorkspaceGroups, POST_json]
         '*':                    [Socialtext::Rest::WorkspaceGroups, bad_method]
 -
+    '/data/workspaces/:ws/photo':
+        'GET':
+            '*/*':  &default  [Socialtext::Rest::WorkspacePhoto, GET_photo]
+        '*':                  [Socialtext::Rest::WorkspacePhoto, bad_method]
+-
+    '/data/workspaces/:ws/small_photo':
+        'GET':
+            '*/*':  &default  [Socialtext::Rest::WorkspacePhoto, GET_small_photo]
+        '*':                  [Socialtext::Rest::WorkspacePhoto, bad_method]
+-
     '/data/workspaces':
         'GET':
             '*/*':     &default [Socialtext::Rest::Workspaces, GET_html]
