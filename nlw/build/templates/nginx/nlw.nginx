@@ -11,22 +11,9 @@
     error_page 502 /static/html/502.html;
 
 [%- IF config.is_appliance || config.is_dev %]
-    [%- SET console_base = '/var/www/console' -%]
-    [%- IF config.is_dev %]
-        [%- console_base = config.data_root_dir _ '/console' -%]
-    [%- END %]
-#    Alias /console/ [% console_base %]/
-#
-#    <Directory [% console_base %]>
-#        Options FollowSymlinks
-#    </Directory>
-#
-#    AddHandler cgi-script .cgi
-#    <Location /console>
-#        DirectoryIndex index.html index.cgi
-#        SetHandler cgi-script
-#        Options ExecCGI
-#    </Location>
+     location /console {
+         proxy_pass http://localhost:[% config.backend_ports.console %];
+     }
 [%- END %]
 
     [%- BLOCK image_cache %]
