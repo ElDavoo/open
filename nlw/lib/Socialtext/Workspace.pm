@@ -1135,7 +1135,7 @@ sub email_passes_invitation_filter {
     my $self   = shift;
     my $email  = shift;
     my $filter = $self->invitation_filter or return 1;
-    return($email and $email =~ qr/$filter/);
+    return($email and $email =~ qr/$filter/i);
 }
 
 after 'role_change_event' => sub {

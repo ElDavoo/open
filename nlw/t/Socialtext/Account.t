@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 113;
+use Test::Socialtext tests => 119;
 use Test::Socialtext::User;
 use Test::Exception;
 use Test::Differences;
@@ -291,7 +291,10 @@ Account_types: {
     is $account_one->account_type,    'Free 50', 'account_type';
     $workspace = Socialtext::Workspace->new(name => $workspace->name); #reload
     $workspace->update(invitation_filter => 'monkey.com');
-    is $workspace->invitation_filter, 'monkey.com',        'no invitation filter';
+    is $workspace->invitation_filter, 'monkey.com',        'invitation filter set to monkey.com';
+    ok $workspace->email_passes_invitation_filter('me@monkey.com'), 'me@monkey.com passes';
+    ok $workspace->email_passes_invitation_filter('me@MONKEY.COM'), 'me@MONKEY.COM passes';
+    ok !$workspace->email_passes_invitation_filter('monkey@me.com'), 'monkey@me.com does not pass';
     is $workspace->is_plugin_enabled('socialcalc'), 0, 'socialcalc enabled';
 
     $account_one->update(account_type => 'Paid'); # or any type, really
@@ -307,6 +310,10 @@ restrict_to_domain: {
     # valid domain.
     eval { $account->update( restrict_to_domain => 'valid.com' ); };
     is $@, '', 'updated restrict_to_domain with valid value';
+
+    ok $account->email_passes_domain_filter('me@valid.com'), 'me@valid.com passes';
+    ok $account->email_passes_domain_filter('me@VALID.COM'), 'me@VALID.COM passes';
+    ok !$account->email_passes_domain_filter('valid@me.com'), 'valid@me.com does not pass';
 
     # invalid domain.
     eval { $account->update( restrict_to_domain => 'valid!@.com' ); };

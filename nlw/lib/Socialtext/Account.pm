@@ -1091,7 +1091,7 @@ sub email_passes_domain_filter {
     my $domain = $self->restrict_to_domain;
     return 1 unless $domain;
 
-    my $filter = qr/@\Q$domain\E$/;
+    my $filter = qr/@\Q$domain\E$/i;
     if ($email =~ $filter) {
         return 1;
     }
