@@ -1,0 +1,32 @@
+| *Comment* | Test Case: Groups UI Search Signals by Group |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Groups UI Search Signals by Group Setup |  |  |
+| st-setup-a-group | 1 | 1 | 1 |
+| enable-acct-plugin | signals | %%group_acct%% |  |
+| set | grp_mbr_short | gui_search_mbr_%%start_time%% |  |
+| set | non_grp_mbr_short | gui_search_non_%%start_time%% |  |
+| set | grp_mbr | %%grp_mbr_short%%@matt.socialtext.net |  |
+| set | non_grp_mbr | %%non_grp_mbr_short%%@matt.socialtext.net |  |
+| create-user | %%grp_mbr%% | %%password%% | %%group_acct%% |
+| set | mbr_user_id | %%user_id%% |  |
+| create-user | %%non_grp_mbr%% | %%password%% | %%group_acct%% |
+| set | non_mbr_user_id | %%user_id%% |  |
+| st-admin | add-member --group %%group_id%% --email %%grp_mbr%% | is now a member of the %%group_name%% Group |  |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Check member box for %%group_user%% and %%grp_mbr%% |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Click Trash Can for %%grp_mbr%%, user is gone |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Check, see NO trash can for %%grp_mbr%% |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: ADD %%non_grp_mbr%%, see user is add |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Click save, inspect for changes |  |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Click Edit Again |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Flip Changes - remove %%non_grp_mbr%%, add %%grp_mbr%% |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Click CANCEL, DO NOT see changes |  |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group TEARDOWN |
+| delete-group | %%group_id%% |
+| st-admin | remove-workspace --w %%group_ws%% |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group COMPLETED |  |  |
