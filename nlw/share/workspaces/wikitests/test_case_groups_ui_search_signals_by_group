@@ -30,11 +30,17 @@
 | *Comment* | Test Case: Signals Search. Pause 20 sec for Signals indexer |  |
 | pause | 20000 | wait for Signals Indexer to run |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group. Search within group ... and not. |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Search within group, see signal |  |
 | st-logoutin | %%group_user%% | %%password%% |
 | open_ok | /?signals |
 
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Search within ACCOUNT, do not see signal |  |
+
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODOA: Login as group member (of two accounts) |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. TODOB: Select "All Group", do not see signal |  |
+
 | *Comment* | Test Case: Groups UI Search Signals by Group Teardown |
 | delete-group | %%group_id%% |
+| st-admin | delete-workspace --w %%group_ws%% --no-export |
 
 | *Comment* | Test Case: Groups UI Search Signals by Group COMPLETED |
