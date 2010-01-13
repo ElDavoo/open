@@ -14,8 +14,8 @@ our @EXPORT_OK = qw(
     sql_commit sql_begin_work sql_rollback sql_in_transaction
     sql_convert_to_boolean sql_convert_from_boolean
     sql_parse_timestamptz sql_format_timestamptz sql_timestamptz_now
-
     sql_ok sql_mock_result sql_mock_row_count ok_no_more_sql
+    sql_ensure_temp
 );
 our %EXPORT_TAGS = (
     'exec' => [qw(sql_execute sql_execute_array sql_selectrow sql_singlevalue)],
@@ -61,6 +61,7 @@ sub sql_in_transaction { $Mock_in_transaction }
 sub sql_begin_work { $Mock_in_transaction = 1 }
 sub sql_commit { $Mock_in_transaction = 0 }
 sub sql_rollback { $Mock_in_transaction = 0 }
+sub sql_ensure_temp { }
 
 sub sql_selectrow { 
     my $sth = sql_execute(@_);
