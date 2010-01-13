@@ -32,6 +32,7 @@ Verbs: (start is the default verb if none is specified)
   restart       stop, then start
 
 Options:
+  -a                operate only on appliance console
   -c                operate only on ceqlotron (there is no 'test' ceqlotron)
   -p                operate only on the json proxy
   -t, --test        operate on live-test server rather than devel. server
@@ -39,12 +40,13 @@ Options:
   -2                operate only on Apache 2 instance
   -v, --verbose     extra verbosity
 
-If none of -c, -1, or -2 are specified, the verb acts on all three daemons.
+If none of -a, -c, -1, or -2 are specified, the verb acts on all three daemons.
 END_OF_HELP
     exit 0;
 }
 
-my ( %apache_command, %ceqlotron_command, $nginx, $apache_perl );
+my (%apache_command, %ceqlotron_command, %appliance_command, $nginx,
+    $apache_perl);
 
 # Options
 my $use_test_server  = 0;
@@ -52,11 +54,13 @@ my $apache1_please   = 0;
 my $nginx_please     = 0;
 my $ceqlotron_please = 0;
 my $jsonproxy_please = 0;
+my $appliance_please = 0;
 
 my %OPTSPEC = (
     'test|t'    => \$use_test_server,
     'help|h'    => \&usage,
     'verbose|v' => \$Socialtext::ApacheDaemon::Verbose,
+    a           => \$appliance_please,
     c           => \$ceqlotron_please,
     p           => \$jsonproxy_please,
     1           => \$apache1_please,
@@ -73,8 +77,10 @@ usage() if grep { $_ eq 'help' } @ARGV;
 my @verbs = @ARGV ? @ARGV : ('start');
 
 # If you don't specify any of -c, -1, or -2, you get them all.
-$ceqlotron_please = $nginx_please = $apache1_please = $jsonproxy_please = 1
+$appliance_please = $ceqlotron_please = $nginx_please = $apache1_please
+    = $jsonproxy_please = 1
     unless ( $ceqlotron_please
+          || $appliance_please
           || $nginx_please
           || $apache1_please
           || $jsonproxy_please );
@@ -107,8 +113,9 @@ sub dispatch {
     foreach my $verb ( @verbs ) {
         if ( my $cmd = $apache_command{$verb} ) {
             $cmd->($_) for @apaches;
-            $ceqlotron_command{$verb}->() if $ceqlotron_please;
             local $Socialtext::System::SILENT_RUN = 1;
+            $ceqlotron_command{$verb}->() if $ceqlotron_please;
+            $appliance_command{$verb}->() if $appliance_please;
             shell_run "$jsonproxy $verb" if $jsonproxy_please;
         }
         else {
@@ -164,6 +171,21 @@ sub init_commands {
         },
         hup     => sub { },
         restart => sub { $ceqlotron_command{$_}->(@_) for qw( stop start ) },
+        ports   => sub { },
+    );
+    my $appliance_svc_dir
+        = "$FindBin::Bin/../../appliance/libsocialtext-appliance-perl/service";
+    %appliance_command = (
+        start => sub {
+            print "Starting appliance console.\n";
+            shell_run("svc -u $appliance_svc_dir");
+        },
+        stop => sub {
+            print "Stopping appliance console.\n";
+            shell_run("svc -d $appliance_svc_dir");
+        },
+        hup     => sub { },
+        restart => sub { $appliance_command{$_}->(@_) for qw( stop start ) },
         ports   => sub { },
     );
 }
