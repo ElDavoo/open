@@ -68,6 +68,13 @@ sub json_proxy_port {
         : PORTS_START_AT() + 4000 + $>;
 }
 
+memoize 'console_port';
+sub console_port {
+    return Socialtext::AppConfig->is_appliance()
+        ? _default_backend_http_port() + 1
+        : PORTS_START_AT() + 5000 + $>;
+}
+
 ###############################################################################
 # Helpers: front-end HTTP port
 sub _env_var_http_port {
