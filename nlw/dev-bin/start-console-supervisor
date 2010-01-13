@@ -1,0 +1,18 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use App::Daemon qw/daemonize/;
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use Socialtext::System qw/shell_run/;
+
+my $sdir = 
+    "$FindBin::Bin/../../appliance/libsocialtext-appliance-perl/service";
+
+die "Can't find service directory: $sdir" unless -d $sdir;
+die "Service directory has no run: $sdir" unless -e "$sdir/run";
+
+print "Starting supervise on $sdir\n";
+daemonize();
+
+shell_run("supervise $sdir");
