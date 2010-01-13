@@ -34,6 +34,6 @@ t.runAsync([
         );
         t.endAsync();
     }
-]);
+], 600000);
 
 })(jQuery);

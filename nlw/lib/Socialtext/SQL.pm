@@ -42,6 +42,7 @@ our @EXPORT_OK = qw(
     sql_commit sql_begin_work sql_rollback sql_in_transaction
     sql_convert_to_boolean sql_convert_from_boolean
     sql_parse_timestamptz sql_format_timestamptz sql_timestamptz_now
+    sql_ensure_temp
 );
 our %EXPORT_TAGS = (
     'exec' => [qw(sql_execute sql_execute_array
@@ -115,6 +116,7 @@ When forking a new process be sure to, C<disconnect_dbh()> first.
         $DBH->do("SET client_min_messages TO 'WARNING'");
         $DBH->{'private_Socialtext::SQL'} = {
             txn_stack => [],
+            temps => {},
         };
 
         $NEEDS_PING = 0;
@@ -432,6 +434,40 @@ Return the current time as a hires, formatted, timestamptz string.
 
 sub sql_timestamptz_now {
     return sql_format_timestamptz(Socialtext::Date->now(hires=>1));
+}
+
+=head2 sql_ensure_temp($table, $defn, [@indexes])
+
+Ensure that a temporary table is set up for this connection. The column
+definitions are passed in as C<$defn>, and should be valid SQL for the
+"inside" of a CREATE TABLE statement.  Basically:
+
+  CREATE TEMPORARY TABLE $table ( $defn ) ON COMMIT PRESERVE ROWS;
+
+If you need indexes applied, pass those CREATE INDEX statements in full as
+subsequent parameters.
+
+If the temp table already exists it's truncated and the indexes aren't
+reapplied.
+
+=cut
+
+sub sql_ensure_temp {
+    my ($table, $defn, @idx) = @_;
+
+    my $dbh = get_dbh();
+    if (!exists $dbh->{'private_Socialtext::SQL'}{temps}{$table}) {
+        my $sql = qq{CREATE TEMPORARY TABLE $table ( $defn )
+                     ON COMMIT PRESERVE ROWS};
+        sql_execute($sql);
+        for my $idx (@idx) {
+            sql_execute($idx);
+        }
+        $dbh->{'private_Socialtext::SQL'}{temps}{$table} = 1;
+    }
+    else {
+        sql_execute("TRUNCATE $table");
+    }
 }
 
 1;

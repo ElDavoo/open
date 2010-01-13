@@ -382,6 +382,7 @@ sub groups {
         FROM user_set_path
         JOIN groups ON into_set_id = user_set_id
         WHERE from_set_id = ? $add_where
+        ORDER BY driver_group_name
     },@bind);
 
     my $apply = $p{ids_only}
