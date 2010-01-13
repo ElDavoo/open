@@ -87,11 +87,15 @@ echo "Linking in extra modules ..."
 set +e
 QUIET=1 dev-bin/link-console
 dev-bin/link-reports
+
+# Start the supervisor
+dev-bin/start-console-supervisor
 set -e
 
 [ $BENCHMARK == 1 ] && st-config set benchmark_mode 1
 
 [ $HELPEN == 1 ] && st-admin import-workspace --tarball $ST_CURRENT/nlw/share/l10n/help/help-en.tar.gz
+
 
 if [ $PAUSE == 0 ]; then
     echo "Starting in dual-Apache mode"
