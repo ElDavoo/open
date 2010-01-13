@@ -155,6 +155,11 @@ sub _get_current_schema_checksum {
 sub _cache_initial_data {
     my $schema_cache_dir = shift;
 
+    if ($ENV{ST_TEST_SKIP_DB_CACHE}) {
+        print "# SKIPPING initial data caching because ST_TEST_SKIP_DB_CACHE is set\n";
+        return;
+    }
+
     my $checksum = _get_current_schema_checksum();
     my $filename = "$schema_cache_dir/cache.$checksum.sql";
     return if (-f $filename && -s _);
