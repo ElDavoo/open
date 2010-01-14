@@ -895,7 +895,7 @@ div#contentContainer {
 	border-left: #759fb1 1px solid; 
 	border-right: #759fb1 1px solid; 
 	background:#fff url(../images/contentContainerTile.png) repeat-x top left;
-	padding: 0 0 40px 20px;
+/*	padding: 0 0 40px 20px;*/
 	clear: both;
 }
 
@@ -1865,12 +1865,13 @@ div#footer {
 }	
 
 div#footerLinks {
-	width: 45%;
+/*	width: 45%;*/
 	float: left;
 	height: 40px;
 	background: url(../images/footerLeft.png) no-repeat top left;
 }
 
+/*
 div#footerLinks ul {
 	float: left;
 }
@@ -1894,14 +1895,39 @@ div#footerLinks ul li a:hover {
 div#footerLinks ul li.first {
 	background: none;
 }
+*/
+div#footerLinks div {
+	float: left;
+}
+
+div#footerLinks div div {
+	float: left;
+	padding: 0 10px 0 10px;
+	background: url(../images/footerDivider.png) no-repeat center left;
+}
+
+div#footerLinks a {
+	float: left;
+	color: #fff;
+	line-height: 40px;
+}
+
+div#footerLinks a:hover {
+	color: #ffe744;
+}
+
+div#footerLinks div div.first {
+	background: none;
+}
 
 div#footerGlobal {
 	float: right;
-	width: 45%;
+/*	width: 45%; */
 	height: 40px;
 	background: url(../images/footerRight.png) no-repeat top right;
 }
 
+/*
 div#footerGlobal ul {
 	float: right;
 }
@@ -1924,7 +1950,32 @@ div#footerGlobal ul li a:hover {
 
 div#footerGlobal ul li.first {
 	background: none;
+} 
+*/
+
+div#footerGlobal div {
+	float: right;
 }
+
+div#footerGlobal div div {
+	float: left;
+	padding: 0 10px 0 10px;
+	background: url(../images/footerDivider.png) no-repeat center left;
+}
+
+div#footerGlobal a {
+	float: left;
+	color: #fff;
+	line-height: 40px;
+}
+
+div#footerGlobal a:hover {
+	color: #ffe744;
+}
+
+div#footerGlobal div div.first {
+	background: none;
+} 
 	
 /* footer End */
 
@@ -2069,9 +2120,9 @@ body#dashBoard div#controls .welcome {
     padding-left: 10px;
 }
 
-div#contentContainer {
+/*div#contentContainer {
     padding: 0 0 0px 20px;
-}
+}*/
 
 table.dataTable td img.pageType {
     border: none;
@@ -4140,9 +4191,9 @@ body#dashBoard .widgetColumn {
     -height: 300px; /* For IE6 */
 }
 
-body#dashBoard #contentContainer {
+/*body#dashBoard #contentContainer {
     padding: 0 0 0 1%;
-}
+}*/
 
 body#dashBoard .placeholder {
     border: 2px dashed rgb(170,170,170);
@@ -4190,7 +4241,7 @@ body#dashBoard div#controls div#controlsRight ul {
     margin-top: 11px;
 }
 
-.container #col0 {
+/*.container #col0 {
     padding-right: 1%;
     width: 26%;
 }
@@ -4243,6 +4294,7 @@ body#dashBoard div#controls div#controlsRight ul {
     padding: 0 !important;
     margin: 0 !important;
 }
+*/
 /* End of Container stuff */
 
 /* Search Results */

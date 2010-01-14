@@ -4,6 +4,10 @@
       [%- PROCESS css_link -%]
     [% END %]
 [% ELSE %]
+    <link rel="stylesheet" href="[% wiki.skin_uri('s3') %]/css/blueprint/lib/reset.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="[% wiki.skin_uri('s3') %]/css/blueprint/lib/liquid.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="[% wiki.skin_uri('s3') %]/css/blueprint/lib/typography.css" type="text/css" media="screen, projection">
+    <!--[if IE]><link rel="stylesheet" href="[% wiki.skin_uri('s3') %]/css/blueprint/lib/ie.css" type="text/css" media="screen, projection"><![endif]-->
     [%- FOREACH css_file IN css.standard -%]
       [%- PROCESS css_link -%]
     [% END %]
@@ -17,6 +21,8 @@
     [%- FOREACH css_file IN css.common -%]
       [%- PROCESS css_link -%]
     [% END %]
+
+        
 [% END %]
 
 [% IF dynamic_logo_url %]

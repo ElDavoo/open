@@ -1,4 +1,4 @@
-<li id="[% gadget.id %]-li" class="[% gadget.fixed ? "fixed" : "draggable" %]">
+<div id="[% gadget.id %]-li" class="[% gadget.fixed ? "fixed" : "draggable" %]">
 <div class="[% IF gadget.fixed %]tan[% ELSE %]regular[% END %] widget" id="[% gadget.id %]">
     <div class="widgetHeader">
         <div class="widgetHeaderTitle">
@@ -49,4 +49,4 @@
     </div><!-- widgetContent END -->
     <div class="widgetBottom"><div class="widgetBottomRight"></div></div><!-- widgetBottom END -->                                
 </div><!-- widget END -->
-</li>
+</div>
