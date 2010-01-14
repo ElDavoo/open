@@ -27,10 +27,10 @@ lots_of_hits();
 rt22654_crosstag_search_bug();
 more_featured_search();
 flexing_multiple_pages();
+rt22174_title_search_bug();
 TODO: {
     local $TODO = 'Solr stories should fix me!';
     basic_utf8();
-    rt22174_title_search_bug();
     test_for_dollar_amp_and_friend();
     index_and_search_a_big_document(); # go away?
     basic_wildcard_search();
@@ -171,9 +171,12 @@ sub rt22174_title_search_bug {
     erase_index_ok();
     make_page_ok( "Beamish Stout", 'has thou slain the jabberwock' );
     make_page_ok( "light", 'is beamish.  has thou slain the jabberwock' );
+    TODO: {
+    local $TODO = 'Solr stories should fix me!';
     search_ok( '"has thou slain the jabberwock" AND title:beamish', 1, "" );
     search_ok( '"has thou slain the jabberwock" AND =beamish',      1, "" );
     search_ok( '=beamish AND "has thou slain the jabberwock"',      1, "" );
+    }
 }
 
 sub basic_utf8 {
