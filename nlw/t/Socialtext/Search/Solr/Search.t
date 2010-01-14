@@ -25,9 +25,9 @@ ok make_searcher(), 'made searcher';
 basic_search();
 lots_of_hits();
 rt22654_crosstag_search_bug();
+more_featured_search();
 TODO: {
     local $TODO = 'Solr stories should fix me!';
-    more_featured_search();
     basic_utf8();
     flexing_multiple_pages();
     rt22174_title_search_bug();
@@ -68,12 +68,15 @@ QUOTE
         "bridge idonotexist", 0,
         "Assert searching defaults to AND connectivity"
     );
-    search_ok( '"smell of smoke"', 1, "Phrase search" );
     search_ok( 'bridges -smoke',   0, "Search with negation" );
+    TODO: {
+    local $TODO = 'Phrase searching not yet implemented';
+    search_ok( '"smell of smoke"', 1, "Phrase search" );
     search_ok(
         'bridges AND NOT "smell of smoke"', 0,
         "Search with phrase negation"
     );
+    }
     search_ok(
         'bridges AND NOT "smoke on the water"', 1,
         "Search without Deep Purple "
