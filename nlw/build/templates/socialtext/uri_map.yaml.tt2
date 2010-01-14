@@ -383,6 +383,12 @@
             'text/html':        *default
         '*':                    [Socialtext::Rest::UserSharedAccounts, bad_method]
 -
+    '/data/users/:username/workspaces':
+        'GET':
+            'text/html':        [Socialtext::Rest::UserWorkspaces, GET_html]
+            'application/json': [Socialtext::Rest::UserWorkspaces, GET_json]
+        '*':                    [Socialtext::Rest::UserWorkspaces, bad_method]
+-
     '/data/users':
         'POST':
             '*/*':              [Socialtext::Rest::Users, bad_type]
