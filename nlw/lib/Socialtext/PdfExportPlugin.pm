@@ -171,7 +171,7 @@ sub _get_html {
     local *Socialtext::Formatter::TradeMark::html = sub {'<SUP>TM</SUP>'};
     my $html = "<html><head><title>"
         . $page->metadata->Subject
-        . "</title><body>"
+        . "</title></head><body>"
         . $page->to_absolute_html(
             undef,
             link_dictionary => Socialtext::PdfExport::LinkDictionary->new )
