@@ -18,7 +18,8 @@
 | text_like | //body | Invite people to your group |  |
 | text_like | //body | Enter a list of email addresses (one address per line) of people you would like to invite to this group |  |
 | wait_for_element_visible_ok | object_id | 30000 |
-| text_unlike | //body | ... %%group_name%% |
+| text_unlike | object_id | ... %%group_name%% |
+| text_like | object_id | %%group_acct%% |
 
 | st-admin | add-group-admin --e %%group_user%% --g %%group_id%% | is now a admin of the |
 | open_ok | /?action=invite |  |
@@ -32,7 +33,7 @@
 
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group CHECK Activity for group, SEE NEW MEMBER (TODO) |
 | open_ok | /st/group/%%group_id%% |  |  |
-| st-name-widget | 3 | activity_widget |
+| st-name-widget | 4 | activity_widget |
 | st-widget-title-like | activity_widget | Activity |
 | st-select-widget-frame | activity_widget |  |
 | wait_for_text_present_ok | View RSS feed for %%group_name%% | 30000 |
@@ -56,7 +57,7 @@
 | text_like | //body | Invite people to your group |  |
 | text_like | //body | Enter a list of email addresses (one address per line) of people you would like to invite to this group |  |
 | wait_for_element_visible_ok | object_id | 30000 |  |
-| text_unlike | //body | ... %%group_name%% |  |
+| text_unlike | object_id | ... %%group_name%% |  |
 
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group Teardown |
 | delete-group | %%group_id%% |
