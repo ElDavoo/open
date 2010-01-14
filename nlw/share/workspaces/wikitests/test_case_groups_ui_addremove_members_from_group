@@ -1,12 +1,14 @@
-| *Comment* | Test Case: Groups UI Search Signals by Group |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group |
 
 * Fixture: SocialWidgets
 
-| *Comment* | Test Case: Groups UI Search Signals by Group Setup |  |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group: Setup |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
 | enable-acct-plugin | signals | %%group_acct%% |  |
-| set | grp_mbr_short | gui_search_mbr_%%start_time%% |  |
-| set | non_grp_mbr_short | gui_search_non_%%start_time%% |  |
+| set | grp_mbr_short | guimbr%%start_time%% |  |
+| set | grp_mbr_bestfull | guimbr%%start_time%% |  |
+| set | non_grp_mbr_short | guinonmbr%%start_time%% |  |
+| set | non_grp_mbr_bestfull | guinonmbr%%start_time%% |  |
 | set | grp_mbr | %%grp_mbr_short%%@matt.socialtext.net |  |
 | set | non_grp_mbr | %%non_grp_mbr_short%%@matt.socialtext.net |  |
 | create-user | %%grp_mbr%% | %%password%% | %%group_acct%% |
@@ -15,18 +17,109 @@
 | set | non_mbr_user_id | %%user_id%% |  |
 | st-admin | add-member --group %%group_id%% --email %%grp_mbr%% | is now a member of the %%group_name%% Group |  |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Check member box for %%group_user%% and %%grp_mbr%% |  |
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Click Trash Can for %%grp_mbr%%, user is gone |  |
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Check, see NO trash can for %%grp_mbr%% |  |
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: ADD %%non_grp_mbr%%, see user is add |  |
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Click save, inspect for changes |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. Check member box for %%group_user%% and %%grp_mbr%% |  |
+| st-admin | add-group-admin --e %%username%% --g %%group_id%% |  |
+| open_ok | /?group/%%group_id%%/ |  |
+| st-name-widget | 5 | members_widget |
+| st-widget-title-like | members_widget | Membership |
+| st-select-widget-frame | members_widget |  |
+| wait_for_element_visible_ok | link=%%username%% | 30000 |
+| wait_for_element_visible_ok | link=%%grp_mbr%% | 30000 |
+| wait_for_element_visible_ok | link=%%group_user%% | 30000 |
+| select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Click Edit Again |  |
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Flip Changes - remove %%non_grp_mbr%%, add %%grp_mbr%% |  |
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Click CANCEL, DO NOT see changes |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. Click link=(Edit) |  |
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_and_wait | link=(Edit) |  |
+| select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group TEARDOWN |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. Click Trash Can for %%grp_mbr%%, user is gone |  |
+| st-name-widget | 3 | membership_widget |
+| st-widget-title-like | membership_widget | Membership |
+| st-select-widget-frame | membership_widget |  |
+| wait_for_element_visible_ok | link=%%username%% | 30000 |
+| text_like | //body | %%username%% (admin) |
+| wait_for_element_visible_ok | link=%%grp_mbr%% | 30000 |
+| wait_for_element_visible_ok | link=%%group_user%% | 30000 |
+| wait_for_element_visible_ok | %%mbr_user_id%% | 30000 |
+| click_ok | %%mbr_user_id%% |  |
+
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. TODO Figure out how to say elements are disabled |  |
+
+wait_for_element_not_visible_ok | %%mbr_user_id%% | 30000 |
+
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. TODO Find element after typeahead (borked now) |  |
+| wait_for_element_visible_ok | user | 30000 |
+| type-lookahead-ok | user | %%non_grp_mbr_bestfull%% |
+| wait_for_element_present_ok | link=%%non_grp_mbr_bestfull%% | 30000 |
+| click_ok | link=%%non_grp_mbr_bestfull%% |  |
+| wait_for_element_visible_ok | link=%%non_grp_mbr%% | 30000 |
+| wait_for_element_visible_ok | %%non_mbr_user_id%% | 30000 |
+
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. Click save, inspect for changes |  |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| wait_for_element_visible_ok | st-cancel-create-group | 30000 |
+| click_and_wait | create-group |  |
+| st-name-widget | 5 | membership_widget |
+| st-widget-title-like | membership_widget | Membership |
+| st-select-widget-frame | membership_widget |  |
+| wait_for_element_visible_ok | link=%%non_grp_mbr%% | 30000 |
+| wait_for_element_visible_ok | link=%%group_user%% | 30000 |
+| text_unlike | //body | %%grp_mbr%% |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. Click Edit Again |  |
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_and_wait | link=(Edit) |  |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. Flip Changes - remove %%non_grp_mbr%%, add %%grp_mbr%% |  |
+| st-name-widget | 3 | membership_widget |
+| st-widget-title-like | membership_widget | Membership |
+| st-select-widget-frame | membership_widget |  |
+| wait_for_element_visible_ok | link=%%username%% | 30000 |
+| text_like | //body | %%username%% (admin) |
+| wait_for_element_visible_ok | link=%%non_grp_mbr%% | 30000 |
+| wait_for_element_visible_ok | link=%%group_user%% | 30000 |
+| wait_for_element_visible_ok | %%non_mbr_user_id%% | 30000 |
+| click_ok | %%non_mbr_user_id%% |  |
+
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. TODO Figure out how to say elements are disabled |  |
+
+wait_for_element_not_visible_ok | %%non_mbr_user_id%% | 30000 |
+
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. TODO Find element after typeahead (borked now) |  |
+| wait_for_element_visible_ok | user | 30000 |
+| type-lookahead-ok | user | %%grp_mbr_bestfull%% |
+| wait_for_element_present_ok | link=%%grp_mbr_bestfull%% | 30000 |
+| click_ok | link=%%grp_mbr_bestfull%% |
+| wait_for_element_visible_ok | link=%%grp_mbr%% | 30000 |
+| wait_for_element_visible_ok | %%mbr_user_id%% | 30000 |
+
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. Click CANCEL |  |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| wait_for_element_visible_ok | st-cancel-create-group | 30000 |
+| click_and_wait | st-cancel-create-group |  |
+
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. Inspect; DO NOT see changes |  |
+| st-name-widget | 5 | membership_widget |
+| st-widget-title-like | membership_widget | Membership |
+| st-select-widget-frame | membership_widget |  |
+| wait_for_element_visible_ok | link=%%non_grp_mbr%% | 30000 |
+| wait_for_element_visible_ok | link=%%group_user%% | 30000 |
+| text_unlike | //body | %%grp_mbr%% |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. TEARDOWN |
 | delete-group | %%group_id%% |
 | st-admin | delete-workspace --w %%group_ws%% --no-export |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group COMPLETED |  |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. COMPLETED |  |  |
