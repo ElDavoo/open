@@ -28,10 +28,10 @@ rt22654_crosstag_search_bug();
 more_featured_search();
 flexing_multiple_pages();
 rt22174_title_search_bug();
+test_for_dollar_amp_and_friend();
 TODO: {
     local $TODO = 'Solr stories should fix me!';
     basic_utf8();
-    test_for_dollar_amp_and_friend();
     index_and_search_a_big_document(); # go away?
     basic_wildcard_search();
 }
