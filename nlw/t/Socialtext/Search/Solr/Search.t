@@ -32,9 +32,6 @@ rt22174_title_search_bug();
 test_for_dollar_amp_and_friend();
 index_and_search_a_big_document();
 basic_wildcard_search();
-TODO: {
-    local $TODO = 'Solr stories should fix me!';
-}
 exit;
 
 sub basic_search {
