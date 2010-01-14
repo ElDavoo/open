@@ -354,6 +354,12 @@ sub erase_index_ok {
     eval { indexer()->delete_workspace($workspace) };
     diag("erase_index_ok: $@\n") if $@;
     ok( not($@), "============ ERASED INDEX =============" );
+
+    # Create new searcher/indexer object instance, so we don't leak from one
+    # test to the next; if either of those objects (or their attributes) has
+    # internal state, it can pollute into the next test.
+    make_searcher();
+    make_indexer();
 }
 
 sub make_searcher {
