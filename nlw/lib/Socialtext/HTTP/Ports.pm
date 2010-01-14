@@ -71,7 +71,7 @@ sub json_proxy_port {
 memoize 'console_port';
 sub console_port {
     return Socialtext::AppConfig->is_appliance()
-        ? _default_backend_http_port() + 1
+        ? _default_backend_http_port() + 2
         : PORTS_START_AT() + 5000 + $>;
 }
 
