@@ -7,7 +7,7 @@ use IPC::Run qw(run timeout);
 
 use utf8;
 use Test::Socialtext::Search;
-use Test::Socialtext tests => 198;
+use Test::Socialtext tests => 205;
 fixtures(qw( db no-ceq-jobs ));
 
 use_ok("Socialtext::Search::Solr::Factory");
@@ -22,19 +22,9 @@ my $SEARCHER;
 
 ok make_indexer(), 'made indexer';
 ok make_searcher(), 'made searcher';
-basic_search();
-lots_of_hits();
-rt22654_crosstag_search_bug();
-more_featured_search();
-basic_utf8();
-flexing_multiple_pages();
-rt22174_title_search_bug();
-test_for_dollar_amp_and_friend();
-index_and_search_a_big_document();
-basic_wildcard_search();
-exit;
 
-sub basic_search {
+###############################################################################
+basic_search: {
     erase_index_ok();
     make_page_ok(
         "Cows Rock",
@@ -47,7 +37,8 @@ sub basic_search {
     search_ok( "It is raining", 0, "Nonsense" );
 }
 
-sub more_featured_search {
+###############################################################################
+more_featured_search: {
     erase_index_ok();
     make_page_ok( "Tom Stoppard", <<'QUOTE', [ "man likes dog", "man" ] );
 We cross our bridges when we come to them and burn them behind us, with
@@ -84,6 +75,7 @@ QUOTE
     search_ok( "tag:idonotexst", 0, "Tag search for a non-existant tag" );
 }
 
+###############################################################################
 # As part of RT 26849 faux fields are removed from query strings by replacing
 # their ending ":" with a space.  Ensure this works okay.
 FIXUP_FAUX_FIELDS: {
@@ -93,6 +85,7 @@ FIXUP_FAUX_FIELDS: {
     search_ok( "baby:eater", 1 );  # baby:eater becomes "baby eater"
 }
 
+###############################################################################
 # RT 25899: ensure phrase queries work
 PHRASE_QUERY_BUG: {
     erase_index_ok();
@@ -100,7 +93,8 @@ PHRASE_QUERY_BUG: {
     search_ok( '"yyy zzz"', 1 );  # Breaks with KS 0.15 and less
 }
 
-sub flexing_multiple_pages {
+###############################################################################
+flexing_multiple_pages: {
     erase_index_ok();
     make_page_ok( "Tom Stoppard", <<'QUOTE', [ "quotes", "writers" ] );
 We cross our bridges when we come to them and burn them behind us, with
@@ -154,9 +148,10 @@ QUOTE
     }
 }
 
+###############################################################################
 # If a page has two tags: "cows love" and "super matthew" then make sure a tag
 # search for neither of these matches: "love super" or "matthew cows" 
-sub rt22654_crosstag_search_bug {
+rt22654_crosstag_search_bug: {
     erase_index_ok();
     make_page_ok( "Story of the Mammal", "Mammal Power",
         [ "cows love", "super matthew" ] );
@@ -164,7 +159,8 @@ sub rt22654_crosstag_search_bug {
     search_ok( 'tag:"matthew cows"', 0, "" );
 }
 
-sub rt22174_title_search_bug {
+###############################################################################
+rt22174_title_search_bug: {
     erase_index_ok();
     make_page_ok( "Beamish Stout", 'has thou slain the jabberwock' );
     make_page_ok( "light", 'is beamish.  has thou slain the jabberwock' );
@@ -176,7 +172,8 @@ sub rt22174_title_search_bug {
     }
 }
 
-sub basic_utf8 {
+###############################################################################
+basic_utf8: {
     erase_index_ok();
     my $utf8 = "big and Groß";
     make_page_ok( $utf8, "Cows are good but $utf8 en français",
@@ -206,7 +203,8 @@ sub basic_utf8 {
     search_ok( "tag:espa nol", 0, "UTF-8 not used as token seperator" );
 }
 
-sub lots_of_hits {
+###############################################################################
+lots_of_hits: {
     erase_index_ok();
     for my $n ( 1 .. 105 ) {
         make_page_ok( "Page Test $n", "The contents are $n" );
@@ -214,15 +212,14 @@ sub lots_of_hits {
     search_ok( "Page Test", 20, "Big result sets returned ok" );
 }
 
-#####################################
-#
+###############################################################################
 # In this test block we are testing to see if $& (or friends) has been used.
 # The mention (whether it's in unused code or not) of $&, $' or $` will cause
 # Perl regexes to slow down globally, in an exponential fashion (by the length
 # of the string being tested).  This is a fundamental limitation and bug in
 # Perl.  Search below for "MACHINERY_FOR_DOLLAR_AMP_TIMING_TEST" for more
 # information.
-sub test_for_dollar_amp_and_friend {
+test_for_dollar_amp_and_friend: {
     my $MAX_RATIO = 10;
     my $baseline  = run_time_test_externally();
     my $test_time = run_time_test_internally();
@@ -247,7 +244,8 @@ MSG
     }
 }
 
-sub index_and_search_a_big_document {
+###############################################################################
+index_and_search_a_big_document: {
     my $text = "Mary had a little lamb and it liked to drink. " x 100000;
     erase_index_ok();
     ok( 1, '(Indexing big document - 4.4 MB)' );
@@ -255,7 +253,8 @@ sub index_and_search_a_big_document {
     search_ok( "lamb", 1, "Searching for the big page" );
 }
 
-sub basic_wildcard_search {
+###############################################################################
+basic_wildcard_search: {
     erase_index_ok();
     my @words = split /\s+/, "When the roofers are done roofing the roof.";
     my $n = 0;
@@ -280,6 +279,13 @@ sub basic_wildcard_search {
     search_ok( "(roof*)", 3, "Searching for wildcard in tag in parens." );
 }
 
+exit;
+
+###############################################################################
+###############################################################################
+### Helper methods (no tests after here)
+###############################################################################
+###############################################################################
 sub make_page_ok {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
