@@ -26,10 +26,10 @@ basic_search();
 lots_of_hits();
 rt22654_crosstag_search_bug();
 more_featured_search();
+flexing_multiple_pages();
 TODO: {
     local $TODO = 'Solr stories should fix me!';
     basic_utf8();
-    flexing_multiple_pages();
     rt22174_title_search_bug();
     test_for_dollar_amp_and_friend();
     index_and_search_a_big_document(); # go away?
@@ -130,8 +130,11 @@ this earth, to sit together beneath the neon and fluorescent calmly sipping
 our coffee, like the sages sipping their tea underneath the willow, sitting
 quietly, saying nothing.
 QUOTE
+    TODO: {
+    local $TODO = 'Solr stories should fix me!';
     search_ok( "bridges OR children", 2, "Disjunctive Search" );
     search_ok( "the",                 3, "Common word" );
+    }
 
     search_ok( "tag:writers",       3, "Common tags" );
     search_ok( "tag: writers",      3, "Field search with a space" );
@@ -147,8 +150,11 @@ QUOTE
         "Common categories (alias for tags), with conjunction"
     );
 
+    TODO: {
+    local $TODO = 'Solr stories should fix me!';
     search_ok( "(sages OR bridges) AND (tea OR emperor)", 1,
         "More complex search" );
+    }
 }
 
 # If a page has two tags: "cows love" and "super matthew" then make sure a tag
