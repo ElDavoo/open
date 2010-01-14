@@ -152,7 +152,7 @@ sub _get_html {
     # FIXME: Add special link dictionary here.
     return "<html><head><title>"
         . $page->metadata->Subject
-        . "</title><body>"
+        . "</head></title><body>"
         . $page->to_absolute_html()
         . "</body></html>";
 }
