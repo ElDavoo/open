@@ -30,10 +30,10 @@ flexing_multiple_pages();
 rt22174_title_search_bug();
 test_for_dollar_amp_and_friend();
 index_and_search_a_big_document();
+basic_wildcard_search();
 TODO: {
     local $TODO = 'Solr stories should fix me!';
     basic_utf8();
-    basic_wildcard_search();
 }
 exit;
 
@@ -264,16 +264,19 @@ sub basic_wildcard_search {
         make_page_ok( "Wildcard $n: $word", $word, ["cow_$word"] );
     }
     search_ok( "roof*",          3, "Searching for roof*" );
-    search_ok( "ro*",            0, "No wildcard when term too short" );
     search_ok( "title:wildcard", 8, "Searching for wildcard" );
     search_ok( "title: wild*",   8, "Searching for title: wild*" );
     search_ok( "title:wild*",    8, "Searching for title:wild*" );
     search_ok( "=wild*",         8, "Searching for title:wild*" );
+    TODO: {
+    local $TODO = 'Solr stories should fix me!';
+    search_ok( "ro*",            0, "No wildcard when term too short" );
     search_ok( "whe* OR don*",   2, "Searching for wildcard in disjunction" );
     search_ok( "whe* -don*",     1, "Searching with negation of wildcard" );
     search_ok( "category:cow_roof*", 3, "Searching for wildcard in category" );
     search_ok( "tag:cow_roof*", 3, "Searching for wildcard in tag" );
     search_ok( "tag:cow_roof*", 3, "Searching for wildcard in tag w/ caps." );
+    }
     search_ok( "(roof*)", 3, "Searching for wildcard in tag in parens." );
 }
 
