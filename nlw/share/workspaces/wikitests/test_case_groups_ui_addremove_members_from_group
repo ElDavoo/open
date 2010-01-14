@@ -27,6 +27,6 @@
 
 | *Comment* | Test Case: Groups UI Search Signals by Group TEARDOWN |
 | delete-group | %%group_id%% |
-| st-admin | remove-workspace --w %%group_ws%% |
+| st-admin | delete-workspace --w %%group_ws%% --no-export |
 
 | *Comment* | Test Case: Groups UI Search Signals by Group COMPLETED |  |  |
