@@ -13,15 +13,12 @@ Tests for [Story: Groups ReST API]
 # ... Non-admin gets a 401
 
 | POST_json | /data/groups | {"ldap_dn":"%%ldap_dn%%","account_id":"%%account_id%%"} |
-| body-is | hmm |
-| code-is | 401 |
+| code-is   | 401          |                                                         |
 
-# ... admin gets a 201 (assuming success)                            |
-
+# ... admin gets a 201 (assuming success) 
 | set-business-admin | %%username%% | 1 |
 
 ## Now post an existing ldap group
-
 | POST_json | /data/groups | {"ldap_dn":"%%ldap_dn%%","account_id":"%%account_id%%"} |
 | code-is   | 201          |                                                         |
 
@@ -31,7 +28,6 @@ Tests for [Story: Groups ReST API]
 | body-like   | Hawkwind           |         |
 
 # ... admin gets a 404? 406? status code if the group is not in LDAP
-
 | POST_json | /data/groups | {"ldap_dn":"cn=NoExisty,dc=socialtext,dc=com","account_id":"%%account_id%%"} |
 | code-is | 400 |
 

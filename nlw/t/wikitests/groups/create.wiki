@@ -3,6 +3,7 @@
 Tests to create groups via REST and CLI.
 
 | standard-test-setup |
+| delete-all-groups | |
 
 * Create a group using the default account & user
 * Make sure that user count is 0: SystemUser shouldn't added as an admin
@@ -45,7 +46,7 @@ Tests to create groups via REST and CLI.
 | code-is            | 201          |                                                                         |
 | st-admin           | list-groups  | qr/%%g4%% .\s+0 .\s+1 .\s+%%account%% . [\d-]+ .\s+user-%%start_time%%/ |
 | POST_json          | /data/groups | {"account_id":"%%account_id%%","name":"%%g4%%"}                         |
-| code-is            | 409          |                                                                         |
+| code-is            | 400          |                                                                         |
 | POST_json          | /data/groups | {"account_id"                                                           |
 | code-is            | 400          |                                                                         |
 

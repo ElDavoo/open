@@ -6,6 +6,8 @@ use Socialtext::Group;
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json encode_json/;
 use Socialtext::File;
+use Socialtext::SQL ':txn';
+use Socialtext::Exceptions;
 use namespace::clean -except => 'meta';
 
 # Anybody can see these, since they are just the list of groups the user
@@ -49,126 +51,94 @@ override extra_headers => sub {
     );
 };
 
-sub create_error {
-    my ($self, $err, $group_name) = @_;
-    warn $err;
-    if ($err =~ m/duplicate key violates/) {
-        $self->rest->header( -status => HTTP_409_Conflict );
-        return "Error creating group: $group_name already exists.";
-    }
-    $self->rest->header( -status => HTTP_400_Bad_Request );
-    $err =~ s{ at /\S+ line .*}{};
-    return "Error creating group: $err";
-}
-
 sub POST_json {
     my $self = shift;
     my $rest = shift;
 
+    unless ($self->rest->user->is_authenticated) {
+        $rest->header(-status => HTTP_401_Unauthorized);
+        return '';
+    }
+
     my $data = eval { decode_json( $rest->getContent() ) };
     if ($@) {
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-        );
+        $rest->header(-status => HTTP_400_Bad_Request);
         return "Bad JSON: $@";
     }
 
-    unless ($self->rest->user->is_authenticated) {
-        $rest->header(
-            -status => HTTP_401_Unauthorized,
-        );
-        return '';
-    }
-
-    unless ( defined $data and ref($data) eq 'HASH' ) {
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-        );
-        return '';
-    }
-
-    my $account_id = $data->{account_id}
-        || $self->rest->user->primary_account_id
-        || Socialtext::Account->Default->account_id;
-
-    my $account = Socialtext::Account->new(account_id => $account_id);
-    unless ($account) {
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-        );
-        return "account_id ($account_id) is not a valid account_id";
-    }
-
-    my $group;
-    my $name = $data->{ldap_dn} || $data->{name};
-    if (my $ldap_dn = $data->{ldap_dn}) {
-        unless ($self->rest->user->is_business_admin) {
-            warn "NOT ADMIN";
-            $rest->header(
-                -status => HTTP_401_Unauthorized,
-            );
-            return "hmm";
-        }
-
-        # Check if Group already exists
-        my $proto = eval {
-            Socialtext::Group->GetProtoGroup(driver_unique_id => $ldap_dn);
-        };
-        if ($proto) {
-            $rest->header(
-                -status => HTTP_409_Conflict,
-            );
-            return "$ldap_dn is already a group";
-        }
-
-        # Vivify the Group, thus loading it into ST.
-        eval {
-            $group = Socialtext::Group->GetGroup(
-                driver_unique_id   => $ldap_dn,
-                primary_account_id => $account->account_id,
-            );
-        };
-        return $self->create_error($@, $name) if $@;
-    }
-    elsif (my $group_name = $data->{name}) {
-        # Regular Socialtext Group
-        eval {
-            $group = Socialtext::Group->Create({
-                driver_group_name => $group_name,
-                primary_account_id => $account->account_id,
-                created_by_user_id => $self->rest->user->user_id,
-                description => $data->{description},
-            });
-        };
-        return $self->create_error($@, $name) if $@;
-    }
-    else {
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-        );
+    unless ($data->{name} || $data->{ldap_dn}) {
+        $rest->header(-status => HTTP_400_Bad_Request);
         return "Either ldap_dn or name is required to create a group.";
     }
 
-    unless ($group) {
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-        );
-        return "Could not create the group";
+    unless ( defined $data and ref($data) eq 'HASH' ) {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return '';
     }
 
-    if (my $photo_id = $data->{photo_id}) {
-        eval {
+    $data->{account_id} ||= $self->rest->user->primary_account_id;
+
+    sql_begin_work();
+    my $group;
+    eval {
+        $group = ($data->{ldap_dn})
+            ? $self->_create_ldap_group($data)
+            : $self->_create_native_group($data);
+
+        if (my $photo_id = $data->{photo_id}) {
             my $blob = scalar Socialtext::File::get_contents_binary(
-                "$Socialtext::Rest::Uploads::UPLOAD_DIR/$photo_id"
-            );
+                "$Socialtext::Rest::Uploads::UPLOAD_DIR/$photo_id");
             $group->photo->set(\$blob);
-        };
-        warn "Error setting profile photo: $@" if $@;
-    }
+        }
+    };
+    if (my $e = $@) {
+        sql_rollback();
 
-    $rest->header( -status => HTTP_201_Created );
+        my $status = (ref($e) eq 'Socialtext::Exception::Auth')
+            ? HTTP_401_Unauthorized
+            : HTTP_400_Bad_Request;
+
+        $rest->header(-status => $status);
+        return '';
+    }
+    sql_commit();
+
+    $rest->header(-status => HTTP_201_Created);
     return encode_json($group->to_hash);
 }
+
+sub _create_ldap_group {
+    my $self    = shift;
+    my $data    = shift;
+    my $rest    = $self->rest;
+    my $ldap_dn = $data->{ldap_dn};
+
+    die Socialtext::Exception::Auth->new()
+        unless $rest->user->is_business_admin;
+
+    Socialtext::Group->GetProtoGroup(driver_unique_id => $ldap_dn)
+        and die "Group already exists";
+
+    my $group = Socialtext::Group->GetGroup(
+        driver_unique_id   => $data->{ldap_dn},
+        primary_account_id => $data->{account_id},
+    ) or die "ldap group does not exist";
+
+    return $group;
+}
+
+sub _create_native_group {
+    my $self = shift;
+    my $data = shift;
+
+    return Socialtext::Group->Create({
+        driver_group_name => $data->{name},
+        primary_account_id => $data->{account_id},
+        created_by_user_id => $self->rest->user->user_id,
+        description => $data->{description},
+    });
+}
+
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
