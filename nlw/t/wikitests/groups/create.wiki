@@ -64,3 +64,28 @@ Tests to create groups via REST and CLI.
 | GET-json  | /data/groups/%%group_id%%/users          |
 | code-is   | 200                                      |
 | body-like | "role":"admin","username":"%%username%%" |
+
+
+## Create a couple of workspaces, user is _not_ an admin
+| set              | erosional      | erosional%%start_time%%  |
+| create-workspace | %%erosional%%  |                          |
+| set              | erosional_id   | %%workspace_id%%         |
+| set              | solutional     | solutional%%start_time%% |
+| create-workspace | %%solutional%% |                          |
+| set              | solutional_id  | %%workspace_id%%         |
+| set              | g6             | g6-%%start_time%%        |
+| set              | g6_id          | %%group_id%%             |
+
+## Cannot create a group because we can't admin the workspaces
+| *Comment* | can't admin workspaces |                                                                                                           |
+| POST-json | /data/groups           | {"name":"%%g6%%","workspaces":[{"workspace_id":"%%erosional_id%%"},{"workspace_id":"%%solutional_id%%"}]} |
+| code-is   | 401                    |                                                                                                           |
+
+## Make the user an admin of the workspaces
+| add-member | %%username%% | %%erosional%%  | admin |
+| add-member | %%username%% | %%solutional%% | admin |
+
+## Create a group with workspace memberships
+| *Comment* | Create a group with workspace memberships |
+| POST-json | /data/groups | {"name":"%%g6%%","workspaces":[{"workspace_id":"%%erosional_id%%","role":"admin"},{"workspace_id":"%%solutional_id%%"}]} |
+| code-is   | 201          |                                                                                                                          |

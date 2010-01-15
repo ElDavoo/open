@@ -31,3 +31,13 @@ Tests for [Story: Groups ReST API]
 | POST_json | /data/groups | {"ldap_dn":"cn=NoExisty,dc=socialtext,dc=com","account_id":"%%account_id%%"} |
 | code-is | 400 |
 
+## Create another group and try to add it to a workspace.
+| set              | motorhead      | cn=Motorhead,dc=socialtext,dc=com |       |
+| set              | motorspace     | motorspace-%%start_time%%         |       |
+| create-workspace | %%motorspace%% |                                   |       |
+| set              | motorspace_id  | %%workspace_id%%                  |       |
+| add-member       | %%username%%   | %%motorspace%%                    | admin |
+
+## Create the group with the workspace
+| POST-json | /data/groups | {"ldap_dn":"%%motorhead%%","workspaces":[{"workspace_id":"%%motorspace_id%%"}]} |
+| code-is | 201 |

@@ -8,6 +8,8 @@ use Socialtext::JSON qw/decode_json encode_json/;
 use Socialtext::File;
 use Socialtext::SQL ':txn';
 use Socialtext::Exceptions;
+use Socialtext::Role;
+use Socialtext::Permission 'ST_ADMIN_WORKSPACE_PERM';
 use namespace::clean -except => 'meta';
 
 # Anybody can see these, since they are just the list of groups the user
@@ -60,7 +62,7 @@ sub POST_json {
         return '';
     }
 
-    my $data = eval { decode_json( $rest->getContent() ) };
+    my $data = eval { decode_json($rest->getContent()) };
     if ($@) {
         $rest->header(-status => HTTP_400_Bad_Request);
         return "Bad JSON: $@";
@@ -85,6 +87,10 @@ sub POST_json {
             ? $self->_create_ldap_group($data)
             : $self->_create_native_group($data);
 
+        if (my $workspaces = $data->{workspaces}) {
+            $self->_add_group_to_workspaces($group, $workspaces);
+        }
+
         if (my $photo_id = $data->{photo_id}) {
             my $blob = scalar Socialtext::File::get_contents_binary(
                 "$Socialtext::Rest::Uploads::UPLOAD_DIR/$photo_id");
@@ -105,6 +111,30 @@ sub POST_json {
 
     $rest->header(-status => HTTP_201_Created);
     return encode_json($group->to_hash);
+}
+
+sub _add_group_to_workspaces {
+    my $self       = shift;
+    my $group      = shift;
+    my $workspaces = shift;
+
+    for my $ws (@$workspaces) {
+        my $workspace = Socialtext::Workspace->new(
+            workspace_id => $ws->{workspace_id});
+
+        my $perm = $workspace->permissions->user_can(
+            user       => $self->rest->user,
+            permission => ST_ADMIN_WORKSPACE_PERM,
+        );
+        
+        die Socialtext::Exception::Auth->new()
+            unless $perm || $self->rest->user->is_business_admin;
+
+        my $role = Socialtext::Role->new(
+            name => ($ws->{role}) ? $ws->{role} : 'member' );
+
+        $workspace->add_group(group => $group, role => $role);
+    }
 }
 
 sub _create_ldap_group {
@@ -131,14 +161,15 @@ sub _create_native_group {
     my $self = shift;
     my $data = shift;
 
-    return Socialtext::Group->Create({
+    my $group = Socialtext::Group->Create({
         driver_group_name => $data->{name},
         primary_account_id => $data->{account_id},
         created_by_user_id => $self->rest->user->user_id,
         description => $data->{description},
     });
-}
 
+    return $group;
+}
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
