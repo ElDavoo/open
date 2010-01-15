@@ -50,7 +50,6 @@ sub GET {
         my $file_path = '/nlw/protected/'
             . join('/', $self->hub->current_workspace->name, 'attachments',
                 $attachment->page_id, $attachment->id, $attachment->filename);
-        warn $file_path;
 
         # See Socialtext::Headers::add_attachments for the IE6/7 motivation
         # behind Pragma and Cache-control below.
