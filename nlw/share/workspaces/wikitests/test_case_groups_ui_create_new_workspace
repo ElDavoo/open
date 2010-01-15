@@ -1,0 +1,22 @@
+| *Comment* | Test Case: Groups UI Create New Workspace |
+
+| *Comment* | Test Case: Groups UI Create New Workspace SETUP |  |  |
+| st-setup-a-group | 1 | 1 | 1 |
+| st-logoutin | %%group_user%% | %%password%% |  |
+| open_ok | /?group/%%group_id%%/ |  |  |
+
+| *Comment* | Test Case: Groups UI Create New Workspace TODO Click Edit Button |
+| *Comment* | Test Case: Groups UI Create New Workspace TODO Check Workspaces Widget |
+| *Comment* | Test Case: Groups UI Create New Workspace TODO Type in a new workspace |
+| *Comment* | Test Case: Groups UI Create New Workspace TODO Save - is the new workspace there? |
+| *Comment* | Test Case: Groups UI Create New Workspace TODO st-admin remove-member should fail for my user (belong is by group) |
+| *Comment* | Test Case: Groups UI Create New Workspace TODO st-admin list-workspaces - workspace shows up for me |
+| *Comment* | Test Case: Groups UI Create New Workspace TODO check /workspace-you-just-created URL |
+
+| *Comment* | Test Case: Groups UI Create New Workspace TODO Try again - click cancel, do not see changes |
+
+| *Comment* | Test Case: Groups UI Create New Workspace TEARDOWN |
+| delete-group | %%group_id%% |
+| st-admin | delete-workspace --w %%group_ws%% --no-export |
+
+| *Comment* | Test Case: Groups UI Create New Workspace COMPLETED |  |  |
