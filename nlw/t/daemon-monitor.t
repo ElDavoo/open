@@ -160,21 +160,21 @@ socket_tests: {
 
     # cranky should give a 403
     test_monitor(
-        $c.'--serv scgi',
-        "--scgi --tcp $port"
+        $c.'--serv http',
+        "--http --tcp $port"
     );
     logged_like qr/non-200/;
 
     # cranky gives a 200
     test_monitor(
-        $c.'--after 5 --serv scgi --scgi ok',
-        "--scgi --tcp $port"
+        $c.'--after 5 --serv http --http ok',
+        "--http --tcp $port"
         => 'lives'
     );
 
     test_monitor(
         $c.'--serv stall',
-        "--scgi --tcp $port"
+        "--http --tcp $port"
     );
     logged_like qr/timeout/;
 }
@@ -191,6 +191,7 @@ appliance_conf_tests: {
             monitor_proxy_max_fds    => 32,
             monitor_proxy_tcp_port   => $port,
             monitor_proxy_check_scgi => 1,
+            monitor_proxy_check_http => 1,
             monitor_proxy_init_cmd   => $init_cmd,
             monitor_proxy_pidfile    => $pidfile,
         );
@@ -200,14 +201,14 @@ appliance_conf_tests: {
         $conf->save();
     }
 
-    test_monitor($c.'--serv scgi --scgi ok','--config proxy' => 'lives');
+    test_monitor($c.'--serv http --http ok','--config proxy' => 'lives');
 
-    test_monitor($c.'--serv scgi --scgi ok --ram 64','--config proxy');
+    test_monitor($c.'--serv http --http ok --ram 64','--config proxy');
     logged_like qr/is too big \(RSS\)/i;
-    test_monitor($c.'--serv scgi --scgi ok --fds 64','--config proxy');
+    test_monitor($c.'--serv http --http ok --fds 64','--config proxy');
     logged_like qr/too many files/i;
 
-    test_monitor($c.'--serv scgi --scgi 403','--config proxy');
+    test_monitor($c.'--serv http --http 403','--config proxy');
     logged_like qr/non-200/;
 
     test_monitor($c.'--serv stall', '--config proxy');
