@@ -12,6 +12,8 @@ use Coro::AnyEvent;
 use Guard qw/scope_guard/;
 use Socialtext::Log qw/st_log/;
 
+our $VERSION = '2.0';
+
 our $man = 0;
 our $help = 0;
 our $pidfile;
@@ -21,7 +23,7 @@ our $max_vsz = 512; # in MiB
 our $max_fds = 512;
 our $signal  = 15; # SIGTERM
 our $tcp_port = 0;
-our $check_scgi = 0;
+our $check_http = 0;
 our $config_prefix;
 
 GetOptions(
@@ -34,7 +36,7 @@ GetOptions(
     'vsz=i'  => \$max_vsz,
     'fds=i'  => \$max_fds,
     'tcp=i'  => \$tcp_port,
-    'scgi!'  => \$check_scgi,
+    'http!'  => \$check_http,
     'config=s' => \$config_prefix,
 )
 or pod2usage(-exitstatus => 1, -message => $?);
@@ -58,11 +60,18 @@ if ($config_prefix) {
     my $conf = Socialtext::Appliance::Config->new;
     no strict "refs";
     for my $key (qw(
-        pidfile init_cmd signal max_rss max_vsz max_fds tcp_port check_scgi
+        pidfile init_cmd signal max_rss max_vsz max_fds tcp_port
+        check_http
     )) {
         my $val = $conf->value("monitor_${config_prefix}_$key");
         next unless defined $val;
         ${"$key"} = $val;
+    }
+
+    # backwards compat for scgi option
+    if (!$check_http) {
+        my $val = $conf->value("monitor_${config_prefix}_check_scgi");
+        $check_http = $val if defined $val;
     }
 }
 
@@ -176,18 +185,31 @@ if ($tcp_port && $tcp_port !~ /\D/) {
     recover("tcp port $tcp_port is not open") unless $netstat;
 }
 
-#warn "checking scgi\n";
+#warn "checking http\n";
 
-if ($check_scgi) {
-    require Socialtext::SCGI;
-    my ($err, $response) = Socialtext::SCGI->Ping($tcp_port);
+if ($check_http) {
+    require HTTP::Request;
+    require LWP::UserAgent;
 
-    if ($err || !$response) {
-        recover("scgi server isn't responding? (error: $err)");
+    my $ua = LWP::UserAgent->new(
+        timeout => 10,
+        max_redirect => 0,
+    );
+    $ua->no_proxy('localhost');
+    $ua->agent("st-daemon-monitor/$VERSION ".$ua->_agent);
+
+    my $req = HTTP::Request->new('GET', "http://localhost:$tcp_port/ping",
+        [Accept => 'application/json; charset=UTF-8']);
+
+    my $resp = eval { $ua->request($req) };
+    my $err = $@;
+    if ($err || !$resp) {
+        recover("http server isn't responding? (error: $err)");
     }
-    if ($response !~ /Status: 200/sm) {
-        #warn "$hdrs\n";
-        recover("scgi server returned a non-200 response");
+
+    if ($resp->code != 200) {
+        recover("http server returned a non-200 response (code:".$resp->code.
+            ", msg:".$resp->message.")");
     }
 }
 
@@ -215,7 +237,7 @@ st-daemon-monitor - Monitor daemon processes
     --vsz <Int>         VSZ limit
     --fds <Int>         FDS limit
     --tcp <Port>        Check that the process is listingin on this port
-    --scgi              Ping scgi server on port passed as --tcp
+    --http              Ping http server on port passed as --tcp
     --config <prefix>   Use /etc/socialtext/appliance.conf to read values
 
 =cut
