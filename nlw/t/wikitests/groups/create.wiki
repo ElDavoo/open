@@ -96,3 +96,19 @@ Tests to create groups via REST and CLI.
 | *Comment* | Create a group with workspace memberships |
 | POST-json | /data/groups | {"name":"%%g6%%","workspaces":[{"workspace_id":"%%erosional_id%%","role":"admin"},{"workspace_id":"%%solutional_id%%"}]} |
 | code-is   | 201          |                                                                                                                          |
+
+## Get a couple of users to add to a group
+| set         | bowline          | bowline%%start_time%%@ken.socialtext.net      |
+| create-user | %%bowline%%      | password                                      |
+| set         | bowline_id       | %%user_id%%                                   |
+| set         | figure_eight     | figure-eight%%start_time%%@ken.socialtext.net |
+| create-user | %%figure_eight%% | password                                      |
+| set         | figure_eight_id  | %%user_id%%                                   |
+| set         | g7               | g7-%%start_time%%                             |
+
+## Create a group with users
+| *Comment* | Create a group with users |
+| POST-json | /data/groups | {"name":"%%g7%%","users":{"users":[{"username":"%%bowline%%"},{"user_id":"%%figure_eight_id%%","role":"admin"}]}} |
+| code-is | 201 |
+| body-like | "user_count":"3" |
+

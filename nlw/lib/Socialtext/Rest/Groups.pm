@@ -10,6 +10,7 @@ use Socialtext::SQL ':txn';
 use Socialtext::Exceptions;
 use Socialtext::Role;
 use Socialtext::Permission 'ST_ADMIN_WORKSPACE_PERM';
+use Socialtext::JobCreator;
 use namespace::clean -except => 'meta';
 
 # Anybody can see these, since they are just the list of groups the user
@@ -65,7 +66,7 @@ sub POST_json {
     my $data = eval { decode_json($rest->getContent()) };
     if ($@) {
         $rest->header(-status => HTTP_400_Bad_Request);
-        return "bad json: $@\n";
+        return "bad json\n";
     }
 
     unless ($data->{name} || $data->{ldap_dn}) {
@@ -87,6 +88,7 @@ sub POST_json {
             ? $self->_create_ldap_group($data)
             : $self->_create_native_group($data);
 
+        $self->_add_members_to_group($group, $data->{users});
         $self->_add_group_to_workspaces($group, $data->{workspaces});
 
         if (my $photo_id = $data->{photo_id}) {
@@ -103,7 +105,7 @@ sub POST_json {
             : HTTP_400_Bad_Request;
 
         $rest->header(-status => $status);
-        return ($e =~ /Groups::POST_json/) ? '' : "$e";
+        return $e;
     }
     sql_commit();
 
@@ -111,17 +113,66 @@ sub POST_json {
     return encode_json($group->to_hash);
 }
 
+sub _add_members_to_group {
+    my $self      = shift;
+    my $group     = shift;
+    my $user_meta = shift;
+    my $invitor   = $self->rest->user;
+
+    return unless $user_meta;
+    die "group is not updateable\n" unless $group->can_update_store;
+
+    my $notify  = $user_meta->{send_message} || 0;
+    my $message = $user_meta->{additional_message} || '';
+
+    for my $meta (@{$user_meta->{users}}) {
+        my $name_or_id = $meta->{username} || $meta->{user_id};
+        my $invitee = Socialtext::User->Resolve($name_or_id)
+            or die "no such user\n";
+
+        my $shared_plugin = $invitor->can_use_plugin_with('groups', $invitee);
+        die Socialtext::Exception::Auth->new()
+            unless $shared_plugin || $invitor->is_business_admin;
+
+        my $role = Socialtext::Role->new(
+            name => ($meta->{role}) ? $meta->{role} : 'member' );
+        die "no such role: '$meta->{role}'\n" unless $role;
+
+        next if $group->role_for_user($invitee, {direct => 1});
+
+        $group->add_user(
+            user  => $invitee,
+            role  => $role,
+            actor => $invitor,
+        );
+
+        if ($notify) {
+            Socialtext::JobCreator->insert(
+                'Socialtext::Job::GroupInvite',
+                {
+                    group_id  => $group->group_id,
+                    user_id   => $invitee->user_id,
+                    sender_id => $invitor->user_id,
+                    $message ? (extra_text => $message) : (),
+                }
+            );
+        }
+    }
+}
+
 sub _add_group_to_workspaces {
     my $self    = shift;
     my $group   = shift;
     my $ws_meta = shift;
+    my $invitor = $self->rest->user;
 
     for my $ws (@$ws_meta) {
         my $workspace = Socialtext::Workspace->new(
-            workspace_id => $ws->{workspace_id});
+            workspace_id => $ws->{workspace_id}
+        ) or die "no such workspace\n";
 
         my $perm = $workspace->permissions->user_can(
-            user       => $self->rest->user,
+            user       => $invitor,
             permission => ST_ADMIN_WORKSPACE_PERM,
         );
         die Socialtext::Exception::Auth->new()
@@ -131,7 +182,13 @@ sub _add_group_to_workspaces {
             name => ($ws->{role}) ? $ws->{role} : 'member' );
         die "no such role: '$ws->{role}'\n" unless $role;
 
-        $workspace->add_group(group => $group, role => $role);
+        next if $workspace->role_for_group($group, {direct => 1});
+
+        $workspace->add_group(
+            group => $group,
+            role  => $role,
+            actor => $invitor,
+        );
     }
 }
 
@@ -156,20 +213,21 @@ sub _create_ldap_group {
 }
 
 sub _create_native_group {
-    my $self = shift;
-    my $data = shift;
+    my $self    = shift;
+    my $data    = shift;
+    my $creator = $self->rest->user;
 
     Socialtext::Group->GetGroup(
-        driver_group_name => $data->{name},
+        driver_group_name  => $data->{name},
         primary_account_id => $data->{account_id},
-        created_by_user_id => $self->rest->user->user_id,
+        created_by_user_id => $creator->user_id,
     ) and die "group already exists\n";
 
     my $group = Socialtext::Group->Create({
-        driver_group_name => $data->{name},
+        driver_group_name  => $data->{name},
         primary_account_id => $data->{account_id},
-        created_by_user_id => $self->rest->user->user_id,
-        description => $data->{description},
+        created_by_user_id => $creator->user_id,
+        description        => $data->{description},
     });
 
     return $group;
