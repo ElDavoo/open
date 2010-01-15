@@ -170,8 +170,8 @@ sub main {
 
             my $template_root = _get_template_root();
             my $conf_d = "$template_root/nginx/conf.d";
-            for my $include (glob("$conf_d/*.nginx")) {
-                (my $file = $include) =~ s{^$conf_d/(.*)\.nginx$}{$1};
+            for my $include (glob("$conf_d/*.tt2")) {
+                (my $file = $include) =~ s{^$conf_d/(.*)\.tt2$}{$1};
                 push @files, [
                     "nginx/conf.d/$file.tt2"
                         => "$dirs{nginx_etc}/conf.d/$file.conf",

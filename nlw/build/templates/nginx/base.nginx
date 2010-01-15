@@ -34,7 +34,6 @@ http {
   include [% config.nginx_etc_dir %]/proxy.conf;
   include [% config.nginx_etc_dir %]/mime.conf;
   include [% config.nginx_etc_dir %]/auto-generated.d/*.conf;
-  include [% config.nginx_etc_dir %]/conf.d/*.conf;
 }
 
 # TODO:
