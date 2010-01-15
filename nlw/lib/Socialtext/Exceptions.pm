@@ -76,6 +76,13 @@ BEGIN {
             description => 'The specified resource was not found',
         },
 
+        'Socialtext::Exception::Conflict' => {
+            isa         => 'Socialtext::Exception',
+            alias       => 'conflict',
+            fields      => [qw( name )],
+            description => 'Conflict with the specified resource',
+        },
+
         'Socialtext::Exception::VirtualMethod' => {
             isa         => 'Socialtext::Exception',
             description =>
