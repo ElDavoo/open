@@ -36,18 +36,18 @@
 
     # this first one is only here for sake of doc-pages, everything
     # else should use /static
-    rewrite    /.*/base/(.+)           /static/skin/s2/$1 redirect;
-    rewrite    ^/static/[\.0-9]+/(.+)$ /static/$1         last;
+    rewrite /.*/base/(.+)           /static/skin/s2/$1 redirect;
+    rewrite ^/static/[\.0-9]+/(.+)$ /static/$1         last;
 
-    rewrite    ^/nlw/[\.0-9]+/(.+\.scgi)$      /nlw/$1    last;
+    # Redirect old CGI and SCGI proxy URLs to the new HTTP version
+    rewrite ^/nlw/plugin/[^/]+/widgets/proxy.cgi$  /nlw/json-proxy  break;
+    rewrite ^/nlw/[\.0-9]+/.+.scgi$                /nlw/json-proxy  break;
+    rewrite ^/nlw/proxy.scgi$                      /nlw/json-proxy  break;
 
-    # Redirect old CGI proxy URLs to the new SCGI version
-    rewrite    ^/nlw/plugin/[^/]+/widgets/proxy.cgi$  /nlw/proxy.scgi  last;
+    rewrite ^/nlw/plugin/[\.0-9]+/(.+)$  /nlw/plugin/$1      last;
+    rewrite ^/nlw/plugin/:[^/]+/(.+)$    /nlw/plugin/$1      last;
 
-    rewrite    ^/nlw/plugin/[\.0-9]+/(.+)$  /nlw/plugin/$1      last;
-    rewrite    ^/nlw/plugin/:[^/]+/(.+)$    /nlw/plugin/$1      last;
-
-    rewrite    ^/ig/ifpc_relay              /nlw/plugin/widgets/ifpc_relay.html redirect;
+    rewrite ^/ig/ifpc_relay              /nlw/plugin/widgets/ifpc_relay.html redirect;
 
 [%- IF not (config.is_appliance) %]
     rewrite    ^/my/$       http://[% config.nlw_server_hostname %] last;
