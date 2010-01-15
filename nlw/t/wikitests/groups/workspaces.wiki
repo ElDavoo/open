@@ -3,6 +3,7 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 * Fixture: SocialRest
 
 | standard-test-setup |
+| delete-all-groups   |
 
 ## Create a new group, add it to a couple of workspaces
 | *Comment*              | Setup        |                                        |       |
@@ -23,6 +24,9 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | create-workspace       | %%bronze%%   |                                        |       |
 | set                    | bronze_id    | %%workspace_id%%                       |       |
 | add-group-to-workspace | %%group_id%% | %%bronze%%                             |       |
+| set                    | copper       | copper%%start_time%%                   |       |
+| create-workspace       | %%copper%%   |                                        |       |
+| set                    | copper_id    | %%workspace_id%%                       |       |
 ################################################################################
 
 ## GET, user is not authorized
@@ -68,3 +72,80 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | json-path-is | $[2].title                                          | %%silver%%                  |
 | json-path-is | $[2].id                                             | %%silver_id%%               |
 | json-path-is | $[2].uri                                            | /data/workspaces/%%silver%% |
+
+
+## Create a new group for trying out POSTS
+| set          | post     | post-%%start_time%% |
+| create-group | %%post%% |                     |
+| set          | post_id  | %%group_id%%        |
+
+## POST, no group
+| *Comment* | POST, no group            |    |
+| POST-json | /data/groups/0/workspaces | {} |
+| code-is   | 404                       |    |
+| body-like | not found                 |    |
+
+## POST, not authorized to admin group
+| *Comment* | POST, not authorized to admin group |    |
+| POST-json | /data/groups/%%post_id%%/workspaces | {} |
+| code-is   | 401                                 |    |
+| body-like | user not authorized                 |    |
+
+## Add user to group so we can POST to its worksapces resource
+## Add the user to a couple of workspaces
+| add-user-to-group | %%admin%% | %%post_id%% | admin |
+| add-member        | %%admin%% | %%gold%%    | admin |
+| add-member        | %%admin%% | %%silver%%  | admin |
+| add-member        | %%admin%% | %%bronze%%  |       |
+
+## POST, bad json
+| *Comment* | POST, bad json                      |              |
+| POST-json | /data/groups/%%post_id%%/workspaces | {"workspace" |
+| code-is   | 400                                 |              |
+| body-like | bad json                            |              |
+
+## POST, not a workspace
+| *Comment* | POST, not a workspace               |                      |
+| POST-json | /data/groups/%%post_id%%/workspaces | {"workspace_id":"0"} |
+| code-is   | 400                                 |                      |
+| body-like | no such workspace                   |                      |
+
+## POST, not a workspace admin
+| *Comment* | POST, not a workspace admin         |                                  |
+| POST-json | /data/groups/%%post_id%%/workspaces | {"workspace_id":"%%bronze_id%%"} |
+| code-is   | 401                                 |                                  |
+| body-like | user cannot admin workspace         |                                  |
+
+## POST, not a role
+| *Comment* | POST, not a role                    |                                                      |
+| POST-json | /data/groups/%%post_id%%/workspaces | {"workspace_id":"%%silver_id%%","role":"nosuchrole"} |
+| code-is   | 400                                 |                                                      |
+| body-like | no such role                        |                                                      |
+
+## POST, add to a workspace
+| *Comment* | POST, add to a workpsace            |                                  |
+| POST-json | /data/groups/%%post_id%%/workspaces | {"workspace_id":"%%silver_id%%"} |
+| code-is   | 201                                 |                                  |
+| body-like | "workspace_count":"1"               |                                  |
+
+## POST, add to a workspace as admin
+| *Comment* | POST, add to a workspace as admin   |                                               |
+| POST-json | /data/groups/%%post_id%%/workspaces | {"workspace_id":"%%gold_id%%","role":"admin"} |
+| code-is   | 201                                 |                                               |
+| body-like | "workspace_count":"2"               |                                               |
+
+## Make user an admin of some more workspaces
+| add-member | %%admin%% | %%bronze%% | admin |
+| add-member | %%admin%% | %%copper%% | admin |
+
+## POST, multiple
+| *Comment* | POST, multiple                      |                                                                     |
+| POST-json | /data/groups/%%post_id%%/workspaces | [{"workspace_id":"%%bronze_id%%"},{"workspace_id":"%%copper_id%%"}] |
+| code-is   | 201                                 |                                                                     |
+| body-like | "workspace_count":"4"               |                                                                     |
+
+## POST, group already has role
+| *Comment* | POST, group already has role        |                                |
+| POST-json | /data/groups/%%post_id%%/workspaces | {"workspace_id":"%%gold_id%%"} |
+| code-is   | 409                                 |                                |
+| body-like | group already in workspace          |                                |

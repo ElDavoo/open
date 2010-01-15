@@ -4,7 +4,11 @@ use Moose;
 extends 'Socialtext::Rest::Groups';
 use Socialtext::Exceptions;
 use Socialtext::Group;
-use Socialtext::Permission qw/ST_READ_PERM/;
+use Socialtext::Permission qw/ST_READ_PERM ST_ADMIN_WORKSPACE_PERM
+                              ST_ADMIN_PERM/;
+use Socialtext::HTTP ':codes';
+use Socialtext::JSON;
+use Socialtext::SQL ':txn';
 use namespace::clean -except => 'meta';
 
 sub permission { +{} }
@@ -44,6 +48,103 @@ sub _entity_hash {
         id            => $workspace->workspace_id,
         default       => $workspace->is_default ? 1 : 0,
     };
+}
+
+sub POST_json {
+    my $self = shift;
+    my $rest = shift;
+    my $user = $rest->user;
+
+    # I've written this find group/check perms code too many times, this
+    # should be factored out into a RestGroups role.
+    my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
+    unless ($group) {
+        $rest->header(-status => HTTP_404_Not_Found);
+        return "not found";
+    }
+
+    my $perm = $group->user_can(user => $user, permission => ST_ADMIN_PERM);
+    unless ($perm || $user->is_business_admin) {
+        $rest->header(-status => HTTP_401_Unauthorized);
+        return "user not authorized";
+    }
+
+    my $json = eval { decode_json($rest->getContent()) };
+    $json = (ref($json) eq 'HASH') ? [$json] : $json;
+
+    unless (ref($json) eq 'ARRAY') {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return "bad json";
+    }
+
+    sql_begin_work();
+    eval {
+        foreach my $meta (@$json) {
+            $self->_add_group(
+                $group,
+                $meta->{workspace_id},
+                $meta->{role} || 'member'
+            );
+        }
+    };
+    if (my $e = $@) {
+        sql_rollback();
+        my ($status, $message);
+
+        if (my $err = ref($e)) {
+            if ($err eq 'Socialtext::Exception::Auth') {
+                $status = HTTP_401_Unauthorized;
+            }
+            elsif ($err eq 'Socialtext::Exception::Conflict') {
+                $status = HTTP_409_Conflict;
+            }
+            else {
+                $status = HTTP_400_Bad_Request;
+            }
+
+            $message = $e->message;
+        }
+        else {
+            $status  = HTTP_400_Bad_Request;
+            $message = '';
+        }
+
+        $rest->header(-status => $status);
+        return "$message";
+    }
+
+    sql_commit();
+    $rest->header(-status => HTTP_201_Created);
+    return encode_json($group->to_hash);
+}
+
+sub _add_group {
+    my $self         = shift;
+    my $group        = shift;
+    my $workspace_id = shift;
+    my $role_name    = shift;
+
+    my $user = $self->rest->user;
+
+    my $ws = Socialtext::Workspace->new(workspace_id => $workspace_id)
+        or die Socialtext::Exception::Params->new("no such workspace");
+
+    my $perm = $ws->permissions->user_can(
+        user => $user,
+        permission => ST_ADMIN_WORKSPACE_PERM,
+    );
+    die Socialtext::Exception::Auth->new("user cannot admin workspace")
+        unless $perm || $user->is_business_admin;
+
+    my $role = Socialtext::Role->new( name => $role_name)
+        or die Socialtext::Exception::Params->new("no such role");
+
+    my $current = $ws->role_for_group($group, {direct => 1})
+       and die Socialtext::Exception::Conflict->new(
+           "group already in workspace"
+       );
+
+    $ws->add_group(group => $group, role => $role, actor => $user);
 }
 
 no Moose;

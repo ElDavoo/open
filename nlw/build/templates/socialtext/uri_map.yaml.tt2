@@ -530,6 +530,8 @@
         'GET':
             'text/html':        [Socialtext::Rest::Group::Workspaces, GET_html]
             'application/json': [Socialtext::Rest::Group::Workspaces, GET_json]
+        'POST':
+            'application/json': [Socialtext::Rest::Group::Workspaces, POST_json]
         '*':                    [Socialtext::Rest::Group::Workspaces, bad_method]
 -
     '/data/groups/:group_id/photo':
