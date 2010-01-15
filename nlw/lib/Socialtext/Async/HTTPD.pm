@@ -89,7 +89,7 @@ Socialtext::Async::HTTPD - AnyEvent HTTPD
 =head1 SYNOPSIS
 
     my $done = AE::cv;
-    my $s = scgi_server '127.0.0.1', 22222, sub {
+    my $s = http_server '127.0.0.1', 22222, sub {
         $done->begin;
         my $handle = shift;
         my $env = shift;
