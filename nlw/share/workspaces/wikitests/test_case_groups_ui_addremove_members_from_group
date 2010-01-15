@@ -3,6 +3,7 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group: Setup |  |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group: Emails cannot have dashes due to {bz 3037}: Page lookahead fails on punctuation |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
 | enable-acct-plugin | signals | %%group_acct%% |  |
 | set | grp_mbr_short | guimbr%%start_time%% |  |
