@@ -23,6 +23,12 @@ CREATE TABLE recent_signal (
     recipient_id bigint,
     hidden boolean DEFAULT false
 );
+
+INSERT INTO recent_signal
+SELECT signal_id, at, user_id, body, in_reply_to_id, recipient_id, hidden
+  FROM signal
+ WHERE at >= 'today'::timestamptz - '4 weeks'::interval;
+
 CREATE INDEX ix_recent_signal_at ON recent_signal ("at");
 CREATE INDEX ix_recent_signal_at_user ON recent_signal ("at", user_id);
 CREATE INDEX ix_recent_signal_recipient_at ON recent_signal (recipient_id, "at");
@@ -107,6 +113,11 @@ CREATE TABLE recent_signal_user_set (
     signal_id bigint NOT NULL,
     user_set_id integer NOT NULL
 );
+
+INSERT INTO recent_signal_user_set
+SELECT signal_id, user_set_id
+  FROM signal_user_set
+ WHERE signal_id IN (SELECT signal_id FROM recent_signal);
 
 CREATE INDEX ix_recent_signal_user_set
     ON recent_signal_user_set (signal_id);
