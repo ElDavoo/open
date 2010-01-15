@@ -65,7 +65,7 @@ sub POST_json {
     my $data = eval { decode_json($rest->getContent()) };
     if ($@) {
         $rest->header(-status => HTTP_400_Bad_Request);
-        return "Bad JSON: $@";
+        return "bad json: $@\n";
     }
 
     unless ($data->{name} || $data->{ldap_dn}) {
@@ -87,9 +87,7 @@ sub POST_json {
             ? $self->_create_ldap_group($data)
             : $self->_create_native_group($data);
 
-        if (my $workspaces = $data->{workspaces}) {
-            $self->_add_group_to_workspaces($group, $workspaces);
-        }
+        $self->_add_group_to_workspaces($group, $data->{workspaces});
 
         if (my $photo_id = $data->{photo_id}) {
             my $blob = scalar Socialtext::File::get_contents_binary(
@@ -105,7 +103,7 @@ sub POST_json {
             : HTTP_400_Bad_Request;
 
         $rest->header(-status => $status);
-        return '';
+        return ($e =~ /Groups::POST_json/) ? '' : "$e";
     }
     sql_commit();
 
@@ -114,11 +112,11 @@ sub POST_json {
 }
 
 sub _add_group_to_workspaces {
-    my $self       = shift;
-    my $group      = shift;
-    my $workspaces = shift;
+    my $self    = shift;
+    my $group   = shift;
+    my $ws_meta = shift;
 
-    for my $ws (@$workspaces) {
+    for my $ws (@$ws_meta) {
         my $workspace = Socialtext::Workspace->new(
             workspace_id => $ws->{workspace_id});
 
@@ -126,12 +124,12 @@ sub _add_group_to_workspaces {
             user       => $self->rest->user,
             permission => ST_ADMIN_WORKSPACE_PERM,
         );
-        
         die Socialtext::Exception::Auth->new()
             unless $perm || $self->rest->user->is_business_admin;
 
         my $role = Socialtext::Role->new(
             name => ($ws->{role}) ? $ws->{role} : 'member' );
+        die "no such role: '$ws->{role}'\n" unless $role;
 
         $workspace->add_group(group => $group, role => $role);
     }
@@ -147,12 +145,12 @@ sub _create_ldap_group {
         unless $rest->user->is_business_admin;
 
     Socialtext::Group->GetProtoGroup(driver_unique_id => $ldap_dn)
-        and die "Group already exists";
+        and die "group already exists\n";
 
     my $group = Socialtext::Group->GetGroup(
         driver_unique_id   => $data->{ldap_dn},
         primary_account_id => $data->{account_id},
-    ) or die "ldap group does not exist";
+    ) or die "ldap group does not exist\n";
 
     return $group;
 }
@@ -160,6 +158,12 @@ sub _create_ldap_group {
 sub _create_native_group {
     my $self = shift;
     my $data = shift;
+
+    Socialtext::Group->GetGroup(
+        driver_group_name => $data->{name},
+        primary_account_id => $data->{account_id},
+        created_by_user_id => $self->rest->user->user_id,
+    ) and die "group already exists\n";
 
     my $group = Socialtext::Group->Create({
         driver_group_name => $data->{name},
