@@ -5,18 +5,39 @@
 | st-logoutin | %%group_user%% | %%password%% |  |
 | open_ok | /?group/%%group_id%%/ |  |  |
 
-| *Comment* | Test Case: Groups UI Create New Workspace TODO Click Edit Button |
-| *Comment* | Test Case: Groups UI Create New Workspace TODO Check Workspaces Widget |
-| *Comment* | Test Case: Groups UI Create New Workspace TODO Type in a new workspace |
-| *Comment* | Test Case: Groups UI Create New Workspace TODO Save - is the new workspace there? |
-| *Comment* | Test Case: Groups UI Create New Workspace TODO st-admin remove-member should fail for my user (belong is by group) |
-| *Comment* | Test Case: Groups UI Create New Workspace TODO st-admin list-workspaces - workspace shows up for me |
-| *Comment* | Test Case: Groups UI Create New Workspace TODO check /workspace-you-just-created URL |
+| *Comment* | Test Case: Groups UI Create New Workspace Click Edit Button |  |
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_and_wait | link=(Edit) |  |
+| select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups UI Create New Workspace TODO Try again - click cancel, do not see changes |
+| *Comment* | Test Case: Groups UI Create New Workspace Get to Workspaces Widget |  |
+| st-name-widget | 1 | workspaces_widget |
+| st-widget-title-like | workspaces_widget | Workspaces |
+| st-select-widget-frame | workspaces_widget |  |
 
-| *Comment* | Test Case: Groups UI Create New Workspace TEARDOWN |
-| delete-group | %%group_id%% |
-| st-admin | delete-workspace --w %%group_ws%% --no-export |
+| *Comment* | Test Case: Groups UI Create New Workspace TODO Type in a new workspace |  |
+
+| *Comment* | Test Case: Groups UI Create New Workspace Save - is the new workspace there? |  |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | st-cancel-create-group | 30000 |
+| click_and_wait | create-group |  |
+| st-name-widget | 1 | workspaces_widget |
+| st-widget-title-like | workspaces_widget | Workspaces |
+| st-select-widget-frame | workspaces_widget |  |
+| *Comment* | Test Case: Groups UI Create New Workspace TODO Look for Workspace name in widget |  |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups UI Create New Workspace TODO st-admin remove-member should fail for my user (belong is by group) |  |
+| *Comment* | Test Case: Groups UI Create New Workspace TODO st-admin list-workspaces - workspace shows up for me |  |
+| *Comment* | Test Case: Groups UI Create New Workspace TODO check /workspace-you-just-created URL |  |
+
+| *Comment* | Test Case: Groups UI Create New Workspace TODO Try again - click cancel, do not see changes |  |
+
+| *Comment* | Test Case: Groups UI Create New Workspace TEARDOWN |  |
+| delete-group | %%group_id%% |  |
+| st-admin | delete-workspace --w %%group_ws%% --no-export |  |
 
 | *Comment* | Test Case: Groups UI Create New Workspace COMPLETED |  |  |
