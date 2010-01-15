@@ -84,8 +84,10 @@
         include conf.d/rewrite-*;
     [%- END %]
 
-    # Cache attachments
-    location ~ ^/data/.*/attachments/.+/.+ {
+    # Used with X-Accel-Redirect to serve attachments from nginx
+    location /nlw/protected/ {
+        internal;
+        alias [% config.data_root_dir %]/plugin/;
         expires 1y;
     }
 

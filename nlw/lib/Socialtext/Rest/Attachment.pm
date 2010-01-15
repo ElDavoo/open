@@ -34,8 +34,6 @@ sub GET {
     }
     my $file_size = -s _;
 
-    my $fh = '';
-    
     eval {
         my $mime_type = $attachment->mime_type;
 
@@ -47,13 +45,12 @@ sub GET {
             $mime_type .= '; charset=' . $charset;
         }
 
-        if ( $mime_type =~ /^(?:image|video|audio)\b/ ) {
-            # mod_xsendfile insists on sending the Last-Modified header,
-            # so cannot use it for media files without breaking the caching behaviour.
-            # Please see {bz: 1931} for details.
-            $fh = new IO::File $file, 'r';
-            die "Cannot read $file: $!" unless $fh;
-        }
+        # eg:
+        # admin/attachments/admin_wiki/20091217174324-11-3042/video_60seconds.png 
+        my $file_path = '/nlw/protected/'
+            . join('/', $self->hub->current_workspace->name, 'attachments',
+                $attachment->page_id, $attachment->id, $attachment->filename);
+        warn $file_path;
 
         # See Socialtext::Headers::add_attachments for the IE6/7 motivation
         # behind Pragma and Cache-control below.
@@ -65,7 +62,7 @@ sub GET {
             '-cache-control'      => undef,
             'Content-Disposition' => 'filename="'
                 . $attachment->filename . '"',
-            ($fh ? () : ('-X-Sendfile'  => $file)),
+            '-X-Accel-Redirect'  => $file_path,
         );
     };
     warn $@ if $@;
@@ -75,9 +72,8 @@ sub GET {
     # Probably an invalid attachment id.
     return $self->_invalid_attachment( $rest, $@ ) if $@;
 
-    # The frontend mod_xsendfile will take care of sending the attachment.
-    # (This happens when $fh is set to '', which is the default except for media files.)
-    return $fh;
+    # The frontend will take care of sending the attachment.
+    return '';
 }
 
 sub DELETE {
