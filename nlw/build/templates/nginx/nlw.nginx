@@ -162,6 +162,6 @@ server {
 
     ssl_ciphers HIGH:MEDIUM:!ADH;
 
-    [% server_common( config.backend_ports.http, 1 ) %]
+    [% server_common( config.backend_ports.https, 1 ) %]
 }
 [%- END %]
