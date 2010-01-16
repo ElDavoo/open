@@ -324,6 +324,7 @@ lib/Socialtext/Rest/Gadgets/Common.pm
 t/widget/uploaded.xml
 t/wikitests/widgets/events.wiki
 bin/json-proxy.scgi
+bin/json-proxy
 bin/generate-proxy-config
 etc/apache2/conf.d/apache2-jsonproxy.conf
 t/wikitests/socialcalc/ss-rountrip.wiki
