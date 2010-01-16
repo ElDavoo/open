@@ -36,7 +36,7 @@ our $TICKER_EVERY = 5;
 
 
 my $UNPARSEABLE_CRUFT = "throw 1; < don't be evil' >";
-my $proxy = "$SERVER_ROOT/nlw/proxy.scgi";
+my $proxy = "$SERVER_ROOT/nlw/json-proxy";
 $AnyEvent::HTTP::MAX_PER_HOST = $AnyEvent::HTTP::MAX_PERSISTENT_PER_HOST = 9999;
 
 my $all_done = AE::cv;

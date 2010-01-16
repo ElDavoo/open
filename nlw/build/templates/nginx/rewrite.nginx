@@ -41,8 +41,10 @@
 
     # Redirect old CGI and SCGI proxy URLs to the new HTTP version
     rewrite ^/nlw/plugin/[^/]+/widgets/proxy.cgi$  /nlw/json-proxy  break;
-    rewrite ^/nlw/[\.0-9]+/.+.scgi$                /nlw/json-proxy  break;
     rewrite ^/nlw/proxy.scgi$                      /nlw/json-proxy  break;
+    rewrite ^/nlw/[\.0-9]+/.+.scgi$                /nlw/json-proxy  break;
+    # Redirect versioned proxy to the un-numbered place
+    rewrite ^/nlw/[\.0-9]+/json-proxy$             /nlw/json-proxy  break;
 
     rewrite ^/nlw/plugin/[\.0-9]+/(.+)$  /nlw/plugin/$1      last;
     rewrite ^/nlw/plugin/:[^/]+/(.+)$    /nlw/plugin/$1      last;
