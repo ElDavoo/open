@@ -119,6 +119,27 @@ Wikiwyg.browserIsSupported = (
     Wikiwyg.is_safari
 );
 
+/* {bz: 2407} - Selenium 1.0+ is almost undetectable, so we
+ * use the undocumented-anywhere-on-web "seleniumAlert"
+ * variable as the probe.  The "Selenium" variable is still
+ * probed to retain compatibility with Selenium 0.9x.
+ *
+ * {bz: 3471} - In multiWindow mode and under an iframe, even
+ * the seleniumAlert detection fails.  Use window.opener to
+ * probe if we're opened by the Selenium RC runner.
+ */
+Wikiwyg.is_selenium = (
+    (typeof seleniumAlert != 'undefined')
+    || (typeof Selenium != 'undefined')
+    || ((typeof window.opener != 'undefined')
+        && (window.opener.selenium_myiframe
+            || window.opener.seleniumLoggingFrame))
+    || ((typeof window.parent != 'undefined')
+        && (typeof window.parent.opener != 'undefined')
+        && (window.parent.opener.selenium_myiframe
+            || window.parent.opener.seleniumLoggingFrame)
+    )
+);
 
 // Wikiwyg environment setup public methods
 proto.createWikiwygArea = function(div, config) {
@@ -716,12 +737,7 @@ proto.enableLinkConfirmations = function() {
     wikiwyg.confirmed = false;
 
     window.onbeforeunload = function(ev) {
-        /* {bz: 2407} - Selenium 1.0+ is almost undetectable, so we
-         * use the undocumented-anywhere-on-web "seleniumAlert"
-         * variable as the probe.  The "Selenium" variable is still
-         * probed to retain compatibility with Selenium 0.9x.
-         */
-        if (typeof seleniumAlert != 'undefined' || typeof Selenium != 'undefined') {
+        if (Wikiwyg.is_selenium) {
             /* Selenium cannot handle .onbeforeunload, so simply let the
              * browser unload the window because there's no way to force
              * "Cancel" from within Javascript.
