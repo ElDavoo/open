@@ -1,11 +1,7 @@
 [%# This macro defines the main chunk of the nginx config.  We load this chunk into
   # Virtual host blocks below... %]
 [%- MACRO server_common( apache_perl_port, for_ssl_vhost) BLOCK %]
-[%- IF config.is_appliance AND config.hostname_conf_exists %]
-    include /etc/nginx/conf.d/hostname.conf;
-[%- ELSE %]
     server_name [% config.nlw_web_hostname %] [% FOREACH alias in config.nlw_server_aliases %][% alias %][% END %];
-[%- END %][%# is_appliance %]
 
     root [% config.data_root_dir %];
     error_page 502 /static/html/502.html;
