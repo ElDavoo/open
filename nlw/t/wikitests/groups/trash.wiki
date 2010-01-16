@@ -81,3 +81,32 @@
 | code-is         | 200                                                   |                                                           |
 | json-parse      |                                                       |                                                           |
 | json-array-size | 2                                                     |                                                           |
+
+## Set up some worksapces to delete
+| set                    | hydrogen     | hydrogen-%%start_time%% |       |
+| create-workspace       | %%hydrogen%% |                         |       |
+| set                    | hydrogen_id  | %%workspace_id%%        |       |
+| add-group-to-workspace | %%group_id%% | %%hydrogen%%            |       |
+| add-member             | %%admin%%    | %%hydrogen%%            | admin |
+####
+| set                    | oxygen       | oxygen-%%start_time%%   |       |
+| create-workspace       | %%oxygen%%   |                         |       |
+| set                    | oxygen_id    | %%workspace_id%%        |       |
+| add-group-to-workspace | %%group_id%% | %%oxygen%%              |       |
+| add-member             | %%admin%%    | %%oxygen%%              | admin |
+####
+| set                    | nitrogen     | nitrogen-%%start_time%% |       |
+| create-workspace       | %%nitrogen%% |                         |       |
+| set                    | nitrogen_id  | %%workspace_id%%        |       |
+| add-group-to-workspace | %%group_id%% | %%nitrogen%%            |       |
+| add-member             | %%admin%%    | %%nitrogen%%            | admin |
+
+## Delete workspace
+| *Comment* | Delete workspace                |                                    |
+| POST-json | /data/groups/%%group_id%%/trash | {"workspace_id":"%%hydrogen_id%%"} |
+| code-is   | 200                             |                                    |
+
+## Delete multiple workspaces
+| *Comment* | Delete multiple workspaces |
+| POST-json | /data/groups/%%group_id%%/trash | [{"workspace_id":"%%oxygen_id%%"},{"workspace_id":"%%oxygen_id%%"}] |
+| code-is   | 200                             |                                    |

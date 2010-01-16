@@ -6,7 +6,8 @@ use base 'Socialtext::Rest::Entity';
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
 use Socialtext::l10n qw(loc);
-use Socialtext::Permission qw(ST_READ_PERM ST_ADMIN_PERM);
+use Socialtext::Permission qw(ST_READ_PERM ST_ADMIN_PERM
+                              ST_ADMIN_WORKSPACE_PERM);
 use Socialtext::Group;
 use Socialtext::SQL ':txn';
 
@@ -157,9 +158,7 @@ sub POST_to_trash {
     sql_begin_work();
     eval {
         for my $item (@$data) {
-            my $name_or_id = $item->{user_id} || $item->{username};
-            my $condemned = Socialtext::User->Resolve($name_or_id);
-            $group->remove_user(user => $condemned, actor => $actor);
+            $self->_remove_item($item, $group);
         }
     };
     if ($@) {
@@ -173,6 +172,32 @@ sub POST_to_trash {
     return '';
 }
 
+sub _remove_item {
+    my $self  = shift;
+    my $item  = shift;
+    my $group = shift;
+
+    my $actor = $self->rest->user;
+    if (my $name_or_id = $item->{user_id} || $item->{username}) {
+        my $condemned = Socialtext::User->Resolve($name_or_id);
+        $group->remove_user(user => $condemned, actor => $actor);
+    }
+    elsif (my $ws_id = $item->{workspace_id}) {
+        my $ws = Socialtext::Workspace->new(workspace_id => $ws_id)
+            or die 'no workspace';
+
+        my $perm = $ws->permissions->user_can(
+            user       => $actor,
+            permission => ST_ADMIN_WORKSPACE_PERM,
+        );
+        die "don't have permission" unless $perm || $actor->is_business_admin;
+
+        $ws->remove_group(group => $group, actor => $actor);
+    }
+    else {
+        die "Bad data";
+    }
+}
 1;
 
 =head1 NAME
