@@ -52,28 +52,6 @@
         expires 1y;
     }
 
-[% IF 0 %]
-    # webplugin drop-ins should go in
-    # [% config.data_root_dir %]/webplugin/PLUGIN-NAME
-    # two directories are expected there, a cgi directory scripts
-    # and a static directory for static files
-    # URI paths would be /webplugin/cgi/PLUGIN-NAME/script.cgi for scripts
-    #     or /webplugin/PLUGIN-NAME/foo.html for static files and resources
-    ScriptAliasMatch ^/webplugin/cgi/([^/]+)(.*) [% config.data_root_dir %]/webplugin/$1/cgi$2
-    <LocationMatch "^/webplugin/cgi/[^/+].*">   
-        Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-        Order allow,deny
-        Allow from all
-    </LocationMatch>   
-
-    AliasMatch ^/webplugin/([^/]+)(.*) [% config.data_root_dir %]/webplugin/$1/static$2
-    <LocationMatch "^/webplugin/[^/+].*.*"> 
-        Options -MultiViews +SymLinksIfOwnerMatch
-        Order allow,deny
-        Allow from all
-    </LocationMatch>
-[% END %]
-
     location ~ ^/nlw/plugin/([^/]+)/(.+) {
         alias [% config.static_dir %]/plugin/$1/share/$2;
         expires 1y;
