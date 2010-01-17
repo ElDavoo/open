@@ -24,7 +24,7 @@ http {
     '"$request" $body_bytes_sent "$http_referer" '
     '"$http_user_agent" "$http_x_forwarded_for"';
   [%- IF config.is_dev %]
-  access_log [% config.log_dir %]/[% config.app_prefix %]access.log;
+  access_log [% config.log_dir %]/access.log;
   [%- ELSE %]
   access_log [% config.log_dir %]/access.log;
   [%- END %]
