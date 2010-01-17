@@ -20,8 +20,12 @@
         [% ELSE %]
         | <a href="/m/search/[% ws.name %]/">[% loc('Search') %]</a>
         [% END %]
-        [% IF page AND user_can_edit_page  AND page.metadata.Type == 'wiki' %]
+        [% IF page AND page.metadata.Type == 'wiki' %]
+            [% IF user_can_edit_page %]
             | <a href="/m/page/[% ws.name %]/[% page.uri %]?action=edit">[% loc('Edit') %]</a>
+            [% ELSIF user_can_join_to_edit_page %]
+            | <a href="/m/page/[% ws.name %]/[% page.uri %]?action=join">[% loc('Join to Edit') %]</a>
+            [% END %]
         [% END %]
 
         [% IF cancel_edit %]
