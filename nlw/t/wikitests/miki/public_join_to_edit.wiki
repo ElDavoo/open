@@ -16,16 +16,16 @@
 | set         | auth                                    | auth%%start_time%%@socialtext.net |
 | create_user | %%auth%%                                | password                          |
 
-| *Comment*      | Authenticated user sees a join link        |          |
-| http-user-pass | %%auth%%                                   | password |
-| GET            | /m/page/%%workspace%%/%%page%%             |          |
-| code-is        | 200                                        |          |
-| body-unlike    | /m/page/%%workspace%%/%%page%%?action=edit |          |
-| body-like      | /m/page/%%workspace%%/%%page%%?action=join |          |
+| *Comment*      | Authenticated user sees a join link                |          |
+| http-user-pass | %%auth%%                                           | password |
+| GET            | /m/page/%%workspace%%/%%page%%                     |          |
+| code-is        | 200                                                |          |
+| body-unlike    | /m/page/%%workspace%%/%%page%%?action=edit         |          |
+| body-like      | /m/page/%%workspace%%/%%page%%?action=join_to_edit |          |
 
-| *Comment*      | Following the link redirects back to page  |          |
-| GET            | /m/page/%%workspace%%/%%page%%?action=join |          |
-| code-is        | 302                                        |          |
+| *Comment* | Following the link redirects back to page          |
+| GET       | /m/page/%%workspace%%/%%page%%?action=join_to_edit |
+| code-is   | 302                                                |
 
 | *Comment*      | The page now has an edit link              |          |
 | GET            | /m/page/%%workspace%%/%%page%%             |          |
