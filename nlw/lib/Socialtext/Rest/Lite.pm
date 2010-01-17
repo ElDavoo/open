@@ -196,6 +196,21 @@ sub get_page {
                     -type   => 'text/html' . '; charset=UTF-8'
                 );
             }
+            elsif ( $action && $action eq 'join_to_edit' ) {
+                if ( Socialtext::Lite->new( hub => $self->hub )->user_can_join_to_edit_page($page) ) {
+                    require Socialtext::Handler::Authen;
+                    bless({} => 'Socialtext::Handler::Authen')->_add_user_to_workspace(
+                        $self->rest->user,
+                        $self->workspace->name,
+                    );
+                }
+
+                $rest->header(
+                    -Location => $self->full_url,
+                    -status  => HTTP_302_Found,
+                );
+                return '';
+            }
             else {
                 $content = Socialtext::Lite->new( hub => $self->hub )->display($page);
                 $rest->header(
