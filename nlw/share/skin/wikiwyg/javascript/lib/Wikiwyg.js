@@ -129,13 +129,13 @@ Wikiwyg.browserIsSupported = (
  * probe if we're opened by the Selenium RC runner.
  */
 Wikiwyg.is_selenium = (
-    (typeof seleniumAlert != 'undefined')
-    || (typeof Selenium != 'undefined')
-    || ((typeof window.opener != 'undefined')
+    (typeof seleniumAlert != 'undefined' && seleniumAlert)
+    || (typeof Selenium != 'undefined' && Selenium)
+    || ((typeof window.opener != 'undefined' && window.opener)
         && (window.opener.selenium_myiframe
             || window.opener.seleniumLoggingFrame))
-    || ((typeof window.parent != 'undefined')
-        && (typeof window.parent.opener != 'undefined')
+    || ((typeof window.parent != 'undefined' && window.parent)
+        && (typeof window.parent.opener != 'undefined' && window.parent.opener)
         && (window.parent.opener.selenium_myiframe
             || window.parent.opener.seleniumLoggingFrame)
     )
