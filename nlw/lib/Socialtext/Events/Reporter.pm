@@ -312,10 +312,18 @@ sub visible_exists {
     my $sql = qq{
        EXISTS (
             SELECT 1
-            FROM users_share_plugin_tc
-            WHERE viewer_id = ?
-              AND plugin = '$plugin'
-              AND other_id = $event_field
+              -- "viewer and event-record user share some user set..."
+              FROM user_sets_for_user v_path
+              JOIN user_sets_for_user o_path USING (user_set_id)
+             WHERE v_path.user_id = ? -- viewer
+               AND o_path.user_id = $event_field
+               -- "...and that common user set has access to some plugin"
+               AND EXISTS (
+                   SELECT 1
+                     FROM user_set_plugin_tc plug
+                    WHERE plugin = '$plugin'
+                      AND plug.user_set_id = o_path.user_set_id
+               )
     };
     push @$bind_ref, $self->viewer->user_id;
 
