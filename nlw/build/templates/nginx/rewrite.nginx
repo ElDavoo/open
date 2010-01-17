@@ -130,4 +130,5 @@
         proxy_pass http://localhost:[% apache_perl_port %];
         # Rewrite upstream redirects correctly
         proxy_redirect http://[% config.nlw_server_hostname %]/ /;
+        proxy_redirect http://[% config.nlw_web_hostname %]/ /;
     }
