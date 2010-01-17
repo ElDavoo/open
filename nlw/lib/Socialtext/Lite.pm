@@ -403,10 +403,22 @@ sub _frame_page {
         # XXX next two for attachments, because we are using legacy urls
         # for now
         page             => $page,
-        user_can_edit_page =>
+        user_can_edit_page => (
             $self->hub->checker->check_permission('edit') &&
-            $self->hub->checker->can_modify_locked($page),
+            $self->hub->checker->can_modify_locked($page)
+        ),
+        user_can_join_to_edit_page => $self->user_can_join_to_edit_page($page),
         %args,
+    );
+}
+
+sub user_can_join_to_edit_page {
+    my ($self, $page) = @_;
+
+    return (
+        $self->hub->current_user->is_authenticated &&
+        $self->hub->checker->check_permission('self_join') &&
+        $self->hub->checker->can_modify_locked($page)
     );
 }
 
