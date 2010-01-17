@@ -81,6 +81,27 @@ CREATE FUNCTION cleanup_sessions() RETURNS "trigger"
 $$
     LANGUAGE plpgsql;
 
+CREATE FUNCTION delete_recent_signal() RETURNS "trigger"
+    AS $$
+    BEGIN
+        DELETE FROM recent_signal
+         WHERE recent_signal.signal_id = OLD.signal_id;
+        RETURN NULL;    -- trigger return val is ignored
+    END
+    $$
+    LANGUAGE plpgsql;
+
+CREATE FUNCTION delete_recent_signal_user_set() RETURNS "trigger"
+    AS $$
+    BEGIN
+        DELETE FROM recent_signal_user_set
+         WHERE recent_signal_user_set.signal_id   = OLD.signal_id
+           AND recent_signal_user_set.user_set_id = OLD.user_set_id;
+        RETURN NULL;    -- trigger return val is ignored
+    END
+    $$
+    LANGUAGE plpgsql;
+
 CREATE FUNCTION g_int_compress(internal) RETURNS internal
     AS '$libdir/_int', 'g_int_compress'
     LANGUAGE c;
@@ -116,6 +137,32 @@ CREATE FUNCTION icount(integer[]) RETURNS integer
 CREATE FUNCTION idx(integer[], integer) RETURNS integer
     AS '$libdir/_int', 'idx'
     LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION insert_recent_signal() RETURNS "trigger"
+    AS $$
+    BEGIN
+        INSERT INTO recent_signal (
+            signal_id, "at", user_id, body,
+            in_reply_to_id, recipient_id, hidden
+        )
+        VALUES (
+            NEW.signal_id, NEW."at", NEW.user_id, NEW.body,
+            NEW.in_reply_to_id, NEW.recipient_id, NEW.hidden
+        );
+        RETURN NULL;    -- trigger return val is ignored
+    END
+    $$
+    LANGUAGE plpgsql;
+
+CREATE FUNCTION insert_recent_signal_user_set() RETURNS "trigger"
+    AS $$
+    BEGIN
+        INSERT INTO recent_signal_user_set (signal_id, user_set_id)
+        VALUES (NEW.signal_id, NEW.user_set_id);
+        RETURN NULL;    -- trigger return val is ignored
+    END
+    $$
+    LANGUAGE plpgsql;
 
 CREATE FUNCTION intarray_del_elem(integer[], integer) RETURNS integer[]
     AS '$libdir/_int', 'intarray_del_elem'
@@ -347,6 +394,34 @@ CREATE FUNCTION subarray(integer[], integer) RETURNS integer[]
 CREATE FUNCTION uniq(integer[]) RETURNS integer[]
     AS '$libdir/_int', 'uniq'
     LANGUAGE c IMMUTABLE STRICT;
+
+CREATE FUNCTION update_recent_signal() RETURNS "trigger"
+    AS $$
+    BEGIN
+        UPDATE recent_signal
+           SET "at"           = NEW."at",
+               user_id        = NEW.user_id,
+               body           = NEW.body,
+               in_reply_to_id = NEW.in_reply_to_id,
+               recipient_id   = NEW.recipient_id,
+               hidden         = NEW.hidden
+         WHERE signal_id      = NEW.signal_id;
+        RETURN NULL;    -- trigger return val is ignored
+    END
+    $$
+    LANGUAGE plpgsql;
+
+CREATE FUNCTION update_recent_signal_user_set() RETURNS "trigger"
+    AS $$
+    BEGIN
+        UPDATE recent_signal_user_set
+           SET user_set_id = NEW.user_set_id
+         WHERE signal_id   = OLD.signal_id
+           AND user_set_id = OLD.user_set_id;
+        RETURN NULL;    -- trigger return val is ignored
+    END
+    $$
+    LANGUAGE plpgsql;
 
 CREATE AGGREGATE array_accum (
     BASETYPE = anyelement,
@@ -967,6 +1042,21 @@ CREATE TABLE profile_relationship (
     other_user_id bigint NOT NULL
 );
 
+CREATE TABLE recent_signal (
+    signal_id bigint NOT NULL,
+    "at" timestamptz DEFAULT now(),
+    user_id bigint NOT NULL,
+    body text NOT NULL,
+    in_reply_to_id bigint,
+    recipient_id bigint,
+    hidden boolean DEFAULT false
+);
+
+CREATE TABLE recent_signal_user_set (
+    signal_id bigint NOT NULL,
+    user_set_id integer NOT NULL
+);
+
 CREATE VIEW roles_for_user AS
   SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_path.role_id
    FROM user_set_path
@@ -1312,6 +1402,10 @@ ALTER TABLE ONLY profile_relationship
     ADD CONSTRAINT profile_relationship_pkey
             PRIMARY KEY (user_id, profile_field_id);
 
+ALTER TABLE ONLY recent_signal
+    ADD CONSTRAINT recent_signal_pkey
+            PRIMARY KEY (signal_id);
+
 ALTER TABLE ONLY search_sets
     ADD CONSTRAINT search_sets_pkey
             PRIMARY KEY (search_set_id);
@@ -1610,6 +1704,39 @@ CREATE INDEX ix_page_events_contribs_actor_time
 	    ON event (actor_id, "at")
 	    WHERE ((event_class = 'page') AND is_page_contribution("action"));
 
+CREATE INDEX ix_recent_signal_at
+	    ON recent_signal ("at");
+
+CREATE INDEX ix_recent_signal_at_user
+	    ON recent_signal ("at", user_id);
+
+CREATE INDEX ix_recent_signal_recipient_at
+	    ON recent_signal (recipient_id, "at");
+
+CREATE INDEX ix_recent_signal_reply
+	    ON recent_signal (in_reply_to_id);
+
+CREATE INDEX ix_recent_signal_user_at
+	    ON recent_signal (user_id, "at");
+
+CREATE INDEX ix_recent_signal_user_set
+	    ON recent_signal_user_set (signal_id);
+
+CREATE UNIQUE INDEX ix_recent_signal_user_set_rev
+	    ON recent_signal_user_set (user_set_id, signal_id);
+
+CREATE INDEX ix_recent_signal_uset_accounts
+	    ON recent_signal_user_set (signal_id, user_set_id)
+	    WHERE (user_set_id > (B'00110000000000000000000000000000'::"bit")::integer);
+
+CREATE INDEX ix_recent_signal_uset_groups
+	    ON recent_signal_user_set (signal_id, user_set_id)
+	    WHERE ((user_set_id >= (B'00010000000000000000000000000001'::"bit")::integer) AND (user_set_id <= (B'00100000000000000000000000000000'::"bit")::integer));
+
+CREATE INDEX ix_recent_signal_uset_wksps
+	    ON recent_signal_user_set (signal_id, user_set_id)
+	    WHERE ((user_set_id >= (B'00100000000000000000000000000001'::"bit")::integer) AND (user_set_id <= (B'00110000000000000000000000000000'::"bit")::integer));
+
 CREATE INDEX ix_rollup_user_signal_user
 	    ON rollup_user_signal (user_id);
 
@@ -1699,6 +1826,9 @@ CREATE UNIQUE INDEX profile_field_name
 
 CREATE INDEX profile_relationship_other_user_id
 	    ON profile_relationship (other_user_id);
+
+CREATE INDEX recent_signal_hidden
+	    ON recent_signal (hidden);
 
 CREATE UNIQUE INDEX search_set_workspaces___search_set_id___search_set_id___workspa
 	    ON search_set_workspaces (search_set_id, workspace_id);
@@ -1794,10 +1924,40 @@ CREATE TRIGGER sessions_insert
     FOR EACH STATEMENT
     EXECUTE PROCEDURE cleanup_sessions();
 
+CREATE TRIGGER signal_delete_recent
+    AFTER DELETE ON signal
+    FOR EACH ROW
+    EXECUTE PROCEDURE delete_recent_signal();
+
 CREATE TRIGGER signal_insert
     AFTER INSERT ON signal
     FOR EACH ROW
     EXECUTE PROCEDURE signal_sent();
+
+CREATE TRIGGER signal_insert_recent
+    AFTER INSERT ON signal
+    FOR EACH ROW
+    EXECUTE PROCEDURE insert_recent_signal();
+
+CREATE TRIGGER signal_update_recent
+    AFTER UPDATE ON signal
+    FOR EACH ROW
+    EXECUTE PROCEDURE update_recent_signal();
+
+CREATE TRIGGER signal_uset_delete_recent
+    AFTER DELETE ON signal_user_set
+    FOR EACH ROW
+    EXECUTE PROCEDURE delete_recent_signal_user_set();
+
+CREATE TRIGGER signal_uset_insert_recent
+    AFTER INSERT ON signal_user_set
+    FOR EACH ROW
+    EXECUTE PROCEDURE insert_recent_signal_user_set();
+
+CREATE TRIGGER signal_uset_update_recent
+    AFTER UPDATE ON signal_user_set
+    FOR EACH ROW
+    EXECUTE PROCEDURE update_recent_signal_user_set();
 
 CREATE TRIGGER user_set_path_insert
     AFTER INSERT ON user_set_path
@@ -2044,6 +2204,11 @@ ALTER TABLE ONLY profile_relationship
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY recent_signal_user_set
+    ADD CONSTRAINT recent_signal_user_set_signal_fk
+            FOREIGN KEY (signal_id)
+            REFERENCES recent_signal(signal_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY rollup_user_signal
     ADD CONSTRAINT rollup_user_signal_user_id_fk
             FOREIGN KEY (user_id)
@@ -2165,4 +2330,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '102');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '103');
