@@ -411,3 +411,4 @@ lib/Socialtext/Handler/Container/EditGroup.pm
 t/wikitests/control/transform_accounts.wiki
 t/wikitests/dashboard/manage.wiki
 t/wikitests/miki/signals-to-network.wiki
+t/Socialtext/Signal/recent.t
