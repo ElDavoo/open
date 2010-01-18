@@ -1,0 +1,26 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+
+use strict;
+use warnings;
+use Test::Socialtext tests => 4;
+use Test::Socialtext::SQL;
+
+fixtures(qw( db ));
+
+###############################################################################
+# TEST: "recent" Signals tables match their counterparts
+recent_signals: {
+    local $Test::Socialtext::SQL::Normalizer = sub {
+        my $name = shift;
+        $name =~ s/^recent_//;
+        $name =~ s/^ix_recent_/ix_/;
+        return $name;
+    };
+
+    db_columns_match_ok(qw(signal recent_signal));
+    db_indices_match_ok(qw(signal recent_signal));
+
+    db_columns_match_ok(qw(signal_user_set recent_signal_user_set));
+    db_indices_match_ok(qw(signal_user_set recent_signal_user_set));
+}
