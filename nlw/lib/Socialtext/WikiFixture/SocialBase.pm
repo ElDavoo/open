@@ -930,10 +930,17 @@ accept defaults to 'text/html'.
 =cut
 
 sub get {
-    my ($self, $uri, $accept) = @_;
+    my ($self, $uri, $accept, $headers) = @_;
     $accept ||= 'text/html';
 
-    $self->_get($uri, [Accept => $accept, Cookie => $self->{_cookie}]);
+    my @headers = (
+        Accept => $accept,
+        Cookie => $self->{_cookie},
+    );
+    if ($headers) {
+        push @headers, map { split m/\s*=\s*/ } split m/\s*,\s*/, $headers;
+    }
+    $self->_get($uri, \@headers);
 }
 
 =head2 cond_get ( uri, accept, ims, inm )
@@ -1003,6 +1010,18 @@ sub code_is {
         like $self->{http}->response->content(), $self->quote_as_regex($msg),
              "Status content matches";
     }
+}
+
+=head2 dump_http_response 
+
+=cut
+
+sub dump_http_response {
+    my $self = shift;
+    my $content = $self->{http}->response->content;
+    $self->{http}->response->content("Content removed");
+    diag $self->{http}->response->as_string;
+    $self->{http}->response->content($content);
 }
 
 =head2 has_header( header [, expected_value])
@@ -1168,6 +1187,17 @@ sub set_http_keepalive {
     # re-instantiate our Test::HTTP object
     delete $self->{http};
     $self->http_user_pass($self->{http_username}, $self->{http_password});
+}
+
+=head2 set_user_agent ( $ua_string )
+
+=cut
+
+sub set_user_agent {
+    my $self = shift;
+    my $ua_string = shift;
+    $self->{http}->ua->agent($ua_string);
+    diag "Set UserAgent string to '$ua_string'";
 }
 
 =head2 set_from_content ( name, regex )
