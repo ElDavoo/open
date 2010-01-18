@@ -43,6 +43,13 @@
 [%# The rewrite file must come before any of the redirect confs below %]
 [% PROCESS 'nginx/rewrite.nginx' %]
 
+    location ~ "^/static/(.+.js.gz)$" {
+        alias [% config.static_dir %]/$1;
+        expires 1y;
+        types {}
+        default_type application/x-javascript;
+    }
+
     location ~ ^/static/(.+) {
         alias [% config.static_dir %]/$1;
         expires 1y;
