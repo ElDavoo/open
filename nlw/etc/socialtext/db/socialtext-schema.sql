@@ -81,27 +81,6 @@ CREATE FUNCTION cleanup_sessions() RETURNS "trigger"
 $$
     LANGUAGE plpgsql;
 
-CREATE FUNCTION delete_recent_signal() RETURNS "trigger"
-    AS $$
-    BEGIN
-        DELETE FROM recent_signal
-         WHERE recent_signal.signal_id = OLD.signal_id;
-        RETURN NULL;    -- trigger return val is ignored
-    END
-    $$
-    LANGUAGE plpgsql;
-
-CREATE FUNCTION delete_recent_signal_user_set() RETURNS "trigger"
-    AS $$
-    BEGIN
-        DELETE FROM recent_signal_user_set
-         WHERE recent_signal_user_set.signal_id   = OLD.signal_id
-           AND recent_signal_user_set.user_set_id = OLD.user_set_id;
-        RETURN NULL;    -- trigger return val is ignored
-    END
-    $$
-    LANGUAGE plpgsql;
-
 CREATE FUNCTION g_int_compress(internal) RETURNS internal
     AS '$libdir/_int', 'g_int_compress'
     LANGUAGE c;
@@ -1406,6 +1385,10 @@ ALTER TABLE ONLY recent_signal
     ADD CONSTRAINT recent_signal_pkey
             PRIMARY KEY (signal_id);
 
+ALTER TABLE ONLY recent_signal_user_set
+    ADD CONSTRAINT recent_signal_user_set_pkey
+            PRIMARY KEY (signal_id, user_set_id);
+
 ALTER TABLE ONLY search_sets
     ADD CONSTRAINT search_sets_pkey
             PRIMARY KEY (search_set_id);
@@ -1924,11 +1907,6 @@ CREATE TRIGGER sessions_insert
     FOR EACH STATEMENT
     EXECUTE PROCEDURE cleanup_sessions();
 
-CREATE TRIGGER signal_delete_recent
-    AFTER DELETE ON signal
-    FOR EACH ROW
-    EXECUTE PROCEDURE delete_recent_signal();
-
 CREATE TRIGGER signal_insert
     AFTER INSERT ON signal
     FOR EACH ROW
@@ -1943,11 +1921,6 @@ CREATE TRIGGER signal_update_recent
     AFTER UPDATE ON signal
     FOR EACH ROW
     EXECUTE PROCEDURE update_recent_signal();
-
-CREATE TRIGGER signal_uset_delete_recent
-    AFTER DELETE ON signal_user_set
-    FOR EACH ROW
-    EXECUTE PROCEDURE delete_recent_signal_user_set();
 
 CREATE TRIGGER signal_uset_insert_recent
     AFTER INSERT ON signal_user_set
@@ -2204,10 +2177,20 @@ ALTER TABLE ONLY profile_relationship
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY recent_signal
+    ADD CONSTRAINT recent_signal_signal_id
+            FOREIGN KEY (signal_id)
+            REFERENCES signal(signal_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY recent_signal_user_set
     ADD CONSTRAINT recent_signal_user_set_signal_fk
             FOREIGN KEY (signal_id)
             REFERENCES recent_signal(signal_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY recent_signal_user_set
+    ADD CONSTRAINT recent_signal_uset_signal_user_set
+            FOREIGN KEY (signal_id, user_set_id)
+            REFERENCES signal_user_set(signal_id, user_set_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY rollup_user_signal
     ADD CONSTRAINT rollup_user_signal_user_id_fk
@@ -2330,4 +2313,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '103');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '104');
