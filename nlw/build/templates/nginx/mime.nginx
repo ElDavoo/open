@@ -4,7 +4,7 @@ types {
   text/xml                              xml rss;
   image/gif                             gif;
   image/jpeg                            jpeg jpg;
-  application/x-javascript              js;
+  application/x-javascript              js js.gz;
   text/plain                            txt;
   text/x-component                      htc;
   text/mathml                           mml;
