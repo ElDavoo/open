@@ -7,6 +7,17 @@ ALTER TABLE container
 
 DROP TABLE container_type;
 
+-- Remove containers that violate the unique constraint we are about to add on
+-- (container_type, user_set_id, name)
+-- This will leave ONLY the most recent versions of all containers.
+DELETE
+  FROM container
+ WHERE container_id NOT IN (
+    SELECT MAX(container_id)
+      FROM container
+  GROUP BY container_type, name, user_id, group_id, account_id
+ );
+
 -- Replace user_id, account_id, group_id, page_id, workspace_id with
 -- user_set_id
 
