@@ -1,0 +1,31 @@
+| *Comment* | Test Case: Signals Follow Filter With Pagination |  |
+
+| set | signaler | siguser_%%start_time%%@ken.socialtext.net |
+| set | signaler_short | siguser_%%start_time%% |
+| set | follower | foluser_%%start_time%%@ken.socialtext.net |
+| set | follower_short | foluser_%%start_time%% |
+| set | notfollowed | nfoluser_%%start_time%%@ken.socialtext.net |
+| set | notfollowed_short | nfoluser_%%start_time%% |
+
+| set | acct | account_%%start_time%% |
+| set | ws | workspace_%%start_time%% |
+
+| st-admin | create-account --name %%acct%% |  |
+| st-admin | enable-plugin --account %%acct%% --p signals |  |
+| st-admin | create-workspace --account %%acct%% --n %%ws%% --t %%ws%% --empty | was created |
+
+| st-admin | create-user --e %%signaler%% --p %%password%% --account %%hostname%% --f "%%signaler_short%%" |  |
+| st-admin | create-user --e %%follower%% --p %%password%% --account %%hostname%% --f "%%follower_short%%" |  |
+| st-admin | create-user --e %notfollowed%% --p %%password%% --account %%hostname%% --f "%%notfollwed_short%%" |  |
+| st-admin | add-member --w %%ws%% --e %%email%% | now has the role of 'member' in the |
+| st-admin | add-member --w %%ws%% --e %%signaler%% | now has the role of 'member' in the |
+| st-admin | add-member --w %%ws%% --e %%follower%% | now has the role of 'member' in the |
+| st-admin | add-member --w %%ws%% --e %%notfollowed%% | now has the role of 'member' in the |
+
+| *Comment* | Test Case: Signals Follow Filter With Pagination signaler signals many times |  |  |
+| st-logoutin | %%signaler%% | %%password%% |  |
+| post-signals | 44 | ssig-%%start_time%% | 1 |
+
+| *Comment* | Test Case: Signals Follow Filter With Pagination notfollowed signals many times |  |  |
+| st-logoutin | %%notfollowed%% | %%password%% |  |
+| post-signals | 44 | nfsig-%%start_time%% | 45 |
