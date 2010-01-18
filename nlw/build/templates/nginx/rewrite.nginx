@@ -77,15 +77,6 @@
     rewrite    ^/m/$             /m          last;
     rewrite    ^/m/page/([^/]+)$ /m/page/$1/ last;
 
-    # I don't think I need any of this
-#    RewriteRule    !^/m$            -   [C]
-#    RewriteRule    !^/data(/.*)?$   -   [C]
-#    RewriteRule    !^/nlw           -   [C]
-#    RewriteRule    !^/challenge     -   [C]
-#    RewriteRule    !^/logos         -   [C]
-#    RewriteRule    !^/favicon\.ico  -   [C]
-#    RewriteRule    ^/([^/\.]+)/?$  /$1/index.cgi  [R,L,NE]
-
     rewrite    ^/([^/\.]+)/emailprefs\??(.*)$ "/$1/index.cgi?action=preferences_settings&preferences_class_id=email_notify;$2" last;
     rewrite    ^/([^/\.]+)/watchlistprefs\??(.*)$ "/$1/index.cgi?action=preferences_settings&preferences_class_id=watchlist;$2" last;
 
