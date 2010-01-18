@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 4;
+use Test::Socialtext tests => 5;
 use Test::Socialtext::SQL;
 
 fixtures(qw( db ));
@@ -23,4 +23,16 @@ recent_signals: {
 
     db_columns_match_ok(qw(signal_user_set recent_signal_user_set));
     db_indices_match_ok(qw(signal_user_set recent_signal_user_set));
+}
+
+###############################################################################
+# TEST: Events "archive" tables match their counterparts
+events_archive: {
+    local $Test::Socialtext::SQL::Normalizer = sub {
+        my $name = shift;
+        $name =~ s/_archive//;
+        return $name;
+    };
+
+    db_columns_match_ok(qw(event event_archive));
 }
