@@ -93,15 +93,6 @@
     # Force IE8 to emulate IE7, to avoid IE8 rendering issues.
     add_header X-UA-Compatible IE=EmulateIE7;
 
-    # Enable run-time compression of everything *except* images
-    gzip             on;
-    gzip_min_length  1000;
-    gzip_proxied     expired no-cache no-store private auth;
-    gzip_types       text/plain application/x-javascript text/css;
-    gzip_disable     "MSIE [1-6]\.";
-    gzip_disable     "Mozilla/4(?!.*\bMSIE\s+[789])";
-    gzip_disable     "Mozilla/4\.0[678](?!.*\bMSIE\s+[789])";
-
     location ~ \.js$ {
       # Safari doesn't like compressed JS, so *only* compress HTML content
       gzip_disable     "Safari";
