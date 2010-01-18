@@ -76,12 +76,11 @@
 
     # DON'T cache RPC relay
     location /nlw/plugin/widgets/rpc_relay.html {
+        alias [% config.static_dir %]/plugin/widgets/share/rpc_relay.html;
         expires 1s;
     }
     location /nlw/plugin/widgets/ifpc_relay.html {
-        expires 1s;
-    }
-    location /ig/ifpc_relay {
+        alias [% config.static_dir %]/plugin/widgets/share/ifpc_relay.html;
         expires 1s;
     }
 
