@@ -557,6 +557,14 @@ sub nginx_params {
         # For the same reason as above, we set this here rather than in the
         # logic in Socialtext::AppConfig.
         $config{syslog_level} = 'info';
+
+        my $nginx_client_body_dir;
+        $nginx_client_body_dir = "$dirs{cache}/nginx_client_body";
+        unless (-d $nginx_client_body_dir) {
+            mkdir $nginx_client_body_dir
+                or die "Can't mkdir $nginx_client_body_dir: $!";
+        }
+        $config{nginx_client_body_dir} = $nginx_client_body_dir;
     }
     else {
         $config{user} = get_build_setting( 'st-user' );
