@@ -37,8 +37,6 @@
 | st-name-widget | 3 | spactivities |
 | st-widget-title-like | spactivities | Activity |
 | st-verify-text-in-activities-widget | spactivities | %%signal%% |
-
-| *Comment* | Test Case: Signal From Profile. Signal appears in Signals page - currently broken by {bz 3484} |  |
 | click_and_wait | link=Signals |  |
 | wait_for_text_present_ok | Signals | 30000 |
 | st-name-widget | 3 | sigactivities |
@@ -77,8 +75,6 @@
 | *Comment* | Test Case: Signal From Profile. mention DOES NOT appear in "lastsignal" on %%spuser%% profile page |  |
 | *Comment* | Test Case: Signal From Profile. previous mention remains. This currently fails. |  |
 | wait_for_element_present_ok | //div[@id='lastsignal'] | 30000 |
-
-| *Comment* | Test Case: Signal From Profile. mention appears on Signals page - Not it doesn't {bz 3484} |  |
 | click_and_wait | link=Signals |  |
 | wait_for_text_present_ok | Signals | 30000 |
 | st-name-widget | 3 | sigactivities |

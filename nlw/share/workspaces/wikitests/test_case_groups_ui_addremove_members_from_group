@@ -52,7 +52,7 @@
 
 wait_for_element_not_visible_ok | %%mbr_user_id%% | 30000 |
 
-| *Comment* | Test Case: Groups UI AddRemove Members From Group. TODO Find element after typeahead (borked now) |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. TODO Find element after typeahead (borked now) {bz 3479} |  |
 | wait_for_element_visible_ok | user | 30000 |
 | type-lookahead-ok | user | %%non_grp_mbr_bestfull%% |
 | wait_for_element_present_ok | link=%%non_grp_mbr_bestfull%% | 30000 |
