@@ -23,6 +23,7 @@
 | st-name-widget | 3 | signals_widget |
 | wait_for_element_visible_ok | network-select | 30000 |
 | select_ok | network-select | index=0 |
+| *Comment* | Test Case: Groups UI Signal from group home BORKED by {bz 3484} |  |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_1%% |
 | st_verify_text_in_activities_widget | signals_widget | qr/You.+minute.+ago to %%group_name%%/ |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_2%% |
@@ -56,6 +57,7 @@
 | wait_for_element_visible_ok | network-select | 30000 |
 | select_ok | network-select | index=0 |
 | st-name-widget | 3 | signals_widget |
+| *Comment* | Test Case: Groups UI Signal from group home Borked by {bz 3484} |  |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_1%% |
 | st_verify_text_in_activities_widget | signals_widget | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_2%% |

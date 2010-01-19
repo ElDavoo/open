@@ -6,7 +6,7 @@
 | st-setup-a-group | 1 | 1 | 1 |
 | enable-acct-plugin | signals | %%group_acct |  |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group. Create Group Mbr and Non-Group Mbr |  |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. Create Group Mbr and Non-Group Mbr |  |
 | set | grp_mbr_short | gui_search_mbr_%%start_time%% |
 | set | non_grp_mbr_short | gui_search_non_%%start_time%% |
 | set | grp_mbr | %%grp_mbr_short%%@matt.socialtext.net |
@@ -32,7 +32,7 @@
 
 | *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Search within group, see signal |  |
 | st-logoutin | %%group_user%% | %%password%% |
-| open_ok | /?signals |
+| open_ok | /?signals |  |
 
 | *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Search within ACCOUNT, do not see signal |  |
 

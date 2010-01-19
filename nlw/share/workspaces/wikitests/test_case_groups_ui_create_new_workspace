@@ -1,5 +1,7 @@
 | *Comment* | Test Case: Groups UI Create New Workspace |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Groups UI Create New Workspace SETUP |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
 | st-logoutin | %%group_user%% | %%password%% |  |

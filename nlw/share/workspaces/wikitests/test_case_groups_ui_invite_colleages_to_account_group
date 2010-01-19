@@ -31,17 +31,18 @@
 | wait_for_element_visible_ok | Link=Invite more people | 30000 |
 | text_like | qr/The following 1 user was successfully invited into this Group:\s+%%eto_ws_user%%/i |  |
 
-| *Comment* | Test Case: Groups UI Invite Colleages to account-group CHECK Activity for group, SEE NEW MEMBER (TODO) |
-| open_ok | /st/group/%%group_id%% |  |  |
+| *Comment* | Test Case: Groups UI Invite Colleages to account-group CHECK Activity for group, SEE NEW MEMBER |  |
+| open_ok | /st/group/%%group_id%% |  |
 | st-name-widget | 4 | activity_widget |
 | st-widget-title-like | activity_widget | Activity |
 | st-select-widget-frame | activity_widget |  |
+| pause | 3000 | needed for text_like |
 | wait_for_text_present_ok | View RSS feed for %%group_name%% | 30000 |
 | text_like | //body | added %%to_ws%% to the group %%group_name%% |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups UI Invite Colleages to account-group Pause 30 seconds for invitation email delivery |  |
-| pause | 30000 |
+| *Comment* | Test Case: Groups UI Invite Colleages to account-group Pause 45 seconds for invitation email delivery |  |
+| pause | 45000 |
 
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group login as %%email%% so you can see the confirmation email |  |
 | open_ok | /%%to_ws%%/?action=recent_changes |  |
@@ -61,5 +62,7 @@
 
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group Teardown |
 | delete-group | %%group_id%% |
+| st-admin | delete-workspace --w %%group_ws%% --no-export |
+| st-admin | delete-workspace --w %%to_ws%% --no-export |
 
 | *Comment* | Test Case:Groups UI Invite Colleages to account-group COMPLETED |
