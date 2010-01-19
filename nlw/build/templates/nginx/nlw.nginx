@@ -89,6 +89,9 @@
             root [% config.static_dir %];
         }
     [%- END %]
+    location /robots.txt {
+        root [% config.data_root_dir %]/docroot;
+    }
 
     # Force IE8 to emulate IE7, to avoid IE8 rendering issues.
     add_header X-UA-Compatible IE=EmulateIE7;
