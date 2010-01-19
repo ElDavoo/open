@@ -23,10 +23,10 @@
     # the uncompressed version - Note SAFARI!!!
     # ALSO notice that this RewriteRule is NOT the last one in the chain
     if ($http_user_agent ~* Safari) {
-        rewrite ^(.*)\.js\.gz$ $1.js redirect;
+        rewrite ^(.*)\.js\.gz$ $1.js permanent redirect;
     }
     if ($http_accept_encoding !~ gzip) {
-        rewrite ^(.*)\.js\.gz$ $1.js;
+        rewrite ^(.*)\.js\.gz$ $1.js permanent redirect;
     }
 
     # We support /static/wsdl for backward compat., but WSDLs are not static
