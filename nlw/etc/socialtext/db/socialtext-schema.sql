@@ -390,18 +390,6 @@ CREATE FUNCTION update_recent_signal() RETURNS "trigger"
     $$
     LANGUAGE plpgsql;
 
-CREATE FUNCTION update_recent_signal_user_set() RETURNS "trigger"
-    AS $$
-    BEGIN
-        UPDATE recent_signal_user_set
-           SET user_set_id = NEW.user_set_id
-         WHERE signal_id   = OLD.signal_id
-           AND user_set_id = OLD.user_set_id;
-        RETURN NULL;    -- trigger return val is ignored
-    END
-    $$
-    LANGUAGE plpgsql;
-
 CREATE AGGREGATE array_accum (
     BASETYPE = anyelement,
     SFUNC = array_append,
@@ -1926,11 +1914,6 @@ CREATE TRIGGER signal_uset_insert_recent
     AFTER INSERT ON signal_user_set
     FOR EACH ROW
     EXECUTE PROCEDURE insert_recent_signal_user_set();
-
-CREATE TRIGGER signal_uset_update_recent
-    AFTER UPDATE ON signal_user_set
-    FOR EACH ROW
-    EXECUTE PROCEDURE update_recent_signal_user_set();
 
 CREATE TRIGGER user_set_path_insert
     AFTER INSERT ON user_set_path

@@ -26,6 +26,14 @@ ALTER TABLE ONLY "recent_signal_user_set"
         ON DELETE CASCADE
         ON UPDATE CASCADE;
 
+--- Remove "UPDATE" trigger on the "recent_signal_user_set" table, instead
+--- letting the above mentioned Foreign Key constraint keep things in check.
+--- Being that the *only* two columns in this table are part of the foreign
+--- key constraint, this'll work (as there's no other column that could get
+--- updated that we'd need to have the trigger take care of for us).
+DROP TRIGGER signal_uset_update_recent ON signal_user_set;
+DROP FUNCTION update_recent_signal_user_set();
+
 --- Add missing pkey index on the "recent_signal_user_set" table.
 ALTER TABLE ONLY recent_signal_user_set
     ADD CONSTRAINT recent_signal_user_set_pkey
