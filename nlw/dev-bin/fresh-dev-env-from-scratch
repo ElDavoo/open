@@ -64,6 +64,9 @@ if [ -e ~/.nlw ]; then
     dev-bin/st-bootstrap-openldap stop
 fi
 
+# when switching to nginx you might have apache2 running still
+killall /usr/sbin/apache2 >/dev/null 2>&1 || true;
+
 # Create the basic dev-env
 rm -rf $HOME/.nlw/
 PLUGINS=${PLUGINS:-widgets agile csskit dashboard people signals socialcalc apache socialpoint control groups}
