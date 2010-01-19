@@ -183,6 +183,10 @@ sub main {
             my $docroot = "$dirs{root}/docroot";
             my $robots = "$docroot/robots.txt";
             if (!-e $robots) {
+                unless (-d $docroot) {
+                    File::Path::mkpath($docroot)
+                        or die "Can't mkpath $docroot: $!";
+                }
                 open(my $fh, ">$robots") or die "Can't open $robots: $!";
                 print $fh "# Add any robot rules here, this file will not\n"
                         . "# be overwritten on upgrade.\n";
