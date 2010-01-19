@@ -74,7 +74,7 @@ sub POST {
     my $rest = shift;
     my $user = $rest->user;
 
-    unless ($self->user_can('is_business_admin')) {
+    unless ($user->is_authenticated && !$user->is_deleted) {
         $rest->header(-status => HTTP_401_Unauthorized);
         return '';
     }
@@ -88,6 +88,15 @@ sub POST {
         return "name, title, account_id required";
     }
 
+    $request->{account_id} ||= $user->primary_account_id;
+    my $acct = Socialtext::Account->new(account_id => $request->{account_id});
+    unless ($user->is_business_admin || $acct->role_for_user($user)) {
+        $rest->header(
+            -status => HTTP_401_Unauthorized,
+            -type  => 'text/plain', );
+        return "user cannot access account";
+    }
+
     my $new_workspace_name = $request->{name};
 
     if ( Socialtext::Workspace->new( name => $new_workspace_name ) ) {
@@ -97,9 +106,6 @@ sub POST {
         return "$new_workspace_name is not a valid selection\n";
     }
 
-    # if we don't pass an account_id, default to the creator's primary
-    # account.
-    $request->{account_id} ||= $user->primary_account_id;
 
     sql_begin_work();
     eval {

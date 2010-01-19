@@ -44,15 +44,20 @@ Test case for `/data/workspaces`; the Workspace list
 | create-user        | %%bus_admin%%        | password                                        | %%non_default_acct%% |
 | set-business-admin | %%bus_admin%%        | 1                                               |                      |
 | set                | bus_admin_id         | %%user_id%%                                     |                      |
+| set                | auth_user            | auth-user-%%start_time%%@ken.socialtext.net     |                      |
+| create-user        | %%auth_user%%        | password                                        |                      |
+| set                | auth_user_id         | %%user_id%%                                     |                      |
 | set                | violin               | violin-ws-%%start_time%%                        |                      |
 | set                | viola                | viola-ws-%%start_time%%                         |                      |
+| set                | cello                | cello-ws-%%start_time%%                         |                      |
 
 ## POST to a workspace, Using an account_id arg.
-| http-user-pass | %%bus_admin%%          | password                                                                     |
-| POST-json      | /data/workspaces       | {"name":"%%violin%%","title":"Violin","account_id":"%%default_account_id%%"} |
-| code-is        | 201                    |                                                                              |
-| GET-json       | /data/workspaces?q=all |                                                                              |
-| code-is        | 200                    |                                                                              |
+| *Comment*      | POST to a workspace, Using an account_id arg |                                                                              |
+| http-user-pass | %%bus_admin%%                                | password                                                                     |
+| POST-json      | /data/workspaces                             | {"name":"%%violin%%","title":"Violin","account_id":"%%default_account_id%%"} |
+| code-is        | 201                                          |                                                                              |
+| GET-json       | /data/workspaces?q=all                       |                                                                              |
+| code-is        | 200                                          |                                                                              |
 | body-like | qr/\{"workspace_id":"\d+","name":"%%violin%%",[^\}]+,"account_id":"%%default_account_id%%",[^\}]+,"title":"Violin","id":"\d+"\}/s |
 
 ## POST to a workspace, Using the creator's account_id
@@ -62,3 +67,17 @@ Test case for `/data/workspaces`; the Workspace list
 | GET-json  | /data/workspaces?q=all                              |                                      |
 | code-is   | 200                                                 |                                      |
 | body-like | qr/\{"workspace_id":"\d+","name":"%%viola%%",[^\}]+,"account_id":"%%non_default_acct_id%%",[^\}]+,"title":"Viola","id":"\d+"\}/s |
+
+## POST, authenticated user cannot create a workspace in an account they don't have access to
+| *Comment*      | POST, authenticated user, unauthorized account |                                                                             |
+| http-user-pass | %%auth_user%%                                  | password                                                                    |
+| POST-json      | /data/workspaces                               | {"name":"%%cello%%","title":"Cello","account_id":"%%non_default_acct_id%%"} |
+| code-is        | 401                                            |                                                                             |
+| body-like      | user cannot access account                     |                                                                             |
+
+## POST, authenticated user
+| *Comment*      | POST, authenticated user |                                      |
+| http-user-pass | %%auth_user%%            | password                             |
+| POST-json      | /data/workspaces         | {"name":"%%cello%%","title":"Cello"} |
+| code-is        | 201                      |                                      |
+
