@@ -37,7 +37,6 @@ Test case for `/data/workspaces`; the Workspace list
 | body-unlike      | "name":"%%ws_three%%"                             |                              |             |
 
 ## Setup so we can test POST
-| set                | default_acct_id      | %%account_id%%                                  |                      |
 | set                | non_default_acct     | non-default%%start_time%%                       |                      |
 | create-account     | %%non_default_acct%% |                                                 |                      |
 | set                | non_default_acct_id  | %%account_id%%                                  |                      |
@@ -46,6 +45,7 @@ Test case for `/data/workspaces`; the Workspace list
 | set-business-admin | %%bus_admin%%        | 1                                               |                      |
 | set                | bus_admin_id         | %%user_id%%                                     |                      |
 | set                | violin               | violin-ws-%%start_time%%                        |                      |
+| set                | viola                | viola-ws-%%start_time%%                         |                      |
 
 ## POST to a workspace, Using an account_id arg.
 | http-user-pass | %%bus_admin%%          | password                                                                     |
@@ -54,3 +54,11 @@ Test case for `/data/workspaces`; the Workspace list
 | GET-json       | /data/workspaces?q=all |                                                                              |
 | code-is        | 200                    |                                                                              |
 | body-like | qr/\{"workspace_id":"\d+","name":"%%violin%%",[^\}]+,"account_id":"%%default_account_id%%",[^\}]+,"title":"Violin","id":"\d+"\}/s |
+
+## POST to a workspace, Using the creator's account_id
+| *Comment* | POST to a workspace, Using the creator's account_id |                                      |
+| POST-json | /data/workspaces                                    | {"name":"%%viola%%","title":"Viola"} |
+| code-is   | 201                                                 |                                      |
+| GET-json  | /data/workspaces?q=all                              |                                      |
+| code-is   | 200                                                 |                                      |
+| body-like | qr/\{"workspace_id":"\d+","name":"%%viola%%",[^\}]+,"account_id":"%%non_default_acct_id%%",[^\}]+,"title":"Viola","id":"\d+"\}/s |

@@ -81,7 +81,7 @@ sub POST {
 
     my $request = decode_json( $rest->getContent() );
 
-    unless ($request->{name} and $request->{title} and $request->{account_id}) {
+    unless ($request->{name} and $request->{title}) {
         $rest->header(
             -status => HTTP_400_Bad_Request,
             -type  => 'text/plain', );
@@ -96,6 +96,10 @@ sub POST {
             -type   => 'text/plain', );
         return "$new_workspace_name is not a valid selection\n";
     }
+
+    # if we don't pass an account_id, default to the creator's primary
+    # account.
+    $request->{account_id} ||= $user->primary_account_id;
 
     sql_begin_work();
     eval {
