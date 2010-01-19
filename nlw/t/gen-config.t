@@ -96,5 +96,7 @@ sub check_apache_config {
 
 sub run_test {
     my $args = shift;
-    return qx($^X $gen_config $args 2>&1);
+    my $output = qx($^X $gen_config $args 2>&1);
+#    warn $output;
+    return $output;
 }
