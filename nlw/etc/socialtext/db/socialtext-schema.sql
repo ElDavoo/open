@@ -2190,7 +2190,7 @@ ALTER TABLE ONLY recent_signal_user_set
 ALTER TABLE ONLY recent_signal_user_set
     ADD CONSTRAINT recent_signal_uset_signal_user_set
             FOREIGN KEY (signal_id, user_set_id)
-            REFERENCES signal_user_set(signal_id, user_set_id) ON DELETE CASCADE;
+            REFERENCES signal_user_set(signal_id, user_set_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY rollup_user_signal
     ADD CONSTRAINT rollup_user_signal_user_id_fk
