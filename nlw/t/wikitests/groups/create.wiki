@@ -112,3 +112,13 @@ Tests to create groups via REST and CLI.
 | code-is | 201 |
 | body-like | "user_count":"3" |
 
+## Set up a group and some workspace aliases
+| set | g8          | g8-%%start_time%%          |
+| set | clove_hitch | clove-hitch-%%start_time%% |
+| set | butterfly   | butterfly-%%start_time%%   |
+
+## Create a group, create workspaces at the same time.
+| *Comment* | Create a group, create workspaces at the same time |
+| POST-json | /data/groups | {"name":"%%g8%%","new_workspaces":[{"name":"%%clove_hitch%%","title":"Clove Hitch"},{"name":"%%butterfly%%","title":"Butterfly"}]} |
+| code-is | 201 |
+| body-like | "workspace_count":"2" |

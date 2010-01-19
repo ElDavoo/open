@@ -89,7 +89,11 @@ sub POST_json {
             : $self->_create_native_group($data);
 
         $self->_add_members_to_group($group, $data->{users});
-        $self->_add_group_to_workspaces($group, $data->{workspaces});
+
+        my @created = $self->_create_workspaces($data->{new_workspaces});
+
+        $self->_add_group_to_workspaces(
+            $group, @{$data->{workspaces}}, @created);
 
         if (my $photo_id = $data->{photo_id}) {
             my $blob = scalar Socialtext::File::get_contents_binary(
@@ -160,13 +164,37 @@ sub _add_members_to_group {
     }
 }
 
+sub _create_workspaces {
+    my $self      = shift;
+    my $to_create = shift;
+    my $creator   = $self->rest->user;
+
+    my @ws_meta = ();
+    for my $meta (@$to_create) {
+        my $ws = Socialtext::Workspace->create(
+            name       => $meta->{name},
+            title      => $meta->{title},
+            account_id => $creator->primary_account_id,
+        );
+
+        $ws->add_user(
+            user => $creator,
+            role => Socialtext::Role->Admin(),
+        );
+
+        push @ws_meta, {workspace_id => $ws->workspace_id, role => 'member'};
+    }
+
+    return @ws_meta;
+}
+
 sub _add_group_to_workspaces {
     my $self    = shift;
     my $group   = shift;
-    my $ws_meta = shift;
+    my @ws_meta = @_;
     my $invitor = $self->rest->user;
 
-    for my $ws (@$ws_meta) {
+    for my $ws (@ws_meta) {
         my $workspace = Socialtext::Workspace->new(
             workspace_id => $ws->{workspace_id}
         ) or die "no such workspace\n";
