@@ -24,7 +24,7 @@ Readonly my $USER      => '@ST_USER@';
 Readonly my @CEQ_START => ( $CEQLOTRON, "--output=$LOGFILE" );
 
 assert_absolute_paths(
-    'ceqltron'  => $CEQLOTRON,
+    'ceqlotron' => $CEQLOTRON,
     'PID file'  => $PIDFILE,
     'path file' => $LOGFILE,
 );

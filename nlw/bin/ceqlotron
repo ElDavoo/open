@@ -180,7 +180,7 @@ sub start_worker {
         do_work($loops);
     };
     if ($@) {
-        st_log->error("Ceqltron worker: Error $@");
+        st_log->error("Ceqlotron worker: Error $@");
     }
 }
 

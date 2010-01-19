@@ -806,7 +806,7 @@ We'd love to see who's using Socialtext Open.
 
     Removed unused handlers etc. from the Apache configurations.
 
-    Socialtext::Ceqltron was getting loaded by Apache when it shouldn't
+    Socialtext::Ceqlotron was getting loaded by Apache when it shouldn't
     have.
 
     Updated the invitation email to not be so likely to trip spam
