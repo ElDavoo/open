@@ -101,6 +101,13 @@
       gzip_disable     "Safari";
     }
 
+    location /nginx_status {
+      stub_status on;
+      access_log  off;
+      allow 127.0.0.1;
+      deny all;
+    }
+
     # Unconditionally include local Socialtext-provided add-ons
     include [% config.nginx_etc_dir %]/socialtext-conf.d/include-*.conf;
 
