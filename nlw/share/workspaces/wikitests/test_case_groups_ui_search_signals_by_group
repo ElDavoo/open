@@ -4,15 +4,15 @@
 
 | *Comment* | Test Case: Groups UI Search Signals by Group Setup |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
-| enable-acct-plugin | signals | %%group_acct |  |
+| st-admin | enable-plugin --plugin signals --account %%group_acct%% |  |  |
 
 | *Comment* | Test Case: Groups UI Search Signals by Group. Create Group Mbr and Non-Group Mbr |  |
 | set | grp_mbr_short | gui_search_mbr_%%start_time%% |
 | set | non_grp_mbr_short | gui_search_non_%%start_time%% |
 | set | grp_mbr | %%grp_mbr_short%%@matt.socialtext.net |
-| set | non_grp_mbr | %%non_mbr_short%%@matt.socialtext.net |
+| set | non_grp_mbr | %%non_grp_mbr_short%%@matt.socialtext.net |
 | st-admin | create-user --e %%grp_mbr%% --p %%password%% --account %%group_acct%% | created |
-| st-admin | create-user --e %%grp_mbr%% --p %%password%% --account %%group_acct%% | created |
+| st-admin | create-user --e %%non_grp_mbr%% --p %%password%% --account %%group_acct%% | created |
 | st-admin | add-member --group %%group_id%% --email %%grp_mbr%% | is now a member of the %%group_name%% Group |
 
 | *Comment* | Test Case: Groups UI Search Signals by Group. Send 2 signals %%grp_mbr%% |  |
