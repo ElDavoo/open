@@ -57,8 +57,9 @@ override extra_headers => sub {
 sub POST_json {
     my $self = shift;
     my $rest = shift;
+    my $user = $rest->user;
 
-    unless ($self->rest->user->is_authenticated) {
+    unless ($user->is_authenticated && !$user->is_deleted) {
         $rest->header(-status => HTTP_401_Unauthorized);
         return '';
     }
@@ -79,7 +80,7 @@ sub POST_json {
         return '';
     }
 
-    $data->{account_id} ||= $self->rest->user->primary_account_id;
+    $data->{account_id} ||= $user->primary_account_id;
 
     sql_begin_work();
     my $group;
