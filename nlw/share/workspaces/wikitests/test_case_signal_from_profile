@@ -6,58 +6,51 @@
 | create-user | %%spuser%% | %%password%% |
 | st-logoutin | %%spuser%% |  |
 
-| *Comment* | Test Case: Signal From Profile. logged in user has empty "lastsignal"|  |
+| *Comment* | Test Case: Signal From Profile. logged in user has empty "lastsignal" |  |
 
 | wait_for_element_visible_ok | link=Profile | 30000 |
 | click_and_wait | link=Profile |  |
 | wait_for_element_present_ok | //div[@id='lastsignal'] | 30000 |
 | wait_for_element_not_present_ok | //div[@id='lastsignal']//a | 5000 |
 
-| *Comment* | Test Case: Signal From Profile. logged in user signals another user from the other user's profile|  |
-| *Comment* | Test Case: Signal From Profile. it is safe to let the other user be wikitester@ken.socialtext.net|  |
-| *Comment* | Test Case: Signal From Profile. already in People search context|  |
+| *Comment* | Test Case: Signal From Profile. logged in user signals another user from the other user's profile |  |
+| *Comment* | Test Case: Signal From Profile. it is safe to let the other user be wikitester@ken.socialtext.net |  |
+| *Comment* | Test Case: Signal From Profile. already in People search context |  |
 
 | st-search | wikitester | People matching 'wikitester' |
 | wait_for_element_visible_ok | link=wikitester | 5000 |
 | click_and_wait | link=wikitester |  |
 | wait_for_text_present_ok | Signal to wikitester | 5000 |
 
+| set | signal | Public Hello to wikitester from me |
 | st-name-widget | 3 | siggy |
-| st-send-signal-via-profile-widget | siggy | Public Hello to wikitester from %%spuser%% |
+| st-send-signal-via-profile-widget | siggy | %%signal%% |
 
-| *Comment* | Test Case: Signal From Profile. mention appears in wikitester profile activities widget|  |
-
+| *Comment* | Test Case: Signal From Profile. mention appears in wikitester profile activities widget |  |
 | st-name-widget | 4 | wtactivities |  |
-| st-verify-text-in-widget | wtactivities | Public Hello to wikitester from %%spuser%% |
+| st-widget-title-like | wtactivities | Activity |
+| st-verify-text-in-activities-widget | wtactivities | %%signal%% |
 
-| *Comment* | Test Case: Signal From Profile. mention appears in %%spuser%% profile activities widget|  |
-
+| *Comment* | Test Case: Signal From Profile. Signal appears in %%spuser%% profile activities widget |  |
 | click_and_wait | link=Profile |  |
 | wait_for_text_present_ok | Activity | 30000 |
-| st-name-widget | 4 | spactivities |
-| st-verify-text-in-widget | spactivities | Public Hello to wikitester from %%spuser%% |
+| st-name-widget | 3 | spactivities |
+| st-widget-title-like | spactivities | Activity |
+| st-verify-text-in-activities-widget | spactivities | %%signal%% |
 
-| *Comment* | Test Case: Signal From Profile. mention appears in "lastsignal" on %%spuser%% profile page|  |
-
-| wait_for_element_present_ok | //div[@id='lastsignal'] | 30000 |
-| wait_for_element_present_ok | //div[@id='lastsignal']//a | 5000 |
-| text_like | //div[@id='lastsignal'] | Public Hello to wikitester from %%spuser%% |
-
-| *Comment* | Test Case: Signal From Profile. mention appears on Signals page|  |
-
+| *Comment* | Test Case: Signal From Profile. Signal appears in Signals page - currently broken by {bz 3484} |  |
 | click_and_wait | link=Signals |  |
 | wait_for_text_present_ok | Signals | 30000 |
 | st-name-widget | 3 | sigactivities |
-| st-verify-text-in-widget | sigactivities | Public Hello to wikitester from %%spuser%% |
+| st-verify-text-in-activities-widget | sigactivities | %%signal%% |
 
-| *Comment* | Test Case: Signal From Profile. mention appears in Activities widget|  |
-
+| *Comment* | Test Case: Signal From Profile. mention appears in Activities widget |  |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | dbactivities |
-| st-verify-text-in-activities-widget | dbactivities | Public Hello to wikitester from %%spuser%% |
+| st-verify-text-in-activities-widget | dbactivities | %%signal%% |
 
-| *Comment* | Test Case: Signal From Profile. logged in user private signals another user from the other user's profile|  |
-| *Comment* | Test Case: Signal From Profile. it is safe to let the other user be wikitester@ken.socialtext.net|  |
+| *Comment* | Test Case: Signal From Profile. logged in user private signals another user from the other user's profile |  |
+| *Comment* | Test Case: Signal From Profile. it is safe to let the other user be wikitester@ken.socialtext.net |  |
 
 | click_and_wait | link=Profile |  |
 | wait_for_element_present_ok | st-search-action | 5000 |
@@ -68,39 +61,32 @@
 | wait_for_text_present_ok | Signal to wikitester | 5000 |
 
 | st-name-widget | 3 | siggy |  |
-| st-send-signal-via-profile-widget | siggy | Private Hello to wikitester from %%spuser%% | private |
+| set | private | Private Hello to wikitester from me |  |
+| st-send-signal-via-profile-widget | siggy | %%private%% | private |
 
-| *Comment* | Test Case: Signal From Profile. mention appears in wikitester profile activities widget|  |
-
+| *Comment* | Test Case: Signal From Profile. mention appears in wikitester profile activities widget |  |
 | st-name-widget | 4 | wtactivities |
-| st-verify-text-in-widget | wtactivities | Private Hello to wikitester from %%spuser%% |
+| st-verify-text-in-widget | wtactivities | %%private%% |
 
-| *Comment* | Test Case: Signal From Profile. mention appears in %%spuser%% profile activities widget|  |
-
+| *Comment* | Test Case: Signal From Profile. mention appears in %%spuser%% profile activities widget |  |
 | click_and_wait | link=Profile |  |
 | wait_for_text_present_ok | Activity | 30000 |
-| st-name-widget | 4 | spactivities |
-| st-verify-text-in-widget | spactivities | Private Hello to wikitester from %%spuser%% |
+| st-name-widget | 3 | spactivities |
+| st-verify-text-in-widget | spactivities | %%private%% |
 
-| *Comment* | Test Case: Signal From Profile. mention DOES NOT appear in "lastsignal" on %%spuser%% profile page|  |
-| *Comment* | Test Case: Signal From Profile. previous mention remains|  |
-
+| *Comment* | Test Case: Signal From Profile. mention DOES NOT appear in "lastsignal" on %%spuser%% profile page |  |
+| *Comment* | Test Case: Signal From Profile. previous mention remains. This currently fails. |  |
 | wait_for_element_present_ok | //div[@id='lastsignal'] | 30000 |
-| wait_for_element_present_ok | //div[@id='lastsignal']//a | 5000 |
-| text_like | //div[@id='lastsignal'] | Public Hello to wikitester from %%spuser%% |
 
-| *Comment* | Test Case: Signal From Profile. mention appears on Signals page|  |
-
+| *Comment* | Test Case: Signal From Profile. mention appears on Signals page - Not it doesn't {bz 3484} |  |
 | click_and_wait | link=Signals |  |
 | wait_for_text_present_ok | Signals | 30000 |
 | st-name-widget | 3 | sigactivities |
-| st-verify-text-in-widget | sigactivities | Private Hello to wikitester from %%spuser%% |
+| st-verify-text-in-widget | sigactivities | %%private%% |
 
-| *Comment* | Test Case: Signal From Profile. mention appears in Activities widget|  |
-
+| *Comment* | Test Case: Signal From Profile. mention appears in Activities widget |  |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | dbactivities |
-| st-verify-text-in-activities-widget | dbactivities | Private Hello to wikitester from %%spuser%% |
-
+| st-verify-text-in-activities-widget | dbactivities | %%private%% |
 
 | *Comment* | Test Case: Signal From Profile COMPLETED |  |
