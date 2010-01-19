@@ -54,3 +54,8 @@ Test many of the different browser workarounds.
 | header-like | Location | /nlw/plugin/widgets/ifpc_relay.html |
 | GET     | /nlw/plugin/widgets/ifpc_relay.html |
 | code-is | 200                                 |
+
+| *Comment* | have an empty robots.txt |
+| set-user-agent | Wikid |
+| GET | /robots.txt |
+| Code-is | 200 |
