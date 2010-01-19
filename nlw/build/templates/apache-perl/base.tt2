@@ -15,6 +15,7 @@ LoadModule  expires_module          [% config.module_dir %]/mod_expires.so
 LoadModule  headers_module          [% config.module_dir %]/mod_headers.so
 LoadModule  env_module              [% config.module_dir %]/mod_env.so
 LoadModule  setenvif_module         [% config.module_dir %]/mod_setenvif.so
+LoadModule  cgi_module              [% config.module_dir %]/mod_cgi.so
 
 [%- IF config.ssl %]
     LoadModule  ssl_module          [% config.module_dir %]/mod_ssl.so

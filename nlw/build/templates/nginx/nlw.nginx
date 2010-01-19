@@ -96,7 +96,7 @@
     # Force IE8 to emulate IE7, to avoid IE8 rendering issues.
     add_header X-UA-Compatible IE=EmulateIE7;
 
-    location ~ \.js$ {
+    location ~ "^/static/.+\.js$" {
       # Safari doesn't like compressed JS, so *only* compress HTML content
       gzip_disable     "Safari";
     }

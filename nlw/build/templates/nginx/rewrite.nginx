@@ -16,6 +16,9 @@
     rewrite /nlw.* https://[% config.nlw_server_hostname %][% colon_port %]$1 break;
 [%- END %]
 
+    # Rewrite for reports
+    rewrite ^/nlw/reports(.*)$ /webplugin/cgi/reports/report.cgi$1 break;
+
     # make sure user agents that don't do gzipped javascript use
     # the uncompressed version - Note SAFARI!!!
     # ALSO notice that this RewriteRule is NOT the last one in the chain
