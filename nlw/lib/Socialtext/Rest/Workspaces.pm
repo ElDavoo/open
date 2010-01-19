@@ -57,8 +57,13 @@ sub _entity_hash {
         title => $workspace->title,
         # not really modified time, but it is the time we have
         modified_time => $workspace->creation_datetime,
-        id => $workspace->workspace_id,
         default => $workspace->is_default ? 1 : 0,
+        account_id => $workspace->account_id,
+
+        # workspace_id is the 'right' name for this field, but hang on to 'id'
+        # for backwards compatibility.
+        workspace_id => $workspace->workspace_id,
+        id => $workspace->workspace_id,
 
         # REVIEW: more?
     };
