@@ -89,6 +89,28 @@
         ErrorDocument 404 /index.cgi
     </LocationMatch>
 
+    # webplugin drop-ins should go in
+    # /var/www/socialtext/webplugin/PLUGIN-NAME
+    # two directories are expected there, a cgi directory scripts
+    # and a static directory for static files
+    # URI paths would be /webplugin/cgi/PLUGIN-NAME/script.cgi for scripts
+    #     or /webplugin/PLUGIN-NAME/foo.html for static files and resources
+    AliasMatch ^/webplugin/([^/c]+)(.*) [% config.data_root_dir %]/webplugin/$1/static$2
+    <LocationMatch "^/webplugin/[^/+].*.*">
+        SetHandler default-handler
+        Options -MultiViews +FollowSymlinks
+        Order allow,deny
+        Allow from all
+    </LocationMatch>
+
+    ScriptAliasMatch ^/webplugin/cgi/([^/]+)(.*) [% config.data_root_dir %]/webplugin/$1/cgi$2
+    <LocationMatch "^/webplugin/cgi/[^/+].*">
+        SetHandler cgi-script
+        Options +ExecCGI -MultiViews +FollowSymlinks
+        Order allow,deny
+        Allow from all
+    </LocationMatch>
+
 [%- END %][%# MACRO vhost_common %]
 
 [%# Real code starts here %]
