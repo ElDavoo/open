@@ -204,8 +204,9 @@ sub create {
     my $clone_pages_from = delete $p{clone_pages_from};
 
     my $self;
+    my $in_txn = sql_in_transaction();
     eval {
-        sql_begin_work();
+        sql_begin_work() unless $in_txn;
 
         $class->_validate_and_clean_data(\%p);
         delete $p{workspace_id};
@@ -233,11 +234,11 @@ EOSQL
         }
 
         $self->permissions->set( set_name => 'member-only' );
-        sql_commit();
+        sql_commit() unless $in_txn;
     };
 
     if ( my $e = $@ ) {
-        sql_rollback();
+        sql_rollback() unless $in_txn;
         rethrow_exception($e);
     }
 
