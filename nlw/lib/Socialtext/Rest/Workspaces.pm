@@ -9,6 +9,7 @@ use base 'Socialtext::Rest::Collection';
 use Socialtext::JSON;
 use Socialtext::HTTP ':codes';
 use Socialtext::Permission;
+use Socialtext::SQL ':txn';
 use Socialtext::Workspace;
 use Socialtext::User;
 
@@ -66,26 +67,23 @@ sub _entity_hash {
 sub POST {
     my $self = shift;
     my $rest = shift;
+    my $user = $rest->user;
 
     unless ($self->user_can('is_business_admin')) {
-        $rest->header(
-                      -status => HTTP_401_Unauthorized,
-                     );
+        $rest->header(-status => HTTP_401_Unauthorized);
         return '';
     }
 
-    my $create_request_hash = decode_json( $rest->getContent() );
+    my $request = decode_json( $rest->getContent() );
 
-    unless ( $create_request_hash->{name} and
-             $create_request_hash->{title} and
-             $create_request_hash->{account_id} ) {
+    unless ($request->{name} and $request->{title} and $request->{account_id}) {
         $rest->header(
             -status => HTTP_400_Bad_Request,
             -type  => 'text/plain', );
         return "name, title, account_id required";
     }
 
-    my $new_workspace_name = $create_request_hash->{name};
+    my $new_workspace_name = $request->{name};
 
     if ( Socialtext::Workspace->new( name => $new_workspace_name ) ) {
         $rest->header(
@@ -94,24 +92,28 @@ sub POST {
         return "$new_workspace_name is not a valid selection\n";
     }
 
-    my ( $new_workspace ) = eval {
-        $self->_create_workspace(
-            creator          => $self->rest->user(),
-            %$create_request_hash );
+    sql_begin_work();
+    eval {
+        my $ws = $self->_create_workspace(
+            creator => $user,
+            %$request
+        );
     };
-
     if ( my $e = Exception::Class->caught('Socialtext::Exception::DataValidation') ) {
+        sql_rollback();
         $rest->header(
-                      -status => HTTP_400_Bad_Request,
-                      -type   => 'text/plain' );
+            -status => HTTP_400_Bad_Request,
+            -type   => 'text/plain' );
         return join( "\n", $e->messages );
     } elsif ( $@ ) {
+        sql_rollback();
         $rest->header(
             -status => HTTP_400_Bad_Request,
             -type   => 'text/plain' );
         warn $@;
         return "$@";
     }
+    sql_commit();
 
     $rest->header(
         -status => HTTP_201_Created,
@@ -121,16 +123,6 @@ sub POST {
 
     return '';
 
-}
-
-sub _admin_in_workspace_p {
-    my $self = shift;
-    my %p    = @_;
-
-    return $p{workspace}->permissions->user_can(
-        user       => $p{user},
-        permission =>
-            Socialtext::Permission->new( name => 'admin_workspace' ), );
 }
 
 # REVIEW: Extract to Socialtext::*? Almost certainly
