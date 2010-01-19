@@ -1,5 +1,7 @@
 | *Comment* | Test Case: Signals Follow Filter With Pagination |  |
 
+* Fixture: SocialWidgets
+
 | set | signaler | siguser_%%start_time%%@ken.socialtext.net |
 | set | signaler_short | siguser_%%start_time%% |
 | set | follower | foluser_%%start_time%%@ken.socialtext.net |
@@ -14,10 +16,9 @@
 | st-admin | enable-plugin --account %%acct%% --p signals |  |
 | st-admin | create-workspace --account %%acct%% --n %%ws%% --t %%ws%% --empty | was created |
 
-| st-admin | create-user --e %%signaler%% --p %%password%% --account %%hostname%% --f "%%signaler_short%%" |  |
-| st-admin | create-user --e %%follower%% --p %%password%% --account %%hostname%% --f "%%follower_short%%" |  |
-| st-admin | create-user --e %%notfollowed%% --p %%password%% --account %%hostname%% --f "%%notfollowed_short%%" |  |
-| st-admin | add-member --w %%ws%% --e %%email%% | now has the role of 'member' in the |
+| st-admin | create-user --e %%signaler%% --p %%password%% --account %%acct%% --f "%%signaler_short%%" |  |
+| st-admin | create-user --e %%follower%% --p %%password%% --account %%acct%% --f "%%follower_short%%" |  |
+| st-admin | create-user --e %%notfollowed%% --p %%password%% --account %%acct%% --f "%%notfollowed_short%%" |  |
 | st-admin | add-member --w %%ws%% --e %%signaler%% | now has the role of 'member' in the |
 | st-admin | add-member --w %%ws%% --e %%follower%% | now has the role of 'member' in the |
 | st-admin | add-member --w %%ws%% --e %%notfollowed%% | now has the role of 'member' in the |
@@ -25,7 +26,73 @@
 | *Comment* | Test Case: Signals Follow Filter With Pagination signaler signals many times |  |  |
 | http-user-pass | %%signaler%% | %%password%% |  |
 | post-signals | 21 | ssig-%%start_time%% | 1 |
+| st-process-jobs |  |  |  |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination notfollowed signals many times |  |  |
 | http-user-pass | %%notfollowed%% | %%password%% |  |
 | post-signals | 21 | nfsig-%%start_time%% | 45 |
+| st-process-jobs |  |  |  |
+
+| *Comment* | Test Case: Signals Follow Filter With Pagination follower logs in, follows signaler |  |
+| st-logoutin | %%follower%% | %%password%% |
+| wait_for_element_visible_ok | link=People | 30000 |
+| click_and_wait | link=People |  |
+| wait_for_element_visible_ok | st-search-term | 30000 |
+| type_ok | st-search-term | %%signaler_short%% |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
+| click_and_wait | st-search-submit |  |
+| wait_for_element_visible_ok | link=%%signaler_short%% | 30000 |
+| click_and_wait | link=%%signaler_short%% |  |
+| wait_for_element_visible_ok | link=Follow this person | 30000 |
+| click_ok | link=Follow this person |  |
+| wait_for_element_visible_ok | link=Stop following this person | 30000 |
+
+| *Comment* | Test Case: Signals Follow Filter With Pagination follower checks signals, filters for following |  |
+| wait_for_element_visible_ok | link=Signals | 30000 |
+| click_and_wait | link=Signals |  |
+| wait_for_element_visible_ok | select-everyone | 30000 |
+| click_ok | select-everyone |  |
+| st-name-widget | 3 | signals |
+| st-select-widget-frame | signals |  |
+| wait_for_text_present_ok | nfsig-%%start_time%% 65 | 30000 |
+| wait_for_text_present_ok | nfsig-%%start_time%% 46 | 30000 |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | select-followed | 30000 |
+| click_ok | select-followed |  |
+| st-select-widget-frame | signals |  |
+| wait_for_text_not_present_ok | nfsig-%%start_time%% | 30000 |
+
+| *Comment* | Test Case: Signals Follow Filter With Pagination follower checks pagination |  |
+| wait_for_text_present_ok | ssig-%%start_time%% 21 | 30000 |
+| wait_for_text_present_ok | ssig-%%start_time%% 2 | 30000 |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | //span[@class='older nav-link active'] | 30000 |
+| click_ok | //span[@class='older nav-link active'] |  |
+| st-select-widget-frame | signals |  |
+| wait_for_text_present_ok | ssig-%%start_time%% 1 | 30000 |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | //span[@class='newer nav-link active'] | 30000 |
+| click_ok | //span[@class='newer nav-link active'] |  |
+| st-select-widget-frame | signals |  |
+| wait_for_text_present_ok | ssig-%%start_time%% 2 | 30000 |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | //span[@class='older nav-link active'] | 30000 |
+| click_ok | //span[@class='older nav-link active'] |  |
+| wait_for_element_visible_ok | //span[@class='newest nav-link active'] | 30000 |
+| click_ok | //span[@class='newest nav-link active'] |  |
+| st-select-widget-frame | signals |  |
+| wait_for_text_present_ok | ssig-%%start_time%% 21 | 30000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Signals Follow Filter With Pagination follower unfilters signals |  |
+| wait_for_element_visible_ok | select-everyone | 30000 |
+| click_ok | select-everyone |  |
+| st-select-widget-frame | signals |  |
+| wait_for_text_present_ok | nfsig-%%start_time%% 65 | 30000 |
+| wait_for_text_present_ok | nfsig-%%start_time%% 46 | 30000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Signals Follow Filter With Pagination teardown |  |
+| st-admin | delete-workspace --w %%ws%% --no-export |  |
+
+| *Comment* | Test Case: Signals Follow Filter With Pagination COMPLETED |  |

@@ -60,7 +60,7 @@
 | wait_for_element_visible_ok | st-savebutton-%%activities_widget%% | 30000 |
 | click_ok | st-savebutton-%%activities_widget%% |  |
 
-| *Comment* | Test Case: Activities Widget Conversations TODO Verify Edits and Comments |  |
+| *Comment* | Test Case: Activities Widget Conversations Verify Edits and Comments |  |
 
 | st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpagetwo%% in %%wrkspc%%/ |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+edited %%notconvpagetwo%% in %%wrkspc%%/ |

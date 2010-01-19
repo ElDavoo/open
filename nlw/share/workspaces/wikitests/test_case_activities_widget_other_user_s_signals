@@ -26,12 +26,7 @@
 | post-signal | dragged a comb across my head %%start_time%% |  |
 | post-signal | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% |  |
 
-| *Comment* | Test Case: Activities Widget Other User Signals. Wait for the Signals Indexer a while |  |
-| pause | 10000 |  |
-
-| *Comment* | Test Case: Activities Widget Other User. TODO: Edit Page as conversation |  |
-| *Comment* | Test Case: Activities Widget Other User. TODO: Edit Page as edit |  |
-| *Comment* | Test Case: Activities Widget Other User. TODO: Comment on page as conversation |  |
-| *Comment* | Test Case: Activities Widget Other User. TODO: Comment on page as not conversation |  |
+| *Comment* | Test Case: Activities Widget Other User Signals. Process jobs |  |
+| st_process_jobs |  |  |
 
 | *Comment* | Test Case: Activities Widget Other User Signals. COMPLETED |  |
