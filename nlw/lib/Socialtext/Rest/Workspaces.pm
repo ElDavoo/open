@@ -61,6 +61,8 @@ sub _entity_hash {
         modified_time => $workspace->creation_datetime,
         default => $workspace->is_default ? 1 : 0,
         account_id => $workspace->account_id,
+        user_count => $workspace->user_count(direct => 1),
+        group_count => $workspace->group_count(direct => 1),
 
         # workspace_id is the 'right' name for this field, but hang on to 'id'
         # for backwards compatibility.
