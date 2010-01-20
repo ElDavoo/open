@@ -17,6 +17,12 @@ Socialtext.Group.GetDriverGroups = function(driver_key, callback) {
 Socialtext.Group.prototype = new Socialtext.Base();
 
 $.extend(Socialtext.Group.prototype, {
+    postArgs: [
+        'ldap_dn', 'name', 'account_id', 'description', 'photo_id',
+        'workspaces', 'users', 'send_message', 'additional_message'
+    ],
+    putArgs: [ 'name', 'account_id', 'description', 'photo_id' ],
+
     url: function(rest) {
         rest = rest || '';
         return '/data/groups/' + this.group_id + rest;
@@ -24,18 +30,14 @@ $.extend(Socialtext.Group.prototype, {
 
     request: function(type, url, callback) {
         var self = this;
+        try{
         if (!this.name && !this.ldap_dn) {
             throw new Error(loc("LDAP DN or group name required"));
         }
 
         var data = {};
-        if (this.ldap_dn) data.ldap_dn = this.ldap_dn;
-        if (this.name) data.name = this.name;
-        if (this.account_id) data.account_id = this.account_id;
-        if (this.description) data.description = this.description;
-        if (this.photo_id) data.photo_id = this.photo_id;
-        if (this.workspaces) data.workspaces = this.workspaces;
-        if (this.users) data.users = this.users;
+        var args = type == 'POST' ? this.postArgs : this.putArgs;
+        $.each(args, function(i, arg) { if (self[arg]) data[arg] = self[arg] });
 
         $.ajax({
             url: url,
@@ -49,6 +51,7 @@ $.extend(Socialtext.Group.prototype, {
             },
             error: this.errorCallback(callback)
         });
+        }catch(e){console.log(e)};
     },
 
     create: function(callback) {
@@ -59,17 +62,16 @@ $.extend(Socialtext.Group.prototype, {
         var self = this;
 
         if (self.group_id) {
-            var users = self.users;
-            var trash = self.trash;
-            var workspaces = self.workspaces;
-            delete self.users;
-            delete self.trash;
-            delete self.workspaces;
+            var users = {
+                users: self.users,
+                send_message: self.send_message,
+                additional_message: self.additional_message
+            };
             self.runAsynch([
                 function(cb) { self.request('PUT', self.url(), cb) },
                 function(cb) { self.addMembers(users, cb) },
-                function(cb) { self.addToWorkspaces(workspaces, cb) },
-                function(cb) { self.removeTrash(trash, cb) }
+                function(cb) { self.addToWorkspaces(self.workspaces, cb) },
+                function(cb) { self.removeTrash(self.trash, cb) }
             ], callback);
         }
         else {
@@ -77,20 +79,22 @@ $.extend(Socialtext.Group.prototype, {
         }
     },
 
-    addMembers: function(users, callback) {
-        this.postItems(this.url('/users'), users, callback);
+    addMembers: function(data, callback) {
+        if (!data.users.length) return callback({});
+        this.postItems(this.url('/users'), data, callback);
     },
 
     addToWorkspaces: function(workspaces, callback) {
+        if (!workspaces.length) return callback({});
         this.postItems(this.url('/workspaces'), workspaces, callback);
     },
 
     removeTrash: function(trash, callback) {
+        if (!trash.length) return callback({});
         this.postItems(this.url('/trash'), trash, callback);
     },
 
     postItems: function(url, list, callback) {
-        if (!list.length) return callback({});
         $.ajax({
             url: url,
             type: 'post',
