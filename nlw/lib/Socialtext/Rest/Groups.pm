@@ -89,7 +89,7 @@ sub POST_json {
             ? $self->_create_ldap_group($data)
             : $self->_create_native_group($data);
 
-        $self->_add_members_to_group($group, $data->{users});
+        $self->_add_members_to_group($group, $data);
 
         my @created = $self->_create_workspaces($data->{new_workspaces});
 
@@ -119,18 +119,18 @@ sub POST_json {
 }
 
 sub _add_members_to_group {
-    my $self      = shift;
-    my $group     = shift;
-    my $user_meta = shift;
-    my $invitor   = $self->rest->user;
+    my $self    = shift;
+    my $group   = shift;
+    my $data    = shift;
+    my $invitor = $self->rest->user;
 
-    return unless $user_meta;
+    return unless $data and $data->{users};
     die "group is not updateable\n" unless $group->can_update_store;
 
-    my $notify  = $user_meta->{send_message} || 0;
-    my $message = $user_meta->{additional_message} || '';
+    my $notify  = $data->{send_message} || 0;
+    my $message = $data->{additional_message} || '';
 
-    for my $meta (@{$user_meta->{users}}) {
+    for my $meta (@{$data->{users}}) {
         my $name_or_id = $meta->{username} || $meta->{user_id};
         my $invitee = Socialtext::User->Resolve($name_or_id)
             or die "no such user\n";

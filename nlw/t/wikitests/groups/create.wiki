@@ -108,7 +108,7 @@ Tests to create groups via REST and CLI.
 
 ## Create a group with users
 | *Comment* | Create a group with users |
-| POST-json | /data/groups | {"name":"%%g7%%","users":{"users":[{"username":"%%bowline%%"},{"user_id":"%%figure_eight_id%%","role":"admin"}]}} |
+| POST-json | /data/groups | {"name":"%%g7%%","users":[{"username":"%%bowline%%"},{"user_id":"%%figure_eight_id%%","role":"admin"}]} |
 | code-is | 201 |
 | body-like | "user_count":"3" |
 
