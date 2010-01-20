@@ -103,15 +103,37 @@ proto.create_grammar = function() {
 
         tr: {
             match: /^((?:(?:^|\n)\|.*?\|(?:\n| \n(?=\|)|  +\n)))/,
-            blocks: ['td'],
+            blocks: ['td_multi_line_block', 'td_single_line_block', 'td_phrase'],
             filter: function(node) { return node.text.replace(/\s+$/, '') }
         },
 
-        td: {
-            match: /\|?\s*(.*?)\s*\|\n?/,
-            phrases: all_phrases // XXX - do blocks based on matchedness; make it a callback?
+        td_multi_line_block: {
+            match: /\|[ \t]*\n?(\s*?.*?\n.*?)[ \t]*\| *\n?/,
+            blocks: ['pre', 'html', 'hr', 'hx', 'waflparagraph', 'ol', 'ul', 'blockquote', 'p', 'empty', 'else']
+            filter: function(node) {
+                return node.text.replace(/\n?$/, '\n');
+            }
         },
 
+        td_single_line_block: {
+        },
+
+        td_phrase: {
+        },
+
+                   /*
+        td: {
+            filter: function(node) {
+                var newText = node.text.replace(/^[ \t]*\n?(.*?)[ \t]*$/, '$1');
+                if (/\n/.test(newText)) {
+                    newText = newText.replace(/\n?$/, '\n');
+                }
+                phrases: all_phrases, // XXX - do blocks based on matchedness; make it a callback?
+                return node.text.replace(/\s+$/, '')
+            }
+        },
+
+        */
 
         hx: {
             match: /^((\^+) *([^\n]*?)(\s+=+)?\s*?\n+)/,
