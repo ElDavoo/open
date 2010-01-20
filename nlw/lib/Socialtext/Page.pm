@@ -1040,7 +1040,9 @@ sub update_db_metadata {
     my $hash = $self->hash_representation;
     my $wksp_id = $self->hub->current_workspace->workspace_id;
     my $pg_id = $hash->{page_id};
-    sql_begin_work();
+
+    my $in_txn = sql_in_transaction();
+    sql_begin_work() unless $in_txn;
 
     my $sth = sql_execute(
         'SELECT creator_id, create_time FROM page
@@ -1127,7 +1129,7 @@ INSSQL
         );
     }
 
-    sql_commit();
+    sql_commit() unless $in_txn;
 }
 
 sub is_system_page {
