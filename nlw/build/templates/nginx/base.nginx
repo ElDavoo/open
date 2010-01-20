@@ -36,7 +36,7 @@ http {
   gzip_min_length  1000;
   gzip_buffers     16 8k;
   gzip_proxied     expired no-cache no-store private auth;
-  gzip_types       text/css application/x-javascript;
+  gzip_types       text/css application/javascript;
   gzip_disable     "MSIE [1-6]\.";
   gzip_disable     "Mozilla/4(?!.*\bMSIE\s+[789])";
   gzip_disable     "Mozilla/4\.0[678](?!.*\bMSIE\s+[789])";

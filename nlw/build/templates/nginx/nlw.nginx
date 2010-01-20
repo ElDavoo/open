@@ -47,7 +47,7 @@
         alias [% config.static_dir %]/$1;
         expires 1y;
         types {}
-        default_type application/x-javascript;
+        default_type application/javascript;
         add_header Content-Encoding "gzip";
         gzip off;
     }
@@ -57,7 +57,16 @@
         expires 1y;
     }
 
-    location ~ ^/nlw/plugin/([^/]+)/(.+) {
+    location ~ "^/nlw/plugin/([^/]+)/(.+.js.gz)" {
+        alias [% config.static_dir %]/plugin/$1/share/$2;
+        expires 1y;
+        types {}
+        default_type application/javascript;
+        add_header Content-Encoding "gzip";
+        gzip off;
+    }
+
+    location ~ "^/nlw/plugin/([^/]+)/(.+)" {
         alias [% config.static_dir %]/plugin/$1/share/$2;
         expires 1y;
     }
