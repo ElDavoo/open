@@ -21,6 +21,8 @@ The random functions use perl's built-in C<rand()> for randomness.
 
 =head1 FUNCTIONS
 
+=over
+
 =cut
 
 use List::Util qw/shuffle/;
@@ -73,6 +75,10 @@ Return a random element from the list.
 sub rand_pick (\@) {
     $_[0][rand(scalar(@{$_[0]}))];
 }
+
+=back
+
+=cut
 
 1;
 
