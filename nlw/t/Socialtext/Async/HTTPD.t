@@ -1,4 +1,6 @@
 #!perl
+# @COPYRIGHT@
+
 use warnings;
 use strict;
 
