@@ -98,7 +98,13 @@ sub POST {
     sql_begin_work();
     eval {
         for my $meta (@$request) {
-            $self->_create_workspace_from_meta($meta);
+            my $ws = $self->_create_workspace_from_meta($meta);
+
+            $ws->add_user(
+                user  => $user,
+                role  => Socialtext::Role->Admin(),
+                actor => $user,
+            );
         }
     };
     if (my $e = $@) {
