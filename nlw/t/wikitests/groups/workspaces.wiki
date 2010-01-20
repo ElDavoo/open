@@ -57,6 +57,7 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | json-path-is | $[0].name                                            | %%bronze%%                  |
 | json-path-is | $[0].title                                           | %%bronze%%                  |
 | json-path-is | $[0].id                                              | %%bronze_id%%               |
+| json-path-is | $[0].workspace_id                                    | %%bronze_id%%               |
 | json-path-is | $[0].uri                                             | /data/workspaces/%%bronze%% |
 
 ## Verify that gold is second w/correct info
@@ -64,6 +65,7 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | json-path-is | $[1].name                                           | %%gold%%                  |
 | json-path-is | $[1].title                                          | %%gold%%                  |
 | json-path-is | $[1].id                                             | %%gold_id%%               |
+| json-path-is | $[1].workspace_id                                   | %%gold_id%%               |
 | json-path-is | $[1].uri                                            | /data/workspaces/%%gold%% |
 
 ## Verify that silver is last w/correct info
@@ -71,6 +73,7 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | json-path-is | $[2].name                                           | %%silver%%                  |
 | json-path-is | $[2].title                                          | %%silver%%                  |
 | json-path-is | $[2].id                                             | %%silver_id%%               |
+| json-path-is | $[2].workspace_id                                   | %%silver_id%%               |
 | json-path-is | $[2].uri                                            | /data/workspaces/%%silver%% |
 
 

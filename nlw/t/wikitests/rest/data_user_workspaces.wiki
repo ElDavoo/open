@@ -70,4 +70,5 @@
 | json-parse      |                                                                |
 | json-array-size | 1                                                              |
 | body-like       | %%ws1%%                                                        |
+| body-like       | workspace_id                                                   |
 | body-unlike     | %%ws2%%                                                        |

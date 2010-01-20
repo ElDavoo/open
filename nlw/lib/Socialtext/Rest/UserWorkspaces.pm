@@ -56,6 +56,7 @@ sub _entity_hash {
         title         => $workspace->title,
         modified_time => $workspace->creation_datetime,
         id            => $workspace->workspace_id,
+        workspace_id  => $workspace->workspace_id,
         default       => $workspace->is_default ? 1 : 0,
     };
 }
