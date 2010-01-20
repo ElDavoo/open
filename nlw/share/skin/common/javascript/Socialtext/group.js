@@ -56,33 +56,47 @@ $.extend(Socialtext.Group.prototype, {
     },
 
     save: function(callback) {
-        if (this.group_id) {
-            this.request('PUT', this.url(), callback);
+        var self = this;
+
+        if (self.group_id) {
+            var users = self.users;
+            var trash = self.trash;
+            var workspaces = self.workspaces;
+            delete self.users;
+            delete self.trash;
+            delete self.workspaces;
+            self.runAsynch([
+                function(cb) { self.request('PUT', self.url(), cb) },
+                function(cb) { self.addMembers(users, cb) },
+                function(cb) { self.addToWorkspaces(workspaces, cb) },
+                function(cb) { self.removeTrash(trash, cb) }
+            ], callback);
         }
         else {
-            this.create(callback);
+            self.create(callback);
         }
     },
 
-    addMembers: function(userList, callback) {
-        $.ajax({
-            url: this.url('/users'),
-            type: 'post',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: $.toJSON(userList),
-            success: function() { if (callback) callback({}) },
-            error: this.errorCallback(callback)
-        });
+    addMembers: function(users, callback) {
+        this.postItems(this.url('/users'), users, callback);
     },
 
-    removeMembers: function(userList, callback) {
+    addToWorkspaces: function(workspaces, callback) {
+        this.postItems(this.url('/workspaces'), workspaces, callback);
+    },
+
+    removeTrash: function(trash, callback) {
+        this.postItems(this.url('/trash'), trash, callback);
+    },
+
+    postItems: function(url, list, callback) {
+        if (!list.length) return callback({});
         $.ajax({
-            url: this.url('/trash'),
+            url: url,
             type: 'post',
             dataType: 'json',
             contentType: 'application/json',
-            data: $.toJSON(userList),
+            data: $.toJSON(list),
             success: function() { if (callback) callback({}) },
             error: this.errorCallback(callback)
         });
