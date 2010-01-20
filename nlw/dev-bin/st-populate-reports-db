@@ -6,6 +6,9 @@ use Cwd;
 use File::Basename;
 
 chdir( File::Basename::dirname($0));
+use FindBin ();
+use lib "$FindBin::Bin";
+
 require 'reports-functions.pl';
 
 #Globals

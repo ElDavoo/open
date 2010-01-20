@@ -11,6 +11,10 @@ use Socialtext::User;
 use Socialtext::Role;
 use Time::localtime;
 
+ 
+use FindBin ();
+use lib "$FindBin::Bin";
+    
 
 require 'reports-functions.pl';
 
