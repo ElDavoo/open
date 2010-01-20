@@ -75,7 +75,7 @@
     rewrite    ^/m/s$            /m/signals    last;
     rewrite    ^/m/p$            /m/people     last;
     rewrite    ^/m/w$            /m/workspace_list     last;
-    rewrite    ^/m/$             /m          last;
+    rewrite    ^/m/?$             /m          last;
     rewrite    ^/m/page/([^/]+)$ /m/page/$1/ last;
 
     rewrite    ^/([^/\.]+)/emailprefs\??(.*)$ "/$1/index.cgi?action=preferences_settings&preferences_class_id=email_notify;$2" last;
