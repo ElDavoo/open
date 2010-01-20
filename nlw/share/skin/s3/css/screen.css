@@ -4415,4 +4415,16 @@ body#dashBoard #st-editing-tools-edit span.prefix {
     top: -9px;
 }
 
+#createGroupButtons {
+    height: 30px;
+    width: 98%;
+    padding-top: 10px;
+    text-align: right;
+}
+
+#createGroupButtons .spinner {
+    margin-right: 70px;
+    margin-top: 6px;
+}
+
 .red_error { color: #e22 }
