@@ -526,6 +526,7 @@ EOF
 sub nginx_params {
     my %dirs = %{+shift};
 
+    my $confd = "$dirs{nginx_etc}/conf.d";
     my %config = (
         standard_params( \%dirs ),
         base_dir        => $dirs{nginx_base_dir},
