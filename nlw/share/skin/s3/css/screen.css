@@ -4414,3 +4414,5 @@ body#dashBoard #st-editing-tools-edit span.prefix {
     font-size: 100%;
     top: -9px;
 }
+
+.red_error { color: #e22 }
