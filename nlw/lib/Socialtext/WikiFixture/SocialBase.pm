@@ -1500,6 +1500,17 @@ sub _call_method {
     }
     $headers ||= [];
     push @$headers, Cookie => $self->{_cookie} if $self->{_cookie};
+
+    # nginx requires a C-L header for PUTs
+    if ($method eq 'put') {
+        my $cl = 0;
+        if (defined($body) && length($body)) {
+            use bytes;
+            $cl = length($body); # bytes::length, hack for utf-8
+        }
+        push @$headers, 'Content-Length' => $cl;
+    }
+
     my $start = time();
     $self->{http}->$method($self->{browser_url} . $uri, $headers, $body);
     $self->{_last_http_time} = time() - $start;
