@@ -46,11 +46,11 @@ eq_or_diff [ sort @{$socialtext->user_ids} ],
           Socialtext::User->Guest->user_id ],
   'user_ids() works';
 
-eval { Socialtext::Account->create( name => 'Test Account' ) };
-like( $@, qr/already in use/, 'cannot create two accounts with the same name' );
+throws_ok { Socialtext::Account->create(name => 'Test Account') }
+    qr/already in use/, 'cannot create two accounts with the same name';
 
-eval { $unknown->update( name => 'new name' ) };
-like( $@, qr/cannot change/, 'cannot change the name of a system-created account' );
+throws_ok { $unknown->update(name => 'new name') }
+    qr/cannot change/, 'cannot change the name of a system-created account';
 
 my $ws = Socialtext::Workspace->create(
     name       => 'testingspace',
@@ -308,20 +308,20 @@ restrict_to_domain: {
     my $account = create_test_account_bypassing_factory();
 
     # valid domain.
-    eval { $account->update( restrict_to_domain => 'valid.com' ); };
-    is $@, '', 'updated restrict_to_domain with valid value';
+    lives_ok { $account->update(restrict_to_domain => 'valid.com') }
+        'updated restrict_to_domain with valid value';
 
     ok $account->email_passes_domain_filter('me@valid.com'), 'me@valid.com passes';
     ok $account->email_passes_domain_filter('me@VALID.COM'), 'me@VALID.COM passes';
     ok !$account->email_passes_domain_filter('valid@me.com'), 'valid@me.com does not pass';
 
     # invalid domain.
-    eval { $account->update( restrict_to_domain => 'valid!@.com' ); };
-    like $@, qr/is not valid/, 'restrict_to_domain has invalid value';
+    throws_ok { $account->update(restrict_to_domain => 'valid!@.com') }
+        qr/is not valid/, 'restrict_to_domain has invalid value';
 
     # remove restriction
-    eval { $account->update( restrict_to_domain => '' ); };
-    is $@, '', 'unsetting restrict_to_domain';
+    lives_ok { $account->update( restrict_to_domain => '' ); }
+        'unsetting restrict_to_domain';
 }
 
 free50_accounts: {
