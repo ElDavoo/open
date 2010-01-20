@@ -8,26 +8,23 @@ use Coro;
 use AnyEvent;
 use Coro::AnyEvent;
 use AnyEvent::HTTP;
-# use AnyEvent::AIO ();
-# use Coro::AIO;
-# use Coro::LWP;
-use Coro::Channel;
+use AnyEvent::AIO ();
+use IO::AIO;
 use Guard;
 use JSON::XS qw/encode_json decode_json/;
 use Data::Dumper;
 use URI::Escape qw/uri_escape_utf8/;
 use List::Util qw/sum/;
-#use Coro::Debug;
 
 use constant TRACE => 0;
 
-my $SERVER_ROOT = 'http://dev7.socialtext.net';
+my $SERVER_ROOT = 'http://dev8.socialtext.net';
 my $REFRESH = 60;       # integer seconds; widget refresh interval
 my $SIGNAL_EVERY = 5.0; # fractional seconds: per-user signal interval
 my $SIGNAL_CHANCE = 0.1; # probability of sending a signal instead of a full wait
-my $USER_ITERATIONS = 250;
-my $USER_COUNT = 75;
-my $USER_FMT = 'user-%d-42367@ken.socialtext.net';
+my $USER_ITERATIONS = 10;
+my $USER_COUNT = 250;
+my $USER_FMT = 'user-%d-27810@ken.socialtext.net';
 our $TICKER_EVERY = 5;
 
 #
@@ -39,14 +36,17 @@ my $UNPARSEABLE_CRUFT = "throw 1; < don't be evil' >";
 my $proxy = "$SERVER_ROOT/nlw/json-proxy";
 $AnyEvent::HTTP::MAX_PER_HOST = $AnyEvent::HTTP::MAX_PERSISTENT_PER_HOST = 9999;
 
+sub show (@);
+sub diag (@);
+
 my $all_done = AE::cv;
 my %phase_state = ();
-our $phase_display = sub {print "nothing to report\n"};
+our $phase_display = sub {show "nothing to report"};
 our $script_start = AnyEvent->time;
-my $ticker = AE::timer $TICKER_EVERY,$TICKER_EVERY, sub {
-    print "-" x 30,(AnyEvent->now - $script_start)," ",$AnyEvent::HTTP::ACTIVE,"\n";
+my $ticker = AE::timer $TICKER_EVERY,$TICKER_EVERY, unblock_sub {
+    show "-" x 30,(AnyEvent->now - $script_start),$AnyEvent::HTTP::ACTIVE;
     $phase_display->();
-    #Coro::Debug::command('ps');
+#     Coro::Debug::command('ps');
 };
 
 my %users;
@@ -57,9 +57,18 @@ for my $n (1..$USER_COUNT) {
 my @user_keys = keys %users;
 my %user_state;
 
+sub ignore {}
+sub show (@) {
+    my $msg = join('',@_).$/;
+    aio_write *STDOUT, undef, length($msg), $msg, 0, \&ignore;
+    return;
+}
+
 sub diag (@) {
     return unless TRACE; # although it's good to say "diag ... if TRACE" for speed
-    warn join(' ',@_).$/;
+    my $msg = join(' ',@_).$/;
+    aio_write *STDERR, undef, length($msg), $msg, 0, \&ignore;
+    return;
 }
 
 sub run_for_user ($$&) {
@@ -79,11 +88,11 @@ sub log_in_users {
         $all_done->send;
         $phase->croak('timed-out logging-in users');
     };
-    print "logging-in users...\n";
+    show "logging-in users...";
 
     my %guards; # cancelling guards
     local $phase_display = sub {
-        print "logging in users, ".(scalar keys %guards)." remaining\n";
+        show "logging in users, ".(scalar keys %guards)." remaining";
     };
 
     for my $user (keys %users) {
@@ -91,8 +100,6 @@ sub log_in_users {
 
         $user_state{$user} = {
             name => $user,
-            CO_SLOT => {},
-            KA_COUNT => {},
         };
 
         run_for_user $user, "log-in $user", sub {
@@ -122,13 +129,13 @@ sub log_in_users {
                 diag "++ logged-in:",$user,$user_state{$user}{cookie} if TRACE;
             }
             else {
-                warn "Failed to log in $user ($headers->{Status})\n";
+                warn "Failed to log in $user ($headers->{Status} $headers->{Reason})\n";
                 $phase->croak('failed to log in '.$user);
             }
         };
     }
     $phase->recv;
-    print "done logging in\n";
+    show "done logging in";
 }
 
 my $signal_number = 0;
@@ -206,7 +213,7 @@ sub send_proxy_req ($$$$$$) {
             %request_opts,
             $when_get_is_done;
 
-        diag "sent";
+        diag "++ sent $proxy_method to proxy for $user: $uri";
 
         # hold on to the guards:
         $phase_state{in_progress}{$user}{$url} = [$fg,$timeout];
@@ -402,17 +409,19 @@ sub simple_dashboard {
         $phase_state{r_time_sum} = 0.0;
         $phase_state{r_num} = 0;
 
-
-        print "Simple dashboard phase\n";
-        print "Average Response Time: ".
+        show
+        "Simple dashboard phase\n".
+        "Average Response Time: ".
             sprintf("%0.3f",$immed_r_time)."s/r immed, ".
-            sprintf("%0.3f",$total_r_time)."s/r overall\n";
-        print "Average Request Rate: ".
+            sprintf("%0.3f",$total_r_time)."s/r overall\n".
+        "Average Request Rate: ".
             sprintf("%0.3f",$immed_r_rate)."r/s immed, ".
-            sprintf("%0.3f",$total_r_rate)."r/s overall\n";
-        print "Remaining: $total_u users, $outstanding requests.\n";
-        print "Success: $phase_state{posted_signals} signals, $phase_state{req_success} requests.\n";
-        print "Errors: $phase_state{failed} failed, $phase_state{timeout} timeouts, $phase_state{parse_error} parse errors, $phase_state{failed_signals} failed signals\n";
+            sprintf("%0.3f",$total_r_rate)."r/s overall\n".
+        "Remaining: $total_u users, $outstanding requests.\n".
+        "Success: $phase_state{posted_signals} signals, $phase_state{req_success} requests.\n".
+        "Errors: $phase_state{failed} failed, $phase_state{timeout} timeouts, $phase_state{parse_error} parse errors, ".
+            "$phase_state{failed_signals} failed signals"
+        ;
     };
 
     my @coros; # for keeping coro guards
@@ -427,7 +436,7 @@ sub simple_dashboard {
     }
 
     $phase->recv;
-#     print "++ phase all done\n";
+#     diag "++ phase all done\n";
     $phase_display->();
 }
 
