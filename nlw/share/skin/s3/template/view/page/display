@@ -30,7 +30,7 @@
     [% ELSE %]
       [% IF locking_enabled && can_lock %]
         <div id="st-page-lock-admin">
-        <a href="index.cgi?page_name=[% page.id %];action=[% page_locked ? "unlock_page" : "lock_page" %]" id="st-admin-lock-link">
+        <a href="/[% current_workspace.name %]/?page_name=[% page.id %];action=[% page_locked ? "unlock_page" : "lock_page" %]" id="st-admin-lock-link">
         [% IF page_locked %]
           <img src="/static/skin/s3/images/lock-locked.png" />
         [% ELSE %]
@@ -84,11 +84,11 @@
           <li><a href="#" id="st-pagetools-copy">[% loc('Copy Page to Workspace') %]</a></li>
           [% END %]
           [% IF checker.check_permission('delete') AND !page_locked_for_user %]
-          <li [% not locking_enabled OR not can_lock ? "class=\"separator\"":"" %]><a href="index.cgi?[% page.id %]" id="st-pagetools-delete">[% loc('Delete Page') %]</a></li>
+          <li [% not locking_enabled OR not can_lock ? "class=\"separator\"":"" %]><a href="/[% current_workspace.name %]?[% page.id %]" id="st-pagetools-delete">[% loc('Delete Page') %]</a></li>
           [% END %]
           [% IF locking_enabled AND can_lock %]
             <li class="separator">
-              <a href="index.cgi?page_name=[% page.id %];action=[% page_locked ? "unlock_page" : "lock_page" %]" id="st-pagetools-lock">
+              <a href="/[% current_workspace.name %]?page_name=[% page.id %];action=[% page_locked ? "unlock_page" : "lock_page" %]" id="st-pagetools-lock">
                 [% page_locked ? loc('Unlock Page') : loc('Lock Page') %]
               </a>
             </li>
@@ -106,14 +106,14 @@
           [% END %]
           [% FILTER decorate('pageexport') %]
           [% END %]
-          <li><a href="index.cgi?action=display_html;page_name=[% page.id %]" target="_new">[% loc('Export as HTML') %]</a></li>
+          <li><a href="/[% current_workspace.name %]?action=display_html;page_name=[% page.id %]" target="_new">[% loc('Export as HTML') %]</a></li>
 
           [% IF loc_lang != 'ja' %]
-          <li><a href="index.cgi?action=pdf_export;page_selected=[% page.id %]" target="_new">[% loc('Export to PDF') %]</a></li>
+          <li><a href="/[% current_workspace.name %]?action=pdf_export;page_selected=[% page.id %]" target="_new">[% loc('Export to PDF') %]</a></li>
           [% END %]
-          <li class="separator"><a href="index.cgi?action=rtf_export;page_selected=[% page.id %]" target="_new">[% loc('Export to Word') %]</a></li>
+          <li class="separator"><a href="/[% current_workspace.name %]?action=rtf_export;page_selected=[% page.id %]" target="_new">[% loc('Export to Word') %]</a></li>
           [% FOREACH tool = tools.keys %]
-          <li class="separator"><a href="index.cgi?action=[% tools.$tool.0 %];page_name=[% page.id %]">[% tool %]</a></li>
+          <li class="separator"><a href="/[% current_workspace.name %]?action=[% tools.$tool.0 %];page_name=[% page.id %]">[% tool %]</a></li>
           [% END %]
         </ul>
       </li>
