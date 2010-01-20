@@ -3,10 +3,8 @@
       return 403;
     }
 
-[%- IF config.confd_exists %]
     # include file for rewrite rules on this system
     include conf.d/rewrite*;
-[%- END %]
 
     # unconditionally include local socialtext add-on rewrite rules on this system
     include socialtext-conf.d/rewrite*;

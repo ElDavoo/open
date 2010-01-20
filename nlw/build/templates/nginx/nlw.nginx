@@ -71,12 +71,8 @@
         expires 1y;
     }
 
-    # include file for rewrite rules on this system
-    include socialtext-conf.d/rewrite-*;
-
-    [%- IF config.confd_exists %]
-        include conf.d/*.conf;
-    [%- END %]
+    # include all conf.d files (rewrite rules, json proxies, etc) on this system
+    include conf.d/*.conf;
 
     # Used with X-Accel-Redirect to serve attachments from nginx
     location /nlw/protected/ {

@@ -526,14 +526,12 @@ EOF
 sub nginx_params {
     my %dirs = %{+shift};
 
-    my $confd = "$dirs{nginx_etc}/conf.d";
     my %config = (
         standard_params( \%dirs ),
         base_dir        => $dirs{nginx_base_dir},
         log_dir         => $dirs{nginx_log},
         lock_dir        => $dirs{lock},
         nginx_etc_dir => $dirs{nginx_etc},
-        confd_exists    => -d $confd,
         hostname_conf_exists => -f "$confd/hostname.conf",
         redirect_to_ssl => -f "$confd/redirect-to-ssl",
         nlw_config_file => File::Spec->catfile( $dirs{socialtext_etc}, 'socialtext.conf' ),
