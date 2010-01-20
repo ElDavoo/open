@@ -5,6 +5,8 @@ use App::Daemon qw/daemonize/;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 use Socialtext::System qw/shell_run/;
+use Socialtext::Paths;
+use Socialtext::AppConfig;
 
 my $sdir = 
     "$FindBin::Bin/../../appliance/libsocialtext-appliance-perl/service";
@@ -13,6 +15,9 @@ die "Can't find service directory: $sdir" unless -d $sdir;
 die "Service directory has no run: $sdir" unless -e "$sdir/run";
 
 print "Starting supervise on $sdir\n";
+
+$App::Daemon::logfile = Socialtext::Paths::log_directory() . '/supervise.log';
+$App::Daemon::pidfile = Socialtext::AppConfig->pid_file_dir . '/supervise.pid';
 daemonize();
 
 shell_run("supervise $sdir");
