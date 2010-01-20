@@ -101,39 +101,46 @@ proto.create_grammar = function() {
             filter: function(node) { return node.text.replace(/^\|\| *([^\|\n]+?) *\n/, '') }
         },
 
+        // TODO: Port _ceci_ne_pas_un_pipe here and replace it back to | when
+        // match is done, so we still gets a literal | within {{}}.
+
         tr: {
             match: /^((?:(?:^|\n)\|.*?\|(?:\n| \n(?=\|)|  +\n)))/,
-            blocks: ['td_multi_line_block', 'td_single_line_block', 'td_phrase'],
+            blocks: ['td_multi_line_block', 'td_single_line_block', 'td_phrase', 'td_final'],
             filter: function(node) { return node.text.replace(/\s+$/, '') }
         },
 
         td_multi_line_block: {
-            match: /\|[ \t]*\n?(\s*?.*?\n.*?)[ \t]*\| *\n?/,
-            blocks: ['pre', 'html', 'hr', 'hx', 'waflparagraph', 'ol', 'ul', 'blockquote', 'p', 'empty', 'else']
+            match: /\|[ \t]*\n?(\s*?[^|]*?\n[^|]*?)[ \t]*(?=\|)/,
+            blocks: ['pre', 'html', 'hr', 'hx', 'waflparagraph', 'ol', 'ul', 'blockquote', 'p', 'empty', 'else'],
             filter: function(node) {
+                node.type = 'td';
                 return node.text.replace(/\n?$/, '\n');
             }
         },
 
         td_single_line_block: {
-        },
-
-        td_phrase: {
-        },
-
-                   /*
-        td: {
+          match: /\|[ \t]*\n?((?:\*+|#+|>+|\^+)\s[^|]*?)[ \t]*(?=\|)/,
+            blocks: ['hx', 'ol', 'ul'],
             filter: function(node) {
-                var newText = node.text.replace(/^[ \t]*\n?(.*?)[ \t]*$/, '$1');
-                if (/\n/.test(newText)) {
-                    newText = newText.replace(/\n?$/, '\n');
-                }
-                phrases: all_phrases, // XXX - do blocks based on matchedness; make it a callback?
-                return node.text.replace(/\s+$/, '')
+                node.type = 'td';
+                return node.text + '\n';
             }
         },
 
-        */
+        td_phrase: {
+            match: /\|[ \t]*\n?(\s*?[^|]*?)[ \t]*(?=\|)/,
+            phrases: all_phrases,
+            filter: function(node) {
+                node.type = 'td';
+                return node.text;
+            }
+        },
+
+        td_final: {
+            match: /^\s*\|\s*/,
+            filter: function(node) { node.type = '' }
+        },
 
         hx: {
             match: /^((\^+) *([^\n]*?)(\s+=+)?\s*?\n+)/,
