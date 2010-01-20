@@ -11,6 +11,8 @@ use Socialtext::HTTP ':codes';
 use Socialtext::Permission;
 use Socialtext::SQL ':txn';
 use Socialtext::Workspace;
+use Socialtext::Account;
+use Socialtext::Exceptions;
 use Socialtext::User;
 
 # Anybody can see these, since they are just the list of workspaces the user
@@ -80,92 +82,86 @@ sub POST {
     }
 
     my $request = decode_json( $rest->getContent() );
-
-    unless ($request->{name} and $request->{title}) {
+    $request = ref($request) eq 'HASH' ? [$request] : $request;
+    unless (ref($request) eq 'ARRAY') {
         $rest->header(
             -status => HTTP_400_Bad_Request,
             -type  => 'text/plain', );
-        return "name, title, account_id required";
+        return "bad json";
     }
-
-    $request->{account_id} ||= $user->primary_account_id;
-    my $acct = Socialtext::Account->new(account_id => $request->{account_id});
-    unless ($user->is_business_admin || $acct->role_for_user($user)) {
-        $rest->header(
-            -status => HTTP_401_Unauthorized,
-            -type  => 'text/plain', );
-        return "user cannot access account";
-    }
-
-    my $new_workspace_name = $request->{name};
-
-    if ( Socialtext::Workspace->new( name => $new_workspace_name ) ) {
-        $rest->header(
-            -status => HTTP_409_Conflict,
-            -type   => 'text/plain', );
-        return "$new_workspace_name is not a valid selection\n";
-    }
-
 
     sql_begin_work();
     eval {
-        my $ws = $self->_create_workspace(
-            creator => $user,
-            %$request
-        );
+        for my $meta (@$request) {
+            $self->_create_workspace_from_meta($meta);
+        }
     };
-    if ( my $e = Exception::Class->caught('Socialtext::Exception::DataValidation') ) {
+    if (my $e = $@) {
         sql_rollback();
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-            -type   => 'text/plain' );
-        return join( "\n", $e->messages );
-    } elsif ( $@ ) {
-        sql_rollback();
-        $rest->header(
-            -status => HTTP_400_Bad_Request,
-            -type   => 'text/plain' );
-        warn $@;
-        return "$@";
-    }
-    sql_commit();
+        my ($status, $message);
+        if (ref($e)) {
+            $status = $e->isa('Socialtext::Exception::Auth')
+                ? HTTP_401_Unauthorized
+                : HTTP_400_Bad_Request;
 
+            $message = join("\n", $e->message);
+        }
+        else {
+            $status  = HTTP_400_Bad_Request;
+            $message = $e;
+            warn $message;
+        }
+        $rest->header(
+            -status => $status,
+            -type   => 'text/plain',
+        );
+        return "$message";
+    }
+
+    sql_commit();
     $rest->header(
         -status => HTTP_201_Created,
         -type   => 'application/json',
-        -Location => $self->full_url('/', $new_workspace_name),
     );
-
-    return '';
+    return 'created';
 
 }
 
-# REVIEW: Extract to Socialtext::*? Almost certainly
-# The question is "what".  JJP thinks we want a "Socialtext::Provisioner" class
-# that handles the various intricacies of business logic involved.
-sub _create_workspace {
-    my $self = shift;
-    my %p    = @_;
+sub _create_workspace_from_meta {
+    my $self  = shift;
+    my $meta  = shift;
+    my $actor = $self->rest->user;
 
-    my $new_workspace = Socialtext::Workspace->create(
-        name                            => $p{name},
-        title                           => $p{title},
-        account_id                      => $p{account_id},
-        cascade_css                     => $p{cascade_css},
-        customjs_name                   => $p{customjs_name},
-        customjs_uri                    => $p{customjs_uri},
-        skin_name                       => $p{skin_name},
+    die Socialtext::Exception::DataValidation->new('name, title required')
+        unless $meta->{name} and $meta->{title};
+
+    $meta->{account_id} ||= $actor->primary_account_id;
+    my $acct = Socialtext::Account->new(account_id => $meta->{account_id});
+    die Socialtext::Exception::Auth->new('user cannot access account')
+        unless $actor->is_business_admin || $acct->role_for_user($actor);
+
+    Socialtext::Workspace->new(name => $meta->{name})
+        and die Socialtext::Exception::Conflict->new('workspace exists');
+
+    my $ws = Socialtext::Workspace->create(
+        creator                         => $actor,
+        name                            => $meta->{name},
+        title                           => $meta->{title},
+        account_id                      => $meta->{account_id},
+        cascade_css                     => $meta->{cascade_css},
+        customjs_name                   => $meta->{customjs_name},
+        customjs_uri                    => $meta->{customjs_uri},
+        skin_name                       => $meta->{skin_name},
         show_welcome_message_below_logo =>
-            $p{show_welcome_message_below_logo},
-        show_title_below_logo => $p{show_title_below_logo},
-        header_logo_link_uri  => $p{header_logo_link_uri},
+            $meta->{show_welcome_message_below_logo},
+        show_title_below_logo => $meta->{show_title_below_logo},
+        header_logo_link_uri  => $meta->{header_logo_link_uri},
 
-        ( $p{clone_pages_from} 
-            ? ( clone_pages_from => $p{clone_pages_from} )
+        ( $meta->{clone_pages_from} 
+            ? ( clone_pages_from => $meta->{clone_pages_from} )
             : () ),
     );
 
-    return ($new_workspace);
+    return $ws;
 }
-
 1;

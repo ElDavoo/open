@@ -50,6 +50,8 @@ Test case for `/data/workspaces`; the Workspace list
 | set                | violin               | violin-ws-%%start_time%%                        |                      |
 | set                | viola                | viola-ws-%%start_time%%                         |                      |
 | set                | cello                | cello-ws-%%start_time%%                         |                      |
+| set                | double_bass          | double-bass-ws-%%start_time%%                   |                      |
+| set                | octo_bass            | octo-bass-ws-%%start_time%%                     |                      |
 
 ## POST to a workspace, Using an account_id arg.
 | *Comment*      | POST to a workspace, Using an account_id arg |                                                                              |
@@ -81,3 +83,7 @@ Test case for `/data/workspaces`; the Workspace list
 | POST-json      | /data/workspaces         | {"name":"%%cello%%","title":"Cello"} |
 | code-is        | 201                      |                                      |
 
+## POST, create multiple workspaces
+| *Comment* | POST, create multiple workspaces |                                                                                                 |
+| POST-json | /data/workspaces                 | [{"name":"%%double_bass%%","title":"Double Bass"},{"name":"%%octo_bass%%","title":"Octo Bass"}] |
+| code-is   | 201                              |                                                                                                 |
