@@ -14,6 +14,9 @@ use Socialtext::Workspace;
 use Socialtext::Account;
 use Socialtext::Exceptions;
 use Socialtext::User;
+use Socialtext::Group;
+use Socialtext::Permission 'ST_ADMIN_PERM';
+use Socialtext::JobCreator;
 
 # Anybody can see these, since they are just the list of workspaces the user
 # has 'selected'.
@@ -164,6 +167,50 @@ sub _create_workspace_from_meta {
             : () ),
     );
 
+    if (my $groups = $meta->{groups}) {
+        $self->_add_groups_to_workspace($ws, $groups);
+    }
+
     return $ws;
 }
+
+sub _add_groups_to_workspace {
+    my $self    = shift;
+    my $ws      = shift;
+    my $groups  = shift;
+    my $rest    = $self->rest;
+    my $creator = $rest->user;
+
+    $groups = ref($groups) eq 'HASH' ? [$groups] : $groups;
+    die Socialtext::Exceptions::DataValidation->new('bad json')
+        unless ref($groups) eq 'ARRAY';
+
+    for my $meta (@$groups) {
+        my $group = Socialtext::Group->GetGroup(
+            group_id => $meta->{group_id}
+        ) or die Socialtext::Exception::NotFound->new('group does not exist');
+
+        $ws->has_group($group, {direct => 1})
+            and die Socialtext::Exception::Conflict->new(
+                'group already in workspace');
+
+        $group->user_can(
+            user => $creator,
+            permission => ST_ADMIN_PERM,
+        ) or die Socialtext::Exception::Auth->new('user is not group admin');
+
+        my $role = Socialtext::Role->new(
+            name => $group->{role} ? $group->{role} : 'member'
+        ) or die Socialtext::Exception::Param->new('invalid role for group');
+
+        $ws->add_group(
+            group => $group,
+            role  => $role,
+            actor => $creator,
+        );
+    }
+
+    return undef;
+}
+
 1;
