@@ -23,6 +23,8 @@ Options:
 
 =cut
 
+use FindBin;
+use lib "$FindBin::Bin/../lib";
 use Coro;
 use AnyEvent;
 use Coro::AnyEvent;
