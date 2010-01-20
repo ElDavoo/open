@@ -63,7 +63,7 @@
       </div>
     [% ELSE %]
       [% IF listview_content_actions %][% PROCESS $listview_content_actions %][% END %]
-      <form id="st-listview-form" method="post" action="index.cgi">
+      <form id="st-listview-form" method="post" action="/[% current_workspace.name %]/index.cgi">
       <input id="st-listview-action" name="action" value="" type="hidden">
       <input id="st-listview-filename" name="filename" value="" type="hidden">
       <table class="dataTable pagelist" cellspacing="0">
