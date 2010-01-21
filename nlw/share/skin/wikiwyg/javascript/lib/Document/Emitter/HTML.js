@@ -5,13 +5,6 @@ proto.className = 'Document.Emitter.HTML';
 
 proto.content = function() {
     var len = this.output.length;
-    if (this.output.indexOf('</p>\n') == (this.output.length - 5)) {
-        // Single-paragraph; emit without the <p>...</p> tag
-        return this.output.substr(3, len-8);
-    }
-    else if (this.output.substr(-1) == '\n') {
-        return this.output.substr(0, len-1); // chomp
-    }
     return this.output;
 }
 
@@ -24,12 +17,12 @@ proto.begin_node = function(node) {
             return;
         }
         case 'html': {
-            var onload = "if (typeof(ss) != 'undefined' && ss.editor) { var recalc = function () { try { ss.editor.DoPositionCalculations() } catch (e) { setTimeout(recalc, 500) } }; recalc() } if (!window.image_dimension_cache) window.image_dimension_cache = {};window.image_dimension_cache['/data/wafl/Raw%20HTML%20section.%20Edit%20in%20Wiki%20Text%20mode.?uneditable=1'] = [ this.offsetWidth, this.offsetHeight ]; this.style.width = this.offsetWidth + 'px'; this.style.height = this.offsetHeight + 'px'";
-            this.output += '<img widget="'+node._html.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'" src="/data/wafl/Raw%20HTML%20section.%20Edit%20in%20Wiki%20Text%20mode.?uneditable=1" title="Raw HTML section. Edit in Wiki Text mode." onload="'+onload+'" />';
+            var onload = "if (typeof(ss) != 'undefined' && ss.editor) { var recalc = function () { try { ss.editor.DoPositionCalculations() } catch (e) { setTimeout(recalc, 500) } }; recalc() } if (!window.image_dimension_cache) window.image_dimension_cache = {};window.image_dimension_cache['https://www2.socialtext.net/data/wafl/Raw%20HTML%20section.%20Edit%20in%20Wiki%20Text%20mode.?uneditable=1'] = [ this.offsetWidth, this.offsetHeight ]; this.style.width = this.offsetWidth + 'px'; this.style.height = this.offsetHeight + 'px'";
+            this.output += '<img widget="'+node._html.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'" src="https://www2.socialtext.net/data/wafl/Raw%20HTML%20section.%20Edit%20in%20Wiki%20Text%20mode.?uneditable=1" title="Raw HTML section. Edit in Wiki Text mode." onload="'+onload+'" />';
             return;
         }
         case 'waflparagraph': case 'waflphrase': case 'im': {
-            var onload = "if (typeof(ss) != 'undefined' && ss.editor) { var recalc = function () { try { ss.editor.DoPositionCalculations() } catch (e) { setTimeout(recalc, 500) } }; recalc() } if (!window.image_dimension_cache) window.image_dimension_cache = {};window.image_dimension_cache['/data/wafl/"+node._label.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "\\'").replace(/\\/g, "\\\\")+"'] = [ this.offsetWidth, this.offsetHeight ]; this.style.width = this.offsetWidth + 'px'; this.style.height = this.offsetHeight + 'px'";
+            var onload = "if (typeof(ss) != 'undefined' && ss.editor) { var recalc = function () { try { ss.editor.DoPositionCalculations() } catch (e) { setTimeout(recalc, 500) } }; recalc() } if (!window.image_dimension_cache) window.image_dimension_cache = {};window.image_dimension_cache['https://www2.socialtext.net/data/wafl/"+node._label.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "\\'").replace(/\\/g, "\\\\")+"'] = [ this.offsetWidth, this.offsetHeight ]; this.style.width = this.offsetWidth + 'px'; this.style.height = this.offsetHeight + 'px'";
 
             if ((!Document.Emitter.HTML.renderImageAsNormalWAFL) && node._wafl.match(/^image:\s*(\S+)(?:\s+size=(\w+))?/)) {
                 var imageName = RegExp.$1;
@@ -57,7 +50,7 @@ proto.begin_node = function(node) {
                     }
                 }
             }
-            this.output += '<img widget="{'+node._wafl.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'}" src="/data/wafl/'+encodeURIComponent(node._label)+'" onload="'+onload+'" />';
+            this.output += '<img widget="{'+node._wafl.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'}" src="https://www2.socialtext.net/data/wafl/'+encodeURIComponent(node._label)+'" onload="'+onload+'" />';
             return;
         }
         case 'a': case 'wikilink': {
@@ -66,6 +59,20 @@ proto.begin_node = function(node) {
         }
         case 'file': {
             this.output += '<a title="(network resource)" href="'+encodeURI(node._href)+'">';
+            return;
+        }
+        case 'table': {
+            var cls = 'formatter_table';
+
+            if (node._sort) { cls += ' sort' }
+            if (!node._border) { cls += ' borderless' }
+
+            this.output += '<table '
+                         + (node._border ? 'border="1" ' : '')
+                         + 'style="border-collapse:collapse" '
+                         + 'options="'+node._options+'" '
+                         + 'class="'+cls+'"'
+                         + ">\n";
             return;
         }
         case 'ul': case 'ol': case 'table': case 'tr': {

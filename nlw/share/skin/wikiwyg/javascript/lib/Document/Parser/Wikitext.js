@@ -57,6 +57,20 @@ proto.create_grammar = function() {
         };
     };
 
+    var _ceci_ne_pas_une_pipe = function(input) {
+        // Escape | into 0xFFFC (Object Replacement Character).
+        return input.replace(/{{(.*?)}}/g, function(match, text){
+            return '{{'+text.replace(/\|/g, String.fromCharCode(0xFFFC))+'}}';
+        });
+    };
+
+    var _que_sera_sera = function(output) {
+        // Unescape 0xFFFC back to |.
+        return output.replace(/{{(.*?)}}/g, function(match, text) {
+            return '{{'+text.replace(new RegExp(String.fromCharCode(0xFFFC), 'g'), '|')+'}}';
+        });
+    };
+
     return {
         _all_blocks: all_blocks,
         _all_phrases: all_phrases,
@@ -96,13 +110,24 @@ proto.create_grammar = function() {
         pre: { match: /^\.pre\ *\n((?:[^\n]*\n)*?)\.pre\ *\n(?:\s*\n)?/ },
         hr: { match: /^--+(?:\s*\n)?/ },
         table: {
-            match: /^(((^\|.*\| \n(?=\|))|(^\|.*\|  +\n)|(?:^\|.*?\|\n))+)/,
+            match: /^((?:\|\| *([^\|\n]+?) *\n)?(((\|.*\| \n(?=\|))|(\|.*\|  +\n)|(?:\|.*?\|\n))+))/,
             blocks: ['tr'],
-            filter: function(node) { return node.text.replace(/^\|\| *([^\|\n]+?) *\n/, '') }
-        },
+            filter: function(node) {
+                node._options = node['1'] || '';
+                node._border = true;
+                node._sort = false;
 
-        // TODO: Port _ceci_ne_pas_un_pipe here and replace it back to | when
-        // match is done, so we still gets a literal | within {{}}.
+                var opts = node._options.match(/([^\s:=]+[:=]\s*\S*)/g);
+                for (var i = 0; i < opts.length; i++) {
+                    var match = opts[i].match(/^([^\s:=]+)[:=]\s*(\S*)/),
+                        key = match['1'],
+                        val = match['2'];
+                    node['_'+key] = ((val != 'off') && (val != 'false'));
+                }
+
+                return node['2'];
+            }
+        },
 
         tr: {
             match: /^((?:(?:^|\n)\|.*?\|(?:\n| \n(?=\|)|  +\n)))/,
@@ -111,7 +136,9 @@ proto.create_grammar = function() {
         },
 
         td_multi_line_block: {
+            pre_match: _ceci_ne_pas_une_pipe,
             match: /\|[ \t]*\n?(\s*?[^|]*?\n[^|]*?)[ \t]*(?=\|)/,
+            post_match: _que_sera_sera,
             blocks: ['pre', 'html', 'hr', 'hx', 'waflparagraph', 'ol', 'ul', 'blockquote', 'p', 'empty', 'else'],
             filter: function(node) {
                 node.type = 'td';
@@ -120,7 +147,9 @@ proto.create_grammar = function() {
         },
 
         td_single_line_block: {
-          match: /\|[ \t]*\n?((?:\*+|#+|>+|\^+)\s[^|]*?)[ \t]*(?=\|)/,
+            pre_match: _ceci_ne_pas_une_pipe,
+            match: /\|[ \t]*\n?((?:\*+|#+|>+|\^+)\s[^|]*?)[ \t]*(?=\|)/,
+            post_match: _que_sera_sera,
             blocks: ['hx', 'ol', 'ul'],
             filter: function(node) {
                 node.type = 'td';
@@ -129,7 +158,9 @@ proto.create_grammar = function() {
         },
 
         td_phrase: {
+            pre_match: _ceci_ne_pas_une_pipe,
             match: /\|[ \t]*\n?(\s*?[^|]*?)[ \t]*(?=\|)/,
+            post_match: _que_sera_sera,
             phrases: all_phrases,
             filter: function(node) {
                 node.type = 'td';

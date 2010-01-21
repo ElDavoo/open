@@ -55,14 +55,21 @@ proto.handle_match = function(type, match) {
 }
 
 proto.find_match = function(matched_func, type) {
-    var re = this.grammar[type].match;
+    var rule = this.grammar[type];
+    var re = rule.match;
     if (!re) throw 'no regexp for type: ' + type;
-    var capture = this.input.match(re);
+    var text_to_match = this.input;
+    if (rule.pre_match) {
+        text_to_match = rule.pre_match(text_to_match);
+    }
+    var capture = text_to_match.match(re);
     if (capture) {
         // console.log("Found match " + type + " - " + matched_func);
         var match = this[matched_func].call(this, capture, this.grammar[type].lookbehind);
         match.type = this.grammar[type].type || type;
-        // console.log(match);
+        if (rule.post_match) {
+            match.text = rule.post_match(match.text);
+        }
         return match;
     }
     return;
@@ -115,7 +122,7 @@ proto.subparse = function(func, match, type, filter) {
 
     if (match.type) this.receiver.begin_node(match);
 
-    var parser = eval('new ' + this.className + '()');
+    var parser = new Document.Parser.Wikitext();
 
     parser.input = (filtered_text == null) ? match.text : filtered_text;
     parser.grammar = this.grammar;
