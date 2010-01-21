@@ -15,10 +15,11 @@ Tests for creating a workspace via the REST API
 
 | Comment | Add a regular workspace |                               |                                                                     |
 | POST    | /data/workspaces        | Content-Type=application/json | {"name":"%%workspace%%", "title":"%%workspace%%", "account_id":"1"} |
-| code-is    | 201                                            |                               |
-| GET        | /data/workspaces/%%workspace%%                 | application/json              |
-| code-is    | 200                                            |                               |
-| body-like  | qr/"name":"%%workspace%%"[^\}]+"title":"%%workspace%%"/ |                               |
+| code-is    | 201                                                     |                                |
+| has-header | Location                                                | /data/workspaces/%%workspace%% |
+| GET        | /data/workspaces/%%workspace%%                          | application/json               |
+| code-is    | 200                                                     |                                |
+| body-like  | qr/"name":"%%workspace%%"[^\}]+"title":"%%workspace%%"/ |                                |
 
 | set       | page1                                                | monkey              |             |
 | set       | content                                              | Things Monkeys Love |             |
