@@ -9,6 +9,7 @@ use Socialtext::Build qw(get_build_setting);
 use Socialtext::Log qw/st_timed_log/;
 use Socialtext::User;
 use Socialtext::System qw(shell_run);
+use Socialtext::System::TraceTo '/var/log/st-update.log';
 use Socialtext::Timer;
 use Socialtext::File;
 use Socialtext::AppConfig;
@@ -33,12 +34,10 @@ exit;
 sub run_scripts {
     my $dir = shift;
     $Socialtext::System::SILENT_RUN = 1;
-    my $log = '/var/log/st-update.log';
     for my $script ( get_scripts($dir) ) {
         (my $name = $script) =~ s#.+/##;
-        my $command = (-w $log) ? "$script 2>&1 | tee -a $log" : $script;
         Socialtext::Timer->Continue($name);
-        shell_run($command);
+        shell_run($script);
         Socialtext::Timer->Pause($name);
     }
     st_timed_log('info', 'POSTINST', 'st-post-install',
