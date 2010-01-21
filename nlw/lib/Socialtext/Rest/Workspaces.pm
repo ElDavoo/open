@@ -95,10 +95,13 @@ sub POST {
         return "bad json";
     }
 
+    my @workspaces;
+
     sql_begin_work();
     eval {
         for my $meta (@$request) {
             my $ws = $self->_create_workspace_from_meta($meta);
+            push @workspaces, $ws;
 
             $ws->add_user(
                 user  => $user,
@@ -130,9 +133,15 @@ sub POST {
     }
 
     sql_commit();
+
+    my $location = @workspaces > 1
+        ? '/data/workspaces'
+        : '/data/workspaces/' . $workspaces[0]->name;
+
     $rest->header(
-        -status => HTTP_201_Created,
-        -type   => 'application/json',
+        -status   => HTTP_201_Created,
+        -type     => 'application/json',
+        -Location => Socialtext::URI::uri(path => $location),
     );
     return 'created';
 
