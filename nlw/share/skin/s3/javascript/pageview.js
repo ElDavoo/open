@@ -219,6 +219,7 @@ Page = {
         $.ajax({
             type: "PUT",
             url: this.tagUrl(tag),
+            data: {},
             complete: function () {
                 Page.refreshTags();
                 $('#st-tags-field').val('');
