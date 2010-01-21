@@ -2,11 +2,15 @@
 
 | standard-test-setup |
 
+## POST an upload
+| *Comment* | POST an upload |
 | POST-file        | /data/uploads      | method=file        | file | t/widget/creepy_goat.jpg |
 | code-is          | 201                |                    |      |                          |
 | body-like        | "status":"success" |                    |      |                          |
 | set-from-content | upload_id          | qr/"id":"([^"]+)"/ |      |                          |
 
-| GET       | /data/uploads/%%upload_id%% |            |
-| code-is   | 200                         |            |
-| header-is | Content-type                | image/jpeg |
+## GET the upload we just created
+| *Comment* | GET the upload we just created |            |
+| GET       | /data/uploads/%%upload_id%%    |            |
+| code-is   | 200                            |            |
+| header-is | Content-type                   | image/jpeg |
