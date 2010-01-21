@@ -196,7 +196,7 @@ sub generate_group_primary_account_roles {
 
     my ($count) = $dbh->selectrow_array(
         "SELECT COUNT(*) FROM ($missing_accts_sql) q");
-    return unless $count;
+    return $dbh->rollback unless $count;
     print "$count Groups need roles in their primary account\n";
 
     my $inserted = $dbh->do(qq{
