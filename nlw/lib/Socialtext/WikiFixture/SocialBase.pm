@@ -760,7 +760,7 @@ sub remove_member {
     die "No such user $email" unless $user;
 
     $ws->remove_user(user => $user);
-    diag "Added user $email to $workspace";
+    diag "Removed user $email from $workspace";
 }
 
 sub add_workspace_admin {
