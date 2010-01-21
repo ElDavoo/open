@@ -18,6 +18,7 @@ sub adapter {
 
 sub GET_html {
     my $self = shift;
+    $self->rest->header(-type => 'text/html; charset=UTF-8');
     return $self->adapter->handle_report(
         $self->name, $self->start, $self->duration, 'html'
     );
@@ -25,6 +26,7 @@ sub GET_html {
 
 sub GET_json {
     my $self = shift;
+    $self->rest->header(-type => 'application/json; charset=UTF-8');
     return $self->adapter->handle_report(
         $self->name, $self->start, $self->duration, 'json'
     );
