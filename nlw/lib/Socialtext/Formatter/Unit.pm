@@ -361,7 +361,13 @@ sub table_phrases { Socialtext::Formatter->all_phrases }
 
 sub _ceci_ne_pas_une_pipe {
     my $text = shift;
-    $text =~ s/\|/\x{2502}/g;
+    $text =~ s/\|/\x{FFFC}/g;
+    return $text;
+}
+
+sub _que_sera_sera {
+    my $text = shift;
+    $text =~ s/\x{FFFC}/\|/g;
     return $text;
 }
 
@@ -369,15 +375,18 @@ sub match {
     my $self = shift;
     my $text = shift;
 
-    # Replace escaped pipe characters with something that _looks_ like a
-    # pipe character to avoid an extremely rare core dump. {bz: 3247}
+    # Replace escaped pipe characters with a U+FFFC,
+    # to avoid an extremely rare core dump. {bz: 3247}
     $text =~ s/{{(.*?)}}/'{{' . _ceci_ne_pas_une_pipe($1) . '}}'/eg;
     return unless $text =~ /(\|(\s*.*?\s*)\| *)(.*)/sm;
 
     $self->start_offset( $-[1] );
     $self->end_offset( $3 eq "\n" ? $+[3] : $+[2] );
 
+    # Now replace the U+FFFC (Object Replacement) back with a real | character.
     my $new_text = $2;
+    $new_text =~ s/{{(.*?)}}/'{{' . _que_sera_sera($1) . '}}'/eg;
+
     $new_text =~ s/^[ \t]*\n?(.*?)[ \t]*$/$1/s;
     $self->text($new_text);
 
