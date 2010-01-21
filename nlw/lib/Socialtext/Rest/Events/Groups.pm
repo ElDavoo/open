@@ -28,7 +28,7 @@ sub _group {
     my $group_id = $self->group_id;
     my $viewer = $self->rest->user;
 
-    my $group = Socialtext::Group->GetGroup(driver_unique_id => $group_id);
+    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
     if ($group) {
         return $group if $viewer->is_business_admin;
         return $group if $group->has_user($viewer);
