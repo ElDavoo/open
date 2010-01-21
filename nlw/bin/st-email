@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+    if [ "$1" == "disable" ]; then
+        echo DISABLING email for $HOSTNAME
+        sudo perl -pi -e "s/dc_eximconfig_configtype='[^']+'/dc_eximconfig_configtype='local'/" /etc/exim4/update-exim4.conf.conf
+        sudo update-exim4.conf
+        sudo /etc/init.d/exim4 restart
+    elif [ "$1" == "enable" ]; then
+        echo ENABLING email for $HOSTNAME
+        sudo perl -pi -e "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
+        sudo update-exim4.conf
+        sudo /etc/init.d/exim4 restart
+    else
+        echo "Usage: st-email [enable|disable]"
+    fi
+
+    echo "Done"
