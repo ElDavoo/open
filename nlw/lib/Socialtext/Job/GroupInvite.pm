@@ -25,7 +25,7 @@ sub _build_sender {
 
 sub _build_group {
     my $self = shift;
-    return Socialtext::Group->GetGroup( driver_unique_id => $self->arg->{group_id} );
+    return Socialtext::Group->GetGroup( group_id => $self->arg->{group_id} );
 }
 
 sub do_work {
