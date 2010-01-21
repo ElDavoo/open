@@ -117,7 +117,7 @@ proto.create_grammar = function() {
                 node._border = true;
                 node._sort = false;
 
-                var opts = node._options.match(/([^\s:=]+[:=]\s*\S*)/g);
+                var opts = node._options.match(/([^\s:=]+[:=]\s*\S*)/g) || [];
                 for (var i = 0; i < opts.length; i++) {
                     var match = opts[i].match(/^([^\s:=]+)[:=]\s*(\S*)/),
                         key = match['1'],
