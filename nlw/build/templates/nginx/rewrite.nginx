@@ -118,8 +118,8 @@
 [%- END %]
 
     if ($to_backend) {
-        rewrite "^/([^/]+)(\?.+)?$" "/$1/$2" permanent;
-        rewrite "^/([^/]+)/?(\?.+)?$" "/$1/index.cgi$2" break;
+        rewrite "^/(?!index.cgi)([^/]+)(\?.+)?$" "/$1/$2" permanent;
+        rewrite "^/(?!index.cgi)([^/]+)/?(\?.+)?$" "/$1/index.cgi$2" break;
     }
     location / {
         proxy_pass http://localhost:[% apache_perl_port %];
