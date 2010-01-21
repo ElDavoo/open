@@ -28,6 +28,7 @@ INSTALL_ST   = $(INSTALL) -o $(ST_USER) -g $(ST_GROUP)
 
 # Install locations
 INIT_D_DIR      = $(PREFIX)@INIT_D@
+ST_BIN_DIR      = $(PREFIX)/usr/bin
 ST_INSTALL_DIR  = $(PREFIX)@SHAREDIR@
 INSTALL_LIB     = $(PREFIX)@LIBDIR@
 INSTALLSCRIPT   = $(PREFIX)@BINDIR@
@@ -163,6 +164,7 @@ install-debian:
 	$(INSTALL_ROOT) dev-bin/gen-config $(ST_INSTALL_DIR)/debian/bin/
 	$(INSTALL_ROOT) dev-bin/setup-postgres-permissions $(ST_INSTALL_DIR)/debian/bin/
 	$(INSTALL_ROOT) build/bin/db-login-test $(ST_INSTALL_DIR)/debian/bin/
+	$(INSTALL_ROOT) dev-bin/st-bootstrap-openldap $(ST_BIN_DIR)/
 	$(MKDIR) $(ST_INSTALL_DIR)/debian/build/
 	$(CP_DIR) build/templates $(ST_INSTALL_DIR)/debian/build
 
@@ -205,6 +207,7 @@ db-user:
 
 remove-old-install: 
 	$(RM_DIR) $(ST_INSTALL_DIR) 
+	$(RM_DIR) $(ST_BIN_DIR) 
 	$(RM_DIR) $(INSTALL_LIB)/{Public,Control,Socialtext}
 
 install-perl: install-ok
