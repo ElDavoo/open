@@ -12,6 +12,7 @@ t.runAsync([
         $.ajax({
             url: "/data/workspaces/help-en/pages/socialtext_releases_simple_editing/tags/測",
             type: 'PUT',
+            data: {},
             async: false,
             cache: false
         });
