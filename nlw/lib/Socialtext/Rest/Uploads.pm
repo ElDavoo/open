@@ -8,7 +8,7 @@ use Socialtext::File;
 use Socialtext::JSON qw/encode_json/;
 use namespace::clean -except => 'meta';
 
-our $UPLOAD_DIR = "/tmp/uploads";
+our $UPLOAD_DIR = "/tmp";
 
 sub permission { +{} }
 sub collection_name { 'Uploads' }
@@ -35,8 +35,8 @@ sub _entities_for_query {
 }
 
 sub _entity_hash {
-    my $self  = shift;
-    my $id = shift;
+    my $self = shift;
+    my $id   = shift;
     return { name => $id, uri => "/data/uploads/$id" };
 }
 
@@ -57,12 +57,11 @@ sub POST_file {
         );
     }
 
-    my $uuid = $self->uuid->create_str();
+    my $id = 'upload-' . $self->uuid->create_str();
     eval {
         my $fh = $file->[0];
         my $blob = do { local $/; <$fh> };
-        mkdir($UPLOAD_DIR, 0777) unless -d $UPLOAD_DIR;
-        my $temp = "$UPLOAD_DIR/$uuid";
+        my $temp = "$UPLOAD_DIR/$id";
         Socialtext::File::set_contents_binary($temp, $blob);
     };
     if ( $@ ) {
@@ -74,7 +73,7 @@ sub POST_file {
     $rest->header( -status => HTTP_201_Created );
     return encode_json({
         status => 'success',
-        id => $uuid,
+        id => $id,
         message => 'photo uploaded',
     });
 }
