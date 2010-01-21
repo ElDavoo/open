@@ -236,7 +236,7 @@ sub _extract_group {
     my $row = shift;
     return unless $row->{group_id};
     my $group_id = $row->{group_id};
-    my $group = Socialtext::Group->GetGroup(driver_unique_id => $group_id);
+    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
     $row->{group} = {
         name => $group->display_name,
         id => $group_id,
