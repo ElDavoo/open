@@ -1,6 +1,6 @@
 * Fixture: EmailJob
 
-| standard-test-setup |
+| standard-test-setup | | no-group |
 | st-clear-jobs |
 | clear-email |
 | st-admin | set-workspace-config -w %%workspace%% email_notify_is_enabled 1 |
@@ -145,13 +145,14 @@ This also tests the email notify sort order and the display details prefs.
 | clear-email   |
 | st-clear-jobs |
 
-| edit_page       | %%workspace%%   | Foo                          | O hai |
-| edit_page       | %%workspace%%   | Aaaa                         | O hai |
-| job-count       | EmailNotify     | 2                            |       |
-| job-exists      | EmailNotify     | %%workspace_id%%-foo         |       |
-| job-exists      | EmailNotify     | %%workspace_id%%-aaaa        |       |
-| st-process-jobs |                 |                              |       |
-| job-count       | EmailNotifyUser | 1                            |       |
+| edit_page       | %%workspace%%   | Foo                             | O hai |
+| edit_page       | %%workspace%%   | Aaaa                            | O hai |
+| sleep           | 1               |                                 |       |
+| job-count       | EmailNotify     | 2                               |       |
+| job-exists      | EmailNotify     | %%workspace_id%%-foo            |       |
+| job-exists      | EmailNotify     | %%workspace_id%%-aaaa           |       |
+| st-process-jobs |                 |                                 |       |
+| job-count       | EmailNotifyUser | 1                               |       |
 | job-exists      | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |       |
 
 | post-form  | /%%workspace%%/index.cgi | %%pref_prefix%%=4320&%%pref_suffix%% |
