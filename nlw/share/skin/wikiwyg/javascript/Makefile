@@ -20,10 +20,10 @@ EDITOR_SOURCE_FILES= \
 		lib/Wikiwyg/Wikitext.js \
 		Wikiwyg/DataValidator.js \
 		wikiwyg.js \
-#		lib/Document/Emitter.js \
-#		lib/Document/Emitter/HTML.js \
-#		lib/Document/Parser.js \
-#		lib/Document/Parser/Wikitext.js \
+		lib/Document/Emitter.js \
+		lib/Document/Emitter/HTML.js \
+		lib/Document/Parser.js \
+		lib/Document/Parser/Wikitext.js \
 #		lib/Wikiwyg/Console.js \
 
 
