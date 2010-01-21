@@ -316,7 +316,6 @@ sub Create {
 
     # Add the creator as an admin of this group
     my $creator = $group->creator;
-    my $pri_account = $group->primary_account;
     unless ($creator->is_system_created) {
         $group->add_user(
             role => Socialtext::Role->Admin,
@@ -326,6 +325,7 @@ sub Create {
     }
 
     # This bypassing logging & event generation:
+    my $pri_account = $group->primary_account;
     $pri_account->user_set->add_object_role($group, Socialtext::Role->Member);
 
     # make sure the GAR gets created
