@@ -63,23 +63,27 @@ if ($mig_state == 0) {
     set_migration_state($mig_state+1);
 }
 if ($mig_state == 1) {
+    generate_group_primary_account_roles();
+    set_migration_state($mig_state+1);
+}
+if ($mig_state == 2) {
     for my $table (keys %tables) {
         next if $table eq $fast_track;
         migrate_table($table);
     }
     set_migration_state($mig_state+1);
 }
-if ($mig_state == 2) {
+if ($mig_state == 3) {
     # must happen after the migrate_table() phase
     generate_user_primary_account_roles();
     set_migration_state($mig_state+1);
 }
-if ($mig_state == 3) {
+if ($mig_state == 4) {
     # could happen before the user_primary_account_roles phase
     generate_workspace_account_roles();
     set_migration_state($mig_state+1);
 }
-if ($mig_state == 4) {
+if ($mig_state == 5) {
     print "Migration complete!\n";
 }
 else {
@@ -139,7 +143,8 @@ sub set_migration_state {
 
 sub fast_track {
     print "tables in order of size: ".join(',',@size_order)."\n";
-    $fast_track = $size_order[0];
+    # need to apply a special fix to group_account_role
+    $fast_track = (grep {$_ ne 'group_account_role' } @size_order)[0];
     my @columns = @{$tables{$fast_track}};
     my @pg_offsets = map { $pg_offset_for_column{$_} } @columns;
 
@@ -177,6 +182,34 @@ sub fast_track {
     print "... committing\n";
     $dbh->commit;
     print "Done fast-track of $fast_track\n";
+}
+
+sub generate_group_primary_account_roles {
+    my $missing_accts_sql = q{
+        SELECT DISTINCT g.group_id, primary_account_id
+          FROM groups g
+          LEFT JOIN group_account_role gar ON (g.group_id = gar.group_id AND g.primary_account_id = gar.account_id)
+         WHERE gar.account_id IS NULL
+    };
+
+    $dbh->begin_work;
+
+    my ($count) = $dbh->selectrow_array(
+        "SELECT COUNT(*) FROM ($missing_accts_sql) q");
+    return unless $count;
+    print "$count Groups need roles in their primary account\n";
+
+    my $inserted = $dbh->do(qq{
+        INSERT INTO group_account_role (group_id, account_id, role_id)
+        SELECT group_id, primary_account_id, $member_id
+        FROM ($missing_accts_sql) q
+    });
+    die "inserted less GARs than expected?!" if ($inserted != $count);
+    print "Inserted $inserted GARs\n";
+
+    # update the table size so it gets migrated in migrate_table()
+    $tsize{group_account_role} += $inserted;
+    $dbh->commit;
 }
 
 sub migrate_table {

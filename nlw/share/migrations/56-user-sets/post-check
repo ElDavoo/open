@@ -13,7 +13,7 @@ local $dbh->{RaiseError} = 1;
 my ($mig_state) = $dbh->selectrow_array(qq{
     SELECT value FROM "System" WHERE field = 'migration-56'
 });
-is $mig_state, 4, "all phases of the migration completed";
+is $mig_state, 5, "all phases of the migration completed";
 
 my @tables = qw(
    user_account_role
