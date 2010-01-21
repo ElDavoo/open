@@ -2,12 +2,35 @@
 
 Socialtext = Socialtext || {};
 Socialtext.Workspace = function(params) {
+    delete params.create;
     $.extend(this, params);
 };
 
 Socialtext.Workspace.prototype = new Socialtext.Base();
 
-$.extend(Socialtext.Workspace.prototype, {});
+$.extend(Socialtext.Workspace.prototype, {
+    postArgs: [ 'title', 'name', 'groups' ],
+    create: function(callback) {
+        var self = this;
+        var data = {};
+        $.each(this.postArgs, function(i, arg) {
+            if (self[arg]) data[arg] = self[arg];
+        });
+
+        $.ajax({
+            url: '/data/workspaces',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: $.toJSON(data),
+            success: function(data) {
+                $.extend(self, data);
+                if (callback) callback({});
+            },
+            error: this.errorCallback(callback)
+        });
+    }
+});
 
 /**
  * Class Methods

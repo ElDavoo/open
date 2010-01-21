@@ -19,7 +19,8 @@ Socialtext.Group.prototype = new Socialtext.Base();
 $.extend(Socialtext.Group.prototype, {
     postArgs: [
         'ldap_dn', 'name', 'account_id', 'description', 'photo_id',
-        'workspaces', 'users', 'send_message', 'additional_message'
+        'workspaces', 'users', 'send_message', 'additional_message',
+        'new_workspaces'
     ],
     putArgs: [ 'name', 'account_id', 'description', 'photo_id' ],
 
@@ -30,7 +31,6 @@ $.extend(Socialtext.Group.prototype, {
 
     request: function(type, url, callback) {
         var self = this;
-        try{
         if (!this.name && !this.ldap_dn) {
             throw new Error(loc("LDAP DN or group name required"));
         }
@@ -51,7 +51,6 @@ $.extend(Socialtext.Group.prototype, {
             },
             error: this.errorCallback(callback)
         });
-        }catch(e){console.log(e)};
     },
 
     create: function(callback) {
@@ -67,12 +66,22 @@ $.extend(Socialtext.Group.prototype, {
                 send_message: self.send_message,
                 additional_message: self.additional_message
             };
-            self.runAsynch([
+            var jobs = [
                 function(cb) { self.request('PUT', self.url(), cb) },
                 function(cb) { self.addMembers(users, cb) },
                 function(cb) { self.addToWorkspaces(self.workspaces, cb) },
                 function(cb) { self.removeTrash(self.trash, cb) }
-            ], callback);
+            ];
+
+            $.each(self.new_workspaces || [], function(i, info) {
+                info.groups = {group_id: self.group_id};
+                jobs.push(function(cb) {
+                    var workspace = new Socialtext.Workspace(info);
+                    workspace.create(cb);
+                });
+            });
+
+            self.runAsynch(jobs, callback);
         }
         else {
             self.create(callback);
