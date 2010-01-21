@@ -8,6 +8,7 @@ use Socialtext::UserSet qw/:const/;
 use Socialtext::Exceptions qw(data_validation_error);
 use Socialtext::Group::Homunculus;
 use Socialtext::Log qw(st_log);
+use Socialtext::Role;
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::SQL::Builder qw(:all);
 use Socialtext::l10n qw(loc);
@@ -134,6 +135,7 @@ sub GetGroupHomunculus {
         # Wasn't in DB; INSERT
         $proto_group = $refreshed;
         $self->NewGroupRecord( $proto_group );
+        $self->CreateInitialRelationships( $proto_group );
     }
 
     my $homey = $self->NewGroupHomunculus($proto_group);
@@ -150,6 +152,41 @@ sub GetGroupHomunculus {
     }
 
     return $homey;
+}
+
+# Create the initial creator/account relationships for a Group
+sub CreateInitialRelationships {
+    my ($self, $proto_or_homey) = @_;
+
+    # Upscale whatever we were given into an actual "Group" object
+    my $homey = ref($proto_or_homey) eq 'HASH'
+        ? $self->NewGroupHomunculus($proto_or_homey)
+        : $proto_or_homey;
+    my $group = Socialtext::Group->new(homunculus => $homey);
+
+    # Add the creator as an Admin of the Group
+    my $creator = $group->creator;
+    unless ($creator->is_system_created) {
+        $group->add_user(
+            role  => Socialtext::Role->Admin,
+            user  => $creator,
+            actor => $creator,
+        );
+    }
+
+    # Make sure the Group has a Role in its Primary Account, *BYPASSING*
+    # logging and event generation.
+    my $pri_account = $group->primary_account;
+    $pri_account->user_set->add_object_role($group, Socialtext::Role->Member);
+
+    # Make sure that the Group is properly added to any AUW that exists in the
+    # Account.
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub(Socialtext::User->SystemUser);
+    $adapter->hook(
+        'nlw.add_group_account_role',
+        $pri_account, $group, Socialtext::Role->Member,
+    );
 }
 
 # Please refer to t/live-ldap/Groups-refresh-as-jobs.t for test coverage of
@@ -570,6 +607,30 @@ data prior to creating the Group.
 
 If your Factory is read-only and is not updateable, simply implement a stub
 method which throws an exception to indicate error.
+
+=item B<$factory-E<gt>CreateInitialRelationships($proto_or_homey)>
+
+Creates the initial Account/Creator relationships for the Group defined by the
+provided C<$proto_or_homey> (which is either a C<$proto_group> or a Group
+Homunculus object).
+
+This method is called I<automatically> by:
+
+=over
+
+=item *
+
+C<Socialtext::Group-E<gt>Create()>, when creating a new Group object, to
+handle cases where the Group is explicitly created in a data store.
+
+=item *
+
+C<Socialtext::Group::Factory-E<gt>GetGroupHomunculus()>, when auto-vivifying a
+Group that lives in an external store.
+
+=back
+
+As such, there should be B<NO> need for you to call this method directly.
 
 =item B<$factory-E<gt>Update($group, \%proto_group)>
 

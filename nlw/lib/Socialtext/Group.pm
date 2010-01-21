@@ -312,29 +312,8 @@ sub Create {
 
     # ask that factory to create the Group Homunculus
     my $homey = $factory->Create($proto_group);
+    $factory->CreateInitialRelationships($homey);
     my $group = Socialtext::Group->new(homunculus => $homey);
-
-    # Add the creator as an admin of this group
-    my $creator = $group->creator;
-    unless ($creator->is_system_created) {
-        $group->add_user(
-            role => Socialtext::Role->Admin,
-            user => $creator,
-            actor => $creator,
-        );
-    }
-
-    # This bypassing logging & event generation:
-    my $pri_account = $group->primary_account;
-    $pri_account->user_set->add_object_role($group, Socialtext::Role->Member);
-
-    # make sure the GAR gets created
-    my $adapter = Socialtext::Pluggable::Adapter->new;
-    $adapter->make_hub(Socialtext::User->SystemUser);
-    $adapter->hook(
-        'nlw.add_group_account_role',
-        $pri_account, $group, Socialtext::Role->Member,
-    );
 
     return $group;
 }
