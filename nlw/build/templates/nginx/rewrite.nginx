@@ -118,6 +118,7 @@
 [%- END %]
 
     if ($to_backend) {
+        rewrite "^/([^/]+)(\?.+)?$" "/$1/$2" permanent;
         rewrite "^/([^/]+)/?(\?.+)?$" "/$1/index.cgi$2" break;
     }
     location / {
