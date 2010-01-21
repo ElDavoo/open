@@ -36,7 +36,7 @@ JEMPLATES=$(wildcard template/*.tt2)
 JEMPLATES_COMPILED=Jemplates.js
 
 API_FILE=$(COMMON_JAVASCRIPT)/Socialtext/socialtext-api.js
-API_FILES=$(wildcard $(COMMON_JAVASCRIPT)/Socialtext/*)
+API_FILES=$(filter-out %socialtext-api.js,$(wildcard $(COMMON_JAVASCRIPT)/Socialtext/*))
 
 S3_SOURCE_FILES= \
 		timestamp.js \
