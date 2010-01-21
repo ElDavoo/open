@@ -1080,14 +1080,6 @@ CREATE TABLE signal_user_set (
     user_set_id integer NOT NULL
 );
 
-CREATE TABLE "storage" (
-    user_id bigint NOT NULL,
-    "class" varchar(128),
-    "key" varchar(128),
-    value text,
-    datatype varchar(10)
-);
-
 CREATE SEQUENCE tag_id_seq
     INCREMENT BY 1
     NO MAXVALUE
@@ -1810,20 +1802,6 @@ CREATE UNIQUE INDEX search_sets___owner_user_id___owner_user_id___name
 CREATE INDEX signal_hidden
 	    ON signal (hidden);
 
-CREATE INDEX storage_class_key_ix
-	    ON "storage" ("class", "key");
-
-CREATE INDEX storage_key_ix
-	    ON "storage" ("key");
-
-CREATE INDEX storage_key_value_type_ix
-	    ON "storage" ("key", value)
-	    WHERE (("key")::text = 'type');
-
-CREATE INDEX storage_key_value_viewer_ix
-	    ON "storage" ("key", value)
-	    WHERE (("key")::text = 'viewer');
-
 CREATE INDEX user_plugin_pref_idx
 	    ON user_plugin_pref (user_id, plugin);
 
@@ -2296,4 +2274,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '104');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '105');
