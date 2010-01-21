@@ -1,12 +1,16 @@
 *user action* | *correct response* | *comment*
-Add tag "foo", return | appears in sidebar 
-Add two word tag "foo bar" to another page, return | appears in sidebar 
-Add tag "Foster City", return | appears in sidebar with correct capitalization 
+Add tag "foo", return | appears in sidebar
+Add two word tag "foo bar" to another page, return | appears in sidebar
+Add tag "Foster City", return | appears in sidebar with correct capitalization
 Look ahead: start to type "fo" | sidebar autosuggests "foo", "foo bar", "foster city"
 
 | *Comment* | Starting Test Case: Tagging |  |
 
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| set | t_ws | tagging_ws_%%start_time%% |
+| st-admin | create-workspace --name %%t_ws%% --title %%t_ws%% | was created |
+| add-member | %%username%% | %%t_ws%% |
+
+| open_ok | /%%t_ws%%/index.cgi?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
@@ -27,7 +31,7 @@ Look ahead: start to type "fo" | sidebar autosuggests "foo", "foo bar", "foster 
 | *Comment* | Test Case: Tagging. verify fog tag added |  |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_text_present_ok | fog %%start_time%% | 30000 |
-| text_like | link=fog %%start_time%% | fog %%start_time%% |
+| wait_for_element_visible_ok | link=fog %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Tagging - Chinese chars |  |
 | wait_for_element_visible_ok | st-tags-plusbutton-link | 30000 |
@@ -37,8 +41,8 @@ Look ahead: start to type "fo" | sidebar autosuggests "foo", "foo bar", "foster 
 
 | *Comment* | Test Case: Tagging. verify Chinese chars |  |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
-| pause | 5000 |  |
-| text_like | st-tags-listing | 所以 |
+| pause | 10000 |  |
+| text_like | 所以 |  |
 
 | *Comment* | Test Case: Tagging. foo bar tag added |  |
 | wait_for_element_visible_ok | st-tags-plusbutton-link | 30000 |
@@ -49,7 +53,7 @@ Look ahead: start to type "fo" | sidebar autosuggests "foo", "foo bar", "foster 
 | *Comment* | Test Case: Tagging. verify foo bar tag added |  |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_text_present_ok | foo bar %%start_time%% | 30000 |
-| text_like | link=foo bar %%start_time%% | foo bar %%start_time%% |
+| wait_for_element_visible_ok | link=foo bar %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Tagging - special chars |  |
 | wait_for_element_visible_ok | st-tags-plusbutton-link | 30000 |
@@ -60,7 +64,7 @@ Look ahead: start to type "fo" | sidebar autosuggests "foo", "foo bar", "foster 
 | *Comment* | Test Case: Tagging. verify special chars @#$ %%start_time%% tag added |  |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_text_present_ok | special chars @#$ %%start_time%% | 30000 |
-| text_like | link=special chars @#$ %%start_time%% | special chars @#$ %%start_time%% |
+| wait_for_element_visible_ok | link=special chars @#$ %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Tagging. foster City tag added |  |
 | wait_for_element_visible_ok | st-tags-plusbutton-link | 30000 |
@@ -71,7 +75,7 @@ Look ahead: start to type "fo" | sidebar autosuggests "foo", "foo bar", "foster 
 | *Comment* | Test Case: Tagging. verify foster City tag added |  |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_text_present_ok | foster City %%start_time%% | 30000 |
-| text_like | link=foster City %%start_time%% | foster City %%start_time%% |
+| wait_for_element_visible_ok | link=foster City %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Tagging reverify foo bar link |  |
 | text_like | link=foo bar %%start_time%% | foo bar %%start_time%% |
@@ -84,12 +88,12 @@ Add any other tag to three different pages | tag is added
 
 | *Comment* | Test Case: Tagging add the same tag to three new pages |  |
 
-| st-admin | update-page --w %%workspace%% --e %%email%% --p "tag page 1 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
-| st-admin | update-page --w %%workspace%% --e %%email%% --p "tag page 2 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
-| st-admin | update-page --w %%workspace%% --e %%email%% --p "tag page 3 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
+| st-admin | update-page --w %%t_ws%% --e %%email%% --p "tag page 1 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
+| st-admin | update-page --w %%t_ws%% --e %%email%% --p "tag page 2 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
+| st-admin | update-page --w %%t_ws%% --e %%email%% --p "tag page 3 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
 
 | *Comment* | Tag Page 1 |  |
-| open_ok | /%%workspace%%/?tag page 1 %%start_time%% |  |
+| open_ok | /%%t_ws%%/?tag page 1 %%start_time%% |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
 | click_ok | link=Add Tag |  |
 | wait_for_element_visible_ok | st-tags-field | 30000 |
@@ -103,7 +107,7 @@ Add any other tag to three different pages | tag is added
 | text_like | link=tagtest %%start_time%% | tagtest %%start_time%% |
 
 | *Comment* | Tag Page 2 |  |
-| open_ok | /%%workspace%%/?tag page 2 %%start_time%% |  |
+| open_ok | /%%t_ws%%/?tag page 2 %%start_time%% |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
 | click_ok | link=Add Tag |  |
 | wait_for_element_visible_ok | st-tags-field | 30000 |
@@ -117,7 +121,7 @@ Add any other tag to three different pages | tag is added
 | text_like | link=tagtest %%start_time%% | tagtest %%start_time%% |
 
 | *Comment* | Tag Page 3 |  |
-| open_ok | /%%workspace%%/?tag page 3 %%start_time%% |  |
+| open_ok | /%%t_ws%%/?tag page 3 %%start_time%% |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
 | click_ok | link=Add Tag |  |
 | wait_for_element_visible_ok | st-tags-field | 30000 |
@@ -132,7 +136,7 @@ Add any other tag to three different pages | tag is added
 
 | *Comment* | Test Case: Tagging checking revisions |  |
 
-Click Revisions | new revision created for new tag 
+Click Revisions | new revision created for new tag
 Compare top two revisions | only difference is in added tag
 
 | *Comment* | Test Case: Tagging Compare Revisions |  |
@@ -140,7 +144,7 @@ Compare top two revisions | only difference is in added tag
 | clickAndWait | link=Compare Revisions |  |
 | text_like | qr/Tags:.+Tags:\s*tagtest %%start_time%%/ |  |
 
-Click on that tag in third page | list appears with correct three pages 
+Click on that tag in third page | list appears with correct three pages
 Click on any link in list | that page appears
 
 | clickAndWait | link=Back To Current Revision |  |
@@ -148,22 +152,16 @@ Click on any link in list | that page appears
 | clickAndWait | link=tag page 3 %%start_time%% |  |
 | text_like | st-page-titletext | tag page 3 %%start_time%% |
 
-Remove that tag | tag is removed 
-Click Revisions | observe new revision is created 
+Remove that tag | tag is removed
+Click Revisions | observe new revision is created
 Compare top two revisions | only difference is in deleted tag
 
-TODO: this test is failing because it can't delete its tag, even though tag delete works in other tests
-
-| *Comment* | Test Case: Tagging. THIS TEST FAILS BECAUSE TAG DELETE DOES NOT WORK HERE |  |
-| open_ok | /%%workspace%%/?tag page 2 %%start_time%% |
+| *Comment* | Test Case: Tagging Delete Tag |  |
+| open_ok | /%%t_ws%%/?tag page 2 %%start_time%% |
 | wait_for_element_present_ok | //a[contains(@title,'Delete this')] | 30000 |
 | click_ok | //a[contains(@title,'Delete this')] |  |
 | wait_for_element_visible_ok | st-no-tags-placeholder | 30000 |
 | text_like | st-no-tags-placeholder | There are no tags for this page. |
-
-JUNE 6 2007 RT 25664. WRONG NUMBER OF REVISIONS
-
-TODO: check for an incremented revision after fixing RT 25664
 
 | *Comment* | Test Case: Tagging. Compare revisions for deleted tag |  |
 | *Comment* | The revision number did not change but the tag should be gone |  |
@@ -172,54 +170,45 @@ TODO: check for an incremented revision after fixing RT 25664
 | text_like | qr/Tags:\s*tagtest %%start_time%%/m |  |
 | text_like | qr/Tags:\s*$/m |  |
 
-Navigate to All Tags in list view | All Tags appears 
-Observe that tag | tag is still in list 
+Navigate to All Tags in list view | All Tags appears
+Observe that tag | tag is still in list
 Click that tag | Tag list page appears with two remaining tagged pages
 
-| open_ok | /%%workspace%%/?action=recent_changes |  |
+| open_ok | /%%t_ws%%/?action=recent_changes |  |
 | clickAndWait | link=All Tags |  |
 | text_like | contentContainer | tagtest %%start_time%% |
 | clickAndWait | link=tagtest %%start_time%% |  |
 | text_like | contentContainer | tag page 1 %%start_time%% |
 | text_like | contentContainer | tag page 3 %%start_time%% |
 
-| *Comment* | Test Case: Tagging Teardown |  |
-| st-admin | purge-page --workspace %%workspace%% --page tag_page_%%start_time%% | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page tag_page_1_%%start_time%% | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page tag_page_2_%%start_time%% | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page tag_page_3_%%start_time%% | was purged |
+| *Comment* | Test Case: Tagging test for tags in lookahead |  |
+| open_ok | /%%t_ws%%/index.cgi?action=new_page |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | tag page 4 %%start_time%% content |
+| type_ok | st-newpage-pagename-edit | tag page 4 %%start_time%% |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| click_and_wait | st-save-button-link |  |
 
-| *Comment* | Test Case : Tagging COMPLETED |  |
-
-^ DONE_TESTING
-^ END
-
-TODO: find a way to test lookahead
-
-| *Comment* | Test Case: Tagging remove the added tags, then test for them in lookahead |  |
-| click_ok | //a[contains(@title,'Delete this tag')] |  |
-| wait_for_element_not_present_ok | link=所以 | 30000 |
-| click_ok | //a[contains(@title,'Delete this tag')] |  |
-| wait_for_element_not_present_ok | link=fog %%start_time%% | 30000 |
-| click_ok | //a[contains(@title,'Delete this tag')] |  |
-| wait_for_element_not_present_ok | link=foo bar %%start_time%% | 30000 |
-| click_ok | //a[contains(@title,'Delete this tag')] |  |
-| wait_for_element_not_present_ok | link=foster City %%start_time%% | 30000 |
-| click_ok | //a[contains(@title,'Delete this tag')] |  |
-| wait_for_element_not_present_ok | link=special chars @#$ %%start_time%% | 30000 |
-
-| *Comment* | Test Case: Tagging verify all tags are gone |  |
-| wait_for_text_not_present_ok | There are no tags for this page. | 30000 |
-
-| *Comment* | Test Case: Tagging verify suggestions foo bar and Foster City |  |
-| type_ok | st-tags-field | fo |
-| wait_for_element_visible_ok | link=foster city %%start_time%% | 30000 |
+| *Comment* | Test Case: Tagging verify suggestions foo bar, fog, and Foster City |  |
+| wait_for_element_visible_ok | link=Add Tag | 30000 |
+| click_ok | link=Add Tag |  |
+| wait_for_element_visible_ok | st-tags-field | 30000 |
+| type_lookahead_ok | st-tags-field | fo |
+| wait_for_element_visible_ok | link=foster City %%start_time%% | 30000 |
 | wait_for_element_visible_ok | link=foo bar %%start_time%% | 30000 |
-| wait_for_element_visible_ok | link=foo %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=fog %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Tagging use lookahead to add a tag |  |
-| click_ok | link=foster city %%start_time%% |  |
-| wait_for_element_visible_ok | link=Add Tag | 30000 |
+| click_ok | link=foster City %%start_time%% |  |
+| wait_for_text_not_present_ok | There are no tags for this page. | 30000 |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_text_present_ok | foster City %%start_time%% | 30000 |
 | text_like | st-tags-listing | foster City %%start_time%% |
+
+| *Comment* | Test Case: Tagging Teardown |  |
+| st-admin | delete-workspace --workspace %%t_ws%% --no-export | has been deleted |
+
+| *Comment* | Test Case : Tagging COMPLETED |  |

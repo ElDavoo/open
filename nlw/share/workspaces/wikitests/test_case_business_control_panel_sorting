@@ -59,17 +59,13 @@
 | click_and_wait | link=Name |  |
 | text_like | qr/0-sort-1-workspace1-%%start_time%%.+0-sort-2-workspace2-%%start_time%%.+0-sort-3-workspace3-%%start_time%%/ |  |
 
-TODO: RESTORE THE FOLLOWING TWO TESTS AFTER {bz: 472} IS FIXED
-
-| *Comment* | RESTORE THE FOLLOWING TWO TESTS AFTER {bz: 472} IS FIXED |  |
+| *Comment* | Test Case: Business Control Panel Sorting Sort By Users |  |
 | wait_for_element_visible_ok | workspace-sort-users | 30000 |
 | click_and_wait | //a[contains(@href,'workspace_sort_order=asc;workspace_order_by=user_count')] |  |
-
-text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ | |
+| text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ |  |
 
 | click_and_wait | workspace-sort-users |  |
-
-text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ | |
+| text_like | qr/0-sort-2-workspace1-%%start_time%%.+0-sort-3-workspace1-%%start_time%%.+0-sort-3-workspace2-%%start_time%%/ |  |
 
 | click_and_wait | link=Account |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
