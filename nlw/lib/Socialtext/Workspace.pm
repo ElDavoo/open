@@ -562,7 +562,6 @@ my %ReservedNames = map { $_ => 1 } qw(
     console
     data
     feed
-    id
     nlw
     noauth
     page
