@@ -385,6 +385,13 @@ sub postHandler {
         $headers{'-content-length'} = 0; # forces a non-T-E response
     }
 
+    # Force setting Content-Length, so nginx doesn't hold open connections.
+    if (defined($$resultref) and !defined $headers{'-content-length'}) {
+        use bytes;
+        $headers{'-content-length'} = length($$resultref);
+        no bytes;
+    }
+
     # Reset headers to our cleaned set.
     $self->header(%headers);
 
