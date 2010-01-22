@@ -31,9 +31,11 @@ sub delete_recklessly {
          )
     }, $account->user_set_id);
 
-    Socialtext::SQL::disconnect_dbh();
-
     $account->delete;
+
+    # Clear all caches (the Account, and anything that may have cached a copy
+    # of our count of the Account)
+    Socialtext::Cache->clear();
 }
 
 sub export_account {

@@ -26,7 +26,9 @@ sub All {
         },
     );
 
-    Socialtext::SQL::disconnect_dbh();
+    # Clear all caches (the Group, and anything that may have cached a copy of
+    # our count of the Group)
+    Socialtext::Cache->clear();
 }
 
 sub delete_recklessly {

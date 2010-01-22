@@ -16,7 +16,6 @@ sub delete_recklessly {
     # Load classes on demand
     require Socialtext::SQL;
     require Socialtext::User;
-    require Socialtext::Cache;
 
     # Get a hold of the System User record
     my $system_user = Socialtext::User->SystemUser;
@@ -71,8 +70,8 @@ sub delete_recklessly {
         }, $user_id
     );
 
-    # Clear any User cache(s) that may be in use
-    Socialtext::SQL::disconnect_dbh();
+    # Clear all caches (the User, and anything that may have cached a copy of
+    # our count of the User)
     Socialtext::Cache->clear();
 }
 
