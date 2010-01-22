@@ -30,10 +30,33 @@ sub Report {
     return {map {$_ => sprintf('%0.03f', $Timings->{$_}->{timer})} keys(%$Timings)}
 }
 
+sub ExtendedReport {
+    my $class = shift;
+    foreach my $timer (keys(%$Timings)) {
+        if (ref($Timings->{$timer}->{timer})) {
+            $class->Stop($timer);
+        }
+    }
+
+    my %report;
+    foreach my $key (keys %{$Timings}) {
+        my $duration = $Timings->{$key}->{timer};
+        my $count    = $Timings->{$key}->{how_many} || 1;
+        my $average  = $duration / $count;
+        $report{$key} = {
+            duration => sprintf('%0.03f', $duration),
+            count    => $count,
+            average  => sprintf('%0.03f', $average),
+        };
+    }
+    return \%report;
+}
+
 sub Start {
     my $class = shift;
     my $timed = shift;
     local $@;
+    $Timings->{$timed}->{how_many}++;
     $Timings->{$timed}->{counter}++;
     $Timings->{$timed}->{timer} = $class->new();
 }
@@ -56,6 +79,7 @@ sub Continue {
     if (ref($Timings->{$timed}->{timer})) {
         $class->Stop($timed);
     }
+    $Timings->{$timed}->{how_many}++;
     $Timings->{$timed}->{counter}++;
     $Timings->{$timed}->{timer} = $class->new($Timings->{$timed}->{timer});
 }
