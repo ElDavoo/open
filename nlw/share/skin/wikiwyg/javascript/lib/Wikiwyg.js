@@ -128,17 +128,25 @@ Wikiwyg.browserIsSupported = (
  * the seleniumAlert detection fails.  Use window.opener to
  * probe if we're opened by the Selenium RC runner.
  */
-Wikiwyg.is_selenium = (
-    (typeof seleniumAlert != 'undefined' && seleniumAlert)
-    || (typeof Selenium != 'undefined' && Selenium)
-    || ((typeof window.top != 'undefined' && window.top)
-        && (window.top.selenium_myiframe
-            || window.top.seleniumLoggingFrame)
-    || ((typeof window.top.opener != 'undefined' && window.top.opener)
-        && (window.top.opener.selenium_myiframe
-            || window.top.opener.seleniumLoggingFrame))
-    )
-);
+Wikiwyg._try_probe_selenium = function () {
+    try {
+        Wikiwyg.is_selenium = (
+            (typeof seleniumAlert != 'undefined' && seleniumAlert)
+            || (typeof Selenium != 'undefined' && Selenium)
+            || ((typeof window.top != 'undefined' && window.top)
+                && (window.top.selenium_myiframe
+                    || window.top.seleniumLoggingFrame)
+            || ((typeof window.top.opener != 'undefined' && window.top.opener)
+                && (window.top.opener.selenium_myiframe
+                    || window.top.opener.seleniumLoggingFrame))
+            )
+        );
+    } catch (e) {
+        setTimeout(Wikiwyg._try_probe_selenium, 1000);
+    }
+};
+
+Wikiwyg._try_probe_selenium();
 
 // Wikiwyg environment setup public methods
 proto.createWikiwygArea = function(div, config) {
