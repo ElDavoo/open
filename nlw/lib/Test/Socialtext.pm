@@ -299,10 +299,13 @@ sub timer_report {
     return unless ($ENV{TEST_VERBOSE} and not $ENV{TEST_LESS_VERBOSE});
 
     diag "Socialtext::Timer report\n";
-    my $report = Socialtext::Timer->Report();
+    my $report = Socialtext::Timer->ExtendedReport();
     if (%{$report}) {
-        foreach my $key (sort { $report->{$b} <=> $report->{$a} } keys %{$report}) {
-            my $str = sprintf( '%30s => %0.4f', $key, $report->{$key} );
+        foreach my $key (sort { $report->{$b}->{duration} <=> $report->{$a}->{duration} } keys %{$report}) {
+            my $dur = $report->{$key}->{duration};
+            my $cnt = $report->{$key}->{count};
+            my $avg = $report->{$key}->{average};
+            my $str = sprintf( '%30s => %0.3f  (%5d times, avg %0.3f)', $key, $dur, $cnt, $avg );
             diag $str;
         }
     }
