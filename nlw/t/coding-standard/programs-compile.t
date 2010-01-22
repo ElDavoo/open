@@ -17,12 +17,13 @@ BEGIN {
     }
 }
 
-# Put non-compiling program names in the passed in list,
-# so they are done as TODO tests.
-my @bin_programs = make_prog_list('bin/', qw(
-    json-proxy.scgi
-));
+# Disables output-redirection by Socialtext::System::TraceTo :
+$ENV{PERLCHECK} = 1;
 
+# list parameter is programs to skip; will be run as TODO tests
+my @bin_programs = make_prog_list('bin/', qw());
+
+# list parameter is programs to skip; will be run as TODO tests
 my @dev_bin_programs = make_prog_list('dev-bin/', qw(
     import-user-data-1
     memory-watchdog

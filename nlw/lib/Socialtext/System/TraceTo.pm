@@ -7,12 +7,12 @@ sub import {
     my $class = shift;
     my $logname = shift;
     return unless $logname;
-    return if $ENV{PERLCHECK};
     logfile($logname);
 }
 
 our $LogFH;
 sub logfile ($) {
+    return if $ENV{PERLCHECK};
     my $logname = shift;
     open $LogFH, '>>', $logname
         or die "can't open log '$logname' for appending";
