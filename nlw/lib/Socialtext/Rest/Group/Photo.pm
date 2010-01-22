@@ -50,7 +50,7 @@ sub _get_photo {
         -cache_control => 'no-cache, no-store',
         -type          => 'image/png',
     );
-    return $photo;
+    return $$photo;
 }
 
 sub POST_photo {
