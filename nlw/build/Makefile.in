@@ -52,9 +52,9 @@ CREATE_DB_USER = $(PERL) dev-bin/create-db-user
 
 # Init scripts called to stop/start services during 'make upgrade'.
 APACHE_SCRIPT    = $(INIT_D_DIR)/apache-perl
-APACHE2_SCRIPT   = $(INIT_D_DIR)/apache2
+NGINX_SCRIPT     = $(INIT_D_DIR)/nginx
 CEQLOTRON_SCRIPT = $(INIT_D_DIR)/ceqlotron
-SERVICE_SCRIPTS  = $(APACHE_SCRIPT) $(APACHE2_SCRIPT) $(CEQLOTRON_SCRIPT)
+SERVICE_SCRIPTS  = $(APACHE_SCRIPT) $(NGINX_SCRIPT) $(CEQLOTRON_SCRIPT)
 
 # File sets that can be installed (use install-files to get all files)
 INSTALL_BASE = install-html       \
@@ -75,7 +75,7 @@ INSTALL_PKGS_TARGETS = install-pkgs-dapper \
 # Configuration targets for $(GENCONFIG)
 CONF_TARGETS = apache-config      \
                apache-perl-config \
-               apache2-config     \
+               nginx-config       \
                app-config         \
                ssl-config
 
@@ -295,7 +295,7 @@ stop-start: stop-services start-services
 
 stop-services:
 	$(APACHE_SCRIPT) stop
-	$(APACHE2_SCRIPT) stop
+	$(NGINX_SCRIPT) stop
 	$(CEQLOTRON_SCRIPT) stop
 
 start-services:
