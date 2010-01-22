@@ -820,8 +820,39 @@ proto.on_pasted = function(html) {
     // The "false" here for isWholeDocument means we're dealing with HTML fragments.
     var wikitext = self.wikiwyg.mode_objects[WW_ADVANCED_MODE].convert_html_to_wikitext(html, false);
 
-    html = ((new Document.Parser.Wikitext()).parse(wikitext, new Document.Emitter.HTML()));
-    self.insert_html( html );
+    if (!/<(?:table|img)[\s>]/i.test(html)) {
+        // The HTML does not contain tables or images - use the JS Document parser.
+        html = ((new Document.Parser.Wikitext()).parse(wikitext, new Document.Emitter.HTML()));
+        self.insert_html( html );
+        return;
+    }
+
+    // For complex tables, we still fallback to server-side rendering for now.
+    jQuery.ajax({
+        type: 'post',
+        url: 'index.cgi',
+        data: {
+            action: 'wikiwyg_wikitext_to_html',
+            content: wikitext
+        },
+        success: function(html) {
+            /* {bz: 3006}: Fix up pasted relative wiki-links copied from Wikiwyg itself. */
+            var base = location.href.replace(/\?.*/, '');
+
+            html = html
+                .replace(/^<div class="wiki">\n*/i, '')
+                .replace(/\n*<br\/><\/div>\n*$/i, '')
+                .replace(/^<p>([\s\S]*?)<\/p>/, '$1')
+                .replace(/(<a\b[^>]*\bhref=['"])(index.cgi)?\?/ig, '$1' + base + '?');
+
+            self.insert_html( html );
+
+//             jQuery.hideLightbox();
+        },
+        error: function(xhr) {
+//             jQuery.hideLightbox();
+        }
+    });
 }
 
 proto.paste_buffer_is_simple = function(buffer) {
