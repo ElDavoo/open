@@ -160,6 +160,6 @@ Automated backup and restore testing
 | st-admin | purge-page --w admin --p backup_restore_3_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Console Backup and Restore: empty-2 should already be gone. Tear it down anyway. |  |
-| st-admin | delete-workspace --no-export --w empty-2-%%start_time%% | has been deleted |
+| st-admin | delete-workspace --no-export --w empty-2-%%start_time%% |  |
 
 | *Comment* | Test Case: Console Backup and Restore COMPLETED |  |
