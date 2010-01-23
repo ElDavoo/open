@@ -55,10 +55,6 @@ sub _scheme {
         # we're connected via HTTP or HTTPS, and generate an appropriate URI.
         return ( scheme => $ENV{NLWHTTPSRedirect} ? 'https' : 'http' );
     }
-    elsif (_running_under_apache2()) {
-        # In the front-end, we just check the HTTPS ENV var
-        return ( scheme => $ENV{HTTPS} ? 'https' : 'http' );
-    }
     else {
         return ( scheme => $default_scheme );
     }
@@ -78,11 +74,6 @@ sub _https_port {
 
 sub _running_under_mod_perl {
     return exists $ENV{MOD_PERL} ? 1 : 0;
-}
-
-sub _running_under_apache2 {
-    my $software = $ENV{SERVER_SOFTWARE};
-    return ($software && $software =~ m{^Apache/2}) ? 1 : 0;
 }
 
 1;
