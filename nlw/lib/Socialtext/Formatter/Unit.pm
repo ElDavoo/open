@@ -359,13 +359,13 @@ const html_end   => "</td>\n";
 
 sub table_phrases { Socialtext::Formatter->all_phrases }
 
-sub _ceci_ne_pas_une_pipe {
+sub _escape_pipes {
     my $text = shift;
     $text =~ s/\|/\x{FFFC}/g;
     return $text;
 }
 
-sub _que_sera_sera {
+sub _unescape_pipes {
     my $text = shift;
     $text =~ s/\x{FFFC}/\|/g;
     return $text;
@@ -375,17 +375,17 @@ sub match {
     my $self = shift;
     my $text = shift;
 
-    # Replace escaped pipe characters with a U+FFFC,
-    # to avoid an extremely rare core dump. {bz: 3247}
-    $text =~ s/{{(.*?)}}/'{{' . _ceci_ne_pas_une_pipe($1) . '}}'/eg;
+    # Replace pipe characters in {{...}} with U+FFFC (Object Replacement)
+    # characters, to avoid an extremely rare core dump. {bz: 3247}
+    $text =~ s/{{(.*?)}}/'{{' . _escape_pipes($1) . '}}'/eg;
     return unless $text =~ /(\|(\s*.*?\s*)\| *)(.*)/sm;
 
     $self->start_offset( $-[1] );
     $self->end_offset( $3 eq "\n" ? $+[3] : $+[2] );
 
-    # Now replace the U+FFFC (Object Replacement) back with a real | character.
+    # Now replace U+FFFC back with real | characters.
     my $new_text = $2;
-    $new_text =~ s/{{(.*?)}}/'{{' . _que_sera_sera($1) . '}}'/eg;
+    $new_text =~ s/{{(.*?)}}/'{{' . _unescape_pipes($1) . '}}'/eg;
 
     $new_text =~ s/^[ \t]*\n?(.*?)[ \t]*$/$1/s;
     $self->text($new_text);

@@ -57,14 +57,15 @@ proto.create_grammar = function() {
         };
     };
 
-    var _ceci_ne_pas_une_pipe = function(input) {
-        // Escape | into 0xFFFC (Object Replacement Character).
+    var _escape_pipes = function(input) {
+        // Escape | in {{...}} sections with 0xFFFC (Object Replacement) characters,
+        // so the "td" parser won't get confused when parsing "| {{...|...}} |".
         return input.replace(/{{(.*?)}}/g, function(match, text){
             return '{{'+text.replace(/\|/g, String.fromCharCode(0xFFFC))+'}}';
         });
     };
 
-    var _que_sera_sera = function(output) {
+    var _unescape_pipes = function(output) {
         // Unescape 0xFFFC back to |.
         return output.replace(/{{(.*?)}}/g, function(match, text) {
             return '{{'+text.replace(new RegExp(String.fromCharCode(0xFFFC), 'g'), '|')+'}}';
@@ -136,9 +137,9 @@ proto.create_grammar = function() {
         },
 
         td_multi_line_block: {
-            pre_match: _ceci_ne_pas_une_pipe,
+            pre_match: _escape_pipes,
             match: /\|[ \t]*\n?(\s*?[^|]*?\n[^|]*?)[ \t]*(?=\|)/,
-            post_match: _que_sera_sera,
+            post_match: _unescape_pipes,
             blocks: ['pre', 'html', 'hr', 'hx', 'waflparagraph', 'ol', 'ul', 'blockquote', 'p', 'empty', 'else'],
             filter: function(node) {
                 node.type = 'td';
@@ -147,9 +148,9 @@ proto.create_grammar = function() {
         },
 
         td_single_line_block: {
-            pre_match: _ceci_ne_pas_une_pipe,
+            pre_match: _escape_pipes,
             match: /\|[ \t]*\n?((?:\*+|#+|>+|\^+)\s[^|]*?)[ \t]*(?=\|)/,
-            post_match: _que_sera_sera,
+            post_match: _unescape_pipes,
             blocks: ['hx', 'ol', 'ul'],
             filter: function(node) {
                 node.type = 'td';
@@ -158,9 +159,9 @@ proto.create_grammar = function() {
         },
 
         td_phrase: {
-            pre_match: _ceci_ne_pas_une_pipe,
+            pre_match: _escape_pipes,
             match: /\|[ \t]*\n?(\s*?[^|]*?)[ \t]*(?=\|)/,
-            post_match: _que_sera_sera,
+            post_match: _unescape_pipes,
             phrases: all_phrases,
             filter: function(node) {
                 node.type = 'td';
