@@ -5,8 +5,8 @@ Bug 1654: Email this page shows ldap usernames instead of email addresses
 | *Comment* | Test Case: Email page shows LDAP emails |  |
 
 | *Comment* | Set up the LDAP user info, then run the basic "Email this page" test |  |
-| set | username | devnull3 |
-| set | email | devnull3@socialtext.com |
+| set | username | devnullx |
+| set | email | devnullx@socialtext.com |
 | set | password | ldapd3v |
 | st-logoutin | %%username%% | %%password%% |
 | include | [Test Case: Email page shows emails] |  |

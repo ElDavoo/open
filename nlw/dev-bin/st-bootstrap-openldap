@@ -372,6 +372,15 @@ sn: Three
 mail: devnull3@socialtext.com
 userPassword: ldapd3v
 
+# Another QA test user
+dn: cn=devnullx,dc=socialtext,dc=com
+objectClass: inetOrgPerson
+cn: devnullx
+gn: devnullx
+sn: LDAP Dev
+mail: devnullx@socialtext.com
+userPassword: ldapd3v
+
 # Taro Yamada (Note how gn and sn are reversed in the cn)
 dn: cn=山田太郎,dc=socialtext,dc=com
 objectClass: inetOrgPerson

@@ -8,7 +8,7 @@ Carefully set up the environment so the tests will run.
 | set | password | d3vnu11l |
 | set | email | wikitester@ken.socialtext.net |
 
-| *Comment* | Disable LDAP and remove user devnull3 from the system |  |
+| *Comment* | Disable LDAP and remove user devnullx from the system |  |
 | include | [Disable LDAP] |  |
 
 | *Comment* | You must immediately logout since your LDAP user is gone |  |

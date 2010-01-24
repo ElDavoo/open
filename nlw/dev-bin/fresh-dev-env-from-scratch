@@ -98,10 +98,8 @@ set -e
 
 [ $BENCHMARK == 1 ] && st-config set benchmark_mode 1
 
-[ $HELPEN == 1 ] && st-admin import-workspace --tarball $ST_CURRENT/nlw/share/l10n/help/help-en.tar.gz
-
 if [ $PAUSE == 0 ]; then
-    echo "Starting in dual-Apache mode"
+    echo "Starting nginx and apache-perl"
     dev-bin/nlwctl start
 else
     echo "Skipping NLW startup, you need do it manually"

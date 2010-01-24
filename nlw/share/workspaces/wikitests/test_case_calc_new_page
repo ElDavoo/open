@@ -49,7 +49,8 @@
 | is_checked_ok | st-newspreadsheet-duplicate-option-suggest |  |
 | wait_for_element_present_ok | st-newpage-duplicate-okbutton | 30000 |
 | click_and_wait | st-newspreadsheet-duplicate-okbutton |  |
-| location_like | /%%workspace%%/index.cgi?%%short_username%%_np_ss_%%start_time%%_two |  |
+| wait_for_element_visible_ok | st-page-titletext | 30000 |
+| text_like | st-page-titletext | qr/%%short_username%%.+np ss %%start_time%% Two/ism |
 
 | *Comment* | Test Case: Calc New Page Teardown |  |
 | st-admin | purge-page --workspace %%workspace%% --page ns_%%start_time%% | was purged |

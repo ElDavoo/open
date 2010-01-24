@@ -16,15 +16,15 @@
 | type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% Sig |
 | click_and_wait | st-signal-submit |  |
 | wait_for_text_present_ok | less than a minute ago | 3000 |
-| wait_for_element_present_ok | link=%%short_username%% | 3000 |
+| wait_for_element_present_ok | //a[contains(text(),'%%short_username%%')] | 3000 |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 
 | click_and_wait | link=Mine |  |
-| wait_for_element_present_ok | link=%%short_username%% | 30000 |
+| wait_for_element_present_ok | //a[contains(text(),'%%short_username%%')] | 30000 |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 
 | click_and_wait | link=People I follow |  |
-| wait_for_element_present_ok | link=%%short_username%% | 30000 |
+| wait_for_element_present_ok | //a[contains(text(),'%%short_username%%')] | 30000 |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 
 | *Comment* | Test Case: Mobile Signals. Send 10 more signals |  |

@@ -4,10 +4,10 @@ Any LDAP user specific testcases should go here.
 
 Every test should override the passed in values as follows:
 
-set | username | devnull3 |
-set | email | devnull3@socialtext.com |
+set | username | devnullx |
+set | email | devnullx@socialtext.com |
 set | password | ldapd3v |
-set | email_esc | devnull3\@socialtext.com |
+set | email_esc | devnullx\@socialtext.com |
 
 LDAP test cases must explicitly use the above ldap username, email, and pwd so LDAP Testcases can be called from tests where a Default user is logged in.
 

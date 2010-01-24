@@ -66,7 +66,7 @@
 | st-widget-title-like | people_widget | Membership |
 | st-select-widget-frame | people_widget |  |
 | wait_for_text_present_ok | %%username%% | 30000 |
-| wait_for_element_visible_ok | link=%%username%% | 30000 |
+| text_like | //a[contains(@href,'?profile')] | %%username%% |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |
@@ -96,7 +96,7 @@
 | *Comment* | Test Case: User Creates Group. Try UTF-8 group name |  |
 | set | groupname | ἀπὸ τὸ Ἄξιον ἐστί %%start_time%% |
 | *Comment* | Test Case: User Creates Group named %%groupname%%. |  |
-| st-admin | create-group --name "%%groupname%%" --email %%email%%| %%groupname%% Group has been created |
+| st-admin | create-group --name "%%groupname%%" --email %%email%% | %%groupname%% Group has been created |
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |
 | open | /?create_group |  |

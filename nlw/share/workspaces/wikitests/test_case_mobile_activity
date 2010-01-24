@@ -12,12 +12,16 @@
 | add_member | %%username%% | %%ma%% |
 | add_member | %%mau%% | %%ma%% |
 
+| *Comment* | Test Case: Mobile Activity. CANNOT USE update-page  BECAUSE NO EVENTS ARE CREATED |  |
+
 | *Comment* | Test Case: Mobile Activity. %%username%% starts a conversation in %%ma%% |  |
 | st-create-wikipage | %%ma%% | Mobile Activity %%start_time%% 0000 |
 
 | *Comment* | Test Case: Mobile Activity. %%mau%% creates 11 pages in %%ma%% |  |
 
 | st-logoutin | %%mau%% | %%password%% |  |
+
+| *Comment* | Test Case: Mobile Activity. CANNOT USE update-page  BECAUSE NO EVENTS ARE CREATED |  |
 
 | st-create-wikipage | %%ma%% | Mobile Activity %%start_time%% 0001 |
 | st-create-wikipage | %%ma%% | Mobile Activity %%start_time%% 0002 |
@@ -94,7 +98,7 @@
 | click_and_wait | link=Activity |  |
 | click_and_wait | link=People I follow |  |
 | wait_for_element_not_present_ok | link=%%maus%% | 3000 |
-| text_unlike | //body | qr/%%maus%%.+edited.+Mobile Activity %%start_time%% 0000.+in.+%%ma%%/ism |  |
+| text_unlike | //body | qr/%%maus%%.+edited.+Mobile Activity %%start_time%% 0000.+in.+%%ma%%/ism |
 
 | *Comment* | Test Case: Mobile Activity Teardown |  |
 | st-admin | delete-workspace --w %%ma%% --no-export | has been deleted |

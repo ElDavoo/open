@@ -5,7 +5,7 @@
 
 | st-admin | create-account --name '%%new_acct%%' | was created |
 | st-admin | create-workspace --name %%new_workspace%% --title %%new_workspace%% --account '%%new_acct%%' | was created |
-| st-admin | give-accounts-admin --e %%username%% | now has |
+| st-admin | give-accounts-admin --u %%username%% | now has |
 
 | *Comment* | Test case: Business Control Panel create a user, add as admin, verify admin |  |
 | open_ok | /nlw/control/user |  |

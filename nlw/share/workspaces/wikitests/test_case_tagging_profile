@@ -117,8 +117,7 @@ text_like | 所以 | |
 | wait_for_element_visible_ok | link=%%fname%% %%lname%% | 30000 |
 | wait_for_element_visible_ok | link=Tools | 30000 |
 | click_ok | link=Add this tag to me |  |
-| wait_for_element_visible_ok | link=%%short_username%% | 30000 |
-| text_like | link=%%short_username%% | %%short_username%% |
+| wait_for_element_visible_ok | //a[contains(text(),'%%short_username%%')] | 30000 |
 
 | *Comment* | Test Case: Tagging Profile. Add tag to someone |  |
 | click_ok | link=Add this tag to someone |  |
