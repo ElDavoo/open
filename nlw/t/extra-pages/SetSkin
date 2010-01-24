@@ -53,6 +53,7 @@ function set_skin (skin) {
         'avd-ict',
         'brainware',
         'cab',
+        'cae',
         'cafas',
         'califor',
         'cfia',
@@ -74,6 +75,7 @@ function set_skin (skin) {
         'emersol',
         'euriki',
         'evergreen',
+        'expion',
         'fei',
         'fona',
         'gluelondon',
@@ -101,8 +103,11 @@ function set_skin (skin) {
         'naag',
         'netel',
         'netsuite',
+        'ogilvymather',
+        'ohiostem',
         'omidyar',
         'omidyar-archive',
+        'on24',
         'osbornetrans',
         'oxunpr',
         'prodrive',
@@ -123,6 +128,7 @@ function set_skin (skin) {
         'tenacity',
         'tetrapak',
         'thrivent',
+        'usgbc',
         'transunion',
         'voce',
         'washcost',
@@ -131,6 +137,7 @@ function set_skin (skin) {
         'wmg',
         'youtube',
         'zehnder',
+        'zynga',
     ];
 
     for (i=0; i<skins.length; i++) {
