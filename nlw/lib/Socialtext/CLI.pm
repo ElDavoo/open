@@ -3671,15 +3671,15 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   list-groups [--account or --workspace]
   show-group-config --group
-  create-group --ldap-dn [--account]
+  create-group (--ldap-dn or --name) [--account] [--email]
   show-members --group 
   add-member --group [ --account or --workspace ]
   add-member [ --username or --email ] --group 
   add-workspace-admin --group  --workspace
   add-group-admin --group [ --username or --email ]
+  remove-group-admin --group [ --username or --email ]
   remove-member --group [--account or --workspace]
   remove-member [ --username or --email ] --group
-  remove-group-admin --group [ --username or --email ]
 
   OTHER
 
