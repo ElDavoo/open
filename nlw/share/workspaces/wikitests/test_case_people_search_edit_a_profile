@@ -47,7 +47,7 @@
 | wait_for_text_present_ok | %%first%% %%last%% | 30000 |
 | text_like | st-editing-tools-edit | %%first%% %%last%% |
 
-| *Comment* | Test Case: Edit Profile. WAIT FOR THE PEOPLE INDEXER TO INDEX THIS PERSON |  |
-| pause | 10000 |  |
+| *Comment* | Test Case: Edit Profile. Index %%first%% %%last%% profile |  |
+| st-process-jobs | |  |
 
 | *Comment* | Test Case: People Search Edit a Profile COMPLETED |  |
