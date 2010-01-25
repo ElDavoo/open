@@ -66,6 +66,8 @@ fi
 
 # when switching to nginx you might have apache2 running still
 killall /usr/sbin/apache2 >/dev/null 2>&1 || true;
+# ditto for the old SCGI json proxy
+killall json-proxy.scgi 2>&1 || true;
 
 # Create the basic dev-env
 rm -rf $HOME/.nlw/
