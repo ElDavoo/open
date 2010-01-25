@@ -64,7 +64,8 @@ sub run_as_script {
     print $script_fh $code;
     close $script_fh;
 
-    my $rc = system($^X, '-w', '-Mstrict', $script_name);
+    # Include the lib dir for when not running under `prove -l`
+    my $rc = system($^X, '-w', '-Mstrict', '-Ilib', $script_name);
     ok !$rc, "$name ran ok";
     ok -f $logfile && -r _, "$name created log file";
 
