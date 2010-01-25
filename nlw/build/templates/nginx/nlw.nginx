@@ -27,7 +27,7 @@
             location /[% cache_name %] {
               internal;
               root [% config.cache_dir %];
-              expires -1;
+              expires epoch;
               add_header Cache-Control "public, must-revalidate, max-age=0, pre-check=0, post-check=0";
               add_header X-Cache "HIT from [% cache_name %]";
             }
