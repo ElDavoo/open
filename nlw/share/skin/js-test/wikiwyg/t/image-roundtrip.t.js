@@ -18,21 +18,21 @@ else {
 /* Test
 === uj-232 - Image urls not roundtripping in IE
 --- wikitext
-http:base/images/docs/search.png
+http://www.socialtext.com/images/logo.png
 
-> http:base/images/docs/search.png
+> http://www.socialtext.com/images/logo.png
 
 === wafl inside a P tag works
 --- html
-<p><span><img alt="base" src="http://talc.socialtext.net:21002/admin/base/images/doc/search.png" border="0"><!-- wiki: http:base/images/docs/search.png --></span></p>
+<p><span><img alt="base" src="http://www.socialtext.com/images/logo.png" border="0"><!-- wiki: http://www.socialtext.com/images/logo.png --></span></p>
 --- text
-http:base/images/docs/search.png
+http://www.socialtext.com/images/logo.png
 
 === wafl inside a BLOCKQUOTE tag works
 --- html
-<blockquote><span><img alt="base" src="http://talc.socialtext.net:21002/admin/base/images/doc/search.png" border="0"><!-- wiki: http:base/images/docs/search.png --></span></blockquote>
+<blockquote><span><img alt="base" src="http://www.socialtext.com/images/logo.png" border="0"><!-- wiki: http://www.socialtext.com/images/logo.png --></span></blockquote>
 --- text
-> http:base/images/docs/search.png
+> http://www.socialtext.com/images/logo.png
 
 */
 
