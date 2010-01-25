@@ -11,6 +11,7 @@
 | set | non_grp_mbr_short | gui_search_non_%%start_time%% |
 | set | grp_mbr | %%grp_mbr_short%%@matt.socialtext.net |
 | set | non_grp_mbr | %%non_grp_mbr_short%%@matt.socialtext.net |
+
 | st-admin | create-user --e %%grp_mbr%% --p %%password%% --account %%group_acct%% | created |
 | st-admin | create-user --e %%non_grp_mbr%% --p %%password%% --account %%group_acct%% | created |
 | st-admin | add-member --group %%group_id%% --email %%grp_mbr%% | is now a member of the %%group_name%% Group |
@@ -20,15 +21,15 @@
 | post-signal | SearchForThis %%start_time%% 01 |  |
 | pause | 3000 |  |
 | post-signal | SearchForThis %%start_time%% 12 |  |
-| *Comment* | Test Case: Signals Search. Pause 20 sec for Signals indexer |  |
 
 | *Comment* | Test Case: Groups UI Search Signals by Group. Send 2 signals %%non_grp_mbr%% |  |
 | http-user-pass | %%non_grp_mbr%% | %%password%% |
 | post-signal | SearchForThis %%start_time%% 20 |  |
 | pause | 3000 |  |
 | post-signal | SearchForThis %%start_time%% 25 |  |
-| *Comment* | Test Case: Signals Search. Pause 20 sec for Signals indexer |  |
-| pause | 20000 | wait for Signals Indexer to run |
+
+| *Comment* | Test Case: Signals Search.  Process jobs |  |
+| st_process_jobs |  |   |
 
 | *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Search within group, see signal |  |
 | st-logoutin | %%group_user%% | %%password%% |

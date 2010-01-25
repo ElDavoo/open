@@ -1,7 +1,7 @@
 * Fixture: SocialWidgets
 
 TODO: use follow/unfollow to test Signals switch on Everyone/Following
-TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnull3
+TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnullx
 
 | *Comment* | Test Case: Follow |  |
 
@@ -21,8 +21,8 @@ TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnull3
 | type_ok | password | %%password%% |
 | click_and_wait | login_btn |  |
 
-| *Comment* | WAIT UNTIL NEWLY CREATED USERS ARE INDEXED |  |
-| pause | 10000 |  |
+| *Comment* | Test Case: Follow. Process jobs |  |
+| st_process_jobs |  |
 
 | *Comment* | Test Case: Follow. Open %%fFname%% profile |  |
 | wait_for_element_visible_ok | link=People | 60000 |
@@ -129,8 +129,8 @@ TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnull3
 | wait_for_element_visible_ok | st-search-term | 60000 |
 | type_ok | st-search-term | %%username%% |
 | click_and_wait | st-search-submit |  |
-| wait_for_element_visible_ok | link=%%short_username%% | 60000 |
-| click_and_wait | link=%%short_username%% |  |
+| wait_for_element_visible_ok | //a[contains(text(),'%%short_username%%')] | 60000 |
+| click_and_wait | //a[contains(text(),'%%short_username%%')] |  |
 | wait_for_element_visible_ok | link=Follow this person | 60000 |
 | click_ok | link=Follow this person |  |
 | wait_for_element_visible_ok | link=Stop following this person | 60000 |
@@ -143,21 +143,23 @@ TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnull3
 | st-select-widget-frame | follow_widget |  |
 | wait_for_element_visible_ok | //td[contains(text(),'Follows')] | 60000 |
 | click_ok | //td[contains(text(),'Follows')] |  |
-| wait_for_element_visible_ok | link=%%short_username%% | 60000 |
+| wait_for_element_visible_ok | //a[contains(text(),'%%short_username%%')] | 60000 |
 
 | *Comment* | Test Case: Follow. Is %%short_username%% a Follower of %%fFname%% |  |
 | wait_for_element_visible_ok | //td[contains(text(),'Followers')] | 60000 |
 | click_ok | //td[contains(text(),'Followers')] |  |
-| wait_for_element_visible_ok | link=%%short_username%% | 60000 |
+| wait_for_element_visible_ok | //a[contains(text(),'%%short_username%%')] | 60000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Follow. Open profile for %%short_username%% |  |
 | wait_for_element_visible_ok | link=People | 60000 |
 | click_and_wait | link=People |  |
 | text_like | All People |  |
-| *Comment* | use the profile link that is hidden in the People pulldown menu |  |
-| wait_for_element_present_ok | link=%%short_username%% | 60000 |
-| click_and_wait | link=%%short_username%% |  |
+| wait_for_element_visible_ok | st-search-term | 60000 |
+| type_ok | st-search-term | %%username%% |
+| click_and_wait | st-search-submit |  |
+| wait_for_element_visible_ok | //a[contains(text(),'%%short_username%%')] | 60000 |
+| click_and_wait | //a[contains(text(),'%%short_username%%')] |  |
 
 | *Comment* | Test Case: Follow. Verify %%short_username%% follows %%fFname%% |  |
 | wait_for_text_present_ok | Colleagues | 60000 |
@@ -186,8 +188,8 @@ TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnull3
 | wait_for_element_visible_ok | st-search-term | 60000 |
 | type_ok | st-search-term | %%username%% |
 | click_and_wait | st-search-submit |  |
-| wait_for_element_visible_ok | link=%%short_username%% | 60000 |
-| click_and_wait | link=%%short_username%% |  |
+| wait_for_element_visible_ok | //a[contains(text(),'%%short_username%%')] | 60000 |
+| click_and_wait | //a[contains(text(),'%%short_username%%')] |  |
 | wait_for_element_visible_ok | link=Follow this person | 60000 |
 
 | *Comment* | Test Case: Follow. %%fFname%% Verifies stopped following %%short_username%% |  |

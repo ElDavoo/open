@@ -20,9 +20,9 @@
 | *Comment* | Test Case: Signals Pagination. Use st-admin create-user since they may already exist |  |
 | st-admin | create_user --e %%a_username%% --p %%password%% --account %%hostname%% --f "%%a_name%%" |  |
 | st-admin | create_user --e %%z_username%% --p %%password%% --account %%hostname%% --f "%%z_name%%" |  |
-| st-admin | add-member --w ssp-%%start_time%% --e %%email%% | now has the role of 'member' in the |
 | st-admin | add-member --w ssp-%%start_time%% --e %%a_username%% | now has the role of 'member' in the |
 | st-admin | add-member --w ssp-%%start_time%% --e %%z_username%% | now has the role of 'member' in the |
+| st-admin | add-member --w ssp-%%start_time%% --u %%username%% | now has the role of 'member' in the |
 
 | *Comment* | This test uses post-signals to rapidly create signals. |  |
 | *Comment* | It creates a set of signals that can be searched and will appear |  |
@@ -38,12 +38,8 @@
 | http-user-pass | %%z_username%% | %%password%% |  |
 | post-signals | 22 | Pagination %%start_time%% | 41 |
 
-| *Comment* | Test Case: Signals Pagination. You have no choice but to wait until the Signals Indexer finishes. |  |  |
-| *Comment* | Test Case: Signals Pagination. If you don't you get partial search results |  |  |
-| *Comment* | Test Case: Signals Pagination. Pausing 30 seconds for Signals Indexing |  |  |
-| pause | 30000 |  |
-
-| http-user-pass | %%email%% | %%password%% |
+| *Comment* | Test Case: Signals Pagination. Process Jobs to index Signals |  |  |
+| st_process_jobs |  |  |
 
 | *Comment* | Test Case: Signals Pagination. Search for 44 Pagination %%start_time%% signals |  |
 | open_ok | /?signals |  |
@@ -53,18 +49,20 @@
 | type_ok | st-search-term | Pagination %%start_time%% |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
+
+| *Comment* | sort-picker is inside the search widget. Why does this wait work? |  |
 | wait_for_element_visible_ok | sort-picker | 30000 |
 | select_ok | sort-picker | label=Newest |
 
-| *Comment* | Test Case: Signals Pagination. Pause 30 seconds for widget to populate. I hate pause |  |
-| pause | 30000 | I hate Pause |
+| *Comment* | Test Case: Signals Pagination. Select widget, wait for population. |  |
+| *Comment* | Ken has tried and failed to get rid of pause. This widget is wonky. |  |
+| pause | 8000 | I Hate Pause |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
+| wait_for_text_present_ok | Search results | 60000 |
+| text_like | qr/Search results.+'Pagination %%start_time%%'/ism |  |
 
 | *Comment* | Test Case: Signals Pagination. Verify found Pagination %%start_time%% signals |  |
-| wait_for_text_present_ok | Search results | 30000 |
-| text_like | qr/Search results.+'Pagination %%start_time%%'/ism | |
-
 | wait_for_text_present_ok | Pagination %%start_time%% 43 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 44 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 45 | 30000 |
@@ -142,11 +140,11 @@
 | text-like | qr/%%a_name%%.+%%start_time%% 1.+%%a_name%%.+%%start_time%% 20/ism |  |
 | select_frame | relative=parent |  |
 
-| *Comment* | Test Case: Signals Pagination. Relevance. Send a more relevant signal AND a newer signal |  |
-
+| *Comment* | Test Case: Signals Pagination. Relevance. %%username%% Sends a more relevant signal AND a newer signal |  |
+| http-user-pass | %%username%% | %%password%% |  |
 | post-signals | 1 | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 63 |
 | post-signals | 1 | LessRelevant %%start_time%% | 64 |
-| pause | 8000 | I hate Pause |
+| st_process_jobs |  |  |
 
 | *Comment* | Test Case: Signals Pagination. Relevance. Find a more relevant signal |  |
 | open_ok | /?signals |  |
@@ -155,16 +153,19 @@
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
 | click_and_wait | st-search-submit |  |
-| pause | 8000 | I hate Pause |
+| pause | 8000 | I Hate Pause |
 
 | *Comment* | Test Case: Signals Pagination. Search will sort by Oldest (sticky). This is good. |  |
 
-| *Comment* | Test Case: Signals Pagination. Verify found more relevant signal |  |
+| *Comment* | Test Case: Signals Pagination. Select the widget again |  |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
 | wait_for_text_present_ok | Search results | 30000 |
-| text_like | qr/Search results.+'%%start_time%%'/ism | |
+| text_like | qr/Search results.+'%%start_time%%'/ism |  |
+| wait_for_element_visible_ok | sort-picker | 30000 |
 | select_ok | sort-picker | label=Relevance |
+
+| *Comment* | Test Case: Signals Pagination. Verify found more relevant signal |  |
 | wait_for_text_present_ok | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
 | text-like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 62/ism |  |
@@ -189,14 +190,35 @@
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
 | click_and_wait | st-search-submit |  |
-| pause | 8000 | I hate pause |
+| pause | 8000 | I Hate Pause |
 
 | *Comment* | Test Case: Signals Pagination. Verify irrelevant signal deleted |  |
 | st-name-widget | 3 | searchwidget |
 | st-select-widget-frame | searchwidget |  |
+| wait_for_text_present_ok | Search results | 30000 |
+| wait_for_text_present_ok | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 30000 |
+| wait_for_text_present_ok | %%start_time%% 62 | 30000 |
 | text_unlike | //body | LessRelevant %%start_time%% |
 | text_like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 62/ism |  |
+| select_frame | relative=parent |  |
 
+| *Comment* | Test Case: Signals Pagination. login as %%z_username%%, search for %%a_username%% signal |  |
+| st-logoutin | %%z_username%% | %%password%% |
+| open_ok | /?signals |  |
+| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_visible_ok | st-search-term | 30000 |
+| is_selected_ok | st-search-action | id=st-search-signals |
+| type_ok | st-search-term | Pagination %%start_time%% 5 |
+| click_and_wait | st-search-submit |  |
+| pause | 8000 | I Hate Pause |
+
+| *Comment* | Test Case: Signals Pagination. Verify no delete for non-sender %%z_username%% |  |
+| st-name-widget | 3 | searchwidget |
+| st-select-widget-frame | searchwidget |  |
+| wait_for_text_present_ok | Pagination %%start_time%% 5 | 30000 |
+| wait_for_element_not_present_ok | //a[@class='hideLink'] | 5000 |
+
+| *Comment* | Test Case: Signals Pagination TEARDOWN EARLY |
 | st-admin | delete-workspace --w ssp-%%start_time%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Signals Pagination. Verify clear |  |
@@ -205,7 +227,7 @@
 WHY DOESN'T CLICK AND WAIT WORK HERE? TIMES OUT EVEN THOUGH THE PAGE LOADS ...
 
 | click_ok | link=clear search results |  |
-| pause | 8000 | I hate pause |
+| pause | 8000 | I Hate pause |
 
 | *Comment* | Test Case: Signals Pagination. IE and Safari hang here, so just exit for now. |  |
 

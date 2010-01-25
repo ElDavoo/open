@@ -3,20 +3,27 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Groups Home Setup |  |
-| set | short_nopermuser | nopermuser %%start_time%% |
-| set | nopermuser | nopermuser-%%start_time%%@matt.socialtext.net |
 | set | groupname | Group-%%start_time%% |
-| create_group | %%groupname%% |  |
 | set | wsname | grp-ws-%%start_time%% |
 | set | wsname2 | other-grp-ws-%%start_time%% |
 
+| set | permuser | permuser-%%start_time%%@matt.socialtext.net |
+| set | short_permuser | permuser %%start_time%% |
+| set | nopermuser | nopermuser-%%start_time%%@matt.socialtext.net |
+| set | short_nopermuser | nopermuser %%start_time%% |
+
+| create_group | %%groupname%% |  |
+
+| st-admin | enable-plugin --all-accounts --plugin groups |  |
 | st-admin | create-workspace --title %%wsname%% --name %%wsname%% | was created |
 | st-admin | create-workspace --title %%wsname2%% --name %%wsname2%% | was created |
-| st-admin | add-member --e %%username%% --group %%group_id%% | is now a member of the |
-| st-admin | enable-plugin --all-accounts --plugin groups |  |
 | st-admin | add-member --workspace %%wsname%% --group %%group_id%% | now has the role of 'member' |
 | st-admin | add-member --workspace %%wsname2%% --group %%group_id%% | now has the role of 'member' |
 | st-admin | create-user --e %%nopermuser%% --p %%password%% | was created |
+| st-admin | create-user --e %%permuser%% --p %%password%% | was created |
+| st-admin | add-member --e %%permuser%% --group %%group_id%% | is now a member of the |
+
+| st-logoutin | %%permuser%% | %%password%% |
 
 | *Comment* | Test Case: Groups Make A New Page |  |
 | open_ok | /%%wsname%%/index.cgi?action=new_page |  |
@@ -44,7 +51,7 @@
 | type_ok | comment | comment-%%start_time%% |
 | wait_for_element_visible_ok | link=Save | 30000 |
 | click_ok | link=Save |  |
-| wait_for_text_present_ok | contributed by %%short_username%% | 30000 |
+| wait_for_text_present_ok | contributed by %%short_permuser%% | 30000 |
 | wait_for_text_present_ok | comment-%%start_time%% | 30000 |
 
 | *Comment* | Test Case: Groups Send A Signal to the Group |  |
@@ -94,12 +101,12 @@
 | text_like | //body | qr/System User.+minute.+ago.+added.+%%short_nopermuser%% to.+%%groupname%%/ism |
 | text_like | //body | qr/System User.+minute.+ago.+added.+%%groupname%% to.+%%wsname2%%/ism |
 | text_like | //body | qr/System User.+minute.+ago.+added.+%%groupname%% to.+%%wsname%%/ism |
-| text_like | //body | qr/System User.+minute.+ago.+added.+%%short_username%% to.+%%groupname%%/ism |
+| text_like | //body | qr/System User.+minute.+ago.+added.+%%short_permuser%% to.+%%groupname%%/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups Home Check People Widget |  |
 | st-select-widget-frame | people_widget |  |
-| wait_for_text_present_ok | %%username%% | 30000 |
+| wait_for_text_present_ok | %%permuser%% | 30000 |
 | wait_for_text_present_ok | %%nopermuser%% | 30000 |
 | select-frame | relative=parent |  |
 

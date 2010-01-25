@@ -4,10 +4,10 @@ This testcase traverses the UI to all the places that differ from the Default UI
 
 | *Comment* | Override username, email and password with LDAP values |  |
 
-| set | username | devnull3 |
-| set | email | devnull3@socialtext.com |
+| set | username | devnullx |
+| set | email | devnullx@socialtext.com |
 | set | password | ldapd3v |
-| set | email_esc | devnull3\@socialtext.com |
+| set | email_esc | devnullx\@socialtext.com |
 
 | *Comment* | %%username%% : %%password%% : %%email%% |  |
 
@@ -17,7 +17,7 @@ This testcase traverses the UI to all the places that differ from the Default UI
 | wait_for_element_visible_ok | username | 30000 |
 | text_like | Username: |  |
 
-| *Comment* | Test Case: Verify LDAP Enabled: I forgot my Password (LDAP users can't reset pwd) |
+| *Comment* | Test Case: Verify LDAP Enabled: I forgot my Password (LDAP users can't reset pwd) |  |
 | click_and_wait | link=I don't know my password. |  |
 | text_like | Socialtext password help |  |
 | type_ok | username | %%username%% |
@@ -47,9 +47,9 @@ This testcase traverses the UI to all the places that differ from the Default UI
 | text_like | contentContainer | Admin |
 | text_unlike | contentContainer | Reset Password |
 
-| *Comment* | Test Case: Verify LDAP Enabled: Profile should display appropriate Welcome message | |
-| open_ok | /st/dashboard | |
-| text-like | css=#controls .welcome | Dev Null Three |
+| *Comment* | Test Case: Verify LDAP Enabled: Profile should display appropriate Welcome message |  |
+| open_ok | /st/dashboard |  |
+| text-like | css=#controls .welcome | devnullx LDAP Dev |
 | text-unlike | css=#controls .welcome | New User |
 
 | *Comment* | Test Case: Verify LDAP Enabled COMPLETED |  |

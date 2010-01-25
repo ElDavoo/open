@@ -30,7 +30,7 @@
 | wait_for_element_visible_ok | link=Join to edit | 30000 |
 | wait_for_element_not_present_ok | link=Edit | 5000 |
 | click_and_wait | link=Join to edit |  |
-| location_like | /%%acct_ws%%/index.cgi |  |
+| wait_for_text_present_ok | %%acct%% |  |
 | wait_for_element_visible_ok | link=Edit | 5000 |
 | wait_for_element_visible_ok | link=Comment | 5000 |
 

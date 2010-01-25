@@ -5,7 +5,7 @@
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Create a target workspace |  |
 | st-admin | create-workspace --name %%newspace%% --title "%%newtitle%%" | qr/A new workspace named "%%newspace%%" was created/ |
-| st-admin | add-member --email %%email%% --workspace %%newspace%% | qr/%%username%% now has the role of 'member' in the %%newspace%% workspace/ |
+| st-admin | add-member --email %%email%% --workspace %%newspace%% | qr/%%username%%.+now has the role of 'member' in the %%newspace%% workspace/ism |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace Create test page |  |
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
