@@ -369,7 +369,7 @@ sub create_uwr {
     print " done!\n";
 }
 
-{
+if ($GROUPS) {
     print "Assigning ".$GROUP_USER_RATIO*$GROUPS." User->Group Roles";
 
     my $basis = 1.5*$GROUP_USER_RATIO; # +/- 50% variance
@@ -390,7 +390,7 @@ sub create_uwr {
     print " done!\n";
 }
 
-{
+if ($GROUPS) {
     print "Assigning ".$GROUP_WS_RATIO*$GROUPS." Group->WS Roles";
 
     my $basis = 1.5*$GROUP_WS_RATIO; # +/- 50% variance
