@@ -72,19 +72,6 @@ sub watchlist_links_only {
     return $p;
 }
 
-sub watchlist_dashboard_length {
-    my $self = shift;
-    my $p = $self->new_preference('watchlist_dashboard_length');
-    $p->query(loc('How many items from your watchlist should be shown on the dashboard?'));
-    $p->type('pulldown');
-    my $choices = [
-        5 => 5, 10 => 10, 15 => 15, 20 => 20
-    ];
-    $p->choices($choices);
-    $p->default(5);
-    return $p;
-}
-
 sub page_watched {
     my $self      = shift;
     my $watchlist = Socialtext::Watchlist->new(

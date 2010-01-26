@@ -176,7 +176,7 @@ sub _get_watchlist_info {
                         : undef),
             preview => (  $show_preview ? $page->summary : '' ),
         };
-        last if @pages >= $self->hub->favorites->preferences->watchlist_dashboard_length->value;
+        last if @pages >= 5;
      }
     return {
         pages => \@pages,
