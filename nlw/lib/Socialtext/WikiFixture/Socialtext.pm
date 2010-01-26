@@ -730,7 +730,7 @@ sub st_appliance_config {
     my $verify = shift;
     $verify = $self->quote_as_regex($verify) if $verify;
     #ONLY runs on an appliance
-    if (!Socialtext::AppConfig::_startup_user_is_human_user()) {
+    if (!Socialtext::AppConfig->startup_user_is_human_user()) {
        #On An Appliance
        my $str = "sudo st-appliance-config $options";
        diag $str;

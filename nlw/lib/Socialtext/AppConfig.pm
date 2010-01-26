@@ -32,7 +32,7 @@ my $StartupUser = getpwuid($>);
 my @obviously_not_human_users = qw( www-data wwwrun nobody daemon );
 my %obviously_not_human_users = map {($_,1)} @obviously_not_human_users;
 
-sub _startup_user_is_human_user {
+sub startup_user_is_human_user {
     return 0 if $obviously_not_human_users{ $StartupUser->name };
 
     # XXX - This is Debian and OSX specific. I doubt there's a 100%
@@ -125,14 +125,14 @@ sub is_default {
 }
 
 sub _default_data_root {
-    return ( _startup_user_is_human_user()
+    return ( startup_user_is_human_user()
              ? File::Spec->catdir( _user_root(), 'root' )
              : get_prefixed_dir("webroot"));
 }
 
 sub _default_code_base {
     return (
-        _startup_user_is_human_user()
+        startup_user_is_human_user()
         ? File::Spec->catdir( _user_checkout_dir(), 'share' )
         : get_prefixed_dir("sharedir")
     );
@@ -184,13 +184,13 @@ sub _default_change_event_queue_dir {
 }
 
 sub _cache_root_dir {
-    return ( _startup_user_is_human_user()
+    return ( startup_user_is_human_user()
              ? File::Spec->catdir( _user_root(), 'cache' )
              : get_prefixed_dir('cachedir'));
 }
 
 sub _default_pid_file_dir {
-    return ( _startup_user_is_human_user()
+    return ( startup_user_is_human_user()
              ? File::Spec->catfile( _user_root(), 'run' )
              : get_prefixed_dir('piddir'));
 }
@@ -207,14 +207,14 @@ Returns the location that executable scripts should be stored at.
 =cut
 
 sub bin_path {
-    if ( _startup_user_is_human_user() ) {
+    if ( startup_user_is_human_user() ) {
         return File::Spec->catfile( _user_checkout_dir(), 'bin' );
     }
     return $Config{installscript};
 }
 
 sub _default_db_name {
-    return 'NLW' unless _startup_user_is_human_user();
+    return 'NLW' unless startup_user_is_human_user();
 
     my $name = 'NLW_' . $StartupUser->name;
     $name .= '_testing' if $ENV{HARNESS_ACTIVE};
@@ -227,7 +227,7 @@ sub _default_db_name {
 
 sub _default_solr_base {
     my $base = 'http://localhost:8983/solr';
-    return "$base/core0" unless _startup_user_is_human_user();
+    return "$base/core0" unless startup_user_is_human_user();
 
     my $name = $StartupUser->name;
     $name .= '_testing' if $ENV{HARNESS_ACTIVE};
@@ -241,7 +241,7 @@ sub _default_solr_base {
 sub _default_schema_name { 'socialtext' }
 
 sub _default_db_user {
-    return ( _startup_user_is_human_user()
+    return ( startup_user_is_human_user()
              ? $StartupUser->name
              : 'nlw' )
 }
@@ -406,7 +406,7 @@ sub _find_config_dirs {
 
     if ( !$ENV{HARNESS_ACTIVE} ) {
         push @dirs, '/etc/socialtext';
-        if ( _startup_user_is_human_user() ) {
+        if ( startup_user_is_human_user() ) {
             unshift @dirs, $StartupUser->dir . '/.nlw/etc/socialtext';
         }
     }

@@ -96,7 +96,7 @@ sub _ldap_root_dir {
         # NOTE: although Test::Socialtext::Environment provides a "root_dir()"
         # method, we *DON'T* want to use that; we're not necessariy running
         # unit tests.
-        if (Socialtext::AppConfig->_startup_user_is_human_user()) {
+        if (Socialtext::AppConfig->startup_user_is_human_user()) {
             $ldap_root_dir = Socialtext::AppConfig->_user_root();
         }
         else {

@@ -2035,7 +2035,7 @@ sub _change_plugin {
 
 sub st_catchup_logs {
    my $self = shift;
-   if (Socialtext::AppConfig::_startup_user_is_human_user()) {
+   if (Socialtext::AppConfig->startup_user_is_human_user()) {
        #In Dev Env
        my $current_dir = cwd;
        my $new_dir =  $ENV{ST_CURRENT} . "/socialtext-reports/";

@@ -22,7 +22,7 @@ my $sharedir = $config->code_base;
 my @dicdir = ( dicdir => catdir( $sharedir, "l10n", "mecab" ) );
 
 # Generate mecab files if this is a dev-env and it doesn't exist.
-if ( $config->_startup_user_is_human_user ) {
+if ( $config->startup_user_is_human_user ) {
     unless ( -e catfile( $dicdir[1], "dicrc" ) ) {
         my $dir    = dirname(__FILE__);
         my $script = abs_path(catfile(

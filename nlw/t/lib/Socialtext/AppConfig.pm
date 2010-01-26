@@ -50,7 +50,7 @@ sub web_hostname { 'mock_web_hostname' }
 sub custom_http_port { $CUSTOM_HTTP_PORT }
 sub instance { Socialtext::AppConfig->new }
 
-sub _startup_user_is_human_user { 1 }
+sub startup_user_is_human_user { 1 }
 
 sub _user_root { "$ENV{HOME}/.nlw" }
 

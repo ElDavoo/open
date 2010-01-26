@@ -154,7 +154,7 @@ sub new {
         $self->_syslog_output;
         $self->_screen_output if $ENV{NLW_DEBUG_SCREEN};
         $self->_devenv_output
-            if Socialtext::AppConfig->_startup_user_is_human_user();
+            if Socialtext::AppConfig->startup_user_is_human_user();
     };
     warn $@ if $@;
 
