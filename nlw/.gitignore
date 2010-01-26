@@ -415,3 +415,4 @@ t/wikitests/miki/signals-to-network.wiki
 t/Socialtext/Signal/recent.t
 build/templates/nginx/conf.d/json-proxy.tt2
 t/wikitests/frontend/http-keep-alive.wiki
+t/Socialtext/Gadgets/Gadget-expand.t
