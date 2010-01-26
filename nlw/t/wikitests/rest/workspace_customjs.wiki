@@ -11,7 +11,6 @@ Needed for integration with Lotus Connections; the "LC->ST Connector" that IBM d
 | st-admin  | give-accounts-admin --email %%username%%                      | now has                       |                                                                                          |
 | POST      | /data/workspaces                                              | Content-Type=application/json | { "name":"%%wksp%%", "title":"%%wksp%%", "account_id":"1", "customjs_uri":"/monkey.js" } |
 | code-is   | 201                                                           |                               |                                                                                          |
-| st-admin  | add-workspace-admin --email %%username%% --workspace %%wksp%% | now has                       |                                                                                          |
 | GET       | /data/workspaces/%%wksp%%                                     | application/json              |                                                                                          |
 | code-is   | 200                                                           |                               |                                                                                          |
 | body-like | "customjs_uri":"/monkey.js"                                   |                               |                                                                                          |

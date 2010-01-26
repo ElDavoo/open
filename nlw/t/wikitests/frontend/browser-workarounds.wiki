@@ -9,24 +9,22 @@ Test many of the different browser workarounds.
 | SET | blackberry_ua | BlackBerry8700/4.1.0 Profile/MIDP-2.0 Configuration/CLDC-1.1 |
 | standard-test-setup |
 
-| *Comment* | By default, javascript is not gzipped |
-| GET                | %%js_gz_uri%%    |                          |
-| Code-is            | 200              |                          |
-| header-is          | Content-Type     | application/x-javascript |
-| header-isnt        | Content-Encoding | gzip                     |
+| *Comment*   | By default, javascript is not gzipped |                                     |
+| GET         | %%js_gz_uri%%                         |                                     |
+| Code-is     | 301                                   |                                     |
+| header-like | Location                              | skin/s3/javascript/socialtext-s3.js |
 
-| *Comment*          | Javascript should be gzipped if available |
-| GET                | %%js_gz_uri%% |  | Accept-Encoding=gzip |
-| Code-is            | 200              |                          |
-| header-is          | Content-Type     | application/x-javascript |
-| header-is          | Content-Encoding | gzip                     |
+| *Comment* | Javascript should be gzipped if available |                        |                      |
+| GET       | %%js_gz_uri%%                             |                        | Accept-Encoding=gzip |
+| Code-is   | 200                                       |                        |                      |
+| header-is | Content-Type                              | application/javascript |                      |
+| header-is | Content-Encoding                          | gzip                   |                      |
 
-| *Comment*      | Disable gzip for IE6 |                          |
-| set-user-agent | %%ie6_ua%%           |                          |
-| GET            | %%js_gz_uri%%        |                          |
-| Code-is        | 200                  |                          |
-| header-is      | Content-Type         | application/x-javascript |
-| header-isnt    | Content-Encoding     | gzip                     |
+| *Comment*      | Disable gzip for IE6 |                                     |
+| set-user-agent | %%ie6_ua%%           |                                     |
+| GET            | %%js_gz_uri%%        |                                     |
+| Code-is        | 301                  |                                     |
+| header-like    | Location             | skin/s3/javascript/socialtext-s3.js |
 
 | *Comment*      | Mobile browsers are redirected (Android) |            |
 | set-user-agent | %%android_ua%%                           |            |

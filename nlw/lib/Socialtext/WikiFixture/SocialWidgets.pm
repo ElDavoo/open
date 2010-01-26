@@ -4,8 +4,7 @@ use strict;
 use warnings;
 use base 'Socialtext::WikiFixture::Socialtext';
 use Test::More;
-use URI;
-use URI::QueryParam;
+use Socialtext::URI;
 use Cwd;
 
 =head1 NAME
@@ -63,7 +62,9 @@ You should navigate to the container URL using normal Selenese test command like
 =cut
 sub st_empty_container { 
     my ($self) = @_;
-    my $location = $self->_adjust_location(action => "clear_widgets");
+    my $location = Socialtext::URI::uri(
+        path => '/st/dashboard', query => { clear => 1 },
+    );
     eval {
         $self->{selenium}->open($location);
         $self->{selenium}->wait_for_page_to_load(10000);
@@ -81,7 +82,9 @@ You should navigate to the container URL using normal Selenese test command like
 =cut
 sub st_reset_container {
     my ($self) = @_;
-    my $location = $self->_adjust_location(action => "reset_container");
+    my $location = Socialtext::URI::uri(
+        path => '/st/dashboard', query => { reset => 1 },
+    );
     eval {
         $self->{selenium}->open($location);
         $self->{selenium}->wait_for_page_to_load(10000);
@@ -110,9 +113,13 @@ sub st_add_widget {
     # backwards compat:
     $widgetpath = "file:$widgetpath" unless $widgetpath =~ m{^\w+:};
 
-    my $location = $self->_adjust_location(action => "add_widget", 
-                                           src => $widgetpath,
-                                           container_id => $self->_containerID);
+    my $location = Socialtext::URI::uri(
+        path => '/st/dashboard',
+        query => {
+            add_widget => 1,
+            src => $widgetpath,
+        },
+    );
     eval {
         my @widgetsbefore = $self->_getWidgetList;
         $self->{selenium}->open($location);
@@ -563,18 +570,6 @@ sub st_find_user {
     ok(!$@, 'st-find-user');
 }   
 
-
-sub _adjust_location {
-    my ($self, %params) = @_;
-
-    (my $uriraw = $self->{selenium}->get_location()) =~ s/;/&/g;
-    my $uri = URI->new($uriraw);
-    while (my ($k,$v) = each %params) {
-        $uri->query_param($k, $v);
-    }
-    (my $adjusted_uri = $uri->as_string) =~ s/&/;/g;
-    return $adjusted_uri;
-}
 
 sub _getWidgetList {
     my ($self) = @_;
