@@ -58,7 +58,7 @@
     # Old style container rewrites
     if ($args ~ ^signals\/q\/(.+)) {
         set $signals_q $1;
-        rewrite ^/$ /st/signals?q=$signals_q last;
+        rewrite ^/$ /st/signals?q=$signals_q? redirect;
     }
     if ($args ~ ^([^=]+)$) {
         set $container $1;
