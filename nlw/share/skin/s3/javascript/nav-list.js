@@ -13,13 +13,26 @@ $.fn.navList = function(opts) {
         success: function(data) {
             if (opts.sort) data = data.sort(opts.sort);
             $(self).each(function() {
-                $(this).append(Jemplate.process('nav-list.tt2', {
+                $(this).html(Jemplate.process('nav-list.tt2', {
                     loc: loc,
                     data: data,
                     opts: opts
                 }));
             });
         }
+    });
+};
+
+$.fn.peopleNavList = function () {
+    $(this).navList({
+        url: "/data/people/" + Socialtext.userid + "/watchlist",
+        icon: function(p) { return '/data/people/' + p.id + '/small_photo' },
+        href: function(p) { return '/st/profile/' + p.id },
+        title: function(p) { return p.best_full_name },
+        emptyMessage: loc("Currently, you are not following any people."),
+        actions: [
+            [ loc("People Directory..."), "/?action=people" ]
+        ]
     });
 };
 

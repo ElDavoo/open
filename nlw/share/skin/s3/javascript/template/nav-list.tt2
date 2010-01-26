@@ -1,3 +1,6 @@
+[%- FOR action = opts.actions -%]
+    <li class="dropaction"><a href="[% action.1 %]">[% action.0 %]</a></li>
+[%- END -%]
 [%- IF data.size -%]
     [%- FOR entry = data -%]
         <li>
