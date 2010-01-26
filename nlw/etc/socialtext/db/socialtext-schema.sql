@@ -179,16 +179,16 @@ CREATE FUNCTION is_ignorable_action(event_class text, "action" text) RETURNS boo
     AS $$
 BEGIN
     IF event_class = 'page' THEN
-        RETURN action IN ('view', 'edit_start', 'edit_cancel', 'edit_contention', 'watch_add', 'watch_delete');
+        RETURN action IN ('view', 'edit_start', 'edit_cancel', 'edit_contention');
 
     ELSIF event_class = 'person' THEN
-        RETURN action IN ('view', 'watch_add', 'watch_delete');
+        RETURN action = 'view';
 
     ELSIF event_class = 'signal' THEN
         RETURN false;
 
     ELSIF event_class = 'widget' THEN
-        RETURN action NOT IN ('add');
+        RETURN action != 'add';
 
     END IF;
 
@@ -2274,4 +2274,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '105');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '106');
