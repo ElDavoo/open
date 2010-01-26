@@ -33,7 +33,8 @@ pod2usage( -exitstatus=>0, -verbose=>2 ) if ($man);
 
 ###############################################################################
 # On appliances, this *must* be run as "root".
-if (Socialtext::AppConfig->is_appliance() && $>) {
+if (   Socialtext::AppConfig->is_appliance()
+    && Socialtext::AppConfig->startup_user_is_human_user()) {
     shell_run('sudo', $^X, $0, @ORIGINAL_ARGV);
     exit;
 }
