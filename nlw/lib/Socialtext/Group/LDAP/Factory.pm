@@ -146,8 +146,11 @@ sub _lookup_group {
     return unless (%{$attr_map});
 
     # Map the fields in the provided proto-group to their underlying LDAP
-    # attributes, and make sure that the values are properly escaped
+    # attributes, and make sure that the values are properly escaped.  If we
+    # don't have anything sensible to lookup, return right away; we're not
+    # going to find it if we don't know what we're looking for.
     my $ldap_search_attrs = $self->_map_proto_to_ldap_attrs($proto_group);
+    return unless (%{$ldap_search_attrs});
 
     # build up the LDAP search options
     my @ldap_group_attrs =
