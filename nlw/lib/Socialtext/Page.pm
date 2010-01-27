@@ -1994,6 +1994,11 @@ sub parse_headers {
             $metadata->{$attribute} = $value;
         }
     }
+
+    # Putting whacky whitespace in a page title can kill javascript on the
+    # front-end. This fixes {bz: 3475}.
+    $metadata->{Subject} =~ s/\s/ /g;
+
     return $metadata;
 }
 
