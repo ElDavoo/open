@@ -308,6 +308,8 @@ sub _gen_sort_closure {
 sub page_count {
     my $self = shift;
     my $tag  = shift;
+    
+    $tag = Socialtext::Encode::ensure_is_utf8($tag);
 
     if (lc($tag) eq 'recent changes') {
         my $prefs = $self->hub->recent_changes->preferences;
@@ -349,6 +351,7 @@ sub get_pages_for_category {
         );
     }
     else {
+        $tag = Socialtext::Encode::ensure_is_utf8($tag);
         $model_pages = Socialtext::Model::Pages->By_tag(
             hub          => $self->hub,
             workspace_id => $self->hub->current_workspace->workspace_id,
