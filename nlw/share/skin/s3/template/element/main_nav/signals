@@ -4,6 +4,8 @@
 
  [% PROCESS element/main_nav/subnav/people %]
 
+ [% PROCESS element/main_nav/subnav/groups %]
+
  [% PROCESS element/main_nav/subnav/workspaces %]
 
  [% PROCESS element/main_nav/subnav/invite %]
