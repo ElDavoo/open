@@ -51,8 +51,10 @@
 | type_ok | comment | comment-%%start_time%% |
 | wait_for_element_visible_ok | link=Save | 30000 |
 | click_ok | link=Save |  |
-| wait_for_text_present_ok | contributed by %%short_permuser%% | 30000 |
 | wait_for_text_present_ok | comment-%%start_time%% | 30000 |
+| wait_for_text_present_ok | contributed by  | 30000 |
+| text_like | qr/contributed by.+ %%short_permuser%%/ism | |
+
 
 | *Comment* | Test Case: Groups Send A Signal to the Group |  |
 | open_ok | /?group/%%group_id%% |  |

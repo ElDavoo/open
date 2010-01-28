@@ -1,7 +1,9 @@
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Socialtext Gadgets |  |
 
 | set_timeout | 60000 | Widgets slow down open / a lot |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container  |  |  |
 
 | *Comment* | Test Case: Socialtext Gadgets. All People Tags |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |

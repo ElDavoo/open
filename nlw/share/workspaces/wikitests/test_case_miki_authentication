@@ -40,7 +40,7 @@ that follow it. So we do this test in a scratch workspace instead
 | click_and_wait | //input[@value='Log in'] |  |
 
 | *Comment* | Test Case: Miki Authentication test logged in after redirect |  |
-| location_like | /m/page/%%miki_space%%/ |  |
+| location_like | /m/page/%%miki_space%% |  |
 | text_like | link=Edit | Edit |
 | click_and_wait | link=Edit |  |
 | text_like | link=Cancel Edit | Cancel Edit |
@@ -52,7 +52,7 @@ that follow it. So we do this test in a scratch workspace instead
 | st-admin | set-permissions --workspace %%miki_space%% --permissions public-join-to-edit |  |
 
 | open_ok | /m/page/%%miki_space%% |  |
-| location_like | /m/page/%%miki_space%%/ |  |
+| location_like | /m/page/%%miki_space%% |  |
 
 | *Comment* | Test Case: Miki Authentication logged out - can't edit |  |
 | wait_for_element_not_present_ok | link=Edit | 30000 |
