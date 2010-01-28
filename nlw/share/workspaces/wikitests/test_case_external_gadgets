@@ -1,3 +1,5 @@
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: External Gadgets |  |
 
 | set_timeout | 90000 | Widgets slow down open / a lot |
@@ -5,7 +7,7 @@
 | *Comment* | Test Case: External Gadgets. In order to pass in IE 6, clear the Dashboard every time or it times out |  |
 
 | *Comment* | Test Case: External Gadgets. Microsoft Outlook |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Microsoft Outlook'] | 30000 |
@@ -13,7 +15,7 @@
 | text_like | contentContainer | Microsoft Outlook |
 
 | *Comment* | Test Case: External Gadgets. YouTube Video Player |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-YouTube Video Player'] | 30000 |
@@ -21,7 +23,7 @@
 | text_like | contentContainer | YouTube Video Player |
 
 | *Comment* | Test Case: External Gadgets. SlideShare Feeds |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-SlideShare Feeds'] | 30000 |
@@ -29,7 +31,7 @@
 | text_like | contentContainer | SlideShare Feeds |
 
 | *Comment* | Test Case: External Gadgets. BeTwittered |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-BeTwittered'] | 30000 |
@@ -37,7 +39,7 @@
 | text_like | contentContainer | BeTwittered |
 
 | *Comment* | Test Case: External Gadgets. My del.icio.us |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-My del.icio.us'] | 30000 |
@@ -45,7 +47,7 @@
 | text_like | contentContainer | My del.icio.us |
 
 | *Comment* | Test Case: External Gadgets. MapQuest |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-MapQuest'] | 30000 |
@@ -53,7 +55,7 @@
 | text_like | contentContainer | MapQuest |
 
 | *Comment* | Test Case: External Gadgets. Wikipedia |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
@@ -61,7 +63,7 @@
 | text_like | contentContainer | Wikipedia |
 
 | *Comment* | Test Case: External Gadgets. Flickr Photos |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Flickr Photos'] | 30000 |
@@ -69,7 +71,7 @@
 | text_like | contentContainer | Flickr Photos |
 
 | *Comment* | Test Case: External Gadgets. LabPixies Calculator |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-LabPixies Calculator'] | 30000 |
@@ -77,7 +79,7 @@
 | text_like | contentContainer | LabPixies Calculator |
 
 | *Comment* | Test Case: External Gadgets. Clock & Date |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[contains(@id,'Date')] | 30000 |
@@ -85,7 +87,7 @@
 | text_like | contentContainer | Clock & Date |
 
 | *Comment* | Test Case: External Gadgets. LabPixies ToDo |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-LabPixies ToDo'] | 30000 |
@@ -93,14 +95,11 @@
 | text_like | contentContainer | LabPixies ToDo |
 
 | *Comment* | Test Case: External Gadgets. Google Calendar. IGNORE ERRORS IN IE. |  |
-| open_ok | /?action=clear_widgets |  |
+| st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Google Calendar'] | 30000 |
 | click_and_wait | //a[@id='gallery-widget-Google Calendar'] |  |
 | text_like | contentContainer | Google Calendar |
-
-| *Comment* | Test Case: External Gadgets TEARDOWN |  |
-| open_ok | /?action=clear_widgets |  |
 
 | *Comment* | Test Case: External Gadgets COMPLETED |  |

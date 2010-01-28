@@ -7,7 +7,4 @@
 | include | [Test Case: Socialtext Gadgets] |
 | include | [Test Case: External Gadgets] |
 
-| *Comment* | Test Case: Gadgets Galore teardown |  |
-| open_ok | /?action=clear_widgets |  |
-
 | *Comment* | Test Case: Gadgets Galore COMPLETED |  |
