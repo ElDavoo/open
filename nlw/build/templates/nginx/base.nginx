@@ -45,12 +45,3 @@ http {
   include [% config.nginx_etc_dir %]/mime.conf;
   include [% config.nginx_etc_dir %]/auto-generated.d/*.conf;
 }
-
-# TODO:
-# Review: worker_rlimit_nofile 8192;
-
-# FastCGI json proxy
-# conf.d/redirect-to-ssl
-# rewrite /nlw/reports -> webplugin
-
-

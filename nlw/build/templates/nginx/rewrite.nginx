@@ -84,22 +84,6 @@
     rewrite    ^/nlw/control/?$         /nlw/control/index.html  last;
     rewrite    ^(/nlw/control/[^/]+)/$  $1 last;
 
-# XXX Is this needed?
-    # Transform ? in REST strings into doubly-encoded %3F, and rely on
-    # Socialtext::Handler::REST to turn them back.
-    # REVIEW: Maybe use a PUA character here instead?
-[% FOREACH i = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1] %]
-#    rewrite    ^/data/(.*)
-    [%- FOREACH j = [1..i] -%]
-\?(.*)
-    [%- END -%]
-   http://localhost:[% apache_perl_port %]/data/$1
-    [%- FOREACH j = [1..i] -%]
-\%3F$[% j+1 %]
-    [%- END -%]
-  last;
-[%- END %]
-
     set $to_backend 1;
     if ($uri ~ ^/nlw/plugin) {
         set $to_backend 0;
@@ -113,9 +97,6 @@
     if ($uri ~ ^/robots.txt$) {
         set $to_backend 0;
     }
-[%- IF config.is_appliance || config.is_dev %]
-    # TODO set up /console here
-[%- END %]
 
     if ($to_backend) {
         rewrite "^(/challenge.+)" $1 break;
