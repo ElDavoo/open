@@ -6,39 +6,55 @@ use Socialtext::HTTP qw(:codes);
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
+with 'Socialtext::Rest::Pageable';
 
 # We punt to the permission handling stuff below.
 sub permission { +{ GET => undef } }
 
-sub authorized_to_view {
-    my ($self, $user) = @_;
-    my $acting_user = $self->rest->user;
+has 'user' => (
+    is => 'ro', isa => 'Socialtext::User', lazy_build => 1,
+);
+sub _build_user {
+    my $self = shift;
+    my $user = eval { Socialtext::User->Resolve($self->username) };
+    die Socialtext::Exception::NotFound->new() unless $user;
     return $user;
 }
 
-override get_resource => sub {
+sub if_authorized {
+    my $self = shift;
+    my $method = shift;
+    my $call = shift;
+
+    if ($method eq 'POST') {
+        return $self->not_authorized
+            unless $self->rest->user->is_business_admin;
+    }
+    elsif ($method eq 'GET') {
+        return $self->not_authorized
+            unless $self->rest->user->is_business_admin
+                or $self->rest->user->user_id == $self->user->user_id;
+    }
+    else {
+        return $self->bad_method;
+    }
+
+    return $self->$call(@_);
+}
+
+has 'accounts' => (
+    is => 'ro', isa => 'ArrayRef',
+    lazy_build => 1,
+);
+sub _build_accounts {
     my $self = shift;
     my $rest   = $self->rest;
-    my $viewer = $rest->user;
-
-    my $user = eval { Socialtext::User->Resolve($self->username) };
-    die Socialtext::Exception::NotFound->new() unless $user;
-
-    unless ($viewer) {
-        $rest->header( -status => HTTP_401_Unauthorized );
-        return ();
-    }
-    if (!$viewer->is_business_admin and $viewer->user_id != $user->user_id) {
-        $rest->header( -status => HTTP_401_Unauthorized );
-        return ();
-
-    }
 
     my @accounts;
     my %account_ids;
 
-    my $user_accounts = $user->accounts;
-    my $pri_acct = $user->primary_account_id;
+    my $user_accounts = $self->user->accounts;
+    my $pri_acct = $self->user->primary_account_id;
     for my $acct (@$user_accounts) {
         my $acct_id = $acct->account_id;
         my $acct_hash = {
@@ -50,7 +66,7 @@ override get_resource => sub {
         $account_ids{$acct_id} = $acct_hash;
     }
 
-    my $user_wksps = $user->workspaces;
+    my $user_wksps = $self->user->workspaces;
     while (my $wksp = $user_wksps->next) {
         my $acct_id = $wksp->account_id;
         my $wksp_hash = {
@@ -63,49 +79,53 @@ override get_resource => sub {
     }
 
     eval { 
-    my $user_groups = $user->groups;
-    while (my $grp = $user_groups->next) {
-        my $group_hash = {
-            name => $grp->driver_group_name,
-            group_id => $grp->group_id,
-        };
-        my $grp_accts = $grp->accounts;
-        while (my $acct = $grp_accts->next) {
-            my $acct_id = $acct->account_id;
+        my $user_groups = $self->user->groups;
+        while (my $grp = $user_groups->next) {
+            my $group_hash = {
+                name => $grp->driver_group_name,
+                group_id => $grp->group_id,
+            };
+            my $grp_accts = $grp->accounts;
+            while (my $acct = $grp_accts->next) {
+                my $acct_id = $acct->account_id;
 
-            my $acct_hash = $account_ids{$acct_id};
-            push @{ $acct_hash->{via_group} }, $group_hash;
+                my $acct_hash = $account_ids{$acct_id};
+                push @{ $acct_hash->{via_group} }, $group_hash;
+            }
         }
-    }
     };
     if ($@) {
         warn "ERROR: $@";
     }
 
-    my $limit = $rest->query->param('limit') || 20;
-    my $offset = $rest->query->param('offset') || 0;
-    my $order = $rest->query->param('order') || 'account_id';
-    my $reverse = $rest->query->param('reverse');
-    my $startIndex = $offset + 1;
-    my $total = @accounts;
-    if ($reverse) {
-        @accounts = $order eq 'account_id'
-            ? sort { $b->{$order} <=> $a->{$order} } @accounts
-            : sort { $b->{$order} cmp $a->{$order} } @accounts;
+    return \@accounts;
+}
+
+sub _get_entities {
+    my $self = shift;
+    my $order = $self->rest->query->param('order') || 'account_id';
+    my $accounts = $self->accounts;
+    my @sorted;
+    if ($self->reverse) {
+        @sorted = $order eq 'account_id'
+            ? sort { $b->{$order} <=> $a->{$order} } @$accounts
+            : sort { $b->{$order} cmp $a->{$order} } @$accounts;
     }
     else {
-        @accounts = $order eq 'account_id'
-            ? sort { $a->{$order} <=> $b->{$order} } @accounts
-            : sort { $a->{$order} cmp $b->{$order} } @accounts;
+        @sorted = $order eq 'account_id'
+            ? sort { $a->{$order} <=> $b->{$order} } @$accounts
+            : sort { $a->{$order} cmp $b->{$order} } @$accounts;
     }
-    @accounts = splice @accounts, $offset, $limit;
-    return {
-        startIndex => "$startIndex",
-        itemsPerPage => "$limit",
-        totalResults => "$total",
-        entry => \@accounts,
-    };
+    return [
+        splice @sorted, $self->start_index || 0, $self->items_per_page,
+    ];
 };
+
+sub _get_total_results {
+    my $self = shift;
+    my $accounts = $self->accounts;
+    return scalar @$accounts;
+}
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
