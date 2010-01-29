@@ -183,8 +183,8 @@ Provided in the spirit of TIMTOWTDI.
 =cut
 
 sub sql_abstract {
-    require SQL::Abstract::Limit;
-    return SQL::Abstract::Limit->new(
+    require Socialtext::SQL::Abstract;
+    return Socialtext::SQL::Abstract->new(
         logic => 'and',
         @_,
         limit_dialect => 'LimitOffset',
