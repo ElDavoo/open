@@ -1,37 +1,36 @@
 package Socialtext::Rest::WorkspaceUsers;
 # @COPYRIGHT@
-
-use warnings;
-use strict;
-
-use base 'Socialtext::Rest::Users';
+use Moose;
 use Socialtext::JSON;
 use Socialtext::HTTP ':codes';
 use Socialtext::WorkspaceInvitation;
 use Socialtext::User::Find::Workspace;
-use Class::Field qw/field/;
+use namespace::clean -except => 'meta';
+
+extends 'Socialtext::Rest::Users';
 
 sub allowed_methods {'GET, HEAD, POST'}
 sub collection_name { "Users in workspace " . $_[0]->ws }
 
-field '_workspace',
-    '-init' => 'Socialtext::Workspace->new(name => $self->ws)';
-
-sub create_user_find {
+has '_workspace' => (
+    is => 'ro', isa => 'Socialtext::Workspace',
+    lazy_build => 1,
+);
+sub _build__workspace {
     my $self = shift;
-    my $limit = $self->rest->query->param('count') ||
-                $self->rest->query->param('limit') ||
-                25;
-    my $offset = $self->rest->query->param('offset') || 0;
+    Socialtext::Workspace->new(name => $self->ws);
+};
 
+sub _build_user_find {
+    my $self = shift;
     my $filter = $self->rest->query->param('filter');
     my $workspace = $self->_workspace;
     die "invalid workspace" unless $workspace;
 
     return Socialtext::User::Find::Workspace->new(
         viewer => $self->rest->user,
-        limit => $limit,
-        offset => $offset,
+        limit  => $self->items_per_page,
+        offset => $self->start_index,
         filter => $filter,
         workspace => $workspace,
     )
@@ -54,7 +53,8 @@ sub if_authorized {
     elsif ($method eq 'GET') {
         return $self->not_authorized
             unless $checker->check_permission('admin_workspace')
-                || $checker->check_permission('email_out');
+                || $checker->check_permission('email_out')
+                || $acting_user->is_business_admin();
     }
     else {
         return $self->bad_method;
@@ -138,4 +138,5 @@ sub _POST {
     return '';
 }
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;

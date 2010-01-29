@@ -1,22 +1,18 @@
 package Socialtext::Rest::Users;
 # @COPYRIGHT@
-
-use warnings;
-use strict;
-
-use Class::Field qw( const field );
+use Moose;
 use Socialtext::JSON;
 use Socialtext::HTTP ':codes';
 use Socialtext::User;
 use Socialtext::Exceptions;
 use Socialtext::User::Find;
 use Socialtext::User::Find::All;
+use namespace::clean -except => 'meta';
 
-use base 'Socialtext::Rest::Collection';
+extends 'Socialtext::Rest::Collection';
+with 'Socialtext::Rest::Pageable';
 
 sub allowed_methods {'GET, POST'}
-
-field errors        => [];
 
 sub if_authorized {
     my $self = shift;
@@ -87,13 +83,13 @@ sub _POST_json {
     return '';
 }
 
-sub create_user_find {
-    my $self = shift;
-    my $limit = $self->rest->query->param('count') ||
-                $self->rest->query->param('limit') ||
-                25;
-    my $offset = $self->rest->query->param('offset') || 0;
+has 'user_find' => (
+    is => 'ro', isa => 'Socialtext::User::Find',
+    lazy_build => 1,
+);
 
+sub _build_user_find {
+    my $self = shift;
     my $filter = $self->rest->query->param('filter');
     my $all    = $self->rest->query->param('all') || 0;
 
@@ -102,19 +98,15 @@ sub create_user_find {
         = $all ? 'Socialtext::User::Find::All' : 'Socialtext::User::Find';
 
     # Instantiate the User Finder
-    return $finder_class->new(
-        viewer => $self->rest->user,
-        limit  => $limit,
-        offset => $offset,
-        filter => $filter,
-    );
-}
-
-sub get_resource {
-    my $self = shift;
-    my $rest = shift;
-
-    my $f = eval { $self->create_user_find };
+    my $user_find;
+    eval {
+        $user_find = $finder_class->new(
+            viewer => $self->rest->user,
+            limit  => $self->items_per_page,
+            offset => $self->start_index,
+            filter => $filter,
+        );
+    };
     if ($@) {
         warn $@;
         Socialtext::Exception->throw(
@@ -122,8 +114,28 @@ sub get_resource {
             http_status => HTTP_400_Bad_Request,
         );
     }
+    return $user_find;
+}
 
-    my $results = eval { $f->typeahead_find };
+sub _get_total_results {
+    my $self = shift;
+
+    my $count = eval { $self->user_find->get_count() };
+    if ($@) {
+        warn $@;
+        Socialtext::Exception->throw(
+            error => "Query error",
+            http_status => HTTP_400_Bad_Request,
+        );
+    }
+    return $count;
+}
+
+sub _get_entities {
+    my $self = shift;
+    my $rest = shift;
+
+    my $results = eval { $self->user_find->typeahead_find };
     if ($@) {
         warn $@;
         Socialtext::Exception->throw(
@@ -135,7 +147,7 @@ sub get_resource {
     return $results || [];
 }
 
-sub _entity_hash {
-}
+sub _entity_hash { return $_[1] }
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;

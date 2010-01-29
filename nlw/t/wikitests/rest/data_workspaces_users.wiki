@@ -172,3 +172,42 @@
 | http-user-pass | %%admin%%                                     | password      |
 | GET            | /data/workspaces/%%workspace%%/users/%%peon%% |               |
 | code-is        | 405                                           |               |
+
+# test Pageable collections
+
+| set              | awesome     | awesome%%start_time%% |
+| create-workspace | %%awesome%% | %%account%%           |
+
+| create-user | user1%%start_time%%@q.q | password | %%account%% |
+| create-user | user2%%start_time%%@q.q | password | %%account%% |
+| create-user | user3%%start_time%%@q.q | password | %%account%% |
+| create-user | user4%%start_time%%@q.q | password | %%account%% |
+| create-user | user5%%start_time%%@q.q | password | %%account%% |
+| create-user | user6%%start_time%%@q.q | password | %%account%% |
+| create-user | user7%%start_time%%@q.q | password | %%account%% |
+| create-user | user8%%start_time%%@q.q | password | %%account%% |
+| create-user | user9%%start_time%%@q.q | password | %%account%% |
+
+| add-member | user1%%start_time%%@q.q | %%awesome%% | admin |
+| add-member | user2%%start_time%%@q.q | %%awesome%% |       |
+| add-member | user3%%start_time%%@q.q | %%awesome%% |       |
+| add-member | user4%%start_time%%@q.q | %%awesome%% |       |
+| add-member | user5%%start_time%%@q.q | %%awesome%% |       |
+| add-member | user6%%start_time%%@q.q | %%awesome%% |       |
+| add-member | user7%%start_time%%@q.q | %%awesome%% |       |
+| add-member | user8%%start_time%%@q.q | %%awesome%% |       |
+| add-member | user9%%start_time%%@q.q | %%awesome%% |       |
+
+| set-business-admin | user1%%start_time%%@q.q | 1        |
+| http-user-pass     | user1%%start_time%%@q.q | password |
+
+| *Comment*         | Pageable Data                                           |                         |
+| GET-json          | /data/workspaces/%%awesome%%/users?startIndex=3&count=2 |                         |
+| code-is           | 200                                                     |                         |
+| json-parse        |                                                         |                         |
+| json-path-is      | $.startIndex                                            | 3                       |
+| json-path-is      | $.itemsPerPage                                          | 2                       |
+| json-path-is      | $.totalResults                                          | 9                       |
+| json-path-is      | $.entry[0].email_address                                | user4%%start_time%%@q.q |
+| json-path-is      | $.entry[1].email_address                                | user5%%start_time%%@q.q |
+| json-path-missing | $.entry[2]                                              |                         |
