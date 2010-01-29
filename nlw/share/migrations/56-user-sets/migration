@@ -194,6 +194,8 @@ sub generate_group_primary_account_roles {
 
     $dbh->begin_work;
 
+    $dbh->do("DELETE FROM group_account_role WHERE role_id = $affiliate_id");
+
     my ($count) = $dbh->selectrow_array(
         "SELECT COUNT(*) FROM ($missing_accts_sql) q");
     return $dbh->rollback unless $count;
