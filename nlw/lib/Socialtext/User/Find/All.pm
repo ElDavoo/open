@@ -15,29 +15,20 @@ before 'typeahead_find' => sub {
     }
 };
 
-sub get_results {
+sub _build_sql_from { 'users' }
+
+sub _build_sql_where {
     my $self = shift;
-
-    my $sql = q{
-        SELECT user_id, first_name, last_name, email_address, driver_username
-        FROM users
-        WHERE (
-            lower(first_name) LIKE $1 OR
-            lower(last_name) LIKE $1 OR
-            lower(email_address) LIKE $1 OR
-            lower(driver_username) LIKE $1 OR
-            lower(display_name) LIKE $1
-        )
-        ORDER BY last_name ASC, first_name ASC
-        LIMIT $2 OFFSET $3
+    my $filter = $self->filter;
+    return {
+        '-or' => [
+            'lower(first_name)'      => { '-like' => $filter },
+            'lower(last_name)'       => { '-like' => $filter },
+            'lower(email_address)'   => { '-like' => $filter },
+            'lower(driver_username)' => { '-like' => $filter },
+            'lower(display_name)'    => { '-like' => $filter },
+        ],
     };
-
-    #local $Socialtext::SQL::PROFILE_SQL = 1;
-    my $sth = sql_execute($sql,
-        $self->filter, $self->limit, $self->offset
-    );
-
-    return $sth->fetchall_arrayref({}) || [];
 }
 
 __PACKAGE__->meta->make_immutable;

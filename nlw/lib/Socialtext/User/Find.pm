@@ -1,7 +1,8 @@
 package Socialtext::User::Find;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::SQL qw/get_dbh sql_execute/;
+use Socialtext::SQL qw/get_dbh sql_execute sql_singlevalue/;
+use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::String;
 use Socialtext::User;
 use namespace::clean -except => 'meta';
@@ -39,33 +40,82 @@ sub cleanup_filter {
     return $self->filter($filter);
 }
 
+has 'sql_from' => (
+    is => 'ro', isa => 'Str', lazy_build => 1,
+);
+sub _build_sql_from {
+    return q{
+        user_sets_for_user viewer
+        JOIN user_sets_for_user other USING (user_set_id)
+        JOIN users ON (other.user_id = users.user_id)
+    };
+}
+
+has 'sql_cols' => (
+    is => 'ro', isa => 'ArrayRef', lazy_build => 1,
+);
+sub _build_sql_cols {
+    return [
+        'DISTINCT users.user_id', 'first_name', 'last_name',
+        'email_address', 'driver_username',
+    ];
+}
+
+has 'sql_count' => (
+    is => 'ro', isa => 'ArrayRef', lazy_build => 1,
+);
+sub _build_sql_count {
+    return ['COUNT(DISTINCT(users.user_id))'];
+}
+
+has 'sql_where' => (
+    is => 'ro', isa => 'HashRef', lazy_build => 1,
+);
+sub _build_sql_where {
+    my $self = shift;
+    my $filter = $self->filter;
+    return {
+        '-and' => [ 'viewer.user_id' => $self->viewer->user_id ],
+        '-or' => [
+            'lower(first_name)'      => { '-like' => $filter },
+            'lower(last_name)'       => { '-like' => $filter },
+            'lower(email_address)'   => { '-like' => $filter },
+            'lower(driver_username)' => { '-like' => $filter },
+            'lower(display_name)'    => { '-like' => $filter },
+        ],
+    };
+}
+
+has 'sql_order' => (
+    is => 'ro', isa => 'Str', lazy_build => 1,
+);
+sub _build_sql_order {
+    return 'last_name, first_name';
+}
+
 sub get_results {
     my $self = shift;
 
-    my $sql = q{
-        SELECT DISTINCT other.user_id, first_name, last_name,
-                        email_address, driver_username
-          FROM user_sets_for_user viewer
-          JOIN user_sets_for_user other USING (user_set_id)
-          JOIN users ON (other.user_id = users.user_id)
-         WHERE viewer.user_id = $2
-           AND (
-            lower(first_name) LIKE $1 OR
-            lower(last_name) LIKE $1 OR
-            lower(email_address) LIKE $1 OR
-            lower(driver_username) LIKE $1 OR
-            lower(display_name) LIKE $1
-         )
-         ORDER BY last_name ASC, first_name ASC
-         LIMIT $3 OFFSET $4
-    };
-
-    #local $Socialtext::SQL::PROFILE_SQL = 1;
-    my $sth = sql_execute($sql, 
-        $self->filter, $self->viewer->user_id, $self->limit, $self->offset
+    my ($sql, @bind) = $self->abstract->select(
+        \$self->sql_from, $self->sql_cols, $self->sql_where,
+        $self->sql_order, $self->limit, $self->offset,
     );
 
+    my $sth = sql_execute($sql, @bind);
     return $sth->fetchall_arrayref({}) || [];
+}
+
+has 'abstract' => (
+    is => 'ro', isa => 'SQL::Abstract', lazy_build => 1,
+);
+sub _build_abstract { sql_abstract() }
+
+sub get_count {
+    my $self = shift;
+    my ($sql, @bind) = $self->abstract->select(
+        \$self->sql_from, $self->sql_count, $self->sql_where,
+    );
+    return sql_singlevalue($sql, @bind);
 }
 
 sub typeahead_find {

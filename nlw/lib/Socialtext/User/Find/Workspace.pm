@@ -2,6 +2,7 @@ package Socialtext::User::Find::Workspace;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::SQL qw/get_dbh sql_execute/;
+use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::String;
 use Socialtext::User;
 use List::MoreUtils qw/any/;
@@ -11,41 +12,64 @@ extends 'Socialtext::User::Find';
 
 has workspace => (is => 'rw', isa => 'Socialtext::Workspace', required => 1);
 
+sub _build_sql_from {
+    return q{
+        user_set_path
+        JOIN users ON (from_set_id = user_id)
+        JOIN "Role" USING(role_id)
+    };
+}
+
+sub _build_sql_cols {
+    return [
+        'user_id', 'first_name', 'last_name',
+        'email_address', 'driver_username',
+        'array_accum(DISTINCT "Role".name) AS role_names',
+    ];
+}
+
+has '+sql_where' => ( 'isa' => 'ArrayRef' );
+
+sub _build_sql_where {
+    my $self = shift;
+    my $filter = $self->filter;
+
+    my ($sub_stmt, @sub_bind) = sql_abstract->select(
+        "user_sets_for_user", "1", {
+            user_set_id => $self->workspace->user_set_id,
+            user_id => $self->viewer->user_id,
+        },
+    );
+
+    return [
+        '-and' => [
+            into_set_id => $self->workspace->user_set_id,
+            '-nest' => \["EXISTS ($sub_stmt)" => @sub_bind],
+            '-or' => [
+                'lower(first_name)'      => { '-like' => $filter },
+                'lower(last_name)'       => { '-like' => $filter },
+                'lower(email_address)'   => { '-like' => $filter },
+                'lower(driver_username)' => { '-like' => $filter },
+                'lower(display_name)'    => { '-like' => $filter },
+            ],
+        ],
+    ];
+}
+
+has '+sql_order' => ( isa => 'HashRef' );
+sub _build_sql_order {
+    return {
+        order_by => [ qw(last_name first_name) ],
+        group_by => 'user_id, first_name, last_name, '
+                  . 'email_address, driver_username',
+    };
+}
+
 sub get_results {
     my $self = shift;
 
-    my $sql = q{
-        SELECT user_id, first_name, last_name,
-               email_address, driver_username,
-               array_accum(DISTINCT "Role".name) AS role_names
-        FROM user_set_path
-        JOIN users ON (from_set_id = user_id)
-        JOIN "Role" USING(role_id)
-        WHERE into_set_id = $3
-          AND EXISTS (
-            SELECT 1
-              FROM user_sets_for_user
-             WHERE user_set_id = $3
-               AND user_id = $2
-          )
-          AND (
-            lower(first_name) LIKE $1 OR
-            lower(last_name) LIKE $1 OR
-            lower(email_address) LIKE $1 OR
-            lower(driver_username) LIKE $1
-          )
-        GROUP BY user_id, first_name, last_name, email_address, driver_username
-        ORDER BY last_name ASC, first_name ASC
-        LIMIT $4 OFFSET $5
-    };
+    my $rows = $self->SUPER::get_results();
 
-    #local $Socialtext::SQL::PROFILE_SQL = 1;
-    my $sth = sql_execute($sql, 
-        $self->filter, $self->viewer->user_id, $self->workspace->user_set_id,
-        $self->limit, $self->offset,
-    );
-
-    my $rows = $sth->fetchall_arrayref({}) || [];
     for my $row (@$rows) {
         my @roles = map { Socialtext::Role->new(name => $_) }
             @{$row->{role_names} || []};
