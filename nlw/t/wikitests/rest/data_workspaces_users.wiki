@@ -201,6 +201,34 @@
 | set-business-admin | user1%%start_time%%@q.q | 1        |
 | http-user-pass     | user1%%start_time%%@q.q | password |
 
+| *Comment*              | Test passing direct=1   |                     |
+| set                    | shiny                   | shiny%%start_time%% |
+| create-group           | %%shiny%%               |                     |
+| add-user-to-group      | user1%%start_time%%@q.q | %%group_id%%        |
+| add-user-to-group      | user2%%start_time%%@q.q | %%group_id%%        |
+| add-user-to-group      | user3%%start_time%%@q.q | %%group_id%%        |
+| create-workspace       | %%shiny%%               |                     |
+| add-group-to-workspace | %%group_id%%            | %%shiny%%           |
+| add-member             | user4%%start_time%%@q.q | %%shiny%%           |
+| add-member             | user5%%start_time%%@q.q | %%shiny%%           |
+| add-member             | user6%%start_time%%@q.q | %%shiny%%           |
+
+| GET       | /data/workspaces/%%shiny%%/users |
+| body-like | user1%%start_time%%@q.q          |
+| body-like | user2%%start_time%%@q.q          |
+| body-like | user3%%start_time%%@q.q          |
+| body-like | user4%%start_time%%@q.q          |
+| body-like | user5%%start_time%%@q.q          |
+| body-like | user6%%start_time%%@q.q          |
+
+| GET         | /data/workspaces/%%shiny%%/users?direct=1 |
+| body-unlike | user1%%start_time%%@q.q                   |
+| body-unlike | user2%%start_time%%@q.q                   |
+| body-unlike | user3%%start_time%%@q.q                   |
+| body-like   | user4%%start_time%%@q.q                   |
+| body-like   | user5%%start_time%%@q.q                   |
+| body-like   | user6%%start_time%%@q.q                   |
+
 | *Comment*         | Pageable Data                                           |                         |
 | GET-json          | /data/workspaces/%%awesome%%/users?startIndex=3&count=2 |                         |
 | code-is           | 200                                                     |                         |

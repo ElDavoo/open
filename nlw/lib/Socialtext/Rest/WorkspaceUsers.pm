@@ -33,6 +33,7 @@ sub _build_user_find {
         offset => $self->start_index,
         filter => $filter,
         workspace => $workspace,
+        direct => $self->rest->query->param('direct'),
     )
 }
 

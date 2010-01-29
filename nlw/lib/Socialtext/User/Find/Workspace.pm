@@ -10,11 +10,14 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::User::Find';
 
+has direct => (is => 'ro', isa => 'Bool');
 has workspace => (is => 'rw', isa => 'Socialtext::Workspace', required => 1);
 
 sub _build_sql_from {
-    return q{
-        user_set_path
+    my $self = shift;
+    my $table = $self->direct ? 'user_set_include' : 'user_set_path';
+    return qq{
+        $table
         JOIN users ON (from_set_id = user_id)
         JOIN "Role" USING(role_id)
     };
