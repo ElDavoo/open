@@ -11,7 +11,8 @@
         requireMatch: false,
         params: { 
             order: 'alpha',
-            count: 30 // for fetching
+            count: 30, // for fetching
+            minimal: 1
         }
     };
 

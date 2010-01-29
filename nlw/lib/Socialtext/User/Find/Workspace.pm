@@ -6,6 +6,7 @@ use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::String;
 use Socialtext::User;
 use List::MoreUtils qw/any/;
+use Socialtext::UserSet qw(:const);
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::User::Find';
@@ -16,19 +17,44 @@ has workspace => (is => 'rw', isa => 'Socialtext::Workspace', required => 1);
 sub _build_sql_from {
     my $self = shift;
     my $table = $self->direct ? 'user_set_include' : 'user_set_path';
-    return qq{
+    my $from = qq{
         $table
         JOIN users ON (from_set_id = user_id)
         JOIN "Role" USING(role_id)
     };
+    unless ($self->minimal) {
+        $from .= qq{
+            JOIN "UserMetadata" USING(user_id)
+            JOIN "Account"
+                ON "UserMetadata".primary_account_id = "Account".account_id
+        };
+    }
+    return $from;
 }
 
 sub _build_sql_cols {
-    return [
+    my $self = shift;
+    my $cols = [
         'user_id', 'first_name', 'last_name',
         'email_address', 'driver_username',
         'array_accum(DISTINCT "Role".name) AS role_names',
     ];
+    unless ($self->minimal) {
+        push @$cols,
+            '"UserMetadata".primary_account_id',
+            '"Account".name AS primary_account_name',
+            'creation_datetime',
+            q{ 
+                (
+                    SELECT COUNT(*)
+                      FROM user_set_path countable
+                     WHERE countable.from_set_id = user_id
+                       AND into_set_id } . PG_WKSP_FILTER . q{
+                  GROUP BY from_set_id, user_id
+                ) AS workspace_count
+            },
+    }
+    return $cols;
 }
 
 has '+sql_where' => ( 'isa' => 'ArrayRef' );
@@ -59,13 +85,18 @@ sub _build_sql_where {
     ];
 }
 
-has '+sql_order' => ( isa => 'HashRef' );
-sub _build_sql_order {
-    return {
-        order_by => [ qw(last_name first_name) ],
-        group_by => 'user_id, first_name, last_name, '
-                  . 'email_address, driver_username',
-    };
+sub _build_sql_group {
+    my $self = shift;
+    my @group_cols = qw(
+        user_id first_name last_name email_address driver_username
+    );
+    unless ($self->minimal) {
+        push @group_cols, qw(
+            primary_account_name primary_account_id creation_datetime
+        );
+    }
+
+    return join ',', @group_cols;
 }
 
 sub get_results {

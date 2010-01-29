@@ -7,10 +7,13 @@ use Socialtext::String;
 use Socialtext::User;
 use namespace::clean -except => 'meta';
 
-has viewer => (is => 'rw', isa => 'Socialtext::User', required => 1);
-has limit => (is => 'rw', isa => 'Maybe[Int]');
-has offset => (is => 'rw', isa => 'Maybe[Int]');
-has filter => (is => 'rw', isa => 'Maybe[Str]');
+has 'viewer' => (is => 'rw', isa => 'Socialtext::User', required => 1);
+has 'limit' => (is => 'rw', isa => 'Maybe[Int]');
+has 'offset' => (is => 'rw', isa => 'Maybe[Int]');
+has 'filter' => (is => 'rw', isa => 'Maybe[Str]');
+has 'order' => (is => 'ro', isa => 'Maybe[Str]');
+has 'reverse' => (is => 'ro', isa => 'Bool', default => 0);
+has 'minimal' => (is => 'ro', isa => 'Bool', default => 0);
 
 sub cleanup_filter {
     my $self = shift;
@@ -86,12 +89,25 @@ sub _build_sql_where {
     };
 }
 
-has 'sql_order' => (
-    is => 'ro', isa => 'Str', lazy_build => 1,
-);
+has 'sql_order' => ( is => 'ro', isa => 'HashRef', lazy_build => 1 );
+
 sub _build_sql_order {
-    return 'last_name, first_name';
+    my $self = shift;
+
+    my $order = $self->order;
+    die if $order and $order !~ /^\w+$/;
+    $order = [qw(last_name first_name)] if !$order or $order eq 'name';
+
+    my $group = $self->sql_group;
+
+    return {
+        order_by => $self->reverse ? { -desc => $order } : { -asc => $order },
+        $group ? (group_by => $group) : (),
+    }
 }
+
+has 'sql_group' => ( is => 'ro', isa => 'Maybe[Str]', lazy_build => 1);
+sub _build_sql_group {}
 
 sub get_results {
     my $self = shift;

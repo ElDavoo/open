@@ -105,6 +105,7 @@ sub _build_user_find {
             limit  => $self->items_per_page,
             offset => $self->start_index,
             filter => $filter,
+            order => $self->rest->query->param('order') || '',
         );
     };
     if ($@) {

@@ -33,7 +33,10 @@ sub _build_user_find {
         offset => $self->start_index,
         filter => $filter,
         workspace => $workspace,
-        direct => $self->rest->query->param('direct'),
+        direct => $self->rest->query->param('direct') || 0,
+        minimal => $self->rest->query->param('minimal') || 0,
+        order => $self->rest->query->param('order') || '',
+        reverse => $self->rest->query->param('reverse') || 0,
     )
 }
 
