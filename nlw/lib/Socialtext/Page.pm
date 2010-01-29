@@ -1997,7 +1997,9 @@ sub parse_headers {
 
     # Putting whacky whitespace in a page title can kill javascript on the
     # front-end. This fixes {bz: 3475}.
-    $metadata->{Subject} =~ s/\s/ /g;
+    if ($metadata->{Subject}) {
+        $metadata->{Subject} =~ s/\s/ /g;
+    }
 
     return $metadata;
 }
