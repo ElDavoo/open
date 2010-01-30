@@ -37,6 +37,7 @@ sub _build_user_find {
         minimal => $self->rest->query->param('minimal') || 0,
         order => $self->rest->query->param('order') || '',
         reverse => $self->rest->query->param('reverse') || 0,
+        all => $self->rest->query->param('all') || 0,
     )
 }
 

@@ -6,7 +6,6 @@ use Socialtext::HTTP ':codes';
 use Socialtext::User;
 use Socialtext::Exceptions;
 use Socialtext::User::Find;
-use Socialtext::User::Find::All;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
@@ -91,21 +90,17 @@ has 'user_find' => (
 sub _build_user_find {
     my $self = shift;
     my $filter = $self->rest->query->param('filter');
-    my $all    = $self->rest->query->param('all') || 0;
-
-    # Who implements the User Finder class we need?
-    my $finder_class
-        = $all ? 'Socialtext::User::Find::All' : 'Socialtext::User::Find';
 
     # Instantiate the User Finder
     my $user_find;
     eval {
-        $user_find = $finder_class->new(
+        $user_find = Socialtext::User::Find->new(
             viewer => $self->rest->user,
             limit  => $self->items_per_page,
             offset => $self->start_index,
             filter => $filter,
-            order => $self->rest->query->param('order') || '',
+            order  => $self->rest->query->param('order') || '',
+            all    => $self->rest->query->param('all') || 0,
         );
     };
     if ($@) {

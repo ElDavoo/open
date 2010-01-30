@@ -14,6 +14,7 @@ has 'filter' => (is => 'rw', isa => 'Maybe[Str]');
 has 'order' => (is => 'ro', isa => 'Maybe[Str]');
 has 'reverse' => (is => 'ro', isa => 'Bool', default => 0);
 has 'minimal' => (is => 'ro', isa => 'Bool', default => 0);
+has 'all' => (is => 'ro', isa => 'Bool', default => 0);
 
 sub cleanup_filter {
     my $self = shift;
@@ -78,7 +79,8 @@ sub _build_sql_where {
     my $self = shift;
     my $filter = $self->filter;
     return {
-        '-and' => [ 'viewer.user_id' => $self->viewer->user_id ],
+        $self->all ? ()
+            : '-and' => [ 'viewer.user_id' => $self->viewer->user_id ],
         '-or' => [
             'lower(first_name)'      => { '-like' => $filter },
             'lower(last_name)'       => { '-like' => $filter },
@@ -136,6 +138,9 @@ sub get_count {
 
 sub typeahead_find {
     my $self = shift;
+    if ($self->all and !$self->viewer->is_business_admin) {
+        die "Only Business Admin's can search for Users across all Accounts.\n";
+    }
     $self->cleanup_filter;
     my @results;
     for my $row (@{$self->get_results}) {

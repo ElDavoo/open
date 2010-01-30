@@ -73,7 +73,10 @@ sub _build_sql_where {
     return [
         '-and' => [
             into_set_id => $self->workspace->user_set_id,
-            '-nest' => \["EXISTS ($sub_stmt)" => @sub_bind],
+
+            # Limit the visible users unless 'all' is true
+            $self->all ? () : ('-nest' => \["EXISTS ($sub_stmt)" => @sub_bind]),
+
             '-or' => [
                 'lower(first_name)'      => { '-like' => $filter },
                 'lower(last_name)'       => { '-like' => $filter },
