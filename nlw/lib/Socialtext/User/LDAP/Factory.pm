@@ -11,9 +11,11 @@ use Socialtext::LDAP;
 use Socialtext::User::LDAP;
 use Socialtext::UserMetadata;
 use Socialtext::Log qw(st_log);
-use Socialtext::SQL qw(sql_selectrow);
+use Socialtext::SQL qw(sql_singlevalue);
+use Socialtext::SQL::Builder qw(sql_abstract);
 use Net::LDAP::Util qw(escape_filter_value);
-use Socialtext::SQL qw(sql_execute sql_singlevalue);
+use Socialtext::SQL qw(sql_execute sql_singlevalue sql_selectrow);
+use Socialtext::Exceptions qw(data_validation_error);
 use Socialtext::Timer;
 use Readonly;
 use List::MoreUtils qw(part);
@@ -172,6 +174,8 @@ sub lookup {
         return;
     }
     if ($mesg->count() > 1) {
+        # If we get here, there are duped LDAP records for this field. ST
+        # requires that these fields be unique, so be sure to note this.
         st_log->error( "ST::User::LDAP: found multiple matches for user; $key/$val" );
         return;
     }
@@ -309,6 +313,10 @@ sub _vivify {
         eval {
             $user_attrs{user_id} = $user_id;
             $self->ValidateAndCleanData($cached_homey, \%user_attrs);
+            $self->_check_cache_for_conflict(
+                user_id => $cached_homey->{user_id},
+                %user_attrs,
+            );
         };
         if (my $e = Exception::Class->caught("Socialtext::Exception::DataValidation")) {
             # record error(s)
@@ -369,6 +377,50 @@ sub _vivify {
     $user_attrs{extra_attrs} = \%extra_attrs;
     %$proto_user = %user_attrs;
     return;
+}
+
+sub _check_cache_for_conflict {
+    my $self = shift;
+    my %attrs = @_;
+
+    # the 'users_driver_unique_id' IX in the 'users' table.
+    my @driver_unique_id = (
+        '-and' => [
+            driver_key => $attrs{driver_key},
+            driver_unique_id => $attrs{driver_unique_id},
+        ],
+    );
+
+    # the 'users_lower_username_driver_key' IX in the 'users' table.
+    my @username_driver_key = (
+        '-and' => [
+            driver_key => $attrs{driver_key},
+            driver_username => lc($attrs{username}),
+        ],
+    );
+
+    # the 'users_lower_email_address_driver_key' in the 'users' table.
+    my @email_driver_key = (
+        '-and' => [
+            driver_key => $attrs{driver_key},
+            email_address => lc($attrs{email_address}),
+        ],
+    );
+
+    my ($sql, @bind) = sql_abstract()->select('users', 'COUNT(1)', {
+        '-and' => [ 
+            user_id => {'-!=' => $attrs{user_id}},
+            '-or' => [
+                @email_driver_key,
+                @username_driver_key,
+                @driver_unique_id,
+            ],
+        ],
+    });
+
+    my $rows = sql_singlevalue($sql, @bind);
+    data_validation_error errors => ['Cached user already exists values']
+        if $rows;
 }
 
 sub Search {
