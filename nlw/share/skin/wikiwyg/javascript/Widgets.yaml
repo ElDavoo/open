@@ -16,6 +16,7 @@ widgets:
   - fetchatom
   - search
   - googlesoap
+  - googlesearch
   - technorati
   - aim
   - yahoo
@@ -348,6 +349,20 @@ widget:
     more_desc: There are no optional properties for an Atom feed.
     image_text:
         - { field: default, text: "feed: %atom_url" }
+
+  googlesearch:
+    id: googlesearch
+    label: Google Search
+    color: saddlebrown
+    pattern: '{googlesearch: %search_term}'
+    field: search_term
+    title: Search Google for '$search_term'. Click to edit.
+    desc: Display the results from a Google search. Use this form to edit the properties for the search.
+    more_desc: There are no optional properties for an Google search.
+    labels:
+        search_term: Search for
+    image_text:
+        - { field: default, text: "Google: %search_term" }
 
   googlesoap:
     id: googlesoap
@@ -692,7 +707,7 @@ menu_hierarchy:
   - label: From the web...   
     sub_menu:
       - label: Google search results
-        widget: googlesoap
+        widget: googlesearch
       - label: Technorati results
         widget: technorati
       - label: RSS feed items

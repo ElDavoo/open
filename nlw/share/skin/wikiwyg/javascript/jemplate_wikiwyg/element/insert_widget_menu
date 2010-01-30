@@ -23,7 +23,7 @@
           <li do="do_widget_weblog_list">Blog&nbsp;List</li>
           <li do="do_widget_tag_list">Tag&nbsp;List</li>
           <li do="do_widget_search">Search&nbsp;Results</li>
-          <li do="do_widget_googlesoap">Google&nbsp;Search</li>
+          <li do="do_widget_googlesearch">Google&nbsp;Search</li>
         </ul>
       </li>
       <li>Field

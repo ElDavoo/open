@@ -26,6 +26,7 @@ CGI: 3.10
 CGI::Cookie: 0
 Cache::FileCache: 0
 Carp: 0
+Class::Accessor: 0.34
 Class::Field: 0.12
 Class::Singleton: 1.03
 Cwd: 3.07
@@ -92,6 +93,7 @@ IPC::Run: 0.79
 JavaScript::Minifier::XS: 0.04
 Jcode: 2.06
 Jemplate: 0.22
+JSON::Any: 1.19
 JSON::XS: 2.01
 KinoSearch: 0.161
 LWP::UserAgent: 2.033
@@ -121,7 +123,8 @@ pQuery: 0
 Readonly: 1.03
 Readonly::XS: 1.03
 Regexp::Common: 2.120
-REST::Application: 0.992
+REST::Application: 1.0.8
+REST::Google: 0.992
 RTF::Writer: 0
 Scalar::Util: 1.19
 SOAP::Lite: 0.67
