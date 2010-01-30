@@ -6,7 +6,7 @@ use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Socialtext::User;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 16;
+use Test::Socialtext tests => 28;
 
 ###############################################################################
 # FIXTURE:  db
@@ -116,4 +116,74 @@ ldap_invalid_data_throws_error: {
     ok $e, '... due to data validation error';
     like $e->full_message, qr/Email address is a required field/,
         '... ... missing e-mail address';
+}
+
+# Test: Duplicate email_address on refresh.
+refresh_with_duped_email: {
+    my $user1_dn = 'cn=Nathan Explosion,dc=example,dc=com';
+    my %user1_attrs =  (
+        objectClass => 'inetOrgPerson',
+        mail        => 'nathan@example.com',
+        cn          => 'Nathan Explosion',
+        gn          => 'Nathan',
+        sn          => 'Explosion',
+        title       => 'Duped@example.com',
+    );
+
+    my $user2_dn = 'cn=Toki Wartooth,dc=example,dc=com';
+    my %user2_attrs =  (
+        objectClass => 'inetOrgPerson',
+        mail        => 'toki@example.com',
+        cn          => 'Toki Wartooth',
+        gn          => 'Toki',
+        sn          => 'Wartooth',
+        title       => 'duped@example.com',
+    );
+
+    # start up OpenLDAP
+    my $ldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
+    isa_ok $ldap, 'Test::Socialtext::Bootstrap::OpenLDAP';
+
+    # populate OpenLDAP schema
+    ok $ldap->add_ldif('t/test-data/ldap/base_dn.ldif'), 'added base_dn';
+
+    # create first "bogus" User in LDAP
+    my $rc = $ldap->add($user1_dn, %user1_attrs);
+    ok $rc, 'added Nathan Explosion to LDAP';
+    my $nathan = Socialtext::User->new(username => 'Nathan Explosion');
+    ok $nathan->isa('Socialtext::User'), 'got Nathan Explosion';
+    my $nathan_cached_at = $nathan->homunculus->cached_at->epoch();
+
+    # create second "bogus" User in LDAP
+    $rc = $ldap->add($user2_dn, %user2_attrs);
+    ok $rc, 'added Toki Wartooth to LDAP';
+    my $toki = Socialtext::User->new(username => 'Toki Wartooth');
+    ok $toki->isa('Socialtext::User'), 'got Toki Wartooth';
+    my $toki_cached_at = $toki->homunculus->cached_at->epoch();
+
+    # update LDAP config, so we can refresh Users with invalid data
+    $ldap->ldap_config->{attr_map}{email_address} = 'title';
+    $ldap->add_to_ldap_config();
+
+    # expire Users
+    $nathan->homunculus->expire();
+    $toki->homunculus->expire();
+
+    sleep 2; # stupid, but we need to ensure last_cached_at actually changes.
+
+    # Refresh Toki, should work fine.
+    my $toki_refreshed = Socialtext::User->new(username => 'Toki Wartooth');
+    ok $toki_refreshed->isa('Socialtext::User'), 'Toki is still a user';
+    is $toki_refreshed->email_address, 'duped@example.com',
+        '... now has bad email_address';
+    ok $toki_cached_at < $toki_refreshed->homunculus->cached_at->epoch(),
+        '... who has been properly refreshed.';
+
+    # Refresh Nathan, should _not_ update.
+    my $nathan_refreshed = Socialtext::User->new(username => 'Nathan Explosion');
+    ok $nathan_refreshed->isa('Socialtext::User'), 'Nathan is still a user';
+    is $nathan_refreshed->email_address, 'nathan@example.com',
+        '... still has old email_address';
+    ok $nathan_cached_at < $nathan_refreshed->homunculus->cached_at->epoch(),
+        '... who has been refreshed.';
 }
