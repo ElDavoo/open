@@ -10,6 +10,9 @@ Socialtext.Workspace.prototype = new Socialtext.Base();
 
 $.extend(Socialtext.Workspace.prototype, {
     postArgs: [ 'title', 'name', 'groups' ],
+    url: function(extra) {
+        return '/data/workspaces/' + this.name + extra
+    },
     create: function(callback) {
         var self = this;
         var data = {};
@@ -26,6 +29,18 @@ $.extend(Socialtext.Workspace.prototype, {
             success: function(data) {
                 $.extend(self, data);
                 if (callback) callback({});
+            },
+            error: this.errorCallback(callback)
+        });
+    },
+    updateUserRole: function(username, role_name, callback) {
+        $.ajax({
+            url: this.url('/users/' + username),
+            type: 'PUT',
+            contentType: 'application/json',
+            data: $.toJSON({ 'role_name': role_name }),
+            success: function(data) {
+                if ($.isFunction(callback)) callback();
             },
             error: this.errorCallback(callback)
         });
