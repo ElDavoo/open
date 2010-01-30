@@ -10,8 +10,10 @@ Socialtext.Base.prototype = {
         var self = this;
         return function(xhr, textStatus, errorThrown) {
             self.error = xhr ? xhr.responseText : errorThrown;
-            if (!callback) alert(self.error);
-            callback({error: self.error});
+            if (callback)
+                callback({error: self.error});
+            else 
+                alert(self.error);
         };
     },
 
