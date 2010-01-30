@@ -299,6 +299,7 @@
         '*': [Socialtext::Rest::WorkspaceAttachments, bad_method]
 -
     '/data/workspaces/:ws/users/:username':
+        'PUT':     [Socialtext::Rest::WorkspaceUser, PUT]
         'DELETE':  [Socialtext::Rest::WorkspaceUser, DELETE]
         '*':       [Socialtext::Rest::WorkspaceUser, bad_method]
 -
