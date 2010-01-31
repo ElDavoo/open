@@ -41,9 +41,12 @@ The font-size percentage is of 16px. (0.75 * 16px = 12px) */
 }
 .wiki p,
 .wiki li,
-.wiki td,
 #st-revision-display {
     font-size:12px ! important;
+    line-height:15px;
+}
+.wiki td {
+    font-size:12px;
     line-height:15px;
 }
 .wiki em {
@@ -262,6 +265,8 @@ html .wiki a:hover {
 .wiki table.st-ss td {
     border: inherit;
     padding: inherit;
+    font-size: inherit;
+    line-height: inherit;
 }
 .wiki table.borderless th,
 .wiki table.borderless td {
