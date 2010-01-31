@@ -145,6 +145,7 @@ Time::Local: 1.11
 Time::Piece: 0
 Time::Piece::Range: 0
 # Part of URI
+URI: 1.52
 URI::Escape: 3.28
 URI::FromHash: 0.02
 # Part of URI
