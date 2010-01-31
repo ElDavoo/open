@@ -25,12 +25,6 @@ sub get_result {
     my $self = shift;
     my $query = shift;
 
-    if ($query =~ /[^\x00-\x7F]/) {
-        return {
-            error => "Sorry, Google Search currently only accepts plain English characters: <b>" . Socialtext::Encode::ensure_is_utf8($query) . "</b>"
-        };
-    }
-
     REST::Google::Search->http_referer(
         Socialtext::URI::uri(path => '/')
     );
@@ -42,7 +36,7 @@ sub get_result {
     # loop so we can adjust the limit later.
     while (@results < $self->limit) {
         my $res = REST::Google::Search->new(
-            q => $query,
+            q => Socialtext::Encode::ensure_is_utf8($query),
             rsz => 'large',
             start => 0+@results,
         );

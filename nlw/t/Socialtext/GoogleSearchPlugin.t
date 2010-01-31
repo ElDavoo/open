@@ -24,12 +24,7 @@ like $content, qr{\Q<a href="http://www.google.com/search?q=One">Search for "One
 like $content, qr{\Q<a href="http://www.google.com/search?q=Two">Search for "Two"</a>\E},
     '{googlesoap: Two} works';
 
-TODO: {
-    local $TODO = "Non-ASCII search does not work yet";
-
 like $content, qr{\QSearch for "naïve"</a>\E},
     '{googlesearch: naïve} works';
 like $content, qr{\QSearch for "曌"</a>\E},
     '{googlesearch: 曌} works';
-
-}
