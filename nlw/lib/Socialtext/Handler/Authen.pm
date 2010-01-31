@@ -237,6 +237,10 @@ sub _add_user_to_workspace {
     my ($self, $user, $ws_name) = @_;
     my $ws = Socialtext::Workspace->new( name => $ws_name );
     if ($ws and $user->is_authenticated) {
+        if ($ws->has_user($user)) {
+            return 1;
+        }
+
         my $perms = $ws->permissions;
         my $can_self_join = $perms->role_can( 
             role => Socialtext::Role->Guest(),
