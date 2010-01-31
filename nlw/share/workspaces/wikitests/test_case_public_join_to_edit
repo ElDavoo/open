@@ -1,12 +1,20 @@
-| *Comment* | Test Case: Public Join to Edit |
+| *Comment* | Test Case: Public Join to Edit |  |
+| *Comment* | Four cases to test: |  |
+| *Comment* | Logged out user, non-member |  |
+| *Comment* | Logged in user, non-member |  |
+| *Comment* | Logged out user, existing member |  |
+| *Comment* | Logged in user, existing member |  |
 
 | set | auth_w | public-auth-%%start_time%% |
-| st-admin | create-workspace --name %%auth_w%% --title %%auth_w%% |  |
+| st-admin | create-workspace --name %%auth_w%% --title "%%auth_w%% Title" |  |
 | st-admin | set-permissions --workspace %%auth_w%% --permissions public-join-to-edit | The permissions for the %%auth_w%% workspace have been changed to public-join-to-edit. |
-| st-logout |  |  |
 
+| *Comment* | Case: 1 Logged out user, non-member |  |
+
+| st-logout |  |  |
 | open_ok | /%%auth_w%%/index.cgi |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
+| text_like | st-page-titletext | %%auth_w%% Title |
 
 | *Comment* | Test Case: Public Join to Edit. Verify buttons and links page top |  |
 | wait_for_element_not_present_ok | st-edit-button-link | 30000 |
@@ -20,21 +28,33 @@
 | *Comment* | Test Case: Public Join to Edit. Verify buttons and links page bottom |  |
 | text_like | footerGlobal | Log in |
 
-| *Comment* | Test Case: Public Authenticate to Edit. Verify bottom buttons missing |  |
+| *Comment* | Test Case: Public Join to Edit. Verify bottom buttons missing |  |
 | text_unlike | bottomButtons | Comment |
 
-| st-admin | create-user --email nonmember_%%start_time%%@ken.socialtext.net --password 123456 |  |
+TODO: Join To Edit, Register, See redirect, membership, and editable. Logout. See Join To Edit.
+TODO: test Join after just joining: Join. See dual Login/Membership page. Login. See editable.
+
+| *Comment* | Case 2: Logged in user, non-member |  |
+
+| st-admin | create-user --email nonmember_%%start_time%%@ken.socialtext.net --password %%password%% |  |
 | click_and_wait | link=Log in |  |
+| wait_for_element_visible_ok | username | 30000 |
+| wait_for_element_visible_ok | password | 30000 |
 | type_ok | username | nonmember_%%start_time%%@ken.socialtext.net |
-| type_ok | password | 123456 |
+| type_ok | password | %%password%% |
 | click_and_wait | login_btn |  |
 
-| *Comment* | Test Case: Public Join to Edit. Logged-In, NOT GOING to see edit open after login. |  |
-| wait_for_element_not_present_ok | link=Edit | 30000 |
-| wait_for_element_not_present_ok | link=Wiki Text | 30000 |
+| *Comment* | Test Case: Public Join to Edit. Logged-In, non-member, redirected but NOT GOING to see edit open after login. |  |
+| wait_for_element_visible_ok | st-page-titletext | 30000 |
+| text_like | st-page-titletext | %%auth_w%% Title |
+| wait_for_element_not_present_ok | st-edit-button-link | 30000 |
 | wait_for_element_not_present_ok | link=Comment | 30000 |
-| click_and_wait | link=Settings |  |
+| wait_for_element_not_present_ok | link=Add Tag | 30000 |
+| wait_for_element_not_present_ok | link=Upload Files | 30000 |
+| wait_for_element_visible_ok | link=Join to edit | 30000 |
 
+| *Comment* | Test Case: Public Join to Edit. Workspace settings ARE visible in public workspaces |  |
+| click_and_wait | link=Settings |  |
 | text_like | contentLeft | My Settings |
 | text_like | contentLeft | List All Users |
 | text_like | contentLeft | My Workspaces |
@@ -50,15 +70,46 @@
 | text_unlike | contentLeft | Manage All Users |
 | text_unlike | contentLeft | Invite New Users |
 
+TODO: Join. See immediate editable and membership.
+
+| *Comment* | Test Case: Public Join to Edit. logout, having already joined %%auth_w%%. Attempt to rejoin. |  |
+| *Comment* | Test Case: Public Join to Edit. FAIL UNTIL {bz 3538} IS FIXED |  |
+
+| *Comment* | Case 3: Logged out user, existing member |  |
+| st-admin | add-member --u %%username%% --w %%auth_w%% | now has the role of 'member' |
+
+| st-logout |  |  |
 | open_ok | /%%auth_w%%/index.cgi |  |
 | wait_for_element_visible_ok | link=Join to edit | 30000 |
-| click_ok | link=Join to edit | 30000 |
+| click_and_wait | link=Join to edit | 30000 |
+| wait_for_element_visible_ok | username | 30000 |
+| wait_for_element_visible_ok | password | 30000 |
+| type_ok | username | %%username%% |
+| type_ok | password | %%password%% |
+| click_and_wait | login_btn |  |
+
+| *Comment* | Test Case: Public Join to Edit. Member redirected to WS after login |  |
+
+| *Comment* | TEMPORARY REOPEN UNTIL {bz: 3538} IS FIXED |  |
+| open_ok | /%%auth_w%%/index.cgi |  |
+
 | wait_for_element_visible_ok | link=Edit | 30000 |
+| wait_for_element_visible_ok | link=Comment | 30000 |
+| wait_for_element_visible_ok | st-page-titletext | 30000 |
+| text_like | st-page-titletext | %%auth_w%% Title |
+
+| *Comment* | Case 4: Logged in user, existing member |  |
+| open_ok | / |  |
+| open_ok | /%%auth_w%%/index.cgi |  |
+| wait_for_element_visible_ok | link=Edit | 30000 |
+| wait_for_element_visible_ok | link=Comment | 30000 |
+| wait_for_element_visible_ok | st-page-titletext | 30000 |
+| text_like | st-page-titletext | %%auth_w%% Title |
 | st-logout |  |  |
 | wait_for_element_not_present_ok | link=Edit | 30000 |
 | wait_for_element_visible_ok | link=Join to edit | 30000 |
 
-| *Comment* | Test Case: Public Authenticate to Edit Teardown |
+| *Comment* | Test Case: Public Join to Edit Teardown |  |
 | st-admin | delete-workspace -workspace %%auth_w%% --no-export | has been deleted |
 
-| *Comment* | Test Case: Public Authenticate to Edit COMPLETED |
+| *Comment* | Test Case: Public Join to Edit COMPLETED |
