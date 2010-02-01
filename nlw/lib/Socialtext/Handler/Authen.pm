@@ -15,7 +15,8 @@ use Socialtext::AppConfig;
 use Socialtext::Authen;
 use Socialtext::BrowserDetect;
 use Socialtext::Hub;
-use Socialtext::Log 'st_log';
+use Socialtext::Log qw(st_timed_log);
+use Socialtext::Timer;
 use Socialtext::Apache::User;
 use Socialtext::User;
 use Socialtext::Session;
@@ -221,7 +222,7 @@ sub login {
         $dest = "/";
     }
 
-    st_log->info( "LOGIN: " . $user->email_address . " destination: $dest" );
+    st_timed_log('info', 'WEB', "LOGIN", $user, {}, Socialtext::Timer->Report);
 
     if (my $ws_name = $self->{args}{workspace_name}) {
         $self->_add_user_to_workspace($user, $ws_name)
