@@ -47,9 +47,8 @@ sub GET {
 
         # eg:
         # admin/attachments/admin_wiki/20091217174324-11-3042/video_60seconds.png 
-        my $file_path = '/nlw/protected/'
-            . join('/', $self->hub->current_workspace->name, 'attachments',
-                $attachment->page_id, $attachment->id, Socialtext::String::uri_escape($attachment->filename));
+        my $data_dir = Socialtext::AppConfig->data_root_dir;
+        (my $file_path = $file) =~ s{^$data_dir/plugin}{/nlw/protected};
 
         # See Socialtext::Headers::add_attachments for the IE6/7 motivation
         # behind Pragma and Cache-control below.
