@@ -58,6 +58,7 @@
 | st-name-widget | 2 | workspaces_widget |
 | st-widget-title-like | workspaces_widget | Workspaces |
 | st-select-widget-frame | workspaces_widget |  |
+| *Comment* | Test Case: Groups UI Create New Workspace FAILS IN IE7 due to {bz 3540} |  |
 | wait_for_element_visible_ok | link=%%createme_ws_title%% | 30000 |
 | select-frame | relative=parent |  |
 
