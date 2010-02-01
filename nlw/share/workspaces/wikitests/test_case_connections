@@ -9,13 +9,14 @@
 
 | *Comment* | Test Case: Connections. Technorati decommissioned |
 
-| type_ok | wikiwyg_wikitext_textarea | `FetchRSS Test\n{fetchrss: http://feeds.feedburner.com/ross}\n*AIM.* aim:example *Yahoo!* *alternatively:* ymsgr:example yahoo:example *Skype.* *alternatively:* callto:example skype:example` |
+| type_ok | wikiwyg_wikitext_textarea | `FetchRSS Test\n{fetchrss: http://feeds.feedburner.com/ross}\n*AIM.* aim:example *Yahoo!* *alternatively:* ymsgr:example yahoo:example *Skype.* *alternatively:* callto:example skype:example Googlesearch\n{googlesearch: example}\n` |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_and_wait | st-save-button-link |  |
 | text_like | st-page-content | Ross Mayfield's Weblog |
 | text_like | st-page-content | AIM. |
 | text_like | st-page-content | Yahoo! alternatively: |
 | text_like | st-page-content | Skype. alternatively: |
+| text_like | st-page-content | Search for "example" |
 
 | *Comment* | Test Case: Connections. Four RSS/ATOM feeds, one at a time ELSE timeout |
 
