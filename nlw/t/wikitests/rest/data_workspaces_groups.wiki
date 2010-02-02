@@ -1,0 +1,72 @@
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+## Create a new group, add it to a couple of workspaces
+| *Comment* | Setup |
+
+| set | admin     | admin%%start_time%%@ken.socialtext.net |
+| set | workspace | workspace%%start_time%%                |
+| set | dogs      | dogs%%start_time%%                     |
+| set | cats      | cats%%start_time%%                     |
+| set | zebras    | zebras%%start_time%%                   |
+| set | fish      | fish%%start_time%%                     |
+
+# Create 4 groups and add them to the workspace
+| create-user            | %%admin%%     | password      |
+| create-workspace       | %%workspace%% |               |
+| create-group           | %%dogs%%      |               |
+| add-group-to-workspace | %%group_id%%  | %%workspace%% |
+| create-group           | %%cats%%      |               |
+| add-group-to-workspace | %%group_id%%  | %%workspace%% |
+| create-group           | %%zebras%%    |               |
+| add-group-to-workspace | %%group_id%%  | %%workspace%% |
+| create-group           | %%fish%%      |               |
+| add-group-to-workspace | %%group_id%%  | %%workspace%% |
+
+| http-user-pass | %%admin%% | password |
+
+################
+| *Comment* | GET, user is not authorized           |
+
+| GET       | /data/workspaces/%%workspace%%/groups |
+| code-is   | 403                                   |
+
+################
+| *Comment*  | Log in as workspace admin |               |       |
+
+| add-member | %%admin%% | %%workspace%% | admin |
+
+################
+| *Comment* | GET HTML, groups are in order     |
+
+| GET       | /data/workspaces/%%workspace%%/groups         |
+| code-is   | 200                                           |
+| body-like | <h1>Workspace Groups</h1>                     |
+| body-like | qr/%%cats%%.+%%dogs%%.+%%fish%%.+%%zebras%%/s |
+
+################
+| *Comment* | GET JSON |
+
+| GET-json        | /data/workspaces/%%workspace%%/groups |            |
+| code-is         | 200                                   |            |
+| json-parse      |                                       |            |
+| json-array-size | 4                                     |            |
+| json-path-is    | $[0].group_name                       | %%cats%%   |
+| json-path-is    | $[1].group_name                       | %%dogs%%   |
+| json-path-is    | $[2].group_name                       | %%fish%%   |
+| json-path-is    | $[3].group_name                       | %%zebras%% |
+
+################
+| *Comment* | GET HTML, groups are in order     |
+
+| GET-json     | /data/workspaces/%%workspace%%/groups?startIndex=0 |            |
+| code-is      | 200                                                |            |
+| json-parse   |                                                    |            |
+| json-path-is | $.startIndex                                       | 0          |
+| json-path-is | $.itemsPerPage                                     | 25         |
+| json-path-is | $.totalResults                                     | 4          |
+| json-path-is | $.entry[0].group_name                              | %%cats%%   |
+| json-path-is | $.entry[1].group_name                              | %%dogs%%   |
+| json-path-is | $.entry[2].group_name                              | %%fish%%   |
+| json-path-is | $.entry[3].group_name                              | %%zebras%% |

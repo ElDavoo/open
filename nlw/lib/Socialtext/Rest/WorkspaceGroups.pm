@@ -4,41 +4,80 @@ use Moose;
 use Socialtext::Workspace;
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json/;
+use Socialtext::Permission 'ST_ADMIN_WORKSPACE_PERM';
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
+with 'Socialtext::Rest::Pageable';
 
 has 'workspace' => (is => 'rw', isa => 'Maybe[Object]', lazy_build => 1);
 
 sub permission { +{ GET => undef, POST => undef } }
 sub allowed_methods { 'POST', 'GET' }
-sub collection_name { "Account Groups" }
+sub collection_name { "Workspace Groups" }
 
-sub _entities_for_query {
-    my $self      = shift;
-    my $rest      = $self->rest;
-    my $user      = $rest->user;
-    my $workspace = $self->workspace or return ();
+sub if_authorized {
+    my $self = shift;
+    my $method = shift;
+    my $call = shift;
 
-    my @groups;
-    my $group_cursor = $workspace->groups();
-    if ($user->is_business_admin) {
-        @groups = $group_cursor->all();
-    }
-    else {
-        while (my $g = $group_cursor->next) {
-            eval {
-                if ($g->creator->user_id == $user->user_id 
-                        or $g->has_user($user)) {
-                    push @groups, $g;
-                }
-            };
-            warn $@ if $@;
-        }
+    my $has_perm = $self->workspace->permissions->user_can(
+        user => $self->rest->user,
+        permission => ST_ADMIN_WORKSPACE_PERM,
+    );
+    unless ($has_perm or $self->rest->user->is_business_admin) {
+        return $self->not_authorized;
     }
 
-    return @groups;
+    return $self->$call(@_);
 }
+
+sub _get_total_results {
+    my $self = shift;
+    return $self->workspace->total_group_roles(
+        include_aggregates => 1,
+        limit => $self->items_per_page,
+        offset => $self->start_index,
+        direct => 1,
+    );
+}
+
+sub _get_entities {
+    my $self = shift;
+    my $rest = shift;
+
+    my $roles = $self->workspace->sorted_group_roles(
+        include_aggregates => 1,
+        limit => $self->items_per_page,
+        offset => $self->start_index,
+        direct => 1,
+        order_by => 'driver_group_name',
+    );
+    $roles->apply(sub {
+        my $info = shift;
+        my $group = Socialtext::Group->GetGroup(group_id => $info->{group_id});
+        my $role = Socialtext::Role->new(role_id => $info->{role_id});
+        return {
+            group_id => $group->group_id,
+            group_name => $group->driver_group_name,
+            user_count => $info->{user_count},
+            workspace_count => $info->{workspace_count},
+            primary_account_name => $group->primary_account->name,
+            primary_account_id => $group->primary_account->account_id,
+            created => $group->creation_datetime->dmy,
+            created_by_user_id => $group->created_by_user_id,
+            created_by_username => $group->creator->guess_real_name,
+            role_id => $info->{role_id},
+            role_name => $role->name,
+            name => $group->driver_group_name,
+            uri => "/data/groups/$info->{group_id}"
+        };
+    });
+    my @groups = $roles->all;
+    return \@groups;
+}
+
+sub _entity_hash { return $_[1] }
 
 sub _build_workspace {
     my $self = shift;
@@ -47,21 +86,6 @@ sub _build_workspace {
         name => Socialtext::String::uri_unescape( $self->acct ),
     );
 }
-
-sub _entity_hash {
-    my $self  = shift;
-    my $group = shift;
-
-    return $group->to_hash( show_members => $self->{_show_members} );
-}
-
-around get_resource => sub {
-    my $orig = shift;
-    my $self = shift;
-
-    $self->{_show_members} = $self->rest->query->param('show_members') ? 1 : 0;
-    return $orig->($self, @_);
-};
 
 sub POST_json {
     my $self = shift;
