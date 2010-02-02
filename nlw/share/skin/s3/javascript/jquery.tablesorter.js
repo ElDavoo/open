@@ -242,11 +242,7 @@
 				var t = "";
 				
 				if(config.textExtraction == "simple") {
-					if(node.childNodes[0] && node.childNodes[0].hasChildNodes()) {
-						t = node.childNodes[0].innerHTML;
-					} else {
-						t = node.innerHTML;
-					}
+					t = $(node).text();
 				} else {
 					if(typeof(config.textExtraction) == "function") {
 						t = config.textExtraction(node);
