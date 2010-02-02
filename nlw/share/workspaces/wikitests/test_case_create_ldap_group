@@ -1,0 +1,46 @@
+| *Comment* | Test Case: Create LDAP Group |  |
+| *Comment* | Test Case: Create LDAP Group Requires LDAP to be enabled |  |
+
+| *Comment* | Test Case: Create LDAP Group - Startup LDAP, should contain list of LDAP Group Factories |  |
+| open-ok | /nlw/control/group/ |  |
+| wait_for_element_visible_ok | link=Create Group | 5000 |
+| click_ok | link=Create Group |  |
+| wait_for_text_present_ok | Create a new Socialtext group | 5000 |
+| wait_for_text_present_ok | Load an existing group from LDAP | 5000 |
+| wait_for_element_visible_ok | st-radio-stdgroup | 5000 |
+| wait_for_element_visible_ok | st-radio-ldapgroup | 5000 |
+
+| *Comment* | Test Case: Create LDAP Group. Exercise lightbox |  |
+| click_ok | st-radio-ldapgroup |  |
+| is_checked_ok | st-radio-ldapgroup |  |
+
+| wait_for_element_visible_ok | ldap_driver | 5000 |
+| select_ok | ldap_driver | index=0 |
+| is_selected_ok | ldap_driver | index=0 |
+
+| wait_for_element_visible_ok | st-select-ldap-group | 5000 |
+| pause | 1000 |  |
+| select_ok | st-select-ldap-group | label=Hawkwind |
+| is_selected_ok | st-select-ldap-group | label=Hawkwind |
+| select_ok | st-select-ldap-group | label=Motorhead |
+| is_selected_ok | st-select-ldap-group | label=Motorhead |
+
+| click_ok | st-radio-stdgroup |  |
+| is_checked_ok | st-radio-stdgroup |  |
+| click_ok | st-radio-ldapgroup |  |
+| is_checked_ok | st-radio-ldapgroup |  |
+
+| *Comment* | Test Case: Create LDAP Group. Save and Verify | |
+| wait_for_element_visible_ok | st-group-create-submit | 30000 |
+| click_ok | st-group-create-submit |  |
+
+| wait_for_element_visible_ok | link=Add Group To an Account | 30000 |
+| text_like | //body | Motorhead Group |
+| text_like | //body | Created By: |
+| text_like | //body | Created On: |
+| text_like | //body | Source: LDAP: |
+| text_like | //body | Description: |
+| text_like | //body | Accounts (1): |
+
+
+| *Comment* | Test Case: | *Comment* | Test Case: Create LDAP Group COMPLETED |  |

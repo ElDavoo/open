@@ -89,7 +89,7 @@
 | wait_for_element_visible_ok | lookahead | 30000 |
 | type-lookahead-ok | lookahead | %%new_workspace%% |
 | pause | 5000 |  |
-| wait_for_element_not_present_ok | %%new_workspace%% (%%new_workspace%%) | 30000 |
+| wait_for_element_not_present_ok | //a[@class=lookaheaditem] | 30000 |
 
 | *Comment* | Test Case: Groups UI Create New Workspace Now delete %%test_delete_ws%% from group |  |
 | open_ok | /?group/%%group_id%%/ |  |
@@ -132,8 +132,8 @@
 | wait_for_element_visible_ok | lookahead | 30000 |
 | type-lookahead-ok | lookahead | %%new_workspace%% |
 | pause | 5000 |  |
-| wait_for_element_visible_ok | link=%%new_workspace%% (%%new_workspace%%) | 30000 |
-| click_ok | link=%%new_workspace%% (%%new_workspace%%) |  |
+| wait_for_element_visible_ok | //a[@class=lookaheaditem] | 30000 |
+| click_ok | //a[@class=lookaheaditem] |  |
 | wait_for_element_visible_ok | %%new_workspace_id%% | 30000 |
 | select-frame | relative=parent |  |
 | click_and_wait | create-group |  |
