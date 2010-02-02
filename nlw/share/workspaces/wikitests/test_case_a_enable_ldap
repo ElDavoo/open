@@ -3,4 +3,6 @@
 
 | st-ldap | start | openldap running |
 | st-admin | add-workspace-admin --username devnullx --w %%workspace%% | devnullx now has the role of 'admin' in the test-data Workspace |
+
+
 | *Comment* | Enable LDAP: COMPLETED |  |
