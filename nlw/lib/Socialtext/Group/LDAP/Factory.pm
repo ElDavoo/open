@@ -219,11 +219,39 @@ sub _lookup_group {
     return $response;
 }
 
+our %UPDATING_GROUP;
 sub _update_group_members {
     my $self    = shift;
     my $homey   = shift;
     my $members = shift;
     my $group   = Socialtext::Group->new(homunculus => $homey);
+
+    # Watch out for recursion during Group updates.
+    #
+    # We've had an instance in the past where we accidentally triggered a
+    # Group lookup to be done _while_ we were in the process of refreshing the
+    # Group.  This triggered the Group to be refreshed _recursively_, which is
+    # just bad.
+    #
+    # So, keep track of what Groups we're actively refreshing.  If we find
+    # that we end up recursively trying to do a Group lookup, its an error.
+    # Ideally we shouldn't hit/trigger this, but this code will help us verify
+    # that while running regression tests.
+    my $name = $group->driver_group_name;
+    if ($UPDATING_GROUP{$name}) {
+        my $msg = "ST recursed internally while doing LDAP Group refresh";
+
+        # when encountered in tests, this is a *FATAL* condition
+        if ($ENV{HARNESS_ACTIVE}) {
+            require Test::More;
+            Test::More::BAIL_OUT($msg);
+        }
+        # but _if_ we happen to encounter this out in the field, log an error
+        # and then just don't recurse.
+        st_log->critical($msg);
+        return;
+    }
+    local $UPDATING_GROUP{$name} = 1;
 
     # Get the list of all of the existing Users in the Group, which we'll
     # whittle down to *just* those that are no longer members and can have
