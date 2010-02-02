@@ -3,7 +3,7 @@ package Socialtext::UserSetPerspective;
 use Moose;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::MultiCursor;
-use Socialtext::SQL qw/sql_execute/;
+use Socialtext::SQL qw/sql_execute sql_singlevalue/;
 use Socialtext::SQL::Builder qw/sql_abstract/;
 use namespace::clean -except => 'meta';
 
@@ -48,6 +48,31 @@ sub get_order_by {
         confess $@ if $@;
     }
     return ($join,$sort,@cols);
+}
+
+sub get_total {
+    my ($self,$opts) = @_;
+
+    die "where is a required option and must be an ArrayRef"
+        unless ($opts->{where} && ref($opts->{where}) eq 'ARRAY');
+
+    my $mux = $opts->{mux_roles};
+    my @cols = $self->cols;
+    push @cols, ($mux ? 'role_ids' : 'role_id');
+
+    my $from = Socialtext::UserSet->RoleViewSQL(
+        $self->view,
+        ($opts->{direct} ? (direct => 1) : ()),
+        ($mux ? (mux_roles => 1) : ()),
+    );
+    $from .= $self->always_join if $self->always_join;
+
+    my @where = @{$opts->{where}};
+
+    my ($sql, @bind) = sql_abstract()->select(\$from, \@cols, \@where); 
+    return sql_singlevalue(qq{
+        SELECT COUNT(1) FROM ($sql) countable
+    }, @bind);
 }
 
 sub get_cursor {
