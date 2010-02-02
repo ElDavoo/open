@@ -343,6 +343,13 @@ sub callHandler {
 
 }
 
+my %type_alias = (
+    JSON  => 'application/json; charset=UTF-8',
+    XML   => 'text/xml; charset=UTF-8',
+    HTML  => 'text/html; charset=UTF-8',
+    PLAIN => 'text/plain; charset=UTF-8',
+);
+
 # FIXME: add on cache handling hack
 # If cache headers have not otherwise been dorked with, this
 # makes _nothing_ cache.
@@ -391,6 +398,10 @@ sub postHandler {
         use bytes;
         $headers{'-content-length'} = length($$resultref);
         no bytes;
+    }
+
+    if (my $type = $type_alias{$headers{'-type'}||''}) {
+        $headers{'-type'} = $type;
     }
 
     # Reset headers to our cleaned set.
