@@ -98,7 +98,8 @@ sub _build_sql_order {
 
     my $order = $self->order;
     die if $order and $order !~ /^\w+$/;
-    $order = [qw(last_name first_name)] if !$order or $order eq 'name';
+    $order = [qw(last_name first_name)]
+        if !$order or $order eq 'name' or $order eq 'alpha';
 
     my $group = $self->sql_group;
 
