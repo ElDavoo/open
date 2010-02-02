@@ -339,10 +339,10 @@ sub no_resource {
     return "$resource_name not found";
 }
 
-=head2 resource_conflict()
+=head2 conflict()
 
-Informs the client that we can't operate because no valid resource
-was created or found from the provided URI.
+The request could not be completed due to a conflict with the current state of
+the resource.
 
 =cut
 
