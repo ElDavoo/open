@@ -1,3 +1,5 @@
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Gadgets Galore |  |
 
 | st-admin | enable-plugin --p dashboard --all-accounts |  |
