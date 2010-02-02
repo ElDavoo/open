@@ -82,3 +82,8 @@ div#controls div#controlsRight ul li a.export {
     margin-left: 15px;
 }
 
+
+body#contentPage * div#contentColumns div#contentRight {
+    padding-right: 0px;
+}
+
