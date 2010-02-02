@@ -316,6 +316,7 @@
 -
     '/data/workspaces/:ws/groups/:group_id':
         'DELETE':   [Socialtext::Rest::WorkspaceGroup, DELETE]
+        'PUT':      [Socialtext::Rest::WorkspaceGroup, PUT]
         '*':        [Socialtext::Rest::WorkspaceGroup, bad_method]
 -
     '/data/workspaces/:ws':
