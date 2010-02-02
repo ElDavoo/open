@@ -11,6 +11,7 @@ FF3 only, not Safari, not IE: {bz 3471} (IE: Selenium: Unable to send signals fr
 
 * [Test Case: Groups UI Signal from group home]
 * [Test Case: Groups UI Send Signal to Group]
+* [Test Case: Groups UI Create New Workspace]
 
 Broken due to selenium issues:
 
@@ -18,5 +19,4 @@ Broken due to selenium issues:
 
 ToDo:
 
-* [Test Case: Groups UI Create New Workspace]
 * [Test Case: Groups UI Search Signals by Group]

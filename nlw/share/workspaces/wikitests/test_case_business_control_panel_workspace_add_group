@@ -51,7 +51,7 @@
 | text_like | //body | %%group%% Group has been removed from the Workspace |
 | text_like | //body | Groups (0) |
 
-| *Comment* | Test Case: Business Control Panel Workspace Add Group TEARDOWN |
+| *Comment* | Test Case: Business Control Panel Workspace Add Group TEARDOWN | |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group COMPLETED |  |
