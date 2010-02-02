@@ -59,17 +59,16 @@ sub _get_entities {
         my $role = Socialtext::Role->new(role_id => $info->{role_id});
         return {
             group_id => $group->group_id,
-            group_name => $group->driver_group_name,
+            name => $group->driver_group_name,
             user_count => $info->{user_count},
             workspace_count => $info->{workspace_count},
             primary_account_name => $group->primary_account->name,
             primary_account_id => $group->primary_account->account_id,
-            created => $group->creation_datetime->dmy,
+            creation_date => $group->creation_datetime->ymd,
             created_by_user_id => $group->created_by_user_id,
             created_by_username => $group->creator->guess_real_name,
             role_id => $info->{role_id},
             role_name => $role->name,
-            name => $group->driver_group_name,
             uri => "/data/groups/$info->{group_id}"
         };
     });

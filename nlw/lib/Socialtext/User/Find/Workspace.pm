@@ -43,7 +43,7 @@ sub _build_sql_cols {
         push @$cols,
             '"UserMetadata".primary_account_id',
             '"Account".name AS primary_account_name',
-            'creation_datetime',
+            "to_char(creation_datetime, 'YYYY-MM-DD') AS creation_date",
             q{ 
                 (
                     SELECT COUNT(*)
@@ -95,7 +95,7 @@ sub _build_sql_group {
     );
     unless ($self->minimal) {
         push @group_cols, qw(
-            primary_account_name primary_account_id creation_datetime
+            primary_account_name primary_account_id creation_date
         );
     }
 
