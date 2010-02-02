@@ -716,6 +716,15 @@ sub _sorted_group_roles_apply {
         $opts{thing} = $self;
         return $perspective->get_cursor(\%opts);
     }
+
+    sub total_group_roles {
+        my ($self, %opts) = @_;
+        my $t = time_scope('total_group_roles');
+        require Socialtext::Group;
+        $opts{where} = ['gxr.into_set_id' => $self->user_set_id];
+        $opts{thing} = $self;
+        return $perspective->get_total(\%opts);
+    }
 }
 
 1;
