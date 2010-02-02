@@ -551,8 +551,9 @@ sub delete_group {
 
     my $group = Socialtext::Group->GetGroup(group_id => $group_id);
     if ($group) {
-        diag "Deleting group $group_id";
-        $group->delete();
+        diag "Recklessly deleting group $group_id";
+        require Test::Socialtext::Group;
+        Test::Socialtext::Group->delete_recklessly($group);
     }
 }
 
