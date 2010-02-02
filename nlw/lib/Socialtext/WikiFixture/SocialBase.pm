@@ -525,6 +525,11 @@ sub create_multi_groups {
    }
 }
 
+sub get_group_id {
+    my ($self, $group_name, $variable) = @_;
+    my $group = Socialtext::Group->GetGroup(driver_group_name => $group_name);
+    $self->{$variable} = $group->group_id;
+}
 
 sub delete_created_groups {
     my $self = shift;
