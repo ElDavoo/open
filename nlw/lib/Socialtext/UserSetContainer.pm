@@ -534,6 +534,17 @@ for my $thing_name (qw(user group)) {
     };
 }
 
+sub role_count {
+    my ($self, %p) = @_;
+    my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
+    return sql_singlevalue(qq{
+        SELECT COUNT(*)
+          FROM $table
+         WHERE role_id = ?
+           AND into_set_id = ?
+    }, $p{role}->role_id, $self->user_set_id);
+}
+
 sub _sorted_user_roles_order_by {
     my $ob = shift;
     my ($join,$sort,@cols);
