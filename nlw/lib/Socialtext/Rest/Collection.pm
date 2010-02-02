@@ -112,6 +112,7 @@ sub _make_getter {
                 'Auth'           => sub { $self->not_authorized },
                 'NotFound'       => sub { $self->http_404($rest) },
                 'NoSuchResource' => sub { $self->no_resource($e->name) },
+                'Conflict'       => sub { $self->conflict($e->errors) },
             );
             for my $class_type (keys %error_handlers) {
                 my $class = 'Socialtext::Exception::' . $class_type;

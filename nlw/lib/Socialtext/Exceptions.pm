@@ -79,7 +79,7 @@ BEGIN {
         'Socialtext::Exception::Conflict' => {
             isa         => 'Socialtext::Exception',
             alias       => 'conflict',
-            fields      => [qw( name )],
+            fields      => [qw( errors )],
             description => 'Conflict with the specified resource',
         },
 

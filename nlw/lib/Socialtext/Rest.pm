@@ -339,6 +339,23 @@ sub no_resource {
     return "$resource_name not found";
 }
 
+=head2 resource_conflict()
+
+Informs the client that we can't operate because no valid resource
+was created or found from the provided URI.
+
+=cut
+
+sub conflict {
+    my $self = shift;
+    my $errors = shift || [];
+    $self->rest->header(
+        -status => HTTP_409_Conflict,
+        -type   => 'text/plain',
+    );
+    return join "\n", @$errors;
+}
+
 sub page_lock_permission_fail {
     my $self = shift;
 
