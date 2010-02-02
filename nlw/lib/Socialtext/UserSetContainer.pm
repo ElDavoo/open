@@ -703,6 +703,7 @@ sub _sorted_group_roles_apply {
         supergroup_count => [ into => 'groups',     using => 'user_set_id' ],
         subgroup_count   => [ from => 'groups',     using => 'user_set_id' ],
         account_count    => [ into => 'accounts',   using => 'user_set_id' ],
+        user_count       => [ from => 'users',      using => 'user_set_id' ],
     },
     order_by => \&_sorted_group_roles_order_by,
     apply    => \&_sorted_group_roles_apply,
