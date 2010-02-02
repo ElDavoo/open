@@ -55,6 +55,7 @@ sub DELETE {
 }
 
 # Remove a Group from a Workspace
+# XXX: This is the same as Socialtext::Rest::WorkspaceUser (refactor please)
 sub PUT {
     my ($self, $rest) = @_;
     $self->if_authorized(sub {
