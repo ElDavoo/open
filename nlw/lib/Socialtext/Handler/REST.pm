@@ -128,6 +128,7 @@ sub log_timings {
     my $class   = shift;
     my $handler = shift;
 
+    Socialtext::Timer->Reset();
     # Only log timing information on a successful request
     # ie status is either 2xx or 3xx
     my %headers = $handler->header();
