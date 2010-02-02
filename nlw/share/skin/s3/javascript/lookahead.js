@@ -270,7 +270,7 @@
                         .attr('src', src)
                         .appendTo(li);
                 }
-                self.$('<a href="#"></a>')
+                self.$('<a class="lookaheadItem" href="#"></a>')
                     .css({
                         marginLeft: '5px',
                         whiteSpace: 'nowrap'
