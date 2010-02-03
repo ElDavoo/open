@@ -103,9 +103,6 @@ sub DELETE {
     return $self->_can_administer_workspace(sub {
         my $ws = $self->workspace;
 
-        return $self->http_404($self->rest)
-            unless $ws;
-
         Socialtext::Search::AbstractFactory->GetFactory->create_indexer(
             $ws->name
         )->delete_workspace($ws->name);
@@ -124,6 +121,8 @@ sub _can_administer_workspace {
     my $self = shift;
     my $cb   = shift;
     my $user = $self->rest->user;
+
+    return $self->http_404($self->rest) unless $self->workspace;
 
     my $can_admin = $user->is_business_admin
         || $user->is_technical_admin 
