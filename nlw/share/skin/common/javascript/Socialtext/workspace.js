@@ -33,9 +33,9 @@ $.extend(Socialtext.Workspace.prototype, {
             error: this.errorCallback(callback)
         });
     },
-    updateUserRole: function(username, role_name, callback) {
+    updateRole: function(collection, id, role_name, callback) {
         $.ajax({
-            url: this.url('/users/' + username),
+            url: this.url('/' + collection + '/' + id),
             type: 'PUT',
             contentType: 'application/json',
             data: $.toJSON({ 'role_name': role_name }),
@@ -44,6 +44,28 @@ $.extend(Socialtext.Workspace.prototype, {
             },
             error: this.errorCallback(callback)
         });
+    },
+    updateUserRole: function(user_id, role_name, callback) {
+        this.updateRole('users', user_id, role_name, callback);
+    },
+    updateGroupRole: function(group_id, role_name, callback) {
+        this.updateRole('groups', group_id, role_name, callback);
+    },
+    removeRole: function(collection, id, callback) {
+        $.ajax({
+            url: this.url('/' + collection + '/' + id),
+            type: 'DELETE',
+            success: function(data) {
+                if ($.isFunction(callback)) callback();
+            },
+            error: this.errorCallback(callback)
+        });
+    },
+    removeGroupRole: function(group_id, callback) {
+        this.removeRole('groups', group_id, callback);
+    },
+    removeUserRole: function(user_id, callback) {
+        this.removeRole('users', user_id, callback);
     }
 });
 
