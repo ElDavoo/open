@@ -30,17 +30,20 @@
 | click_ok | st-radio-ldapgroup |  |
 | is_checked_ok | st-radio-ldapgroup |  |
 
-| *Comment* | Test Case: Create LDAP Group. Save and Verify | |
+| *Comment* | Test Case: Create LDAP Group. Save and Verify |  |
 | wait_for_element_visible_ok | st-group-create-submit | 30000 |
 | click_ok | st-group-create-submit |  |
+| st-process-jobs |  |  |
+| get_group_id | Motorhead | created_group_id |
+| open_ok | /nlw/control/group/%%created_group_id%% |  |
 
-| wait_for_element_visible_ok | link=Add Group To an Account | 30000 |
+| wait_for_element_visible_ok | link=Add Group To An Account | 30000 |
 | text_like | //body | Motorhead Group |
 | text_like | //body | Created By: |
 | text_like | //body | Created On: |
 | text_like | //body | Source: LDAP: |
 | text_like | //body | Description: |
 | text_like | //body | Accounts (1): |
+| text_like | //body | Users(3): |
 
-
-| *Comment* | Test Case: | *Comment* | Test Case: Create LDAP Group COMPLETED |  |
+| *Comment* | Test Case: Create LDAP Group COMPLETED |  |
