@@ -1,0 +1,121 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use Socialtext::Paths;
+use Socialtext::SQL qw/get_dbh sql_execute/;
+use Fatal qw/mkdir link/;
+use Socialtext::Events::Reporter;
+use Data::Dumper;
+use Socialtext::UserSetContainer;
+use Socialtext::File qw/set_contents/;
+use Socialtext::JSON qw/encode_json/;
+use Socialtext::UserSet ':const';
+use Socialtext::Timer qw/time_scope/;
+
+my $cache_dir = Socialtext::Paths::cache_directory('firehose');
+mkdir $cache_dir unless -d $cache_dir;
+
+my $dbh = get_dbh();
+
+my $reporter = Socialtext::Events::Reporter->new;
+my $fields = join(",\n\t", map { "$_->[1] AS $_->[0]" } $reporter->field_list);
+my $sth = $dbh->prepare(<<EOSQL);
+SELECT $fields
+  FROM (
+    SELECT evt.* FROM (
+        SELECT e.*
+        FROM event e
+        WHERE at > ?::timestamptz
+        ORDER BY at DESC
+    ) evt
+) outer_e
+LEFT JOIN page ON (outer_e.page_workspace_id = page.workspace_id AND
+                   outer_e.page_id = page.page_id)
+LEFT JOIN "Workspace" w ON (outer_e.page_workspace_id = w.workspace_id)
+-- the JOINs above mess up the "ORDER BY at DESC".
+-- Fortunately, the re-sort isn't too hideous after LIMIT-ing
+ORDER BY outer_e.at DESC
+EOSQL
+
+warn "Running execute";
+my $last_at = '2010-02-01';
+while(1) {
+    my $timers = Socialtext::Timer->Report;
+    sleep 1;
+    Socialtext::Timer->Reset;
+    my $timer_str = %$timers ? join ', ', map {"$_:$timers->{$_}"} keys %$timers : '';
+    warn "Checking for events since $last_at ($timer_str)\n";
+    my $t = time_scope('event_loop');
+    
+    $sth->execute($last_at) || die "execute failed: " . $sth->errstr . "\n";
+    warn "Got results";
+    my $result = $reporter->decorate_event_set($sth);
+    warn "Decorated";
+    if (@$result) {
+        $last_at = $result->[0]{at};
+        for my $r (@$result) {
+            if ($r->{event_class} eq 'signal') {
+                for my $acct_id (@{ $r->{context}{account_ids} }) {
+                    my $uset = $acct_id + ACCT_OFFSET;
+                    store_event_for_users($r, $uset);
+                }
+            }
+        }
+    }
+}
+
+my $timers = Socialtext::Timer->Report;
+my $timer_str = %$timers ? join ', ', map {"$_:$timers->{$_}"} keys %$timers : '';
+warn "Last run: $last_at ($timer_str)\n";
+exit;
+
+sub store_event_for_users {
+    my $evt  = shift;
+    my $uset = shift;
+    (my $at = $evt->{at}) =~ s/\s+/_/g;
+
+    my $user_ids = users_in_uset($uset);
+
+    my $first_file;
+    my $t = time_scope 'store_event_for_users';
+    for my $uid (@$user_ids) {
+        my $dir = user_id_to_mbox_dir($uid);
+        my $file = "$dir/$at";
+        next if -e $file;
+        unless ($first_file) {
+            set_contents($file, encode_json($evt));
+            warn "  Wrote $file\n";
+            $first_file = $file;
+        }
+        else {
+            link $first_file => $file;
+            warn "  Linked $file to $first_file\n";
+        }
+    }
+}
+
+sub users_in_uset {
+    my $uset = shift;
+
+    my $t = time_scope 'users_in_uset';
+    my $id_filter = PG_USER_FILTER;
+    my $sth = sql_execute(qq{
+        SELECT DISTINCT from_set_id
+        FROM user_set_path
+        WHERE from_set_id $id_filter
+          AND into_set_id = ?
+    }, $uset);
+    return [ map { $_->[0] } @{$sth->fetchall_arrayref || []} ];
+}
+
+sub user_id_to_mbox_dir {
+    my $uid = shift;
+
+    # ultra simple for now
+    my $dir = "$cache_dir/$uid";
+    mkdir $dir unless -d $dir;
+    return $dir;
+}
+
