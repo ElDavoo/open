@@ -341,6 +341,11 @@
         'DELETE':               [Socialtext::Rest::Workspace, DELETE]
         '*':                    [Socialtext::Rest::Workspace, bad_method]
 -
+    '/data/workspaces/:ws/trash':
+        'POST':
+            'application/json': [Socialtext::Rest::Workspace, POST_to_trash]
+        '*':                    [Socialtext::Rest::Workspace, bad_method]
+-
     '/data/workspaces/:ws/groups':
         'GET':
             'application/json': [Socialtext::Rest::WorkspaceGroups, GET_json]

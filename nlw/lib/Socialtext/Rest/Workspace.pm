@@ -9,6 +9,8 @@ use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
 use Socialtext::Workspace;
 use Socialtext::Workspace::Permissions;
+use Socialtext::User;
+use Socialtext::Group;
 
 # we handle perms ourselves for PUT
 sub permission      { +{ GET => 'read', PUT => undef } }
@@ -115,8 +117,37 @@ sub DELETE {
     });
 }
 
-# REVIEW: this is starting to look like an idiom.
-# Might already exist somewhere in the code.
+sub POST_to_trash {
+    my $self = shift;
+
+    # XXX: still need to verify that we have at least one remaining admin.
+    $self->_can_administer_workspace(sub {
+        my $data = decode_json($self->rest->getContent());
+        my $ws   = $self->workspace;
+
+        for my $thing (@$data) {
+            my $condemned;
+
+            if (my $name_or_id = $thing->{username} || $thing->{user_id}) {
+                $condemned = Socialtext::User->Resolve($name_or_id);
+            }
+            else {
+                $condemned = eval {
+                    Socialtext::Group->GetGroup(group_id => $thing->{group_id})
+                };
+            }
+            next unless $condemned
+                && $ws->user_set->direct_object_role($condemned);
+
+            $ws->remove_role(
+                actor  => $self->rest->user,
+                object => $condemned,
+            );
+        }
+        return '';
+    });
+}
+
 sub _can_administer_workspace {
     my $self = shift;
     my $cb   = shift;
