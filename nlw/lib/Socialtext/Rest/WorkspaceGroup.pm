@@ -16,13 +16,13 @@ extends 'Socialtext::Rest::Entity';
 sub allowed_methods { 'DELETE' };
 
 has 'target_group' => (
-    is => 'ro', isa => 'Socialtext::Group', lazy_build => 1,
+    is => 'ro', isa => 'Maybe[Socialtext::Group]', lazy_build => 1,
 );
 
 sub _build_target_group {
     my $self = shift;
     my $group_id = $self->group_id;
-    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+    my $group = eval{ Socialtext::Group->GetGroup(group_id => $group_id) };
 }
 
 sub if_authorized {
@@ -34,6 +34,9 @@ sub if_authorized {
 
     return $self->no_workspace() unless $self->workspace;
     return $self->not_authorized() unless $self->can_admin;
+    return $self->http_404($self->rest, 'group not found')
+        unless $self->target_group;
+
     unless ($self->workspace->has_group($self->target_group)) {
         $self->rest->header( -status => HTTP_404_Not_Found );
         return $self->target_group->driver_group_name
