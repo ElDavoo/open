@@ -127,3 +127,9 @@ We're not testing the results of what the Permission Set grants to readers/viewe
 | PUT       | /data/workspaces/%%workspace%%                                         | Content-Type=application/json | { "permission_set": "intranet" }                |
 | GET       | /data/workspaces/%%workspace%%                                         | application/json              |                                                 |
 | body-like | "permission_set":"intranet"                                            |                               |                                                 |
+| *Comment* | ... invalid set                                                        |                               |                                                 |
+| PUT       | /data/workspaces/%%workspace%%                                         | Content-Type=application/json | { "permission_set": "ENOSUCH" }                 |
+| code-is   | 400                                                                    |                               |                                                 |
+| body-like | ENOSUCH unknown                                                        |                               |                                                 |
+| GET       | /data/workspaces/%%workspace%%                                         | application/json              |                                                 |
+| body-like | "permission_set":"intranet"                                            |                               |                                                 |

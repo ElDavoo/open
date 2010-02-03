@@ -70,86 +70,66 @@ sub get_resource {
 sub PUT {
     my( $self, $rest ) = @_;
 
-    unless ($self->_can_administer_workspace( ) ) {
-        $rest->header(
-                      -status => HTTP_403_Forbidden,
-                     );
+    return $self->_can_administer_workspace(sub {
+        my $workspace = $self->workspace;
+
+        return $self->http_404($self->rest)
+            unless $workspace;
+
+        my $data = decode_json($rest->getContent());
+
+        my $uri = $data->{customjs_uri};
+        if (defined $uri) {
+            $workspace->update(customjs_uri => $uri);
+        }
+
+        my $set  = $data->{permission_set};
+        my @sets = keys %Socialtext::Workspace::Permissions::PermissionSets;
+        unless (defined $set && grep { $_ eq $set } @sets) {
+            return $self->http_400(
+                $self->rest, "$set unknown");
+        }
+
+        $workspace->permissions->set( set_name => $set );
+
+        $rest->header( -status => HTTP_204_No_Content );
         return '';
-    }
-
-    my $workspace = $self->workspace;
-
-    unless ($workspace) {
-        $rest->header(
-            -status => HTTP_404_Not_Found,
-        );
-        return $self->ws . ' not found';
-    }
-
-    my $content = $rest->getContent();
-    my $update_request_hash = decode_json( $content );
-
-    my $uri = $update_request_hash->{customjs_uri};
-    if (defined $uri) {
-        $workspace->update(customjs_uri => $uri);
-    }
-
-    my $permission_set = $update_request_hash->{permission_set};
-    if ( defined $permission_set ) {
-        if (
-            grep { $_ eq $permission_set }
-            keys(%Socialtext::Workspace::Permissions::PermissionSets)
-            ) {
-            $workspace->permissions->set( set_name => $permission_set );
-        }
-        else {
-            $rest->header(
-                -status => HTTP_400_Bad_Request,
-            );
-            return '$permission_set unknown';
-        }
-    }
-
-    $rest->header( -status => HTTP_204_No_Content );
-    return '';
+    });
 }
 
 sub DELETE {
     my ( $self, $rest ) = @_;
 
-    unless ($self->_can_administer_workspace()) {
-        $rest->header(
-            -status => HTTP_403_Forbidden,
-        );
-        # Be ambivalent about why deletion not allowed.
-        return $self->ws . ' cannot be deleted.';
-    }
+    return $self->_can_administer_workspace(sub {
+        my $ws = $self->workspace;
 
-    if ( $self->workspace ) {
+        return $self->http_404($self->rest)
+            unless $ws;
+
         Socialtext::Search::AbstractFactory->GetFactory->create_indexer(
-            $self->workspace->name )
-            ->delete_workspace( $self->workspace->name );
-        $self->workspace->delete;
+            $ws->name
+        )->delete_workspace($ws->name);
+
+        $ws->delete;
         $rest->header(
             -status => HTTP_204_No_Content,
         );
         return $self->ws . ' removed';
-    }
-    else {
-        return $self->http_404($rest);
-    }
+    });
 }
 
 # REVIEW: this is starting to look like an idiom.
 # Might already exist somewhere in the code.
 sub _can_administer_workspace {
     my $self = shift;
-
+    my $cb   = shift;
     my $user = $self->rest->user;
-    return $user->is_business_admin()
-        || $user->is_technical_admin()
-        || ( $self->workspace
-        && $self->hub->checker->check_permission('admin_workspace') );
+
+    my $can_admin = $user->is_business_admin
+        || $user->is_technical_admin 
+        || $self->hub->checker->check_permission('admin_workspace');
+
+    return ($can_admin) ? $cb->() : $self->not_authorized();
 }
 
 sub validate_resource_id {
@@ -160,6 +140,5 @@ sub validate_resource_id {
         errors  => $errors
     );
 }
-
 
 1;
