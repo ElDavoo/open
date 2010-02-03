@@ -52,10 +52,10 @@
 | code-is         | 200                                   |            |
 | json-parse      |                                       |            |
 | json-array-size | 4                                     |            |
-| json-path-is    | $[0].group_name                       | %%cats%%   |
-| json-path-is    | $[1].group_name                       | %%dogs%%   |
-| json-path-is    | $[2].group_name                       | %%fish%%   |
-| json-path-is    | $[3].group_name                       | %%zebras%% |
+| json-path-is    | $[0].name                       | %%cats%%   |
+| json-path-is    | $[1].name                       | %%dogs%%   |
+| json-path-is    | $[2].name                       | %%fish%%   |
+| json-path-is    | $[3].name                       | %%zebras%% |
 
 ################
 | *Comment* | GET HTML, groups are in order     |
@@ -66,7 +66,7 @@
 | json-path-is | $.startIndex                                       | 0          |
 | json-path-is | $.itemsPerPage                                     | 25         |
 | json-path-is | $.totalResults                                     | 4          |
-| json-path-is | $.entry[0].group_name                              | %%cats%%   |
-| json-path-is | $.entry[1].group_name                              | %%dogs%%   |
-| json-path-is | $.entry[2].group_name                              | %%fish%%   |
-| json-path-is | $.entry[3].group_name                              | %%zebras%% |
+| json-path-is | $.entry[0].name                              | %%cats%%   |
+| json-path-is | $.entry[1].name                              | %%dogs%%   |
+| json-path-is | $.entry[2].name                              | %%fish%%   |
+| json-path-is | $.entry[3].name                              | %%zebras%% |
