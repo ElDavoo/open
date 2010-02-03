@@ -8,7 +8,8 @@ use Socialtext::LDAP;
 use Socialtext::Log qw(st_log);
 use Socialtext::SQL qw(sql_execute);
 use Socialtext::Group;
-use Socialtext::User::LDAP::Factory;
+use Socialtext::Group::Factory;         # needed for cache/async over-ride
+use Socialtext::User::LDAP::Factory;    # needed for cache/async over-ride
 use Net::LDAP::Control::Paged;
 use Net::LDAP::Constant qw(LDAP_CONTROL_PAGED);
 
