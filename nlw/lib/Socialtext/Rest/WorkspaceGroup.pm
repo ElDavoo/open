@@ -48,24 +48,18 @@ sub DELETE {
     my ($self, $rest) = @_;
     $self->if_authorized(sub {
         # Remove the Group from the WS
-        $self->workspace->remove_group( group => $self->target_group );
-        $rest->header( -status => HTTP_204_No_Content );
-        return '';
+        $self->modify_roles(sub {
+            $self->workspace->remove_group( group => $self->target_group );
+        });
     });
 }
 
 # Remove a Group from a Workspace
-# XXX: This is the same as Socialtext::Rest::WorkspaceUser (refactor please)
 sub PUT {
     my ($self, $rest) = @_;
     $self->if_authorized(sub {
         my $content = $rest->getContent();
-
-        my $dbh = get_dbh();
-        my $in_txn = sql_in_transaction();
-        $dbh->begin_work unless $in_txn;
-
-        eval {
+        $self->modify_roles(sub {
             my $object = decode_json( $content );
             die 'role parameter is required' unless $object->{role_name};
 
@@ -75,30 +69,47 @@ sub PUT {
             $self->workspace->assign_role_to_group(
                 group => $self->target_group, role => $role
             );
-
-            my $admins = $self->workspace->role_count(
-                role => Socialtext::Role->Admin(),
-                direct => 1,
-            );
-            conflict errors => ["cannot delete last admin"] unless $admins;
-
-            $dbh->commit unless $in_txn;
-        };
-        my $e = Exception::Class->caught('Socialtext::Exception::Conflict');
-        if ($e) {
-            $dbh->rollback unless $in_txn;
-            return $self->conflict($e->errors);
-        }
-        elsif ( $@ )  {
-            warn $@;
-            $dbh->rollback unless $in_txn;
-            $rest->header( -status => HTTP_400_Bad_Request );
-            return $@;
-        }
-        
-        $rest->header( -status => HTTP_204_No_Content );
-        return '';
+        });
     });
+}
+
+# XXX: This is the same as Socialtext::Rest::WorkspaceUser (refactor please)
+
+# This subroutine runs some operation in a transaction and rolls back and
+# errors if the operation resulted in this workspace having no admin groups or
+# users
+sub modify_roles {
+    my ($self, $call) = @_;
+
+    my $dbh = get_dbh();
+    my $in_txn = sql_in_transaction();
+    $dbh->begin_work unless $in_txn;
+
+    eval {
+        $call->();
+
+        my $admins = $self->workspace->role_count(
+            role => Socialtext::Role->Admin(),
+            direct => 1,
+        );
+        conflict errors => ["cannot delete last admin"] unless $admins;
+
+        $dbh->commit unless $in_txn;
+    };
+
+    my $e = Exception::Class->caught('Socialtext::Exception::Conflict');
+    if ($e) {
+        $dbh->rollback unless $in_txn;
+        return $self->conflict($e->errors);
+    }
+    elsif ( $@ )  {
+        warn $@;
+        $dbh->rollback unless $in_txn;
+        $self->rest->header( -status => HTTP_400_Bad_Request );
+        return $@;
+    }
+    $self->rest->header( -status => HTTP_204_No_Content );
+    return '';
 }
 
 sub can_admin {

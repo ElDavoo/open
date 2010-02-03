@@ -50,6 +50,9 @@
 | PUT-json | /data/workspaces/%%shiny%%/users/%%user1%% | {"role_name":"member"} |
 | code-is  | 409                                        |                        |
 
+| DELETE  | /data/workspaces/%%shiny%%/users/%%user1%% |
+| code-is | 409                                        |
+
 | GET-json     | /data/workspaces/%%shiny%%/users?all=1 |        |
 | code-is      | 200                                    |        |
 | json-parse   |                                        |        |
@@ -85,6 +88,9 @@
 
 | PUT-json | /data/workspaces/%%shiny%%/groups/%%group_id%% | {"role_name":"member"} |
 | code-is  | 409                                            |                        |
+
+| DELETE  | /data/workspaces/%%shiny%%/groups/%%group_id%% |
+| code-is | 409                                            |
 
 ################
 | *Comment* | Make a user an admin first |
