@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 24;
+use Test::Socialtext tests => 34;
 use Test::Socialtext::Group;
 use File::Slurp qw(write_file);
 use Benchmark qw(timeit timestr);
@@ -186,6 +186,86 @@ test_force_refresh: {
     # cleanup; don't want to pollute other tests
     Test::Socialtext::Group->delete_recklessly($ldap_group );
 }
+
+###############################################################################
+# TEST: a User w/invalid data doesn't kill Group refreshes; the Group should
+# be able to refresh without him.
+user_w_missing_email_doesnt_kill_group_refresh: {
+    my $ldap = set_up_openldap();
+
+    # Force Group lookups to be synchronous.
+    local $Socialtext::Group::Factory::Asynchronous = 0;
+
+    # set up custom LDAP config, so we can create Users with invalid data
+    $ldap->ldap_config->{attr_map}{email_address} = 'title';
+    $ldap->add_to_ldap_config();
+
+    # valid/invalid Users, and a Group containing both
+    my $valid_dn    = 'cn=Blue Valkyrie,dc=example,dc=com';
+    my %valid_attrs = (
+        objectClass => 'inetOrgPerson',
+        cn          => 'Blue Valkyrie',
+        gn          => 'Blue',
+        sn          => 'Valkyrie',
+        title       => 'blue.valkyrie@example.com',
+    );
+
+    my $invalid_dn = 'cn=Yellow Wizard,dc=example,dc=com';
+    my %invalid_attrs = (
+        objectClass => 'inetOrgPerson',
+        cn          => 'Yellow Wizard',
+        gn          => 'Yellow',
+        sn          => 'Wizard',
+    );
+
+    my $group_dn    = 'cn=Gauntlet Characters,dc=example,dc=com';
+    my %group_attrs = (
+        objectClass => 'groupOfNames',
+        cn          => 'Gauntlet Characters',
+        member      => [ $valid_dn, $invalid_dn ],
+    );
+
+    # add the test data to LDAP
+    my $rc;
+    $rc = $ldap->add($valid_dn, %valid_attrs);
+    ok $rc, 'added valid User to LDAP';
+
+    $rc = $ldap->add($invalid_dn, %invalid_attrs);
+    ok $rc, 'added invalid User to LDAP';
+
+    $rc = $ldap->add($group_dn, %group_attrs);
+    ok $rc, 'added Group to LDAP';
+
+    # instantiate the Group, which should load it into the system ok
+    clear_log();
+    my $group = eval {
+        Socialtext::Group->GetGroup(driver_unique_id => $group_dn);
+    };
+    ok $group, 'Group instantiation successful';
+    is $group->user_count, 1, '... with correct number of valid Users';
+    logged_like 'warning',
+        qr/Unable to refresh.*'$invalid_dn'.*Email address is a required field/,
+        '... recording warning about missing e-mail';
+
+    # force a refresh of the Group, it should refresh successfully and just
+    # skip the User that has no e-mail address.
+    {
+        clear_log();
+        Socialtext::LDAP::Operations->RefreshGroups(force => 1);
+        logged_like 'info', qr/refreshing: $group_attrs{cn}/,
+            '... Group refreshed';
+        logged_like 'warning',
+            qr/Unable to refresh.*'$invalid_dn'.*Email address is a required field/,
+            '... recording warning about missing e-mail';
+
+        my $refreshed = eval {
+            Socialtext::Group->GetGroup(driver_unique_id => $group_dn);
+        };
+        ok $refreshed, '... refreshed Group instantiation successful';
+        is $refreshed->user_count, 1, '... ... with correct number of valid Users';
+    }
+}
+
 
 ###############################################################################
 # BENCHMARK: how long does it take to refresh 1000 Groups with 1 User each?

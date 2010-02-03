@@ -278,7 +278,17 @@ sub _update_group_members {
         next if (delete $last_cached_users{$dn});
 
         # look this DN up as a User, and give them an UGR
-        my $user = Socialtext::User->new( driver_unique_id => $dn );
+        my $user = eval { Socialtext::User->new( driver_unique_id => $dn ) };
+        if (my $e = Exception::Class->caught('Socialtext::Exception::DataValidation')) {
+            st_log->warning("Unable to refresh LDAP Group member '$dn', skipping; $_")
+                for $e->messages;
+            next;
+        }
+        elsif ($@) {
+            st_log->error("Unable to refresh LDAP Group member '$dn', skipping; $@");
+            next;
+        }
+
         if ($user) {
             $group->add_user( user => $user );
             next;
