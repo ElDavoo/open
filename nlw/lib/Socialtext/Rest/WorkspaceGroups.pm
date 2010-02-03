@@ -51,7 +51,8 @@ sub _get_entities {
         limit => $self->items_per_page,
         offset => $self->start_index,
         direct => 1,
-        order_by => 'driver_group_name',
+        order_by => $self->order || 'driver_group_name',
+        sort_order => $self->reverse ? 'DESC' : 'ASC',
     );
     $roles->apply(sub {
         my $info = shift;
