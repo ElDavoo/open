@@ -245,3 +245,13 @@
 | code-is         | 200                                        |
 | json-parse      |                                            |
 | json-array-size | 2                                          |
+
+## PUT updates user roles
+| *Comment* | PUT updates user roles |
+| PUT-json | /data/workspaces/%%awesome%%/users | [{"username":"user2%%start_time%%@q.q","role_name":"admin"}] |
+| code-is  | 204                                |                                                              |
+
+## PUT cannot delete last admin
+| *Comment* | PUT cannot delete last admin       |                                                                                                                           |
+| PUT-json  | /data/workspaces/%%awesome%%/users | [{"username":"user2%%start_time%%@q.q","role_name":"member"},{"username":"user1%%start_time%%@q.q","role_name":"member"}] |
+| code-is   | 409                                |                                                                                                                           |

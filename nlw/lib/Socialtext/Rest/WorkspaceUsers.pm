@@ -5,9 +5,11 @@ use Socialtext::JSON;
 use Socialtext::HTTP ':codes';
 use Socialtext::WorkspaceInvitation;
 use Socialtext::User::Find::Workspace;
+use Socialtext::Exceptions 'data_validation_error';
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Users';
+with 'Socialtext::Rest::WorkspaceRole';
 
 sub allowed_methods {'GET, HEAD, POST'}
 sub collection_name { "Users in workspace " . $_[0]->ws }
@@ -141,6 +143,37 @@ sub _POST {
     );
 
     return '';
+}
+
+sub PUT_json {
+    my $self = shift;
+
+    $self->can_admin(sub {
+        $self->modify_roles(sub {
+            my $ws = $self->workspace;
+            my $updates = decode_json($self->rest->getContent());
+
+            for my $update (@$updates) {
+                my $username  = $update->{username};
+                my $role_name = $update->{role_name};
+
+                my $target = Socialtext::User->new(username => $username);
+                my $role   = Socialtext::Role->new(name => $role_name);
+                die data_validation_error errors => ["bad username or role"]
+                    unless $target and $role;
+
+                my $exists = $ws->has_user($target, {direct => 1});
+                die data_validation_error errors => ["user not in workspace"]
+                    unless $exists;
+
+                $ws->assign_role_to_user(
+                    actor => $self->rest->user,
+                    user  => $target,
+                    role  => $role,
+                );
+            }
+        });
+    });
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

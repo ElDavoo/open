@@ -322,6 +322,9 @@
         'POST':
             '*/*':              [Socialtext::Rest::WorkspaceUsers, bad_type]
             'application/json': [Socialtext::Rest::WorkspaceUsers, POST]
+        'PUT':
+            '*/*':              [Socialtext::Rest::WorkspaceUsers, bad_type]
+            'application/json': [Socialtext::Rest::WorkspaceUsers, PUT_json]
         '*':                    [Socialtext::Rest::WorkspaceUsers, bad_method]
 -
     '/data/workspaces/:ws/groups/:group_id':
