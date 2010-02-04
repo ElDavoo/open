@@ -1,16 +1,17 @@
 package Socialtext::Rest::Workspace;
 # @COPYRIGHT@
 
-use strict;
-use warnings;
-
-use base 'Socialtext::Rest::Entity';
+use Moose;
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
 use Socialtext::Workspace;
 use Socialtext::Workspace::Permissions;
 use Socialtext::User;
 use Socialtext::Group;
+use namespace::clean -except => 'meta';
+
+extends 'Socialtext::Rest::Entity';
+with 'Socialtext::Rest::WorkspaceRole';
 
 # we handle perms ourselves for PUT
 sub permission      { +{ GET => 'read', PUT => undef } }
@@ -72,7 +73,7 @@ sub get_resource {
 sub PUT {
     my( $self, $rest ) = @_;
 
-    return $self->_can_administer_workspace(sub {
+    return $self->can_admin(sub {
         my $workspace = $self->workspace;
 
         return $self->http_404($self->rest)
@@ -86,13 +87,14 @@ sub PUT {
         }
 
         my $set  = $data->{permission_set};
-        my @sets = keys %Socialtext::Workspace::Permissions::PermissionSets;
-        unless (defined $set && grep { $_ eq $set } @sets) {
-            return $self->http_400(
-                $self->rest, "$set unknown");
+        if ($set) {
+            my @sets = keys %Socialtext::Workspace::Permissions::PermissionSets;
+            return $self->http_400($self->rest, "$set unknown")
+                unless grep { $_ eq $set } @sets;
+
+            $workspace->permissions->set( set_name => $set );
         }
 
-        $workspace->permissions->set( set_name => $set );
 
         $rest->header( -status => HTTP_204_No_Content );
         return '';
@@ -102,7 +104,7 @@ sub PUT {
 sub DELETE {
     my ( $self, $rest ) = @_;
 
-    return $self->_can_administer_workspace(sub {
+    return $self->can_admin(sub {
         my $ws = $self->workspace;
 
         Socialtext::Search::AbstractFactory->GetFactory->create_indexer(
@@ -120,46 +122,33 @@ sub DELETE {
 sub POST_to_trash {
     my $self = shift;
 
-    # XXX: still need to verify that we have at least one remaining admin.
-    $self->_can_administer_workspace(sub {
-        my $data = decode_json($self->rest->getContent());
-        my $ws   = $self->workspace;
+    $self->can_admin(sub {
+        $self->modify_roles(sub {
+            my $data = decode_json($self->rest->getContent());
+            my $ws   = $self->workspace;
 
-        for my $thing (@$data) {
-            my $condemned;
+            for my $thing (@$data) {
+                my $condemned;
 
-            if (my $name_or_id = $thing->{username} || $thing->{user_id}) {
-                $condemned = Socialtext::User->Resolve($name_or_id);
+                if (my $name_or_id = $thing->{username} || $thing->{user_id}) {
+                    $condemned = Socialtext::User->Resolve($name_or_id);
+                }
+                else {
+                    $condemned = eval {
+                        Socialtext::Group->GetGroup(group_id => $thing->{group_id})
+                    };
+                }
+                next unless $condemned
+                    && $ws->user_set->direct_object_role($condemned);
+
+                $ws->remove_role(
+                    actor  => $self->rest->user,
+                    object => $condemned,
+                );
             }
-            else {
-                $condemned = eval {
-                    Socialtext::Group->GetGroup(group_id => $thing->{group_id})
-                };
-            }
-            next unless $condemned
-                && $ws->user_set->direct_object_role($condemned);
-
-            $ws->remove_role(
-                actor  => $self->rest->user,
-                object => $condemned,
-            );
-        }
-        return '';
+            return '';
+        });
     });
-}
-
-sub _can_administer_workspace {
-    my $self = shift;
-    my $cb   = shift;
-    my $user = $self->rest->user;
-
-    return $self->http_404($self->rest) unless $self->workspace;
-
-    my $can_admin = $user->is_business_admin
-        || $user->is_technical_admin 
-        || $self->hub->checker->check_permission('admin_workspace');
-
-    return ($can_admin) ? $cb->() : $self->not_authorized();
 }
 
 sub validate_resource_id {
@@ -171,4 +160,6 @@ sub validate_resource_id {
     );
 }
 
+no Moose;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;

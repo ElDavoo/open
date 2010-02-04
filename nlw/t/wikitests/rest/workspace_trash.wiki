@@ -55,7 +55,7 @@
 ## Trash users/groups
 | *Comment* | Trash users/groups                 |                                                                                             |
 | POST-json | /data/workspaces/%%arabica%%/trash | [{"username":"%%congensis%%"},{"user_id":"%%excelsa_id%%"},{"group_id":"%%gallienii_id%%"}] |
-| code-is   | 200                                |                                                                                             |
+| code-is   | 204                                |                                                                                             |
 
 ## Check for updated users
 | *Comment*       | Check for updated users            |          |
@@ -70,3 +70,8 @@
 | code-is         | 200                                 |          |
 | json-parse      |                                     |          |
 | json-array-size | 0                                   |          |
+
+## Cannot trash last Admin
+| *Comment* | Cannot trash last Admin            |                               |
+| POST-json | /data/workspaces/%%arabica%%/trash | [{"user_id":"%%canephora%%"}] |
+| code-is   | 409                                |                               |
