@@ -527,7 +527,12 @@ sub create_multi_groups {
 
 sub get_group_id {
     my ($self, $group_name, $variable) = @_;
-    my $group = Socialtext::Group->GetGroup(driver_group_name => $group_name);
+
+    # opportunistic search; presumes that you've got *ONLY* one Group with the
+    # given name.
+    my ($group) =
+        grep { $_->name eq $group_name }
+        Socialtext::Group->All->all;
     $self->{$variable} = $group->group_id;
 }
 
