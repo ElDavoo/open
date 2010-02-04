@@ -7,7 +7,7 @@
 <input id="containerID" type="hidden" value="[% container.id %]"/>
 <input id="widgetList" type="hidden" value="[% container.gadgetlist %]"/>
 
-<div id="controls">
+<div id="controls" [% IF container.hide_controls %]class="empty"[% END %]>
     <div id="st-editing-tools-edit">
         [% IF container.hello_template %]
             [% INCLUDE $container.hello_template %]

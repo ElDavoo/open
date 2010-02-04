@@ -339,6 +339,9 @@ div#controls {
 	height: 41px;
 	background: url(../images/controlsTile.png) repeat-x top left;
 }
+div #controls.empty {
+        height: 8px !important;
+}
 
 body#contentPage div#controls,body#settingsPage div#controls,body#dashBoard div#controls, body#revisions div#controls,body#settingsPage div#controls, #socialcalc-header {
 	height: 44px;
@@ -350,6 +353,9 @@ body#blog div#controls {
 	background: url(../images/dashControlsTile.png) repeat-x top left;
 }
 
+div #controls.empty div#st-editing-tools-edit {
+        height: 8px !important;
+}
 div#controls div#st-editing-tools-edit {
 	background: url(../images/controlsLeft.png) no-repeat top left;
 	float: left;
@@ -742,6 +748,9 @@ body#settingsPage div#controls div#controlsRight {
 	background: url(../images/contentControlsRight.png) no-repeat top right;
 	height: 44px;
 	width: 600px !important;
+}
+div #controls.empty div#controlsRight {
+        height: 8px !important;
 }
 
 div#controlsRightEmpty {
