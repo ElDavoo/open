@@ -47,6 +47,7 @@ my %active_users;
 # This maps account IDs to the indirect member user_ids
 # No attempt is made to keep this current.
 my %acct_users;
+my %group_users;
 
 # Collect some global stats for easier debugging
 my %stats;
@@ -66,8 +67,8 @@ my $database_ticker = sub {
 
         my ($users, $groups, undef, $accts) = 
             user_set_id_partition(delete $sig->{user_set_ids});
-        $sig->{group_ids} = \$groups;
-        $sig->{account_ids} = \$accts;
+        $sig->{group_ids} = $groups;
+        $sig->{account_ids} = $accts;
 
         for my $acct_id (@$accts) {
             unless ($acct_users{$acct_id}) {
@@ -76,6 +77,19 @@ my $database_ticker = sub {
             }
 
             for my $uid (@{ $acct_users{$acct_id}}) {
+                next unless $active_users{$uid};
+                $send_to_these_people{$uid}++;
+                push @{ $active_users{$uid}{queued} }, $sig;
+                say "Queued $sig->{signal_id} for user $uid";
+            }
+        }
+        for my $group_id (@$groups) {
+            unless ($group_users{$group_id}) {
+                say "Loading users in group $group_id";
+                $group_users{$group_id} = users_in_uset($group_id + GROUP_OFFSET);
+            }
+
+            for my $uid (@{ $group_users{$group_id}}) {
                 next unless $active_users{$uid};
                 $send_to_these_people{$uid}++;
                 push @{ $active_users{$uid}{queued} }, $sig;
@@ -107,7 +121,7 @@ my $database_ticker = sub {
 };
 
 # Poll the DB every 5 seconds (blocking).
-my $database_ticker_timer = AE::timer 5, 5, $database_ticker;
+my $database_ticker_timer = AE::timer 1, 1, $database_ticker;
 
 my $port = (shift(@ARGV) || Socialtext::HTTP::Ports->firehose_port()) or die "Usage: $0 <port>\n";
 say "Starting HTTPD server at http://localhost:$port";
@@ -186,6 +200,8 @@ sub users_in_uset {
         WHERE from_set_id $id_filter
           AND into_set_id = ?
     }, $uset);
-    return [ map { $_->[0] } @{$sth->fetchall_arrayref || []} ];
+    my $user_ids = [ map { $_->[0] } @{$sth->fetchall_arrayref || []} ];
+    say "Found " . (0+@$user_ids) . " users in user_set $uset";
+    return $user_ids;
 }
 
