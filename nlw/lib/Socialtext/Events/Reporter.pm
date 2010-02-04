@@ -906,6 +906,36 @@ sub get_events_group_activities {
     return $evs;
 }
 
+sub get_events_workspace_activities {
+    my $self     = shift;
+    my $workspace    = shift;
+    my $opts     = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+
+    Socialtext::Timer->Continue('get_gactivity');
+
+    $self->add_condition(q{
+        (
+            event_class = 'page'
+            AND is_page_contribution(action)
+            AND e.page_workspace_id = ?
+            AND EXISTS (
+                SELECT 1
+                  FROM user_set_path
+                 WHERE from_set_id = e.actor_id
+                   AND into_set_id = ?
+                 LIMIT 1
+            )
+        )
+    }, $workspace->workspace_id, $workspace->user_set_id);
+
+    $self->_skip_standard_opts(1);
+    my $evs = $self->_get_events(@_);
+    Socialtext::Timer->Pause('get_gactivity');
+
+    return @$evs if wantarray;
+    return $evs;
+}
+
 sub _conversations_where {
     my $visible_ws = shift || $VISIBLE_WORKSPACES;
     return qq{

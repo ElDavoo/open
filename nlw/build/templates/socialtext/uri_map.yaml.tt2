@@ -54,6 +54,16 @@
             'text/plain':             [Socialtext::Rest::Events::Groups, GET_text]
         '*':                    [Socialtext::Rest::Events::Groups, bad_method]
 -
+    '/data/events/workspaces/:ws':
+        'GET':
+            '*/*':           &default [Socialtext::Rest::Events::Workspaces, GET_html]
+            'text/html':              *default
+            'application/json':       [Socialtext::Rest::Events::Workspaces, GET_json]
+            'text/x-yaml':            [Socialtext::Rest::Events::Workspaces, GET_yaml]
+            'application/atom+xml':   [Socialtext::Rest::Events::Workspaces, GET_atom]
+            'text/plain':             [Socialtext::Rest::Events::Workspaces, GET_text]
+        '*':                    [Socialtext::Rest::Events::Workspaces, bad_method]
+-
     '/data/events/conversations/:user':
         'GET':
             '*/*':           &default [Socialtext::Rest::Events::Conversations, GET_html]

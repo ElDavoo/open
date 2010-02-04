@@ -24,6 +24,14 @@ sub GetActivities {
     return $reporter->get_events_activities($user, @_);
 }
 
+sub GetWorkspaceActivities {
+    my $class = shift;
+    my $viewer = shift || croak 'must supply viewer';
+    my $workspace = shift || croak 'must supply workspace to view';
+    my $reporter = Socialtext::Events::Reporter->new(viewer => $viewer);
+    return $reporter->get_events_workspace_activities($workspace, @_);
+}
+
 sub GetGroupActivities {
     my $class = shift;
     my $viewer = shift || croak 'must supply viewer';
