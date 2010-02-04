@@ -51,21 +51,24 @@ $.extend(Socialtext.Workspace.prototype, {
     updateGroupRole: function(group_id, role_name, callback) {
         this.updateRole('groups', group_id, role_name, callback);
     },
-    removeRole: function(collection, id, callback) {
+    removeRoles: function(roles, callback) {
+        var data = $.map(roles, function(role) {
+            var r = {};
+            if (role.user_id) r.user_id = role.user_id;
+            if (role.group_id) r.group_id = role.group_id;
+            if (role.username) r.username = role.username;
+            return r;
+        });
         $.ajax({
-            url: this.url('/' + collection + '/' + id),
-            type: 'DELETE',
+            url: this.url('/trash'),
+            type: 'POST',
+            contentType: 'application/json',
+            data: $.toJSON(data),
             success: function(data) {
                 if ($.isFunction(callback)) callback();
             },
             error: this.errorCallback(callback)
         });
-    },
-    removeGroupRole: function(group_id, callback) {
-        this.removeRole('groups', group_id, callback);
-    },
-    removeUserRole: function(user_id, callback) {
-        this.removeRole('users', user_id, callback);
     }
 });
 
