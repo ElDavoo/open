@@ -99,25 +99,25 @@
 | *Comment*      | Workspace Admin can add a User to a Workspace |                               |                                                                                  |
 | remove-member  | %%peon%%                                      | %%workspace%%                 |                                                                                  |
 | http-user-pass | %%admin%%                                     | password                      |                                                                                  |
-| POST           | /data/workspaces/%%workspace%%/users          | Content-Type=application/json | { "username":"%%peon%%", "rolename":"member", "send_confirmation_invitation":0 } |
+| POST           | /data/workspaces/%%workspace%%/users          | Content-Type=application/json | { "username":"%%peon%%", "role_name":"member", "send_confirmation_invitation":0 } |
 | code-is        | 201                                           |                               |                                                                                  |
 
 | *Comment*      | Accounts Admin can add a User to a Workspace |                               |                                                                                  |
 | remove-member  | %%peon%%                                     | %%workspace%%                 |                                                                                  |
 | http-user-pass | %%accounts_admin%%                           | password                      |                                                                                  |
-| POST           | /data/workspaces/%%workspace%%/users         | Content-Type=application/json | { "username":"%%peon%%", "rolename":"member", "send_confirmation_invitation":0 } |
+| POST           | /data/workspaces/%%workspace%%/users         | Content-Type=application/json | { "username":"%%peon%%", "role_name":"member", "send_confirmation_invitation":0 } |
 | code-is        | 201                                          |                               |                                                                                  |
 
 | *Comment*      | System Admin can add a User to a Workspace |                               |                                                                                  |
 | remove-member  | %%peon%%                                   | %%workspace%%                 |                                                                                  |
 | http-user-pass | %%system_admin%%                           | password                      |                                                                                  |
-| POST           | /data/workspaces/%%workspace%%/users       | Content-Type=application/json | { "username":"%%peon%%", "rolename":"member", "send_confirmation_invitation":0 } |
+| POST           | /data/workspaces/%%workspace%%/users       | Content-Type=application/json | { "username":"%%peon%%", "role_name":"member", "send_confirmation_invitation":0 } |
 | code-is        | 201                                        |                               |                                                                                  |
 
 | *Comment*      | Non-Admin *cannot* add a User to a Workspace |                               |                                                                                  |
 | remove-member  | %%peon%%                                     | %%workspace%%                 |                                                                                  |
 | http-user-pass | %%member%%                                   | password                      |                                                                                  |
-| POST           | /data/workspaces/%%workspace%%/users         | Content-Type=application/json | { "username":"%%peon%%", "rolename":"member", "send_confirmation_invitation":0 } |
+| POST           | /data/workspaces/%%workspace%%/users         | Content-Type=application/json | { "username":"%%peon%%", "role_name":"member", "send_confirmation_invitation":0 } |
 | code-is        | 403                                          |                               |                                                                                  |
 
 | *Comment*      | Adding User to Workspace requires data |                               |     |
@@ -128,7 +128,7 @@
 | *Comment*      | Workspace Admin can promote an existing Member to a WS Admin |                               |                                               |
 | add-member     | %%peon%%                                                     | %%workspace%%                 |                                               |
 | http-user-pass | %%admin%%                                                    | password                      |                                               |
-| POST           | /data/workspaces/%%workspace%%/users                         | Content-Type=application/json | { "username":"%%peon%%", "rolename":"admin" } |
+| POST           | /data/workspaces/%%workspace%%/users                         | Content-Type=application/json | { "username":"%%peon%%", "role_name":"admin" } |
 | code-is        | 201                                                          |                               |                                               |
 
 | *Comment*      | Workspace Admin can remove a User from a Workspace |               |
