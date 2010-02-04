@@ -18,7 +18,7 @@ Tests for adding groups to a workspace
 # Authorized
 | st-admin  | give-accounts-admin --email %%username%% |                                           |
 | post-json | /data/workspaces/%%workspace%%/groups    | {"group_id":%%gid%%,"role_name":"member"} |
-| code-is   | 204                                      |                                           |
+| code-is   | 201                                      |                                           |
 # verify
 | get       | /data/workspaces/%%workspace%%/groups | application/json |
 | body-like | g%%start_time%%                       |                  |
@@ -40,7 +40,7 @@ Tests for adding groups to a workspace
 | create-group | ga%%start_time%%                      |                                                     |
 | set          | gaid                                  | %%group_id%%                                        |
 | post-json    | /data/workspaces/%%workspace%%/groups | {"group_id":%%gaid%%,"role_name":"admin"} |
-| code-is      | 204                                   |                                                     |
+| code-is      | 201                                   |                                                     |
 # verify
 | get       | /data/workspaces/%%workspace%%/groups | application/json |
 | body-like | ga%%start_time%%                      |                  |
