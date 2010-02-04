@@ -153,9 +153,7 @@ sub POST_json {
         ($role ? (role => $role) : ()),
     );
 
-    $rest->header(
-        -status => HTTP_204_No_Content,
-    );
+    $rest->header(-status => HTTP_201_Created);
     return '';
 }
 
