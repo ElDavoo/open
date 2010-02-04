@@ -1574,6 +1574,20 @@ sub edit_page {
     diag "Edited page [$page_name]/$workspace";
 }
 
+sub comment_page {
+    my $self = shift;
+    my $workspace = shift;
+    my $page_name = shift;
+    my $content = shift;
+    $self->post("/data/workspaces/$workspace/pages/$page_name/comments",
+        'Accept=text/html,Content-Type=text/x.socialtext-wiki',
+        $content,
+    );
+    my $code = $self->{http}->response->code;
+    ok( (($code == 201) or ($code == 204)), "Code is $code");
+    diag "Commented page [$page_name]/$workspace";
+}
+
 sub post_signal {
     my $self = shift;
     my $content = shift;
