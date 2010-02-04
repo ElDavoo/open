@@ -119,7 +119,7 @@ verifyValue | wikiwyg_wikitext_textarea | foo |
 
 | *Comment* | Test Case: Insert Menu "From the web..." |  |
 | click_ok | link=Google Search Results |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{googlesoap: ----}/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{googlesearch: ----}/s` |
 | click_ok | link=Google Search Results |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
 
