@@ -70,9 +70,9 @@ $.extend(Socialtext.Group.prototype, {
                 function(cb) { self.request('PUT', self.url(), cb) },
                 function(cb) { self.addMembers(users, cb) },
                 function(cb) { self.addToWorkspaces(self.workspaces, cb) },
-                function(cb) { self.removeTrash(self.trash, cb) }
+                function(cb) { self.removeTrash(self.trash, cb) },
+                function(cb) { self.changeMemberships(self.changedmemberships, cb) }
             ];
-
             $.each(self.new_workspaces || [], function(i, info) {
                 info.groups = {group_id: self.group_id};
                 jobs.push(function(cb) {
@@ -92,6 +92,11 @@ $.extend(Socialtext.Group.prototype, {
     addMembers: function(data, callback) {
         if (!data.users.length) return callback({});
         this.postItems(this.url('/users'), data, callback);
+    },
+
+    changeMemberships: function(memberships, callback) {
+        if (!memberships.length) return callback({});
+        this.postItems(this.url('/membership'), memberships, callback);
     },
 
     addToWorkspaces: function(workspaces, callback) {
