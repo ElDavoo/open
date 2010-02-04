@@ -65,7 +65,10 @@ my $database_ticker = sub {
         $last_db_request = $sig->{at};
 
         my ($users, $groups, undef, $accts) = 
-            user_set_id_partition($sig->{user_set_ids});
+            user_set_id_partition(delete $sig->{user_set_ids});
+        $sig->{group_ids} = \$groups;
+        $sig->{account_ids} = \$accts;
+
         for my $acct_id (@$accts) {
             unless ($acct_users{$acct_id}) {
                 say "Loading users in account $acct_id";
