@@ -620,6 +620,7 @@ sub _backend_ports {
         https      => Socialtext::HTTP::Ports->backend_https_port(),
         json_proxy => Socialtext::HTTP::Ports->json_proxy_port(),
         console    => Socialtext::HTTP::Ports->console_port(),
+        firehose   => Socialtext::HTTP::Ports->firehose_port(),
     };
 }
 

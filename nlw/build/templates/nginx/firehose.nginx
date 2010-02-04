@@ -15,7 +15,7 @@ location /data/firehose/signals {
     # Docs: http://wiki.nginx.org/NginxHttpProxyModule
 
     # omitting slash at the end transmits the URI (path) verbatim
-    proxy_pass 'http://localhost:28017';
+    proxy_pass 'http://localhost:[% config.backend_ports.firehose %]';
 
     # hide from client (in the response)
     proxy_hide_header 'Proxy-Connection';
