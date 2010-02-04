@@ -70,6 +70,8 @@ my $database_ticker = sub {
         $sig->{group_ids} = $groups;
         $sig->{account_ids} = $accts;
 
+
+        my %recips;
         for my $acct_id (@$accts) {
             unless ($acct_users{$acct_id}) {
                 say "Loading users in account $acct_id";
@@ -78,9 +80,7 @@ my $database_ticker = sub {
 
             for my $uid (@{ $acct_users{$acct_id}}) {
                 next unless $active_users{$uid};
-                $send_to_these_people{$uid}++;
-                push @{ $active_users{$uid}{queued} }, $sig;
-                say "Queued $sig->{signal_id} for user $uid";
+                $recips{$uid}++;
             }
         }
         for my $group_id (@$groups) {
@@ -91,10 +91,14 @@ my $database_ticker = sub {
 
             for my $uid (@{ $group_users{$group_id}}) {
                 next unless $active_users{$uid};
-                $send_to_these_people{$uid}++;
-                push @{ $active_users{$uid}{queued} }, $sig;
-                say "Queued $sig->{signal_id} for user $uid";
+                $recips{$uid}++;
             }
+        }
+
+        for my $uid (keys %recips) {
+            $send_to_these_people{$uid}++;
+            push @{ $active_users{$uid}{queued} }, $sig;
+            say "Queued $sig->{signal_id} for user $uid";
         }
     }
     for my $uid (keys %send_to_these_people) {
