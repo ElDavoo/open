@@ -33,30 +33,53 @@ $.extend(Socialtext.Workspace.prototype, {
             error: this.errorCallback(callback)
         });
     },
-    updateRole: function(collection, id, role_name, callback) {
-        $.ajax({
-            url: this.url('/' + collection + '/' + id),
-            type: 'PUT',
-            contentType: 'application/json',
-            data: $.toJSON({ 'role_name': role_name }),
-            success: function(data) {
-                if ($.isFunction(callback)) callback();
-            },
-            error: this.errorCallback(callback)
+    _splitMemberRoles: function(members, role_name) {
+        // XXX: We should make /data/workspace/:ws/members so we don't need to
+        // split this here
+        var roles = { users: [], groups: [] };
+        $.each(members, function(i, mem) {
+            var role = role_name ? { role_name: role_name } : {};
+            if (mem.group_id) role.group_id = mem.group_id;
+            if (mem.user_id) role.user_id = mem.user_id;
+            if (mem.username) role.username = mem.username;
+            if (mem.group_id) {
+                roles.groups.push(role);
+            }
+            else if (mem.user_id || mem.username) {
+                roles.users.push(role);
+            }
+        });
+        return roles;
+    },
+    updateMembers: function(opts) {
+        var self = this;
+        var members = this._splitMemberRoles(opts.members, opts.role_name);
+        if (!members.users.length && !members.groups.length) {
+            throw new Error("No members specified");
+        }
+        $.each(members, function(collection, list) {
+            if (!list.length) return;
+            $.ajax({
+                url: self.url('/' + collection),
+                type: opts.method || 'PUT',
+                contentType: 'application/json',
+                data: $.toJSON(list),
+                success: function(data) {
+                    if ($.isFunction(opts.callback)) opts.callback();
+                },
+                error: self.errorCallback(opts.callback)
+            });
         });
     },
-    updateUserRole: function(user_id, role_name, callback) {
-        this.updateRole('users', user_id, role_name, callback);
+    addMembers: function(opts) {
+        this.updateMembers($.extend(opts, { method: 'POST' }));
     },
-    updateGroupRole: function(group_id, role_name, callback) {
-        this.updateRole('groups', group_id, role_name, callback);
-    },
-    removeRoles: function(roles, callback) {
-        var data = $.map(roles, function(role) {
+    removeMembers: function(opts) {
+        var data = $.map(opts.members, function(member) {
             var r = {};
-            if (role.user_id) r.user_id = role.user_id;
-            if (role.group_id) r.group_id = role.group_id;
-            if (role.username) r.username = role.username;
+            if (member.user_id) r.user_id = member.user_id;
+            if (member.group_id) r.group_id = member.group_id;
+            if (member.username) r.username = member.username;
             return r;
         });
         $.ajax({
@@ -65,9 +88,9 @@ $.extend(Socialtext.Workspace.prototype, {
             contentType: 'application/json',
             data: $.toJSON(data),
             success: function(data) {
-                if ($.isFunction(callback)) callback();
+                if ($.isFunction(opts.callback)) opts.callback();
             },
-            error: this.errorCallback(callback)
+            error: this.errorCallback(opts.callback)
         });
     }
 });
