@@ -23,35 +23,43 @@ use Socialtext::HTTP::Cookie;
 # * Show all signals from "public" groups (defined in config)
 # ** This would allow better client-side filtering of groups
 # * Figure out how to make database polling non-blocking
+# * don't poll the DB when we just did X msec ago
 
 my $main_cv = AE::cv();
 my $dbh = get_dbh();
+
+# This query could become more advanced over time. For now, just grab all
+# signals.
 my $sth = $dbh->prepare(<<EOSQL);
-        SELECT $Socialtext::Signal::SIGNAL_FIELDS, signal.at
-        FROM signal 
-        $Socialtext::Signal::USER_SET_IDS_JOIN
-        WHERE at > ?::timestamptz
-        ORDER BY signal.at ASC
+    SELECT $Socialtext::Signal::SIGNAL_FIELDS, signal.at
+    FROM signal 
+    $Socialtext::Signal::USER_SET_IDS_JOIN
+    WHERE at > ?::timestamptz
+    ORDER BY signal.at ASC
 EOSQL
 
+
+# These users have open connections:
 my %active_users;
+
+# This maps account IDs to the indirect member user_ids
+# No attempt is made to keep this current.
 my %acct_users;
+
+# Collect some global stats for easier debugging
 my %stats;
+my $stats_ticker = AE::timer 15, 15, sub { warn Dumper \%stats };
 
-my $stats_ticker = AE::timer 15, 15, sub {
-    use Data::Dumper;
-    warn Dumper \%stats;
-};
 
-my $last_at = sql_singlevalue(q{select 'now'::timestamptz});
+my $last_db_request = sql_singlevalue(q{select 'now'::timestamptz});
 my $database_ticker = sub {
     $stats{"database polls"}++;
-    $sth->execute($last_at) || die "execute failed: " . $sth->errstr . "\n";
+    $sth->execute($last_db_request) || die "execute failed: " . $sth->errstr . "\n";
     my $results = $sth->fetchall_arrayref({});
     my %send_to_these_people;
     while (my $sig = shift @$results) {
         $stats{"Signals found"}++;
-        $last_at = $sig->{at};
+        $last_db_request = $sig->{at};
 
         my ($users, $groups, undef, $accts) = 
             user_set_id_partition($sig->{user_set_ids});
@@ -68,7 +76,6 @@ my $database_ticker = sub {
                 warn "Queued $sig->{signal_id} for user $uid\n";
             }
         }
-        
     }
     for my $uid (keys %send_to_these_people) {
         my $u = $active_users{$uid};
@@ -92,7 +99,10 @@ my $database_ticker = sub {
         };
     }
 };
-my $database_ticker_timer = AE::timer 1, 1, $database_ticker;
+
+# Poll the DB every 5 seconds (blocking).
+my $database_ticker_timer = AE::timer 5, 5, $database_ticker;
+
 
 my $port = Socialtext::HTTP::Ports->firehose_port() or die "No port!";
 warn "Starting HTTPD server at http://localhost:$port\n";
@@ -100,25 +110,8 @@ my $httpd = AnyEvent::HTTPD->new(port => $port, host => '127.0.0.1');
 $httpd->reg_cb (
    '/data/firehose' => sub {
       my ($httpd, $req) = @_;
-      my $headers = $req->headers;
-      my $cookie_string = $headers->{cookie};
-      my @cookies = split /\b; \b/, $cookie_string;
 
-      my $uid;
-      for my $c (@cookies) {
-          my ($name, $value) = split /=/, $c, 2;
-          next unless $name eq 'NLW-user';
-          warn "Splitting '$value'";
-          my %user_data = split /[&;]|\b; \b/, $value;
-          $uid = $user_data{user_id};
-          my $expected_MAC = Socialtext::HTTP::Cookie->MAC_for_user_id($uid);
-          if ($expected_MAC ne $user_data{MAC}) {
-              $req->respond ({ content => ['text/plain', "Bad cookie\n" ] });
-          }
-          last;
-      }
-      $req->respond ({ content => ['text/plain', "Missing cookie\n" ] }) unless $uid;
-
+      my $uid = _get_user_id_from_cookie($req) or return;
       if (my $u = $active_users{$uid}) {
           warn "User re-connected $uid\n";
           $u->{req} = $req;
@@ -135,16 +128,45 @@ $httpd->reg_cb (
           };
       }
    },
+
+   # Someone suggests we check the database.
    '/data/firehose/tick' => sub {
        my ($httpd, $req) = @_;
-       $req->respond({ content => ['text/plain', 'Thank you.\n'] });
+       warn "Tick!\n";
+       $stats{Tick}++;
+       $req->respond({ content => ['text/plain', "Thank you.\n"] });
        $database_ticker->(),
+       $httpd->stop_request;
    },
 );
 
 warn "Starting main event loop\n";
 $main_cv->recv; # run forever
 exit;
+
+sub _get_user_id_from_cookie {
+    my $req = shift;
+    my $headers = $req->headers;
+    my $cookie_string = $headers->{cookie};
+    my @cookies = split /\b; \b/, $cookie_string;
+    for my $c (@cookies) {
+        my ($name, $value) = split /=/, $c, 2;
+        next unless $name eq 'NLW-user';
+
+        warn "Splitting '$value'";
+        my %user_data = split /[&;]|\b; \b/, $value;
+        my $uid = $user_data{user_id};
+
+        my $expected_MAC = Socialtext::HTTP::Cookie->MAC_for_user_id($uid);
+        if ($expected_MAC ne $user_data{MAC}) {
+            $req->respond ({ content => ['text/plain', "Bad cookie\n" ] });
+            return undef;
+        }
+        return $uid;;
+    }
+    $req->respond ({ content => ['text/plain', "No cookie\n" ] });
+    return undef;
+}
 
 sub users_in_uset {
     my $uset = shift;
