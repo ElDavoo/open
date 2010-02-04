@@ -1,0 +1,150 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use FindBin;
+use EV;
+use AnyEvent;
+use lib "$FindBin::Bin/../lib";
+use Socialtext::SQL qw/get_dbh sql_execute sql_singlevalue/;
+use Fatal qw/mkdir link/;
+use Socialtext::Signal;
+use Data::Dumper;
+use Socialtext::UserSetContainer;
+use Socialtext::JSON qw/encode_json/;
+use Socialtext::UserSet ':all';
+use Socialtext::Timer qw/time_scope/;
+use AnyEvent::HTTPD;
+use Socialtext::HTTP::Cookie;
+
+# Polls signals DB, sends updates to connected users
+# TODO:
+# * Hide user_set_ids that the receiving user should not see
+# * queue messages for users connect in the past minute
+# * return multiple messages per user
+# * show all signals from !"private" groups (defined in config)
+
+
+my $main_cv = AE::cv();
+my $dbh = get_dbh();
+my $sth = $dbh->prepare(<<EOSQL);
+        SELECT $Socialtext::Signal::SIGNAL_FIELDS, signal.at
+        FROM signal 
+        $Socialtext::Signal::USER_SET_IDS_JOIN
+        WHERE at > ?::timestamptz
+        ORDER BY signal.at ASC
+EOSQL
+
+my %active_users;
+my %acct_users;
+my %stats;
+
+my $last_at = sql_singlevalue(q{select 'now'::timestamptz});
+my $db_poller = AE::timer 0, 2, sub {
+    $stats{"database polls"}++;
+    $sth->execute($last_at) || die "execute failed: " . $sth->errstr . "\n";
+    my $results = $sth->fetchall_arrayref({});
+    my %send_to_these_people;
+    while (my $sig = shift @$results) {
+        $stats{"Signals found"}++;
+        $last_at = $sig->{at};
+
+        my ($users, $groups, undef, $accts) = 
+            user_set_id_partition($sig->{user_set_ids});
+        for my $acct_id (@$accts) {
+            unless ($acct_users{$acct_id}) {
+                warn "Loading users in account $acct_id";
+                $acct_users{$acct_id} = users_in_uset($acct_id + ACCT_OFFSET);
+            }
+
+            for my $uid (@{ $acct_users{$acct_id}}) {
+                next unless $active_users{$uid};
+                $send_to_these_people{$uid}++;
+                push @{ $active_users{$uid}{queued} }, $sig;
+                warn "Queued $sig->{signal_id} for user $uid\n";
+            }
+        }
+        
+    }
+    for my $uid (keys %send_to_these_people) {
+        my $u = $active_users{$uid};
+        my $req = delete $active_users{$uid}{req};
+        next unless defined $req;
+
+        warn "Sending " . @{$u->{queued}} . " signals to $uid\n";
+        $req->respond({ content => ['application/json', encode_json($u->{queued}). "\n"] });
+        $u->{queued} = [];
+
+        # Set up a timer to drop this user.
+        $u->{timeout} = AE::timer 10, 0, sub {
+            my $now = time();
+            if ($now - $u->{connected_at} >= 10) {
+                warn "User $uid has not connected in a while, dropping them.\n";
+                delete $active_users{$uid};
+            }
+            else {
+                warn "User $uid has had recent activity, they can stay!\n";
+            }
+        };
+    }
+};
+
+my $httpd = AnyEvent::HTTPD->new(port => 9090);
+$httpd->reg_cb (
+   '/data/firehose' => sub {
+      my ($httpd, $req) = @_;
+      my $headers = $req->headers;
+      my $cookies = $headers->{cookie};
+      $cookies = [$cookies] unless ref $cookies;
+
+      my $uid;
+      use Data::Dumper;
+      warn Dumper $cookies;
+      for my $c (@$cookies) {
+          my ($name, $value) = split /=/, $c, 2;
+          next unless $name eq 'NLW-user';
+          my %user_data = split /[&;]/, $value;
+          $uid = $user_data{user_id};
+          my $expected_MAC = Socialtext::HTTP::Cookie->MAC_for_user_id($uid);
+          if ($expected_MAC ne $user_data{MAC}) {
+              $req->respond ({ content => ['text/plain', "Bad cookie\n" ] });
+          }
+          last;
+      }
+      $req->respond ({ content => ['text/plain', "Missing cookie\n" ] }) unless $uid;
+
+      if (my $u = $active_users{$uid}) {
+          warn "User re-connected $uid\n";
+          $u->{req} = $req;
+          $u->{connected_at} = time;
+          $u->{timeout} = undef;
+      }
+      else {
+          warn "New user connected $uid\n";
+          $active_users{$uid} = {
+              req => $req,
+              connected_at => time(),
+              queued => [],
+              timeout => undef,
+          };
+      }
+   },
+);
+
+$main_cv->recv; # run forever
+exit;
+
+sub users_in_uset {
+    my $uset = shift;
+
+    $stats{"users in uset"}++;
+    my $t = time_scope 'users_in_uset';
+    my $id_filter = PG_USER_FILTER;
+    my $sth = sql_execute(qq{
+        SELECT DISTINCT from_set_id
+        FROM user_set_path
+        WHERE from_set_id $id_filter
+          AND into_set_id = ?
+    }, $uset);
+    return [ map { $_->[0] } @{$sth->fetchall_arrayref || []} ];
+}
+
