@@ -356,6 +356,9 @@
             'text/html':        *default
         'POST':
             'application/json': [Socialtext::Rest::WorkspaceGroups, POST_json]
+        'PUT':
+            '*/*':              [Socialtext::Rest::WorkspaceGroups, bad_type]
+            'application/json': [Socialtext::Rest::WorkspaceGroups, PUT_json]
         '*':                    [Socialtext::Rest::WorkspaceGroups, bad_method]
 -
     '/data/workspaces/:ws/photo':

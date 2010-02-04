@@ -9,6 +9,7 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
 with 'Socialtext::Rest::Pageable';
+with 'Socialtext::Rest::WorkspaceRole';
 
 has 'workspace' => (is => 'rw', isa => 'Maybe[Object]', lazy_build => 1);
 
@@ -155,6 +156,40 @@ sub POST_json {
 
     $rest->header(-status => HTTP_201_Created);
     return '';
+}
+
+sub PUT_json {
+    my $self = shift;
+
+    $self->can_admin(sub {
+        $self->modify_roles(sub {
+            my $ws = $self->workspace;
+            my $updates = decode_json($self->rest->getContent());
+
+            for my $update (@$updates) {
+                my $group_id  = $update->{group_id};
+                my $role_name = $update->{role_name};
+
+                my $role   = Socialtext::Role->new(name => $role_name);
+                my $target = eval {
+                    Socialtext::Group->GetGroup(group_id => $group_id)
+                };
+
+                die data_validation_error(errors => ["bad group_id or role"])
+                    unless $target and $role;
+
+                my $exists = $ws->has_group($target, {direct => 1});
+                die data_validation_error(errors => ["group not in workspace"])
+                    unless $exists;
+
+                $ws->assign_role_to_group(
+                    actor => $self->rest->user,
+                    group => $target,
+                    role  => $role,
+                );
+            }
+        });
+    });
 }
 
 __PACKAGE__->meta->make_immutable( inline_constructor => 0 );

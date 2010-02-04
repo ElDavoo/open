@@ -49,3 +49,13 @@ Tests for adding groups to a workspace
 | post-json | /data/workspaces/%%workspace%%/groups | {"group_id":%%gid%%,"role_name":"member"} |
 | code-is   | 409                                   |                                           |
 
+## PUT update group role
+| *Comment* | PUT update group role                 |                                              |
+| PUT-json  | /data/workspaces/%%workspace%%/groups | [{"group_id":"%%gid%%","role_name":"admin"}] |
+| code-is   | 204                                   |                                              |
+
+## PUT cannot remove last admin
+| *Comment* | PUT cannot remove last admin          |                                                                                            |
+| remove-member | %%username%% | %%workspace%% |
+| PUT-json  | /data/workspaces/%%workspace%%/groups | [{"group_id":"%%gid%%","role_name":"member"},{"group_id":"%%gaid%%","role_name":"member"}] |
+| code-is   | 409                                   |                                                                                            |
