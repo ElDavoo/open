@@ -11,7 +11,7 @@
 # vim: ft=nginx ro
 #
 # vim: filetype=nginx
-location /data/firehose {
+location /data/firehose/signals {
     # Docs: http://wiki.nginx.org/NginxHttpProxyModule
 
     # omitting slash at the end transmits the URI (path) verbatim

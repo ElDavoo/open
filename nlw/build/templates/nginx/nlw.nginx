@@ -115,6 +115,8 @@
       deny all;
     }
 
+    include firehose.conf;
+
     # Unconditionally include local Socialtext-provided add-ons
     include [% config.nginx_etc_dir %]/socialtext-conf.d/include-*.conf;
 

@@ -108,7 +108,7 @@ my $port = Socialtext::HTTP::Ports->firehose_port() or die "No port!";
 warn "Starting HTTPD server at http://localhost:$port\n";
 my $httpd = AnyEvent::HTTPD->new(port => $port, host => '127.0.0.1');
 $httpd->reg_cb (
-   '/data/firehose' => sub {
+   '/data/firehose/signals' => sub {
       my ($httpd, $req) = @_;
 
       my $uid = _get_user_id_from_cookie($req) or return;
