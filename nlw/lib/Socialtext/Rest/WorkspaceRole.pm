@@ -3,7 +3,7 @@ package Socialtext::Rest::WorkspaceRole;
 use Moose::Role;
 use Socialtext::Exceptions qw(conflict);
 use Socialtext::HTTP ':codes';
-use Socialtext::SQL qw(:txn);
+use Socialtext::SQL ':txn';
 use namespace::clean -except => 'meta';
 
 # This subroutine runs some operation in a transaction and rolls back and

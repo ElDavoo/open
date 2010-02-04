@@ -24,6 +24,7 @@ sub _build_target_group {
     my $self = shift;
     my $group_id = $self->group_id;
     my $group = eval{ Socialtext::Group->GetGroup(group_id => $group_id) };
+    return $group;
 }
 
 around 'can_admin' => sub {
