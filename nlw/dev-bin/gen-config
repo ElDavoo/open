@@ -149,6 +149,10 @@ sub main {
                 $params, 'overwrite',
             ],
             [
+                'nginx/firehose.nginx' => "$dirs{nginx_etc}/firehose.conf",
+                $params, 'overwrite',
+            ],
+            [
                 'nginx/mime.nginx' => "$dirs{nginx_etc}/mime.conf",
                 $params, 'overwrite',
             ],

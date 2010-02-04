@@ -4,6 +4,7 @@ use warnings;
 use FindBin;
 use EV;
 use AnyEvent;
+use lib "$FindBin::Bin/../firehose-lib/lib/perl5";
 use lib "$FindBin::Bin/../lib";
 use Socialtext::SQL qw/get_dbh sql_execute sql_singlevalue/;
 use Fatal qw/mkdir link/;
@@ -19,10 +20,9 @@ use Socialtext::HTTP::Cookie;
 # Polls signals DB, sends updates to connected users
 # TODO:
 # * Hide user_set_ids that the receiving user should not see
-# * queue messages for users connect in the past minute
-# * return multiple messages per user
-# * show all signals from !"private" groups (defined in config)
-
+# * Show all signals from "public" groups (defined in config)
+# ** This would allow better client-side filtering of groups
+# * Figure out how to make database polling non-blocking
 
 my $main_cv = AE::cv();
 my $dbh = get_dbh();
@@ -38,8 +38,13 @@ my %active_users;
 my %acct_users;
 my %stats;
 
+my $stats_ticker = AE::timer 15, 15, sub {
+    use Data::Dumper;
+    warn Dumper \%stats;
+};
+
 my $last_at = sql_singlevalue(q{select 'now'::timestamptz});
-my $db_poller = AE::timer 0, 2, sub {
+my $database_ticker = sub {
     $stats{"database polls"}++;
     $sth->execute($last_at) || die "execute failed: " . $sth->errstr . "\n";
     my $results = $sth->fetchall_arrayref({});
@@ -87,22 +92,24 @@ my $db_poller = AE::timer 0, 2, sub {
         };
     }
 };
+my $database_ticker_timer = AE::timer 1, 1, $database_ticker;
 
-my $httpd = AnyEvent::HTTPD->new(port => 9090);
+my $port = Socialtext::HTTP::Ports->firehose_port() or die "No port!";
+warn "Starting HTTPD server at http://localhost:$port\n";
+my $httpd = AnyEvent::HTTPD->new(port => $port, host => '127.0.0.1');
 $httpd->reg_cb (
    '/data/firehose' => sub {
       my ($httpd, $req) = @_;
       my $headers = $req->headers;
-      my $cookies = $headers->{cookie};
-      $cookies = [$cookies] unless ref $cookies;
+      my $cookie_string = $headers->{cookie};
+      my @cookies = split /\b; \b/, $cookie_string;
 
       my $uid;
-      use Data::Dumper;
-      warn Dumper $cookies;
-      for my $c (@$cookies) {
+      for my $c (@cookies) {
           my ($name, $value) = split /=/, $c, 2;
           next unless $name eq 'NLW-user';
-          my %user_data = split /[&;]/, $value;
+          warn "Splitting '$value'";
+          my %user_data = split /[&;]|\b; \b/, $value;
           $uid = $user_data{user_id};
           my $expected_MAC = Socialtext::HTTP::Cookie->MAC_for_user_id($uid);
           if ($expected_MAC ne $user_data{MAC}) {
@@ -128,8 +135,14 @@ $httpd->reg_cb (
           };
       }
    },
+   '/data/firehose/tick' => sub {
+       my ($httpd, $req) = @_;
+       $req->respond({ content => ['text/plain', 'Thank you.\n'] });
+       $database_ticker->(),
+   },
 );
 
+warn "Starting main event loop\n";
 $main_cv->recv; # run forever
 exit;
 

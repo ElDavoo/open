@@ -1,0 +1,44 @@
+=head2 Wed Feb  3 16:42:39 2010: C<Module> L<Object::Event|Object::Event>
+
+=over 4
+
+=item *
+
+C<installed into: /home/lukec/src/st/socialtext/nlw/firehose-lib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.21>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Wed Feb  3 16:42:40 2010: C<Module> L<AnyEvent::HTTPD|AnyEvent::HTTPD>
+
+=over 4
+
+=item *
+
+C<installed into: /home/lukec/src/st/socialtext/nlw/firehose-lib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.84>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+

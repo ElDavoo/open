@@ -1,14 +1,12 @@
 package Socialtext::HTTP::Ports;
 # @COPYRIGHT@
-
-use strict;
-use warnings;
+use MooseX::Singleton;
 use Socialtext::AppConfig;
 use Memoize;
 
 ###############################################################################
 # Export our constants, so they can be used in our test suite
-use base qw(Exporter);
+extends qw(Exporter);
 our @EXPORT_OK = qw(
     STANDARD_HTTP_PORT
     STANDARD_HTTPS_PORT
@@ -61,18 +59,20 @@ sub backend_https_port {
     return _default_backend_https_port();       # default
 }
 
-memoize 'json_proxy_port';
-sub json_proxy_port {
-    return Socialtext::AppConfig->is_appliance()
-        ? _default_backend_http_port() + 1
-        : PORTS_START_AT() + 4000 + $>;
-}
-
-memoize 'console_port';
-sub console_port {
-    return Socialtext::AppConfig->is_appliance()
-        ? _default_backend_http_port() + 2
-        : PORTS_START_AT() + 5000 + $>;
+my %dev_backend_ports = (
+    json_proxy => 4000 + $>,
+    console    => 5000 + $>,
+    firehose   => 6000 + $>,
+);
+my $port_counter = 1;
+for my $bs (keys %dev_backend_ports) {
+    my $name = $bs . '_port';
+    my $builder = sub {
+        return Socialtext::AppConfig->is_appliance()
+            ? _default_backend_http_port() + $port_counter++
+            : PORTS_START_AT() + $dev_backend_ports{$bs};
+    };
+    has $name => (is => 'ro', isa => 'Int', default => $builder->());
 }
 
 ###############################################################################
@@ -140,6 +140,7 @@ sub _default_devenv_backend_https_port {
     return _default_devenv_backend_http_port() + SSL_PORT_DIFFERENCE();
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
 
 =head1 NAME
