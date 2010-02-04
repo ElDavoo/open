@@ -17,6 +17,8 @@ use Socialtext::Timer qw/time_scope/;
 use AnyEvent::HTTPD;
 use Socialtext::HTTP::Cookie;
 
+sub say { print(@_, "\n") }
+
 # Polls signals DB, sends updates to connected users
 # TODO:
 # * Hide user_set_ids that the receiving user should not see
@@ -48,13 +50,14 @@ my %acct_users;
 
 # Collect some global stats for easier debugging
 my %stats;
-my $stats_ticker = AE::timer 15, 15, sub { warn Dumper \%stats };
+my $stats_ticker = AE::timer 15, 15, sub { say Dumper \%stats };
 
 
 my $last_db_request = sql_singlevalue(q{select 'now'::timestamptz});
 my $database_ticker = sub {
     $stats{"database polls"}++;
-    $sth->execute($last_db_request) || die "execute failed: " . $sth->errstr . "\n";
+    $sth->execute($last_db_request) || die "execute failed: " . $sth->errstr;
+
     my $results = $sth->fetchall_arrayref({});
     my %send_to_these_people;
     while (my $sig = shift @$results) {
@@ -65,7 +68,7 @@ my $database_ticker = sub {
             user_set_id_partition($sig->{user_set_ids});
         for my $acct_id (@$accts) {
             unless ($acct_users{$acct_id}) {
-                warn "Loading users in account $acct_id";
+                say "Loading users in account $acct_id";
                 $acct_users{$acct_id} = users_in_uset($acct_id + ACCT_OFFSET);
             }
 
@@ -73,7 +76,7 @@ my $database_ticker = sub {
                 next unless $active_users{$uid};
                 $send_to_these_people{$uid}++;
                 push @{ $active_users{$uid}{queued} }, $sig;
-                warn "Queued $sig->{signal_id} for user $uid\n";
+                say "Queued $sig->{signal_id} for user $uid";
             }
         }
     }
@@ -82,7 +85,7 @@ my $database_ticker = sub {
         my $req = delete $active_users{$uid}{req};
         next unless defined $req;
 
-        warn "Sending " . @{$u->{queued}} . " signals to $uid\n";
+        say "Sending " . 0+@{$u->{queued}} . " signals to $uid";
         $req->respond({ content => ['application/json', encode_json($u->{queued}). "\n"] });
         $u->{queued} = [];
 
@@ -90,11 +93,11 @@ my $database_ticker = sub {
         $u->{timeout} = AE::timer 10, 0, sub {
             my $now = time();
             if ($now - $u->{connected_at} >= 10) {
-                warn "User $uid has not connected in a while, dropping them.\n";
+                say "User $uid has not connected in a while, dropping them.";
                 delete $active_users{$uid};
             }
             else {
-                warn "User $uid has had recent activity, they can stay!\n";
+                say "User $uid has had recent activity, they can stay!";
             }
         };
     }
@@ -103,9 +106,9 @@ my $database_ticker = sub {
 # Poll the DB every 5 seconds (blocking).
 my $database_ticker_timer = AE::timer 5, 5, $database_ticker;
 
+my $port = (shift(@ARGV) || Socialtext::HTTP::Ports->firehose_port()) or die "Usage: $0 <port>\n";
+say "Starting HTTPD server at http://localhost:$port";
 
-my $port = Socialtext::HTTP::Ports->firehose_port() or die "No port!";
-warn "Starting HTTPD server at http://localhost:$port\n";
 my $httpd = AnyEvent::HTTPD->new(port => $port, host => '127.0.0.1');
 $httpd->reg_cb (
    '/data/firehose/signals' => sub {
@@ -113,13 +116,13 @@ $httpd->reg_cb (
 
       my $uid = _get_user_id_from_cookie($req) or return;
       if (my $u = $active_users{$uid}) {
-          warn "User re-connected $uid\n";
+          say "User re-connected: $uid";
           $u->{req} = $req;
           $u->{connected_at} = time;
           $u->{timeout} = undef;
       }
       else {
-          warn "New user connected $uid\n";
+          say "New user connected: $uid";
           $active_users{$uid} = {
               req => $req,
               connected_at => time(),
@@ -132,15 +135,15 @@ $httpd->reg_cb (
    # Someone suggests we check the database.
    '/data/firehose/tick' => sub {
        my ($httpd, $req) = @_;
-       warn "Tick!\n";
+       say "Tick!";
        $stats{Tick}++;
        $req->respond({ content => ['text/plain', "Thank you.\n"] });
-       $database_ticker->(),
+       $database_ticker->();
        $httpd->stop_request;
    },
 );
 
-warn "Starting main event loop\n";
+say "Starting main event loop";
 $main_cv->recv; # run forever
 exit;
 
@@ -153,19 +156,19 @@ sub _get_user_id_from_cookie {
         my ($name, $value) = split /=/, $c, 2;
         next unless $name eq 'NLW-user';
 
-        warn "Splitting '$value'";
+        say "Splitting '$value'";
         my %user_data = split /[&;]|\b; \b/, $value;
         my $uid = $user_data{user_id};
 
         my $expected_MAC = Socialtext::HTTP::Cookie->MAC_for_user_id($uid);
         if ($expected_MAC ne $user_data{MAC}) {
             $req->respond ({ content => ['text/plain', "Bad cookie\n" ] });
-            return undef;
+            return;
         }
-        return $uid;;
+        return $uid;
     }
     $req->respond ({ content => ['text/plain', "No cookie\n" ] });
-    return undef;
+    return;
 }
 
 sub users_in_uset {
