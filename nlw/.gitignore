@@ -75,6 +75,8 @@ lib/Socialtext/Appliance/User.pm
 lib/Socialtext/Appliance/WorkspaceUsageReport.pm
 lib/Socialtext/Build/ConfigureValues.pm
 lib/Socialtext/CSSKit/Template/Plugin/decorate.pm
+lib/Socialtext/Handler/Container/
+lib/Socialtext/Gadgets/Gadget/
 lib/Socialtext/Gadgets/Container.pm
 lib/Socialtext/Gadgets/ContainerType.pm
 lib/Socialtext/Gadgets/Features.pm
