@@ -10,40 +10,57 @@ use Socialtext::SQL qw(get_dbh :txn);
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Entity';
+with 'Socialtext::Rest::WorkspaceRole';
 
 sub allowed_methods {'DELETE, PUT'}
 
 has 'target_user' => (
-    is => 'ro', isa => 'Socialtext::User', lazy_build => 1,
+    is => 'ro', isa => 'Maybe[Socialtext::User]', lazy_build => 1,
 );
 
 sub _build_target_user {
     my $self = shift;
-    return Socialtext::User->Resolve($self->username);
+    my $user = eval { Socialtext::User->Resolve($self->username) };
+    return $user;
 }
 
-sub if_authorized {
+around 'can_admin' => sub {
+    my $orig = shift;
     my $self = shift;
-    my $call = shift;
 
-    my $acting_user = $self->rest->user;
-    my $checker = $self->hub->checker;
+    my $ws     = $self->workspace;
+    my $target = $self->target_user;
+    my $actor  = $self->rest->user;
 
-    return $self->no_workspace unless $self->workspace;
-    return $self->not_authorized unless $self->can_admin;
-    unless ($self->workspace->has_user($self->target_user) ) {
-        $self->rest->header( -status => HTTP_404_Not_Found );
-        return $self->username
-            . " is not a member of "
-            . $self->workspace->name;
+    return $self->no_workspace() unless $ws;
+
+    return $self->http_404($self->rest, 'user not found')
+        unless $target;
+
+    unless ($ws->has_user($target) ) {
+        return $self->http_404(
+            $self->rest,
+            $target->username . " is not a member of " . $ws->name
+        );
     }
-    return $self->$call(@_);
-}
+
+    return $self->$orig(@_);
+};
 
 # Remove a user from a workspace
 sub DELETE {
     my ( $self, $rest ) = @_;
-    $self->if_authorized(sub {
+    my $actor = $rest->user;
+    my $target = $self->target_user;
+
+    # Users can remove themselves regardless of whether they are an admin.
+    if ($actor->user_id == $target->user_id) {
+        return $self->modify_roles(sub {
+            $self->workspace->remove_user( user => $self->target_user );
+        });
+    }
+
+    $self->can_admin(sub {
         $self->modify_roles(sub {
             $self->workspace->remove_user( user => $self->target_user );
         });
@@ -53,7 +70,7 @@ sub DELETE {
 # Remove a user from a workspace
 sub PUT {
     my ( $self, $rest ) = @_;
-    $self->if_authorized(sub {
+    $self->can_admin(sub {
         my $content = $rest->getContent();
         $self->modify_roles(sub {
             my $object = decode_json( $content );
@@ -69,53 +86,5 @@ sub PUT {
     });
 }
 
-# This subroutine runs some operation in a transaction and rolls back and
-# errors if the operation resulted in this workspace having no admin groups or
-# users
-sub modify_roles {
-    my ($self, $call) = @_;
-
-    my $dbh = get_dbh();
-    my $in_txn = sql_in_transaction();
-    $dbh->begin_work unless $in_txn;
-
-    eval {
-        $call->();
-
-        my $admins = $self->workspace->role_count(
-            role => Socialtext::Role->Admin(),
-            direct => 1,
-        );
-        conflict errors => ["cannot delete last admin"] unless $admins;
-
-        $dbh->commit unless $in_txn;
-    };
-
-    my $e = Exception::Class->caught('Socialtext::Exception::Conflict');
-    if ($e) {
-        $dbh->rollback unless $in_txn;
-        return $self->conflict($e->errors);
-    }
-    elsif ( $@ )  {
-        warn $@;
-        $dbh->rollback unless $in_txn;
-        $self->rest->header( -status => HTTP_400_Bad_Request );
-        return $@;
-    }
-    $self->rest->header( -status => HTTP_204_No_Content );
-    return '';
-}
-
-sub can_admin {
-    my $self = shift;
-
-    return $self->rest->user->is_business_admin()
-        || $self->rest->user->is_technical_admin()
-        || $self->hub->checker->check_permission('admin_workspace')
-        || $self->rest->user->user_id eq $self->target_user->user_id;
-}
-
-
-# SFP
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
