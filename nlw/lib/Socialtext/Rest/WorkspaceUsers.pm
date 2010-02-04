@@ -85,16 +85,16 @@ sub _POST {
     my $create_request_hash = decode_json( $rest->getContent() );
 
     unless ( $create_request_hash->{username} and
-             $create_request_hash->{rolename} ) {
+             $create_request_hash->{role_name} ) {
         $rest->header(
             -status => HTTP_400_Bad_Request,
             -type  => 'text/plain', );
-        return "username, rolename required";
+        return "username, role_name required";
     }
 
     my $workspace_name = $self->ws;
     my $username = $create_request_hash->{username};
-    my $rolename = $create_request_hash->{rolename};
+    my $rolename = $create_request_hash->{role_name};
 
     eval {
         if ( $create_request_hash->{send_confirmation_invitation} ) {
@@ -118,7 +118,7 @@ sub _POST {
             my $role = Socialtext::Role->new( name => $rolename );
         
             unless( $user && $role ) {
-                die "both username, rolename must be valid\n";
+                die "both username, role_name must be valid\n";
             }
         
             $workspace->assign_role_to_user( user => $user, role => $role );
