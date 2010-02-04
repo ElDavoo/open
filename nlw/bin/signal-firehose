@@ -21,7 +21,7 @@ sub say { print(@_, "\n") }
 
 # Polls signals DB, sends updates to connected users
 # TODO:
-# * Hide user_set_ids that the receiving user should not see
+# * Convert user_set_ides visible to the receiving user into "group_ids" and "account_ids" arrays.
 # * Show all signals from "public" groups (defined in config)
 # ** This would allow better client-side filtering of groups
 # * Figure out how to make database polling non-blocking
