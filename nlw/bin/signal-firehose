@@ -9,7 +9,7 @@ use lib "$FindBin::Bin/../lib";
 use Socialtext::SQL qw/get_dbh sql_execute sql_singlevalue/;
 use Fatal qw/mkdir link/;
 use Socialtext::Signal;
-use Data::Dumper;
+use YAML;;
 use Socialtext::UserSetContainer;
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::UserSet ':all';
@@ -50,7 +50,7 @@ my %acct_users;
 
 # Collect some global stats for easier debugging
 my %stats;
-my $stats_ticker = AE::timer 15, 15, sub { say Dumper \%stats };
+my $stats_ticker = AE::timer 15, 15, sub { say YAML::Dump(\%stats), '---' };
 
 
 my $last_db_request = sql_singlevalue(q{select 'now'::timestamptz});
@@ -85,7 +85,7 @@ my $database_ticker = sub {
         my $req = delete $active_users{$uid}{req};
         next unless defined $req;
 
-        say "Sending " . 0+@{$u->{queued}} . " signals to $uid";
+        say "Sending " . (0+@{$u->{queued}}) . " signals to $uid";
         $req->respond({ content => ['application/json', encode_json($u->{queued}). "\n"] });
         $u->{queued} = [];
 
