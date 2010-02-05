@@ -6,10 +6,11 @@ Socialtext.Base = function() {};
 Socialtext.Base.errorCallback = function(callback) {
     return function(xhr, textStatus, errorThrown) {
         var error = xhr ? xhr.responseText : errorThrown;
+        if (!error) error = 'An unknown error occured';
         if (callback)
             callback({error: error});
         else 
-            alert(self.error);
+            alert(error);
     };
 };
 
