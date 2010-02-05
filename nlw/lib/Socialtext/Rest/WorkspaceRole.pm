@@ -19,7 +19,7 @@ sub modify_roles {
         $call->();
 
         my $ok = $self->workspace->has_at_least_one_admin();
-        conflict errors => ["You cannot remove the last admin"] unless $ok;
+        conflict errors => ["The workspace needs to include at least one admin."] unless $ok;
     };
 
     my $e = Exception::Class->caught('Socialtext::Exception::Conflict');
