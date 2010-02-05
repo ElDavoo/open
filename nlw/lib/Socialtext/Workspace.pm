@@ -1846,7 +1846,7 @@ my $de_dupe_members = sub {
     my ($self, %opts) = @_;
     my $new_role = $opts{role};
 
-    my $acct_users = $opts{account}->users;
+    my $acct_users = $opts{account}->users(primary_only => 1);
     while (my $u = $acct_users->next) {
         my $r = $self->role_for_user($u, direct => 1);
         next unless defined $r;
