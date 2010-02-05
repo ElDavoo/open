@@ -3,22 +3,22 @@
 if (typeof(Socialtext) == 'undefined') Socialtext = {};
 Socialtext.Base = function() {};
 
-Socialtext.Base.prototype = {
-    error: '',
+Socialtext.Base.errorCallback = function(callback) {
+    return function(xhr, textStatus, errorThrown) {
+        var error = xhr ? xhr.responseText : errorThrown;
+        if (callback)
+            callback({error: error});
+        else 
+            alert(self.error);
+    };
+};
 
+Socialtext.Base.prototype = {
     errorCallback: function(callback) {
-        var self = this;
-        return function(xhr, textStatus, errorThrown) {
-            self.error = xhr ? xhr.responseText : errorThrown;
-            if (callback)
-                callback({error: self.error});
-            else 
-                alert(self.error);
-        };
+        return Socialtext.Base.errorCallback(callback);
     },
 
     successCallback: function(callback) {
-        self.error = '';
         return function(data) { callback({ data: data }) };
     },
 

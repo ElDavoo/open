@@ -2,17 +2,18 @@
 
 OUTPUT=socialtext-api.js
 FILES=\
-        base.js \
-	account.js \
-	group.js \
-	useraccountrole.js \
-	user.js \
-	workspace.js \
+        lib/Socialtext/Base.js \
+	lib/Socialtext/Account.js \
+	lib/Socialtext/Group.js \
+	lib/Socialtext/UserAccountRole.js \
+	lib/Socialtext/User.js \
+	lib/Socialtext/Workspace.js \
 
 all: $(OUTPUT)
 
 clean:
 	rm -f $(OUTPUT)
+	$(MAKE) -C t clean
 
 $(OUTPUT): $(FILES) Makefile
 	rm -f $@; \

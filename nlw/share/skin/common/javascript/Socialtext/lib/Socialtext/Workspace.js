@@ -9,36 +9,17 @@ Socialtext.Workspace = function(params) {
 Socialtext.Workspace.prototype = new Socialtext.Base();
 
 $.extend(Socialtext.Workspace.prototype, {
-    postArgs: [ 'title', 'name', 'groups' ],
     url: function(extra) {
+        if (!extra) extra = '';
         return '/data/workspaces/' + this.name + extra
     },
-    create: function(callback) {
-        var self = this;
-        var data = {};
-        $.each(this.postArgs, function(i, arg) {
-            if (self[arg]) data[arg] = self[arg];
-        });
-
-        $.ajax({
-            url: '/data/workspaces',
-            type: 'POST',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: $.toJSON(data),
-            success: function(data) {
-                $.extend(self, data);
-                if (callback) callback({});
-            },
-            error: this.errorCallback(callback)
-        });
-    },
-    _splitMemberRoles: function(members, role_name) {
+    _splitMemberRoles: function(members) {
         // XXX: We should make /data/workspace/:ws/members so we don't need to
         // split this here
         var roles = { users: [], groups: [] };
         $.each(members, function(i, mem) {
-            var role = role_name ? { role_name: role_name } : {};
+            var role = {};
+            if (mem.role_name) role.role_name = mem.role_name;
             if (mem.group_id) role.group_id = mem.group_id;
             if (mem.user_id) role.user_id = mem.user_id;
             if (mem.username) role.username = mem.username;
@@ -53,7 +34,7 @@ $.extend(Socialtext.Workspace.prototype, {
     },
     updateMembers: function(opts) {
         var self = this;
-        var members = this._splitMemberRoles(opts.members, opts.role_name);
+        var members = this._splitMemberRoles(opts.members);
         if (!members.users.length && !members.groups.length) {
             throw new Error("No members specified");
         }
@@ -61,7 +42,7 @@ $.extend(Socialtext.Workspace.prototype, {
             if (!list.length) return;
             $.ajax({
                 url: self.url('/' + collection),
-                type: opts.method || 'PUT',
+                type: 'PUT',
                 contentType: 'application/json',
                 data: $.toJSON(list),
                 success: function(data) {
@@ -71,8 +52,19 @@ $.extend(Socialtext.Workspace.prototype, {
             });
         });
     },
-    addMembers: function(opts) {
-        this.updateMembers($.extend(opts, { method: 'POST' }));
+    addMember: function(member, callback) {
+        var collection = member.group_id ? 'groups' : 'users';
+        member.rolename = 'member';
+        $.ajax({
+            url: this.url('/' + collection),
+            type: 'POST',
+            contentType: 'application/json',
+            data: $.toJSON(member),
+            success: function(data) {
+                if ($.isFunction(callback)) callback();
+            },
+            error: this.errorCallback(callback)
+        });
     },
     removeMembers: function(opts) {
         var data = $.map(opts.members, function(member) {
@@ -116,6 +108,29 @@ Socialtext.Workspace.All = function(callback) {
         }
     });
 };
+
+Socialtext.Workspace.Create = function(opts) {
+    var data = {};
+    if (opts.title) data.title = opts.title;
+    if (opts.name) data.name = opts.name;
+    if (opts.groups) data.groups = opts.groups;
+
+    $.ajax({
+        url: '/data/workspaces',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: $.toJSON(data),
+        success: function(data) {
+            $.extend(self, data);
+            if (opts.callback) opts.callback({});
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            var error = xhr ? xhr.responseText : errorThrown;
+            opts.callback({ error: error });
+        }
+    });
+}
 
 Socialtext.Workspace.ReservedNames = [
     'account', 'administrate', 'administrator', 'atom', 'attachment',

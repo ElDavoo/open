@@ -76,8 +76,9 @@ $.extend(Socialtext.Group.prototype, {
             $.each(self.new_workspaces || [], function(i, info) {
                 info.groups = {group_id: self.group_id};
                 jobs.push(function(cb) {
-                    var workspace = new Socialtext.Workspace(info);
-                    workspace.create(cb);
+                    Socialtext.Workspace.Create(
+                        $.extend({ callback: cb }, info)
+                    );
                 });
             });
 
