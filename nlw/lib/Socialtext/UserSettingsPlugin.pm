@@ -127,12 +127,16 @@ sub users_listall {
     $self->_update_users_in_workspace()
         if $self->cgi->Button;
 
-    my @uwr = $self->hub->current_workspace->user_roles(direct => 1)->all;
-    my @gwr = $self->hub->current_workspace->group_roles->all;
+    my $ws = $self->hub->current_workspace;
+    my @uwr = $ws->user_roles(direct => 1)->all;
+    my @gwr = $ws->group_roles->all;
+    my $is_auw = $ws->is_all_users_workspace;
     my $settings_section = $self->template_process(
         'element/settings/users_listall_section',
         users_with_roles => \@uwr,
         groups_with_roles => \@gwr,
+        is_auw => $is_auw,
+        workspace => $ws,
         $self->status_messages_for_template,
     );
 

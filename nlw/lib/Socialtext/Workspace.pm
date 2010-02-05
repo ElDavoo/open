@@ -1009,7 +1009,7 @@ sub account {
 sub is_all_users_workspace {
     my $self        = shift;
 
-    return $self->role_for_account( $self->account );
+    return $self->role_for_account( $self->account, direct => 1 );
 }
 
 {
