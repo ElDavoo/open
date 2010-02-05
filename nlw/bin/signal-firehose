@@ -21,7 +21,6 @@ sub say { print(@_, "\n") }
 
 # Polls signals DB, sends updates to connected users
 # TODO:
-# * Convert user_set_ides visible to the receiving user into "group_ids" and "account_ids" arrays.
 # * Show all signals from "public" groups (defined in config)
 # ** This would allow better client-side filtering of groups
 # * Figure out how to make database polling non-blocking
@@ -53,6 +52,27 @@ my %group_users;
 my %stats;
 my $stats_ticker = AE::timer 15, 15, sub { say YAML::Dump(\%stats), '---' };
 
+use Socialtext::User;
+use Socialtext::Signal;
+use Socialtext::Rest::Signals;
+
+{ # Preparing a "convert_signal_by_uid_to_resource" utility function.
+    my $_active_uid;
+    my $_rest_signals = bless(
+        { rest => bless({}, '__mock__') },
+        'Socialtext::Rest::Signals'
+    );
+
+    sub __mock__::user {
+        return Socialtext::User->new(user_id => $_active_uid);
+    }
+
+    sub convert_signal_by_uid_to_resource {
+        my $signal = shift;
+        $_active_uid = shift;
+        return $_rest_signals->convert_signal_to_resource($signal);
+    }
+};
 
 my $last_db_request = sql_singlevalue(q{select 'now'::timestamptz});
 my $database_ticker = sub {
@@ -66,10 +86,9 @@ my $database_ticker = sub {
         $last_db_request = $sig->{at};
 
         my ($users, $groups, undef, $accts) = 
-            user_set_id_partition(delete $sig->{user_set_ids});
+            user_set_id_partition($sig->{user_set_ids});
         $sig->{group_ids} = $groups;
         $sig->{account_ids} = $accts;
-
 
         my %recips;
         for my $acct_id (@$accts) {
@@ -96,8 +115,14 @@ my $database_ticker = sub {
         }
 
         for my $uid (keys %recips) {
+            # Render each Signal once, on behalf of the receiving user.
+            my $resource = convert_signal_by_uid_to_resource(
+                Socialtext::Signal->_db_fields_to_object($sig),
+                $uid
+            );
+
             $send_to_these_people{$uid}++;
-            push @{ $active_users{$uid}{queued} }, $sig;
+            push @{ $active_users{$uid}{queued} }, $resource;
             say "Queued $sig->{signal_id} for user $uid";
         }
     }
@@ -188,7 +213,7 @@ sub _get_user_id_from_cookie {
         }
         return $uid;
     }
-    $req->respond ({ content => ['text/plain', "No cookie\n" ] });
+    $req->respond ({ content => ['text/plain', "No NLW-user found in cookies:\n$headers->{cookie}\n" ] });
     return;
 }
 
