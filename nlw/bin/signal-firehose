@@ -118,7 +118,7 @@ my $database_ticker = sub {
         for my $uid (keys %recips) {
             # Render each Signal once, on behalf of the receiving user.
             my $resource = convert_signal_by_uid_to_resource(
-                Socialtext::Signal->_db_fields_to_object($sig),
+                Socialtext::Signal->_db_fields_to_object({ %$sig }),
                 $uid
             );
 
