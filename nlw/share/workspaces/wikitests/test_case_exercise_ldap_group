@@ -40,8 +40,6 @@
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
 | text_like | //body | Motorhead |
 | select-frame | relative=parent |  |
 | st-name-widget | 2 | workspaces_widget |
@@ -49,7 +47,13 @@
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_element_visible_ok | link=%%ldapy_ws%% | 30000 |
 | select-frame | relative=parent |  |
-| pause | 50000 |  |
+| st-name-widget | 5 | membership_widget |
+| st-widget-title-like | membership_widget | Membership |
+| st-select-widget-frame | membership_widget |  |
+| wait_for_element_visible_ok | link=Eddie Clarke | 30000 |
+| wait_for_element_visible_ok | link=Lemmy Kilmister | 30000 |
+| wait_for_element_visible_ok | link=Phil Taylor | 30000 |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Exercise LDAP Group TODO Signal and Filter Signals |  |
 
