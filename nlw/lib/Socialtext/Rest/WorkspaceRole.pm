@@ -22,7 +22,7 @@ sub modify_roles {
             role => Socialtext::Role->Admin(),
             direct => 1,
         );
-        conflict errors => ["cannot delete last admin"] unless $admins;
+        conflict errors => ["You cannot remove the last admin"] unless $admins;
     };
 
     my $e = Exception::Class->caught('Socialtext::Exception::Conflict');
