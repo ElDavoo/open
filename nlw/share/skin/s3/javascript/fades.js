@@ -1,7 +1,14 @@
 (function($){
 
 $.fn.fade = function(color, cb) {
-    $(this).addClass('colorFaded').animate({ backgroundColor: color }, cb);
+    var called = false;
+    $(this).addClass('colorFaded').animate(
+        { backgroundColor: color },
+        function() {
+            if (cb) cb();
+            cb = null;
+        }
+    );
 }
 
 $.fn.yellowFade = function(cb) {
@@ -14,7 +21,7 @@ $.fn.redFade = function(cb) {
 
 $.fn.clearFades = function(cb) {
     if ($(this).find('.colorFaded').size()) {
-        $(this).find('.colorFaded').animate({ backgroundColor: 'white' }, cb);
+        $(this).find('.colorFaded').fade('white', cb);
     }
     else {
         if (cb) cb();
