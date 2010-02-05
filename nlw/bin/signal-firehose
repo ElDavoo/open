@@ -74,6 +74,7 @@ use Socialtext::Rest::Signals;
     }
 };
 
+my $last_signal_response_time = time();
 my $last_db_request = sql_singlevalue(q{select 'now'::timestamptz});
 my $database_ticker = sub {
     $stats{"database polls"}++;
@@ -126,6 +127,9 @@ my $database_ticker = sub {
             say "Queued $sig->{signal_id} for user $uid";
         }
     }
+
+    $last_signal_response_time = time();
+
     for my $uid (keys %send_to_these_people) {
         my $u = $active_users{$uid};
         my $req = delete $active_users{$uid}{req};
@@ -137,6 +141,9 @@ my $database_ticker = sub {
 
         # Set up a timer to drop this user (10 minutes).
         $u->{timeout} = AE::timer 600, 0, sub {
+            # If nobody has spoken in 10 minutes, don't erroneously drop everybody.
+            return if $u->{connected_at} >= $last_signal_response_time;
+
             my $now = time();
             if ($now - $u->{connected_at} >= 600) {
                 say "User $uid has not connected in a while, dropping them.";
