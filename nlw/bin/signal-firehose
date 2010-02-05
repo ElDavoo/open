@@ -135,10 +135,10 @@ my $database_ticker = sub {
         $req->respond({ content => ['application/json', encode_json($u->{queued}). "\n"] });
         $u->{queued} = [];
 
-        # Set up a timer to drop this user.
-        $u->{timeout} = AE::timer 10, 0, sub {
+        # Set up a timer to drop this user (10 minutes).
+        $u->{timeout} = AE::timer 600, 0, sub {
             my $now = time();
-            if ($now - $u->{connected_at} >= 10) {
+            if ($now - $u->{connected_at} >= 600) {
                 say "User $uid has not connected in a while, dropping them.";
                 delete $active_users{$uid};
             }
@@ -149,7 +149,7 @@ my $database_ticker = sub {
     }
 };
 
-# Poll the DB every 5 seconds (blocking).
+# Poll the DB every second (blocking).
 my $database_ticker_timer = AE::timer 1, 1, $database_ticker;
 
 my $port = (shift(@ARGV) || Socialtext::HTTP::Ports->firehose_port()) or die "Usage: $0 <port>\n";
