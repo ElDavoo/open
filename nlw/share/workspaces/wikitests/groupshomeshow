@@ -27,14 +27,14 @@
 
 | open_ok | /?dashboard |  |
 | *Comment* | SEE Groups Dropdown - Hover over it |  |
-| *Comment* | SEE Groups Dropdown - Hover over it - ALPHABETICAL SORT OF GROUPS?  |  |
+| *Comment* | SEE Groups Dropdown - Hover over it - ALPHABETICAL SORT OF GROUPS? |  |
 | *Comment* | SEE Groups Dropdown SEE list of three groups %%aagrpname%%, %%aagrpname%%, %%aagrpname%% |  |
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
 
 | *Comment* | Open a group page |
-| open | /?group/%%group_id%% |
+| open | /st/group/%%group_id%% |
 | *Comment* | SEE: Groups PAGE |
 | *Comment* | SEE: Group name %%aagrpname%%, created by %%username%%, belonging to workspace %%newws%% |
 | pause | %%pt%% |
