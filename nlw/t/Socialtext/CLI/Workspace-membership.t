@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 14;
 use Test::Output qw(combined_from);
 use Carp qw/confess/;
 use Socialtext::CLI;
@@ -126,6 +126,27 @@ Cannot_add_account_to_account: {
     ok($@, "Can't add_account on a group");
     eval { $grp->assign_role_to_account(account => $acct2) };
     ok($@, "Can't add_role_for on a group");
+}
+
+Cannot_change_account_of_an_AUW: {
+    my $account   = create_test_account_bypassing_factory();
+    my $account2  = create_test_account_bypassing_factory();
+    my $ws        = create_test_workspace(account => $account);
+    my $ws_name   = $ws->name;
+
+    # Make $ws an AUW of $account
+    $ws->add_account(account => $account);
+
+    my $output = combined_from( sub { eval {
+        Socialtext::CLI->new(
+            argv => [
+                '--workspace' => $ws_name,
+                account_name => $account2->name,
+            ],
+        )->set_workspace_config();
+    } } );
+    like $output, qr/This workspace is the all users workspace for the \S+ account\. Aborting\./;
+    is $ws->has_account($account) => 1, '... account is not in workspace';
 }
 
 exit;
