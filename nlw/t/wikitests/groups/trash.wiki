@@ -119,7 +119,7 @@
 | *Comment* | Trying to remove the only admin from a group fails |                            |
 | POST-json | /data/groups/%%group_id%%/trash                    | [{"username":"%%admin%%"}] |
 | code-is   | 409                                                |                            |
-| body-like | cannot remove the last admin                       |                            |
+| body-like | The group needs to include at least one admin.     |                            |
 
 | *Comment*  | Try to remove all admins: check for rollback |
 | GET-json   | /data/groups/%%group_id%%/users              |

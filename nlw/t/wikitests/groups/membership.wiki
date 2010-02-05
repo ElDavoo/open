@@ -116,7 +116,7 @@ Assumes devnull1 or whoever the default login is *isn't* in this group:
 | *Comment* | Try to remove all admins             |                                                                                                                                 |
 | POST-json | /data/groups/%%group_id%%/membership | [{"username":"%%admin%%","role":"member"},{"username":"%%mercury%%", "role":"member"},{"username":"%%zinc%%", "role":"member"}] |
 | code-is   | 409                                  |                                                                                                                                 |
-| body-like | cannot remove the last admin         |                                                                                                                                 |
+| body-like | The group needs to include at least one admin. |
 
 | *Comment*   | Try to remove all admins: check for rollback |
 | GET-json    | /data/groups/%%group_id%%/users                |

@@ -8,6 +8,7 @@ use Socialtext::JSON;
 use Socialtext::l10n qw(loc);
 use Socialtext::Permission qw(ST_READ_PERM ST_ADMIN_PERM
                               ST_ADMIN_WORKSPACE_PERM);
+use Socialtext::Exceptions qw(conflict);
 use Socialtext::Group;
 use Socialtext::SQL ':txn';
 
@@ -137,6 +138,7 @@ sub _with_admin_permission_do {
         return $error->{message};
     }
 
+    local $@;
     return $self->$callback();
 }
 
@@ -154,22 +156,20 @@ sub _admin_with_group_data_do_txn {
 
         sql_begin_work();
 
-        local $@;
         my $rv = eval { $self->$callback($group, $data) };
 
-        if (my $e = $@) {
+        my $e = Exception::Class->caught('Socialtext::Exception::Conflict');
+        if ($e) {
             sql_rollback();
-            if ($e =~ /no admins remain/) {
-                $self->rest->header( -status => HTTP_409_Conflict );
-                return loc("You cannot remove the last admin");
-            }
-            else {
-                $self->rest->header(-status => HTTP_400_Bad_Request);
-                $e = $1 if $e =~ /(.*) at /;
-                # XXX: cannot always localize sub-exception, so why bother
-                # placing it inside a localized one?
-                return loc('Could not process request: [_1]', $e);
-            }
+            return $self->SUPER::conflict($e->errors);
+        }
+        elsif ($e = $@) {
+            sql_rollback();
+            $self->rest->header(-status => HTTP_400_Bad_Request);
+            $e = $1 if $e =~ /(.*) at /;
+            # XXX: cannot always localize sub-exception, so why bother
+            # placing it inside a localized one?
+            return loc('Could not process request: [_1]', $e);
         }
 
         sql_commit();
@@ -195,7 +195,8 @@ sub POST_to_membership { $_[0]->_admin_with_group_data_do_txn(sub {
         $group->assign_role_to_user( user => $user, role => $role );
     }
 
-    die "no admins remain" unless $group->has_at_least_one_admin;
+    conflict errors => ["The group needs to include at least one admin."]
+        unless $group->has_at_least_one_admin;
 
     return '';
 }) }
@@ -221,7 +222,8 @@ sub POST_to_trash { $_[0]->_admin_with_group_data_do_txn(sub {
                 user       => $actor,
                 permission => ST_ADMIN_WORKSPACE_PERM,
             );
-            die "don't have permission" unless $perm || $actor->is_business_admin;
+            die "don't have permission"
+                unless $perm || $actor->is_business_admin;
 
             $ws->remove_group(group => $group, actor => $actor);
         }
@@ -230,7 +232,8 @@ sub POST_to_trash { $_[0]->_admin_with_group_data_do_txn(sub {
         }
     }
 
-    die "no admins remain" unless $group->has_at_least_one_admin;
+    conflict errors => ["The group needs to include at least one admin."]
+        unless $group->has_at_least_one_admin;
 
     return '';
 }) }
