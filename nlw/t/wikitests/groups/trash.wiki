@@ -110,3 +110,20 @@
 | *Comment* | Delete multiple workspaces |
 | POST-json | /data/groups/%%group_id%%/trash | [{"workspace_id":"%%oxygen_id%%"},{"workspace_id":"%%oxygen_id%%"}] |
 | code-is   | 200                             |                                    |
+
+
+| set | another_group | group2_%%start_time%% |
+| create-group | %%another_group%% | %%account%% | %%admin%% |
+| add-user-to-group | %%mercury%% | %%group_id%% |
+
+| *Comment* | Trying to remove the only admin from a group fails |                            |
+| POST-json | /data/groups/%%group_id%%/trash                    | [{"username":"%%admin%%"}] |
+| code-is   | 409                                                |                            |
+| body-like | cannot remove the last admin                       |                            |
+
+| *Comment*  | Try to remove all admins: check for rollback |
+| GET-json   | /data/groups/%%group_id%%/users              |
+| code-is    | 200                                          |
+| json-parse |                                              |
+| json-like  | [{"username":"%%admin%%", "role":"admin"}]   |
+| json-like  | [{"username":"%%mercury%%"}]                 |

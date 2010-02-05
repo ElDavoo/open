@@ -18,11 +18,8 @@ sub modify_roles {
     eval {
         $call->();
 
-        my $admins = $self->workspace->role_count(
-            role => Socialtext::Role->Admin(),
-            direct => 1,
-        );
-        conflict errors => ["You cannot remove the last admin"] unless $admins;
+        my $ok = $self->workspace->has_at_least_one_admin();
+        conflict errors => ["You cannot remove the last admin"] unless $ok;
     };
 
     my $e = Exception::Class->caught('Socialtext::Exception::Conflict');

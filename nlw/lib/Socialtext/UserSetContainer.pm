@@ -202,6 +202,16 @@ sub remove_role {
     return $role_removed;
 }
 
+sub has_at_least_one_admin {
+    my $self = shift;
+    # XXX: conflates admin role with admin-like privs.
+    my $admins = $self->role_count(
+        role => Socialtext::Role->Admin(),
+        direct => 1,
+    );
+    return ($admins >= 1);
+}
+
 sub _role_change_checker {
     my ($self,$p) = @_;
 

@@ -28,6 +28,8 @@
 | POST-json | /data/groups/0/membership | {"user_id":"%%mercury_id%%", "role":"admin"} |
 | code-is   | 404                       |                                            |
 
+Assumes devnull1 or whoever the default login is *isn't* in this group:
+
 | *Comment* | POST, User devnull1 does not have admin privs |                                            |
 | POST-json | /data/groups/%%group_id%%/membership          | {"user_id":"%%mercury_id%%", "role":"admin"} |
 | code-is   | 403                                           |                                            |
@@ -43,6 +45,7 @@
 | GET-json   | /data/groups/%%group_id%%/users                 |
 | code-is    | 200                                             |
 | json-parse |                                                 |
+| json-array-size | 3 |
 | json-like  | [{"user_id":"%%mercury_id%%", "role":"member"}] |
 
 | *Comment* | Adjust Mercury from member to admin  |                                              |
@@ -53,6 +56,7 @@
 | GET-json   | /data/groups/%%group_id%%/users                |
 | code-is    | 200                                            |
 | json-parse |                                                |
+| json-array-size | 3 |
 | json-like  | [{"user_id":"%%mercury_id%%", "role":"admin"}] |
 
 | *Comment*       | Adjust Mercury from admin to member  |                                             |
@@ -83,7 +87,7 @@
 | GET-json    | /data/groups/%%group_id%%/users                |
 | code-is     | 200                                            |
 | json-parse  |                                                |
-| json-unlike | [{"user_id":"%%cobalt_id%%", "role":"member"}] |
+| json-unlike | [{"user_id":"%%cobalt_id%%"}] |
 
 | *Comment* | Adjust three people at once; should fail as a batch |                                                                                                                                |
 | POST-json | /data/groups/%%group_id%%/membership                | [{"username":"%%mercury%%", "role":"admin"},{"username":"%%zinc%%", "role":"admin"},{"username":"%%cobalt%%", "role":"admin"}] |
@@ -95,7 +99,7 @@
 | json-parse  |                                                   |
 | json-like   | [{"user_id":"%%mercury_id%%", "role":"member"}]   |
 | json-like   | [{"user_id":"%%zinc_id%%", "role":"member"}]      |
-| json-unlike | [{"user_id":"%%cobalt_id%%", "role":"admin"}]     |
+| json-unlike | [{"user_id":"%%cobalt_id%%"}]     |
 
 | *Comment* | Adjust two people at once; should work as a batch |                                                                                      |
 | POST-json | /data/groups/%%group_id%%/membership              | [{"username":"%%mercury%%", "role":"admin"},{"username":"%%zinc%%", "role":"admin"}] |
@@ -107,4 +111,17 @@
 | json-parse  |                                                |
 | json-like   | [{"user_id":"%%mercury_id%%", "role":"admin"}] |
 | json-like   | [{"user_id":"%%zinc_id%%", "role":"admin"}]    |
-| json-unlike | [{"user_id":"%%cobalt_id%%", "role":"admin"}]  |
+| json-unlike | [{"user_id":"%%cobalt_id%%"}]  |
+
+| *Comment* | Try to remove all admins             |                                                                                                                                 |
+| POST-json | /data/groups/%%group_id%%/membership | [{"username":"%%admin%%","role":"member"},{"username":"%%mercury%%", "role":"member"},{"username":"%%zinc%%", "role":"member"}] |
+| code-is   | 409                                  |                                                                                                                                 |
+| body-like | cannot remove the last admin         |                                                                                                                                 |
+
+| *Comment*   | Try to remove all admins: check for rollback |
+| GET-json    | /data/groups/%%group_id%%/users                |
+| code-is     | 200                                            |
+| json-parse  |                                                |
+| json-like   | [{"user_id":"%%mercury_id%%", "role":"admin"}] |
+| json-like   | [{"user_id":"%%zinc_id%%", "role":"admin"}]    |
+| json-unlike | [{"user_id":"%%cobalt_id%%"}]  |

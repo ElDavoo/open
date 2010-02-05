@@ -157,11 +157,19 @@ sub _admin_with_group_data_do_txn {
         local $@;
         my $rv = eval { $self->$callback($group, $data) };
 
-        if ($@) {
+        if (my $e = $@) {
             sql_rollback();
-            $self->rest->header(-status => HTTP_400_Bad_Request);
-            $@ = $1 if $@ =~ /(.*) at /;
-            return loc('Could not process request: [_1]', $@);
+            if ($e =~ /no admins remain/) {
+                $self->rest->header( -status => HTTP_409_Conflict );
+                return loc("You cannot remove the last admin");
+            }
+            else {
+                $self->rest->header(-status => HTTP_400_Bad_Request);
+                $e = $1 if $e =~ /(.*) at /;
+                # XXX: cannot always localize sub-exception, so why bother
+                # placing it inside a localized one?
+                return loc('Could not process request: [_1]', $e);
+            }
         }
 
         sql_commit();
@@ -187,45 +195,46 @@ sub POST_to_membership { $_[0]->_admin_with_group_data_do_txn(sub {
         $group->assign_role_to_user( user => $user, role => $role );
     }
 
+    die "no admins remain" unless $group->has_at_least_one_admin;
+
     return '';
 }) }
 
 sub POST_to_trash { $_[0]->_admin_with_group_data_do_txn(sub {
     my ($self, $group, $data) = @_;
 
+    my $actor = $self->rest->user;
+
     for my $item (@$data) {
-        $self->_remove_item($item, $group);
+        if (my $name_or_id = $item->{user_id} || $item->{username}) {
+            my $condemned = Socialtext::User->Resolve($name_or_id);
+            $group->remove_user(user => $condemned, actor => $actor);
+        }
+        elsif (my $ws_id = $item->{workspace_id}) {
+            # XXX: stash thinks this doesn't belong here; it implies to him
+            # that we're removing the workspace from the group, not vice versa
+            # as the code below implements.
+            my $ws = Socialtext::Workspace->new(workspace_id => $ws_id)
+                or die 'no workspace';
+
+            my $perm = $ws->permissions->user_can(
+                user       => $actor,
+                permission => ST_ADMIN_WORKSPACE_PERM,
+            );
+            die "don't have permission" unless $perm || $actor->is_business_admin;
+
+            $ws->remove_group(group => $group, actor => $actor);
+        }
+        else {
+            die "Bad data";
+        }
     }
+
+    die "no admins remain" unless $group->has_at_least_one_admin;
 
     return '';
 }) }
 
-sub _remove_item {
-    my $self  = shift;
-    my $item  = shift;
-    my $group = shift;
-
-    my $actor = $self->rest->user;
-    if (my $name_or_id = $item->{user_id} || $item->{username}) {
-        my $condemned = Socialtext::User->Resolve($name_or_id);
-        $group->remove_user(user => $condemned, actor => $actor);
-    }
-    elsif (my $ws_id = $item->{workspace_id}) {
-        my $ws = Socialtext::Workspace->new(workspace_id => $ws_id)
-            or die 'no workspace';
-
-        my $perm = $ws->permissions->user_can(
-            user       => $actor,
-            permission => ST_ADMIN_WORKSPACE_PERM,
-        );
-        die "don't have permission" unless $perm || $actor->is_business_admin;
-
-        $ws->remove_group(group => $group, actor => $actor);
-    }
-    else {
-        die "Bad data";
-    }
-}
 1;
 
 =head1 NAME
@@ -235,9 +244,12 @@ Socialtext::Rest::Group - Group resource handler
 =head1 SYNOPSIS
 
     GET /data/groups/:group_id
+    PUT /data/groups/:group_id
+    POST /data/groups/:group_id/trash
+    POST /data/groups/:group_id/membership
 
 =head1 DESCRIPTION
 
-View the details of a group.
+View and alter a group.
 
 =cut
