@@ -330,24 +330,44 @@ sub _mk_method ($&) {
     );
 }
 
-for my $thing_name (qw(user group)) {
-    my $id_filter = ($thing_name eq 'user') ? PG_USER_FILTER : PG_GROUP_FILTER;
-    my $id_offset = ($thing_name eq 'user') ? USER_OFFSET : GROUP_OFFSET;
+for my $thing_name (qw(user group account)) {
+    my $id_filter = {
+        user    => PG_USER_FILTER,
+        group   => PG_GROUP_FILTER,
+        account => PG_ACCT_FILTER,
+    }->{$thing_name};
+    my $id_offset = {
+        user    => USER_OFFSET,
+        group   => GROUP_OFFSET,
+        account => ACCT_OFFSET,
+    }->{$thing_name};
 
-    my $realize_thing = ($thing_name eq 'user')
-        ? sub { Socialtext::User->new(user_id => $_[0]) }
-        : sub { Socialtext::Group->GetGroup(group_id => $_[0]) };
-
-    my $thing_checker = ($thing_name eq 'user')
-        ? sub { $_[0] && blessed($_[0]) && ($_[0]->isa('Socialtext::User') or $_[0]->isa('Socialtext::UserMetadata')) }
-        : sub { $_[0] && blessed($_[0]) && $_[0]->isa('Socialtext::Group') };
+    my $realize_thing = {
+        user    => sub { Socialtext::User->new(user_id        => $_[0]) },
+        group   => sub { Socialtext::Group->GetGroup(group_id => $_[0]) },
+        account => sub { Socialtext::Account->new(account_id  => $_[0]) },
+    }->{$thing_name};
+    my $thing_checker = {
+        user => sub {
+            $_[0]
+                && blessed($_[0])
+                && ($_[0]->isa('Socialtext::User')
+                or $_[0]->isa('Socialtext::UserMetadata'));
+        },
+        group =>
+            sub { $_[0] && blessed($_[0]) && $_[0]->isa('Socialtext::Group') 
+        },
+        account => sub {
+            $_[0] && blessed($_[0]) && $_[0]->isa('Socialtext::Account');
+        },
+    }->{$thing_name};
 
     my $from_set_filter = $thing_name eq 'user' ? q{
         AND from_set_id NOT IN (
             SELECT user_id FROM users WHERE is_profile_hidden)
             } : '';
 
-    # grep: sub add_user sub add_group
+    # grep: sub add_user sub add_group sub add_account
     _mk_method "add_$thing_name" => sub {
         my $self = shift;
         my %p = (@_==1) ? %{$_[0]} : @_;
@@ -364,6 +384,7 @@ for my $thing_name (qw(user group)) {
     };
 
     # grep: sub assign_role_to_user sub assign_role_to_group
+    #       sub assign_role_to_account
     _mk_method "assign_role_to_$thing_name" => sub {
         my $self = shift;
         my %p = (@_==1) ? %{$_[0]} : @_;
@@ -379,7 +400,7 @@ for my $thing_name (qw(user group)) {
         );
     };
 
-    # grep: sub remove_user sub remove_group
+    # grep: sub remove_user sub remove_group sub remove_account
     _mk_method "remove_$thing_name" => sub {
         my $self = shift;
         my %p = (@_==1) ? %{$_[0]} : @_;
@@ -403,7 +424,7 @@ for my $thing_name (qw(user group)) {
         return $removed;
     };
 
-    # grep: sub has_user sub has_group
+    # grep: sub has_user sub has_group sub has_account
     _mk_method "has_$thing_name" => sub {
         my $self = shift;
         my $o = shift;
@@ -418,7 +439,7 @@ for my $thing_name (qw(user group)) {
         }
     };
 
-    # grep: sub role_for_user sub role_for_group
+    # grep: sub role_for_user sub role_for_group sub role_for_account
     _mk_method "role_for_$thing_name" => sub {
         my $self = shift;
         my $o = shift;
@@ -441,7 +462,7 @@ for my $thing_name (qw(user group)) {
         }
     };
 
-    # grep: sub user_has_role sub group_has_role
+    # grep: sub user_has_role sub group_has_role sub account_has_role
     _mk_method "${thing_name}_has_role" => sub {
         my $self = shift;
         my %p = (@_==1) ? %{$_[0]} : @_;
@@ -457,7 +478,7 @@ for my $thing_name (qw(user group)) {
         return any {$_ eq $role_id} @role_ids;
     };
 
-    # grep: sub user_count sub group_count
+    # grep: sub user_count sub group_count sub account_count
     _mk_method "${thing_name}_count" => sub {
         my $self = shift;
         my %p = (@_==1) ? %{$_[0]} : @_;
@@ -474,7 +495,7 @@ for my $thing_name (qw(user group)) {
         }, $self->user_set_id);
     };
 
-    # grep: sub user_ids sub group_ids
+    # grep: sub user_ids sub group_ids sub account_ids
     _mk_method "${thing_name}_ids" => sub {
         my $self = shift;
         my %p = (@_==1) ? %{$_[0]} : @_;
@@ -492,7 +513,7 @@ for my $thing_name (qw(user group)) {
         return [map { $_->[0] - $id_offset } @{$sth->fetchall_arrayref || []}];
     };
 
-    # grep: sub users sub groups
+    # grep: sub users sub groups sub accounts
     _mk_method "${thing_name}s" => sub {
         my $self = shift;
         my %p = (@_==1) ? %{$_[0]} : @_;
@@ -506,7 +527,7 @@ for my $thing_name (qw(user group)) {
         );
     };
 
-    # grep: sub user_roles sub group_roles
+    # grep: sub user_roles sub group_roles sub account_roles
     _mk_method "${thing_name}_roles" => sub {
         my $self = shift;
         my %p = (@_==1) ? %{$_[0]} : @_;
