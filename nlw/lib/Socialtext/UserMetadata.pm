@@ -132,7 +132,6 @@ sub create {
             actor => $self->creator,
             role  => Socialtext::Role->Member(),
         );
-        $acct->add_to_all_users_workspace(object => $self);
     }
 
     my $adapter = Socialtext::Pluggable::Adapter->new;

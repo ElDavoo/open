@@ -1730,11 +1730,6 @@ sub _show_config {
     my $msg = 'Config for ' . $obj->name . " $thing_name\n\n";
     my $fmt = '%-32s: %s';
     my $hash = $obj->to_hash;
-    if ($thing_name eq 'Account') {
-        $hash->{all_users_workspace_name} = Socialtext::Workspace->new(
-                workspace_id => $hash->{all_users_workspace}
-        )->name() if defined $hash->{all_users_workspace};
-    }
     delete $hash->{name};
     for my $c ( sort keys %$hash ) {
         my $val = $hash->{$c};
@@ -1781,15 +1776,6 @@ sub set_account_config {
             unless ($account->can($key));
 
         $value = undef if $value eq '-null-';
-
-        if ( $value and $key eq 'all_users_workspace' ) {
-            my $ws = Socialtext::Workspace->new( name => $value );
-
-            $self->_error( loc("No workspace named '[_1]' exists.", $value) )
-                unless $ws;
-
-            $value = $ws->workspace_id;
-        }
 
         $update{$key} = $value;
     }

@@ -55,7 +55,9 @@ has $_.'_count' => (
 
 with 'Socialtext::UserSetContained',
      'Socialtext::UserSetContainer' => {
-        excludes => [qw(enable_plugin disable_plugin)],
+        excludes => [qw(enable_plugin disable_plugin
+                        add_account assign_role_to_account
+        )],
      };
 
 sub enable_plugin { die "cannot enable a plugin for a group" }

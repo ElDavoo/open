@@ -1008,9 +1008,8 @@ sub account {
 
 sub is_all_users_workspace {
     my $self        = shift;
-    my $account_auw = $self->account->all_users_workspace || 0;
 
-    return ( $account_auw == $self->workspace_id );
+    return $self->role_for_account( $self->account );
 }
 
 {
@@ -2354,7 +2353,7 @@ workspace belongs.
 
 =head2 $workspace->is_all_users_workspace()
 
-Returns whether or not the workspace is the all users workspace for the account
+Returns whether or not the workspace is an all users workspace for the account
 to which it belongs.
 
 =head2 $workspace->set_permissions( set_name => $name )

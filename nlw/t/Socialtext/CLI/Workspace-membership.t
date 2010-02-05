@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 8;
+use Test::Socialtext tests => 12;
 use Test::Output qw(combined_from);
 use Carp qw/confess/;
 use Socialtext::CLI;
@@ -112,8 +112,21 @@ remove_account_from_workspace: {
     is $ws->has_account($account) => 0, '... account is not in workspace';
 }
 
+Cannot_add_account_to_account: {
+    my $acct1 = create_test_account_bypassing_factory();
+    my $acct2 = create_test_account_bypassing_factory();
+    my $grp   = create_test_group();
 
-#TODO
-# * Test that we can't add accounts to groups
+    eval { $acct1->add_account(account => $acct2) };
+    ok($@, "Can't add_account on an account");
+    eval { $acct1->assign_role_to_account(account => $acct2) };
+    ok($@, "Can't add_role_for on an account");
+
+    eval { $grp->add_account(account => $acct1) };
+    ok($@, "Can't add_account on a group");
+    eval { $grp->assign_role_to_account(account => $acct2) };
+    ok($@, "Can't add_role_for on a group");
+}
+
 exit;
 

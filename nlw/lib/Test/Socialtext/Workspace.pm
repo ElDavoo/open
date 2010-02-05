@@ -7,15 +7,6 @@ use warnings;
 sub delete_recklessly {
     my ($class, $ws) = @_;
 
-    # Load classes on demand
-    require Socialtext::Workspace;
-
-    # Un-set the workspace as being the "all_users_workspace" (which would
-    # normally prevent us from deleting the WS
-    if ($ws->is_all_users_workspace) {
-        $ws->account->update( all_users_workspace => undef );
-    }
-
     # Delete the WS
     $ws->delete();
 }

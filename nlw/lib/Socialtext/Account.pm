@@ -39,7 +39,6 @@ Readonly our @ACCT_COLS => qw(
     email_addresses_are_hidden
     is_exportable
     allow_invitation
-    all_users_workspace
     account_type
     restrict_to_domain
 
@@ -61,7 +60,10 @@ foreach my $column ( @ACCT_COLS ) {
     has $column => (is => 'rw', isa => 'Any');
 }
 
-with 'Socialtext::UserSetContainer';
+with 'Socialtext::UserSetContainer' => {
+    excludes => [qw( add_account assign_role_to_account )],
+};
+
 
 my @TYPES = ('Standard', 'Free 50', 'Placeholder', 'Paid', 'Comped', 'Trial', 'Unknown');
 my %VALID_TYPE = map { $_ => 1 } @TYPES;
@@ -297,11 +299,6 @@ sub export {
 
     my $export_file = $opts{file} || "$dir/account.yaml";
 
-    my $all_users_workspace = ( $self->all_users_workspace )
-        ? Socialtext::Workspace->new(
-            workspace_id =>$self->all_users_workspace )->name()
-        : undef;
-
     my $logo_ref = $self->logo->logo;
     my $data = {
         # versioning
@@ -314,7 +311,6 @@ sub export {
         users                      => $self->all_users_as_hash,
         logo                       => MIME::Base64::encode($$logo_ref),
         allow_invitation           => $self->allow_invitation,
-        all_users_workspace        => $all_users_workspace,
         plugins                    => [ $self->plugins_enabled ],
         (map { $_ => $self->$_ } grep {/^desktop_/} @ACCT_COLS),
     };
@@ -411,17 +407,12 @@ sub import_file {
         # "Placeholder" Accounts can be over-written at import; they were
         # created as placeholders during the import of another Account.
         #
-        # HOWEVER... don't pass through the "all_users_workspace" here, as we
-        # haven't imported any of the Workspaces yet.  When "finish_import()"
-        # gets called it'll get set.
-        #
         # We also need to make sure that we update the Account Type to
         # _something_, even if it wasn't explicit in the original export; by
         # default, Accounts are of the "Standard" type.
         $account->update(
             account_type => 'Standard',
             %acct_params,
-            all_users_workspace => undef,
         );
     }
     else {
@@ -506,12 +497,24 @@ sub finish_import {
     my $hub  = $opts{hub};
     my $meta = $self->{_import_hash};
 
+    # Old tarballs may use the deprecated all_users_workspace
     if ( my $ws_name = $meta->{all_users_workspace} ) {
         my $ws = Socialtext::Workspace->new( name => $ws_name );
-        $self->update( all_users_workspace => $ws->workspace_id );
+
+        $ws->assign_role_to_account(account => $self, role => 'member');
     }
 
     $hub->pluggable->hook('nlw.finish_import_account', $self, $meta, \%opts);
+}
+
+sub has_all_users_workspaces {
+    my $self = shift;
+
+    my $ws_cursor = $self->workspaces;
+    while (my $ws = $ws_cursor->next) {
+        return 1 if $ws->role_for_account($self);
+    }
+    return 0;
 }
 
 after 'role_change_check' => sub {
@@ -730,19 +733,6 @@ sub _post_update {
     my $old  = shift;
     my $new  = shift;
 
-    if ($new->{all_users_workspace}) {
-        my $o;
-        my $users = $self->users(direct => 1);
-        while ($o = $users->next()) {
-            $self->add_to_all_users_workspace(object => $o);
-        }
-
-        my $groups = $self->groups(direct => 1);
-        while ($o = $groups->next()) {
-            $self->add_to_all_users_workspace(object => $o);
-        }
-    }
-
     $old->{account_type} ||= '';
     $new->{account_type} ||= '';
     if (    $old->{account_type} eq 'Free 50'
@@ -772,36 +762,6 @@ sub _post_update {
     }
 
     Socialtext::Cache->clear('account');
-}
-
-sub add_to_all_users_workspace {
-    my ($self, %p) = @_;
-
-    my $auw_id = $self->all_users_workspace;
-    return unless $auw_id;
-    my $auw  = Socialtext::Workspace->new(workspace_id => $auw_id);
-    return unless $auw;
-
-    my $o = delete $p{object};
-    if ($o->isa('Socialtext::UserMetadata')) {
-        $o = Socialtext::User->new(user_id => $o->user_id);
-    }
-    if ($o->isa('Socialtext::User')) {
-        # Now according to {bz: 2896} we still need to check invitation_filter
-        # here.
-        return if !$auw->email_passes_invitation_filter($o->email_address);
-
-        # User cannot be added via this api if they do not already have a role
-        # in this account
-        return unless $self->role_for_user($o);
-    }
-
-    return if $auw->user_set->object_directly_connected($o);
-    $auw->add_role(
-        actor => $p{actor} || Socialtext::User->SystemUser,
-        object => $o, 
-        role => $p{role},
-    );
 }
 
 sub Count {
@@ -906,7 +866,6 @@ sub Free50ForDomain {
           FROM "Account"
          WHERE restrict_to_domain = ?
            AND account_type = 'Free 50'
-           AND all_users_workspace IS NOT NULL
          ORDER BY account_id
          LIMIT 1
     }, $domain);
@@ -1027,19 +986,6 @@ sub _validate_and_clean_data {
 
     if ( not $is_create and $p->{is_system_created} ) {
         push @errors, loc('You cannot change is_system_created for an account after it has been created.');
-    }
-
-    if ( $p->{all_users_workspace} ) {
-        my $ws_id = $p->{all_users_workspace};
-        my $ws = Socialtext::Workspace->new( workspace_id => $ws_id );
-
-        if ( $ws ) {
-            push(@errors, loc("Workspace ([_1]) not in account", $ws_id ))
-                unless $ws->account_id == $self->account_id;
-        }
-        else {
-            push(@errors, loc("Workspace ([_1]) doesn't exist", $ws_id));
-        }
     }
 
     if ($p->{account_type} and !$VALID_TYPE{ $p->{account_type} }) {
@@ -1377,6 +1323,10 @@ Returns a hash representation of the account.
 =item $account->is_using_account_logo_as_desktop_logo()
 
 Checks whether or not the desktop logo is an uploaded custom account logo.
+
+=item $account->has_all_users_workspaces()
+
+Checks whether or not the account has any all users workspaces.
 
 =item Socialtext::Account->Unknown()
 
