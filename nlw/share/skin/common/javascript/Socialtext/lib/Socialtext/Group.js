@@ -59,7 +59,6 @@ $.extend(Socialtext.Group.prototype, {
 
     save: function(callback) {
         var self = this;
-
         if (self.group_id) {
             var users = {
                 users: self.users,
@@ -85,7 +84,11 @@ $.extend(Socialtext.Group.prototype, {
             self.runAsynch(jobs, callback);
         }
         else {
-            self.create(callback);
+            // We still should call changedmemberships after group created for 
+            // changing the memberships of newly added users
+            self.create(function () {
+                self.changeMemberships(self.changedmemberships, callback);
+                });
         }
     },
 
