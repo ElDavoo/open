@@ -133,6 +133,16 @@ $.extend(Socialtext.Group.prototype, {
                 error:   function() { if (callback) callback(false) }
             });
         }
+    },
+
+    getAdmins: function(callback) {
+        $.getJSON(this.url('?show_admins=1'), function(data) { 
+            var result=[];
+            result = $.map(data.admins, function(elem, index) {
+                return elem.user_id;
+            });
+            callback(result);
+        });
     }
 });
 
