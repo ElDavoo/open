@@ -45,9 +45,7 @@ $.extend(Socialtext.Workspace.prototype, {
                 type: 'PUT',
                 contentType: 'application/json',
                 data: $.toJSON(list),
-                success: function(data) {
-                    if ($.isFunction(opts.callback)) opts.callback();
-                },
+                success: self.successCallback(opts.callback),
                 error: self.errorCallback(opts.callback)
             });
         });
@@ -60,9 +58,7 @@ $.extend(Socialtext.Workspace.prototype, {
             type: 'POST',
             contentType: 'application/json',
             data: $.toJSON(member),
-            success: function(data) {
-                if ($.isFunction(callback)) callback();
-            },
+            success: this.successCallback(opts.callback),
             error: this.errorCallback(callback)
         });
     },
@@ -79,9 +75,7 @@ $.extend(Socialtext.Workspace.prototype, {
             type: 'POST',
             contentType: 'application/json',
             data: $.toJSON(data),
-            success: function(data) {
-                if ($.isFunction(opts.callback)) opts.callback();
-            },
+            success: this.successCallback(opts.callback),
             error: this.errorCallback(opts.callback)
         });
     }
