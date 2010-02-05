@@ -103,7 +103,7 @@ sub get_cursor {
 
     # Remove role_id out of the order by; it's always ASC in an array when
     # muxing.
-    $order =~ s/(?:\s*,\s+)role_id\s*(?:ASC|DESC)?(\s*,)?/$1/i 
+    $order =~ s/(?:\s*,\s+)role_id\s*(?:ASC|DESC)?(\s*,)?/$1 ? $1 : ''/ie
         if $mux and $order;
 
     if (my $ob = lc $opts->{order_by}) {
