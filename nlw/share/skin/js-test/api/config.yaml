@@ -1,0 +1,10 @@
+index_title: Socialtext S3 JavaScript Testing
+import_libs:
+  - ../../common/javascript/jquery-1.2.6.js
+  - ../../common/javascript/jquery-json-1.3.js
+  - ../common/lib/Test/Visual.js
+  - ../../common/javascript/Socialtext/socialtext-api.js
+  - lib/Test/Socialtext.js
+template_include_path:
+  - ../common/template
+  - ./template
