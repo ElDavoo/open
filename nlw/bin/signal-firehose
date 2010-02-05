@@ -200,7 +200,7 @@ sub _get_user_id_from_cookie {
     my @cookies = split /\b; \b/, $cookie_string;
     for my $c (@cookies) {
         my ($name, $value) = split /=/, $c, 2;
-        next unless $name eq 'NLW-user';
+        next unless $name eq 'AIR-user' or $name eq 'NLW-user';
 
         say "Splitting '$value'";
         my %user_data = split /[&;]|\b; \b/, $value;
@@ -213,7 +213,7 @@ sub _get_user_id_from_cookie {
         }
         return $uid;
     }
-    $req->respond ({ content => ['text/plain', "No NLW-user found in cookies:\n$headers->{cookie}\n" ] });
+    $req->respond ({ content => ['text/plain', "No AIR-user nor NLW-user found in cookies:\n$headers->{cookie}\n" ] });
     return;
 }
 
