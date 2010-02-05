@@ -74,6 +74,53 @@ use Socialtext::Rest::Signals;
     }
 };
 
+sub get_signal_recipients {
+    my $sig = shift;
+
+    # Private signals - only visible to the sender and the recipient
+    my %recips;
+    if (my $rid = $sig->{recipient_id}) {
+        my $uid = $sig->{user_id};
+
+        $recips{$uid}++ if $active_users{$uid};
+        $recips{$rid}++ if $active_users{$rid};
+
+        return keys %recips;
+    }
+
+    my ($users, $groups, undef, $accts) = 
+        user_set_id_partition($sig->{user_set_ids});
+
+    $sig->{group_ids} = $groups;
+    $sig->{account_ids} = $accts;
+
+    for my $acct_id (@$accts) {
+        unless ($acct_users{$acct_id}) {
+            say "Loading users in account $acct_id";
+            $acct_users{$acct_id} = users_in_uset($acct_id + ACCT_OFFSET);
+        }
+
+        for my $uid (@{ $acct_users{$acct_id}}) {
+            next unless $active_users{$uid};
+            $recips{$uid}++;
+        }
+    }
+    for my $group_id (@$groups) {
+        unless ($group_users{$group_id}) {
+            say "Loading users in group $group_id";
+            $group_users{$group_id} = users_in_uset($group_id + GROUP_OFFSET);
+        }
+
+        for my $uid (@{ $group_users{$group_id}}) {
+            next unless $active_users{$uid};
+            $recips{$uid}++;
+        }
+    }
+
+    return keys %recips;
+}
+
+
 my $last_signal_response_time = time();
 my $last_db_request = sql_singlevalue(q{select 'now'::timestamptz});
 my $database_ticker = sub {
@@ -86,36 +133,7 @@ my $database_ticker = sub {
         $stats{"Signals found"}++;
         $last_db_request = $sig->{at};
 
-        my ($users, $groups, undef, $accts) = 
-            user_set_id_partition($sig->{user_set_ids});
-        $sig->{group_ids} = $groups;
-        $sig->{account_ids} = $accts;
-
-        my %recips;
-        for my $acct_id (@$accts) {
-            unless ($acct_users{$acct_id}) {
-                say "Loading users in account $acct_id";
-                $acct_users{$acct_id} = users_in_uset($acct_id + ACCT_OFFSET);
-            }
-
-            for my $uid (@{ $acct_users{$acct_id}}) {
-                next unless $active_users{$uid};
-                $recips{$uid}++;
-            }
-        }
-        for my $group_id (@$groups) {
-            unless ($group_users{$group_id}) {
-                say "Loading users in group $group_id";
-                $group_users{$group_id} = users_in_uset($group_id + GROUP_OFFSET);
-            }
-
-            for my $uid (@{ $group_users{$group_id}}) {
-                next unless $active_users{$uid};
-                $recips{$uid}++;
-            }
-        }
-
-        for my $uid (keys %recips) {
+        for my $uid (get_signal_recipients($sig)) {
             # Render each Signal once, on behalf of the receiving user.
             my $resource = convert_signal_by_uid_to_resource(
                 Socialtext::Signal->_db_fields_to_object({ %$sig }),
