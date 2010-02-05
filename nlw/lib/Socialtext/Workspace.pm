@@ -1836,6 +1836,24 @@ after role_change_check => sub {
     if ($thing->isa(ref($self))) {
         die "Workspace user_sets cannot contain other workspaces.";
     }
+    elsif ($thing->isa('Socialtext::Account')) {
+        if ($thing->account_id != $self->account_id) {
+            die "Only a workspace's primary account can be a member.\n";
+        }
+    }
+};
+
+after assign_role_to_account => sub {
+    my ($self, %opts) = @_;
+    my $new_role = $opts{role};
+
+    my $acct_users = $opts{account}->users;
+    while (my $u = $acct_users->next) {
+        my $r = $self->role_for_user($u, direct => 1);
+        next unless defined $r;
+        next unless $r->role_id == $new_role->role_id;
+        $self->remove_user(user => $u, role => 'member');
+    }
 };
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

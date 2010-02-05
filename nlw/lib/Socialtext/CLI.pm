@@ -832,6 +832,7 @@ sub add_member {
         'group-workspace' => sub { $self->_add_group_to_workspace_as($role) },
         'user-group'      => sub { $self->_add_user_to_group_as($role) },
         'user-account'    => sub { $self->_add_user_to_account_as($role) },
+        'account-workspace' => sub { $self->_add_account_to_ws_as($role)},
     );
     my $type = $self->_type_of_entity_collection_operation( keys %jump );
 
@@ -1022,26 +1023,52 @@ sub _add_user_to_workspace_as {
 }
 
 sub _add_group_to_workspace_as {
-    my $self         = shift;
-    my $new_role     = shift;
-    my $group        = $self->_require_group();
-    my $workspace    = $self->_require_workspace();
-    my $current_role = $workspace->role_for_group($group);
+    my $self     = shift;
+    my $new_role = shift;
+    my $ws       = $self->_require_workspace();
+    my $group    = $self->_require_group();
+
+    $self->_add_thingy_to_ws_as($new_role, group => $group, $ws);
+}
+
+sub _add_account_to_ws_as {
+    my $self     = shift;
+    my $new_role = shift;
+    my $ws       = $self->_require_workspace();
+    my $account  = $self->_require_account();
+
+    eval {
+        $self->_add_thingy_to_ws_as($new_role, account => $account, $ws);
+    };
+    warn $@ if $@;
+}
+
+sub _add_thingy_to_ws_as {
+    my $self     = shift;
+    my $new_role = shift;
+    my $type     = shift;
+    my $thingy = shift;
+    my $ws = shift;
+
+    my $current_role_method = "role_for_$type";
+    my $current_role = $ws->$current_role_method($thingy);
 
     $self->_check_workspace_role(
         cur_role => $current_role,
         new_role => $new_role,
-        name     => $group->driver_group_name,
-        ws_name  => $workspace->name,
+        name     => $thingy->name,
+        ws_name  => $ws->name,
     );
 
-    $workspace->assign_role_to_group( group => $group, role  => $new_role );
+    my $assign_method = "assign_role_to_$type";
+    $ws->$assign_method($type => $thingy, role => $new_role);
     $self->_success(
         loc("[_1] now has the role of '[_2]' in the [_3] Workspace",
-            $group->driver_group_name,
+            $thingy->name,
             $new_role->display_name,
-            $workspace->name)
+            $ws->name)
     );
+
 }
 
 sub _check_workspace_role {
@@ -1070,6 +1097,7 @@ sub remove_member {
         'group-account'   => sub { $self->_remove_group_from_account() },
         'user-group'      => sub { $self->_remove_user_from_group() },
         'user-account'    => sub { $self->_remove_user_from_account() },
+        'workspace-account' => sub { $self->_remove_account_from_ws() },
     );
     my $type = $self->_type_of_entity_collection_operation( keys %jump );
 
@@ -1195,7 +1223,10 @@ sub _remove_group_from_account {
         );
     }
 
-    $self->_remove_group_from_thing( $group, $account );
+    $self->_remove_thing_from_thing(
+        group   => $group,
+        account => $account
+    );
 }
 
 sub _remove_group_from_workspace {
@@ -1203,34 +1234,54 @@ sub _remove_group_from_workspace {
     my $group     = $self->_require_group();
     my $workspace = $self->_require_workspace();
 
-    $self->_remove_group_from_thing( $group, $workspace );
+    $self->_remove_thing_from_thing(
+        group     => $group,
+        workspace => $workspace
+    );
 }
 
-sub _remove_group_from_thing {
-    my $self  = shift;
-    my $group = shift;
-    my $thing = shift;    # either a workspace or an account.
+sub _remove_account_from_ws {
+    my $self      = shift;
+    my $workspace = $self->_require_workspace();
+    my $account   = $self->_require_account();
 
-    unless ($thing->has_group($group)) {
-        $self->_error(
-            loc("[_1] is not a member of [_2]",
-                $group->driver_group_name, $thing->name)
-        );
-    }
-
-    $thing->remove_group( group => $group );
-    my $role   = $thing->role_for_group($group);
-    if ($role) {
-        $self->_success( 
-            loc("[_1] now has the role of '[_2]' in [_3] due to membership in a Group",
-                $group->display_name, $role->display_name, $thing->name)
-        );
-    }
-
-    $self->_success(
-        loc('[_1] is no longer a member of [_2]',
-            $group->display_name, $thing->name)
+    $self->_remove_thing_from_thing(
+        account   => $account,
+        workspace => $workspace
     );
+}
+
+sub _remove_thing_from_thing {
+    my $self           = shift;
+    my $condemned_type = shift;
+    my $condemned      = shift;
+    my $container_tupe = shift;
+    my $container      = shift;
+
+    my $has_method    = "has_$condemned_type";
+    my $remove_method = "remove_$condemned_type";
+    my $role_method   = "role_for_$condemned_type";
+
+    unless ($container->$has_method($condemned)) {
+       $self->_error(
+           loc("[_1] is not a member of [_2]",
+               $condemned->name, $container->name)
+        );
+    }
+
+    $container->$remove_method($condemned_type => $condemned);
+    my $role = $container->$role_method($condemned);
+    my $msg;
+    if ($role) {
+        $msg = loc("[_1] now has the role of '[_2]' in [_3] due to membership in a Group",
+            $condemned->name, $role->display_name, $container->name);
+    }
+    else {
+        $msg = loc('[_1] is no longer a member of [_2]',
+            $condemned->name, $container->name);
+    }
+
+    return $self->_success($msg);
 }
 
 sub add_workspace_admin {
