@@ -1,5 +1,7 @@
 | *Comment* | Test Case: Control Panel Exercise LDAP Group |  |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Control Panel Exercise LDAP Group SETUP |  |
 | get-group-id | Motorhead | created_group_id |
 | set | ldapy_ws | ldapy-ws-%%start_time%% |
@@ -24,15 +26,30 @@
 | text_like | //body | Motorhead |
 | wait_for_element_visible_ok | link=Motorhead | 30000 |
 
-| *Comment* | Test Case: Exercise LDAP Group Login as a member, see the group, see the workspace, see the members |  |
+| *Comment* | Test Case: Exercise LDAP Group Login as a member, see the group home page |
 | open_ok | / |  |
 | st-logoutin | Lemmy Kilmister | ld@pu53r |
 | st-admin | add-member --workspace %%ldapy_ws%% --g %%created_group_id%% | Motorhead now has the role of 'member' in the |
 | open_ok | /%%ldapy_ws%%/ |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | wait_for_element_present_ok | link=Motorhead | 30000 |
-| pause | 50000 |  |
 | click_and_wait | link=Motorhead |  |
+
+| *Comment* | Test Case: Exercise LDAP see the workspace, see the members on the group home page |  |
+| pause | 50000 |  |
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_and_wait | link=(Edit) |  |
+| text_like | //body | Motorhead |
+| select-frame | relative=parent |  |
+| st-name-widget | 2 | workspaces_widget |
+| st-widget-title-like | workspaces_widget | Workspaces |
+| st-select-widget-frame | workspaces_widget |  |
+| wait_for_element_visible_ok | link=%%ldapy_ws%% | 30000 |
+| select-frame | relative=parent |  |
+| pause | 50000 |  |
 
 | *Comment* | Test Case: Exercise LDAP Group TODO Signal and Filter Signals |  |
 
