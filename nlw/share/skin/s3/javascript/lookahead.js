@@ -265,7 +265,12 @@
                     self.$('<img/>')
                         .css({
                             'vertical-align': 'middle',
-                            'border': '1px solid #666'
+                            'border': '1px solid #666',
+                            'cursor': 'pointer'
+                        })
+                        .click(function() {
+                            self.accept(i);
+                            return false;
                         })
                         .attr('src', src)
                         .appendTo(li);
