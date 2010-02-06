@@ -533,7 +533,6 @@ CREATE TABLE "Account" (
     desktop_link_color varchar(7) DEFAULT '#0081F8'::varchar,
     desktop_highlight_color varchar(7) DEFAULT '#FFFDD3'::varchar,
     allow_invitation boolean DEFAULT true NOT NULL,
-    all_users_workspace bigint,
     account_type text DEFAULT 'Standard' NOT NULL,
     restrict_to_domain text DEFAULT '' NOT NULL,
     user_set_id integer NOT NULL
@@ -2274,4 +2273,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '106');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '107');
