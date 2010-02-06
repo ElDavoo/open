@@ -1,7 +1,7 @@
-if (typeof LocalizedStrings == 'undefined')
-    LocalizedStrings = {};
-
 function loc() {
+    if (typeof LocalizedStrings == 'undefined')
+        LocalizedStrings = {};
+
     var locale = Socialtext.loc_lang;
     var dict = LocalizedStrings[locale] || new Array;
     var str = arguments[0] || "";

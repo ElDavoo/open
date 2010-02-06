@@ -54,6 +54,7 @@ S3_SOURCE_FILES= \
 		Jemplate.js \
 		$(ALL_JEMPLATE_PLUGINS) \
 		$(JEMPLATES_COMPILED) \
+		lightbox-create_content.js \
 		loc.js \
 		cookie.js \
 		lookahead.js \
