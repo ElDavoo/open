@@ -69,8 +69,7 @@ $.extend(Socialtext.Group.prototype, {
                 function(cb) { self.request('PUT', self.url(), cb) },
                 function(cb) { self.addMembers(users, cb) },
                 function(cb) { self.addToWorkspaces(self.workspaces, cb) },
-                function(cb) { self.changeMemberships(self.changedmemberships, cb) },
-                function(cb) { self.removeTrash(self.trash, cb) }
+                function(cb) { self.changeMemberships(self.changedmemberships, cb) }
             ];
             $.each(self.new_workspaces || [], function(i, info) {
                 info.groups = {group_id: self.group_id};
@@ -78,6 +77,17 @@ $.extend(Socialtext.Group.prototype, {
                     Socialtext.Workspace.Create(
                         $.extend({ callback: cb }, info)
                     );
+                });
+            });
+            $.each(self.trash || [], function(i, info) {
+                jobs.push(function(cb) {
+                    var workspace = new Socialtext.Workspace({
+                        name: info.name
+                    });
+                    workspace.removeMembers({
+                        members: [ { group_id: self.group_id } ],
+                        callback: cb
+                    });
                 });
             });
 

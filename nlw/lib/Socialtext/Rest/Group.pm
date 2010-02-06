@@ -211,22 +211,6 @@ sub POST_to_trash { $_[0]->_admin_with_group_data_do_txn(sub {
             my $condemned = Socialtext::User->Resolve($name_or_id);
             $group->remove_user(user => $condemned, actor => $actor);
         }
-        elsif (my $ws_id = $item->{workspace_id}) {
-            # XXX: stash thinks this doesn't belong here; it implies to him
-            # that we're removing the workspace from the group, not vice versa
-            # as the code below implements.
-            my $ws = Socialtext::Workspace->new(workspace_id => $ws_id)
-                or die 'no workspace';
-
-            my $perm = $ws->permissions->user_can(
-                user       => $actor,
-                permission => ST_ADMIN_WORKSPACE_PERM,
-            );
-            die "don't have permission"
-                unless $perm || $actor->is_business_admin;
-
-            $ws->remove_group(group => $group, actor => $actor);
-        }
         else {
             die "Bad data";
         }

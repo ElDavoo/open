@@ -160,9 +160,12 @@ Group is a member of.
 =head1 SYNOPSIS
 
     GET /data/groups/:group_id/workspaces
+    POST /data/groups/:group_id/workspaces
 
 =head1 DESCRIPTION
 
 View the details for a list of Workspaces that a Group is a member of.
+
+OR add this group to workspaces (will fail if already a member of one of those workspaces). (Undocumented API)
 
 =cut
