@@ -1912,11 +1912,6 @@ CREATE TRIGGER workspace_user_set_delete
     FOR EACH ROW
     EXECUTE PROCEDURE on_user_set_delete();
 
-ALTER TABLE ONLY "Account"
-    ADD CONSTRAINT account_all_users_workspace_fk
-            FOREIGN KEY (all_users_workspace)
-            REFERENCES "Workspace"(workspace_id) ON DELETE RESTRICT;
-
 ALTER TABLE ONLY account_logo
     ADD CONSTRAINT account_logo_account_fk
             FOREIGN KEY (account_id)
