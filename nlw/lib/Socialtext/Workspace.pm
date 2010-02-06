@@ -1842,7 +1842,8 @@ after role_change_check => sub {
     }
 };
 
-my $de_dupe_members = sub {
+after qw(assign_role_to_account add_account) => \&_de_dupe_users;
+sub _de_dupe_users {
     my ($self, %opts) = @_;
     my $new_role = $opts{role};
 
@@ -1853,9 +1854,7 @@ my $de_dupe_members = sub {
         next unless $r->role_id == $new_role->role_id;
         $self->remove_user(user => $u, role => $new_role);
     }
-};
-after assign_role_to_account => $de_dupe_members;
-after add_account => $de_dupe_members;
+}
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
