@@ -99,6 +99,13 @@
             'text/x.cowsay':    [Socialtext::Rest::Echo, POST_cowsay]
         '*': [Socialtext::Rest::Echo, bad_method]
 -
+    '/data/config':
+        GET:
+            '*/*':     &default [Socialtext::Rest::Config, GET_text]
+            text/plain:         *default
+            application/json:   [Socialtext::Rest::Config, GET_json]
+        '*': [Socialtext::Rest::Config, bad_method]
+-
     '/data/version':
         GET:
             '*/*':     &default [Socialtext::Rest::Version, GET_text]
