@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 51;
+use Test::Socialtext tests => 38;
 use Test::Exception;
 use Test::Warn;
 
@@ -24,23 +24,10 @@ set_all_users_workspace: {
     my $acct = create_test_account_bypassing_factory();
     my $ws   = create_test_workspace(account => $acct);
 
-    # update the all_users_workspace
-    $acct->update( all_users_workspace => $ws->workspace_id );
+    $ws->add_account( account => $acct );
 
-    is $acct->all_users_workspace, $ws->workspace_id, 
-        'Set all users workspace.';
-}
-
-################################################################################
-# TEST: Set all_users_workspace, workspace does not exist
-set_workspace_does_not_exist: {
-    my $acct = create_test_account_bypassing_factory();
-
-    dies_ok {
-        $acct->update( all_users_workspace => '-2000' );
-    } 'dies when workspace does not exist';
-
-    is $acct->all_users_workspace, undef, '... all users workspace not updated';
+    ok $ws->is_all_users_workspace, "workspace is AUW";
+    ok $acct->has_all_users_workspaces, 'account has AUWs';
 }
 
 ################################################################################
@@ -50,10 +37,10 @@ set_workspace_not_in_account: {
     my $ws   = create_test_workspace();
 
     dies_ok {
-        $acct->update( all_users_workspace => $ws->workspace_id );
+        $ws->add_account(account => $acct);
     } 'dies when workspace is not in account';
 
-    is $acct->all_users_workspace, undef, '... all users workspace not updated';
+    ok !$acct->has_all_users_workspaces, '... all users workspace not updated';
 }
 
 ################################################################################
@@ -69,44 +56,15 @@ account_no_workspace: {
 }
 
 ################################################################################
-# TEST: add user to all users workspace, not in account
-user_not_in_account: {
-    my $other_acct = create_test_account_bypassing_factory();
-    my $acct       = create_test_account_bypassing_factory();
-    my $ws         = create_test_workspace(account => $acct);
-    my $user       = create_test_user();
-
-    my $ws_users = $ws->users;
-    isa_ok $ws_users, 'Socialtext::MultiCursor';
-    is $ws_users->count, 0, '... starts with 0 users';
-
-    # Make the workspace the all account workspace.
-    $acct->update( all_users_workspace => $ws->workspace_id );
-
-    # fails silently, user cannot be added to the AUW (using this API)
-    # if they do not already have a role in the account.
-    # User still can be added with $ws->add_user(), a 'legal' way of doing
-    # this.
-    $acct->add_to_all_users_workspace( object => $user );
-
-    $ws_users = $ws->users;
-    isa_ok $ws_users, 'Socialtext::MultiCursor';
-    is $ws_users->count, 0, '... with no users';
-}
-
-################################################################################
 # TEST: Add/Remove user to account with all users workspace ( high level ).
 account_with_workspace_high_level: {
     my $other_acct = create_test_account_bypassing_factory();
     my $acct       = create_test_account_bypassing_factory();
     my $ws         = create_test_workspace(account => $acct);
 
-    # Make the workspace the all account workspace.
-    $acct->update( all_users_workspace => $ws->workspace_id );
+    $ws->add_account(account => $acct);
 
-    # Make sure the user is in the account.
-    my $user = create_test_user();
-    $user->primary_account( $acct );
+    my $user = create_test_user( account => $acct );
 
     my $ws_users = $ws->users;
     isa_ok $ws_users, 'Socialtext::MultiCursor';
@@ -117,6 +75,11 @@ account_with_workspace_high_level: {
 
     # Change user's primary account
     $user->primary_account( $other_acct );
+    $acct->remove_user(user => $user);
+
+    $ws_users = $ws->users;
+    isa_ok $ws_users, 'Socialtext::MultiCursor';
+    is $ws_users->count, 0, '... and now the user is gone';
 }
 
 ################################################################################
@@ -126,38 +89,11 @@ account_with_workspace_high_level: {
     my $ws   = create_test_workspace(account => $acct);
     my $user = create_test_user(account => $acct);
 
-    # Make the workspace the all account workspace.
-    $acct->update( all_users_workspace => $ws->workspace_id );
+    $ws->add_account( account => $acct );
 
     my $ws_users = $ws->users;
     isa_ok $ws_users, 'Socialtext::MultiCursor';
     is $ws_users->count, 1, '... with one user';
-}
-
-################################################################################
-# TEST: all users workspace changes, user stays in ws.
-user_remains: {
-    my $acct     = create_test_account_bypassing_factory();
-    my $ws       = create_test_workspace(account => $acct);
-    my $other_ws = create_test_workspace(account => $acct);
-
-    # Make the workspace the all account workspace.
-    $acct->update( all_users_workspace => $ws->workspace_id );
-
-    # Make sure the user is in the account.
-    my $user = create_test_user();
-    $user->primary_account( $acct );
-
-    my $ws_users = $ws->users;
-    isa_ok $ws_users, 'Socialtext::MultiCursor';
-    is $ws_users->count, 1, '... with one user';
-
-    # Change account's all users workspace.
-    $acct->update( all_users_workspace => $other_ws->workspace_id );
-
-    $ws_users = $ws->users;
-    isa_ok $ws_users, 'Socialtext::MultiCursor';
-    is $ws_users->count, 1, '... still with one user';
 }
 
 ################################################################################
@@ -168,13 +104,8 @@ user_primary_account_change: {
     my $new_ws   = create_test_workspace(account => $new_acct);
     my $member   = Socialtext::Role->Member();
 
-    $old_acct->update( all_users_workspace => $old_ws->workspace_id );
-    is $old_acct->all_users_workspace, $old_ws->workspace_id,
-        'old Account has all users workspace';
-
-    $new_acct->update( all_users_workspace => $new_ws->workspace_id );
-    is $new_acct->all_users_workspace, $new_ws->workspace_id,
-        'new Account has all users workspace';
+    $old_ws->add_account(account => $old_acct);
+    $new_ws->add_account(account => $new_acct);
 
     my $user = create_test_user( account => $old_acct );
 
@@ -207,9 +138,7 @@ user_with_indirect_account_role: {
     my $ws     = create_test_workspace(account => $acct);
     my $member = Socialtext::Role->Member();
 
-    $acct->update( all_users_workspace => $auw->workspace_id );
-    is $acct->all_users_workspace, $auw->workspace_id,
-        'Account has all users workspace';
+    $auw->add_account(account => $acct);
 
     # Give user an indirect role in the Account by adding them to a (non-AUW)
     # workspace
@@ -234,9 +163,7 @@ group_has_role_in_auw_exists: {
     my $member = Socialtext::Role->Member();
 
     # Update AUW _before_ adding the group.
-    $acct->update( all_users_workspace => $ws->workspace_id );
-    is $acct->all_users_workspace, $ws->workspace_id,
-        'Account assigned all users workspace before adding groups';
+    $ws->add_account(account => $acct);
 
     # Add User to Group
     $group->add_user( user => $user );
@@ -266,10 +193,7 @@ group_has_role_in_auw_updated: {
     ok $role, 'User has Role in Group';
     is $role->role_id, $member->role_id, '... Role is Member';
 
-    # Update the AUW _after_ adding the group.
-    $acct->update( all_users_workspace => $ws->workspace_id );
-    is $acct->all_users_workspace, $ws->workspace_id,
-        'Account has all users workspace updated after adding groups';
+    $ws->add_account(account => $acct);
 
     # Check User's Role in the AUW
     $role = $ws->role_for_user($user, direct => 1 );
@@ -287,9 +211,7 @@ group_has_role_in_auw_when_added_to_account: {
     my $user   = create_test_user();
     my $member = Socialtext::Role->Member();
 
-    $acct->update( all_users_workspace => $ws->workspace_id );
-    is $acct->all_users_workspace, $ws->workspace_id,
-        'Account has all users workspace updated after adding groups';
+    $ws->add_account(account => $acct);
 
     # Add User to Group
     $group->add_user( user => $user );
