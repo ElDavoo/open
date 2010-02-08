@@ -324,7 +324,10 @@ sub export {
 }
 
 # Always use direct => 1 for account plugins.
-around 'plugins_enabled' => sub { shift->(direct => 1, @_) };
+around 'plugins_enabled' => sub {
+    my ($orig, $self, @args) = @_;
+    $orig->($self, direct => 1, @args);
+};
 
 sub all_users_as_hash {
     my $self  = shift;
