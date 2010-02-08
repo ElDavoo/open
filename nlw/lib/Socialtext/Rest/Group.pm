@@ -8,6 +8,8 @@ use Socialtext::Permission qw(ST_READ_PERM ST_ADMIN_PERM
                               ST_ADMIN_WORKSPACE_PERM);
 use Socialtext::Exceptions qw(conflict);
 use Socialtext::Group;
+use Socialtext::Rest::SetController;
+
 use Socialtext::SQL ':txn';
 use namespace::clean -except => 'meta';
 
@@ -20,6 +22,18 @@ has 'group' => (
 sub _build_group {
     my $self = shift;
     return eval { Socialtext::Group->GetGroup(group_id => $self->group_id) };
+}
+
+has 'controller' => (
+    is => 'ro', isa => 'Socialtext::Rest::SetController',
+    lazy_build => 1,
+);
+sub _build_controller {
+    my $self = shift;
+    return Socialtext::Rest::SetController->new(
+        actor     => $self->rest->user,
+        container => $self->group,
+    );
 }
 
 sub permission      { +{} }
@@ -231,6 +245,109 @@ sub POST_to_trash { $_[0]->_admin_with_group_data_do_txn(sub {
 
     return '';
 }) }
+
+# Map to `PUT /data/groups/:group_id/users
+sub PUT_to_users {
+    my $self = shift;
+    my $rest = shift;
+    return $self->can_admin(sub {
+        my $json = decode_json($rest->getContent());
+
+        my $ctrl = $self->controller;
+        $ctrl->scopes(['user']);
+        $ctrl->actions([qw(add update remove)]);
+        $ctrl->hooks()->{post_user_add} = sub {$self->user_invite(@_)}
+            if (defined $json->{send_message} && $json->{send_message} == 1);
+
+        $self->do_in_txn(sub {
+            $ctrl->alter_members($json->{entry});
+        });
+    });
+}
+
+sub user_invite {
+    my $self       = shift;
+    my $user_role  = shift;
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::GroupInvite',
+        {
+            group_id  => $self->group->group_id,
+            user_id   => $user_role->{user}->user_id,
+            sender_id => $user_role->{actor}->user_id,
+        },
+    );
+}
+
+sub can_admin {
+    my $self = shift;
+    my $cb   = shift;
+
+    my $user  = $self->rest->user;
+    my $group = $self->group;
+    return $self->no_resource("group id: " . $self->group_id )
+        unless $group;
+
+    my $admin = $group->user_can(user => $user, permission => ST_ADMIN_PERM);
+    if ($admin || $user->is_business_admin || $user->is_technical_admin) {
+        return $cb->();
+    }
+
+    return $self->not_authorized();
+}
+
+# XXX: This should live up higher in our stack.
+sub do_in_txn {
+    my $self  = shift;
+    my $cb    = shift;
+    my %addtl = @_; # user may pass in a CODEREF with index 'success'.
+
+    my $in_txn = sql_in_transaction();
+    sql_begin_work() unless $in_txn;
+    eval {
+        $cb->(@_);
+    };
+    if (my $e = Exception::Class->caught('Socialtext::Exception')) {
+        sql_rollback() unless $in_txn;
+        return $self->handle_exception($e);
+    }
+    if (my $e = $@) {
+        warn $e;
+        sql_rollback() unless $in_txn;
+        $self->rest->header(
+            -status => HTTP_400_Bad_Request,
+            -type   => 'text/plain',
+        );
+        return $e;
+    }
+
+    sql_commit() unless $in_txn;
+    if (my $sucess = $addtl{success}) {
+        return $sucess->();
+    }
+
+    $self->rest->header(-status => HTTP_204_No_Content);
+    return '';
+}
+
+# XXX: This should live up higher in our stack, perhaps even the handler.
+sub handle_exception {
+    my $self = shift;
+    my $e    = shift;
+
+    if (!$e->isa('Socialtext::Exception')) {
+        # XXX Server Error?
+        return "WTF?";
+    }
+
+    my $status = {
+        'Socialtext::Exception::Conflict'       => HTTP_409_Conflict,
+        'Socialtext::Exception::DataValidation' => HTTP_409_Conflict,
+    }->{ref($e)};
+
+    $self->rest->header(-status => $status, -type   => 'text/plain');
+    return join('\n', $e->messages);
+}
 
 no Moose;
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

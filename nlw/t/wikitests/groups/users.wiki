@@ -15,8 +15,8 @@ Tests for [Story: Groups ReST API]
 | code-is     | 200                       |         |
 | header-like | Cache-Control             | private |
 | json-parse  |                           |         |
-| Body-like   | "group_id":"%%group_id%%" |         |
-| Body-like   | "name":"%%group_name%%"   |         |
+| body-like   | "group_id":"%%group_id%%" |         |
+| body-like   | "name":"%%group_name%%"   |         |
 | body-like   | "user_count":"1"          |         |
 | body-like   | "workspace_count":"0"     |         |
 | body-unlike | "members"                 |         |
@@ -29,8 +29,8 @@ Tests for [Story: Groups ReST API]
 | code-is     | 200                       |         |
 | header-like | Cache-Control             | private |
 | json-parse  |                           |         |
-| Body-like   | "group_id":"%%group_id%%" |         |
-| Body-like   | "name":"%%group_name%%"   |         |
+| body-like   | "group_id":"%%group_id%%" |         |
+| body-like   | "name":"%%group_name%%"   |         |
 | body-like   | "user_count":"2"          |         |
 | body-like   | "workspace_count":"0"     |         |
 | body-unlike | "members"                 |         |
@@ -99,7 +99,7 @@ Tests for [Story: Groups ReST API]
 | set         | jimmy                                            | jimmy%%start_time%%@ken.socialtext.net |
 | create-user | %%jimmy%%                                        | password                               |
 | set         | jimmy_id                                         | %%user_id%%                            |
-| POST_json   | /data/groups/%%group_id%%/users                  | {"username":"%%jimmy%%"}               |
+| POST-json   | /data/groups/%%group_id%%/users                  | {"username":"%%jimmy%%"}               |
 | code-is     | 201                                              |                                        |
 
 ## Verify that the user's role was created with the correct attrs
@@ -182,4 +182,29 @@ Tests for [Story: Groups ReST API]
 | body-like       | %%ted%%                         |         |
 | body-like       | %%harley%%                      |         |
 | body-like       | %%hank%%                        |         |
+
+## Create users to test PUT
+| *Comment*   | Create users to test PUT |                                         |
+| set         | haile                    | haile%%start_time%%@ken.socialtext.net  |
+| create-user | %%haile%%                | password                                |
+| set         | haile_id                 | %%user_id%%                             |
+| set         | hakim                    | hakim%%start_time%%@ken.socialtext.net  |
+| create-user | %%hakim%%                | password                                |
+| set         | hakim_id                 | %%user_id%%                             |
+| set         | halden                   | halden%%start_time%%@ken.socialtext.net |
+| create-user | %%halden%%               | password                                |
+| set         | halden_id                | %%user_id%%                             |
+
+## PUT one to users
+| st-clear-jobs |                                 |                                                           |
+| PUT-json      | /data/groups/%%group_id%%/users | {"entry":[{"username":"%%haile%%","role_name":"member"}]} |
+| code-is       | 204                             |                                                           |
+| job-count     | GroupInvite                     | 0                                                         |
+
+## PUT many to users
+| *Comment*     | PUT many to users               |                                                                                                                              |
+| st-clear-jobs |                                 |                                                                                                                              |
+| PUT-json      | /data/groups/%%group_id%%/users | {"send_message":"1","entry":[{"user_id":"%%hakim_id%%","role_name":"admin"},{"username":"%%halden%%","role_name":"member"}]} |
+| code-is       | 204                             |                                                                                                                              |
+| job-count     | GroupInvite                     | 2                                                                                                                            |
 
