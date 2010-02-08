@@ -83,6 +83,8 @@ proto.init = function() {}
 
 Wikiwyg.VERSION = '3.00';
 
+if (typeof LocalizedStrings == 'undefined')
+    this.addGlobal().LocalizedStrings = {};
 this.addGlobal().WW_SIMPLE_MODE = 'Wikiwyg.Wysiwyg';
 this.addGlobal().WW_ADVANCED_MODE = 'Wikiwyg.Wikitext';
 this.addGlobal().WW_PREVIEW_MODE = 'Wikiwyg.Preview';
