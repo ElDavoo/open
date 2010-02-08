@@ -22,6 +22,7 @@ use Socialtext::Timer qw/time_scope/;
 use Socialtext::Pluggable::Adapter;
 use Socialtext::AccountLogo;
 use Socialtext::Account::Roles;
+use Socialtext::Role;
 use Socialtext::UserSet qw/:const/;
 use YAML qw/DumpFile LoadFile/;
 use MIME::Base64 ();
@@ -497,7 +498,7 @@ sub finish_import {
     my $hub  = $opts{hub};
     my $meta = $self->{_import_hash};
 
-    # Old tarballs may use the deprecated all_users_workspace
+    # Exports may use the deprecated all_users_workspace setting
     if ( my $ws_name = $meta->{all_users_workspace} ) {
         my $ws = Socialtext::Workspace->new( name => $ws_name );
 
