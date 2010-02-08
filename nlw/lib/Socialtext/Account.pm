@@ -301,9 +301,9 @@ sub export {
     my $export_file = $opts{file} || "$dir/account.yaml";
 
     my $logo_ref = $self->logo->logo;
-    my $data = {
+    my $data     = {
         # versioning
-        version                    => $EXPORT_VERSION,
+        version => $EXPORT_VERSION,
         # data
         name                       => $self->name,
         is_system_created          => $self->is_system_created,
@@ -313,6 +313,8 @@ sub export {
         logo                       => MIME::Base64::encode($$logo_ref),
         allow_invitation           => $self->allow_invitation,
         plugins                    => [ $self->plugins_enabled ],
+        all_users_workspaces       =>
+            [ map { $_->name } @{ $self->all_users_workspaces } ],
         (map { $_ => $self->$_ } grep {/^desktop_/} @ACCT_COLS),
     };
     $hub->pluggable->hook('nlw.export_account', $self, $data, \%opts);
@@ -320,6 +322,9 @@ sub export {
     DumpFile($export_file, $data);
     return $export_file;
 }
+
+# Always use direct => 1 for account plugins.
+around 'plugins_enabled' => sub { shift->(direct => 1, @_) };
 
 sub all_users_as_hash {
     my $self  = shift;
@@ -485,7 +490,8 @@ sub import_file {
                 print loc("... '[_1]' plugin missing; skipping", $plugin_name) . "\n";
                 next;
             }
-            $account->enable_plugin($plugin_name);
+            eval { $account->enable_plugin($plugin_name) };
+            warn $@ if $@;
         }
     }
 
@@ -498,24 +504,39 @@ sub finish_import {
     my $hub  = $opts{hub};
     my $meta = $self->{_import_hash};
 
+    my @auws;
     # Exports may use the deprecated all_users_workspace setting
     if ( my $ws_name = $meta->{all_users_workspace} ) {
-        my $ws = Socialtext::Workspace->new( name => $ws_name );
+        push @auws, $ws_name;
+    }
+    if (my $auw_names = $meta->{all_users_workspaces}) {
+        push @auws, @$auw_names;
+    }
 
+    for my $ws_name (@auws) {
+        my $ws = Socialtext::Workspace->new( name => $ws_name );
         $ws->assign_role_to_account(account => $self, role => 'member');
     }
 
     $hub->pluggable->hook('nlw.finish_import_account', $self, $meta, \%opts);
 }
 
-sub has_all_users_workspaces {
+sub all_users_workspaces {
     my $self = shift;
 
     my $ws_cursor = $self->workspaces;
+    my @auws;
     while (my $ws = $ws_cursor->next) {
-        return 1 if $ws->role_for_account($self);
+        push @auws, $ws if $ws->role_for_account($self);
     }
-    return 0;
+    return \@auws;
+}
+
+sub has_all_users_workspaces {
+    my $self = shift;
+
+    my $auws = $self->all_users_workspaces;
+    return @$auws > 0 ? 1 : 0;
 }
 
 after 'role_change_check' => sub {
