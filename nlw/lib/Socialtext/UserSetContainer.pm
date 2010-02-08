@@ -664,6 +664,15 @@ sub _sorted_user_roles_apply {
         $opts{thing} = $self;
         return $perspective->get_cursor(\%opts);
     }
+
+    sub total_user_roles {
+        my ($self, %opts) = @_;
+        my $t = time_scope('total_user_roles');
+        require Socialtext::Group;
+        $opts{where} = ['uxr.user_set_id' => $self->user_set_id];
+        $opts{thing} = $self;
+        return $perspective->get_total(\%opts);
+    }
 }
 
 sub _sorted_group_roles_order_by {

@@ -66,7 +66,7 @@ Tests for [Story: Groups ReST API]
 | set-business-admin | %%badmin%%                | 0       |
 | GET                | /data/groups/%%group_id%%/users |         |
 | header-like        | Cache-Control             | private |
-| code-is            | 404                       |         |
+| code-is            | 403                       |         |
 
 ## visible by Group Members (Members see Groups they are members of)
 ## *not* visible by other Users (can't see Groups you have no relationship to)
@@ -76,7 +76,7 @@ Tests for [Story: Groups ReST API]
 | http-user-pass | %%jane%% | password                              |
 
 | GET             | /data/groups/%%group_id%%/users |         |
-| code-is         | 404                       |         |
+| code-is         | 403                       |         |
 | header-like     | Cache-Control             | private |
 
 | add-user-to-group | %%jane%%                        | %%group_id%% |
@@ -182,6 +182,19 @@ Tests for [Story: Groups ReST API]
 | body-like       | %%ted%%                         |         |
 | body-like       | %%harley%%                      |         |
 | body-like       | %%hank%%                        |         |
+
+## GET Users, pageable. 
+## Actual paging is tested in t/wikitests/rest/data/workspaces_groups.wiki,
+## so we'll only check the result here.
+| *Comment*        | GET Users, pageable, 8 results               |    |
+| GET-json         | /data/groups/%%group_id%%/users?startIndex=0 |    |
+| code-is          | 200                                          |    |
+| json-parse       |                                              |    |
+| json-path-is     | $.startIndex                                 | 0  |
+| json-path-is     | $.itemsPerPage                               | 25 |
+| json-path-is     | $.totalResults                               | 8  |
+| json-path-exists | $.entry[0]                                   |    |
+| json-path-exists | $.entry[7]                                   |    |
 
 ## Create users to test PUT
 | *Comment*   | Create users to test PUT |                                         |

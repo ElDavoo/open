@@ -11,34 +11,91 @@ use Socialtext::JobCreator;
 use Socialtext::l10n qw(loc);
 use namespace::clean -except => 'meta';
 
+with 'Socialtext::Rest::Pageable';
+
+has 'group' => (
+    is => 'ro', isa => 'Maybe[Socialtext::Group]',
+    lazy_build => 1,
+);
+sub _build_group {
+    my $self = shift;
+
+    my $group_id = $self->group_id;
+    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+    return $group;
+}
+
 # Anybody can see these, since they are just the list of workspaces the user
 # has 'selected'.
 sub permission { +{} }
 
 sub collection_name { 'Group users' }
 
-sub _entities_for_query {
+sub if_authorized {
     my $self = shift;
-    my $group_id = $self->group_id;
-    my $user = $self->rest->user();
+    my $method = shift;
+    my $call = shift;
 
-    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
-    die Socialtext::Exception::NotFound->new() unless $group;
+    return $self->no_resource('group') unless $self->group;
 
-    my $can_read = $group->user_can(
+    my $user = $self->rest->user;
+    my $perm = $method eq 'GET' ? ST_READ_PERM : ST_ADMIN_PERM;
+    my $can = $self->group->user_can(
         user => $user,
-        permission => ST_READ_PERM,
+        permission => $perm,
     );
-    die Socialtext::Exception::NotFound->new()
-        unless $user->is_business_admin
-            or $group->creator->user_id == $user->user_id
-            or $can_read;
 
-    my $users = $group->users_as_minimal_arrayref();
+    unless ($can || $user->is_business_admin) {
+        return $self->not_authorized;
+    }
 
-    # XXX: We should sort in the DB, but the GroupSearch role doesn't seem
-    # easily extendible for me to implement it there.
-    return sort { $a->{best_full_name} cmp $b->{best_full_name} } @$users;
+    return $self->$call(@_);
+}
+
+sub _get_total_results {
+    my $self = shift;
+    return $self->group->total_user_roles(
+        include_aggregates => 1,
+        limit              => $self->items_per_page,
+        offset             => $self->start_index,
+        direct             => 1,
+    );
+}
+
+sub _get_entities {
+    my $self = shift;
+    my $rest = shift;
+
+    my $roles = $self->group->sorted_user_roles(
+        include_aggregates => 1,
+        limit => $self->items_per_page,
+        offset => $self->start_index,
+        direct => 1,
+        order_by => $self->order || 'username',
+        sort_order => $self->reverse ? 'DESC' : 'ASC',
+    );
+    $roles->apply(sub {
+        my $info = shift;
+        my $user = Socialtext::User->new(user_id => $info->{user_id});
+        my $role = Socialtext::Role->new(role_id => $info->{role_id});
+        return {
+            user_id => $user->user_id,
+            name => $user->username,
+            workspace_count => $info->{workspace_count},
+            group_count => $info->{group_count},
+            primary_account_id => $user->primary_account_id,
+            primary_account_name => $user->primary_account->name,
+            creation_date => $user->creation_datetime_object->ymd,
+            created_by_user_id => $user->created_by_user_id,
+            created_by_username => $user->creator->guess_real_name,
+            group_count => $info->{group_count},
+            uri => "/data/users/$info->{user_id}",
+            role_id => $info->{role_id},
+            role_name => $role->name,
+        };
+    });
+    my @users = $roles->all;
+    return \@users;
 }
 
 sub _entity_hash { return $_[1] }
@@ -49,7 +106,7 @@ sub POST_json {
     my $invitor = $rest->user;
     my $data    = decode_json($rest->getContent());
 
-    my $group = Socialtext::Group->GetGroup( group_id => $self->group_id );
+    my $group = $self->group;
     unless ( $group ) {
         $rest->header( -status => HTTP_404_Not_Found );
         return 'Resource not found';
