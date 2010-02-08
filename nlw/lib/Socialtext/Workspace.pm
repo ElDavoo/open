@@ -1846,6 +1846,7 @@ after qw(assign_role_to_account add_account) => \&_de_dupe_users;
 sub _de_dupe_users {
     my ($self, %opts) = @_;
     my $new_role = $opts{role};
+    $new_role = Socialtext::Role->new(name => $new_role) unless ref $new_role;
 
     my $acct_users = $opts{account}->users(primary_only => 1);
     while (my $u = $acct_users->next) {
