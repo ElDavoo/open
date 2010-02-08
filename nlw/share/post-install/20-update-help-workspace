@@ -21,4 +21,5 @@ fi
 sha1sum $SHAREDIR/*.gz > $HELPSUM
 
 
-st-run-as-web-user st-create-help-workspaces $SHAREDIR
+JOBID=`(st-run-as-web-user ceq-exec --timeout 900 --priority 90 /usr/bin/st-create-help-workspaces $SHAREDIR || echo "FAILED TO create-help-workspaces")`
+echo "$JOBID running st-create-help-workspaces $SHAREDIR"
