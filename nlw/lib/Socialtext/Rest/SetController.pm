@@ -79,7 +79,7 @@ sub alter_one_member {
     return undef if $action eq 'skip';
 
     my $req = {$scope => $thing, role => $role, actor => $self->actor};
-    $self->do($action, $scope, $req);
+    $self->excute($action, $scope, $req);
 
     return $self->run_post_hook($action, $scope, $req);
 }
@@ -98,7 +98,7 @@ sub run_post_hook {
 }
 
 {
-    my $todo = {
+    my $to_exe = {
         user => {
             add    => sub { shift->add_user(@_) },
             remove => sub { shift->remove_user(@_) },
@@ -111,17 +111,17 @@ sub run_post_hook {
         },
     };
 
-    sub do {
+    sub execute {
         my $self   = shift;
         my $action = shift;
         my $scope  = shift;
         my $req    = shift;
 
-        my $todo = $todo->{$scope}{$action};
+        my $to_exe = $to_exe->{$scope}{$action};
         croak "nothing to do for '$scope $action'"
-            unless $todo;
+            unless $to_exe;
 
-        return $todo->($self->container, $req);
+        return $to_exe->($self->container, $req);
     }
 }
 
