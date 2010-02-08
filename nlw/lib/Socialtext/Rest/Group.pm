@@ -1,8 +1,6 @@
 package Socialtext::Rest::Group;
 # @COPYRIGHT@
-use strict;
-use warnings;
-use base 'Socialtext::Rest::Entity';
+use Moose;
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
 use Socialtext::l10n qw(loc);
@@ -11,6 +9,18 @@ use Socialtext::Permission qw(ST_READ_PERM ST_ADMIN_PERM
 use Socialtext::Exceptions qw(conflict);
 use Socialtext::Group;
 use Socialtext::SQL ':txn';
+use namespace::clean -except => 'meta';
+
+extends 'Socialtext::Rest::Entity';
+
+has 'group' => (
+    is => 'ro', isa => 'Maybe[Socialtext::Group]',
+    lazy_build => 1,
+);
+sub _build_group {
+    my $self = shift;
+    return eval { Socialtext::Group->GetGroup(group_id => $self->group_id) };
+}
 
 sub permission      { +{} }
 sub allowed_methods {'GET, PUT'}
@@ -19,7 +29,7 @@ sub entity_name     { "Group" }
 sub get_resource {
     my( $self, $rest ) = @_;
 
-    my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
+    my $group = $self->group;
     return undef unless $group;
 
     my $can_read = $group->user_can(
@@ -51,8 +61,8 @@ sub create_error {
 sub PUT_json { $_[0]->_with_admin_permission_do(sub {
     my $self = shift;
     my $rest = $self->rest;
+    my $group = $self->group;
 
-    my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
     my $data  = eval { decode_json( $rest->getContent ) };
 
     if (!$data or ref($data) ne 'HASH') {
@@ -97,10 +107,10 @@ sub _has_request_error {
         permissions => undef,
         @_
     );
-    my $rest = $self->rest;
-    my $user = $rest->user;
+    my $rest  = $self->rest;
+    my $user  = $rest->user;
+    my $group = $self->group;
 
-    my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
     return +{
         status  => HTTP_404_Not_Found,
         message => loc('Group not found')
@@ -145,7 +155,7 @@ sub _with_admin_permission_do {
 sub _admin_with_group_data_do_txn {
     my ($self, $callback) = @_;
     $self->_with_admin_permission_do(sub {
-        my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
+        my $group = $self->group;
         my $data  = eval{ decode_json($self->rest->getContent) };
         $data = (ref($data) eq 'HASH') ? [$data] : $data;
 
@@ -222,6 +232,8 @@ sub POST_to_trash { $_[0]->_admin_with_group_data_do_txn(sub {
     return '';
 }) }
 
+no Moose;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
 
 =head1 NAME
