@@ -95,6 +95,10 @@
         location /favicon.ico {
             root [% config.static_dir %];
         }
+    [%- ELSE %]
+        location /favicon.ico {
+            root [% config.data_root_dir %];
+        }
     [%- END %]
     location /robots.txt {
         root [% config.data_root_dir %]/docroot;
