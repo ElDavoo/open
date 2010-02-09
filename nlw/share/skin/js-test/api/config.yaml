@@ -3,8 +3,10 @@ import_libs:
   - ../../common/javascript/jquery-1.2.6.js
   - ../../common/javascript/jquery-json-1.3.js
   - ../common/lib/Test/Visual.js
-  - ../../common/javascript/Socialtext/socialtext-api.js
   - lib/Test/Socialtext.js
-template_include_path:
-  - ../common/template
-  - ./template
+  - lib/Socialtext/Base.js
+  - lib/Socialtext/Group.js
+  - lib/Socialtext/User.js
+  - lib/Socialtext/Workspace.js
+  - lib/Socialtext/Account.js
+  - lib/Socialtext/UserAccountRole.js
