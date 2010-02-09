@@ -3,53 +3,21 @@
 [% PROCESS element/settings/start %]
 
 <dl class="form">
-  <dt><label>[% loc('Workspace Permissions') %]</label></dt>
+  <dt><label>[% loc('Workspace Privacy') %]</label></dt>
   <dd>
-    [% loc('You can choose the level of privacy for your workspace. For more information on choosing the level of privacy for your workspace, see') %] 
-    <a href="/help/index.cgi?[% loc('roles_and_permission_sets#standard_workspace_types') %]">[% loc('Roles and Permission Sets (standard workspace types)') %]</a>.
+    [% loc('Workspaces are private by default. All users need to log in to view pages. Only workspace admins can invite new users.') %] 
   </dd>
+  [% IF current_permission_set_name == "member-only" %]
+    <p>[% loc('If you need public workspaces that can be viewed by users without logging in, please contact <a href="[_1]">Socialtext Support</a>', support_address) %]</p>
+  [% ELSE %]
   <dt><label>[% loc('Do you want to set up this workspace as:') %]</label></dt>
   <dd>
-    <input type="radio" name="permission_set_name" [% IF current_permission_set_name == "member-only" %]checked="1"[% END %] value="member-only" />
-    <strong>[% loc('Private') %]</strong> - [% loc('only invited users can access the workspace') %]
-  </dd>
-[% IF current_permission_set_name == "public-authenticate-to-edit" %]
-  <dd>
-    <input type="radio" name="permission_set_name" [% IF current_permission_set_name == "public-authenticate-to-edit" %]checked="1"[% END %] value="public-authenticate-to-edit" />
-    <strong>[% loc('Public login-to-edit') %]</strong> - <b>[% loc('(deprecated)') %]</b>  [% loc('anyone can see the workspace, users can register to be able to edit.') %] <b>[% loc('Note:') %]</b> [% loc('Registered users will not become members of this workspace''s network; they will not appear in a directory and will not receive change notifications. If you''d like members to join the network and receive notifications, choose Public join-to-edit') %]
-  </dd>
-[% END %]
-  <dd>
-    <input type="radio" name="permission_set_name" [% IF current_permission_set_name == "public-join-to-edit" %]checked="1"[% END %] value="public-join-to-edit" />
-    <strong>[% loc('Public join-to-edit') %]</strong> - [% loc('anyone can see the workspace. People may become members. Existing users become members of this workspace. New users join the workspace and have their primary network set to this workspace''s network') %]
+    <input type="radio" name="permission_set_name" value="member-only" />
+    <strong>[% loc('Private') %]</strong> - [% loc('users need to be invited by an admin and must log in to see pages.') %]
   </dd>
   <dd>
-    <input type="radio" name="permission_set_name" [% IF current_permission_set_name == "public-read-only" %]checked="1"[% END %] value="public-read-only" />
-    <strong>[% loc('Public read-only') %]</strong> - [% loc('anybody can see the workspace, only privately invited members can edit') %]
-  </dd>
-  <dd>
-    <input type="radio" name="permission_set_name" [% IF current_permission_set_name == "public-comment-only" %]checked="1"[% END %] value="public-comment-only">
-    <strong>[% loc('Public read-and-comment-only') %]</strong> - [% loc('anybody can see the workspace and make comments, only privately invited members can edit') %]
-  </dd>
-  <dd>
-    <input type="radio" name="permission_set_name" [% IF current_permission_set_name == "public" %]checked="1"[% END %] value="public" />
-    <strong>[% loc('Fully public') %]</strong> - [% loc('anybody can see and edit pages') %]
-    [% UNLESS is_appliance %]
-      (<b>[% loc('Warning') %]</b>: [% loc('if you use this setting, the workspace is likely to be spammed') %])
-    [% END %]
-  </dd>
-
-  [% IF is_appliance %]
-  <dd>
-    <input type="radio" name="permission_set_name" [% IF current_permission_set_name == "intranet" %]checked="1"[% END %] value="intranet" />
-    <strong>[% loc('Intranet') %]</strong> - [% loc('anybody can see and edit pages, upload files and send email') %]
-  </dd>
-  [% END %]
-
-  [% IF current_permission_set_name == "custom" %]
-  <dd>
-    <input type="radio" name="permission_set_name" [% IF current_permission_set_name == "custom" %]checked="1"[% END %] value="custom" />
-    <strong>[% loc('Custom privacy setting') %]</strong>
+    <input type="radio" name="permission_set_name" checked="checked" value="not-member-only" />
+    <strong>[% loc('Public') %]</strong> - [% loc('users can see pages without logging in.') %]
   </dd>
   [% END %]
 

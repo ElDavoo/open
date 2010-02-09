@@ -611,6 +611,7 @@ sub workspaces_permissions {
         'element/settings/workspaces_permissions_section',
         workspace                   => $self->hub->current_workspace,
         is_appliance                => Socialtext::AppConfig->is_appliance(),
+        support_address             => Socialtext::AppConfig->support_address(),
         current_permission_set_name => $set_name,
         fill_in_data                => {
             allows_page_locking => $self->hub->current_workspace->allows_page_locking,
@@ -645,23 +646,14 @@ sub _set_workspace_permissions {
         ? loc('Page locking is enabled.')
         : loc('Page locking is disabled.');
 
-    my $set_name = $self->cgi()->permission_set_name();
-    if ( $set_name and
-        (! $Socialtext::Workspace::Permissions::PermissionSets{ $set_name })
-            and
-        (! $Socialtext::Workspace::Permissions::DeprecatedPermissionSets{ $set_name })
-    ) {
-        $message .= '  ';
-        $message .= loc('Using Custom workspace permissions.');
-    }
-    elsif ( $set_name and $Socialtext::Workspace::Permissions::DeprecatedPermissionSets{ $set_name }) {
-        $message .= '  ';
-        $message .= loc('The permissions for [_1] ([_2]) is deprecated.', $ws->name(), loc($set_name));
-    }        
-    elsif ($ws->permissions->current_set_name ne $set_name) {
-        $message .= '  ';
-        $message .= loc('The permissions for [_1] have been set to [_2].', $ws->name(), loc($set_name));
-        $ws->permissions->set( set_name => $set_name );
+    # This was drastically simplified as of 
+    # [Story: Remove Public Workspace Option]
+    if (my $set_name = $self->cgi()->permission_set_name()) {
+        if ($set_name eq 'member-only') {
+            $message .= '  ';
+            $message .= loc('The permissions for [_1] have been set to [_2].', $ws->name(), loc($set_name));
+            $ws->permissions->set( set_name => $set_name );
+        }
     }
 
     # This has to go after the perm settings because ST_EMAIL_IN_PERM
