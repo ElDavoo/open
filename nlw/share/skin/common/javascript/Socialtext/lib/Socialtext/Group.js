@@ -36,11 +36,9 @@ $.extend(Socialtext.Group.prototype, {
         $.ajax({
             url: self.url(),
             type: 'PUT',
-            dataType: 'json',
             contentType: 'application/json',
             data: $.toJSON(data),
-            success: function(data) {
-                $.extend(self, data);
+            success: function() {
                 if (callback) callback({});
             },
             error: this.errorCallback(callback)
