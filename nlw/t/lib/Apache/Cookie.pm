@@ -6,7 +6,7 @@ use warnings;
 our $DATA = {};
 
 sub new {
-    my ($class, %opts) = @_;
+    my ($class, $req, %opts) = @_;
     my $self = { %opts };
     bless $self, $class;
 }
