@@ -110,7 +110,7 @@ die "XXX : not implemented yet -- autoprovision new users\n";
 
     # figure out where the User wanted to be in the first place, and redirect
     # them off over there.
-    my $redirect = $class->get_redirect_uri($token->data->{resource_url});
+    my $redirect = $class->get_redirect_uri($request, $token);
     st_log->info("LOGIN: " . $user->email_address . " destination $redirect");
     Socialtext::Apache::User::set_login_cookie($request, $user->user_id, '');
     $user->record_login;
@@ -124,11 +124,19 @@ sub build_challenge_uri {
     # start with the configured Challenge URI
     my $challenge_uri = URI->new($config->challenge_uri);
 
-    # add in the "resource_url" (the URL the User was _trying_ to get to)
-# XXX: does this get auto-escaped for us? or do we have to do it ourselves?
-    $challenge_uri->query_form(resource_url => $request->parsed_uri->unparse);
+    # build a target URI; the URI that the User should be sent to after being
+    # successfully authenticated, so that we can then log them in and redirect
+    # them to the resource that they were originally trying to access.
+    my $target_uri;
+    {
+        my $parsed_uri = $request->parsed_uri;
+        $target_uri
+            = Socialtext::URI::uri(path => $parsed_uri->path)
+            . '?'
+            . $parsed_uri->query;
+    }
 
-    # done
+    $challenge_uri->query_form(TARGET => $target_uri);
     return $challenge_uri->as_string;
 }
 
@@ -138,11 +146,13 @@ sub build_challenge_uri {
 # We do *not* allow for redirects to send the User to a machine other than
 # ourselves.
 sub get_redirect_uri {
-    my ($self, $redirect) = @_;
+    my ($self, $request, $token) = @_;
 
-    # get the URI that we're supposed to redirect the User to, and make sure
-    # that its a *relative* URI (no absolute URIs allowed)
-    $redirect ||= $DEFAULT_REDIRECT_URI;
+    # get the URL that we're supposed to be redirecting the User to
+    my $redirect = $request->param('redirect_to') || $DEFAULT_REDIRECT_URI;
+
+    # make sure that regardless of whether the Redirect URI is absolute or
+    # relative, that it points to *THIS* server.
     my $uri = URI->new($redirect);
     if ($uri->scheme) {
         # given an absolute URI; if it points to somewhere _other_than_

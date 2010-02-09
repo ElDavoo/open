@@ -112,7 +112,7 @@ redirect_to_challenge_uri: {
     my ($self, $uri) = $app->call_args(2);
 
     my $challenge_uri = Socialtext::OpenToken::Config->load->challenge_uri;
-    like $uri, qr/^$challenge_uri\?resource_url=/,
+    like $uri, qr/^$challenge_uri\?TARGET=/,
         '... ... to the challenge_uri';
 
     # CLEANUP: out of process fixtures don't clean up for us
@@ -142,7 +142,7 @@ stale_ticket: {
     my ($self, $uri) = $app->call_args(2);
 
     my $challenge_uri = Socialtext::OpenToken::Config->load->challenge_uri;
-    like $uri, qr/^$challenge_uri\?resource_url=/,
+    like $uri, qr/^$challenge_uri\?TARGET=/,
         '... ... to the challenge_uri';
 
     # CLEANUP: out of process fixtures don't clean up for us
@@ -317,13 +317,13 @@ sub _issue_challenge {
             Crypt::OpenToken::CIPHER_AES128,
             {
                 subject  => $user->username,
-                ($resource_url ? (resource_url=>$resource_url) : ()),
                 %{$token_data},
             },
         );
     }
     my $token_param = $config->token_parameter;
     local $Apache::Request::PARAMS{$token_param} = $token;
+    local $Apache::Request::PARAMS{redirect_to}  = $resource_url;
 
     # issue the challenge
     my $rc = Socialtext::Challenger::OpenToken->challenge(hub => $hub);
