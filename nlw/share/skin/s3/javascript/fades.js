@@ -1,7 +1,12 @@
 (function($){
 
 $.fn.fade = function(color, cb) {
-    var called = false;
+    if ($.browser.msie) {
+        if (cb) cb();
+        cb = null;
+        return;
+    }
+
     $(this).addClass('colorFaded').animate(
         { backgroundColor: color },
         function() {
