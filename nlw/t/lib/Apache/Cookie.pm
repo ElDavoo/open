@@ -5,9 +5,16 @@ use warnings;
 
 our $DATA = {};
 
+# keep track of cookies that have been created
+my @cookies;
+sub clear_cookies { @cookies = (); }
+sub cookie_count  { return scalar @cookies; }
+sub next_cookie   { return shift @cookies; }
+
 sub new {
     my ($class, $req, %opts) = @_;
     my $self = { %opts };
+    push @cookies, $self;
     bless $self, $class;
 }
 
