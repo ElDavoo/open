@@ -3,7 +3,7 @@ package Socialtext::Events::Reporter;
 use Moose;
 use Clone qw/clone/;
 use Socialtext::Encode ();
-use Socialtext::SQL qw/sql_execute/;
+use Socialtext::SQL qw/sql_execute sql_format_timestamptz/;
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::User;
 use Socialtext::Pluggable::Adapter;
@@ -867,12 +867,26 @@ sub get_events_group_activities {
 
     Socialtext::Timer->Continue('get_gactivity');
 
+    unless ($opts->{after}) {
+        my $created = $group->creation_datetime;
+        my $cut_off = DateTime->now - DateTime::Duration->new(weeks => 4);
+        if ($created > $cut_off) {
+            my $lower_bound = sql_format_timestamptz($created);
+            $opts->{after} = $lower_bound;
+        }
+    }
+
+    # by using non-view indexes, we can get a simple perf boost until we
+    # devise something better
+    $self->add_condition("action <> 'view'");
+    if ($opts->{action} && $opts->{action} eq 'view') {
+        return []; # view events are all filtered out
+    }
+
     my @binds = ();
     my $groupvissql = $self->visible_exists('signals','e.actor_id', 
-        {
-            group_id => $group_id
-        }, 
-        \@binds, 'e');
+        { group_id => $group_id }, \@binds, 'e');
+
     $self->add_condition(q{
         ( event_class = 'group' AND group_id = ? )
         OR (
@@ -899,7 +913,7 @@ sub get_events_group_activities {
     }, $group_id, $group_set_id, $group_set_id, @binds);
 
     $self->_skip_standard_opts(1);
-    my $evs = $self->_get_events(@_);
+    my $evs = $self->_get_events($opts);
     Socialtext::Timer->Pause('get_gactivity');
 
     return @$evs if wantarray;
