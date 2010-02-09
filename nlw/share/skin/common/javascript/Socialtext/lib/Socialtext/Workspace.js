@@ -120,7 +120,7 @@ Socialtext.Workspace.All = function(callback) {
     });
 };
 
-Socialtext.Workspace.Create = function(opts) {
+Socialtext.Workspace.Create = function(opts, callback) {
     var data = {};
     if (opts.title) data.title = opts.title;
     if (opts.name) data.name = opts.name;
@@ -134,11 +134,11 @@ Socialtext.Workspace.Create = function(opts) {
         data: $.toJSON(data),
         success: function(data) {
             var workspace = new Socialtext.Workspace({name: data.name});
-            if (opts.callback) opts.callback(workspace);
+            if (callback) callback(workspace);
         },
         error: function(xhr, textStatus, errorThrown) {
             var error = xhr ? xhr.responseText : errorThrown;
-            opts.callback({ error: error });
+            if (callback) callback({ error: error });
         }
     });
 }

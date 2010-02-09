@@ -67,9 +67,7 @@ $.extend(Socialtext.Group.prototype, {
         $.each(self.new_workspaces || [], function(i, info) {
             info.groups = {group_id: self.group_id};
             jobs.push(function(cb) {
-                Socialtext.Workspace.Create(
-                    $.extend({ callback: cb }, info)
-                );
+                Socialtext.Workspace.Create(info, cb);
             });
         });
         $.each(self.trash || [], function(i, info) {
@@ -77,10 +75,9 @@ $.extend(Socialtext.Group.prototype, {
                 var workspace = new Socialtext.Workspace({
                     name: info.name
                 });
-                workspace.removeMembers({
-                    members: [ { group_id: self.group_id } ],
-                    callback: cb
-                });
+                workspace.removeMembers(
+                    [ { group_id: self.group_id } ], cb
+                );
             });
         });
 
