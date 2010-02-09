@@ -23,6 +23,9 @@ END;
 $$
     LANGUAGE plpgsql IMMUTABLE;
 
+-- rebuild this index (based on the above updated function)
+REINDEX INDEX ix_event_activity_ignore;
+
 --- DB migration done
 UPDATE "System"
    SET value = '106'
