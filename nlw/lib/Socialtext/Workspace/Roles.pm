@@ -161,26 +161,43 @@ sub RolesForUserInWorkspace {
         sort_order    => SCALAR_TYPE(default   => 'asc'),
         user_id       => SCALAR_TYPE,
         direct        => BOOLEAN_TYPE(default => 0),
+        permission_id => SCALAR_TYPE(default => undef),
     };
     sub WorkspacesByUserId {
-        my $class      = shift;
-        my %p          = validate(@_, $spec);
-        my $user_id    = $p{user_id};
-        my $limit      = $p{limit};
-        my $offset     = $p{offset};
-        my $direct     = $p{direct};
-        my $exclude    = $p{exclude};
-        my $sort_order = $p{sort_order};
+        my $class         = shift;
+        my %p             = validate(@_, $spec);
+        my $user_id       = $p{user_id};
+        my $permission_id = $p{permission_id};
+        my $limit         = $p{limit};
+        my $offset        = $p{offset};
+        my $direct        = $p{direct};
+        my $exclude       = $p{exclude};
+        my $sort_order    = $p{sort_order};
+
+        my @binds = ($user_id);
 
         my $uwr_table = $direct
             ? 'user_set_include'
             : 'user_set_path';
 
-        my $exclude_clause = '';
+        my $where_filter = '';
         if (@$exclude) {
             my $wksps
                 = join(',', map { $_ + WKSP_OFFSET } grep !/\D/, @$exclude);
-            $exclude_clause = "AND into_set_id NOT IN ($wksps)";
+            $where_filter .= "AND into_set_id NOT IN ($wksps)";
+        }
+
+        if ($permission_id) {
+            $where_filter .= qq{
+                AND EXISTS (
+                    SELECT 1
+                      FROM "WorkspaceRolePermission"
+                     WHERE workspace_id = w.workspace_id
+                       AND role_id = $uwr_table.role_id
+                       AND permission_id = ?
+                )
+            };
+            push @binds, $permission_id;
         }
 
         my $sql = qq{
@@ -188,12 +205,12 @@ sub RolesForUserInWorkspace {
               FROM "Workspace" w
               JOIN $uwr_table ON (w.user_set_id = into_set_id)
              WHERE from_set_id = ?
-             $exclude_clause
+             $where_filter
              GROUP BY w.workspace_id, w.name
              ORDER BY w.name $sort_order
              LIMIT ? OFFSET ?
         };
-        my $sth = sql_execute( $sql, $user_id, $limit, $offset );
+        my $sth = sql_execute( $sql, @binds, $limit, $offset );
 
         return Socialtext::MultiCursor->new(
             iterables => [ $sth->fetchall_arrayref() ],
@@ -205,30 +222,49 @@ sub RolesForUserInWorkspace {
     }
 
     sub CountWorkspacesByUserId {
-        my $class   = shift;
-        my %p       = validate(@_, $spec);
-        my $user_id = $p{user_id};
-        my $direct  = $p{direct};
-        my $exclude = $p{exclude};
+        my $class         = shift;
+        my %p             = validate(@_, $spec);
+        my $user_id       = $p{user_id};
+        my $permission_id = $p{permission_id};
+        my $direct        = $p{direct};
+        my $exclude       = $p{exclude};
 
-        my $exclude_clause = '';
+        my @binds = ($user_id);
+
+        my $where_filter = '';
         if (@$exclude) {
             my $wksps = join(',', map { WKSP_OFFSET + $_ } 
                 grep !/\D/, @$exclude);
-            $exclude_clause = "AND into_set_id NOT IN ($wksps)";
+            $where_filter .= "AND into_set_id NOT IN ($wksps)";
         }
 
         my $uwr_table = $direct
             ? 'user_set_include'
             : 'user_set_path';
+
+        if ($permission_id) {
+            $where_filter .= qq{
+                AND EXISTS (
+                    SELECT 1
+                      FROM "WorkspaceRolePermission" wrp
+                      JOIN "Workspace" w USING (workspace_id)
+                     WHERE w.user_set_id = $uwr_table.into_set_id
+                       AND wrp.workspace_id = w.workspace_id
+                       AND wrp.role_id = $uwr_table.role_id
+                       AND wrp.permission_id = ?
+                )
+            };
+            push @binds, $permission_id;
+        }
+
         my $sql = qq{
             SELECT COUNT(DISTINCT(into_set_id))
               FROM $uwr_table
              WHERE from_set_id = ?
                AND into_set_id }.PG_WKSP_FILTER.qq{
-             $exclude_clause
+             $where_filter
         };
-        my $count = sql_singlevalue( $sql, $user_id );
+        my $count = sql_singlevalue( $sql, @binds );
         return $count;
     }
 }
