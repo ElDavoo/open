@@ -9,6 +9,8 @@ FILES=\
 	lib/Socialtext/User.js \
 	lib/Socialtext/Workspace.js \
 
+TESTS=$(wildcard t/*)
+
 all: $(OUTPUT)
 
 clean:
@@ -20,3 +22,6 @@ $(OUTPUT): $(FILES) Makefile
 	for js in $(FILES); do \
 	    (echo "// BEGIN $$js"; cat $$js | perl -pe 's/\r//g') >> $@; \
 	done
+
+tests: $(TESTS) $(FILES) Makefile
+	$(MAKE) -C ../../../js-test/api
