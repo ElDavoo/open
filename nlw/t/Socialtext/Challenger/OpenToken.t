@@ -9,6 +9,7 @@ use mocked 'Apache::Cookie';
 use mocked 'Socialtext::Log', qw(:tests);
 use mocked 'Socialtext::Hub';
 use POSIX qw();
+use MIME::Base64;
 use Crypt::OpenToken;
 use Socialtext::Challenger::OpenToken;
 use File::Slurp qw(write_file);
@@ -310,7 +311,8 @@ sub _issue_challenge {
     # create an OpenToken to use for the challenge
     my $token;
     if ($with_token) {
-        my $factory = Crypt::OpenToken->new(password => $data{password});
+        my $password = decode_base64($data{password});
+        my $factory  = Crypt::OpenToken->new(password => $password);
         $token = $factory->create(
             Crypt::OpenToken::CIPHER_AES128,
             {

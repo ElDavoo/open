@@ -60,7 +60,7 @@ back to use from the SP.  Defaults to "opentoken".
 
 =item B<password> (required)
 
-The shared password used for decrypting the OpenTokens.
+The shared password used for decrypting the OpenTokens, Base64 encoded.
 
 =item B<clock_skew>
 

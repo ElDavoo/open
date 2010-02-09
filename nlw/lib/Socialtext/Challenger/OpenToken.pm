@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use Crypt::OpenToken;
 use URI;
+use MIME::Base64;
 use Socialtext::Apache::User;
 use Socialtext::Log qw(st_log);
 use Socialtext::OpenToken::Config;
@@ -69,8 +70,9 @@ sub challenge {
     }
 
     # parse/dissect the OpenToken
-    my $factory = Crypt::OpenToken->new(password => $config->password);
-    my $token   = eval { $factory->parse($token_str) };
+    my $password = decode_base64($config->password);
+    my $factory  = Crypt::OpenToken->new(password => $password);
+    my $token    = eval { $factory->parse($token_str) };
     if ($@) {
         st_log->warning("ST::Challenger::OpenToken: error occurred while parsing token; $@");
         return $app->redirect($challenge_uri);
