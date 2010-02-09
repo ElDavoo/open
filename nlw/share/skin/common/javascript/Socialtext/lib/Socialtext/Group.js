@@ -137,7 +137,6 @@ $.extend(Socialtext.Group.prototype, {
         $.ajax({
             url: url,
             type: 'POST',
-            dataType: 'json',
             contentType: 'application/json',
             data: $.toJSON(list),
             success: function() { self.call(callback) },
