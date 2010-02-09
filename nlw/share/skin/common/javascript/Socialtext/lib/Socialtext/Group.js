@@ -60,22 +60,16 @@ $.extend(Socialtext.Group.prototype, {
             function(cb) { self.saveInfo(cb) },
             function(cb) { self.addMembers(users, cb) },
             function(cb) { self.addToWorkspaces(self.workspaces, cb) },
-            function(cb) { self.updateMembers(self.changedmemberships, cb) }
+            function(cb) { self.updateMembers(self.changedmemberships, cb) },
+            function(cb) { self.removeMembers(self.trash, cb) },
+            function(cb) {
+                self.removeFromWorkspaces(self.trashed_workspaces, cb)
+            }
         ];
         $.each(self.new_workspaces || [], function(i, info) {
             info.groups = {group_id: self.group_id};
             jobs.push(function(cb) {
                 Socialtext.Workspace.Create(info, cb);
-            });
-        });
-        $.each(self.trash || [], function(i, info) {
-            jobs.push(function(cb) {
-                var workspace = new Socialtext.Workspace({
-                    name: info.name
-                });
-                workspace.removeMembers(
-                    [ { group_id: self.group_id } ], cb
-                );
             });
         });
 
@@ -84,8 +78,19 @@ $.extend(Socialtext.Group.prototype, {
         });
     },
 
-    // XXX these should be collapsed to one method
+    /**
+     * addMembers(userList, options, callback)
+     *
+     * accepts: 
+     *   an array of users [{user_id:...},...], or
+     *   a hash {
+     *      users: [], // users
+     *      send_message: true/false,
+     *      additional_message: "invite message"
+     *   }
+     */
     addMembers: function(users, callback) {
+        var users = users && users.users ? users.users : users || [];
         if (!users.length) return callback({});
         this.postItems(this.url('/users'), users, callback);
     },
@@ -103,6 +108,23 @@ $.extend(Socialtext.Group.prototype, {
     addToWorkspaces: function(workspaces, callback) {
         if (!workspaces.length) return this.call(callback);
         this.postItems(this.url('/workspaces'), workspaces, callback);
+    },
+
+    removeFromWorkspaces: function(workspaces, callback) {
+        var self = this;
+        var jobs = [];
+        if (!workspaces.length) return this.call(callback);
+        $.each(workspaces, function(i, info) {
+            jobs.push(function(cb) {
+                var workspace = new Socialtext.Workspace({
+                    name: info.name
+                });
+                workspace.removeMembers(
+                    [ { group_id: self.group_id } ], cb
+                );
+            });
+        });
+        this.runAsynch(jobs, callback);
     },
 
     removeMembers: function(trash, callback) {
