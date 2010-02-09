@@ -20,4 +20,6 @@ sub fetch {
     return $DATA;
 }
 
+sub bake { 1 };
+
 1;
