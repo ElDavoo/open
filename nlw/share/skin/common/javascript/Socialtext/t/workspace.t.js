@@ -120,16 +120,7 @@ t.runAsync([
      * Add some members
      */
     function() {
-        workspace.addMember(testUsers[0], t.nextStep());
-    },
-    function() {
-        workspace.addMember(testUsers[1], t.nextStep());
-    },
-    function() {
-        workspace.addMember(testGroups[0], t.nextStep());
-    },
-    function() {
-        workspace.addMember(testGroups[1], t.nextStep());
+        workspace.addMembers(testUsers.concat(testGroups), t.nextStep());
     },
     
     /**
@@ -144,11 +135,7 @@ t.runAsync([
 
     function() {
         testUsers[0].role_name = 'admin';
-        workspace.updateMembers({
-            members: [ testUsers[0] ],
-            role_name: 'admin',
-            callback: t.nextStep()
-        });
+        workspace.updateMembers([ testUsers[0] ], t.nextStep());
     },
 
     function() {
@@ -161,11 +148,7 @@ t.runAsync([
 
     function() {
         testGroups[1].role_name = 'admin';
-        workspace.updateMembers({
-            members: [ testGroups[1] ],
-            role_name: 'admin',
-            callback: t.nextStep()
-        });
+        workspace.updateMembers([ testGroups[1] ], t.nextStep());
     },
 
     function() {

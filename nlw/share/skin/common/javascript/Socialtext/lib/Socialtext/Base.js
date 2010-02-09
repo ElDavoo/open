@@ -34,12 +34,12 @@ Socialtext.Base.prototype = {
         var runJob = function() {
             var job = jobs.shift();
             if (!job) { // done
-                callback();
+                callback({});
                 return;
             }
             job(function(res) {
-                if (self.error) {
-                    callback();
+                if (res.error) {
+                    callback({error: res.error});
                 }
                 else {
                     runJob();

@@ -32,38 +32,55 @@ $.extend(Socialtext.Workspace.prototype, {
         });
         return roles;
     },
-    updateMembers: function(opts) {
+    _request: function(method, collection, data, callback) {
         var self = this;
-        var members = this._splitMemberRoles(opts.members);
-        if (!members.users.length && !members.groups.length) {
+        $.ajax({
+            url: self.url('/' + collection),
+            type: method,
+            contentType: 'application/json',
+            data: $.toJSON(data),
+            success: self.successCallback(callback),
+            error: self.errorCallback(callback)
+        });
+    },
+    updateMembers: function(members, callback) {
+        var self = this;
+        var types = this._splitMemberRoles(members);
+        if (!types.users.length && !types.groups.length) {
             throw new Error("No members specified");
         }
-        $.each(members, function(collection, list) {
-            if (!list.length) return;
-            $.ajax({
-                url: self.url('/' + collection),
-                type: 'PUT',
-                contentType: 'application/json',
-                data: $.toJSON(list),
-                success: self.successCallback(opts.callback),
-                error: self.errorCallback(opts.callback)
+        var jobs = [];
+        if (types.users.length) {
+            jobs.push(function(cb) {
+                self._request('PUT', 'users', types.users, cb)
             });
-        });
+        }
+        if (types.groups.length) {
+            jobs.push(function(cb) {
+                self._request('PUT', 'groups', types.groups, cb)
+            });
+        }
+        self.runAsynch(jobs, callback);
     },
-    addMember: function(member, callback) {
-        var collection = member.group_id ? 'groups' : 'users';
-        member.rolename = 'member';
-        $.ajax({
-            url: this.url('/' + collection),
-            type: 'POST',
-            contentType: 'application/json',
-            data: $.toJSON(member),
-            success: this.successCallback(opts.callback),
-            error: this.errorCallback(callback)
+    addMembers: function(members, callback) {
+        var self = this;
+        var jobs = [];
+        $.each(members, function(i, member) {
+            if (member.group_id) {
+                jobs.push(function(cb) {
+                    self._request('POST', 'groups', member, cb)
+                });
+            }
+            else {
+                jobs.push(function(cb) {
+                    self._request('POST', 'users', member, cb)
+                });
+            }
         });
+        this.runAsynch(jobs, callback);
     },
-    removeMembers: function(opts) {
-        var data = $.map(opts.members, function(member) {
+    removeMembers: function(members, callback) {
+        var data = $.map(members, function(member) {
             var r = {};
             if (member.user_id) r.user_id = member.user_id;
             if (member.group_id) r.group_id = member.group_id;
@@ -75,8 +92,8 @@ $.extend(Socialtext.Workspace.prototype, {
             type: 'POST',
             contentType: 'application/json',
             data: $.toJSON(data),
-            success: this.successCallback(opts.callback),
-            error: this.errorCallback(opts.callback)
+            success: this.successCallback(callback),
+            error: this.errorCallback(callback)
         });
     }
 });
@@ -116,8 +133,8 @@ Socialtext.Workspace.Create = function(opts) {
         contentType: 'application/json',
         data: $.toJSON(data),
         success: function(data) {
-            $.extend(self, data);
-            if (opts.callback) opts.callback({});
+            var workspace = new Socialtext.Workspace({name: data.name});
+            if (opts.callback) opts.callback(workspace);
         },
         error: function(xhr, textStatus, errorThrown) {
             var error = xhr ? xhr.responseText : errorThrown;
