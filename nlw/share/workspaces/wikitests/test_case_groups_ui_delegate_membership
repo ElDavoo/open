@@ -26,11 +26,11 @@
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
-| text_like | //body | qr/%%group_user_escaped%%\s+Member/ |
+| text_like | //body | qr/%%group_user_short%%\s+Member/ |
 | wait_for_element_present_ok | //a[@value='Admin'] | 30000 |
 | click_ok | //a[@value='Admin'] |  |
 | text_like | //body | qr/changed/ism |
-| text_like | //body | qr/%%group_user_escaped%%\s+Admin/ |
+| text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
@@ -45,13 +45,13 @@
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
-| text_like | //body | qr/%%group_user_escaped%%\s+Admin/ |
+| text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 
 | *Comment* | Test Case: Groups UI Delegate Membership - Change back to Member, save takes |  |
 | wait_for_element_present_ok | //a[@value='Member'] | 30000 |
 | click_ok | //a[@value='Member'] |  |
 | text_like | //body | qr/changed/ism |
-| text_like | //body | qr/%%group_user_escaped%%\s+Member/ |
+| text_like | //body | qr/%%group_user_short%%\s+Member/ |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
@@ -64,7 +64,7 @@
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
-| text_like | //body | qr/%%group_user_escaped%%\s+Member/ |
+| text_like | //body | qr/%%group_user_short%%\s+Member/ |
 | select-frame | relative=parent |  |
 | click_and_wait | create-group |  |
 
@@ -85,12 +85,12 @@
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
-| text_like | //body | qr/%%group_user_escaped%%\s+Admin/ |
+| text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | wait_for_element_present_ok | //a[@value='Member'] | 30000 |
 | click_ok | //a[@value='Member'] |  |
 | pause | 3000 |  |
 | verifyAlert | There should always be at least one admin for this group. |  |
-| text_like | //body | qr/%%group_user_escaped%%\s+Admin/ |
+| text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI Delegate Membership - Save, Edit, Still see still see Admin! |  |
@@ -104,7 +104,7 @@
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
-| text_like | //body | qr/%%group_user_escaped%%\s+Admin/ |
+| text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
 | click_and_wait | create-group |  |
 
