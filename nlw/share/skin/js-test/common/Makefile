@@ -41,7 +41,7 @@ clean:
 purge: clean
 	rm Makefile config.yaml
 
-%.t.html: $(TEST_LOCAL) config.yaml
+%.t.html: $(TEST_LOCAL) t/*.t.js config.yaml
 	perl $(RENDERER) $(notdir $<) $(@:%.t.html=t/%.t.js) > $@
 
 index.html: $(INDEX_LOCAL) t/*.t.js config.yaml
