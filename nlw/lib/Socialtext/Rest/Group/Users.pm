@@ -81,6 +81,7 @@ sub _get_entities {
         return {
             user_id => $user->user_id,
             name => $user->username,
+            best_full_name => $user->guess_real_name,
             workspace_count => $info->{workspace_count},
             group_count => $info->{group_count},
             primary_account_id => $user->primary_account_id,
