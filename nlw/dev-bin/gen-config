@@ -289,7 +289,13 @@ sub main {
             'socialtext/ntlm.yaml.tt2' => "$dirs{socialtext_etc}/ntlm.yaml",
             { },
             $is_dev_install ? 'overwrite' : 0
-            ];
+            ],
+            [
+            'socialtext/opentoken.yaml.tt2' => "$dirs{socialtext_etc}/opentoken.yaml",
+            { },
+            $is_dev_install ? 'overwrite' : 0
+            ],
+            ;
     }
     generate_app_config( \%dirs ) if is_target_for("app") && !$opts{stdout};
     generate_config( @files );
