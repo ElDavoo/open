@@ -3,7 +3,6 @@
 
 use strict;
 use warnings;
-use lib '/home/graham/src/customer-one-offs/crypt-opentoken/lib';
 use mocked 'Socialtext::WebApp';
 use mocked 'Apache::Cookie';
 use mocked 'Socialtext::Log', qw(:tests);
