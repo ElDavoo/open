@@ -8,7 +8,7 @@
     [% loc('Workspaces are private by default. All users need to log in to view pages. Only workspace admins can invite new users.') %] 
   </dd>
   [% IF current_permission_set_name == "member-only" %]
-    <p>[% loc('If you need public workspaces that can be viewed by users without logging in, please contact <a href="[_1]">Socialtext Support</a>', support_address) %]</p>
+    <p>[% loc('If you need public workspaces that can be viewed by users without logging in, please contact <a href="[_1]">Socialtext Support</a>.', support_address) %]</p>
   [% ELSE %]
   <dt><label>[% loc('Do you want to set up this workspace as:') %]</label></dt>
   <dd>
