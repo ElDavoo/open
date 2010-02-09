@@ -208,8 +208,8 @@ sub POST_to_membership { $_[0]->_admin_with_group_data_do_txn(sub {
     for my $item (@$data) {
         my $name_or_id = $item->{user_id} || $item->{username}
             or die "Missing user_id/username";
-        my $role = $item->{role}
-            or die "Missing role";
+        my $role = $item->{role_name} || $item->{role}
+            or die "Missing role_name";
 
         my $user = Socialtext::User->Resolve($name_or_id);
 

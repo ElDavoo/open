@@ -24,15 +24,15 @@
 ################################################################################
 
 ################################################################################
-| *Comment* | POST, Group Not Found     |                                            |
-| POST-json | /data/groups/0/membership | {"user_id":"%%mercury_id%%", "role":"admin"} |
-| code-is   | 404                       |                                            |
+| *Comment* | POST, Group Not Found     |                                                   |
+| POST-json | /data/groups/0/membership | {"user_id":"%%mercury_id%%", "role_name":"admin"} |
+| code-is   | 404                       |                                                   |
 
 Assumes devnull1 or whoever the default login is *isn't* in this group:
 
-| *Comment* | POST, User devnull1 does not have admin privs |                                            |
-| POST-json | /data/groups/%%group_id%%/membership          | {"user_id":"%%mercury_id%%", "role":"admin"} |
-| code-is   | 403                                           |                                            |
+| *Comment* | POST, User devnull1 does not have admin privs |                                                   |
+| POST-json | /data/groups/%%group_id%%/membership          | {"user_id":"%%mercury_id%%", "role_name":"admin"} |
+| code-is   | 403                                           |                                                   |
 
 | *Comment*      | Log in as a Group admin |          |
 | http-user-pass | %%admin%%               | password |
@@ -41,47 +41,47 @@ Assumes devnull1 or whoever the default login is *isn't* in this group:
 | GET-json  | /data/groups/%%group_id%%/membership |
 | code-is   | 405                                  |
 
-| *Comment*  | Check that Mercury is currently a member        |
-| GET-json   | /data/groups/%%group_id%%/users                 |
-| code-is    | 200                                             |
-| json-parse |                                                 |
-| json-array-size | 3 |
-| json-like  | [{"user_id":"%%mercury_id%%", "role":"member"}] |
+| *Comment*       | Check that Mercury is currently a member             |
+| GET-json        | /data/groups/%%group_id%%/users                      |
+| code-is         | 200                                                  |
+| json-parse      |                                                      |
+| json-array-size | 3                                                    |
+| json-like       | [{"user_id":"%%mercury_id%%", "role_name":"member"}] |
 
-| *Comment* | Adjust Mercury from member to admin  |                                              |
-| POST-json | /data/groups/%%group_id%%/membership | {"user_id":"%%mercury_id%%", "role":"admin"} |
-| code-is   | 200                                  |                                              |
+| *Comment* | Adjust Mercury from member to admin  |                                                   |
+| POST-json | /data/groups/%%group_id%%/membership | {"user_id":"%%mercury_id%%", "role_name":"admin"} |
+| code-is   | 200                                  |                                                   |
 
-| *Comment*  | Check that Mercury is now an admin             |
-| GET-json   | /data/groups/%%group_id%%/users                |
-| code-is    | 200                                            |
-| json-parse |                                                |
-| json-array-size | 3 |
-| json-like  | [{"user_id":"%%mercury_id%%", "role":"admin"}] |
+| *Comment*       | Check that Mercury is now an admin                  |
+| GET-json        | /data/groups/%%group_id%%/users                     |
+| code-is         | 200                                                 |
+| json-parse      |                                                     |
+| json-array-size | 3                                                   |
+| json-like       | [{"user_id":"%%mercury_id%%", "role_name":"admin"}] |
 
-| *Comment*       | Adjust Mercury from admin to member  |                                             |
-| POST-json       | /data/groups/%%group_id%%/membership | {"username":"%%mercury%%", "role":"member"} |
-| code-is         | 200                                  |                                             |
+| *Comment* | Adjust Mercury from admin to member  |                                                  |
+| POST-json | /data/groups/%%group_id%%/membership | {"username":"%%mercury%%", "role_name":"member"} |
+| code-is   | 200                                  |                                                  |
 
-| *Comment*  | Check that Mercury is a member again            |
-| GET-json   | /data/groups/%%group_id%%/users                 |
-| code-is    | 200                                             |
-| json-parse |                                                 |
-| json-like  | [{"user_id":"%%mercury_id%%", "role":"member"}] |
+| *Comment*  | Check that Mercury is a member again                 |
+| GET-json   | /data/groups/%%group_id%%/users                      |
+| code-is    | 200                                                  |
+| json-parse |                                                      |
+| json-like  | [{"user_id":"%%mercury_id%%", "role_name":"member"}] |
 
-| *Comment*       | Adjust Mercury into an invalid role  |                                       |
-| POST-json       | /data/groups/%%group_id%%/membership | {"username":"%%mercury%%", "role":""} |
-| code-is         | 400                                  |                                       |
+| *Comment* | Adjust Mercury into an invalid role  |                                            |
+| POST-json | /data/groups/%%group_id%%/membership | {"username":"%%mercury%%", "role_name":""} |
+| code-is   | 400                                  |                                            |
 
-| *Comment*  | Check that Mercury is still a member            |
-| GET-json   | /data/groups/%%group_id%%/users                 |
-| code-is    | 200                                             |
-| json-parse |                                                 |
-| json-like  | [{"user_id":"%%mercury_id%%", "role":"member"}] |
+| *Comment*  | Check that Mercury is still a member                 |
+| GET-json   | /data/groups/%%group_id%%/users                      |
+| code-is    | 200                                                  |
+| json-parse |                                                      |
+| json-like  | [{"user_id":"%%mercury_id%%", "role_name":"member"}] |
 
-| *Comment*       | Adjust Cobalt, not part of the group |                                              |
-| POST-json       | /data/groups/%%group_id%%/membership | {"user_id":"%%cobalt_id%%", "role":"member"} |
-| code-is         | 400                                  |                                              |
+| *Comment* | Adjust Cobalt, not part of the group |                                                   |
+| POST-json | /data/groups/%%group_id%%/membership | {"user_id":"%%cobalt_id%%", "role_name":"member"} |
+| code-is   | 400                                  |                                                   |
 
 | *Comment*   | Check that Cobalt is still not a member        |
 | GET-json    | /data/groups/%%group_id%%/users                |
@@ -89,39 +89,39 @@ Assumes devnull1 or whoever the default login is *isn't* in this group:
 | json-parse  |                                                |
 | json-unlike | [{"user_id":"%%cobalt_id%%"}] |
 
-| *Comment* | Adjust three people at once; should fail as a batch |                                                                                                                                |
-| POST-json | /data/groups/%%group_id%%/membership                | [{"username":"%%mercury%%", "role":"admin"},{"username":"%%zinc%%", "role":"admin"},{"username":"%%cobalt%%", "role":"admin"}] |
-| code-is   | 400                                                 |                                                                                                                                |
+| *Comment* | Adjust three people at once; should fail as a batch |                                                                                                                                               |
+| POST-json | /data/groups/%%group_id%%/membership                | [{"username":"%%mercury%%", "role_name":"admin"},{"username":"%%zinc%%", "role_name":"admin"},{"username":"%%cobalt%%", "role_name":"admin"}] |
+| code-is   | 400                                                 |                                                                                                                                               |
 
-| *Comment*   | Check that everything stayed as-is after rollback |
-| GET-json    | /data/groups/%%group_id%%/users                   |
-| code-is     | 200                                               |
-| json-parse  |                                                   |
-| json-like   | [{"user_id":"%%mercury_id%%", "role":"member"}]   |
-| json-like   | [{"user_id":"%%zinc_id%%", "role":"member"}]      |
-| json-unlike | [{"user_id":"%%cobalt_id%%"}]     |
+| *Comment*   | Check that everything stayed as-is after rollback    |
+| GET-json    | /data/groups/%%group_id%%/users                      |
+| code-is     | 200                                                  |
+| json-parse  |                                                      |
+| json-like   | [{"user_id":"%%mercury_id%%", "role_name":"member"}] |
+| json-like   | [{"user_id":"%%zinc_id%%", "role_name":"member"}]    |
+| json-unlike | [{"user_id":"%%cobalt_id%%"}]                        |
 
 | *Comment* | Adjust two people at once; should work as a batch |                                                                                      |
-| POST-json | /data/groups/%%group_id%%/membership              | [{"username":"%%mercury%%", "role":"admin"},{"username":"%%zinc%%", "role":"admin"}] |
+| POST-json | /data/groups/%%group_id%%/membership              | [{"username":"%%mercury%%", "role_name":"admin"},{"username":"%%zinc%%", "role_name":"admin"}] |
 | code-is   | 200                                               |                                                                                      |
 
-| *Comment*   | Check that everything works as expected        |
-| GET-json    | /data/groups/%%group_id%%/users                |
-| code-is     | 200                                            |
-| json-parse  |                                                |
-| json-like   | [{"user_id":"%%mercury_id%%", "role":"admin"}] |
-| json-like   | [{"user_id":"%%zinc_id%%", "role":"admin"}]    |
-| json-unlike | [{"user_id":"%%cobalt_id%%"}]  |
+| *Comment*   | Check that everything works as expected             |
+| GET-json    | /data/groups/%%group_id%%/users                     |
+| code-is     | 200                                                 |
+| json-parse  |                                                     |
+| json-like   | [{"user_id":"%%mercury_id%%", "role_name":"admin"}] |
+| json-like   | [{"user_id":"%%zinc_id%%", "role_name":"admin"}]    |
+| json-unlike | [{"user_id":"%%cobalt_id%%"}]                       |
 
-| *Comment* | Try to remove all admins             |                                                                                                                                 |
-| POST-json | /data/groups/%%group_id%%/membership | [{"username":"%%admin%%","role":"member"},{"username":"%%mercury%%", "role":"member"},{"username":"%%zinc%%", "role":"member"}] |
-| code-is   | 409                                  |                                                                                                                                 |
-| body-like | The group needs to include at least one admin. |
+| *Comment* | Try to remove all admins                       |                                                                                                                                                |
+| POST-json | /data/groups/%%group_id%%/membership           | [{"username":"%%admin%%","role_name":"member"},{"username":"%%mercury%%", "role_name":"member"},{"username":"%%zinc%%", "role_name":"member"}] |
+| code-is   | 409                                            |                                                                                                                                                |
+| body-like | The group needs to include at least one admin. |                                                                                                                                                |
 
-| *Comment*   | Try to remove all admins: check for rollback |
-| GET-json    | /data/groups/%%group_id%%/users                |
-| code-is     | 200                                            |
-| json-parse  |                                                |
-| json-like   | [{"user_id":"%%mercury_id%%", "role":"admin"}] |
-| json-like   | [{"user_id":"%%zinc_id%%", "role":"admin"}]    |
-| json-unlike | [{"user_id":"%%cobalt_id%%"}]  |
+| *Comment*   | Try to remove all admins: check for rollback        |
+| GET-json    | /data/groups/%%group_id%%/users                     |
+| code-is     | 200                                                 |
+| json-parse  |                                                     |
+| json-like   | [{"user_id":"%%mercury_id%%", "role_name":"admin"}] |
+| json-like   | [{"user_id":"%%zinc_id%%", "role_name":"admin"}]    |
+| json-unlike | [{"user_id":"%%cobalt_id%%"}]                       |
