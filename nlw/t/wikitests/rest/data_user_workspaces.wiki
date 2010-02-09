@@ -72,3 +72,14 @@
 | body-like       | %%ws1%%                                                        |
 | body-like       | workspace_id                                                   |
 | body-unlike     | %%ws2%%                                                        |
+
+## GET JSON, Pageable interface (actual paging is tested elsewhere |
+| *Comment*        | GET JSON, Pageable interface                     |    |
+| GET-json         | /data/users/%%username%%/workspaces?startIndex=0 |    |
+| code-is          | 200                                              |    |
+| json-parse       |                                                  |    |
+| json-path-is     | $.startIndex                                     | 0  |
+| json-path-is     | $.itemsPerPage                                   | 25 |
+| json-path-is     | $.totalResults                                   | 2  |
+| json-path-exists | $.entry[0]                                       |    |
+| json-path-exists | $.entry[1]                                       |    |

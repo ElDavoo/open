@@ -3,9 +3,12 @@ package Socialtext::Rest::UserWorkspaces;
 use Moose;
 extends 'Socialtext::Rest::Collection';
 use Socialtext::User;
-use Socialtext::Exceptions;
+use Socialtext::Exceptions qw(not_found auth_error param_error);
 use Socialtext::Permission;
+use Socialtext::Workspace;
 use namespace::clean -except => 'meta';
+
+with 'Socialtext::Rest::Pageable';
 
 sub permission { +{} }
 sub collection_name { 'User Workspaces' }
@@ -15,51 +18,77 @@ sub ensure_actor_can_view {
     my $subject = shift;
     my $actor   = $self->rest->user();
 
-    die Socialtext::Exception::Auth->new()
-        unless ($actor->is_business_admin ||
-            $actor->user_id == $subject->user_id);
+    not_found unless $subject;
+
+    my $is_subject = $actor->user_id == $subject->user_id;
+        auth_error unless $is_subject || $actor->is_business_admin;
 }
 
-sub _entities_for_query {
+sub _get_total_results {
     my $self    = shift;
+    my $subject = eval {Socialtext::User->Resolve($self->username) };
+    $self->ensure_actor_can_view($subject);
 
-    my $subject = eval { Socialtext::User->Resolve($self->username) };
-    die Socialtext::Exception::NotFound->new() unless $subject;
+    return $subject->workspace_count(
+        direct => 1,
+        $self->_permission_filter(),
+    );
+}
+
+sub _permission_filter {
+    my $self = shift;
+    if (my $perm_name = $self->rest->query->param('permission')) {
+        my $perm = Socialtext::Permission->new(name => $perm_name);
+        param_error unless $perm;
+
+        return (permission_id => $perm->permission_id);
+    }
+
+    return ();
+}
+
+sub _get_entities {
+    my $self    = shift;
+    my $subject = eval {Socialtext::User->Resolve($self->username) };
 
     $self->ensure_actor_can_view($subject);
 
-    my @workspaces = $subject->workspaces->all();
+    my $workspaces = $subject->workspaces(
+        limit => $self->items_per_page,
+        offset => $self->start_index,
+        order_by => $self->order || 'name',
+        sort_order => $self->reverse ? 'DESC' : 'ASC',
+        direct => 1,
+        $self->_permission_filter(),
+    );
+    $workspaces->apply(sub {
+        my $item = shift;
+        my $ws   = Socialtext::Workspace->new(workspace_id => $item->[0]);
+        return {
+            workspace_id => $ws->workspace_id,
+            name => $ws->name,
+            title => $ws->title,
+            uri => '/data/workspaces/' . $ws->name,
+            account_id => $ws->account->account_id,
+            account_name => $ws->account->name,
+            created_by_user_id => $ws->creator->user_id,
+            created_by_username => $ws->creator->username,
+            create_datetime => $ws->creation_datetime_object->ymd,
+            user_count => $ws->user_count,
+            group_count => $ws->group_count,
+            default => $ws->is_default ? 1 : 0,
 
-    my $perm_name = $self->rest->query->param('permission');
-    if ($perm_name) {
-        my $perm = Socialtext::Permission->new(name => $perm_name);
-        die Socialtext::Exception::Params->new() unless $perm;
+            # for backwards compatibility
+            id => $ws->workspace_id,
+            modified_time => $ws->creation_datetime,
+        };
+    });
 
-        @workspaces = grep {
-            $_->permissions->user_can(
-                user       => $subject,
-                permission => $perm,
-            )
-        } @workspaces;
-    }
-
-    return @workspaces;
+    my @workspaces = $workspaces->all();
+    return \@workspaces;
 }
 
-sub _entity_hash {
-    my $self      = shift;
-    my $workspace = shift;
-
-    return +{
-        name          => $workspace->name,
-        uri           => '/data/workspaces/' . $workspace->name,
-        title         => $workspace->title,
-        modified_time => $workspace->creation_datetime,
-        id            => $workspace->workspace_id,
-        workspace_id  => $workspace->workspace_id,
-        default       => $workspace->is_default ? 1 : 0,
-    };
-}
+sub _entity_hash { return $_[1] }
 
 no Moose;
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
