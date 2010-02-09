@@ -1,0 +1,115 @@
+| *Comment* | Test Case: Groups UI Delegate Membership |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Groups UI Delegate Membership Setup |  |  |
+| st-setup-a-group | 1 | 1 | 1 |
+| enable-acct-plugin | signals | %%group_acct%% |  |
+| set | grp_mbr_short | guimbr%%start_time%% |  |
+| set | grp_mbr_bestfull | guimbr%%start_time%% |  |
+| set | grp_mbr | %%grp_mbr_short%%@matt.socialtext.net |  |
+| create-user | %%grp_mbr%% | %%password%% | %%group_acct%% |
+| set | mbr_user_id | %%user_id%% |  |
+| st-admin | add-member --group %%group_id%% --email %%grp_mbr%% | is now a member of the %%group_name%% Group |  |
+| st-admin | add-group-admin --e %%username%% --g %%group_id%% |  |  |
+
+| *Comment* | Test Case: Groups UI ADelegate Membership - Open The Group |  |
+| open_ok | /st/group/%%group_id%%/ |  |
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_and_wait | link=(Edit) |  |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups UI Delegate Membership - Make %%group_user%% an admin |  |
+| st-name-widget | 3 | members_widget |
+| st-widget-title-like | members_widget | Members |
+| st-select-widget-frame | members_widget |  |
+| text_like | //body | qr/%%group_user_escaped%%\s+Member/ |
+| wait_for_element_present_ok | //a[@value='Admin'] | 30000 |
+| click_ok | //a[@value='Admin'] |  |
+| text_like | //body | qr/changed/ism |
+| text_like | //body | qr/%%group_user_escaped%%\s+Admin/ |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| click_and_wait | create-group |  |
+
+| *Comment* | Test Case: Groups UI Delegate Membership - Check to make sure %%group_user%% is an admin |  |
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_and_wait | link=(Edit) |  |
+| select-frame | relative=parent |  |
+| st-name-widget | 3 | members_widget |
+| st-widget-title-like | members_widget | Members |
+| st-select-widget-frame | members_widget |  |
+| text_like | //body | qr/%%group_user_escaped%%\s+Admin/ |
+
+| *Comment* | Test Case: Groups UI Delegate Membership - Change back to Member, save takes |  |
+| wait_for_element_present_ok | //a[@value='Member'] | 30000 |
+| click_ok | //a[@value='Member'] |  |
+| text_like | //body | qr/changed/ism |
+| text_like | //body | qr/%%group_user_escaped%%\s+Member/ |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| click_and_wait | create-group |  |
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_and_wait | link=(Edit) |  |
+| select-frame | relative=parent |  |
+| st-name-widget | 3 | members_widget |
+| st-widget-title-like | members_widget | Members |
+| st-select-widget-frame | members_widget |  |
+| text_like | //body | qr/%%group_user_escaped%%\s+Member/ |
+| select-frame | relative=parent |  |
+| click_and_wait | create-group |  |
+
+| *Comment* | Test Case: Groups UI Delegate Membership - You can not remove all admins |  |
+| st-admin | remove-member --g %%group_id%% --email %%username%% |  |
+| st-admin | remove-member --g %%group_id%% --email %%grp_mbr%% |  |
+| st-admin | add-group-admin --e %%group_user%% --g %%group_id%% |  |  |
+
+| *Comment* | Test Case: Groups UI Delegate Membership Set single element to Admin, click member, still see Admin! |  |
+| st-logoutin | %%group_user%% | %%password%% |
+| open_ok | /st/group/%%group_id%%/ |  |
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_and_wait | link=(Edit) |  |
+| select-frame | relative=parent |  |
+| st-name-widget | 3 | members_widget |
+| st-widget-title-like | members_widget | Members |
+| st-select-widget-frame | members_widget |  |
+| text_like | //body | qr/%%group_user_escaped%%\s+Admin/ |
+| wait_for_element_present_ok | //a[@value='Member'] | 30000 |
+| click_ok | //a[@value='Member'] |  |
+| pause | 3000 |  |
+| verifyAlert | There should always be at least one admin for this group. |  |
+| text_like | //body | qr/%%group_user_escaped%%\s+Admin/ |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups UI Delegate Membership - Save, Edit, Still see still see Admin! |  |
+| click_and_wait | create-group |  |
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_and_wait | link=(Edit) |  |
+| select-frame | relative=parent |  |
+| st-name-widget | 3 | members_widget |
+| st-widget-title-like | members_widget | Members |
+| st-select-widget-frame | members_widget |  |
+| text_like | //body | qr/%%group_user_escaped%%\s+Admin/ |
+| select-frame | relative=parent |  |
+| click_and_wait | create-group |  |
+
+| *Comment* | Test Case: Groups UI Delegate Membership. TEARDOWN |
+| delete-group | %%group_id%% |
+| st-admin | delete-workspace --w %%group_ws%% --no-export |
+
+| *Comment* | Test Case: Groups UU Delegate Membership. COMPLETED |  |  |

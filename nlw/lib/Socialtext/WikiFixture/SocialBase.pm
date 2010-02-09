@@ -1841,9 +1841,9 @@ PS: If you've got a more object-oriented, less structured way to do this, I'd be
 
 sub st_setup_a_group {
      my ($self, $create_and_add_account, $create_ws, $add_ws_to_group) = @_;
-     $self->handle_command('set','group_user','group-member-user-%%start_time%%@matt.socialtext.net');
-     $self->handle_command('set','group_user_escaped','group-user%%start_time%%\@matt.socialtext.net');
-     $self->handle_command('set','group_user_short','group member user %%start_time%%');
+     $self->handle_command('set','group_user','gmu%%start_time%%@matt.socialtext.net');
+     $self->handle_command('set','group_user_escaped','gmu%%start_time%%\@matt.socialtext.net');
+     $self->handle_command('set','group_user_short','gmu%%start_time%%');
      $self->handle_command('set','group_name', 'group-name-%%start_time%%');
     
      #Create the user, the account, and possible the group
