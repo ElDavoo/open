@@ -8,3 +8,4 @@ all clean:
 	make -C socialcalc $@
 	make -C sample $@
 	make -C html2wiki $@
+	make -C api $@
