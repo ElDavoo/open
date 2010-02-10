@@ -6,9 +6,6 @@ use Socialtext::HTTP ':codes';
 use Socialtext::SQL ':txn';
 use namespace::clean -except => 'meta';
 
-# This subroutine runs some operation in a transaction and rolls back and
-# errors if the operation resulted in this workspace having no admin groups or
-# users
 sub modify_roles {
     my ($self, $call) = @_;
 
@@ -17,9 +14,9 @@ sub modify_roles {
 
     eval {
         $call->();
-
-        my $ok = $self->workspace->has_at_least_one_admin();
-        conflict errors => ["The workspace needs to include at least one admin."] unless $ok;
+        conflict
+            errors => ["The workspace needs to include at least one admin."]
+            unless $self->workspace->has_at_least_one_admin();
     };
 
     my $e = Exception::Class->caught('Socialtext::Exception::Conflict');
@@ -28,7 +25,6 @@ sub modify_roles {
         return $self->conflict($e->errors);
     }
     elsif ($@)  {
-        warn $@;
         sql_rollback() unless $in_txn;
         $self->rest->header( -status => HTTP_400_Bad_Request );
         return $@;
@@ -38,7 +34,6 @@ sub modify_roles {
     $self->rest->header( -status => HTTP_204_No_Content );
     return '';
 }
-
 
 sub can_admin {
     my $self = shift;
@@ -57,3 +52,35 @@ sub can_admin {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Rest::WorkspaceRole - Moose Role for workspace ReST contexts
+
+=head1 SYNOPSIS
+
+  use Moose;
+  use Socialtext::Rest::Somethingerother;
+  extends 'Socialtext::Rest';
+  with 'Socialtext::Rest::WorkspaceRole';
+
+=head1 DESCRIPTION
+
+Helper methods for ReST endpoints that are in a workspace context (i.e.
+contained in some URL-named workspace).
+
+=head1 METHODS
+
+=over modify_roles($callback)
+
+Runs a callback in a transaction and IFF the operation resulted in this
+workspace having no admin groups or users causes the transaction to rollback.
+
+=over can_admin($callback)
+
+Can the current rest user admin the active workspace? If so, call the
+callback, otherwise call the C<not_authorized> method.
+
+=cut
