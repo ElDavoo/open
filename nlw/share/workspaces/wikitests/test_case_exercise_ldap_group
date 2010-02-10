@@ -27,11 +27,12 @@
 | text_like | //body | Motorhead |
 | wait_for_element_visible_ok | link=Motorhead | 30000 |
 
-| *Comment* | Test Case: Exercise LDAP Group Login as a member, see the group home page |
+| *Comment* | Test Case: Exercise LDAP Group Login as a member, see the group home page |  |
 | open_ok | / |  |
 | st-logoutin | Lemmy Kilmister | ld@pu53r |
 | st-admin | add-member --workspace %%ldapy_ws%% --g %%created_group_id%% | Motorhead now has the role of 'member' in the |
-| open_ok | /%%ldapy_ws%%/ |  |
+| pause | 5000 |  |
+| open_ok | /%%ldapy_ws%% |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | wait_for_element_present_ok | link=Motorhead | 30000 |
 | click_and_wait | link=Motorhead |  |
