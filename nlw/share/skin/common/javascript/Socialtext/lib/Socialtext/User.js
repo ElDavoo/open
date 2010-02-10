@@ -32,6 +32,23 @@ $.extend(Socialtext.User.prototype, {
             success: this.successCallback(callback),
             error: this.errorCallback(callback)
         });
+    },
+
+    removeFromWorkspaces: function(workspaces, callback) {
+        var self = this;
+        var jobs = [];
+        if (!workspaces.length) return this.call(callback);
+        $.each(workspaces, function(i, info) {
+            jobs.push(function(cb) {
+                var workspace = new Socialtext.Workspace({
+                    name: info.name
+                });
+                workspace.removeMembers(
+                    [ { username: self.username } ], cb
+                );
+            });
+        });
+        this.runAsynch(jobs, callback);
     }
 });
 
