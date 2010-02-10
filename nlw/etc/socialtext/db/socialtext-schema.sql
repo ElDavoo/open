@@ -1834,6 +1834,10 @@ CREATE INDEX users_lower_username
 CREATE UNIQUE INDEX users_lower_username_driver_key
 	    ON users (lower(driver_username), driver_key);
 
+CREATE INDEX users_that_are_hidden
+	    ON users (user_id)
+	    WHERE is_profile_hidden;
+
 CREATE INDEX watchlist_user_workspace
 	    ON "Watchlist" (user_id, workspace_id);
 
@@ -2268,4 +2272,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '107');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '108');
