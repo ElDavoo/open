@@ -1,0 +1,34 @@
+| *Comment* | Test Case: Business Control Panel Workspace Roles |
+
+| *Comment* | Test Case: Business Control Panel Workspace Roles Setup create group, ws, member |
+| st-setup-a-group | 1 | 1 | 1 |
+
+| set | user2 | wrs-2-%%start_time%%@matt.socialtext.net |
+| set | user2_esc | wrs-2-%%start_time%%\@matt.socialtext.net |
+| create_user | %%user2%% | %%password%% |
+| set | user2_id | %%user_id%% |
+| set | user3 | wrs-3-%%start_time%%@matt.socialtext.net |
+| create_user | %%user3%% | %%password%% |
+| set | user3_id | %%user_id%% |
+| set | user3_esc | wrs-3-%%start_time%%\@matt.socialtext.net |
+
+| *Comment* | Test Case: Business Control Panel Workspace Roles Setup create two new members, add them to workspace |
+| st-admin | add-member --w %%group_ws%% --e %%user2%% | now has the role of 'member' in the |
+| st-admin | add-member --w %%group_ws%% --e %%user3%% | now has the role of 'member' in the |
+| st-search-cp-workspace | %%group_ws%% | 1 |
+
+| *Comment* | Test Case: Business Control Panel Workspace Roles Modify Promote member to admin role within workspace |  |
+
+| *Comment* | Test Case: Business Control Panel Workspace Roles Modify Demote admin to member role within workspace |  |
+
+| *Comment* | Test Case: Business Control Panel Workspace Roles Modify batch of promote member to admin role within workspace |  |
+
+| *Comment* | Test Case: Business Control Panel Workspace Roles Modify batch of demote admin to member role within workspace |  |
+
+| *Comment* | Test Case: Business Control Panel Workspace Roles Modify Remove User from workspace |  |
+
+| *Comment* | Test Case: Business Control Panel Workspace Roles Modify Remove Batch of users from workspace |  |
+| *Comment* | Test Case: Business Control Panel Workspace Roles Modify Cannot demote single user to member |  |
+| *Comment* | Test Case: Business Control Panel Workspace Roles Modify Group Role within Workspace |  |
+
+| *Comment* | Test Case: Business Control Panel Workspace Roles COMPLETED |
