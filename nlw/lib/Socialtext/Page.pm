@@ -846,6 +846,7 @@ sub delete_tag {
     if ( $self->hub->checker->check_permission('edit') ) {
         $self->metadata->delete_category($tag);
         $self->metadata->RevisionSummary('');
+        $self->metadata->update( user => $self->hub->current_user );
         $self->store( user => $self->hub->current_user );
         $self->_fire_webhooks(
             tags_deleted => [$tag],
