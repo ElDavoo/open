@@ -1,5 +1,7 @@
 | *Comment* | Test Case: LDAP Groups |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: LDAP Groups Creates a group, exercises it, and tears down |
 | *Comment* | Test Case: LDAP Groups REQUIRES st-bootstrap-openldap TO BE RUNNING |
 

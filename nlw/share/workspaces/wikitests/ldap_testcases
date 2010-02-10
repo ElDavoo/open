@@ -1,3 +1,5 @@
+* Fixture: SocialWidgets
+
 These testcases work for an LDAP user but not for a default user.
 These testcases REQUIRE that LDAP be enabled.
 Any LDAP user specific testcases should go here.
@@ -16,6 +18,10 @@ LDAP test cases must explicitly use the above ldap username, email, and pwd so L
 Test Case: Verify LDAP Enabled verifies the LDAP user screens for Login/Logout, Password Reset, Admin resets password, and self register
 
 * [Test Case: Verify LDAP Enabled]
+
+Test Case: LDAP Groups creates an LDAP Group and exercises it
+
+* [Test Case: LDAP Groups]
 
 Special test case for LDAP user CLI commands
 

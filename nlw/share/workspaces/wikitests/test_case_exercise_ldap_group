@@ -9,6 +9,7 @@
 
 | *Comment* | Test Case: Exercise LDAP Group Add a workspace |  |
 | st-admin | create-workspace --name %%ldapy_ws%% --title %%ldapy_ws%% | A new workspace named "%%ldapy_ws%%" was created |
+| open_ok | / |  |
 | st-logoutin | Lemmy Kilmister | ld@pu53r |
 | open_ok | /%%ldapy_ws%%/ |  |
 | text_like | //body | You are not authorized to view this workspace |
