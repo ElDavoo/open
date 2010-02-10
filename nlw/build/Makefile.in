@@ -475,7 +475,6 @@ QUICK_TESTS = \
 	t/Socialtext/Sheet.t \
 	t/Socialtext/Skin.t \
 	t/Socialtext/SQL/Builder.t \
-	t/Socialtext/Storage.t \
 	t/Socialtext/String.t \
 	t/Socialtext/System.t \
 	t/Socialtext/Template/Plugin/html_encode.t \
