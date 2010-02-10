@@ -79,7 +79,7 @@ sub alter_one_member {
     return undef if $action eq 'skip';
 
     my $req = {$scope => $thing, role => $role, actor => $self->actor};
-    $self->excute($action, $scope, $req);
+    $self->execute($action, $scope, $req);
 
     return $self->run_post_hook($action, $scope, $req);
 }
