@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More qw(no_plan);
+use Test::More tests => 5;
 
 use Socialtext::SQL::Builder qw(sql_abstract);
 use_ok 'Socialtext::SQL::Abstract';
@@ -51,3 +51,5 @@ my $abstract = sql_abstract();
              q{ORDER BY order_col } .
              q{LIMIT 10 OFFSET 5};
 }
+
+pass 'done';
