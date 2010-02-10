@@ -305,7 +305,7 @@ sub st_search_cp_workspace {
     $self->handle_command('open_ok', '/nlw/control/workspace');
     $self->handle_command('wait_for_element_visible_ok','name',30000);
     $self->handle_command('wait_for_element_visible_ok','st-ws-search-submit',30000);
-    $self->handle_command('type_ok','username',$searchfor);
+    $self->handle_command('type_ok','name',$searchfor);
     $self->handle_command('click_and_wait','st-ws-search-submit');
     my $str = "Workspaces matching " . '"' . $searchfor . '"';
     $self->handle_command('wait_for_text_present_ok',$searchfor,30000);
