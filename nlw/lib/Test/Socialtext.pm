@@ -65,6 +65,7 @@ our @EXPORT = qw(
     dump_roles
     timer_clear
     timer_report
+    set_as_default_account
 );
 
 our @EXPORT_OK = qw(
@@ -329,8 +330,8 @@ END { _teardown_cleanup() }
 sub _teardown_cleanup {
     _reset_initial_appconfig();
     if ($DB_AVAILABLE) {
-        _remove_all_but_initial_objects();
         _reset_initial_sysconfig();
+        _remove_all_but_initial_objects();
     }
 }
 
@@ -375,6 +376,7 @@ sub _teardown_cleanup {
                 q{INSERT INTO "System" VALUES (}.$ph.')', @$setting);
         }
         Socialtext::SQL::sql_commit();
+        eval { Socialtext::Account->Clear_Default_Account_Cache() };
         undef $InitialSysConfig;
     }
 }
@@ -618,6 +620,14 @@ my @Added_groups;
         # create a Hub based on this User/Workspace
         return new_hub($ws->name, $user->username);
     }
+}
+
+sub set_as_default_account($) {
+    my $acct = shift;
+    require Socialtext::SystemSettings;
+    Socialtext::SystemSettings::set_system_setting(
+        'default-account' => $acct->account_id);
+    Socialtext::Account->Clear_Default_Account_Cache();
 }
 
 sub SSS() {
