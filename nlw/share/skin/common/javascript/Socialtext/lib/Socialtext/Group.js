@@ -74,7 +74,7 @@ $.extend(Socialtext.Group.prototype, {
         });
 
         self.runAsynch(jobs, function() {
-            self.call(callback, self);
+            self._call(callback, self);
         });
     },
 
@@ -95,25 +95,25 @@ $.extend(Socialtext.Group.prototype, {
         this.postItems(this.url('/users'), users, callback);
     },
 
-    call: function(callback, opts) {
+    _call: function(callback, opts) {
         if (typeof(opts) == 'undefined') opts = {};
         if ($.isFunction(callback)) callback(opts);
     },
 
     updateMembers: function(members, callback) {
-        if (!members.length) return this.call(callback);
+        if (!members.length) return this._call(callback);
         this.postItems(this.url('/membership'), members, callback);
     },
 
     addToWorkspaces: function(workspaces, callback) {
-        if (!workspaces.length) return this.call(callback);
+        if (!workspaces.length) return this._call(callback);
         this.postItems(this.url('/workspaces'), workspaces, callback);
     },
 
     removeFromWorkspaces: function(workspaces, callback) {
         var self = this;
         var jobs = [];
-        if (!workspaces.length) return this.call(callback);
+        if (!workspaces.length) return this._call(callback);
         $.each(workspaces, function(i, info) {
             jobs.push(function(cb) {
                 var workspace = new Socialtext.Workspace({
@@ -128,7 +128,7 @@ $.extend(Socialtext.Group.prototype, {
     },
 
     removeMembers: function(trash, callback) {
-        if (!trash.length) return this.call(callback);
+        if (!trash.length) return this._call(callback);
         this.postItems(this.url('/trash'), trash, callback);
     },
 
@@ -139,7 +139,7 @@ $.extend(Socialtext.Group.prototype, {
             type: 'POST',
             contentType: 'application/json',
             data: $.toJSON(list),
-            success: function() { self.call(callback) },
+            success: function() { self._call(callback) },
             error: self.errorCallback(callback)
         });
     },
@@ -147,14 +147,14 @@ $.extend(Socialtext.Group.prototype, {
     hasMember: function(username, callback) {
         var self = this;
         if (!Number(self.group_id)) {
-            self.call(callback, false);
+            self._call(callback, false);
         }
         else {
             $.ajax({
                 url: this.url('/users/' + username),
                 type: 'HEAD',
-                success: function() { self.call(callback, true) },
-                error:   function() { self.call(callback, false) }
+                success: function() { self._call(callback, true) },
+                error:   function() { self._call(callback, false) }
             });
         }
     },
