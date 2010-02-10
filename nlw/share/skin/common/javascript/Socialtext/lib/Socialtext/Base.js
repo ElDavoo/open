@@ -8,7 +8,7 @@ Socialtext.Base.errorCallback = function(callback) {
         var error = xhr ? xhr.responseText : errorThrown;
         if (!error) error = 'An unknown error occured';
         if (callback)
-            callback({error: error});
+            callback({errors: [error]});
         else 
             alert(error);
     };

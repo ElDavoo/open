@@ -201,7 +201,7 @@ Socialtext.Group.Create = function(opts, callback) {
         },
         error: function(xhr, textStatus, errorThrown) {
             var error = xhr ? xhr.responseText : errorThrown;
-            if (callback) callback({ error: error });
+            if (callback) callback({ errors: [error] });
         }
     });
 };
