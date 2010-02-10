@@ -30,16 +30,19 @@ Socialtext.Base.prototype = {
      * and call the callback after the operation is completed
      */
     runAsynch: function(jobs, callback) {
+        var errors = [];
+
         var self = this;
         var runJob = function() {
             var job = jobs.shift();
             if (!job) { // done
-                callback({});
+                callback({errors: errors});
                 return;
             }
             job(function(res) {
                 if (res.error) {
-                    callback({error: res.error});
+                    errors.push(res.error);
+                    runJob();
                 }
                 else {
                     runJob();
