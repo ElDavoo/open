@@ -44,10 +44,10 @@ run {
 __DATA__
 === rt wafl phrase
 --- wafl
-{rt 1166}
+{bz 1234}
 --- match
 <div class="wiki">
-<span class="nlw_phrase"><a href="http://rt.socialtext.net/Ticket/Display.html?id=1166">1166</a><!-- wiki: {rt: 1166} --></span><br /></div>
+<span class="nlw_phrase"><a href="https://bugs.socialtext.net:555/show_bug.cgi?id=1234">1234</a><!-- wiki: {bz: 1234} --></span><br /></div>
 
 === section wafl phrase
 --- wafl

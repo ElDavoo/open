@@ -12,5 +12,3 @@ strestdocs: http://www.socialtext.net/st-rest-docs/index.cgi?%s
 bz: https://bugs.socialtext.net:555/show_bug.cgi?id=%s
 bug: https://bugs.socialtext.net:555/show_bug.cgi?id=%s
 st-git: http://github.com/socialtext/%1/commit/%2
-# END COMMENT
-
