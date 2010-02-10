@@ -24,17 +24,23 @@ sub bootstrap_openldap {
     return $openldap;
 }
 
+
+my $account = create_test_account_bypassing_factory();
+ok $account, 'made test account';
+set_as_default_account($account);
+is(Socialtext::Account->Default->account_id, $account->account_id,
+    'configured default account');
+
 ###############################################################################
 user_vivified_into_all_users_workspace: {
     my $openldap = bootstrap_openldap();
-    my $account  = Socialtext::Account->Default();
-    my $ws       = create_test_workspace();
+    my $ws       = create_test_workspace(account => $account);
     my $member   = Socialtext::Role->Member();
 
     # Setup
-    $account->update( all_users_workspace => $ws->workspace_id );
-    is $account->all_users_workspace, $ws->workspace_id,
-        'set all users Workspace';
+    $ws->add_account(account => $account);
+    is_deeply [map { $_->name } @{$account->all_users_workspaces || []}],
+        [$ws->name], 'set up all-users workspace';
 
     # First, a "Default" User (so we know it works)
     my $user = create_test_user(account => $account);
@@ -61,9 +67,4 @@ user_vivified_into_all_users_workspace: {
     $role = $ws->role_for_user($user);
     ok $role, '... User has Role in All Users Workspace';
     is $role->name, $member->name, '... ... the Member role';
-
-    # Teardown
-    $account->update( all_users_workspace => undef );
-    is $account->all_users_workspace, undef,
-        'unset all users Workspace';
 }
