@@ -992,6 +992,10 @@ sub _validate_and_clean_data {
         push @errors, loc('Account name is a required field.');
     }
 
+    if ($p->{all_users_workspace}) {
+        push @errors, 'Updating the all-users workspace via $acct->update is deprecated';
+    }
+
     if ( $p->{skin_name} ) {
         my $skin = Socialtext::Skin->new(name => $p->{skin_name});
         unless ($skin->exists) {

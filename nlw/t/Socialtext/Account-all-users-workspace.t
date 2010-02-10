@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 38;
+use Test::Socialtext tests => 39;
 use Test::Exception;
 use Test::Warn;
 
@@ -17,6 +17,14 @@ use Socialtext::Role;
 fixtures(qw( db ));
 
 use_ok 'Socialtext::Account';
+
+deprecated: {
+    my $acct = create_test_account_bypassing_factory();
+    my $ws   = create_test_workspace(account => $acct);
+    dies_ok {
+        $acct->update(all_users_workspace => $ws->workspace_id);
+    } 'updating an account with an AUW is deprecated';
+}
 
 ################################################################################
 # TEST: Set all_users_workspace
