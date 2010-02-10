@@ -1,5 +1,5 @@
-# @COPYRIGHT@
 package Socialtext::GoogleSearchPlugin;
+# @COPYRIGHT@
 use strict;
 use warnings;
 use base 'Socialtext::Plugin';
@@ -93,4 +93,22 @@ sub pretty {
 }
 
 1;
+__END__
 
+=head1 NAME
+
+Socialtext::GoogleSearchPlugin - Search google via its ReST API
+
+=head1 SYNOPSIS
+
+  {googlesearch: some terms to search for}
+
+=head1 DESCRIPTION
+
+Insert google search results into a page using the C<{googlesearch: }> WAFL.
+
+The old "googlesoap" WAFL is supported for backwards-compatibility.
+
+No callable-from-Perl API at the moment.
+
+=cut
