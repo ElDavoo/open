@@ -319,6 +319,7 @@ sub timer_report {
 sub _store_initial_state {
     _store_initial_appconfig();
     if ($DB_AVAILABLE) {
+        _store_initial_sysconfig();
         _store_initial_objects();
     }
 }
@@ -329,6 +330,7 @@ sub _teardown_cleanup {
     _reset_initial_appconfig();
     if ($DB_AVAILABLE) {
         _remove_all_but_initial_objects();
+        _reset_initial_sysconfig();
     }
 }
 
@@ -353,6 +355,27 @@ sub _teardown_cleanup {
                 $appconfig->write();
             }
         }
+    }
+}
+
+{
+    my $InitialSysConfig = [];
+    sub _store_initial_sysconfig {
+        my $dbh = Socialtext::SQL::get_dbh();
+        $InitialSysConfig = $dbh->selectall_arrayref(
+            q{SELECT * FROM "System"});
+    }
+    sub _reset_initial_sysconfig {
+        Test::More::diag("CLEANUP: resetting System table");
+        Socialtext::SQL::sql_begin_work();
+        Socialtext::SQL::sql_execute(q{DELETE FROM "System"});
+        foreach my $setting (@$InitialSysConfig) {
+            my $ph = join(',', ('?') x @$setting);
+            Socialtext::SQL::sql_execute(
+                q{INSERT INTO "System" VALUES (}.$ph.')', @$setting);
+        }
+        Socialtext::SQL::sql_commit();
+        undef $InitialSysConfig;
     }
 }
 
