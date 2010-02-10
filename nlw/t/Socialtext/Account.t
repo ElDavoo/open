@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 119;
+use Test::Socialtext tests => 121;
 use Test::Socialtext::User;
 use Test::Exception;
 use Test::Differences;
@@ -330,22 +330,26 @@ free50_accounts: {
 
     my $acct = create_test_account_bypassing_factory();
     my $ws   = create_test_workspace( account => $acct );
-    $acct->update(
-        all_users_workspace => $ws->workspace_id,
-        restrict_to_domain  => 'valid.com',
-        account_type        => 'Free 50',
-    );
+    lives_ok {
+        $acct->update(
+            restrict_to_domain  => 'valid.com',
+            account_type        => 'Free 50',
+        );
+        $ws->add_account(account => $acct);
+    };
 
     $lookup = Socialtext::Account->Free50ForDomain('valid.com');
     is $acct->account_id, $lookup->account_id, 'got correct Free 50 account';
 
     my $other    = create_test_account_bypassing_factory();
     my $other_ws = create_test_workspace( account => $other );
-    $other->update(
-        all_users_workspace => $other_ws->workspace_id,
-        restrict_to_domain  => 'valid.com',
-        account_type        => 'Free 50',
-    );
+    lives_ok {
+        $other->update(
+            restrict_to_domain  => 'valid.com',
+            account_type        => 'Free 50',
+        );
+        $other_ws->add_account(account => $other);
+    };
 
     $lookup = Socialtext::Account->Free50ForDomain('valid.com');
 
