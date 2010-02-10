@@ -40,13 +40,10 @@ Socialtext.Base.prototype = {
                 return;
             }
             job(function(res) {
-                if (res.error) {
-                    errors.push(res.error);
-                    runJob();
+                if (res.errors) {
+                    errors = errors.concat(res.errors);
                 }
-                else {
-                    runJob();
-                }
+                runJob();
             });
         };
         runJob();

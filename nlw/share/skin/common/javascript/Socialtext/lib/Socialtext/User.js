@@ -38,14 +38,13 @@ $.extend(Socialtext.User.prototype, {
         var self = this;
         var jobs = [];
         if (!workspaces.length) return this.call(callback);
+        var errors = [];
         $.each(workspaces, function(i, info) {
             jobs.push(function(cb) {
                 var workspace = new Socialtext.Workspace({
                     name: info.name
                 });
-                workspace.removeMembers(
-                    [ { username: self.username } ], cb
-                );
+                workspace.removeMembers([ { username: self.username } ], cb);
             });
         });
         this.runAsynch(jobs, callback);
