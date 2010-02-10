@@ -9,10 +9,6 @@ use MIME::Base64;
 use Socialtext::Apache::User;
 use Socialtext::Log qw(st_log);
 use Socialtext::OpenToken::Config;
-        # username
-        # email address
-        # first name
-        # last name
 use Socialtext::User;
 use Socialtext::WebApp;
 
@@ -95,7 +91,28 @@ sub challenge {
     unless ($user) {
         my $auto_provision = $config->auto_provision_new_users;
         if ($auto_provision) {
-die "XXX : not implemented yet -- autoprovision new users\n";
+            st_log->info("ST::Challenger::OpenToken: auto-provisioning user '$username'");
+
+            # Grab the User data from the OpenToken
+            my $data = $token->data;
+            my %proto_user = (
+                username      => $data->{subject},
+                email_address => $data->{email_address},
+                first_name    => $data->{first_name},
+                last_name     => $data->{last_name},
+            );
+
+            # Auto-provision the new User
+            $user = eval { Socialtext::User->create(%proto_user) };
+            if ($@) {
+                st_log->error("ST::Challenger::OpenToken: unable to auto-provision new user '$username'; $@");
+                return $app->_handle_error(
+                    error => {
+                        type => 'not_logged_in',
+                    },
+                    path    => '/nlw/login.html',
+                );
+            }
         }
         else {
             st_log->warning("ST::Challenger::OpenToken: have valid token, but for unknown user '$username'");
@@ -194,6 +211,28 @@ User in order to authenticate them and log them in to the system.
 
 This module can be used to integrate a Socialtext Appliance into a SAML
 infrastructure using a SAML Service Provider application such as PingFederate.
+
+=head1 CONFIGURATION
+
+The configuration for the OpenToken Challenger resides in
+F</etc/socialtext/opentoken.yaml>, and is documented in
+L<Socialtext::OpenToken::Config>.
+
+A note of importance is that if you wish to auto-provision new Users, you will
+B<need> to make sure that the following attributes are provided in the
+OpenToken:
+
+=over
+
+=item subject
+
+=item email_address
+
+=item first_name
+
+=item last_name
+
+=back
 
 =head1 METHODS
 
