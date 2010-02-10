@@ -289,12 +289,38 @@ sub st_search_for {
     $self->handle_command('click_ok','st-search-submit');
 }
 
+=head2 st_search_cp_workspace($searchfor, $clickthrough)
+
+Control panel workspace search automation
+
+Goes to url /nlw/control/workspace and searches the name $searchfor 
+
+if $clickthrough is defined and true (1), it will click through to that workspace
+
+=cut
+
+
+sub st_search_cp_workspace {
+    my ($self, $searchfor, $clickthrough) = @_;
+    my ($self, $searchfor) = @_;
+    $self->handle_command('open_ok', '/nlw/control/workspace');
+    $self->handle_command('wait_for_element_visible_ok','name',30000);
+    $self->handle_command('wait_for_element_visible_ok','st-ws-search-submit',30000);
+    $self->handle_command('type_ok','username',$searchfor);
+    $self->handle_command('click_and_wait','st-ws-search-submit');
+    my $str = "Workspaces matching " . '"' . $searchfor . '"';
+    $self->handle_command('wait_for_text_present_ok',$searchfor,30000);i
+    if (defined($clickthrough) && ($clickthrough)) {
+        $self->handle_command('wait_for_element_visible_ok',"link=$searchfor",30000);
+        $self->handle_command('click_and_wait',"link=$searchfor");
+        $self->handle_command('wait_for_element_visible_ok','link=Usage Reports',30000);
+    }
+}
+
+
 =head2 st_search_cp_users($searchfor)
 
 Control panel (USER) search automation
-
-For Future Work:
-Consdier adding second parameter, 'element', to cover 'groups','accounts','workspaces' etc.
 
 =cut
 
