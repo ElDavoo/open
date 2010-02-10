@@ -17,7 +17,11 @@
   </dd>
   <dd>
     <input type="radio" name="permission_set_name" checked="checked" value="not-member-only" />
-    <strong>[% loc('Public') %]</strong> - [% loc('users can see pages without logging in.') %]
+    [% IF current_permission_set_name == "custom" %]
+      <strong>[% loc('Custom') %]</strong> - [% loc('this workspace has custom permissions.') %]
+    [% ELSE %]
+      <strong>[% loc('Public') %]</strong> - [% loc('users can see pages without logging in.') %]
+    [% END %]
   </dd>
   [% END %]
 
