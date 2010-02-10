@@ -32,9 +32,11 @@ sub make_getter {
         }
 
 
-        $rest->header(type => "$type; charset=UTF-8");
+        $rest->header(-type => "$type; charset=UTF-8");
 
-        local $YAML::UseHeader = 0; # Get simple key/value pair without the "---" line
+        # Get simple key/value pair without the "---" line
+        local $YAML::UseHeader = 0;
+
         return $render->({
             server_version => $Socialtext::VERSION,
             api_version => $Socialtext::Rest::Version::API_VERSION,
@@ -48,3 +50,21 @@ sub make_getter {
 *GET_json = make_getter( 'application/json', \&encode_json );
 
 1;
+__END__
+
+=head1 NAME
+
+Socialtext::Rest::Config
+
+=head1 SYNOPSIS
+
+  GET /data/config
+
+=head1 DESCRIPTION
+
+Retrieves "public" config information from various parts of the application.
+
+Supports C<text/plain> (which is actually YAML without the --- header) and
+C<application/json> representations.
+
+=cut
