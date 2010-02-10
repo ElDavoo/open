@@ -21,6 +21,7 @@ BEGIN {
     $rc >>= 8;
     $rc && die "unable to set up test fixtures!";
 }
+fixtures(qw( admin_no_pages ));
 
 ###############################################################################
 # TEST DATA
