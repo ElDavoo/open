@@ -63,7 +63,10 @@ sub _build_accounts {
             is_primary => ($acct_id == $pri_acct ? 1 : 0),
         };
         push @accounts, $acct_hash;
-        $account_ids{$acct_id} = $acct_hash;
+        $account_ids{$acct_id} = {
+            hash => $acct_hash,
+            obj  => $acct,
+        };
     }
 
     my $user_wksps = $self->user->workspaces;
@@ -75,7 +78,9 @@ sub _build_accounts {
         };
 
         my $acct_hash = $account_ids{$acct_id};
-        push @{ $acct_hash->{via_workspace} }, $wksp_hash;
+        next if $wksp->has_account($acct_hash->{obj});
+
+        push @{ $acct_hash->{hash}{via_workspace} }, $wksp_hash;
     }
 
     eval { 
