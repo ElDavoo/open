@@ -380,7 +380,7 @@ sub GetProtoGroup {
         next unless $factory;
 
         my $proto = $factory->_get_cached_group( \%p );
-        return undef unless defined $proto;
+        next unless defined $proto;
 
         $proto->{cached_at} = sql_parse_timestamptz( $proto->{cached_at} );
         return $proto;
