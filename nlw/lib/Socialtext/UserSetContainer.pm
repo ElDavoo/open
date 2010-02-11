@@ -588,7 +588,7 @@ sub _sorted_user_roles_order_by {
         push @cols, 'u.driver_username';
         $sort = 'u.driver_username';
     }
-    elsif ($ob == 'user_id') {
+    elsif ($ob eq 'user_id') {
         $sort = 'u.user_id';
     }
     elsif ($ob =~ /^email(?:_address)?$/) {
