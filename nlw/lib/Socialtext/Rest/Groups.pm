@@ -46,7 +46,7 @@ sub _get_total_results {
         Socialtext::Group->Count;
     }
     else {
-        return $user->groups->group_count;
+        return $user->group_count;
     }
 }
 

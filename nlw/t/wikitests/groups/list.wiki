@@ -109,7 +109,18 @@ Tests for [Story: Groups ReST API]
 | create-group | theta   |
 | create-group | iota    |
 
+| get-group-id      | alpha      | alpha_id       |
+| get-group-id      | gamma      | gamma_id       |
+| get-group-id      | epsilon    | epsilon_id     |
+| add-user-to-group | %%badmin%% | %%alpha_id%%   |
+| add-user-to-group | %%badmin%% | %%gamma_id%%   |
+| add-user-to-group | %%badmin%% | %%epsilon_id%% |
+
+####################
+| *Comment* | Passing all shows all groups |
+
 | GET-json     | /data/groups?all=1&startIndex=0&FTW=1 |         |
+| code-is      | 200                                   |         |
 | header-like  | Cache-Control                         | private |
 | json-parse   |                                       |         |
 | json-path-is | $.startIndex                          | 0       |
@@ -124,3 +135,17 @@ Tests for [Story: Groups ReST API]
 | json-path-is | $.entry[6].name                       | iota    |
 | json-path-is | $.entry[7].name                       | theta   |
 | json-path-is | $.entry[8].name                       | zeta    |
+
+####################
+| *Comment* | Not passing all only shows the user groups |
+
+| GET-json     | /data/groups?startIndex=0&FTW=1 |         |
+| code-is      | 200                             |         |
+| header-like  | Cache-Control                   | private |
+| json-parse   |                                 |         |
+| json-path-is | $.startIndex                    | 0       |
+| json-path-is | $.itemsPerPage                  | 25      |
+| json-path-is | $.totalResults                  | 3       |
+| json-path-is | $.entry[0].name                 | alpha   |
+| json-path-is | $.entry[1].name                 | epsilon |
+| json-path-is | $.entry[2].name                 | gamma   |

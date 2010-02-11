@@ -378,9 +378,10 @@ sub group_count {
     }
 
     return sql_singlevalue(qq{
-        SELECT COUNT(DISTINCT(group_id))
+        SELECT COUNT(DISTINCT(into_set_id))
           FROM user_set_path
-         WHERE from_set_id = ? $add_where
+         WHERE into_set_id }.PG_GROUP_FILTER.qq{
+           AND from_set_id = ? $add_where
     },@bind);
 }
 
