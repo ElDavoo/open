@@ -18,9 +18,8 @@ add_account_to_workspace: {
     my $acct_name = $account->name;
     my $ws        = create_test_workspace(account => $account);
     my $ws_name   = $ws->name;
-    my $user      = create_test_user();
+    my $user      = create_test_user(account => $account);
 
-    $account->add_user(user => $user);
     $ws->add_user(user => $user);
 
     my $output = combined_from( sub { eval {
@@ -30,7 +29,7 @@ add_account_to_workspace: {
                     '--account'   => $acct_name,
                 ],
             )->add_member();
-    } } );
+    }; warn $@ if $@ } );
     like $output, qr/$acct_name now has the role of 'member' in the $ws_name Workspace/,
         '... with correct message';
 
