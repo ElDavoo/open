@@ -73,14 +73,18 @@ contained in some URL-named workspace).
 
 =head1 METHODS
 
-=over modify_roles($callback)
+=over 
+
+=item modify_roles($callback)
 
 Runs a callback in a transaction and IFF the operation resulted in this
 workspace having no admin groups or users causes the transaction to rollback.
 
-=over can_admin($callback)
+=item can_admin($callback)
 
 Can the current rest user admin the active workspace? If so, call the
 callback, otherwise call the C<not_authorized> method.
+
+=back
 
 =cut
