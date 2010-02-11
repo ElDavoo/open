@@ -61,7 +61,8 @@ rm_dir "formatter_cache_dir";
 set -x
 NLWCTL_QUIET=1 dev-bin/nlwctl stop
 if [ -e ~/.nlw ]; then
-    dev-bin/st-bootstrap-openldap stop
+    # we may have more than one openldap running, make sure to kill 'em all
+    for PIDFILE in ~/.nlw/run/slapd*.pid; do st-bootstrap-openldap stop; done
 fi
 
 # when switching to nginx you might have apache2 running still
