@@ -92,5 +92,35 @@ Tests for [Story: Groups ReST API]
 | body-like       | "username":"%%jane%%"                                              |         |
 | body-like       | "username":"%%bobemail%%"                                          |         |
 
+###################
+| *Comment* | Pageable group list |
 
+| set-business-admin | %%badmin%% | 1        |
+| http-user-pass     | %%badmin%% | password |
 
+| delete-all-groups |
+| create-group | alpha   |
+| create-group | beta    |
+| create-group | gamma   |
+| create-group | delta   |
+| create-group | epsilon |
+| create-group | zeta    |
+| create-group | eta     |
+| create-group | theta   |
+| create-group | iota    |
+
+| GET-json     | /data/groups?all=1&startIndex=0&FTW=1 |         |
+| header-like  | Cache-Control                         | private |
+| json-parse   |                                       |         |
+| json-path-is | $.startIndex                          | 0       |
+| json-path-is | $.itemsPerPage                        | 25      |
+| json-path-is | $.totalResults                        | 9       |
+| json-path-is | $.entry[0].name                       | alpha   |
+| json-path-is | $.entry[1].name                       | beta    |
+| json-path-is | $.entry[2].name                       | delta   |
+| json-path-is | $.entry[3].name                       | epsilon |
+| json-path-is | $.entry[4].name                       | eta     |
+| json-path-is | $.entry[5].name                       | gamma   |
+| json-path-is | $.entry[6].name                       | iota    |
+| json-path-is | $.entry[7].name                       | theta   |
+| json-path-is | $.entry[8].name                       | zeta    |

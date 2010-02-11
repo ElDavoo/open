@@ -360,6 +360,30 @@ sub shared_groups {
     return (wantarray ? @shared_groups : \@shared_groups);
 }
 
+sub group_count {
+    my $self = shift;
+    my %p = @_;
+
+    my @bind = ($self->user_set_id);
+    my $add_where = '';
+    if ($p{plugin}) {
+        $add_where = q{
+          AND user_set_id IN (
+            SELECT user_set_id
+              FROM user_set_plugin_tc
+             WHERE plugin = ?
+          )
+        };
+        push @bind, $p{plugin};
+    }
+
+    return sql_singlevalue(qq{
+        SELECT COUNT(DISTINCT(group_id))
+          FROM user_set_path
+         WHERE from_set_id = ? $add_where
+    },@bind);
+}
+
 sub groups {
     my $self = shift;
     my %p = @_;

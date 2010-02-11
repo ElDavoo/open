@@ -1,7 +1,6 @@
 package Socialtext::Rest::Groups;
 # @COPYRIGHT@
 use Moose;
-extends 'Socialtext::Rest::Collection';
 use Socialtext::Group;
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json encode_json/;
@@ -13,37 +12,65 @@ use Socialtext::Permission 'ST_ADMIN_WORKSPACE_PERM';
 use Socialtext::JobCreator;
 use namespace::clean -except => 'meta';
 
+extends 'Socialtext::Rest::Collection';
+with 'Socialtext::Rest::Pageable';
+
 # Anybody can see these, since they are just the list of groups the user
 # has 'selected'.
 sub permission { +{} }
 
 sub collection_name { 'Groups' }
 
-sub _entities_for_query {
+sub _entity_hash { 
+    my ($self, $group) = @_;
+    my $show_members = $self->rest->query->param('show_members');
+    return {
+        group_id => $group->group_id,
+        name => $group->name,
+        user_count => $group->user_count,
+        workspace_count => $group->workspace_count,
+        creation_date => $group->creation_datetime->ymd,
+        created_by_user_id => $group->created_by_user_id,
+        created_by_username => $group->creator->guess_real_name,
+        uri => "/data/groups/" . $group->group_id,
+        $show_members
+            ? ( members => $group->users_as_minimal_arrayref('member') )
+            : (),
+    };
+}
+
+sub _get_total_results {
     my $self = shift;
-    my $user = $self->rest->user();
+    my $user = $self->rest->user;
+    if ($user->is_business_admin and $self->rest->query->param('all')) {
+        Socialtext::Group->Count;
+    }
+    else {
+        return $user->groups->group_count;
+    }
+}
+
+sub _get_entities {
+    my $self = shift;
+    my $user = $self->rest->user;
 
     if ($user->is_business_admin and $self->rest->query->param('all')) {
-        return Socialtext::Group->All->all;
+        my $iter = Socialtext::Group->All(
+            order_by => $self->order,
+            sort_order => $self->reverse ? 'DESC' : 'ASC',
+            include_aggregates => 1,
+            creator => 1,
+            primary_account => 1,
+            limit => $self->items_per_page,
+            offset => $self->start_index,
+        );
+        return [ $iter->all ];
     }
-
-    return $user->groups->all;
+    else {
+        return [ $user->groups->all ];
+    }
 }
 
-sub _entity_hash {
-    my $self  = shift;
-    my $group = shift;
-
-    return $group->to_hash( show_members => $self->{_show_members} );
-}
-
-around get_resource => sub {
-    my $orig = shift;
-    my $self = shift;
-
-    $self->{_show_members} = $self->rest->query->param('show_members') ? 1 : 0;
-    return $orig->($self, @_);
-};
 
 override extra_headers => sub {
     my $self = shift;
