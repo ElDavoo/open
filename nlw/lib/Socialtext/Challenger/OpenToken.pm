@@ -88,48 +88,53 @@ sub challenge {
     # extract the username from the token, and go lookup the User
     my $username = $token->subject();
     my $user     = eval { Socialtext::User->new(username => $username) };
-    unless ($user) {
-        my $auto_provision = $config->auto_provision_new_users;
-        if ($auto_provision) {
-            st_log->info("ST::Challenger::OpenToken: auto-provisioning user '$username'");
 
-            # Grab the User data from the OpenToken
-            my $data = $token->data;
-            my %proto_user = (
-                username      => $data->{subject},
-                email_address => $data->{email_address},
-                first_name    => $data->{first_name},
-                last_name     => $data->{last_name},
-            );
+    # Optionally auto-provision the User
+    my $auto_provision = $config->auto_provision_new_users;
+    if ($auto_provision) {
+        # Extract the User data from the OpenToken
+        my $data = $token->data;
+        my %proto_user = (
+            username      => $data->{subject},
+            email_address => $data->{email_address},
+            first_name    => $data->{first_name},
+            last_name     => $data->{last_name},
+        );
 
-            # Generate a random password for the User so that we've got
-            # _something_ in there.  Otherwise, checks for
-            # "has_valid_password()" will fail and the User won't ever be
-            # allowed to log in.
-            my $password = $class->_generate_random_password(32);
-            $proto_user{password} = $password;
-
-            # Auto-provision the new User
-            $user = eval { Socialtext::User->create(%proto_user) };
-            if ($@) {
-                st_log->error("ST::Challenger::OpenToken: unable to auto-provision new user '$username'; $@");
-                return $app->_handle_error(
-                    error => {
-                        type => 'not_logged_in',
-                    },
-                    path    => '/nlw/login.html',
-                );
+        # Create/Update the User record as necessary.
+        my $action = '';
+        eval {
+            if ($user) {
+                $action = 'update';
+                $class->_update_user($user, %proto_user);
             }
+            else {
+                $action = 'create';
+                st_log->info("ST::Challenger::OpenToken: auto-provisioning user '$username'");
+                $user = $class->_create_user(%proto_user);
+            }
+        };
+        if (my $e = Exception::Class->caught('Socialtext::Exception::DataValidation')) {
+            my $msg = join ', ', $e->messages;
+            st_log->error( "ST::Challenger::OpenToken: unable to $action user; $msg" );
+            return;
         }
-        else {
-            st_log->warning("ST::Challenger::OpenToken: have valid token, but for unknown user '$username'");
-            return $app->_handle_error(
-                error => {
-                    type => 'not_logged_in',
-                },
-                path    => '/nlw/login.html',
-            );
+        elsif ($e = $@) {
+            st_log->error( "ST::Challenger::OpenToken: failed to $action user; $e" );
+            return;
         }
+    }
+
+    # If we don't have a User record, it wasn't provisioned; can't login as
+    # the User, so fail.
+    unless ($user) {
+        st_log->warning("ST::Challenger::OpenToken: have valid token, but for unknown user '$username'");
+        return $app->_handle_error(
+            error => {
+                type => 'not_logged_in',
+            },
+            path    => '/nlw/login.html',
+        );
     }
 
     # figure out where the User wanted to be in the first place, and redirect
@@ -139,6 +144,25 @@ sub challenge {
     Socialtext::Apache::User::set_login_cookie($request, $user->user_id, '');
     $user->record_login;
     return $app->redirect($redirect);
+}
+
+sub _update_user {
+    my ($class, $user, %proto_user) = @_;
+    $user->update_store(%proto_user);
+}
+
+sub _create_user {
+    my ($class, %proto_user) = @_;
+
+    # Generate a random password for the User so that we've got _something_ in
+    # there.  Otherwise, checks for "has_valid_password()" will fail and the
+    # User won't ever be allowed to log in.
+    my $password = $class->_generate_random_password(32);
+    $proto_user{password} = $password;
+
+    # Create the User record.
+    my $user = Socialtext::User->create(%proto_user);
+    return $user;
 }
 
 sub _generate_random_password {
