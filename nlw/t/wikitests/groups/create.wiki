@@ -63,9 +63,10 @@ Tests to create groups via REST and CLI.
 | body-like        | "description":"Hello World"              |                                                                             |
 
 # Make sure that %%username%% was added as an admin
-| GET-json  | /data/groups/%%group_id%%/users          |
-| code-is   | 200                                      |
-| body-like | "role":"admin","username":"%%username%%" |
+| GET-json   | /data/groups/%%group_id%%/users                   |
+| code-is    | 200                                               |
+| json-parse |                                                   |
+| json-like  | [{"role_name":"admin","username":"%%username%%"}] |
 
 
 ## Create a couple of workspaces, user is _not_ an admin
