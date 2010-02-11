@@ -6,8 +6,9 @@ use Socialtext::AppConfig;
 use Socialtext::Timer;
 use DateTime::Format::Pg;
 use DBI;
-use base 'Exporter';
+use Scalar::Util qw/blessed/;
 use Carp qw/confess carp croak cluck/;
+use base 'Exporter';
 
 =head1 NAME
 
@@ -40,6 +41,7 @@ our @EXPORT_OK = qw(
     get_dbh disconnect_dbh invalidate_dbh
     sql_execute sql_execute_array sql_selectrow sql_singlevalue 
     sql_commit sql_begin_work sql_rollback sql_in_transaction
+    sql_txn
     sql_convert_to_boolean sql_convert_from_boolean
     sql_parse_timestamptz sql_format_timestamptz sql_timestamptz_now
     sql_ensure_temp
@@ -50,7 +52,7 @@ our %EXPORT_TAGS = (
     'time' => [qw(sql_parse_timestamptz sql_format_timestamptz 
                   sql_timestamptz_now)],
     'bool' => [qw(sql_convert_to_boolean sql_convert_from_boolean)],
-    'txn'  => [qw(sql_commit sql_begin_work
+    'txn'  => [qw(sql_txn sql_commit sql_begin_work
                   sql_rollback sql_in_transaction)],
 );
 
@@ -162,58 +164,170 @@ apache request boundaries)
 
 =head1 Transactions
 
-Currently we support just one level of transaction.  Call sql_in_transaction
-to check.
+Nested transactions are now supported through the use of postgres savepoints.
 
-=head2 sql_in_transaction()
+L<http://www.postgresql.org/docs/8.1/static/sql-savepoint.html>
 
-Returns true if we currently in a transaction
+Both C<sql_txn> and C<sql_begin_work> are interoperable.  It's safe to use
+C<sql_txn> between C<sql_begin_work> and C<sql_commit> calls.
 
-=head2 sql_begin_work()
+=head2 sql_txn { run_stuff };
 
-Starts a transaction, so sql_execute will not auto-commit.
+Run code in a transaction (or use a savepoint if one's already started).  It's
+safe to call C<sql_begin_work> and other transaction funcions from with the
+code closure. E.g.
 
-=head2 sql_commit()
+    sub foo {
+        sql_begin_work();
+        eval { ... };
+        $@ ? sql_rollback() : sql_commit();
+    }
+    sub bar {
+        sql_txn {
+            foo();
+        };
+    }
 
-Commit a transaction started by the calling code.
+The calling context (C<wantarray>) and calling parameters are preserved.  This
+allows you to use this sub as a Moose/Class::MOP method wrapper:
 
-=head2 sql_rollback()
+  around 'foo' => \&sql_txn;
 
-Rollback a transaction started by the calling code.
+When not using Moose, remember to pass through any arguments you aren't
+closing-over in the transaction block.
+
+    sub my_wrapper {
+        my $self = shift;
+        # do stuff outside of txn
+        return sql_txn {
+              # do stuff inside the txn
+        }, @_;
+    }
+
+If the code dies, the transaction (or savepoint) is rolled back.  Upon
+success, the transaction is committed (or the savepoint released).
 
 =cut
 
+sub sql_txn (&;@) {
+    my $code = shift;
 
-sub sql_in_transaction { 
-    my $dbh = get_dbh();
-    return $dbh->{AutoCommit} ? 0 : 1;
+    sql_begin_work([caller()]);
+
+    # the following is based on code from Try::Tiny:
+    my $wa = wantarray;
+    my @rv;
+    my $e;
+    {
+        local $@; # preserve $@ outside of this call
+        eval {
+            if ($wa) { # call in list context
+                @rv = $code->(@_);
+            }
+            elsif (defined $wa) { # call in scalar context
+                $rv[0] = $code->(@_);
+            }
+            else { # call in void context
+                $code->(@_);
+            }
+            return 1; # successful call
+        };
+        $e = $@; # copy back out due to local $@
+    }
+
+    if ($e) {
+        carp "sql_txn rollback..." if $DEBUG;
+        eval { sql_rollback() };
+        $e .= "\nand during rollback: $@" if ($@ && !blessed($e));
+        $@ = $e; # make Test::Exception happy
+        die $e;
+    }
+    else {
+        carp "sql_txn committing..." if $DEBUG;
+        sql_commit();
+    }
+
+    return unless defined $wa;
+    return $wa ? @rv : $rv[0];
 }
+
+=head2 sql_in_transaction()
+
+Returns 0 if not in a transaction.  Returns the transaction "level" otherwise.
+1 means a pure transaction, 2 and above indicate savepoints are in use.
+
+=head2 sql_begin_work()
+
+Starts a transaction or creates a savepoint. Using C<sql_txn> is recomended,
+however.
+
+=head2 sql_commit()
+
+Commit a transaction or release the most recent savepoint.
+
+=head2 sql_rollback()
+
+Rollback a transaction or to the most recent savepoint.
+
+=cut
+
+sub sql_in_transaction {
+    my $dbh = get_dbh();
+    return 0 if $dbh->{AutoCommit};
+    return scalar(@{$dbh->{'private_Socialtext::SQL'}{txn_stack}})||1;
+}
+
+my $savepoint = 0;
 sub sql_begin_work {
     my $dbh = get_dbh();
-    croak "Already in a transaction!" unless $dbh->{AutoCommit};
-    warn "Beginning transaction" if $DEBUG;
-    $dbh->begin_work();
-    push @{$dbh->{'private_Socialtext::SQL'}{txn_stack}}, [caller];
+    my $caller = shift || [caller];
+
+    my $sp = 0;
+    if ($dbh->{AutoCommit}) {
+        carp "Beginning transaction" if $DEBUG;
+    }
+    else {
+        $sp = "st_".$savepoint++;
+        carp "Creating savepoint $sp" if $DEBUG;
+    }
+    push @{$dbh->{'private_Socialtext::SQL'}{txn_stack}}, [$sp,@$caller];
+    return $sp ? $dbh->pg_savepoint($sp) : $dbh->begin_work();
 }
+
 sub sql_commit {
     my $dbh = get_dbh();
     if ($dbh->{AutoCommit}) {
         carp "commit while outside of transaction";
         return;
     }
-    carp "Committing transaction" if $DEBUG;
-    pop @{$dbh->{'private_Socialtext::SQL'}{txn_stack}};
-    return $dbh->commit();
+
+    my $rec = pop @{$dbh->{'private_Socialtext::SQL'}{txn_stack}};
+    if ($rec->[0]) {
+        carp "Releasing savepoint $rec->[0]" if $DEBUG;
+        return $dbh->pg_release($rec->[0]);
+    }
+    else {
+        carp "Committing transaction" if $DEBUG;
+        return $dbh->commit();
+    }
 }
+
 sub sql_rollback {
     my $dbh = get_dbh();
     if ($dbh->{AutoCommit}) {
         carp "rollback while outside of transaction";
         return;
     }
-    carp "Rolling back transaction" if $DEBUG;
-    pop @{$dbh->{'private_Socialtext::SQL'}{txn_stack}};
-    return $dbh->rollback();
+
+    my $rec = pop @{$dbh->{'private_Socialtext::SQL'}{txn_stack}};
+    if ($rec->[0]) {
+        carp "Rolling back to savepoint $rec->[0]" if $DEBUG;
+        return $dbh->pg_rollback_to($rec->[0]);
+    }
+    else {
+        carp "Rolling back transaction" if $DEBUG;
+        return $dbh->rollback();
+    }
 }
 
 sub _dump_txn_stack {
@@ -221,7 +335,7 @@ sub _dump_txn_stack {
     my @w = ("Transaction stack:\n");
     my $stack = $dbh->{'private_Socialtext::SQL'}{txn_stack};
     foreach my $caller (@$stack) {
-        push @w, "\tFile: $caller->[1], Line: $caller->[2] ($caller->[0])\n";
+        push @w, "\tat $caller->[2] line $caller->[3] ($caller->[1])\n";
     }
     warn join('',@w); # so as to just call 'warn' once
     @$stack = ();

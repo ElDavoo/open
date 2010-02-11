@@ -3,8 +3,8 @@
 
 use strict;
 use warnings;
+use Test::Socialtext tests => 58;
 use Test::Exception;
-use Test::Socialtext tests => 35;
 
 fixtures( 'db' );
 
@@ -43,17 +43,17 @@ sql_execute: {
     }
 }
 
-Transactions: {
+old_school_transactions: {
     my @warnings;
     lives_ok {
-        local $SIG{__WARN__} = sub {push @warnings, $_};
+        local $SIG{__WARN__} = sub {push @warnings, $_[0]};
         sql_rollback();
     } "rollback outside of transaction is not fatal";
     ok @warnings == 1, "got a warning";
     @warnings = ();
 
     lives_ok {
-        local $SIG{__WARN__} = sub {push @warnings, $_};
+        local $SIG{__WARN__} = sub {push @warnings, $_[0]};
         sql_commit();
     } "outside of transaction is not fatal";
     ok @warnings == 1, "got a warning";
@@ -87,12 +87,6 @@ Transactions: {
         sql_singlevalue("SELECT * FROM goes_away LIMIT 1");
     } "should be fine because txn in progress";
     sql_commit();
-
-    dies_ok {
-        sql_begin_work();
-        sql_begin_work();
-    } "can't nest transactions";
-    sql_rollback();
 
     sql_begin_work();
     sql_execute($tt);
@@ -186,3 +180,97 @@ SQL_CONVERT_FROM_BOOLEAN: {
     $value = sql_convert_from_boolean($sql_value);
     is($value, 0, 'false is 0');
 }
+
+txn_block: {
+    my $val;
+#     local $Socialtext::SQL::DEBUG = 1;
+
+    ok get_dbh()->{AutoCommit}, 'not in txn yet';
+    is sql_in_transaction(), 0, "no txn";
+
+    sql_txn {
+        my @args = @_;
+        is_deeply \@args, ['arg one','arg two'], "args get passed in";
+        is sql_in_transaction(), 1, "in pure txn";
+
+        sql_execute(
+            q{INSERT INTO "System" (field,value) VALUES ('first','ok')});
+
+        dies_ok {
+            sql_txn {
+                is sql_in_transaction(), 2, "two nestings";
+                sql_execute(q{INSERT INTO "Barf"});
+            };
+        } 'non-existant table causes exception';
+
+        $val = sql_singlevalue(q{
+            SELECT value FROM "System" WHERE field = 'first'});
+        is $val, 'ok', "savepoint worked";
+    } 'arg one', 'arg two';
+
+    is sql_in_transaction(), 0, "no txn";
+
+    {
+        package MyTransactionalThing;
+        use Moose;
+        use Scalar::Util qw/blessed/;
+        use Socialtext::SQL qw/:exec :txn/;
+        around 'do_a_txn' => \&sql_txn;
+        sub do_a_txn {
+            my $self = shift;
+            my $arg = shift;
+            ::ok blessed($self), 'object passed in';
+            ::is $arg,'param!', 'arg preserved';
+            ::is sql_in_transaction(), 1, "simple txn";
+            sql_execute(q{UPDATE "System" SET value='ya' WHERE field='first'});
+            die "wtf?";
+            sql_execute(q{INSERT INTO "Barf"});
+        }
+    }
+    my $mtt = MyTransactionalThing->new;
+    dies_ok {
+        $mtt->do_a_txn('param!');
+    } 'exception propagates up';
+
+    $val = sql_singlevalue(q{
+        SELECT value FROM "System" WHERE field = 'first'});
+    is $val, 'ok', "wrapped method txn worked";
+
+    sql_txn {
+        is sql_in_transaction(), 1, "in pure txn";
+        $val = sql_singlevalue(q{
+            SELECT value FROM "System" WHERE field = 'first'});
+        is $val, 'ok', "transaction comitted";
+        sql_execute(q{DELETE FROM "System" WHERE field = 'first'});
+    };
+
+    $val = sql_singlevalue(q{
+        SELECT value FROM "System" WHERE field = 'first'});
+    is $val, undef, "field removed due to 2nd txn completing";
+
+    my @list = sql_txn { my @q = (5,6); return @q };
+    is_deeply \@list, [5,6], "list context ok";
+
+    my $scalar = sql_txn { my @q = (8,9,10); return @q };
+    is $scalar, 3, "scalar context ok";
+}
+
+dangling_txn: {
+    lives_ok {
+        sql_begin_work();
+        sql_begin_work();
+        sql_rollback();
+    } 'two begins, one rollback';
+    my @warnings;
+    lives_ok {
+        local $SIG{__WARN__} = sub {
+            push @warnings, $_[0]};
+        Socialtext::SQL::disconnect_dbh();
+    } "outside of transaction is not fatal";
+    ok @warnings == 2, "got two warnings";
+    like $warnings[0], qr/Transaction left dangling/, 'dangling warning';
+    like $warnings[1], qr{at t/Socialtext/SQL\.t line \d+ \(.+\)}m,
+        'txn stack trace';
+}
+
+pass 'done';
