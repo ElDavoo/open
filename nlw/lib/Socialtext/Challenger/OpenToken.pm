@@ -102,6 +102,13 @@ sub challenge {
                 last_name     => $data->{last_name},
             );
 
+            # Generate a random password for the User so that we've got
+            # _something_ in there.  Otherwise, checks for
+            # "has_valid_password()" will fail and the User won't ever be
+            # allowed to log in.
+            my $password = $class->_generate_random_password(32);
+            $proto_user{password} = $password;
+
             # Auto-provision the new User
             $user = eval { Socialtext::User->create(%proto_user) };
             if ($@) {
@@ -132,6 +139,17 @@ sub challenge {
     Socialtext::Apache::User::set_login_cookie($request, $user->user_id, '');
     $user->record_login;
     return $app->redirect($redirect);
+}
+
+sub _generate_random_password {
+    my ($class, $length) = @_;
+    my @valid = ('a'..'z', 'A'..'Z', '0'..'9');
+    my $pass = '';
+    while ($length-- >= 0) {
+        my $offset = rand(scalar @valid);
+        $pass .= $valid[$offset];
+    }
+    return $pass;
 }
 
 # Returns the URL which kickstarts a SP-initiated SAML assertion.

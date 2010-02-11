@@ -12,7 +12,7 @@ use POSIX qw();
 use Crypt::OpenToken;
 use Socialtext::Challenger::OpenToken;
 use Socialtext::User;
-use Test::Socialtext tests => 6;
+use Test::Socialtext tests => 7;
 
 ###############################################################################
 # Create our test fixtures *OUT OF PROCESS* as we're using a mocked Hub.
@@ -59,6 +59,11 @@ auto_create_user: {
     # verify that the User was created in the correct account
     is $user->primary_account->name, Socialtext::Account->Default->name,
         '... ... placed in the Default Account';
+
+    # verify that the User has a valid password (and would thus be _able_ to
+    # log in; you can't login unless your User record thinks it has a valid
+    # password).
+    ok $user->has_valid_password, '... ... with a valid (but bogus) password';
 
     # CLEANUP: out of process fixtures don't clean up for us
     $user && Test::Socialtext::User->delete_recklessly($user);
