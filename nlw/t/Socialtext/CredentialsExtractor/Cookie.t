@@ -38,6 +38,7 @@ cookie_ok: {
     # create the cookie data
     local $Apache::Cookie::DATA = {
         $cookie_name => Apache::Cookie->new(
+            $mock_request,
             value => {
                 user_id => $valid_username,
                 MAC     => Digest::SHA::sha1_base64(
@@ -70,6 +71,7 @@ cookie_has_bad_mac: {
     # create the cookie data
     local $Apache::Cookie::DATA = {
         $cookie_name => Apache::Cookie->new(
+            $mock_request,
             value => {
                 user_id => $valid_username,
                 MAC     => 'THIS-IS-A-BAD-MAC',
@@ -119,6 +121,7 @@ adobe_air_separate_cookie: {
 
     # create the cookie data
     my $cookie = Apache::Cookie->new(
+        $mock_request,
         value => {
             user_id => $valid_username,
             MAC => Digest::SHA::sha1_base64(
