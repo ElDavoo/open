@@ -186,24 +186,28 @@ sub _lookup_group {
     my $ldap = $self->ldap;
     return unless $ldap;
 
+    my $text = join ", ",
+        map { "$_ => $options{$_}" } keys %options;
+    $text = "options($text)";
+
     my $mesg = $ldap->search( %options );
     unless ($mesg) {
-        st_log->error( "ST::Group::LDAP::Factory: no suitable LDAP response" );
+        st_log->error( "ST::Group::LDAP::Factory: no suitable LDAP response; $text" );
         return;
     }
     if ($mesg->code) {
-        st_log->error( "ST::Group::LDAP::Factory: LDAP error while finding Group; " . $mesg->error() );
+        st_log->error( "ST::Group::LDAP::Factory: LDAP error while finding Group; $text, " . $mesg->error() );
         return;
     }
     if ($mesg->count() > 1) {
-        st_log->error( "ST::Group::LDAP::Factory: found multiple matches for Group; $options{filter}" );
+        st_log->error( "ST::Group::LDAP::Factory: found multiple matches for Group; $text" );
         return;
     }
 
     # Extract the Group from the LDAP response
     my $entry = $mesg->shift_entry();
     unless ($entry) {
-        st_log->debug( "ST::Group::LDAP::Factory: unable to find Group in LDAP; $options{filter}" );
+        st_log->debug( "ST::Group::LDAP::Factory: unable to find Group in LDAP; $text" );
         return;
     }
 
