@@ -1,0 +1,32 @@
+[%# @COPYRIGHT@ -%]
+[%# vim: set et sts=2 sw=2: %]
+[% WRAPPER layout/html id="logoutPage" title=loc("Logout") %]
+<div id="st-display-mode-container" class="authentication">
+  <div id="controls">
+    <div id="st-editing-tools-edit">
+        <h2 id="st-page-titletext" class="tableTitle">[% loc('Logged out of Socialtext' ) %]</h2>
+    </div>
+    <div id="controlsRight">&nbsp;</div>
+  </div>
+
+  <div id="contentContainer">
+    [% INCLUDE errors_and_messages %]
+
+    <div id="contentColumns">
+      <div id="contentLeft">
+        <p>
+          [% loc('You have logged out of Socialtext.') %]
+        </p>
+        <p>
+          [% loc('Click "Log in" in the upper-right to log in.') %]
+        </p>
+        <p>&nbsp;</p>
+      </div>
+      <div id="contentRight" class="wiki">
+        [% INCLUDE 'element/workspace_list/public_workspaces' %]
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+[% END %]

@@ -29,6 +29,8 @@ Carp: 0
 Class::Accessor: 0.34
 Class::Field: 0.12
 Class::Singleton: 1.03
+Crypt::OpenToken: 0
+Crypt::Rijndael: 1.09
 Cwd: 3.07
 Data::Dumper: 2.121
 Data::Page: 2.00
@@ -44,6 +46,7 @@ DBD::Pg: 2.11.7
 DB_File::Lock: 0.05
 DBI: 1.607
 Digest::MD5: 2.33
+Digest::HMAC: 1.01
 Digest::SHA: 0
 Digest::SHA1: 0
 # 1.884 fixes major bugs in the output of ->format, which we use in ST::Workspace
