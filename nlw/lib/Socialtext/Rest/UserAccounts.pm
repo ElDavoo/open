@@ -94,7 +94,7 @@ sub _build_accounts {
             while (my $acct = $grp_accts->next) {
                 my $acct_id = $acct->account_id;
 
-                my $acct_hash = $account_ids{$acct_id};
+                my $acct_hash = $account_ids{$acct_id}{hash};
                 push @{ $acct_hash->{via_group} }, $group_hash;
             }
         }
