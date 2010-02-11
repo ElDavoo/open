@@ -80,7 +80,7 @@ sub _build_sql_where {
     my $filter = $self->filter;
     return {
         $self->all ? ()
-            : '-and' => [ 'viewer.user_id' => $self->viewer->user_id ],
+            : ('-and' => [ 'viewer.user_id' => $self->viewer->user_id ]),
         '-or' => [
             'lower(first_name)'      => { '-like' => $filter },
             'lower(last_name)'       => { '-like' => $filter },
