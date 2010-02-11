@@ -233,28 +233,33 @@ sub RefreshGroups {
     # LDAP connection time out between lookups.
     st_log->info( "getting list of LDAP groups to refresh" );
     my $sth = sql_execute( qq{
-        SELECT driver_key, driver_unique_id, driver_group_name
+        SELECT group_id,
+               driver_key,
+               driver_unique_id,
+               driver_group_name
           FROM groups
          WHERE driver_key ~* 'LDAP'
          ORDER BY driver_key, driver_group_name
     } );
     st_log->info( "... found " . $sth->rows . " LDAP groups" );
 
-    my $rows_aref = $sth->fetchall_arrayref();
+    my $rows = $sth->fetchall_arrayref({});
     $sth->finish();
 
     # Refresh each of the LDAP Groups
-    foreach my $row (@{$rows_aref}) {
-        my ($driver_key, $driver_unique_id, $driver_group_name) = @{$row};
-
+    foreach my $row (@{$rows}) {
         # get the LDAP group factory we need for this Group.
-        my $factory = _get_group_factory($driver_key);
+        my $factory = _get_group_factory($row->{driver_key});
         next unless $factory;
 
         # refresh the Group data from the Factory
-        st_log->info( "... refreshing: $driver_group_name" );
+        st_log->info(
+            "... refreshing: $row->{driver_group_name} ($row->{group_id})");
+
         my $homunculus = eval {
-            $factory->GetGroupHomunculus(driver_unique_id => $driver_unique_id);
+            $factory->GetGroupHomunculus(
+                driver_unique_id => $row->{driver_unique_id}
+            );
         };
         if ($@) {
             st_log->error($@);
