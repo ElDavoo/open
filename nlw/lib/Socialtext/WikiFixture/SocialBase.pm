@@ -526,11 +526,21 @@ sub create_group {
         ? Socialtext::User->Resolve($user_name)
         : Socialtext::User->SystemUser();
 
-    my $group = Socialtext::Group->Create({
-        driver_group_name  => $group_name,
-        primary_account_id => $account->account_id,
-        created_by_user_id => $user->user_id,
-    });
+    my $group;
+    eval {
+        $group = Socialtext::Group->Create({
+            driver_group_name  => $group_name,
+            primary_account_id => $account->account_id,
+            created_by_user_id => $user->user_id,
+        });
+    };
+    if (my $err = $@) {
+        if ($err =~ m/duplicate key violates/) {
+            diag "Group $group_name already exists";
+            return;
+        }
+        die $@;
+    }
 
     # store the "group_id" variable so people can assign it to other vars
     # e.g. | set | my_group_id | %%group_id%% |
