@@ -71,7 +71,7 @@ sub _get_entities {
             created_by_username => $group->creator->guess_real_name,
             role_id => $info->{role_id},
             role_name => $role->name,
-            uri => "/data/groups/$info->{group_id}"
+            uri => "/data/group/$info->{group_id}"
         };
     });
     my @groups = $roles->all;

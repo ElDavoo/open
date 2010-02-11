@@ -32,7 +32,7 @@ sub _entity_hash {
         creation_date => $group->creation_datetime->ymd,
         created_by_user_id => $group->created_by_user_id,
         created_by_username => $group->creator->guess_real_name,
-        uri => "/data/groups/" . $group->group_id,
+        uri => "/data/group/" . $group->group_id,
         $show_members
             ? ( members => $group->users_as_minimal_arrayref('member') )
             : (),
