@@ -1,7 +1,6 @@
 package Socialtext::Rest::Group::Workspaces;
 # @COPYRIGHT@
 use Moose;
-extends 'Socialtext::Rest::Groups';
 use Socialtext::Exceptions;
 use Socialtext::Group;
 use Socialtext::Permission qw/ST_READ_PERM ST_ADMIN_WORKSPACE_PERM
@@ -10,6 +9,8 @@ use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
 use Socialtext::SQL ':txn';
 use namespace::clean -except => 'meta';
+
+extends 'Socialtext::Rest::Collection';
 
 sub permission { +{} }
 sub collection_name { 'Group Workspaces' }
