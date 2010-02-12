@@ -220,4 +220,7 @@ Tests for [Story: Groups ReST API]
 | PUT-json      | /data/groups/%%group_id%%/users | {"send_message":"1","entry":[{"user_id":"%%hakim_id%%","role_name":"admin"},{"username":"%%halden%%","role_name":"member"}]} |
 | code-is       | 204                             |                                                                                                                              |
 | job-count     | GroupInvite                     | 2                                                                                                                            |
-
+## PUT dies
+| *Comment* | PUT dies, with bad entry        |                                                  |
+| PUT-json  | /data/groups/%%group_id%%/users | {"entry":[{"group_id":"0","role_name":"admin"}]} |
+| code-is   | 400                             |                                                  |

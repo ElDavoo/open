@@ -178,17 +178,13 @@ sub _admin_with_group_data_do_txn {
             return loc('Malformed JSON passed to resource');
         }
 
-        sql_begin_work();
-
-        my $rv = eval { $self->$callback($group, $data) };
+        my $rv = eval { sql_txn {$self->$callback($group, $data)} };
 
         my $e = Exception::Class->caught('Socialtext::Exception::Conflict');
         if ($e) {
-            sql_rollback();
             return $self->SUPER::conflict($e->errors);
         }
         elsif ($e = $@) {
-            sql_rollback();
             $self->rest->header(-status => HTTP_400_Bad_Request);
             $e = $1 if $e =~ /(.*) at /;
             # XXX: cannot always localize sub-exception, so why bother
@@ -196,7 +192,6 @@ sub _admin_with_group_data_do_txn {
             return loc('Could not process request: [_1]', $e);
         }
 
-        sql_commit();
         $self->rest->header(-status => HTTP_200_OK);
         return $rv;
     });
@@ -301,18 +296,12 @@ sub do_in_txn {
     my $cb    = shift;
     my %addtl = @_; # user may pass in a CODEREF with index 'success'.
 
-    my $in_txn = sql_in_transaction();
-    sql_begin_work() unless $in_txn;
-    eval {
-        $cb->(@_);
-    };
+    eval { sql_txn { $cb->(@_) } };
     if (my $e = Exception::Class->caught('Socialtext::Exception')) {
-        sql_rollback() unless $in_txn;
         return $self->handle_exception($e);
     }
     if (my $e = $@) {
         warn $e;
-        sql_rollback() unless $in_txn;
         $self->rest->header(
             -status => HTTP_400_Bad_Request,
             -type   => 'text/plain',
@@ -320,9 +309,8 @@ sub do_in_txn {
         return $e;
     }
 
-    sql_commit() unless $in_txn;
-    if (my $sucess = $addtl{success}) {
-        return $sucess->();
+    if (my $success = $addtl{success}) {
+        return $success->();
     }
 
     $self->rest->header(-status => HTTP_204_No_Content);
