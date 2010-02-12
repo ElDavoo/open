@@ -521,7 +521,9 @@ sub _process_field_conditions {
             $self->add_condition("e.$eq_key NOT IN $placeholders", @$arg);
         }
         elsif (defined $arg) {
-            $self->add_condition("e.$eq_key <> ?", $arg);
+            # view events are no longer in the DB
+            $self->add_condition("e.$eq_key <> ?", $arg)
+                unless $arg eq 'view';
         }
         else {
             $self->add_condition("e.$eq_key IS NOT NULL");
@@ -876,13 +878,6 @@ sub get_events_group_activities {
         }
     }
 
-    # by using non-view indexes, we can get a simple perf boost until we
-    # devise something better
-    $self->add_condition("action <> 'view'");
-    if ($opts->{action} && $opts->{action} eq 'view') {
-        return []; # view events are all filtered out
-    }
-
     my @binds = ();
     my $groupvissql = $self->visible_exists('signals','e.actor_id', 
         { group_id => $group_id }, \@binds, 'e');
@@ -1069,14 +1064,6 @@ sub get_events_followed {
     $opts->{followed} = 1;
     $opts->{contributions} = 1;
     die "no limit?!" unless $opts->{count};
-
-    if ($opts->{action} && $opts->{action} eq 'view') {
-        return []; # view events aren't contributions
-    }
-
-    # by using non-view indexes, we can get a simple perf boost until we
-    # devise something better
-    $opts->{"action!"} = 'view';
 
     my ($followed_sql, $followed_args) = $self->_build_standard_sql($opts);
 

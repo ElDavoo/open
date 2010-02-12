@@ -24,7 +24,7 @@ Fetches types of events for miki signals and activities.
 sub activities {
     my $self = shift;
     return $self->events(
-        'action!' => 'view,edit_start,edit_cancel,watch_add,watch_delete',
+        'action!' => 'edit_start,edit_cancel,watch_add,watch_delete',
         title => 'Activities',
         section => 'activities',
         @_,
