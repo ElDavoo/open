@@ -100,3 +100,23 @@ Test case for `/data/workspaces`; the Workspace list
 | GET-json  | /data/workspaces                    |                                                                           |
 | code-is   | 200                                 |                                                                           |
 | body-like | qr/\{"workspace_id":"\d+","group_count":"1","name":"%%tuba%%",[^\}]+,"account_id":"%%default_account_id%%",[^\}]+,"id":"\d+","title":"Tuba","user_count":"1"\}/s |
+
+# Minimal interface
+| *Comment*   | GET minimal                |
+| GET-json    | /data/workspaces?minimal=1 |
+| code-is     | 200                        |
+| body-like   | %%tuba%%                   |
+| body-like   | %%cello%%                  |
+| body-like   | %%octo_bass%%              |
+| body-like   | %%double_bass%%            |
+| body-like   | foobar                     |
+| body-like   | workspace_id               |
+| body-like   | name                       |
+| body-like   | account_id                 |
+| body-like   | title                      |
+| body-like   | default                    |
+| body-unlike | group_count                |
+| body-unlike | modified_time              |
+| body-unlike | uri                        |
+| body-unlike | "id"                       |
+| body-unlike | user_count                 |

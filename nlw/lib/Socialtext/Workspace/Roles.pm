@@ -9,6 +9,7 @@ use Socialtext::SQL qw(:exec);
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::Validate qw(validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE);
+use Socialtext::Timer;
 use Readonly;
 
 ###############################################################################
@@ -161,6 +162,7 @@ sub RolesForUserInWorkspace {
         sort_order    => SCALAR_TYPE(default   => 'asc'),
         user_id       => SCALAR_TYPE,
         direct        => BOOLEAN_TYPE(default => 0),
+        minimal       => BOOLEAN_TYPE(default => 0),
         permission_id => SCALAR_TYPE(default => undef),
     };
     sub WorkspacesByUserId {
@@ -173,6 +175,9 @@ sub RolesForUserInWorkspace {
         my $direct        = $p{direct};
         my $exclude       = $p{exclude};
         my $sort_order    = $p{sort_order};
+        my $minimal       = $p{minimal};
+
+        Socialtext::Timer->Continue('ws_by_userid');
 
         my @binds = ($user_id);
 
@@ -200,25 +205,43 @@ sub RolesForUserInWorkspace {
             push @binds, $permission_id;
         }
 
+        my $fields = 'w.workspace_id';
+        my $group_by = 'w.workspace_id, w.name';
+        if ($minimal) {
+            $fields = 'w.workspace_id AS workspace_id, w.name AS name, '
+                      . 'w.account_id AS account_id, w.title AS title';
+            $group_by .= ', w.account_id, w.title';
+        }
+
         my $sql = qq{
-            SELECT w.workspace_id
+            SELECT $fields
               FROM "Workspace" w
               JOIN $uwr_table ON (w.user_set_id = into_set_id)
              WHERE from_set_id = ?
              $where_filter
-             GROUP BY w.workspace_id, w.name
+             GROUP BY $group_by
              ORDER BY w.name $sort_order
              LIMIT ? OFFSET ?
         };
         my $sth = sql_execute( $sql, @binds, $limit, $offset );
 
-        return Socialtext::MultiCursor->new(
-            iterables => [ $sth->fetchall_arrayref() ],
-            apply     => sub {
-                my $row = shift;
-                return Socialtext::Workspace->new(workspace_id => $row->[0]);
-            }
-        );
+        my $cursor;
+        if ($minimal) {
+            $cursor = Socialtext::MultiCursor->new(
+                iterables => [ $sth->fetchall_arrayref({}) ],
+            );
+        }
+        else {
+            $cursor = Socialtext::MultiCursor->new(
+                iterables => [ $sth->fetchall_arrayref() ],
+                apply     => sub {
+                    my $row = shift;
+                    return Socialtext::Workspace->new(workspace_id => $row->[0]);
+                }
+            );
+        }
+        Socialtext::Timer->Pause('ws_by_userid');
+        return $cursor;
     }
 
     sub CountWorkspacesByUserId {

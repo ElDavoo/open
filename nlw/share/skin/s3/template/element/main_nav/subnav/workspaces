@@ -8,7 +8,7 @@
   [% UNLESS user.is_guest %]
     <script>
         $("#global-workspace-list").navList({
-            url: "/data/workspaces",
+            url: "/data/workspaces?minimal=1",
             defaultId: 'default-workspace-link',
             href: function(w) { return '/' + w.name },
             title: function(w) { return w.title },

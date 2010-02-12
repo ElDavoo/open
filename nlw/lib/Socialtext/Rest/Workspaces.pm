@@ -17,6 +17,8 @@ use Socialtext::User;
 use Socialtext::Group;
 use Socialtext::Permission 'ST_ADMIN_PERM';
 use Socialtext::JobCreator;
+use Socialtext::AppConfig;
+use Socialtext::Timer;
 
 # Anybody can see these, since they are just the list of workspaces the user
 # has 'selected'.
@@ -39,6 +41,7 @@ sub _entities_for_query {
     my $self = shift;
 
     my $query = $self->rest->query->param('q');
+    my $minimal = $self->rest->query->param('minimal');
     my $user  = $self->rest->user();
 
     # REVIEW: 'all' should only work for some super authenticate user,
@@ -48,7 +51,7 @@ sub _entities_for_query {
         return ( Socialtext::Workspace->All()->all() );
     }
     else {
-        return ( $self->rest->user->workspaces()->all() );
+        return ( $self->rest->user->workspaces( minimal => $minimal )->all() );
     }
 }
 
@@ -56,7 +59,16 @@ sub _entity_hash {
     my $self      = shift;
     my $workspace = shift;
 
-    return +{
+    Socialtext::Timer->Continue('entity_hash');
+    $self->{__default_ws} ||= Socialtext::AppConfig->default_workspace || '__NONE__';
+    if (ref($workspace) eq 'HASH') {
+        # Minimal mode doesn't give us an object, for speed
+        $workspace->{default} = $workspace->{name} eq $self->{__default_ws} ? 1 : 0;
+        Socialtext::Timer->Pause('entity_hash');
+        return $workspace;
+    }
+
+    my $hash = {
         name  => $workspace->name,
         uri   => '/data/workspaces/' . $workspace->name,
         title => $workspace->title,
@@ -74,6 +86,8 @@ sub _entity_hash {
 
         # REVIEW: more?
     };
+    Socialtext::Timer->Pause('entity_hash');
+    return $hash;
 }
 
 sub POST {
