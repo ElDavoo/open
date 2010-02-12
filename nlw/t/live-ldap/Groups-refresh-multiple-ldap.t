@@ -1,11 +1,12 @@
 #!/user/bin/perl
+# @COPYRIGHT@
 use strict;
 use warnings;
 
 # This test exists to test out the scenario reported by an appliance customer
 # and described in {bz: 3567}.
 
-use Test::Socialtext 'no_plan';
+use Test::Socialtext tests => 11;
 use Socialtext::Group;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 
