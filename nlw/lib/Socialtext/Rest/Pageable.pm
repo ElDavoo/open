@@ -9,7 +9,10 @@ requires qw(_get_total_results _get_entities);
 has 'pageable' => ( is => 'ro', isa => 'Bool', lazy_build => 1 );
 sub _build_pageable {
     my $self = shift;
-    defined $self->rest->query->param('startIndex');
+    defined $self->rest->query->param('startIndex')
+        or defined $self->rest->query->param('offset')
+        or defined $self->rest->query->param('count')
+        or defined $self->rest->query->param('limit');
 }
 
 has 'start_index' => ( is => 'ro', isa => 'Int', lazy_build => 1 );
@@ -22,7 +25,8 @@ sub _build_start_index {
 has 'items_per_page' => ( is => 'ro', isa => 'Int', lazy_build => 1 );
 sub _build_items_per_page {
     my $self = shift;
-    my $count = $self->rest->query->param('count') || return 25;
+    my $count = $self->rest->query->param('count')
+             || $self->rest->query->param('limit') or return 25;
     return $count > max_per_page ? max_per_page : $count;
 }
 
@@ -50,11 +54,20 @@ sub get_resource {
     Socialtext::Timer->Pause('_entity_hash_map');
 
     if ($self->pageable and $content_type eq 'application/json') {
-        return {
-            startIndex => $self->start_index+0,
-            itemsPerPage => $self->items_per_page+0,
-            totalResults => $self->_get_total_results()+0,
-            entry => $results,
+        if (defined $self->rest->query->param('startIndex')) {
+            # Emit OpenSocial-compatible payload
+            return {
+                startIndex => $self->start_index+0,
+                itemsPerPage => $self->items_per_page+0,
+                totalResults => $self->_get_total_results()+0,
+                entry => $results,
+            }
+        }
+        else {
+            if (@$results > $self->items_per_page) {
+                $#$results = $self->items_per_page - 1;
+            }
+            return $results;
         }
     }
     else {
