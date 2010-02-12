@@ -32,7 +32,8 @@ sub collection_name { "Tags for " . $_[0]->workspace->title . "\n" }
 sub _entities_for_query {
     my $self = shift;
 
-    my @params = $self->hub->current_workspace->workspace_id;
+    my $ws_id = $self->hub->current_workspace->workspace_id;
+    my @params = ($ws_id);
 
     my $sql = "
         SELECT tag AS name, count(page_id) AS page_count
@@ -41,8 +42,8 @@ sub _entities_for_query {
     ";
 
     if (my $except_page = $self->rest->query->param('exclude_from')) {
-        $sql .= "AND tag NOT IN (SELECT tag FROM page_tag WHERE page_id = ?)\n";
-        push @params, $except_page;
+        $sql .= "AND tag NOT IN (SELECT tag FROM page_tag WHERE page_id = ? AND workspace_id = ?)\n";
+        push @params, $except_page, $ws_id;
     };
 
     $sql .= "GROUP BY tag";
