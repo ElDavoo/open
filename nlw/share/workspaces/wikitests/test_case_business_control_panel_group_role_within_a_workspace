@@ -22,13 +22,13 @@
 | st-admin | add-member --w %%group_ws%% --g %%group3_id%% | now has the role of 'member' in the |
 | st-admin | add-workspace-admin --w %%group_ws%% -g %%default_group_id%% |  |
 | st-search-cp-workspace | %%group_ws%% | 1 |
-| setSpeed | 1000 |
+| setSpeed | 1000 |  |
 
 | *Comment* | Test Case: Business Control Panel Group Role Within A Workspace Promote member to admin role within workspace |  |
-| wait_for_element_visible_ok | groupTable-dropdown-1-0 |  |
-| wait_for_element_visible_ok | groupTable-dropdown-1-1 |  |
-| wait_for_element_visible_ok | groupTable-dropdown-1-2 |  |
-| wait_for_element_visible_ok | groupTable-dropdown-1-3 |  |
+| wait_for_element_visible_ok | groupTable-dropdown-1-0 | 30000 |
+| wait_for_element_visible_ok | groupTable-dropdown-1-1 | 30000 |
+| wait_for_element_visible_ok | groupTable-dropdown-1-2 | 30000 |
+| wait_for_element_visible_ok | groupTable-dropdown-1-3 | 30000 |
 | is_selected_ok | groupTable-dropdown-1-0 | label=Member |
 | is_selected_ok | groupTable-dropdown-1-1 | label=Member |
 | is_selected_ok | groupTable-dropdown-1-2 | label=Member |
@@ -59,12 +59,12 @@
 
 | *Comment* | Test Case: Business Control Panel Group Role Within A Workspace Modify batch of promote member to admin role within workspace |  |
 | *Comment* | Test Case: Business Control Panel Group Role Within A Workspace action 0 is remove from wskspce, action 1 is promote to admin, action2 is remove admin |  |
-| wait_for_element_visible_ok | groupTable-clearSelected |
-| wait_for_element_visible_ok | groupTable-action-0 |
-| wait_for_element_visible_ok | groupTable-action-1 |
-| wait_for_element_visible_ok | groupTable-action-2 |
-| wait_for_element_visible_ok | groupTable-select-1 |
-| wait_for_element_visible_ok | groupTable-select-2 |
+| wait_for_element_visible_ok | groupTable-clearSelected | 30000 |
+| wait_for_element_visible_ok | groupTable-action-0 | 30000 |
+| wait_for_element_visible_ok | groupTable-action-1 | 30000 |
+| wait_for_element_visible_ok | groupTable-action-2 | 30000 |
+| wait_for_element_visible_ok | groupTable-select-1 | 30000 |
+| wait_for_element_visible_ok | groupTable-select-2 | 30000 |
 | click_ok | groupTable-select-1 |  |
 | click_ok | groupTable-select-2 |  |
 | click_ok | groupTable-action-1 |  |
@@ -129,7 +129,7 @@
 | is_selected_ok | groupTable-dropdown-1-1 | label=Member |
 
 | *Comment* | Test Case: Business Control Panel Group Role Add an admin USER, now batch remove Admin succeeds |  |
-| st-admin | add-workspace-admin --e %%group_user%% --w %%group_ws%% |
+| st-admin | add-workspace-admin --e %%group_user%% --w %%group_ws%% |  |
 | st-search-cp-workspace | %%group_ws%% | 1 |
 | wait_for_element_visible_ok | userTable-dropdown-1-0 | 30000 |
 | is_selected_ok | userTable-dropdown-1-0 | label=Admin |
@@ -140,7 +140,7 @@
 | text_like | //body | Groups (2) |
 | is_selected_ok | groupTable-dropdown-1-0 | label=Member |
 | is_selected_ok | groupTable-dropdown-1-1 | label=Member |
-| pause | 5000 |
+| pause | 5000 |  |
 
 | *Comment* | Test Case: Business Control Panel Group Role Add an admin GROUP, now batch remove membership for ws entirely succeeds |  |
 | st-search-cp-workspace | %%group_ws%% | 1 |
