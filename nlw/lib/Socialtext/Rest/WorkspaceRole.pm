@@ -15,7 +15,7 @@ sub modify_roles {
     eval {
         $call->();
         conflict
-            errors => ["The workspace needs to include at least one admin."]
+            errors => ["Workspaces need to include at least one admin."]
             unless $self->workspace->has_at_least_one_admin();
     };
 
