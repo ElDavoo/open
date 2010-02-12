@@ -1191,6 +1191,21 @@ CREATE VIEW users_share_plugin_tc AS
    JOIN user_set_plugin_tc plug USING (user_set_id)
    JOIN user_sets_for_user o_path USING (user_set_id);
 
+CREATE TABLE view_event (
+    "at" timestamptz NOT NULL,
+    "action" text NOT NULL,
+    actor_id integer NOT NULL,
+    event_class text NOT NULL,
+    context text,
+    page_id text,
+    page_workspace_id bigint,
+    person_id integer,
+    tag_name text,
+    signal_id bigint,
+    hidden boolean DEFAULT false,
+    group_id bigint
+);
+
 CREATE TABLE webhook (
     id bigint NOT NULL,
     creator_id bigint NOT NULL,
@@ -2272,4 +2287,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '108');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '109');

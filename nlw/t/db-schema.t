@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 5;
+use Test::Socialtext tests => 6;
 use Test::Socialtext::SQL;
 
 fixtures(qw( db ));
@@ -35,4 +35,15 @@ events_archive: {
     };
 
     db_columns_match_ok(qw(event event_archive));
+}
+
+# TEST: Events "view" table match their counterparts
+events_archive: {
+    local $Test::Socialtext::SQL::Normalizer = sub {
+        my $name = shift;
+        $name =~ s/view_//;
+        return $name;
+    };
+
+    db_columns_match_ok(qw(event view_event));
 }
