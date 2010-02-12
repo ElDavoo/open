@@ -3,16 +3,16 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 58;
+use Test::Socialtext tests => 60;
 use Test::Exception;
 
 fixtures( 'db' );
 
 BEGIN {
-    use_ok 'Socialtext::Schema';
     use_ok 'Socialtext::SQL', qw( 
         get_dbh disconnect_dbh invalidate_dbh
         :exec :bool :txn :time
+        sql_ensure_temp
     );
 }
 
@@ -271,6 +271,28 @@ dangling_txn: {
     like $warnings[0], qr/Transaction left dangling/, 'dangling warning';
     like $warnings[1], qr{at t/Socialtext/SQL\.t line \d+ \(.+\)}m,
         'txn stack trace';
+}
+
+ensure_temp: {
+    my $results = [];
+    lives_ok {
+        sql_txn {
+            eval {
+                sql_txn {
+                    sql_ensure_temp("my_temp","foo int");
+                    die "oh crap";
+                };
+            };
+            ok $@, 'inner transaction got rolled back, cancelling tbl create';
+            undef $@;
+
+            sql_ensure_temp("my_temp","foo int");
+            sql_execute("INSERT INTO my_temp VALUES (42)");
+        };
+        my $sth = sql_execute("SELECT * FROM my_temp");
+        $results = $sth->fetchall_arrayref;
+    } 'outer transaction is ok';
+    is_deeply $results, [[42]];
 }
 
 pass 'done';

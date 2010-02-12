@@ -8,6 +8,7 @@ use DateTime::Format::Pg;
 use DBI;
 use Scalar::Util qw/blessed/;
 use Carp qw/confess carp croak cluck/;
+use List::MoreUtils qw/any/;
 use base 'Exporter';
 
 =head1 NAME
@@ -288,8 +289,13 @@ sub sql_begin_work {
     }
     else {
         $sp = "st_".$savepoint++;
-        carp "Creating savepoint $sp" if $DEBUG;
+        if ($DEBUG) {
+            carp "Creating savepoint $sp, ".
+                 "level ".(1+@{$dbh->{'private_Socialtext::SQL'}{txn_stack}});
+        }
     }
+
+    local $dbh->{RaiseError} = 1;
     push @{$dbh->{'private_Socialtext::SQL'}{txn_stack}}, [$sp,@$caller];
     return $sp ? $dbh->pg_savepoint($sp) : $dbh->begin_work();
 }
@@ -301,6 +307,7 @@ sub sql_commit {
         return;
     }
 
+    local $dbh->{RaiseError} = 1;
     my $rec = pop @{$dbh->{'private_Socialtext::SQL'}{txn_stack}};
     if ($rec->[0]) {
         carp "Releasing savepoint $rec->[0]" if $DEBUG;
@@ -319,6 +326,7 @@ sub sql_rollback {
         return;
     }
 
+    local $dbh->{RaiseError} = 1;
     my $rec = pop @{$dbh->{'private_Socialtext::SQL'}{txn_stack}};
     if ($rec->[0]) {
         carp "Rolling back to savepoint $rec->[0]" if $DEBUG;
@@ -568,20 +576,41 @@ reapplied.
 
 sub sql_ensure_temp {
     my ($table, $defn, @idx) = @_;
+    if (any { $_=~/;/ } $table, $defn, @idx) {
+        croak "temp table, its definition, and its indexes cannot contain ';'";
+    }
 
     my $dbh = get_dbh();
-    if (!exists $dbh->{'private_Socialtext::SQL'}{temps}{$table}) {
+    if ($dbh->state && $dbh->state !~ /^0[012]/) {
+        carp "skipping creating temp table; in error state anyway ".$dbh->state;
+        return;
+    }
+
+    my $needs_create = 0;
+
+    eval {
+        sql_txn {
+            local $dbh->{RaiseError} = 0;
+            carp "TRUNCATE-ing $table" if ($PROFILE_SQL||$TRACE_SQL||$DEBUG);
+            $dbh->do(qq{TRUNCATE $table});
+            my $st = $dbh->state;
+            carp "TRUNCATE status: $st" if $DEBUG;
+            $needs_create = 1 if ($st eq '42P01'); # UNDEFINED TABLE
+            die $dbh->error if $dbh->error;
+        };
+    };
+    die $@ if ($@ && !$needs_create);
+
+    return unless $needs_create;
+    sql_txn {
+        carp "Creating temp '$table'" if ($PROFILE_SQL||$TRACE_SQL||$DEBUG);
         my $sql = qq{CREATE TEMPORARY TABLE $table ( $defn )
-                     ON COMMIT PRESERVE ROWS};
+                     WITHOUT OIDS ON COMMIT PRESERVE ROWS};
         sql_execute($sql);
         for my $idx (@idx) {
             sql_execute($idx);
         }
-        $dbh->{'private_Socialtext::SQL'}{temps}{$table} = 1;
-    }
-    else {
-        sql_execute("TRUNCATE $table");
-    }
+    };
 }
 
 1;
