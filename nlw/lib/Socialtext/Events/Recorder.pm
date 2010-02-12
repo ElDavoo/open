@@ -141,8 +141,9 @@ sub record_event {
     my $fields = join(', ', map {$_->[0]} @ins_map);
     my @values = map {$_->[1]} @ins_map;
     my $placeholders = join(', ', map {$_->[2]} @ins_map);
+    my $table = $p->{action} eq 'view' ? 'view_event' : 'event';
 
-    my $sql = "INSERT INTO event ( $fields ) VALUES ( $placeholders )";
+    my $sql = "INSERT INTO $table ( $fields ) VALUES ( $placeholders )";
     sql_execute($sql, @values);
 
     return; # don't leak the $sth returned from sql_execute
