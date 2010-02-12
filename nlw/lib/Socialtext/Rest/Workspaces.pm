@@ -64,6 +64,7 @@ sub _entity_hash {
     if (ref($workspace) eq 'HASH') {
         # Minimal mode doesn't give us an object, for speed
         $workspace->{default} = $workspace->{name} eq $self->{__default_ws} ? 1 : 0;
+        $workspace->{uri} = '/data/workspaces/' . $workspace->{name};
         Socialtext::Timer->Pause('entity_hash');
         return $workspace;
     }
