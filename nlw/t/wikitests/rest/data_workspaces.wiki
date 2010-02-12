@@ -109,14 +109,13 @@ Test case for `/data/workspaces`; the Workspace list
 | body-like   | %%cello%%                  |
 | body-like   | %%octo_bass%%              |
 | body-like   | %%double_bass%%            |
-| body-like   | foobar                     |
 | body-like   | workspace_id               |
 | body-like   | name                       |
 | body-like   | account_id                 |
 | body-like   | title                      |
 | body-like   | default                    |
+| body-like   | uri                        |
 | body-unlike | group_count                |
 | body-unlike | modified_time              |
-| body-unlike | uri                        |
 | body-unlike | "id"                       |
 | body-unlike | user_count                 |
