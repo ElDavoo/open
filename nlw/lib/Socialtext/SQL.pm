@@ -169,14 +169,21 @@ Nested transactions are now supported through the use of postgres savepoints.
 
 L<http://www.postgresql.org/docs/8.1/static/sql-savepoint.html>
 
+Use C<sql_txn> unless you need to do something fancy; it's much less
+error-prone than matching up begin/commit/rollback commands manually.
+
 Both C<sql_txn> and C<sql_begin_work> are interoperable.  It's safe to use
-C<sql_txn> between C<sql_begin_work> and C<sql_commit> calls.
+C<sql_txn> between C<sql_begin_work> and C<sql_commit> calls.  3rd-party code
+that starts transactions via C<< $dbh->begin_work >> is not supported.
 
 =head2 sql_txn { run_stuff };
 
-Run code in a transaction (or use a savepoint if one's already started).  It's
-safe to call C<sql_begin_work> and other transaction funcions from with the
-code closure. E.g.
+Run a block of code in a transaction (or use a savepoint if one's already
+started).  If the code dies, the transaction (or savepoint) is rolled back.
+Upon success, the transaction is committed (or the savepoint released).
+
+It's safe to call C<sql_begin_work> and other transaction funcions from with
+the code closure.
 
     sub foo {
         sql_begin_work();
@@ -190,23 +197,28 @@ code closure. E.g.
     }
 
 The calling context (C<wantarray>) and calling parameters are preserved.  This
-allows you to use this sub as a Moose/Class::MOP method wrapper:
+allows you to use this sub as a C<Moose> or C<Class::MOP> method wrapper:
 
-  around 'foo' => \&sql_txn;
+    around 'baz' => \&sql_txn;
+    sub baz {
+        my $self = shift;
+        #...
+        die 'this will cause a rollback' if $failed;
+        return 'woot';
+    }
 
 When not using Moose, remember to pass through any arguments you aren't
 closing-over in the transaction block.
 
     sub my_wrapper {
         my $self = shift;
+        my $x = shift;
         # do stuff outside of txn
         return sql_txn {
-              # do stuff inside the txn
-        }, @_;
+            my $y = shift;
+            do_stuff($x,$y,@_);
+        }, @_; # pass in @_ to make shift do the right thing
     }
-
-If the code dies, the transaction (or savepoint) is rolled back.  Upon
-success, the transaction is committed (or the savepoint released).
 
 =cut
 
@@ -260,15 +272,17 @@ Returns 0 if not in a transaction.  Returns the transaction "level" otherwise.
 =head2 sql_begin_work()
 
 Starts a transaction or creates a savepoint. Using C<sql_txn> is recomended,
-however.
+however.  Dies if a transaction/savepoint couldn't be started.
 
 =head2 sql_commit()
 
-Commit a transaction or release the most recent savepoint.
+Commit a transaction or release the most recent savepoint.  Dies on failure to
+do so.
 
 =head2 sql_rollback()
 
-Rollback a transaction or to the most recent savepoint.
+Rollback a transaction or to the most recent savepoint. Dies on failure to do
+so.
 
 =cut
 
