@@ -273,6 +273,16 @@ sub user_invite {
     );
 }
 
+sub DELETE {
+    my $self = shift;
+    $self->can_admin(sub {
+        $self->do_in_txn(sub {
+            my $group = $self->group;
+            $group->delete;
+        });
+    });
+}
+
 sub can_admin {
     my $self = shift;
     my $cb   = shift;

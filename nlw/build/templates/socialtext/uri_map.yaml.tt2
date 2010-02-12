@@ -540,6 +540,7 @@
             'application/json': [Socialtext::Rest::Group, GET_json]
         'PUT':
             'application/json': [Socialtext::Rest::Group, PUT_json]
+        'DELETE':               [Socialtext::Rest::Group, DELETE]
         '*':                    [Socialtext::Rest::Group, bad_method]
 -
     '/data/groups/:group_id/membership':
