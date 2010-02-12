@@ -1,10 +1,11 @@
 package Socialtext::Rest::Group::Accounts;
 # @COPYRIGHT@
 use Moose;
-extends 'Socialtext::Rest::Groups';
 use Socialtext::Group;
 use Socialtext::Permission qw/ST_READ_PERM/;
 use namespace::clean -except => 'meta';
+
+extends 'Socialtext::Rest::Collection';
 
 # Anybody can see these, since they are just the list of workspaces the user
 # has 'selected'.
