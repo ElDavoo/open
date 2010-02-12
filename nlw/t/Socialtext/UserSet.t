@@ -3,11 +3,11 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 129;
+use Test::Socialtext tests => 138;
 use Test::Differences;
 use Test::Exception;
 use List::Util qw/shuffle/;
-use Socialtext::SQL qw/get_dbh/;
+use Socialtext::SQL qw/get_dbh sql_txn/;
 BEGIN {
     use_ok 'Socialtext::UserSet', qw/:const/;
 }
@@ -585,6 +585,50 @@ role_list: {
     is direct_role(2,4),undef;
     is direct_role(1,4),$member;
 }
+
+
+transactions_and_temp_tables: {
+    local $Socialtext::SQL::DEBUG = 1;
+    reset_graph();
+
+    # reconnect; this was causing the "temp table caching" to fail so please
+    # leave this in here to avoid regressing.
+    Socialtext::SQL::disconnect_dbh();
+    $dbh = get_dbh();
+
+    ok !connected(1,2), 'not connected before';
+    lives_ok {
+        sql_txn {
+            eval {
+                sql_txn {
+                    # temp table gets lazy-created by this first call:
+                    insert(3,4,$member);
+                    insert(3,4,$member);
+                };
+            };
+            ok $@, 'dup insert died';
+            undef $@; # for Test::Exception
+
+            # Because of the rollback above, this call was incorrectly
+            # assuming that the "to_copy" table existed.
+            insert(1,2,$member);
+        };
+    } 'dup insert dies';
+    ok connected(1,2), 'before inner rollback ok';
+    ok !connected(3,4), 'rollback ok';
+
+    lives_ok {
+        sql_txn {
+            insert(3,4,$member);
+            insert(4,5,$member);
+        };
+    } 'normal insert is ok';
+
+    ok connected(1,2), 'normal insert path ok';
+    ok connected(3,5), 'normal insert path ok';
+}
+
+pass 'done';
 
 reset_graph();
 

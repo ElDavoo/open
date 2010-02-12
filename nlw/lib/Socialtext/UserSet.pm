@@ -1,10 +1,11 @@
 package Socialtext::UserSet;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::SQL qw/get_dbh :txn/;
+use Socialtext::SQL qw/get_dbh :txn sql_ensure_temp/;
 use Socialtext::Timer qw/time_scope/;
 use List::MoreUtils qw/part/;
 use Memoize;
+use Guard;
 use namespace::clean -except => 'meta';
 
 our $VERSION = 1.0;
@@ -578,18 +579,14 @@ sub RoleViewSQL {
 
 ###################################################
 
-# used in the migration:
+# used in a migration:
 sub _create_insert_temp {
     my ($self, $dbh, $bulk) = @_;
-
-    $dbh->do(qq{
-        CREATE TEMPORARY TABLE to_copy (
-            new_start int,
-            new_end int,
-            new_vlist int[]
-        ) WITHOUT OIDS ON COMMIT DELETE ROWS
+    sql_ensure_temp(to_copy => q{
+        new_start int,
+        new_end int,
+        new_vlist int[]
     });
-    $dbh->{'private_Socialtext::UserSet_insert_temp'} = 1;
 }
 
 sub _insert {
@@ -597,12 +594,7 @@ sub _insert {
 
     my $t = time_scope('uset_insert');
 
-    if ($dbh->{'private_Socialtext::UserSet_insert_temp'}) {
-        $dbh->do(q{TRUNCATE TABLE to_copy});
-    }
-    else {
-        $self->_create_insert_temp($dbh);
-    }
+    $self->_create_insert_temp($dbh) unless $bulk;
 
     my $prep_method = $bulk ? 'prepare_cached' : 'prepare';
 
@@ -716,26 +708,15 @@ sub _delete {
 sub _modify_wrapper {
     my $code = shift;
     my $self = shift;
-
-    my $t = time_scope('uset_update');
-    my $dbh = get_dbh();
-    local $dbh->{RaiseError} = 1;
-    local $dbh->{TraceLevel} = ($self->trace) ? 3 : $dbh->{TraceLevel};
-    
-    my $in_txn = sql_in_transaction();
-    $dbh->begin_work unless $in_txn;
-    eval {
+    my @args = @_;
+    return sql_txn {
+        my $t = time_scope('uset_update');
+        my $dbh = get_dbh();
+        local $dbh->{RaiseError} = 1;
+        local $dbh->{TraceLevel} = ($self->trace) ? 3 : $dbh->{TraceLevel};
         $dbh->do(q{LOCK user_set_include,user_set_path IN SHARE MODE});
-        $self->$code($dbh, @_);
-        $dbh->commit unless $in_txn;
+        $self->$code($dbh, @args);
     };
-    if (my $e = $@) {
-        local $@;
-        eval { $dbh->rollback unless $in_txn };
-        warn "during rollback: $@" if $@;
-        confess $e;
-    }
-    return;
 }
 
 sub _query_wrapper {
