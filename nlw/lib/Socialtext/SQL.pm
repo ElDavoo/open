@@ -610,7 +610,7 @@ sub sql_ensure_temp {
             my $st = $dbh->state;
             carp "TRUNCATE status: $st" if $DEBUG;
             $needs_create = 1 if ($st eq '42P01'); # UNDEFINED TABLE
-            die $dbh->error if $dbh->error;
+            die $dbh->errstr if $dbh->errstr;
         };
     };
     die $@ if ($@ && !$needs_create);
