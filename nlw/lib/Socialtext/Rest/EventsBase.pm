@@ -8,7 +8,7 @@ use Socialtext::Events;
 use Socialtext::Events::Reporter;
 use Socialtext::User;
 use Socialtext::Workspace;
-use Socialtext::Exceptions qw/auth_error/;
+use Socialtext::Exceptions qw/auth_error bad_request/;
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::Timer;
 use Socialtext::l10n 'loc';
@@ -136,7 +136,11 @@ sub extract_common_args {
                     unless $group->has_user($viewer);
             }),
         _bunch_of($q,'event_class'),
-        _bunch_of($q,'action'),
+        _bunch_of($q,'action', sub {
+                # no longer serve view events
+                my $action = shift;
+                bad_request "view is not a valid action" if $action eq 'view';
+            }),
         _bunch_of($q,'tag_name'),
         _bunch_of($q,'actor.id');
 

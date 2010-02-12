@@ -47,15 +47,20 @@ Test case for `/data/events`(GET and POST).
 | json-parse      |                       |                  |
 | json-array-size | 1                     |                  |
 
-| *Comment*       | post a view event to make sure it gets filtered | |
+| *Comment*       | post a view event to make sure it is not shown | |
 | post-json | /data/events | {"event_class":"person","action":"view","actor":{"id":"%%tester1_id%%"},"person":{"id":"%%tester2_id%%"}} |
 | code-is    | 201                         |                |
 
-| Comment         | check event setup |                  |
+| Comment | check event setup, view events should not be shown |
 | get             | /data/events      | application/json |
 | code-is         | 200               |                  |
 | json-parse      |                   |                  |
-| json-array-size | 2                 |                  |
+| json-array-size | 1                 |                  |
+
+| Comment   | action=view should return 400 |
+| GET       | /data/events?action=view      |
+| code-is   | 400                           |
+| body-like | view is not a valid action    |
 
 | *Comment*      | ensure that signals are appearing in 'followed' api  |                                    |
 | http-user-pass | %%tester2%%                                          | password                           |

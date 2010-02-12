@@ -113,6 +113,7 @@ sub _make_getter {
                 'NotFound'       => sub { $self->http_404($rest) },
                 'NoSuchResource' => sub { $self->no_resource($e->name) },
                 'Conflict'       => sub { $self->conflict($e->errors) },
+                'BadRequest'     => sub { $self->http_400($rest, $e->message) },
             );
             for my $class_type (keys %error_handlers) {
                 my $class = 'Socialtext::Exception::' . $class_type;

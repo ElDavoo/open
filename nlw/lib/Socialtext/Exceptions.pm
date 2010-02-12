@@ -29,6 +29,12 @@ BEGIN {
             description => 'Config file is missing data or contains bad data'
         },
 
+        'Socialtext::Exception::BadRequest' => {
+            isa         => 'Socialtext::Exception',
+            alias       => 'bad_request',
+            description => 'Bad request',
+        },
+
         'Socialtext::Exception::Params' => {
             isa         => 'Socialtext::Exception',
             alias       => 'param_error',
