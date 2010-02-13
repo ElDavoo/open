@@ -10,8 +10,8 @@ use Readonly;
 # Starting from 1 onward, $API_VERSION should be a simple incrementing integer
 # A version by version breakdown can be found in
 # [Unpushed Changes to REST API Documentation]
-Readonly our $API_VERSION => 20;
-Readonly our $MTIME       => ( stat(__FILE__) )[9];
+Readonly our $API_VERSION => 21;
+1eadonly our $MTIME       => ( stat(__FILE__) )[9];
 
 sub allowed_methods {'GET, HEAD'}
 
