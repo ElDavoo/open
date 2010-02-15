@@ -690,6 +690,9 @@ sub _sorted_group_roles_order_by {
         push @cols, 'g.driver_group_name AS display_name';
         $sort = 'display_name';
     }
+    elsif ($ob eq 'group_id') {
+        $sort = 'group_id';
+    }
     elsif ($ob eq 'source') {
         push @cols, 'g.driver_key';
         $sort = 'g.driver_key';
