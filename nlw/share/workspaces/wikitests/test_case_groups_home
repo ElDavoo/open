@@ -52,9 +52,8 @@
 | wait_for_element_visible_ok | link=Save | 30000 |
 | click_ok | link=Save |  |
 | wait_for_text_present_ok | comment-%%start_time%% | 30000 |
-| wait_for_text_present_ok | contributed by  | 30000 |
-| text_like | qr/contributed by.+ %%short_permuser%%/ism | |
-
+| wait_for_text_present_ok | contributed by | 30000 |
+| text_like | qr/contributed by.+ %%short_permuser%%/ism |  |
 
 | *Comment* | Test Case: Groups Send A Signal to the Group |  |
 | open_ok | /?group/%%group_id%% |  |
@@ -108,8 +107,8 @@
 
 | *Comment* | Test Case: Groups Home Check People Widget |  |
 | st-select-widget-frame | people_widget |  |
-| wait_for_text_present_ok | %%permuser%% | 30000 |
-| wait_for_text_present_ok | %%nopermuser%% | 30000 |
+| wait_for_text_present_ok | %%short_permuser%% | 30000 |
+| wait_for_text_present_ok | %%short_nopermuser%% | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups Home TEARDOWN |  |

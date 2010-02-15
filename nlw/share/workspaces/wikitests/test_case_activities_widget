@@ -32,12 +32,10 @@
 | include | [Test Case: Activities Widget Verify Others Signals] |  |
 | include | [Test Case: Activities Widget Conversations] |  |
 | include | [Test Case: Activities Widget Tags and Tagging] |  |
-| include | [Test Case: Activities Widget Followers] | |
+| include | [Test Case: Activities Widget Followers] |  |
 
-| *Comment* | Test Case: Activities Widget Teardown |  |
-| open_ok | /?dashboard |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| st-empty-container |  |  |
+| *Comment* | Test Case: Activities Widget TEARDOWN |  |
+
 | st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --w %%diffws%% --no-export | has been deleted |
 

@@ -464,7 +464,7 @@ sub st_verify_text_in_activities_widget {
     my ($self, $widgetname, $texttofind) = @_;
     #eval {
         $self->handle_command('st-select-widget-frame', $widgetname);
-        $self->handle_command('pause', 3000);
+        $self->handle_command('pause', 12000);
         #If is regexp,
         if ($texttofind=~/^qr\//) {
             $self->handle_command('text_like','//body', $texttofind);
