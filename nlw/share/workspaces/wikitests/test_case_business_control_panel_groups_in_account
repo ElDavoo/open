@@ -100,10 +100,8 @@
 
 | *Comment* | Test Case: Business Control Panel Groups In Account - Group Detail User Info |  |
 | wait_for_element_visible_ok | link=Add Group To An Account | 30000 |
-| wait_for_element_visible_ok | link=Role | 30000 |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Primary Account | 30000 |
-| wait_for_element_visible_ok | link=Source | 30000 |
 | text_like | qr/Users.+%%e_isouser3%%.+%%e_isouser2%%.+%%e_isouser1%%/ |  |
 
 | *Comment* | Test Case: Business Control Panel Groups In Account TEARDOWN |
