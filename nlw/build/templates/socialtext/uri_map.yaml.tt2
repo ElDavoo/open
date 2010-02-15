@@ -113,6 +113,10 @@
             application/json:   [Socialtext::Rest::Version, GET_json]
         '*': [Socialtext::Rest::Version, bad_method]
 -
+    '/data/workspaces/:ws/pages/:pname/viewers':
+        'GET':
+            'application/json': &default [Socialtext::Rest::Report::PageViewers, GET_json]
+-
     '/data/workspaces/:ws/pages/:pname/events':
         'GET':
             '*/*':           &default [Socialtext::Rest::Events::Page, GET_html]
