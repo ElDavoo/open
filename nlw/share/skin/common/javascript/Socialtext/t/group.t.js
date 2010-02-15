@@ -1,6 +1,6 @@
 var t = new Test.Socialtext();
 
-t.plan(13);
+t.plan(15);
 
 var groupName = "Shiny Group " + t.startTime;
 var testUsers = [
@@ -86,14 +86,33 @@ t.runAsync([
     function() {
         usersCorrect(t.nextStep());
     },
-
     function() {
         testUsers[0].role_name = 'admin';
         group.updateMembers([ testUsers[0] ], t.nextStep());
     },
-
     function() {
         usersCorrect(t.nextStep());
+    },
+
+    /**
+     * Delete a group
+     */
+    function() {
+        group.delete(t.nextStep());
+    },
+    function(res) {
+        t.ok(!res.errors, "No errors removing group");
+        $.ajax({
+            url: group.url(),
+            success: function() {
+                t.fail("Group wasn't deleted");
+                t.nextStep()();
+            },
+            error: function(xhr) {
+                t.is(xhr.status, 404, "404 after deleting group");
+                t.nextStep()();
+            }
+        });
     },
 
     function() {
