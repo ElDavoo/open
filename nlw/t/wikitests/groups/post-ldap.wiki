@@ -27,6 +27,11 @@ Tests for [Story: Groups ReST API]
 | header-like | Cache-Control      | private |
 | body-like   | Hawkwind           |         |
 
+## Post the group again (should fail; we've already loaded it)
+| POST_json | /data/groups         | {"ldap_dn":"%%ldap_dn%%","account_id":"%%account_id%%"} |
+| code-is   | 400                  |                                                         |
+| body-like | group already exists |                                                         |
+
 # ... admin gets a 404? 406? status code if the group is not in LDAP
 | POST_json | /data/groups              | {"ldap_dn":"cn=NoExisty,dc=socialtext,dc=com","account_id":"%%account_id%%"} |
 | code-is   | 400                       |                                                                              |
