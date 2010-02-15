@@ -2022,7 +2022,7 @@ div#contentColumns.showbox #contentRight {
     display: block;
 }
 
-#st-wikinav-profile {
+#st-wikinav-profile a {
     float: none !important;
 }
 
