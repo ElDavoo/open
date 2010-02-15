@@ -11,7 +11,7 @@ use Readonly;
 # A version by version breakdown can be found in
 # [Unpushed Changes to REST API Documentation]
 Readonly our $API_VERSION => 21;
-1eadonly our $MTIME       => ( stat(__FILE__) )[9];
+Readonly our $MTIME       => ( stat(__FILE__) )[9];
 
 sub allowed_methods {'GET, HEAD'}
 
