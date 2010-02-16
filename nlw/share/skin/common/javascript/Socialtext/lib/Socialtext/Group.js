@@ -169,7 +169,7 @@ $.extend(Socialtext.Group.prototype, {
         });
     },
 
-    delete: function(callback) {
+    remove: function(callback) {
         $.ajax({
             url: this.url(),
             type: 'DELETE',

@@ -98,14 +98,14 @@ t.runAsync([
      * Delete a group
      */
     function() {
-        group.delete(t.nextStep());
+        group.remove(t.nextStep());
     },
     function(res) {
         t.ok(!res.errors, "No errors removing group");
         $.ajax({
             url: group.url(),
             success: function() {
-                t.fail("Group wasn't deleted");
+                t.fail("Group wasn't removed");
                 t.nextStep()();
             },
             error: function(xhr) {
