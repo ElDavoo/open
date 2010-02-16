@@ -1584,22 +1584,6 @@ CREATE INDEX ix_event_for_page
 	    ON event (page_workspace_id, page_id, "at")
 	    WHERE (event_class = 'page');
 
-CREATE INDEX ix_event_noview_at
-	    ON event ("at")
-	    WHERE ("action" <> 'view');
-
-CREATE INDEX ix_event_noview_at_page
-	    ON event ("at")
-	    WHERE (("action" <> 'view') AND (event_class = 'page'));
-
-CREATE INDEX ix_event_noview_at_person
-	    ON event ("at")
-	    WHERE (("action" <> 'view') AND (event_class = 'person'));
-
-CREATE INDEX ix_event_noview_class_at
-	    ON event (event_class, "at")
-	    WHERE ("action" <> 'view');
-
 CREATE INDEX ix_event_page_contention
 	    ON event (page_workspace_id, page_id, "at")
 	    WHERE ((event_class = 'page') AND (("action" = 'edit_start') OR ("action" = 'edit_cancel')));
