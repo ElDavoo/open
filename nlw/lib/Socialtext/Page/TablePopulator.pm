@@ -37,10 +37,8 @@ sub populate {
     my $workspace = $self->{workspace};
     my $workspace_name = $self->{workspace_name};
 
-    # Start a transaction, and delete everything for this workspace
-    my $already_in_txn = sql_in_transaction();
-    sql_begin_work() unless $already_in_txn;
-    eval {
+    eval { sql_txn {
+        # Start a transaction, and delete everything for this workspace.
         # if we're recreating the workspace from scratch, clean it out *first*
         if ($recreate) {
             sql_execute(
@@ -119,14 +117,8 @@ sub populate {
         # Now add all those pages and tags to the database
         add_to_db('page', \@pages);
         add_to_db('page_tag', \@page_tags);
-    };
-    if ($@) {
-        sql_rollback() unless $already_in_txn;
-        die "Error during populate of $workspace_name: $@";
-    }
-    else {
-        sql_commit() unless $already_in_txn;
-    }
+    }};
+    die "Error during populate of $workspace_name: $@" if $@;
 }
 
 sub read_metadata {

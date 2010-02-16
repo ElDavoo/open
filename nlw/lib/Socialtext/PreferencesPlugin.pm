@@ -173,18 +173,18 @@ sub Store_prefs_for_user {
 
     my @keys = ($user->user_id, $workspace->workspace_id);
     my $json = encode_json($prefs);
-    sql_begin_work;
-    sql_execute('
-        DELETE FROM user_workspace_pref 
-         WHERE user_id = ? AND workspace_id = ?
-         ', @keys,
-     );
-    sql_execute('
-        INSERT INTO user_workspace_pref (user_id, workspace_id, pref_blob) 
-        VALUES (?,?,?)
-        ', @keys, $json
-    );
-    sql_commit;
+    sql_txn {
+        sql_execute('
+            DELETE FROM user_workspace_pref
+             WHERE user_id = ? AND workspace_id = ?
+             ', @keys,
+         );
+        sql_execute('
+            INSERT INTO user_workspace_pref (user_id, workspace_id, pref_blob)
+            VALUES (?,?,?)
+            ', @keys, $json
+        );
+    };
 
     $class_or_self->_cache->clear();
 }

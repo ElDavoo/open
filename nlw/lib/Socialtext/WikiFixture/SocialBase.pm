@@ -1981,17 +1981,17 @@ sub job_exists {
 sub st_fast_forward_jobs {
     my ($self, $minutes) = @_;
     my $s = $minutes * 60;
-    sql_begin_work;
-    sql_execute(q{
-        UPDATE job SET
-            insert_time = insert_time - $1,
-            run_after = run_after - $1,
-            grabbed_until = grabbed_until - $1
-    }, $s);
-    sql_execute(q{UPDATE error SET error_time = error_time-$1}, $s);
-    sql_execute(q{UPDATE exitstatus SET completion_time = completion_time-$1}, $s);
-    sql_commit;
-    pass "fast-forwarded jobs by $minutes minutes";
+    eval { sql_txn {
+        sql_execute(q{
+            UPDATE job SET
+                insert_time = insert_time - $1,
+                run_after = run_after - $1,
+                grabbed_until = grabbed_until - $1
+        }, $s);
+        sql_execute(q{UPDATE error SET error_time = error_time-$1}, $s);
+        sql_execute(q{UPDATE exitstatus SET completion_time = completion_time-$1}, $s);
+    }};
+    ok !$@, "fast-forwarded jobs by $minutes minutes";
 }
 
 sub st_account_type_is {

@@ -1,13 +1,14 @@
 package Socialtext::PrefsTable;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::SQL qw/:exec :txn/;
+use Socialtext::SQL qw/:exec sql_txn/;
 use Socialtext::SQL::Builder qw/sql_abstract/;
 use namespace::clean -except => 'meta';
 
 has 'table' => (is => 'ro', isa => 'Str', required => 1);
 has 'identity' => (is => 'ro', isa => 'HashRef[Str]', required => 1);
 
+around 'clear' => \&sql_txn;
 sub clear {
     my $self = shift;
     my ($sql,@bind) = sql_abstract()->delete($self->table,$self->identity);
@@ -58,16 +59,11 @@ sub set {
     # ... and then the preferences
     push @array_columns, \@keys, \@vals;
 
-    sql_begin_work();
-    eval {
+    sql_txn {
         sql_execute($del_sql,@del_bind);
         sql_execute_array($ins_sql,{},@array_columns);
     };
-    if (my $error = $@) {
-        sql_rollback();
-        die $error;
-    }
-    sql_commit();
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;

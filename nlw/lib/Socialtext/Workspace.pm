@@ -204,10 +204,7 @@ sub create {
     my $clone_pages_from = delete $p{clone_pages_from};
 
     my $self;
-    my $in_txn = sql_in_transaction();
-    eval {
-        sql_begin_work() unless $in_txn;
-
+    sql_txn {
         $class->_validate_and_clean_data(\%p);
         delete $p{workspace_id};
         delete $p{user_set_id};
@@ -234,13 +231,7 @@ EOSQL
         }
 
         $self->permissions->set( set_name => 'member-only' );
-        sql_commit() unless $in_txn;
     };
-
-    if ( my $e = $@ ) {
-        sql_rollback() unless $in_txn;
-        rethrow_exception($e);
-    }
 
     $self->_make_fs_paths();
 
@@ -1032,8 +1023,7 @@ sub is_all_users_workspace {
 
         data_validation_error errors => \@errors if @errors;
 
-        eval {
-            sql_begin_work;
+        sql_txn {
             sql_execute(
                 'DELETE FROM "WorkspacePingURI" WHERE workspace_id = ?',
                $self->workspace_id,
@@ -1046,13 +1036,7 @@ sub is_all_users_workspace {
                     $uri
                 );
             }
-            sql_commit;
         };
-
-        if ( my $e = $@ ) {
-            sql_rollback();
-            rethrow_exception($e);
-        }
     }
 }
 
@@ -1075,9 +1059,7 @@ sub ping_uris {
 
         my @fields = grep { defined && length } @{ $p{fields} };
 
-        eval {
-            sql_begin_work;
-
+        sql_txn {
             sql_execute(
                 'DELETE FROM "WorkspaceCommentFormCustomField" '
                 . 'WHERE workspace_id = ?',
@@ -1092,13 +1074,7 @@ sub ping_uris {
                     $self->workspace_id, $field, $i++,
                 );
             }
-            sql_commit;
         };
-
-        if ( my $e = $@ ) {
-            sql_rollback();
-            rethrow_exception($e);
-        }
     }
 }
 

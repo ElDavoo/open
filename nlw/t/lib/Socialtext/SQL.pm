@@ -7,11 +7,12 @@ use unmocked 'Test::More';
 use unmocked 'Socialtext::Date';
 use unmocked 'Data::Dumper';
 use unmocked 'DateTime::Format::Pg';
+use unmocked 'Guard';
 
 our @EXPORT_OK = qw(
     get_dbh disconnect_dbh invalidate_dbh
     sql_execute sql_execute_array sql_selectrow sql_singlevalue
-    sql_commit sql_begin_work sql_rollback sql_in_transaction
+    sql_commit sql_begin_work sql_rollback sql_in_transaction sql_txn
     sql_convert_to_boolean sql_convert_from_boolean
     sql_parse_timestamptz sql_format_timestamptz sql_timestamptz_now
     sql_ok sql_mock_result sql_mock_row_count ok_no_more_sql
@@ -22,7 +23,7 @@ our %EXPORT_TAGS = (
     'time' => [qw(sql_parse_timestamptz sql_format_timestamptz)],
     'bool' => [qw(sql_convert_to_boolean sql_convert_from_boolean)],
     'txn'  => [qw(sql_commit sql_begin_work
-                  sql_rollback sql_in_transaction)],
+                  sql_rollback sql_in_transaction sql_txn)],
 
     'test' => [qw(sql_ok sql_mock_result sql_mock_row_count ok_no_more_sql)],
 );
@@ -58,9 +59,17 @@ sub disconnect_dbh { }
 sub invalidate_dbh { }
 my $Mock_in_transaction = 0;
 sub sql_in_transaction { $Mock_in_transaction }
-sub sql_begin_work { $Mock_in_transaction = 1 }
-sub sql_commit { $Mock_in_transaction = 0 }
-sub sql_rollback { $Mock_in_transaction = 0 }
+sub sql_begin_work { $Mock_in_transaction++ }
+sub sql_commit { $Mock_in_transaction-- }
+sub sql_rollback { $Mock_in_transaction-- }
+sub sql_txn (&;) { 
+    my $code = shift;
+    $Mock_in_transaction++;
+    Guard::scope_guard { $Mock_in_transaction-- };
+    return $code->(@_);
+}
+
+
 sub sql_ensure_temp { }
 
 sub sql_selectrow { 

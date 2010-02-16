@@ -333,9 +333,7 @@ sub _set_permissions {
         push @$perms, @$self_join_perms;
     }
 
-    eval {
-        sql_begin_work();
-
+    sql_txn {
         sql_execute(
             'DELETE FROM "WorkspaceRolePermission" WHERE workspace_id = ?',
             $self->{workspace}->workspace_id,
@@ -371,13 +369,7 @@ sub _set_permissions {
             );
         }
 
-        sql_commit();
     };
-
-    if ( my $e = $@ ) {
-        sql_rollback();
-        rethrow_exception($e);
-    }
 }
 
 sub _populate_db_metadata {

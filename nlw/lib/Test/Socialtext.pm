@@ -19,7 +19,7 @@ use Socialtext::Group;
 use Socialtext::User;
 use Socialtext::Cache;
 use Socialtext::AppConfig;
-use Socialtext::SQL qw/:exec/;
+use Socialtext::SQL qw/:exec sql_txn get_dbh/;
 use Socialtext::Timer;
 use Socialtext::UserSet qw/:const/;
 use YAML;
@@ -362,20 +362,20 @@ sub _teardown_cleanup {
 {
     my $InitialSysConfig = [];
     sub _store_initial_sysconfig {
-        my $dbh = Socialtext::SQL::get_dbh();
+        my $dbh = get_dbh;
         $InitialSysConfig = $dbh->selectall_arrayref(
             q{SELECT * FROM "System"});
     }
     sub _reset_initial_sysconfig {
         Test::More::diag("CLEANUP: resetting System table");
-        Socialtext::SQL::sql_begin_work();
-        Socialtext::SQL::sql_execute(q{DELETE FROM "System"});
-        foreach my $setting (@$InitialSysConfig) {
-            my $ph = join(',', ('?') x @$setting);
-            Socialtext::SQL::sql_execute(
-                q{INSERT INTO "System" VALUES (}.$ph.')', @$setting);
-        }
-        Socialtext::SQL::sql_commit();
+        sql_txn {
+            sql_execute(q{DELETE FROM "System"});
+            foreach my $setting (@$InitialSysConfig) {
+                my $ph = join(',', ('?') x @$setting);
+                sql_execute(
+                    q{INSERT INTO "System" VALUES (}.$ph.')', @$setting);
+            }
+        };
         eval { Socialtext::Account->Clear_Default_Account_Cache() };
         undef $InitialSysConfig;
     }
@@ -473,12 +473,11 @@ sub _teardown_cleanup {
         if (Test::Socialtext::Environment->instance()->verbose) {
             Test::More::diag("CLEANUP: removing all ceq jobs");
         }
-        Socialtext::SQL::sql_begin_work();
-        # OK to leave funcmap alone
-        Socialtext::SQL::sql_execute(
-            "TRUNCATE note, error, exitstatus, job"
-        );
-        Socialtext::SQL::sql_commit();
+
+        # destroy theschwartz jobs, OK to leave funcmap alone
+        sql_txn {
+            sql_execute("TRUNCATE note, error, exitstatus, job");
+        };
     }
 }
 
