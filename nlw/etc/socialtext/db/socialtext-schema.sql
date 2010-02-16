@@ -299,7 +299,8 @@ CREATE FUNCTION purge_user_set(to_purge integer) RETURNS boolean
         -- Signals that will have zero user-sets after we delete to_purge need
         -- to also get purged.  Otherwise these signals become visible to
         -- everyone.
-        DELETE FROM signal
+        UPDATE SIGNAL
+        SET hidden = true
         WHERE signal_id IN (
             SELECT signal_id
               FROM signal_user_set sus1
@@ -2272,4 +2273,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '108');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '109');
