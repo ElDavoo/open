@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use Socialtext::SQL qw/get_dbh/;
+use Socialtext::SQL qw/get_dbh :exec :txn/;
 use Socialtext::SQL::Builder qw/sql_nextval/;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::Account;
@@ -89,14 +89,14 @@ my $commits = 0;
 my $dbh = get_dbh();
 $| = 1;
 
-$dbh->{AutoCommit} = 0;
-$dbh->rollback;
+sql_begin_work();
 $dbh->{RaiseError} = 1;
 
 sub maybe_commit {
     return unless $writes >= $WRITES_PER_COMMIT;
     print ".";
-    $dbh->commit;
+    sql_commit();
+    sql_begin_work();
 
     $total_writes += $writes;
     $commits++;
