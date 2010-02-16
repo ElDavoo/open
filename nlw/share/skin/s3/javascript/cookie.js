@@ -12,13 +12,18 @@ Cookie.get = function(name) {
         : unescape(document.cookie.substring(valueStart, valueEnd))
 };
 
-Cookie.set = function(name, val, expiration) {
+Cookie.set = function(name, val, expiration, path) {
     // Default to 25 year expiry if not specified by the caller.
-    if (typeof(expiration) == 'undefined')
+    if (typeof(expiration) == 'undefined') {
         expiration = new Date(
             new Date().getTime() + 25 * 365 * 24 * 60 * 60 * 1000
-        )
-    var str = name + '=' + escape(val) + '; expires=' + expiration.toGMTString()
+        );
+    }
+    var str = name + '=' + escape(val)
+        + '; expires=' + expiration.toGMTString();
+    if (path) {
+        str += '; path=' + path;
+    }
     document.cookie = str;
 };
 
