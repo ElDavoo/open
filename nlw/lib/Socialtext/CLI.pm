@@ -3730,6 +3730,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-group-admin --group [ --username or --email ]
   remove-member --group [--account or --workspace]
   remove-member [ --username or --email ] --group
+  delete-group --group
 
   OTHER
 
@@ -4298,6 +4299,10 @@ If no C<--account> is specified, the default system Account will be used.
 
 If no C<--email> is specified, regular groups will be created by the
 System User.
+
+=head2 delete-group --group
+
+Deletes a Socialtext Group. C<--group> must be a Group ID>.
 
 =head2 add-member --group [--account or --workpsace]
 
