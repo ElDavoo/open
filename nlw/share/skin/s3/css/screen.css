@@ -3902,6 +3902,10 @@ body#dashBoard #st-editing-tools-edit #lastsignal {
     display: none;
 }
 
+.notice .error {
+    color: #D00;
+}
+
 ul li.flexButtonBlue a.addButton {
     background: url(../images/addFlexButtonBlue.png) no-repeat;
 }
