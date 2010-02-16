@@ -27,6 +27,6 @@ Cookie.set = function(name, val, expiration, path) {
     document.cookie = str;
 };
 
-Cookie.del = function(name) {
-    Cookie.set(name, '', new Date(new Date().getTime() - 1));
+Cookie.del = function(name, path) {
+    Cookie.set(name, '', new Date(new Date().getTime() - 1), path);
 };
