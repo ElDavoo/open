@@ -271,13 +271,15 @@ sub _cached_group_is_fresh {
 
 # Delete a Group object from the local DB.
 sub Delete {
-    my ($self, $group) = @_;
-    $self->DeleteGroupRecord( $group->primary_key() );
+    my $self = shift;
+    my $group = shift;
+    $self->DeleteGroupRecord( $group->primary_key(), @_ );
 }
 
 # Deletes a Group record from the local DB.
 sub DeleteGroupRecord {
-    my ($self, $proto_group) = @_;
+    my ($self, $proto_group, $actor) = @_;
+    $actor ||= Socialtext::User->SystemUser;
 
     # Delete any copy of this Group in the *in-memory* cache
     Socialtext::Group->cache->remove($proto_group->{group_id});
@@ -287,7 +289,10 @@ sub DeleteGroupRecord {
 
     # DELETE the record in the DB
     my $sth = $self->SqlDeleteOneRecord( $where );
-    return $sth->rows();
+    my $rows = $sth->rows();
+
+    st_log->info("DELETE,GROUP,group:$proto_group->{group_id},actor:"
+                . $actor->username);
 }
 
 # Updates the local DB using the provided Group information

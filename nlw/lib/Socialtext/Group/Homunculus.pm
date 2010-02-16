@@ -198,7 +198,7 @@ sub update_store {
 sub delete {
     my $self = shift;
     my $factory = $self->factory();
-    $factory->Delete($self);
+    $factory->Delete($self, @_);
 }
 
 no Moose;
@@ -306,7 +306,7 @@ hash-ref.
 Throws a fatal exception if the Group Factory does not have an updateable
 store.
 
-=item B<$group-E<gt>delete()>
+=item B<$group-E<gt>delete($actor)>
 
 Deletes the Group from the local DB store.
 

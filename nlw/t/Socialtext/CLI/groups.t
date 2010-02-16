@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 35;
+use Test::Socialtext tests => 37;
 use Test::Exception;
 BEGIN { use_ok 'Socialtext::CLI'; }
 use Test::Socialtext::CLIUtils qw/is_last_exit/;
@@ -133,6 +133,18 @@ show_group_members: {
     like $output, qr/\| Email Address \| First \| Last \| Role \|/,
         '... with fields';
     like $output, qr/\Q$email_address\E/, '... with user';
+}
+
+################################################################################
+delete_a_group: {
+    my $group         = create_test_group();
+
+    my $output = combined_from {
+        eval { new_cli( '--group' => $group->group_id )->delete_group() }
+    };
+
+    ok $output, 'got output...';
+    like $output, qr/Deleted group id: \d+/, '... deleted the group';
 }
 
 ################################################################################
