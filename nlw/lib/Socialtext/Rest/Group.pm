@@ -289,7 +289,7 @@ sub can_admin {
 
     my $user  = $self->rest->user;
     my $group = $self->group;
-    return $self->no_resource("group id: " . $self->group_id )
+    return $self->no_resource("Group with id " . $self->group_id )
         unless $group;
 
     my $admin = $group->user_can(user => $user, permission => ST_ADMIN_PERM);
