@@ -33,6 +33,7 @@ my $base = substr("$now",-5);
 
 my $member_id = Socialtext::Role->Member->role_id;
 my $admin_id = Socialtext::Role->Admin->role_id;
+my $user_and_groups_only = 0;
 
 GetOptions(
     'accounts|a=i' => \$ACCOUNTS,
@@ -45,6 +46,7 @@ GetOptions(
     'view-event-ratio|v=s' => \$VIEW_EVENT_RATIO,
     'signals|s=i' => \$SIGNALS,
     'base|b=s' => \$base,
+    'user-groups-only' => \$user_and_groups_only,
 ) or usage();
 
 sub usage {
@@ -62,7 +64,13 @@ WHERE options are:
   --view-event-ratio=F
   --signals=N
   --base=S
+  --user-groups-only (Only create users and groups, nothing else)
 EOT
+}
+
+if ($user_and_groups_only) {
+    $ACCOUNTS = 1;
+    $PAGES = $EVENTS = $SIGNALS = 0;
 }
 
 my $MAX_WS_ASSIGN = int($ACCOUNTS / 20); 
