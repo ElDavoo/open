@@ -278,7 +278,7 @@ sub DELETE {
     $self->can_admin(sub {
         $self->do_in_txn(sub {
             my $group = $self->group;
-            $group->delete;
+            $group->delete($self->user);
         });
     });
 }
