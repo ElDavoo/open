@@ -293,6 +293,8 @@ sub DeleteGroupRecord {
 
     st_log->info("DELETE,GROUP,group:$proto_group->{group_id},actor:"
                 . $actor->username);
+
+    return $rows;
 }
 
 # Updates the local DB using the provided Group information
