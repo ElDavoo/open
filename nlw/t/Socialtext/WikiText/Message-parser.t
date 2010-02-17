@@ -11,8 +11,6 @@ use_ok 'Socialtext::WikiText::Parser::Messages';
 use_ok 'Socialtext::WikiText::Emitter::Messages::Canonicalize';
 use_ok 'Socialtext::WikiText::Emitter::Messages::HTML';
 
-fixtures( 'admin' );
-
 my @links;
 
 for my $type (qw(Canonicalize HTML)) {
