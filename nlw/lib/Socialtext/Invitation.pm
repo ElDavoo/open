@@ -66,6 +66,7 @@ sub invite_notify {
         : 'Socialtext';
 
     my %vars = (
+        user                  => $user,
         username              => $user->username,
         requires_confirmation => $user->requires_confirmation,
         confirmation_uri      => $user->confirmation_uri || '',
