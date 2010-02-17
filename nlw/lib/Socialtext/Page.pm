@@ -229,7 +229,7 @@ sub update_from_remote {
 
     # We've already check for permission to do this
     if ( $p{from} ) {
-        $user = Socialtext::User->new( email_address => $p{from} );
+        $user = Socialtext::User->Resolve( $p{from} );
         $user ||= Socialtext::User->create(
             email_address => $p{from},
             username      => $p{from}
@@ -1275,7 +1275,7 @@ sub last_edited_by {
         $email_address = $name . '@example.com';
     }
 
-    my $user = Socialtext::User->new( email_address => $email_address );
+    my $user = Socialtext::User->Resolve( $email_address );
 
     # There are many usernames in pages that were never in the users
     # table.  We need to have all users in the DBMS, so
