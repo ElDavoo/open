@@ -44,7 +44,7 @@ my $graphb = $graph->deep_copy;
 
 my $dbh = Socialtext::SQL::get_dbh();
 my $us = Socialtext::UserSet->new;
-$dbh->begin_work;
+Socialtext::SQL::sql_begin_work();
 $us->_create_insert_temp($dbh,'bulk');
 my $memberroleid = Socialtext::Role->Member->role_id;
 my $counter=0;
@@ -55,7 +55,7 @@ for my $set (values %edges) {
     #$us->add_role($set->[0],$set->[1],$memberroleid); 
     $us->_insert($dbh,$set->[0],$set->[1],$memberroleid,'bulk');
 }
-$dbh->commit;
+Socialtext::SQL::sql_commit();
 diag("Took ". (Time::HiRes::time - $start) . " to generate user_sets in db");
 #warn "Done creating user_sets";
 

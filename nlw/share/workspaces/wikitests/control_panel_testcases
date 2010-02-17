@@ -10,6 +10,7 @@
 
 * [Test Case: Business Control Panel Sorting]
 * [Test Case: Control Panel Create Group]
+* [Test Case: Control Panel Deactivate Group]
 * [Test Case: Business Control Panel Invite To Workspace]
 * [Test Case: Business Control Panel Invite Users to Existent Workspace]
 
@@ -21,7 +22,8 @@
 * [Test Case: Business Control Panel Group Role Within A Workspace]
 * [Test Case: Business Control Panel Group Add To Workspace]
 * [Test Case: Business Control Panel Workspace Add Group]
-* [Test Case: Control Panel Workspace, Remove Group]
+
+Test Case: Control Panel Remove Group is redundant with Add Group
 
 ----
 

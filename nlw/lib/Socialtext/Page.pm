@@ -1037,22 +1037,25 @@ sub _log_page_action {
 
 sub update_db_metadata {
     my $self = shift;
+    sql_txn { $self->_do_update_db_metadata() };
+}
 
+sub _do_update_db_metadata {
+    my $self = shift;
     my $hash = $self->hash_representation;
     my $wksp_id = $self->hub->current_workspace->workspace_id;
     my $pg_id = $hash->{page_id};
 
-    my $in_txn = sql_in_transaction();
-    sql_begin_work() unless $in_txn;
-
     my $sth = sql_execute(
-        'SELECT creator_id, create_time FROM page
-            WHERE workspace_id = ? AND page_id = ?',
+        q{SELECT creator_id, create_time FROM page
+            WHERE workspace_id = ? AND page_id = ? FOR UPDATE},
         $wksp_id, $pg_id,
     );
     my $rows = $sth->fetchall_arrayref();
     my ($creator_id, $create_time);
+    my $exists = 0;
     if (@$rows) {
+        $exists = 1;
         $creator_id = $rows->[0][0];
         $create_time = $rows->[0][1];
     }
@@ -1061,11 +1064,6 @@ sub update_db_metadata {
         $creator_id = $orig_page->last_edited_by->user_id;
         $create_time = $orig_page->metadata->Date;
     }
-
-    my $exists = sql_singlevalue('SELECT page_id FROM page 
-                                  WHERE workspace_id = ? 
-                                  AND page_id = ? FOR UPDATE', 
-                                 $wksp_id, $pg_id);
 
     my @args = (
         $hash->{name},
@@ -1129,8 +1127,6 @@ INSSQL
             [ map { [$wksp_id, $pg_id, $_] } @$tags ],
         );
     }
-
-    sql_commit() unless $in_txn;
 }
 
 sub is_system_page {
@@ -1487,14 +1483,14 @@ sub purge {
     my $hash    = $self->hash_representation;
     my $wksp_id = $self->hub->current_workspace->workspace_id;
 
-    sql_begin_work();
-    sql_execute('DELETE FROM page WHERE workspace_id = ? and page_id = ?',
-        $wksp_id, $hash->{page_id}
-    );
-    sql_execute('DELETE FROM page_tag WHERE workspace_id = ? and page_id = ?',
-        $wksp_id, $hash->{page_id}
-    );
-    sql_commit();
+    sql_txn {
+        sql_execute('DELETE FROM page WHERE workspace_id = ? and page_id = ?',
+            $wksp_id, $hash->{page_id}
+        );
+        sql_execute('DELETE FROM page_tag WHERE workspace_id = ? and page_id = ?',
+            $wksp_id, $hash->{page_id}
+        );
+    };
 }
 
 Readonly my $ExcerptLength => 350;

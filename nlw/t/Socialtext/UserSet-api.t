@@ -5,7 +5,7 @@ use strict;
 
 use Test::Socialtext tests => 68;
 use Test::Exception;
-use Socialtext::SQL qw/:txn/;
+use Socialtext::SQL qw/sql_txn/;
 BEGIN {
     use_ok 'Socialtext::Group';
     use_ok 'Socialtext::Workspace';
@@ -124,12 +124,10 @@ nested_txn: {
     my $grp = create_test_group();
     my $user1 = create_test_user();
     my $user2 = create_test_user();
-    sql_begin_work();
-
-    lives_ok { $grp->add_user(user => $user1) } 'added first user in txn';
-    lives_ok { $grp->add_user(user => $user2) } 'added second user in txn';
-
-    sql_commit();
+    sql_txn {
+        lives_ok { $grp->add_user(user => $user1) } 'added first user in txn';
+        lives_ok { $grp->add_user(user => $user2) } 'added second user in txn';
+    };
 
     ok $grp->has_user($user1);
     ok $grp->has_user($user2);

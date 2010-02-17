@@ -21,9 +21,7 @@
 | set | group4 | groupd%%start_time%% |  |
 | create-group | %%group4%% | %%account%% | %%username%% |
 | set | group_id4 | %%group_id%% |  |
-| set | group5 | groupe%%start_time%% |  |
-| create-group | %%group5%% | %%account%% | %%username%% |
-| set | group_id5 | %%group_id%% |  |
+
 | add-group-to-workspace | %%group_id1%% | %%ws%% |  |
 | add-group-to-workspace | %%group_id2%% | %%ws%% |  |
 | add-group-to-workspace | %%group_id3%% | %%ws%% |  |
@@ -43,27 +41,42 @@
 | click_and_wait | link=%%ws%% |  |
 | wait-for-text-present-ok | %%ws%% workspace | 30000 |
 | wait-for-text-present-ok | Groups (4) | 30000 |
-| text_like | //body | qr/Group ID.+Name.+Users.+Workspaces.+Primary Account.+Created.+Creator.*Role/ism |
+| text_like | //body | qr/Name.+Role.+Workspaces.+Users.+Primary Account.+Created.+Creator/ism |
 
-| set | g1_match | %%group_id1%%.*%%group1%%.*2.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
-| set | g2_match | %%group_id2%%.*%%group2%%.*2.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
-| set | g3_match | %%group_id3%%.*%%group3%%.*2.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
-| set | g4_match | %%group_id4%%.*%%group4%%.*2.*1.*%%account%%.*\d{4}-\d\d-\d\d.*member |
+| set | g1_match | `%%group1%%.*1.*2.*%%account%%.\d{4}-\d\d-\d\d.%%short_username%%` |
+| set | g2_match | `.*%%group2%%.*1.*2.*%%account%%.\d{4}-\d\d-\d\d.%%short_username%%` |
+| set | g3_match | `.*%%group3%%.*1.*2.*%%account%%.\d{4}-\d\d-\d\d.%%short_username%%` |
+| set | g4_match | `.*%%group4%%.*1.*2.*%%account%%.\d{4}-\d\d-\d\d.%%short_username%%` |
 
-| *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by name ascending should order groups 1 (a) 3 (b) 2 (c) 4 (d) |  |
-| text_like | //body | qr/%%g1_match%%.+%%g3_match%%.+%%g2_match%%.+%%g4_match%%/sm |
+| text_like | //body | `%%g1_match%%` |
+| text_like | //body | `%%g3_match%%` |
+| text_like | //body | `%%g2_match%%` |
+| text_like | //body | `%%g4_match%%` |
 
-| *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by name descending should order groups 1 (a) 3 (b) 2 (c) 4 (d) |  |
-| click_and_wait | group-sort-name |  |
+| *Comment* | Test Case: Business Control Panel Groups in Workspace name ascending order: 1 (a) 3 (b) 2 (c) 4 (d) |  |
+| text_like | //body | qr/%%g1_match%%.+%%g3_match%%.+%%g2_match%%.+%%g4_match%%/ism |
+
+| *Comment* | Test Case: Business Control Panel Groups in Workspace name descending order: 4 (d) 2 (c) 3 (b) 1 (a) |  |
+| click_ok | groupTable-orderBy-0 |  |
+| pause | 5000 |  |
 | text_like | //body | qr/%%g4_match%%.+%%g2_match%%.+%%g3_match%%.+%%g1_match%%/ism |
 
-| *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by id ascending should order groups 1 2 3 4 |  |
-| click_and_wait | group-sort-id |  |
-| text_like | //body | qr/%%g1_match%%.+%%g2_match%%.+%%g3_match%%.+%%g4_match%%/ism |
+| *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by name ascending again a-b-c-d |  |
+| click_ok | groupTable-orderBy-0 |  |
+| pause | 5000 |  |
+| text_like | //body | qr/%%g1_match%%.+%%g3_match%%.+%%g2_match%%.+%%g4_match%%/ism |
 
-| *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by id descending should order groups 4 3 2 1 |  |
-| click_and_wait | group-sort-id |  |
-| text_like | //body | qr/%%g4_match%%.+%%g3_match%%.+%%g2_match%%.+%%g1_match%%/ism |
+ *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by id ascending should order groups 1 2 3 4 | |
+click_and_wait | ID GOES HERE | |
+pause | 5000 | |
+text_like | //body | qr/%%g1_match%%.+%%g2_match%%.+%%g3_match%%.+%%g4_match%%/ism |
+
+TODO: restore ID sort if ID column comes back to this table
+
+ *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by id descending should order groups 4 3 2 1 | |
+click_and_wait | ID GOES HERE | |
+pause | 5000 | |
+text_like | //body | qr/%%g4_match%%.+%%g3_match%%.+%%g2_match%%.+%%g1_match%%/ism |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Add Group Link |  |
 | open_ok | /nlw/control/workspace |  |
@@ -71,15 +84,32 @@
 | type_ok | name | %%ws%% |
 | st-submit |  |  |
 | click_and_wait | link=%%ws%% |  |
+
+| set | group5 | groupe%%start_time%% |  |
+| create-group | %%group5%% | %%account%% | %%username%% |
+| set | group_id5 | %%group_id%% |  |
+
+| *Comment* | Test Case: Business Control Panel Groups in Workspace Add Group |
 | wait_for_element_present_ok | link=Add Group To Workspace | 30000 |
 | click_and_wait | link=Add Group To Workspace |  |
 | wait_for_element_visible_ok | group_id | 30000 |
+| select_ok | group_id | label=Default,%%group5%% |
+| is_selected_ok | group_id | label=Default,%%group5%% |
+| wait_for_element_visible_ok | send-invite-message | 30000 |
+| uncheck_ok | send-invite-message |  |
+| check_ok | invite-as-admins |  |
+| click_and_wait | //input[@value='Add to Workspace'] |  |
 
-| *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Add Group |
-
-TODO: why does this TC end abruptly with a comment ?
+| *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Group added |
+| wait-for-text-present-ok | Group '%%group5%%' now has the role of admin in the %%ws%% Workspace | 30000 |
+| text_like | //body | qr/%%ws%% workspace/ism |
+| wait_for_element_visible_ok | link=Add Group To Workspace | 5000 |
+| wait_for_element_visible_ok | link=%%group5%% | 5000 |
+| is_selected_ok | groupTable-dropdown-1-0 | label=Member |
+| is_selected_ok | groupTable-dropdown-1-4 | label=Admin |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace TEARDOWN |
+
 | st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace COMPLETED |

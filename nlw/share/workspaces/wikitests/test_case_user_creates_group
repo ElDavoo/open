@@ -4,6 +4,11 @@
 
 | *Comment* | Test Case: User Creates Group Setup |  |
 | set | groupname | ucg group %%start_time%% |
+| set | groupuser | ucg_user_%%start_time%% |
+| set | short_groupuser | ucg user %%start_time%% |
+| set | groupemail | %%groupuser%%@ken.socialtext.net |
+
+| create-user | %%groupemail%% | %%password%% |
 
 | *Comment* | Test Case: User Creates Group disabled, try create group |  |
 | st-admin | disable-plugin --plugin groups --all-accounts |  |
@@ -12,6 +17,9 @@
 
 | *Comment* | Test Case: User Creates Group enabled, create group |  |
 | st-admin | enable-plugin --plugin groups --all-accounts | The groups plugin is now enabled for all accounts |
+
+| st-logoutin | %%groupemail%% | %%password%% |
+
 | open | /?create_group |  |
 | text_like | //body | Create a Group |
 | wait_for_element_visible_ok | link=? | 30000 |
@@ -36,8 +44,8 @@
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| text_like | //body | %%username%% |
-| text_like | //body | Administrator |
+| text_like | //body | Administrators |
+| text_like | //body | %%groupuser%% |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Inspect New Group Page Workspaces |  |
@@ -57,16 +65,14 @@
 | st-widget-title-like | activity_widget | Activity |
 | st-select-widget-frame | activity_widget |  |
 | wait_for_text_present_ok | View RSS feed for %%groupname%% | 30000 |
-| text_like | //body | %%short_username%% |
-| text_like | //body | joined the group %%groupname%% |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Inspect New Group Page Membership |  |
 | st-name-widget | 5 | people_widget |
 | st-widget-title-like | people_widget | Membership |
 | st-select-widget-frame | people_widget |  |
-| wait_for_text_present_ok | %%username%% | 30000 |
-| text_like | //a[contains(@href,'?profile')] | %%username%% |
+| wait_for_element_visible_ok | //a[contains(@href,'?profile')] | 30000 |
+| wait_for_text_present_ok | %%short_groupuser%% | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |

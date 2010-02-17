@@ -5,8 +5,7 @@ use warnings;
 use Readonly;
 use List::Util qw(first);
 use Socialtext::Cache;
-use Socialtext::SQL qw( sql_execute sql_commit sql_rollback sql_begin_work
-                        sql_in_transaction);
+use Socialtext::SQL qw(get_dbh sql_execute :txn);
 use Socialtext::Validate qw(
     validate validate_pos SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE
     HANDLE_TYPE URI_TYPE USER_TYPE ROLE_TYPE PERMISSION_TYPE FILE_TYPE
@@ -134,17 +133,8 @@ sub new {
         },
     };
     sub set {
-        my $self = shift;
-        my $in_transaction = sql_in_transaction();
-        eval {
-            sql_begin_work() unless $in_transaction;
-            $self->_set_permissions(@_);
-            sql_commit unless $in_transaction;
-        };
-        if ( my $e = $@ ) {
-            sql_rollback() unless $in_transaction;
-            rethrow_exception($e);
-        }
+        my ($self,@args) = @_;
+        sql_txn { $self->_set_permissions(@args) };
         Socialtext::Cache->clear('ws_perms');
     }
 

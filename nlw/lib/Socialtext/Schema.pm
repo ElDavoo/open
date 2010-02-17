@@ -6,8 +6,7 @@ use File::Spec;
 use Socialtext::Paths;
 use Socialtext::AppConfig;
 use Socialtext::System qw/shell_run/;
-use Socialtext::SQL qw/sql_singlevalue sql_execute sql_begin_work 
-                       sql_commit disconnect_dbh/;
+use Socialtext::SQL qw/sql_execute disconnect_dbh/;
 use Socialtext::SystemSettings qw/get_system_setting set_system_setting/;
 
 # Ignore PG environment variables that may be hanging around.

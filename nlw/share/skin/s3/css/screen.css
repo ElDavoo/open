@@ -3899,6 +3899,11 @@ body#dashBoard #st-editing-tools-edit #lastsignal {
     border: 1px solid #759FB1;
     padding: 4px;
     text-align: center;
+    display: none;
+}
+
+.notice .error {
+    color: #D00;
 }
 
 ul li.flexButtonBlue a.addButton {

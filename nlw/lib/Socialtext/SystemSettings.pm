@@ -3,7 +3,7 @@ package Socialtext::SystemSettings;
 use strict;
 use warnings;
 use base 'Exporter';
-use Socialtext::SQL qw/sql_begin_work sql_execute sql_commit sql_singlevalue/;
+use Socialtext::SQL qw/sql_singlevalue sql_execute sql_txn/;
 
 our @EXPORT_OK = qw/exists_system_setting get_system_setting set_system_setting/;
 
@@ -42,10 +42,10 @@ sub set_system_setting {
     my $name = shift;
     my $value = shift;
 
-    sql_begin_work();
-    sql_execute('DELETE FROM "System" WHERE field = ?', $name);
-    sql_execute('INSERT INTO "System" VALUES (?,?)', $name, $value);
-    sql_commit();
+    sql_txn {
+        sql_execute('DELETE FROM "System" WHERE field = ?', $name);
+        sql_execute('INSERT INTO "System" VALUES (?,?)', $name, $value);
+    };
 }
 
 

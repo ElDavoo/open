@@ -112,11 +112,8 @@ sub purge {
 sub _save_db {
     my ($self, %blobs) = @_;
 
-    my $dbh = get_dbh;
-
-    my $txn = sql_in_transaction();
-    sql_begin_work($dbh) unless $txn;
-    eval {
+    sql_txn {
+        my $dbh = get_dbh;
         local $dbh->{RaiseError} = 1; # b/c of direct $dbh usage
 
         my $table = $self->table;
@@ -147,14 +144,7 @@ sub _save_db {
         $sth->execute;
 
         die "unable to update image" unless ($sth->rows == 1);
-
-        sql_commit($dbh) unless $txn;
     };
-    if ($@) {
-        warn $@;
-        sql_rollback($dbh) unless $txn;
-        return "SQL Error";
-    }
 }
 
 sub _save_cache {

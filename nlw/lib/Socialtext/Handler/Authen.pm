@@ -15,7 +15,7 @@ use Socialtext::AppConfig;
 use Socialtext::Authen;
 use Socialtext::BrowserDetect;
 use Socialtext::Hub;
-use Socialtext::Log qw(st_timed_log);
+use Socialtext::Log qw(st_log st_timed_log);
 use Socialtext::Timer;
 use Socialtext::Apache::User;
 use Socialtext::User;

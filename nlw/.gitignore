@@ -420,3 +420,4 @@ t/wikitests/frontend/http-keep-alive.wiki
 t/Socialtext/Gadgets/Gadget-expand.t
 t/wikitests/widgets/proxy-nocache.wiki
 t/wikitests/people/rest/data_people_paged.wiki
+t/Socialtext/Gadgets/Gadget-install.t

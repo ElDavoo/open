@@ -594,7 +594,12 @@ sub _insert {
 
     my $t = time_scope('uset_insert');
 
-    $self->_create_insert_temp($dbh) unless $bulk;
+    if ($bulk) {
+        $dbh->do("TRUNCATE to_copy");
+    }
+    else {
+        $self->_create_insert_temp($dbh);
+    }
 
     my $prep_method = $bulk ? 'prepare_cached' : 'prepare';
 

@@ -112,8 +112,7 @@ sub POST {
 
     my @workspaces;
 
-    sql_begin_work();
-    eval {
+    eval { sql_txn {
         for my $meta (@$request) {
             my $ws = $self->_create_workspace_from_meta($meta);
             push @workspaces, $ws;
@@ -124,9 +123,8 @@ sub POST {
                 actor => $user,
             );
         }
-    };
+    }};
     if (my $e = $@) {
-        sql_rollback();
         my ($status, $message);
         if (ref($e)) {
             $status = $e->isa('Socialtext::Exception::Auth')
@@ -146,8 +144,6 @@ sub POST {
         );
         return "$message";
     }
-
-    sql_commit();
 
     my $location = @workspaces > 1
         ? '/data/workspaces'

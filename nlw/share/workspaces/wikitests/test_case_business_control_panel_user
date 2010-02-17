@@ -16,8 +16,7 @@
 | type_ok | name | %%new_workspace%% |
 | st-submit |  |  |
 | click_and_wait | link=%%new_workspace%% |  |
-| text_like | admin |  |
-| text_unlike | //body | member |
+| is_selected_ok | //select[@id='userTable-dropdown-1-0'] | label=Admin |
 
 | *Comment* | Test case: Business Control Panel User exercise 'add new user' button |  |
 | click_and_wait | link=Accounts |  |
@@ -61,7 +60,7 @@
 | *Comment* | Test case: Business Control Panel User wait for JS to build account table |  |
 | *Comment* | table contains identical links to Account links, so test table content instead |  |
 
-| wait_for_element_present_ok | //input[contains(@id,'userAccountTable-radio')] | 3000 |
+| wait_for_element_present_ok | //input[contains(@id,'accountTable-radio')] | 3000 |
 | wait_for_text_present_ok | Relationship | 30000 |
 | text_like | //table[@class='sttable'] | %%new_acct%% |
 | text_like | //table[@class='sttable'] | %%new_workspace%% |
@@ -89,6 +88,8 @@
 | type_ok | username | %%cli_user%% |
 | st-submit |  |  |
 | text_like | Showing 1 - 1 of 1 total. |  |
+
+TODO: remove user from Workspace and remove user from Account
 
 | *Comment* | Test case: Business Control Panel User TEARDOWN |  |
 

@@ -3,9 +3,9 @@
 
 | *Comment* | Test Case: Create LDAP Group - Startup LDAP, should contain list of LDAP Group Factories |  |
 | open-ok | /nlw/control/group/ |  |
-| wait_for_element_visible_ok | link=Create Group | 5000 |
-| click_ok | link=Create Group |  |
-| wait_for_text_present_ok | Create a new Socialtext group | 5000 |
+| wait_for_element_visible_ok | //input[@type='button' and @value="Create new Group"] | 30000 |
+| click_ok | //input[@type='button' and @value="Create new Group"] |  |
+| wait_for_text_present_ok | Create a new Socialtext group | 30000 |
 | wait_for_text_present_ok | Load an existing group from LDAP | 5000 |
 | wait_for_element_visible_ok | st-radio-stdgroup | 5000 |
 | wait_for_element_visible_ok | st-radio-ldapgroup | 5000 |
@@ -33,8 +33,10 @@
 | *Comment* | Test Case: Create LDAP Group. Save and Verify |  |
 | wait_for_element_visible_ok | st-group-create-submit | 30000 |
 | click_ok | st-group-create-submit |  |
+
+| *Comment* | Test Case: Create LDAP Group. Process jobs after Motorhead |  |
 | st-process-jobs |  |  |
-| pause | 20000 |  |
+
 | get_group_id | Motorhead | created_group_id |
 | open_ok | /nlw/control/group/%%created_group_id%% |  |
 

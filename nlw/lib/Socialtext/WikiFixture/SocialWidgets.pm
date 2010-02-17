@@ -56,8 +56,7 @@ sub init {
 
 =head2 st_empty_container ( )
 
-Empties the current container using the action=clear_widgets parameter. 
-You should navigate to the container URL using normal Selenese test command like "open"
+Navigates to and empties the Dashboard.
 
 =cut
 sub st_empty_container { 
@@ -364,9 +363,7 @@ You pass in the link name in add content screen.
 sub st_single_widget_in_dashboard {
     my ($self, $linkid) = @_;
     eval {
-        $self->open_ok("/?dashboard");
         $self->handle_command('st-empty-container');
-        $self->open_ok("/?dashboard");
         $self->handle_command('wait_for_element_visible_ok','link=Add Content','30000');
         $self->handle_command('click_and_wait','link=Add Content');
         my $str = '//a[@id=' . "'" . $linkid . "'" . ']';
@@ -467,7 +464,7 @@ sub st_verify_text_in_activities_widget {
     my ($self, $widgetname, $texttofind) = @_;
     #eval {
         $self->handle_command('st-select-widget-frame', $widgetname);
-        $self->handle_command('pause', 3000);
+        $self->handle_command('pause', 12000);
         #If is regexp,
         if ($texttofind=~/^qr\//) {
             $self->handle_command('text_like','//body', $texttofind);

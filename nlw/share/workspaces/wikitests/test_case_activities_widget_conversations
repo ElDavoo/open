@@ -59,23 +59,25 @@
 | select-ok | up_limit | 25 |
 | wait_for_element_visible_ok | st-savebutton-%%activities_widget%% | 30000 |
 | click_ok | st-savebutton-%%activities_widget%% |  |
+| wait_for_element_not_visible_ok | up_limit | 30000 |
+| wait_for_element_not_visible_ok | st-savebutton-%%activities_widget%% | 30000 |
 
 | *Comment* | Test Case: Activities Widget Conversations Verify Edits and Comments |  |
 
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpagetwo%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+edited %%notconvpagetwo%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+%%notconvpagetwo%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited.+%%notconvpagetwo%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+edited.+%%notconvpagetwo%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+%%notconvpagetwo%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%/ism |
 
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+commented on %%watchedpagename%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mycommentedpagename%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpage%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%actorshort%%.+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%actorshort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+commented.+on.+%%watchedpagename%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited.+%%mycommentedpagename%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited.+%%mypagename%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited.+%%notconvpage%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%actorshort%%.+minute.+ago.+commented.+on.+%%mycommentedpagename%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%actorshort%%.+minute.+ago.+edited.+%%mypagename%%.+in.+%%wrkspc%%/ism |
 
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpagetwo%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+commented on %%watchedpagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%mycommentedpagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited %%notconvpage%% in %%wrkspc%%.+%%actorshort%%.+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%.+%%actorshort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited.+%%notconvpagetwo%%.+in.+%%wrkspc%%.+%%convusershort%%.+minute.+ago.+commented.+on.+%%watchedpagename%%.+in.+%%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited.+%%mycommentedpagename%%.+in.+%%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited.+%%mypagename%%.+in.+%%wrkspc%%.+%%convusershort%%.+minute.+ago.+edited.+%%notconvpage%%.+in.+%%wrkspc%%.+%%actorshort%%.+minute.+ago.+commented.+on.+%%mycommentedpagename%%.+in.+%%wrkspc%%.+%%actorshort%%.+minute.+ago.+edited.+%%mypagename%%.+in.+%%wrkspc%%/ism |
 
 | *Comment* | Test Case: Activities Widget Conversations Changes to convos only, verify Edits, Comments, and NOT PRESENTs |  |
 | st-select-widget-frame | activities_widget |  |
@@ -84,13 +86,13 @@
 | wait_for_element_visible_ok | link=%%convusershort%% | 30000 |
 | select-frame | relative=parent |  |
 
-| st_text_unlike_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpagetwo%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+commented on %%watchedpagename%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mycommentedpagename%% in %%wrkspc%%/ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
-| st_text_unlike_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited %%notconvpage%% in %%wrkspc%%/ |
-| st_text_unlike_in_activities_widget | activities_widget | qr/%%actorshort%%+minute.+ago.+commented on %%mycommentedpagename%% in %%wrkspc%%/ |
-| st_text_unlike_in_activities_widget | activities_widget | qr/%%actorshort%%.+minute.+ago.+edited %%mypagename%% in %%wrkspc%%/ |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited.+%%notconvpagetwo%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+commented.+on.+%%watchedpagename%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited.+%%mycommentedpagename%%.+in.+%%wrkspc%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited.+%%mypagename%%.+in.+%%wrkspc%%/ism |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%convusershort%%.+minute.+ago.+edited.+%%notconvpage%%.+in.+%%wrkspc%%/ism |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%actorshort%%+minute.+ago.+commented.+on.+%%mycommentedpagename%%.+in.+%%wrkspc%%/ism |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%actorshort%%.+minute.+ago.+edited.+%%mypagename%%.+in.+%%wrkspc%%/ism |
 
 | *Comment* | Test Case: Activities Widget Verify Conversation TEARDOWN |  |
 

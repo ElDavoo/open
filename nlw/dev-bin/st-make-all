@@ -14,6 +14,7 @@ my @dirs = qw(
     plugins/dashboard
     plugins/people
     plugins/control
+    plugins/groups
 );
 
 pod2usage() unless (@ARGV);

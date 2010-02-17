@@ -148,11 +148,11 @@ sub add_user {
 
     my $user = eval { Socialtext::User->Resolve($args{username}) };
     if ($user) {
-        # If an account is specified, add the user to that account.
-        if ($self->{account} && 
-            $user->primary_account_id != $self->{account}->account_id) 
-        {
-            $self->{account}->add_user(user => $user);
+        my $acct = $self->{account};
+        # If an account is specified, add the user to that account if they are
+        # not already a mamber.
+        if ($acct && !$acct->has_user($user)) {
+            $acct->add_user(user => $user);
             $changed_user++;
         }
     }

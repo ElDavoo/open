@@ -9,28 +9,22 @@ use namespace::clean -except => 'meta';
 sub modify_roles {
     my ($self, $call) = @_;
 
-    my $in_txn = sql_in_transaction();
-    sql_begin_work() unless $in_txn;
-
-    eval {
+    eval { sql_txn {
         $call->();
         conflict
             errors => ["Workspaces need to include at least one admin."]
             unless $self->workspace->has_at_least_one_admin();
-    };
+    }};
 
     my $e = Exception::Class->caught('Socialtext::Exception::Conflict');
     if ($e) {
-        sql_rollback() unless $in_txn;
         return $self->conflict($e->errors);
     }
     elsif ($@)  {
-        sql_rollback() unless $in_txn;
         $self->rest->header( -status => HTTP_400_Bad_Request );
         return $@;
     }
 
-    sql_commit() unless $in_txn;
     $self->rest->header( -status => HTTP_204_No_Content );
     return '';
 }

@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use Test::More;
+use Test::Exception;
 
 BEGIN {
     if (!-e 't/lib/Socialtext/People/Profile.pm') {
@@ -10,12 +11,13 @@ BEGIN {
         exit;
     }
     
-    plan tests => 114;
+    plan tests => 115;
 }
 
 use mocked 'Socialtext::People::Profile', qw(save_ok);
 use mocked 'Socialtext::Log', qw(:tests);
 use mocked 'Socialtext::User';
+use Socialtext::Account;
 $Socialtext::MassAdd::Has_People_Installed = 1;
 
 use_ok 'Socialtext::MassAdd';
@@ -102,6 +104,46 @@ Add_from_hash: {
         is_deeply \@successes, ['Added user ronnie'], 'success message ok';
         logged_like 'info', qr/Added user ronnie/, '... message also logged';
     }
+}
+
+add_user_to_account_again: {
+    my $id = time . $$ . 'double_jeopardy';
+    my $account = Socialtext::Account->create(name => $id);
+    my %userinfo = (
+        username      => 'master',
+        email_address => 'master@juba.com',
+        first_name    => 'Master',
+        last_name     => 'Juba',
+        password      => 'jazztapstep',
+        position      => 'Dancer',
+        company       => 'Independent',
+        location      => '',
+        work_phone    => '',
+        mobile_phone  => '',
+        home_phone    => ''
+    );
+
+    my $acct_id = Socialtext::Account->Default->account_id;
+    my $master  = Socialtext::User->new(
+        username           => 'master',
+        primary_account_id => $acct_id,
+    );
+
+    local $Socialtext::User::Users{master} = $master;
+
+    # User is _already_ a member of the account we intend to add them to.
+    $account->add_user(user => $master);
+
+    my $success = '';
+    my $mass_add = Socialtext::MassAdd->new(
+        account => $account,
+        pass_cb => sub { $success = $_[0] },
+        fail_cb => sub { },
+    );
+
+    lives_ok {
+        $mass_add->add_user(%userinfo);
+    } 'user is added without incident';
 }
 
 my $PIRATE_CSV = <<'EOT';

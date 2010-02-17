@@ -55,7 +55,7 @@
 | pause | 5000 |  |
 | wait_for_text_present_ok | Workspace role changes were successful. | 30000 |
 | select_ok | userTable-dropdown-1-0 | label=Member |
-| wait_for_text_present_ok | The workspace needs to include at least one admin. | 30000 |
+| wait_for_text_present_ok | Workspaces need to include at least one admin | 30000 |
 | is_selected_ok | userTable-dropdown-1-0 | label=Admin |
 | st-search-cp-workspace | %%group_ws%% | 1 |
 | wait_for_element_visible_ok | userTable-dropdown-1-0 | 30000 |
@@ -87,7 +87,7 @@
 | click_ok | userTable-select-1 |  |
 | click_ok | userTable-select-2 |  |
 | click_ok | userTable-action-2 |  |
-| wait_for_text_present_ok | The workspace needs to include at least one admin. | 30000 |
+| wait_for_text_present_ok | Workspaces need to include at least one admin | 30000 |
 | st-search-cp-workspace | %%group_ws%% | 1 |
 | wait_for_element_visible_ok | userTable-dropdown-1-0 | 30000 |
 | is_selected_ok | userTable-dropdown-1-0 | label=Admin |
@@ -134,7 +134,7 @@
 | click_ok | userTable-select-0 |  |
 | click_ok | userTable-select-1 |  |
 | click_ok | userTable-action-2 |  |
-| wait_for_text_present_ok | The workspace needs to include at least one admin. | 30000 |
+| wait_for_text_present_ok | Workspaces need to include at least one admin | 30000 |
 | text_like | //body | Users (2) |
 | is_selected_ok | userTable-dropdown-1-0 | label=Admin |
 | is_selected_ok | userTable-dropdown-1-1 | label=Member |

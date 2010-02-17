@@ -937,6 +937,19 @@ sub _add_user_to_group_as {
     );
 }
 
+sub delete_group {
+    my $self = shift;
+    my $group = $self->_require_group();
+    my $gid = $group->group_id;
+    
+    eval { $group->delete };
+    if ($@) {
+        warn $@;
+        $self->_error(loc("Failed to delete group id [_1]: [_2]", $gid, $@));
+    }
+    $self->_success(loc("Deleted group id: [_1]", $gid));
+}
+
 # We don't need to be magical here because there is no 'admin' role for
 # Groups within Accounts (yet).
 sub _add_group_to_account_as {
@@ -3717,6 +3730,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-group-admin --group [ --username or --email ]
   remove-member --group [--account or --workspace]
   remove-member [ --username or --email ] --group
+  delete-group --group
 
   OTHER
 
@@ -4285,6 +4299,10 @@ If no C<--account> is specified, the default system Account will be used.
 
 If no C<--email> is specified, regular groups will be created by the
 System User.
+
+=head2 delete-group --group
+
+Deletes a Socialtext Group. C<--group> must be a Group ID>.
 
 =head2 add-member --group [--account or --workpsace]
 

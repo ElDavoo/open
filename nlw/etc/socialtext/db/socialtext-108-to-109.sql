@@ -1,33 +1,52 @@
 BEGIN;
 
--- Create a new table for all view events, move all view events
--- into that table.
-CREATE TABLE view_event (
-    "at" timestamptz NOT NULL,
-    "action" text NOT NULL,
-    actor_id integer NOT NULL,
-    event_class text NOT NULL,
-    context text,
-    page_id text,
-    page_workspace_id bigint,
-    person_id integer,
-    tag_name text,
-    signal_id bigint,
-    hidden boolean DEFAULT false,
-    group_id bigint
-);
+-- modify the purge_user_set function to remove the signal_user_set entry
+-- and hide signals.
+CREATE OR REPLACE FUNCTION purge_user_set(to_purge integer) RETURNS boolean
+AS $$
+    BEGIN
+        LOCK user_set_include, user_set_path IN SHARE MODE;
 
--- No longer need these indexes
-DROP INDEX ix_event_noview_at;
-DROP INDEX ix_event_noview_at_page;
-DROP INDEX ix_event_noview_at_person;
-DROP INDEX ix_event_noview_class_at;
+        DELETE FROM user_set_include
+        WHERE from_set_id = to_purge OR into_set_id = to_purge;
 
--- Move data into this new table
-INSERT INTO view_event ( SELECT * FROM event_archive WHERE action = 'view');
-INSERT INTO view_event ( SELECT * FROM event         WHERE action = 'view');
-DELETE FROM event_archive WHERE action = 'view';
-DELETE FROM event         WHERE action = 'view';
+        DELETE FROM user_set_path
+        WHERE user_set_path_id IN (
+            SELECT user_set_path_id
+              FROM user_set_path_component
+             WHERE user_set_id = to_purge
+        );
+
+        DELETE FROM user_set_plugin_pref
+        WHERE user_set_id = to_purge;
+
+        DELETE FROM user_set_plugin
+        WHERE user_set_id = to_purge;
+
+        -- Signals that will have zero user-sets after we delete to_purge need
+        -- to also get purged.  Otherwise these signals become visible to
+        -- everyone.
+        UPDATE SIGNAL
+        SET hidden = true
+        WHERE signal_id IN (
+            SELECT signal_id
+              FROM signal_user_set sus1
+             WHERE sus1.user_set_id = to_purge
+               AND NOT EXISTS (
+                   SELECT 1
+                     FROM signal_user_set sus2
+                    WHERE sus1.signal_id = sus2.signal_id
+                      AND sus2.user_set_id <> to_purge
+               )
+         );
+
+        DELETE FROM signal_user_set
+        WHERE user_set_id = to_purge;
+
+        RETURN true;
+    END;
+$$
+    LANGUAGE plpgsql;
 
 --- DB migration done
 UPDATE "System"

@@ -167,6 +167,15 @@ $.extend(Socialtext.Group.prototype, {
             });
             callback(result);
         });
+    },
+
+    remove: function(callback) {
+        $.ajax({
+            url: this.url(),
+            type: 'DELETE',
+            success: this.successCallback(callback),
+            error: this.errorCallback(callback)
+        });
     }
 });
 

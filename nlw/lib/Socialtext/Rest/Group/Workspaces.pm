@@ -79,8 +79,7 @@ sub POST_json {
         return "bad json";
     }
 
-    sql_begin_work();
-    eval {
+    eval { sql_txn {
         foreach my $meta (@$json) {
             $self->_add_group(
                 $group,
@@ -88,9 +87,8 @@ sub POST_json {
                 $meta->{role} || 'member'
             );
         }
-    };
+    }};
     if (my $e = $@) {
-        sql_rollback();
         my ($status, $message);
 
         if (my $err = ref($e)) {
@@ -115,7 +113,6 @@ sub POST_json {
         return "$message";
     }
 
-    sql_commit();
     $rest->header(-status => HTTP_201_Created);
     return encode_json($group->to_hash);
 }

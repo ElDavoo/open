@@ -23,10 +23,10 @@
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group Add the Group |  |
 | wait_for_element_visible_ok | link=Add Group To Workspace | 30000 |
-| text_like | //body | Groups (0) |
+| wait_for_text_present_ok | Groups (0) | 30000 |
 | click_and_wait | link=Add Group To Workspace |  |
 | wait_for_element_visible_ok | send-invite-message | 30000 |
-| wait_for_element_visible_ok | invite-as-admins | 30000 |
+| uncheck_ok | send-invite-message |  |
 | text_like | //body | qr/Add Group To Workspace/ism |
 | text_like | //body | Send invitation email |
 | wait_for_element_visible_ok | group_id | 30000 |
@@ -34,24 +34,29 @@
 | click_and_wait | //input[@value='Add to Workspace'] |  |
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group Verify the add |  |
-| text_like | //body | qr/Group '%%group%%' now has the role of member in the %%ws%% workspace/ism |
-| text_like | //body | Groups (1) |
+| wait_for_text_present_ok | Group '%%group%%' now has the role of member in the %%ws%% | 30000 |
+| wait_for_text_present_ok | Groups (1) | 30000 |
+| wait_for_text_present_ok | Users (0) | 30000 |
 | wait_for_element_visible_ok | link=%%group%% | 30000 |
-| st-admin | show-members -w %%ws%% | member |
-| wait_for_element_visible_ok | link=%%group%% | 30000 |
-| text_like | //body | Users (0) |
+| st-admin | list-groups -w %%ws%% | %%group%% |
 
-| *Comment* | Test Case: Business Control Panel Workspace Add Group (Now Remove It) |  |
-| wait_for_element_visible_ok | group_id | 30000 |
-| click_ok | name=group_id value=%%group_id%% |  |
-| wait_for_element_visible_ok | st-remove-group-from-workspace-submit | 30000 |
-| click_and_wait | st-remove-group-from-workspace-submit |  |
-| confirmation_like | qr/Are you sure you want to remove this Group from the %%ws%% Workspace?/ism |  |
-| wait_for_element_visible_ok | link=Usage Reports | 30000 |
-| text_like | //body | %%group%% Group has been removed from the Workspace |
-| text_like | //body | Groups (0) |
+| *Comment* | Test Case: Business Control Panel Workspace Add Group - try to remove it |  |
+| wait_for_element_visible_ok | groupTable-select-0 | 30000 |
+| click_ok | groupTable-select-0 |  |
+| wait_for_element_visible_ok | //input[@id='groupTable-action-0' and @value="Remove from Workspace"] | 30000 |
+| click_ok | //input[@id='groupTable-action-0' and @value="Remove from Workspace"] |  |
+| confirmation_like | qr/Remove the.+selected group/ism |  |
+| wait_for_text_present_ok | Workspaces need to include at least one admin | 30000 |
 
-| *Comment* | Test Case: Business Control Panel Workspace Add Group TEARDOWN | |
+| *Comment* | Test Case: Business Control Panel Workspace Add Group - give WS admin so group can be removed |  |
+| st-admin | add-workspace-admin --w %%ws%% --u %%username%% | now has the role of 'admin' |
+| click_ok | groupTable-select-0 |  |
+| wait_for_element_visible_ok | //input[@id='groupTable-action-0' and @value="Remove from Workspace"] | 30000 |
+| click_ok | //input[@id='groupTable-action-0' and @value="Remove from Workspace"] |  |
+| confirmation_like | qr/Remove the.+selected group/ism |  |
+| wait_for_text_present_ok | Workspace role changes were successful | 30000 |
+
+| *Comment* | Test Case: Business Control Panel Workspace Add Group TEARDOWN |  |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group COMPLETED |  |

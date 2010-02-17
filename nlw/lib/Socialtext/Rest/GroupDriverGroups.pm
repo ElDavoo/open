@@ -46,16 +46,15 @@ __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 =head1 NAME
 
-Socialtext::Rest::Groups - List groups on the system.
+Socialtext::Rest::GroupDriverGroups - List groups in a driver on the system.
 
 =head1 SYNOPSIS
 
-    GET /data/groups
+    GET /data/group_drivers/:driver/groups
 
 =head1 DESCRIPTION
 
-View the list of groups.  You can only see groups you created or are a
-member of, unless you are a business admin, in which case you can see
-all groups.
+View the list of groups present in a given driver.  Only visible by a Business
+Admin.
 
 =cut

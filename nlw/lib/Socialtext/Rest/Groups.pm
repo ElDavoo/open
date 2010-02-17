@@ -111,9 +111,8 @@ sub POST_json {
 
     $data->{account_id} ||= $user->primary_account_id;
 
-    sql_begin_work();
     my $group;
-    eval {
+    eval { sql_txn {
         $group = ($data->{ldap_dn})
             ? $self->_create_ldap_group($data)
             : $self->_create_native_group($data);
@@ -130,10 +129,8 @@ sub POST_json {
                 "$Socialtext::Rest::Uploads::UPLOAD_DIR/$photo_id");
             $group->photo->set(\$blob);
         }
-    };
+    }};
     if (my $e = $@) {
-        sql_rollback();
-
         my $status = (ref($e) eq 'Socialtext::Exception::Auth')
             ? HTTP_401_Unauthorized
             : HTTP_400_Bad_Request;
@@ -141,7 +138,6 @@ sub POST_json {
         $rest->header(-status => $status);
         return $e;
     }
-    sql_commit();
 
     $rest->header(-status => HTTP_201_Created);
     return encode_json($group->to_hash);

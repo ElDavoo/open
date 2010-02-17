@@ -4,7 +4,7 @@
 
 | *Comment* | Test Case: Groups UI Delegate Membership Setup |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
-| enable-acct-plugin | signals | %%group_acct%% |  |
+|  | enable-acct-plugin | signals | %%group_acct%% |  |
 | set | grp_mbr_short | guimbr%%start_time%% |  |
 | set | grp_mbr_bestfull | guimbr%%start_time%% |  |
 | set | grp_mbr | %%grp_mbr_short%%@matt.socialtext.net |  |
@@ -15,6 +15,7 @@
 
 | *Comment* | Test Case: Groups UI ADelegate Membership - Open The Group |  |
 | open_ok | /st/group/%%group_id%%/ |  |
+| setSpeed | 3000 |  |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
@@ -107,6 +108,7 @@
 | text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
 | click_and_wait | create-group |  |
+| setSpeed | 0 |  |
 
 | *Comment* | Test Case: Groups UI Delegate Membership. TEARDOWN |
 | delete-group | %%group_id%% |
