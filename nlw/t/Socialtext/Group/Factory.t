@@ -6,11 +6,6 @@ use warnings;
 use Test::Socialtext tests => 8;
 
 ###############################################################################
-# Fixtures: base_config
-# - Need config files around, but don't care what's in them.
-fixtures(qw( base_config ));
-
-###############################################################################
 # Implement some Group Factories that we can test with/against
 {
     package ReadWriteGroupFactory;
