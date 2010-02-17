@@ -10,6 +10,7 @@ jemplate/widget_date_edit.html
 jemplate/widget_fetchatom_edit.html
 jemplate/widget_fetchrss_edit.html
 jemplate/widget_file_edit.html
+jemplate/widget_googlesearch_edit.html
 jemplate/widget_googlesoap_edit.html
 jemplate/widget_image_edit.html
 jemplate/widget_include_edit.html
