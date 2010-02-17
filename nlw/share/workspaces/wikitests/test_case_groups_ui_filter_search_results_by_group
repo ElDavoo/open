@@ -42,7 +42,7 @@
 | st-admin | add-member --email %%other_acct_diff_mbr%% --workspace %%other_ws%% | now has the role of 'member' |
 
 | *Comment* | Test Case: Groups UI Filter Search Results by Group Put UTF-8 into my name |  |
-| set | utf8_first_name | firstnameáäåéþðfx |
+| set | utf8_first_name | memberfirstnameáäåéþðfx |
 | set | utf8_last_name | useráäåéþðfx |
 | open_ok | /?action=users_settings |  |
 | wait_for_element_visible_ok | //input[@name='first_name'] | 30000 |
