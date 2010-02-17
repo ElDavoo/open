@@ -17,11 +17,11 @@ use Test::Socialtext tests => 15;
 ###############################################################################
 # Create our test fixtures *OUT OF PROCESS* as we're using a mocked Hub.
 BEGIN {
-    my $rc = system('dev-bin/make-test-fixture --fixture admin_no_pages');
+    my $rc = system('dev-bin/make-test-fixture --fixture db');
     $rc >>= 8;
     $rc && die "unable to set up test fixtures!";
 }
-fixtures(qw( admin_no_pages ));
+fixtures(qw( db ));
 
 ###############################################################################
 # TEST DATA
