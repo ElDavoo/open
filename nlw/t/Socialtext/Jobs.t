@@ -5,7 +5,7 @@ use warnings;
 use Test::Socialtext tests => 65;
 use Test::Exception;
 
-fixtures('db', 'foobar');
+fixtures('foobar');
 
 BEGIN {
     use_ok 'Socialtext::Jobs';
