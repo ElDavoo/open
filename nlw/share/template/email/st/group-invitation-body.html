@@ -1,4 +1,5 @@
 [%# @COPYRIGHT@ -%]
+[% SET group_name = group_name | html %]
 
 [% IF extra_text %]
 [% extra_text -%]
@@ -32,7 +33,6 @@
 [% user.best_full_name %],
 </p>
 <p>
-[% SET acct_name = group_name | html %]
 [% loc('[_1] has added you to the group: [_2]', inviting_user, group_name) %] 
 </p>
 <p>
