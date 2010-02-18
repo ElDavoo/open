@@ -178,8 +178,6 @@ basic_utf8: {
     my $utf8 = "big and Groß";
     make_page_ok( $utf8, "Cows are good but $utf8 en français",
         ["español"] );
-    TODO: {
-    local $TODO = 'Solr stories should fix me!';
     search_ok( "français",         1, "Utf8 body search" );
     search_ok( "Groß",             1, "Utf8 general search" );
     search_ok( "Groß français",   1, "Utf8 search with implicit AND" );
@@ -191,7 +189,6 @@ basic_utf8: {
         "Groß AND (français OR tag:español) AND category:español",
         1, "Complicated search with UTF-8"
     );
-    }
 
     # Ensure the tokenizer/stemmers aren't just ignoring the UTF-8
     search_ok( "Gro",          0, "UTF-8 not lost in stemming" );
