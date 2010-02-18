@@ -21,10 +21,13 @@ sub say { print(@_, "\n") }
 
 # Polls signals DB, sends updates to connected users
 # TODO:
-# * Show all signals from "public" groups (defined in config)
-# ** This would allow better client-side filtering of groups
 # * Figure out how to make database polling non-blocking
+# ** anyevent DBI OR coro-dbd-pg
+# ** OR do DB stuff in a separate, related process using IPC
+# ** use pg's built-in NOTIFY functionality to *not* poll?
 # * don't poll the DB when we just did X msec ago
+# * somehow refresh account/group membership
+# * When a user connects, send any queued items
 
 my $main_cv = AE::cv();
 my $dbh = get_dbh();
