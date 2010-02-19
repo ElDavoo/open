@@ -18,7 +18,8 @@
 
 | *Comment* | Test Case: Tagging Profile. %%username%% may be in any account, and is secondarily in tagging-profile. |  |
 | *Comment* | Test Case: Tagging Profile. fog tag added |  |
-| click_and_wait | link=Profile |  |
+| set_user_bfn | best_full | %%username%% |
+| click_and_wait | link=%%best_full%% |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
 | type_ok | new_tag | fog %%start_time%% |
 | click_ok | //input[@value='Add Tag'] |  |
@@ -71,9 +72,9 @@ text_like | 所以 | |
 | click_and_wait | login_btn |  |
 
 | *Comment* | Test Case: Tagging Profile. fog tag added to %%e_user%% |  |
-| wait_for_element_visible_ok | link=Profile | 60000 |
+| wait_for_element_visible_ok | link=%%best_full%% | 60000 |
 | text_like | %%fname%% %%lname%% |  |
-| click_and_wait | link=Profile |  |
+| click_and_wait | link=%%best_full%% |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
 | type_ok | new_tag | fog %%start_time%% |
 | click_ok | //input[@value='Add Tag'] |  |
@@ -100,8 +101,9 @@ text_like | 所以 | |
 | st-admin | add-member --w tp-%%start_time%% --e %%tag_user%% | now has the role of 'member' in the |
 
 | st-logoutin | %%tag_user%% | %%password%% |
-| wait_for_element_visible_ok | link=Profile | 30000 |
-| click_and_wait | link=Profile |  |
+| set_user_bfn | best_full_tag | %%tag_user%% |
+| wait_for_element_visible_ok | link=%%best_full_tag%% | 30000 |
+| click_and_wait | link=%%best_full_tag%% |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
 | type_ok | new_tag | tagger %%start_time%% |
 | click_ok | //input[@value='Add Tag'] |  |

@@ -31,7 +31,8 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test case: Activities Widget Verify My Signals. Wait for Signal to appear in Profile Activity |  |
-| click_and_wait | link=Profile |  |
+| set_user_bfn | best_full | %%username%% |
+| click_and_wait | link=%%best_full%% |  |
 | wait_for_text_present_ok | Activity | 30000 |
 | st-name-widget | 3 | profile_activity |
 | st-widget-title-like | profile_activity | Activity |

@@ -8,8 +8,9 @@
 
 | *Comment* | Test Case: Signal From Profile. logged in user has empty "lastsignal" |  |
 
-| wait_for_element_visible_ok | link=Profile | 30000 |
-| click_and_wait | link=Profile |  |
+| set_user_bfn | best_full | %%spuser%% | 
+| wait_for_element_visible_ok | link=%%best_full%% | 30000 |
+| click_and_wait | link=%%best_full%% |  |
 | wait_for_element_present_ok | //div[@id='lastsignal'] | 30000 |
 | wait_for_element_not_present_ok | //div[@id='lastsignal']//a | 5000 |
 
@@ -32,7 +33,7 @@
 | st-verify-text-in-activities-widget | wtactivities | %%signal%% |
 
 | *Comment* | Test Case: Signal From Profile. Signal appears in %%spuser%% profile activities widget |  |
-| click_and_wait | link=Profile |  |
+| click_and_wait | %%best_full%% |  |
 | wait_for_text_present_ok | Activity | 30000 |
 | st-name-widget | 3 | spactivities |
 | st-widget-title-like | spactivities | Activity |
@@ -50,7 +51,7 @@
 | *Comment* | Test Case: Signal From Profile. logged in user private signals another user from the other user's profile |  |
 | *Comment* | Test Case: Signal From Profile. it is safe to let the other user be wikitester@ken.socialtext.net |  |
 
-| click_and_wait | link=Profile |  |
+| click_and_wait | %%best_full%% |  |
 | wait_for_element_present_ok | st-search-action | 5000 |
 | select_ok | st-search-action | id=st-search-people |
 | st-search | wikitester | People matching 'wikitester' |
@@ -67,7 +68,7 @@
 | st-verify-text-in-widget | wtactivities | %%private%% |
 
 | *Comment* | Test Case: Signal From Profile. mention appears in %%spuser%% profile activities widget |  |
-| click_and_wait | link=Profile |  |
+| click_and_wait | link=%%best_full%% |  |
 | wait_for_text_present_ok | Activity | 30000 |
 | st-name-widget | 3 | spactivities |
 | st-verify-text-in-widget | spactivities | %%private%% |

@@ -25,7 +25,8 @@
 | text_like | st-wikinav-logout | Log out |
 
 | *Comment* | Test Case: Global Navigation Profile |  |
-| click_and_wait | link=Profile |  |
+| set_user_bfn | best_full | %%username%% |
+| click_and_wait | link=%%best_full%% |  |
 | text_like | contentContainer | Profile |
 | text_like | contentContainer | Activity |
 | text_like | contentContainer | Colleagues |

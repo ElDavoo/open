@@ -3,8 +3,9 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Active Members Actions - View Profile |  |
-| wait_for_element_visible_ok | link=Profile | 60000 |
-| click_and_wait | link=Profile |  |
+| set_user_bfn | best_full | %%username%% |
+| wait_for_element_visible_ok | link=%%best_full%% | 60000 |
+| click_and_wait | link=%%best_full%% |  |
 | st-name-widget | 1 | profile |
 | st-select-widget-frame | profile |  |
 | wait_for_element_visible_ok | link=(Edit) | 60000 |
