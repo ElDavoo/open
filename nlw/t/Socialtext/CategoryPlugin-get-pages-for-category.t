@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 4;
+use Test::Socialtext tests => 7;
 use Socialtext::Pages;
 use DateTime;
 
@@ -26,6 +26,7 @@ my $hub = create_test_hub();
     }
 }
 
+############# CRAPPY OLD API ###################
 # get ten of them and see which ones you have
 Get_with_limit: {
     my @pages = $hub->category->get_pages_for_category( 'rad', 10 );
@@ -45,3 +46,15 @@ Get: {
         'pages returned in sequence';
     is scalar(@numbers), 10, 'got 10 pages';
 }
+
+############# NEW FAST API ###################
+Get_with_limit: {
+    my $pages = $hub->category->_get_pages_for_listview( 'rad', 'desc', undef, 10, 5 );
+    is $pages->{total_entries}, 20, 'total entries';
+    my @ids = map {$_->{page_id}} @{ $pages->{rows} };
+    my @numbers = map {$_ =~ /_(\d+)$/; $1} @ids;
+
+    is join(',', @numbers), join(',', reverse 6 .. 15), 'pages returned in sequence';
+    is scalar(@numbers), 10, 'got 10 pages';
+}
+
