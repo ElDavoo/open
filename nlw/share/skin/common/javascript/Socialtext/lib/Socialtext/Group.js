@@ -90,8 +90,8 @@ $.extend(Socialtext.Group.prototype, {
      *   }
      */
     addMembers: function(users, callback) {
-        // Not an array, then make it into a structure
-        if ($.isArray(users) || !users) { 
+        // If an array, then make it into a structure
+        if ((Object.prototype.toString.call(users) === '[object Array]') ||   !users) { 
             users = {users: (users || [])};
         };
         if (!users.users.length) return callback({});
