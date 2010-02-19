@@ -121,3 +121,5 @@ fi
 
 # Clean up dead symlinks
 find -L -type l -delete
+
+echo "fresh-dev-env-from-scratch complete."
