@@ -3,7 +3,7 @@ package Socialtext::Model::Pages;
 use strict;
 use warnings;
 use Socialtext::Model::Page;
-use Socialtext::SQL qw/sql_execute/;
+use Socialtext::SQL qw/sql_execute sql_singlevalue/;
 use Socialtext::Timer;
 use Carp qw/croak/;
 
@@ -84,6 +84,7 @@ sub By_tag {
     my $hub          = $p{hub};
     my $workspace_id = $p{workspace_id};
     my $limit        = $p{count} || $p{limit};
+    my $offset       = $p{offset};
     my $tag          = $p{tag};
     my $order_by     = $p{order_by} || 'last_edit_time DESC';
     my $no_tags      = $p{do_not_need_tags};
@@ -91,13 +92,14 @@ sub By_tag {
 
     Socialtext::Timer->Continue('By_category');
     my $pages = $class->_fetch_pages(
-        hub          => $hub,
-        workspace_id => $workspace_id,
-        limit        => $limit,
-        tag          => $tag,
-        order_by     => "page.$order_by",
+        hub              => $hub,
+        workspace_id     => $workspace_id,
+        limit            => $limit,
+        offset           => $offset,
+        tag              => $tag,
+        order_by         => $order_by,
         do_not_need_tags => $no_tags,
-        type         => $type,
+        type             => $type,
     );
     Socialtext::Timer->Pause('By_category');
     return $pages;
@@ -170,6 +172,12 @@ sub _fetch_pages {
         push @{ $p{bind} }, $p{tag};
     }
 
+    # If ordering by a user, add the extra join and order by the display name
+    if ( ($p{order_by}||'') =~ m/^page\.(creator_id|last_editor_id) (\S+)$/ ) {
+        $p{order_by} = "users.display_name $2";
+        $more_join .= " JOIN users ON (page.$1 = users.user_id)";
+    }
+
     if ( $p{type} ) {
         $p{where} .= ' AND ' if $p{where};
         $p{where} .= 'page.page_type = ?';
@@ -196,8 +204,8 @@ sub _fetch_pages {
     }
 
     my $order_by = '';
-    if ( $p{order_by} ) {
-        $order_by = "ORDER BY $p{order_by}";
+    if ($p{order_by} && $p{order_by} =~ /^[a-z0-9_.]+(:? asc| desc)?$/i) {
+        $order_by = "ORDER BY $p{order_by}, page.name asc";
     }
 
     my $limit = '';
@@ -336,7 +344,7 @@ sub ChangedCount {
     my $workspace_id = $p{workspace_id};
     my $max_age      = $p{duration};
 
-    my $sth = sql_execute(<<EOT,
+    return sql_execute(<<EOT,
 SELECT count(*) FROM page
     WHERE NOT deleted
       AND workspace_id = ?
@@ -344,6 +352,25 @@ SELECT count(*) FROM page
 EOT
         $workspace_id, "$max_age seconds",
     );
+}
+
+sub ActiveCount {
+    my ($class, %p) = @_;
+
+    return sql_singlevalue(q{
+        SELECT count(*) FROM page WHERE NOT deleted AND workspace_id = ?
+    }, $p{workspace});
+}
+
+sub TaggedCount {
+    my ($class, %p) = @_;
+
+    return sql_singlevalue(q{
+        SELECT count(*) 
+          FROM page
+          JOIN page_tag USING (page_id, workspace_id)
+         WHERE NOT deleted AND workspace_id = ? AND tag = ?
+    }, $p{workspace_id}, $p{tag});
 }
 
 1;
