@@ -37,7 +37,8 @@ INSTALLSCRIPT   = $(PREFIX)@BINDIR@
 PERL = @PERL@
 
 # Testing
-PROVE = nice st-prove --timer --state=save
+PROVE_ARGS =
+PROVE = nice st-prove --timer --state=save $(PROVE_ARGS)
 TEST_JOBS = 4
 UNIT_TESTS  = $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
 WIKID_TESTS = $(shell find -L t/wikitests/ -name '*.wiki')
