@@ -23,7 +23,7 @@ use Socialtext::Log qw( st_log );
 use Socialtext::Paths;
 use Socialtext::PageMeta;
 use Socialtext::Search::AbstractFactory;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::EmailSender::Factory;
 use Socialtext::l10n qw(loc system_locale);
 use Socialtext::WikiText::Parser;
@@ -2315,6 +2315,7 @@ sub edit_summary { $_[0]->metadata->RevisionSummary }
 # This is called by Socialtext::Query::Plugin::push_result
 sub to_result {
     my $self = shift;
+    my $t = time_scope 'page_to_result';
     my $metadata = $self->metadata;
 
     my $result = {};
