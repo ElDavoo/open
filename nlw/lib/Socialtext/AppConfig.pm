@@ -1250,6 +1250,14 @@ Default: 1
 
 =for code type => BOOLEAN_TYPE
 
+=head2 desktop_update_url
+
+Set this to an empty string to prevent Desktop clients from auto-updating itself.
+
+Default: http://www.socialtext.com/desktop/update.xml
+
+=for code type => SCALAR_TYPE
+
 =head2 solr_base
 
 Set this to the base URL for your solr instance.
