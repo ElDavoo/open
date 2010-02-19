@@ -8,7 +8,6 @@ use Socialtext::Page;
 use Socialtext::User;
 use Socialtext::Jobs;
 use Socialtext::WebHook;
-use Data::Dumper;
 
 fixtures(qw( empty ));
 
