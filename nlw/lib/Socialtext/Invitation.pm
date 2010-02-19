@@ -20,21 +20,20 @@ has 'extra_text' => (is => 'ro', isa => 'Maybe[Str]',);
 has 'extra_args' => (is => 'ro', isa => 'Hash', lazy_build => 1);
 
 sub queue {
-    my $self      = shift;
-    my $invitee   = shift;
-    my %user_args = @_;
+    my $self    = shift;
+    my $invitee = shift;
+    my %addtl   = @_;
 
+    my $role   = delete $addtl{role} || Socialtext::Role->Member();
     my $object = $self->object;
-    my $user = Socialtext::User->new(
-        email_address => $invitee
-    );
+    my $user   = Socialtext::User->new(email_address => $invitee);
 
     $user ||= Socialtext::User->create(
         username => $invitee,
         email_address => $invitee,
         created_by_user_id => $self->from_user->user_id,
         primary_account_id => $object->account_id,
-        %user_args,
+        %addtl,
     );
 
     $user->set_confirmation_info()
@@ -42,7 +41,7 @@ sub queue {
 
     $object->assign_role_to_user(
         user => $user,
-        role => Socialtext::Role->Member()
+        role => $role,
     );
 
     Socialtext::JobCreator->insert(
