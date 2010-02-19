@@ -372,19 +372,19 @@ tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
 test:
-	$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS) $(WIKID_TESTS)
+	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS) $(WIKID_TESTS)
 
 testunit:
-	$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS)
+	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS)
 
 testwikid:
-	$(PROVE) --jobs $(TEST_JOBS) $(WIKID_TESTS)
+	@$(PROVE) --jobs $(TEST_JOBS) $(WIKID_TESTS)
 
 testplugin-%:
-	$(PROVE) -s $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
+	@$(PROVE) -s $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
 
 testlive:
-	$(PROVE) -r t/live
+	@$(PROVE) -r t/live
 
 testall: test testlive
 
