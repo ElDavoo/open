@@ -25,7 +25,6 @@
 | type_lookahead_ok | addAccountLookahead | %%acct2%% |
 | wait_for_element_visible_ok | link=%%acct2%% | 30000 |
 | click_ok | link=%%acct2%% |  |
-| wait_for_text_present_ok | User has been added to the %%acct2%% account | 30000 |
 | wait_for_text_present_ok | Accounts (2) | 30000 |
 | text_like | //body | qr/%%primacct%%.+Primary Account.+%%acct2%%.+Member of Account/ |
 | wait_for_element_visible_ok | link=Name | 30000 |

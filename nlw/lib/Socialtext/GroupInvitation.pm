@@ -34,7 +34,7 @@ sub _template_args {
     my $self = shift;
     return (
         group_name => $self->group->driver_group_name,
-        group_uri  => Socialtext::URI::uri(path => '/'),
+        group_uri  => Socialtext::URI::uri(path => '/st/group/'.$self->group->group_id),
     );
 }
 

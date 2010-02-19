@@ -1,25 +1,32 @@
 [% extra_text -%]
+[% UNLESS requires_confirmation %]
 
+--
+[% END %]
+[% IF requires_confirmation -%]
 [% loc('Hi,') %]
 
 [% loc("I'm inviting you to join [_1], one of our Socialtext groups", group_name) %] [% UNLESS requires_confirmation %][% loc('Sign in using the information below:') %][% END %]
 
-[% IF requires_confirmation -%]
 [% loc("Please click on this link to confirm your email address:") %] [% confirmation_uri | html %]
 
 [% loc("Once you have confirmed your account, you will receive a second email with login details.") %]
-[% ELSE -%]
-[% loc('web address:') %] [% group_uri | html %]
-[% loc('username:') %] [% username | html %]
-
-[% loc("If you don't remember your password, follow this link to select a new password:") %]
-[% forgot_password_uri %]
-
-[% END -%]
 
 [% loc('Thanks,') %]
 
 [% inviting_user %]
+[% ELSE -%]
+[% user.best_full_name %],
+
+[% SET acct_name = group_name | html -%]
+[% loc('[_1] has added you to the group: [_2]', inviting_user, group_name) %] 
+
+[% loc("As a member, you can send Signals to the group and use any of the group workspaces.") %]
+
+[% loc('Go to the')%] [% group_name %] [% loc('Home Page.') %]: [% group_uri %]
+
+[% group_name %] [% loc('is a group on [_1].', host) %]
+[% END -%]
 
 [% PROCESS 'email/standard-footer.txt'
    support_link = 1 %]

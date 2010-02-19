@@ -90,11 +90,22 @@ sub st_timed_log {
     my $name = shift;
     my $user = shift;
     my $data = shift || {};
-    my $times = shift || {};
+    my $times = shift;
+    my $extended_times = shift;
 
-    my $time = join(',', map { $_.':'.$times->{$_} } 
-                         sort { $times->{$b} <=> $times->{$a} } 
-                         keys %$times);
+    my $time;
+    if ($times) {
+        $time = join(',', map { $_.':'.$times->{$_} } 
+                             sort { $times->{$b} <=> $times->{$a} } 
+                             keys %$times);
+    }
+    elsif ($extended_times) {
+        my $t = $extended_times;
+        $time = join(',', map { "$_($t->{$_}{count}):$t->{$_}{duration}" } 
+                             sort { $t->{$b}{duration} <=> $t->{$a}{duration} } 
+                             keys %$t);
+    }
+
     $data->{timers} = $time if $time;
 
     my $user_id = $user

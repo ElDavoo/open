@@ -144,8 +144,8 @@
 | st-search-cp-workspace | %%group_ws%% | 1 |
 | wait_for_element_visible_ok | userTable-dropdown-1-0 | 30000 |
 | text_like | //body | Users (2) |
-| wait_for_element_visible_ok | groupTable-dropdown-1-0 | 30000 |
-| is_selected_ok | groupTable-dropdown-1-0 | label=Admin |
+| wait_for_element_visible_ok | groupTable-dropdown-2-0 | 30000 |
+| is_selected_ok | groupTable-dropdown-2-0 | label=Admin |
 | st-search-cp-workspace | %%group_ws%% | 1 |
 | wait_for_element_visible_ok | userTable-select-0 | 30000 |
 | click_ok | userTable-select-0 |  |

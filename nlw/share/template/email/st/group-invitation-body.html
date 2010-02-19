@@ -1,45 +1,51 @@
 [%# @COPYRIGHT@ -%]
+[% SET group_name = group_name | html %]
 
 [% IF extra_text %]
 [% extra_text -%]
+[% UNLESS requires_confirmation %]
+<hr/>
+[% END %]
 [% END %]
 
+[% IF requires_confirmation %]
 <p>
 [% loc('Hi,') %]
 </p>
-
 <p>
-[% SET acct_name = group_name | html %]
-[% loc("I'm inviting you to join the [_1] group at [_2].", acct_name, host) %]
-[% UNLESS requires_confirmation %]
-[% loc('Sign in using the information below:') %]
-[% END %]
+[% loc("I'm inviting you to join the [_1] group at [_2].", group_name, host) %]
 </p>
-
-[% IF requires_confirmation %]
 <p>
 [% SET confirm_uri = confirmation_uri | html %]
 [% loc('Please <a href="[_1]">click on this link</a> to confirm your email address.', confirm_uri) %]
 </p>
-
 <p>
 [% loc('Once you have confirmed your account, you will receive a second email with login details.') %]
 </p>
+<p>
+[% loc('Thanks,') %]
+</p>
+<p>
+[% inviting_user %]
+</p>
 [% ELSE %]
 <p>
-[% loc('web address:') %] <a href="[% group_uri | html %]">[% group_uri | html %]</a><br />
-[% loc('username:') %] [% username | html %]
+[% user.best_full_name %],
+</p>
+<p>
+[% loc('[_1] has added you to the group: [_2]', inviting_user, group_name) %] 
+</p>
+<p>
+[% loc("As a member, you can send Signals to the group and use any of the group workspaces.") %]
+<p>
+[% loc('Go to the')%] <a href="[% group_uri | html %]">[% group_name %]</a> [% loc('Home Page.') %]
+</p>
+<p>
+[% group_name %] [% loc('is a group on [_1].', host) %]
 </p>
 
 [% END %]
 
-<p>
-[% loc('Thanks,') %]
-</p>
-
-<p>
-[% inviting_user %]
-</p>
 
 [% PROCESS 'email/standard-footer.html'
    support_link = 1 %]

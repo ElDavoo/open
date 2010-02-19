@@ -192,7 +192,8 @@ sub log_timings {
         $message,
         $handler->user,
         $data,
-        Socialtext::Timer->Report()
+        undef,
+        Socialtext::Timer->ExtendedReport()
     );
 }
 
