@@ -325,6 +325,7 @@ sub _pages_for_tag {
     my $self = shift;
     my $tag = shift;
 
+    # In the future, use category->_get_pages_for_listview, which is fast
     my $rows = $self->hub->category->get_page_info_for_category($tag);
     return $self->_process_template(
         $TAG_TEMPLATE,
