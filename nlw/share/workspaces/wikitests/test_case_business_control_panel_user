@@ -16,7 +16,8 @@
 | type_ok | name | %%new_workspace%% |
 | st-submit |  |  |
 | click_and_wait | link=%%new_workspace%% |  |
-| is_selected_ok | //select[@id='userTable-dropdown-1-0'] | label=Admin |
+| wait_for_element_visible_ok | userTable-dropdown-1-0 |  |
+| is_selected_ok | userTable-dropdown-1-0 | label=Admin |
 
 | *Comment* | Test case: Business Control Panel User exercise 'add new user' button |  |
 | click_and_wait | link=Accounts |  |
