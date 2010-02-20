@@ -91,7 +91,7 @@ Set the NLW cookie to a valid cookie for $username
 sub set_nlw_cookie_for_user {
     my ($self, $username) = @_;
 
-    $email ||= $self->{http_username};
+    $username ||= $self->{http_username};
     my $user = Socialtext::User->Resolve($username);
 
     require Socialtext::HTTP::Cookie;
@@ -222,7 +222,7 @@ sub stress_for {
     Socialtext::System::shell_run('torture', @args);
 }
 
-=head2 standard-test-setup
+=head2 password standard-test-setup
 
 Set up a new account, workspace and user to work with.
 
@@ -2332,6 +2332,8 @@ sub _json_path_test {
         }
     }
 
+    # work around the fact that we aren't reading .wiki files in unicode mode
+    $expected = Encode::decode_utf8($expected) if $test =~ /^is/;
     if ($test eq 'is') {
         return is $sel, $expected, $comment;
     }
@@ -2360,12 +2362,6 @@ sub _json_path_test {
     return;
 }
 
-sub st_widgets {
-    my $self    = shift;
-    my $options = shift || '';
-    Socialtext::System::shell_run('st-widgets', $options);
-}
-
 {
     no strict 'refs';
     for my $test (qw(is isnt like unlike exists missing size)) {
@@ -2374,6 +2370,26 @@ sub st_widgets {
             $self->_json_path_test($test,@_);
         };
     }
+}
+
+sub json_path_set {
+    my ($self, $key, $path) = @_;
+
+    $path =~ s/^\$//; # remove leading $
+    my $sel = eval { $self->_select_json_path($path, $self->{json}) };
+    if (my $e = $@) {
+        fail "path selection error: $e";
+    }
+    else {
+        $self->{$key} = $sel;
+        pass "set $key to $sel (\$$path)";
+    }
+}
+
+sub st_widgets {
+    my $self    = shift;
+    my $options = shift || '';
+    Socialtext::System::shell_run('st-widgets', $options);
 }
 
 1;
