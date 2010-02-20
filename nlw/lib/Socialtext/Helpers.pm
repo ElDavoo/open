@@ -397,7 +397,7 @@ sub valid_email_domain {
     my $self_or_class = shift;
     my $domain = shift;
 
-    my $validator =  Email::Valid->new( tldcheck => 1 );
+    my $validator =  Email::Valid->new();
     return $validator->address( 'user@' . $domain ) ? 1 : 0;
 }
 
