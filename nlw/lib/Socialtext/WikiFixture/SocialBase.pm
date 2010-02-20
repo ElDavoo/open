@@ -89,8 +89,11 @@ Set the NLW cookie to a valid cookie for $username
 =cut
 
 sub set_nlw_cookie_for_user {
-    my ($self, $email) = @_;
-    my $user = Socialtext::User->Resolve($email);
+    my ($self, $username) = @_;
+
+    $email ||= $self->{http_username};
+    my $user = Socialtext::User->Resolve($username);
+
     require Socialtext::HTTP::Cookie;
     my $user_id = $user->user_id;
     my $mac = Socialtext::HTTP::Cookie->MAC_for_user_id($user_id);
@@ -134,6 +137,22 @@ sub http_user_pass {
     # store it locally too.
     $self->{http_username} = $user if $user;
     $self->{http_password} = $pass if $pass;
+
+    $self->clear_nlw_cookie;
+}
+
+=head2 http_user_pass_and_cookie ( $username, $password )
+
+Set the HTTP username and password.
+
+=cut
+
+sub http_user_pass_and_cookie {
+    my $self = shift;
+    my $user = shift;
+    my $pass = shift;
+    $self->http_user_pass($user,$pass);
+    $self->set_nlw_cookie_for_user($user);
 }
 
 =head2 follow_redirects_for ( $methods )
