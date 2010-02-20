@@ -11,6 +11,7 @@ use Socialtext::Rest::Version;
 use Socialtext::JSON;
 use Socialtext;
 use Socialtext::AppConfig;
+use Socialtext::Appliance::Config;
 use Readonly;
 
 Readonly my @PUBLIC_CONFIG_KEYS => qw(
@@ -31,6 +32,7 @@ sub make_getter {
             return '';
         }
 
+        my $appliance = Socialtext::Appliance::Config->new;
 
         $rest->header(-type => "$type; charset=UTF-8");
 
@@ -40,6 +42,9 @@ sub make_getter {
         return $render->({
             server_version => $Socialtext::VERSION,
             api_version => $Socialtext::Rest::Version::API_VERSION,
+            desktop_update_url => $appliance->value('desktop_update_enabled')
+                                    ? $appliance->value('desktop_update_url')
+                                    : '',
             ( map { $_ => Socialtext::AppConfig->$_() } @PUBLIC_CONFIG_KEYS ),
         });
 
