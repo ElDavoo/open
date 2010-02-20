@@ -75,6 +75,13 @@ sub console_port {
         : PORTS_START_AT() + 5000 + $>;
 }
 
+memoize 'pushd_port';
+sub pushd_port {
+    return Socialtext::AppConfig->is_appliance()
+        ? _default_backend_http_port() + 3
+        : PORTS_START_AT() + 6000 + $>;
+}
+
 ###############################################################################
 # Helpers: front-end HTTP port
 sub _env_var_http_port {
