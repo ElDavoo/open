@@ -1,0 +1,41 @@
+[%# @COPYRIGHT@ -%]
+
+<p style="font-weight: bold;">
+  [% loc("Thank you for joining your company's collaboration group, hosted by Socialtext.") %]
+</p>
+
+
+[% IF requires_confirmation %]
+
+  [% SET uri = confirmation_uri | html %]
+  <p>[% loc('Please <a target="blank" title="(external link)" href="[_1]">click here</a> to confirm your email address and log in.', uri) %]</p>
+  <p>[% loc('If your email client does not support hyperlinks, you can also copy and paste this URL into a browser to confirm your email address:') %]</p>
+  <blockquote>[% uri %]</blockquote>
+  <p>[% loc('By clicking the above link, you can immediately start sharing &quot;Twitter-like&quot; messages privately with your co-workers, and find a better way to work using social networking and wiki workspaces. You also get your own personal home page.') %]</p>
+
+[% ELSE %]
+
+  <p>
+    [% loc('web address:') %] <a href="[% account_uri | html %]">[% account_uri | html %]</a><br />
+    [% loc('username:') %] [% username | html %]
+  </p>
+
+  [% IF appconfig.is_default('user_factories') %]
+    [% IF app_name; a = 'a'; ELSE; a = 'an'; END %]
+    <p>
+      [% loc("Because you already have [_1] [_2] group, the password is the same as the password you use for your other [_3] groups.", a, app_name, app_name) %]
+      [% loc("If you don't remember it, follow this link to select a new password:") %]
+      [% forgot_password_uri %]
+    </p>
+  [% END %]
+
+  <p>[% loc('You may want to keep this email for future reference.') %]</p>
+
+[% END %]
+
+<p>[% loc("We encourage you to invite other co-workers to join your company's collaboration network.") %]</p>
+<p>[% loc("If you did not request to join your company's collaboration network, please contact <a href=\"mailto:abuse@socialtext.com\">abuse@socialtext.com</a>") %]</p>
+
+<p>[% loc("Happy Collaborating!") %]</p>
+<p><img alt="Socialtext logo" src="http://www.socialtext.com/themes/socialtext/images/header_logo.gif" /></p>
+<p style="font-weight: bold; font-style: italic;"><a href="http://www.socialtext.com">www.socialtext.com</a></p>
