@@ -49,6 +49,7 @@ my $tt2 = Template->new({
 });
 
 my $widget = $widget_data->{$type};
+
 my @required = defined $widget->{required}
   ? (@{$widget->{required}})
   : defined $widget->{field}

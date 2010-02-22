@@ -78,4 +78,11 @@
     nocomment: 1
     files:
         - ../../wikiwyg/javascript/lib/Selection.htc
+'socialtext-editor.js':
+    compress: 1
+    files:
+        - lightbox-attachment.js
+        -
+            skin: wikiwyg
+            target: socialtext-editor.js
 

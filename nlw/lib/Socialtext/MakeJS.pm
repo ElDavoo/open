@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Socialtext::AppConfig;
 use Socialtext::System qw(shell_run);
+use Socialtext::JSON qw(encode_json);
 use File::Basename qw(dirname);
 use JavaScript::Minifier::XS qw(minify);
 use File::Slurp qw(slurp write_file);
@@ -22,10 +23,26 @@ for my $file (glob("$code_base/skin/*/javascript/Deps.yaml")) {
     $files{$plugin} = YAML::LoadFile($file);
 }
 
+sub CleanAllSkins {
+    my ($class) = @_;
+    for my $skin (keys %files) {
+        warn "Cleaning skin $skin...\n" if $VERBOSE;
+        $class->CleanSkin($skin);
+    }
+}
+
+sub BuildAllSkins {
+    my ($class) = @_;
+    for my $skin (keys %files) {
+        warn "Building skin $skin...\n" if $VERBOSE;
+        $class->BuildSkin($skin);
+    }
+}
+
 sub BuildSkin {
     my ($class, $skin) = @_;
     for my $target (keys %{$files{$skin}}) {
-        warn "Starting $target...\n" if $VERBOSE;
+        warn "Building $target...\n" if $VERBOSE;
         $class->Build($skin, $target);
     }
 }
@@ -33,6 +50,7 @@ sub BuildSkin {
 sub CleanSkin {
     my ($class, $skin) = @_;
     local $CWD = "$code_base/skin/$skin/javascript";
+    warn "Cleaning files in skin $skin...\n" if $VERBOSE;
     unlink keys %{$files{$skin}};
 }
 
@@ -61,7 +79,7 @@ sub _build_from_template {
     my $config = $config_file ? YAML::LoadFile($config_file) : {};
     $config->{make_time} = time;
 
-    warn "Building $info->{target}...\n" if $VERBOSE;
+    warn "Writing to $info->{target}...\n" if $VERBOSE;
     my $output;
     Template->new->process($template, $config, \$output);
     return $output;
@@ -72,7 +90,7 @@ sub _build_from_command {
     if (-f $info->{target}) {
         return;
     }
-    warn "Building $info->{target}...\n" if $VERBOSE;
+    warn "Writing to $info->{target}...\n" if $VERBOSE;
     $Socialtext::System::SILENT_RUN = !$VERBOSE;
     shell_run "$info->{command} > $info->{target}";
 }
@@ -83,8 +101,96 @@ sub _build_from_jemplates {
     my $latest = (sort map { modified($_) } @$jemplates)[-1];
     my $last_build = modified($info->{target});
     return unless $latest > $last_build;
-    warn "Building $info->{target} from jemplates...\n" if $VERBOSE;
+    warn "Writing to $info->{target} from jemplates...\n" if $VERBOSE;
     return Jemplate->compile_template_files(@$jemplates);
+}
+
+# This is a one off for widgets and should only happen in the wikiwyg skin
+sub _build_from_widget_jemplates {
+    my ($class, $info) = @_;
+
+    my $items = $info->{widget_jemplates} || die 'no widget_jemplates';;
+
+    my @files = ('Widgets.yaml', map { "template/$_->{template}" } @$items);
+    my $latest = (map { modified($_) } @files)[-1];
+    return unless $latest > modified($info->{target});
+
+    warn "Writing to $info->{target} from widget jemplates...\n" if $VERBOSE;
+
+    $Socialtext::System::SILENT_RUN = !$VERBOSE;
+
+    my $yaml = YAML::LoadFile('Widgets.yaml');
+
+    my @jemplates;
+    for my $item (@$items) {
+        if ($item->{all}) {
+            for my $widget (@{$yaml->{widgets}}) {
+                $class->_render_widget_jemplate(
+                    yaml => $yaml,
+                    output => "jemplate/widget_${widget}_edit.html",
+                    template => $item->{template},
+                );
+                push @jemplates, "jemplate/widget_${widget}_edit.html";
+            }
+        }
+        else {
+            $class->_render_widget_jemplate(
+                yaml => $yaml,
+                output => $item->{target},
+                template => $item->{template},
+            );
+            push @jemplates, $item->{target};
+        }
+    }
+
+    return Jemplate->compile_template_files(@jemplates );
+}
+
+{
+    my $tt2;
+
+    sub _render_widget_jemplate {
+        my ($class, %vars) = @_;
+        my $yaml_data = delete $vars{yaml} || die;
+        my $output_file = $vars{output} || die;
+        my $template = $vars{template} || die;
+        my $widget_data = $yaml_data->{widget} || die;
+
+        my ($type, $kind) = ('','');
+        if ($output_file =~ /^jemplate\/widget_(\w+)_(\w+)\.html$/) {
+            ($type, $kind) = ($1, $2);
+        }
+
+        $tt2 ||= Template->new({
+            START_TAG => '<!',
+            END_TAG => '!>',
+            INCLUDE_PATH => ['template'],
+        });
+
+        my $widget = $widget_data->{$type};
+        my @required = defined $widget->{required}
+          ? (@{$widget->{required}})
+          : defined $widget->{field}
+            ? ($widget->{field})
+            : ();
+        my %required = map {($_, 1)} @required;
+        my $data = {
+            type => $type,
+            data => $yaml_data,
+            widget => $widget,
+            fields =>
+                $widget->{field} ? [$widget->{field}] :
+                $widget->{fields} ? $widget->{fields} :
+                [],
+            pdfields => $widget->{pdfields},
+            required => \%required,
+            menu_hierarchy => $yaml_data->{menu_hierarchy},
+        };
+
+        warn "Generating $output_file\n" if $VERBOSE;
+        $tt2->process($template, $data, $output_file)
+            || die $tt2->error(), "\n";
+    }
 }
 
 sub _build_lightbox {
@@ -101,13 +207,24 @@ sub _build_lightbox {
             and $last_build >= modified($js)
             and $last_build >= modified('st-lightbox.js');
 
-    warn "Building lightbox: $info->{lightbox}\n";
+    warn "Writing to lightbox: $info->{lightbox}\n";
     return join "\n",
         Jemplate->compile_template_files($tt2);
         "// BEGIN st-lightbox.js",
         slurp('st-lightbox.js'), 
         "// BEGIN $js",
         slurp($js);
+}
+
+sub _build_json {
+    my ($class, $info) = @_;
+    my $yaml = $info->{json};
+    my $name = $info->{name} || die "name required";
+
+    my $last_build = modified($info->{target});
+    return unless modified($yaml) >  $last_build;
+
+    return "$name = " . encode_json(YAML::LoadFile($yaml)) . ";";
 }
 
 sub _build_from_files {
@@ -144,7 +261,7 @@ sub _build_from_files {
     my $last_build = modified($info->{target});
 
     if ($last_build < $latest) {
-        warn "Building $info->{target}...\n" if $VERBOSE;
+        warn "Writing to $info->{target}...\n" if $VERBOSE;
         # Now actually build
         my $all = '';
         for my $file (@files) {
@@ -177,6 +294,12 @@ sub Build {
     }
     elsif ($info->{jemplates}) {
         $text = $class->_build_from_jemplates($info);
+    }
+    elsif ($info->{widget_jemplates}) {
+        $text = $class->_build_from_widget_jemplates($info);
+    }
+    elsif ($info->{json}) {
+        $text = $class->_build_json($info);
     }
     elsif ($info->{lightbox}) {
         $text = $class->_build_lightbox($info);
