@@ -15,10 +15,13 @@ use AnyEvent;
 use AnyEvent::Handle;
 use AnyEvent::Socket qw/tcp_server/;
 use HTTP::Parser::XS qw/parse_http_request/;
+use HTTP::Response ();
+use bytes; no bytes; # just load it
 
 use base 'Exporter';
 our $VERSION = '1.0';
 our @EXPORT = qw(http_server);
+our @EXPORT_OK = qw(http_server serialize_response);
 
 sub http_server($$$) {
     my $host = shift;
@@ -27,7 +30,8 @@ sub http_server($$$) {
     return tcp_server $host, $port, sub { handle_http(@_,$cb) };
 }
 
-my $EOH = "\015\012\015\012";
+my $CRLF = "\015\012";
+my $EOH = $CRLF.$CRLF;
 sub handle_http {
     my $fh = shift;
     my $host = shift;
@@ -77,6 +81,12 @@ sub handle_http {
     });
 
     return;
+}
+
+sub serialize_response {
+    my $resp = shift;
+    $resp->header('Content-Length', bytes::length($resp->content));
+    return "HTTP/1.0 ".$resp->as_string($CRLF);
 }
 
 1;
