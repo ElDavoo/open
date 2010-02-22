@@ -227,13 +227,16 @@ around 'groups','group_count' => sub {
 
 sub invite {
     my $self = shift;
-    my %p    = @_;  # passed straight through.
+    my %p    = @_;
 
     require Socialtext::AccountInvitation;
     return Socialtext::AccountInvitation->new(
         account    => $self,
         from_user  => $p{from_user},
         extra_text => $p{extra_text},
+
+        # optional arguments.
+        ($p{template} ? (template => $p{template}) : ()),
         ($p{viewer} ? (viewer => $p{viewer}) : ()),
     );
 }

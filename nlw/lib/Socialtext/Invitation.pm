@@ -10,14 +10,10 @@ use Socialtext::l10n qw(system_locale);
 use Socialtext::EmailSender::Factory;
 use namespace::clean -except => 'meta';
 
-has 'from_user' => (
-    is       => 'ro', isa => 'Socialtext::User',
-    required => 1,
-);
-
-has 'viewer'  => (is => 'ro', isa => 'Socialtext::Formatter::Viewer',);
-has 'extra_text' => (is => 'ro', isa => 'Maybe[Str]',);
-has 'extra_args' => (is => 'ro', isa => 'Hash', lazy_build => 1);
+has 'from_user'  => (is => 'ro', isa => 'Socialtext::User', required => 1);
+has 'viewer'     => (is => 'ro', isa => 'Socialtext::Formatter::Viewer');
+has 'extra_text' => (is => 'ro', isa => 'Maybe[Str]');
+has 'template'   => (is => 'ro', isa => 'Str', default => 'st');
 
 sub queue {
     my $self    = shift;
@@ -50,15 +46,16 @@ sub queue {
             user_id         => $user->user_id,
             sender_id       => $self->from_user->user_id,
             extra_text      => $self->extra_text,
+            template        => $self->template,
             $self->id_hash(),
         }
     );
 }
 
 sub invite_notify {
-    my $self       = shift;
-    my $user       = shift;
-    my $template_dir = 'st';
+    my $self     = shift;
+    my $user     = shift;
+    my $template = $self->template;
 
     my $app_name = Socialtext::AppConfig->is_appliance()
         ? 'Socialtext Appliance'
@@ -82,7 +79,7 @@ sub invite_notify {
     my $type = $self->_template_type;
     my $renderer = Socialtext::TT2::Renderer->instance();
     my $text_body = $renderer->render(
-        template => "email/$template_dir/$type-invitation.txt",
+        template => "email/$template/$type-invitation.txt",
         vars     => {
             %vars,
             extra_text => $extra_text,
@@ -94,7 +91,7 @@ sub invite_notify {
         vars     => {
             %vars,
             invitation_body =>
-                "email/$template_dir/$type-invitation-body.html",
+                "email/$template/$type-invitation-body.html",
             extra_text => $self->{viewer}
                 ? $self->{viewer}->process($extra_text || '')
                 : $extra_text,

@@ -14,7 +14,6 @@ has sender => (
     is => 'ro', isa => 'Socialtext::User',
     lazy_build => 1,
 );
-
 sub _build_sender {
     my $self = shift;
     return Socialtext::User->new( user_id => $self->arg->{sender_id} );
@@ -56,6 +55,7 @@ sub do_work {
         my $invitation = $object->invite(
             from_user   => $self->sender,
             extra_text  => $self->arg->{extra_text},
+            template    => $self->arg->{template} || 'st',
         );
 
         # {bz: 3357} - Somehow the constructor does not set layout of $invitation
