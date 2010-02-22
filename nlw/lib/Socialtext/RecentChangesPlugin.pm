@@ -136,18 +136,10 @@ sub recent_changes_html {
     my $self = shift;
     my $count = $self->preferences->sidebox_changes_depth->value;
     Socialtext::Timer->Continue('get_recent_changes');
-    my $changes = $self->get_recent_changes($count);
+    my $changes = $self->get_recent_changes_in_category(count => $count);
     Socialtext::Timer->Pause('get_recent_changes');
     $self->template_process('recent_changes_box_filled.html',
         %$changes,
-    );
-}
-
-sub get_recent_changes {
-    my $self = shift;
-    my $count = shift;
-    return $self->get_recent_changes_in_category(
-        count    => $count,
     );
 }
 
