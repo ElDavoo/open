@@ -426,3 +426,8 @@ lib/Socialtext/Pluggable/Plugin/Provisioning.pm
 lib/Socialtext/Handler/Provisioning.pm
 t/wikitests/provisioning/test_forms.wiki
 etc/socialtext/uri_map.d/provisioning.yaml
+t/wikitests/trial.wiki
+t/wikitests/provisioning/free50
+etc/socialtext/provisioning.yaml
+t/wikitests/provisioning/trial.wiki
+t/wikitests/provisioning/free50.wiki
