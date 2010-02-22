@@ -1,0 +1,29 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use Socialtext::MakeJS;
+
+my $usage = "USAGE: $0 <build|clean> <skin> [target]\n";
+
+my $command = shift || die $usage;
+my $skin = shift || die $usage;
+my $target = shift;
+
+$Socialtext::MakeJS::VERBOSE = 1;
+
+if ($command eq 'build') {
+    if ($target) {
+        Socialtext::MakeJS->Build($skin, $target);
+    }
+    else {
+        Socialtext::MakeJS->BuildSkin($skin);
+    }
+}
+elsif ($command eq 'clean') {
+    Socialtext::MakeJS->CleanSkin($skin);
+}
+else {
+    die "Unknown command: $command\n";
+}

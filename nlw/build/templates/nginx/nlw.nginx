@@ -43,6 +43,18 @@
 [%# The rewrite file must come before any of the redirect confs below %]
 [% PROCESS 'nginx/rewrite.nginx' %]
 
+    [%- IF config.is_dev %]
+        location ~ "^/static/skin/([^/]+)/javascript/(.*)" {
+            proxy_pass http://localhost:[% apache_perl_port %]/js/skin/$1/$2;
+        }
+
+        location /nlw/static/ {
+            internal;
+            alias [% config.static_dir %]/;
+            expires 1y;
+        }
+    [%- END %]
+
     location ~ "^/static/(.+.js.gz)$" {
         alias [% config.static_dir %]/$1;
         expires 1y;

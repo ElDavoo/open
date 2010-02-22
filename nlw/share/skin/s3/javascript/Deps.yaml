@@ -1,0 +1,81 @@
+---
+'socialtext-s3.js':
+    compress: 1
+    files:
+        - ../../common/javascript/jquery-1.2.6.js
+        - ../../common/javascript/jquery-json-1.3.js
+        - ../../common/javascript/utf8.js
+        - timestamp.js
+        - info.js
+        - Debug.js
+        - Class.js
+        - lightbox.js
+        - jquery-patch.js
+        - jquery-plugin.js
+        - jquery.tablesorter.js
+        - jquery.selectOverlap.js
+        - Jemplate.js
+        - JemplatePlugin/*.js
+        - Jemplates.js
+        - lightbox-create_content.js
+        - loc.js
+        - cookie.js
+        - lookahead.js
+        - pageview.js
+        - email.js
+        - search.js
+        - nav-list.js
+        - 
+            skin: common
+            target: Socialtext/socialtext-api.js
+        - s3.js
+        - people-avatar.js
+'timestamp.js':
+    template: template/timestamp.js 
+'info.js':
+    template: template/info.js
+    config: ../info.yaml
+'Jemplate.js':
+    command: 'jemplate --runtime=jquery'
+'Jemplates.js':
+    jemplates:
+        - 'template/nav-list.tt2'
+        - 'template/new_signal.tt2'
+'lightbox-attachment.js':
+    compress: 1
+    lightbox: attachment
+'lightbox-comment.js':
+    compress: 1
+    lightbox: comment
+'lightbox-copy.js':
+    compress: 1
+    lightbox: copy
+'lightbox-create_content.js':
+    compress: 1
+    lightbox: create_content
+'lightbox-delete.js':
+    compress: 1
+    lightbox: delete
+'lightbox-duplicate.js':
+    compress: 1
+    lightbox: duplicate
+'lightbox-edit_check.js':
+    compress: 1
+    lightbox: edit_check
+'lightbox-edit_warning_help.js':
+    compress: 1
+    lightbox: edit_warning_help
+'lightbox-email.js':
+    compress: 1
+    lightbox: email
+'lightbox-rename.js':
+    compress: 1
+    lightbox: rename
+'lightbox-simple.js':
+    compress: 1
+    lightbox: simple
+'Selection.htc':
+    nocomment: 1
+    files:
+        - ../../wikiwyg/javascript/lib/Selection.htc
+
