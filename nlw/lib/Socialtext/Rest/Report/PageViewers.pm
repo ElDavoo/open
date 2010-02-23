@@ -25,8 +25,8 @@ Shows the people that viewed the given page recently.
 # we do not need to provide backwards compatible interfaces, and we want
 # more control over the REST responses.
 
-sub start_time { 'now' }
-sub duration { '-3months' }
+sub start_time { shift->rest->query->param('start_time') || 'now' }
+sub duration   { shift->rest->query->param('duration')   || '-3months' }
 
 override 'GET_json' => sub {
     my $self = shift;
@@ -54,8 +54,8 @@ sub _get_entities {
     my $page = $self->page;
     my $report = eval { $self->adapter->_build_report(
         'ViewersByPage', {
-            start_time  => 'now',
-            duration    => '-3months',
+            start_time  => $self->start_time,
+            duration    => $self->duration,
             type        => 'raw',
             workspace   => $self->hub->current_workspace->name,
             page_id     => $page->id,
