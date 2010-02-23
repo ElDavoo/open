@@ -63,8 +63,10 @@ sub handler ($$) {
         my $vars = {};
 
         if ($uri eq 'choose_password.html') {
-            my $saved_args = $self->session->saved_args;
-            my $hash = $saved_args->{hash};
+            my $saved_args  = $self->session->saved_args;
+            my $hash        = $saved_args->{hash};
+            my $account_for = $saved_args->{account_for};
+
             return $self->_redirect('/nlw/login.html') unless $hash;
 
             my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
@@ -72,7 +74,18 @@ sub handler ($$) {
                 return $self->_redirect('/nlw/login.html');
             }
             $vars->{email_address} = $user->email_address;
-            $vars->{hash} = $hash;
+            $vars->{hash}          = $hash;
+
+            if ($account_for && $account_for eq 'free50') {
+                $vars->{title}         = loc("Free50 Account Setup");
+                $vars->{heading}       = loc("Free50 Account Setup");
+                $vars->{to_create}     = loc("Socialtext Free50 account");
+            }
+            else {
+                $vars->{title}         = loc("Choose Password");
+                $vars->{heading}       = loc("Choose Password");
+                $vars->{to_create}     = loc("Socialtext account");
+            }
         }
 
         # Include login_message_file content in vars sent to template
@@ -430,7 +443,11 @@ sub confirm_email {
     }
 
     if ( $user->confirmation_is_for_password_change or not $user->has_valid_password ) {
-        $self->session->save_args(hash => $hash);
+        $self->session->save_args(
+            hash => $hash,
+            ($self->{args}{account_for} 
+                ? (account_for => $self->{args}{account_for}) : ()),
+        );
         return $self->_redirect( "/nlw/choose_password.html" );
     }
 
