@@ -1,9 +1,8 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: People Search Edit A Profile Access profile. |  |
-| set_user_bfn | best_full | %%username%% |
-| wait_for_element_visible_ok | link=%%best_full%% | 60000 |
-| click_and_wait | link=%%best_full%% |  |
+| open_ok |  /st/profile |  |
+| text-like | st-editing-tools-edit | %%short_username%% |
 
 | *Comment* | Test Case: People Search Edit A Profile Open for editing |  |
 | st-name-widget | 1 | profile |
@@ -49,6 +48,6 @@
 | text_like | st-editing-tools-edit | %%first%% %%last%% |
 
 | *Comment* | Test Case: Edit Profile. Index %%first%% %%last%% profile |  |
-| st-process-jobs | |  |
+| st-process-jobs |  |  |
 
 | *Comment* | Test Case: People Search Edit a Profile COMPLETED |  |

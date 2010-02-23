@@ -8,9 +8,7 @@
 
 | *Comment* | Test Case: Signal From Profile. logged in user has empty "lastsignal" |  |
 
-| set_user_bfn | best_full | %%spuser%% | 
-| wait_for_element_visible_ok | link=%%best_full%% | 30000 |
-| click_and_wait | link=%%best_full%% |  |
+| open_ok | /st/profile |  |
 | wait_for_element_present_ok | //div[@id='lastsignal'] | 30000 |
 | wait_for_element_not_present_ok | //div[@id='lastsignal']//a | 5000 |
 

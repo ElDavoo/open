@@ -18,15 +18,15 @@
 | *Comment* | Test Case: Global Navigation top links |  |
 | open_ok | /%%workspace%%/ |  |
 | text_like | workspaceNav | Workspace: %%title%% |
-| text_like | st-wikinav-profile | Profile |
+| text_like | st-wikinav-profile | %%short_username%% |
 | text_like | st-wikinav-mobile | Mobile |
 | text_like | st-wikinav-setting | Settings |
 | text_like | st-wikinav-help | Help |
 | text_like | st-wikinav-logout | Log out |
 
 | *Comment* | Test Case: Global Navigation Profile |  |
-| set_user_bfn | best_full | %%username%% |
-| click_and_wait | link=%%best_full%% |  |
+| wait_for_element_present_ok | link=%%short_username%% | 30000 |
+| click_and_wait | link=%%short_username%% |  |
 | text_like | contentContainer | Profile |
 | text_like | contentContainer | Activity |
 | text_like | contentContainer | Colleagues |
@@ -56,7 +56,7 @@
 TODO: find a way to check the best full name
 
 | *Comment* | Test Case: Global Navigation Logged in user |  |
-| text_like | globalNav | Logged in as |
+| text_like | globalNav | Welcome |
 
 | *Comment* | Test Case: Global Navigation Search |  |
 | text_like | st-search-form | qr/Search This Workspace:.*Search My Workspaces:.*Search People:/i |

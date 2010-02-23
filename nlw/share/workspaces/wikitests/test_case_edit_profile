@@ -26,10 +26,9 @@
 | click_and_wait | login_btn |  |
 
 | *Comment* | Verify original first and last names: %%fname%% %%lname%% |  |
-| set_user_bfn | best_full | %%e_user%% |
-| wait_for_element_visible_ok | link=%%best_full%% | 60000 |
 | text_like | %%fname%% %%lname%% |  |
-| click_and_wait | link=%%best_full%% |  |
+| open_ok | /st/profile |  |
+| text_like | st-page-titletext | %%fname%% %%lname%% |  |
 
 | *Comment* | Test Case: Edit Profile. Open for editing |  |
 | st-name-widget | 1 | profile |

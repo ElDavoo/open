@@ -41,8 +41,7 @@ TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnullx
 | wait_for_element_visible_ok | link=Stop following this person | 60000 |
 
 | *Comment* | Test Case: Follow. Verify Follow %%fFname%% in %%short_username%% profile |  |
-| set_user_bfn | best_full | %%username%% |
-| click_and_wait | link=%%best_full%% |  |
+| open_ok | /st/profile |  |
 | wait_for_text_present_ok | Colleagues | 60000 |
 | st-name-widget | 4 | follow_widget |
 | st-widget-title-like | follow_widget | Colleagues |

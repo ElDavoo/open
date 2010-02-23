@@ -18,8 +18,7 @@
 
 | *Comment* | Test Case: Tagging Profile. %%username%% may be in any account, and is secondarily in tagging-profile. |  |
 | *Comment* | Test Case: Tagging Profile. fog tag added |  |
-| set_user_bfn | best_full | %%username%% |
-| click_and_wait | link=%%best_full%% |  |
+| open_ok | /st/profile |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
 | type_ok | new_tag | fog %%start_time%% |
 | click_ok | //input[@value='Add Tag'] |  |
