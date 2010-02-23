@@ -341,10 +341,10 @@ EOT
 sub ChangedCount {
     my $class = shift;
     my %p     = @_;
-    my $workspace_id = $p{workspace_id};
-    my $max_age      = $p{duration};
+    my $workspace_id = $p{workspace_id} or croak "workspace_id needed";
+    my $max_age      = $p{duration} or croak "duration needed";
 
-    return sql_execute(<<EOT,
+    return sql_singlevalue(<<EOT,
 SELECT count(*) FROM page
     WHERE NOT deleted
       AND workspace_id = ?
