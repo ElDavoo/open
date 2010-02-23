@@ -346,7 +346,7 @@ EOT
 sub get_pages_for_category {
     my $self = shift;
     my $t = time_scope 'get_for_category';
-    my ( $tag, $limit, $sort_style ) = @_;
+    my ( $tag, $limit, $sort_style, $offset ) = @_;
     $tag = lc($tag);
     $sort_style ||= 'update';
     my $order_by = $sort_style eq 'update' 
@@ -361,6 +361,7 @@ sub get_pages_for_category {
             workspace_id => $self->hub->current_workspace->workspace_id,
             order_by     => $order_by,
             ($limit ? (limit => $limit) : ()),
+            ($offset ? (offset => $offset) : ()),
         );
     }
     else {
@@ -371,6 +372,7 @@ sub get_pages_for_category {
             tag          => $tag,
             order_by     => $order_by,
             ($limit ? (limit => $limit) : ()),
+            ($offset ? (offset => $offset) : ()),
             do_not_need_tags => 1,
         );
     }
@@ -437,9 +439,8 @@ sub get_pages_numeric_range {
     my $finish             = shift;
     my $sort_and_get_pages = shift;
     my @pages              = $self->get_pages_for_category(
-        $category, $finish, $sort_and_get_pages,
+        $category, $finish, $sort_and_get_pages, $start
     );
-    @pages = @pages[ $start .. $#pages ];
     return @pages;
 }
 
