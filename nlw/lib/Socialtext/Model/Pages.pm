@@ -4,11 +4,12 @@ use strict;
 use warnings;
 use Socialtext::Model::Page;
 use Socialtext::SQL qw/sql_execute sql_singlevalue/;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Carp qw/croak/;
 
 sub By_seconds_limit {
     my $class         = shift;
+    my $t             = time_scope 'By_seconds_limit';
     my %p             = @_;
     my $since         = $p{since};
     my $seconds       = $p{seconds};
@@ -21,7 +22,6 @@ sub By_seconds_limit {
     my $type          = $p{type};
     my $order_by      = $p{order_by} || 'page.last_edit_time DESC';
 
-    Socialtext::Timer->Continue('By_seconds_limit');
     my $where;
     my @bind;
     if ( $since ) {
@@ -36,7 +36,7 @@ sub By_seconds_limit {
         croak "seconds or count parameter is required";
     }
 
-    my $pages = $class->_fetch_pages(
+    return $class->_fetch_pages(
         hub => $hub,
         $workspace_ids ? ( workspace_ids => $workspace_ids ) : (),
         type         => $type,
@@ -50,12 +50,11 @@ sub By_seconds_limit {
         do_not_need_tags => $p{do_not_need_tags},
         deleted_ok   => $p{deleted_ok},
     );
-    Socialtext::Timer->Pause('By_seconds_limit');
-    return $pages;
 }
 
 sub All_active {
     my $class        = shift;
+    my $t            = time_scope 'All_active';
     my %p            = @_;
     my $hub          = $p{hub};
     my $limit        = $p{count} || $p{limit};
@@ -67,8 +66,7 @@ sub All_active {
 
     $limit = 500 unless defined $limit;
 
-    Socialtext::Timer->Continue('All_active');
-    my $pages = $class->_fetch_pages(
+    return $class->_fetch_pages(
         hub          => $hub,
         limit        => $limit,
         workspace_id => $workspace_id,
@@ -77,12 +75,11 @@ sub All_active {
         offset       => $offset,
         type         => $type,
     );
-    Socialtext::Timer->Pause('All_active');
-    return $pages;
 }
 
 sub By_tag {
     my $class        = shift;
+    my $t            = time_scope 'By_tag';
     my %p            = @_;
     my $hub          = $p{hub};
     my $workspace_id = $p{workspace_id};
@@ -93,8 +90,7 @@ sub By_tag {
     my $no_tags      = $p{do_not_need_tags};
     my $type         = $p{type};
 
-    Socialtext::Timer->Continue('By_tag');
-    my $pages = $class->_fetch_pages(
+    return $class->_fetch_pages(
         hub              => $hub,
         workspace_id     => $workspace_id,
         limit            => $limit,
@@ -104,12 +100,11 @@ sub By_tag {
         do_not_need_tags => $no_tags,
         type             => $type,
     );
-    Socialtext::Timer->Pause('By_tag');
-    return $pages;
 }
 
 sub By_id {
     my $class            = shift;
+    my $t                = time_scope 'By_id';
     my %p                = @_;
     my $hub              = $p{hub};
     my $workspace_id     = $p{workspace_id};
@@ -131,7 +126,6 @@ sub By_id {
         $bind = [$page_id];
     }
 
-    Socialtext::Timer->Continue('By_id');
     my $pages = $class->_fetch_pages(
         hub              => $hub,
         workspace_id     => $workspace_id,
@@ -145,7 +139,6 @@ sub By_id {
         my $pg_ids = join(',', (ref($page_id) ? @$page_id : ($page_id)));
         die "No page(s) found for ($workspace_id, $pg_ids)"
     }
-    Socialtext::Timer->Pause('By_id');
     return @$pages == 1 ? $pages->[0] : $pages;
 }
 
@@ -298,6 +291,7 @@ EOT
 
 sub Minimal_by_name {
     my $class        = shift;
+    my $t            = time_scope 'Minimal_by_name';
     my %p            = @_;
     my $workspace_id = $p{workspace_id};
     my $limit        = $p{limit} || '';
@@ -342,8 +336,9 @@ EOT
 }
 
 sub ChangedCount {
-    my $class = shift;
-    my %p     = @_;
+    my $class        = shift;
+    my $t            = time_scope 'ChangedCount';
+    my %p            = @_;
     my $workspace_id = $p{workspace_id} or croak "workspace_id needed";
     my $max_age      = $p{duration} or croak "duration needed";
 
@@ -359,6 +354,7 @@ EOT
 
 sub ActiveCount {
     my ($class, %p) = @_;
+    my $t  = time_scope 'ActiveCount';
     my $id = $p{workspace_id} || $p{workspace};
 
     return sql_singlevalue(q{
@@ -368,6 +364,7 @@ sub ActiveCount {
 
 sub TaggedCount {
     my ($class, %p) = @_;
+    my $t = time_scope 'TaggedCount';
 
     return sql_singlevalue(q{
         SELECT count(*) 
