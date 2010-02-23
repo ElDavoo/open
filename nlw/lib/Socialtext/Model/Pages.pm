@@ -359,10 +359,11 @@ EOT
 
 sub ActiveCount {
     my ($class, %p) = @_;
+    my $id = $p{workspace_id} || $p{workspace};
 
     return sql_singlevalue(q{
         SELECT count(*) FROM page WHERE NOT deleted AND workspace_id = ?
-    }, $p{workspace});
+    }, $id);
 }
 
 sub TaggedCount {
