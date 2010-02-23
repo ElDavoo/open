@@ -189,8 +189,8 @@ sub RolesForUserInWorkspace {
               JOIN $uwr_table ON (w.user_set_id = into_set_id)
              WHERE from_set_id = ?
              $exclude_clause
-             GROUP BY w.workspace_id, w.name
-             ORDER BY w.name $sort_order
+             GROUP BY w.workspace_id, w.title
+             ORDER BY w.title $sort_order
              LIMIT ? OFFSET ?
         };
         my $sth = sql_execute( $sql, $user_id, $limit, $offset );
