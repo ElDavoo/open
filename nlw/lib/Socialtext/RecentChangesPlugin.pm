@@ -2,7 +2,7 @@
 package Socialtext::RecentChangesPlugin;
 use Socialtext::CategoryPlugin;
 use Socialtext::l10n qw/loc/;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::Model::Pages;
 use Socialtext::Pageset;
 use strict;
@@ -12,6 +12,7 @@ use base 'Socialtext::Query::Plugin';
 
 use Class::Field qw( const );
 use Socialtext::l10n qw ( loc );
+use List::Util qw/min/;
 
 sub class_id { 'recent_changes' }
 const class_title      => loc("What's New");
@@ -82,21 +83,13 @@ sub recent_changes {
             errors => [loc("Invalid character '/' in changes parameter")] );
     }
 
-    my $type = $self->cgi->changes;
-    my $sortdir = $self->sortdir;
-
-    Socialtext::Timer->Continue('get_result_set');
-
-    $self->dont_use_cached_result_set();
-    $self->result_set( $self->sorted_result_set( $sortdir ) );
-    if ($type eq 'all') {
+    if ($self->cgi->changes eq 'all') {
         $self->result_set->{predicate} = "action=changes;changes=all";
     }
 
-    Socialtext::Timer->Pause('get_result_set');
-
+    $self->dont_use_cached_result_set();
     $self->display_results(
-        $sortdir,
+        $self->sortdir,
         miki_url      => $self->hub->helpers->miki_path('recent_changes_query'),
         feeds         => $self->_feeds( $self->hub->current_workspace ),
         unplug_uri    => "?action=unplug",
@@ -154,16 +147,27 @@ sub new_changes {
     Socialtext::Timer->Continue('RCP_new_changes');
     $self->result_set($self->new_result_set($type));
 
+    my $limit = $self->cgi->limit || Socialtext::Pageset::PAGE_SIZE;
+    $limit = min($limit, Socialtext::Pageset::MAX_PAGE_SIZE);
+    my $offset = $self->cgi->offset || 0;
+    my $order_by = $self->ui_sort_to_order_by();
+
     my $display_title;
     my $pages_ref;
+    my $total = 0;
     if (defined $type && $type eq 'all') {
         $display_title = loc("All Pages");
+        my $ws_id = $self->hub->current_workspace->workspace_id;
         $pages_ref = Socialtext::Model::Pages->All_active(
             hub => $self->hub,
-            workspace_id => $self->hub->current_workspace->workspace_id,
-            limit => -1,
+            workspace_id => $ws_id,
             do_not_need_tags => 1,
+            limit => $limit,
+            offset => $offset,
+            order_by => $order_by,
         );
+        
+        $total = Socialtext::Model::Pages->ActiveCount(workspace => $ws_id);
     }
     else {
         my $depth = $self->preferences->changes_depth;
@@ -173,7 +177,11 @@ sub new_changes {
         $pages_ref = $self->by_seconds_limit(
             $category ? ( tag => $category ) : (),
             count => $count,
+            limit => $limit,
+            offset => $offset,
+            order_by => $order_by,
         );
+        $total = $self->count_by_seconds_limit();
     }
 
     Socialtext::Timer->Continue('new_changes_push_result');
@@ -183,8 +191,9 @@ sub new_changes {
     }
     Socialtext::Timer->Pause('new_changes_push_result');
 
-    my $hits = $self->result_set->{hits} = @{$self->result_set->{rows}};
-    $self->result_set->{display_title} = "$display_title ($hits)";
+    $self->result_set->{hits} = $total;
+    $self->result_set->{display_title} = "$display_title ($total)";
+    $self->result_set->{partial_set} = 1;
     Socialtext::Timer->Pause('RCP_new_changes');
 }
 
@@ -203,6 +212,18 @@ sub by_seconds_limit {
         %args,
     );
     return $pages;
+}
+
+sub count_by_seconds_limit {
+    my $self = shift;
+    my $t = time_scope 'count_by_seconds';
+
+    my $prefs = $self->hub->recent_changes->preferences;
+    my $seconds = $prefs->changes_depth->value * 1440 * 60;
+    return Socialtext::Model::Pages->ChangedCount(
+        duration    => $seconds,
+        workspace_id => $self->hub->current_workspace->workspace_id,
+    );
 }
 
 sub new_result_set {
@@ -230,6 +251,8 @@ use Socialtext::CGI qw( cgi );
 
 cgi 'changes';
 cgi 'offset';
+cgi 'limit';
+cgi 'sortby';
 
 ######################################################################
 package Socialtext::RecentChanges::Wafl;
