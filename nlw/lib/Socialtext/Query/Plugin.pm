@@ -128,6 +128,24 @@ sub show_summaries {
     return $self->cgi->summaries || 0;
 }
 
+sub ui_sort_to_order_by {
+    my $self = shift;
+    my $sortby = shift;
+    my $sortdir = shift;
+    $sortby  ||= $self->cgi->sortby || 'Date';
+    $sortdir ||= $self->cgi->direction || $self->sortdir->{ $sortby };
+
+    my $sort_map = {
+        date     => 'last_edit_time',
+        subject  => 'name',
+        username => 'last_editor_id',
+        creator  => 'creator_id',
+        map { $_ => $_ } qw/create_time revision_count/
+    };
+    return join ' ', $sort_map->{lc($sortby)} || 'last_edit_time',
+                             $sortdir;
+}
+
 sub sorted_result_set {
     my $self = shift;
     my $sortdir_map = shift;

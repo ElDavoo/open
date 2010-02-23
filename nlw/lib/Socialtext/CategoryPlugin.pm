@@ -386,17 +386,8 @@ sub _get_pages_for_listview {
     my ($self, $tag, $sortdir, $sortby, $limit, $offset) = @_;
     my $t = time_scope 'tagged_for_listview';
 
-    my $sort_map = {
-        date     => 'last_edit_time',
-        subject  => 'name',
-        username => 'last_editor_id',
-        creator  => 'creator_id',
-        map { $_ => $_ } qw/create_time revision_count/
-    };
-    my $order_by = join ' ', $sort_map->{lc($sortby)} || 'last_edit_time',
-                             $sortdir;
-
     my $hub = $self->hub;
+    my $order_by = $self->ui_sort_to_order_by($sortby, $sortdir);
     my $ws_id = $hub->current_workspace->workspace_id;
 
     my ($total, $model_pages);
