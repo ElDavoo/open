@@ -76,7 +76,6 @@
 | text_like | link=VPT %%start_time%% | VPT %%start_time%% |
 
 | *Comment* | Test Case: Verify Profile. Verify Updates present. |  |
-| click_and_wait | link=%%best_full%% |  |
 | wait_for_text_present_ok | Activity | 30000 |
 | st-name-widget | 3 | updates |
 | st-widget-title-like | updates | Activity |
