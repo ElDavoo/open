@@ -98,11 +98,20 @@ sub invite_notify {
         }
     );
 
+    # a requirement for [Story: User breezes through Free registration],
+    # messages from 'System User' should come from 'Socialtext'. Calling
+    # this user 'Socialtext' elsewhere in the system doesn't make sense,
+    # so override the username here.
+    my $sys_user = Socialtext::User->SystemUser();
+    my $from = ($self->from_user->user_id == $sys_user->user_id)
+        ? 'Socialtext <' . $sys_user->email_address . '>'
+        : $self->from_user->name_and_email,
+
     my $locale = system_locale();
     my $email_sender = Socialtext::EmailSender::Factory->create($locale);
     my $subject = $self->_subject;
     $email_sender->send(
-        from      => $self->from_user->name_and_email,
+        from      => $from,
         to        => $user->email_address,
         subject   => $subject,
         text_body => $text_body,
