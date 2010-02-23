@@ -32,12 +32,6 @@ sub register {
         wafl => 'recent_changes_full' => 'Socialtext::RecentChanges::Wafl' );
 }
 
-sub get_result_set_path {
-    my $self = shift;
-    my $extension = $self->cgi->changes || '';
-    return $self->SUPER::get_result_set_path(@_) . $extension;
-}
-
 sub changes_depth {
     my $self = shift;
     my $p = $self->new_preference('changes_depth');
