@@ -8,9 +8,9 @@
 [% IF requires_confirmation %]
 
   [% SET uri = confirmation_uri | html %]
-  <p>[% loc('Please <a target="blank" title="(external link)" href="[_1]">click here</a> to confirm your email address and log in.', uri) %]</p>
+  <p>[% loc('Please <a target="blank" title="(external link)" href="[_1]&account_for=free50">click here</a> to confirm your email address and log in.', uri) %]</p>
   <p>[% loc('If your email client does not support hyperlinks, you can also copy and paste this URL into a browser to confirm your email address:') %]</p>
-  <blockquote>[% uri %]</blockquote>
+  <blockquote>[% uri %]&amp;account_for=free50</blockquote>
   <p>[% loc('By clicking the above link, you can immediately start sharing &quot;Twitter-like&quot; messages privately with your co-workers, and find a better way to work using social networking and wiki workspaces. You also get your own personal home page.') %]</p>
 
 [% ELSE %]

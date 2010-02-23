@@ -2,7 +2,7 @@
 
 
 [% IF requires_confirmation -%]
-[% loc("Please click on this link to confirm your email address:") %] [% confirmation_uri %]
+[% loc("Please click on this link to confirm your email address:") %] [% confirmation_uri %]&account_for=free50
 
 [% loc('By clicking the above link, you can immediately start sharing "Twitter-like" messages privately with your co-workers, and find a better way to work using social networking and wiki workspaces. You also get your own personal home page.') %]
 
