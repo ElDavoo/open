@@ -93,7 +93,7 @@ sub By_tag {
     my $no_tags      = $p{do_not_need_tags};
     my $type         = $p{type};
 
-    Socialtext::Timer->Continue('By_category');
+    Socialtext::Timer->Continue('By_tag');
     my $pages = $class->_fetch_pages(
         hub              => $hub,
         workspace_id     => $workspace_id,
@@ -104,7 +104,7 @@ sub By_tag {
         do_not_need_tags => $no_tags,
         type             => $type,
     );
-    Socialtext::Timer->Pause('By_category');
+    Socialtext::Timer->Pause('By_tag');
     return $pages;
 }
 
