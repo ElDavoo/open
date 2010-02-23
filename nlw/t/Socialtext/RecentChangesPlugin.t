@@ -14,7 +14,7 @@ use Socialtext::RecentChangesPlugin;
 use Socialtext::Hub;
 use DateTime;
 use DateTime::Duration;
-use Test::Socialtext tests => 64;
+use Test::Socialtext tests => 55;
 
 fixtures(qw( db ));
 
@@ -23,6 +23,7 @@ my $now = time;
 my $hub = create_test_hub();
 $hub->current_user( Socialtext::User->SystemUser );
 my $pages = $hub->pages;
+my $aaaa_user = create_test_user(unique_id => "AAAAA$$");
 
 my @p;
 $p[1] = "page one $$";
@@ -45,7 +46,7 @@ $p[3] = "page three $$";
 my $page_three = Socialtext::Page->new( hub => $hub )->create(
     title   => $p[3],
     content => "aaa this is page three, wow!",
-    creator => $hub->current_user,
+    creator => $aaaa_user,
 );
 my $yesterday = DateTime->now() - DateTime::Duration->new(days => 1);
 $page_three->hard_set_date($yesterday, $hub->current_user);
@@ -103,6 +104,9 @@ sub changes_ok {
 
     ok $last_result_set, "$name : got a result set";
     ok $last_result_set->{rows}, "$name : got rows in the result set";
+    for my $page (@{ $last_result_set->{rows} }) {
+        my $creator = Socialtext::User->Resolve($page->{creator});
+    }
     my @titles = map {$_->{Subject}} @{$last_result_set->{rows}};
     is_deeply \@titles, $expected,
         "$name : items sorted";
@@ -154,26 +158,6 @@ sort_by_title: {
     );
 }
 
-sort_by_summary: {
-    changes_ok(
-        cgi => {sortby => 'Summary', direction => 'asc'},
-        result => [@p[3,1,2]],
-        name => 'by summary, asc'
-    );
-    changes_ok(
-        cgi => {sortby => 'Summary', direction => 'desc'},
-        result => [@p[2,1,3]],
-        name => 'by summary, desc'
-    );
-    # Direction is *not* sticky, but uses default direction
-    # - as per {bz: 3116}, RecentChanges does not have sticky sort
-    changes_ok(
-        cgi => {sortby => 'Summary'},
-        result => [@p[3,1,2]],
-        name => 'by summary, default (not sticky)'
-    );
-}
-
 sort_by_username: {
     # assumption:
     ok(Socialtext::User->SystemUser->username gt 
@@ -181,19 +165,19 @@ sort_by_username: {
 
     changes_ok(
         cgi => {sortby => 'username', direction => 'asc'},
-        result => [@p[2,1,3]],
+        result => [@p[3,2,1]],
         name => 'by username, asc'
     );
     changes_ok(
         cgi => {sortby => 'username', direction => 'desc'},
-        result => [@p[3,1,2]],
+        result => [@p[1,2,3]],
         name => 'by username, desc'
     );
     # Direction is *not* sticky, but uses default direction
     # - as per {bz: 3116}, RecentChanges does not have sticky sort
     changes_ok(
         cgi => {sortby => 'username'},
-        result => [@p[2,1,3]],
+        result => [@p[3,2,1]],
         name => 'by username, default (not sticky)'
     );
 }

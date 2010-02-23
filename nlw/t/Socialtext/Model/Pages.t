@@ -57,7 +57,7 @@ $COMMON_SELECT
     WHERE NOT deleted
       AND page.workspace_id = ? 
       AND last_edit_time > 'now'::timestamptz - ?::interval 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'88 seconds','foo', 20],
         );
@@ -95,7 +95,7 @@ $COMMON_SELECT
     WHERE NOT deleted
       AND page.workspace_id = ? 
       AND last_edit_time > 'now'::timestamptz - ?::interval 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'88 seconds','foo', 20],
         );
@@ -123,7 +123,7 @@ $COMMON_SELECT
     WHERE NOT deleted
       AND page.workspace_id IN (?,?,?)
       AND last_edit_time > ?::timestamptz
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [1,2,3,'2008-01-01 01:01:01','foo', 20],
         );
@@ -160,7 +160,7 @@ $COMMON_SELECT
     WHERE NOT deleted
       AND page.workspace_id = ? 
       AND last_edit_time > ?::timestamptz
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'2008-01-01','foo', 20],
         );
@@ -209,7 +209,7 @@ $COMMON_SELECT
     WHERE NOT deleted 
       AND page.workspace_id = ? 
       AND last_edit_time > 'now'::timestamptz - ?::interval 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'88 seconds','foo', 20],
         );
@@ -246,7 +246,7 @@ $COMMON_SELECT
     WHERE NOT deleted 
       AND page.workspace_id = ? 
       AND last_edit_time > 'now'::timestamptz - ?::interval 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'88 seconds','foo',20],
         );
@@ -578,7 +578,7 @@ $COMMON_SELECT
         JOIN page_tag USING (page_id, workspace_id) 
     WHERE NOT deleted 
       AND page.workspace_id = ? 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'foo',33],
         );
@@ -613,7 +613,7 @@ $COMMON_SELECT
         JOIN page_tag USING (page_id, workspace_id) 
     WHERE NOT deleted 
       AND page.workspace_id = ? 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'foo',33],
         );
@@ -635,7 +635,7 @@ $COMMON_SELECT
         JOIN page_tag USING (page_id, workspace_id) 
     WHERE NOT deleted 
       AND page.workspace_id = ? 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc
     LIMIT ?
     OFFSET ?
 EOT
@@ -662,7 +662,7 @@ $COMMON_SELECT
     WHERE NOT deleted 
       AND page.workspace_id = ? 
       AND LOWER(page_tag.tag) = LOWER(?) 
-    ORDER BY users.display_name DESC
+    ORDER BY LOWER(users.display_name) DESC, page.name asc
     LIMIT ?
     OFFSET ?
 EOT
@@ -689,7 +689,7 @@ $COMMON_SELECT
     WHERE NOT deleted 
       AND page.workspace_id = ? 
       AND LOWER(page_tag.tag) = LOWER(?) 
-    ORDER BY users.display_name DESC
+    ORDER BY LOWER(users.display_name) DESC, page.name asc
     LIMIT ?
     OFFSET ?
 EOT
@@ -943,7 +943,7 @@ $COMMON_SELECT
     JOIN page_tag USING (page_id, workspace_id) 
 WHERE NOT deleted 
   AND page.workspace_id = ? 
-  AND LOWER(page_tag.tag) = LOWER(?) AND page.page_type = ? ORDER BY page.last_edit_time DESC LIMIT ?
+  AND LOWER(page_tag.tag) = LOWER(?) AND page.page_type = ? ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
         args => [9,'foo','wiki',33],
     );
@@ -965,7 +965,7 @@ $COMMON_SELECT
 WHERE NOT deleted
   AND page.workspace_id = ? 
   AND last_edit_time > 'now'::timestamptz - ?::interval 
-  AND LOWER(page_tag.tag) = LOWER(?) AND page.page_type = ? ORDER BY page.last_edit_time DESC LIMIT ?
+  AND LOWER(page_tag.tag) = LOWER(?) AND page.page_type = ? ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
         args => [9,'88 seconds','foo', 'spreadsheet', 20],
     );

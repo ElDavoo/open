@@ -86,7 +86,7 @@ sub By_tag {
     my $limit        = $p{count} || $p{limit};
     my $offset       = $p{offset};
     my $tag          = $p{tag};
-    my $order_by     = $p{order_by} || 'last_edit_time DESC';
+    my $order_by     = $p{order_by} || 'page.last_edit_time DESC';
     my $no_tags      = $p{do_not_need_tags};
     my $type         = $p{type};
 
@@ -169,8 +169,8 @@ sub _fetch_pages {
     }
 
     # If ordering by a user, add the extra join and order by the display name
-    if ( ($p{order_by}||'') =~ m/^page\.(creator_id|last_editor_id) (\S+)$/ ) {
-        $p{order_by} = "users.display_name $2";
+    if ( ($p{order_by}||'') =~ m/(creator_id|last_editor_id) (\S+)$/ ) {
+        $p{order_by} = "LOWER(users.display_name) $2";
         $more_join .= " JOIN users ON (page.$1 = users.user_id)";
     }
 
@@ -200,7 +200,7 @@ sub _fetch_pages {
     }
 
     my $order_by = '';
-    if ($p{order_by} && $p{order_by} =~ /^[a-z0-9_.]+(:? asc| desc)?$/i) {
+    if ($p{order_by} && $p{order_by} =~ /^\S+(:? asc| desc)?$/i) {
         $order_by = "ORDER BY $p{order_by}, page.name asc";
     }
 
