@@ -1,8 +1,8 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: People Search Edit A Profile Access profile. |  |
-| open_ok |  /st/profile |  |
-| text-like | st-editing-tools-edit | %%short_username%% |
+| open_ok | /st/profile |  |
+| text_like | //body | Profile |
 
 | *Comment* | Test Case: People Search Edit A Profile Open for editing |  |
 | st-name-widget | 1 | profile |
