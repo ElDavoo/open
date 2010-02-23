@@ -14,10 +14,12 @@ sub By_seconds_limit {
     my $seconds       = $p{seconds};
     my $workspace_ids = $p{workspace_ids};
     my $workspace_id  = $p{workspace_id};
+    my $offset        = $p{offset};
     my $limit         = $p{count} || $p{limit};
     my $tag           = $p{tag} || $p{category};
     my $hub           = $p{hub};
     my $type          = $p{type};
+    my $order_by      = $p{order_by} || 'page.last_edit_time DESC';
 
     Socialtext::Timer->Continue('By_seconds_limit');
     my $where;
@@ -39,10 +41,11 @@ sub By_seconds_limit {
         $workspace_ids ? ( workspace_ids => $workspace_ids ) : (),
         type         => $type,
         where        => $where,
+        offset       => $offset,
         limit        => $limit,
         tag          => $tag,
         bind         => \@bind,
-        order_by     => 'page.last_edit_time DESC',
+        order_by     => $order_by,
         workspace_id => $workspace_id,
         do_not_need_tags => $p{do_not_need_tags},
         deleted_ok   => $p{deleted_ok},
