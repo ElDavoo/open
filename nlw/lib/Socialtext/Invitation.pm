@@ -67,6 +67,7 @@ sub invite_notify {
 
     my %vars = (
         user                  => $user,
+        from_user             => $self->from_user,
         username              => $user->username,
         requires_confirmation => $user->requires_confirmation,
         confirmation_uri      => $user->confirmation_uri || '',
