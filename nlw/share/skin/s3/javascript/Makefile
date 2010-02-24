@@ -121,6 +121,7 @@ $(API_FILE): $(API_FILES)
 
 lightbox-%.js: st-lightbox.js lightbox/%.tt2 lightbox/%.js
 	jemplate --compile $(@:lightbox-%.js=lightbox/%.tt2) > $@; \
+	echo ';' >> $@; \
 	for js in st-lightbox.js $(@:lightbox-%.js=lightbox/%.js); do \
 	    (echo "// BEGIN $$js"; cat $$js; echo ';' | perl -pe 's/\r//g') >> $@; \
 	done
