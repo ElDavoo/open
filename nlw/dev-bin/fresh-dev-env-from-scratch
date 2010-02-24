@@ -96,7 +96,7 @@ QUIET=1 dev-bin/link-console
 dev-bin/link-reports
 
 # Start the supervisor
-dev-bin/start-console-supervisor
+dev-bin/console-supervisor
 set -e
 
 [ $BENCHMARK == 1 ] && st-config set benchmark_mode 1
