@@ -61,13 +61,13 @@ clean:
 $(EDITOR_FILE): $(EDITOR_SOURCE_FILES) Makefile
 	rm -f $@;
 	for js in $(EDITOR_SOURCE_FILES); do \
-	    (echo "// BEGIN $$js"; cat $$js | perl -pe 's/\r//g') >> $@; \
+	    (echo "// BEGIN $$js"; cat $$js; echo ';' | perl -pe 's/\r//g') >> $@; \
 	done
 
 $(EDITOR_LIGHT_FILE): $(EDITOR_LIGHT_SOURCE_FILES) Makefile
 	rm -f $@;
 	for js in $(EDITOR_LIGHT_SOURCE_FILES); do \
-	    (echo "// BEGIN $$js"; cat $$js | perl -pe 's/\r//g') >> $@; \
+	    (echo "// BEGIN $$js"; cat $$js; echo ';' | perl -pe 's/\r//g') >> $@; \
 	done
 
 $(JEMPLATE_MODULE): jemplate $(ALL_JEMPLATES)
