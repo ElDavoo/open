@@ -78,7 +78,7 @@ sub _entity_hash {
     my $self = shift;
     my $obj  = shift;
 
-    my ($username, $count) = @$obj;
+    my ($username, $count, $last_view) = @$obj;
     my $user = Socialtext::User->Resolve($username);
     return undef unless $user;
 
@@ -92,6 +92,7 @@ sub _entity_hash {
         user_id        => $user_id,
         count          => $count,
         context_title  => $user->primary_account->name,
+        last_view      => $last_view,
     };
 }
 
