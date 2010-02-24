@@ -60,6 +60,7 @@ rm_dir "formatter_cache_dir";
 # Shut down any running copy of ST and/or OpenLDAP
 set -x
 NLWCTL_QUIET=1 dev-bin/nlwctl stop
+dev-bin/console-supervisor stop
 if [ -e ~/.nlw ]; then
     # we may have more than one openldap running, make sure to kill 'em all
     for PIDFILE in ~/.nlw/run/slapd*.pid; do st-bootstrap-openldap stop; done
@@ -96,7 +97,7 @@ QUIET=1 dev-bin/link-console
 dev-bin/link-reports
 
 # Start the supervisor
-dev-bin/console-supervisor
+dev-bin/console-supervisor start
 set -e
 
 [ $BENCHMARK == 1 ] && st-config set benchmark_mode 1

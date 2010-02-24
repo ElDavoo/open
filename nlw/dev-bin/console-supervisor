@@ -15,7 +15,16 @@ my $sdir =
 die "Can't find service directory: $sdir" unless -d $sdir;
 die "Service directory has no run: $sdir" unless -e "$sdir/run";
 
-print "Starting supervise on $sdir\n";
+# Get App::Daemon to parse the command line, so we can act on it
+App::Daemon::cmd_line_parse();
+
+# Stopping "supervise" needs special handling; can't be done via App::Daemon
+if ($App::Daemon::action eq 'stop') {
+    shell_run("-svc -d -x $sdir");
+    exit;
+}
+
+print "Starting supervise on $sdir\n" unless ($App::Daemon::action eq 'status');
 
 $App::Daemon::logfile = Socialtext::Paths::log_directory() . '/supervise.log';
 $App::Daemon::pidfile = Socialtext::AppConfig->pid_file_dir . '/supervise.pid';
