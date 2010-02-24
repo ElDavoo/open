@@ -66,3 +66,17 @@ sub can_view {
 no Moose;
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+=head1 NAME
+
+Socialtext::Rest::Account - Account resource handler
+
+=head1 SYNOPSIS
+
+    GET /data/accounts/:acct
+
+=head1 DESCRIPTION
+
+View an Account.
+
+=cut
