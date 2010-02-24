@@ -432,3 +432,4 @@ etc/socialtext/provisioning.yaml
 t/wikitests/provisioning/trial.wiki
 t/wikitests/provisioning/free50.wiki
 etc/socialtext/provisioning.yaml
+t/Socialtext/Confirmation-Email.t
