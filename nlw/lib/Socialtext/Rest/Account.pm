@@ -48,17 +48,8 @@ sub can_view {
 
     return $self->no_resource('Account') unless $self->account;
 
-    my $user = $self->rest->user;
-
-    # Accounts don't have permission sets, so we check against the role
-    # itself.
-    my $is_account_admin = $self->account->user_has_role(
-        user => $user,
-        role => Socialtext::Role->Admin(),
-    );
-
     return $self->not_authorized()
-        unless $is_account_admin || $user->is_business_admin;
+        unless $self->rest->user->is_business_admin;
 
     return $cb->();
 }

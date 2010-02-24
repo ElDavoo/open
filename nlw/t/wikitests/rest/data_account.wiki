@@ -61,14 +61,7 @@
 | add-user-to-account | %%sata%% | %%ide%% | admin |
 
 ## GET-json, User is Admin
-| *Comment*        | GET-json, User is Admin |            |
-| GET-json         | /data/accounts/%%ide%%  |            |
-| code-is          | 200                     |            |
-| json-parse       |                         |            |
-| json-path-is     | $.name                  | %%ide%%    |
-| json-path-is     | $.account_id            | %%ide_id%% |
-| json-path-is     | $.account_type          | Standard   |
-| json-path-is     | $.skin_name             | s3         |
-| json-path-exists | $.restrict_to_domain    |            |
-| json-path-exists | $.plugins               |            |
-
+| *Comment* | GET-json, User is Admin |
+| GET-json  | /data/accounts/%%ide%%  |
+| code-is   | 403                     |
+| body-like | User not authorized     |
