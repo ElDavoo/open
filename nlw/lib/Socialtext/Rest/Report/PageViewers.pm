@@ -31,8 +31,6 @@ sub duration   { shift->rest->query->param('duration')   || '-3months' }
 override 'GET_json' => sub {
     my $self = shift;
 
-    return $self->error(400, 'Bad request', $@) if $@;
-
     my $data = eval { $self->_get_entities() };
     return $data unless ref($data);
     return $self->error(400, 'Bad request', $@) if $@;
@@ -52,16 +50,20 @@ sub _get_entities {
     my $self = shift;
     my $user = $self->rest->user;
     my $page = $self->page;
+    my $ws   = $self->hub->current_workspace;
+
+    return $self->not_authorized
+        unless $user->is_business_admin or $ws->has_user($user);
+
     my $report = eval { $self->adapter->_build_report(
         'ViewersByPage', {
             start_time  => $self->start_time,
             duration    => $self->duration,
             type        => 'raw',
-            workspace   => $self->hub->current_workspace->name,
+            workspace   => $ws->name,
             page_id     => $page->id,
         }, $user,
     ) };
-    return $self->not_authorized unless $report->is_viewable_by($user);
     my $all_data = $report->_data;
     $self->{_total_results} = @$all_data;
     return [
