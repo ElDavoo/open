@@ -116,6 +116,17 @@
 | *Comment* | Test Case: Login/Logout Login with original password |  |
 | st-logout |  |  |
 | st-login | %%inout_user%% | 123456 |
+| st-logout | | |
+
+| *Comment* | Test Case: Login page shows list of public Workspaces | |
+| open  | /nlw/login.html | |
+| wait_for_element_visible_ok | st-login-form | |
+| text_like | free access to view and contribute to any of these public wikis | |
+
+| *Comment* | Test Case: Logout page shows list of public Workspaces | |
+| open | /nlw/logout.html | |
+| wait_for_element_visible_ok | logoutPage |
+| text_like | free access to view and contribute to any of these public wikis | |
 
 | *Comment* | Test Case: Login/Logout Teardown |  |
 | st-admin | remove-member --email %%inout_user%% --workspace %%workspace%% |  |

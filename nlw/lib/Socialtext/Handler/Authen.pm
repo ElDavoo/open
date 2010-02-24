@@ -93,9 +93,6 @@ sub handler ($$) {
                 return $self->_redirect( $vars->{miki_url} );
             }
 
-            # list of public workspaces (for Workspace List)
-            $vars->{public_workspaces} = [$main->hub->workspace_list->public_workspaces];
-
             # login message
             my $file = Socialtext::AppConfig->login_message_file();
             if ( $file and -r $file ) {
@@ -106,6 +103,11 @@ sub handler ($$) {
                 };
                 warn $@ if $@;
             }
+        }
+        if (($uri eq 'login.html') || ($uri eq 'logout.html')) {
+            # list of public workspaces (for Workspace List)
+            $vars->{public_workspaces}
+                = [ $main->hub->workspace_list->public_workspaces ];
         }
         if ( $uri eq 'join.html' ) {
             my $redirect_to = $self->{args}{redirect_to} || '';

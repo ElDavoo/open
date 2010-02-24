@@ -219,8 +219,8 @@ sub RolesForUserInWorkspace {
               JOIN $uwr_table ON (w.user_set_id = into_set_id)
              WHERE from_set_id = ?
              $where_filter
-             GROUP BY $group_by
-             ORDER BY w.name $sort_order
+             GROUP BY w.workspace_id, UPPER(w.title)
+             ORDER BY UPPER(w.title) $sort_order
              LIMIT ? OFFSET ?
         };
         my $sth = sql_execute( $sql, @binds, $limit, $offset );
@@ -510,7 +510,7 @@ Specifies an offset into the results to start the result set at.
 B<Ignored.>  Provided solely for compatibility with other parts of the system
 that hand this through automatically.
 
-The result set is B<always> ordered by Workspace Name.
+The result set is B<always> ordered by Workspace Title, case insensitive.
 
 =item sort_order
 
