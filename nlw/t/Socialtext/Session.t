@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 24;
+use Test::Socialtext tests => 26;
 
 fixtures(qw( db ));
 
@@ -65,6 +65,17 @@ BEGIN {
 
     my $args = $session->saved_args();
     is( $args->{foo}, 1, 'saved_args - foo = 1' );
+    is( $args->{bar}, 2, 'saved_args - bar = 2' );
+}
+
+{ # remove
+    my $session = Socialtext::Session->new();
+    $session->save_args( foo => 1, bar => 2 );
+
+    $session->remove('foo');
+
+    my $args = $session->saved_args();
+    is( $args->{foo}, undef, 'saved_args - foo is undef' );
     is( $args->{bar}, 2, 'saved_args - bar = 2' );
 }
 

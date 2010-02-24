@@ -528,6 +528,7 @@ sub choose_password {
 
     st_log->info( "LOGIN: " . $user->email_address . " destination: $dest" );
 
+    $self->sesssion->remove('account_for');
     $self->session->write;
     $self->redirect($dest);
 }
