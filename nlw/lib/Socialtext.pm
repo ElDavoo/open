@@ -16,7 +16,7 @@ use Socialtext::Authz;
 use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::Validate qw( validate SCALAR_TYPE USER_TYPE WORKSPACE_TYPE );
 
-our $VERSION = '3.7.7.0';
+our $VERSION = '4.0.0.0';
 
 const product_version => $VERSION;
 field using_debug => 0;

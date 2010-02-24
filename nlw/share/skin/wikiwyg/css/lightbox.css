@@ -64,6 +64,13 @@
     margin-left: 25px;
 }
 
+.lightbox .additional .bigHint {
+    margin-left: 25px;
+    font-size: 125%;
+    line-height: 125%;
+    font-weight: bold;
+}
+
 .lightbox .st-widgets-optionstable tr, .lightbox .st-widgets-optionstable td {
     vertical-align: middle;
 }
