@@ -206,11 +206,11 @@ sub RolesForUserInWorkspace {
         }
 
         my $fields = 'w.workspace_id';
-        my $group_by = 'w.workspace_id, w.name';
+        my $group_by = 'w.workspace_id, w.title, w.name';
         if ($minimal) {
             $fields = 'w.workspace_id AS workspace_id, w.name AS name, '
                       . 'w.account_id AS account_id, w.title AS title';
-            $group_by .= ', w.account_id, w.title';
+            $group_by .= ', w.account_id';
         }
 
         my $sql = qq{
@@ -219,27 +219,21 @@ sub RolesForUserInWorkspace {
               JOIN $uwr_table ON (w.user_set_id = into_set_id)
              WHERE from_set_id = ?
              $where_filter
-             GROUP BY w.workspace_id, UPPER(w.title)
+             GROUP BY $group_by
              ORDER BY UPPER(w.title) $sort_order
              LIMIT ? OFFSET ?
         };
         my $sth = sql_execute( $sql, @binds, $limit, $offset );
 
-        my $cursor;
-        if ($minimal) {
-            $cursor = Socialtext::MultiCursor->new(
-                iterables => [ $sth->fetchall_arrayref({}) ],
-            );
+        my $cursor = Socialtext::MultiCursor->new(
+            iterables => [ $sth->fetchall_arrayref({}) ]);
+
+        unless ($minimal) {
+            $cursor->apply(sub {
+                Socialtext::Workspace->new(workspace_id => shift->{workspace_id});
+            });
         }
-        else {
-            $cursor = Socialtext::MultiCursor->new(
-                iterables => [ $sth->fetchall_arrayref() ],
-                apply     => sub {
-                    my $row = shift;
-                    return Socialtext::Workspace->new(workspace_id => $row->[0]);
-                }
-            );
-        }
+
         Socialtext::Timer->Pause('ws_by_userid');
         return $cursor;
     }
