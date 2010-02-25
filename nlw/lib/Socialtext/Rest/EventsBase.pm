@@ -246,7 +246,10 @@ sub _htmlize_event {
 
 sub resource_to_json {
     my ($self, $events) = @_;
-    $self->_htmlize_event($_) for @$events;
+    my $html = $self->rest->query->param('html');
+    unless (defined $html and !$html) {
+        $self->_htmlize_event($_) for @$events;
+    }
     $self->_add_test_headers();
     return encode_json($events);
 }
