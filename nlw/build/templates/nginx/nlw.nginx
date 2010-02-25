@@ -4,7 +4,10 @@
     server_name [% config.nlw_web_hostname %] [% FOREACH alias in config.nlw_server_aliases %][% alias %][% END %];
 
     root [% config.data_root_dir %];
+
+[%- UNLESS config.is_dev %]
     error_page 502 /static/html/502.html;
+[%- END %]
 
 [%- IF config.is_appliance || config.is_dev %]
      location /console {
