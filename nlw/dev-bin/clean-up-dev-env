@@ -15,8 +15,9 @@ clean_out_dot_nlw() {
     rm -rf ~/.nlw/
 }
 drop_test_databases() {
-    MY_TEST_DATABASES=`psql -l | grep NLW_graham_testing | awk '{ print $1 }'`
+    MY_TEST_DATABASES=`psql -l | grep NLW_${USER}_testing | awk '{ print $1 }'`
     for DB in $MY_TEST_DATABASES; do
+        echo "Dropping $DB"
         dropdb $DB 2>/dev/null;
     done
 }
