@@ -79,8 +79,13 @@ sub PUT_prefs {
     $self->if_authorized_to_edit(sub {
         use Socialtext::CGI::Scrubbed;
         my $cgi = Socialtext::CGI::Scrubbed->new($self->rest->getContent);
-        for my $key (grep { s/^up_// } $cgi->param) {
-            $self->gadget->set_preference($key, $cgi->param("up_$key"));
+        for ($cgi->param) {
+            if (/^up_(.*)$/) {
+                $self->gadget->set_preference($1, $cgi->param($_));
+            }
+            elsif (/^env_(.*)$/) {
+                $self->gadget->set_env($1, $cgi->param($_));
+            }
         }
 
         $self->_log_gadget_metadata;
