@@ -52,7 +52,7 @@ set +x
 # Remove a bunch of stuff
 if [ -e t/tmp ]; then
     dev-bin/nlwctl --test stop
-    rm -r t/tmp* &
+    sh -c 'rm -r t/tmp*'
 fi
 rm_dir "template_compile_dir";
 rm_dir "formatter_cache_dir";
@@ -60,11 +60,8 @@ rm_dir "formatter_cache_dir";
 # Shut down any running copy of ST and/or OpenLDAP
 set -x
 NLWCTL_QUIET=1 dev-bin/nlwctl stop
-dev-bin/console-supervisor stop
-if [ -e ~/.nlw ]; then
-    # we may have more than one openldap running, make sure to kill 'em all
-    for PIDFILE in ~/.nlw/run/slapd*.pid; do st-bootstrap-openldap stop; done
-fi
+dev-bin/setup-supervisors stop
+dev-bin/st-bootstrap-openldap stop
 
 # when switching to nginx you might have apache2 running still
 killall /usr/sbin/apache2 >/dev/null 2>&1 || true;
@@ -73,7 +70,7 @@ killall json-proxy.scgi 2>&1 || true;
 
 # Create the basic dev-env
 rm -rf $HOME/.nlw/
-PLUGINS=${PLUGINS:-widgets agile csskit dashboard people signals socialcalc apache socialpoint control groups provisioning}
+PLUGINS=${PLUGINS:-widgets agile csskit dashboard people signals socialcalc apache socialpoint control groups provisioning push}
 st-make-all @clean
 st-make-all @all
 dev-bin/link-plugins $PLUGINS
@@ -97,7 +94,7 @@ QUIET=1 dev-bin/link-console
 dev-bin/link-reports
 
 # Start the supervisor
-dev-bin/console-supervisor start
+dev-bin/setup-supervisors start
 set -e
 
 [ $BENCHMARK == 1 ] && st-config set benchmark_mode 1

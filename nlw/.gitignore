@@ -436,3 +436,7 @@ t/Socialtext/Confirmation-Email.t
 bin/st-pushd
 build/templates/nginx/conf.d/st-pushd.tt2
 t/wikitests/push/basic-signals.wiki
+t/Socialtext/Confirmation-Email.t
+lib/Socialtext/Handler/Push.pm
+bin/st-pushd.orig
+t/wikitests/push/hide-signal.wiki
