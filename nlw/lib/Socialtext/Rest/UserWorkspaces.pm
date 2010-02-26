@@ -63,7 +63,7 @@ sub _get_entities {
     );
     $workspaces->apply(sub {
         my $item = shift;
-        my $ws   = Socialtext::Workspace->new(workspace_id => $item->[0]);
+        my $ws   = Socialtext::Workspace->new(workspace_id => $item->{workspace_id});
         return {
             workspace_id => $ws->workspace_id,
             name => $ws->name,
