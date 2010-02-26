@@ -8,7 +8,7 @@ use Encode::Guess;
 use Socialtext::Validate qw[validate SCALAR_TYPE];
 use Carp qw/carp croak/;
 
-our @GUESSES = qw(latin1 cp1252 shiftjis big5);
+our @GUESSES = qw( cp1252 );
 
 sub is_valid_utf8 {
     my $copy = shift;
