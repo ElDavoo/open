@@ -58,7 +58,7 @@ sub start_supervise {
     return if $pid;
 
     POSIX::setsid();
-    Socialtext::System::TraceTo->logfile("$log_dir/supervise-$name.log");
+    Socialtext::System::TraceTo::logfile("$log_dir/supervise-$name.log");
     close STDIN;
     chdir '/';
     exec "/usr/bin/supervise $sdir" or die "can't exec supervise: $!";
