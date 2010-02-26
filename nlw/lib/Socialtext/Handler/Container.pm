@@ -65,14 +65,17 @@ sub invalid {
 
 sub not_found {
     my $self = shift;
+    my $msg = shift || loc("The page you are trying to view does not exist.  Please check with the system administrator or contact <a href=\"[_1]\">Socialtext Support</a>.", Socialtext::AppConfig->support_address);
+
     $self->rest->header(-status => HTTP_404_Not_Found);
-    return $self->error(loc("Not Found"));
+    return $self->error($msg);
 }
 
 sub forbidden {
     my $self = shift;
+    my $msg = shift || loc("You do not have permission to view this page. Please check with the system administrator or contact <a href=\"[_1]\">Socialtext Support</a>.", Socialtext::AppConfig->support_address);
+
     $self->rest->header(-status => HTTP_403_Forbidden);
-    my $msg = loc("Forbidden: You do not have permission to view this page");
     return $self->error($msg);
 }
 
@@ -92,11 +95,22 @@ sub redirect {
 
 sub GET {
     my ($self, $rest) = @_;
-    loc_lang( $self->hub->best_locale );
-    $self->if_authorized_to_view(sub {
-        $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
-        return $self->get_html;
-    });
+
+    my $res;
+
+    eval {
+        loc_lang( $self->hub->best_locale );
+        $res = $self->if_authorized_to_view(sub {
+            $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
+            return $self->get_html;
+        });
+    };
+    if ($@) {
+        warn $@;
+        return $self->error(loc("There was a problem trying to display this page. Use your browser's refresh button and try again. If the problem continues, please contact <a href=\"[_1]\">Socialtext Support</a>.", Socialtext::AppConfig->support_address));
+    }
+
+    return $res;
 }
 
 sub DELETE {
