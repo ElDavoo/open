@@ -47,7 +47,11 @@ sub from_csv {
 
     # make sure that we're working with UTF8; if we don't set this then
     # Text::CSV_XS isn't going to parse UTF8 properly
-    $csv = Socialtext::Encode::ensure_is_utf8($csv);
+    #
+    # Limit the encoding guesses to just ones we hit often, though; some of
+    # the other encodings match more chars that we hit often on import.
+    local @Socialtext::Encode::GUESSES = qw( utf-8 cp1252 );
+    $csv = Socialtext::Encode::guess_decode($csv);
 
     # convert the CSV from whatever EOL format it has to Unix-style EOL
     $csv =~ s/\r\n/\n/g;        # DOS/Windows -> Unix EOL
