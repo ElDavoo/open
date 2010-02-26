@@ -440,3 +440,4 @@ t/Socialtext/Confirmation-Email.t
 lib/Socialtext/Handler/Push.pm
 bin/st-pushd.orig
 t/wikitests/push/hide-signal.wiki
+t/Socialtext/Handler/Push.t
