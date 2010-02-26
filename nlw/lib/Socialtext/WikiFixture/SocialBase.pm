@@ -1599,7 +1599,10 @@ sub _call_method {
     }
 
     my $start = time();
-    $self->{http}->$method($self->{browser_url} . $uri, $headers, $body);
+    if ($uri !~ m#^http://localhost:\d+#) {
+        $uri = $self->{browser_url} . $uri;
+    }
+    $self->{http}->$method($uri, $headers, $body);
     $self->{_last_http_time} = time() - $start;
 }
 
