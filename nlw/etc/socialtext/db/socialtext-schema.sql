@@ -179,7 +179,7 @@ CREATE FUNCTION is_ignorable_action(event_class text, "action" text) RETURNS boo
     AS $$
 BEGIN
     RETURN (event_class = 'page' AND action IN ('edit_start', 'edit_cancel', 'edit_contention'))
-        OR (event_class = 'widget' AND action != 'add');
+        OR (event_class = 'widget' AND action <> 'add');
 END;
 $$
     LANGUAGE plpgsql IMMUTABLE;
