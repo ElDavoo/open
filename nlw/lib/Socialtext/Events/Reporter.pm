@@ -624,6 +624,12 @@ sub _build_standard_sql {
             $self->add_condition('signal_id IS NOT NULL');
         }
 
+        if ($opts->{group_id}) {
+            $self->add_condition(
+                "event_class != 'group' OR group_id = ?", $opts->{group_id},
+            );
+        }
+
         if ($opts->{activity} && $opts->{activity} eq 'all-combined') {
             $self->add_condition('NOT is_ignorable_action(event_class,action)');
         }
