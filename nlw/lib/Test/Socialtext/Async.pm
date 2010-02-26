@@ -9,7 +9,7 @@ use Time::HiRes qw/sleep/;
 use Socialtext::JSON qw/decode_json/;
 
 use base 'Exporter';
-our @EXPORT = qw(wait_until_pingable);
+our @EXPORT = qw(wait_until_pingable empty_port);
 
 sub wait_until_pingable {
     my $port = shift;
@@ -57,6 +57,26 @@ sub wait_until_pingable {
     }
 }
 
+# empty_port is from Test::TCP, *NOT* copyright Socialtext:
+sub empty_port {
+    my $port = shift || 10000;
+    $port = 19000 unless $port =~ /^[0-9]+$/ && $port < 19000;
+
+    require IO::Socket::INET;
+
+    while ( $port++ < 20000 ) {
+        my $sock = IO::Socket::INET->new(
+            Listen    => 5,
+            LocalAddr => '127.0.0.1',
+            LocalPort => $port,
+            Proto     => 'tcp',
+            ReuseAddr => 1,
+        );
+        return $port if $sock;
+    }
+    die "empty port not found";
+}
+
 1;
 __END__
 
@@ -67,6 +87,7 @@ Test::Socialtext::Async - Test utils for async stuff
 =head1 SYNOPSIS
 
   use Test::Socialtext::Async;
+  my $port = empty_port();
   wait_until_pingable($port, 'proxy');
 
 =head1 DESCRIPTION
