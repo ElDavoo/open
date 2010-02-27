@@ -2,6 +2,7 @@
 [%- USE html_encode -%]
 [%- USE decorate -%]
 [%- USE label_ellipsis -%]
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
@@ -66,7 +67,7 @@
             <li id="st-wikinav-mobile"><a href="[% miki_url %]">[% loc('Mobile') %]</a></li>
             [% END %]
             [% IF desktop_url %]
-            <li id="st-wikinav-mobile"><a href="[% desktop_url %]" target="_blank" onclick="$.showLightbox('<div width=100% style=text-align:center><iframe src=[% desktop_url %] width=215 height=180 scrolling=no border=0 style=margin:15px></iframe></div>'); return false">[% loc('Desktop') %]</a></li>
+            <li id="st-wikinav-desktop">[%- desktop_link(id="st-wikinav-link-desktop") -%]</li>
             [% END %]
             <li id="st-wikinav-setting"><a href="/[% current_workspace.name %]?action=users_settings">[% loc('Settings') %]</a></li>
             <li id="st-wikinav-help"><a href="/help/index.cgi" target="_blank">[% loc('Help') %]</a></li>
@@ -168,6 +169,9 @@
               [% IF miki_url %]
                 <li><a id="st-footer-link-mobile" href="[% miki_url %]">[% loc('Mobile') %]</a></li>
               [% END %]
+              [% IF desktop_url %]
+                <li>[%- desktop_link(id="st-footer-link-desktop") -%]</li>
+              [% END %]
                 <li><a id="st-footer-link-setting" href="/[% current_workspace.name %]?action=users_settings">[% loc('Settings') %]</a></li>
                 <li><a id="st-footer-link-help" href="/help/index.cgi" target="_blank">[% loc('Help') %]</a></li>
               [% IF user.is_guest %]
@@ -191,3 +195,8 @@
     [% END %]
   </body>
 </html>
+
+[%- MACRO desktop_link BLOCK -%]
+<a id="[% id %]" href="[% desktop_url %]" target="_blank"
+   onclick="$.showLightbox('<div width=100% style=text-align:center><iframe src=[% desktop_url %] width=215 height=180 scrolling=no border=0 style=margin:15px;background:url(/static/skin/common/images/ajax-loader.gif);background-repeat:no-repeat;background-position:center></iframe></div>'); return false">[% loc('Desktop') %]</a>
+[%- END -%]
