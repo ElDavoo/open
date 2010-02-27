@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>205</version>
-  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-205.air</url>
-  <description><![CDATA[[Build 205 - Fri Feb 26 23:23:57 PST 2010]
+  <version>206</version>
+  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-206.air</url>
+  <description><![CDATA[[Build 206 - Fri Feb 26 23:45:56 PST 2010]
+* Correctly remember username/password for web-invoked launch.
+* Respect server's desktop_update_url setting in /data/config.
+
+[Build 205 - Fri Feb 26 23:23:57 PST 2010]
 * Move settings lightbox behind the help button to avoid overlapping.
 
 [Build 204 - Fri Feb 26 21:27:16 PST 2010]
