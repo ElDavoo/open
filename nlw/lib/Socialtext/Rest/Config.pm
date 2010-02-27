@@ -8,6 +8,7 @@ use base 'Socialtext::Rest';
 use YAML ();
 use Socialtext::HTTP ':codes';
 use Socialtext::Rest::Version;
+use Socialtext::URI;
 use Socialtext::JSON;
 use Socialtext;
 use Socialtext::AppConfig;
@@ -43,7 +44,7 @@ sub make_getter {
             server_version => $Socialtext::VERSION,
             api_version => $Socialtext::Rest::Version::API_VERSION,
             desktop_update_url => $appliance->value('desktop_update_enabled')
-                                    ? $appliance->value('desktop_update_url')
+                                    ? Socialtext::URI::uri( path => "/st/desktop/update" )
                                     : '',
             ( map { $_ => Socialtext::AppConfig->$_() } @PUBLIC_CONFIG_KEYS ),
         });
