@@ -277,14 +277,7 @@ sub global_template_vars {
         $thunker->(miki_url => sub { $self->miki_path }),
         $thunker->(desktop_url => sub {
             return '' unless $self->desktop_update_enabled;
-
-            if ($ENV{NLW_DEV_MODE} or
-                Socialtext::AppConfig->web_hostname eq 'www2.socialtext.net'
-            ) {
-                return '/static/desktop/flair-badge.html';
-            }
-
-            return '/static/desktop/badge.html';
+            return '/st/desktop/badge';
         }),
         $thunker->(stax_info => sub { $hub->stax->hacks_info }),
         $thunker->(workspaceslist => sub {

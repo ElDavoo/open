@@ -1,6 +1,7 @@
 <html><head><title>Install Flair Signals</title><style><!-- body{ margin: 0 } --></style><body>
         <span tmp="div" id="flashcontent" style="width:215px; height:180px;">
-&nbsp;Please get <a target="_blank" href="http://get.adobe.com/air/">Adobe AIR</a> first, then <a target="_blank" href="flairSignals-latest.air">Click here</a> to install manually.  Thank you!
+&nbsp;Please get <a target="_blank" href="http://get.adobe.com/air/">Adobe AIR</a> first,
+then <a target="_blank" href="[% url %]">Click here</a> to install manually.  Thank you!
         </span>
 
 <script language="Javascript">
@@ -38,16 +39,16 @@ var server = encodeToHex(
     location.protocol + '//' + location.hostname
     + ((location.port == 80) ? '' : ':' + location.port)
 );
-var so = new SWFObject("AIRInstallBadge.swf", "", "215", "180", "9.0.115", "#000000");
+var so = new SWFObject("/static/desktop/AIRInstallBadge.swf", "", "215", "180", "9.0.115", "#000000");
 
 so.addVariable("airversion", "1.5");
 so.addVariable("appname", "Socialtext Desktop Flair");
-so.addVariable("appurl", location.toString().replace(/[^\/]+$/, "flairSignals-latest.air"));
+so.addVariable("appurl", '[% url %]');
 so.addVariable("appid", "flashSignals");
 so.addVariable('appinstallarg', server);
 so.addVariable('applauncharg', server);
 so.addVariable("pubid", "EC39758BA03E08434F5ED9824F5927096F6C375C.1");
-so.addVariable("appversion", "202");
+so.addVariable("appversion", "[% version %]");
 so.write("flashcontent");
 
 </script>

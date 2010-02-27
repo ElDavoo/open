@@ -696,6 +696,10 @@
     '/help/index.cgi':
         '*':                    [Socialtext::Rest::Help, handler]
 -
+    '/st/desktop/:filename':
+        'GET':                  [Socialtext::Rest::Desktop, GET]
+        '*':                    [Socialtext::Rest::Desktop, bad_method]
+-
     '/:ws/index.cgi/:filename':
         '*':                    [Socialtext::Rest::App, handler]
 -
