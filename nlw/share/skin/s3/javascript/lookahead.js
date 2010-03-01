@@ -521,7 +521,7 @@
                 }
                 var $error = self.$('<span></span>')
                     .addClass("st-suggestion-warning");
-                this.$('<li></li>')
+                self.$('<li></li>')
                     .append($error)
                     .appendTo(self.getLookaheadList());
 
