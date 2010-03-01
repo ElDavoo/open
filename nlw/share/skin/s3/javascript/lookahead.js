@@ -526,7 +526,7 @@
                     .appendTo(self.getLookaheadList());
 
                 if (textStatus == 'parsererror') {
-                    $error.html(loc("Error parsing data"));
+                    $error.html("Error parsing data");
                 }
                 else if (self.opts.onError) {
                     var errorHandler = self.opts.onError[xhr.status]
