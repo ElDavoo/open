@@ -442,3 +442,8 @@ bin/st-pushd.orig
 t/Socialtext/Handler/Push-graceful.t
 t/Socialtext/Handler/Push-poll-timeout.t
 lib/Socialtext/Pluggable/Plugin/Push.pm
+t/wikitests/push/signal-workspace-mention.wiki
+lib/Socialtext/Handler/Push/Client.pm
+lib/Socialtext/Handler/Push/Request.pm
+lib/Socialtext/Handler/Push/Util.pm
+lib/Socialtext/Signal/Render.pm
