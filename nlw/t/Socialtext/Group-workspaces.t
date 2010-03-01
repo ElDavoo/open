@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 6;
+use Test::Socialtext tests => 13;
 
 ###############################################################################
 # Fixtures: db
@@ -11,18 +11,15 @@ fixtures(qw( db ));
 
 use_ok 'Socialtext::Group';
 
-################################################################################
-# TEST: Group is in no Workspaces; has no GWRs
 group_with_no_workspaces: {
     my $group      = create_test_group();
     my $workspaces = $group->workspaces();
 
     isa_ok $workspaces, 'Socialtext::MultiCursor', 'got a list of workspaces';
     is $workspaces->count(), 0, '... with the correct count';
+    is $group->workspace_count, 0, "... same count, different accessor";
 }
 
-################################################################################
-# TEST: Group has Role in some Workspaces
 group_has_workspaces: {
     my $user   = create_test_user();
     my $ws_one = create_test_workspace(user => $user);
@@ -33,8 +30,32 @@ group_has_workspaces: {
     $ws_one->add_group(group => $group);
     $ws_two->add_group(group => $group);
 
+    is $group->workspace_count, 2, "two workspaces";
     my $workspaces = $group->workspaces();
 
+    isa_ok $workspaces, 'Socialtext::MultiCursor', 'got a list of workspaces';
+    is $workspaces->count(), 2, '... with the correct count';
+    isa_ok $workspaces->next(), 'Socialtext::Workspace', '... queried Workspace';
+}
+
+group_has_distinct_workspaces: {
+    my $user   = create_test_user();
+    my $ws_one = create_test_workspace(user => $user);
+    my $ws_two = create_test_workspace(user => $user);
+    my $group1 = create_test_group();
+    my $group2 = create_test_group();
+
+    $ws_one->add_group(group => $group1);
+
+    # set up two paths to the second workspace from group 1
+    $ws_two->add_group(group => $group1);
+    $ws_two->add_group(group => $group2);
+    $group2->add_group(group => $group1);
+
+    is $group1->workspace_count, 2, "two workspaces for group 1";
+    is $group2->workspace_count, 1, "just one workspace for group 2";
+
+    my $workspaces = $group1->workspaces();
     isa_ok $workspaces, 'Socialtext::MultiCursor', 'got a list of workspaces';
     is $workspaces->count(), 2, '... with the correct count';
     isa_ok $workspaces->next(), 'Socialtext::Workspace', '... queried Workspace';
