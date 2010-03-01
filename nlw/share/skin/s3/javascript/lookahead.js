@@ -519,7 +519,7 @@
                     self.onchange();
                     return;
                 }
-                var $error = this.$('<span></span>')
+                var $error = self.$('<span></span>')
                     .addClass("st-suggestion-warning");
                 this.$('<li></li>')
                     .append($error)
