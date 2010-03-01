@@ -35,6 +35,10 @@
             this.window = targetWindow;
             this.$ = targetWindow.$;
         }
+        else {
+            this.window = window;
+            this.$ = $;
+        }
 
         this._items = [];
         this.input = input;
@@ -515,7 +519,7 @@
                     self.onchange();
                     return;
                 }
-                var $error = this.$('<span"></span>')
+                var $error = this.$('<span></span>')
                     .addClass("st-suggestion-warning");
                 this.$('<li></li>')
                     .append($error)
