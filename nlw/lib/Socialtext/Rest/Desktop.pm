@@ -51,8 +51,11 @@ sub GET {
     if ($filename =~ /^(?:flair-)?badge(?:.html)?$/) {
         return $self->hub->template->process(
             ($PrefersFlair ? "desktop/flair-badge.html" : "desktop/badge.html"),
-            url     => $self->app_url,
-            version => $self->app_version,
+            app_url     => $self->app_url,
+            app_version => $self->app_version,
+            air_swf_url => Socialtext::URI::uri(
+                path => '/static/desktop/air.swf'
+            ),
         );
     }
 
