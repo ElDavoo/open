@@ -1,2 +1,4 @@
-/* no IE7-specific css is required for now */
+body div#mainNav ul ul.level2 {
+    overflow-y: scroll;
+}
 
