@@ -18,6 +18,14 @@ $.fn.navList = function(opts) {
                     data: data,
                     opts: opts
                 }));
+
+                // Work around {bz: 3614} by hiding the Y-axis
+                // scroll bar when the list size is small.
+                if ($.browser.msie && $.browser.version == 7) {
+                    if ($(this).find('li').size() < 8) {
+                        $(this).css('overflow-y', 'hidden');
+                    }
+                }
             });
         }
     });

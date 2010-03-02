@@ -436,14 +436,18 @@ sub workspaces {
     my $self = shift;
 
     my $sth = sql_execute( q{
-            SELECT into_set_id - }.PG_WKSP_OFFSET.q{ as workspace_id
+            SELECT DISTINCT into_set_id
               FROM user_set_path
              WHERE from_set_id = ?
                AND into_set_id }.PG_WKSP_FILTER.q{
         }, $self->user_set_id);
+
     return Socialtext::MultiCursor->new(
         iterables => $sth->fetchall_arrayref(),
-        apply => sub { Socialtext::Workspace->new(workspace_id => shift) },
+        apply => sub {
+            my $ws_id = (shift) - WKSP_OFFSET;
+            return Socialtext::Workspace->new(workspace_id => $ws_id);
+        },
     );
 }
 
