@@ -74,6 +74,11 @@
               [% END %]
               </ul>
             [% END %]
+            <h4>[% loc('Plug-ins') %]</h4>
+            <ul class="leftNavList">
+              [% FILTER decorate('pluginsettings') %]
+              [% END %]
+            </ul>
             <div class="clear"></div>
           </div><!-- widgetContent -->
           <div class="widgetBottom"><div class="widgetBottomRight"></div></div><!-- widgetBottom END -->
