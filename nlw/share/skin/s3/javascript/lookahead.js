@@ -39,10 +39,6 @@
             this.window = window;
             this.$ = jQuery;
         }
-        else {
-            this.window = window;
-            this.$ = $;
-        }
 
         this._items = [];
         this.input = input;
