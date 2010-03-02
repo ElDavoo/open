@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext qw(no_plan);
+use Test::Socialtext tests => 8;
 use Socialtext::Page;
 use Socialtext::User;
 use Socialtext::Jobs;
