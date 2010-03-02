@@ -15,6 +15,12 @@
      }
 [%- END %]
 
+[%- IF config.is_appliance -%]
+     location /static/appliance {
+         alias /usr/share/libsocialtext-appliance-perl/static;
+     }
+[%- END %]
+
     [%- BLOCK image_cache %]
         # image cache: [% cache_name %]
         set $matcher "$request_method$uri";
