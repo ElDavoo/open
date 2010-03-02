@@ -434,14 +434,31 @@ after 'role_change_event' => sub {
 ###############################################################################
 sub workspaces {
     my $self = shift;
+    my %p = @_;
 
-    my $sth = sql_execute( q{
-            SELECT DISTINCT into_set_id
-              FROM user_set_path
-             WHERE from_set_id = ?
-               AND into_set_id }.PG_WKSP_FILTER.q{
-        }, $self->user_set_id);
+    my $t = time_scope('group_workspaces');
 
+    my $sql = q{
+        SELECT DISTINCT into_set_id
+          FROM user_set_path usp
+         WHERE from_set_id = ?
+           AND into_set_id }.PG_WKSP_FILTER.q{
+    };
+
+    if ($p{exclude_auw_paths}) {
+        # There isn't a path via some account from this group to the workspace
+        # in question.
+        $sql .= q{
+           AND NOT EXISTS (
+              SELECT 1
+                FROM user_set_path_component uspc
+               WHERE uspc.user_set_path_id = usp.user_set_path_id
+                 AND uspc.user_set_id }.PG_ACCT_FILTER.q{
+           )
+        }
+    }
+
+    my $sth = sql_execute($sql, $self->user_set_id);
     return Socialtext::MultiCursor->new(
         iterables => $sth->fetchall_arrayref(),
         apply => sub {
