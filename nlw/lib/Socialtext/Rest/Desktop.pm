@@ -53,9 +53,12 @@ sub GET {
             ($PrefersFlair ? "desktop/flair-badge.html" : "desktop/badge.html"),
             app_url     => $self->app_url,
             app_version => $self->app_version,
-            air_swf_url => Socialtext::URI::uri(
-                path => '/static/desktop/air.swf'
+            static_appliance_url => Socialtext::URI::uri(
+                path => '/static/appliance'
             ),
+#            air_swf_url => Socialtext::URI::uri(
+#                path => '/static/desktop/air.swf'
+#            ),
         );
     }
 

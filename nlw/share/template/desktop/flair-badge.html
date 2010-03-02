@@ -1,8 +1,35 @@
-<html><head><title>Install Flair Signals</title><style><!-- body{ margin: 0 } --></style><body>
+<html><head><title>Install Flair Signals</title><style><!-- body{ margin: 0 } --></style><body style="background: white">
         <span tmp="div" id="flashcontent" style="width:215px; height:180px;">
-&nbsp;Please get <a target="_blank" href="http://get.adobe.com/air/">Adobe AIR</a> first,
-then <a target="_blank" href="[% app_url %]">Click here</a> to install manually.  Thank you!
+<br/>
+<ol>
+<li>Please install <a id="air-link" target="_blank" href="http://get.adobe.com/air/">Adobe&nbsp;AIR&#8482</a>.
+<li>Then launch <a target="_blank" href="[% app_url %]">Socialtext&nbsp;Desktop</a>.
+</ol>
+Thank you! :-)
         </span>
+
+<script>
+    var link = document.getElementById('air-link');
+    var platform = 'unknown';
+    if (typeof(window.navigator.platform) != undefined) {
+        platform = window.navigator.platform.toLowerCase();
+        if (platform.indexOf('win') != -1)
+            platform = 'win';
+        else if (platform.indexOf('mac') != -1)
+            platform = 'mac';
+        else if (platform.indexOf('linux') != -1)
+            platform = 'lin';
+    }
+    
+    if (platform == 'win') {
+        link.href = '[% static_appliance_url %]/AdobeAIRInstaller.exe';
+    } else if (platform == 'mac') {
+        link.href = '[% static_appliance_url %]/AdobeAIR.dmg';
+    } else if (platform == 'lin') {
+        link.href = '[% static_appliance_url %]/AdobeAIRInstaller.bin';
+    }
+</script>
+
 
 <script language="Javascript">
 
