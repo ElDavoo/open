@@ -117,8 +117,7 @@ sub get_results {
         delete $row->{role_names};
         $row->{role_name} = $sorted_role_names[-1];
         $row->{roles} = \@sorted_role_names;
-        $row->{is_workspace_admin} =
-            any { $_ eq 'admin' } @sorted_role_names;
+        $row->{is_admin} = any { $_ eq 'admin' } @sorted_role_names;
     }
 
     return $rows;
