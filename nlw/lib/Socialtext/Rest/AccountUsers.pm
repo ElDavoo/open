@@ -1,14 +1,24 @@
 package Socialtext::Rest::AccountUsers;
 # @COPYRIGHT@
-
-use strict;
-use warnings;
-use base 'Socialtext::Rest::Collection';
+use Moose;
 use Socialtext::Account;
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::HTTP ':codes';
+use Socialtext::User::Find::Container;
 use Socialtext::String;
 use Socialtext::User;
+use namespace::clean -except => 'meta';
+
+extends 'Socialtext::Rest::Users';
+
+has 'account' => (
+    is => 'ro', isa => 'Socialtext::Account',
+    lazy_build => 1,
+);
+sub _build_account {
+    my $self = shift;
+    Socialtext::Account->new(name => $self->acct);
+};
 
 sub allowed_methods { 'POST', 'GET', 'DELETE' }
 sub collection_name { 
@@ -21,14 +31,56 @@ sub collection_name {
 sub workspace { return Socialtext::NoWorkspace->new() }
 sub ws { '' }
 
+sub if_authorized {
+    my $self = shift;
+    my $method = shift;
+    my $call = shift;
+
+    my $acting_user = $self->rest->user;
+    my $checker = $self->hub->checker;
+
+    if ($method eq 'POST' or $method eq 'DELETE') {
+        return $self->not_authorized 
+            unless $acting_user->is_business_admin();
+    }
+    elsif ($method eq 'GET') {
+        return $self->not_authorized
+            unless $acting_user->is_business_admin()
+                || $self->account->has_user($acting_user);
+    }
+    else {
+        return $self->bad_method;
+    }
+
+    return $self->$call(@_);
+}
+
+sub _build_user_find {
+    my $self = shift;
+    return Socialtext::User::Find::Container->new(
+        viewer => $self->rest->user,
+        limit  => $self->items_per_page,
+        offset => $self->start_index,
+        filter => $self->rest->query->param('filter') || undef,
+        container => $self->account,
+        direct => $self->rest->query->param('direct') || 0,
+        minimal => $self->rest->query->param('minimal') || 0,
+        order => $self->rest->query->param('order') || '',
+        reverse => $self->rest->query->param('reverse') || 0,
+        all => $self->rest->query->param('all') || 0,
+    )
+}
+
 sub POST_json {
+    my ($self, $rest) = @_;
+    return $self->if_authorized('POST', sub {
+        $self->_POST_json($rest);
+    });
+}
+
+sub _POST_json {
     my $self = shift;
     my $rest = shift;
-
-    unless ($self->user_can('is_business_admin')) {
-        $rest->header( -status => HTTP_401_Unauthorized );
-        return '';
-    }
 
     my $account = Socialtext::Account->new( 
         name => Socialtext::String::uri_unescape( $self->acct ),
@@ -70,12 +122,14 @@ sub POST_json {
 }
 
 sub DELETE {
-    my ( $self, $rest ) = @_;
+    my ($self, $rest) = @_;
+    return $self->if_authorized('DELETE', sub {
+        $self->_DELETE($rest);
+    });
+}
 
-    unless ($self->user_can('is_business_admin')) {
-        $rest->header( -status => HTTP_401_Unauthorized );
-        return '';
-    }
+sub _DELETE {
+    my ( $self, $rest ) = @_;
 
     my $account = Socialtext::Account->new( 
         name => Socialtext::String::uri_unescape( $self->acct ),
@@ -117,41 +171,5 @@ sub DELETE {
     return '';
 }
 
-sub permission {
-    +{ GET => 'is_business_admin' };
-}
-
-sub element_list_item {
-   return "<li><a href=\"$_[1]->{uri}\">$_[1]->{name}<a/></li>\n";
-}
-
-sub get_resource {
-    my $self = shift;
-    my $rest = shift;
-
-    my $account = Socialtext::Account->Resolve( $self->acct );
-    
-    unless ( defined $account ) {
-       $rest->header(
-           -status => HTTP_404_Not_Found,
-        );
-        return [];
-    };
-
-    return [
-        map { $self->_user_representation( $_ ) }
-            @{ $account->users_as_hash }
-    ];
-}
-
-sub _user_representation {
-    my $self      = shift;
-    my $user_info = shift;
-
-    return +{
-        name => $user_info->{email_address},
-        uri  => "/data/users/" . $user_info->{email_address},
-    }
-}
-
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;

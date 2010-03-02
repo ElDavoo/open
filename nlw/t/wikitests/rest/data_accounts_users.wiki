@@ -11,7 +11,7 @@ Tests for [Story: User can be member of multiple accounts]
 # Add a user without being a business admin
 
 | POST_json           | %%users_uri%% | {"username":"%%user2%%"}       |
-| code-is             | 401           |                                     |
+| code-is             | 403           |                                     |
 
 # Add a user as a business admin
 
@@ -35,7 +35,7 @@ Tests for [Story: User can be member of multiple accounts]
 
 | set-business-admin | %%username%%            | 0 |
 | DELETE             | %%users_uri%%/%%user2%% |   |
-| code-is            | 401                     |   |
+| code-is            | 403                     |   |
 
 # Remove from account via username
 
@@ -70,3 +70,21 @@ Tests for [Story: User can be member of multiple accounts]
 | DELETE    | %%users_uri%%/%%user2_id%% |                            |
 | code-is   | 204                        |                            |
 
+# Test getting the list of users
+| set            | notamember     | notamember-%%start_time%%@ken.socialtext.net |             |
+| create-user    | %%notamember%% | password                                     |             |
+| http-user-pass | %%notamember%% | password                                     |             |
+| set            | isamember      | isamember-%%start_time%%@ken.socialtext.net  |             |
+| create-user    | %%isamember%%  | password                                     | %%account%% |
+
+| http-user-pass | %%notamember%%                   | password |
+| GET-json       | /data/accounts/%%account%%/users |          |
+| code-is        | 403                              |          |
+
+| http-user-pass  | %%isamember%%                    | password      |
+| GET-json        | /data/accounts/%%account%%/users |               |
+| code-is         | 200                              |               |
+| json-parse      |                                  |               |
+| json-array-size | 2                                |               |
+| json-path-is    | $[0].username                    | %%username%%  |
+| json-path-is    | $[1].username                    | %%isamember%% |
