@@ -33,11 +33,11 @@
         var targetWindow = opts.getWindow && opts.getWindow();
         if (targetWindow) {
             this.window = targetWindow;
-            this.$ = targetWindow.$;
+            this.$ = targetWindow.jQuery;
         }
         else {
             this.window = window;
-            this.$ = $;
+            this.$ = jQuery;
         }
 
         this._items = [];
@@ -519,9 +519,9 @@
                     self.onchange();
                     return;
                 }
-                var $error = this.$('<span></span>')
+                var $error = self.$('<span></span>')
                     .addClass("st-suggestion-warning");
-                this.$('<li></li>')
+                self.$('<li></li>')
                     .append($error)
                     .appendTo(self.getLookaheadList());
 
