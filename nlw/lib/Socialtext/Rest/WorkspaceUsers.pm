@@ -4,7 +4,7 @@ use Moose;
 use Socialtext::JSON;
 use Socialtext::HTTP ':codes';
 use Socialtext::WorkspaceInvitation;
-use Socialtext::User::Find::Workspace;
+use Socialtext::User::Find::Container;
 use Socialtext::Exceptions 'data_validation_error';
 use namespace::clean -except => 'meta';
 
@@ -29,12 +29,12 @@ sub _build_user_find {
     my $workspace = $self->_workspace;
     die "invalid workspace" unless $workspace;
 
-    return Socialtext::User::Find::Workspace->new(
+    return Socialtext::User::Find::Container->new(
         viewer => $self->rest->user,
         limit  => $self->items_per_page,
         offset => $self->start_index,
         filter => $filter,
-        workspace => $workspace,
+        container => $workspace,
         direct => $self->rest->query->param('direct') || 0,
         minimal => $self->rest->query->param('minimal') || 0,
         order => $self->rest->query->param('order') || '',

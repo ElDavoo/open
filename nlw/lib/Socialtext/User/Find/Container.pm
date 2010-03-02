@@ -1,4 +1,4 @@
-package Socialtext::User::Find::Workspace;
+package Socialtext::User::Find::Container;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::SQL qw/get_dbh sql_execute/;
@@ -12,7 +12,7 @@ use namespace::clean -except => 'meta';
 extends 'Socialtext::User::Find';
 
 has direct => (is => 'ro', isa => 'Bool');
-has workspace => (is => 'rw', isa => 'Socialtext::Workspace', required => 1);
+has container => (is => 'rw', isa => 'Maybe[Socialtext::UserSetContainer]');
 
 sub _build_sql_from {
     my $self = shift;
@@ -65,14 +65,14 @@ sub _build_sql_where {
 
     my ($sub_stmt, @sub_bind) = sql_abstract->select(
         "user_sets_for_user", "1", {
-            user_set_id => $self->workspace->user_set_id,
+            user_set_id => $self->container->user_set_id,
             user_id => $self->viewer->user_id,
         },
     );
 
     return [
         '-and' => [
-            into_set_id => $self->workspace->user_set_id,
+            into_set_id => $self->container->user_set_id,
 
             # Limit the visible users unless 'all' is true
             $self->all ? () : ('-nest' => \["EXISTS ($sub_stmt)" => @sub_bind]),
