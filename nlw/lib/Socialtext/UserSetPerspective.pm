@@ -62,8 +62,10 @@ sub get_total {
 
     my $from = Socialtext::UserSet->RoleViewSQL(
         $self->view,
-        ($opts->{direct} ? (direct => 1) : ()),
-        ($mux ? (mux_roles => 1) : ()),
+        direct => $opts->{direct},
+        mux_roles => $opts->{mux_roles},
+        omit_roles => $opts->{omit_roles},
+        exclude_acct_paths => $opts->{exclude_acct_paths},
     );
     $from .= $self->always_join if $self->always_join;
 
@@ -82,13 +84,16 @@ sub get_cursor {
         unless ($opts->{where} && ref($opts->{where}) eq 'ARRAY');
 
     my $mux = $opts->{mux_roles};
+    my $omit = $opts->{omit_roles};
     my @cols = $self->cols;
-    push @cols, ($mux ? 'role_ids' : 'role_id');
+    push @cols, ($mux ? 'role_ids' : 'role_id') unless $omit;
 
     my $from = Socialtext::UserSet->RoleViewSQL(
         $self->view,
-        ($opts->{direct} ? (direct => 1) : ()),
-        ($mux ? (mux_roles => 1) : ()),
+        direct => $opts->{direct},
+        mux_roles => $mux,
+        omit_roles => $omit,
+        exclude_acct_paths => $opts->{exclude_acct_paths},
     );
     $from .= $self->always_join if $self->always_join;
 
@@ -102,9 +107,9 @@ sub get_cursor {
     my $order = $self->subsort;
 
     # Remove role_id out of the order by; it's always ASC in an array when
-    # muxing.
+    # muxing (and gone when omitting)
     $order =~ s/(?:\s*,\s+)role_id\s*(?:ASC|DESC)?(\s*,)?/$1 ? $1 : ''/ie
-        if $mux and $order;
+        if (($mux or $omit) and $order);
 
     if (my $ob = lc $opts->{order_by}) {
         my ($join,$sort,@extra_cols);
@@ -152,7 +157,7 @@ sub get_cursor {
                     @{$row->{role_ids}}
                 ];
             }
-            else {
+            elsif (!$omit) {
                 $row->{role} = 
                     Socialtext::Role->new(role_id => $row->{role_id});
             }
