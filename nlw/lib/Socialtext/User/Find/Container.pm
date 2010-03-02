@@ -45,13 +45,13 @@ sub _build_sql_cols {
             '"Account".name AS primary_account_name',
             "to_char(creation_datetime, 'YYYY-MM-DD') AS creation_date",
             q{ 
-                (
+                COALESCE((
                     SELECT COUNT(*)
                       FROM user_set_path countable
                      WHERE countable.from_set_id = user_id
                        AND into_set_id } . PG_WKSP_FILTER . q{
                   GROUP BY from_set_id, user_id
-                ) AS workspace_count
+                ),0) AS workspace_count
             },
     }
     return $cols;
