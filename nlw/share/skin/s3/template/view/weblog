@@ -48,7 +48,7 @@
       [% FOREACH section IN section_iterator %]
         [% FOREACH entry = section.entries %]
           <h3><a href="[% script_name %]?[%entry.page_uri%]">[% entry.title | html %]</a></h3>
-          <em>
+          <em class="weblog_info">
           [% IF entry.is_updated %]
             [% loc('Posted by') %] [% entry.original.username | decorate('user_link') %] [% loc('on') %] [% entry.original.date_local %]
           [% ELSE %]
@@ -59,7 +59,7 @@
             [% entry.post %]
           </div>
           <hr size="1"/>
-          <em>
+          <em class="weblog_info">
             [% IF entry.is_updated %]
                   [% loc('Created by') %] [% entry.original.username | decorate('user_link') %] [% loc('on') %] [% entry.original.date_local %].
                   [% loc('Updated by') %] [% entry.username | decorate('user_link') %] [% loc('on') %] [% entry.date_local %].
