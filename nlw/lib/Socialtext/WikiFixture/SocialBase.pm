@@ -629,6 +629,20 @@ sub remove_group_from_workspace {
     diag "Removed group $group_id from $ws_name";
 }
 
+sub add_account_to_workspace {
+    my $self      = shift;
+    my $acct_name = shift || $self->{account};
+    my $ws_name   = shift;
+
+    my $ws   = Socialtext::Workspace->new(name => $ws_name);
+    my $acct = Socialtext::Account->new(name   => $acct_name);
+
+    $ws->assign_role_to_account( account => $acct );
+
+    diag 'Added ' . $acct->name . ' Account'
+       . " to $ws_name WS";
+}
+
 sub add_group_to_account {
     my $self         = shift;
     my $group_id     = shift || $self->{group_id};
