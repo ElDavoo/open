@@ -905,6 +905,29 @@ sub add_comment {
     return;
 }
 
+sub last_comment_event {
+    my $self = shift;
+    my $create_time = $self->original_revision->metadata->Date;
+    my $reporter = Socialtext::Events::Reporter->new(
+        viewer => $self->hub->current_user,
+    );
+    my $events = $reporter->get_events(
+        event_class       => 'page',
+        action            => 'comment',
+        page_id           => $self->id,
+        page_workspace_id => $self->hub->current_workspace->workspace_id,
+        after             => $create_time,
+        limit             => 1,
+    ) || [];
+    return shift @{$events};
+}
+
+sub last_comment {
+    my $self = shift;
+    my $event = $self->last_comment_event;
+    return $event ? $event->{context} : +{};
+}
+
 sub _comment_attribution {
     my $self = shift;
 
