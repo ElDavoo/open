@@ -4,6 +4,7 @@ use Moose;
 use Socialtext::EmailNotifier;
 use Socialtext::URI;
 use Socialtext::l10n qw/loc loc_lang system_locale/;
+use Socialtext::PageMeta qw/EDIT_SUMMARY_MAXLENGTH/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
@@ -38,13 +39,14 @@ sub do_work {
     my $tz = $hub->timezone;
     my $email_time = $tz->_now();
     my %vars = (
-        user             => $user,
-        workspace        => $ws,
-        pages            => $pages,
-        include_editor   => $self->_links_only($prefs),
-        email_time       => $tz->get_time_user($email_time) ,
-        email_date       => $tz->get_dateonly_user($email_time) ,
-        base_profile_uri => Socialtext::URI::uri(path => 'st/profile/'),
+        user                   => $user,
+        workspace              => $ws,
+        pages                  => $pages,
+        include_editor         => $self->_links_only($prefs),
+        email_time             => $tz->get_time_user($email_time),
+        email_date             => $tz->get_dateonly_user($email_time),
+        base_profile_uri       => Socialtext::URI::uri(path => 'st/profile/'),
+        edit_summary_maxlength => EDIT_SUMMARY_MAXLENGTH,
         $self->_extra_template_vars(),
     );
 
