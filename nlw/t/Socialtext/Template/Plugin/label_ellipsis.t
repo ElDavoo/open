@@ -3,32 +3,35 @@
 
 use strict;
 use warnings;
+use Template;
+use Test::More tests => 10;
 
-use Test::More;
+sub truncate_ok($$$;$) {
+    my ($text, $length, $expected, $msg) = @_;
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    $msg ||= "truncated: $expected";
 
-BEGIN {
-    eval 'use Test::MockObject';
-    plan skip_all => 'This test requires Test::MockObject' if $@;
-    plan tests => 11;
+    my $template = "[%- USE label_ellipsis -%][%- text | label_ellipsis($length) -%]";
+    my $received = '';
+
+    my $tt = Template->new(
+        PLUGIN_BASE => 'Socialtext::Template::Plugin',
+    );
+    $tt->process(\$template, { text => $text }, \$received) || die $tt->error;
+    is $received, $expected, $msg;
 }
 
-my $context = Test::MockObject->new();
-$context->mock('install_filter', sub { return $context; } );
-$context->mock('define_filter', sub { return $context; } );
-
-use_ok( 'Socialtext::Template::Plugin::label_ellipsis' );
-my $filter = Socialtext::Template::Plugin::label_ellipsis->new($context);
-
-is($filter->filter('abcd', [15]), 'abcd', 'No ellipsis on short label');
-is($filter->filter('abcd', [2]), 'ab...', 'Ellipsis on length 2 label');
-is($filter->filter('abc def', [4]), 'abc...', 'Ellipsis breaks on space');
-is($filter->filter('abc def', [6]), 'abc...', 'Ellipsis breaks on space if short one');
-is($filter->filter('abc def', [7]), 'abc def', 'No ellipsis on exact length');
-is($filter->filter('abc  def efg', [11]), 'abc  def...', 'Whitespace preserved between words');
-is($filter->filter('abc def', [0]), '...', 'Ellipsis only if length is 0');
-is($filter->filter('abc def', [2]), 'ab...', 'Proper short word ellipsis with space');
+truncate_ok 'abcd',         15, 'abcd',        'No ellipsis on short label';
+truncate_ok 'abcd',          2, 'ab...',       'Ellipsis on length 2 label';
+truncate_ok 'abc def',       4, 'abc...',      'Ellipsis breaks on space';
+truncate_ok 'abc def',       6, 'abc...',      'Ellipsis breaks on space if short one';
+truncate_ok 'abc def',       7, 'abc def',     'No ellipsis on exact length';
+truncate_ok 'abc  def efg', 11, 'abc  def...', 'Whitespace preserved between words';
+truncate_ok 'abc def',       0, '...',         'Ellipsis only if length is 0';
+truncate_ok 'abc def',       2, 'ab...',       'Proper short word ellipsis with space';
 
 #utf8
 my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
-is($filter->filter($singapore, [3]), $singapore, 'UTF8 not truncated');
-is($filter->filter($singapore, [2]), substr($singapore, 0, 2) . '...', 'UTF8 truncated with ellipsis');
+truncate_ok $singapore, 3, $singapore, 'UTF8 not truncated';
+truncate_ok $singapore, 2, substr($singapore, 0, 2) . '...', 'UTF8 truncated with ellipsis';
+
