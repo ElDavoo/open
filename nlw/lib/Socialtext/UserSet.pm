@@ -485,6 +485,10 @@ C<< mux_roles => 1 >>.  The roles will be unique and sorted ascending by ID.
 To omit the roles, and just return the distinct relationships, pass in
 C<< omit_roles => 1 >>.  Cannot be combined with mux_roles.
 
+To exclude paths that contain an account (e.g. an all-users-workspace
+pattern), pass in C<< exclude_acct_paths => 1 >>.  Shouldn't be combined with
+C<< direct => 1 >>.
+
 =cut
 
 sub _role_view_sql_normalizer {
@@ -493,6 +497,7 @@ sub _role_view_sql_normalizer {
     $p{direct} ||= 0;
     $p{mux_roles} ||= 0;
     $p{omit_roles} ||= 0;
+    $p{exclude_acct_paths} ||= 0;
     return join("\t", map {$_=>$p{$_}} keys %p);
 }
 
@@ -507,6 +512,7 @@ sub RoleViewSQL {
     my $alias = (delete $p{alias}) || "${from}_${into}_roles";
     my $mux_roles = (delete $p{mux_roles}) || 0;
     my $omit_roles = (delete $p{omit_roles}) || 0;
+    my $exclude_acct_paths = (delete $p{exclude_acct_paths}) || 0;
 
     die "users makes no sense as 'into'" if $into eq 'users';
     die "accounts makes no sense as 'from'" if $from eq 'accounts';
@@ -529,6 +535,16 @@ sub RoleViewSQL {
     $into_alias ||= 'into_set_id';
     if ($plural_to_filter{$into}) {
         push @filter, 'into_set_id'.$plural_to_filter{$into};
+    }
+
+    if ($exclude_acct_paths && $table eq 'user_set_path') {
+        push @filter, qq{
+            NOT EXISTS (
+                SELECT 1
+                  FROM user_set_path_component uspc
+                 WHERE uspc.user_set_path_id = user_set_path.user_set_path_id
+                   AND uspc.user_set_id }.PG_ACCT_FILTER.q{
+            )};
     }
 
     my $filter = join(' AND ',@filter);

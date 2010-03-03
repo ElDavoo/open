@@ -32,6 +32,18 @@ $.extend(Socialtext.Workspace.prototype, {
         });
         return roles;
     },
+    _hasImpersonators: function(members) {
+        var self = this;
+
+        var hasImpersonators = false;
+        $(members).each(function(i, member) {
+            if ($.inArray('impersonator', member.roles) != -1) {
+                hasImpersonators = true;
+            }
+        });
+
+        return hasImpersonators;
+    },
     _request: function(method, collection, data, callback) {
         var self = this;
         $.ajax({
@@ -45,22 +57,27 @@ $.extend(Socialtext.Workspace.prototype, {
     },
     updateMembers: function(members, callback) {
         var self = this;
-        var types = this._splitMemberRoles(members);
-        if (!types.users.length && !types.groups.length) {
-            throw new Error("No members specified");
+        if (self._hasImpersonators(members)) {
+            callback({errors: ['Impersonators can only be managed by system administrators']});
         }
-        var jobs = [];
-        if (types.users.length) {
-            jobs.push(function(cb) {
-                self._request('PUT', 'users', types.users, cb)
-            });
+        else {
+            var types = self._splitMemberRoles(members);
+            if (!types.users.length && !types.groups.length) {
+                throw new Error("No members specified");
+            }
+            var jobs = [];
+            if (types.users.length) {
+                jobs.push(function(cb) {
+                    self._request('PUT', 'users', types.users, cb)
+                });
+            }
+            if (types.groups.length) {
+                jobs.push(function(cb) {
+                    self._request('PUT', 'groups', types.groups, cb)
+                });
+            }
+            self.runAsynch(jobs, callback);
         }
-        if (types.groups.length) {
-            jobs.push(function(cb) {
-                self._request('PUT', 'groups', types.groups, cb)
-            });
-        }
-        self.runAsynch(jobs, callback);
     },
     addMembers: function(members, callback) {
         var self = this;
@@ -80,21 +97,28 @@ $.extend(Socialtext.Workspace.prototype, {
         this.runAsynch(jobs, callback);
     },
     removeMembers: function(members, callback) {
-        var data = $.map(members, function(member) {
-            var r = {};
-            if (member.user_id) r.user_id = member.user_id;
-            if (member.group_id) r.group_id = member.group_id;
-            if (member.username) r.username = member.username;
-            return r;
-        });
-        $.ajax({
-            url: this.url('/trash'),
-            type: 'POST',
-            contentType: 'application/json',
-            data: $.toJSON(data),
-            success: this.successCallback(callback),
-            error: this.errorCallback(callback)
-        });
+        var self = this;
+
+        if (self._hasImpersonators(members)) {
+            callback({errors: ['Impersonators can only be managed by system administrators']});
+        }
+        else {
+            var data = $.map(members, function(member) {
+                var r = {};
+                if (member.user_id) r.user_id = member.user_id;
+                if (member.group_id) r.group_id = member.group_id;
+                if (member.username) r.username = member.username;
+                return r;
+            });
+            $.ajax({
+                url: this.url('/trash'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: $.toJSON(data),
+                success: this.successCallback(callback),
+                error: this.errorCallback(callback)
+            });
+        }
     }
 });
 

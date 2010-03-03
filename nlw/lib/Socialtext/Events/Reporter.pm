@@ -885,31 +885,38 @@ sub get_events_group_activities {
     }
 
     my @binds = ();
-    my $groupvissql = $self->visible_exists('signals','e.actor_id', 
-        { group_id => $group_id }, \@binds, 'e');
+    my $groupsig_sql = $self->visible_exists('signals','e.actor_id', 
+        {
+            group_id => $group_id
+        }, 
+        \@binds, 'e');
 
     $self->add_condition(q{
         ( event_class = 'group' AND group_id = ? )
         OR (
             event_class = 'page'
             AND is_page_contribution(action)
-            AND EXISTS (
+            AND EXISTS ( -- the event's actor is in this group
                 SELECT 1
                   FROM user_set_path
                  WHERE from_set_id = e.actor_id
                    AND into_set_id = ?
-                 LIMIT 1
             )
-            AND EXISTS (
+            AND EXISTS ( -- the group is in the event's workspace
                 SELECT 1
-                  FROM user_set_path
+                  FROM user_set_path usp
                  WHERE e.page_workspace_id = into_set_id - }.PG_WKSP_OFFSET.q{
                    AND from_set_id = ?
-                 LIMIT 1
+                   AND NOT EXISTS (
+                      SELECT 1
+                        FROM user_set_path_component uspc
+                       WHERE uspc.user_set_path_id = usp.user_set_path_id
+                         AND uspc.user_set_id }.PG_ACCT_FILTER.q{
+                   )
             )
         )
        OR (
-        }.$groupvissql.q{
+        }.$groupsig_sql.q{
         )
     }, $group_id, $group_set_id, $group_set_id, @binds);
 
