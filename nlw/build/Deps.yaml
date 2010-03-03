@@ -138,6 +138,7 @@ Template: 2.19
 Template::Plugin::FillInForm: 0.04
 Template::Plugin::JSON: 0
 Template::Plugin::Number::Format: 0
+Template::Plugin::Cycle: 0
 Text::Autoformat: 1.14.0
 Text::CSV_XS: 0.52
 Text::Flowed: 0.14
