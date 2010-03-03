@@ -47,13 +47,13 @@ sub ClearForUsers {
 sub ClearForAccount {
     my $class = shift;
     my $account_id = shift;
-    PurgeCache(); # just purge the entire cache
+    $class->PurgeCache(); # just purge the entire cache
 }
 
 sub ClearForGroup {
     my $class = shift;
     my $group_id = shift;
-    PurgeCache(); # just purge the entire cache
+    $class->PurgeCache(); # just purge the entire cache
 }
 
 sub PurgeCache {
