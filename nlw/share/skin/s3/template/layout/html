@@ -5,7 +5,7 @@
 
 [%- MACRO desktop_link BLOCK -%]
 <a id="[% id %]" href="[% desktop_url %]" target="_blank"
-   onclick="$.showLightbox('<div width=100% style=text-align:center><iframe src=[% desktop_url %] width=215 height=180 scrolling=no border=0 style=margin:15px;background:url(/static/skin/common/images/ajax-loader.gif);background-repeat:no-repeat;background-position:center></iframe></div>'); return false">[% loc('Desktop') %]</a>
+   onclick="$.showLightbox('<div width=100% style=text-align:center><iframe src=[% desktop_url %] width=480 height=300 scrolling=no border=0 style=margin:15px;background:url(/static/skin/common/images/ajax-loader.gif);background-repeat:no-repeat;background-position:center></iframe></div>'); return false">[% loc('Desktop') %]</a>
 [%- END -%]
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

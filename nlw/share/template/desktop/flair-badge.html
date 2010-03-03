@@ -1,5 +1,17 @@
-<html><head><title>Install Flair Signals</title><style><!-- body{ margin: 0 } --></style><body style="background: white">
-        <span tmp="div" id="flashcontent" style="width:215px; height:180px;">
+<html><head>
+    <link media="screen" href="/static/skin/s3/css/screen.css" type="text/css" rel="stylesheet">
+    <title>Install Flair Signals</title>
+</head><body style="background: white; margin: 0px">
+    <span tmp="div" id="flashcontent" style="
+        width: 215px;
+        height: 180px;
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -90px;
+        margin-left: -107px;
+    ">
 <br/>
 <ol>
 <li>Please install <a id="air-link" target="_blank" href="http://get.adobe.com/air/">Adobe&nbsp;AIR&#8482</a>.
@@ -8,6 +20,15 @@
 Thank you! :-)
         </span>
 
+<div class="buttons" style="position: absolute; right: 10px; bottom: 10px">
+        <ul style="float: left; padding: 10px;" class="widgetButton">
+          <li class="flexButton">
+              <a href="#" id="st-duplicate-cancellink" class="close genericOrangeButton" onclick="if (parent && parent.$) { parent.$.hideLightbox() }">Close</a>
+          </li>
+        </ul>
+    </div>
+
+</body>
 <script>
     var link = document.getElementById('air-link');
     var platform = 'unknown';
