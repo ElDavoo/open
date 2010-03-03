@@ -1,7 +1,7 @@
 <html><head>
     <link media="screen" href="/static/skin/s3/css/screen.css" type="text/css" rel="stylesheet">
     <title>Install Flair Signals</title>
-</head><body style="background: white; margin: 0px">
+</head><body style="background: white; margin: 0px; font-size: 13px">
     <span tmp="div" id="flashcontent" style="
         width: 215px;
         height: 180px;
@@ -14,8 +14,8 @@
     ">
 <br/>
 <ol>
-<li>Please install <a id="air-link" target="_blank" href="http://get.adobe.com/air/">Adobe&nbsp;AIR&#8482</a>.
-<li>Then launch <a target="_blank" href="[% app_url %]">Socialtext&nbsp;Desktop</a>.
+<li style="margin-bottom: 10px">Please install <a id="air-link" target="_blank" href="http://get.adobe.com/air/">Adobe&nbsp;AIR&#8482</a>.
+<li style="margin-bottom: 10px">Then launch <a target="_blank" href="[% app_url %]">Socialtext&nbsp;Desktop</a>.
 </ol>
 Thank you! :-)
         </span>
@@ -48,6 +48,11 @@ Thank you! :-)
         link.href = '[% static_appliance_url %]/AdobeAIR.dmg';
     } else if (platform == 'lin') {
         link.href = '[% static_appliance_url %]/AdobeAIRInstaller.bin';
+    }
+
+    var html = document.getElementById('flashcontent').innerHTML;
+    function hide_swfobject () {
+        document.getElementById('flashcontent').innerHTML = html;
     }
 </script>
 
@@ -98,6 +103,7 @@ so.addVariable('applauncharg', server);
 so.addVariable("airswfurl", '[% air_swf_url %]');
 so.addVariable("pubid", "EC39758BA03E08434F5ED9824F5927096F6C375C.1");
 so.addVariable("appversion", "[% app_version %]");
+so.addParam("allowScriptAccess", "always");
 so.write("flashcontent");
 
 </script>
