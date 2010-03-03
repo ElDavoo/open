@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 13;
+use Test::Socialtext tests => 16;
 
 ###############################################################################
 # Fixtures: db
@@ -59,4 +59,23 @@ group_has_distinct_workspaces: {
     isa_ok $workspaces, 'Socialtext::MultiCursor', 'got a list of workspaces';
     is $workspaces->count(), 2, '... with the correct count';
     isa_ok $workspaces->next(), 'Socialtext::Workspace', '... queried Workspace';
+}
+
+group_exclude_auw_paths: {
+    my $user   = create_test_user();
+    my $acct = create_test_account_bypassing_factory();
+    my $ws_one = create_test_workspace(account => $acct, user => $user);
+    $ws_one->add_account(account => $acct);
+    my $group = create_test_group(account => $acct);
+
+    my $workspaces = $group->workspaces();
+    is $workspaces->count, 1, 'auw is counted';
+
+    $workspaces = $group->workspaces(exclude_auw_paths => 1);
+    is $workspaces->count, 0, 'auw is NOT counted';
+
+    $ws_one->add_group(group => $group, role => 'admin');
+
+    $workspaces = $group->workspaces(exclude_auw_paths => 1);
+    is $workspaces->count, 1, 'workspace is deliberate';
 }

@@ -1,0 +1,33 @@
+Test the NTLM challenger, to make sure it redirects properly.
+
+Covers {bz: 3626}, where it was determined that triggering the NTLM Challenger
+for "non-WS content" was not redirecting properly.
+
+* Fixture: SocialRest
+
+| *Comment*        | Setup               |                     |
+| set              | account             | acct_%%start_time%% |
+| create-account   | %%account%%         |                     |
+| set              | workspace           | wksp_%%start_time%% |
+| create-workspace | %%workspace%%       | %%account%%         |
+| st-config        | set challenger NTLM |                     |
+| http-user-pass   |                     |                     |
+
+| *Comment*          | Public Workspace (no authen required)  |        |
+| set-ws-permissions | %%workspace%%                          | public |
+| get                | /%%workspace%%/index.cgi?%%workspace%% |        |
+| code-is            | 200                                    |        |
+
+| *Comment*          | Member Only Workspace                  |                                        |
+| set-ws-permissions | %%workspace%%                          | member-only                            |
+| get                | /%%workspace%%/index.cgi?%%workspace%% |                                        |
+| code-is            | 302                                    |                                        |
+| header-like        | Location                               | /nlw/ntlm?redirect_to=%2F%%workspace%% |
+
+| *Comment*   | Challenger, directly |                           |
+| get         | /challenge/?/        |                           |
+| code-is     | 302                  |                           |
+| header-like | Location             | /nlw/ntlm?redirect_to=%2F |
+
+| *Comment* | Teardown               |
+| st-config | set challenger STLogin |

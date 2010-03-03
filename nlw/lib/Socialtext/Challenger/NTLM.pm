@@ -12,7 +12,6 @@ sub challenge {
     my $hub      = $p{hub};
     my $request  = $p{request};
     my $redirect = $p{redirect};
-    my $workspace = $hub->current_workspace;
 
     # get a handle to the app
     my $app = Socialtext::WebApp->NewForNLW;
@@ -44,8 +43,9 @@ sub challenge {
 
         # log an error stating that this User isn't authorized to view this
         # Workspace.
-        my $username = $hub->current_user->username();
-        my $message  = loc(
+        my $workspace = $hub->current_workspace;
+        my $username  = $hub->current_user->username();
+        my $message   = loc(
             "User [_1] is not authorized to view workspace [_2]",
             $username . $workspace->title()
         );
@@ -54,13 +54,14 @@ sub challenge {
 
     # redirect the User to the Login URI, while setting the current error into
     # the session (so we can get at it later if needed).
+    my %args = (
+        workspace_title => $hub->current_workspace->title,
+        workspace_id    => $hub->current_workspace->workspace_id,
+    ) if ($hub and $hub->current_workspace);
     return $app->_handle_error(
         error => {
             type => $type,
-            args => {
-                workspace_title => $workspace->title(),
-                workspace_id    => $workspace->workspace_id(),
-            },
+            args => \%args,
         },
         path  => $challenge_uri,
         query => { redirect_to => $redirect },
