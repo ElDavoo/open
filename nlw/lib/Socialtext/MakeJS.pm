@@ -31,6 +31,19 @@ sub CleanAllSkins {
     }
 }
 
+sub Build {
+    my ($class, $skin, $target) = @_;
+    if ($target eq 'all') {
+        $class->BuildSkin($skin);
+    }
+    elsif ($target eq 'clean') {
+        $class->CleanSkin($skin);
+    }
+    else {
+        $class->BuildTarget($skin, $target);
+    }
+}
+
 sub BuildAllSkins {
     my ($class) = @_;
     for my $skin (keys %files) {
@@ -51,7 +64,12 @@ sub CleanSkin {
     my ($class, $skin) = @_;
     local $CWD = "$code_base/skin/$skin/javascript";
     warn "Cleaning files in skin $skin...\n" if $VERBOSE;
-    unlink keys %{$files{$skin}};
+    my @toclean;
+    for my $file (keys %{$files{$skin}}) {
+        push @toclean, $file;
+        push @toclean, "$file.gz" if $files{$skin}{$file}{compress};
+    }
+    unlink @toclean;
 }
 
 sub modified {
@@ -274,7 +292,7 @@ sub _build_from_files {
     return;
 }
 
-sub Build {
+sub BuildTarget {
     my ($class, $skin, $target) = @_;
 
     local $CWD = "$code_base/skin/$skin/javascript";

@@ -2,38 +2,26 @@
 use strict;
 use warnings;
 use FindBin;
+use Cwd qw(cwd);
 use lib "$FindBin::Bin/../lib";
 use Socialtext::MakeJS;
-
-my $usage = "USAGE: $0 <build|clean> [skin] [target]\n";
-
-my $command = shift || die $usage;
-my $skin = shift;
-my $target = shift;
+use Getopt::Long qw(GetOptions);
 
 $Socialtext::MakeJS::VERBOSE = 1;
 
-if ($command eq 'build') {
-    if ($skin) {
-        if ($target) {
-            Socialtext::MakeJS->Build($skin, $target);
-        }
-        else {
-            Socialtext::MakeJS->BuildSkin($skin);
-        }
-    }
-    else {
-        Socialtext::MakeJS->BuildAllSkins;
-    }
-}
-elsif ($command eq 'clean') {
-    if ($skin) {
-        Socialtext::MakeJS->CleanSkin($skin);
-    }
-    else {
-        Socialtext::MakeJS->CleanAllSkins($skin);
-    }
+my $usage = "USAGE: $0 <all|clean|target>\n";
+my %opts;
+GetOptions(\%opts, qw(skin=s all-skins));
+my $target = shift || 'all';
+
+if ($opts{'all-skins'}) {
+    Socialtext::MakeJS->BuildAllSkins;
 }
 else {
-    die "Unknown command: $command\n";
+    unless ($opts{skin}) {
+        ($opts{skin}) = cwd =~ m{skin/([^/]+)/javascript$};
+        die "Not in a skin dir\n" unless $opts{skin};
+    }
+    Socialtext::MakeJS->Build($opts{skin}, $target);
 }
+
