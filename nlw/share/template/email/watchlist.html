@@ -6,29 +6,87 @@
 <head>
   <title>[% loc('Watchlist Update for [_1]', escaped_title) %]</title>
 </head>
-
 <body>
+<style type="text/css">
+  body {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 11px;
+    color: #333;
+    width: 95%;
+  }
+  .st-email-header, .st-email-contents, .st-email-footer {
+    width: 100%;
+    padding: 3px 5px;
+  }
+  .st-email-header, .st-email-footer {
+    border: 1px solid #bbb;
+    background-color: #edf7fb;
+  }
+  .st-title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .st-datetime {
+    font-size: 10px;
+    color: #888;
+  }
+  .st-watchlist-item-odd, .st-watchlist-item-even {
+    border: 1px solid white;
+  }
+  .st-watchlist-item-odd {
+    background-color: white;
+  }
+  .st-watchlist-item-even {
+    background-color: #e7e7e7;
+  }
+  .st-email-footer {
+    overflow: auto;
+    font-size: 10px;
+  }
+  .st-byline {
+    float: left;
+  }
+  .st-link-home {
+    float: right;
+  }
+  .st-page-editor {
+    padding: 0 0 0 15px;
+    font-size: 11px;
+    color: #666;
+  }
+  .st-page-edit-summary {
+    padding: 0 0 0 30px;
+    font-size: 10px;
+    color: #888;
+  }
+</style>
 
-<p>
-  [% user.guess_real_name | html %],
-</p>
+<div class="st-email-header">
+  <div class="st-title">
+    [% loc('Watchlist: <a href="[_2]">[_3]</a> <a href="[_1]">(edit)</a>', watchlist_uri, workspace.uri, escaped_title) %]
+  </div>
+  <div class="st-datetime">
+    [% loc('Generated on [_1] at [_2]', email_date, email_time) %]
+  </div>
+</div>
 
-<p>
-  [% loc('The following pages in your <a href="[_1]">watchlist</a> in <a href="[_3]">[_2]</a> have recently changed. This email was generated on [_4] at [_5].', watchlist_uri, escaped_title, workspace.uri, email_date, email_time) %]
-</p>
+<div class="st-email-contents">
+  <div class="st-watchlist">
+    [%- USE row_class = Cycle('st-watchlist-item-odd', 'st-watchlist-item-even') -%]
+    [%- FOR page IN pages %]
+      <div class="[% row_class %]">
+        [% PROCESS 'email/page-details.html' %]
+      </div>
+    [%- END %]
+  </div>
+</div>
 
-<ul>
-  [%- FOR page = pages %]
-    [% PROCESS 'email/page-details.html' %]
-  [%- END %]     
-</ul>
-
-<hr />
-<p>
-  [% loc('To stop receiving or change how often you receive emails about changes to your watchlist in [_1], you can <a href="[_2]">change your preferences</a>.',  escaped_title, escaped_uri) %]
-</p>
-
-[% PROCESS 'email/standard-footer.html' support_link = 0 %]
+<div class="st-email-footer">
+  <div class="st-email-preferences">
+    [% loc('To stop receiving or change how often you receive emails about changes to your watchlist in [_1], you can <a href="[_2]">change your preferences</a>.',  escaped_title, escaped_uri) %]
+  </div>
+  [% PROCESS 'email/nicer-standard-footer.html' support_link = 0 %]
+</div>
 
 </body>
 </html>

@@ -13,26 +13,23 @@
   [%- END -%]
 [%- END -%]
 
-<li><a href="[% workspace.uri %]?[% page.uri %]">[% page.metadata.Subject %]</a>  [%- IF include_editor %]
-    <br />
-    [%- IF user.username == page.last_edited_by.username %]
-      [% SET escaped_name = loc('you') | html %]
-    [% ELSE %]
-      [% SET escaped_name = page.last_edited_by.best_full_name( workspace => workspace ) | html %]
-    [%- END %]
-    [%- SET profile_uri = base_profile_uri _ page.last_edited_by.user_id %]
-    [%- IF page.metadata.Revision == 1 %]
-      [%- SET action = loc('created by') %]
-    [% ELSE %]
-      [%- SET action = loc('last edited by') %]
-    [%- END %]
-    [%- edit_time = ago_text(page.modified_time) -%]
-    [%- IF page.edit_summary %]
-      [%- edit_summary = ((page.edit_summary == '(comment)') ? page.last_comment.summary : page.edit_summary) -%]
-      [%- edit_summary = BLOCK %][% edit_summary | label_ellipsis(edit_summary_maxlength) %][% END -%]
-      [% loc('[_1] <a href="[_4]">[_2]</a> [_5] saying, "[_3]"', action, escaped_name, edit_summary, profile_uri, edit_time) %]
-    [% ELSE %]
-      [% loc('[_1] <a href="[_3]">[_2]</a> [_4]', action, escaped_name, profile_uri, edit_time) %]
-    [%- END %]
+<div class="st-page-detail">
+  <div class="st-page-name">
+    <a href="[% workspace.uri %]?[% page.uri %]">[% page.metadata.Subject %]</a>
+  </div>
+  [%- IF include_editor %]
+    [%- username    = (user.username == page.last_edited_by.username) ? loc('you') : page.last_edited_by.best_full_name(workspace=>workspace) -%]
+    [%- action      = (page.metadata.Revision == 1) ? loc('Created by') : loc('Last edited by') -%]
+    [%- edit_time   = ago_text(page.modified_time) -%]
+    [%- profile_uri = base_profile_uri _ page.last_edited_by.user_id -%]
+    <div class="st-page-editor">
+      [% loc('[_1] <a href="[_2]">[_3]</a> [_4]', action, profile_uri, username, edit_time) %]
+    </div>
+    <div class="st-page-edit-summary">
+      [%- IF page.edit_summary %]
+        [%- edit_summary = ((page.edit_summary == '(comment)') ? page.last_comment.summary : page.edit_summary) -%]
+        [% edit_summary | label_ellipsis(edit_summary_maxlength) %]
+      [%- END %]
+    </div>
   [%- END %]
-</li>
+</div>

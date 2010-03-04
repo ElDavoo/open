@@ -1,0 +1,13 @@
+[%- IF support_link %]
+  <div class="st-support-link">
+    [%- support_address = BLOCK %][% appconfig.support_address | html %][% END -%]
+    [%- SET support_link = '<a href="' _ support_address _ '">Contact Support</a>' -%]
+    [% loc('If you have questions about this email, please [_1]', support_link) %]
+  </div>
+[%- END %]
+<div class="st-byline">
+  [% loc('Brought to you by Socialtext.') %]
+</div>
+<div class="st-link-home">
+  <a href="http://www.socialtext.com/">http://www.socialtext.com/</a>
+</div>
