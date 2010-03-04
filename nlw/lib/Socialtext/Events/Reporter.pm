@@ -287,18 +287,30 @@ sub decorate_event_set {
 
 sub signal_vis_sql {
     my $self = shift;
-    my $evtable = shift|| 'evt';
+    my $evtable = shift || 'evt';
     return qq{ 
-    AND user_set_id IN (
-        SELECT user_set_id
-        FROM signal_user_set sua
-        WHERE sua.signal_id = $evtable.signal_id
-    )
-    AND (
-        $evtable.person_id IS NULL
-        OR $evtable.person_id = ?
-        OR $evtable.actor_id = ?
-    )};
+        AND ((
+                $evtable.person_id IS NULL
+                AND user_set_id IN (
+                    SELECT user_set_id
+                    FROM signal_user_set sua
+                    WHERE sua.signal_id = $evtable.signal_id
+                )
+            )
+            OR (
+                -- the signal is direct
+                ($evtable.person_id = ? OR $evtable.actor_id = ?)
+
+                -- and the filtered network contains both users
+                AND EXISTS (
+                    SELECT 1
+                    FROM user_sets_for_user usfu
+                    WHERE usfu.user_id = evt.person_id
+                      AND v_path.user_set_id = usfu.user_set_id
+                )
+            )
+        )
+    };
 };
 
 sub visible_exists {
