@@ -447,3 +447,7 @@ lib/Socialtext/Handler/Push/Client.pm
 lib/Socialtext/Handler/Push/Request.pm
 lib/Socialtext/Handler/Push/Util.pm
 lib/Socialtext/Signal/Render.pm
+lib/Socialtext/Client/Push.pm
+t/wikitests/push/basic-signals.wiki
+t/wikitests/push/hide-signal.wiki
+t/wikitests/push/membership-change.wiki
