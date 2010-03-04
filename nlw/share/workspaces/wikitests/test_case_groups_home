@@ -59,8 +59,7 @@
 | open_ok | /?group/%%group_id%% |  |
 | st-name-widget | 3 | signals_widget |
 | st-send-signal-via-profile-widget | signals_widget | signal-%%start_time%% |
-| st-name-widget | 4 | activity_widget |
-| st-select-widget-frame | activity_widget |  |
+| st-select-widget-frame | signals_widget |  |
 | wait_for_text_present_ok | to %%groupname%% | 30000 |
 | select_frame | relative=parent |  |
 
@@ -68,7 +67,8 @@
 | st-logoutin | %%nopermuser%% | %%password%% |
 | open_ok | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | Error | 30000 |
-| wait_for_text_present_ok | You do not have permission to view this page | 30000 |
+| wait_for_text_present_ok | You do not have permission to view this group. Please check with the group administrator or contact Socialtext Support | 30000 |
+| wait_for_element_visible_ok | link=Socialtext Support | 30000 |
 
 | *Comment* | Test Case: Groups Add member, Check again |  |
 | st-admin | add-member --e %%nopermuser%% --group %%group_id%% | is now a member of the |
@@ -77,8 +77,7 @@
 | st-name-widget | 1 | information_widget |
 | st-name-widget | 2 | workspaces_widget |
 | st-name-widget | 3 | signals_widget |
-| st-name-widget | 4 | activity_widget |
-| st-name-widget | 5 | people_widget |
+| st-name-widget | 4 | people_widget |
 
 | *Comment* | Test Case: Groups Home Check Information Widget |  |
 | st-select-widget-frame | information_widget |  |
@@ -92,8 +91,8 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups Home Check Activity Widget |  |
-| st-select-widget-frame | activity_widget |  |
-| wait_for_text_present_ok | %%groupname%%'s Activity | 30000 |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_text_present_ok | within %%groupname%% | 30000 |
 | wait_for_text_present_ok | minute | 30000 |
 | wait_for_text_present_ok | edited New Page %%start_time%% in %%wsname%% | 30000 |
 | wait_for_text_present_ok | tagged New Page %%start_time%% in %%wsname%% as tag-%%start_time%% | 30000 |
