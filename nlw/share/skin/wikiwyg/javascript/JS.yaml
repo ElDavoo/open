@@ -1,7 +1,7 @@
 ---
 'socialtext-editor.js':
     parts:
-        - ../../s2/javascript/main.js
+        - {dir: skin/s2/javascript, file: main.js}
         - jemplate_wikiwyg.js
         - jemplate_wikiwyg_edit.js
         - lib/Wikiwyg.js
@@ -19,6 +19,14 @@
         - lib/Document/Emitter/HTML.js
         - lib/Document/Parser.js
         - lib/Document/Parser/Wikitext.js
+'socialtext-editor-light.js':
+    parts:
+        - {dir: skin/s2/javascript, file: main.js}
+        - lib/Wikiwyg.js
+        - Widgets.js
+        - lib/Wikiwyg/Widgets.js
+        - lib/Wikiwyg/Wikitext.js
+        - lib/Wikiwyg/Wysiwyg.js
 'jemplate_wikiwyg.js':
     parts:
         - jemplate: jemplate_wikiwyg
