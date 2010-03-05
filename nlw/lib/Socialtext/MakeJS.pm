@@ -25,7 +25,6 @@ my @dirs = (
 my %dirs;
 for my $file (@dirs) {
     my ($subdir) = $file =~ m{$code_base/(.*)/JS\.yaml};
-    warn "Loading $file\n";
     $dirs{$subdir} = YAML::LoadFile($file);
 }
 
@@ -68,8 +67,6 @@ sub Build {
 
     local $CWD = "$code_base/$dir";
     my $info = $dirs{$dir}{$target} || return;
-
-    warn "Checking $dir/$target...\n" if $VERBOSE;
 
     my $parts = $info->{parts} || die "$target has no parts!";
 
@@ -139,6 +136,9 @@ sub _part_to_text {
     if ($part->{template}) {
         return $class->_template_to_text($part);
     }
+    elsif ($part->{jemplate_runtime}) {
+        return $class->_jemplate_runtime_to_text($part);
+    }
     elsif ($part->{command}) {
         return $class->_command_to_text($part);
     }
@@ -191,6 +191,14 @@ sub _command_to_text {
     my $text = '';
     $text .= $part->{nocomment} ? '' : "// BEGIN $part->{command}\n";
     return qx/$part->{command}/;
+}
+
+sub _jemplate_runtime_to_text {
+    my ($class, $part) = @_;
+    my $text = '';
+    $text .= $part->{nocomment} ? '' : "// BEGIN Jemplate Runtime\n";
+    $text .= Jemplate->runtime_source_code($part->{jquery_runtime});
+    return $text;
 }
 
 sub _jemplate_to_text {

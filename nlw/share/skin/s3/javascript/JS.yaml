@@ -14,7 +14,7 @@
         - 'jquery-plugin.js'
         - 'jquery.tablesorter.js'
         - 'jquery.selectOverlap.js'
-        - { command: 'jemplate --runtime=jquery' }
+        - { jemplate_runtime: jquery }
         - 'JemplatePlugin/*.js'
         - { jemplate: 'template/nav-list.tt2' }
         - { jemplate: 'template/new_signal.tt2' }
