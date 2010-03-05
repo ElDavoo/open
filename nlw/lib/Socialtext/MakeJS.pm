@@ -202,7 +202,6 @@ sub _jemplate_to_text {
         warn "Finding in $part->{jemplate}";
         find({
             no_chdir => 1,
-            preprocess => sub { return sort @_ },
             wanted => sub {
                 my $jemplate = $File::Find::name;
                 return unless -f $jemplate;
@@ -212,7 +211,7 @@ sub _jemplate_to_text {
                     scalar(slurp($jemplate)), $name
                 );
             },
-        }, glob("$part->{jemplate}/*"));
+        }, $part->{jemplate});
     }
     elsif (-f $part->{jemplate}) {
         $text .= $part->{nocomment} ? '' : "// BEGIN $part->{jemplate}\n";
@@ -268,6 +267,8 @@ sub _widget_jemplate_to_text {
     $text .= $part->{nocomment}
         ? '' : "// BEGIN widgets $part->{widget_template}\n";
     $text .= Jemplate->compile_template_files(@jemplates);
+
+    unlink @jemplates;
     return $text;
 }
 
