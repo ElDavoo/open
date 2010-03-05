@@ -15,140 +15,227 @@ use Compress::Zlib;
 use namespace::clean -except => 'meta';
 
 our $VERBOSE = 0;
-
 my $code_base = Socialtext::AppConfig->code_base;
-my %files;
-for my $file (glob("$code_base/skin/*/javascript/JS.yaml")) {
-    my ($plugin) = $file =~ m{/skin/([^/]+)/javascript/};
-    $files{$plugin} = YAML::LoadFile($file);
+
+my @dirs = (
+    glob("$code_base/skin/*/javascript/JS.yaml"),
+    glob("$code_base/plugin/*/share/javascript/JS.yaml"),
+);
+my %dirs;
+for my $file (@dirs) {
+    my ($subdir) = $file =~ m{$code_base/(.*)/JS\.yaml};
+    warn "Loading $file\n";
+    $dirs{$subdir} = YAML::LoadFile($file);
 }
 
-sub CleanAllSkins {
+sub CleanAll {
     my ($class) = @_;
-    for my $skin (keys %files) {
-        warn "Cleaning skin $skin...\n" if $VERBOSE;
-        $class->CleanSkin($skin);
+    for my $dir (keys %dirs) {
+        warn "Cleaning in directory $dir...\n" if $VERBOSE;
+        $class->CleanDir($dir);
     }
 }
 
-sub BuildAllSkins {
+sub BuildAll {
     my ($class) = @_;
-    for my $skin (keys %files) {
-        warn "Building skin $skin...\n" if $VERBOSE;
-        $class->BuildSkin($skin);
+    for my $dir (keys %dirs) {
+        $class->BuildDir($dir);
     }
 }
 
-sub BuildSkin {
-    my ($class, $skin) = @_;
-    for my $target (keys %{$files{$skin}}) {
-        warn "Building $target...\n" if $VERBOSE;
-        $class->Build($skin, $target);
+sub BuildDir {
+    my ($class, $dir) = @_;
+    for my $target (keys %{$dirs{$dir}}) {
+        $class->Build($dir, $target);
     }
 }
 
-sub CleanSkin {
-    my ($class, $skin) = @_;
-    local $CWD = "$code_base/skin/$skin/javascript";
-    warn "Cleaning files in skin $skin...\n" if $VERBOSE;
+sub CleanDir {
+    my ($class, $dir) = @_;
+    local $CWD = "$code_base/$dir";
+    warn "Cleaning files in dir $dir...\n" if $VERBOSE;
     my @toclean;
-    for my $file (keys %{$files{$skin}}) {
+    for my $file (keys %{$dirs{$dir}}) {
         push @toclean, $file;
-        push @toclean, "$file.gz" if $files{$skin}{$file}{compress};
+        push @toclean, "$file.gz" if $dirs{$dir}{$file}{compress};
     }
     unlink @toclean;
 }
 
-sub modified {
-    return (stat $_[0])[9] || 0;
+sub Build {
+    my ($class, $dir, $target) = @_;
+
+    local $CWD = "$code_base/$dir";
+    my $info = $dirs{$dir}{$target} || return;
+
+    warn "Checking $dir/$target...\n" if $VERBOSE;
+
+    my $parts = $info->{parts} || die "$target has no parts!";
+
+    # Iterate over parts, building as we go
+    my @last_modifieds;
+    for my $part (@$parts) {
+        # Clean the data
+        $part = ref $part ? $part : { file => $part };
+        $part->{dir} ||= $dir;
+
+        # Check if this is a built file
+        if ($part->{file} and $dirs{ $part->{dir} }{ $part->{file} }) {
+            $class->Build($part->{dir}, $part->{file});
+        }
+        push @last_modifieds, $class->_part_last_modified($part);
+    }
+
+    # Return if the file is up-to-date
+    return if (modified($target) >= (sort @last_modifieds)[-1]);
+    warn "Building $dir/$target...\n" if $VERBOSE;
+    # Now actually build
+    my $text = '';
+    for my $part (@$parts) {
+        $text .= $class->_part_to_text($part);
+        $text .= "\n";
+    }
+
+    if (defined $text) {
+        write_file($target, $text);
+        write_compressed($target, $text) if $info->{compress};
+    }
 }
 
-sub _build_from_template {
-    my ($class, $info) = @_;
+sub _part_last_modified {
+    my ($class, $part) = @_;
+    my @files;
+    local $CWD = "$code_base/$part->{dir}";
+    push @files, "JS.yaml";
+    push @files, glob($part->{file}) if $part->{file};
+    push @files, $part->{template} if $part->{template};
+    push @files, $part->{config} if $part->{config};
+    push @files, $part->{jemplate} if $part->{jemplate};
+    push @files, $part->{json} if $part->{json};
 
-    my $template = $info->{template} || die 'template file required';
-    my $config_file = $info->{config} || '';
+    if (my $template = $part->{widget_template}) {
+        push @files, 'Widgets.yaml';
+        push @files, $template;
+        #push @files, $part->{target}; XXX???
+    }
+    return map { modified($_) } @files;
+}
+
+sub _part_to_text {
+    my ($class, $part) = @_;
+    local $CWD = "$code_base/$part->{dir}";
+    if ($part->{file}) {
+        return $class->_file_to_text($part);
+    }
+    if ($part->{template}) {
+        return $class->_template_to_text($part);
+    }
+    elsif ($part->{command}) {
+        return $class->_command_to_text($part);
+    }
+    elsif ($part->{jemplate}) {
+        return $class->_jemplate_to_text($part);
+    }
+    elsif ($part->{widget_template}) {
+        return $class->_widget_jemplate_to_text($part);
+    }
+    elsif ($part->{json}) {
+        return $class->_json_to_text($part);
+    }
+    else {
+        die "Don't know how to create part: $part->{dir}";
+    }
+}
+
+sub _file_to_text {
+    my ($class, $part) = @_;
+    my $text = '';
+    for my $file (glob($part->{file})) {
+        $text .= "// BEGIN $part->{file}\n" unless $part->{nocomment};
+        $text .= slurp($file);
+    }
+    return $text;
+}
+
+sub _template_to_text {
+    my ($class, $part) = @_;
+
+    my $template = $part->{template} || die 'template file required';
+    my $config_file = $part->{config} || '';
     die "template $template doesn't exist!" unless -f $template;
     die "$config_file doesn't exist" if $config_file and !-f $config_file;
-
-    my $last_build = modified($info->{target});
-    my $uptodate = 1
-        if $last_build >= modified($template)
-       and (!$config_file or $last_build >= modified($config_file));
-
-    if ($uptodate) {
-        return;
-    }
 
     # Load template vars
     my $config = $config_file ? YAML::LoadFile($config_file) : {};
     $config->{make_time} = time;
 
-    warn "Writing to $info->{target}...\n" if $VERBOSE;
     my $output;
     Template->new->process($template, $config, \$output);
-    return $output;
+    my $begin = '';
+    $begin .= $part->{nocomment} ? '' : "// BEGIN $part->{template}\n";
+    return join '', $begin, $output;
 }
 
-sub _build_from_command {
-    my ($class, $info) = @_;
-    if (-f $info->{target}) {
-        return;
-    }
-    warn "Writing to $info->{target}...\n" if $VERBOSE;
+sub _command_to_text {
+    my ($class, $part) = @_;
     $Socialtext::System::SILENT_RUN = !$VERBOSE;
-    shell_run "$info->{command} > $info->{target}";
+    my $text = '';
+    $text .= $part->{nocomment} ? '' : "// BEGIN $part->{command}\n";
+    return qx/$part->{command}/;
 }
 
-sub _build_from_jemplates {
-    my ($class, $info) = @_;
-    my $jemplates = $info->{jemplates};
-    my $latest = (sort map { modified($_) } @$jemplates)[-1];
-    my $last_build = modified($info->{target});
-    return unless $latest > $last_build;
-    warn "Writing to $info->{target} from jemplates...\n" if $VERBOSE;
-    return Jemplate->compile_template_files(@$jemplates);
+sub _jemplate_to_text {
+    my ($class, $part) = @_;
+    my $text ='';
+    $text .= $part->{nocomment} ? '' : "// BEGIN $part->{jemplate}\n";
+    return Jemplate->compile_template_files($part->{jemplate});
+}
+
+sub _json_to_text {
+    my ($class, $part) = @_;
+    my $name = $part->{name} || die "name required";
+    my $text = '';
+    $text .= $part->{nocomment} ? '' : "// BEGIN $part->{json}\n";
+    $text .= "$name = " . encode_json(YAML::LoadFile($part->{json})) . ";";
+    return $text;
 }
 
 # This is a one off for widgets and should only happen in the wikiwyg skin
-sub _build_from_widget_jemplates {
-    my ($class, $info) = @_;
-
-    my $items = $info->{widget_jemplates} || die 'no widget_jemplates';;
-
-    my @files = ('Widgets.yaml', map { "template/$_->{template}" } @$items);
-    my $latest = (map { modified($_) } @files)[-1];
-    return unless $latest > modified($info->{target});
-
-    warn "Writing to $info->{target} from widget jemplates...\n" if $VERBOSE;
+sub _widget_jemplate_to_text {
+    my ($class, $part) = @_;
 
     $Socialtext::System::SILENT_RUN = !$VERBOSE;
 
     my $yaml = YAML::LoadFile('Widgets.yaml');
 
     my @jemplates;
-    for my $item (@$items) {
-        if ($item->{all}) {
-            for my $widget (@{$yaml->{widgets}}) {
-                $class->_render_widget_jemplate(
-                    yaml => $yaml,
-                    output => "jemplate/widget_${widget}_edit.html",
-                    template => $item->{template},
-                );
-                push @jemplates, "jemplate/widget_${widget}_edit.html";
-            }
-        }
-        else {
+    if ($part->{all}) {
+        for my $widget (@{$yaml->{widgets}}) {
             $class->_render_widget_jemplate(
                 yaml => $yaml,
-                output => $item->{target},
-                template => $item->{template},
+                output => "jemplate/widget_${widget}_edit.html",
+                template => $part->{widget_template},
             );
-            push @jemplates, $item->{target};
+            push @jemplates, "jemplate/widget_${widget}_edit.html";
         }
     }
+    elsif ($part->{target}) {
+        $class->_render_widget_jemplate(
+            yaml => $yaml,
+            output => $part->{target},
+            template => $part->{widget_template},
+        );
+        push @jemplates, $part->{target};
+    }
+    else {
+        die "Don't know how to render widget jemplate";
+    }
 
-    return Jemplate->compile_template_files(@jemplates );
+    my $text = '';
+    $text .= $part->{nocomment}
+        ? '' : "// BEGIN widgets $part->{widget_template}\n";
+    $text .= Jemplate->compile_template_files(@jemplates);
+    return $text;
 }
 
 {
@@ -198,130 +285,6 @@ sub _build_from_widget_jemplates {
     }
 }
 
-sub _build_lightbox {
-    my ($class, $info) = @_;
-    my $lb = $info->{lightbox};
-    my $tt2 = "lightbox/$lb.tt2";
-    my $js = "lightbox/$lb.js";
-    die "$js doesn't exist\n" unless -f $js;
-    die "$tt2 doesn't exist\n" unless -f $tt2;
-
-    my $last_build = modified($info->{target});
-    return
-        if $last_build >= modified($tt2)
-            and $last_build >= modified($js)
-            and $last_build >= modified('st-lightbox.js');
-
-    warn "Writing to lightbox: $info->{lightbox}\n";
-    return join "\n",
-        Jemplate->compile_template_files($tt2);
-        "// BEGIN st-lightbox.js",
-        slurp('st-lightbox.js'), 
-        "// BEGIN $js",
-        slurp($js);
-}
-
-sub _build_json {
-    my ($class, $info) = @_;
-    my $yaml = $info->{json};
-    my $name = $info->{name} || die "name required";
-
-    my $last_build = modified($info->{target});
-    return unless modified($yaml) >  $last_build;
-
-    return "$name = " . encode_json(YAML::LoadFile($yaml)) . ";";
-}
-
-sub _build_from_files {
-    my ($class, $info) = @_;
-
-    # Build a list of files to include, building prereqs as they come up
-    my @globs;
-    for my $file (@{$info->{files}}) {
-        my ($src_skin, $src_file);
-        if (ref $file) {
-            # Build prereq
-            $src_skin = $file->{skin} || $info->{skin};
-            $src_file = $file->{target};
-        }
-        else {
-            $src_skin = $info->{skin};
-            $src_file = $file;
-        }
-
-        # Check if this is a build file
-        if ($files{$src_skin}{$src_file}) {
-            $class->Build($src_skin, $src_file);
-        }
-        
-        my $path = $info->{skin} eq $src_skin
-            ? $src_file :  "../../$src_skin/javascript/$src_file";
-
-        push @globs, $path;
-    }
-
-    # Check if we need to build
-    my @files = glob(join(' ', @globs));
-    my $latest = (sort map { modified($_) } @files)[-1];
-    my $last_build = modified($info->{target});
-
-    if ($last_build < $latest) {
-        warn "Writing to $info->{target}...\n" if $VERBOSE;
-        # Now actually build
-        my $all = '';
-        for my $file (@files) {
-            $all .= "// BEGIN $file\n" unless $info->{nocomment};
-            $all .= slurp($file);
-            $all .= "\n";
-        }
-        return $all;
-    }
-    return;
-}
-
-sub Build {
-    my ($class, $skin, $target) = @_;
-
-    local $CWD = "$code_base/skin/$skin/javascript";
-    my $info = $files{$skin}{$target} || return;
-
-    warn "Starting $skin/$target...\n" if $VERBOSE;
-
-    $info->{target} = $target;
-    $info->{skin} ||= $skin;
-
-    my $text;
-    if ($info->{template}) {
-        $text = $class->_build_from_template($info);
-    }
-    elsif ($info->{command}) {
-        $text = $class->_build_from_command($info);
-    }
-    elsif ($info->{jemplates}) {
-        $text = $class->_build_from_jemplates($info);
-    }
-    elsif ($info->{widget_jemplates}) {
-        $text = $class->_build_from_widget_jemplates($info);
-    }
-    elsif ($info->{json}) {
-        $text = $class->_build_json($info);
-    }
-    elsif ($info->{lightbox}) {
-        $text = $class->_build_lightbox($info);
-    }
-    elsif ($info->{files}) {
-        $text = $class->_build_from_files($info);
-    }
-    else {
-        warn "Don't know how to build $target!\n";
-    }
-
-    if (defined $text) {
-        write_file($target, $text);
-        write_compressed($target, $text) if $info->{compress};
-    }
-}
-
 sub write_compressed {
     my ($target, $text) = @_;
 
@@ -333,6 +296,10 @@ sub write_compressed {
 
     warn "Writing to $target.gz...\n" if $VERBOSE;
     write_file("$target.gz", $gzipped);
+}
+
+sub modified {
+    return (stat $_[0])[9] || 0;
 }
 
 1;

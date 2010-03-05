@@ -1,6 +1,6 @@
 ---
 'socialtext-editor.js':
-    files:
+    parts:
         - ../../s2/javascript/main.js
         - jemplate_wikiwyg.js
         - jemplate_wikiwyg_edit.js
@@ -20,19 +20,18 @@
         - lib/Document/Parser.js
         - lib/Document/Parser/Wikitext.js
 'jemplate_wikiwyg.js':
-    jemplates:
-        - jemplate_wikiwyg/edit_wikiwyg
-        - jemplate_wikiwyg/element
-        - jemplate_wikiwyg/insert_menu
-        - jemplate_wikiwyg/st_page_editing_toolbar
+    parts:
+        - { jemplate: jemplate_wikiwyg/edit_wikiwyg }
+        - { jemplate: jemplate_wikiwyg/element }
+        - { jemplate: jemplate_wikiwyg/insert_menu }
+        - { jemplate: jemplate_wikiwyg/st_page_editing_toolbar }
 'jemplate_wikiwyg_edit.js':
-    widget_jemplates:
-        - 
-            all: 1
-            template: widget_edit.tt2
-        - 
-            target: jemplate/insert_widget_menu
-            template: widget_menu.tt2
+    parts:
+        - widget_template: widget_edit.tt2
+          all: 1
+        - widget_template: widget_menu.tt2
+          target: jemplate/insert_widget_menu
 'Widgets.js':
-    json: Widgets.yaml
-    name: 'Wikiwyg.Widgets'
+    parts:
+        - { json: 'Widgets.yaml', name: 'Wikiwyg.Widgets' }
+

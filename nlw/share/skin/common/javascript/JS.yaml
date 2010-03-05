@@ -1,6 +1,6 @@
 ---
 'Socialtext/socialtext-api.js':
-    files:
+    parts:
         - Socialtext/lib/Socialtext/Base.js
         - Socialtext/lib/Socialtext/Account.js
         - Socialtext/lib/Socialtext/Group.js

@@ -3,37 +3,28 @@ use strict;
 use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
+use Cwd qw(cwd);
 use Socialtext::MakeJS;
-
-my $usage = "USAGE: $0 <build|clean> [skin] [target]\n";
-
-my $command = shift || die $usage;
-my $skin = shift;
-my $target = shift;
+use Time::HiRes qw(time);
 
 $Socialtext::MakeJS::VERBOSE = 1;
 
-if ($command eq 'build') {
-    if ($skin) {
-        if ($target) {
-            Socialtext::MakeJS->Build($skin, $target);
-        }
-        else {
-            Socialtext::MakeJS->BuildSkin($skin);
-        }
+my $code_base = Socialtext::AppConfig->code_base;
+(my $dir = cwd) =~ s{^$code_base/}{};
+$dir =~ s{^$ENV{ST_CURRENT}/plugins}{plugin};
+
+my @targets = @ARGV ? @ARGV : ('all');
+my $before = time;
+for my $target (@targets) {
+    if ($target eq 'all') {
+        Socialtext::MakeJS->BuildDir($dir);
+    }
+    elsif ($target eq 'clean') {
+        Socialtext::MakeJS->CleanDir($dir);
     }
     else {
-        Socialtext::MakeJS->BuildAllSkins;
+        Socialtext::MakeJS->Build($dir, $target);
     }
 }
-elsif ($command eq 'clean') {
-    if ($skin) {
-        Socialtext::MakeJS->CleanSkin($skin);
-    }
-    else {
-        Socialtext::MakeJS->CleanAllSkins($skin);
-    }
-}
-else {
-    die "Unknown command: $command\n";
-}
+my $lapsed = (time - $before);
+warn "Took $lapsed seconds.\n";
