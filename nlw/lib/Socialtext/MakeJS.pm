@@ -4,14 +4,15 @@ use warnings;
 use Socialtext::AppConfig;
 use Socialtext::System qw(shell_run);
 use Socialtext::JSON qw(encode_json);
-use File::Basename qw(dirname);
 use JavaScript::Minifier::XS qw(minify);
-use File::Slurp qw(slurp write_file);
 use Template;
 use YAML;
 use File::chdir;
 use Jemplate;
 use Compress::Zlib;
+use File::Slurp qw(slurp write_file);
+use File::Find qw(find);
+use File::Basename qw(basename dirname);
 use namespace::clean -except => 'meta';
 
 our $VERBOSE = 0;
@@ -110,13 +111,21 @@ sub _part_last_modified {
     push @files, glob($part->{file}) if $part->{file};
     push @files, $part->{template} if $part->{template};
     push @files, $part->{config} if $part->{config};
-    push @files, $part->{jemplate} if $part->{jemplate};
     push @files, $part->{json} if $part->{json};
+
+    if ($part->{jemplate} and -f $part->{jemplate}) {
+        push @files, $part->{jemplate};
+    }
+    elsif ($part->{jemplate} and -d $part->{jemplate}) {
+        find({
+            no_chdir => 1,
+            wanted => sub { push @files, $File::Find::name },
+        }, $part->{jemplate});
+    }
 
     if (my $template = $part->{widget_template}) {
         push @files, 'Widgets.yaml';
         push @files, $template;
-        #push @files, $part->{target}; XXX???
     }
     return map { modified($_) } @files;
 }
@@ -187,8 +196,32 @@ sub _command_to_text {
 sub _jemplate_to_text {
     my ($class, $part) = @_;
     my $text ='';
-    $text .= $part->{nocomment} ? '' : "// BEGIN $part->{jemplate}\n";
-    return Jemplate->compile_template_files($part->{jemplate});
+    if (-d $part->{jemplate}) {
+        # Traverse the directory, so we can maintain template names like
+        # element/something.tt2 rather than just something.tt2
+        warn "Finding in $part->{jemplate}";
+        find({
+            no_chdir => 1,
+            preprocess => sub { return sort @_ },
+            wanted => sub {
+                my $jemplate = $File::Find::name;
+                return unless -f $jemplate;
+                (my $name = $jemplate) =~ s{^$part->{jemplate}/}{};
+                $text .= $part->{nocomment} ? '' : "// BEGIN $jemplate\n";
+                $text .= Jemplate->compile_template_content(
+                    scalar(slurp($jemplate)), $name
+                );
+            },
+        }, glob("$part->{jemplate}/*"));
+    }
+    elsif (-f $part->{jemplate}) {
+        $text .= $part->{nocomment} ? '' : "// BEGIN $part->{jemplate}\n";
+        $text .= Jemplate->compile_template_files($part->{jemplate});
+    }
+    else {
+        die "Don't know how to compile jemplate: $part->{jemplate}";
+    }
+    return $text;
 }
 
 sub _json_to_text {

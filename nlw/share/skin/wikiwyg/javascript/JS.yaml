@@ -21,10 +21,8 @@
         - lib/Document/Parser/Wikitext.js
 'jemplate_wikiwyg.js':
     parts:
-        - { jemplate: jemplate_wikiwyg/edit_wikiwyg }
-        - { jemplate: jemplate_wikiwyg/element }
-        - { jemplate: jemplate_wikiwyg/insert_menu }
-        - { jemplate: jemplate_wikiwyg/st_page_editing_toolbar }
+        - jemplate: jemplate_wikiwyg
+        - jemplate: jemplate
 'jemplate_wikiwyg_edit.js':
     parts:
         - widget_template: widget_edit.tt2
