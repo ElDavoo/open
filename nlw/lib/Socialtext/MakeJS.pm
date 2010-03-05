@@ -13,6 +13,7 @@ use Compress::Zlib;
 use File::Slurp qw(slurp write_file);
 use File::Find qw(find);
 use File::Basename qw(basename dirname);
+use Clone qw(clone);
 use namespace::clean -except => 'meta';
 
 our $VERBOSE = 0;
@@ -26,6 +27,30 @@ my %dirs;
 for my $file (@dirs) {
     my ($subdir) = $file =~ m{$code_base/(.*)/JS\.yaml};
     $dirs{$subdir} = YAML::LoadFile($file);
+    expand_collapsed($dirs{$subdir});
+}
+
+sub expand_collapsed {
+    my $targets = shift;
+
+    # Check if a regex matches the target, and expand it
+    for my $target (keys %$targets) {
+        my $expands = delete $targets->{$target}{expand} || next;
+        my $info = delete $targets->{$target};
+
+        for my $expand (@$expands) {
+            (my $new_target = $target) =~ s{%}{$expand};
+            my $clone = $targets->{$new_target} = clone($info);
+            for my $part (@{$clone->{parts}}) {
+                if (ref $part) {
+                    $_ =~ s{%}{$expand}g for values %$part;
+                }
+                else {
+                    $part =~ s{%}{$expand}g;
+                }
+            }
+        }
+    }
 }
 
 sub CleanAll {
@@ -66,7 +91,8 @@ sub Build {
     my ($class, $dir, $target) = @_;
 
     local $CWD = "$code_base/$dir";
-    my $info = $dirs{$dir}{$target} || return;
+
+    my $info = $dirs{$dir}{$target} || '';
 
     my $parts = $info->{parts} || die "$target has no parts!";
 
@@ -88,15 +114,19 @@ sub Build {
     return if (modified($target) >= (sort @last_modifieds)[-1]);
     warn "Building $dir/$target...\n" if $VERBOSE;
     # Now actually build
-    my $text = '';
+    my @text;
     for my $part (@$parts) {
-        $text .= $class->_part_to_text($part);
-        $text .= "\n";
+        my $part_text = $class->_part_to_text($part);
+        push @text, $part_text if $part_text;
     }
 
-    if (defined $text) {
+    if (@text) {
+        my $text = join '', map { "$_\n" } @text;
         write_file($target, $text);
         write_compressed($target, $text) if $info->{compress};
+    }
+    else {
+        die "Error building $target!\n";
     }
 }
 
@@ -109,6 +139,7 @@ sub _part_last_modified {
     push @files, $part->{template} if $part->{template};
     push @files, $part->{config} if $part->{config};
     push @files, $part->{json} if $part->{json};
+    push @files, glob("$part->{shindig_feature}/*") if $part->{shindig_feature};
 
     if ($part->{jemplate} and -f $part->{jemplate}) {
         push @files, $part->{jemplate};
@@ -151,9 +182,31 @@ sub _part_to_text {
     elsif ($part->{json}) {
         return $class->_json_to_text($part);
     }
-    else {
-        die "Don't know how to create part: $part->{dir}";
+    elsif ($part->{shindig_feature}) {
+        return $class->_shindig_feature_to_text($part);
     }
+    else {
+        die "Do not know how to create part: $part->{dir}";
+    }
+}
+
+sub _shindig_feature_to_text {
+    my ($class, $part) = @_;
+    require Socialtext::Gadgets::Features;
+    my $feature = Socialtext::Gadgets::Features->new(
+        feature_dir => "$CWD/$part->{feature_dir}",
+        type => $part->{type},
+    );
+    my $text;
+    if ($part->{shindig_feature} eq 'default') {
+        $text = $feature->default_feature_js();
+    }
+    else {
+        $text = $feature->feature_js($part->{shindig_feature});
+    }
+    return unless $text;
+    return $part->{nocomment} ?
+        "// BEGIN Shindig Feature $part->{shindig_feature}\n$text" : $text;
 }
 
 sub _file_to_text {
