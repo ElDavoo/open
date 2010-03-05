@@ -28,9 +28,6 @@ sub handler {
                 open M, "> $stamp_file";
                 print M time();
                 close M;
-                shell_run '-st-make-all @all; st-widgets update-all';
-            }
-            else {
                 shell_run '-st-widgets update-all';
             }
         }
