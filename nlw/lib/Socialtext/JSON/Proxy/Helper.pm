@@ -11,14 +11,20 @@ use File::Find qw(find);
 
 our $cache_dir = Socialtext::Paths::storage_directory('json_cache');
 
-sub ClearForUsers {
+sub ClearMemoryCache {
     my $class = shift;
-    my %user_ids = map { $_ => 1 } @_;
     my $pidfile = Socialtext::AppConfig->pid_file_dir . "/json-proxy.pid";
     if (-f $pidfile) {
         my $pid = Socialtext::File::get_contents($pidfile);
         system "kill -USR1 $pid";
     }
+}
+
+sub ClearForUsers {
+    my $class = shift;
+    my %user_ids = map { $_ => 1 } @_;
+
+    $class->ClearMemoryCache;
 
     # Purge each user's file-based cache
     my $cache_dir = Socialtext::Paths::storage_directory('json_cache');
@@ -41,20 +47,18 @@ sub ClearForUsers {
 sub ClearForAccount {
     my $class = shift;
     my $account_id = shift;
-    PurgeCache(); # just purge the entire cache
+    $class->PurgeCache(); # just purge the entire cache
 }
 
 sub ClearForGroup {
     my $class = shift;
     my $group_id = shift;
-    PurgeCache(); # just purge the entire cache
+    $class->PurgeCache(); # just purge the entire cache
 }
 
 sub PurgeCache {
     my $class = shift;
-
-    my $pidfile = Socialtext::AppConfig->pid_file_dir . "/json-proxy.pid";
-    system "/sbin/start-stop-daemon --stop --quiet --oknodo --pidfile $pidfile --signal USR1 >/dev/null 2>/dev/null";
+    $class->ClearMemoryCache;
 
     my $cache_dir = Socialtext::Paths::storage_directory('json_cache');
     if (-d $cache_dir) {

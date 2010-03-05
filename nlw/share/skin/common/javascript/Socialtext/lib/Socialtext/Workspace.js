@@ -37,7 +37,7 @@ $.extend(Socialtext.Workspace.prototype, {
 
         var hasImpersonators = false;
         $(members).each(function(i, member) {
-            if ($.inArray('impersonator', member.roles) != -1) {
+            if (member.roles && $.inArray('impersonator', member.roles) != -1) {
                 hasImpersonators = true;
             }
         });

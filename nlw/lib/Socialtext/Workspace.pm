@@ -1833,6 +1833,15 @@ sub _de_dupe_users {
     }
 }
 
+after qw(add_account remove_account) => sub {
+    my ($self, %opts) = @_;
+    if ($opts{account}) {
+        Socialtext::JSON::Proxy::Helper->ClearForAccount(
+            $opts{account}->account_id
+        );
+    }
+};
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 package Socialtext::NoWorkspace;
