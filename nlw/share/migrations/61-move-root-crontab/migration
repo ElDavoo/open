@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+DIR=/var/spool/cron/crontabs
+
+if [ -e $DIR/root ]; then
+    mv $DIR/root $DIR/www-data
+    chown www-data:crontab $DIR/www-data
+fi
