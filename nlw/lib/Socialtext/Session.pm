@@ -56,6 +56,11 @@ sub save_args {
 
 sub saved_args { $_[0]->_session->{__saved_args__} || {} }
 
+sub remove {
+    my ($self,$key) = @_;
+    delete $self->_session->{__saved_args__}{$key};
+}
+
 sub add_message {
     return if $_[0]->_exists( $_[0]->_session->{__messages__}, $_[1] );
     push @{ $_[0]->_session->{__messages__} }, $_[1];
@@ -138,6 +143,10 @@ the C<saved_args()> method.
 =item * $session->saved_args()
 
 Returns the saved args as a hashref.
+
+=item * $session->remove($arg)
+
+Remove the value identified by the key $arg.
 
 =item * $session->add_message($message)
 

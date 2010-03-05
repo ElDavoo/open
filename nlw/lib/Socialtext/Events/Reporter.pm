@@ -287,18 +287,30 @@ sub decorate_event_set {
 
 sub signal_vis_sql {
     my $self = shift;
-    my $evtable = shift|| 'evt';
+    my $evtable = shift || 'evt';
     return qq{ 
-    AND user_set_id IN (
-        SELECT user_set_id
-        FROM signal_user_set sua
-        WHERE sua.signal_id = $evtable.signal_id
-    )
-    AND (
-        $evtable.person_id IS NULL
-        OR $evtable.person_id = ?
-        OR $evtable.actor_id = ?
-    )};
+        AND ((
+                $evtable.person_id IS NULL
+                AND user_set_id IN (
+                    SELECT user_set_id
+                    FROM signal_user_set sua
+                    WHERE sua.signal_id = $evtable.signal_id
+                )
+            )
+            OR (
+                -- the signal is direct
+                ($evtable.person_id = ? OR $evtable.actor_id = ?)
+
+                -- and the filtered network contains both users
+                AND EXISTS (
+                    SELECT 1
+                    FROM user_sets_for_user usfu
+                    WHERE usfu.user_id = evt.person_id
+                      AND v_path.user_set_id = usfu.user_set_id
+                )
+            )
+        )
+    };
 };
 
 sub visible_exists {
@@ -624,6 +636,12 @@ sub _build_standard_sql {
             $self->add_condition('signal_id IS NOT NULL');
         }
 
+        if ($opts->{group_id}) {
+            $self->add_condition(
+                "event_class != 'group' OR group_id = ?", $opts->{group_id},
+            );
+        }
+
         if ($opts->{activity} && $opts->{activity} eq 'all-combined') {
             $self->add_condition('NOT is_ignorable_action(event_class,action)');
         }
@@ -879,31 +897,38 @@ sub get_events_group_activities {
     }
 
     my @binds = ();
-    my $groupvissql = $self->visible_exists('signals','e.actor_id', 
-        { group_id => $group_id }, \@binds, 'e');
+    my $groupsig_sql = $self->visible_exists('signals','e.actor_id', 
+        {
+            group_id => $group_id
+        }, 
+        \@binds, 'e');
 
     $self->add_condition(q{
         ( event_class = 'group' AND group_id = ? )
         OR (
             event_class = 'page'
             AND is_page_contribution(action)
-            AND EXISTS (
+            AND EXISTS ( -- the event's actor is in this group
                 SELECT 1
                   FROM user_set_path
                  WHERE from_set_id = e.actor_id
                    AND into_set_id = ?
-                 LIMIT 1
             )
-            AND EXISTS (
+            AND EXISTS ( -- the group is in the event's workspace
                 SELECT 1
-                  FROM user_set_path
+                  FROM user_set_path usp
                  WHERE e.page_workspace_id = into_set_id - }.PG_WKSP_OFFSET.q{
                    AND from_set_id = ?
-                 LIMIT 1
+                   AND NOT EXISTS (
+                      SELECT 1
+                        FROM user_set_path_component uspc
+                       WHERE uspc.user_set_path_id = usp.user_set_path_id
+                         AND uspc.user_set_id }.PG_ACCT_FILTER.q{
+                   )
             )
         )
        OR (
-        }.$groupvissql.q{
+        }.$groupsig_sql.q{
         )
     }, $group_id, $group_set_id, $group_set_id, @binds);
 

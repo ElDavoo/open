@@ -25,8 +25,8 @@
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
-| select-frame | relative=parent |  |
+| click_ok | link=(Edit) |  |
+| pause | 30000 | click and wait seems to fail |
 
 | *Comment* | Test Case: Groups UI Create New Workspace Get to Workspaces Widget |  |
 | st-name-widget | 2 | workspaces_widget |
@@ -61,12 +61,12 @@
 | st-name-widget | 2 | workspaces_widget |
 | st-widget-title-like | workspaces_widget | Workspaces |
 | st-select-widget-frame | workspaces_widget |  |
-| *Comment* | Test Case: Groups UI Create New Workspace FAILS IN IE7 due to {bz 3540} |  |
+| *Comment* | Test Case: Groups UI Create New Workspace FAILS IN IE7 due to {bz: 3540} |  |
 | wait_for_element_visible_ok | link=%%createme_ws_title%% | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI Create New Workspace st-admin remove-member should fail for my user (belong is by group) |  |
-| *Comment* | Test Case: Groups UI Create New Workspace st-admin remove-member - Fails due to {bz 3518} |  |
+| *Comment* | Test Case: Groups UI Create New Workspace st-admin remove-member - Fails due to {bz: 3518} |  |
 | st-admin | remove-member --w %%createme_ws_name%% --e %%group_user%% | through a group |
 
 | *Comment* | Test Case: Groups UI Create New Workspacest-admin list-workspaces - workspace shows up for me |  |

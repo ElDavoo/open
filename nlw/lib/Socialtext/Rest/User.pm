@@ -43,8 +43,9 @@ sub get_resource {
                 $user->accounts
             ],
             groups => [
-                map { $_->to_hash(plugins=>1, show_account_ids=>1) }
-                $user->groups->all
+                map { $_->to_hash(plugins=>1, show_account_ids=>1,
+                                  show_admins => 1)
+                    } $user->groups->all
             ],
         };
     }

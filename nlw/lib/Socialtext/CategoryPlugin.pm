@@ -14,9 +14,10 @@ use Socialtext::Permission qw( ST_ADMIN_WORKSPACE_PERM );
 use Socialtext::Validate qw( validate SCALAR_TYPE USER_TYPE );
 use URI::Escape ();
 use Socialtext::l10n qw(loc);
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/:exec/;
 use Socialtext::Model::Pages;
+use List::Util qw/min/;
 
 sub class_id {'category'}
 const class_title => 'Category Managment';
@@ -149,10 +150,15 @@ sub category_display {
     my $self = shift;
     my $category = shift || $self->cgi->category;
 
-    my $sortdir = Socialtext::Query::Plugin->sortdir;
     my $sortby = $self->cgi->sortby || 'Date';
-    my $direction = $self->cgi->direction || $sortdir->{ $sortby };
-    my $rows = $self->get_page_info_for_category( $category, $sortdir );
+    my $direction = $self->cgi->direction || $self->sortdir->{ $sortby };
+    $direction = $direction eq 'desc' ? 'desc' : 'asc';
+    my $limit = $self->cgi->limit || Socialtext::Pageset::PAGE_SIZE;
+    $limit = min($limit, Socialtext::Pageset::MAX_PAGE_SIZE);
+    my $offset = $self->cgi->offset || 0;
+
+    my $results = $self->_get_pages_for_listview(
+        $category, $direction, $sortby, $limit, $offset );
 
     my $uri_escaped_category = $self->uri_escape($category);
     my $html_escaped_category = $self->html_escape($category);
@@ -162,16 +168,21 @@ sub category_display {
         summaries              => $self->show_summaries,
         display_title          => loc("Tag: [_1]", $category),
         predicate              => 'action=category_display;category=' . $uri_escaped_category,
-        rows                   => $rows,
+        rows                   => $results->{rows},
         html_escaped_category  => $html_escaped_category,
         uri_escaped_category   => $uri_escaped_category,
         email_category_address => $self->email_address($category),
-        sortdir                => $sortdir,
+        sortdir                => $self->sortdir,
         sortby                 => $sortby,
         direction              => $direction,
         unplug_uri    => "?action=unplug;tag=$uri_escaped_category",
         unplug_phrase => loc('Click this button to save the pages with the tag [_1] to your computer for offline use.', $html_escaped_category),
         load_row_times         => \&Socialtext::Query::Plugin::load_row_times,
+        Socialtext::Pageset->new(
+            cgi => {$self->cgi->all},
+            total_entries => $results->{total_entries},
+        )->template_vars(),
+        partial_set => 1,
     );
 }
 
@@ -180,6 +191,7 @@ sub get_page_info_for_category {
     my $category = shift;
     my $sort_map = shift;
 
+    my $t = time_scope('get_category');
     my $sort_sub = $self->_sort_closure($sort_map);
 
     my @rows;
@@ -314,7 +326,7 @@ sub page_count {
     if (lc($tag) eq 'recent changes') {
         my $prefs = $self->hub->recent_changes->preferences;
         my $seconds = $prefs->changes_depth->value * 1440 * 60;
-        return 0+Socialtext::Model::Pages->ChangedCount(
+        return Socialtext::Model::Pages->ChangedCount(
             workspace_id => $self->hub->current_workspace->workspace_id,
             duration => $seconds,
         );
@@ -333,7 +345,8 @@ EOT
 
 sub get_pages_for_category {
     my $self = shift;
-    my ( $tag, $limit, $sort_style ) = @_;
+    my $t = time_scope 'get_for_category';
+    my ( $tag, $limit, $sort_style, $offset ) = @_;
     $tag = lc($tag);
     $sort_style ||= 'update';
     my $order_by = $sort_style eq 'update' 
@@ -348,6 +361,7 @@ sub get_pages_for_category {
             workspace_id => $self->hub->current_workspace->workspace_id,
             order_by     => $order_by,
             ($limit ? (limit => $limit) : ()),
+            ($offset ? (offset => $offset) : ()),
         );
     }
     else {
@@ -358,9 +372,55 @@ sub get_pages_for_category {
             tag          => $tag,
             order_by     => $order_by,
             ($limit ? (limit => $limit) : ()),
+            ($offset ? (offset => $offset) : ()),
+            do_not_need_tags => 1,
         );
     }
-    return map { $self->hub->pages->new_page($_->id) } @$model_pages;
+
+    # XXX THIS IS REALLY SLOW, this should all be paginated in the DB
+    # _get_pages_for_listview is much faster.
+    return map { $self->hub->pages->new_page($_->id) } @$model_pages
+}
+
+sub _get_pages_for_listview {
+    my ($self, $tag, $sortdir, $sortby, $limit, $offset) = @_;
+    my $t = time_scope 'tagged_for_listview';
+
+    my $hub = $self->hub;
+    my $order_by = $self->ui_sort_to_order_by($sortby, $sortdir);
+    my $ws_id = $hub->current_workspace->workspace_id;
+
+    my ($total, $model_pages);
+    my @args = (
+        hub              => $hub,
+        workspace_id     => $ws_id,
+        order_by         => $order_by,
+        offset           => $offset,
+        limit            => $limit,
+        do_not_need_tags => 1,
+    );
+
+    if (lc($tag) eq 'recent changes') {
+        $total = Socialtext::Model::Pages->ActiveCount(
+            workspace_id => $ws_id
+        );
+        $model_pages = Socialtext::Model::Pages->All_active(@args);
+    }
+    else {
+        $tag = Socialtext::Encode::ensure_is_utf8($tag);
+        push @args, tag => $tag;
+
+        $total = Socialtext::Model::Pages->TaggedCount(
+            workspace_id => $ws_id,
+            tag          => $tag
+        );
+        $model_pages = Socialtext::Model::Pages->By_tag(@args);
+    }
+
+    return {
+        total_entries => $total,
+        rows => [map { $_->to_result } @$model_pages],
+    };
 }
 
 sub get_pages_numeric_range {
@@ -370,9 +430,8 @@ sub get_pages_numeric_range {
     my $finish             = shift;
     my $sort_and_get_pages = shift;
     my @pages              = $self->get_pages_for_category(
-        $category, $finish, $sort_and_get_pages,
+        $category, $finish, $sort_and_get_pages, $start
     );
-    @pages = @pages[ $start .. $#pages ];
     return @pages;
 }
 
@@ -483,6 +542,8 @@ cgi 'page_id' => '-clean_path';
 cgi 'sortby';
 cgi 'direction';
 cgi 'summaries';
+cgi 'offset';
+cgi 'limit';
 
 ######################################################################
 package Socialtext::Category::Wafl;

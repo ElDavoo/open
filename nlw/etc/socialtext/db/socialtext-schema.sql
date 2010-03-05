@@ -178,22 +178,8 @@ $$
 CREATE FUNCTION is_ignorable_action(event_class text, "action" text) RETURNS boolean
     AS $$
 BEGIN
-    IF event_class = 'page' THEN
-        RETURN action IN ('view', 'edit_start', 'edit_cancel', 'edit_contention');
-
-    ELSIF event_class = 'person' THEN
-        RETURN action = 'view';
-
-    ELSIF event_class = 'signal' THEN
-        RETURN false;
-
-    ELSIF event_class = 'widget' THEN
-        RETURN action != 'add';
-
-    END IF;
-
-    -- ignore all other event classes:
-    RETURN true;
+    RETURN (event_class = 'page' AND action IN ('edit_start', 'edit_cancel', 'edit_contention'))
+        OR (event_class = 'widget' AND action <> 'add');
 END;
 $$
     LANGUAGE plpgsql IMMUTABLE;
@@ -2272,4 +2258,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '109');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '111');

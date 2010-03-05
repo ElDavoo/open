@@ -41,7 +41,7 @@ TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnullx
 | wait_for_element_visible_ok | link=Stop following this person | 60000 |
 
 | *Comment* | Test Case: Follow. Verify Follow %%fFname%% in %%short_username%% profile |  |
-| click_and_wait | link=Profile |  |
+| open_ok | /st/profile |  |
 | wait_for_text_present_ok | Colleagues | 60000 |
 | st-name-widget | 4 | follow_widget |
 | st-widget-title-like | follow_widget | Colleagues |
@@ -89,7 +89,7 @@ TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnullx
 | wait_for_element_visible_ok | link=Follow this person | 60000 |
 
 | *Comment* | Test Case: Follow. Verify UnFollow %%fFname%% in %%short_username%% profile |  |
-| click_and_wait | link=Profile |  |
+| open_ok | /st/profile |  |
 | wait_for_text_present_ok | Colleagues | 60000 |
 | st-name-widget | 4 | follow_widget |
 | st-widget-title-like | follow_widget | Colleagues |
@@ -136,7 +136,7 @@ TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnullx
 | wait_for_element_visible_ok | link=Stop following this person | 60000 |
 
 | *Comment* | Test Case: Follow. Verify %%fFname%% follows %%short_username%% |  |
-| click_and_wait | link=Profile |  |
+| open_ok | /st/profile |  |
 | wait_for_text_present_ok | Colleagues | 60000 |
 | st-name-widget | 4 | follow_widget |
 | st-widget-title-like | follow_widget | Colleagues |
@@ -193,7 +193,7 @@ TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnullx
 | wait_for_element_visible_ok | link=Follow this person | 60000 |
 
 | *Comment* | Test Case: Follow. %%fFname%% Verifies stopped following %%short_username%% |  |
-| click_and_wait | link=Profile |  |
+| open_ok | /st/profile |  |
 | wait_for_text_present_ok | Colleagues | 60000 |
 | st-name-widget | 4 | follow_widget |
 | st-widget-title-like | follow_widget | Colleagues |

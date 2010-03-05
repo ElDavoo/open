@@ -32,8 +32,9 @@ Verbs: (start is the default verb if none is specified)
   restart       stop, then start
 
 Options:
-  -a                operate only on appliance console
-  -c                operate only on ceqlotron (there is no 'test' ceqlotron)
+  -a                operate only on appliance console service
+  -u                operate only on the pushd service
+  -c                operate only on ceqlotron
   -p                operate only on the json proxy
   -t, --test        operate on live-test server rather than devel. server
   -1                operate only on Apache 1 instance
@@ -45,7 +46,7 @@ END_OF_HELP
     exit 0;
 }
 
-my (%apache_command, %ceqlotron_command, %appliance_command, $nginx,
+my (%apache_command, %ceqlotron_command, %appliance_command, %pushd_command, $nginx,
     $apache_perl);
 
 # Options
@@ -55,6 +56,7 @@ my $nginx_please     = 0;
 my $ceqlotron_please = 0;
 my $jsonproxy_please = 0;
 my $appliance_please = 0;
+my $pushd_please = 0;
 
 my %OPTSPEC = (
     'test|t'    => \$use_test_server,
@@ -66,6 +68,7 @@ my %OPTSPEC = (
     1           => \$apache1_please,
     2           => \$nginx_please,
     n           => \$nginx_please,
+    u           => \$pushd_please,
 );
 
 Getopt::Long::Configure('bundling');
@@ -78,18 +81,22 @@ my @verbs = @ARGV ? @ARGV : ('start');
 
 # If you don't specify any of -c, -1, or -2, you get them all.
 $appliance_please = $ceqlotron_please = $nginx_please = $apache1_please
-    = $jsonproxy_please = 1
+    = $jsonproxy_please = $pushd_please = 1
     unless ( $ceqlotron_please
           || $appliance_please
           || $nginx_please
           || $apache1_please
+          || $pushd_please
           || $jsonproxy_please );
 
 my $jsonproxy = "$FindBin::Bin/../../plugins/widgets/etc/init.d/json-proxy";
 $jsonproxy_please = 0 unless -e $jsonproxy;
 
-# This combination doesn't make sense.
-$ceqlotron_please = 0 if $use_test_server;
+# These servers don't run in test mode
+if ($use_test_server) {
+    # XXX: does jsonproxy belong here too?
+    $ceqlotron_please = $appliance_please = $pushd_please = 0
+}
 
 my @apaches;
 if ( $nginx_please ) {
@@ -116,6 +123,7 @@ sub dispatch {
             local $Socialtext::System::SILENT_RUN = 1;
             $ceqlotron_command{$verb}->() if $ceqlotron_please;
             $appliance_command{$verb}->() if $appliance_please;
+            $pushd_command{$verb}->() if $pushd_please;
             shell_run "$jsonproxy $verb" if $jsonproxy_please;
         }
         else {
@@ -173,6 +181,7 @@ sub init_commands {
         restart => sub { $ceqlotron_command{$_}->(@_) for qw( stop start ) },
         ports   => sub { },
     );
+
     my $appliance_svc_dir
         = "$FindBin::Bin/../../appliance/libsocialtext-appliance-perl/service";
     %appliance_command = (
@@ -186,6 +195,22 @@ sub init_commands {
         },
         hup     => sub { },
         restart => sub { $appliance_command{$_}->(@_) for qw( stop start ) },
+        ports   => sub { },
+    );
+
+    my $pushd_svc_dir
+        = "$FindBin::Bin/../../plugins/push/service";
+    %pushd_command = (
+        start => sub {
+            print "Starting pushd service.\n";
+            shell_run("svc -u $pushd_svc_dir");
+        },
+        stop => sub {
+            print "Stopping pushd service.\n";
+            shell_run("svc -d $pushd_svc_dir");
+        },
+        hup     => sub { },
+        restart => sub { $pushd_command{$_}->(@_) for qw( stop start ) },
         ports   => sub { },
     );
 }

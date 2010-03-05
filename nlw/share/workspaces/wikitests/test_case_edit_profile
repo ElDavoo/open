@@ -17,7 +17,6 @@
 | st-admin | `set-user-names --e %%e_user%% --f %%fname%% --l %%lname%%` |  |
 | st-admin | `create-user -e supervisor%%start_time%%@ken.socialtext.net --p %%password%%` |  |
 | st-admin | `create-user -e assistant%%start_time%%@ken.socialtext.net --p %%password%%` |  |
-
 | *Comment* | Test Case: Edit Profile. Access profile. |  |
 | open_ok | /nlw/submit/logout |  |
 | wait_for_element_visible_ok | username | 60000 |
@@ -27,9 +26,9 @@
 | click_and_wait | login_btn |  |
 
 | *Comment* | Verify original first and last names: %%fname%% %%lname%% |  |
-| wait_for_element_visible_ok | link=Profile | 60000 |
 | text_like | %%fname%% %%lname%% |  |
-| click_and_wait | link=Profile |  |
+| open_ok | /st/profile |  |
+| text_like | st-page-titletext | %%fname%% %%lname%% |  |
 
 | *Comment* | Test Case: Edit Profile. Open for editing |  |
 | st-name-widget | 1 | profile |
@@ -39,7 +38,28 @@
 
 | *Comment* | Test Case: Edit Profile. Verify profile present. |  |
 | st-name-widget | 1 | profile_details |
+| st-widget-title-like | profile_details | Edit Profile |
 | st-select-widget-frame | profile_details |  |
+| wait_for_element_visible_ok | photo-upload-button | 60000 |
+| wait_for_element_visible_ok | update_profile | 60000 |
+| text_like | //body | Name |
+| text_like | //body | Organization |
+| text_like | //body | Contact |
+| text_like | //body | IM |
+| text_like | //body | Web |
+| text_like | //body | First Name |
+| text_like | //body | Last Name |
+| verifyValue | first_name | %%fname%% |
+| verifyValue | last_name | %%lname%% |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Edit Profile. Verify by clicking link=(Edit) from Global Nav |  |
+| open_ok | /st/dashboard/ |  |
+| wait_for_element_visible_ok | link=(edit) | 30000 |
+| click_and_wait | link=(edit) |  |
+| st-name-widget | 1 | profile_widget |
+| st-widget-title-like | profile_widget | Edit Profile |
+| st-select-widget-frame | profile_widget |  |
 | wait_for_element_visible_ok | photo-upload-button | 60000 |
 | wait_for_element_visible_ok | update_profile | 60000 |
 | text_like | //body | Name |
@@ -85,11 +105,13 @@
 | wait_for_element_visible_ok | field_assistant | 30000 |
 
 | *Comment* | Test Case: Edit Profile. Have to use click_ok and Pause for profile to save. |  |
-| click_and_wait | update_profile |  |
+| click_ok | update_profile |  |
+| wait_for_text_present_ok | %%new_fname%% %%new_lname%% | 30000 |
+| pause | 30000 |  |
 | st-name-widget | 1 | profile |
 | st-select-widget-frame | profile |  |
 | wait_for_element_visible_ok | link=supervisor%%start_time%% | 30000 |
 | wait_for_element_visible_ok | link=assistant%%start_time%% | 30000 |
 | text_like | //body | %%new_fname%% %%new_lname%% |
-| select-frame | relative=parent | |
+| select-frame | relative=parent |  |
 | *Comment* | Test Case: Edit Profile COMPLETED |  |

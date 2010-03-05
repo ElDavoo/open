@@ -10,31 +10,26 @@ use Socialtext::l10n qw(system_locale);
 use Socialtext::EmailSender::Factory;
 use namespace::clean -except => 'meta';
 
-has 'from_user' => (
-    is       => 'ro', isa => 'Socialtext::User',
-    required => 1,
-);
-
-has 'viewer'  => (is => 'ro', isa => 'Socialtext::Formatter::Viewer',);
-has 'extra_text' => (is => 'ro', isa => 'Maybe[Str]',);
-has 'extra_args' => (is => 'ro', isa => 'Hash', lazy_build => 1);
+has 'from_user'  => (is => 'ro', isa => 'Socialtext::User', required => 1);
+has 'viewer'     => (is => 'ro', isa => 'Socialtext::Formatter::Viewer');
+has 'extra_text' => (is => 'ro', isa => 'Maybe[Str]');
+has 'template'   => (is => 'ro', isa => 'Str', default => 'st');
 
 sub queue {
-    my $self      = shift;
-    my $invitee   = shift;
-    my %user_args = @_;
+    my $self    = shift;
+    my $invitee = shift;
+    my %addtl   = @_;
 
+    my $role   = delete $addtl{role} || Socialtext::Role->Member();
     my $object = $self->object;
-    my $user = Socialtext::User->new(
-        email_address => $invitee
-    );
+    my $user   = Socialtext::User->new(email_address => $invitee);
 
     $user ||= Socialtext::User->create(
         username => $invitee,
         email_address => $invitee,
         created_by_user_id => $self->from_user->user_id,
         primary_account_id => $object->account_id,
-        %user_args,
+        %addtl,
     );
 
     $user->set_confirmation_info()
@@ -42,7 +37,7 @@ sub queue {
 
     $object->assign_role_to_user(
         user => $user,
-        role => Socialtext::Role->Member()
+        role => $role,
     );
 
     Socialtext::JobCreator->insert(
@@ -51,15 +46,16 @@ sub queue {
             user_id         => $user->user_id,
             sender_id       => $self->from_user->user_id,
             extra_text      => $self->extra_text,
+            template        => $self->template,
             $self->id_hash(),
         }
     );
 }
 
 sub invite_notify {
-    my $self       = shift;
-    my $user       = shift;
-    my $template_dir = 'st';
+    my $self     = shift;
+    my $user     = shift;
+    my $template = $self->template;
 
     my $app_name = Socialtext::AppConfig->is_appliance()
         ? 'Socialtext Appliance'
@@ -67,6 +63,7 @@ sub invite_notify {
 
     my %vars = (
         user                  => $user,
+        from_user             => $self->from_user,
         username              => $user->username,
         requires_confirmation => $user->requires_confirmation,
         confirmation_uri      => $user->confirmation_uri || '',
@@ -83,7 +80,7 @@ sub invite_notify {
     my $type = $self->_template_type;
     my $renderer = Socialtext::TT2::Renderer->instance();
     my $text_body = $renderer->render(
-        template => "email/$template_dir/$type-invitation.txt",
+        template => "email/$template/$type-invitation.txt",
         vars     => {
             %vars,
             extra_text => $extra_text,
@@ -95,18 +92,27 @@ sub invite_notify {
         vars     => {
             %vars,
             invitation_body =>
-                "email/$template_dir/$type-invitation-body.html",
+                "email/$template/$type-invitation-body.html",
             extra_text => $self->{viewer}
                 ? $self->{viewer}->process($extra_text || '')
                 : $extra_text,
         }
     );
 
+    # a requirement for [Story: User breezes through Free registration],
+    # messages from 'System User' should come from 'Socialtext'. Calling
+    # this user 'Socialtext' elsewhere in the system doesn't make sense,
+    # so override the username here.
+    my $sys_user = Socialtext::User->SystemUser();
+    my $from = ($self->from_user->user_id == $sys_user->user_id)
+        ? 'Socialtext <' . $sys_user->email_address . '>'
+        : $self->from_user->name_and_email,
+
     my $locale = system_locale();
     my $email_sender = Socialtext::EmailSender::Factory->create($locale);
     my $subject = $self->_subject;
     $email_sender->send(
-        from      => $self->from_user->name_and_email,
+        from      => $from,
         to        => $user->email_address,
         subject   => $subject,
         text_body => $text_body,

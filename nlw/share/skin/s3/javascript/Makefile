@@ -121,8 +121,9 @@ $(API_FILE): $(API_FILES)
 
 lightbox-%.js: st-lightbox.js lightbox/%.tt2 lightbox/%.js
 	jemplate --compile $(@:lightbox-%.js=lightbox/%.tt2) > $@; \
+	echo ';' >> $@; \
 	for js in st-lightbox.js $(@:lightbox-%.js=lightbox/%.js); do \
-	    (echo "// BEGIN $$js"; cat $$js | perl -pe 's/\r//g') >> $@; \
+	    (echo "// BEGIN $$js"; cat $$js; echo ';' | perl -pe 's/\r//g') >> $@; \
 	done
 
 $(JEMPLATES_COMPILED): $(JEMPLATES)
@@ -135,7 +136,7 @@ $(EDITOR_FILE): lightbox-attachment.js $(ST_EDITOR_FILE)
 $(EDITOR_LIGHT_FILE): $(EDITOR_LIGHT_FILES)
 	rm -f $@;
 	for js in $(EDITOR_LIGHT_FILES) ; do \
-	    (echo "// BEGIN $$js"; cat $$js | perl -pe 's/\r//g') >> $@; \
+	    (echo "// BEGIN $$js"; cat $$js; echo ';' | perl -pe 's/\r//g') >> $@; \
 	done
 
 $(EDITOR_FILE_MINI): $(EDITOR_FILE)
@@ -147,7 +148,7 @@ $(EDITOR_LIGHT_FILE_MINI): $(EDITOR_LIGHT_FILE)
 $(S3_FILE): $(S3_SOURCE_FILES) Makefile
 	rm -f $@;
 	for js in $(S3_SOURCE_FILES); do \
-	    (echo "// BEGIN $$js"; cat $$js | perl -pe 's/\r//g') >> $@; \
+	    (echo "// BEGIN $$js"; cat $$js; echo ';'| perl -pe 's/\r//g') >> $@; \
 	done
 
 $(ST_EDITOR_FILE): $(ALL_EDITOR_FILES)

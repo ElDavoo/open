@@ -13,7 +13,7 @@ use Socialtext::Page;
 use Socialtext::Paths;
 use Socialtext::WeblogUpdates;
 use Readonly;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::User;
 use Socialtext::Validate qw( validate DIR_TYPE );
 use Socialtext::Workspace;
@@ -37,10 +37,8 @@ This includes deleted pages.
 =cut
 sub all {
     my $self = shift;
-    Socialtext::Timer->Continue('all_pages');
-    my @pages = map {$self->new_page($_)} $self->all_ids;
-    Socialtext::Timer->Pause('all_pages');
-    return @pages;
+    my $t = time_scope 'all_pages';
+    return map {$self->new_page($_)} $self->all_ids;
 }
 
 =head2 $pages->all_active()
@@ -51,15 +49,13 @@ workspace and are active (not deleted).
 =cut
 sub all_active {
     my $self = shift;
-    Socialtext::Timer->Continue('all_active');
-    my @pages = grep {$_->active} $self->all();
-    Socialtext::Timer->Pause('all_active');
-    return @pages;
+    my $t = time_scope 'all_active';
+    return grep {$_->active} $self->all();
 }
 
 sub all_ids {
     my $self = shift;
-    Socialtext::Timer->Continue('all_ids');
+    my $t = time_scope 'all_ids';
     my $sth = sql_execute(<<EOT,
 SELECT page_id 
     FROM page
@@ -69,7 +65,6 @@ EOT
         $self->hub->current_workspace->workspace_id,
     );
     my $pages = $sth->fetchall_arrayref();
-    Socialtext::Timer->Pause('all_ids');
     return map { $_->[0] } @$pages;
 }
 
@@ -93,7 +88,7 @@ Returns a list of all page_id's which are currently locked.
 
 sub all_ids_locked {
     my $self = shift;
-    Socialtext::Timer->Continue('all_locked');
+    my $t = time_scope 'all_locked';
     my $sth = sql_execute(<<EOT,
 SELECT page_id 
     FROM page
@@ -104,18 +99,14 @@ EOT
         $self->hub->current_workspace->workspace_id,
     );
     my $pages = $sth->fetchall_arrayref();
-    Socialtext::Timer->Pause('all_locked');
     return map { $_->[0] } @$pages;
 }
 
 sub all_newest_first {
     my $self = shift;
-    Socialtext::Timer->Continue('all_newest_first');
-    my @pages = map {$self->new_page($_)} 
+    my $t = time_scope 'all_newest_first';
+    return map {$self->new_page($_)} 
       $self->all_ids_newest_first;
-    Socialtext::Timer->Pause('all_newest_first');
-    return @pages;
-
 }
 
 sub all_since {
@@ -123,7 +114,7 @@ sub all_since {
     my $minutes = shift;
     my $active_only = ((shift) ? "AND deleted = false" : '');
 
-    Socialtext::Timer->Continue('all_since');
+    my $t = time_scope 'all_since';
     my $sth = sql_execute(<<EOT,
 SELECT page_id 
     FROM page
@@ -136,9 +127,7 @@ EOT
         "$minutes minutes",
     );
     my $pages = $sth->fetchall_arrayref();
-    my @pages_since = map { $self->new_page($_->[0]) } @$pages;
-    Socialtext::Timer->Pause('all_since');
-    return @pages_since;
+    return map { $self->new_page($_->[0]) } @$pages;
 }
 
 sub all_at_or_after {
@@ -146,7 +135,7 @@ sub all_at_or_after {
     my $after_epoch = shift;
     my $active_only = ((shift) ? "AND deleted = false" : '');
 
-    Socialtext::Timer->Continue('all_at_or_after');
+    my $t = time_scope 'all_at_or_after';
     my $dt = DateTime->from_epoch(epoch => $after_epoch);
     my $sth = sql_execute(<<EOT,
 SELECT page_id 
@@ -160,15 +149,12 @@ EOT
         sql_format_timestamptz($dt),
     );
     my $pages = $sth->fetchall_arrayref();
-    my @pages_after = map { $self->new_page($_->[0]) } @$pages;
-    Socialtext::Timer->Pause('all_at_or_after');
-    return @pages_after;
+    return map { $self->new_page($_->[0]) } @$pages;
 }
 
 sub random_page {
     my $self = shift;
-    Socialtext::Timer->Continue('random_page');
-
+    my $t = time_scope 'random_page';
     my $sth = sql_execute(<<EOT,
 SELECT page_id 
     FROM page
@@ -180,9 +166,7 @@ EOT
         $self->hub->current_workspace->workspace_id,
     );
     my $pages = $sth->fetchall_arrayref();
-    my $random_page = (@$pages ? $self->new_page($pages->[0][0]) : undef );
-    Socialtext::Timer->Pause('random_page');
-    return $random_page;
+    return (@$pages ? $self->new_page($pages->[0][0]) : undef );
 }
 
 sub name_to_title { $_[1] }
@@ -238,6 +222,7 @@ sub unset_current {
 
 sub new_page {
     my $self = shift;
+    my $t = time_scope 'pages_new_page';
     Socialtext::Page->new(hub => $self->hub, id => shift);
 }
 

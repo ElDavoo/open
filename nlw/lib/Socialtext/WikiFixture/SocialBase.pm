@@ -89,8 +89,11 @@ Set the NLW cookie to a valid cookie for $username
 =cut
 
 sub set_nlw_cookie_for_user {
-    my ($self, $email) = @_;
-    my $user = Socialtext::User->Resolve($email);
+    my ($self, $username) = @_;
+
+    $username ||= $self->{http_username};
+    my $user = Socialtext::User->Resolve($username);
+
     require Socialtext::HTTP::Cookie;
     my $user_id = $user->user_id;
     my $mac = Socialtext::HTTP::Cookie->MAC_for_user_id($user_id);
@@ -134,6 +137,22 @@ sub http_user_pass {
     # store it locally too.
     $self->{http_username} = $user if $user;
     $self->{http_password} = $pass if $pass;
+
+    $self->clear_nlw_cookie;
+}
+
+=head2 http_user_pass_and_cookie ( $username, $password )
+
+Set the HTTP username and password.
+
+=cut
+
+sub http_user_pass_and_cookie {
+    my $self = shift;
+    my $user = shift;
+    my $pass = shift;
+    $self->http_user_pass($user,$pass);
+    $self->set_nlw_cookie_for_user($user);
 }
 
 =head2 follow_redirects_for ( $methods )
@@ -203,7 +222,7 @@ sub stress_for {
     Socialtext::System::shell_run('torture', @args);
 }
 
-=head2 standard-test-setup
+=head2 password standard-test-setup
 
 Set up a new account, workspace and user to work with.
 
@@ -627,6 +646,20 @@ sub remove_group_from_workspace {
 
     $ws->remove_group( group => $group );
     diag "Removed group $group_id from $ws_name";
+}
+
+sub add_account_to_workspace {
+    my $self      = shift;
+    my $acct_name = shift || $self->{account};
+    my $ws_name   = shift;
+
+    my $ws   = Socialtext::Workspace->new(name => $ws_name);
+    my $acct = Socialtext::Account->new(name   => $acct_name);
+
+    $ws->assign_role_to_account( account => $acct );
+
+    diag 'Added ' . $acct->name . ' Account'
+       . " to $ws_name WS";
 }
 
 sub add_group_to_account {
@@ -1580,7 +1613,10 @@ sub _call_method {
     }
 
     my $start = time();
-    $self->{http}->$method($self->{browser_url} . $uri, $headers, $body);
+    if ($uri !~ m#^http://localhost:\d+#) {
+        $uri = $self->{browser_url} . $uri;
+    }
+    $self->{http}->$method($uri, $headers, $body);
     $self->{_last_http_time} = time() - $start;
 }
 
@@ -2313,6 +2349,8 @@ sub _json_path_test {
         }
     }
 
+    # work around the fact that we aren't reading .wiki files in unicode mode
+    $expected = Encode::decode_utf8($expected) if $test =~ /^is/;
     if ($test eq 'is') {
         return is $sel, $expected, $comment;
     }
@@ -2341,12 +2379,6 @@ sub _json_path_test {
     return;
 }
 
-sub st_widgets {
-    my $self    = shift;
-    my $options = shift || '';
-    Socialtext::System::shell_run('st-widgets', $options);
-}
-
 {
     no strict 'refs';
     for my $test (qw(is isnt like unlike exists missing size)) {
@@ -2355,6 +2387,26 @@ sub st_widgets {
             $self->_json_path_test($test,@_);
         };
     }
+}
+
+sub json_path_set {
+    my ($self, $key, $path) = @_;
+
+    $path =~ s/^\$//; # remove leading $
+    my $sel = eval { $self->_select_json_path($path, $self->{json}) };
+    if (my $e = $@) {
+        fail "path selection error: $e";
+    }
+    else {
+        $self->{$key} = $sel;
+        pass "set $key to $sel (\$$path)";
+    }
+}
+
+sub st_widgets {
+    my $self    = shift;
+    my $options = shift || '';
+    Socialtext::System::shell_run('st-widgets', $options);
 }
 
 1;

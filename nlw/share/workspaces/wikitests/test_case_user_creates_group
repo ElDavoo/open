@@ -55,20 +55,13 @@
 | wait_for_text_present_ok | This group is not a member of any workspaces | 30000 |
 | select-frame | relative=parent |  |
 
-| st-name-widget | 3 | signal_widget |
-| st-widget-title-like | signal_widget | Signal to group '%%groupname%%' |
-
-| *Comment* | Test Case: User Creates Group. TODO: Send and verify Signal to group widget |  |
-
-| *Comment* | Test Case: User Creates Group. Inspect New Group Page RSS Feed |  |
-| st-name-widget | 4 | activity_widget |
-| st-widget-title-like | activity_widget | Activity |
-| st-select-widget-frame | activity_widget |  |
-| wait_for_text_present_ok | View RSS feed for %%groupname%% | 30000 |
+| *Comment* | Test Case: User Creates Group. Inspect New Group Page Activities Widget |  |
+| st-name-widget | 3 | activity_widget |
+| st-widget-title-like | activity_widget | Activities |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Inspect New Group Page Membership |  |
-| st-name-widget | 5 | people_widget |
+| st-name-widget | 4 | people_widget |
 | st-widget-title-like | people_widget | Membership |
 | st-select-widget-frame | people_widget |  |
 | wait_for_element_visible_ok | //a[contains(@href,'?profile')] | 30000 |
@@ -102,7 +95,7 @@
 | *Comment* | Test Case: User Creates Group. Try UTF-8 group name |  |
 | set | groupname | ἀπὸ τὸ Ἄξιον ἐστί %%start_time%% |
 | *Comment* | Test Case: User Creates Group named %%groupname%%. |  |
-| st-admin | create-group --name "%%groupname%%" --email %%email%% | %%groupname%% Group has been created |
+| st-admin | create-group --name "%%groupname%%" --email %%groupemail%% | %%groupname%% Group has been created |
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |
 | open | /?create_group |  |

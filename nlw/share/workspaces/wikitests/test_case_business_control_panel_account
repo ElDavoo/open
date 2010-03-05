@@ -25,7 +25,7 @@
 | wait_for_text_present_ok | Domain (floodyflooy) is not valid. | 30000 |
 | type_ok | st-account-restrict-to-domain | floodyflooy.notadomain |
 | click_and_wait | st-account-restrict-submit |  |
-| wait_for_text_present_ok | Domain (floodyflooy.notadomain) is not valid. | 30000 |
+| wait_for_text_present_ok | Account updated | 30000 |
 | type_ok | st-account-restrict-to-domain | xndev.com |
 | click_and_wait | st-account-restrict-submit |  |
 | wait_for_text_present_ok | Account updated | 30000 |

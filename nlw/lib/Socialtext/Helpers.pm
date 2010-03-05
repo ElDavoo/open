@@ -177,18 +177,29 @@ sub default_workspace {
         : undef;
 }
 
-sub signals_only {
+sub _get_appliance_config_value {
     my $self = shift;
+    my $key = shift;
 
     # Appliance Code is probably not installed if there's an error.
+    local $@;
     eval "require Socialtext::Appliance::Config";
     if ( my $e = $@ ) {
         st_log( 'info', "Could not load Socialtext::Appliance::Config: $e\n" );
         return 0;
     }
 
-    my $config = Socialtext::Appliance::Config->new;
-    return $config->value('signals_only');
+    return Socialtext::Appliance::Config->new->value($key);
+}
+
+sub signals_only {
+    my $self = shift;
+    return $self->_get_appliance_config_value('signals_only');
+}
+
+sub desktop_update_enabled {
+    my $self = shift;
+    $self->_get_appliance_config_value('desktop_update_enabled');
 }
 
 sub _get_history_list_for_template
@@ -264,6 +275,10 @@ sub global_template_vars {
             );
         }),
         $thunker->(miki_url => sub { $self->miki_path }),
+        $thunker->(desktop_url => sub {
+            return '' unless $self->desktop_update_enabled;
+            return '/st/desktop/badge';
+        }),
         $thunker->(stax_info => sub { $hub->stax->hacks_info }),
         $thunker->(workspaceslist => sub {
                 $self->_get_workspace_list_for_template }),
@@ -397,7 +412,7 @@ sub valid_email_domain {
     my $self_or_class = shift;
     my $domain = shift;
 
-    my $validator =  Email::Valid->new( tldcheck => 1 );
+    my $validator =  Email::Valid->new();
     return $validator->address( 'user@' . $domain ) ? 1 : 0;
 }
 

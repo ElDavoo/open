@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 121;
+use Test::More tests => 130;
 use Test::Exception;
 use mocked 'Socialtext::SQL', qw/:test/;
 use mocked 'Socialtext::Page';
@@ -57,7 +57,7 @@ $COMMON_SELECT
     WHERE NOT deleted
       AND page.workspace_id = ? 
       AND last_edit_time > 'now'::timestamptz - ?::interval 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'88 seconds','foo', 20],
         );
@@ -95,7 +95,7 @@ $COMMON_SELECT
     WHERE NOT deleted
       AND page.workspace_id = ? 
       AND last_edit_time > 'now'::timestamptz - ?::interval 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'88 seconds','foo', 20],
         );
@@ -123,7 +123,7 @@ $COMMON_SELECT
     WHERE NOT deleted
       AND page.workspace_id IN (?,?,?)
       AND last_edit_time > ?::timestamptz
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [1,2,3,'2008-01-01 01:01:01','foo', 20],
         );
@@ -160,7 +160,7 @@ $COMMON_SELECT
     WHERE NOT deleted
       AND page.workspace_id = ? 
       AND last_edit_time > ?::timestamptz
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'2008-01-01','foo', 20],
         );
@@ -209,7 +209,7 @@ $COMMON_SELECT
     WHERE NOT deleted 
       AND page.workspace_id = ? 
       AND last_edit_time > 'now'::timestamptz - ?::interval 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'88 seconds','foo', 20],
         );
@@ -246,7 +246,7 @@ $COMMON_SELECT
     WHERE NOT deleted 
       AND page.workspace_id = ? 
       AND last_edit_time > 'now'::timestamptz - ?::interval 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'88 seconds','foo',20],
         );
@@ -578,7 +578,7 @@ $COMMON_SELECT
         JOIN page_tag USING (page_id, workspace_id) 
     WHERE NOT deleted 
       AND page.workspace_id = ? 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'foo',33],
         );
@@ -613,12 +613,91 @@ $COMMON_SELECT
         JOIN page_tag USING (page_id, workspace_id) 
     WHERE NOT deleted 
       AND page.workspace_id = ? 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC LIMIT ?
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'foo',33],
         );
         ok_no_more_sql();
     }
+
+    Paged: {
+        Socialtext::Model::Pages->By_tag(
+            workspace_id => 9,
+            limit => 20,
+            offset => 40,
+            tag => 'foo',
+            do_not_need_tags => 1,
+        );
+        sql_ok(
+            name => 'by_tag',
+            sql => <<EOT,
+$COMMON_SELECT
+        JOIN page_tag USING (page_id, workspace_id) 
+    WHERE NOT deleted 
+      AND page.workspace_id = ? 
+      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc
+    LIMIT ?
+    OFFSET ?
+EOT
+            args => [9,'foo',20,40],
+        );
+        ok_no_more_sql();
+    }
+
+    Ordered_by_creator: {
+        Socialtext::Model::Pages->By_tag(
+            workspace_id => 9,
+            limit => 20,
+            offset => 40,
+            tag => 'foo',
+            do_not_need_tags => 1,
+            order_by => 'creator_id DESC',
+        );
+        sql_ok(
+            name => 'by_tag',
+            sql => <<EOT,
+$COMMON_SELECT
+        JOIN page_tag USING (page_id, workspace_id) 
+        JOIN users ON (page.creator_id = users.user_id)
+    WHERE NOT deleted 
+      AND page.workspace_id = ? 
+      AND LOWER(page_tag.tag) = LOWER(?) 
+    ORDER BY LOWER(users.display_name) DESC, page.name asc
+    LIMIT ?
+    OFFSET ?
+EOT
+            args => [9,'foo',20,40],
+        );
+        ok_no_more_sql();
+    }
+
+    Ordered_by_last_editor: {
+        Socialtext::Model::Pages->By_tag(
+            workspace_id => 9,
+            limit => 20,
+            offset => 40,
+            tag => 'foo',
+            do_not_need_tags => 1,
+            order_by => 'last_editor_id DESC',
+        );
+        sql_ok(
+            name => 'by_tag',
+            sql => <<EOT,
+$COMMON_SELECT
+        JOIN page_tag USING (page_id, workspace_id) 
+        JOIN users ON (page.last_editor_id = users.user_id)
+    WHERE NOT deleted 
+      AND page.workspace_id = ? 
+      AND LOWER(page_tag.tag) = LOWER(?) 
+    ORDER BY LOWER(users.display_name) DESC, page.name asc
+    LIMIT ?
+    OFFSET ?
+EOT
+            args => [9,'foo',20,40],
+        );
+        ok_no_more_sql();
+    }
+
 }
 
 By_id: {
@@ -864,7 +943,7 @@ $COMMON_SELECT
     JOIN page_tag USING (page_id, workspace_id) 
 WHERE NOT deleted 
   AND page.workspace_id = ? 
-  AND LOWER(page_tag.tag) = LOWER(?) AND page.page_type = ? ORDER BY page.last_edit_time DESC LIMIT ?
+  AND LOWER(page_tag.tag) = LOWER(?) AND page.page_type = ? ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
         args => [9,'foo','wiki',33],
     );
@@ -886,7 +965,7 @@ $COMMON_SELECT
 WHERE NOT deleted
   AND page.workspace_id = ? 
   AND last_edit_time > 'now'::timestamptz - ?::interval 
-  AND LOWER(page_tag.tag) = LOWER(?) AND page.page_type = ? ORDER BY page.last_edit_time DESC LIMIT ?
+  AND LOWER(page_tag.tag) = LOWER(?) AND page.page_type = ? ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
         args => [9,'88 seconds','foo', 'spreadsheet', 20],
     );

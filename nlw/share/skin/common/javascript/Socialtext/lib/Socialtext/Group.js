@@ -90,8 +90,11 @@ $.extend(Socialtext.Group.prototype, {
      *   }
      */
     addMembers: function(users, callback) {
-        var users = users && users.users ? users.users : users || [];
-        if (!users.length) return callback({});
+        // If an array, then make it into a structure
+        if ((Object.prototype.toString.call(users) === '[object Array]') ||   !users) { 
+            users = {users: (users || [])};
+        };
+        if (!users.users.length) return callback({});
         this.postItems(this.url('/users'), users, callback);
     },
 

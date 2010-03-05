@@ -1,13 +1,13 @@
 #!/usr/bin/perl
+# @COPYRIGHT@
 
 use strict;
 use warnings;
-use Test::Socialtext qw(no_plan);
+use Test::Socialtext tests => 8;
 use Socialtext::Page;
 use Socialtext::User;
 use Socialtext::Jobs;
 use Socialtext::WebHook;
-use Data::Dumper;
 
 fixtures(qw( empty ));
 

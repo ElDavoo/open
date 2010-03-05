@@ -55,13 +55,13 @@ Tests for [Story: Groups ReST API]
 | set            | badmin_id  | %%user_id%%                             |
 | http-user-pass | %%badmin%% | password                                |
 
-| set-business-admin | %%badmin%%                | 1       |
-| GET                | /data/groups/%%group_id%%/users |         |
-| code-is            | 200                       |         |
-| header-like        | Cache-Control             | private |
-| json-parse         |                           |         |
-| json-array-size | 2 | |
-| body-like | %%jenny%% |
+| set-business-admin | %%badmin%%                            | 1       |
+| GET                | /data/groups/%%group_id%%/users?all=1 |         |
+| code-is            | 200                                   |         |
+| header-like        | Cache-Control                         | private |
+| json-parse         |                                       |         |
+| json-array-size    | 2                                     |         |
+| body-like          | %%jenny%%                             |         |
 
 | set-business-admin | %%badmin%%                | 0       |
 | GET                | /data/groups/%%group_id%%/users |         |

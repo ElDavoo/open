@@ -12,6 +12,7 @@ use URI::QueryParam;
 use Socialtext::l10n qw( loc );
 use Encode;
 use Socialtext::String ();
+use Socialtext::Timer qw/time_scope/;
 use utf8;
 
 sub class_id { 'weblog' }
@@ -274,6 +275,7 @@ sub start_entry {
 
 sub weblog_display {
     my $self = shift;
+    my $t = time_scope 'weblog_display';
     my $weblog_id = $self->current_blog;
     my $weblog_start_entry = $self->start_entry;
     my $weblog_limit = $self->cgi->limit || $self->preferences->weblog_depth->value;
@@ -382,6 +384,7 @@ does not happen.
 =cut
 sub get_entries {
     my $self = shift;
+    my $t = time_scope 'weblog_get_entries';
     my %p = @_;
     my $weblog_id = $p{weblog_id};
     my $start = $p{start};

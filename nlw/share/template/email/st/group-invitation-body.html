@@ -30,10 +30,10 @@
 </p>
 [% ELSE %]
 <p>
-[% user.best_full_name %],
+<a href="[% profile_uri_base %][% user.user_id %]">[% user.guess_real_name %]</a>,
 </p>
 <p>
-[% loc('[_1] has added you to the group: [_2]', inviting_user, group_name) %] 
+<a href="[% profile_uri_base %][% from_user.user_id %]">[% from_user.guess_real_name %]</a> [% loc('has added you to the group: [_1]', group_name) %] 
 </p>
 <p>
 [% loc("As a member, you can send Signals to the group and use any of the group workspaces.") %]

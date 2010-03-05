@@ -45,9 +45,8 @@ sub from_csv {
     my $self = shift;
     my $csv  = shift;
 
-    # make sure that we're working with UTF8; if we don't set this then
-    # Text::CSV_XS isn't going to parse UTF8 properly
-    $csv = Socialtext::Encode::ensure_is_utf8($csv);
+    # Guess encoding of CSV file; default is UTF-8, falls back to CP1252.
+    $csv = Socialtext::Encode::guess_decode($csv);
 
     # convert the CSV from whatever EOL format it has to Unix-style EOL
     $csv =~ s/\r\n/\n/g;        # DOS/Windows -> Unix EOL

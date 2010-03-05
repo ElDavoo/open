@@ -46,4 +46,4 @@
 | delete-group | %%group_id%% |
 | st-admin | delete-workspace --w %%grps_ws%% --no-export |
 
-| *Comment* | Test Case: User Groups UI COMPLETE |
+| *Comment* | Test Case: Groups in Global Nav COMPLETE |

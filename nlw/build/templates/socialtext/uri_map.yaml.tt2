@@ -118,6 +118,10 @@
             application/json:   [Socialtext::Rest::Version, GET_json]
         '*': [Socialtext::Rest::Version, bad_method]
 -
+    '/data/workspaces/:ws/pages/:pname/viewers':
+        'GET':
+            'application/json': &default [Socialtext::Rest::Report::PageViewers, GET_json]
+-
     '/data/workspaces/:ws/pages/:pname/events':
         'GET':
             '*/*':           &default [Socialtext::Rest::Events::Page, GET_html]
@@ -455,6 +459,12 @@
             'text/html':        [Socialtext::Rest::Accounts, GET_html]
         '*':                    [Socialtext::Rest::Accounts, bad_method]
 -
+    '/data/accounts/:acct':
+        'GET':
+            '*/*':              [Socialtext::Rest::Account, bad_type]
+            'application/json': [Socialtext::Rest::Account, GET_json]
+        '*':                    [Socialtext::Rest::Account, bad_method]
+-
     '/data/accounts/:acct/users':
         'POST':
             '*/*':              [Socialtext::Rest::AccountUsers, bad_type]
@@ -690,6 +700,10 @@
 -
     '/help/index.cgi':
         '*':                    [Socialtext::Rest::Help, handler]
+-
+    '/st/desktop/:filename':
+        'GET':                  [Socialtext::Rest::Desktop, GET]
+        '*':                    [Socialtext::Rest::Desktop, bad_method]
 -
     '/:ws/index.cgi/:filename':
         '*':                    [Socialtext::Rest::App, handler]

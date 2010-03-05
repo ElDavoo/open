@@ -6,12 +6,13 @@ use Socialtext::Group;
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::Permission qw/ST_READ_PERM ST_ADMIN_PERM/;
+use Socialtext::User::Find::Container;
 use Socialtext::User;
 use Socialtext::JobCreator;
 use Socialtext::l10n qw(loc);
 use namespace::clean -except => 'meta';
 
-with 'Socialtext::Rest::Pageable';
+extends 'Socialtext::Rest::Users';
 
 has 'group' => (
     is => 'ro', isa => 'Maybe[Socialtext::Group]',
@@ -52,55 +53,25 @@ sub if_authorized {
     return $self->$call(@_);
 }
 
-sub _get_total_results {
+sub _build_user_find {
     my $self = shift;
-    return $self->group->total_user_roles(
-        include_aggregates => 1,
-        limit              => $self->items_per_page,
-        offset             => $self->start_index,
-        direct             => 1,
-    );
-}
+    my $filter = $self->rest->query->param('filter');
+    my $group = $self->group;
+    die "invalid group" unless $group;
 
-sub _get_entities {
-    my $self = shift;
-    my $rest = shift;
-
-    my $roles = $self->group->sorted_user_roles(
-        include_aggregates => 1,
-        limit => $self->items_per_page,
+    return Socialtext::User::Find::Container->new(
+        viewer => $self->rest->user,
+        limit  => $self->items_per_page,
         offset => $self->start_index,
-        direct => 1,
-        order_by => $self->order || 'username',
-        sort_order => $self->reverse ? 'DESC' : 'ASC',
-    );
-    $roles->apply(sub {
-        my $info = shift;
-        my $user = Socialtext::User->new(user_id => $info->{user_id});
-        my $role = Socialtext::Role->new(role_id => $info->{role_id});
-        return {
-            user_id => $user->user_id,
-            name => $user->username,
-            best_full_name => $user->guess_real_name,
-            username => $user->username,
-            workspace_count => $info->{workspace_count},
-            group_count => $info->{group_count},
-            primary_account_id => $user->primary_account_id,
-            primary_account_name => $user->primary_account->name,
-            creation_date => $user->creation_datetime_object->ymd,
-            created_by_user_id => $user->created_by_user_id,
-            created_by_username => $user->creator->guess_real_name,
-            group_count => $info->{group_count},
-            uri => "/data/users/$info->{user_id}",
-            role_id => $info->{role_id},
-            role_name => $role->name,
-        };
-    });
-    my @users = $roles->all;
-    return \@users;
+        filter => $filter,
+        container => $group,
+        direct => $self->rest->query->param('direct') || 0,
+        minimal => $self->rest->query->param('minimal') || 0,
+        order => $self->rest->query->param('order') || '',
+        reverse => $self->rest->query->param('reverse') || 0,
+        all => $self->rest->query->param('all') || 0,
+    )
 }
-
-sub _entity_hash { return $_[1] }
 
 sub POST_json {
     my $self    = shift;

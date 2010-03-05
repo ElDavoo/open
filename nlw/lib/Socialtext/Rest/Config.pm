@@ -8,9 +8,11 @@ use base 'Socialtext::Rest';
 use YAML ();
 use Socialtext::HTTP ':codes';
 use Socialtext::Rest::Version;
+use Socialtext::URI;
 use Socialtext::JSON;
 use Socialtext;
 use Socialtext::AppConfig;
+use Socialtext::Appliance::Config;
 use Readonly;
 
 Readonly my @PUBLIC_CONFIG_KEYS => qw(
@@ -31,6 +33,7 @@ sub make_getter {
             return '';
         }
 
+        my $appliance = Socialtext::Appliance::Config->new;
 
         $rest->header(-type => "$type; charset=UTF-8");
 
@@ -40,6 +43,9 @@ sub make_getter {
         return $render->({
             server_version => $Socialtext::VERSION,
             api_version => $Socialtext::Rest::Version::API_VERSION,
+            desktop_update_url => $appliance->value('desktop_update_enabled')
+                                    ? Socialtext::URI::uri( path => "/st/desktop/update" )
+                                    : '',
             ( map { $_ => Socialtext::AppConfig->$_() } @PUBLIC_CONFIG_KEYS ),
         });
 

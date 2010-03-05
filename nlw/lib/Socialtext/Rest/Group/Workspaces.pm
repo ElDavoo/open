@@ -20,6 +20,8 @@ sub _entities_for_query {
     my $group_id = $self->group_id;
     my $user = $self->rest->user;
 
+    my $exclude_auw = $self->rest->query->param('exclude_auw_paths') || 0;
+
     my $group = Socialtext::Group->GetGroup(group_id => $group_id)
         or die Socialtext::Exception->NotFound->new();
 
@@ -33,8 +35,7 @@ sub _entities_for_query {
            || $can_read;
 
     return sort { $a->title cmp $b->title }
-       $group->workspaces->all();
-
+       $group->workspaces(exclude_auw_paths => $exclude_auw)->all();
 }
 
 sub _entity_hash {

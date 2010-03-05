@@ -206,11 +206,11 @@ sub RolesForUserInWorkspace {
         }
 
         my $fields = 'w.workspace_id';
-        my $group_by = 'w.workspace_id, w.name';
+        my $group_by = 'w.workspace_id, w.title, w.name';
         if ($minimal) {
             $fields = 'w.workspace_id AS workspace_id, w.name AS name, '
                       . 'w.account_id AS account_id, w.title AS title';
-            $group_by .= ', w.account_id, w.title';
+            $group_by .= ', w.account_id';
         }
 
         my $sql = qq{
@@ -220,26 +220,20 @@ sub RolesForUserInWorkspace {
              WHERE from_set_id = ?
              $where_filter
              GROUP BY $group_by
-             ORDER BY w.name $sort_order
+             ORDER BY UPPER(w.title) $sort_order
              LIMIT ? OFFSET ?
         };
         my $sth = sql_execute( $sql, @binds, $limit, $offset );
 
-        my $cursor;
-        if ($minimal) {
-            $cursor = Socialtext::MultiCursor->new(
-                iterables => [ $sth->fetchall_arrayref({}) ],
-            );
+        my $cursor = Socialtext::MultiCursor->new(
+            iterables => [ $sth->fetchall_arrayref({}) ]);
+
+        unless ($minimal) {
+            $cursor->apply(sub {
+                Socialtext::Workspace->new(workspace_id => shift->{workspace_id});
+            });
         }
-        else {
-            $cursor = Socialtext::MultiCursor->new(
-                iterables => [ $sth->fetchall_arrayref() ],
-                apply     => sub {
-                    my $row = shift;
-                    return Socialtext::Workspace->new(workspace_id => $row->[0]);
-                }
-            );
-        }
+
         Socialtext::Timer->Pause('ws_by_userid');
         return $cursor;
     }
@@ -510,7 +504,7 @@ Specifies an offset into the results to start the result set at.
 B<Ignored.>  Provided solely for compatibility with other parts of the system
 that hand this through automatically.
 
-The result set is B<always> ordered by Workspace Name.
+The result set is B<always> ordered by Workspace Title, case insensitive.
 
 =item sort_order
 

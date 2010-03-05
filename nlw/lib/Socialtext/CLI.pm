@@ -4302,7 +4302,7 @@ System User.
 
 =head2 delete-group --group
 
-Deletes a Socialtext Group. C<--group> must be a Group ID>.
+Deletes a Socialtext Group. C<--group> must be a Group ID.
 
 =head2 add-member --group [--account or --workpsace]
 

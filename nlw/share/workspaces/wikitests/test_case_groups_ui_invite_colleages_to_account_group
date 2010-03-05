@@ -33,11 +33,10 @@
 
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group CHECK Activity for group, SEE NEW MEMBER |  |
 | open_ok | /st/group/%%group_id%% |  |
-| st-name-widget | 4 | activity_widget |
-| st-widget-title-like | activity_widget | Activity |
+| st-name-widget | 3 | activity_widget |
+| st-widget-title-like | activity_widget | Activities |
 | st-select-widget-frame | activity_widget |  |
 | pause | 3000 | needed for text_like |
-| wait_for_text_present_ok | View RSS feed for %%group_name%% | 30000 |
 | text_like | //body | added %%to_ws%% to the group %%group_name%% |
 | select-frame | relative=parent |  |
 

@@ -35,6 +35,7 @@ sub _template_args {
     return (
         group_name => $self->group->driver_group_name,
         group_uri  => Socialtext::URI::uri(path => '/st/group/'.$self->group->group_id),
+        profile_uri_base => Socialtext::URI::uri(path => '/st/profile/'),
     );
 }
 

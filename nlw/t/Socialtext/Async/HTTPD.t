@@ -4,11 +4,31 @@
 use warnings;
 use strict;
 
-use Test::More tests => 6;
+use Test::More tests => 7;
+use Test::Differences;
 use AnyEvent;
 use AnyEvent::Util qw/portable_socketpair/;
 use AnyEvent::Handle;
-use Socialtext::Async::HTTPD;
+use Socialtext::Async::HTTPD qw/http_server serialize_response/;
+use Encode;
+use utf8;
+
+serialize: {
+    my $resp = HTTP::Response->new(200 => 'Alright',
+        [ 'Content-Type' => 'text/x-yaml; charset=UTF-8' ]);
+    $resp->content(encode_utf8("---\nfoo: 看板\n"));
+    my $ser = serialize_response($resp);
+    my $r = "\015";
+    my $expect = encode_utf8(<<EOHTTP);
+HTTP/1.0 200 Alright$r
+Content-Length: 16$r
+Content-Type: text/x-yaml; charset=UTF-8$r
+$r
+---
+foo: 看板
+EOHTTP
+    eq_or_diff $ser, $expect, 'response serialized';
+}
 
 my ($client_fh,$server_fh) = portable_socketpair();
 ok $client_fh && $server_fh, "got socketpair";
