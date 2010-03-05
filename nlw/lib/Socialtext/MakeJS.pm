@@ -18,7 +18,7 @@ our $VERBOSE = 0;
 
 my $code_base = Socialtext::AppConfig->code_base;
 my %files;
-for my $file (glob("$code_base/skin/*/javascript/Deps.yaml")) {
+for my $file (glob("$code_base/skin/*/javascript/JS.yaml")) {
     my ($plugin) = $file =~ m{/skin/([^/]+)/javascript/};
     $files{$plugin} = YAML::LoadFile($file);
 }
@@ -28,19 +28,6 @@ sub CleanAllSkins {
     for my $skin (keys %files) {
         warn "Cleaning skin $skin...\n" if $VERBOSE;
         $class->CleanSkin($skin);
-    }
-}
-
-sub Build {
-    my ($class, $skin, $target) = @_;
-    if ($target eq 'all') {
-        $class->BuildSkin($skin);
-    }
-    elsif ($target eq 'clean') {
-        $class->CleanSkin($skin);
-    }
-    else {
-        $class->BuildTarget($skin, $target);
     }
 }
 
@@ -292,7 +279,7 @@ sub _build_from_files {
     return;
 }
 
-sub BuildTarget {
+sub Build {
     my ($class, $skin, $target) = @_;
 
     local $CWD = "$code_base/skin/$skin/javascript";
