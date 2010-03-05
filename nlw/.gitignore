@@ -451,3 +451,4 @@ lib/Socialtext/Client/Push.pm
 t/wikitests/push/basic-signals.wiki
 t/wikitests/push/hide-signal.wiki
 t/wikitests/push/membership-change.wiki
+t/Socialtext/Handler/Push-sig-render.t
