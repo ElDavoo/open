@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>206</version>
-  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-206.air</url>
-  <description><![CDATA[[Build 206 - Fri Feb 26 23:45:56 PST 2010]
+  <version>213</version>
+  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-213.air</url>
+  <description><![CDATA[[Build 213 - Thu Mar  4 16:44:16 PST 2010]
+* Clicking on replied username goes to Convos, not user profile. (Jon, Alan)
+
+[Build 212 - Thu Mar  4 07:36:50 PST 2010]
+* Restore link coloring of "show profile" links in Signals info bar.
+
+[Build 211 - Thu Mar  4 01:41:59 PST 2010]
+* Convo: Clicking the Lightbox title icon now re-focus to topmost signal.
+* Convo: Input prompt text now shows "Post a reply to <User Name>".
+* Signals: Add "show profile" and "show conversation" tooltips to the info bar.
+
+[Build 209 - Wed Mar  3 23:23:08 PST 2010]
+* Rename "Threads" to "Conversations" (Convo).
+* Convo: Use relative timestamps for follow-up signals.
+* Convo: Indent follow-up signals by one level.
+* Convo: "Post" now posts replies to the topical signal.
+
+[Build 208 - Wed Mar  3 20:13:29 PST 2010]
+* First sketch at Thread display support.
+
+[Build 207 - Mon Mar  1 17:38:03 PST 2010]
+* Temporary reversal of "Start timer when the previous update succeeds" to see if it's the root cause of {bz: 3621}.
+
+[Build 206 - Fri Feb 26 23:45:56 PST 2010]
 * Correctly remember username/password for web-invoked launch.
 * Respect server's desktop_update_url setting in /data/config.
 
