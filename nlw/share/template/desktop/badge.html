@@ -1,5 +1,6 @@
 <html><head>
     <link media="screen" href="/static/skin/s3/css/screen.css" type="text/css" rel="stylesheet">
+    <script src="/static/skin/common/javascript/jquery-1.2.6.js" type="application/javascript"></script>
     <title>Install Socialtext Desktop</title>
 </head><body style="background: white; margin: 0px; font-size: 13px">
     <span tmp="div" id="flashcontent" style="
@@ -101,11 +102,23 @@ so.addVariable("appurl", '[% app_url %]');
 so.addVariable("appid", "SocialtextDesktop");
 so.addVariable('appinstallarg', server);
 so.addVariable('applauncharg', server);
-so.addVariable("airswfurl", '[% air_swf_url %]');
 so.addVariable("pubid", "42919CF44D65844DBA4ECD90C2D88C65DBC1C196.1");
 so.addVariable("appversion", "[% app_version %]");
 so.addParam("allowScriptAccess", "always");
-so.write("flashcontent");
+
+$(function(){
+    $.ajax({
+        type: 'GET',
+        url: "http://airdownload.adobe.com/air/browserapi/air.swf",
+        timeout: 5000,
+        complete: function(xhr) {
+            if (xhr && xhr.status >= 400 && xhr.status != 501) {
+                so.addVariable("airswfurl", '[% air_swf_url %]');
+            }
+            so.write("flashcontent");
+        }
+    })
+});
 
 </script>
 </body></html>

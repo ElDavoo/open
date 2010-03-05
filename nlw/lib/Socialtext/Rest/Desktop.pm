@@ -56,9 +56,9 @@ sub GET {
             static_appliance_url => Socialtext::URI::uri(
                 path => '/static/appliance'
             ),
-#            air_swf_url => Socialtext::URI::uri(
-#                path => '/static/desktop/air.swf'
-#            ),
+            air_swf_url => Socialtext::URI::uri(
+                path => '/static/desktop/air.swf'
+            ),
         );
     }
 
