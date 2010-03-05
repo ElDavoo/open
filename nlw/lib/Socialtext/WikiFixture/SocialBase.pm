@@ -760,15 +760,20 @@ sub create_workspace {
     my $self = shift;
     my $name = shift;
     my $account = shift;
+    my $title = shift;
 
-    my $ws = Socialtext::Workspace->new(name => $name);
+    if (!defined($title) || length($title)<2) {
+       $title = $name;
+    }
+  
+    my $ws = Socialtext::Workspace->new(name => $name, title => $title);
     if ($ws) {
         diag "Workspace $name already exists";
         return
     }
 
     $ws = Socialtext::Workspace->create(
-        name => $name, title => $name,
+        name => $name, title => $title,
         (
             $account
             ? (account_id => Socialtext::Account->new(name => $account)
