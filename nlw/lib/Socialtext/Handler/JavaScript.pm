@@ -10,12 +10,27 @@ my $code_base = Socialtext::AppConfig->code_base;
 
 sub GET {
     my ($self, $rest) = @_;
-    my $skin = $self->skin;
+    my $name = $self->name;
+    my $type = $self->type;
     my $file = $self->file;
-    my $path = "$code_base/skin/$skin/javascript/$file";
 
-    Socialtext::MakeJS->Build($skin, $file);
+    my $dir;
+    if ($type eq 'skin') {
+        $dir = "skin/$name/javascript";
+    }
+    elsif ($type eq 'plugin') {
+        $dir = "plugin/$name/share/javascript";
+    }
+    else {
+        die "Don't know how to build $type javascript.";
+    }
+
+    Socialtext::MakeJS->Build($dir, $file);
     
+    $file =~ s/\.gz$//;
+    my $path = "$code_base/$dir/$file";
+    my $url = "/nlw/static/$dir/$file";
+    warn $url;
     unless (-f $path) {
         warn "Don't know how to build $path";
         return $self->no_resource($file);
@@ -28,7 +43,7 @@ sub GET {
         -pragma               => undef,
         '-cache-control'      => undef,
         'Content-Disposition' => "filename=\"$file\"",
-        '-X-Accel-Redirect'   => "/nlw/static/skin/$skin/javascript/$file",
+        '-X-Accel-Redirect'   => $url,
     );
 }
 

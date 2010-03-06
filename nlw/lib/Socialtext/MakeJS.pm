@@ -14,6 +14,7 @@ use File::Slurp qw(slurp write_file);
 use File::Find qw(find);
 use File::Basename qw(basename dirname);
 use Clone qw(clone);
+use Carp qw(confess);
 use namespace::clean -except => 'meta';
 
 our $VERBOSE = 0;
@@ -89,10 +90,11 @@ sub CleanDir {
 
 sub Build {
     my ($class, $dir, $target) = @_;
+    $target =~ s/\.gz$//; # built anyway
 
     local $CWD = "$code_base/$dir";
 
-    my $info = $dirs{$dir}{$target} || '';
+    my $info = $dirs{$dir}{$target} || confess "$dir:$target";
 
     my $parts = $info->{parts} || die "$target has no parts!";
 
