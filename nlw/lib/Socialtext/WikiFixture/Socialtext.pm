@@ -151,8 +151,8 @@ sub st_login {
     my $password = shift || $self->{password};
     my $workspace = shift || $self->{workspace};
 
-    my $url = '/nlw/login.html';
-    $url .= "?redirect_to=\%2F$workspace\%2Findex.cgi" if $workspace;
+    my $url = '/challenge';
+    $url .= "?\%2F$workspace\%2Findex.cgi" if $workspace;
     diag "st-login: $username, $password, $workspace - $url";
     $sel->open_ok($url);
     $sel->type_ok('username', $username);

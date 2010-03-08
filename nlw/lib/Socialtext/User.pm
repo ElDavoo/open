@@ -1426,7 +1426,7 @@ sub send_confirmation_completed_email {
 
         %vars = (
             title => $app_name,
-            uri   => Socialtext::URI::uri( path => '/nlw/login.html' ),
+            uri   => Socialtext::URI::uri(path => '/challenge'),
         );
 
         $subject = loc("You can now login to the [_1] application", $app_name);

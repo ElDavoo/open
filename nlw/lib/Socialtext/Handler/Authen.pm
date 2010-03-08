@@ -67,12 +67,11 @@ sub handler ($$) {
             my $hash        = $saved_args->{hash};
             my $account_for = $saved_args->{account_for};
 
-            return $self->_redirect('/nlw/login.html') unless $hash;
+            return $self->_challenge() unless $hash;
 
             my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-            unless ($user) {
-                return $self->_redirect('/nlw/login.html');
-            }
+            return $self->_challenge() unless $user;
+
             $vars->{email_address} = $user->email_address;
             $vars->{hash}          = $hash;
 
@@ -415,7 +414,7 @@ sub register {
     $user->send_confirmation_email;
 
     $self->session->add_message(loc("An email confirming your registration has been sent to [_1].", $email_address));
-    return $self->_redirect("/nlw/login.html");
+    return $self->_challenge();
 }
 
 sub confirm_email {
@@ -423,12 +422,10 @@ sub confirm_email {
     my $r = $self->r;
 
     my $hash = $self->{args}{hash};
-    return $self->_redirect('/nlw/login.html') unless $hash;
+    return $self->_challenge() unless $hash;
 
     my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-    unless ($user) {
-        return $self->_redirect('/nlw/login.html');
-    }
+    return $self->_challenge() unless $user;
 
     if ( $user->confirmation_has_expired ) {
         $user->set_confirmation_info();
@@ -441,7 +438,7 @@ sub confirm_email {
         }
 
         $self->session->add_error(loc("The confirmation URL you used has expired. A new one will be sent."));
-        return $self->_redirect("/nlw/login.html");
+        return $self->_challenge();
     }
 
     if ( $user->confirmation_is_for_password_change or not $user->has_valid_password ) {
@@ -480,11 +477,9 @@ sub confirm_email {
         $self->session->add_message(loc("Your email address, [_1], has been confirmed. Please login.", $address));
     }
     $self->session->save_args( username => $user->username );
-    if ( $targetws ) {
-        return $self->_redirect("/nlw/login.html?redirect_to=".$targetws->uri);
-    } else {
-        return $self->_redirect("/nlw/login.html");
-    }
+
+    $self->{args}{redirect_to} = $targetws->uri if ($targetws);
+    return $self->_challenge();
 }
 
 sub choose_password {
@@ -492,12 +487,10 @@ sub choose_password {
     my $r = $self->r;
 
     my $hash = $self->{args}{hash};
-    return $self->_redirect('/nlw/login.html') unless $hash;
+    return $self->_challenge unless $hash;
 
     my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-    unless ($user) {
-        return $self->_redirect('/nlw/login.html');
-    }
+    return $self->_challenge unless $user;
 
     my %args;
     $args{$_} = $self->{args}{$_} || '' for (qw(password password2));
@@ -539,25 +532,25 @@ sub resend_confirmation {
     my $email_address = $self->{args}{email_address};
     unless ($email_address) {
         warn "No email address found to resend confirmation";
-        return $self->_redirect('/nlw/login.html');
+        return $self->_challenge();
     }
 
     my $user = Socialtext::User->new( email_address => $email_address );
     unless ($user) {
         $self->session->add_error(loc("[_1] is not registered as a user. Try a different email address?", $email_address));
-        return $self->_redirect('/nlw/login.html');
+        return $self->_challenge();
     }
 
     unless ($user->requires_confirmation) {
         $self->session->add_error(loc("The email address for [_1] has already been confirmed.", $email_address));
-        return $self->_redirect('/nlw/login.html');
+        return $self->_challenge();
     }
 
     $user->set_confirmation_info;
     $user->send_confirmation_email;
 
     $self->session->add_error(loc('The confirmation email has been resent. Please follow the link in this email to activate your account.'));
-    return $self->_redirect("/nlw/login.html");
+    return $self->_challenge();
 }
 
 sub require_confirmation_redirect {
@@ -573,7 +566,7 @@ sub require_confirmation_redirect {
        },
     } );
 
-    return $self->_redirect("/nlw/login.html");
+    return $self->_challenge();
 }
 
 sub _redirect {
@@ -586,6 +579,14 @@ sub _redirect {
               . "redirect_to=" . uri_escape_utf8($redirect_to);
     }
     $self->redirect($uri);
+}
+
+sub _challenge {
+    my $self = shift;
+    my $redirect_to   = $self->{args}{redirect_to};
+    my $challenge_uri = '/challenge';
+    $challenge_uri .= '?' . uri_escape_utf8($redirect_to) if ($redirect_to);
+    return $self->_redirect($challenge_uri);
 }
 
 sub _find_user_for_email_confirmation_hash {

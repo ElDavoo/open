@@ -52,7 +52,7 @@ sub if_authorized_to_edit {
 sub not_authenticated {
     my $self = shift;
     my $redirect_to = $self->rest->request->parsed_uri->unparse;
-    $self->redirect("/nlw/login.html?redirect_to=$redirect_to");
+    $self->redirect("/challenge?$redirect_to");
     return '';
 }
 

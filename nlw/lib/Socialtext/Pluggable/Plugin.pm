@@ -297,7 +297,7 @@ sub redirect_to_login {
     if (Socialtext::BrowserDetect::is_mobile()) {
         return $self->redirect('/lite/login');
     }
-    return $self->redirect("/nlw/login.html?redirect_to=$uri");
+    return $self->redirect("/challenge?$uri");
 }
 
 sub redirect {
