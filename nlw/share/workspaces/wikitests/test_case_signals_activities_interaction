@@ -44,7 +44,7 @@
 
 | click_ok | link=Log out |
 | pause | 8000 | I HATE pause |
-| open_ok | /nlw/login.html |  |
+| open_ok | /challenge | |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
 | type_ok | username | %%emainuser%% |
@@ -93,7 +93,7 @@
 
 | click_ok | link=Log out |
 | pause | 8000 | I HATE pause |
-| open_ok | /nlw/login.html |  |
+| open_ok | /challenge | |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
 | type_ok | username | %%efollowed%% |
@@ -118,7 +118,7 @@
 
 | click_ok | link=Log out |
 | pause | 8000 | I HATE pause |
-| open_ok | /nlw/login.html |  |
+| open_ok | /challenge | |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
 | type_ok | username | %%efriend%% |
@@ -141,7 +141,7 @@
 
 | click_ok | link=Log out |
 | pause | 8000 | I HATE pause |
-| open_ok | /nlw/login.html |  |
+| open_ok | /challenge | |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
 | type_ok | username | %%econversant%% |
@@ -177,7 +177,7 @@
 
 | click_ok | link=Log out |  |
 | pause | 8000 | I HATE pause |
-| open_ok | /nlw/login.html |  |
+| open_ok | /challenge | |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
 | type_ok | username | %%esecond%% |
