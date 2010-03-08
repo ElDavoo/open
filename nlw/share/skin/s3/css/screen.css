@@ -4405,3 +4405,72 @@ body#dashBoard #st-editing-tools-edit span.prefix {
 }
 
 .red_error { color: #e22 }
+
+/*
+ * Dropdowns
+ */
+ul#network-list, ul#signal_network-list {
+    width: 150px;
+}
+
+ul.dropdownOptions {
+    position: absolute;
+    display: none;
+    z-index: 300;
+    display: block;
+    background-color: #FFF;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    width: 100px;
+}
+ul.dropdownOptions li {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 3px;
+    border: 1px solid black;
+    border-bottom: none;
+    overflow: hidden;
+}
+ul.dropdownOptions li.last {
+    border-bottom: 1px solid black;
+}
+
+ul.dropdownOptions a {
+    color: #0E93D8;
+    white-space: nowrap;
+
+    /* Styles that are inherited in widgets: */
+    font-size: 11px;
+    font-family: arial, helvetica, sans-serif;
+}
+
+/* Hovered option */
+ul.dropdownOptions li:hover, ul.dropdownOptions li.hover {
+    background-color: #F4F0CB;
+}
+ul.dropdownOptions li:hover a, ul.dropdownOptions li.hover a {
+    text-decoration: underline;
+}
+
+/* Selected option */
+ul.dropdownOptions li.selected {
+    background-color: #F4F0CB;
+}
+
+/* Disabled option */
+ul.dropdownOptions li.disabled {
+    background-color: #FFF;
+}
+
+/* Disabled option's link */
+ul.dropdownOptions li.disabled a {
+    color: #CCC;
+    cursor: default;
+    text-decoration: none;
+}
+
+ul.dropdownOptions li.disabled a:hover {
+    text-decoration: none;
+}
