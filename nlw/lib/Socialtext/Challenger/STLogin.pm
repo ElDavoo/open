@@ -86,7 +86,9 @@ sub challenge {
             },
         },
         path  => $login_page,
-        query => { redirect_to => $redirect },
+        query => {
+            ($redirect ? (redirect_to => $redirect) : ()),
+        },
     );
 
 }
