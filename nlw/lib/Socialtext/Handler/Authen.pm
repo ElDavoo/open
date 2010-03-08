@@ -324,8 +324,11 @@ sub register {
     my $self = shift;
     my $r = $self->r;
 
-    my $target_ws_name = $self->{args}{workspace_name};
-    my $redirect_target = $target_ws_name ?  '/nlw/join.html?workspace_name='.$self->{args}{workspace_name}.';redirect_to='.$self->{args}{redirect_to} : '/nlw/register.html';
+    my $target_ws_name  = $self->{args}{workspace_name};
+    my $redirect_target = $target_ws_name
+        ? "/nlw/join.html?workspace_name=$target_ws_name"
+        : '/nlw/register.html';
+
     unless (Socialtext::AppConfig->self_registration()) {
         $self->session->add_error(loc("Registration is disabled."));
         return $self->_redirect($redirect_target);
