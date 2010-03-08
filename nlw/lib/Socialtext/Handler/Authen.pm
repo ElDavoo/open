@@ -239,6 +239,7 @@ sub login {
     st_timed_log('info', 'WEB', "LOGIN", $user, {}, Socialtext::Timer->Report);
 
     if (my $ws_name = $self->{args}{workspace_name}) {
+# XXX: display error, not using the login template
         $self->_add_user_to_workspace($user, $ws_name)
             or return $self->_redirect($login_uri);
     }
