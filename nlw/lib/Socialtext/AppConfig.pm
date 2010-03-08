@@ -1017,7 +1017,7 @@ The URI that users are redirected to after they log out.
 Defaults to the login URI, but make no assumption about this pointing to a
 page that you can login from.
 
-Default: /nlw/login.html
+Default: /challenge
 
 =for code type => SCALAR_TYPE
 
