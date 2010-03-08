@@ -73,13 +73,13 @@
 
 | *Comment* | *Change stuff in backup* |  |
 
+| uncheck_ok | chk_0 |  |
 | uncheck_ok | chk_1 |  |
 | uncheck_ok | chk_2 |  |
 | uncheck_ok | chk_3 |  |
 | uncheck_ok | chk_4 |  |
 | uncheck_ok | chk_5 |  |
 | uncheck_ok | chk_6 |  |
-| uncheck_ok | chk_0 |  |
 | select_ok | hour | label=23 |
 | select_ok | minutes | label=59 |
 | check_ok | chk_1 |  |
@@ -106,15 +106,13 @@
 
 | *Comment* | *Change Backup Schedule to none* |  |
 
+| uncheck_ok | chk_0 |  |
 | uncheck_ok | chk_1 |  |
 | uncheck_ok | chk_2 |  |
 | uncheck_ok | chk_3 |  |
 | uncheck_ok | chk_4 |  |
 | uncheck_ok | chk_5 |  |
 | uncheck_ok | chk_6 |  |
-
-| *Comment* | Select Sunday midnight |  |
-| check_ok | chk_0 |  |
 | select_ok | hour | label=0 |
 | select_ok | minutes | label=0 |
 | click_ok | save_schedule |  |
@@ -126,7 +124,6 @@
 
 | *Comment* | *Change Backup Schedule to 2,4,6* |  |
 
-| uncheck_ok | chk_0 |
 | check_ok | chk_2 |  |
 | check_ok | chk_4 |  |
 | check_ok | chk_6 |  |
@@ -141,6 +138,19 @@
 | config_is | smbpass | test_pass |
 | config_is | smbshare | test_dir |
 | config_is | smbuser | test_user |
+
+| *Comment* | *Change Backup Schedule to Sunday Only* |  |
+
+| uncheck_ok | chk_1 |  |
+| uncheck_ok | chk_2 |  |
+| uncheck_ok | chk_3 |  |
+| uncheck_ok | chk_4 |  |
+| uncheck_ok | chk_5 |  |
+| uncheck_ok | chk_6 |  |
+| check_ok | chk_0 |  |
+| click_ok | save_schedule |  |
+| wait_for_page_to_load_ok | 30000 |  |
+| config_is | backdays | 1 |
 
 | *Comment* | *Report a Problem tab* |  |
 

@@ -1,3 +1,5 @@
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Mobile Signals |  |
 
 | open_ok | /m/signals |  |
@@ -107,5 +109,69 @@
 | click_and_wait | link=First page |  |
 | wait_for_text_not_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 11 | 3000 |
+
+| *Comment* | Test Case: Mobile Signals. Send signal to groups |  |
+
+| set | msacct | mobile-signals-%%start_time%% |
+
+| *Comment* | Test Case: Mobile Signals. Create two accounts. Add %%username%% to both |  |
+| st-admin | create-account --name %%msacct%%-A | A new account named "%%msacct%%-A" was created |
+| st-admin | create-account --name %%msacct%%-B | A new account named "%%msacct%%-B" was created |
+| st-admin | add-member --account %%msacct%%-A --u %%username%% | is now a member of the %%msacct%%-A |
+| st-admin | add-member --account %%msacct%%-B --u %%username%% | is now a member of the %%msacct%%-B |
+
+| open_ok | /m/signals |  |
+| wait_for_element_visible_ok | st-select-network | 30000 |
+
+| *Comment* | Test Case: Mobile Signals. Signal to All My Groups |  |
+| select_ok | st-select-network | label=All My Groups |
+| type_ok | st-signal-text | %%username%% signals to All Groups at %%start_time%% |
+| click_and_wait | st-signal-submit |  |
+| text_like | %%username%% signals to All Groups at %%start_time%% |  |
+
+| *Comment* | Test Case: Mobile Signals. Signal to %%msacct%%-A |  |
+| select_ok | st-select-network | label=%%msacct%%-A (1 user) |
+| type_ok | st-signal-text | %%username%% signals to %%msacct%%-A at %%start_time%% |
+| click_and_wait | st-signal-submit |  |
+| text_like | %%username%% signals to %%msacct%%-A at %%start_time%% |  |
+
+| *Comment* | Test Case: Mobile Signals. Signal to %%msacct%%-B |  |
+| select_ok | st-select-network | label=%%msacct%%-B (1 user) |
+| type_ok | st-signal-text | %%username%% signals to %%msacct%%-B at %%start_time%% |
+| click_and_wait | st-signal-submit |  |
+| text_like | %%username%% signals to %%msacct%%-B at %%start_time%% |  |
+
+| *Comment* | Test Case: Mobile Signals. Verify signal to groups |  |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | network-select | 30000 |
+
+| *Comment* | Test Case: Mobile Signals. See three signals |  |
+| select_ok | network-select | label=All My Groups |
+| pause | 8000 | I hate pause |
+| st-name-widget | 3 | signals_widget |
+| st-widget-title-like | signals_widget | Signals |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_text_present_ok | %%username%% signals to %%msacct%%-A at %%start_time%% | 10000 |
+| wait_for_text_present_ok | %%username%% signals to %%msacct%%-B at %%start_time%% | 10000 |
+| wait_for_text_present_ok | %%username%% signals to All Groups at %%start_time%% | 10000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Mobile Signals. See two signals, All and A |  |
+| select_ok | network-select | label=%%msacct%%-A (1 user) |
+| pause | 8000 | I hate pause |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_text_present_ok | %%username%% signals to %%msacct%%-A at %%start_time%% | 10000 |
+| text_like | //body | %%username%% signals to All Groups at %%start_time%% |
+| text_unlike | //body | %%username%% signals to %%msacct%%-B at %%start_time%% |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Mobile Signals. See two signals, All and B |  |
+| select_ok | network-select | label=%%msacct%%-B (1 user) |
+| pause | 8000 | I hate pause |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_text_present_ok | %%username%% signals to %%msacct%%-B at %%start_time%% | 10000 |
+| text_like | //body | %%username%% signals to All Groups at %%start_time%% |
+| text_unlike | //body | %%username%% signals to %%msacct%%-A at %%start_time%% |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Mobile Signals COMPLETED |  |
