@@ -43,7 +43,6 @@ sub challenge {
     # if we were to decline to do this challenge
     # we should return false before going on
 
-    my $login_page = '/nlw/login.html';
     my $app = Socialtext::WebApp->NewForNLW;
     unless ($request) {
         $request = $app->apache_req;
@@ -51,9 +50,7 @@ sub challenge {
     unless (defined $redirect) {
         $redirect = $request->parsed_uri->unparse;
     }
-    if ($redirect =~ m#^/m(?:/|$)#) {
-        $login_page = '/m/login';
-    }
+    my $login_page = $class->_get_login_page($redirect);
 
     my $ws;
     if ($hub) {
@@ -88,6 +85,15 @@ sub challenge {
         },
     );
 
+}
+
+sub _get_login_page {
+    my ($class, $url) = @_;
+    my $login_page = '/nlw/login.html';
+    if ($url =~ m#^/m(?:/|$)#) {
+        $login_page = '/m/login';
+    }
+    return $login_page;
 }
 
 1;
