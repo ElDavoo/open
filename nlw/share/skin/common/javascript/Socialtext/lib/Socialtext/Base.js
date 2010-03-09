@@ -36,11 +36,12 @@ Socialtext.Base.prototype = {
         var runJob = function() {
             var job = jobs.shift();
             if (!job) { // done
+                self.errors = errors;
                 callback({errors: errors});
                 return;
             }
             job(function(res) {
-                if (res.errors) {
+                if (res.errors && res.errors.length) {
                     errors = errors.concat(res.errors);
                 }
                 runJob();
