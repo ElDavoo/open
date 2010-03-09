@@ -18,7 +18,9 @@ my %exclude =
 SKIP: {
     skip 'No `ack` available', 1, unless `which ack` =~ /\w/;
 
-    my @bad_files = `ack --follow --nocolor --all -l /nlw/login.html .`;
+    my @bad_files =
+        grep { !m{t/tmp/} }     # ignore test tmp dirs
+        `ack --follow --nocolor --all -l /nlw/login.html .`;
     chomp @bad_files;
 
     @bad_files = grep { !exists $exclude{$_} } @bad_files;
