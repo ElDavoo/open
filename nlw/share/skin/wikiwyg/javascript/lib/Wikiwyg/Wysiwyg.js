@@ -37,7 +37,8 @@ proto.config = {
     disabledToolbarButtons: [],
     editHeightMinimum: 150,
     editHeightAdjustment: 1.3,
-    clearRegex: null
+    clearRegex: null,
+    enableClearHandler: Socialtext.new_page
 };
 
 proto.initializeObject = function() {
@@ -960,11 +961,12 @@ proto.get_cursor_state = function() {
 
 proto.set_clear_handler = function () {
     var self = this;
-    if (!Socialtext.new_page) return;
+    if (!this.wikiwyg.config.enableClearHandler) return;
 
-    var editor = Wikiwyg.is_ie ? self.get_editable_div() : self.get_edit_document();
+    var editor = Wikiwyg.is_ie ? self.get_editable_div()
+                               : self.get_edit_document();
 
-    var clean = function() {
+    var clean = function(e) {
         self.clear_inner_html();
         jQuery(editor).unbind('click', clean).unbind('keydown', clean);
     };

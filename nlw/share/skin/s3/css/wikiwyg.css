@@ -64,8 +64,14 @@ table .current-cell {
     background: red;
 }
 
+.clearHandler {
+    font-style: italic;
+    color: #666666;
+}
+
 body.signals {
     background-color: white;
+    margin: 3px;
 }
 
 body.signals .wiki, body.socialcalc .wiki {
