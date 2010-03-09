@@ -48,7 +48,6 @@ sub challenge {
     if ( !$request ) {
         $request = $app->apache_req;
     }
-    my $ws;
     if ( !defined ($redirect) ) {
         $redirect = $request->parsed_uri->unparse;
     }
@@ -56,6 +55,7 @@ sub challenge {
         $login_page = '/m/login';
     }
 
+    my $ws;
     if ($hub) {
         $ws = $hub->current_workspace;
         if ( !$hub->current_user->is_guest ) {
