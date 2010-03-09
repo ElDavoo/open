@@ -67,7 +67,6 @@ sub challenge {
     my $workspace_title = $ws ? $ws->title        : '';
     my $workspace_id    = $ws ? $ws->workspace_id : '';
 
-
     # stick some information in the session
     # and then establishes a redirect header
     # and throws up
@@ -84,7 +83,6 @@ sub challenge {
             ($redirect ? (redirect_to => $redirect) : ()),
         },
     );
-
 }
 
 sub _get_login_page {
