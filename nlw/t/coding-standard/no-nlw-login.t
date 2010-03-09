@@ -16,6 +16,8 @@ my %exclude =
         share/skin/js-test/s3/t/bz-1379.t.js
         share/skin/js-test/s3/t/bz-1500.t.js
         t/coding-standard/no-nlw-login.t
+        t/live/login-message.t
+        t/live/user.t
     );
 
 SKIP: {
