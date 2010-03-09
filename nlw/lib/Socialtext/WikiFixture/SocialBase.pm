@@ -2579,6 +2579,15 @@ sub json_path_parse {
     }
 }
 
+sub header_unlike {
+    my $self = shift;
+    my $name = shift || die "header name is mandatory for header_unlike";
+    my $rgx  = shift || die "regex is mandatory for header_unlike";
+    my $header   = $self->{http}->response->header($name);
+    my $expected = $self->quote_as_regex($rgx);
+    unlike $header, $rgx, "$name header-unlike $expected";
+}
+
 sub st_widgets {
     my $self    = shift;
     my $options = shift || '';
