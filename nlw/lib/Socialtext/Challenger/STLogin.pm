@@ -39,7 +39,7 @@ sub challenge {
     my $hub      = $p{hub};
     my $request  = $p{request};
     my $redirect = $p{redirect};
-    my $type;
+    my $type     = 'not_logged_in';
     # if we were to decline to do this challenge
     # we should return false before going on
 
@@ -49,9 +49,6 @@ sub challenge {
         $request = $app->apache_req;
     }
     my $ws;
-    if ( !$type ) {
-        $type = 'not_logged_in';
-    }
     if ( !defined ($redirect) ) {
         $redirect = $request->parsed_uri->unparse;
     }
