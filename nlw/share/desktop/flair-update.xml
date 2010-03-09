@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>213</version>
-  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-213.air</url>
-  <description><![CDATA[[Build 213 - Thu Mar  4 16:44:16 PST 2010]
+  <version>216</version>
+  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-216.air</url>
+  <description><![CDATA[[Build 216 - Mon Mar  8 21:04:06 PST 2010]
+* Initial support for /data/push.
+
+[Build 215 - Fri Mar  5 08:42:14 PST 2010]
+* Properly anchor nested convo entries under their parents.
+* Handle the case of server having zero events instead of raising an exception.
+
+[Build 214 - Fri Mar  5 07:57:38 PST 2010]
+* Convo: Nested thread view.
+* Convo: "Click to reply" for listed Signals.
+* Convo: Flashback and Search results can now open as conversations.
+
+[Build 213 - Thu Mar  4 16:44:16 PST 2010]
 * Clicking on replied username goes to Convos, not user profile. (Jon, Alan)
 
 [Build 212 - Thu Mar  4 07:36:50 PST 2010]
