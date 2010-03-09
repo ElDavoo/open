@@ -15,9 +15,10 @@
     ">
 <br/>
 <ol id="getThings" style="display: none">
-<li id="getFlash" style="margin-bottom: 10px">Please first install <a id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">Flash&nbsp;&#8482 Player</a>.
-<li id="getAIR" style="margin-bottom: 10px; display: none">Please install <a id="air-link" target="_blank" href="http://get.adobe.com/air/">Adobe&nbsp;AIR&#8482</a>.
-<li style="margin-bottom: 10px">Then <span id="restart">restart your browser, and</span> open this dialog box again.</a></li>
+<li class="getFlash" style="margin-bottom: 10px">Please first install <a id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">Flash&nbsp;&#8482 Player</a>.
+<li class="getFlash" style="margin-bottom: 10px">Then restart your browser, and open this dialog box again.</a></li>
+<li class="getAIR" style="margin-bottom: 10px; display: none">Please install <a id="air-link" target="_blank" href="http://get.adobe.com/air/">Adobe&nbsp;AIR&#8482</a>.
+<li class="getAIR" style="margin-bottom: 10px; display: none">Then <a href="#" onclick="$('#flashcontent').css('background', 'url(/static/skin/common/images/ajax-loader.gif) no-repeat center'); $('#getThings').hide(); location.replace(location.href); return false">click here</a> to launch Socialtext Desktop.</a></li>
 <li>Thank you! :-)</li>
 </ol>
         </span>
@@ -118,9 +119,8 @@ var prevHTML;
 function hide_swfobject () {
     $('#flashcontent').html(prevHTML);
     $('#getThings').show();
-    $('#getFlash').hide();
-    $('#restart').hide();
-    $('#getAIR').show();
+    $('.getAIR').show();
+    $('.getFlash').hide();
 }
 
 $(function(){
