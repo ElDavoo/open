@@ -1,8 +1,8 @@
 <html><head>
     <link media="screen" href="/static/skin/s3/css/screen.css" type="text/css" rel="stylesheet">
-    <script src="/static/skin/common/javascript/jquery-1.2.6.js" type="application/javascript"></script>
     <title>[% app_name %]</title>
 </head><body style="background: white; margin: 0px; font-size: 13px">
+    <script src="/static/skin/common/javascript/jquery-1.2.6.js"></script>
     <span tmp="div" id="flashcontent" style="
         width: 215px;
         height: 180px;
@@ -17,7 +17,7 @@
 <ol id="getThings" style="display: none">
 <li id="getFlash" style="margin-bottom: 10px">Please first install <a id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">Flash&nbsp;&#8482 Player</a>.
 <li id="getAIR" style="margin-bottom: 10px; display: none">Please install <a id="air-link" target="_blank" href="http://get.adobe.com/air/">Adobe&nbsp;AIR&#8482</a>.
-<li>Then <a href="#" onclick="location.reload(); return false">refresh this page</a></li>
+<li style="margin-bottom: 10px">Then <span id="restart">restart your browser, and</span> open this dialog box again.</a></li>
 <li>Thank you! :-)</li>
 </ol>
         </span>
@@ -64,15 +64,6 @@
         flashLink.href = '[% static_appliance_url %]/install_flash_player_10_linux.tar.gz';
     }
 
-    var html = $('#flashcontent').html();
-    function hide_swfobject () {
-        $('#flashcontent').html(html);
-        $('#getFlash').hide();
-        $('#getAIR').show();
-    }
-    setTimeout(function(){
-        $('#getThings').show();
-    }, 1000);
 </script>
 
 
@@ -123,7 +114,17 @@ so.addVariable("pubid", "[% pub_id %]");
 so.addVariable("appversion", "[% app_version %]");
 so.addParam("allowScriptAccess", "always");
 
+var prevHTML;
+function hide_swfobject () {
+    $('#flashcontent').html(prevHTML);
+    $('#getThings').show();
+    $('#getFlash').hide();
+    $('#restart').hide();
+    $('#getAIR').show();
+}
+
 $(function(){
+    prevHTML = $('#flashcontent').html();
     $.ajax({
         type: 'GET',
         url: "http://airdownload.adobe.com/air/browserapi/air.swf",
@@ -133,6 +134,7 @@ $(function(){
                 so.addVariable("airswfurl", '[% air_swf_url %]');
             }
             so.write("flashcontent");
+            $('#getThings').show();
         }
     })
 });
