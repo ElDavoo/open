@@ -12,6 +12,7 @@ my %exclude =
     qw(
         dev-bin/st-create-account-data
         lib/Socialtext/Challenger/STLogin.pm
+        share/migrations/26-page-metadata-to-db/lib/Socialtext/User.pm
         share/skin/js-test/s3/t/bz-1379.t.js
         share/skin/js-test/s3/t/bz-1500.t.js
         t/coding-standard/no-nlw-login.t
