@@ -298,7 +298,7 @@ sub accounts {
     my @args = ($self->user_id);
     my $sql;
 
-    Socialtext::Timer->Continue('user_accts');
+    my $t = time_scope 'user_accts';
 
     if ($plugin) {
         $sql = q{
@@ -308,7 +308,7 @@ sub accounts {
                 ON (plug.user_set_id = path.into_set_id)
             WHERE path.from_set_id = ?
               AND plug.plugin = ?
-              AND plug.user_set_id > }.PG_ACCT_OFFSET;
+              AND plug.user_set_id }.PG_ACCT_FILTER;
         push @args, $plugin;
     }
     else {
@@ -316,13 +316,12 @@ sub accounts {
             SELECT DISTINCT into_set_id 
             FROM user_set_path 
             WHERE from_set_id = ?
-              AND into_set_id > }.PG_ACCT_OFFSET;
+              AND into_set_id }.PG_ACCT_FILTER;
     }
 
     my $sth = sql_execute($sql, @args);
     my @account_ids = map {$_->[0] - ACCT_OFFSET} @{$sth->fetchall_arrayref()};
     if ($p{ids_only}) {
-        Socialtext::Timer->Pause('user_accts');
         return (wantarray ? @account_ids : \@account_ids);
     }
     else {
@@ -330,7 +329,6 @@ sub accounts {
                        map {
                            Socialtext::Account->new(account_id => $_)
                        } @account_ids;
-        Socialtext::Timer->Pause('user_accts');
         return (wantarray ? @accounts : \@accounts);
     }
 }
