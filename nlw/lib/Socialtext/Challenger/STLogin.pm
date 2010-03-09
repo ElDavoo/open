@@ -45,10 +45,10 @@ sub challenge {
 
     my $login_page = '/nlw/login.html';
     my $app = Socialtext::WebApp->NewForNLW;
-    if ( !$request ) {
+    unless ($request) {
         $request = $app->apache_req;
     }
-    if ( !defined ($redirect) ) {
+    unless (defined $redirect) {
         $redirect = $request->parsed_uri->unparse;
     }
     if ($redirect =~ m#^/m(?:/|$)#) {
