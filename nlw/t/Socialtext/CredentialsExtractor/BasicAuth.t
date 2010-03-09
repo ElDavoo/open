@@ -113,7 +113,7 @@ no_authentication_header_set: {
 sub make_mocked_request {
     my ($username, $password) = @_;
     my %args = (
-        uri => 'http://localhost/nlw/login.html',
+        uri => 'http://localhost/challenge',
     );
 
     if ($username && $password) {
