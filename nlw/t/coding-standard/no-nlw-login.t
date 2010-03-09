@@ -3,16 +3,21 @@
 
 use strict;
 use warnings;
+use List::MoreUtils qw(any);
 use Test::More tests => 1;
 use Test::Differences;
 
 # List of things that are OK to include "/nlw/login.html" in them.
+my @skip_paths = qw(
+    share/migrations/
+    share/workspaces/stl10n/
+    t/tmp/
+);
 my %skip_files =
     map { $_ => 1 }
     qw(
         dev-bin/st-create-account-data
         lib/Socialtext/Challenger/STLogin.pm
-        share/migrations/26-page-metadata-to-db/lib/Socialtext/User.pm
         share/skin/js-test/s3/t/bz-1379.t.js
         share/skin/js-test/s3/t/bz-1500.t.js
         t/coding-standard/no-nlw-login.t
@@ -23,12 +28,15 @@ my %skip_files =
 SKIP: {
     skip 'No `ack` available', 1, unless `which ack` =~ /\w/;
 
-    my @bad_files =
-        grep { !m{t/tmp/} }     # ignore test tmp dirs
-        `ack --follow --nocolor --all -l /nlw/login.html .`;
-    chomp @bad_files;
+    my @candidates = `ack --follow --nocolor --all -l /nlw/login.html .`;
+    chomp @candidates;
 
-    @bad_files = grep { !exists $skip_files{$_} } @bad_files;
+    my @bad_files;
+    foreach my $file (@candidates) {
+        next if (exists $skip_files{$file});
+        next if (any { $file =~ /^$_/ } @skip_paths);
+        push @bad_files, $file;
+    }
 
     eq_or_diff \@bad_files, [], 'No /nlw/login.html in our source code';
 
