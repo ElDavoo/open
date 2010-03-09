@@ -10,6 +10,7 @@ use Test::Differences;
 my %exclude =
     map { $_ => 1 }
     qw(
+        dev-bin/st-create-account-data
         lib/Socialtext/Challenger/STLogin.pm
         t/coding-standard/no-nlw-login.t
     );
