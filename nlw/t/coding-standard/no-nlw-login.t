@@ -7,7 +7,7 @@ use Test::More tests => 1;
 use Test::Differences;
 
 # List of things that are OK to include "/nlw/login.html" in them.
-my %exclude =
+my %skip_files =
     map { $_ => 1 }
     qw(
         dev-bin/st-create-account-data
@@ -28,7 +28,7 @@ SKIP: {
         `ack --follow --nocolor --all -l /nlw/login.html .`;
     chomp @bad_files;
 
-    @bad_files = grep { !exists $exclude{$_} } @bad_files;
+    @bad_files = grep { !exists $skip_files{$_} } @bad_files;
 
     eq_or_diff \@bad_files, [], 'No /nlw/login.html in our source code';
 
