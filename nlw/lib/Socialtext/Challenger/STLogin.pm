@@ -50,7 +50,6 @@ sub challenge {
     unless (defined $redirect) {
         $redirect = $request->parsed_uri->unparse;
     }
-    my $login_page = $class->_get_login_page($redirect);
 
     my $ws;
     if ($hub) {
@@ -70,6 +69,7 @@ sub challenge {
     # stick some information in the session
     # and then establishes a redirect header
     # and throws up
+    my $login_page = $class->_get_login_page($redirect);
     $app->_handle_error(
         error => {
             type => $type,
