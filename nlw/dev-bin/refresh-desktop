@@ -32,7 +32,7 @@ while (my ($update_file, $air_filespec) = each %Editions) {
 
     download $remote_air;
 
-    git rm  => $local_air if -f $local_air;
+    git rm  => $local_air if -f "$Local/$local_air";
     git add => $remote_air;
     git add => $update_file;
 
