@@ -9,14 +9,14 @@
 
 | *Comment* | Test Case: Groups UI Signal from group SELECT Signal, Send Signal, Verify |  |
 | st-name-widget | 3 | signals_widget |
-| st-name-widget | 4 | activity_widget |
 | set | mysignal_1 | You say you've seen seven wonders |
 | set | mysignal_2 | ... and your bird can sing! |
 | st-send-signal-via-profile-widget | signals_widget | %%mysignal_1%% |
 | st-send-signal-via-profile-widget | signals_widget | %%mysignal_2%% |
-| st_verify_text_in_activities_widget | activity_widget | %%mysignal_1%% |
-| st_verify_text_in_activities_widget | activity_widget | qr/You.+minute.+ago to %%group_name%%/ |
-| st_verify_text_in_activities_widget | activity_widget | %%mysignal_2%% |
+| st_verify_text_in_activities_widget | signals_widget | %%mysignal_1%% |
+| *Commment* | Fails due to {bz: 3643} |  |
+| st_verify_text_in_activities_widget | signals_widget | qr/You.+minute.+ago to %%group_name%%/ |
+| st_verify_text_in_activities_widget | signals_widget | %%mysignal_2%% |
 
 | *Comment* | Test Case: Groups UI Signal from group home Verify Signal in ?Signal Page |  |
 | open_ok | /st/signals |  |
