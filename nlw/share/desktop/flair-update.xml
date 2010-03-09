@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>216</version>
-  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-216.air</url>
-  <description><![CDATA[[Build 216 - Mon Mar  8 21:04:06 PST 2010]
+  <version>217</version>
+  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-217.air</url>
+  <description><![CDATA[[Build 217 - Tue Mar  9 15:35:46 PST 2010]
+* People: Add rhyme and reason to the display order. (Eugene)
+
+[Build 216 - Mon Mar  8 21:04:06 PST 2010]
 * Initial support for /data/push.
 
 [Build 215 - Fri Mar  5 08:42:14 PST 2010]
