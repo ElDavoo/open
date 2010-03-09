@@ -44,7 +44,7 @@ TO DO - Add testability hooks and confirm Grey Ghost Icon
 | *Comment* | Test Case: People Dashboard Navigation - Add Content has correct content |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-All People Tags'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Active Content'] | 30000 |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Active Members'] | 30000 |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Active People'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Activities'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Workspaces'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wiki Page'] | 30000 |

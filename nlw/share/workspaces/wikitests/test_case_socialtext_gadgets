@@ -3,7 +3,7 @@
 | *Comment* | Test Case: Socialtext Gadgets |  |
 
 | set_timeout | 60000 | Widgets slow down open / a lot |
-| st_empty_container  |  |  |
+| st_empty_container |  |  |
 
 | *Comment* | Test Case: Socialtext Gadgets. All People Tags |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
@@ -25,8 +25,8 @@
 | open_ok | / |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Active Members'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Active Members'] |  |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Active People'] | 30000 |
+| click_and_wait | //a[@id='gallery-widget-Active People'] |  |
 | wait_for_text_present_ok | Active Members | 30000 |
 | text_like | contentContainer | Active Members |
 
