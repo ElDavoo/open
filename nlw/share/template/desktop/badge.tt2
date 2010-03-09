@@ -14,11 +14,12 @@
         margin-left: -107px;
     ">
 <br/>
-<ol>
-<li style="margin-bottom: 10px">Please install <a id="air-link" target="_blank" href="http://get.adobe.com/air/">Adobe&nbsp;AIR&#8482</a>.
-<li style="margin-bottom: 10px">Then launch <a target="_blank" href="[% app_url %]">Socialtext&nbsp;Desktop</a>.
+<ol id="getThings" style="display: none">
+<li id="getFlash" style="margin-bottom: 10px">Please first install <a id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">Flash&nbsp;&#8482 Player</a>.
+<li id="getAIR" style="margin-bottom: 10px; display: none">Please install <a id="air-link" target="_blank" href="http://get.adobe.com/air/">Adobe&nbsp;AIR&#8482</a>.
+<li>Then <a href="#" onclick="location.reload(); return false">refresh this page</a></li>
+<li>Thank you! :-)</li>
 </ol>
-Thank you! :-)
         </span>
 
 <div class="buttons" style="position: absolute; right: 10px; bottom: 10px">
@@ -31,7 +32,9 @@ Thank you! :-)
 
 </body>
 <script>
-    var link = document.getElementById('air-link');
+    var airLink = document.getElementById('air-link');
+    var flashLink = document.getElementById('flash-link');
+
     var platform = 'unknown';
     if (typeof(window.navigator.platform) != undefined) {
         platform = window.navigator.platform.toLowerCase();
@@ -42,19 +45,34 @@ Thank you! :-)
         else if (platform.indexOf('linux') != -1)
             platform = 'lin';
     }
-    
+
     if (platform == 'win') {
-        link.href = '[% static_appliance_url %]/AdobeAIRInstaller.exe';
+        airLink.href = '[% static_appliance_url %]/AdobeAIRInstaller.exe';
+
+        var userAgent = navigator.userAgent.toLowerCase();
+        if (/msie/.test( userAgent ) && !/opera/.test( userAgent )) {
+            flashLink.href = '[% static_appliance_url %]/install_flash_player_10_active_x.exe';
+        }
+        else {
+            flashLink.href = '[% static_appliance_url %]/install_flash_player_10.exe';
+        }
     } else if (platform == 'mac') {
-        link.href = '[% static_appliance_url %]/AdobeAIR.dmg';
+        airLink.href = '[% static_appliance_url %]/AdobeAIR.dmg';
+        flashLink.href = '[% static_appliance_url %]/install_flash_player_10_osx_ub.dmg';
     } else if (platform == 'lin') {
-        link.href = '[% static_appliance_url %]/AdobeAIRInstaller.bin';
+        airLink.href = '[% static_appliance_url %]/AdobeAIRInstaller.bin';
+        flashLink.href = '[% static_appliance_url %]/install_flash_player_10_linux.tar.gz';
     }
 
-    var html = document.getElementById('flashcontent').innerHTML;
+    var html = $('#flashcontent').html();
     function hide_swfobject () {
-        document.getElementById('flashcontent').innerHTML = html;
+        $('#flashcontent').html(html);
+        $('#getFlash').hide();
+        $('#getAIR').show();
     }
+    setTimeout(function(){
+        $('#getThings').show();
+    }, 1000);
 </script>
 
 
