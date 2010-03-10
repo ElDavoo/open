@@ -138,8 +138,6 @@ html .wiki a:hover {
 
 .wiki blockquote {
     margin: 1em 1.5em;
-    color: #666;
-    font-style: italic;
 }
 .wiki strong {
     font-weight: bold;
