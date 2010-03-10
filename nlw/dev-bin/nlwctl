@@ -32,18 +32,19 @@ Verbs: (start is the default verb if none is specified)
   restart       stop, then start
 
 Options:
+  -1                operate only on Apache 1 service
   -a                operate only on appliance console service
+  -c                operate only on ceqlotron service
+  -p                operate only on the json proxy service
+  -n/-2             operate only on nginx service
   -u                operate only on the pushd service
-  -c                operate only on ceqlotron
-  -p                operate only on the json proxy
+
   -t, --test        operate on live-test server rather than devel. server
-  -1                operate only on Apache 1 instance
-  -2                operate only on Apache 2 instance
   -v, --verbose     extra verbosity
 
-If none of -a, -c, -1, or -2 are specified, the verb acts on all three daemons.
+If none of the service options are specified, the verb acts on all services.
 END_OF_HELP
-    exit 0;
+    exit 1;
 }
 
 my (%apache_command, %ceqlotron_command, %appliance_command, %pushd_command, $nginx,
