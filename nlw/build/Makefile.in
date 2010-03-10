@@ -64,6 +64,7 @@ INSTALL_BASE = install-html       \
                install-migrations \
                install-l10n \
                install-post-install \
+               install-desktop \
                install-wsdl \
 	       install-workspaces
 
