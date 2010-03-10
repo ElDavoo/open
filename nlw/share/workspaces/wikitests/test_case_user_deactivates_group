@@ -11,35 +11,18 @@
 | st-admin | add-member --e %%other_user%% --g %%deac_id%% | is now a member of |
 | st-admin | add-member --e %%username%% --g %%deac_id%% | is now a member of |
 
-| *Comment* | Test Case: User Deactivates Group See link from global nav |  |
-| open_ok | / |  |
-| wait_for_element_present_ok | link=%%deac_group%% | 30000 |
-| click_and_wait | link=%%deac_group%% |  |
-
-| *Comment* | Test Case: User Deactivates Group As non-admin, do not see deactivate link |  |
-| wait_for_element_not_present_ok | st-delete-group | 30000 |
-| st-name-widget | 1 | info_widget |
-| st-widget-title-like | info_widget | Information |
-| st-select-widget-frame | info_widget |  |
-| wait_for_element_not_present_ok | link=(Edit) | 30000 |
-| select-frame | relative=parent |  |
+There was a test here to see if a non-admin could see the Delete Group button on the group homepage.
+Since a non-admin can't get to the Group edit page, this test was a non-sequitur.
 
 | *Comment* | Test Case: User Deactivates Group Promote to admin, do see deactivate link |  |
 | st-admin | add-group-admin --e %%username%% --g %%deac_id%% | is now a admin of the |
-| open_ok | / |  |
-| wait_for_element_present_ok | link=%%deac_group%% | 30000 |
-| click_and_wait | link=%%deac_group%% |  |
-| st-name-widget | 1 | info_widget |
-| st-widget-title-like | info_widget | Information |
-| st-select-widget-frame | info_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
-| select-frame | relative=parent |  |
+| open_ok | /st/edit_group/%%group_id%% |  |
+| wait_for_text_present_ok | Edit Group: | 30000 |
 | wait_for_element_visible_ok | st-delete-group | 30000 |
 | click_ok | st-delete-group |  |
 | wait_for_element_visible_ok | st-save-widget-template | 30000 |
-| text_like | //body | Delete Group |
-| text_like | //body | Delete %%deac_group%% |
+| wait_for_text_present_ok | Delete Group | 10000 |
+| wait_for_text_present_ok | Delete %%deac_group%% | 10000 |
 | text_like | //body | You will not be able to restore the group once it's deleted. Users will no longer be able to signal to this group and any access to workspaces through this group will be revoked. |
 
 | *Comment* | Test Case: User Deactivates Group TODO Click Deactivate/Cancel Once there is an ID |
@@ -47,11 +30,11 @@
 | *Comment* | Test Case: User Deactivates Group Click Deactivate/YES I'm sure |  |
 | click_and_wait | st-save-widget-template |  |
 | wait_for_text_present_ok | The group, %%deac_group%%, has been successfully deleted. | 30000 |
-| wait_for_element_not_present_ok | link=%%deac_group%% | 30000 |
+| wait_for_element_not_present_ok | link=%%deac_group%% | 5000 |
 
 | *Comment* | Test Case: User Deactivates Group Link Login as other user, still do not see link |  |
 | st-logoutin | %%other_user%% | %%password%% |
-| wait_for_element_not_present_ok | %%deac_group%% | 30000 |
+| wait_for_element_not_present_ok | link=%%deac_group%% | 5000 |
 
 | *Comment* | Test Case: User Deactivates Group Teardown |
 | delete_group | %%deac_id%% |  |

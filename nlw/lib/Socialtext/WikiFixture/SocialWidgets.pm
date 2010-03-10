@@ -427,8 +427,6 @@ sub st_send_signal_via_activities_widget {
     my $browser = $ENV{'selenium_browser'} || 'chrome';
 
     $self->handle_command('st-select-widget-frame', $widgetname);
-    $self->handle_command('wait_for_element_visible_ok', 'expand-input', '30000');
-    $self->handle_command('click_ok', 'expand-input');
     $self->handle_command('pause', '3000'); # to let the widget frame open
 
     if ($browser=~/chrome|firefox/ig) {
@@ -445,7 +443,6 @@ sub st_send_signal_via_activities_widget {
     $self->handle_command('click_ok', 'post');
 
     $self->handle_command('pause', 3000); # must wait before signaling again
-    $self->handle_command('click_ok', 'expand-input');
     $self->handle_command('select-frame','relative=parent'); 
     
     ok(!$@, 'st_send_signal_via_activities_widget');
