@@ -38,7 +38,7 @@ proto.config = {
     editHeightMinimum: 150,
     editHeightAdjustment: 1.3,
     clearRegex: null,
-    enableClearHandler: Socialtext.new_page
+    enableClearHandler: false,
 };
 
 proto.initializeObject = function() {
@@ -56,8 +56,9 @@ proto.clear_inner_html = function() {
     var inner_html = this.get_inner_html();
     var clear = this.config.clearRegex;
     var res = inner_html.match(clear) ? 'true' : 'false';
-    if (clear && inner_html.match(clear))
-        this.set_inner_html('\n');
+    if (clear && inner_html.match(clear)) {
+        this.set_inner_html('');
+    }
 }
 
 proto.get_keybinding_area = function() {
@@ -961,7 +962,7 @@ proto.get_cursor_state = function() {
 
 proto.set_clear_handler = function () {
     var self = this;
-    if (!this.wikiwyg.config.enableClearHandler) return;
+    if (!this.wikiwyg.config.enableClearHandler && !Socialtext.new_page) return;
 
     var editor = Wikiwyg.is_ie ? self.get_editable_div()
                                : self.get_edit_document();
@@ -969,6 +970,7 @@ proto.set_clear_handler = function () {
     var clean = function(e) {
         self.clear_inner_html();
         jQuery(editor).unbind('click', clean).unbind('keydown', clean);
+        self.set_focus();
     };
 
     try {

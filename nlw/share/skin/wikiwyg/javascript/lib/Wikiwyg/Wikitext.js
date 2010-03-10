@@ -61,8 +61,10 @@ proto.clear_inner_text = function() {
     this.area.onclick = function() {
         var inner_text = self.area.value;
         var clear = self.config.clearRegex;
-        if (clear && inner_text.match(clear))
+        if (clear && inner_text.match(clear)) {
             self.area.value = '';
+            jQuery(self.area).removeClass('clearHandler');
+        }
     }
 }
 
