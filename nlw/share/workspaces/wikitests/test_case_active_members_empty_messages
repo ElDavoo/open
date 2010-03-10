@@ -45,6 +45,7 @@
 | wait_for_text_present_ok | %%EmptyEdits%% | 5000 |
 | click_ok | link=Signals |  |
 | wait_for_text_present_ok | %%EmptySignals%% | 5000 |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Active Members Empty Messages TEARDOWN |  |
 
