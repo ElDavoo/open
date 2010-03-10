@@ -60,17 +60,17 @@
 | *Comment* | Test Case: Business Control Panel Groups in Workspace name ascending order: 1 (a) 3 (b) 2 (c) 4 (d) |  |
 | click_ok | groupTable-orderBy-1 |  |
 | pause | 5000 |  |
-| text_like | //body | qr/%%g1_match%%.+%%g3_match%%.+%%g2_match%%.+%%g4_match%%/ism |
+| text_like | //body | qr/Groups \(4\).+%%g1_match%%.+%%g3_match%%.+%%g2_match%%.+%%g4_match%%/ism |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace name descending order: 4 (d) 2 (c) 3 (b) 1 (a) |  |
 | click_ok | groupTable-orderBy-1 |  |
 | pause | 5000 |  |
-| text_like | //body | qr/%%g4_match%%.+%%g2_match%%.+%%g3_match%%.+%%g1_match%%/ism |
+| text_like | //body | qr/Groups \(4\).+%%g4_match%%.+%%g2_match%%.+%%g3_match%%.+%%g1_match%%/ism |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by name ascending again a-b-c-d |  |
 | click_ok | groupTable-orderBy-1 |  |
 | pause | 5000 |  |
-| text_like | //body | qr/%%g1_match%%.+%%g3_match%%.+%%g2_match%%.+%%g4_match%%/ism |
+| text_like | //body | qr/Groups \(4\).+%%g1_match%%.+%%g3_match%%.+%%g2_match%%.+%%g4_match%%/ism |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace randomize order again |  |
 | click_ok | groupTable-orderBy-7 |  |
@@ -79,12 +79,12 @@
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by id ascending should order groups 1 (a) 2 (c) 3 (b) 4 (d) |  |
 | click_ok | groupTable-orderBy-0 |  |
 | pause | 5000 |  |
-| text_like | //body | qr/%%g1_match%%.+%%g2_match%%.+%%g3_match%%.+%%g4_match%%/ism |
+| text_like | //body | qr/Groups \(4\).+%%g1_match%%.+%%g2_match%%.+%%g3_match%%.+%%g4_match%%/ism |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by id descending should order groups 4 (d) 3 (b) 2 (c) 1 (a) |  |
 | click_ok | groupTable-orderBy-0 |  |
 | pause | 5000 |  |
-| text_like | //body | qr/%%g4_match%%.+%%g3_match%%.+%%g2_match%%.+%%g1_match%%/ism |
+| text_like | //body | qr/Groups \(4\).+%%g4_match%%.+%%g3_match%%.+%%g2_match%%.+%%g1_match%%/ism |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Sorting by id ascending AGAIN 1 (a) 2 (c) 3 (b) 4 (d) |  |
 | click_ok | groupTable-orderBy-0 |  |
