@@ -169,6 +169,13 @@
             var offset = this.$('iframe[name='+window.name+']').offset();
             left += offset.left;
             top += offset.top;
+
+            // Map unload to remove the lookahead, otherwise it can hang
+            // around after we move a widget
+            var self = this;
+            $(window).unload(function() {
+                self.lookahead.remove();
+            });
         }
 
         if (!this.lookahead) {
