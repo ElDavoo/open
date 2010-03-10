@@ -3,13 +3,7 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: RSS Feed Widget. Create the widget |  |
-| open_ok | /?dashboard | 60000 |
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_ok | link=Add Content |  |
-| wait_for_element_visible_ok | gallery-widget-RSS Viewer | 30000 |
-| click_ok | gallery-widget-RSS Viewer |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| st-single-widget-in-dashboard | gallery-widget-RSS Viewer | |
 
 | *Comment* | Test Case: RSS Feed Widget. Set the widget |  |
 | st-name-widget | 1 | rss_feed |
@@ -47,8 +41,6 @@
 | wait_for_element_visible_ok | link=Emerson | 3000 |
 | text_like | //body | the new Highsmith book |
 | text_like | //body | the book is best framed as an introduction |
-
 | select-frame | relative=parent |  |
-| st-empty-container |  |  |
 
 | *Comment* | Test Case: RSS Feed Widget COMPLETED |

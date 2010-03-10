@@ -61,12 +61,10 @@ Navigates to and empties the Dashboard.
 =cut
 sub st_empty_container { 
     my ($self) = @_;
-    my $location = Socialtext::URI::uri(
-        path => '/st/dashboard', query => { clear => 1 },
-    );
+    my $location = '/st/dashboard?clear=1';
     eval {
         $self->{selenium}->open($location);
-        $self->{selenium}->wait_for_page_to_load(10000);
+        $self->{selenium}->wait_for_page_to_load(30000);
         my $widgetlist = $self->{selenium}->get_value("id=widgetList");
         diag "Widgets after empty: $widgetlist\n"; 
     };

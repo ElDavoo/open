@@ -48,7 +48,6 @@
 
 | *Comment* | Test Case: Active Content Empty Messages TEARDOWN |  |
 
-| st-empty-container |  |  |
 | st-admin | remove-member --username %%empty_user%% --account %%empty_acct%% |  |
 
 | *Comment* | Test Case: Active Content Empty Messages COMPLETED |  |

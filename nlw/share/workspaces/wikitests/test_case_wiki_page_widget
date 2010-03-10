@@ -15,13 +15,7 @@
 | click_and_wait | st-save-button-link |  |
 
 | *Comment* | Test Case: Wiki Page Widget. Create the widget |  |
-| open_ok | /?dashboard | 60000 |
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_ok | link=Add Content |  |
-| wait_for_element_visible_ok | gallery-widget-Wiki Page | 30000 |
-| click_ok | gallery-widget-Wiki Page |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| st-single-widget-in-dashboard |  gallery-widget-Wiki Page |  |
 
 | *Comment* | Test Case: Wiki Page Widget. Load the widget |  |
 | st-name-widget | 1 | wikipage |
@@ -43,10 +37,9 @@
 | wait_for_element_present_ok | link=Edit | 30000 |
 | wait_for_element_present_ok | link=View | 30000 |
 | wait_for_text_present_ok | I have created a page called Wiki Page %%start_time%%. w00t. | 30000 |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Wiki Page TEARDOWN |  |
-| select-frame | relative=parent |  |
-| st-empty-container |  |  |
 | st-admin | purge-page --workspace %%workspace%% --page wiki_page_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Wiki Page Widget COMPLETED |  |

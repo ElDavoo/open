@@ -4,12 +4,7 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Tag Cloud Widget. Create the workspace tags widget |  |
-| open_ok | /?dashboard | 60000 |
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_ok | link=Add Content |  |
-| wait_for_element_visible_ok | gallery-widget-Workspace Tags | 30000 |
-| click_ok | gallery-widget-Workspace Tags |  |
+| st-single-widget-in-dashboard | gallery-widget-Workspace Tags |   |
 
 | *Comment* | Test Case: Tag Cloud Widget. See the tags for workspace help-en |  |
 | wait_for_text_present_ok | Tags for help-en workspace | 30000 |
@@ -40,8 +35,6 @@
 | wait_for_element_visible_ok | link=carroll | 200 |
 | wait_for_element_visible_ok | link=carroll's poem | 100 |
 | wait_for_element_visible_ok | link=my next thirty years | 50 |
-
 | select-frame | relative=parent |  |
-| st-empty-container |  |  |
 
 | *Comment* | Test Case: Tag Cloud Widget COMPLETED |

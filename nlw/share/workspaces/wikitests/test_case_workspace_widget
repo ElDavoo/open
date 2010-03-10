@@ -6,13 +6,8 @@
 | st-admin | add-member --workspace workspacewidget-%%start_time%% --username %%username%% |  |
 
 | st-clear-json-cache |  |  |
-| open_ok | /?dashboard | 60000 |
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | gallery-widget-Workspaces | 30000 |
-| click_and_wait | gallery-widget-Workspaces |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+
+| st-single-widget-in-dashboard | gallery-widget-Workspaces |  |
 
 | *Comment* | Test Case: Widgets - Workspaces Widget |  |
 | st-name-widget | 1 | myworkspace |
@@ -28,9 +23,12 @@
 | *Comment* | Remove member, see if workspace is gone |  |
 | *Comment* | The widget name is %%myworkspace%% |  |
 | st-admin | remove-member --username %%username%% --workspace workspacewidget-%%start_time%% | no longer has the role of 'member' |
-| st-logout |  |  |
+
+Why logout and login?
+
+ st-logout |  |  |
 | st-clear-json-cache |  |  |
-| st-login |  |  |
+ st-login |  |  |
 
 | open_ok | /?dashboard | 60000 |
 | st-name-widget | 1 | myworkspace |
@@ -45,7 +43,6 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Workspace Widget Teardown |  |
-| st-empty-container |  |  |
 | st-admin | delete-workspace --workspace workspacewidget-%%start_time%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Workspace Widget COMPLETED |  |
