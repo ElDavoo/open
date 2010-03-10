@@ -15,13 +15,23 @@
     ">
 <br/>
 <ol id="getThings" style="display: none">
-<li class="getFlash" style="margin-bottom: 10px">Please first install <a id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">Flash&nbsp;&#8482 Player</a>.
+<li class="getFlash" style="margin-bottom: 10px">Please first install <a id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">Flash&nbsp;&#8482&nbsp;Player</a>.
 <li class="getFlash" style="margin-bottom: 10px">Then restart your browser, and open this dialog box again.</a></li>
 <li class="getAIR" style="margin-bottom: 10px; display: none">Please install <a id="air-link" target="_blank" href="http://get.adobe.com/air/">Adobe&nbsp;AIR&#8482</a>.
 <li class="getAIR" style="margin-bottom: 10px; display: none">Then <a href="#" onclick="$('#flashcontent').css('background', 'url(/static/skin/common/images/ajax-loader.gif) no-repeat center'); $('#getThings').hide(); location.replace(location.href); return false">click here</a> to launch Socialtext Desktop.</a></li>
 <li>Thank you! :-)</li>
 </ol>
         </span>
+
+<!--[if !IE]>-->
+<object type="application/x-shockwave-flash"
+data="http://airdownload.adobe.com/air/browserapi/air.swf"
+id="airDetect" width="1" height="1">
+</object>
+<!--<![endif]-->
+<object id="airDetectIE" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="1" height="1">
+<param name="movie" value="http://airdownload.adobe.com/air/browserapi/air.swf">
+</object>
 
 <div class="buttons" style="position: absolute; right: 10px; bottom: 10px">
         <ul style="float: left; padding: 10px;" class="widgetButton">
@@ -123,20 +133,32 @@ function hide_swfobject () {
     $('.getFlash').hide();
 }
 
+function hasFlash(selector) {
+    if ($(selector).length == 0) return false;
+    var obj = $(selector).get(0);
+    if (typeof obj == 'undefined') return false;
+    return(typeof obj.GetVariable != 'undefined');
+}
+
+function tryInit (tries) {
+    if (hasFlash('#airDetect') || hasFlash('#airDetectIE')) {
+        so.write("flashcontent");
+        $('#getThings').show();
+    }
+    else if (tries > 10) {
+        so.addVariable("airswfurl", '[% air_swf_url %]');
+        so.write("flashcontent");
+        $('#getThings').show();
+    }
+    else {
+        tries++;
+        setTimeout(function(){ tryInit(tries) }, 250);
+    }
+}
+
 $(function(){
     prevHTML = $('#flashcontent').html();
-    $.ajax({
-        type: 'GET',
-        url: "http://airdownload.adobe.com/air/browserapi/air.swf",
-        timeout: 5000,
-        complete: function(xhr) {
-            if (xhr && xhr.status >= 400 && xhr.status != 501) {
-                so.addVariable("airswfurl", '[% air_swf_url %]');
-            }
-            so.write("flashcontent");
-            $('#getThings').show();
-        }
-    })
+    setTimeout(function(){ tryInit(0) }, 250);
 });
 
 </script>
