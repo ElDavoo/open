@@ -52,6 +52,10 @@ proto.initialize_object = function() {
     this.clear_inner_text();
 }
 
+proto.blur = function() {
+    this.textarea.blur();
+};
+
 proto.set_focus = function() {
     this.textarea.focus();
 }

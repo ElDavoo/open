@@ -609,6 +609,13 @@ proto.fix_up_relative_imgs = function() {
     }
 }
 
+proto.blur = function() {
+    try {
+        if (Wikiwyg.is_gecko) this.get_edit_window().blur();
+        if (Wikiwyg.is_ie) this.get_editable_div().blur();
+    } catch (e) {}
+}
+
 proto.set_focus = function() {
     try {
         if (Wikiwyg.is_gecko) this.get_edit_window().focus();
