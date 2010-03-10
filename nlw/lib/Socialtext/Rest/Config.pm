@@ -37,18 +37,20 @@ sub make_getter {
 
         $rest->header(-type => "$type; charset=UTF-8");
 
-        # Get simple key/value pair without the "---" line
-        local $YAML::UseHeader = 0;
-
-        return $render->({
+        my $config = {
             server_version => $Socialtext::VERSION,
             api_version => $Socialtext::Rest::Version::API_VERSION,
             desktop_update_url => $appliance->value('desktop_update_enabled')
                                     ? Socialtext::URI::uri( path => "/st/desktop/update" )
                                     : '',
             ( map { $_ => Socialtext::AppConfig->$_() } @PUBLIC_CONFIG_KEYS ),
-        });
+        };
 
+        $self->hub->pluggable->hook('nlw.get_rest_config', $config);
+
+        # Get simple key/value pair without the "---" line
+        local $YAML::UseHeader = 0;
+        return $render->($config);
     };
 }
 
