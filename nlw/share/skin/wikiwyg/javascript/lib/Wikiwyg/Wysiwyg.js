@@ -38,7 +38,7 @@ proto.config = {
     editHeightMinimum: 150,
     editHeightAdjustment: 1.3,
     clearRegex: null,
-    enableClearHandler: false,
+    enableClearHandler: false
 };
 
 proto.initializeObject = function() {
