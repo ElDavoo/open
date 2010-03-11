@@ -585,6 +585,7 @@ sub _build_standard_sql {
     my $opts = shift;
 
     my $viewer_id = $self->viewer->user_id;
+    my $table = $self->table;
 
     $self->_process_before_after($opts);
 
@@ -636,9 +637,9 @@ sub _build_standard_sql {
             $self->add_condition('signal_id IS NOT NULL');
         }
 
-        if ($opts->{group_id}) {
+        if ($opts->{group_id} and $table ne 'event_page_contrib') {
             $self->add_condition(
-                "event_class != 'group' OR group_id = ?", $opts->{group_id},
+                "event_class <> 'group' OR group_id = ?", $opts->{group_id}
             );
         }
 
@@ -655,7 +656,6 @@ sub _build_standard_sql {
 
     my ($limit_stmt, @limit_args) = $self->_limit_and_offset($opts);
 
-    my $table = $self->table;
     if ($table ne 'event_page_contrib') {
         # event_page_contrib doesn't have a hidden column
         $self->add_condition('NOT hidden');
