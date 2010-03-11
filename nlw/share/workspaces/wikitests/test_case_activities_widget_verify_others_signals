@@ -18,8 +18,8 @@
 
 | *Comment* | Test Case: Activities Widget Verify Others Signals. Signals in Dashboard Activities widget. |  |
 | st-select-widget-frame | activities_widget |  |
-| wait_for_element_present_ok | action-signals | 10000 |
-| click_ok | action-signals |  |
+| wait_for_element_present_ok | link=signals | 10000 |
+| click_ok | link=signals |  |
 
 | *Comment* | Test Case: Activities Widget Verify Others Signals. select_and_wait in iframe doesn't work. Use pause. |  |
 | pause | 10000 | I hate pause |
@@ -29,8 +29,8 @@
 | wait_for_text_present_ok | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% | 30000 |
 | wait_for_text_present_ok | Other User Summary signal %%start_time%% | 30000 |
 
-| *Comment* | Test Case: Activities widget Verify Others Signals. Wait for automatic refresh to 3 minutes ago in Activity | |
+| *Comment* | Test Case: Activities widget Verify Others Signals. Wait for automatic refresh to 3 minutes ago in Activity |  |
 | wait_for_text_present_ok | 3 minutes ago | 180000 |
-| select-frame | relative=parent | |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Activities Widget Verify Others Signals COMPLETED |  |
