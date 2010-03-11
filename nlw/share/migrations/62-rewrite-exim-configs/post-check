@@ -1,22 +1,38 @@
 #!/bin/sh
 
 CONF=/etc/exim4/conf.d
-INTERVAL=$(grep QUEUEINTERVAL /etc/default/exim4 | cut -d '=' -f 2)
-MAX=$(grep connection_max_messages \
-    $CONF/transport/30_exim4-config_remote_smtp | awk '{print $3}')
 
+# This will fail if the value is incorrect or non-existent
+INTERVAL=$(grep QUEUEINTERVAL /etc/default/exim4 | cut -d '=' -f 2)
 if [ "$INTERVAL" != "'1m'" ]; then
     echo "Failed to update queue interval... migration fails(1)."
     exit 1
 fi
 
+# This will fail if the value is incorrect or non-existent
+MAX=$(grep connection_max_messages \
+    $CONF/transport/30_exim4-config_remote_smtp | awk '{print $3}')
 if [ "$MAX" != "15" ]; then
     echo "Failed to update connection max... migration fails(2)."
     exit 1
 fi
 
-if [ ! -e $CONF/main/04_exim4-config_socialtext ]; then
+# FILE exists
+FILE=$CONF/main/04_exim4-config_socialtext
+if [ ! -e $FILE ]; then
     echo "Failed to find main config... migration fails(3)."
+    exit 1
+fi
+
+# ... and has queue_only value
+if [ -z "$(grep queue_only $FILE)" ]; then
+    echo "Failed to queue_only... migration fails(4)."
+    exit 1
+fi
+
+# ... and has correct queue_run_max value
+if [ -z "$(grep 'queue_run_max = 5' $FILE)" ]; then
+    echo "Failed to find value for queue_run_max... migration fails(4)."
     exit 1
 fi
 
