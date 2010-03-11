@@ -17,6 +17,7 @@ use Readonly;
 
 Readonly my @PUBLIC_CONFIG_KEYS => qw(
     allow_network_invitation
+    signals_size_limit
 );
 
 sub allowed_methods { 'GET' }
