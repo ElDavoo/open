@@ -61,6 +61,7 @@ sub handle_waflphrase {
     my $self = shift;
     my $match = shift; 
     return unless $match->{type} eq 'waflphrase';
+    my $length = $match->{end} - $match->{begin};
     if ($match->{2} eq 'link') {
         my $options = $match->{3};
         if ($options =~ /^\s*([\w\-]+)\s*\[(.*)\]\s*$/) {
@@ -74,6 +75,7 @@ sub handle_waflphrase {
                 page_id => $page_id,
                 text => $text,
                 wafl_string => $options,
+                wafl_length => $length
             });
             return;
         }
@@ -83,6 +85,7 @@ sub handle_waflphrase {
         $self->{receiver}->insert({
             wafl_type   => 'user',
             user_string => $options,
+            wafl_length => $length
         });
         return;
     }
