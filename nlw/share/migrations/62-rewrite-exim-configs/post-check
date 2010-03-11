@@ -1,0 +1,24 @@
+#!/bin/sh
+
+CONF=/etc/exim4/conf.d
+INTERVAL=$(grep QUEUEINTERVAL /etc/default/exim4 | cut -d '=' -f 2)
+MAX=$(grep connection_max_messages \
+    $CONF/transport/30_exim4-config_remote_smtp | awk '{print $3}')
+
+if [ "$INTERVAL" != "'1m'" ]; then
+    echo "Failed to update queue interval... migration fails(1)."
+    exit 1
+fi
+
+if [ "$MAX" != "15" ]; then
+    echo "Failed to update connection max... migration fails(2)."
+    exit 1
+fi
+
+if [ ! -e $CONF/main/04_exim4-config_socialtext ]; then
+    echo "Failed to find main config... migration fails(3)."
+    exit 1
+fi
+
+echo "Migration complete."
+exit 0

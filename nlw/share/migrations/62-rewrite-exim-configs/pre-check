@@ -1,0 +1,24 @@
+#!/bin/sh
+
+CONF=/etc/exim4/conf.d
+INTERVAL=$(grep QUEUEINTERVAL /etc/default/exim4 | cut -d '=' -f 2)
+MAX=$(grep connection_max_messages \
+    $CONF/transport/30_exim4-config_remote_smtp | awk '{print $3}')
+
+if [ "$INTERVAL" != "'1m'" ]; then
+    echo "Running migration(1)..."
+    exit 0
+fi
+
+if [ "$MAX" != "15" ]; then
+    echo "Running migration(2)..."
+    exit 0
+fi
+
+if [ ! -e $CONF/main/04_exim4-config_socialtext ]; then
+    echo "Running migration(3)..."
+    exit 0
+fi
+
+echo "Looks like exim4 has already been reconfigured."
+exit 1

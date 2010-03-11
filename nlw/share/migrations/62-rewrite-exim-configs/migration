@@ -1,0 +1,31 @@
+#!/bin/sh
+
+CONF=/etc/exim4/conf.d
+
+DEFAULT=/etc/default/exim4
+INTERVAL=$(grep QUEUEINTERVAL $DEFAULT | cut -d '=' -f 2)
+if [ "$INTERVAL" != "'1m'" ]; then
+    perl -pi.bak -e "s/QUEUEINTERVAL='\d+.'/QUEUEINTERVAL='1m'/" $DEFAULT
+fi
+
+FILE=$CONF/transport/30_exim4-config_remote_smtp
+MAX=$(grep connection_max_messages $FILE | awk '{print $3}')
+if [ "$MAX" != "15" ]; then
+    if [ -n "$(grep connection_max_messages $FILE)" ]; then
+        # entry exists, update
+        perl -pi.bak -e 's/(connection_max_messages)\s*=\s*\d+/$1 = 15/' $FILE
+    else
+        cp $FILE $FILE.bak
+        echo '  connection_max_messages = 15' >> $FILE
+    fi
+fi
+
+FILE=$CONF/main/04_exim4-config_socialtext
+if [ ! -f $FILE ]; then
+
+    cat - <<MAIN > $FILE
+queue_only
+queue_run_max = 5
+MAIN
+
+fi
