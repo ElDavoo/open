@@ -1270,9 +1270,9 @@ Default: 16
 
 Set this to limit the maximum size of signals posted to this servers. Accounts may limit signals size to a smaller number.
 
-Default: 400 
+Default: 400
 
-=for code type => SCALAR_TYPE
+=for code type => POSITIVE_INT_TYPE
 
 =head1 OTHER METHODS
 
