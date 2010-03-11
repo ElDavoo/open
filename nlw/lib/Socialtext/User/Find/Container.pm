@@ -36,7 +36,7 @@ sub _build_sql_cols {
     my $self = shift;
     my $cols = [
         'user_id', 'first_name', 'last_name',
-        'email_address', 'driver_username',
+        'email_address', 'driver_username', 'display_name',
         'array_accum(DISTINCT "Role".name) AS role_names',
     ];
     unless ($self->minimal) {
@@ -91,7 +91,7 @@ sub _build_sql_where {
 sub _build_sql_group {
     my $self = shift;
     my @group_cols = qw(
-        user_id first_name last_name email_address driver_username
+        user_id first_name last_name email_address driver_username display_name
     );
     unless ($self->minimal) {
         push @group_cols, qw(

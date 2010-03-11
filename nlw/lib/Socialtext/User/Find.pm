@@ -60,7 +60,7 @@ has 'sql_cols' => (
 );
 sub _build_sql_cols {
     return [
-        'DISTINCT users.user_id', 'first_name', 'last_name',
+        'DISTINCT users.user_id', 'first_name', 'last_name', 'display_name',
         'email_address', 'driver_username',
     ];
 }
@@ -98,7 +98,7 @@ sub _build_sql_order {
 
     my $order = $self->order;
     die if $order and $order !~ /^\w+$/;
-    $order = [qw(last_name first_name)]
+    $order = ['display_name']
         if !$order or $order eq 'name' or $order eq 'alpha';
 
     my $group = $self->sql_group;
