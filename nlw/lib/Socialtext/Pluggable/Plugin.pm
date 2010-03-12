@@ -617,6 +617,48 @@ sub request {
     return $rest->request;
 }
 
+# Account Plugin Prefs
+
+sub _account_plugin_pt {
+    my $self = shift;
+    my $acct = shift;
+    return Socialtext::PrefsTable->new(
+        table    => 'user_set_plugin_pref',
+        identity => {
+            plugin      => $self->name,
+            user_set_id => $acct->user_set_id,
+        }
+    );
+}
+
+sub set_account_prefs {
+    my $self = shift;
+    my %opts = @_;
+    my $acct = delete $opts{account};
+    return unless %opts;
+    $self->_account_plugin_pt($acct)->set(%opts);
+    my $acct_name = $acct->name;
+    my $username  = $self->hub->current_user->username;
+    st_log()->info("$username changed ".$self->name." preferences for $acct_name");
+}
+
+sub get_account_prefs {
+    my $self = shift;
+    my %opts = @_;
+    my $acct = $opts{account};
+    return $self->_account_plugin_pt($acct)->get();
+}
+
+sub clear_account_prefs {
+    my $self = shift;
+    my %opts = @_;
+    my $acct = $opts{account};
+    $self->_account_plugin_pt($acct)->clear();
+    my $acct_name = $acct->name;
+    my $username  = $self->hub->current_user->username;
+    st_log()->info("$username cleared ".$self->name." preferences for $acct_name");
+}
+
 # Workspace Plugin Prefs
 
 sub _workspace_plugin_pt {
