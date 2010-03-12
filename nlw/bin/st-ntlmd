@@ -2,15 +2,20 @@
 use warnings;
 use strict;
 
-use AnyEvent;
-use Guard;
-use Socialtext::Async::HTTPD qw/http_server/;
+#
+# Override a bunch of modules to prevent Apache::AuthenNTLM from loading
+# mod_perl components.
+#
 
 package mod_perl;
 our $VERSION = 0.01;
 
+
+# Caution: this class is a blessed Int, not a hashref:
 package Apache::Connection;
-# Caution: this class is a blessed Int, not a hashref
+use warnings;
+use strict;
+
 
 sub remote_addr {}
 use constant remote_host => '127.0.0.1';
@@ -33,8 +38,10 @@ has '_table' => (is => 'rw', isa => 'HashRef',
 package Apache;
 use Moose;
 use MooseX::AttributeInflate;
-our $AUTOLOAD;
-sub import {}
+
+use constant auth_type => 'ntlm,basic';
+use constant auth_name => '';
+use constant proxyreq => 0;
 
 has '_sid' => (is => 'rw', isa => 'Str');
 
@@ -53,6 +60,7 @@ has 'user' => (is => 'rw', isa => 'Str');
 # only support ntlm, not Basic
 has 'authtype' => (is => 'rw', isa => 'Str', default => 'ntlm');
 
+our $AUTOLOAD;
 sub AUTOLOAD {
     use Data::Dumper; warn "Autoload Apache $AUTOLOAD ".Dumper([caller,@_]);
     return '';
@@ -83,34 +91,33 @@ sub dir_config {
 
 sub log_reason {
     my $self = shift;
-    warn $_[0].$/;
+    my $rsn = shift;
+    chomp $rsn;
+    main::st_log->warning("AuthenNTLM reason: $rsn");
 }
 
-use constant auth_type => 'ntlm,basic';
-use constant auth_name => '';
-use constant proxyreq => 0;
-
 package Apache::Constants;
+use warnings;
+use strict;
 use constant OK => 'OK';
 use constant DECLINED => 'DECLINED';
 use constant HTTP_UNAUTHORIZED => 401;
 use constant HTTP_FORBIDDEN => 403;
 use constant HTTP_INTERNAL_SERVER_ERROR => 500;
-our $AUTOLOAD;
-sub import {}
-sub AUTOLOAD {
-    use Data::Dumper; die "Autoload Apache::Constants $AUTOLOAD".Dumper(@_);
-}
 
-package Apache::File;
-our $AUTOLOAD;
-sub import {}
-sub AUTOLOAD {
-    use Data::Dumper; die "Autoload Apache::File $AUTOLOAD".Dumper(@_);
-}
+package Apache::File; # just prevent this one from loading
+use warnings;
+use strict;
+
 
 package main;
 
+# MUST load these late (after we override the Apache:: packages above)
+use AnyEvent;
+use Guard;
+use Socialtext::Async::HTTPD qw/http_server/;
+use Socialtext::Log qw/st_log/;
+use Socialtext::Async::Syslog; # patches st_log
 use Socialtext::NTLM::Config;
 use Apache::AuthenNTLM;
 
@@ -126,6 +133,23 @@ my $orig_get_config = \&Apache::AuthenNTLM::get_config;
     *Apache::AuthenNTLM::Lock::lock = sub { 'dummy' };
     *Apache::AuthenNTLM::Lock::DESTROY = sub {};
 }
+
+
+my $in_progress_sid;
+my $in_progress_timer;
+
+our $Reconnect_timeout = 2.0;
+
+my $pending_guard;
+my $pending_reqs = [];
+
+my $port = 9090; # TODO: getopt
+
+my $server = http_server '127.0.0.1', $port, \&handle_http;
+st_log->notice("Starting st-ntlmd on port $port\n");
+AE::cv->recv;
+exit 0;
+
 
 sub get_config {
     my ($self, $r) = @_;
@@ -164,41 +188,31 @@ sub get_config {
     $self->{fallbackdomain} = Socialtext::NTLM::Config->FallbackDomain();
 
     # debugging notes
-#     my $prefix = 'ST::Apache::Authen::NTLM:';
-#     warn( "$prefix default domain: " . $self->{defaultdomain} );
-#     warn( "$prefix fallback domain: " . $self->{fallbackdomain} );
-#     warn( "$prefix AuthType: " . $self->{authtype} );
-#     warn( "$prefix AuthName: " . $self->{authname} );
-#     warn( "$prefix Auth NTLM: " . $self->{authntlm} );
-#     warn( "$prefix Auth Basic: " . $self->{authbasic} );
-#     warn( "$prefix NTLMAuthoritative: " . $self->{ntlmauthoritative} );
-#     warn( "$prefix SplitDomainPrefix: " . $self->{splitdomainprefix} );
-#     foreach my $domain (sort keys %{$self->{smbpdc}}) {
-#         next unless ($domain);  # skip blank/empty domains
-#         warn( "$prefix domain: $domain" );
-#         warn( "$prefix ... pdc: " . $self->{smbpdc}{$domain} );
-#         warn( "$prefix ... bdc: " . $self->{smbbdc}{$domain} );
-#     }
+    my $prefix = 'st-ntlmd';
+    st_log->debug("$prefix default domain: " . $self->{defaultdomain} );
+    st_log->debug("$prefix fallback domain: " . $self->{fallbackdomain} );
+    st_log->debug("$prefix AuthType: " . $self->{authtype} );
+    st_log->debug("$prefix AuthName: " . $self->{authname} );
+    st_log->debug("$prefix Auth NTLM: " . $self->{authntlm} );
+    st_log->debug("$prefix Auth Basic: " . $self->{authbasic} );
+    st_log->debug("$prefix NTLMAuthoritative: " . $self->{ntlmauthoritative} );
+    st_log->debug("$prefix SplitDomainPrefix: " . $self->{splitdomainprefix} );
+    foreach my $domain (sort keys %{$self->{smbpdc}}) {
+        next unless ($domain);  # skip blank/empty domains
+        st_log->debug("$prefix domain: $domain" );
+        st_log->debug("$prefix ... pdc: " . $self->{smbpdc}{$domain} );
+        st_log->debug("$prefix ... bdc: " . $self->{smbbdc}{$domain} );
+    }
 }
 
-my $in_progress_sid;
-my $in_progress_timer;
-
-our $Reconnect_timeout = 2.0;
-
-my $pending_guard;
-my $pending_reqs = [];
-
-my $port = 9090; # TODO: getopt
-warn "Starting server on port $port\n";
-my $server = http_server '127.0.0.1', $port, sub {
+sub handle_http {
     my ($handle, $env, undef, $fatal, $err) = @_;
 
     if ($err || $fatal) {
         # just log it and carry on; no CVs to worry about
         # st_log->error("ntlmd AnyEvent::Handle error: $err");
         chomp $err;
-        warn "AnyEvent::Handle error: $err\n";
+        st_log->error("AnyEvent::Handle error: $err\n");
         return;
     }
 
@@ -215,7 +229,7 @@ my $server = http_server '127.0.0.1', $port, sub {
     my $xa = $env->{HTTP_X_AUTHORIZATION} || '';
     my $ntlm_type = ($xa !~ /NTLM .{7}TUAA(.)/) ? 'non-ntlm' :
         ($1 eq 'B') ? 'type 1' : 'type 3';
-    warn "GOT SID: $sid, NTLM type: $ntlm_type\n";
+    st_log->debug("GOT SID: $sid, NTLM type: $ntlm_type\n");
 
     if ($ntlm_type eq 'non-ntlm') {
         ask_to_use_ntlm($handle);
@@ -223,14 +237,14 @@ my $server = http_server '127.0.0.1', $port, sub {
     }
 
     if (!$in_progress_sid) {
-        warn "NEW SID $sid\n";
+        st_log->debug("NEW SID $sid\n");
     }
     elsif ($sid eq $in_progress_sid) {
-        warn "CONTINUE $sid\n";
+        st_log->debug("CONTINUE $sid\n");
         undef $in_progress_timer; # cancel the timeout
     }
     else {
-        warn "QUEUE $sid\n";
+        st_log->debug("QUEUE $sid\n");
         push @$pending_reqs, [$handle, $env, $sid];
         return;
     }
@@ -241,7 +255,7 @@ my $server = http_server '127.0.0.1', $port, sub {
 
 sub ask_to_use_ntlm {
     my $handle = shift;
-    warn "client didn't provide a NTLM blob, rc: 401\n";
+    st_log->warning("client didn't provide a NTLM blob, rc: 401\n");
     my $resp =
         "HTTP/1.0 200 OK\r\n".
         "X-Status: 401\r\n".
@@ -259,13 +273,13 @@ sub ask_to_use_ntlm {
 }
 
 sub empty_pending {
-    warn "empty pending queue\n";
+    st_log->debug("empty pending queue\n");
     $pending_reqs = [];
     undef $pending_guard;
 }
 
 sub cancel_in_progress {
-    warn "throwing out sid $in_progress_sid\n";
+    st_log->debug("throwing out sid $in_progress_sid\n");
     undef $Apache::AuthenNTLM::cache; # releases samba
     undef $in_progress_sid;
     undef $in_progress_timer; # and ourselves
@@ -281,7 +295,7 @@ sub cancel_in_progress {
             empty_pending();
             return;
         }
-        warn "found pending\n";
+        st_log->debug("found pending\n");
 
         # might be unnecessary paranoia:
         if ($in_progress_sid) {
@@ -299,7 +313,7 @@ sub cancel_in_progress {
 sub do_ntlm {
     my ($handle, $env, $sid) = @_;
 
-    warn "PROCESSING SID: $sid\n";
+    st_log->debug("PROCESSING SID: $sid\n");
 
     my $r = Apache->new(
         _sid => $sid,
@@ -325,7 +339,7 @@ sub do_ntlm {
         $in_progress_sid = $sid;
         $in_progress_timer =
             AE::timer $Reconnect_timeout, 0, sub {
-                warn "TIMEOUT $sid\n";
+                st_log->debug("TIMEOUT $sid\n");
                 cancel_in_progress();
             };
     }
@@ -343,17 +357,18 @@ sub do_ntlm {
 
     $handle->on_error(sub {
         my (undef, $fatal, $error) = @_;
-        warn "AnyEvent::Handle error while responding to sid:$sid, $error\n";
+        st_log->error("AnyEvent::Handle error while responding to sid:$sid, $error\n");
         cancel_in_progress();
         $handle->destroy;
     });
     $handle->push_write($resp);
     $handle->on_drain(sub {
-        warn "RESPONSE to $sid:".
-            "rc: $rc, x-www-a: ".($w_a ? 'yes' : 'no').", user: $u\n";
+        st_log->info("SSO,NTLM,RESPONSE,SID:$sid,{".
+            qq{"rc":"$rc",}.
+            qq{"x-www-a":}.($w_a ? 'true' : 'false').','.
+            qq{"user":"$u"}.
+        "}\n");
         shutdown $handle->{fh}, 1;
         $handle->destroy;
     });
 };
-
-AE::cv->recv;
