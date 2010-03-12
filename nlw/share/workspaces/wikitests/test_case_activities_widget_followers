@@ -4,11 +4,11 @@
 
 | *Comment* | Test Case: Activities Widget Followers Create Account and Three users |  |
 | set | shortfollow | following%%start_time%% |
-| set | followinguser | %%shortfollow%%@matt.socialtext.net |
+| set | followinguser | %%shortfollow%%@ken.socialtext.net |
 | set | shortnot | justme%%start_time%% |
-| set | notfollowinguser | %%shortnot%%@matt.socialtext.net |
+| set | notfollowinguser | %%shortnot%%@ken.socialtext.net |
 | set | shortloggedin | awf%%start_time%% |
-| set | loggedinuser | %%shortloggedin%%@matt.socialtext.net |
+| set | loggedinuser | %%shortloggedin%%@ken.socialtext.net |
 | set | followws | follow-ws-%%start_time%% |
 | set | followacct | followacct%%start_time%% |
 
@@ -47,6 +47,7 @@
 | st-find-user | %%shortfollow%% |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
+
 | pause | 5000 | needed for IE7. Serious. Sorry about that. |
 | click_ok | link=Follow this person |  |
 | wait_for_element_visible_ok | link=Stop following this person | 30000 |
@@ -59,29 +60,34 @@
 | wait_for_element_not_visible_ok | up_limit | 30000 |
 | wait_for_element_not_visible_ok | st-savebutton-%%activities_widget%% | 30000 |
 
-| *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, see all activities |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+to.+%%followacct%%.+Signal from not a follower %%start_time%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+edited.+donotseethispage.+in.+%%followws%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to.+%%followacct%%.+You should see this %%start_time%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited.+pageone.+in.+%%followws%%/ism |
+| set | r1 | %%shortnot%%.+ago.+to.+%%followacct%%.+Signal from not a follower %%start_time%% |
+| set | r2 | %%shortnot%%.+ago.+edited.+donotseethispage.+in.+%%followws%% |
+| set | r3 | %%shortfollow%%.+ago.+to.+%%followacct%%.+You should see this %%start_time%% |
+| set | r4 | %%shortfollow%%.+ago.+edited.+pageone.+in.+%%followws%% |
 
-| *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, change dropdown back to followed, see only %%shortfollow%%'s activtvities |  |
-| st-select-widget-frame | activities_widget |  |
-| click_ok | feed-followed |  |
-| select-frame | relative=parent |
-| st_text_unlike_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+to.+%%followacct%%.+Signal from not a follower %%start_time%%/ism |
-| st_text_unlike_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+edited.+donotseethispage.+in.+%%followws%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to.+%%followacct%%.+You should see this %%start_time%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited.+pageone.+in.+%%followws%%/ism |
+| *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, see all activities |  |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%r1%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%r2%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%r3%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%r4%%/ism |
 
-| *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, see all activities |  |
-| st-select-widget-frame | activities_widget |  |
-| click_ok | feed-everyone |  |
-| select-frame | relative=parent |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+to.+%%followacct%%.+Signal from not a follower %%start_time%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortnot%%.+ago.+edited.+donotseethispage.+in.+%%followws%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+to.+%%followacct%%.+You should see this %%start_time%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%shortfollow%%.+ago.+edited.+pageone.+in.+%%followws%%/ism |
+| *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, change to people I follow, see only %%shortfollow%%'s activity |  |
+| wait_for_element_present_ok | link=people I follow | 5000 |
+| click_ok | link=people I follow |  |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%r3%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%r4%%/ism |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%r1%%/ism |
+| st_text_unlike_in_activities_widget | activities_widget | qr/%%r2%%/ism |
+
+| *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, change to everyone, see all activities |  |
+| wait_for_element_present_ok | link=everyone | 5000 |
+| click_ok | link=people I everyone |  |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%r1%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%r2%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%r3%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/%%r4%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers Teardown |
 | st-admin | delete-workspace --workspace %%followws%% --no-export | has been deleted |
+
+| *Comment* | Test Case: Activities Widget Followers COMPLETED |

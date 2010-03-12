@@ -4,17 +4,16 @@
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Setup |  |
 
+TODO: there seems to be some weirdness indexing usernames that end in a string of numbers. Come back and look at that. Meanwhile, put letters after the numbers.
 
-TODO: there seems to be some weirdness indexing usernames that end in a string of numbers. Come back and look at that.  Meanwhile, put letters after the numbers.
-
-| set | tagginguser | tagging%%start_time%%foobar@ken.socialtext.next |
-| set | taggingusershort | tagging%%start_time%%foobar |
-| set | taguser | awtuser%%start_time%%barfoo@ken.socialtext.next |
-| set | tagusershort | awtuser%%start_time%%barfoo |
-| set | pagename | heusser-%%start_time%% |
-| set | personaltag | add tag to me %%start_time%% |
-| set | othertag | add me to new user %%start_time%% |
-| set | pagetag | add page tag |
+| set | tagginguser | tagging%%start_time%%@ken.socialtext.net |
+| set | taggingusershort | You |
+| set | taguser | taguser%%start_time%%@ken.socialtext.net |
+| set | tagusershort | taguser%%start_time%% |
+| set | pagename | pagename%%start_time%% |
+| set | personaltag | personaltag %%start_time%% |
+| set | othertag | othertag %%start_time%% |
+| set | pagetag | pagetag |
 | set | wrkspc | acwidg-tags-ws%%start_time%% |
 
 | st-admin | create-workspace --name %%wrkspc%% --title %%wrkspc%% |  |
@@ -36,7 +35,7 @@ TODO: there seems to be some weirdness indexing usernames that end in a string o
 | wait_for_element_visible_ok | link=%%othertag%% | 30000 |
 | text_like | link=%%othertag%% | %%othertag%% |
 
-| *Comment* | Test Case: Activities Widget Tags and Tagging Tag ME |  |
+| *Comment* | Test Case: Activities Widget Tags and Tagging Tag ME %%tagginguser%% |  |
 | open_ok | /?profile |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
 | type_ok | new_tag | %%personaltag%% |
@@ -59,12 +58,12 @@ TODO: there seems to be some weirdness indexing usernames that end in a string o
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Verify Tags in activities widget |
 
-| st_verify_text_in_activities_widget | activities_widget | qr/%%taggingusershort%%.+minute.+ago.+tagged %%pagename%% in %%wrkspc%% as %%pagetag%%.+%%taggingusershort%%.+minute.+ago.+edited %%pagename%% in %%wrkspc%%.+%%taggingusershort%%.+minute.+ago.+tagged themself %%personaltag%%.+%%taggingusershort%%.+minute.+ago.+tagged %%tagusershort%% %%othertag%%/ |
+| set | t1 | %%taggingusershort%%.+minute.+ago.+tagged %%pagename%% in %%wrkspc%% as %%pagetag%% |
+| set | t2 | %%taggingusershort%%.+minute.+ago.+edited %%pagename%% in %%wrkspc%% |
+| set | t3 | %%taggingusershort%%.+minute.+ago.+tagged themself %%personaltag%% |
+| set | t4 | %%taggingusershort%%.+minute.+ago.+tagged %%tagusershort%% %%othertag%% |
 
-| st_verify_text_in_activities_widget | activities_widget | qr/%%taggingusershort%%.+minute.+ago.+tagged %%pagename%% in %%wrkspc%% as %%pagetag%%./ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%taggingusershort%%.+minute.+ago.+edited %%pagename%% in %%wrkspc%%./ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%taggingusershort%%.+minute.+ago.+tagged themself %%personaltag%%./ |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%taggingusershort%%.+minute.+ago.+tagged %%tagusershort%% %%othertag%%./ |
+| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%t1%%.+%%t2%%.+%%t3%%.+%%t4%%/ism |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging TEARDOWN |
 

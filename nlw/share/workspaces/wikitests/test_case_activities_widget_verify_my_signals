@@ -78,3 +78,5 @@
 | wait_for_text_present_ok | Signal %%start_time%% | 10000 |
 | text_like | //body | qr/Super.+Edit.+Summary.+From.+Signal.+%%start_time%%/ |
 | select-frame | relative=parent |  |
+
+| *Comment* | Test case: Activities Widget Verify My Signals COMPLETED  |  |
