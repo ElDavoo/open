@@ -740,8 +740,15 @@ proto.enableThis = function() {
         if (Wikiwyg.is_gecko) {
             self.get_edit_document().designMode = 'on';
             setTimeout(function() {
-                self.get_edit_document().execCommand("enableObjectResizing", false, false);
-                self.get_edit_document().execCommand("enableInlineTableEditing", false, false);
+                try {
+                    self.get_edit_document().execCommand(
+                        "enableObjectResizing", false, false
+                    );
+                    self.get_edit_document().execCommand(
+                        "enableInlineTableEditing", false, false
+                    );
+                }
+                catch(e){}
             }, 100);
         }
         else if (Wikiwyg.is_ie) {
