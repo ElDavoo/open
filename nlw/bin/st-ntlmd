@@ -192,9 +192,15 @@ my $pending_reqs = [];
 my $port = 9090; # TODO: getopt
 warn "Starting server on port $port\n";
 my $server = http_server '127.0.0.1', $port, sub {
-    my ($handle, $env, undef, $err, $fatal) = @_;
+    my ($handle, $env, undef, $fatal, $err) = @_;
 
-    # TODO; react to err/fatal
+    if ($err || $fatal) {
+        # just log it and carry on; no CVs to worry about
+        # st_log->error("ntlmd AnyEvent::Handle error: $err");
+        chomp $err;
+        warn "AnyEvent::Handle error: $err\n";
+        return;
+    }
 
     my ($sid) = ($env->{QUERY_STRING} =~ /sid=([^;&]+)/);
     unless ($sid) {
@@ -335,13 +341,16 @@ sub do_ntlm {
         "\r\n".
         "ok\n";
 
-    warn "RESPONSE to $sid: rc: $rc, x-www-a: ".($w_a ? 'yes' : 'no').", user: $u\n";
     $handle->on_error(sub {
+        my (undef, $fatal, $error) = @_;
+        warn "AnyEvent::Handle error while responding to sid:$sid, $error\n";
         cancel_in_progress();
         $handle->destroy;
     });
     $handle->push_write($resp);
     $handle->on_drain(sub {
+        warn "RESPONSE to $sid:".
+            "rc: $rc, x-www-a: ".($w_a ? 'yes' : 'no').", user: $u\n";
         shutdown $handle->{fh}, 1;
         $handle->destroy;
     });
