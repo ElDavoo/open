@@ -65,4 +65,4 @@
 | st-admin | delete-workspace --w %%bcpws_3%% --no-export |  |
 | st-admin | delete-workspace --w %%bcpws_4%% --no-export |  |
 
-| *comment* | Test Case: Business Control Panel User Remove Workspaces Completed |  |
+| *comment* | Test Case: Business Control Panel User Remove Workspaces COMPLETED |  |

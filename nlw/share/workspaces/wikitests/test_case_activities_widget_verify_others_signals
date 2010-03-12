@@ -17,12 +17,11 @@
 | wait_for_element_not_visible_ok | up_limit | 30000 |
 
 | *Comment* | Test Case: Activities Widget Verify Others Signals. Signals in Dashboard Activities widget. |  |
-| st-select-widget-frame | activities_widget |  |
 | wait_for_element_present_ok | link=signals | 10000 |
 | click_ok | link=signals |  |
+| st-select-widget-frame | activities_widget |  |
 
-| *Comment* | Test Case: Activities Widget Verify Others Signals. select_and_wait in iframe doesn't work. Use pause. |  |
-| pause | 10000 | I hate pause |
+| *Comment* | Test Case: Activities Widget Verify Others Signals. Verify those signals. |  |
 | wait_for_text_present_ok | woke up %%start_time%% | 30000 |
 | wait_for_text_present_ok | fell out of bed %%start_time%% | 30000 |
 | wait_for_text_present_ok | dragged a comb across my head %%start_time%% | 30000 |
