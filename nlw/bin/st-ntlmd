@@ -112,9 +112,12 @@ use strict;
 
 package main;
 
-# MUST load these late (after we override the Apache:: packages above)
 use AnyEvent;
 use Guard;
+use Getopt::Long;
+
+# MUST load all Socialtext::* packages late (after we override the Apache::
+# packages above)
 use Socialtext::Async::HTTPD qw/http_server/;
 use Socialtext::Log qw/st_log/;
 use Socialtext::Async::Syslog; # patches st_log
@@ -138,12 +141,16 @@ my $orig_get_config = \&Apache::AuthenNTLM::get_config;
 my $in_progress_sid;
 my $in_progress_timer;
 
-our $Reconnect_timeout = 2.0;
+our $Handshake_timeout = 2.0;
 
 my $pending_guard;
 my $pending_reqs = [];
 
-my $port = 9090; # TODO: getopt
+my $port = 9090;
+
+GetOptions(
+    'port=i' => \$port,
+);
 
 my $server = http_server '127.0.0.1', $port, \&handle_http;
 st_log->notice("Starting st-ntlmd on port $port\n");
@@ -181,6 +188,9 @@ sub get_config {
         $self->{smbpdc}{$domain} = $primary;
         $self->{smbbdc}{$domain} = join ' ', @{$backups};
     }
+    
+    # the default domain comes from the 0th config too:
+    $Handshake_timeout = $all_configs[0]->handshake_timeout;
 
     # set the default/fallback domains, in case the NTLM handshake doesn't
     # indicate which one to use
@@ -338,7 +348,7 @@ sub do_ntlm {
         undef $pending_guard;
         $in_progress_sid = $sid;
         $in_progress_timer =
-            AE::timer $Reconnect_timeout, 0, sub {
+            AE::timer $Handshake_timeout, 0, sub {
                 st_log->debug("TIMEOUT $sid\n");
                 cancel_in_progress();
             };

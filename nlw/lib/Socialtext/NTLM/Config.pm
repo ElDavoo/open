@@ -15,6 +15,7 @@ const 'config_basename' => 'ntlm.yaml';
 field 'domain';
 field 'primary';
 field 'backup' => [];
+field 'handshake_timeout' => 2.0;
 
 ###############################################################################
 # Custom initialization routine
@@ -84,6 +85,14 @@ The name of the Primary Domain Controller for the domain.
 =item B<backup>
 
 The name(s) of the Backup Domain Controllers for the domain.
+
+=item B<handshake_timeout>
+
+How long clients are given between type 1 and type 3 requests (the initiating
+and completing HTTP requests).  Since we can only process one handshake
+concurrently at a time (an NTLM+samba limitation), we need to time-out slow
+handshakes.  Setting this too low will cause lots of authentication pop-ups.
+Default: 2.0 seconds.
 
 =back
 
