@@ -61,3 +61,6 @@ else
         echo 'queue_run_max = 5' >> $FILE
     fi
 fi
+
+# Update configs.
+update-exim4.conf
