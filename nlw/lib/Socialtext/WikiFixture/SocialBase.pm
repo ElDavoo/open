@@ -10,6 +10,7 @@ use Socialtext::JSON qw/decode_json encode_json/;
 use Socialtext::File;
 use Socialtext::System qw();
 use Socialtext::HTTP::Ports;
+use Socialtext::PrefsTable;
 use Socialtext::Role;
 use Socialtext::People::Profile;
 use Socialtext::UserSet qw(ACCT_OFFSET);
@@ -386,6 +387,26 @@ sub account_config {
     );
     $acct->update($key => $val);
     diag "Set account $account_name config: $key to $val";
+}
+
+sub account_plugin_pref {
+    my $self = shift;
+    my $account_name = shift;
+    my $plugin_name = shift;
+    my $key = shift;
+    my $val = shift;
+    my $acct = Socialtext::Account->new(
+        name => $account_name,
+    );
+    my $pt = Socialtext::PrefsTable->new(
+        table => 'user_set_plugin_pref',
+        identity => {
+            plugin => $plugin_name, 
+            user_set_id => $acct->user_set_id
+        }
+    );
+    $pt->set($key, $val);
+    diag "Set account/plugin pref for plugin $plugin_name / account $account_name - $key to $val";
 }
 
 sub get_account_id {
