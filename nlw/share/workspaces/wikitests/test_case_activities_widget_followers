@@ -81,7 +81,7 @@
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, change to everyone, see all activities |  |
 | wait_for_element_present_ok | link=everyone | 5000 |
-| click_ok | link=people I everyone |  |
+| click_ok | link=everyone |  |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%r1%%/ism |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%r2%%/ism |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%r3%%/ism |
