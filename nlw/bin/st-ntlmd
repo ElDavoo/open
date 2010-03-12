@@ -3,24 +3,18 @@ use warnings;
 use strict;
 
 use AnyEvent;
+use Guard;
 use Socialtext::Async::HTTPD qw/http_server/;
 
 package mod_perl;
 our $VERSION = 0.01;
 
-package Apache::ConnectionAddr;
-
 package Apache::Connection;
-our $AUTOLOAD;
-sub import {}
-sub AUTOLOAD {
-    use Data::Dumper; warn "Autoload Apache::Connection $AUTOLOAD".Dumper(@_);
-    return '';
-}
+# Caution: this class is a blessed Int, not a hashref
 
-sub DESTROY {}
 sub remote_addr {}
 use constant remote_host => '127.0.0.1';
+use constant remote_ip => '127.0.0.1';
 use constant remote_port => '0bogus';
 
 package Apache::Table;
@@ -43,6 +37,7 @@ our $AUTOLOAD;
 sub import {}
 
 has '_sid' => (is => 'rw', isa => 'Str');
+
 has '_dir_config' => (is => 'rw', isa => 'Apache::Table', lazy_build => 1);
 has_inflated 'err_headers_out' => (is => 'rw', isa => 'Apache::Table');
 has_inflated 'headers_in' => (
@@ -55,6 +50,9 @@ has_inflated 'headers_out' => (is => 'rw', isa => 'Apache::Table');
 has 'uri' => (is => 'rw', isa => 'Str');
 has 'user' => (is => 'rw', isa => 'Str');
 
+# only support ntlm, not Basic
+has 'authtype' => (is => 'rw', isa => 'Str', default => 'ntlm');
+
 sub AUTOLOAD {
     use Data::Dumper; warn "Autoload Apache $AUTOLOAD ".Dumper([caller,@_]);
     return '';
@@ -62,13 +60,15 @@ sub AUTOLOAD {
 
 sub connection {
     my $self = shift;
-    my $sid = $self->_sid . '';
-    return bless \$sid, 'Apache::Connection';
+    my $con = 42;
+    return bless \$con, 'Apache::Connection';
 }
 
 sub _build__dir_config {
     return Apache::Table->new(_table => {
-            ntdomain => 'foo bar baz',
+        ntdomain => 'foo bar baz',
+        ntlmdebug => 0,
+        ntlmsemkey => 0, # disable IPC::Semaphore locking
     });
 }
 
@@ -121,6 +121,10 @@ my $orig_get_config = \&Apache::AuthenNTLM::get_config;
         return '127.0.0.1', '0bogus';
     };
     *Apache::AuthenNTLM::get_config = \&main::get_config;
+
+    # paranoia: disable the IPC::Semaphore stuff
+    *Apache::AuthenNTLM::Lock::lock = sub { 'dummy' };
+    *Apache::AuthenNTLM::Lock::DESTROY = sub {};
 }
 
 sub get_config {
@@ -133,6 +137,7 @@ sub get_config {
 
     $self->{debug} = 1;
 
+    # mocking sets up these two:
     delete $self->{smbpdc}{foo};
     delete $self->{smbbdc}{foo};
 
@@ -159,81 +164,143 @@ sub get_config {
     $self->{fallbackdomain} = Socialtext::NTLM::Config->FallbackDomain();
 
     # debugging notes
-    my $prefix = 'ST::Apache::Authen::NTLM:';
-    warn( "$prefix default domain: " . $self->{defaultdomain} );
-    warn( "$prefix fallback domain: " . $self->{fallbackdomain} );
-    warn( "$prefix AuthType: " . $self->{authtype} );
-    warn( "$prefix AuthName: " . $self->{authname} );
-    warn( "$prefix Auth NTLM: " . $self->{authntlm} );
-    warn( "$prefix Auth Basic: " . $self->{authbasic} );
-    warn( "$prefix NTLMAuthoritative: " . $self->{ntlmauthoritative} );
-    warn( "$prefix SplitDomainPrefix: " . $self->{splitdomainprefix} );
-    foreach my $domain (sort keys %{$self->{smbpdc}}) {
-        next unless ($domain);  # skip blank/empty domains
-        warn( "$prefix domain: $domain" );
-        warn( "$prefix ... pdc: " . $self->{smbpdc}{$domain} );
-        warn( "$prefix ... bdc: " . $self->{smbbdc}{$domain} );
-    }
+#     my $prefix = 'ST::Apache::Authen::NTLM:';
+#     warn( "$prefix default domain: " . $self->{defaultdomain} );
+#     warn( "$prefix fallback domain: " . $self->{fallbackdomain} );
+#     warn( "$prefix AuthType: " . $self->{authtype} );
+#     warn( "$prefix AuthName: " . $self->{authname} );
+#     warn( "$prefix Auth NTLM: " . $self->{authntlm} );
+#     warn( "$prefix Auth Basic: " . $self->{authbasic} );
+#     warn( "$prefix NTLMAuthoritative: " . $self->{ntlmauthoritative} );
+#     warn( "$prefix SplitDomainPrefix: " . $self->{splitdomainprefix} );
+#     foreach my $domain (sort keys %{$self->{smbpdc}}) {
+#         next unless ($domain);  # skip blank/empty domains
+#         warn( "$prefix domain: $domain" );
+#         warn( "$prefix ... pdc: " . $self->{smbpdc}{$domain} );
+#         warn( "$prefix ... bdc: " . $self->{smbbdc}{$domain} );
+#     }
 }
 
-# TODO: make this an LRU cache
-my %cache_cache;
+my $in_progress_sid;
+my $in_progress_timer;
 
-my $server = http_server '127.0.0.1', '9090', sub {
+our $Reconnect_timeout = 2.0;
+
+my $pending_guard;
+my $pending_reqs = [];
+
+my $port = 9090; # TODO: getopt
+warn "Starting server on port $port\n";
+my $server = http_server '127.0.0.1', $port, sub {
     my ($handle, $env, undef, $err, $fatal) = @_;
+
+    # TODO; react to err/fatal
 
     my ($sid) = ($env->{QUERY_STRING} =~ /sid=([^;&]+)/);
     unless ($sid) {
-        $handle->push_write("HTTP/1.0 500 No session\r\nContent-Length:0\r\n\r\n");
+        $handle->push_write("HTTP/1.0 500 No session\r\n".
+            "Content-Length:0\r\n\r\n");
         $handle->on_drain(sub {
             shutdown $handle->{fh}, 1;
             $handle->destroy;
         });
         return;
     }
-    warn "STARTING SID: $sid\n";
+    warn "GOT SID: $sid\n";
     warn "... AUTH HDR: ".$env->{HTTP_X_AUTHORIZATION}."\n"
         if ($env->{HTTP_X_AUTHORIZATION});
 
-    # "reconnect" the session
-    warn "... EXISTS!\n" if $cache_cache{$sid};
-    $Apache::AuthenNTLM::cache = $cache_cache{$sid};
+    if (!$in_progress_sid) {
+        warn "NEW SID\n";
+    }
+    elsif ($sid eq $in_progress_sid) {
+        warn "CONTINUE $sid\n";
+        undef $in_progress_timer; # cancel the timeout
+    }
+    else {
+        warn "QUEUE $sid\n";
+        push @$pending_reqs, [$handle, $env, $sid];
+        return;
+    }
 
-    my $r = Apache->new(_sid => $sid);
-    $r->uri($env->{PATH_INFO});
-    $r->headers_in(Apache::Table->new(_table => {
-        Connection => 'keep-alive',
-        'Authorization' => $env->{HTTP_X_AUTHORIZATION},
-    }));
+    do_ntlm($handle,$env,$sid);
+    return;
+};
 
+sub cancel_in_progress {
+    warn "... throwing out sid $in_progress_sid\n";
+    undef $Apache::AuthenNTLM::cache; # releases samba
+    undef $in_progress_sid;
+    undef $in_progress_timer; # and ourselves
+
+    if (@$pending_reqs) {
+        $pending_guard ||= AE::idle(sub {
+            if (!@$pending_reqs) {
+                $pending_reqs = []; # reset mem
+                undef $pending_guard;
+                return;
+            }
+
+            # might be unnecessary paranoia:
+            if ($in_progress_sid) {
+                undef $pending_guard;
+                return;
+            }
+
+            my $next = shift @$pending_reqs;
+            do_ntlm(@$next);
+        });
+    }
+}
+
+sub do_ntlm {
+    my ($handle, $env, $sid) = @_;
+
+    warn "PROCESSING SID: $sid\n";
+
+    my $r = Apache->new(
+        _sid => $sid,
+        uri => $env->{PATH_INFO},
+        headers_in => Apache::Table->new(_table => {
+            Connection    => 'keep-alive',
+            Authorization => $env->{HTTP_X_AUTHORIZATION},
+        })
+    );
+
+    # blocks, blocks HARD:
     my $rc = Apache::AuthenNTLM -> run($r);
-
-    # keep the session for later
-    $cache_cache{$sid} = $Apache::AuthenNTLM::cache;
 
     my $resp = "HTTP/1.0 200 OK\r\n".
         "X-Status: $rc\r\n";
 
     if (my $w_a = $r->err_headers_out->get('WWW-Authenticate')) {
         $resp .= "X-WWW-Authenticate: $w_a\r\n";
-
-        # for Basic, there's no need to keep a session
-        delete $cache_cache{$sid}
-            if ($w_a =~ /^Basic /i);
+        # stop processing the queue while we're working on this one.
+        undef $pending_guard;
+        $in_progress_sid = $sid;
+        $in_progress_timer =
+            AE::timer $Reconnect_timeout, 0, sub {
+                warn "TIMEOUT $sid\n";
+                cancel_in_progress();
+            };
     }
     elsif (my $u = $r->user) {
         $resp .= "X-User: $u\r\n";
-        # got a user, therefore done with this session.
-        delete $cache_cache{$sid};
+        # all finished
+        cancel_in_progress();
     }
 
     $resp .=
         "Content-Length: 2\r\n".
         "Content-Type: text/plain\r\n".
+        "\r\n".
         "ok\r\n";
 
     warn "RESPONSE: $resp";
-    warn "CACHED: ".scalar(keys %cache_cache)."\n";
+    $handle->on_error(sub {
+        cancel_in_progress();
+        $handle->destroy;
+    });
     $handle->push_write($resp);
     $handle->on_drain(sub {
         shutdown $handle->{fh}, 1;
