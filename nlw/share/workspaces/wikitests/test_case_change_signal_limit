@@ -1,0 +1,34 @@
+| *Comment* | Test Case: Change Signal Limit |
+
+| *Comment* | Test Case: Change Signal Limit Create two accounts and two users |  |
+| set | onehundredlimit | one-hundred-limit-%%start_time%% |
+| set | twohundredlimit | twohundred-limit-%%start_time%% |
+| set | onehundreduser | onehundreduser-%%start_time%%@matt.socialtext.net |
+| set | twohundreduser | twohundreduser-%%start_time%%@matt.socialtext.net |
+| set | onehundred_ws | onehundred-ws-%%start_time%% |
+| set | onefiftysignal | 2*4*6*8*11*14*17*20*23*26*29*32*35*38*41*44*47*50*53*56*59*62*65*68*71*74*77*80*83*86*89*92*95*98*102*106*110*114*118*122*126*130*134*138*142*146*150* |
+| set | onefiftyonesignal | *3*5*7*9*12*15*18*21*24*27*30*33*36*39*42*45*48*51*54*57*60*63*66*69*72*75*78*81*84*87*90*93*96*99*103*107*111*115*119*123*127*131*135*139*143*147*151* |
+| set | twohundredsignal | *3*5*7*9*12*15*18*21*24*27*30*33*36*39*42*45*48*51*54*57*60*63*66*69*72*75*78*81*84*87*90*93*96*100*104*108*112*116*120*124*128*132*136*140*144*148*152*156*160*164*168*172*176*180*184*188*192*196*200* |
+| set | twohundredonesignal | *3*5*7*10*13*16*19*22*25*28*31*34*37*40*43*46*49*52*55*58*61*64*67*70*73*76*79*82*85*88*91*94*97*101*105*109*113*117*121*125*129*133*137*141*145*149*153*157*161*165*169*173*177*181*185*189*193*197*201* |
+
+| create-account | %%onehundredlimit%% |  |
+| create-account | %%twohundredlimit%% |  |
+| st-admin | create-user --e %%onehundreduser%% --p %%password%% --account %%onehundredlimit%% | A new user with the username |
+| st-admin | create-user --e %%twohundreduser%% --p %%password%% --account %%twohundredlimit%% | A new user with the username |
+| st-admin | create-workspace --name %%onehundred_ws%% --title %%onehundred_ws%% --account %%onehundredlimit%% | A new workspace named |
+
+| *Comment* | Test Case: Change Signal Limit Login and see 140-char limit |
+
+| *Comment* | Test Case: Change Signal Limit Login set serverwide 200 char limit - see limit |
+
+| *Comment* | Test Case: Change Signal Limit Login set serverwide 150 char limit for a specific acct - see limit |
+
+| *Comment* | Test Case: Change Signal Limit Login Other acct still at 200 |
+
+| *Comment* | Test Case: Change Signal Limit Login add-member so I'll see the 150-char workspace |
+
+| *Comment* | Test Case: Change Signal Limit Login Signal to both, limit is 150 |
+
+| *Comment* | Test Case: Change Signal Limit Login Change back to signal to %%onehundredlimit%%, limit is 200 chars |
+
+| *Comment* | Test Case: Change Signal Limit COMPLETED |
