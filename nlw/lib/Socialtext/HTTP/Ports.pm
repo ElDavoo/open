@@ -75,6 +75,12 @@ sub console_port {
         : PORTS_START_AT() + 5000 + $>;
 }
 
+memoize 'ntlmd_port';
+sub ntlmd_port {
+    return Socialtext::AppConfig->is_appliance()
+        ? 9090 : PORTS_START_AT() + 7000 + $>;
+}
+
 ###############################################################################
 # Helpers: front-end HTTP port
 sub _env_var_http_port {
