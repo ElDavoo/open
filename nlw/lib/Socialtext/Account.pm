@@ -1038,9 +1038,10 @@ sub _validate_and_clean_data {
 sub hash_representation {
     my ($self,%p) = @_;
     my $hash = {
-        account_name    => $self->name,
-        account_id      => $self->account_id,
-        plugins_enabled => [ sort $self->plugins_enabled ],
+        account_name       => $self->name,
+        account_id         => $self->account_id,
+        plugins_enabled    => [ sort $self->plugins_enabled ],
+        signals_size_limit => 400, # XXX STUB to be changed by gwachob
     };
     unless ($p{no_desktop}) {
         $hash->{$_} = $self->$_ for (grep /^desktop_/,@ACCT_COLS);
