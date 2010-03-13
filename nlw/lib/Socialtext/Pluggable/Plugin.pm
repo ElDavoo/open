@@ -20,6 +20,7 @@ use Socialtext::String ();
 use Socialtext::SQL qw(:txn :exec);
 use Socialtext::Log qw/st_log/;
 use Socialtext::PrefsTable;
+use Socialtext::UserSet qw/:const/;
 my $prod_ver = Socialtext->product_version;
 
 # Class Methods
@@ -618,6 +619,19 @@ sub request {
 }
 
 # Account Plugin Prefs
+
+sub GetAccountPluginPrefTable {
+    my $class = shift;
+    my $acct = shift;
+    my $userset_id= $acct + ACCT_OFFSET;
+    return Socialtext::PrefsTable->new(
+        table    => 'user_set_plugin_pref',
+        identity => {
+            plugin      => $class->name,
+            user_set_id => $userset_id
+        }
+    );
+}
 
 sub _account_plugin_pt {
     my $self = shift;
