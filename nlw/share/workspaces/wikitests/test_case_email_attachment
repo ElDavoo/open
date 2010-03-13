@@ -27,8 +27,8 @@
 | *Comment* | Test Case: Email attachment email sending page to %%workspace%%@%%wikiemail%% |  |
 | click_ok | email_send |  |
 
-| *Comment* | Pausing 60 seconds for email delivery, then index page |  |
-| pause | 60000 |  |
+| *Comment* | Pausing 90 seconds for email delivery, then index page |  |
+| pause | 90000 |  |
 | st-admin | index-page --workspace %%workspace%% --page email_subject_%%start_time%% |  |
 
 | *Comment* | Test Case: Email attachment email Check Reception with HTML attachment |  |
@@ -45,10 +45,12 @@
 | click_ok | //a[contains(@title,'Delete this attachment')] |  |
 | wait_for_element_visible_ok | link=Delete | 30000 |
 | click_ok | link=Delete |  |
+| wait_for_element_not_visible_ok | link=Delete | 30000 |
 
 | *Comment* | Test Case: Email attachment Search for attachment page and verify no attachment |  |
-| *Comment* | Test Case: Email attachment Pause to let TheCeq do its job |  |
-| pause | 20000 |  |
+| *Comment* | Test Case: Email attachment Process jobs |  |
+| st-process-jobs |  |  |
+
 | type_ok | st-search-term | "Note %%start_time%%" |
 | click_and_wait | st-search-submit |  |
 | text_like | contentContainer | Email subject %%start_time%% |
