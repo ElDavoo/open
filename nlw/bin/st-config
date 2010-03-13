@@ -14,6 +14,7 @@ use Pod::Usage;
 my %opts;
 GetOptions(
     'help' => \$opts{help},
+    'terse|t' => \$opts{terse},
 ) or exit 1;
 
 usage() if $opts{help};
@@ -37,17 +38,24 @@ usage("Invalid command: $command")
 $Commands{$command}->(@ARGV);
 
 sub get {
-    print "\n";
+    print "\n" unless $opts{terse};
     for my $k (@_) {
         unless ( Socialtext::AppConfig->can($k) ) {
             print " Config name '$k' does not exist.\n";
             next;
         }
 
-        my $value = Socialtext::AppConfig->$k() || 'undef';
-        print " $k: $value\n";
+        my $value = Socialtext::AppConfig->$k();
+        if ($opts{terse}) {
+            $value ||= '';
+            print $value,"\n";
+        }
+        else {
+            $value ||= 'undef';
+            print " $k: $value\n";
+        }
     }
-    print "\n";
+    print "\n" unless $opts{terse};
 }
 
 sub echo {
@@ -122,6 +130,9 @@ This program provides the following options:
 =head2 get key1 key2
 
 Print the value(s) of the specified key(s).
+
+Specify C<--terse> before C<get> to print out the value(s) without keys or
+decoration.
 
 =head2 echo key
 
