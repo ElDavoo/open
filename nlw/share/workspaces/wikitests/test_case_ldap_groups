@@ -5,6 +5,8 @@
 | *Comment* | Test Case: LDAP Groups Creates a group, exercises it, and tears down |
 | *Comment* | Test Case: LDAP Groups REQUIRES st-bootstrap-openldap TO BE RUNNING |
 
+| st-admin | give-accounts-admin --u %%username%% |  |
+
 | include | [Test Case: Create LDAP Group] |
 | include | [Test Case: Exercise LDAP Group] |
 | include | [Test Case: LDAP Group Teardown] |

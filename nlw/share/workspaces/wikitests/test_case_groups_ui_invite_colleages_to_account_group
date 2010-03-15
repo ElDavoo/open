@@ -39,8 +39,8 @@
 | text_like | //body | added %%to_ws%% to the group %%group_name%% |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups UI Invite Colleages to account-group Pause 45 seconds for invitation email delivery |  |
-| pause | 45000 |
+| *Comment* | Test Case: Groups UI Invite Colleages to account-group Pause 90 seconds for invitation email delivery |  |
+| pause | 90000 |
 
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group login as %%email%% so you can see the confirmation email |  |
 | open_ok | /%%to_ws%%/?action=recent_changes |  |

@@ -4,6 +4,7 @@
 
 | set | spuser | spuser-%%start_time%%@ken.socialtext.net |
 | create-user | %%spuser%% | %%password%% |
+| st-admin | enable-plugin --all-accounts --plugin signals |  |
 | st-logoutin | %%spuser%% |  |
 
 | *Comment* | Test Case: Signal From Profile. logged in user has empty "lastsignal" |  |

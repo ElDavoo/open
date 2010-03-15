@@ -4,6 +4,10 @@
 
 | *Comment* | Test Case: Groups UI Signal from group home SETUP |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
+
+| st-admin | enable-plugin --account %%group_acct%% --plugin signals |  |
+| st-admin | enable-plugin --account %%group_acct%% --plugin groups |  |
+
 | st-logoutin | %%group_user%% | %%password%% |  |
 | open_ok | /?group/%%group_id%% |  |  |
 
@@ -31,10 +35,18 @@
 | open_ok | /?group/%%group_id%% |  |
 | st-name-widget | 3 | activity_widget |
 | st-select-widget-frame | activity_widget |  |
-| wait_for_element_not_present_ok | post | 30000 |
-| wait_for_element_not_present_ok | wikiwyg_wikitext_textarea | 30000 |
-| select-frame | relative=parent |  |
-| st-admin | enable-plugin --plugin signals --account %%group_acct%% |  |
+
+ wait_for_element_not_visible_ok | collapse-input | 5000 |
+
+| select_frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups UI Signal from group home - Set Account to signals, see signal option |  |
+| st-admin | enable-plugin --plugin signals --all-accounts |  |
+| open_ok | /?group/%%group_id%% |  |
+| st-name-widget | 3 | activity_widget |
+| st-select-widget-frame | activity_widget |  |
+| wait_for_element_visible_ok | collapse-input | 5000 |
+| select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Login as non group member, do not see signal |  |
 | st-admin | add-member --workspace %%group_ws%% --email %%username%% |  |
@@ -51,9 +63,9 @@
 | *Comment* | Test Case: Groups UI Signal from group home - Add member, see signal |  |
 | st-admin | add-member --group %%group_id%% --email %%username%% |  |
 | open_ok | /st/signals |  |
-| st-name-widget | 3 | signals_widget |
 | wait_for_element_visible_ok | network-select | 30000 |
 | select_ok | network-select | index=0 |
+| st-name-widget | 3 | signals_widget |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_1%% |
 | st_verify_text_in_activities_widget | signals_widget | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_2%% |
