@@ -428,7 +428,7 @@ sub st_send_signal_via_activities_widget {
     $self->handle_command('pause', '3000'); # to let the widget frame open
 
     # Clear the "What are you working on?" message
-    $self->handle_command('wait_for_element_visible_ok', 'signalsNotSetUp', 5000);
+    $self->handle_command('wait_for_element_present_ok', 'signalsNotSetUp', 5000);
     $self->handle_command('click_ok', 'signalsNotSetUp');
 
     if ($browser=~/chrome|firefox/ig) {
