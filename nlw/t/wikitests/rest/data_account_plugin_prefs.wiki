@@ -1,0 +1,57 @@
+* Fixture: SocialRest
+
+### Setup
+| set                    | acct              | account-%%start_time%%                          |              |
+| create-account         | %%acct%%          |                                                 |              |
+| set                    | acct_id           | %%account_id%%                                  |              |
+| set                    | auth              | auth-user-%%start_time%%@ken.socialtext.com     |              |
+| create-user            | %%auth%%          | password                                        |              |
+| set                    | disabled          | %%start_time%%-disabled                         |              |
+| set                    | disabled_user     | disabled-%%start_time%%@ken.socialtext.com      |              |
+| create-account         | %%disabled%%      |                                                 |              |
+| disable-account-plugin | %%disabled%%      | signals                                         |              |
+| set                    | %%disabled_user%% | disabled-user-%%start_time%%@ken.socialtext.net |              |
+| create-user            | %%disabled_user%% | password                                        | %%disabled%% |
+| set-business-admin     | %%disabled_user%% | 1                                               |              |
+
+## User is not logged in
+| *Comment*      | User is not logged in                                  |                              |
+| http-user-pass |                                                        |                              |
+| PUT-json       | /data/accounts/%%acct_id%%/plugins/signals/preferences | {"signals_size_limit":"350"} |
+| code-is        | 404                                                    |                              |
+
+## User is not business admin
+| *Comment*      | User is not business admin                          |                              |
+| http-user-pass | %%auth%%                                            | password                     |
+| PUT-json       | /data/accounts/%%acct%%/plugins/signals/preferences | {"signals_size_limit":"350"} |
+| code-is        | 403                                                 |                              |
+
+## Account does not exist
+| *Comment*      | Account does not exist                             |                              |
+| http-user-pass | devnull1@socialtext.com                            | d3vnu11l                     |
+| PUT-json       | /data/accounts/ENOSUCH/plugins/signals/preferences | {"signals_size_limit":"350"} |
+| code-is        | 404                                                |                              |
+
+## Signals is not enabled
+| *Comment*      | Signals is not enabled                                  |                              |
+| http-user-pass | %%disabled_user%%                                       | password                     |
+| PUT-json       | /data/accounts/%%disabled%%/plugins/signals/preferences | {"signals_size_limit":"350"} |
+| code-is        | 404                                                     |                              |
+
+## User is business admin
+| *Comment*      | User is business admin                              |                              |
+| http-user-pass | devnull1@socialtext.com                             | d3vnu11l                     |
+| PUT-json       | /data/accounts/%%acct%%/plugins/signals/preferences | {"signals_size_limit":"350"} |
+| code-is        | 204                                                 |                              |
+
+## Can be found in account ReST lookup
+| *Comment*    | Can be found in account ReST lookup             |     |
+| GET-json     | /data/accounts/%%acct%%                         |     |
+| code-is      | 200                                             |     |
+| json-parse   |                                                 |     |
+| json-path-is | $.plugin_preferences.signals.signals_size_limit | 350 |
+
+^ Later
+
+## Can be found in account ReST lookup
+| *Comment* | Can be found in user's accounts ReST lookup |

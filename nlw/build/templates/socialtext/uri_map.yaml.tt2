@@ -494,6 +494,12 @@
             'image/png': [Socialtext::Rest::AccountLogo, GET_image]
         '*':             [Socialtext::Rest::AccountLogo, bad_method]
 -
+    '/data/accounts/:acct/plugins/:plugin/preferences':
+        'PUT':
+            '*/*':              [Socialtext::Rest::AccountPluginPrefs, bad_type]
+            'application/json': [Socialtext::Rest::AccountPluginPrefs, PUT_json]
+        '*':                    [Socialtext::Rest::AccountPluginPrefs, bad_method]
+-
     '/data/wafl/:__text__':
         'GET':
             '*/*':              [Socialtext::Rest::Wafl, GET_image]

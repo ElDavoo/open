@@ -28,6 +28,11 @@ sub GET_json {
     $self->can_view(sub {
         my $acct = $self->account;
 
+        # XXX: This is just for signals now, make this more generic when we've
+        # got more prefs.
+        my $prefs = Socialtext::Pluggable::Plugin::Signals
+            ->GetAccountPluginPrefTable($acct->account_id)->get();
+
         my $data = {
             name               => $acct->name,
             account_id         => $acct->account_id,
@@ -35,6 +40,7 @@ sub GET_json {
             skin_name          => $acct->skin_name,
             restrict_to_domain => $acct->restrict_to_domain,
             plugins            => [$acct->plugins_enabled],
+            plugin_preferences => {signals => $prefs},
         };
 
         $self->rest->header(-type => 'application/json');
