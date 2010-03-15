@@ -1913,6 +1913,11 @@ ALTER TABLE ONLY event
             REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY event
+    ADD CONSTRAINT event_group_id_fk
+            FOREIGN KEY (group_id)
+            REFERENCES groups(group_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY event
     ADD CONSTRAINT event_page_fk
             FOREIGN KEY (page_workspace_id, page_id)
             REFERENCES page(workspace_id, page_id) ON DELETE CASCADE;
@@ -2258,4 +2263,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '111');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '112');
