@@ -452,3 +452,5 @@ t/wikitests/push/basic-signals.wiki
 t/wikitests/push/hide-signal.wiki
 t/wikitests/push/membership-change.wiki
 t/Socialtext/Handler/Push-sig-render.t
+t/Socialtext/Signal/length.t
+t/wikitests/signals/data_signals_length.wiki
