@@ -3,68 +3,13 @@ package Socialtext::Apache::Authen::NTLM;
 
 use strict;
 use warnings;
-use base qw(Apache::AuthenNTLM);
-use Apache::Constants qw(HTTP_UNAUTHORIZED HTTP_FORBIDDEN HTTP_INTERNAL_SERVER_ERROR);
+use Apache::Constants qw(HTTP_UNAUTHORIZED HTTP_FORBIDDEN HTTP_INTERNAL_SERVER_ERROR OK DECLINED);
 use Socialtext::NTLM::Config;
 use Socialtext::Log qw(st_log);
 use Socialtext::l10n qw(loc);
 use Socialtext::Session;
 
-###############################################################################
-# read in our custom NTLM config, instead of relying on Apache config file to
-# set this up.
-sub get_config {
-    my ($self, $r) = @_;
-
-    # if we've already read in the config, don't do it again.
-    return if ($self->{smbpdc});
-
-    # let our base class read in its config, so that Admins _could_ use their
-    # Apache config to define some of this if they wanted to.
-    $self->SUPER::get_config($r);
-
-    # force Apache::AuthenNTLM to split up the "domain\username" and only
-    # leave us the "username" part; our Authen system doesn't understand
-    # composite usernames and isn't able to handle this as an exception to the
-    # rule.
-    $self->{splitdomainprefix} = 1;
-
-    # read in our NTLM config, and set up our PDC/BDCs
-    my @all_configs = Socialtext::NTLM::Config->load();
-    foreach my $config (@all_configs) {
-        my $domain  = lc( $config->domain() );
-        my $primary = $config->primary();
-        my $backups = $config->backup();
-
-        $self->{smbpdc}{$domain} = $primary;
-        $self->{smbbdc}{$domain} = join ' ', @{$backups};
-    }
-
-    # set the default/fallback domains, in case the NTLM handshake doesn't
-    # indicate which one to use
-    $self->{defaultdomain}  = Socialtext::NTLM::Config->DefaultDomain();
-    $self->{fallbackdomain} = Socialtext::NTLM::Config->FallbackDomain();
-
-    # debugging notes
-    my $prefix = 'ST::Apache::Authen::NTLM:';
-    st_log->debug( "$prefix default domain: " . $self->{defaultdomain} );
-    st_log->debug( "$prefix fallback domain: " . $self->{fallbackdomain} );
-    st_log->debug( "$prefix AuthType: " . $self->{authtype} );
-    st_log->debug( "$prefix AuthName: " . $self->{authname} );
-    st_log->debug( "$prefix Auth NTLM: " . $self->{authntlm} );
-    st_log->debug( "$prefix Auth Basic: " . $self->{authbasic} );
-    st_log->debug( "$prefix NTLMAuthoritative: " . $self->{ntlmauthoritative} );
-    st_log->debug( "$prefix SplitDomainPrefix: " . $self->{splitdomainprefix} );
-    foreach my $domain (sort keys %{$self->{smbpdc}}) {
-        next unless ($domain);  # skip blank/empty domains
-        st_log->debug( "$prefix domain: $domain" );
-        st_log->debug( "$prefix ... pdc: " . $self->{smbpdc}{$domain} );
-        st_log->debug( "$prefix ... bdc: " . $self->{smbbdc}{$domain} );
-    }
-}
-
-###############################################################################
-# Over-ridden Mod_perl handler.
+# mod_perl authen handler:
 sub handler($$) {
     my ($class, $r) = @_;
 
@@ -73,7 +18,9 @@ sub handler($$) {
     $r->subprocess_env(nokeepalive => undef);
 
     # call off to let the base class do its work
-    my $rc = $class->SUPER::handler($r);
+    #my $rc = $class->SUPER::handler($r);
+    my $rc = call_ntlm_daemon($r);
+
     if ($rc == HTTP_UNAUTHORIZED) {
         _set_session_error( $r, { type => 'not_logged_in' } );
     }
@@ -92,6 +39,48 @@ sub handler($$) {
     st_log->debug( "NTLM authen handler rc: $rc" );
 
     return $rc;
+}
+
+use LWP::UserAgent;
+
+sub call_ntlm_daemon {
+    my $r = shift;
+    my $ua = LWP::UserAgent->new;
+    my $req = HTTP::Request->new('GET' => 'http://localhost:9090'.$r->uri.'?'.$r->args);
+
+    unless ($r->header_in('Authorization')) {
+        $r->err_headers_out->add('WWW-Authenticate' => 'NTLM');
+        return HTTP_UNAUTHORIZED;
+    }
+    
+    $req->header('X-Authorization' => $r->header_in('Authorization'));
+    my $resp = $ua->request($req);
+
+    if ($resp->is_success) {
+        my $auth_header = $resp->header('X-WWW-Authenticate');
+        if ($auth_header) {
+            $r->err_headers_out->add('WWW-Authenticate' => $auth_header);
+        }
+
+        my $auth_user = $resp->header('X-User');
+        if ($auth_user) {
+            warn "GOT USER: $auth_user\n";
+            $r->user($auth_user);
+        }
+
+        my $auth_status = $resp->header('X-Status');
+        if ($auth_status eq 'OK') {
+            $auth_status = OK;
+        }
+        elsif ($auth_status eq 'DECLINED') {
+            $auth_status = DECLINED;
+        }
+        return $auth_status;
+    }
+    else {
+        st_log->error("ntlm daemon returned ".$resp->status_line);
+    }
+    return HTTP_INTERNAL_SERVER_ERROR;
 }
 
 ###############################################################################
