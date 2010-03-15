@@ -2552,7 +2552,7 @@ proto.insert_image = function (src, widget, widget_element, cb) {
 
     html += 'onload="if (typeof(ss) != \'undefined\' && ss.editor) { var recalc = function () { try { ss.editor.DoPositionCalculations() } catch (e) { setTimeout(recalc, 500) } }; recalc() } ';
 
-    if (dim) {
+    if (dim && (dim[0] || dim[1])) {
         html += '" width="' + dim[0] + '" height="' + dim[1] + '"';
     }
     else {
