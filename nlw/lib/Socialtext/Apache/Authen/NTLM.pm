@@ -1,26 +1,24 @@
 package Socialtext::Apache::Authen::NTLM;
 # @COPYRIGHT@
-
 use strict;
 use warnings;
 use Apache::Constants qw(HTTP_UNAUTHORIZED HTTP_FORBIDDEN HTTP_INTERNAL_SERVER_ERROR OK DECLINED);
+use LWP::UserAgent;
 use Socialtext::NTLM::Config;
 use Socialtext::Log qw(st_log);
 use Socialtext::l10n qw(loc);
 use Socialtext::Session;
+use Socialtext::HTTP::Ports;
 
 # mod_perl authen handler:
 sub handler($$) {
     my ($class, $r) = @_;
 
-    # turn HTTP KeepAlive requests *ON*
+    # turn HTTP KeepAlive requests *ON*, only really affects apache2 front-end
     st_log->debug( "turning HTTP Keep-Alives back on" );
     $r->subprocess_env(nokeepalive => undef);
 
-    # call off to let the base class do its work
-    #my $rc = $class->SUPER::handler($r);
     my $rc = call_ntlm_daemon($r);
-
     if ($rc == HTTP_UNAUTHORIZED) {
         _set_session_error( $r, { type => 'not_logged_in' } );
     }
@@ -28,10 +26,7 @@ sub handler($$) {
         _set_session_error( $r, { type => 'unauthorized_workspace' } );
     }
     elsif ($rc == HTTP_INTERNAL_SERVER_ERROR) {
-        # Apache::AuthenNTLM throws a 500 when it can't speak to the PDC, and
-        # this is the *ONLY* time it throws a 500
         $rc = HTTP_FORBIDDEN;
-        st_log->error( "unable to reach the Windows NTLM DC to get nonce" );
         _set_session_error( $r, loc(
             "The Socialtext system cannot reach the Windows NTLM Domain Controller.  An Admin should check the Domain Controller and/or Socialtext configuration."
         ) );
@@ -41,46 +36,47 @@ sub handler($$) {
     return $rc;
 }
 
-use LWP::UserAgent;
-
 sub call_ntlm_daemon {
     my $r = shift;
-    my $ua = LWP::UserAgent->new;
-    my $req = HTTP::Request->new('GET' => 'http://localhost:9090'.$r->uri.'?'.$r->args);
 
-    unless ($r->header_in('Authorization')) {
+    my $authz_in = $r->header_in('Authorization');
+    unless ($authz_in) {
         $r->err_headers_out->add('WWW-Authenticate' => 'NTLM');
         return HTTP_UNAUTHORIZED;
     }
+
+    my $ua = LWP::UserAgent->new;
+    my $port = Socialtext::HTTP::Ports->ntlmd_port;
+    my $uri = $r->uri;
+    $uri = "/$uri" unless $uri =~ m#^/#;
+    my $ntlmd_url = 'http://localhost:'.$port.$uri.'?'.$r->args;
+    my $req = HTTP::Request->new('GET' => $ntlmd_url);
     
-    $req->header('X-Authorization' => $r->header_in('Authorization'));
+    $req->header('X-Authorization' => $authz_in);
     my $resp = $ua->request($req);
 
-    if ($resp->is_success) {
-        my $auth_header = $resp->header('X-WWW-Authenticate');
-        if ($auth_header) {
-            $r->err_headers_out->add('WWW-Authenticate' => $auth_header);
-        }
-
-        my $auth_user = $resp->header('X-User');
-        if ($auth_user) {
-            warn "GOT USER: $auth_user\n";
-            $r->user($auth_user);
-        }
-
-        my $auth_status = $resp->header('X-Status');
-        if ($auth_status eq 'OK') {
-            $auth_status = OK;
-        }
-        elsif ($auth_status eq 'DECLINED') {
-            $auth_status = DECLINED;
-        }
-        return $auth_status;
+    if (!$resp->is_success) {
+        st_log->error("Unexpected NTLM daemon response: ".$resp->status_line);
+        return HTTP_INTERNAL_SERVER_ERROR;
     }
-    else {
-        st_log->error("ntlm daemon returned ".$resp->status_line);
+
+    my $authn_out = $resp->header('X-WWW-Authenticate');
+    $r->err_headers_out->add('WWW-Authenticate' => $authn_out) if $authn_out;
+
+    my $authn_user = $resp->header('X-User');
+    $r->user($authn_user) if $authn_user;
+
+    my $authn_status = $resp->header('X-Status');
+    # Special tokens are used for OK and DECLINED to avoid loading gross
+    # Apache::Constants module on the daemon side:
+    if ($authn_status eq 'OK') {
+        $authn_status = OK; # note: not necessarily "200"
     }
-    return HTTP_INTERNAL_SERVER_ERROR;
+    elsif ($authn_status eq 'DECLINED') {
+        $authn_status = DECLINED;
+    }
+
+    return $authn_status;
 }
 
 ###############################################################################
