@@ -1037,11 +1037,14 @@ sub _validate_and_clean_data {
 
 sub hash_representation {
     my ($self,%p) = @_;
+    # XXX: This is just for signals now, make this more generic when we've
+    # got more prefs.
+    my $prefs = { signals => $self->get_plugin_preferences('signals')->get()};
     my $hash = {
         account_name       => $self->name,
         account_id         => $self->account_id,
         plugins_enabled    => [ sort $self->plugins_enabled ],
-        signals_size_limit => 400, # XXX STUB to be changed by gwachob
+        plugin_preferences => $prefs
     };
     unless ($p{no_desktop}) {
         $hash->{$_} = $self->$_ for (grep /^desktop_/,@ACCT_COLS);
@@ -1050,6 +1053,18 @@ sub hash_representation {
         $hash->{user_count} = $self->user_count;
     }
     return $hash;
+}
+
+sub get_plugin_preferences {
+    my $self = shift;
+    my $plugin_name = shift;
+    return Socialtext::PrefsTable->new(
+        table    => 'user_set_plugin_pref',
+        identity => {
+            plugin      => $plugin_name,
+            user_set_id => $self->user_set_id
+        }
+    );
 }
 
 sub is_using_account_logo_as_desktop_logo {
@@ -1352,6 +1367,10 @@ to allow plugins to finish the import of their data.
 =item $account->hash_representation()
 
 Returns a hash representation of the account.
+
+=item $account->get_plugin_preferences($plugin)
+
+Returns the plugin preferences (an C<Socialtext::PrefsTable> object) for this account
 
 =item $account->is_using_account_logo_as_desktop_logo()
 

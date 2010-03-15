@@ -30,9 +30,7 @@ sub GET_json {
 
         # XXX: This is just for signals now, make this more generic when we've
         # got more prefs.
-        my $prefs = Socialtext::Pluggable::Plugin::Signals
-            ->GetAccountPluginPrefTable($acct->account_id)->get();
-
+        my $prefs = $acct->get_plugin_preferences('signals')->get();
         my $data = {
             name               => $acct->name,
             account_id         => $acct->account_id,

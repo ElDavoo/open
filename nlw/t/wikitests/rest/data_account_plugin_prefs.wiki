@@ -6,6 +6,8 @@
 | set                    | acct_id           | %%account_id%%                                  |              |
 | set                    | auth              | auth-user-%%start_time%%@ken.socialtext.com     |              |
 | create-user            | %%auth%%          | password                                        |              |
+| set                    | acct_user | acct-user-%%start_time%%@ken.socialtext.com     |              |
+| create-user            | %%acct_user%%          | password                                        | %%acct%%             |
 | set                    | disabled          | %%start_time%%-disabled                         |              |
 | set                    | disabled_user     | disabled-%%start_time%%@ken.socialtext.com      |              |
 | create-account         | %%disabled%%      |                                                 |              |
@@ -51,7 +53,11 @@
 | json-parse   |                                                 |     |
 | json-path-is | $.plugin_preferences.signals.signals_size_limit | 350 |
 
-^ Later
-
 ## Can be found in account ReST lookup
 | *Comment* | Can be found in user's accounts ReST lookup |
+| http-user-pass | %%acct_user%% | password |
+| GET-json     | /data/users/%%acct_user%%                         |     |
+| code-is      | 200                                             |     |
+| json-parse   |                                                 |     |
+| json-path-is | $.accounts[0].plugin_preferences.signals.signals_size_limit | 350 |
+
