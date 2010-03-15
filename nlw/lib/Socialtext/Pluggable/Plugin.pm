@@ -37,6 +37,7 @@ field 'last';
 const scope => 'account';
 const hidden => 1; # hidden to admins
 const read_only => 0; # cannot be disabled/enabled in the control panel
+const valid_account_prefs => (); # none by default, override in a child.
 
 sub dependencies { } # Enable/Disable dependencies
 sub enables {} # Enable only dependencies
