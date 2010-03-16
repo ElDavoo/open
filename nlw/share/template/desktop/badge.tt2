@@ -1,5 +1,5 @@
 <html><head>
-    <link media="screen" href="/static/skin/s3/css/screen.css" type="text/css" rel="stylesheet">
+    <link media="screen" href="/static/skin/s3/css/screen.css" type="text/css" rel="stylesheet"></link>
     <title>[% app_name %]</title>
 </head><body style="background: white; margin: 0px; font-size: 13px">
     <script src="/static/skin/common/javascript/jquery-1.2.6.js"></script>
@@ -35,8 +35,8 @@ id="airDetect" width="1" height="1">
 
 <div class="buttons" style="position: absolute; right: 10px; bottom: 10px">
         <ul style="float: left; padding: 10px;" class="widgetButton">
-          <li class="flexButton">
-              <a href="#" id="st-duplicate-cancellink" class="close genericOrangeButton" onclick="if (parent && parent.$) { parent.$.hideLightbox() }">Close</a>
+          <li id="st-desktop-close" class="flexButton disabled">
+              <a href="#" id="st-desktop-cancellink" class="close genericOrangeButton" onclick="if (parent && parent.$) { parent.$.hideLightbox() }">Close</a>
           </li>
         </ul>
     </div>
@@ -143,11 +143,13 @@ function hasFlash(selector) {
 function tryInit (tries) {
     if (hasFlash('#airDetect') || hasFlash('#airDetectIE')) {
         so.write("flashcontent");
+        $('#st-desktop-close').removeClass('disabled');
         $('#getThings').show();
     }
     else if (tries > 10) {
         so.addVariable("airswfurl", '[% air_swf_url %]');
         so.write("flashcontent");
+        $('#st-desktop-close').removeClass('disabled');
         $('#getThings').show();
     }
     else {
