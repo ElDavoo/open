@@ -118,7 +118,7 @@
 | click_ok | save_schedule |  |
 | wait_for_page_to_load_ok | 30000 |  |
 
-| config_is | backdays | 0 |
+| config_is | backdays |  |
 | config_is | backhour | 0 |
 | config_is | backminutes | 0 |
 
@@ -150,7 +150,7 @@
 | check_ok | chk_0 |  |
 | click_ok | save_schedule |  |
 | wait_for_page_to_load_ok | 30000 |  |
-| config_is | backdays | 1 |
+| config_is | backdays | 0 |
 
 | *Comment* | *Report a Problem tab* |  |
 

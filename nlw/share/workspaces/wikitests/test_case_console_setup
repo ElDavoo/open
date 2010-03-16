@@ -40,6 +40,28 @@
 | is_element_present_ok | setup-allow-invitation |  |
 | is_element_present_ok | setup-support-href |  |
 | is_element_present_ok | setup-login-message |  |
+| is_element_present_ok | desktop_update_enabled |  |
+
+| *Comment* | Test Case: Console Setup. Disable/Enable Desktop Update |  |
+| is_element_present_ok | setup-st-auto-update |  |
+| uncheck_ok | desktop_update_enabled |  |
+| text_like | //body | By default, Socialtext Desktop automatically updates itself from www.socialtext.com. |
+| text_like | //body | You may disable automatic updates by unchecking this checkbox and clicking Submit. |
+| click_ok | setup-st-auto-update |  |
+| wait_for_page_to_load_ok | 30000 |  |
+| open_ok | /console |  |
+| wait_for_element_visible_ok | link=Setup | 30000 |
+| click_and_wait | link=Setup |  |
+| config_is | desktop_update_enabled | 0 |
+| is_element_present_ok | setup-st-auto-update |  |
+| check_ok | desktop_update_enabled |  |
+| is_checked_ok | desktop_update_enabled |  |
+| click_and_wait | setup-st-auto-update |  |
+| open_ok | /console |
+| wait_for_element_visible_ok | link=Setup | 30000 |
+| click_ok | link=Setup |  |
+| wait_for_page_to_load_ok | 30000 |  |
+| config_is | desktop_update_enabled | 1 |
 
 | *Comment* | Test Case: Console Setup. Self register, login msg, support contact, allow invites |  |
 | uncheck_ok | self_registration |  |
