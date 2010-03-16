@@ -115,14 +115,14 @@ TODO: verify cannot actually issue invitations via URL
 
 | *Comment* | Test Case: Invite people. Check /control to make sure esocial's account has not changed |  |
 | st-admin | give-accounts-admin --e %%acct_user%% | now has accounts admin |
-| open_ok | /nlw/control/user?username=%%social%% |
+| open_ok | /nlw/control/user?username=%%social%% |  |
 | wait_for_element_visible_ok | link=Socialtext | 30000 |
 | text_like | qr/Socialtext.+Primary Account/ism |  |
 | open_ok | / |  |
 | st-logoutin |  |  |
 
-| *Comment* | Test Case: Invite people. Pause 30 seconds for invitation email delivery |  |
-| pause | 30000 |
+| *Comment* | Test Case: Invite people. Pause 90 seconds for invitation email delivery |  |
+| pause | 90000 |  |
 
 | *Comment* | Test Case: Invite people. login as %%email%% so you can see the confirmation email |  |
 
