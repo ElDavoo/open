@@ -42,7 +42,7 @@ $.extend(Socialtext.Account.prototype, {
             contentType: 'application/json',
             data: $.toJSON(prefs),
             success: this.successCallback(callback),
-            error: this.errorCallback(callback),
+            error: this.errorCallback(callback)
         });
     }
 });
