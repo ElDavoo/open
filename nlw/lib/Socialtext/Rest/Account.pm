@@ -5,6 +5,7 @@ use Socialtext::Account;
 use Socialtext::JSON 'encode_json';
 use Socialtext::Role;
 use Socialtext::String;
+use Socialtext::Pluggable::Adapter;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Entity';
@@ -30,7 +31,6 @@ sub GET_json {
 
         # XXX: This is just for signals now, make this more generic when we've
         # got more prefs.
-        my $prefs = $acct->get_plugin_preferences('signals')->get();
         my $data = {
             name               => $acct->name,
             account_id         => $acct->account_id,
@@ -38,7 +38,8 @@ sub GET_json {
             skin_name          => $acct->skin_name,
             restrict_to_domain => $acct->restrict_to_domain,
             plugins            => [$acct->plugins_enabled],
-            plugin_preferences => {signals => $prefs},
+            plugin_preferences => 
+                Socialtext::Pluggable::Adapter->new->account_preferences($acct),
         };
 
         $self->rest->header(-type => 'application/json');
