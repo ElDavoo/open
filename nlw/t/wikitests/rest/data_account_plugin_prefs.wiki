@@ -18,7 +18,7 @@
 
 
 ## Reset the server-wide signals limit
-| st-config      | set signals_size_limit 400                           |                              |
+| st-config      | set signals_size_limit 401                           |                              |
 
 ## User is not logged in
 | *Comment*      | User is not logged in                                  |                              |
@@ -45,6 +45,12 @@
 | code-is        | 404                                                     |                              |
 
 
+## Default Account Limit Can be found in account ReST lookup
+| *Comment*    | Can be found in account ReST lookup             |     |
+| GET-json     | /data/accounts/%%acct%%                         |     |
+| code-is      | 200                                             |     |
+| json-parse   |                                                 |     |
+| json-path-is | $.plugin_preferences.signals.signals_size_limit | 400 |
 
 ## User is business admin
 | *Comment*      | User is business admin                              |                              |
