@@ -57,6 +57,8 @@ has_inflated 'headers_out' => (is => 'rw', isa => 'Apache::Table');
 has 'uri' => (is => 'rw', isa => 'Str');
 has 'user' => (is => 'rw', isa => 'Str');
 
+has 'reason' => (is => 'rw', isa => 'Str', writer => 'log_reason');
+
 # only support ntlm, not Basic
 has 'authtype' => (is => 'rw', isa => 'Str', default => 'ntlm');
 
@@ -74,9 +76,10 @@ sub connection {
 
 sub _build__dir_config {
     return Apache::Table->new(_table => {
-        ntdomain => 'foo bar baz',
-        ntlmdebug => 0,
-        ntlmsemkey => 0, # disable IPC::Semaphore locking
+        ntdomain          => 'foo bar baz',
+        ntlmdebug         => 0,
+        ntlmsemkey        => 0, # disable IPC::Semaphore locking
+        ntlmauthoritative => 1,
     });
 }
 
@@ -87,13 +90,6 @@ sub dir_config {
         return $self->_dir_config;
     }
     return $self->_dir_config->get($k);
-}
-
-sub log_reason {
-    my $self = shift;
-    my $rsn = shift;
-    chomp $rsn;
-    main::st_log->warning("AuthenNTLM reason: $rsn");
 }
 
 package Apache::Constants;
@@ -114,7 +110,9 @@ package main;
 
 use AnyEvent;
 use Guard;
+use Try::Tiny;
 use Getopt::Long;
+use Tie::Cache::LRU ();
 
 # MUST load all Socialtext::* packages late (after we override the Apache::
 # packages above)
@@ -123,6 +121,9 @@ use Socialtext::Log qw/st_log/;
 use Socialtext::Async::Syslog; # patches st_log
 use Socialtext::NTLM::Config;
 use Apache::AuthenNTLM;
+
+use constant MAX_PASSWORD_FAILURES => 5; # will reject after this many
+use constant REMEMBER_FAILURES     => 100;
 
 my $orig_get_config = \&Apache::AuthenNTLM::get_config;
 {
@@ -141,6 +142,9 @@ my $orig_get_config = \&Apache::AuthenNTLM::get_config;
 my $in_progress_sid;
 my $in_progress_timer;
 
+my %recent_sid_failures;
+tie %recent_sid_failures, 'Tie::Cache::LRU', REMEMBER_FAILURES;
+
 our $Handshake_timeout = 2.0;
 
 my $pending_guard;
@@ -150,6 +154,7 @@ my $port = 9090;
 
 GetOptions(
     'port=i' => \$port,
+    'timeout' => \$Handshake_timeout,
 );
 
 my $server = http_server '127.0.0.1', $port, \&handle_http;
@@ -223,6 +228,7 @@ sub handle_http {
         # st_log->error("ntlmd AnyEvent::Handle error: $err");
         chomp $err;
         st_log->error("AnyEvent::Handle error: $err\n");
+        $handle->destroy if $handle;
         return;
     }
 
@@ -238,7 +244,7 @@ sub handle_http {
     }
     my $xa = $env->{HTTP_X_AUTHORIZATION} || '';
     my $ntlm_type = ($xa !~ /NTLM .{7}TUAA(.)/) ? 'non-ntlm' :
-        ($1 eq 'B') ? 'type 1' : 'type 3';
+        ($1 eq 'B') ? 'type-1' : 'type-3';
     st_log->debug("GOT SID: $sid, NTLM type: $ntlm_type\n");
 
     if ($ntlm_type eq 'non-ntlm') {
@@ -292,7 +298,7 @@ sub cancel_in_progress {
     st_log->debug("throwing out sid $in_progress_sid\n");
     undef $Apache::AuthenNTLM::cache; # releases samba
     undef $in_progress_sid;
-    undef $in_progress_timer; # and ourselves
+    undef $in_progress_timer;
 
     unless (@$pending_reqs) {
         empty_pending();
@@ -322,6 +328,23 @@ sub cancel_in_progress {
 
 sub do_ntlm {
     my ($handle, $env, $sid) = @_;
+    my $safety = guard {
+        $handle->destroy;
+        cancel_in_progress();
+    };
+
+    try {
+        _do_ntlm($handle,$env,$sid);
+        $safety->cancel;
+    }
+    catch {
+        st_log->error("st-ntlmd: error processing SID:$sid\n$_\n");
+    };
+    return;
+}
+
+sub _do_ntlm {
+    my ($handle, $env, $sid) = @_;
 
     st_log->debug("PROCESSING SID: $sid\n");
 
@@ -337,11 +360,31 @@ sub do_ntlm {
     # blocks, blocks HARD:
     my $rc = Apache::AuthenNTLM -> run($r);
 
-    my $resp = "HTTP/1.0 200 OK\r\n".
-        "X-Status: $rc\r\n";
-
     my $w_a = $r->err_headers_out->get('WWW-Authenticate');
     my $u = $r->user || '';
+
+    my $resp = "HTTP/1.0 200 OK\r\n";
+
+    if (my $reason = $r->reason) {
+        st_log()->warning("AuthenNTLM reason: $reason");
+        if ($reason =~ /^Wrong password/) {
+            if (++$recent_sid_failures{$sid} > MAX_PASSWORD_FAILURES) {
+                # frequent re-attempts seems to happen if IE6 isn't logged
+                # into the right domain.
+                st_log->error("SID $sid has too many failures, rejecting");
+                $rc = 403;
+                $w_a = '';
+                $u = '';
+                cancel_in_progress();
+            }
+        }
+        $reason =~ s/\r?\n/ /smg;
+        chomp $reason;
+        $resp .= "X-Reason: $reason\r\n";
+    }
+
+    $resp .= "X-Status: $rc\r\n";
+
     if ($w_a) {
         $resp .= "X-WWW-Authenticate: $w_a\r\n";
         # stop processing the queue while we're working on this one.
@@ -349,7 +392,7 @@ sub do_ntlm {
         $in_progress_sid = $sid;
         $in_progress_timer =
             AE::timer $Handshake_timeout, 0, sub {
-                st_log->debug("TIMEOUT $sid\n");
+                st_log->error("SSO,NTLM,TIMEOUT,SID:$sid,{}\n");
                 cancel_in_progress();
             };
     }
@@ -381,4 +424,4 @@ sub do_ntlm {
         shutdown $handle->{fh}, 1;
         $handle->destroy;
     });
-};
+}
