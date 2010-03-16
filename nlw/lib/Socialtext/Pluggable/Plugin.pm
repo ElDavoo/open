@@ -621,6 +621,8 @@ sub request {
 
 # Account Plugin Prefs
 
+sub DefaultAccountPluginPrefs { +{} }
+
 sub GetAccountPluginPrefTable {
     my $class = shift;
     my $acct = shift;
@@ -630,7 +632,8 @@ sub GetAccountPluginPrefTable {
         identity => {
             plugin      => $class->name,
             user_set_id => $userset_id
-        }
+        },
+        defaults => $class->DefaultAccountPluginPrefs,
     );
 }
 
@@ -642,7 +645,8 @@ sub _account_plugin_pt {
         identity => {
             plugin      => $self->name,
             user_set_id => $acct->user_set_id,
-        }
+        },
+        defaults => $self->DefaultAccountPluginPrefs,
     );
 }
 

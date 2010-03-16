@@ -188,6 +188,24 @@ sub plugin_object {
     return $plugin;
 }
 
+sub account_preferences {
+    my ($self, $account) = @_;
+
+    # Build up the default preferences before loading actual prefs from the DB
+    my %defaults = map { $_->[0] => $_->[1] } grep { %{$_->[1]} }
+                   map { [$_->name => $_->DefaultAccountPluginPrefs] }
+                   $self->plugins;
+
+    my $table = Socialtext::PrefsTable->new(
+        table    => 'user_set_plugin_pref',
+        identity => {
+            user_set_id => $account->user_set_id
+        },
+        defaults => \%defaults,
+    );
+    return $table->get();
+}
+
 sub registered {
     my ($self, $name) = @_;
     if ( my $hooks = $hooks{$name} ) {
