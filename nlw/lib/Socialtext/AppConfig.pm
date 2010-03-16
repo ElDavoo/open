@@ -1270,7 +1270,7 @@ Default: 16
 
 Set this to limit the maximum size of signals posted to this servers. Accounts may limit signals size to a smaller number.
 
-Default: 400
+Default: 1000
 
 =for code type => POSITIVE_INT_TYPE
 
