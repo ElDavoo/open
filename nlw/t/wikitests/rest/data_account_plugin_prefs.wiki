@@ -16,6 +16,10 @@
 | create-user            | %%disabled_user%% | password                                        | %%disabled%% |
 | set-business-admin     | %%disabled_user%% | 1                                               |              |
 
+
+## Reset the server-wide signals limit
+| st-config      | set signals_size_limit 400                           |                              |
+
 ## User is not logged in
 | *Comment*      | User is not logged in                                  |                              |
 | http-user-pass |                                                        |                              |
@@ -40,11 +44,15 @@
 | PUT-json       | /data/accounts/%%disabled%%/plugins/signals/preferences | {"signals_size_limit":"350"} |
 | code-is        | 404                                                     |                              |
 
+
+
 ## User is business admin
 | *Comment*      | User is business admin                              |                              |
 | http-user-pass | devnull1@socialtext.com                             | d3vnu11l                     |
 | PUT-json       | /data/accounts/%%acct%%/plugins/signals/preferences | {"signals_size_limit":"350"} |
 | code-is        | 204                                                 |                              |
+
+
 
 ## Can be found in account ReST lookup
 | *Comment*    | Can be found in account ReST lookup             |     |
@@ -60,4 +68,14 @@
 | code-is      | 200                                             |     |
 | json-parse   |                                                 |     |
 | json-path-is | $.accounts[0].plugin_preferences.signals.signals_size_limit | 350 |
+
+## Can't set higher than server max
+
+| st-config      | set signals_size_limit 10                           |                              |
+| http-user-pass | devnull1@socialtext.com                             | d3vnu11l                     |
+| PUT-json       | /data/accounts/%%acct%%/plugins/signals/preferences | {"signals_size_limit":"350"} |
+| code-is        | 403                                                 |                              |
+| body-like      | Size Limit Exceeds Server Max                       |                              |
+
+
 

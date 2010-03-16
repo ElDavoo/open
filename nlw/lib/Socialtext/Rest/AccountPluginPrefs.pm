@@ -1,6 +1,7 @@
 package Socialtext::Rest::AccountPluginPrefs;
 # @COPYRIGHT@
 use Moose;
+use Socialtext::AppConfig;
 use Socialtext::HTTP ':codes';
 use Socialtext::Pluggable::Plugin::Signals;
 use Socialtext::JSON 'decode_json';
@@ -41,6 +42,12 @@ sub PUT_json {
             return 'Unrecognized JSON key';
         }
 
+        if ((defined($data->{signals_size_limit})) and 
+            ($data->{signals_size_limit} > 
+                Socialtext::AppConfig->signals_size_limit)) {
+            $rest->header( -status => HTTP_403_Forbidden );
+            return "Size Limit Exceeds Server Max";
+        }
         my $prefs = $signals->GetAccountPluginPrefTable($acct->account_id);
         $prefs->set(%$data);
 
