@@ -44,7 +44,6 @@
 | PUT-json       | /data/accounts/%%disabled%%/plugins/signals/preferences | {"signals_size_limit":"350"} |
 | code-is        | 404                                                     |                              |
 
-
 ## Default Account Limit Can be found in account ReST lookup
 | *Comment*    | Can be found in account ReST lookup             |     |
 | GET-json     | /data/accounts/%%acct%%                         |     |
@@ -58,8 +57,6 @@
 | PUT-json       | /data/accounts/%%acct%%/plugins/signals/preferences | {"signals_size_limit":"350"} |
 | code-is        | 204                                                 |                              |
 
-
-
 ## Can be found in account ReST lookup
 | *Comment*    | Can be found in account ReST lookup             |     |
 | GET-json     | /data/accounts/%%acct%%                         |     |
@@ -67,21 +64,28 @@
 | json-parse   |                                                 |     |
 | json-path-is | $.plugin_preferences.signals.signals_size_limit | 350 |
 
-## Can be found in account ReST lookup
-| *Comment* | Can be found in user's accounts ReST lookup |
-| http-user-pass | %%acct_user%% | password |
-| GET-json     | /data/users/%%acct_user%%                         |     |
-| code-is      | 200                                             |     |
-| json-parse   |                                                 |     |
-| json-path-is | $.accounts[0].plugin_preferences.signals.signals_size_limit | 350 |
+## Can be found in user's ReST lookup
+| *Comment*      | Can be found in user's accounts ReST lookup                 |          |
+| http-user-pass | %%acct_user%%                                               | password |
+| GET-json       | /data/users/%%acct_user%%                                   |          |
+| code-is        | 200                                                         |          |
+| json-parse     |                                                             |          |
+| json-path-is   | $.accounts[0].plugin_preferences.signals.signals_size_limit | 350      |
+
+## Size limit must be a positive integer
+| *Comment*      | Size limit must be a positive integer               |                               |
+| http-user-pass | devnull1@socialtext.com                             | d3vnu11l                      |
+| PUT-json       | /data/accounts/%%acct%%/plugins/signals/preferences | {"signals_size_limit":"word"} |
+| code-is        | 400                                                 |                               |
+| body-like      | Size Limit must be a positive integer               |                               |
+| PUT-json       | /data/accounts/%%acct%%/plugins/signals/preferences | {"signals_size_limit":"-19"}  |
+| code-is        | 400                                                 |                               |
+| body-like      | Size Limit must be a positive integer               |                               |
 
 ## Can't set higher than server max
-
+| *Comment*      | Can't set higher than server max                    |                              |
 | st-config      | set signals_size_limit 10                           |                              |
 | http-user-pass | devnull1@socialtext.com                             | d3vnu11l                     |
 | PUT-json       | /data/accounts/%%acct%%/plugins/signals/preferences | {"signals_size_limit":"350"} |
 | code-is        | 403                                                 |                              |
 | body-like      | Size Limit Exceeds Server Max                       |                              |
-
-
-

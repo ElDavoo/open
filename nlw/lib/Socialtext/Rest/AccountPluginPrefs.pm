@@ -42,12 +42,20 @@ sub PUT_json {
             return 'Unrecognized JSON key';
         }
 
-        if ((defined($data->{signals_size_limit})) and 
-            ($data->{signals_size_limit} > 
-                Socialtext::AppConfig->signals_size_limit)) {
-            $rest->header( -status => HTTP_403_Forbidden );
-            return "Size Limit Exceeds Server Max";
+        if (exists $data->{signals_size_limit}) {
+            my $limit = $data->{signals_size_limit};
+
+            if ($limit !~ /^\d+$/ || $limit <= 0) { # limit is a pos int
+                $rest->header( -status => HTTP_400_Bad_Request );
+                return "Size Limit must be a positive integer";
+            }
+
+            if ($limit > Socialtext::AppConfig->signals_size_limit) {
+                $rest->header( -status => HTTP_403_Forbidden );
+                return "Size Limit Exceeds Server Max";
+            }
         }
+
         my $prefs = $signals->GetAccountPluginPrefTable($acct->account_id);
         $prefs->set(%$data);
 
