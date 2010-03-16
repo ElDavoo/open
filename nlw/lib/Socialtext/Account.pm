@@ -1042,7 +1042,10 @@ sub hash_representation {
         account_id         => $self->account_id,
         plugins_enabled    => [ sort $self->plugins_enabled ],
         plugin_preferences => 
-            Socialtext::Pluggable::Adapter->new->account_preferences($self),
+            Socialtext::Pluggable::Adapter->new->account_preferences(
+                account       => $self,
+                with_defaults => 1,
+            ),
     };
     unless ($p{no_desktop}) {
         $hash->{$_} = $self->$_ for (grep /^desktop_/,@ACCT_COLS);

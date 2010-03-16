@@ -29,8 +29,6 @@ sub GET_json {
     $self->can_view(sub {
         my $acct = $self->account;
 
-        # XXX: This is just for signals now, make this more generic when we've
-        # got more prefs.
         my $data = {
             name               => $acct->name,
             account_id         => $acct->account_id,
@@ -39,7 +37,10 @@ sub GET_json {
             restrict_to_domain => $acct->restrict_to_domain,
             plugins            => [$acct->plugins_enabled],
             plugin_preferences => 
-                Socialtext::Pluggable::Adapter->new->account_preferences($acct),
+                Socialtext::Pluggable::Adapter->new->account_preferences(
+                    account       => $acct,
+                    with_defaults => 1,
+                ),
         };
 
         $self->rest->header(-type => 'application/json');
