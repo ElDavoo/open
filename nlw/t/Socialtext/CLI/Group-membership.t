@@ -666,7 +666,7 @@ group_is_already_admin_of_workspace: {
             )->add_member();
         };
     } );
-    like $output, qr/Group already has the role of 'admin' in the \S+ Workspace/,
+    like $output, qr/.+ already has the role of 'admin' in the \S+ Workspace/,
         'Group already has role error message';
 }
 
