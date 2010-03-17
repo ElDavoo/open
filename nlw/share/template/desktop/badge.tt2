@@ -1,5 +1,16 @@
 <html><head>
-    <link media="screen" href="/static/skin/s3/css/screen.css" type="text/css" rel="stylesheet"></link>
+    <link media="screen" href="/static/skin/s3/css/screen.css" type="text/css" rel="stylesheet" />
+  <!--[if gte IE 6]>
+    <link rel="stylesheet" type="text/css" href="/static/skin/s3/css/screen.ie.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/static/skin/s3/css/screen.ie6.css" media="screen" />
+  <![endif]-->
+  <!--[if gte IE 7]>
+    <link rel="stylesheet" type="text/css" href="/static/skin/s3/css/screen.ie7.css" media="screen" />
+  <![endif]-->
+  <style><!--
+    li { margin-bottom: 10px; }
+    .target { white-space: nowrap; }
+  --></style>
     <title>[% app_name %]</title>
 </head><body style="background: white; margin: 0px; font-size: 13px">
     <script src="/static/skin/common/javascript/jquery-1.2.6.js"></script>
@@ -17,11 +28,11 @@
 
 <li><span class="target">Flash Player</span> is required.</li>
 <li>Please
-<a class="getFlash" id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">click&nbsp;here</a>
-<a class="getAIR" id="air-link" target="_blank" href="http://get.adobe.com/air/">click&nbsp;here</a>
-to download and install <span class="target">Flash Player</span>.</li>
+<a class="getFlash" style="font-weight: bold" id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">click&nbsp;here</a>
+<a class="getAIR" style="font-weight: bold" id="air-link" target="_blank" href="http://get.adobe.com/air/">click&nbsp;here</a>
+to download and run the installer for <span class="target">Flash Player</span>.</li>
 <li><i>(You will need Administrator privileges on your workstation to install <span class="target">Flash Player</span>.)</i></li>
-<li class="getFlash" style="margin-bottom: 10px">After installation, please restart your browser, then open this dialog box again.</a></li>
+<li class="getFlash" style="margin-bottom: 10px">After installation, please <b>restart your browser</b>, then open this dialog box again.</a></li>
 <li class="getAIR" style="margin-bottom: 10px; display: none">After installation, please <a href="/" onclick="$('#flashcontent').css('background', 'url(/static/skin/common/images/ajax-loader.gif) no-repeat center'); $('#getThings').hide(); location.replace(location.href); return false">click here</a> to launch Socialtext&nbsp;Desktop.</a></li>
 <li>Thank you! :-)</li>
 </ol>
@@ -142,7 +153,8 @@ function hasFlash(selector) {
     if ($(selector).length == 0) return false;
     var obj = $(selector).get(0);
     if (typeof obj == 'undefined') return false;
-    return(typeof obj.GetVariable != 'undefined');
+    return(typeof obj.GetVariable != 'undefined'
+        && typeof obj.GetVariable != 'unknown');
 }
 
 function tryInit (tries) {
@@ -163,15 +175,11 @@ function tryInit (tries) {
     }
 }
 
-$(function(){
-    prevHTML = $('#flashcontent').html();
-    $('.getAIR').hide();
-    $('.getFlash').show();
-    $('#air-link').hide();
-    $('li').css('margin-bottom', '10px');
-    $('.target').css('white-space', 'nowrap');
-    setTimeout(function(){ tryInit(0) }, 250);
-});
+prevHTML = $('#flashcontent').html();
+$('.getAIR').hide();
+$('.getFlash').show();
+$('#air-link').hide();
+setTimeout(function(){ tryInit(0) }, 250);
 
 </script>
 </body></html>
