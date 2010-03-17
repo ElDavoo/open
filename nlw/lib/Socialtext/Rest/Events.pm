@@ -112,7 +112,6 @@ sub _post_an_event {
     if (!$actor_id && $self->rest->user && !$self->rest->user->is_guest) {
         $actor_id = $self->rest->user->user_id;
         my $uname = $self->rest->user->username;
-        warn "NOTICE: event actor has been set to '$uname' (id:$actor_id)";
     }
     return $self->_missing_param('actor.id')
         unless $actor_id;
