@@ -7,6 +7,7 @@ use base 'Socialtext::WikiFixture';
 use Test::HTTP;
 use Test::More;
 use Socialtext::WikiFixture::Socialtext;
+use Socialtext::AppConfig;
 
 =head1 NAME
 
@@ -35,6 +36,8 @@ sub init {
     # Set up the Test::HTTP object initially
     Socialtext::WikiFixture::SocialBase::init($self);
     Socialtext::WikiFixture::init($self);
+    Socialtext::AppConfig->set(signals_size_limit => 1000);
+    Socialtext::AppConfig->write();
 }
 
 =head2 handle_command( @row )
