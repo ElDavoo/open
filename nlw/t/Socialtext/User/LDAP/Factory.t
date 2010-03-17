@@ -134,7 +134,7 @@ get_user_valid_search_terms: {
     $user = $factory->GetUser(email_address=>'user@example.com');
     isa_ok $user, 'Socialtext::User::LDAP', 'email_address; valid search term';
 
-    no_warnings_logged_ok "no warnings logged to this point";
+    no_warnings_logged_ok "no warnings logged to this point", qr/Can't connect to pushd/;
 
     # "first_name" is mapped, but is -NOT- a valid search term
     my $missing_user = $factory->GetUser(first_name=>'First');
