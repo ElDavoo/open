@@ -26,6 +26,7 @@
 | add-member | %%overlapuser%% | %%diffws%% |  |
 | add-member | %%overlapuser%% | %%ws%% |  |
 
+| include | [Test Case: Activities Widget Greeting] |  |
 | include | [Test Case: Activities Widget Setup My Signals] |  |
 | include | [Test Case: Activities Widget Other User's Signals] |  |
 | include | [Test Case: Activities Widget Verify My Signals] |  |
