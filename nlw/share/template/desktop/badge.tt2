@@ -4,24 +4,28 @@
 </head><body style="background: white; margin: 0px; font-size: 13px">
     <script src="/static/skin/common/javascript/jquery-1.2.6.js"></script>
     <span tmp="div" id="flashcontent" style="
-        width: 215px;
-        height: 180px;
+        width: 430px;
+        height: 250px;
         display: block;
         position: absolute;
         top: 50%;
         left: 50%;
-        margin-top: -90px;
-        margin-left: -107px;
+        margin-top: -125px;
+        margin-left: -215px;
     ">
-<br/>
-<ol id="getThings" style="display: none">
-<li class="getFlash" style="margin-bottom: 10px">Please first install <a id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">Flash&nbsp;&#8482&nbsp;Player</a>.
-<li class="getFlash" style="margin-bottom: 10px">Then restart your browser, and open this dialog box again.</a></li>
-<li class="getAIR" style="margin-bottom: 10px; display: none">Please install <a id="air-link" target="_blank" href="http://get.adobe.com/air/">Adobe&nbsp;AIR&#8482</a>.
-<li class="getAIR" style="margin-bottom: 10px; display: none">Then <a href="#" onclick="$('#flashcontent').css('background', 'url(/static/skin/common/images/ajax-loader.gif) no-repeat center'); $('#getThings').hide(); location.replace(location.href); return false">click here</a> to launch Socialtext Desktop.</a></li>
+<ol id="getThings" style="display: none; text-align: left">
+
+<li><span class="target">Flash Player</span> is required.</li>
+<li>Please
+<a class="getFlash" id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">click&nbsp;here</a>
+<a class="getAIR" id="air-link" target="_blank" href="http://get.adobe.com/air/">click&nbsp;here</a>
+to download and install <span class="target">Flash Player</span>.</li>
+<li><i>(You will need Administrator privileges on your workstation to install <span class="target">Flash Player</span>.)</i></li>
+<li class="getFlash" style="margin-bottom: 10px">After installation, please restart your browser, then open this dialog box again.</a></li>
+<li class="getAIR" style="margin-bottom: 10px; display: none">After installation, please <a href="/" onclick="$('#flashcontent').css('background', 'url(/static/skin/common/images/ajax-loader.gif) no-repeat center'); $('#getThings').hide(); location.replace(location.href); return false">click here</a> to launch Socialtext&nbsp;Desktop.</a></li>
 <li>Thank you! :-)</li>
 </ol>
-        </span>
+</span>
 
 <!--[if !IE]>-->
 <object type="application/x-shockwave-flash"
@@ -129,8 +133,9 @@ var prevHTML;
 function hide_swfobject () {
     $('#flashcontent').html(prevHTML);
     $('#getThings').show();
-    $('.getAIR').show();
+    $('.target').text('Adobe AIR');
     $('.getFlash').hide();
+    $('.getAIR').show();
 }
 
 function hasFlash(selector) {
@@ -160,6 +165,11 @@ function tryInit (tries) {
 
 $(function(){
     prevHTML = $('#flashcontent').html();
+    $('.getAIR').hide();
+    $('.getFlash').show();
+    $('#air-link').hide();
+    $('li').css('margin-bottom', '10px');
+    $('.target').css('white-space', 'nowrap');
     setTimeout(function(){ tryInit(0) }, 250);
 });
 
