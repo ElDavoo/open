@@ -16,6 +16,9 @@ use namespace::clean -except => 'meta';
 
 has 'viewer' => (
     is => 'ro', isa => 'Socialtext::User',
+    handles => {
+        viewer_id => 'user_id',
+    }
 );
 
 has 'link_dictionary' => (
@@ -337,7 +340,7 @@ sub visible_exists {
                       AND plug.user_set_id = o_path.user_set_id
                )
     };
-    push @$bind_ref, $self->viewer->user_id;
+    push @$bind_ref, $self->viewer_id;
 
     my $account_id = $opts->{account_id};
     my $group_id = $opts->{group_id};
@@ -584,7 +587,6 @@ sub _build_standard_sql {
     my $self = shift;
     my $opts = shift;
 
-    my $viewer_id = $self->viewer->user_id;
     my $table = $self->table;
 
     $self->_process_before_after($opts);
@@ -595,7 +597,7 @@ sub _build_standard_sql {
             if ($self->_include_public_ws) {
                 $visible_ws .= ' UNION ALL '.$PUBLIC_WORKSPACES;
             }
-            my @bind = ($viewer_id);
+            my @bind = ($self->viewer_id);
             if ($opts->{account_id}) {
                 $visible_ws = _limit_ws_to_account($visible_ws);
                 push @bind, $opts->{account_id};
@@ -623,12 +625,12 @@ sub _build_standard_sql {
         if ($opts->{followed}) {
             if ($opts->{with_my_signals}) {
                 $self->add_condition(
-                    $FOLLOWED_PEOPLE_ONLY_WITH_MY_SIGNALS => ($viewer_id) x 3
+                    $FOLLOWED_PEOPLE_ONLY_WITH_MY_SIGNALS => ($self->viewer_id) x 3
                 );
             }
             else {
                 $self->add_condition(
-                    $FOLLOWED_PEOPLE_ONLY => ($viewer_id) x 2
+                    $FOLLOWED_PEOPLE_ONLY => ($self->viewer_id) x 2
                 );
             }
         }
