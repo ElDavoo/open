@@ -18,16 +18,21 @@ for "non-WS content" was not redirecting properly.
 | get                | /%%workspace%%/index.cgi?%%workspace%% |        |
 | code-is            | 200                                    |        |
 
-| *Comment*          | Member Only Workspace                  |                                        |
-| set-ws-permissions | %%workspace%%                          | member-only                            |
-| get                | /%%workspace%%/index.cgi?%%workspace%% |                                        |
-| code-is            | 302                                    |                                        |
-| header-like        | Location                               | /nlw/ntlm?redirect_to=%2F%%workspace%% |
+| *Comment*          | Member Only Workspace                  |                              |
+| set-ws-permissions | %%workspace%%                          | member-only                  |
+| get                | /%%workspace%%/index.cgi?%%workspace%% |                              |
+| code-is            | 302                                    |                              |
+| header-like        | Location                               | /nlw/ntlm                    |
+| header-like        | Location                               | redirect_to=%2F%%workspace%% |
+| header-like        | Location                               | qr/\bsid=[a-f0-9-]+/         |
 
-| *Comment*   | Challenger, directly |                           |
-| get         | /challenge/?/        |                           |
-| code-is     | 302                  |                           |
-| header-like | Location             | /nlw/ntlm?redirect_to=%2F |
+| *Comment*     | Challenger, directly |                          |
+| get           | /challenge/?/        |                          |
+| code-is       | 302                  |                          |
+| header-like   | Location             | /nlw/ntlm                |
+| header-like   | Location             | redirect_to=%2F          |
+| header-unlike | Location             | qr/\Qredirect_to=%2F\e./ |
+| header-like   | Location             | qr/\bsid=[a-f0-9-]+/     |
 
 | *Comment* | Teardown               |
 | st-config | set challenger STLogin |
