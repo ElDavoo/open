@@ -91,7 +91,8 @@ END_OF_RANT
     ok $orig ne $page,
         q{When there are multiple revisions, $page->original_revision returns an object distinct from $page.};
 
-    my $changes = $hub->recent_changes->get_recent_changes;
+    my $changes = $hub->recent_changes->get_recent_changes_in_category();
+
     my $row     = $changes->{rows}->[0];
     #use YAML; warn Dump($changes->{rows});
     is( $row->{Subject}, $TITLE, "most recently modified page is $TITLE" );
