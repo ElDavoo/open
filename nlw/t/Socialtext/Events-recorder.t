@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::More tests => 28;
+use Test::More tests => 31;
 use Test::Exception;
 use mocked 'Socialtext::Page';
 use mocked 'Socialtext::Headers';
@@ -16,6 +16,7 @@ BEGIN {
 }
 
 my $insert_re = qr/^INSERT INTO event \( at, event_class, action, actor_id, person_id, page_id, page_workspace_id, signal_id, tag_name, context, group_id \) VALUES/;
+my $insert_view_re = qr/^INSERT INTO view_event \( at, event_class, action, actor_id, person_id, page_id, page_workspace_id, signal_id, tag_name, context, group_id \) VALUES/;
 
 my $user = Socialtext::User->new(
     user_id => 2345, 
@@ -82,7 +83,7 @@ Creating_events: {
     }
 
 
-    Record_valid_event: {
+    Record_valid_view_event: {
         Socialtext::Events->Record({
             timestamp   => 'whenevs',
             action      => 'view',
@@ -93,13 +94,30 @@ Creating_events: {
         });
         sql_ok(
             name => "Record valid event",
-            sql => $insert_re,
+            sql => $insert_view_re,
             args => [ 'whenevs', 'page', 'view', 1, undef,
                       'hello_world', 22, (undef) x 4 ],
         );
         ok_no_more_sql();
     }
 
+    Record_valid_edit_event: {
+        Socialtext::Events->Record({
+            timestamp   => 'whenevs',
+            action      => 'edit',
+            actor       => 1,
+            page        => 'hello_world',
+            workspace   => 22,
+            event_class => 'page',
+        });
+        sql_ok(
+            name => "Record valid event",
+            sql => $insert_re,
+            args => [ 'whenevs', 'page', 'edit', 1, undef,
+                      'hello_world', 22, (undef) x 4 ],
+        );
+        ok_no_more_sql();
+    }
     Record_page_object: {
         Socialtext::Events->Record( {
             action      => 'view',
@@ -108,7 +126,7 @@ Creating_events: {
         } );
         sql_ok(
             name => "Record event with page object",
-            sql => $insert_re,
+            sql => $insert_view_re,
             args => ['now', 'page', 'view', 2345, 
                      undef, 'example_page',  348798, undef, undef,
                      '{"revision_id":"abcd","edit_summary":"awesome","revision_count":"56"}',
