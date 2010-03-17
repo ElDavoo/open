@@ -35,12 +35,10 @@
 | st-text-unlike-in-activities-widget | activities_widget | %%fourfortysignal%% |
 
 | *Comment* | Test Case: Change Signal Limit Login set serverwide 200 char limit - see limit |
-
-| *Comment* | Test Case: Change Signal Limit Login set serverwide 150 char limit for a specific acct - see limit |
+| open_ok | / | *Comment* | Test Case: Change Signal Limit Login set serverwide 150 char limit for a specific acct - see limit |
 
 | *Comment* | Test Case: Change Signal Limit Login Other acct still at 200 |
 
-0
 | *Comment* | Test Case: Change Signal Limit Login add-member so I'll see the 150-char workspace |
 
 | *Comment* | Test Case: Change Signal Limit Login Signal to both, limit is 150 |
