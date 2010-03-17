@@ -7,6 +7,8 @@ Socialtext
 Author: Mark Schuber :: Araucaria Design
 Date: 05/12/2008
 
+updated by reed@bertopro.com on 3/16/10 (March)
+10-03-16a
 */
 
 /* CSS Reset Start */ 
@@ -2254,9 +2256,9 @@ body#dashBoard div#lastsignal {
     border: none;
     font-size: 1em;
 }
-
+/* there's wafl_box defs in wiki.css & screen.css */
 .wafl_box {
-    background: #F4F4F4 none repeat scroll 0%;
+    background: #ffffff none repeat scroll 0%;
     border: 1px solid #AAAAAA;
     color: #000000;
     padding: 10px;
@@ -2267,10 +2269,10 @@ body#dashBoard div#lastsignal {
     border: none;
 }
 
-.wafl_title {
+.wafl_title, .fetchrss_title {
     font-weight: bold;
     color: #000000;
-    text-align: center;
+    text-align: left;
     font-size: 1em;
 }
 
