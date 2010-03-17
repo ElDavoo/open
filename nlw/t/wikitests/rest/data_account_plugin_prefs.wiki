@@ -81,6 +81,9 @@
 | PUT-json       | /data/accounts/%%acct%%/plugins/signals/preferences | {"signals_size_limit":"-19"}  |
 | code-is        | 400                                                 |                               |
 | body-like      | Size Limit must be a positive integer               |                               |
+| PUT-json       | /data/accounts/%%acct%%/plugins/signals/preferences | {"signals_size_limit":"20.5"} |
+| code-is        | 400                                                 |                               |
+| body-like      | Size Limit must be a positive integer               |                               |
 
 ## Can't set higher than server max
 | *Comment*      | Can't set higher than server max                    |                              |
