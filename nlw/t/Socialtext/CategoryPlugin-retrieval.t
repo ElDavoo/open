@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use DateTime;
 use Socialtext::Pages;
-use Test::Socialtext tests => 7;
+use Test::Socialtext tests => 8;
 
 ###############################################################################
 # Fixtures: db
