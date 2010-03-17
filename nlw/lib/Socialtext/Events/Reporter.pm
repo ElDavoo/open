@@ -305,7 +305,7 @@ sub signal_vis_sql {
                 AND EXISTS (
                     SELECT 1
                     FROM user_sets_for_user usfu
-                    WHERE usfu.user_id = evt.person_id
+                    WHERE usfu.user_id = $evtable.person_id
                       AND v_path.user_set_id = usfu.user_set_id
                 )
             )
