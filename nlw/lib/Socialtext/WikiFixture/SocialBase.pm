@@ -354,6 +354,23 @@ sub st_search_cp_users {
     $self->handle_command('wait_for_text_present_ok',$searchfor,30000);
 }
 
+=head2 st_search_cp_accounts($searchfor)
+
+Control panel (Account) search automation
+
+=cut
+
+sub st_search_cp_accounts {
+   my ($self, $searchfor) = @_;
+   $self->handle_command('open_ok', '/nlw/control/account');
+   $self->handle_command('wait_for_element_visible_ok','st-search-by-name',30000);
+   $self->handle_command('wait_for_element_visible_ok','st-submit-search-by-name',30000);
+   $self->handle_command('type_ok','st-search-by-name',$searchfor);
+   $self->handle_command('click_and_wait','st-submit-search-by-name');
+   my $str = "Accounts matching " . '"' . $searchfor . '"';
+   $self->handle_command('wait_for_text_present_ok',$str,30000);
+}
+
 sub create_account {
     my $self = shift;
     my $name = shift;

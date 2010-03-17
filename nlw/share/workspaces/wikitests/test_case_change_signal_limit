@@ -1,15 +1,18 @@
 | *Comment* | Test Case: Change Signal Limit |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Change Signal Limit Create two accounts and two users |  |
 | set | onehundredlimit | one-hundred-limit-%%start_time%% |
 | set | twohundredlimit | twohundred-limit-%%start_time%% |
 | set | onehundreduser | onehundreduser-%%start_time%%@matt.socialtext.net |
 | set | twohundreduser | twohundreduser-%%start_time%%@matt.socialtext.net |
 | set | onehundred_ws | onehundred-ws-%%start_time%% |
-| set | onefiftysignal | 2*4*6*8*11*14*17*20*23*26*29*32*35*38*41*44*47*50*53*56*59*62*65*68*71*74*77*80*83*86*89*92*95*98*102*106*110*114*118*122*126*130*134*138*142*146*150* |
-| set | onefiftyonesignal | *3*5*7*9*12*15*18*21*24*27*30*33*36*39*42*45*48*51*54*57*60*63*66*69*72*75*78*81*84*87*90*93*96*99*103*107*111*115*119*123*127*131*135*139*143*147*151* |
-| set | twohundredsignal | *3*5*7*9*12*15*18*21*24*27*30*33*36*39*42*45*48*51*54*57*60*63*66*69*72*75*78*81*84*87*90*93*96*100*104*108*112*116*120*124*128*132*136*140*144*148*152*156*160*164*168*172*176*180*184*188*192*196*200* |
-| set | twohundredonesignal | *3*5*7*10*13*16*19*22*25*28*31*34*37*40*43*46*49*52*55*58*61*64*67*70*73*76*79*82*85*88*91*94*97*101*105*109*113*117*121*125*129*133*137*141*145*149*153*157*161*165*169*173*177*181*185*189*193*197*201* |
+| set | onefiftysignal | 2b4b6b8b11b14b17b20b23b26b29b32b35b38b41b44b47b50b53b56b59b62b65b68 71 74 77 80 83 86 89 92 95 98 102 106 110 114 118 122 126 130 134 138 142 146 150 |
+| set | onefiftyonesignal | 3 5 7 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 99 103 107 111 115 119 123 127 131 135 139 143 147 151 |
+| set | twohundredsignal | 3 5 7 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 100 104 108 112 116 120 124 128 132 136 140 144 148 152 156 160 164 168 172 176 180 184 188 192 196 200 |
+| set | twohundredonesignal | 3 5 7 10 13 16 19 22 25 28 31 34 37 40 43 46 49 52 55 58 61 64 67 70 73 76 79 82 85 88 91 94 97 101 105 109 113 117 121 125 129 133 137 141 145 149 153 157 161 165 169 173 177 181 185 189 193 197 201 |
+| set | fourfortysignal | 3 5 7 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 100 104 108 112 116 120 124 128 132 136 140 144 148 152 156 160 164 168 172 176 180 184 188 192 196 200 204 208 212 216 220 224 228 232 236 240 244 248 252 256 260 264 268 272 276 280 284 288 292 296 300 304 308 312 316 320 324 328 332 336 340 344 348 352 356 360 364 368 372 376 380 384 388 392 396 400 404 408 412 416 420 424 428 432 436 440 |
 
 | create-account | %%onehundredlimit%% |  |
 | create-account | %%twohundredlimit%% |  |
@@ -17,7 +20,19 @@
 | st-admin | create-user --e %%twohundreduser%% --p %%password%% --account %%twohundredlimit%% | A new user with the username |
 | st-admin | create-workspace --name %%onehundred_ws%% --title %%onehundred_ws%% --account %%onehundredlimit%% | A new workspace named |
 
-| *Comment* | Test Case: Change Signal Limit Login and see 140-char limit |
+| *Comment* | Test Case: Change Signal Limit Login and see 400-char limit |  |
+| st-admin | give-accounts-admin --email %%username%% |  |
+| open_ok | /st/dashboard |  |
+| st_single_widget_in_dashboard | gallery-widget-Activities |  |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+| st-select-widget-frame | activities_widget |
+| text_like | //body | 400 |
+| select-frame | relative=parent |  |
+| st-send-signal-via-activities-widget | activities_widget | %%twohundredsignal%% |
+| st-verify-text-in-activities-widget | activities_widget | %%twohundredsignal%% |
+| st-send-signal-via-activities-widget | activities_widget | %%fourfortysignal%% |
+| st-text-unlike-in-activities-widget | activities_widget | %%fourfortysignal%% |
 
 | *Comment* | Test Case: Change Signal Limit Login set serverwide 200 char limit - see limit |
 
@@ -25,6 +40,7 @@
 
 | *Comment* | Test Case: Change Signal Limit Login Other acct still at 200 |
 
+0
 | *Comment* | Test Case: Change Signal Limit Login add-member so I'll see the 150-char workspace |
 
 | *Comment* | Test Case: Change Signal Limit Login Signal to both, limit is 150 |
