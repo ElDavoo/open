@@ -86,6 +86,7 @@ sub can_admin {
 no Moose;
 __PACKAGE__->meta->make_immutable(inline_constructor =>0);
 1;
+
 =head1 NAME
 
 Socialtext::Rest::AccountPluginPrefs - Account plugin preferences handler 
