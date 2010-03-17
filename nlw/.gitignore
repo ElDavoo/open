@@ -454,3 +454,4 @@ t/wikitests/push/membership-change.wiki
 t/Socialtext/Handler/Push-sig-render.t
 t/Socialtext/Signal/length.t
 t/wikitests/signals/data_signals_length.wiki
+lib/Socialtext/WikiFixture/Reports.pm
