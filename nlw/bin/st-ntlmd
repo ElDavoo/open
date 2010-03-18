@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 use warnings;
 use strict;
+use FindBin;
+use lib "$FindBin::Bin/../lib";
 
 #
 # Override a bunch of modules to prevent Apache::AuthenNTLM from loading
