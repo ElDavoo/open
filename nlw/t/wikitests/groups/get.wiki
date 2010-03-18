@@ -9,6 +9,15 @@ Tests for [Story: Groups ReST API]
 | set          | group_name     | group%%start_time%% |              |
 | create-group | %%group_name%% | %%account%%         | %%username%% |
 
+# Group shows up in list
+| GET | /data/groups |
+| code-is | 200 |
+| header-like | Cache-Control | private |
+| json-parse | |
+| Body-like | "group_id":"%%group_id%%" |
+| Body-like | "name":"%%group_name%%" |
+| Body-like | "uri":"/data/groups/%%group_id%%" |
+
 ## visible by Group Creator (Creator sees Groups he created or is a member of)
 
 | GET | /data/groups/%%group_id%% |
