@@ -290,7 +290,8 @@ sub decorate_event_set {
 
 sub signal_vis_sql {
     my $self = shift;
-    my $evtable = shift || 'evt';
+    my $evtable = shift;
+    my $path_table = shift;
     return qq{ 
         AND ((
                 $evtable.person_id IS NULL
@@ -309,7 +310,7 @@ sub signal_vis_sql {
                     SELECT 1
                     FROM user_sets_for_user usfu
                     WHERE usfu.user_id = $evtable.person_id
-                      AND v_path.user_set_id = usfu.user_set_id
+                      AND $path_table.user_set_id = usfu.user_set_id
                 )
             )
         )
@@ -354,7 +355,7 @@ sub visible_exists {
     }
 
     if ($plugin eq 'signals') {
-        $sql .= $self->signal_vis_sql($evt_table); 
+        $sql .= $self->signal_vis_sql($evt_table, 'v_path');
         push @$bind_ref, ($self->viewer->user_id) x 2;
     }
 
