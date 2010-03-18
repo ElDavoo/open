@@ -27,10 +27,10 @@ Visit in IE 6 and IE 7 and Safari
 
 | *Comment* | SEE Download Desktop Note; click if it you'd like. |
 
-| wait_for_element_visible_ok | st-duplicate-cancellink | 30000 |
+| wait_for_element_visible_ok | st-desktop-cancellink | 30000 |
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
-| click_ok | st-duplicate-cancellink |  |
+| click_ok | st-desktop-cancellink |  |
 | pause | %%pt%% |  |
 | *Comment* | Remove Spurious pop-up browser window if needed |
 | pause | %%pt%% |  |
@@ -600,7 +600,7 @@ Lightbox screens:
 | click_and_wait | link=Add Members |  |
 | click_and_wait | //a[@id='workspaceName'] |  |
 
-| click_and_wait | link=Profile |  |
+| click_and_wait | link=%%short_username%% |  |
 | *Comment* | SEE user profile |  |
 | pause | %%pt%% |  |
 | open_ok | /?edit_profile |  |
@@ -610,7 +610,7 @@ Lightbox screens:
 
 | *Comment* | SlideShow navigate home in case previous test hangs |  |
 | open-ok | /%%wiki%% |  |
-| click_and_wait | link=Profile |  |
+| click_and_wait | link=%%short_username%% |  |
 | *Comment* | SEE user tagging |  |
 
 | type_ok | new_tag | SlideShow %%start_time%% |
