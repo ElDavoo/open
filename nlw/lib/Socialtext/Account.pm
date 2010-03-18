@@ -164,6 +164,18 @@ sub _build_logo {
     return Socialtext::AccountLogo->new(account => $self);
 }
 
+has 'plugin_preferences' => (
+    is => 'ro', isa => 'HashRef',
+    lazy_build => 1,
+);
+
+sub _build_plugin_preferences {
+    my $self = shift;
+    return Socialtext::Pluggable::Adapter->new->account_preferences(
+        account => $self, with_defaults => 1,
+    );
+}
+
 sub custom_workspace_skins {
     my $self = shift;
     my %p    = @_;
@@ -1056,11 +1068,7 @@ sub hash_representation {
         account_name       => $self->name,
         account_id         => $self->account_id,
         plugins_enabled    => [ sort $self->plugins_enabled ],
-        plugin_preferences => 
-            Socialtext::Pluggable::Adapter->new->account_preferences(
-                account       => $self,
-                with_defaults => 1,
-            ),
+        plugin_preferences => $self->plugin_preferences,
     };
     unless ($p{no_desktop}) {
         $hash->{$_} = $self->$_ for (grep /^desktop_/,@ACCT_COLS);
