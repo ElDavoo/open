@@ -10,6 +10,7 @@ my @dirs = qw(
     nlw/share/skin
     plugins/socialcalc
     plugins/widgets
+    plugins/signals
     plugins/dashboard
     plugins/people
     plugins/control
