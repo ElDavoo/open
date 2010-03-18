@@ -53,6 +53,38 @@ sub FallbackDomain {
     return $default->domain();
 }
 
+sub ConfigureApacheAuthenNTLM {
+    my $class = shift;
+    my $o = shift;
+
+    # force Apache::AuthenNTLM to split up the "domain\username" and only
+    # leave us the "username" part; our Authen system doesn't understand
+    # composite usernames and isn't able to handle this as an exception to the
+    # rule.
+    $o->{splitdomainprefix} = 1;
+
+    # read in our NTLM config, and set up our PDC/BDCs
+    my @all_configs = $class->load();
+    foreach my $config (@all_configs) {
+        my $domain  = lc( $config->domain() );
+        my $primary = $config->primary();
+        my $backups = $config->backup();
+
+        $o->{smbpdc}{$domain} = $primary;
+        $o->{smbbdc}{$domain} = join ' ', @{$backups};
+    }
+    
+    # the default domain comes from the 0th config too:
+    $o->{handshake_timeout} = 0+$all_configs[0]->handshake_timeout;
+
+    # set the default/fallback domains, in case the NTLM handshake doesn't
+    # indicate which one to use
+    $o->{defaultdomain}  = $class->DefaultDomain();
+    $o->{fallbackdomain} = $class->FallbackDomain();
+
+    return $o;
+}
+
 1;
 
 =head1 NAME

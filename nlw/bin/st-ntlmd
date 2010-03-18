@@ -175,36 +175,17 @@ sub get_config {
 
     $orig_get_config->($self,$r);
 
-    $self->{debug} = 1;
-
     # mocking sets up these two:
     delete $self->{smbpdc}{foo};
     delete $self->{smbbdc}{foo};
 
-    # force Apache::AuthenNTLM to split up the "domain\username" and only
-    # leave us the "username" part; our Authen system doesn't understand
-    # composite usernames and isn't able to handle this as an exception to the
-    # rule.
-    $self->{splitdomainprefix} = 1;
+    $self->{debug} = 1;
 
-    # read in our NTLM config, and set up our PDC/BDCs
-    my @all_configs = Socialtext::NTLM::Config->load();
-    foreach my $config (@all_configs) {
-        my $domain  = lc( $config->domain() );
-        my $primary = $config->primary();
-        my $backups = $config->backup();
+    Socialtext::NTLM::Config->ConfigureApacheAuthenNTLM($self);
 
-        $self->{smbpdc}{$domain} = $primary;
-        $self->{smbbdc}{$domain} = join ' ', @{$backups};
-    }
-    
-    # the default domain comes from the 0th config too:
-    $Handshake_timeout = $all_configs[0]->handshake_timeout;
+    $Handshake_timeout = delete $self->{handshake_timeout};
 
-    # set the default/fallback domains, in case the NTLM handshake doesn't
-    # indicate which one to use
-    $self->{defaultdomain}  = Socialtext::NTLM::Config->DefaultDomain();
-    $self->{fallbackdomain} = Socialtext::NTLM::Config->FallbackDomain();
+    return unless $self->{debug};
 
     # debugging notes
     my $prefix = 'st-ntlmd';
