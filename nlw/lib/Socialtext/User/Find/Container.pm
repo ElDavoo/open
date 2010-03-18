@@ -124,4 +124,40 @@ sub get_results {
 }
 
 __PACKAGE__->meta->make_immutable;
+
+=head1 NAME
+
+User::Find::Container - Find users in an UserSetContainer
+
+=head1 SYNOPSIS
+
+    my $user_find = Socialtext::User::Find::Container->new(
+        container => $group,
+        direct => $true_or_false,
+        # ...standard User::Find parameters...
+    )
+
+=head1 DESCRIPTION
+
+This module extends the Socialtext::User::Find interface with
+two additional parameters:
+
+=over 4
+
+=item container
+
+The scope to find users from.
+
+Must be a L<Socialtext::UserSetContainer> object, such as a group.
+
+=item direct
+
+If true, only find users who are direct members of the container.
+
+If false, also find indirect members of intermediate sub-containers.
+
+=back
+
+=cut
+
 1;
