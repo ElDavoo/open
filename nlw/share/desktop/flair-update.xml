@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>217</version>
-  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-217.air</url>
-  <description><![CDATA[[Build 217 - Tue Mar  9 15:35:46 PST 2010]
+  <version>226</version>
+  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-226.air</url>
+  <description><![CDATA[[Build 226 - Fri Mar 12 22:24:41 PST 2010]
+* On Login, reset SignalTo to Primary group if it was set to "All Groups".
+
+[Build 225 - Fri Mar 12 04:17:39 PST 2010]
+* Start Signal/Activity clocks right after network reconnection.
+
+[Build 224 - Fri Mar 12 03:57:29 PST 2010]
+* Fix {bz: 3621}: Signals stops refreshing after network disconnect.
+
+[Build 223 - Fri Mar 12 03:13:37 PST 2010]
+* Fix {bz: 3603}: Support System Proxy settings on Mac OS X.
+
+[Build 222 - Thu Mar 11 09:23:38 PST 2010]
+* Signals: Name auto-completion are now sorted by name.
+* Fix {bz: 3632}: Duplicated People entries and People-refresh problems.
+
+[Build 221 - Wed Mar 10 21:47:09 PST 2010]
+* Fix Account skin application accidentally removed in build 220.
+
+[Build 220 - Wed Mar 10 21:24:39 PST 2010]
+* Add a colon between Signal poster's name and time. (Alan)
+
+[Build 219 - Wed Mar 10 21:11:47 PST 2010]
+* Correctly use /data/config to detect push support. (Stash)
+* Abort all pending Ajax requests upon logout.
+
+[Build 218 - Tue Mar  9 19:36:02 PST 2010]
+* Finish first-round implementation of /data/push support.
+
+[Build 217 - Tue Mar  9 15:35:46 PST 2010]
 * People: Add rhyme and reason to the display order. (Eugene)
 
 [Build 216 - Mon Mar  8 21:04:06 PST 2010]
