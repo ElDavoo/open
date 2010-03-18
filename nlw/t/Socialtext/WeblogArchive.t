@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 8;
-fixtures(qw( empty ));
+fixtures(qw( clean empty ));
 
 BEGIN {
     use_ok( "Socialtext::WeblogArchive" );
@@ -23,9 +23,7 @@ my %months = (
 my $hub = new_hub('empty');
 
 create_pages();
-
 test_archive();
-
 test_html();
 
 sub test_archive {
@@ -70,8 +68,9 @@ sub create_page {
         content    => "this is our $year and $month",
         categories => ['archive blog'],
         date       => DateTime->new(
-            year => $year, month => $months{$month},
-            day  => 1,
+            year  => $year,
+            month => $months{$month},
+            day   => 2,
         ),
         creator    => $hub->current_user,
     );
