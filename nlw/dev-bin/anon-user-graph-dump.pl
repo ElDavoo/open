@@ -18,29 +18,26 @@ use YAML qw/Dump/;
 
 my $dbh = get_dbh();
 
-my @queries = split "\n",<<EOQ;
-SELECT * FROM "Role";
-SELECT account_id FROM "Account";
-SELECT workspace_id,account_id FROM "Workspace";
-SELECT * FROM "System";
-SELECT * FROM account_plugin;
-SELECT * FROM group_account_role;
-SELECT * FROM group_workspace_role;
-SELECT group_id,primary_account_id FROM groups;
-SELECT user_id,primary_account_id FROM users NATURAL JOIN "UserMetadata";
-SELECT * FROM user_account_role;
-SELECT * FROM user_group_role;
-SELECT * FROM user_workspace_role;
-SELECT * FROM workspace_plugin;
-SELECT * FROM workspace_plugin_pref;
-EOQ
+my %queries = (
+    Role => q{SELECT * FROM "Role"},
+    Permission => q{SELECT * FROM "Permission"},
+    Account => q{SELECT account_id FROM "Account"},
+    Workspace => q{SELECT workspace_id,account_id FROM "Workspace"},
+    WorkspaceRolePermission => q{SELECT workspace_id,role_id,array_accum(permission_id) AS permission_ids FROM "WorkspaceRolePermission" GROUP BY workspace_id, role_id ORDER BY workspace_id, role_id},
+    System => q{SELECT * FROM "System"},
+    groups => q{SELECT group_id,primary_account_id FROM groups},
+    users => q{SELECT user_id,primary_account_id FROM users NATURAL JOIN "UserMetadata"},
+    user_set_include => q{SELECT * FROM user_set_include},
+    user_set_plugin => q{SELECT user_set_id, array_accum(plugin) AS plugins FROM user_set_plugin GROUP BY user_set_id},
+    user_set_plugin_pref => q{SELECT * FROM user_set_plugin_pref},
+);
 
-for my $query (@queries) {
+while (my ($label, $query) = each %queries) {
 	my $sth = $dbh->prepare($query);
 	$sth->execute();
 	# make keys lexical for readability
 	print Dump({
-		aa_table => "Role",
+		aa_label => $label,
 		bb_names => $sth->{NAME},
 		zz_data => $sth->fetchall_arrayref(),
 	});
