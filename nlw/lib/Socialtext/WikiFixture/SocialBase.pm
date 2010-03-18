@@ -285,6 +285,18 @@ sub st_create_pages {
     ok 1, "Created $numberpages of pages in $workspace";
 }
 
+sub stub_page {
+    my ($self, $workspace, $title, $content) = @_;
+    my $user = Socialtext::User->SystemUser;
+    my $hub = new_hub($workspace);
+
+    $content ||= "Placeholder content ".$self->{start_time};
+    Socialtext::Page->new(hub => $hub)->create(
+                              title => $title,
+                              content => $content,
+                              creator => Socialtext::User->SystemUser);
+}
+
 =head2 st_search_for($searchtype, $searchvalue)
 
 Global nav search automation
