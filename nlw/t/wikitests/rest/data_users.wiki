@@ -48,114 +48,123 @@ Create five users.  Zeno is in another account so we can test visibility.  A B a
 | add-member | %%user_b%% | %%ws1%% |
 | add-member | %%user_c%% | %%ws1%% |
 
-| set | user_a_json | {"user_id":"%%user_a_id%%","first_name":"%%fn_a%%","last_name":"%%ln_a%%","email_address":"%%user_a%%","username":"%%user_a%%"} |
-| set | user_b_json | {"user_id":"%%user_b_id%%","first_name":"%%fn_b%%","last_name":"%%ln_b%%","email_address":"%%user_b%%","username":"%%user_b%%"} |
-| set | user_c_json | {"user_id":"%%user_c_id%%","first_name":"%%fn_c%%","last_name":"%%ln_c%%","email_address":"%%user_c%%","username":"%%user_c%%"} |
-| set | user_d_json | {"user_id":"%%user_d_id%%","first_name":"%%fn_d%%","last_name":"%%ln_d%%","email_address":"%%user_d%%","username":"%%user_d%%"} |
-
 | Comment        | run it all as user a |          |
 | http-user-pass | %%user_a%%           | password |
-
 
 Query on some string should prefix-match against the first name, last name and email address.
 
 The results should always be sorted by "Last Name, First Name"
 
-| Comment    | happy path | |
-| GET        | /data/users?filter=Carl                  | application/json |
-| code-is    | 200                                      |                  |
-| json-parse |                                          |                  |
-| json-like  | [%%user_c_json%%]                        |                  |
+## This time through, let's check the entire JSON hash, in the future, we'll just check user_id's and assume that the rest is correct.
+| Comment      | happy path              |                  |
+| GET          | /data/users?filter=Carl | application/json |
+| code-is      | 200                     |                  |
+| json-parse   |                         |                  |
+| json-path-is | $[0].user_id            | %%user_c_id%%    |
+| json-path-is | $[0].first_name         | %%fn_c%%         |
+| json-path-is | $[0].last_name          | %%ln_c%%         |
+| json-path-is | $[0].email_address      | %%user_c%%       |
+| json-path-is | $[0].username           | %%user_c%%       |
 
-| Comment    | No filter: all users                                              |                  |
-| GET        | /data/users                                                       | application/json |
-| code-is    | 200                                                               |                  |
-| json-parse |                                                                   |                  |
-| json-like  | [%%user_c_json%%,%%user_a_json%%,%%user_b_json%%,%%user_d_json%%] |                  |
+| Comment      | No filter: all users |                  |
+| GET          | /data/users          | application/json |
+| code-is      | 200                  |                  |
+| json-parse   |                      |                  |
+| json-path-is | $[0].user_id         | %%user_a_id%%    |
+| json-path-is | $[1].user_id         | %%user_b_id%%    |
+| json-path-is | $[2].user_id         | %%user_c_id%%    |
+| json-path-is | $[3].user_id         | %%user_d_id%%    |
 
 | Comment | An empty filter param should be a bad query |                  |
 | get     | /data/users?filter=                         | application/json |
 | code-is | 400                                         |                  |
 
-| Comment         | single letter "C"                 |                  |
-| GET             | /data/users?filter=C              | application/json |
-| code-is         | 200                               |                  |
-| json-parse      |                                   |                  |
-| json-array-size | 2                                 |                  |
-| json-like       | [%%user_c_json%%,%%user_a_json%%] |                  |
+| Comment         | single letter "C"    |                  |
+| GET             | /data/users?filter=C | application/json |
+| code-is         | 200                  |                  |
+| json-parse      |                      |                  |
+| json-array-size | 2                    |                  |
+| json-path-is    | $[0].user_id         | %%user_a_id%%    |
+| json-path-is    | $[1].user_id         | %%user_c_id%%    |
 
-| Comment         | case insensitive                  |                  |
-| GET             | /data/users?filter=c              | application/json |
-| code-is         | 200                               |                  |
-| json-parse      |                                   |                  |
-| json-array-size | 2                                 |                  |
-| json-like       | [%%user_c_json%%,%%user_a_json%%] |                  |
+| Comment         | case insensitive     |                  |
+| GET             | /data/users?filter=c | application/json |
+| code-is         | 200                  |                  |
+| json-parse      |                      |                  |
+| json-array-size | 2                    |                  |
+| json-path-is    | $[0].user_id         | %%user_a_id%%    |
+| json-path-is    | $[1].user_id         | %%user_c_id%%    |
 
-| Comment         | spaces *are* ignored              |                  |
-| GET             | /data/users?filter=c+             | application/json |
-| code-is         | 200                               |                  |
-| json-parse      |                                   |                  |
-| json-array-size | 2                                 |                  |
-| json-like       | [%%user_c_json%%,%%user_a_json%%] |                  |
+| Comment         | spaces *are* ignored  |                  |
+| GET             | /data/users?filter=c+ | application/json |
+| code-is         | 200                   |                  |
+| json-parse      |                       |                  |
+| json-array-size | 2                     |                  |
+| json-path-is    | $[0].user_id          | %%user_a_id%%    |
+| json-path-is    | $[1].user_id          | %%user_c_id%%    |
 
 | Comment         | spaces *are* ignored      |                  |
 | GET             | /data/users?filter=+carl+ | application/json |
 | code-is         | 200                       |                  |
 | json-parse      |                           |                  |
 | json-array-size | 1                         |                  |
-| json-like       | [%%user_c_json%%]         |                  |
+| json-path-is    | $[0].user_id              | %%user_c_id%%    |
 
-| Comment         | "smit" gets two results           |                  |
-| GET             | /data/users?filter=smit           | application/json |
-| code-is         | 200                               |                  |
-| json-parse      |                                   |                  |
-| json-array-size | 2                                 |                  |
-| json-like       | [%%user_b_json%%,%%user_d_json%%] |                  |
+| Comment         | "smit" gets two results |                  |
+| GET             | /data/users?filter=smit | application/json |
+| code-is         | 200                     |                  |
+| json-parse      |                         |                  |
+| json-array-size | 2                       |                  |
+| json-path-is    | $[0].user_id            | %%user_b_id%%    |
+| json-path-is    | $[1].user_id            | %%user_d_id%%    |
 
 | Comment         | "zxcv" gets two results (email match) |                  |
 | GET             | /data/users?filter=zxcv               | application/json |
 | code-is         | 200                                   |                  |
 | json-parse      |                                       |                  |
 | json-array-size | 2                                     |                  |
-| json-like       | [%%user_c_json%%,%%user_b_json%%]     |                  |
+| json-path-is    | $[0].user_id                          | %%user_b_id%%    |
+| json-path-is    | $[1].user_id                          | %%user_c_id%%    |
 
 | Comment         | "asdf" gets two results (zeno isn't visible) |                  |
 | GET             | /data/users?filter=asdf                      | application/json |
 | code-is         | 200                                          |                  |
 | json-parse      |                                              |                  |
 | json-array-size | 2                                            |                  |
-| json-like       | [%%user_a_json%%,%%user_d_json%%]            |                  |
+| json-path-is    | $[0].user_id                                 | %%user_a_id%%    |
+| json-path-is    | $[1].user_id                                 | %%user_d_id%%    |
 
 | Comment         | "zxcv" limit works              |                  |
 | GET             | /data/users?filter=zxcv;limit=1 | application/json |
 | code-is         | 200                             |                  |
 | json-parse      |                                 |                  |
 | json-array-size | 1                               |                  |
-| json-like       | [%%user_c_json%%]               |                  |
+| json-path-is    | $[0].user_id                    | %%user_b_id%%    |
 
 | Comment         | "zxcv" count works (same as limit) |                  |
 | GET             | /data/users?filter=zxcv;count=1    | application/json |
 | code-is         | 200                                |                  |
 | json-parse      |                                    |                  |
 | json-array-size | 1                                  |                  |
-| json-like       | [%%user_c_json%%]                  |                  |
+| json-path-is    | $[0].user_id                       | %%user_b_id%%    |
 
 | Comment         | "zxcv" offset works                      |                  |
 | GET             | /data/users?filter=zxcv;count=1;offset=1 | application/json |
 | code-is         | 200                                      |                  |
 | json-parse      |                                          |                  |
 | json-array-size | 1                                        |                  |
-| json-like       | [%%user_b_json%%]                        |                  |
-
+| json-path-is    | $[0].user_id                             | %%user_c_id%%    |
 
 /data/workspaces/:ws/users works similarly to /data/users, but is in a workspace context.  Test out the lookahead.
 
-| Comment         | workspace no filter: all users                    |                  |
-| GET             | /data/workspaces/%%ws1%%/users                    | application/json |
-| code-is         | 200                                               |                  |
-| json-parse      |                                                   |                  |
-| json-array-size | 3                                                 |                  |
-| json-like       | [%%user_c_json%%,%%user_a_json%%,%%user_b_json%%] |                  |
+| Comment         | workspace no filter: all users |                  |
+| GET             | /data/workspaces/%%ws1%%/users | application/json |
+| code-is         | 200                            |                  |
+| json-parse      |                                |                  |
+| json-array-size | 3                              |                  |
+| json-path-is    | $[0].user_id                   | %%user_a_id%%    |
+| json-path-is    | $[1].user_id                   | %%user_b_id%%    |
+| json-path-is    | $[2].user_id                   | %%user_c_id%%    |
 
 | Comment | workspace empty filter: invalid        |                  |
 | GET     | /data/workspaces/%%ws1%%/users?filter= | application/json |
@@ -166,4 +175,5 @@ The results should always be sorted by "Last Name, First Name"
 | code-is         | 200                                       |                  |
 | json-parse      |                                           |                  |
 | json-array-size | 2                                         |                  |
-| json-like       | [%%user_c_json%%,%%user_a_json%%]         |                  |
+| json-path-is    | $[0].user_id                              | %%user_a_id%%    |
+| json-path-is    | $[1].user_id                              | %%user_c_id%%    |
