@@ -19,95 +19,70 @@ use Socialtext::Role;
 our %AllowableRoles = map { $_ => 1 }
     qw/guest authenticated_user affiliate member admin impersonator/;
 
-
 our %PermissionSets = (
-    'public' => {
-        guest              => [ qw( read edit comment ) ],
-        authenticated_user => [ qw( read edit comment email_in ) ],
-        affiliate          => [],
-        member             => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ],
-        admin              => [ qw( read edit attachments comment delete
-                                    email_in email_out admin_workspace lock ) ],
-    },
-    'member-only' => {
-        guest              => [ ],
-        authenticated_user => [ 'email_in' ],
-        affiliate          => [],
-        member             => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ],
-        admin              => [ qw( read edit attachments comment delete
-                                    email_in email_out admin_workspace lock ) ],
-    },
-    'authenticated-user-only' => {
-        guest              => [ ],
-        authenticated_user => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ],
-        affiliate          => [],
-        member             => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ],
-        admin              => [ qw( read edit attachments comment delete
-                                    email_in email_out admin_workspace lock ) ],
-    },
-    'public-read-only' => {
-        guest              => [ 'read' ],
-        authenticated_user => [ 'read' ],
-        affiliate          => [],
-        member             => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ],
-        admin              => [ qw( read edit attachments comment delete
-                                    email_in email_out admin_workspace lock ) ],
-    },
-    'public-comment-only' => {
-        guest              => [ qw( read comment ) ],
-        authenticated_user => [ qw( read comment ) ],
-        affiliate          => [],
-        member             => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ],
-        admin              => [ qw( read edit attachments comment delete
-                                    email_in email_out admin_workspace lock ) ],
-    },
-    'public-join-to-edit' => {
-        guest              => [ qw( read self_join) ],
-        authenticated_user => [ qw( read self_join) ],
-        affiliate          => [],
-        member             => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ],
-        admin              => [ qw( read edit attachments comment delete
-                                    email_in email_out admin_workspace lock ) ],
-    },
-    'intranet' => {
-        guest              => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ],
-        authenticated_user => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ],
-        affiliate          => [],
-        member             => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ], 
-        admin              => [ qw( read edit attachments comment delete
-                                    email_in email_out admin_workspace lock ) ],
-    },
+  'public' => {
+    admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
+    member             => [qw( read edit attachments comment delete email_in email_out                      )],
+    authenticated_user => [qw( read edit             comment        email_in                                )],
+    guest              => [qw( read edit             comment                                                )],
+  },
+  'member-only' => {
+    admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
+    member             => [qw( read edit attachments comment delete email_in email_out                      )],
+    authenticated_user => [qw(                                      email_in                                )],
+    guest              => [                                                                                  ],
+  },
+  'authenticated-user-only' => {
+    admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
+    member             => [qw( read edit attachments comment delete email_in email_out                      )],
+    authenticated_user => [qw( read edit attachments comment delete email_in email_out                      )],
+    guest              => [                                                                                  ],
+  },
+  'public-read-only' => {
+    admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
+    member             => [qw( read edit attachments comment delete email_in email_out                      )],
+    guest              => [qw( read                                                                         )],
+    authenticated_user => [qw( read                                                                         )],
+  },
+  'public-comment-only' => {
+    admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
+    member             => [qw( read edit attachments comment delete email_in email_out                      )],
+    authenticated_user => [qw( read                  comment                                                )],
+    guest              => [qw( read                  comment                                                )],
+  },
+  'public-join-to-edit' => {
+    admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock           )],
+    member             => [qw( read edit attachments comment delete email_in email_out                                )],
+    authenticated_user => [qw( read                                                                         self_join )],
+    guest              => [qw( read                                                                         self_join )],
+  },
+  'intranet' => {
+    admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
+    member             => [qw( read edit attachments comment delete email_in email_out                      )],
+    authenticated_user => [qw( read edit attachments comment delete email_in email_out                      )],
+    guest              => [qw( read edit attachments comment delete email_in email_out                      )],
+  },
 );
 
 our %DeprecatedPermissionSets = (
-    'public-authenticate-to-edit' => {
-        guest              => [ qw( read edit_controls ) ],
-        authenticated_user => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ],
-        affiliate          => [],
-        member             => [ qw( read edit attachments comment delete
-                                    email_in email_out ) ],
-        admin              => [ qw( read edit attachments comment delete
-                                    email_in email_out admin_workspace lock ) ],
-    },
+  'public-authenticate-to-edit' => {
+    admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock               )],
+    member             => [qw( read edit attachments comment delete email_in email_out                                    )],
+    authenticated_user => [qw( read edit attachments comment delete email_in email_out                                    )],
+    guest              => [qw( read                                                                         edit_controls )],
+  },
 );
-
-my @PermissionSetsLocalize = (loc('public'), loc('member-only'), loc('authenticated-user-only'), loc('public-read-only'), loc('public-comment-only'), loc('public-authenticate-to-edit') ,loc('public-join-to-edit'), loc('intranet'));
 
 # Impersonators should be able to do everything members can do, plus
 # impersonate.
 $_->{impersonator} = [ 'impersonate', @{ $_->{member} } ]
     for (values %PermissionSets, values %DeprecatedPermissionSets);
+
+# Affilates (deprecated role) are permission-less
+$_->{affiliate} = []
+    for (values %PermissionSets, values %DeprecatedPermissionSets);
+
+my @PermissionSetsLocalize = (loc('public'), loc('member-only'), loc('authenticated-user-only'), loc('public-read-only'), loc('public-comment-only'), loc('public-authenticate-to-edit') ,loc('public-join-to-edit'), loc('intranet'));
 
 sub IsValidRole {
     my $class = shift;
