@@ -3,6 +3,7 @@ package Socialtext::WikiFixture::SocialBase;
 use strict;
 use warnings;
 use Carp qw(cluck);
+use Socialtext::AppConfig;
 use Socialtext::Account;
 use Socialtext::User;
 use Socialtext::SQL qw/:exec :txn/;
@@ -29,6 +30,15 @@ use HTTP::Request::Common;
 use LWP::UserAgent;
 use Socialtext::l10n qw(loc);
 
+# mix-in some commands from the Socialtext fixture
+# XXX move bodies to SocialBase?
+{
+    require Socialtext::WikiFixture::Socialtext;
+    no warnings 'redefine';
+    *st_admin = \&Socialtext::WikiFixture::Socialtext::st_admin;
+    *st_config = \&Socialtext::WikiFixture::Socialtext::st_config;
+}
+
 =head1 NAME
 
 Socialtext::WikiFixture::SocialBase - Base fixture class that has shared logic
@@ -51,6 +61,14 @@ sub init {
     my $def = Socialtext::Account->Default;
     $self->{default_account} = $def->name;
     $self->{default_account_id} = $def->account_id;
+
+    # reset some defaults
+    $self->st_config('set challenger STLogin')
+        unless Socialtext::AppConfig->challenger eq 'STLogin';
+    $self->st_config('set signals_size_limit 1000')
+        unless Socialtext::AppConfig->signals_size_limit == 1000;
+    $self->st_config('set default_workspace ""')
+        if Socialtext::AppConfig->default_workspace;
 
     # Set up the Test::HTTP object initially
     $self->http_user_pass($self->{username}, $self->{password});
