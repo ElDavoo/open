@@ -38,16 +38,6 @@ to download and run the installer for <span class="target">Flash Player</span>.<
 </ol>
 </span>
 
-<!--[if !IE]>-->
-<object type="application/x-shockwave-flash"
-data="http://airdownload.adobe.com/air/browserapi/air.swf"
-id="airDetect" width="1" height="1">
-</object>
-<!--<![endif]-->
-<object id="airDetectIE" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="1" height="1">
-<param name="movie" value="http://airdownload.adobe.com/air/browserapi/air.swf">
-</object>
-
 <div class="buttons" style="position: absolute; right: 10px; bottom: 10px">
         <ul style="float: left; padding: 10px;" class="widgetButton">
           <li id="st-desktop-close" class="flexButton disabled">
@@ -141,6 +131,7 @@ so.addVariable("appversion", "[% app_version %]");
 so.addParam("allowScriptAccess", "always");
 
 var prevHTML;
+
 function hide_swfobject () {
     $('#flashcontent').html(prevHTML);
     $('#getThings').show();
@@ -149,37 +140,17 @@ function hide_swfobject () {
     $('.getAIR').show();
 }
 
-function hasFlash(selector) {
-    if ($(selector).length == 0) return false;
-    var obj = $(selector).get(0);
-    if (typeof obj == 'undefined') return false;
-    return(typeof obj.GetVariable != 'undefined'
-        && typeof obj.GetVariable != 'unknown');
-}
-
-function tryInit (tries) {
-    if (hasFlash('#airDetect') || hasFlash('#airDetectIE')) {
-        so.write("flashcontent");
-        $('#st-desktop-close').removeClass('disabled');
-        $('#getThings').show();
-    }
-    else if (tries > 10) {
-        so.addVariable("airswfurl", '[% air_swf_url %]');
-        so.write("flashcontent");
-        $('#st-desktop-close').removeClass('disabled');
-        $('#getThings').show();
-    }
-    else {
-        tries++;
-        setTimeout(function(){ tryInit(tries) }, 250);
-    }
-}
-
 prevHTML = $('#flashcontent').html();
 $('.getAIR').hide();
 $('.getFlash').show();
 $('#air-link').hide();
-setTimeout(function(){ tryInit(0) }, 250);
+
+$(function(){
+    so.addVariable("airswfurl", '[% air_swf_url %]');
+    so.write("flashcontent");
+    $('#st-desktop-close').removeClass('disabled');
+    $('#getThings').show();
+});
 
 </script>
 </body></html>
