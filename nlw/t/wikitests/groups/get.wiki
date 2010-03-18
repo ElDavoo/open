@@ -17,6 +17,15 @@ Tests for [Story: Groups ReST API]
 | Body-like | "group_id":"%%group_id%%" |
 | Body-like | "name":"%%group_name%%" |
 | Body-like | "uri":"/data/groups/%%group_id%%" |
+| Body-like | "user_count":"1" |
+| Body-like | "workspace_count":"0" |
+# Just check to make sure fields are present
+| Body-like | "creation_date": |
+| Body-like | "created_by_user_id": |
+| Body-like | "created_by_username":" |
+| Body-like | "primary_account_id": |
+| Body-like | "primary_account_name":"%%account%% |
+| Body-like | "description":" |
 
 ## visible by Group Creator (Creator sees Groups he created or is a member of)
 
@@ -29,6 +38,13 @@ Tests for [Story: Groups ReST API]
 | body-like | "user_count":"1" |
 | body-like | "workspace_count":"0" |
 | body-unlike | "members" |
+# Just check to make sure fields are present
+| Body-like | "creation_date": |
+| Body-like | "created_by_user_id": |
+| Body-like | "created_by_username":" |
+| Body-like | "primary_account_id": |
+| Body-like | "primary_account_name":"%%account%%" |
+| Body-like | "description":" |
 
 # Show members
 
