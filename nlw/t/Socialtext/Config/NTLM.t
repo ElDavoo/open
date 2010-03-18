@@ -9,7 +9,9 @@ use Test::Differences;
 
 fixtures(qw( base_config ));
 
-use ok 'Socialtext::NTLM::Config';
+BEGIN {
+    use_ok 'Socialtext::NTLM::Config';
+}
 
 ###############################################################################
 # Test data
