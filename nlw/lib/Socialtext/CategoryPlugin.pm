@@ -520,7 +520,7 @@ EOT
 sub email_address {
     my $self = shift;
     my $category = shift;
-    return '' if $category eq 'recent changes';
+    return '' if lc $category eq 'recent changes';
     $category = $self->Encode_category_email($category);
     my $email_address = $self->hub->current_workspace->email_in_address;
     if ( !$self->hub->current_workspace->email_weblog_dot_address ) {
