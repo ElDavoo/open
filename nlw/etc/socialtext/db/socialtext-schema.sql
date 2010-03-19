@@ -55,6 +55,15 @@ CREATE FUNCTION _int_union(integer[], integer[]) RETURNS integer[]
     AS '$libdir/_int', '_int_union'
     LANGUAGE c STRICT;
 
+CREATE FUNCTION auto_hash_signal() RETURNS "trigger"
+    AS $$
+    BEGIN
+        NEW.hash = md5(NEW.at AT TIME ZONE 'UTC' || 'Z' || NEW.body);
+        return NEW;
+    END
+$$
+    LANGUAGE plpgsql;
+
 CREATE FUNCTION auto_vivify_user_rollups() RETURNS "trigger"
     AS $$
     BEGIN
@@ -122,11 +131,11 @@ CREATE FUNCTION insert_recent_signal() RETURNS "trigger"
     BEGIN
         INSERT INTO recent_signal (
             signal_id, "at", user_id, body,
-            in_reply_to_id, recipient_id, hidden
+            in_reply_to_id, recipient_id, hidden, hash
         )
         VALUES (
             NEW.signal_id, NEW."at", NEW.user_id, NEW.body,
-            NEW.in_reply_to_id, NEW.recipient_id, NEW.hidden
+            NEW.in_reply_to_id, NEW.recipient_id, NEW.hidden, NEW.hash
         );
         RETURN NULL;    -- trigger return val is ignored
     END
@@ -1002,7 +1011,8 @@ CREATE TABLE recent_signal (
     body text NOT NULL,
     in_reply_to_id bigint,
     recipient_id bigint,
-    hidden boolean DEFAULT false
+    hidden boolean DEFAULT false,
+    hash character(32) NOT NULL
 );
 
 CREATE TABLE recent_signal_user_set (
@@ -1052,7 +1062,8 @@ CREATE TABLE signal (
     body text NOT NULL,
     in_reply_to_id bigint,
     recipient_id bigint,
-    hidden boolean DEFAULT false
+    hidden boolean DEFAULT false,
+    hash character(32) NOT NULL
 );
 
 CREATE SEQUENCE signal_id_seq
@@ -1658,6 +1669,9 @@ CREATE INDEX ix_recent_signal_at
 CREATE INDEX ix_recent_signal_at_user
 	    ON recent_signal ("at", user_id);
 
+CREATE UNIQUE INDEX ix_recent_signal_hash
+	    ON signal (hash);
+
 CREATE INDEX ix_recent_signal_recipient_at
 	    ON recent_signal (recipient_id, "at");
 
@@ -1696,6 +1710,9 @@ CREATE INDEX ix_signal_at
 
 CREATE INDEX ix_signal_at_user
 	    ON signal ("at", user_id);
+
+CREATE UNIQUE INDEX ix_signal_hash
+	    ON signal (hash);
 
 CREATE INDEX ix_signal_recipient_at
 	    ON signal (recipient_id, "at");
@@ -1861,6 +1878,11 @@ CREATE TRIGGER sessions_insert
     AFTER INSERT ON sessions
     FOR EACH STATEMENT
     EXECUTE PROCEDURE cleanup_sessions();
+
+CREATE TRIGGER signal_before_insert
+    BEFORE INSERT ON signal
+    FOR EACH ROW
+    EXECUTE PROCEDURE auto_hash_signal();
 
 CREATE TRIGGER signal_insert
     AFTER INSERT ON signal
@@ -2263,4 +2285,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '112');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '113');
