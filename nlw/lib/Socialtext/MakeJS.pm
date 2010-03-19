@@ -88,6 +88,17 @@ sub CleanDir {
     unlink @toclean;
 }
 
+sub Exists {
+    my ($class, $dir, $target) = @_;
+    if ($target) {
+        $target =~ s/\.gz$//; # built anyway
+        return $dirs{$dir}{$target} ? 1 : 0;
+    }
+    else {
+        return $dirs{$dir} ? 1 : 0;
+    }
+}
+
 sub Build {
     my ($class, $dir, $target) = @_;
     $target =~ s/\.gz$//; # built anyway

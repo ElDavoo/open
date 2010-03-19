@@ -30,7 +30,6 @@ sub GET {
     $file =~ s/\.gz$//;
     my $path = "$code_base/$dir/$file";
     my $url = "/nlw/static/$dir/$file";
-    warn $url;
     unless (-f $path) {
         warn "Don't know how to build $path";
         return $self->no_resource($file);
