@@ -1266,6 +1266,14 @@ Default: 16
 
 =for code type => SCALAR_TYPE
 
+=head2 signals_size_limit 
+
+Set this to limit the maximum size of signals posted to this servers. Accounts may limit signals size to a smaller number.
+
+Default: 1000
+
+=for code type => POSITIVE_INT_TYPE
+
 =head1 OTHER METHODS
 
 In addition to the methods available for each configuration variable,

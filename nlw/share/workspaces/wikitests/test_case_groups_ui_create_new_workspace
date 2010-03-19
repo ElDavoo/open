@@ -6,27 +6,33 @@
 | st-setup-a-group | 1 | 1 | 1 |
 | st-logoutin | %%group_user%% | %%password%% |  |
 | st-admin | add-group-admin --g %%group_id%% -e %%group_user%% |  |  |
-| set | new_workspace | gui-nw-%%start_time%% |  |
-| set | createme_ws_name | gui-name-ws-%%start_time%% |  |
-| set | createme_ws_title | gui-title-ws-%%start_time%% |  |
 | set | test_delete_ws | gui-test-delete-%%start_time%% |  |
-| create_workspace | %%test_delete_ws%% |  |  |
+| set | test_delete_ws_title | delete-title-%%start_time%% |  |
+| set | addme_ws | gui-addme-ws-%%start_time%% |  |
+| set | createme_ws_name | gui-createme-%%start_time%% |  |
+| set | createme_ws_title | gui-create-title-%%start_time%% |  |
+
+| create_workspace | %%test_delete_ws%% | %%hostname%% | %%test_delete_ws_title%% |
 | set | delete_ws_id | %%workspace_id%% |  |
+| st-admin | add-member --w %%test_delete_ws%% --g %%group_id%% | now has the role of |  |
+| st-admin | add-workspace-admin --w %%test_delete_ws%% --e %%group_user%% |  |  |
+| st-admin | create-workspace --name %%addme_ws%% --title %%addme_ws%% |  |  |
+| st-admin | add-member -w %%addme_ws%% --g %%group_id%% | now has the role of |  |
 
-| create_workspace | %%new_workspace%% |  |
-| set | new_workspace_id | %%workspace_id%% |
+| *Comment* | Test Case: Groups UI Create New Workspace Get to Workspaces Widget |  |
 | open_ok | /?group/%%group_id%%/ |  |
+| st-name-widget | 2 | workspaces_widget |
+| st-widget-title-like | workspaces_widget | Workspaces |
 
-| st-admin | add-member --w %%test_delete_ws%% --g %%group_id%% | now has the role of |
-| st-admin | add-workspace-admin --w %%test_delete_ws%% --e %%group_user%% |  |
+| *Comment* | Test Case: Groups UI Create New Workspace Is the %%test_delete_ws%% workspace there? |  |
+| st-select-widget-frame | workspaces_widget |  |
+| text_like | //body | %%test_delete_ws_title%% |
+| wait_for_element_visible_ok | link=%%test_delete_ws_title%% | 30000 |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI Create New Workspace Click Edit Button |  |
-| st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_ok | link=(Edit) |  |
-| pause | 30000 | click and wait seems to fail |
+| open_ok | /st/edit_group/%%group_id%% |  |
+| wait_for_text_present_ok | Edit Group: | 30000 |
 
 | *Comment* | Test Case: Groups UI Create New Workspace Get to Workspaces Widget |  |
 | st-name-widget | 2 | workspaces_widget |
@@ -35,9 +41,10 @@
 
 | *Comment* | Test Case: Groups UI Create New Workspace Get to Workspaces Widget check for %%group_ws%% |  |
 | text_like | //body | workspace |
+
 | *Comment* | Test Case: Groups UI Create New Workspace Type in a new workspace |  |
 | wait_for_element_visible_ok | new_workspace | 30000 |
-| click_ok | new_workspace | 30000 |
+| click_ok | new_workspace |  |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | new-workspace-next | 30000 |
 | wait_for_element_visible_ok | new_workspace_title | 30000 |
@@ -61,49 +68,35 @@
 | st-name-widget | 2 | workspaces_widget |
 | st-widget-title-like | workspaces_widget | Workspaces |
 | st-select-widget-frame | workspaces_widget |  |
-| *Comment* | Test Case: Groups UI Create New Workspace FAILS IN IE7 due to {bz: 3540} |  |
+| *Comment* | Test Case: Groups UI Create New Workspace FAILS IN IE7 due to 3540 |  |
 | wait_for_element_visible_ok | link=%%createme_ws_title%% | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups UI Create New Workspace st-admin remove-member should fail for my user (belong is by group) |  |
-| *Comment* | Test Case: Groups UI Create New Workspace st-admin remove-member - Fails due to {bz: 3518} |  |
-| st-admin | remove-member --w %%createme_ws_name%% --e %%group_user%% | through a group |
-
-| *Comment* | Test Case: Groups UI Create New Workspacest-admin list-workspaces - workspace shows up for me |  |
-| st-admin | list-workspaces --e %%group_user%% | %%createme_ws_name%% |
 | *Comment* | Test Case: Groups UI Create New Workspace check /workspace-you-just-created URL |  |
 | open_ok | /%%createme_ws_name%%/ |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 
-| *Comment* | Test Case: Groups UI Create New Workspace Add %%new_workspace%% to group - lookahead fails if not admin |  |
-| open_ok | /?group/%%group_id%%/ |  |
-| st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
-| select-frame | relative=parent |  |
-| st-name-widget | 2 | workspaces_widget |
-| st-widget-title-like | workspaces_widget | Workspaces |
-| st-select-widget-frame | workspaces_widget |  |
-| wait_for_element_visible_ok | lookahead | 30000 |
-| type-lookahead-ok | lookahead | %%new_workspace%% |
-| pause | 5000 |  |
-| wait_for_element_not_present_ok | //a[@class=lookaheaditem] | 30000 |
+| *Comment* | Test Case: Groups UI Create New Workspace st-admin remove-member should fail for my user (belong's by group) |  |
+| *Comment* | Test Case: Groups UI Create New Workspace st-admin remove-member - Fails due to {bz: 3518} - check removed |  |
+| st-admin | remove-member --w %%group_ws%% --e %%group_user%% |  |
+
+| *Comment* | Test Case: Groups UI Create New Workspacest-admin list-workspaces - workspace shows up for me |  |
+| st-admin | list-workspaces --e %%group_user%% | %%group_ws%% |
+| st-admin | list-workspaces --e %%group_user%% | %%addme_ws%% |
+| st-admin | list-workspaces --e %%group_user%% | %%createme_ws_name%% |
+
+| *Comment* | Test Case: Groups UI Create New Workspace check /workspace-you-just-created URL |  |
+| open_ok | /%%addme_ws%%/ |  |
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
 
 | *Comment* | Test Case: Groups UI Create New Workspace Now delete %%test_delete_ws%% from group |  |
-| open_ok | /?group/%%group_id%%/ |  |
-| st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
-| select-frame | relative=parent |  |
+| open_ok | /st/edit_group/%%group_id%% |  |
+| wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 2 | workspaces_widget |
 | st-widget-title-like | workspaces_widget | Workspaces |
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_element_visible_ok | %%delete_ws_id%% | 30000 |
-| text_like | //body | %%test_delete_ws%% |
+| text_like | //body | %%test_delete_ws_title%% |
 | click_ok | %%delete_ws_id%% |  |
 | pause | 4000 | waiting for js to remove element. It's not disabled, but there, can't wait_for |
 | select-frame | relative=parent |  |
@@ -115,44 +108,14 @@
 | st-widget-title-like | workspaces_widget | Workspaces |
 | st-select-widget-frame | workspaces_widget |  |
 | text_unlike | //body | %%test_delete_ws%% |
+| text_unlike | //body | %%test_delete_ws_title%% |
 | select-frame | relative=parent |  |
-
-| *Comment* | Test Case: Groups UI Create New Workspace Add %%createme_ws_name%% to group - become admin, see lookahead |  |
-| st-admin | add-workspace-admin --e %%group_user%% --w %%new_workspace%% |  |
-| open_ok | /?group/%%group_id%%/ |  |
-| st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
-| select-frame | relative=parent |  |
-| st-name-widget | 2 | workspaces_widget |
-| st-widget-title-like | workspaces_widget | Workspaces |
-| st-select-widget-frame | workspaces_widget |  |
-| wait_for_element_visible_ok | lookahead | 30000 |
-| type-lookahead-ok | lookahead | %%new_workspace%% |
-| pause | 5000 |  |
-| wait_for_element_visible_ok | //a[@class=lookaheaditem] | 30000 |
-| click_ok | //a[@class=lookaheaditem] |  |
-| wait_for_element_visible_ok | %%new_workspace_id%% | 30000 |
-| select-frame | relative=parent |  |
-| click_and_wait | create-group |  |
-| st-name-widget | 2 | workspaces_widget |
-| st-widget-title-like | workspaces_widget | Workspaces |
-| st-select-widget-frame | workspaces_widget |  |
-| text_like | //body | %%new_workspace%% |
-| select-frame | relative=parent |  |
-| *Comment* | PAUSING |
-| pause | 50000 |  |
-
-| *Comment* | Test Case: Groups UI Create New Workspace TODO Try again - click cancel, do not see changes |  |
-| *Comment* | Test Case: Groups UI Create New Workspace TODO Cancel create workspace at step1 and step2 |  |
 
 | *Comment* | Test Case: Groups UI Create New Workspace TEARDOWN |  |
 | delete-group | %%group_id%% |  |
-| st-admin | delete-workspace --w %%group_ws%% --no-export |  |
-| st-admin | delete-workspace --w %%new_workspace%% --no-export |  |
-| st-admin | delete-workspace --w %%createme_ws_title%% --no-export |  |
 | st-admin | delete-workspace --w %%test_delete_ws%% --no-export |  |
+| st-admin | delete-workspace --w %%addme_ws%% --no-export |  |
+| st-admin | delete-workspace --w %%group_ws%% --no-export |  |
+| st-admin | delete-workspace --w %%createme_ws_name --no-export |  |
 
 | *Comment* | Test Case: Groups UI Create New Workspace COMPLETED |  |  |

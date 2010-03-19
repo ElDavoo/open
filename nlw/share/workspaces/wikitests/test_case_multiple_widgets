@@ -3,14 +3,7 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Multiple Widgets Add Image Widget |  |
-| open_ok | /?dashboard |  |
-| wait_for_text_present_ok | Welcome | 30000 |
-| st-empty-container |  |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
-| wait_for_element_visible_ok | gallery-widget-Image | 30000 |
-| click_and_wait | gallery-widget-Image |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| st-single-widget-in-dashboard | gallery-widget-Image |  |
 
 | st-name-widget | 1 | image_widget |
 | st-widget-title-like | image_widget | Image |

@@ -3,8 +3,8 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Active Members Actions - View Profile |  |
-| open_ok | /st/profile | |
-| text-like | st-editing-tools-edit | %%short_username%% |
+| open_ok | /st/profile |  |
+| text-like | st-editing-tools-edit | %%logged_in_user%% |
 | st-name-widget | 1 | profile |
 | st-select-widget-frame | profile |  |
 | wait_for_element_visible_ok | link=(Edit) | 60000 |

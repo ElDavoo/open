@@ -4,10 +4,15 @@
 | st-admin | create_user -e %%conv_email%% -p %%password%% |  |
 | st-admin | create_workspace -n %%acw%% -t %%acw%% --empty |  |
 | st-admin | create_workspace -n %%acwnoresults%% -t %%acwnoresults%% --empty |  |
-| st-admin | add-member -u  %%username%% -w %%acw%% |  |
+| st-admin | add-member -u %%username%% -w %%acw%% |  |
 | st-admin | add-member -e %%conv_email%% -w %%acw%% |  |
-| st-admin | add-member -u  %%username%% -w %%acwnoresults%% |  |
+| st-admin | add-member -u %%username%% -w %%acwnoresults%% |  |
 | st-admin | add-member -e %%conv_email%% -w %%acwnoresults%% |  |
+
+| *Comment* | Test Case: Active Content Setup - empty message verification |  |
+| set | empty_acct | ac-empty-%%start_time%% |
+| set | empty_user | %%conv_email%% |
+| include | [Test Case: Active Content Empty Messages] |  |
 
 | *Comment* | Test Case: Active Content Setup. Be sure you are logged in as %%email%% |  |
 | st-logoutin |  |  |

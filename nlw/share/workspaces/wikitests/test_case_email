@@ -109,8 +109,8 @@ TODO: find a way to test user chooser
 | *Comment* | Test Case: Email sending page to %%workspace%%@%%wikiemail%% |  |
 | click_ok | email_send |  |
 
-| *Comment* | Pausing 60 seconds for first email delivery |
-| pause | 60000 |
+| *Comment* | Pausing 90 seconds for first email delivery |
+| pause | 90000 |
 
 | *Comment* | Test Case: Email Check Reception |  |
 | open_ok | /%%workspace%%/index.cgi?Email subject %%start_time%% |  |
@@ -128,8 +128,8 @@ TODO: find a way to test user chooser
 | type_ok | email_page_subject | Email subject %%start_time%% |
 | click_ok | email_send |  |
 
-| *Comment* | Pausing 60 seconds for second email delivery |
-| pause | 60000 |
+| *Comment* | Pausing 90 seconds for second email delivery |
+| pause | 90000 |
 
 | *Comment* | Test Case: Email Check that the new page is there |  |
 | open_ok | /%%workspace%%/index.cgi?Email_subject_%%start_time%% |  |
@@ -159,6 +159,10 @@ TODO: find a way to test user chooser
 | click_ok | email_send |  |
 | wait_for_element_not_visible_ok | st-email-lightbox | 30000 |
 
+| *Comment* | Pausing 90 seconds for third email delivery |
+| *Comment* | The page wants to receive itself, then send itself again |
+| pause | 90000 |
+
 | open_ok | /%%workspace%%/index.cgi?Email_subject_%%start_time%% |  |
 | click_ok | st-pagetools-email |  |
 | wait_for_element_visible_ok | st-email-lightbox | 30000 |
@@ -169,16 +173,18 @@ TODO: find a way to test user chooser
 | type_ok | email_page_subject | Fwd: Fw: Re: Email subject %%start_time%% |
 | click_ok | email_send |  |
 
-| *Comment* | Pausing 60 seconds for third and fourth email delivery |
-| pause | 60000 |
+| *Comment* | Pausing 90 seconds for fourth email delivery |
+| *Comment* | The page wants to send itself having received itself from the third mailing |
+| pause | 90000 |
 
-| *Comment* | Test Case: Email check that the new content from both mailings are added to the original page |  |
+| *Comment* | Test Case: Email check that the new content from all mailings are added to the original page by counting the number of repetitions |  |
 | open_ok | /%%workspace%%/index.cgi?Email_subject_%%start_time%% |  |
 | wait_for_element_visible_ok | st-page-titletext | 10000 |
 | text_like | st-page-titletext | Email subject %%start_time%% |
 | text_like | st-page-content | qr/Announcements and Links àèéìòù.+Announcements and Links.+Announcements and Links.+Announcements and Links.+Announcements and Links.+Announcements and Links.+Announcements and Links àèéìòù.+Announcements and Links àèéìòù.+Announcements and Links.+Announcements and Links àèéìòù/ |
 
 | *Comment* | Test Case: Email Teardown |  |
+
 | st-admin | remove-member --email %%start_time%%_one@ken.socialtext.net --workspace %%workspace%% |  |
 | st-admin | remove-member --email %%start_time%%_two@ken.socialtext.net --workspace %%workspace%% |  |
 | st-admin | purge-page --w %%workspace%% --page email_title_%%start_time%% | was purged |

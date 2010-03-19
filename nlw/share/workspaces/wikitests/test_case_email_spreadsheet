@@ -22,8 +22,8 @@
 | *Comment* | Test Case: Email Spreadsheet email Spreadsheet to %%workspace%%@%%wikiemail%% |  |
 | click_ok | email_send |  |
 
-| *Comment* | Pausing 60 seconds for Spreadsheet delivery |  |
-| pause | 60000 |  |
+| *Comment* | Pausing 90 seconds for Spreadsheet delivery |  |
+| pause | 90000 |  |
 
 | *Comment* | Test Case: Email Spreadsheet Check Reception |  |
 | open_ok | /%%workspace%%/index.cgi?Email Spreadsheet %%start_time%% |  |

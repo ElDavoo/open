@@ -37,7 +37,8 @@ proto.config = {
     disabledToolbarButtons: [],
     editHeightMinimum: 150,
     editHeightAdjustment: 1.3,
-    clearRegex: null
+    clearRegex: null,
+    enableClearHandler: false
 };
 
 proto.initializeObject = function() {
@@ -55,8 +56,9 @@ proto.clear_inner_html = function() {
     var inner_html = this.get_inner_html();
     var clear = this.config.clearRegex;
     var res = inner_html.match(clear) ? 'true' : 'false';
-    if (clear && inner_html.match(clear))
-        this.set_inner_html('\n');
+    if (clear && inner_html.match(clear)) {
+        this.set_inner_html('');
+    }
 }
 
 proto.get_keybinding_area = function() {
@@ -607,6 +609,13 @@ proto.fix_up_relative_imgs = function() {
     }
 }
 
+proto.blur = function() {
+    try {
+        if (Wikiwyg.is_gecko) this.get_edit_window().blur();
+        if (Wikiwyg.is_ie) this.get_editable_div().blur();
+    } catch (e) {}
+}
+
 proto.set_focus = function() {
     try {
         if (Wikiwyg.is_gecko) this.get_edit_window().focus();
@@ -731,8 +740,15 @@ proto.enableThis = function() {
         if (Wikiwyg.is_gecko) {
             self.get_edit_document().designMode = 'on';
             setTimeout(function() {
-                self.get_edit_document().execCommand("enableObjectResizing", false, false);
-                self.get_edit_document().execCommand("enableInlineTableEditing", false, false);
+                try {
+                    self.get_edit_document().execCommand(
+                        "enableObjectResizing", false, false
+                    );
+                    self.get_edit_document().execCommand(
+                        "enableInlineTableEditing", false, false
+                    );
+                }
+                catch(e){}
             }, 100);
         }
         else if (Wikiwyg.is_ie) {
@@ -960,13 +976,15 @@ proto.get_cursor_state = function() {
 
 proto.set_clear_handler = function () {
     var self = this;
-    if (!Socialtext.new_page) return;
+    if (!this.wikiwyg.config.enableClearHandler && !Socialtext.new_page) return;
 
-    var editor = Wikiwyg.is_ie ? self.get_editable_div() : self.get_edit_document();
+    var editor = Wikiwyg.is_ie ? self.get_editable_div()
+                               : self.get_edit_document();
 
-    var clean = function() {
+    var clean = function(e) {
         self.clear_inner_html();
         jQuery(editor).unbind('click', clean).unbind('keydown', clean);
+        self.set_focus();
     };
 
     try {
@@ -2534,7 +2552,7 @@ proto.insert_image = function (src, widget, widget_element, cb) {
 
     html += 'onload="if (typeof(ss) != \'undefined\' && ss.editor) { var recalc = function () { try { ss.editor.DoPositionCalculations() } catch (e) { setTimeout(recalc, 500) } }; recalc() } ';
 
-    if (dim) {
+    if (dim && (dim[0] || dim[1])) {
         html += '" width="' + dim[0] + '" height="' + dim[1] + '"';
     }
     else {

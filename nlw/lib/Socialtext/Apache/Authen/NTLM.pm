@@ -1,79 +1,24 @@
 package Socialtext::Apache::Authen::NTLM;
 # @COPYRIGHT@
-
 use strict;
 use warnings;
-use base qw(Apache::AuthenNTLM);
-use Apache::Constants qw(HTTP_UNAUTHORIZED HTTP_FORBIDDEN HTTP_INTERNAL_SERVER_ERROR);
+use Apache::Constants qw(HTTP_UNAUTHORIZED HTTP_FORBIDDEN HTTP_INTERNAL_SERVER_ERROR OK DECLINED);
+use LWP::UserAgent;
 use Socialtext::NTLM::Config;
 use Socialtext::Log qw(st_log);
 use Socialtext::l10n qw(loc);
 use Socialtext::Session;
+use Socialtext::HTTP::Ports;
 
-###############################################################################
-# read in our custom NTLM config, instead of relying on Apache config file to
-# set this up.
-sub get_config {
-    my ($self, $r) = @_;
-
-    # if we've already read in the config, don't do it again.
-    return if ($self->{smbpdc});
-
-    # let our base class read in its config, so that Admins _could_ use their
-    # Apache config to define some of this if they wanted to.
-    $self->SUPER::get_config($r);
-
-    # force Apache::AuthenNTLM to split up the "domain\username" and only
-    # leave us the "username" part; our Authen system doesn't understand
-    # composite usernames and isn't able to handle this as an exception to the
-    # rule.
-    $self->{splitdomainprefix} = 1;
-
-    # read in our NTLM config, and set up our PDC/BDCs
-    my @all_configs = Socialtext::NTLM::Config->load();
-    foreach my $config (@all_configs) {
-        my $domain  = lc( $config->domain() );
-        my $primary = $config->primary();
-        my $backups = $config->backup();
-
-        $self->{smbpdc}{$domain} = $primary;
-        $self->{smbbdc}{$domain} = join ' ', @{$backups};
-    }
-
-    # set the default/fallback domains, in case the NTLM handshake doesn't
-    # indicate which one to use
-    $self->{defaultdomain}  = Socialtext::NTLM::Config->DefaultDomain();
-    $self->{fallbackdomain} = Socialtext::NTLM::Config->FallbackDomain();
-
-    # debugging notes
-    my $prefix = 'ST::Apache::Authen::NTLM:';
-    st_log->debug( "$prefix default domain: " . $self->{defaultdomain} );
-    st_log->debug( "$prefix fallback domain: " . $self->{fallbackdomain} );
-    st_log->debug( "$prefix AuthType: " . $self->{authtype} );
-    st_log->debug( "$prefix AuthName: " . $self->{authname} );
-    st_log->debug( "$prefix Auth NTLM: " . $self->{authntlm} );
-    st_log->debug( "$prefix Auth Basic: " . $self->{authbasic} );
-    st_log->debug( "$prefix NTLMAuthoritative: " . $self->{ntlmauthoritative} );
-    st_log->debug( "$prefix SplitDomainPrefix: " . $self->{splitdomainprefix} );
-    foreach my $domain (sort keys %{$self->{smbpdc}}) {
-        next unless ($domain);  # skip blank/empty domains
-        st_log->debug( "$prefix domain: $domain" );
-        st_log->debug( "$prefix ... pdc: " . $self->{smbpdc}{$domain} );
-        st_log->debug( "$prefix ... bdc: " . $self->{smbbdc}{$domain} );
-    }
-}
-
-###############################################################################
-# Over-ridden Mod_perl handler.
+# mod_perl authen handler:
 sub handler($$) {
     my ($class, $r) = @_;
 
-    # turn HTTP KeepAlive requests *ON*
+    # turn HTTP KeepAlive requests *ON*, only really affects apache2 front-end
     st_log->debug( "turning HTTP Keep-Alives back on" );
     $r->subprocess_env(nokeepalive => undef);
 
-    # call off to let the base class do its work
-    my $rc = $class->SUPER::handler($r);
+    my $rc = call_ntlm_daemon($r);
     if ($rc == HTTP_UNAUTHORIZED) {
         _set_session_error( $r, { type => 'not_logged_in' } );
     }
@@ -81,10 +26,7 @@ sub handler($$) {
         _set_session_error( $r, { type => 'unauthorized_workspace' } );
     }
     elsif ($rc == HTTP_INTERNAL_SERVER_ERROR) {
-        # Apache::AuthenNTLM throws a 500 when it can't speak to the PDC, and
-        # this is the *ONLY* time it throws a 500
         $rc = HTTP_FORBIDDEN;
-        st_log->error( "unable to reach the Windows NTLM DC to get nonce" );
         _set_session_error( $r, loc(
             "The Socialtext system cannot reach the Windows NTLM Domain Controller.  An Admin should check the Domain Controller and/or Socialtext configuration."
         ) );
@@ -92,6 +34,49 @@ sub handler($$) {
     st_log->debug( "NTLM authen handler rc: $rc" );
 
     return $rc;
+}
+
+sub call_ntlm_daemon {
+    my $r = shift;
+
+    my $authz_in = $r->header_in('Authorization');
+    unless ($authz_in) {
+        $r->err_headers_out->add('WWW-Authenticate' => 'NTLM');
+        return HTTP_UNAUTHORIZED;
+    }
+
+    my $ua = LWP::UserAgent->new;
+    my $port = Socialtext::HTTP::Ports->ntlmd_port;
+    my $uri = $r->uri;
+    $uri = "/$uri" unless $uri =~ m#^/#;
+    my $ntlmd_url = 'http://localhost:'.$port.$uri.'?'.$r->args;
+    my $req = HTTP::Request->new('GET' => $ntlmd_url);
+    
+    $req->header('X-Authorization' => $authz_in);
+    my $resp = $ua->request($req);
+
+    if (!$resp->is_success) {
+        st_log->error("Unexpected NTLM daemon response: ".$resp->status_line);
+        return HTTP_INTERNAL_SERVER_ERROR;
+    }
+
+    my $authn_out = $resp->header('X-WWW-Authenticate');
+    $r->err_headers_out->add('WWW-Authenticate' => $authn_out) if $authn_out;
+
+    my $authn_user = $resp->header('X-User');
+    $r->user($authn_user) if $authn_user;
+
+    my $authn_status = $resp->header('X-Status');
+    # Special tokens are used for OK and DECLINED to avoid loading gross
+    # Apache::Constants module on the daemon side:
+    if ($authn_status eq 'OK') {
+        $authn_status = OK; # note: not necessarily "200"
+    }
+    elsif ($authn_status eq 'DECLINED') {
+        $authn_status = DECLINED;
+    }
+
+    return $authn_status;
 }
 
 ###############################################################################

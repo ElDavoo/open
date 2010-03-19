@@ -61,12 +61,10 @@ Navigates to and empties the Dashboard.
 =cut
 sub st_empty_container { 
     my ($self) = @_;
-    my $location = Socialtext::URI::uri(
-        path => '/st/dashboard', query => { clear => 1 },
-    );
+    my $location = '/st/dashboard?clear=1';
     eval {
         $self->{selenium}->open($location);
-        $self->{selenium}->wait_for_page_to_load(10000);
+        $self->{selenium}->wait_for_page_to_load(30000);
         my $widgetlist = $self->{selenium}->get_value("id=widgetList");
         diag "Widgets after empty: $widgetlist\n"; 
     };
@@ -427,13 +425,15 @@ sub st_send_signal_via_activities_widget {
     my $browser = $ENV{'selenium_browser'} || 'chrome';
 
     $self->handle_command('st-select-widget-frame', $widgetname);
-    $self->handle_command('wait_for_element_visible_ok', 'expand-input', '30000');
-    $self->handle_command('click_ok', 'expand-input');
     $self->handle_command('pause', '3000'); # to let the widget frame open
 
+    # Clear the "What are you working on?" message
+    $self->handle_command('wait_for_element_present_ok', 'signalsNotSetUp', 5000);
+    $self->handle_command('click_ok', 'signalsNotSetUp');
+
     if ($browser=~/chrome|firefox/ig) {
+        $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
         $self->handle_command('selectFrame', 'signalFrame');
-        $self->handle_command('wait_for_element_visible_ok', '//body', 5000);
         $self->handle_command('type_ok' ,'//body', $signaltosend);
         $self->handle_command('select-frame' ,'relative=parent');
     } else {
@@ -445,7 +445,6 @@ sub st_send_signal_via_activities_widget {
     $self->handle_command('click_ok', 'post');
 
     $self->handle_command('pause', 3000); # must wait before signaling again
-    $self->handle_command('click_ok', 'expand-input');
     $self->handle_command('select-frame','relative=parent'); 
     
     ok(!$@, 'st_send_signal_via_activities_widget');

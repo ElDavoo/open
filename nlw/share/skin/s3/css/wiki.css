@@ -1,3 +1,5 @@
+/* updated by reed@bertopro.com on 3/16/10 (March) 10-03-16b */
+ 
 .wiki ol, .wiki ul {
     padding-left: 25px;
 }
@@ -138,8 +140,6 @@ html .wiki a:hover {
 
 .wiki blockquote {
     margin: 1em 1.5em;
-    color: #666;
-    font-style: italic;
 }
 .wiki strong {
     font-weight: bold;
@@ -344,21 +344,22 @@ html .wiki a:hover {
     text-decoration:none;
     border-bottom:1px #d82500 solid;
 }
+/* there's wafl_box defs in wiki.css & screen.css */
 .wiki .wafl_box,
 .wiki .fetchrss_box {
-    background:#fcf2e3;
+    background:#ffffff;
     color:inherit;
-    padding:0;
-    margin-bottom:1em;
-    border:none;
+    padding:0 0 3px 0;
+    margin-bottom: 0;
+    border: 2px solid #d6d6d6;;
 }
 .wiki .wafl_titlebox,
 .wiki .fetchrss_titlebox {
-    background:#fae8ce;
+    background:#efefef;
     font-size:120%;
-    padding:.5em 0 .5em 1em;
-    margin-bottom:1em;
-    border-bottom:1px #e7cdaa solid;
+    padding:.5em;
+    margin-bottom: .25em;
+    border-bottom: 2px solid #d6d6d6;
 }
 .wiki .wafl_titlebox a,
 .wiki .fetchrss_titlebox a {
@@ -366,10 +367,9 @@ html .wiki a:hover {
 }
 .wiki .wafl_items,
 .wiki .fetchrss_items {
-    padding:0 1em 1em 1em;
+    padding:0 1em 0 1em;
 }
-.wiki ul.item_list,
-.wiki ul.fetchrss_items {
+.wiki ul.item_list {
     list-style-type:none;
     margin-left:0;
 }
@@ -380,6 +380,44 @@ html .wiki a:hover {
 .wiki ul.item_list li.item p.snippet,
 .wiki ul.fetchrss_items li.fetchrss_item p.fetchrss_description {
     margin-top:.25em ! important;
+}
+.wafl_box .wafl_items .wiki ul,
+.wafl_box .wafl_items ul.item_list {
+	margin: 0 1.5em 0 1.5em;
+	padding: 0 0 0 7px;
+}
+.wiki ul.fetchrss_items {
+	margin: 0 1.5em 0 1.5em;
+	padding: 0 0 0 25px;
+}
+
+.wafl_box .wafl_items ul.item_list li {
+	list-style-type: disc;
+	line-height: 1em;
+	padding: 0;
+}
+div.fetchrss_box ul.fetchrss_items {
+	margin-bottom: 0px;
+}
+/*
+div.wafl_box div.wafl_items div.wiki ul li,
+div.fetchrss_box ul.fetchrss_items li{
+	padding-top: 0;
+}
+*/
+
+div#contentColumns div#contentLeft div.wafl_box div.wafl_items ul.item_list li p {
+	line-height: 1em;
+}
+
+.wafl_box .wafl_items .wiki {
+	padding: 0;
+}
+.wafl_box .wafl_items .wiki br {
+	display: none;
+}
+td .wafl_box {
+	margin-bottom: 0;
 }
 .wiki .wiki-include-page {
     margin:0 0 1em 0;

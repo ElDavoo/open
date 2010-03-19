@@ -99,7 +99,7 @@
     }
 
     if ($to_backend) {
-        rewrite "^(/challenge.+)" $1 break;
+        rewrite "^(/challenge.*)" $1 break;
         rewrite "^/(?!index.cgi)([^/]+)(\?.+)?$" "/$1/$2" permanent;
         rewrite "^/(?!index.cgi)([^/]+)/?(\?.+)?$" "/$1/index.cgi$2" break;
     }

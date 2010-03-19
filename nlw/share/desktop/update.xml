@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
+  <version>4.0.1RC0</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.0.1RC0.air</url>
+  <description><![CDATA[[4.0.1RC0 - Fri Mar 12 22:49:39 PST 2010]
+(Features)
+* Users can now directly install, upgrade and launch Desktop from an appliance.
+* Administrators can now turn off auto-updating from system console.
+* Support Authenticating Proxies in Mac OS X's System Settings.
+
+(Enhancements)
+* Signals: Add a ":" separator between User and timestamp for improved legibility.
+* Signals: On Login, reset "Signal To" to Primary group if it was set to "All Groups".
+* Signals: Reliably resume updates when internet connection was stopped and resumed.
+* People: Logout/Login no longer results in duplicated people entries.
+* People: Sort names alphabetically for the "All My Groups" list.
+* People: Hide Refresh button when People list is still refreshing.
+* Workspaces: Inter-workspace links now correctly opens in lightbox view.
+
+[4.0.0 - Fri Feb 26 15:26:02 PST 2010]
+(Features)
+* Signals: @-completion now displays only members in the "Signal to" network.
+* People: New "Open" button in a Profile to navigate to its Web interface.
+* Activities: Support for "...More...", with much faster refresh speed.
+* Activities: Update style to match the Dashboard widget.
+* Activities: Renamed the tab from "Activity" to "Activities".
+* Activities: Include People events in display, in addition to Page events.
+* Activities: Include "Follow" events in display.
+* Status Bar: Click to display version history.
+* Status Bar: Show the logged-in user name.
+* Login: Add a link to follow us on Twitter and Facebook.
+
+(Enhancements)
+* Signals: Say "Show Signals within" instead of "Show Signals from".
+* People: Filter text no longer affects @-completion in Signals and "Edited By" in Workspaces.
+* People: Much improved performance; no longer freezes up upon first login.
+* Correctly restore the Active Tab and Subtabs upon restart.
+* Server timeout set to 60 seconds for improved performance.
+* Gracefully delay requests when server response is slower than update interval.
+* Add version number to user-agent string for easier server log analysis.
+
+[3.7.5 - Mon Feb  1 15:54:18 PST 2010]
+(Enhancements)
+* Fix {bz: 3504}: Hidden profile fields should stay hidden in People's Profiles.
+* Fix {bz: 3528}: Workspace/Network lists are now remembered by ID, not by index.
+
+[3.7.4 - Fri Jan 15 13:43:23 PST 2010]
+(Features)
+* Settings: New "Display all Personal messages" option to filter popups.
+* Signals: Support for Socialtext Groups in "Signal to" and "Show Signals from".
+* Signals: When "Signals to" changes, change "Show Signals from" to match.
+* Signals: Inform the user when "Show Signals from" changes away from "Signals to".
+* Signals: Entries in Followed/Mine/Personal/Sent/Link sub-tabs are now Flashbackable.
+* People: Support for Socialtext Groups in All People listing.
+
+(Enhancements)
+* Login: No longer display a harmless error message when the server had no signals.
+* Signals: "Show Signal from" no longer scrolls horizontally with long Network names.
+* Signals: Popups should now consume less CPU when fading in and fading out.
+* Signals: Disable the "Signal to" dropdown only when replying, not when mentioning.
+* Workspaces: Renamed the tab from "Workspace" for better consistency with Web UI.
+* Workspaces: SocialCalc spreadsheets are now displayed using the same Web UI styling.
+* Workspaces: Only allow double-clicking on known-displayable attachments.
+
+[3.7.0 - Tue Nov 24 07:07:05 PST 2009]
+(Features)
+* Signals: Double-click a search result to see its historical context as "Flashback".
+* Signals: Support per-network views in addition to "Show Signals from all networks".
+* Workspace: Add "All Workspaces" search for server version v3.7.1.2+.
+* Workspace: Double-click an image or HTML attachment to view it in a lightbox.
+
+(Enhancements)
+* "Minimize" in Microsoft Windows now minimizes to system tray.
+* Login: Do not pre-fill Server URL, but offer a button to set to Socialtext Hosted.
+* Signals: Disable "Signal to Account" dropdown when replying or direct-messaging.
+* Signals: Clicking on the Signal Search view now auto-focuses on search term input box.
+* Signals: @-completion now work reliably the first time after login.
+* People: Use the ST star icon for "Follow/Stop following this person" instead of a checkbox.
+* People: Keyword filtering no longer interferes with Signal tab's @-completion.
+* Workspace: Correctly style Wiki text in preview and lightbox.
+  (e.g. horizontal borders in tables are now visible.)
+
+[3.6.2 - Mon Sep 28 23:31:04 PDT 2009]
+* Add support for Signal Search for Socialtext server v3.6.3+.
+* Failed login to www.socialtext.net will now fallback to www1 for Free50 users.
+
+[3.6.1 - Mon Sep 21 10:27:15 PDT 2009]
+* Fix the case where filtering for non-existent People deactivates People tab.
+
+[3.6.0 - Sun Sep  6 04:19:03 PDT 2009]
+* Fix incorrect People tab display with Socialtext server v3.6.0+.
+* Fix the bug where too general a search freezes Workspace tab.
+
+[3.5.9 - Thu Sep  3 21:22:21 PDT 2009]
+* Double-clicking a row in Workspace tab now opens the Page inside a mini-browser.
+* A page set as home page in the mini-browser will now open immediately after Login.
+* Support for Activity tab display with Socialtext server v3.6.0+.
+
+[3.5.8 - Thu Aug 20 16:44:17 PDT 2009]
+* Fix a performance issue by checking deletion for visible-in-viewport signals only.
+
+[3.5.7 - Thu Aug 13 20:03:52 PDT 2009]
+* Add support for Deleting signals for Socialtext server v3.5.9+.
+
+[3.5.6 - Thu Jul  2 19:56:08 PDT 2009]
+* Add support for Activity feed in Socialtext server v3.5.7+.
+* Activity feed should no longer be refreshed when already logged out.
+
+[3.5.5 - Thu Jun 18 00:42:44 PDT 2009]
+* Hide "Private to" button if the server does not support private message.
+* Disable the "Replies and Mentions" tab if the server supports neither.
+* Send @UserName, not {user:*}, if the server does not support user mentions.
+
+[3.5.4 - Wed May 27 23:53:13 PDT 2009]
+* Names not prefixed with @ will no longer appear in the @ tab.
+* Fix the bug where Signals with smiley icons erroneously appearing in the @ tab.
+
+[3.5.3 - Fri May 15 04:59:03 PDT 2009]
+* New "Private to" and "Insert mention" buttons for Signals tab.
+* New "Refresh" button in the Workspace tab to refresh the workspaces list.
+* Clicking the popup notification now stops currently queued popups.
+* Ctrl-R now consistently refreshes People and Workspace list in those tabs.
+* Drag-and-drop URLs from Browser into the Signals tab now inserts links.
+* Drag-and-drop text into the Signals tab now correctly appends the text.
+* Rename Signals and Activity's "My Colleagues" tab to "Followed".
+* Upon logout, SD now clears all leftover data from the previous session.
+* Auto-correct typed "(@UserName)" to "( @UserName )" to form a proper mention.
+* Private Signals that mentions you again now appears in @ tab as well.
+* Fix the bug that sometimes turns the People/Profile tab blank.
+* Add Server URL to the default status bar.
+
+[3.5.2 - Fri May  1 15:43:45 PDT 2009]
+* Support for proper replies, private messages, and user mentions.
+* New "Private message" sub-tab for Signals to list private messages.
+* New "...more..." button at the bottom of Signals/All to fetch older Signals.
+* New "Save as..." button to save Signals as HTML file on disk.
+* New "Help" button on the top bar, next to "Settings".
+* New "I don't know my password" link on login panel.
+* Typing "@" in the Signal text body now pulls down people's photos.
+* Typing "@" in the Signal text body now offers "private message" buttons.
+* "Replies"/"Private"/"Links" are now icon tabs, not text tabs.
+* On Workspace selection change, redo search unless one is in progress.
+* Mac: New "Reset application window" item in dock icon's right-click menu.
+
+[3.5.1 - Sat Apr 11 03:04:41 PDT 2009]
+* If the server supports invitation, display an invite link.
+* If the server supports skinning, skin the client accordingly upon login.
+* Show "Welcome, New User!" link when the user had not set first/last name yet.
+* Show "Upload your photo!" link when the user had not uploaded their photo yet.
+* Added a "refresh" button to the Activity tab and the People tab.
+* Changed "Hide signals from other networks" to "Show signals from other networks".
+* When login is successful, immediately re-run the previous Workspace query.
+* For Outlook compatibility, we no longer show First/Last names when clicking email links.
+
+[3.5.0 - Tue Mar 24 20:06:54 PDT 2009]
+* The default server URL was incorrectly set to www2.socialtext.net;
+  it should be www.socialtext.net.
+
+[3.4.2 - Sat Mar 21 06:54:56 PDT 2009]
+* Users can choose which network to Signal to.
+* Signals show which network the Signal was sent to.
+* Typing "@" in Signals input box now auto-completes user names.
+* New "People" tab showing a people directory.
+* Users can view profile information on individual users.
+* New "Workspace" tab for searching on individual workspaces.
+* Drag-and-drop uploading and downloading Page attachments.
+* In Signals tab, new "@Replies" tab collects signals mentioning your name.
+* In Signals tab, new "Links" tab collects signals containing hyperlinks.
+
+[3.4.0 - Thu Feb 26 17:37:29 PST 2009]
+* First public release.
+]]></description>
+</update>

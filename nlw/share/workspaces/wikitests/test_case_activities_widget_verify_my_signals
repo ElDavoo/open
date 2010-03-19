@@ -16,9 +16,9 @@
 | wait_for_element_not_visible_ok | up_limit | 30000 |
 
 | *Comment* | Test Case: Activities Widget Verify My Signals. Signals in widget. Select signals. |  |
+| wait_for_element_present_ok | link=signals | 10000 |
+| click_ok | link=signals |  |
 | st-select-widget-frame | activities_widget |  |
-| wait_for_element_present_ok | action-signals | 10000 |
-| click_ok | action-signals |  |
 
 | *Comment* | Test Case: Activities Widget Verify My Signals. select_and_wait in iframe doesn't work. Use pause. |  |
 | pause | 10000 | I hate pause |
@@ -78,3 +78,5 @@
 | wait_for_text_present_ok | Signal %%start_time%% | 10000 |
 | text_like | //body | qr/Super.+Edit.+Summary.+From.+Signal.+%%start_time%%/ |
 | select-frame | relative=parent |  |
+
+| *Comment* | Test case: Activities Widget Verify My Signals COMPLETED  |  |

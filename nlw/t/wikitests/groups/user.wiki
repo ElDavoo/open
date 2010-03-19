@@ -23,19 +23,19 @@
 | create-user       | %%jacob%%      | password                               |              |
 # Make sure that we're seeing what we're supposed to see
 
-| GET             | /data/groups/%%group_id%%/users |         |
-| code-is         | 200                             |         |
-| header-like     | Cache-Control                   | private |
-| json-parse      |                                 |         |
-| json-array-size | 3                               |         |
-| body-like       | %%jules%%                       |         |
-| body-like       | %%jonas%%                       |         |
+| GET             | /data/groups/%%group_id%%/users?all=1 |         |
+| code-is         | 200                                   |         |
+| header-like     | Cache-Control                         | private |
+| json-parse      |                                       |         |
+| json-array-size | 3                                     |         |
+| body-like       | %%jules%%                             |         |
+| body-like       | %%jonas%%                             |         |
 
 # Delete us some Users
 
 | DELETE          | /data/groups/%%group_id%%/users/%%jonas%% |         |
 | code-is         | 204                                       |         |
-| GET             | /data/groups/%%group_id%%/users           |         |
+| GET             | /data/groups/%%group_id%%/users?all=1     |         |
 | code-is         | 200                                       |         |
 | header-like     | Cache-Control                             | private |
 | json-parse      |                                           |         |

@@ -58,13 +58,26 @@ sub challenge {
         workspace_title => $hub->current_workspace->title,
         workspace_id    => $hub->current_workspace->workspace_id,
     ) if ($hub and $hub->current_workspace);
+
+
+    my $sid;
+    {
+        use OSSP::uuid;
+        my $uuid = new OSSP::uuid;
+        $uuid->make("v4"); # completely random
+        $sid = $uuid->export("str");
+    }
+    
     return $app->_handle_error(
         error => {
             type => $type,
             args => \%args,
         },
         path  => $challenge_uri,
-        query => { redirect_to => $redirect },
+        query => { 
+            redirect_to => $redirect,
+            sid => $sid,
+        },
     );
 }
 

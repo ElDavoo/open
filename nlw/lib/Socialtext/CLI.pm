@@ -1097,7 +1097,10 @@ sub _check_workspace_role {
         # Do not allow the code to "downgrade" from admin to member,
         # the user has to use remove-workspace-admin for that.
         $self->_error(
-            loc("Group already has the role of 'admin' in the [_1] Workspace", $p{ws_name})
+            loc("[_1] already has the role of 'admin' in the [_2] Workspace",
+                $p{name},
+                $p{ws_name}
+            )
         ) if $p{cur_role}->name eq Socialtext::Role->Admin()->name;
     }
 }

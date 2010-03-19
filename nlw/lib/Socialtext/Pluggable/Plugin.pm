@@ -20,6 +20,7 @@ use Socialtext::String ();
 use Socialtext::SQL qw(:txn :exec);
 use Socialtext::Log qw/st_log/;
 use Socialtext::PrefsTable;
+use Socialtext::UserSet qw/:const/;
 my $prod_ver = Socialtext->product_version;
 
 # Class Methods
@@ -36,6 +37,7 @@ field 'last';
 const scope => 'account';
 const hidden => 1; # hidden to admins
 const read_only => 0; # cannot be disabled/enabled in the control panel
+const valid_account_prefs => (); # none by default, override in a child.
 
 sub dependencies { } # Enable/Disable dependencies
 sub enables {} # Enable only dependencies
@@ -615,6 +617,65 @@ sub request {
     my $self = shift;
     my $rest = $self->rest || $self->hub->rest;
     return $rest->request;
+}
+
+# Account Plugin Prefs
+
+sub DefaultAccountPluginPrefs { +{} }
+
+sub GetAccountPluginPrefTable {
+    my $class = shift;
+    my $acct = shift;
+    my $userset_id= $acct + ACCT_OFFSET;
+    return Socialtext::PrefsTable->new(
+        table    => 'user_set_plugin_pref',
+        identity => {
+            plugin      => $class->name,
+            user_set_id => $userset_id
+        },
+        defaults => $class->DefaultAccountPluginPrefs,
+    );
+}
+
+sub _account_plugin_pt {
+    my $self = shift;
+    my $acct = shift;
+    return Socialtext::PrefsTable->new(
+        table    => 'user_set_plugin_pref',
+        identity => {
+            plugin      => $self->name,
+            user_set_id => $acct->user_set_id,
+        },
+        defaults => $self->DefaultAccountPluginPrefs,
+    );
+}
+
+sub set_account_prefs {
+    my $self = shift;
+    my %opts = @_;
+    my $acct = delete $opts{account};
+    return unless %opts;
+    $self->_account_plugin_pt($acct)->set(%opts);
+    my $acct_name = $acct->name;
+    my $username  = $self->hub->current_user->username;
+    st_log()->info("$username changed ".$self->name." preferences for $acct_name");
+}
+
+sub get_account_prefs {
+    my $self = shift;
+    my %opts = @_;
+    my $acct = $opts{account};
+    return $self->_account_plugin_pt($acct)->get();
+}
+
+sub clear_account_prefs {
+    my $self = shift;
+    my %opts = @_;
+    my $acct = $opts{account};
+    $self->_account_plugin_pt($acct)->clear();
+    my $acct_name = $acct->name;
+    my $username  = $self->hub->current_user->username;
+    st_log()->info("$username cleared ".$self->name." preferences for $acct_name");
 }
 
 # Workspace Plugin Prefs

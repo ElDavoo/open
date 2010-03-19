@@ -3,6 +3,7 @@ package Socialtext::WikiFixture::SocialBase;
 use strict;
 use warnings;
 use Carp qw(cluck);
+use Socialtext::AppConfig;
 use Socialtext::Account;
 use Socialtext::User;
 use Socialtext::SQL qw/:exec :txn/;
@@ -10,6 +11,7 @@ use Socialtext::JSON qw/decode_json encode_json/;
 use Socialtext::File;
 use Socialtext::System qw();
 use Socialtext::HTTP::Ports;
+use Socialtext::PrefsTable;
 use Socialtext::Role;
 use Socialtext::People::Profile;
 use Socialtext::UserSet qw(ACCT_OFFSET);
@@ -27,6 +29,15 @@ use Cwd;
 use HTTP::Request::Common;
 use LWP::UserAgent;
 use Socialtext::l10n qw(loc);
+
+# mix-in some commands from the Socialtext fixture
+# XXX move bodies to SocialBase?
+{
+    require Socialtext::WikiFixture::Socialtext;
+    no warnings 'redefine';
+    *st_admin = \&Socialtext::WikiFixture::Socialtext::st_admin;
+    *st_config = \&Socialtext::WikiFixture::Socialtext::st_config;
+}
 
 =head1 NAME
 
@@ -50,6 +61,14 @@ sub init {
     my $def = Socialtext::Account->Default;
     $self->{default_account} = $def->name;
     $self->{default_account_id} = $def->account_id;
+
+    # reset some defaults
+    $self->st_config('set challenger STLogin')
+        unless Socialtext::AppConfig->challenger eq 'STLogin';
+    $self->st_config('set signals_size_limit 1000')
+        unless Socialtext::AppConfig->signals_size_limit == 1000;
+    $self->st_config('set default_workspace ""')
+        if Socialtext::AppConfig->default_workspace;
 
     # Set up the Test::HTTP object initially
     $self->http_user_pass($self->{username}, $self->{password});
@@ -284,6 +303,18 @@ sub st_create_pages {
     ok 1, "Created $numberpages of pages in $workspace";
 }
 
+sub stub_page {
+    my ($self, $workspace, $title, $content) = @_;
+    my $user = Socialtext::User->SystemUser;
+    my $hub = new_hub($workspace);
+
+    $content ||= "Placeholder content ".$self->{start_time};
+    Socialtext::Page->new(hub => $hub)->create(
+                              title => $title,
+                              content => $content,
+                              creator => Socialtext::User->SystemUser);
+}
+
 =head2 st_search_for($searchtype, $searchvalue)
 
 Global nav search automation
@@ -353,6 +384,23 @@ sub st_search_cp_users {
     $self->handle_command('wait_for_text_present_ok',$searchfor,30000);
 }
 
+=head2 st_search_cp_accounts($searchfor)
+
+Control panel (Account) search automation
+
+=cut
+
+sub st_search_cp_accounts {
+   my ($self, $searchfor) = @_;
+   $self->handle_command('open_ok', '/nlw/control/account');
+   $self->handle_command('wait_for_element_visible_ok','st-search-by-name',30000);
+   $self->handle_command('wait_for_element_visible_ok','st-submit-search-by-name',30000);
+   $self->handle_command('type_ok','st-search-by-name',$searchfor);
+   $self->handle_command('click_and_wait','st-submit-search-by-name');
+   my $str = "Accounts matching " . '"' . $searchfor . '"';
+   $self->handle_command('wait_for_text_present_ok',$str,30000);
+}
+
 sub create_account {
     my $self = shift;
     my $name = shift;
@@ -386,6 +434,26 @@ sub account_config {
     );
     $acct->update($key => $val);
     diag "Set account $account_name config: $key to $val";
+}
+
+sub account_plugin_pref {
+    my $self = shift;
+    my $account_name = shift;
+    my $plugin_name = shift;
+    my $key = shift;
+    my $val = shift;
+    my $acct = Socialtext::Account->new(
+        name => $account_name,
+    );
+    my $pt = Socialtext::PrefsTable->new(
+        table => 'user_set_plugin_pref',
+        identity => {
+            plugin => $plugin_name, 
+            user_set_id => $acct->user_set_id
+        }
+    );
+    $pt->set($key, $val);
+    diag "Set account/plugin pref for plugin $plugin_name / account $account_name - $key to $val";
 }
 
 sub get_account_id {
@@ -760,15 +828,20 @@ sub create_workspace {
     my $self = shift;
     my $name = shift;
     my $account = shift;
+    my $title = shift;
 
-    my $ws = Socialtext::Workspace->new(name => $name);
+    if (!defined($title) || length($title)<2) {
+       $title = $name;
+    }
+  
+    my $ws = Socialtext::Workspace->new(name => $name, title => $title);
     if ($ws) {
         diag "Workspace $name already exists";
         return
     }
 
     $ws = Socialtext::Workspace->create(
-        name => $name, title => $name,
+        name => $name, title => $title,
         (
             $account
             ? (account_id => Socialtext::Account->new(name => $account)

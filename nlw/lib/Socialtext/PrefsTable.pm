@@ -7,6 +7,7 @@ use namespace::clean -except => 'meta';
 
 has 'table' => (is => 'ro', isa => 'Str', required => 1);
 has 'identity' => (is => 'ro', isa => 'HashRef[Str]', required => 1);
+has 'defaults' => (is => 'ro', isa => 'HashRef', default => sub {+{}});
 
 around 'clear' => \&sql_txn;
 sub clear {
@@ -19,10 +20,18 @@ sub clear {
 sub get {
     my $self = shift;
     my ($sql,@bind) = sql_abstract()->select(
-        $self->table,[qw(key value)],$self->identity);
+        $self->table,[qw(plugin key value)],$self->identity);
     my $sth = sql_execute($sql,@bind);
-    my $rows = $sth->fetchall_arrayref() || [];
-    return {map { @$_ } @$rows};
+    my $rows = $sth->fetchall_arrayref({}) || [];
+
+    my $data = { %{$self->defaults} };
+    if ($self->identity->{plugin}) {
+        $data->{ $_->{key} } = $_->{value} for @$rows;
+    }
+    else {
+        $data->{ $_->{plugin} }{ $_->{key} } = $_->{value} for @$rows;
+    }
+    return $data;
 }
 
 sub set {

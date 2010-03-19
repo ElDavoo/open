@@ -36,7 +36,7 @@ for (1 .. $test_days) {
     my $datestr = sql_format_timestamptz($date);
     Socialtext::Events->Record({
         timestamp   => $datestr,
-        action      => 'view',
+        action      => 'edit',
         actor       => $user_id,
         page        => $page->id,
         workspace   => $workspace_id,

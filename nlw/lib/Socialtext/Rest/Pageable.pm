@@ -19,14 +19,17 @@ has 'start_index' => ( is => 'ro', isa => 'Int', lazy_build => 1 );
 sub _build_start_index {
     my $self = shift;
     my $index = $self->rest->query->param('startIndex');
-    return defined $index ? $index : $self->rest->query->param('offset') || 0;
+    $index = $self->rest->query->param('offset') unless defined $index;
+    $index = 0 unless defined $index;
+    return $index;
 }
 
 has 'items_per_page' => ( is => 'ro', isa => 'Int', lazy_build => 1 );
 sub _build_items_per_page {
     my $self = shift;
-    my $count = $self->rest->query->param('count')
-             || $self->rest->query->param('limit') or return 25;
+    my $count = $self->rest->query->param('count');
+    $count = $self->rest->query->param('limit') unless defined $count;
+    $count = 25 unless defined $count;
     return $count > max_per_page ? max_per_page : $count;
 }
 

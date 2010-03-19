@@ -12,7 +12,7 @@ use namespace::clean -except => 'meta';
 extends 'Socialtext::Rest::Users';
 
 has 'account' => (
-    is => 'ro', isa => 'Socialtext::Account',
+    is => 'ro', isa => 'Maybe[Socialtext::Account]',
     lazy_build => 1,
 );
 sub _build_account {
@@ -44,6 +44,8 @@ sub if_authorized {
             unless $acting_user->is_business_admin();
     }
     elsif ($method eq 'GET') {
+        return $self->no_resource('Account') unless $self->account;
+
         return $self->not_authorized
             unless $acting_user->is_business_admin()
                 || $self->account->has_user($acting_user);

@@ -24,9 +24,14 @@
 | create-user | %%view_edit_email%% | %%password%% | %%am_acct_one%% |
 | add-member | %%view_edit_email%% | %%am_ws_1%% |  |
 | add-member | %%view_edit_email%% | %%am_ws_2%% |  |
-| st-logoutin | %%view_edit_email%% | %%password%% |  |
+
+| *Comment* | Test Case: Active Members - %%view_edit_email%% verify empty messages in %%am_acct_one%% |  |
+| set | empty_acct | %%am_acct_one%% |
+| set | empty_user | %%view_edit_email%% |
+| include | [Test Case: Active Members Empty Messages] |  |
 
 | *Comment* | Test Case: Active Members - %%view_edit_email%% Creates a page in %%am_ws_1%% |  |
+| st-logoutin | %%view_edit_email%% | %%password%% |  |
 | open_ok | /%%am_ws_1%%/?action=display;page_type=wiki;page_name=Untitled Page#edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -60,14 +65,17 @@
 | st-logoutin | %%members_email_1%% | %%password%% |
 | set | mark | step1 |
 | set | logged_in_as | %%members_email_1%% |
+| set | logged_in_user | %%members_user_1%% |
 | include | [Test Case: Active Member Actions] |  |
 | st-logoutin | %%members_email_2%% | %%password%% |
 | set | mark | step2 |
 | set | logged_in_as | %%members_email_2%% |
+| set | logged_in_user | %%members_user_2%% |
 | include | [Test Case: Active Member Actions] |  |
 | st-logoutin | %%members_email_3%% | %%password%% |
 | set | mark | step3 |
 | set | logged_in_as | %%members_email_3%% |
+| set | logged_in_user | %%members_user_3%% |
 | include | [Test Case: Active Member Actions] |  |
 | include | [Test Case: Active Member Actions] |  |
 

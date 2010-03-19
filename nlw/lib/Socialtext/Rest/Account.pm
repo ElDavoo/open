@@ -5,6 +5,7 @@ use Socialtext::Account;
 use Socialtext::JSON 'encode_json';
 use Socialtext::Role;
 use Socialtext::String;
+use Socialtext::Pluggable::Adapter;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Entity';
@@ -35,6 +36,11 @@ sub GET_json {
             skin_name          => $acct->skin_name,
             restrict_to_domain => $acct->restrict_to_domain,
             plugins            => [$acct->plugins_enabled],
+            plugin_preferences => 
+                Socialtext::Pluggable::Adapter->new->account_preferences(
+                    account       => $acct,
+                    with_defaults => 1,
+                ),
         };
 
         $self->rest->header(-type => 'application/json');

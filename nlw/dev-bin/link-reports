@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use FindBin;
-use Fatal qw/chdir/;
+use Fatal qw/chdir symlink/;
 use lib "$FindBin::Bin/../lib";
 use Socialtext::System qw/shell_run/;
 
@@ -12,9 +12,13 @@ unless (-d $reports_dir) {
     die "Couldn't find reports directory at $reports_dir!\n";
 }
 
-if (-d "$reports_dir/lib/Socialtext/Reports" and not -d "lib/Socialtext/Reports") {
-    symlink "$reports_dir/lib/Socialtext/Reports", "lib/Socialtext/Reports"
-        or die "Can't symlink reports";
+unless (-l "lib/Socialtext/Reports") {
+    symlink "$reports_dir/lib/Socialtext/Reports" => "lib/Socialtext/Reports";
+}
+
+unless (-l "lib/Socialtext/WikiFixture/Reports.pm") {
+    symlink "$reports_dir/lib/Socialtext/WikiFixture/Reports.pm" =>
+        "lib/Socialtext/WikiFixture/Reports.pm";
 }
 
 chdir $reports_dir;

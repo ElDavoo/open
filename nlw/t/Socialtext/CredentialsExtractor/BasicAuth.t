@@ -118,7 +118,7 @@ sub make_mocked_request {
 
     if ($username && $password) {
         my $encoded = MIME::Base64::encode("$username\:$password");
-        $args{'Authorization'} = $encoded;
+        $args{'Authorization'} = "Basic $encoded";
     }
 
     return Apache::Request->new(%args);

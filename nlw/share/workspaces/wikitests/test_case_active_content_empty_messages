@@ -1,0 +1,54 @@
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Active Content Empty Messages |  |
+
+| set_default | empty_user | %%username%% |
+| set_default | empty_acct | Unknown |
+
+| *Comment* | Test Case: Active Content Empty Messages setup empty user and account |  |
+| st-admin | create-account --name %%empty_acct%% |  |
+| st-admin | create-user --e %%empty_user%% --p %%password%% |  |
+| st-admin | add-member --account %%empty_acct%% --u %%empty_user%% |  |
+| st-logoutin | %%empty_user%% | %%password%% |
+
+| *Comment* | Test Case: Active Content Empty Messages get an empty Active Content widget |  |
+
+| st_single_widget_in_dashboard | gallery-widget-Active Content |  |
+| st-name-widget | 1 | active_content |
+| st-widget-title-like | active_content | Active Content |
+| st-widget-settings | active_content |  |
+| wait_for_element_visible_ok | up_account | 30000 |
+| uncheck_ok | up_rotate |  |
+| select_ok | up_account | %%empty_acct%% |
+| click_ok | st-savebutton-%%active_content%% |  |
+| wait_for_element_not_visible_ok | up_account | 30000 |
+
+| *Comment* | Test Case: Active Content Empty Messages set the empty Content messages |  |
+
+| set | EmptyViews | The most frequently viewed pages will be listed here. After you explore your new workspaces, you can see the most viewed pages here. |
+| set | EmptyEdits | The most frequently edited pages will be listed here. Try editing a page in one of your new workspaces. |
+| set | EmptyWatch | The most frequently watched pages will be listed here. Try watching a page in one of your new workspaces by clicking on the Watch icon in the page's toolbar. |
+| set | EmptyEmail | The most frequently emailed pages will be listed here. Try emailing a page to a colleague by clicking on the Email icon in the page's toolbar. |
+
+| *Comment* | Test Case: Active Content Empty Messages Check the Empty Content messages |  |
+| st-select-widget-frame | active_content |  |
+| wait_for_element_visible_ok | link=Emailed | 30000 |
+| wait_for_element_visible_ok | link=Edited | 30000 |
+| wait_for_element_visible_ok | link=Watched | 30000 |
+| wait_for_element_not_present_ok | link=Viewed | 5000 |
+| text_like | //body | Viewed |
+
+| wait_for_text_present_ok | %%EmptyViews%% | 5000 |
+| click_ok | link=Edited |  |
+| wait_for_text_present_ok | %%EmptyEdits%% | 5000 |
+| click_ok | link=Watched |  |
+| wait_for_text_present_ok | %%EmptyWatch%% | 5000 |
+| click_ok | link=Emailed |  |
+| wait_for_text_present_ok | %%EmptyEmail%% | 5000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Active Content Empty Messages TEARDOWN |  |
+
+| st-admin | remove-member --username %%empty_user%% --account %%empty_acct%% |  |
+
+| *Comment* | Test Case: Active Content Empty Messages COMPLETED |  |

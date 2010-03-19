@@ -486,6 +486,11 @@ sub to_hash {
         description => $self->description,
         user_count => $self->user_count,
         workspace_count => $self->workspace_count,
+        creation_date => $self->creation_datetime->ymd,
+        created_by_user_id => $self->created_by_user_id,
+        created_by_username => $self->creator->guess_real_name,
+        primary_account_id => $self->primary_account_id,
+        primary_account_name => $self->primary_account->name,
     };
 
     if ($opts{show_members}) {

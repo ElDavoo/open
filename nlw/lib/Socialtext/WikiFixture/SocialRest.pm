@@ -6,7 +6,14 @@ use base 'Socialtext::WikiFixture::SocialBase';
 use base 'Socialtext::WikiFixture';
 use Test::HTTP;
 use Test::More;
-use Socialtext::WikiFixture::Socialtext;
+
+# mix-in some commands from the Socialtext fixture
+# XXX Should move these to socialbase?
+{
+    require Socialtext::WikiFixture::Socialtext;
+    no warnings 'redefine';
+    *st_ldap = \&Socialtext::WikiFixture::Socialtext::st_ldap;
+}
 
 =head1 NAME
 
@@ -48,16 +55,6 @@ sub handle_command {
     my ($command, @opts) = $self->_munge_command_and_opts(@_);
 
     # Lets (ab)use some existing test methods
-    # XXX Should move these to socialbase?
-    if ($command eq 'st_admin') {
-        return Socialtext::WikiFixture::Socialtext::st_admin($self, @opts);
-    }
-    elsif ($command eq 'st_config') {
-        return Socialtext::WikiFixture::Socialtext::st_config($self, @opts);
-    }
-    elsif ($command eq 'st_ldap') {
-        return Socialtext::WikiFixture::Socialtext::st_ldap($self, @opts);
-    }
 
     eval { $self->SUPER::_handle_command($command, @opts) };
     return unless $@;

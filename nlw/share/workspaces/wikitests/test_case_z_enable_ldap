@@ -1,6 +1,9 @@
+| *Comment* | Test Case: Z Enable LDAP starting |  |
+
 | *Comment* | A testset solely for the purpose of enabling LDAP from other testsets. |  |
 | *Comment* | Always makes default LDAP user devnullx a workspace admin in the test workspace |  |
 
 | st-ldap | start | openldap running |
 | st-admin | add-workspace-admin --username devnullx --w %%workspace%% | devnullx now has the role of 'admin' in the test-data Workspace |
-| *Comment* | Enable LDAP: COMPLETED |  |
+
+| *Comment* | Test Case: Z Enable LDAP COMPLETED |  |

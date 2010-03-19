@@ -16,9 +16,10 @@
 [%- END %]
 
 [%- IF config.is_appliance -%]
-     location /static/appliance {
+     location /appliance/static {
          alias /usr/share/libsocialtext-appliance-perl/static;
      }
+     rewrite ^/static/appliance/(.+)$ /appliance/static/$1 last;
 [%- END %]
 
     [%- BLOCK image_cache %]

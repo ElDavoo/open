@@ -103,27 +103,28 @@ sub _item_as_html {
     if ($creator) {
         my $ws   = $page->hub->current_workspace;
         my $name = $creator->best_full_name( workspace => $ws );
-        push @html_headers, "<div>Creator: $name</div>";
+        push @html_footers, "<div>Creator: $name</div>";
     }
     Socialtext::Timer->Pause('_item_as_html_creator');
 
     Socialtext::Timer->Continue('_item_as_html_tags');
     my @tags    = grep { $_ !~ /recent changes/i } $page->categories_sorted;
     if ( scalar @tags ) {
-       push @html_headers, "<div>Tags: " . join( ", ", @tags ) . "</div>";
+       push @html_footers, "<div>Tags: " . join( ", ", @tags ) . "</div>";
     }
     Socialtext::Timer->Pause('_item_as_html_tags');
 
     if (my $summary = $page->edit_summary) {
-        push @html_headers, "<div>Summary: $summary</div>";
+        if ($summary ne '(comment)') {
+            push @html_headers, "<div>$summary</div>";
+        }
     }
 
     Socialtext::Timer->Continue('_item_as_html_css');
     my $css_uri = Socialtext::URI::uri(
         path => Socialtext::Skin->new('s3')->skin_uri('css','wiki.css'),
     );
-    push @html_headers,
-        qq{<link ref="stylesheet" type="text/css" href="$css_uri"/>};
+    my $css = qq{<link ref="stylesheet" type="text/css" href="$css_uri"/>};
     Socialtext::Timer->Pause('_item_as_html_css');
 
     Socialtext::Timer->Continue('_item_as_html_attach');
@@ -136,7 +137,7 @@ sub _item_as_html {
     }
     Socialtext::Timer->Pause('_item_as_html_attach');
 
-    return join "<hr/>", @html_headers, $html, @html_footers;
+    return join "<hr/>", @html_headers, $css . $html, @html_footers;
 }
 
 sub _cdata {

@@ -15,6 +15,7 @@ const 'config_basename' => 'ntlm.yaml';
 field 'domain';
 field 'primary';
 field 'backup' => [];
+field 'handshake_timeout' => 2.0;
 
 ###############################################################################
 # Custom initialization routine
@@ -52,6 +53,38 @@ sub FallbackDomain {
     return $default->domain();
 }
 
+sub ConfigureApacheAuthenNTLM {
+    my $class = shift;
+    my $o = shift;
+
+    # force Apache::AuthenNTLM to split up the "domain\username" and only
+    # leave us the "username" part; our Authen system doesn't understand
+    # composite usernames and isn't able to handle this as an exception to the
+    # rule.
+    $o->{splitdomainprefix} = 1;
+
+    # read in our NTLM config, and set up our PDC/BDCs
+    my @all_configs = $class->load();
+    foreach my $config (@all_configs) {
+        my $domain  = lc( $config->domain() );
+        my $primary = $config->primary();
+        my $backups = $config->backup();
+
+        $o->{smbpdc}{$domain} = $primary;
+        $o->{smbbdc}{$domain} = join ' ', @{$backups};
+    }
+    
+    # the default domain comes from the 0th config too:
+    $o->{handshake_timeout} = 0+$all_configs[0]->handshake_timeout;
+
+    # set the default/fallback domains, in case the NTLM handshake doesn't
+    # indicate which one to use
+    $o->{defaultdomain}  = $class->DefaultDomain();
+    $o->{fallbackdomain} = $class->FallbackDomain();
+
+    return $o;
+}
+
 1;
 
 =head1 NAME
@@ -84,6 +117,14 @@ The name of the Primary Domain Controller for the domain.
 =item B<backup>
 
 The name(s) of the Backup Domain Controllers for the domain.
+
+=item B<handshake_timeout>
+
+How long clients are given between type 1 and type 3 requests (the initiating
+and completing HTTP requests).  Since we can only process one handshake
+concurrently at a time (an NTLM+samba limitation), we need to time-out slow
+handshakes.  Setting this too low will cause lots of authentication pop-ups.
+Default: 2.0 seconds.
 
 =back
 

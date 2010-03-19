@@ -190,22 +190,22 @@ sub _generic_log_like {
     $Test->ok($no_match_result, $name);
 }
 
-sub nothing_logged_ok(;$) {
+sub nothing_logged_ok(;$$) {
     my $name = shift;
     $name ||= "nothing logged";
     _generic_level_not_logged_ok('debug', $name);
 }
 
-sub no_errors_logged_ok(;$) {
+sub no_errors_logged_ok(;$$) {
     _generic_level_not_logged_ok('error', @_);
 }
 
-sub no_warnings_logged_ok(;$) {
+sub no_warnings_logged_ok(;$$) {
     _generic_level_not_logged_ok('warning', @_);
 }
 
 sub _generic_level_not_logged_ok {
-    my ($level, $name) = @_;
+    my ($level, $name, $okregex) = @_;
     $name ||= "nothing logged at '$level' or higher";
 
     # create a lookup table for all of the log levels that are >= the one that
@@ -225,7 +225,8 @@ sub _generic_level_not_logged_ok {
 
         if (exists $looking_for{$sub}) {
             my @args = st_log->call_args($offset);
-            push @found, [$sub, @args];
+            push @found, [$sub, @args] unless 
+                ($okregex and $args[1] =~ $okregex) ;
         }
     }
 
@@ -265,6 +266,7 @@ Socialtext::Log - MOCKED Socialtext::Log
   ($level, $msg) = next_log();
 
   no_warnings_logged_ok 'no warnings logged';
+  no_warnings_logged_ok 'no warnings logged', qr/Dumb warn message/;
   no_errors_logged_ok 'no errors logged';
 
   nothing_logged_ok 'nothing logged at all';
@@ -365,17 +367,17 @@ true otherwise.
 The current implementation does not scale especially well, so use this
 sparingly if you need to search through hundreds of logged messages.
 
-=item B<no_errors_logged_ok($msg)>
+=item B<no_errors_logged_ok($msg, $ignore_re)>
 
-Checks to make sure that no errors (or greater) were logged.
+Checks to make sure that no errors (or greater) were logged. Additionally ignores log messages whose bodies match $ignore_re.
 
-=item B<no_warnings_logged_ok($msg)>
+=item B<no_warnings_logged_ok($msg, $ignore_re)>
 
-Checks to make sure that no warnings (or greater) were logged.
+Checks to make sure that no warnings (or greater) were logged. Additionally ignores log messages whose bodies match $ignore_re.
 
-=item B<nothing_logged_ok($msg)>
+=item B<nothing_logged_ok($msg, $ignore_re)>
 
-Checks to make sure that I<nothing> has been logged, at all.
+Checks to make sure that I<nothing> has been logged, at all. Ignores log messages whose bodies match $ignore_re.
 
 =back
 

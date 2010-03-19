@@ -22,7 +22,8 @@ sub extract_credentials {
 
     # XXX: Apache will only grant us access to $r->get_basic_pw() if we've
     # configured basic-auth in the config for the location, so roll our own.
-    if (my $header = $request->header_in("Authorization")) {
+    my $header = $request->header_in("Authorization");
+    if ($header && $header =~ /^\s*Basic\s+/) {
         $header =~ s/\s*Basic\s+//;
         ($username, $password) = split(/:/, MIME::Base64::decode($header), 2);
 

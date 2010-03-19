@@ -26,6 +26,24 @@ $.extend(Socialtext.Account.prototype, {
             success: this.successCallback(callback),
             error: this.errorCallback(callback)
         });
+    },
+
+    updateSignalsPrefs: function(prefs, callback) {
+        var self = this;
+        self.updatePluginPrefs('signals', prefs, callback);
+    },
+
+    // Generic
+    updatePluginPrefs: function(plugin, prefs, callback) {
+        var self = this;
+        $.ajax({
+            url: this.url('/plugins/' + plugin + '/preferences'),
+            type: 'put',
+            contentType: 'application/json',
+            data: $.toJSON(prefs),
+            success: this.successCallback(callback),
+            error: this.errorCallback(callback)
+        });
     }
 });
 

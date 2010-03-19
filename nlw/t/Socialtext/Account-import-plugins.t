@@ -3,11 +3,14 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 4;
+use Test::Socialtext tests => 9;
 use Socialtext::CLI;
 use Test::Socialtext::Account;
 use Test::Output qw(combined_from);
 use Test::Socialtext::CLIUtils qw(expect_success);
+use Socialtext::Account;
+use Socialtext::Pluggable::Adapter;
+use Socialtext::Pluggable::Plugin::Signals;
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
 use YAML qw(LoadFile DumpFile);
@@ -22,6 +25,7 @@ fixtures(qw( db ));
 # missing Plugin.
 missing_plugin: {
     my $account = create_test_account_bypassing_factory();
+    my $name    = $account->name;
     my $plugin  = 'nonexistent';
     my $results = export_and_import_results(
         account => $account,
@@ -36,8 +40,42 @@ missing_plugin: {
     like $results, qr/account imported/, '... import successful';
     like $results, qr/'$plugin' plugin missing; skipping/,
         '... skipping the missing plugin';
+
+    # Re-instantiate the account with restored values
+    $account = Socialtext::Account->Resolve($name);
+    my $settings = Socialtext::Pluggable::Adapter->new()->account_preferences(
+        account => $account,
+        with_defaults => 0,
+    );
+    is_deeply $settings, {}, 'restored account uses default plugin prefs';
 }
 
+plugin_prefs: {
+    my $account = create_test_account_bypassing_factory();
+    my $name    = $account->name;
+
+    # Set up some plugin prefs.
+    $account->enable_plugin('signals');
+    my $prefs   = Socialtext::Pluggable::Plugin::Signals->GetAccountPluginPrefTable($account->account_id);
+    $prefs->set(signals_size_limit => 200);
+
+    my $results = export_and_import_results(
+        account => $account,
+        flush   => sub {
+            Test::Socialtext::Account->delete_recklessly($account);
+        },
+    );
+    like $results, qr/account imported/, '... import successful';
+
+    # Re-instantiate the account with restored values
+    $account = Socialtext::Account->Resolve($name);
+    my $settings = Socialtext::Pluggable::Adapter->new()->account_preferences(
+        account => $account,
+        with_defaults => 0,
+    );
+    is_deeply $settings, {signals => {signals_size_limit => 200}},
+        'restored account uses custom plugin prefs';
+}
 
 ###############################################################################
 # Helper routine to export an Account, and return the CLI output generated

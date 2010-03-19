@@ -5,7 +5,7 @@
 Find or create several pages that have no incoming links. This creates orphan pages. | pages are created
 
 | set | ws | orphans-ws-%%start_time%% |
-| create-workspace | %%ws%% | %%hostname%% |
+| create-workspace | %%ws%% |  |
 | add-member | %%username%% | %%ws%% |
 | st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0001" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0001" page has been created. |
 | st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0002" page has been created. |

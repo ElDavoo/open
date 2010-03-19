@@ -52,6 +52,10 @@ proto.initialize_object = function() {
     this.clear_inner_text();
 }
 
+proto.blur = function() {
+    this.textarea.blur();
+};
+
 proto.set_focus = function() {
     this.textarea.focus();
 }
@@ -61,8 +65,10 @@ proto.clear_inner_text = function() {
     this.area.onclick = function() {
         var inner_text = self.area.value;
         var clear = self.config.clearRegex;
-        if (clear && inner_text.match(clear))
+        if (clear && inner_text.match(clear)) {
             self.area.value = '';
+            jQuery(self.area).removeClass('clearHandler');
+        }
     }
 }
 

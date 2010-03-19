@@ -164,6 +164,18 @@ sub _build_logo {
     return Socialtext::AccountLogo->new(account => $self);
 }
 
+has 'plugin_preferences' => (
+    is => 'ro', isa => 'HashRef',
+    lazy_build => 1,
+);
+
+sub _build_plugin_preferences {
+    my $self = shift;
+    return Socialtext::Pluggable::Adapter->new->account_preferences(
+        account => $self, with_defaults => 1,
+    );
+}
+
 sub custom_workspace_skins {
     my $self = shift;
     my %p    = @_;
@@ -316,6 +328,11 @@ sub export {
         logo                       => MIME::Base64::encode($$logo_ref),
         allow_invitation           => $self->allow_invitation,
         plugins                    => [ $self->plugins_enabled ],
+        plugin_preferences         =>
+            Socialtext::Pluggable::Adapter->new->account_preferences(
+                account       => $self,
+                with_defaults => 0, # do _not_ export defaults.
+            ),
         all_users_workspaces       =>
             [ map { $_->name } @{ $self->all_users_workspaces } ],
         (map { $_ => $self->$_ } grep {/^desktop_/} @ACCT_COLS),
@@ -496,7 +513,17 @@ sub import_file {
                 print loc("... '[_1]' plugin missing; skipping", $plugin_name) . "\n";
                 next;
             }
-            eval { $account->enable_plugin($plugin_name) };
+            eval {
+                $account->enable_plugin($plugin_name);
+
+                my $prefs = $hash->{plugin_preferences}{$plugin_name};
+                if ($prefs) {
+                    my $class = Socialtext::Pluggable::Adapter->plugin_class(
+                        $plugin_name);
+                    my $table = $class->GetAccountPluginPrefTable($account->account_id);
+                    $table->set( %{$hash->{plugin_preferences}{$plugin_name}} );
+                }
+            };
             warn $@ if $@;
         }
     }
@@ -1038,9 +1065,10 @@ sub _validate_and_clean_data {
 sub hash_representation {
     my ($self,%p) = @_;
     my $hash = {
-        account_name    => $self->name,
-        account_id      => $self->account_id,
-        plugins_enabled => [ sort $self->plugins_enabled ],
+        account_name       => $self->name,
+        account_id         => $self->account_id,
+        plugins_enabled    => [ sort $self->plugins_enabled ],
+        plugin_preferences => $self->plugin_preferences,
     };
     unless ($p{no_desktop}) {
         $hash->{$_} = $self->$_ for (grep /^desktop_/,@ACCT_COLS);
