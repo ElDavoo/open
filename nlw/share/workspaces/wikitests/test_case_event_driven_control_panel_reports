@@ -20,7 +20,7 @@
 | *Comment* | Test Case: Even-Driven Control Panel Reports - Become a Unique Contributor |  |  |
 | st-logoutin | %%reports_user%% | %%password%% |  |
 | open_ok | /%%ed_ws%%/ |  |  |
-| st_create_wikipage | %%ed_ws%% | hello_page |
+| st_create_wikipage | %%ed_ws%% | hello_page |  |
 | comment_page | %%ed_ws%% | hello_page | hello says Matt. This is a comment. |
 | open_ok | /st/dashboard/ |  |  |
 
@@ -57,9 +57,51 @@
 | pause | 2000 |  |
 | post-signal | abc |  |
 
+| *Comment* | Test Case: Even-Driven Control Panel Reports Second User |
+| set | reports_two | ed-reports-two%%start_time%%@matt.socialtext.net |
+| st-admin | create-user --e %%reports_two%% --p %%password%% --account %%ed_account%% | A new user with the username |
+| st-admin | add-member --e %%reports_two%% --w %%ed_ws%% | has the role of |
+| st-admin | give-accounts-admin --e %%reports_two%% | now has accounts admin access |
+| st-logoutin | %%reports_user%% | %%password%% |  |
+| open_ok | /%%ed_ws%%/ |  |  |
+| open_ok | /%%wd_ws%%/?hello_page |
+| open_ok | /st/dashboard/ |  |  |
+
+| *Comment* | Test Case: Even-Driven Control Panel Reports Second User Personalize my dashboard |  |
+| st_single_widget_in_dashboard | gallery-widget-Wiki Page |  |
+
+| *Comment* | Test Case: Even-Driven Control Panel Reports Second User Personalized my profile |  |
+| set | new_fname | marko |
+| set | new_lname | gaertnero |
+| wait_for_element_visible_ok | link=(edit) | 60000 |
+| click_and_wait | link=(edit) |  |
+
+| *Comment* | Test Case: Event Driven Control Panel Reports Second User profile present |  |
+| st-name-widget | 1 | profile_details |
+| st-select-widget-frame | profile_details |  |
+| wait_for_element_visible_ok | first_name | 30000 |
+| wait_for_element_visible_ok | last_name | 30000 |
+| type_ok | first_name | %%new_fname%% |
+| type_ok | last_name | %%new_lname%% |
+| type_ok | position | Tester |
+| type_ok | company | Socialtext |
+| wait_for_element_visible_ok | update_profile | 30000 |
+| click_and_wait | update_profile |  |
+| st-name-widget | 1 | profile |
+| st-select-widget-frame | profile |  |
+| text_like | //body | %%new_fname%% %%new_lname%% |
+| select-frame | relative=parent |  |
+| *Comment* | Test Case: Even-Driven Control Panel Reports Second user Send THREE signals |  |
+| http-user-pass | %%reports_user%% | %%password%% |
+| post-signal | def |  |
+| pause | 2000 |  |
+| post-signal | ghi |  |
+| pause | 2000 |  |
+| post-signal | zxy |  |
+
 | *Comment* | Test Case: Even-Driven Control Panel Reports - And I've got a workspace |
 | *Comment* | Test Case: Even-Driven Control Panel Reports - And the pages are 30 |
-| *Comment* | Test Case: Even-Driven Control Panel Reports - And the Page Views are 4 (thanks to create) |
+| *Comment* | Test Case: Even-Driven Control Panel Reports - And the Page Views are 5 (thanks to create) |
 
 | *Comment* | Test case: Event-Driven Control Panel Reports View Results |  |
 | pause | 480000 |  |
@@ -67,7 +109,7 @@
 | wait_for_element_visible_ok | link=Growth Reports | 30000 |
 | click_and_wait | link=Growth Reports |  |
 | selectFrame | report-iframe |  |
-| text_like | //body | qr/2\s*1\s*1\s*1\s*1\s*2\s*3\s*2\s*1\s*30\s*4\s*1/ |
+| text_like | //body | qr/2\s*1\s*1\s*1\s*1\s*2\s*3\s*2\s*1\s*30\s*5\s*1/ |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test case: Event-Driven Control Panel Reports - Teardown |  |
