@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>226</version>
-  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-226.air</url>
-  <description><![CDATA[[Build 226 - Fri Mar 12 22:24:41 PST 2010]
+  <version>227</version>
+  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-227.air</url>
+  <description><![CDATA[[Build 227 - Thu Mar 18 00:58:27 PDT 2010]
+* Implement [Story: Expand signals input limit]; default is 400 for ST<=4.0.0 servers.
+
+[Build 226 - Fri Mar 12 22:24:41 PST 2010]
 * On Login, reset SignalTo to Primary group if it was set to "All Groups".
 
 [Build 225 - Fri Mar 12 04:17:39 PST 2010]
