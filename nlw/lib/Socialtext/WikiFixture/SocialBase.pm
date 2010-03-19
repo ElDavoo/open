@@ -2476,6 +2476,43 @@ sub json_path_set {
     }
 }
 
+=head2 json-path-parse
+
+Parse a json-path selection as if it were JSON itself (the OpenSocial
+json-proxy specification does this sort of embedding).
+
+After parsing, the other C<json-path-> directives will work as expected.
+
+=cut
+
+sub json_path_parse {
+    my $self = shift;
+    my $path = shift;
+
+    if (!$self->{json}) {
+        fail "json-path-parse error: you need to call 'json-parse' first (or it failed previously)";
+        return;
+    }
+
+    $path =~ s/^\$//; # remove leading $
+    my $sel = eval { $self->_select_json_path($path, $self->{json}) };
+    if (my $e = $@) {
+        fail "json-path-parse selection error: $e";
+        $self->{json} = {};
+        return;
+    }
+
+    my $json = eval { decode_json($sel) };
+    if (my $e = $@) {
+        fail "json-path-parse error: $e";
+        $self->{json} = {};
+    }
+    else {
+        pass "json-path-parse ok";
+        $self->{json} = $json;
+    }
+}
+
 sub st_widgets {
     my $self    = shift;
     my $options = shift || '';
