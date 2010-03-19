@@ -59,7 +59,7 @@ sub _get_entries_faster {
     my $ws_id = $self->hub->current_workspace->workspace_id;
     my $sth;
     my $order_by = $by_create ? 'create_time' : 'last_edit_time';
-    if ($blog eq 'recent changes') {
+    if (lc $blog eq 'recent changes') {
         $sth = sql_execute(qq{
             SELECT create_time, last_edit_time
               FROM page
