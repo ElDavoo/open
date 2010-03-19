@@ -11,7 +11,7 @@
 | click_and_wait | st-home-link |  |
 | text_like | st-editing-tools-edit | Welcome |
 | click_and_wait | st-wiki-subnav-link-people |  |
-| wai_for_text_present_ok | All People | 30000 |
+| wait_for_text_present_ok | All People | 30000 |
 | click_and_wait | st-wiki-subnav-link-workspaces |  |
 | text_like | contentContainer | qr/Workspace Title\s+Workspace Name/ |
 

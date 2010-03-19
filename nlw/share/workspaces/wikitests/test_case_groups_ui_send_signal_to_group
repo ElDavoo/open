@@ -24,13 +24,13 @@
 | st-name-widget | 1 | signal_sender |
 | st-name-widget | 3 | signal_receptor |
 | select_ok | network-select | index=1 |
-| st_send_signal_via_profile_widget | signal_sender | %%signal_1%% |
+| st_send_signal_via_activities_widget | signal_sender | %%signal_1%% |
 | st_verify_text_in_activities_widget | signal_receptor | qr/You.+minute.+ago to %%group_acct%%/ |
 | st_verify_text_in_activities_widget | signal_receptor | %%signal_1%% |
 
 | *Comment* | Groups UI Send Signal to Group SEND SIGNAL TO GROUP |  |
 | select_ok | network-select | index=2 |
-| st_send_signal_via_profile_widget | signal_sender | %%signal_2%% |
+| st_send_signal_via_activities_widget | signal_sender | %%signal_2%% |
 | st_verify_text_in_activities_widget | signal_receptor | %%signal_2%% |
 | st_verify_text_in_activities_widget | signal_receptor | qr/You.+minute.+ago to %%group_name%%/ |
 
