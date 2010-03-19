@@ -58,6 +58,10 @@
             proxy_pass http://localhost:[% apache_perl_port %]/js/skin/$1/$2;
         }
 
+        location ~ "^/nlw/plugin/([^/]+)/javascript/(.*)" {
+            proxy_pass http://localhost:[% apache_perl_port %]/js/plugin/$1/$2;
+        }
+
         location /nlw/static/ {
             internal;
             alias [% config.static_dir %]/;

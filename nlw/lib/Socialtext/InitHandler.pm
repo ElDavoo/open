@@ -17,22 +17,6 @@ use Socialtext::User::Cache;
 
 sub handler {
     my $r = shift;
-
-    # This env var is set in the apache-perl config file (nlw.conf)
-    if ($ENV{NLW_DEV_MODE} && ! Socialtext::AppConfig->benchmark_mode) {
-        if ($r->uri !~ m{^/data}) {
-            my $stamp_file = Socialtext::Paths::storage_directory('make_ran');
-            my $mod = (stat $stamp_file)[9] || 0;
-            local $Socialtext::System::SILENT_RUN = 1;
-            if ($mod < time - 5) {
-                open M, "> $stamp_file";
-                print M time();
-                close M;
-                shell_run '-st-widgets update-all';
-            }
-        }
-    }
-
     {
         # make all users use the in-memory cache (per process) in Apache
         no warnings 'once';

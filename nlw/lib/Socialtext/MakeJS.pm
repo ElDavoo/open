@@ -94,7 +94,16 @@ sub Build {
 
     local $CWD = "$code_base/$dir";
 
-    my $info = $dirs{$dir}{$target} || confess "$dir:$target";
+    my $info = $dirs{$dir}{$target};
+    
+    unless ($info) {
+        if (-f $target) {
+            return;
+        }
+        else {
+            confess "$dir/$target doesn't exist!";
+        }
+    }
 
     my $parts = $info->{parts} || die "$target has no parts!";
 
