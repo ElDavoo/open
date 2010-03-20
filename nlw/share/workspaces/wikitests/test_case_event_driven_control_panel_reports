@@ -8,6 +8,7 @@
 | set | ed_account | ed-account-%%start_time%% |
 | set | ed_ws | ed-ws-%%start_time%% |
 | set | reports_user | ed-reports-user%%start_time%%@matt.socialtext.net |
+
 | create-account | %%ed_account%% |  |
 | st-admin | create-workspace --name %%ed_ws%% --title %%ed_ws%% --account %%ed_account%% | was created |
 | st-admin | create-user --e %%reports_user%% --p %%password%% --account %%ed_account%% | A new user with the username |
@@ -18,6 +19,7 @@
 | *Comment* | Test Case: Even-Driven Conrol Panel Reports - Unique Members will be 2 |  |  |
 | *Comment* | Test Case: Even-Driven Control Panel Reports - Unique Visitors will be 1 |  |  |
 | *Comment* | Test Case: Even-Driven Control Panel Reports - Become a Unique Contributor |  |  |
+
 | st-logoutin | %%reports_user%% | %%password%% |  |
 | open_ok | /%%ed_ws%%/ |  |  |
 | st_create_wikipage | %%ed_ws%% | hello_page |  |
@@ -30,7 +32,7 @@
 | *Comment* | Test Case: Even-Driven Control Panel Reports - Personalized my profile |  |
 | set | new_fname | mateo |
 | set | new_lname | heussero |
-| wait_for_element_visible_ok | link=(edit) | 60000 |
+| wait_for_element_visible_ok | link=(edit) | 30000 |
 | click_and_wait | link=(edit) |  |
 
 | *Comment* | Test Case: Event Driven Control Panel Reports. Verify profile present. |  |
@@ -44,28 +46,33 @@
 | type_ok | company | Socialtext |
 | wait_for_element_visible_ok | update_profile | 30000 |
 | click_and_wait | update_profile |  |
+
+| *Comment* | Test Case: Event Driven Control Panel Reports. Verify names saved. |  |
 | st-name-widget | 1 | profile |
 | st-select-widget-frame | profile |  |
 | text_like | //body | %%new_fname%% %%new_lname%% |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Even-Driven Control Panel Reports - So now I've viewed myself |  |
-| *Comment* | Test Case: Even-Driven Control Panel Reports - I've allready had a Dashboard Views |  |
-| *Comment* | Test Case: Even-Driven Control Panel Reports - So now i'll send a couple signals |  |
+| *Comment* | Test Case: Even-Driven Control Panel Reports - I've already had a Dashboard Views |  |
+| *Comment* | Test Case: Even-Driven Control Panel Reports - So now I'll send a couple signals |  |
+
 | http-user-pass | %%reports_user%% | %%password%% |
 | post-signal | abc |  |
 | pause | 2000 |  |
 | post-signal | abc |  |
 
-| *Comment* | Test Case: Even-Driven Control Panel Reports Second User |
+| *Comment* | Test Case: Even-Driven Control Panel Reports Second User |  |
 | set | reports_two | ed-reports-two%%start_time%%@matt.socialtext.net |
+
 | st-admin | create-user --e %%reports_two%% --p %%password%% --account %%ed_account%% | A new user with the username |
 | st-admin | add-member --e %%reports_two%% --w %%ed_ws%% | has the role of |
 | st-admin | give-accounts-admin --e %%reports_two%% | now has accounts admin access |
-| st-logoutin | %%reports_user%% | %%password%% |  |
-| open_ok | /%%ed_ws%%/ |  |  |
-| open_ok | /%%wd_ws%%/?hello_page |
-| open_ok | /st/dashboard/ |  |  |
+| st-logoutin | %%reports_user%% | %%password%% |
+
+| open_ok | /%%ed_ws%%/ |  |
+| open_ok | /%%wd_ws%%/?hello_page |  |
+| open_ok | /st/dashboard/ |  |
 
 | *Comment* | Test Case: Even-Driven Control Panel Reports Second User Personalize my dashboard |  |
 | st_single_widget_in_dashboard | gallery-widget-Wiki Page |  |
@@ -73,7 +80,8 @@
 | *Comment* | Test Case: Even-Driven Control Panel Reports Second User Personalized my profile |  |
 | set | new_fname | marko |
 | set | new_lname | gaertnero |
-| wait_for_element_visible_ok | link=(edit) | 60000 |
+
+| wait_for_element_visible_ok | link=(edit) | 30000 |
 | click_and_wait | link=(edit) |  |
 
 | *Comment* | Test Case: Event Driven Control Panel Reports Second User profile present |  |
@@ -87,10 +95,13 @@
 | type_ok | company | Socialtext |
 | wait_for_element_visible_ok | update_profile | 30000 |
 | click_and_wait | update_profile |  |
+
+| *Comment* | Test Case: Event Driven Control Panel Reports Second User verify new names |  |
 | st-name-widget | 1 | profile |
 | st-select-widget-frame | profile |  |
 | text_like | //body | %%new_fname%% %%new_lname%% |
 | select-frame | relative=parent |  |
+
 | *Comment* | Test Case: Even-Driven Control Panel Reports Second user Send THREE signals |  |
 | http-user-pass | %%reports_user%% | %%password%% |
 | post-signal | def |  |
@@ -103,8 +114,10 @@
 | *Comment* | Test Case: Even-Driven Control Panel Reports - And the pages are 30 |
 | *Comment* | Test Case: Even-Driven Control Panel Reports - And the Page Views are 5 (thanks to create) |
 
-| *Comment* | Test case: Event-Driven Control Panel Reports View Results |  |
+| *Comment* | Test case: Event-Driven Control Panel Reports DELIBERATELY WAIT EIGHT MINUTES |  |
 | pause | 480000 |  |
+
+| *Comment* | Test case: Event-Driven Control Panel Reports View Results |  |
 | open_ok | /nlw/control/account/%%account_id%% |  |
 | wait_for_element_visible_ok | link=Growth Reports | 30000 |
 | click_and_wait | link=Growth Reports |  |
