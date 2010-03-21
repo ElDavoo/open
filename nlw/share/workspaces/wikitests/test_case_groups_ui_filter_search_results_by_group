@@ -97,8 +97,10 @@
 | text_like | contentContainer | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
 | text_like | contentContainer | qr/%%other_acct_mbr_short%%/ism |
 
-| *Comment* | Test Case: Groups UI Filter Search Results by Group Teardown |
-| delete-group | %%group_id%% |
-| st-admin | delete-workspace --workspace %%other_ws%% --no-export |
+| *Comment* | Test Case: Groups UI Filter Search Results by Group Teardown |  |
 
-| *Comment* | Test Case: Groups UI Filter Search Results by Group COMPLETED |
+| delete-group | %%group_id%% |  |
+| st-admin | delete-workspace --workspace %%other_ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace %%group_ws%% --no-export | has been deleted |
+
+| *Comment* | Test Case: Groups UI Filter Search Results by Group COMPLETED |  |

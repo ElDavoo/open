@@ -10,7 +10,6 @@
 * [Control Panel Testcases]
 * [Core Testcases]
 * [Calc Testcases]
-* [Report Testcases]
 
 LDAP Testcases will Enable LDAP and use a known LDAP user instead of a Default user where required
 

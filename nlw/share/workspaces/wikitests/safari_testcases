@@ -72,8 +72,6 @@ test env properly and are not testing the test-workspace
 * [Test Case: Email Spreadsheet]
 * [Test Case: Search Is Too General]
 
-* [Report Testcases]
-
 LDAP Testcases will Enable LDAP and use a known LDAP user instead of a Default user where required
 
 * [LDAP Testcases]

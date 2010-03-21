@@ -152,9 +152,9 @@
 | wait_for_text_present_ok | Workspace role changes were successful. | 30000 |
 | wait_for_text_present_ok | Users (1) | 30000 |
 
-| *Comment* | Test Case: Business Control Panel Group Role Within A Workspace Teardown |
+| *Comment* | Test Case: Business Control Panel Group Role Within A Workspace TEARDOWN |
 | setSpeed | 0 |
 | st-admin | delete-group --g %%group_id%% |
-| st-admin | remove-workspace --w %%group_ws%% --no-export |
+| st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Business Control Panel Group Role Within A Workspace COMPLETED |

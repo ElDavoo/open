@@ -7,6 +7,9 @@ Socialcalc enabled is required because we run Calc Testcases
 
 * [Test Case: A Enable LDAP]
 
+Report Testcases needs to run in a pristine environment to pass
+
+* [Report Testcases]
 * [Control Panel Testcases]
 * [Core Testcases]
 
@@ -47,7 +50,6 @@ Dashboard, People, and Signals tests
 * [Test Case: Administer Dashboards]
 * [Test Case: Reset to Default Dashboard]
 
-*Note that we do not run Report Testcases as they require a special test setup in a dev env*
 Appliance testcases are run last because they do a backup/restore
 
 * [Appliance Testcases]
