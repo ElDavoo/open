@@ -622,6 +622,7 @@ sub request {
 # Account Plugin Prefs
 
 sub DefaultAccountPluginPrefs { +{} }
+sub CheckAccountPluginPrefs { +{} }
 
 sub GetAccountPluginPrefTable {
     my $class = shift;
