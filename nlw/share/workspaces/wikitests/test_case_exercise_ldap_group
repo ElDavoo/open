@@ -75,6 +75,6 @@
 
 | *Comment* | Test Case: Exercise LDAP Group TEARDOWN |  |
 
-| st-admin | delete-workspace --name %%ldapy_ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --w  %%ldapy_ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Exercise LDAP Group COMPLETED |  |

@@ -60,9 +60,9 @@
 | wait_for_element_not_visible_ok | up_limit | 30000 |
 | wait_for_element_not_visible_ok | st-savebutton-%%activities_widget%% | 30000 |
 
-| set | r1 | %%shortnot%%.+ago.+to.+%%followacct%%.+Signal from not a follower %%start_time%% |
+| set | r1 | %%shortnot%%.+ago.*to.+%%followacct%%.+Signal.+from.+not.+a.+follower.+%%start_time%% |
 | set | r2 | %%shortnot%%.+ago.+edited.+donotseethispage.+in.+%%followws%% |
-| set | r3 | %%shortfollow%%.+ago.+to.+%%followacct%%.+You should see this %%start_time%% |
+| set | r3 | %%shortfollow%%.+ago.*to.+%%followacct%%.+You.+should.+see.+this.+%%start_time%% |
 | set | r4 | %%shortfollow%%.+ago.+edited.+pageone.+in.+%%followws%% |
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, see all activities |  |
