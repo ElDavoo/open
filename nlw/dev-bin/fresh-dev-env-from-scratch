@@ -113,8 +113,8 @@ st-admin enable-plugin --all-accounts --plugin signals
 st-admin enable-plugin --all-accounts --plugin groups
 
 if [ $UPDATE_WIDGETS == 1 ]; then
-    st-widgets update-all
-    st-widgets update-gallery
+    st-widgets update-all --verbose
+    st-widgets update-gallery --verbose
 fi
 
 # Clean up dead symlinks

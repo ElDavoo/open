@@ -16,6 +16,7 @@
 | st-admin | enable-plugin --plugin groups --account %%to_acct%% |  |
 
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI Transform two accounts & three members |  |
+| st-admin | give-accounts-admin --u %%username%% |  |
 | open_ok | /nlw/control/accounts/transform |  |
 | wait_for_element_visible_ok | %%group_acct%% | 30000 |
 | wait_for_element_visible_ok | primary_name | 30000 |

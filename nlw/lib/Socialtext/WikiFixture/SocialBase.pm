@@ -384,13 +384,13 @@ sub st_search_cp_users {
     $self->handle_command('wait_for_text_present_ok',$searchfor,30000);
 }
 
-=head2 st_search_cp_accounts($searchfor)
+=head2 st_search_cp_account($searchfor)
 
 Control panel (Account) search automation
 
 =cut
 
-sub st_search_cp_accounts {
+sub st_search_cp_account {
    my ($self, $searchfor) = @_;
    $self->handle_command('open_ok', '/nlw/control/account');
    $self->handle_command('wait_for_element_visible_ok','st-search-by-name',30000);
@@ -2156,6 +2156,15 @@ sub st_account_export_field_is {
         "$account $field";
 }
 
+sub st_account_export_field_is_undef {
+    my $self = shift;
+    my $account = shift;
+    my $field = shift;
+    is $self->_st_account_export_field($account, $field),
+        undef,
+        "$account $field";
+}
+
 sub st_account_export_field_like {
     my $self = shift;
     my $account = shift;
@@ -2367,6 +2376,47 @@ sub set_substr {
     diag "Set $dest_var to '$self->{$dest_var}'";
 }
 
+=head2 json_path_is
+
+=head2 json_path_isnt
+
+Test that the value selected by the path (first argument) is/isn't equal to the
+specified value (second argument).
+
+Only a sub-set of JSONPath is supported.  All expressions are anchored to the
+root of the parsed JSON object, so the leading C<$> is optional.  Only scalar
+values can be selected; selecing objects, lists and collections are not
+supported.  JSONPath functions are also not supported.
+
+Use C<< [0] >> notation to select an element of an array.  Processed as a perl
+array offset, so negative values can be used.
+
+Use C<< .element >> or C<< ['element'] >> to select a hash key.
+
+Examples:
+
+    # select the string at baz, nested inside of bar and foo elements.
+    $.foo.bar.baz
+    $['foo'].bar['baz']
+
+    # select the user_id of the first array element
+    $[0].user_id
+
+=head2 json_path_like
+
+=head2 json_path_unlike
+
+Test that the string at the specified path matches the specified regex.  If a
+regex is not supplied, a substring match is performed.
+
+=head2 json_path_exists
+
+=head2 json_path_missing
+
+Test that something exists or doesn't exist at the specified path.
+
+=cut
+
 sub _select_json_path {
     my ($self,$path,$o) = @_;
 
@@ -2412,11 +2462,11 @@ sub _json_path_test {
 
     my $sel = eval { $self->_select_json_path($path, $self->{json}) };
     if (my $e = $@) {
-        if ($test eq 'missing') {
+        if ($test eq 'missing') { # grep json_path_missing
             return like $e, qr/^missing/, $comment;
         }
         diag "path selection error: $e";
-        if ($test eq 'exists') {
+        if ($test eq 'exists') { # grep json_path_exists (failure case)
             fail $comment;
             return;
         }
@@ -2424,23 +2474,23 @@ sub _json_path_test {
 
     # work around the fact that we aren't reading .wiki files in unicode mode
     $expected = Encode::decode_utf8($expected) if $test =~ /^is/;
-    if ($test eq 'is') {
+    if ($test eq 'is') { # grep json_path_is
         return is $sel, $expected, $comment;
     }
-    elsif ($test eq 'isnt') {
+    elsif ($test eq 'isnt') { # grep json_path_isnt
         return isnt $sel, $expected, $comment;
     }
-    elsif ($test eq 'like') {
+    elsif ($test eq 'like') { # grep json_path_like
         return like $sel, $expected, $comment;
     }
-    elsif ($test eq 'unlike') {
+    elsif ($test eq 'unlike') { # grep json_path_unlike
         return unlike $sel, $expected, $comment;
     }
-    elsif ($test eq 'exists') {
+    elsif ($test eq 'exists') { # grep json_path_exists (success case)
         pass $comment;
         return 1;
     }
-    elsif ($test eq 'size') {
+    elsif ($test eq 'size') { # grep json_path_size
         if ('ARRAY' ne ref($sel)) {
             fail $comment. ' - selection is not an array';
             return;
@@ -2454,13 +2504,29 @@ sub _json_path_test {
 
 {
     no strict 'refs';
-    for my $test (qw(is isnt like unlike exists missing size)) {
-        *{"json_path_$test"} = sub {
+    for my $cmd (qw(
+        json_path_is 
+        json_path_isnt 
+        json_path_like 
+        json_path_unlike 
+        json_path_exists 
+        json_path_missing 
+        json_path_size
+    )) {
+        (my $test = $cmd) =~ s/^json_path_//;
+        *{$cmd} = sub {
             my $self = shift;
             $self->_json_path_test($test,@_);
         };
     }
 }
+
+=head2 json_path_set
+
+Set the specified wikitest variale (first argument) to the value of the
+selected json path.
+
+=cut
 
 sub json_path_set {
     my ($self, $key, $path) = @_;
@@ -2473,6 +2539,43 @@ sub json_path_set {
     else {
         $self->{$key} = $sel;
         pass "set $key to $sel (\$$path)";
+    }
+}
+
+=head2 json-path-parse
+
+Parse a json-path selection as if it were JSON itself (the OpenSocial
+json-proxy specification does this sort of embedding).
+
+After parsing, the other C<json-path-> directives will work as expected.
+
+=cut
+
+sub json_path_parse {
+    my $self = shift;
+    my $path = shift;
+
+    if (!$self->{json}) {
+        fail "json-path-parse error: you need to call 'json-parse' first (or it failed previously)";
+        return;
+    }
+
+    $path =~ s/^\$//; # remove leading $
+    my $sel = eval { $self->_select_json_path($path, $self->{json}) };
+    if (my $e = $@) {
+        fail "json-path-parse selection error: $e";
+        $self->{json} = {};
+        return;
+    }
+
+    my $json = eval { decode_json($sel) };
+    if (my $e = $@) {
+        fail "json-path-parse error: $e";
+        $self->{json} = {};
+    }
+    else {
+        pass "json-path-parse ok";
+        $self->{json} = $json;
     }
 }
 

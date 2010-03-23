@@ -42,8 +42,8 @@
 | st-admin | create-user --email %%groupsuser1%% --password %%password%% |  |  |
 | add-user-to-group | %%groupsuser1%% | %%group_id%% |  |
 | add-group-to-account | %%group_id%% | %%mastergroupsacct%% |  |
-| st-admin | give-accounts-admin --e %%username%% |  |
 
+| st-admin | give-accounts-admin --u %%username%% |  |
 | open_ok | /nlw/control/account |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%mastergroupsacct%% |

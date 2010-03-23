@@ -58,10 +58,10 @@ TODO: there seems to be some weirdness indexing usernames that end in a string o
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Verify Tags in activities widget |
 
-| set | t1 | %%taggingusershort%%.+minute.+ago.+tagged %%pagename%% in %%wrkspc%% as %%pagetag%% |
-| set | t2 | %%taggingusershort%%.+minute.+ago.+edited %%pagename%% in %%wrkspc%% |
-| set | t3 | %%taggingusershort%%.+minute.+ago.+tagged themself %%personaltag%% |
-| set | t4 | %%taggingusershort%%.+minute.+ago.+tagged %%tagusershort%% %%othertag%% |
+| set | t1 | %%taggingusershort%%.+minute.+ago.+tagged.+%%pagename%%.+in.+%%wrkspc%%.+as.+%%pagetag%% |
+| set | t2 | %%taggingusershort%%.+minute.+ago.+edited.+%%pagename%%.+in.+%%wrkspc%% |
+| set | t3 | %%taggingusershort%%.+minute.+ago.+tagged.+themself.+%%personaltag%% |
+| set | t4 | %%taggingusershort%%.+minute.+ago.+tagged.+%%tagusershort%%.+%%othertag%% |
 
 | st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%t1%%.+%%t2%%.+%%t3%%.+%%t4%%/ism |
 
