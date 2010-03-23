@@ -2156,6 +2156,15 @@ sub st_account_export_field_is {
         "$account $field";
 }
 
+sub st_account_export_field_is_undef {
+    my $self = shift;
+    my $account = shift;
+    my $field = shift;
+    is $self->_st_account_export_field($account, $field),
+        undef,
+        "$account $field";
+}
+
 sub st_account_export_field_like {
     my $self = shift;
     my $account = shift;
