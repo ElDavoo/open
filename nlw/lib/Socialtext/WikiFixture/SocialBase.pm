@@ -384,13 +384,13 @@ sub st_search_cp_users {
     $self->handle_command('wait_for_text_present_ok',$searchfor,30000);
 }
 
-=head2 st_search_cp_accounts($searchfor)
+=head2 st_search_cp_account($searchfor)
 
 Control panel (Account) search automation
 
 =cut
 
-sub st_search_cp_accounts {
+sub st_search_cp_account {
    my ($self, $searchfor) = @_;
    $self->handle_command('open_ok', '/nlw/control/account');
    $self->handle_command('wait_for_element_visible_ok','st-search-by-name',30000);
