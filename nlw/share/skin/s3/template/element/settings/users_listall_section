@@ -67,34 +67,36 @@
   </table>
 [% END %]
 
-<dl class="form">
-<dt><label>[% loc('Groups') %]</label></dt>
-</dl>
-[% IF groups_with_roles.size == 0 %]
-  <p>[% loc('There are no groups directly associated with this workspace.') %]</p>
-[% ELSE %]
-  <table>
-  <tr>
-    <th>[% loc('Group name') %]</th>
-    <th>[% loc('Users') %]</th>
-    <th>[% loc('Role') %]</th>
-  </tr>
-
-  [% FOREACH gwr IN groups_with_roles %]
-    [% SET group = gwr.0 %]
-    [% SET role = gwr.1 %]
+[% IF is_business_admin OR NOT is_auw %]
+  <dl class="form">
+  <dt><label>[% loc('Groups') %]</label></dt>
+  </dl>
+  [% IF groups_with_roles.size == 0 %]
+    <p>[% loc('There are no groups directly associated with this workspace.') %]</p>
+  [% ELSE %]
+    <table>
     <tr>
-        <td class="text-align-center">
-          [% group.driver_group_name | html %]
-        </td>
-        <td>
-          [% group.user_count %]
-        </td>
-        <td>
-          [% role.name | html %]
-        </td>
+      <th>[% loc('Group name') %]</th>
+      <th>[% loc('Users') %]</th>
+      <th>[% loc('Role') %]</th>
     </tr>
+
+    [% FOREACH gwr IN groups_with_roles %]
+      [% SET group = gwr.0 %]
+      [% SET role = gwr.1 %]
+      <tr>
+          <td class="text-align-center">
+            [% group.driver_group_name | html %]
+          </td>
+          <td>
+            [% group.user_count %]
+          </td>
+          <td>
+            [% role.name | html %]
+          </td>
+      </tr>
+    [% END %]
+    </table>
   [% END %]
-  </table>
 [% END %]
 [% INCLUDE element/settings/stop %]

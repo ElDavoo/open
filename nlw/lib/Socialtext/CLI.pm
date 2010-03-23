@@ -1549,6 +1549,7 @@ sub create_workspace {
         $account = $self->_load_account($name);
     }
     $ws{account_id} = $account->account_id();
+    my $isAllUsersWorkspace = delete($ws{'all-users-workspace'});
 
     my $ws = eval {
         my @extra_args;
@@ -1576,6 +1577,7 @@ sub create_workspace {
         die $e;
     }
 
+    $ws->assign_role_to_account(account => $account) if ($isAllUsersWorkspace);
     $self->_success(
         'A new workspace named "' . $ws->name() . '" was created.' );
 }
@@ -1588,6 +1590,7 @@ sub _require_create_workspace_params {
         'title:s',
         'account:s',
         'clone-pages-from:s',
+        'all-users-workspace',
         'empty',
     );
 }
@@ -3641,7 +3644,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   show-impersonators --workspace
   set-workspace-config --workspace <key> <value>
   show-workspace-config --workspace
-  create-workspace --name --title --account [--empty] [--clone-pages-from]
+  create-workspace --name --title --account [--empty] [--all-users-workspace] [--clone-pages-from]
   delete-workspace --workspace [--dir] [--no-export]
   export-workspace --workspace [--dir] [--name]
   import-workspace --tarball [--overwrite] [--name] [--noindex]
@@ -3969,11 +3972,12 @@ Deletes the specified tags from the given workspace. You can
 specify a single tag by name with C<--tag> or all tags
 matching a string with C<--search>.
 
-=head2 create-workspace --name --title --account [--empty] [--clone-pages-from]
+=head2 create-workspace --name --title --account [--empty] [--all-users-workspace] [--clone-pages-from]
 
 Creates a new workspace with the given settings.  The usual account is
 Socialtext. Accounts are used for billing.  If --empty is given then no pages
-are inserted into the workspace, it is completely empty.
+are inserted into the workspace, it is completely empty. If --all-users-workspace
+is given then the workspace is an "all-users" workspace.
 
 =head2 delete-workspace --workspace [--dir] [--no-export]
 
