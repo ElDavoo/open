@@ -136,6 +136,7 @@ sub users_listall {
         users_with_roles => \@uwr,
         groups_with_roles => \@gwr,
         is_auw => $is_auw,
+        is_business_admin => $self->hub->current_user->is_business_admin,
         workspace => $ws,
         $self->status_messages_for_template,
     );
