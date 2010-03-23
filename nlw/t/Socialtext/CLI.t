@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 321;
+use Test::Socialtext tests => 324;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -16,6 +16,7 @@ fixtures('workspaces_with_extra_pages', 'destructive');
 
 our $NEW_WORKSPACE = 'new-ws-' . $<;
 our $NEW_WORKSPACE2 = 'new-ws2-'. $<;
+our $NEW_AU_WORKSPACE = 'new-auws-'. $<;
 
 ARGV_PROCESSING: {
     expect_failure(
@@ -821,6 +822,24 @@ CREATE_WORKSPACE: {
         'create-workspace failed with invalid clone-pages-from workspace'
     );
 
+# Create all-user workspace    
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [
+                    qw( --all-users-workspace --account Socialtext --name),
+                    $NEW_AU_WORKSPACE,
+                    qw( --title ),
+                    'New Workspace'
+                ]
+            )->create_workspace();
+        },
+        qr/\QA new workspace named "$NEW_AU_WORKSPACE" was created.\E/,
+        'create-workspace success message'
+    );
+
+    my $auws = Socialtext::Workspace->new( name => $NEW_AU_WORKSPACE );
+    ok( $auws->is_all_users_workspace, 'workspace is all-user workspace' );
 }
 
 EXPORT_WORKSPACE: {
