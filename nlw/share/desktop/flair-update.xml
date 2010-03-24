@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>228</version>
-  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-228.air</url>
-  <description><![CDATA[[Build 228 - Mon Mar 22 22:39:42 PDT 2010]
+  <version>229</version>
+  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-229.air</url>
+  <description><![CDATA[[Build 229 - Tue Mar 23 18:34:20 PDT 2010]
+* Pushd: Cope with "continue" messages somenow not parsed back correctly.
+
+[Build 228 - Mon Mar 22 22:39:42 PDT 2010]
 * Set Signal input limit immediately upon login.
 
 [Build 227 - Thu Mar 18 00:58:27 PDT 2010]
