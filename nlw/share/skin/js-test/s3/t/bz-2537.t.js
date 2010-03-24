@@ -44,4 +44,4 @@ t.runAsync([
         t.is( t.$('h1#fnord').length, 1, "Templates with large number of images can be created" );
         t.endAsync();
     }
-], 600000);
+], 6000000);
