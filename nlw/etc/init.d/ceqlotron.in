@@ -58,9 +58,12 @@ elsif ( $operation eq 'stop' ) {
     print "Stopping $NAME... ";
     if ( -f $PIDFILE ) {
         chomp( my $pid = `cat $PIDFILE` );
+        # try a "graceful" shutdown
         try_kill( 'TERM', $pid ) or fail 'already stopped.';
         while ( !timeout_waitpid( $pid, 60 ) ) {
-            try_kill( 'INT', $pid ) or succeed 'done.';
+            print "\n... process still did not exit, sending SIGKILL...";
+            # kill the entire process group, with prejudice.
+            try_kill( 'KILL', -$pid ) or succeed 'done.';
         }
     }
     else {
