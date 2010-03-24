@@ -27,6 +27,7 @@ while (my ($update_file, $air_filespec) = each %Editions) {
 
     if ($local_version eq $remote_version) {
         print "... not updated ($local_version), skipping update.\n";
+        next;
     }
 
     my $local_air  = sprintf $air_filespec, $local_version;
