@@ -540,6 +540,10 @@ sub set {
 
     my %p = @_;
 
+    # Clear the json cache so activities widgets get the new limit
+    require Socialtext::JSON::Proxy::Helper;
+    Socialtext::JSON::Proxy::Helper->PurgeCache;
+
     my %spec = map { $Options{$_} ? ( $_ => $Options{$_} ) : () } keys %p;
     %p = validate( @_, \%spec );
 
