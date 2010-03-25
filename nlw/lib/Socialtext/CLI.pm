@@ -1159,10 +1159,20 @@ sub _remove_user_from_thing {
     my $current = $thing->role_for_user($user, direct => 1);
     my $member  = Socialtext::Role->Member();
 
-    $self->_error( 
-        loc('[_1] is not a member of [_2]',
-            $user->username, $thing->name)
-    ) unless $current;
+    if (!$current) {
+        if (my $indirect_role = $thing->role_for_user($user, direct => 0)) {
+            $self->_error(
+                loc('[_1] is a [_2] of [_3] through a group, and may not be removed directly',
+                    $user->username, $indirect_role->name, $thing->name)
+            );
+        }
+        else {
+            $self->_error(
+                loc('[_1] is not a member of [_2]',
+                    $user->username, $thing->name)
+            );
+        }
+    }
 
     $self->_error(
         loc("[_1] does not have the role of '[_2]' in [_3]",
