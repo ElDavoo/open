@@ -292,6 +292,33 @@ sub signal_vis_sql {
     my $self = shift;
     my $evtable = shift;
     my $path_table = shift;
+    my $bind_ref = shift;
+    my $opts = shift;
+
+    my $direct = $opts->{direct} || 'both';
+    my $dm_sql = 'FALSE';
+    if ($direct ne 'none') {
+        my $dir_sql = join(" OR ",
+            $direct =~ /^(?:received|both)$/ ? "$evtable.person_id = ?" : (),
+            $direct =~ /^(?:sent|both)$/ ? "$evtable.actor_id = ?" : (),
+        );
+        die "Invalid direct parameter: $direct" unless $dir_sql;
+
+        $dm_sql = qq{
+            -- the signal is direct
+            ($dir_sql)
+
+            -- and the filtered network contains both users
+            AND EXISTS (
+                SELECT 1
+                FROM user_sets_for_user usfu
+                WHERE usfu.user_id = $evtable.person_id
+                  AND $path_table.user_set_id = usfu.user_set_id
+            )
+        };
+        push @$bind_ref, ($self->viewer->user_id) x 2;
+    }
+
     return qq{ 
         AND ((
                 $evtable.person_id IS NULL
@@ -301,18 +328,7 @@ sub signal_vis_sql {
                     WHERE sua.signal_id = $evtable.signal_id
                 )
             )
-            OR (
-                -- the signal is direct
-                ($evtable.person_id = ? OR $evtable.actor_id = ?)
-
-                -- and the filtered network contains both users
-                AND EXISTS (
-                    SELECT 1
-                    FROM user_sets_for_user usfu
-                    WHERE usfu.user_id = $evtable.person_id
-                      AND $path_table.user_set_id = usfu.user_set_id
-                )
-            )
+            OR ( $dm_sql )
         )
     };
 };
@@ -355,8 +371,7 @@ sub visible_exists {
     }
 
     if ($plugin eq 'signals') {
-        $sql .= $self->signal_vis_sql($evt_table, 'v_path');
-        push @$bind_ref, ($self->viewer->user_id) x 2;
+        $sql .= $self->signal_vis_sql($evt_table, 'v_path', $bind_ref, $opts);
     }
 
     $sql .= "\n)";
