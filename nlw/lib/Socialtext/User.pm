@@ -1626,15 +1626,15 @@ sub primary_account {
     Socialtext::Cache->clear('authz_plugin');
 
     my $deleted_acct = Socialtext::Account->Deleted;
-    # Update account membership. Business logic says to keep
-    # the user as a member of the old account.
-
-    unless ($new_account->has_user($self, direct => 1)) {
-        $new_account->add_user(
-            user => $self, # use a default role
-        );
-    }
     if ($new_account->account_id != $deleted_acct->account_id) {
+        # Update account membership. Business logic says to keep
+        # the user as a member of the old account.
+        unless ($new_account->has_user($self, direct => 1)) {
+            $new_account->add_user(
+                user => $self, # use a default role
+            );
+        }
+
         # Avoid double-indexing elsewhere in the code.
         require Socialtext::JobCreator;
         Socialtext::JobCreator->index_person( $self );
