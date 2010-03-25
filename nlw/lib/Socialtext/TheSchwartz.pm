@@ -1,7 +1,7 @@
 package Socialtext::TheSchwartz;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::SQL qw/sql_execute get_dbh/;
+use Socialtext::SQL (); # call $dbh-> methods in this class.
 use TheSchwartz::Moosified;
 use Carp qw/croak/;
 use namespace::clean -except => 'meta';
@@ -13,7 +13,7 @@ has '+error_length' => ( default => 0 ); # unlimited errors logged
 has '+prioritize' => ( default => 1 );
 
 # make sure to call get_dbh() every time, basically
-override 'databases' => sub { return [ get_dbh() ] };
+override 'databases' => sub { return [ Socialtext::SQL::get_dbh() ] };
 
 around 'list_jobs' => sub {
     my $orig = shift;
@@ -175,6 +175,26 @@ sub cancel_job {
                       VALUES (?,?,0,$unixtime,$unixtime)", {}, $jobid,$funcid);
         } $dbh;
     }
+}
+
+sub clear_jobs {
+    my $self = shift;
+    for my $dbh (@{$self->databases || []}) {
+        $dbh->do('DELETE FROM job');
+    }
+}
+
+sub remove_job_type {
+    my $self = shift;
+    my $job_name = shift;
+
+    for my $dbh (@{$self->databases || []}) {
+        my $funcid = $self->funcname_to_id($dbh,$job_name);
+        next unless $funcid;
+        $dbh->do('DELETE FROM job WHERE funcid = ?',{},$funcid);
+        $dbh->do('DELETE FROM funcmap WHERE funcid = ?',{},$funcid);
+    }
+    $self->funcmap_cache({});
 }
 
 sub move_jobs_by {

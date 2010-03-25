@@ -1,6 +1,7 @@
 package Socialtext::JobCreator;
 # @COPYRIGHT@
 use MooseX::Singleton;
+use MooseX::AttributeInflate;
 use Socialtext::TheSchwartz;
 use Socialtext::Search::AbstractFactory;
 use Carp qw/croak/;
@@ -8,13 +9,11 @@ use Socialtext::Log qw/st_log/;
 use Socialtext::Cache ();
 use namespace::clean -except => 'meta';
 
-has '_client' => (
+has_inflated '_client' => (
     is => 'ro', isa => 'Socialtext::TheSchwartz',
     lazy_build => 1,
     handles => qr/(?:list|find|get_server_time|func|move_jobs_by|cancel_job)/,
 );
-
-sub _build__client { Socialtext::TheSchwartz->new() }
 
 sub insert {
     my $self = shift;
