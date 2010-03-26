@@ -13,6 +13,7 @@ my $deleted_acct = Socialtext::Account->Deleted(direct => 1);
 my $sth = sql_execute(qq{
         SELECT user_id FROM "UserMetadata"
          WHERE primary_account_id = ?
+         AND is_system_created = 'f' 
          ORDER BY user_id;
     }, $deleted_acct->account_id
 );
