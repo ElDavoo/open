@@ -66,6 +66,7 @@ sub PurgeCache {
         rename $cache_dir => $tmp_dir
             or die "can't rename cache dir to $tmp_dir: $!";
     }
+    mkdir $cache_dir;
 
     return $cache_dir;
 }

@@ -29,4 +29,6 @@ sub get {
     return HTTP::Response->new($RESULTS{$url} || 404);
 }
 
+sub default_headers { }
+
 1;

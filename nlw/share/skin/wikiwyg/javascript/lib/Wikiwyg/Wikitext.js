@@ -1371,6 +1371,7 @@ proto.build_msoffice_list = function(top) {
 
 proto.convert_html_to_wikitext = function(html, isWholeDocument) {
     var self = this;
+    if (html == '') return '';
     html = this.strip_msword_gunk(html);
 
     (function ($) {

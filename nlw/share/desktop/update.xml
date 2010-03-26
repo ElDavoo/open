@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.0.1RC0</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.0.1RC0.air</url>
-  <description><![CDATA[[4.0.1RC0 - Fri Mar 12 22:49:39 PST 2010]
+  <version>4.0.1RC1</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.0.1RC1.air</url>
+  <description><![CDATA[[4.0.1RC1 - Tue Mar 23 19:45:13 PDT 2010]
+(Features)
+* Implement [Story: Expand signals input limit].
+
+[4.0.1RC0 - Fri Mar 12 22:49:39 PST 2010]
 (Features)
 * Users can now directly install, upgrade and launch Desktop from an appliance.
 * Administrators can now turn off auto-updating from system console.

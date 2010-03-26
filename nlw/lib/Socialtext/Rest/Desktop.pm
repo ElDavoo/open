@@ -63,6 +63,18 @@ sub GET {
     }
 
     if ($filename =~ /^(?:flair-)?update(?:\.xml)?$/) {
+        my $ua = $self->rest->request->header_in('User-Agent')
+              || $ENV{HTTP_USER_AGENT};
+
+        # The "xor" below means:
+        # - The UA is Flair but we are serving SD,
+        # - _or_ the UA is SD but we're serving Flair updates.
+        # In either case, return 400 instead of offering a bogus update.xml.
+        if ($ua =~ /\bFlair\b/ xor $PrefersFlair) {
+            $rest->header( -status => HTTP_400_Bad_Request );
+            return '';
+        }
+
         my $url = $self->app_url();
 
         my $xml = $self->update_description_contents;

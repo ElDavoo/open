@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use strict;
+use Socialtext::SQL qw(sql_singlevalue);
+
+# This migration failed if there are any betwittered gadget instances
+
+my $bt_src = "http://hosting.gmodules.com/ig/gadgets/"
+           . "file/106092714974714025177/TwitterGadget.xml";
+
+exit sql_singlevalue("
+    SELECT COUNT(1)
+      FROM gadget_instance
+     WHERE gadget_id = (
+        SELECT gadget_id
+          FROM gadget
+         WHERE src = ?
+     )
+", $bt_src);

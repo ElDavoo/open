@@ -6,6 +6,7 @@ use Socialtext::HTTP ':codes';
 use Socialtext::Pluggable::Plugin::Signals;
 use Socialtext::JSON 'decode_json';
 use Socialtext::Log 'st_log';
+use Socialtext::JSON::Proxy::Helper;
 use List::MoreUtils 'all';
 use namespace::clean -except => 'meta';
 
@@ -58,6 +59,9 @@ sub PUT_json {
 
         my $prefs = $signals->GetAccountPluginPrefTable($acct->account_id);
         $prefs->set(%$data);
+
+        # Clear the json cache so activities widgets get the new limit
+        Socialtext::JSON::Proxy::Helper->ClearForAccount($acct->account_id);
 
         st_log()->info(
             $rest->user->username 
