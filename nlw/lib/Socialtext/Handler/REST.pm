@@ -20,6 +20,7 @@ use YAML;
 use Socialtext::Log qw(st_timed_log);
 use Socialtext::Timer;
 use Socialtext::CGI::Scrubbed;
+use Carp qw( croak );
 
 Readonly my $AUTH_MAP => 'auth_map.yaml';
 Readonly my $AUTH_INFO_DEFAULTS => {
@@ -62,10 +63,27 @@ sub handler ($$) {
 # all previous calls.
 sub header {
     my $self = shift;
-    my @rv = $self->SUPER::header(@_);
-    $self->query->header(@rv);
-    return @rv;
+
+    # Set the default value if this method has not been called yet.
+    if (not exists $self->{__header}) {
+        $self->{__header} = {};
+    }
+
+    # If arguments were passed in then use them to set the header type.
+    # Arguments can be passed in as a hash-ref or as an even sized list.
+    if (@_) {
+        if (@_%2 == 0) { # even-sized list, must be hash
+            %{ $self->{__header} } = ( %{ $self->{__header} }, @_ );
+        } elsif (ref($_[0]) eq 'HASH') {  # First item must be a hash reference
+            %{ $self->{__header} } = ( %{ $self->{__header} }, %{ $_[0] } );
+        } else {
+            croak "Expected even-sized list or hash reference.";
+        }
+    }
+
+    return %{$self->{__header}};
 }
+
 
 sub _webkit_air_unauthorized_handler {
     my $class = shift;
