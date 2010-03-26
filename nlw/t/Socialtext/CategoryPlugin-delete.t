@@ -40,10 +40,12 @@ my $pages = $admin_hub->pages;
     my $cat = 'Category Delete Test 2';
 
     my $page = $pages->new_from_name('Admin');
+    $page->content('test content');
     $page->metadata->Category( [ @{$page->metadata->Category}, $cat ] );
     $page->store( user => $user );
 
     $page = $pages->new_from_name('Conversations');
+    $page->content('test content');
     $page->metadata->Category( [ @{$page->metadata->Category}, $cat ] );
     $page->store( user => $user );
 
