@@ -12,7 +12,7 @@ use Cwd;
 BEGIN { use_ok 'Socialtext::CLI' }
 use Test::Socialtext::CLIUtils qw/expect_failure expect_success/;
 
-fixtures('workspaces_with_extra_pages', 'destructive');
+fixtures(qw(workspaces_with_extra_pages destructive public));
 
 our $NEW_WORKSPACE = 'new-ws-' . $<;
 our $NEW_WORKSPACE2 = 'new-ws2-'. $<;

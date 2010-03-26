@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 3;
-fixtures( 'admin', 'foobar' );
+fixtures( 'admin', 'foobar', 'public' );
 
 filters {
     wiki => 'format',
