@@ -1,6 +1,6 @@
-Addresses Bug {bz: 3708}, where we saw the CP looking up Users by "username" instead of "user_id".
+Addresses Bugs {bz: 3708} and {bz: 3717}, where we saw the CP looking up Users by "username" instead of "user_id".
 
-When we had Users that had an _all numeric_ username, that *could* conflict with the user_id of another User in the system, and the CP would inadvertently display data for the wrong User.
+When we had Users that had an _all numeric_ username, that *could* conflict with the user_id of another User in the system, and the CP would inadvertently display data for or perform operations against the wrong User.
 
 | *Comment* | Test Case: Business Control Panel USER: Lookup by User Id |
 
@@ -29,7 +29,7 @@ When we had Users that had an _all numeric_ username, that *could* conflict with
 | st-admin    | add-member --workspace %%ws_two%% --email %%user_two_email%% |
 | set-user-id | user_two_id        | %%user_two_email%%                           |
 
-# VERIFY: viewing User shows the correct WS list for that User
+# Bug 3708; Viewing User shows the correct WS list for that User
 # ... User One shows their Account/WS list
 | open-ok                     | /nlw/control/user/%%user_one_id%% |                    |
 | text-like                   | //body                            | %%user_one_email%% |
@@ -44,5 +44,23 @@ When we had Users that had an _all numeric_ username, that *could* conflict with
 | text-like                   | accountTable                      | %%acct_two%%       |
 | wait-for-element-visible-ok | workspaceTable                    | 30000              |
 | text-like                   | workspaceTable                    | %%ws_two%%         |
+
+# Bug 3717; Changing Primary Account acts against the correct User
+# ... create a new Acct and make both test Users a member via a WS
+| set      | acct_three                                                                                 | acct_three_%%start_time%% |
+| st-admin | create-account --name '%%acct_three%%'                                                     | was created               |
+| set      | ws_three                                                                                   | ws_three_%%start_time%%   |
+| st-admin | create-workspace --name %%ws_three%% --title %%ws_three%% --empty --account %%acct_three%% | was created               |
+| st-admin | add-member --workspace %%ws_three%% --email %%user_one_email%% |
+| st-admin | add-member --workspace %%ws_three%% --email %%user_two_email%% |
+# ... give User Two that new Acct as her Primary Acct, and double-check that we didn't accidentally re-assign User One
+| open-ok                     | /nlw/control/user/%%user_two_id%% |                                                             |
+| wait-for-element-visible-ok | accountTable                      | 30000                                                       |
+| text-like                   | accountTable                      | Primary Account, Via Workspace: %%ws_two%%                  |
+| click-ok                    | accountTable-radio-2-1            |                                                             |
+| pause                       | 10000                             | wait for AJAX request to save+reload Primary Account change |
+| open-ok                     | /nlw/control/user/%%user_two_id%% |                                                             |
+| wait-for-element-visible-ok | accountTable                      | 30000                                                       |
+| text-like                   | accountTable                      | Primary Account, Via Workspace: %%ws_three%%                |
 
 | *Comment* | Test Case: Business Control Panel USER: Lookup by User Id COMPLETED |
