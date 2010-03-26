@@ -57,6 +57,16 @@ sub handler ($$) {
     return $class->real_handler($r, $user);
 }
 
+# Augment REST::Application's implementation, so each call to ->header can
+# add headers cumulatively, rather than having the last ->header call override
+# all previous calls.
+sub header {
+    my $self = shift;
+    my @rv = $self->SUPER::header(@_);
+    $self->query->header(@rv);
+    return @rv;
+}
+
 sub _webkit_air_unauthorized_handler {
     my $class = shift;
     my $r     = shift;
