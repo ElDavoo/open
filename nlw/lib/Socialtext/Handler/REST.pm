@@ -59,8 +59,10 @@ sub handler ($$) {
 }
 
 # Augment REST::Application's implementation, so each call to ->header can
-# add headers cumulatively, rather than having the last ->header call override
+# add headers incrementally, rather than having the last ->header call override
 # all previous calls.
+# NOTE: Values in earlier ->header calls overrides values in later calls; this
+# is so that subclassed handlers can set non-default -status and -type.
 sub header {
     my $self = shift;
 
@@ -73,9 +75,9 @@ sub header {
     # Arguments can be passed in as a hash-ref or as an even sized list.
     if (@_) {
         if (@_%2 == 0) { # even-sized list, must be hash
-            %{ $self->{__header} } = ( %{ $self->{__header} }, @_ );
+            %{ $self->{__header} } = ( @_, %{ $self->{__header} } );
         } elsif (ref($_[0]) eq 'HASH') {  # First item must be a hash reference
-            %{ $self->{__header} } = ( %{ $self->{__header} }, %{ $_[0] } );
+            %{ $self->{__header} } = ( %{ $_[0] }, %{ $self->{__header} } );
         } else {
             croak "Expected even-sized list or hash reference.";
         }
