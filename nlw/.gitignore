@@ -456,3 +456,7 @@ t/Socialtext/Signal/length.t
 t/wikitests/signals/data_signals_length.wiki
 lib/Socialtext/WikiFixture/Reports.pm
 t/wikitests/widgets/proxy-headers.wiki
+lib/Socialtext/Rest/Signals/Replies.pm
+lib/Socialtext/Gadgets/Container/Signals/Signal.pm
+lib/Socialtext/Handler/Container/Signals/Signal.pm
+t/wikitests/signals/data_signals_permalink.wiki
