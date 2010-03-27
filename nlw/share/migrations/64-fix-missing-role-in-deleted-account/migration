@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+
+use strict;
+use warnings;
+
+use Socialtext::Account;
+use Socialtext::SQL qw(sql_execute sql_selectrow sql_singlevalue);
+
+my $deleted_acct = Socialtext::Account->Deleted(direct => 1);
+
+# go get the user_id for all Users having the Deleted Acct as their Pri Acct
+my $sth = sql_execute(qq{
+        SELECT user_id FROM "UserMetadata"
+         WHERE primary_account_id = ?
+         AND is_system_created = 'f' 
+         ORDER BY user_id;
+    }, $deleted_acct->account_id
+);
+
+my @deleted_user_ids = map {$_->[0]} @{$sth->fetchall_arrayref([0])};
+
+
+print "Fixing up ".scalar(@deleted_user_ids)." users in the Deleted account\n";
+foreach my $user_id (@deleted_user_ids) {
+    my $user = Socialtext::User->new(user_id => $user_id);
+    $user->deactivate();
+}
+
+print "Done fixing up user roles in the Deleted account\n";
+
+exit 0;

@@ -37,6 +37,7 @@
 | st-select-widget-frame | activities_widget |  |
 | text_like | //body | qr/Signal length limit is \d+, please edit your Signal/ism |
 | select-frame | relative=parent |  |
+| st-send-signal-via-activities-widget | activities_widget | abc 123 to get fory four out of input box |
 | st-text-unlike-in-activities-widget | activities_widget | %%fourfortysignal%% |
 
 | *Comment* | Test Case: TODO Change Signal Limit set serverwide 200 char limit - see limit |  |
@@ -89,6 +90,7 @@
 | st-send-signal-via-activities-widget | activities_widget | %%onehundredsignal%% |
 | st-verify-text-in-activities-widget | activities_widget | %%onehundredsignal%% |
 | st-send-signal-via-activities-widget | activities_widget | %%twohundredsignal%% |
+| st-send-signal-via-activities-widget | activities_widget | def 456 to get two hundred out of input box |
 | st-text-unlike-in-activities-widget | activities_widget | %%twohundredsignal%% |
 | st-select-widget-frame | activities_widget |  |
 | text_like | //body | qr/Signal length limit is 100, please edit your Signal/ism |
@@ -111,7 +113,13 @@
 | wait_for_text_present_ok | 100 | 30000 |
 | select-frame | relative=parent |  |
 
+| open-ok | /st/signals |  |
+| pause | 10000 |  |
+| wait_for_element_visible_ok | network-select | 30000 |
+| pause | 10000 |  |
 | select_ok | network-select | label=%%twohundredlimit%% (1 user) |
+| pause | 3000 |  |
+| st-name-widget | 1 | signal_widget |
 | st-select-widget-frame | signal_widget |  |
 | wait_for_text_present_ok | 200 | 3000 |
 | select-frame | relative=parent |  |

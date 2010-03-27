@@ -11,7 +11,11 @@ use subs qw( git download commit version_from );
 chdir "$RealBin/..";
 
 my $Local  = './share/desktop';
-my $Remote = 'http://topaz.socialtext.net/~audreyt/flairSignals';
+
+my %Remotes = (
+    'update.xml' => 'http://topaz.socialtext.net/desktop',
+    'flair-update.xml' => 'http://topaz.socialtext.net/~audreyt/flairSignals',
+);
 
 my %Editions = (
     'update.xml' => 'SocialtextDesktop-%s.air',
@@ -20,8 +24,9 @@ my %Editions = (
 
 while (my ($update_file, $air_filespec) = each %Editions) {
     my $local_version = version_from $update_file or next;
+    my $remote_url = $Remotes{$update_file};
 
-    download $update_file;
+    download $remote_url, $update_file;
 
     my $remote_version = version_from $update_file;
 
@@ -33,7 +38,7 @@ while (my ($update_file, $air_filespec) = each %Editions) {
     my $local_air  = sprintf $air_filespec, $local_version;
     my $remote_air = sprintf $air_filespec, $remote_version;
 
-    download $remote_air;
+    download $remote_url, $remote_air;
 
     git rm  => $local_air if -f "$Local/$local_air";
     git add => $remote_air;
@@ -52,13 +57,13 @@ sub version_from {
 }
 
 sub download {
-    my ( $file ) = @_;
+    my ( $remote_url, $file ) = @_;
 
     local $| = 1;
     print "Downloading $file... ";
 
-    getstore("$Remote/$file" => "$Local/$file") =~ /^[23]/
-      or die "Cannot download $Remote/$file - aborted.\n";
+    getstore("$remote_url/$file" => "$Local/$file") =~ /^[23]/
+      or die "Cannot download $remote_url/$file - aborted.\n";
 
     print "done.\n";
 }

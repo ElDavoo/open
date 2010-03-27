@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>231</version>
-  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-231.air</url>
-  <description><![CDATA[[Build 231 - Tue Mar 23 22:00:01 PDT 2010]
+  <version>234</version>
+  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-234.air</url>
+  <description><![CDATA[[Build 234 - Thu Mar 25 23:28:07 PDT 2010]
+* Correctly upgrade json2.js for real.
+
+[Build 233 - Thu Mar 25 22:51:00 PDT 2010]
+* Upgrade json2.js to the latest build to make certain signals parseable. (for {bz: 3721})
+
+[Build 232 - Thu Mar 25 08:03:32 PDT 2010]
+* Unbreak the Workspaces/Attachments sub-tab. (JonGrorud)
+
+[Build 231 - Tue Mar 23 22:00:01 PDT 2010]
 * Restore "trace" function to unbreak Workspaces tab's preview pane.
 * If GET on /data/signals failed, restart signals clock.
 
