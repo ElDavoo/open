@@ -93,6 +93,15 @@ sub redirect {
     return '';
 }
 
+sub permanent_redirect {
+    my ($self, $url) = @_;
+    $self->rest->header(
+        -status => HTTP_301_Moved_Permanently,
+        -Location => $url,
+    );
+    return '';
+}
+
 sub GET {
     my ($self, $rest) = @_;
 
