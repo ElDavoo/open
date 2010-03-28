@@ -430,7 +430,7 @@ sub visibility_sql {
             SELECT 1
               FROM user_set_path
              WHERE from_set_id = ?
-               AND into_set_id = evt.group_id - }.PG_GROUP_OFFSET.q{
+               AND into_set_id = evt.group_id + }.PG_GROUP_OFFSET.q{
         };
         push @parts,
             "( evt.event_class <> 'group' OR EXISTS (".
