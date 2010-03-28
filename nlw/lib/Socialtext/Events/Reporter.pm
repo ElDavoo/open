@@ -423,6 +423,24 @@ sub visibility_sql {
         push @parts, "(evt.event_class <> 'widget')";
     }
 
+    if (_options_include_class($opts, 'group')
+        and $self->viewer->can_use_plugin('groups') 
+    ) {
+        my $i_am_connected_to_that_group = q{
+            SELECT 1
+              FROM user_set_path
+             WHERE from_set_id = ?
+               AND into_set_id = evt.group_id - }.PG_GROUP_OFFSET.q{
+        };
+        push @parts,
+            "( evt.event_class <> 'group' OR EXISTS (".
+                $i_am_connected_to_that_group."))";
+        push @bind, $self->viewer_id;
+    }
+    else {
+        push @parts, "(evt.event_class <> 'group')";
+    }
+
     my $sql;
     $sql = "\n(\n".join(" AND ",@parts)."\n)\n";
 
