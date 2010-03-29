@@ -675,7 +675,7 @@ DELETE_TAG: {
                 argv => [qw( --workspace foobar --search e )] )
                 ->delete_tag();
         },
-        qr/The following tags were deleted from the foobar workspace:\s+(\s+\* [\w\s]+[eE][\w\s]+\s+)+\z/s,
+        qr/The following tags were deleted from the foobar workspace:\s+(\s+\* [\w\s:]+\s+)+\z/s,
         'delete multiple tags successfully',
     );
 }
