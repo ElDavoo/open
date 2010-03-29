@@ -3337,9 +3337,10 @@ sub _require_tags {
 
     if ( $opts{tag} ) {
         unless ( $hub->category->exists( $opts{tag} ) ) {
-            $self->_error( qq|There is no tag "$opts{tag}" in the |
-                    . $hub->current_workspace()->name()
-                    . ' workspace.' );
+            $self->_error(
+                loc('There is no tag "[_1]" in the [_2] workspace.',
+                    $opts{tag}, $hub->current_workspace()->name())
+            );
         }
 
         return $opts{tag};
@@ -3349,9 +3350,9 @@ sub _require_tags {
 
         unless (@matches) {
             $self->_error(
-                qq|No tags matching "$opts{search}" were found in the |
-                    . $hub->current_workspace()->name()
-                    . ' workspace.' );
+                loc('No tags matching "[_1]" were found in the [_2] workspace.',
+                    $opts{search}, $hub->current_workspace()->name())
+            );
         }
 
         return @matches;
