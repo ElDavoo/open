@@ -132,7 +132,7 @@ sub add_role {
     my %p = (@_==1) ? %{$_[0]} : @_;
  
     my $t = time();
-    $self->_role_change_checker(\%p);
+    $self->_role_change_checker({%p,action=>'add'});
 
     my $thing = $p{object};
     my $role  = $p{role} || $self->role_default($thing);
@@ -156,7 +156,7 @@ sub assign_role {
     my %p = (@_==1) ? %{$_[0]} : @_;
  
     my $t = time;
-    $self->_role_change_checker(\%p);
+    $self->_role_change_checker({%p,action=>'update'});
 
     my $thing = $p{object};
     my $role = $p{role} || $self->role_default($thing);
@@ -184,7 +184,7 @@ sub remove_role {
     my %p = (@_==1) ? %{$_[0]} : @_;
  
     my $t = time;
-    $self->_role_change_checker(\%p);
+    $self->_role_change_checker({%p,action=>'remove'});
 
     my $thing = $p{object};
     $self->role_change_check($p{actor},'remove',$thing);
@@ -243,7 +243,10 @@ sub _role_change_checker {
         param_error "object parameter must be a Socialtext::User, Socialtext::UserMetadata or implement role Socialtext::UserSetContainer";
     }
 
-    if ($o->isa('Socialtext::User') && $o->is_system_created) {
+    if ($o->isa('Socialtext::User') &&
+        $o->is_system_created &&
+        $p->{action} ne 'remove')
+    {
         param_error 'Cannot give a role to a system-created user';
     }
 }
