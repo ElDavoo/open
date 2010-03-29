@@ -39,6 +39,7 @@
 | open_ok | /st/signals |  |
 | st-name-widget | 1 | signal_sender |
 | st-name-widget | 3 | signal_receptor |
+| st_cycle_network_select | 3 |  |
 | select_ok | network-select | index=2 |
 | st_verify_text_in_activities_widget | signal_receptor | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
 | st_verify_text_in_activities_widget | signal_receptor | %%signal_2%% |
@@ -100,6 +101,7 @@
 | *Comment* | Groups UI Send Signal to Group group member can search for group signal and filter by network |  |
 | type_ok | st-search-term | %%signal_2%% |
 | click_and_wait | st-search-submit |  |
+| st_cycle_network_select | 3 |  |
 | select_ok | network-select | index=2 |
 | st-name-widget | 3 | search_results |
 | st-select-widget-frame | search_results |  |
@@ -112,8 +114,6 @@
 | st-select-widget-frame | search_results |  |
 | wait_for_text_present_ok | Search results |  |
 | text_like | qr/Search results.+for '%%signal_2%%'/ism |  |
-| wait_for_text_not_present_ok | %%group_user_short%% | 30000 |
-| wait_for_text_not_present_ok | %%group_name%% | 30000 |
 
 | *Comment* | Groups UI Send Signal to Group Teardown |
 | delete-group | %%group_id%% |
