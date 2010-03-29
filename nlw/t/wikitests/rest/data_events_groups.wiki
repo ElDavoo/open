@@ -1,6 +1,7 @@
 * Fixture: SocialRest
 
 | standard-test-setup |
+| st-clear-events |
 
 | GET_json  | /data/events/groups/999999 |
 | code-is   | 404                        |
@@ -95,3 +96,14 @@ Later on ...
 * adding group to an account
 * removing group from an account
 
+| set | outsider      | outsider@%%start_time%%.ken.socialtext.net |
+| set | outsider_acct | outsiders%%start_time%%                    |
+
+| create-account | outsiders%%start_time%% |          |                   |
+| create-user    | %%outsider%%            | password | %%outsider_acct%% |
+
+| http-user-pass | %%outsider%% | password |
+
+| GET-json    | /data/events |
+| code-is     | 200          |
+| body-unlike | group        |
