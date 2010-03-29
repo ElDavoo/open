@@ -2286,9 +2286,10 @@ sub purge_page {
     my $title = $page->metadata()->Subject();
     $page->purge();
 
-    $self->_success( "The $title page was purged from the "
-            . $hub->current_workspace()->name()
-            . " workspace.\n" );
+    $self->_success( 
+        loc('The [_1] page was purged from the [_2] workspace.',
+            $title, $hub->current_workspace()->name())
+    );
 }
 
 sub lock_page {
@@ -3373,9 +3374,10 @@ sub _require_page {
 
     my $page = $hub->pages()->new_page( $opts{page} );
     unless ( $page and $page->exists() ) {
-        $self->_error( qq|There is no page with the id "$opts{page}" in the |
-                . $hub->current_workspace()->name()
-                . " workspace.\n" );
+        $self->_error( 
+            loc('There is no page with the id "[_1]" in the [_2] workspace.',
+                $opts{page}, $hub->current_workspace()->name())
+        );
     }
 
     return $page;
