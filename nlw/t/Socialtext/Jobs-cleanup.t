@@ -1,4 +1,3 @@
-
 #!/usr/bin/perl
 # @COPYRIGHT@
 use strict;
