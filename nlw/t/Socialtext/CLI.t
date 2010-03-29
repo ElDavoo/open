@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 324;
+use Test::Socialtext tests => 336;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -771,6 +771,26 @@ CREATE_WORKSPACE: {
         qr{The $NEW_WORKSPACE workspace has been cloned to $from_ws},
         'clone-workspace success message',
     );
+
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => $from_ws,
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
+
     expect_success(
         sub {
             Socialtext::CLI->new(
@@ -796,6 +816,8 @@ CREATE_WORKSPACE: {
         qr/\QA new workspace named "$to_ws" was created.\E/,
         'create-workspace success message'
     );
+
+    # Purged pages are not copied over.
     expect_failure(
         sub {
             Socialtext::CLI->new(
@@ -893,6 +915,25 @@ DELETE_SEARCH_INDEX: {
 }
 
 INDEX_PAGE: {
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => $NEW_WORKSPACE,
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
+
     expect_success(
         sub {
             Socialtext::CLI->new( argv =>
@@ -1152,6 +1193,25 @@ PURGE_ATTACHMENT: {
 }
 
 PURGE_PAGE: {
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => 'foobar',
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
+
     expect_success(
         sub {
             Socialtext::CLI->new(
@@ -1175,6 +1235,25 @@ VERSION: {
 }
 
 SEND_WEBLOG_PINGS: {
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => 'admin',
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
+
     expect_failure(
         sub {
             Socialtext::CLI->new(
@@ -1209,6 +1288,25 @@ SEND_WEBLOG_PINGS: {
 SEND_EMAIL_NOTIFICATIONS: {
     Socialtext::Workspace->new( name => 'admin' )
         ->update( email_notify_is_enabled => 1 );
+
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => 'admin',
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
 
     require Socialtext::EmailNotifyPlugin;
     my @pages;
@@ -1247,6 +1345,25 @@ SEND_EMAIL_NOTIFICATIONS: {
 }
 
 SEND_WATCHLIST_EMAILS: {
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => 'admin',
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
+
     require Socialtext::WatchlistPlugin;
     my @pages;
     no warnings 'once';
