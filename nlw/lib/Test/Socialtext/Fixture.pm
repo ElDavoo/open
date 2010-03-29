@@ -456,7 +456,7 @@ sub _generate_help_workspace {
     my $self = shift;
     my $user = shift;
     my $ws_name = shift || 'help-en';
-    my $tarball = $self->env->nlw_dir . "/share/l10n/help/$ws_name.tar.gz";
+    my $tarball = $self->env->nlw_dir . "/t/share/tarballs/$ws_name.tar.gz";
 
     # Workspace already exists.
     return if Socialtext::Workspace->new( name => $ws_name );
