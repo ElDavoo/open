@@ -10,7 +10,7 @@ fixtures( 'admin' );
 use Socialtext::Search::AbstractFactory;
 
 Socialtext::Search::AbstractFactory->GetFactory->create_indexer('admin')
-    ->index_page('quick_start');
+    ->index_page('example_page_product_faq');
 
 my $hub = new_hub('admin');
 
@@ -57,12 +57,12 @@ run {
 
 __DATA__
 === correct title field
---- query: title:quick
+--- query: title:example
 --- expected_results: 1
 --- message
 
 === quoted title field
---- query: title:"quick start"
+--- query: title:"example page"
 --- expected_results: 1
 --- message
 
