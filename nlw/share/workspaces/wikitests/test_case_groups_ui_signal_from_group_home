@@ -61,7 +61,7 @@
 | st_text_unlike_in_activities_widget | signals_widget | %%mysignal_2%% |
 
 | *Comment* | Test Case: Groups UI Signal from group home - matt does a trick to get refresh to work |  |
-| st_cycle_network_select | 4 |  |
+| st_cycle_network_select | 3 |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Add member, see signal |  |
 | st-admin | add-member --group %%group_id%% --email %%username%% |  |
