@@ -137,20 +137,10 @@ sub handler ($$) {
 
         my $saved_args = $self->{saved_args} = $self->session->saved_args;
         my $repl_vars  = {
-            $hub->helpers->global_template_vars,
+            $self->_default_template_vars(),
             authen_page    => 1,
-            loc            => \&loc,
-            errors         => [ $self->session->errors ],
-            messages       => [ $self->session->messages ],
             username_label => Socialtext::Authen->username_label,
             redirect_to    => $self->{args}{redirect_to},
-            static_path    => Socialtext::Helpers::static_path(),
-            skin_uri       => sub {
-                Socialtext::Skin->new(name => shift)->skin_uri
-            },
-            paths          => $hub->skin->template_paths,
-            st_version     => $Socialtext::VERSION,
-            support_address => Socialtext::AppConfig->support_address,
             %$saved_args,
             %$vars,
         };
@@ -604,6 +594,24 @@ sub _load_hub {
     my $self = shift;
     my $main = $self->_load_main();
     return $main->hub();
+}
+
+sub _default_template_vars {
+    my $self = shift;
+    my $hub  = $self->_load_hub();
+    return (
+        $hub->helpers->global_template_vars,
+        loc            => \&loc,
+        errors         => [ $self->session->errors ],
+        messages       => [ $self->session->messages ],
+        static_path    => Socialtext::Helpers::static_path(),
+        skin_uri       => sub {
+            Socialtext::Skin->new(name => shift)->skin_uri
+        },
+        paths          => $hub->skin->template_paths,
+        st_version     => $Socialtext::VERSION,
+        support_address => Socialtext::AppConfig->support_address,
+    );
 }
 
 sub _find_user_for_email_confirmation_hash {
