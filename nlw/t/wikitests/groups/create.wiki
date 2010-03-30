@@ -5,16 +5,24 @@ Tests to create groups via REST and CLI.
 | standard-test-setup   |
 | delete-all-groups     |
 
+Set up a second account, but no users.
+
+| set            | account_a_id  | %%account_id%%        |
+| set            | account_b     | acct-b-%%start_time%% |
+| create-account | %%account_b%% |                       |
+| set            | account_b_id  | %%account_id%%        |
+| set            | account_id    | %%account_a_id%%      |
+
 * Create a group using the default account & user
 * Make sure that user count is 0: SystemUser shouldn't added as an admin
 
 | set      | g1                         | g1-%%start_time%%                                              |
-| st-admin | create-group --name %%g1%% | %%g1%% Group has been created (Group Id:                       |
-| st-admin | list-groups                | qr/%%g1%% .\s+0 .\s+0 .\s+[\w\.]+ . [\d-]+ .\s+system-user/ |
+| st-admin | create-group --name %%g1%% --account %%account_b%% | %%g1%% Group has been created (Group Id:                       |
+| st-admin | list-groups                | qr/%%g1%% .\s+0 .\s+0 .\s+%%account_b%% . [\d-]+ .\s+system-user/ |
 
 * Can't create a group with a duplicate name
 
-| st-admin | create-group --name %%g1%% | The %%g1%% Group has already been added to the system. |
+| st-admin | create-group --name %%g1%% --account %%account_b%% | The %%g1%% Group has already been added to the system. |
 
 * Create with a specific account
 
@@ -26,8 +34,8 @@ Tests to create groups via REST and CLI.
 # This time, the user count is 1 because %%username%% is not system created, and thus should be added as an admin to the group
 
 | set | g3 | g3-%%start_time%% |
-| st-admin | create-group --name %%g3%% --email %%username%% | %%g3%% Group has been created (Group Id:                     |
-| st-admin | list-groups                                     | qr/%%g3%% .\s+0 .\s+1 .\s+[\w\.]+ . [\d-]+ .\s+user-%%start_time%%/ |
+| st-admin | create-group --name %%g3%% --email %%username%% --account %%account_b%% | %%g3%% Group has been created (Group Id:                     |
+| st-admin | list-groups                                     | qr/%%g3%% .\s+0 .\s+1 .\s+%%account_b%% . [\d-]+ .\s+user-%%start_time%%/ |
 
 
 * Create a group via REST
@@ -39,12 +47,15 @@ Tests to create groups via REST and CLI.
 | code-is        | 401          |                                                 |
 
 # All other users should be able to create groups
+| http-user-pass     | %%username%% | %%password%% |
+| set-business-admin | %%username%% | 0            |
+
 # This time, the user count is 1 because %%username%% is not system created, and thus should be added as an admin to the group
-| http-user-pass     | %%username%%         | %%password%%                                                            |
-| set-business-admin | %%username%%         | 0                                                                       |
+
 | POST_json          | /data/groups         | {"account_id":"%%account_id%%","name":"%%g4%%"}                         |
 | code-is            | 201                  |                                                                         |
 | st-admin           | list-groups          | qr/%%g4%% .\s+0 .\s+1 .\s+%%account%% . [\d-]+ .\s+user-%%start_time%%/ |
+
 | POST_json          | /data/groups         | {"account_id":"%%account_id%%","name":"%%g4%%"}                         |
 | code-is            | 400                  |                                                                         |
 | body-like          | group already exists |                                                                         |
@@ -57,6 +68,7 @@ Tests to create groups via REST and CLI.
 | set              | g5                                       | g5-%%start_time%%                                                           |
 | POST_json        | /data/groups                             | {"account_id":"%%account_id%%","name":"%%g5%%","description":"Hello World"} |
 | code-is          | 201                                      |                                                                             |
+| json-parse |
 | set-from-content | group_id                                 | qr/"group_id":"(\d+)"/                                                      |
 | GET-json         | /data/groups/%%group_id%%                |                                                                             |
 | code-is          | 200                                      |                                                                             |
@@ -80,9 +92,9 @@ Tests to create groups via REST and CLI.
 | set              | g6_id          | %%group_id%%             |
 
 ## Create a new, non business admin
-| set            | non_admin     | non_admin%%start_time%%@ken.socialtext.net |
-| create-user    | %%non_admin%% | password                                   |
-| http-user-pass | %%non_admin%% | password                                   |
+| set            | non_admin     | non_admin%%start_time%%@ken.socialtext.net |             |
+| create-user    | %%non_admin%% | password                                   | %%account%% |
+| http-user-pass | %%non_admin%% | password                                   |             |
 
 ## Cannot create a group because we can't admin the workspaces
 | *Comment* | can't admin workspaces |                                                                                                           |
@@ -99,13 +111,13 @@ Tests to create groups via REST and CLI.
 | code-is   | 201          |                                                                                                                          |
 
 ## Get a couple of users to add to a group
-| set         | bowline          | bowline%%start_time%%@ken.socialtext.net      |
-| create-user | %%bowline%%      | password                                      |
-| set         | bowline_id       | %%user_id%%                                   |
-| set         | figure_eight     | figure-eight%%start_time%%@ken.socialtext.net |
-| create-user | %%figure_eight%% | password                                      |
-| set         | figure_eight_id  | %%user_id%%                                   |
-| set         | g7               | g7-%%start_time%%                             |
+| set         | bowline          | bowline%%start_time%%@ken.socialtext.net      |             |
+| create-user | %%bowline%%      | password                                      | %%account%% |
+| set         | bowline_id       | %%user_id%%                                   |             |
+| set         | figure_eight     | figure-eight%%start_time%%@ken.socialtext.net |             |
+| create-user | %%figure_eight%% | password                                      | %%account%% |
+| set         | figure_eight_id  | %%user_id%%                                   |             |
+| set         | g7               | g7-%%start_time%%                             |             |
 
 ## Create a group with users
 | *Comment* | Create a group with users |
@@ -121,5 +133,7 @@ Tests to create groups via REST and CLI.
 ## Create a group, create workspaces at the same time.
 | *Comment* | Create a group, create workspaces at the same time |
 | POST-json | /data/groups | {"name":"%%g8%%","new_workspaces":[{"name":"%%clove_hitch%%","title":"Clove Hitch"},{"name":"%%butterfly%%","title":"Butterfly"}]} |
-| code-is | 201 |
-| body-like | "workspace_count":"2" |
+| code-is      | 201               |   |
+| json-parse   |                   |   |
+| json-path-is | $.workspace_count | 2 |
+| json-path-is | $.user_count      | 1 |
