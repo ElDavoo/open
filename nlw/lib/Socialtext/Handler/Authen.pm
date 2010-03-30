@@ -50,14 +50,8 @@ sub handler ($$) {
 
         # sucks, but we need a Hub to get the global template vars and to
         # get the list of available public workspaces
-        my $user = $self->authenticate($r) || Socialtext::User->Guest();
-        my $ws   = Socialtext::NoWorkspace->new();
-        my $main = Socialtext->new();
-        $main->load_hub(
-            current_user      => $user,
-            current_workspace => $ws,
-        );
-        $main->hub->registry->load();
+        my $hub  = $self->_load_hub();
+        my $user = $hub->current_user();
 
         # vars that we're setting up to use in our template later on
         my $vars = {};
@@ -119,7 +113,7 @@ sub handler ($$) {
         if (($uri eq 'login.html') || ($uri eq 'logout.html')) {
             # list of public workspaces (for Workspace List)
             $vars->{public_workspaces}
-                = [ $main->hub->workspace_list->public_workspaces ];
+                = [ $hub->workspace_list->public_workspaces ];
         }
         if ( $uri eq 'join.html' ) {
             my $redirect_to = $self->{args}{redirect_to} || '';
@@ -143,7 +137,7 @@ sub handler ($$) {
 
         my $saved_args = $self->{saved_args} = $self->session->saved_args;
         my $repl_vars  = {
-            $main->hub->helpers->global_template_vars,
+            $hub->helpers->global_template_vars,
             authen_page    => 1,
             loc            => \&loc,
             errors         => [ $self->session->errors ],
@@ -154,7 +148,7 @@ sub handler ($$) {
             skin_uri       => sub {
                 Socialtext::Skin->new(name => shift)->skin_uri
             },
-            paths          => $main->hub->skin->template_paths,
+            paths          => $hub->skin->template_paths,
             st_version     => $Socialtext::VERSION,
             support_address => Socialtext::AppConfig->support_address,
             %$saved_args,
@@ -591,6 +585,25 @@ sub _challenge {
     my $challenge_uri = '/challenge';
     $challenge_uri .= '?' . uri_escape_utf8($redirect_to) if ($redirect_to);
     return $self->_redirect($challenge_uri);
+}
+
+sub _load_main {
+    my $self = shift;
+    my $user = $self->authenticate($self->{r}) || Socialtext::User->Guest();
+    my $ws   = Socialtext::NoWorkspace->new();
+    my $main = Socialtext->new();
+    $main->load_hub(
+        current_user      => $user,
+        current_workspace => $ws,
+    );
+    $main->hub->registry->load();
+    return $main;
+}
+
+sub _load_hub {
+    my $self = shift;
+    my $main = $self->_load_main();
+    return $main->hub();
 }
 
 sub _find_user_for_email_confirmation_hash {
