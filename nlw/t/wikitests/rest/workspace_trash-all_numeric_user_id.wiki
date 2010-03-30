@@ -40,3 +40,37 @@ another).
 | json-parse      |                                                                                                       |                                                                       |
 | json-array-size | 2                                                                                                     |                                                                       |
 | json-like       | [ {"username":"%%username%%"}, {"username":"%%user_one_username%%"} ]                                 |                                                                       |
+
+| *Comment*       | Can remove user with just username                                    |                                          |
+| add-member      | %%user_two_email%%                                                    | %%ws_name%%                              |
+| POST-json       | /data/workspaces/%%ws_name%%/trash                                    | [ {"username":"%%user_two_username%%"} ] |
+| code-is         | 204                                                                   |                                          |
+| GET             | /data/workspaces/%%ws_name%%/users                                    | application/json                         |
+| code-is         | 200                                                                   |                                          |
+| json-parse      |                                                                       |                                          |
+| json-array-size | 2                                                                     |                                          |
+| json-like       | [ {"username":"%%username%%"}, {"username":"%%user_one_username%%"} ] |                                          |
+
+| *Comment*       | Can remove user with just user_id                                     |                                   |
+| add-member      | %%user_two_email%%                                                    | %%ws_name%%                       |
+| POST-json       | /data/workspaces/%%ws_name%%/trash                                    | [ {"user_id":"%%user_two_id%%"} ] |
+| code-is         | 204                                                                   |                                   |
+| GET             | /data/workspaces/%%ws_name%%/users                                    | application/json                  |
+| code-is         | 200                                                                   |                                   |
+| json-parse      |                                                                       |                                   |
+| json-array-size | 2                                                                     |                                   |
+| json-like       | [ {"username":"%%username%%"}, {"username":"%%user_one_username%%"} ] |                                   |
+
+| *Comment*       | Removing a non-user has no effect  |                                   |
+| add-member      | %%user_two_email%%                 | %%ws_name%%                       |
+| POST-json       | /data/workspaces/%%ws_name%%/trash | [ {"user_id":"1001%%user_two_id%%"} ] |
+| code-is         | 204                                |                                   |
+| GET             | /data/workspaces/%%ws_name%%/users | application/json                  |
+| code-is         | 200                                |                                   |
+| json-parse      |                                    |                                   |
+| json-array-size | 3                                  |                                   |
+
+| *Comment*    | Bad JSON returns error         |     |
+| POST-json    | /data/workspaces/%%ws_name%%/trash | abc |
+| code-is      | 400                                |     |
+| body-like | malformed JSON                     |     |

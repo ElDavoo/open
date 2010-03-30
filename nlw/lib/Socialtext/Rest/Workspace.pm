@@ -129,11 +129,10 @@ sub POST_to_trash {
 
             for my $thing (@$data) {
                 my $condemned;
-
-                if (my $id_or_name = $thing->{user_id} || $thing->{username}) {
-                    $condemned = Socialtext::User->Resolve($id_or_name);
-                }
-                else {
+            
+                $condemned = Socialtext::User->new(user_id => $thing->{user_id}) if $thing->{user_id};
+                $condemned ||= Socialtext::User->new(username => $thing->{username}) if $thing->{username};
+                if (!$condemned) {
                     $condemned = eval {
                         Socialtext::Group->GetGroup(group_id => $thing->{group_id})
                     };
