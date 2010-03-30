@@ -146,8 +146,12 @@
 | wait_for_element_visible_ok | network-select | 30000 |
 
 | *Comment* | Test Case: Mobile Signals. See three signals |  |
+| st_cycle_network_select | 6 |  |
 | select_ok | network-select | label=All My Groups |
 | pause | 8000 | I hate pause |
+| st-name-widget | 1 | send_signal_widget |
+| st_send_signal_via_activities_widget | send_signal_widget | kick it |
+| pause | 8000 |  |
 | st-name-widget | 3 | signals_widget |
 | st-widget-title-like | signals_widget | Signals |
 | st-select-widget-frame | signals_widget |  |
