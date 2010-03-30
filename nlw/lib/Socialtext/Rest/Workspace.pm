@@ -130,8 +130,8 @@ sub POST_to_trash {
             for my $thing (@$data) {
                 my $condemned;
 
-                if (my $name_or_id = $thing->{username} || $thing->{user_id}) {
-                    $condemned = Socialtext::User->Resolve($name_or_id);
+                if (my $id_or_name = $thing->{user_id} || $thing->{username}) {
+                    $condemned = Socialtext::User->Resolve($id_or_name);
                 }
                 else {
                     $condemned = eval {
