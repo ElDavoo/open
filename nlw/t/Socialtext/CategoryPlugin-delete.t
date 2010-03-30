@@ -4,7 +4,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 6;
+use Test::Socialtext tests => 8;
 fixtures( 'admin' );
 
 # The point of this test is to test page duplication without ever
@@ -61,4 +61,32 @@ my $pages = $admin_hub->pages;
     my %cats = map { $_ => 1 } $categories->all;
     ok( ! $cats{$cat},
         'Categories object no longer contains reference to "Category Delete Test 2"' );
+}
+
+caseless_delete: {
+    # Capitalized Tag
+    my $page = $pages->new_from_name('Maxwell Banjo');
+    $page->content('test content');
+    $page->metadata->Category([
+        @{$page->metadata->Category}, 'Dog', # capitalized
+    ]);
+    $page->store( user => $user );
+
+    # lowercase tag
+    $page = $pages->new_from_name('Warren Kaczynski');
+    $page->content('test content');
+    $page->metadata->Category([
+        @{$page->metadata->Category}, 'dog',
+    ]);
+    $page->store( user => $user );
+
+    # should delete 'Dog' and 'dog'.
+    my $categories = $admin_hub->category;
+    $categories->delete(tag => 'dog', user => $user);
+
+    is( ( scalar grep { $_->is_in_category('Dog') } $pages->all ), 0,
+        'There are no pages in the "Dog" category' );
+
+    is( ( scalar grep { $_->is_in_category('dog') } $pages->all ), 0,
+        'There are no pages in the "dog" category' );
 }
