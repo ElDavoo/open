@@ -519,8 +519,9 @@ sub resend_confirmation {
 
     my $email_address = $self->{args}{email_address};
     unless ($email_address) {
-        warn "No email address found to resend confirmation";
-        return $self->_challenge();
+        return $self->_show_error(
+            loc("No email address found to resend confirmation.")
+        );
     }
 
     my $user = Socialtext::User->new( email_address => $email_address );
