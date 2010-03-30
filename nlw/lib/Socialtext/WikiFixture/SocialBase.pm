@@ -9,6 +9,7 @@ use Socialtext::User;
 use Socialtext::SQL qw/:exec :txn/;
 use Socialtext::JSON qw/decode_json encode_json/;
 use Socialtext::File;
+use Socialtext::Group;
 use Socialtext::System qw();
 use Socialtext::HTTP::Ports;
 use Socialtext::PrefsTable;
@@ -16,6 +17,7 @@ use Socialtext::Role;
 use Socialtext::People::Profile;
 use Socialtext::UserSet qw(ACCT_OFFSET);
 use Socialtext::Cache;
+use Socialtext::Workspace;
 use File::LogReader;
 use File::Path qw(rmtree);
 use Test::More;
@@ -668,19 +670,50 @@ sub delete_all_groups {
 
     my $groups = Socialtext::Group->All();
     while (my $g = $groups->next) {
-        $self->delete_group( $g->group_id );
+        $self->delete_group($g);
     }
 }
 
 sub delete_group {
     my $self     = shift;
-    my $group_id = shift || $self->{group_id};
+    my $group_or_id = shift || $self->{group_id};
 
-    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+    my $group = (ref($group_or_id))
+        ? $group_or_id
+        : Socialtext::Group->GetGroup(group_id => $group_or_id);
+
     if ($group) {
+        my $group_id = $group->group_id;
         diag "Recklessly deleting group $group_id";
+
         require Test::Socialtext::Group;
         Test::Socialtext::Group->delete_recklessly($group);
+    }
+}
+
+sub delete_all_workspaces {
+    my $self = shift;
+
+    my $workspaces = Socialtext::Workspace->All();
+    while (my $w = $workspaces->next()) {
+        $self->delete_workspace($w);
+    }
+}
+
+sub delete_workspace {
+    my $self = shift;
+    my $ws_or_id = shift || $self->{workspace_id};
+
+    my $ws = (ref($ws_or_id))
+        ? $ws_or_id
+        : Socialtext::Workspace->new(workspace_id => $ws_or_id);
+
+    if ($ws) {
+        my $ws_id = $ws->workspace_id;
+        diag "Recklessly deleting workspace $ws_id";
+
+        require Test::Socialtext::Workspace;
+        Test::Socialtext::Workspace->delete_recklessly($ws);
     }
 }
 
