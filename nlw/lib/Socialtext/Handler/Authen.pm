@@ -61,7 +61,9 @@ sub handler ($$) {
             my $hash        = $saved_args->{hash};
             my $account_for = $saved_args->{account_for};
 
-            return $self->_challenge() unless $hash;
+            return $self->_show_error(
+                loc('Invalid confirmation URL.')
+            ) unless $hash;
 
             my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
             return $self->_show_error() unless $user;
@@ -410,7 +412,9 @@ sub confirm_email {
     my $r = $self->r;
 
     my $hash = $self->{args}{hash};
-    return $self->_challenge() unless $hash;
+    return $self->_show_error(
+        loc('Invalid confirmation URL.')
+    ) unless $hash;
 
     my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
     return $self->_show_error() unless $user;
@@ -475,7 +479,9 @@ sub choose_password {
     my $r = $self->r;
 
     my $hash = $self->{args}{hash};
-    return $self->_challenge unless $hash;
+    return $self->_show_error(
+        loc('Invalid confirmation URL.')
+    ) unless $hash;
 
     my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
     return $self->_show_error() unless $user;
