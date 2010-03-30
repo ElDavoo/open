@@ -31,11 +31,13 @@ sub get_resource {
     # REVIEW: A permissions issue at this stage will result in a 404
     # which might not be the desired result. In a way it's kind of good,
     # in an information hiding sort of way, but....
-    if (
-        $user
-        && (   $acting_user->is_business_admin()
-            || $user->username eq $acting_user->username )
-        ) {
+    return undef unless $user;
+
+    my $all = $self->rest->query->param('all');
+    my $badmin = $acting_user->is_business_admin;
+    return undef if $all and !$badmin;
+
+    if ($all) {
         return +{
             ( hgrep { $k ne 'password' } %{ $user->to_hash } ),
             accounts => [
@@ -46,6 +48,20 @@ sub get_resource {
                 map { $_->to_hash(plugins=>1, show_account_ids=>1,
                                   show_admins => 1)
                     } $user->groups->all
+            ],
+        };
+    }
+    elsif (my @shared_accts = $user->shared_accounts($acting_user)) {
+        return +{
+            ( hgrep { $k ne 'password' } %{ $user->to_hash } ),
+            accounts => [
+                map { $_->hash_representation(user_count=>1) }
+                @shared_accts
+            ],
+            groups => [
+                map { $_->to_hash(plugins=>1, show_account_ids=>1,
+                                  show_admins => 1)
+                    } $user->shared_groups($acting_user)
             ],
         };
     }
