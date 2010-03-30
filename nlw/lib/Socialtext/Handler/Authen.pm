@@ -614,6 +614,21 @@ sub _default_template_vars {
     );
 }
 
+sub _show_error {
+    my $self  = shift;
+    my $error = shift;
+
+    $self->session->add_error($error) if ($error);
+
+    my $hub = $self->_load_hub();
+    my $repl_vars = {
+        $self->_default_template_vars,
+    };
+    return $self->render_template(
+        $self->{r}, 'errors/display.html', $repl_vars,
+    );
+}
+
 sub _find_user_for_email_confirmation_hash {
     my $self = shift;
     my $r = shift;
