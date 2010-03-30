@@ -8,7 +8,7 @@
 | set-default | group | %%hostname%% |
 
 | *Comment* | Test Case: Signals Page. Get to the Signals page. Wait for the widget to fully load |  |
-|  st-admin |  enable-plugin --all-accounts --p signals |  |
+| st-admin | enable-plugin --all-accounts --p signals |  |
 | open_ok | /?signals |  |
 | wait_for_text_present_ok | Send a Signal | 60000 |
 
@@ -18,55 +18,28 @@
 | st-select-widget-frame | signals_widget |  |
 | wait_for_text_present_ok | Download Socialtext | 60000 |
 | wait_for_text_present_ok | Try out the | 60000 |
+| select-frame | relative=parent |  |
 
 | *Comment* | The first signal fails if you don't wait a while. | I hate pause |
 | pause | 10000 |  |
 
 | *Comment* | Test Case: Signals Page. Once Upon A Time |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | Once Upon A Time %%start_time%% %%mark%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| *Comment* | Test Case: Signals Page. Signals must be spaced by at least two seconds |  |
-| pause | 3000 |  |
-| click_ok | post |  |
-| *Comment* | Test Case: Signals Page. Signals must be spaced by at least two seconds |  |
+| st_send_signal_via_activities_widget | signals_widget | Once Upon A Time %%start_time%% %%mark%% |
 | pause | 3000 |  |
 
 | *Comment* | Test Case: Signals Page. I Remember Long Ago |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | I Remember Long Ago %%start_time%% %%mark%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| *Comment* | Test Case: Signals Page. Signals must be spaced by at least two seconds |  |
+| st_send_signal_via_activities_widget | signals_widget | I Remember Long Ago %%start_time%% %%mark%% |
 | pause | 3000 |  |
 
 | *Comment* | Test Case: Signals Page. Way Back In History |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | Way Back In History %%start_time%% %%mark%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| *Comment* | Test Case: Signals Page. Signals must be spaced by at least two seconds |  |
+| st_send_signal_via_activities_widget | signals_widget | Way Back In History %%start_time%% %%mark%% |
 | pause | 3000 |  |
 
 | *Comment* | Test Case: Signals Page. I May Be Kinda Slow |  |
-| selectFrame | signalFrame |  |
-| wait_for_element_visible_ok | //body | 10000 |
-| type_ok | //body | I May Be Kinda Slow %%start_time%% %%mark%% |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | post | 10000 |
-| click_ok | post |  |
-| *Comment* | Test Case: Signals Page. Signals must be spaced by at least two seconds |  |
+| st_send_signal_via_activities_widget | signals_widget | I May Be Kinda Slow %%start_time%% %%mark%% |
 | pause | 3000 |  |
 
 | *Comment* | Test Case: Signals Page. Verify signals in page. |  |
-| select-frame | relative=parent |  |
-| wait_for_element_present_ok | //iframe[@name='widget_2'] | 30000 |
 | st-name-widget | 3 | signal_activity |
 | st-select-widget-frame | signal_activity |  |
 
@@ -79,10 +52,5 @@
 | *Comment* | Test Case: Signals widget. Wait for automatic refresh to "one minute ago" in page |  |
 | wait_for_text_present_ok | one minute ago | 120000 |
 | select-frame | relative=parent |  |
-| wait_for_element_present_ok | //iframe[@name='widget_2'] | 30000 |
-
-| *Comment* | Test Case: Signals Page Teardown |  |
 
 | *Comment* | Test Case: Signals Page COMPLETED |  |
-
-TODO: write a second TC that exercises all signals, signals from followers only, older, newer, newest
