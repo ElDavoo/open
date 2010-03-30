@@ -64,7 +64,7 @@ sub handler ($$) {
             return $self->_challenge() unless $hash;
 
             my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-            return $self->_challenge() unless $user;
+            return $self->_show_error() unless $user;
 
             $vars->{email_address} = $user->email_address;
             $vars->{hash}          = $hash;
@@ -413,7 +413,7 @@ sub confirm_email {
     return $self->_challenge() unless $hash;
 
     my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-    return $self->_challenge() unless $user;
+    return $self->_show_error() unless $user;
 
     if ( $user->confirmation_has_expired ) {
         $user->set_confirmation_info();
@@ -478,7 +478,7 @@ sub choose_password {
     return $self->_challenge unless $hash;
 
     my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-    return $self->_challenge unless $user;
+    return $self->_show_error() unless $user;
 
     my %args;
     $args{$_} = $self->{args}{$_} || '' for (qw(password password2));
