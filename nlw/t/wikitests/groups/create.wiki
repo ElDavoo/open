@@ -2,8 +2,9 @@
 
 Tests to create groups via REST and CLI.
 
-| standard-test-setup |
-| delete-all-groups | |
+| standard-test-setup   |
+| delete-all-groups     |
+| delete-all-workspaces |
 
 * Create a group using the default account & user
 * Make sure that user count is 0: SystemUser shouldn't added as an admin
