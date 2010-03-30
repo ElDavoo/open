@@ -460,3 +460,4 @@ lib/Socialtext/Rest/Signals/Replies.pm
 lib/Socialtext/Gadgets/Container/Signals/Signal.pm
 lib/Socialtext/Handler/Container/Signals/Signal.pm
 t/wikitests/signals/data_signals_permalink.wiki
+t/wikitests/signals/st_signals.wiki
