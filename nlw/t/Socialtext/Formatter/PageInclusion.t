@@ -43,7 +43,7 @@ like $content_one, qr{Page One.*Page Two.*include: \[page one\]}sm,
 like $content_two, qr{Page Two.*Page One.*include: \[page two\]}sm,
     'page two should have page one but not recurse';
 
-like $content_two, qr{foobar/index.cgi\?People},
+like $content_two, qr{foobar/index.cgi\?people},
     'page two should include welcome from foobar with links to people';
 
 
