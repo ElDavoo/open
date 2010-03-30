@@ -4,7 +4,6 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 
 | standard-test-setup   |
 | delete-all-groups     |
-| delete-all-workspaces |
 
 ## Create a new group, add it to a couple of workspaces
 | *Comment*              | Setup        |                                        |       |
