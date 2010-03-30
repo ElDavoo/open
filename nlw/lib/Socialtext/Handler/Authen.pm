@@ -429,8 +429,9 @@ sub confirm_email {
             $user->send_confirmation_email();
         }
 
-        $self->session->add_error(loc("The confirmation URL you used has expired. A new one will be sent."));
-        return $self->_challenge();
+        return $self->_show_error(
+            loc("The confirmation URL you used has expired. A new one will be sent.")
+        );
     }
 
     if ( $user->confirmation_is_for_password_change or not $user->has_valid_password ) {
