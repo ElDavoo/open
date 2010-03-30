@@ -214,6 +214,25 @@ sub st_widget_settings {
     ok( !$@, "st-widget-settings" );
 }
 
+
+=head2 st_cycle_network_select
+
+  On /st/signals loops through the network-select dropdown to trigger javascript events
+
+=cut
+
+sub st_cycle_network_select {
+    my ($self, $numelements) = @_;
+    $self->handle_command('wait_for_element_visible_ok','network-select','30000'); 
+    $self->handle_command('pause',3000);
+    for (my $idx=0; $idx<$numelements;$idx++) {
+        $self->handle_command('pause',3000);
+        $self->handle_command('select_ok','network-select',"index=$idx");    
+    }
+    $self->handle_command('select_ok','network-select','index=0');
+    $self->handle_command('pause',3000);     
+}
+
 =head2 st_widget_title_like ( logical_name, regex )
 
 This performs a regex text match on the title of the widget (outside the iframe) with the 
