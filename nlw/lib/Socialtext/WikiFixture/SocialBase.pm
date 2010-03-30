@@ -9,6 +9,7 @@ use Socialtext::User;
 use Socialtext::SQL qw/:exec :txn/;
 use Socialtext::JSON qw/decode_json encode_json/;
 use Socialtext::File;
+use Socialtext::Group;
 use Socialtext::System qw();
 use Socialtext::HTTP::Ports;
 use Socialtext::PrefsTable;
@@ -16,6 +17,7 @@ use Socialtext::Role;
 use Socialtext::People::Profile;
 use Socialtext::UserSet qw(ACCT_OFFSET);
 use Socialtext::Cache;
+use Socialtext::Workspace;
 use File::LogReader;
 use File::Path qw(rmtree);
 use Test::More;
@@ -668,19 +670,50 @@ sub delete_all_groups {
 
     my $groups = Socialtext::Group->All();
     while (my $g = $groups->next) {
-        $self->delete_group( $g->group_id );
+        $self->delete_group($g);
     }
 }
 
 sub delete_group {
     my $self     = shift;
-    my $group_id = shift || $self->{group_id};
+    my $group_or_id = shift || $self->{group_id};
 
-    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+    my $group = (ref($group_or_id))
+        ? $group_or_id
+        : Socialtext::Group->GetGroup(group_id => $group_or_id);
+
     if ($group) {
+        my $group_id = $group->group_id;
         diag "Recklessly deleting group $group_id";
+
         require Test::Socialtext::Group;
         Test::Socialtext::Group->delete_recklessly($group);
+    }
+}
+
+sub delete_all_workspaces {
+    my $self = shift;
+
+    my $workspaces = Socialtext::Workspace->All();
+    while (my $w = $workspaces->next()) {
+        $self->delete_workspace($w);
+    }
+}
+
+sub delete_workspace {
+    my $self = shift;
+    my $ws_or_id = shift || $self->{workspace_id};
+
+    my $ws = (ref($ws_or_id))
+        ? $ws_or_id
+        : Socialtext::Workspace->new(workspace_id => $ws_or_id);
+
+    if ($ws) {
+        my $ws_id = $ws->workspace_id;
+        diag "Recklessly deleting workspace $ws_id";
+
+        require Test::Socialtext::Workspace;
+        Test::Socialtext::Workspace->delete_recklessly($ws);
     }
 }
 
@@ -1998,23 +2031,23 @@ sub st_setup_a_group {
          $self->handle_command('st-admin','enable-plugin --account %%group_acct%% --plugin groups');
          #$self->handle_command('st-admin','create_group --name %%group_name%% --account %%group_acct%%', 'has been created');
          $self->handle_command('create_group','%%group_name%%','%%group_acct%%');
-         $self->handle_command('st-admin','create_user --account %%group_acct%% --e %%group_user%% --p %%password%%','was created');
-         $self->handle_command('st-admin', 'add-member --e %%group_user%% --g %%group_id%%','is now a member of');
+         $self->handle_command('st-admin','create_user --account %%group_acct%% --email %%group_user%% --password %%password%%','was created');
+         $self->handle_command('st-admin', 'add-member --email %%group_user%% --group %%group_id%%','is now a member of');
      } 
     else {
-         $self->handle_command('st-admin', 'create_user --e %%group_user%% --p %%password%%', 'was created');
+         $self->handle_command('st-admin', 'create_user --email %%group_user%% --password %%password%%', 'was created');
     #    $self->handle_command('st-admin', 'create_group --name %%%group_name%%','has been created');
          $self->handle_command('create_group','%%group_name%%','%%group_acct%%');
-         $self->handle_command('st-admin', 'add-member --e %%group_user%% --g %%group_id%%','is now a member of');
+         $self->handle_command('st-admin', 'add-member --email %%group_user%% --group %%group_id%%','is now a member of');
      }
 
      #Create Workspace if requested
      if (defined($create_ws) && ($create_ws) ) { 
          $self->handle_command('set','group_ws','group-ws-%%start_time%%');
          if (defined($create_and_add_account) && ($create_and_add_account) ) {
-             $self->handle_command('st-admin', 'create_workspace --n %%group_ws%% --t %%group_ws%% --account %%group_acct%%','was created');
+             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --title %%group_ws%% --account %%group_acct%%','was created');
          } else {
-             $self->handle_command('st-admin', 'create_workspace --n %%group_ws%% --t %%group_ws%%','was created');
+             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --title %%group_ws%%','was created');
          }
      }
 

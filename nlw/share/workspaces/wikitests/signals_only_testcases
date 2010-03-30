@@ -13,8 +13,8 @@ To use this testset:
 for example:
 
 .pre
-export SELENIUM_PLAN_SERVER=<http://talc.socialtext.net:22004> (plan server and workspace is from talc:22004)
-sudo su - qa1 (Signals Only dev env is user qa1 dev env, talc:22201)
+sudo su - qa1 (Signals Only dev env is user qa1 dev env, topaz:22201.  It will be wrecked.)
+export SELENIUM_PLAN_SERVER=http://topaz.socialtext.net:22004 (plan server and workspace is from topaz:22004)
 cdcur
 source nlw/dev-bin/sotc
 .pre

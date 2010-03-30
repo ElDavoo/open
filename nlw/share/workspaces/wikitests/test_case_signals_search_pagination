@@ -2,8 +2,6 @@
 
 * Fixture: SocialWidgets
 
-| enable-acct-plugin | signals | %%hostname%% |
-
 | *Comment* | Test Case: Signals Pagination. Two users, lexicographically orderable |  |
 
 | set | a_username | `a-%%start_time%%@ken.socialtext.net` |
@@ -12,14 +10,17 @@
 | set | a_name | Antiphonal Signaller %%start_time%% |
 | set | z_name | Zany Replier %%start_time%% |
 
-| *Comment* | Test Case: Signals Pagination. You don't know the account of %%username%%, so we need a common account between all these users. |  |
-| st-admin | create-account --name ssp |  |
-| st-admin | enable-plugin --account ssp --p signals |  |
-| st-admin | create-workspace --account ssp --n ssp-%%start_time%% --t SSP --empty | was created |
+| *Comment* | Test Case: Signals Pagination. |  |
+| st-admin | create-account --name ssp-%%start_time%% |  |
+| st-admin | enable-plugin --account ssp-%%start_time%% --p signals |  |
+| st-admin | add-member --account ssp-%%start_time%% --u %%username%% | is now a member of the |
 
-| *Comment* | Test Case: Signals Pagination. Use st-admin create-user since they may already exist |  |
-| st-admin | create_user --e %%a_username%% --p %%password%% --account %%hostname%% --f "%%a_name%%" |  |
-| st-admin | create_user --e %%z_username%% --p %%password%% --account %%hostname%% --f "%%z_name%%" |  |
+| st-admin | create-workspace --account ssp-%%start_time%% --n ssp-%%start_time%% --t SSP --empty | was created |
+
+| *Comment* | Test Case: Signals Pagination. Create users |  |
+| st-admin | create_user --e %%a_username%% --p %%password%% --account ssp-%%start_time%% --f "%%a_name%%" |  |
+| st-admin | create_user --e %%z_username%% --p %%password%% --account ssp-%%start_time%% --f "%%z_name%%" |  |
+
 | st-admin | add-member --w ssp-%%start_time%% --e %%a_username%% | now has the role of 'member' in the |
 | st-admin | add-member --w ssp-%%start_time%% --e %%z_username%% | now has the role of 'member' in the |
 | st-admin | add-member --w ssp-%%start_time%% --u %%username%% | now has the role of 'member' in the |
@@ -86,40 +87,41 @@
 | text_like | qr/Pagination %%start_time%% 62.+Pagination %%start_time%% 43/ism |  |
 
 | *Comment* | Test Case: Signals Pagination. Older >> |  |
-| wait_for_element_visible_ok | //span[@class='older nav-link active'] | 30000 |
-| click_ok | //span[@class='older nav-link active'] |  |
-| wait_for_element_visible_ok | //span[@class='newer nav-link active'] | 30000 |
+| wait_for_element_visible_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
+| click_ok | //span[@id='older' and @class='nav-link active'] |  |
+| wait_for_element_visible_ok | //span[@id='newer' and @class='nav-link active'] | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 5 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 42 | 30000 |
 | text_like | qr/Pagination %%start_time%% 42.+Pagination %%start_time%% 5/ism |  |
 
 | *Comment* | Test Case: Signals Pagination. Older >> again |  |
-| click_ok | //span[@class='older nav-link active'] |  |
-| wait_for_element_not_present_ok | //span[@class='older nav-link active'] | 30000 |
-| wait_for_element_visible_ok | //span[@class='newer nav-link active'] | 30000 |
+| click_ok | //span[@id='older'] |  |
+| wait_for_element_not_present_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
+| wait_for_element_visible_ok | //span[@id='newer' and @class='nav-link active'] | 30000 |
+| wait_for_element_visible_ok | //span[@id='older' and @class='nav-link'] | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 1 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 4 | 30000 |
 | text_like | qr/Pagination %%start_time%% 4.+Pagination %%start_time%% 1/ism |  |
 
 | *Comment* | Test Case: Signals Pagination. Newer >> |  |
-| click_ok | //span[@class='newer nav-link active'] |  |
-| wait_for_element_visible_ok | //span[@class='older nav-link active'] | 30000 |
+| click_ok | //span[@id='newer' and @class='nav-link active'] |  |
+| wait_for_element_visible_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 5 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 42 | 30000 |
 | text_like | qr/Pagination %%start_time%% 42.+Pagination %%start_time%% 5/ism |  |
 
 | *Comment* | Test Case: Signals Pagination. Older >> once more |  |
-| click_ok | //span[@class='older nav-link active'] |  |
-| wait_for_element_not_present_ok | //span[@class='older nav-link active'] | 30000 |
-| wait_for_element_visible_ok | //span[@class='newest nav-link active'] | 30000 |
+| click_ok | //span[@id='older' and @class='nav-link active'] |  |
+| wait_for_element_not_present_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
+| wait_for_element_visible_ok | //span[@id='newest' and @class='nav-link active'] | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 1 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 4 | 30000 |
 | text_like | qr/Pagination %%start_time%% 4.+Pagination %%start_time%% 1/ism |  |
 
 | *Comment* | Test Case: Signals Pagination. << Newest |  |
-| click_ok | //span[@class='newest nav-link active'] |  |
-| wait_for_element_not_present_ok | //span[@class='newest nav-link active'] | 30000 |
-| wait_for_element_present_ok | //span[@class='older nav-link active'] | 30000 |
+| click_ok | //span[@id='newest' and @class='nav-link active'] |  |
+| wait_for_element_not_present_ok | //span[@id='newest' and @class='nav-link active'] | 30000 |
+| wait_for_element_present_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 43 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
 | text_like | qr/Pagination %%start_time%% 62.+Pagination %%start_time%% 43/ism |  |
@@ -220,6 +222,7 @@
 
 | *Comment* | Test Case: Signals Pagination TEARDOWN EARLY |
 | st-admin | delete-workspace --w ssp-%%start_time%% --no-export | has been deleted |
+| st-admin | remove-member --account ssp-%%start_time%% --u %%username%% | no longer has the role of |
 
 | *Comment* | Test Case: Signals Pagination. Verify clear |  |
 | wait_for_element_visible_ok | link=clear search results | 30000 |

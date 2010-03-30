@@ -66,20 +66,20 @@
 | wait_for_text_present_ok | ssig-%%start_time%% 21 | 30000 |
 | wait_for_text_present_ok | ssig-%%start_time%% 2 | 30000 |
 | select-frame | relative=parent |  |
-| wait_for_element_visible_ok | //span[@class='older nav-link active'] | 30000 |
-| click_ok | //span[@class='older nav-link active'] |  |
+| wait_for_element_visible_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
+| click_ok | //span[@id='older' and @class='nav-link active'] |  |
 | st-select-widget-frame | signals |  |
 | wait_for_text_present_ok | ssig-%%start_time%% 1 | 30000 |
 | select-frame | relative=parent |  |
-| wait_for_element_visible_ok | //span[@class='newer nav-link active'] | 30000 |
-| click_ok | //span[@class='newer nav-link active'] |  |
+| wait_for_element_visible_ok | //span[@id='newer' and @class='nav-link active'] | 30000 |
+| click_ok | //span[@id='newer' and @class='nav-link active'] |  |
 | st-select-widget-frame | signals |  |
 | wait_for_text_present_ok | ssig-%%start_time%% 2 | 30000 |
 | select-frame | relative=parent |  |
-| wait_for_element_visible_ok | //span[@class='older nav-link active'] | 30000 |
-| click_ok | //span[@class='older nav-link active'] |  |
-| wait_for_element_visible_ok | //span[@class='newest nav-link active'] | 30000 |
-| click_ok | //span[@class='newest nav-link active'] |  |
+| wait_for_element_visible_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
+| click_ok | //span[@id='older' and @class='nav-link active'] |  |
+| wait_for_element_visible_ok | //span[@id='newest' and @class='nav-link active'] | 30000 |
+| click_ok | //span[@id='newest' and @class='nav-link active'] |  |
 | st-select-widget-frame | signals |  |
 | wait_for_text_present_ok | ssig-%%start_time%% 21 | 30000 |
 | select-frame | relative=parent |  |

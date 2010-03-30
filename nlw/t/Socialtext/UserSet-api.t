@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 68;
+use Test::Socialtext tests => 74;
 use Test::Exception;
 use Socialtext::SQL qw/sql_txn/;
 BEGIN {
@@ -117,6 +117,26 @@ Bad_cases: {
                 object => $grp2,
             );
         } "can update grp to a grp";
+    }
+
+    Add_system_created_user_to_anything: {
+        my $user  = create_test_user(is_system_created => 1);
+        my $acct  = create_test_account_bypassing_factory();
+        my $wksp  = create_test_workspace();
+        my $group = create_test_group();
+
+        my $actor = Socialtext::User->SystemUser();
+        my $err   = qr/Cannot give a role to a system-created user/;
+
+        for my $ctr ($acct, $wksp, $group) {
+            throws_ok {
+                $ctr->add_role(actor => $actor, user => $user, role => $member)
+            } $err, "cannot add a system created user";
+
+            throws_ok {
+                $ctr->add_role(actor => $actor, user => $user, role  => $member)
+            } $err, "cannot add a system created user";
+        }
     }
 }
 

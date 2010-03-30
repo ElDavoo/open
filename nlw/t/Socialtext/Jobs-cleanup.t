@@ -1,9 +1,8 @@
-
 #!/usr/bin/perl
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 65;
+use Test::Socialtext tests => 17;
 use Test::Exception;
 use Socialtext::SQL qw/:exec get_dbh/;
 

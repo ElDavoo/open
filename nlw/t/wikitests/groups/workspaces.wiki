@@ -2,8 +2,8 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 
 * Fixture: SocialRest
 
-| standard-test-setup |
-| delete-all-groups   |
+| standard-test-setup   |
+| delete-all-groups     |
 
 ## Create a new group, add it to a couple of workspaces
 | *Comment*              | Setup        |                                        |       |
