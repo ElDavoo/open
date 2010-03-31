@@ -15,17 +15,20 @@ Test cases for `/data/users` GETs.
 | create-group   | %%start_time%%-group2 |                     |
 | set            | group2                | %%group_id%%        |
 
-| set                 | user_a     | asdf-%%start_time%%-a@ken.socialtext.com |           |
-| set                 | user_b     | zxcv-%%start_time%%-b@ken.socialtext.com |           |
-| set                 | user_z     | asdf-%%start_time%%-z@ken.socialtext.com |           |
-| create-user         | %%user_a%% | password                                 | %%acct1%% |
-| add-user-to-group   | %%user_a%% | %%group1%%                               |           |
-| create-user         | %%user_b%% | password                                 | %%acct1%% |
-| add-user-to-account | %%user_b%% | %%acct3%%                                |           |
-| add-user-to-group   | %%user_b%% | %%group1%%                               |           |
-| add-user-to-group   | %%user_b%% | %%group2%%                               |           |
-| create-user         | %%user_z%% | password                                 | %%acct2%% |
-| http-user-pass      | %%user_a%% | password                                 |           |
+| set                 | user_a           | asdf-%%start_time%%-a@ken.socialtext.com |           |       |            |
+| set                 | user_b           | zxcv-%%start_time%%-b@ken.socialtext.com |           |       |            |
+| set                 | user_z           | asdf-%%start_time%%-z@ken.socialtext.com |           |       |            |
+| set                 | user_9_email     | %%start_time%%-999@ken.socialtext.com    |           |       |            |
+| set                 | user_9           | 9999%%start_time%%                       |           |       |            |
+| create-user         | %%user_a%%       | password                                 | %%acct1%% |       |            |
+| add-user-to-group   | %%user_a%%       | %%group1%%                               |           |       |            |
+| create-user         | %%user_b%%       | password                                 | %%acct1%% |       |            |
+| add-user-to-account | %%user_b%%       | %%acct3%%                                |           |       |            |
+| add-user-to-group   | %%user_b%%       | %%group1%%                               |           |       |            |
+| add-user-to-group   | %%user_b%%       | %%group2%%                               |           |       |            |
+| create-user         | %%user_z%%       | password                                 | %%acct2%% |       |            |
+| create-user         | %%user_9_email%% | password                                 | %%acct1%% | niner | %%user_9%% |
+| http-user-pass      | %%user_a%%       | password                                 |           |       |            |
 
 | Comment | `GET /data/users/:username`                                            |
 | Comment | ... Status is 404 if the viewer and :username don't share any accounts |
@@ -76,3 +79,8 @@ Test cases for `/data/users` GETs.
 | body-like      | acct3                                                    |          |
 | body-like      | group1                                                   |          |
 | body-like      | group2                                                   |          |
+
+| Comment   | A username with only digits |
+| GET_json  | /data/users/%%user_9%%      |
+| code-is   | 200                         |
+| body-like | %%user_9_email%%            |
