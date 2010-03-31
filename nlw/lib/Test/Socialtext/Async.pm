@@ -69,6 +69,7 @@ sub empty_port {
     require IO::Socket::INET;
 
     while ( $port++ < 20000 ) {
+        local $@;
         my $sock = IO::Socket::INET->new(
             Listen    => 5,
             LocalAddr => '127.0.0.1',
@@ -76,7 +77,10 @@ sub empty_port {
             Proto     => 'tcp',
             ReuseAddr => 1,
         );
-        return $port if $sock;
+        if ($sock) {
+            return ($port, $sock) if wantarray;
+            return $port;
+        }
     }
     die "empty_port: no free ports?!";
 }
