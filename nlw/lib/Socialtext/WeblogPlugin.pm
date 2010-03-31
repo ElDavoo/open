@@ -281,6 +281,14 @@ sub weblog_display {
     my $weblog_limit = $self->cgi->limit || $self->preferences->weblog_depth->value;
     $self->current_weblog($weblog_id);
 
+    Restrict_max_weblog_limit: {
+        my $p = $self->preferences->weblog_depth;
+        my $largest_depth = $p->choices->[-2];
+        if ($weblog_limit > $largest_depth) {
+            $weblog_limit = $largest_depth;
+        }
+    }
+
     my $weblog_tag_suffix = $self->_get_weblog_tag_suffix();
 
     my @categories = $self->hub->category->all;
