@@ -657,13 +657,3 @@ sub _find_user_for_email_confirmation_hash {
 }
 
 1;
-
-__END__
-Actions:
-    check: login
-    check: logout
-    check: forgot_password
-    check: register
-    resend_confirmation
-    check: confirm_email
-    choose_password
