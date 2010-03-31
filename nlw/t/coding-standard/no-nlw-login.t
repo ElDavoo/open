@@ -48,7 +48,8 @@ we should either be:
 
 a) triggering the Authen challenger at /challenge?<url>
 
-b) using the ??? error template to display an error
+b) using the 'error/display.html' error template to display an error
+   - see "ST::Handler::Authen->_show_error()" for an example
 EOT
     }
 }
