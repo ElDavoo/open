@@ -11,4 +11,4 @@ if (-x $st_widgets) {
 }
 
 print "$st_widgets is not found - skipping migration.\n";
-exit -1;
+exit 1;
