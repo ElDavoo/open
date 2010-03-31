@@ -26,7 +26,10 @@ sub handler {
 
     if (my $action = $rest->query->param('action')) {
         my $res;
-        eval { $res = $self->hub->process };
+        eval { 
+            $self->hub->rest($rest);
+            $res = $self->hub->process 
+        };
         if (my $e = $@) {
             my $redirect_class = 'Socialtext::WebApp::Exception::Redirect';
             if (Exception::Class->caught($redirect_class)) {
