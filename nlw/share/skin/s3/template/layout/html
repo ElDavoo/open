@@ -30,6 +30,12 @@
     <link rel="alternate" type="application/atom+xml" title="[% feed.value.title | html_encode %]" href="[% feed.value.url %]" />
         [% END %]
       [% END %]
+
+      [% IF feeds.json %]
+        [% FOREACH feed IN feeds.json %]
+    <link rel="alternate" type="application/json" title="[% feed.value.title | html_encode %]" href="[% feed.value.url %]" />
+        [% END %]
+      [% END %]
     [% END %]
 
     <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
