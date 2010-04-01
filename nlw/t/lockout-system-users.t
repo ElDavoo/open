@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 23;
+use Test::Socialtext tests => 27;
 use Test::Exception;
 
 fixtures('db');
@@ -79,3 +79,11 @@ group: {
     ok $group->has_user($regular, {direct=>1}),
         '... user was added to group';
 }
+
+sys_admin: {
+    dies_ok { $guest->set_business_admin(1) } 'no bus admin';
+    dies_ok { $guest->set_business_admin(0) } 'no bus admin';
+    dies_ok { $guest->set_technical_admin(1) } 'no tech admin';
+    dies_ok { $guest->set_technical_admin(0) } 'no tech admin';
+}
+

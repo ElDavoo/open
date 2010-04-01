@@ -165,6 +165,12 @@ sub set_primary_account_id {
     return $self;
 }
 
+before 'set_business_admin', 'set_technical_admin' => sub {
+    my $self = shift;
+    die "Cannot give system-admin privileges to a system user!\n"
+        if $self->is_system_created;
+};
+
 sub record_login { shift->_update_field('last_login_datetime=CURRENT_TIMESTAMP') }
 
 sub _update_field {
