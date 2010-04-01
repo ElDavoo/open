@@ -322,10 +322,11 @@ sub signal_vis_sql {
     return qq{ 
         AND ((
                 $evtable.person_id IS NULL
-                AND user_set_id IN (
-                    SELECT user_set_id
-                    FROM signal_user_set sua
+                AND EXISTS (
+                    SELECT 1
+                     FROM signal_user_set sua
                     WHERE sua.signal_id = $evtable.signal_id
+                      AND sua.user_set_id = $path_table.user_set_id
                 )
             )
             OR ( $dm_sql )
