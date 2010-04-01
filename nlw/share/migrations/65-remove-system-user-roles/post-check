@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Socialtext::SQL qw(sql_singlevalue);
-#use Socialtext::Jobs;
+use Socialtext::Jobs;
 use Socialtext::Page;
 
 my $paths = sql_singlevalue(q{

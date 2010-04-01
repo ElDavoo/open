@@ -5,8 +5,8 @@ use strict;
 use warnings;
 use Socialtext::SQL qw/:exec :txn/;
 use Socialtext::UserSet ();
+use Socialtext::JobCreator;
 
-my $dbh = get_dbh();
 sql_begin_work();
 
 my $set = Socialtext::UserSet->new;
@@ -17,7 +17,10 @@ my $all_sys_users_sth = sql_execute('
     ');
 while ( my ($user_id) = $all_sys_users_sth->fetchrow_array ) {
     # removes all roles belonging to a this user
-    $set->remove_set($user_id);
+    eval {
+        $set->remove_set($user_id);
+    };
+    die $@ if $@ && $@ !~ /^node $user_id doesn't exist\b/;
 
     # schedules jobs to re-index System Users (so they get removed; see below)
     Socialtext::JobCreator->index_person($user_id);
@@ -27,7 +30,7 @@ while ( my ($user_id) = $all_sys_users_sth->fetchrow_array ) {
 print "Removing admin privileges for system-created users...\n";
 sql_execute(q{
     UPDATE "UserMetadata"
-       SET is_business_admin = f, is_technical_admin = f
+       SET is_business_admin = false, is_technical_admin = false
      WHERE is_system_created
 });
 
