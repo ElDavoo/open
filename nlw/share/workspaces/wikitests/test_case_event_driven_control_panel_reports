@@ -71,7 +71,7 @@
 | st-logoutin | %%reports_user%% | %%password%% |
 
 | open_ok | /%%ed_ws%%/ |  |
-| open_ok | /%%wd_ws%%/?hello_page |  |
+| open_ok | /%%ed_ws%%/?hello_page |  |
 | open_ok | /st/dashboard/ |  |
 
 | *Comment* | Test Case: Even-Driven Control Panel Reports Second User Personalize my dashboard |  |
