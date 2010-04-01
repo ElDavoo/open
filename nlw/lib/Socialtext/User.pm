@@ -1611,7 +1611,7 @@ sub primary_account {
             || Socialtext::Account->Unknown;
     }
 
-    die "cannot re-assign an account for a system-user"
+    die "Cannot change the account of a system-user.\n"
         if $self->is_system_created;
 
     my $new_account = shift;
