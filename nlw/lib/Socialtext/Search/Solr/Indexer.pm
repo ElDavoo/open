@@ -386,7 +386,9 @@ sub render_signal_body {
 
 sub index_person {
     my ( $self, $user ) = @_;
-    if ($user->is_deleted or $user->is_profile_hidden) {
+    if (   $user->is_deleted
+        or $user->is_profile_hidden
+        or $user->is_system_created) {
         return $self->delete_person($user->user_id);
     }
     $self->_add_person_doc($user);
