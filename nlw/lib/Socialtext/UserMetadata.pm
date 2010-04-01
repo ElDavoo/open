@@ -126,7 +126,8 @@ sub create {
     # has one already).
     my $acct = Socialtext::Account->new(
         account_id => $self->primary_account_id);
-    unless ($acct->has_user($self, direct => 1)) {
+    my $is_system_user = $p{is_system_created} ne 'f';
+    unless ($is_system_user or $acct->has_user($self, direct => 1)) {
         $acct->add_user(
             user  => $self,
             actor => $self->creator,
