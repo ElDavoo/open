@@ -64,7 +64,7 @@ Tests for [Story: Groups ReST API]
 | st-admin       | create-user --e %%bobemail%% --p password --first %%bobfirst%% --last %%boblast%%  |
 | http-user-pass | %%jane%%     | password                                     |
 
-| st-admin | 
+| st-admin |
 | GET                | /data/groups  |         |
 | code-is            | 200           |         |
 | header-like        | Cache-Control | private |
