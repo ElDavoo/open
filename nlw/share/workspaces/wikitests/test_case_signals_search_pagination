@@ -10,20 +10,16 @@
 | set | a_name | Antiphonal Signaller %%start_time%% |
 | set | z_name | Zany Replier %%start_time%% |
 
-| *Comment* | Test Case: Signals Pagination. |  |
-| st-admin | create-account --name ssp-%%start_time%% |  |
-| st-admin | enable-plugin --account ssp-%%start_time%% --p signals |  |
-| st-admin | add-member --account ssp-%%start_time%% --u %%username%% | is now a member of the |
+| set | sspacct | ssp-%%start_time%% |
 
-| st-admin | create-workspace --account ssp-%%start_time%% --n ssp-%%start_time%% --t SSP --empty | was created |
+| *Comment* | Test Case: Signals Pagination. |  |
+| st-admin | create-account --name %%sspacct%% |  |
+| st-admin | enable-plugin --account %%sspacct%% --p signals |  |
+| st-admin | add-member --account %%sspacct%% --u %%username%% | is now a member of the |
 
 | *Comment* | Test Case: Signals Pagination. Create users |  |
-| st-admin | create_user --e %%a_username%% --p %%password%% --account ssp-%%start_time%% --f "%%a_name%%" |  |
-| st-admin | create_user --e %%z_username%% --p %%password%% --account ssp-%%start_time%% --f "%%z_name%%" |  |
-
-| st-admin | add-member --w ssp-%%start_time%% --e %%a_username%% | now has the role of 'member' in the |
-| st-admin | add-member --w ssp-%%start_time%% --e %%z_username%% | now has the role of 'member' in the |
-| st-admin | add-member --w ssp-%%start_time%% --u %%username%% | now has the role of 'member' in the |
+| st-admin | create_user --e %%a_username%% --p %%password%% --account %%sspacct%% --f "%%a_name%%" |  |
+| st-admin | create_user --e %%z_username%% --p %%password%% --account %%sspacct%% --f "%%z_name%%" |  |
 
 | *Comment* | This test uses post-signals to rapidly create signals. |  |
 | *Comment* | It creates a set of signals that can be searched and will appear |  |
@@ -219,10 +215,6 @@
 | st-select-widget-frame | searchwidget |  |
 | wait_for_text_present_ok | Pagination %%start_time%% 5 | 30000 |
 | wait_for_element_not_present_ok | //a[@class='hideLink'] | 5000 |
-
-| *Comment* | Test Case: Signals Pagination TEARDOWN EARLY |
-| st-admin | delete-workspace --w ssp-%%start_time%% --no-export | has been deleted |
-| st-admin | remove-member --account ssp-%%start_time%% --u %%username%% | no longer has the role of |
 
 | *Comment* | Test Case: Signals Pagination. Verify clear |  |
 | wait_for_element_visible_ok | link=clear search results | 30000 |
