@@ -74,6 +74,6 @@
 | json-array-size | 0                                   |          |
 
 ## Cannot trash last Admin
-| *Comment* | Cannot trash last Admin            |                               |
-| POST-json | /data/workspaces/%%arabica%%/trash | [{"user_id":"%%canephora%%"}] |
-| code-is   | 409                                |                               |
+| *Comment* | Cannot trash last Admin            |                                |
+| POST-json | /data/workspaces/%%arabica%%/trash | [{"username":"%%canephora%%"}] |
+| code-is   | 409                                |                                |
