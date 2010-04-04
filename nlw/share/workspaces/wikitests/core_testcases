@@ -88,6 +88,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: User Settings no mojibake]
 * [Test Case: Weblog naming with Latin-1 character]
 * [Test Case: Signal From Profile]
+* [Test Case: Profile Activity Widget]
 
 * [Edit Contention Testcases]
 * [Mobile Testcases]

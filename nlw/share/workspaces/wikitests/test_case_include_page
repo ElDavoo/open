@@ -269,4 +269,3 @@ Include a page from a different workspace. This test assumes the existence of he
 | st-admin | delete-workspace --w %%tcipw%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Include Page COMPLETED |  |
-
