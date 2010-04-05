@@ -409,6 +409,12 @@ sub _import_users {
 
     my @users;
     for my $info (@$users) {
+        # Do not import the is_system_created flag
+        if (delete $info->{is_system_created}) {
+            warn "$info->{username} was system created. "
+                . "Importing as regular user.\n";
+        }
+
         delete $info->{primary_account_id};
         my $plugin_prefs = delete($info->{plugin_prefs}) || {};
         my $indirect     = delete($info->{indirect})     || 0;
