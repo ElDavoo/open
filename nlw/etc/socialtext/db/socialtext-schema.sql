@@ -912,6 +912,13 @@ CREATE TABLE note (
     value bytea
 );
 
+CREATE TABLE opensocial_appdata (
+    app_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    field text NOT NULL,
+    value text
+);
+
 CREATE TABLE page (
     workspace_id bigint NOT NULL,
     page_id text NOT NULL,
@@ -2052,6 +2059,16 @@ ALTER TABLE ONLY signal
             FOREIGN KEY (in_reply_to_id)
             REFERENCES signal(signal_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY opensocial_appdata
+    ADD CONSTRAINT opensocial_app_data_app_id
+            FOREIGN KEY (app_id)
+            REFERENCES gadget_instance(gadget_instance_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY opensocial_appdata
+    ADD CONSTRAINT opensocial_app_data_user_id
+            FOREIGN KEY (user_id)
+            REFERENCES users(user_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_creator_id_fk
             FOREIGN KEY (creator_id)
@@ -2263,4 +2280,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '112');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '113');
