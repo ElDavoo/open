@@ -456,3 +456,6 @@ t/Socialtext/Signal/length.t
 t/wikitests/signals/data_signals_length.wiki
 lib/Socialtext/WikiFixture/Reports.pm
 t/wikitests/widgets/proxy-headers.wiki
+lib/Socialtext/Rest/OpenSocial.pm
+lib/Socialtext/OpenSocial/AppData.pm
+t/wikitests/widgets/opensocial.wiki
