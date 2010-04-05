@@ -88,7 +88,7 @@ sub challenge {
 sub _get_login_page {
     my ($class, $url) = @_;
     my $login_page = '/nlw/login.html';
-    if ($url =~ m#^/m(?:/|$)#) {
+    if ($url =~ m#^/(m|lite)(?:/|$)#) {
         $login_page = '/m/login';
     }
     return $login_page;
