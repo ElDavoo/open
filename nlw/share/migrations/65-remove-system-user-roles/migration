@@ -34,6 +34,13 @@ sql_execute(q{
      WHERE is_system_created
 });
 
+# disable the system-user password
+sql_execute(q{
+    UPDATE users
+       SET password = '*none*'
+     WHERE driver_username = 'system-user' AND driver_key = 'Default'
+});
+
 print "Done\n";
 sql_commit();
 exit 0;
