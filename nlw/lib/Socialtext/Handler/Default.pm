@@ -64,10 +64,6 @@ sub handler {
 sub redirect_to_login {
     my $self = shift;
     my $uri = uri_escape($ENV{REQUEST_URI} || '');
-
-    if (Socialtext::BrowserDetect::is_mobile()) {
-        return $self->redirect('/lite/login');
-    }
     return $self->redirect("/challenge?$uri");
 }
 
