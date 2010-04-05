@@ -3,32 +3,32 @@ Tests for [Story: Groups ReST API]
 * Fixture: SocialRest
 
 | standard-test-setup |
-| delete-all-groups |
+| delete-all-groups   |
 
 # Should be no groups to start
 
-| GET | /data/groups |
-| code-is | 200 |
-| header-like | Cache-Control | private |
-| json-parse | |
-| json-array-size | 0 |
+| GET             | /data/groups  |         |
+| code-is         | 200           |         |
+| header-like     | Cache-Control | private |
+| json-parse      |               |         |
+| json-array-size | 0             |         |
 
 # Create a new group, make sure it shows up
 
-| set | group_name | group%%start_time%% |
-| create-group | %%group_name%% | %%account%% | %%username%% |
+| set          | group_name     | group%%start_time%% |              |
+| create-group | %%group_name%% | %%account%%         | %%username%% |
 
 ## visible by Group Creator (Creator sees Groups he created or is a member of)
 
-| GET | /data/groups |
-| code-is | 200 |
-| header-like | Cache-Control | private |
-| json-parse | |
-| json-array-size | 1 |
-| Body-like | "group_id":"%%group_id%%" |
-| Body-like | "name":"%%group_name%%" |
-| body-like | "user_count":"1" |
-| body-like | "workspace_count":"0" |
+| GET             | /data/groups         |                |
+| code-is         | 200                  |                |
+| header-like     | Cache-Control        | private        |
+| json-parse      |                      |                |
+| json-array-size | 1                    |                |
+| json-path-is    | $[0].group_id        | %%group_id%%   |
+| json-path-is    | $[0].name            | %%group_name%% |
+| json-path-is    | $[0].user_count      | 1              |
+| json-path-is    | $[0].workspace_count | 0              |
 
 # Group Visibility Rules
 
@@ -44,7 +44,7 @@ Tests for [Story: Groups ReST API]
 | header-like        | Cache-Control      | private |
 | json-parse         |                    |         |
 | json-array-size    | 1                  |         |
-| body-like          | "user_count":"1"   |         |
+| json-path-is       | $[0].user_count    | 1       |
 
 | set-business-admin | %%badmin%%         | 0       |
 | GET                | /data/groups?all=1 |         |
@@ -64,22 +64,22 @@ Tests for [Story: Groups ReST API]
 | st-admin       | create-user --e %%bobemail%% --p password --first %%bobfirst%% --last %%boblast%%  |
 | http-user-pass | %%jane%%     | password                                     |
 
-| st-admin | 
+| st-admin |
 | GET                | /data/groups  |         |
 | code-is            | 200           |         |
 | header-like        | Cache-Control | private |
 | json-parse         |               |         |
 | json-array-size    | 0             |         |
 
-| add-user-to-group | %%jane%%                  | %%group_id%% |
-| add-user-to-group | %%bobemail%%              | %%group_id%% |
-| GET               | /data/groups              |              |
-| code-is           | 200                       |              |
-| header-like       | Cache-Control             | private      |
-| json-parse        |                           |              |
-| json-array-size   | 1                         |              |
-| Body-like         | "group_id":"%%group_id%%" |              |
-| body-like         | "user_count":"3"          |              |
+| add-user-to-group | %%jane%%        | %%group_id%% |
+| add-user-to-group | %%bobemail%%    | %%group_id%% |
+| GET               | /data/groups    |              |
+| code-is           | 200             |              |
+| header-like       | Cache-Control   | private      |
+| json-parse        |                 |              |
+| json-array-size   | 1               |              |
+| json-path-is      | $[0].group_id   | %%group_id%% |
+| json-path-is      | $[0].user_count | 3            |
 
 | GET             | /data/groups?show_members=1                                        |         |
 | code-is         | 200                                                                |         |

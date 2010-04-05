@@ -461,3 +461,6 @@ lib/Socialtext/Gadgets/Container/Signals/Signal.pm
 lib/Socialtext/Handler/Container/Signals/Signal.pm
 t/wikitests/signals/data_signals_permalink.wiki
 t/wikitests/signals/st_signals.wiki
+lib/Socialtext/Rest/OpenSocial.pm
+lib/Socialtext/OpenSocial/AppData.pm
+t/wikitests/widgets/opensocial.wiki

@@ -50,9 +50,9 @@ Visit in IE 6 and IE 7 and Safari
 
 | *Comment* | STARTING SlideShow |  |
 
-| *Comment* | Watch page Advanced Getting Around |  |
+| *Comment* | Watch page Announcements and Links |  |
 
-| open_ok | /%%wiki%%/?Advanced Getting Around |  |
+| open_ok | /%%wiki%%/?Announcements and Links |  |
 | *Comment* | SEE Watch, then Watch |  |
 | st-watch-page | 1 |  |
 | st-is-watched | 1 |  |
@@ -61,11 +61,11 @@ Visit in IE 6 and IE 7 and Safari
 | pause | %%pt%% |  |
 
 | clickAndWait | link=My Watchlist |
-| *Comment* | SEE Advanced Getting Around on Watchlist |
+| *Comment* | SEE Announcements and Links on Watchlist |
 | pause | %%pt%% |
 
-| st-watch-page | 0 | Advanced Getting Around |
-| st-is-watched | 0 | Advanced Getting Around |
+| st-watch-page | 0 | Announcements and Links |
+| st-is-watched | 0 | Announcements and Links |
 | *Comment* | SEE Stopped Watching from Watchlist |  |
 | pause | %%pt%% |  |
 
@@ -183,7 +183,7 @@ Post by Email popup
 
 * Rich/Wiki/Edit Tips/Preview/Edit More/Cancel
 
-| open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |
+| open_ok | /%%wiki%%/index.cgi?Announcements and Links |  |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -204,7 +204,7 @@ Post by Email popup
 #| verifyConfirmation | If you click 'OK', all edit changes will be lost! | |
 
 | *Comment* | Test Edit Summaries Feature |  |
-| open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |
+| open_ok | /%%wiki%%/index.cgi?Announcements and Links |  |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -239,7 +239,7 @@ Post by Email popup
 
 | *Comment* | adding user to admin wiki (ok on appliance, too) to show Copy Page to Workspace |  |
 | st-admin | add-member --w admin --e %%email%% |  |
-| open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |
+| open_ok | /%%wiki%%/index.cgi?Announcements and Links |  |
 
 | click_ok | link=Duplicate Page |  |
 | *Comment* | SEE Duplicate Page |  |
@@ -263,7 +263,7 @@ Post by Email popup
 
 | *Comment* | moved HTML/PDF/RTF to SlideShow Plus to use high perms |  |
 
-| open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |
+| open_ok | /%%wiki%%/index.cgi?Announcements and Links |  |
 | wait_for_element_visible_ok | st-pagetools-print | 30000 |
 | click_ok | st-pagetools-print |  |
 | *Comment* | SlideShow CANCEL Print popup |  |
@@ -310,7 +310,7 @@ Post by Email popup
 
 * page tag view
 
-| open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |
+| open_ok | /%%wiki%%/index.cgi?Announcements and Links |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
 | click_ok | st-tags-addlink |  |
 | *Comment* | SEE add tag box open |  |
@@ -329,7 +329,7 @@ Post by Email popup
 
 * page revisions view
 
-| open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |
+| open_ok | /%%wiki%%/index.cgi?Announcements and Links |  |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -546,7 +546,7 @@ Lightbox screens:
 
 * unplugged popup for page
 
-| open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |
+| open_ok | /%%wiki%%/index.cgi?Announcements and Links |  |
 | click_ok | //img[contains(@src,'plug.png')] |  |
 | *Comment* | SlideShow CANCEL PAGE UNPLUGGED POPUP |  |
 | pause | %%popup%% |  |
@@ -634,7 +634,7 @@ Lightbox screens:
 | include | [GroupsHomeShow] |  |
 
 | *Comment* | moved Simple mode to end because Safari raises an alert |  |
-| open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |
+| open_ok | /%%wiki%%/index.cgi?Announcements and Links |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |

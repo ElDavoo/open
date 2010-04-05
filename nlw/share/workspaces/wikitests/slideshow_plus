@@ -27,7 +27,7 @@ Visit in Firefox:
 
 * a page RSS feed
 
-| open_ok | /%%wiki%%/index.cgi?Advanced Getting Around |  |
+| open_ok | /%%wiki%%/index.cgi?Announcements and Links |  |
 
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | wait_for_element_visible_ok | //img[contains(@src,'rss.png')] | 30000 |

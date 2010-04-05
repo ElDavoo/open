@@ -2,13 +2,17 @@
 
 This testset tests the Signals Only configuration: dashboard disabled, signals enabled, no wikis other than Help wikis.
 
-It will delete all the standard wikis from a dev env and devnull1 member from help-en and help-adminguide
+In a dev env, it will delete all the standard wikis from a dev env and devnull1 member from help-en and help-adminguide.
+In a VE, it will turn it into a microblogging appliance by executing `st-appliance-config set signals_only 1`
+
 Since it will delete all wikis, the plan server and plan workspace must be in a different running environment.
 
 To use this testset:
 
 `export SELENIUM_PLAN_SERVER=http://$PLAN_SERVER:$PLAN_PORT`
-`cdcur; source nlw/dev-bin/sotc`
+
+dev env: `cdcur; source nlw/dev-bin/sotc`
+appliance: `cd; source /usr/share/stconfig/stbin/qa/appliance/asotc`
 
 for example:
 
@@ -33,3 +37,7 @@ NOTE: each of these test must manage its own plugin enables/disables, logins and
 * [Test Case: Follow]
 * [Test case: Signals Login Logout]
 * [Test Case: Invite people to your network]
+
+The True Microblogging TC will only succeed on an actual microblogging VE
+
+* [Test Case: True Microblogging]
