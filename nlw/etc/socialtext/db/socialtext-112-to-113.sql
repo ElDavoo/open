@@ -20,6 +20,12 @@ ALTER TABLE ONLY opensocial_appdata
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
+CREATE UNIQUE INDEX idx_opensocial_appdata_app_user_field
+	    ON opensocial_appdata (app_id, user_id, field);
+
+CREATE INDEX idx_opensocial_appdata_app_user
+	    ON opensocial_appdata (app_id, user_id);
+
 UPDATE "System"
    SET value = '113'
  WHERE field = 'socialtext-schema-version';
