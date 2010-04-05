@@ -581,10 +581,25 @@ sub _redirect {
 
 sub _challenge {
     my $self = shift;
-    return Socialtext::Challenger->Challenge(
-        request  => $self->r,
-        redirect => $self->{args}{redirect_to},
+
+    eval {
+        Socialtext::Challenger->Challenge(
+            request  => $self->r,
+            redirect => $self->{args}{redirect_to},
+        );
+    };
+    if (my $e = $@) {
+        if (Exception::Class->caught('Socialtext::WebApp::Exception::Redirect')) {
+            my $location = $e->message;
+            return $self->redirect($location);
+        }
+        st_log->error($e);
+    }
+
+    $self->session->add_error(
+        loc("Challenger Did not Redirect.")
     );
+    return $self->redirect('/nlw/error.html');
 }
 
 sub _load_main {
