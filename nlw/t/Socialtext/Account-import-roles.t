@@ -3,9 +3,11 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 130;
+use Test::Socialtext tests => 143;
 use Test::Differences;
+use Test::Output qw/stderr_is/;
 use Socialtext::CLI;
+use Socialtext::SQL qw/:exec/;
 use Test::Socialtext::User;
 use Test::Socialtext::Group;
 use Test::Socialtext::Workspace;
@@ -38,6 +40,7 @@ sub export_and_reimport_account {
 
     my $export_base = tempdir(CLEANUP => 1);
     my $export_dir  = File::Spec->catdir($export_base, 'account');
+    Socialtext::Cache->clear();
 
     # Build up the list of Roles that exist *before* the export/import
     my @gars = map { _dump_gars($_) } $acct;
@@ -485,6 +488,29 @@ account_import_preserves_direct_and_indirect_uars: {
         groups     => [$group_one, $group_two],
         users      => [$user],
     );
+}
+
+account_import_system_user_roles: {
+    pass 'TEST: Preserves UARs; Users Primary Account';
+    my $account = create_test_account_bypassing_factory();
+    my $acct_name = $account->name;
+    my $user    = create_test_user(account => $account);
+    my $username = $user->username;
+
+    sql_execute(q{UPDATE "UserMetadata" SET is_system_created = true WHERE user_id = ?}, $user->user_id);
+
+    # Export and re-import the Account; UAR should be preserved
+    stderr_is {
+        export_and_reimport_account(
+            account => $account,
+            users   => [$user],
+        );
+    } "$username was system created. Importing as regular user.\n";
+
+    $account = Socialtext::Account->new(name => $acct_name);
+    $user = Socialtext::User->new(username => $username);
+    is $account->user_count(direct => 1), 1, "still got imported";
+    ok !$user->is_system_created, "but is not a system user";
 }
 
 

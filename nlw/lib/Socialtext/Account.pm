@@ -463,6 +463,11 @@ sub import_file {
     
     my @profiles;
     for my $user_hash (@{ $hash->{users} }) {
+        # Do not import the is_system_created flag
+        if (delete $user_hash->{is_system_created}) {
+            warn "$user_hash->{username} was system created. Importing as regular user.\n";
+        }
+
         my $user = Socialtext::User->new( username => $user_hash->{username} );
         $user ||= Socialtext::User->Create_user_from_hash( $user_hash );
 
@@ -1368,6 +1373,7 @@ Return the logo for an account.
 Export the account data to a file in the specified directory.
 
 =item $account->import_file(file => $file, [ name => $name ])
+
 =item $account->finish_import();
 
 Imports an account from data in the specified file.  If a name
