@@ -7,6 +7,7 @@ use Socialtext;
 use Socialtext::HTTP ':codes';
 use Socialtext::TT2::Renderer;
 use Socialtext::AppConfig;
+use Socialtext::Challenger;
 use Class::Field qw(const field);
 use Socialtext::URI;
 use Socialtext::AppConfig;
@@ -288,6 +289,11 @@ sub cgi_vars {
 sub full_uri {
     my $self = shift;
     return $self->hub->cgi->full_uri_with_query;
+}
+
+sub challenge {
+    my $self = shift;
+    Socialtext::Challenger->Challenge(@_);
 }
 
 sub redirect_to_login {
