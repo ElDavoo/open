@@ -579,10 +579,10 @@ sub _redirect {
 
 sub _challenge {
     my $self = shift;
-    my $redirect_to   = $self->{args}{redirect_to};
-    my $challenge_uri = '/challenge';
-    $challenge_uri .= '?' . uri_escape_utf8($redirect_to) if ($redirect_to);
-    return $self->_redirect($challenge_uri);
+    return Socialtext::Challenger->Challenge(
+        request  => $self->r,
+        redirect => $self->{args}{redirect_to},
+    );
 }
 
 sub _load_main {

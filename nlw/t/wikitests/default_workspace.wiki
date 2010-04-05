@@ -26,7 +26,7 @@
 | header-is          | Location                                                                                   | /%%workspace%%  |
 | get                | /%%workspace%%/index.cgi?%%workspace%%                                                     |                 |
 | code-is            | 302                                                                                        |                 |
-| header-like        | Location                                                                                   | /challenge      |
+| header-like        | Location                                                                                   | /nlw/login.html |
 | http-user-pass     | %%username%%                                                                               | password        |
 | get                | /%%workspace%%/index.cgi?%%workspace%%                                                     |                 |
 | code-is            | 200                                                                                        |                 |
@@ -51,7 +51,7 @@
 | header-is          | Location                                                                                   | /%%workspace%%  |
 | get                | /%%workspace%%/index.cgi?%%workspace%%                                                     |                 |
 | code-is            | 302                                                                                        |                 |
-| header-like        | Location                                                                                   | /challenge      |
+| header-like        | Location                                                                                   | /nlw/login.html |
 | http-user-pass     | %%username%%                                                                               | password        |
 | get                | /%%workspace%%/index.cgi?%%workspace%%                                                     |                 |
 | code-is            | 200                                                                                        |                 |
