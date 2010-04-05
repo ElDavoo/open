@@ -3,6 +3,7 @@ package Socialtext::Challenger::STLogin;
 
 use strict;
 use warnings;
+use Socialtext::BrowserDetect;
 use Socialtext::Log qw(st_log);
 
 =head1 NAME
@@ -69,7 +70,8 @@ sub challenge {
     # stick some information in the session
     # and then establishes a redirect header
     # and throws up
-    my $login_page = $class->_get_login_page($redirect);
+    my $login_page
+        = $class->_is_mobile($redirect) ? '/m/login' : '/nlw/login.html';
     $app->_handle_error(
         error => {
             type => $type,
@@ -85,13 +87,19 @@ sub challenge {
     );
 }
 
-sub _get_login_page {
-    my ($class, $url) = @_;
-    my $login_page = '/nlw/login.html';
-    if ($url =~ m#^/(m|lite)(?:/|$)#) {
-        $login_page = '/m/login';
-    }
-    return $login_page;
+sub _is_mobile_browser {
+    return Socialtext::BrowserDetect::is_mobile() ? 1 : 0;
+}
+
+sub _is_mobile_redirect {
+    my $self = shift;
+    my $url  = shift;
+    return ($url =~ m{^(?:https?://[^/]+)?/(?:lite|m)/}) ? 1 : 0;
+}
+
+sub _is_mobile {
+    my $self = shift;
+    return $self->_is_mobile_browser(@_) || $self->_is_mobile_redirect(@_);
 }
 
 1;
