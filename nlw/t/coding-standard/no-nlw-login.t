@@ -21,6 +21,7 @@ my %skip_files =
         share/skin/js-test/s3/t/bz-1379.t.js
         share/skin/js-test/s3/t/bz-1500.t.js
         share/workspaces/wikitests/test_case_login_logout
+        build/templates/apache-perl/nlw.tt2
     );
 
 SKIP: {
