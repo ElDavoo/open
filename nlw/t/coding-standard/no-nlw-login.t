@@ -48,8 +48,11 @@ we should either be:
 
 a) triggering the Authen challenger at /challenge?<url>
 
-b) using the 'error/display.html' error template to display an error
+b) using the 'authen/error.html' error template to display an error
    - see "ST::Handler::Authen->_show_error()" for an example
+
+   you could also set the error message into the session and then redirect
+   to "/nlw/error.html" to have the message displayed.
 EOT
     }
 }
