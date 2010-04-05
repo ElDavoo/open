@@ -1493,6 +1493,12 @@ CREATE UNIQUE INDEX groups_driver_unique_id
 CREATE UNIQUE INDEX groups_user_set_id
 	    ON groups (user_set_id);
 
+CREATE INDEX idx_opensocial_appdata_app_user
+	    ON opensocial_appdata (app_id, user_id);
+
+CREATE UNIQUE INDEX idx_opensocial_appdata_app_user_field
+	    ON opensocial_appdata (app_id, user_id, field);
+
 CREATE UNIQUE INDEX idx_user_set_include_pkey_and_role
 	    ON user_set_include (from_set_id, into_set_id, role_id);
 
