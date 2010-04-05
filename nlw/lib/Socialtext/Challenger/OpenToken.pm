@@ -31,24 +31,19 @@ sub challenge {
     unless ($config) {
         return $app->_handle_error(
             error => 'OpenToken configuration missing/invalid.',
-            path  => '/nlw/login.html',
+            path  => '/nlw/error.html',
         );
     }
 
     # if we have a Hub *AND* a User, we're Authentiated but not Authorized;
     # show the User a page letting them know that they don't have permission.
     if ($hub and not $hub->current_user->is_guest) {
-        # XXX: we -DON'T- want to use "/nlw/login.html" here, but don't have
-        # any other choice at the moment.  Ideally, we want some sort of error
-        # page that shows a "you're not authorized" error but that -DOESN'T-
-        # include a login box on the page (as we're not responsible for the
-        # logins).
         st_log->debug( 'ST::Challenger::OpenToken: unauthorized access, showing error page to user' );
         return $app->_handle_error(
             error => {
                 type => 'unauthorized_workspace',
             },
-            path    => '/nlw/login.html',
+            path    => '/nlw/error.html',
         );
     }
 
@@ -128,12 +123,11 @@ sub challenge {
     # If we don't have a User record, it wasn't provisioned; can't login as
     # the User, so fail.
     unless ($user) {
-        st_log->warning("ST::Challenger::OpenToken: have valid token, but for unknown user '$username'");
+        my $err = loc("Have valid token, but for unknown user '[_1]'.", $username);
+        st_log->warning("ST::Challenger::OpenToken: $err");
+        $app->session->add_error($err);
         return $app->_handle_error(
-            error => {
-                type => 'not_logged_in',
-            },
-            path    => '/nlw/login.html',
+            path => '/nlw/error.html',
         );
     }
 
