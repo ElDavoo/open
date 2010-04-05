@@ -272,7 +272,6 @@ sub forgot_password {
     my $self = shift;
     my $r = $self->r;
 
-    my $login_uri = $self->{args}{lite} ? '/lite/login' : '/nlw/login.html';
     my $forgot_password_uri = $self->{args}{lite} ? '/lite/forgot_password' : '/nlw/forgot_password.html';
 
     my $username = $self->{args}{username} || '';
@@ -300,8 +299,7 @@ sub forgot_password {
     );
 
     $self->session->save_args( username => $user->username() );
-
-    $self->_redirect($login_uri);
+    $self->_challenge();
 }
 
 sub register {
