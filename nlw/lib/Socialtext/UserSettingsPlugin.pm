@@ -40,10 +40,8 @@ sub settings {
 
 sub users_settings {
     my $self = shift;
-    if ( $self->hub()->current_user()->is_guest() ) {
-        Socialtext::Challenger->Challenge(
-            type => 'settings_requires_account' );
-    }
+
+    $self->reject_guest(type => 'settings_requires_account');
 
     $self->_update_current_user()
         if $self->cgi->Button;
@@ -119,10 +117,8 @@ sub get_admins {
 
 sub users_listall {
     my $self = shift;
-    if ( $self->hub()->current_user()->is_guest() ) {
-        Socialtext::Challenger->Challenge(
-            type => 'settings_requires_account' );
-    }
+
+    $self->reject_guest(type => 'settings_requires_account');
 
     $self->_update_users_in_workspace()
         if $self->cgi->Button;

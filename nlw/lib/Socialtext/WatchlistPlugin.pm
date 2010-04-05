@@ -107,7 +107,9 @@ sub pages_in_watchlist {
 
 sub add_to_watchlist {
     my $self = shift;
-    $self->_reject_guest;
+
+    $self->reject_guest(type => 'watchlist_requires_account');
+
     my $watchlist = Socialtext::Watchlist->new(
         user      => $self->hub->current_user,
         workspace => $self->hub->current_workspace
@@ -128,7 +130,9 @@ sub add_to_watchlist {
 
 sub remove_from_watchlist {
     my $self = shift;
-    $self->_reject_guest;
+
+    $self->reject_guest(type => 'watchlist_requires_account');
+
     my $watchlist = Socialtext::Watchlist->new(
         user      => $self->hub->current_user,
         workspace => $self->hub->current_workspace
@@ -165,14 +169,6 @@ sub _record_watch_delete {
     });
 }
 
-sub _reject_guest {
-    my $self = shift;
-    if ( $self->hub()->current_user()->is_guest() ) {
-        Socialtext::Challenger->Challenge(
-            type => 'watchlist_requires_account' );
-    }
-}
-
 sub watchlist {
     my $self = shift;
     $self->display_watchlist();
@@ -180,7 +176,9 @@ sub watchlist {
 
 sub display_watchlist {
     my $self = shift;
-    $self->_reject_guest();
+
+    $self->reject_guest(type => 'watchlist_requires_account');
+
     my $watchlist = Socialtext::Watchlist->new(
         user      => $self->hub->current_user,
         workspace => $self->hub->current_workspace
