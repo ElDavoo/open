@@ -47,7 +47,7 @@ Test cases for `/data/users` GETs.
 | body-unlike | group2                                                                   |
 
 | Comment            | `GET /data/users/:username?all=1`                     |   |
-| Comment            | ... Status is 403 if the user is not a business admin |   |
+| Comment            | ... Status is 404 if the user is not a business admin |   |
 | GET_json           | /data/users/%%user_b%%?all=1                          |   |
 | code-is            | 404                                                   |   |
 | Comment            | ... Status is 200 if the user is a business admin     |   |
