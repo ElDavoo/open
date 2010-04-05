@@ -159,10 +159,6 @@ sub login {
     my ($self) = @_;
     my $r = $self->r;
 
-    # depending on whether this is the "real" or "lite" version of the login,
-    # we'll want to redirect them to an appropriate login page.
-    my $login_uri = $self->{args}{lite} ? '/lite/login' : '/nlw/login.html';
-
     my $validname = ( Socialtext::Authen->username_is_email()
         ? 'email address'
         : 'username'
@@ -170,7 +166,7 @@ sub login {
     my $username = $self->{args}{username} || '';
     unless ($username) {
         $self->session->add_error(loc('You must provide a valid [_1].', $validname));
-        return $self->_redirect($login_uri);
+        return $self->_challenge();
     }
 
     my $user_check = ( Socialtext::Authen->username_is_email()
@@ -181,7 +177,7 @@ sub login {
     unless ( $user_check ) {
         $self->session->add_error( loc('"[_1]" is not a valid [_2]. Please use your [_2] to log in.', $username, $validname) );
         $r->log_error ($username . ' is not a valid ' . $validname);
-        return $self->_redirect($login_uri);
+        return $self->_challenge();
     }
     my $auth = Socialtext::Authen->new;
     my $user = Socialtext::User->new( username => $username );
@@ -189,7 +185,7 @@ sub login {
     if ($user && !$user->email_address) {
         $self->session->add_error(loc("This username has no associated email address." ));
         $r->log_error ($username . ' has no associated email address');
-        return $self->_redirect($login_uri);
+        return $self->_challenge();
     }
 
     if ($user and $user->requires_confirmation) {
@@ -200,7 +196,7 @@ sub login {
     unless ($self->{args}{password}) {
         $self->session->add_error(loc('Wrong [_1] or password - please try again', $validname));
         $r->log_error('Wrong ' . $validname .' or password for ' . $username);
-        return $self->_redirect($login_uri);
+        return $self->_challenge();
     }
 
     my $check_password = $auth->check_password(
@@ -211,7 +207,7 @@ sub login {
     unless ($check_password) {
         $self->session->add_error(loc('Wrong [_1] or password - please try again', $validname));
         $r->log_error('Wrong ' . $validname .' or password for ' . $username);
-        return $self->_redirect($login_uri);
+        return $self->_challenge();
     }
 
     my $expire = $self->{args}{remember} ? '+12M' : '';
