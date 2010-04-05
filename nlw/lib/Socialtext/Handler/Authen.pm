@@ -633,7 +633,7 @@ sub _show_error {
         $self->_default_template_vars,
     };
     return $self->render_template(
-        $self->{r}, 'errors/display.html', $repl_vars,
+        $self->{r}, 'authen/error.html', $repl_vars,
     );
 }
 
