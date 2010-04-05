@@ -86,20 +86,7 @@ sub handler ($$) {
         # Include login_message_file content in vars sent to template
         # if login_message_file is set in AppConfig.
         if ( $uri eq 'login.html' ) {
-            # URL to the miki login page
-            $vars->{miki_url} = '/lite/login';
-
-            # if we're redirecting to a miki page, use the miki login page
-            # instead
-            my $redirect_to = $self->{args}{redirect_to} || '';
-            if ($redirect_to =~ m#^(?:https?://[^/]+)?/lite/#) {
-                return $self->_redirect( $vars->{miki_url} );
-            }
-
-            # mobile browsers should see the miki login page instead
-            if (Socialtext::BrowserDetect::is_mobile()) {
-                return $self->_redirect( $vars->{miki_url} );
-            }
+            return $self->_redirect('/m/login') if ($self->_is_mobile);
 
             # login message
             my $file = Socialtext::AppConfig->login_message_file();
@@ -151,6 +138,21 @@ sub handler ($$) {
 
     warn "Unknown URI: $uri";
     return NOT_FOUND;
+}
+
+sub _is_mobile_browser {
+    return Socialtext::BrowserDetect::is_mobile() ? 1 : 0;
+}
+
+sub _is_mobile_redirect {
+    my $self = shift;
+    my $url  = $self->{args}{redirect_to};
+    return ($url =~ m{^(?:https?://[^/]+)?/(?:lite|m)/}) ? 1 : 0;
+}
+
+sub _is_mobile {
+    my $self = shift;
+    return $self->_is_mobile_browser || $self->_is_mobile_redirect;
 }
 
 sub login {
