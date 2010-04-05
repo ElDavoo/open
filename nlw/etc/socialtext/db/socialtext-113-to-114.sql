@@ -49,3 +49,4 @@ UPDATE "System"
    SET value = '114'
  WHERE field = 'socialtext-schema-version';
 
+COMMIT;
