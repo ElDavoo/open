@@ -20,6 +20,7 @@ use Socialtext::Log qw(st_log);
 use Socialtext::Timer;
 use Socialtext::System qw/shell_run/;
 use Socialtext::Page::TablePopulator;
+use Socialtext::User::Default::Users;
 use Socialtext::User;
 use Socialtext::PreferencesPlugin;
 use YAML ();
@@ -409,11 +410,7 @@ sub _import_users {
 
     my @users;
     for my $info (@$users) {
-        # Do not import the is_system_created flag
-        if (delete $info->{is_system_created}) {
-            warn "$info->{username} was system created. "
-                . "Importing as regular user.\n";
-        }
+        next unless Socialtext::User::Default::Users->CanImportUser($info);
 
         delete $info->{primary_account_id};
         my $plugin_prefs = delete($info->{plugin_prefs}) || {};

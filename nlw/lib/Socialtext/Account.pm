@@ -10,6 +10,7 @@ use Socialtext::SQL qw( sql_execute sql_singlevalue);
 use Socialtext::SQL::Builder qw(sql_nextval);
 use Socialtext::Helpers;
 use Socialtext::String;
+use Socialtext::User::Default::Users;
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::MultiCursor;
@@ -463,11 +464,8 @@ sub import_file {
     
     my @profiles;
     for my $user_hash (@{ $hash->{users} }) {
-        # Do not import the is_system_created flag
-        if (delete $user_hash->{is_system_created}) {
-            warn "$user_hash->{username} was system created. "
-                . "Importing as regular user.\n";
-        }
+
+        next unless Socialtext::User::Default::Users->CanImportUser($user_hash);
 
         my $user = Socialtext::User->new( username => $user_hash->{username} );
         $user ||= Socialtext::User->Create_user_from_hash( $user_hash );
