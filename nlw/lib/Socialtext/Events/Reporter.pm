@@ -44,7 +44,7 @@ has 'table' => (
         [page_type => 'page.page_type'],
         [page_workspace_name => 'w.name'],
         [page_workspace_title => 'w.title'],
-        [signal_hash => 'outer_s.hash'],
+        # signal_hash may be added dynamically
     );
     has 'field_list' => (
         is => 'rw', isa => 'ArrayRef',
@@ -713,7 +713,19 @@ sub _build_standard_sql {
     my $outer_where = join("
       AND ", map {"($_)"} @{$self->_outer_conditions});
 
-    my $fields = join(",\n\t", map { "$_->[1] AS $_->[0]" } $self->field_list);
+    my @field_list = $self->field_list;
+    my $signals_join = '';
+    if ($table eq 'event') {
+        $signals_join = <<EOSQL;
+LEFT JOIN (
+    SELECT signal_id, hash
+    FROM signal
+) outer_s USING (signal_id)
+EOSQL
+        push @field_list, [signal_hash => 'outer_s.hash'];
+    }
+
+    my $fields = join(",\n\t", map { "$_->[1] AS $_->[0]" } @field_list);
 
     my $sql = <<EOSQL;
 SELECT $fields
@@ -731,10 +743,7 @@ SELECT $fields
 LEFT JOIN page ON (outer_e.page_workspace_id = page.workspace_id AND
                    outer_e.page_id = page.page_id)
 LEFT JOIN "Workspace" w ON (outer_e.page_workspace_id = w.workspace_id)
-LEFT JOIN (
-    SELECT signal_id, hash
-    FROM signal
-) outer_s USING (signal_id)
+$signals_join
 -- the JOINs above mess up the "ORDER BY at DESC".
 -- Fortunately, the re-sort isn't too hideous after LIMIT-ing
 ORDER BY outer_e.at DESC
