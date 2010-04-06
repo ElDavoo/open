@@ -202,7 +202,8 @@ sub get_redirect_uri {
     my ($self, $request, $token) = @_;
 
     # get the URL that we're supposed to be redirecting the User to
-    my $redirect = $request->param('redirect_to') || $DEFAULT_REDIRECT_URI;
+    my $redirect
+        = $request->param('redirect_to') || $request->parsed_uri->unparse;
 
     # make sure that regardless of whether the Redirect URI is absolute or
     # relative, that it points to *THIS* server.
@@ -219,6 +220,14 @@ sub get_redirect_uri {
             return $DEFAULT_REDIRECT_URI;
         }
     }
+
+    # strip off any query param containing the token parameter
+    my $config = Socialtext::OpenToken::Config->load();
+    my $param  = $config->token_parameter;
+    my %query  = $uri->query_form;
+    delete $query{$param};
+    delete $query{''};          # PingFederate sends empty query param back
+    $uri->query_form(\%query);
 
     # return the relative form of the URI back to the caller.
     return $uri->path_query();
