@@ -44,6 +44,7 @@ has 'table' => (
         [page_type => 'page.page_type'],
         [page_workspace_name => 'w.name'],
         [page_workspace_title => 'w.title'],
+        [signal_hash => 'outer_s.hash'],
     );
     has 'field_list' => (
         is => 'rw', isa => 'ArrayRef',
@@ -222,16 +223,23 @@ sub _expand_context {
 sub _extract_signal {
     my $self = shift;
     my $row = shift;
+    my $hash = delete $row->{signal_hash};
     return unless $row->{event_class} eq 'signal';
+
+    my $link_dictionary = $self->link_dictionary;
     my $parser = Socialtext::WikiText::Parser::Messages->new(
        receiver => Socialtext::WikiText::Emitter::Messages::HTML->new(
            callbacks => {
-               link_dictionary => $self->link_dictionary,
+               link_dictionary => $link_dictionary,
                viewer => $self->viewer,
            },
        )
     );
     $row->{context}{body} = $parser->parse($row->{context}{body});
+    $row->{context}{uri} = $link_dictionary->format_link(
+        link => 'signal',
+        signal_hash => $hash,
+    );
 }
 
 sub _extract_group {
@@ -723,6 +731,10 @@ SELECT $fields
 LEFT JOIN page ON (outer_e.page_workspace_id = page.workspace_id AND
                    outer_e.page_id = page.page_id)
 LEFT JOIN "Workspace" w ON (outer_e.page_workspace_id = w.workspace_id)
+LEFT JOIN (
+    SELECT signal_id, hash
+    FROM signal
+) outer_s USING (signal_id)
 -- the JOINs above mess up the "ORDER BY at DESC".
 -- Fortunately, the re-sort isn't too hideous after LIMIT-ing
 ORDER BY outer_e.at DESC
