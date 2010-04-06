@@ -475,6 +475,60 @@ sub _add_person_doc {
 
 
 #################
+# Group Handling
+#################
+
+sub index_group {
+    my ( $self, $group ) = @_;
+    $self->_add_group_doc($group);
+    $self->_commit;
+}
+
+# Remove the group from the index.
+sub delete_group {
+    my ( $self, $group_id ) = @_;
+    $self->solr->delete_by_query("group_key:$group_id");
+    $self->_commit;
+}
+
+sub delete_groups {
+    my $self = shift;
+    $self->solr->delete_by_query("doctype:group");
+    $self->_commit;
+}
+
+sub _add_group_doc {
+    my $self = shift;
+    my $group = shift;
+
+    Socialtext::Timer->Continue('solr_group');
+
+    my $group_id = $group->group_id;
+    st_log->debug("Indexing group $group_id");
+
+    my @fields = (
+        [id => "group:$group_id"],
+        [w => 0],
+        [g => $group_id],
+        [doctype => 'group'], 
+        [group_key => $group_id],
+        [date => _datetime_to_iso()],
+        [created => _datetime_to_iso($group->creation_datetime)],
+        [creator => $group->created_by_user_id],
+        [creator_name => $group->creator->display_name],
+        [title => $group->display_name],
+        [body => $group->description],
+        [sounds_like => $group->display_name],
+        [sounds_like => $group->description],
+    );
+
+    $self->_add_doc(WebService::Solr::Document->new(@fields));
+
+    Socialtext::Timer->Pause('solr_group');
+}
+
+
+#################
 # Miscellaneous 
 #################
 
@@ -511,6 +565,12 @@ sub _pg_date_to_iso {
     );
     my $utc_time = $dt->parse_timestamptz( $pgdate );
     my $date = DateTime->from_epoch( epoch => $utc_time->epoch );
+    $date->set_time_zone('UTC');
+    return $date->iso8601 . 'Z';
+}
+
+sub _datetime_to_iso {
+    my $date = shift || DateTime->now;
     $date->set_time_zone('UTC');
     return $date->iso8601 . 'Z';
 }
