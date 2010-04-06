@@ -147,7 +147,12 @@ sub _is_mobile_browser {
 sub _is_mobile_redirect {
     my $self = shift;
     my $url  = $self->{args}{redirect_to};
-    return ($url =~ m{^(?:https?://[^/]+)?/(?:lite|m)/}) ? 1 : 0;
+    $url =~ s{^https?://[^/]+}{};   # strip off scheme/host
+    $url =~ s{^/}{};                # strip off leading "/"
+    $url =~ s{/.*$}{};              # strip off everything after first "/"
+    return 1 if ($url eq 'lite');
+    return 1 if ($url eq 'm');
+    return 0;
 }
 
 sub _is_mobile {
