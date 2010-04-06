@@ -13,6 +13,7 @@
 | st-admin | create-account --name "%%shared_acct%%" | created |
 | st-admin | create-user --e %%luser%% --p %%password%% --account "%%shared_acct%%" | created |
 | st-admin | enable-plugin --account "%%shared_acct%%" --p signals |  |
+| st-admin | enable-plugin --account "%%shared_acct%%" --p groups |  |
 | st-admin | add-member --account "%%shared_acct%%" --e %%temail%% | member |
 
 | *Comment* | Test Case: Profile Activity Widget. create a group shared by %%luser%% and %%tuser%% |  |  |
@@ -23,9 +24,8 @@
 | st-logoutin | %%luser%% | %%password%% |
 
 | *Comment* | Test Case: Profile Activity Widget. navigate to the %%tuser%% Profile page |  |
-| open_ok | /?action=people |  |
-| wait_for_element_visible_ok | link=%%tuser%% | 30000 |
-| click_and_wait | link=%%tuser%% |  |
+| st_process_jobs |  |  |
+| st_find_user | %%tuser%% |  |
 
 | *Comment* | Test Case: Profile Activity Widget. the basic activities widget exists on the %%tuser%% Profile page |  |
 | text_like | Profile |  |
@@ -33,15 +33,34 @@
 | text_like | Activities |  |
 | st-name-widget | 3 | activitieswidget |
 | st-widget-title-like | activitieswidget | Activities |
+
+| *Comment* | Test Case: Profile Activity Widget. Send and check signals |  |
+| st_send_signal_via_activities_widget | activitieswidget | Public signal to %%tuser%% at %%start_time%% WHOOPEE |
+
+| st_send_signal_via_activities_widget | activitieswidget | Private signal to %%tuser%% at %%start_time%% HURRAY | private |
+
+| st-verify-text-in-activities-widget | activitieswidget | qr/%%tuser%%.+Public signal to %%tuser%% at %%start_time%% WHOOPEE/ism |
+| st-verify-text-in-activities-widget | activitieswidget | qr/You.+private to.+%%tuser%%/ism |
+| st-verify-text-in-activities-widget | activitieswidget | Private signal to %%tuser%% at %%start_time%% HURRAY |
+
+| *Comment* | Test Case: Profile Activity Widget. Clean start: navigate to the %%tuser%% Profile page |  |
+| st_process_jobs |  |  |
+| st_find_user | %%tuser%% |  |
+
+| *Comment* | Test Case: Profile Activity Widget. Probe the activities widget on the %%tuser%% Profile page |  |
+| text_like | Profile |  |
+| text_like | Tags |  |
+| text_like | Activities |  |
+| st-name-widget | 3 | activitieswidget |
+| st-widget-title-like | activitieswidget | Activities |
 | st-select-widget-frame | activitieswidget |  |
 | wait_for_text_present_ok | Showing | 10000 |
-| text_like | qr/Showing.+all events.+from.+%%tuser%%.+within/ism |  |
+| text_like | qr/Showing all events.*from.+%%tuser%%.*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. The widget defaults to mentioning the viewed user when clicked |  |
 | wait_for_element_present_ok | signalsNotSetUp | 10000 |
 | text_like | qr/What are you working on/ism |  |
 | click_ok | signalsNotSetUp |  |
-| wait_for_element_visible_ok | signalFrame | 10000 |
 | wait_for_element_visible_ok | //div[@class='message mention'] | 10000 |
 | wait_for_element_visible_ok | link=%%tuser%% | 10000 |
 
@@ -73,10 +92,10 @@
 | text_like | qr/Post Signals to/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. select list values for "from <feed-type>" filter is only the user's name |  |
-| text_like | qr/Showing.+all events.+from.+%%tuser%%.+within/ism |  |
+| text_like | qr/Showing all events.*from.+%%tuser%%.*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. ... and cannot be changed |  |
-| wait_for_element_not_present_ok | link=%%tuser%% | 5000 |
+| wait_for_element_not_present_ok | //span[@id='feed']/a | 5000 |
 | wait_for_element_not_present_ok | //ul[@id='st-dropdown-1-list'] | 5000 |
 
 | *Comment* | Test Case: Profile Activity Widget. Pulldown menus |  |
@@ -110,7 +129,7 @@
 | st-widget-title-like | activitieswidget | Activities |
 | st-select-widget-frame | activitieswidget |  |
 | wait_for_text_present_ok | Showing | 10000 |
-| text_like | qr/Showing.+all events.+from.+%%short_luser%%.+within/ism |  |
+| text_like | qr/Showing all events.*from %%short_luser%%.*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. ... no "you are composing a message to ..." message appears |  |
 | *Comment* | Test Case: Profile Activity Widget. ... you don't mention yourself |  |
