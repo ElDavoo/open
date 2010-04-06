@@ -15,10 +15,11 @@ use Socialtext::WebApp;
 our $DEFAULT_REDIRECT_URI = '/';
 
 sub challenge {
-    my $class   = shift;
-    my %p       = @_;
-    my $hub     = $p{hub};
-    my $request = $p{request};
+    my $class    = shift;
+    my %p        = @_;
+    my $hub      = $p{hub};
+    my $request  = $p{request};
+    my $redirect = $p{redirect};
 
     # make sure we've got a request
     my $app = Socialtext::WebApp->NewForNLW;
@@ -47,10 +48,14 @@ sub challenge {
         );
     }
 
+    # figure out where the User is supposed to be redirected to after the
+    # challenge is successful.
+    $redirect ||= $class->get_redirect_uri($request);
+
     # figure out where we need to redirect the User to in order to get an
     # OpenToken, in the event that we're either not Authenticated or we have
     # some problem with the OpenToken.
-    my $challenge_uri = $class->build_challenge_uri($config, $request);
+    my $challenge_uri = $class->build_challenge_uri($config, $redirect);
 
     # get the OpenToken as provided in the "opentoken" form parameter
     my $token_param = $config->token_parameter;
@@ -133,7 +138,6 @@ sub challenge {
 
     # figure out where the User wanted to be in the first place, and redirect
     # them off over there.
-    my $redirect = $class->get_redirect_uri($request, $token);
     st_log->info("LOGIN: " . $user->email_address . " destination $redirect");
     Socialtext::Apache::User::set_login_cookie($request, $user->user_id, '');
     $user->record_login;
@@ -172,7 +176,7 @@ sub _generate_random_password {
 
 # Returns the URL which kickstarts a SP-initiated SAML assertion.
 sub build_challenge_uri {
-    my ($class, $config, $request) = @_;
+    my ($class, $config, $redirect) = @_;
 
     # start with the configured Challenge URI
     my $challenge_uri = URI->new($config->challenge_uri);
@@ -182,11 +186,10 @@ sub build_challenge_uri {
     # them to the resource that they were originally trying to access.
     my $target_uri;
     {
-        my $parsed_uri = $request->parsed_uri;
-        $target_uri
-            = Socialtext::URI::uri(path => $parsed_uri->path)
-            . '?'
-            . $parsed_uri->query;
+        $target_uri = Socialtext::URI::uri(
+            path  => '/challenge',
+            query => { redirect_to => $redirect }
+        );
     }
 
     $challenge_uri->query_form(TARGET => $target_uri);
@@ -199,7 +202,7 @@ sub build_challenge_uri {
 # We do *not* allow for redirects to send the User to a machine other than
 # ourselves.
 sub get_redirect_uri {
-    my ($self, $request, $token) = @_;
+    my ($self, $request) = @_;
 
     # get the URL that we're supposed to be redirecting the User to
     my $redirect
