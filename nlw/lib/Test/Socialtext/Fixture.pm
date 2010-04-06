@@ -108,7 +108,7 @@ sub _built_in_base_config {
         $testing,
     );
     _system_or_die(
-        'dev-bin/solr-create',
+        $env->nlw_dir . '/dev-bin/solr-create',
     );
 }
 
