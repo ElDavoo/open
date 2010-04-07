@@ -162,7 +162,7 @@ sub get_html {
             });
         }
         else {
-            return $self->render_template('view/container', {
+            return $self->render_template($self->container->view_template, {
                 container => $self->container->template_vars
             });
         }
