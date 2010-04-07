@@ -44,6 +44,11 @@ has signal => (
     lazy_build => 1,
 );
 
+has group => (
+    is => 'ro', isa => 'Maybe[Socialtext::Group]',
+    lazy_build => 1,
+);
+
 has user => (
     is => 'ro', isa => 'Maybe[Socialtext::User]',
     lazy_build => 1,
@@ -162,6 +167,20 @@ sub _build_signal {
     return $signal if $signal;
 
     my $msg = "Couldn't load signal id=$signal_id";
+    $self->failed($msg);
+    die $msg;
+}
+
+sub _build_group {
+    my $self = shift;
+    my $group_id = $self->arg->{group_id};
+    return unless $group_id;
+
+    require Socialtext::Group;
+    my $group = eval { Socialtext::Group->GetGroup( group_id => $group_id ) };
+    return $group if $group;
+
+    my $msg = "Couldn't load group id=$group_id";
     $self->failed($msg);
     die $msg;
 }
