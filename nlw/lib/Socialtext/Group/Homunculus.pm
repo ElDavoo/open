@@ -8,6 +8,7 @@ use Socialtext::Account;
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::Group;
+use Socialtext::JobCreator;
 use namespace::clean -except => 'meta';
 
 has_table 'groups';
@@ -192,6 +193,8 @@ sub update_store {
 
     # Have the Factory update the record
     $factory->Update($self, $proto_group);
+
+    Socialtext::JobCreator->index_group($proto_group);
 }
 
 # Delete the Group Homunculus from the system.
