@@ -12,6 +12,7 @@ Report Testcases needs to run in a pristine environment to pass
 * [Report Testcases]
 * [Control Panel Testcases]
 * [Core Testcases]
+* [Test Case: change signal limit]
 
 * [Test Case: RSS Icons]
 * [Test Case: Table Info]

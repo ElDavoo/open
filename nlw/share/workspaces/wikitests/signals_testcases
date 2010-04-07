@@ -15,7 +15,9 @@ A convenience testset for running all of our Signals tests
 * [Test Case: signals follow filter with pagination]
 
 * [Test Case: signals login logout]
-* [Test Case: change signal limit]
+
+Test Case: change signal limit - Moved to all_appliance_testcases because it uses /console now
+
 * [Test Case: mobile signals]
 
 And the MONSTER:
