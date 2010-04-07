@@ -4,6 +4,7 @@ use MooseX::Singleton;
 use MooseX::AttributeInflate;
 use Socialtext::TheSchwartz;
 use Socialtext::Search::AbstractFactory;
+use Socialtext::SQL qw/:exec/;
 use Carp qw/croak/;
 use Socialtext::Log qw/st_log/;
 use Socialtext::Cache ();
@@ -232,9 +233,23 @@ sub index_person {
     }
 
     if ($p{name_is_changing}) {
-        eval { $self->_index_related_people($maybe_user, $user_id, %p); }
+        eval { $self->_index_related_people($maybe_user, $user_id, %p); };
+        warn $@ if $@;
+        eval { $self->_index_related_groups($user_id); };
+        warn $@ if $@;
     }
     return ($job_id);
+}
+
+sub _index_related_groups {
+    my ($self, $user_id) = @_;
+
+    my $sth = sql_execute(q{
+        SELECT group_id FROM groups WHERE created_by_user_id = ?
+        }, $user_id);
+    while (my $row = $sth->fetchrow_arrayref) {
+        $self->index_group($row->[0]);
+    }
 }
 
 sub _index_related_people {
