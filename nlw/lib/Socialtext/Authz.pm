@@ -145,40 +145,50 @@ SQL
     return $enabled;
 }
 
-sub plugin_enabled_for_user_in_account {
+sub plugin_enabled_for_user_in_accounts {
     my $self = shift;
     my %p = @_;
     my $user = delete $p{user};
-    my $account = delete $p{account};
+    my $accounts = delete $p{accounts};
     my $plugin_name = delete $p{plugin_name};
 
     return 1 if ($user->username eq $SystemUsername);
 
     my $user_id = $user->user_id;
-    my $account_id = ref($account) ? $account->account_id : $account;
+
+    my @account_ids = map { ref($_) ? $_->account_id : $_ } @$accounts;
 
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "user_acct:$user_id\0$account_id";
+    my $cache_key = "user_acct:$user_id\0" . join("\0", @account_ids);
     my $enabled_plugins = {};
     if ($enabled_plugins = $cache->get($cache_key)) {
         return $enabled_plugins->{$plugin_name} ? 1 : 0;
     }
 
+    my $qs = join ',', map { '?' } @account_ids;
     my $sql = <<SQL;
         SELECT plugin
         FROM user_set_plugin plug
         JOIN "Account" a USING (user_set_id)
         JOIN user_set_path path ON (path.into_set_id = a.user_set_id)
-        WHERE path.from_set_id = ? AND account_id = ?
+        WHERE path.from_set_id = ? AND account_id IN ($qs)
 SQL
 
-    my $sth = sql_execute($sql, $user_id, $account_id);
+    my $sth = sql_execute($sql, $user_id, @account_ids);
     while (my $row = $sth->fetchrow_arrayref) {
         $enabled_plugins->{$row->[0]} = 1;
     }
 
     $cache->set($cache_key, $enabled_plugins);
     return $enabled_plugins->{$plugin_name} ? 1 : 0;
+}
+
+sub plugin_enabled_for_user_in_account {
+    my $self = shift;
+    my %p = @_;
+    return $self->plugin_enabled_for_user_in_accounts(
+        accounts => [ delete $p{account} ], %p
+    );
 }
 
 sub plugins_enabled_for_user_set {
