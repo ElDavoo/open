@@ -20,16 +20,16 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 
-Socialtext::Job::PersonIndex - index a person profile.
+Socialtext::Job::GroupIndex - index a group.
 
 =head1 SYNOPSIS
 
     use Socialtext::JobCreator;
 
-    Socialtext::JobCreator->index_person($user);
+    Socialtext::JobCreator->index_group($group);
 
 =head1 DESCRIPTION
 
-Schedule a job to be run by TheCeq which will index the profile using Solr.
+Schedule a job to be run by TheCeq which will index the group using Solr.
 
 =cut
