@@ -183,6 +183,30 @@ sub index_signal {
     return ($job_id);
 }
 
+sub index_group {
+    my $self = shift;
+    my $group_or_id = shift;
+    my %p = @_;
+    $p{priority} ||= 70;
+
+    # accept either a group object or a group id.
+    my $id = (ref($group_or_id) && $group_or_id->isa('Socialtext::Group'))
+        ? $group_or_id->group_id
+        : $group_or_id;
+
+    my $job_id = $self->insert(
+        'Socialtext::Job::GroupIndex' => {
+            solr => 1,
+            group_id => $id,
+            job => {
+                priority => $p{priority},
+                coalesce => $id,
+            },
+        }
+    );
+    return ($job_id);
+}
+
 sub index_person {
     my $self = shift;
     my $maybe_user = shift;

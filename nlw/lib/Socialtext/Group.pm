@@ -15,6 +15,7 @@ use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::Pluggable::Adapter;
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
+use Socialtext::JobCreator;
 use namespace::clean -except => 'meta';
 
 ###############################################################################
@@ -316,6 +317,7 @@ sub Create {
     my $homey = $factory->Create($proto_group);
     $factory->CreateInitialRelationships($homey);
     my $group = Socialtext::Group->new(homunculus => $homey);
+    Socialtext::JobCreator->index_group($group);
 
     return $group;
 }
