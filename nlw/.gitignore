@@ -464,3 +464,4 @@ t/wikitests/signals/st_signals.wiki
 lib/Socialtext/Rest/OpenSocial.pm
 lib/Socialtext/OpenSocial/AppData.pm
 t/wikitests/widgets/opensocial.wiki
+lib/Socialtext/Pluggable/Plugin/ShareThis.pm
