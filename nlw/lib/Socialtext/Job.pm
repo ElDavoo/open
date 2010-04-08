@@ -163,12 +163,7 @@ sub _build_signal {
     return unless $signal_id;
 
     require Socialtext::Signal;
-    my $signal = eval { Socialtext::Signal->Get( signal_id => $signal_id ) };
-    return $signal if $signal;
-
-    my $msg = "Couldn't load signal id=$signal_id";
-    $self->failed($msg);
-    die $msg;
+    return eval { Socialtext::Signal->Get( signal_id => $signal_id ) };
 }
 
 sub _build_group {
@@ -177,12 +172,7 @@ sub _build_group {
     return unless $group_id;
 
     require Socialtext::Group;
-    my $group = eval { Socialtext::Group->GetGroup( group_id => $group_id ) };
-    return $group if $group;
-
-    my $msg = "Couldn't load group id=$group_id";
-    $self->failed($msg);
-    die $msg;
+    return eval { Socialtext::Group->GetGroup( group_id => $group_id ) };
 }
 
 sub _build_user {
