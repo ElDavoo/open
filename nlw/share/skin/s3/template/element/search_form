@@ -16,11 +16,15 @@ DEFAULT
 
   [% ELSE %]
 
+  [% SET search = container.search %]
+  [% IF action == 'search' && scope == '_' && current_workspace.real; search = 'workspace'; END %]
+  [% IF action == 'search' && !search; search = 'workspaces'; END %]
+
   <select id="st-[%sid%]-action" name="action" class="searchSelect">
     [% IF workspace_present %]
-    <option value="search" id="st-[%sid%]-this-ws" [% IF action == "search" && scope == '_' %]selected="selected" [% END %]>[% loc("Search This Workspace:") %]</option>
+    <option value="search" id="st-[%sid%]-this-ws" [% IF search == "workspace" %]selected="selected" [% END %]>[% loc("Search This Workspace:") %]</option>
     [% END %]
-    <option value="search" id="st-[%sid%]-all-ws" class="scopeStar" [% IF action == "search" && scope == '*' %]selected="selected" [% END %]>[% loc("Search My Workspaces:") %]</option>
+    <option value="search" id="st-[%sid%]-all-ws" class="scopeStar" [% IF search == "workspaces"  %]selected="selected" [% END %]>[% loc("Search My Workspaces:") %]</option>
     [% FILTER decorate('search_box') %][% END %]
   </select>
   <input type="hidden" value="[% scope %]" name="scope" class="searchScope"/>
