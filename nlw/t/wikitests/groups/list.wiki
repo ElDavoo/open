@@ -125,26 +125,26 @@ Tests for [Story: Groups ReST API]
 | json-path-is    | $[0].name                 | alpha |
 
 ####################
-| *Comment*       | Simple filter                  |       |
-| GET-json        | /data/groups?filter=name:alpha |       |
-| code-is         | 200                            |       |
-| json-parse      |                                |       |
-| json-array-size | 1                              |       |
-| json-path-is    | $[0].name                      | alpha |
+| *Comment*       | Simple filter             |       |
+| GET-json        | /data/groups?q=name:alpha |       |
+| code-is         | 200                       |       |
+| json-parse      |                           |       |
+| json-array-size | 1                         |       |
+| json-path-is    | $[0].name                 | alpha |
 
 ####################
-| *Comment*       | Simple filter                  |       |
+| *Comment*       | Simple filter                         |       |
 | GET-json        | /data/groups?filter=description:booya |       |
-| code-is         | 200                            |       |
-| json-parse      |                                |       |
-| json-array-size | 3                              |       |
-| json-path-is    | $[0].name                      | alpha |
-| *Comment*       | Simple filter                  |       |
-| GET-json        | /data/groups?filter=desc:booya |       |
-| code-is         | 200                            |       |
-| json-parse      |                                |       |
-| json-array-size | 3                              |       |
-| json-path-is    | $[0].name                      | alpha |
+| code-is         | 200                                   |       |
+| json-parse      |                                       |       |
+| json-array-size | 3                                     |       |
+| json-path-is    | $[0].name                             | alpha |
+| *Comment*       | Simple filter                         |       |
+| GET-json        | /data/groups?q=desc:booya             |       |
+| code-is         | 200                                   |       |
+| json-parse      |                                       |       |
+| json-array-size | 3                                     |       |
+| json-path-is    | $[0].name                             | alpha |
 
 ####################
 | *Comment*         | OpenSocial filter                      |       |
