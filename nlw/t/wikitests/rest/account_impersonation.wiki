@@ -1,0 +1,111 @@
+* Fixture: SocialRest
+
+.pre
+    if (user_agent is not authenticated) {
+        # i.e. it is a guest
+        deny(401) # test case 1
+    }
+
+    if (user_agent is "system-user" or is system-created) {
+        deny(401) # test case 7
+    }
+
+    if (call is for a workspace) {
+        if (user_agent is a member of the workspace
+            AND desired_user is a member of the workspace
+            AND user_agent has impersonate permission in this workspace)
+        {
+            swtich users # test case 2
+        }
+        else if (user_agent has impersonate in desired_user's primary account) {
+            swtich users # test case 3
+        }
+        else {
+            deny(403) # test case 4
+        }
+    }
+    else {   
+        if (user_agent has impersonate in desired_user's primary account) {
+            switch users # test case 5
+        }
+        else {
+            deny(403) # test case 6
+        }
+    }
+
+    # if not denied, call proceeds as the desired_user, which may result in
+    # other errors
+
+.pre
+
+| set | ctwiki | Content-Type=text/x.socialtext-wiki |
+| set | ctjson | Content-Type=application/json       |
+| set | xobo   | X-on-behalf-of=desired-%%username%% |
+
+Create a standard test setup, with a desired user, an ws impersonator and an acct impersonator
+| standard-test-setup |                       |               |              |
+| create-user         | desired-%%username%%  | password      | %%account%%  |
+| create-user         | ws-imp-%%username%%   | password      | %%account%%  |
+| create-user         | acct-imp-%%username%% | password      | %%account%%  |
+| add-member          | desired-%%username%%  | %%workspace%% |              |
+| add-member          | ws-imp-%%username%%   | %%workspace%% | impersonator |
+| add-user-to-account | acct-imp-%%username%% | %%account%%   | impersonator |
+
+Create a standard test setup with a account impersonator and add the desired user created in the main account as a member (secondary) of this secondary account and to a workspace in this account
+| standard-test-setup | secondary              |                         |              |
+| add-user-to-account | %%secondary_username%% | %%secondary_account%%   | impersonator |
+| add-user-to-account | desired-%%username%%   | %%secondary_account%%   | member       |
+| add-member          | desired-%%username%%   | %%secondary_workspace%% |              |
+
+*Test case 1 (guest still gets 401)*
+
+| Comment        | 401 on guest  |
+| http-user-pass |               |
+| get-json       | /data/signals |
+| code-is        | 401           |
+
+_Would like to test system user - not sure how to do that via rest (test case 7)_
+
+_Test case 2 is covered in other tests_
+
+*Test case 3 - workspace impersonation via acct impersonator role*
+
+| Comment         | Workspace Access from Acct Impersonation      |                     |                |
+| http-user-pass  | acct-imp-%%username%%                         | password            |                |
+| st-clear-events |                                               |                     |                |
+| put             | /data/workspaces/%%workspace%%/pages/pagenew1 | %%ctwiki%%,%%xobo%% | Hello i'm fake |
+| code-is         | 204                                           |                     |                |
+| get             | /%%workspace%%/index.cgi?pagenew1             |                     |                |
+| code-is         | 200                                           |                     |                |
+| body-like       | desired-%%username%%                          |                     |                |
+| http-user-pass  | desired-%%username%%                          | password            |                |
+| get             | /data/events                                  | application/json    |                |
+| code-is         | 200                                           |                     |                |
+| body-like       | desired-%%username%%                          |                     |                |
+| body-unlike     | acct-imp-%%username%%                         |                     |                |
+
+*Test case 4 (partial)*
+Desired user's *primary* account is *not* the one for which the user has impersonator rights
+
+| Comment         | No Workspace Access from Acct Impersonation             |                     |                |
+| http-user-pass  | acct-imp-%%secondary_username%%                         | password            |                |
+| st-clear-events |                                                         |                     |                |
+| put             | /data/workspaces/%%secondary_workspace%%/pages/pagenew1 | %%ctwiki%%,%%xobo%% | Hello i'm fake |
+| code-is         | 403                                                     |                     |                |
+
+*Test Case 5*
+Put a signal as a user
+| Comment        | Impersonator Signals  |                     |                          |
+| http-user-pass | acct-imp-%%username%% | password            |                          |
+| post           | /data/signals         | %%xobo%%,%%ctjson%% | {"signal":"I am sekrit"} |
+| code-is        | 204                   |                     |                          |
+| get            | /data/signals         | application/json    |                          |
+| code-is        | 200                   |                     |                          |
+| body-like      | desired-%%username%%  |                     |                          |
+| body-unlike    | acct-imp-%%username%% |                     |                          |
+
+| Comment        | Non-Primary Impersonator Can't Signal |                     |                          |
+| http-user-pass | %%secondary_username%%                | password            |                          |
+| post           | /data/signals                         | %%xobo%%,%%ctjson%% | {"signal":"I am sneaky"} |
+| code-is        | 403                                   |                     |                          |
+
