@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+
+use strict;
+use warnings;
+
+use Socialtext::SQL qw(sql_singlevalue);
+use Socialtext::Jobs;
+
+my $fail = 0;
+
+my $group_count = sql_singlevalue('SELECT count(*) FROM groups');
+
+Socialtext::Jobs->Unlimit_list_jobs;
+my @jobs = Socialtext::Jobs->list_jobs(
+    funcname => 'Socialtext::Job::GroupIndex');
+my $job_count = @jobs;
+if ($job_count < $group_count) {
+    $fail = 1;
+    print "FAIL: Not enough group re-indexing jobs were scheduled ($job_count / $group_count)\n";
+}
+
+print "Migration successful, $job_count GroupIndex jobs created.\n" unless $fail;
+exit($fail ? 1 : 0);

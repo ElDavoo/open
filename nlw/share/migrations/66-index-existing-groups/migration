@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+
+use strict;
+use warnings;
+use Socialtext::SQL qw/:exec :txn/;
+use Socialtext::JobCreator;
+
+sql_begin_work();
+
+print "Finding all groups\n";
+my $all_groups = sql_execute('SELECT group_id FROM groups');
+while ( my ($group_id) = $all_groups->fetchrow_array ) {
+    Socialtext::JobCreator->index_group($group_id);
+}
+
+print "Done\n";
+sql_commit();
+
