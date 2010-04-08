@@ -56,24 +56,44 @@ sub _get_total_results {
 sub _get_entities {
     my $self = shift;
     my $user = $self->rest->user;
+    my $q    = $self->rest->query;
 
-    if ($user->is_business_admin and $self->rest->query->param('all')) {
-        my $iter = Socialtext::Group->All(
-            order_by => $self->order,
-            sort_order => $self->reverse ? 'DESC' : 'ASC',
-            include_aggregates => 1,
-            creator => 1,
-            primary_account => 1,
-            limit => $self->items_per_page,
-            offset => $self->start_index,
+    my $filter = $q->param('q') || $q->param('filter') || '';
+ 
+    if ($filter) {
+        require Socialtext::Search::Solr::Factory;
+        my $searcher = Socialtext::Search::Solr::Factory->create_searcher();
+        my ($results, $count) = $searcher->begin_search(
+            $filter,
+            undef,
+            undef,
+            doctype   => 'group',
+            viewer    => $user,
+            limit     => $self->items_per_page, 
+            offset    => $self->start_index,
+            direction => $self->reverse ? 'desc' : 'asc',
+            order     => 'title',
         );
-        return [ $iter->all ];
+        return [ map { $_->group } @{ $results->() } ];
     }
     else {
-        return [ $user->groups->all ];
+        if ($user->is_business_admin and $self->rest->query->param('all')) {
+            my $iter = Socialtext::Group->All(
+                order_by => $self->order,
+                sort_order => $self->reverse ? 'DESC' : 'ASC',
+                include_aggregates => 1,
+                creator => 1,
+                primary_account => 1,
+                limit => $self->items_per_page,
+                offset => $self->start_index,
+            );
+            return [ $iter->all ];
+        }
+        else {
+            return [ $user->groups->all ];
+        }
     }
 }
-
 
 override extra_headers => sub {
     my $self = shift;
