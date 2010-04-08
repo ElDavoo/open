@@ -141,6 +141,7 @@ sub _search {
     my $query_type = 'dismax';
     $query_type = 'standard' if $query =~ m/\b[a-z_]+:/i;
     $query_type = 'standard' if $query =~ m/\*|\?/;
+    $query_type = 'standard' if $query =~ m/\s/;
     my @sort = $self->_sort_opts($opts{order}, $opts{direction}, $query_type);
     my $query_hash = {
         # fl = Fields to return
