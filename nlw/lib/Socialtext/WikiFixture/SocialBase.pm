@@ -606,6 +606,7 @@ sub create_group {
     my $group_name   = shift;
     my $account_name = shift;
     my $user_name    = shift;
+    my $description  = shift;
 
     my $account = $account_name
         ? Socialtext::Account->new(name => $account_name)
@@ -621,6 +622,7 @@ sub create_group {
             driver_group_name  => $group_name,
             primary_account_id => $account->account_id,
             created_by_user_id => $user->user_id,
+            description        => $description || 'no description',
         });
     };
     if (my $err = $@) {
