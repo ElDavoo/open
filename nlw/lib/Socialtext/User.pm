@@ -4,7 +4,7 @@ use Moose;
 
 our $VERSION = '0.01';
 
-use Socialtext::Exceptions qw( data_validation_error param_error );
+use Socialtext::Exceptions qw(data_validation_error);
 use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE WORKSPACE_TYPE USER_TYPE SCALAR UNDEF CODEREF);
 use Socialtext::AppConfig;
 use Socialtext::Log qw(st_log);
@@ -251,6 +251,12 @@ sub update_store {
     my $self = shift;
     my %p = @_;
     my $old_name = $self->display_name;
+
+    if ($p{password} && $self->is_system_created) {
+        data_validation_error errors => [
+            "cannot change the password of a system-created user.\n"];
+    }
+
     my $rv = $self->homunculus->update( %p );
     my $new_name = $self->display_name;
     $self->_index(name_is_changing => ($old_name ne $new_name));
