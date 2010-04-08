@@ -2589,6 +2589,13 @@ sub index_people {
     $self->_success( "Scheduled people for re-indexing." );
 }
 
+sub index_groups {
+    my $self = shift;
+
+    my $jobs = Socialtext::Group->IndexGroups();
+    $self->_success( "Scheduled $jobs groups for indexing." );
+}
+
 sub send_email_notifications {
     my $self = shift;
 

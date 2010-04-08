@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 37;
+use Test::Socialtext tests => 39;
 use Test::Exception;
 BEGIN { use_ok 'Socialtext::CLI'; }
 use Test::Socialtext::CLIUtils qw/is_last_exit/;
@@ -145,6 +145,19 @@ delete_a_group: {
 
     ok $output, 'got output...';
     like $output, qr/Deleted group id: \d+/, '... deleted the group';
+}
+
+################################################################################
+index_all_groups: {
+    my $group1        = create_test_group();
+    my $group2        = create_test_group();
+
+    my $output = combined_from {
+        eval { new_cli( )->index_groups() }
+    };
+
+    ok $output, 'got output...';
+    like $output, qr/Scheduled \d+ groups for indexing/;
 }
 
 ################################################################################
