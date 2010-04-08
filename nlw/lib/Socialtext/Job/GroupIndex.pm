@@ -10,7 +10,12 @@ sub do_work {
     my $self    = shift;
     my $indexer = $self->indexer or return;
 
-    $indexer->index_group($self->group);
+    if (my $group = $self->group) {
+        $indexer->index_group($group);
+    }
+    else {
+        $indexer->delete_group($self->arg->{group_id});
+    }
 
     $self->completed();
 }
