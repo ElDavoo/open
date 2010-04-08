@@ -10,7 +10,7 @@ use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
 use Socialtext::Timer qw/time_scope/;
-use Socialtext::SQL qw(get_dbh :exec :time);
+use Socialtext::SQL qw(get_dbh :exec :time :txn);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::Pluggable::Adapter;
 use Socialtext::User;
@@ -390,6 +390,25 @@ sub GetProtoGroup {
 
     # nope, didn't find
     return undef;
+}
+
+sub IndexGroups {
+    my $class = shift;
+
+    require Socialtext::Search::Solr::Factory;
+    my $factory = Socialtext::Search::Solr::Factory->new;
+    my $indexer = $factory->create_indexer();
+    $indexer->delete_groups();
+
+    sql_begin_work();
+    my $all_groups = sql_execute('SELECT group_id FROM groups');
+    my $i = 0;
+    while ( my ($group_id) = $all_groups->fetchrow_array ) {
+        Socialtext::JobCreator->index_group($group_id);
+        $i++;
+    }
+    sql_commit();
+    return $i;
 }
 
 ###############################################################################

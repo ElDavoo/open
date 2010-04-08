@@ -3,17 +3,9 @@
 
 use strict;
 use warnings;
-use Socialtext::SQL qw/:exec :txn/;
-use Socialtext::JobCreator;
+use Socialtext::Group;
 
-sql_begin_work();
 
-print "Finding all groups\n";
-my $all_groups = sql_execute('SELECT group_id FROM groups');
-while ( my ($group_id) = $all_groups->fetchrow_array ) {
-    Socialtext::JobCreator->index_group($group_id);
-}
-
-print "Done\n";
-sql_commit();
-
+print "Creating GroupIndex jobs ...\n";
+my $jobs = Socialtext::Group->IndexGroups();
+print "Done - created $jobs jobs.\n";
