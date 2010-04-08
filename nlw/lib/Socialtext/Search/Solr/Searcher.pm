@@ -10,6 +10,7 @@ use Socialtext::Search::SimpleAttachmentHit;
 use Socialtext::Search::SimplePageHit;
 use Socialtext::Search::SignalHit;
 use Socialtext::Search::PersonHit;
+use Socialtext::Search::GroupHit;
 use Socialtext::Search::Utils;
 use Socialtext::AppConfig;
 use Socialtext::Exceptions;
@@ -117,7 +118,9 @@ sub _search {
         if ($opts{viewer}) {
             # Only from accounts and groups the viewer has a connection to
             my $nets = join(' OR ',
-                (map { "a:$_" } @account_ids),
+                ($opts{doctype} ne 'group'
+                    ? (map {"a:$_"} @account_ids)
+                    : ()),
                 (map { "g:$_" } @group_ids),
             );
             $filter_query[$#filter_query] .= " AND ($nets)";
@@ -187,14 +190,15 @@ sub _sort_opts {
 
     # Map the UI options into Solr fields
     my %sortable = (
-        relevance => 'score',
-        date => 'date',
-        subject => 'plain_title',
+        relevance      => 'score',
+        date           => 'date',
+        subject        => 'plain_title',
         revision_count => 'revisions',
-        create_time => 'created',
-        workspace => 'w_title',
-        sender => 'creator_name',
-        name => 'name_asort',
+        create_time    => 'created',
+        workspace      => 'w_title',
+        sender         => 'creator_name',
+        name           => 'name_asort',
+        title          => 'plain_title',
     );
 
     # If no valid sort order is supplied, then we use either a date sort or a
@@ -255,6 +259,13 @@ sub _make_result {
         return Socialtext::Search::PersonHit->new(
             score => $score,
             user_id => $user_id,
+        );
+    }
+    if ($doctype eq 'group') {
+        (my $group_id = $key) =~ s/^group://;
+        return Socialtext::Search::GroupHit->new(
+            score => $score,
+            group_id => $group_id,
         );
     }
     elsif ($doctype eq 'page' or $doctype eq 'attachment') {
