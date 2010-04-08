@@ -133,12 +133,29 @@ Tests for [Story: Groups ReST API]
 | json-path-is    | $[0].name                 | alpha |
 
 ####################
+| *Comment*       | Simple filter              |       |
+| GET-json        | /data/groups?q=title:alpha |       |
+| code-is         | 200                        |       |
+| json-parse      |                            |       |
+| json-array-size | 1                          |       |
+| json-path-is    | $[0].name                  | alpha |
+
+####################
+| *Comment*       | Simple filter              |       |
+| GET-json        | /data/groups?q=sounds_like:alfa |       |
+| code-is         | 200                        |       |
+| json-parse      |                            |       |
+| json-array-size | 1                          |       |
+| json-path-is    | $[0].name                  | alpha |
+
+####################
 | *Comment*       | Simple filter                         |       |
 | GET-json        | /data/groups?filter=description:booya |       |
 | code-is         | 200                                   |       |
 | json-parse      |                                       |       |
 | json-array-size | 3                                     |       |
 | json-path-is    | $[0].name                             | alpha |
+
 | *Comment*       | Simple filter                         |       |
 | GET-json        | /data/groups?q=desc:booya             |       |
 | code-is         | 200                                   |       |
@@ -154,6 +171,28 @@ Tests for [Story: Groups ReST API]
 | json-path-is      | $.entry[0].name                        | delta |
 | json-path-is      | $.entry[1].name                        | gamma |
 | json-path-missing | $.entry[2]                             |       |
+
+####################
+| *Comment*       | all field search     |
+| GET-json        | /data/groups?q=booya |
+| code-is         | 200                  |
+| json-parse      |                      |
+| json-array-size | 3                    |
+
+####################
+| *Comment*       | boolean AND search                      |
+| GET-json        | /data/groups?filter=booya+AND+alpha |
+| code-is         | 200                                 |
+| json-parse      |                                     |
+| json-array-size | 1                                   |
+
+####################
+| *Comment*       | boolean OR search               |
+| GET-json        | /data/groups?filter=alpha+delta |
+| code-is         | 200                             |
+| json-parse      |                                 |
+| json-array-size | 2                               |
+
 
 
 ####################
