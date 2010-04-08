@@ -491,7 +491,7 @@ account_import_preserves_direct_and_indirect_uars: {
 }
 
 account_import_system_user_roles: {
-    pass 'TEST: Preserves UARs; Users Primary Account';
+    pass 'TEST: importing of system-created user roles';
     my $account = create_test_account_bypassing_factory();
     my $acct_name = $account->name;
     my $user    = create_test_user(account => $account);
