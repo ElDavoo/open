@@ -200,8 +200,11 @@ sub update_store {
 # Delete the Group Homunculus from the system.
 sub delete {
     my $self = shift;
+    my $group_id = $self->group_id;
     my $factory = $self->factory();
     $factory->Delete($self, @_);
+
+    Socialtext::JobCreator->index_group($group_id);
 }
 
 no Moose;
