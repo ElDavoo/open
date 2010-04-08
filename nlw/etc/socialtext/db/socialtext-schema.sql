@@ -1151,12 +1151,6 @@ UNION ALL
    FROM user_set_path path
    JOIN user_set_plugin plug ON path.into_set_id = plug.user_set_id;
 
-CREATE TABLE user_set_role_permission (
-    user_set_id integer NOT NULL,
-    role_id integer NOT NULL,
-    permission_id integer NOT NULL
-);
-
 CREATE VIEW user_use_plugin AS
   SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_plugin.plugin
    FROM user_set_path
@@ -1445,10 +1439,6 @@ ALTER TABLE ONLY user_set_plugin
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey
             PRIMARY KEY (user_id);
-
-ALTER TABLE ONLY user_set_role_permission
-    ADD CONSTRAINT usrp_pk
-            PRIMARY KEY (user_set_id, role_id, permission_id);
 
 CREATE UNIQUE INDEX "Account___name"
 	    ON "Account" (name);
@@ -1863,12 +1853,6 @@ CREATE UNIQUE INDEX users_lower_username_driver_key
 CREATE INDEX users_that_are_hidden
 	    ON users (user_id)
 	    WHERE is_profile_hidden;
-
-CREATE INDEX usrp_perm_lookup_ix
-	    ON user_set_role_permission (permission_id, user_set_id);
-
-CREATE INDEX usrp_perm_lookup_rev_ix
-	    ON user_set_role_permission (user_set_id, permission_id);
 
 CREATE INDEX watchlist_user_workspace
 	    ON "Watchlist" (user_id, workspace_id);
@@ -2293,16 +2277,6 @@ ALTER TABLE ONLY "UserMetadata"
             FOREIGN KEY (primary_account_id)
             REFERENCES "Account"(account_id) ON DELETE CASCADE;
 
-ALTER TABLE ONLY user_set_role_permission
-    ADD CONSTRAINT usrp_permission_fk
-            FOREIGN KEY (permission_id)
-            REFERENCES "Permission"(permission_id) ON DELETE RESTRICT;
-
-ALTER TABLE ONLY user_set_role_permission
-    ADD CONSTRAINT usrp_role_fk
-            FOREIGN KEY (role_id)
-            REFERENCES "Role"(role_id) ON DELETE RESTRICT;
-
 ALTER TABLE ONLY "Watchlist"
     ADD CONSTRAINT watchlist_user_fk
             FOREIGN KEY (user_id)
@@ -2334,4 +2308,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '115');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '114');
