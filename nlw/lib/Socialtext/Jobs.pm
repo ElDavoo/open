@@ -81,6 +81,8 @@ sub job_to_string {
         if $job->arg->{page_id};
     $string .= ";user=".$job->arg->{user_id}
         if $job->arg->{user_id};
+    $string .= ";group=".$job->arg->{group_id}
+        if $job->arg->{group_id};
 
     if ($shortname eq 'Cmd') {
         $string .= ";cmd=".$job->arg->{cmd};
