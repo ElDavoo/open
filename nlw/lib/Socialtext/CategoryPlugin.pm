@@ -512,7 +512,6 @@ EOT
     }
     $data{maxCount} = $max;
     $data{tags} = \@keepers;
-    $data{sorted_tags} = [ sort { $a cmp $b } @keepers ];
     return %data;
 }
 
