@@ -194,7 +194,7 @@ sub update_store {
     # Have the Factory update the record
     $factory->Update($self, $proto_group);
 
-    Socialtext::JobCreator->index_group($proto_group);
+    Socialtext::JobCreator->index_group($self->group_id);
 }
 
 # Delete the Group Homunculus from the system.
