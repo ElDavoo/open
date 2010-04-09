@@ -97,6 +97,24 @@ Tests for [Story: Groups ReST API]
 | set-business-admin | %%badmin%% | 1        |
 | http-user-pass     | %%badmin%% | password |
 
+
+| create-group | skrømt | | | moji |
+| st-process-jobs | |
+| add-user-to-group | %%badmin%% | %%group_id%% |
+
+###################
+| *Comment*       | UTF-8 diplays correctly |         |
+| GET-json        | /data/groups?q=moji     |         |
+| code-is         | 200                     |         |
+| json-parse      |                         |         |
+| json-array-size | 1                       |         |
+| json-path-is    | $[0].name               | skrømt  |
+| GET-json        | /data/groups?q=skrømt   |         |
+| code-is         | 200                     |         |
+| json-parse      |                         |         |
+| json-array-size | 1                       |         |
+| json-path-is    | $[0].name               | skrømt  |
+
 | delete-all-groups |
 | create-group | alpha   | | | booya |
 | create-group | beta    | | | booya |
