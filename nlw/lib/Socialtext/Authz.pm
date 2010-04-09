@@ -19,11 +19,47 @@ sub user_has_permission_for_workspace {
         @_
     );
 
+    # TODO: make this like the other two containers
     return 0 unless $p{workspace}->real;
     return $p{workspace}->permissions->user_can(
-            user       => $p{user},
-            permission => $p{permission},
-        );
+        user       => $p{user},
+        permission => $p{permission},
+    );
+}
+
+sub _user_has_permission_for_container {
+    my $self = shift;
+    my %p = (
+        permission => undef,
+        container  => undef,
+        user       => undef,
+        id_matrix  => undef,
+        @_
+    );
+
+    return 0 unless $p{permission};
+    my $pname = ref($p{permission}) ? $p{permission}->name : $p{permission};
+
+    my @role_ids = $p{container}->role_for_user($p{user}, ids_only => 1);
+    push @role_ids, $p{user}->is_guest
+        ? Socialtext::Role->Guest->role_id
+        : Socialtext::Role->AuthenticatedUser->role_id;
+
+    for my $role_id (@role_ids) {
+        my $m = $p{id_matrix}->{$role_id} || [];
+        return 1 if any {$_ eq $pname} @$m;
+    }
+    return 0;
+}
+
+sub _role_matrix_to_id_matrix {
+    my $matrix = shift;
+    my %id_matrix;
+    for my $role (keys %$matrix) {
+        my $role_id = Socialtext::Role->new(name => $role)->role_id;
+        $id_matrix{$role_id} = $matrix->{$role};
+    }
+    return \%id_matrix;
 }
 
 # Hardcode the permissions matrix in here for now. When it comes time to
@@ -32,10 +68,12 @@ sub user_has_permission_for_workspace {
 {
     # Warning: permissions here must also exist in the ST::Permission module.
     my %matrix = (
-        admin  => [qw/admin read edit/],
-        member => [qw/read edit/],
-        guest  => [],
+        admin              => [qw/admin read edit/],
+        member             => [qw/      read edit/],
+        authenticated_user => [                   ],
+        guest              => [                   ],
     );
+    my $id_matrix;
 
     sub user_has_permission_for_group {
         my $self = shift;
@@ -46,17 +84,42 @@ sub user_has_permission_for_workspace {
             @_
         );
 
+        # XXX NOTE: business admins have special privileges for groups
         return 1 if $p{user}->is_business_admin;
 
-        my $role = $p{group}->role_for_user($p{user});
-        my $role_name = $role ? $role->name : 'guest';
+        $id_matrix ||= _role_matrix_to_id_matrix(\%matrix);
+        $p{container} = delete $p{group},
+        return $self->_user_has_permission_for_container(
+            %p, id_matrix  => $id_matrix,
+        );
+    }
+}
 
-        return 0 unless $p{permission};
-        my $pname = ref($p{permission}) ? $p{permission}->name : $p{permission};
+{
+    # Warning: permissions here must also exist in the ST::Permission module.
+    my %matrix = (
+        admin              => [qw/admin read edit            /],
+        member             => [qw/      read edit            /],
+        impersonator       => [qw/      read edit impersonate/],
+        authenticated_user => [                               ],
+        guest              => [                               ],
+    );
+    my $id_matrix;
 
-        my $set = $matrix{$role_name};
-        return 0 unless $set;
-        return (any { $_ eq $pname } @$set) ? 1 : 0;
+    sub user_has_permission_for_account {
+        my $self = shift;
+        my %p = (
+            permission => undef,
+            account    => undef,
+            user       => undef,
+            @_
+        );
+
+        $id_matrix ||= _role_matrix_to_id_matrix(\%matrix);
+        $p{container} = delete $p{account},
+        return $self->_user_has_permission_for_container(
+            %p, id_matrix  => $id_matrix,
+        );
     }
 }
 

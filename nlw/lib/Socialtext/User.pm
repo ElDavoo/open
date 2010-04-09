@@ -1649,6 +1649,24 @@ sub primary_account {
     return $new_account;
 }
 
+sub can_be_impersonated_by {
+    my $self = shift;
+    my $actor = shift;
+
+    # Account-level impersonation works at least partially on membership, so
+    # it shouldn't be possible to impersonate/be-impersonated with
+    # system-created users.
+    Socialtext::Exception::Auth->throw(
+        "System-created users cannot be impersonated"
+    ) if $self->is_system_created;
+
+    Socialtext::Exception::Auth->throw(
+        "System-created users cannot impersonate"
+    ) if $actor->is_system_created;
+
+    return $self->primary_account->impersonation_ok($actor => $self);
+}
+
 sub accounts_and_groups {
     my ($self,%p) = @_;
     $p{plugin} ||= 'people';

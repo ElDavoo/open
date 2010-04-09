@@ -16,6 +16,7 @@ use List::MoreUtils qw/any/;
 use namespace::clean -except => 'meta';
 
 requires 'user_set_id';
+requires 'impersonation_ok';
 
 has 'user_set' => (
     is => 'ro', isa => 'Socialtext::UserSet',
@@ -464,19 +465,28 @@ for my $thing_name (qw(user group account)) {
         my %p = (@_==1) ? %{$_[0]} : @_;
  
         confess "must supply a $thing_name" unless $thing_checker->($o);
+        my @return;
         if ($p{direct}) {
             my $role_id = $self->user_set->direct_object_role($o);
+            return $role_id if $p{ids_only};
             return Socialtext::Role->new(role_id => $role_id);
         }
         else {
             my @role_ids = $self->user_set->object_roles($o);
-            # FIXME: this sort function is lame; it doesn't consider permissions
-            # at all and it uses hash params pointlessly.
-            my @roles = map { Socialtext::Role->new(role_id => $_) } @role_ids;
-            @roles = Socialtext::Role->SortByEffectiveness(roles => \@roles);
-            @roles = reverse @roles;
-            return @roles if wantarray;
-            return $roles[0];
+            if ($p{ids_only}) {
+                return @role_ids if wantarray;
+                return $role_ids[0];
+            }
+            else {
+                # FIXME: this sort function is lame; it doesn't consider
+                # permissions at all and it uses hash params pointlessly.
+                my @roles =
+                    map { Socialtext::Role->new(role_id => $_) } @role_ids;
+                @roles = Socialtext::Role->SortByEffectiveness(roles=>\@roles);
+                @roles = reverse @roles;
+                return @roles if wantarray;
+                return $roles[0];
+            }
         }
     };
 

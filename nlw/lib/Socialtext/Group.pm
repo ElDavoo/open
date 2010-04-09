@@ -571,6 +571,10 @@ sub _build_workspace_count {
     return shift->workspaces->count;
 }
 
+sub impersonation_ok {
+    # group-context impersonation is never allowed
+    return;
+}
 
 __PACKAGE__->meta->make_immutable;
 1;
