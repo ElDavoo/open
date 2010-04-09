@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 336;
+use Test::Socialtext tests => 320;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -1046,101 +1046,6 @@ CREATE_ACCOUNT: {
     );
 }
 
-SET_PERMISSIONS: {
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [qw( --workspace admin --permissions public-read-only )] )
-                ->set_permissions();
-        },
-        qr/\QThe permissions for the admin workspace have been changed to public-read-only.\E/,
-        'set-permissions success message'
-    );
-
-    my $ws = Socialtext::Workspace->new( name => 'admin' );
-    ok(
-        $ws->permissions->role_can(
-            role       => Socialtext::Role->Guest(),
-            permission => Socialtext::Permission->new( name => 'read' ),
-        ),
-        'guest has read permission'
-    );
-    ok(
-        !$ws->permissions->role_can(
-            role       => Socialtext::Role->Guest(),
-            permission => Socialtext::Permission->new( name => 'edit' ),
-        ),
-        'guest does not have edit permission'
-    );
-
-    # Rainy day
-    expect_failure(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [qw( --workspace admin --permissions monkeys-only )] )
-                ->set_permissions();
-        },
-        qr/\QThe 'monkeys-only' permission does not exist.\E/,
-        'set-permissions error message'
-    );
-}
-
-ADD_REMOVE_PERMISSION: {
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [qw( --workspace admin --permission edit --role guest )] )
-                ->add_permission();
-        },
-        qr/\QThe edit permission has been granted to the guest role in the admin workspace.\E/,
-        'add-permission success message'
-    );
-
-    my $ws = Socialtext::Workspace->new( name => 'admin' );
-    ok(
-        $ws->permissions->role_can(
-            role       => Socialtext::Role->Guest(),
-            permission => Socialtext::Permission->new( name => 'edit' ),
-        ),
-        'guest has edit permission'
-    );
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [qw( --workspace admin --permission edit --role guest )] )
-                ->remove_permission();
-        },
-        qr/\QThe edit permission has been revoked from the guest role in the admin workspace.\E/,
-        'remove-permission success message'
-    );
-
-    ok(
-        !$ws->permissions->role_can(
-            role       => Socialtext::Role->Guest(),
-            permission => Socialtext::Permission->new( name => 'edit' ),
-        ),
-        'guest does not have edit permission'
-    );
-}
-
-SHOW_ACLS: {
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv => [qw( --workspace help-en )] )
-                ->show_acls();
-        },
-        qr/\Qpermission set name: public-read-only\E
-           .+
-           \|\s+admin_workspace\s+\|\s+\|\s+\|\s+\|\s+\|\s+X\s+\|\s+\|\s+
-           \|\s+attachments\s+\|\s+\|\s+\|\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
-           .+
-           \|\s+read\s+\|\s+X\s+\|\s+X\s+\|\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
-          /xs,
-        'show-acls'
-    );
-}
-
 PURGE_ATTACHMENT: {
     my ( $hub, $main )
         = Socialtext::CLI->new( argv => [qw( --workspace foobar )] )
@@ -2082,26 +1987,11 @@ SHOW_ADMINS: {
     );
 }
 
-SHOW_IMPERSONATORS: {
-    # At this point, devnull2@socialtext.com is an impersonator in the foobar workspace
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --workspace foobar )
-                ]
-            )->show_impersonators();
-        },
-        qr/Last \|\n\| devnull2\@socialtext.com/s,
-        'show-impersonators has correct list'
-    );
-}
-
 # Dear developer:
 #
-# Please consider making a new CLI-$feature.t test rather than
+# Please consider making a new CLI/$feature.t test rather than
 # appending to this one. The fixtures required for this test are rather
-# heavyweight. You may wish to clone t/Socialtext/CLI-deactivate.t; it's a
+# heavyweight. You may wish to clone t/Socialtext/CLI/deactivate.t; it's a
 # good example.
 #
 # Sincerely,
