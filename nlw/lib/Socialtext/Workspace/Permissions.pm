@@ -414,13 +414,7 @@ sub SetNameIsValid {
     return $PermissionSets{$name} ? 1 : 0;
 }
 
-{
-    my $cache;
-    sub cache {
-        return $cache ||= Socialtext::Cache->cache('ws_perms');
-    }
-}
-
+sub cache { Socialtext::Cache->cache('ws_perms') }
 
 1;
 

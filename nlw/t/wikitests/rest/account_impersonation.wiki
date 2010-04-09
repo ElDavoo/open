@@ -15,10 +15,10 @@
             AND desired_user is a member of the workspace
             AND user_agent has impersonate permission in this workspace)
         {
-            swtich users # test case 2
+            switch users # test case 2
         }
         else if (user_agent has impersonate in desired_user's primary account) {
-            swtich users # test case 3
+            switch users # test case 3
         }
         else {
             deny(403) # test case 4
@@ -38,21 +38,30 @@
 
 .pre
 
-| set | ctwiki | Content-Type=text/x.socialtext-wiki |
-| set | ctjson | Content-Type=application/json       |
-| set | xobo   | X-on-behalf-of=desired-%%username%% |
-
 Create a standard test setup, with a desired user, an ws impersonator and an acct impersonator
 | standard-test-setup |                       |               |              |
 | create-user         | desired-%%username%%  | password      | %%account%%  |
+| set                 | desired_user_id       | %%user_id%%   |              |
 | create-user         | ws-imp-%%username%%   | password      | %%account%%  |
+| set                 | ws_imp_user_id        | %%user_id%%   |              |
 | create-user         | acct-imp-%%username%% | password      | %%account%%  |
+| set                 | acct_imp_user_id      | %%user_id%%   |              |
+| create-user         | plain-%%username%%    | password      | %%account%%  |
+| create-user         | ba-%%username%%       | password      | %%account%%  |
+| set-business-admin  | ba-%%username%%       |               |              |
 | add-member          | desired-%%username%%  | %%workspace%% |              |
 | add-member          | ws-imp-%%username%%   | %%workspace%% | impersonator |
 | add-user-to-account | acct-imp-%%username%% | %%account%%   | impersonator |
 
+| set | ctwiki | Content-Type=text/x.socialtext-wiki |
+| set | ctjson | Content-Type=application/json       |
+| set | xobo   | X-on-behalf-of=desired-%%username%% |
+| set | xobog  | X-on-behalf-of=guest                |
+| set | xobos  | X-on-behalf-of=system               |
+
 Create a standard test setup with a account impersonator and add the desired user created in the main account as a member (secondary) of this secondary account and to a workspace in this account
 | standard-test-setup | secondary              |                         |              |
+| set                 | secondary_user_id      | %%user_id%%             |              |
 | add-user-to-account | %%secondary_username%% | %%secondary_account%%   | impersonator |
 | add-user-to-account | desired-%%username%%   | %%secondary_account%%   | member       |
 | add-member          | desired-%%username%%   | %%secondary_workspace%% |              |
@@ -74,38 +83,70 @@ _Test case 2 is covered in other tests_
 | http-user-pass  | acct-imp-%%username%%                         | password            |                |
 | st-clear-events |                                               |                     |                |
 | put             | /data/workspaces/%%workspace%%/pages/pagenew1 | %%ctwiki%%,%%xobo%% | Hello i'm fake |
-| code-is         | 204                                           |                     |                |
-| get             | /%%workspace%%/index.cgi?pagenew1             |                     |                |
-| code-is         | 200                                           |                     |                |
-| body-like       | desired-%%username%%                          |                     |                |
-| http-user-pass  | desired-%%username%%                          | password            |                |
-| get             | /data/events                                  | application/json    |                |
-| code-is         | 200                                           |                     |                |
-| body-like       | desired-%%username%%                          |                     |                |
-| body-unlike     | acct-imp-%%username%%                         |                     |                |
+| code-is         | 201                                           |                     |                |
+
+| http-user-pass | desired-%%username%%                          | password             |
+| get-json       | /data/workspaces/%%workspace%%/pages/pagenew1 |                      |
+| code-is      | 200        |                      |
+| json-parse   |            |                      |
+| json-path-is | $.last_editor | desired-%%username%% |
+
+| Comment | Verify page event recorded as desired user | |
+| get-json       | /data/events  |                      |
+| code-is        | 200           |                      |
+| json-parse     |               |                      |
+| json-path-is   | $[0].actor.id | %%desired_user_id%%  |
+| json-path-isnt | $[0].actor.id | %%acct_imp_user_id%% |
 
 *Test case 4 (partial)*
-Desired user's *primary* account is *not* the one for which the user has impersonator rights
+Desired user's *primary* account is *not* the one for which the user has impersonator rights (the DU is *in* the account, but not *owned by* the account of the impersonator).
 
 | Comment         | No Workspace Access from Acct Impersonation             |                     |                |
-| http-user-pass  | acct-imp-%%secondary_username%%                         | password            |                |
+| http-user-pass  | %%secondary_username%%                                  | secondary_password  |                |
 | st-clear-events |                                                         |                     |                |
 | put             | /data/workspaces/%%secondary_workspace%%/pages/pagenew1 | %%ctwiki%%,%%xobo%% | Hello i'm fake |
 | code-is         | 403                                                     |                     |                |
 
 *Test Case 5*
 Put a signal as a user
-| Comment        | Impersonator Signals  |                     |                          |
-| http-user-pass | acct-imp-%%username%% | password            |                          |
-| post           | /data/signals         | %%xobo%%,%%ctjson%% | {"signal":"I am sekrit"} |
-| code-is        | 204                   |                     |                          |
-| get            | /data/signals         | application/json    |                          |
-| code-is        | 200                   |                     |                          |
-| body-like      | desired-%%username%%  |                     |                          |
-| body-unlike    | acct-imp-%%username%% |                     |                          |
+
+| Comment        | Impersonator Signals  |                      |                          |
+| http-user-pass | acct-imp-%%username%% | password             |                          |
+| post           | /data/signals         | %%xobo%%,%%ctjson%%  | {"signal":"I am sekrit"} |
+| code-is        | 201                   |                      |                          |
+| get            | /data/signals         | application/json     |                          |
+| code-is        | 200                   |                      |                          |
+| json-parse     |                       |                      |                          |
+| json-path-is   | $[0].user_id          | %%desired_user_id%%  |                          |
+| json-path-isnt | $[0].user_id          | %%acct_imp_user_id%% |                          |
 
 | Comment        | Non-Primary Impersonator Can't Signal |                     |                          |
-| http-user-pass | %%secondary_username%%                | password            |                          |
+| http-user-pass | %%secondary_username%%                | secondary_password            |                          |
 | post           | /data/signals                         | %%xobo%%,%%ctjson%% | {"signal":"I am sneaky"} |
 | code-is        | 403                                   |                     |                          |
 
+*Other negative test cases*
+
+Non-impersonator member of acct can't impersonate in acct
+
+| Comment        | Non-impersonator can't impersonate in acct |                     |                          |
+| http-user-pass | plain-%%username%%                         | password            |                          |
+| post           | /data/signals                              | %%xobo%%,%%ctjson%% | {"signal":"I am sekrit"} |
+| code-is        | 403                                        |                     |                          |
+
+Can't impersonate guest or system
+| Comment        | Cannot Impersonate Guest |                      |                          |
+| http-user-pass | acct-imp-%%username%%     | password             |                          |
+| post           | /data/signals             | %%xobog%%,%%ctjson%% | {"signal":"I am sekrit"} |
+| code-is        | 403                       |                      |                          |
+
+| Comment        | Cannot Impersonate System User |                      |                          |
+| http-user-pass | acct-imp-%%username%%     | password             |                          |
+| post           | /data/signals             | %%xobos%%,%%ctjson%% | {"signal":"I am sekrit"} |
+| code-is        | 403                       |                      |                          |
+
+Business admin doesn't get impersonate rights implicitly
+| Comment        | Bus Admin Can't Impersonate |                     |                          |
+| http-user-pass | ba-%%username%%             | password            |                          |
+| post           | /data/signals               | %%xobo%%,%%ctjson%% | {"signal":"I am sekrit"} |
+| code-is        | 403                         |                     |                          |

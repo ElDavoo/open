@@ -2,7 +2,6 @@ Test case for on-behalf-of functionality in a Workspace context.
 * Fixture: SocialRest
 
 | standard-test-setup |                |               |
-| set                 | test_workspace | %%workspace%% |
 | set | impersonator | bot%%start_time%%@ken.socialtext.net |
 | set | impersonated | alice%%start_time%%@ken.socialtext.net |
 | create-user | %%impersonator%% | password | %%account%% | Autobot Decepticon |
