@@ -1,22 +1,14 @@
-# @COPYRIGHT@
 package Socialtext::Authz;
-use strict;
-use warnings;
-
-our $VERSION = '0.02';
-
+# @COPYRIGHT@
+use Moose;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_singlevalue sql_execute/;
 use Socialtext::Cache;
 use Socialtext::User::Default::Users qw(:system-user);
 use List::MoreUtils qw/any/;
+use namespace::clean -except => 'meta';
 
-# In the future this might be a factory but for now we'll just make it
-# nice and simple
-sub new {
-    my $class = shift;
-    return bless {}, $class;
-}
+our $VERSION = '1.0';
 
 sub user_has_permission_for_workspace {
     my $self = shift;
@@ -226,6 +218,7 @@ sub plugin_enabled_for_user_set {
     return (any { $_ eq $plugin_name } @plugins) ? 1 : 0;
 }
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
 __END__
 
