@@ -138,6 +138,9 @@ sub GetGroupHomunculus {
         $self->CreateInitialRelationships( $proto_group );
     }
 
+    # Re-index the freshly created/updated group.
+    Socialtext::JobCreator->index_group($proto_group->{group_id});
+
     my $homey = $self->NewGroupHomunculus($proto_group);
 
     if ($Asynchronous) {
