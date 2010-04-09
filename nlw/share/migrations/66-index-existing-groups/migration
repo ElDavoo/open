@@ -1,11 +1,9 @@
 #!/usr/bin/perl
 # @COPYRIGHT@
-
 use strict;
 use warnings;
-use Socialtext::Group;
+use Socialtext::Migration::Utils qw/create_job/;
 
+create_job('ReindexGroups');
 
-print "Creating GroupIndex jobs ...\n";
-my $jobs = Socialtext::Group->IndexGroups();
-print "Done - created $jobs jobs.\n";
+exit 0;
