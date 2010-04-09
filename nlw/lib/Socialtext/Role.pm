@@ -32,10 +32,11 @@ Readonly my @RequiredRoles => (
 sub EnsureRequiredDataIsPresent {
     my $class = shift;
 
+    _cache_clear();
     for my $role (@RequiredRoles) {
         my ( $name, $default ) = @$role;
 
-        next if $class->new( name => $name );
+        next if $class->new( name => $name, _no_seed => 1 );
 
         $class->create(
            name            => $name,
@@ -54,11 +55,14 @@ sub EnsureRequiredDataIsPresent {
         name    => 1,
         role_id => 1,
     );
-    my %role_cache = map { $_ => +{} } keys %ValidCacheKeys;
+    my $seeded = 0;
+    my %role_cache;
+
     sub _cache_fetch {
         my ($name, $key) = @_;
         return $role_cache{$name}{$key};
     }
+
     sub _cache_add {
         my $role = shift;
         foreach my $name (keys %ValidCacheKeys) {
@@ -66,6 +70,7 @@ sub EnsureRequiredDataIsPresent {
             $role_cache{$name}{$key} = $role;
         }
     }
+
     sub _cache_remove {
         my $role = shift;
         foreach my $name (keys %ValidCacheKeys) {
@@ -73,10 +78,28 @@ sub EnsureRequiredDataIsPresent {
             delete $role_cache{$name}{$key};
         }
     }
+
+    sub _cache_seed {
+        return if $seeded;
+        my $sth = sql_execute(
+            q{SELECT role_id, name, used_as_default FROM "Role"});
+        while (my $row = $sth->fetchrow_hashref) {
+            my $role = bless $row, __PACKAGE__;
+            $role_cache{role_id}{$role->{role_id}} = $role;
+            $role_cache{name}{$role->{name}} = $role;
+        }
+    }
+
+    sub _cache_clear {
+        %role_cache = map { $_ => +{} } keys %ValidCacheKeys;
+    }
+    _cache_clear(); # initializes the cache
 }
 
 sub new {
     my ( $class, %p ) = @_;
+
+    _cache_seed() unless $p{_no_seed};
 
     my($role_key, $val);
     if (exists $p{name}) {
@@ -178,10 +201,7 @@ sub DefaultRoleNames {
 sub All {
     my ( $class, %p ) = @_;
 
-    my $sth = sql_execute(
-        'SELECT role_id'
-        . ' FROM "Role"'
-        . ' ORDER BY name' );
+    my $sth = sql_execute('SELECT role_id FROM "Role" ORDER BY name');
 
     return Socialtext::MultiCursor->new(
         iterables => [ $sth->fetchall_arrayref ],
