@@ -461,6 +461,11 @@ sub _getCurrentTags {
     my %weighted_tags;
     if (@$page_tags) {
         %weighted_tags = $self->hub->category->weight_categories(@$page_tags);
+
+        $weighted_tags{sorted_tags} = [
+            sort { lc($a->{name}) cmp lc($b->{name}) }
+            @{ $weighted_tags{tags} }
+        ];
     }
 
     return \%weighted_tags;
