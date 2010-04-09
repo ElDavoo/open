@@ -82,8 +82,12 @@ _Test case 2 is covered in other tests_
 | Comment         | Workspace Access from Acct Impersonation      |                     |                |
 | http-user-pass  | acct-imp-%%username%%                         | password            |                |
 | st-clear-events |                                               |                     |                |
+| st-clear-log |
 | put             | /data/workspaces/%%workspace%%/pages/pagenew1 | %%ctwiki%%,%%xobo%% | Hello i'm fake |
 | code-is         | 201                                           |                     |                |
+| log-like | acct-imp-%%username%% is impersonating desired-%%username%% |
+| log-like | CREATE,PAGE[\S]+desired-%%username%% |
+| log-unlike | CREATE,PAGE[\S]+acct-imp-%%username%% |
 
 | http-user-pass | desired-%%username%%                          | password             |
 | get-json       | /data/workspaces/%%workspace%%/pages/pagenew1 |                      |
@@ -111,6 +115,7 @@ Desired user's *primary* account is *not* the one for which the user has imperso
 Put a signal as a user
 
 | Comment        | Impersonator Signals  |                      |                          |
+| st-clear-log |
 | http-user-pass | acct-imp-%%username%% | password             |                          |
 | post           | /data/signals         | %%xobo%%,%%ctjson%%  | {"signal":"I am sekrit"} |
 | code-is        | 201                   |                      |                          |
@@ -119,6 +124,10 @@ Put a signal as a user
 | json-parse     |                       |                      |                          |
 | json-path-is   | $[0].user_id          | %%desired_user_id%%  |                          |
 | json-path-isnt | $[0].user_id          | %%acct_imp_user_id%% |                          |
+| log-like | acct-imp-%%username%% is impersonating desired-%%username%% |
+| log-like | SIGNAL,CREATE[^\r\n]+sender:%%desired_user_id%% |
+| log-unlike | SIGNAL,CREATE[^\r\n]+sender:%%acct_imp_user_id%% |
+
 
 | Comment        | Non-Primary Impersonator Can't Signal |                     |                          |
 | http-user-pass | %%secondary_username%%                | secondary_password            |                          |
