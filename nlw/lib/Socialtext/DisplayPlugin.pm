@@ -463,11 +463,6 @@ sub _getCurrentTags {
         %weighted_tags = $self->hub->category->weight_categories(@$page_tags);
     }
 
-    foreach my $tag (@{$weighted_tags{tags}}) {
-        $tag->{page_count} = $tag->{page_count};
-    }
-    $weighted_tags{maxCount} = $weighted_tags{maxCount};
-
     return \%weighted_tags;
 }
 
