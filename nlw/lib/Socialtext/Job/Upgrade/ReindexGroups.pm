@@ -1,7 +1,7 @@
 package Socialtext::Job::Upgrade::ReindexGroups;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::Groups;
+use Socialtext::Group;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
@@ -11,7 +11,7 @@ sub do_work {
     my $ws   = $self->workspace or return;
     my $hub  = $self->hub or return;
 
-    eval { Socialtext::Groups->IndexGroups() };
+    eval { Socialtext::Group->IndexGroups() };
     $self->hub->log->error($@) if $@;
 
     $self->completed();
