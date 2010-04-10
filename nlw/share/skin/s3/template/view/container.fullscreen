@@ -1,21 +1,33 @@
 <html>
     <head>
+        [% FILTER decorate "head" %]
         <title>[% container.title %]</title>
         <script type="text/javascript" charset="utf-8"
           src="[% wiki.skin_uri('s3') %]/javascript/socialtext-s3.js.gz">
         </script>
         [% INCLUDE element/container_head %]
         [% INCLUDE "element/wiki/js-bootstrap" %]
+        [% PROCESS element/css_links %]
         <style>
-            iframe { width: 100%; height: 100% }
+            iframe {
+                width: 100%;
+            }
+            body {
+                background: white;
+                padding: 5px !important;
+            }
+            .widget {
+                margin: 0 !important;
+            }
         </style>
+        [% END %]
     </head>
     <body>
         [% SET gadget = container.gadgets.0.0 %]
         [% SET num = 0 %]
         [% SET col = 0 %]
         <div class="widget" id="[% gadget.id %]">
-                [% INCLUDE 'widget/iframe' %]
+            [% INCLUDE 'widget/iframe' %]
         </div>
 
         <script>
