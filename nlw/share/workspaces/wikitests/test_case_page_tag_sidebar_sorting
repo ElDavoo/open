@@ -12,18 +12,18 @@ Addresses Bug {bz: 3421}
 
 | *Comment* | Test Case: Page Tag Sidebar Sorting.  Create some pages and tag them |
 | st-create-wikipage | %%ws_name%%                   | Page Tag Sort 1 |
-| st-add-page-tag    | /%%ws_name%%/?Page Tag Sort 1 | One             | Two | Three |
+| st-add-page-tag    | /%%ws_name%%/?Page Tag Sort 1 | One             | Two | three |
 
 | st-create-wikipage | %%ws_name%%                   | Page Tag Sort 2 |
-| st-add-page-tag    | /%%ws_name%%/?Page Tag Sort 2 | Two             | Three |
+| st-add-page-tag    | /%%ws_name%%/?Page Tag Sort 2 | Two             | three |
 
 | st-create-wikipage | %%ws_name%%                   | Page Tag Sort 3 |
-| st-add-page-tag    | /%%ws_name%%/?Page Tag Sort 3 | Three           |
+| st-add-page-tag    | /%%ws_name%%/?Page Tag Sort 3 | three           |
 
 | *Comment* | Test Case: Page Tag Sidebar Sorting.  Verify *alphabetical* sorting of tags on page "1" |
 | open-ok                     | /%%ws_name%%/?Page Tag Sort 1 |               |
 | wait-for-element-visible-ok | st-tags-listing               | 30000         |
-| text-like                   | st-tags-listing               | One Three Two |
+| text-like                   | st-tags-listing               | One three Two |
 
 | *Comment* | Test Case: Page Tag Sidebar Sorting.  Teardown |
 | st-admin | delete-workspace --workspace %%ws_name%% --no-export | has been deleted |
