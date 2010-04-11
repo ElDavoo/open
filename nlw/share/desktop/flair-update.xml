@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>235</version>
-  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-235.air</url>
-  <description><![CDATA[[Build 235 - Fri Apr  9 03:44:34 PDT 2010]
+  <version>237</version>
+  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-237.air</url>
+  <description><![CDATA[[Build 237 - Sun Apr 11 15:58:43 PDT 2010]
+* Open Permalink in browser for ChocolateRain servers.
+* Suspend Push support for ChocolateRain servers; more ongoing work continues.
+
+[Build 236 - Sat Apr 10 16:34:04 PDT 2010]
+* Convo: "Click to Reply To This Signal" and focuses on the Convo input box.
+
+[Build 235 - Fri Apr  9 03:44:34 PDT 2010]
 * "Log me in automatically" now takes effect upon the first try.
 
 [Build 234 - Thu Mar 25 23:28:07 PDT 2010]
