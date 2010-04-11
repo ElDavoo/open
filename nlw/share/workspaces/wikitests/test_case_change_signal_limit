@@ -1,5 +1,7 @@
 | *Comment* | Test Case: Change Signal Limit |
 
+NOTE: If this test dies in the middle, you may need to go to /console, click setup tab, and change the default signal size to 400 in order to get it to start passing again. Also this test only runs on an appliance.
+
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Change Signal Limit Create two accounts and two users |  |
@@ -40,9 +42,57 @@
 | st-send-signal-via-activities-widget | activities_widget | abc 123 to get fory four out of input box |
 | st-text-unlike-in-activities-widget | activities_widget | %%fourfortysignal%% |
 
-| *Comment* | Test Case: TODO Change Signal Limit set serverwide 200 char limit - see limit |  |
-| *Comment* | Test Case: TODO Change Singal Limit serverwide only works on an appliance for now |  |
-| open_ok | / |  |
+| *Comment* | Test Case: Change Signal Limit set serverwide 300 char limit - see limit |  |
+| open_ok | /console/?rm=Setup |  |
+| wait_for_element_visible_ok | signals_size_limit | 30000 |
+| wait_for_element_visible_ok | set_signals_size_limit | 30000 |
+| type_ok | signals_size_limit | 300 |
+| click_and_wait | set_signals_size_limit |  |
+| open_ok | /st/dashboard |  |
+| st_single_widget_in_dashboard | gallery-widget-Activities |  |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+| st-select-widget-frame | activities_widget |  |
+| text_like | //body | 300 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Change Signal Limit Login set account limit to 200 but server to 100 - see limit of 100 |  |
+| st-search-cp-account | %%twohundredlimit%% |  |
+| wait_for_element_visible_ok | link=%%twohundredlimit%% | 30000 |
+| click_and_wait | link=%%twohundredlimit%% |  |
+| wait_for_text_present_ok | Maximum value for this appliance is | 30000 |
+| wait_for_element_visible_ok | st-signals-size-limit-submit | 30000 |
+| wait_for_element_visible_ok | signals_size_limit | 30000 |
+| type_ok | signals_size_limit | 200 |
+| click_ok | st-signals-size-limit-submit |  |
+| wait_for_text_present_ok | Maximum value for this appliance is | 30000 |
+| verifyValue | signals_size_limit | 200 |
+| open_ok | /console/?rm=Setup |  |
+| wait_for_element_visible_ok | signals_size_limit | 30000 |
+| wait_for_element_visible_ok | set_signals_size_limit | 30000 |
+| type_ok | signals_size_limit | 100 |
+| click_and_wait | set_signals_size_limit |  |
+| open_ok | /st/dashboard |  |
+| st_single_widget_in_dashboard | gallery-widget-Activities |  |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+| st-select-widget-frame | activities_widget |  |
+| text_like | //body | 100 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Change Signal Limit set serverwide limit back to 400 |  |
+| open_ok | /console/?rm=Setup |  |
+| wait_for_element_visible_ok | signals_size_limit | 30000 |
+| wait_for_element_visible_ok | set_signals_size_limit | 30000 |
+| type_ok | signals_size_limit | 400 |
+| click_and_wait | set_signals_size_limit |  |
+| open_ok | /st/dashboard |  |
+| st_single_widget_in_dashboard | gallery-widget-Activities |  |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+| st-select-widget-frame | activities_widget |  |
+| text_like | //body | 400 |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Change Signal Limit Login set serverwide 200 char limit for a specific acct - see limit |  |
 | st-search-cp-account | %%twohundredlimit%% |  |
