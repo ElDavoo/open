@@ -1683,7 +1683,7 @@ CREATE INDEX ix_recent_signal_at_user
 	    ON recent_signal ("at", user_id);
 
 CREATE UNIQUE INDEX ix_recent_signal_hash
-	    ON signal (hash);
+	    ON recent_signal (hash);
 
 CREATE INDEX ix_recent_signal_recipient_at
 	    ON recent_signal (recipient_id, "at");

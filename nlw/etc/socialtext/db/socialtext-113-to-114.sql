@@ -13,7 +13,7 @@ ALTER TABLE signal ALTER COLUMN hash SET NOT NULL;
 ALTER TABLE recent_signal ALTER COLUMN hash SET NOT NULL;
 
 CREATE UNIQUE INDEX ix_signal_hash ON signal (hash);
-CREATE UNIQUE INDEX ix_recent_signal_hash ON signal (hash);
+CREATE UNIQUE INDEX ix_recent_signal_hash ON recent_signal (hash);
 
 CREATE OR REPLACE FUNCTION auto_hash_signal() RETURNS "trigger"
     AS $$
