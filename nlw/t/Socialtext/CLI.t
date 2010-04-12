@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 320;
+use Test::Socialtext tests => 308;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -535,66 +535,6 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
 
     # Cleanup the workspace
     Test::Socialtext::Workspace->delete_recklessly( $workspace );
-}
-
-ADD_REMOVE_WS_ADMIN: {
-    my $ws   = Socialtext::Workspace->new( name => 'foobar' );
-    my $user = Socialtext::User->new( username  => 'test@example.com' );
-    # This adds the workspace to the user's selected workspace list.
-    $ws->add_user( user => $user );
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username test@example.com --workspace foobar )]
-            )->add_workspace_admin();
-        },
-        qr/test\@example\.com now has the role of 'admin' in the foobar Workspace/,
-        'success output from add-admin'
-    );
-
-    my $admin_role = Socialtext::Role->Admin();
-    ok(
-        $ws->user_has_role( user => $user, role => $admin_role ),
-        'user was added to workspace'
-    );
-
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username test@example.com --workspace foobar )]
-            )->add_workspace_admin();
-        },
-        qr/.+ already has the role of 'admin' in the foobar Workspace/,
-        'add-admin when user is already an admin'
-    );
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username test@example.com --workspace foobar )]
-            )->remove_workspace_admin();
-        },
-        qr/test\@example\.com no longer has the role of 'admin' in the foobar Workspace/,
-        'success output from remove-admin'
-    );
-
-    $user = Socialtext::User->new( username => 'test@example.com' );
-    my $member_role = Socialtext::Role->Member();
-    ok(
-        $ws->user_has_role( user => $user, role => $member_role ),
-        'user is now a workspace member, but not an admin'
-    );
-
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username test@example.com --workspace foobar )]
-            )->remove_workspace_admin();
-        },
-        qr/test\@example\.com does not have the role of 'admin' in the .+ Workspace/,
-        'remove-admin when user is not an admin'
-    );
 }
 
 LIST_WORKSPACES: {
@@ -1957,33 +1897,6 @@ SHOW_MEMBERS: {
         },
         qr/\| smtest1\@socialtext.net \| Test1 \| User \|/s,
         'Show members has correct list'
-    );
-}
-
-SHOW_ADMINS: {
-    my $output = '';
-    {
-        local *STDOUT;
-        open STDOUT, '>', '/dev/null';
-        eval {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --email smtest2@socialtext.net --workspace foobar )
-                ]
-            )->add_workspace_admin();
-        };
-    }
-
-    expect_success(
-        sub {
-            $output = Socialtext::CLI->new(
-                argv => [
-                    qw( --workspace foobar )
-                ]
-            )->show_admins();
-        },
-        qr/^(?!.*smtest[1|3]).*smtest2\@socialtext.net \| Test2 \|/s,
-        'Show admins has correct list'
     );
 }
 
