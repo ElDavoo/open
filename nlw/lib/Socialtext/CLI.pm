@@ -1330,9 +1330,8 @@ sub add_workspace_admin {
     return $jump{$type}->();
 }
 
-sub _make_workspace_role_toggler {
+sub _make_workspace_role_downgrader {
     my $rolename    = shift;
-    my $add_p       = shift;
 
     return sub {
         my $self = shift;
@@ -1340,25 +1339,12 @@ sub _make_workspace_role_toggler {
         my $user = $self->_require_user();
         my $ws   = $self->_require_workspace();
 
-        if ( $add_p ) {
-            $self->_ensure_email_passes_filters(
-                $user->email_address,
-                { account => $ws->account, workspace => $ws },
-            );
-        }
-
         require Socialtext::Role;
         my $role         = Socialtext::Role->new( name => $rolename );
         my $display_name = $role->display_name();
 
         my $has_role = $ws->user_has_role(user => $user, role => $role);
-        if ($add_p and $has_role) {
-            $self->_error(loc(
-                "[_1] already has the role of '[_2]' in the [_3] Workspace",
-                $user->username, $role->name, $ws->name
-            ));
-        }
-        elsif (!$add_p and !$has_role) {
+        unless ($has_role) {
             $self->_error(loc(
                 "[_1] does not have the role of '[_2]' in the [_3] Workspace",
                 $user->username, $role->name, $ws->name
@@ -1367,7 +1353,7 @@ sub _make_workspace_role_toggler {
 
         $ws->assign_role_to_user(
             user        => $user,
-            role        => $add_p ? $role : Socialtext::Role->Member,
+            role        => Socialtext::Role->Member,
         );
 
         # special message for removing a role where membership in a group
@@ -1377,14 +1363,10 @@ sub _make_workspace_role_toggler {
         my $current_rolename = $current_user_role->name;
         my $current_role_display_name = $current_user_role->display_name;
 
-        if ((!$add_p)  && 
-            $current_user_role &&
+        if ( $current_user_role &&
             ($current_rolename ne Socialtext::Role->Member->name)) {
             $self->_error(loc("[_1] now has the role of '[_2]' in the [_3] Workspace due to membership in a group", $user->username, $rolename, $ws->name));
         } 
-        elsif ($add_p) {
-            $self->_success(loc("[_1] now has the role of '[_2]' in the [_3] Workspace", $user->username, $rolename, $ws->name));
-        }
         else {
             $self->_success(loc("[_1] no longer has the role of '[_2]' in the [_3] Workspace", $user->username, $rolename, $ws->name));
         }
@@ -1393,8 +1375,8 @@ sub _make_workspace_role_toggler {
 
 {
     no warnings 'once';
-    *remove_workspace_admin        = _make_workspace_role_toggler( 'admin', 0 );
-    *remove_workspace_impersonator = _make_workspace_role_toggler( 'impersonator',    0 );
+    *remove_workspace_admin        = _make_workspace_role_downgrader( 'admin' );
+    *remove_workspace_impersonator = _make_workspace_role_downgrader( 'impersonator' );
 }
 
 sub add_workspace_impersonator {
