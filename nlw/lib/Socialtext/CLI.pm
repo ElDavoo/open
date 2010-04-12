@@ -1394,8 +1394,14 @@ sub _make_workspace_role_toggler {
 {
     no warnings 'once';
     *remove_workspace_admin        = _make_workspace_role_toggler( 'admin', 0 );
-    *add_workspace_impersonator    = _make_workspace_role_toggler( 'impersonator',    1 );
     *remove_workspace_impersonator = _make_workspace_role_toggler( 'impersonator',    0 );
+}
+
+sub add_workspace_impersonator {
+    my $self = shift;
+    return $self->_add_user_to_workspace_as(
+        Socialtext::Role->Impersonator(),
+    );
 }
 
 sub change_password {
