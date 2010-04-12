@@ -177,15 +177,20 @@ sub update_role {
     $self->_insert($dbh, $x, $y, $role_id);
 }
 
-=item remove_set ($n)
+=item remove_set ($n,%opts)
 
-Removes all edges/roles involving node $n.
+Removes all edges/roles involving node $n. Calls the C<purge_user_set()>
+stored procedure to remove references to this user set (as if an C<ON DELETE
+CASCADE> trigger was taking effect).
+
+If the C<< roles_only => 1 >> option is present, only roles are purged;
+the C<purge_user_set()> stored procedure is B<not> called.
 
 =cut
 
 around 'remove_set' => \&_modify_wrapper;
 sub remove_set {
-    my ($self, $dbh, $n) = @_;
+    my ($self, $dbh, $n, %opts) = @_;
 
     my $rows = $dbh->do(q{
         DELETE FROM user_set_include
@@ -193,9 +198,19 @@ sub remove_set {
     }, {}, $n);
     die "node $n doesn't exist" unless $rows>0;
 
-    $dbh->do(q{
-        SELECT purge_user_set($1);
-    }, {}, $n);
+    if ($opts{roles_only}) {
+        $dbh->do(q{
+            DELETE FROM user_set_path
+            WHERE user_set_path_id IN (
+                SELECT user_set_path_id
+                  FROM user_set_path_component
+                 WHERE user_set_id = ?
+            )
+        }, {}, $n);
+    }
+    else {
+        $dbh->do(q{SELECT purge_user_set($1)}, {}, $n);
+    }
     return;
 }
 
