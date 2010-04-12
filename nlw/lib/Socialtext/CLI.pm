@@ -1310,26 +1310,6 @@ sub _remove_thing_from_thing {
     return $self->_success($msg);
 }
 
-sub add_workspace_admin {
-    my $self = shift;
-    my %jump = (
-        'user-workspace'  => sub {
-            $self->_add_user_to_workspace_as(
-                Socialtext::Role->Admin()
-            )
-        },
-        'group-workspace' => sub {
-            $self->_add_group_to_workspace_as(
-                Socialtext::Role->Admin()
-            )
-        },
-    );
-
-    my $type = $self->_type_of_entity_collection_operation( keys %jump );
-
-    return $jump{$type}->();
-}
-
 sub _downgrade_user_to_member_in_workspace {
     my $self      = shift;
     my $user      = shift;
@@ -1380,11 +1360,24 @@ sub _downgrade_user_to_member_in_workspace {
     );
 }
 
-sub add_workspace_impersonator {
+sub add_workspace_admin {
     my $self = shift;
-    return $self->_add_user_to_workspace_as(
-        Socialtext::Role->Impersonator(),
+    my %jump = (
+        'user-workspace'  => sub {
+            $self->_add_user_to_workspace_as(
+                Socialtext::Role->Admin()
+            )
+        },
+        'group-workspace' => sub {
+            $self->_add_group_to_workspace_as(
+                Socialtext::Role->Admin()
+            )
+        },
     );
+
+    my $type = $self->_type_of_entity_collection_operation( keys %jump );
+
+    return $jump{$type}->();
 }
 
 sub remove_workspace_admin {
@@ -1393,6 +1386,13 @@ sub remove_workspace_admin {
     my $ws   = $self->_require_workspace();
     return $self->_downgrade_user_to_member_in_workspace(
         $user, $ws, 'admin',
+    );
+}
+
+sub add_workspace_impersonator {
+    my $self = shift;
+    return $self->_add_user_to_workspace_as(
+        Socialtext::Role->Impersonator(),
     );
 }
 
