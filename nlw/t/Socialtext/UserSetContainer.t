@@ -40,6 +40,7 @@ ok($default_acct->user_set->has_role(
     package Container;
     use Moose;
     has 'user_set_id' => (is => 'rw', isa => 'Int');
+    sub impersonation_ok {return 1};
     with 'Socialtext::UserSetContainer';
 }
 
