@@ -43,7 +43,7 @@ sub munge_raw_query_string {
     $query =~ s/tag:\s*/tag:/gi;   # fix capitalization and allow an extra space
 
     my $field_map = $self->field_map;
-    if ($opts{doctype} eq 'group') {
+    if ($opts{doctype} and $opts{doctype} eq 'group') {
         $field_map->{name} = 'title';
         $field_map->{description} = $field_map->{desc} = 'body';
     }
