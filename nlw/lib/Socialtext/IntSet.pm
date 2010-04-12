@@ -1,4 +1,5 @@
 package Socialtext::IntSet;
+# @COPYRIGHT@
 use Moose;
 use Judy::1 ();
 use Scalar::Util ();
