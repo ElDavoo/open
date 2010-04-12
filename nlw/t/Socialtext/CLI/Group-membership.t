@@ -704,7 +704,7 @@ add_group_as_admin_to_workspace: {
 
 ###############################################################################
 # TEST: add a Group as admin to a WS, Group was already a member.
-add_group_as_admin_to_workspace: {
+add_member_group_as_admin_to_workspace: {
     my $account   = create_test_account_bypassing_factory();
     my $workspace = create_test_workspace(account => $account);
     my $group     = create_test_group();
