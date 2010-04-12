@@ -75,7 +75,7 @@ sub header {
     # Arguments can be passed in as a hash-ref or as an even sized list.
     if (@_) {
         if (@_%2 == 0) { # even-sized list, must be hash
-            %{ $self->{__header} } = ( @_, %{ $self->{__header} } );
+            %{ $self->{__header} } = ( %{ $self->{__header} }, @_ );
         } elsif (ref($_[0]) eq 'HASH') {  # First item must be a hash reference
             %{ $self->{__header} } = ( %{ $_[0] }, %{ $self->{__header} } );
         } else {
