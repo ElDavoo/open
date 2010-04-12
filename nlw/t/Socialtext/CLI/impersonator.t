@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext qw(no_plan);
+use Test::Socialtext tests => 31;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(expect_failure expect_success);
 
