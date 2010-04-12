@@ -1779,6 +1779,45 @@ sub post_signal {
     $self->code_is(201);
 }
 
+sub send_signal {
+    my $self = shift;
+    my $content = shift;
+    my %opts = @_;
+
+    require Socialtext::Signal;
+
+    # Find our user_id if it isn't set
+    my $user_id = $self->{user_id}
+        || Socialtext::User->new(username => $self->{username})->user_id;
+
+    my $signal = eval {
+        Socialtext::Signal->Create(
+            user_id => $user_id,
+            body => $content,
+            %opts,
+        );
+    };
+    if ($@) {
+        fail("Couldn't create signal: $@");
+    }
+
+    $self->{signal_id} = $signal->signal_id;
+    pass("Created signal $self->{signal_id}");
+}
+
+sub send_signal_reply {
+    my $self = shift;
+    my $signal_id = shift;
+
+    $self->send_signal(@_, in_reply_to_id => $signal_id);
+}
+
+sub send_signal_dm {
+    my $self = shift;
+    my $user_id = shift;
+    $self->send_signal(@_, recipient_id => $user_id);
+}
+
 sub post_signals {
     my $self = shift;
     my $count = shift or die;
