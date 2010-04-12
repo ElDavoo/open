@@ -1330,7 +1330,7 @@ sub add_workspace_admin {
     return $jump{$type}->();
 }
 
-sub _make_role_toggler {
+sub _make_workspace_role_toggler {
     my $rolename    = shift;
     my $add_p       = shift;
 
@@ -1393,9 +1393,9 @@ sub _make_role_toggler {
 
 {
     no warnings 'once';
-    *remove_workspace_admin = _make_role_toggler( 'admin', 0 );
-    *add_impersonator       = _make_role_toggler( 'impersonator',    1 );
-    *remove_impersonator    = _make_role_toggler( 'impersonator',    0 );
+    *remove_workspace_admin = _make_workspace_role_toggler( 'admin', 0 );
+    *add_impersonator       = _make_workspace_role_toggler( 'impersonator',    1 );
+    *remove_impersonator    = _make_workspace_role_toggler( 'impersonator',    0 );
 }
 
 sub change_password {
