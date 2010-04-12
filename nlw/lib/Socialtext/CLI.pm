@@ -1330,58 +1330,78 @@ sub add_workspace_admin {
     return $jump{$type}->();
 }
 
-sub _make_workspace_role_downgrader {
-    my $rolename    = shift;
+sub _downgrade_user_to_member_in_workspace {
+    my $self      = shift;
+    my $user      = shift;
+    my $workspace = shift;
+    my $from_role = shift;
 
-    return sub {
-        my $self = shift;
+    my $role = Socialtext::Role->new(name => $from_role);
 
-        my $user = $self->_require_user();
-        my $ws   = $self->_require_workspace();
-
-        require Socialtext::Role;
-        my $role         = Socialtext::Role->new( name => $rolename );
-        my $display_name = $role->display_name();
-
-        my $has_role = $ws->user_has_role(user => $user, role => $role);
-        unless ($has_role) {
-            $self->_error(loc(
-                "[_1] does not have the role of '[_2]' in the [_3] Workspace",
-                $user->username, $role->name, $ws->name
-            ));
-        }
-
-        $ws->assign_role_to_user(
-            user        => $user,
-            role        => Socialtext::Role->Member,
+    unless ($workspace->user_has_role(user => $user, role => $role)) {
+        $self->_error(
+            loc("[_1] does not have the role of '[_2]' in the [_3] Workspace",
+                $user->username, $role->display_name, $workspace->name
+            )
         );
-
-        # special message for removing a role where membership in a group
-        # gives a higher membership level than what the user is left with
-        # after removing an explicit (UWR) role
-        my $current_user_role = $ws->role_for_user($user);
-        my $current_rolename = $current_user_role->name;
-
-        if ( $current_user_role &&
-            ($current_rolename ne Socialtext::Role->Member->name)) {
-            $self->_error(loc("[_1] now has the role of '[_2]' in the [_3] Workspace due to membership in a group", $user->username, $rolename, $ws->name));
-        } 
-        else {
-            $self->_success(loc("[_1] no longer has the role of '[_2]' in the [_3] Workspace", $user->username, $rolename, $ws->name));
-        }
     }
-}
 
-{
-    no warnings 'once';
-    *remove_workspace_admin        = _make_workspace_role_downgrader( 'admin' );
-    *remove_workspace_impersonator = _make_workspace_role_downgrader( 'impersonator' );
+    my $current = $workspace->role_for_user($user, direct => 1);
+    unless ($current) {
+        my $indirect_role = $workspace->role_for_user($user, direct => 0);
+        $self->_error(
+            loc('[_1] is a [_2] of [_3] through a group, and may not be removed directly',
+                $user->username, $indirect_role->name, $workspace->name
+            )
+        )
+    }
+
+    $workspace->assign_role_to_user(
+        user => $user,
+        role => Socialtext::Role->Member,
+    );
+
+    # Let the Admin know if the User has a Group membership which gives a
+    # higher membership level than what the User is left with after
+    # downgrading their explicit Role.
+    $current = $workspace->role_for_user($user);
+    if ($current->name ne Socialtext::Role->Member->name) {
+        $self->_error(
+            loc("[_1] now has the role of '[_2]' in the [_3] Workspace due to membership in a group",
+                $user->username, $current->name, $workspace->name
+            )
+        );
+    } 
+
+    $self->_success(
+        loc("[_1] no longer has the role of '[_2]' in the [_3] Workspace",
+            $user->username, $from_role, $workspace->name
+        )
+    );
 }
 
 sub add_workspace_impersonator {
     my $self = shift;
     return $self->_add_user_to_workspace_as(
         Socialtext::Role->Impersonator(),
+    );
+}
+
+sub remove_workspace_admin {
+    my $self = shift;
+    my $user = $self->_require_user();
+    my $ws   = $self->_require_workspace();
+    return $self->_downgrade_user_to_member_in_workspace(
+        $user, $ws, 'admin',
+    );
+}
+
+sub remove_workspace_impersonator {
+    my $self = shift;
+    my $user = $self->_require_user();
+    my $ws   = $self->_require_workspace();
+    return $self->_downgrade_user_to_member_in_workspace(
+        $user, $ws, 'impersonator',
     );
 }
 
