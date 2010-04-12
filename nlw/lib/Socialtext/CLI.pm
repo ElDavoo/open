@@ -1361,7 +1361,6 @@ sub _make_workspace_role_downgrader {
         # after removing an explicit (UWR) role
         my $current_user_role = $ws->role_for_user($user);
         my $current_rolename = $current_user_role->name;
-        my $current_role_display_name = $current_user_role->display_name;
 
         if ( $current_user_role &&
             ($current_rolename ne Socialtext::Role->Member->name)) {
