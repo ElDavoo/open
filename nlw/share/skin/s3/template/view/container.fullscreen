@@ -1,5 +1,6 @@
 <html>
     <head>
+        [% USE decorate %]
         [% FILTER decorate "head" %]
         <title>[% container.title %]</title>
         <script type="text/javascript" charset="utf-8"
