@@ -53,8 +53,8 @@ QUOTE
         "Multiple Word Search with Stemming"
     );
     search_ok(
-        "bridge idonotexist", 0,
-        "Assert searching defaults to AND connectivity"
+        "bridge idonotexist", 1,
+        "Assert searching defaults to OR connectivity"
     );
     search_ok( 'bridges -smoke',   0, "Search with negation" );
     TODO: {
