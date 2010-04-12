@@ -95,7 +95,7 @@ show-admins
 show-impersonators
 
 | st-admin | show-impersonators | qr/The command you called \(show-impersonators\) requires a workspace to be specified/ |
-| st-admin | add-impersonator --workspace %%cmdline_workspace%% --email devnull1@socialtext.com |  |
+| st-admin | add-workspace-impersonator --workspace %%cmdline_workspace%% --email devnull1@socialtext.com |  |
 | st-admin | show-impersonators --workspace %%cmdline_workspace%% | qr/Email Address.+First.+Last.+devnull1\@socialtext.com/ |
 
 | *Comment* | Test Case: Command Line Tests WORKSPACE Add users from a workspace |

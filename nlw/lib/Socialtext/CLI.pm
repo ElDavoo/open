@@ -1393,9 +1393,9 @@ sub _make_workspace_role_toggler {
 
 {
     no warnings 'once';
-    *remove_workspace_admin = _make_workspace_role_toggler( 'admin', 0 );
-    *add_impersonator       = _make_workspace_role_toggler( 'impersonator',    1 );
-    *remove_impersonator    = _make_workspace_role_toggler( 'impersonator',    0 );
+    *remove_workspace_admin        = _make_workspace_role_toggler( 'admin', 0 );
+    *add_workspace_impersonator    = _make_workspace_role_toggler( 'impersonator',    1 );
+    *remove_workspace_impersonator = _make_workspace_role_toggler( 'impersonator',    0 );
 }
 
 sub change_password {
@@ -3637,8 +3637,6 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   add-group-admin [--username or --email] --group
   remove-workspace-admin [--username or --email] --workspace
   remove-group-admin [--username or --email] --group
-  add-impersonator [--username or --email] --workspace
-  remove-impersonator [--username or --email] --workspace
   disable-email-notify [--username or --email] --workspace
   set-locale [--username or --email] --workspace --locale
   set-user-names [--username or --email] --first-name --last-name
@@ -3658,6 +3656,8 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   add-permission --workspace --role --permission
   remove-permission --workspace --role --permission
+  add-workspace-impersonator [--username or --email] --workspace
+  remove-workspace-impersonator [--username or --email] --workspace
   show-acls --workspace
   show-members --workspace [--direct]
   show-admins --workspace
@@ -3843,17 +3843,6 @@ Given a user and a group, this command remove admin privileges for
 the specified user in the given group, and makes them a normal
 group member.
 
-=head2 add-impersonator [--username or --email] --workspace
-
-Given a user and a workspace, this command makes the specified user an
-impersonator for the given workspace.
-
-=head2 remove-impersonator [--username or --email] --workspace
-
-Given a user and a workspace, this command remove impersonate privileges for
-the specified user in the given workspace, and makes them a normal workspace
-member.
-
 =head2 disable-email-notify [--username or --email] --workspace
 
 Turns off email notifications from the specified workspace for the
@@ -3945,6 +3934,17 @@ workspace.
 
 Revokes the specified permission from the given role in the named
 workspace.
+
+=head2 add-workspace-impersonator [--username or --email] --workspace
+
+Given a user and a workspace, this command makes the specified user an
+impersonator for the given workspace.
+
+=head2 remove-workspace-impersonator [--username or --email] --workspace
+
+Given a user and a workspace, this command remove impersonate privileges for
+the specified user in the given workspace, and makes them a normal workspace
+member.
 
 =head2 show-acls --workspace
 
