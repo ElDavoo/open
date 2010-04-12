@@ -1363,20 +1363,15 @@ sub _downgrade_user_to_member_in_workspace {
 sub add_workspace_admin {
     my $self = shift;
     my %jump = (
-        'user-workspace'  => sub {
-            $self->_add_user_to_workspace_as(
-                Socialtext::Role->Admin()
-            )
+        'user-workspace' => sub {
+            $self->_add_user_to_workspace_as(Socialtext::Role->Admin());
         },
         'group-workspace' => sub {
-            $self->_add_group_to_workspace_as(
-                Socialtext::Role->Admin()
-            )
+            $self->_add_group_to_workspace_as(Socialtext::Role->Admin());
         },
     );
 
-    my $type = $self->_type_of_entity_collection_operation( keys %jump );
-
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
     return $jump{$type}->();
 }
 
