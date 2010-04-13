@@ -967,9 +967,10 @@ sub _add_group_to_account_as {
 
     $account->add_group( group => $group, role => $new_role );
     $self->_success(
-        loc("[_1] is now a member of the [_2] Account",
-            $group->driver_group_name,
-            $account->name
+        loc("[_1] now has the role of '[_2]' in the [_3] Account",
+            $group->display_name,
+            $new_role->display_name,
+            $account->name,
         )
     );
 }
@@ -989,9 +990,10 @@ sub _add_user_to_account_as {
 
     $account->add_user( user => $user, role => $new_role );
     $self->_success(
-        loc("[_1] is now a member of the [_2] Account",
+        loc("[_1] now has the role of '[_2]' in the [_3] Account",
             $user->username,
-            $account->name
+            $new_role->display_name,
+            $account->name,
         )
     );
 }

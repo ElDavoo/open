@@ -28,7 +28,7 @@ add_group_to_account: {
             )->add_member();
         };
     } );
-    like $output, qr/.+ is now a member of the .+ Account/,
+    like $output, qr/.+ now has the role of 'member' in the .+ Account/,
         '... with correct message';
 
     my $role = $account->role_for_group($group);

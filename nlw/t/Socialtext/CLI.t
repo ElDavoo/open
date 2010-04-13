@@ -457,7 +457,7 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
                 ]
             )->add_member(); 
         },
-        qr/.+ is now a member of the .+ Account/,
+        qr/.+ now has the role of 'member' in the .+ Account/,
         'add-member with an --account and --user argument'
     );
     my $role = $account->role_for_user($user1);
