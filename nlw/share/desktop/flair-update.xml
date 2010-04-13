@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>237</version>
-  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-237.air</url>
-  <description><![CDATA[[Build 237 - Sun Apr 11 15:58:43 PDT 2010]
+  <version>240</version>
+  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-240.air</url>
+  <description><![CDATA[[Build 240 - Tue Apr 13 03:39:57 PDT 2010]
+* Restored push support now that the deep-recursion bug has been nixed.
+
+[Build 239 - Mon Apr 12 15:54:05 PDT 2010]
+* Logout then login into another server; @-completion now reflects the new people list. (for {bz: 3742})
+
+[Build 238 - Mon Apr 12 00:55:17 PDT 2010]
+* Hide deactivated/deleted people from @-completion and People tab.
+
+[Build 237 - Sun Apr 11 15:58:43 PDT 2010]
 * Open Permalink in browser for ChocolateRain servers.
 * Suspend Push support for ChocolateRain servers; more ongoing work continues.
 
