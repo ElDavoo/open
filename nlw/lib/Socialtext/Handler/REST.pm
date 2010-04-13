@@ -58,35 +58,6 @@ sub handler ($$) {
     return $class->real_handler($r, $user);
 }
 
-# Augment REST::Application's implementation, so each call to ->header can
-# add headers incrementally, rather than having the last ->header call override
-# all previous calls.
-# NOTE: Values in earlier ->header calls overrides values in later calls; this
-# is so that subclassed handlers can set non-default -status and -type.
-sub header {
-    my $self = shift;
-
-    # Set the default value if this method has not been called yet.
-    if (not exists $self->{__header}) {
-        $self->{__header} = {};
-    }
-
-    # If arguments were passed in then use them to set the header type.
-    # Arguments can be passed in as a hash-ref or as an even sized list.
-    if (@_) {
-        if (@_%2 == 0) { # even-sized list, must be hash
-            %{ $self->{__header} } = ( @_, %{ $self->{__header} } );
-        } elsif (ref($_[0]) eq 'HASH') {  # First item must be a hash reference
-            %{ $self->{__header} } = ( %{ $_[0] }, %{ $self->{__header} } );
-        } else {
-            croak "Expected even-sized list or hash reference.";
-        }
-    }
-
-    return %{$self->{__header}};
-}
-
-
 sub _webkit_air_unauthorized_handler {
     my $class = shift;
     my $r     = shift;
