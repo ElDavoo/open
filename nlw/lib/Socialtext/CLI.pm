@@ -3679,8 +3679,8 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-member [--username or --email] --workspace
   remove-member [--username or --email] --account
   add-workspace-admin [--username or --email] --workspace
-  add-group-admin [--username or --email] --group
   remove-workspace-admin [--username or --email] --workspace
+  add-group-admin [--username or --email] --group
   remove-group-admin [--username or --email] --group
   disable-email-notify [--username or --email] --workspace
   set-locale [--username or --email] --workspace --locale
@@ -3872,16 +3872,16 @@ from the given account.
 Given a user and a workspace, this command makes the specified user an
 admin for the given workspace.
 
-=head2 add-group-admin [--username or --email] --group
-
-Given a user and a group, this command makes the specified user an
-admin for the given group.
-
 =head2 remove-workspace-admin [--username or --email] --workspace
 
 Given a user and a workspace, this command remove admin privileges for
 the specified user in the given workspace, and makes them a normal
 workspace member.
+
+=head2 add-group-admin [--username or --email] --group
+
+Given a user and a group, this command makes the specified user an
+admin for the given group.
 
 =head2 remove-group-admin [--username or --email] --group
 
