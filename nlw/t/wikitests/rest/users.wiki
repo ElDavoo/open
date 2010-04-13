@@ -42,15 +42,29 @@ Test /data/users via the REST API
 | body-unlike | qr/csskit/ |
 
 | comment | we can't see the /data/users for other users unless we're an admin |
-| get     | /data/users/%%user_b%% | application/json |
-| code-is | 404                    |                  |
-| body-like | The requested resource does not exist |
-| body-unlike | qr/csskit/ |
-| st-admin | give-accounts-admin --email %%user_a%% |
-| get     | /data/users/%%user_b%% | application/json |
-| code-is | 200 |
-| body-like | "email_address":"%%user_b%%" |
-| body-like | qr/csskit/ |
+| get         | /data/users/%%user_b%% | application/json |
+| code-is     | 200                    |                  |
+| body-like   | %%user_b%%             |                  |
+| body-like   | %%acct_b%%             |                  |
+| body-unlike | %%acct_c%%             |                  |
+
+| comment | admins do not see all accounts unless ?all=1 |
+| st-admin  | give-accounts-admin --email %%user_a%% |                  |
+| get       | /data/users/%%user_b%%                 | application/json |
+| code-is   | 200                                    |                  |
+| body-like | "email_address":"%%user_b%%"           |                  |
+| body-like | %%user_b%%                             |                  |
+| body-like | %%acct_b%%                             |                  |
+| body-unlike | %%acct_c%%                             |                  |
+| body-unlike | qr/csskit/                             |                  |
+| st-admin  | give-accounts-admin --email %%user_a%% |                  |
+| get       | /data/users/%%user_b%%?all=1           | application/json |
+| code-is   | 200                                    |                  |
+| body-like | "email_address":"%%user_b%%"           |                  |
+| body-like | qr/csskit/                             |                  |
+| body-like | %%user_b%%                             |                  |
+| body-like | %%acct_b%%                             |                  |
+| body-like | %%acct_c%%                             |                  |
 
 
 | comment | log in as user b and check you can see plugins in acct_c |
