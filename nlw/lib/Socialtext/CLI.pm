@@ -3744,6 +3744,8 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-member [--username or --email] --account
   add-workspace-admin [--username or --email] --workspace
   remove-workspace-admin [--username or --email] --workspace
+  add-workspace-impersonator [--username or --email] --workspace
+  remove-workspace-impersonator [--username or --email] --workspace
   add-account-impersonator [--username or --email] --account
   remove-account-impersonator [--username or --email] --account
   add-group-admin [--username or --email] --group
@@ -3767,8 +3769,6 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   add-permission --workspace --role --permission
   remove-permission --workspace --role --permission
-  add-workspace-impersonator [--username or --email] --workspace
-  remove-workspace-impersonator [--username or --email] --workspace
   show-acls --workspace
   show-members --workspace [--direct]
   show-admins --workspace
