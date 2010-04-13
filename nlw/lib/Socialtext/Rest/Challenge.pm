@@ -6,6 +6,7 @@ use warnings;
 use base 'Socialtext::Rest';
 use Socialtext::Challenger;
 use Socialtext::HTTP ':codes';
+use Socialtext::Log qw(st_log);
 use URI::Escape qw(uri_unescape);
 
 sub handler {
@@ -46,6 +47,7 @@ sub handler {
             );
             return '';
         }
+        st_log->info("Challenger Error: $e");
     }
     $self->rest->header(
         -status => HTTP_500_Internal_Server_Error,
