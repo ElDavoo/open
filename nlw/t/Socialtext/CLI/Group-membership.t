@@ -883,7 +883,7 @@ group_member_remains_admin_in_workspace: {
     } );
 
     warn $@ if $@;
-    like $output, qr/.+ now has the role of 'admin' in the .+ Workspace due to membership in a group/, 
+    like $output, qr/.+ now has the role of 'admin' in .+ due to membership in a group/, 
         '... with correct message';
 
     my $role = $workspace->role_for_user($user);
