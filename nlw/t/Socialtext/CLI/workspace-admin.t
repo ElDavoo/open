@@ -92,8 +92,9 @@ remove_workspace_admin: {
     my $ws   = create_test_workspace();
     my $user = create_test_user();
 
-    my $username = $user->username;
-    my $ws_name  = $ws->name;
+    my $username     = $user->username;
+    my $display_name = $user->display_name;
+    my $ws_name      = $ws->name;
 
     $ws->add_user(user => $user, role => $AdminRole);
     ok $ws->user_has_role(user => $user, role => $AdminRole),
@@ -105,7 +106,7 @@ remove_workspace_admin: {
                 argv => ['--username', $username, '--workspace', $ws_name],
             )->remove_workspace_admin();
         },
-        qr/$username no longer has the role of 'admin' in the $ws_name Workspace/,
+        qr/$display_name no longer has the role of 'admin' in the $ws_name Workspace/,
         'User removed as Admin from Workspace',
     );
 
@@ -119,8 +120,9 @@ remove_member_as_workspace_admin: {
     my $ws   = create_test_workspace();
     my $user = create_test_user();
 
-    my $username = $user->username;
-    my $ws_name  = $ws->name;
+    my $username     = $user->username;
+    my $display_name = $user->display_name;
+    my $ws_name      = $ws->name;
 
     $ws->add_user(user => $user, role => $MemberRole);
     ok $ws->user_has_role(user => $user, role => $MemberRole),
@@ -132,7 +134,7 @@ remove_member_as_workspace_admin: {
                 argv => ['--username', $username, '--workspace', $ws_name],
             )->remove_workspace_admin();
         },
-        qr/$username does not have the role of 'admin' in the $ws_name Workspace/,
+        qr/$display_name does not have the role of 'admin' in the $ws_name Workspace/,
         'User was not an Admin; cannot remove them as an Admin',
     );
 
@@ -146,8 +148,9 @@ remove_non_member_as_workspace_admin: {
     my $ws   = create_test_workspace();
     my $user = create_test_user();
 
-    my $username = $user->username;
-    my $ws_name  = $ws->name;
+    my $username     = $user->username;
+    my $display_name = $user->display_name;
+    my $ws_name      = $ws->name;
 
     ok !$ws->has_user($user), 'User starts off not being associated with WS';
 
@@ -157,7 +160,7 @@ remove_non_member_as_workspace_admin: {
                 argv => ['--username', $username, '--workspace', $ws_name],
             )->remove_workspace_admin();
         },
-        qr/$username does not have the role of 'admin' in the $ws_name Workspace/,
+        qr/$display_name does not have the role of 'admin' in the $ws_name Workspace/,
         'User was not a member of Workspace to begin with',
     );
 

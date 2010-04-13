@@ -1310,52 +1310,72 @@ sub _remove_thing_from_thing {
     return $self->_success($msg);
 }
 
-sub _downgrade_user_to_member_in_workspace {
-    my $self      = shift;
-    my $user      = shift;
-    my $workspace = shift;
-    my $from_role = shift;
+sub _thingy_type {
+    my $self   = shift;
+    my $thingy = shift;
+    return 'user'      if ($thingy->isa('Socialtext::User'));
+    return 'group'     if ($thingy->isa('Socialtext::Group'));
+    return 'workspace' if ($thingy->isa('Socialtext::Workspace'));
+    return 'account'   if ($thingy->isa('Socialtext::Account'));
+    die "unknown thingy type";  # XXX: bad error, but what to do?
+}
+
+sub _downgrade_thingy_to_member_in_container {
+    my $self       = shift;
+    my $thingy     = shift;
+    my $container  = shift;
+    my $from_role  = shift;
+    my $MemberRole = Socialtext::Role->Member;
 
     my $role = Socialtext::Role->new(name => $from_role);
 
-    unless ($workspace->user_has_role(user => $user, role => $role)) {
+    # figure out what type the "thingy" and "container" are
+    my $type = $self->_thingy_type($thingy);
+    my $container_type = $self->_thingy_type($container);
+
+    my $has_role_method = "${type}_has_role";
+    unless ($container->$has_role_method($type => $thingy, role => $role)) {
         $self->_error(
-            loc("[_1] does not have the role of '[_2]' in the [_3] Workspace",
-                $user->username, $role->display_name, $workspace->name
+            loc("[_1] does not have the role of '[_2]' in the [_3] [_4].",
+                $thingy->display_name, $role->name,
+                $container->name, ucfirst($container_type),
             )
         );
     }
 
-    my $current = $workspace->role_for_user($user, direct => 1);
-    unless ($current) {
-        my $indirect_role = $workspace->role_for_user($user, direct => 0);
+    my $role_for_method = "role_for_${type}";
+    my $direct_role = $container->$role_for_method($thingy, direct => 1);
+    unless ($direct_role) {
+        my $indirect_role = $container->$role_for_method($thingy, direct => 0);
         $self->_error(
             loc('[_1] is a [_2] of [_3] through a group, and may not be removed directly',
-                $user->username, $indirect_role->name, $workspace->name
+                $thingy->display_name, $indirect_role->name, $container->name,
             )
         )
     }
 
-    $workspace->assign_role_to_user(
-        user => $user,
-        role => Socialtext::Role->Member,
+    my $assign_method = "assign_role_to_${type}";
+    $container->$assign_method(
+        $type => $thingy,
+        role  => $MemberRole,
     );
 
-    # Let the Admin know if the User has a Group membership which gives a
-    # higher membership level than what the User is left with after
+    # Let the Admin know if the "Thingy" has a Group membership which gives a
+    # higher membership level than what the "Thingy" is left with after
     # downgrading their explicit Role.
-    $current = $workspace->role_for_user($user);
-    if ($current->name ne Socialtext::Role->Member->name) {
+    my $current_role = $container->$role_for_method($thingy);
+    if ($current_role->name ne $MemberRole->name) {
         $self->_error(
-            loc("[_1] now has the role of '[_2]' in the [_3] Workspace due to membership in a group",
-                $user->username, $current->name, $workspace->name
+            loc("[_1] now has the role of '[_2]' in [_3] due to membership in a group",
+                $thingy->display_name, $current_role->name, $container->name,
             )
         );
     } 
 
     $self->_success(
-        loc("[_1] no longer has the role of '[_2]' in the [_3] Workspace",
-            $user->username, $from_role, $workspace->name
+        loc("[_1] no longer has the role of '[_2]' in the [_3] [_4].",
+            $thingy->display_name, $from_role,
+            $container->name, ucfirst($container_type),
         )
     );
 }
@@ -1377,10 +1397,22 @@ sub add_workspace_admin {
 
 sub remove_workspace_admin {
     my $self = shift;
+    my %jump = (
+        'user-workspace' => sub {
+            $self->_downgrade_user_to_member_in_workspace(Socialtext::Role->Admin());
+        },
+    );
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
+    return $jump{$type}->();
+}
+
+sub _downgrade_user_to_member_in_workspace {
+    my $self = shift;
+    my $role = shift;
     my $user = $self->_require_user();
     my $ws   = $self->_require_workspace();
-    return $self->_downgrade_user_to_member_in_workspace(
-        $user, $ws, 'admin',
+    return $self->_downgrade_thingy_to_member_in_container(
+        $user, $ws, $role->name,
     );
 }
 
@@ -1393,10 +1425,8 @@ sub add_workspace_impersonator {
 
 sub remove_workspace_impersonator {
     my $self = shift;
-    my $user = $self->_require_user();
-    my $ws   = $self->_require_workspace();
     return $self->_downgrade_user_to_member_in_workspace(
-        $user, $ws, 'impersonator',
+        Socialtext::Role->Impersonator(),
     );
 }
 
