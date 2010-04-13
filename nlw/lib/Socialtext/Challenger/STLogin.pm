@@ -64,14 +64,23 @@ sub challenge {
     }
     $type = $p{type} ? $p{type} : $type;
 
-    my $workspace_title = $ws ? $ws->title        : '';
-    my $workspace_id    = $ws ? $ws->workspace_id : '';
-
-    # stick some information in the session
-    # and then establishes a redirect header
-    # and throws up
+    # Figure out which login to use; mobile, or regular?
     my $login_page
         = $class->_is_mobile($redirect) ? '/m/login' : '/nlw/login.html';
+
+    # If the error is "You're not logged in", just show the login page.
+    if ($type eq 'not_logged_in') {
+        $app->redirect(
+            path  => $login_page,
+            query => {
+                ($redirect ? (redirect_to => $redirect) : ()),
+            },
+        );
+    }
+
+    # Otherwise, show a more detailed error.
+    my $workspace_title = $ws ? $ws->title        : '';
+    my $workspace_id    = $ws ? $ws->workspace_id : '';
     $app->_handle_error(
         error => {
             type => $type,
