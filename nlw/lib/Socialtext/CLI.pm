@@ -1429,6 +1429,26 @@ sub _downgrade_group_to_member_in_workspace {
     );
 }
 
+sub _downgrade_user_to_member_in_account {
+    my $self = shift;
+    my $role = shift;
+    my $user = $self->_require_user();
+    my $acct = $self->_require_account();
+    return $self->_downgrade_thingy_to_member_in_container(
+        $user, $acct, $role->name,
+    );
+}
+
+sub _downgrade_group_to_member_in_account {
+    my $self  = shift;
+    my $role  = shift;
+    my $group = $self->_require_group();
+    my $acct  = $self->_require_account();
+    return $self->_downgrade_thingy_to_member_in_container(
+        $group, $acct, $role->name,
+    );
+}
+
 sub add_workspace_impersonator {
     my $self = shift;
     my %jump = (
@@ -1452,6 +1472,35 @@ sub remove_workspace_impersonator {
         },
         'group-workspace' => sub {
             $self->_downgrade_group_to_member_in_workspace(Socialtext::Role->Impersonator());
+        }
+    );
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
+    return $jump{$type}->();
+}
+
+sub add_account_impersonator {
+    my $self = shift;
+    my %jump = (
+        'user-account' => sub {
+            $self->_add_user_to_account_as(Socialtext::Role->Impersonator());
+        },
+        'group-account' => sub {
+            $self->_add_group_to_account_as(Socialtext::Role->Impersonator());
+        },
+    );
+
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
+    return $jump{$type}->();
+}
+
+sub remove_account_impersonator {
+    my $self = shift;
+    my %jump = (
+        'user-account' => sub {
+            $self->_downgrade_user_to_member_in_account(Socialtext::Role->Impersonator());
+        },
+        'group-account' => sub {
+            $self->_downgrade_group_to_member_in_account(Socialtext::Role->Impersonator());
         }
     );
     my $type = $self->_type_of_entity_collection_operation(keys %jump);
@@ -3695,6 +3744,8 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-member [--username or --email] --account
   add-workspace-admin [--username or --email] --workspace
   remove-workspace-admin [--username or --email] --workspace
+  add-account-impersonator [--username or --email] --account
+  remove-account-impersonator [--username or --email] --account
   add-group-admin [--username or --email] --group
   remove-group-admin [--username or --email] --group
   disable-email-notify [--username or --email] --workspace
@@ -3815,6 +3866,8 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-workspace-admin --group --workspace
   add-workspace-impersonator --group --workspace
   remove-workspace-impersonator --group --workspace
+  add-account-impersonator --group  --account
+  remove-account-impersonator --group --account
   add-group-admin --group [ --username or --email ]
   remove-group-admin --group [ --username or --email ]
   remove-member --group [--account or --workspace]
@@ -3904,6 +3957,17 @@ impersonator for the given workspace.
 
 Given a user and a workspace, this command remove impersonate privileges for
 the specified user in the given workspace, and makes them a normal workspace
+member.
+
+=head2 add-account-impersonator [--username or --email] --account
+
+Given a user and an Account, this command makes the specified user an
+impersonator for the given Account.
+
+=head2 remove-account-impersonator [--username or --email] --account
+
+Given a user and an Account, this command remove impersonate privileges for
+the specified user in the given Account, and makes them a normal Account
 member.
 
 =head2 add-group-admin [--username or --email] --group
@@ -4427,6 +4491,17 @@ impersonator for the given workspace.
 
 Given a Group and a Workspace, this command remove impersonate privileges for
 the specified Group in the given workspace, and makes them a normal workspace
+member.
+
+=head2 add-account-impersonator --group --account
+
+Given a Group and an Account, this command makes the specified Group an
+impersonator for the given Account.
+
+=head2 remove-account-impersonator --group --account
+
+Given a Group and an Account, this command remove impersonate privileges for
+the specified Group in the given Account, and makes them a normal Account
 member.
 
 =head2 add-group-admin [--username or --email] --group

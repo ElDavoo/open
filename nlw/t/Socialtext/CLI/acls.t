@@ -3,10 +3,13 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 19;
+use Test::Socialtext tests => 33;
 use Test::Socialtext::CLIUtils qw/:all/;
 
 fixtures(qw(db));
+
+my $ImpersonatorRole = Socialtext::Role->Impersonator;
+my $MemberRole       = Socialtext::Role->Member;
 
 my $acct = create_test_account_bypassing_factory();
 
@@ -124,5 +127,101 @@ WORKSPACE_IMPERSONATOR: {
         'show-impersonators has correct list'
     );
 }
+
+add_user_account_impersonator: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user();
+
+    my $user_name = $user->username;
+    my $acct_name = $account->name;
+
+    expect_success(
+        call_cli_argv(
+            'add-account-impersonator',
+            '--username' => $user_name,
+            '--account'  => $acct_name,
+        ),
+        qr/$user_name now has the role of 'impersonator' in the $acct_name Account/,
+        'User added as Account Impersonator',
+    );
+
+    ok $account->user_has_role(user => $user, role => $ImpersonatorRole),
+        '... and User has Impersonator role in Account';
+}
+
+remove_user_account_impersonator: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user();
+
+    my $user_name    = $user->username;
+    my $display_name = $user->display_name;
+    my $acct_name    = $account->name;
+
+    $account->add_user(user => $user, role => $ImpersonatorRole);
+    ok $account->user_has_role(user => $user, role => $ImpersonatorRole),
+        'User starts off as an Impersonator in the Account';
+
+    expect_success(
+        call_cli_argv(
+            'remove-account-impersonator',
+            '--username' => $user_name,
+            '--account'  => $acct_name,
+        ),
+        qr/$display_name no longer has the role of 'impersonator' in the $acct_name Account/,
+        'User removed as Account Impersonator',
+    );
+
+    ok $account->user_has_role(user => $user, role => $MemberRole),
+        '... and User was left with Member Role in Account';
+}
+
+add_group_account_impersonator: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group();
+
+    my $group_id     = $group->group_id;
+    my $display_name = $group->display_name;
+    my $acct_name    = $account->name;
+
+    expect_success(
+        call_cli_argv(
+            'add-account-impersonator',
+            '--group'   => $group_id,
+            '--account' => $acct_name,
+        ),
+        qr/$display_name now has the role of 'impersonator' in the $acct_name Account/,
+        'Group added as Account Impersonator',
+    );
+
+    ok $account->group_has_role(group => $group, role => $ImpersonatorRole),
+        '... and Group has Impersonator role in Account';
+}
+
+remove_group_account_impersonator: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group();
+
+    my $group_id     = $group->group_id;
+    my $display_name = $group->display_name;
+    my $acct_name    = $account->name;
+
+    $account->add_group(group => $group, role => $ImpersonatorRole);
+    ok $account->group_has_role(group => $group, role => $ImpersonatorRole),
+        'Group starts off as an Impersonator in the Account';
+
+    expect_success(
+        call_cli_argv(
+            'remove-account-impersonator',
+            '--group'   => $group_id,
+            '--account' => $acct_name,
+        ),
+        qr/$display_name no longer has the role of 'impersonator' in the $acct_name Account/,
+        'Group removed as Account Impersonator',
+    );
+
+    ok $account->group_has_role(group => $group, role => $MemberRole),
+        '... and Group was left with Member Role in Account';
+}
+
 
 pass 'done';
