@@ -410,7 +410,7 @@ sub postHandler {
 
     # If the request is a head, send back just the headers
     if ($self->getRequestMethod() eq 'HEAD') {
-        ($$resultref, undef) = split(/^\r\n/, $$resultref);
+        ($$resultref, undef) = split(/^\r\n/, $$resultref || '');
     }
 }
 
