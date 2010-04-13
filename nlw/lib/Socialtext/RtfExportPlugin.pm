@@ -267,7 +267,8 @@ sub tr_start {
     @cells = $node->find_by_tag_name('td');
     my $width = int((6.5 * 1440) / (scalar(@cells) || 1));
     my $parent = $node->parent;
-    my $borders = $parent->attr('class') =~ /\bborderless\b/ ? 0 : 1;
+    my $class = $parent->attr('class') || '';
+    my $borders = $class =~ /\bborderless\b/ ? 0 : 1;
     my $tr_decl = RTF::Writer::TableRowDecl->new(
         widths => [ map {$width} @cells ],
         borders => $borders,
