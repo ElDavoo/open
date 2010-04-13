@@ -1431,16 +1431,31 @@ sub _downgrade_group_to_member_in_workspace {
 
 sub add_workspace_impersonator {
     my $self = shift;
-    return $self->_add_user_to_workspace_as(
-        Socialtext::Role->Impersonator(),
+    my %jump = (
+        'user-workspace' => sub {
+            $self->_add_user_to_workspace_as(Socialtext::Role->Impersonator());
+        },
+        'group-workspace' => sub {
+            $self->_add_group_to_workspace_as(Socialtext::Role->Impersonator());
+        },
     );
+
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
+    return $jump{$type}->();
 }
 
 sub remove_workspace_impersonator {
     my $self = shift;
-    return $self->_downgrade_user_to_member_in_workspace(
-        Socialtext::Role->Impersonator(),
+    my %jump = (
+        'user-workspace' => sub {
+            $self->_downgrade_user_to_member_in_workspace(Socialtext::Role->Impersonator());
+        },
+        'group-workspace' => sub {
+            $self->_downgrade_group_to_member_in_workspace(Socialtext::Role->Impersonator());
+        }
     );
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
+    return $jump{$type}->();
 }
 
 sub change_password {
@@ -3798,6 +3813,8 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   add-member [ --username or --email ] --group 
   add-workspace-admin --group  --workspace
   remove-workspace-admin --group --workspace
+  add-workspace-impersonator --group --workspace
+  remove-workspace-impersonator --group --workspace
   add-group-admin --group [ --username or --email ]
   remove-group-admin --group [ --username or --email ]
   remove-member --group [--account or --workspace]
@@ -3877,6 +3894,17 @@ admin for the given workspace.
 Given a user and a workspace, this command remove admin privileges for
 the specified user in the given workspace, and makes them a normal
 workspace member.
+
+=head2 add-workspace-impersonator [--username or --email] --workspace
+
+Given a user and a workspace, this command makes the specified user an
+impersonator for the given workspace.
+
+=head2 remove-workspace-impersonator [--username or --email] --workspace
+
+Given a user and a workspace, this command remove impersonate privileges for
+the specified user in the given workspace, and makes them a normal workspace
+member.
 
 =head2 add-group-admin [--username or --email] --group
 
@@ -3980,17 +4008,6 @@ workspace.
 
 Revokes the specified permission from the given role in the named
 workspace.
-
-=head2 add-workspace-impersonator [--username or --email] --workspace
-
-Given a user and a workspace, this command makes the specified user an
-impersonator for the given workspace.
-
-=head2 remove-workspace-impersonator [--username or --email] --workspace
-
-Given a user and a workspace, this command remove impersonate privileges for
-the specified user in the given workspace, and makes them a normal workspace
-member.
 
 =head2 show-acls --workspace
 
@@ -4399,6 +4416,17 @@ it exists.
 
 Given a Group and a Workspace, this command removes admin privileges for the
 specified group in the given workspace, and makes it a normal workspace
+member.
+
+=head2 add-workspace-impersonator --group --workspace
+
+Given a Group and a Workspace, this command makes the specified Group an
+impersonator for the given workspace.
+
+=head2 remove-workspace-impersonator --group --workspace
+
+Given a Group and a Workspace, this command remove impersonate privileges for
+the specified Group in the given workspace, and makes them a normal workspace
 member.
 
 =head2 add-group-admin [--username or --email] --group

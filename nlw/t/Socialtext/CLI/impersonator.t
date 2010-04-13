@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 31;
+use Test::Socialtext tests => 38;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(expect_failure expect_success);
 
@@ -165,6 +165,58 @@ remove_non_member_as_workspace_impersonator: {
     );
 
     ok !$ws->has_user($user), '... User still has no Role in WS';
+}
+
+###############################################################################
+# TEST: Add Group as WS Impersonator
+add_group_as_workspace_impersonator: {
+    my $ws    = create_test_workspace();
+    my $group = create_test_group();
+
+    my $group_id   = $group->group_id;
+    my $group_name = $group->name;
+    my $ws_name    = $ws->name;
+
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--group' => $group_id, '--workspace' => $ws_name],
+            )->add_workspace_impersonator();
+        },
+        qr/$group_name now has the role of 'impersonator' in the $ws_name Workspace/,
+        'Group added as Impersonator to Workspace',
+    );
+
+    ok $ws->group_has_role(group => $group, role => $ImpersonatorRole),
+        '... and Group has Impersonator Role in WS';
+}
+
+###############################################################################
+# TEST: Remove Group Impersonator from WS
+remove_group_as_workspace_impersonator: {
+    my $ws    = create_test_workspace();
+    my $group = create_test_group();
+
+    my $group_id   = $group->group_id;
+    my $group_name = $group->name;
+    my $ws_name    = $ws->name;
+
+    $ws->add_group(group => $group, role => $ImpersonatorRole);
+    ok $ws->group_has_role(group => $group, role => $ImpersonatorRole),
+        'Group starts off as an Impersonator in WS';
+
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--group' => $group_id, '--workspace' => $ws_name],
+            )->remove_workspace_impersonator();
+        },
+        qr/$group_name no longer has the role of 'impersonator' in the $ws_name Workspace/,
+        'Group removed as Impersonator from Workspace',
+    );
+
+    ok $ws->group_has_role(group => $group, role => $MemberRole),
+        '... and Group was left with Member Role in WS';
 }
 
 ###############################################################################
