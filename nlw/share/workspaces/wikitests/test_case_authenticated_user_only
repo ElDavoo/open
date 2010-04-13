@@ -7,7 +7,7 @@
 | st-logout |  |  |
 
 | open_ok | /%%auth_w%%/index.cgi |  |
-| text_like | errors-and-messages | You must login to view this page. |
+| wait-for-element-present-ok | st-login-form | 1000 |
 | st-admin | create-user --email newuser_%%start_time%%@ken.socialtext.net --password 123456 |  |
 | st-login | newuser_%%start_time%%@ken.socialtext.net | 123456 |
 

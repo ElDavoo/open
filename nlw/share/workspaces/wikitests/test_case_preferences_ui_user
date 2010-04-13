@@ -616,7 +616,7 @@
 | click_and_wait | //input[@value='Unsubscribe from the %%new_ws%% workspace'] |  |
 | st-logout |  |  |
 | open | /%%new_ws%% |  |
-| text_like | You must login to view this page |  |
+| wait-for-element-present-ok | st-login-form | 1000 |
 | wait_for_element_visible_ok | username | 30000 |
 | wait_for_element_visible_ok | password | 30000 |
 | type_ok | username | %%new_user%% |
