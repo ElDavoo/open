@@ -459,7 +459,8 @@ sub http_404 {
     my ( $self, $rest ) = @_;
 
     $rest->header( -type   => 'text/plain',
-                   -status => HTTP_404_Not_Found, );
+                   -status => HTTP_404_Not_Found,
+                   $rest->header() );
     return $self->nonexistence_message;
 }
 
@@ -467,7 +468,8 @@ sub http_400 {
    my ( $self, $rest, $content ) = @_;
 
     $rest->header( -type   => 'text/plain',
-                   -status => HTTP_400_Bad_Request, );
+                   -status => HTTP_400_Bad_Request,
+                   $rest->header() );
     return $content || ""; 
 }
 
