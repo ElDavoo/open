@@ -1401,6 +1401,9 @@ sub remove_workspace_admin {
         'user-workspace' => sub {
             $self->_downgrade_user_to_member_in_workspace(Socialtext::Role->Admin());
         },
+        'group-workspace' => sub {
+            $self->_downgrade_group_to_member_in_workspace(Socialtext::Role->Admin());
+        }
     );
     my $type = $self->_type_of_entity_collection_operation(keys %jump);
     return $jump{$type}->();
@@ -1413,6 +1416,16 @@ sub _downgrade_user_to_member_in_workspace {
     my $ws   = $self->_require_workspace();
     return $self->_downgrade_thingy_to_member_in_container(
         $user, $ws, $role->name,
+    );
+}
+
+sub _downgrade_group_to_member_in_workspace {
+    my $self  = shift;
+    my $role  = shift;
+    my $group = $self->_require_group();
+    my $ws    = $self->_require_workspace();
+    return $self->_downgrade_thingy_to_member_in_container(
+        $group, $ws, $role->name,
     );
 }
 
@@ -3784,6 +3797,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   add-member --group [ --account or --workspace ]
   add-member [ --username or --email ] --group 
   add-workspace-admin --group  --workspace
+  remove-workspace-admin --group --workspace
   add-group-admin --group [ --username or --email ]
   remove-group-admin --group [ --username or --email ]
   remove-member --group [--account or --workspace]
@@ -4376,10 +4390,16 @@ Given a Group, list its members.
 
 Given a Group and a User, add the User as a Member of the Group.
 
-=head2 add-workspace-admin --group --workpsace
+=head2 add-workspace-admin --group --workspace
 
 Given a Group and a Workspace, add the Group as an Admin of the Workspace, if
 it exists.
+
+=head2 remove-workspace-admin --group --workspace
+
+Given a Group and a Workspace, this command removes admin privileges for the
+specified group in the given workspace, and makes it a normal workspace
+member.
 
 =head2 add-group-admin [--username or --email] --group
 
