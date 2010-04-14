@@ -23,7 +23,6 @@ fixtures(qw( db ));
 
 ###############################################################################
 # Grab short-hand versions of the Roles we're going to use
-my $Affiliate      = Socialtext::Role->Affiliate();
 my $Member         = Socialtext::Role->Member();
 my $WorkspaceAdmin = Socialtext::Role->Admin();
 my $Impersonator   = Socialtext::Role->Impersonator();
@@ -172,8 +171,6 @@ account_import_preserves_gar: {
     my $impersonator_name = $impersonator->driver_group_name();
 
     # Give the Group a direct Role in the Account
-    #
-    # NOTE: as of 2009-10-22, the only supported GARs are Affiliate and Member
     $account->add_group(group => $group, role => $Member);
     $account->add_group(group => $impersonator, role => $Impersonator);
 
