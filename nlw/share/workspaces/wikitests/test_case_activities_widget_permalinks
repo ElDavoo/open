@@ -1,0 +1,31 @@
+| *Comment* | Test Case: Activities Widget Permalinks |  |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Activities Widget: Send a signal ... |  |
+| http-user-pass | %%username%% | %%password%% |
+| post-signal | Picture yourself on a boat on a river %%start_time%% |  |
+| st_process_jobs |  |  |
+
+| *Comment* | Test Case: Activities Widget: Click a link |  |
+| open_ok | /st/dashboard |  |
+| st_single_widget_in_dashboard | gallery-widget-Activities |  |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_element_visible_ok | //a[contains(@href,'/st/signals')] | 30000 |
+| click_ok | //a[contains(@href,'/st/signals')] |  |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Activities Widget: Go to the pop-up page |  |
+| pause | 12000 |  |
+| selectWindow | Socialtext Signals - Permalink |  |
+| wait_for_text_present_ok | Picture yourself on a boat on a river 1271275899 | 30000 |
+| st-name-widget | 1 | signals_widget |
+
+| *Comment* | Test Case: Activities Widget: Send another signal |  |
+| st_send_signal_via_activities_widget | signals_widget | With Tangerine Trees %%start_time%% |
+| pause | 3000 |  |
+| wait_for_text_present_ok | With Tangerine Trees %%start_time%% | 120000 |
+
+| *Comment* | Test Case: Activities Widget Permalinks COMPLETED |  |
