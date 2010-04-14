@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 143;
+use Test::Socialtext tests => 146;
 use Test::Differences;
 use Test::Output qw/stderr_is/;
 use Socialtext::CLI;
@@ -26,6 +26,7 @@ fixtures(qw( db ));
 my $Affiliate      = Socialtext::Role->Affiliate();
 my $Member         = Socialtext::Role->Member();
 my $WorkspaceAdmin = Socialtext::Role->Admin();
+my $Impersonator   = Socialtext::Role->Impersonator();
 
 ###############################################################################
 # Helper function to export, flush, and re-import an Account.
@@ -167,6 +168,9 @@ account_import_preserves_gar: {
     my $group      = create_test_group();
     my $group_name = $group->driver_group_name();
 
+    my $impersonator      = create_test_group();
+    my $impersonator_name = $impersonator->driver_group_name();
+
     # Give the Group a direct Role in the Account
     #
     # NOTE: as of 2009-10-22, the only supported GARs are Affiliate and Member
@@ -174,11 +178,12 @@ account_import_preserves_gar: {
         group => $group,
         role  => $Member,
     );
+    $account->add_group(group => $impersonator, role => $Impersonator);
 
     # Export and re-import the Account; GAR should be preserved
     export_and_reimport_account(
         account => $account,
-        groups  => [$group],
+        groups  => [$group, $impersonator],
     );
 }
 
@@ -304,14 +309,18 @@ account_import_preserves_uar: {
     my $user      = create_test_user();
     my $user_name = $user->username();
 
+    my $impersonator      = create_test_user();
+    my $impersonator_name = $impersonator->username();
+
     # give the User a direct Role in the Account
     my $orig_role = $Member;
     $account->add_user(user => $user, role => $orig_role);
+    $account->add_user(user => $impersonator, role => $Impersonator);
 
     # Export and re-import the Account
     export_and_reimport_account(
         account => $account,
-        users   => [$user],
+        users   => [$user, $impersonator],
     );
 
     # User should have the correct Role in the Account
@@ -324,6 +333,13 @@ account_import_preserves_uar: {
     my $role = $account->role_for_user($user);
     ok defined $role, '... User has Role in Account';
     is $role->name, $orig_role->name, '... ... with *correct* Role';
+
+    $impersonator = Socialtext::User->new(username => $impersonator_name);
+    isa_ok $impersonator, 'Socialtext::User', '... found re-imported Impersonator';
+
+    $role = $account->role_for_user($impersonator);
+    ok defined $role, '... Impersonator has Role in Account';
+    is $role->name, $Impersonator->name, '... ... Impersonator Role';
 }
 
 ###############################################################################
