@@ -109,6 +109,7 @@ AddDefaultCharset utf-8
     BrowserMatch "SymbianOS"        NLW_MOBILE_BROWSER
     BrowserMatch "Windows CE"       NLW_MOBILE_BROWSER
     BrowserMatch "^hiptop"          NLW_MOBILE_BROWSER
+    BrowserMatch "iPad"             NLW_MOBILE_BROWSER
     BrowserMatch "iPhone"           NLW_MOBILE_BROWSER
     BrowserMatch "Android"          NLW_MOBILE_BROWSER
 </IfModule>

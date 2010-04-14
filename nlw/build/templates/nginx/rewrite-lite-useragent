@@ -2,7 +2,7 @@
 
 # rewrite: /:ws/?args => /m/pages/:ws/?args
 [% mobile_agents = ['^BlackBerry', '^Nokia', 'Palm', 'SymbianOS', 'Windows CE',
-                    '^hiptop', 'iPhone', 'Android'] %]
+                    '^hiptop', 'iPad', 'iPhone', 'Android'] %]
 [% FOR ua IN mobile_agents %]
   if ($http_user_agent ~ "[% ua %]") {
     rewrite ^/+$ /m break;
