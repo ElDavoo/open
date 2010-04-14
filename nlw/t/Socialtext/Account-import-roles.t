@@ -298,8 +298,7 @@ account_import_preserves_uar: {
     my $impersonator_name = $impersonator->username();
 
     # give the User a direct Role in the Account
-    my $orig_role = $Member;
-    $account->add_user(user => $user, role => $orig_role);
+    $account->add_user(user => $user, role => $Member);
     $account->add_user(user => $impersonator, role => $Impersonator);
 
     # Export and re-import the Account
@@ -317,7 +316,7 @@ account_import_preserves_uar: {
 
     my $role = $account->role_for_user($user);
     ok defined $role, '... User has Role in Account';
-    is $role->name, $orig_role->name, '... ... with *correct* Role';
+    is $role->name, $Member->name, '... ... with *correct* Role';
 
     $impersonator = Socialtext::User->new(username => $impersonator_name);
     isa_ok $impersonator, 'Socialtext::User', '... found re-imported Impersonator';
