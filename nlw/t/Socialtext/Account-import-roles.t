@@ -174,10 +174,7 @@ account_import_preserves_gar: {
     # Give the Group a direct Role in the Account
     #
     # NOTE: as of 2009-10-22, the only supported GARs are Affiliate and Member
-    $account->add_group(
-        group => $group,
-        role  => $Member,
-    );
+    $account->add_group(group => $group, role => $Member);
     $account->add_group(group => $impersonator, role => $Impersonator);
 
     # Export and re-import the Account; GAR should be preserved
@@ -206,10 +203,7 @@ account_import_preserves_gwrs: {
 
     # Give the Group a Role in a Workspace, indirectly giving it a Role in the
     # Account.
-    $workspace->add_group(
-        group => $group,
-        role  => $WorkspaceAdmin,
-    );
+    $workspace->add_group(group => $group, role => $WorkspaceAdmin);
 
     # Export and re-import the Account; GWRs/GARs should be preserved
     export_and_reimport_account(
@@ -260,14 +254,8 @@ account_import_preserves_multiple_indirect_roles: {
     my $group   = create_test_group();
 
     # Give the Group some Roles in multiple Workspaces
-    $ws_one->add_group(
-        group => $group,
-        role  => $Member,
-    );
-    $ws_two->add_group(
-        group => $group,
-        role  => $WorkspaceAdmin,
-    );
+    $ws_one->add_group(group => $group, role => $Member);
+    $ws_two->add_group(group => $group, role => $WorkspaceAdmin);
 
     # Export and re-import the Account
     export_and_reimport_account(
