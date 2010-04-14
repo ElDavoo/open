@@ -40,7 +40,8 @@ proto.config = {
     editHeightAdjustment: 1.3,
     clearRegex: null,
     enableClearHandler: false,
-    noToolbar: false
+    noToolbar: false,
+    noTableSorting: false
 };
 
 proto.initializeObject = function() {
@@ -783,17 +784,20 @@ proto.enableThis = function() {
         self.rebindHandlers();
         self.set_clear_handler();
 
-        jQuery.poll(
-            function() {
-                return jQuery("table.sort", self.get_edit_document()).size() > 0
-            },
-            function() {
-                jQuery('table.sort', self.get_edit_document())
-                    .each(function() {
-                        Socialtext.make_table_sortable(this);
-                    });
-            }, 500, 10000
-        );
+        if (!self.config.noTableSorting) {
+            jQuery.poll(
+                function() {
+                    return jQuery("table.sort", self.get_edit_document())
+                        .size() > 0
+                },
+                function() {
+                    jQuery('table.sort', self.get_edit_document())
+                        .each(function() {
+                            Socialtext.make_table_sortable(this);
+                        });
+                }, 500, 10000
+            );
+        }
     };
 
     jQuery.poll(
