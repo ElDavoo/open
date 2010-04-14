@@ -961,11 +961,12 @@ sub _add_group_to_account_as {
 
     $self->_check_account_role(
         cur_role  => $current_role,
+        new_role  => $new_role,
         name      => $group->driver_group_name,
         acct_name => $account->name,
     );
 
-    $account->add_group( group => $group, role => $new_role );
+    $account->assign_role_to_group( group => $group, role => $new_role );
     $self->_success(
         loc("[_1] now has the role of '[_2]' in the [_3] Account",
             $group->display_name,
@@ -984,11 +985,12 @@ sub _add_user_to_account_as {
 
     $self->_check_account_role(
         cur_role  => $current_role,
+        new_role  => $new_role,
         name      => $user->username,
         acct_name => $account->name,
     );
 
-    $account->add_user( user => $user, role => $new_role );
+    $account->assign_role_to_user( user => $user, role => $new_role );
     $self->_success(
         loc("[_1] now has the role of '[_2]' in the [_3] Account",
             $user->username,
@@ -1001,13 +1003,12 @@ sub _add_user_to_account_as {
 sub _check_account_role {
     my $self = shift;
     my %p    = @_;
-    my $member = Socialtext::Role->Member();
 
-    if ( $p{cur_role} && $p{cur_role}->name eq $member->name ) {
+    if ($p{cur_role}) {
         $self->_error(
             loc("[_1] already has the role of '[_2]' in the [_3] Account",
-                $p{name}, $member->display_name, $p{acct_name})
-        );
+                $p{name}, $p{cur_role}->display_name, $p{acct_name})
+        ) if $p{cur_role}->name eq $p{new_role}->name;
     }
 }
 

@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 45;
+use Test::Socialtext tests => 53;
 use Test::Socialtext::CLIUtils qw/:all/;
 
 fixtures(qw(db));
@@ -149,6 +149,31 @@ add_user_account_impersonator: {
         '... and User has Impersonator role in Account';
 }
 
+add_member_user_account_impersonator: {
+    my $account = create_test_account_bypassing_factory();
+    my $user    = create_test_user();
+
+    my $user_name = $user->username;
+    my $acct_name = $account->name;
+
+    $account->add_user(user => $user, role => $MemberRole);
+    ok $account->user_has_role(user => $user, role => $MemberRole),
+        'User starts as Member in the Account';
+
+    expect_success(
+        call_cli_argv(
+            'add-account-impersonator',
+            '--username' => $user_name,
+            '--account'  => $acct_name,
+        ),
+        qr/$user_name now has the role of 'impersonator' in the $acct_name Account/,
+        'User added as Account Impersonator',
+    );
+
+    ok $account->user_has_role(user => $user, role => $ImpersonatorRole),
+        '... and User has Impersonator role in Account';
+}
+
 remove_user_account_impersonator: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user();
@@ -182,6 +207,32 @@ add_group_account_impersonator: {
     my $group_id     = $group->group_id;
     my $display_name = $group->display_name;
     my $acct_name    = $account->name;
+
+    expect_success(
+        call_cli_argv(
+            'add-account-impersonator',
+            '--group'   => $group_id,
+            '--account' => $acct_name,
+        ),
+        qr/$display_name now has the role of 'impersonator' in the $acct_name Account/,
+        'Group added as Account Impersonator',
+    );
+
+    ok $account->group_has_role(group => $group, role => $ImpersonatorRole),
+        '... and Group has Impersonator role in Account';
+}
+
+add_member_group_account_impersonator: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group();
+
+    my $group_id     = $group->group_id;
+    my $display_name = $group->display_name;
+    my $acct_name    = $account->name;
+
+    $account->add_group(group => $group, role => $MemberRole);
+    ok $account->group_has_role(group => $group, role => $MemberRole),
+        'Group starts as Member in the Account';
 
     expect_success(
         call_cli_argv(
