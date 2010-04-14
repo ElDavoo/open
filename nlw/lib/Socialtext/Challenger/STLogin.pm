@@ -52,6 +52,13 @@ sub challenge {
         $redirect = $request->parsed_uri->unparse;
     }
 
+    # Some redirects are just bad/wrong; don't *ever* allow ourselves to get
+    # redirected here (lest we redirect back to ourselves again once the User
+    # logs in).
+    $redirect = undef if ($redirect =~ m{^/challenge});
+    $redirect = undef if ($redirect =~ m{^/nlw/submit/log});
+    $redirect = undef if ($redirect eq '');
+
     my $ws;
     if ($hub) {
         $ws = $hub->current_workspace;
