@@ -1,0 +1,37 @@
+| *Comment* | Test Case: Activities Widget Popout |  |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Activities Widget Popout Send some signals |  |
+| http-user-pass | %%username%% | %%password%% |
+| post-signal | What would you do %%start_time%% |  |
+| post-signal | If I sang out of tune %%start_time%% |  |
+| post-signal | Would you stand up and walk out on me %%start_time%% |  |
+| post-signal | Lend me your ears and I'll sing you a song %%start_time%% |  |
+| open_ok | / |  |
+| st_process_jobs |  |  |
+
+| *Comment* | Test Case: Activities Popout At Dashboard with widget |  |
+| st_single_widget_in_dashboard | gallery-widget-Activities |  |
+| wait_for_text_present_ok | Welcome | 30000 |
+| text_like | st-editing-tools-edit | Welcome |
+| wait_for_text_present_ok | Activities | 30000 |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+| st_verify_text_in_activities_widget | activities_widget | What would you do %%start_time%% |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_element_visible_ok | pop_out | 30000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Activities Widget Popout Examine Popout Page |  |
+| open_ok | /st/activities |  |
+| select-frame | widget_0 |  |
+| st_verify_text_within_activities_widget | What would you do %%start_time%% |  |
+| st_verify_text_within_activities_widget | If I sang out of tune %%start_time%% |  |
+| st_verify_text_within_activities_widget | Would you stand up and walk out on me %%start_time%% |  |
+| st_verify_text_within_activities_widget | Lend me your ears and I'll sing you a song %%start_time%% |  |
+| st_send_signal_within_activities_widget | And I'll try not to sing out of key %%start_time |  |
+| st_verify_text_within_activities_widget | And I'll try not to sing out of key %%start_time |  |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Activities Widget Popout COMPLETED |  |

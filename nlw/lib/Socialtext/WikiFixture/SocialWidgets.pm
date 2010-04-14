@@ -368,28 +368,20 @@ sub st_single_widget_in_dashboard {
     ok(!$@, 'st_single_widget_in_dashboard' );
 }
 
-=head2 st_send_signal_via_activities_widget 
+#=head2 st_send_signal_within_activities_widget
+#
+#Precondition: The activities widget frame is selected
+#Parameters: You pass in the signal text and private flag
+#PostCondition: Signal is sent,frame focus remains on widget
+#
+#=cut
 
-Precondition: Open to page with a named activities widget.  
-Precondition: Frame focus should be the page.
-Parameters: You pass in the activities widget name, signal text, private flag
-PostCondition: Signal is sent, Frame focus is back to entire dashboard
-
-Private flag only makes sense if the widget being used has a toggle-private element.
-
-=cut
-
-sub st_send_signal_via_activities_widget {
-    my ($self, $widgetname, $signaltosend, $private) = @_;
-    my $browser = $ENV{'selenium_browser'} || 'chrome';
-
-    $self->handle_command('st-select-widget-frame', $widgetname);
-    $self->handle_command('pause', '3000'); # to let the widget frame open
-
-    # Clear the "What are you working on?" message
+sub st_send_signal_within_activities_widget {
+    my ($self, $signaltosend, $private) = @_;
     $self->handle_command('wait_for_element_present_ok', 'signalsNotSetUp', 5000);
     $self->handle_command('click_ok', 'signalsNotSetUp');
-
+       
+    my $browser = $ENV{'selenium_browser'} || 'chrome';
     if ($browser=~/chrome|firefox/ig) {
         $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
         $self->handle_command('selectFrame', 'signalFrame');
@@ -403,16 +395,55 @@ sub st_send_signal_via_activities_widget {
     if ($private) {
         # use click_ok - JS does not see check_ok
         $self->handle_command('click_ok', '//input[@class=' . "'toggle-private']");
-        #$self->handle_command('is_checked_ok', "//input[@class='toggle-private']");
+        $self->handle_command('is_checked_ok', '//input[@class=' . "'toggle-private']");
     }
+    
+    $self->handle_command('wait_for_element_visible_ok','post', 5000);
+    $self->handle_command('click_ok','post');
+    $self->handle_command('pause',3000); 
+}
 
-    $self->handle_command('wait_for_element_visible_ok' ,'post', 5000);
-    $self->handle_command('click_ok', 'post');
+=head2 st_send_signal_via_activities_widget 
 
-    $self->handle_command('pause', 3000); # must wait before signaling again
+Precondition: Open to page with a named activities widget.  
+Precondition: Frame focus should be the page.
+Parameters: You pass in the activities widget name, signal text, private flag
+PostCondition: Signal is sent, Frame focus is back to entire dashboard
+
+Private flag only makes sense if the widget being used has a toggle-private element.
+
+=cut
+
+sub st_send_signal_via_activities_widget {
+    my ($self, $widgetname, $signaltosend, $private) = @_;
+
+    $self->handle_command('st-select-widget-frame', $widgetname);
+    $self->handle_command('pause', '3000'); # to let the widget frame open
+
+    $self->st_send_signal_within_activites_widget($signaltosend, $private);    
     $self->handle_command('select-frame','relative=parent'); 
     ok(!$@, 'st_send_signal_via_activities_widget');
 }
+
+
+=head2 st_verify_text_within_activities_widget ($self, $texttofind)
+
+Precondition: Activities widget is selected frame
+PostCondition: Text is verfied (or not), frame focus remains on activities widget
+
+=cut
+
+sub st_verify_text_within_activities_widget {
+    my ($self, $texttofind) = @_;
+    $self->handle_command('pause', 3000);
+    #If is regexp,
+    if ($texttofind=~/^qr\//) {
+        $self->handle_command('text_like','//body', $texttofind);
+    } else {
+        $self->handle_command('wait_for_text_present_ok', $texttofind);
+    }
+}   
+
 
 =head2 st_verify_text_in_activities_widget ($self, $widgetname, $texttofind)
 
@@ -427,12 +458,7 @@ sub st_verify_text_in_activities_widget {
     my ($self, $widgetname, $texttofind) = @_;
     $self->handle_command('st-select-widget-frame', $widgetname);
     $self->handle_command('pause', 3000);
-    #If is regexp,
-    if ($texttofind=~/^qr\//) {
-        $self->handle_command('text_like','//body', $texttofind);
-    } else {
-        $self->handle_command('wait_for_text_present_ok', $texttofind);
-    }
+    $self->st_verify_text_within_activities_widget($texttofind);
     $self->handle_command('select-frame', 'relative=parent');
     ok(!$@, 'st_verify_text_in_activities_widget');
 }
@@ -466,7 +492,7 @@ PostCondition: Text is verified (or not), Frame focus is back to entire dashboar
 
 sub st_verify_link_in_activities_widget {
     my ($self, $widgetname, $linktofind) = @_;
-    $self->handle_command('st-select-widget-frame', 'activities_widget');
+    $self->handle_command('st-select-widget-frame', $widgetname);
     $self->handle_command('pause', 3000);
     $self->handle_command('wait_for_element_present_ok', $linktofind);
     $self->handle_command('select-frame', 'relative=parent');

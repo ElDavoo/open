@@ -8,6 +8,7 @@
 | include | [Test Case: Activities Widget Conversations] |  |
 | include | [Test Case: Activities Widget Tags and Tagging] |  |
 | include | [Test Case: Activities Widget Followers] |  |
+| include | [Test Case: Activities Widget Popout] |  |
 
 | *Comment* | Test Case: Activities Widget TEARDOWN |  |
 | st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
