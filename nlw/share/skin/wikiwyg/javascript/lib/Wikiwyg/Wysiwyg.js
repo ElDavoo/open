@@ -39,7 +39,8 @@ proto.config = {
     editHeightMinimum: 150,
     editHeightAdjustment: 1.3,
     clearRegex: null,
-    enableClearHandler: false
+    enableClearHandler: false,
+    noToolbar: false
 };
 
 proto.initializeObject = function() {
@@ -808,7 +809,7 @@ proto.enableThis = function() {
         500, 10000
     );
 
-    if (!this.__toolbar_styling_interval) {
+    if (!this.config.noToolbar && !this.__toolbar_styling_interval) {
         this.__toolbar_styling_interval = setInterval(
             function() {
                 try {

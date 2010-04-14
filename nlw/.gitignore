@@ -467,3 +467,4 @@ t/wikitests/widgets/opensocial.wiki
 lib/Socialtext/Pluggable/Plugin/ShareThis.pm
 lib/Socialtext/Gadgets/Container/Activities.pm
 lib/Socialtext/Handler/Container/Activities.pm
+t/wikitests/signals/signals_conversation.wiki
