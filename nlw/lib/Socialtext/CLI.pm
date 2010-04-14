@@ -981,7 +981,7 @@ sub _add_user_to_account_as {
     my $new_role     = shift;
     my $user         = $self->_require_user();
     my $account      = $self->_require_account();
-    my $current_role = $account->role_for_user($user);
+    my $current_role = $account->role_for_user($user, direct => 1);
 
     $self->_check_account_role(
         cur_role  => $current_role,
