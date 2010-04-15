@@ -412,6 +412,7 @@ sub import_file {
     }
 
     my $name = $import_name || $hash->{name};
+    $hash->{import_name} = $name;
     my $account = $class->new(name => $name);
     if ($account && !$account->is_placeholder()) {
         die loc("Account [_1] already exists!", $name) . "\n" 
@@ -446,6 +447,7 @@ sub import_file {
         );
     }
     else {
+        warn "Creating account '$name'";
         $account = $class->create(
             %acct_params,
             name => $name,
@@ -467,32 +469,44 @@ sub import_file {
 
         next unless Socialtext::User::Default::Users->CanImportUser($user_hash);
 
-        my $user = Socialtext::User->new( username => $user_hash->{username} );
-        $user ||= Socialtext::User->Create_user_from_hash( $user_hash );
+        # Import this user into the new account we're creating. If they were
+        # in some other account we'll fix that up below.
+        my $user_orig_acct = $user_hash->{primary_account_name}
+            || $hash->{name};
+        $user_hash->{primary_account_name} = $name;
 
-        # Assign the primary Account for this User, such that the User is
-        # imported *back into* the same Account he was exported from.  If that
-        # means having to create a blank/empty Account with that name, so be
-        # it.
+        my $existing_user
+            = Socialtext::User->new(username => $user_hash->{username});
+        my $user = $existing_user
+            || Socialtext::User->Create_user_from_hash($user_hash);
+
+        # If the user's primary account before export was not the account
+        # we're currently importing, then keep that relationship, even if we
+        # need to create a blank/empty account with that name.
         my $pri_acct = $account;
-        my $pri_acct_name = $user_hash->{primary_account_name};
-        if ($pri_acct_name && ($pri_acct_name ne $hash->{name})) {
+        if ($user_orig_acct ne $hash->{name}) {
             # User had a Primary Account that was *not* the Account that we're
             # re-importing (possibly under a new name).
-            $pri_acct = Socialtext::Account->new(name => $pri_acct_name)
+            $pri_acct = Socialtext::Account->new(name => $user_orig_acct)
                      || Socialtext::Account->create(
-                            name         => $pri_acct_name,
+                            name         => $user_orig_acct,
                             account_type => 'Placeholder',
                         );
+        }
 
-            # User's primary account was different, so make sure to add their
-            # relationship to the account we're importing.
+        $user->primary_account($pri_acct);
+
+        if (!$existing_user) {
+            # When we create a user, she is assigned to the default account
+            # so we should remove her from that account.
+            Socialtext::Account->Default()->remove_user(user => $user);
+        }
+
+        eval {
             my $role_name = $user_hash->{roles}{$hash->{name}} || 'member';
             my $acct_role = Socialtext::Role->new(name => $role_name);
             $account->add_user(user => $user, role => $acct_role);
-        }
-        $user->primary_account($pri_acct);
-
+        };
         # Hang onto the profile so we can create it later.
         if (my $profile = delete $user_hash->{profile}) {
             $profile->{user} = $user;
