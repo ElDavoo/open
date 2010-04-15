@@ -16,6 +16,9 @@ has 'account' => (
     is => 'ro', isa => 'Maybe[Socialtext::Account]',
     lazy_build => 1,
 );
+
+sub allowed_methods {'PUT'}
+
 sub _build_account {
     my $self = shift;
     return Socialtext::Account->new(
