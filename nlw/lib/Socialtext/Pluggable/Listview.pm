@@ -76,7 +76,7 @@ sub _prepare_listview {
     push @list_args, account_id => $account_id unless $all_accounts;
     push @list_args, group_id => $group_id if $group_id;
 
-    my $title = $self->_calc_title($tag);
+    my $title = $self->_calc_title($tag, $cgi_vars{search_term});
     my @common = (
         unescaped_search_term => $cgi_vars{search_term},
         search_term => Socialtext::String::uri_escape($cgi_vars{search_term}),
