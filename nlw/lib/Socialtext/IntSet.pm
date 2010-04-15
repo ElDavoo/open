@@ -232,6 +232,10 @@ Simple set enquiry and modification methods.
 
 Returns true if N is in the set.
 
+=item nth($N)
+
+Get the Nth item in the set.  Returns undef if no such N.  B<Note> that this is a 1-based index; the first set bit will be at 1, not 0 like in Perl.
+
 =item set($N)
 
 Add N to the set. Returns if it was previously in the set.
@@ -259,6 +263,8 @@ The amount of memory used by the C<Judy::1> set.
 
 sub get { Judy::1::Test (${$_[0]->judy1},$_[1]) }
 *test = *check = \&get;
+
+sub nth { Judy::1::Nth(${$_[0]->judy1},$_[1]) }
 
 # These may modify the "pointer" value of the judy1 and are supposedly the
 # only ones that can do so.

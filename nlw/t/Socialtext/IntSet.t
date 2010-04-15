@@ -10,7 +10,7 @@ BEGIN {
             "Judy and Judy::1 are required for Socialtext::IntSet";
     }
     else {
-        plan tests => 81;
+        plan tests => 86;
     }
 }
 
@@ -40,6 +40,12 @@ basic_construction: {
     ok !$ints->get(3), '3 now gone';
     ok $ints->get(4), '4 is still set';
     eq_or_diff $ints->array, [1,2,4], "3 gone in array";
+
+    is $ints->nth(0), undef, '0th bit is missing';
+    is $ints->nth(1), 1, '1st bit is present';
+    is $ints->nth(2), 2, '2nd bit is present';
+    is $ints->nth(3), 4, '3rd bit is present';
+    is $ints->nth(4), undef, '4th bit is missing';
 }
 
 serialize: {
