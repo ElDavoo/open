@@ -46,11 +46,10 @@ sub _build_sql_cols {
             "to_char(creation_datetime, 'YYYY-MM-DD') AS creation_date",
             q{ 
                 COALESCE((
-                    SELECT COUNT(*)
+                    SELECT COUNT(DISTINCT into_set_id)
                       FROM user_set_path countable
                      WHERE countable.from_set_id = user_id
                        AND into_set_id } . PG_WKSP_FILTER . q{
-                  GROUP BY from_set_id, user_id
                 ),0) AS workspace_count
             },
     }
@@ -119,7 +118,6 @@ sub get_results {
         $row->{roles} = \@sorted_role_names;
         $row->{is_admin} = any { $_ eq 'admin' } @sorted_role_names;
     }
-
     return $rows;
 }
 
