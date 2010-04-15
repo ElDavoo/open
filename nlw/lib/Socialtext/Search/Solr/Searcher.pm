@@ -202,6 +202,14 @@ sub _sort_opts {
         title          => 'plain_title',
     );
 
+    # Sugar for Signals search
+    if ($order eq 'newest') {
+        $order = 'date'; $direction = 'desc';
+    }
+    elsif ($order eq 'oldest') {
+        $order = 'date'; $direction = 'asc';
+    }
+
     # If no valid sort order is supplied, then we use either a date sort or a
     # score sort.
     return ('sort' => $query_type eq 'standard' ? 'date desc' : 'score desc')
