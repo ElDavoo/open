@@ -832,6 +832,13 @@ sub Resolve {
         return $maybe_user;
     }
 
+    # Note to developers fixing this method:
+    # I (Luke) think the order should be:
+    # email address short circuit
+    # check if it's a username
+    # check if it's an email
+    # otherwise assume it's a user_id
+
     # SHORT-CIRCUIT: if it looks like a User ID, look that up *first*
     if ($maybe_user =~ /^\d+$/) {
         $user = Socialtext::User->new(user_id => $maybe_user) 
