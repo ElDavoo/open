@@ -68,6 +68,7 @@ sub _prepare_listview {
 
     my @list_args = (
         sort => $sortby,
+        order => $sortby,
         viewer => $user,
         limit => $pageset->limit,
         offset => $pageset->offset,
@@ -109,6 +110,7 @@ sub _prepare_listview {
     return (\@list_args, \@template_args, \%other_args);
 }
 
+sub _default_sort { 'relevance' }
 
 sub _store_and_get_search_sort_order {
     my $self = shift;
@@ -121,7 +123,7 @@ sub _store_and_get_search_sort_order {
     }
     else {
         my $savedorder = $self->get_user_prefs->{sortby};
-        return $savedorder || 'relevance';
+        return $savedorder || _default_sort();
     }
 }
 
