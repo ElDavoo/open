@@ -109,34 +109,6 @@ sub _prepare_listview {
     return (\@list_args, \@template_args, \%other_args);
 }
 
-sub _limit_result_accounts {
-    my $rows = shift;
-    my $acct_set = shift;
-    # limit the listing down to accounts that the viewer also has (which
-    # are people-enabled accounts)
-    foreach my $row (@$rows) {
-        @{$row->{accounts}} = grep { $acct_set->{$_->{account_id}} } 
-                                   @{$row->{accounts}};
-    }
-}
-
-sub _finish_listview {
-    my $self = shift;
-    my $rows = shift;
-    my $template_args = shift;
-    my $other_args = shift;
-
-    _limit_result_accounts($rows,$other_args->{acct_set}) 
-        if $other_args->{all_accounts};
-
-    my $pageset = delete $other_args->{pageset};
-
-    $self->template_render('view/peoplelist', 
-        @$template_args, 
-        rows => $rows,
-        $pageset->template_vars(),
-    );
-}
 
 sub _store_and_get_search_sort_order {
     my $self = shift;
