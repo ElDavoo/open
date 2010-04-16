@@ -19,6 +19,15 @@ sub msg_markup_table { return \%markup }
 sub msg_format_link {
     my $self = shift;
     my $ast = shift;
+
+    # Handle the "Named"{link: ws [page]} case.
+    if (length $ast->{text} and $ast->{wafl_string} =~ /^\s*([\w\-]+)\s*\[(.*)\]\s*$/) {
+        my ($workspace_id, $page_id) = ($1, $2);
+        if ($ast->{text} ne $page_id) {
+            return qq("$ast->{text}"{$ast->{wafl_type}: $ast->{wafl_string}});
+        }
+    }
+
     return "{$ast->{wafl_type}: $ast->{wafl_string}}"
 }
 
