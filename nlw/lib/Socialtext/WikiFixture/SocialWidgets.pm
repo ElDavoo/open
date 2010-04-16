@@ -419,8 +419,8 @@ sub st_send_signal_via_activities_widget {
 
     $self->handle_command('st-select-widget-frame', $widgetname);
     $self->handle_command('pause', '3000'); # to let the widget frame open
-
-    $self->st_send_signal_within_activites_widget($signaltosend, $private);    
+   
+    $self->st_send_signal_within_activities_widget($signaltosend, $private);
     $self->handle_command('select-frame','relative=parent'); 
     ok(!$@, 'st_send_signal_via_activities_widget');
 }
