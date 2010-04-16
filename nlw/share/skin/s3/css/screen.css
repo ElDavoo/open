@@ -2239,8 +2239,7 @@ ul li a.followPersonButton {
 body#dashBoard div#lastsignal {
     font-size: 14px;
     color: #666;
-    height: 28px;
-    padding: 10px 20px 0 0;
+    padding: 10px 20px 10px 10px; 
     margin: 0;
     display: block;
     text-align:center;
