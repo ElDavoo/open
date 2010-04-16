@@ -102,7 +102,7 @@ Signal: @JosephHines A few customers have mentioned them, but I think they are p
 
 | set | signal | A few customers have mentioned them, but I think they are pretty regional. |
 | st-name-widget | 3 | siggy |
-| st-send-signal-via-profile-widget | siggy | %%signal%% |
+| st-send-signal-via-activities-widget | siggy | %%signal%% |
 
 Log on as socialtextdemo6@gmail.com / PW = socialtext
 Signal: Heading into the city to give my _Reducing Power Consumption Around The Home_ talk to the "Bay Area Home Owners Assoc"<http://www.bah.com>
@@ -122,7 +122,7 @@ Signal: d @JosephHines Let's talk about SunPowered in private, I have some insid
 
 | set | signal | Let's talk about SunPowered in private, I have some inside news about them. |
 | st-name-widget | 3 | siggy |
-| st-send-signal-via-profile-widget | siggy | %%signal%% | private |
+| st-send-signal-via-activities-widget | siggy | %%signal%% | private |
 
 Log on as socialtextdemo3@gmail.com / PW = socialtext
 Signal: @DawnFoster, The {link: HR [Event Calendar]} page in the HR Workspace has the information you need, and a link to all the forms to complete.
@@ -136,7 +136,7 @@ Signal: @DawnFoster, The {link: HR [Event Calendar]} page in the HR Workspace ha
 
 | set | signal | `The {link HR [Event Calendar]} page in the HR Workspace has the information you need, and a link to all the forms to complete.` |
 | st-name-widget | 3 | siggy |
-| st-send-signal-via-profile-widget | siggy | %%signal%% |
+| st-send-signal-via-activities-widget | siggy | %%signal%% |
 
 | *Comment* | Demo. Process Jobs |  |
 | st_process_jobs |  |  |
@@ -199,7 +199,7 @@ Signal d @‍DawnFoster Ok, I'm free to talk after 11am. Thanks for your help
 
 | set | signal | `Ok, I'm free to talk after 11am. Thanks for your help` |
 | st-name-widget | 3 | siggy |
-| st-send-signal-via-profile-widget | siggy | %%signal%% | private |
+| st-send-signal-via-activities-widget | siggy | %%signal%% | private |
 
 Log on as socialtextdemo2@gmail.com / PW = socialtext
 Comment on page: http://demo.socialtext.net/marketingdemo/index.cgi?brainstorming_for_web_site_redesign saying
