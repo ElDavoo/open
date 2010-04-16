@@ -57,4 +57,42 @@ sub _drop_privs {
 # This exists so it can be overridden by tests and from_input.
 sub _exit { exit shift; }
 
+sub RunSupervised {
+    my $class = shift;
+    my %p = @_;
+    my $port_name = $p{port_name} or die 'port_name is required';
+    my $run = $p{cb} or die 'cb (callback) is required';
+    my $log_file = $p{log_file}
+        or die 'log_file is required (relative path)';
+
+    require Socialtext::AppConfig;
+    require Socialtext::Paths;
+    require Socialtext::HTTP::Ports;
+    require POSIX;
+
+    my $root_dir = Socialtext::AppConfig->data_root_dir();
+    my ($uid, $gid) = (stat $root_dir)[4,5];
+
+    $log_file = Socialtext::Paths::log_directory().'/'.$log_file;
+    unless ($ENV{ST_DAEMON_DEBUG}) {
+        eval "use Socialtext::System::TraceTo qw($log_file);";
+    }
+
+    my $port = Socialtext::HTTP::Ports->$port_name;
+
+    # If we're root, switch to the www-data user.
+    if ($< == 0) {
+        chown $uid, $gid, $log_file;
+        require POSIX;
+        POSIX::setgid($gid);
+        POSIX::setuid($uid);
+    }
+
+    open STDIN, '<', '/dev/null';
+    POSIX::setsid();
+
+    @_ = ($port);
+    goto $run;
+}
+
 1;
