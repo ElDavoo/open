@@ -5,7 +5,7 @@
 | standard-test-setup |               |                                        |             |
 | set | group1_id | %%group_id%% |
 | set | account1_id | %%account_id%% |
-| set-workspace-id | help-en | help_en_id |
+| set-workspace-id | help_en_id | help-en |
 
 | set                 | user1_id      | %%user_id%%                            |             |
 | set                 | recipient     | recip%%start_time%%@ken.socialtext.net |             |

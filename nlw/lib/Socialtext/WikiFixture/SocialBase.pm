@@ -921,14 +921,36 @@ sub set_ws_permissions {
 }
 
 sub set_workspace_id {
-    my $self       = shift;
-    my $workspace  = shift;
-    my $var = shift;
+    my $self      = shift;
+    my $var       = shift;
+    my $workspace = shift;
 
     my $ws = Socialtext::Workspace->new(name => $workspace);
     die "No such workspace $workspace" unless $ws;
     $self->{$var} = $ws->workspace_id;
     diag "Set variable '$var' to $workspace id: $self->{$var}";
+}
+
+sub set_group_id {
+    my $self       = shift;
+    my $var        = shift;
+    my $group_name = shift;
+
+    my $sth = sql_execute(q{
+        SELECT group_id FROM groups WHERE driver_key = 'Default' AND driver_group_name = ?
+    }, $group_name);
+
+    if ($sth->rows == 0) {
+        die "no group '$group_name' found";
+    }
+    elsif ($sth->rows > 1) {
+        die "ambiguous group name '$group_name': ".
+            "found ".$sth->rows." groups with that name";
+    }
+    my ($group_id) = $sth->fetchrow_array;
+
+    $self->{$var} = $group_id;
+    diag "Set variable '$var' to group id: $self->{$var}";
 }
 
 sub add_member {
