@@ -19,12 +19,6 @@ sub create_grammar {
     @$blocks = ('line');
     my $phrases = $grammar->{_all_phrases};
 
-    # For {bz: 3771}, ":-" and ";-" are not <del>-production rules anymore.
-    $grammar->{del} = {
-        match => re_huggy(q{\-}),
-        phrases => $grammar->{_all_phrases},
-    };
-
     # NOTE: if you add phrases here, be sure to update %markup in
     # ST::WT::Emitter::Canonicalize
     @$phrases = ('waflphrase', 'asis', 'a', 'b', 'i', 'del');
@@ -56,12 +50,8 @@ sub re_huggy {
     my $brace2 = shift || $brace1;
     my $ALPHANUM = '\p{Letter}\p{Number}\pM';
 
-    # {bz: 3771}: Make ":-)" and ";-)" smileys non-huggy.
-    my $PRE_ALPHANUM = $ALPHANUM;
-    $PRE_ALPHANUM .= ';:' if $brace1 eq q{\-};
-
     qr/
-        (?:^|(?<=[^{$PRE_ALPHANUM}$brace1]))($brace1(?=\S)(?!$brace2)
+        (?:^|(?<=[^{$ALPHANUM}$brace1]))($brace1(?=\S)(?!$brace2)
         .*?
         $brace2)(?=[^{$ALPHANUM}$brace2]|\z)
     /x;

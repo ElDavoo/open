@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 17;
+use Test::Socialtext tests => 15;
 fixtures(qw( empty ));
 
 BEGIN {
@@ -170,32 +170,3 @@ Image_links: {
         like $html, qr/\Qimg alt="$url" src="$url"\E/, "Image: $k";
     }
 }
-
-Smiley_Friendly: {
-    my $hub = new_hub('empty');
-
-    my $page = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'smiley',
-        content => ':-) Making Wikitext - more Smiley Friendly',
-        creator => $hub->current_user,
-    );
-
-    my $html = $page->to_html;
-    like $html, qr{:-\)},
-         'Smileys are rendered as-is instead of as deletion phrases';
-}
-
-NonSmiley_UnFriendly: {
-    my $hub = new_hub('empty');
-
-    my $page = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'non-smiley',
-        content => ':*) Making Wikitext * more Smiley Friendly',
-        creator => $hub->current_user,
-    );
-
-    my $html = $page->to_html;
-    unlike $html, qr{:\*\)},
-         'Non-smileys are still rendered as phrases';
-}
-
