@@ -447,7 +447,6 @@ sub import_file {
         );
     }
     else {
-        warn "Creating account '$name'";
         $account = $class->create(
             %acct_params,
             name => $name,
@@ -496,10 +495,11 @@ sub import_file {
 
         $user->primary_account($pri_acct);
 
-        if (!$existing_user) {
+        my $default = Socialtext::Account->Default();
+        if (!$existing_user and $pri_acct->account_id != $default->account_id) {
             # When we create a user, she is assigned to the default account
             # so we should remove her from that account.
-            Socialtext::Account->Default()->remove_user(user => $user);
+            $default->remove_user(user => $user);
         }
 
         eval {
