@@ -920,6 +920,17 @@ sub set_ws_permissions {
     diag "Set workspace $workspace permission to $permission";
 }
 
+sub set_workspace_id {
+    my $self       = shift;
+    my $workspace  = shift;
+    my $var = shift;
+
+    my $ws = Socialtext::Workspace->new(name => $workspace);
+    die "No such workspace $workspace" unless $ws;
+    $self->{$var} = $ws->workspace_id;
+    diag "Set variable '$var' to $workspace id: $self->{$var}";
+}
+
 sub add_member {
     my $self = shift;
     my $email = shift;
