@@ -3182,7 +3182,8 @@ sub list_groups {
 
 sub create_group {
     my $self    = shift;
-    my %opts    = $self->_get_options('ldap-dn:s', 'name:s', 'email:s');
+    my %opts    = $self->_get_options(
+        'ldap-dn:s', 'name:s', 'email:s', 'permissions:s');
 
     $opts{account} = $self->_require_account('optional')
         || Socialtext::Account->Default();
@@ -3204,6 +3205,7 @@ sub create_group {
             driver_group_name => $name,
             primary_account_id => $account->account_id,
             created_by_user_id => $user->user_id,
+            permission_set => $opts{permissions},
         });
     };
     if (my $err = $@) {
@@ -3861,7 +3863,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   list-groups [--account or --workspace]
   show-group-config --group
-  create-group (--ldap-dn or --name) [--account] [--email]
+  create-group (--ldap-dn or --name) [--account] [--email] [--permissions]
   show-members --group 
   add-member --group [ --account or --workspace ]
   add-member [ --username or --email ] --group 
@@ -4443,7 +4445,7 @@ with that workspace.
 Show the Group configuration for the specified C<--group> (which must be
 provided as a Group Id).
 
-=head2 create-group (--ldap-dn or --name) [--account] [--email]
+=head2 create-group (--ldap-dn or --name) [--account] [--email] [--permissions]
 
 Creates a new Socialtext Group.  If C<--name> is provided, a regular 
 group will be created.  If C<--ldap-dn> is provided, the group will
@@ -4456,6 +4458,10 @@ If no C<--account> is specified, the default system Account will be used.
 
 If no C<--email> is specified, regular groups will be created by the
 System User.
+
+If no C<--permissions> name is specified, the "private" set will be used.  The
+"self-join" value can be used to create a group where people can freely join
+via the web UI.  Other values will eventually be introduced.
 
 =head2 delete-group --group
 
