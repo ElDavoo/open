@@ -108,6 +108,8 @@ has_column 'user_set_id' => (
     is => 'rw', isa => 'Int', default => sub { shift->group_id + GROUP_OFFSET }
 );
 
+has_column 'permission_set' => (is => 'rw', isa => 'Str');
+
 has_unique_key ('driver_key','driver_unique_id');
 has_unique_key ('primary_account_id', 'created_by_user_id', 'driver_group_name');
 has_unique_key ('user_set_id');

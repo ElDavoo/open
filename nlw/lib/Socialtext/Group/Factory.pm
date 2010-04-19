@@ -431,6 +431,12 @@ sub ValidateAndCleanData {
     # trim fields, removing leading/trailing whitespace
     $self->_validate_trim_values($p);
 
+    $p->{permission_set} ||= 'private';
+    unless ($p->{permission_set} =~ /^(?:private|request-to-join|self-join)$/) {
+        push @errors,
+            loc('Invalid permissions name: [_1]', $p->{permission_set});
+    }
+
     # check for presence of required attributes
     foreach my $field (@required_fields) {
         # field is required if either (a) we're creating a new Group record,

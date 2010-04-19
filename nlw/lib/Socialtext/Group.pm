@@ -46,6 +46,7 @@ has 'homunculus' => (
         update_store
         delete
         user_set_id
+        permission_set
     )],
 );
 
@@ -512,6 +513,7 @@ sub to_hash {
         created_by_username => $self->creator->guess_real_name,
         primary_account_id => $self->primary_account_id,
         primary_account_name => $self->primary_account->name,
+        permission_set => $self->permission_set,
     };
 
     if ($opts{show_members}) {
