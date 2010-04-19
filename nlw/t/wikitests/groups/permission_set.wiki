@@ -72,3 +72,14 @@ Tests to create groups via REST and CLI.
 | json-parse   |                        |                 |
 | json-path-is | $.name                 | %%g8%%          |
 | json-path-is | $.permission_set       | request-to-join |
+
+| *Comment* | just update the description |                         |
+| PUT-json  | /data/groups/%%g8_id%%      | {"name":"%%g8%%","description":"woot!"} |
+| code-is   | 202                         |                         |
+
+| *Comment* | verify the permission set of that group didn't change |
+| GET-json     | /data/groups/%%g8_id%% |                 |
+| code-is      | 200                    |                 |
+| json-parse   |                        |                 |
+| json-path-is | $.name                 | %%g8%%          |
+| json-path-is | $.permission_set       | request-to-join |
