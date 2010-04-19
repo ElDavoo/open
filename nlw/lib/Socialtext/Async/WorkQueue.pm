@@ -264,6 +264,8 @@ __PACKAGE__->meta->make_immutable;
 1;
 __END__
 
+=back
+
 =head1 AUTHOR
 
 Jeremy Stashewsky C<jeremy.stashewsky@socialtext.com>
