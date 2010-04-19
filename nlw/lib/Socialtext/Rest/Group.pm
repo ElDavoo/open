@@ -92,6 +92,7 @@ sub PUT_json { $_[0]->_with_admin_permission_do(sub {
         $group->update_store({
             driver_group_name => $data->{name},
             description => $data->{description} || "",
+            permission_set => $data->{permission_set},
         });
     };
     return $self->create_error($@, $data->{name}) if $@;

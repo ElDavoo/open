@@ -303,6 +303,7 @@ sub _create_native_group {
         primary_account_id => $data->{account_id},
         created_by_user_id => $creator->user_id,
         description        => $data->{description},
+        permission_set     => $data->{permission_set},
     });
 
     return $group;
