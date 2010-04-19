@@ -128,3 +128,19 @@ sub _store_and_get_search_sort_order {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Pluggable::Listview - Base class for pluggable plugins that produce list views.
+
+=head1 SYNOPSIS
+
+  See Socialtext::Pluggable::Plugin::Signals for usage
+
+=head1 DESCRIPTION
+
+Nothing fancing just refactored code here.
+
+=cut
