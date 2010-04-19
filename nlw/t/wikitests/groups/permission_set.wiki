@@ -51,7 +51,7 @@ Tests to create groups via REST and CLI.
 
 | *Comment* | change the permission set of that group via PUT |
 | PUT-json     | /data/groups/%%g8_id%% | {"name":"%%g8%%","description":"yar","permission_set":"request-to-join" } |
-| code-is | 200 |
+| code-is | 202 |
 
 | *Comment* | verify the new permission set of that group |
 | GET-json     | /data/groups/%%g8_id%% |                 |

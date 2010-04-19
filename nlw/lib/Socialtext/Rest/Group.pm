@@ -113,7 +113,8 @@ sub PUT_json { $_[0]->_with_admin_permission_do(sub {
         }
     }
 
-    return undef;
+    $self->rest->header(-status => HTTP_202_Accepted);
+    return '';
 }) }
 
 sub _has_request_error {
