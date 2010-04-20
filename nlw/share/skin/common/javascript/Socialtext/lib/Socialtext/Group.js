@@ -186,7 +186,7 @@ Socialtext.Group.Args = {
     POST: [
         'ldap_dn', 'name', 'account_id', 'description', 'photo_id',
         'workspaces', 'users', 'send_message', 'additional_message',
-        'new_workspaces'
+        'new_workspaces', 'permission_set'
     ],
     PUT: [ 'name', 'account_id', 'description', 'photo_id', 'permission_set' ]
 };
