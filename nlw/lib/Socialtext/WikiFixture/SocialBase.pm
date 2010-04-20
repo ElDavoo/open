@@ -607,6 +607,7 @@ sub create_group {
     my $account_name = shift;
     my $user_name    = shift;
     my $description  = shift;
+    my $permission_set = shift;
 
     my $account = $account_name
         ? Socialtext::Account->new(name => $account_name)
@@ -623,6 +624,7 @@ sub create_group {
             primary_account_id => $account->account_id,
             created_by_user_id => $user->user_id,
             description        => $description || 'no description',
+            permission_set     => $permission_set || 'private',
         });
     };
     if (my $err = $@) {
