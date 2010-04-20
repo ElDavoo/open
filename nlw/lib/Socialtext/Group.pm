@@ -565,6 +565,7 @@ sub serialize_for_export {
         description             => $self->description,
         created_by_username     => $self->creator->username,
         group_id                => $self->group_id, 
+        permission_set          => $self->permission_set,
         # (group_id is used to stitch together signals on import )
     };
 }

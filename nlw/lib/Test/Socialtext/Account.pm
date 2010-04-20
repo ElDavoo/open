@@ -86,8 +86,8 @@ sub export_and_reimport_account {
     my @groups          = $args{groups} ? @{ $args{groups} } : ();
     my @workspaces      = $args{workspaces} ? @{ $args{workspaces} } : ();
     my $cb_after_export = $args{after_export} || $args{flush} || sub { };
-    my $mangle = $args{mangle};
-    my $return_output = $args{return_output} || 0;
+    my $mangle          = $args{mangle};
+    my $return_output   = $args{return_output} || 0;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
