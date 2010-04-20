@@ -19,7 +19,7 @@ my $deep_threads = sql_singlevalue(q{
 
 if ($deep_threads > 0) {
     print "Deep signal threads found ($deep_threads). Migration failed.\n";
-    exit -1;
+    exit 1;
 }
 
 print "No deep signal threads found. Migration complete.\n";

@@ -71,7 +71,7 @@ use base 'Socialtext::Formatter::Phrase';
 use Class::Field qw( const );
 
 const formatter_id  => 'del';
-const pattern_start => qr/(^|(?<=[^${ALPHANUM}\-]))-(?=[^\s\-])/;
+const pattern_start => qr/(^|(?<=[^${ALPHANUM}\-;:]))-(?=[^\s\-])/; # {bz: 3771}: Make ":-)" and ";-)" smileys non-huggy.
 const pattern_end   => qr/-(?=[^{$ALPHANUM}\-]|\z)/;
 const html_start    => '<del>';
 const html_end      => '</del>';

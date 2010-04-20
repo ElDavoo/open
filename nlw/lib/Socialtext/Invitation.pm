@@ -25,8 +25,8 @@ sub queue {
     my $user   = Socialtext::User->new(email_address => $invitee);
 
     $user ||= Socialtext::User->create(
-        username => $invitee,
-        email_address => $invitee,
+        username           => $invitee,
+        email_address      => $invitee,
         created_by_user_id => $self->from_user->user_id,
         primary_account_id => $object->account_id,
         %addtl,
@@ -36,8 +36,9 @@ sub queue {
         unless $user->has_valid_password();
 
     $object->assign_role_to_user(
-        user => $user,
-        role => $role,
+        actor => $self->from_user,
+        user  => $user,
+        role  => $role,
     );
 
     Socialtext::JobCreator->insert(
@@ -123,13 +124,13 @@ sub invite_notify {
 }
 
 sub _log_action {
-    my $self = shift;
-    my $action = shift;
-    my $extra  = shift;
-    my $name = $self->_name;
+    my $self      = shift;
+    my $action    = shift;
+    my $extra     = shift;
+    my $name      = $self->_name;
     my $page_name = '';
     my $user_name = $self->from_user->user_id;
-    my $log_msg = "$action : $name : $page_name : $user_name";
+    my $log_msg   = "$action : $name : $page_name : $user_name";
     if ($extra) {
         $log_msg .= " : $extra";
     }
