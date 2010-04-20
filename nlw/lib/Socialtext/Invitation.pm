@@ -36,8 +36,9 @@ sub queue {
         unless $user->has_valid_password();
 
     $object->assign_role_to_user(
-        user => $user,
-        role => $role,
+        actor => $self->from_user,
+        user  => $user,
+        role  => $role,
     );
 
     Socialtext::JobCreator->insert(
