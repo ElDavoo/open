@@ -9,6 +9,9 @@ use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::Group;
 use Socialtext::JobCreator;
+use Socialtext::JSON qw/encode_json/;
+use Socialtext::Log qw/st_log/;
+use Socialtext::Timer;
 use namespace::clean -except => 'meta';
 
 has_table 'groups';
@@ -186,6 +189,7 @@ sub expire {
 
 sub update_store {
     my ($self, $proto_group) = @_;
+    my $timer = Socialtext::Timer->new;
     my $factory = $self->factory();
 
     # SANITY CHECK: only if our Factory is updateable
@@ -197,16 +201,26 @@ sub update_store {
     $factory->Update($self, $proto_group);
 
     Socialtext::JobCreator->index_group($self->group_id);
+
+    my $msg = 'UPDATE,GROUP,group_id:' . $self->group_id
+              . '(' . encode_json($proto_group) . '),'
+              . '[' . $timer->elapsed . ']';
+    st_log()->info($msg);
 }
 
 # Delete the Group Homunculus from the system.
 sub delete {
     my $self = shift;
+    my $timer = Socialtext::Timer->new;
     my $group_id = $self->group_id;
     my $factory = $self->factory();
     $factory->Delete($self, @_);
 
     Socialtext::JobCreator->index_group($group_id);
+
+    my $msg = 'DELETE,GROUP,group_id:' . $group_id
+              . '[' . $timer->elapsed . ']';
+    st_log()->info($msg);
 }
 
 no Moose;
