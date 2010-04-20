@@ -328,6 +328,7 @@ sub role_change_event {
             while (my $user = $users->next) {
                 Socialtext::JobCreator->index_person( $user );
             }
+            Socialtext::JobCreator->index_group( $thing );
         }
     }
 
