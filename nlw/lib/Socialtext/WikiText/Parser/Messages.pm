@@ -61,9 +61,9 @@ sub re_huggy {
     $PRE_ALPHANUM .= ';:' if $brace1 eq q{\-};
 
     qr/
-        (?:^|(?<=[^{$PRE_ALPHANUM}$brace1]))($brace1(?=\S)(?!$brace2)
-        .*?
-        $brace2)(?=[^{$ALPHANUM}$brace2]|\z)
+        (?:^|(?<=[^{$PRE_ALPHANUM}$brace1]))$brace1(?=\S)(?!$brace2)
+        (.*?)
+        $brace2(?=[^{$ALPHANUM}$brace2]|\z)
     /x;
 }
 
