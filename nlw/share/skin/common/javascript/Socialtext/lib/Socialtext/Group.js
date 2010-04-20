@@ -188,7 +188,7 @@ Socialtext.Group.Args = {
         'workspaces', 'users', 'send_message', 'additional_message',
         'new_workspaces'
     ],
-    PUT: [ 'name', 'account_id', 'description', 'photo_id' ]
+    PUT: [ 'name', 'account_id', 'description', 'photo_id', 'permission_set' ]
 };
 
 Socialtext.Group.Create = function(opts, callback) {
