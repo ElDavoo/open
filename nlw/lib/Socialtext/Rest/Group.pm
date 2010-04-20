@@ -68,7 +68,7 @@ sub create_error {
         return "Error updating group: $group_name already exists.";
     }
     $self->rest->header( -status => HTTP_400_Bad_Request );
-    $err =~ s{ at /\S+ line .*}{};
+    $err =~ s{(?:Trace begun)? at /\S+ line .*}{}s;
     return "Error updating group: $err";
 }
 
