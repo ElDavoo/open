@@ -3,18 +3,14 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 47;
+use Test::Socialtext tests => 67;
 use Socialtext::CLI;
 use Test::Socialtext::User;
 use Test::Socialtext::Workspace;
-use Test::Socialtext::Account;
+use Test::Socialtext::Account qw/export_and_reimport_account/;
 use Test::Socialtext::CLIUtils qw(expect_success);
-use File::Temp qw(tempdir);
-use File::Path qw(rmtree);
 
-###############################################################################
-# Fixtures: db
-fixtures(qw( db ));
+fixtures(qw(db));
 
 ###############################################################################
 # TEST: when re-importing an Account that has indirect Users in it, make sure
@@ -32,7 +28,7 @@ indirect_via_workspace: {
     $workspace->add_user(user => $user);
 
     # Export+reimport the Account
-    export_and_import_account(
+    export_and_reimport_account(
         account => $secondary_account,
         flush   => sub {
             Test::Socialtext::User->delete_recklessly($user);
@@ -82,7 +78,7 @@ indirect_via_group: {
     $group->add_user(user => $user);
 
     # Export+reimport the Account
-    export_and_import_account(
+    export_and_reimport_account(
         account => $secondary_account,
         flush   => sub {
             Test::Socialtext::User->delete_recklessly($user);
@@ -136,7 +132,7 @@ indirect_via_indirect_group: {
     $secondary_account->add_group(group => $group);
 
     # Export+reimport the Account
-    export_and_import_account(
+    export_and_reimport_account(
         account => $secondary_account,
         flush   => sub {
             Test::Socialtext::User->delete_recklessly($user);
@@ -192,7 +188,7 @@ indirect_via_group_in_workspace: {
     $workspace->add_group(group => $group);
 
     # Export+reimport the Account
-    export_and_import_account(
+    export_and_reimport_account(
         account => $secondary_account,
         flush   => sub {
             Test::Socialtext::User->delete_recklessly($user);
@@ -236,45 +232,3 @@ indirect_via_group_in_workspace: {
     ok $q_secondary->has_user($q_user), '... User has Role in Secondary Account';
 }
 
-
-###############################################################################
-# Helper function; export and re-import the Account.
-sub export_and_import_account {
-    my %args    = @_;
-    my $account = $args{account};
-    my $flush   = $args{flush} || sub { };
-
-    my $export_base = tempdir(CLEANUP => 1);
-    my $export_dir  = File::Spec->catdir($export_base, 'account');
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [
-                    '--account', $account->name,
-                    '--dir',     $export_dir,
-                ],
-            )->export_account();
-        },
-        qr/account exported to/,
-        'Account exported',
-    );
-
-    # Flush our test data.
-    $flush->();
-    Socialtext::Cache->clear();
-
-    # Re-import the Account.
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => ['--dir', $export_dir],
-            )->import_account();
-        },
-        qr/account imported/,
-        '... Account re-imported',
-    );
-
-    # CLEANUP
-    rmtree [$export_base], 0;
-}
