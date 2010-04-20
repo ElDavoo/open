@@ -236,6 +236,7 @@ sub _extract_signal {
        )
     );
     $row->{context}{body} = $parser->parse($row->{context}{body});
+    $row->{context}{hash} = $hash;
     $row->{context}{uri} = $link_dictionary->format_link(
         link => 'signal',
         signal_hash => $hash,
