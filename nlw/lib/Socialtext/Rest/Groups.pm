@@ -36,6 +36,7 @@ sub _entity_hash {
         primary_account_id => $group->primary_account_id,
         primary_account_name => $group->primary_account->name,
         description => $group->description,
+        permission_set => $group->permission_set,
         $show_members
             ? ( members => $group->users_as_minimal_arrayref('member') )
             : (),
