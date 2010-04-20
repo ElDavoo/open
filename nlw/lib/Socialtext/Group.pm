@@ -303,6 +303,7 @@ sub Factory {
 ###############################################################################
 sub Create {
     my ($class, $proto_group) = @_;
+    my $timer = Socialtext::Timer->new;
 
     # find first updateable factory
     my $factory =
@@ -319,6 +320,10 @@ sub Create {
     $factory->CreateInitialRelationships($homey);
     my $group = Socialtext::Group->new(homunculus => $homey);
     Socialtext::JobCreator->index_group($group);
+
+    my $msg = 'CREATE,GROUP,group_id:' . $group->group_id
+              . '[' . $timer->elapsed . ']';
+    st_log()->info($msg);
 
     return $group;
 }
