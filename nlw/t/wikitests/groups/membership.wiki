@@ -30,7 +30,7 @@
 
 Assumes devnull1 or whoever the default login is *isn't* in this group:
 
-| *Comment* | POST, User devnull1 does not have admin privs |                                                   |
+| *Comment* | POST, default user does not have admin privs |                                                   |
 | POST-json | /data/groups/%%group_id%%/membership          | {"user_id":"%%mercury_id%%", "role_name":"admin"} |
 | code-is   | 403                                           |                                                   |
 
@@ -125,3 +125,66 @@ Assumes devnull1 or whoever the default login is *isn't* in this group:
 | json-like   | [{"user_id":"%%mercury_id%%", "role_name":"admin"}] |
 | json-like   | [{"user_id":"%%zinc_id%%", "role_name":"admin"}]    |
 | json-unlike | [{"user_id":"%%cobalt_id%%"}]                       |
+
+#########################################
+# Self join group tests
+#########################################
+
+| set          | sjgroup     | sjgroup%%start_time%% |  |  |           |
+| create-group | %%sjgroup%% | %%account%%           |  |  | self-join |
+| add-user-to-group | %%zinc_id%%              | %%group_id%%                               |       |
+| http-user-pass | %%mercury%%               | password |
+
+| *Comment*         | Check that Mercury is not yet a member |
+| GET-json          | /data/groups/%%group_id%%/users        |
+| code-is           | 200                                    |
+| json-parse        |                                        |
+| json-array-size   | 1                                      |
+
+| *Comment*         | Also check that we're not leaking member details |
+| json-path-exists  | $[0].user_id                           |
+| json-path-exists  | $[0].display_name                      |
+| json-path-missing | $[0].best_full_name                    |
+| json-path-missing | $[0].email_address                     |
+| json-path-missing | $[0].username                          |
+| json-path-missing | $[0].role_name                         |
+| json-path-missing | $[0].uri                               |
+
+
+| *Comment* | Mercury tries to self-join a group as an admin|
+| POST-json | /data/groups/%%group_id%%/users | {"username":"%%mercury%%", "role_name":"admin"} |
+| code-is   | 400                                  |                                                  |
+| body-like | Can only become member |
+
+| *Comment* | Mercury self-joins a group |
+| POST-json | /data/groups/%%group_id%%/users | {"username":"%%mercury%%", "role_name":"member"} |
+| code-is   | 201                                  |                                                  |
+
+| *Comment*       | Check that Mercury is a member               |
+| GET-json        | /data/groups/%%group_id%%/users                      |
+| code-is         | 200                                                  |
+| json-parse      |                                                      |
+| json-array-size | 2                                                    |
+| json-like       | [{"user_id":"%%mercury_id%%", "role_name":"member"}] |
+
+| *Comment* | Mercury tries to self-join a group as an admin|
+| POST-json | /data/groups/%%group_id%%/users | {"username":"%%mercury%%", "role_name":"admin"} |
+| code-is   | 403                                  |                                                  |
+| body-like | Insufficient privileges |
+
+| *Comment*       | Check that a non-member, non-related can't see the group |
+| http-user-pass | %%cobalt%% | password |
+| GET-json          | /data/groups/%%group_id%%/users |
+| code-is           | 404                             |
+
+| *Comment* | Try self-joining a group the user has no account relation to |
+| http-user-pass | %%mercury%% | password |
+| set            | acct2        | acct2-%%start_time%%   |  |  |           |
+| create-account | %%acct2%%    |                        |  |  |           |
+| set            | sjgroup2     | sjgroup2%%start_time%% |  |  |           |
+| create-group   | %%sjgroup2%% | %%acct2%%              |  |  | self-join |
+
+| POST-json | /data/groups/%%group_id%%/users | {"username":"%%mercury%%", "role_name":"member"} |
+| code-is   | 403                                  |                                                  |
+| body-like | Insufficient privileges |
+

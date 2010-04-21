@@ -1,7 +1,7 @@
 package Socialtext::User::Find::Container;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::SQL qw/get_dbh sql_execute/;
+use MooseX::StrictConstructor;
 use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::String;
 use Socialtext::User;
@@ -11,18 +11,20 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::User::Find';
 
-has direct => (is => 'ro', isa => 'Bool');
-has container => (is => 'rw', isa => 'Maybe[Socialtext::UserSetContainer]');
+has 'container' => (is => 'ro', isa => 'Socialtext::UserSetContainer',
+    required => 1);
+has 'direct'    => (is => 'ro', isa => 'Bool', default => undef);
 
 sub _build_sql_from {
     my $self = shift;
     my $table = $self->direct ? 'user_set_include' : 'user_set_path';
-    my $from = qq{
-        $table
+    my $from = $table . q{
         JOIN users ON (from_set_id = user_id)
-        JOIN "Role" USING(role_id)
     };
-    unless ($self->minimal) {
+    if ($self->minimal < 2) {
+        $from .= q{ JOIN "Role" USING(role_id) };
+    }
+    if ($self->minimal < 1) {
         $from .= qq{
             JOIN "UserMetadata" USING(user_id)
             JOIN "Account"
@@ -34,13 +36,14 @@ sub _build_sql_from {
 
 sub _build_sql_cols {
     my $self = shift;
-    my $cols = [
-        'user_id', 'first_name', 'last_name',
-        'email_address', 'driver_username', 'display_name',
-        'array_accum(DISTINCT "Role".name) AS role_names',
-    ];
-    unless ($self->minimal) {
-        push @$cols,
+    my @cols = qw(user_id display_name);
+    if ($self->minimal < 2) {
+        push @cols,
+            qw(first_name last_name email_address driver_username),
+            'array_accum(DISTINCT "Role".name) AS role_names';
+    }
+    if ($self->minimal < 1) {
+        push @cols,
             '"UserMetadata".primary_account_id',
             '"Account".name AS primary_account_name',
             "to_char(creation_datetime, 'YYYY-MM-DD') AS creation_date",
@@ -51,61 +54,66 @@ sub _build_sql_cols {
                      WHERE countable.from_set_id = user_id
                        AND into_set_id } . PG_WKSP_FILTER . q{
                 ),0) AS workspace_count
-            },
+            };
     }
-    return $cols;
+    return \@cols;
 }
 
 has '+sql_where' => ( 'isa' => 'ArrayRef' );
 
 sub _build_sql_where {
     my $self = shift;
-    my $filter = $self->filter;
 
-    my ($sub_stmt, @sub_bind) = sql_abstract->select(
-        "user_sets_for_user", "1", {
-            user_set_id => $self->container->user_set_id,
-            user_id => $self->viewer->user_id,
-        },
+    my @where = (
+        into_set_id => $self->container->user_set_id,
     );
 
-    return [
-        '-and' => [
-            into_set_id => $self->container->user_set_id,
+    unless ($self->all) {
+        my ($sub_stmt, @sub_bind) = sql_abstract()->select(
+            "user_sets_for_user", "1", {
+                user_set_id => $self->container->user_set_id,
+                user_id => $self->viewer->user_id,
+            },
+        );
+        push @where, ('-nest' => \["EXISTS ($sub_stmt)" => @sub_bind]);
+    }
 
-            # Limit the visible users unless 'all' is true
-            $self->all ? () : ('-nest' => \["EXISTS ($sub_stmt)" => @sub_bind]),
+    my $filter = $self->filter;
+    push @where,
+        '-or' => [
+            'lower(first_name)'      => { '-like' => $filter },
+            'lower(last_name)'       => { '-like' => $filter },
+            'lower(email_address)'   => { '-like' => $filter },
+            'lower(driver_username)' => { '-like' => $filter },
+            'lower(display_name)'    => { '-like' => $filter },
+        ];
 
-            '-or' => [
-                'lower(first_name)'      => { '-like' => $filter },
-                'lower(last_name)'       => { '-like' => $filter },
-                'lower(email_address)'   => { '-like' => $filter },
-                'lower(driver_username)' => { '-like' => $filter },
-                'lower(display_name)'    => { '-like' => $filter },
-            ],
-        ],
-    ];
+    return ['-and' => \@where];
 }
 
 sub _build_sql_group {
     my $self = shift;
-    my @group_cols = qw(
-        user_id first_name last_name email_address driver_username display_name
-    );
-    unless ($self->minimal) {
+    my @group_cols = qw(user_id display_name);
+    if ($self->minimal < 2) {
+        push @group_cols, qw(
+            first_name last_name email_address driver_username display_name
+        );
+    }
+    if ($self->minimal < 1) {
         push @group_cols, qw(
             primary_account_name primary_account_id creation_date
         );
     }
 
-    return join ',', @group_cols;
+    return join ', ', @group_cols;
 }
 
-sub get_results {
+around 'get_results' => sub {
+    my $code = shift;
     my $self = shift;
+    my $rows = $self->$code(@_);
 
-    my $rows = $self->SUPER::get_results();
-
+    return $rows if ($self->minimal >= 2);
     for my $row (@$rows) {
         my @roles = map { Socialtext::Role->new(name => $_) }
             @{$row->{role_names} || []};
@@ -119,7 +127,7 @@ sub get_results {
         $row->{is_admin} = any { $_ eq 'admin' } @sorted_role_names;
     }
     return $rows;
-}
+};
 
 __PACKAGE__->meta->make_immutable;
 

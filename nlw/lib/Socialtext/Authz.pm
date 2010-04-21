@@ -5,6 +5,7 @@ use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_singlevalue sql_execute/;
 use Socialtext::Cache;
 use Socialtext::User::Default::Users qw(:system-user);
+use Socialtext::UserSet qw/:const/;
 use List::MoreUtils qw/any/;
 use namespace::clean -except => 'meta';
 
@@ -279,6 +280,30 @@ sub plugin_enabled_for_user_set {
     my $plugin_name = delete $p{plugin_name};
     my @plugins = $self->plugins_enabled_for_user_set(%p);
     return (any { $_ eq $plugin_name } @plugins) ? 1 : 0;
+}
+
+sub user_sets_share_an_account {
+    my $self = shift;
+    my $set_a = shift;
+    my $set_b = shift;
+    die "must supply two objects with user_set_id accessors"
+        unless (blessed($set_a) && $set_a->can('user_set_id') and 
+                blessed($set_b) && $set_b->can('user_set_id'));
+
+    my $sql = q{
+        SELECT 1
+          FROM user_set_path path_a
+         WHERE from_set_id = $1 AND into_set_id }. PG_ACCT_FILTER .q{
+           AND EXISTS (
+               SELECT 1
+                 FROM user_set_path path_b
+                WHERE from_set_id = $2
+                  AND path_b.into_set_id = path_a.into_set_id
+           )
+        LIMIT 1
+    };
+    my $sth = sql_execute($sql, $set_a->user_set_id, $set_b->user_set_id);
+    return $sth->rows == 1;
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);
