@@ -196,7 +196,7 @@ sub remove_set {
         DELETE FROM user_set_include
         WHERE from_set_id = $1 OR into_set_id = $1
     }, {}, $n);
-    die "node $n doesn't exist" unless $rows>0;
+    confess "node $n doesn't exist" unless $rows>0;
 
     if ($opts{roles_only}) {
         $dbh->do(q{

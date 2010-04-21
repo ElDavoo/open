@@ -24,6 +24,7 @@ use Socialtext::EmailSender::Factory;
 use Socialtext::User::Cache;
 use Socialtext::Timer qw/time_scope/;
 use Carp qw/croak/;
+use Try::Tiny;
 use Readonly;
 
 BEGIN {
@@ -748,7 +749,12 @@ sub deactivate {
     }
 
     # leaves things referencing this user in place
-    Socialtext::UserSet->new->remove_set($self->user_id, roles_only => 1);
+    try {
+        Socialtext::UserSet->new->remove_set($self->user_id, roles_only => 1);
+    }
+    catch {
+        die $_ unless (/^node \d+ doesn't exist/);
+    };
 
     # remove them from control and console
     $self->set_business_admin(0);
