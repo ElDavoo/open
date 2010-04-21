@@ -63,6 +63,10 @@ sub _get_entities {
     my $discoverable = $q->param('discoverable');
  
     if ($filter) {
+        my $group_ids = [
+            $user->groups(discoverable => $discoverable, ids_only => 1)->all
+        ];
+
         require Socialtext::Search::Solr::Factory;
         my $searcher = Socialtext::Search::Solr::Factory->create_searcher();
         my ($results, $count) = $searcher->begin_search(
@@ -75,7 +79,9 @@ sub _get_entities {
             offset    => $self->start_index,
             direction => $self->reverse ? 'desc' : 'asc',
             order     => 'title',
+            group_ids => $group_ids,
         );
+        $self->{_total_results} = $count;
         return [ map { $_->group } @{ $results->() } ];
     }
     else {
