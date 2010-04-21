@@ -85,12 +85,12 @@ sub _search {
         @account_ids = $opts{viewer}->accounts(ids_only => 1);
     }
 
-    my @group_ids;
+    my $group_ids;
     if ($opts{group_ids}) {
-        @group_ids = @{ $opts{group_ids} };
+        $group_ids = $opts{group_ids};
     }
     elsif ($opts{viewer}) {
-        @group_ids = $opts{viewer}->groups(ids_only => 1)->all;
+        $group_ids = [$opts{viewer}->groups(ids_only => 1)->all];
     }
 
     $query_string = lc $query_string;
@@ -121,7 +121,7 @@ sub _search {
                 ($opts{doctype} ne 'group'
                     ? (map {"a:$_"} @account_ids)
                     : ()),
-                (map { "g:$_" } @group_ids),
+                (map { "g:$_" } @$group_ids),
             );
             $filter_query[$#filter_query] .= " AND ($nets)";
 
