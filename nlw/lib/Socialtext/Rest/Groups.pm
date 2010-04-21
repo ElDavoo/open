@@ -50,7 +50,7 @@ sub _get_total_results {
         Socialtext::Group->Count;
     }
     else {
-        return $user->group_count;
+        return $self->{_total_results} || $user->group_count;
     }
 }
 
@@ -60,6 +60,7 @@ sub _get_entities {
     my $q    = $self->rest->query;
 
     my $filter = $q->param('q') || $q->param('filter') || '';
+    my $discoverable = $q->param('discoverable');
  
     if ($filter) {
         require Socialtext::Search::Solr::Factory;
@@ -91,7 +92,9 @@ sub _get_entities {
             return [ $iter->all ];
         }
         else {
-            return [ $user->groups->all ];
+            my $full_set = [ $user->groups(discoverable => $discoverable)->all ];
+            $self->{_total_results} = @$full_set;
+            return $full_set;
         }
     }
 }

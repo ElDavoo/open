@@ -394,9 +394,23 @@ sub groups {
     my %p = @_;
 
     my @bind = ($self->user_set_id);
-    my $add_where = '';
+
+    # discoverable: exclued - groups i'm a member of (CURRENT)
+    # discoverable: include - groups i'm a member of + permset=self-join
+    # discoverable: only    - permset=self-join - groups i'm a member of
+
+    my $d = $p{discoverable};
+    my $conditions = '0 = 1';
+    my $path_sub_query = q{
+        SELECT into_set_id
+          FROM user_set_path
+         WHERE from_set_id = ?
+    };
+
     if ($p{plugin}) {
-        $add_where = q{
+        die "can't use plugin filter with the discoverable filter"
+            if $p{discoverable};
+        $path_sub_query .= q{
           AND user_set_id IN (
             SELECT user_set_id
               FROM user_set_plugin_tc
@@ -406,12 +420,30 @@ sub groups {
         push @bind, $p{plugin};
     }
 
+    # XXX TODO: scope to this user's accounts
+    my $discoverable_clause = qq{permission_set = 'self-join'};
+
+    if ($d eq 'exclude' or not $d) {
+        $conditions = qq{user_set_id IN ($path_sub_query)}
+    }
+    elsif ($d eq 'only') {
+        $conditions =
+            qq{user_set_id NOT IN ($path_sub_query) AND $discoverable_clause};
+    }
+    elsif ($d eq 'include') {
+        $conditions = 
+            qq{user_set_id IN ($path_sub_query) OR $discoverable_clause};
+    }
+    else {
+        die "unknown 'discoverable' filter\n";
+    }
+    warn "$d => $conditions";
+
     my $sth = sql_execute(qq{
-        SELECT DISTINCT(group_id) AS group_id, driver_group_name
-        FROM user_set_path
-        JOIN groups ON into_set_id = user_set_id
-        WHERE from_set_id = ? $add_where
-        ORDER BY driver_group_name
+        SELECT group_id, driver_group_name
+          FROM groups
+         WHERE $conditions
+         ORDER BY driver_group_name
     },@bind);
 
     my $apply = $p{ids_only}
