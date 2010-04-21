@@ -395,11 +395,10 @@ sub groups {
 
     my @bind = ($self->user_set_id);
 
-    # discoverable: exclued - groups i'm a member of (CURRENT)
+    # discoverable: exclude - groups i'm a member of (CURRENT)
     # discoverable: include - groups i'm a member of + permset=self-join
     # discoverable: only    - permset=self-join - groups i'm a member of
 
-    my $d = $p{discoverable};
     my $conditions = '0 = 1';
     my $path_sub_query = q{
         SELECT into_set_id
@@ -423,7 +422,8 @@ sub groups {
     # XXX TODO: scope to this user's accounts
     my $discoverable_clause = qq{permission_set = 'self-join'};
 
-    if ($d eq 'exclude' or not $d) {
+    my $d = $p{discoverable};
+    if (not $d or $d eq 'exclude') {
         $conditions = qq{user_set_id IN ($path_sub_query)}
     }
     elsif ($d eq 'only') {
@@ -435,9 +435,8 @@ sub groups {
             qq{user_set_id IN ($path_sub_query) OR $discoverable_clause};
     }
     else {
-        die "unknown 'discoverable' filter\n";
+        die "unknown 'discoverable' filter: '$d'\n";
     }
-    warn "$d => $conditions";
 
     my $sth = sql_execute(qq{
         SELECT group_id, driver_group_name
