@@ -125,7 +125,7 @@ Tests for [Story: Groups ReST API]
 | create-group | eta     | | | booya |
 | create-group | theta   | | | booya |
 | create-group | iota    | | | booya |
-| create-group | taliban | | | come join us | self-join |
+| create-group | taliban | | | booya! come join us | self-join |
 | st-process-jobs | |
 
 | get-group-id      | alpha      | alpha_id     |
@@ -250,6 +250,7 @@ Tests for [Story: Groups ReST API]
 | json-path-is | $.entry[2].name                 | gamma   |
 
 #####################
+
 | Comment         | `discoverable=exclude` should be the default |
 | GET-json        | /data/groups                                 |
 | code-is         | 200                                          |
@@ -265,14 +266,14 @@ Tests for [Story: Groups ReST API]
 | json-path-is | $.entry[1].name                                | delta |
 | json-path-is | $.entry[2].name                                | gamma |
 
-| Comment      | `discoverable=only` should be the default   |         |
+| Comment      | `discoverable=only`                         |         |
 | GET-json     | /data/groups?discoverable=only;startIndex=0 |         |
 | code-is      | 200                                         |         |
 | json-parse   |                                             |         |
 | json-path-is | $.totalResults                              | 1       |
 | json-path-is | $.entry[0].name                             | taliban |
 
-| Comment      | `discoverable=include` should be the default   |         |
+| Comment      | `discoverable=include`                         |         |
 | GET-json     | /data/groups?discoverable=include;startIndex=0 |         |
 | code-is      | 200                                            |         |
 | json-parse   |                                                |         |
@@ -282,7 +283,41 @@ Tests for [Story: Groups ReST API]
 | json-path-is | $.entry[2].name                                | gamma   |
 | json-path-is | $.entry[3].name                                | taliban |
 
+###### Now with Filtering ######
+
+| Comment         | `discoverable=exclude` should be the default |
+| GET-json        | /data/groups?filter=booya                    |
+| code-is         | 200                                          |
+| json-parse      |                                              |
+| json-array-size | 3                                            |
+
+| Comment      | `discoverable=exclude` should be the default                |       |
+| GET-json     | /data/groups?discoverable=exclude;startIndex=0;filter=booya |       |
+| code-is      | 200                                                         |       |
+| json-parse   |                                                             |       |
+| json-path-is | $.totalResults                                              | 3     |
+| json-path-is | $.entry[0].name                                             | alpha |
+| json-path-is | $.entry[1].name                                             | delta |
+| json-path-is | $.entry[2].name                                             | gamma |
+
+| Comment      | `discoverable=only`                                      |         |
+| GET-json     | /data/groups?discoverable=only;startIndex=0;filter=booya |         |
+| code-is      | 200                                                      |         |
+| json-parse   |                                                          |         |
+| json-path-is | $.totalResults                                           | 1       |
+| json-path-is | $.entry[0].name                                          | taliban |
+
+| Comment      | `discoverable=include`                                      |         |
+| GET-json     | /data/groups?discoverable=include;startIndex=0;filter=booya |         |
+| code-is      | 200                                                         |         |
+| json-parse   |                                                             |         |
+| json-path-is | $.totalResults                                              | 4       |
+| json-path-is | $.entry[0].name                                             | alpha   |
+| json-path-is | $.entry[1].name                                             | delta   |
+| json-path-is | $.entry[2].name                                             | gamma   |
+| json-path-is | $.entry[3].name                                             | taliban |
+
+
 ^ TO IMPLEMENT
 
-* The above tests work for searches too (n.b. `filter=blah`)
 * look for XXX TODO in Socialtext/User.pm - (limit discovery to account scopes)
