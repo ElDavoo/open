@@ -69,9 +69,9 @@
 
 | *Comment* | Test case: Activities Widget Basic events. Wait for Signal to appear in Profile Activity |  |
 | open_ok | /st/profile |  |
-| wait_for_text_present_ok | Activity | 30000 |
+| wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | profile_activity |
-| st-widget-title-like | profile_activity | Activity |
+| st-widget-title-like | profile_activity | Activities |
 | st_verify_text_in_activities_widget | profile_activity | She rocks in the treehouse %%start_time%% |
 | st_verify_text_in_activities_widget | profile_activity | Rockin and a bopin %%start_time%% |
 | st_verify_text_in_activities_widget | profile_activity | All the little birds %%start_time%% |
