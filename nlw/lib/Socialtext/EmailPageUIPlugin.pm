@@ -2,11 +2,11 @@
 package Socialtext::EmailPageUIPlugin;
 use strict;
 use warnings;
-
-use base 'Socialtext::Plugin';
-
+use Socialtext::JobCreator;
 use Class::Field qw( const );
 use Readonly;
+
+use base 'Socialtext::Plugin';
 
 sub class_id { 'email_page_ui' }
 const class_title => 'Email Page';
@@ -71,17 +71,19 @@ sub email_page {
     my $send_copy = $self->cgi->email_page_send_copy;
 
     my $page = $self->hub->pages->new_from_name($page_name);
-    my $sender = $self->hub->current_user;
-
     $note = '' unless $use_intro;
 
-    $page->send_as_email(
-        from => $sender->email_address,
-        to => $user_destination,
-        subject => $subject,
-        body_intro => $note . "\n\n",
-        include_attachments => $attachments_p,
-        send_copy => $send_copy
+    Socialtext::JobCreator->send_page_email(
+        page_id => $page->id,
+        workspace_id => $self->hub->current_workspace->workspace_id,
+        email_args => {
+            from => $self->hub->current_user->email_address,
+            to => $user_destination,
+            subject => $subject,
+            body_intro => $note . "\n\n",
+            include_attachments => $attachments_p,
+            send_copy => $send_copy
+        }
     );
     $self->template_process('close_window.html');
 }

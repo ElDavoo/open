@@ -115,6 +115,13 @@ sub index_page {
     return @job_ids;
 }
 
+sub send_page_email {
+    my $self = shift;
+    my %opts = @_;
+
+    return $self->insert( "Socialtext::Job::EmailPage" => \%opts );
+}
+
 sub send_page_notifications {
     my $self = shift;
     my $page = shift;
