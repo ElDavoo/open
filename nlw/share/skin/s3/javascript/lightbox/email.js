@@ -43,14 +43,22 @@ proto.show = function () {
         });
 
         jQuery('#email_all').click(function () {
-            jQuery.getJSON('/data/workspaces/' + Socialtext.wiki_id + '/users?limit=9999999', function (data) {
-                self.clearHelp();
-                for (var i=0; i<data.length; i++) {
-                    jQuery('<option />')
-                        .html(data[i].email)
-                        .appendTo('#email_dest');
-                }
-            });
+            self.clearHelp();
+            var startIndex = 0;
+            var fetch_user_pageful = function () {
+                jQuery.getJSON('/data/workspaces/' + Socialtext.wiki_id + '/users?limit=100;startIndex=' + startIndex, function (data) {
+                    for (var i=0; i < data.entry.length; i++) {
+                        jQuery('<option />')
+                            .html(data.entry[i].email)
+                            .appendTo('#email_dest');
+                        startIndex++;
+                    }
+                    if (startIndex < data.totalResults) {
+                        fetch_user_pageful();
+                    }
+                });
+            }
+            fetch_user_pageful();
         });
 
         jQuery('#email_none').click(function () {
