@@ -672,7 +672,7 @@ sub delete_all_groups {
 
     my $groups = Socialtext::Group->All();
     while (my $g = $groups->next) {
-        Test::Socialtext::Group->delete_recklessly($group);
+        Test::Socialtext::Group->delete_recklessly($g);
     }
 }
 
