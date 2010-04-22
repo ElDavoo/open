@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 138;
+use Test::Socialtext tests => 143;
 use Test::Differences;
 use Test::Exception;
 use List::Util qw/shuffle/;
@@ -527,13 +527,41 @@ remove_set: {
         del_set(7);
     } "can't delete a set that doesn't exist";
 
+    $dbh->do(q{INSERT INTO user_set_plugin (user_set_id, plugin)
+               VALUES (?,?)}, {}, 3+$OFFSET, 'foo');
+    $dbh->do(q{INSERT INTO user_set_plugin (user_set_id, plugin)
+               VALUES (?,?)}, {}, 4+$OFFSET, 'bar');
+
+    my ($plug) = $dbh->selectrow_array(
+        q{SELECT plugin FROM user_set_plugin WHERE user_set_id = ?}, {},
+        3+$OFFSET);
+    is $plug, 'foo';
+
     lives_ok {
-        del_set(3);
+        del_set(3, roles_only => 1);
     } "deleted set 3";
+
+    my ($plug2) = $dbh->selectrow_array(
+        q{SELECT plugin FROM user_set_plugin WHERE user_set_id = ?}, {},
+        3+$OFFSET);
+    is $plug2, 'foo', 'set pref *not* purged';
 
     is_graph_tc(
         [1,2 => 1,2],
         [5,4 => 5,4],
+    );
+
+    lives_ok {
+        del_set(4);
+    } "deleted set 4, not just roles";
+
+    my ($plug3) = $dbh->selectrow_array(
+        q{SELECT plugin FROM user_set_plugin WHERE user_set_id = ?}, {},
+        4+$OFFSET);
+    is $plug3, undef, 'set pref got purged';
+
+    is_graph_tc(
+        [1,2 => 1,2],
     );
 }
 
@@ -588,7 +616,8 @@ role_list: {
 
 
 transactions_and_temp_tables: {
-    local $Socialtext::SQL::DEBUG = 1;
+    # uncomment to make debugging easier:
+    #local $Socialtext::SQL::DEBUG = 1;
     reset_graph();
 
     # reconnect; this was causing the "temp table caching" to fail so please
