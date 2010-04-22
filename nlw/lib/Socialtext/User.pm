@@ -9,7 +9,7 @@ use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE WOR
 use Socialtext::AppConfig;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
-use Socialtext::SQL qw(sql_execute sql_selectrow sql_singlevalue);
+use Socialtext::SQL qw(sql_execute sql_selectrow sql_singlevalue sql_txn);
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
 use Socialtext::UserMetadata;
@@ -24,6 +24,7 @@ use Socialtext::EmailSender::Factory;
 use Socialtext::User::Cache;
 use Socialtext::Timer qw/time_scope/;
 use Carp qw/croak/;
+use Try::Tiny;
 use Readonly;
 
 BEGIN {
@@ -768,6 +769,7 @@ sub is_externally_sourced {
 }
 
 # revoke a user's access to everything
+around 'deactivate' => \&sql_txn;
 sub deactivate {
     my $self = shift;
 
@@ -775,39 +777,30 @@ sub deactivate {
         if $self->is_system_created;
 
     if ($self->can_update_store) {
-        $self->update_store( password => '*password*', no_crypt => 1 );
+        # disable login
+        $self->update_store( password => '*no-password*', no_crypt => 1 );
     }
     else {
         warn loc("The user has been removed from workspaces and directories.") . "\n";
         warn loc("Login information is controlled by the [_1] directory administrator.", $self->driver_name) . "\n\n";
     }
 
-    # Add a user to the new primary _before_ deleting the old
-    $self->primary_account(Socialtext::Account->Deleted());
-
-    # Remove the user from all of the things that they have membership in.
-    my @containers = (
-        $self->workspaces->all(),
-        $self->accounts(),
-        # $self->groups(),
-    );
-
-    for my $container ( @containers ) {
-        # Skip deleted account, not strictly necessary since we refuse to
-        # remove users from thier primary accounts.
-        next if ( $container->isa('Socialtext::Account')
-            && $container->name eq 'Deleted' );
-
-        $container->remove_user( user => $self );
+    # leaves things referencing this user in place
+    try {
+        Socialtext::UserSet->new->remove_set($self->user_id, roles_only => 1);
     }
+    catch {
+        die $_ unless (/^node \d+ doesn't exist/);
+    };
 
     # remove them from control and console
-    if ($self->is_business_admin) {
-        $self->set_business_admin(0);
-    }
-    if ($self->is_technical_admin) {
-        $self->set_technical_admin(0);
-    }
+    $self->set_business_admin(0);
+    $self->set_technical_admin(0);
+
+    # side-effect: re-indexes the profile (which should remove it), adds a
+    # "member" Role to the Deleted account.
+    require Socialtext::Account;
+    $self->primary_account(Socialtext::Account->Deleted());
 
     return $self;
 }
@@ -815,6 +808,8 @@ sub deactivate {
 sub reactivate {
     my $self    = shift;
     my %p       = @_;
+
+    require Socialtext::Account;
     my $deleted = Socialtext::Account->Deleted();
 
     die "Account is required" unless $p{account};
@@ -1650,6 +1645,7 @@ sub profile_is_visible_to {
 sub primary_account {
     my $self = shift;
 
+    require Socialtext::Account;
     if (@_==0) {
         return Socialtext::Account->new(account_id => $self->primary_account_id)
             || Socialtext::Account->Unknown;
@@ -1661,9 +1657,6 @@ sub primary_account {
     my $new_account = shift;
     $new_account = Socialtext::Account->new(account_id => $new_account)
         unless ref($new_account);
-
-    my $old_account = Socialtext::Account->new(
-        account_id => $self->primary_account_id );
 
     $self->metadata->set_primary_account_id($new_account->account_id);
 
@@ -1678,11 +1671,9 @@ sub primary_account {
             user => $self, # use a default role
         );
     }
-    if ($new_account->account_id != $deleted_acct->account_id) {
-        # Avoid double-indexing elsewhere in the code.
-        require Socialtext::JobCreator;
-        Socialtext::JobCreator->index_person( $self );
-    }
+
+    require Socialtext::JobCreator;
+    Socialtext::JobCreator->index_person( $self );
 
     return $new_account;
 }
@@ -2077,7 +2068,8 @@ Returns a boolean indicating whether the user can use the given plugin to intera
 
 =head2 $user->deactivate()
 
-Deactivates the user, removing them from all their workspaces and preventing them from logging in.
+Deactivates the user, removing them from all their workspaces, groups and
+accounts.  Prevents them from logging in.
 
 =head2 $user->avatar_is_visible()
 

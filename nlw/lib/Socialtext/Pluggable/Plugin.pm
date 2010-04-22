@@ -302,6 +302,19 @@ sub redirect_to_login {
     return $self->redirect("/challenge?$uri");
 }
 
+sub error {
+    my $self = shift;
+    my %opts = @_;
+    my $status = delete $opts{status} || HTTP_500_Internal_Server_Error;
+    my $error  = delete $opts{error} || 'An error has occured';
+
+    $self->header_out(-status => $status);
+    return $self->template_render(
+        'view/error',
+        error_string => $error,
+    );
+}
+
 sub redirect {
     my ($self,$target) = @_;
     unless ($target =~ /^(https?:|\/)/i or $target =~ /\?/) {
