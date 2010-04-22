@@ -22,3 +22,19 @@ sub do_work {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Job::EmailPage - Email out a page
+
+=head1 SYNOPSIS
+
+  See Socialtext::Page for usage.
+
+=head1 DESCRIPTION
+
+Formats and sends a page out via email.
+
+=cut
