@@ -70,9 +70,9 @@ sub to_text {
 
 # special
 sub process {
-    my $self = shift;
-    my $raw_text        = shift;
-    my $page            = shift;
+    my $self     = shift;
+    my $raw_text = shift;
+    my $page     = shift;
     
     my $timer = time_scope('viewer_process');
     my $large_formatted = $self->_large_check(\$raw_text);
