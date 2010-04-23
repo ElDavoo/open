@@ -42,6 +42,7 @@ has '_table' => (is => 'rw', isa => 'HashRef',
 package Apache;
 use Moose;
 use MooseX::AttributeInflate;
+use Socialtext::Log qw(st_log);
 
 use constant auth_type => 'ntlm,basic';
 use constant auth_name => '';
@@ -61,7 +62,15 @@ has_inflated 'headers_out' => (is => 'rw', isa => 'Apache::Table');
 has 'uri' => (is => 'rw', isa => 'Str');
 has 'user' => (is => 'rw', isa => 'Str');
 
-has 'reason' => (is => 'rw', isa => 'Str', writer => 'log_reason');
+has 'reason' => (
+    is      => 'rw',
+    isa     => 'Str',
+    writer  => 'log_reason',
+    trigger => sub {
+        my ($self, $new_reason, $old_reason) = @_;
+        st_log->warning("AuthenNTLM reason: $new_reason");
+    },
+);
 
 # only support ntlm, not Basic
 has 'authtype' => (is => 'rw', isa => 'Str', default => 'ntlm');
@@ -351,7 +360,6 @@ sub _do_ntlm {
     my $resp = "HTTP/1.0 200 OK\r\n";
 
     if (my $reason = $r->reason) {
-        st_log()->warning("AuthenNTLM reason: $reason");
         if ($reason =~ /^Wrong password/) {
             if (++$recent_sid_failures{$sid} > MAX_PASSWORD_FAILURES) {
                 # frequent re-attempts seems to happen if IE6 isn't logged
