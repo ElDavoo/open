@@ -104,6 +104,7 @@ if [ $PAUSE == 0 ]; then
     dev-bin/nlwctl start
 else
     echo "Skipping NLW startup, you need do it manually"
+    dev-bin/nlwctl stop
 fi
 
 
