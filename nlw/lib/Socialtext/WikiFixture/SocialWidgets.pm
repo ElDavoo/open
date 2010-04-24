@@ -378,9 +378,9 @@ sub st_single_widget_in_dashboard {
 
 sub st_send_signal_within_activities_widget {
     my ($self, $signaltosend, $private) = @_;
-    $self->handle_command('wait_for_element_present_ok', 'signalsNotSetUp', 5000);
-    $self->handle_command('click_ok', 'signalsNotSetUp');
-       
+    $self->handle_command('wait_for_element_present_ok', 'mainWikiwyg', 5000);
+    $self->handle_command('click_ok', 'mainWikiwyg');
+
     my $browser = $ENV{'selenium_browser'} || 'chrome';
     if ($browser=~/chrome|firefox/ig) {
         $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
@@ -405,7 +405,7 @@ sub st_send_signal_within_activities_widget {
 
 =head2 st_send_signal_via_activities_widget 
 
-Precondition: Open to page with a named activities widget.  
+Precondition: Open to page with a named activities widget.
 Precondition: Frame focus should be the page.
 Parameters: You pass in the activities widget name, signal text, private flag
 PostCondition: Signal is sent, Frame focus is back to entire dashboard
@@ -447,17 +447,16 @@ sub st_verify_text_within_activities_widget {
 
 =head2 st_verify_text_in_activities_widget ($self, $widgetname, $texttofind)
 
-Precondition: Open to /?dashboard with a named activities widget.  
-Precondition: Frame focus should be the entire dashboard
-Parameters: You paass in the activties widget name, text to look for
-PostCondition: Text is verified (or not), Frame focus is back to entire dashboard
+Precondition: Open to container with a named activities widget.
+Precondition: Frame focus should be the entire page
+Parameters: You pass in the activties widget name, text to look for
+PostCondition: Text is verified (or not), Frame focus is back to entire page
 
 =cut
 
 sub st_verify_text_in_activities_widget {
     my ($self, $widgetname, $texttofind) = @_;
     $self->handle_command('st-select-widget-frame', $widgetname);
-    $self->handle_command('pause', 3000);
     $self->st_verify_text_within_activities_widget($texttofind);
     $self->handle_command('select-frame', 'relative=parent');
     ok(!$@, 'st_verify_text_in_activities_widget');
@@ -465,10 +464,10 @@ sub st_verify_text_in_activities_widget {
 
 =head2 st_text_unlike_in_activities_widget ($self, $widgetname, $betternotfindit)
 
-Precondition: open to /?dashboard with a named activitis widget
-Precondition: Frame focus should be entire dashboard
-Parameters: You pass in widget name, text to not find
-Postcondition: Text is unverified (or not), Frame focus is back on dashboard
+Precondition: open to container with a named activities widget
+Precondition: Frame focus should be entire page
+Parameters: You pass in activities widget name, text to not find
+Postcondition: Text is unverified (or not), Frame focus is back to entire page
 
 =cut
 
@@ -483,10 +482,10 @@ sub st_text_unlike_in_activities_widget  {
 
 =head2 st_verify_link_in_activities_wdiget
 
-Precondition: Open to /?dashboard with a named activities widget.  
-Precondition: Frame focus should be the entire dashboard
+Precondition: open to container with a named activities widget
+Precondition: Frame focus should be entire page
 Parameters: You paass in the activties widget name, link to look for
-PostCondition: Text is verified (or not), Frame focus is back to entire dashboard
+PostCondition: link is found  (or not), Frame focus is back to entire page
 
 =cut
 
