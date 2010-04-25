@@ -62,7 +62,7 @@
 | open_ok | / |  |
 | st-logout |  |  |
 | open_ok | /nlw/control/accounts/transform |  |
-| text_like | //body | You must have admin privileges to access this URI. |
+| text_like | //body | Log in to Socialtext |
 
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI Teardown |
 | delete-group | %%group_id%% |

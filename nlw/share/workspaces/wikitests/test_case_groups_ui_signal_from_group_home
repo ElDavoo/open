@@ -23,8 +23,7 @@
 
 | *Comment* | Test Case: Groups UI Signal from group home Verify Signal in Signal Page |  |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | network-select | 30000 |
-| select_ok | network-select | index=0 |
+| st_cycle_network_select | 3 |  |
 | st-name-widget | 3 | signals_widget |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_1%% |
 | st_verify_text_in_activities_widget | signals_widget | qr/You.+minute.+ago to %%group_name%%/ |
@@ -35,9 +34,8 @@
 | open_ok | /?group/%%group_id%% |  |
 | st-name-widget | 3 | activity_widget |
 | st-select-widget-frame | activity_widget |  |
-
- wait_for_element_not_visible_ok | collapse-input | 5000 |
-
+| text_unlike | //body | What are you working on? |
+| text_like | within %%group_name%% |  |
 | select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Set Account to signals, see signal option |  |
@@ -45,30 +43,27 @@
 | open_ok | /?group/%%group_id%% |  |
 | st-name-widget | 3 | activity_widget |
 | st-select-widget-frame | activity_widget |  |
-| wait_for_element_visible_ok | collapse-input | 5000 |
+| wait_for_element_present_ok | mainWikiwyg | 10000 |
+| text_like | What are you working on? |  |
+| text_like | within %%group_name%% |  |
 | select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Login as non group member, do not see signal |  |
 | st-admin | add-member --workspace %%group_ws%% --email %%username%% |  |
 | st-logoutin |  |  |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | network-select | 30000 |
-| select_ok | network-select | index=0 |
+| st_cycle_network_select | 3 |  |
 | st-name-widget | 3 | signals_widget |
-| st_verify_text_in_activities_widget | signals_widget | Display signals from |
 | st_text_unlike_in_activities_widget | signals_widget | %%mysignal_1%% |
 | st_text_unlike_in_activities_widget | signals_widget | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
 | st_text_unlike_in_activities_widget | signals_widget | %%mysignal_2%% |
 
-| *Comment* | Test Case: Groups UI Signal from group home - matt does a trick to get refresh to work |  |
-| st_cycle_network_select | 3 |  |
-
 | *Comment* | Test Case: Groups UI Signal from group home - Add member, see signal |  |
 | st-admin | add-member --group %%group_id%% --email %%username%% |  |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | network-select | 30000 |
-| select_ok | network-select | index=0 |
+| st_cycle_network_select | 3 |  |
 | st-name-widget | 3 | signals_widget |
+| st_verify_text_in_activities_widget | signals_widget | Showing signals from |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_1%% |
 | st_verify_text_in_activities_widget | signals_widget | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_2%% |

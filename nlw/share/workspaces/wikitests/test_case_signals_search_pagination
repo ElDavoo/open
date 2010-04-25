@@ -5,6 +5,7 @@
 | *Comment* | Test Case: Signals Pagination. Two users, lexicographically orderable |  |
 
 | set | a_username | `a-%%start_time%%@ken.socialtext.net` |
+| set | x_username | `x-%%start_time%%@ken.socialtext.net` |
 | set | z_username | `z-%%start_time%%@ken.socialtext.net` |
 
 | set | a_name | Antiphonal Signaller %%start_time%% |
@@ -15,11 +16,12 @@
 | *Comment* | Test Case: Signals Pagination. |  |
 | st-admin | create-account --name %%sspacct%% |  |
 | st-admin | enable-plugin --account %%sspacct%% --p signals |  |
-| st-admin | add-member --account %%sspacct%% --u %%username%% | is now a member of the |
 
 | *Comment* | Test Case: Signals Pagination. Create users |  |
 | st-admin | create_user --e %%a_username%% --p %%password%% --account %%sspacct%% --f "%%a_name%%" |  |
+| st-admin | create_user --e %%x_username%% --p %%password%% --account %%sspacct%% |  |
 | st-admin | create_user --e %%z_username%% --p %%password%% --account %%sspacct%% --f "%%z_name%%" |  |
+| st-admin | add-member --e %%username%% --account %%sspacct%% | member |
 
 | *Comment* | This test uses post-signals to rapidly create signals. |  |
 | *Comment* | It creates a set of signals that can be searched and will appear |  |
@@ -35,7 +37,7 @@
 | http-user-pass | %%z_username%% | %%password%% |  |
 | post-signals | 22 | Pagination %%start_time%% | 41 |
 
-| *Comment* | Test Case: Signals Pagination. Process Jobs to index Signals |  |  |
+| *Comment* | Test Case: Signals Pagination. Process Jobs to index Signals |  |
 | st_process_jobs |  |  |
 
 | *Comment* | Test Case: Signals Pagination. Search for 44 Pagination %%start_time%% signals |  |
@@ -43,21 +45,14 @@
 | wait_for_element_visible_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
-| type_ok | st-search-term | Pagination %%start_time%% |
+| type_ok | st-search-term | "Pagination %%start_time%%" |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
 
-| *Comment* | sort-picker is inside the search widget. Why does this wait work? |  |
 | wait_for_element_visible_ok | sort-picker | 30000 |
-| select_ok | sort-picker | label=Newest |
-
-| *Comment* | Test Case: Signals Pagination. Select widget, wait for population. |  |
-| *Comment* | Ken has tried and failed to get rid of pause. This widget is wonky. |  |
-| pause | 8000 | I Hate Pause |
-| st-name-widget | 3 | searchwidget |
-| st-select-widget-frame | searchwidget |  |
-| wait_for_text_present_ok | Search results | 60000 |
-| text_like | qr/Search results.+'Pagination %%start_time%%'/ism |  |
+| select_and_wait | sort-picker | label=Relevance |
+| wait_for_text_present_ok | Signals matching '"Pagination %%start_time%%"' | 60000 |
+| select_and_wait | sort-picker | label=Newest |
 
 | *Comment* | Test Case: Signals Pagination. Verify found Pagination %%start_time%% signals |  |
 | wait_for_text_present_ok | Pagination %%start_time%% 43 | 30000 |
@@ -81,152 +76,124 @@
 | wait_for_text_present_ok | Pagination %%start_time%% 61 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
 | text_like | qr/Pagination %%start_time%% 62.+Pagination %%start_time%% 43/ism |  |
+| text_unlike | //body | Pagination %%start_time%% 42 |
 
-| *Comment* | Test Case: Signals Pagination. Older >> |  |
-| wait_for_element_visible_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
-| click_ok | //span[@id='older' and @class='nav-link active'] |  |
-| wait_for_element_visible_ok | //span[@id='newer' and @class='nav-link active'] | 30000 |
+| *Comment* | Test Case: Signals Pagination. Page 2 |  |
+| click_and_wait | link=2 |  |
 | wait_for_text_present_ok | Pagination %%start_time%% 5 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 42 | 30000 |
 | text_like | qr/Pagination %%start_time%% 42.+Pagination %%start_time%% 5/ism |  |
+| text_unlike | //body | Pagination %%start_time%% 43 |
 
-| *Comment* | Test Case: Signals Pagination. Older >> again |  |
-| click_ok | //span[@id='older'] |  |
-| wait_for_element_not_present_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
-| wait_for_element_visible_ok | //span[@id='newer' and @class='nav-link active'] | 30000 |
-| wait_for_element_visible_ok | //span[@id='older' and @class='nav-link'] | 30000 |
+| *Comment* | Test Case: Signals Pagination. Page 3 |  |
+| click_and_wait | link=3 |  |
 | wait_for_text_present_ok | Pagination %%start_time%% 1 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 4 | 30000 |
 | text_like | qr/Pagination %%start_time%% 4.+Pagination %%start_time%% 1/ism |  |
 
-| *Comment* | Test Case: Signals Pagination. Newer >> |  |
-| click_ok | //span[@id='newer' and @class='nav-link active'] |  |
-| wait_for_element_visible_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
+| *Comment* | Test Case: Signals Pagination. Previous |  |
+| click_and_wait | link=Previous |  |
 | wait_for_text_present_ok | Pagination %%start_time%% 5 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 42 | 30000 |
 | text_like | qr/Pagination %%start_time%% 42.+Pagination %%start_time%% 5/ism |  |
 
-| *Comment* | Test Case: Signals Pagination. Older >> once more |  |
-| click_ok | //span[@id='older' and @class='nav-link active'] |  |
-| wait_for_element_not_present_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
-| wait_for_element_visible_ok | //span[@id='newest' and @class='nav-link active'] | 30000 |
+| *Comment* | Test Case: Signals Pagination. Next |  |
+| click_and_wait | link=Next |  |
 | wait_for_text_present_ok | Pagination %%start_time%% 1 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 4 | 30000 |
 | text_like | qr/Pagination %%start_time%% 4.+Pagination %%start_time%% 1/ism |  |
 
-| *Comment* | Test Case: Signals Pagination. << Newest |  |
-| click_ok | //span[@id='newest' and @class='nav-link active'] |  |
-| wait_for_element_not_present_ok | //span[@id='newest' and @class='nav-link active'] | 30000 |
-| wait_for_element_present_ok | //span[@id='older' and @class='nav-link active'] | 30000 |
+| *Comment* | Test Case: Signals Pagination. First |  |
+| click_and_wait | link=First |  |
 | wait_for_text_present_ok | Pagination %%start_time%% 43 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
 | text_like | qr/Pagination %%start_time%% 62.+Pagination %%start_time%% 43/ism |  |
 
-| *Comment* | Test Case: Signals Pagination. Sort. SORT DOES NOT CAUSE PAGE LOAD |  |
+| *Comment* | Test Case: Signals Pagination. Sort. |  |
 | wait_for_element_visible_ok | sort-picker | 30000 |
-| select_ok | sort-picker | label=Sender |
-| wait_for_text_present_ok | Pagination %%start_time%% 22 | 30000 |
-| wait_for_text_present_ok | Pagination %%start_time%% 3 | 30000 |
-| text-like | qr/%%a_name%%.+%%start_time%% 22.+%%a_name%%.+%%start_time%% 3/ism |  |
-| select_ok | sort-picker | label=Newest |
+| select_and_wait | sort-picker | label=Sender |
+
+ wait_for_text_present_ok | Pagination %%start_time%% 22 | 30000 |
+wait_for_text_present_ok | Pagination %%start_time%% 3 | 30000 |
+
+ text-like | qr/%%a_name%%.+%%start_time%% 22.+%%a_name%%.+%%start_time%% 3/ism | |
+
+| select_and_wait | sort-picker | label=Newest |
 | wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 43 | 30000 |
-| text-like | qr/%%z_name%%.+%%start_time%% 62.+%%z_name%%.+%%start_time%% 43/ism |  |
-| select_ok | sort-picker | label=Oldest |
+
+ text-like | qr/%%z_name%%.+%%start_time%% 62.+%%z_name%%.+%%start_time%% 43/ism | |
+
+| select_and_wait | sort-picker | label=Oldest |
 | wait_for_text_present_ok | Pagination %%start_time%% 1 | 30000 |
 | wait_for_text_present_ok | Pagination %%start_time%% 20 | 30000 |
-| text-like | qr/%%a_name%%.+%%start_time%% 1.+%%a_name%%.+%%start_time%% 20/ism |  |
-| select_frame | relative=parent |  |
 
-| *Comment* | Test Case: Signals Pagination. Relevance. %%username%% Sends a more relevant signal AND a newer signal |  |
+ text-like | qr/%%a_name%%.+%%start_time%% 1.+%%a_name%%.+%%start_time%% 20/ism | |
+
+| *Comment* | Test Case: Signals Pagination. Relevance. %%username%% Sends a more relevant signal AND a newer signal |  |  |
 | http-user-pass | %%username%% | %%password%% |  |
 | post-signals | 1 | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 63 |
 | post-signals | 1 | LessRelevant %%start_time%% | 64 |
-| st_process_jobs |  |  |
+| st_process_jobs |  |  |  |
 
 | *Comment* | Test Case: Signals Pagination. Relevance. Find a more relevant signal |  |
 | open_ok | /?signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| wait_for_element_visible_ok | st-search-term | 30000 |
+| wait_for_element_visible_ok | st-search-action | 10000 |
+| wait_for_element_visible_ok | st-search-term | 10000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
 | click_and_wait | st-search-submit |  |
-| pause | 8000 | I Hate Pause |
 
 | *Comment* | Test Case: Signals Pagination. Search will sort by Oldest (sticky). This is good. |  |
-
-| *Comment* | Test Case: Signals Pagination. Select the widget again |  |
-| st-name-widget | 3 | searchwidget |
-| st-select-widget-frame | searchwidget |  |
-| wait_for_text_present_ok | Search results | 30000 |
-| text_like | qr/Search results.+'%%start_time%%'/ism |  |
-| wait_for_element_visible_ok | sort-picker | 30000 |
-| select_ok | sort-picker | label=Relevance |
+| wait_for_text_present_ok | Signals matching '%%start_time%%' | 30000 |
+| wait_for_element_visible_ok | sort-picker | 10000 |
+| select_and_wait | sort-picker | label=Relevance |
 
 | *Comment* | Test Case: Signals Pagination. Verify found more relevant signal |  |
-| wait_for_text_present_ok | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 30000 |
-| wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
-| text-like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 62/ism |  |
+| wait_for_text_present_ok | MoreRelevant %%start_time%% %%start_time%% %%start_time%% 63 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 62 | 10000 |
 
 | *Comment* | Test Case: Signals Pagination. Verify relevant signal not newest signal |  |
-| select_ok | sort-picker | label=Newest |
-| wait_for_text_present_ok | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 30000 |
-| wait_for_text_present_ok | LessRelevant %%start_time%% | 30000 |
-| wait_for_text_present_ok | Pagination %%start_time%% 62 | 30000 |
-| text-like | qr/LessRelevant %%start_time%%.+MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 62/ism |  |
+| select_and_wait | sort-picker | label=Newest |
+| wait_for_text_present_ok | MoreRelevant %%start_time%% %%start_time%% %%start_time%% 63 | 30000 |
+| wait_for_text_present_ok | LessRelevant %%start_time%% 64 | 10000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 62 | 10000 |
+| text-like | qr/LessRelevant %%start_time%% 64.+MoreRelevant %%start_time%% %%start_time%% %%start_time%% 63/ism |  |
 
 | *Comment* | Test Case: Signals Pagination. Delete irrelevant signal and search again |  |
+| open_ok | /st/signals |  |
+| st-name-widget | 3 | signals_widget |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_text_present_ok | Showing signals from | 30000 |
+| wait_for_text_present_ok | LessRelevant %%start_time%% 64 | 30000 |
 | click_ok | //a[@class='hideLink'] |  |
 | verifyConfirmation | Are you sure you want to delete this Signal?\nYou cannot undelete it. |  |
-| wait_for_text_not_present_ok | LessRelevant %%start_time%% | 10000 |
+| wait_for_text_not_present_ok | LessRelevant %%start_time%% 64 | 10000 |
 | select_frame | relative=parent |  |
 
-| *Comment* | Test Case: Signals Pagination. You must open Signals to clear out hidden deleted signal |  |
+| *Comment* | Test Case: Signals Pagination. open Signals to verify hidden deleted signal |  |
 | open_ok | /?signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| wait_for_element_visible_ok | st-search-term | 30000 |
+| wait_for_element_visible_ok | st-search-action | 10000 |
+| wait_for_element_visible_ok | st-search-term | 10000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
 | click_and_wait | st-search-submit |  |
-| pause | 8000 | I Hate Pause |
 
 | *Comment* | Test Case: Signals Pagination. Verify irrelevant signal deleted |  |
-| st-name-widget | 3 | searchwidget |
-| st-select-widget-frame | searchwidget |  |
-| wait_for_text_present_ok | Search results | 30000 |
-| wait_for_text_present_ok | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 30000 |
-| wait_for_text_present_ok | %%start_time%% 62 | 30000 |
-| text_unlike | //body | LessRelevant %%start_time%% |
-| text_like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 62/ism |  |
-| select_frame | relative=parent |  |
+| wait_for_text_present_ok | MoreRelevant %%start_time%% %%start_time%% %%start_time%% 63 | 30000 |
+| wait_for_text_present_ok | Pagination %%start_time%% 62 | 10000 |
+| text_unlike | //body | LessRelevant %%start_time%% 64 |
 
-| *Comment* | Test Case: Signals Pagination. login as %%z_username%%, search for %%a_username%% signal |  |
-| st-logoutin | %%z_username%% | %%password%% |
-| open_ok | /?signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| wait_for_element_visible_ok | st-search-term | 30000 |
-| is_selected_ok | st-search-action | id=st-search-signals |
-| type_ok | st-search-term | Pagination %%start_time%% 5 |
-| click_and_wait | st-search-submit |  |
-| pause | 8000 | I Hate Pause |
-
+| *Comment* | Test Case: Signals Pagination. login as %%z_username%% |  |
 | *Comment* | Test Case: Signals Pagination. Verify no delete for non-sender %%z_username%% |  |
-| st-name-widget | 3 | searchwidget |
-| st-select-widget-frame | searchwidget |  |
-| wait_for_text_present_ok | Pagination %%start_time%% 5 | 30000 |
+| st-logoutin | %%x_username%% | %%password%% |
+| open_ok | /?signals |  |
+| st-name-widget | 3 | signals_widget |
+| st-select-widget-frame | signals_widget |  |
 | wait_for_element_not_present_ok | //a[@class='hideLink'] | 5000 |
+| selectFrame | relative=parent |  |
 
-| *Comment* | Test Case: Signals Pagination. Verify clear |  |
-| wait_for_element_visible_ok | link=clear search results | 30000 |
-
-WHY DOESN'T CLICK AND WAIT WORK HERE? TIMES OUT EVEN THOUGH THE PAGE LOADS ...
-
-| click_ok | link=clear search results |  |
-| pause | 8000 | I Hate pause |
-
-| *Comment* | Test Case: Signals Pagination. IE and Safari hang here, so just exit for now. |  |
-
-st-name-widget | 3 | searchwidget |
-st-widget-title-like | searchwidget | Signals |
+| *Comment* | Test Case: Signals Pagination TEARDOWN |
+| st-admin | remove-member --e %%username%% --account %%sspacct%% | no longer |
 
 | *Comment* | Test Case: Signals Pagination COMPLETED |

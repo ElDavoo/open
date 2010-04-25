@@ -58,9 +58,9 @@
 | text_like | qr/Showing all events.*from.+%%tuser%%.*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. The widget defaults to mentioning the viewed user when clicked |  |
-| wait_for_element_present_ok | signalsNotSetUp | 10000 |
+| wait_for_element_present_ok | mainWikiwyg | 10000 |
 | text_like | qr/What are you working on/ism |  |
-| click_ok | signalsNotSetUp |  |
+| click_ok | mainWikiwyg |  |
 | wait_for_element_visible_ok | //div[@class='message mention'] | 10000 |
 | wait_for_element_visible_ok | link=%%tuser%% | 10000 |
 
@@ -88,7 +88,7 @@
 | click_ok | link=x |  |
 | wait_for_element_not_present_ok | //div[@class='message mention'] | 5000 |
 
-| *Comment* | Test Case: Profile Activity Widget. "Post signals to" |  |
+| *Comment* | Test Case: Profile Activity Widget. "Post to" |  |
 | text_like | qr/Post Signals to/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. select list values for "from <feed-type>" filter is only the user's name |  |

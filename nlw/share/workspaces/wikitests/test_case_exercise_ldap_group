@@ -16,7 +16,7 @@
 
 | *Comment* | Test Case: Exercise LDAP Group Add am account |  |
 | create-account | %%ldapy_account%% |  |
-| st-admin | add-member --g %%created_group_id%% --account %%ldapy_account%% | Motorhead is now a member of the %%ldapy_account%% Account |
+| st-admin | add-member --g %%created_group_id%% --account %%ldapy_account%% | Motorhead now has the role of 'member' in the %%ldapy_account%% Account |
 | st-admin | show-members --account ldapy-acct-%%start_time%% | lemmy@socialtext.com |
 | st-admin | show-members --account ldapy-acct-%%start_time%% | Kilmister |
 | st-admin | show-members --account ldapy-acct-%%start_time%% | Phil |
@@ -75,6 +75,6 @@
 
 | *Comment* | Test Case: Exercise LDAP Group TEARDOWN |  |
 
-| st-admin | delete-workspace --w  %%ldapy_ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%ldapy_ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Exercise LDAP Group COMPLETED |  |

@@ -70,8 +70,8 @@
 
 | *Comment* | Test Case: Join. Navigate to the confirmation email |  |
 | text_like | workspaceName | %%to_ws%% |
-| *Comment* | Wait 60 seconds for the confirmation email to arrive |  |
-| pause | 60000 |  |
+| *Comment* | Wait 90 seconds for the confirmation email to arrive |  |
+| pause | 90000 |  |
 | wait_for_element_visible_ok | link=What's New | 30000 |
 | click_and_wait | link=What's New |  |
 | wait_for_element_visible_ok | link=Welcome to the %%acct%% workspace - please confirm your email to join | 30000 |

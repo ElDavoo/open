@@ -50,15 +50,15 @@ include | [Test Case: People Search Edit A Profile] | |
 | text_like | %%first%% %%last%% |  |
 | st-search | NoSuch | Showing 1 - 0 of 0 total |
 
-| st-search | work:"%%default_field%% work" | Showing 1 - 1 of 1 total |
+| st-search | work_phone:"%%default_field%% work" | Showing 1 - 1 of 1 total |
 | text_like | %%first%% %%last%% |  |
 | st-search | NoSuch | Showing 1 - 0 of 0 total |
 
-| st-search | mobile:"%%default_field%% mobile" | Showing 1 - 1 of 1 total |
+| st-search | mobile_phone:"%%default_field%% mobile" | Showing 1 - 1 of 1 total |
 | text_like | %%first%% %%last%% |  |
 | st-search | NoSuch | Showing 1 - 0 of 0 total |
 
-| st-search | home:"%%default_field%% home" | Showing 1 - 1 of 1 total |
+| st-search | home_phone:"%%default_field%% home" | Showing 1 - 1 of 1 total |
 | text_like | %%first%% %%last%% |  |
 | st-search | NoSuch | Showing 1 - 0 of 0 total |
 
@@ -90,7 +90,7 @@ include | [Test Case: People Search Edit A Profile] | |
 | text_like | %%first%% %%last%% |  |
 | st-search | NoSuch | Showing 1 - 0 of 0 total |
 
-| st-search | personal:"%%default_field%% personal" | Showing 1 - 1 of 1 total |
+| st-search | personal_url:"%%default_field%% personal" | Showing 1 - 1 of 1 total |
 | text_like | %%first%% %%last%% |  |
 | st-search | NoSuch | Showing 1 - 0 of 0 total |
 
