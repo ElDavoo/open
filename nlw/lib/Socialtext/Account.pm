@@ -1077,6 +1077,10 @@ sub _validate_and_clean_data {
             loc("Domain ([_1]) is not valid!", $p->{restrict_to_domain});
     }
 
+    unless (defined $p->{allow_invitation}) {
+        $p->{allow_invitation} = Socialtext::AppConfig->allow_network_invitation;
+    }
+
     data_validation_error errors => \@errors if @errors;
 }
 
