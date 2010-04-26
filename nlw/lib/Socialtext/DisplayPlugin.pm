@@ -458,7 +458,7 @@ sub _getCurrentTags {
     my $page = shift;
 
     my $page_tags = $page->metadata->Category;
-    my %weighted_tags;
+    my %weighted_tags = (tags => $page_tags);
     if (@$page_tags) {
         %weighted_tags = $self->hub->category->weight_categories(@$page_tags);
 
