@@ -217,7 +217,10 @@ sub _parse_data {
 
     # This is the "new" format, it's a hashref with users index.
     if (ref($data) eq 'HASH' && $data->{users}) {
-        $data->{send_message} ||= 0;
+        $data = {
+            users => $data->{users},
+            send_message => $data->{send_message} || 0,
+        };
         return $data;
     }
 
