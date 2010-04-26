@@ -229,13 +229,16 @@ sub POST_to_trash { $_[0]->_admin_with_group_data_do_txn(sub {
     my $actor = $self->rest->user;
 
     for my $item (@$data) {
-        if (my $name_or_id = $item->{user_id} || $item->{username}) {
-            my $condemned = Socialtext::User->Resolve($name_or_id);
-            $group->remove_user(user => $condemned, actor => $actor);
+        my $user;
+        if ($item->{user_id}) {
+            $user = Socialtext::User->new(user_id => $item->{user_id});
         }
-        else {
-            die "Bad data";
+        elsif ($item->{username}) {
+            $user = Socialtext::User->new(username => $item->{username});
         }
+
+        die "Bad data (couldn't resolve user)" unless $user;
+        $group->remove_user(user => $user, actor => $actor);
     }
 
     conflict errors => ["The group needs to include at least one admin."]
