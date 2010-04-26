@@ -173,19 +173,26 @@ sub _unit_is_bad_wafl {
     return ($unit->can('method') and !$self->wafl_table->{ $unit->method });
 }
 
+sub cache_dir {
+    my $self = shift;
+    my $ws_id = shift;
+    use Carp qw/confess/;
+    confess 'no ws_id' unless defined $ws_id;
+
+    # XXX Do we need to check available disk space?
+    # XXX Do we use Cache::Cache?
+    my $cache_dir = Socialtext::AppConfig->formatter_cache_dir . "/$ws_id";
+    File::Path::mkpath($cache_dir) unless -d $cache_dir;
+    return $cache_dir;
+}
+
 sub get_cached_tree {
     my $self = shift;
     my ( $text, $page, $workspace_id ) = @_;
 
     my $page_id = $page->id;
 
-    # XXX Do we need to check available disk space?
-    # XXX Do we use Cache::Cache?
-    my $cache_root = Socialtext::AppConfig->formatter_cache_dir;
-    my $cache_dir  = "$cache_root/$workspace_id";
-
-    File::Path::mkpath($cache_dir) unless -d $cache_dir;
-
+    my $cache_dir = $self->cache_dir($workspace_id);
     my $cache_file = "$cache_dir/$page_id";
     my $parsed;
 

@@ -32,6 +32,7 @@ use Socialtext::String;
 use Socialtext::Events;
 use Socialtext::SQL qw/:exec :txn get_dbh sql_parse_timestamptz/;
 use Socialtext::SQL::Builder qw/sql_insert_many/;
+use Socialtext::Permission 'ST_READ_PERM';
 
 use Carp ();
 use Class::Field qw( field const );
@@ -606,6 +607,7 @@ information about the unit. See get_headers and get_sections
 for examples.
 
 =cut 
+
 sub get_units {
     my $self    = shift;
     my %matches = @_;
@@ -1008,7 +1010,88 @@ sub _perform_store_actions {
     $self->hub->backlinks->update($self);
     Socialtext::JobCreator->index_page($self);
     Socialtext::JobCreator->send_page_notifications($self);
+
+    {
+        my $t = time_scope('cache_html');
+        my @cache_questions;
+        eval {
+        $self->get_units(
+            wafl_phrase => sub {
+                my $wafl = shift;
+                return unless ref($wafl) eq
+                    'Socialtext::Formatter::InterWikiLink';
+                my ($ws_name) = $wafl->parse_wafl_reference;
+                my $ws = Socialtext::Workspace->new(name => $ws_name);
+                push @cache_questions, { workspace => $ws } if $ws;
+            },
+        );
+        }; die "ZOMG: $@" if $@;
+        
+        eval {
+        $self->_cache_using_questions( \@cache_questions );
+        }; die "OMG: $@" if $@;
+    }
+
     $self->_log_page_action();
+}
+
+sub _cache_using_questions {
+    my $self = shift;
+    my $questions = shift;
+
+    my @short_q;
+    my @answers;
+    for my $q (@$questions) {
+        if (my $ws = $q->{workspace}) {
+            push @short_q, 'w' . $ws->workspace_id;
+            push @answers, $self->hub->authz->user_has_permission_for_workspace(
+                user => $self->hub->current_user,
+                permission => ST_READ_PERM,
+                workspace => $ws
+            ) ? 1 : 0;
+        }
+    }
+
+    my $q_str = join '-', @short_q;
+    $q_str ||= 'null';
+
+    my $q_file = $self->_question_file or return;
+    warn "Wrote '$q_str' to $q_file\n";
+    Socialtext::File::set_contents($q_file, $q_str);
+
+    my $html = $self->to_html;
+    my $answer_str = join '-', map { $_ . '_' . shift(@answers) } @short_q;
+
+    my $cache_dir = $self->_cache_dir or return;
+    my $cache_file = $self->_answer_file($answer_str);
+    warn "Writing cached html to $cache_file\n";
+    Socialtext::File::set_contents_utf8($cache_file, $html);
+}
+
+sub _page_cache_basename {
+    my $self = shift;
+    my $cache_dir = $self->_cache_dir or return;
+    return "$cache_dir/" . $self->id . '-' . $self->revision_id;
+}
+
+sub _question_file {
+    my $self = shift;
+    my $base = $self->_page_cache_basename or return;
+    return "$base-Q";
+}
+
+sub _answer_file {
+    my $self = shift;
+    my $answer_str = shift;
+    my $base = $self->_page_cache_basename or return;
+    return "$base-$answer_str";
+}
+
+sub _cache_dir {
+    my $self = shift;
+    return unless $self->hub;
+    return $self->hub->viewer->parser->cache_dir(
+        $self->hub->current_workspace->workspace_id);
 }
 
 sub _log_page_action {

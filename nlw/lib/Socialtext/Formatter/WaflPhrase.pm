@@ -88,6 +88,7 @@ sub existence_error {
 
 sub parse_wafl_reference {
     my $self = shift;
+        eval {
     my ( $workspace_name, $page_title, $qualifier, @other ) =
         $self->arguments =~ $self->wafl_reference_parse or return;
     $workspace_name ||= $self->current_workspace_name;
@@ -97,6 +98,7 @@ sub parse_wafl_reference {
     my $page_id = Socialtext::String::title_to_id($page_title)
         || $self->hub->viewer->page_id || $self->current_page_id;
     my $title = $page_title || '';
+        }; die "lllllOMG: $@" if $@;
 
     # XXX using hub here may causes issues with page titles
     # from other workspaces

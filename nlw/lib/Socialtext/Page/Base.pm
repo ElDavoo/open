@@ -13,8 +13,10 @@ AND new-style Socialtext::Model::Page objects.
 use strict;
 use warnings;
 use Socialtext::Formatter::AbsoluteLinkDictionary;
+use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::File;
 use Carp ();
+use Carp qw/cluck/;
 
 =head2 to_absolute_html($content)
 
@@ -59,9 +61,56 @@ sub to_html {
     my $content = @_ ? shift : $self->content;
     my $page = shift;
     $content = '' unless defined $content;
-    return $self->is_spreadsheet
-        ? $self->hub->pluggable->hook('render.sheet.html', \$content, $self)
-        : $self->hub->viewer->process($content, $page);
+
+    return $self->hub->pluggable->hook('render.sheet.html', \$content, $self)
+        if $self->is_spreadsheet;
+
+    # Look for cached HTML
+    my $q_file = $self->_question_file;
+    if ($q_file and -e $q_file) {
+        my $q_str = Socialtext::File::get_contents($q_file);
+        warn "Found a question string: '$q_str'\n";
+        my $a_str = $self->_questions_to_answers($q_str);
+        warn "My answer is '$a_str'";
+        my $cache_file = $self->_answer_file($a_str);
+        if (-e $cache_file) {
+            warn "Page HTML cache HIT ($cache_file)\n";
+            return Socialtext::File::get_contents_utf8($cache_file);
+        }
+        warn "Page HTML cache MISS ($cache_file)\n";
+    }
+
+    return $self->hub->viewer->process($content, $page);
+}
+
+sub _questions_to_answers {
+    my $self = shift;
+    my $q_str = shift;
+
+    my $cur_user;
+    my $authz = $self->hub->authz;
+
+    my @answers;
+    for my $q (split '-', $q_str) {
+        if ($q =~ m/^w(\d+)$/) {
+            $cur_user ||= $self->hub->current_user;
+
+            my $ws = Socialtext::Workspace->new(workspace_id => $1);
+            my $ok = $self->hub->authz->user_has_permission_for_workspace(
+                user => $cur_user,
+                permission => ST_READ_PERM,
+                workspace => $ws,
+            ) ? 1 : 0;
+            push @answers, "${q}_$ok";
+        }
+        elsif ($q eq 'null') {
+            next;
+        }
+        else {
+            die "Unknown question - '$q'!";
+        }
+    }
+    return join '-', @answers;
 }
 
 sub exists {
