@@ -119,7 +119,8 @@ sub POST_json {
     my $rest = shift;
     my $user = $rest->user;
 
-    unless ($user->is_authenticated && !$user->is_deleted) {
+    unless ($user->is_authenticated && !$user->is_deleted
+                && Socialtext::Group->User_can_create_group($user)) {
         $rest->header(-status => HTTP_401_Unauthorized);
         return '';
     }

@@ -4,6 +4,7 @@ Tests to create groups via REST and CLI.
 
 | standard-test-setup   |
 | delete-all-groups     |
+| st-config | set users_can_create_groups 1 |                                |
 
 Set up a second account, but no users.
 
@@ -137,3 +138,13 @@ Set up a second account, but no users.
 | json-parse   |                   |   |
 | json-path-is | $.workspace_count | 2 |
 | json-path-is | $.user_count      | 1 |
+
+
+####################################
+# Test the `users_can_create_groups` option
+
+| Comment   | Create a group as a user when users_can_create_groups is 0 |
+| st-config | set users_can_create_groups 0 |                                |
+| POST_json | /data/groups                  | {"name":"fail %%start_time%%"} |
+| code-is   | 401                           |                                |
+| st-config | set users_can_create_groups 1 |                                |
