@@ -16,6 +16,8 @@ use Socialtext::Pluggable::Adapter;
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::JobCreator;
+use Socialtext::Authz::SimpleChecker;
+use List::MoreUtils qw/any/;
 use namespace::clean -except => 'meta';
 
 ###############################################################################
@@ -274,6 +276,20 @@ sub All {
     );
 
     return $cursor;
+}
+
+sub User_can_create_group {
+    my $class = shift;
+    my $user  = shift or croak "Must supply a user";
+
+    return Socialtext::AppConfig->users_can_create_groups()
+            || $user->is_business_admin()
+            || any { 
+                   Socialtext::Authz::SimpleChecker->new(
+                       user => $user, container => $_
+                   )->check_permission('admin') 
+               } $user->accounts;
+
 }
 
 ###############################################################################
