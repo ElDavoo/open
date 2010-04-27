@@ -1254,6 +1254,14 @@ Default: 1
 
 =for code type => BOOLEAN_TYPE
 
+=head2 users_can_create_groups
+
+Set this to false to prevent users from creating groups.
+
+Default: 1
+
+=for code type => BOOLEAN_TYPE
+
 =head2 solr_base
 
 Set this to the base URL for your solr instance.
