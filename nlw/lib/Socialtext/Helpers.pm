@@ -238,6 +238,8 @@ sub global_template_vars {
         action            => $hub->cgi->action,
         pluggable         => $hub->pluggable,
         checker           => $hub->checker,
+        acct_checker      => Socialtext::Authz::SimpleChecker->new(
+            user => $cur_user, container => $cur_ws->account),
         loc               => \&loc,
         loc_lang          => ($locale ? $locale->value : undef),
         current_workspace => $cur_ws,

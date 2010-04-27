@@ -49,8 +49,16 @@ sub check_permission {
             group      => $self->container,
         );
     }
-
-    croak 'container may only be a Workspace or Group';
+    elsif ($self->container->isa('Socialtext::Account')) {
+        return $self->authz->user_has_permission_for_account(
+            user       => $self->user,
+            permission => $permission,
+            account    => $self->container,
+        );
+    }
+    else {
+        croak "Unknown container type: " . ref($self->container);
+    }
 }
 
 sub can_modify_locked {
