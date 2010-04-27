@@ -89,7 +89,7 @@
 | wait_for_element_not_present_ok | //div[@class='message mention'] | 5000 |
 
 | *Comment* | Test Case: Profile Activity Widget. "Post to" |  |
-| text_like | qr/Post Signals to/ism |  |
+| text_like | qr/Post to/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. select list values for "from <feed-type>" filter is only the user's name |  |
 | text_like | qr/Showing all events.*from.+%%tuser%%.*within/ism |  |
@@ -106,7 +106,7 @@
 | wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[contains(text(),'%%shared_acct%%')] | 5000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[contains(text(),'%%shared_group%%')] | 5000 |
 
-| *Comment* | Test Case: Profile Activity Widget. "Post signals to" select list shows all shared groups between viewer and viewee |  |
+| *Comment* | Test Case: Profile Activity Widget. "Post to" select list shows all shared groups between viewer and viewee |  |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[1]/a[text()='All shared groups'] | 5000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[2]/a[contains(text(),'%%shared_acct%%')] | 5000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[3]/a[contains(text(),'%%shared_group%%')] | 5000 |

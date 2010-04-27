@@ -4,31 +4,33 @@
 
 | set | Greeting | What are you working on? |  |
 
-| *Comment* | Test Case: dashboard Activities Widget Greeting present |  |
+| *Comment* | Test Case: Activities Widget Greeting Dashboard |  |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | %%Greeting%% | 10000 |
 
-| *Comment* | Test Case: Activities Widget Greeting click - Greeting disappears |  |
+| *Comment* | Test Case: Activities Widget Greeting Dashboard click - Greeting disappears |  |
 | wait_for_element_present_ok | mainWikiwyg | 5000 |
 | click_ok | mainWikiwyg |  |
 | wait_for_text_not_present_ok | %%Greeting%% | 5000 |
 | select_frame | relative=parent |  |
 
-| *Comment* | Test Case: Signals Activities Widget Greeting present |  |
+| *Comment* | Test Case: Activities Widget Greeting Signals present |  |
 | open_ok | /st/signals/ |
-| wait_for_text_present_ok | Activities | 10000 |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
+| wait_for_text_present_ok | Send a Signal | 10000 |
+| st-name-widget | 1 | signal_widget |
+| st-widget-title-like | signal_widget | Send a Signal |
+| st-select-widget-frame | signal_widget |  |
 | wait_for_text_present_ok | %%Greeting%% | 10000 |
 
-| *Comment* | Test Case: Activities Widget Greeting click - Greeting disappears |  |
+| *Comment* | Test Case: Activities Widget Greeting Signals click - Greeting disappears |  |
 | wait_for_element_present_ok | mainWikiwyg | 5000 |
 | click_ok | mainWikiwyg |  |
 | wait_for_text_not_present_ok | %%Greeting%% | 5000 |
 | select_frame | relative=parent |  |
+
+TODO: profile and group activity widget greetings
 
 | *Comment* | Test Case: Activities Widget Greeting COMPLETED |  |
