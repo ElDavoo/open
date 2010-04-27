@@ -6,6 +6,8 @@ use warnings;
 use List::MoreUtils qw(any);
 use Socialtext::SQL qw(sql_txn sql_selectrow get_dbh sql_singlevalue);
 
+my $DEBUG = $ENV{DEBUG_MIGRATION} || 0;
+
 # For accounting
 my $updates    = 0;
 my $db_hits    = 0;
@@ -31,7 +33,7 @@ while ($run) {
 }
 
 print "\nUpdates: $updates\nDB Hits: $db_hits\nCache Hits: $cache_hits\n"
-    if $ENV{DEBUG_MIGRATION};
+    if $DEBUG;
 
 exit;
 
@@ -39,8 +41,7 @@ sub update_signal {
     my $signal = shift;
     my $reply  = shift;
 
-    print "Found signal $signal, unthreading...\n"
-        if $ENV{DEBUG_MIGRATION} == 2;
+    print "Found signal $signal, unthreading...\n" if $DEBUG == 2;
 
     my $source = find_source($reply);
     $updator->execute($source, $signal);
@@ -77,7 +78,7 @@ sub find_source {
         $signal = $maybe; # new signal to check against
         $db_hits++;
     }
-    print "... found source $signal\n" if $ENV{DEBUG_MIGRATION} == 2;
+    print "... found source $signal\n" if $DEBUG == 2;
 
     return $signal;
 }
