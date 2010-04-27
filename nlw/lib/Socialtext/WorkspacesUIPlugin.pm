@@ -465,7 +465,13 @@ sub _workspace_clone_or_create {
     my $display_title = shift;
     my $section       = shift;
 
-    $self->hub->assert_current_user_is_admin;
+    my $acct_checker = Socialtext::Authz::SimpleChecker->new(
+        user => $self->hub->current_user,
+        container => $self->hub->current_workspace->account,
+    );
+    unless ($acct_checker->check_permission('admin')) {
+        Socialtext::WebApp::Exception::Redirect->throw('?');
+    }
 
     if ( $self->cgi->Button ) {
         my $ws = $self->_create_workspace();
