@@ -1412,6 +1412,16 @@ sub remove_workspace_admin {
     return $jump{$type}->();
 }
 
+sub add_account_admin {
+    my $self = shift;
+    return $self->_add_user_to_account_as(Socialtext::Role->Admin());
+}
+
+sub remove_account_admin {
+    my $self = shift;
+    return $self->_downgrade_user_to_member_in_account(Socialtext::Role->Admin);
+}
+
 sub _downgrade_user_to_member_in_workspace {
     my $self = shift;
     my $role = shift;
@@ -2363,6 +2373,25 @@ sub show_admins {
     $self->_success($msg, "no indent");
 }
 
+sub show_account_admins {
+    my $self = shift;
+
+    my $acct = $self->_require_account();
+
+    my $msg = "Admins of the " . $acct->name . " account\n\n";
+    $msg .= "| Email Address | First | Last |\n";
+
+    my $user_cursor = $self->_get_acct_users_cursor($acct);
+    my $entry;
+    while ($entry = $user_cursor->next) {
+        my ($user, $role) = @$entry;
+        next if ($role->name ne 'admin');
+        $msg .= '| ' . join(' | ', $user->email_address, $user->first_name, $user->last_name) . " |\n";
+    }
+
+    $self->_success($msg, "no indent");
+}
+
 sub show_impersonators {
     my $self = shift;
 
@@ -2383,10 +2412,17 @@ sub show_impersonators {
 }
 
 sub _get_ws_users_cursor {
-    my $self     = shift;
-    my $ws       = shift;
-    my %opts     = $self->_get_options('direct');
+    my $self = shift;
+    my $ws   = shift;
+    my %opts = $self->_get_options('direct');
     return $ws->user_roles( %opts );
+}
+
+sub _get_acct_users_cursor {
+    my $self = shift;
+    my $acct = shift;
+    my %opts = $self->_get_options('direct');
+    return $acct->user_roles( %opts );
 }
 
 sub purge_page {
