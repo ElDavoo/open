@@ -168,6 +168,8 @@ sub plugin_enabled_for_user_sets {
     my $user_set_id = $p{user_set_id};
     my $plugin_name = $p{plugin_name};
 
+    my $t = time_scope 'plugin_enabled_for_user_sets';
+
     my $cache = Socialtext::Cache->cache('authz_plugin');
     my $cache_key = "user_sets:$user_set_id\0$actor_id\0$plugin_name";
     my $enabled = $cache->get($cache_key);
@@ -191,10 +193,8 @@ sub plugin_enabled_for_user_sets {
         LIMIT 1
 SQL
 
-    Socialtext::Timer->Continue('plugin_enabled_for_users');
     $enabled = sql_singlevalue($sql, $plugin_name,
                                $actor_id, $user_set_id) ? 1 : 0;
-    Socialtext::Timer->Pause('plugin_enabled_for_users');
 
     $cache->set($cache_key, $enabled);
     return $enabled;
@@ -207,6 +207,10 @@ sub plugin_enabled_for_user_in_accounts {
     my $accounts = delete $p{accounts};
     my $plugin_name = delete $p{plugin_name};
 
+    if (!@$accounts) {
+        Carp::cluck "what?! no accounts?!";
+        return 0;
+    }
     return 1 if ($user->username eq $SystemUsername);
 
     my $user_id = $user->user_id;
