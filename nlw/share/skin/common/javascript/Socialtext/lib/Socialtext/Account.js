@@ -44,6 +44,23 @@ $.extend(Socialtext.Account.prototype, {
             success: this.successCallback(callback),
             error: this.errorCallback(callback)
         });
+    },
+
+    updateMember: function(member, callback) {
+        var self = this;
+        $.ajax({
+            url: this.url('/users'),
+            type: 'POST',
+            contentType: 'application/json',
+            data: $.toJSON(member),
+            success: function() { self._call(callback) },
+            error: self.errorCallback(callback)
+        });
+    },
+
+    _call: function(callback, opts) {
+        if (typeof(opts) == 'undefined') opts = {};
+        if ($.isFunction(callback)) callback(opts);
     }
 });
 

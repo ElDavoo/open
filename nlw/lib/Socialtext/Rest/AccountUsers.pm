@@ -111,8 +111,17 @@ sub _POST_json {
         return "Could not resolve the user: $user_id";
     }
 
-    if (! $account->has_user($user)) {
-        eval { $account->add_user(user => $user) };
+    my $role_name = $data->{role_name} || 'member';
+    my $role = Socialtext::Role->new(name => $role_name);
+    unless ($role) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "Invalid role name: '$role_name'";
+    }
+
+    if (! $account->user_has_role(user => $user, role => $role)) {
+        eval {
+            $account->assign_role_to_user( user => $user, role => $role );
+        };
         if ( $@ ) {
             $rest->header( -status => HTTP_400_Bad_Request );
             return "Could not add user to the account: $@";
