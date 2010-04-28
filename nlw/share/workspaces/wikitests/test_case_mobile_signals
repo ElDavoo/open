@@ -117,8 +117,8 @@
 | *Comment* | Test Case: Mobile Signals. Create two accounts. Add %%username%% to both |  |
 | st-admin | create-account --name %%msacct%%-A | A new account named "%%msacct%%-A" was created |
 | st-admin | create-account --name %%msacct%%-B | A new account named "%%msacct%%-B" was created |
-| st-admin | add-member --account %%msacct%%-A --u %%username%% | is now a member of the %%msacct%%-A |
-| st-admin | add-member --account %%msacct%%-B --u %%username%% | is now a member of the %%msacct%%-B |
+| st-admin | add-member --account %%msacct%%-A --u %%username%% | now has the role of 'member' in the %%msacct%%-A |
+| st-admin | add-member --account %%msacct%%-B --u %%username%% | now has the role of 'member' in the %%msacct%%-B |
 
 | open_ok | /m/signals |  |
 | wait_for_element_visible_ok | st-select-network | 30000 |

@@ -121,9 +121,9 @@ this earth, to sit together beneath the neon and fluorescent calmly sipping
 our coffee, like the sages sipping their tea underneath the willow, sitting
 quietly, saying nothing.
 QUOTE
+    search_ok( "bridges OR children", 2, "Disjunctive Search" );
     TODO: {
     local $TODO = 'Solr stories should fix me!';
-    search_ok( "bridges OR children", 2, "Disjunctive Search" );
     search_ok( "the",                 3, "Common word" );
     }
 
@@ -141,11 +141,8 @@ QUOTE
         "Common categories (alias for tags), with conjunction"
     );
 
-    TODO: {
-    local $TODO = 'Solr stories should fix me!';
     search_ok( "(sages OR bridges) AND (tea OR emperor)", 1,
         "More complex search" );
-    }
 }
 
 ###############################################################################

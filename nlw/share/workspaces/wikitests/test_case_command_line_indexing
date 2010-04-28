@@ -20,10 +20,7 @@
 | st-admin | index-attachment --workspace %%cmdline_workspace%% --page %%cmdline_workspace%% | qr/The command you called \(index-attachment\) requires an attachment to be specified/ |
 | st-admin | index-page --workspace %%cmdline_workspace%% --page %%cmdline_workspace%%_wiki | There is no page with the id "%%cmdline_workspace%%_wiki" in the %%cmdline_workspace%% workspace. |
 
-| st-admin | index-page --workspace %%cmdline_workspace%% --page announcements_and_links | The Announcements and Links page in the %%cmdline_workspace%% workspace has been indexed. |
-
-TODO: find a way to calculate the attachment ID
-st-admin | index-attachment --workspace %%cmdline_workspace%% --page announcements_and_links --attachment 20080320064508-16-27288 | The Navbar-All-tags.png attachment in the %%cmdline_workspace%% workspace has been indexed. |
+| st-admin | index-page --workspace %%cmdline_workspace%% --page example_page_project_tracking | The Example Page: Project Tracking page in the %%cmdline_workspace%% workspace has been indexed. |
 
 | *Comment* | Test Case: Command Line INDEXING Teardown |  |
 | st-admin | delete-workspace --w %%cmdline_workspace%% --no-export | has been deleted |

@@ -1159,13 +1159,11 @@ after role_change_check => sub {
 sub impersonation_ok {
     my ($self, $actor, $user) = @_;
 
-    if ($self->name eq 'Unknown' or $self->name eq 'Deleted' or
-        $self->is_system_created)
-    {
+    if (($self->name eq 'Unknown') or ($self->name eq 'Deleted')) {
         st_log->error("Failed attempt to impersonate ".$user->username.
              " by ".$actor->username.". ".
              "The user belongs to the ".$self->name." account, ".
-             "which is system-created or disallows impersonation");
+             "which disallows impersonation");
         Socialtext::Exception::Auth->throw(
             "Cannot impersonate in system account ".$self->name
         );

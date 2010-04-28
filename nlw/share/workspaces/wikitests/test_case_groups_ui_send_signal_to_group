@@ -65,23 +65,15 @@
 | *Comment* | Groups UI Send Signal to Group search does not find group-only signal |  |
 | type_ok | st-search-term | %%signal_2%% |
 | click_and_wait | st-search-submit |  |
-| st-name-widget | 3 | search_results |
-| st-select-widget-frame | search_results |  |
-| wait_for_text_present_ok | Search results | 30000 |
-| text_like | qr/Search results.+for '%%signal_2%%'/ism |  |
+| wait_for_text_present_ok | Signals matching '%%signal_2%%' | 30000 |
 | wait_for_text_not_present_ok | %%group_name%% | 30000 |
-| select_frame | relative=parent |  |
 
 | *Comment* | Groups UI Send Signal to Group search does find account signal |
 | type_ok | st-search-term | %%signal_1%% |
 | click_and_wait | st-search-submit |  |
-| st-name-widget | 3 | search_results |
-| st-select-widget-frame | search_results |  |
-| wait_for_text_present_ok | Search results | 30000 |
-| text_like | qr/Search results.+for '%%signal_1%%'/ism |  |
+| wait_for_text_present_ok | Signals matching '%%signal_1%%' | 30000 |
 | wait_for_text_present_ok | %%group_user_short%% | 30000 |
 | wait_for_text_present_ok | %%group_acct%% | 30000 |
-| select_frame | relative=parent |  |
 
 | *Comment* | Groups UI Send Signal to Group group member can search for account signal |  |
 | st-logoutin | %%ssg_user%% | %%password%% |
@@ -90,30 +82,19 @@
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | %%signal_1%% |
 | click_and_wait | st-search-submit |  |
-| st-name-widget | 3 | search_results |
-| st-select-widget-frame | search_results |  |
-| wait_for_text_present_ok | Search results | 30000 |
-| text_like | qr/Search results.+for '%%signal_1%%'/ism |  |
+| wait_for_text_present_ok | Signals matching '%%signal_1%%' | 30000 |
 | wait_for_text_present_ok | %%group_user_short%% | 30000 |
 | wait_for_text_present_ok | %%group_acct%% | 30000 |
-| select_frame | relative=parent |  |
 
 | *Comment* | Groups UI Send Signal to Group group member can search for group signal and filter by network |  |
 | type_ok | st-search-term | %%signal_2%% |
 | click_and_wait | st-search-submit |  |
 | st_cycle_network_select | 3 |  |
 | select_ok | network-select | index=2 |
-| st-name-widget | 3 | search_results |
-| st-select-widget-frame | search_results |  |
-| wait_for_text_present_ok | Search results | 30000 |
-| text_like | qr/Search results.+for '%%signal_2%%'/ism |  |
+| wait_for_text_present_ok | Signals matching '%%signal_2%%' | 30000 |
 | wait_for_text_present_ok | %%group_user_short%% | 30000 |
-| text_like | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |  |
-| select_frame | relative=parent |  |
 | select_ok | network-select | index=1 |
-| st-select-widget-frame | search_results |  |
-| wait_for_text_present_ok | Search results |  |
-| text_like | qr/Search results.+for '%%signal_2%%'/ism |  |
+| wait_for_text_present_ok | Signals matching '%%signal_2%%' | 30000 |
 
 | *Comment* | Groups UI Send Signal to Group Teardown |
 | delete-group | %%group_id%% |

@@ -503,9 +503,15 @@ sub _limit_ws_to_group {
         FROM ( $visible_ws ) visgrp
         WHERE workspace_id + }.PG_WKSP_OFFSET .q{ IN (
             SELECT into_set_id
-              FROM user_set_path
-             WHERE from_set_id = ?
-               AND into_set_id }.PG_WKSP_FILTER.q{
+              FROM user_set_path usp
+             WHERE usp.from_set_id = ?
+               AND usp.into_set_id }.PG_WKSP_FILTER.q{
+               AND NOT EXISTS ( -- WS isn't accessible to Group as AUW
+                  SELECT 1
+                    FROM user_set_path_component uspc
+                   WHERE uspc.user_set_path_id = usp.user_set_path_id
+                     AND uspc.user_set_id }.PG_ACCT_FILTER.q{
+               )
         )
     };
 }

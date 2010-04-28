@@ -11,13 +11,13 @@
 | st-admin | add-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% now has the role of 'admin' in the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command --usernameLine LDAP Remove workspace admin |  |
-| st-admin | remove-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% no longer has the role of 'admin' in the %%cmdline_workspace%% workspace/ism |
+| st-admin | remove-workspace-admin --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/no longer has the role of 'admin' in the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Add WS impersonator |  |
 | st-admin | add-workspace-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% now has the role of 'impersonator' in the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Remove impersonator |  |
-| st-admin | remove-workspace-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% no longer has the role of 'impersonator' in the %%cmdline_workspace%% workspace/ism |
+| st-admin | remove-workspace-impersonator --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/no longer has the role of 'impersonator' in the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Disable Email Notify |  |
 | st-admin | disable-email-notify --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/Email notify has been disabled for %%cli_user%% in the %%cmdline_workspace%% workspace/ism |

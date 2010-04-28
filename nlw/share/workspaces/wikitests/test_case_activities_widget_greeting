@@ -4,56 +4,33 @@
 
 | set | Greeting | What are you working on? |  |
 
-| *Comment* | Test Case: Activities Widget Greeting present |  |
+| *Comment* | Test Case: Activities Widget Greeting Dashboard |  |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | %%Greeting%% | 10000 |
 
-| *Comment* | Test Case: Activities Widget Greeting click - Greeting disappears |  |
-| wait_for_element_present_ok | signalsNotSetUp | 5000 |
-| click_ok | signalsNotSetUp |  |
-| wait_for_element_present_ok | //div[@id='signalsNotSetUp' and @style='display: none;'] | 5000 |
-
-| *Comment* | Test Case: Activities Widget Greeting is open for signals |  |
-| wait_for_element_visible_ok | //div[@class='expanded'] | 5000 |
-| wait_for_element_not_visible_ok | //div[@class='collapsed'] | 5000 |
+| *Comment* | Test Case: Activities Widget Greeting Dashboard click - Greeting disappears |  |
+| wait_for_element_present_ok | mainWikiwyg | 5000 |
+| click_ok | mainWikiwyg |  |
+| wait_for_text_not_present_ok | %%Greeting%% | 5000 |
 | select_frame | relative=parent |  |
 
-| *Comment* | Test Case: Activities Widget navigate away, come back |  |
-| click_and_wait | link=Signals |  |
-| click_and_wait | link=Dashboard |  |
+| *Comment* | Test Case: Activities Widget Greeting Signals present |  |
+| open_ok | /st/signals/ |
+| wait_for_text_present_ok | Send a Signal | 10000 |
+| st-name-widget | 1 | signal_widget |
+| st-widget-title-like | signal_widget | Send a Signal |
+| st-select-widget-frame | signal_widget |  |
+| wait_for_text_present_ok | %%Greeting%% | 10000 |
 
-| *Comment* | Test Case: Activities Widget Greeting still open for signals |  |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
-| wait_for_element_visible_ok | //div[@class='expanded'] | 5000 |
-| wait_for_element_not_visible_ok | //div[@class='collapsed'] | 5000 |
-
-| *Comment* | Test Case: Activities Widget Greeting collapse input |  |
-| click_ok | collapse-input |  |
-| wait_for_element_visible_ok | //div[@class='collapsed'] | 5000 |
-| wait_for_element_not_visible_ok | //div[@class='expanded'] | 5000 |
+| *Comment* | Test Case: Activities Widget Greeting Signals click - Greeting disappears |  |
+| wait_for_element_present_ok | mainWikiwyg | 5000 |
+| click_ok | mainWikiwyg |  |
+| wait_for_text_not_present_ok | %%Greeting%% | 5000 |
 | select_frame | relative=parent |  |
 
-| *Comment* | Test Case: Activities Widget Greeting navigate away, come back again |  |
-| click_and_wait | link=Signals |  |
-| click_and_wait | link=Dashboard |  |
-
-| *Comment* | Test Case: Activities Widget Greeting still closed for signals |  |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
-
-| wait_for_element_visible_ok | //div[@class='collapsed'] | 5000 |
-| wait_for_element_not_visible_ok | //div[@class='expanded'] | 5000 |
-
-| *Comment* | Test Case: Activities Widget Greeting reopen for signals |  |
-| click_ok | collapse-input |  |
-| wait_for_element_visible_ok | //div[@class='expanded'] | 5000 |
-| wait_for_element_not_visible_ok | //div[@class='collapsed'] | 5000 |
-| select_frame | relative=parent |  |
+TODO: profile and group activity widget greetings
 
 | *Comment* | Test Case: Activities Widget Greeting COMPLETED |  |

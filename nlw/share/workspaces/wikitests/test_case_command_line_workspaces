@@ -95,7 +95,9 @@ show-admins
 show-impersonators
 
 | st-admin | show-impersonators | qr/The command you called \(show-impersonators\) requires a workspace to be specified/ |
-| st-admin | add-workspace-impersonator --workspace %%cmdline_workspace%% --email devnull1@socialtext.com |  |
+| st-admin | add-workspace-impersonator --workspace %%cmdline_workspace%% --email devnull1@socialtext.com | devnull1@socialtext.com already has the role of 'admin' in the %%cmdline_workspace%% |
+| st-admin | remove-workspace-admin --email devnull1@socialtext.com --workspace %%cmdline_workspace%% | no longer has the role of 'admin' |
+| st-admin | add-workspace-impersonator --workspace %%cmdline_workspace%% --email devnull1@socialtext.com | devnull1@socialtext.com now has the role of 'impersonator' in the %%cmdline_workspace%% |
 | st-admin | show-impersonators --workspace %%cmdline_workspace%% | qr/Email Address.+First.+Last.+devnull1\@socialtext.com/ |
 
 | *Comment* | Test Case: Command Line Tests WORKSPACE Add users from a workspace |
@@ -213,10 +215,10 @@ purge-attachment
 | st-admin | purge-attachment | qr/The command you called \(purge-attachment\) requires a workspace to be specified/ |
 | st-admin | purge-attachment --workspace %%cmdline_workspace%% | qr/The command you called \(purge-attachment\) requires a page to be specified/ |
 | st-admin | purge-attachment --workspace %%cmdline_workspace%% --page nosuchpage | qr/There is no page with the id "nosuchpage" in the %%cmdline_workspace%% workspace/ |
-| st-admin | purge-attachment --workspace %%cmdline_workspace%% --page announcements_and_links | qr/The command you called \(purge-attachment\) requires an attachment to be specified/ |
+| st-admin | purge-attachment --workspace %%cmdline_workspace%% --page example_page_project_tracking | qr/The command you called \(purge-attachment\) requires an attachment to be specified/ |
 
 TODO: figure out a way to calculate the attachment ID
-st-admin | purge-attachment --workspace %%cmdline_workspace%% --page announcements_and_links --attachment 20080320064508-16-27288 | The Navbar-All-tags.png attachment was purged from Announcements and Links page in the %%cmdline_workspace%% workspace. |
+st-admin | purge-attachment --workspace %%cmdline_workspace%% --page example_page_project_tracking --attachment 20100401162154-11-29454 | attachment was purged from Example Page: Project Tracking page in the %%cmdline_workspace%% workspace. |
 
  search-categories --workspace --search
 delete-category --workspace [--category or --search]

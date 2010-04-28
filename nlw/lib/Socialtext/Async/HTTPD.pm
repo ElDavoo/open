@@ -9,6 +9,16 @@ package Socialtext::Async::HTTPD;
 #
 # ~stash
 
+# Hi, Socialtext devs heeding stash++'s advice above:
+#
+# Please consider running the said PSGI app in Starman
+# (http://search.cpan.org/dist/Starman/), a high-performance
+# preforking Plack server, optionally with "starman --preload-app"
+# to minimize memory footprint.
+#
+# Cheers,
+# -au
+
 use warnings;
 use strict;
 use AnyEvent;

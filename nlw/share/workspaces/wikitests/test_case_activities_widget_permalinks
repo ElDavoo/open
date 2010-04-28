@@ -2,26 +2,43 @@
 
 * Fixture: SocialWidgets
 
+| set | acct | permalinkacct%%start_time%% |
+| set | user | permalink-%%start_time%%@matt.socialtext.net |
+| st-admin | create-account --name %%acct%% | was created |
+| st-admin | create-user --email %%user%% --password %%password%% --account %%acct%% | was created |
+| st-logoutin | %%user%% | %%password%% |
+
 | *Comment* | Test Case: Activities Widget: Send a signal ... |  |
-| http-user-pass | %%username%% | %%password%% |
+| http-user-pass | %%user%% | %%password%% |
 | post-signal | Picture yourself on a boat on a river %%start_time%% |  |
 | st_process_jobs |  |  |
 
-| *Comment* | Test Case: Activities Widget: Click a link |  |
+| *Comment* | Test Case: Activities Widget: Find the link for that signal |  |
 | open_ok | /st/dashboard |  |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st-select-widget-frame | activities_widget |  |
-| wait_for_element_visible_ok | //a[contains(@href,'/st/signals')] | 30000 |
+| GET-json | /data/events |  |
+| json-parse |  |  |
+
+json-path-set | signal_hash | $[0].hash |
+
+| set-from-content | signal_hash | qr/"hash":"(\S+)","body":/ |
+
+| wait_for_element_visible_ok | //a[contains(@href,'/st/signals/%%signal_hash%%')] | 30000 |
+| wait_for_element_visible_ok | //a[contains(@target,'_new')] | 30000 |
 | click_ok | //a[contains(@href,'/st/signals')] |  |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Activities Widget: Go to the pop-up page |  |
-| pause | 12000 |  |
-| selectWindow | Socialtext Signals - Permalink |  |
-| wait_for_text_present_ok | Picture yourself on a boat on a river 1271275899 | 30000 |
+| pause | 3000 |  |
+
+| open_ok | /st/signals/%%signal_hash%% |  |
+| pause | 3000 |  |
+| wait_for_text_present_ok | Signals - Permalink | 30000 |
 | st-name-widget | 1 | signals_widget |
+| st_verify_text_in_activities_widget | signals_widget | Picture yourself on a boat on a river %%start_time%% |
 
 | *Comment* | Test Case: Activities Widget: Send another signal |  |
 | st_send_signal_via_activities_widget | signals_widget | With Tangerine Trees %%start_time%% |

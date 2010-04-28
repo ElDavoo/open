@@ -165,37 +165,40 @@ sub plugin_enabled_for_users {
 sub plugin_enabled_for_user_sets {
     my $self        = shift;
     my %p           = @_;
-    my $actor_id    = $p{actor_id};
-    my $user_set_id = $p{user_set_id};
+    my $set_id_a    = $p{actor_id} || $p{set_id_a};
+    my $set_id_b    = $p{user_set_id} || $p{set_id_b};
     my $plugin_name = $p{plugin_name};
 
+    my $t = time_scope 'plugin_enabled_for_user_sets';
+
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "user_sets:$user_set_id\0$actor_id\0$plugin_name";
+    my $cache_key = "plugs_4_2_us3ts:$set_id_a\0$set_id_b\0$plugin_name";
     my $enabled = $cache->get($cache_key);
     return $enabled if defined $enabled;
 
-    # This reads "find all user sets with plugin X that are related to user A,
-    # then check each user_set to see if user B is also in it".
-    # This should be faster on average than just joining r1 and r2 when using
-    # LIMIT 1"
-    my $sql = <<SQL;
+    # This reads: find all user containers C with plugin P enabled that are
+    # related to entity A, then check each user_set to see if entity B is also
+    # in container C (*OR* B == C).
+    my $sql = q{
         SELECT 1
         FROM user_set_path r1
         JOIN user_set_plugin p1 ON (r1.into_set_id = p1.user_set_id)
-        WHERE p1.plugin = ? AND r1.from_set_id = ?
-          AND EXISTS (
-                SELECT 1
-                FROM user_set_path r2
-                WHERE r1.into_set_id = r2.into_set_id 
-                  AND r2.from_set_id = ?
+        WHERE p1.plugin = $1 AND r1.from_set_id = $2
+          AND (
+              r1.into_set_id = $3
+                OR
+              EXISTS (
+                    SELECT 1
+                    FROM user_set_path r2
+                    WHERE r1.into_set_id = r2.into_set_id 
+                      AND r2.from_set_id = $3
+              )
           )
         LIMIT 1
-SQL
+    };
 
-    Socialtext::Timer->Continue('plugin_enabled_for_users');
     $enabled = sql_singlevalue($sql, $plugin_name,
-                               $actor_id, $user_set_id) ? 1 : 0;
-    Socialtext::Timer->Pause('plugin_enabled_for_users');
+                               $set_id_a, $set_id_b) ? 1 : 0;
 
     $cache->set($cache_key, $enabled);
     return $enabled;
@@ -208,6 +211,10 @@ sub plugin_enabled_for_user_in_accounts {
     my $accounts = delete $p{accounts};
     my $plugin_name = delete $p{plugin_name};
 
+    if (!@$accounts) {
+        Carp::cluck "what?! no accounts?!";
+        return 0;
+    }
     return 1 if ($user->username eq $SystemUsername);
 
     my $user_id = $user->user_id;
@@ -215,7 +222,7 @@ sub plugin_enabled_for_user_in_accounts {
     my @account_ids = map { ref($_) ? $_->account_id : $_ } @$accounts;
 
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "user_acct:$user_id\0" . join("\0", @account_ids);
+    my $cache_key = "user_acct_plug:$user_id\0" . join("\0", @account_ids);
     my $enabled_plugins = {};
     if ($enabled_plugins = $cache->get($cache_key)) {
         return $enabled_plugins->{$plugin_name} ? 1 : 0;
@@ -256,7 +263,7 @@ sub plugins_enabled_for_user_set {
     my $user_set_id = ref($user_set) ? $user_set->user_set_id : $user_set;
 
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "uset:$user_set_id\0plugins\0direct=$direct";
+    my $cache_key = "plugs_4_uset:$user_set_id\0plugins\0direct=$direct";
     my $plugins = $cache->get($cache_key);
     return @$plugins if defined $plugins;
 

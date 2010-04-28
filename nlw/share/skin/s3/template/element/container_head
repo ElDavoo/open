@@ -2,6 +2,10 @@
 
 [% INCLUDE syndicator %]
 
+[% FOR link IN container.feeds.json %]
+  <link rel="alternate" type="application/json" href="[% link.url %] title="[% link.title %]" />
+[% END %]
+
 [% FOR script = container.features %]
     <script src="[% script %]"></script>
 [% END %]

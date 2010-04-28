@@ -29,6 +29,10 @@
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI Verify Correctness |  |
 | wait_for_text_present_ok | Transform Account %%group_acct%% to group succeeded | 30000 |
 | wait_for_text_present_ok | Transform Account %%group_acct_two%% to group succeeded | 30000 |
+
+| *Comment* | Test Case: Groups UI Acct 2 Group Web UI at Groups page. Click ID to get latest groups |  |
+| wait_for_element_visible_ok | link=ID | 10000 |
+| click_ok | link=ID |  |
 | wait_for_element_visible_ok | link=%%group_acct%% | 30000 |
 | wait_for_element_visible_ok | link=%%group_acct%% | 30000 |
 | open_ok | nlw/control/account/%%to_acct_id%% |  |
@@ -36,14 +40,14 @@
 | wait_for_element_visible_ok | link=%%user_three%% | 30000 |
 | wait_for_element_visible_ok | link=%%group_user%% | 30000 |
 | wait_for_text_present_ok | Users (3) | 30000 |
-| text_like | //body | Groups (2) |
+| wait_for_text_present_ok | Groups (2) | 30000 |
 | wait_for_element_visible_ok | link=%%group_acct%% | 30000 |
 | wait_for_element_visible_ok | link=%%group_acct_two%% | 30000 |
-| text_like | //body | Workspaces (1) |
+| wait_for_text_present_ok | Workspaces (1) | 30000 |
 | wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
 | click_and_wait | link=%%group_acct%% |  |
-| text_like | //body | Users (1) |
 | wait_for_element_visible_ok | link=%%group_user%% | 30000 |
+| wait_for_text_present_ok | Users (1) | 10000 |
 
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI - Overlapping acct from/to, see error |  |
 | open_ok | /nlw/control/accounts/transform |  |
@@ -62,7 +66,7 @@
 | open_ok | / |  |
 | st-logout |  |  |
 | open_ok | /nlw/control/accounts/transform |  |
-| text_like | //body | You must have admin privileges to access this URI. |
+| text_like | //body | Log in to Socialtext |
 
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI Teardown |
 | delete-group | %%group_id%% |

@@ -341,6 +341,7 @@ sub st_edit_page {
   $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
   $self->handle_command('click_and_wait','st-save-button-link');
   $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000); 
+  $self->handle_command('pause',1000);
   $self->handle_command('set_Speed',0);
 }
 
