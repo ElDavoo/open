@@ -72,6 +72,7 @@ sub _prepare_listview {
         viewer => $user,
         limit => $pageset->limit,
         offset => $pageset->offset,
+        direction => $cgi_vars{direction},
     );
     push @list_args, tag => $tag if $tag;
     push @list_args, account_id => $account_id unless $all_accounts;
