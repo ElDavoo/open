@@ -159,6 +159,15 @@
             'text/plain':       [Socialtext::Rest::PageTagHistory, GET_text]
         '*':      [Socialtext::Rest::PageTag, bad_method]
 -
+    '/data/workspaces/:ws/pages/:pname/watchers':
+        'GET':   
+            '*/*':     &default [Socialtext::Rest::PageWatchers, GET_html]
+            'application/json': [Socialtext::Rest::PageWatchers, GET_json]
+            'text/x-yaml':      [Socialtext::Rest::PageWatchers, GET_yaml]
+            'text/html':        *default
+            'text/plain':       [Socialtext::Rest::PageWatchers, GET_text]
+        '*':      [Socialtext::Rest::PageWatchers, bad_method]
+-
     '/data/workspaces/:ws/pages/:pname/sections':
         'GET':
             '*/*':     &default [Socialtext::Rest::Sections, GET_html]
