@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 38;
+use Test::Socialtext tests => 47;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(expect_failure expect_success);
 
@@ -218,7 +218,6 @@ remove_group_as_workspace_impersonator: {
     ok $ws->group_has_role(group => $group, role => $MemberRole),
         '... and Group was left with Member Role in WS';
 }
-
 ###############################################################################
 # TEST: Show list of WS Impersonators
 show_workspace_impersonators: {
@@ -273,3 +272,59 @@ show_workspace_impersonators: {
         'Unrelated User is *not* shown as an Impersonator of the WS',
     );
 }
+
+###############################################################################
+# TEST: Show list of Account Impersonators
+show_account_impersonators: {
+    my $acct             = create_test_account_bypassing_factory();
+    my $impersonator_user     = create_test_user();
+    my $member_user    = create_test_user();
+    my $unrelated_user = create_test_user();
+
+    my $acct_name            = $acct->name;
+    my $impersonator_username     = $impersonator_user->username;
+    my $member_username    = $member_user->username;
+    my $unrelated_username = $unrelated_user->username;
+
+    $acct->add_user(user => $impersonator_user, role => $ImpersonatorRole);
+    ok $acct->user_has_role(user => $impersonator_user, role => $ImpersonatorRole),
+        'User starts off as an Impersonator of the acct';
+
+    $acct->add_user(user => $member_user, role => $MemberRole);
+    ok $acct->user_has_role(user => $member_user, role => $MemberRole),
+        'User starts off as an Member of the acct';
+
+    ok !$acct->has_user($unrelated_user),
+        'User has no Role in the acct';
+
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--account', $acct_name],
+            )->show_impersonators();
+        },
+        qr/$impersonator_username/s,
+        'Impersonator User is shown as an Impersonator of the acct',
+    );
+
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--account', $acct_name],
+            )->show_impersonators();
+        },
+        qr/(?!$member_username)/s,
+        'Member User is *not* shown as an Impersonator of the acct',
+    );
+
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--account', $acct_name],
+            )->show_impersonators();
+        },
+        qr/(?!$unrelated_username)/s,
+        'Unrelated User is *not* shown as an Impersonator of the acct',
+    );
+}
+
