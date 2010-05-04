@@ -1,0 +1,105 @@
+| *Comment* | Test Case: Business Control Panel Settings |
+
+| set | new_user | new-user-%%start_time%%@matt.socialtext.net |
+
+| *Comment* | Test Case: Business Control Panel Settings - Check the page as non-accounts-admin, see warnin' |  |
+| st-admin | remove-accounts-admin --e %%username%% |  |
+| open_ok | /nlw/control/settings |  |
+| wait_for_text_present_ok | You must have admin privileges to access this URI | 30000 |
+| text_like | //body | You must have admin privileges to access this URI |
+| text_like | //body | Error |
+
+| *Comment* | Test Case: Business Control Panel Settings - Check the page as accounts-admin verify text FTW |  |
+| st-admin | give-accounts-admin --e %%username%% | %%username%% now has accounts admin access |
+| open_ok | /nlw/control/settings |  |
+| text_like | //body | Accounts on this system are "self-join". Any user who can access the Socialtext application can join the default account, create a profile, participate in the account's Signals channels. Users can invite other users into their account. |
+| text_like | //body | Accounts on this system are "private". Users must be invited to accounts by an administrator. |
+| wait_for_element_visible_ok | self_join_update | 30000 |
+
+| *Comment* | Test Case: Business Control Panel Settings - Set accounts on the server to private |  |
+| check_ok | document.forms[0].self_join[1] |  |
+| click_and_wait | self_join_update |  |
+| wait_for_element_visible_ok | self_join_update | 30000 |
+| is_checked_ok | document.forms[0].self_join[1] |  |
+| open_ok | / |  |
+
+| *Comment* | Test Case: Business Control Panel Settings - Logout, see no register, login |  |
+| st-logout |  |  |
+| text_unlike | //body | Register |
+| open_ok | /nlw/register.html |  |
+| wait_for_element_visible_ok | email_address | 30000 |
+| wait_for_element_visible_ok | register_password | 30000 |
+| wait_for_element_visible_ok | register_password2 | 30000 |
+| wait_for_element_visible_ok | register_btn | 30000 |
+| type_ok | email_address | %%new_user%% |
+| type_ok | register_password | password |
+| type_ok | register_password2 | password |
+| click_and_wait | register_btn |  |
+| wait_for_text_present_ok | Registration is disabled | 30000 |
+| st-login |  |  |
+
+| *Comment* | Test Case: Business Control Panel Settings - Set accounts on the server to public |  |
+| open_ok | /nlw/control/settings |  |
+| wait_for_element_visible_ok | self_join_update |  |
+| check_ok | document.forms[0].self_join[0] |  |
+| click_and_wait | self_join_update |  |
+| wait_for_element_visible_ok | self_join_update | 30000 |
+| is_checked_ok | document.forms[0].self_join[0] |  |
+
+| *Comment* | Test Case: Business Control Panel Settings - Logout, see register link, login |  |
+| open_ok | / |
+| st-logout |  |  |
+| wait_for_element_visible_ok | link=Register | 30000 |
+| click_and_wait | link=Register |  |
+| wait_for_element_visible_ok | email_address | 30000 |
+| wait_for_element_visible_ok | register_password | 30000 |
+| wait_for_element_visible_ok | register_password2 | 30000 |
+| wait_for_element_visible_ok | register_btn | 30000 |
+| type_ok | email_address | %%new_user%% |
+| type_ok | register_password | %%password%% |
+| type_ok | register_password2 | %%password%% |
+| click_and_wait | register_btn |  |
+| wait_for_text_present_ok | An email confirming your registration has been sent to %%new_user%% | 30000 |
+| open_ok | / |  |
+| st-login |  |  |
+
+| *Comment* | Test Case: Business Control Panel Settings - Set Group Create to only account admins |  |
+| open_ok | /nlw/control/settings |  |
+| text_like | //body | Any member in an account can create a group, and become the group's administrator. As the group administrator, that user can create a workspace for that group. |
+| text_like | //body | Only account administrators can create groups and workspaces. |
+| wait_for_element_visible_ok | group_create_update | 30000 |
+| check_ok | document.forms[1].group_create[1] |  |
+| click_and_wait | group_create_update |  |
+| wait_for_element_visible_ok | group_create_update | 30000 |
+| is_checked_ok | document.forms[1].group_create[1] |  |
+
+| *Comment* | Test Case: Business Control Panel Settings - Remove Account Admin, cannot create group |  |
+| st-admin | remove-accounts-admin --e %%username%% | %%username%% no longer has accounts admin access |
+| open_ok | / |  |
+| text_unlike | //body | Create Group... |
+| wait_for_element_not_present_ok | link=Create Group... | 30000 |
+
+| *Comment* | Test Case: Business Control Panel Settings - Add Account Admin, can create group |  |
+| st-admin | give-accounts-admin --e %%username%% | %%username%% now has accounts admin access |
+| open_ok | / |  |
+| wait_for_element_present_ok | link=Create Group... | 30000 |
+
+| *Comment* | Test Case: Business Control Panel Settings - Set Group Create to anybody |  |
+| open_ok | /nlw/control/settings/ |  |
+| wait_for_element_visible_ok | group_create_update | 30000 |
+| check_ok | document.forms[1].group_create[0] |  |
+| click_and_wait | group_create_update |  |
+| wait_for_element_present_ok | group_create_update | 30000 |
+| is_checked_ok | document.forms[1].group_create[0] |  |
+
+| *Comment* | Test Case: Business Control Panel Settings - Remove Account Admin can create group |  |
+| st-admin | remove-accounts-admin --e %%username%% | %%username%% no longer has accounts admin access |
+| open_ok | / |  |
+| wait_for_element_present_ok | link=Create Group... | 30000 |
+
+| *Comment* | Test Case: Business Control Panel Settings - Add Account Admin still can create group |  |
+| st-admin | give-accounts-admin --e %%username%% | %%username%% now has accounts admin access |
+| open_ok | / |  |
+| wait_for_element_present_ok | link=Create Group... | 30000 |
+
+| *Comment* | Test Case: Business Control Panel Settings COMPLETED |
