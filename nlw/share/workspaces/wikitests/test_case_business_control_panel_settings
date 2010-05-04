@@ -102,4 +102,7 @@
 | open_ok | / |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 
+| *Comment* | Test Case: Business Control Panel Settings Teardown |
+| st-admin | delete-workspace --w %%ws%% --no-export |  |
+
 | *Comment* | Test Case: Business Control Panel Settings COMPLETED |
