@@ -46,7 +46,7 @@ proto.get_from_page = function() {
         return this.from_page_text().val();
     }
     else if (this.from_template_radio().is(':checked')) {
-        return this.from_template_select().val();
+        return decodeURIComponent(this.from_template_select().val());
     }
     else {
         return;
