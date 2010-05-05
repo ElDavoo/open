@@ -131,11 +131,12 @@ CREATE FUNCTION insert_recent_signal() RETURNS "trigger"
     BEGIN
         INSERT INTO recent_signal (
             signal_id, "at", user_id, body,
-            in_reply_to_id, recipient_id, hidden, hash
+            in_reply_to_id, recipient_id, hidden, hash, anno_blob
         )
         VALUES (
             NEW.signal_id, NEW."at", NEW.user_id, NEW.body,
-            NEW.in_reply_to_id, NEW.recipient_id, NEW.hidden, NEW.hash
+            NEW.in_reply_to_id, NEW.recipient_id, NEW.hidden, NEW.hash, 
+            NEW.anno_blob
         );
         RETURN NULL;    -- trigger return val is ignored
     END
@@ -1020,7 +1021,8 @@ CREATE TABLE recent_signal (
     in_reply_to_id bigint,
     recipient_id bigint,
     hidden boolean DEFAULT false,
-    hash character(32) NOT NULL
+    hash character(32) NOT NULL,
+    anno_blob text
 );
 
 CREATE TABLE recent_signal_user_set (
@@ -1071,7 +1073,8 @@ CREATE TABLE signal (
     in_reply_to_id bigint,
     recipient_id bigint,
     hidden boolean DEFAULT false,
-    hash character(32) NOT NULL
+    hash character(32) NOT NULL,
+    anno_blob text
 );
 
 CREATE SEQUENCE signal_id_seq

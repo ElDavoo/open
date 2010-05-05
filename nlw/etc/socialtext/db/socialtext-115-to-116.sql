@@ -4,7 +4,7 @@ BEGIN;
 ALTER TABLE signal ADD COLUMN anno_blob TEXT;
 ALTER TABLE recent_signal ADD COLUMN anno_blob TEXT;
 
-CREATE OR UPDATE FUNCTION insert_recent_signal() RETURNS "trigger"
+CREATE OR REPLACE FUNCTION insert_recent_signal() RETURNS "trigger"
     AS $$
     BEGIN
         INSERT INTO recent_signal (

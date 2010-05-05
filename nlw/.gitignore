@@ -470,3 +470,4 @@ lib/Socialtext/Handler/Container/Activities.pm
 t/wikitests/signals/signals_conversation.wiki
 lib/Socialtext/Signal/Search.pm
 t/wikitests/signals/data_signals_private.wiki
+t/wikitests/signals/annotations.wiki
