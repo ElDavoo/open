@@ -1,6 +1,10 @@
 | *Comment* | Test Case: Business Control Panel Settings |
 
 | set | new_user | new-user-%%start_time%%@matt.socialtext.net |
+| set | new_acct | new-acct-%%start_time%% |
+| set | admin_user | acct_admin-%%start_time%%@matt.socialtext.net |
+| st-admin | create-account --name %%new_acct%% | was created |
+| st-admin | create-user --e %%admin_user%% --p %%password%% --account %%new_acct%% | was created |
 
 | *Comment* | Test Case: Business Control Panel Settings - Check the page as non-accounts-admin, see warnin' |  |
 | st-admin | remove-accounts-admin --e %%username%% |  |
@@ -39,10 +43,14 @@
 | st-login |  |  |
 | st-admin | remove-accounts-admin --e %%username%% |  |
 | open_ok | / |  |
+| wait_for_element_not_present_ok | link=Invite! | 30000 |
 | text_unlike | //body | Invite! |
-| st-admin | give-accounts-admin --e %%username%% |  |
+| st-admin | give-accounts-admin --e %%username%% | %%username%% now has accounts admin access |
+| st-admin | add-account-admin --e %%admin_user%% --account %%new_acct%% | now has the role of 'admin' in the |
+| st-logoutin | %%admin_user%% | %%password%% |
 | open_ok | / |  |
 | wait_for_element_visible_ok | link=Invite! | 30000 |
+| st-logoutin |  |  |
 
 | *Comment* | Test Case: Business Control Panel Settings - Set accounts on the server to public |  |
 | open_ok | /nlw/control/settings |  |
@@ -107,8 +115,5 @@
 | st-admin | give-accounts-admin --e %%username%% | %%username%% now has accounts admin access |
 | open_ok | / |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
-
-| *Comment* | Test Case: Business Control Panel Settings Teardown |
-| st-admin | delete-workspace --w %%ws%% --no-export |  |
 
 | *Comment* | Test Case: Business Control Panel Settings COMPLETED |
