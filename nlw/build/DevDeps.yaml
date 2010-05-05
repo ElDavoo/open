@@ -44,6 +44,7 @@ Test::Mock::LWP: 0
 
 Socialtext::WikiFixture::Socialtext: 0
 Socialtext::WikiTest: 0.05
+Test::Differences: 0.47
 
 # For mocking libraries
 mocked: 0.09

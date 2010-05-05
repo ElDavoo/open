@@ -147,13 +147,9 @@ NOTE: If this test dies in the middle, you may need to go to /console, click set
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Change Signal Limit On signals page, toggling account toggles limits |  |
-| open-ok | / |  |
-| wait_for_element_visible_ok | link=Signals | 30000 |
-| click_and_wait | link=Signals |  |
-| pause | 10000 |  |
+| open-ok | /st/signals |  |
 | wait_for_element_visible_ok | network-select | 30000 |
 | st-name-widget | 1 | signal_widget |
-| st-widget-title-like | signal_widget | Send a Signal |
 | st-select-widget-frame | signal_widget |  |
 | wait_for_text_present_ok | 100 | 30000 |
 | select-frame | relative=parent |  |

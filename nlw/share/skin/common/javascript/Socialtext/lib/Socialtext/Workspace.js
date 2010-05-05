@@ -203,9 +203,7 @@ Socialtext.Workspace.TitleToName = function (title) {
     if (title == '')
         return '';
     return encodeURI(
-        /* For Safari, the similar regex below doesn't work in Safari */
-        title.replace(/[^A-Za-z0-9_+]+/g, '-')
-             .replace(/[^A-Za-z0-9_+\u00C0-\u00FF]+/g, '-')
+        title.replace(/[^A-Za-z0-9_+\u00C0-\u00FF]+/g, '-')
              .substr(0,30)
              .toLocaleLowerCase()
     );

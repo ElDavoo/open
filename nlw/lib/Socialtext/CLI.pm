@@ -2362,7 +2362,7 @@ sub show_admins {
     my $msg = "Admins of the " . $ws->name . " workspace\n\n";
     $msg .= "| Email Address | First | Last |\n";
 
-    my $user_cursor = $self->_get_ws_users_cursor($ws);
+    my $user_cursor = $self->_get_container_users_cursor($ws);
     my $entry;
     while ($entry = $user_cursor->next) {
         my ($user, $role) = @$entry;
@@ -2395,12 +2395,20 @@ sub show_account_admins {
 sub show_impersonators {
     my $self = shift;
 
-    my $ws = $self->_require_workspace();
+    my $ws = $self->_require_workspace(undef, 'optional');
+    my $acct = $self->_require_account('optional');
+    unless ($ws or $acct) {
+        $self->_error(
+            loc("The command you called ([_1]) requires an account or a "
+                . "workspace to be specified.", $self->{command}),
+        );
+    }
 
-    my $msg = "Impersonators in the " . $ws->name . " workspace\n\n";
+    my $thingy = $ws ? 'workspace' : 'account';
+    my $msg = "Impersonators in the " . ($ws || $acct)->name . " $thingy\n\n";
     $msg .= "| Email Address | First | Last |\n";
 
-    my $user_cursor = $self->_get_ws_users_cursor($ws);
+    my $user_cursor = $self->_get_container_users_cursor($ws || $acct);
     my $entry;
     while ($entry = $user_cursor->next) {
         my ($user, $role) = @$entry;
@@ -2411,11 +2419,11 @@ sub show_impersonators {
     $self->_success($msg, "no indent");
 }
 
-sub _get_ws_users_cursor {
-    my $self = shift;
-    my $ws   = shift;
-    my %opts = $self->_get_options('direct');
-    return $ws->user_roles( %opts );
+sub _get_container_users_cursor {
+    my $self      = shift;
+    my $container = shift;
+    my %opts      = $self->_get_options('direct');
+    return $container->user_roles(%opts);
 }
 
 sub _get_acct_users_cursor {
@@ -3813,7 +3821,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   show-acls --workspace
   show-members --workspace [--direct]
   show-admins --workspace
-  show-impersonators --workspace
+  show-impersonators [--workspace or --account]
   set-workspace-config --workspace <key> <value>
   show-workspace-config --workspace
   create-workspace --name --title --account [--empty] [--all-users-workspace] [--clone-pages-from]

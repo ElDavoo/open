@@ -423,6 +423,7 @@ sub import_file {
     my %acct_params = (
         is_system_created          => $hash->{is_system_created},
         skin_name                  => $hash->{skin_name},
+        backup_skin_name           => 's3',
         email_addresses_are_hidden => $hash->{email_addresses_are_hidden},
         allow_invitation           => (
             defined $hash->{allow_invitation}
@@ -434,6 +435,7 @@ sub import_file {
                 grep {/^desktop_/} @ACCT_COLS
         ),
     );
+
     if ($account && $account->is_placeholder) {
         # "Placeholder" Accounts can be over-written at import; they were
         # created as placeholders during the import of another Account.
@@ -1047,11 +1049,22 @@ sub _validate_and_clean_data {
     if ( $p->{skin_name} ) {
         my $skin = Socialtext::Skin->new(name => $p->{skin_name});
         unless ($skin->exists) {
-            push @errors, loc(
+            if ($p->{backup_skin_name}) {
+                $skin = Socialtext::Skin->new(name => $p->{backup_skin_name});
+            }
+            my $msg = loc(
                 "The skin you specified, [_1], does not exist.", $p->{skin_name}
             );
+            if ($skin->exists) {
+                warn $msg . "\n";
+                warn "Falling back to the $p->{backup_skin_name} skin.\n";
+            }
+            else {
+                push @errors, $msg;
+            }
         }
     }
+    delete $p->{backup_skin_name};
 
     if ( defined $p->{name} && Socialtext::Account->new( name => $p->{name} ) ) {
         push @errors, loc('The account name you chose, [_1], is already in use.',$p->{name} );

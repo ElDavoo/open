@@ -19,9 +19,8 @@
 
 | *Comment* | Test Case: Activities Widget Greeting Signals present |  |
 | open_ok | /st/signals/ |
-| wait_for_text_present_ok | Send a Signal | 10000 |
+| wait_for_text_present_ok | Signal | 10000 |
 | st-name-widget | 1 | signal_widget |
-| st-widget-title-like | signal_widget | Send a Signal |
 | st-select-widget-frame | signal_widget |  |
 | wait_for_text_present_ok | %%Greeting%% | 10000 |
 

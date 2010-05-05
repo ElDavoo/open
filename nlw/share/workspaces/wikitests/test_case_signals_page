@@ -1,4 +1,4 @@
-| *Comment* | STARTING Test case: Signals Page |
+| *Comment* | Test case: Signals Page |
 
 * Fixture: SocialWidgets
 
@@ -9,19 +9,12 @@
 
 | *Comment* | Test Case: Signals Page. Get to the Signals page. Wait for the widget to fully load |  |
 | st-admin | enable-plugin --all-accounts --p signals |  |
-| open_ok | /?signals |  |
-| wait_for_text_present_ok | Send a Signal | 60000 |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal | 60000 |
 
 | *Comment* | Test Case: Signals Page. Send four signals |  |
 | st-name-widget | 1 | signals_widget |
-| st-widget-title-like | signals_widget | Send a Signal |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_text_present_ok | Download Socialtext | 60000 |
-| wait_for_text_present_ok | Try out the | 60000 |
-| select-frame | relative=parent |  |
-
-| *Comment* | The first signal fails if you don't wait a while. | I hate pause |
-| pause | 10000 |  |
+| pause | 5000 | I hate pause |
 
 | *Comment* | Test Case: Signals Page. Once Upon A Time |  |
 | st_send_signal_via_activities_widget | signals_widget | Once Upon A Time %%start_time%% %%mark%% |
@@ -39,18 +32,21 @@
 | st_send_signal_via_activities_widget | signals_widget | I May Be Kinda Slow %%start_time%% %%mark%% |
 | pause | 3000 |  |
 
+| *Comment* | Test Case: Signals Page. Process jobs. |  |
+| st-process-jobs |  |  |
+
 | *Comment* | Test Case: Signals Page. Verify signals in page. |  |
-| st-name-widget | 3 | signal_activity |
+| st-name-widget | 1 | signal_activity |
 | st-select-widget-frame | signal_activity |  |
 
-| wait_for_text_present_ok | Once Upon A Time %%start_time%% %%mark%% | 120000 |
-| wait_for_text_present_ok | I Remember Long Ago %%start_time%% %%mark%% | 120000 |
-| wait_for_text_present_ok | Way Back In History %%start_time%% %%mark%% | 120000 |
-| wait_for_text_present_ok | I May Be Kinda Slow %%start_time%% %%mark%% | 120000 |
-| text_like | //body | qr/You.+to.+%%group%%/ism |
+| wait_for_text_present_ok | Once Upon A Time %%start_time%% %%mark%% | 30000 |
+| wait_for_text_present_ok | I Remember Long Ago %%start_time%% %%mark%% | 30000 |
+| wait_for_text_present_ok | Way Back In History %%start_time%% %%mark%% | 30000 |
+| wait_for_text_present_ok | I May Be Kinda Slow %%start_time%% %%mark%% | 30000 |
 
 | *Comment* | Test Case: Signals widget. Wait for automatic refresh to "x minute ago" in page |  |
-| wait_for_text_present_ok | minute | 120000 |
+| wait_for_text_present_ok | minute | 30000 |
+| text_like | //body | qr/You.+to.+%%group%%/ism |
 | text_like | //body | qr/You.+minute.+ago/ |
 | select-frame | relative=parent |  |
 
