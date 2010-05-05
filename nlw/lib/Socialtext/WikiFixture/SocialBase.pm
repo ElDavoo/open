@@ -2485,6 +2485,13 @@ sub set_substr {
     diag "Set $dest_var to '$self->{$dest_var}'";
 }
 
+# Gross hack workaround
+sub set_pipe {
+    my $self = shift;
+    my $var  = shift;
+    $self->{$var} = '|';
+}
+
 =head2 json_path_is
 
 =head2 json_path_isnt
