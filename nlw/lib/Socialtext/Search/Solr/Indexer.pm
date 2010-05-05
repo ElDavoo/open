@@ -345,6 +345,10 @@ sub _add_signal_doc {
         (map { [link => $_] } @$external_links),
     );
 
+    for my $triplet (@{ $signal->annotation_triplets }) {
+        push @fields, [annotation => lc join '|', @$triplet];
+    }
+
     $self->_add_doc(WebService::Solr::Document->new(@fields));
 
     Socialtext::Timer->Pause('solr_signal');
