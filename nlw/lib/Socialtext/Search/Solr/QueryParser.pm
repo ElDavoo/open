@@ -38,6 +38,7 @@ sub _build_field_map {
         manager_id    => 'supervisor_pf_i',
         supervisor_id => 'supervisor_pf_i',
         assistant_id  => 'assistant_pf_i',
+        anno          => 'annotation',
     };
 }
 
@@ -48,7 +49,8 @@ sub _build_searchable_fields {
         qw/title tag body w/,
         # Signal fields:
         qw/w doctype id creator body pvt dm_recip a g reply_to mention
-           link_page_key link_w link date created is_question creator_name/,
+           link_page_key link_w link date created is_question creator_name
+           annotation/,
         # People fields: (keys AND values)
         %{ $self->field_map },
         qw/phone tag_exact tag_count sounds_like/,
@@ -56,5 +58,20 @@ sub _build_searchable_fields {
         qw/name description desc/,
     ]
 }
+
+around 'munge_raw_query_string' => sub {
+    my $orig = shift;
+
+    my $query = $orig->(@_);
+    if ($query =~ m/annotation:\[([^\]]+)\]/) {
+        my ($start, $end) = ($-[0], $+[0]);
+        my @args = map { s/^"(.+)"$/$1/; $_ } split ',', $1;
+        my $new_query = "annotation:" . lc join('|', @args);
+        $new_query .= "|*" if @args < 3;
+        substr($query, $start, $end) = $new_query;
+    }
+
+    return $query;
+};
 
 1;
