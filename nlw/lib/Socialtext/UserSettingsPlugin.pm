@@ -124,7 +124,9 @@ sub users_listall {
         if $self->cgi->Button;
 
     my $ws = $self->hub->current_workspace;
-    my @uwr = $ws->user_roles(direct => 1)->all;
+    my @uwr = sort { $a->best_full_name <=> $b->best_full_name }
+        $ws->user_roles(direct => 1)->all;
+
     my @gwr = $ws->group_roles->all;
     my $is_auw = $ws->is_all_users_workspace;
     my $settings_section = $self->template_process(
