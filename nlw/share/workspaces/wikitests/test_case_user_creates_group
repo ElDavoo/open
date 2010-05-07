@@ -21,10 +21,22 @@
 | st-logoutin | %%groupemail%% | %%password%% |
 
 | wait_for_element_present_ok | link=Create Group... | 30000 |
-| click_and_wait | link=Create Group... |  |
-| text_like | //body | Create a Group |
+| click_ok | link=Create Group... |  |
+| wait_for_element_present_ok | st-create-group-next | 30000 |
+| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
+| click_ok | st-lightbox-cancel-create-group | 30000 |
+| wait_for_element_not_present_ok | st-create-group-next | 30000 |
+| wait_for_element_not_present_ok | st-lightbox-cancel-create-group | 30000 |
+| wait_for_element_present_ok | link=Create Group... | 30000 |
+| click_ok | link=Create Group... |  |
+| wait_for_element_present_ok | st-create-group-next | 30000 |
+| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
+| click_ok | st-create-group-next |  |
+| wait_for_element_not_present_ok | st-create-group-next | 30000 |
+| wait_for_element_not_present_ok | st-lightbox-cancel-create-group | 30000 |
 | wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
+| text_like | //body | Create a Group |
 
 | *Comment* | Test Case: User Creates Group. Actually Create a Group |  |
 | st-name-widget | 1 | create_group |
@@ -71,7 +83,12 @@
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
-| click_and_wait | link=Create Group... |  |
+| click_ok | link=Create Group... |  |
+| wait_for_element_present_ok | st-create-group-next | 30000 |
+| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
+| click_ok | st-create-group-next |  |
+| wait_for_element_not_present_ok | st-create-group-next | 30000 |
+| wait_for_element_not_present_ok | st-lightbox-cancel-create-group | 30000 |
 | wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
 | st-name-widget | 1 | create_group |
@@ -88,7 +105,12 @@
 
 | *Comment* | Test Case: User Creates Group. Test the cancel button, go to Dashboard |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
-| click_and_wait | link=Create Group... |  |
+| click_ok | link=Create Group... |  |
+| wait_for_element_present_ok | st-create-group-next | 30000 |
+| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
+| click_ok | st-create-group-next |  |
+| wait_for_element_not_present_ok | st-create-group-next | 30000 |
+| wait_for_element_not_present_ok | st-lightbox-cancel-create-group | 30000 |
 | wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
 | wait_for_element_visible_ok | st-cancel-create-group | 30000 |
