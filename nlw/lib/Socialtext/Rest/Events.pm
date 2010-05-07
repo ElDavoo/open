@@ -7,6 +7,7 @@ use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::l10n 'loc';
 use Socialtext::User;
+use Socialtext::Role;
 use Socialtext::SQL qw/:txn/;
 use Guard;
 
@@ -37,10 +38,10 @@ sub get_resource {
         unless ($group->has_user($self->rest->user)) {
             $g = guard { sql_rollback };
             sql_begin_work;
-            $group->add_role(
-                object => $self->rest->user,
-                actor => Socialtext::User->SystemUser,
-                temporary => 1
+            $group->user_set->add_role(
+                $self->rest->user->user_id,
+                $group->user_set_id,
+                Socialtext::Role->Member->role_id
             );
         }
     }
