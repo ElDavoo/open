@@ -2,8 +2,9 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
+use FindBin;
+use lib "$FindBin::Bin/../lib";
 
-use lib 'lib';
 use Socialtext::IntSet; # if you don't have this, try vec() or Judy::1
 
 # FROM Socialtext::String:
