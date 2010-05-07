@@ -499,6 +499,44 @@ sub st_verify_link_in_activities_widget {
 }
       
 
+=head2 st_create_group ($groupname, $groupdesc, $radiotype)
+
+Radiotype should be self-join-radio or private-radio
+
+=cut
+
+sub st_create_group {
+    my ($self, $groupname, $groupdesc, $radiotype) = @_;
+    $self->handle_command('wait_for_element_present_ok','link=Create Group...',30000);
+    $self->handle_command('click_ok','link=Create Group...');
+    $self->handle_command('wait_for_element_present_ok','st-create-group-next', 30000);
+    $self->handle_command('wait_for_element_present_ok','st-lightbox-cancel-create-group', 30000);
+    $self->handle_command('click_ok', 'st-lightbox-cancel-create-group', 30000);
+    $self->handle_command('wait_for_element_not_present_ok','st-create-group-next', 30000);
+    $self->handle_command('wait_for_element_not_present_ok','st-lightbox-cancel-create-group', 30000);
+    $self->handle_command('wait_for_element_present_ok','link=Create Group...', 30000);
+    $self->handle_command('click_ok','link=Create Group...');
+    $self->handle_command('wait_for_element_present_ok','st-create-group-next');
+    $self->handle_command('wait_for_element_present_ok','st-lightbox-cancel-create-group');
+    $self->handle_command('wait_for_element_present_ok', $radiotype);
+    $self->handle_command('click_ok', $radiotype);
+    $self->handle_command('click_ok','st-create-group-next');
+    $self->handle_command('wait_for_element_not_present_ok','st-create-group-next', 30000);
+    $self->handle_command('wait_for_element_not_present_ok','st-lightbox-cancel-create-group', 30000);
+    $self->handle_command('wait_for_element_visible_ok','link=?',30000);
+    $self->handle_command('wait_for_element_visible_ok','create-group', 30000);
+    $self->handle_command('text_like','//body','Create a Group');
+    $self->handle_command('st-name-widget', 1,'create_group');
+    $self->handle_command('st-select-widget-frame','create_group');
+    $self->handle_command('wait_for_element_visible_ok','name', 30000);
+    $self->handle_command('wait_for_element_visible_ok','description', 30000);
+    $self->handle_command('wait_for_element_visible_ok','upload',30000);
+    $self->handle_command('wait_for_element_visible_ok','reset',30000);
+    $self->handle_command('type_ok','name',%groupname);
+    $self->handle_command('type_ok','description',$groupdesc);
+    $self->handle_command('select-frame','relative=parent');
+}
+
 =head2 st_find_user ( $user_id ) 
 
 Pass in a unique value for the user before the at sign, and selenium will 
