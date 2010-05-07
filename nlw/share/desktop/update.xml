@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.0.2</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.0.2.air</url>
-  <description><![CDATA[[4.0.2 - Thu Apr  8 19:59:23 PDT 2010]
+  <version>4.1.0</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.1.0.air</url>
+  <description><![CDATA[[4.1.0 - Thu May  6 18:22:01 PDT 2010]
+(Features)
+* Signals: Support for thread view of Signal Conversations by default.
+* Signals: Click "x ago" to open Permalink in browser.
+* Signals: New navigation hot keys: C-8 (Previous subtab), C-9 (Next subtab).
+* Signals: New view-toggling hot key: C-0 (Toggles between list/thread views)
+* Signals: Click "as a topic/reply" to launch Conversation view.
+* Signals: Fetch 100 signals on startup by default (was 50).
+* People: Hide deactivated/deleted users from @-completion and directory.
+* UI: Switched to a new icon set, free of the airplane sigil.
+
+(Enhancements)
+* Signals: Improved interactivity when displaying large batch of signals.
+* Conversation: Clicking a signal entry to focus on the reply input box.
+* People: Logout then login into another server now properly refreshes the list.
+
+[4.0.2 - Thu Apr  8 19:59:23 PDT 2010]
 (Enhancements)
 * "Log me in automatically" now takes effect upon the first try.
 
