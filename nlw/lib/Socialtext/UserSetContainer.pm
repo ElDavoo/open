@@ -148,8 +148,10 @@ sub add_role {
         die $@;
     }
 
-    eval { $self->role_change_event($p{actor},'add',$thing,$role) };
-    eval { $self->_log_role_change($p{actor},'add',$thing,$role,$t) };
+    unless ($p{temporary}) {
+        eval { $self->role_change_event($p{actor},'add',$thing,$role) };
+        eval { $self->_log_role_change($p{actor},'add',$thing,$role,$t) };
+    }
     return;
 }
 
