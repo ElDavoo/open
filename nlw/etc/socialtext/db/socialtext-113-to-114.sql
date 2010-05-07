@@ -12,6 +12,15 @@ UPDATE recent_signal
 ALTER TABLE signal ALTER COLUMN hash SET NOT NULL;
 ALTER TABLE recent_signal ALTER COLUMN hash SET NOT NULL;
 
+-- Remove duplicate signals that will cause problems with the unique index
+DELETE FROM signal 
+  WHERE signal_id IN (
+    SELECT A.signal_id 
+      FROM signal A 
+      JOIN signal B ON (A.at = B.at AND a.body = B.body)
+     WHERE a.signal_id > b.signal_id
+  );
+
 CREATE UNIQUE INDEX ix_signal_hash ON signal (hash);
 CREATE UNIQUE INDEX ix_recent_signal_hash ON recent_signal (hash);
 
