@@ -38,6 +38,8 @@ sub _user_has_permission_for_container {
         @_
     );
 
+    return 1 if ($p{user}->username eq $SystemUsername);
+
     return 0 unless $p{permission};
     my $pname = ref($p{permission}) ? $p{permission}->name : $p{permission};
 
@@ -68,13 +70,21 @@ sub _role_matrix_to_id_matrix {
 # default group permissions here.
 {
     # Warning: permissions here must also exist in the ST::Permission module.
-    my %matrix = (
-        admin              => [qw/admin read edit/],
-        member             => [qw/      read edit/],
-        authenticated_user => [                   ],
-        guest              => [                   ],
+    my %permission_matrix = (
+        private => {
+            admin              => [qw/admin read edit/],
+            member             => [qw/      read edit/],
+            authenticated_user => [                   ],
+            guest              => [                   ],
+        },
+        'self-join' => {
+            admin              => [qw/admin read edit/],
+            member             => [qw/      read edit/],
+            authenticated_user => [qw/      read     /],
+            guest              => [                   ],
+        },
     );
-    my $id_matrix;
+    my %id_matrix;
 
     sub user_has_permission_for_group {
         my $self = shift;
@@ -88,10 +98,14 @@ sub _role_matrix_to_id_matrix {
         # XXX NOTE: business admins have special privileges for groups
         return 1 if $p{user}->is_business_admin;
 
-        $id_matrix ||= _role_matrix_to_id_matrix(\%matrix);
+        my $pset = $p{group}->permission_set;
+        $pset = 'private' unless exists $permission_matrix{$pset};
+
+        $id_matrix{$pset} ||=
+            _role_matrix_to_id_matrix($permission_matrix{$pset});
         $p{container} = delete $p{group},
         return $self->_user_has_permission_for_container(
-            %p, id_matrix  => $id_matrix,
+            %p, id_matrix  => $id_matrix{$pset},
         );
     }
 }
