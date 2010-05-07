@@ -18,6 +18,8 @@ use Socialtext::UserSet qw/:const/;
 use Socialtext::JobCreator;
 use Socialtext::Authz::SimpleChecker;
 use List::MoreUtils qw/any/;
+use Socialtext::Exceptions qw/auth_error/;
+use Socialtext::Permission qw(ST_ADMIN_PERM);
 use namespace::clean -except => 'meta';
 
 ###############################################################################
@@ -472,6 +474,35 @@ after 'role_change_event' => sub {
             group => $self,
         });
     }
+};
+
+after 'role_change_check' => sub {
+    my ($self,$actor,$change,$thing,$role) = @_;
+
+    return if $self->user_can(
+        user       => $actor,
+        permission => ST_ADMIN_PERM
+    );
+
+    # allow self-updating users for the self-join type of groups
+    if ($self->permission_set eq 'self-join' &&
+        $thing->can('user_id') && 
+        $actor->user_id == $thing->user_id &&
+        Socialtext::Authz->new->user_sets_share_an_account($actor,$self)
+    ) {
+        if ($change eq 'add' || $change eq 'update') {
+            return if $role->name eq 'member';
+            # an admin adds themselves as the first action to an empty group
+            if ($role->name eq 'admin') {
+                return if $self->role_count == 0;
+            }
+        }
+        elsif ($change eq 'remove') {
+            return;
+        }
+    }
+
+    auth_error "You are not allowed to modify this group's membership";
 };
 
 ###############################################################################
