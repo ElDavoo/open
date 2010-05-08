@@ -532,7 +532,7 @@ sub st_create_group {
     $self->handle_command('wait_for_element_visible_ok','description', 30000);
     $self->handle_command('wait_for_element_visible_ok','upload',30000);
     $self->handle_command('wait_for_element_visible_ok','reset',30000);
-    $self->handle_command('type_ok','name',%groupname);
+    $self->handle_command('type_ok','name',$groupname);
     $self->handle_command('type_ok','description',$groupdesc);
     $self->handle_command('select-frame','relative=parent');
 }
