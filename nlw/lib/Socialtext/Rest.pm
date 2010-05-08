@@ -14,11 +14,12 @@ use Date::Parse qw/str2time/;
 use Carp 'croak';
 use Try::Tiny;
 
-use Socialtext::Exceptions;
+use Socialtext::Exceptions qw/bad_request/;
 use Socialtext::Workspace;
 use Socialtext::HTTP ':codes';
 use Socialtext::Log 'st_log';
 use Socialtext::URI;
+use Socialtext::JSON qw/decode_json/;
 
 our $AUTOLOAD;
 
@@ -379,14 +380,13 @@ sub full_url {
 
 sub GET_yaml {
     require YAML;
-    require Socialtext::JSON;
     my $self = shift;
     my $json = $self->GET_json(@_);
     $self->rest->header(
         $self->rest->header,
         -type   => 'text/plain',
     );
-    return YAML::Dump(Socialtext::JSON::decode_json($json))
+    return YAML::Dump(decode_json($json))
 }
 
 sub _renderer_load {
@@ -473,5 +473,10 @@ sub http_400 {
     return $content || ""; 
 }
 
+sub decoded_json_body {
+    my $self = shift;
+    return try { decode_json($self->rest->getContent) }
+    catch { bad_request 'Malformed JSON passed to resource.' };
+}
 
 1;
