@@ -18,7 +18,7 @@ has 'all'     => (is => 'rw', isa => 'Bool', default => undef, writer => '_all')
 
 # 0 = full representation
 # 1 = limited representation
-# 2 = only user_id and display_name (forced by just_visiting)
+# 2 = only BFN, user_id and display_name (forced by just_visiting)
 has 'minimal' => (is => 'rw', isa => 'Int', default => 0, writer => '_minimal');
 
 has 'just_visiting' => (is => 'ro', isa => 'Bool');
@@ -163,9 +163,14 @@ sub typeahead_find {
     my $rows = $self->get_results;
     my $min = $self->minimal;
     if ($min >= 2) {
-        return [ map { +{
-            user_id => $_->{user_id}, display_name => $_->{display_name}
-        } } @$rows ];
+        return [ map { 
+            my $user = Socialtext::User->new(user_id => $_->{user_id});
+            +{
+                best_full_name => $user->guess_real_name,
+                user_id => $_->{user_id}, 
+                display_name => $_->{display_name} 
+            } 
+        } @$rows ];
     }
 
     my @results;
