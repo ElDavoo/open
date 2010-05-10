@@ -8,8 +8,8 @@ use Socialtext::SQL qw(sql_singlevalue);
 my $bt_src = "http://hosting.gmodules.com/ig/gadgets/"
            . "file/106092714974714025177/TwitterGadget.xml";
 
-exit sql_singlevalue("
-    SELECT COUNT(1)
+my $count = sql_singlevalue("
+    SELECT COUNT(*)
       FROM gadget_instance
      WHERE gadget_id = (
         SELECT gadget_id
@@ -17,3 +17,8 @@ exit sql_singlevalue("
          WHERE src = ?
      )
 ", $bt_src);
+
+if ($count) {
+    warn "There are still $count betwittered gadgets, which do not work.\n";
+}
+exit 0;
