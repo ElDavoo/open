@@ -12,10 +12,25 @@
 | set          | g1_id  | %%group_id%%                  |
 | set          | g1_uri | /data/events/groups/%%g1_id%% |
 
+| set          | g2     | g2-%%start_time%%             |
+| create-group | %%g2%% | %%account%% | %%username%% | Foo | self-join |
+| set          | g2_id  | %%group_id%%                  |
+| set          | g2_uri | /data/events/groups/%%g2_id%% |
+
 * not authorized to see this group - 403
 
 | GET_json | %%g1_uri%% |
 | code-is  | 403        |
+
+* self-join groups events are visible to auth'd users
+| GET_json | %%g2_uri%% |
+| code-is  | 200 |
+
+| http_user_pass | | |
+| GET_json | %%g1_uri%% |
+| code-is  | 401 |
+
+| http_user_pass | %%username%% | %%password%% |
 
 * group with no events
 
