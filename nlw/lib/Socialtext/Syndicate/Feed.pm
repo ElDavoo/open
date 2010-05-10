@@ -58,7 +58,16 @@ sub _author {
     my $self = shift;
     my $page = shift;
     my $user = $page->last_edited_by or return '';
-    return $user->best_full_name( workspace => $page->hub->current_workspace );
+    my $editor = $user->best_full_name(
+        workspace => $page->hub->current_workspace
+    );
+    if ($user->user_id != $page->creator->user_id) {
+        my $creator = $page->creator->best_full_name(
+            workspace => $page->hub->current_workspace
+        );
+        return "$creator (updated by $editor)";
+    }
+    return $editor;
 }
 
 sub _feed_id {
@@ -97,15 +106,6 @@ sub _item_as_html {
     Socialtext::Timer->Continue('_item_as_html_html');
     my $html    = $page->to_absolute_html;
     Socialtext::Timer->Pause('_item_as_html_html');
-
-    Socialtext::Timer->Continue('_item_as_html_creator');
-    my $creator = $page->creator;
-    if ($creator) {
-        my $ws   = $page->hub->current_workspace;
-        my $name = $creator->best_full_name( workspace => $ws );
-        push @html_footers, "<div>Creator: $name</div>";
-    }
-    Socialtext::Timer->Pause('_item_as_html_creator');
 
     Socialtext::Timer->Continue('_item_as_html_tags');
     my @tags    = grep { $_ !~ /recent changes/i } $page->categories_sorted;
