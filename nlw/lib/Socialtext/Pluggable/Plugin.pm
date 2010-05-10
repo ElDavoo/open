@@ -839,4 +839,8 @@ sub sheet_renderer {
     );
 }
 
+sub date_local {
+    return $_[0]->hub->timezone->date_local($_[1]);
+}
+
 1;

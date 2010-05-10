@@ -152,6 +152,14 @@ sub title_to_id {
     my $id = shift;
     my $no_escape = shift || 0;
 
+    # NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE #
+    #                                                         #
+    #  / \   If you change this function be sure to update    #
+    # / ! \  dev-bin/generate-title-to-id-js.pl and whatever  #
+    # -----  uses that javascript function too!               #
+    #                                                         #
+    # NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE #
+
     $id = '' if not defined $id;
     $id =~ s/[^\p{Letter}\p{Number}\p{ConnectorPunctuation}\pM]+/_/g;
     $id =~ s/_+/_/g;
