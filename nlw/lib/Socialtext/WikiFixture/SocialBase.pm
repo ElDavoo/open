@@ -317,6 +317,7 @@ sub stub_page {
                               creator => Socialtext::User->SystemUser);
 }
 
+
 =head2 st_search_for($searchtype, $searchvalue)
 
 Global nav search automation

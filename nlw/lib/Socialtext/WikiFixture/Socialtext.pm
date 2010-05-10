@@ -187,6 +187,7 @@ sub st_logoutin {
     $self->st_login($username, $password);
 }
 
+
 =head2 st_page_title( $expected_title )
 
 Verifies that the page title (NOT HTML title) is correct.

@@ -519,7 +519,7 @@ sub st_create_group {
     $self->handle_command('wait_for_element_present_ok','st-create-group-next');
     $self->handle_command('wait_for_element_present_ok','st-lightbox-cancel-create-group');
     $self->handle_command('wait_for_element_present_ok', $radiotype);
-    $self->handle_command('click_ok', $radiotype);
+    $self->handle_command('check_ok', $radiotype);
     $self->handle_command('click_ok','st-create-group-next');
     $self->handle_command('wait_for_element_not_present_ok','st-create-group-next', 30000);
     $self->handle_command('wait_for_element_not_present_ok','st-lightbox-cancel-create-group', 30000);
