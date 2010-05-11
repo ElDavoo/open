@@ -1,0 +1,89 @@
+| *Comment* | Test Case: Group Home at Different Levels |  |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Group Home at Different Levels Setup |  |  |
+| st_setup_a_group | 1 | 1 | 1 |
+| set | account_user | account-user%%start_time%%@matt.socialtext.net |  |
+| set | non_account_user | non-account-user%%start_time%%@matt.socialtext.net |  |
+| st-admin | create-user --e %%non_account_user%% --password %%password%% | was created. |  |
+| st-admin | create-user --e %%account_user%% --password %%password%% --account %%group_acct%% | was created. |  |
+| set | private_grp_id | %%group_id%% |  |
+| set | self_join_grp | self-join-grp-%%start_time%% |  |
+| create-group | %%self_join_grp%% | %%group_acct%% |  |
+| set | self_join_grp_id | %%group_id%% |  |
+| st-admin | add-member --e %%username%% --g %%self_join_grp_id%% | is now a member of the |  |
+| st-admin | add-group-admin --e %%username%% --g %%self_join_grp_id%% | is now a admin of the |  |
+
+| *Comment* | Test Case: Group Home at Different Levels for private group |  |
+| st-logoutin | %%group_user%% | %%password%% |
+| open_ok | /st/group/%%private_grp_id%% |  |
+| pause | 30000 |  |
+| open_ok | /st/dashboard |  |
+| st-logoutin | %%account_user%% | %%password%% |
+| open_ok | /st/group/%%private_grp_id%% |  |
+| pause | 30000 |  |
+| st-logoutin | %%non_account_user%% | %%password%% |
+| open_ok | /st/group/%%private_grp_id%% |  |
+| pause | 30000 |  |
+
+| *Comment* | Group Home at Different Levels Make %%self_join_grp_id%% a self-join group |  |
+| st-logoutin |  |  |
+| open_ok | /st/group/%%self_join_grp_id%% |  |
+
+| *Comment* | Group Home at Different Levels Edit (was) Private Group, Flip Permissions |  |
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| text_like | //body | Group Type private |
+| text_unlike | //body | Group Type self-join |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_and_wait | link=(Edit) |  |
+| wait_for_element_visible_ok | permission-change | 30000 |
+| click_ok | permission-change |  |
+| pause | 6000 |  |
+| select-frame | relative=parent |  |
+| wait_for_element_present_ok | st-create-group-next | 30000 |
+| wait_for_element_present_ok | st-lightbox-cancel-create-group | 3000 |
+| wait_for_element_present_ok | self-join-radio | 30000 |
+| check_ok | self-join-radio |  |
+| click_ok | st-create-group-next |  |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+| wait_for_text_present_ok | self-join |  |
+| text_unlike | //body | private Change |
+| text_like | //body | self-join Change |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| click_and_wait | create-group |  |
+
+| *Comment* | Test Case: Group Home at Different Levels See Group is changed to self-join |  |
+| *Comment* | Test Case: Group Home at Different Levels GAHH, self-join is cached only in SE, refind page |  |
+| open_ok | / |  |
+| wait_for_element_present_ok | link=%%self_join_grp%% | 30000 |
+| click_and_wait | link=%%self_join_grp%% |  |
+| pause | 3000 |  |
+| refresh_ok |  |  |
+| pause | 8000 |  |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+| text_like | //body | Group Type self-join |
+| text_unlike | //body | Group Type private |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Group Home at Different Levels for self-join group |  |
+| st-logoutin | %%group_user%% | %%password%% |
+| open_ok | /st/group/%%self_join_grp_id%% |  |
+| pause | 30000 |  |
+| open_ok | /st/dashboard |  |
+| st-logoutin | %%account_user%% | %%password%% |
+| open_ok | /st/group/%%self_join_grp_id%% |  |
+| pause | 30000 |  |
+| st-logoutin | %%non_account_user%% | %%password%% |
+| open_ok | /st/group/%%self_join_grp_id%% |  |
+| pause | 30000 |  |
+
+| *Comment* | Test Case: Group Home at Different Levels TEARDOWN |  |
+| st-admin | delete-workspace --w %%group_ws%% --no-export | was deleted |
+| delete-group | %%self_join_grp_id%% |  |
+| delete-group | %%private_grp_id%% |  |  | *Comment* | Test Case: Group Home at Different Levels COMPLETED |  |
