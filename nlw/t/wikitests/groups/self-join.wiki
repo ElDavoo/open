@@ -1,0 +1,86 @@
+
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+| set         | hakim                    | hakim%%start_time%%@ken.socialtext.net  |
+| create-user | %%hakim%%                | password                                |
+| set         | hakim_id                 | %%user_id%%                             |
+
+| *Comment* | Create a self-join group, ensure restricted access |
+
+| set            | account2     | acct2-%%start_time%%                   |              |            |           |
+| create-account | %%account2%% |                                        |              |            |           |
+| set            | sjgroup      | sjgroup%%start_time%%                  |              |            |           |
+| create-group   | %%sjgroup%%  | %%account2%%                           | %%username%% |            | self-join |
+| set            | steve        | steve%%start_time%%@ken.socialtext.net |              |            |           |
+| create-user    | %%steve%%    | password                               | %%account2%% | Stevey Boy |           |
+| set-user-id    | steve_id     | %%steve%%                              |              |            |           |
+
+* related user == shares an account with the group
+* member == in the group
+* unrelated user == not in the group or in the group's account(s)
+
+| http-user-pass | %%hakim%% | password |
+
+| *Comment* | Check that an unrelated user can't see the group membership |
+| GET-json | /data/groups/%%group_id%%/users |
+| code-is  | 404                             |
+
+| *Comment* | Check that an unrelated user can't modify the group |
+| POST-json | /data/groups/%%group_id%%/users | {"user_id":%%hakim_id%%} |
+| code-is   | 404                             |                          |
+| POST-json | /data/groups/%%group_id%%/membership | [{"user_id":%%hakim_id%%, "role":"member"}] |
+| code-is   | 404                             |                          |
+
+| *Comment* | Check that a *connected* user can access the group |
+
+| http-user-pass | %%steve%% | password |
+
+| GET-json | /data/groups/%%group_id%%?show_members=1&show_admins=1 |
+| code-is           | 200                  |              |
+| json-parse        |                      |              |
+| json-path-is      | $.group_id           | %%group_id%% |
+| json-path-is      | $.name               | %%sjgroup%%  |
+| json-path-is      | $.permission_set     | self-join    |
+| json-path-exists  | $.members            |              |
+| json-path-missing | $.members[0]         |              |
+| json-path-exists  | $.admins[0].username | %%username%% |
+| json-path-is      | $.user_count         | 1            |
+| json-path-is      | $.workspace_count    | 0            |
+
+| *Comment* | Check that a *connected* user can self-join |
+| POST-json | /data/groups/%%group_id%%/users | {"user_id":%%steve_id%%} |
+| code-is   | 202                             |                          |
+
+| GET-json | /data/groups/%%group_id%%?show_members=1&show_admins=1 |
+| code-is          | 200                  |              |
+| json-parse       |                      |              |
+| json-path-is     | $.members[0].user_id | %%steve_id%% |
+| json-path-exists | $.admins[0].username | %%username%% |
+| json-path-is     | $.user_count         | 2            |
+| json-path-is     | $.workspace_count    | 0            |
+
+| *Comment* | Check that a *connected* user can't become an admin |
+| POST-json | /data/groups/%%group_id%%/membership | [{"user_id":"%%steve_id%%","role_name":"admin"}] |
+| code-is   | 403                                  |                                           |
+
+| *Comment* | Check that a *connected* user can't demote someone else |
+| POST-json | /data/groups/%%group_id%%/membership | [{"username":"%%username%%","role_name":"member"}] |
+| code-is   | 403                                  |                                             |
+
+| *Comment* | Check that self-joined user can leave |
+| POST-json | /data/groups/%%group_id%%/trash | [{"user_id":%%steve_id%%}] |
+| code-is   | 204                             |                            |
+
+| GET-json | /data/groups/%%group_id%%?show_members=1&show_admins=1 |
+| code-is           | 200                  |              |
+| json-parse        |                      |              |
+| json-path-is      | $.group_id           | %%group_id%% |
+| json-path-is      | $.name               | %%sjgroup%%  |
+| json-path-is      | $.permission_set     | self-join    |
+| json-path-exists  | $.members            |              |
+| json-path-missing | $.members[0]         |              |
+| json-path-exists  | $.admins[0].username | %%username%% |
+| json-path-is      | $.user_count         | 1            |
+| json-path-is      | $.workspace_count    | 0            |

@@ -6,10 +6,13 @@ Tests for [Story: Groups ReST API]
 
 # Create a new group, make sure it shows up
 
-| set               | group_name     | group%%start_time%%                    |              |
-| create-group      | %%group_name%% | %%account%%                            | %%username%% |
-| set               | jenny          | jenny%%start_time%%@ken.socialtext.net |              |
-| create-user       | %%jenny%%      | password                               |              |
+| set          | group_name     | group%%start_time%%                    |              |
+| create-group | %%group_name%% | %%account%%                            | %%username%% |
+| set          | jenny          | jenny%%start_time%%@ken.socialtext.net |              |
+| create-user  | %%jenny%%      | password                               |              |
+| set-user-id | jenny_id | %%jenny%% |
+
+| *Comment*   | Get the default group with the default user |
 
 | GET         | /data/groups/%%group_id%% |         |
 | code-is     | 200                       |         |
@@ -21,9 +24,11 @@ Tests for [Story: Groups ReST API]
 | body-like   | "workspace_count":"0"     |         |
 | body-unlike | "members"                 |         |
 
-| add-user-to-group | %%jenny%%      | %%group_id%%                           |              |
-
 ## visible by Group Creator (Creator sees Groups he created or is a member of)
+
+| *Comment*   | Group is visible to group creator |
+
+| add-user-to-group | %%jenny%% | %%group_id%% |
 
 | GET         | /data/groups/%%group_id%% |         |
 | code-is     | 200                       |         |
@@ -35,6 +40,8 @@ Tests for [Story: Groups ReST API]
 | body-like   | "workspace_count":"0"     |         |
 | body-unlike | "members"                 |         |
 
+| *Comment*   | Group's users are visible to group creator |
+
 | GET             | /data/groups/%%group_id%%/users |         |
 | code-is         | 200                             |         |
 | header-like     | Cache-Control                   | private |
@@ -44,11 +51,15 @@ Tests for [Story: Groups ReST API]
 
 # Fetching a non-existent group = 404
 
+| *Comment* | Bogus group id |
+
 | GET             | /data/groups/2342343434/users |         |
 | code-is         | 404                             |         |
 | header-like     | Cache-Control                   | private |
 
 ## ... visible by Business Admin (Business Admin can see all Groups)
+
+| *Comment* | Business Admins can see all groups |
 
 | set            | badmin     | badmin%%start_time%%@ken.socialtext.net |
 | create-user    | %%badmin%% | password                                |
@@ -66,17 +77,19 @@ Tests for [Story: Groups ReST API]
 | set-business-admin | %%badmin%%                | 0       |
 | GET                | /data/groups/%%group_id%%/users |         |
 | header-like        | Cache-Control             | private |
-| code-is            | 403                       |         |
+| code-is            | 404                       |         |
 
 ## visible by Group Members (Members see Groups they are members of)
 ## *not* visible by other Users (can't see Groups you have no relationship to)
+
+| *Comment* | Group members can see a group they're in |
 
 | set            | jane     | jane%%start_time%%@ken.socialtext.net |
 | create-user    | %%jane%% | password                              |
 | http-user-pass | %%jane%% | password                              |
 
 | GET             | /data/groups/%%group_id%%/users |         |
-| code-is         | 403                       |         |
+| code-is         | 404                       |         |
 | header-like     | Cache-Control             | private |
 
 | add-user-to-group | %%jane%%                        | %%group_id%% |
@@ -100,7 +113,7 @@ Tests for [Story: Groups ReST API]
 | create-user | %%jimmy%%                                        | password                               |
 | set         | jimmy_id                                         | %%user_id%%                            |
 | POST-json   | /data/groups/%%group_id%%/users                  | {"username":"%%jimmy%%"}               |
-| code-is     | 201                                              |                                        |
+| code-is     | 202                                              |                                        |
 
 ## Verify that the user's role was created with the correct attrs
 | *Comment* | Verify that the user's role was created with the correct attrs |
@@ -112,7 +125,7 @@ Tests for [Story: Groups ReST API]
 | set         | jorge                                                      | jorge%%start_time%%@ken.socialtext.net        |
 | create-user | %%jorge%%                                                  | password                                      |
 | POST_json   | /data/groups/%%group_id%%/users                            | {"username":"%%jorge%%","role_name":"member"} |
-| code-is     | 201                                                        |                                               |
+| code-is     | 202                                                        |                                               |
 
 | *Comment*   | Create the User, Add User to Group with defaults |                                                                        |
 | set         | bill                                             | bill%%start_time%%@ken.socialtext.net                                  |
@@ -121,7 +134,7 @@ Tests for [Story: Groups ReST API]
 | create-user | %%ted%%                                          | password                                                               |
 | set-user-id | ted_id                                           | %%ted%%                                                                |
 | POST_json   | /data/groups/%%group_id%%/users                  | [{"username":"%%bill%%"},{"user_id":"%%ted_id%%","role_name":"admin"}] |
-| code-is     | 201                                              |                                                                        |
+| code-is     | 202                                              |                                                                        |
 
 ## Ted is an Admin, make sure he can invite users to the group w/rest.
 
@@ -130,7 +143,7 @@ Tests for [Story: Groups ReST API]
 | set            | jonas                                   | jonas%%start_time%%@ken.socialtext.net |
 | create-user    | %%jonas%%                               | password                               |
 | POST_json      | /data/groups/%%group_id%%/users         | {"username":"%%jonas%%"}               |
-| code-is        | 201                                     |                                        |
+| code-is        | 202                                     |                                        |
 
 ## Error conditions
 
@@ -139,6 +152,8 @@ Tests for [Story: Groups ReST API]
 | create-user | %%jamie%%            | password                                      |
 | POST_json   | /data/groups/0/users | {"username":"%%jamie%%","role_name":"member"} |
 | code-is     | 404                  |                                               |
+
+| http-user-pass | %%username%% | password |
 
 | *Comment* | Add User to Group with bad json |    |
 | POST_json | /data/groups/%%group_id%%/users | {} |
@@ -164,7 +179,7 @@ Tests for [Story: Groups ReST API]
 | *Comment*     | Alternate invite format         |                                                                                                            |
 | st-clear-jobs |                                 |                                                                                                            |
 | POST_json     | /data/groups/%%group_id%%/users | {"users":[{"username":"%%harley%%"},{"user_id":"%%hank_id%%"}],"send_message":1,"additional_message":"hi"} |
-| code-is       | 201                             |                                                                                                            |
+| code-is       | 202                             |                                                                                                            |
 | job-count     | GroupInvite                     | 2                                                                                                          |
 
 ## Verify Users were added to Group
@@ -208,19 +223,24 @@ Tests for [Story: Groups ReST API]
 | create-user | %%halden%%               | password                                |
 | set         | halden_id                | %%user_id%%                             |
 
-## PUT one to users
 | st-clear-jobs |                                 |                                                           |
+
+## PUT one to users
+
+| *Comment*   | PUT one user |
 | PUT-json      | /data/groups/%%group_id%%/users | {"entry":[{"username":"%%haile%%","role_name":"member"}]} |
-| code-is       | 204                             |                                                           |
+| code-is       | 202                             |                                                           |
 | job-count     | GroupInvite                     | 0                                                         |
 
 ## PUT many to users
 | *Comment*     | PUT many to users               |                                                                                                                              |
 | st-clear-jobs |                                 |                                                                                                                              |
 | PUT-json      | /data/groups/%%group_id%%/users | {"send_message":"1","entry":[{"user_id":"%%hakim_id%%","role_name":"admin"},{"username":"%%halden%%","role_name":"member"}]} |
-| code-is       | 204                             |                                                                                                                              |
+| code-is       | 202                             |                                                                                                                              |
 | job-count     | GroupInvite                     | 2                                                                                                                            |
+
 ## PUT dies
 | *Comment* | PUT dies, with bad entry        |                                                  |
 | PUT-json  | /data/groups/%%group_id%%/users | {"entry":[{"group_id":"0","role_name":"admin"}]} |
-| code-is   | 400                             |                                                  |
+| code-is   | 403                             |                                                  |
+
