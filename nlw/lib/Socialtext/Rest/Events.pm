@@ -6,6 +6,10 @@ use base 'Socialtext::Rest::EventsBase';
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::l10n 'loc';
+use Socialtext::User;
+use Socialtext::Role;
+use Socialtext::SQL qw/:txn/;
+use Guard;
 
 sub allowed_methods {'GET, POST'}
 
@@ -22,6 +26,25 @@ sub get_resource {
     my @args = ($self->extract_common_args(), 
                 $self->extract_page_args(),
                 $self->extract_people_args());
+
+    # For self-join groups, we need to be able to view the group's activity
+    # stream without actually being a member of the group, SO here we add the
+    # user to the group in a transaction to the user can be removed after
+    # we've generated the list of events.
+    my $g;
+    my %args = @args;
+    if ($args{group_id}) {
+        my $group = Socialtext::Group->GetGroup(group_id => $args{group_id});
+        unless ($group->has_user($self->rest->user)) {
+            $g = guard { sql_rollback };
+            sql_begin_work;
+            $group->user_set->add_role(
+                $self->rest->user->user_id,
+                $group->user_set_id,
+                Socialtext::Role->Member->role_id
+            );
+        }
+    }
 
     my $events = Socialtext::Events->Get($self->rest->user, @args);
     $events ||= [];

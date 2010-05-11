@@ -91,8 +91,9 @@ sub Update {
     # columns (which *aren't* updateable)
     my $to_merge = $self->FilterNonPrimaryKeyColumns($updates_ref);
     foreach my $attr (keys %{$to_merge}) {
-        my $setter = "_$attr";
-        $group->$setter( $updates_ref->{$attr} );
+        my $setter = $group->meta->find_attribute_by_name($attr);
+        next unless $setter;
+        $setter->set_value($group,$updates_ref->{$attr});
     }
     return $group;
 }

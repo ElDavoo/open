@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 321;
+use Test::Socialtext tests => 308;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -12,10 +12,11 @@ use Cwd;
 BEGIN { use_ok 'Socialtext::CLI' }
 use Test::Socialtext::CLIUtils qw/expect_failure expect_success/;
 
-fixtures('workspaces_with_extra_pages', 'destructive');
+fixtures(qw(workspaces_with_extra_pages destructive public));
 
 our $NEW_WORKSPACE = 'new-ws-' . $<;
 our $NEW_WORKSPACE2 = 'new-ws2-'. $<;
+our $NEW_AU_WORKSPACE = 'new-auws-'. $<;
 
 ARGV_PROCESSING: {
     expect_failure(
@@ -456,7 +457,7 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
                 ]
             )->add_member(); 
         },
-        qr/.+ is now a member of the .+ Account/,
+        qr/.+ now has the role of 'member' in the .+ Account/,
         'add-member with an --account and --user argument'
     );
     my $role = $account->role_for_user($user1);
@@ -534,66 +535,6 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
 
     # Cleanup the workspace
     Test::Socialtext::Workspace->delete_recklessly( $workspace );
-}
-
-ADD_REMOVE_WS_ADMIN: {
-    my $ws   = Socialtext::Workspace->new( name => 'foobar' );
-    my $user = Socialtext::User->new( username  => 'test@example.com' );
-    # This adds the workspace to the user's selected workspace list.
-    $ws->add_user( user => $user );
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username test@example.com --workspace foobar )]
-            )->add_workspace_admin();
-        },
-        qr/test\@example\.com now has the role of 'admin' in the foobar Workspace/,
-        'success output from add-admin'
-    );
-
-    my $admin_role = Socialtext::Role->Admin();
-    ok(
-        $ws->user_has_role( user => $user, role => $admin_role ),
-        'user was added to workspace'
-    );
-
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username test@example.com --workspace foobar )]
-            )->add_workspace_admin();
-        },
-        qr/.+ already has the role of 'admin' in the foobar Workspace/,
-        'add-admin when user is already an admin'
-    );
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username test@example.com --workspace foobar )]
-            )->remove_workspace_admin();
-        },
-        qr/test\@example\.com no longer has the role of 'admin' in the foobar Workspace/,
-        'success output from remove-admin'
-    );
-
-    $user = Socialtext::User->new( username => 'test@example.com' );
-    my $member_role = Socialtext::Role->Member();
-    ok(
-        $ws->user_has_role( user => $user, role => $member_role ),
-        'user is now a workspace member, but not an admin'
-    );
-
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username test@example.com --workspace foobar )]
-            )->remove_workspace_admin();
-        },
-        qr/test\@example\.com does not have the role of 'admin' in the .+ Workspace/,
-        'remove-admin when user is not an admin'
-    );
 }
 
 LIST_WORKSPACES: {
@@ -674,7 +615,7 @@ DELETE_TAG: {
                 argv => [qw( --workspace foobar --search e )] )
                 ->delete_tag();
         },
-        qr/The following tags were deleted from the foobar workspace:\s+(\s+\* [\w\s]+[eE][\w\s]+\s+)+\z/s,
+        qr/The following tags were deleted from the foobar workspace:\s+(\s+\* [\w\s:]+\s+)+\z/s,
         'delete multiple tags successfully',
     );
 }
@@ -770,6 +711,26 @@ CREATE_WORKSPACE: {
         qr{The $NEW_WORKSPACE workspace has been cloned to $from_ws},
         'clone-workspace success message',
     );
+
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => $from_ws,
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
+
     expect_success(
         sub {
             Socialtext::CLI->new(
@@ -795,6 +756,8 @@ CREATE_WORKSPACE: {
         qr/\QA new workspace named "$to_ws" was created.\E/,
         'create-workspace success message'
     );
+
+    # Purged pages are not copied over.
     expect_failure(
         sub {
             Socialtext::CLI->new(
@@ -821,6 +784,24 @@ CREATE_WORKSPACE: {
         'create-workspace failed with invalid clone-pages-from workspace'
     );
 
+# Create all-user workspace    
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [
+                    qw( --all-users-workspace --account Socialtext --name),
+                    $NEW_AU_WORKSPACE,
+                    qw( --title ),
+                    'New Workspace'
+                ]
+            )->create_workspace();
+        },
+        qr/\QA new workspace named "$NEW_AU_WORKSPACE" was created.\E/,
+        'create-workspace success message'
+    );
+
+    my $auws = Socialtext::Workspace->new( name => $NEW_AU_WORKSPACE );
+    ok( $auws->is_all_users_workspace, 'workspace is all-user workspace' );
 }
 
 EXPORT_WORKSPACE: {
@@ -874,6 +855,25 @@ DELETE_SEARCH_INDEX: {
 }
 
 INDEX_PAGE: {
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => $NEW_WORKSPACE,
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
+
     expect_success(
         sub {
             Socialtext::CLI->new( argv =>
@@ -986,101 +986,6 @@ CREATE_ACCOUNT: {
     );
 }
 
-SET_PERMISSIONS: {
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [qw( --workspace admin --permissions public-read-only )] )
-                ->set_permissions();
-        },
-        qr/\QThe permissions for the admin workspace have been changed to public-read-only.\E/,
-        'set-permissions success message'
-    );
-
-    my $ws = Socialtext::Workspace->new( name => 'admin' );
-    ok(
-        $ws->permissions->role_can(
-            role       => Socialtext::Role->Guest(),
-            permission => Socialtext::Permission->new( name => 'read' ),
-        ),
-        'guest has read permission'
-    );
-    ok(
-        !$ws->permissions->role_can(
-            role       => Socialtext::Role->Guest(),
-            permission => Socialtext::Permission->new( name => 'edit' ),
-        ),
-        'guest does not have edit permission'
-    );
-
-    # Rainy day
-    expect_failure(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [qw( --workspace admin --permissions monkeys-only )] )
-                ->set_permissions();
-        },
-        qr/\QThe 'monkeys-only' permission does not exist.\E/,
-        'set-permissions error message'
-    );
-}
-
-ADD_REMOVE_PERMISSION: {
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [qw( --workspace admin --permission edit --role guest )] )
-                ->add_permission();
-        },
-        qr/\QThe edit permission has been granted to the guest role in the admin workspace.\E/,
-        'add-permission success message'
-    );
-
-    my $ws = Socialtext::Workspace->new( name => 'admin' );
-    ok(
-        $ws->permissions->role_can(
-            role       => Socialtext::Role->Guest(),
-            permission => Socialtext::Permission->new( name => 'edit' ),
-        ),
-        'guest has edit permission'
-    );
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [qw( --workspace admin --permission edit --role guest )] )
-                ->remove_permission();
-        },
-        qr/\QThe edit permission has been revoked from the guest role in the admin workspace.\E/,
-        'remove-permission success message'
-    );
-
-    ok(
-        !$ws->permissions->role_can(
-            role       => Socialtext::Role->Guest(),
-            permission => Socialtext::Permission->new( name => 'edit' ),
-        ),
-        'guest does not have edit permission'
-    );
-}
-
-SHOW_ACLS: {
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv => [qw( --workspace help-en )] )
-                ->show_acls();
-        },
-        qr/\Qpermission set name: public-read-only\E
-           .+
-           \|\s+admin_workspace\s+\|\s+\|\s+\|\s+\|\s+\|\s+X\s+\|\s+\|\s+
-           \|\s+attachments\s+\|\s+\|\s+\|\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
-           .+
-           \|\s+read\s+\|\s+X\s+\|\s+X\s+\|\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
-          /xs,
-        'show-acls'
-    );
-}
-
 PURGE_ATTACHMENT: {
     my ( $hub, $main )
         = Socialtext::CLI->new( argv => [qw( --workspace foobar )] )
@@ -1133,6 +1038,25 @@ PURGE_ATTACHMENT: {
 }
 
 PURGE_PAGE: {
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => 'foobar',
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
+
     expect_success(
         sub {
             Socialtext::CLI->new(
@@ -1156,6 +1080,25 @@ VERSION: {
 }
 
 SEND_WEBLOG_PINGS: {
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => 'admin',
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
+
     expect_failure(
         sub {
             Socialtext::CLI->new(
@@ -1190,6 +1133,25 @@ SEND_WEBLOG_PINGS: {
 SEND_EMAIL_NOTIFICATIONS: {
     Socialtext::Workspace->new( name => 'admin' )
         ->update( email_notify_is_enabled => 1 );
+
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => 'admin',
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
 
     require Socialtext::EmailNotifyPlugin;
     my @pages;
@@ -1228,6 +1190,25 @@ SEND_EMAIL_NOTIFICATIONS: {
 }
 
 SEND_WATCHLIST_EMAILS: {
+    # Ensure the page exists.
+    expect_success(
+        sub {
+            my $content = "This is a new page.\n";
+            local *STDIN;
+            open STDIN, '<', \$content;
+
+            Socialtext::CLI->new(
+                argv => [
+                    qw(--workspace) => 'admin',
+                    qw(--username) => 'devnull1@socialtext.com',
+                    qw(--page) => 'Start here',
+                ]
+            )->update_page();
+        },
+        qr/The "Start here" page has been (created|updated)\./,
+        'update-page success'
+    );
+
     require Socialtext::WatchlistPlugin;
     my @pages;
     no warnings 'once';
@@ -1919,53 +1900,11 @@ SHOW_MEMBERS: {
     );
 }
 
-SHOW_ADMINS: {
-    my $output = '';
-    {
-        local *STDOUT;
-        open STDOUT, '>', '/dev/null';
-        eval {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --email smtest2@socialtext.net --workspace foobar )
-                ]
-            )->add_workspace_admin();
-        };
-    }
-
-    expect_success(
-        sub {
-            $output = Socialtext::CLI->new(
-                argv => [
-                    qw( --workspace foobar )
-                ]
-            )->show_admins();
-        },
-        qr/^(?!.*smtest[1|3]).*smtest2\@socialtext.net \| Test2 \|/s,
-        'Show admins has correct list'
-    );
-}
-
-SHOW_IMPERSONATORS: {
-    # At this point, devnull2@socialtext.com is an impersonator in the foobar workspace
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --workspace foobar )
-                ]
-            )->show_impersonators();
-        },
-        qr/Last \|\n\| devnull2\@socialtext.com/s,
-        'show-impersonators has correct list'
-    );
-}
-
 # Dear developer:
 #
-# Please consider making a new CLI-$feature.t test rather than
+# Please consider making a new CLI/$feature.t test rather than
 # appending to this one. The fixtures required for this test are rather
-# heavyweight. You may wish to clone t/Socialtext/CLI-deactivate.t; it's a
+# heavyweight. You may wish to clone t/Socialtext/CLI/deactivate.t; it's a
 # good example.
 #
 # Sincerely,

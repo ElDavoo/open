@@ -32,7 +32,7 @@
 | *Comment* | Login, visit a workspace to create some breadcrumbs, logout. |  |
 | st_logout |  |  |
 | open_ok | private-%%start_time%% |  |
-| text_like | errors-and-messages | You must login to view this page. |
+| wait-for-element-present-ok | st-login-form | 1000 |
 | type_ok | username | %%login_user%% |
 | type_ok | password | test%%start_time%% |
 | clickAndWait | login_btn |  |
@@ -54,7 +54,7 @@
 | open_ok | login-to-edit-%%start_time%% |  |
 | text_like | st-page-wiki-title | Login to Edit %%start_time%% |
 | click_and_wait | link=Login |  |
-| text_like | errors-and-messages | You must login to view this page. |
+| wait-for-element-present-ok | st-login-form | 1000 |
 | type_ok | username | %%login_user%% |
 | type_ok | password | test%%start_time%% |
 | clickAndWait | login_btn |  |
@@ -62,7 +62,7 @@
 | st_logout |  |  |
 | text_like | st-login-to-edit-button-link | Edit |
 | click_and_wait | link=Edit |  |
-| text_like | errors-and-messages | You must login to view this page. |
+| wait-for-element-present-ok | st-login-form | 1000 |
 | type_ok | username | %%login_user%% |
 | type_ok | password | test%%start_time%% |
 | clickAndWait | login_btn |  |
@@ -82,7 +82,7 @@
 | st_logout |  |  |
 | wait_for_text_present_ok | Public %%start_time%% |  |
 | click_and_wait | link=Login |  |
-| text_like | errors-and-messages | You must login to view this page. |
+| wait-for-element-present-ok | st-login-form | 1000 |
 | type_ok | username | %%login_user%% |
 | type_ok | password | test%%start_time%% |
 | clickAndWait | login_btn |  |
@@ -128,7 +128,7 @@
 | *Comment* | Test Case: Return to last login |  |
 | *Comment* | Log in, visit a workspace, log out, delete the workspace, log in. You should go to the last workspace you were at prior to the deleted workspace. |  |
 | open_ok | private-%%start_time%% |  |
-| text_like | errors-and-messages | You must login to view this page. |
+| wait-for-element-present-ok | st-login-form | 1000 |
 | type_ok | username | %%login_user%% |
 | type_ok | password | test%%start_time%% |
 | clickAndWait | login_btn |  |

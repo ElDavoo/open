@@ -10,11 +10,16 @@ use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
 use Socialtext::Timer qw/time_scope/;
-use Socialtext::SQL qw(get_dbh :exec :time);
+use Socialtext::SQL qw(get_dbh :exec :time :txn);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::Pluggable::Adapter;
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
+use Socialtext::JobCreator;
+use Socialtext::Authz::SimpleChecker;
+use List::MoreUtils qw/any/;
+use Socialtext::Exceptions qw/auth_error/;
+use Socialtext::Permission qw(ST_ADMIN_PERM);
 use namespace::clean -except => 'meta';
 
 ###############################################################################
@@ -45,6 +50,7 @@ has 'homunculus' => (
         update_store
         delete
         user_set_id
+        permission_set
     )],
 );
 
@@ -274,6 +280,20 @@ sub All {
     return $cursor;
 }
 
+sub User_can_create_group {
+    my $class = shift;
+    my $user  = shift or croak "Must supply a user";
+
+    return Socialtext::AppConfig->users_can_create_groups()
+            || $user->is_business_admin()
+            || any { 
+                   Socialtext::Authz::SimpleChecker->new(
+                       user => $user, container => $_
+                   )->check_permission('admin') 
+               } $user->accounts;
+
+}
+
 ###############################################################################
 sub Factory {
     my ($class, %p) = @_;
@@ -301,6 +321,7 @@ sub Factory {
 ###############################################################################
 sub Create {
     my ($class, $proto_group) = @_;
+    my $timer = Socialtext::Timer->new;
 
     # find first updateable factory
     my $factory =
@@ -316,6 +337,11 @@ sub Create {
     my $homey = $factory->Create($proto_group);
     $factory->CreateInitialRelationships($homey);
     my $group = Socialtext::Group->new(homunculus => $homey);
+    Socialtext::JobCreator->index_group($group);
+
+    my $msg = 'CREATE,GROUP,group_id:' . $group->group_id
+              . '[' . $timer->elapsed . ']';
+    st_log()->info($msg);
 
     return $group;
 }
@@ -390,6 +416,25 @@ sub GetProtoGroup {
     return undef;
 }
 
+sub IndexGroups {
+    my $class = shift;
+
+    require Socialtext::Search::Solr::Factory;
+    my $factory = Socialtext::Search::Solr::Factory->new;
+    my $indexer = $factory->create_indexer();
+    $indexer->delete_groups();
+
+    sql_begin_work();
+    my $all_groups = sql_execute('SELECT group_id FROM groups');
+    my $i = 0;
+    while ( my ($group_id) = $all_groups->fetchrow_array ) {
+        Socialtext::JobCreator->index_group($group_id);
+        $i++;
+    }
+    sql_commit();
+    return $i;
+}
+
 ###############################################################################
 # Base package for Socialtext Group infrastructure.
 use constant base_package => __PACKAGE__;
@@ -429,6 +474,35 @@ after 'role_change_event' => sub {
             group => $self,
         });
     }
+};
+
+after 'role_change_check' => sub {
+    my ($self,$actor,$change,$thing,$role) = @_;
+
+    return if $self->user_can(
+        user       => $actor,
+        permission => ST_ADMIN_PERM
+    );
+
+    # allow self-updating users for the self-join type of groups
+    if ($self->permission_set eq 'self-join' &&
+        $thing->can('user_id') && 
+        $actor->user_id == $thing->user_id &&
+        Socialtext::Authz->new->user_sets_share_an_account($actor,$self)
+    ) {
+        if ($change eq 'add' || $change eq 'update') {
+            return if $role->name eq 'member';
+            # an admin adds themselves as the first action to an empty group
+            if ($role->name eq 'admin') {
+                return if $self->role_count == 0;
+            }
+        }
+        elsif ($change eq 'remove') {
+            return;
+        }
+    }
+
+    auth_error "You are not allowed to modify this group's membership";
 };
 
 ###############################################################################
@@ -491,6 +565,7 @@ sub to_hash {
         created_by_username => $self->creator->guess_real_name,
         primary_account_id => $self->primary_account_id,
         primary_account_name => $self->primary_account->name,
+        permission_set => $self->permission_set,
     };
 
     if ($opts{show_members}) {
@@ -542,6 +617,7 @@ sub serialize_for_export {
         description             => $self->description,
         created_by_username     => $self->creator->username,
         group_id                => $self->group_id, 
+        permission_set          => $self->permission_set,
         # (group_id is used to stitch together signals on import )
     };
 }
@@ -550,6 +626,10 @@ sub _build_workspace_count {
     return shift->workspaces->count;
 }
 
+sub impersonation_ok {
+    # group-context impersonation is never allowed
+    return;
+}
 
 __PACKAGE__->meta->make_immutable;
 1;

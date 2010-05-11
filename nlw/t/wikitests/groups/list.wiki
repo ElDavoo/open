@@ -1,34 +1,34 @@
 Tests for [Story: Groups ReST API]
 
-* Fixture: SocialRest
+* Fixture: Search
 
 | standard-test-setup |
-| delete-all-groups |
+| delete-all-groups   |
 
 # Should be no groups to start
 
-| GET | /data/groups |
-| code-is | 200 |
-| header-like | Cache-Control | private |
-| json-parse | |
-| json-array-size | 0 |
+| GET             | /data/groups  |         |
+| code-is         | 200           |         |
+| header-like     | Cache-Control | private |
+| json-parse      |               |         |
+| json-array-size | 0             |         |
 
 # Create a new group, make sure it shows up
 
-| set | group_name | group%%start_time%% |
-| create-group | %%group_name%% | %%account%% | %%username%% |
+| set          | group_name     | group%%start_time%% |              |
+| create-group | %%group_name%% | %%account%%         | %%username%% |
 
 ## visible by Group Creator (Creator sees Groups he created or is a member of)
 
-| GET | /data/groups |
-| code-is | 200 |
-| header-like | Cache-Control | private |
-| json-parse | |
-| json-array-size | 1 |
-| Body-like | "group_id":"%%group_id%%" |
-| Body-like | "name":"%%group_name%%" |
-| body-like | "user_count":"1" |
-| body-like | "workspace_count":"0" |
+| GET             | /data/groups         |                |
+| code-is         | 200                  |                |
+| header-like     | Cache-Control        | private        |
+| json-parse      |                      |                |
+| json-array-size | 1                    |                |
+| json-path-is    | $[0].group_id        | %%group_id%%   |
+| json-path-is    | $[0].name            | %%group_name%% |
+| json-path-is    | $[0].user_count      | 1              |
+| json-path-is    | $[0].workspace_count | 0              |
 
 # Group Visibility Rules
 
@@ -44,7 +44,7 @@ Tests for [Story: Groups ReST API]
 | header-like        | Cache-Control      | private |
 | json-parse         |                    |         |
 | json-array-size    | 1                  |         |
-| body-like          | "user_count":"1"   |         |
+| json-path-is       | $[0].user_count    | 1       |
 
 | set-business-admin | %%badmin%%         | 0       |
 | GET                | /data/groups?all=1 |         |
@@ -64,22 +64,21 @@ Tests for [Story: Groups ReST API]
 | st-admin       | create-user --e %%bobemail%% --p password --first %%bobfirst%% --last %%boblast%%  |
 | http-user-pass | %%jane%%     | password                                     |
 
-| st-admin | 
 | GET                | /data/groups  |         |
 | code-is            | 200           |         |
 | header-like        | Cache-Control | private |
 | json-parse         |               |         |
 | json-array-size    | 0             |         |
 
-| add-user-to-group | %%jane%%                  | %%group_id%% |
-| add-user-to-group | %%bobemail%%              | %%group_id%% |
-| GET               | /data/groups              |              |
-| code-is           | 200                       |              |
-| header-like       | Cache-Control             | private      |
-| json-parse        |                           |              |
-| json-array-size   | 1                         |              |
-| Body-like         | "group_id":"%%group_id%%" |              |
-| body-like         | "user_count":"3"          |              |
+| add-user-to-group | %%jane%%        | %%group_id%% |
+| add-user-to-group | %%bobemail%%    | %%group_id%% |
+| GET               | /data/groups    |              |
+| code-is           | 200             |              |
+| header-like       | Cache-Control   | private      |
+| json-parse        |                 |              |
+| json-array-size   | 1               |              |
+| json-path-is      | $[0].group_id   | %%group_id%% |
+| json-path-is      | $[0].user_count | 3            |
 
 | GET             | /data/groups?show_members=1                                        |         |
 | code-is         | 200                                                                |         |
@@ -98,23 +97,122 @@ Tests for [Story: Groups ReST API]
 | set-business-admin | %%badmin%% | 1        |
 | http-user-pass     | %%badmin%% | password |
 
-| delete-all-groups |
-| create-group | alpha   |
-| create-group | beta    |
-| create-group | gamma   |
-| create-group | delta   |
-| create-group | epsilon |
-| create-group | zeta    |
-| create-group | eta     |
-| create-group | theta   |
-| create-group | iota    |
 
-| get-group-id      | alpha      | alpha_id       |
-| get-group-id      | gamma      | gamma_id       |
-| get-group-id      | epsilon    | epsilon_id     |
-| add-user-to-group | %%badmin%% | %%alpha_id%%   |
-| add-user-to-group | %%badmin%% | %%gamma_id%%   |
-| add-user-to-group | %%badmin%% | %%epsilon_id%% |
+| create-group | skrømt | | | moji |
+| st-process-jobs | |
+| add-user-to-group | %%badmin%% | %%group_id%% |
+
+###################
+| *Comment*       | UTF-8 diplays correctly |         |
+| GET-json        | /data/groups?q=moji     |         |
+| code-is         | 200                     |         |
+| json-parse      |                         |         |
+| json-array-size | 1                       |         |
+| json-path-is    | $[0].name               | skrømt  |
+| GET-json        | /data/groups?q=skrømt   |         |
+| code-is         | 200                     |         |
+| json-parse      |                         |         |
+| json-array-size | 1                       |         |
+| json-path-is    | $[0].name               | skrømt  |
+
+| delete-all-groups |
+| create-group | alpha   | | | booya |
+| create-group | beta    | | | booya |
+| create-group | gamma   | | | booya |
+| create-group | delta   | | | booya |
+| create-group | epsilon | | | booya |
+| create-group | zeta    | | | booya |
+| create-group | eta     | | | booya |
+| create-group | theta   | | | booya |
+| create-group | iota    | | | booya |
+| create-group | taliban | | | booya! come join us | self-join |
+| st-process-jobs | |
+
+| get-group-id      | alpha      | alpha_id     |
+| get-group-id      | delta      | delta_id     |
+| get-group-id      | gamma      | gamma_id     |
+| add-user-to-group | %%badmin%% | %%alpha_id%% |
+| add-user-to-group | %%badmin%% | %%delta_id%% |
+| add-user-to-group | %%badmin%% | %%gamma_id%% |
+
+####################
+| *Comment*       | Simple filter             |       |
+| GET-json        | /data/groups?filter=alpha |       |
+| code-is         | 200                       |       |
+| json-parse      |                           |       |
+| json-array-size | 1                         |       |
+| json-path-is    | $[0].name                 | alpha |
+
+####################
+| *Comment*       | Simple filter             |       |
+| GET-json        | /data/groups?q=name:alpha |       |
+| code-is         | 200                       |       |
+| json-parse      |                           |       |
+| json-array-size | 1                         |       |
+| json-path-is    | $[0].name                 | alpha |
+
+####################
+| *Comment*       | Simple filter              |       |
+| GET-json        | /data/groups?q=title:alpha |       |
+| code-is         | 200                        |       |
+| json-parse      |                            |       |
+| json-array-size | 1                          |       |
+| json-path-is    | $[0].name                  | alpha |
+
+####################
+| *Comment*       | Simple filter              |       |
+| GET-json        | /data/groups?q=sounds_like:alfa |       |
+| code-is         | 200                        |       |
+| json-parse      |                            |       |
+| json-array-size | 1                          |       |
+| json-path-is    | $[0].name                  | alpha |
+
+####################
+| *Comment*       | Simple filter                         |       |
+| GET-json        | /data/groups?filter=description:booya |       |
+| code-is         | 200                                   |       |
+| json-parse      |                                       |       |
+| json-array-size | 3                                     |       |
+| json-path-is    | $[0].name                             | alpha |
+
+| *Comment*       | Simple filter                         |       |
+| GET-json        | /data/groups?q=desc:booya             |       |
+| code-is         | 200                                   |       |
+| json-parse      |                                       |       |
+| json-array-size | 3                                     |       |
+| json-path-is    | $[0].name                             | alpha |
+
+####################
+| *Comment*         | OpenSocial filter                      |       |
+| GET-json          | /data/groups?startIndex=1&filter=booya |       |
+| code-is           | 200                                    |       |
+| json-parse        |                                        |       |
+| json-path-is      | $.entry[0].name                        | delta |
+| json-path-is      | $.entry[1].name                        | gamma |
+| json-path-missing | $.entry[2]                             |       |
+
+####################
+| *Comment*       | all field search     |
+| GET-json        | /data/groups?q=booya |
+| code-is         | 200                  |
+| json-parse      |                      |
+| json-array-size | 3                    |
+
+####################
+| *Comment*       | boolean AND search                      |
+| GET-json        | /data/groups?filter=booya+AND+alpha |
+| code-is         | 200                                 |
+| json-parse      |                                     |
+| json-array-size | 1                                   |
+
+####################
+| *Comment*       | boolean OR search               |
+| GET-json        | /data/groups?filter=alpha+delta |
+| code-is         | 200                             |
+| json-parse      |                                 |
+| json-array-size | 2                               |
+
+
 
 ####################
 | *Comment* | Passing all shows all groups |
@@ -125,7 +223,7 @@ Tests for [Story: Groups ReST API]
 | json-parse   |                                       |         |
 | json-path-is | $.startIndex                          | 0       |
 | json-path-is | $.itemsPerPage                        | 25      |
-| json-path-is | $.totalResults                        | 9       |
+| json-path-is | $.totalResults                        | 10      |
 | json-path-is | $.entry[0].name                       | alpha   |
 | json-path-is | $.entry[1].name                       | beta    |
 | json-path-is | $.entry[2].name                       | delta   |
@@ -133,8 +231,9 @@ Tests for [Story: Groups ReST API]
 | json-path-is | $.entry[4].name                       | eta     |
 | json-path-is | $.entry[5].name                       | gamma   |
 | json-path-is | $.entry[6].name                       | iota    |
-| json-path-is | $.entry[7].name                       | theta   |
-| json-path-is | $.entry[8].name                       | zeta    |
+| json-path-is | $.entry[7].name                       | taliban    |
+| json-path-is | $.entry[8].name                       | theta   |
+| json-path-is | $.entry[9].name                       | zeta    |
 
 ####################
 | *Comment* | Not passing all only shows the user groups |
@@ -147,5 +246,78 @@ Tests for [Story: Groups ReST API]
 | json-path-is | $.itemsPerPage                  | 25      |
 | json-path-is | $.totalResults                  | 3       |
 | json-path-is | $.entry[0].name                 | alpha   |
-| json-path-is | $.entry[1].name                 | epsilon |
+| json-path-is | $.entry[1].name                 | delta   |
 | json-path-is | $.entry[2].name                 | gamma   |
+
+#####################
+
+| Comment         | `discoverable=exclude` should be the default |
+| GET-json        | /data/groups                                 |
+| code-is         | 200                                          |
+| json-parse      |                                              |
+| json-array-size | 3                                            |
+
+| Comment         | `discoverable=exclude` should be the default |
+| GET-json     | /data/groups?discoverable=exclude;startIndex=0 |       |
+| code-is      | 200                                            |       |
+| json-parse   |                                                |       |
+| json-path-is | $.totalResults                                 | 3       |
+| json-path-is | $.entry[0].name                                | alpha |
+| json-path-is | $.entry[1].name                                | delta |
+| json-path-is | $.entry[2].name                                | gamma |
+
+| Comment      | `discoverable=only`                         |         |
+| GET-json     | /data/groups?discoverable=only;startIndex=0 |         |
+| code-is      | 200                                         |         |
+| json-parse   |                                             |         |
+| json-path-is | $.totalResults                              | 1       |
+| json-path-is | $.entry[0].name                             | taliban |
+
+| Comment      | `discoverable=include`                         |         |
+| GET-json     | /data/groups?discoverable=include;startIndex=0 |         |
+| code-is      | 200                                            |         |
+| json-parse   |                                                |         |
+| json-path-is | $.totalResults                                 | 4       |
+| json-path-is | $.entry[0].name                                | alpha   |
+| json-path-is | $.entry[1].name                                | delta   |
+| json-path-is | $.entry[2].name                                | gamma   |
+| json-path-is | $.entry[3].name                                | taliban |
+
+###### Now with Filtering ######
+
+| Comment         | `discoverable=exclude` should be the default |
+| GET-json        | /data/groups?filter=booya                    |
+| code-is         | 200                                          |
+| json-parse      |                                              |
+| json-array-size | 3                                            |
+
+| Comment      | `discoverable=exclude` should be the default                |       |
+| GET-json     | /data/groups?discoverable=exclude;startIndex=0;filter=booya |       |
+| code-is      | 200                                                         |       |
+| json-parse   |                                                             |       |
+| json-path-is | $.totalResults                                              | 3     |
+| json-path-is | $.entry[0].name                                             | alpha |
+| json-path-is | $.entry[1].name                                             | delta |
+| json-path-is | $.entry[2].name                                             | gamma |
+
+| Comment      | `discoverable=only`                                      |         |
+| GET-json     | /data/groups?discoverable=only;startIndex=0;filter=booya |         |
+| code-is      | 200                                                      |         |
+| json-parse   |                                                          |         |
+| json-path-is | $.totalResults                                           | 1       |
+| json-path-is | $.entry[0].name                                          | taliban |
+
+| Comment      | `discoverable=include`                                      |         |
+| GET-json     | /data/groups?discoverable=include;startIndex=0;filter=booya |         |
+| code-is      | 200                                                         |         |
+| json-parse   |                                                             |         |
+| json-path-is | $.totalResults                                              | 4       |
+| json-path-is | $.entry[0].name                                             | alpha   |
+| json-path-is | $.entry[1].name                                             | delta   |
+| json-path-is | $.entry[2].name                                             | gamma   |
+| json-path-is | $.entry[3].name                                             | taliban |
+
+
+^ TO IMPLEMENT
+
+* look for XXX TODO in Socialtext/User.pm - (limit discovery to account scopes)

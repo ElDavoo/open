@@ -2,38 +2,18 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use FindBin;
-use lib "$FindBin::Bin/../lib";
-BEGIN {
-    if ($ENV{ST_CURRENT}) {
-        use lib "$ENV{ST_CURRENT}/nlw/lib";
+BEGIN { push @INC, "$ENV{ST_CURRENT}/nlw/lib" if $ENV{ST_CURRENT} }
+use Socialtext::Daemontools;
+Socialtext::Daemontools->RunSupervised(
+    log_file => 'st-ntlmd.log',
+    port_name => 'ntlmd_port',
+    cb => sub {
+        my $port = shift;
+        my $exe = '/usr/bin/st-ntlmd';
+        if (!Socialtext::AppConfig->is_appliance()) {
+            $exe = "$ENV{ST_CURRENT}/nlw/bin/st-ntlmd";
+        }
+        exec $exe,'--port',$port
+            or die "can't exec ${exe}: $!";
     }
-}
-use Socialtext::AppConfig;
-use Socialtext::Paths;
-use Socialtext::HTTP::Ports;
-
-my $log_file = Socialtext::Paths::log_directory() .
-    "/st-ntlmd.log";
-unless ($ENV{NTLMD_DEBUG}) {
-    eval "use Socialtext::System::TraceTo qw($log_file);";
-}
-my $port = Socialtext::HTTP::Ports->ntlmd_port();
-
-# If we're root, switch to the www-data user.
-close STDIN;
-if ($< == 0) {
-    my $uid = getpwnam('www-data');
-    my $gid = getgrnam('www-data');
-    chown $uid, $gid, $log_file;
-    exec qw(su www-data), $0, @ARGV
-        or die "can't exec $0 as www-data: $!";
-}
-
-my $exe = '/usr/bin/st-ntlmd';
-if (!Socialtext::AppConfig->is_appliance()) {
-    $exe = "$ENV{ST_CURRENT}/nlw/bin/st-ntlmd";
-}
-
-exec $exe,'--port',$port
-    or die "can't exec ${exe}: $!";
+);

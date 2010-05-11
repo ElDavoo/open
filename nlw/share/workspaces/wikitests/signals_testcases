@@ -1,11 +1,25 @@
 A convenience testset for running all of our Signals tests
 
-Signals Widget
-
-Test Case: Activities Widget
-
-Signal to Networks
-
 * [Test Case: Signal to Networks]
 * [Test Case: Signals Search]
 * [Test Case: Signals Search Pagination]
+
+* [Test Case: groups ui search signals by group]
+* [Test Case: groups ui send signal to group]
+* [Test Case: groups ui signal from group home]
+
+* [Test Case: signals page]
+* [Test Case: signal from profile]
+* [Test Case: signal to networks]
+* [Test Case: signals activities interaction]
+* [Test Case: signals follow filter with pagination]
+
+* [Test Case: signals login logout]
+
+Test Case: change signal limit - Moved to all_appliance_testcases because it uses /console now
+
+* [Test Case: mobile signals]
+
+And the MONSTER:
+
+* [Test Case: Activities Widget]

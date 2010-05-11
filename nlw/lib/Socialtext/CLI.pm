@@ -961,15 +961,17 @@ sub _add_group_to_account_as {
 
     $self->_check_account_role(
         cur_role  => $current_role,
+        new_role  => $new_role,
         name      => $group->driver_group_name,
         acct_name => $account->name,
     );
 
-    $account->add_group( group => $group, role => $new_role );
+    $account->assign_role_to_group( group => $group, role => $new_role );
     $self->_success(
-        loc("[_1] is now a member of the [_2] Account",
-            $group->driver_group_name,
-            $account->name
+        loc("[_1] now has the role of '[_2]' in the [_3] Account",
+            $group->display_name,
+            $new_role->display_name,
+            $account->name,
         )
     );
 }
@@ -979,19 +981,21 @@ sub _add_user_to_account_as {
     my $new_role     = shift;
     my $user         = $self->_require_user();
     my $account      = $self->_require_account();
-    my $current_role = $account->role_for_user($user);
+    my $current_role = $account->role_for_user($user, direct => 1);
 
     $self->_check_account_role(
         cur_role  => $current_role,
+        new_role  => $new_role,
         name      => $user->username,
         acct_name => $account->name,
     );
 
-    $account->add_user( user => $user, role => $new_role );
+    $account->assign_role_to_user( user => $user, role => $new_role );
     $self->_success(
-        loc("[_1] is now a member of the [_2] Account",
+        loc("[_1] now has the role of '[_2]' in the [_3] Account",
             $user->username,
-            $account->name
+            $new_role->display_name,
+            $account->name,
         )
     );
 }
@@ -999,13 +1003,12 @@ sub _add_user_to_account_as {
 sub _check_account_role {
     my $self = shift;
     my %p    = @_;
-    my $member = Socialtext::Role->Member();
 
-    if ( $p{cur_role} && $p{cur_role}->name eq $member->name ) {
+    if ($p{cur_role}) {
         $self->_error(
             loc("[_1] already has the role of '[_2]' in the [_3] Account",
-                $p{name}, $member->display_name, $p{acct_name})
-        );
+                $p{name}, $p{cur_role}->display_name, $p{acct_name})
+        ) if $p{cur_role}->name eq $p{new_role}->name;
     }
 }
 
@@ -1159,10 +1162,20 @@ sub _remove_user_from_thing {
     my $current = $thing->role_for_user($user, direct => 1);
     my $member  = Socialtext::Role->Member();
 
-    $self->_error( 
-        loc('[_1] is not a member of [_2]',
-            $user->username, $thing->name)
-    ) unless $current;
+    if (!$current) {
+        if (my $indirect_role = $thing->role_for_user($user, direct => 0)) {
+            $self->_error(
+                loc('[_1] is a [_2] of [_3] through a group, and may not be removed directly',
+                    $user->username, $indirect_role->name, $thing->name)
+            );
+        }
+        else {
+            $self->_error(
+                loc('[_1] is not a member of [_2]',
+                    $user->username, $thing->name)
+            );
+        }
+    }
 
     $self->_error(
         loc("[_1] does not have the role of '[_2]' in [_3]",
@@ -1300,92 +1313,211 @@ sub _remove_thing_from_thing {
     return $self->_success($msg);
 }
 
+sub _thingy_type {
+    my $self   = shift;
+    my $thingy = shift;
+    return 'user'      if ($thingy->isa('Socialtext::User'));
+    return 'group'     if ($thingy->isa('Socialtext::Group'));
+    return 'workspace' if ($thingy->isa('Socialtext::Workspace'));
+    return 'account'   if ($thingy->isa('Socialtext::Account'));
+    die "unknown thingy type";  # XXX: bad error, but what to do?
+}
+
+sub _downgrade_thingy_to_member_in_container {
+    my $self       = shift;
+    my $thingy     = shift;
+    my $container  = shift;
+    my $from_role  = shift;
+    my $MemberRole = Socialtext::Role->Member;
+
+    my $role = Socialtext::Role->new(name => $from_role);
+
+    # figure out what type the "thingy" and "container" are
+    my $type = $self->_thingy_type($thingy);
+    my $container_type = $self->_thingy_type($container);
+
+    my $has_role_method = "${type}_has_role";
+    unless ($container->$has_role_method($type => $thingy, role => $role)) {
+        $self->_error(
+            loc("[_1] does not have the role of '[_2]' in the [_3] [_4].",
+                $thingy->display_name, $role->name,
+                $container->name, ucfirst($container_type),
+            )
+        );
+    }
+
+    my $role_for_method = "role_for_${type}";
+    my $direct_role = $container->$role_for_method($thingy, direct => 1);
+    unless ($direct_role) {
+        my $indirect_role = $container->$role_for_method($thingy, direct => 0);
+        $self->_error(
+            loc('[_1] is a [_2] of [_3] through a group, and may not be removed directly',
+                $thingy->display_name, $indirect_role->name, $container->name,
+            )
+        )
+    }
+
+    my $assign_method = "assign_role_to_${type}";
+    $container->$assign_method(
+        $type => $thingy,
+        role  => $MemberRole,
+    );
+
+    # Let the Admin know if the "Thingy" has a Group membership which gives a
+    # higher membership level than what the "Thingy" is left with after
+    # downgrading their explicit Role.
+    my $current_role = $container->$role_for_method($thingy);
+    if ($current_role->name ne $MemberRole->name) {
+        $self->_error(
+            loc("[_1] now has the role of '[_2]' in [_3] due to membership in a group",
+                $thingy->display_name, $current_role->name, $container->name,
+            )
+        );
+    } 
+
+    $self->_success(
+        loc("[_1] no longer has the role of '[_2]' in the [_3] [_4].",
+            $thingy->display_name, $from_role,
+            $container->name, ucfirst($container_type),
+        )
+    );
+}
+
 sub add_workspace_admin {
     my $self = shift;
     my %jump = (
-        'user-workspace'  => sub {
-            $self->_add_user_to_workspace_as(
-                Socialtext::Role->Admin()
-            )
+        'user-workspace' => sub {
+            $self->_add_user_to_workspace_as(Socialtext::Role->Admin());
         },
         'group-workspace' => sub {
-            $self->_add_group_to_workspace_as(
-                Socialtext::Role->Admin()
-            )
+            $self->_add_group_to_workspace_as(Socialtext::Role->Admin());
         },
     );
 
-    my $type = $self->_type_of_entity_collection_operation( keys %jump );
-
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
     return $jump{$type}->();
 }
 
-sub _make_role_toggler {
-    my $rolename    = shift;
-    my $add_p       = shift;
-
-    return sub {
-        my $self = shift;
-
-        my $user = $self->_require_user();
-        my $ws   = $self->_require_workspace();
-
-        if ( $add_p ) {
-            $self->_ensure_email_passes_filters(
-                $user->email_address,
-                { account => $ws->account, workspace => $ws },
-            );
+sub remove_workspace_admin {
+    my $self = shift;
+    my %jump = (
+        'user-workspace' => sub {
+            $self->_downgrade_user_to_member_in_workspace(Socialtext::Role->Admin());
+        },
+        'group-workspace' => sub {
+            $self->_downgrade_group_to_member_in_workspace(Socialtext::Role->Admin());
         }
-
-        require Socialtext::Role;
-        my $role         = Socialtext::Role->new( name => $rolename );
-        my $display_name = $role->display_name();
-
-        my $has_role = $ws->user_has_role(user => $user, role => $role);
-        if ($add_p and $has_role) {
-            $self->_error(loc(
-                "[_1] already has the role of '[_2]' in the [_3] Workspace",
-                $user->username, $role->name, $ws->name
-            ));
-        }
-        elsif (!$add_p and !$has_role) {
-            $self->_error(loc(
-                "[_1] does not have the role of '[_2]' in the [_3] Workspace",
-                $user->username, $role->name, $ws->name
-            ));
-        }
-
-        $ws->assign_role_to_user(
-            user        => $user,
-            role        => $add_p ? $role : Socialtext::Role->Member,
-        );
-
-        # special message for removing a role where membership in a group
-        # gives a higher membership level than what the user is left with
-        # after removing an explicit (UWR) role
-        my $current_user_role = $ws->role_for_user($user);
-        my $current_rolename = $current_user_role->name;
-        my $current_role_display_name = $current_user_role->display_name;
-
-        if ((!$add_p)  && 
-            $current_user_role &&
-            ($current_rolename ne Socialtext::Role->Member->name)) {
-            $self->_error(loc("[_1] now has the role of '[_2]' in the [_3] Workspace due to membership in a group", $user->username, $rolename, $ws->name));
-        } 
-        elsif ($add_p) {
-            $self->_success(loc("[_1] now has the role of '[_2]' in the [_3] Workspace", $user->username, $rolename, $ws->name));
-        }
-        else {
-            $self->_success(loc("[_1] no longer has the role of '[_2]' in the [_3] Workspace", $user->username, $rolename, $ws->name));
-        }
-    }
+    );
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
+    return $jump{$type}->();
 }
 
-{
-    no warnings 'once';
-    *remove_workspace_admin = _make_role_toggler( 'admin', 0 );
-    *add_impersonator       = _make_role_toggler( 'impersonator',    1 );
-    *remove_impersonator    = _make_role_toggler( 'impersonator',    0 );
+sub add_account_admin {
+    my $self = shift;
+    return $self->_add_user_to_account_as(Socialtext::Role->Admin());
+}
+
+sub remove_account_admin {
+    my $self = shift;
+    return $self->_downgrade_user_to_member_in_account(Socialtext::Role->Admin);
+}
+
+sub _downgrade_user_to_member_in_workspace {
+    my $self = shift;
+    my $role = shift;
+    my $user = $self->_require_user();
+    my $ws   = $self->_require_workspace();
+    return $self->_downgrade_thingy_to_member_in_container(
+        $user, $ws, $role->name,
+    );
+}
+
+sub _downgrade_group_to_member_in_workspace {
+    my $self  = shift;
+    my $role  = shift;
+    my $group = $self->_require_group();
+    my $ws    = $self->_require_workspace();
+    return $self->_downgrade_thingy_to_member_in_container(
+        $group, $ws, $role->name,
+    );
+}
+
+sub _downgrade_user_to_member_in_account {
+    my $self = shift;
+    my $role = shift;
+    my $user = $self->_require_user();
+    my $acct = $self->_require_account();
+    return $self->_downgrade_thingy_to_member_in_container(
+        $user, $acct, $role->name,
+    );
+}
+
+sub _downgrade_group_to_member_in_account {
+    my $self  = shift;
+    my $role  = shift;
+    my $group = $self->_require_group();
+    my $acct  = $self->_require_account();
+    return $self->_downgrade_thingy_to_member_in_container(
+        $group, $acct, $role->name,
+    );
+}
+
+sub add_workspace_impersonator {
+    my $self = shift;
+    my %jump = (
+        'user-workspace' => sub {
+            $self->_add_user_to_workspace_as(Socialtext::Role->Impersonator());
+        },
+        'group-workspace' => sub {
+            $self->_add_group_to_workspace_as(Socialtext::Role->Impersonator());
+        },
+    );
+
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
+    return $jump{$type}->();
+}
+
+sub remove_workspace_impersonator {
+    my $self = shift;
+    my %jump = (
+        'user-workspace' => sub {
+            $self->_downgrade_user_to_member_in_workspace(Socialtext::Role->Impersonator());
+        },
+        'group-workspace' => sub {
+            $self->_downgrade_group_to_member_in_workspace(Socialtext::Role->Impersonator());
+        }
+    );
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
+    return $jump{$type}->();
+}
+
+sub add_account_impersonator {
+    my $self = shift;
+    my %jump = (
+        'user-account' => sub {
+            $self->_add_user_to_account_as(Socialtext::Role->Impersonator());
+        },
+        'group-account' => sub {
+            $self->_add_group_to_account_as(Socialtext::Role->Impersonator());
+        },
+    );
+
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
+    return $jump{$type}->();
+}
+
+sub remove_account_impersonator {
+    my $self = shift;
+    my %jump = (
+        'user-account' => sub {
+            $self->_downgrade_user_to_member_in_account(Socialtext::Role->Impersonator());
+        },
+        'group-account' => sub {
+            $self->_downgrade_group_to_member_in_account(Socialtext::Role->Impersonator());
+        }
+    );
+    my $type = $self->_type_of_entity_collection_operation(keys %jump);
+    return $jump{$type}->();
 }
 
 sub change_password {
@@ -1549,6 +1681,7 @@ sub create_workspace {
         $account = $self->_load_account($name);
     }
     $ws{account_id} = $account->account_id();
+    my $isAllUsersWorkspace = delete($ws{'all-users-workspace'});
 
     my $ws = eval {
         my @extra_args;
@@ -1576,6 +1709,7 @@ sub create_workspace {
         die $e;
     }
 
+    $ws->assign_role_to_account(account => $account) if ($isAllUsersWorkspace);
     $self->_success(
         'A new workspace named "' . $ws->name() . '" was created.' );
 }
@@ -1588,6 +1722,7 @@ sub _require_create_workspace_params {
         'title:s',
         'account:s',
         'clone-pages-from:s',
+        'all-users-workspace',
         'empty',
     );
 }
@@ -2227,7 +2362,26 @@ sub show_admins {
     my $msg = "Admins of the " . $ws->name . " workspace\n\n";
     $msg .= "| Email Address | First | Last |\n";
 
-    my $user_cursor = $self->_get_ws_users_cursor($ws);
+    my $user_cursor = $self->_get_container_users_cursor($ws);
+    my $entry;
+    while ($entry = $user_cursor->next) {
+        my ($user, $role) = @$entry;
+        next if ($role->name ne 'admin');
+        $msg .= '| ' . join(' | ', $user->email_address, $user->first_name, $user->last_name) . " |\n";
+    }
+
+    $self->_success($msg, "no indent");
+}
+
+sub show_account_admins {
+    my $self = shift;
+
+    my $acct = $self->_require_account();
+
+    my $msg = "Admins of the " . $acct->name . " account\n\n";
+    $msg .= "| Email Address | First | Last |\n";
+
+    my $user_cursor = $self->_get_acct_users_cursor($acct);
     my $entry;
     while ($entry = $user_cursor->next) {
         my ($user, $role) = @$entry;
@@ -2241,12 +2395,20 @@ sub show_admins {
 sub show_impersonators {
     my $self = shift;
 
-    my $ws = $self->_require_workspace();
+    my $ws = $self->_require_workspace(undef, 'optional');
+    my $acct = $self->_require_account('optional');
+    unless ($ws or $acct) {
+        $self->_error(
+            loc("The command you called ([_1]) requires an account or a "
+                . "workspace to be specified.", $self->{command}),
+        );
+    }
 
-    my $msg = "Impersonators in the " . $ws->name . " workspace\n\n";
+    my $thingy = $ws ? 'workspace' : 'account';
+    my $msg = "Impersonators in the " . ($ws || $acct)->name . " $thingy\n\n";
     $msg .= "| Email Address | First | Last |\n";
 
-    my $user_cursor = $self->_get_ws_users_cursor($ws);
+    my $user_cursor = $self->_get_container_users_cursor($ws || $acct);
     my $entry;
     while ($entry = $user_cursor->next) {
         my ($user, $role) = @$entry;
@@ -2257,11 +2419,18 @@ sub show_impersonators {
     $self->_success($msg, "no indent");
 }
 
-sub _get_ws_users_cursor {
-    my $self     = shift;
-    my $ws       = shift;
-    my %opts     = $self->_get_options('direct');
-    return $ws->user_roles( %opts );
+sub _get_container_users_cursor {
+    my $self      = shift;
+    my $container = shift;
+    my %opts      = $self->_get_options('direct');
+    return $container->user_roles(%opts);
+}
+
+sub _get_acct_users_cursor {
+    my $self = shift;
+    my $acct = shift;
+    my %opts = $self->_get_options('direct');
+    return $acct->user_roles( %opts );
 }
 
 sub purge_page {
@@ -2273,9 +2442,10 @@ sub purge_page {
     my $title = $page->metadata()->Subject();
     $page->purge();
 
-    $self->_success( "The $title page was purged from the "
-            . $hub->current_workspace()->name()
-            . " workspace.\n" );
+    $self->_success( 
+        loc('The [_1] page was purged from the [_2] workspace.',
+            $title, $hub->current_workspace()->name())
+    );
 }
 
 sub lock_page {
@@ -2573,6 +2743,13 @@ sub index_people {
 
     Socialtext::JobCreator->insert('Socialtext::Job::Upgrade::ReindexPeople');
     $self->_success( "Scheduled people for re-indexing." );
+}
+
+sub index_groups {
+    my $self = shift;
+
+    my $jobs = Socialtext::Group->IndexGroups();
+    $self->_success( "Scheduled $jobs groups for indexing." );
 }
 
 sub send_email_notifications {
@@ -3049,7 +3226,8 @@ sub list_groups {
 
 sub create_group {
     my $self    = shift;
-    my %opts    = $self->_get_options('ldap-dn:s', 'name:s', 'email:s');
+    my %opts    = $self->_get_options(
+        'ldap-dn:s', 'name:s', 'email:s', 'permissions:s');
 
     $opts{account} = $self->_require_account('optional')
         || Socialtext::Account->Default();
@@ -3071,6 +3249,7 @@ sub create_group {
             driver_group_name => $name,
             primary_account_id => $account->account_id,
             created_by_user_id => $user->user_id,
+            permission_set => $opts{permissions},
         });
     };
     if (my $err = $@) {
@@ -3324,9 +3503,10 @@ sub _require_tags {
 
     if ( $opts{tag} ) {
         unless ( $hub->category->exists( $opts{tag} ) ) {
-            $self->_error( qq|There is no tag "$opts{tag}" in the |
-                    . $hub->current_workspace()->name()
-                    . ' workspace.' );
+            $self->_error(
+                loc('There is no tag "[_1]" in the [_2] workspace.',
+                    $opts{tag}, $hub->current_workspace()->name())
+            );
         }
 
         return $opts{tag};
@@ -3336,9 +3516,9 @@ sub _require_tags {
 
         unless (@matches) {
             $self->_error(
-                qq|No tags matching "$opts{search}" were found in the |
-                    . $hub->current_workspace()->name()
-                    . ' workspace.' );
+                loc('No tags matching "[_1]" were found in the [_2] workspace.',
+                    $opts{search}, $hub->current_workspace()->name())
+            );
         }
 
         return @matches;
@@ -3359,9 +3539,10 @@ sub _require_page {
 
     my $page = $hub->pages()->new_page( $opts{page} );
     unless ( $page and $page->exists() ) {
-        $self->_error( qq|There is no page with the id "$opts{page}" in the |
-                . $hub->current_workspace()->name()
-                . " workspace.\n" );
+        $self->_error( 
+            loc('There is no page with the id "[_1]" in the [_2] workspace.',
+                $opts{page}, $hub->current_workspace()->name())
+        );
     }
 
     return $page;
@@ -3611,11 +3792,13 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-member [--username or --email] --workspace
   remove-member [--username or --email] --account
   add-workspace-admin [--username or --email] --workspace
-  add-group-admin [--username or --email] --group
   remove-workspace-admin [--username or --email] --workspace
+  add-workspace-impersonator [--username or --email] --workspace
+  remove-workspace-impersonator [--username or --email] --workspace
+  add-account-impersonator [--username or --email] --account
+  remove-account-impersonator [--username or --email] --account
+  add-group-admin [--username or --email] --group
   remove-group-admin [--username or --email] --group
-  add-impersonator [--username or --email] --workspace
-  remove-impersonator [--username or --email] --workspace
   disable-email-notify [--username or --email] --workspace
   set-locale [--username or --email] --workspace --locale
   set-user-names [--username or --email] --first-name --last-name
@@ -3638,10 +3821,10 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   show-acls --workspace
   show-members --workspace [--direct]
   show-admins --workspace
-  show-impersonators --workspace
+  show-impersonators [--workspace or --account]
   set-workspace-config --workspace <key> <value>
   show-workspace-config --workspace
-  create-workspace --name --title --account [--empty] [--clone-pages-from]
+  create-workspace --name --title --account [--empty] [--all-users-workspace] [--clone-pages-from]
   delete-workspace --workspace [--dir] [--no-export]
   export-workspace --workspace [--dir] [--name]
   import-workspace --tarball [--overwrite] [--name] [--noindex]
@@ -3724,11 +3907,16 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   list-groups [--account or --workspace]
   show-group-config --group
-  create-group (--ldap-dn or --name) [--account] [--email]
+  create-group (--ldap-dn or --name) [--account] [--email] [--permissions]
   show-members --group 
   add-member --group [ --account or --workspace ]
   add-member [ --username or --email ] --group 
   add-workspace-admin --group  --workspace
+  remove-workspace-admin --group --workspace
+  add-workspace-impersonator --group --workspace
+  remove-workspace-impersonator --group --workspace
+  add-account-impersonator --group  --account
+  remove-account-impersonator --group --account
   add-group-admin --group [ --username or --email ]
   remove-group-admin --group [ --username or --email ]
   remove-member --group [--account or --workspace]
@@ -3803,33 +3991,44 @@ from the given account.
 Given a user and a workspace, this command makes the specified user an
 admin for the given workspace.
 
-=head2 add-group-admin [--username or --email] --group
-
-Given a user and a group, this command makes the specified user an
-admin for the given group.
-
 =head2 remove-workspace-admin [--username or --email] --workspace
 
 Given a user and a workspace, this command remove admin privileges for
 the specified user in the given workspace, and makes them a normal
 workspace member.
 
+=head2 add-workspace-impersonator [--username or --email] --workspace
+
+Given a user and a workspace, this command makes the specified user an
+impersonator for the given workspace.
+
+=head2 remove-workspace-impersonator [--username or --email] --workspace
+
+Given a user and a workspace, this command remove impersonate privileges for
+the specified user in the given workspace, and makes them a normal workspace
+member.
+
+=head2 add-account-impersonator [--username or --email] --account
+
+Given a user and an Account, this command makes the specified user an
+impersonator for the given Account.
+
+=head2 remove-account-impersonator [--username or --email] --account
+
+Given a user and an Account, this command remove impersonate privileges for
+the specified user in the given Account, and makes them a normal Account
+member.
+
+=head2 add-group-admin [--username or --email] --group
+
+Given a user and a group, this command makes the specified user an
+admin for the given group.
+
 =head2 remove-group-admin [--username or --email] --group
 
 Given a user and a group, this command remove admin privileges for
 the specified user in the given group, and makes them a normal
 group member.
-
-=head2 add-impersonator [--username or --email] --workspace
-
-Given a user and a workspace, this command makes the specified user an
-impersonator for the given workspace.
-
-=head2 remove-impersonator [--username or --email] --workspace
-
-Given a user and a workspace, this command remove impersonate privileges for
-the specified user in the given workspace, and makes them a normal workspace
-member.
 
 =head2 disable-email-notify [--username or --email] --workspace
 
@@ -3969,11 +4168,12 @@ Deletes the specified tags from the given workspace. You can
 specify a single tag by name with C<--tag> or all tags
 matching a string with C<--search>.
 
-=head2 create-workspace --name --title --account [--empty] [--clone-pages-from]
+=head2 create-workspace --name --title --account [--empty] [--all-users-workspace] [--clone-pages-from]
 
 Creates a new workspace with the given settings.  The usual account is
 Socialtext. Accounts are used for billing.  If --empty is given then no pages
-are inserted into the workspace, it is completely empty.
+are inserted into the workspace, it is completely empty. If --all-users-workspace
+is given then the workspace is an "all-users" workspace.
 
 =head2 delete-workspace --workspace [--dir] [--no-export]
 
@@ -4289,7 +4489,7 @@ with that workspace.
 Show the Group configuration for the specified C<--group> (which must be
 provided as a Group Id).
 
-=head2 create-group (--ldap-dn or --name) [--account] [--email]
+=head2 create-group (--ldap-dn or --name) [--account] [--email] [--permissions]
 
 Creates a new Socialtext Group.  If C<--name> is provided, a regular 
 group will be created.  If C<--ldap-dn> is provided, the group will
@@ -4302,6 +4502,10 @@ If no C<--account> is specified, the default system Account will be used.
 
 If no C<--email> is specified, regular groups will be created by the
 System User.
+
+If no C<--permissions> name is specified, the "private" set will be used.  The
+"self-join" value can be used to create a group where people can freely join
+via the web UI.  Other values will eventually be introduced.
 
 =head2 delete-group --group
 
@@ -4320,10 +4524,38 @@ Given a Group, list its members.
 
 Given a Group and a User, add the User as a Member of the Group.
 
-=head2 add-workspace-admin --group --workpsace
+=head2 add-workspace-admin --group --workspace
 
 Given a Group and a Workspace, add the Group as an Admin of the Workspace, if
 it exists.
+
+=head2 remove-workspace-admin --group --workspace
+
+Given a Group and a Workspace, this command removes admin privileges for the
+specified group in the given workspace, and makes it a normal workspace
+member.
+
+=head2 add-workspace-impersonator --group --workspace
+
+Given a Group and a Workspace, this command makes the specified Group an
+impersonator for the given workspace.
+
+=head2 remove-workspace-impersonator --group --workspace
+
+Given a Group and a Workspace, this command remove impersonate privileges for
+the specified Group in the given workspace, and makes them a normal workspace
+member.
+
+=head2 add-account-impersonator --group --account
+
+Given a Group and an Account, this command makes the specified Group an
+impersonator for the given Account.
+
+=head2 remove-account-impersonator --group --account
+
+Given a Group and an Account, this command remove impersonate privileges for
+the specified Group in the given Account, and makes them a normal Account
+member.
 
 =head2 add-group-admin [--username or --email] --group
 

@@ -44,6 +44,7 @@ has 'table' => (
         [page_type => 'page.page_type'],
         [page_workspace_name => 'w.name'],
         [page_workspace_title => 'w.title'],
+        # signal_hash may be added dynamically
     );
     has 'field_list' => (
         is => 'rw', isa => 'ArrayRef',
@@ -222,16 +223,24 @@ sub _expand_context {
 sub _extract_signal {
     my $self = shift;
     my $row = shift;
+    my $hash = delete $row->{signal_hash};
     return unless $row->{event_class} eq 'signal';
+
+    my $link_dictionary = $self->link_dictionary;
     my $parser = Socialtext::WikiText::Parser::Messages->new(
        receiver => Socialtext::WikiText::Emitter::Messages::HTML->new(
            callbacks => {
-               link_dictionary => $self->link_dictionary,
+               link_dictionary => $link_dictionary,
                viewer => $self->viewer,
            },
        )
     );
     $row->{context}{body} = $parser->parse($row->{context}{body});
+    $row->{context}{hash} = $hash;
+    $row->{context}{uri} = $link_dictionary->format_link(
+        link => 'signal',
+        signal_hash => $hash,
+    );
 }
 
 sub _extract_group {
@@ -292,27 +301,44 @@ sub signal_vis_sql {
     my $self = shift;
     my $evtable = shift;
     my $path_table = shift;
+    my $bind_ref = shift;
+    my $opts = shift;
+
+    my $direct = $opts->{direct} || 'both';
+    my $dm_sql = 'FALSE';
+    if ($direct ne 'none') {
+        my $dir_sql = join(" OR ",
+            $direct =~ /^(?:received|both)$/ ? "$evtable.person_id = ?" : (),
+            $direct =~ /^(?:sent|both)$/ ? "$evtable.actor_id = ?" : (),
+        );
+        die "Invalid direct parameter: $direct" unless $dir_sql;
+
+        $dm_sql = qq{
+            -- the signal is direct
+            ($dir_sql)
+
+            -- and the filtered network contains both users
+            AND EXISTS (
+                SELECT 1
+                FROM user_sets_for_user usfu
+                WHERE usfu.user_id = $evtable.person_id
+                  AND $path_table.user_set_id = usfu.user_set_id
+            )
+        };
+        push @$bind_ref, ($self->viewer->user_id) x 2;
+    }
+
     return qq{ 
         AND ((
                 $evtable.person_id IS NULL
-                AND user_set_id IN (
-                    SELECT user_set_id
-                    FROM signal_user_set sua
-                    WHERE sua.signal_id = $evtable.signal_id
-                )
-            )
-            OR (
-                -- the signal is direct
-                ($evtable.person_id = ? OR $evtable.actor_id = ?)
-
-                -- and the filtered network contains both users
                 AND EXISTS (
                     SELECT 1
-                    FROM user_sets_for_user usfu
-                    WHERE usfu.user_id = $evtable.person_id
-                      AND $path_table.user_set_id = usfu.user_set_id
+                     FROM signal_user_set sua
+                    WHERE sua.signal_id = $evtable.signal_id
+                      AND sua.user_set_id = $path_table.user_set_id
                 )
             )
+            OR ( $dm_sql )
         )
     };
 };
@@ -355,8 +381,7 @@ sub visible_exists {
     }
 
     if ($plugin eq 'signals') {
-        $sql .= $self->signal_vis_sql($evt_table, 'v_path');
-        push @$bind_ref, ($self->viewer->user_id) x 2;
+        $sql .= $self->signal_vis_sql($evt_table, 'v_path', $bind_ref, $opts);
     }
 
     $sql .= "\n)";
@@ -423,6 +448,24 @@ sub visibility_sql {
         push @parts, "(evt.event_class <> 'widget')";
     }
 
+    if (_options_include_class($opts, 'group')
+        and $self->viewer->can_use_plugin('groups') 
+    ) {
+        my $i_am_connected_to_that_group = q{
+            SELECT 1
+              FROM user_set_path
+             WHERE from_set_id = ?
+               AND into_set_id = evt.group_id + }.PG_GROUP_OFFSET.q{
+        };
+        push @parts,
+            "( evt.event_class <> 'group' OR EXISTS (".
+                $i_am_connected_to_that_group."))";
+        push @bind, $self->viewer_id;
+    }
+    else {
+        push @parts, "(evt.event_class <> 'group')";
+    }
+
     my $sql;
     $sql = "\n(\n".join(" AND ",@parts)."\n)\n";
 
@@ -460,9 +503,15 @@ sub _limit_ws_to_group {
         FROM ( $visible_ws ) visgrp
         WHERE workspace_id + }.PG_WKSP_OFFSET .q{ IN (
             SELECT into_set_id
-              FROM user_set_path
-             WHERE from_set_id = ?
-               AND into_set_id }.PG_WKSP_FILTER.q{
+              FROM user_set_path usp
+             WHERE usp.from_set_id = ?
+               AND usp.into_set_id }.PG_WKSP_FILTER.q{
+               AND NOT EXISTS ( -- WS isn't accessible to Group as AUW
+                  SELECT 1
+                    FROM user_set_path_component uspc
+                   WHERE uspc.user_set_path_id = usp.user_set_path_id
+                     AND uspc.user_set_id }.PG_ACCT_FILTER.q{
+               )
         )
     };
 }
@@ -671,7 +720,19 @@ sub _build_standard_sql {
     my $outer_where = join("
       AND ", map {"($_)"} @{$self->_outer_conditions});
 
-    my $fields = join(",\n\t", map { "$_->[1] AS $_->[0]" } $self->field_list);
+    my @field_list = $self->field_list;
+    my $signals_join = '';
+    if ($table eq 'event') {
+        $signals_join = <<EOSQL;
+LEFT JOIN (
+    SELECT signal_id, hash
+    FROM signal
+) outer_s USING (signal_id)
+EOSQL
+        push @field_list, [signal_hash => 'outer_s.hash'];
+    }
+
+    my $fields = join(",\n\t", map { "$_->[1] AS $_->[0]" } @field_list);
 
     my $sql = <<EOSQL;
 SELECT $fields
@@ -689,6 +750,7 @@ SELECT $fields
 LEFT JOIN page ON (outer_e.page_workspace_id = page.workspace_id AND
                    outer_e.page_id = page.page_id)
 LEFT JOIN "Workspace" w ON (outer_e.page_workspace_id = w.workspace_id)
+$signals_join
 -- the JOINs above mess up the "ORDER BY at DESC".
 -- Fortunately, the re-sort isn't too hideous after LIMIT-ing
 ORDER BY outer_e.at DESC

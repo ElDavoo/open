@@ -96,6 +96,12 @@ div.clear {
     font-weight: bold;
 }
 
+.signal_error {
+    color: #f00;
+    font-weight: bold;
+    padding: 10px 0 5px 5px;
+}
+
 .people_list,
 .event_list {
     width: 100%;

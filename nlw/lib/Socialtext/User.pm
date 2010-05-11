@@ -4,12 +4,12 @@ use Moose;
 
 our $VERSION = '0.01';
 
-use Socialtext::Exceptions qw( data_validation_error param_error );
+use Socialtext::Exceptions qw(data_validation_error);
 use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE WORKSPACE_TYPE USER_TYPE SCALAR UNDEF CODEREF);
 use Socialtext::AppConfig;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
-use Socialtext::SQL qw(sql_execute sql_selectrow sql_singlevalue);
+use Socialtext::SQL qw(sql_execute sql_selectrow sql_singlevalue sql_txn);
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
 use Socialtext::UserMetadata;
@@ -24,6 +24,7 @@ use Socialtext::EmailSender::Factory;
 use Socialtext::User::Cache;
 use Socialtext::Timer qw/time_scope/;
 use Carp qw/croak/;
+use Try::Tiny;
 use Readonly;
 
 BEGIN {
@@ -251,6 +252,12 @@ sub update_store {
     my $self = shift;
     my %p = @_;
     my $old_name = $self->display_name;
+
+    if ($p{password} && $self->is_system_created) {
+        data_validation_error errors => [
+            "cannot change the password of a system-created user.\n"];
+    }
+
     my $rv = $self->homunculus->update( %p );
     my $new_name = $self->display_name;
     $self->_index(name_is_changing => ($old_name ne $new_name));
@@ -388,9 +395,22 @@ sub groups {
     my %p = @_;
 
     my @bind = ($self->user_set_id);
-    my $add_where = '';
+
+    # discoverable: exclude - groups i'm a member of (CURRENT)
+    # discoverable: include - groups i'm a member of + permset=self-join
+    # discoverable: only    - permset=self-join - groups i'm a member of
+
+    my $conditions = '0 = 1';
+    my $path_sub_query = q{
+        SELECT into_set_id
+          FROM user_set_path
+         WHERE from_set_id = ?
+    };
+
     if ($p{plugin}) {
-        $add_where = q{
+        die "can't use plugin filter with the discoverable filter"
+            if $p{discoverable};
+        $path_sub_query .= q{
           AND user_set_id IN (
             SELECT user_set_id
               FROM user_set_plugin_tc
@@ -400,12 +420,30 @@ sub groups {
         push @bind, $p{plugin};
     }
 
+    # XXX TODO: scope to this user's accounts
+    my $discoverable_clause = qq{permission_set = 'self-join'};
+
+    my $d = $p{discoverable};
+    if (not $d or $d eq 'exclude') {
+        $conditions = qq{user_set_id IN ($path_sub_query)}
+    }
+    elsif ($d eq 'only') {
+        $conditions =
+            qq{user_set_id NOT IN ($path_sub_query) AND $discoverable_clause};
+    }
+    elsif ($d eq 'include') {
+        $conditions = 
+            qq{user_set_id IN ($path_sub_query) OR $discoverable_clause};
+    }
+    else {
+        die "unknown 'discoverable' filter: '$d'\n";
+    }
+
     my $sth = sql_execute(qq{
-        SELECT DISTINCT(group_id) AS group_id, driver_group_name
-        FROM user_set_path
-        JOIN groups ON into_set_id = user_set_id
-        WHERE from_set_id = ? $add_where
-        ORDER BY driver_group_name
+        SELECT group_id, driver_group_name
+          FROM groups
+         WHERE $conditions
+         ORDER BY driver_group_name
     },@bind);
 
     my $apply = $p{ids_only}
@@ -731,6 +769,7 @@ sub is_externally_sourced {
 }
 
 # revoke a user's access to everything
+around 'deactivate' => \&sql_txn;
 sub deactivate {
     my $self = shift;
 
@@ -738,39 +777,30 @@ sub deactivate {
         if $self->is_system_created;
 
     if ($self->can_update_store) {
-        $self->update_store( password => '*password*', no_crypt => 1 );
+        # disable login
+        $self->update_store( password => '*no-password*', no_crypt => 1 );
     }
     else {
         warn loc("The user has been removed from workspaces and directories.") . "\n";
         warn loc("Login information is controlled by the [_1] directory administrator.", $self->driver_name) . "\n\n";
     }
 
-    # Add a user to the new primary _before_ deleting the old
-    $self->primary_account(Socialtext::Account->Deleted());
-
-    # Remove the user from all of the things that they have membership in.
-    my @containers = (
-        $self->workspaces->all(),
-        $self->accounts(),
-        # $self->groups(),
-    );
-
-    for my $container ( @containers ) {
-        # Skip deleted account, not strictly necessary since we refuse to
-        # remove users from thier primary accounts.
-        next if ( $container->isa('Socialtext::Account')
-            && $container->name eq 'Deleted' );
-
-        $container->remove_user( user => $self );
+    # leaves things referencing this user in place
+    try {
+        Socialtext::UserSet->new->remove_set($self->user_id, roles_only => 1);
     }
+    catch {
+        die $_ unless (/^node \d+ doesn't exist/);
+    };
 
     # remove them from control and console
-    if ($self->is_business_admin) {
-        $self->set_business_admin(0);
-    }
-    if ($self->is_technical_admin) {
-        $self->set_technical_admin(0);
-    }
+    $self->set_business_admin(0);
+    $self->set_technical_admin(0);
+
+    # side-effect: re-indexes the profile (which should remove it), adds a
+    # "member" Role to the Deleted account.
+    require Socialtext::Account;
+    $self->primary_account(Socialtext::Account->Deleted());
 
     return $self;
 }
@@ -778,6 +808,8 @@ sub deactivate {
 sub reactivate {
     my $self    = shift;
     my %p       = @_;
+
+    require Socialtext::Account;
     my $deleted = Socialtext::Account->Deleted();
 
     die "Account is required" unless $p{account};
@@ -825,6 +857,13 @@ sub Resolve {
     if (ref($maybe_user) && $maybe_user->can('user_id')) {
         return $maybe_user;
     }
+
+    # Note to developers fixing this method:
+    # I (Luke) think the order should be:
+    # email address short circuit
+    # check if it's a username
+    # check if it's an email
+    # otherwise assume it's a user_id
 
     # SHORT-CIRCUIT: if it looks like a User ID, look that up *first*
     if ($maybe_user =~ /^\d+$/) {
@@ -1426,7 +1465,7 @@ sub send_confirmation_completed_email {
 
         %vars = (
             title => $app_name,
-            uri   => Socialtext::URI::uri( path => '/nlw/login.html' ),
+            uri   => Socialtext::URI::uri(path => '/challenge'),
         );
 
         $subject = loc("You can now login to the [_1] application", $app_name);
@@ -1606,38 +1645,55 @@ sub profile_is_visible_to {
 sub primary_account {
     my $self = shift;
 
+    require Socialtext::Account;
     if (@_==0) {
         return Socialtext::Account->new(account_id => $self->primary_account_id)
             || Socialtext::Account->Unknown;
     }
 
+    die "Cannot change the account of a system-user.\n"
+        if $self->is_system_created;
+
     my $new_account = shift;
     $new_account = Socialtext::Account->new(account_id => $new_account)
         unless ref($new_account);
-
-    my $old_account = Socialtext::Account->new(
-        account_id => $self->primary_account_id );
 
     $self->metadata->set_primary_account_id($new_account->account_id);
 
     Socialtext::Cache->clear('authz_plugin');
 
     my $deleted_acct = Socialtext::Account->Deleted;
-    if ($new_account->account_id != $deleted_acct->account_id) {
-        # Update account membership. Business logic says to keep
-        # the user as a member of the old account.
-        unless ($new_account->has_user($self, direct => 1)) {
-            $new_account->add_user(
-                user => $self, # use a default role
-            );
-        }
+    # Update account membership. Business logic says to keep
+    # the user as a member of the old account.
 
-        # Avoid double-indexing elsewhere in the code.
-        require Socialtext::JobCreator;
-        Socialtext::JobCreator->index_person( $self );
+    unless ($new_account->has_user($self, direct => 1)) {
+        $new_account->add_user(
+            user => $self, # use a default role
+        );
     }
 
+    require Socialtext::JobCreator;
+    Socialtext::JobCreator->index_person( $self );
+
     return $new_account;
+}
+
+sub can_be_impersonated_by {
+    my $self = shift;
+    my $actor = shift;
+
+    # Account-level impersonation works at least partially on membership, so
+    # it shouldn't be possible to impersonate/be-impersonated with
+    # system-created users.
+    Socialtext::Exception::Auth->throw(
+        "System-created users cannot be impersonated"
+    ) if $self->is_system_created;
+
+    Socialtext::Exception::Auth->throw(
+        "System-created users cannot impersonate"
+    ) if $actor->is_system_created;
+
+    return $self->primary_account->impersonation_ok($actor => $self);
 }
 
 sub accounts_and_groups {
@@ -2012,7 +2068,8 @@ Returns a boolean indicating whether the user can use the given plugin to intera
 
 =head2 $user->deactivate()
 
-Deactivates the user, removing them from all their workspaces and preventing them from logging in.
+Deactivates the user, removing them from all their workspaces, groups and
+accounts.  Prevents them from logging in.
 
 =head2 $user->avatar_is_visible()
 

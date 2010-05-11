@@ -20,6 +20,7 @@ use YAML;
 use Socialtext::Log qw(st_timed_log);
 use Socialtext::Timer;
 use Socialtext::CGI::Scrubbed;
+use Carp qw( croak );
 
 Readonly my $AUTH_MAP => 'auth_map.yaml';
 Readonly my $AUTH_INFO_DEFAULTS => {
@@ -409,7 +410,7 @@ sub postHandler {
 
     # If the request is a head, send back just the headers
     if ($self->getRequestMethod() eq 'HEAD') {
-        ($$resultref, undef) = split(/^\r\n/, $$resultref);
+        ($$resultref, undef) = split(/^\r\n/, $$resultref || '');
     }
 }
 

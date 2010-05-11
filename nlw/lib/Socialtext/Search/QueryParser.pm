@@ -42,11 +42,16 @@ sub munge_raw_query_string {
     $query =~ s/category:/tag:/gi; # Old name for tags
     $query =~ s/tag:\s*/tag:/gi;   # fix capitalization and allow an extra space
 
+    my $field_map = $self->field_map;
+    if ($opts{doctype} and $opts{doctype} eq 'group') {
+        $field_map->{name} = 'title';
+        $field_map->{description} = $field_map->{desc} = 'body';
+    }
+
     # Find everything that looks like a field, but is not.  I.e. in "cow:foo"
     # we would find "cow:". 
     my $searchable_fields;
     my @non_fields;
-    my $field_map = $self->field_map;
     while ($query =~ /(\w+):/g ) {
         my ($f_start, $f_length) = ($-[1], $+[1] - $-[1]);
         my $maybe_field = $1;

@@ -126,7 +126,8 @@ sub create {
     # has one already).
     my $acct = Socialtext::Account->new(
         account_id => $self->primary_account_id);
-    unless ($acct->has_user($self, direct => 1)) {
+    my $is_system_user = $p{is_system_created} ne 'f';
+    unless ($is_system_user or $acct->has_user($self, direct => 1)) {
         $acct->add_user(
             user  => $self,
             actor => $self->creator,
@@ -163,6 +164,12 @@ sub set_primary_account_id {
     $self->primary_account_id($value);
     return $self;
 }
+
+before 'set_business_admin', 'set_technical_admin' => sub {
+    my $self = shift;
+    die "Cannot give system-admin privileges to a system user!\n"
+        if $self->is_system_created;
+};
 
 sub record_login { shift->_update_field('last_login_datetime=CURRENT_TIMESTAMP') }
 

@@ -141,6 +141,15 @@ field people_tag => '/?action=people;tag=%{tag_name}';
 
 field group => '/?group/%{group_id}';
 
+=head2 signal links
+
+{signal_hash} provides a signal's permalink.
+
+=cut
+
+field signal       => '/st/signals/%{signal_hash}';
+field signal_reply => '/st/signals/%{in_reply_to_hash}?r=%{signal_hash}';
+
 =head1 METHODS
 
 =head2 new

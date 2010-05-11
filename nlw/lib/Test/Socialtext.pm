@@ -567,11 +567,13 @@ my @Added_groups;
         $opts{unique_id}          ||= create_unique_id;
         $opts{account}            ||= Socialtext::Account->Default;
         $opts{created_by_user_id} ||= Socialtext::User->SystemUser->user_id;
+        $opts{is_system_created}  ||= 0;
         my $user = Socialtext::User->create(
             username           => $opts{unique_id} . '@ken.socialtext.net',
             email_address      => $opts{unique_id} . '@ken.socialtext.net',
             created_by_user_id => $opts{created_by_user_id},
             primary_account_id => $opts{account}->account_id,
+            is_system_created  => $opts{is_system_created},
         );
         push @Added_users, $user->user_id;
         return $user;

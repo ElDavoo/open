@@ -12,6 +12,7 @@ use DateTime;
 use DateTime::Format::HTTP;
 use Date::Parse qw/str2time/;
 use Carp 'croak';
+use Try::Tiny;
 
 use Socialtext::Exceptions;
 use Socialtext::Workspace;
@@ -130,77 +131,62 @@ sub _check_on_behalf_of {
     # because we are being called internally, or by tests
     return unless $self->rest->can('request');
 
-    my $current_user = $self->rest->user;
-
     my $behalf_header    = $self->rest->request->header_in('X-On-Behalf-Of');
     my $behalf_parameter = $self->rest->query->param('on-behalf-of');
-    my $behalf_user = $behalf_parameter
-        || $behalf_header
-        || undef;
-    return unless $behalf_user;
+    my $behalf_username = $behalf_parameter || $behalf_header || undef;
+    return unless $behalf_username;
 
-    # if we are in a non-real workspace, error out
-    unless ($workspace and $workspace->real()) {
-        st_log->info(
-            $current_user->username, 'tried to impersonate',
-            $behalf_user,                'without workspace'
+    my $current_user = $self->rest->user;
+
+    if ($current_user->is_guest) {
+        # {bz: 1665}: Because "guest" is usually due to cred extractor
+        # failure, we fail with the same error as not_authorized instead
+        # of the terribly misleading "guest may not impersonate".
+        $self->rest->header(
+            -status => HTTP_401_Unauthorized,
+            -WWW_Authenticate => 'Basic realm="Socialtext"',
         );
         Socialtext::Exception::Auth->throw(
-            'on behalf not valid without workspace');
-    }
-
-    my $checker      = Socialtext::Authz::SimpleChecker->new(
-        user      => $current_user,
-        container => $workspace,
-    );
-
-    if ($checker->check_permission('impersonate')) {
-        my $new_user = Socialtext::User->new(username => $behalf_user);
-        if ($new_user) {
-            $self->rest->{_user} = $new_user;
-            $self->rest->request->connection->user($new_user->username);
-
-            # clear the paramters in case there is a subrequest
-            $self->rest->query->param('on-behalf-of', '');
-            $self->rest->request->header_in('X-On-Behalf-Of', '');
-            st_log->info(
-                $current_user->username, 'impersonated as',
-                $behalf_user
-            );
-        }
-        else {
-            st_log->info(
-                $current_user->username,
-                'failed to impersonate invalid user', $behalf_user
-            );
-            Socialtext::Exception::Auth->throw($behalf_user . ' invalid');
-
-        }
-    }
-    else {
-        st_log->info(
-            $current_user->username, 'attempted to impersonate',
-            $behalf_user,            'without impersonate permission'
+            "Cannot impersonate unless authenticated; please check your credentials and/or your appliance's LDAP/SSO configuration"
         );
+    }
 
-        if ($self->rest->user->is_guest) {
-            # {bz: 1665}: Because "guest" is usually due to cred extractor
-            # failure, we fail with the same error as not_authorized instead
-            # of the terribly misleading "guest may not impersonate".
-            $self->rest->header(
-                -status => HTTP_401_Unauthorized,
-                -WWW_Authenticate => 'Basic realm="Socialtext"',
-            );
-
+    my $desired_user;
+    try {
+        $desired_user = Socialtext::User->new(username => $behalf_username);
+        # be careful not to leak a "no such user" error here
+        unless ($desired_user and (
+                $desired_user->can_be_impersonated_by($current_user) or
+                $workspace->impersonation_ok($current_user => $desired_user)))
+        {
             Socialtext::Exception::Auth->throw(
-                "Master Account has wrong ID or password - please try again."
+                "Cannot impersonate ".$behalf_username." in this context"
             );
-        }
-        else {
-            Socialtext::Exception::Auth->throw(
-                $current_user->username . ' may not impersonate');
         }
     }
+    catch {
+        my $e = $_;
+        if (UNIVERSAL::isa($e,'Socialtext::Exception::Auth')) {
+            $self->rest->header(
+                -status => HTTP_403_Forbidden,
+            );
+            $e->rethrow();
+        }
+        st_log->warning("exception while trying to impersonate: $e");
+        die $e;
+    };
+
+    $self->rest->{_user} = $desired_user;
+    $self->rest->request->connection->user($desired_user->username);
+
+    # clear the paramters in case there is a subrequest
+    $self->rest->query->param('on-behalf-of', '');
+    $self->rest->request->header_in('X-On-Behalf-Of', '');
+    st_log->debug(
+        $current_user->username, 'is impersonating',
+        $desired_user->username
+    );
+    return;
 }
 
 sub _new_main {
@@ -473,7 +459,8 @@ sub http_404 {
     my ( $self, $rest ) = @_;
 
     $rest->header( -type   => 'text/plain',
-                   -status => HTTP_404_Not_Found, );
+                   -status => HTTP_404_Not_Found,
+                   $rest->header() );
     return $self->nonexistence_message;
 }
 
@@ -481,7 +468,8 @@ sub http_400 {
    my ( $self, $rest, $content ) = @_;
 
     $rest->header( -type   => 'text/plain',
-                   -status => HTTP_400_Bad_Request, );
+                   -status => HTTP_400_Bad_Request,
+                   $rest->header() );
     return $content || ""; 
 }
 

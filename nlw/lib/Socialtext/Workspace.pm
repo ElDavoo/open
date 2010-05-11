@@ -34,7 +34,7 @@ use Socialtext::String;
 use Readonly;
 use Socialtext::Account;
 use Socialtext::Cache;
-use Socialtext::Permission qw( ST_EMAIL_IN_PERM ST_READ_PERM );
+use Socialtext::Permission qw( ST_EMAIL_IN_PERM ST_READ_PERM ST_IMPERSONATE_PERM );
 use Socialtext::Role;
 use Socialtext::URI;
 use Socialtext::MultiCursor;
@@ -1842,6 +1842,15 @@ after qw(add_account remove_account) => sub {
     }
 };
 
+sub impersonation_ok {
+    my ($self, $actor, $user) = @_;
+
+    return unless $self->has_user($actor);
+    return unless $self->has_user($user);
+    return $self->permissions->user_can(
+        user => $actor, permission => ST_IMPERSONATE_PERM);
+}
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 package Socialtext::NoWorkspace;
@@ -1863,6 +1872,8 @@ use constant drop_breadcrumb            => undef;
 sub created_by_user_id { Socialtext::User->SystemUser->user_id }
 
 sub new { return bless {}, __PACKAGE__ }
+
+sub impersonation_ok { return } # false
 
 __PACKAGE__->meta->make_immutable;
 1;

@@ -1,7 +1,7 @@
 * Fixture: SocialWidgets
 
 TODO: use follow/unfollow to test Signals switch on Everyone/Following
-TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnullx
+TODO: make this run with LDAP user devnullx
 
 | *Comment* | Test Case: Follow |  |
 
@@ -22,7 +22,7 @@ TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnullx
 | click_and_wait | login_btn |  |
 
 | *Comment* | Test Case: Follow. Process jobs |  |
-| st_process_jobs |  |
+| st_process_jobs |  |  |
 
 | *Comment* | Test Case: Follow. Open %%fFname%% profile |  |
 | wait_for_element_visible_ok | link=People | 60000 |
@@ -163,7 +163,7 @@ TODO: make this run with LDAP user Dev Null Three, perhaps rename him devnullx
 
 | *Comment* | Test Case: Follow. Verify %%short_username%% follows %%fFname%% |  |
 | wait_for_text_present_ok | Colleagues | 60000 |
-| st-name-widget | 5 | follow_widget |
+| st-name-widget | 4 | follow_widget |
 | st-widget-title-like | follow_widget | Colleagues |
 | st-select-widget-frame | follow_widget |  |
 | wait_for_element_visible_ok | //td[contains(text(),'Follows')] | 60000 |

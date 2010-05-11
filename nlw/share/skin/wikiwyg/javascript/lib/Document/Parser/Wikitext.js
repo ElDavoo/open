@@ -12,10 +12,12 @@ proto.create_grammar = function() {
     var all_phrases = ['waflphrase', 'asis', 'wikilink', 'wikilink2', 'a', 'im', 'mail', 'file', 'tt', 'b', 'i', 'del', 'a'];
 
     var re_huggy = function(brace1, brace2) {
+        var preAlphaNum = '\\w';
+        if (brace1 == '-') { preAlphaNum += ':;'; }
         brace2 = '\\' + (brace2 || brace1);
         brace1 = '\\' + brace1;
         return {
-            match: new RegExp('(?:^|[^'+brace1+'\\w])('+brace1+'(?=\\S)(?!'+brace2+')(.*?)'+brace2+'(?=[^'+brace2+'\\w]|$))'),
+            match: new RegExp('(?:^|[^'+brace1+preAlphaNum+'])('+brace1+'(?=\\S)(?!'+brace2+')(.*?)'+brace2+'(?=[^'+brace2+'\\w]|$))'),
             phrases: (brace1 == '\\`') ? null : all_phrases,
             lookbehind: true
         };

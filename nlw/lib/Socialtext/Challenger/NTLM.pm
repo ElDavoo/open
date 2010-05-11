@@ -38,8 +38,8 @@ sub challenge {
         # error type: unauthorized_workspace
         $type = 'unauthorized_workspace';
 
-        # show the User the regular "login" page with the error
-        $challenge_uri = '/nlw/login.html';
+        # use an error page that has *no* login form on it.
+        $challenge_uri = '/nlw/error.html';
 
         # log an error stating that this User isn't authorized to view this
         # Workspace.

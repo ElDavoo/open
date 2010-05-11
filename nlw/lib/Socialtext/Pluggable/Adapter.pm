@@ -208,7 +208,14 @@ sub account_preferences {
         },
         defaults => \%defaults,
     );
-    return $table->get();
+
+    my $data = $table->get;
+    while (my ($plugin, $prefs) = each %$data) {
+        my $class = $self->plugin_class($plugin);
+        $class->CheckAccountPluginPrefs($prefs);
+    }
+
+    return $data;
 }
 
 sub registered {

@@ -144,6 +144,7 @@
       <div id="st-page-content">[% page.content %]</div>
     </div>
     <div id="contentRight">
+      [% FILTER decorate('page_sidebar_widget') %][% END %]
       <div class="widget">
         <div class="widgetHeader">
         <h4>[% loc('Tags') %]</h4>

@@ -98,7 +98,7 @@ sub _parse_feed {
             return $hostname . $l;
 	};
 
-	$feed->link( $link_expander->( $feed->link ) );
+	$feed->link( $link_expander->( $feed->link ) ) if defined $feed->link;
 	foreach my $entry ( $feed->entries ) {
             my $link = $entry->link;
             next unless $link;

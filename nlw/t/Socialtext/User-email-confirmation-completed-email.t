@@ -43,7 +43,7 @@ my $user = Socialtext::User->create(
         'email is addressed to user' );
 
     my @parts = $emails[0]->parts;
-    like( $parts[0]->body, qr[/nlw/login\.html],
+    like( $parts[0]->body, qr[/challenge],
           'text email body has login link' );
 }
 

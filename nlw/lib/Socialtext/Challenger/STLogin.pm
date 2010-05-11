@@ -3,6 +3,7 @@ package Socialtext::Challenger::STLogin;
 
 use strict;
 use warnings;
+use Socialtext::BrowserDetect;
 use Socialtext::Log qw(st_log);
 
 =head1 NAME
@@ -39,26 +40,26 @@ sub challenge {
     my $hub      = $p{hub};
     my $request  = $p{request};
     my $redirect = $p{redirect};
-    my $type;
+    my $type     = 'not_logged_in';
     # if we were to decline to do this challenge
     # we should return false before going on
 
-    my $login_page = '/nlw/login.html';
     my $app = Socialtext::WebApp->NewForNLW;
-    if ( !$request ) {
+    unless ($request) {
         $request = $app->apache_req;
     }
-    my $ws;
-    if ( !$type ) {
-        $type = 'not_logged_in';
-    }
-    if ( !defined ($redirect) ) {
+    unless (defined $redirect) {
         $redirect = $request->parsed_uri->unparse;
     }
-    if ($redirect =~ m#^/m(?:/|$)#) {
-        $login_page = '/m/login';
-    }
 
+    # Some redirects are just bad/wrong; don't *ever* allow ourselves to get
+    # redirected here (lest we redirect back to ourselves again once the User
+    # logs in).
+    $redirect = undef if ($redirect =~ m{^/challenge});
+    $redirect = undef if ($redirect =~ m{^/nlw/submit/log});
+    $redirect = undef if ($redirect eq '');
+
+    my $ws;
     if ($hub) {
         $ws = $hub->current_workspace;
         if ( !$hub->current_user->is_guest ) {
@@ -70,13 +71,23 @@ sub challenge {
     }
     $type = $p{type} ? $p{type} : $type;
 
+    # Figure out which login to use; mobile, or regular?
+    my $login_page
+        = $class->_is_mobile($redirect) ? '/m/login' : '/nlw/login.html';
+
+    # If the error is "You're not logged in", just show the login page.
+    if ($type eq 'not_logged_in') {
+        $app->redirect(
+            path  => $login_page,
+            query => {
+                ($redirect ? (redirect_to => $redirect) : ()),
+            },
+        );
+    }
+
+    # Otherwise, show a more detailed error.
     my $workspace_title = $ws ? $ws->title        : '';
     my $workspace_id    = $ws ? $ws->workspace_id : '';
-
-
-    # stick some information in the session
-    # and then establishes a redirect header
-    # and throws up
     $app->_handle_error(
         error => {
             type => $type,
@@ -86,9 +97,30 @@ sub challenge {
             },
         },
         path  => $login_page,
-        query => { redirect_to => $redirect },
+        query => {
+            ($redirect ? (redirect_to => $redirect) : ()),
+        },
     );
+}
 
+sub _is_mobile_browser {
+    return Socialtext::BrowserDetect::is_mobile() ? 1 : 0;
+}
+
+sub _is_mobile_redirect {
+    my $self = shift;
+    my $url  = shift;
+    $url =~ s{^https?://[^/]+}{};   # strip off scheme/host
+    $url =~ s{^/}{};                # strip off leading "/"
+    $url =~ s{/.*$}{};              # strip off everything after first "/"
+    return 1 if ($url eq 'lite');
+    return 1 if ($url eq 'm');
+    return 0;
+}
+
+sub _is_mobile {
+    my $self = shift;
+    return $self->_is_mobile_browser(@_) || $self->_is_mobile_redirect(@_);
 }
 
 1;

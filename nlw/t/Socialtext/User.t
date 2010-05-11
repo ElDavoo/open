@@ -4,14 +4,14 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 58;
+use Test::Socialtext tests => 63;
 fixtures(qw( clean db ));
 use Socialtext::User;
 use Socialtext::Role;
+use Test::Exception;
 
 my $user;
 
-# Since the Postgres plugin is always available, these are duplicated here
 is( Socialtext::User->Count(), 2, 'base users are registered' );
 ok( Socialtext::User->SystemUser, 'a system user exists' );
 ok( Socialtext::User->Guest, 'a guest user exists' );
@@ -301,13 +301,14 @@ deactivate_user: {
 
     # Check account membership
     my @accounts = $user->accounts();
-    is scalar(@accounts), 0, 'deactivated user is in zero accounts';
+    is scalar(@accounts), 1, 'deactivated user is in one account';
     is $user->primary_account_id, $deleted->account_id,
         "user's primary account is Deleted account";
+    ok $deleted->has_user( $user ), 'user has a role in deleted account';
 
     # Check workspaces, password
     is $user->workspace_count(), 0, "user was removed from their workspaces";
-    is $user->password, '*password*', "user's password was 'deactivated'";
+    is $user->password, '*no-password*', "user's password was 'deactivated'";
 
     # "Reactivate" the user
     my $new_account = create_test_account_bypassing_factory();
@@ -319,6 +320,13 @@ deactivate_user: {
     ok $new_account->has_user( $user ), 'user is in new account';
     is $new_account->account_id, $user->primary_account_id,
         '... which is their primary account';
+
+    # purge the user's roles, confirm we can still deactivate
+    Socialtext::UserSet->new->remove_set($user->user_id, roles_only => 1);
+
+    lives_ok { $user->deactivate() } 'can deactivate after accidental purge';
+    ok $deleted->has_user($user), 'user has a role in deleted account';
+    ok !$new_account->has_user($user), 'user removed from old account';
 }
 
 user_workspaces: {
@@ -372,3 +380,5 @@ AllTechnicalUsers: {
     my $users = Socialtext::User->AllTechnicalAdmins();
     is $users->count, 1, 'found 1 technical user!';
 }
+
+pass 'done';

@@ -20,7 +20,7 @@ that follow it. So we do this test in a scratch workspace instead
 
 | *Comment* | Test Case: Miki Authentication Login page |  |
 | open_ok | /m/page/%%miki_space%% |  |
-| text_like | You must login to view this page. |  |
+| wait-for-element-present-ok | st-login-form | 1000 |
 | type_ok | username | %%username%% |
 | type_ok | password | %%password%% |
 | click_and_wait | //input[@value='Log in'] |  |

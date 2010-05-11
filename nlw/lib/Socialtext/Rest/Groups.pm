@@ -36,6 +36,7 @@ sub _entity_hash {
         primary_account_id => $group->primary_account_id,
         primary_account_name => $group->primary_account->name,
         description => $group->description,
+        permission_set => $group->permission_set,
         $show_members
             ? ( members => $group->users_as_minimal_arrayref('member') )
             : (),
@@ -49,31 +50,60 @@ sub _get_total_results {
         Socialtext::Group->Count;
     }
     else {
-        return $user->group_count;
+        return $self->{_total_results} || $user->group_count;
     }
 }
 
 sub _get_entities {
     my $self = shift;
     my $user = $self->rest->user;
+    my $q    = $self->rest->query;
 
-    if ($user->is_business_admin and $self->rest->query->param('all')) {
-        my $iter = Socialtext::Group->All(
-            order_by => $self->order,
-            sort_order => $self->reverse ? 'DESC' : 'ASC',
-            include_aggregates => 1,
-            creator => 1,
-            primary_account => 1,
-            limit => $self->items_per_page,
-            offset => $self->start_index,
+    my $filter = $q->param('q') || $q->param('filter') || '';
+    my $discoverable = $q->param('discoverable');
+ 
+    if ($filter) {
+        my $group_ids = [
+            $user->groups(discoverable => $discoverable, ids_only => 1)->all
+        ];
+
+        require Socialtext::Search::Solr::Factory;
+        my $searcher = Socialtext::Search::Solr::Factory->create_searcher();
+        my ($results, $count) = $searcher->begin_search(
+            $filter,
+            undef,
+            undef,
+            doctype   => 'group',
+            viewer    => $user,
+            limit     => $self->items_per_page, 
+            offset    => $self->start_index,
+            direction => $self->reverse ? 'desc' : 'asc',
+            order     => 'title',
+            group_ids => $group_ids,
         );
-        return [ $iter->all ];
+        $self->{_total_results} = $count;
+        return [ map { $_->group } @{ $results->() } ];
     }
     else {
-        return [ $user->groups->all ];
+        if ($user->is_business_admin and $self->rest->query->param('all')) {
+            my $iter = Socialtext::Group->All(
+                order_by => $self->order,
+                sort_order => $self->reverse ? 'DESC' : 'ASC',
+                include_aggregates => 1,
+                creator => 1,
+                primary_account => 1,
+                limit => $self->items_per_page,
+                offset => $self->start_index,
+            );
+            return [ $iter->all ];
+        }
+        else {
+            my $full_set = [ $user->groups(discoverable => $discoverable)->all ];
+            $self->{_total_results} = @$full_set;
+            return $full_set;
+        }
     }
 }
-
 
 override extra_headers => sub {
     my $self = shift;
@@ -89,7 +119,8 @@ sub POST_json {
     my $rest = shift;
     my $user = $rest->user;
 
-    unless ($user->is_authenticated && !$user->is_deleted) {
+    unless ($user->is_authenticated && !$user->is_deleted
+                && Socialtext::Group->User_can_create_group($user)) {
         $rest->header(-status => HTTP_401_Unauthorized);
         return '';
     }
@@ -283,6 +314,7 @@ sub _create_native_group {
         primary_account_id => $data->{account_id},
         created_by_user_id => $creator->user_id,
         description        => $data->{description},
+        permission_set     => $data->{permission_set},
     });
 
     return $group;

@@ -15,10 +15,11 @@ use Socialtext::WebApp;
 our $DEFAULT_REDIRECT_URI = '/';
 
 sub challenge {
-    my $class   = shift;
-    my %p       = @_;
-    my $hub     = $p{hub};
-    my $request = $p{request};
+    my $class    = shift;
+    my %p        = @_;
+    my $hub      = $p{hub};
+    my $request  = $p{request};
+    my $redirect = $p{redirect};
 
     # make sure we've got a request
     my $app = Socialtext::WebApp->NewForNLW;
@@ -31,31 +32,30 @@ sub challenge {
     unless ($config) {
         return $app->_handle_error(
             error => 'OpenToken configuration missing/invalid.',
-            path  => '/nlw/login.html',
+            path  => '/nlw/error.html',
         );
     }
 
     # if we have a Hub *AND* a User, we're Authentiated but not Authorized;
     # show the User a page letting them know that they don't have permission.
     if ($hub and not $hub->current_user->is_guest) {
-        # XXX: we -DON'T- want to use "/nlw/login.html" here, but don't have
-        # any other choice at the moment.  Ideally, we want some sort of error
-        # page that shows a "you're not authorized" error but that -DOESN'T-
-        # include a login box on the page (as we're not responsible for the
-        # logins).
         st_log->debug( 'ST::Challenger::OpenToken: unauthorized access, showing error page to user' );
         return $app->_handle_error(
             error => {
                 type => 'unauthorized_workspace',
             },
-            path    => '/nlw/login.html',
+            path    => '/nlw/error.html',
         );
     }
+
+    # figure out where the User is supposed to be redirected to after the
+    # challenge is successful.
+    $redirect ||= $class->get_redirect_uri($request);
 
     # figure out where we need to redirect the User to in order to get an
     # OpenToken, in the event that we're either not Authenticated or we have
     # some problem with the OpenToken.
-    my $challenge_uri = $class->build_challenge_uri($config, $request);
+    my $challenge_uri = $class->build_challenge_uri($config, $redirect);
 
     # get the OpenToken as provided in the "opentoken" form parameter
     my $token_param = $config->token_parameter;
@@ -128,18 +128,16 @@ sub challenge {
     # If we don't have a User record, it wasn't provisioned; can't login as
     # the User, so fail.
     unless ($user) {
-        st_log->warning("ST::Challenger::OpenToken: have valid token, but for unknown user '$username'");
+        my $err = loc("Have valid token, but for unknown user '[_1]'.", $username);
+        st_log->warning("ST::Challenger::OpenToken: $err");
+        $app->session->add_error($err);
         return $app->_handle_error(
-            error => {
-                type => 'not_logged_in',
-            },
-            path    => '/nlw/login.html',
+            path => '/nlw/error.html',
         );
     }
 
     # figure out where the User wanted to be in the first place, and redirect
     # them off over there.
-    my $redirect = $class->get_redirect_uri($request, $token);
     st_log->info("LOGIN: " . $user->email_address . " destination $redirect");
     Socialtext::Apache::User::set_login_cookie($request, $user->user_id, '');
     $user->record_login;
@@ -178,7 +176,7 @@ sub _generate_random_password {
 
 # Returns the URL which kickstarts a SP-initiated SAML assertion.
 sub build_challenge_uri {
-    my ($class, $config, $request) = @_;
+    my ($class, $config, $redirect) = @_;
 
     # start with the configured Challenge URI
     my $challenge_uri = URI->new($config->challenge_uri);
@@ -188,11 +186,10 @@ sub build_challenge_uri {
     # them to the resource that they were originally trying to access.
     my $target_uri;
     {
-        my $parsed_uri = $request->parsed_uri;
-        $target_uri
-            = Socialtext::URI::uri(path => $parsed_uri->path)
-            . '?'
-            . $parsed_uri->query;
+        $target_uri = Socialtext::URI::uri(
+            path  => '/challenge',
+            query => { redirect_to => $redirect }
+        );
     }
 
     $challenge_uri->query_form(TARGET => $target_uri);
@@ -205,10 +202,11 @@ sub build_challenge_uri {
 # We do *not* allow for redirects to send the User to a machine other than
 # ourselves.
 sub get_redirect_uri {
-    my ($self, $request, $token) = @_;
+    my ($self, $request) = @_;
 
     # get the URL that we're supposed to be redirecting the User to
-    my $redirect = $request->param('redirect_to') || $DEFAULT_REDIRECT_URI;
+    my $redirect
+        = $request->param('redirect_to') || $request->parsed_uri->unparse;
 
     # make sure that regardless of whether the Redirect URI is absolute or
     # relative, that it points to *THIS* server.
@@ -225,6 +223,14 @@ sub get_redirect_uri {
             return $DEFAULT_REDIRECT_URI;
         }
     }
+
+    # strip off any query param containing the token parameter
+    my $config = Socialtext::OpenToken::Config->load();
+    my $param  = $config->token_parameter;
+    my %query  = $uri->query_form;
+    delete $query{$param};
+    delete $query{''};          # PingFederate sends empty query param back
+    $uri->query_form(\%query);
 
     # return the relative form of the URI back to the caller.
     return $uri->path_query();

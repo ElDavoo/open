@@ -96,7 +96,7 @@ sudo ./etc/init.d/exim start
   * sudo -u www-data /usr/local/bin/st-create-workspace admin
   * sudo -u www-data st-admin create-user --email you@yourserver.com --password password
   * sudo -u www-data st-admin add_member --email you@yoursever.com --workspace admin
-  * browse to <server>/nlw/login.html
+  * browse to <server>/challenge
   * login with the username
 
 That's it! You now have a fully functional Socialtext wiki.  

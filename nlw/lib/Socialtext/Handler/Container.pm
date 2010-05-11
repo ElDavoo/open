@@ -52,7 +52,7 @@ sub if_authorized_to_edit {
 sub not_authenticated {
     my $self = shift;
     my $redirect_to = $self->rest->request->parsed_uri->unparse;
-    $self->redirect("/nlw/login.html?redirect_to=$redirect_to");
+    $self->redirect("/challenge?$redirect_to");
     return '';
 }
 
@@ -88,6 +88,15 @@ sub redirect {
     my ($self, $url) = @_;
     $self->rest->header(
         -status => HTTP_302_Found,
+        -Location => $url,
+    );
+    return '';
+}
+
+sub permanent_redirect {
+    my ($self, $url) = @_;
+    $self->rest->header(
+        -status => HTTP_301_Moved_Permanently,
         -Location => $url,
     );
     return '';
@@ -153,7 +162,7 @@ sub get_html {
             });
         }
         else {
-            return $self->render_template('view/container', {
+            return $self->render_template($self->container->view_template, {
                 container => $self->container->template_vars
             });
         }

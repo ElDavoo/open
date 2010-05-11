@@ -20,6 +20,7 @@ use Socialtext::Log qw(st_log);
 use Socialtext::Timer;
 use Socialtext::System qw/shell_run/;
 use Socialtext::Page::TablePopulator;
+use Socialtext::User::Default::Users;
 use Socialtext::User;
 use Socialtext::PreferencesPlugin;
 use YAML ();
@@ -409,6 +410,8 @@ sub _import_users {
 
     my @users;
     for my $info (@$users) {
+        next unless Socialtext::User::Default::Users->CanImportUser($info);
+
         delete $info->{primary_account_id};
         my $plugin_prefs = delete($info->{plugin_prefs}) || {};
         my $indirect     = delete($info->{indirect})     || 0;

@@ -10,6 +10,7 @@ use Socialtext::SQL qw( sql_execute sql_singlevalue);
 use Socialtext::SQL::Builder qw(sql_nextval);
 use Socialtext::Helpers;
 use Socialtext::String;
+use Socialtext::User::Default::Users;
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::MultiCursor;
@@ -411,6 +412,7 @@ sub import_file {
     }
 
     my $name = $import_name || $hash->{name};
+    $hash->{import_name} = $name;
     my $account = $class->new(name => $name);
     if ($account && !$account->is_placeholder()) {
         die loc("Account [_1] already exists!", $name) . "\n" 
@@ -421,6 +423,7 @@ sub import_file {
     my %acct_params = (
         is_system_created          => $hash->{is_system_created},
         skin_name                  => $hash->{skin_name},
+        backup_skin_name           => 's3',
         email_addresses_are_hidden => $hash->{email_addresses_are_hidden},
         allow_invitation           => (
             defined $hash->{allow_invitation}
@@ -432,6 +435,7 @@ sub import_file {
                 grep {/^desktop_/} @ACCT_COLS
         ),
     );
+
     if ($account && $account->is_placeholder) {
         # "Placeholder" Accounts can be over-written at import; they were
         # created as placeholders during the import of another Account.
@@ -463,32 +467,48 @@ sub import_file {
     
     my @profiles;
     for my $user_hash (@{ $hash->{users} }) {
-        my $user = Socialtext::User->new( username => $user_hash->{username} );
-        $user ||= Socialtext::User->Create_user_from_hash( $user_hash );
 
-        # Assign the primary Account for this User, such that the User is
-        # imported *back into* the same Account he was exported from.  If that
-        # means having to create a blank/empty Account with that name, so be
-        # it.
+        next unless Socialtext::User::Default::Users->CanImportUser($user_hash);
+
+        # Import this user into the new account we're creating. If they were
+        # in some other account we'll fix that up below.
+        my $user_orig_acct = $user_hash->{primary_account_name}
+            || $hash->{name};
+        $user_hash->{primary_account_name} = $name;
+
+        my $existing_user
+            = Socialtext::User->new(username => $user_hash->{username});
+        my $user = $existing_user
+            || Socialtext::User->Create_user_from_hash($user_hash);
+
+        # If the user's primary account before export was not the account
+        # we're currently importing, then keep that relationship, even if we
+        # need to create a blank/empty account with that name.
         my $pri_acct = $account;
-        my $pri_acct_name = $user_hash->{primary_account_name};
-        if ($pri_acct_name && ($pri_acct_name ne $hash->{name})) {
+        if ($user_orig_acct ne $hash->{name}) {
             # User had a Primary Account that was *not* the Account that we're
             # re-importing (possibly under a new name).
-            $pri_acct = Socialtext::Account->new(name => $pri_acct_name)
+            $pri_acct = Socialtext::Account->new(name => $user_orig_acct)
                      || Socialtext::Account->create(
-                            name         => $pri_acct_name,
+                            name         => $user_orig_acct,
                             account_type => 'Placeholder',
                         );
+        }
 
-            # User's primary account was different, so make sure to add their
-            # relationship to the account we're importing.
+        $user->primary_account($pri_acct);
+
+        my $default = Socialtext::Account->Default();
+        if (!$existing_user and $pri_acct->account_id != $default->account_id) {
+            # When we create a user, she is assigned to the default account
+            # so we should remove her from that account.
+            $default->remove_user(user => $user);
+        }
+
+        eval {
             my $role_name = $user_hash->{roles}{$hash->{name}} || 'member';
             my $acct_role = Socialtext::Role->new(name => $role_name);
             $account->add_user(user => $user, role => $acct_role);
-        }
-        $user->primary_account($pri_acct);
-
+        };
         # Hang onto the profile so we can create it later.
         if (my $profile = delete $user_hash->{profile}) {
             $profile->{user} = $user;
@@ -1029,11 +1049,22 @@ sub _validate_and_clean_data {
     if ( $p->{skin_name} ) {
         my $skin = Socialtext::Skin->new(name => $p->{skin_name});
         unless ($skin->exists) {
-            push @errors, loc(
+            if ($p->{backup_skin_name}) {
+                $skin = Socialtext::Skin->new(name => $p->{backup_skin_name});
+            }
+            my $msg = loc(
                 "The skin you specified, [_1], does not exist.", $p->{skin_name}
             );
+            if ($skin->exists) {
+                warn $msg . "\n";
+                warn "Falling back to the $p->{backup_skin_name} skin.\n";
+            }
+            else {
+                push @errors, $msg;
+            }
         }
     }
+    delete $p->{backup_skin_name};
 
     if ( defined $p->{name} && Socialtext::Account->new( name => $p->{name} ) ) {
         push @errors, loc('The account name you chose, [_1], is already in use.',$p->{name} );
@@ -1057,6 +1088,10 @@ sub _validate_and_clean_data {
     ) {
         push @errors,
             loc("Domain ([_1]) is not valid!", $p->{restrict_to_domain});
+    }
+
+    unless (defined $p->{allow_invitation}) {
+        $p->{allow_invitation} = Socialtext::AppConfig->allow_network_invitation;
     }
 
     data_validation_error errors => \@errors if @errors;
@@ -1133,6 +1168,28 @@ after role_change_check => sub {
         die "Account user_sets cannot contain other accounts.";
     }
 };
+
+sub impersonation_ok {
+    my ($self, $actor, $user) = @_;
+
+    if (($self->name eq 'Unknown') or ($self->name eq 'Deleted')) {
+        st_log->error("Failed attempt to impersonate ".$user->username.
+             " by ".$actor->username.". ".
+             "The user belongs to the ".$self->name." account, ".
+             "which disallows impersonation");
+        Socialtext::Exception::Auth->throw(
+            "Cannot impersonate in system account ".$self->name
+        );
+    }
+
+    return unless $self->has_user($user);
+    my $authz = Socialtext::Authz->new;
+    return $authz->user_has_permission_for_account(
+        user       => $actor,
+        account    => $self,
+        permission => 'impersonate'
+    );
+}
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
@@ -1368,6 +1425,7 @@ Return the logo for an account.
 Export the account data to a file in the specified directory.
 
 =item $account->import_file(file => $file, [ name => $name ])
+
 =item $account->finish_import();
 
 Imports an account from data in the specified file.  If a name

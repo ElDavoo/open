@@ -55,6 +55,15 @@ CREATE FUNCTION _int_union(integer[], integer[]) RETURNS integer[]
     AS '$libdir/_int', '_int_union'
     LANGUAGE c STRICT;
 
+CREATE FUNCTION auto_hash_signal() RETURNS "trigger"
+    AS $$
+    BEGIN
+        NEW.hash = md5(NEW.at AT TIME ZONE 'UTC' || 'Z' || NEW.body);
+        return NEW;
+    END
+$$
+    LANGUAGE plpgsql;
+
 CREATE FUNCTION auto_vivify_user_rollups() RETURNS "trigger"
     AS $$
     BEGIN
@@ -122,11 +131,12 @@ CREATE FUNCTION insert_recent_signal() RETURNS "trigger"
     BEGIN
         INSERT INTO recent_signal (
             signal_id, "at", user_id, body,
-            in_reply_to_id, recipient_id, hidden
+            in_reply_to_id, recipient_id, hidden, hash, anno_blob
         )
         VALUES (
             NEW.signal_id, NEW."at", NEW.user_id, NEW.body,
-            NEW.in_reply_to_id, NEW.recipient_id, NEW.hidden
+            NEW.in_reply_to_id, NEW.recipient_id, NEW.hidden, NEW.hash, 
+            NEW.anno_blob
         );
         RETURN NULL;    -- trigger return val is ignored
     END
@@ -880,7 +890,8 @@ CREATE TABLE groups (
     created_by_user_id bigint NOT NULL,
     cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
     user_set_id integer NOT NULL,
-    description text DEFAULT '' NOT NULL
+    description text DEFAULT '' NOT NULL,
+    permission_set text DEFAULT 'private' NOT NULL
 );
 
 CREATE SEQUENCE groups___group_id
@@ -910,6 +921,13 @@ CREATE TABLE note (
     jobid bigint NOT NULL,
     notekey varchar(255) NOT NULL,
     value bytea
+);
+
+CREATE TABLE opensocial_appdata (
+    app_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    field text NOT NULL,
+    value text
 );
 
 CREATE TABLE page (
@@ -1002,7 +1020,9 @@ CREATE TABLE recent_signal (
     body text NOT NULL,
     in_reply_to_id bigint,
     recipient_id bigint,
-    hidden boolean DEFAULT false
+    hidden boolean DEFAULT false,
+    hash character(32) NOT NULL,
+    anno_blob text
 );
 
 CREATE TABLE recent_signal_user_set (
@@ -1052,7 +1072,9 @@ CREATE TABLE signal (
     body text NOT NULL,
     in_reply_to_id bigint,
     recipient_id bigint,
-    hidden boolean DEFAULT false
+    hidden boolean DEFAULT false,
+    hash character(32) NOT NULL,
+    anno_blob text
 );
 
 CREATE SEQUENCE signal_id_seq
@@ -1486,6 +1508,12 @@ CREATE UNIQUE INDEX groups_driver_unique_id
 CREATE UNIQUE INDEX groups_user_set_id
 	    ON groups (user_set_id);
 
+CREATE INDEX idx_opensocial_appdata_app_user
+	    ON opensocial_appdata (app_id, user_id);
+
+CREATE UNIQUE INDEX idx_opensocial_appdata_app_user_field
+	    ON opensocial_appdata (app_id, user_id, field);
+
 CREATE UNIQUE INDEX idx_user_set_include_pkey_and_role
 	    ON user_set_include (from_set_id, into_set_id, role_id);
 
@@ -1658,6 +1686,9 @@ CREATE INDEX ix_recent_signal_at
 CREATE INDEX ix_recent_signal_at_user
 	    ON recent_signal ("at", user_id);
 
+CREATE UNIQUE INDEX ix_recent_signal_hash
+	    ON recent_signal (hash);
+
 CREATE INDEX ix_recent_signal_recipient_at
 	    ON recent_signal (recipient_id, "at");
 
@@ -1696,6 +1727,9 @@ CREATE INDEX ix_signal_at
 
 CREATE INDEX ix_signal_at_user
 	    ON signal ("at", user_id);
+
+CREATE UNIQUE INDEX ix_signal_hash
+	    ON signal (hash);
 
 CREATE INDEX ix_signal_recipient_at
 	    ON signal (recipient_id, "at");
@@ -1861,6 +1895,11 @@ CREATE TRIGGER sessions_insert
     AFTER INSERT ON sessions
     FOR EACH STATEMENT
     EXECUTE PROCEDURE cleanup_sessions();
+
+CREATE TRIGGER signal_before_insert
+    BEFORE INSERT ON signal
+    FOR EACH ROW
+    EXECUTE PROCEDURE auto_hash_signal();
 
 CREATE TRIGGER signal_insert
     AFTER INSERT ON signal
@@ -2051,6 +2090,16 @@ ALTER TABLE ONLY signal
     ADD CONSTRAINT in_reply_to_fk
             FOREIGN KEY (in_reply_to_id)
             REFERENCES signal(signal_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY opensocial_appdata
+    ADD CONSTRAINT opensocial_app_data_app_id
+            FOREIGN KEY (app_id)
+            REFERENCES gadget_instance(gadget_instance_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY opensocial_appdata
+    ADD CONSTRAINT opensocial_app_data_user_id
+            FOREIGN KEY (user_id)
+            REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_creator_id_fk
@@ -2263,4 +2312,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '112');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '116');

@@ -1,6 +1,7 @@
 package Socialtext::Jobs;
 # @COPYRIGHT@
 use MooseX::Singleton;
+use MooseX::AttributeInflate;
 use Socialtext::TheSchwartz;
 use Socialtext::SQL qw/sql_execute/;
 use Module::Pluggable search_path => 'Socialtext::Job',
@@ -10,7 +11,7 @@ use Carp qw/croak/;
 use POSIX qw/strftime/;
 use namespace::clean -except => [qw(meta job_types)];
 
-has '_client' => (
+has_inflated '_client' => (
     is => 'ro', isa => 'Socialtext::TheSchwartz',
     lazy_build => 1,
     handles => qr/^.+$/,
@@ -19,8 +20,6 @@ has '_client' => (
 around 'insert' => sub {
     croak 'Use Socialtext::JobCreator->insert to create jobs'
 };
-
-sub _build__client { Socialtext::TheSchwartz->new() }
 
 memoize 'job_types';
 
@@ -49,8 +48,6 @@ sub can_do_short_jobs {
     $self->load_all_jobs();
     $self->can_do($_) for grep { !$_->is_long_running() } $self->job_types;
 }
-
-sub clear_jobs { sql_execute('DELETE FROM job') }
 
 sub job_to_string {
     my $class = shift;
@@ -84,6 +81,8 @@ sub job_to_string {
         if $job->arg->{page_id};
     $string .= ";user=".$job->arg->{user_id}
         if $job->arg->{user_id};
+    $string .= ";group=".$job->arg->{group_id}
+        if $job->arg->{group_id};
 
     if ($shortname eq 'Cmd') {
         $string .= ";cmd=".$job->arg->{cmd};
@@ -103,6 +102,27 @@ sub job_to_string {
 
     return $string unless wantarray;
     return ($string, $shortname);
+}
+
+sub cleanup_job_tables {
+    my $self = shift;
+    my $logger_cb = shift || sub {};
+
+    my @types = $self->job_types; # finds all available job modules 
+    my %type_map = map {$_=>1} @types;
+
+    my $stat = $self->stat_jobs();
+
+    for my $job_name (keys %$stat) {
+        # job module still exists: situation normal
+        next if $type_map{$job_name};
+
+        # Job module is missing.
+        # Delete all jobs and remove it from the funcmap (so that it no longer
+        # shows in ceq-stat and ceq-read).
+        $logger_cb->($job_name);
+        $self->remove_job_type($job_name);
+    }
 }
 
 __PACKAGE__->meta->make_immutable;

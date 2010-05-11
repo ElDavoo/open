@@ -16,6 +16,7 @@ use List::MoreUtils qw/any/;
 use namespace::clean -except => 'meta';
 
 requires 'user_set_id';
+requires 'impersonation_ok';
 
 has 'user_set' => (
     is => 'ro', isa => 'Socialtext::UserSet',
@@ -132,12 +133,13 @@ sub add_role {
     my %p = (@_==1) ? %{$_[0]} : @_;
  
     my $t = time();
-    $self->_role_change_checker(\%p);
+    $self->_role_change_checker({%p,action=>'add'});
 
     my $thing = $p{object};
     my $role  = $p{role} || $self->role_default($thing);
 
-    $self->role_change_check($p{actor},'add',$thing,$role);
+    $self->role_change_check($p{actor},'add',$thing,$role)
+        unless $p{is_initial_role};
     eval { $self->user_set->add_object_role($thing, $role) };
     if ($@) {
         if ($@ =~ /constraint/i) {
@@ -156,7 +158,7 @@ sub assign_role {
     my %p = (@_==1) ? %{$_[0]} : @_;
  
     my $t = time;
-    $self->_role_change_checker(\%p);
+    $self->_role_change_checker({%p,action=>'update'});
 
     my $thing = $p{object};
     my $role = $p{role} || $self->role_default($thing);
@@ -184,7 +186,7 @@ sub remove_role {
     my %p = (@_==1) ? %{$_[0]} : @_;
  
     my $t = time;
-    $self->_role_change_checker(\%p);
+    $self->_role_change_checker({%p,action=>'remove'});
 
     my $thing = $p{object};
     $self->role_change_check($p{actor},'remove',$thing);
@@ -243,7 +245,10 @@ sub _role_change_checker {
         param_error "object parameter must be a Socialtext::User, Socialtext::UserMetadata or implement role Socialtext::UserSetContainer";
     }
 
-    if ($o->isa('Socialtext::User') && $o->is_system_created) {
+    if ($o->isa('Socialtext::User') &&
+        $o->is_system_created &&
+        $p->{action} ne 'remove')
+    {
         param_error 'Cannot give a role to a system-created user';
     }
 }
@@ -324,6 +329,7 @@ sub role_change_event {
             while (my $user = $users->next) {
                 Socialtext::JobCreator->index_person( $user );
             }
+            Socialtext::JobCreator->index_group( $thing );
         }
     }
 
@@ -461,19 +467,28 @@ for my $thing_name (qw(user group account)) {
         my %p = (@_==1) ? %{$_[0]} : @_;
  
         confess "must supply a $thing_name" unless $thing_checker->($o);
+        my @return;
         if ($p{direct}) {
             my $role_id = $self->user_set->direct_object_role($o);
+            return $role_id if $p{ids_only};
             return Socialtext::Role->new(role_id => $role_id);
         }
         else {
             my @role_ids = $self->user_set->object_roles($o);
-            # FIXME: this sort function is lame; it doesn't consider permissions
-            # at all and it uses hash params pointlessly.
-            my @roles = map { Socialtext::Role->new(role_id => $_) } @role_ids;
-            @roles = Socialtext::Role->SortByEffectiveness(roles => \@roles);
-            @roles = reverse @roles;
-            return @roles if wantarray;
-            return $roles[0];
+            if ($p{ids_only}) {
+                return @role_ids if wantarray;
+                return $role_ids[0];
+            }
+            else {
+                # FIXME: this sort function is lame; it doesn't consider
+                # permissions at all and it uses hash params pointlessly.
+                my @roles =
+                    map { Socialtext::Role->new(role_id => $_) } @role_ids;
+                @roles = Socialtext::Role->SortByEffectiveness(roles=>\@roles);
+                @roles = reverse @roles;
+                return @roles if wantarray;
+                return $roles[0];
+            }
         }
     };
 

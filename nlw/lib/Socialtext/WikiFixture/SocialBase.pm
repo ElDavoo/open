@@ -9,6 +9,7 @@ use Socialtext::User;
 use Socialtext::SQL qw/:exec :txn/;
 use Socialtext::JSON qw/decode_json encode_json/;
 use Socialtext::File;
+use Socialtext::Group;
 use Socialtext::System qw();
 use Socialtext::HTTP::Ports;
 use Socialtext::PrefsTable;
@@ -16,6 +17,7 @@ use Socialtext::Role;
 use Socialtext::People::Profile;
 use Socialtext::UserSet qw(ACCT_OFFSET);
 use Socialtext::Cache;
+use Socialtext::Workspace;
 use File::LogReader;
 use File::Path qw(rmtree);
 use Test::More;
@@ -315,6 +317,7 @@ sub stub_page {
                               creator => Socialtext::User->SystemUser);
 }
 
+
 =head2 st_search_for($searchtype, $searchvalue)
 
 Global nav search automation
@@ -384,13 +387,13 @@ sub st_search_cp_users {
     $self->handle_command('wait_for_text_present_ok',$searchfor,30000);
 }
 
-=head2 st_search_cp_accounts($searchfor)
+=head2 st_search_cp_account($searchfor)
 
 Control panel (Account) search automation
 
 =cut
 
-sub st_search_cp_accounts {
+sub st_search_cp_account {
    my ($self, $searchfor) = @_;
    $self->handle_command('open_ok', '/nlw/control/account');
    $self->handle_command('wait_for_element_visible_ok','st-search-by-name',30000);
@@ -604,6 +607,8 @@ sub create_group {
     my $group_name   = shift;
     my $account_name = shift;
     my $user_name    = shift;
+    my $description  = shift;
+    my $permission_set = shift;
 
     my $account = $account_name
         ? Socialtext::Account->new(name => $account_name)
@@ -619,6 +624,8 @@ sub create_group {
             driver_group_name  => $group_name,
             primary_account_id => $account->account_id,
             created_by_user_id => $user->user_id,
+            description        => $description || 'no description',
+            permission_set     => $permission_set || 'private',
         });
     };
     if (my $err = $@) {
@@ -668,19 +675,50 @@ sub delete_all_groups {
 
     my $groups = Socialtext::Group->All();
     while (my $g = $groups->next) {
-        $self->delete_group( $g->group_id );
+        Test::Socialtext::Group->delete_recklessly($g);
     }
 }
 
 sub delete_group {
     my $self     = shift;
-    my $group_id = shift || $self->{group_id};
+    my $group_or_id = shift || $self->{group_id};
 
-    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+    my $group = (ref($group_or_id))
+        ? $group_or_id
+        : Socialtext::Group->GetGroup(group_id => $group_or_id);
+
     if ($group) {
+        my $group_id = $group->group_id;
         diag "Recklessly deleting group $group_id";
+
         require Test::Socialtext::Group;
         Test::Socialtext::Group->delete_recklessly($group);
+    }
+}
+
+sub delete_all_workspaces {
+    my $self = shift;
+
+    my $workspaces = Socialtext::Workspace->All();
+    while (my $w = $workspaces->next()) {
+        $self->delete_workspace($w);
+    }
+}
+
+sub delete_workspace {
+    my $self = shift;
+    my $ws_or_id = shift || $self->{workspace_id};
+
+    my $ws = (ref($ws_or_id))
+        ? $ws_or_id
+        : Socialtext::Workspace->new(workspace_id => $ws_or_id);
+
+    if ($ws) {
+        my $ws_id = $ws->workspace_id;
+        diag "Recklessly deleting workspace $ws_id";
+
+        require Test::Socialtext::Workspace;
+        Test::Socialtext::Workspace->delete_recklessly($ws);
     }
 }
 
@@ -883,6 +921,39 @@ sub set_ws_permissions {
     die "No such workspace $workspace" unless $ws;
     $ws->permissions->set( set_name => $permission );
     diag "Set workspace $workspace permission to $permission";
+}
+
+sub set_workspace_id {
+    my $self      = shift;
+    my $var       = shift;
+    my $workspace = shift;
+
+    my $ws = Socialtext::Workspace->new(name => $workspace);
+    die "No such workspace $workspace" unless $ws;
+    $self->{$var} = $ws->workspace_id;
+    diag "Set variable '$var' to $workspace id: $self->{$var}";
+}
+
+sub set_group_id {
+    my $self       = shift;
+    my $var        = shift;
+    my $group_name = shift;
+
+    my $sth = sql_execute(q{
+        SELECT group_id FROM groups WHERE driver_key = 'Default' AND driver_group_name = ?
+    }, $group_name);
+
+    if ($sth->rows == 0) {
+        die "no group '$group_name' found";
+    }
+    elsif ($sth->rows > 1) {
+        die "ambiguous group name '$group_name': ".
+            "found ".$sth->rows." groups with that name";
+    }
+    my ($group_id) = $sth->fetchrow_array;
+
+    $self->{$var} = $group_id;
+    diag "Set variable '$var' to group id: $self->{$var}";
 }
 
 sub add_member {
@@ -1744,6 +1815,45 @@ sub post_signal {
     $self->code_is(201);
 }
 
+sub send_signal {
+    my $self = shift;
+    my $content = shift;
+    my %opts = @_;
+
+    require Socialtext::Signal;
+
+    # Find our user_id if it isn't set
+    my $user_id = $self->{user_id}
+        || Socialtext::User->new(username => $self->{username})->user_id;
+
+    my $signal = eval {
+        Socialtext::Signal->Create(
+            user_id => $user_id,
+            body => $content,
+            %opts,
+        );
+    };
+    if ($@) {
+        fail("Couldn't create signal: $@");
+    }
+
+    $self->{signal_id} = $signal->signal_id;
+    pass("Created signal $self->{signal_id}");
+}
+
+sub send_signal_reply {
+    my $self = shift;
+    my $signal_id = shift;
+
+    $self->send_signal(@_, in_reply_to_id => $signal_id);
+}
+
+sub send_signal_dm {
+    my $self = shift;
+    my $user_id = shift;
+    $self->send_signal(@_, recipient_id => $user_id);
+}
+
 sub post_signals {
     my $self = shift;
     my $count = shift or die;
@@ -1998,23 +2108,23 @@ sub st_setup_a_group {
          $self->handle_command('st-admin','enable-plugin --account %%group_acct%% --plugin groups');
          #$self->handle_command('st-admin','create_group --name %%group_name%% --account %%group_acct%%', 'has been created');
          $self->handle_command('create_group','%%group_name%%','%%group_acct%%');
-         $self->handle_command('st-admin','create_user --account %%group_acct%% --e %%group_user%% --p %%password%%','was created');
-         $self->handle_command('st-admin', 'add-member --e %%group_user%% --g %%group_id%%','is now a member of');
+         $self->handle_command('st-admin','create_user --account %%group_acct%% --email %%group_user%% --password %%password%%','was created');
+         $self->handle_command('st-admin', 'add-member --email %%group_user%% --group %%group_id%%','is now a member of');
      } 
     else {
-         $self->handle_command('st-admin', 'create_user --e %%group_user%% --p %%password%%', 'was created');
+         $self->handle_command('st-admin', 'create_user --email %%group_user%% --password %%password%%', 'was created');
     #    $self->handle_command('st-admin', 'create_group --name %%%group_name%%','has been created');
          $self->handle_command('create_group','%%group_name%%','%%group_acct%%');
-         $self->handle_command('st-admin', 'add-member --e %%group_user%% --g %%group_id%%','is now a member of');
+         $self->handle_command('st-admin', 'add-member --email %%group_user%% --group %%group_id%%','is now a member of');
      }
 
      #Create Workspace if requested
      if (defined($create_ws) && ($create_ws) ) { 
          $self->handle_command('set','group_ws','group-ws-%%start_time%%');
          if (defined($create_and_add_account) && ($create_and_add_account) ) {
-             $self->handle_command('st-admin', 'create_workspace --n %%group_ws%% --t %%group_ws%% --a %%group_acct%%','was created');
+             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --title %%group_ws%% --account %%group_acct%%','was created');
          } else {
-             $self->handle_command('st-admin', 'create_workspace --n %%group_ws%% --t %%group_ws%%','was created');
+             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --title %%group_ws%%','was created');
          }
      }
 
@@ -2153,6 +2263,15 @@ sub st_account_export_field_is {
     my $expected = shift;
     is $self->_st_account_export_field($account, $field),
         $expected,
+        "$account $field";
+}
+
+sub st_account_export_field_is_undef {
+    my $self = shift;
+    my $account = shift;
+    my $field = shift;
+    is $self->_st_account_export_field($account, $field),
+        undef,
         "$account $field";
 }
 
@@ -2367,6 +2486,54 @@ sub set_substr {
     diag "Set $dest_var to '$self->{$dest_var}'";
 }
 
+# Gross hack workaround
+sub set_pipe {
+    my $self = shift;
+    my $var  = shift;
+    $self->{$var} = '|';
+}
+
+=head2 json_path_is
+
+=head2 json_path_isnt
+
+Test that the value selected by the path (first argument) is/isn't equal to the
+specified value (second argument).
+
+Only a sub-set of JSONPath is supported.  All expressions are anchored to the
+root of the parsed JSON object, so the leading C<$> is optional.  Only scalar
+values can be selected; selecing objects, lists and collections are not
+supported.  JSONPath functions are also not supported.
+
+Use C<< [0] >> notation to select an element of an array.  Processed as a perl
+array offset, so negative values can be used.
+
+Use C<< .element >> or C<< ['element'] >> to select a hash key.
+
+Examples:
+
+    # select the string at baz, nested inside of bar and foo elements.
+    $.foo.bar.baz
+    $['foo'].bar['baz']
+
+    # select the user_id of the first array element
+    $[0].user_id
+
+=head2 json_path_like
+
+=head2 json_path_unlike
+
+Test that the string at the specified path matches the specified regex.  If a
+regex is not supplied, a substring match is performed.
+
+=head2 json_path_exists
+
+=head2 json_path_missing
+
+Test that something exists or doesn't exist at the specified path.
+
+=cut
+
 sub _select_json_path {
     my ($self,$path,$o) = @_;
 
@@ -2412,11 +2579,11 @@ sub _json_path_test {
 
     my $sel = eval { $self->_select_json_path($path, $self->{json}) };
     if (my $e = $@) {
-        if ($test eq 'missing') {
+        if ($test eq 'missing') { # grep json_path_missing
             return like $e, qr/^missing/, $comment;
         }
         diag "path selection error: $e";
-        if ($test eq 'exists') {
+        if ($test eq 'exists') { # grep json_path_exists (failure case)
             fail $comment;
             return;
         }
@@ -2424,23 +2591,23 @@ sub _json_path_test {
 
     # work around the fact that we aren't reading .wiki files in unicode mode
     $expected = Encode::decode_utf8($expected) if $test =~ /^is/;
-    if ($test eq 'is') {
+    if ($test eq 'is') { # grep json_path_is
         return is $sel, $expected, $comment;
     }
-    elsif ($test eq 'isnt') {
+    elsif ($test eq 'isnt') { # grep json_path_isnt
         return isnt $sel, $expected, $comment;
     }
-    elsif ($test eq 'like') {
+    elsif ($test eq 'like') { # grep json_path_like
         return like $sel, $expected, $comment;
     }
-    elsif ($test eq 'unlike') {
+    elsif ($test eq 'unlike') { # grep json_path_unlike
         return unlike $sel, $expected, $comment;
     }
-    elsif ($test eq 'exists') {
+    elsif ($test eq 'exists') { # grep json_path_exists (success case)
         pass $comment;
         return 1;
     }
-    elsif ($test eq 'size') {
+    elsif ($test eq 'size') { # grep json_path_size
         if ('ARRAY' ne ref($sel)) {
             fail $comment. ' - selection is not an array';
             return;
@@ -2454,13 +2621,29 @@ sub _json_path_test {
 
 {
     no strict 'refs';
-    for my $test (qw(is isnt like unlike exists missing size)) {
-        *{"json_path_$test"} = sub {
+    for my $cmd (qw(
+        json_path_is 
+        json_path_isnt 
+        json_path_like 
+        json_path_unlike 
+        json_path_exists 
+        json_path_missing 
+        json_path_size
+    )) {
+        (my $test = $cmd) =~ s/^json_path_//;
+        *{$cmd} = sub {
             my $self = shift;
             $self->_json_path_test($test,@_);
         };
     }
 }
+
+=head2 json_path_set
+
+Set the specified wikitest variale (first argument) to the value of the
+selected json path.
+
+=cut
 
 sub json_path_set {
     my ($self, $key, $path) = @_;
@@ -2474,6 +2657,52 @@ sub json_path_set {
         $self->{$key} = $sel;
         pass "set $key to $sel (\$$path)";
     }
+}
+
+=head2 json-path-parse
+
+Parse a json-path selection as if it were JSON itself (the OpenSocial
+json-proxy specification does this sort of embedding).
+
+After parsing, the other C<json-path-> directives will work as expected.
+
+=cut
+
+sub json_path_parse {
+    my $self = shift;
+    my $path = shift;
+
+    if (!$self->{json}) {
+        fail "json-path-parse error: you need to call 'json-parse' first (or it failed previously)";
+        return;
+    }
+
+    $path =~ s/^\$//; # remove leading $
+    my $sel = eval { $self->_select_json_path($path, $self->{json}) };
+    if (my $e = $@) {
+        fail "json-path-parse selection error: $e";
+        $self->{json} = {};
+        return;
+    }
+
+    my $json = eval { decode_json($sel) };
+    if (my $e = $@) {
+        fail "json-path-parse error: $e";
+        $self->{json} = {};
+    }
+    else {
+        pass "json-path-parse ok";
+        $self->{json} = $json;
+    }
+}
+
+sub header_unlike {
+    my $self = shift;
+    my $name = shift || die "header name is mandatory for header_unlike";
+    my $rgx  = shift || die "regex is mandatory for header_unlike";
+    my $header   = $self->{http}->response->header($name);
+    my $expected = $self->quote_as_regex($rgx);
+    unlike $header, $rgx, "$name header-unlike $expected";
 }
 
 sub st_widgets {

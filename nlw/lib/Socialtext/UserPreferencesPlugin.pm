@@ -27,11 +27,8 @@ sub register {
 
 sub preferences_settings {
     my $self = shift;
-    if ( $self->hub()->current_user()->is_guest() ) {
-        Socialtext::Challenger->Challenge(
-            type => 'settings_requires_account' );
 
-    }
+    $self->reject_guest(type => 'settings_requires_account');
 
     my $class_id = $self->cgi->preferences_class_id;
     if ( $class_id eq '' ) {

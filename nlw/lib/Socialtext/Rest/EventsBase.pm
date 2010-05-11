@@ -12,6 +12,7 @@ use Socialtext::Exceptions qw/auth_error bad_request/;
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::Timer;
 use Socialtext::l10n 'loc';
+use Socialtext::Permission qw/ST_READ_PERM/;
 use List::MoreUtils qw/uniq/;
 
 use constant MAX_EVENT_COUNT => 500;
@@ -127,13 +128,17 @@ sub extract_common_args {
         _one($q,'before'),
         _one($q,'after'),
         _one($q, 'activity'),
+        _one($q, 'direct'),
         _bunch_of($q,'account_id'),
         _bunch_of($q,'group_id', sub {
                 # is the viewer IN this group?
                 my $group_id = shift;
                 my $group = Socialtext::Group->GetGroup(group_id => $group_id);
-                auth_error "you are not a member of group $group_id"
-                    unless $group->has_user($viewer);
+                auth_error "you don't have permission to view group $group_id"
+                    unless $group->user_can(
+                        user       => $viewer,
+                        permission => ST_READ_PERM,
+                    );
             }),
         _bunch_of($q,'event_class'),
         _bunch_of($q,'action', sub {

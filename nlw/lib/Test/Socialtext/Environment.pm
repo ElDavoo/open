@@ -139,11 +139,13 @@ sub hub_for_workspace {
     my $username = shift || Test::Socialtext::User->test_username();
     my $ws = ref $name ? $name : Socialtext::Workspace->new( name => $name )
         or croak "No such workspace: $name";
+    my $user = Socialtext::User->new(username => $username)
+        or croak "No such user: $username";
 
     my $main = Socialtext->new()->debug();
     my $hub  = $main->load_hub(
         current_workspace => $ws,
-        current_user      => Socialtext::User->new( username => $username ),
+        current_user      => $user,
     );
 
     $hub->registry->load;

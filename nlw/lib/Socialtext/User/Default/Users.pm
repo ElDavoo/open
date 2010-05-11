@@ -40,6 +40,22 @@ our $GuestEmailAddress = 'guest@socialtext.net';
         my ( $class, $key, $val ) = @_;
         return $RequiredDefaultUsers{$key}{lc($val)};
     }
+
+    sub CanImportUser {
+        my ($class, $user_hash) = @_;
+        # Silently refuse to import the two special system users
+        return if $user_hash->{username}
+            =~ m/^(?:$SystemUsername|$GuestUsername)$/;
+        return if $user_hash->{email_address}
+            =~ m/^(?:$SystemEmailAddress|$GuestEmailAddress)$/;
+
+        # Do not import the is_system_created flag.
+        if (delete $user_hash->{is_system_created}) {
+            warn "$user_hash->{username} was system created. "
+                . "Importing as regular user.\n";
+        }
+        return 1;
+    }
 }
 
 1;

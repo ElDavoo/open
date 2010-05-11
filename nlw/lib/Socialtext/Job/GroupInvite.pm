@@ -13,25 +13,18 @@ has sender => (
     lazy_build => 1,
 );
 
-has group => (
-    is => 'ro', isa => 'Socialtext::Group',
-    lazy_build => 1,
-);
-
 sub _build_sender {
     my $self = shift;
     return Socialtext::User->new( user_id => $self->arg->{sender_id} );
 }
 
-sub _build_group {
-    my $self = shift;
-    return Socialtext::Group->GetGroup( group_id => $self->arg->{group_id} );
-}
 
 sub do_work {
     my $self  = shift;
     my $group = $self->group;
     my $user  = $self->user;
+
+    return $self->completed unless $group;
 
     unless ( $group->has_user($user) ) {
         my $msg = "User " . $user->user_id 

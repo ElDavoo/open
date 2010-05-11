@@ -55,8 +55,8 @@ my $nlw = get_nlw_filename();
 # 6) For account-usage report, change the quarter ending to Feb 31 or July 31
 #    (Same month ending as @dates last month, below
 #-------------------------------------------------------------------------------#
-#my @dates = ('Dec 30','Dec 11','Jan 10','Jan 11','Jan 12', 'Jan 13', 'Feb 01');
-my @dates = ('Apr 30', 'May 11', 'Jun 10', 'Jun 11', 'Jun 12', 'Jun 13', 'Jul 01');
+my @dates = ('Dec 30','Dec 11','Jan 10','Jan 11','Jan 12', 'Jan 13', 'Feb 01');
+#my @dates = ('Apr 30', 'May 11', 'Jun 10', 'Jun 11', 'Jun 12', 'Jun 13', 'Jul 01');
 #----------------------------------------------------------#
 #  Create the Files and setup for import
 
@@ -397,8 +397,8 @@ sub create_page_nlw_entry {
 
 sub get_month_day {
    my $iMonth = shift;
-   my @monthArr = ('Apr 01', 'Apr 01', 'May 01', 'May 01','Jun 01','Jun 01');
-   #my @monthArr = ('Dec 01','Dec 01','Jan 01','Jan 01','Feb 01','Feb 01');
+   #my @monthArr = ('Apr 01', 'Apr 01', 'May 01', 'May 01','Jun 01','Jun 01');
+   my @monthArr = ('Dec 01','Dec 01','Jan 01','Jan 01','Feb 01','Feb 01');
    return $monthArr[$iMonth];
 }
 
@@ -427,7 +427,7 @@ sub create_dashboard_view {
      my @arr;
      my $month = get_month_day($iMonth);
     
-    $arr[0] = $date . ' 10:02:23 socialtext nlw[25204]: [2204] WEB,GET,/,UNDEF,ACTOR_ID:' .
+    $arr[0] = $date . ' 10:02:23 socialtext nlw[25204]: [2204] WEB,GET,/ST/DASHBOARD,UNDEF,ACTOR_ID:' .
              $user->user_id . 
              ',{"timers":"overall:1.117,handler_run:1.106,gadget_expand_hangman:0.954,tt2_render:0.701,global_tt2_vars:0.588,sql_execute:0.167,container_template_vars:0.067,get_dbh:0.049,container_get_gadgets:0.041,plugin_enabled_for_user:0.028,gadget_get_prefs:0.026,sql_prepare:0.022,user_new:0.013,web_auth:0.008,gadget_get_messages:0.007,user_accts:0.004,plugins_enabled_for_account:0.002,sql_selectrow:0.002,container_load_from_type:0.002,ppl_listing:0.001,container_type_load:0.001"}' . "\n";
 

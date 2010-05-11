@@ -3,140 +3,24 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 130;
+use Test::Socialtext tests => 146;
 use Test::Differences;
+use Test::Output qw/stderr_is/;
 use Socialtext::CLI;
+use Socialtext::SQL qw/:exec/;
 use Test::Socialtext::User;
 use Test::Socialtext::Group;
 use Test::Socialtext::Workspace;
-use Test::Socialtext::Account;
+use Test::Socialtext::Account qw/export_and_reimport_account/;
 use Test::Socialtext::CLIUtils qw(expect_success);
-use File::Temp qw(tempdir);
-use File::Path qw(rmtree);
-use Data::Dumper;
 
-###############################################################################
-# Fixtures: db
-fixtures(qw( db ));
+fixtures(qw(db));
 
 ###############################################################################
 # Grab short-hand versions of the Roles we're going to use
-my $Affiliate      = Socialtext::Role->Affiliate();
 my $Member         = Socialtext::Role->Member();
 my $WorkspaceAdmin = Socialtext::Role->Admin();
-
-###############################################################################
-# Helper function to export, flush, and re-import an Account.
-our $DumpRoles = 0;
-sub export_and_reimport_account {
-    my %args            = @_;
-    my $acct            = $args{account};
-    my @users           = $args{users} ? @{ $args{users} } : ();
-    my @groups          = $args{groups} ? @{ $args{groups} } : ();
-    my @workspaces      = $args{workspaces} ? @{ $args{workspaces} } : ();
-    my $cb_after_export = $args{after_export} || sub { };
-
-    my $export_base = tempdir(CLEANUP => 1);
-    my $export_dir  = File::Spec->catdir($export_base, 'account');
-
-    # Build up the list of Roles that exist *before* the export/import
-    my @gars = map { _dump_gars($_) } $acct;
-    my @uars = map { _dump_uars($_) } $acct;
-    my @uwrs = map { _dump_uwrs($_) } @workspaces;
-    my @gwrs = map { _dump_gwrs($_) } @workspaces;
-    my @ugrs = map { _dump_ugrs($_) } @groups;
-
-    # Export the Account
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => ['--account', $acct->name, '--dir', $export_dir],
-            )->export_account(),
-        },
-        qr/account exported to/,
-        '... Account exported',
-    );
-
-    # Flush the system, cleaning out the test Users/Workspaces/Accounts.
-    #
-    # *DON'T* use a list traversal operation that could manipulate the
-    # original list/objects, though; we're going to need them again in a
-    # moment.
-    $cb_after_export->();
-    foreach my $user (@users) {
-        Test::Socialtext::User->delete_recklessly($user);
-    }
-    foreach my $group (@groups) {
-        Test::Socialtext::Group->delete_recklessly($group);
-    }
-    foreach my $ws (@workspaces) {
-        Test::Socialtext::Workspace->delete_recklessly($ws);
-    }
-    Test::Socialtext::Account->delete_recklessly($acct);
-    Socialtext::Cache->clear();
-
-    # Re-import the Account
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => ['--dir', $export_dir],
-            )->import_account();
-        },
-        qr/account imported/,
-        '... Account re-imported',
-    );
-
-    # Load up copies of all of the Accounts/Workspaces/Groups that exist after
-    # the export/import.  Yes, this is a bit ugly (especially for Groups,
-    # where on re-import, the unique key is going to change for the Group;
-    # primary_account_id changes).
-    my $imported_acct = Socialtext::Account->new(name => $acct->name);
-
-    my @imported_workspaces =
-        map { Socialtext::Workspace->new(name => $_->name) }
-        @workspaces;
-
-    my @imported_groups;
-    foreach my $group (@groups) {
-        my $primary_account = Socialtext::Account->new(
-            name => $group->primary_account->name,
-        );
-        my $primary_acct_id    = $primary_account->account_id;
-        my $created_by_user_id = $group->created_by_user_id;
-        my $group_name         = $group->driver_group_name;
-        push @imported_groups, Socialtext::Group->GetGroup(
-            primary_account_id => $primary_acct_id,
-            created_by_user_id => $created_by_user_id,
-            driver_group_name  => $group_name,
-        );
-    }
-
-    # Get the list of Roles that exist *after* the export/import
-    my @imported_gars = map { _dump_gars($_) } $imported_acct;
-    my @imported_uars = map { _dump_uars($_) } $imported_acct;
-    my @imported_uwrs = map { _dump_uwrs($_) } @imported_workspaces;
-    my @imported_gwrs = map { _dump_gwrs($_) } @imported_workspaces;
-    my @imported_ugrs = map { _dump_ugrs($_) } @imported_groups;
-
-    # Role list *should* be the same after import
-    eq_or_diff \@imported_gars, \@gars, '... Group/Account Roles preserved';
-    eq_or_diff \@imported_uars, \@uars, '... User/Account Roles preserved';
-    eq_or_diff \@imported_uwrs, \@uwrs, '... User/Workspace Roles preserved';
-    eq_or_diff \@imported_gwrs, \@gwrs, '... Group/Workspace Roles preserved';
-    eq_or_diff \@imported_ugrs, \@ugrs, '... User/Group Roles preserved';
-
-    # (debugging) Dump the Roles
-    if ($DumpRoles) {
-        diag "Group/Account Roles: "   . Dumper(\@gars);
-        diag "User/Account Roles: "    . Dumper(\@uars);
-        diag "User/Workspace Roles: "  . Dumper(\@uwrs);
-        diag "Group/Workspace Roles: " . Dumper(\@gwrs);
-        diag "User/Group Roles: "      . Dumper(\@ugrs);
-    }
-
-    # CLEANUP: remove our temp directory
-    rmtree([$export_base], 0);
-}
+my $Impersonator   = Socialtext::Role->Impersonator();
 
 ###############################################################################
 # TEST: Account export/import preserves GAR, when Group has this Account as
@@ -164,18 +48,17 @@ account_import_preserves_gar: {
     my $group      = create_test_group();
     my $group_name = $group->driver_group_name();
 
+    my $impersonator      = create_test_group();
+    my $impersonator_name = $impersonator->driver_group_name();
+
     # Give the Group a direct Role in the Account
-    #
-    # NOTE: as of 2009-10-22, the only supported GARs are Affiliate and Member
-    $account->add_group(
-        group => $group,
-        role  => $Member,
-    );
+    $account->add_group(group => $group, role => $Member);
+    $account->add_group(group => $impersonator, role => $Impersonator);
 
     # Export and re-import the Account; GAR should be preserved
     export_and_reimport_account(
         account => $account,
-        groups  => [$group],
+        groups  => [$group, $impersonator],
     );
 }
 
@@ -198,10 +81,7 @@ account_import_preserves_gwrs: {
 
     # Give the Group a Role in a Workspace, indirectly giving it a Role in the
     # Account.
-    $workspace->add_group(
-        group => $group,
-        role  => $WorkspaceAdmin,
-    );
+    $workspace->add_group(group => $group, role => $WorkspaceAdmin);
 
     # Export and re-import the Account; GWRs/GARs should be preserved
     export_and_reimport_account(
@@ -252,14 +132,8 @@ account_import_preserves_multiple_indirect_roles: {
     my $group   = create_test_group();
 
     # Give the Group some Roles in multiple Workspaces
-    $ws_one->add_group(
-        group => $group,
-        role  => $Member,
-    );
-    $ws_two->add_group(
-        group => $group,
-        role  => $WorkspaceAdmin,
-    );
+    $ws_one->add_group(group => $group, role => $Member);
+    $ws_two->add_group(group => $group, role => $WorkspaceAdmin);
 
     # Export and re-import the Account
     export_and_reimport_account(
@@ -301,14 +175,17 @@ account_import_preserves_uar: {
     my $user      = create_test_user();
     my $user_name = $user->username();
 
+    my $impersonator      = create_test_user();
+    my $impersonator_name = $impersonator->username();
+
     # give the User a direct Role in the Account
-    my $orig_role = $Member;
-    $account->add_user(user => $user, role => $orig_role);
+    $account->add_user(user => $user, role => $Member);
+    $account->add_user(user => $impersonator, role => $Impersonator);
 
     # Export and re-import the Account
     export_and_reimport_account(
         account => $account,
-        users   => [$user],
+        users   => [$user, $impersonator],
     );
 
     # User should have the correct Role in the Account
@@ -320,7 +197,14 @@ account_import_preserves_uar: {
 
     my $role = $account->role_for_user($user);
     ok defined $role, '... User has Role in Account';
-    is $role->name, $orig_role->name, '... ... with *correct* Role';
+    is $role->name, $Member->name, '... ... with *correct* Role';
+
+    $impersonator = Socialtext::User->new(username => $impersonator_name);
+    isa_ok $impersonator, 'Socialtext::User', '... found re-imported Impersonator';
+
+    $role = $account->role_for_user($impersonator);
+    ok defined $role, '... Impersonator has Role in Account';
+    is $role->name, $Impersonator->name, '... ... Impersonator Role';
 }
 
 ###############################################################################
@@ -487,89 +371,26 @@ account_import_preserves_direct_and_indirect_uars: {
     );
 }
 
+account_import_system_user_roles: {
+    pass 'TEST: importing of system-created user roles';
+    my $account = create_test_account_bypassing_factory();
+    my $acct_name = $account->name;
+    my $user    = create_test_user(account => $account);
+    my $username = $user->username;
 
-###############################################################################
-###############################################################################
-### HELPER METHODS
-###############################################################################
-###############################################################################
-sub _dump_gars {
-    my $account = shift;
-    my @gars;
-    if ($account) {
-        my $cursor  = $account->groups(direct => 0);
-        while (my $group = $cursor->next) {
-            push @gars, {
-                group   => $group->driver_group_name,
-                account => $account->name,
-                role    => $account->role_for_group($group)->name,
-            };
-        }
-    }
-    return @gars;
+    sql_execute(q{UPDATE "UserMetadata" SET is_system_created = true WHERE user_id = ?}, $user->user_id);
+
+    # Export and re-import the Account; UAR should be preserved
+    stderr_is {
+        export_and_reimport_account(
+            account => $account,
+            users   => [$user],
+        );
+    } "$username was system created. Importing as regular user.\n";
+
+    $account = Socialtext::Account->new(name => $acct_name);
+    $user = Socialtext::User->new(username => $username);
+    is $account->user_count(direct => 1), 1, "still got imported";
+    ok !$user->is_system_created, "but is not a system user";
 }
 
-sub _dump_uars {
-    my $account = shift;
-    my @uars;
-    if ($account) {
-        my $cursor = $account->users();
-
-        while (my $user = $cursor->next) {
-            push @uars, {
-                user    => $user->username,
-                account => $account->name,
-                role    => $account->role_for_user($user)->name,
-            };
-        }
-    }
-    return @uars;
-}
-
-sub _dump_uwrs {
-    my $workspace = shift;
-    my @uwrs;
-    if ($workspace) {
-        my $cursor = $workspace->users();
-        while (my $user = $cursor->next) {
-            push @uwrs, {
-                user      => $user->username,
-                workspace => $workspace->name,
-                role      => $workspace->role_for_user($user)->name,
-            };
-        }
-    }
-    return @uwrs;
-}
-
-sub _dump_gwrs {
-    my $workspace = shift;
-    my @gwrs;
-    if ($workspace) {
-        my $cursor = $workspace->groups();
-        while (my $group = $cursor->next) {
-            push @gwrs, {
-                group     => $group->driver_group_name,
-                workspace => $workspace->name,
-                role      => $workspace->role_for_group($group)->name,
-            };
-        }
-    }
-    return @gwrs;
-}
-
-sub _dump_ugrs {
-    my $group = shift;
-    my @ugrs;
-    if ($group) {
-        my $cursor = $group->users();
-        while (my $user = $cursor->next) {
-            push @ugrs, {
-                user  => $user->username,
-                group => $group->driver_group_name,
-                role  => $group->role_for_user($user)->name,
-            };
-        }
-    }
-    return @ugrs;
-}

@@ -40,11 +40,8 @@ users_are($deleted, []);
 my $socialtext = Socialtext::Account->Socialtext;
 isa_ok( $socialtext, 'Socialtext::Account' );
 ok( $socialtext->is_system_created, 'Unknown account is system-created' );
-users_are($socialtext, ['system-user', 'guest']);
-eq_or_diff [ sort @{$socialtext->user_ids} ],
-  [ sort {$a <=> $b} Socialtext::User->SystemUser->user_id, 
-          Socialtext::User->Guest->user_id ],
-  'user_ids() works';
+users_are($socialtext, []);
+eq_or_diff [ sort @{$socialtext->user_ids} ], [], 'user_ids() works';
 
 throws_ok { Socialtext::Account->create(name => 'Test Account') }
     qr/already in use/, 'cannot create two accounts with the same name';

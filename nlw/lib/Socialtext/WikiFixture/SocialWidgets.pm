@@ -214,6 +214,25 @@ sub st_widget_settings {
     ok( !$@, "st-widget-settings" );
 }
 
+
+=head2 st_cycle_network_select
+
+  On /st/signals loops through the network-select dropdown to trigger javascript events
+
+=cut
+
+sub st_cycle_network_select {
+    my ($self, $numelements) = @_;
+    $self->handle_command('wait_for_element_visible_ok','network-select','30000'); 
+    $self->handle_command('pause',3000);
+    for (my $idx=0; $idx<$numelements;$idx++) {
+        $self->handle_command('pause',3000);
+        $self->handle_command('select_ok','network-select',"index=$idx");    
+    }
+    $self->handle_command('select_ok','network-select','index=0');
+    $self->handle_command('pause',3000);     
+}
+
 =head2 st_widget_title_like ( logical_name, regex )
 
 This performs a regex text match on the title of the widget (outside the iframe) with the 
@@ -326,30 +345,6 @@ ENDJS2
     ok( !$@, "st-wait-for-all-widgets-load");
 }
 
-
-
-=head2 st_add_activity_widget()
-
-Adds the activity widget to a dashboard
-(A work in progress)
-
-=cut
-
-sub st_add_activity_widget {
-    my ($self, $username, $password) = @_;
-}
-
-=head2 st_send_signal
-
-Sends a signal to the selected widget
-(A work in progress) 
-
-=cut
-
-sub st_send_signal {
-    my ($self, $username, $password) = @_;
-}
-
 =head2 st_single_widget_in_dashboard
 
 Clears dashboard, adds a single widget in location 1.  
@@ -370,67 +365,23 @@ sub st_single_widget_in_dashboard {
         $self->handle_command('wait_for_text_present_ok', "Welcome", 30000);
         $self->handle_command('text_like', 'st-editing-tools-edit', 'Welcome');
         };
-        ok(!$@, 'st_single_widget_in_dashboard' );
+    ok(!$@, 'st_single_widget_in_dashboard' );
 }
 
-=head2 st_send_signal_via_profile_widget
+#=head2 st_send_signal_within_activities_widget
+#
+#Precondition: The activities widget frame is selected
+#Parameters: You pass in the signal text and private flag
+#PostCondition: Signal is sent,frame focus remains on widget
+#
+#=cut
 
-Precondition: Open to a user profile with a named profile widget.
-Precondition: Frame focus should be the entire profile
-Parameters: You pass in the profile widget name, signal text, and optional private flag
-PostCondition: Signal is sent, Frame focus is back to entire profile
+sub st_send_signal_within_activities_widget {
+    my ($self, $signaltosend, $private) = @_;
+    $self->handle_command('wait_for_element_present_ok', 'mainWikiwyg', 5000);
+    $self->handle_command('click_ok', 'mainWikiwyg');
 
-=cut
-
-sub st_send_signal_via_profile_widget {
-    my ($self, $widgetname, $signaltosend, $private) = @_;
     my $browser = $ENV{'selenium_browser'} || 'chrome';
-    $self->handle_command('set_Speed', $speed);
-    $self->handle_command('st-select-widget-frame', $widgetname);
-
-    if ($browser=~/chrome|firefox/ig) {
-        $self->handle_command('selectFrame', 'signalFrame');
-        $self->handle_command('wait_for_element_visible_ok', '//body', 5000);
-        $self->handle_command('type_ok' ,'//body', $signaltosend);
-        $self->handle_command('select-frame' ,'relative=parent');
-    } else {
-        $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 5000);
-        $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$signaltosend);
-    }
-
-    if ($private) {
-        $self->handle_command('check_ok', 'private');
-    }
-
-    $self->handle_command('wait_for_element_visible_ok' ,'post', 5000);
-    $self->handle_command('click_ok', 'post');
-
-    $self->handle_command('select-frame','relative=parent');
-    $self->handle_command('set_Speed',0);
-
-    ok(!$@, 'st_send-signal_via_profile_widget');
-}
-
-=head2 st_send_signal_via_activities_widget 
-
-Precondition: Open to /?dashboard with a named activities widget.  
-Precondition: Frame focus should be the entire dashboard
-Parameters: You pass in the activities widget name, signal text
-PostCondition: Signal is sent, Frame focus is back to entire dashboard
-
-=cut
-
-sub st_send_signal_via_activities_widget {
-    my ($self, $widgetname, $signaltosend) = @_;
-    my $browser = $ENV{'selenium_browser'} || 'chrome';
-
-    $self->handle_command('st-select-widget-frame', $widgetname);
-    $self->handle_command('pause', '3000'); # to let the widget frame open
-
-    # Clear the "What are you working on?" message
-    $self->handle_command('wait_for_element_present_ok', 'signalsNotSetUp', 5000);
-    $self->handle_command('click_ok', 'signalsNotSetUp');
-
     if ($browser=~/chrome|firefox/ig) {
         $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
         $self->handle_command('selectFrame', 'signalFrame');
@@ -441,75 +392,82 @@ sub st_send_signal_via_activities_widget {
         $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$signaltosend);
     }
 
-    $self->handle_command('wait_for_element_visible_ok' ,'post', 5000);
-    $self->handle_command('click_ok', 'post');
-
-    $self->handle_command('pause', 3000); # must wait before signaling again
-    $self->handle_command('select-frame','relative=parent'); 
+    if ($private) {
+        # use click_ok - JS does not see check_ok
+        $self->handle_command('click_ok', '//input[@class=' . "'toggle-private']");
+        $self->handle_command('is_checked_ok', '//input[@class=' . "'toggle-private']");
+    }
     
+    $self->handle_command('wait_for_element_visible_ok','post', 5000);
+    $self->handle_command('click_ok','post');
+    $self->handle_command('pause',3000); 
+}
+
+=head2 st_send_signal_via_activities_widget 
+
+Precondition: Open to page with a named activities widget.
+Precondition: Frame focus should be the page.
+Parameters: You pass in the activities widget name, signal text, private flag
+PostCondition: Signal is sent, Frame focus is back to entire dashboard
+
+Private flag only makes sense if the widget being used has a toggle-private element.
+
+=cut
+
+sub st_send_signal_via_activities_widget {
+    my ($self, $widgetname, $signaltosend, $private) = @_;
+
+    $self->handle_command('st-select-widget-frame', $widgetname);
+    $self->handle_command('pause', '3000'); # to let the widget frame open
+   
+    $self->st_send_signal_within_activities_widget($signaltosend, $private);
+    $self->handle_command('select-frame','relative=parent'); 
     ok(!$@, 'st_send_signal_via_activities_widget');
 }
 
+
+=head2 st_verify_text_within_activities_widget ($self, $texttofind)
+
+Precondition: Activities widget is selected frame
+PostCondition: Text is verfied (or not), frame focus remains on activities widget
+
+=cut
+
+sub st_verify_text_within_activities_widget {
+    my ($self, $texttofind) = @_;
+    $self->handle_command('pause', 3000);
+    #If is regexp,
+    if ($texttofind=~/^qr\//) {
+        $self->handle_command('text_like','//body', $texttofind);
+    } else {
+        $self->handle_command('wait_for_text_present_ok', $texttofind);
+    }
+}   
+
+
 =head2 st_verify_text_in_activities_widget ($self, $widgetname, $texttofind)
 
-Precondition: Open to /?dashboard with a named activities widget.  
-Precondition: Frame focus should be the entire dashboard
-Parameters: You paass in the activties widget name, text to look for
-PostCondition: Text is verified (or not), Frame focus is back to entire dashboard
+Precondition: Open to container with a named activities widget.
+Precondition: Frame focus should be the entire page
+Parameters: You pass in the activties widget name, text to look for
+PostCondition: Text is verified (or not), Frame focus is back to entire page
 
 =cut
 
 sub st_verify_text_in_activities_widget {
     my ($self, $widgetname, $texttofind) = @_;
-    #eval {
-        $self->handle_command('st-select-widget-frame', $widgetname);
-        $self->handle_command('pause', 12000);
-        #If is regexp,
-        if ($texttofind=~/^qr\//) {
-            $self->handle_command('text_like','//body', $texttofind);
-        } else {
-            $self->handle_command('wait_for_text_present_ok', $texttofind);
-        }
-        $self->handle_command('select-frame', 'relative=parent');
-    #}
-
+    $self->handle_command('st-select-widget-frame', $widgetname);
+    $self->st_verify_text_within_activities_widget($texttofind);
+    $self->handle_command('select-frame', 'relative=parent');
     ok(!$@, 'st_verify_text_in_activities_widget');
-}
-
-=head2 st_verify_text_in_widget ($self, $widgetname, $texttofind)
-
-Precondition: A named widget.
-Precondition: Frame focus should be the entire page
-Parameters: You paass in the widget name, text to look for
-PostCondition: Text is verified (or not), Frame focus is back to entire page
-
-=cut
-
-sub st_verify_text_in_widget {
-    my ($self, $widgetname, $texttofind) = @_;
-    #eval {
-        $self->handle_command('set_Speed', $speed);
-        $self->handle_command('st-select-widget-frame', $widgetname);
-        $self->handle_command('pause', 2000);
-        #If is regexp,
-        if ($texttofind=~/^qr\//) {
-            $self->handle_command('text_like','//body', $texttofind);
-        } else {
-            $self->handle_command('wait_for_text_present_ok', $texttofind);
-        }
-        $self->handle_command('select-frame', 'relative=parent');
-  #}
-    $self->handle_command('set_Speed',0);
-
-    ok(!$@, 'st_verify_text_in_widget');
 }
 
 =head2 st_text_unlike_in_activities_widget ($self, $widgetname, $betternotfindit)
 
-Precondition: open to /?dashboard with a named activitis widget
-Precondition: Frame focus should be entire dashboard
-Parameters: You pass in widget name, text to not find
-Postcondition: Text is unverified (or not), Frame focus is back on dashboard
+Precondition: open to container with a named activities widget
+Precondition: Frame focus should be entire page
+Parameters: You pass in activities widget name, text to not find
+Postcondition: Text is unverified (or not), Frame focus is back to entire page
 
 =cut
 
@@ -522,28 +480,62 @@ sub st_text_unlike_in_activities_widget  {
     ok(!$@, 'st_text_unlike_in_activities_widget');
 }
 
-
-
-
 =head2 st_verify_link_in_activities_wdiget
-Precondition: Open to /?dashboard with a named activities widget.  
-Precondition: Frame focus should be the entire dashboard
+
+Precondition: open to container with a named activities widget
+Precondition: Frame focus should be entire page
 Parameters: You paass in the activties widget name, link to look for
-PostCondition: Text is verified (or not), Frame focus is back to entire dashboard
+PostCondition: link is found  (or not), Frame focus is back to entire page
+
 =cut
 
 sub st_verify_link_in_activities_widget {
     my ($self, $widgetname, $linktofind) = @_;
-    #eval {
-        $self->handle_command('st-select-widget-frame', 'activities_widget');
-        $self->handle_command('wait_for_element_visible_ok', 'action', 10000);
-        $self->handle_command('pause', 10000);
-        $self->handle_command('wait_for_element_present_ok', $linktofind);
-        $self->handle_command('select-frame', 'relative=parent');
-    #};
+    $self->handle_command('st-select-widget-frame', $widgetname);
+    $self->handle_command('pause', 3000);
+    $self->handle_command('wait_for_element_present_ok', $linktofind);
+    $self->handle_command('select-frame', 'relative=parent');
     ok(!$@, 'st-verify-link-in-activities-widget');
 }
       
+
+=head2 st_create_group ($groupname, $groupdesc, $radiotype)
+
+Radiotype should be self-join-radio or private-radio
+
+=cut
+
+sub st_create_group {
+    my ($self, $groupname, $groupdesc, $radiotype) = @_;
+    $self->handle_command('wait_for_element_present_ok','link=Create Group...',30000);
+    $self->handle_command('click_ok','link=Create Group...');
+    $self->handle_command('wait_for_element_present_ok','st-create-group-next', 30000);
+    $self->handle_command('wait_for_element_present_ok','st-lightbox-cancel-create-group', 30000);
+    $self->handle_command('click_ok', 'st-lightbox-cancel-create-group', 30000);
+    $self->handle_command('wait_for_element_not_present_ok','st-create-group-next', 30000);
+    $self->handle_command('wait_for_element_not_present_ok','st-lightbox-cancel-create-group', 30000);
+    $self->handle_command('wait_for_element_present_ok','link=Create Group...', 30000);
+    $self->handle_command('click_ok','link=Create Group...');
+    $self->handle_command('wait_for_element_present_ok','st-create-group-next');
+    $self->handle_command('wait_for_element_present_ok','st-lightbox-cancel-create-group');
+    $self->handle_command('wait_for_element_present_ok', $radiotype);
+    $self->handle_command('check_ok', $radiotype);
+    $self->handle_command('click_ok','st-create-group-next');
+    $self->handle_command('wait_for_element_not_present_ok','st-create-group-next', 30000);
+    $self->handle_command('wait_for_element_not_present_ok','st-lightbox-cancel-create-group', 30000);
+    $self->handle_command('wait_for_element_visible_ok','link=?',30000);
+    $self->handle_command('wait_for_element_visible_ok','create-group', 30000);
+    $self->handle_command('text_like','//body','Create a Group');
+    $self->handle_command('st-name-widget', 1,'create_group');
+    $self->handle_command('st-select-widget-frame','create_group');
+    $self->handle_command('wait_for_element_visible_ok','name', 30000);
+    $self->handle_command('wait_for_element_visible_ok','description', 30000);
+    $self->handle_command('wait_for_element_visible_ok','upload',30000);
+    $self->handle_command('wait_for_element_visible_ok','reset',30000);
+    $self->handle_command('type_ok','name',$groupname);
+    $self->handle_command('type_ok','description',$groupdesc);
+    $self->handle_command('select-frame','relative=parent');
+}
 
 =head2 st_find_user ( $user_id ) 
 
@@ -551,6 +543,7 @@ Pass in a unique value for the user before the at sign, and selenium will
 search for it and click on that user.
 
 =cut
+
 sub st_find_user {
     my ($self, $user_id) = @_;
     $self->handle_command('open_ok','/?action=people');

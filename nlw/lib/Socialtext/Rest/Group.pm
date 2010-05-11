@@ -68,7 +68,7 @@ sub create_error {
         return "Error updating group: $group_name already exists.";
     }
     $self->rest->header( -status => HTTP_400_Bad_Request );
-    $err =~ s{ at /\S+ line .*}{};
+    $err =~ s{(?:Trace begun)? at /\S+ line .*}{}s;
     return "Error updating group: $err";
 }
 
@@ -92,6 +92,7 @@ sub PUT_json { $_[0]->_with_admin_permission_do(sub {
         $group->update_store({
             driver_group_name => $data->{name},
             description => $data->{description} || "",
+            permission_set => $data->{permission_set},
         });
     };
     return $self->create_error($@, $data->{name}) if $@;
@@ -112,7 +113,8 @@ sub PUT_json { $_[0]->_with_admin_permission_do(sub {
         }
     }
 
-    return undef;
+    $self->rest->header(-status => HTTP_202_Accepted);
+    return '';
 }) }
 
 sub _has_request_error {
@@ -227,13 +229,16 @@ sub POST_to_trash { $_[0]->_admin_with_group_data_do_txn(sub {
     my $actor = $self->rest->user;
 
     for my $item (@$data) {
-        if (my $name_or_id = $item->{user_id} || $item->{username}) {
-            my $condemned = Socialtext::User->Resolve($name_or_id);
-            $group->remove_user(user => $condemned, actor => $actor);
+        my $user;
+        if ($item->{user_id}) {
+            $user = Socialtext::User->new(user_id => $item->{user_id});
         }
-        else {
-            die "Bad data";
+        elsif ($item->{username}) {
+            $user = Socialtext::User->new(username => $item->{username});
         }
+
+        die "Bad data (couldn't resolve user)" unless $user;
+        $group->remove_user(user => $user, actor => $actor);
     }
 
     conflict errors => ["The group needs to include at least one admin."]

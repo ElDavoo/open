@@ -447,10 +447,9 @@ sub get_pages_numeric_range {
 
         # Delete the tag on each page
         for my $page ( $self->get_pages_for_category($p{tag}) ) {
-            $page->metadata->Category(
-                [ grep { $_ ne $p{tag} } @{ $page->metadata->Category }
-                ]
-            );
+            $page->metadata->Category([
+                grep { lc($_) ne lc($p{tag}) } @{ $page->metadata->Category }
+            ]);
             $page->store( user => $p{user} );
         }
 
@@ -458,7 +457,7 @@ sub get_pages_numeric_range {
         sql_execute( <<EOT,
 DELETE FROM page_tag 
     WHERE workspace_id = ?
-      AND tag = ?
+      AND LOWER(tag) = LOWER(?)
 EOT
             $self->hub->current_workspace->workspace_id, $p{tag},
         );
@@ -513,14 +512,13 @@ EOT
     }
     $data{maxCount} = $max;
     $data{tags} = \@keepers;
-    $data{sorted_tags} = [ sort { $a cmp $b } @keepers ];
     return %data;
 }
 
 sub email_address {
     my $self = shift;
     my $category = shift;
-    return '' if $category eq 'recent changes';
+    return '' if lc $category eq 'recent changes';
     $category = $self->Encode_category_email($category);
     my $email_address = $self->hub->current_workspace->email_in_address;
     if ( !$self->hub->current_workspace->email_weblog_dot_address ) {

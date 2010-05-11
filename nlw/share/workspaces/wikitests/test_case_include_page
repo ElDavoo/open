@@ -1,7 +1,8 @@
 | *Comment* | Test Case: Include Page |  |
 
 | set | tcipw | page-include-%%start_time%% |
-| set | title | Start here |
+| set | title | Example Page: Press Release |
+| set | content | This page shows how a team can work together |
 
 | st-admin | create-workspace --name %%tcipw%% --title "Page Include Test" | A new workspace named "%%tcipw%%" was created. |
 | st-admin | add-member --w %%tcipw%% --e %%email%% | qr/%%username%% now has the role of 'member' in the %%tcipw%% workspace/ism |
@@ -23,7 +24,7 @@ Repeat test using Miki/Lite access.
 | click_and_wait | st-save-button-link |  |
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
-| text_like | //div[@class='wiki-include-content'] | This quick tour |
+| text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. Open the included page for editing |  |
 | click_and_wait | //a[@class="smallEditButton"] |  |
@@ -31,7 +32,7 @@ Repeat test using Miki/Lite access.
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | click_ok | link=Wiki Text |  |
 | text_like | st-editing-title | `Editing: %%title%%` |
-| verifyValue | wikiwyg_wikitext_textarea | qr/.+This quick tour.+/ |
+| verifyValue | wikiwyg_wikitext_textarea | %%content%% |
 
 | *Comment* | Test Case: Include Page. Verify backlink to including page |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
@@ -44,13 +45,13 @@ Repeat test using Miki/Lite access.
 
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
-| text_like | //div[@class='wiki-include-content'] | This quick tour |
+| text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. Open the included page for editing |  |
 | click_and_wait | //a[@class="smallEditButton"] |  |
 | wait_for_element_visible_ok | edit_textarea | 30000 |
 | wait_for_element_visible_ok | link=Cancel Edit | 30000 |
-| verifyValue | edit_textarea | qr/.+This quick tour.+/ |
+| verifyValue | edit_textarea | %%content%% |
 
 Include a page in a public wiki page when logged in. Test for content and edit button.
 Repeat test using Miki/Lite access.
@@ -61,7 +62,7 @@ Repeat test using Miki/Lite access.
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
-| text_like | //div[@class='wiki-include-content'] | This quick tour |
+| text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. PUBLIC Open the included page for editing |  |
 | click_and_wait | //a[@class="smallEditButton"] |  |
@@ -69,20 +70,20 @@ Repeat test using Miki/Lite access.
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | click_ok | link=Wiki Text |  |
 | text_like | st-editing-title | `Editing: %%title%%` |
-| verifyValue | wikiwyg_wikitext_textarea | qr/.+This quick tour.+/ |
+| verifyValue | wikiwyg_wikitext_textarea | %%content%% |
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI Run the same test in Miki |  |
 | open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
 
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
-| text_like | //div[@class='wiki-include-content'] | This quick tour |
+| text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI Open the included page for editing |  |
 | click_and_wait | //a[@class="smallEditButton"] |  |
 | wait_for_element_visible_ok | edit_textarea | 30000 |
 | wait_for_element_visible_ok | link=Cancel Edit | 30000 |
-| verifyValue | edit_textarea | qr/.+This quick tour.+/ |
+| verifyValue | edit_textarea | %%content%% |
 | click_and_wait | link=Cancel Edit |  |
 
 Logout from Miki. Test for content and edit button in page view.
@@ -98,7 +99,7 @@ Repeat test using Miki/Lite access.
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
-| text_like | //div[@class='wiki-include-content'] | This quick tour |
+| text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. PUBLIC LOGGED OUT. Open the included page for editing |  |
 | click_and_wait | //a[@class="smallEditButton"] |  |
@@ -106,20 +107,20 @@ Repeat test using Miki/Lite access.
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | text_like | st-editing-title | `Editing: %%title%%` |
-| verifyValue | wikiwyg_wikitext_textarea | qr/.+This quick tour.+/ |
+| verifyValue | wikiwyg_wikitext_textarea | %%content%% |
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI LOGGED OUT. Run the same test in Miki |  |
 | open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
 
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
-| text_like | //div[@class='wiki-include-content'] | This quick tour |
+| text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI LOGGED OUT. Open the included page for editing |  |
 | click_and_wait | //a[@class="smallEditButton"] |  |
 | wait_for_element_visible_ok | edit_textarea | 30000 |
 | wait_for_element_visible_ok | link=Cancel Edit | 30000 |
-| verifyValue | edit_textarea | qr/.+This quick tour.+/ |
+| verifyValue | edit_textarea | %%content%% |
 
 | *Comment* | Test Case: Include Page. AUTH. Login. Open the included page for editing |  |
 | st-admin | set-permissions --w %%tcipw%% --p public-join-to-edit | The permissions for the %%tcipw%% workspace have been changed to public-join-to-edit. |
@@ -128,7 +129,7 @@ Repeat test using Miki/Lite access.
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
-| text_like | //div[@class='wiki-include-content'] | This quick tour |
+| text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. AUTH Open the included page for editing |  |
 | click_and_wait | //a[@class="smallEditButton"] |  |
@@ -136,19 +137,19 @@ Repeat test using Miki/Lite access.
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | text_like | st-editing-title | `Editing: %%title%%` |
-| verifyValue | wikiwyg_wikitext_textarea | qr/.+This quick tour.+/ |
+| verifyValue | wikiwyg_wikitext_textarea | %%content%% |
 
 | *Comment* | Test Case: Include Page. AUTH MIKI Run the same test in Miki |  |
 | open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
-| text_like | //div[@class='wiki-include-content'] | This quick tour |
+| text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. AUTH MIKI Open the included page for editing |  |
 | click_and_wait | //a[@class="smallEditButton"] |  |
 | wait_for_element_visible_ok | edit_textarea | 30000 |
 | wait_for_element_visible_ok | link=Cancel Edit | 30000 |
-| verifyValue | edit_textarea | qr/.+This quick tour.+/ |
+| verifyValue | edit_textarea | %%content%% |
 | click_and_wait | link=Cancel Edit |  |
 
 Logout from Miki. Test for content and edit button in page view.
@@ -164,7 +165,7 @@ Repeat test using Miki/Lite access.
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
-| text_like | //div[@class='wiki-include-content'] | This quick tour |
+| text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. AUTH LOGGED OUT. CANNOT Open the included page for editing |  |
 | wait_for_element_not_present_ok | //a[@class="smallEditButton"] | 10000 |
@@ -174,7 +175,7 @@ Repeat test using Miki/Lite access.
 
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |
-| text_like | //div[@class='wiki-include-content'] | This quick tour |
+| text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. AUTH MIKI LOGGED OUT. CANNOT Open the included page for editing |  |
 | wait_for_element_not_present_ok | //a[@class="smallEditButton"] | 10000 |

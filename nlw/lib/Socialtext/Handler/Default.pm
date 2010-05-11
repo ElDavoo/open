@@ -26,7 +26,10 @@ sub handler {
 
     if (my $action = $rest->query->param('action')) {
         my $res;
-        eval { $res = $self->hub->process };
+        eval { 
+            $self->hub->rest($rest);
+            $res = $self->hub->process 
+        };
         if (my $e = $@) {
             my $redirect_class = 'Socialtext::WebApp::Exception::Redirect';
             if (Exception::Class->caught($redirect_class)) {
@@ -61,11 +64,7 @@ sub handler {
 sub redirect_to_login {
     my $self = shift;
     my $uri = uri_escape($ENV{REQUEST_URI} || '');
-
-    if (Socialtext::BrowserDetect::is_mobile()) {
-        return $self->redirect('/lite/login');
-    }
-    return $self->redirect("/nlw/login.html?redirect_to=$uri");
+    return $self->redirect("/challenge?$uri");
 }
 
 sub redirect {

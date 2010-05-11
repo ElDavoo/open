@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use base 'Socialtext::Rest';
-use Socialtext::JSON;
+use Socialtext::JSON qw/encode_json decode_json/;
 use XML::Parser;
 
 sub GET_html {
@@ -20,7 +20,7 @@ sub GET_json {
     my $text = $self->text;
     $text =~ s/"/\\"/g;
     $rest->header(-type => 'application/json');
-    return "{text: \"$text\"}\n";
+    return encode_json({text => $text});
 }
 
 sub GET_xml {

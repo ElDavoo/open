@@ -2,14 +2,13 @@
 
 | *Comment* | Test Case: Active Content Empty Messages |  |
 
-| set_default | empty_user | %%username%% |
-| set_default | empty_acct | Unknown |
+| set | empty_member | empty_member_%%start_time%%@ken.socialtext.net |
+| set | empty_acct | empty_acct_%%start_time%% |
 
-| *Comment* | Test Case: Active Content Empty Messages setup empty user and account |  |
+| *Comment* | Test Case: Active Members Empty Messages setup empty user and account |  |
 | st-admin | create-account --name %%empty_acct%% |  |
-| st-admin | create-user --e %%empty_user%% --p %%password%% |  |
-| st-admin | add-member --account %%empty_acct%% --u %%empty_user%% |  |
-| st-logoutin | %%empty_user%% | %%password%% |
+| st-admin | create-user --e %%empty_member%% --p %%password%% --account %%empty_acct%% |  |
+| st-logoutin | %%empty_member%% | %%password%% |
 
 | *Comment* | Test Case: Active Content Empty Messages get an empty Active Content widget |  |
 
@@ -17,11 +16,10 @@
 | st-name-widget | 1 | active_content |
 | st-widget-title-like | active_content | Active Content |
 | st-widget-settings | active_content |  |
-| wait_for_element_visible_ok | up_account | 30000 |
 | uncheck_ok | up_rotate |  |
-| select_ok | up_account | %%empty_acct%% |
+| select_ok | up_view | Viewed Pages |
 | click_ok | st-savebutton-%%active_content%% |  |
-| wait_for_element_not_visible_ok | up_account | 30000 |
+| wait_for_element_not_visible_ok | st-savebutton-%%active_content%% | 30000 |
 
 | *Comment* | Test Case: Active Content Empty Messages set the empty Content messages |  |
 
@@ -48,7 +46,5 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Active Content Empty Messages TEARDOWN |  |
-
-| st-admin | remove-member --username %%empty_user%% --account %%empty_acct%% |  |
 
 | *Comment* | Test Case: Active Content Empty Messages COMPLETED |  |

@@ -7,6 +7,7 @@ use Socialtext;
 use Socialtext::HTTP ':codes';
 use Socialtext::TT2::Renderer;
 use Socialtext::AppConfig;
+use Socialtext::Challenger;
 use Class::Field qw(const field);
 use Socialtext::URI;
 use Socialtext::AppConfig;
@@ -290,14 +291,28 @@ sub full_uri {
     return $self->hub->cgi->full_uri_with_query;
 }
 
+sub challenge {
+    my $self = shift;
+    Socialtext::Challenger->Challenge(@_);
+}
+
 sub redirect_to_login {
     my $self = shift;
     my $uri = uri_escape($ENV{REQUEST_URI} || '');
+    return $self->redirect("/challenge?$uri");
+}
 
-    if (Socialtext::BrowserDetect::is_mobile()) {
-        return $self->redirect('/lite/login');
-    }
-    return $self->redirect("/nlw/login.html?redirect_to=$uri");
+sub error {
+    my $self = shift;
+    my %opts = @_;
+    my $status = delete $opts{status} || HTTP_500_Internal_Server_Error;
+    my $error  = delete $opts{error} || 'An error has occured';
+
+    $self->header_out(-status => $status);
+    return $self->template_render(
+        'view/error',
+        error_string => $error,
+    );
 }
 
 sub redirect {
@@ -622,6 +637,7 @@ sub request {
 # Account Plugin Prefs
 
 sub DefaultAccountPluginPrefs { +{} }
+sub CheckAccountPluginPrefs { +{} }
 
 sub GetAccountPluginPrefTable {
     my $class = shift;
@@ -821,6 +837,10 @@ sub sheet_renderer {
         sheet => $sheet,
         hub   => $hub,
     );
+}
+
+sub date_local {
+    return $_[0]->hub->timezone->date_local($_[1]);
 }
 
 1;

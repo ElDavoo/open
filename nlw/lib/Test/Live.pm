@@ -342,7 +342,7 @@ sub log_in {
     my $username = shift || Test::Socialtext::User->test_username();
     my $password = shift || Test::Socialtext::User->test_password();
 
-    $self->mech->get($self->base_url . '/nlw/login.html');
+    $self->mech->get($self->base_url . '/challenge');
     $self->mech->submit_form(
         fields => {
             username => $username,

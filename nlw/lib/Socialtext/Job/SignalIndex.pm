@@ -9,14 +9,12 @@ with 'Socialtext::CoalescingJob';
 sub do_work {
     my $self    = shift;
     my $indexer = $self->indexer or return;
-    my $signal_id = $self->arg->{signal_id};
-    my $signal  = $self->signal;
 
-    if ($signal) {
+    if (my $signal = $self->signal) {
         $indexer->index_signal($signal);
     }
     else {
-        $indexer->delete_signal($signal_id);
+        $indexer->delete_signal($self->arg->{signal_id});
     }
 
     $self->completed();

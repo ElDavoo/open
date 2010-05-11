@@ -1,20 +1,20 @@
 package Socialtext::JobCreator;
 # @COPYRIGHT@
 use MooseX::Singleton;
+use MooseX::AttributeInflate;
 use Socialtext::TheSchwartz;
 use Socialtext::Search::AbstractFactory;
+use Socialtext::SQL qw/:exec/;
 use Carp qw/croak/;
 use Socialtext::Log qw/st_log/;
 use Socialtext::Cache ();
 use namespace::clean -except => 'meta';
 
-has '_client' => (
+has_inflated '_client' => (
     is => 'ro', isa => 'Socialtext::TheSchwartz',
     lazy_build => 1,
     handles => qr/(?:list|find|get_server_time|func|move_jobs_by|cancel_job)/,
 );
-
-sub _build__client { Socialtext::TheSchwartz->new() }
 
 sub insert {
     my $self = shift;
@@ -115,6 +115,13 @@ sub index_page {
     return @job_ids;
 }
 
+sub send_page_email {
+    my $self = shift;
+    my %opts = @_;
+
+    return $self->insert( "Socialtext::Job::EmailPage" => \%opts );
+}
+
 sub send_page_notifications {
     my $self = shift;
     my $page = shift;
@@ -184,6 +191,30 @@ sub index_signal {
     return ($job_id);
 }
 
+sub index_group {
+    my $self = shift;
+    my $group_or_id = shift;
+    my %p = @_;
+    $p{priority} ||= 70;
+
+    # accept either a group object or a group id.
+    my $id = (ref($group_or_id) && $group_or_id->isa('Socialtext::Group'))
+        ? $group_or_id->group_id
+        : $group_or_id;
+
+    my $job_id = $self->insert(
+        'Socialtext::Job::GroupIndex' => {
+            solr => 1,
+            group_id => $id,
+            job => {
+                priority => $p{priority},
+                coalesce => $id,
+            },
+        }
+    );
+    return ($job_id);
+}
+
 sub index_person {
     my $self = shift;
     my $maybe_user = shift;
@@ -209,9 +240,23 @@ sub index_person {
     }
 
     if ($p{name_is_changing}) {
-        eval { $self->_index_related_people($maybe_user, $user_id, %p); }
+        eval { $self->_index_related_people($maybe_user, $user_id, %p); };
+        warn $@ if $@;
+        eval { $self->_index_related_groups($user_id); };
+        warn $@ if $@;
     }
     return ($job_id);
+}
+
+sub _index_related_groups {
+    my ($self, $user_id) = @_;
+
+    my $sth = sql_execute(q{
+        SELECT group_id FROM groups WHERE created_by_user_id = ?
+        }, $user_id);
+    while (my $row = $sth->fetchrow_arrayref) {
+        $self->index_group($row->[0]);
+    }
 }
 
 sub _index_related_people {

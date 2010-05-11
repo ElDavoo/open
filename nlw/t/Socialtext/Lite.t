@@ -183,6 +183,14 @@ like( $html, qr{\Q<input name="search_term" value="title:dust" />},
 like( $html, qr{<li>.*<a.*href="/m/page/admin/stronger_than_dust"}ms, 
     'search results include expected page' );
 
+# Need a page called 'Start here' with a 'Welcome' tag.
+my $start = Socialtext::Page->new( hub => $hub )->create(
+    title      => 'Start here',
+    content    => 'Starting..',
+    categories => [ 'Welcome' ],
+    creator    => $hub->current_user,
+);
+
 ## investigate tag handling
 # get the tag list
 $html = $lite->tag();

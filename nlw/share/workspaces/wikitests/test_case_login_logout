@@ -3,7 +3,7 @@
 | *Comment* | Test Case: Login/Logout Login redirect |  |
 | st-logout |  |  |
 | open | /%%workspace%% |  |
-| st-message | You must login to view this page |  |
+| wait-for-element-present-ok | st-login-form | 1000 |
 
 | *Comment* | Test Case: Login/Logout Empty email address: |  |
 | type_ok | username |  |

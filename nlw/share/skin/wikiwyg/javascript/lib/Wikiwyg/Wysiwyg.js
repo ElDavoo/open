@@ -30,6 +30,7 @@ proto.classtype = 'wysiwyg';
 proto.modeDescription = 'Wysiwyg';
 
 proto.config = {
+    border: '1px solid black',
     useParentStyles: true,
     useStyleMedia: 'wikiwyg',
     iframeId: null,
@@ -38,7 +39,9 @@ proto.config = {
     editHeightMinimum: 150,
     editHeightAdjustment: 1.3,
     clearRegex: null,
-    enableClearHandler: false
+    enableClearHandler: false,
+    noToolbar: false,
+    noTableSorting: false
 };
 
 proto.initializeObject = function() {
@@ -727,7 +730,7 @@ proto.rebindHandlers = function() {
 
 proto.enableThis = function() {
     Wikiwyg.Mode.prototype.enableThis.call(this);
-    this.edit_iframe.style.border = '1px black solid';
+    this.edit_iframe.style.border = this.config.border;
     this.edit_iframe.width = '99%';
     this.setHeightOf(this.edit_iframe);
     this.fix_up_relative_imgs();
@@ -781,17 +784,20 @@ proto.enableThis = function() {
         self.rebindHandlers();
         self.set_clear_handler();
 
-        jQuery.poll(
-            function() {
-                return jQuery("table.sort", self.get_edit_document()).size() > 0
-            },
-            function() {
-                jQuery('table.sort', self.get_edit_document())
-                    .each(function() {
-                        Socialtext.make_table_sortable(this);
-                    });
-            }, 500, 10000
-        );
+        if (!self.config.noTableSorting) {
+            jQuery.poll(
+                function() {
+                    return jQuery("table.sort", self.get_edit_document())
+                        .size() > 0
+                },
+                function() {
+                    jQuery('table.sort', self.get_edit_document())
+                        .each(function() {
+                            Socialtext.make_table_sortable(this);
+                        });
+                }, 500, 10000
+            );
+        }
     };
 
     jQuery.poll(
@@ -807,7 +813,7 @@ proto.enableThis = function() {
         500, 10000
     );
 
-    if (!this.__toolbar_styling_interval) {
+    if (!this.config.noToolbar && !this.__toolbar_styling_interval) {
         this.__toolbar_styling_interval = setInterval(
             function() {
                 try {

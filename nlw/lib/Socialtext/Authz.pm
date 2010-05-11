@@ -1,22 +1,15 @@
-# @COPYRIGHT@
 package Socialtext::Authz;
-use strict;
-use warnings;
-
-our $VERSION = '0.02';
-
+# @COPYRIGHT@
+use Moose;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_singlevalue sql_execute/;
 use Socialtext::Cache;
 use Socialtext::User::Default::Users qw(:system-user);
+use Socialtext::UserSet qw/:const/;
 use List::MoreUtils qw/any/;
+use namespace::clean -except => 'meta';
 
-# In the future this might be a factory but for now we'll just make it
-# nice and simple
-sub new {
-    my $class = shift;
-    return bless {}, $class;
-}
+our $VERSION = '1.0';
 
 sub user_has_permission_for_workspace {
     my $self = shift;
@@ -27,11 +20,49 @@ sub user_has_permission_for_workspace {
         @_
     );
 
+    # TODO: make this like the other two containers
     return 0 unless $p{workspace}->real;
     return $p{workspace}->permissions->user_can(
-            user       => $p{user},
-            permission => $p{permission},
-        );
+        user       => $p{user},
+        permission => $p{permission},
+    );
+}
+
+sub _user_has_permission_for_container {
+    my $self = shift;
+    my %p = (
+        permission => undef,
+        container  => undef,
+        user       => undef,
+        id_matrix  => undef,
+        @_
+    );
+
+    return 1 if ($p{user}->username eq $SystemUsername);
+
+    return 0 unless $p{permission};
+    my $pname = ref($p{permission}) ? $p{permission}->name : $p{permission};
+
+    my @role_ids = $p{container}->role_for_user($p{user}, ids_only => 1);
+    push @role_ids, $p{user}->is_guest
+        ? Socialtext::Role->Guest->role_id
+        : Socialtext::Role->AuthenticatedUser->role_id;
+
+    for my $role_id (@role_ids) {
+        my $m = $p{id_matrix}->{$role_id} || [];
+        return 1 if any {$_ eq $pname} @$m;
+    }
+    return 0;
+}
+
+sub _role_matrix_to_id_matrix {
+    my $matrix = shift;
+    my %id_matrix;
+    for my $role (keys %$matrix) {
+        my $role_id = Socialtext::Role->new(name => $role)->role_id;
+        $id_matrix{$role_id} = $matrix->{$role};
+    }
+    return \%id_matrix;
 }
 
 # Hardcode the permissions matrix in here for now. When it comes time to
@@ -39,11 +70,21 @@ sub user_has_permission_for_workspace {
 # default group permissions here.
 {
     # Warning: permissions here must also exist in the ST::Permission module.
-    my %matrix = (
-        admin  => [qw/admin read edit/],
-        member => [qw/read edit/],
-        guest  => [],
+    my %permission_matrix = (
+        private => {
+            admin              => [qw/admin read edit/],
+            member             => [qw/      read edit/],
+            authenticated_user => [                   ],
+            guest              => [                   ],
+        },
+        'self-join' => {
+            admin              => [qw/admin read edit/],
+            member             => [qw/      read edit/],
+            authenticated_user => [qw/      read     /],
+            guest              => [                   ],
+        },
     );
+    my %id_matrix;
 
     sub user_has_permission_for_group {
         my $self = shift;
@@ -54,17 +95,46 @@ sub user_has_permission_for_workspace {
             @_
         );
 
+        # XXX NOTE: business admins have special privileges for groups
         return 1 if $p{user}->is_business_admin;
 
-        my $role = $p{group}->role_for_user($p{user});
-        my $role_name = $role ? $role->name : 'guest';
+        my $pset = $p{group}->permission_set;
+        $pset = 'private' unless exists $permission_matrix{$pset};
 
-        return 0 unless $p{permission};
-        my $pname = ref($p{permission}) ? $p{permission}->name : $p{permission};
+        $id_matrix{$pset} ||=
+            _role_matrix_to_id_matrix($permission_matrix{$pset});
+        $p{container} = delete $p{group},
+        return $self->_user_has_permission_for_container(
+            %p, id_matrix  => $id_matrix{$pset},
+        );
+    }
+}
 
-        my $set = $matrix{$role_name};
-        return 0 unless $set;
-        return (any { $_ eq $pname } @$set) ? 1 : 0;
+{
+    # Warning: permissions here must also exist in the ST::Permission module.
+    my %matrix = (
+        admin              => [qw/admin read edit            /],
+        member             => [qw/      read edit            /],
+        impersonator       => [qw/      read edit impersonate/],
+        authenticated_user => [                               ],
+        guest              => [                               ],
+    );
+    my $id_matrix;
+
+    sub user_has_permission_for_account {
+        my $self = shift;
+        my %p = (
+            permission => undef,
+            account    => undef,
+            user       => undef,
+            @_
+        );
+
+        $id_matrix ||= _role_matrix_to_id_matrix(\%matrix);
+        $p{container} = delete $p{account},
+        return $self->_user_has_permission_for_container(
+            %p, id_matrix  => $id_matrix,
+        );
     }
 }
 
@@ -109,76 +179,93 @@ sub plugin_enabled_for_users {
 sub plugin_enabled_for_user_sets {
     my $self        = shift;
     my %p           = @_;
-    my $actor_id    = $p{actor_id};
-    my $user_set_id = $p{user_set_id};
+    my $set_id_a    = $p{actor_id} || $p{set_id_a};
+    my $set_id_b    = $p{user_set_id} || $p{set_id_b};
     my $plugin_name = $p{plugin_name};
 
+    my $t = time_scope 'plugin_enabled_for_user_sets';
+
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "user_sets:$user_set_id\0$actor_id\0$plugin_name";
+    my $cache_key = "plugs_4_2_us3ts:$set_id_a\0$set_id_b\0$plugin_name";
     my $enabled = $cache->get($cache_key);
     return $enabled if defined $enabled;
 
-    # This reads "find all user sets with plugin X that are related to user A,
-    # then check each user_set to see if user B is also in it".
-    # This should be faster on average than just joining r1 and r2 when using
-    # LIMIT 1"
-    my $sql = <<SQL;
+    # This reads: find all user containers C with plugin P enabled that are
+    # related to entity A, then check each user_set to see if entity B is also
+    # in container C (*OR* B == C).
+    my $sql = q{
         SELECT 1
         FROM user_set_path r1
         JOIN user_set_plugin p1 ON (r1.into_set_id = p1.user_set_id)
-        WHERE p1.plugin = ? AND r1.from_set_id = ?
-          AND EXISTS (
-                SELECT 1
-                FROM user_set_path r2
-                WHERE r1.into_set_id = r2.into_set_id 
-                  AND r2.from_set_id = ?
+        WHERE p1.plugin = $1 AND r1.from_set_id = $2
+          AND (
+              r1.into_set_id = $3
+                OR
+              EXISTS (
+                    SELECT 1
+                    FROM user_set_path r2
+                    WHERE r1.into_set_id = r2.into_set_id 
+                      AND r2.from_set_id = $3
+              )
           )
         LIMIT 1
-SQL
+    };
 
-    Socialtext::Timer->Continue('plugin_enabled_for_users');
     $enabled = sql_singlevalue($sql, $plugin_name,
-                               $actor_id, $user_set_id) ? 1 : 0;
-    Socialtext::Timer->Pause('plugin_enabled_for_users');
+                               $set_id_a, $set_id_b) ? 1 : 0;
 
     $cache->set($cache_key, $enabled);
     return $enabled;
 }
 
-sub plugin_enabled_for_user_in_account {
+sub plugin_enabled_for_user_in_accounts {
     my $self = shift;
     my %p = @_;
     my $user = delete $p{user};
-    my $account = delete $p{account};
+    my $accounts = delete $p{accounts};
     my $plugin_name = delete $p{plugin_name};
 
+    if (!@$accounts) {
+        Carp::cluck "what?! no accounts?!";
+        return 0;
+    }
     return 1 if ($user->username eq $SystemUsername);
 
     my $user_id = $user->user_id;
-    my $account_id = ref($account) ? $account->account_id : $account;
+
+    my @account_ids = map { ref($_) ? $_->account_id : $_ } @$accounts;
 
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "user_acct:$user_id\0$account_id";
+    my $cache_key = "user_acct_plug:$user_id\0" . join("\0", @account_ids);
     my $enabled_plugins = {};
     if ($enabled_plugins = $cache->get($cache_key)) {
         return $enabled_plugins->{$plugin_name} ? 1 : 0;
     }
 
+    my $qs = join ',', map { '?' } @account_ids;
     my $sql = <<SQL;
         SELECT plugin
         FROM user_set_plugin plug
         JOIN "Account" a USING (user_set_id)
         JOIN user_set_path path ON (path.into_set_id = a.user_set_id)
-        WHERE path.from_set_id = ? AND account_id = ?
+        WHERE path.from_set_id = ? AND account_id IN ($qs)
 SQL
 
-    my $sth = sql_execute($sql, $user_id, $account_id);
+    my $sth = sql_execute($sql, $user_id, @account_ids);
     while (my $row = $sth->fetchrow_arrayref) {
         $enabled_plugins->{$row->[0]} = 1;
     }
 
     $cache->set($cache_key, $enabled_plugins);
     return $enabled_plugins->{$plugin_name} ? 1 : 0;
+}
+
+sub plugin_enabled_for_user_in_account {
+    my $self = shift;
+    my %p = @_;
+    return $self->plugin_enabled_for_user_in_accounts(
+        accounts => [ delete $p{account} ], %p
+    );
 }
 
 sub plugins_enabled_for_user_set {
@@ -190,7 +277,7 @@ sub plugins_enabled_for_user_set {
     my $user_set_id = ref($user_set) ? $user_set->user_set_id : $user_set;
 
     my $cache = Socialtext::Cache->cache('authz_plugin');
-    my $cache_key = "uset:$user_set_id\0plugins\0direct=$direct";
+    my $cache_key = "plugs_4_uset:$user_set_id\0plugins\0direct=$direct";
     my $plugins = $cache->get($cache_key);
     return @$plugins if defined $plugins;
 
@@ -216,6 +303,31 @@ sub plugin_enabled_for_user_set {
     return (any { $_ eq $plugin_name } @plugins) ? 1 : 0;
 }
 
+sub user_sets_share_an_account {
+    my $self = shift;
+    my $set_a = shift;
+    my $set_b = shift;
+    die "must supply two objects with user_set_id accessors"
+        unless (blessed($set_a) && $set_a->can('user_set_id') and 
+                blessed($set_b) && $set_b->can('user_set_id'));
+
+    my $sql = q{
+        SELECT 1
+          FROM user_set_path path_a
+         WHERE from_set_id = $1 AND into_set_id }. PG_ACCT_FILTER .q{
+           AND EXISTS (
+               SELECT 1
+                 FROM user_set_path path_b
+                WHERE from_set_id = $2
+                  AND path_b.into_set_id = path_a.into_set_id
+           )
+        LIMIT 1
+    };
+    my $sth = sql_execute($sql, $set_a->user_set_id, $set_b->user_set_id);
+    return $sth->rows == 1;
+}
+
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
 __END__
 

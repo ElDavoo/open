@@ -16,12 +16,13 @@
 
 | *Comment* | Test Case: Exercise LDAP Group Add am account |  |
 | create-account | %%ldapy_account%% |  |
-| st-admin | add-member --g %%created_group_id%% --account %%ldapy_account%% | Motorhead is now a member of the %%ldapy_account%% Account |
+| st-admin | add-member --g %%created_group_id%% --account %%ldapy_account%% | Motorhead now has the role of 'member' in the %%ldapy_account%% Account |
 | st-admin | show-members --account ldapy-acct-%%start_time%% | lemmy@socialtext.com |
 | st-admin | show-members --account ldapy-acct-%%start_time%% | Kilmister |
 | st-admin | show-members --account ldapy-acct-%%start_time%% | Phil |
 | st-admin | show-members --account ldapy-acct-%%start_time%% | Eddie |
 | st-logoutin | %%username%% | %%password%% |
+| st-admin | give-accounts-admin --u %%username%% |  |
 | open_ok | /nlw/control/account/%%account_id%% |  |
 | text_like | //body | Groups (1) |
 | text_like | //body | Motorhead |
@@ -62,6 +63,7 @@
 | *Comment* | Test Case: Exercise LDAP Group Remove from Account, Workspace, check removals |  |
 | st-logoutin | %%username%% | %%password%% |
 | st-admin | remove-member --account %%ldapy_account%% --g %%created_group_id%% | Motorhead is no longer a member of %%ldapy_account%% |
+| st-admin | give-accounts-admin --u %%username%% |  |
 | open_ok | /nlw/control/account/%%account_id%% |  |
 | text_like | //body | Groups (0) |
 | text_unlike | //body | Motorhead |
@@ -70,5 +72,9 @@
 | st-admin | remove-member --g %%created_group_id%% --w %%ldapy_ws%% |  |
 | open_ok | /%%ldapy_ws%%/ |  |
 | text_like | //body | You are not authorized to view this workspace |
+
+| *Comment* | Test Case: Exercise LDAP Group TEARDOWN |  |
+
+| st-admin | delete-workspace --w %%ldapy_ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Exercise LDAP Group COMPLETED |  |

@@ -112,10 +112,11 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI Create New Workspace TEARDOWN |  |
-| delete-group | %%group_id%% |  |
-| st-admin | delete-workspace --w %%test_delete_ws%% --no-export |  |
-| st-admin | delete-workspace --w %%addme_ws%% --no-export |  |
-| st-admin | delete-workspace --w %%group_ws%% --no-export |  |
-| st-admin | delete-workspace --w %%createme_ws_name --no-export |  |
 
-| *Comment* | Test Case: Groups UI Create New Workspace COMPLETED |  |  |
+| delete-group | %%group_id%% |  |
+| st-admin | delete-workspace --w %%test_delete_ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%addme_ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%createme_ws_name%% --no-export | has been deleted |
+
+| *Comment* | Test Case: Groups UI Create New Workspace COMPLETED |  |

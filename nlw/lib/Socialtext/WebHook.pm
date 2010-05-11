@@ -144,6 +144,28 @@ sub Add_webhooks {
             if (my $h_ws_id = $h->{workspace_id}) {
                 next unless $p{workspace_id} == $h_ws_id;
             }
+            if ($p{class} eq 'signal') {
+                if (my $hanno = $h->details->{annotation}) {
+                    next unless ref($hanno) eq 'ARRAY';
+                    my $nmspc = $hanno->[0];
+                    my $anno = $p{annotations};
+                    next unless defined $anno->{$nmspc};
+                    if (@$hanno > 1) {
+                        my $key = $hanno->[1];
+                        next unless defined $anno->{$nmspc}{$key};
+                        if (@$hanno > 2) {
+                            my $hval = $hanno->[2];
+                            my $val = $anno->{$nmspc}{$key};
+                            my $vals = ref($val) ? $val : [$val];
+                            my $match = 0;
+                            for my $v (@$vals) {
+                                $match++ if $v eq $hval;
+                            }
+                            next unless $match;
+                        }
+                    }
+                }
+            }
 
             Socialtext::JobCreator->insert(
                 'Socialtext::Job::WebHook' => {

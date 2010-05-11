@@ -55,7 +55,7 @@ EOT
     tests => [
         [ 'click_ok' => ['id=logout_btn', 'log out']],
         [ 'wait_for_page_to_load_ok' => 10000],
-        [ 'open_ok', '/nlw/login.html?redirect_to=%2Ffoo%2Findex.cgi' ],
+        [ 'open_ok', '/challenge?%2Ffoo%2Findex.cgi' ],
         [ 'type_ok', ['username' => 'testuser']],
         [ 'type_ok', ['password' => 'password']],
         [ 'click_ok', [q{id=login_btn}, 'log in']],
@@ -308,7 +308,7 @@ st_fixture_ok(
 | st-login | foo | bar |
 EOT
     tests => [
-        [ open_ok => '/nlw/login.html?redirect_to=%2Ffoo%2Findex.cgi' ],
+        [ open_ok => '/challenge?%2Ffoo%2Findex.cgi' ],
         [ type_ok => ['username', 'foo']],
         [ type_ok => ['password', 'bar']],
         [ click_ok => [q{id=login_btn}, 'log in']],
@@ -647,7 +647,7 @@ sub st_fixture_ok {
 
     my $tests = $args{tests};
     unshift @$tests, 
-      [ open_ok => '/nlw/login.html?redirect_to=%2Ffoo%2Findex.cgi' ],
+      [ open_ok => '/challenge?%2Ffoo%2Findex.cgi' ],
       [ type_ok => ['username', 'testuser']],
       [ type_ok => ['password', 'password']],
       [ click_ok => [q{id=login_btn}, 'log in']],

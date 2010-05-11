@@ -12,9 +12,9 @@
 | st-admin | add-member --w tp-%%start_time%% --e %%email%% | now has the role of 'member' in the |
 | st-admin | add-member --w tp-%%start_time%% --e %%e_user%% | now has the role of 'member' in the |
 
-| *Comment* | Starting Test Case: Tagging Profile. Log in %%username%% in case this is included from another profile test. |  |
-| click_and_wait | link=Dashboard |  |
-| st-logoutin |  |  |
+| *Comment* | Test Case: Tagging Profile. Log in %%username%% in case this is included from another profile test. |  |
+| open_ok | /nlw/submit/logout |  |
+| st-login |  |  |
 
 | *Comment* | Test Case: Tagging Profile. %%username%% may be in any account, and is secondarily in tagging-profile. |  |
 | *Comment* | Test Case: Tagging Profile. fog tag added |  |

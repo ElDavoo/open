@@ -12,7 +12,7 @@ Tests for [Story: User can be member of multiple accounts]
 | POST_json | %%users_uri%% | {"username":"%%user2%%"} |
 | code-is   | 403           |                          |
 
-# Add a user as a business admin
+# Add a user as a business admin (defaults to member)
 | set-business-admin | %%username%%  | 1                        |
 | POST_json          | %%users_uri%% | {"username":"%%user2%%"} |
 | code-is            | 201           |                          |
@@ -77,3 +77,42 @@ Tests for [Story: User can be member of multiple accounts]
 | json-array-size | 2                                |               |
 | json-path-is    | $[0].username                    | %%isamember%% |
 | json-path-is    | $[1].username                    | %%username%%  |
+
+#################
+
+Adding users as admins!
+
+| *comment*      | Add an admin to the account |                                              |
+| set            | admin                       | admin-%%start_time%%@ken.socialtext.net      |
+| create-user    | %%admin%%                   | password                                     |
+| http-user-pass | %%username%%                   | password                                     |
+| POST_json      | %%users_uri%%               | {"email_address":"%%admin%%","role_name":"admin"} |
+| code-is        | 201                         |                                              |
+| GET-json        | /data/accounts/%%account%%/users |               |
+| code-is         | 200                              |               |
+| json-parse      |                                  |               |
+| json-array-size | 3                                |               |
+| json-path-is    | $[0].username                    | %%admin%%  |
+| json-path-is    | $[1].username                    | %%isamember%% |
+| json-path-is    | $[2].username                    | %%username%%  |
+| json-path-is    | $[0].role_name               | admin  |
+| json-path-is    | $[1].role_name               | member  |
+| json-path-is    | $[2].role_name               | member  |
+
+| Comment | Update an existing user. |
+| POST_json | %%users_uri%% | {"email_address":"%%username%%","role_name":"admin"} |
+| code-is         | 201                              |               |
+| GET-json        | /data/accounts/%%account%%/users |               |
+| code-is         | 200                              |               |
+| json-parse      |                                  |               |
+| json-array-size | 3                                |               |
+| json-path-is    | $[0].username                    | %%admin%%     |
+| json-path-is    | $[1].username                    | %%isamember%% |
+| json-path-is    | $[2].username                    | %%username%%  |
+| json-path-is    | $[0].role_name                   | admin         |
+| json-path-is    | $[1].role_name                   | member        |
+| json-path-is    | $[2].role_name                   | admin         |
+
+| Comment | Use a bad role_name |
+| POST_json | %%users_uri%% | {"email_address":"%%username%%","role_name":"badmin"} |
+| code-is         | 400                              |               |

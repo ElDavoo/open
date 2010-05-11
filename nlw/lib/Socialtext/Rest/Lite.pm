@@ -19,7 +19,6 @@ sub not_authorized {
     eval {
         Socialtext::Challenger->Challenge(
             hub      => $self->hub,
-            request  => $self->rest->query,
             redirect => $self->rest->query->url(
                 -absolute => 1, -path => 1, -query => 1
             ),

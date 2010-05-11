@@ -3,20 +3,11 @@ package Test::Socialtext::CLIUtils;
 use strict;
 use warnings;
 use base 'Exporter';
+our @EXPORT = ();
 our @EXPORT_OK = qw/expect_success expect_failure is_last_exit call_cli_argv/;
+our %EXPORT_TAGS = ('all' => \@EXPORT_OK);
 use Test::More;
-
-BEGIN {
-    unless (
-        eval {
-            require Test::Output;
-            Test::Output->import();
-            1;
-        }
-        ) {
-        plan skip_all => 'These tests require Test::Output to run.';
-    }
-}
+use Test::Output;
 
 our $LastExitVal;
 {
@@ -32,6 +23,7 @@ sub expect_success {
 
     my $test = ref $expect ? \&stdout_like : \&stdout_is;
 
+    local $@;
     local $LastExitVal;
     $expect = [$expect] unless ref($expect) and ref($expect) eq 'ARRAY';
     for my $e (@$expect) {
@@ -50,6 +42,7 @@ sub expect_failure {
 
     my $test = ref $expect ? \&stderr_like : \&stderr_is;
 
+    local $@;
     local $LastExitVal;
     $test->(
         sub {

@@ -55,12 +55,6 @@ Cannot_create_empty_tag: {
                 page_count => 1,
             }
         ],
-        sorted_tags => [
-            {
-                name => 'empty',
-                page_count => 1,
-            }
-        ],
     }, 'empty tag is not added';
 }
 

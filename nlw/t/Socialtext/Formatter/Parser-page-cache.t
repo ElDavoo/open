@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 14;
-fixtures('workspaces');
+fixtures('workspaces', 'public');
 
 use Socialtext::Pages;
 use File::Path ();

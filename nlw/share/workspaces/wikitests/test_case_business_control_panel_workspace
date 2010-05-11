@@ -5,9 +5,11 @@
 | set | cli_user | cli_test%%start_time%%@ken.socialtext.net |
 
 | st-admin | create-account --name '%%new_acct%%' |  |
-
-| *Comment* | Test case: Business Control Panel Workspace Create a new workspace in the new account |  |
 | st-admin | create-workspace --name %%new_workspace%% --title %%new_workspace%% --account '%%new_acct%%' |  |
+
+| *Comment* | Test case: Business Control Panel Workspace Verify workspace in account |  |
+
+| st-admin | give-accounts-admin --u %%username%% |  |
 | open_ok | /nlw/control |  |
 | wait_for_element_visible_ok | link=Accounts | 3000 |
 | click_and_wait | link=Accounts |  |

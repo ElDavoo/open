@@ -42,7 +42,7 @@ Also, you need base_dn.ldif in your wikitest_client_files directory.
 | *Comment* | Test case: now deleted user should be treated as *not* logged in |  |
 | refresh |  |  |
 | wait_for_page_to_load_ok | 30000 |  |
-| st-message | You must login to view this page |  |
+| wait-for-element-present-ok | st-login-form | 1000 |
 
 | *Comment* | Test case: should not be able to log in as now deleted LDAP user |  |
 | st-login | %%test_username%% | %%test_password%% |

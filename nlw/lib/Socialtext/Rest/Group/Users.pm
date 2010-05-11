@@ -14,16 +14,36 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Users';
 
-has 'group' => (
-    is => 'ro', isa => 'Maybe[Socialtext::Group]',
-    lazy_build => 1,
-);
+has 'group' => (is => 'ro', isa => 'Maybe[Socialtext::Group]', lazy_build => 1);
+has 'user_is_related' => (is => 'ro', isa => 'Bool', lazy_build => 1);
+# see builder for definition of "visitor"
+has 'user_is_visitor' => (is => 'ro', isa => 'Bool', lazy_build => 1);
+
 sub _build_group {
     my $self = shift;
 
     my $group_id = $self->group_id;
     my $group = Socialtext::Group->GetGroup(group_id => $group_id);
     return $group;
+}
+
+sub _build_user_is_related {
+    my $self = shift;
+    return $self->hub->authz->user_sets_share_an_account(
+        $self->rest->user, $self->group);
+}
+
+sub _build_user_is_visitor {
+    my $self = shift;
+    my $visitor = $self->rest->user;
+    my $group = $self->group;
+
+    # visitor is a user related to this group by some account that is doing
+    # some self-join related activity.
+
+    return if $group->has_user($visitor);
+    return if $group->permission_set ne 'self-join';
+    return $self->user_is_related;
 }
 
 # Anybody can see these, since they are just the list of workspaces the user
@@ -36,18 +56,28 @@ sub if_authorized {
     my $self = shift;
     my $method = shift;
     my $call = shift;
+    my $user = $self->rest->user;
+
+    return $self->not_authorized if $user->is_guest;
 
     return $self->no_resource('group') unless $self->group;
 
-    my $user = $self->rest->user;
-    my $perm = $method eq 'GET' ? ST_READ_PERM : ST_ADMIN_PERM;
+    my $perm;
+    if    ($method eq 'GET')  { $perm = ST_READ_PERM; }
+    elsif ($method eq 'POST') { $perm = ST_ADMIN_PERM; }
+    else { return $self->bad_method; }
+
     my $can = $self->group->user_can(
         user => $user,
         permission => $perm,
     );
 
+    $can ||= $self->user_is_visitor;
+
     unless ($can || $user->is_business_admin) {
-        return $self->not_authorized;
+        return $self->user_is_related
+            ? $self->not_authorized
+            : $self->no_resource('group');
     }
 
     return $self->$call(@_);
@@ -55,22 +85,27 @@ sub if_authorized {
 
 sub _build_user_find {
     my $self = shift;
-    my $filter = $self->rest->query->param('filter');
     my $group = $self->group;
-    die "invalid group" unless $group;
+    my $viewer = $self->rest->user;
+    my $q = $self->rest->query;
 
-    return Socialtext::User::Find::Container->new(
-        viewer => $self->rest->user,
-        limit  => $self->items_per_page,
-        offset => $self->start_index,
-        filter => $filter,
+    my %args = (
+        viewer    => $viewer,
+        limit     => $self->items_per_page,
+        offset    => $self->start_index,
         container => $group,
-        direct => $self->rest->query->param('direct') || 0,
-        minimal => $self->rest->query->param('minimal') || 0,
-        order => $self->rest->query->param('order') || '',
-        reverse => $self->rest->query->param('reverse') || 0,
-        all => $self->rest->query->param('all') || 0,
-    )
+        direct    => $q->param('direct') || undef,
+        order     => $q->param('order') || '',
+        reverse   => $q->param('reverse') || undef,
+        # these may get changed by 'just_visiting':
+        filter    => $q->param('filter') || undef,
+        all       => $q->param('all') || undef,
+        minimal   => $q->param('minimal') || 0,
+    );
+
+    $args{just_visiting} = 1 if $self->user_is_visitor;
+
+    return Socialtext::User::Find::Container->new(\%args);
 }
 
 sub POST_json {
@@ -91,13 +126,16 @@ sub POST_json {
         return 'Group membership cannot be changed';
     }
 
-    my $can_admin = $group->user_can(
+    my $is_visiting = $self->user_is_visitor;
+
+    my $can_admin = ($is_visiting) ? undef : $group->user_can(
         user       => $invitor,
         permission => ST_ADMIN_PERM
     );
-    unless ($self->user_can('is_business_admin') || $can_admin) {
-        $rest->header( -status => HTTP_401_Unauthorized );
-        return '';
+    my $is_badmin = $self->user_can('is_business_admin');
+    unless ($is_badmin || $can_admin || $is_visiting) {
+        $rest->header( -status => HTTP_403_Forbidden );
+        return 'Insufficient privileges to make this change to the group';
     }
 
     $data = _parse_data($data);
@@ -126,6 +164,13 @@ sub POST_json {
         }
 
         my $role_name = $roledata->{role_name} || 'member';
+        if ($is_visiting and not $is_badmin) {
+            if ($role_name ne 'member') {
+                $rest->header( -status => HTTP_400_Bad_Request );
+                return loc("Can only become member of self-join groups");
+            }
+        }
+
         my $role = Socialtext::Role->new( name => $role_name );
         unless ( $role && $role->name ) {
             $rest->header( -status => HTTP_400_Bad_Request );
@@ -172,7 +217,10 @@ sub _parse_data {
 
     # This is the "new" format, it's a hashref with users index.
     if (ref($data) eq 'HASH' && $data->{users}) {
-        $data->{send_message} ||= 0;
+        $data = {
+            users => $data->{users},
+            send_message => $data->{send_message} || 0,
+        };
         return $data;
     }
 

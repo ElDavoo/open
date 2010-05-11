@@ -33,6 +33,7 @@ sub PUT_json {
     my $hook;
     eval { 
         $object->{creator_id} = $rest->user->user_id;
+        $object->{details_blob} = encode_json(delete($object->{details}) || {} );
         $hook = Socialtext::WebHook->Create(%$object),
     };
     if ($@) {

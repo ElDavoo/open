@@ -10,6 +10,7 @@ use Socialtext::Search::SimpleAttachmentHit;
 use Socialtext::Search::SimplePageHit;
 use Socialtext::Search::SignalHit;
 use Socialtext::Search::PersonHit;
+use Socialtext::Search::GroupHit;
 use Socialtext::Search::Utils;
 use Socialtext::AppConfig;
 use Socialtext::Exceptions;
@@ -84,12 +85,12 @@ sub _search {
         @account_ids = $opts{viewer}->accounts(ids_only => 1);
     }
 
-    my @group_ids;
+    my $group_ids;
     if ($opts{group_ids}) {
-        @group_ids = @{ $opts{group_ids} };
+        $group_ids = $opts{group_ids};
     }
     elsif ($opts{viewer}) {
-        @group_ids = $opts{viewer}->groups(ids_only => 1)->all;
+        $group_ids = [$opts{viewer}->groups(ids_only => 1)->all];
     }
 
     $query_string = lc $query_string;
@@ -117,8 +118,10 @@ sub _search {
         if ($opts{viewer}) {
             # Only from accounts and groups the viewer has a connection to
             my $nets = join(' OR ',
-                (map { "a:$_" } @account_ids),
-                (map { "g:$_" } @group_ids),
+                ($opts{doctype} ne 'group'
+                    ? (map {"a:$_"} @account_ids)
+                    : ()),
+                (map { "g:$_" } @$group_ids),
             );
             $filter_query[$#filter_query] .= " AND ($nets)";
 
@@ -138,6 +141,7 @@ sub _search {
     my $query_type = 'dismax';
     $query_type = 'standard' if $query =~ m/\b[a-z_]+:/i;
     $query_type = 'standard' if $query =~ m/\*|\?/;
+    $query_type = 'standard' if $query =~ m/\s/;
     my @sort = $self->_sort_opts($opts{order}, $opts{direction}, $query_type);
     my $query_hash = {
         # fl = Fields to return
@@ -187,15 +191,24 @@ sub _sort_opts {
 
     # Map the UI options into Solr fields
     my %sortable = (
-        relevance => 'score',
-        date => 'date',
-        subject => 'plain_title',
+        relevance      => 'score',
+        date           => 'date',
+        subject        => 'plain_title',
         revision_count => 'revisions',
-        create_time => 'created',
-        workspace => 'w_title',
-        sender => 'creator_name',
-        name => 'name_asort',
+        create_time    => 'created',
+        workspace      => 'w_title',
+        sender         => 'creator_name',
+        name           => 'name_asort',
+        title          => 'plain_title',
     );
+
+    # Sugar for Signals search
+    if ($order eq 'newest') {
+        $order = 'date'; $direction = 'desc';
+    }
+    elsif ($order eq 'oldest') {
+        $order = 'date'; $direction = 'asc';
+    }
 
     # If no valid sort order is supplied, then we use either a date sort or a
     # score sort.
@@ -255,6 +268,13 @@ sub _make_result {
         return Socialtext::Search::PersonHit->new(
             score => $score,
             user_id => $user_id,
+        );
+    }
+    if ($doctype eq 'group') {
+        (my $group_id = $key) =~ s/^group://;
+        return Socialtext::Search::GroupHit->new(
+            score => $score,
+            group_id => $group_id,
         );
     }
     elsif ($doctype eq 'page' or $doctype eq 'attachment') {

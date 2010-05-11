@@ -1,8 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>226</version>
-  <url>http://topaz.socialtext.net/~audreyt/flairSignals/flairSignals-226.air</url>
-  <description><![CDATA[[Build 226 - Fri Mar 12 22:24:41 PST 2010]
+  <version>258</version>
+  <url>http://topaz.socialtext.net/flair/flairSignals-258.air</url>
+  <description><![CDATA[[Build 258 - Thu Apr 29 08:28:15 PDT 2010]
+* Full-refresh the thread view when the user is not composing a reply. ({bz: 3823})
+* Make Flair always auto-update from topaz.
+* Restore "Find" functionality for thread view.
+
+[Build 257 - Thu Apr 29 05:51:28 PDT 2010]
+* Edit area now remains on screen when new signals arrive.
+* Add back the "...More..." functionality.
+* Cache avatar and asset photos locally, so they no longer disappear.
+* Super-secret C-0 key binding now toggles between linear and thread view.
+* Repair "Go back to Group you're Signalling to". ({bz: 3817})
+
+[Build 256 - Wed Apr 28 10:31:29 PDT 2010]
+* Fix {bz: 3805}: Attribution links missing in entries.
+
+[Build 255 - Wed Apr 28 08:06:22 PDT 2010]
+* Fix a buglet that makes "/me ..."'s replies all italic and green.
+
+[Build 254 - Wed Apr 28 07:46:45 PDT 2010]
+* C-9 now works without triggering an additional C-F.
+* Fixed "mention" lookahead in replies.
+
+[Build 253 - Wed Apr 28 02:11:16 PDT 2010]
+* Signals/All: Support for threading for ST version v4.0.2+.
+* Signals: Launch threading lightboxes in Non-All subtabs via "as a topic" links.
+* Signals: New hot keys: C-8 (Prev subtab), C-9 (Next subtab), C-0 (toggle between all and search)
+
+[Build 252 - Wed Apr 21 10:16:08 PDT 2010]
+* Delay the "No signals has been posted" notice at startup in build 251.
+
+[Build 251 - Wed Apr 21 10:06:45 PDT 2010]
+* Repair Convo lightbox regression. (Ken)
+
+[Build 250 - Tue Apr 20 23:02:17 PDT 2010]
+* Mitigate network-transition timeouts via periodic force-pulling. (Eugene)
+
+[Build 249 - Mon Apr 19 21:40:56 PDT 2010]
+* Fix {bz: 3777}: pushd server and client deadlock. (Ken)
+* Switch to a new set of icon drawn by Ross. (Ross)
+
+[Build 248 - Fri Apr 16 21:21:17 PDT 2010]
+* Display newer signals before older ones, for better visual feedback.
+
+[Build 247 - Fri Apr 16 21:00:39 PDT 2010]
+* Make SD much more responsive by rendering one signal at a time. (Kathleen)
+* Also reduced UI delays for "Reply" and "Reply Privately".
+
+[Build 246 - Thu Apr 15 01:28:46 PDT 2010]
+* Fix suppressed "Followed" list display. (Alan)
+* Immediately fetch signals after the user posted a new signal.
+
+[Build 245 - Wed Apr 14 17:12:15 PDT 2010]
+* Reinstate forced-reconnect interval at 30 seconds after conferring with Stash.
+
+[Build 244 - Wed Apr 14 15:44:24 PDT 2010]
+* Fix the "disappearing tray icon" bug introduced in build 241. ({bz: 3767})
+
+[Build 243 - Wed Apr 14 15:25:29 PDT 2010]
+* Reinstate forced-reconnect interval at 180 seconds.
+* Don't hammer the server when pushd becomes temporarily unavailable.
+
+[Build 242 - Wed Apr 14 03:50:56 PDT 2010]
+* Decrease forced-reconnect interval back to 30 seconds as staging pushd seems unstable.
+
+[Build 241 - Wed Apr 14 02:39:37 PDT 2010]
+* Reconnect gracefully when the push daemon restarts. ({bz: 3763})
+* Increased forced-reconnect interval from 30 to 300 seconds. (Luke)
+
+[Build 240 - Tue Apr 13 03:39:57 PDT 2010]
+* Restored push support now that the deep-recursion bug has been nixed.
+
+[Build 239 - Mon Apr 12 15:54:05 PDT 2010]
+* Logout then login into another server; @-completion now reflects the new people list. (for {bz: 3742})
+
+[Build 238 - Mon Apr 12 00:55:17 PDT 2010]
+* Hide deactivated/deleted people from @-completion and People tab.
+
+[Build 237 - Sun Apr 11 15:58:43 PDT 2010]
+* Open Permalink in browser for ChocolateRain servers.
+* Suspend Push support for ChocolateRain servers; more ongoing work continues.
+
+[Build 236 - Sat Apr 10 16:34:04 PDT 2010]
+* Convo: "Click to Reply To This Signal" and focuses on the Convo input box.
+
+[Build 235 - Fri Apr  9 03:44:34 PDT 2010]
+* "Log me in automatically" now takes effect upon the first try.
+
+[Build 234 - Thu Mar 25 23:28:07 PDT 2010]
+* Correctly upgrade json2.js for real.
+
+[Build 233 - Thu Mar 25 22:51:00 PDT 2010]
+* Upgrade json2.js to the latest build to make certain signals parseable. (for {bz: 3721})
+
+[Build 232 - Thu Mar 25 08:03:32 PDT 2010]
+* Unbreak the Workspaces/Attachments sub-tab. (JonGrorud)
+
+[Build 231 - Tue Mar 23 22:00:01 PDT 2010]
+* Restore "trace" function to unbreak Workspaces tab's preview pane.
+* If GET on /data/signals failed, restart signals clock.
+
+[Build 230 - Tue Mar 23 19:43:31 PDT 2010]
+* Send proper SD user agent header for auto-updater (for {bz: 3692}).
+
+[Build 229 - Tue Mar 23 18:34:20 PDT 2010]
+* Pushd: Cope with "continue" messages somenow not parsed back correctly.
+
+[Build 228 - Mon Mar 22 22:39:42 PDT 2010]
+* Set Signal input limit immediately upon login.
+
+[Build 227 - Thu Mar 18 00:58:27 PDT 2010]
+* Implement [Story: Expand signals input limit]; default is 400 for ST<=4.0.0 servers.
+
+[Build 226 - Fri Mar 12 22:24:41 PST 2010]
 * On Login, reset SignalTo to Primary group if it was set to "All Groups".
 
 [Build 225 - Fri Mar 12 04:17:39 PST 2010]

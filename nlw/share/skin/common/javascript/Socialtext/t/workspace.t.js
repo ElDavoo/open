@@ -87,11 +87,10 @@ t.runAsync([
     function() {
         Socialtext.Workspace.Create({
             title: workspaceTitle,
-            name: workspaceName,
-            callback: function() {
-                t.pass("Created Workspace");
-                t.nextStep()();
-            }
+            name: workspaceName
+        }, function() {
+            t.pass("Created Workspace");
+            t.callNextStep();
         });
     },
 

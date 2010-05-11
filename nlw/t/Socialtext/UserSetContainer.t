@@ -3,8 +3,9 @@
 use warnings;
 use strict;
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 27;
+use Test::Socialtext tests => 35;
 use Test::More;
+use Test::Exception;
 BEGIN { 
     use_ok 'Socialtext::UserSet', qw/:const/;
     use_ok 'Socialtext::UserSetContainer';
@@ -39,10 +40,12 @@ ok($default_acct->user_set->has_role(
     package Container;
     use Moose;
     has 'user_set_id' => (is => 'rw', isa => 'Int');
+    sub impersonation_ok {return 1};
     with 'Socialtext::UserSetContainer';
 }
 
 my $c = Container->new(user_set_id => ACCT_OFFSET + 1_000_000);
+ok $c;
 my $cid = $c->user_set_id;
 END { 
     diag "CLEANUP: remove anonymous user-set";
@@ -171,4 +174,28 @@ account_logging: {
     my $rm = $acct->remove_role(object => $user, actor => $actor);
     logged_like info => qr/^REMOVE,USER_ROLE,role:admin,$qr$/;
     is $rm->role_id, $admin->role_id;
+}
+
+system_created_no_roles: {
+    my $acct = create_test_account_bypassing_factory();
+    my $a_sys_user = create_test_user(is_system_created => 1, account => $acct);
+    ok $a_sys_user, 'created a system user';
+
+    dies_ok {
+        $c->add_user(user => $a_sys_user);
+    } "can't add system-created users";
+
+    dies_ok {
+        $c->assign_user(user => $a_sys_user);
+    } "can't add system-created users";
+
+    lives_ok {
+        $c->user_set->add_object_role($a_sys_user, $member->role_id);
+    } 'super low-level interface is OK';
+    ok $c->has_user($a_sys_user), 'added via super-low-level interface';
+
+    lives_ok {
+        $c->remove_user(user => $a_sys_user);
+    } "can remove them though (if they did get added somehow)";
+    ok !$c->has_user($a_sys_user), 'removed via high-level interface';
 }

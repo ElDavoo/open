@@ -2239,8 +2239,7 @@ ul li a.followPersonButton {
 body#dashBoard div#lastsignal {
     font-size: 14px;
     color: #666;
-    height: 28px;
-    padding: 10px 20px 0 0;
+    padding: 10px 20px 10px 10px; 
     margin: 0;
     display: block;
     text-align:center;
@@ -3653,7 +3652,7 @@ table.pagelist.dataTable th div.selectall{
     vertical-align: middle;
 }
 
-table.pagelist.dataTable th div.sort, div.peopleSort {
+table.pagelist.dataTable th div.sort {
     float: right;
     margin-right: 8px;
     vertical-align: middle;

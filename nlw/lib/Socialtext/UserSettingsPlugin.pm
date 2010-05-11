@@ -40,10 +40,8 @@ sub settings {
 
 sub users_settings {
     my $self = shift;
-    if ( $self->hub()->current_user()->is_guest() ) {
-        Socialtext::Challenger->Challenge(
-            type => 'settings_requires_account' );
-    }
+
+    $self->reject_guest(type => 'settings_requires_account');
 
     $self->_update_current_user()
         if $self->cgi->Button;
@@ -119,16 +117,16 @@ sub get_admins {
 
 sub users_listall {
     my $self = shift;
-    if ( $self->hub()->current_user()->is_guest() ) {
-        Socialtext::Challenger->Challenge(
-            type => 'settings_requires_account' );
-    }
+
+    $self->reject_guest(type => 'settings_requires_account');
 
     $self->_update_users_in_workspace()
         if $self->cgi->Button;
 
     my $ws = $self->hub->current_workspace;
-    my @uwr = $ws->user_roles(direct => 1)->all;
+    my @uwr = sort { $a->best_full_name <=> $b->best_full_name }
+        $ws->user_roles(direct => 1)->all;
+
     my @gwr = $ws->group_roles->all;
     my $is_auw = $ws->is_all_users_workspace;
     my $settings_section = $self->template_process(
@@ -136,6 +134,7 @@ sub users_listall {
         users_with_roles => \@uwr,
         groups_with_roles => \@gwr,
         is_auw => $is_auw,
+        is_business_admin => $self->hub->current_user->is_business_admin,
         workspace => $ws,
         $self->status_messages_for_template,
     );

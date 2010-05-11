@@ -57,7 +57,8 @@ sub _make_getter {
                         -type          => $content_type . '; charset=UTF-8',
                         -Last_Modified => $self->make_http_date(
                             $self->last_modified($resource)
-                        )
+                        ),
+                        $rest->header(),
                     );
                     return $self->$sub($resource);
                 }

@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 118;
+use Test::Socialtext tests => 123;
 use Test::Output qw(combined_from);
 use Carp qw/confess/;
 use Socialtext::CLI;
@@ -28,7 +28,7 @@ add_group_to_account: {
             )->add_member();
         };
     } );
-    like $output, qr/.+ is now a member of the .+ Account/,
+    like $output, qr/.+ now has the role of 'member' in the .+ Account/,
         '... with correct message';
 
     my $role = $account->role_for_group($group);
@@ -703,8 +703,52 @@ add_group_as_admin_to_workspace: {
 }
 
 ###############################################################################
+# TEST: remove a Group as Admin from a WS
+remove_group_as_admin_from_workspace: {
+    my $account   = create_test_account_bypassing_factory();
+    my $workspace = create_test_workspace(account => $account);
+    my $group     = create_test_group();
+
+    # Add Group as Admin to WS
+    my $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'     => $group->group_id,
+                    '--workspace' => $workspace->name,
+                ],
+            )->add_workspace_admin();
+        };
+    } );
+    like $output, qr/.+ now has the role of 'admin' in the .+ Workspace/,
+        'Group added as Admin to WS';
+    my $role = $workspace->role_for_group($group);
+    ok $role, 'Group has Role in Workspace';
+    is $role->name, Socialtext::Role->Admin()->name,
+        '... Role is admin';
+
+    # Remove Group as Admin from WS
+    $output = combined_from( sub {
+        eval {
+            Socialtext::CLI->new(
+                argv => [
+                    '--group'     => $group->group_id,
+                    '--workspace' => $workspace->name,
+                ],
+            )->remove_workspace_admin();
+        };
+    } );
+    like $output, qr/.+ no longer has the role of 'admin' in the .+ Workspace/,
+        '... Group removed as Admin in the WS';
+
+    $role = $workspace->role_for_group($group);
+    is $role->name, Socialtext::Role->Member()->name,
+        '... ... but is still a Member in the WS';
+}
+
+###############################################################################
 # TEST: add a Group as admin to a WS, Group was already a member.
-add_group_as_admin_to_workspace: {
+add_member_group_as_admin_to_workspace: {
     my $account   = create_test_account_bypassing_factory();
     my $workspace = create_test_workspace(account => $account);
     my $group     = create_test_group();
@@ -839,7 +883,7 @@ group_member_remains_admin_in_workspace: {
     } );
 
     warn $@ if $@;
-    like $output, qr/.+ now has the role of 'admin' in the .+ Workspace due to membership in a group/, 
+    like $output, qr/.+ now has the role of 'admin' in .+ due to membership in a group/, 
         '... with correct message';
 
     my $role = $workspace->role_for_user($user);

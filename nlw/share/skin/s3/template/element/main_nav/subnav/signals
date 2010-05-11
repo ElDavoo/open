@@ -1,7 +1,7 @@
 [% USE decorate %]
 [% FILTER decorate('nav_signals') %]
-<li class="submenu"><a id="st-wiki-subnav-link-people" href="http://socialtext.com/products/signals.php">[% loc("Signals") %]</a>
-  <ul class="level2 withimage" id="global-people-directory">
+<li class="submenu"><a id="st-wiki-subnav-link-signals" href="http://socialtext.com/products/signals.php">[% loc("Signals") %]</a>
+  <ul class="level2 withimage">
   [% IF user.is_guest %]
     <li class="emptynotice">[% loc("You must register or be logged in to use this feature.") %]</li>
   [% ELSE %]

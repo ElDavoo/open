@@ -151,8 +151,8 @@ sub st_login {
     my $password = shift || $self->{password};
     my $workspace = shift || $self->{workspace};
 
-    my $url = '/nlw/login.html';
-    $url .= "?redirect_to=\%2F$workspace\%2Findex.cgi" if $workspace;
+    my $url = '/challenge';
+    $url .= "?\%2F$workspace\%2Findex.cgi" if $workspace;
     diag "st-login: $username, $password, $workspace - $url";
     $sel->open_ok($url);
     $sel->type_ok('username', $username);
@@ -186,6 +186,7 @@ sub st_logoutin {
     $self->st_logout;
     $self->st_login($username, $password);
 }
+
 
 =head2 st_page_title( $expected_title )
 
@@ -264,9 +265,9 @@ sub st_create_wikipage {
     $self->handle_command('set_Speed',0);
 }
 
-=head2 st_add_page_tag ( $url, $page, $tag) 
+=head2 st_add_page_tag ($url, $page, @tags)
 
-Adds a tag to a wikipage through the GUI.
+Adds one (or more) tags to a wikipage through the GUI.
 
 First goes to server/$url (url should include workspace)
 
@@ -275,19 +276,21 @@ The page must exist in order to have a tag added.
 =cut
 
 sub st_add_page_tag {
-   my ($self, $url, $tag) = @_;
+   my ($self, $url, @tags) = @_;
    $self->handle_command('open_ok',$url);
    $self->handle_command('set_Speed',3000);
    $self->handle_command('wait_for_element_visible_ok','st-pagetools-email', 30000);
    $self->handle_command('wait_for_element_visible_ok','link=Add Tag',30000);
    $self->handle_command('wait_for_element_visible_ok','st-edit-button-link-bottom',30000);
    $self->handle_command('wait_for_element_visible_ok','st-comment-button-link-bottom',30000);
-   $self->handle_command('click_ok','link=Add Tag'); 
-   $self->handle_command('wait_for_element_visible_ok','st-tags-field',30000);
-   $self->handle_command('type_ok', 'st-tags-field', $tag);
-   $self->handle_command('wait_for_element_visible_ok', 'st-tags-plusbutton-link', 30000);
-   $self->handle_command('click_ok','st-tags-plusbutton-link');
-   $self->handle_command('wait_for_element_visible_ok','link='.$tag, 30000);
+   foreach my $tag (@tags) {
+       $self->handle_command('click_ok','link=Add Tag');
+       $self->handle_command('wait_for_element_visible_ok','st-tags-field',30000);
+       $self->handle_command('type_ok', 'st-tags-field', $tag);
+       $self->handle_command('wait_for_element_visible_ok', 'st-tags-plusbutton-link', 30000);
+       $self->handle_command('click_ok','st-tags-plusbutton-link');
+       $self->handle_command('wait_for_element_visible_ok','link='.$tag, 30000);
+   }
    $self->handle_command('set_Speed',0);
 }
 
@@ -339,6 +342,7 @@ sub st_edit_page {
   $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
   $self->handle_command('click_and_wait','st-save-button-link');
   $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000); 
+  $self->handle_command('pause',1000);
   $self->handle_command('set_Speed',0);
 }
 

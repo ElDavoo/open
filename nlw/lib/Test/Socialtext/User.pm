@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use Carp qw(croak);
 use Class::Field qw(const);
+use List::MoreUtils qw(any);
 
 const 'test_username'      => 'devnull1@socialtext.com';
 const 'test_email_address' => 'devnull1@socialtext.com';
@@ -29,9 +30,9 @@ sub delete_recklessly {
     # as is possible.
     my $user_id = $user_or_homunculus->user_id;
 
-    # Don't allow for system created Users to be deleted
-    my $metadata = Socialtext::UserMetadata->new( user_id => $user_id );
-    if ($metadata && $metadata->is_system_created()) {
+    # Don't delete Guest and SystemUser
+    my @req_users = ($system_user, Socialtext::User->Guest());
+    if ( any { $_->user_id == $user_id } @req_users ) {
         croak "can't delete system created users, even recklessly";
     }
 

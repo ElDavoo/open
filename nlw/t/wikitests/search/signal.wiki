@@ -5,6 +5,7 @@
 | standard-test-setup |               |                                        |             |
 | set | group1_id | %%group_id%% |
 | set | account1_id | %%account_id%% |
+| set-workspace-id | help_en_id | help-en |
 
 | set                 | user1_id      | %%user_id%%                            |             |
 | set                 | recipient     | recip%%start_time%%@ken.socialtext.net |             |
@@ -69,7 +70,7 @@ This matches because the user's Best Full Name is defaulting to the username:
 
 * Workspace id is numerical exact only
 
-| get             | /data/signals?q=link_w%3A1 | application/json |
+| get             | /data/signals?q=link_w%3A%%help_en_id%% | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
 | json-array-size | 1                                    |                  |

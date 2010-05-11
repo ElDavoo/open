@@ -33,16 +33,14 @@
 | type_ok | st-search-term | %%start_time%% |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
+
 | *Comment* | Test Case: Signals Search. Process Jobs |  |
 | st_process_jobs |  |  |
 
 | *Comment* | Test Case: Signals Search. Verify found 2 signals %%a_username%% |  |
-| st-name-widget | 3 | searchwidget |
-| st-select-widget-frame | searchwidget |  |
-| text_like | qr/Search results.+for '%%start_time%%'/ism |  |
+| text_like | Signals matching '%%start_time%%' |  |
 | text_like | NotAStopWord %%start_time%% 12 |  |
 | text_like | NotAStopWord %%start_time%% 01 |  |
-| select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Signals Search. login as %%z_username%% |  |
 | st-logoutin | %%z_username%% | %%password%% |
@@ -52,6 +50,7 @@
 | post-signal | NotAStopWord %%start_time%% 21 |  |
 | pause | 3000 |  |
 | post-signal | NotAStopWord %%start_time%% 32 |  |
+
 | *Comment* | Test Case: Signals Search. Process Jobs |  |
 | st_process_jobs |  |  |
 
@@ -63,40 +62,37 @@
 | type_ok | st-search-term | %%start_time%% |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
-| pause | 8000 | I hate pause |
 
 | *Comment* | Test Case: Signals Search. Verify found 4 signals %%z_username%% |  |
-| st-name-widget | 3 | searchwidget |
-| st-select-widget-frame | searchwidget |  |
-
-| wait_for_text_present_ok | Search results  | 30000 |
-| text_like | qr/Search results.+for '%%start_time%%'/ism |  |
+| text_like | Signals matching '%%start_time%%' |  |
 | text_like | NotAStopWord %%start_time%% 32 |  |
 | text_like | NotAStopWord %%start_time%% 21 |  |
 | text_like | NotAStopWord %%start_time%% 12 |  |
 | text_like | NotAStopWord %%start_time%% 01 |  |
 
-| *Comment* | Test Case: Signals Search. Sort. SORT DOES NOT CAUSE PAGE LOAD |  |
+| *Comment* | Test Case: Signals Search. Sort. |  |
 | wait_for_element_visible_ok | sort-picker | 30000 |
-| select_ok | sort-picker | label=Sender |
-| pause | 8000 | I Hate Pause |
+| select_and_wait | sort-picker | label=Sender |
 | text-like | qr/%%start_time%% 12.+%%start_time%% 01.+%%start_time%% 32.+%%start_time%% 21/ism |  |
-| text-like | qr/%%a_name%%.+You/ism |  |
-| select_ok | sort-picker | label=Newest |
-| pause | 8000 | I Hate Pause |
+
+| text-like | qr/%%a_name%%.+%%a_name%%.+%%z_name%%.+%%z_name%%/ism |  |
+
+| select_and_wait | sort-picker | label=Newest |
 | text-like | qr/%%start_time%% 32.+%%start_time%% 21.+%%start_time%% 12.+%%start_time%% 01/ism |  |
-| text-like | qr/You.+%%a_name%%/ism |  |
-| select_ok | sort-picker | label=Oldest |
-| pause | 8000 | I Hate Pause |
+
+| text-like | qr/%%z_name%%.+%%z_name%%.+%%a_name%%.+%%a_name%%/ism |  |
+
+| select_and_wait | sort-picker | label=Oldest |
 | text-like | qr/%%start_time%% 01.+%%start_time%% 12.+%%start_time%% 21.+%%start_time%% 32/ism |  |
-| text-like | qr/%%a_name%%.+You/ism |  |
-| select_frame | relative=parent |  |
+
+| text-like | qr/%%a_name%%.+%%z_name%%/ism |  |
 
 | *Comment* | Test Case: Signals Search. Relevance. Send a more relevant signal AND a newer signal |  |
 | http-user-pass | %%z_username%% | %%password%% |
 | post-signal | MoreRelevant %%start_time%% %%start_time%% %%start_time%% |  |
 | pause | 3000 |  |
 | post-signal | LessRelevant %%start_time%% |  |
+
 | *Comment* | Test Case: Signals Search. Process Jobs |  |
 | st_process_jobs |  |  |
 
@@ -108,29 +104,31 @@
 | type_ok | st-search-term | %%start_time%% |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
-| pause | 8000 | I hate Pause |
 
 | *Comment* | Test Case: Signals Search. Verify found more relevant signal |  |
-| st-name-widget | 3 | searchwidget |
-| st-select-widget-frame | searchwidget |  |
-| wait_for_text_present_ok | Search results | 30000 |
-| text_like | qr/Search results.+for '%%start_time%%'/ism |  |
-| select_ok | sort-picker | label=Relevance |
-| pause | 8000 | I Hate Pause |
+| text_like | Signals matching '%%start_time%%' |  |
+| select_and_wait | sort-picker | label=Relevance |
 | text-like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 12/ism |  |
 
 | *Comment* | Test Case: Signals Search. Verify relevant signal not newest signal |  |
-| select_ok | sort-picker | label=Newest |
-| pause | 8000 | I Hate Pause |
+| select_and_wait | sort-picker | label=Newest |
 | text-like | qr/LessRelevant %%start_time%%.+MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 12/ism |  |
 
 | *Comment* | Test Case: Signals Search. Delete irrelevant signal and search again |  |
+| open_ok | /?signals |  |
+| st-name-widget | 1 | siggy |
+| st-select-widget-frame | siggy |  |
+| wait_for_text_present_ok | LessRelevant %%start_time%% | 30000 |
+| wait_for_element_visible_ok | //a[@class='hideLink'] | 10000 |
 | click_ok | //a[@class='hideLink'] |  |
 | verifyConfirmation | Are you sure you want to delete this Signal?\nYou cannot undelete it. |  |
 | wait_for_text_not_present_ok | LessRelevant %%start_time%% | 10000 |
 | select_frame | relative=parent |  |
 
-| *Comment* | Test Case: Signals Search. You must open Signals to clear out hidden deleted signal |  |
+| *Comment* | Test Case: Signals Search. Process Jobs |  |
+| st_process_jobs |  |  |
+
+| *Comment* | Test Case: Signals Search. re-open Signals to check hidden deleted signal |  |
 | open_ok | /?signals |  |
 | wait_for_element_visible_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
@@ -138,25 +136,10 @@
 | type_ok | st-search-term | %%start_time%% |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
-| pause | 8000 | I hate pause |
 
 | *Comment* | Test Case: Signals Search. Verify irrelevant signal deleted |  |
-| st-name-widget | 3 | searchwidget |
-| st-select-widget-frame | searchwidget |  |
-| wait_for_text_not_present_ok | LessRelevant %%start_time%% | 10000 |
+| wait_for_text_present_ok | Signals matching '%%start_time%%' | 10000 |
 | text_like | qr/MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+%%start_time%% 12/ism |  |
-
-| *Comment* | Test Case: Signals Search. Verify clear |  |
-| wait_for_element_visible_ok | link=clear search results | 30000 |
-
-WHY DOESN'T CLICK AND WAIT WORK HERE? MAYBE BECAUSE INSIDE FRAME ...
-
-| click_ok | link=clear search results |  |
-| pause | 8000 | I hate pause |
-
-| *Comment* | Test Case: Signals Search. IE and Safari hang here, so just exit for now. |  |
-
-st-name-widget | 3 | searchwidget |
-st-widget-title-like | searchwidget | Signals |
+| wait_for_text_not_present_ok | LessRelevant %%start_time%% | 10000 |
 
 | *Comment* | Test Case: Signals Search COMPLETED |

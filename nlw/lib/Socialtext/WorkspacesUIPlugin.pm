@@ -10,7 +10,6 @@ use Class::Field qw( const );
 use Socialtext::AppConfig;
 use Socialtext::Permission qw( ST_EMAIL_IN_PERM );
 use Socialtext::Role;
-use Socialtext::Challenger;
 use Socialtext::l10n qw(loc);
 use Socialtext::File::Copy::Recursive qw(dircopy);
 use Socialtext::Log 'st_log';
@@ -39,10 +38,8 @@ sub register {
 
 sub workspaces_listall {
     my $self = shift;
-    if ($self->hub()->current_user()->is_guest()) {
-        Socialtext::Challenger->Challenge(
-            type => 'settings_requires_account');
-    }
+
+    $self->reject_guest(type => 'settings_requires_account');
 
     $self->_update_selected_workspaces()
         if $self->cgi->Button;
@@ -468,7 +465,13 @@ sub _workspace_clone_or_create {
     my $display_title = shift;
     my $section       = shift;
 
-    $self->hub->assert_current_user_is_admin;
+    my $acct_checker = Socialtext::Authz::SimpleChecker->new(
+        user => $self->hub->current_user,
+        container => $self->hub->current_workspace->account,
+    );
+    unless ($acct_checker->check_permission('admin')) {
+        Socialtext::WebApp::Exception::Redirect->throw('?');
+    }
 
     if ( $self->cgi->Button ) {
         my $ws = $self->_create_workspace();
@@ -570,11 +573,8 @@ sub workspaces_created {
 
 sub workspaces_unsubscribe {
     my $self = shift;
-    if ( $self->hub()->current_user()->is_guest() ) {
-        Socialtext::Challenger->Challenge( type    =>
-                                                'settings_requires_account' );
 
-    }
+    $self->reject_guest(type => 'settings_requires_account');
 
     if ( $self->cgi->Button ) {
         $self->hub->current_workspace->remove_user( user => $self->hub->current_user );

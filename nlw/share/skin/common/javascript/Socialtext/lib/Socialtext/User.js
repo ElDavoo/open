@@ -14,8 +14,8 @@ $.extend(Socialtext.User.prototype, {
     },
 
     url: function() {
-        if (!this.username) throw new Error("No username");
-        return '/data/users/' + this.username;
+        if (!this.user_id) throw new Error("No user_id");
+        return '/data/users/' + this.user_id;
     },
 
     setPrimaryAccountId: function(id, callback) {
@@ -44,7 +44,7 @@ $.extend(Socialtext.User.prototype, {
                 var workspace = new Socialtext.Workspace({
                     name: info.name
                 });
-                workspace.removeMembers([ { username: self.username } ], cb);
+                workspace.removeMembers([ { user_id: self.user_id } ], cb);
             });
         });
         this.runAsynch(jobs, callback);

@@ -1,24 +1,41 @@
 package Socialtext::User::Find;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::SQL qw/get_dbh sql_execute sql_singlevalue/;
+use MooseX::StrictConstructor;
+use Socialtext::SQL qw/sql_execute sql_singlevalue/;
 use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::String;
 use Socialtext::User;
 use namespace::clean -except => 'meta';
 
-has 'viewer' => (is => 'rw', isa => 'Socialtext::User', required => 1);
-has 'limit' => (is => 'rw', isa => 'Maybe[Int]');
-has 'offset' => (is => 'rw', isa => 'Maybe[Int]');
-has 'filter' => (is => 'rw', isa => 'Maybe[Str]');
-has 'order' => (is => 'ro', isa => 'Maybe[Str]');
-has 'reverse' => (is => 'ro', isa => 'Bool', default => 0);
-has 'minimal' => (is => 'ro', isa => 'Bool', default => 0);
-has 'all' => (is => 'ro', isa => 'Bool', default => 0);
+has 'viewer'  => (is => 'rw', isa => 'Socialtext::User', required => 1);
+has 'limit'   => (is => 'rw', isa => 'Maybe[Int]');
+has 'offset'  => (is => 'rw', isa => 'Maybe[Int]');
+has 'filter'  => (is => 'rw', isa => 'Maybe[Str]');
+has 'order'   => (is => 'rw', isa => 'Maybe[Str]', writer => '_order');
+has 'reverse' => (is => 'ro', isa => 'Bool', default => undef);
+has 'all'     => (is => 'rw', isa => 'Bool', default => undef, writer => '_all');
+
+# 0 = full representation
+# 1 = limited representation
+# 2 = only BFN, user_id and display_name (forced by just_visiting)
+has 'minimal' => (is => 'rw', isa => 'Int', default => 0, writer => '_minimal');
+
+has 'just_visiting' => (is => 'ro', isa => 'Bool');
+
+sub BUILD {
+    my $self = shift;
+    if ($self->just_visiting) {
+        $self->_all(1);
+        $self->_minimal(2);
+        $self->filter(undef); # everyone
+        $self->_order('name');
+    }
+    $self->cleanup_filter;
+}
 
 sub cleanup_filter {
     my $self = shift;
-    my $new_value = shift;
 
     # undef: everyone
     # empty: invalid query
@@ -59,10 +76,13 @@ has 'sql_cols' => (
     is => 'ro', isa => 'ArrayRef', lazy_build => 1,
 );
 sub _build_sql_cols {
-    return [
-        'DISTINCT users.user_id', 'first_name', 'last_name', 'display_name',
-        'email_address', 'driver_username',
-    ];
+    my $self = shift;
+    my @cols = 'DISTINCT users.user_id', 'display_name';
+    if ($self->minimal < 2) {
+        push @cols, 'first_name', 'last_name', 'display_name',
+            'email_address', 'driver_username';
+    }
+    return \@cols;
 }
 
 has 'sql_count' => (
@@ -115,7 +135,7 @@ sub _build_sql_group {}
 sub get_results {
     my $self = shift;
 
-    my ($sql, @bind) = $self->abstract->select(
+    my ($sql, @bind) = sql_abstract()->select(
         \$self->sql_from, $self->sql_cols, $self->sql_where,
         $self->sql_order, $self->limit, $self->offset,
     );
@@ -124,14 +144,9 @@ sub get_results {
     return $sth->fetchall_arrayref({}) || [];
 }
 
-has 'abstract' => (
-    is => 'ro', isa => 'SQL::Abstract', lazy_build => 1,
-);
-sub _build_abstract { sql_abstract() }
-
 sub get_count {
     my $self = shift;
-    my ($sql, @bind) = $self->abstract->select(
+    my ($sql, @bind) = sql_abstract()->select(
         \$self->sql_from, $self->sql_count, $self->sql_where,
     );
     return sql_singlevalue($sql, @bind);
@@ -139,23 +154,40 @@ sub get_count {
 
 sub typeahead_find {
     my $self = shift;
-    if ($self->all and !$self->viewer->is_business_admin) {
+    if ($self->all and
+        !($self->viewer->is_business_admin or $self->just_visiting))
+    {
         die "Only Business Admin's can search for Users across all Accounts.\n";
     }
-    $self->cleanup_filter;
+
+    my $rows = $self->get_results;
+    my $min = $self->minimal;
+    if ($min >= 2) {
+        return [ map { 
+            my $user = Socialtext::User->new(user_id => $_->{user_id});
+            +{
+                best_full_name => $user->guess_real_name,
+                user_id => $_->{user_id}, 
+                display_name => $_->{display_name} 
+            } 
+        } @$rows ];
+    }
+
     my @results;
-    for my $row (@{$self->get_results}) {
+    for my $row (@$rows) {
         next if Socialtext::User::Default::Users->IsDefaultUser(
             username => $row->{driver_username},
         );
-        my $user = Socialtext::User->new(user_id => $row->{user_id});
-        $row->{best_full_name} = $user->guess_real_name;
-        $row->{name} = $row->{driver_username};
-        $row->{uri} = "/data/users/$row->{driver_username}";
+        unless ($min) {
+            my $user = Socialtext::User->new(user_id => $row->{user_id});
+            $row->{best_full_name} = $user->guess_real_name;
+            $row->{name} = $row->{driver_username};
+            $row->{uri} = "/data/users/$row->{driver_username}";
 
-        # Backwards compatibility stuff
-        $row->{email} = $row->{email_address};
-        $row->{username} = $row->{driver_username};
+            # Backwards compatibility stuff
+            $row->{email} = $row->{email_address};
+            $row->{username} = $row->{driver_username};
+        }
         push @results, $row;
     }
     return \@results;

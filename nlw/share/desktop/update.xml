@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.0.1RC0</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.0.1RC0.air</url>
-  <description><![CDATA[[4.0.1RC0 - Fri Mar 12 22:49:39 PST 2010]
+  <version>4.0.2</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.0.2.air</url>
+  <description><![CDATA[[4.0.2 - Thu Apr  8 19:59:23 PDT 2010]
+(Enhancements)
+* "Log me in automatically" now takes effect upon the first try.
+
+[4.0.1 - Thu Mar 25 08:15:27 PDT 2010]
 (Features)
 * Users can now directly install, upgrade and launch Desktop from an appliance.
 * Administrators can now turn off auto-updating from system console.
 * Support Authenticating Proxies in Mac OS X's System Settings.
+* Signals: Support for server-configurable expanded input limits.
+* Signals: Increased default input limits from 140 to 400.
 
 (Enhancements)
 * Signals: Add a ":" separator between User and timestamp for improved legibility.

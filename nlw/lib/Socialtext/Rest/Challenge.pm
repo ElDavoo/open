@@ -6,21 +6,36 @@ use warnings;
 use base 'Socialtext::Rest';
 use Socialtext::Challenger;
 use Socialtext::HTTP ':codes';
+use Socialtext::Log qw(st_log);
 use URI::Escape qw(uri_unescape);
 
 sub handler {
     my ( $self, $rest ) = @_;
 
-    # we use query string to avoid the processing that's done
-    # to make official URIs. This way no data is lost:
-    # REVIEW: Challener::STLogin does not escape what it puts
-    # on its query string.
-    # REVIEW: this depends on a bunch CGI.pm whooey that may
-    # not be reliable.
-    my $uri = $rest->query->query_string();
-    $uri =~ s/^keywords=//;
-
-    eval {Socialtext::Challenger->Challenge( redirect => uri_unescape($uri) );};
+    # If the query string contains a "redirect_to" parameter, use that as the
+    # URL to redirect the User to.  Otherwise, treat the *entire* URL as the
+    # redirect.
+    #
+    # This allows for Challengers to set themselves up to be called once on an
+    # initial request for:
+    #
+    #       /challenge?<url>
+    #
+    # and to then build a URL to let them get called a second time with actual
+    # query params by redirecting back to:
+    #
+    #       /challenge?redirect_to=<url>&key=val&key=val...
+    my $uri;
+    if ($rest->query->param('redirect_to')) {
+        $uri = $rest->query->param('redirect_to');
+    }
+    else {
+        $uri = $rest->query->query_string();
+        $uri =~ s/^keywords=//;
+    }
+    eval {
+        Socialtext::Challenger->Challenge( redirect => uri_unescape($uri) );
+    };
 
     if ( my $e = $@ ) {
         if ( Exception::Class->caught('Socialtext::WebApp::Exception::Redirect') )
@@ -32,6 +47,7 @@ sub handler {
             );
             return '';
         }
+        st_log->info("Challenger Error: $e");
     }
     $self->rest->header(
         -status => HTTP_500_Internal_Server_Error,

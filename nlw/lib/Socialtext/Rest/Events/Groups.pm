@@ -3,6 +3,7 @@ package Socialtext::Rest::Events::Groups;
 use strict;
 use warnings;
 use base 'Socialtext::Rest::EventsBase';
+use Socialtext::Permission qw/ST_READ_PERM/;
 use Socialtext::Exceptions;
 
 use Socialtext::l10n 'loc';
@@ -31,7 +32,10 @@ sub _group {
     my $group = Socialtext::Group->GetGroup(group_id => $group_id);
     if ($group) {
         return $group if $viewer->is_business_admin;
-        return $group if $group->has_user($viewer);
+        return $group if $group->user_can(
+            user       => $viewer,
+            permission => ST_READ_PERM,
+        );
         Socialtext::Exception::Auth->throw();
     }
 

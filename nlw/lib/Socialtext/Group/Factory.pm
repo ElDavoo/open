@@ -138,6 +138,9 @@ sub GetGroupHomunculus {
         $self->CreateInitialRelationships( $proto_group );
     }
 
+    # Re-index the freshly created/updated group.
+    Socialtext::JobCreator->index_group($proto_group->{group_id});
+
     my $homey = $self->NewGroupHomunculus($proto_group);
 
     if ($Asynchronous) {
@@ -167,10 +170,13 @@ sub CreateInitialRelationships {
     # Add the creator as an Admin of the Group
     my $creator = $group->creator;
     unless ($creator->is_system_created) {
-        $group->add_user(
-            role  => Socialtext::Role->Admin,
-            user  => $creator,
-            actor => $creator,
+        # call add_role directly since add_$thing won't pass-through
+        # is_initial_role.
+        $group->add_role(
+            role            => Socialtext::Role->Admin,
+            object          => $creator,
+            actor           => $creator,
+            is_initial_role => 1,
         );
     }
 
@@ -373,7 +379,7 @@ sub NewGroupRecord {
 
     # new Group records default to being cached _now_.
     $proto_group->{cached_at} ||= $self->Now();
-    delete $proto_group->{description} 
+    $proto_group->{description} = ''
         unless defined $proto_group->{description};
 
     # Only concern ourselves with valid Db Columns
@@ -427,6 +433,15 @@ sub ValidateAndCleanData {
 
     # trim fields, removing leading/trailing whitespace
     $self->_validate_trim_values($p);
+
+    $p->{permission_set} ||= 'private' if ($is_create);
+    delete $p->{permission_set} unless defined $p->{permission_set};
+    if (defined($p->{permission_set}) &&
+        $p->{permission_set} !~ /^(?:private|request-to-join|self-join)$/)
+    {
+        push @errors,
+            loc('Invalid permissions name: [_1]', $p->{permission_set});
+    }
 
     # check for presence of required attributes
     foreach my $field (@required_fields) {

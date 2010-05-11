@@ -50,14 +50,8 @@ sub handler ($$) {
 
         # sucks, but we need a Hub to get the global template vars and to
         # get the list of available public workspaces
-        my $user = $self->authenticate($r) || Socialtext::User->Guest();
-        my $ws   = Socialtext::NoWorkspace->new();
-        my $main = Socialtext->new();
-        $main->load_hub(
-            current_user      => $user,
-            current_workspace => $ws,
-        );
-        $main->hub->registry->load();
+        my $hub  = $self->_load_hub();
+        my $user = $hub->current_user();
 
         # vars that we're setting up to use in our template later on
         my $vars = {};
@@ -67,12 +61,13 @@ sub handler ($$) {
             my $hash        = $saved_args->{hash};
             my $account_for = $saved_args->{account_for};
 
-            return $self->_redirect('/nlw/login.html') unless $hash;
+            return $self->_show_error(
+                loc('Invalid confirmation URL.')
+            ) unless $hash;
 
             my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-            unless ($user) {
-                return $self->_redirect('/nlw/login.html');
-            }
+            return $self->_show_error() unless $user;
+
             $vars->{email_address} = $user->email_address;
             $vars->{hash}          = $hash;
 
@@ -91,20 +86,7 @@ sub handler ($$) {
         # Include login_message_file content in vars sent to template
         # if login_message_file is set in AppConfig.
         if ( $uri eq 'login.html' ) {
-            # URL to the miki login page
-            $vars->{miki_url} = '/lite/login';
-
-            # if we're redirecting to a miki page, use the miki login page
-            # instead
-            my $redirect_to = $self->{args}{redirect_to} || '';
-            if ($redirect_to =~ m#^(?:https?://[^/]+)?/lite/#) {
-                return $self->_redirect( $vars->{miki_url} );
-            }
-
-            # mobile browsers should see the miki login page instead
-            if (Socialtext::BrowserDetect::is_mobile()) {
-                return $self->_redirect( $vars->{miki_url} );
-            }
+            return $self->_redirect('/m/login') if ($self->_is_mobile);
 
             # login message
             my $file = Socialtext::AppConfig->login_message_file();
@@ -120,7 +102,7 @@ sub handler ($$) {
         if (($uri eq 'login.html') || ($uri eq 'logout.html')) {
             # list of public workspaces (for Workspace List)
             $vars->{public_workspaces}
-                = [ $main->hub->workspace_list->public_workspaces ];
+                = [ $hub->workspace_list->public_workspaces ];
         }
         if ( $uri eq 'join.html' ) {
             my $redirect_to = $self->{args}{redirect_to} || '';
@@ -144,20 +126,10 @@ sub handler ($$) {
 
         my $saved_args = $self->{saved_args} = $self->session->saved_args;
         my $repl_vars  = {
-            $main->hub->helpers->global_template_vars,
+            $self->_default_template_vars(),
             authen_page    => 1,
-            loc            => \&loc,
-            errors         => [ $self->session->errors ],
-            messages       => [ $self->session->messages ],
             username_label => Socialtext::Authen->username_label,
             redirect_to    => $self->{args}{redirect_to},
-            static_path    => Socialtext::Helpers::static_path(),
-            skin_uri       => sub {
-                Socialtext::Skin->new(name => shift)->skin_uri
-            },
-            paths          => $main->hub->skin->template_paths,
-            st_version     => $Socialtext::VERSION,
-            support_address => Socialtext::AppConfig->support_address,
             %$saved_args,
             %$vars,
         };
@@ -168,13 +140,31 @@ sub handler ($$) {
     return NOT_FOUND;
 }
 
+sub _is_mobile_browser {
+    return Socialtext::BrowserDetect::is_mobile() ? 1 : 0;
+}
+
+sub _is_mobile_redirect {
+    my $self = shift;
+    my $url  = $self->{args}{redirect_to};
+    if (defined $url) {
+        $url =~ s{^https?://[^/]+}{};   # strip off scheme/host
+        $url =~ s{^/}{};                # strip off leading "/"
+        $url =~ s{/.*$}{};              # strip off everything after first "/"
+        return 1 if ($url eq 'lite');
+        return 1 if ($url eq 'm');
+    }
+    return 0;
+}
+
+sub _is_mobile {
+    my $self = shift;
+    return $self->_is_mobile_browser || $self->_is_mobile_redirect;
+}
+
 sub login {
     my ($self) = @_;
     my $r = $self->r;
-
-    # depending on whether this is the "real" or "lite" version of the login,
-    # we'll want to redirect them to an appropriate login page.
-    my $login_uri = $self->{args}{lite} ? '/lite/login' : '/nlw/login.html';
 
     my $validname = ( Socialtext::Authen->username_is_email()
         ? 'email address'
@@ -183,7 +173,7 @@ sub login {
     my $username = $self->{args}{username} || '';
     unless ($username) {
         $self->session->add_error(loc('You must provide a valid [_1].', $validname));
-        return $self->_redirect($login_uri);
+        return $self->_challenge();
     }
 
     my $user_check = ( Socialtext::Authen->username_is_email()
@@ -194,7 +184,7 @@ sub login {
     unless ( $user_check ) {
         $self->session->add_error( loc('"[_1]" is not a valid [_2]. Please use your [_2] to log in.', $username, $validname) );
         $r->log_error ($username . ' is not a valid ' . $validname);
-        return $self->_redirect($login_uri);
+        return $self->_challenge();
     }
     my $auth = Socialtext::Authen->new;
     my $user = Socialtext::User->new( username => $username );
@@ -202,7 +192,7 @@ sub login {
     if ($user && !$user->email_address) {
         $self->session->add_error(loc("This username has no associated email address." ));
         $r->log_error ($username . ' has no associated email address');
-        return $self->_redirect($login_uri);
+        return $self->_challenge();
     }
 
     if ($user and $user->requires_confirmation) {
@@ -213,7 +203,7 @@ sub login {
     unless ($self->{args}{password}) {
         $self->session->add_error(loc('Wrong [_1] or password - please try again', $validname));
         $r->log_error('Wrong ' . $validname .' or password for ' . $username);
-        return $self->_redirect($login_uri);
+        return $self->_challenge();
     }
 
     my $check_password = $auth->check_password(
@@ -224,7 +214,7 @@ sub login {
     unless ($check_password) {
         $self->session->add_error(loc('Wrong [_1] or password - please try again', $validname));
         $r->log_error('Wrong ' . $validname .' or password for ' . $username);
-        return $self->_redirect($login_uri);
+        return $self->_challenge();
     }
 
     my $expire = $self->{args}{remember} ? '+12M' : '';
@@ -241,7 +231,7 @@ sub login {
 
     if (my $ws_name = $self->{args}{workspace_name}) {
         $self->_add_user_to_workspace($user, $ws_name)
-            or return $self->_redirect($login_uri);
+            or return $self->_redirect('/nlw/error.html');
     }
 
     $self->session->write;
@@ -289,7 +279,6 @@ sub forgot_password {
     my $self = shift;
     my $r = $self->r;
 
-    my $login_uri = $self->{args}{lite} ? '/lite/login' : '/nlw/login.html';
     my $forgot_password_uri = $self->{args}{lite} ? '/lite/forgot_password' : '/nlw/forgot_password.html';
 
     my $username = $self->{args}{username} || '';
@@ -317,16 +306,18 @@ sub forgot_password {
     );
 
     $self->session->save_args( username => $user->username() );
-
-    $self->_redirect($login_uri);
+    $self->_challenge();
 }
 
 sub register {
     my $self = shift;
     my $r = $self->r;
 
-    my $target_ws_name = $self->{args}{workspace_name};
-    my $redirect_target = $target_ws_name ?  '/nlw/join.html?workspace_name='.$self->{args}{workspace_name}.';redirect_to='.$self->{args}{redirect_to} : '/nlw/register.html';
+    my $target_ws_name  = $self->{args}{workspace_name};
+    my $redirect_target = $target_ws_name
+        ? "/nlw/join.html?workspace_name=$target_ws_name"
+        : '/nlw/register.html';
+
     unless (Socialtext::AppConfig->self_registration()) {
         $self->session->add_error(loc("Registration is disabled."));
         return $self->_redirect($redirect_target);
@@ -415,7 +406,7 @@ sub register {
     $user->send_confirmation_email;
 
     $self->session->add_message(loc("An email confirming your registration has been sent to [_1].", $email_address));
-    return $self->_redirect("/nlw/login.html");
+    return $self->_challenge();
 }
 
 sub confirm_email {
@@ -423,12 +414,12 @@ sub confirm_email {
     my $r = $self->r;
 
     my $hash = $self->{args}{hash};
-    return $self->_redirect('/nlw/login.html') unless $hash;
+    return $self->_show_error(
+        loc('Invalid confirmation URL.')
+    ) unless $hash;
 
     my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-    unless ($user) {
-        return $self->_redirect('/nlw/login.html');
-    }
+    return $self->_show_error() unless $user;
 
     if ( $user->confirmation_has_expired ) {
         $user->set_confirmation_info();
@@ -440,8 +431,9 @@ sub confirm_email {
             $user->send_confirmation_email();
         }
 
-        $self->session->add_error(loc("The confirmation URL you used has expired. A new one will be sent."));
-        return $self->_redirect("/nlw/login.html");
+        return $self->_show_error(
+            loc("The confirmation URL you used has expired. A new one will be sent.")
+        );
     }
 
     if ( $user->confirmation_is_for_password_change or not $user->has_valid_password ) {
@@ -480,11 +472,9 @@ sub confirm_email {
         $self->session->add_message(loc("Your email address, [_1], has been confirmed. Please login.", $address));
     }
     $self->session->save_args( username => $user->username );
-    if ( $targetws ) {
-        return $self->_redirect("/nlw/login.html?redirect_to=".$targetws->uri);
-    } else {
-        return $self->_redirect("/nlw/login.html");
-    }
+
+    $self->{args}{redirect_to} = $targetws->uri if ($targetws);
+    return $self->_challenge();
 }
 
 sub choose_password {
@@ -492,12 +482,12 @@ sub choose_password {
     my $r = $self->r;
 
     my $hash = $self->{args}{hash};
-    return $self->_redirect('/nlw/login.html') unless $hash;
+    return $self->_show_error(
+        loc('Invalid confirmation URL.')
+    ) unless $hash;
 
     my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-    unless ($user) {
-        return $self->_redirect('/nlw/login.html');
-    }
+    return $self->_show_error() unless $user;
 
     my %args;
     $args{$_} = $self->{args}{$_} || '' for (qw(password password2));
@@ -538,26 +528,27 @@ sub resend_confirmation {
 
     my $email_address = $self->{args}{email_address};
     unless ($email_address) {
-        warn "No email address found to resend confirmation";
-        return $self->_redirect('/nlw/login.html');
+        return $self->_show_error(
+            loc("No email address found to resend confirmation.")
+        );
     }
 
     my $user = Socialtext::User->new( email_address => $email_address );
     unless ($user) {
         $self->session->add_error(loc("[_1] is not registered as a user. Try a different email address?", $email_address));
-        return $self->_redirect('/nlw/login.html');
+        return $self->_challenge();
     }
 
     unless ($user->requires_confirmation) {
         $self->session->add_error(loc("The email address for [_1] has already been confirmed.", $email_address));
-        return $self->_redirect('/nlw/login.html');
+        return $self->_challenge();
     }
 
     $user->set_confirmation_info;
     $user->send_confirmation_email;
 
     $self->session->add_error(loc('The confirmation email has been resent. Please follow the link in this email to activate your account.'));
-    return $self->_redirect("/nlw/login.html");
+    return $self->_challenge();
 }
 
 sub require_confirmation_redirect {
@@ -573,7 +564,7 @@ sub require_confirmation_redirect {
        },
     } );
 
-    return $self->_redirect("/nlw/login.html");
+    return $self->_challenge();
 }
 
 sub _redirect {
@@ -586,6 +577,81 @@ sub _redirect {
               . "redirect_to=" . uri_escape_utf8($redirect_to);
     }
     $self->redirect($uri);
+}
+
+sub _challenge {
+    my $self = shift;
+
+    eval {
+        Socialtext::Challenger->Challenge(
+            request  => $self->r,
+            redirect => $self->{args}{redirect_to},
+        );
+    };
+    if (my $e = $@) {
+        if (Exception::Class->caught('Socialtext::WebApp::Exception::Redirect')) {
+            my $location = $e->message;
+            return $self->redirect($location);
+        }
+        st_log->error($e);
+    }
+
+    $self->session->add_error(
+        loc("Challenger Did not Redirect.")
+    );
+    return $self->redirect('/nlw/error.html');
+}
+
+sub _load_main {
+    my $self = shift;
+    my $user = $self->authenticate($self->{r}) || Socialtext::User->Guest();
+    my $ws   = Socialtext::NoWorkspace->new();
+    my $main = Socialtext->new();
+    $main->load_hub(
+        current_user      => $user,
+        current_workspace => $ws,
+    );
+    $main->hub->registry->load();
+    return $main;
+}
+
+sub _load_hub {
+    my $self = shift;
+    my $main = $self->_load_main();
+    return $main->hub();
+}
+
+sub _default_template_vars {
+    my $self = shift;
+    my $hub  = $self->_load_hub();
+    return (
+        $hub->helpers->global_template_vars,
+        loc            => \&loc,
+        errors         => [ $self->session->errors ],
+        messages       => [ $self->session->messages ],
+        static_path    => Socialtext::Helpers::static_path(),
+        skin_uri       => sub {
+            Socialtext::Skin->new(name => shift)->skin_uri
+        },
+        paths          => $hub->skin->template_paths,
+        st_version     => $Socialtext::VERSION,
+        support_address => Socialtext::AppConfig->support_address,
+    );
+}
+
+sub _show_error {
+    my $self  = shift;
+    my $error = shift;
+
+    $self->session->add_error($error) if ($error);
+
+    my $hub = $self->_load_hub();
+    my $repl_vars = {
+        $self->_default_template_vars,
+    };
+    return $self->render_template(
+        $self->{r}, 'authen/error.html', $repl_vars,
+    );
 }
 
 sub _find_user_for_email_confirmation_hash {
@@ -608,13 +674,3 @@ sub _find_user_for_email_confirmation_hash {
 }
 
 1;
-
-__END__
-Actions:
-    check: login
-    check: logout
-    check: forgot_password
-    check: register
-    resend_confirmation
-    check: confirm_email
-    choose_password

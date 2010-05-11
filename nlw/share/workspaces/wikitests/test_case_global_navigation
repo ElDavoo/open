@@ -11,7 +11,7 @@
 | click_and_wait | st-home-link |  |
 | text_like | st-editing-tools-edit | Welcome |
 | click_and_wait | st-wiki-subnav-link-people |  |
-| wai_for_text_present_ok | All People | 30000 |
+| wait_for_text_present_ok | All People | 30000 |
 | click_and_wait | st-wiki-subnav-link-workspaces |  |
 | text_like | contentContainer | qr/Workspace Title\s+Workspace Name/ |
 
@@ -28,7 +28,7 @@
 | wait_for_element_present_ok | link=%%short_username%% | 30000 |
 | click_and_wait | link=%%short_username%% |  |
 | text_like | contentContainer | Profile |
-| text_like | contentContainer | Activity |
+| text_like | contentContainer | Activities |
 | text_like | contentContainer | Colleagues |
 | text_like | contentContainer | Workspaces |
 | text_like | contentContainer | Tags |

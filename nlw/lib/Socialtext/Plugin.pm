@@ -7,6 +7,7 @@ use base 'Socialtext::Base';
 
 use Class::Field qw( const field );
 use File::Path ();
+use Socialtext::Challenger;
 use Socialtext::Indexes;
 use Socialtext::File;
 use Socialtext::Paths;
@@ -89,6 +90,13 @@ sub redirect {
     # This uses Socialtext::WebHelpers::redirect
     $self->hub->headers->redirect( $self->_redirect_url(@_) );
     return '';
+}
+
+sub reject_guest {
+    my $self = shift;
+    if ($self->hub->current_user->is_guest) {
+        Socialtext::Challenger->Challenge(@_);
+    }
 }
 
 sub box_on {

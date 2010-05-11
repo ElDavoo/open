@@ -458,15 +458,15 @@ sub _getCurrentTags {
     my $page = shift;
 
     my $page_tags = $page->metadata->Category;
-    my %weighted_tags;
+    my %weighted_tags = (tags => $page_tags);
     if (@$page_tags) {
         %weighted_tags = $self->hub->category->weight_categories(@$page_tags);
-    }
 
-    foreach my $tag (@{$weighted_tags{tags}}) {
-        $tag->{page_count} = $tag->{page_count};
+        $weighted_tags{sorted_tags} = [
+            sort { lc($a->{name}) cmp lc($b->{name}) }
+            @{ $weighted_tags{tags} }
+        ];
     }
-    $weighted_tags{maxCount} = $weighted_tags{maxCount};
 
     return \%weighted_tags;
 }
