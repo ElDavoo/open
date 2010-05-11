@@ -646,6 +646,24 @@ sub create_group {
     return $group;
 }
 
+
+sub group_permission_set {
+    my $self     = shift;
+    my $group_id = shift;
+    my $set_name = shift;
+
+    my $group;
+    eval {
+        $group = Socialtext::Group->GetGroup({group_id => $group_id});
+        $group->update_store({permission_set => $set_name});
+    };
+    if (my $e = $@) {
+        die "couldn't update group permissions: $e";
+    }
+
+    diag "Group " . $group->name . " now has $set_name permissions";
+}
+
 sub create_multi_groups {
    my ($self, $name, $num) = @_;
    for (my $idx=0; $idx<$num; $idx++) {
