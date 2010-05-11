@@ -17,6 +17,7 @@ use Getopt::Long qw( :config pass_through );
 use Socialtext::AppConfig;
 use Pod::Usage;
 use Readonly;
+use Scalar::Util qw/blessed/;
 use Socialtext::Search::AbstractFactory;
 use Socialtext::Validate qw( validate SCALAR_TYPE ARRAYREF_TYPE );
 use Socialtext::l10n qw( loc loc_lang system_locale );
@@ -3260,7 +3261,11 @@ sub create_group {
                 )
             );
         }
-        $self->_error(loc("Error creating group: [_1]", $err));
+        elsif (blessed($err)) {
+            $err = $err->as_string();
+        }
+        my ($msg) = ($err =~ m{(.+?)(?:^Trace begun)? at \S+ line .*}ims);
+        $self->_error(loc("Error creating group: [_1]", $msg));
     }
     $self->_success(
         loc("[_1] Group has been created (Group Id: [_2])",
