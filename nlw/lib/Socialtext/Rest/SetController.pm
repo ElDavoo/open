@@ -1,12 +1,20 @@
 package Socialtext::Rest::SetController;
 # @COPYRIGHT@
 use Moose;
+use MooseX::StrictConstructor;
 use Carp 'croak';
 use Socialtext::Role;
+use Socialtext::Exceptions qw(bad_request auth_error data_validation_error);
+use Moose::Util::TypeConstraints qw(enum);
+use List::MoreUtils 'none';
 use namespace::clean -except => 'meta';
 
 my @valid_actions = qw(add update remove); # 'skip' exists for internal use.
+enum 'SetController.action' => @valid_actions;
 my @valid_scopes  = qw(user group);
+enum 'SetController.scope' => @valid_scopes;
+my @valid_roles  = qw(admin member);
+enum 'SetController.role' => @valid_roles;
 
 has 'actor' => (
     is => 'ro', isa => 'Socialtext::User',
@@ -19,43 +27,29 @@ has 'container' => (
 );
 
 has 'scopes' => (
-    is => 'rw', isa => 'ArrayRef',
+    is => 'rw', isa => 'ArrayRef[SetController.scope]',
     required => 1, default => sub { [@valid_scopes] },
-    trigger => \&scopes_are_valid,
     auto_deref => 1,
 );
 
 has 'actions' => (
-    is => 'rw', isa => 'ArrayRef',
+    is => 'rw', isa => 'ArrayRef[SetController.action]',
     required => 1, default => sub { [@valid_actions] },
-    trigger => \&actions_are_valid,
+    auto_deref => 1,
+);
+
+has 'roles' => (
+    is => 'rw', isa => 'ArrayRef[SetController.role]',
+    required => 1, default => sub { [@valid_roles] },
     auto_deref => 1,
 );
 
 has 'hooks' => (
-    is => 'rw', isa => 'HashRef',
+    is => 'rw', isa => 'HashRef[CodeRef]',
     required => 1, default => sub { +{} },
 );
 
-sub actions_are_valid {
-    my $self    = shift;
-    my $actions = shift;
-
-    for my $action (@$actions) {
-        croak "action $action is not valid"
-            unless grep { $_ eq $action } @valid_actions;
-    }
-}
-
-sub scopes_are_valid {
-    my $self   = shift;
-    my $scopes = shift;
-
-    for my $scope (@$scopes) {
-        croak "scope '$scope' is not valid"
-            unless grep { $_ eq $scope } @valid_scopes;
-    }
-}
+has 'self_action_only' => (is => 'rw', isa => 'Bool');
 
 sub alter_members {
     my $self     = shift;
@@ -70,16 +64,32 @@ sub alter_one_member {
     my $self = shift;
     my @req  = (@_ == 1) ? %{$_[0]} : @_;
 
-    croak "request is null" unless scalar(@req);
+    data_validation_error "request is null" unless scalar(@req);
 
-    my ($scope,$thing_key)  = $self->request_scope(@req);
-    my $role                = $self->request_role(@req);
-    my $thing               = $self->request_thing($thing_key, @req);
-    my $action              = $self->request_action($scope, $thing, $role);
+    my ($scope,$thing_key) = $self->request_scope(@req);
+
+    if ($self->self_action_only) {
+        bad_request "self-only mode only allowed for users"
+            unless $scope eq 'user';
+    }
+
+    my $role   = $self->request_role(@req);
+    my $thing  = $self->request_thing($thing_key, @req);
+    my $action = $self->request_action($scope, $thing, $role);
+
+    my $req = {object=>$thing, role=>$role, actor=>$self->actor};
+
     return undef if $action eq 'skip';
 
-    my $req = {$scope => $thing, role => $role, actor => $self->actor};
-    $self->execute($action, $scope, $req);
+    # restrict roles a user can grant for 'add' and 'update' actions
+    if ($action ne 'remove' && none { $_ eq $role->name } $self->roles ) {
+        bad_request "you may only use roles: " . join(', ', $self->roles);
+    }
+
+    if    ($action eq 'add')    { $self->container->add_role($req) }
+    elsif ($action eq 'remove') { $self->container->remove_role($req) }
+    elsif ($action eq 'update') { $self->container->assign_role($req) }
+    else { return } # do nothing
 
     return $self->run_post_hook($action, $scope, $req);
 }
@@ -98,37 +108,9 @@ sub run_post_hook {
 }
 
 {
-    my $to_exe = {
-        user => {
-            add    => sub { shift->add_user(@_) },
-            remove => sub { shift->remove_user(@_) },
-            update => sub { shift->assign_role_to_user(@_) },
-        },
-        group => {
-            add    => sub { shift->add_group(@_) },
-            remove => sub { shift->remove_group(@_) },
-            update => sub { shift->assign_role_to_group(@_) },
-        },
-    };
-
-    sub execute {
-        my $self   = shift;
-        my $action = shift;
-        my $scope  = shift;
-        my $req    = shift;
-
-        my $to_exe = $to_exe->{$scope}{$action};
-        croak "nothing to do for '$scope $action'"
-            unless $to_exe;
-
-        return $to_exe->($self->container, $req);
-    }
-}
-
-{
     my $realize = {
-        username => sub { Socialtext::User->Resolve($_[0]) },
-        user_id  => sub { Socialtext::User->Resolve($_[0]) },
+        username => sub { Socialtext::User->new(username => $_[0]) },
+        user_id  => sub { Socialtext::User->new(user_id => $_[0]) },
         group_id => sub {
             eval{Socialtext::Group->GetGroup(group_id => $_[0])} },
     };
@@ -138,11 +120,19 @@ sub run_post_hook {
         my $key   = shift;
         my %req   = @_;
 
+        if ($self->self_action_only) {
+            data_validation_error "can only act on users in self-action mode"
+                unless ($key eq 'username' || $key eq 'user_id');
+            auth_error "can only act on self"
+                unless ($req{$key} eq $self->actor->$key);
+            return $self->actor;
+        }
+
         my $realizor = $realize->{$key};
         croak "cannot realize '$key : $req{$key}'" unless $realizor;
 
         my $thing = $realizor->($req{$key});
-        croak "no result for '$key : $req{$key}'"
+        data_validation_error "no result for '$key : $req{$key}'"
             unless $thing;
         return $thing;
     }
@@ -153,42 +143,38 @@ sub request_role {
     my %req  = @_;
 
     my $role_name = $req{role_name};
-    return undef unless $role_name;
+    return unless $role_name;
 
     my $role = Socialtext::Role->new(name => $req{role_name});
-    croak "no such role '$role_name'" unless $role;
+    data_validation_error "no such role '$role_name'" unless $role;
 
     return $role;
 }
 
 sub request_action {
     my $self  = shift;
-
-    my $action = $self->_real_request_action(@_);
-    croak "action '$action' is not allowed"
-        unless $action eq 'skip' || grep { $action eq $_ } $self->actions;
-
-    return $action;
-}
-
-sub _real_request_action {
-    my $self  = shift;
     my $scope = shift;
     my $thing = shift;
     my $role  = shift;
 
-    my $checker = "role_for_$scope";
-    my $has     = $self->container->$checker($thing, direct => 1);
+    my $has_role_id = $self->container->user_set->direct_object_role($thing);
 
-    if ($has) {
-        return 'remove' unless $role;
-        return 'skip' if $has->role_id == $role->role_id;
-        return 'update';
+    my $action;
+
+    if ($has_role_id) {
+        if (!$role) { $action = 'remove' }
+        elsif ($has_role_id == $role->role_id) { $action = 'skip' }
+        else { $action = 'update' }
     }
     else {
-        return 'add' if $role;
-        return 'skip';
+        $action = $role ? 'add' : 'skip';
     }
+
+
+    auth_error "action '$action' is not allowed"
+        unless $action eq 'skip' || grep { $action eq $_ } $self->actions;
+
+    return $action;
 }
 
 { 
@@ -208,12 +194,12 @@ sub _real_request_action {
             my $scope = $scopes_for_key->{$key};
             next unless $scope;
 
-            croak "scope for key '$key' is illegal"
+            auth_error "scope for key '$key' is illegal"
                 unless grep { $_ eq $scope } $self->scopes;
 
             return ($scope => $key);
         }
-        croak "no scope found for request";
+        data_validation_error "no scope found for request";
     }
 }
 
