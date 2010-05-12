@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.1.0</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.1.0.air</url>
-  <description><![CDATA[[4.1.0 - Thu May  6 18:22:01 PDT 2010]
+  <version>4.1.0.1</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.1.0.1.air</url>
+  <description><![CDATA[[4.1.0.1 - Tue May 11 00:43:21 PDT 2010]
+(Enhancements)
+* Fix a bug where incoming signals sometimes freeze Desktop when typing a reply.
+* Increased height of Input area for Signals and Conversation boxes.
+
+[4.1.0 - Thu May  6 18:22:01 PDT 2010]
 (Features)
 * Signals: Support for thread view of Signal Conversations by default.
 * Signals: Click "x ago" to open Permalink in browser.
