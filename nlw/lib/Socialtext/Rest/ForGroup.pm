@@ -6,7 +6,6 @@ use namespace::clean -except => 'meta';
 
 has 'group' => (is => 'ro', isa => 'Maybe[Socialtext::Group]', lazy_build => 1);
 
-# TODO: these accessors are duplicated in Socialtext::Rest::Group
 has 'user_is_related' => (is => 'ro', isa => 'Bool', lazy_build => 1);
 # see builder for definition of "visitor"
 has 'user_is_visitor' => (is => 'ro', isa => 'Bool', lazy_build => 1);
