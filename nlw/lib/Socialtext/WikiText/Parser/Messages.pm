@@ -27,7 +27,7 @@ sub create_grammar {
 
     # NOTE: if you add phrases here, be sure to update %markup in
     # ST::WT::Emitter::Canonicalize
-    @$phrases = ('waflphrase', 'asis', 'a', 'b', 'i', 'del');
+    @$phrases = ('a', 'waflphrase', 'asis', 'b', 'i', 'del'); # order matters
     $grammar->{line} = {
         match => qr/^(.*)$/s,
         phrases => $phrases,
