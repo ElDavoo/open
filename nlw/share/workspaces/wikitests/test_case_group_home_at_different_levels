@@ -13,25 +13,47 @@
 | create-group | %%self_join_grp%% | %%group_acct%% |  |
 | set | self_join_grp_id | %%group_id%% |  |
 | st-admin | add-member --e %%username%% --g %%self_join_grp_id%% | is now a member of the |  |
-| st-admin | add-group-admin --e %%username%% --g %%self_join_grp_id%% | is now a admin of the |  |
+| st-admin | add-group-admin --e %%group_user%% --g %%self_join_grp_id%% | is now a admin of the |  |
+| st-admin | add-member --g %%self_join_grp_id%% --w %%group_ws%% | now has the role of |
 
 | *Comment* | Test Case: Group Home at Different Levels for private group |  |
 | st-logoutin | %%group_user%% | %%password%% |
 | open_ok | /st/group/%%private_grp_id%% |  |
-| pause | 30000 |  |
+| text_like | //body | %%group_name%% |
+| wait_for_element_not_present_ok | st-join-group | 30000 |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+| wait_for_text_present_ok | %%group_name%% | 30000 |
+| select-frame | relative=parent |  |
+| st-name-widget | 2 | workspaces_widget |
+| st-name-widget | 3 | signals_widget |
+| st-name-widget | 4 | members_widget |
+| st-select-widget-frame | workspaces_widget |  |
+| wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
+| select-frame | relative=parent |  |
+| st_verify_text_in_activities_widget | signals_widget | joined the group |
+| st_verify_text_in_activities_widget | signals_widget | to the workspace |
+| st-select-widget-frame | members_widget |
+| text_like | //body | %%group_user_short%% |
+| select-frame | relative=parent |  |
+
 | open_ok | /st/dashboard |  |
 | st-logoutin | %%account_user%% | %%password%% |
 | open_ok | /st/group/%%private_grp_id%% |  |
-| pause | 30000 |  |
+| text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
+| text_unlike | //body | %%group_name%% |
+| wait_for_element_not_present_ok | st-join-group | 30000 |
+
 | st-logoutin | %%non_account_user%% | %%password%% |
-| open_ok | /st/group/%%private_grp_id%% |  |
-| pause | 30000 |  |
+| open_ok | /st/group/%%private_grp_id%% |
+| text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
+| text_unlike | //body | %%group_name%% |
+| wait_for_element_not_present_ok | st-join-group | 30000 |
 
 | *Comment* | Group Home at Different Levels Make %%self_join_grp_id%% a self-join group |  |
-| st-logoutin |  |  |
+| st-logoutin |  |
+| st-admin | add-group-admin --e %%username%% --g %%self_join_grp_id%% | is now a admin |
 | open_ok | /st/group/%%self_join_grp_id%% |  |
-
-| *Comment* | Group Home at Different Levels Edit (was) Private Group, Flip Permissions |  |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
@@ -67,23 +89,73 @@
 | pause | 8000 |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| text_like | //body | Group Type self-join |
-| text_unlike | //body | Group Type private |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Group Home at Different Levels for self-join group |  |
+| *Comment* | Test Case: Group Home at Different Levels for self-join group - as member |  |
 | st-logoutin | %%group_user%% | %%password%% |
 | open_ok | /st/group/%%self_join_grp_id%% |  |
-| pause | 30000 |  |
+| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
+| wait_for_element_not_present_ok | st-join-group | 30000 |
+| st-name-widget | 2 | workspaces_widget |
+| st-name-widget | 3 | signals_widget |
+| st-name-widget | 4 | members_widget |
+| st-select-widget-frame | workspaces_widget |  |
+| wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
+| select-frame | relative=parent |  |
+| st_verify_text_in_activities_widget | signals_widget | added %%short_username%% to the group |
+| st_verify_text_in_activities_widget | signals_widget | to the workspace |
+| st-select-widget-frame | members_widget |
+| text_like | //body | %%group_user_short%% |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Group Home at Different Levels self-join group / account member |  |
 | open_ok | /st/dashboard |  |
 | st-logoutin | %%account_user%% | %%password%% |
 | open_ok | /st/group/%%self_join_grp_id%% |  |
-| pause | 30000 |  |
+| text_like | %%self_join_grp%% |  |
+| wait_for_element_visible_ok | st-join-group | 30000 |
+| st-name-widget | 1 | information_widget |
+| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
+| st-select-widget-frame | information_widget |  |
+| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
+| select-frame | relative=parent |  |
+| st-name-widget | 2 | workspaces_widget |
+| st-name-widget | 3 | signals_widget |
+| st-name-widget | 4 | members_widget |
+| wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
+| select-frame | relative=parent |  |
+| st_verify_text_in_activities_widget | signals_widget | added %%short_username%% to the group |
+| st_verify_text_in_activities_widget | signals_widget | to the workspace |
+| st-select-widget-frame | members_widget |
+| text_like | //body | %%group_user_short%% |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Group Home at Different Levels self-join group / different account member |  |
 | st-logoutin | %%non_account_user%% | %%password%% |
 | open_ok | /st/group/%%self_join_grp_id%% |  |
-| pause | 30000 |  |
+| text_like | %%self_join_grp%% |  |
+| wait_for_element_visible_ok | st-join-group | 30000 |
+| st-name-widget | 1 | information_widget |
+| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
+| st-select-widget-frame | information_widget |  |
+| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
+| select-frame | relative=parent |  |
+| st-name-widget | 2 | workspaces_widget |
+| st-name-widget | 3 | signals_widget |
+| st-name-widget | 4 | members_widget |
+| st-select-widget-frame | workspaces_widget |
+| wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
+| select-frame | relative=parent |  |
+| st_verify_text_in_activities_widget | signals_widget | added %%short_username%% to the group |
+| st_verify_text_in_activities_widget | signals_widget | to the workspace |
+| st-select-widget-frame | members_widget |
+| text_like | //body | %%group_user_short%% |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group Home at Different Levels TEARDOWN |  |
-| st-admin | delete-workspace --w %%group_ws%% --no-export | was deleted |
+| st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
 | delete-group | %%self_join_grp_id%% |  |
-| delete-group | %%private_grp_id%% |  |  | *Comment* | Test Case: Group Home at Different Levels COMPLETED |  |
+| delete-group | %%private_grp_id%% |  |
+| *Comment* | Test Case: Group Home at Different Levels COMPLETED |  |
