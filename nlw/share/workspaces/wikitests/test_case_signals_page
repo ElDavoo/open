@@ -44,7 +44,7 @@
 | wait_for_text_present_ok | Way Back In History %%start_time%% %%mark%% | 30000 |
 | wait_for_text_present_ok | I May Be Kinda Slow %%start_time%% %%mark%% | 30000 |
 
-| *Comment* | Test Case: Signals widget. Wait for automatic refresh to "x minute ago" in page |  |
+| *Comment* | Test Case: Signals Page. Wait for automatic refresh to "x minute ago" in page |  |
 | wait_for_text_present_ok | minute | 30000 |
 | text_like | //body | qr/You.+to.+%%group%%/ism |
 | text_like | //body | qr/You.+minute.+ago/ |
