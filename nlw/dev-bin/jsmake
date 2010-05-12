@@ -17,7 +17,7 @@ my @targets = @ARGV ? @ARGV : ('all');
 my $before = time;
 for my $target (@targets) {
     if ($target eq 'all') {
-        Socialtext::MakeJS->BuildDir($dir);
+        Socialtext::MakeJS->BuildAll;
     }
     elsif ($target eq 'clean') {
         Socialtext::MakeJS->CleanDir($dir);
