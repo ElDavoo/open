@@ -143,7 +143,7 @@ sub Build {
     }
 
     if (@text) {
-        my $text = join '', map { "$_\n" } @text;
+        my $text = join '', map { "$_;\n" } @text;
         write_file($target, $text);
         write_compressed($target, $text) if $info->{compress};
     }
