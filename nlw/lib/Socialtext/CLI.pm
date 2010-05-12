@@ -3242,8 +3242,14 @@ sub create_group {
         );
     }
 
-    my $user = Socialtext::User->new(email_address => $opts{email})
-        || Socialtext::User->SystemUser;
+    my $email = $opts{email};
+    $self->_error( loc("--email must be supplied to create a group.") )
+        unless $email;
+
+    my $user = Socialtext::User->new(email_address => $opts{email});
+    $self->_error( loc("no user for email address [_1]", $email) )
+        unless $user;
+
     my $account = $opts{account} || Socialtext::Account->Default;
     my $group = eval {
         Socialtext::Group->Create({

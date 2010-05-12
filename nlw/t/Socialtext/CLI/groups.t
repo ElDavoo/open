@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 39;
+use Test::Socialtext tests => 43;
 use Test::Exception;
 BEGIN { use_ok 'Socialtext::CLI'; }
 use Test::Socialtext::CLIUtils qw/is_last_exit/;
@@ -158,6 +158,32 @@ index_all_groups: {
 
     ok $output, 'got output...';
     like $output, qr/Scheduled \d+ groups for indexing/;
+}
+
+################################################################################
+create_group: {
+
+    # simple:
+    my $user = create_test_user();
+    my $output = combined_from {
+        eval { new_cli(
+            '--name'  => 'simple group',
+            '--email' => $user->email_address,
+        )->create_group() }
+    };
+
+    ok $output, 'got output for simple group create...';
+    like $output, qr/simple group Group has been created/, '... correct';
+
+    # no email_address provided
+    my $output = combined_from {
+        eval { new_cli(
+            '--name'  => 'illegal group',
+        )->create_group() }
+    };
+
+    ok $output, 'got output for illegal group create...';
+    like $output, qr/--email must be supplied/, '... correct';
 }
 
 ################################################################################
