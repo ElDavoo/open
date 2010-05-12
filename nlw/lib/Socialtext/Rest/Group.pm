@@ -361,6 +361,7 @@ sub PUT_to_users {
     if ($self->can_self_administer) {
         $ctrl->actions([qw(add remove)]);
         $ctrl->self_action_only(1);
+        $ctrl->roles(['member']);
     }
     else {
         # otherwise, user must be an admin
