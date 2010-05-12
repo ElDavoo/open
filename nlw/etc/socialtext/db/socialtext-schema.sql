@@ -188,7 +188,7 @@ $$
 CREATE FUNCTION is_ignorable_action(event_class text, "action" text) RETURNS boolean
     AS $$
 BEGIN
-    RETURN (event_class = 'page' AND action IN ('edit_start', 'edit_cancel', 'edit_contention'))
+    RETURN (event_class = 'page' AND action IN ('edit_start', 'edit_cancel', 'edit_contention', 'watch_add', 'watch_delete'))
         OR (event_class = 'widget' AND action <> 'add');
 END;
 $$
@@ -2312,4 +2312,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '116');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '117');
