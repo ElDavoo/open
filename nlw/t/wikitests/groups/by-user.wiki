@@ -122,3 +122,22 @@ Tests for [Story: Groups ReST API]
 # a user_id that doesn't exist == 404
 | GET     | /data/users/9999999/groups |
 | code-is | 404                        |
+
+# group ordering is case-insensitive alphabetical in json
+| set          | sort_user     | sort-user%%start_time%%@ken.socialtext.net |               |
+| create-user  | %%sort_user%% | password                                   |               |
+| set          | third         | bbb%%start_time%%                          |               |
+| create-group | %%third%%     |                                            | %%sort_user%% |
+| set          | second        | AAB%%start_time%%                          |               |
+| create-group | %%second%%    |                                            | %%sort_user%% |
+| set          | first         | aaa%%start_time%%                          |               |
+| create-group | %%first%%     |                                            | %%sort_user%% |
+
+| http-user-pass | %%sort_user%% | password |
+| GET-json        | /data/users/%%sort_user%%/groups |            |
+| code-is         | 200                              |            |
+| json-parse      |                                  |            |
+| json-array-size | 3                                |            |
+| json-path-is    | $[0].name                        | %%first%%  |
+| json-path-is    | $[1].name                        | %%second%% |
+| json-path-is    | $[2].name                        | %%third%%  |
