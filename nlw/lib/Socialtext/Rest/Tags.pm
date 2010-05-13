@@ -11,8 +11,8 @@ use base 'Socialtext::Rest::Collection';
 sub SORTS {
     return +{
         alpha => sub {
-            $Socialtext::Rest::Collection::a->{name}
-                cmp $Socialtext::Rest::Collection::b->{name};
+            lc($Socialtext::Rest::Collection::a->{name})
+                cmp lc($Socialtext::Rest::Collection::b->{name});
         },
         weighted => sub {
             $Socialtext::Rest::Collection::b->{page_count} <=>

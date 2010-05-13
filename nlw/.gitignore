@@ -473,3 +473,5 @@ t/wikitests/signals/data_signals_private.wiki
 t/wikitests/signals/annotations.wiki
 lib/Socialtext/Gadgets/CLI.pm
 lib/Socialtext/Job/UpdateWidget.pm
+t/wikitests/groups/directory.wiki
+t/wikitests/push/bang-visible.wiki
