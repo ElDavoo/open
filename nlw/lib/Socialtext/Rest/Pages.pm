@@ -32,9 +32,12 @@ sub get_resource {
     my $count   = $self->rest->query->param('count') || 100;
 
     # This is a performance path for page lookahead, which must be very fast
-    if ($minimal and $content_type eq 'application/json' 
-            and $filter and $filter =~ m#^\\b(.+)#) {
-        my $page_filter = $1;
+    if ($minimal) {
+        unless ($filter) {
+            Socialtext::Exception::BadRequest->throw(
+                message => 'Using ?minimal=1 requires a ?filter');
+        }
+        (my $page_filter = $filter) =~ s/^\\b//;
         $self->{_last_modified} = time;
         return Socialtext::Model::Pages->Minimal_by_name(
             workspace_id => $self->hub->current_workspace->workspace_id,
