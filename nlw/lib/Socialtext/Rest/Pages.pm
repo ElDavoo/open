@@ -144,7 +144,8 @@ sub _entities_for_query {
     my $self = shift;
 
     Socialtext::Timer->Continue('entities_for_query');
-    my $search_query = $self->rest->query->param('q');
+    my $search_query = $self->rest->query->param('q')
+                        || $self->rest->query->param('filter');
     my @entities;
 
     if (defined $search_query and length $search_query) {
