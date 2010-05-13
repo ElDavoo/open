@@ -9,6 +9,7 @@ use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE WOR
 use Socialtext::AppConfig;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
+use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::SQL qw(sql_execute sql_selectrow sql_singlevalue sql_txn);
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
@@ -354,13 +355,19 @@ sub shared_accounts {
 }
 
 sub shared_groups {
-    my ($self, $user) = @_;
+    my $self          = shift;
+    my $user          = shift;
+    my $inc_self_join = shift || 1; # defaults to true
 
     my $group_cursor = $self->groups;
     
     my @shared_groups;
     while (my $g = $group_cursor->next) {
-        push @shared_groups, $g if $g->has_user($user);
+        my $is_shared = $inc_self_join
+            ? $g->user_can(user => $user, permission => ST_READ_PERM)
+            : $g->has_user($user);
+
+        push @shared_groups, $g if $is_shared;
     }
     return (wantarray ? @shared_groups : \@shared_groups);
 }
