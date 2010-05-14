@@ -24,6 +24,7 @@ sub collection_name { 'Groups' }
 sub _entity_hash { 
     my ($self, $group) = @_;
     my $show_members = $self->rest->query->param('show_members');
+    return $group if $self->rest->query->param('ids_only');
     return {
         group_id => $group->group_id,
         name => $group->name,
@@ -97,7 +98,7 @@ sub _get_entities {
             );
             return [ $iter->all ];
         }
-        elsif ($self->rest->query->param('startIndex') and not $self->rest->query->param('skipTotalResult')) {
+        elsif (defined $self->rest->query->param('startIndex') and not $self->rest->query->param('skipTotalResult')) {
             # We need to supply "total_results".
             my $full_set = [ $user->groups( discoverable => $discoverable )->all ];
             $self->{_total_results} = @$full_set; # XXX - Re-implement this entire paragraph with a Count method.
@@ -108,6 +109,7 @@ sub _get_entities {
         else {
             # Old API; no need to supply total_results.
             return [ $user->groups(
+                ids_only => scalar $self->rest->query->param('ids_only'),
                 discoverable => $discoverable,
                 limit => $self->items_per_page,
                 offset => $self->start_index,
