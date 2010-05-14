@@ -65,7 +65,7 @@ sub _invite_one_user {
     $user->set_confirmation_info()
         unless $user->has_valid_password();
 
-    if (!$wksp->has_user($user)) {
+    if (!$wksp->has_user($user, direct => 1)) {
         $wksp->add_user(
             user => $user,
             role => Socialtext::Role->Member(),
