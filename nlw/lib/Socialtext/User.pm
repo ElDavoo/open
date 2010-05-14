@@ -446,11 +446,26 @@ sub groups {
         die "unknown 'discoverable' filter: '$d'\n";
     }
 
+    my $limit = '';
+    my $offset = '';
+
+    if ($p{limit}) {
+        $limit = 'LIMIT ?';
+        push @bind, $p{limit};
+    }
+
+    if ($p{offset}) {
+        $offset = 'OFFSET ?';
+        push @bind, $p{offset};
+    }
+
     my $sth = sql_execute(qq{
         SELECT group_id, driver_group_name
           FROM groups
          WHERE $conditions
          ORDER BY driver_group_name
+         $limit
+         $offset
     },@bind);
 
     my $apply = $p{ids_only}
@@ -1924,9 +1939,11 @@ list reference in scalar context.
 Returns a list of the accounts where both $user and $user2 are members.
 Returns a list reference in scalar context.
 
-=head2 $user->groups()
+=head2 $user->groups( %params )
 
 Returns a C<Socialtext::MultiCursor> of groups that this user has a role in.
+
+Supports C<discoverable>, C<limit> and C<offset> named parameters.
 
 =head2 $user->shared_groups( $user2 )
 

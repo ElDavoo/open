@@ -98,7 +98,11 @@ sub _get_entities {
             return [ $iter->all ];
         }
         else {
-            my $full_set = [ $user->groups(discoverable => $discoverable)->all ];
+            my $full_set = [ $user->groups(
+                discoverable => $discoverable,
+                limit => $self->items_per_page,
+                offset => $self->start_index
+            )->all ];
             $self->{_total_results} = @$full_set;
             return $full_set;
         }
