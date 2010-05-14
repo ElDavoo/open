@@ -102,8 +102,8 @@ sub _get_entities {
             # We need to supply "total_results".
             my $full_set = [ $user->groups( discoverable => $discoverable )->all ];
             $self->{_total_results} = @$full_set; # XXX - Re-implement this entire paragraph with a Count method.
-            splice(@$full_set, 0, $self->start_index);
-            splice(@$full_set, $self->items_per_page);
+            splice(@$full_set, 0, $self->start_index) if $self->start_index;
+            splice(@$full_set, $self->items_per_page) if @$full_set > $self->items_per_page;
             return $full_set;
         }
         else {
