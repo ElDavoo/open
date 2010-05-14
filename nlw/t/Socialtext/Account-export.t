@@ -41,6 +41,7 @@ sub dump_group {
         primary_account_name => $group->primary_account->name,
         driver_group_name    => $group->driver_group_name,
         created_by_username  => $group->creator->username,
+        permission_set       => $group->permission_set,
         role_name            => ignore(),
         users                => ignore(),
         description          => ignore(),
