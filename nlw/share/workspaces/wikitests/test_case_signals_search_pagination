@@ -168,8 +168,10 @@ wait_for_text_present_ok | Pagination %%start_time%% 3 | 30000 |
 | wait_for_text_present_ok | LessRelevant %%start_time%% 64 | 30000 |
 | click_ok | //a[@class='hideLink'] |  |
 | verifyConfirmation | Are you sure you want to delete this Signal?\nYou cannot undelete it. |  |
-| wait_for_text_not_present_ok | LessRelevant %%start_time%% 64 | 10000 |
+| wait_for_text_not_present_ok | LessRelevant %%start_time%% 64 | 20000 |
 | select_frame | relative=parent |  |
+
+| st-process-jobs |
 
 | *Comment* | Test Case: Signals Search Pagination. open Signals to verify hidden deleted signal |  |
 | open_ok | /?signals |  |

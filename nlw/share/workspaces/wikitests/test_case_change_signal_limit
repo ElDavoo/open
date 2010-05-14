@@ -1,59 +1,66 @@
-| *Comment* | Test Case: Change Signal Limit |
-
-NOTE: If this test dies in the middle, you may need to go to /console, click setup tab, and change the default signal size to 400 in order to get it to start passing again. Also this test only runs on an appliance.
-
 * Fixture: SocialWidgets
+
+| *Comment* | Test Case: Change Signal Limit |
+| *Comment* | If this test dies in the middle, you may need to go to /console, click setup tab, and change the default signal size to 400 in order to get it to start passing again. Also this test only runs on an appliance. |
 
 | *Comment* | Test Case: Change Signal Limit Create two accounts and two users |  |
 | set | onehundredlimit | one-hundred-limit-%%start_time%% |
 | set | twohundredlimit | twohundred-limit-%%start_time%% |
-| set | onehundreduser | onehundreduser-%%start_time%%@matt.socialtext.net |
-| set | twohundred_ws | twohundred-ws-%%start_time%% |
+| set | onehundreduser | onehundreduser-%%start_time%%@ken.socialtext.net |
+
 | set | onehundredsignal | 3 5 7 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 |
-| set | onefiftysignal | 2b4b6b8b11b14b17b20b23b26b29b32b35b38b41b44b47b50b53b56b59b62b65b68 71 74 77 80 83 86 89 92 95 98 102 106 110 114 118 122 126 130 134 138 142 146 150 |
-| set | onefiftyonesignal | 3 5 7 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 99 103 107 111 115 119 123 127 131 135 139 143 147 151 |
+
 | set | twohundredsignal | 3 5 7 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 100 104 108 112 116 120 124 128 132 136 140 144 148 152 156 160 164 168 172 176 180 184 188 192 196 200 |
 | set | twohundredonesignal | 3 5 7 10 13 16 19 22 25 28 31 34 37 40 43 46 49 52 55 58 61 64 67 70 73 76 79 82 85 88 91 94 97 101 105 109 113 117 121 125 129 133 137 141 145 149 153 157 161 165 169 173 177 181 185 189 193 197 201 |
+
 | set | fourfortysignal | 3 5 7 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 100 104 108 112 116 120 124 128 132 136 140 144 148 152 156 160 164 168 172 176 180 184 188 192 196 200 204 208 212 216 220 224 228 232 236 240 244 248 252 256 260 264 268 272 276 280 284 288 292 296 300 304 308 312 316 320 324 328 332 336 340 344 348 352 356 360 364 368 372 376 380 384 388 392 396 400 404 408 412 416 420 424 428 432 436 440 |
+
 | set | onehundred_two | two 7 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 |
 
 | create-account | %%onehundredlimit%% |  |
 | create-account | %%twohundredlimit%% |  |
 | st-admin | create-user --e %%onehundreduser%% --p %%password%% --account %%onehundredlimit%% | A new user with the username |
-| st-admin | create-workspace --name %%twohundred_ws%% --title %%twohundred_ws%% --account %%twohundredlimit%% | A new workspace named |
-| st-admin | add-member --e %%onehundreduser%% --w %%twohundred_ws%% | now has the role of |
+| st-admin | add-member --e %%onehundreduser%% --account %%twohundredlimit%% | now has the role of |
 
-| *Comment* | Test Case: See default 400-char limit |  |
+| *Comment* | Test Case: Change Signal Limit See default 400-char limit |  |
 | st-admin | give-accounts-admin --email %%username%% |  |
 | st-admin | give-accounts-admin --email %%onehundreduser%% |  |
+
 | open_ok | /st/dashboard |  |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st-select-widget-frame | activities_widget |  |
-| text_like | //body | 400 |
+| wait_for_text_present_ok | 400 | 20000 |
 | select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Change Signal Limit Send 200 and 440 char signals |  |
 | st-send-signal-via-activities-widget | activities_widget | %%twohundredsignal%% |
 | st-verify-text-in-activities-widget | activities_widget | %%twohundredsignal%% |
 | st-send-signal-via-activities-widget | activities_widget | %%fourfortysignal%% |
+
 | st-select-widget-frame | activities_widget |  |
+| wait_for_text_present_ok | Signal length limit is | 20000 |
 | text_like | //body | qr/Signal length limit is \d+, please edit your Signal/ism |
 | select-frame | relative=parent |  |
-| st-send-signal-via-activities-widget | activities_widget | abc 123 to get fory four out of input box |
+
+| st-send-signal-via-activities-widget | activities_widget | abc 123 to get FORTY FOUR out of input box |
 | st-text-unlike-in-activities-widget | activities_widget | %%fourfortysignal%% |
 
 | *Comment* | Test Case: Change Signal Limit set serverwide 300 char limit - see limit |  |
+| st-admin | give-system-admin --email %%username%% |  |
 | open_ok | /console/?rm=Setup |  |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
 | wait_for_element_visible_ok | set_signals_size_limit | 30000 |
 | type_ok | signals_size_limit | 300 |
 | click_and_wait | set_signals_size_limit |  |
+
 | open_ok | /st/dashboard |  |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st-select-widget-frame | activities_widget |  |
-| text_like | //body | 300 |
+| wait_for_text_present_ok | 300 | 20000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Change Signal Limit Login set account limit to 200 but server to 100 - see limit of 100 |  |
@@ -67,17 +74,20 @@ NOTE: If this test dies in the middle, you may need to go to /console, click set
 | click_ok | st-signals-size-limit-submit |  |
 | wait_for_text_present_ok | Maximum value for this appliance is | 30000 |
 | verifyValue | signals_size_limit | 200 |
+
 | open_ok | /console/?rm=Setup |  |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
 | wait_for_element_visible_ok | set_signals_size_limit | 30000 |
 | type_ok | signals_size_limit | 100 |
 | click_and_wait | set_signals_size_limit |  |
+
+| *Comment* | Test Case: Change Signal Limit Verify limit is MIN(server, account) limit |  |
 | open_ok | /st/dashboard |  |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st-select-widget-frame | activities_widget |  |
-| text_like | //body | 100 |
+| wait_for_text_present_ok | 100 | 20000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Change Signal Limit set serverwide limit back to 400 |  |
@@ -86,12 +96,13 @@ NOTE: If this test dies in the middle, you may need to go to /console, click set
 | wait_for_element_visible_ok | set_signals_size_limit | 30000 |
 | type_ok | signals_size_limit | 400 |
 | click_and_wait | set_signals_size_limit |  |
+
 | open_ok | /st/dashboard |  |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st-select-widget-frame | activities_widget |  |
-| text_like | //body | 400 |
+| wait_for_text_present_ok | 400 | 20000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Change Signal Limit Login set serverwide 200 char limit for a specific acct - see limit |  |
@@ -108,6 +119,7 @@ NOTE: If this test dies in the middle, you may need to go to /console, click set
 | type_ok | signals_size_limit | 50000 |
 | click_ok | st-signals-size-limit-submit |  |
 | wait_for_text_present_ok | Maximum value for this appliance is | 30000 |
+
 | st-search-cp-account | %%twohundredlimit%% |  |
 | wait_for_element_visible_ok | link=%%twohundredlimit%% | 30000 |
 | click_and_wait | link=%%twohundredlimit%% |  |
@@ -122,14 +134,16 @@ NOTE: If this test dies in the middle, you may need to go to /console, click set
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
 | type_ok | signals_size_limit | 100 |
 | click_ok | st-signals-size-limit-submit |  |
+
 | st-search-cp-account | %%onehundredlimit%% |  |
 | wait_for_element_visible_ok | link=%%onehundredlimit%% | 30000 |
 | click_and_wait | link=%%onehundredlimit%% |  |
 | verifyValue | signals_size_limit | 100 |
 
-| *Comment* | Test Case: Change Signal Limit Logoutin as special user |  |
-| open_ok | /st/dashboard |  |
-| st-logoutin | %%onehundreduser%% | %%password%% |
+| *Comment* | Test Case: Change Signal Limit logoutin as special user |  |
+| open_ok | /nlw/submit/logout |  |
+| st-login | %%onehundreduser%% | %%password%% |
+
 | open_ok | /st/dashboard |  |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
@@ -137,66 +151,78 @@ NOTE: If this test dies in the middle, you may need to go to /console, click set
 | st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | 100 | 30000 |
 | select-frame | relative=parent |  |
+
 | st-send-signal-via-activities-widget | activities_widget | %%onehundredsignal%% |
 | st-verify-text-in-activities-widget | activities_widget | %%onehundredsignal%% |
 | st-send-signal-via-activities-widget | activities_widget | %%twohundredsignal%% |
+
 | st-send-signal-via-activities-widget | activities_widget | def 456 to get two hundred out of input box |
 | st-text-unlike-in-activities-widget | activities_widget | %%twohundredsignal%% |
+
+| st-send-signal-via-activities-widget | activities_widget | %%twohundredsignal%% |
 | st-select-widget-frame | activities_widget |  |
-| text_like | //body | qr/Signal length limit is 100, please edit your Signal/ism |
+| wait_for_text_present_ok | Signal length limit is 100 | 20000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Change Signal Limit On signals page, toggling account toggles limits |  |
-| open-ok | /st/signals |  |
-| wait_for_element_visible_ok | network-select | 30000 |
-| st-name-widget | 1 | signal_widget |
-| st-select-widget-frame | signal_widget |  |
-| wait_for_text_present_ok | 100 | 30000 |
-| select-frame | relative=parent |  |
 
-| select_ok | network-select | label=All My Groups |
-| st-select-widget-frame | signal_widget |  |
-| wait_for_text_present_ok | 100 | 30000 |
-| select-frame | relative=parent |  |
+| *Comment* | Test Case: Change Signal Limit. Limit 100 in All Groups |  |
+| open_ok | /st/signals |  |
+| text_like | st-editing-tools-edit | Signals |
 
-| open-ok | /st/signals |  |
-| pause | 10000 |  |
-| wait_for_element_visible_ok | network-select | 30000 |
-| pause | 10000 |  |
-| select_ok | network-select | label=%%twohundredlimit%% (1 user) |
-| pause | 3000 |  |
-| st-name-widget | 1 | signal_widget |
-| st-select-widget-frame | signal_widget |  |
-| wait_for_text_present_ok | 200 | 3000 |
-| select-frame | relative=parent |  |
-| select_ok | network-select | label=%%onehundredlimit%% (primary, 1 user) |
-| st-select-widget-frame | signal_widget |  |
-| wait_for_text_present_ok | 100 | 30000 |
-| select-frame | relative=parent |  |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 20000 |
 
-| *Comment* | Test Case: Change Signal Limit Check Limits on Signals Page |  |
-| st-select-widget-frame | signal_widget |  |
-| wait_for_text_present_ok | Download Socialtext | 60000 |
-| wait_for_text_present_ok | Try out the | 60000 |
-| pause | 10000 |  |
+| open_ok | /?action=invite |  |
+| open_ok | /st/signals |  |
+
+| *Comment* | Test Case: Change Signal Limit. Test Limit 100 in All Groups |  |
+| st-name-widget | 1 | signals_widget |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_text_present_ok | 100 | 30000 |
 | selectFrame | relative=parent |  |
-| st-send-signal-via-activities-widget | signal_widget | %%onehundred_two%% |
-| st-select-widget-frame | signal_widget |  |
+
+| *Comment* | Test Case: Change Signal Limit. Limit 100 in %%onehundredlimit%% |  |
+
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[text()='%%onehundredlimit%% (primary, 1 users)'] | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[text()='%%onehundredlimit%% (primary, 1 users)'] | 20000 |
+
+| open_ok | /?action=invite |  |
+| open_ok | /st/signals |  |
+
+| *Comment* | Test Case: Change Signal Limit. Test Limit 100 in %%onehundredlimit%% |  |
+| st-name-widget | 1 | signals_widget |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_text_present_ok | 100 | 20000 |
+| selectFrame | relative=parent |  |
+
+| *Comment* | Test Case: Change Signal Limit. Limit 200 in %%twohundredlimit%% |  |
+
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[text()='%%twohundredlimit%% (1 users)'] | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[text()='%%twohundredlimit%% (1 users)'] | 20000 |
+
+| open_ok | /?action=invite |  |
+| open_ok | /st/signals |  |
+
+| *Comment* | Test Case: Change Signal Limit. Limit 200 in %%twohundredlimit%% |  |
+| st-name-widget | 1 | signals_widget |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_text_present_ok | 200 | 20000 |
+| selectFrame | relative=parent |  |
+
+| *Comment* | Test Case: Change Signal Limit. Test Limit 200 in %%twohundredlimit%% |  |
+| st-send-signal-via-activities-widget | signals_widget | %%onehundred_two%% |
+| st-select-widget-frame | signals_widget |  |
 | text_unlike | //body | Signal length limit is 100, please edit your Signal |
 | selectFrame | relative=parent |  |
-| st-send-signal-via-activities-widget | signal_widget | %%twohundredsignal%% |
-| st-select-widget-frame | signal_widget |  |
-| text_like | //body | Signal length limit is 100, please edit your Signal |
+
+| st-send-signal-via-activities-widget | signals_widget | %%fourfortysignal%% |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_text_present_ok | Signal length limit is 200 | 20000 |
 | selectFrame | relative=parent |  |
 
-| *Comment* | Test Case: Change Signal Limit Confirm and dis-confirm signals |  |
-| wait_for_element_present_ok | //iframe[@name='widget_2'] | 30000 |
-| st-name-widget | 3 | signal_activity |
-| st-select-widget-frame | signal_activity |  |
-| wait_for_text_present_ok | %%onehundred_two%% | 120000 |
-| text_unlike | //body | %%twohundredsignal%% |
-
 | *Comment* | Test Case: Change Signal Limit TEARDOWN |  |
-| st-admin | delete-workspace -w %%twohundred_ws%% --no-export | deleted |
+
+| st-admin | remove-system-admin --email %%username%% |  |
 
 | *Comment* | Test Case: Change Signal Limit COMPLETED |  |

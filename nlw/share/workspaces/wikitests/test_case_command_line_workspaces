@@ -94,7 +94,7 @@ show-admins
 
 show-impersonators
 
-| st-admin | show-impersonators | qr/The command you called \(show-impersonators\) requires a workspace to be specified/ |
+| st-admin | show-impersonators | qr/The command you called \(show-impersonators\) requires an account or a workspace to be specified/ |
 | st-admin | add-workspace-impersonator --workspace %%cmdline_workspace%% --email devnull1@socialtext.com | devnull1@socialtext.com already has the role of 'admin' in the %%cmdline_workspace%% |
 | st-admin | remove-workspace-admin --email devnull1@socialtext.com --workspace %%cmdline_workspace%% | no longer has the role of 'admin' |
 | st-admin | add-workspace-impersonator --workspace %%cmdline_workspace%% --email devnull1@socialtext.com | devnull1@socialtext.com now has the role of 'impersonator' in the %%cmdline_workspace%% |
