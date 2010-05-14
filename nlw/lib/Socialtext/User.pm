@@ -403,9 +403,10 @@ sub groups {
 
     my @bind = ($self->user_set_id);
 
-    # discoverable: exclude - groups i'm a member of (CURRENT)
-    # discoverable: include - groups i'm a member of + permset=self-join
-    # discoverable: only    - permset=self-join - groups i'm a member of
+    # discoverable: exclude   - groups i'm a member of (CURRENT)
+    # discoverable: include   - groups i'm a member of + permset=self-join
+    # discoverable: only      - permset=self-join - groups i'm a member of
+    # discoverable: public    - non-private groups
 
     my $conditions = '0 = 1';
     my $path_sub_query = q{
@@ -441,6 +442,11 @@ sub groups {
     elsif ($d eq 'include') {
         $conditions = 
             qq{user_set_id IN ($path_sub_query) OR $discoverable_clause};
+    }
+    elsif ($d eq 'public') {
+        # XXX TODO: scope to this user's accounts
+        $conditions = qq{permission_set <> 'private'};
+        @bind = ();
     }
     else {
         die "unknown 'discoverable' filter: '$d'\n";
