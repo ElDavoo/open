@@ -40,7 +40,7 @@
 | wait_for_element_visible_ok | link=Readers | 30000 |
 | wait_for_element_visible_ok | link=Edits | 30000 |
 | wait_for_element_visible_ok | link=Signals | 30000 |
-| wait_for_element_not_present_ok | link=Viewed | 5000 |
+| wait_for_element_not_present_ok | link=Viewed | 20000 |
 | text_like | //body | Viewed |
 
 | *Comment* | Test Case: Active Members Widget Check the content of Readers |  |
@@ -72,7 +72,7 @@
 | wait_for_element_visible_ok | link=Readers | 30000 |
 | wait_for_element_visible_ok | link=Edits | 30000 |
 | wait_for_element_visible_ok | link=Signals | 30000 |
-| wait_for_element_not_present_ok | link=Viewed | 5000 |
+| wait_for_element_not_present_ok | link=Viewed | 20000 |
 | text_like | //body | Viewed |
 | text_unlike | //body | test page 1 |
 | text_unlike | //body | test page 2 |

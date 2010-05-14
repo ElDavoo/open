@@ -45,7 +45,7 @@ to actually set up microblogging. It still expects the plan server to be elsewhe
 
 | *Comment* | Test Case: Setup Signals Only. create a well-known account before signals_only |  |
 | *Comment* | Test Case: Setup Signals Only. %%wna%% is used in Test Case: True Microblogging |  |
-| st-admin | create-account --name "%%wna%%" | has been created |
+| st-admin | create-account --name "%%wna%%" | was created |
 
 | *Comment* | Test Case: Setup Signals Only. set signals_only. Could take minutes. |  |
 | st-appliance-config | set signals_only 1 |  |

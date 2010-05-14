@@ -39,7 +39,7 @@
 | *Comment* | Test Case: Signal From Profile. Public mention appears in %%spuser%% Signal page activities widget |  |
 | click_and_wait | link=Signals |  |
 | wait_for_text_present_ok | Signals | 30000 |
-| st-name-widget | 3 | sigactivities |
+| st-name-widget | 1 | sigactivities |
 | st-verify-text-in-activities-widget | sigactivities | %%signal%% |
 
 | *Comment* | Test Case: Signal From Profile. Public mention appears in %%spuser%% Dashboard activities widget |  |
@@ -72,7 +72,7 @@
 | *Comment* | Test Case: Signal From Profile. Private mention appears in %%spuser%% signal activities widget |  |
 | click_and_wait | link=Signals |  |
 | wait_for_text_present_ok | Signals | 30000 |
-| st-name-widget | 3 | sigactivities |
+| st-name-widget | 1 | sigactivities |
 | st-verify-text-in-activities-widget | sigactivities | %%signal%% |
 
 | *Comment* | Test Case: Signal From Profile. private mention appears in %%spuser%% dashboard activities widget |  |

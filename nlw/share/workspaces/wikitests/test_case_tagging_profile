@@ -56,7 +56,7 @@ text_like | 所以 | |
 | *Comment* | Test Case: Tagging Profile clicking on a tag link causes Selenium to bomb, but opening tag link directly works. |  |
 | open_ok | /?action=people;tag=fog%20%%start_time%% |  |
 | wait_for_element_visible_ok | //select[@class='account-select'] | 30000 |
-| select_and_wait | //select[@class='account-select'] | All People |
+| select_and_wait | //select[@class='account-select'] | All Groups |
 
 | *Comment* | Test Case: Tagging Profile list view: tag fog %%start_time%% |  |
 | text_like | All People Tagged 'fog %%start_time%%' |  |
@@ -81,7 +81,7 @@ text_like | 所以 | |
 | text_like | link=fog %%start_time%% | fog %%start_time%% |
 | open_ok | /?action=people;tag=fog%20%%start_time%% |  |
 | wait_for_element_visible_ok | //select[@class='account-select'] | 30000 |
-| select_and_wait | //select[@class='account-select'] | All People |
+| select_and_wait | //select[@class='account-select'] | All Groups |
 
 | *Comment* | Test Case: Tagging Profile list view: tag fog %%start_time%% two users |  |
 | text_like | All People Tagged 'fog %%start_time%%' |  |
@@ -110,7 +110,7 @@ text_like | 所以 | |
 | st-logoutin |  |  |
 | open_ok | /?action=people;tag=tagger%20%%start_time%% |  |
 | wait_for_element_visible_ok | //select[@class='account-select'] | 30000 |
-| select_and_wait | //select[@class='account-select'] | All People |
+| select_and_wait | //select[@class='account-select'] | All Groups |
 | wait_for_element_visible_ok | link=%%fname%% %%lname%% | 30000 |
 | wait_for_element_visible_ok | link=Tools | 30000 |
 | click_and_wait | link=Add this tag to me |  |

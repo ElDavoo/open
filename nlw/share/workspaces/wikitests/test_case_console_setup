@@ -48,20 +48,20 @@
 | type_ok | signals_size_limit | -25 |
 | click_ok | set_signals_size_limit |  |
 | wait_for_page_to_load_ok | 30000 |  |
-| wait_for_text_present_ok | Must set a signals maximum size greater than zero | 30000 |
+| wait_for_text_present_ok | Signals maximum size must be an positive integer | 30000 |
 | text_unlike | //body | -25 |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
 | wait_for_element_visible_ok | set_signals_size_limit | 30000 |
 | type_ok | signals_size_limit | 0 |
 | click_ok | set_signals_size_limit |  |
 | wait_for_page_to_load_ok | 30000 |  |
-| wait_for_text_present_ok | Must set a signals maximum size greater than zero | 30000 |
+| wait_for_text_present_ok | Signals maximum size must be an positive integer | 30000 |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
 | wait_for_element_visible_ok | set_signals_size_limit | 30000 |
 | type_ok | signals_size_limit | 300 |
 | click_ok | set_signals_size_limit |  |
 | wait_for_page_to_load_ok | 30000 |  |
-| text_unlike | //body | Must set a signals maximum size greater than zero |
+| text_unlike | //body | Signals maximum size must be an positive integer |
 | verifyValue | signals_size_limit | 300 |
 
 | *Comment* | Test Case: Console Setup. Disable/Enable Desktop Update |  |
@@ -205,6 +205,7 @@
 | click_and_wait | timeserver_config |  |
 | type_ok | smarthost |  |
 | click_and_wait | config_email |  |
+| st-admin | remove-system-admin --email %%email%% | no longer has system admin access |
 
 | *Comment* | Test Case: Console Setup. make sure the default setting is ntp.ubuntu.com |  |
 | value_is | timeserver | ntp.ubuntu.com |

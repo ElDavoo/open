@@ -23,9 +23,6 @@
 | wait_for_element_visible_ok | link=Signals | 30000 |
 | click_and_wait | link=Signals |  |
 
-| *Comment* | Test Case: Signal to Networks. Verify no group selector |  |
-| wait_for_element_not_present_ok | network-select | 10000 |
-
 | *Comment* | Test Case: Signal to Networks. Signal to primary account |  |
 | set | mark | primary |
 | set | group | signals-%%start_time%% |
@@ -35,18 +32,6 @@
 | st-admin | add-member --e %%member%% --w help-en | now has the role of 'member' in the |
 | st-admin | disable-plugin --account Socialtext --p dashboard |  |
 | st-admin | enable-plugin --account Socialtext --p signals |  |
-
-| open-ok | / |  |
-| wait_for_element_visible_ok | link=Signals | 30000 |
-| click_and_wait | link=Signals |  |
-
-| *Comment* | Test Case: Signal to Networks. Select signals to All My Groups |  |
-| st-cycle-network-select | 2 |  |
-
-| *Comment* | Test Case: Signal to Networks. Signal to All Groups |  |
-| set | mark | All |
-| set | group | 2 groups |
-| include | [Test Case: Signals Page] |  |
 
 | *Comment* | Test Case: Signal to Networks TEARDOWN |  |
 | st-admin | remove-member --e %%member%% --w help-en | no longer has the role of 'member' |
