@@ -104,7 +104,9 @@ sub _get_entities {
 #               offset => $self->start_index
             )->all ];
             $self->{_total_results} = @$full_set; # Is a separate ->count faster? not sure.
-            return [@{$full_set}[$self->start_index .. $self->start_index + $self->items_per_page - 1]];
+            splice(@$full_set, 0, $self->start_index);
+            splice(@$full_set, $self->items_per_page);
+            return $full_set;
         }
     }
 }
