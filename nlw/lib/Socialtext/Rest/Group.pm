@@ -85,6 +85,12 @@ sub controller {
     );
 }
 
+# users can voluntarily remove themselves from any group they are a member of
+sub can_self_remove {
+    my $self = shift;
+    return !$self->user_can_admin;
+}
+
 sub can_self_administer {
     my $self = shift;
     return $self->group->permission_set eq 'self-join'
@@ -267,7 +273,7 @@ sub POST_to_trash {
     );
 
     # allow for self-removal on self-join groups
-    if ($self->can_self_administer) {
+    if ($self->can_self_remove) {
         $ctrl->self_action_only(1);
     }
     else {

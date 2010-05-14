@@ -141,3 +141,15 @@
 | *Comment* | non-admins can remove themselves |
 | POST-json | /data/groups/%%group2_id%%/trash | [{"username":"%%copper%%"}] |
 | code-is   | 204                              |                             |
+
+## Private Group, non-admin self-removal
+| set               | group3     | group3-%%start_time%% |            |  |         |
+| create-group      | %%group3%% | %%account%%           | %%copper%% |  | private |
+| set               | group3_id  | %%group_id%%          |            |  |         |
+| add-user-to-group | %%lead%%   | %%group_id%%          | member     |  |         |
+
+## Log in as lead, try to remove self
+| *Comment* | Log in as lead, try to remove self |
+| http-user-pass | %%lead%%                         | password                |
+| POST-json      | /data/groups/%%group3_id%%/trash | {"username":"%%lead%%"} |
+| code-is        | 204                              |                         |
