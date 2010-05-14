@@ -124,7 +124,7 @@ sub users_listall {
         if $self->cgi->Button;
 
     my $ws = $self->hub->current_workspace;
-    my @uwr = sort { $a->best_full_name <=> $b->best_full_name }
+    my @uwr = sort { $a->[0]->best_full_name cmp $b->[0]->best_full_name }
         $ws->user_roles(direct => 1)->all;
 
     my @gwr = $ws->group_roles->all;
