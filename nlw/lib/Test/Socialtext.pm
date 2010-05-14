@@ -51,6 +51,7 @@ our @EXPORT = qw(
     create_test_account
     create_test_account_bypassing_factory
     create_test_user
+    create_test_badmin
     create_test_workspace
     create_test_group
     SSS
@@ -564,19 +565,25 @@ my @Added_groups;
 
     sub create_test_user {
         my %opts = @_;
-        $opts{unique_id}          ||= create_unique_id;
-        $opts{account}            ||= Socialtext::Account->Default;
+        my $uniq = delete $opts{unique_id} || create_unique_id;
+        my $acct = delete $opts{account} || Socialtext::Account->Default;
+
+        $opts{email_address} = $opts{username} = $uniq.'@ken.socialtext.net';
         $opts{created_by_user_id} ||= Socialtext::User->SystemUser->user_id;
-        $opts{is_system_created}  ||= 0;
+
         my $user = Socialtext::User->create(
-            username           => $opts{unique_id} . '@ken.socialtext.net',
-            email_address      => $opts{unique_id} . '@ken.socialtext.net',
-            created_by_user_id => $opts{created_by_user_id},
-            primary_account_id => $opts{account}->account_id,
-            is_system_created  => $opts{is_system_created},
+            %opts,
+            primary_account_id => $acct->account_id,
         );
         push @Added_users, $user->user_id;
         return $user;
+    }
+
+    sub create_test_badmin {
+        my %opts = @_;
+        $opts{unique_id} = 'admin-'.create_unique_id;
+        $opts{is_business_admin} = $opts{is_technical_admin} = 1;
+        return create_test_user(%opts);
     }
 
     sub create_test_workspace {
