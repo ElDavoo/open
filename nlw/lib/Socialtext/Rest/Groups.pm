@@ -97,16 +97,23 @@ sub _get_entities {
             );
             return [ $iter->all ];
         }
-        else {
+        elsif ($self->rest->query->param('startIndex')) {
+            # Collection API: We need to supply "total_results".
             my $full_set = [ $user->groups(
                 discoverable => $discoverable,
-#               limit => $self->items_per_page,
-#               offset => $self->start_index
             )->all ];
             $self->{_total_results} = @$full_set; # Is a separate ->count faster? not sure.
             splice(@$full_set, 0, $self->start_index);
             splice(@$full_set, $self->items_per_page);
             return $full_set;
+        }
+        else {
+            # Old API; no need to supply total_results.
+            return [ $user->groups(
+                discoverable => $discoverable,
+                limit => $self->items_per_page,
+                offset => $self->start_index,
+            )->all ];
         }
     }
 }
