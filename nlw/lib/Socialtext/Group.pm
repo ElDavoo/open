@@ -484,6 +484,13 @@ after 'role_change_check' => sub {
         permission => ST_ADMIN_PERM
     );
 
+    if ($change eq 'remove' && $thing->can('user_id') &&
+        $actor->user_id == $thing->user_id)
+    {
+        # users can always self-part
+        return;
+    }
+
     # allow self-updating users for the self-join type of groups
     if ($self->permission_set eq 'self-join' &&
         $thing->can('user_id') && 
@@ -496,9 +503,6 @@ after 'role_change_check' => sub {
             if ($role->name eq 'admin') {
                 return if $self->role_count == 0;
             }
-        }
-        elsif ($change eq 'remove') {
-            return;
         }
     }
 
