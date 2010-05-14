@@ -488,7 +488,7 @@ after 'role_change_check' => sub {
     if ($self->permission_set eq 'self-join' &&
         $thing->can('user_id') && 
         $actor->user_id == $thing->user_id &&
-        Socialtext::Authz->new->user_sets_share_an_account($actor,$self)
+        $self->shares_account_with($actor)
     ) {
         if ($change eq 'add' || $change eq 'update') {
             return if $role->name eq 'member';

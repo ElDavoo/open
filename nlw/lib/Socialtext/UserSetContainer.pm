@@ -214,6 +214,12 @@ sub has_at_least_one_admin {
     return ($admins >= 1);
 }
 
+sub shares_account_with {
+    my $self = shift;
+    my $set  = shift;
+    return Socialtext::Authz->new->user_sets_share_an_account($set, $self);
+}
+
 sub _role_change_checker {
     my ($self,$p) = @_;
 
