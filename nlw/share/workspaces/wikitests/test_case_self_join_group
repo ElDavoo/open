@@ -5,8 +5,11 @@
 | *Comment* | Test Case: Self Join Group Define Users, Accounts |  |
 | set | account | selfjoin-acct-%%start_time%% |
 | set | group | grp-%%start_time%% |
-| set | user | selfjoin%%start_time%%@matt.socialtext.net |
-| set | joiner | joiner%%start_time%%@matt.socialtext.net |
+| set | user_short | selfjoin%%start_time%% |
+| set | user | %%user_short%%@matt.socialtext.net |
+| set | joiner_short | joiner%%start_time%% |
+| set | joiner | %%joiner_short%%@matt.socialtext.net |
+
 | set | ws | selfjoin-ws-%%start_time%% |
 | set | other_account | other-acct-%%start_time%% |
 | set | other_user | other-user-%%start_time%%@matt.socialtext.net |
@@ -104,6 +107,7 @@
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
+| get_id_from_url | group_id |  |
 
 | *Comment* | Test Case: Self Join Group - See Group is changed to self-join |  |
 | *Comment* | Test Case: Self Join Group - GAHH, self-join is cached only in SE, refind page |  |
@@ -118,16 +122,44 @@
 | text_like | //body | Group Type self-join |
 | text_unlike | //body | Group Type private |
 | select-frame | relative=parent |  |
+| wait_for_element_visible_ok | st-leave-group | 30000 |
+| click_ok | st-leave-group |  |
+| wait_for_element_visible_ok | st-leave-group | 30000 |
+| wait_for_text_present_ok | The group needs to include at least one admin. | 30000 |
+| st-name-widget | 4 | members_widget |
+| st-select-widget-frame | members_widget |
+| text_like | //body | %%user_short%% |
+| select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Self Join Group FUTURE WORK Login as a different user, discoverable, joinable |  |
+| *Comment* | Test Case: Self Join Group Login as a different user, discoverable, joinable |  |
 | st-logoutin | %%joiner%% | %%password%% |
+| open_ok | /st/group/%%group_id%% |  |
+| wait_for_element_visible_ok | st-join-group | 30000 |
+| click_ok | st-join-group | 30000 |
+| pause | 5000 |  |
+| refresh_ok |  | id seems to be missing without refresh |
+| pause | 8000 |  |
+| wait_for_element_visible_ok | st-leave-group | 30000 |
+| st-name-widget | 4 | members_widget |
+| st-select-widget-frame | members_widget |  |
+| text_like | //body | %%user_short%% |
+| text_like | //body | %%joiner_short%% |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Self Join Group Leave as different user |  |
+| click_ok | st-leave-group | 30000 |
+| wait_for_element_visible_ok | st-join-group | 30000 |
+| st-name-widget | 4 | members_widget |
+| st-select-widget-frame | members_widget |  |
+| text_like | //body | %%user_short%% |
+| text_unlike | //body | %%joiner_short%% |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Self Join Group FUTURE WORK Login as a different account, not-discoverable, not-joinable |  |
 | st-logoutin | %%other_user%% | %%password%% |
-
-| *Comment* | Test Case: Self Join Group FUTURE WORK Add a workspace overlap, discoverable, joinable |  |
-
-| *Comment* | Test Case: Self Join Group FUTURE WORK Create a private group, login as separate, not discoverable or joinable |  |
+| open_ok | /st/group/%%group_id%% |  |
+| wait_for_element_not_present_ok | st-join-group | 30000 |
+| text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
 
 | *Comment* | Test Case: Self Join Group TEARDOWN |  |
 | st-admin | delete-workspace --no-export --w %%ws%% | has been deleted |

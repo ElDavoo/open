@@ -135,24 +135,8 @@
 | *Comment* | Test Case: Group Home at Different Levels self-join group / different account member |  |
 | st-logoutin | %%non_account_user%% | %%password%% |
 | open_ok | /st/group/%%self_join_grp_id%% |  |
-| text_like | %%self_join_grp%% |  |
-| wait_for_element_visible_ok | st-join-group | 30000 |
-| st-name-widget | 1 | information_widget |
-| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
-| st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
-| select-frame | relative=parent |  |
-| st-name-widget | 2 | workspaces_widget |
-| st-name-widget | 3 | signals_widget |
-| st-name-widget | 4 | members_widget |
-| st-select-widget-frame | workspaces_widget |
-| wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
-| select-frame | relative=parent |  |
-| st_verify_text_in_activities_widget | signals_widget | added %%short_username%% to the group |
-| st_verify_text_in_activities_widget | signals_widget | to the workspace |
-| st-select-widget-frame | members_widget |
-| text_like | //body | %%group_user_short%% |
-| select-frame | relative=parent |  |
+| wait_for_element_not_present_ok | st-join-group | 30000 |
+| text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
 
 | *Comment* | Test Case: Group Home at Different Levels TEARDOWN |  |
 | st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |

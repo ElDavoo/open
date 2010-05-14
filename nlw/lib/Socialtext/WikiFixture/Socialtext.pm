@@ -237,6 +237,26 @@ sub st_page_multi_watch {
   }
 }
 
+=head2 get_url( $variable )
+  Get the URL, stick it in a variable
+=cut
+
+sub get_url {
+    my ($self, $variable) = @_;
+    $self->{$variable} = $self->get_location();
+}
+
+=head2 get_id_from_url ($variable) 
+  You're on URL ending in /d$.  Get a group ID, stick it into $variable
+=cut
+
+sub get_id_from_url {
+    my ($self, $variable) = @_;
+    my $str = $self->get_location();
+    my @arr = split(/\//, $str);
+    $self->{$variable} = $arr[scalar(@arr)-1];
+}
+
 =head2 st_page_create ( $workspace, pagename )
 
 Creates a plain-english page at server/workspace/pagname and leaves you in view mode.  
