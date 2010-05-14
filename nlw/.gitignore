@@ -475,3 +475,5 @@ lib/Socialtext/Gadgets/CLI.pm
 lib/Socialtext/Job/UpdateWidget.pm
 t/wikitests/groups/directory.wiki
 t/wikitests/push/bang-visible.wiki
+lib/Socialtext/Gadgets/Container/GroupDirectory.pm
+lib/Socialtext/Handler/Container/GroupDirectory.pm
