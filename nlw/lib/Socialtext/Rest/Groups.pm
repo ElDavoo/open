@@ -100,11 +100,11 @@ sub _get_entities {
         else {
             my $full_set = [ $user->groups(
                 discoverable => $discoverable,
-                limit => $self->items_per_page,
-                offset => $self->start_index
+#               limit => $self->items_per_page,
+#               offset => $self->start_index
             )->all ];
-            $self->{_total_results} = @$full_set;
-            return $full_set;
+            $self->{_total_results} = @$full_set; # Is a separate ->count faster? not sure.
+            return [@{$full_set}[$self->start_index .. $self->start_index + $self->items_per_page - 1]];
         }
     }
 }
