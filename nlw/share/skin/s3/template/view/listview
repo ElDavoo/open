@@ -163,7 +163,7 @@
         </td>
     [% IF listview_extra_columns.watchlist %]
         <td class="listview-watchlist">
-        <a id="st-watchlist-indicator-[% row.page_uri %]" class="on watch" href="#" title="[% loc('Stop watching') %]">[% loc('Stop watching') %]</a>
+        <a id="st-watchlist-indicator-[% row.page_uri %]" class="on watch" href="#" title="[% loc('Stop Watching') %]">[% loc('Stop Watching') %]</a>
         </td>
     [% END %]
         </tr>
