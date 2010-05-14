@@ -62,8 +62,10 @@ sub get_resource {
             return {
                 startIndex => $self->start_index+0,
                 itemsPerPage => $self->items_per_page+0,
-                totalResults => $self->_get_total_results()+0,
                 entry => $results,
+                ($self->rest->query->param('skipTotalResults')
+                    ? ()
+                    : (totalResults => $self->_get_total_results()+0)),
             }
         }
         else {
