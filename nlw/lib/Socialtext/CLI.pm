@@ -2712,8 +2712,12 @@ sub index_people {
 sub index_groups {
     my $self = shift;
 
-    my $jobs = Socialtext::Group->IndexGroups();
-    $self->_success( "Scheduled $jobs groups for indexing." );
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    unless ($adapter->plugin_exists('groups')) {
+        $self->_error(loc("The People plugin is not installed."));
+    }
+    Socialtext::JobCreator->insert('Socialtext::Job::Upgrade::ReindexGroups');
+    $self->_success( "Scheduled groups for re-indexing." );
 }
 
 sub send_email_notifications {
