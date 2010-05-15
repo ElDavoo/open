@@ -27,7 +27,7 @@ sub noisy_decode {
     return guess_decode($args{input}, $args{blame}, 'noisy');
 }
 
-sub ensure_is_utf8 {
+sub ensure_is_utf8 ($) {
     my $bytes = shift;
     return Encode::is_utf8($bytes)
            ? $bytes
