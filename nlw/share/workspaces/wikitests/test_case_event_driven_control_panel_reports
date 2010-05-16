@@ -122,7 +122,7 @@
 | wait_for_element_visible_ok | link=Growth Reports | 30000 |
 | click_and_wait | link=Growth Reports |  |
 | selectFrame | report-iframe |  |
-| text_like | //body | qr/3\s*1\s*1\s*1\s*1\s*2\s*3\s*2\s*1\s*7\s*7\s*1/ |
+| text_like | //body | qr/3\s*1\s*1\s*1\s*1\s*4\s*6\s*5\s*1\s*11\s*7\s*1/ |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test case: Event-Driven Control Panel Reports - Teardown |  |
