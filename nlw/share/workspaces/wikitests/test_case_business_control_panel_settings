@@ -16,7 +16,7 @@
 | *Comment* | Test Case: Business Control Panel Settings - Check the page as accounts-admin verify text FTW |  |
 | st-admin | give-accounts-admin --e %%username%% | %%username%% now has accounts admin access |
 | open_ok | /nlw/control/settings |  |
-| text_like | //body | Accounts on this system are "self-join". Any user who can access the Socialtext application can join the default account, create a profile, participate in the account's Signals channels. Users can invite other users into their account. |
+| text_like | //body | Accounts on this system are "self-join". Any user who can access the Socialtext application can join the default account, create a profile, and participate in the account's Signals channels. Users can invite other users into their account. |
 | text_like | //body | Accounts on this system are "private". Users must be invited to accounts by an administrator. |
 | wait_for_element_visible_ok | self_join_update | 30000 |
 
