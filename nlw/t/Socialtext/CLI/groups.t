@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 44;
+use Test::Socialtext tests => 45;
 use Test::Exception;
 BEGIN { use_ok 'Socialtext::CLI'; }
 use Test::Socialtext::CLIUtils qw/is_last_exit/;
@@ -146,6 +146,9 @@ delete_a_group: {
 
     ok $output, 'got output...';
     like $output, qr/Deleted group id: \d+/, '... deleted the group';
+
+    my $refresh = Socialtext::Group->GetGroup(group_id => $group->group_id);
+    ok !$refresh, '... and its really gone';
 }
 
 ################################################################################
