@@ -57,19 +57,8 @@ sub handler {
 
 1;
 
-__END__
-
 =head1 NAME
 
 Socialtext::Rest::Challenge - Provides a handler() sub for challenges
-
-=head1 SYNOPSIS
-
-  <Location /challenge>
-      PerlHandler  +Socialtext::Handler::Rest
-  </LocationMatch>
-
-A path must be added to uri_map.yaml.
-
 
 =cut
