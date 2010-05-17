@@ -150,9 +150,9 @@ delete_a_group: {
 
 ################################################################################
 index_all_groups: {
-    my $group1        = create_test_group();
-    my $group2        = create_test_group();
-    my $jobs  = Socialtext::Jobs->instance();
+    my $group1 = create_test_group();
+    my $group2 = create_test_group();
+    my $jobs   = Socialtext::Jobs->instance();
 
     $jobs->clear_jobs();
     my $output = combined_from {
