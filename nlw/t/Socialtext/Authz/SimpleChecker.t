@@ -47,18 +47,6 @@ $result = $group->role_for_user( $guest_user);
 ok !$result, 'guest has no role in group';
 
 ################################################################################
-# pass an illegal UserSetContainer
-illegal_container: {
-    dies_ok {
-        my $checker = Socialtext::Authz::SimpleChecker->new(
-            user      => $admin_user,
-            container => $account,
-        );
-        $checker->check_permission('write');
-    } 'dies when wrong type of container is passed.';
-}
-
-################################################################################
 # Basic Groups checking
 basic_groups: {
     perms_as_expected($admin_user, $group, {
