@@ -160,7 +160,8 @@ index_all_groups: {
     };
 
     ok $output, 'got output...';
-    like $output, qr/Scheduled groups for re-indexing/;
+    like $output, qr/Scheduled groups for re-indexing/,
+        '... Groups are being re-indexed';
 
     my @jobs = $jobs->list_jobs(
         funcname => 'Socialtext::Job::Upgrade::ReindexGroups',
