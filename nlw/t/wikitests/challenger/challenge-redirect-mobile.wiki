@@ -37,7 +37,7 @@ to the WS.
 | code-is     | 302                        |          |
 | header-like | Location                   | /m/login |
 
-| *Comment*   | Challenger access w/params still OK |          |
-| GET         | /challenge?/st/dashboard            |          |
-| code-is     | 302                                 |          |
-| header-like | Location                            | /m/login |
+| *Comment*   | Challenger access w/params still OK |                                        |
+| GET         | /challenge?/st/dashboard            |                                        |
+| code-is     | 302                                 |                                        |
+| header-like | Location                            | /m/login?redirect_to=%2Fst%2Fdashboard |
