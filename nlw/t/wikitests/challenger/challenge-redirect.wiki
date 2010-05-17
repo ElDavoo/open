@@ -38,3 +38,7 @@ to the WS.
 | GET         | /challenge?/st/dashboard            |                                               |
 | code-is     | 302                                 |                                               |
 | header-like | Location                            | /nlw/login.html?redirect_to=%2Fst%2Fdashboard |
+
+| GET         | /challenge?/%%ws_name%%             |                                               |
+| code-is     | 302                                 |                                               |
+| header-like | Location                            | /nlw/login.html?redirect_to=%2F%%ws_name%%    |
