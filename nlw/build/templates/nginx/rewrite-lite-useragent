@@ -11,7 +11,7 @@
   if ($uri ~ ^/(m|data)) {
     set $redirect_page 0;
   }
-  if ($uri ~ ^/(index\.cgi|challenge)) {
+  if ($uri ~ ^/(index\.cgi|challenge(?:[\/\?]|$))) {
     set $redirect_page 0;
   }
   set $ua_redirect "$http_user_agent-$redirect_page";
