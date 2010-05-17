@@ -176,7 +176,7 @@ create_group: {
     like $output, qr/simple group Group has been created/, '... correct';
 
     # no email_address provided
-    my $output = combined_from {
+    $output = combined_from {
         eval { new_cli(
             '--name'  => 'illegal group',
         )->create_group() }
