@@ -157,7 +157,7 @@ index_all_groups: {
     };
 
     ok $output, 'got output...';
-    like $output, qr/Scheduled \d+ groups for indexing/;
+    like $output, qr/Scheduled groups for re-indexing/;
 }
 
 ################################################################################
