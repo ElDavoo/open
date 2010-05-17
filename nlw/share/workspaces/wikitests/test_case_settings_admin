@@ -1,6 +1,7 @@
 | *Comment* | Test Case: Settings: Admin |
 
 | *Comment* | Test Case: Settings: Admin make sure user is an admin |  |
+| st-admin | add-account-admin --email %%email%% --account %%hostname%% |  |
 | st-admin | add-workspace-admin --email %%email%% --workspace %%workspace%% |  |
 | st-admin | set-workspace-config --w %%workspace%% email_notify_is_enabled 1 | has been updated |
 

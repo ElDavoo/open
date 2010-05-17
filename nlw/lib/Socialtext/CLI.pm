@@ -3810,6 +3810,8 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-workspace-admin [--username or --email] --workspace
   add-workspace-impersonator [--username or --email] --workspace
   remove-workspace-impersonator [--username or --email] --workspace
+  add-account-admin [--username or --email] --account
+  remove-account-admin [--username or --email] --account
   add-account-impersonator [--username or --email] --account
   remove-account-impersonator [--username or --email] --account
   add-group-admin [--username or --email] --group
@@ -4022,6 +4024,17 @@ impersonator for the given workspace.
 Given a user and a workspace, this command remove impersonate privileges for
 the specified user in the given workspace, and makes them a normal workspace
 member.
+
+=head2 add-account-admin [--username or --email] --account
+
+Given a user and an account, this command makes the specified user an
+admin for the given account.
+
+=head2 remove-account-admin [--username or --email] --account
+
+Given a user and a account, this command remove admin privileges for
+the specified user in the given account, and makes them a normal
+account member.
 
 =head2 add-account-impersonator [--username or --email] --account
 
