@@ -1,4 +1,5 @@
 package Socialtext::Rest::ForGroup;
+# @COPYRIGHT@
 use Moose::Role;
 use Socialtext::Group;
 use Socialtext::Permission qw(ST_ADMIN_PERM);
