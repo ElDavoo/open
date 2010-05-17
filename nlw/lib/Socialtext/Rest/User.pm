@@ -61,7 +61,7 @@ sub get_resource {
             groups => [
                 map { $_->to_hash(plugins=>1, show_account_ids=>1,
                                   show_admins => 1)
-                    } $user->shared_groups($acting_user)
+                    } $user->shared_groups($acting_user, 1, 'ignore badmin')
             ],
         };
     }

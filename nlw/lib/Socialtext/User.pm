@@ -358,13 +358,17 @@ sub shared_groups {
     my $self          = shift;
     my $user          = shift;
     my $inc_self_join = shift || 1; # defaults to true
+    my $ignore_badmin = shift || 0;
 
     my $group_cursor = $self->groups;
     
     my @shared_groups;
     while (my $g = $group_cursor->next) {
         my $is_shared = $inc_self_join
-            ? $g->user_can(user => $user, permission => ST_READ_PERM)
+            ? $g->user_can(
+                user => $user,
+                permission => ST_READ_PERM,
+                ignore_badmin => $ignore_badmin)
             : $g->has_user($user);
 
         push @shared_groups, $g if $is_shared;
