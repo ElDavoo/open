@@ -478,3 +478,4 @@ t/wikitests/push/bang-visible.wiki
 lib/Socialtext/Gadgets/Container/GroupDirectory.pm
 lib/Socialtext/Handler/Container/GroupDirectory.pm
 t/wikitests/groups/search.wiki
+t/Socialtext/Pluggable/Plugin/Groups.t
