@@ -8,29 +8,30 @@ to the WS.
 
 * Fixture: SocialRest
 
-| *Comment*          | Create a WS that begins with "challenge" |                          |
-| set                | ws_name                                  | challenge-%%start_time%% |
-| create-workspace   | %%ws_name%%                              |                          |
-| set-ws-permissions | %%ws_name%%                              | public                   |
+| *Comment*        | Create a WS that begins with "challenge" |                          |
+| set              | ws_name                                  | challenge-%%start_time%% |
+| create-workspace | %%ws_name%%                              |                          |
+| http-user-pass   |                                          |                          |
 
 | *Comment*      | Use a mobile browser |
 | set-user-agent | BlackBerry           |
 
-| *Comment*   | WS access doesn't trigger Challenger |                       |
-| GET         | /%%ws_name%%                         |                       |
-| code-is     | 302                                  |                       |
-| header-like | Location                             | /m/page/%%ws_name%%/  |
+| *Comment*   | WS access doesn't trigger Challenger |                                                   |
+| GET         | /%%ws_name%%                         |                                                   |
+| code-is     | 302                                  |                                                   |
+| header-like | Location                             | /m/page/%%ws_name%%/                              |
 
-| GET         | /%%ws_name%%/                        |                       |
-| code-is     | 302                                  |                       |
-| header-like | Location                             | /m/page/%%ws_name%%/  |
+| GET         | /%%ws_name%%/                        |                                                   |
+| code-is     | 302                                  |                                                   |
+| header-like | Location                             | /m/page/%%ws_name%%/                              |
 
-| GET         | /%%ws_name%%/index.cgi               |                       |
-| code-is     | 302                                  |                       |
-| header-like | Location                             | /m/page/%%ws_name%%/  |
+| GET         | /%%ws_name%%/index.cgi               |                                                   |
+| code-is     | 302                                  |                                                   |
+| header-like | Location                             | /m/page/%%ws_name%%/                              |
 
-| GET         | /m/page/%%ws_name%%/                 |                       |
-| code-is     | 200                                  |                       |
+| GET         | /m/page/%%ws_name%%/                 |                                                   |
+| code-is     | 302                                  |                                                   |
+| header-like | Location                             | /m/login?redirect_to=%2Fm%2Fpage%2F%%ws_name%%%2F |
 
 | *Comment*   | Challenger access still OK |          |
 | GET         | /challenge                 |          |
