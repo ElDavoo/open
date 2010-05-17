@@ -2,11 +2,12 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 43;
+use Test::Socialtext tests => 44;
 use Test::Exception;
 BEGIN { use_ok 'Socialtext::CLI'; }
 use Test::Socialtext::CLIUtils qw/is_last_exit/;
 use Test::Output qw(combined_from);
+use Socialtext::Jobs;
 
 fixtures('db');
 
@@ -151,13 +152,20 @@ delete_a_group: {
 index_all_groups: {
     my $group1        = create_test_group();
     my $group2        = create_test_group();
+    my $jobs  = Socialtext::Jobs->instance();
 
+    $jobs->clear_jobs();
     my $output = combined_from {
         eval { new_cli( )->index_groups() }
     };
 
     ok $output, 'got output...';
     like $output, qr/Scheduled groups for re-indexing/;
+
+    my @jobs = $jobs->list_jobs(
+        funcname => 'Socialtext::Job::Upgrade::ReindexGroups',
+    );
+    ok @jobs, '... Ceq job(s) created to re-index Groups';
 }
 
 ################################################################################
