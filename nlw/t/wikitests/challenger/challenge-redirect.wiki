@@ -8,26 +8,19 @@ to the WS.
 
 * Fixture: SocialRest
 
-| *Comment*          | Create a WS that begins with "challenge" |                          |
-| set                | ws_name                                  | challenge-%%start_time%% |
-| create-workspace   | %%ws_name%%                              |                          |
-| set-ws-permissions | %%ws_name%%                              | public                   |
+| *Comment*        | Create a WS that begins with "challenge" |                          |
+| set              | ws_name                                  | challenge-%%start_time%% |
+| create-workspace | %%ws_name%%                              |                          |
+| http-user-pass   |                                          |                          |
 
-| *Comment*   | WS access doesn't trigger Challenger |                                    |
-| GET         | /%%ws_name%%                         |                                    |
-| code-is     | 301                                  |                                    |
-| header-like | Location                             | /%%ws_name%%/                      |
+| *Comment*   | WS access doesn't trigger Challenger |                                                        |
+| GET         | /%%ws_name%%                         |                                                        |
+| code-is     | 301                                  |                                                        |
+| header-like | Location                             | /%%ws_name%%/                                          |
 
-| GET         | /%%ws_name%%/                        |                                    |
-| code-is     | 302                                  |                                    |
-| header-like | Location                             | /%%ws_name%%/index.cgi             |
-
-| GET         | /%%ws_name%%/index.cgi               |                                    |
-| code-is     | 302                                  |                                    |
-| header-like | Location                             | /%%ws_name%%/index.cgi?%%ws_name%% |
-
-| GET         | /%%ws_name%%/index.cgi?%%ws_name%%   |                                    |
-| code-is     | 200                                  |                                    |
+| GET         | /%%ws_name%%/                        |                                                        |
+| code-is     | 302                                  |                                                        |
+| header-like | Location                             | /nlw/login.html?redirect_to=%2F%%ws_name%%%2Findex.cgi |
 
 | *Comment*   | Challenger access still OK |                 |
 | GET         | /challenge                 |                 |
