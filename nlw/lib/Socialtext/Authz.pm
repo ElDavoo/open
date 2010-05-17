@@ -103,14 +103,17 @@ sub _role_matrix_to_id_matrix {
     sub user_has_permission_for_group {
         my $self = shift;
         my %p = (
-            permission => undef,
-            group      => undef,
-            user       => undef,
+            permission    => undef,
+            group         => undef,
+            user          => undef,
+            ignore_badmin => undef,
             @_
         );
 
         # XXX NOTE: business admins have special privileges for groups
-        return 1 if $p{user}->is_business_admin;
+        unless ($p{ignore_badmin}) {
+            return 1 if $p{user}->is_business_admin;
+        }
 
         my $pset = $p{group}->permission_set;
         $pset = 'private' unless exists $permission_matrix{$pset};
