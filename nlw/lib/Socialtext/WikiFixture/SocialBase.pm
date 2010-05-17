@@ -284,6 +284,33 @@ sub standard_test_setup {
     $self->http_user_pass($user_name, $password);
 }
 
+=head2 st_open_noeval ($url)
+
+Opens a page that maybe should return a 404 or something
+
+=cut
+
+sub st_open_noeval {
+    my ($self, $url) = @_;
+    my %valid_pre_open_commands = (open => 1, testComplete => 1, getNewBrowserSession => 1,);
+    my $command = 'open';
+    if (!$self->{_page_opened} and !$valid_pre_open_commands{$command}) {
+        die "You must open a page before calling $command. eg: \$sel->open('/');\n";
+    }
+    $command = uri_escape('open');
+    my $fullurl = "http://$self->{host}:$self->{port}/selenium-server/driver/" . "\?cmd=$command";
+    $fullurl .= '&1=' . URI::Escape::uri_escape_utf8($url);
+    print "fullurl is $fullurl\n";
+    if (defined $self->{selenium}->{session_id}) {
+        $fullurl .= "&sessionId=$self->{selenium}->{session_id}";
+    }
+    print "---> Requesting $fullurl\n" if $self->{verbose};
+    my $ua = LWP::UserAgent->new;
+    my $response = $ua->request( HTTP::Request->new(GET => $fullurl) );
+    #Wait for page to acutally open. 
+    $self->handle_command('pause',20000);
+}
+
 =head2 st_create_pages($workspace, $numberpages)
 
 Creates $numpages number of pages in $workspace
