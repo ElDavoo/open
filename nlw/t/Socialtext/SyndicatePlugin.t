@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 45;
+use Test::Socialtext tests => 43;
 use Socialtext::URI;
 use Socialtext::Cache;
 fixtures(qw( clean auth-to-edit no-ceq-jobs ));
@@ -121,7 +121,6 @@ http://www.w3.org/2005/Atom
 >Auth-to-edit Wiki: this is the title</title>
 >this is the title</title>
 <h3 id="this_is_the_content">This is the content</h3>
-Creator: devnull1@hidden
 Tags: blink, cows
 --- nomatch
 >this is bad xhtml</title>
@@ -131,7 +130,6 @@ Tags: blink, cows
 --- type: RSS20
 --- argument: this is the title
 --- match
-Creator: devnull1@hidden
 Tags: blink, cows
 <category>blink, cows</category>
 
