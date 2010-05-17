@@ -133,7 +133,7 @@ Assumes devnull1 or whoever the default login is *isn't* in this group:
 
 | set               | sjgroup     | sjgroup%%start_time%% |  |  |           |
 | create-group      | %%sjgroup%% | %%account%%           |  |  | self-join |
-| add-user-to-group | %%zinc_id%% | %%group_id%%          |  |  |           |
+| add-user-to-group | %%zinc_id%% | %%group_id%%          | admin |  |           |
 
 | http-user-pass | %%mercury%% | password |
 
@@ -146,7 +146,7 @@ Assumes devnull1 or whoever the default login is *isn't* in this group:
 | *Comment*         | Also check that we're not leaking member details |
 | json-path-exists  | $[0].user_id                           |
 | json-path-exists  | $[0].display_name                      |
-| json-path-missing | $[0].best_full_name                    |
+| json-path-exists  | $[0].best_full_name                    |
 | json-path-missing | $[0].email_address                     |
 | json-path-missing | $[0].username                          |
 | json-path-missing | $[0].role_name                         |

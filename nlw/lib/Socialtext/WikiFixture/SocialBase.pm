@@ -1292,6 +1292,17 @@ sub dump_http_response {
     $self->{http}->response->content($content);
 }
 
+=head2 dump_json_response 
+
+=cut
+
+sub dump_json {
+    my $self = shift;
+    my $json = $self->{http}->response->content;
+    my $blob = decode_json($json);
+    warn Dumper $blob;
+}
+
 =head2 has_header( header [, expected_value])
 
 Check that the specified header is in the response, with an optional second check for the header's value.
