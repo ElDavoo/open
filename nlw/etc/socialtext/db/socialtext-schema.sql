@@ -1328,6 +1328,10 @@ ALTER TABLE ONLY gallery
     ADD CONSTRAINT gallery_account_uniq
             UNIQUE (account_id);
 
+ALTER TABLE ONLY gallery_gadget
+    ADD CONSTRAINT gallery_gadget_uniq
+            UNIQUE (gallery_id, gadget_id);
+
 ALTER TABLE ONLY gallery
     ADD CONSTRAINT gallery_pk
             PRIMARY KEY (gallery_id);
@@ -2312,4 +2316,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '117');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '118');
