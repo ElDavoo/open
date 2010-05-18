@@ -77,6 +77,7 @@ sub _get_entities {
             user_count => $ws->user_count,
             group_count => $ws->group_count,
             default => $ws->is_default ? 1 : 0,
+            permission_set => $ws->permissions->current_set_name,
 
             # for backwards compatibility
             id => $ws->workspace_id,

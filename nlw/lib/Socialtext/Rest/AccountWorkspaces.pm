@@ -39,6 +39,7 @@ sub _entity_hash {
         title => $workspace->title,
         modified_time => $workspace->creation_datetime,
         id => $workspace->workspace_id,
+        permission_set => $workspace->permissions->current_set_name,
     };
 }
 
