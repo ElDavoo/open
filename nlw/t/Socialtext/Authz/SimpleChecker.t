@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 52;
+use Test::Socialtext tests => 51;
 use Test::Exception;
 use Socialtext::Role;
 
