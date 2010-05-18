@@ -1509,6 +1509,13 @@ CREATE UNIQUE INDEX groups_account_user_group_name
 CREATE UNIQUE INDEX groups_driver_unique_id
 	    ON groups (driver_key, driver_unique_id);
 
+CREATE INDEX groups_permission_set
+	    ON groups (permission_set);
+
+CREATE INDEX groups_permission_set_non_priv
+	    ON groups (permission_set)
+	    WHERE (permission_set <> 'private');
+
 CREATE UNIQUE INDEX groups_user_set_id
 	    ON groups (user_set_id);
 
