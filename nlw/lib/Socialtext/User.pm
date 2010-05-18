@@ -405,6 +405,8 @@ sub groups {
     my $self = shift;
     my %p = @_;
 
+    my $t = time_scope 'groups_4user';
+
     my @bind = ($self->user_set_id);
 
     # discoverable: exclude   - groups i'm a member of (CURRENT)
@@ -432,19 +434,30 @@ sub groups {
         push @bind, $p{plugin};
     }
 
-    my $discoverable_clause = qq{(
-        (permission_set <> 'private')
-            AND EXISTS (
-                   SELECT 1
-                     FROM user_set_include
-                    WHERE from_set_id = groups.user_set_id
-                      AND into_set_id IN (
-                          SELECT DISTINCT into_set_id 
-                                     FROM user_set_path 
-                                    WHERE from_set_id = ?
-                                      AND into_set_id }.PG_ACCT_FILTER.qq{
-                          )
-            )
+    # Using an EXISTS with a join happening in the subquery seems to be
+    # reasonably fast so long as the into_set_ids are bounded with the account
+    # filter.  On staging, this is about 30% faster than using a second nested
+    # EXISTS, but staging doesn't have that many groups.  On prod, the cost of
+    # the sub-query is a bit higher initially but should be more "stable" as
+    # the number of groups grow.
+    #
+    # Ideally this should be targetting the "groups_permission_set_non_priv"
+    # index in the 'discoverable=public' case and the "groups_permission_set"
+    # index in the 'only' and 'include' cases.  For systems with small numbers
+    # of groups (<1000) Pg will probably do a seq-scan since the whole table
+    # fits into cache.
+    my $discoverable_clause = q{(
+        permission_set <> 'private'
+        AND EXISTS (
+            -- an account is shared by this user and the group:
+            SELECT 1
+            FROM user_set_path g_path, user_set_path u_path
+            WHERE g_path.from_set_id = groups.user_set_id
+              AND g_path.into_set_id }.PG_ACCT_FILTER.q{
+              AND u_path.from_set_id = ?
+              AND u_path.into_set_id }.PG_ACCT_FILTER.q{
+              AND u_path.into_set_id = g_path.into_set_id
+        )
     )};
 
     my $d = $p{discoverable};
