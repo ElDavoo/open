@@ -408,8 +408,8 @@ sub groups {
     my @bind = ($self->user_set_id);
 
     # discoverable: exclude   - groups i'm a member of (CURRENT)
-    # discoverable: include   - groups i'm a member of + permset=self-join
-    # discoverable: only      - permset=self-join - groups i'm a member of
+    # discoverable: include   - non-private groups + groups i'm a member of
+    # discoverable: only      - non-private groups - groups i'm a member of
     # discoverable: public    - non-private groups
 
     my $conditions = '0 = 1';
