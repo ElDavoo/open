@@ -432,8 +432,20 @@ sub groups {
         push @bind, $p{plugin};
     }
 
-    # XXX TODO: scope to this user's accounts
-    my $discoverable_clause = qq{permission_set = 'self-join'};
+    my $discoverable_clause = qq{(
+        (permission_set <> 'private')
+            AND EXISTS (
+                   SELECT 1
+                     FROM user_set_include
+                    WHERE from_set_id = groups.user_set_id
+                      AND into_set_id IN (
+                          SELECT DISTINCT into_set_id 
+                                     FROM user_set_path 
+                                    WHERE from_set_id = ?
+                                      AND into_set_id }.PG_ACCT_FILTER.qq{
+                          )
+            )
+    )};
 
     my $d = $p{discoverable};
     if (not $d or $d eq 'exclude') {
@@ -442,15 +454,17 @@ sub groups {
     elsif ($d eq 'only') {
         $conditions =
             qq{user_set_id NOT IN ($path_sub_query) AND $discoverable_clause};
+
+        push @bind, $self->user_set_id;
     }
     elsif ($d eq 'include') {
         $conditions = 
             qq{user_set_id IN ($path_sub_query) OR $discoverable_clause};
+
+        push @bind, $self->user_set_id;
     }
     elsif ($d eq 'public') {
-        # XXX TODO: scope to this user's accounts
-        $conditions = qq{permission_set <> 'private'};
-        @bind = ();
+        $conditions = $discoverable_clause;
     }
     else {
         die "unknown 'discoverable' filter: '$d'\n";
