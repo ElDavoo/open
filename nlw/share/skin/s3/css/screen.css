@@ -3110,6 +3110,11 @@ div#mainNav ul.level2 li a {
     background: none;
 }
 
+div#mainNav ul.level2 li.dropaction a.label,
+div#mainNav ul.level2 li.dropaction a.label:hover {
+    color: #333333;
+}
+
 div#mainNav ul.level2 li.dropaction a,
 div#mainNav ul.level2 li.notinstallednotice a
 {

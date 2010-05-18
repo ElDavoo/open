@@ -1,5 +1,9 @@
 [%- FOR action = opts.actions -%]
+    [% IF action.1.defined OR action.2.defined %]
     <li class="dropaction"><a href="[% action.1 %]"[% IF action.2.defined %] onClick="[% action.2 %]"[% END %]>[% action.0 %]</a></li>
+    [% ELSE %]
+    <li class="dropaction"><a class="label" name="st-dropaction-[% action.0 %]">[% action.0 %]</a></li>
+    [% END %]
 [%- END -%]
 [%- IF data.size -%]
     [%- FOR entry = data -%]
