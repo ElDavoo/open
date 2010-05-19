@@ -72,6 +72,11 @@ sub POST_json {
         return "user not authorized";
     }
 
+    if ($group->permission_set eq 'self-join') {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return "self-join groups cannot be added to workspaces";
+    }
+
     my $json = eval { decode_json($rest->getContent()) };
     $json = (ref($json) eq 'HASH') ? [$json] : $json;
 

@@ -152,3 +152,11 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | POST-json | /data/groups/%%post_id%%/workspaces | {"workspace_id":"%%gold_id%%"} |
 | code-is   | 409                                 |                                |
 | body-like | group already in workspace          |                                |
+
+## Cannot add self-join group to workspaces
+| *Comment* | Cannot add self-join group to workspaces |
+| set          | sj1     | sj1-%%start_time%% |           |  |           |
+| create-group | %%sj1%% |                    | %%admin%% |  | self-join |
+| set          | sj1_id  | %%group_id%%       |           |  |           |
+| POST-json | /data/groups/%%sj1_id%%/workspaces | {"workspace_id":"%%gold_id%%"} |
+| code-is   | 400                                |                                |
