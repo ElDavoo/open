@@ -131,6 +131,11 @@ sub POST_json {
         return "Group_id ($group_id) is not a valid group";
     }
 
+    if ($group->permission_set eq 'self-join') {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return "cannot add self-join group to workspace";
+    }
+
     my $role;
     if (my $role_name = $data->{role_name}) {
         $role = Socialtext::Role->new(name => $role_name);

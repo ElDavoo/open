@@ -59,3 +59,11 @@ Tests for adding groups to a workspace
 | remove-member | %%username%% | %%workspace%% |
 | PUT-json  | /data/workspaces/%%workspace%%/groups | [{"group_id":"%%gid%%","role_name":"member"},{"group_id":"%%gaid%%","role_name":"member"}] |
 | code-is   | 409                                   |                                                                                            |
+
+## POST cannot add a self-join group
+| *Comment* | POST cannot add a self-join group |
+| set          | sj1     | sj1-%%start_time%% |              |  |           |
+| create-group | %%sj1%% |                    | %%username%% |  | self-join |
+| set          | sj1_id  | %%group_id%%       |              |  |           |
+| POST-json | /data/workspaces/%%workspace%%/groups | {"group_id":"%%sj1_id%%","role_name":"member"} |
+| code-is   | 400                                   |                                                |
