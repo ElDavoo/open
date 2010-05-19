@@ -127,6 +127,13 @@ sub PUT_json {
         return 'Name is required';
     }
 
+    if ($data->{permission_set} ne $group->permission_set) {
+        Socialtext::Exception->DataValidation->throw( message => 
+            "self-join groups cannot contain workspaces"
+        ) if $data->{permission_set} eq 'self-join'
+           && $group->workspace_count > 0;
+    }
+
     try {
         $group->update_store({
             driver_group_name => $data->{name},
