@@ -111,6 +111,12 @@ Set up a second account, but no users.
 | POST-json | /data/groups | {"name":"%%g6%%","workspaces":[{"workspace_id":"%%erosional_id%%","role":"admin"},{"workspace_id":"%%solutional_id%%"}]} |
 | code-is   | 201          |                                                                                                                          |
 
+## Cannot create a self-join group with workspaces
+| *Comment* | Cannot create a self-join group with workspaces |
+| set | sj1 | sj1-%%start_time%% |
+| POST-json | /data/groups | {"name":"%%sj1%%","permission_set":"self-join","workspaces":[{"workspace_id":"%%solutional_id%%"}]} |
+| code-is   | 400          |                                                                                                     |
+
 ## Get a couple of users to add to a group
 | set         | bowline          | bowline%%start_time%%@ken.socialtext.net      |             |
 | create-user | %%bowline%%      | password                                      | %%account%% |
