@@ -6,6 +6,7 @@ use Socialtext::User;
 use Socialtext::Exceptions qw(not_found auth_error param_error);
 use Socialtext::MultiCursorFilter;
 use Socialtext::Permission;
+use Socialtext::Timer 'time_scope';
 use Socialtext::Workspace;
 use Socialtext::Workspace::Permissions;
 use namespace::clean -except => 'meta';
@@ -82,6 +83,10 @@ sub _get_entities {
             !Socialtext::Workspace::Permissions->SetNameIsValid($filter);
         %limit_and_offset = ();
     }
+
+    my $t = $filter
+        ? time_scope('mcfiltered_user_workspaces_results')
+        : time_scope('user_workspaces_results');
 
     my $workspaces = $subject->workspaces(
         order_by => $self->order || 'name',

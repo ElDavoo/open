@@ -120,3 +120,35 @@ Test case for `/data/workspaces`; the Workspace list
 | body-unlike | modified_time              |
 | body-unlike | "id"                       |
 | body-unlike | user_count                 |
+
+## Permission Set filtering
+| set                | perms_user     | perms-user%%start_time%%@ken.socialtext.net |             |
+| create-user        | %%perms_user%% | password                                    | %%account%% |
+| set                | private        | private-%%start_time%%                      |             |
+| create-workspace   | %%private%%    | %%account%%                                 |             |
+| set                | private_id     | %%workspace_id%%                            |             |
+| add-member         | %%perms_user%% | %%private%%                                 | admin       |
+| set                | public         | public-%%start_time%%                       |             |
+| create-workspace   | %%public%%     | %%account%%                                 |             |
+| set                | public_id      | %%workspace_id%%                            |             |
+| set-ws-permissions | %%public%%     | public                                      |             |
+| add-member         | %%perms_user%% | %%public%%                                  | admin       |
+
+| http-user-pass | %%perms_user%% | password |
+
+## GET-json error when permission_set is invalid
+| GET-json | /data/workspaces?permission_set=ENOSUCHSET |
+| code-is  | 500                                        |
+
+## GET-json returns proper results with permission_set param
+| GET-json        | /data/workspaces?permission_set=member-only |                |
+| code-is         | 200                                         |                |
+| json-parse      |                                             |                |
+| json-array-size | 1                                           |                |
+| json-path-is    | $[0].id                                     | %%private_id%% |
+
+## GET-json, using a minimal param ignores a permission_set param
+| GET-json        | /data/workspaces?minimal=1;permission_set=member-only |
+| code-is         | 200                                                   |
+| json-parse      |                                                       |
+| json-array-size | 2                                                     |
