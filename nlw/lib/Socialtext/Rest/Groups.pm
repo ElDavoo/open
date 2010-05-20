@@ -154,7 +154,9 @@ sub POST_json {
         return '';
     }
 
-    if ($data->{permission_set} eq 'self-join' && $data->{workspaces}) {
+    my $is_self_join = $data->{permission_set}
+        && $data->{permission_set} eq 'self-join';
+    if ($is_self_join && $data->{workspaces}) {
         $rest->header(-status => HTTP_400_Bad_Request);
         return 'self-join groups may not contain workspaces';
     }
