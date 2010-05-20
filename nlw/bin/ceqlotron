@@ -154,6 +154,7 @@ sub main_loop {
             $ProcManager->set_max_procs(get_max_procs()) unless $ExitPlease;
         }
         else {
+            $0 = 'ceqlotron: worker process' unless $RunInForeground;
             if (!$ExitPlease) {
                 st_log->debug("Ceqlotron worker: starting");
 
@@ -187,17 +188,23 @@ sub start_worker {
 sub do_work {
     my $jobs_remaining = shift;
     $jobs_remaining = 1 unless ($jobs_remaining && $jobs_remaining > 0);
+    my $num_processed = 0;
 
+    $0 = 'ceqlotron: worker [idle, fresh]';
     while ($jobs_remaining && !$ExitPlease) {
         my $sleep_for;
 
         if (my $job = Socialtext::Jobs->find_job_for_workers()) {
+            (my $shortname = $job->funcname) =~ s/^Socialtext::Job:://;
+            $0 = "ceqlotron: worker [processing $shortname #".$job->jobid.']';
             Socialtext::Timer->Reset();
             Socialtext::Timer->Continue('work_once');
             Socialtext::Jobs->work_once($job);
+            $num_processed++;
             Socialtext::Timer->Pause('work_once');
 
             my $result = log_job($job);
+            $0 = 'ceqlotron: worker [idle, ran '.$num_processed.']';
             die "Job encountered failures" unless ($result eq 'finished');
 
             next if $OnceMode;
@@ -278,6 +285,7 @@ sub maybe_run_in_background {
     elsif ($child_pid != 0) {
         _exit(0); # ... the terminal-attached parent
     }
+    $0 = "ceqlotron: master process $0";
     setsid();
 }
 
