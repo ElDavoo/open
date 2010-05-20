@@ -136,6 +136,13 @@ sub POST_json {
         return "cannot add self-join group to workspace";
     }
 
+    if ($group->permission_set eq 'private'
+        && $workspace->permissions->current_set_name ne 'member-only'
+    ) {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return "cannot add private group to public workspace";
+    }
+
     my $role;
     if (my $role_name = $data->{role_name}) {
         $role = Socialtext::Role->new(name => $role_name);

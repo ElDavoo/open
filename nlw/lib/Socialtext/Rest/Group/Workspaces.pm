@@ -149,6 +149,12 @@ sub _add_group {
            "group already in workspace"
        );
 
+    if ($group->permission_set eq 'private'
+        && $ws->permissions->current_set_name ne 'member-only'
+    ) {
+        die Socialtext::Exception::DataValidation->new();
+    }
+
     $ws->add_group(group => $group, role => $role, actor => $user);
 }
 

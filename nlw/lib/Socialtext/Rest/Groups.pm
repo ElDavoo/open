@@ -288,6 +288,12 @@ sub _add_group_to_workspaces {
             name => ($ws->{role}) ? $ws->{role} : 'member' );
         die "no such role: '$ws->{role}'\n" unless $role;
 
+        if ($group->permission_set eq 'private'
+            && $workspace->permissions->current_set_name ne 'member-only'
+        ) {
+            die Socialtext::Exception::DataValidation->new();
+        }
+
         next if $workspace->role_for_group($group, {direct => 1});
 
         $workspace->add_group(

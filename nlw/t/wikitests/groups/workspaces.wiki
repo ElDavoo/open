@@ -160,3 +160,12 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | set          | sj1_id  | %%group_id%%       |           |  |           |
 | POST-json | /data/groups/%%sj1_id%%/workspaces | {"workspace_id":"%%gold_id%%"} |
 | code-is   | 400                                |                                |
+
+## Cannot add private group to workspace if it is not member-only
+| *Comment* | Cannot add private group to workspace if it is not member-only |
+| set                | pubg1     | pubg1-%%start_time%% |           |  |         |
+| create-group       | %%pubg1%% |                      | %%admin%% |  | private |
+| set                | pubg1_id  | %%group_id%%         |           |  |         |
+| set-ws-permissions | %%gold%%  | public               |           |  |         |
+| POST-json | /data/groups/%%pubg1_id%%/workspaces | {"workspace_id":"%%gold_id%%"} |
+| code-is   | 400                                |                                |
