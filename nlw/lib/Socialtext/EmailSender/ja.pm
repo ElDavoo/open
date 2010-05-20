@@ -164,9 +164,9 @@ our ($H2Z, %H2Z);
         return $filename;
     }
 
-    sub _get_encoding {
-        return 'iso-2022-jp';
-    }
+    sub _get_encoding { 'iso-2022-jp' } # for Encode
+    sub _get_charset  { 'ISO-2022-JP' } # for headers
+    sub _get_content_transfer_encoding { '7bit' }
 
     sub _uri_unescape {
         my $self = shift;
