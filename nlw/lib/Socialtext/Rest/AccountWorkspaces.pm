@@ -3,6 +3,9 @@ package Socialtext::Rest::AccountWorkspaces;
 
 use Moose;
 use Socialtext::Account;
+use Socialtext::Exceptions qw(param_error);
+use Socialtext::Workspace::Permissions;
+use Socialtext::MultiCursorFilter;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
@@ -17,10 +20,23 @@ sub _entities_for_query {
     my $query     = $rest->query->param('q') || '';
     my $acct_name = $self->acct();
     my $account   = Socialtext::Account->new( name => $acct_name );
+    my $set_filter = $rest->query->param('permission_set');
 
     return () unless $account;
 
-    my @workspaces = $account->workspaces()->all();
+    my $workspaces = $account->workspaces();
+
+    if ($set_filter) {
+        param_error "permission_set is invalid" if
+            !Socialtext::Workspace::Permissions->SetNameIsValid($set_filter);
+
+        $workspaces = Socialtext::MultiCursorFilter->new(
+            cursor => $workspaces,
+            filter => sub { shift->permissions->current_set_name eq $set_filter },
+        );
+    }
+
+    my @workspaces = $workspaces->all();
 
     if ( $user->is_business_admin && $query eq 'all' ) {
         return @workspaces;
