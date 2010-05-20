@@ -59,3 +59,22 @@ Tests for adding groups to a workspace
 | remove-member | %%username%% | %%workspace%% |
 | PUT-json  | /data/workspaces/%%workspace%%/groups | [{"group_id":"%%gid%%","role_name":"member"},{"group_id":"%%gaid%%","role_name":"member"}] |
 | code-is   | 409                                   |                                                                                            |
+
+## POST cannot add a self-join group
+| *Comment* | POST cannot add a self-join group |
+| set          | sj1     | sj1-%%start_time%% |              |  |           |
+| create-group | %%sj1%% |                    | %%username%% |  | self-join |
+| set          | sj1_id  | %%group_id%%       |              |  |           |
+| POST-json | /data/workspaces/%%workspace%%/groups | {"group_id":"%%sj1_id%%","role_name":"member"} |
+| code-is   | 400                                   |                                                |
+
+## POST cannot add a private group when workspace is not member-only
+| set                | privg1     | privg1-%%start_time%% |              |
+| create-group       | %%privg1%% |                       | %%username%% |
+| set                | privg1_id  | %%group_id%%          |              |
+| set                | pubws1     | pubws1-%%start_time%% |              |
+| create-workspace   | %%pubws1%% |                       |              |
+| set                | pubws1_id  | %%workspace_id%%      |              |
+| set-ws-permissions | %%pubws1%% | public                |              |
+| POST-json | /data/workspaces/%%pubws1%%/groups | {"group_id":"%%privg1_id%%","role_name":"member"} |
+| code-is   | 400                                |                                                   |

@@ -50,15 +50,15 @@ Tests to create groups via REST and CLI.
 
 
 | *Comment* | change the permission set of that group via PUT |
-| PUT-json     | /data/groups/%%g8_id%% | {"name":"%%g8%%","description":"yar","permission_set":"request-to-join" } |
+| PUT-json     | /data/groups/%%g8_id%% | {"name":"%%g8%%","description":"yar","permission_set":"private" } |
 | code-is | 202 |
 
-| *Comment* | verify the new permission set of that group |
-| GET-json     | /data/groups/%%g8_id%% |                 |
-| code-is      | 200                    |                 |
-| json-parse   |                        |                 |
-| json-path-is | $.name                 | %%g8%%          |
-| json-path-is | $.permission_set       | request-to-join |
+| *Comment*    | verify the new permission set of that group |         |
+| GET-json     | /data/groups/%%g8_id%%                      |         |
+| code-is      | 200                                         |         |
+| json-parse   |                                             |         |
+| json-path-is | $.name                                      | %%g8%%  |
+| json-path-is | $.permission_set                            | private |
 
 
 | *Comment* | try an invalid permission set via PUT |
@@ -71,7 +71,14 @@ Tests to create groups via REST and CLI.
 | code-is      | 200                    |                 |
 | json-parse   |                        |                 |
 | json-path-is | $.name                 | %%g8%%          |
-| json-path-is | $.permission_set       | request-to-join |
+| json-path-is | $.permission_set       | private         |
+
+| *Comment* | Cannot change set from 'private' to 'self-join' when the group has workspaces |
+| set                    | ws8                    | ws8-%%start_time%%              |
+| create-workspace       | %%ws8%%                |                                 |
+| add-group-to-workspace | %%g8_id%%              | %%ws8%%                         |
+| PUT-json               | /data/groups/%%g8_id%% | {"permission_set":"self-join" } |
+| code-is                | 400                    |                                 |
 
 | *Comment* | just update the description |                         |
 | PUT-json  | /data/groups/%%g8_id%%      | {"name":"%%g8%%","description":"woot!"} |
@@ -82,4 +89,4 @@ Tests to create groups via REST and CLI.
 | code-is      | 200                    |                 |
 | json-parse   |                        |                 |
 | json-path-is | $.name                 | %%g8%%          |
-| json-path-is | $.permission_set       | request-to-join |
+| json-path-is | $.permission_set       | private         |

@@ -111,6 +111,23 @@ Set up a second account, but no users.
 | POST-json | /data/groups | {"name":"%%g6%%","workspaces":[{"workspace_id":"%%erosional_id%%","role":"admin"},{"workspace_id":"%%solutional_id%%"}]} |
 | code-is   | 201          |                                                                                                                          |
 
+## Cannot create a self-join group with workspaces
+| *Comment* | Cannot create a self-join group with workspaces |
+| set | sj1 | sj1-%%start_time%% |
+| POST-json | /data/groups | {"name":"%%sj1%%","permission_set":"self-join","workspaces":[{"workspace_id":"%%solutional_id%%"}]} |
+| code-is   | 400          |                                                                                                     |
+
+## Cannot create a private group with non-private workspaces
+| *Comment* | Cannot create a private group with non-private workspaces |
+| set                | pubws1        | pubws1-%%start_time%% |       |
+| create-workspace   | %%pubws1%%    |                       |       |
+| set                | pubws1_id     | %%workspace_id%%      |       |
+| add-member         | %%non_admin%% | %%pubws1%%            | admin |
+| set-ws-permissions | %%pubws1%%    | public                |       |
+| set                | privg1        | privg-%%start_time%%  |       |
+| POST-json | /data/groups | {"name":"%%privg1%%","permission_set":"private","workspaces":[{"workspace_id":"%%pubws1_id%%"}]} |
+| code-is   | 400          |                                                                                                  |
+
 ## Get a couple of users to add to a group
 | set         | bowline          | bowline%%start_time%%@ken.socialtext.net      |             |
 | create-user | %%bowline%%      | password                                      | %%account%% |

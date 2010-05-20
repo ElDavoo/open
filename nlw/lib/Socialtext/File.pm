@@ -4,8 +4,8 @@ use strict;
 use warnings;
 use base 'Exporter';
 our @EXPORT_OK = qw(
-    set_contents set_contents_utf8
-    get_contents get_contents_utf8
+    set_contents set_contents_utf8 set_contents_binary
+    get_contents get_contents_utf8 get_contents_binary
     ensure_directory
 );
 

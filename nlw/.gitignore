@@ -479,3 +479,4 @@ lib/Socialtext/Gadgets/Container/GroupDirectory.pm
 lib/Socialtext/Handler/Container/GroupDirectory.pm
 t/wikitests/groups/search.wiki
 t/Socialtext/Pluggable/Plugin/Groups.t
+t/rest_files/atom-latin1.xml

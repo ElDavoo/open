@@ -7,7 +7,7 @@ use Socialtext::AppConfig;
 use Socialtext::Account;
 use Socialtext::User;
 use Socialtext::SQL qw/:exec :txn/;
-use Socialtext::JSON qw/decode_json encode_json/;
+use Socialtext::JSON qw/encode_json decode_json_utf8/;
 use Socialtext::File;
 use Socialtext::Group;
 use Socialtext::System qw();
@@ -18,6 +18,7 @@ use Socialtext::People::Profile;
 use Socialtext::UserSet qw(ACCT_OFFSET);
 use Socialtext::Cache;
 use Socialtext::Workspace;
+use Socialtext::Encode qw/ensure_is_utf8/;
 use File::LogReader;
 use File::Path qw(rmtree);
 use Test::More;
@@ -1282,6 +1283,8 @@ sub code_is {
 
 =head2 dump_http_response 
 
+Dump the headers of the last http response.
+
 =cut
 
 sub dump_http_response {
@@ -1292,15 +1295,18 @@ sub dump_http_response {
     $self->{http}->response->content($content);
 }
 
-=head2 dump_json_response 
+=head2 dump_json
+
+Decode the last response as JSON, produce Data::Dumper diag output.
 
 =cut
 
 sub dump_json {
     my $self = shift;
-    my $json = $self->{http}->response->content;
-    my $blob = decode_json($json);
-    warn Dumper $blob;
+    my $json = $self->{http}->_decoded_content;
+    $json =~ s/^throw 1; < don't be evil' >\s*//ms;
+    my $blob = decode_json_utf8($json);
+    diag(Dumper($blob));
 }
 
 =head2 has_header( header [, expected_value])
@@ -1636,9 +1642,9 @@ Try to parse the body as JSON, remembering the result for additional tests.
 sub json_parse {
     my $self = shift;
     $self->{json} = undef;
-    my $content = $self->{http}->response->content || '';
+    my $content = $self->{http}->_decoded_content || '';
     $content =~ s/^throw 1; < don't be evil' >\s*//ms;
-    $self->{json} = eval { decode_json($content) };
+    $self->{json} = eval { decode_json_utf8($content) };
     ok !$@ && defined $self->{json} && ref($self->{json}) =~ /^ARRAY|HASH$/,
         $self->{http}->name . " parsed content" . ($@ ? " \$\@=$@" : "");
     unless (defined $self->{json}) {
@@ -1694,7 +1700,7 @@ sub _json_test {
     if (not defined $json ) {
         fail $self->{http}->name . " no json result";
     }
-    my $parsed_candidate = eval { decode_json($candidate) };
+    my $parsed_candidate = eval { decode_json_utf8($candidate) };
     if ($@ || ! defined $parsed_candidate || ref($parsed_candidate) !~ /^|ARRAY|HASH|SCALAR$/)  {
         fail $self->{http}->name . " failed to find or parse candidate " . ($@ ? " \$\@=$@" : "");
         return;
@@ -2646,7 +2652,7 @@ sub _json_path_test {
     }
 
     # work around the fact that we aren't reading .wiki files in unicode mode
-    $expected = Encode::decode_utf8($expected) if $test =~ /^is/;
+    $expected = ensure_is_utf8($expected) if $test =~ /^is/;
     if ($test eq 'is') { # grep json_path_is
         return is $sel, $expected, $comment;
     }
@@ -2741,7 +2747,7 @@ sub json_path_parse {
         return;
     }
 
-    my $json = eval { decode_json($sel) };
+    my $json = eval { decode_json_utf8($sel) };
     if (my $e = $@) {
         fail "json-path-parse error: $e";
         $self->{json} = {};

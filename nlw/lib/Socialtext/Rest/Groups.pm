@@ -50,8 +50,11 @@ sub _get_total_results {
     if ($user->is_business_admin and $self->rest->query->param('all')) {
         Socialtext::Group->Count;
     }
+    elsif (defined $self->{_total_results}) {
+        return $self->{_total_results};
+    }
     else {
-        return $self->{_total_results} || $user->group_count;
+        return $user->group_count;
     }
 }
 
@@ -152,6 +155,13 @@ sub POST_json {
     unless ( defined $data and ref($data) eq 'HASH' ) {
         $rest->header(-status => HTTP_400_Bad_Request);
         return '';
+    }
+
+    my $is_self_join = $data->{permission_set}
+        && $data->{permission_set} eq 'self-join';
+    if ($is_self_join && $data->{workspaces}) {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return 'self-join groups may not contain workspaces';
     }
 
     $data->{account_id} ||= $user->primary_account_id;
@@ -280,6 +290,12 @@ sub _add_group_to_workspaces {
         my $role = Socialtext::Role->new(
             name => ($ws->{role}) ? $ws->{role} : 'member' );
         die "no such role: '$ws->{role}'\n" unless $role;
+
+        if ($group->permission_set eq 'private'
+            && $workspace->permissions->current_set_name ne 'member-only'
+        ) {
+            die Socialtext::Exception::DataValidation->new();
+        }
 
         next if $workspace->role_for_group($group, {direct => 1});
 

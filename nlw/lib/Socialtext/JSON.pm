@@ -1,36 +1,38 @@
 package Socialtext::JSON;
-
-# Required inclusions.
 use strict;
 use warnings;
 use JSON::XS qw();
+use Encode ();
 
 # Export our methods.
 use base qw(Exporter);
-our @EXPORT_OK = qw(
-    encode_json
-    decode_json
-    );
-our @EXPORT = @EXPORT_OK;
+our @EXPORT_OK = qw(encode_json decode_json decode_json_utf8);
+our @EXPORT = qw(encode_json decode_json);
 
 sub encode_json {
-    # defer to JSON::XS
-    
-
     unless (ref $_[0]) {
-        # manually encode a string because heaven forbid anyone would be
-        # stupid enough to *want* to do that. 
+        # manually encode a string; JSON::XS doesn't allow this.
         my $val = shift;
         $val =~ s{\\}{\\\\}g;
         $val =~ s{"}{\\"}g;
-        return qq("$val");
+        $val = qq("$val");
+        Encode::_utf8_off($val); # JSON::XS turns off the utf8-flag
+        return $val;
     }
-    return JSON::XS::encode_json($_[0]);
+    goto &JSON::XS::encode_json;
 }
 
-sub decode_json {
-    # defer to JSON::XS
-    return JSON::XS::decode_json($_[0]);
+# was "sub decode_json"; now is a pass-through
+*decode_json = \&JSON::XS::decode_json;
+
+sub decode_json_utf8 {
+    # JSON::XS won't properly decode UTF-8 unless it's the raw bytes.  If a
+    # string is marked with the utf8 flag, turning it off is a
+    # cheap-and-cheerful way to do this. However, since we're doing it on
+    # $_[0], it has the side-effect of changing the flag on the original
+    # scalar.
+    Encode::_utf8_off($_[0]) if Encode::is_utf8($_[0]);
+    goto &JSON::XS::decode_json;
 }
 
 1;
@@ -59,7 +61,7 @@ B<one> place.
 
 =head1 METHODS
 
-The following methods are exported automatically:
+The C<encode_json> and C<decode_json> functions are exported automatically.
 
 =over
 
@@ -72,7 +74,13 @@ is, the string contains octets only).  Croaks on error.
 
 Opposite of C<encode_json()>; expects a UTF-8 encoded, binary string and ties
 to parse that as UTF-8 encoded JSON text returning the resulting reference.
-Croaks on error.
+Croaks on error.  The utf8 flag should be turned off on the string.
+
+=item B<decode_json_utf8($any_json_text)>
+
+If the string has its utf8 flag on, this function forces the flag B<off> on the
+original scalar.  This is in order to make JSON::XS happy when the flag happens
+to be on.  Otherwise, this does the same thing as C<decode_json>.
 
 =back
 
@@ -82,7 +90,7 @@ Socialtext, Inc. C<< <code@socialtext.com> >>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008 Socialtext, Inc., All Rights Reserved.
+Copyright 2008-2010 Socialtext, Inc., All Rights Reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
