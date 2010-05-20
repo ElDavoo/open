@@ -50,8 +50,11 @@ sub _get_total_results {
     if ($user->is_business_admin and $self->rest->query->param('all')) {
         Socialtext::Group->Count;
     }
+    elsif (defined $self->{_total_results}) {
+        return $self->{_total_results};
+    }
     else {
-        return $self->{_total_results} || $user->group_count;
+        return $user->group_count;
     }
 }
 
