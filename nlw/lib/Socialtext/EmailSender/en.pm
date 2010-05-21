@@ -35,7 +35,7 @@ $Email::Send::Sendmail::SENDMAIL = '/usr/sbin/sendmail';
     sub _encode_address {
         my $self    = shift;
         my $address = shift;
-        return $address;
+        return Encode::encode('utf8' => $address);
     }
 
     sub _encode_subject {
@@ -64,9 +64,9 @@ $Email::Send::Sendmail::SENDMAIL = '/usr/sbin/sendmail';
         return $filename;
     }
 
-    sub _get_encoding {
-        return 'utf8';
-    }
+    sub _get_encoding { 'utf8' }  # for Encode
+    sub _get_charset  { 'UTF-8' } # for headers
+    sub _get_content_transfer_encoding { '8bit' }
 }
 1;
 
