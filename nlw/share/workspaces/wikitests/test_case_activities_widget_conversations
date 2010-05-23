@@ -29,8 +29,11 @@
 | st-admin | update-page --email %%isolateduser%% --workspace %%wrkspc%% --page %%mycommentedpagename%% < %%wikitest_client_files%%wikitest.txt | has been created |
 | st-admin | update-page --email %%isolateduser%% --workspace %%wrkspc%% --page %%watchedpagename%% < %%wikitest_client_files%%wikitest.txt | has been created |
 
+| *Comment* | Test Case: Activities Widget Conversations - logout explicitly |  |
+| open_ok | /nlw/submit/logout |  |
+
 | *Comment* | Test Case: Activities Widget Conversations - %%actor%% creates a page, comments on a page, watches a page |  |
-| st-logoutin | %%actor%% | %%password%% |
+| st-login | %%actor%% | %%password%% |
 
 | st-create-wikipage | %%wrkspc%% | %%mypagename%% |
 | st-comment-on-page | /%%wrkspc%%/?%%mycommentedpagename%% | Leaving a comment |

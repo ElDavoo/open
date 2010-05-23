@@ -1,6 +1,10 @@
+| *Comment* | Test Case: Activities Widget Verify My Signals |  |
+
+| *Comment* | Test Case: Activities Widget Verify My Signals - explicit logout |  |
+| open_ok | /nlw/submit/logout |  |
+
 | *Comment* | Test Case: Activities Widget Verify My Signals. Get a fresh Activities widget |  |
-| st-catchup-logs |  |  |
-| st-logoutin | %%signalsuser%% | %%password%% |
+| st-login | %%signalsuser%% | %%password%% |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 
 | *Comment* | Test Case: Activities Widget Verify My Signals. Back at Dashboard with widget |  |
@@ -79,4 +83,4 @@
 | text_like | //body | qr/Super.+Edit.+Summary.+From.+Signal.+%%start_time%%/ |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test case: Activities Widget Verify My Signals COMPLETED  |  |
+| *Comment* | Test case: Activities Widget Verify My Signals COMPLETED |  |

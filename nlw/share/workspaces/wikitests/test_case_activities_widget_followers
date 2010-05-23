@@ -24,9 +24,12 @@
 | st-admin | create-user --email %%loggedinuser%% --password %%password%% --account %%followacct%% |  |
 | st-admin | add-member --workspace %%followws%% --email %%loggedinuser%% |  |
 
+| *Comment* | Test Case: Activities Widget Followers logout explicitly |  |
+| open_ok | /nlw/submit/logout |  |
+
 | *Comment* | Test Case: Activities Widget Followers Login as %%followinguser%%, create a page and send a signal |  |
 
-| st-logoutin | %%followinguser%% | %%password%% |
+| st-login | %%followinguser%% | %%password%% |
 | open_ok | /%%followws%%/ |  |
 | st-create-wikipage | %%followws%% | pageone |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
@@ -64,6 +67,12 @@
 | set | r2 | %%shortnot%%.+ago.+edited.+donotseethispage.+in.+%%followws%% |
 | set | r3 | %%shortfollow%%.+ago.*to.+%%followacct%%.+You.+should.+see.+this.+%%start_time%% |
 | set | r4 | %%shortfollow%%.+ago.+edited.+pageone.+in.+%%followws%% |
+
+| *Comment* | Test Case: Activities Widget Followers wait until widget reloads |  |
+| st_select_widget_frame | activities_widget |  |
+| wait_for_text_present_ok | %%shortnot%% | 30000 |
+| wait_for_text_present_ok | %%shortfollow%% | 30000 |
+| select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, see all activities |  |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%r1%%/ism |

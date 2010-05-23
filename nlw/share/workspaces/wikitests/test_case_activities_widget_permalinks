@@ -6,7 +6,10 @@
 | set | user | permalink-%%start_time%%@matt.socialtext.net |
 | st-admin | create-account --name %%acct%% | was created |
 | st-admin | create-user --email %%user%% --password %%password%% --account %%acct%% | was created |
-| st-logoutin | %%user%% | %%password%% |
+
+| *Comment* | Test Case: Activities Widget Permalinks - explicit logout |  |
+| open_ok | /nlw/submit/logout |  |
+| st-login | %%user%% | %%password%% |
 
 | *Comment* | Test Case: Activities Widget: Send a signal ... |  |
 | http-user-pass | %%user%% | %%password%% |
@@ -18,14 +21,12 @@
 | wait_for_text_present_ok | Signals | 30000 |
 | st-name-widget | 1 | outer_widget |
 | st-select-widget-frame | outer_widget |  |
-| GET-json | /data/events |  |
-| json-parse |  |  |
 
-json-path-set | signal_hash | $[0].hash |
+ GET-json | /data/events | |
+json-parse | | |
+set-from-content | signal_hash | qr/"hash":"(\S+)","body":/ |
+wait_for_element_visible_ok | //a[contains(@href,'/st/signals/%%signal_hash%%')] | 30000 |
 
-| set-from-content | signal_hash | qr/"hash":"(\S+)","body":/ |
-
-| wait_for_element_visible_ok | //a[contains(@href,'/st/signals/%%signal_hash%%')] | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Activities Widget: Go to the pop-up page |  |
