@@ -54,14 +54,14 @@ TO DO - Add testability hooks and confirm Grey Ghost Icon
 
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Microsoft Outlook'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Google Calendar'] | 30000 |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-YouTube Video Player'] | 30000 |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Youtube Video Player'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-SlideShare Feeds'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-My del.icio.us'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Flickr Photos'] | 30000 |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Flickr Photos - English'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-LabPixies Calculator'] | 30000 |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Clock & Date'] | 30000 |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-LabPixies ToDo'] | 30000 |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-ToDo'] | 30000 |
 | text_like | Displays a single page from any of your workspaces within a Socialtext Widget. |  |
 
 | *Comment* | Test Case: People Dashboard Navigation People. Last people page. Set filter to All not %%hostname%% |  |

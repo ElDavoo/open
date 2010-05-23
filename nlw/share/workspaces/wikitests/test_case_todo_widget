@@ -2,7 +2,7 @@
 
 * Fixture: SocialWidgets
 
-| st-single-widget-in-dashboard | gallery-widget-LabPixies ToDo |  |
+| st-single-widget-in-dashboard | gallery-widget-ToDo |  |
 | text_like | contentContainer | ToDo |
 
 | st-name-widget | 1 | todo_widget |
