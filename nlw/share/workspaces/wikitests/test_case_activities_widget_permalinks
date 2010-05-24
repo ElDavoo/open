@@ -23,7 +23,7 @@
 
 json-path-set | signal_hash | $[0].hash |
 
-| set-from-content | signal_hash | qr/"hash":"(\S+)","body":/ |
+| set-from-content | signal_hash | qr/"hash":"(\S+)","topics":/ |
 
 | wait_for_element_visible_ok | //a[contains(@href,'/st/signals/%%signal_hash%%')] | 30000 |
 | select-frame | relative=parent |  |
