@@ -121,4 +121,7 @@ fi
 # Clean up dead symlinks
 find -L -type l -delete
 
+# Purge json proxy cache
+bin/st-purge-json-proxy-cache
+
 echo "fresh-dev-env-from-scratch complete."
