@@ -1409,6 +1409,25 @@ sub post_file {
     $self->{_last_http_time} = time() - $start;
 }
 
+=head2 upload_file( filename )
+
+Post a local file to the specified URI, DWIMy
+
+    | post-file | bob.txt |
+    | set | your_var | %%upload_id%% |
+
+=cut
+
+sub upload_file {
+    my $self = shift;
+    my $filename = shift;
+    $self->post_file('/data/uploads', 'method=file', 'file', $filename);
+    $self->code_is(201);
+    $self->body_like(q{"status":"success"});
+    $self->set_from_content('upload_id', 'qr/"id":"([^"]+)"/');
+    diag "Uploaded $filename, got id $self->{upload_id}";
+}
+
 =head2 put( uri, headers, body )
 
 Put to the specified URI
