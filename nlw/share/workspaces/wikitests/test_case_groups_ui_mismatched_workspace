@@ -1,0 +1,81 @@
+| *Comment* | Test Case: Groups UI mismatched Workspace |  |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Groups UI mismatched Workspace SETUP Workspaces |  |
+| set | ws_public | ws-public-%%start_time%% |
+| set | ws_private | ws-private-%%start_time%% |
+| set | ws_click_to_join | ws-click-to-join-%%start_time%% |
+| st-admin | create-workspace --name %%ws_public%% --title %%ws_public%% | was created |
+| st-admin | create-workspace --name %%ws_private%% --title %%ws_private%% | was created |
+| st-admin | create-workspace --name %%ws_click_to_join%% --title %%ws_click_to_join%% | was created |
+| st-admin | add-workspace-admin --e %%username%% --w %%ws_public%% | now has the role of 'admin' |
+| st-admin | add-workspace-admin --e %%username%% --w %%ws_private%% | now has the role of 'admin' |
+| st-admin | add-workspace-admin --e %%username%% --w %%ws_click_to_join%% | now has the role of 'admin' |
+| st-admin | set-permissions --permissions public-join-to-edit --workspace %%ws_click_to_join%% | have been changed to public-join-to-edit |
+| st-admin | set-permissions --permissions public --workspace %%ws_public%% | have been changed to public |
+
+| *Comment* | Test Case: Groups UI mismatched Workspace Create Self-join Group |  |  |
+| set | group_self_join | grp-self-join-%%start_time%% |  |
+| st-create-group | %%group_self_join%% | group description | self-join-radio |
+| wait_for_element_visible_ok | create-group | 30000 |  |
+| st-name-widget | 2 | workspaces_widget |  |
+| st-select-widget-frame | workspaces_widget |  |  |
+| wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. We will be adding the ability to add workspaces to this group soon. | 30000 |  |
+| select-frame | relative=parent |  |  |
+| click_and_wait | create-group |  |  |
+
+| *Comment* | Test Case: Groups UI mismatched Workspace Change group to private |  |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| wait_for_element_visible_ok | permission-change | 30000 |
+| click_ok | permission-change |  |
+| pause | 6000 |  |
+| select-frame | relative=parent |  |
+| wait_for_element_present_ok | st-create-group-next | 30000 |
+| wait_for_element_present_ok | private-radio | 30000 |
+| check_ok | private-radio |  |
+| click_ok | st-create-group-next |  |
+| pause | 6000 |  |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+| wait_for_text_present_ok | private | 30000 |
+| select-frame | relative=parent |  |
+| click_and_wait | create-group |  |
+| st-name-widget | 2 | workspaces_widget |
+| st-select-widget-frame | workspaces_widget |  |
+| wait_for_text_present_ok | Use the input above to select workspaces to associate with this group. You can only associate member-only workspaces with a private group. | 30000 |
+| wait_for_element_present_ok | lookahead | 30000 |
+| wait_for_element_present_ok | new_workspace | 30000 |
+| select-frame | relative=parent |  |
+| click_and_wait | create-group |  |
+
+| *Comment* | Test Case: Groups UI mismatched Workspace SETUP Private Group |  |  |
+| st-create-group | %%group_self_join%% | group description | self-join-radio |
+| wait_for_element_visible_ok | create-group | 30000 |  |
+| click_and_wait | create-group |  |  |
+| st-name-widget | 1 | information_widget |  |
+| st-select-widget-frame | information_widget |  |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |  |
+| click_ok | link=(Edit) |  |  |
+| wait_for_element_visible_ok | permission-change | 30000 |  |
+| click_ok | permission-change |  |  |
+| pause | 6000 |  |  |
+| select-frame | relative=parent |  |  |
+| wait_for_element_present_ok | st-create-group-next | 30000 |  |
+| wait_for_element_present_ok | private-radio | 30000 |  |
+| check_ok | private-radio |  |  |
+| click_ok | st-create-group-next |  |  |
+| click_and_wait | create-group |  |  |
+| st-name-widget | 1 | information_widget |  |
+| st-select-widget-frame | information_widget |  |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |  |
+| select-frame | relative=parent |  |  |
+| st-name-widget | 2 | workspaces_widget |  |
+| st-select-widget-frame | workspaces_widget |  |  |
+| wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. We will be adding the ability to add workspaces to this group soon. | 30000 |  |
+| select-frame | relative=parent |  |  |
+| click_and_wait | create-group |  |  |
+
+| *Comment* | Test Case: Groups UI mismatched Workspace TEARDOWN |  |
