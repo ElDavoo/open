@@ -11,13 +11,7 @@ our @EXPORT = qw(encode_json decode_json);
 
 sub encode_json {
     unless (ref $_[0]) {
-        # manually encode a string; JSON::XS doesn't allow this.
-        my $val = shift;
-        $val =~ s{\\}{\\\\}g;
-        $val =~ s{"}{\\"}g;
-        $val = qq("$val");
-        Encode::_utf8_off($val); # JSON::XS turns off the utf8-flag
-        return $val;
+        return JSON::XS->new->utf8->allow_nonref->encode($_[0]);
     }
     goto &JSON::XS::encode_json;
 }
