@@ -46,14 +46,14 @@ sub POST_file {
 
     unless ($self->rest->user->is_authenticated) {
         return $self->_post_failure(
-            $rest, HTTP_401_Unauthorized, 'must be a group admin'
+            $rest, HTTP_401_Unauthorized, 'user is not authenticated'
         );
     }
 
     my $file = $rest->query->{'file'};
     unless ($file) {
         return $self->_post_failure(
-            $rest, HTTP_400_Bad_Request, 'photo is a required argument'
+            $rest, HTTP_400_Bad_Request, 'file is a required argument'
         );
     }
 
@@ -66,7 +66,7 @@ sub POST_file {
     };
     if ( $@ ) {
         return $self->_post_failure(
-            $rest, HTTP_400_Bad_Request, "could not save image"
+            $rest, HTTP_400_Bad_Request, "could not save file"
         );
     }
 
@@ -74,7 +74,7 @@ sub POST_file {
     return encode_json({
         status => 'success',
         id => $id,
-        message => 'photo uploaded',
+        message => 'file uploaded',
     });
 }
 
