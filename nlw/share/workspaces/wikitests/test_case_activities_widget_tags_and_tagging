@@ -22,7 +22,9 @@ TODO: there seems to be some weirdness indexing usernames that end in a string o
 | st-admin | add-member --email %%tagginguser%% --workspace %%wrkspc%% |  |
 | st-admin | add-member --email %%taguser%% --workspace %%wrkspc%% |  |
 
-| st-logoutin | %%tagginguser%% | %%password%% |
+| *Comment* | Test Case: Activities Widget Tags and Tagging: logout explicitly |  |
+| open_ok | /nlw/submit/logout |  |  |
+| st-login | %%tagginguser%% | %%password%% |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging: Process jobs after creating user |  |
 | st_process_jobs |  |  |
