@@ -84,3 +84,29 @@
 | json-path-exists  | $.admins[0].username | %%username%% |
 | json-path-is      | $.user_count         | 1            |
 | json-path-is      | $.workspace_count    | 0            |
+
+##
+| *Comment* | Check that self-join events are visible for non members |
+
+| GET-json          | /data/events?group_id=%%group_id%%&html=0 |       |
+| code-is           | 200                                       |       |
+| json-parse        |                                           |       |
+| json-path-is      | $[0].event_class                          | group |
+| json-path-missing | $[1]                                      |       |
+
+##
+| *Comment* | Make sure only permanant users' person events show up in event feeds |
+
+| POST-json | /data/people/%%username%%/tags | {"tag_name":"cool admin"} |
+| code-is   | 204                            |                           |
+| POST-json | /data/people/%%steve%%/tags    | {"tag_name":"cool guy"}   |
+| code-is   | 204                            |                           |
+
+| set-user-id | user_id | %%username%% |
+
+| GET-json          | /data/events?group_id=%%group_id%%&html=0&event_class=person |             |
+| code-is           | 200                                                          |             |
+| json-parse        |                                                              |             |
+| json-path-is      | $[0].event_class                                             | person      |
+| json-path-is      | $[0].person.id                                               | %%user_id%% |
+| json-path-missing | $[1]                                                         |             |

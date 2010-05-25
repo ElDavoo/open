@@ -32,9 +32,9 @@ sub get_resource {
     # user to the group in a transaction to the user can be removed after
     # we've generated the list of events.
     my $g;
-    my %args = @args;
-    if ($args{group_id}) {
-        my $group = Socialtext::Group->GetGroup(group_id => $args{group_id});
+    my %ro_args = @args;
+    if ($ro_args{group_id}) {
+        my $group = Socialtext::Group->GetGroup(group_id => $ro_args{group_id});
         unless ($group->has_user($self->rest->user)) {
             $g = guard { sql_rollback };
             sql_begin_work;
@@ -43,6 +43,7 @@ sub get_resource {
                 $group->user_set_id,
                 Socialtext::Role->Member->role_id
             );
+            push @args, 'person_id!', $self->rest->user->user_id;
         }
     }
 
