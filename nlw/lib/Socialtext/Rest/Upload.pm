@@ -10,8 +10,11 @@ use Socialtext::Rest::Uploads;
 use Socialtext::People::ProfilePhoto;
 use Socialtext::Group::Photo;
 use Socialtext::AccountLogo;
+use Socialtext::Upload;
 use File::Type;
 use File::Temp qw(tempfile);
+use File::Copy qw/copy move/;
+use Try::Tiny;
 
 my %RESIZERS = (
     profile => 'Socialtext::People::ProfilePhoto',
@@ -27,42 +30,46 @@ sub GET {
     my ($self, $rest) = @_;
     my $user = $self->rest->user;
     my $user_id = $user->user_id;
-    my $id = $self->id;
-    my $file = "$Socialtext::Rest::Uploads::UPLOAD_DIR/$id";
+    my $uuid = $self->id;
 
     unless ($user->is_authenticated) {
         $rest->header( -status => HTTP_401_Unauthorized );
         return '';
     }
 
-    unless (-f $file) {
+    my $upload = try { Socialtext::Upload->Get(attachment_uuid => $uuid) };
+    if (!$upload || !$upload->is_temporary) {
         $rest->header( -status => HTTP_404_Not_Found );
         return '';
     }
 
-    my $mime = File::Type->new->mime_type($file);
+    my $file = $upload->temp_filename;
+    unless (-f $file) {
+        $rest->header( -status => HTTP_404_Not_Found );
+        return '';
+    }
 
     # Support image resizing /?resize=group:small will resize for a
     # Socialtext::Group::Photo using the small version
     my $blob;
     if (my $resize = $rest->query->param('resize')) {
         my ($resizer, $version) = split ':', $resize;
-        die "You can only resize images" unless $mime =~ m{^image/};
+        die "You can only resize images" unless $upload->is_image;
         die "Bad resize string: $resize" unless $resizer and $version;
         my $rclass = $RESIZERS{$resizer} || die "Unknown resizer: $resizer";
 
         my $temp;
         (undef, $temp) = tempfile('/tmp/resizeXXXXXX', OPEN => 0);
-        link $file, $temp;
+        copy($file, $temp);
         $rclass->Resize($version, $temp);
         $blob = Socialtext::File::get_contents_binary($temp);
         unlink $temp;
     }
     else {
-        $blob = Socialtext::File::get_contents_binary($file);
+        $upload->binary_contents(\$blob);
     }
 
-    $rest->header( 'Content-type' => $mime );
+    $rest->header( 'Content-type' => $upload->mime_type );
     return $blob;
 }
 

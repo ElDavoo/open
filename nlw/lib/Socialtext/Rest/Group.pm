@@ -9,6 +9,7 @@ use Socialtext::Permission qw(ST_READ_PERM ST_ADMIN_PERM
 use Socialtext::Exceptions ();
 use Socialtext::Group;
 use Socialtext::Rest::SetController;
+use Socialtext::Upload;
 use Try::Tiny;
 
 use Socialtext::SQL 'sql_txn';
@@ -155,19 +156,20 @@ sub PUT_json {
     };
 
     my $photo_id = $data->{photo_id};
-    if (defined $photo_id) {
-        if ($photo_id) {
-            eval {
-                my $blob = scalar Socialtext::File::get_contents_binary(
-                    "$Socialtext::Rest::Uploads::UPLOAD_DIR/$photo_id"
-                );
-                $group->photo->set(\$blob);
-            };
-            warn "Error setting profile photo: $@" if $@;
+    if ($photo_id) {
+        try {
+            my $blob;
+            my $upload = Socialtext::Upload->Get(attachment_uuid => $photo_id);
+            $upload->binary_contents(\$blob);
+            $group->photo->set(\$blob);
+            $upload->purge;
         }
-        else {
-            $group->photo->purge;
-        }
+        catch {
+            warn "Error setting profile photo: $_";
+        };
+    }
+    elsif (defined $photo_id) { # zero or empty-string
+        $group->photo->purge;
     }
 
     $self->rest->header(-status => HTTP_202_Accepted);
