@@ -699,6 +699,24 @@ CREATE VIEW accounts_for_user AS
    FROM user_sets_for_user
   WHERE user_sets_for_user.user_set_id >= B'00110000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'01000000000000000000000000000000'::"bit"::integer;
 
+CREATE TABLE attachment (
+    attachment_id integer NOT NULL,
+    attachment_uuid text NOT NULL,
+    creator_id integer NOT NULL,
+    created_at timestamptz DEFAULT now() NOT NULL,
+    filename text NOT NULL,
+    mime_type text NOT NULL,
+    is_image boolean NOT NULL,
+    is_temporary boolean DEFAULT false NOT NULL,
+    content_length integer NOT NULL
+);
+
+CREATE SEQUENCE attachment_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
 CREATE TABLE container (
     container_id bigint NOT NULL,
     container_type text NOT NULL,
@@ -1077,6 +1095,11 @@ CREATE TABLE signal (
     anno_blob text
 );
 
+CREATE TABLE signal_attachment (
+    attachment_id integer NOT NULL,
+    signal_id bigint NOT NULL
+);
+
 CREATE SEQUENCE signal_id_seq
     INCREMENT BY 1
     NO MAXVALUE
@@ -1283,6 +1306,14 @@ ALTER TABLE ONLY "Workspace"
 ALTER TABLE ONLY account_logo
     ADD CONSTRAINT account_logo_pkey
             PRIMARY KEY (account_id);
+
+ALTER TABLE ONLY attachment
+    ADD CONSTRAINT attachment_pkey
+            PRIMARY KEY (attachment_id);
+
+ALTER TABLE ONLY attachment
+    ADD CONSTRAINT attachment_uuid_key
+            UNIQUE (attachment_uuid);
 
 ALTER TABLE ONLY container
     ADD CONSTRAINT container_pk
@@ -1957,6 +1988,11 @@ ALTER TABLE ONLY account_logo
             FOREIGN KEY (account_id)
             REFERENCES "Account"(account_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY attachment
+    ADD CONSTRAINT attachment_creator_fk
+            FOREIGN KEY (creator_id)
+            REFERENCES users(user_id) ON DELETE RESTRICT;
+
 ALTER TABLE ONLY event
     ADD CONSTRAINT event_actor_id_fk
             FOREIGN KEY (actor_id)
@@ -2207,6 +2243,16 @@ ALTER TABLE ONLY rollup_user_signal
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY signal_attachment
+    ADD CONSTRAINT signal_attachment_attachment_fk
+            FOREIGN KEY (attachment_id)
+            REFERENCES attachment(attachment_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY signal_attachment
+    ADD CONSTRAINT signal_attachment_signal_fk
+            FOREIGN KEY (signal_id)
+            REFERENCES signal(signal_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY signal
     ADD CONSTRAINT signal_recipient_fk
             FOREIGN KEY (recipient_id)
@@ -2323,4 +2369,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '118');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '119');
