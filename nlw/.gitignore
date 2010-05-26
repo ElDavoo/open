@@ -480,3 +480,5 @@ lib/Socialtext/Handler/Container/GroupDirectory.pm
 t/wikitests/groups/search.wiki
 t/Socialtext/Pluggable/Plugin/Groups.t
 t/rest_files/atom-latin1.xml
+lib/Socialtext/JSON/Batch.pm
+t/wikitests/widgets/proxy-batch.wiki
