@@ -8,20 +8,25 @@ use Socialtext::SQL qw/:exec sql_txn sql_format_timestamptz/;
 use Socialtext::SQL::Builder qw/sql_nextval sql_insert sql_update/;
 use Socialtext::JSON qw/json_true json_false/;
 use File::Copy qw/copy move/;
+use File::Path qw/make_path/;
 use Fatal qw/copy move rename open close unlink/;
 use File::Type;
 use Try::Tiny;
+use Moose::Util::TypeConstraints;
 use namespace::clean -except => 'meta';
 
 our $UPLOAD_DIR = "/tmp";
-our $STORAGE_DIR = "/var/www/socialtext/attachments";
-warn 'warning: $STORAGE_DIR is still hard-coded';
+our $STORAGE_DIR = Socialtext::AppConfig->data_root_dir."/attachments";
 warn 'warning: need a cron job to sync DB with temp-reaped filesys';
-warn 'warning: derive mime_type using File::Type';
-#     my $mime = File::Type->new->mime_type($file);
+
+subtype 'Str.UUID'
+    => as 'Str'
+    # e.g. dfd6fd31-e518-41ca-ad5a-6e06bc46f1dd
+    => where { /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/ }
+    => message { "invalid UUID" };
 
 has 'attachment_id' => (is => 'rw', isa => 'Int');
-has 'attachment_uuid' => (is => 'rw', isa => 'Str');
+has 'attachment_uuid' => (is => 'rw', isa => 'Str.UUID');
 has 'filename' => (is => 'rw', isa => 'Str');
 has 'mime_type' => (is => 'rw', isa => 'Str');
 has 'content_length' => (is => 'rw', isa => 'Int');
@@ -111,7 +116,7 @@ sub Get {
 
 sub disk_filename {
     my $self = shift;
-    return $self->is_temporary ? $self->temp_filename : $self->storage_name;
+    return $self->is_temporary ? $self->temp_filename : $self->storage_filename;
 }
 
 sub temp_filename {
@@ -119,9 +124,13 @@ sub temp_filename {
     return "$UPLOAD_DIR/upload-".$self->attachment_uuid;
 }
 
-sub storage_name {
+sub storage_filename {
     my $self = shift;
-    return join('/', $STORAGE_DIR, $self->attachment_uuid);
+    my $id = $self->attachment_uuid;
+    my $part1 = substr($id,0,2);
+    my $part2 = substr($id,2,2);
+    my $file  = substr($id,4);
+    return join('/', $STORAGE_DIR, $part1, $part2, $file);
 }
 
 sub created_at_str { sql_format_timestamptz($_[0]->created_at) }
@@ -163,10 +172,17 @@ sub make_permanent {
 
     return unless $self->is_temporary;
 
-    my $targ = $self->storage_name;
+    my $targ = $self->storage_filename;
+
+    (my $dir = $targ) =~ s#/[^/]+$##;
+    make_path($dir, {mode => 0774});
     move($self->temp_filename => $targ.'.tmp');
-    sql_execute(q{UPDATE attachment SET is_temp = f
-                  WHERE attachment_id = ?}, $self->attachment_id);
+
+    sql_execute(q{
+        UPDATE attachment
+           SET is_temporary = false
+         WHERE attachment_id = ?
+    }, $self->attachment_id);
     rename($targ.'.tmp' => $targ);
     $self->is_temporary(undef);
 }
