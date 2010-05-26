@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>285</version>
-  <url>http://topaz.socialtext.net/flair/flairSignals-285.air</url>
-  <description><![CDATA[[Build 285 - Wed May 12 15:12:38 PDT 2010]
+  <version>288</version>
+  <url>http://topaz.socialtext.net/flair/flairSignals-288.air</url>
+  <description><![CDATA[[Build 288 - Wed May 26 03:36:55 PDT 2010]
+* Fix {bz: 3942}: Desktop: All tab under People does not display users.
+
+[Build 287 - Tue May 18 12:52:00 PDT 2010]
+* Sync-up Activities shared code.
+* Fix {bz: 3914}: Unresponsive script while replying to conversation.
+
+[Build 286 - Wed May 12 16:25:22 PDT 2010]
+* Added support for pushd synchronization.
+
+[Build 285 - Wed May 12 15:12:38 PDT 2010]
 * Confirmed fixing {bz: 3904} for real.
 
 [Build 284 - Wed May 12 14:29:54 PDT 2010]
