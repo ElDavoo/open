@@ -6,8 +6,11 @@ use Encode ();
 
 # Export our methods.
 use base qw(Exporter);
-our @EXPORT_OK = qw(encode_json decode_json decode_json_utf8);
+our @EXPORT_OK = qw(encode_json decode_json decode_json_utf8 json_true json_false);
 our @EXPORT = qw(encode_json decode_json);
+
+*json_true = JSON::XS::true;
+*json_false = JSON::XS::false;
 
 sub encode_json {
     unless (ref $_[0]) {
