@@ -3,6 +3,7 @@ package Socialtext::Challenger::NTLM;
 
 use strict;
 use warnings;
+use base qw(Socialtext::Challenger::Base);
 use Socialtext::Log qw(st_log);
 use Socialtext::l10n qw(loc);
 
@@ -25,6 +26,7 @@ sub challenge {
     unless ($redirect) {
         $redirect = $class->build_redirect_uri($request);
     }
+    $redirect = $class->clean_redirect_uri($redirect);
 
     # default error is "User isn't logged in"
     my $type = 'not_logged_in';
