@@ -12,11 +12,13 @@ sub is_mobile_browser {
 sub is_mobile_redirect {
     my $class = shift;
     my $url   = shift;
-    $url =~ s{^https?://[^/]+}{};    # strip off scheme/host
-    $url =~ s{^/}{};                 # strip off leading "/"
-    $url =~ s{/.*$}{};               # strip off everything after first "/"
-    return 1 if ($url eq 'lite');
-    return 1 if ($url eq 'm');
+    if (defined $url) {
+        $url =~ s{^https?://[^/]+}{};    # strip off scheme/host
+        $url =~ s{^/}{};                 # strip off leading "/"
+        $url =~ s{/.*$}{};               # strip off everything after first "/"
+        return 1 if ($url eq 'lite');
+        return 1 if ($url eq 'm');
+    }
     return 0;
 }
 
