@@ -34,6 +34,7 @@ sub _build_user_is_visitor {
     # visitor is a user related to this group by some account that is doing
     # some self-join related activity.
 
+    return if $self->user_can_admin;
     return if $group->has_user($visitor);
     return if $group->permission_set ne 'self-join';
     return $self->user_is_related;

@@ -244,3 +244,20 @@ Tests for [Story: Groups ReST API]
 | PUT-json  | /data/groups/%%group_id%%/users | {"entry":[{"group_id":"0","role_name":"admin"}]} |
 | code-is   | 403                             |                                                  |
 
+| *comment* | business admins can see all details of users in self-join groups |
+
+Test for {bz: 3959} - biz admins & self-join (biz-admin-ness should take precedence over self-join-ness for purposes of displaying details of users in the user list)
+
+| http-user-pass         | %%badmin%%                            | password              |            |           |           |
+| set                    | algroup                               | %%start_time%%algroup |            |           |           |
+| create-group           | %%algroup%%                           | %%account%%           | %%badmin%% | self-join | self-join |
+| set                    | algroup_id                            | %%group_id%%          |            |           |           |
+| add-user-to-group      | %%badmin%%                            | %%algroup_id%%        | admin      |           |           |
+| add-user-to-group      | %%jenny%%                             | %%algroup_id%%        | admin      |           |           |
+| remove-user-from-group | %%badmin%%                            | %%algroup_id%%        |            |           |           |
+| GET                    | /data/groups/%%group_id%%/users?all=1 |                       |            |           |           |
+| json-parse             |                                       |                       |            |           |           |
+| json-array-size        | 1                                     |                       |            |           |           |
+| body-like              | %%jenny%%                             |                       |            |           |           |
+
+
