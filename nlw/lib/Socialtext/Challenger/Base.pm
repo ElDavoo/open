@@ -27,6 +27,23 @@ sub is_mobile {
     return $class->is_mobile_browser(@_) || $class->is_mobile_redirect(@_);
 }
 
+sub clean_redirect_uri {
+    my $class = shift;
+    my $uri   = shift;
+
+    # Don't allow for redirects to "/challenge"
+    return if ($uri =~ m{^/challenge(?:[/\?].*)?$});
+
+    # Don't allow for redirects to "/nlw/submit/log(in|out)"
+    return if ($uri =~ m{^/nlw/submit/log});
+
+    # Don't allow for empty redirects
+    return if ($uri eq '');
+
+    # URI looks ok
+    return $uri;
+}
+
 1;
 
 =head1 NAME
@@ -70,6 +87,11 @@ false otherwise.
 
 Returns true if I<either> the browser or the URL appear to be mobile,
 returning false otherwise.
+
+=item $class->clean_redirect_uri($uri)
+
+Cleans the provided C<$uri>, so that we avoid potential situations of
+"redirecting back to the Challenger" (thus creating an infinite loop).
 
 =back
 
