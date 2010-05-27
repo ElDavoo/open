@@ -123,13 +123,23 @@ sub temp_filename {
     return "$UPLOAD_DIR/upload-".$self->attachment_uuid;
 }
 
-sub storage_filename {
+sub relative_filename {
     my $self = shift;
     my $id = $self->attachment_uuid;
     my $part1 = substr($id,0,2);
     my $part2 = substr($id,2,2);
     my $file  = substr($id,4);
-    return join('/', $STORAGE_DIR, $part1, $part2, $file);
+    return join('/', $part1, $part2, $file);
+}
+
+sub storage_filename {
+    my $self = shift;
+    return join('/', $STORAGE_DIR, $self->relative_filename);
+}
+
+sub protected_uri {
+    my $self = shift;
+    return join('/', '/nlw/attachments', $self->relative_filename);
 }
 
 sub created_at_str { sql_format_timestamptz($_[0]->created_at) }
