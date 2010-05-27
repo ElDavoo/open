@@ -6,7 +6,6 @@ use Socialtext::MooseX::Types::Pg;
 use Data::UUID;
 use Socialtext::SQL qw/:exec sql_txn sql_format_timestamptz/;
 use Socialtext::SQL::Builder qw/sql_nextval sql_insert sql_update/;
-use Socialtext::JSON qw/json_true json_false/;
 use File::Copy qw/copy move/;
 use File::Path qw/make_path/;
 use Fatal qw/copy move rename open close unlink/;
@@ -135,15 +134,15 @@ sub storage_filename {
 
 sub created_at_str { sql_format_timestamptz($_[0]->created_at) }
 
-sub to_hash {
+sub as_hash {
     my ($self, $viewer) = shift;
-    my %hash = map { $self->$_ } qw(
+    my %hash = map { $_ => $self->$_ } qw(
         attachment_id attachment_uuid filename
         mime_type content_length creator_id
     );
     $hash{created_at} = $self->created_at_str;
-    $hash{is_temporary} = $self->is_temporary ? json_true : json_false;
-    $hash{is_image} = $self->is_image ? json_true : json_false;
+    $hash{is_temporary} = $self->is_temporary ? 1 : 0;
+    $hash{is_image} = $self->is_image ? 1 : 0;
 
     if ($viewer && $viewer->is_business_admin) {
         my $filename = $self->disk_filename;
@@ -151,7 +150,7 @@ sub to_hash {
         my $exists = -f _;
         $hash{physical_status} = {
             filename => $filename,
-            'exists' => $exists ? json_true : json_false,
+            'exists' => $exists ? 1 : 0,
             'stat' => $stat,
         };
     }
