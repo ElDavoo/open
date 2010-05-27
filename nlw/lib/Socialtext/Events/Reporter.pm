@@ -695,14 +695,8 @@ sub _build_standard_sql {
             );
         }
 
-        if ($opts->{activity}) {
-            if ($opts->{activity} eq 'all-combined') {
-                $self->add_condition('NOT is_ignorable_action(event_class,action)');
-            }
-            elsif ($opts->{activity} eq 'non-signals-combined') {
-                $self->add_condition('NOT is_ignorable_action(event_class,action)');
-                $self->add_condition("event_class <> 'signal'");
-            }
+        if ($opts->{activity} and $opts->{activity} eq 'all-combined') {
+            $self->add_condition('NOT is_ignorable_action(event_class,action)');
         }
 
         # filter for contributions-type events
