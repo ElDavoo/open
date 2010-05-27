@@ -16,6 +16,7 @@
 | wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. We will be adding the ability to add workspaces to this group soon. | 30000 |  |
 | select-frame | relative=parent |  |  |
 | click_and_wait | create-group |  |  |
+| get_id_from_url | first_group_id |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace Change group to private |  |
 | st-name-widget | 1 | information_widget |
@@ -103,7 +104,8 @@ this fails but matt sees the text int the GUI: | wait_for_text_present_ok | Curr
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace TEARDOWN |  |
-
+| st-admin | delete-group --g %%first_group_id%% | Deleted group id |
+| st-admin | delete-group --g %%new_group_id%% | Deleted group id |
 | st-admin | delete-workspace --workspace %%ws_private%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace COMPLETED |  |
