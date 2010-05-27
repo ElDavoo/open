@@ -2113,16 +2113,19 @@ sub st_clear_jobs {
 
 =head2 st-process-jobs
 
-Run any queued jobs.
+Run any queued jobs synchronously.
+
+Takes an optional TYPE as parameter. If present, only run jobs matching the given TYPE.
 
 =cut
 
 sub st_process_jobs {
+    my $self = shift;
     # sleep a bit, to avoid race conditions w/jobs that don't have sub-second
     # timings (e.g. the "email-notify" wikiD test.
     CORE::sleep(1);
 
-    Test::Socialtext::ceqlotron_run_synchronously();
+    Test::Socialtext::ceqlotron_run_synchronously(@_);
 }
 
 
