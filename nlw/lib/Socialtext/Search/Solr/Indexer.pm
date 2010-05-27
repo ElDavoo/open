@@ -268,7 +268,9 @@ sub _truncate {
     my ( $self, $key, $text_ref ) = @_;
     my $max_size = 20 * ( 1024**2 );
     return if length($$text_ref) <= $max_size;
-    my $info = "ws = " . $self->ws_name . " key = $key";
+    my $info = ($self->ws_name ? "ws = " . $self->ws_name . ' '
+                              : '')
+                . " key = $key";
     _debug("Truncating text to $max_size characters:  $info");
     $$text_ref = substr( $$text_ref, 0, $max_size );
 }
@@ -343,8 +345,54 @@ sub _add_signal_doc {
         push @fields, [annotation => lc join '|', @$triplet];
     }
 
+    for my $attachment (@{ $signal->attachments }) {
+        $self->_add_signal_attachment_doc($signal, $attachment);
+    }
+
     $self->_add_doc(WebService::Solr::Document->new(@fields));
 }
+
+sub _add_signal_attachment_doc {
+    my $self = shift;
+    my $signal = shift;
+    my $att = shift;
+    my $t = time_scope('solr_signal_attachment');
+
+    my $id = "signal:" . $signal->signal_id . ":filename:" . $att->filename;
+    st_log->debug("Indexing doc $id");
+
+    my $ctime = _pg_date_to_iso($signal->at);
+    my $recip = $signal->recipient_id || 0;
+
+    my $body; {
+        my $t = time_scope('solr_attach_body');
+        $body = $att->to_string;
+        _scrub_body(\$body);
+        $self->_truncate( $id, \$body );
+        _debug( "Retrieved attachment content.  Length is " . length $body );
+    }
+
+    my @fields = (
+        # These fields are mostly shared with the signal for visibility
+        # and consistency reasons
+        [id => $id],
+        [w => 0],
+        [signal_key => $signal->signal_id], # so delete deletes both
+        [date => $ctime], [created => $ctime],
+        [creator => $signal->user_id],
+        [creator_name => $signal->user->best_full_name],
+        [pvt => $recip ? 1 : 0],
+        [dm_recip => $recip],
+        (map { [a => $_] } @{ $signal->account_ids }),
+        (map { [g => $_] } @{ $signal->group_ids }),
+        [body => $body],
+        [filename => $att->filename],
+
+        [doctype => 'signal_attachment'], 
+    );
+    $self->_add_doc(WebService::Solr::Document->new(@fields));
+}
+
 
 sub render_signal_body {
     my $self = shift;

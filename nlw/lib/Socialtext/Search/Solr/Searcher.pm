@@ -114,7 +114,13 @@ sub _search {
                     @$workspaces) . ")";
     }
     elsif ($opts{doctype}) {
-        push @filter_query, "doctype:$opts{doctype}";
+        if ($opts{doctype} eq 'signal') {
+            push @filter_query, "(doctype:signal OR doctype:signal_attachment)";
+        }
+        else {
+            push @filter_query, "doctype:$opts{doctype}";
+        }
+
         if ($opts{viewer}) {
             # Only from accounts and groups the viewer has a connection to
             my $nets = join(' OR ',
@@ -263,6 +269,14 @@ sub _make_result {
             signal_id => $signal_id,
         );
     }
+    if ($doctype eq 'signal_attachment') {
+        $key =~ m/^signal:(\d+):filename:(.+)$/;
+        return Socialtext::Search::SignalAttachmentHit->new(
+            score => $score,
+            signal_id => $1,
+            filename => $2,
+        );
+    }
     if ($doctype eq 'person') {
         (my $user_id = $key) =~ s/^person://;
         return Socialtext::Search::PersonHit->new(
@@ -298,6 +312,9 @@ sub _make_result {
             ? Socialtext::Search::SimpleAttachmentHit->new($hit, $ws_name,
             $page, $attachment)
             : Socialtext::Search::SimplePageHit->new($hit, $ws_name, $page);
+    }
+    else {
+        warn "Unknown doctype return in search results! '$doctype'";
     }
 }
 
