@@ -457,19 +457,23 @@ sub nonexistence_message { 'The requested resource does not exist.' }
 
 sub http_404 {
     my ( $self, $rest ) = @_;
-
-    $rest->header( -type   => 'text/plain',
-                   -status => HTTP_404_Not_Found,
-                   $rest->header() );
+    $rest->header(
+        -type   => 'text/plain',
+        $rest->header(),
+        -status => HTTP_404_Not_Found,
+    );
     return $self->nonexistence_message;
 }
 
 sub http_400 {
-   my ( $self, $rest, $content ) = @_;
+    my ( $self, $rest, $content ) = @_;
 
-    $rest->header( -type   => 'text/plain',
-                   -status => HTTP_400_Bad_Request,
-                   $rest->header() );
+    $rest->header(
+        -type   => 'text/plain',
+        $rest->header(),
+        -status => HTTP_400_Bad_Request,
+    );
+
     return $content || ""; 
 }
 
