@@ -3,7 +3,7 @@ package Socialtext::Challenger::STLogin;
 
 use strict;
 use warnings;
-use Socialtext::BrowserDetect;
+use base qw(Socialtext::Challenger::Base);
 use Socialtext::Log qw(st_log);
 
 =head1 NAME
@@ -51,13 +51,7 @@ sub challenge {
     unless (defined $redirect) {
         $redirect = $request->parsed_uri->unparse;
     }
-
-    # Some redirects are just bad/wrong; don't *ever* allow ourselves to get
-    # redirected here (lest we redirect back to ourselves again once the User
-    # logs in).
-    $redirect = undef if ($redirect =~ m{^/challenge(?:[/\?].*)$});
-    $redirect = undef if ($redirect =~ m{^/nlw/submit/log});
-    $redirect = undef if ($redirect eq '');
+    $redirect = $class->clean_redirect_uri($redirect);
 
     my $ws;
     if ($hub) {
@@ -73,7 +67,7 @@ sub challenge {
 
     # Figure out which login to use; mobile, or regular?
     my $login_page
-        = $class->_is_mobile($redirect) ? '/m/login' : '/nlw/login.html';
+        = $class->is_mobile($redirect) ? '/m/login' : '/nlw/login.html';
 
     # If the error is "You're not logged in", just show the login page.
     if ($type eq 'not_logged_in') {
@@ -101,26 +95,6 @@ sub challenge {
             ($redirect ? (redirect_to => $redirect) : ()),
         },
     );
-}
-
-sub _is_mobile_browser {
-    return Socialtext::BrowserDetect::is_mobile() ? 1 : 0;
-}
-
-sub _is_mobile_redirect {
-    my $self = shift;
-    my $url  = shift;
-    $url =~ s{^https?://[^/]+}{};   # strip off scheme/host
-    $url =~ s{^/}{};                # strip off leading "/"
-    $url =~ s{/.*$}{};              # strip off everything after first "/"
-    return 1 if ($url eq 'lite');
-    return 1 if ($url eq 'm');
-    return 0;
-}
-
-sub _is_mobile {
-    my $self = shift;
-    return $self->_is_mobile_browser(@_) || $self->_is_mobile_redirect(@_);
 }
 
 1;

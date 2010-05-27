@@ -13,7 +13,7 @@ use Crypt::OpenToken;
 use Socialtext::Challenger::OpenToken;
 use File::Slurp qw(write_file);
 use Socialtext::User;
-use Test::Socialtext tests => 30;
+use Test::Socialtext tests => 24;
 
 ###############################################################################
 # Create our test fixtures *OUT OF PROCESS* as we're using a mocked Hub.
@@ -107,13 +107,11 @@ redirect_to_challenge_uri: {
     ok $rc, 'challenge was successful';
 
     # make sure a redirect was issued to the 'challenge_uri'
-    my $app = Socialtext::WebApp->instance();
-    $app->called_pos_ok(2, 'redirect', '... redirect was issued');
-    my ($self, $uri) = $app->call_args(2);
-
     my $challenge_uri = Socialtext::OpenToken::Config->load->challenge_uri;
-    like $uri, qr/^$challenge_uri\?TARGET=/,
-        '... ... to the challenge_uri';
+    my $webapp        = Socialtext::WebApp->instance();
+    my $redirect_uri  = $webapp->{redirect};
+    like $redirect_uri, qr/^$challenge_uri\?TARGET=/,
+        '... redirecting to the challenge_uri';
 
     # CLEANUP: out of process fixtures don't clean up for us
     Test::Socialtext::User->delete_recklessly($user);
@@ -137,13 +135,11 @@ stale_ticket: {
     logged_like 'info', qr/invalid token/, '... invalid token';
 
     # make sure a redirect was issued to the 'challenge_uri'
-    my $app = Socialtext::WebApp->instance();
-    $app->called_pos_ok(2, 'redirect', '... redirect was issued');
-    my ($self, $uri) = $app->call_args(2);
-
     my $challenge_uri = Socialtext::OpenToken::Config->load->challenge_uri;
-    like $uri, qr/^$challenge_uri\?TARGET=/,
-        '... ... to the challenge_uri';
+    my $webapp        = Socialtext::WebApp->instance();
+    my $redirect_uri  = $webapp->{redirect};
+    like $redirect_uri, qr/^$challenge_uri\?TARGET=/,
+        '... redirecting to the challenge_uri';
 
     # CLEANUP: out of process fixtures don't clean up for us
     Test::Socialtext::User->delete_recklessly($user);
@@ -180,10 +176,9 @@ default_redirect_is_root: {
     ok $rc, 'challenge was successful';
 
     # verify that the redirect was to "/"
-    my $app = Socialtext::WebApp->instance();
-    $app->called_pos_ok(2, 'redirect', '... redirect was issued');
-    my ($self, $uri) = $app->call_args(2);
-    is $uri, '/', '... ... to "/"';
+    my $webapp        = Socialtext::WebApp->instance();
+    my $redirect_uri  = $webapp->{redirect};
+    is $redirect_uri, '/', '... redirecting to "/"';
 
     # CLEANUP: out of process fixtures don't clean up for us
     Test::Socialtext::User->delete_recklessly($user);
@@ -203,10 +198,9 @@ relative_url_is_allowed: {
     ok $rc, 'challenge was successful';
 
     # verify that the redirect was to the target URI
-    my $app = Socialtext::WebApp->instance();
-    $app->called_pos_ok(2, 'redirect', '... redirect was issued');
-    my ($self, $uri) = $app->call_args(2);
-    is $uri, $resource_url, '... ... to specified resource URL';
+    my $webapp = Socialtext::WebApp->instance();
+    my $redirect_uri  = $webapp->{redirect};
+    is $redirect_uri, $resource_url, '... redirecting to specified URL';
 
     # CLEANUP: out of process fixtures don't clean up for us
     Test::Socialtext::User->delete_recklessly($user);
@@ -228,10 +222,9 @@ local_absolute_url_is_allowed: {
     ok $rc, 'challenge was successful';
 
     # verify that the redirect was to the target URI
-    my $app = Socialtext::WebApp->instance();
-    $app->called_pos_ok(2, 'redirect', '... redirect was issued');
-    my ($self, $uri) = $app->call_args(2);
-    is $uri, $resource_url, '... ... to (local) absolute URL';
+    my $webapp = Socialtext::WebApp->instance();
+    my $redirect_uri  = $webapp->{redirect};
+    is $redirect_uri, $resource_url, '... redirecting to (local) absolute URL';
 
     # CLEANUP: out of process fixtures don't clean up for us
     Test::Socialtext::User->delete_recklessly($user);
@@ -254,10 +247,9 @@ external_absolute_url_is_not_allowed: {
 
     # verify that the redirect was to the *default* redirect URI; we don't
     # allow for redirects to an external absolute URI
-    my $app = Socialtext::WebApp->instance();
-    $app->called_pos_ok(2, 'redirect', '... redirect was issued');
-    my ($self, $uri) = $app->call_args(2);
-    is $uri, '/', '... ... to default redirect URI';
+    my $webapp        = Socialtext::WebApp->instance();
+    my $redirect_uri  = $webapp->{redirect};
+    is $redirect_uri, '/', '... redirecting to default redirect URI';
 
     # make sure we used the default redirect URI for the right reason
     logged_like 'error', qr/redirect attempted to external/,

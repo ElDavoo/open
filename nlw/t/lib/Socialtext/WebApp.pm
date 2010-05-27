@@ -4,6 +4,7 @@ package Socialtext::WebApp;
 use strict;
 use warnings;
 use unmocked 'Test::MockObject';
+use unmocked 'Socialtext::URI';
 use mocked 'Apache::Request';
 
 ###############################################################################
@@ -19,7 +20,11 @@ sub NewForNLW {
                     $self->{apache_req}
                 } )
             ->set_false( '_handle_error' )
-            ->set_true( 'redirect' );
+            ->mock( 'redirect' => sub {
+                my $self = shift;
+                my $uri  = (@_ == 1) ? shift : Socialtext::URI::uri(@_);
+                $self->{redirect} = $uri;
+            } );
     }
     return $Instance;
 }
