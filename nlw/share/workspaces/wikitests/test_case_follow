@@ -22,7 +22,6 @@ TODO: make this run with LDAP user devnullx
 | click_and_wait | login_btn |  |
 
 | *Comment* | Test Case: Follow. Process jobs |  |
-| st_process_jobs |  |  |
 
 | *Comment* | Test Case: Follow. Open %%fFname%% profile |  |
 | wait_for_element_visible_ok | link=People | 60000 |
@@ -38,6 +37,9 @@ TODO: make this run with LDAP user devnullx
 | wait_for_element_visible_ok | link=Follow this person | 60000 |
 | pause | 5000 | needed for IE7 |
 | click_ok | link=Follow this person |  |
+
+| st_process_jobs | PeopleIndex |  |
+
 | wait_for_element_visible_ok | link=Stop following this person | 60000 |
 
 | *Comment* | Test Case: Follow. Verify Follow %%fFname%% in %%short_username%% profile |  |

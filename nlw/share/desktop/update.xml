@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.1.0.1</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.1.0.1.air</url>
-  <description><![CDATA[[4.1.0.1 - Tue May 11 00:43:21 PDT 2010]
+  <version>4.1.0.2</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.1.0.2.air</url>
+  <description><![CDATA[[4.1.0.2 - Wed May 26 03:39:02 PDT 2010]
+(Enhancements)
+* Fix a bug in 4.1.0.1 causing the "People" tab to be empty.
+
+[4.1.0.1 - Tue May 11 00:43:21 PDT 2010]
 (Enhancements)
 * Fix a bug where incoming signals sometimes freeze Desktop when typing a reply.
 * Increased height of Input area for Signals and Conversation boxes.

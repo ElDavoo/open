@@ -16,6 +16,7 @@
 | wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. We will be adding the ability to add workspaces to this group soon. | 30000 |  |
 | select-frame | relative=parent |  |  |
 | click_and_wait | create-group |  |  |
+| get_id_from_url | first_group_id |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace Change group to private |  |
 | st-name-widget | 1 | information_widget |
@@ -39,18 +40,22 @@
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
+| click_ok | link=(Edit) |  |
+| wait_for_element_visible_ok | name | 30000 |
+| wait_for_element_visible_ok | description | 30000 |
 | select-frame | relative=parent |  |
 | st-name-widget | 2 | workspaces_widget |
 | st-select-widget-frame | workspaces_widget |  |
-| wait_for_text_present_ok | Use the input above to select workspaces to associate with this group. You can only associate member-only workspaces with a private group. | 30000 |
+| wait_for_text_present_ok | Use the input above to select workspaces to associate with this group. | 30000 |
+| wait_for_text_present_ok | You can only associate member-only workspaces with a private group | 30000 |
 | wait_for_element_present_ok | lookahead | 30000 |
 | wait_for_element_present_ok | new_workspace | 30000 |
 | select-frame | relative=parent |  |
 | click_and_wait | create-group |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace SETUP Private Group becomes Self-join |  |  |
-| st-create-group | %%group_self_join%% | group description | private-radio |
+| set | group_private | grp-private-%%start_time%% |  |
+| st-create-group | %%group_private%% | group description | private-radio |
 | wait_for_element_visible_ok | create-group | 30000 |  |
 | click_and_wait | create-group |  |  |
 | st-name-widget | 1 | information_widget |  |
@@ -69,25 +74,38 @@
 | st-name-widget | 1 | information_widget |  |
 | st-select-widget-frame | information_widget |  |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |  |
+| click_ok | link=(Edit) | 30000 |  |
+| wait_for_element_visible_ok | name | 30000 |
+| wait_for_element_visible_ok | description | 30000 |
 | select-frame | relative=parent |  |  |
 | st-name-widget | 2 | workspaces_widget |  |
 | st-select-widget-frame | workspaces_widget |  |  |
-| wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. We will be adding the ability to add workspaces to this group soon. | 30000 |  |
+| wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. | 30000 |
+| wait_for_text_present_ok | We will be adding the ability to add workspaces to this group soon. | 30000 |
 | select-frame | relative=parent |  |  |
 | click_and_wait | create-group |  |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace Private Group Does not show change button when a ws is added |  |
 | get_id_from_url | new_group_id |  |
 | st-admin | add-member --g %%new_group_id%% --w %%ws_private%% |  |
-| open_ok | /st/group/%%new_group_ud%% |  |
+| open_ok | / |  |
+| wait_for_element_present_ok | link=%%group_private%% | 30000 |
+| click_and_wait | link=%%group_private%% |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) | 30000 |
+| click_ok | link=(Edit) | 30000 |
+| wait_for_element_visible_ok | name | 30000 |
+| wait_for_element_visible_ok | description | 30000 |
 | wait_for_element_not_present_ok | permission-change | 30000 |
-| text_like | //body | Currently, you cannot change a group's permission settings from private to self-join unless you remove the workspace associations first. |
+
+this fails but matt sees the text int the GUI: | wait_for_text_present_ok | Currently, you cannot change a group's permission settings from private to self-join unless you remove the workspace associations first. | 30000 |
+
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups UI mismatched Workspace Private Group throws warning when adding private group is fine |  |  |
-
 | *Comment* | Test Case: Groups UI mismatched Workspace TEARDOWN |  |
+| st-admin | delete-group --g %%first_group_id%% | Deleted group id |
+| st-admin | delete-group --g %%new_group_id%% | Deleted group id |
+| st-admin | delete-workspace --workspace %%ws_private%% --no-export | has been deleted |
+
+| *Comment* | Test Case: Groups UI mismatched Workspace COMPLETED |  |

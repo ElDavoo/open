@@ -69,7 +69,7 @@ proto.show = function () {
             .lookahead({
                 url: '/data/workspaces/' + Socialtext.wiki_id + '/users',
                 linkText: function (user) {
-                    return user.best_full_name
+                    return user.display_name
                          + ' <' + user.email_address +'>';
                 },
                 displayAs: function (item) {
