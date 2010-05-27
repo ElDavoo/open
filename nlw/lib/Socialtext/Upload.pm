@@ -12,6 +12,7 @@ use Fatal qw/copy move rename open close unlink/;
 use File::Type;
 use Try::Tiny;
 use Moose::Util::TypeConstraints;
+use Socialtext::Exceptions qw/no_such_resource_error data_validation_error/;
 use namespace::clean -except => 'meta';
 
 our $UPLOAD_DIR = "/tmp";
@@ -100,7 +101,7 @@ sub Get {
 
     my $attachment_id = delete $p{attachment_id};
     my $attachment_uuid = delete $p{attachment_uuid};
-    die "need an ID or UUID to retrieve an attachment"
+    data_validation_error("need an ID or UUID to retrieve an attachment")
         unless ($attachment_id || $attachment_uuid);
 
     my $dbh = sql_execute(q{
@@ -109,6 +110,12 @@ sub Get {
         WHERE attachment_id = ? OR attachment_uuid = ?},
         $attachment_id, $attachment_uuid);
     my $row = $dbh->fetchrow_hashref();
+
+    no_such_resource_error(
+        message => "Uploaded file not found.",
+        name => 'Uploaded file'
+    ) unless $row;
+
     $row->{created_at} = delete $row->{created_at_utc};
     return $class->new($row);
 }
