@@ -101,7 +101,7 @@
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 
 | *Comment* | Test case: Miki Find 'followed' user with MIKI search, click through, follow |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 | click_and_wait | link=People |  |
 | wait_for_element_visible_ok | st-search-text | 30000 |
 | type_ok | st-search-text | %%othershortuser%% |
@@ -120,6 +120,9 @@
 | click_and_wait | link=Follow |  |
 | wait_for_element_visible_ok | link=Stop Following | 30000 |
 | open_ok | /m/ |  |
+
+| st_process_jobs | PeopleIndex |
+
 | wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
