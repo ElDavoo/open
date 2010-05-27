@@ -2,17 +2,17 @@
 
 | standard-test-setup |
 
-| Comment     | Attachments should be searchable |
-| upload-file | README                           |
-| post-json   | /data/signals | {"signal":"Zimzam!","attachments":["%%upload_id%%"]} |
-| upload-file | t/Socialtext/File/stringify_data/test.pdf |
-| post-json   | /data/signals | {"signal":"Frizzle!","attachments":["%%upload_id%%"]} |
-| upload-file | t/extra-attachments/FormattingTest/thing.png |
-| post-json   | /data/signals | {"signal":"Newza!","attachments":["%%upload_id%%"]} |
-| code-is         | 201         |   |
-| job-count       | SignalIndex | 3 |
-| st-process-jobs |             |   |
-| job-count       | SignalIndex | 0 |
+| Comment         | Attachments should be searchable             |                                                       |
+| upload-file     | README                                       |                                                       |
+| post-json       | /data/signals                                | {"signal":"Zimzam!","attachments":["%%upload_id%%"]}  |
+| upload-file     | t/Socialtext/File/stringify_data/test.pdf    |                                                       |
+| post-json       | /data/signals                                | {"signal":"Frizzle!","attachments":["%%upload_id%%"]} |
+| upload-file     | t/extra-attachments/FormattingTest/thing.png |                                                       |
+| post-json       | /data/signals                                | {"signal":"Newza!","attachments":["%%upload_id%%"]}   |
+| code-is         | 201                                          |                                                       |
+| job-count       | SignalIndex                                  | 3                                                     |
+| st-process-jobs |                                              |                                                       |
+| job-count       | SignalIndex                                  | 0                                                     |
 
 | signal-search | q=Sassafras           | 0 |
 | signal-search | q=filename:README     | 1 |
