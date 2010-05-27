@@ -52,36 +52,6 @@ sub GET {
     return '';
 }
 
-sub _serve_file {
-    my $self       = shift;
-    my $rest       = shift;
-    my $attachment = shift;
-    my $file_path  = shift;
-    my $file_size  = shift;
-
-    my $mime_type = $attachment->mime_type;
-    if ( $mime_type =~ /^text/ ) {
-        my $charset = $attachment->charset(system_locale());
-        if (! defined $charset) {
-            $charset = 'UTF8';
-        }
-        $mime_type .= '; charset=' . $charset;
-    }
-
-    # See Socialtext::Headers::add_attachments for the IE6/7 motivation
-    # behind Pragma and Cache-control below.
-    $rest->header(
-        -status               => HTTP_200_OK,
-        '-content-length'     => $file_size,
-        -type                 => $mime_type,
-        -pragma               => undef,
-        '-cache-control'      => undef,
-        'Content-Disposition' => 'filename="'
-            . $attachment->filename . '"',
-        '-X-Accel-Redirect'  => $file_path,
-    );
-}
-
 sub DELETE {
     my ( $self, $rest ) = @_;
 

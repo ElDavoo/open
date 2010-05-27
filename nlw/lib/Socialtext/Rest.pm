@@ -12,7 +12,9 @@ use DateTime;
 use DateTime::Format::HTTP;
 use Date::Parse qw/str2time/;
 use Carp 'croak';
+use List::MoreUtils qw/part/;
 use Try::Tiny;
+use Scalar::Util qw/blessed/;
 
 use Socialtext::Exceptions qw/bad_request/;
 use Socialtext::Workspace;
@@ -481,6 +483,32 @@ sub decoded_json_body {
     my $self = shift;
     return try { decode_json($self->rest->getContent) }
     catch { bad_request 'Malformed JSON passed to resource.' };
+}
+
+# Send a file to the client via nginx
+sub _serve_file {
+    my ($self, $rest, $attachment, $file_path, $file_size) = @_;
+
+    my $mime_type = $attachment->mime_type;
+    if ( $mime_type =~ /^text/ ) {
+        my $charset = $attachment->can('charset')
+            ? $attachment->charset(system_locale())
+            : undef;
+        $charset = 'UTF-8' unless defined $charset;
+        $mime_type .= "; charset=$charset";
+    }
+
+    # See Socialtext::Headers::add_attachments for the IE6/7 motivation
+    # behind Pragma and Cache-control below.
+    $rest->header(
+        '-status'             => HTTP_200_OK,
+        '-content-length'     => $file_size,
+        '-type'               => $mime_type,
+        '-pragma'             => undef,
+        '-cache-control'      => undef,
+        'Content-Disposition' => 'filename="'.$attachment->filename.'"',
+        '-X-Accel-Redirect'   => $file_path,
+    );
 }
 
 1;
