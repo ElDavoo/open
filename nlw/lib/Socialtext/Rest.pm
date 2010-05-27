@@ -511,4 +511,80 @@ sub _serve_file {
     );
 }
 
+{
+    my @default_exception_handlers = (
+       ['Socialtext::Exception::Auth' =>
+        sub { my($self,$e)=@_; $self->not_authorized }],
+       ['Socialtext::Exception::NotFound' =>
+        sub { my($self,$e)=@_; $self->http_404($self->rest) }],
+       ['Socialtext::Exception::NoSuchResource' =>
+        sub { my($self,$e)=@_; $self->no_resource($e->name) }],
+       ['Socialtext::Exception::Conflict' =>
+        sub { my($self,$e)=@_; $self->conflict($e->errors) }],
+       ['Socialtext::Exception::BadRequest' =>
+        sub { my($self,$e)=@_; $self->http_400($self->rest, $e->message) }],
+       ['Socialtext::Exception::DataValidation' =>
+        sub { my($self,$e)=@_; $self->http_400($self->rest, $e->message) }],
+    );
+    sub rest_exception_handlers {
+        return [@default_exception_handlers]; # copy
+    }
+}
+
+sub trim_exception {
+    my $msg = shift;
+    $msg =~ s{(?:^Trace begun)? at \S+ line .*$}{}ims;
+    return $msg;
+}
+
+sub handle_rest_exception {
+    my ($self, $e) = @_;
+    my $msg;
+
+    $self->rest->header(
+        $self->rest->header,
+        -status => HTTP_500_Internal_Server_Error,
+        -type => 'text/plain',
+    );
+
+    my $hdlrs = $self->rest_exception_handlers;
+    my ($re_hdlrs, $isa_hdlrs) = part { ('Regexp' eq ref $_->[0]) ? 0 : 1 }
+        @$hdlrs;
+
+    if (blessed($e) && $e->isa("Socialtext::Exception")) {
+        my %hdr;
+        if (my $status = $e->http_status) {
+            $hdr{'-status'} = $status;
+        }
+        if (my $type = $e->http_type) {
+            $hdr{'-type'} = $type;
+        }
+        $self->rest->header($self->rest->header, %hdr);
+
+        # try a handler based on the class name
+        for my $handler (@$isa_hdlrs) {
+            my ($isa, $code) = @$handler;
+            next unless ($e->isa($isa));
+            $msg = $self->$code($e);
+            goto _send_error_message if defined $msg;
+        }
+
+        # fall through to the regex handlers
+        $e = $e->as_string;
+    }
+
+    for my $handler (@$re_hdlrs) {
+        my ($re, $code) = @$handler;
+        $msg = $self->$code($e) if ($e =~ $re);
+        goto _send_error_message if defined $msg;
+    }
+
+    $msg = trim_exception($e);
+    _send_error_message: {
+        warn "REST Error: $e\n";
+        st_log->error($msg);
+        return $msg;
+    }
+}
+
 1;
