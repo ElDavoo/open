@@ -6,7 +6,7 @@ use DateTime;
 use Moose;
 use MooseX::AttributeInflate;
 use MooseX::AttributeHelpers;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::Hub;
 use Socialtext::Workspace;
 use Socialtext::Page;
@@ -75,13 +75,12 @@ sub index_workspace {
 sub delete_workspace {
     my $self = shift;
     my $ws_name = shift || $self->ws_name;
+    my $t = time_scope('solr_del_wksp');
     my $ws = Socialtext::Workspace->new(name => $ws_name);
     my $ws_id = $ws->workspace_id;
     
-    Socialtext::Timer->Continue('solr_del_wksp');
     $self->solr->delete_by_query("w:$ws_id");
     $self->_commit;
-    Socialtext::Timer->Pause('solr_del_wksp');
 }
 
 # Get all the active attachments on a given page and add them to the index.
@@ -124,8 +123,7 @@ sub delete_page {
 sub _add_page_doc {
     my $self = shift;
     my $page = shift;
-
-    Socialtext::Timer->Continue('solr_page');
+    my $t = time_scope('solr_page');
 
     my $ws_id = $self->workspace->workspace_id;
     my $id = join(':',$ws_id,$page->id);
@@ -136,10 +134,12 @@ sub _add_page_doc {
 
     my $revisions = $page->revision_count;
 
-    Socialtext::Timer->Continue('solr_page_body');
-    my $body = $page->_to_plain_text;
-    _scrub_body(\$body);
-    Socialtext::Timer->Pause('solr_page_body');
+    my $body; {
+        my $t = time_scope('solr_page_body');
+        $body = $page->_to_plain_text;
+        _scrub_body(\$body);
+    }
+
 
     my @fields = (
         [id => $id], # composite of workspace and page
@@ -166,8 +166,6 @@ sub _add_page_doc {
     }
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
-
-    Socialtext::Timer->Pause('solr_page');
 }
 
 sub page_key {
@@ -211,8 +209,7 @@ sub delete_attachment {
 sub _add_attachment_doc {
     my $self = shift;
     my $att = shift;
-
-    Socialtext::Timer->Continue('solr_add_attach');
+    my $t = time_scope('solr_add_attach');
 
     my $ws_id = $self->workspace->workspace_id;
     my $id = join(':',$ws_id,$att->page_id,$att->id);
@@ -225,12 +222,13 @@ sub _add_attachment_doc {
     # counteract the revisions boost by providing a dummy constant
     my $revisions = FUDGE_ATTACH_REVS;
 
-    Socialtext::Timer->Continue('solr_attach_body');
-    my $body = $att->to_string;
-    _scrub_body(\$body);
-    my $key = $self->page_key($att->page_id);
-    $self->_truncate( $key, \$body );
-    Socialtext::Timer->Pause('solr_attach_body');
+    my ($body, $key); {
+        my $t = time_scope('solr_attach_body');
+        $body = $att->to_string;
+        _scrub_body(\$body);
+        $key = $self->page_key($att->page_id);
+        $self->_truncate( $key, \$body );
+    }
 
     _debug( "Retrieved attachment content.  Length is " . length $body );
     return unless length $body;
@@ -256,7 +254,6 @@ sub _add_attachment_doc {
     );
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
-    Socialtext::Timer->Pause('solr_add_attach');
 }
 
 # Make sure the text we index is not bigger than 20 million characters, which
@@ -306,8 +303,7 @@ sub delete_signals {
 sub _add_signal_doc {
     my $self = shift;
     my $signal = shift;
-
-    Socialtext::Timer->Continue('solr_signal');
+    my $t = time_scope('solr_signal');
 
     my $id = "signal:" . $signal->signal_id;
     st_log->debug("Indexing doc $id");
@@ -315,10 +311,8 @@ sub _add_signal_doc {
     my $ctime = _pg_date_to_iso($signal->at);
     my $recip = $signal->recipient_id || 0;
     my @user_topics = $signal->user_topics;
-    Socialtext::Timer->Continue('solr_signal_body');
     my ($body, $external_links, $page_links) = $self->render_signal_body($signal);
     _scrub_body(\$body);
-    Socialtext::Timer->Pause('solr_signal_body');
 
     my $in_reply_to = $signal->in_reply_to;
     my $is_question = $body =~ m/\?\s*$/ ? 1 : 0;
@@ -350,13 +344,12 @@ sub _add_signal_doc {
     }
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
-
-    Socialtext::Timer->Pause('solr_signal');
 }
 
 sub render_signal_body {
     my $self = shift;
     my $signal = shift;
+    my $t = time_scope('solr_signal_body');
 
     my @external_links;
     my @page_links;
@@ -418,8 +411,7 @@ sub delete_people {
 sub _add_person_doc {
     my $self = shift;
     my $user = shift;
-
-    Socialtext::Timer->Continue('solr_person');
+    my $t = time_scope('solr_person');
 
     my $user_id = $user->user_id;
     st_log->debug("Indexing person $user_id");
@@ -473,8 +465,6 @@ sub _add_person_doc {
     }
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
-
-    Socialtext::Timer->Pause('solr_person');
 }
 
 
@@ -504,8 +494,7 @@ sub delete_groups {
 sub _add_group_doc {
     my $self = shift;
     my $group = shift;
-
-    Socialtext::Timer->Continue('solr_group');
+    my $t = time_scope('solr_group');
 
     my $group_id = $group->group_id;
     st_log->debug("Indexing group $group_id");
@@ -527,8 +516,6 @@ sub _add_group_doc {
     );
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
-
-    Socialtext::Timer->Pause('solr_group');
 }
 
 
@@ -593,28 +580,24 @@ sub _scrub_body {
 
 sub _commit {
     my $self = shift;
-
     my $docs = $self->_docs || [];
+    my $t = time_scope('solr_commit');
 
-    Socialtext::Timer->Continue('solr_commit');
     _debug("Preparing to finalize index.");
-
     eval {
         # there used to be code here to delete docs before adding them, but
         # apparently this isn't necessary:
         # http://lucene.apache.org/solr/tutorial.html#Updating+Data
 
         if (@$docs) {
-            Socialtext::Timer->Continue('solr_add');
             st_log->debug('Adding '.@$docs.' documents to index');
+            my $t2 = time_scope('solr_add');
             $self->solr->add($docs);
-            Socialtext::Timer->Pause('solr_add');
         }
 
         $self->solr->commit();
     };
     my $err = $@;
-    Socialtext::Timer->Pause('solr_commit');
     die $err if $err;
     _debug("Done finalizing index.");
 }
