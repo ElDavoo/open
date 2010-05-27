@@ -2795,4 +2795,15 @@ sub st_widgets {
     Socialtext::System::shell_run('st-widgets', $options);
 }
 
+sub signal_search {
+    my $self = shift;
+    my $query = shift;
+    my $expected_result_count = shift;
+
+    $self->get_json("/data/signals?$query");
+    $self->code_is(200);
+    $self->json_parse;
+    $self->json_array_size($expected_result_count);
+}
+
 1;
