@@ -50,7 +50,7 @@ sub _build_searchable_fields {
         # Signal fields:
         qw/w doctype id creator body pvt dm_recip a g reply_to mention
            link_page_key link_w link date created is_question creator_name
-           annotation/,
+           annotation filename/,
         # People fields: (keys AND values)
         %{ $self->field_map },
         qw/phone tag_exact tag_count sounds_like/,

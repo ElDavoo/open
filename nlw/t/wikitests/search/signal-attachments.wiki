@@ -15,15 +15,19 @@
 | job-count       | SignalIndex | 0 |
 
 | signal-search | q=Sassafras           | 0 |
+| signal-search | q=filename:README     | 1 |
+| json-like     | [{"body":"Zimzam!"}]  |   |
 | signal-search | q=README              | 1 |
 | json-like     | [{"body":"Zimzam!"}]  |   |
 | signal-search | q=walkthrough         | 1 |
 | json-like     | [{"body":"Zimzam!"}]  |   |
 | signal-search | q=Florentine          | 1 |
 | json-like     | [{"body":"Frizzle!"}] |   |
-| signal-search | q=thing.png      | 1 |
-| json-like     | [{"body":"Newza!"}] |   |
-| signal-search | q=pdf          | 1 |
+| signal-search | q=filename:thing.png  | 1 |
+| json-like     | [{"body":"Newza!"}]   |   |
+| signal-search | q=thing.png           | 1 |
+| json-like     | [{"body":"Newza!"}]   |   |
+| signal-search | q=pdf                 | 1 |
 | json-like     | [{"body":"Frizzle!"}] |   |
 
 To test:
