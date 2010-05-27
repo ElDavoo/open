@@ -485,3 +485,4 @@ t/wikitests/widgets/proxy-batch.wiki
 lib/Socialtext/Signal/Attachment.pm
 lib/Socialtext/Rest/Signals/Attachment.pm
 t/wikitests/opensocial-appdata.wiki
+t/wikitests/signals/attachment.wiki
