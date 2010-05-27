@@ -236,21 +236,38 @@ sub formatted_unlike() {
 }
 
 sub ceqlotron_run_synchronously() {
+    my $funcname = shift;
+
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     # Run all the jobs in TheCeq queue, *IN-PROCESS*
     require Socialtext::Jobs;
     Socialtext::Jobs->can_do_all();
+
+    my $funcid;
+    if ($funcname) {
+        $funcname =~ s/^(?:Socialtext::Job::)?/Socialtext::Job::/;
+        $funcid = Socialtext::Jobs->_client->funcname_to_id(Socialtext::SQL::get_dbh(), $funcname);
+    }
+
     while (my $job = Socialtext::Jobs->find_job_for_workers()) {
+        if ($funcname and $job->funcname !~ /$funcname$/i) {
+            next;
+        }
+
         Socialtext::Jobs->work_once($job);
         Socialtext::Cache->clear();
         Socialtext::SQL::invalidate_dbh();
     }
 
     # Make sure the Job queue is empty.
+    my $condition = '';
+    if ($funcid) {
+        $condition = "AND funcid = $funcid";
+    }
     require Socialtext::SQL;
-    my $jobs_left = Socialtext::SQL::sql_singlevalue(q{
-        SELECT COUNT(*) FROM job WHERE run_after < EXTRACT(epoch from now())
+    my $jobs_left = Socialtext::SQL::sql_singlevalue(qq{
+        SELECT COUNT(*) FROM job WHERE run_after < EXTRACT(epoch from now()) $condition
     });
     $jobs_left ||= 0;
     Test::More::is($jobs_left, 0, "ceqlotron finished all runnable jobs");
