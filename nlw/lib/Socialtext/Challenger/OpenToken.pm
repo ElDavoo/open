@@ -3,6 +3,7 @@ package Socialtext::Challenger::OpenToken;
 
 use strict;
 use warnings;
+use base qw(Socialtext::Challenger::Base);
 use Crypt::OpenToken;
 use URI;
 use MIME::Base64;
@@ -51,6 +52,7 @@ sub challenge {
     # figure out where the User is supposed to be redirected to after the
     # challenge is successful.
     $redirect ||= $class->get_redirect_uri($request);
+    $redirect = $class->clean_redirect_uri($redirect);
 
     # figure out where we need to redirect the User to in order to get an
     # OpenToken, in the event that we're either not Authenticated or we have
