@@ -12,8 +12,6 @@
 | include | [Test Case: Activities Widget Permalinks] |  |
 
 | *Comment* | Test Case: Activities Widget TEARDOWN |  |
-| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
-| st-admin | delete-workspace --w %%diffws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Activities Widget COMPLETED |  |
 
