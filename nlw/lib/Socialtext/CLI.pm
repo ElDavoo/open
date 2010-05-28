@@ -2519,10 +2519,9 @@ sub locked_pages {
 
 sub purge_attachment {
     my $self = shift;
-
     my ( $hub, $main ) = $self->_require_hub();
     my $page = $self->_require_page($hub);
-    my $attachment = $self->_require_attachment($page);
+    my $attachment = $self->_require_page_attachment($page);
 
     my $title = $page->metadata()->Subject();
     my $filename = $attachment->filename;
@@ -2531,6 +2530,51 @@ sub purge_attachment {
     $self->_success( "The $filename attachment was purged from "
                       . "$title page in the "
                       . $hub->current_workspace()->name() . " workspace.\n" );
+}
+
+sub purge_signal_attachment {
+    my $self = shift;
+    my $attachment = $self->_require_signal_attachment;
+
+    my $filename = $attachment->filename;
+    my $signal_id = $attachment->signal_id;
+    $attachment->purge;
+
+    $self->_success( "The $filename attachment was purged from "
+                      . "signal $signal_id.\n");
+}
+
+sub _require_signal_attachment {
+    my $self = shift;
+
+    my %opts = $self->_get_options('signal:s', 'attachment:s');
+    unless ($opts{signal} and $opts{attachment}) {
+        return $self->_error(
+            "The command you called ($self->{command}) requires --signal and "
+            . "--attachment arguments."
+        );
+    }
+
+    require Socialtext::Signal;
+    my $signal = eval { Socialtext::Signal->Get($opts{signal}) };
+    if ($@) {
+        return $self->_error(
+            "$self->{command} requires a valid signal id or hash. $opts{signal}"
+            . " is not valid."
+        );
+    }
+
+    require Socialtext::Signal::Attachment;
+    my $attachment = Socialtext::Signal::Attachment->GetForSignalFilename(
+        $signal, $opts{attachment}
+    );
+    unless ($attachment) {
+        return $self->_error(
+            "$opts{attachment} is not a valid filename for an attachment of "
+            . " signal $opts{signal}."
+        );
+    }
+    return $attachment;
 }
 
 
@@ -2679,7 +2723,7 @@ sub index_attachment {
 
     my ( $hub, $main ) = $self->_require_hub();
     my $page       = $self->_require_page($hub);
-    my $attachment = $self->_require_attachment($page);
+    my $attachment = $self->_require_page_attachment($page);
 
     my $search_config = $self->_optional_string('search-config') || 'live';
     my $ws_name       = $hub->current_workspace()->name();
@@ -3563,7 +3607,7 @@ sub _require_page {
     return $page;
 }
 
-sub _require_attachment {
+sub _require_page_attachment {
     my $self = shift;
     my $page = shift;
 
