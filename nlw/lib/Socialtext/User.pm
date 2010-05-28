@@ -571,6 +571,7 @@ sub Create_user_from_hash {
         created_by_user_id => $creator->user_id,
         no_crypt           => 1,
     );
+    st_log->notice( "created user: $create{email_address}" );
     return $user;
 }
 
