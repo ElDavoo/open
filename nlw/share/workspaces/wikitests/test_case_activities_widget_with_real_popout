@@ -9,7 +9,7 @@
 | post-signal | Would you stand up and walk out on me %%start_time%% |  |
 | post-signal | Lend me your ears and I'll sing you a song %%start_time%% |  |
 | open_ok | / |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Activities Popout At Dashboard with widget |  |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |

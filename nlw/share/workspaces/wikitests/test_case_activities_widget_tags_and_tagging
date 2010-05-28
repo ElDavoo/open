@@ -27,7 +27,7 @@ TODO: there seems to be some weirdness indexing usernames that end in a string o
 | st-login | %%tagginguser%% | %%password%% |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging: Process jobs after creating user |  |
-| st_process_jobs |  |  |
+| st_process_jobs | PeopleIndex |  |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Tag A profile |  |
 | st-find-user | %%tagusershort%% |  |

@@ -38,7 +38,7 @@
 | post-signals | 22 | Pagination %%start_time%% | 41 |
 
 | *Comment* | Test Case: Signals Search Pagination. Process Jobs to index Signals |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Signals Search Pagination. Search for 44 Pagination %%start_time%% signals |  |
 | open_ok | /?signals |  |
@@ -134,7 +134,7 @@ wait_for_text_present_ok | Pagination %%start_time%% 3 | 30000 |
 | http-user-pass | %%username%% | %%password%% |  |
 | post-signals | 1 | MoreRelevant %%start_time%% %%start_time%% %%start_time%% | 63 |
 | post-signals | 1 | LessRelevant %%start_time%% | 64 |
-| st_process_jobs |  |  |  |
+| st_process_jobs | SignalIndex |  |  |
 
 | *Comment* | Test Case: Signals Search Pagination. Relevance. Find a more relevant signal |  |
 | open_ok | /?signals |  |
@@ -171,7 +171,7 @@ wait_for_text_present_ok | Pagination %%start_time%% 3 | 30000 |
 | wait_for_text_not_present_ok | LessRelevant %%start_time%% 64 | 20000 |
 | select_frame | relative=parent |  |
 
-| st-process-jobs |
+| st-process-jobs | SignalIndex |
 
 | *Comment* | Test Case: Signals Search Pagination. open Signals to verify hidden deleted signal |  |
 | open_ok | /?signals |  |

@@ -48,6 +48,6 @@
 | text_like | st-editing-tools-edit | %%first%% %%last%% |
 
 | *Comment* | Test Case: Edit Profile. Index %%first%% %%last%% profile |  |
-| st-process-jobs |  |  |
+| st-process-jobs | PeopleIndex |  |
 
 | *Comment* | Test Case: People Search Edit a Profile COMPLETED |  |
