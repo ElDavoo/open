@@ -3898,6 +3898,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   unlock-page --workspace --page
   purge-page --workspace --page
   purge-attachment --workspace --page --attachment
+  purge-signal-attachment --signal --attachment
   search-tags --workspace --search
   delete-tag --workspace [--tag or --search]
   add-users-from --workspace --target
@@ -4348,6 +4349,12 @@ specified by its I<page id>, which is the name used in URIs.
 Purges the specified attachment from the given page and workspace. The
 attachment must be specified by its I<attachment id>, which is the
 name used in URIs.
+
+=head2 purge-signal-attachment --signal --attachment
+
+Purges the specified attachment from the given signal. The attachment
+must be specified by its I<filename>.  The signal can be specified by
+its I<signal_id> or I<signal hash>.
 
 =head2 index-workspace --workspace [--sync] [--search-config]
 
