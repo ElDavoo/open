@@ -9,8 +9,10 @@
 | post-json       | /data/signals                                | {"signal":"Frizzle!","attachments":["%%upload_id%%"]} |
 | upload-file     | t/extra-attachments/FormattingTest/thing.png |                                                       |
 | post-json       | /data/signals                                | {"signal":"Newza!","attachments":["%%upload_id%%"]}   |
+| upload-file     | t/Socialtext/File/stringify_data/test.zip    |                                                       |
+| post-json       | /data/signals                                | {"signal":"Bazzam!","attachments":["%%upload_id%%"]}   |
 | code-is         | 201                                          |                                                       |
-| job-count       | SignalIndex                                  | 3                                                     |
+| job-count       | SignalIndex                                  | 4                                                     |
 | st-process-jobs |                                              |                                                       |
 | job-count       | SignalIndex                                  | 0                                                     |
 
@@ -21,14 +23,19 @@
 | json-like     | [{"body":"Zimzam!"}]  |   |
 | signal-search | q=walkthrough         | 1 |
 | json-like     | [{"body":"Zimzam!"}]  |   |
-| signal-search | q=Florentine          | 1 |
+| signal-search | q=Florentine          | 2 |
 | json-like     | [{"body":"Frizzle!"}] |   |
+| json-like     | [{"body":"Bazzam!"}] |   |
 | signal-search | q=filename:thing.png  | 1 |
 | json-like     | [{"body":"Newza!"}]   |   |
 | signal-search | q=thing.png           | 1 |
 | json-like     | [{"body":"Newza!"}]   |   |
 | signal-search | q=pdf                 | 1 |
 | json-like     | [{"body":"Frizzle!"}] |   |
+| signal-search | q=test.zip            | 1 |
+| json-like     | [{"body":"Bazzam!"}]  |   |
+| signal-search | q=ppt                 | 1 |
+| json-like     | [{"body":"Bazzam!"}]  |   |
 
 To test:
 * zip attachment
