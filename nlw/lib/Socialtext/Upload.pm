@@ -17,7 +17,6 @@ use namespace::clean -except => 'meta';
 
 our $UPLOAD_DIR = "/tmp";
 our $STORAGE_DIR = Socialtext::AppConfig->data_root_dir."/attachments";
-warn 'warning: need a cron job to sync DB with temp-reaped filesys';
 
 subtype 'Str.UUID'
     => as 'Str'
