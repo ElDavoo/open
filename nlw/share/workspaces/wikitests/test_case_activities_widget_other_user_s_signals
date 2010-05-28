@@ -30,6 +30,6 @@
 | post-signal | found my way downstairs and drank a cup, and looking, I noticed I was late %%start_time%% |  |
 
 | *Comment* | Test Case: Activities Widget Other User's Signals. Process jobs |  |
-| st_process_jobs |  |  |
+| st_process_jobs |  SignalIndex |  |
 
 | *Comment* | Test Case: Activities Widget Other User's Signals COMPLETED |  |

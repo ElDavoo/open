@@ -26,12 +26,12 @@
 | *Comment* | Test Case: Signals Follow Filter With Pagination signaler signals many times |  |  |
 | http-user-pass | %%signaler%% | %%password%% |  |
 | post-signals | 21 | ssig-%%start_time%% | 1 |
-| st-process-jobs |  |  |  |
+| st-process-jobs | SignalIndex  |  |  |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination notfollowed signals many times |  |  |
 | http-user-pass | %%notfollowed%% | %%password%% |  |
 | post-signals | 21 | nfsig-%%start_time%% | 45 |
-| st-process-jobs |  |  |  |
+| st-process-jobs | SignalIndex |  |  |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination follower logs in, follows signaler |  |
 | st-logoutin | %%follower%% | %%password%% |

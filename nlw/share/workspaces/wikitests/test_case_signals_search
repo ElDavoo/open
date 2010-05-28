@@ -23,7 +23,7 @@
 | pause | 3000 |  |
 | post-signal | NotAStopWord %%start_time%% 12 |  |
 | *Comment* | Test Case: Signals Search. Process Jobs |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Signals Search. Search 2 signals %%a_username%% |  |
 | open_ok | /?signals |  |
@@ -35,7 +35,7 @@
 | click_and_wait | st-search-submit |  |
 
 | *Comment* | Test Case: Signals Search. Process Jobs |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Signals Search. Verify found 2 signals %%a_username%% |  |
 | text_like | Signals matching '%%start_time%%' |  |
@@ -52,7 +52,7 @@
 | post-signal | NotAStopWord %%start_time%% 32 |  |
 
 | *Comment* | Test Case: Signals Search. Process Jobs |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Signals Search. Search 2 signals %%z_username%% |  |
 | open_ok | /?signals |  |
@@ -94,7 +94,7 @@
 | post-signal | LessRelevant %%start_time%% |  |
 
 | *Comment* | Test Case: Signals Search. Process Jobs |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Signals Search. Relevance. Find a more relevant signal |  |
 | open_ok | /?signals |  |
@@ -126,7 +126,7 @@
 | select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Signals Search. Process Jobs |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Signals Search. re-open Signals to check hidden deleted signal |  |
 | open_ok | /?signals |  |

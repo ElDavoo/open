@@ -33,7 +33,7 @@
 | pause | 3000 |  |
 
 | *Comment* | Test Case: Signals Page. Process jobs. |  |
-| st-process-jobs |  |  |
+| st-process-jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Signals Page. Verify signals in page. |  |
 | st-name-widget | 1 | signal_activity |

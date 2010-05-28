@@ -29,7 +29,7 @@
 | post-signal | SearchForThis %%start_time%% 25 |  |
 
 | *Comment* | Test Case: Signals Search.  Process jobs |  |
-| st_process_jobs |  |   |
+| st_process_jobs | SignalIndex |   |
 
 | *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Search within group, see signal |  |
 | st-logoutin | %%group_user%% | %%password%% |

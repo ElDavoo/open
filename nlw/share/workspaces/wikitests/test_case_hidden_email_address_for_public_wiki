@@ -11,7 +11,7 @@
 | st-admin | create-workspace --n %%he_ws%% --t "Hidden Email %%start_time%%" | created |
 | st-admin | create-user --e %%he_mail%% --p %%password%% |  |
 | st-admin | add-workspace-admin --w %%he_ws%% --e %%he_mail%% | now has the role of 'admin' in the |
-| st_process_jobs |  |  |
+| st_process_jobs | PeopleIndex |  |
 | open-ok | /%%he_ws%% |  |
 | type_ok | username | %%he_mail%% |
 | type_ok | password | %%password%% |

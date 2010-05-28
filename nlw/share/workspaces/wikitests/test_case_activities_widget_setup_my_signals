@@ -31,6 +31,6 @@
 | post-signal | Love to hear the robin going %%start_time%% |  |
 
 | *Comment* | Test Case: Activities Widget Setup My Signals. Process jobs |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Activities Widget Setup My Signals COMPLETED |

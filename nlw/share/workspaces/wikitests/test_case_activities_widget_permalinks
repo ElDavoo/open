@@ -11,7 +11,7 @@
 | *Comment* | Test Case: Activities Widget: Send a signal ... |  |
 | http-user-pass | %%user%% | %%password%% |
 | post-signal | Picture yourself on a boat on a river %%start_time%% |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Activities Widget: Find the link for that signal |  |
 | open_ok | /st/signals |  |
