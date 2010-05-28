@@ -21,6 +21,7 @@ use Socialtext::Workspace;
 use Socialtext::Encode qw/ensure_is_utf8/;
 use File::LogReader;
 use File::Path qw(rmtree);
+use File::Temp qw(tempfile);
 use Test::More;
 use Test::HTTP;
 use Test::Socialtext;
@@ -1413,19 +1414,55 @@ sub post_file {
 
 Post a local file to the specified URI, DWIMy
 
-    | post-file | bob.txt |
+    | upload-file | bob.txt |
     | set | your_var | %%upload_id%% |
+
+To check for a 413 Request Entity Too Large error:
+
+    | upload-file | huge.dat | fail-413 |
 
 =cut
 
 sub upload_file {
     my $self = shift;
     my $filename = shift;
+    my $opt = shift;
     $self->post_file('/data/uploads', 'method=file', 'file', $filename);
-    $self->code_is(201);
-    $self->body_like(q{"status":"success"});
-    $self->set_from_content('upload_id', 'qr/"id":"([^"]+)"/');
-    diag "Uploaded $filename, got id $self->{upload_id}";
+    if ($opt eq 'fail-413') {
+        $self->code_is(413);
+        $self->body_like(q{nginx}, "nginx blocked the upload");
+    }
+    else {
+        $self->code_is(201);
+        $self->body_like(q{"status":"success"});
+        $self->set_from_content('upload_id', 'qr/"id":"([^"]+)"/');
+        diag "Uploaded $filename, got id $self->{upload_id}";
+    }
+}
+
+=head2 generate_large_file( kb )
+
+Make a large file full of nul-bytes.  Sets the large_filename variable.  File
+is deleted during global destruction (of Perl).
+
+    | generate-large-file | 1024 |
+    | set | one_mb_filename | %%large_filename%% |
+
+=cut
+
+our @generated_temp_files;
+sub generate_large_file {
+    my ($self, $size_in_kb) = @_;
+
+    die "size must be in kb" if ($size_in_kb =~ /\D/);
+
+    my $tmp = File::Temp->new(UNLINK => 1);
+    my $filename = $tmp->filename;
+    $tmp->close;
+    my $rc = system("dd if=/dev/zero of=$filename bs=1024 count=$size_in_kb");
+    is $rc, 0, "created large file $filename";
+    $self->{large_filename} = $filename;
+    push @generated_temp_files, $tmp;
 }
 
 =head2 put( uri, headers, body )
