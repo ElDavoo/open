@@ -461,7 +461,17 @@ sub http_404 {
     my ( $self, $rest ) = @_;
     $rest->header(
         -type   => 'text/plain',
+        -status => HTTP_404_Not_Found,
         $rest->header(),
+    );
+    return $self->nonexistence_message;
+}
+
+sub http_404_force {
+    my $self = shift;
+    $self->rest->header(
+        $self->rest->header(),
+        -type   => 'text/plain',
         -status => HTTP_404_Not_Found,
     );
     return $self->nonexistence_message;
@@ -469,13 +479,21 @@ sub http_404 {
 
 sub http_400 {
     my ( $self, $rest, $content ) = @_;
-
     $rest->header(
         -type   => 'text/plain',
+        -status => HTTP_400_Bad_Request,
         $rest->header(),
+    );
+    return $content || ""; 
+}
+
+sub http_400_force {
+    my ( $self, $content ) = @_;
+    $self->rest->header(
+        $self->rest->header(),
+        -type   => 'text/plain',
         -status => HTTP_400_Bad_Request,
     );
-
     return $content || ""; 
 }
 
@@ -516,15 +534,15 @@ sub _serve_file {
        ['Socialtext::Exception::Auth' =>
         sub { my($self,$e)=@_; $self->not_authorized }],
        ['Socialtext::Exception::NotFound' =>
-        sub { my($self,$e)=@_; $self->http_404($self->rest) }],
+        sub { my($self,$e)=@_; $self->http_404_force() }],
        ['Socialtext::Exception::NoSuchResource' =>
         sub { my($self,$e)=@_; $self->no_resource($e->name) }],
        ['Socialtext::Exception::Conflict' =>
         sub { my($self,$e)=@_; $self->conflict($e->errors) }],
        ['Socialtext::Exception::BadRequest' =>
-        sub { my($self,$e)=@_; $self->http_400($self->rest, $e->message) }],
+        sub { my($self,$e)=@_; $self->http_400_force($e->message) }],
        ['Socialtext::Exception::DataValidation' =>
-        sub { my($self,$e)=@_; $self->http_400($self->rest, $e->message) }],
+        sub { my($self,$e)=@_; $self->http_400_force($e->message) }],
     );
     sub rest_exception_handlers {
         return [@default_exception_handlers]; # copy
