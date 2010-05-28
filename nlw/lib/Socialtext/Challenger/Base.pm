@@ -34,8 +34,8 @@ sub clean_redirect_uri {
     # Don't allow for redirects to "/challenge"
     return if ($uri =~ m{^/challenge(?:[/\?].*)?$});
 
-    # Don't allow for redirects to "/nlw/submit/log(in|out)"
-    return if ($uri =~ m{^/nlw/submit/log});
+    # Don't allow for redirects to "/nlw/submit/*"
+    return if ($uri =~ m{^/nlw/submit/});
 
     # Don't allow for empty redirects
     return if ($uri eq '');
