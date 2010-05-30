@@ -14,7 +14,6 @@
 | set | self_join_grp_id | %%group_id%% |  |
 | st-admin | add-member --e %%username%% --g %%self_join_grp_id%% | is now a member of the |  |
 | st-admin | add-group-admin --e %%group_user%% --g %%self_join_grp_id%% | is now a admin of the |  |
-| st-admin | add-member --g %%self_join_grp_id%% --w %%group_ws%% | now has the role of |
 
 | *Comment* | Test Case: Group Home at Different Levels for private group |  |
 | st-logoutin | %%group_user%% | %%password%% |
@@ -62,48 +61,52 @@
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
 | click_and_wait | link=(Edit) |  |
 | wait_for_element_visible_ok | permission-change | 30000 |
+| pause | 8000 |  |
 | click_ok | permission-change |  |
-| pause | 6000 |  |
+| pause | 8000 |  |
 | select-frame | relative=parent |  |
 | wait_for_element_present_ok | st-create-group-next | 30000 |
 | wait_for_element_present_ok | st-lightbox-cancel-create-group | 3000 |
 | wait_for_element_present_ok | self-join-radio | 30000 |
+| pause | 8000 |  |
 | check_ok | self-join-radio |  |
+| pause | 8000 |  |
 | click_ok | st-create-group-next |  |
-| st-name-widget | 1 | information_widget |
-| st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | self-join |  |
-| text_unlike | //body | private Change |
-| text_like | //body | self-join Change |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | create-group | 30000 |
-| click_and_wait | create-group |  |
-
-| *Comment* | Test Case: Group Home at Different Levels See Group is changed to self-join |  |
-| *Comment* | Test Case: Group Home at Different Levels GAHH, self-join is cached only in SE, refind page |  |
-| open_ok | / |  |
-| wait_for_element_present_ok | link=%%self_join_grp%% | 30000 |
-| click_and_wait | link=%%self_join_grp%% |  |
-| pause | 3000 |  |
-| refresh_ok |  |  |
 | pause | 8000 |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
+| wait_for_text_present_ok | self-join |  |
+| text_like | //body | qr/self-join.+Change/ism |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| pause | 8000 |  |
+| click_and_wait | create-group |  |
+
+| *Comment* | Test Case: Group Home at Different Levels See Group is changed to self-join |  |
+| open_ok | /st/dashboard |  |
+| wait_for_text_present_ok | Welcome | 10000 |
+| open_ok | /st/group/%%self_join_grp_id%% |
+| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
+
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+| wait_for_text_present_ok | self-join | 10000 |
+| text_like | //body | qr/Group Type.+self-join/ism |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Group Home at Different Levels for self-join group - as member |  |
+| *Comment* | Test Case: Group Home at Different Levels for self-join group - as group member |  |
 | st-logoutin | %%group_user%% | %%password%% |
 | open_ok | /st/group/%%self_join_grp_id%% |  |
 | wait_for_text_present_ok | %%self_join_grp%% | 30000 |
-| wait_for_element_not_present_ok | st-join-group | 30000 |
+| wait_for_element_not_present_ok | st-join-group | 10000 |
+| wait_for_element_visible_ok | st-leave-group | 10000 |
+
 | st-name-widget | 2 | workspaces_widget |
 | st-name-widget | 3 | signals_widget |
 | st-name-widget | 4 | members_widget |
-| st-select-widget-frame | workspaces_widget |  |
-| wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
-| select-frame | relative=parent |  |
+
 | st_verify_text_in_activities_widget | signals_widget | added %%short_username%% to the group |
-| st_verify_text_in_activities_widget | signals_widget | to the workspace |
+
 | st-select-widget-frame | members_widget |
 | text_like | //body | %%group_user_short%% |
 | select-frame | relative=parent |  |
@@ -111,23 +114,23 @@
 | *Comment* | Test Case: Group Home at Different Levels self-join group / account member |  |
 | open_ok | /st/dashboard |  |
 | st-logoutin | %%account_user%% | %%password%% |
+
 | open_ok | /st/group/%%self_join_grp_id%% |  |
 | text_like | %%self_join_grp%% |  |
 | wait_for_element_visible_ok | st-join-group | 30000 |
+
 | st-name-widget | 1 | information_widget |
 | wait_for_text_present_ok | %%self_join_grp%% | 30000 |
 | st-select-widget-frame | information_widget |  |
 | wait_for_text_present_ok | %%self_join_grp%% | 30000 |
 | select-frame | relative=parent |  |
+
 | st-name-widget | 2 | workspaces_widget |
 | st-name-widget | 3 | signals_widget |
 | st-name-widget | 4 | members_widget |
-| wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
-| select-frame | relative=parent |  |
-| wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
-| select-frame | relative=parent |  |
+
 | st_verify_text_in_activities_widget | signals_widget | added %%short_username%% to the group |
-| st_verify_text_in_activities_widget | signals_widget | to the workspace |
+
 | st-select-widget-frame | members_widget |
 | text_like | //body | %%group_user_short%% |
 | select-frame | relative=parent |  |
@@ -142,4 +145,5 @@
 | st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
 | delete-group | %%self_join_grp_id%% |  |
 | delete-group | %%private_grp_id%% |  |
+
 | *Comment* | Test Case: Group Home at Different Levels COMPLETED |  |
