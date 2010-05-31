@@ -28,20 +28,25 @@ sub is_mobile {
 }
 
 sub clean_redirect_uri {
-    my $class = shift;
-    my $uri   = shift;
+    my $class   = shift;
+    my $uri     = shift;
+    my $default = $class->default_redirect_uri;
 
     # Don't allow for redirects to "/challenge"
-    return if ($uri =~ m{^/challenge(?:[/\?].*)?$});
+    return $default if ($uri =~ m{^/challenge(?:[/\?].*)?$});
 
     # Don't allow for redirects to "/nlw/submit/*"
-    return if ($uri =~ m{^/nlw/submit/});
+    return $default if ($uri =~ m{^/nlw/submit/});
 
     # Don't allow for empty redirects
-    return if ($uri eq '');
+    return $default if ($uri eq '');
 
     # URI looks ok
     return $uri;
+}
+
+sub default_redirect_uri {
+    return '/';
 }
 
 1;
@@ -92,6 +97,11 @@ returning false otherwise.
 
 Cleans the provided C<$uri>, so that we avoid potential situations of
 "redirecting back to the Challenger" (thus creating an infinite loop).
+
+=item $class->default_redirect_uri()
+
+Returns the default URI that the User should be redirected to, if we are
+otherwise unable to determine where to redirect them to.
 
 =back
 

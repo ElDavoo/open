@@ -13,8 +13,6 @@ use Socialtext::OpenToken::Config;
 use Socialtext::User;
 use Socialtext::WebApp;
 
-our $DEFAULT_REDIRECT_URI = '/';
-
 sub challenge {
     my $class    = shift;
     my %p        = @_;
@@ -222,7 +220,7 @@ sub get_redirect_uri {
             st_log->error(
                 "ST::Challenger::OpenToken; redirect attempted to external source; $redirect"
             );
-            return $DEFAULT_REDIRECT_URI;
+            return $self->default_redirect_uri;
         }
     }
 

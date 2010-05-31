@@ -45,5 +45,5 @@ sub challenge_redirect_is($$$) {
 # Test various URLs to make sure that the final redirect URL is sane
 challenge_redirect_is '/',             '/',             'Root URL redirect';
 challenge_redirect_is '/st/signals',   '/st/signals',   'Signals redirect';
-challenge_redirect_is '/challenge',    undef,           '/challenge not ok';
+challenge_redirect_is '/challenge',    '/',             '/challenge not ok';
 challenge_redirect_is '/challenge-it', '/challenge-it', '/challenge in WS ok';
