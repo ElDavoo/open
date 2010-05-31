@@ -8,7 +8,6 @@ use Socialtext::JSON;
 use Socialtext::File;
 use Socialtext::Rest::Uploads;
 use Socialtext::Upload;
-use File::Type;
 use File::Temp qw(tempfile);
 use File::Copy qw/copy move/;
 use Fatal qw/copy move/;

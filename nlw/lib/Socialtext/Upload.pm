@@ -9,10 +9,10 @@ use Socialtext::SQL::Builder qw/sql_nextval sql_insert sql_update/;
 use File::Copy qw/copy move/;
 use File::Path qw/make_path/;
 use Fatal qw/copy move rename open close unlink/;
-use File::Type;
 use Try::Tiny;
 use Moose::Util::TypeConstraints;
 use Socialtext::Exceptions qw/no_such_resource_error data_validation_error/;
+use Socialtext::File ();
 use namespace::clean -except => 'meta';
 
 our $UPLOAD_DIR = "/tmp";
@@ -39,9 +39,10 @@ sub Create {
     my ($class, %p) = @_;
 
     my $temp_fh;
+    my $temp_filename = $p{temp_filename};
     if (my $field = $p{cgi_param}) {
         my $q = $p{cgi};
-        my $temp_filename = $q->param($field);
+        $temp_filename = $q->param($field);
         $temp_fh = $q->upload($field);
         die "no upload field '$field' found \n" unless $temp_fh;
         my $raw_info = $q->uploadInfo($temp_fh);
@@ -55,16 +56,11 @@ sub Create {
         die "no filename in Content-Disposition header" unless $real_filename;
 
         $p{filename} = $real_filename;
-
-        $p{mime_type} = try { File::Type->new->mime_type($temp_filename) };
-        $p{mime_type} ||= $info{'content-type'};
-        die "no Content-Type for upload" unless $p{mime_type};
-
-        $p{content_length} = -s $temp_fh;
     }
-    elsif ($p{temp_fh}) {
-        $temp_fh = delete $p{temp_fh};
-        $p{content_length} = -s $temp_fh;
+
+    if ($temp_filename) {
+        $p{mime_type} ||= Socialtext::File::mime_type($temp_filename);
+        $temp_fh = $temp_filename;
     }
 
     my $creator = $p{creator};
@@ -93,6 +89,7 @@ sub Create {
     # Moose type constraints could fail, hence the txn wrapper
     my $self = $class->Get(attachment_id => $id);
     if ($temp_fh) {
+        # copy can take fh or filename
         copy($temp_fh, $self->temp_filename);
     }
     return $self;
