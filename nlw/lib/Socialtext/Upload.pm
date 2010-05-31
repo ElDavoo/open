@@ -87,6 +87,7 @@ sub Create {
         mime_type       => $mime_type,
         is_image        => $is_image,
         is_temporary    => 1,
+        ($p{created_at} ? (created_at => $p{created_at}) : ()),
     });
 
     # Moose type constraints could fail, hence the txn wrapper
