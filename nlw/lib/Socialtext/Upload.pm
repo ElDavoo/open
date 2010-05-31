@@ -62,6 +62,10 @@ sub Create {
 
         $p{content_length} = -s $temp_fh;
     }
+    elsif ($p{temp_fh}) {
+        $temp_fh = delete $p{temp_fh};
+        $p{content_length} = -s $temp_fh;
+    }
 
     my $creator = $p{creator};
     my $creator_id = $creator ? $creator->user_id : $p{creator_id};
