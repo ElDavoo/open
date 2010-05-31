@@ -6,7 +6,7 @@ use base 'Exporter';
 our @EXPORT_OK = qw(
     set_contents set_contents_utf8 set_contents_binary
     get_contents get_contents_utf8 get_contents_binary
-    ensure_directory
+    ensure_directory mime_type
 );
 
 =head1 NAME
@@ -471,6 +471,23 @@ sub newest_directory_file {
     return '' unless scalar( @files );
 
     return reduce { ( $a gt $b ) ? $a : $b } @files;
+}
+
+=head2 mime_type($filename)
+
+Returns the mime type of the file.
+
+=cut
+
+sub mime_type {
+    my $fn = shift;
+    require Socialtext::System;
+    local $@;
+    my $type
+        = eval { Socialtext::System::backtick('/usr/bin/file', '-ib', $fn) };
+    return unless $type;
+    chomp $type;
+    return $type;
 }
 
 =head1 SEE ALSO
