@@ -28,14 +28,21 @@
 | *Comment* | Test Case: Groups UI Edit an Existing Group Change the Values & Click Save |  |
 | wait_for_element_visible_ok | name | 30000 |
 | wait_for_element_visible_ok | description | 30000 |
+
+| pause | 8000 | THIS IS an important pause |
+
 | type_ok | name | %%new_group_name%% |
 | type_ok | description | %%new_group_description%% |
+
+| pause | 8000 | THIS IS an important pause |
 
 | verifyValue | name | %%new_group_name%% |
 | verifyValue | description | %%new_group_description%% |
 | select-frame | relative=parent |  |
+
+| pause | 8000 | THIS IS an important pause |
+
 | wait_for_element_visible_ok | create-group | 30000 |
-| wait_for_element_visible_ok | st-cancel-create-group | 30000 |
 | click_and_wait | create-group |  |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group See the new values |  |
