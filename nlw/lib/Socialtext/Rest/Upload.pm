@@ -25,6 +25,7 @@ my %RESIZERS = (
 sub permission      { +{} }
 sub allowed_methods {'GET'}
 sub entity_name     { "Upload" }
+sub nonexistence_message { "Uploaded file not found." }
 
 sub GET {
     my ($self, $rest) = @_;
@@ -43,13 +44,17 @@ sub _GET {
     my $uuid = $self->id;
 
     my $upload = try { Socialtext::Upload->Get(attachment_uuid => $uuid) };
-    if (!$upload || !$upload->is_temporary) {
-        return $self->no_resource('Uploaded attachment');
+    my $file;
+    unless ($upload &&
+            $upload->is_temporary &&
+            $upload->creator_id == $user->user_id) 
+    {
+        return $self->http_404_force;
     }
 
     my $file = $upload->temp_filename;
     unless (-f $file) {
-        return $self->no_resource('Uploaded attachment');
+        return $self->http_404_force;
     }
 
     # Support image resizing /?resize=group:small will resize for a
