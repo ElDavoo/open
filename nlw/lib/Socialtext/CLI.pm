@@ -2534,7 +2534,7 @@ sub purge_attachment {
 
 sub purge_signal_attachment {
     my $self = shift;
-    my $attachment = $self->_require_signal_attachment;
+    my ($signal, $attachment) = $self->_require_signal_attachment;
 
     my $filename = $attachment->filename;
     my $signal_id = $attachment->signal_id;
@@ -2549,7 +2549,7 @@ sub _require_signal_attachment {
 
     my %opts = $self->_get_options('signal:s', 'attachment:s');
     unless ($opts{signal} and $opts{attachment}) {
-        return $self->_error(
+        $self->_error(
             "The command you called ($self->{command}) requires --signal and "
             . "--attachment arguments."
         );
@@ -2557,8 +2557,8 @@ sub _require_signal_attachment {
 
     require Socialtext::Signal;
     my $signal = eval { Socialtext::Signal->Get($opts{signal}) };
-    if ($@) {
-        return $self->_error(
+    if ($@ or !$signal) {
+        $self->_error(
             "$self->{command} requires a valid signal id or hash. $opts{signal}"
             . " is not valid."
         );
@@ -2569,12 +2569,12 @@ sub _require_signal_attachment {
         $signal, $opts{attachment}
     );
     unless ($attachment) {
-        return $self->_error(
+        $self->_error(
             "$opts{attachment} is not a valid filename for an attachment of "
             . " signal $opts{signal}."
         );
     }
-    return $attachment;
+    return ($signal,$attachment);
 }
 
 
