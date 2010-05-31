@@ -7,69 +7,86 @@ use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
 use Socialtext::File;
 use Socialtext::Rest::Uploads;
-use Socialtext::People::ProfilePhoto;
-use Socialtext::Group::Photo;
-use Socialtext::AccountLogo;
 use Socialtext::Upload;
 use File::Type;
 use File::Temp qw(tempfile);
 use File::Copy qw/copy move/;
+use Fatal qw/copy move/;
+use Socialtext::Exceptions qw/data_validation_error/;
 use Try::Tiny;
 
 my %RESIZERS = (
-    profile => 'Socialtext::People::ProfilePhoto',
-    group   => 'Socialtext::Group::Photo',
-    account => 'Socialtext::AccountLogo',
+    profile   => 'Socialtext::People::ProfilePhoto',
+    group     => 'Socialtext::Group::Photo',
+    account   => 'Socialtext::AccountLogo',
+    sigattach => 'Socialtext::Signal::Attachment',
 );
 
 sub permission      { +{} }
 sub allowed_methods {'GET'}
-sub entity_name     { "Group" }
+sub entity_name     { "Upload" }
 
 sub GET {
     my ($self, $rest) = @_;
-    my $user = $self->rest->user;
-    my $user_id = $user->user_id;
-    my $uuid = $self->id;
+    my $rv;
+    try   { $rv = $self->_GET() }
+    catch { $rv = $self->handle_rest_exception($_) };
+    return $rv;
+}
 
-    unless ($user->is_authenticated) {
-        $rest->header( -status => HTTP_401_Unauthorized );
-        return '';
-    }
+sub _GET {
+    my $self = shift;
+    my $user = $self->rest->user;
+
+    return $self->not_authorized unless $user->is_authenticated;
+
+    my $uuid = $self->id;
 
     my $upload = try { Socialtext::Upload->Get(attachment_uuid => $uuid) };
     if (!$upload || !$upload->is_temporary) {
-        $rest->header( -status => HTTP_404_Not_Found );
-        return '';
+        return $self->no_resource('Uploaded attachment');
     }
 
     my $file = $upload->temp_filename;
     unless (-f $file) {
-        $rest->header( -status => HTTP_404_Not_Found );
-        return '';
+        return $self->no_resource('Uploaded attachment');
     }
 
     # Support image resizing /?resize=group:small will resize for a
     # Socialtext::Group::Photo using the small version
     my $blob;
-    if (my $resize = $rest->query->param('resize')) {
-        my ($resizer, $version) = split ':', $resize;
-        die "You can only resize images" unless $upload->is_image;
-        die "Bad resize string: $resize" unless $resizer and $version;
-        my $rclass = $RESIZERS{$resizer} || die "Unknown resizer: $resizer";
+    if (my $resize = $self->rest->query->param('resize')) {
+        data_validation_error "You can only resize images"
+            unless $upload->is_image;
 
-        my $temp;
-        (undef, $temp) = tempfile('/tmp/resizeXXXXXX', OPEN => 0);
-        copy($file, $temp);
-        $rclass->Resize($version, $temp);
-        $blob = Socialtext::File::get_contents_binary($temp);
-        unlink $temp;
+        my ($resizer, $size) = split ':', $resize;
+        $size ||= 'small';
+
+        my $rclass = $RESIZERS{$resizer}
+            or data_validation_error "Unknown resizer: $resizer";
+        eval "require $rclass";
+        if ($@) {
+            warn "while looking for resizer: $@";
+            die "Unable to resize image.\n";
+        }
+
+        try  {
+            my $temp;
+            (undef, $temp) = tempfile('/tmp/resizeXXXXXX',
+                OPEN => 0, UNLINK => 1);
+            copy($file, $temp);
+            $rclass->Resize($size, $temp);
+            $blob = Socialtext::File::get_contents_binary($temp);
+        }
+        catch {
+            die "Unable to resize image: $_";
+        };
     }
     else {
         $upload->binary_contents(\$blob);
     }
 
-    $rest->header( 'Content-type' => $upload->mime_type );
+    $self->rest->header(-type => $upload->mime_type);
     return $blob;
 }
 
