@@ -18,8 +18,6 @@ CREATE TABLE attachment (
     content_length int NOT NULL
 );
 
--- TODO: CREATE TABLE attachment_thumbnail ?
-
 ALTER TABLE ONLY attachment
     ADD CONSTRAINT attachment_creator_fk
             FOREIGN KEY (creator_id)
@@ -29,6 +27,10 @@ ALTER TABLE ONLY attachment
     ADD CONSTRAINT attachment_pkey PRIMARY KEY (attachment_id);
 ALTER TABLE ONLY attachment
     ADD CONSTRAINT attachment_uuid_key UNIQUE (attachment_uuid);
+
+CREATE INDEX idx_attach_created_at ON attachment(created_at);
+CREATE INDEX idx_attach_created_at_temp ON attachment(created_at)
+    WHERE NOT is_temporary;
 
 CREATE TABLE signal_attachment (
     attachment_id int NOT NULL,

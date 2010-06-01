@@ -15,6 +15,8 @@ use Socialtext::Exceptions qw/no_such_resource_error data_validation_error/;
 use Socialtext::File ();
 use namespace::clean -except => 'meta';
 
+# NOTE: if this gets changed to anything other than /tmp, make sure tmpreaper is
+# monitoring that directory.
 our $UPLOAD_DIR = "/tmp";
 our $STORAGE_DIR = Socialtext::AppConfig->data_root_dir."/attachments";
 
@@ -119,6 +121,19 @@ sub Get {
 
     $row->{created_at} = delete $row->{created_at_utc};
     return $class->new($row);
+}
+
+sub CleanTemps {
+    my $class = shift;
+    # tmpreaper period is hard-coded to 7d in gen-config and will be
+    # deleteing the files themselves.
+    my $sth = sql_execute(q{
+        DELETE FROM attachment
+        WHERE is_temporary
+          AND created_at < 'now'::timestamptz - '7 days'::interval
+    });
+    warn "Cleaned up ".$sth->rows." temp attachment records"
+        if ($sth->rows > 0);
 }
 
 sub disk_filename {

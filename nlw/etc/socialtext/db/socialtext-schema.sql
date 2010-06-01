@@ -1550,6 +1550,13 @@ CREATE INDEX groups_permission_set_non_priv
 CREATE UNIQUE INDEX groups_user_set_id
 	    ON groups (user_set_id);
 
+CREATE INDEX idx_attach_created_at
+	    ON attachment (created_at);
+
+CREATE INDEX idx_attach_created_at_temp
+	    ON attachment (created_at)
+	    WHERE (NOT is_temporary);
+
 CREATE INDEX idx_opensocial_appdata_app_user
 	    ON opensocial_appdata (app_id, user_id);
 
