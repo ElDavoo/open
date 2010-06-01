@@ -1426,7 +1426,7 @@ To check for a 413 Request Entity Too Large error:
 sub upload_file {
     my $self = shift;
     my $filename = shift;
-    my $opt = shift;
+    my $opt = shift || '';
     $self->post_file('/data/uploads', 'method=file', 'file', $filename);
     if ($opt eq 'fail-413') {
         $self->code_is(413);
