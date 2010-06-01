@@ -2801,6 +2801,17 @@ sub index_groups {
     $self->_success( "Scheduled groups for re-indexing." );
 }
 
+sub index_signals {
+    my $self = shift;
+
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    unless ($adapter->plugin_exists('signals')) {
+        $self->_error(loc("The Signals plugin is not installed."));
+    }
+    Socialtext::JobCreator->insert('Socialtext::Job::Upgrade::ReindexSignals');
+    $self->_success( "Scheduled signals for re-indexing." );
+}
+
 sub send_email_notifications {
     my $self = shift;
 
@@ -3957,6 +3968,8 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-workspace-from-search-set --name --workspace [--username or --email]
   list-workspaces-in-search-set --name [--username or --email]
   index-people
+  index-groups
+  index-signals
 
   PROFILE (only available with Socialtext People)
 
