@@ -40,11 +40,9 @@ around 'Create' => \&sql_txn;
 sub Create {
     my ($class, %p) = @_;
 
-    my $temp_fh;
-    my $temp_filename = $p{temp_filename};
+    my $temp_fh = $p{temp_filename};
     if (my $field = $p{cgi_param}) {
         my $q = $p{cgi};
-        $temp_filename = $q->param($field);
         $temp_fh = $q->upload($field);
         die "no upload field '$field' found \n" unless $temp_fh;
         my $raw_info = $q->uploadInfo($temp_fh);
@@ -60,20 +58,13 @@ sub Create {
         $p{filename} = $real_filename;
     }
 
-    if ($temp_filename) {
-        $p{mime_type} ||= Socialtext::File::mime_type($temp_filename);
-        $temp_fh = $temp_filename;
-    }
-
     my $creator = $p{creator};
     my $creator_id = $creator ? $creator->user_id : $p{creator_id};
 
     my $id = sql_nextval('attachment_id_seq');
     my $uuid = $p{uuid} || $class->NewUUID();
 
-    my $mime_type = $p{mime_type} || 'application/octet-stream';
     my $filename = $p{filename};
-    my $is_image = ($mime_type =~ m#image/#) ? 1 : 0;
     my $content_length = $p{content_length} || 0;
 
     sql_insert(attachment => {
@@ -81,19 +72,34 @@ sub Create {
         attachment_id   => $id,
         creator_id      => $creator_id,
         filename        => $filename,
-        content_length  => $content_length,
-        mime_type       => $mime_type,
-        is_image        => $is_image,
         is_temporary    => 1,
         ($p{created_at} ? (created_at => $p{created_at}) : ()),
+        # We will update these 2 next fields below
+        mime_type       => 'application/octet-stream',
+        is_image        => 0,
+        content_length  => $content_length,
     });
 
     # Moose type constraints could fail, hence the txn wrapper
     my $self = $class->Get(attachment_id => $id);
+    my $disk_filename = $self->temp_filename;
     if ($temp_fh) {
         # copy can take fh or filename
-        copy($temp_fh, $self->temp_filename);
+        copy($temp_fh, $disk_filename);
     }
+
+    eval {
+        my $mime_type = Socialtext::File::mime_type($disk_filename);
+        my $is_image = ($mime_type =~ m#image/#) ? 1 : 0;
+        $content_length = -s $disk_filename;
+        sql_execute(q{
+            UPDATE attachment
+               SET mime_type = ?, is_image = ?, content_length = ?
+             WHERE attachment_id = ?
+        }, $mime_type, $is_image, $content_length, $self->attachment_id);
+    };
+    warn "Could not detect mime_type of " .$self->temp_filename. ": $@\n" if $@;
+
     return $self;
 }
 
