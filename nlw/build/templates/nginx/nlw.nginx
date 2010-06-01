@@ -160,13 +160,13 @@ server {
     [%- END %]
 }
 
-[%- IF config.ssl_only OR config.use_ssl %]
+[%- IF config.ssl_only OR config.ssl_name %]
 server {
     [%#- Have SSL enabled server too %]
     listen [% config.frontend_ports.https %];
     ssl on;
-    ssl_certificate [% config.ssl_base_dir %]/certs/[% config.nlw_server_hostname %].crt;
-    ssl_certificate_key [% config.ssl_base_dir %]/private/[% config.nlw_server_hostname %].key;
+    ssl_certificate [% config.ssl_base_dir %]/certs/[% config.ssl_name%].crt;
+    ssl_certificate_key [% config.ssl_base_dir %]/private/[% config.ssl_name %].key;
 
     ssl_ciphers HIGH:MEDIUM:!ADH;
 

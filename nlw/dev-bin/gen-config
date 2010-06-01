@@ -25,6 +25,7 @@ use File::Copy ();
 use File::Path ();
 use File::Spec;
 use File::Slurp ();
+use List::MoreUtils qw(firstval);
 use Getopt::Long;
 use Socialtext::AppConfig;
 use Socialtext::HTTP::Ports;
@@ -600,7 +601,8 @@ sub nginx_params {
         };
         $config{use_canonical_name} = 'On';
     }
-    $config{use_ssl} = _use_ssl($config{nlw_server_hostname});
+    $config{ssl_name} = _ssl_name(
+        $config{nlw_web_hostname}, $config{nlw_server_hostname});
 
     my $appconfig = Socialtext::AppConfig->new;
     $config{ssl_only} = $appconfig->ssl_only();
@@ -626,10 +628,10 @@ sub _backend_ports {
     };
 }
 
-sub _use_ssl {
-    my $hostname = shift;
+sub _ssl_name {
+    my @possible = @_;
 
-    return $is_dev_install || -f "/etc/ssl/certs/$hostname.crt";
+    return firstval { -f "/etc/ssl/certs/$_.crt" } @possible;
 }
 
 sub _static_dir {
@@ -807,17 +809,17 @@ sub copy_static_files {
     my %config = standard_params( \%dirs );
     return unless $config{is_dev};
 
-    my $crt_source =
-        -f "$inc/static/ssl/$config{nlw_server_hostname}.crt"
-        ? "$inc/static/ssl/$config{nlw_server_hostname}.crt"
-        : "$inc/static/ssl/talc.socialtext.net.crt";
-    my $key_source =
-        -f "$inc/static/ssl/$config{nlw_server_hostname}.key"
-        ? "$inc/static/ssl/$config{nlw_server_hostname}.key"
-        : "$inc/static/ssl/talc.socialtext.net.key";
+    my $to_use = firstval { -f "$inc/static/ssl/$_.crt" } (
+        $config{nlw_web_hostname},
+        $config{nlw_server_hostname},
+        'talc.socialtext.net'
+    );
 
-    my $crt_target = "$dirs{ssl_base}/certs/$config{nlw_server_hostname}.crt";
-    my $key_target = "$dirs{ssl_base}/private/$config{nlw_server_hostname}.key";
+    my $crt_source = "$inc/static/ssl/$to_use.crt";
+    my $crt_target = "$dirs{ssl_base}/certs/$to_use.crt";
+
+    my $key_source = "$inc/static/ssl/$to_use.crt";
+    my $key_target = "$dirs{ssl_base}/private/$to_use.key";
 
     for my $pair ( [ $crt_source, $crt_target ],
                    [ $key_source, $key_target ],
