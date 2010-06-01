@@ -122,6 +122,7 @@ sub _get_entities {
             group_count => $ws->group_count,
             default => $ws->is_default ? 1 : 0,
             permission_set => $ws->permissions->current_set_name,
+            is_all_users_workspace => $ws->is_all_users_workspace ? 1 : 0,
 
             # for backwards compatibility
             id => $ws->workspace_id,
