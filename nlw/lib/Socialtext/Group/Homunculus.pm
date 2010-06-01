@@ -10,6 +10,7 @@ use Socialtext::UserSet qw/:const/;
 use Socialtext::Group;
 use Socialtext::JobCreator;
 use Socialtext::JSON qw/encode_json/;
+use Socialtext::JSON::Proxy::Helper;
 use Socialtext::Log qw/st_log/;
 use Socialtext::Timer;
 use namespace::clean -except => 'meta';
@@ -200,6 +201,7 @@ sub update_store {
     # Have the Factory update the record
     $factory->Update($self, $proto_group);
 
+    Socialtext::JSON::Proxy::Helper->ClearForGroup($self->group_id);
     Socialtext::JobCreator->index_group($self->group_id);
 
     my $msg = 'UPDATE,GROUP,group_id:' . $self->group_id
