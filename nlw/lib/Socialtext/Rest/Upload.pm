@@ -43,7 +43,6 @@ sub _GET {
     my $uuid = $self->id;
 
     my $upload = try { Socialtext::Upload->Get(attachment_uuid => $uuid) };
-    my $file;
     unless ($upload &&
             $upload->is_temporary &&
             $upload->creator_id == $user->user_id) 
