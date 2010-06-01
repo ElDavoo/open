@@ -911,8 +911,9 @@ sub remove_user_from_account {
 sub create_workspace {
     my $self = shift;
     my $name = shift;
-    my $account = shift;
+    my $account_id = shift;
     my $title = shift;
+    my $allusers = shift;
 
     if (!defined($title) || length($title)<2) {
        $title = $name;
@@ -924,16 +925,19 @@ sub create_workspace {
         return
     }
 
+
+    my $account = $account_id
+        ? Socialtext::Account->new(name => $account_id)
+        : Socialtext::Account->Default;
+
     $ws = Socialtext::Workspace->create(
         name => $name, title => $title,
-        (
-            $account
-            ? (account_id => Socialtext::Account->new(name => $account)
-                ->account_id())
-            : (account_id => Socialtext::Account->Default->account_id())
-        ),
+        account_id => $account->account_id(),
         skip_default_pages => 1,
     );
+
+    $ws->assign_role_to_account(account => $account) if ($allusers);
+
     $ws->enable_plugin($_) for qw/socialcalc/;
     $self->{workspace_id} = $ws->workspace_id;
     diag "Created workspace $name";
