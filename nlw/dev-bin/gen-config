@@ -822,7 +822,7 @@ sub copy_static_files {
     my $crt_source = "$inc/static/ssl/$to_use.crt";
     my $crt_target = "$dirs{ssl_base}/certs/$to_use.crt";
 
-    my $key_source = "$inc/static/ssl/$to_use.crt";
+    my $key_source = "$inc/static/ssl/$to_use.key";
     my $key_target = "$dirs{ssl_base}/private/$to_use.key";
 
     for my $pair ( [ $crt_source, $crt_target ],
