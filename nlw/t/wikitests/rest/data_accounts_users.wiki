@@ -12,7 +12,7 @@ Tests for [Story: User can be member of multiple accounts]
 | set            | user3_account     | u3acct%%start_time%%                 |                   |
 | create-account | %%user3_account%% |                                      |                   |
 | set            | user3             | u3-%%start_time%%@ken.socialtext.net |                   |
-| create-user    | %%user3%%         | password                             | %%user3-account%% |
+| create-user    | %%user3%%         | password                             | %%user3_account%% |
 
 # Add a user without being a business admin
 | POST_json | %%users_uri%% | {"username":"%%user2%%"} |
@@ -148,3 +148,31 @@ Adding users as admins!
 | json-array-size | 4                                |               |
 | json-path-is    | $[2].username                    | %%user3%%  |
 
+
+| Comment | for bz 3993, add a user to a workspace in this account |
+
+| set | beta_ws | beta_%%start_time%% |
+| create-workspace | %%beta_ws%% | %%account%% |
+| add-member | %%admin%% | %%beta_ws%% | member |
+
+| Comment | check that they're a direct admin |
+
+| http-user-pass | %%username%% | password |
+
+| GET-json | /data/accounts/%%account%%/users?direct=1 |
+| code-is         | 200            |              |
+| json-parse      |                |              |
+| json-array-size | 3              |              |
+| json-path-is    | $[0].username  | %%admin%% |
+| json-path-is    | $[0].role_name | admin        |
+
+| Comment | demote them |
+| POST-json | %%users_uri%% | {"email_address":"%%admin%%","role_name":"member"} |
+| code-is | 201 |
+
+| GET-json | /data/accounts/%%account%%/users?direct=1 |
+| code-is         | 200            |              |
+| json-parse      |                |              |
+| json-array-size | 3              |              |
+| json-path-is    | $[0].username  | %%admin%% |
+| json-path-is    | $[0].role_name | member       |
