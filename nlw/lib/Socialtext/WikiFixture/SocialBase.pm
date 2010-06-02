@@ -2258,9 +2258,9 @@ sub st_setup_a_group {
      if (defined($create_ws) && ($create_ws) ) { 
          $self->handle_command('set','group_ws','group-ws-%%start_time%%');
          if (defined($create_and_add_account) && ($create_and_add_account) ) {
-             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --title %%group_ws%% --account %%group_acct%%','was created');
+             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --title %%group_ws%% --empty --account %%group_acct%%','was created');
          } else {
-             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --title %%group_ws%%','was created');
+             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --empty --title %%group_ws%%','was created');
          }
      }
 

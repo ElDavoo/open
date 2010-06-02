@@ -4,7 +4,8 @@
 
 | *Comment* | Test Case: Group Home at Different Levels Setup |  |  |
 | st_setup_a_group | 1 | 1 | 1 |
-| set | account_user | account-user%%start_time%%@matt.socialtext.net |  |
+| set | account_user_best_full | account-user%%start_time%% |  |
+| set | account_user | %%account_user_best_full%%@matt.socialtext.net |  |
 | set | non_account_user | non-account-user%%start_time%%@matt.socialtext.net |  |
 | st-admin | create-user --e %%non_account_user%% --password %%password%% | was created. |  |
 | st-admin | create-user --e %%account_user%% --password %%password%% --account %%group_acct%% | was created. |  |
@@ -17,6 +18,7 @@
 
 | *Comment* | Test Case: Group Home at Different Levels for private group |  |
 | st-logoutin | %%group_user%% | %%password%% |
+| pause | 4000 | Needed |
 | open_ok | /st/group/%%private_grp_id%% |  |
 | text_like | //body | %%group_name%% |
 | wait_for_element_not_present_ok | st-join-group | 30000 |
@@ -30,7 +32,7 @@
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
 | select-frame | relative=parent |  |
-| st_verify_text_in_activities_widget | signals_widget | joined the group |
+| st_verify_text_in_activities_widget | signals_widget | added %%account_user_best_full%% to the group |
 | st_verify_text_in_activities_widget | signals_widget | to the workspace |
 | st-select-widget-frame | members_widget |
 | text_like | //body | %%group_user_short%% |
@@ -38,13 +40,13 @@
 
 | open_ok | /st/dashboard |  |
 | st-logoutin | %%account_user%% | %%password%% |
-| open_ok | /st/group/%%private_grp_id%% |  |
+| st_open_noeval | /st/group/%%private_grp_id%% |  |
 | text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
 | text_unlike | //body | %%group_name%% |
 | wait_for_element_not_present_ok | st-join-group | 30000 |
 
 | st-logoutin | %%non_account_user%% | %%password%% |
-| open_ok | /st/group/%%private_grp_id%% |
+| st_open_noeval | /st/group/%%private_grp_id%% |
 | text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
 | text_unlike | //body | %%group_name%% |
 | wait_for_element_not_present_ok | st-join-group | 30000 |
@@ -61,16 +63,13 @@
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
 | click_and_wait | link=(Edit) |  |
 | wait_for_element_visible_ok | permission-change | 30000 |
-| pause | 8000 |  |
 | click_ok | permission-change |  |
 | pause | 8000 |  |
 | select-frame | relative=parent |  |
 | wait_for_element_present_ok | st-create-group-next | 30000 |
 | wait_for_element_present_ok | st-lightbox-cancel-create-group | 3000 |
 | wait_for_element_present_ok | self-join-radio | 30000 |
-| pause | 8000 |  |
 | check_ok | self-join-radio |  |
-| pause | 8000 |  |
 | click_ok | st-create-group-next |  |
 | pause | 8000 |  |
 | st-name-widget | 1 | information_widget |
@@ -79,7 +78,6 @@
 | text_like | //body | qr/self-join.+Change/ism |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
-| pause | 8000 |  |
 | click_and_wait | create-group |  |
 
 | *Comment* | Test Case: Group Home at Different Levels See Group is changed to self-join |  |
@@ -137,7 +135,7 @@
 
 | *Comment* | Test Case: Group Home at Different Levels self-join group / different account member |  |
 | st-logoutin | %%non_account_user%% | %%password%% |
-| open_ok | /st/group/%%self_join_grp_id%% |  |
+| st-open-noeval | /st/group/%%self_join_grp_id%% |  |
 | wait_for_element_not_present_ok | st-join-group | 30000 |
 | text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
 
