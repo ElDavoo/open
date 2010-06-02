@@ -921,11 +921,11 @@ sub remove_user_from_account {
 }
 
 sub create_workspace {
-    my $self = shift;
-    my $name = shift;
-    my $account_id = shift;
-    my $title = shift;
-    my $allusers = shift;
+    my $self      = shift;
+    my $name      = shift;
+    my $acct_name = shift;
+    my $title     = shift;
+    my $allusers  = shift;
 
     if (!defined($title) || length($title)<2) {
        $title = $name;
@@ -938,8 +938,8 @@ sub create_workspace {
     }
 
 
-    my $account = $account_id
-        ? Socialtext::Account->new(name => $account_id)
+    my $account = $acct_name
+        ? Socialtext::Account->new(name => $acct_name)
         : Socialtext::Account->Default;
 
     $ws = Socialtext::Workspace->create(
