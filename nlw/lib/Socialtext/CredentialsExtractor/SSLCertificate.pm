@@ -7,9 +7,21 @@ use warnings;
 sub extract_credentials {
     my ($class, $request) = @_;
 
-    my $subject = $request->header_in('X-SSL-Client-Subject-DN');
-    my ($username) = ($subject =~ m{/CN=(.+?)/});
+    my $subject  = $request->header_in('X-SSL-Client-Subject-DN');
+    my $username = _extract_cn($subject);
+
     return $username;
+}
+
+# Possible formats:
+#   /C=US/ST=CA/L=Palo Alto/O=Socialtext/CN=devnull1@socialtext.com/...
+#   /C=US/ST=CA/L=Palo Alto/O=Socialtext/CN=devnull1@socialtext.com
+#   C=US, ST=CA, L=Palo Alto, O=Socialtext, CN=devnull1@socialtext.com, ...
+#   C=US, ST=CA, L=Palo Alto, O=Socialtext, CN=devnull1@socialtext.com
+sub _extract_cn {
+    my $subj = shift;
+    my ($cn) = ($subj =~ m{CN=(.+?)(?:\s*[/,]\s*\S+=|\s*$)});
+    return $cn;
 }
 
 1;
