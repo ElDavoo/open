@@ -245,6 +245,17 @@ sub stress_for {
     Socialtext::System::shell_run('torture', @args);
 }
 
+=head2 invalidate_dbh
+
+Invalidates the DBH used in-process.  If you've restarted Pg, you'll want to
+run this command to force a reconnect.
+
+=cut
+
+sub invalidate_dbh {
+    Socialtext::SQL::invalidate_dbh();
+}
+
 =head2 password standard-test-setup
 
 Set up a new account, workspace and user to work with.
