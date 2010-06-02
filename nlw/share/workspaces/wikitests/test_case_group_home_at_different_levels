@@ -18,8 +18,8 @@
 
 | *Comment* | Test Case: Group Home at Different Levels for private group |  |
 | st-logoutin | %%group_user%% | %%password%% |
-| pause | 4000 | Needed |
-| open_ok | /st/group/%%private_grp_id%% |  |
+| wait_for_element_present_ok | link=%%group_name%% | 30000 |
+| click_and_wait | link=%%group_name%% |  |
 | text_like | //body | %%group_name%% |
 | wait_for_element_not_present_ok | st-join-group | 30000 |
 | st-name-widget | 1 | information_widget |
@@ -32,7 +32,7 @@
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
 | select-frame | relative=parent |  |
-| st_verify_text_in_activities_widget | signals_widget | added %%account_user_best_full%% to the group |
+| st_verify_text_in_activities_widget | signals_widget | to the group |
 | st_verify_text_in_activities_widget | signals_widget | to the workspace |
 | st-select-widget-frame | members_widget |
 | text_like | //body | %%group_user_short%% |
@@ -81,9 +81,8 @@
 | click_and_wait | create-group |  |
 
 | *Comment* | Test Case: Group Home at Different Levels See Group is changed to self-join |  |
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | Welcome | 10000 |
-| open_ok | /st/group/%%self_join_grp_id%% |
+| wait_for_element_present_ok | link=%%self_join_grp%% | 30000 |
+| click_and_wait | link=%%self_join_grp%% |  |
 | wait_for_text_present_ok | %%self_join_grp%% | 30000 |
 
 | st-name-widget | 1 | information_widget |
@@ -110,7 +109,6 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group Home at Different Levels self-join group / account member |  |
-| open_ok | /st/dashboard |  |
 | st-logoutin | %%account_user%% | %%password%% |
 
 | open_ok | /st/group/%%self_join_grp_id%% |  |
@@ -121,6 +119,7 @@
 | wait_for_text_present_ok | %%self_join_grp%% | 30000 |
 | st-select-widget-frame | information_widget |  |
 | wait_for_text_present_ok | %%self_join_grp%% | 30000 |
+| pause | 60000 |  |
 | select-frame | relative=parent |  |
 
 | st-name-widget | 2 | workspaces_widget |
