@@ -1,0 +1,3 @@
+# vim: filetype=nginx
+ssl_verify_client on;
+ssl_client_certificate [% config.ssl_base_dir %]/certs/ca.crt;
