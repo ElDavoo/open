@@ -97,6 +97,7 @@ sub _entity_hash {
         user_count => $workspace->user_count(direct => 1),
         group_count => $workspace->group_count(direct => 1),
         permission_set => $workspace->permissions->current_set_name,
+        is_all_users_workspace => $workspace->is_all_users_workspace ? 1 : 0,
 
         # workspace_id is the 'right' name for this field, but hang on to 'id'
         # for backwards compatibility.

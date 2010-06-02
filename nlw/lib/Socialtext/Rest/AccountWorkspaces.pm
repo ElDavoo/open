@@ -56,6 +56,7 @@ sub _entity_hash {
         modified_time => $workspace->creation_datetime,
         id => $workspace->workspace_id,
         permission_set => $workspace->permissions->current_set_name,
+        is_all_users_workspace => $workspace->is_all_users_workspace ? 1 : 0,
     };
 }
 

@@ -50,6 +50,7 @@ sub _entity_hash {
         id            => $workspace->workspace_id,
         workspace_id  => $workspace->workspace_id,
         default       => $workspace->is_default ? 1 : 0,
+        is_all_users_workspace => $workspace->is_all_users_workspace ? 1 : 0,
     };
 }
 

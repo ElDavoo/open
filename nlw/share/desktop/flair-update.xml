@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>288</version>
-  <url>http://topaz.socialtext.net/flair/flairSignals-288.air</url>
-  <description><![CDATA[[Build 288 - Wed May 26 03:36:55 PDT 2010]
+  <version>292</version>
+  <url>http://topaz.socialtext.net/flair/flairSignals-292.air</url>
+  <description><![CDATA[[Build 292 - Tue Jun  1 22:42:34 PDT 2010]
+* The spinners should keep spinning, not spinning only once.
+
+[Build 291 - Tue Jun  1 22:19:14 PDT 2010]
+* Make the spinner not show behind the Workspace Search button.
+
+[Build 290 - Tue Jun  1 22:14:30 PDT 2010]
+* Workspaces: Clicking the "Loading" spinner stops the current search.
+
+[Build 289 - Sun May 30 23:50:05 PDT 2010]
+* Fix {bz: 3971}: Shorten Local Store file names to <256 characters.
+* Fix {bz: 3977}: ...More... button messes up threadview internals.
+* Signals: Restore proper account skin colouring for listviews.
+
+[Build 288 - Wed May 26 03:36:55 PDT 2010]
 * Fix {bz: 3942}: Desktop: All tab under People does not display users.
 
 [Build 287 - Tue May 18 12:52:00 PDT 2010]

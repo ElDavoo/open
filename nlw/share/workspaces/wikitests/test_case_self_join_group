@@ -16,11 +16,10 @@
 | set | public_group | public-group-%%start_time%% |
 | set | private_group | private-group-%%start_time%% |
 
-| *Comment* | Test Case: Self Join Group CREATE users, accounts, a workspace |  |
+| *Comment* | Test Case: Self Join Group CREATE users, accounts |  |
 | st-admin | create-account --name %%account%% | was created |
 | st-admin | create-user --email %%user%% --password %%password%% --account %%account%% | was created |
 | st-admin | create-user --email %%joiner%% --password %%password%% --account %%account%% | was created |
-| st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%account%% | was created |
 | st-admin | create-account --name %%other_account%% | was created |
 | st-admin | create-user --email %%other_user%% --password %%password%% --account %%other_account%% | was created |
 
@@ -29,7 +28,6 @@
 | st-create-group | %%public_group%% | public group | self-join-radio |
 
 | *Comment* | Self-join GROUP CREATED |
-| pause | 8000 |
 
 | *Comment* | Test Case: Self Join Group - Change to private |  |
 | st-name-widget | 1 | information_widget |
@@ -40,15 +38,11 @@
 
 | wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |
-| pause | 8000 | This is an important pause |
-
 | select-frame | relative=parent |  |
 | wait_for_element_present_ok | st-create-group-next | 30000 |
 | wait_for_element_present_ok | st-lightbox-cancel-create-group | 3000 |
 | wait_for_element_present_ok | private-radio | 30000 |
 | click_ok | private-radio | 30000 |
-| pause | 8000 | This is an important pause |
-
 | click_ok | st-create-group-next |  |
 | pause | 8000 | This is an important pause |
 
@@ -59,12 +53,14 @@
 
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
+| get_id_from_url | first_group |  |  |
 
 | *Comment* | Test Case: Self Join Group - See Group is changed to private |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| text_like | //body | qr/private.+Change/ism |  |
-| text_unlike | //body | qr/self-join.+Change/ism |  |
+| text_like | //body | qr/private/ism |  |
+| text_unlike | //body | qr/self-join/ism |  |
+
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Self Join Group - Create Private Group |  |
@@ -80,7 +76,6 @@
 | select-frame | relative=parent |  |
 
 | wait_for_element_visible_ok | create-group | 30000 |
-| pause | 8000 | This is an important pause |
 | click_and_wait | create-group |  |
 
 | *Comment* | Test Case: Self Join Group - Edit Private Group, Flip Permissions |  |
@@ -108,7 +103,6 @@
 | wait_for_element_present_ok | self-join-radio | 30000 |
 
 | check_ok | self-join-radio |  |
-| pause | 8000 | This is an important pause |
 
 | click_ok | st-create-group-next |  |
 | pause | 8000 | This is an important pause |
@@ -121,8 +115,6 @@
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
-| pause | 8000 | This is an important pause |
-
 | get_id_from_url | group_id |  |
 
 | *Comment* | Test Case: Self Join Group - See Group is changed to self-join |  |
@@ -151,8 +143,6 @@
 | pause | 8000 | This is an important pause |
 
 | wait_for_element_visible_ok | st-leave-group | 30000 |
-| pause | 8000 | This is an important pause |
-
 | st-name-widget | 4 | members_widget |
 | st-widget-title-like | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
@@ -174,12 +164,13 @@
 
 | *Comment* | Test Case: Self Join Group. Login as a different account, not-discoverable, not-joinable |  |
 | st-logoutin | %%other_user%% | %%password%% |
-| open_ok | /st/group/%%group_id%% |  |
+| pause | 3000 |  |
+| st_open_noeval | /st/group/%%group_id%% |  |
 | text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
 | wait_for_element_not_present_ok | st-join-group | 5000 |
 
 | *Comment* | Test Case: Self Join Group TEARDOWN |  |
-| *Comment* | Test Case: Self Join Group TEARDOWN HOW CAN THE GROUPS BE DELETED? |  |
-| st-admin | delete-workspace --no-export --w %%ws%% | has been deleted |
+| delete-group | %%first_group%% |  |
+| delete-group | %%group_id%% |  |
 
 | *Comment* | Test Case: Self Join Group COMPLETED |  |
