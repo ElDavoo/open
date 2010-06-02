@@ -105,6 +105,9 @@
     }
     location / {
         proxy_pass http://localhost:[% apache_perl_port %];
+        proxy_set_header X-SSL-Client-Issuer-DN  $ssl_client_i_dn;
+        proxy_set_header X-SSL-Client-Subject-DN $ssl_client_s_dn;
+        proxy_set_header X-SSL-Client-Serial     $ssl_client_serial;
         # Rewrite upstream redirects correctly
         proxy_redirect http://[% config.nlw_server_hostname %]/ /;
         proxy_redirect http://[% config.nlw_web_hostname %]/ /;
