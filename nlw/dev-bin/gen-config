@@ -602,7 +602,9 @@ sub nginx_params {
         $config{use_canonical_name} = 'On';
     }
     $config{ssl_name} = _ssl_name(
-        $config{nlw_web_hostname}, $config{nlw_server_hostname});
+        ssl_base => $dirs{ssl_base},
+        search   => [ $config{nlw_web_hostname}, $config{nlw_server_hostname} ],
+    );
 
     my $appconfig = Socialtext::AppConfig->new;
     $config{ssl_only} = $appconfig->ssl_only();
@@ -629,9 +631,11 @@ sub _backend_ports {
 }
 
 sub _ssl_name {
-    my @possible = @_;
+    my %opts   = @_;
+    my $base   = $opts{ssl_base};
+    my $search = $opts{search};
 
-    return firstval { -f "/etc/ssl/certs/$_.crt" } @possible;
+    return firstval { -f "$base/certs/$_.crt" } @{$search};
 }
 
 sub _static_dir {
