@@ -110,3 +110,24 @@
 | json-path-is      | $[0].event_class                                             | person      |
 | json-path-is      | $[0].person.id                                               | %%user_id%% |
 | json-path-missing | $[1]                                                         |             |
+
+## Confirm fix for {bz: 3982};
+## A private group that has only AUW workspace
+## memberships can update its permission-set from private to self-join
+| set              | bz_acct_name      | bz3982-acct%%start_time%%                    |                  |         |         |
+| create-account   | %%bz_acct_name%%  |                                              |                  |         |         |
+| set              | bz_acct_id        | %%account_id%%                               |                  |         |         |
+| set              | bz_username       | bz3982-user%%start_time%%@ken.socialtext.net |                  |         |         |
+| create-user      | %%bz_username%%   | password                                     | %%bz_acct_name%% |         |         |
+| set              | bz_user_id        | %%user_id%%                                  |                  |         |         |
+| set              | bz_ws_name        | bz3982-ws%%start_time%%                      |                  |         |         |
+| create-workspace | %%bz_ws_name%%    | %%bz_acct_name%%                             |                  | 1       |         |
+| set              | bz_ws_id          | %%workspace_id%%                             |                  |         |         |
+| set              | bz_group_name     | bz3982-group%%start_time%%                   |                  |         |         |
+| create-group     | %%bz_group_name%% | %%bz_acct_name%%                             | %%bz_username%%  | 'Group' | private |
+| set              | bz_group_id       | %%group_id%%                                 |                  |         |         |
+
+| *Comment* | Can change group permissions in presence of AUW |
+| http-user-pass | %%bz_username%%              | password                       |
+| PUT-json       | /data/groups/%%bz_group_id%% | {"permission_set":"self-join","name":"Group"} |
+| code-is        | 202                          |                                |
