@@ -131,7 +131,7 @@ sub PUT_json {
         Socialtext::Exception::DataValidation->throw( message => 
             "self-join groups cannot contain workspaces"
         ) if $data->{permission_set} eq 'self-join'
-           && $group->workspace_count > 0;
+           && $group->workspaces(exclude_auw_paths => 1)->count > 0;
     }
 
     try {
