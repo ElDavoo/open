@@ -110,16 +110,17 @@ sub Create {
         warn "Could not detect mime_type of " .$self->temp_filename. ": $_\n";
     };
 
-    st_log->info(join(',', "UPLOAD,CREATE",
+    st_log()->info(join(',', "UPLOAD,CREATE",
         $self->is_image ? 'IMAGE' : 'FILE',
-        'id'.$self->attachment_id,
-        'uuid:'.$self->attachment_uuid,
-        'path:'.$self->disk_filename,
-        'creator_id:'.$self->creator_id,
-        'creator'.$self->creator->username,
-        'filename:'.encode_json($self->filename),
-        'created_at:'.$self->created_at,
-    ));
+        encode_json({
+            'id'         => $self->attachment_id,
+            'uuid'       => $self->attachment_uuid,
+            'path'       => $self->disk_filename,
+            'creator_id' => $self->creator_id,
+            'creator'    => $self->creator->username,
+            'filename'   => $self->filename,
+            'created_at' => $self->created_at_str,
+        })));
 
     return $self;
 }
@@ -219,23 +220,24 @@ sub as_hash {
 }
 
 sub purge {
-    my $self = shift;
-    my $actor = shift || Socialtext::User->SystemUser;
+    my ($self, %p) = @_;
+    my $actor = $p{actor} || Socialtext::User->SystemUser;
 
     # missing file is OK
     try { unlink $self->disk_filename };
     sql_execute(q{DELETE FROM attachment WHERE attachment_id = ?},
         $self->attachment_id);
 
-    st_log->info(join(',', "UPLOAD,DELETE",
+    st_log()->info(join(',', "UPLOAD,DELETE",
         $self->is_image ? 'IMAGE' : 'FILE',
-        'id'.$self->attachment_id,
-        'uuid:'.$self->attachment_uuid,
-        'path:'.$self->disk_filename,
-        'actor_id'.$actor->user_id,
-        'actor'.$actor->username,
-        'filename:'.encode_json($self->filename),
-    ));
+        encode_json({
+            'id'       => $self->attachment_id,
+            'uuid'     => $self->attachment_uuid,
+            'path'     => $self->disk_filename,
+            'actor_id' => $actor->user_id,
+            'actor'    => $actor->username,
+            'filename' => $self->filename,
+        })));
 }
 
 sub make_permanent {
@@ -270,16 +272,17 @@ sub make_permanent {
 after 'make_permanent' => sub {
     my ($self, %p) = @_;
     my $actor = $p{actor} || Socialtext::User->SystemUser;
-    st_log->info(join(',', "UPLOAD,CONSUME",
+    st_log()->info(join(',', "UPLOAD,CONSUME",
         $self->is_image ? 'IMAGE' : 'FILE',
-        'id'.$self->attachment_id,
-        'uuid:'.$self->attachment_uuid,
-        'path:'.$self->storage_filename,
-        'from-path:'.$self->temp_filename,
-        'actor_id'.$actor->user_id,
-        'actor'.$actor->username,
-        'filename:'.encode_json($self->filename),
-    ));
+        encode_json({
+            'id'        => $self->attachment_id,
+            'uuid'      => $self->attachment_uuid,
+            'path'      => $self->disk_filename,
+            'from-path' => $self->temp_filename,
+            'actor_id'  => $actor->user_id,
+            'actor'     => $actor->username,
+            'filename'  => $self->filename,
+        })));
 };
 
 sub binary_contents {
