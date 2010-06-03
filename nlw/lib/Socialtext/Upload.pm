@@ -13,6 +13,8 @@ use Try::Tiny;
 use Moose::Util::TypeConstraints;
 use Socialtext::Exceptions qw/no_such_resource_error data_validation_error/;
 use Socialtext::File ();
+use Socialtext::Log qw/st_log/;
+use Socialtext::JSON qw/encode_json/;
 use namespace::clean -except => 'meta';
 
 # NOTE: if this gets changed to anything other than /tmp, make sure tmpreaper is
@@ -80,15 +82,17 @@ sub Create {
         content_length  => $content_length,
     });
 
-    # Moose type constraints could fail, hence the txn wrapper
+    # Moose type constraints can cause the create to fail here, hence the txn
+    # wrapper.
     my $self = $class->Get(attachment_id => $id);
+
     my $disk_filename = $self->temp_filename;
     if ($temp_fh) {
         # copy can take fh or filename
         copy($temp_fh, $disk_filename);
     }
 
-    eval {
+    try {
         my $mime_type = Socialtext::File::mime_type($disk_filename);
         my $is_image = ($mime_type =~ m#image/#) ? 1 : 0;
         $content_length = -s $disk_filename;
@@ -97,8 +101,24 @@ sub Create {
                SET mime_type = ?, is_image = ?, content_length = ?
              WHERE attachment_id = ?
         }, $mime_type, $is_image, $content_length, $self->attachment_id);
+        $self->mime_type($mime_type);
+        $self->is_image($is_image);
+        $self->content_length($content_length);
+    }
+    catch {
+        warn "Could not detect mime_type of " .$self->temp_filename. ": $_\n";
     };
-    warn "Could not detect mime_type of " .$self->temp_filename. ": $@\n" if $@;
+
+    st_log->info(join(',', "UPLOAD,CREATE",
+        $self->is_image ? 'IMAGE' : 'FILE',
+        'id'.$self->attachment_id,
+        'uuid:'.$self->attachment_uuid,
+        'path:'.$self->disk_filename,
+        'creator_id:'.$self->creator_id,
+        'creator'.$self->creator->username,
+        'filename:'.encode_json($self->filename),
+        'created_at:'.$self->created_at,
+    ));
 
     return $self;
 }
@@ -199,10 +219,22 @@ sub as_hash {
 
 sub purge {
     my $self = shift;
+    my $actor = shift || Socialtext::User->SystemUser;
+
     # missing file is OK
     try { unlink $self->disk_filename };
     sql_execute(q{DELETE FROM attachment WHERE attachment_id = ?},
         $self->attachment_id);
+
+    st_log->info(join(',', "UPLOAD,DELETE",
+        $self->is_image ? 'IMAGE' : 'FILE',
+        'id'.$self->attachment_id,
+        'uuid:'.$self->attachment_uuid,
+        'path:'.$self->disk_filename,
+        'actor_id'.$actor->user_id,
+        'actor'.$actor->username,
+        'filename:'.encode_json($self->filename),
+    ));
 }
 
 sub make_permanent {
@@ -224,6 +256,20 @@ sub make_permanent {
     rename($targ.'.tmp' => $targ);
     $self->is_temporary(undef);
 }
+after 'make_permanent' => sub {
+    my ($self, %p) = @_;
+    my $actor = $p{actor} || Socialtext::User->SystemUser;
+    st_log->info(join(',', "UPLOAD,CONSUME",
+        $self->is_image ? 'IMAGE' : 'FILE',
+        'id'.$self->attachment_id,
+        'uuid:'.$self->attachment_uuid,
+        'path:'.$self->storage_filename,
+        'from-path:'.$self->temp_filename,
+        'actor_id'.$actor->user_id,
+        'actor'.$actor->username,
+        'filename:'.encode_json($self->filename),
+    ));
+};
 
 sub binary_contents {
     my ($self, $ref) = @_;
