@@ -15,6 +15,7 @@ use Socialtext::Exceptions qw/no_such_resource_error data_validation_error/;
 use Socialtext::File ();
 use Socialtext::Log qw/st_log/;
 use Socialtext::JSON qw/encode_json/;
+use Guard;
 use namespace::clean -except => 'meta';
 
 # NOTE: if this gets changed to anything other than /tmp, make sure tmpreaper is
@@ -242,11 +243,12 @@ sub make_permanent {
 
     return unless $self->is_temporary;
 
+    my $src = $self->temp_filename;
     my $targ = $self->storage_filename;
 
     (my $dir = $targ) =~ s#/[^/]+$##;
     make_path($dir, {mode => 0774});
-    move($self->temp_filename => $targ.'.tmp');
+    move($src => $targ.'.tmp');
 
     sql_execute(q{
         UPDATE attachment
@@ -255,6 +257,15 @@ sub make_permanent {
     }, $self->attachment_id);
     rename($targ.'.tmp' => $targ);
     $self->is_temporary(undef);
+
+    if ($p{guard}) {
+        # move it back unless this gets cancelled
+        return guard { 
+            move($targ => "$src.tmp");
+            rename("$src.tmp" => $src);
+            $self->is_temporary(1);
+        };
+    }
 }
 after 'make_permanent' => sub {
     my ($self, %p) = @_;
