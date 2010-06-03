@@ -470,6 +470,16 @@ sub _workspace_clone_or_create {
         container => $self->hub->current_workspace->account,
     );
     unless ($acct_checker->check_permission('admin')) {
+        # WS Admins get shown a page of instructions
+        if ($self->hub->checker->check_permission('admin_workspace')) {
+            $self->screen_template('view/ws-admin-cannot-create-ws');
+            return $self->render_screen(
+                hub           => $self->hub,
+                display_title => $display_title,
+                pref_list     => $self->_get_pref_list,
+            );
+        }
+        # Everyone else gets thrown back from whence they came
         Socialtext::WebApp::Exception::Redirect->throw('?');
     }
 
