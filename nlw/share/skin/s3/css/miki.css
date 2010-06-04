@@ -217,3 +217,11 @@ div.clear {
     margin-bottom: 5px;
 }
 
+.attachments .attachment img {
+    vertical-align: middle;
+}
+
+.attachments .attachment {
+    font-size: 11px;
+    white-space: nowrap;
+}
