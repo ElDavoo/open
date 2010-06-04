@@ -44,6 +44,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: Connections]
 * [Test Case: Settings: User]
 * [Test Case: Settings: Admin]
+* [Test Case: User Settings Create Workspace]
 * [Test Case: Workspace Configuration]
 * [Test Case: Workspace Privacy]
 * [Test Case: Authenticated-User-Only]

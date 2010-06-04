@@ -49,24 +49,6 @@
 | text_like | workspaceNav | Add Members |
 | st-logoutin |  |  |
 
-| *Comment* | Test Case: Settings: Admin workspace title cannot begin with a dash |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Create New Workspace |  |
-| type_ok | title | -newspace %%start_time%% |
-| type_ok | name | newspace%%start_time%% |
-| click_and_wait | link=Save |  |
-| text_like | Workspace title must be between 2 and 64 characters long and may not begin with a - |
-
-| *Comment* | Test Case: Settings: Admin test Create New Workspace functionality |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Create New Workspace |  |
-| type_ok | title | Newspace %%start_time%% |
-| type_ok | name | newspace-%%start_time%% |
-| click_and_wait | link=Save |  |
-| text_like | contentContainer | You have just created "Newspace %%start_time%%" |
-| click_and_wait | link=Go to |  |
-| location_like | /newspace-%%start_time%%/index.cgi?newspace_%%start_time%% |  |
-
 | *Comment* | Test Case: Settings: Admin test Clone Workspace functionality |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Clone This Workspace |  |

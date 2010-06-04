@@ -10,6 +10,7 @@ Sunshine Testcases. Sample testcases to smoketest builds and dev envs
 * [Test Case: Tools: Duplicate Page]
 * [Test Case: Watchlist]
 * [Test Case: Settings: Admin]
+* [Test Case: User Settings Create Workspace]
 * [Test Case: Workspace Privacy]
 * [Test Case: Tagged Pages Sorting]
 * [Test Case: Sorting Files]
