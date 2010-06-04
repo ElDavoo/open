@@ -45,6 +45,7 @@ sub Create {
     my ($class, %p) = @_;
 
     my $temp_fh = $p{temp_filename};
+    my $type_hint = $p{mime_type};
     if (my $field = $p{cgi_param}) {
         my $q = $p{cgi};
         $temp_fh = $q->upload($field);
@@ -57,6 +58,8 @@ sub Create {
             $real_filename = $class->clean_filename($1);
         }
         die "no filename in Content-Disposition header" unless $real_filename;
+
+        $type_hint = $info{'content-type'} if $info{'content-type'};
 
         $p{filename} = $real_filename;
     }
@@ -94,7 +97,8 @@ sub Create {
     }
 
     try {
-        my $mime_type = Socialtext::File::mime_type($disk_filename);
+        my $mime_type = Socialtext::File::mime_type(
+            $disk_filename, $self->filename, $type_hint);
         my $is_image = ($mime_type =~ m#image/#) ? 1 : 0;
         $content_length = -s $disk_filename;
         sql_execute(q{
@@ -120,6 +124,7 @@ sub Create {
             'creator'    => $self->creator->username,
             'filename'   => $self->filename,
             'created_at' => $self->created_at_str,
+            'type'       => $self->mime_type,
         })));
 
     return $self;
