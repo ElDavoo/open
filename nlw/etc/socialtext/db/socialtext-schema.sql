@@ -1106,6 +1106,11 @@ CREATE SEQUENCE signal_id_seq
     NO MINVALUE
     CACHE 1;
 
+CREATE TABLE signal_tag (
+    signal_id bigint NOT NULL,
+    tag text NOT NULL
+);
+
 CREATE TABLE signal_user_set (
     signal_id bigint NOT NULL,
     user_set_id integer NOT NULL
@@ -1562,6 +1567,12 @@ CREATE INDEX idx_opensocial_appdata_app_user
 
 CREATE UNIQUE INDEX idx_opensocial_appdata_app_user_field
 	    ON opensocial_appdata (app_id, user_id, field);
+
+CREATE INDEX idx_signal_tag_signal_id
+	    ON signal_tag (signal_id);
+
+CREATE INDEX idx_signal_tag_tag
+	    ON signal_tag (tag);
 
 CREATE UNIQUE INDEX idx_user_set_include_pkey_and_role
 	    ON user_set_include (from_set_id, into_set_id, role_id);
@@ -2260,6 +2271,11 @@ ALTER TABLE ONLY signal_attachment
             FOREIGN KEY (signal_id)
             REFERENCES signal(signal_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY signal_tag
+    ADD CONSTRAINT signal_id_fk
+            FOREIGN KEY (signal_id)
+            REFERENCES signal(signal_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY signal
     ADD CONSTRAINT signal_recipient_fk
             FOREIGN KEY (recipient_id)
@@ -2376,4 +2392,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '119');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '120');
