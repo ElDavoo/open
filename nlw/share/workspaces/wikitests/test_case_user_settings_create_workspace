@@ -24,15 +24,16 @@
 | click_and_wait | link=Settings |  |
 | wait_for_element_visible_ok | link=Create New Workspace | 30000 |
 
-| *Comment* | Test Case: User Settings Create Workspace Link goes to create group |
+| *Comment* | Test Case: User Settings Create Workspace Link goes to create group |  |
 | click_and_wait | link=Create New Workspace | 30000 |
 | text_like | //body | You can create a new Group, or add a workspace to an existing Group. |
-| text_like | //body | To add a workspace to an existing group, go to the "Group Directory" | text_like | //body | To add a workspace to a new group, go to "Create Group" under the Groups pulldown |
+| text_like | //body | To add a workspace to an existing group, go to the "Group Directory" |
+| text_like | //body | To add a workspace to a new group, go to "Create Group" under the Groups pulldown |
 | wait_for_element_visible_ok | link="Group Directory" | 30000 |
 | wait_for_element_visible_ok | link="Create Group" | 30000 |
 | click_ok | link="Create Group" | 30000 |
 
-| *Comment* | Test Case: User Settings Create Workspace ... and leads into creating a group |
+| *Comment* | Test Case: User Settings Create Workspace ... and leads into creating a group |  |
 | wait_for_text_present_ok | Please choose the group type, then click Next | 30000 |
 | wait_for_element_visible_ok | st-create-group-next | 30000 |
 | click_and_wait | st-create-group-next |  |
