@@ -58,14 +58,8 @@ sub clean_filename {
     my $self = shift;
     my $filename = shift;
 
-    $filename = Socialtext::Encode::ensure_is_utf8(
-        $filename
-    );
-    $filename =~ s/[\/\\]+$//;
-    $filename =~ s/^.*[\/\\]//;
-    # why would we do  ... => ~~.  ?
-    $filename =~ s/(\.+)\./'~' x length($1) . '.'/ge;
-    return $filename;
+    require Socialtext::Upload;
+    return Socialtext::Upload->clean_filename($filename);
 }
 
 my $x = 0;

@@ -12,6 +12,7 @@ use Fatal qw/copy move rename open close unlink/;
 use Try::Tiny;
 use Moose::Util::TypeConstraints;
 use Socialtext::Exceptions qw/no_such_resource_error data_validation_error/;
+use Socialtext::Encode;
 use Socialtext::File ();
 use Socialtext::Log qw/st_log/;
 use Socialtext::JSON qw/encode_json/;
@@ -50,11 +51,10 @@ sub Create {
         die "no upload field '$field' found \n" unless $temp_fh;
         my $raw_info = $q->uploadInfo($temp_fh);
         my %info = map { lc($_) => $raw_info->{$_} } keys %$raw_info;
-
         my $cd = $info{'content-disposition'};
         my $real_filename;
         if ($cd =~ /filename="([^"]+)"/) {
-            $real_filename = $1;
+            $real_filename = $class->clean_filename($1);
         }
         die "no filename in Content-Disposition header" unless $real_filename;
 
@@ -167,6 +167,20 @@ sub CleanTemps {
 sub disk_filename {
     my $self = shift;
     return $self->is_temporary ? $self->temp_filename : $self->storage_filename;
+}
+
+sub clean_filename {
+    my $class_or_self = shift;
+    my $filename      = shift;
+
+    $filename = Socialtext::Encode::ensure_is_utf8(
+        $filename
+    );
+    $filename =~ s/[\/\\]+$//;
+    $filename =~ s/^.*[\/\\]//;
+    # why would we do  ... => ~~.  ?
+    $filename =~ s/(\.+)\./'~' x length($1) . '.'/ge;
+    return $filename;
 }
 
 sub temp_filename {
