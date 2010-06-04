@@ -473,16 +473,14 @@ sub newest_directory_file {
     return reduce { ( $a gt $b ) ? $a : $b } @files;
 }
 
-=head2 mime_type($path)
-
-=head2 mime_type($path, $file_extension)
-
 =head2 mime_type($path, $file_extension, $type_hint)
 
 Returns the mime type of the file.
 
 The algorithm is roughly as follows.  A "basic" type is defined to be either
-"text/plain" or "application/octet-stream", or "application/msword" (i.e. unknown text, binary or OLE document).
+"text/plain" or "application/octet-stream", or some other type that mime-magic
+detection uses as a fallback (e.g. application/msword for OLE documents,
+application/x-zip for everything zip-compressed).
 
 First, we check the file "signature" using a mime-magic database.  If this
 finds a type that B<isn't> a "basic" type, that type is returned.  Otherwise,
@@ -507,8 +505,8 @@ our $is_basic_type = qr{^(?:
     text/plain |
     application/(?:
         octet-stream |
-        msword | # file calls all OLE documents this
-        x-zip # file calls all ZIP magic this
+        msword | # magic db calls all OLE documents this
+        x-zip # magic db calls all ZIP magic this
     )$
 )}x;
 sub mime_type {
@@ -551,7 +549,7 @@ Socialtext, Inc. C<< <code@socialtext.com> >>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2006 Socialtext, Inc., all rights reserved.
+Copyright 2006-2010 Socialtext, Inc., all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
