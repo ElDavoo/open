@@ -7,7 +7,7 @@ use Socialtext::AppConfig;
 use Socialtext::Account;
 use Socialtext::User;
 use Socialtext::SQL qw/:exec :txn/;
-use Socialtext::JSON qw/encode_json decode_json_utf8/;
+use Socialtext::JSON qw/encode_json decode_json_utf8 decode_json/;
 use Socialtext::File;
 use Socialtext::Group;
 use Socialtext::System qw();
@@ -1944,7 +1944,11 @@ sub comment_page {
 sub post_signal {
     my $self = shift;
     my $content = shift;
-    $self->post_json('/data/signals', encode_json( { signal => $content } ));
+    my $extra = shift || "{}";
+    my $blob = decode_json($extra);
+
+    $blob->{signal} = $content;
+    $self->post_json('/data/signals', encode_json( $blob ));
     $self->code_is(201);
 }
 
