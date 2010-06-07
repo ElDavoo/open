@@ -29,6 +29,7 @@ use Time::HiRes qw/gettimeofday tv_interval time/;
 use URI::Escape qw(uri_unescape uri_escape);
 use Data::Dumper;
 use MIME::Types;
+use List::MoreUtils qw(any);
 use Cwd;
 use HTTP::Request::Common;
 use LWP::UserAgent;
@@ -2776,6 +2777,30 @@ sub _json_path_test {
             $self->_json_path_test($test,@_);
         };
     }
+}
+
+=head2 json_in_array
+
+Test that a string occurs within a json array.
+
+=cut
+
+sub json_in_array {
+    my ($self, $path, $element) = @_;
+    $path =~ s/^\$//; # remove leading $
+
+    my $selected = eval { $self->_select_json_path($path, $self->{json}) };
+    if (my $e = $@) {
+        fail $@;
+        return;
+    }
+
+    fail "'$path' is not an array'"
+        unless ref($selected) && ref($selected) eq 'ARRAY';
+
+    # breaks if $_ is not a scalar.
+    my $exists = any { "$_" eq "$element" } @$selected;
+    ok $exists, "found '$element' in json path";
 }
 
 =head2 json_path_set
