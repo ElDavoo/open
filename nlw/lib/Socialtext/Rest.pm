@@ -170,6 +170,7 @@ sub _check_on_behalf_of {
     catch {
         my $e = $_;
         st_log->warning("exception while trying to impersonate: $e");
+        st_log->warning("... no such user") unless $desired_user;
         if (UNIVERSAL::isa($e,'Socialtext::Exception::Auth')) {
             $self->rest->header(
                 -status => HTTP_403_Forbidden,
