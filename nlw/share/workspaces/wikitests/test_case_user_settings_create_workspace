@@ -5,7 +5,7 @@
 | set | ws | user-setting-ws-%%start_time%% |
 | set | user | user-setting%%start_time%%@matt.socialtext.net |
 | st-admin | create-account --name %%acct%% | was created |
-| st-admin | create-workspace --name %%ws%% --title %%ws%% --acct %%acct%% | was created |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% | was created |
 | st-admin | create-user --e %%user%% --p %%password%% --account %%acct%% | was created |
 | st-admin | add-member --e %%user%% --w %%ws%% | now has the role of 'member' in the |
 
@@ -46,21 +46,31 @@
 | click_and_wait | link=Settings |  |
 | wait_for_element_not_present_ok | link=Create New Workspace | 30000 |
 
-*Comment* | Test Case: User Settings Create Workspace Promote to account admin, *do* see Create New Workspace link | |
-st-admin | add-account-admin --e %%user%% --account %%acct%% | now has the role of 'admin' |
-open_ok | /%%ws%%/ | |
-wait_for_element_visible_ok | link=Settings | 30000 |
-click_and_wait | link=Settings | |
-wait_for_element_visible_ok | link=Create New Workspace | 30000 |
+| *Comment* | Test Case: User Settings Create Workspace Promote to account admin, *do* see Create New Workspace link |  |
+| st-admin | add-account-admin --e %%user%% --account %%acct%% | now has the role of 'admin' |
+| open_ok | /%%ws%%/ |  |
+| wait_for_element_visible_ok | link=Settings | 30000 |
+| click_and_wait | link=Settings |  |
+| wait_for_element_visible_ok | link=Clone This Workspace | 30000 |
+| wait_for_element_visible_ok | link=Create New Workspace | 30000 |
+| click_and_wait | link=Create New Workspace |  |
+| text_like | qr/Workspace Title.+Workspace Name/ism |  |
+| location_like | workspaces_create |  |
+| click_and_wait | link=Clone This Workspace |  |
+| text_like | qr/Clone Workspace.+Workspace Title.+Workspace Name/ism |  |
+| location_like | workspace_clone |  |
 
-*Comment* | Test Case: User Settings Create Workspace Remove account admin, *do not* see Create New Workspace link | |
-st-admin | remove-account-admin --e %%user%% --account %%acct%% | no longer has the role of 'admin' in the |
-open_ok | /%%ws%%/ | |
-wait_for_element_visible_ok | link=Settings | 30000 |
-click_and_wait | link=Settings | |
-wait_for_element_not_present_ok | link=Create New Workspace | 30000 |
+| *Comment* | Test Case: User Settings Create Workspace Remove account admin, *do not* see Create New Workspace link |  |
+| st-admin | remove-account-admin --e %%user%% --account %%acct%% | no longer has the role of 'admin' in the |
+| open_ok | /%%ws%%/ |  |
+| wait_for_element_visible_ok | link=Settings | 30000 |
+| click_and_wait | link=Settings |  |
+| wait_for_element_visible_ok | link=My Settings | 5000 |
+| wait_for_element_not_present_ok | link=Create New Workspace | 5000 |
+| wait_for_element_not_present_ok | link=Clone This Workspace | 5000 |
 
 | *Comment* | Test Case: User Settings Create Workspace Teardown |  |
+
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: User Settings Create Workspace COMPLETED |
