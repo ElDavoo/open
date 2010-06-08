@@ -487,3 +487,6 @@ lib/Socialtext/Rest/Signals/Attachment.pm
 t/wikitests/opensocial-appdata.wiki
 t/wikitests/signals/attachment.wiki
 t/wikitests/signals/tags.wiki
+lib/Socialtext/Rest/SignalTags.pm
+lib/Socialtext/Signal/Tag.pm
+t/Socialtext/Signal/Tag.t
