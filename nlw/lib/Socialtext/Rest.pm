@@ -169,13 +169,13 @@ sub _check_on_behalf_of {
     }
     catch {
         my $e = $_;
+        st_log->warning("exception while trying to impersonate: $e");
         if (UNIVERSAL::isa($e,'Socialtext::Exception::Auth')) {
             $self->rest->header(
                 -status => HTTP_403_Forbidden,
             );
             $e->rethrow();
         }
-        st_log->warning("exception while trying to impersonate: $e");
         die $e;
     };
 
