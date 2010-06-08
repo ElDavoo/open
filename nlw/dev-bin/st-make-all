@@ -8,8 +8,9 @@ use Term::ANSIColor 'color';
 
 my @dirs = qw(
     nlw/share/skin
-    plugins/socialcalc
     plugins/widgets
+
+    plugins/socialcalc
     plugins/signals
     plugins/dashboard
     plugins/people
@@ -33,10 +34,14 @@ my $st_current = $ENV{ST_CURRENT};
 my $overall_err = 0;
 my %proc;
 
-# run the first one synchronously
-my $topdir = shift @dirs;
-start_dir($topdir);
-wait_for_dir($topdir);
+# run the first two synchronously
+my $skin_dir = shift @dirs;
+start_dir($skin_dir);
+wait_for_dir($skin_dir);
+
+my $widget_dir = shift @dirs;
+start_dir($widget_dir);
+wait_for_dir($widget_dir);
 
 # run the rest in parallel
 foreach my $dir (@dirs) {
