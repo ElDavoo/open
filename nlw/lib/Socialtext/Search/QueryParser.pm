@@ -41,6 +41,7 @@ sub munge_raw_query_string {
     $query =~ s/=/title:/g;        # Old style title search
     $query =~ s/category:/tag:/gi; # Old name for tags
     $query =~ s/tag:\s*/tag:/gi;   # fix capitalization and allow an extra space
+    $query =~ s/(?:\s|^)#(\p{IsWord}+)/tag:$1/g; # Allow hashtag searches
 
     my $field_map = $self->field_map;
     if ($opts{doctype} and $opts{doctype} eq 'group') {
