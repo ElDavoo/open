@@ -1795,6 +1795,10 @@ dl.form p {
 	margin: 1em 0;
 }
 
+dl.form strong {
+	font-weight: bold;
+}
+
 dl.form dd {
 	color: #000000;
 	line-height: 30px;
