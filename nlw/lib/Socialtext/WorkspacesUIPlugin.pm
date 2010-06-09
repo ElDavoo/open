@@ -471,10 +471,10 @@ sub _workspace_clone_or_create {
         container => $self->hub->current_workspace->account,
     );
 
-    my $has_perm_ws_admin = $ws_checker->check_permission('admin_workspace');
-    my $has_perm_admin    = $acct_checker->check_permission('admin');
+    my $has_perm_ws_admin   = $ws_checker->check_permission('admin_workspace');
+    my $has_perm_acct_admin = $acct_checker->check_permission('admin');
 
-    unless ($has_perm_admin) {
+    unless ($has_perm_acct_admin) {
         # WS Admins get shown a page of instructions
         if ($has_perm_ws_admin) {
             my $settings_section = $self->template_process(
