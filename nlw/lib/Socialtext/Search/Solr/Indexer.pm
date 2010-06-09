@@ -339,6 +339,7 @@ sub _add_signal_doc {
                [link_page_key => $_->[1]],
             } @$page_links),
         (map { [link => $_] } @$external_links),
+        (map { [tag => $_->tag] } @{$signal->tags}),
     );
 
     for my $triplet (@{ $signal->annotation_triplets }) {
