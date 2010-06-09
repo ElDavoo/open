@@ -2689,7 +2689,7 @@ proto.getWidgetImageUrl = function(widget_text) {
         // Just ignore and set the text to be the widget text
     }
 
-    return '/data/wafl/' + encodeURI(widget_text) + (uneditable ? '?uneditable=1' : '');
+    return '/data/wafl/' + encodeURIComponent(widget_text) + (uneditable ? '?uneditable=1' : '');
 }
 
 proto.create_wafl_string = function(widget, form) {
