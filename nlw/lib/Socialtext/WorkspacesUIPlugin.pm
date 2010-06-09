@@ -466,7 +466,7 @@ sub _workspace_clone_or_create {
     my $section       = shift;
 
     my $acct_checker = Socialtext::Authz::SimpleChecker->new(
-        user => $self->hub->current_user,
+        user      => $self->hub->current_user,
         container => $self->hub->current_workspace->account,
     );
     unless ($acct_checker->check_permission('admin')) {
@@ -490,13 +490,13 @@ sub _workspace_clone_or_create {
         Socialtext::WebApp::Exception::Redirect->throw('?');
     }
 
-    if ( $self->cgi->Button ) {
+    if ($self->cgi->Button) {
         my $ws = $self->_create_workspace();
 
-        if ( $ws ) {
+        if ($ws) {
             my $url = 'action=workspaces_created;workspace_id='
                 . $ws->workspace_id;
-            $self->redirect( $url );
+            $self->redirect($url);
         }
     }
 
