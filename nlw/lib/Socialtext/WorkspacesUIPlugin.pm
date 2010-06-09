@@ -477,25 +477,16 @@ sub _workspace_clone_or_create {
     unless ($has_perm_acct_admin) {
         # WS Admins get shown a page of instructions
         if ($has_perm_ws_admin) {
-            my $settings_section = $self->template_process(
-                'element/settings/workspaces_cannot_create_section',
-                workspace => $self->hub->current_workspace,
-                $self->status_messages_for_template,
-            );
-            $self->screen_template('view/settings');
-            return $self->render_screen(
-                settings_table_id => 'settings-table',
-                settings_section  => $settings_section,
-                hub               => $self->hub,
-                display_title     => $display_title,
-                pref_list         => $self->_get_pref_list,
-            );
+            $section = 'workspaces_cannot_create_section';
         }
         # Everyone else gets thrown back from whence they came
-        Socialtext::WebApp::Exception::Redirect->throw('?');
+        else {
+            Socialtext::WebApp::Exception::Redirect->throw('?');
+        }
     }
 
-    if ($self->cgi->Button) {
+    # Only *Account* Admin's can create a new WS (not WS Admins)
+    if ($has_perm_acct_admin && $self->cgi->Button) {
         my $ws = $self->_create_workspace();
 
         if ($ws) {
