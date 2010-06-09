@@ -1787,8 +1787,12 @@ dl.form dt label {
 }
 
 dl.form {
-	width: 100%;
+	width: 97%;
 	clear: both;
+}
+
+dl.form p {
+	margin: 1em 0;
 }
 
 dl.form dd {

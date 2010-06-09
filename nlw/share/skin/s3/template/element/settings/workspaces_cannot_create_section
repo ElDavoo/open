@@ -1,19 +1,24 @@
 [%# vim: set et sts=2 sw=2: %]
 [%# @COPYRIGHT@ -%]
-<p>
-  In order to create a workspace, the Workspace must belong to a Group. You
-  can create a new Group, or add a workspace to an existing Group.
-</p>
-<p>
-  To add a workspace to an existing group, go to the
-  <a href="/st/groups">"Group Directory"</a>
-  under the Groups pulldown in the main navigation above, go to your chosen
-  group, click "Edit" and create the workspace. Currently, you can create a
-  new workspace only for a private group.
-</p>
-<p>
-  To add a workspace to a new group, go to
-  <a href="#" onclick="showCreateGroupLightbox(); return false">"Create Group"</a>
-  under the Groups pulldown in the main navigation above. From there, use the
-  "Workspaces" section to create your workspace.
-</p>
+<dl class="form">
+  <dt><label>[% loc('Create New Workspace') %]</label></dt>
+  <dd>
+    <p>
+      In order to create a workspace, the Workspace must belong to a Group.
+      You can create a new Group, or add a workspace to an existing Group.
+    </p>
+    <p>
+      To add a workspace to an existing group, go to the
+      <a href="/st/groups">"Group Directory"</a>
+      under the Groups pulldown in the main navigation above, go to your
+      chosen group, click "Edit" and create the workspace. Currently, you can
+      create a new workspace only for a private group.
+    </p>
+    <p>
+      To add a workspace to a new group, go to
+      <a href="#" onclick="showCreateGroupLightbox(); return false">"Create Group"</a>
+      under the Groups pulldown in the main navigation above. From there, use
+      the "Workspaces" section to create your workspace.
+    </p>
+  </dd>
+</dl>
