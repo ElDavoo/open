@@ -2,14 +2,16 @@
 
 * Fixture: SocialWidgets
 
-| set | spuser | spuser-%%start_time%%@ken.socialtext.net |
+| set | spshort | spuser%%start_time%% |
+| set | spuser | %%spshort%%@ken.socialtext.net |
 | create-user | %%spuser%% | %%password%% |
 | st-admin | enable-plugin --all-accounts --plugin signals |  |
 | st-logoutin | %%spuser%% |  |
 
 | *Comment* | Test Case: Signal From Profile. logged in user has empty "lastsignal" |  |
 
-| open_ok | /st/profile |  |
+| wait_for_element_visible_ok | link=%%spshort%% | 30000 |
+| click_and_wait | link=%%spshort%% |  |
 | wait_for_element_present_ok | //div[@id='lastsignal'] | 30000 |
 | wait_for_element_not_present_ok | //div[@id='lastsignal']/a | 5000 |
 
@@ -28,7 +30,8 @@
 | st-verify-text-in-activities-widget | activities | %%signal%% |
 
 | *Comment* | Test Case: Signal From Profile. Public mention appears in %%spuser%% profile activities widget |  |
-| open_ok | /st/profile |  |
+| wait_for_element_visible_ok | link=%%spshort%% | 30000 |
+| click_and_wait | link=%%spshort%% |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | spactivities |
 | st-widget-title-like | spactivities | Activities |
@@ -63,7 +66,8 @@
 | st-verify-text-in-activities-widget | activities | %%private%% |
 
 | *Comment* | Test Case: Signal From Profile. private mention appears in %%spuser%% profile activities widget |  |
-| open_ok | /st/profile |  |
+| wait_for_element_visible_ok | link=%%spshort%% | 30000 |
+| click_and_wait | link=%%spshort%% |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | spactivities |
 | st-widget-title-like | spactivities | Activities |

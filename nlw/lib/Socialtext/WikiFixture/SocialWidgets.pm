@@ -381,6 +381,7 @@ sub st_send_signal_within_activities_widget {
     $self->handle_command('wait_for_element_present_ok', 'mainWikiwyg', 5000);
     $self->handle_command('click_ok', 'mainWikiwyg');
 
+    $self->handle_command('set_Speed',4000);
     my $browser = $ENV{'selenium_browser'} || 'chrome';
     if ($browser=~/chrome|firefox/ig) {
         $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
@@ -401,6 +402,7 @@ sub st_send_signal_within_activities_widget {
     $self->handle_command('wait_for_element_visible_ok','post', 5000);
     $self->handle_command('click_ok','post');
     $self->handle_command('pause',3000); 
+    $self->handle_command('set_Speed',0);
 }
 
 =head2 st_send_signal_via_activities_widget 
