@@ -465,13 +465,18 @@ sub _workspace_clone_or_create {
     my $display_title = shift;
     my $section       = shift;
 
+    my $ws_checker   = $self->hub->checker;
     my $acct_checker = Socialtext::Authz::SimpleChecker->new(
         user      => $self->hub->current_user,
         container => $self->hub->current_workspace->account,
     );
-    unless ($acct_checker->check_permission('admin')) {
+
+    my $has_perm_ws_admin = $ws_checker->check_permission('admin_workspace');
+    my $has_perm_admin    = $acct_checker->check_permission('admin');
+
+    unless ($has_perm_admin) {
         # WS Admins get shown a page of instructions
-        if ($self->hub->checker->check_permission('admin_workspace')) {
+        if ($has_perm_ws_admin) {
             my $settings_section = $self->template_process(
                 'element/settings/workspaces_cannot_create_section',
                 workspace => $self->hub->current_workspace,
