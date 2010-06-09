@@ -8,7 +8,7 @@ widgets:
   - include
   - section
   - recent_changes
-  - signaltag
+  - hashtag
   - tag
   - tag_list
   - weblog
@@ -230,11 +230,11 @@ widget:
         - { field: label, text: "weblog: %label" }
         - { field: default, text: "weblog: %weblog_name" }
 
-  signaltag:
-    id: signaltag
+  hashtag:
+    id: hashtag
     label: Signal Tag Link
     color: green
-    pattern: '{signaltag: %tag}'
+    pattern: '{hashtag: %tag}'
     fields: [tag]
     title: Link to tag '$tag'. Click to edit.
     required: [tag]
