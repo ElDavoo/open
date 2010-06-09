@@ -45,11 +45,13 @@ sub _build_field_map {
 sub _build_searchable_fields { 
     my $self = shift;
     [
+        # General fields - multi-type
+        qw/tag body w doctype id creator creator_name tag date created/,
         # Page / attachment fields:
-        qw/title tag body w/,
+        qw/title/,
         # Signal fields:
-        qw/w doctype id creator body pvt dm_recip a g reply_to mention
-           link_page_key link_w link date created is_question creator_name
+        qw/pvt dm_recip a g reply_to mention
+           link_page_key link_w link is_questio 
            annotation filename/,
         # People fields: (keys AND values)
         %{ $self->field_map },
