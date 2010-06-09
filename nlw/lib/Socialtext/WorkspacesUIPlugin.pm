@@ -472,11 +472,18 @@ sub _workspace_clone_or_create {
     unless ($acct_checker->check_permission('admin')) {
         # WS Admins get shown a page of instructions
         if ($self->hub->checker->check_permission('admin_workspace')) {
-            $self->screen_template('view/ws-admin-cannot-create-ws');
+            my $settings_section = $self->template_process(
+                'element/settings/workspaces_cannot_create_section',
+                workspace => $self->hub->current_workspace,
+                $self->status_messages_for_template,
+            );
+            $self->screen_template('view/settings');
             return $self->render_screen(
-                hub           => $self->hub,
-                display_title => $display_title,
-                pref_list     => $self->_get_pref_list,
+                settings_table_id => 'settings-table',
+                settings_section  => $settings_section,
+                hub               => $self->hub,
+                display_title     => $display_title,
+                pref_list         => $self->_get_pref_list,
             );
         }
         # Everyone else gets thrown back from whence they came
