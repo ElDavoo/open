@@ -38,7 +38,8 @@ sub create_grammar {
     };
 
     $grammar->{hashtag} = {
-        match => qr/#(\S+)/,
+        # Only match after a space or beginning
+        match => qr/(?<!\S)#(\p{IsWord}+)/,
         filter => sub {
             my $node = shift;
             $self->{receiver}->insert({
