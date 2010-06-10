@@ -5,6 +5,7 @@ use warnings;
 use base 'Socialtext::WikiText::Emitter::Messages::Base';
 use Socialtext::l10n qw/loc/;
 use Socialtext::Formatter::AbsoluteLinkDictionary;
+use Socialtext::String;
 use Readonly;
 
 Readonly my %markup => (
@@ -39,10 +40,11 @@ sub msg_format_link {
 sub msg_format_hashtag {
     my $self = shift;
     my $ast = shift;
+    my $hashtag = Socialtext::String::uri_escape(qq["$ast->{text}"]);
     my $url = $self->link_dictionary->format_link(
         url_prefix => $self->{callbacks}{baseurl} || "",
         link => 'signal_hashtag',
-        hashtag => $ast->{text},
+        hashtag => $hashtag,
     );
     return qq{#<a href="$url">$ast->{text}</a>};
 }
