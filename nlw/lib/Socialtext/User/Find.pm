@@ -77,9 +77,9 @@ has 'sql_cols' => (
 );
 sub _build_sql_cols {
     my $self = shift;
-    my @cols = 'DISTINCT users.user_id', 'display_name';
+    my @cols = ('DISTINCT users.user_id', 'display_name');
     if ($self->minimal < 2) {
-        push @cols, 'first_name', 'last_name', 'display_name',
+        push @cols, 'first_name', 'last_name',
             'email_address', 'driver_username';
     }
     return \@cols;
