@@ -46,7 +46,7 @@
         var self = this;
 
         if (this.opts.clickCurrentButton) {
-            this.opts.clickCurrentButton.click(function() {
+            this.opts.clickCurrentButton.unbind('click').click(function() {
                 self.clickCurrent();
                 return false;
             });
@@ -436,6 +436,9 @@
             if (selitem.length && selitem.attr('value')) {
                 this.accept(selitem.attr('value'));
             }
+        }
+        else if (!this.opts.requireMatch) {
+            this.acceptInputValue();
         }
     };
 
