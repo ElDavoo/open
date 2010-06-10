@@ -149,7 +149,7 @@ field group => '/?group/%{group_id}';
 
 field signal         => '/st/signals/%{signal_hash}';
 field signal_reply   => '/st/signals/%{in_reply_to_hash}?r=%{signal_hash}';
-field signal_hashtag => '/?action=search_signals&search_term=tag:%{hashtag}';
+field signal_hashtag => '/?action=search_signals&search_term=tag:%{hashtag}&sortby=newest';
 
 =head1 METHODS
 
