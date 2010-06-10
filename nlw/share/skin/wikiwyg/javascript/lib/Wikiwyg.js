@@ -1591,7 +1591,7 @@ proto.set_config = function(user_config) {
 }
 
 proto.merge_config = function(key, value) {
-    if (value instanceof Array) {
+    if (value instanceof Array || value instanceof Function) {
         this.config[key] = value;
     }
     // cross-browser RegExp object check

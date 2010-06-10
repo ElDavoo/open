@@ -36,6 +36,7 @@ proto.config = {
     iframeId: null,
     iframeObject: null,
     disabledToolbarButtons: [],
+    editHandler: undefined,
     editHeightMinimum: 150,
     editHeightAdjustment: 1.3,
     clearRegex: null,
@@ -2953,6 +2954,13 @@ proto.hookLookaheads = function() {
 }
 
 proto.getWidgetInput = function(widget_element, selection, new_widget) {
+    // Allow this function to be overridden by an editHandler (used in the
+    // activities widget currently)
+    if (jQuery.isFunction(this.config.editHandler)) {
+        this.config.editHandler(widget_element, selection, new_widget);
+        return;
+    }
+
     if ( Wikiwyg.Widgets.widget_editing > 0 )
         return;
     Wikiwyg.Widgets.widget_editing++;
