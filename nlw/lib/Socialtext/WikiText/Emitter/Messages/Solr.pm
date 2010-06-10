@@ -31,6 +31,12 @@ sub msg_format_user {
     return $self->user_as_username( $ast );
 }
 
+sub msg_format_hashtag {
+    my $self = shift;
+    my $ast = shift;
+    return "#$ast->{text}";
+}
+
 sub user_as_username {
     my $self = shift;
     my $ast  = shift;

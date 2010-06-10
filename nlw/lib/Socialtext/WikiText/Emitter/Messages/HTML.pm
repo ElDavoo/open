@@ -36,6 +36,17 @@ sub msg_format_link {
     return qq{<a href="$url">$ast->{text}</a>};
 }
 
+sub msg_format_hashtag {
+    my $self = shift;
+    my $ast = shift;
+    my $url = $self->link_dictionary->format_link(
+        url_prefix => $self->{callbacks}{baseurl} || "",
+        link => 'signal_hashtag',
+        hashtag => $ast->{text},
+    );
+    return qq{#<a href="$url">$ast->{text}</a>};
+}
+
 sub msg_format_user {
     my $self = shift;
     my $ast = shift;

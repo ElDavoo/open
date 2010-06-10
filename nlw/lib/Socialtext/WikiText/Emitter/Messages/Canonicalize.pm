@@ -31,6 +31,12 @@ sub msg_format_link {
     return "{$ast->{wafl_type}: $ast->{wafl_string}}"
 }
 
+sub msg_format_hashtag {
+    my $self = shift;
+    my $ast = shift;
+    return "{hashtag: $ast->{text}}";
+}
+
 sub msg_format_user {
     my $self = shift;
     my $ast = shift;
