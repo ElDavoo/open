@@ -29,7 +29,7 @@ sub insert {
     }
 
     if ($self->{callbacks}{noun_link}) {
-        if ($ast->{wafl_type} eq 'link' || $ast->{wafl_type} eq 'user') {
+        if ($ast->{wafl_type} =~ m{(?:link|user|hashtag)}) {
             $self->{callbacks}{noun_link}->($ast);
         }
     }
@@ -39,6 +39,9 @@ sub insert {
     }
     elsif ( $ast->{wafl_type} eq 'user' ) {
         $self->{output} .= $self->msg_format_user($ast);
+    }
+    elsif ( $ast->{wafl_type} eq 'hashtag' ) {
+        $self->{output} .= $self->msg_format_hashtag($ast);
     }
     else {
         $self->{output} .= "{$ast->{wafl_type}: $ast->{wafl_string}}";
@@ -50,6 +53,7 @@ sub insert {
 sub msg_markup_table { die 'subclass must override msg_markup_table' }
 sub msg_format_user { die 'subclass must override msg_format_user' }
 sub msg_format_link { die 'subclass must override msg_format_link' }
+sub msg_format_hashtag { die 'subclass must override msg_format_hashtag' }
 
 sub begin_node { my $self=shift; $self->_markup_node(0,@_) }
 sub end_node   { my $self=shift; $self->_markup_node(1,@_) }

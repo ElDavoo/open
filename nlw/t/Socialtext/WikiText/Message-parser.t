@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 # do *not* `use utf8` here
-use Test::Socialtext tests => 3 + 2*10;
+use Test::Socialtext tests => 3 + 2*14;
 
 use_ok 'Socialtext::WikiText::Parser::Messages';
 use_ok 'Socialtext::WikiText::Emitter::Messages::Canonicalize';
@@ -17,9 +17,9 @@ for my $type (qw(Canonicalize HTML)) {
     my $parser = make_parser($type);
     isa_ok $parser, 'Socialtext::WikiText::Parser::Messages';
 
-    ok $parser->parse('{user: 1} {link: admin [Admin Wiki]} {user: 2} "Named"{link: foo [bar]}'),
+    ok $parser->parse('{user: 1} {link: admin [Admin Wiki]} {user: 2} "Named"{link: foo [bar]} #tag {hashtag: other tag}'),
         'parsed alright';
-    is scalar(@links), 4, 'three links';
+    is scalar(@links), 6, 'six links';
 
     is $links[0]->{wafl_type}, 'user';
     is $links[0]->{user_string}, '1', 'user 1 is first';
@@ -31,6 +31,12 @@ for my $type (qw(Canonicalize HTML)) {
 
     is $links[3]->{wafl_type}, 'link', 'then a link';
     is $links[3]->{text}, 'Named', 'the link is named';
+
+    is $links[4]->{wafl_type}, 'hashtag', 'then a hashtag';
+    is $links[4]->{text}, 'tag', 'tag is named';
+
+    is $links[5]->{wafl_type}, 'hashtag', 'then a hashtag';
+    is $links[5]->{text}, 'other tag', 'tag is named';
 }
 
 sub make_parser {
