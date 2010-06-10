@@ -112,9 +112,10 @@
 | pause | 8000 | I hate pause |
 | text_unlike | contentRight | wikitestzip.zip |
 
-| *Comment* | Test Case: Manage Files test extracted txt file |  |
-| click_and_wait | //a[contains(@href,'original/O%20Star.txt')] |  |
-| text_like | Not stooping from its sphere |  |
+| *Comment* | Test Case: Manage Files test extracted txt file (Temporarily disabled) |  |
+
+FireFOX 3.6 can not open this in-line /w selenium | click_and_wait | //a[contains(@href,'original/O%20Star.txt')] | |
+FireFOX 3.6 can not open this in-line /w selenium | text_like | Not stooping from its sphere | |
 
 | *Comment* | Test Case: Manage Files Teardown |  |
 | st-admin | purge-page --workspace %%workspace%% --page manage_files_%%start_time%% | was purged |
