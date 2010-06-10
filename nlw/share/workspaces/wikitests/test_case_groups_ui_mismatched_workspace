@@ -16,7 +16,7 @@
 | wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. We will be adding the ability to add workspaces to this group soon. | 30000 |  |
 | select-frame | relative=parent |  |  |
 | click_and_wait | create-group |  |  |
-| get_id_from_url | first_group_id |  |
+| get_id_from_url | first_group_id |  |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace Change group to private |  |
 | st-name-widget | 1 | information_widget |
@@ -53,6 +53,22 @@
 | select-frame | relative=parent |  |
 | click_and_wait | create-group |  |
 
+| *Comment* | Test Case: Groups UI mismatched Workspace (Group that became a) private Group Does not show change button when a ws is added |  |
+| st-admin | add-member --g %%first_group_id%% --w %%ws_private%% |  |
+| open_ok | / |  |
+| wait_for_element_present_ok | link=%%group_self_join%% | 30000 |
+| click_and_wait | link=%%group_self_join%% |  |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_ok | link=(Edit) | 30000 |
+| wait_for_element_visible_ok | name | 30000 |
+| wait_for_element_visible_ok | description | 30000 |
+| wait_for_element_not_present_ok | permission-change | 30000 |
+| pause | 12000 | this is an important pause |
+| text_like | //div[@class='empty_message'] | Currently, you cannot change a group's permission settings |
+| select-frame | relative=parent |  |
+
 | *Comment* | Test Case: Groups UI mismatched Workspace SETUP Private Group becomes Self-join |  |  |
 | set | group_private | grp-private-%%start_time%% |  |
 | st-create-group | %%group_private%% | group description | private-radio |
@@ -75,33 +91,17 @@
 | st-select-widget-frame | information_widget |  |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |  |
 | click_ok | link=(Edit) | 30000 |  |
-| wait_for_element_visible_ok | name | 30000 |
-| wait_for_element_visible_ok | description | 30000 |
+| wait_for_element_visible_ok | name | 30000 |  |
+| wait_for_element_visible_ok | description | 30000 |  |
 | select-frame | relative=parent |  |  |
 | st-name-widget | 2 | workspaces_widget |  |
 | st-select-widget-frame | workspaces_widget |  |  |
-| wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. | 30000 |
-| wait_for_text_present_ok | We will be adding the ability to add workspaces to this group soon. | 30000 |
+| wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. | 30000 |  |
+| wait_for_text_present_ok | We will be adding the ability to add workspaces to this group soon. | 30000 |  |
 | select-frame | relative=parent |  |  |
 | click_and_wait | create-group |  |  |
-
-| *Comment* | Test Case: Groups UI mismatched Workspace Private Group Does not show change button when a ws is added |  |
-| get_id_from_url | new_group_id |  |
-| st-admin | add-member --g %%new_group_id%% --w %%ws_private%% |  |
-| open_ok | / |  |
-| wait_for_element_present_ok | link=%%group_private%% | 30000 |
-| click_and_wait | link=%%group_private%% |  |
-| st-name-widget | 1 | information_widget |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_ok | link=(Edit) | 30000 |
-| wait_for_element_visible_ok | name | 30000 |
-| wait_for_element_visible_ok | description | 30000 |
-| wait_for_element_not_present_ok | permission-change | 30000 |
-
-this fails but matt sees the text int the GUI: | wait_for_text_present_ok | Currently, you cannot change a group's permission settings from private to self-join unless you remove the workspace associations first. | 30000 |
-
 | select-frame | relative=parent |  |
+| get_id_from_url | new_group_id |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace TEARDOWN |  |
 | st-admin | delete-group --g %%first_group_id%% | Deleted group id |
