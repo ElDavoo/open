@@ -64,6 +64,7 @@
         set $container $1;
         rewrite ^/$ /st/$container? redirect;
     }
+    rewrite ^/st/people$  /?action=people    redirect;
 
     rewrite ^/control/   /nlw/control/  redirect;
 
