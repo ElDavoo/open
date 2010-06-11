@@ -169,6 +169,7 @@ server {
     ssl_certificate_key [% config.ssl_base_dir %]/private/[% config.ssl_name %].key;
 
     ssl_ciphers HIGH:MEDIUM:!ADH;
+    ssl_protocols SSLv3 TLSv1;
 
     [% server_common( config.backend_ports.https, 1 ) %]
 }
