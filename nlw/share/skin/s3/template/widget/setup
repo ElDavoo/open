@@ -2,7 +2,7 @@
 
     [% FOR pref = gadget.preferences %]
         [% IF pref.datatype == 'hidden' %]
-            <input name="up_[% pref.name %]" type="hidden" value="[% pref.value %]"/>
+            <input name="[% pref.name %]" type="hidden" value="[% pref.value %]"/>
         [% END %]
     [% END %]
 
@@ -16,7 +16,7 @@
                 <th>[% pref.display_name %]:</th>
                 <td>
                 [% IF pref.datatype == 'enum' %]
-                    <select name="up_[% pref.name %]">
+                    <select name="[% pref.name %]">
                         [% FOR item = pref.options %]
                             [% selected = '' %]
                             [% IF pref.value == item.value %]
@@ -28,7 +28,7 @@
                         [% END %]
                     </select>
                 [% ELSIF pref.datatype == 'workspace' %]
-                    <select class="workspace_setting" name="up_[% pref.name %]">
+                    <select class="workspace_setting" name="[% pref.name %]">
                         [% UNLESS pref.required %]
                             <option value="" [% IF pref.value == '' %]selected="selected"[% END %]>All</option>
                         [% END %]
@@ -43,7 +43,7 @@
                     <input value="[% user.accounts.0.name %]" type="hidden"/>
                     <div class="fixedSetting">[% user.accounts.0.name %]</div>
                     [% ELSE %]
-                    <select class="account_setting" name="up_[% pref.name %]">
+                    <select class="account_setting" name="[% pref.name %]">
                     [% UNLESS pref.required %]
                         <option value="" [% IF pref.value == '' %]selected="selected"[% END %]>All</option>
                     [% END %]
@@ -55,11 +55,11 @@
                     </select>
                     [% END %]
                 [% ELSIF pref.datatype == 'page' %]
-                    <input value="[% pref.value %]" name="up_[% pref.name %]" class="page_setting"/>
+                    <input value="[% pref.value %]" name="[% pref.name %]" class="page_setting"/>
                 [% ELSIF pref.datatype == 'bool' %]
-                    <input name="up_[% pref.name %]" type="checkbox" value="true" [% IF pref.value == 'true' %]checked="checked"[% END %]/>
+                    <input name="[% pref.name %]" type="checkbox" value="true" [% IF pref.value == 'true' %]checked="checked"[% END %]/>
                 [% ELSE %]
-                    <input name="up_[% pref.name %]" type="text" value="[% pref.value %]"/>
+                    <input name="[% pref.name %]" type="text" value="[% pref.value %]"/>
                 [% END %]
                 </td>
         </tr>
