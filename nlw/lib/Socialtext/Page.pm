@@ -782,6 +782,7 @@ sub add_tags {
         my $meta = $self->metadata;
         my %tags_added;
         foreach my $tag (@tags) {
+            warn $tag;
             my $added = $meta->add_category($tag);
             $tags_added{$tag} = 1;
         }
