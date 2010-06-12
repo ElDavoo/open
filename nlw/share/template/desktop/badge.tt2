@@ -133,11 +133,13 @@ so.addParam("allowScriptAccess", "always");
 var prevHTML;
 
 function hide_swfobject () {
-    $('#flashcontent').html(prevHTML);
-    $('#getThings').show();
-    $('.target').text('Adobe AIR 2');
-    $('.getFlash').hide();
-    $('.getAIR').show();
+    setTimeout(function(){
+        $('#flashcontent').html(prevHTML);
+        $('#getThings').show();
+        $('.target').text('Adobe AIR 2');
+        $('.getFlash').hide();
+        $('.getAIR').show();
+    }, 100);
 }
 
 prevHTML = $('#flashcontent').html();
