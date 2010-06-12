@@ -135,7 +135,7 @@ var prevHTML;
 function hide_swfobject () {
     $('#flashcontent').html(prevHTML);
     $('#getThings').show();
-    $('.target').text('Adobe AIR');
+    $('.target').text('Adobe AIR 2');
     $('.getFlash').hide();
     $('.getAIR').show();
 }
