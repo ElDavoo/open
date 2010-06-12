@@ -5,6 +5,10 @@
             <script src="[% script %]"></script>
         [% END %]
         [% INCLUDE syndicator %]
+  
+        [%- FOREACH css_file IN css.widget -%]
+            <link rel="stylesheet" type="text/css" href="[% css_file %]"/>
+        [% END %]
 
         <script>
             var msgs = [% as_json(messages) %];
