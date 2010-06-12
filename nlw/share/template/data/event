@@ -77,11 +77,9 @@
         <img class="asset-icon" src="[% skin_uri('/images/asset-icons/edit-16.png') %]"/>
     [%- END -%]
 [%- ELSE -%]
-    [%- actor -%]
-    [%- ago UNLESS no_ago -%]
-
+    [%- actor -%] [%+ ago UNLESS no_ago -%]
     [%- TRY -%]
-        [%- INCLUDE "data/events/$event_class" -%]
+        [%- INCLUDE "data/events/$event_class" out=out -%]
     [%- CATCH -%]
         [%- loc('Unknown event class: [_1]', event.event_class) -%]
     [%- END -%]
