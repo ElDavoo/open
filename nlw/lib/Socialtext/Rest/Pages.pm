@@ -15,6 +15,7 @@ use Socialtext::String;
 use Socialtext::Timer;
 use Socialtext::JSON;
 use Socialtext::l10n qw/loc/;
+use Try::Tiny;
 
 $JSON::UTF8 = 1;
 
@@ -49,7 +50,13 @@ sub get_resource {
 
     my $search_query = $self->rest->query->param('q');
     if (defined $search_query and length $search_query) {
-        return $self->SUPER::get_resource();
+        my $rv;
+        try { $rv = $self->SUPER::get_resource() }
+        catch {
+            warn "Page query failed, returning empty result set: $_";
+            $rv = [];
+        };
+        return $rv;
     }
     return [$self->_hashes_for_query];
 }
@@ -209,6 +216,7 @@ sub _searched_pages {
         $self->{_too_many} = $@->num_results;
         return ();
     }
+    elsif ($@) { die $@ }
 
     my @all_pages;
     for my $workspace_name (sort keys %page_ids_by_workspace) {
