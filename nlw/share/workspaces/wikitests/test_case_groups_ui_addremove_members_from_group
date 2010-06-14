@@ -3,7 +3,7 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group: Setup |  |  |
-| *Comment* | Test Case: Groups UI AddRemove Members From Group: Emails cannot have dashes due to {bz 3037}: Page lookahead fails on punctuation |  |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group: Emails cannot have dashes due to {bz: 3037}: Page lookahead fails on punctuation |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
 | enable-acct-plugin | signals | %%group_acct%% |  |
 | set | grp_mbr_short | guimbr%%start_time%% |  |
@@ -29,13 +29,14 @@
 | wait_for_element_visible_ok | link=%%group_user%% | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups UI AddRemove Members From Group. Click link=(Edit) |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. Open for editing |  |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
 | select-frame | relative=parent |  |
+
+| open_ok | /st/edit_group/%%group_id%% |  |
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group. Click Trash Can for %%grp_mbr%%, user is gone |  |
 | st-name-widget | 3 | membership_widget |
@@ -48,7 +49,7 @@
 | wait_for_element_visible_ok | %%mbr_user_id%% | 30000 |
 | click_ok | %%mbr_user_id%% |  |
 
-| *Comment* | Test Case: Groups UI AddRemove Members From Group. Find element after typeahead (borked now) {bz 3479} |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. Find element after typeahead (borked now) {bz: 3479} |  |
 | wait_for_element_visible_ok | lookahead | 30000 |
 | type-lookahead-ok | lookahead | %%non_grp_mbr_bestfull%% |
 | wait_for_element_present_ok | //a[@class=lookaheadItem] | 30000 |
@@ -69,13 +70,14 @@
 | text_unlike | //body | %%grp_mbr%% |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups UI AddRemove Members From Group. Click Edit Again |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. Edit Again |  |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
 | select-frame | relative=parent |  |
+
+| open_ok | /st/edit_group/%%group_id%% |  |
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group. Flip Changes - remove %%non_grp_mbr%%, add %%grp_mbr%% |  |
 | st-name-widget | 3 | membership_widget |

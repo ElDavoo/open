@@ -22,28 +22,43 @@
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
+
+| select-frame | relative=parent |  |
+| open_ok | /st/edit_group/%%first_group_id%% |  |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+
 | wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |
 | pause | 6000 |  |
 | select-frame | relative=parent |  |
+
 | wait_for_element_present_ok | st-create-group-next | 30000 |
 | wait_for_element_present_ok | private-radio | 30000 |
 | check_ok | private-radio |  |
 | click_ok | st-create-group-next |  |
 | pause | 6000 |  |
+
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | wait_for_text_present_ok | private | 30000 |
 | select-frame | relative=parent |  |
+
 | click_and_wait | create-group |  |
+
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_ok | link=(Edit) |  |
+
+| select-frame | relative=parent |  |
+| open_ok | /st/edit_group/%%first_group_id%% |  |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+
 | wait_for_element_visible_ok | name | 30000 |
 | wait_for_element_visible_ok | description | 30000 |
 | select-frame | relative=parent |  |
+
 | st-name-widget | 2 | workspaces_widget |
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_text_present_ok | Use the input above to select workspaces to associate with this group. | 30000 |
@@ -54,6 +69,7 @@
 | click_and_wait | create-group |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace (Group that became a) private Group Does not show change button when a ws is added |  |
+
 | st-admin | add-member --g %%first_group_id%% --w %%ws_private%% |  |
 | open_ok | / |  |
 | wait_for_element_present_ok | link=%%group_self_join%% | 30000 |
@@ -61,7 +77,12 @@
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_ok | link=(Edit) | 30000 |
+
+| select-frame | relative=parent |  |
+| open_ok | /st/edit_group/%%first_group_id%% |  |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+
 | wait_for_element_visible_ok | name | 30000 |
 | wait_for_element_visible_ok | description | 30000 |
 | wait_for_element_not_present_ok | permission-change | 30000 |
@@ -74,38 +95,49 @@
 | st-create-group | %%group_private%% | group description | private-radio |
 | wait_for_element_visible_ok | create-group | 30000 |  |
 | click_and_wait | create-group |  |  |
+| get_id_from_url | private_id |  |  |
+
 | st-name-widget | 1 | information_widget |  |
 | st-select-widget-frame | information_widget |  |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |  |
-| click_ok | link=(Edit) |  |  |
-| wait_for_element_visible_ok | permission-change | 30000 |  |
-| click_ok | permission-change |  |  |
-| pause | 6000 |  |  |
 | select-frame | relative=parent |  |  |
-| wait_for_element_present_ok | st-create-group-next | 30000 |  |
-| wait_for_element_present_ok | self-join-radio | 30000 |  |
-| check_ok | self-join-radio |  |  |
-| click_ok | st-create-group-next |  |  |
-| click_and_wait | create-group |  |  |
-| st-name-widget | 1 | information_widget |  |
-| st-select-widget-frame | information_widget |  |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |  |
-| click_ok | link=(Edit) | 30000 |  |
+
+| open_ok | /st/edit_group/%%private_id%% |  |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | permission-change | 30000 |
+| click_ok | permission-change |  |
+| pause | 6000 |  |
+| select-frame | relative=parent |  |
+| wait_for_element_present_ok | st-create-group-next | 30000 |
+| wait_for_element_present_ok | self-join-radio | 30000 |
+| check_ok | self-join-radio |  |
+| click_ok | st-create-group-next |  |
+| click_and_wait | create-group |  |
+
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+
+| select-frame | relative=parent |  |
+| open_ok | /st/edit_group/%%private_id%% |  |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+
 | wait_for_element_visible_ok | name | 30000 |  |
 | wait_for_element_visible_ok | description | 30000 |  |
 | select-frame | relative=parent |  |  |
+
 | st-name-widget | 2 | workspaces_widget |  |
 | st-select-widget-frame | workspaces_widget |  |  |
 | wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. | 30000 |  |
 | wait_for_text_present_ok | We will be adding the ability to add workspaces to this group soon. | 30000 |  |
 | select-frame | relative=parent |  |  |
 | click_and_wait | create-group |  |  |
-| select-frame | relative=parent |  |
-| get_id_from_url | new_group_id |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace TEARDOWN |  |
 | st-admin | delete-group --g %%first_group_id%% | Deleted group id |
-| st-admin | delete-group --g %%new_group_id%% | Deleted group id |
+| st-admin | delete-group --g %%private_id%% | Deleted group id |
 | st-admin | delete-workspace --workspace %%ws_private%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace COMPLETED |  |

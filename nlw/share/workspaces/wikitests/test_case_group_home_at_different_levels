@@ -34,7 +34,7 @@
 | select-frame | relative=parent |  |
 | st_verify_text_in_activities_widget | signals_widget | to the group |
 | st_verify_text_in_activities_widget | signals_widget | to the workspace |
-| st-select-widget-frame | members_widget |
+| st-select-widget-frame | members_widget |  |
 | text_like | //body | %%group_user_short%% |
 | select-frame | relative=parent |  |
 
@@ -46,14 +46,15 @@
 | wait_for_element_not_present_ok | st-join-group | 30000 |
 
 | st-logoutin | %%non_account_user%% | %%password%% |
-| st_open_noeval | /st/group/%%private_grp_id%% |
+| st_open_noeval | /st/group/%%private_grp_id%% |  |
 | text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
 | text_unlike | //body | %%group_name%% |
 | wait_for_element_not_present_ok | st-join-group | 30000 |
 
 | *Comment* | Group Home at Different Levels Make %%self_join_grp_id%% a self-join group |  |
-| st-logoutin |  |
+| st-logoutin |  |  |
 | st-admin | add-group-admin --e %%username%% --g %%self_join_grp_id%% | is now a admin |
+
 | open_ok | /st/group/%%self_join_grp_id%% |  |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
@@ -61,7 +62,11 @@
 | text_like | //body | Group Type private |
 | text_unlike | //body | Group Type self-join |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
+| select-frame | relative=parent |  |
+
+| *Comment* | Group Home at Different Levels do not click Edit, wrong frame level |  |
+| open_ok | /st/edit_group/%%self_join_grp_id%% |  |
+
 | wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |
 | pause | 8000 |  |
@@ -104,7 +109,7 @@
 
 | st_verify_text_in_activities_widget | signals_widget | added %%short_username%% to the group |
 
-| st-select-widget-frame | members_widget |
+| st-select-widget-frame | members_widget |  |
 | text_like | //body | %%group_user_short%% |
 | select-frame | relative=parent |  |
 
@@ -128,7 +133,7 @@
 
 | st_verify_text_in_activities_widget | signals_widget | added %%short_username%% to the group |
 
-| st-select-widget-frame | members_widget |
+| st-select-widget-frame | members_widget |  |
 | text_like | //body | %%group_user_short%% |
 | select-frame | relative=parent |  |
 

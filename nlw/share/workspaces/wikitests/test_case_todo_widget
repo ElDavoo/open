@@ -9,8 +9,7 @@
 | st-widget-title-like | todo_widget | ToDo |
 | st-select-widget-frame | todo_widget |  |
 | text_like | //body | New task |
-| text_like | //body | New list |
-| pause | 5000 |  |
+
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: ToDo Widget COMPLETED |  |

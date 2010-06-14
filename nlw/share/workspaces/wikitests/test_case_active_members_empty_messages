@@ -16,7 +16,7 @@
 | st-name-widget | 1 | active_members |
 | st-widget-title-like | active_members | Active People |
 | st-widget-settings | active_members |  |
-| uncheck_ok | up_rotate |  |
+| uncheck_ok | rotate |  |
 | click_ok | st-savebutton-%%active_members%% |  |
 | wait_for_element_not_visible_ok | st-savebutton-%%active_members%% | 10000 |
 

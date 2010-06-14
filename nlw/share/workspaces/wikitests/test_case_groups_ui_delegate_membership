@@ -4,14 +4,17 @@
 
 | *Comment* | Test Case: Groups UI Delegate Membership Setup |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
-|  | enable-acct-plugin | signals | %%group_acct%% |  |
-| set | grp_mbr_short | guimbr%%start_time%% |  |
-| set | grp_mbr_bestfull | guimbr%%start_time%% |  |
-| set | grp_mbr | %%grp_mbr_short%%@matt.socialtext.net |  |
+| enable-acct-plugin | signals | %%group_acct%% |  |
+
+| set | grp_mbr_short | guimbr%%start_time%% |
+| set | grp_mbr_bestfull | guimbr%%start_time%% |
+| set | grp_mbr | %%grp_mbr_short%%@matt.socialtext.net |
+
 | create-user | %%grp_mbr%% | %%password%% | %%group_acct%% |
-| set | mbr_user_id | %%user_id%% |  |
-| st-admin | add-member --group %%group_id%% --email %%grp_mbr%% | is now a member of the %%group_name%% Group |  |
-| st-admin | add-group-admin --e %%username%% --g %%group_id%% |  |  |
+
+| set | mbr_user_id | %%user_id%% |
+| st-admin | add-member --group %%group_id%% --email %%grp_mbr%% | is now a member of the %%group_name%% Group |
+| st-admin | add-group-admin --e %%username%% --g %%group_id%% |  |
 
 | *Comment* | Test Case: Groups UI ADelegate Membership - Open The Group |  |
 | open_ok | /st/group/%%group_id%%/ |  |
@@ -72,7 +75,7 @@
 | *Comment* | Test Case: Groups UI Delegate Membership - You can not remove all admins |  |
 | st-admin | remove-member --g %%group_id%% --email %%username%% |  |
 | st-admin | remove-member --g %%group_id%% --email %%grp_mbr%% |  |
-| st-admin | add-group-admin --e %%group_user%% --g %%group_id%% |  |  |
+| st-admin | add-group-admin --e %%group_user%% --g %%group_id%% |  |
 
 | *Comment* | Test Case: Groups UI Delegate Membership Set single element to Admin, click member, still see Admin! |  |
 | st-logoutin | %%group_user%% | %%password%% |

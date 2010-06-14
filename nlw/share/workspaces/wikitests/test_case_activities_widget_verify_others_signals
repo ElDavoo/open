@@ -11,10 +11,10 @@
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st-widget-settings | activities_widget |  |
-| wait_for_element_visible_ok | up_limit | 30000 |
-| select_ok | up_limit | 25 |
+| wait_for_element_visible_ok | limit | 30000 |
+| select_ok | limit | 25 |
 | click_ok | st-savebutton-%%activities_widget%% |  |
-| wait_for_element_not_visible_ok | up_limit | 30000 |
+| wait_for_element_not_visible_ok | limit | 30000 |
 
 | *Comment* | Test Case: Activities Widget Verify Others Signals. Signals in Dashboard Activities widget. |  |
 | wait_for_element_present_ok | link=signals | 10000 |

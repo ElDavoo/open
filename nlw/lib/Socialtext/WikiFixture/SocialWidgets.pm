@@ -149,6 +149,8 @@ whose value is the id of the widget (ie the value of __MODULE_ID__)
 
 sub st_name_widget {
     my ($self, $position, $logical) = @_;
+    diag "Called st_name_widget with '$logical'. Sleeping 5. "."\n";
+    sleep(5);
     eval {
         my @widgetlist = $self->_getWidgetList;
         $self->{_widgets}{$logical} = $widgetlist[$position-1];

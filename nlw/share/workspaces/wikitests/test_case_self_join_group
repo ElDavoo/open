@@ -27,7 +27,10 @@
 | st-logoutin | %%user%% | %%password%% |  |
 | st-create-group | %%public_group%% | public group | self-join-radio |
 
-| *Comment* | Self-join GROUP CREATED |
+| *Comment* | Test Case: Self Join Group - public group opened for editing |  |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
 
 | *Comment* | Test Case: Self Join Group - Change to private |  |
 | st-name-widget | 1 | information_widget |
@@ -39,12 +42,16 @@
 | wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |
 | select-frame | relative=parent |  |
+
 | wait_for_element_present_ok | st-create-group-next | 30000 |
 | wait_for_element_present_ok | st-lightbox-cancel-create-group | 3000 |
 | wait_for_element_present_ok | private-radio | 30000 |
 | click_ok | private-radio | 30000 |
 | click_ok | st-create-group-next |  |
-| pause | 10000 | This is an important pause |
+| *Comment* | Test Case: Self Join Group - Changed to private |  |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
 
 | st-select-widget-frame | information_widget |  |
 | text_like | //span[@id='permission-set'] | qr/private/ism |  |
@@ -53,12 +60,18 @@
 
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
-| get_id_from_url | first_group |  |  |
+| get_id_from_url | first_group |  |
 
 | *Comment* | Test Case: Self Join Group - See Group is changed to private |  |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
+
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| pause | 10000 | This is an important pause |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
 
 | text_like | //span[@class='permissionType'] | qr/private/ism |  |
 | text_unlike | //span[@class='permissionType'] | qr/self-join/ism |  |
@@ -70,6 +83,10 @@
 | st-create-group | %%private_group%% | private group | private-radio |
 
 | *Comment* | Test Case: Self Join Group - Save Private Group |  |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
+
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
@@ -79,17 +96,26 @@
 
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
+| get_id_from_url | second_id |  |
 
 | *Comment* | Test Case: Self Join Group - Edit Private Group, Flip Permissions |  |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
+
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
-
 | st-select-widget-frame | information_widget |  |
 | text_like | //span[@class='permissionType'] | qr/private/ism |
 | text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
 
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
+| select-frame | relative=parent |  |
+
+| open_ok | /st/edit_group/%%second_id%% |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
 
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
@@ -97,7 +123,9 @@
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |  |
-| pause | 8000 | This is an important pause |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
 
 | select-frame | relative=parent |  |
 | wait_for_element_present_ok | st-create-group-next | 30000 |
@@ -107,7 +135,9 @@
 | check_ok | self-join-radio |  |
 
 | click_ok | st-create-group-next |  |
-| pause | 8000 | This is an important pause |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
 
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
@@ -118,6 +148,9 @@
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
 | get_id_from_url | group_id |  |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
 
 | *Comment* | Test Case: Self Join Group - See Group is changed to self-join |  |
 
@@ -132,6 +165,9 @@
 | wait_for_element_visible_ok | st-leave-group | 30000 |
 | wait_for_text_present_ok | The group needs to include at least one admin. | 30000 |
 
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
+
 | st-name-widget | 4 | members_widget |
 | st-select-widget-frame | members_widget |
 | text_like | //body | %%user_short%% |
@@ -142,9 +178,15 @@
 | open_ok | /st/group/%%group_id%% |  |
 | wait_for_element_visible_ok | st-join-group | 30000 |
 | click_ok | st-join-group | 30000 |
-| pause | 8000 | This is an important pause |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
 
 | wait_for_element_visible_ok | st-leave-group | 30000 |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
+
 | st-name-widget | 4 | members_widget |
 | st-widget-title-like | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
@@ -154,7 +196,10 @@
 
 | *Comment* | Test Case: Self Join Group Leave as different user |  |
 | click_ok | st-leave-group | 30000 |
-| pause | 8000 | This is an important pause |
+
+| *Comment* | Test Case: Self Join Group PAUSE |  |
+| pause | 5000 |  |
+
 | wait_for_element_visible_ok | st-join-group | 30000 |
 
 | st-name-widget | 4 | members_widget |

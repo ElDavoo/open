@@ -16,8 +16,8 @@
 | st-name-widget | 1 | active_content |
 | st-widget-title-like | active_content | Active Content |
 | st-widget-settings | active_content |  |
-| uncheck_ok | up_rotate |  |
-| select_ok | up_view | Viewed Pages |
+| uncheck_ok | rotate |  |
+| select_ok | view | Viewed Pages |
 | click_ok | st-savebutton-%%active_content%% |  |
 | wait_for_element_not_visible_ok | st-savebutton-%%active_content%% | 30000 |
 

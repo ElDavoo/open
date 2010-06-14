@@ -4,7 +4,7 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Tag Cloud Widget. Create the workspace tags widget |  |
-| st-single-widget-in-dashboard | gallery-widget-Workspace Tags |   |
+| st-single-widget-in-dashboard | gallery-widget-Workspace Tags |  |
 
 | *Comment* | Test Case: Tag Cloud Widget. See the tags for workspace help-en |  |
 | wait_for_text_present_ok | Tags for help-en workspace | 30000 |
@@ -21,8 +21,8 @@
 | *Comment* | Test Case: Tag Cloud Widget. Set the widget for workspace test-data |  |
 | select-frame | relative=parent |  |
 | st-widget-settings | tag_cloud |  |
-| wait_for_element_visible_ok | up_workspace | 30000 |
-| select-ok | up_workspace | Canonical Test Data Set |
+| wait_for_element_visible_ok | workspace | 30000 |
+| select-ok | workspace | Canonical Test Data Set |
 | wait_for_element_visible_ok | st-savebutton-%%tag_cloud%% | 30000 |
 | click_ok | st-savebutton-%%tag_cloud%% |  |
 | wait_for_element_not_visible_ok | st-savebutton-%%tag_cloud%% | 30000 |

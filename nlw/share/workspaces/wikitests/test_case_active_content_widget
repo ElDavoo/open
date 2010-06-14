@@ -17,11 +17,11 @@
 | st_single_widget_in_dashboard | gallery-widget-Active Content |  |
 | st-name-widget | 1 | active_content |
 | st-widget-settings | active_content |  |
-| wait_for_element_visible_ok | up_workspace | 30000 |
-| uncheck_ok | up_rotate |  |
-| select_ok | up_workspace | %%acw%% |
+| wait_for_element_visible_ok | workspace | 30000 |
+| uncheck_ok | rotate |  |
+| select_ok | workspace | %%acw%% |
 | click_ok | st-savebutton-%%active_content%% |  |
-| wait_for_element_not_visible_ok | up_workspace | 30000 |
+| wait_for_element_not_visible_ok | workspace | 30000 |
 
 | *Comment* | Test Case: Active Content Widget Check the content of Viewed |  |
 | st-select-widget-frame | active_content |  |
@@ -94,12 +94,12 @@
 
 | *Comment* | Test Case: Active Content Widget Test Workspace Combo Box |  |
 | st-widget-settings | active_content |  |
-| wait_for_element_visible_ok | up_workspace | 30000 |
-| select_ok | up_workspace | %%acwnoresults%% |
-| uncheck_ok | up_rotate |  |
-| select_ok | up_view | Viewed Pages |
+| wait_for_element_visible_ok | workspace | 30000 |
+| select_ok | workspace | %%acwnoresults%% |
+| uncheck_ok | rotate |  |
+| select_ok | view | Viewed Pages |
 | click_ok | st-savebutton-%%active_content%% |  |
-| wait_for_element_not_visible_ok | up_workspace | 30000 |
+| wait_for_element_not_visible_ok | workspace | 30000 |
 | st-select-widget-frame | active_content |  |
 | wait_for_element_visible_ok | link=Edited | 30000 |
 | text_like | //body | Viewed |

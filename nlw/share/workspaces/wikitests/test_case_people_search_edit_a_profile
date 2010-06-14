@@ -42,12 +42,7 @@
 | type_ok | field_linkedin_url | %%default_field%% linkedin |
 | type_ok | field_facebook_url | %%default_field%% facebook |
 
-| *Comment* | Test Case: Edit Profile. Have to use click_ok and wait for First Last to appear on the profile page |  |
+| *Comment* | Test Case: Edit Profile. As of FF 3.6.3 and Se 1.0.x must exit after update_profile |  |
 | click_ok | update_profile |  |
-| wait_for_text_present_ok | %%first%% %%last%% | 30000 |
-| text_like | st-editing-tools-edit | %%first%% %%last%% |
-
-| *Comment* | Test Case: Edit Profile. Index %%first%% %%last%% profile |  |
-| st-process-jobs | PeopleIndex |  |
 
 | *Comment* | Test Case: People Search Edit a Profile COMPLETED |  |
