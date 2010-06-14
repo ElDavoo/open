@@ -6,7 +6,7 @@ use base 'Socialtext::Rest';
 
 use Socialtext::JSON;
 use Socialtext::HTTP ':codes';
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::AppConfig;
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
@@ -194,14 +194,10 @@ but subclasses can override this.
 
 sub _hashes_for_query {
     my $self = shift;
-
-    Socialtext::Timer->Continue('_entities_for_query');
+    my $t = time_scope '_entities_for_query';
     my @results =  $self->_entities_for_query;
-    Socialtext::Timer->Pause('_entities_for_query');
-    Socialtext::Timer->Continue('_entity_hash_map');
-    @results = map { $self->_entity_hash($_) } @results;
-    Socialtext::Timer->Pause('_entity_hash_map');
-    return @results;
+    $t = time_scope '_entity_hash_map';
+    return map { $self->_entity_hash($_) } @results;
 }
 
 =head2 $obj->add_text_element($text);
