@@ -12,7 +12,7 @@ use Socialtext::Page;
 use Socialtext::Model::Pages;
 use Socialtext::Search 'search_on_behalf';
 use Socialtext::String;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::JSON;
 use Socialtext::l10n qw/loc/;
 use Try::Tiny;
@@ -153,7 +153,7 @@ sub _entity_hash {
 sub _entities_for_query {
     my $self = shift;
 
-    Socialtext::Timer->Continue('entities_for_query');
+    my $t = time_scope 'entities_for_query';
     my $search_query = $self->rest->query->param('q')
                         || $self->rest->query->param('filter');
     my @entities;
@@ -184,15 +184,13 @@ sub _entities_for_query {
         ) || []};
     }
 
-    Socialtext::Timer->Pause('entities_for_query');
-
     return @entities;
 }
 
 sub _searched_pages {
     my ( $self, $search_query ) = @_;
 
-    Socialtext::Timer->Continue('searched_pages');
+    my $t = time_scope 'searched_pages';
 
     my %page_ids_by_workspace;
     eval { 
@@ -235,7 +233,6 @@ sub _searched_pages {
         }
     }
 
-    Socialtext::Timer->Pause('searched_pages');
     return @all_pages;
 }
 

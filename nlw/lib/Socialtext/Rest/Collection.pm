@@ -89,12 +89,10 @@ sub _make_getter {
     my ( $perl_method, $content_type ) = @_;
     return sub {
         my ( $self, $rest ) = @_;
-
-        Socialtext::Timer->Continue("GET_$content_type");
+        my $t_outer = time_scope "GET_$content_type";
         my $rv = eval { $self->if_authorized( 'GET', sub {
-            Socialtext::Timer->Continue('get_resource');
+            my $t_inner = time_scope "get_resource";
             my $resource = $self->get_resource($rest, $content_type);
-            Socialtext::Timer->Pause('get_resource');
             $resource = [] unless ref $resource;
 
             my %new_headers = (
@@ -106,7 +104,6 @@ sub _make_getter {
             $rest->header(%new_headers);
             return $self->$perl_method($resource);
         })};
-        Socialtext::Timer->Pause("GET_$content_type");
         if (my $e = $@) {
             my %error_handlers = (
                 'Auth'           => sub { $self->not_authorized },
