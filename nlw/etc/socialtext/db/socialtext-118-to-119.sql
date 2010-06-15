@@ -1,5 +1,7 @@
 BEGIN;
 
+-- for [Story: User adds file attachment to Signals]
+
 CREATE SEQUENCE "attachment_id_seq"
     INCREMENT BY 1
     NO MAXVALUE

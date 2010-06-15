@@ -1440,6 +1440,14 @@ ALTER TABLE ONLY sessions
     ADD CONSTRAINT sessions_pkey
             PRIMARY KEY (id);
 
+ALTER TABLE ONLY signal_attachment
+    ADD CONSTRAINT sigattach_ukey
+            UNIQUE (attachment_id, signal_id);
+
+ALTER TABLE ONLY signal_attachment
+    ADD CONSTRAINT sigattach_ukey2
+            UNIQUE (signal_id, attachment_id);
+
 ALTER TABLE ONLY signal
     ADD CONSTRAINT signal_pkey
             PRIMARY KEY (signal_id);
@@ -2392,4 +2400,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '120');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '122');
