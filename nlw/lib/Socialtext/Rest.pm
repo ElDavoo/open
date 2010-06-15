@@ -22,6 +22,7 @@ use Socialtext::HTTP ':codes';
 use Socialtext::Log 'st_log';
 use Socialtext::URI;
 use Socialtext::JSON qw/decode_json/;
+use Socialtext::l10n qw(system_locale);
 
 our $AUTOLOAD;
 

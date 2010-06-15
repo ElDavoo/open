@@ -7,7 +7,6 @@ use strict;
 use base 'Socialtext::Rest';
 use IO::File;
 use Socialtext::HTTP ':codes';
-use Socialtext::l10n qw(system_locale);
 use Socialtext::String ();
 
 sub allowed_methods { 'GET, HEAD, DELETE' }
