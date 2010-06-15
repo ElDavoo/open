@@ -55,7 +55,7 @@ sub Create {
         my $cd = $info{'content-disposition'};
         my $real_filename;
         if ($cd =~ /filename="([^"]+)"/) {
-            $real_filename = $class->clean_filename($1);
+            $real_filename = $class->CleanFilename($1);
         }
         die "no filename in Content-Disposition header" unless $real_filename;
 
@@ -177,7 +177,7 @@ sub disk_filename {
 *CleanFilename = *clean_filename;
 sub clean_filename {
     my $class_or_self = shift;
-    my $filename      = shift || $self->filename;
+    my $filename      = shift || $class_or_self->filename;
     $filename = ensure_is_utf8($filename);
     $filename =~ s/[\/\\]+$//;
     $filename =~ s/^.*[\/\\]//;
