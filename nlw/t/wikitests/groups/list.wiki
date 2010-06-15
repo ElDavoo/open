@@ -56,6 +56,7 @@ Tests for [Story: Groups ReST API]
 ## visible by Group Members (Members see Groups they are members of)
 ## *not* visible by other Users (can't see Groups you have no relationship to)
 
+| set            | janefirst    | jane%%start_time%%                           |
 | set            | jane         | jane%%start_time%%@ken.socialtext.net        |
 | set            | bobemail     | bobfullname%%start_time%%@ken.socialtext.net |
 | set            | bobfirst     | bobfirst%%start_time%%                       |
@@ -87,7 +88,7 @@ Tests for [Story: Groups ReST API]
 | json-array-size | 1                                                                  |         |
 | Body-like       | "group_id":"%%group_id%%"                                          |         |
 | body-like       | "best_full_name":"%%bobfirst%% %%boblast%%","user_id":             |         |
-| body-like       | "best_full_name":"jane%%start_time%%","user_id":                             |         |
+| body-like       | "best_full_name":"%%janefirst%%","user_id":                        |         |
 | body-like       | "username":"%%jane%%"                                              |         |
 | body-like       | "username":"%%bobemail%%"                                          |         |
 
