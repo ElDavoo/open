@@ -66,7 +66,8 @@ Test case for `/data/workspaces`; the Workspace list
 | code-is        | 201                                          |                                                                              |
 | GET-json       | /data/workspaces?q=all                       |                                                                              |
 | code-is        | 200                                          |                                                                              |
-| body-like | qr/\{"workspace_id":"\d+","permission_set":"member-only","group_count":"0","name":"%%violin%%",[^\}]+,"account_id":"%%default_account_id%%",[^\}]+,"id":"\d+","title":"Violin","user_count":"1"\}/s |
+| json-parse |
+| json-like |  [{"permission_set":"member-only", "group_count":"0", "name":"%%violin%%", "account_id":"%%default_account_id%%", "title":"Violin", "user_count":"1"}] |
 
 ## POST to a workspace, Using the creator's account_id
 | *Comment* | POST to a workspace, Using the creator's account_id |                                      |
@@ -74,7 +75,8 @@ Test case for `/data/workspaces`; the Workspace list
 | code-is   | 201                                                 |                                      |
 | GET-json  | /data/workspaces?q=all                              |                                      |
 | code-is   | 200                                                 |                                      |
-| body-like | qr/\{"workspace_id":"\d+","permission_set":"member-only","group_count":"0","name":"%%viola%%",[^\}]+,"account_id":"%%non_default_acct_id%%",[^\}]+,"id":"\d+","title":"Viola","user_count":"1"\}/s |
+| json-parse |
+| json-like |  [{"permission_set":"member-only", "group_count":"0", "name":"%%viola%%", "account_id":"%%non_default_acct_id%%", "title":"Viola", "user_count":"1"}] |
 
 ## POST, authenticated user cannot create a workspace in an account they don't have access to
 | *Comment*      | POST, authenticated user, unauthorized account |                                                                             |
@@ -100,7 +102,8 @@ Test case for `/data/workspaces`; the Workspace list
 | code-is   | 201                                 |                                                                           |
 | GET-json  | /data/workspaces                    |                                                                           |
 | code-is   | 200                                 |                                                                           |
-| body-like | qr/\{"workspace_id":"\d+","permission_set":"member-only","group_count":"1","name":"%%tuba%%",[^\}]+,"account_id":"%%default_account_id%%",[^\}]+,"id":"\d+","title":"Tuba","user_count":"1"\}/s |
+| json-parse |
+| json-like |  [{"permission_set":"member-only", "group_count":"1", "name":"%%tuba%%", "account_id":"%%default_account_id%%", "title":"Tuba", "user_count":"1"}] |
 
 # Minimal interface
 | *Comment*   | GET minimal                |
