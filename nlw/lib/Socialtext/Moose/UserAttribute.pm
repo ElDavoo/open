@@ -70,3 +70,20 @@ sub has_user {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Moose::UserAttribute
+
+=head1 SYNOPSIS
+
+  use Socialtext::Moose::UserAttribute;
+  has_user 'creator' => (is => 'ro', st_maybe => 1);
+
+=head1 DESCRIPTION
+
+Provides a has_user moose attribute declarator.
+
+=cut
