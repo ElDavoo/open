@@ -12,7 +12,7 @@ use Fatal qw/copy move rename open close unlink/;
 use Try::Tiny;
 use Moose::Util::TypeConstraints;
 use Socialtext::Exceptions qw/no_such_resource_error data_validation_error/;
-use Socialtext::Encode;
+use Socialtext::Encode qw/ensure_is_utf8/;
 use Socialtext::File ();
 use Socialtext::Log qw/st_log/;
 use Socialtext::JSON qw/encode_json/;
@@ -174,13 +174,11 @@ sub disk_filename {
     return $self->is_temporary ? $self->temp_filename : $self->storage_filename;
 }
 
+*CleanFilename = *clean_filename;
 sub clean_filename {
     my $class_or_self = shift;
-    my $filename      = shift;
-
-    $filename = Socialtext::Encode::ensure_is_utf8(
-        $filename
-    );
+    my $filename      = shift || $self->filename;
+    $filename = ensure_is_utf8($filename);
     $filename =~ s/[\/\\]+$//;
     $filename =~ s/^.*[\/\\]//;
     # why would we do  ... => ~~.  ?
