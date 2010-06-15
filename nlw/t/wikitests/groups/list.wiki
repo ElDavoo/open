@@ -317,7 +317,3 @@ Tests for [Story: Groups ReST API]
 | json-path-is | $.entry[2].name                                             | gamma   |
 | json-path-is | $.entry[3].name                                             | taliban |
 
-
-^ TO IMPLEMENT
-
-* look for XXX TODO in Socialtext/User.pm - (limit discovery to account scopes)
