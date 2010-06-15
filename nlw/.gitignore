@@ -490,3 +490,5 @@ t/wikitests/signals/tags.wiki
 lib/Socialtext/Rest/SignalTags.pm
 lib/Socialtext/Signal/Tag.pm
 t/Socialtext/Signal/Tag.t
+lib/Socialtext/Gadgets/Container/SignalsPopOut.pm
+lib/Socialtext/Handler/Container/SignalsPopOut.pm
