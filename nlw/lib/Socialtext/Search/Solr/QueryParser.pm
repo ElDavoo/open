@@ -51,7 +51,7 @@ sub _build_searchable_fields {
         qw/title/,
         # Signal fields:
         qw/pvt dm_recip a g reply_to mention
-           link_page_key link_w link is_questio 
+           link_page_key link_w link is_question
            annotation filename/,
         # People fields: (keys AND values)
         %{ $self->field_map },
