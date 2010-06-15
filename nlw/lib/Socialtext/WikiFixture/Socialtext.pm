@@ -211,14 +211,19 @@ Looks at the page default_server/url numviews number of times.
 
 Useful to canning up page views for reports, metrics widgets, etc.
 
+Opens a different page between each view to assure reloading
+
 =cut
 
 sub st_page_multi_view {
   my ($self, $url, $numviews) = @_;
+  $self->handle_command('set_Speed',3000);
   for (my $idx=0; $idx<$numviews;$idx++) {
       $self->{selenium}->open_ok($url);
-      $self->handle_command('wait_for_element_visible_ok','link=Edit','30000');
+      $self->{selenium}->open_ok('/?action=invite');
+      #$self->handle_command('location_like',$url);
   }
+  $self->handle_command('set_Speed',0);
 }
 
 =head2 st_page_multi_watch( $numwatches) 
@@ -271,7 +276,7 @@ want the output written to nlw.log)
 
 sub st_create_wikipage {
     my ($self, $workspace, $pagename)  = @_;
-    my $url = '/' . $workspace . '/?action=display;page_type=wiki;page_name=Untitled Page#edit';
+    my $url = '/' . $workspace . '/?action=new_page';
     $self->{selenium}->open_ok($url);
     $self->handle_command('set_Speed',3000);
     $self->handle_command('wait_for_element_visible_ok','link=Wiki Text',30000);

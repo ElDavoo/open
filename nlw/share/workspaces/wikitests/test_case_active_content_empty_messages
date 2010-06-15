@@ -33,7 +33,6 @@
 | wait_for_element_visible_ok | link=Emailed | 30000 |
 | wait_for_element_visible_ok | link=Edited | 30000 |
 | wait_for_element_visible_ok | link=Watched | 30000 |
-| wait_for_element_visible_ok | link=Viewed | 20000 |
 
 | wait_for_text_present_ok | %%EmptyViews%% | 5000 |
 | click_ok | link=Edited |  |
