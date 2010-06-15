@@ -10,8 +10,7 @@
 | include | [Test Case: Activities Widget Tags and Tagging] |  |
 | include | [Test Case: Activities Widget Followers] |  |
 | include | [Test Case: Activities Widget Permalinks] |  |
-
-| *Comment* | Test Case: Activities Widget TEARDOWN |  |
+| include | [Test Case: Activities Widget with REAL Popout] |  |
 
 | *Comment* | Test Case: Activities Widget COMPLETED |  |
 
