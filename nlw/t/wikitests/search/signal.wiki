@@ -41,9 +41,7 @@
 | json-array-size | 1 |
 | json-like | [{"body":"Stupid plain"}] |
 
-This matches because the user's Best Full Name is defaulting to the username:
-
-| get             | /data/signals?q=%%username%% | application/json |
+| get             | /data/signals?q=%%start_time%% | application/json |
 | code-is         | 200                          |                  |
 | json-parse      |                              |                  |
 | json-array-size | 1                            |                  |
