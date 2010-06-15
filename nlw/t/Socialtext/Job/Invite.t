@@ -34,6 +34,7 @@ process_job: {
     my $account_name    = $account->name;
     my $recipient_email = $recipient->email_address;
     my $invitor_email   = $invitor->email_address;
+    my $invitor_name    = $invitor->display_name;
 
     Socialtext::JobCreator->insert(
         $class,
@@ -61,7 +62,7 @@ process_job: {
     my $body = $email->body_raw;
     like $body, qr/username:\s+\Q$recipient_email\E/,
         '... ... to recipient';
-    like $body, qr/<p>\s+Thanks,\s+<\/p>\s+<p>\s+\Q$invitor_email\E/,
+    like $body, qr/<p>\s+Thanks,\s+<\/p>\s+<p>\s+\Q$invitor_name\E/,
        '... ... from sender';
     like $body, qr/join the \Q$account_name\E group/,
        '... ... into account';
