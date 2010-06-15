@@ -319,3 +319,38 @@ sub binary_contents {
 
 __PACKAGE__->meta->make_immutable;
 1;
+__END__
+
+=head1 NAME
+
+Socialtext::Upload - Data object for uploaded files
+
+=head1 SYNOPSIS
+
+    use Socialtext::Upload;
+    my $upload = Socialtext::Upload->Get(attachment_id => $n);
+    # or
+    my $upload = Socialtext::Upload->Get(attachment_uuid => $uuid);
+
+    my $u = Socialtext::Upload->Create(cgi => $cgi, cgi_param => 'file_param');
+    sql_txn {
+        $social_object->attach($u);
+        $u->make_permanent();
+    };
+
+=head1 DESCRIPTION
+
+Socialtext::Upload encapsulates the "uploaded file" lifecycle.  It's a
+combination of a database record and file on disk.  The file is stored in a
+temporary area (which is periodically cleaned by other parts of the system)
+until it is "made permanent" by associating it with some other object in the
+Socialtext system.
+
+=head1 SEE ALSO
+
+C<Socialtext::Rest::Upload> and C<Socialtext::Rest::Uploads> - the ReST API
+associated with this class.
+
+C<Socialtext::Signal::Attachment> - the first user of this module.
+
+=cut
