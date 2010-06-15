@@ -15,12 +15,6 @@ ALTER TABLE ONLY signal_tag
 CREATE INDEX idx_signal_tag_signal_id ON signal_tag(signal_id);
 CREATE INDEX idx_signal_tag_tag ON signal_tag(tag);
 
--- For [Story: Update Signal Annotations to Match New Twitter Spec]
--- Nuke all old annotations in the old format.
-
-UPDATE signal SET anno_blob = '[]';
-UPDATE recent_signal SET anno_blob = '[]';
-
 UPDATE "System"
    SET value = '120'
  WHERE field = 'socialtext-schema-version';
