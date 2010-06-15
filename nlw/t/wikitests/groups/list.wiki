@@ -87,7 +87,7 @@ Tests for [Story: Groups ReST API]
 | json-array-size | 1                                                                  |         |
 | Body-like       | "group_id":"%%group_id%%"                                          |         |
 | body-like       | "best_full_name":"%%bobfirst%% %%boblast%%","user_id":             |         |
-| body-like       | "best_full_name":"%%jane%%","user_id":                             |         |
+| body-like       | "best_full_name":"jane%%start_time%%","user_id":                             |         |
 | body-like       | "username":"%%jane%%"                                              |         |
 | body-like       | "username":"%%bobemail%%"                                          |         |
 
