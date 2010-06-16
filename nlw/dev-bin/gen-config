@@ -625,7 +625,7 @@ sub _ssl_name {
     my $base   = $opts{ssl_base};
     my $search = $opts{search};
 
-    return firstval { -f "$base/certs/$_.crt" } @{$search};
+    return firstval { -f "$base/certs/$_.crt" } @$search;
 }
 
 sub _static_dir {
@@ -806,7 +806,8 @@ sub copy_static_files {
     my $to_use = firstval { -f "$inc/static/ssl/$_.crt" } (
         $config{nlw_web_hostname},
         $config{nlw_server_hostname},
-        'talc.socialtext.net'
+        'talc.socialtext.net',
+        'topaz.socialtext.net'
     );
 
     my $crt_source = "$inc/static/ssl/$to_use.crt";
