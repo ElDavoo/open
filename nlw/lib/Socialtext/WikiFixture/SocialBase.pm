@@ -1900,9 +1900,9 @@ sub _call_method {
 
 sub _get {
     my ($self, $uri, $opts) = @_;
-    warn "GET: $self->{browser_url}$uri\n"; # intentional warn
     my $start = time();
     $uri = "$self->{browser_url}$uri" if $uri =~ m#^/#;
+    warn "GET: $uri\n"; # intentional warn
     $self->{http}->get( $uri, $opts );
     $self->{_last_http_time} = time() - $start;
 }
