@@ -1,5 +1,7 @@
 | *Comment* | Test Case: Activities Widget Add Attachment |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Activities Widget Add Attachment Setup |  |
 | set | acct | awaa-acct-%%start_time%% |
 | set | user | awaauser%%start_time%%@matt.socialtext.net |
