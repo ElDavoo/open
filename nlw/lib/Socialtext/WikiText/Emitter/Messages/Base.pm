@@ -33,7 +33,7 @@ sub insert {
     if ($self->{callbacks}{noun_link} &&
         $type =~ m{^(?:link|user|hashtag|hashmark)$})
     {
-        # TODO: make it look like hashtag?
+        # make hashmark look like hashtag to the callback.
         $ast->{wafl_type} = 'hashtag' if $type eq 'hashmark';
         $self->{callbacks}{noun_link}->($ast);
         $ast->{wafl_type} = $type if $type eq 'hashmark';
