@@ -21,30 +21,38 @@ sub insert {
     my $self = shift;
     my $ast = shift;
 
-    unless (defined $ast->{wafl_type}) {
+    my $type = $ast->{wafl_type};
+
+    unless (defined $type) {
         my $output = $ast->{output};
         $output = '' unless defined $output;
         $self->{output} .= $output;
         return;
     }
 
-    if ($self->{callbacks}{noun_link}) {
-        if ($ast->{wafl_type} =~ m{(?:link|user|hashtag)}) {
-            $self->{callbacks}{noun_link}->($ast);
-        }
+    if ($self->{callbacks}{noun_link} &&
+        $type =~ m{^(?:link|user|hashtag|hashmark)$})
+    {
+        # TODO: make it look like hashtag?
+        $ast->{wafl_type} = 'hashtag' if $type eq 'hashmark';
+        $self->{callbacks}{noun_link}->($ast);
+        $ast->{wafl_type} = $type if $type eq 'hashmark';
     }
 
-    if ( $ast->{wafl_type} eq 'link' ) {
+    if ( $type eq 'link' ) {
         $self->{output} .= $self->msg_format_link($ast);
     }
-    elsif ( $ast->{wafl_type} eq 'user' ) {
+    elsif ( $type eq 'user' ) {
         $self->{output} .= $self->msg_format_user($ast);
     }
-    elsif ( $ast->{wafl_type} eq 'hashtag' ) {
+    elsif ( $type eq 'hashmark') {
+        # handled by markup_node; not actually a wafl
+    }
+    elsif ( $type eq 'hashtag' ) {
         $self->{output} .= $self->msg_format_hashtag($ast);
     }
     else {
-        $self->{output} .= "{$ast->{wafl_type}: $ast->{wafl_string}}";
+        $self->{output} .= "{$type: $ast->{wafl_string}}";
     }
 
     return;
@@ -55,17 +63,17 @@ sub msg_format_user { die 'subclass must override msg_format_user' }
 sub msg_format_link { die 'subclass must override msg_format_link' }
 sub msg_format_hashtag { die 'subclass must override msg_format_hashtag' }
 
-sub begin_node { my $self=shift; $self->_markup_node(0,@_) }
-sub end_node   { my $self=shift; $self->_markup_node(1,@_) }
+sub begin_node { my $self=shift; $self->markup_node(0,@_) }
+sub end_node   { my $self=shift; $self->markup_node(1,@_) }
 
-sub _markup_node {
+sub markup_node {
     my $self = shift;
-    my $offset = shift;
+    my $is_end = shift;
     my $ast = shift;
 
     my $markup = $self->msg_markup_table;
     return unless exists $markup->{$ast->{type}};
-    my $output = $markup->{$ast->{type}}->[$offset];
+    my $output = $markup->{$ast->{type}}->[$is_end ? 1 : 0];
     if ($ast->{type} eq 'a') {
         $output =~ s/HREF/$ast->{attributes}{href}/;
     }

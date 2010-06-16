@@ -27,7 +27,7 @@ sub create_grammar {
 
     # NOTE: if you add phrases here, be sure to update %markup in
     # ST::WT::Emitter::Canonicalize. Order matters
-    @$phrases = ('a', 'waflphrase', 'asis', 'b', 'i', 'del', 'hashtag');
+    @$phrases = ('a', 'waflphrase', 'asis', 'b', 'i', 'del', 'hashmark');
     $grammar->{line} = {
         match => qr/^(.*)$/s,
         phrases => $phrases,
@@ -37,16 +37,15 @@ sub create_grammar {
         }
     };
 
-    $grammar->{hashtag} = {
-        # Only match after a space or beginning
+    $grammar->{hashmark} = {
+        # Only match after a space or beginning-of-line
         match => qr/(?<!\S)#(\p{IsWord}+)/,
         filter => sub {
-            my $node = shift;
+            $_ =~ s/^#//;
             $self->{receiver}->insert({
-                wafl_type => 'hashtag',
-                text => $node->{text},
+                wafl_type => 'hashmark',
+                text => $_[0]{text},
             });
-            return;
         },
     };
 

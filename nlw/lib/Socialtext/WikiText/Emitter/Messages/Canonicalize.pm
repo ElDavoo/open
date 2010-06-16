@@ -12,6 +12,7 @@ Readonly my %markup => (
     i    => [ '_',  '_' ],
     del  => [ '-',  '-' ],
     a    => [ '"',  '"<HREF>' ],
+    hashmark => [ '{hashtag: ', '}' ],
 );
 
 sub msg_markup_table { return \%markup }
