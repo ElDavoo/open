@@ -3,6 +3,7 @@ package Socialtext::Rest::Uploads;
 use Moose;
 extends 'Socialtext::Rest::Collection';
 use Socialtext::HTTP ':codes';
+use Socialtext::HTTP::Cookie 'AIR_USER_COOKIE';
 use Socialtext::Upload;
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::SQL qw/sql_txn/;
@@ -77,11 +78,24 @@ sub POST_file {
         if ($fail_msg);
 
     $rest->header( -status => HTTP_201_Created );
-    return encode_json({
+
+    my $response = encode_json({
         status  => 'success',
         id      => $upload->attachment_uuid,
         message => 'file uploaded',
     });
+
+    if (Socialtext::HTTP::Cookie->cookie_name($self->rest->request)
+        eq AIR_USER_COOKIE
+    ) {
+        return << ".";
+<html><head>
+    <script>window.childSandboxBridge = $response;</script>
+</head><body>success</body></html>
+.
+    }
+
+    return $response;
 }
 
 sub _post_failure {
