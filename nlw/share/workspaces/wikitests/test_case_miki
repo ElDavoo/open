@@ -4,6 +4,7 @@
 | set | ws | `miki-ws-%%start_time%%` |
 | set | mikiacct | mikiacct-%%start_time%% |
 | set | mikiuser | `mikiuser%%start_time%%@ken.socialtext.net` |
+| set | short_mikiuser | mikiuser%%start_time |
 | set | othermikiuser | `othermikiuser%%start_time%%@ken.socialtext.net` |
 | set | othershortuser | `othermikiuser%%start_time%%` |
 
@@ -139,7 +140,7 @@
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | Workspaces |  |
-| text_like | Hello, %%mikiuser%% |  |
+| text_like | Hello, %%short_mikiuser%% |  |
 | text_like | Workspaces you belong to: |  |
 
 | *Comment* | Test case: Miki Click 'Activity' in global nav |  |
@@ -180,7 +181,7 @@
 | click_and_wait | link=Workspaces |  |
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | text_like | Workspaces |  |
-| text_like | Hello, %%mikiuser%% |  |
+| text_like | Hello, %%short_mikiuser%% |  |
 | text_like | Workspaces you belong to: |  |
 | text_like | You have free access to view and |  |
 | text_like | contribute to any of these public wikis: |  |
