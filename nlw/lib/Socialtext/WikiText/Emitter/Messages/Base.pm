@@ -75,7 +75,14 @@ sub markup_node {
     return unless exists $markup->{$ast->{type}};
     my $output = $markup->{$ast->{type}}->[$is_end ? 1 : 0];
     if ($ast->{type} eq 'a') {
-        $output =~ s/HREF/$ast->{attributes}{href}/;
+        if ($is_end) {
+            $output =~ s/HREF/$ast->{attributes}{href}/;
+        }
+        else {
+            if (my $cb = $self->{callbacks}{href_link}) {
+                $cb->($ast);
+            }
+        }
     }
     $self->{output} .= $output;
 }
