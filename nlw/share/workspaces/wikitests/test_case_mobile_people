@@ -9,8 +9,8 @@ TODO: Follow/unFollow/Signals/Profile/Activity for a person
 
 | *Comment* | Test Case: Mobile People create user, process jobs |  |
 
-| create_user | %%mu%% | %%password%% | %%hostname%% | %%fname%% %%lname%% |
-| st-process-jobs | PeopleIndex  |  |  |  |
+| st-admin | create-user --email %%mu%% --password %%password%% --first %%fname%% --last %%lname%% | created |
+| st-process-jobs | PeopleIndex |  |  |  |
 
 | *Comment* | Test Case: Mobile People open Mobile, check for boilerplate |  |
 | open_ok | /m |  |
