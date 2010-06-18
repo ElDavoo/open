@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 # do *not* `use utf8` here
-use Test::More tests => 6 + 7 + 4 + 3*29 + 7;
+use Test::More tests => 6 + 7 + 4 + 3*33 + 7;
 
 use ok 'WikiText::Socialtext';
 use ok 'Socialtext::WikiText::Parser::Messages';
@@ -51,7 +51,8 @@ for my $type (qw(Solr Canonicalize HTML)) {
        .'http://example.com/1 '
        .'"awesomeness"<http://awesome.com/2> '
        .'"wikked"<http://google.com/3> http://example.com/4 '
-       .'incarnate'
+       .'incarnate '
+       .'{link: admin [Admin Wiki] some part}'
     );
     
     ok $content, "$type emitted alright";
@@ -68,7 +69,7 @@ for my $type (qw(Solr Canonicalize HTML)) {
     like $content, qr/please $hashmark_re /, "$type hashmark placed OK";
     unlike $content, qr/^$hashmark_re/,
         "$type no spurrious hashtag at the beginning (regression)";
-    is scalar(@noun_links), 6, "$type six links";
+    is scalar(@noun_links), 7, "$type six links";
 
     is $noun_links[0]{wafl_type}, 'user', "$type has user wafl first";
     is $noun_links[0]{user_string}, '1', 'user 1 is first';
@@ -86,6 +87,11 @@ for my $type (qw(Solr Canonicalize HTML)) {
 
     is $noun_links[5]{wafl_type}, 'hashtag', "$type then a hashtag";
     is $noun_links[5]{text}, 'other taag', "$type tag is named";
+
+    is $noun_links[6]{wafl_type}, 'link', "$type then a link";
+    is $noun_links[6]{page_id}, 'Admin%20Wiki', "$type link has page_id";
+    is $noun_links[6]{workspace_id}, 'admin', "$type link has workspace";
+    is $noun_links[6]{section}, 'some%20part', "$type link has section";
 
     {
         is scalar(@href_links), 4, "$type got href links";

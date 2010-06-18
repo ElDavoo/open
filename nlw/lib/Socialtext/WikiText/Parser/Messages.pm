@@ -137,15 +137,18 @@ sub handle_waflphrase {
     my $length = $match->{end} - $match->{begin};
     if ($match->{2} eq 'link') {
         my $options = $match->{3};
-        if ($options =~ /^\s*([\w\-]+)\s*\[(.*)\]\s*$/) {
-            my ($workspace_id, $page_id) = ($1, $2);
+        if ($options =~ /^\s*([\w\-]+)\s*\[(.*)\]\s*(.*?)\s*$/) {
+            my ($workspace_id, $page_id, $section) = ($1, $2, $3);
             my $text = $match->{text} || $page_id;
             $page_id =
                 Socialtext::String::title_to_display_id($page_id, 'no-escape');
+            $section =
+                Socialtext::String::uri_escape($section) if $section;
             $self->{receiver}->insert({
                 wafl_type => 'link',
                 workspace_id => $workspace_id,
                 page_id => $page_id,
+                section => $section,
                 text => $text,
                 wafl_string => $options,
                 wafl_length => $length

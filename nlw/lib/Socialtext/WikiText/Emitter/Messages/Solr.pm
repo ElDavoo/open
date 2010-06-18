@@ -17,14 +17,7 @@ Readonly my %markup => (
 
 sub msg_markup_table { return \%markup }
 
-sub msg_format_link {
-    my $self = shift;
-    my $ast = shift;
-    if (my $cb = $self->{callbacks}{page_link}) {
-        $cb->($ast);
-    }
-    return qq{"$ast->{text}" $ast->{workspace_id} [$ast->{page_id}]};
-}
+# inherit sub msg_format_link from Canonicalize
 
 sub msg_format_user {
     my $self = shift;

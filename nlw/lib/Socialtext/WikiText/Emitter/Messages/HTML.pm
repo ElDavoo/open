@@ -29,12 +29,17 @@ sub msg_markup_table { return \%markup }
 sub msg_format_link {
     my $self = shift;
     my $ast = shift;
-    my $url = $self->link_dictionary->format_link(
+    my @args = (
         url_prefix => $self->{callbacks}{baseurl} || "",
         link => 'interwiki',
         workspace => $ast->{workspace_id},
         page_uri => $ast->{page_id},
     );
+    if (defined $ast->{section} && length($ast->{section})) {
+        push @args,
+            section => '#'.$ast->{section};
+    }
+    my $url = $self->link_dictionary->format_link(@args);
     return qq{<a href="$url">$ast->{text}</a>};
 }
 
