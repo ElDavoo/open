@@ -4,7 +4,7 @@
 | set | ws | `miki-ws-%%start_time%%` |
 | set | mikiacct | mikiacct-%%start_time%% |
 | set | mikiuser | `mikiuser%%start_time%%@ken.socialtext.net` |
-| set | short_mikiuser | mikiuser%%start_time |
+| set | short_mikiuser | mikiuser%%start_time%% |
 | set | othermikiuser | `othermikiuser%%start_time%%@ken.socialtext.net` |
 | set | othershortuser | `othermikiuser%%start_time%%` |
 
