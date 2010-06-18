@@ -16,10 +16,12 @@ Since a non-admin can't get to the Group edit page, this test was a non-sequitur
 
 | *Comment* | Test Case: User Deactivates Group Promote to admin, do see deactivate link |  |
 | st-admin | add-group-admin --e %%username%% --g %%deac_id%% | is now a admin of the |
+
 | open_ok | /st/edit_group/%%group_id%% |  |
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | wait_for_element_visible_ok | st-delete-group | 30000 |
 | click_ok | st-delete-group |  |
+
 | wait_for_element_visible_ok | st-save-widget-template | 30000 |
 | wait_for_text_present_ok | Delete Group | 10000 |
 | wait_for_text_present_ok | Delete %%deac_group%% | 10000 |
@@ -27,9 +29,17 @@ Since a non-admin can't get to the Group edit page, this test was a non-sequitur
 
 | *Comment* | Test Case: User Deactivates Group TODO Click Deactivate/Cancel Once there is an ID |
 
-| *Comment* | Test Case: User Deactivates Group Click Deactivate/YES I'm sure |  |
-| click_and_wait | st-save-widget-template |  |
-| wait_for_text_present_ok | The group, %%deac_group%%, has been successfully deleted. | 30000 |
+| *Comment* | Test Case: User Deactivates Group Wait for the f$%&king JS to load. Wait a long time. |  |
+| pause | 8000 |
+
+| *Comment* | Test Case: User Deactivates Group. click_ok to deactivate. Don't even think about using click_and_wait |  |
+| click_ok | st-save-widget-template |  |
+
+| *Comment* | Test Case: User Deactivates Group Wait for the f$%&king JS to execute. Wait a long time. |  |
+| pause | 15000 |
+
+| *Comment* | Test Case: User Deactivates Group wait for the success msg at the dashboard |  |
+| wait_for_text_present_ok | The group, %%deac_group%%, has been successfully deleted. | 60000 |
 | wait_for_element_not_present_ok | link=%%deac_group%% | 5000 |
 
 | *Comment* | Test Case: User Deactivates Group Link Login as other user, still do not see link |  |

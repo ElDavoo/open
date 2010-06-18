@@ -12,7 +12,7 @@
 | add_member | %%username%% | %%ma%% |
 | add_member | %%mau%% | %%ma%% |
 
-| *Comment* | Test Case: Mobile Activity. CANNOT USE update-page  BECAUSE NO EVENTS ARE CREATED |  |
+| *Comment* | Test Case: Mobile Activity. CANNOT USE update-page BECAUSE NO EVENTS ARE CREATED |  |
 
 | *Comment* | Test Case: Mobile Activity. %%username%% starts a conversation in %%ma%% |  |
 | st-create-wikipage | %%ma%% | Mobile Activity %%start_time%% 0000 |
@@ -21,7 +21,7 @@
 
 | st-logoutin | %%mau%% | %%password%% |  |
 
-| *Comment* | Test Case: Mobile Activity. CANNOT USE update-page  BECAUSE NO EVENTS ARE CREATED |  |
+| *Comment* | Test Case: Mobile Activity. CANNOT USE update-page BECAUSE NO EVENTS ARE CREATED |  |
 
 | st-create-wikipage | %%ma%% | Mobile Activity %%start_time%% 0001 |
 | st-create-wikipage | %%ma%% | Mobile Activity %%start_time%% 0002 |
@@ -42,6 +42,7 @@
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | %%mau%% continues the conversation in %%ma%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_and_wait | st-save-button-link |  |
 | wait_for_element_visible_ok | st-edit-button-link | 60000 |

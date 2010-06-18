@@ -59,7 +59,7 @@
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | text_like | //body | Administrators |
-| text_like | //body | %%groupuser%% |
+| text_like | //body | %%short_groupuser%% |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Inspect New Group Page Workspaces |  |
