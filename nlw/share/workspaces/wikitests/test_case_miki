@@ -122,7 +122,7 @@
 | wait_for_element_visible_ok | link=Stop Following | 30000 |
 | open_ok | /m/ |  |
 
-| st_process_jobs | PeopleIndex |
+| st_process_jobs | PersonIndex |
 
 | wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_text_present_ok | %%signal1%% | 30000 |

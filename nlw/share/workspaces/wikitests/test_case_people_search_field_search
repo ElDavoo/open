@@ -20,7 +20,7 @@ st-logoutin | %%euserfive%% | %%password%% | |
 include | [Test Case: People Search Edit A Profile] | |
 
 | *Comment* | Test Case: People Search Field Search. Index %%first%% %%last%% profile |  |
-| st-process-jobs | PeopleIndex |  |
+| st-process-jobs | PersonIndex |  |
 
 | *Comment* | Test Case: People Search Field Search Access People. |  |
 | open_ok | /?action=people |  |

@@ -22,7 +22,7 @@ TODO: make this run with LDAP user devnullx
 | click_and_wait | login_btn |  |
 
 | *Comment* | Test Case: Follow. Process jobs |  |
-| st_process_jobs | PeopleIndex |  |
+| st_process_jobs | PersonIndex |  |
 
 | *Comment* | Test Case: Follow. Open %%fFname%% profile |  |
 | wait_for_element_visible_ok | link=People | 60000 |

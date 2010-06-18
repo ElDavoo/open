@@ -34,13 +34,13 @@
 | wait_for_element_visible_ok | link=Edited | 30000 |
 | wait_for_element_visible_ok | link=Watched | 30000 |
 
-| wait_for_text_present_ok | %%EmptyViews%% | 5000 |
+| wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 | click_ok | link=Edited |  |
-| wait_for_text_present_ok | %%EmptyEdits%% | 5000 |
+| wait_for_text_present_ok | %%EmptyEdits%% | 30000 |
 | click_ok | link=Watched |  |
-| wait_for_text_present_ok | %%EmptyWatch%% | 5000 |
+| wait_for_text_present_ok | %%EmptyWatch%% | 30000 |
 | click_ok | link=Emailed |  |
-| wait_for_text_present_ok | %%EmptyEmail%% | 5000 |
+| wait_for_text_present_ok | %%EmptyEmail%% | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Active Content Empty Messages TEARDOWN |  |

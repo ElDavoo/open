@@ -24,7 +24,7 @@
 | st-logoutin | %%luser%% | %%password%% |
 
 | *Comment* | Test Case: Profile Activity Widget. navigate to the %%tuser%% Profile page |  |
-| st_process_jobs | PeopleIndex |  |
+| st_process_jobs | PersonIndex |  |
 | st_find_user | %%tuser%% |  |
 
 | *Comment* | Test Case: Profile Activity Widget. the basic activities widget exists on the %%tuser%% Profile page |  |
@@ -44,7 +44,7 @@
 | st-verify-text-in-activities-widget | activitieswidget | Private signal to %%tuser%% at %%start_time%% HURRAY |
 
 | *Comment* | Test Case: Profile Activity Widget. Clean start: navigate to the %%tuser%% Profile page |  |
-| st_process_jobs | PeopleIndex  |  |
+| st_process_jobs | PersonIndex  |  |
 | st_find_user | %%tuser%% |  |
 
 | *Comment* | Test Case: Profile Activity Widget. Probe the activities widget on the %%tuser%% Profile page |  |

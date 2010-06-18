@@ -50,7 +50,7 @@
 | click_and_wait | st-search-submit |  |
 
 | wait_for_element_visible_ok | sort-picker | 30000 |
-| select_and_wait | sort-picker | label=Relevance |
+| select_and_wait | sort-picker | label=Sender |
 | wait_for_text_present_ok | Signals matching '"Pagination %%start_time%%"' | 60000 |
 | select_and_wait | sort-picker | label=Newest |
 
