@@ -12,6 +12,7 @@ Readonly my %markup => (
     i    => [ '',  '' ],
     del  => [ '',  '' ],
     a    => [ '"',  '"<HREF>' ],
+    hashmark => ['',''],
 );
 
 sub msg_markup_table { return \%markup }
@@ -46,29 +47,23 @@ sub user_as_username {
     return $user->best_full_name;
 }
 
-# Copied from Base.pm and modified to not emit the HREF if it matches the link
-# text (which happens for canonicalized raw links)
-sub _markup_node {
+sub markup_node {
     my $self = shift;
-    my $offset = shift;
+    my $is_end = shift;
     my $ast = shift;
 
-    my $markup = $self->msg_markup_table;
-    return unless exists $markup->{$ast->{type}};
-
-    my $output = $markup->{$ast->{type}}->[$offset];
-    if ($ast->{type} eq 'a') {
+    if ($ast->{type} eq 'a' and $is_end) {
+        my $output = $self->msg_markup_table->{$ast->{type}}->[$is_end];
         if (($ast->{text}||'') eq $ast->{attributes}{href}) {
-            $output =~ s/\<HREF\>//;
+            $output =~ s/<HREF>//;
         }
         else {
             $output =~ s/HREF/$ast->{attributes}{href}/;
         }
-        if ($self->{callbacks}{href_link} and $offset == 0) {
-            $self->{callbacks}{href_link}->($ast);
-        }
+        $self->{output} .= $output;
+        return;
     }
-    $self->{output} .= $output;
+    $self->SUPER::markup_node($is_end, $ast);
 }
 
 1;
