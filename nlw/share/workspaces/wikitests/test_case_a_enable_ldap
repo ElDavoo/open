@@ -4,6 +4,9 @@
 | *Comment* | Always makes default LDAP user devnullx a workspace admin in the test workspace |  |
 
 | st-ldap | start | openldap running |
+
+| pause | 5000 |  |
+| st-process-jobs | PersonIndex |  |
 | st-admin | add-workspace-admin --username devnullx --w %%workspace%% | devnullx now has the role of 'admin' in the test-data Workspace |
 
 | *Comment* | Test Case: A Enable LDAP COMPLETED |  |

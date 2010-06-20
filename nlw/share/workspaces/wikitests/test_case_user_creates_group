@@ -11,7 +11,7 @@
 | create-user | %%groupemail%% | %%password%% |
 
 | *Comment* | Test Case: User Creates Group enabled, create group |  |
-| st-admin | enable-plugin --plugin groups --all-accounts | The groups plugin is now enabled for all accounts |
+| st-admin | enable-plugin --plugin groups --all-accounts |  |
 
 | st-logoutin | %%groupemail%% | %%password%% |
 
