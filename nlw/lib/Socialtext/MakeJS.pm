@@ -1,7 +1,6 @@
 package Socialtext::MakeJS;
 use strict;
 use warnings;
-use Socialtext::AppConfig;
 use Socialtext::System qw(shell_run);
 use Socialtext::JSON qw(encode_json);
 use JavaScript::Minifier::XS qw(minify);
@@ -9,6 +8,7 @@ use Template;
 use YAML;
 use File::chdir;
 use Jemplate;
+use FindBin;
 use Compress::Zlib;
 use File::Slurp qw(slurp write_file);
 use File::Find qw(find);
@@ -17,8 +17,12 @@ use Clone qw(clone);
 use Carp qw(confess);
 use namespace::clean -except => 'meta';
 
+my $code_base = $ENV{ST_CURRENT};
+unless ($code_base) {
+    ($code_base = $FindBin::Bin) =~ s{dev-bin$}{share};
+}
+
 our $VERBOSE = 0;
-my $code_base = Socialtext::AppConfig->code_base;
 
 my @dirs = (
     glob("$code_base/skin/*/javascript/JS.yaml"),

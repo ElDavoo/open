@@ -9,9 +9,9 @@ use Time::HiRes qw(time);
 
 $Socialtext::MakeJS::VERBOSE = 1;
 
-my $code_base = Socialtext::AppConfig->code_base;
-(my $dir = cwd) =~ s{^$code_base/}{};
-$dir =~ s{^$ENV{ST_CURRENT}/plugins}{plugin};
+(my $base = $FindBin::Bin) =~ s{nlw/dev-bin$}{};
+(my $dir = cwd) =~ s{^$base/nlw/share/}{};
+$dir =~ s{^$base/plugins}{plugin};
 
 my @targets = @ARGV ? @ARGV : ('all');
 my $before = time;
