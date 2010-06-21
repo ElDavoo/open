@@ -410,7 +410,7 @@ sub render_signal_body {
                     my $link = $ast->{attributes}{href};
                     push @external_links, $link;
                 },
-                page_link => sub {
+                noun_link => sub {
                     my $ast = shift;
                     my $wksp = Socialtext::Workspace->new(name => $ast->{workspace_id});
                     return unless $wksp;
