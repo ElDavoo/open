@@ -223,9 +223,9 @@ sub html {
 
     return $self->syntax_error unless $image_name;
 
+    my $escaped = $self->uri_escape($image_name);
     my $file_id = $self->get_file_id( $workspace_name, $page_id, $image_name )
         or return $self->error;
-    $image_name     = $self->uri_escape($image_name);
 
     # We have to save and restore the current workspace so we can set it
     # properly for inter-workspace links.  This is probably a bug in
@@ -237,7 +237,7 @@ sub html {
         link       => 'image',
         url_prefix => $self->url_prefix,
         workspace  => $workspace_name,
-        filename   => $image_name,
+        filename   => $escaped,
         page_uri   => $page_uri,
         id         => $file_id,
         size       => $size || 'scaled',
@@ -252,7 +252,7 @@ sub html {
     return qq{<a href="$link">} . $self->label ."</a>"
         if $self->label;
 
-    my $alt_text = $self->uri_unescape($image_name);
+    my $alt_text = $image_name;
     my $widget = $self->wikitext;
 
     return

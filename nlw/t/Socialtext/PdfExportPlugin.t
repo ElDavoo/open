@@ -3,8 +3,9 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 16;
 use YAML;
+use URI::Escape qw(uri_escape);
 
 fixtures(qw( admin ));
 
@@ -15,6 +16,41 @@ convert_page_to_html: {
     my $file = $hub->pdf_export->_create_html_file('Conversations');
     ok $file, 'Got file from converting wikipage to HTML';
     ok -s $file, '... which is not an empty file';
+}
+
+###############################################################################
+# TEST: convert to HTML, with attached image w/spaces in filename
+convert_to_html_w_spaces_in_image_filename: {
+    my $imgfile = 'socialtext-logo-30.gif';
+    my $imgpath = "t/attachments/$imgfile";
+    my $newname = 'name with spaces in filename.gif';
+    my $wiki    = "{image: $newname}";
+
+    my $hub  = create_test_hub();
+    my $page = Socialtext::Page->new(hub => $hub)->create(
+        creator => $hub->current_user,
+        title   => 'Test Page',
+        content => $wiki,
+    );
+    ok $page, 'Created test page';
+
+    open my $fh, '<', $imgpath or die "$imgpath\: $!";
+    $hub->attachments->create(
+        creator  => $hub->current_user,
+        page_id  => $page->id,
+        filename => $newname,
+        fh       => $fh,
+    );
+
+    my @attachments = $page->attachments();
+    is scalar(@attachments), 1, '... attached image';
+
+    my $html = $hub->pdf_export->_get_html($page->name);
+    ok $html, '... converted to HTML';
+
+    my $escaped = uri_escape($newname);
+    like $html, qr{<img [^>]*src="[^"]+/$escaped"},
+        '... image filename is properly escaped';
 }
 
 ###############################################################################
