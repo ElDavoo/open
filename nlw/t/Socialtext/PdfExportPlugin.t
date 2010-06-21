@@ -9,7 +9,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 11;
+use Test::Socialtext tests => 7;
 fixtures('admin');
 
 use Readonly;
@@ -32,14 +32,7 @@ sub generates_valid_pdf {
     $description ||= $wikitext;
 
     my $pdf_content = pdf_for_wikitext($wikitext);
-    like(
-        $pdf_content, qr/\A%PDF-\d+\.\d+/,
-        "$description looks like a pdf at start"
-    );
-    like(
-        $pdf_content, qr/%%EOF\Z/,
-        "$description looks like a pdf at end"
-    );
+    looks_like_pdf_ok $pdf_content;
 }
 
 MULTI_PAGE: {
@@ -47,17 +40,7 @@ MULTI_PAGE: {
 
     my $pdf_content;
     $HUB->pdf_export->multi_page_export( \@page_names, \$pdf_content );
-
-    like(
-        $pdf_content, 
-        qr/\A%PDF-\d+\.\d+/,
-        'generated content looks like a pdf at start'
-    );
-    like(
-        $pdf_content, 
-        qr/%%EOF\Z/,
-        'generated content looks like a pdf at end'
-    );
+    looks_like_pdf_ok $pdf_content;
 }
 
 HTML_FILES: {
