@@ -121,18 +121,21 @@ sub _run_htmldoc {
         # be the root where it begins looking for files. -mml
         local $CWD = '/';
 
-        # Sometimes htmldoc has errors trying to write to a tmp file
-        # that is already there. That corresponds to a 512 or 1024 
-        # return from the run command. This is a hack making up 
-        # for lameness in htmldoc. It runs the same command again
-        # if a first attempt doesn't work. This doesn't happen
-        # very often.
-        my $attempts = 0;
-        while ($attempts < 5) {
+        # When htmldoc generates output, we *expect* some error output
+        # indicating "Unable to connect to...".  Sucks, but htmldoc tries to
+        # do HTTP lookups based on file paths.  We'll ignore these errors, but
+        # anything else should be treated as an actual error condition.
+        my $failures = 0;
+        while ($failures < 5) {
             run \@command, \$input, $output_ref, \$err;
-            my $wait_result = $?;
-            last unless ($wait_result == 512 || $wait_result == 1024 );
-            $attempts++;
+            my @errors =
+                grep { !/Unable to connect to/ }
+                grep { /^ERR/ }
+                split /^/, $err;
+            last unless @errors;
+
+            warn $_ for @errors;
+            $failures ++;
         }
     }
 
