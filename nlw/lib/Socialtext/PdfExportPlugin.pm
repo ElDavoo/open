@@ -173,6 +173,7 @@ sub _get_html {
 
     # Old school here.  htmldoc doesn't support the &trade; entitity, and it
     # doesn't support Unicode.
+    no warnings 'redefine';
     local *Socialtext::Formatter::TradeMark::html = sub {'<SUP>TM</SUP>'};
     my $html = "<html><head><title>"
         . $page->metadata->Subject
