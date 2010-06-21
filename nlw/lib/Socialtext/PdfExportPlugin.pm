@@ -7,6 +7,7 @@ use base 'Socialtext::Plugin';
 use Socialtext::PdfExport::LinkDictionary;
 use File::chdir;
 use Socialtext::l10n qw(loc);
+use Socialtext::Log qw(st_log);
 use IPC::Run 'run';
 use Readonly;
 use Class::Field 'const';
@@ -134,7 +135,8 @@ sub _run_htmldoc {
                 split /^/, $err;
             last unless @errors;
 
-            warn $_ for @errors;
+            st_log->error("@command");
+            st_log->error($_) for @errors;
             $failures ++;
         }
     }
