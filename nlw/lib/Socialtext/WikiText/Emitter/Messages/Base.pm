@@ -72,10 +72,14 @@ sub markup_node {
     my $ast = shift;
 
     my $markup = $self->msg_markup_table;
+    
     return unless exists $markup->{$ast->{type}};
     my $output = $markup->{$ast->{type}}->[$is_end ? 1 : 0];
     if ($ast->{type} eq 'a') {
         $output =~ s/HREF/$ast->{attributes}{href}/;
+        if (my $cb = $self->{callbacks}{href_link}) {
+            $cb->($ast);
+        }
     }
     $self->{output} .= $output;
 }

@@ -73,7 +73,7 @@ my %OPTSPEC = (
 );
 
 Getopt::Long::Configure('bundling');
-GetOptions(%OPTSPEC) or exit 1;
+GetOptions(%OPTSPEC) or usage();
 
 usage() if grep { $_ eq 'help' } @ARGV;
 

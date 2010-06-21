@@ -12,6 +12,7 @@ Readonly my %markup => (
     i    => [ '',  '' ],
     del  => [ '',  '' ],
     a    => [ '"',  '"<HREF>' ],
+    hashmark => ['',''],
 );
 
 sub msg_markup_table { return \%markup }
@@ -19,11 +20,18 @@ sub msg_markup_table { return \%markup }
 sub msg_format_link {
     my $self = shift;
     my $ast = shift;
-    if (my $cb = $self->{callbacks}{page_link}) {
-        $cb->($ast);
+
+    # Handle the "Named"{link: ws [page]} case.
+    if (length $ast->{text} and $ast->{wafl_string} =~ /\[(.*)\]/) {
+        my $page_id = $1;
+        if ($ast->{text} ne $page_id) {
+            return qq("$ast->{text}" $ast->{wafl_string});
+        }
     }
-    return qq{"$ast->{text}" $ast->{workspace_id} [$ast->{page_id}]};
+
+    return $ast->{wafl_string};
 }
+
 
 sub msg_format_user {
     my $self = shift;
@@ -46,29 +54,23 @@ sub user_as_username {
     return $user->best_full_name;
 }
 
-# Copied from Base.pm and modified to not emit the HREF if it matches the link
-# text (which happens for canonicalized raw links)
-sub _markup_node {
+sub markup_node {
     my $self = shift;
-    my $offset = shift;
+    my $is_end = shift;
     my $ast = shift;
 
-    my $markup = $self->msg_markup_table;
-    return unless exists $markup->{$ast->{type}};
-
-    my $output = $markup->{$ast->{type}}->[$offset];
-    if ($ast->{type} eq 'a') {
+    if ($ast->{type} eq 'a' and $is_end) {
+        my $output = $self->msg_markup_table->{$ast->{type}}->[$is_end];
         if (($ast->{text}||'') eq $ast->{attributes}{href}) {
-            $output =~ s/\<HREF\>//;
+            $output =~ s/<HREF>//;
         }
         else {
             $output =~ s/HREF/$ast->{attributes}{href}/;
         }
-        if ($self->{callbacks}{href_link} and $offset == 0) {
-            $self->{callbacks}{href_link}->($ast);
-        }
+        $self->{output} .= $output;
+        return;
     }
-    $self->{output} .= $output;
+    $self->SUPER::markup_node($is_end, $ast);
 }
 
 1;
