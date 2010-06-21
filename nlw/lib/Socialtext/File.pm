@@ -6,7 +6,7 @@ use base 'Exporter';
 our @EXPORT_OK = qw(
     set_contents set_contents_utf8 set_contents_binary
     get_contents get_contents_utf8 get_contents_binary
-    ensure_directory
+    ensure_directory mime_type
 );
 
 =head1 NAME
@@ -472,6 +472,73 @@ sub newest_directory_file {
 
     return reduce { ( $a gt $b ) ? $a : $b } @files;
 }
+
+=head2 mime_type($path, $file_extension, $type_hint)
+
+Returns the mime type of the file.
+
+The algorithm is roughly as follows.  A "basic" type is defined to be either
+"text/plain" or "application/octet-stream", or some other type that mime-magic
+detection uses as a fallback (e.g. application/msword for OLE documents,
+application/x-zip for everything zip-compressed).
+
+First, we check the file "signature" using a mime-magic database.  If this
+finds a type that B<isn't> a "basic" type, that type is returned.  Otherwise,
+the function falls through to the next check.
+
+If a C<$file_extension> isn't given, this check is skipped.  The file extension
+is given as input to the C<MIME::Types> module.  If this check finds a type
+that B<isn't> a "basic" type, that type is returned.  If a "basic" type or no
+type is found, the function falls through to the next check.
+
+If a C<$type_hint> isn't given, this check is skipped.  The type hint is for
+example what an uploading browser or external system considers this file to be
+typed as.  If present, it's returned instead of a "basic" type.
+
+Finally, if no better type could be found using the above two checks, the
+"basic" type that was found by the mime-magic check is returned.
+
+=cut
+
+# application/msword is detected for a number of OLE-type documents it seems.
+our $is_basic_type = qr{^(?:
+    text/plain |
+    application/(?:
+        octet-stream |
+        msword | # magic db calls all OLE documents this
+        x-zip # magic db calls all ZIP magic this
+    )$
+)}x;
+sub mime_type {
+    my ($path_to_file, $file_extension, $type_hint) = @_;
+
+    local $@;
+    my $magic_type = eval {
+        require Socialtext::System;
+        Socialtext::System::backtick('/usr/bin/file', '-Lib', $path_to_file);
+    };
+    chomp $magic_type if defined $magic_type;
+    if ($magic_type) {
+        return $magic_type unless $magic_type =~ $is_basic_type;
+    }
+
+    if ($file_extension) {
+        $file_extension =~ s/.+\.([^.]+)$/$1/;
+        my $type = eval {
+            require MIME::Types;
+            my $mts = MIME::Types->new(only_complete => 1);
+            my $mt = $mts->mimeTypeOf(lc $file_extension);
+            $mt->type;
+        };
+        if ($type) {
+            return $type unless $type =~ $is_basic_type;
+        }
+    }
+
+    return $type_hint if $type_hint;
+    return $magic_type;
+}
+
 
 =head1 SEE ALSO
 
