@@ -108,7 +108,6 @@ sub multi_page_export {
 sub _run_htmldoc {
     my ( $input, $output_ref, @command ) = @_;
 
-    my $err;
     # We ignore the exit code because htmldoc sometimes exits nonzero even
     # when a PDF was created.  We check for the '%PDF' magic number at the top
     # of the output instead. -mml
@@ -128,6 +127,7 @@ sub _run_htmldoc {
         # anything else should be treated as an actual error condition.
         my $failures = 0;
         while ($failures < 5) {
+            my $err;
             run \@command, \$input, $output_ref, \$err;
             my @errors =
                 grep { !/Unable to connect to/ }
