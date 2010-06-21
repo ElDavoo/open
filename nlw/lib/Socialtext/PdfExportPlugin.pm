@@ -173,14 +173,19 @@ sub _get_html {
 
     # Old school here.  htmldoc doesn't support the &trade; entitity, and it
     # doesn't support Unicode.
-    no warnings 'redefine';
-    local *Socialtext::Formatter::TradeMark::html = sub {'<SUP>TM</SUP>'};
+    my $content = do {
+        no warnings 'redefine';
+        local *Socialtext::Formatter::TradeMark::html = sub {'<SUP>TM</SUP>'};
+        $page->to_absolute_html(
+            undef,
+            link_dictionary => Socialtext::PdfExport::LinkDictionary->new,
+        );
+    };
+
     my $html = "<html><head><title>"
         . $page->metadata->Subject
         . "</title></head><body>"
-        . $page->to_absolute_html(
-            undef,
-            link_dictionary => Socialtext::PdfExport::LinkDictionary->new )
+        . $content
         . "</body></html>";
     $self->hub->current_workspace($initial_ws) if ($initial_ws->name ne $workspace_name);
     return $html;    
