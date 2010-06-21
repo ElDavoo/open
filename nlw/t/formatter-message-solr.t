@@ -52,7 +52,7 @@ __DATA__
 
 === Raw links are supported
 --- wikitext: Have you seen "http://foo.com/carl"<http://foo.com/carl> yet?
---- solr: Have you seen "http://foo.com/carl"<http://foo.com/carl> yet?
+--- solr: Have you seen "http://foo.com/carl" yet?
 
 === page links are supported
 --- wikitext: edited "Some Label"{link: workspacename [some_page]}
