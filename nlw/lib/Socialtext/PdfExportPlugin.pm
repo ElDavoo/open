@@ -78,7 +78,7 @@ sub pdf_export {
         );
         return $pdf_content;
     }
-    return "Error:<pre>$pdf_content</pre>\n";
+    return "Error:<pre>Unable to convert to PDF</pre>\n";
 }
 
 =head2 multi_page_export($page_names, \$output)
