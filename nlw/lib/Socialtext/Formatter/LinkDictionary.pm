@@ -147,8 +147,9 @@ field group => '/?group/%{group_id}';
 
 =cut
 
-field signal       => '/st/signals/%{signal_hash}';
-field signal_reply => '/st/signals/%{in_reply_to_hash}?r=%{signal_hash}';
+field signal         => '/st/signals/%{signal_hash}';
+field signal_reply   => '/st/signals/%{in_reply_to_hash}?r=%{signal_hash}';
+field signal_hashtag => '/?action=search_signals&search_term=tag_exact:%{hashtag}&sortby=newest';
 
 =head1 METHODS
 

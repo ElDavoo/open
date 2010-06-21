@@ -42,37 +42,6 @@ $SendClass                       = 'Sendmail';
         max_size => SCALAR_TYPE( default => 1024 * 1024 * 5 ),
     };
 
-    sub _get_content_transfer_encoding {
-        my $self = shift;
-       
-        my $encoding = shift;
-        my $content_transfer_encoding;
-        if($encoding eq 'utf-8') {
-           $content_transfer_encoding = '8bit';
-        } elsif ($encoding eq 'iso-2022-jp') {
-           $content_transfer_encoding = '7bit';
-        } else {
-           $content_transfer_encoding = '8bit';
-        }
-    }
-
-    sub _get_charset {
-        my $self     = shift;
-        my $encoding = shift;
-        my $charset;
-        if ( $encoding eq 'iso-2022-jp' ) {
-            $charset = 'ISO-2022-JP';
-        }
-        elsif ( $encoding eq 'utf8' ) {
-            $charset = 'UTF-8';
-        }
-        else {
-            $charset = 'UTF-8';
-        }
-
-        return $charset;
-    }
-
     sub get_send_class {
         if (my $file = $ENV{ST_EMAIL_TO_FILE}) {
             require Email::Send::IO;
@@ -87,7 +56,6 @@ $SendClass                       = 'Sendmail';
         my $self     = shift;
         my $body     = shift;
         my $encoding = shift;
-
         return Encode::encode( $encoding, $body );
     }
 
@@ -95,7 +63,6 @@ $SendClass                       = 'Sendmail';
         my $self     = shift;
         my $body     = shift;
         my $encoding = shift;
-
         return Encode::encode( $encoding, $body );
     }
 

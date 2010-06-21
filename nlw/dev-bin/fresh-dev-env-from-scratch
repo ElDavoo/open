@@ -6,19 +6,22 @@
 # '-w' option will _not_ upadte widgets/galleries, also implies '-b'
 # '-p' option will _not_ start up nlw in this script
 # '-h' option will import the help-en wiki
+# '-s' option will create-socialtext-users
 
 HELPEN=0
 FIXTURE='ALL'
 BENCHMARK=0
 PAUSE=0
 UPDATE_WIDGETS=1
-while getopts "hmbpw" OPT; do
+ST_USERS=0
+while getopts "hmbpws" OPT; do
   case $OPT in
     h) HELPEN=1;;
     b) BENCHMARK=1;;
     m) FIXTURE=admin_no_pages;;
     p) PAUSE=1;;
     w) UPDATE_WIDGETS=0;BENCHMARK=1;;
+    s) ST_USERS=1;;
   esac
 done
 
@@ -118,7 +121,12 @@ if [ $UPDATE_WIDGETS == 1 ]; then
     st-widgets update-gallery --verbose
 fi
 
+[ $ST_USERS == 1 ] && create-socialtext-users
+
 # Clean up dead symlinks
 find -L -type l -delete
+
+# Purge json proxy cache
+bin/st-purge-json-proxy-cache
 
 echo "fresh-dev-env-from-scratch complete."

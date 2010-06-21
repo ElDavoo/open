@@ -15,7 +15,6 @@ all: $(OUTPUT)
 
 clean:
 	rm -f $(OUTPUT)
-	$(MAKE) -C t clean
 
 $(OUTPUT): $(FILES) Makefile
 	rm -f $@; \

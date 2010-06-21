@@ -8,6 +8,7 @@ widgets:
   - include
   - section
   - recent_changes
+  - hashtag
   - tag
   - tag_list
   - weblog
@@ -228,6 +229,17 @@ widget:
     image_text:
         - { field: label, text: "weblog: %label" }
         - { field: default, text: "weblog: %weblog_name" }
+
+  hashtag:
+    id: hashtag
+    label: Signal Tag Link
+    color: green
+    pattern: '{hashtag: %tag}'
+    fields: [tag]
+    title: Link to tag '$tag'. Click to edit.
+    required: [tag]
+    image_text:
+        - { field: tag, text: "#%tag" }
 
   tag:
     id: tag
@@ -519,7 +531,7 @@ widget:
     color: darkgoldenrod
     pattern: '{user: %user_email}'
     field: user_email
-    title: Show full name for '$user_email'. Click to edit.
+    title: User mention. Click to edit.
     desc: Display the full name for the given email address or user name. Use this form to edit the properties of the user name.
     more_desc: There are no optional properties for a user name.
     required: [user_email]

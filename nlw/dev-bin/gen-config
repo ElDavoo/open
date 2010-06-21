@@ -25,6 +25,7 @@ use File::Copy ();
 use File::Path ();
 use File::Spec;
 use File::Slurp ();
+use List::MoreUtils qw(firstval);
 use Getopt::Long;
 use Socialtext::AppConfig;
 use Socialtext::HTTP::Ports;
@@ -555,13 +556,8 @@ sub nginx_params {
 
         # XXX FIXME
         $config{servers} = {
-            min_spare               => 2,
-            max_spare               => 2,
-            start                   => 2,
-            max_clients             => 12,
             keep_alive_timeout      => 30,
             keep_alive_max_req      => 50,
-            max_requests_per_child  => 0,
             worker_processes        => 1,
         };
 
@@ -589,18 +585,16 @@ sub nginx_params {
         $config{user} = get_build_setting( 'st-user' );
         $config{group} = get_build_setting( 'st-group' );
         $config{servers} = {
-            min_spare              => 30,
-            max_spare              => 70,
-            start                  => 45,
-            max_clients            => 150,
             keep_alive_timeout     => 30,
             keep_alive_max_req     => 50,
-            max_requests_per_child => 0,
             worker_processes       => 1,
         };
         $config{use_canonical_name} = 'On';
     }
-    $config{use_ssl} = _use_ssl($config{nlw_server_hostname});
+    $config{ssl_name} = _ssl_name(
+        ssl_base => $dirs{ssl_base},
+        search   => [ $config{nlw_web_hostname}, $config{nlw_server_hostname} ],
+    );
 
     my $appconfig = Socialtext::AppConfig->new;
     $config{ssl_only} = $appconfig->ssl_only();
@@ -626,10 +620,12 @@ sub _backend_ports {
     };
 }
 
-sub _use_ssl {
-    my $hostname = shift;
+sub _ssl_name {
+    my %opts   = @_;
+    my $base   = $opts{ssl_base};
+    my $search = $opts{search};
 
-    return $is_dev_install || -f "/etc/ssl/certs/$hostname.crt";
+    return firstval { -f "$base/certs/$_.crt" } @$search;
 }
 
 sub _static_dir {
@@ -676,12 +672,12 @@ sub apache_perl_params {
             ( $ENV{ST_MEMTOTAL} )
             ? detect_server_settings()
             : {
-                min_spare              => 2,
-                max_spare              => 2,
-                start                  => 2,
-                max_clients            => 150,
-                keep_alive_timeout     => 30,
-                keep_alive_max_req     => 50,
+                min_spare              => 1,
+                max_spare              => 1,
+                start                  => 1,
+                max_clients            => 3,
+                keep_alive_timeout     => 5,
+                keep_alive_max_req     => 15,
                 max_requests_per_child => 1000,
             };
         $config{use_canonical_name} = 'Off';
@@ -807,17 +803,18 @@ sub copy_static_files {
     my %config = standard_params( \%dirs );
     return unless $config{is_dev};
 
-    my $crt_source =
-        -f "$inc/static/ssl/$config{nlw_server_hostname}.crt"
-        ? "$inc/static/ssl/$config{nlw_server_hostname}.crt"
-        : "$inc/static/ssl/talc.socialtext.net.crt";
-    my $key_source =
-        -f "$inc/static/ssl/$config{nlw_server_hostname}.key"
-        ? "$inc/static/ssl/$config{nlw_server_hostname}.key"
-        : "$inc/static/ssl/talc.socialtext.net.key";
+    my $to_use = firstval { -f "$inc/static/ssl/$_.crt" } (
+        $config{nlw_web_hostname},
+        $config{nlw_server_hostname},
+        'talc.socialtext.net',
+        'topaz.socialtext.net'
+    );
 
-    my $crt_target = "$dirs{ssl_base}/certs/$config{nlw_server_hostname}.crt";
-    my $key_target = "$dirs{ssl_base}/private/$config{nlw_server_hostname}.key";
+    my $crt_source = "$inc/static/ssl/$to_use.crt";
+    my $crt_target = "$dirs{ssl_base}/certs/$to_use.crt";
+
+    my $key_source = "$inc/static/ssl/$to_use.key";
+    my $key_target = "$dirs{ssl_base}/private/$to_use.key";
 
     for my $pair ( [ $crt_source, $crt_target ],
                    [ $key_source, $key_target ],

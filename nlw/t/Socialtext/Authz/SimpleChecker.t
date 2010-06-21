@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 52;
+use Test::Socialtext tests => 51;
 use Test::Exception;
 use Socialtext::Role;
 
@@ -45,18 +45,6 @@ $result = $ws->role_for_user( $guest_user);
 ok !$result, 'guest has no role in ws';
 $result = $group->role_for_user( $guest_user);
 ok !$result, 'guest has no role in group';
-
-################################################################################
-# pass an illegal UserSetContainer
-illegal_container: {
-    dies_ok {
-        my $checker = Socialtext::Authz::SimpleChecker->new(
-            user      => $admin_user,
-            container => $account,
-        );
-        $checker->check_permission('write');
-    } 'dies when wrong type of container is passed.';
-}
 
 ################################################################################
 # Basic Groups checking

@@ -1464,22 +1464,26 @@ my %LimitAndSortSpec = (
         Readonly my %SQL => (
             name => 'SELECT *'
                 . ' FROM "Workspace"'
+                . ' WHERE workspace_id <> 0'
                 . " ORDER BY name $p{sort_order}"
                 . ' LIMIT ? OFFSET ?',
             creation_datetime => 'SELECT *'
                 . ' FROM "Workspace"'
+                . ' WHERE workspace_id <> 0'
                 . " ORDER BY creation_datetime $p{sort_order},"
                 . ' name ASC'
                 . ' LIMIT ? OFFSET ?',
             account_name => 'SELECT "Workspace".*'
                 . ' FROM "Workspace", "Account"'
                 . ' WHERE "Workspace".account_id = "Account".account_id'
+                . '   AND workspace_id <> 0'
                 . " ORDER BY \"Account\".name $p{sort_order},"
                 . ' "Workspace".name ASC'
                 . ' LIMIT ? OFFSET ?',
             creator => 'SELECT *'
                 . ' FROM "Workspace", users'
                 . ' WHERE created_by_user_id=user_id'
+                . '   AND workspace_id <> 0'
                 . " ORDER BY driver_username $p{sort_order}, name ASC"
                 . ' LIMIT ? OFFSET ?',
             user_count => qq{
@@ -1493,6 +1497,7 @@ SELECT "Workspace".*
             GROUP BY into_set_id
     ) AS temp1
     WHERE temp1.into_set_id = "Workspace".user_set_id
+      AND workspace_id <> 0
     ORDER BY user_count $p{sort_order},
     "Workspace".name ASC
     LIMIT ? OFFSET ?
@@ -1540,11 +1545,13 @@ sub _WorkspaceCursor {
             name => 'SELECT *'
                 . ' FROM "Workspace"'
                 . ' WHERE account_id=?'
+                . '   AND workspace_id <> 0'
                 . " ORDER BY name $p{sort_order}"
                 . ' LIMIT ? OFFSET ?',
             creation_datetime => 'SELECT *'
                 . ' FROM "Workspace"'
                 . ' WHERE account_id=?'
+                . '   AND workspace_id <> 0'
                 . " ORDER BY creation_datetime $p{sort_order},"
                 . ' name ASC'
                 . ' LIMIT ? OFFSET ?',
@@ -1552,6 +1559,7 @@ sub _WorkspaceCursor {
                 . ' FROM "Workspace", "Account"'
                 . ' WHERE "Workspace".account_id = "Account".account_id'
                 . ' AND "Workspace".account_id=?'
+                . ' AND workspace_id <> 0'
                 . " ORDER BY \"Account\".name $p{sort_order},"
                 . ' "Workspace".name ASC'
                 . ' LIMIT ? OFFSET ?',
@@ -1559,19 +1567,21 @@ sub _WorkspaceCursor {
                 . ' FROM "Workspace", users'
                 . ' WHERE created_by_user_id=user_id'
                 . ' AND "Workspace".account_id=?'
+                . ' AND workspace_id <> 0'
                 . " ORDER BY driver_username $p{sort_order}, name ASC"
                 . ' LIMIT ? OFFSET ?',
             user_count => qq{
             SELECT "Workspace".*
                     FROM "Workspace",
-                    (SELECT into_set_id, 
+                    (SELECT into_set_id,
                         COUNT(DISTINCT(from_set_id)) AS user_count
-                     FROM user_set_path 
+                     FROM user_set_path
                      WHERE from_set_id } . PG_USER_FILTER . qq{
                      GROUP BY into_set_id)
                     AS temp1
                     WHERE temp1.into_set_id = "Workspace".user_set_id
                     AND "Workspace".account_id=?
+                    AND workspace_id <> 0
                     ORDER BY user_count $p{sort_order},
                     "Workspace".name ASC
                     LIMIT ? OFFSET ?

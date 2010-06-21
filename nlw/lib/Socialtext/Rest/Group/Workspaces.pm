@@ -50,6 +50,7 @@ sub _entity_hash {
         id            => $workspace->workspace_id,
         workspace_id  => $workspace->workspace_id,
         default       => $workspace->is_default ? 1 : 0,
+        is_all_users_workspace => $workspace->is_all_users_workspace ? 1 : 0,
     };
 }
 
@@ -70,6 +71,11 @@ sub POST_json {
     unless ($perm || $user->is_business_admin) {
         $rest->header(-status => HTTP_401_Unauthorized);
         return "user not authorized";
+    }
+
+    if ($group->permission_set eq 'self-join') {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return "self-join groups cannot be added to workspaces";
     }
 
     my $json = eval { decode_json($rest->getContent()) };
@@ -143,6 +149,12 @@ sub _add_group {
        and die Socialtext::Exception::Conflict->new(
            "group already in workspace"
        );
+
+    if ($group->permission_set eq 'private'
+        && $ws->permissions->current_set_name ne 'member-only'
+    ) {
+        die Socialtext::Exception::DataValidation->new();
+    }
 
     $ws->add_group(group => $group, role => $role, actor => $user);
 }

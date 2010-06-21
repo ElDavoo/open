@@ -24,6 +24,7 @@ sub collection_name { 'Groups' }
 sub _entity_hash { 
     my ($self, $group) = @_;
     my $show_members = $self->rest->query->param('show_members');
+    return $group if $self->rest->query->param('ids_only');
     return {
         group_id => $group->group_id,
         name => $group->name,
@@ -49,8 +50,11 @@ sub _get_total_results {
     if ($user->is_business_admin and $self->rest->query->param('all')) {
         Socialtext::Group->Count;
     }
+    elsif (defined $self->{_total_results}) {
+        return $self->{_total_results};
+    }
     else {
-        return $self->{_total_results} || $user->group_count;
+        return $user->group_count;
     }
 }
 
@@ -97,10 +101,22 @@ sub _get_entities {
             );
             return [ $iter->all ];
         }
-        else {
-            my $full_set = [ $user->groups(discoverable => $discoverable)->all ];
-            $self->{_total_results} = @$full_set;
+        elsif (defined $self->rest->query->param('startIndex') and not $self->rest->query->param('skipTotalResult')) {
+            # We need to supply "total_results".
+            my $full_set = [ $user->groups( discoverable => $discoverable )->all ];
+            $self->{_total_results} = @$full_set; # XXX - Re-implement this entire paragraph with a Count method.
+            splice(@$full_set, 0, $self->start_index) if $self->start_index;
+            splice(@$full_set, $self->items_per_page) if @$full_set > $self->items_per_page;
             return $full_set;
+        }
+        else {
+            # Old API; no need to supply total_results.
+            return [ $user->groups(
+                ids_only => scalar $self->rest->query->param('ids_only'),
+                discoverable => $discoverable,
+                limit => $self->items_per_page,
+                offset => $self->start_index,
+            )->all ];
         }
     }
 }
@@ -139,6 +155,14 @@ sub POST_json {
     unless ( defined $data and ref($data) eq 'HASH' ) {
         $rest->header(-status => HTTP_400_Bad_Request);
         return '';
+    }
+
+    my $is_self_join = $data->{permission_set}
+        && $data->{permission_set} eq 'self-join';
+    my $wses = $data->{workspaces};
+    if ($is_self_join && defined($wses) && scalar(@$wses)) {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return 'self-join groups may not contain workspaces';
     }
 
     $data->{account_id} ||= $user->primary_account_id;
@@ -267,6 +291,12 @@ sub _add_group_to_workspaces {
         my $role = Socialtext::Role->new(
             name => ($ws->{role}) ? $ws->{role} : 'member' );
         die "no such role: '$ws->{role}'\n" unless $role;
+
+        if ($group->permission_set eq 'private'
+            && $workspace->permissions->current_set_name ne 'member-only'
+        ) {
+            die Socialtext::Exception::DataValidation->new();
+        }
 
         next if $workspace->role_for_group($group, {direct => 1});
 

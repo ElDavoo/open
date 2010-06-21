@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 23;
+use Test::Socialtext tests => 76;
 use Test::Exception;
 
 ################################################################################
@@ -183,3 +183,159 @@ remove_non_member_user_from_group: {
     lives_ok { $group->remove_user(user => $user) }
         "... removing non-member User from Group doesn't choke";
 }
+
+private_group_self_actions: {
+    my $group = create_test_group();
+    my $user  = create_test_user();
+    my $other_user = create_test_user();
+    my $yet_another_user = create_test_user();
+    my $badmin = create_test_badmin();
+
+    is $group->permission_set, 'private', "assert private group";
+
+    # Group should be empty (have no Users)
+    is $group->users->count(), 0, 'Group has no Users in it (yet)';
+
+    # Add the User to the Group
+    lives_ok {
+        $group->add_user(actor => $badmin, user => $user);
+    } "business admin can add a user";
+    is $group->users->count(), 1, 'still just one user';
+
+    dies_ok {
+        $group->add_user(actor => $user, user => $other_user);
+    } "non admin can't add a user";
+
+    dies_ok {
+        $group->add_role(actor => $user, object => $other_user, role => 'member');
+    } "non admin can't add a user";
+
+    dies_ok {
+        $group->add_role(actor => $user, object => $other_user, role => 'admin');
+    } "non admin can't add a user";
+
+    dies_ok {
+        $group->add_user(actor => $user, user => $other_user, role => 'admin');
+    } "non admin can't add a user";
+
+    is $group->users->count(), 1, 'still just one user';
+
+    lives_ok {
+        $group->assign_role_to_user(
+            actor => $badmin, role => 'admin', user => $user);
+    } "badmin made a group admin";
+
+    lives_ok {
+        $group->add_user(actor => $user, user => $other_user);
+    } "can now add as an admin";
+
+    is $group->users->count(), 2, 'ok, added that time';
+
+    $badmin->set_business_admin(0);
+    $badmin->set_technical_admin(0);
+
+    dies_ok {
+        $group->add_user(actor => $badmin, user => $yet_another_user);
+    } "demoted badmin can't add";
+
+    is $group->role_for_user($other_user,direct=>1)->name, 'member', 'passenger on-board';
+    lives_ok {
+        $group->remove_user(actor => $other_user, user => $other_user);
+    } "passenger can abandon ship";
+    is $group->users->count(), 1, ".. head count";
+
+    lives_ok {
+        $group->remove_user(actor => $user, user => $user);
+    } "captain can abandon ship (last-admin checks are done in the ReST layer)";
+    is $group->users->count(), 0, "nobody left on-board";
+}
+
+self_join_group_self_actions: {
+    my $acct = create_test_account_bypassing_factory();
+    my $acct2 = create_test_account_bypassing_factory();
+    my $group = create_test_group(account => $acct);
+    my $user  = create_test_user(account => $acct);
+    my $peer  = create_test_user(account => $acct);
+    my $outsider = create_test_user(account => $acct2);
+
+    $group->update_store({permission_set => 'self-join'});
+    is $group->permission_set, 'self-join', "group is now self-join";
+
+    is $group->users->count, 0;
+
+    dies_ok {
+        $group->add_user(user => $outsider, actor => $outsider);
+    } "outsider can't join self-join group";
+    is $group->users->count, 0;
+
+    lives_ok {
+        $group->add_user(user => $user, actor => $user);
+    } "person in same account can self-join";
+    is $group->role_for_user($user,direct=>1)->name, 'member', '.. role';
+    is $group->users->count, 1, '.. count';
+        
+    dies_ok {
+        $group->add_user(user => $peer, actor => $peer, role => 'admin');
+    } "can't request an admin role";
+    is $group->users->count, 1, '.. count';
+    
+    lives_ok {
+        $group->assign_role(object => $user, role => 'admin',
+            actor => Socialtext::User->SystemUser);
+    } "system-user can give someone admin";
+    is $group->users->count, 1, '.. count';
+    is $group->role_for_user($user,direct=>1)->name, 'admin', '.. role';
+
+    lives_ok {
+        $group->add_role(object => $peer, role => 'member',
+            actor => Socialtext::User->SystemUser);
+    } "system-user can add a user";
+    is $group->users->count, 2, '.. count';
+    is $group->role_for_user($peer,direct=>1)->name, 'member', '.. role';
+
+    lives_ok {
+        $group->add_user(user => $outsider, actor => $user);
+    } "group admin can bring in an outsider";
+    is $group->users->count, 3, '.. count';
+    is $group->role_for_user($outsider,direct=>1)->name, 'member', '.. role';
+
+    lives_ok {
+        $group->remove_user(user => $outsider); # default sys-user
+    } 'system-user can remove outsider';
+    ok !$group->has_user($outsider), '... actually removed';
+    is $group->users->count, 2, '.. count';
+
+    dies_ok {
+        $group->add_user(actor => $peer, role => 'admin', user => $outsider);
+    } "member can't bring someone in as admin";
+    is $group->users->count, 2, '.. count';
+
+    lives_ok {
+        $group->add_user(actor => $user, role => 'admin', user => $outsider);
+    } "group admin can bring in an outsider as an admin";
+    is $group->users->count, 3, '.. count';
+    is $group->role_for_user($outsider,direct=>1)->name, 'admin', '.. role';
+
+    lives_ok {
+        $group->assign_role_to_user(actor => $user, role => 'member', user => $outsider);
+    } "admin can demote a member";
+    is $group->role_for_user($outsider,direct=>1)->name, 'member', '.. role';
+
+    lives_ok {
+        $group->remove_user(user => $outsider, actor => $outsider);
+    } "passenger can abandon ship";
+    is $group->users->count, 2, '.. count';
+
+    lives_ok {
+        $group->remove_user(user => $peer, actor => $peer);
+    } "administrative crew can be cowards (if they're quick; i.e. not the last admin)";
+    is $group->users->count, 1, '.. count';
+
+    lives_ok {
+        $group->remove_user(user => $user, actor => $user);
+    } "the captain *can* abandon ship (last-admin checks are done higher-up in the ReST layer)";
+    is $group->users->count, 0, '.. count';
+
+}
+
+pass 'all done';

@@ -5,131 +5,183 @@
 | *Comment* | Test Case: Self Join Group Define Users, Accounts |  |
 | set | account | selfjoin-acct-%%start_time%% |
 | set | group | grp-%%start_time%% |
-| set | user | selfjoin%%start_time%%@matt.socialtext.net |
-| set | joiner | joiner%%start_time%%@matt.socialtext.net |
+| set | user_short | selfjoin%%start_time%% |
+| set | user | %%user_short%%@matt.socialtext.net |
+| set | joiner_short | joiner%%start_time%% |
+| set | joiner | %%joiner_short%%@matt.socialtext.net |
+
 | set | ws | selfjoin-ws-%%start_time%% |
 | set | other_account | other-acct-%%start_time%% |
 | set | other_user | other-user-%%start_time%%@matt.socialtext.net |
 | set | public_group | public-group-%%start_time%% |
 | set | private_group | private-group-%%start_time%% |
 
-| *Comment* | Test Case: Self Join Group CREATE users, accounts, a workspace |  |
+| *Comment* | Test Case: Self Join Group CREATE users, accounts |  |
 | st-admin | create-account --name %%account%% | was created |
 | st-admin | create-user --email %%user%% --password %%password%% --account %%account%% | was created |
 | st-admin | create-user --email %%joiner%% --password %%password%% --account %%account%% | was created |
-| st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%account%% | was created |
 | st-admin | create-account --name %%other_account%% | was created |
 | st-admin | create-user --email %%other_user%% --password %%password%% --account %%other_account%% | was created |
 
 | *Comment* | Test Case: Self Join Group Create Group |  |  |
 | st-logoutin | %%user%% | %%password%% |  |
 | st-create-group | %%public_group%% | public group | self-join-radio |
-| st-name-widget | 1 | information_widget |  |
-| st-select-widget-frame | information_widget |  |  |
-| text_unlike | //body | private Change |  |
-| text_like | //body | self-join Change |  |
-| select-frame | relative=parent |  |  |
 
-| *Comment* | Test Case: Self Join Group - Edit, Flip Permissions |  |
+| *Comment* | Test Case: Self Join Group - public group opened for editing |  |
+
+| *Comment* | Test Case: Self Join Group - Change permission to private |  |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| text_like | //body | self-join Change |
-| text_unlike | //body | private Change |
+| text_like | //span[@id='permission-set'] | qr/self-join/ism |
+| text_unlike | //span[@id='permission-set'] | qr/private/ism |
+
 | wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |
-| pause | 6000 |  |
 | select-frame | relative=parent |  |
+
 | wait_for_element_present_ok | st-create-group-next | 30000 |
-| wait_for_element_present_ok | st-lightbox-cancel-create-group | 3000 |
+| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
 | wait_for_element_present_ok | private-radio | 30000 |
 | click_ok | private-radio | 30000 |
+| is_checked_ok | private-radio |  |
+
+| *Comment* | Test Case: Self Join Group - wait for the f#$%^king JS to finish loading |  |
+| pause | 5000 |  |
+
+| *Comment* | Test Case: Self Join Group - click_ok |  |
 | click_ok | st-create-group-next |  |
+| wait_for_element_not_present_ok | st-create-group-next | 30000 |
+
+| *Comment* | Test Case: Self Join Group - Verify Changed to private |  |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | private | 30000 |
-| text_unlike | //body | self-join Change |
-| text_like | //body | private Change |
+| text_like | //span[@id='permission-set'] | qr/private/ism |
+| text_unlike | //span[@id='permission-set'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
+
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
+| get_id_from_url | first_group |  |
 
-| *Comment* | Test Case: Self Join Group - See Group is changed to private |  |
+| *Comment* | Test Case: Self Join Group - See Group is Saved private |  |
+
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| text_like | //body | private |
-| text_unlike | //body | self-join |
+| text_like | //span[@class='permissionType'] | qr/private/ism |
+| text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Self Join Group - Create Private Group |  |
 | st-logoutin | %%user%% | %%password%% |  |
 | st-create-group | %%private_group%% | private group | private-radio |
-| st-name-widget | 1 | information_widget |  |
-| st-select-widget-frame | information_widget |  |  |
-| text_like | //body | private Change |  |
-| text_unlike | //body | self-join Change |  |
-| select-frame | relative=parent |  |  |
 
 | *Comment* | Test Case: Self Join Group - Save Private Group |  |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| text_like | //body | private Change |
-| text_unlike | //body | self-join Change |
+| text_like | //span[@id='permission-set'] | qr/private/ism |
+| text_unlike | //span[@id='permission-set'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
+
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
+| get_id_from_url | second_id |  |
 
 | *Comment* | Test Case: Self Join Group - Edit Private Group, Flip Permissions |  |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| text_like | //body | Group Type private |
-| text_unlike | //body | Group Type self-join |
+| text_like | //span[@class='permissionType'] | qr/private/ism |
+| text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
+
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
+| select-frame | relative=parent |  |
+
+| open_ok | /st/edit_group/%%second_id%% |
+
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |
-| pause | 6000 |  |
+
 | select-frame | relative=parent |  |
 | wait_for_element_present_ok | st-create-group-next | 30000 |
-| wait_for_element_present_ok | st-lightbox-cancel-create-group | 3000 |
+| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
 | wait_for_element_present_ok | self-join-radio | 30000 |
-| check_ok | self-join-radio |  |
+
+| click_ok | self-join-radio | 30000 |
+| is_checked_ok | self-join-radio |  |
+
+| *Comment* | Test Case: Self Join Group - wait for the f#$%^king JS to finish loading |  |
+| pause | 5000 |  |
+
 | click_ok | st-create-group-next |  |
+| wait_for_element_not_present_ok | st-create-group-next | 30000 |
+
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | self-join |  |
-| text_unlike | //body | private Change |
-| text_like | //body | self-join Change |
+| text_like | //span[@id='permission-set'] | qr/self-join/ism |
+| text_unlike | //span[@id='permission-set'] | qr/private/ism |
+
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
+| get_id_from_url | group_id |  |
 
 | *Comment* | Test Case: Self Join Group - See Group is changed to self-join |  |
-| *Comment* | Test Case: Self Join Group - GAHH, self-join is cached only in SE, refind page |  |
-| open_ok | / |  |
-| wait_for_element_present_ok | link=%%private_group%% | 30000 |
-| click_and_wait | link=%%private_group%% |
-| pause | 3000 |  |
-| refresh_ok |  |  |
-| pause | 8000 |  |
+
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| text_like | //body | Group Type self-join |
-| text_unlike | //body | Group Type private |
+| text_like | //span[@class='permissionType'] | qr/self-join/ism |
+| text_unlike | //span[@class='permissionType'] | qr/private/ism |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Self Join Group FUTURE WORK Login as a different user, discoverable, joinable |  |
+| wait_for_element_visible_ok | st-leave-group | 30000 |
+| click_ok | st-leave-group |  |
+| wait_for_text_present_ok | The group needs to include at least one admin. | 30000 |
+| wait_for_element_visible_ok | st-leave-group | 30000 |
+
+| st-name-widget | 4 | members_widget |
+| st-select-widget-frame | members_widget |
+| text_like | //body | %%user_short%% |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Self Join Group Login as a different user, discoverable, joinable |  |
 | st-logoutin | %%joiner%% | %%password%% |
+| open_ok | /st/group/%%group_id%% |  |
 
-| *Comment* | Test Case: Self Join Group FUTURE WORK Login as a different account, not-discoverable, not-joinable |  |
+| wait_for_element_visible_ok | st-join-group | 30000 |
+| click_ok | st-join-group | 30000 |
+| wait_for_element_visible_ok | st-leave-group | 30000 |
+
+| st-name-widget | 4 | members_widget |
+| st-widget-title-like | members_widget | Membership |
+| st-select-widget-frame | members_widget |  |
+| text_like | //body | %%user_short%% |
+| text_like | //body | %%joiner_short%% |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Self Join Group Leave as different user |  |
+| click_ok | st-leave-group | 30000 |
+| wait_for_element_visible_ok | st-join-group | 30000 |
+
+| st-name-widget | 4 | members_widget |
+| st-widget-title-like | members_widget | Membership |
+| st-select-widget-frame | members_widget |  |
+| text_like | //body | %%user_short%% |
+| text_unlike | //body | %%joiner_short%% |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Self Join Group. Login as a different account, not-discoverable, not-joinable |  |
 | st-logoutin | %%other_user%% | %%password%% |
-
-| *Comment* | Test Case: Self Join Group FUTURE WORK Add a workspace overlap, discoverable, joinable |  |
-
-| *Comment* | Test Case: Self Join Group FUTURE WORK Create a private group, login as separate, not discoverable or joinable |  |
+| wait_for_text_present_ok | Welcome | 30000 |
+| st_open_noeval | /st/group/%%group_id%% |  |
+| wait_for_text_present_ok | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. | 30000 |
+| wait_for_element_not_present_ok | st-join-group | 5000 |
 
 | *Comment* | Test Case: Self Join Group TEARDOWN |  |
-| st-admin | delete-workspace --no-export --w %%ws%% | has been deleted |
+| delete-group | %%first_group%% |  |
+| delete-group | %%group_id%% |  |
 
 | *Comment* | Test Case: Self Join Group COMPLETED |  |

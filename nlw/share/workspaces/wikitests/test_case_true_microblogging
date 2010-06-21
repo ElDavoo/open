@@ -41,7 +41,7 @@
 
 | *Comment* | Test Case: True Microblogging new account got AUW automagically |  |
 | st-admin | create-account --name %%tctmacct%% | A new account named "%%tctmacct%%" was created. |
-| st-admin | add-member --u %%username%% --account %%tctmacct%% | is now a member |
+| st-admin | add-member --u %%username%% --account %%tctmacct%% | now has the role of 'member' |
 | open-ok | /%%tctmauw%% |  |
 | wait_for_element_visible_ok | link=Settings |  |
 | click_and_wait | link=Settings |  |

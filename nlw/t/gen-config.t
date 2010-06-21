@@ -41,10 +41,10 @@ Dev_env: {
     }
 
     check_apache_config(
-        MinSpareServers     => 2,
-        MaxSpareServers     => 2,
-        StartServers        => 2,
-        MaxClients          => 150,
+        MinSpareServers     => 1,
+        MaxSpareServers     => 1,
+        StartServers        => 1,
+        MaxClients          => 3,
         MaxRequestsPerChild => 1000,
     );
 }

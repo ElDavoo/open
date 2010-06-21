@@ -1,14 +1,8 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: People Search Edit A Profile Access profile. |  |
-| open_ok | /st/profile |  |
-| text_like | //body | Profile |
-
-| *Comment* | Test Case: People Search Edit A Profile Open for editing |  |
-| st-name-widget | 1 | profile |
-| st-select-widget-frame | profile |  |
-| wait_for_element_visible_ok | link=(Edit) | 60000 |
-| click_and_wait | link=(Edit) |  |
+| open_ok | /st/edit_profile |  |
+| text_like | //body | Edit Profile |
 
 | *Comment* | Test Case: People Search Edit A Profile Verify profile present. |  |
 | st-name-widget | 1 | profile_details |
@@ -23,6 +17,7 @@
 | text_like | //body | Last Name |
 
 | *Comment* | Test Case: People Search Edit A Profile Fill in all values with unique strings |  |
+| wait_for_element_visible_ok | field_first_name | 30000 |
 | type_ok | field_first_name | %%first%% |
 | type_ok | field_last_name | %%last%% |
 | type_ok | field_position | %%default_field%% position |
@@ -42,12 +37,13 @@
 | type_ok | field_linkedin_url | %%default_field%% linkedin |
 | type_ok | field_facebook_url | %%default_field%% facebook |
 
-| *Comment* | Test Case: Edit Profile. Have to use click_ok and wait for First Last to appear on the profile page |  |
-| click_ok | update_profile |  |
-| wait_for_text_present_ok | %%first%% %%last%% | 30000 |
-| text_like | st-editing-tools-edit | %%first%% %%last%% |
+| *Comment* | Test Case: Edit A Profile. Be conservative around clicking update |  |
+| wait_for_element_visible_ok | update_profile | 30000 |
+| pause | 5000 | settling time |
+| click_and_wait | update_profile |  |
+| wait_for_text_not_present_ok | Edit Profile | 30000 |
+| wait_for_text_present_ok | Profile | 30000 |
+| wait_for_text_present_ok | Tag | 30000 |
+| wait_for_text_present_ok | Activities | 30000 |
 
-| *Comment* | Test Case: Edit Profile. Index %%first%% %%last%% profile |  |
-| st-process-jobs |  |  |
-
-| *Comment* | Test Case: People Search Edit a Profile COMPLETED |  |
+| *Comment* | Test Case: People Search Edit A Profile COMPLETED |  |

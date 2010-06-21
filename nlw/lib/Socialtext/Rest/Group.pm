@@ -6,80 +6,120 @@ use Socialtext::JSON;
 use Socialtext::l10n qw(loc);
 use Socialtext::Permission qw(ST_READ_PERM ST_ADMIN_PERM
                               ST_ADMIN_WORKSPACE_PERM);
-use Socialtext::Exceptions qw(conflict);
+use Socialtext::Exceptions ();
 use Socialtext::Group;
 use Socialtext::Rest::SetController;
+use Socialtext::Upload;
+use Try::Tiny;
 
-use Socialtext::SQL ':txn';
+use Socialtext::SQL 'sql_txn';
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Entity';
+with 'Socialtext::Rest::ForGroup';
 
-has 'group' => (
-    is => 'ro', isa => 'Maybe[Socialtext::Group]',
-    lazy_build => 1,
-);
-sub _build_group {
+sub permission      { +{} }
+sub allowed_methods {'GET, POST, PUT'}
+sub entity_name     { "Group" }
+
+sub if_authorized {
     my $self = shift;
-    return eval { Socialtext::Group->GetGroup(group_id => $self->group_id) };
+    my $method = shift;
+    my $call = shift;
+    my $user = $self->rest->user;
+
+    return $self->not_authorized if $user->is_guest;
+
+    my $group = $self->group;
+    return $self->no_resource("group") unless $group;
+
+    my $permission = ($method eq 'GET') ? ST_READ_PERM : ST_ADMIN_PERM;
+
+    my $can_do =
+        $self->user_is_related || # MAYBE can (more checks per method)
+        $group->user_can(user => $user, permission => $permission) ||
+        $self->user_can_admin;
+
+    return $self->not_authorized() unless $can_do;
+
+    unless ($method eq 'GET' || $group->can_update_store) {
+        return $self->http_400($self->rest,"This group cannot be modified.");
+    }
+
+    return try {
+        $self->$call(@_);
+    }
+    catch {
+        my $e = $_;
+        my $err_status = HTTP_500_Internal_Server_Error;
+        if (blessed($e)) {
+            if ($e->isa('Socialtext::Exception::Auth')) {
+                return $self->not_authorized();
+            }
+            elsif ($e->http_status) {
+                $err_status = $e->http_status;
+            }
+            elsif ($e->isa("Socialtext::Exception::BadRequest") ||
+                   $e->isa('Socialtext::Exception::DataValidation'))
+            {
+                $err_status = HTTP_400_Bad_Request;
+            }
+            elsif ($e->isa("Socialtext::Exception::Conflict")) {
+                $err_status = HTTP_409_Conflict;
+            }
+            $e = $e->as_string;
+        }
+        my ($msg) = ($e =~ m{(.+?)(?:^Trace begun)? at \S+ line .*}ims);
+        $msg ||= $e;
+        $self->rest->header(-type => 'text/plain',
+                            -status => $err_status);
+        return $msg;
+    };
 }
 
-has 'controller' => (
-    is => 'ro', isa => 'Socialtext::Rest::SetController',
-    lazy_build => 1,
-);
-sub _build_controller {
+sub controller {
     my $self = shift;
     return Socialtext::Rest::SetController->new(
+        @_,
         actor     => $self->rest->user,
         container => $self->group,
     );
 }
 
-sub permission      { +{} }
-sub allowed_methods {'GET, PUT'}
-sub entity_name     { "Group" }
-
-sub get_resource {
-    my( $self, $rest ) = @_;
-
-    my $group = $self->group;
-    return undef unless $group;
-
-    my $can_read = $group->user_can(
-        user => $self->rest->user,
-        permission => ST_READ_PERM,
-    );
-    my $user = $self->rest->user;
-    if ($user->is_business_admin or $can_read) {
-        return $group->to_hash(
-            show_members => $rest->query->param('show_members') ? 1 : 0,
-            show_admins => $rest->query->param('show_admins') ? 1 : 0,
-        );
-    }
-    return undef;
-}
-
-sub create_error {
-    my ($self, $err, $group_name) = @_;
-    warn $err;
-    if ($err =~ m/duplicate key violates/) {
-        $self->rest->header( -status => HTTP_409_Conflict );
-        return "Error updating group: $group_name already exists.";
-    }
-    $self->rest->header( -status => HTTP_400_Bad_Request );
-    $err =~ s{(?:Trace begun)? at /\S+ line .*}{}s;
-    return "Error updating group: $err";
-}
-
-sub PUT_json { $_[0]->_with_admin_permission_do(sub {
+# users can voluntarily remove themselves from any group they are a member of
+sub can_self_remove {
     my $self = shift;
-    my $rest = $self->rest;
+    return !$self->user_can_admin;
+}
+
+sub can_self_administer {
+    my $self = shift;
+    return $self->group->permission_set eq 'self-join'
+        && !$self->user_can_admin;
+}
+
+# GET /data/groups/:group_id
+sub get_resource {
+    my $self = shift;
+    return $self->if_authorized('GET', sub {
+        my $q = $self->rest->query;
+        return $self->group->to_hash(
+            show_members => $q->param('show_members') ? 1 : 0,
+            show_admins  => $q->param('show_admins') ? 1 : 0,
+        );
+    });
+}
+
+# PUT /data/groups/:group_id
+sub PUT_json {
+    my $self  = shift;
+    my $rest  = $self->rest;
     my $group = $self->group;
+    my $data  = $self->decoded_json_body();
 
-    my $data  = eval { decode_json( $rest->getContent ) };
+    return $self->not_authorized() unless $self->user_can_admin;
 
-    if (!$data or ref($data) ne 'HASH') {
+    if (ref($data) ne 'HASH') {
         $rest->header( -status => HTTP_400_Bad_Request );
         return 'Content should be a JSON hash.';
     }
@@ -88,182 +128,270 @@ sub PUT_json { $_[0]->_with_admin_permission_do(sub {
         return 'Name is required';
     }
 
-    eval {
+    if ($data->{permission_set} ne $group->permission_set) {
+        Socialtext::Exception::DataValidation->throw( message => 
+            "self-join groups cannot contain workspaces"
+        ) if $data->{permission_set} eq 'self-join'
+           && $group->workspaces(exclude_auw_paths => 1)->count > 0;
+    }
+
+    try {
         $group->update_store({
             driver_group_name => $data->{name},
             description => $data->{description} || "",
             permission_set => $data->{permission_set},
         });
+    }
+    catch {
+        my $e = $_;
+        if ($e =~ m/duplicate key violates/) {
+            Socialtext::Exception::Conflict->throw(message =>
+                "Error updating group: $data->{name} already exists.");
+        }
+        elsif (blessed($e) && $e->isa('Socialtext::Exception::DataValidation')){ 
+            $e->{http_status} = HTTP_400_Bad_Request;
+            $e->rethrow;
+        }
+        die $e;
     };
-    return $self->create_error($@, $data->{name}) if $@;
 
     my $photo_id = $data->{photo_id};
-    if (defined $photo_id) {
-        if ($photo_id) {
-            eval {
-                my $blob = scalar Socialtext::File::get_contents_binary(
-                    "$Socialtext::Rest::Uploads::UPLOAD_DIR/$photo_id"
-                );
-                $group->photo->set(\$blob);
-            };
-            warn "Error setting profile photo: $@" if $@;
+    if ($photo_id) {
+        try {
+            my $blob;
+            my $upload = Socialtext::Upload->Get(attachment_uuid => $photo_id);
+            $upload->binary_contents(\$blob);
+            $group->photo->set(\$blob);
+            $upload->purge;
         }
-        else {
-            $group->photo->purge;
-        }
+        catch {
+            warn "Error setting profile photo: $_";
+        };
+    }
+    elsif (defined $photo_id) { # zero or empty-string
+        $group->photo->purge;
     }
 
     $self->rest->header(-status => HTTP_202_Accepted);
     return '';
-}) }
+}
 
-sub _has_request_error {
+sub _check_one_admin {
     my $self = shift;
-    my %p    = (
-        permissions => undef,
-        @_
-    );
-    my $rest  = $self->rest;
-    my $user  = $rest->user;
+    Socialtext::Exception::Conflict->throw(
+        message => "The group needs to include at least one admin."
+    ) unless $self->group->has_at_least_one_admin;
+}
+
+sub _do_self_add {
+    my ($self, $data) = @_;
     my $group = $self->group;
+    my @errors;
+    my $actor = $self->rest->user;
+    my $mod = $data->[0];
 
-    return +{
-        status  => HTTP_404_Not_Found,
-        message => loc('Group not found')
-    } unless ($group);
-
-    my $user_has_permission = 0;
-    for my $perm (@{ $p{permissions} }) {
-        my $can = $group->user_can(
-            user       => $user,
-            permission => $perm
-        );
-        $user_has_permission = 1 if $can;
-    };
-    return +{
-        status  => HTTP_403_Forbidden,
-        message => loc('You do not have permission')
-    } unless ($user_has_permission || $user->is_business_admin);
-
-    return +{
-        status => HTTP_400_Bad_Request,
-        message => loc('Group membership cannot be changed'),
-    } unless $group->can_update_store;
-
-    return undef;
-}
-
-sub _with_admin_permission_do {
-    my ($self, $callback) = @_;
-
-    my $error = $self->_has_request_error(
-        permissions => [ST_ADMIN_PERM]
-    );
-    if ($error) {
-        $self->rest->header(-status => $error->{status});
-        return $error->{message};
+    if (@$data != 1 ||
+        ($mod->{user_id} && $mod->{user_id} != $actor->user_id) ||
+        ($mod->{username} && $mod->{username} ne $actor->username))
+    {
+        push @errors, "can only self-add in self-join mode";
+    }
+    elsif ($mod->{role_name} ne 'member') {
+        push @errors, "can only assign member role in self-join mode";
     }
 
-    local $@;
-    return $self->$callback();
-}
+    Socialtext::Exception::DataValidation->throw(
+        http_status => HTTP_403_Forbidden,
+        errors => \@errors
+    )
+        if @errors;
 
-sub _admin_with_group_data_do_txn {
-    my ($self, $callback) = @_;
-    $self->_with_admin_permission_do(sub {
-        my $group = $self->group;
-        my $data  = eval{ decode_json($self->rest->getContent) };
-        $data = (ref($data) eq 'HASH') ? [$data] : $data;
+    $group->add_user(
+        actor => $actor, user => $actor, role => Socialtext::Role->Member);
 
-        unless ($data) {
-            $self->rest->header(-status => HTTP_400_Bad_Request);
-            return loc('Malformed JSON passed to resource');
-        }
-
-        my $rv = eval { sql_txn {$self->$callback($group, $data)} };
-
-        my $e = Exception::Class->caught('Socialtext::Exception::Conflict');
-        if ($e) {
-            return $self->SUPER::conflict($e->errors);
-        }
-        elsif ($e = $@) {
-            $self->rest->header(-status => HTTP_400_Bad_Request);
-            $e = $1 if $e =~ /(.*) at /;
-            # XXX: cannot always localize sub-exception, so why bother
-            # placing it inside a localized one?
-            return loc('Could not process request: [_1]', $e);
-        }
-
-        $self->rest->header(-status => HTTP_200_OK);
-        return $rv;
-    });
-}
-
-sub POST_to_membership { $_[0]->_admin_with_group_data_do_txn(sub {
-    my ($self, $group, $data) = @_;
-
-    for my $item (@$data) {
-        my $name_or_id = $item->{user_id} || $item->{username}
-            or die "Missing user_id/username";
-
-        my $role = Socialtext::Role->new(name => $item->{role_name})
-            or die "Role '$item->{role_name}' does not exist";
-
-        my $user = Socialtext::User->Resolve($name_or_id);
-
-        $group->has_user($user)
-            or die "This group does not have $name_or_id as a user";
-
-        $group->assign_role_to_user( user => $user, role => $role );
-    }
-
-    conflict errors => ["The group needs to include at least one admin."]
-        unless $group->has_at_least_one_admin;
-
+    $self->rest->header(-status => HTTP_202_Accepted);
     return '';
-}) }
+}
 
-sub POST_to_trash { $_[0]->_admin_with_group_data_do_txn(sub {
-    my ($self, $group, $data) = @_;
+# POST /data/groups/:group_id/membership
+# TODO: use the SetController like the other modification methods
+sub POST_to_membership {
+    my $self = shift;
+    my $data  = $self->decoded_json_body;
+    $data = (ref($data) eq 'HASH') ? [$data] : $data;
 
+    my $group = $self->group;
+    my @errors;
     my $actor = $self->rest->user;
 
-    for my $item (@$data) {
-        my $user;
-        if ($item->{user_id}) {
-            $user = Socialtext::User->new(user_id => $item->{user_id});
-        }
-        elsif ($item->{username}) {
-            $user = Socialtext::User->new(username => $item->{username});
+    # let visitors add themselves.
+    return $self->_do_self_add($data) if $self->can_self_administer;
+
+    # otherwise reject related, non-admin, users.
+    return $self->not_authorized() unless $self->user_can_admin;
+
+    for (my $i=0; $i<=$#$data; $i++) {
+        my $item = $data->[$i];
+        unless ($item->{user_id} || $item->{username}) {
+            push @errors, "Entry $i Missing user_id/username";
+            next;
         }
 
-        die "Bad data (couldn't resolve user)" unless $user;
-        $group->remove_user(user => $user, actor => $actor);
+        my $role = Socialtext::Role->new(name => $item->{role_name});
+        unless ($role) {
+            push @errors, "Entry $i Missing/invalid role '$item->{role_name}'";
+            next;
+        }
+
+        my $user = Socialtext::User->new(
+            $item->{user_id} ? (user_id => $item->{user_id})
+                             : (username => $item->{username})
+        );
+        unless ($user) {
+            push @errors, "Entry $i user not found";
+            next;
+        }
+
+        unless ($group->has_user($user)) {
+            push @errors, "Entry $i user id ".$user->user_id." is not a member";
+            next;
+        }
+
+        $group->assign_role_to_user(
+            actor => $actor, user => $user, role => $role);
     }
 
-    conflict errors => ["The group needs to include at least one admin."]
-        unless $group->has_at_least_one_admin;
+    Socialtext::Exception::DataValidation->throw(errors => \@errors) if @errors;
 
+    $self->_check_one_admin;
+
+    $self->rest->header(-status => HTTP_202_Accepted);
     return '';
-}) }
+}
 
-# Map to `PUT /data/groups/:group_id/users
+# POST /data/groups/:group_id/trash
+sub POST_to_trash {
+    my $self = shift;
+
+    my $data  = $self->decoded_json_body;
+    $data = (ref($data) eq 'HASH') ? [$data] : $data;
+
+    my $ctrl = $self->controller(
+        scopes  => ['user'],
+        actions => ['remove'],
+    );
+
+    # allow for self-removal on self-join groups
+    if ($self->can_self_remove) {
+        $ctrl->self_action_only(1);
+    }
+    else {
+        # otherwise, user must be an admin to remove
+        return $self->not_authorized() unless $self->user_can_admin;
+    }
+
+    $ctrl->alter_members($data);
+    $self->_check_one_admin;
+
+    $self->rest->header(-status => HTTP_204_No_Content);
+    return '';
+}
+
+# Map to `POST /data/groups/:group_id/users
+sub POST_to_users {
+    my $self = shift;
+    my $data = _parse_data($self->decoded_json_body);
+    
+    my $ctrl = $self->controller(
+        scopes  => ['user'],
+        actions => ['add'],
+    );
+
+    # allow for self-add on self-join groups
+    if ($self->can_self_administer) {
+        $ctrl->self_action_only(1);
+        $ctrl->roles(['member']);
+    }
+    else {
+        # otherwise, user must be an admin
+        return $self->not_authorized() unless $self->user_can_admin;
+    }
+
+    $ctrl->hooks()->{post_user_add} = sub {$self->user_invite(@_)}
+        if ($data->{send_message});
+
+    $ctrl->alter_members($data->{users});
+
+    $self->_check_one_admin;
+
+    $self->rest->header(-status => HTTP_202_Accepted);
+    return '';
+}
+
+# Makes POST_to_users backwards compatible.
+sub _parse_data {
+    my $data = shift;
+
+    # This is the "new" format, it's a hashref with users index.
+    if (ref($data) eq 'HASH') {
+        if ($data->{users}) {
+            $data = {
+                users => $data->{users},
+                send_message => $data->{send_message} || 0,
+            };
+        }
+        elsif ($data->{username} || $data->{user_id}) {
+            $data = { users => [$data] };
+        }
+    }
+    elsif (ref($data) eq 'ARRAY') {
+        $data = { users => $data };
+    }
+
+    # We still may have passed bad data, return if we don't have an arrayref
+    # at this point.
+    Socialtext::Exception::BadRequest->throw(
+        message => "Expected a list of users, got none.")
+        unless ref($data->{users}) eq 'ARRAY';
+
+    for my $user_entry (@{$data->{users}}) {
+        # force these to be "adds" in the SetController
+        $user_entry->{role_name} ||= 'member';
+    }
+
+    return $data;
+}
+
+# PUT /data/groups/:group_id/users
 sub PUT_to_users {
     my $self = shift;
-    my $rest = shift;
-    return $self->can_admin(sub {
-        my $json = decode_json($rest->getContent());
+    my $data = $self->decoded_json_body;
 
-        my $ctrl = $self->controller;
-        $ctrl->scopes(['user']);
-        $ctrl->actions([qw(add update remove)]);
-        $ctrl->hooks()->{post_user_add} = sub {$self->user_invite(@_)}
-            if (defined $json->{send_message} && $json->{send_message} == 1);
+    my $ctrl = $self->controller(
+        scopes  => ['user'],
+        actions => [qw(add remove update)],
+    );
 
-        $self->do_in_txn(sub {
-            $ctrl->alter_members($json->{entry});
-        });
-    });
+    # allow for self-add/removal on self-join groups
+    if ($self->can_self_administer) {
+        $ctrl->actions([qw(add remove)]);
+        $ctrl->self_action_only(1);
+        $ctrl->roles(['member']);
+    }
+    else {
+        # otherwise, user must be an admin
+        return $self->not_authorized() unless $self->user_can_admin;
+    }
+    
+    $ctrl->hooks()->{post_user_add} = sub {$self->user_invite(@_)}
+        if ($data->{send_message});
+
+    $ctrl->alter_members($data->{entry});
+
+    $self->_check_one_admin;
+
+    $self->rest->header(-status => HTTP_202_Accepted);
+    return '';
 }
 
 sub user_invite {
@@ -274,84 +402,31 @@ sub user_invite {
         'Socialtext::Job::GroupInvite',
         {
             group_id  => $self->group->group_id,
-            user_id   => $user_role->{user}->user_id,
+            user_id   => $user_role->{object}->user_id,
             sender_id => $user_role->{actor}->user_id,
         },
     );
 }
 
+# DELETE /data/groups/:group_id
 sub DELETE {
     my $self = shift;
-    $self->can_admin(sub {
-        $self->do_in_txn(sub {
-            my $group = $self->group;
-            $group->delete($self->rest->user);
-        });
-    });
-}
 
-sub can_admin {
-    my $self = shift;
-    my $cb   = shift;
+    # reject related, non-admin, users.
+    return $self->not_authorized() unless $self->user_can_admin;
 
-    my $user  = $self->rest->user;
-    my $group = $self->group;
-    return $self->no_resource("Group with id " . $self->group_id )
-        unless $group;
-
-    my $admin = $group->user_can(user => $user, permission => ST_ADMIN_PERM);
-    if ($admin || $user->is_business_admin || $user->is_technical_admin) {
-        return $cb->();
-    }
-
-    return $self->not_authorized();
-}
-
-# XXX: This should live up higher in our stack.
-sub do_in_txn {
-    my $self  = shift;
-    my $cb    = shift;
-    my %addtl = @_; # user may pass in a CODEREF with index 'success'.
-
-    eval { sql_txn { $cb->(@_) } };
-    if (my $e = Exception::Class->caught('Socialtext::Exception')) {
-        return $self->handle_exception($e);
-    }
-    if (my $e = $@) {
-        warn $e;
-        $self->rest->header(
-            -status => HTTP_400_Bad_Request,
-            -type   => 'text/plain',
-        );
-        return $e;
-    }
-
-    if (my $success = $addtl{success}) {
-        return $success->();
-    }
-
+    $self->group->delete($self->rest->user);
     $self->rest->header(-status => HTTP_204_No_Content);
     return '';
 }
 
-# XXX: This should live up higher in our stack, perhaps even the handler.
-sub handle_exception {
-    my $self = shift;
-    my $e    = shift;
+# put sql_txn *first* so it runs *after* the if_authorized check (remember:
+# around works like a stack; first in, last executed)
+around qr/^(?:POST|PUT|DELETE)/ => \&sql_txn;
 
-    if (!$e->isa('Socialtext::Exception')) {
-        # XXX Server Error?
-        return "WTF?";
-    }
-
-    my $status = {
-        'Socialtext::Exception::Conflict'       => HTTP_409_Conflict,
-        'Socialtext::Exception::DataValidation' => HTTP_409_Conflict,
-    }->{ref($e)};
-
-    $self->rest->header(-status => $status, -type   => 'text/plain');
-    return join('\n', $e->messages);
-}
+around qr/^POST/   => sub { $_[1]->if_authorized('POST',   @_[0,2..$#_]) };
+around qr/^PUT/    => sub { $_[1]->if_authorized('PUT',    @_[0,2..$#_]) };
+around qr/^DELETE/ => sub { $_[1]->if_authorized('DELETE', @_[0,2..$#_]) };
 
 no Moose;
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
@@ -365,8 +440,11 @@ Socialtext::Rest::Group - Group resource handler
 
     GET /data/groups/:group_id
     PUT /data/groups/:group_id
+    POST /data/groups/:group_id
+    DELETE /data/groups/:group_id
     POST /data/groups/:group_id/trash
     POST /data/groups/:group_id/membership
+    POST /data/groups/:group_id/users
 
 =head1 DESCRIPTION
 

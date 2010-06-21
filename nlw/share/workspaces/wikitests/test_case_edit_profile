@@ -10,11 +10,10 @@
 | set | lname | Editor |
 | set | new_fname | Profligate |
 | set | new_lname | Edisaurus |
-
-| set | super | supervisor%%start_time%%@ken.socialtext.net |
-| set | short_super | supervisor%%start_time%% |
-| set | assistant | assistant%%start_time%%@ken.socialtext.net |
-| set | short_assistant | assistant%%start_time%% |
+| set | super | epsupervisor@ken.socialtext.net |
+| set | short_super | epsupervisor |
+| set | assistant | epassistant@ken.socialtext.net |
+| set | short_assistant | epassistant |
 
 | *Comment* | Test Case: Edit Profile. Create a user. user may already exist |  |
 | st-admin | `create-user --e %%e_user%% --p %%password%%` |  |
@@ -107,17 +106,16 @@
 | type-lookahead-ok | xpath=//div[@id='field_assistant']/input[@class='relationship'] | %%short_assistant%% |
 | wait-for-element-present-ok | link=%%short_assistant%% |  |
 | click-ok | link=%%short_assistant%% |  |
-| pause | 4000 |  |
 
-| *Comment* | Test Case: Edit Profile. Have to use click_ok and Pause for profile to save. |  |
-| click_ok | update_profile |  |
-| wait_for_text_present_ok | %%new_fname%% %%new_lname%% | 30000 |
-| pause | 10000 |  |
-| st-name-widget | 1 | profile |
-| st-select-widget-frame | profile |  |
-| wait_for_element_visible_ok | link=%%short_super%% | 30000 |
-| wait_for_element_visible_ok | link=%%short_assistant%% | 30000 |
-| text_like | //body | %%new_fname%% %%new_lname%% |
-| select-frame | relative=parent |  |
+| *Comment* | Test Case: Edit Profile. Be conservative around clicking update |  |
+| wait_for_element_visible_ok | update_profile | 30000 |
+| pause | 5000 | settling time |
+| click_and_wait | update_profile |  |
+| wait_for_text_not_present_ok | Edit Profile | 30000 |
+| wait_for_text_present_ok | Profile | 30000 |
+| wait_for_text_present_ok | Tag | 30000 |
+| wait_for_text_present_ok | Activities | 30000 |
+
+| *Comment* | Test Case: Edit Profile COMPLETED |  |
 
 | *Comment* | Test Case: Edit Profile COMPLETED |  |

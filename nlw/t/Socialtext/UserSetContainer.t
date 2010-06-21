@@ -55,7 +55,7 @@ END {
 
 user_logging: {
     clear_log();
-    my $actor = create_test_user();
+    my $actor = create_test_badmin();
     my $aid = $actor->user_id;
     my $aname = $actor->username;
     my $qr = qr/
@@ -78,7 +78,7 @@ user_logging: {
 
 group_logging: {
     clear_log();
-    my $actor = create_test_user();
+    my $actor = create_test_badmin();
     my $aid = $actor->user_id;
     my $aname = $actor->username;
     my $qr = qr/
@@ -101,7 +101,7 @@ group_logging: {
 
 user_group_logging: {
     clear_log();
-    my $actor = create_test_user();
+    my $actor = create_test_badmin();
     my $aid = $actor->user_id;
     my $aname = $actor->username;
     my $qr = qr/
@@ -124,7 +124,7 @@ user_group_logging: {
 
 workspace_logging: {
     clear_log();
-    my $actor = create_test_user();
+    my $actor = create_test_badmin();
     my $aid = $actor->user_id;
     my $aname = $actor->username;
     my $ws = create_test_workspace();
@@ -151,7 +151,7 @@ workspace_logging: {
 
 account_logging: {
     clear_log();
-    my $actor = create_test_user();
+    my $actor = create_test_badmin();
     my $aid = $actor->user_id;
     my $aname = $actor->username;
     my $acct = create_test_account_bypassing_factory();
@@ -178,15 +178,16 @@ account_logging: {
 
 system_created_no_roles: {
     my $acct = create_test_account_bypassing_factory();
+    my $actor = create_test_badmin(account => $acct);
     my $a_sys_user = create_test_user(is_system_created => 1, account => $acct);
     ok $a_sys_user, 'created a system user';
 
     dies_ok {
-        $c->add_user(user => $a_sys_user);
+        $c->add_user(actor => $actor, user => $a_sys_user);
     } "can't add system-created users";
 
     dies_ok {
-        $c->assign_user(user => $a_sys_user);
+        $c->assign_user(actor => $actor, user => $a_sys_user);
     } "can't add system-created users";
 
     lives_ok {
@@ -195,7 +196,7 @@ system_created_no_roles: {
     ok $c->has_user($a_sys_user), 'added via super-low-level interface';
 
     lives_ok {
-        $c->remove_user(user => $a_sys_user);
+        $c->remove_user(actor => $actor, user => $a_sys_user);
     } "can remove them though (if they did get added somehow)";
     ok !$c->has_user($a_sys_user), 'removed via high-level interface';
 }

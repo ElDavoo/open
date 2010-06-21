@@ -12,9 +12,10 @@ use Socialtext::Page;
 use Socialtext::Model::Pages;
 use Socialtext::Search 'search_on_behalf';
 use Socialtext::String;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::JSON;
 use Socialtext::l10n qw/loc/;
+use Try::Tiny;
 
 $JSON::UTF8 = 1;
 
@@ -32,9 +33,12 @@ sub get_resource {
     my $count   = $self->rest->query->param('count') || 100;
 
     # This is a performance path for page lookahead, which must be very fast
-    if ($minimal and $content_type eq 'application/json' 
-            and $filter and $filter =~ m#^\\b(.+)#) {
-        my $page_filter = $1;
+    if ($minimal) {
+        unless ($filter) {
+            Socialtext::Exception::BadRequest->throw(
+                message => 'Using ?minimal=1 requires a ?filter');
+        }
+        (my $page_filter = $filter) =~ s/^\\b//;
         $self->{_last_modified} = time;
         return Socialtext::Model::Pages->Minimal_by_name(
             workspace_id => $self->hub->current_workspace->workspace_id,
@@ -46,7 +50,13 @@ sub get_resource {
 
     my $search_query = $self->rest->query->param('q');
     if (defined $search_query and length $search_query) {
-        return $self->SUPER::get_resource();
+        my $rv;
+        try { $rv = $self->SUPER::get_resource() }
+        catch {
+            warn "Page query failed, returning empty result set: $_";
+            $rv = [];
+        };
+        return $rv;
     }
     return [$self->_hashes_for_query];
 }
@@ -143,8 +153,9 @@ sub _entity_hash {
 sub _entities_for_query {
     my $self = shift;
 
-    Socialtext::Timer->Continue('entities_for_query');
-    my $search_query = $self->rest->query->param('q');
+    my $t = time_scope 'entities_for_query';
+    my $search_query = $self->rest->query->param('q')
+                        || $self->rest->query->param('filter');
     my @entities;
 
     if (defined $search_query and length $search_query) {
@@ -173,15 +184,13 @@ sub _entities_for_query {
         ) || []};
     }
 
-    Socialtext::Timer->Pause('entities_for_query');
-
     return @entities;
 }
 
 sub _searched_pages {
     my ( $self, $search_query ) = @_;
 
-    Socialtext::Timer->Continue('searched_pages');
+    my $t = time_scope 'searched_pages';
 
     my %page_ids_by_workspace;
     eval { 
@@ -205,6 +214,7 @@ sub _searched_pages {
         $self->{_too_many} = $@->num_results;
         return ();
     }
+    elsif ($@) { die $@ }
 
     my @all_pages;
     for my $workspace_name (sort keys %page_ids_by_workspace) {
@@ -223,7 +233,6 @@ sub _searched_pages {
         }
     }
 
-    Socialtext::Timer->Pause('searched_pages');
     return @all_pages;
 }
 

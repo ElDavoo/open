@@ -9,6 +9,7 @@ use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE WOR
 use Socialtext::AppConfig;
 use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
+use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::SQL qw(sql_execute sql_selectrow sql_singlevalue sql_txn);
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
@@ -354,13 +355,23 @@ sub shared_accounts {
 }
 
 sub shared_groups {
-    my ($self, $user) = @_;
+    my $self          = shift;
+    my $user          = shift;
+    my $inc_self_join = shift || 1; # defaults to true
+    my $ignore_badmin = shift || 0;
 
     my $group_cursor = $self->groups;
     
     my @shared_groups;
     while (my $g = $group_cursor->next) {
-        push @shared_groups, $g if $g->has_user($user);
+        my $is_shared = $inc_self_join
+            ? $g->user_can(
+                user => $user,
+                permission => ST_READ_PERM,
+                ignore_badmin => $ignore_badmin)
+            : $g->has_user($user);
+
+        push @shared_groups, $g if $is_shared;
     }
     return (wantarray ? @shared_groups : \@shared_groups);
 }
@@ -394,11 +405,14 @@ sub groups {
     my $self = shift;
     my %p = @_;
 
+    my $t = time_scope 'groups_4user';
+
     my @bind = ($self->user_set_id);
 
-    # discoverable: exclude - groups i'm a member of (CURRENT)
-    # discoverable: include - groups i'm a member of + permset=self-join
-    # discoverable: only    - permset=self-join - groups i'm a member of
+    # discoverable: exclude   - groups i'm a member of (CURRENT)
+    # discoverable: include   - non-private groups + groups i'm a member of
+    # discoverable: only      - non-private groups - groups i'm a member of
+    # discoverable: public    - non-private groups
 
     my $conditions = '0 = 1';
     my $path_sub_query = q{
@@ -420,8 +434,31 @@ sub groups {
         push @bind, $p{plugin};
     }
 
-    # XXX TODO: scope to this user's accounts
-    my $discoverable_clause = qq{permission_set = 'self-join'};
+    # Using an EXISTS with a join happening in the subquery seems to be
+    # reasonably fast so long as the into_set_ids are bounded with the account
+    # filter.  On staging, this is about 30% faster than using a second nested
+    # EXISTS, but staging doesn't have that many groups.  On prod, the cost of
+    # the sub-query is a bit higher initially but should be more "stable" as
+    # the number of groups grow.
+    #
+    # Ideally this should be targetting the "groups_permission_set_non_priv"
+    # index in the 'discoverable=public' case and the "groups_permission_set"
+    # index in the 'only' and 'include' cases.  For systems with small numbers
+    # of groups (<1000) Pg will probably do a seq-scan since the whole table
+    # fits into cache.
+    my $discoverable_clause = q{(
+        permission_set <> 'private'
+        AND EXISTS (
+            -- an account is shared by this user and the group:
+            SELECT 1
+            FROM user_set_path g_path, user_set_path u_path
+            WHERE g_path.from_set_id = groups.user_set_id
+              AND g_path.into_set_id }.PG_ACCT_FILTER.q{
+              AND u_path.from_set_id = ?
+              AND u_path.into_set_id }.PG_ACCT_FILTER.q{
+              AND u_path.into_set_id = g_path.into_set_id
+        )
+    )};
 
     my $d = $p{discoverable};
     if (not $d or $d eq 'exclude') {
@@ -430,13 +467,33 @@ sub groups {
     elsif ($d eq 'only') {
         $conditions =
             qq{user_set_id NOT IN ($path_sub_query) AND $discoverable_clause};
+
+        push @bind, $self->user_set_id;
     }
     elsif ($d eq 'include') {
         $conditions = 
             qq{user_set_id IN ($path_sub_query) OR $discoverable_clause};
+
+        push @bind, $self->user_set_id;
+    }
+    elsif ($d eq 'public') {
+        $conditions = $discoverable_clause;
     }
     else {
         die "unknown 'discoverable' filter: '$d'\n";
+    }
+
+    my $limit = '';
+    my $offset = '';
+
+    if ($p{limit}) {
+        $limit = 'LIMIT ?';
+        push @bind, $p{limit};
+    }
+
+    if ($p{offset}) {
+        $offset = 'OFFSET ?';
+        push @bind, $p{offset};
     }
 
     my $sth = sql_execute(qq{
@@ -444,6 +501,8 @@ sub groups {
           FROM groups
          WHERE $conditions
          ORDER BY driver_group_name
+         $limit
+         $offset
     },@bind);
 
     my $apply = $p{ids_only}
@@ -512,6 +571,7 @@ sub Create_user_from_hash {
         created_by_user_id => $creator->user_id,
         no_crypt           => 1,
     );
+    st_log->notice( "created user: $create{email_address}" );
     return $user;
 }
 
@@ -542,7 +602,7 @@ sub _get_full_name {
 
         return $name if length $name;
 
-        return $self->email_address 
+        return $self->guess_real_name 
             unless ($p{workspace} && $p{workspace}->workspace_id != 0);
 
         return $self->_masked_email_address($p{workspace});
@@ -1917,9 +1977,11 @@ list reference in scalar context.
 Returns a list of the accounts where both $user and $user2 are members.
 Returns a list reference in scalar context.
 
-=head2 $user->groups()
+=head2 $user->groups( %params )
 
 Returns a C<Socialtext::MultiCursor> of groups that this user has a role in.
+
+Supports C<discoverable>, C<limit> and C<offset> named parameters.
 
 =head2 $user->shared_groups( $user2 )
 

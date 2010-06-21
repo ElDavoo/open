@@ -46,7 +46,7 @@
         var self = this;
 
         if (this.opts.clickCurrentButton) {
-            this.opts.clickCurrentButton.click(function() {
+            this.opts.clickCurrentButton.unbind('click').click(function() {
                 self.clickCurrent();
                 return false;
             });
@@ -120,11 +120,18 @@
 
     $.fn.lookahead = function(opts) {
         this.each(function(){
-            lookaheads.push(new Lookahead(this, opts));
+            this.lookahead = new Lookahead(this, opts); 
+            lookaheads.push(this.lookahead);
         });
 
         return this;
     };
+
+    $.fn.abortLookahead = function() {
+        this.each(function() {
+            this.lookahead.abort();
+        });
+    }
 
     Lookahead.prototype = {
         'window': window,
@@ -315,6 +322,7 @@
 
     Lookahead.prototype.show = function () {
         var self = this;
+
         var lookahead = this.getLookahead();
         if (!lookahead.is(':visible')) {
             lookahead.fadeIn(function() {
@@ -437,6 +445,9 @@
                 this.accept(selitem.attr('value'));
             }
         }
+        else if (!this.opts.requireMatch) {
+            this.acceptInputValue();
+        }
     };
 
     Lookahead.prototype.storeCache = function (val, data) {
@@ -474,6 +485,10 @@
         return [];
     };
 
+    Lookahead.prototype.abort = function () {
+        if (this.request) this.request.abort();
+    };
+
     Lookahead.prototype.onchange = function () {
         var self = this;
         if (this._loading_lookahead) {
@@ -504,7 +519,7 @@
         params[this.opts.filterName] = '\\b' + val;
 
         this._loading_lookahead = true;
-        $.ajax({
+        this.request = $.ajax({
             url: url,
             data: params,
             cache: false,

@@ -12,7 +12,7 @@ use Socialtext::Skin;
 use Socialtext::Pluggable::Adapter;
 use Socialtext::Workspace;
 use Socialtext::System qw(shell_run);
-use Fcntl ':flock';
+use Fcntl ();
 use Socialtext::User::Cache;
 
 sub handler {
@@ -38,26 +38,33 @@ sub handler {
     return;
 }
 
-sub _regen_combined_js {
-    my $r = shift;
-
-    # Figure out what skin to build
-    my ($ws_name) = $r->uri =~ m{^/([^/]+)/index\.cgi$};
-    my $workspace = $ws_name ? Socialtext::Workspace->new(name=>$ws_name) : undef;
-    my $skin_name = $workspace ? $workspace->skin_name : 's3';
-    my $skin      = Socialtext::Skin->new(name => $skin_name);
-
-    for my $dir ($skin->make_dirs) {
-        local $CWD = $dir;
-
-        my $semaphore = "$dir/build-semaphore";
-        open( my $lock, ">>", $semaphore )
-            or die "Could not open $semaphore: $!\n";
-        flock( $lock, LOCK_EX )
-            or die "Could not get lock on $semaphore: $!\n";
-        system( 'make', 'all' ) and die "Error calling make in $dir: $!";
-        close($lock);
+sub _remake_all {
+    my $remake_time = 10;
+    my $stamp_file = Socialtext::Paths::storage_directory('make_ran');
+    my $mtime = (stat $stamp_file)[9] || 0;
+    if ($mtime < time - $remake_time) {
+#         warn "[$$] need to remake ".time."\n";
+        # file is missing or out of date; serialize requests
+        sysopen my $lock, $stamp_file, Fcntl::O_CREAT|Fcntl::O_RDWR, 0660;
+        flock $lock, Fcntl::LOCK_EX;
+        $mtime = (stat $lock)[9];
+        if ($mtime < time - $remake_time) {
+#             warn "[$$] is going to make ".time."\n";
+            # we're the first one, run make
+            local $Socialtext::System::SILENT_RUN = 1;
+            shell_run '-st-make-all @all';
+            shell_run '-st-widgets update-all';
+            # prevent others holding the lock from running make
+            print $lock time."\n";
+#             warn "[$$] done make ".time."\n";
+        }
+#         else {
+#             warn "[$$] not stale after all ".time."\n";
+#         }
     }
+#     else {
+#         warn "[$$] no make needed ".time."\n";
+#     }
 }
 
 1;

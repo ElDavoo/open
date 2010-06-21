@@ -1787,8 +1787,16 @@ dl.form dt label {
 }
 
 dl.form {
-	width: 100%;
+	width: 97%;
 	clear: both;
+}
+
+dl.form p {
+	margin: 1em 0;
+}
+
+dl.form strong {
+	font-weight: bold;
 }
 
 dl.form dd {
@@ -3108,6 +3116,11 @@ div#mainNav ul.level2 li a {
     line-height: 20px;
     padding: 0px 0px 0px 3px;
     background: none;
+}
+
+div#mainNav ul.level2 li.dropaction a.label,
+div#mainNav ul.level2 li.dropaction a.label:hover {
+    color: #333333;
 }
 
 div#mainNav ul.level2 li.dropaction a,

@@ -36,6 +36,7 @@ proto.config = {
     iframeId: null,
     iframeObject: null,
     disabledToolbarButtons: [],
+    editHandler: undefined,
     editHeightMinimum: 150,
     editHeightAdjustment: 1.3,
     clearRegex: null,
@@ -1090,13 +1091,17 @@ proto.add_web_link = function() {
     var url       = jQuery('#web-link-destination').val();
     var url_text  = jQuery('#web-link-text').val();
 
-    if (!url || !url.match(/^(http|https|ftp|irc|mailto|file):/)) {
+    if (!this.valid_web_link(url)) {
         this.set_add_a_link_error("Please fill in the Link destination field for web links.");
         return false;
     }
 
     this.make_web_link(url, url_text);
     return true;
+}
+
+proto.valid_web_link = function(url) {
+    return (url.length && url.match(/^(http|https|ftp|irc|mailto|file):/));
 }
 
 proto.insert_link_wafl_widget = function(wafl, widget_element) {
@@ -2689,7 +2694,7 @@ proto.getWidgetImageUrl = function(widget_text) {
         // Just ignore and set the text to be the widget text
     }
 
-    return '/data/wafl/' + encodeURI(widget_text) + (uneditable ? '?uneditable=1' : '');
+    return '/data/wafl/' + encodeURIComponent(widget_text) + (uneditable ? '?uneditable=1' : '');
 }
 
 proto.create_wafl_string = function(widget, form) {
@@ -2953,6 +2958,13 @@ proto.hookLookaheads = function() {
 }
 
 proto.getWidgetInput = function(widget_element, selection, new_widget) {
+    // Allow this function to be overridden by an editHandler (used in the
+    // activities widget currently)
+    if (jQuery.isFunction(this.config.editHandler)) {
+        this.config.editHandler(widget_element, selection, new_widget);
+        return;
+    }
+
     if ( Wikiwyg.Widgets.widget_editing > 0 )
         return;
     Wikiwyg.Widgets.widget_editing++;

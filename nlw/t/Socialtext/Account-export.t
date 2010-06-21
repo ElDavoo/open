@@ -41,6 +41,7 @@ sub dump_group {
         primary_account_name => $group->primary_account->name,
         driver_group_name    => $group->driver_group_name,
         created_by_username  => $group->creator->username,
+        permission_set       => $group->permission_set,
         role_name            => ignore(),
         users                => ignore(),
         description          => ignore(),
@@ -60,6 +61,7 @@ sub dump_signal {
         username => $signal->user->username,
         group_ids => $signal->group_ids,
         account_ids => $signal->account_ids,
+        attachments => $signal->attachments,
     };
     return $data;
 }
@@ -243,7 +245,7 @@ export_succeeds_when_profile_hidden: {
 Export_signals_to_group: {
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user(account => $account);
-    my $group     = create_test_group();
+    my $group   = create_test_group();
     $group->add_user(user => $user);
     $account->add_group(group => $group);
 
@@ -252,6 +254,7 @@ Export_signals_to_group: {
         group_ids => [$group->group_id],
         user_id => $user->user_id,
     );
+    $sig->clear_user; # remove the ref to $user, so we re-create it later.
 
     account_export_contains(
         prefix  => 'Includes User with hidden ST People Profile',

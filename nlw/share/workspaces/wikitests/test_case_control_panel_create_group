@@ -37,7 +37,7 @@
 | pause | 5000 |  |
 | click_and_wait | st-group-create-submit |  |
 | wait_for_element_visible_ok | link=Add Group To An Account | 30000 |
-| text_like | //body | Created By: %%username%% |
+| text_like | //body | Created By: %%short_username%% |
 | text_like | //body | %%CPgroupname%% |
 
 | *Comment* | Test Case: Control Panel Create Group. %%username%% is group admin. Group is assigned to account %%hostname%% |  |
@@ -88,7 +88,7 @@
 | text_like | //body | You successfully added 4 users to 1 group. |
 | text_like | //body | Users (5) |
 | text_like | //body | %%groupname%% |
-| text_like | //body | Created By: %%username%% |
+| text_like | //body | Created By: %%short_username%% |
 
 | *Comment* | Test Case: Control Panel Create Group - add member %%fName%% to existing group via lookahead |  |
 

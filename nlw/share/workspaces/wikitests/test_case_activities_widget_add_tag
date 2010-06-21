@@ -1,0 +1,48 @@
+| *Comment* | Test Case: Activities Widget Add Tag |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Activities Widget Add Tag Setup |  |
+| set | acct | awat-acct-%%start_time%% |
+| set | user | awatuser%%start_time%%@matt.socialtext.net |
+| st-admin | create-account --name %%acct%% | was created |
+| st-admin | create-user --e %%user%% --p %%password%% --account %%acct%% | was created |
+
+| *Comment* | Test Case: Activities Widget Add Tag |  |
+| st-logoutin | %%user%% | %%password%% |
+| st_single_widget_in_dashboard | gallery-widget-Activities |
+| wait_for_text_present_ok | Welcome | 30000 |
+| st-name-widget | 1 | activities_widget |
+| st-select-widget-frame | activities_widget |  |
+
+| *Comment* | Test Case: Activities Widget Click - Queue up a 'real' tag |  |
+| wait_for_element_visible_ok | mainInsertTag | 30000 |
+| wait_for_element_visible_ok | //a[@id='mainInsertTag']/div | 30000 |
+| click_ok | //a[@id='mainInsertTag']/div | 30000 |
+| wait_for_element_visible_ok | link=OK | 30000 |
+| wait_for_element_visible_ok | link=Cancel | 30000 |
+| wait_for_element_visible_ok | //a[@id='signals'/div[2]/div[4]/div[2]/input | 30000 |
+| type_ok | //a[@id='signals'/div[2]/div[4]/div[2]/input | real tag |
+| click_ok | link=OK |  |
+
+| *Comment* | Test Case: Activities Widget Click - Queue up a 'fake' tag |  |
+| pause | 2000 |
+| click_ok | //a[@id='mainInsertTag']/div | 30000 |
+| wait_for_element_visible_ok | link=OK | 30000 |
+| wait_for_element_visible_ok | link=Cancel | 30000 |
+| wait_for_element_visible_ok | //a[@id='signals'/div[2]/div[4]/div[2]/input | 30000 |
+| type_ok | //a[@id='signals'/div[2]/div[4]/div[2]/input | cancelled |
+| click_ok | link=Cancel |  |  |
+| st_send_signal_within_activities_widget | of the emergency broadcast system %%start_time%% |
+| wait_for_element_visible_ok | link=real tag |
+| wait_for_element_not_present_ok | cancelled |
+| text_like | //body | of the emergency broadcast system %%start_time%% |
+
+| *Comment* | Test Case: Activities Widget Signals Results page - Test fails due to {bz: 4029} |  |
+| click_and_wait | link=real tag |
+| text_like | //body | Signals matching 'tag:"real tag"' |
+| text_like | //body | #real tag of the emergency broadcast system %%start_time%% |
+| text_like | //body | Showing 1 - 1 of 1 total | . | *Comment* | Test Case: Activities Widget Add Tag CLEANUP |
+| select-frame | relative=parent |
+
+| *Comment* | Test Case: Activities Widget Add Tag COMPLETED |

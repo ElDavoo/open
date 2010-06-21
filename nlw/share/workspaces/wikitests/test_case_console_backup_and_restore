@@ -57,8 +57,8 @@ Automated backup and restore testing
 | click_and_wait | //input[@value='Backup'] |  |
 | text_like | Backup is in progress |  |
 
-| *Comment* | WAIT 90 seconds FOR BACKUP TO COMPLETE and hope it is long enough |  |
-| pause | 90000 |  |
+| *Comment* | WAIT two minutes FOR BACKUP TO COMPLETE and hope it is long enough |  |
+| pause | 120000 |  |
 
 | *Comment* | Test Case: Console Backup and Restore: create a second test page in admin. It should be gone after restore. |  |
 | st_admin | update-page --w admin --e %%email%% --page --page "Backup Restore Page 2 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "Backup Restore Page 2 %%start_time%%" page has been created. |
@@ -77,20 +77,20 @@ Automated backup and restore testing
 | wait_for_element_visible_ok | restore_id | 30000 |
 | select_ok | restore_id | index=0 |
 | click_and_wait | //input[@value='Restore'] |  |
-| text_like | Restore in progress |  |
 
-| *Comment* | WAIT 300 seconds FOR RESTORE TO COMPLETE and hope it is enough |  |
-| pause | 300000 |  |
+| *Comment* | WAIT six minutes FOR RESTORE TO COMPLETE and hope it is enough |  |
+| pause | 360000 |  |
 
 | *Comment* | Test Case: Console Backup and Restore: Verify that the restore completed |  |
 | st_admin | give-system-admin --e %%email%% |  |
+
 | *Comment* | Test Case: Console Backup and Restore: Navigate away again come back to Backup page |  |
 | open_ok | /console/index.cgi?rm=Setup |  |
 | open_ok | /console/index.cgi?rm=Backup |  |
 | wait_for_element_visible_ok | link=Refresh file list | 30000 |
-| text_unlike | //body | Restore in progress |
 
 | *Comment* | Test Case: Console Backup and Restore: the RESTORED admin is there containing first new page and missing second new page |  |
+| open_ok | /nlw/submit/logout |  |
 | st_login |  |  |
 | open_ok | /admin/index.cgi?action=recent_changes |  |
 | wait_for_element_present_ok | link=Backup Restore %%start_time%% |  |
@@ -161,5 +161,6 @@ Automated backup and restore testing
 
 | *Comment* | Test Case: Console Backup and Restore: empty-2 should already be gone. Tear it down anyway. |  |
 | st-admin | delete-workspace --no-export --w empty-2-%%start_time%% |  |
+|  st-admin | remove-system-admin --e %%email%% |  |
 
 | *Comment* | Test Case: Console Backup and Restore COMPLETED |  |

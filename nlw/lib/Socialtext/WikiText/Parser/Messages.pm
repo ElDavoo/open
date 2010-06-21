@@ -26,8 +26,8 @@ sub create_grammar {
     };
 
     # NOTE: if you add phrases here, be sure to update %markup in
-    # ST::WT::Emitter::Canonicalize
-    @$phrases = ('waflphrase', 'asis', 'a', 'b', 'i', 'del');
+    # ST::WT::Emitter::Canonicalize. Order matters
+    @$phrases = ('a', 'waflphrase', 'asis', 'b', 'i', 'del', 'hashmark');
     $grammar->{line} = {
         match => qr/^(.*)$/s,
         phrases => $phrases,
@@ -35,6 +35,18 @@ sub create_grammar {
             chomp;
             s/\n/ /g; # Turn all newlines into spaces
         }
+    };
+
+    $grammar->{hashmark} = {
+        # Only match after a space or beginning-of-line
+        match => qr/(?<!\S)#(\p{IsWord}+)/,
+        filter => sub {
+            $_ =~ s/^#//;
+            $self->{receiver}->insert({
+                wafl_type => 'hashmark',
+                text => $_[0]{text},
+            });
+        },
     };
 
     my $url_scheme = qr{(?:http|https|ftp|irc|file):(?://)?};
@@ -95,6 +107,14 @@ sub handle_waflphrase {
         $self->{receiver}->insert({
             wafl_type   => 'user',
             user_string => $options,
+            wafl_length => $length
+        });
+        return;
+    }
+    elsif ($match->{2} eq 'hashtag') {
+        $self->{receiver}->insert({
+            wafl_type   => 'hashtag',
+            text => $match->{3},
             wafl_length => $length
         });
         return;

@@ -4,6 +4,7 @@
 | set | ws | `miki-ws-%%start_time%%` |
 | set | mikiacct | mikiacct-%%start_time%% |
 | set | mikiuser | `mikiuser%%start_time%%@ken.socialtext.net` |
+| set | short_mikiuser | mikiuser%%start_time%% |
 | set | othermikiuser | `othermikiuser%%start_time%%@ken.socialtext.net` |
 | set | othershortuser | `othermikiuser%%start_time%%` |
 
@@ -11,6 +12,7 @@
 | set | signal1 | hello from a different user at %%start_time%% |
 | set | signal2 | and I say goodbye from the main user at %%start_time%% |
 | set | multisignal | You say potato, I say potatoe |
+
 | enable_acct_plugin | dashboard | %%mikiacct%% |
 | enable_acct_plugin | people | %%mikiacct%% |
 | enable_acct_plugin | signals | %%mikiacct%% |
@@ -18,6 +20,7 @@
 | *Comment* | Test Case: Multiple Account Signal |  |
 | set | othermikiacct | `othermikiacct-%%start_time%%` |
 | set | otherws | `other-miki-ws-%%start_time%%` |
+
 | create_account | %%othermikiacct%% |  |
 | create_workspace | %%otherws%% | %%othermikiacct%% |
 
@@ -28,6 +31,7 @@
 | add_member | %%othermikiuser%% | %%ws%% |  |
 
 | st-logoutin | %%othermikiuser%% | %%password%% |
+
 | *Comment* | Test case: Miki Open global nav, should be signals |  |
 | open_ok | /m/ |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
@@ -37,11 +41,13 @@
 
 | add_member | %%mikiuser%% | %%otherws%% |
 | add_member | %%othermikiuser%% | %%otherws%% |
+
 | open_ok | /m/ |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | wait_for_element_visible_ok | st-select-network | 30000 |
+
 | text_like | //body | Signal to |
 | text_like | Signals |  |
 | text_like | What are you working on? |  |
@@ -60,22 +66,22 @@
 | text_like | //body | qr/%%othershortuser%%.+minute.+to %%mikiacct%%.+%%signal1%%/ism |
 
 | *Comment* | Test case: Miki Send MULTI Signals |  |
-| select_ok | st-select-network | All My Groups |
 | select_ok | st-select-network | %%mikiacct%% (primary, 2 users) |
 | select_ok | st-select-network | %%othermikiacct%% (2 users) |
-| select_ok | st-select-network | All My Groups |
+
 | type_ok | st-signal-text | %%multisignal%% |
 | click_and_wait | st-signal-submit |  |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | wait_for_text_present_ok | less than a minute ago | 30000 |
 | wait_for_text_present_ok | %%multisignal%% | 30000 |
-| text_like | //body | qr/%%othershortuser%%.+minute.+to 2 groups.+%%multisignal%%/ism |
+| text_like | //body | qr/%%othershortuser%%.+minute.+%%multisignal%%/ism |
 
 | *Comment* | Test case: Miki Log In as 'main' user, see global nav |  |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 | st-login | %%mikiuser%% | %%password%% |
+
 | open_ok | /m/ |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
@@ -96,7 +102,7 @@
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 
 | *Comment* | Test case: Miki Find 'followed' user with MIKI search, click through, follow |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 | click_and_wait | link=People |  |
 | wait_for_element_visible_ok | st-search-text | 30000 |
 | type_ok | st-search-text | %%othershortuser%% |
@@ -115,6 +121,9 @@
 | click_and_wait | link=Follow |  |
 | wait_for_element_visible_ok | link=Stop Following | 30000 |
 | open_ok | /m/ |  |
+
+| st_process_jobs | PersonIndex |
+
 | wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
@@ -131,7 +140,7 @@
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | Workspaces |  |
-| text_like | Hello, %%mikiuser%% |  |
+| text_like | Hello, %%short_mikiuser%% |  |
 | text_like | Workspaces you belong to: |  |
 
 | *Comment* | Test case: Miki Click 'Activity' in global nav |  |
@@ -172,7 +181,7 @@
 | click_and_wait | link=Workspaces |  |
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | text_like | Workspaces |  |
-| text_like | Hello, %%mikiuser%% |  |
+| text_like | Hello, %%short_mikiuser%% |  |
 | text_like | Workspaces you belong to: |  |
 | text_like | You have free access to view and |  |
 | text_like | contribute to any of these public wikis: |  |

@@ -25,7 +25,7 @@
 | body-like | People                          |
 | body-like | Signals                         |
 | body-like | Log out                         |
-| body-like | Hello, <b>%%email_address%%</b> |
+| body-like | Hello, <b>user %%start_time%%</b> |
 | body-like | Workspaces you belong to:       |
 | body-like | You have free access            |
 | body-like | %%workspace%%                   |

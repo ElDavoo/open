@@ -72,7 +72,7 @@ File::Basename: 2.72
 File::chdir: 0.06
 File::CounterFile: 1.04
 File::Find: 0
-File::Path: 1.06
+File::Path: 2.07
 File::Slurp: 9999.09
 File::Spec: 3.07
 File::Spec::Unix: 1.5

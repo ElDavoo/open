@@ -3,17 +3,14 @@
 | *Comment* | STARTING Test case: Activities Widget |
 
 | include | [Test Case: Activities Widget Basic Events] |  |
+| include | [Test Case: Activities Widget Popout] |  |
 | include | [Test Case: Activities Widget Other Signals] |  |
 | include | [Test Case: Activities Widget Greeting] |  |
 | include | [Test Case: Activities Widget Conversations] |  |
 | include | [Test Case: Activities Widget Tags and Tagging] |  |
 | include | [Test Case: Activities Widget Followers] |  |
-| include | [Test Case: Activities Widget Popout] |  |
 | include | [Test Case: Activities Widget Permalinks] |  |
-
-| *Comment* | Test Case: Activities Widget TEARDOWN |  |
-| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
-| st-admin | delete-workspace --w %%diffws%% --no-export | has been deleted |
+| include | [Test Case: Activities Widget with REAL Popout] |  |
 
 | *Comment* | Test Case: Activities Widget COMPLETED |  |
 

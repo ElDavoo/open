@@ -113,69 +113,77 @@
 | *Comment* | Test Case: Mobile Signals. Send signal to groups |  |
 
 | set | msacct | mobile-signals-%%start_time%% |
+| set | common_user | ms%%start_time%%@ken.socialtext.net |
 
-| *Comment* | Test Case: Mobile Signals. Create two accounts. Add %%username%% to both |  |
+| *Comment* | Test Case: Mobile Signals. Create two accounts. Add %%common_user%% to both |  |
 | st-admin | create-account --name %%msacct%%-A | A new account named "%%msacct%%-A" was created |
 | st-admin | create-account --name %%msacct%%-B | A new account named "%%msacct%%-B" was created |
-| st-admin | add-member --account %%msacct%%-A --u %%username%% | now has the role of 'member' in the %%msacct%%-A |
-| st-admin | add-member --account %%msacct%%-B --u %%username%% | now has the role of 'member' in the %%msacct%%-B |
+| st-admin | enable-plugin --plugin signals --account %%msacct%%-A |  |
+| st-admin | enable-plugin --plugin signals --account %%msacct%%-B |  |
+
+| st-admin | create-user --e %%common_user%% --p %%password%% --account %%msacct%%-A | A new user |
+| st-admin | add-member --account %%msacct%%-B --u %%common_user%% | now has the role of 'member' in the %%msacct%%-B |
+
+| *Comment* | Test Case: Mobile Signals. Login as %%common_user%% to create a predictable "within" menu |  |
+| open_ok | /nlw/submit/logout |  |
+| st-login | %%common_user%% | %%password%% |
 
 | open_ok | /m/signals |  |
 | wait_for_element_visible_ok | st-select-network | 30000 |
 
-| *Comment* | Test Case: Mobile Signals. Signal to All My Groups |  |
-| select_ok | st-select-network | label=All My Groups |
-| type_ok | st-signal-text | %%username%% signals to All Groups at %%start_time%% |
-| click_and_wait | st-signal-submit |  |
-| text_like | %%username%% signals to All Groups at %%start_time%% |  |
-
 | *Comment* | Test Case: Mobile Signals. Signal to %%msacct%%-A |  |
-| select_ok | st-select-network | label=%%msacct%%-A (1 user) |
-| type_ok | st-signal-text | %%username%% signals to %%msacct%%-A at %%start_time%% |
+| select_ok | st-select-network | label=%%msacct%%-A (primary, 1 user) |
+| type_ok | st-signal-text | Signal to %%msacct%%-A |
 | click_and_wait | st-signal-submit |  |
-| text_like | %%username%% signals to %%msacct%%-A at %%start_time%% |  |
+| text_like | Signal to %%msacct%%-A |  |
 
 | *Comment* | Test Case: Mobile Signals. Signal to %%msacct%%-B |  |
 | select_ok | st-select-network | label=%%msacct%%-B (1 user) |
-| type_ok | st-signal-text | %%username%% signals to %%msacct%%-B at %%start_time%% |
+| type_ok | st-signal-text | Signal to %%msacct%%-B |
 | click_and_wait | st-signal-submit |  |
-| text_like | %%username%% signals to %%msacct%%-B at %%start_time%% |  |
+| text_like | Signal to %%msacct%%-B |  |
 
 | *Comment* | Test Case: Mobile Signals. Verify signal to groups |  |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | network-select | 30000 |
+| text_like | st-editing-tools-edit | Signals |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 20000 |
 
-| *Comment* | Test Case: Mobile Signals. See three signals |  |
-| st_cycle_network_select | 6 |  |
-| select_ok | network-select | label=All My Groups |
-| pause | 8000 | I hate pause |
-| st-name-widget | 1 | send_signal_widget |
-| st_send_signal_via_activities_widget | send_signal_widget | kick it |
-| pause | 8000 |  |
-| st-name-widget | 3 | signals_widget |
-| st-widget-title-like | signals_widget | Signals |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_text_present_ok | %%username%% signals to %%msacct%%-A at %%start_time%% | 10000 |
-| wait_for_text_present_ok | %%username%% signals to %%msacct%%-B at %%start_time%% | 10000 |
-| wait_for_text_present_ok | %%username%% signals to All Groups at %%start_time%% | 10000 |
-| select-frame | relative=parent |  |
+| open_ok | /?action=invite |  |
+| open_ok | /st/signals |  |
 
-| *Comment* | Test Case: Mobile Signals. See two signals, All and A |  |
-| select_ok | network-select | label=%%msacct%%-A (1 user) |
-| pause | 8000 | I hate pause |
+| st-name-widget | 1 | signals_widget |
 | st-select-widget-frame | signals_widget |  |
-| wait_for_text_present_ok | %%username%% signals to %%msacct%%-A at %%start_time%% | 10000 |
-| text_like | //body | %%username%% signals to All Groups at %%start_time%% |
-| text_unlike | //body | %%username%% signals to %%msacct%%-B at %%start_time%% |
-| select-frame | relative=parent |  |
+| wait_for_text_present_ok | Signal to %%msacct%%-B | 20000 |
+| wait_for_text_present_ok | Signal to %%msacct%%-A | 20000 |
+| selectFrame | relative=parent |  |
 
-| *Comment* | Test Case: Mobile Signals. See two signals, All and B |  |
-| select_ok | network-select | label=%%msacct%%-B (1 user) |
-| pause | 8000 | I hate pause |
+| *Comment* | Test Case: Mobile Signals. See only one signal to A |  |
+
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[text()='%%msacct%%-A (primary, 1 users)'] | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[text()='%%msacct%%-A (primary, 1 users)'] | 20000 |
+
+| open_ok | /?action=invite |  |
+| open_ok | /st/signals |  |
+
+| st-name-widget | 1 | signals_widget |
 | st-select-widget-frame | signals_widget |  |
-| wait_for_text_present_ok | %%username%% signals to %%msacct%%-B at %%start_time%% | 10000 |
-| text_like | //body | %%username%% signals to All Groups at %%start_time%% |
-| text_unlike | //body | %%username%% signals to %%msacct%%-A at %%start_time%% |
-| select-frame | relative=parent |  |
+| wait_for_text_present_ok | Signal to %%msacct%%-A | 20000 |
+| text_unlike | //body | Signal to %%msacct%%-B |
+| selectFrame | relative=parent |  |
+
+| *Comment* | Test Case: Mobile Signals. See only one signal to B |  |
+
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[text()='%%msacct%%-B (1 users)'] | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[text()='%%msacct%%-B (1 users)'] | 20000 |
+
+| open_ok | /?action=invite |  |
+| open_ok | /st/signals |  |
+
+| st-name-widget | 1 | signals_widget |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_text_present_ok | Signal to %%msacct%%-B | 20000 |
+| text_unlike | //body | Signal to %%msacct%%-A |
+| selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Mobile Signals COMPLETED |  |

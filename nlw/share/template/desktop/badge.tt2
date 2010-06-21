@@ -118,9 +118,9 @@ var server = encodeToHex(
     location.protocol + '//' + location.hostname
     + (((location.port == 80) || (location.port == '')) ? '' : ':' + location.port)
 );
-var so = new SWFObject("/static/desktop/AIRInstallBadge.swf", "", "215", "180", "9.0.115", "#000000");
+var so = new SWFObject("/static/desktop/AIRInstallBadge.swf?airversion=2.0", "", "215", "180", "9.0.115", "#000000");
 
-so.addVariable("airversion", "1.5");
+so.addVariable("airversion", "2.0");
 so.addVariable("appname", "[% app_name %]");
 so.addVariable("appurl", '[% app_url %]');
 so.addVariable("appid", "[% app_id %]");
@@ -133,11 +133,13 @@ so.addParam("allowScriptAccess", "always");
 var prevHTML;
 
 function hide_swfobject () {
-    $('#flashcontent').html(prevHTML);
-    $('#getThings').show();
-    $('.target').text('Adobe AIR');
-    $('.getFlash').hide();
-    $('.getAIR').show();
+    setTimeout(function(){
+        $('#flashcontent').html(prevHTML);
+        $('#getThings').show();
+        $('.target').text('Adobe AIR 2');
+        $('.getFlash').hide();
+        $('.getAIR').show();
+    }, 100);
 }
 
 prevHTML = $('#flashcontent').html();

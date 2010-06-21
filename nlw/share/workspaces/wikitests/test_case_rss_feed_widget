@@ -3,15 +3,15 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: RSS Feed Widget. Create the widget |  |
-| st-single-widget-in-dashboard | gallery-widget-RSS Viewer | |
+| st-single-widget-in-dashboard | gallery-widget-RSS Viewer |  |
 
 | *Comment* | Test Case: RSS Feed Widget. Set the widget |  |
 | st-name-widget | 1 | rss_feed |
 | wait_for_text_present_ok | Socialtext blog | 30000 |
 | st-widget-title-like | rss_feed | Socialtext blog |
 | st-widget-settings | rss_feed |  |
-| wait_for_element_visible_ok | up_rss_feed | 30000 |
-| type_ok | up_rss_feed | http://use.perl.org/~heusserm/journal/rss |
+| wait_for_element_visible_ok | rss_feed | 30000 |
+| type_ok | rss_feed | http://use.perl.org/~heusserm/journal/rss |
 | wait_for_element_visible_ok | st-savebutton-%%rss_feed%% | 30000 |
 | click_ok | st-savebutton-%%rss_feed%% |  |
 | wait_for_element_not_visible_ok | st-savebutton-%%rss_feed%% | 30000 |
@@ -29,8 +29,8 @@
 
 | *Comment* | Test Case: RSS Feed Widget. Unlimited view |  |
 | st-widget-settings | rss_feed |  |
-| wait_for_element_visible_ok | up_max_desc | 30000 |
-| select_ok | up_max_desc | Unlimited |
+| wait_for_element_visible_ok | max_desc | 30000 |
+| select_ok | max_desc | Unlimited |
 | wait_for_element_visible_ok | st-savebutton-%%rss_feed%% | 30000 |
 | click_ok | st-savebutton-%%rss_feed%% |  |
 | wait_for_element_not_visible_ok | st-savebutton-%%rss_feed%% | 30000 |

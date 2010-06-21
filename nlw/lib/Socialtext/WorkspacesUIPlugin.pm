@@ -465,21 +465,34 @@ sub _workspace_clone_or_create {
     my $display_title = shift;
     my $section       = shift;
 
+    my $ws_checker   = $self->hub->checker;
     my $acct_checker = Socialtext::Authz::SimpleChecker->new(
-        user => $self->hub->current_user,
+        user      => $self->hub->current_user,
         container => $self->hub->current_workspace->account,
     );
-    unless ($acct_checker->check_permission('admin')) {
-        Socialtext::WebApp::Exception::Redirect->throw('?');
+
+    my $has_perm_ws_admin   = $ws_checker->check_permission('admin_workspace');
+    my $has_perm_acct_admin = $acct_checker->check_permission('admin');
+
+    unless ($has_perm_acct_admin) {
+        # WS Admins get shown a page of instructions
+        if ($has_perm_ws_admin) {
+            $section = 'workspaces_cannot_create_section';
+        }
+        # Everyone else gets thrown back from whence they came
+        else {
+            Socialtext::WebApp::Exception::Redirect->throw('?');
+        }
     }
 
-    if ( $self->cgi->Button ) {
+    # Only *Account* Admin's can create a new WS (not WS Admins)
+    if ($has_perm_acct_admin && $self->cgi->Button) {
         my $ws = $self->_create_workspace();
 
-        if ( $ws ) {
+        if ($ws) {
             my $url = 'action=workspaces_created;workspace_id='
                 . $ws->workspace_id;
-            $self->redirect( $url );
+            $self->redirect($url);
         }
     }
 

@@ -100,10 +100,16 @@
     # include all conf.d files (rewrite rules, json proxies, etc) on this system
     include conf.d/*.conf;
 
-    # Used with X-Accel-Redirect to serve attachments from nginx
+    # Used with X-Accel-Redirect to serve old-style attachments from nginx
     location /nlw/protected/ {
         internal;
         alias [% config.data_root_dir %]/plugin/;
+        expires 1y;
+    }
+    # Used with X-Accel-Redirect to serve new-style attachments from nginx
+    location /nlw/attachments/ {
+        internal;
+        alias [% config.data_root_dir %]/attachments/;
         expires 1y;
     }
 
@@ -170,15 +176,16 @@ server {
     [%- END %]
 }
 
-[%- IF config.ssl_only OR config.use_ssl %]
+[%- IF config.ssl_only OR config.ssl_name %]
 server {
     [%#- Have SSL enabled server too %]
     listen [% config.frontend_ports.https %];
     ssl on;
-    ssl_certificate [% config.ssl_base_dir %]/certs/[% config.nlw_server_hostname %].crt;
-    ssl_certificate_key [% config.ssl_base_dir %]/private/[% config.nlw_server_hostname %].key;
+    ssl_certificate [% config.ssl_base_dir %]/certs/[% config.ssl_name%].crt;
+    ssl_certificate_key [% config.ssl_base_dir %]/private/[% config.ssl_name %].key;
 
     ssl_ciphers HIGH:MEDIUM:!ADH;
+    ssl_protocols SSLv3 TLSv1;
 
     [% server_common( config.backend_ports.https, 1 ) %]
 }

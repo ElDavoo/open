@@ -35,6 +35,7 @@ sub _user_has_permission_for_container {
         container  => undef,
         user       => undef,
         id_matrix  => undef,
+        auth_user_must_share_account => undef,
         @_
     );
 
@@ -44,9 +45,22 @@ sub _user_has_permission_for_container {
     my $pname = ref($p{permission}) ? $p{permission}->name : $p{permission};
 
     my @role_ids = $p{container}->role_for_user($p{user}, ids_only => 1);
-    push @role_ids, $p{user}->is_guest
-        ? Socialtext::Role->Guest->role_id
-        : Socialtext::Role->AuthenticatedUser->role_id;
+    if (!@role_ids) {
+        if ($p{user}->is_guest) {
+            push @role_ids, Socialtext::Role->Guest->role_id;
+        }
+        elsif ($p{auth_user_must_share_account}) {
+            if ($self->user_sets_share_an_account($p{user},$p{container})) {
+                push @role_ids, Socialtext::Role->AuthenticatedUser->role_id;
+            }
+            else {
+                push @role_ids, Socialtext::Role->Guest->role_id;
+            }
+        }
+        else {
+            push @role_ids, Socialtext::Role->AuthenticatedUser->role_id;
+        }
+    }
 
     for my $role_id (@role_ids) {
         my $m = $p{id_matrix}->{$role_id} || [];
@@ -89,14 +103,17 @@ sub _role_matrix_to_id_matrix {
     sub user_has_permission_for_group {
         my $self = shift;
         my %p = (
-            permission => undef,
-            group      => undef,
-            user       => undef,
+            permission    => undef,
+            group         => undef,
+            user          => undef,
+            ignore_badmin => undef,
             @_
         );
 
         # XXX NOTE: business admins have special privileges for groups
-        return 1 if $p{user}->is_business_admin;
+        unless ($p{ignore_badmin}) {
+            return 1 if $p{user}->is_business_admin;
+        }
 
         my $pset = $p{group}->permission_set;
         $pset = 'private' unless exists $permission_matrix{$pset};
@@ -105,7 +122,9 @@ sub _role_matrix_to_id_matrix {
             _role_matrix_to_id_matrix($permission_matrix{$pset});
         $p{container} = delete $p{group},
         return $self->_user_has_permission_for_container(
-            %p, id_matrix  => $id_matrix{$pset},
+            %p,
+            id_matrix  => $id_matrix{$pset},
+            auth_user_must_share_account => 1,
         );
     }
 }

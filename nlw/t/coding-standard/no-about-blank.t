@@ -11,6 +11,6 @@ SKIP: {
 
     my @bad_files =
         grep { !m{no-about-blank.t} }
-        `ack --follow --nocolor --all -l about:blank .`;
+        `ack --follow --nocolor --all -l about:blank . | grep -v core`;
     is_deeply \@bad_files, [], 'No about:blank in our source code';
 }

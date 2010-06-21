@@ -149,6 +149,8 @@ whose value is the id of the widget (ie the value of __MODULE_ID__)
 
 sub st_name_widget {
     my ($self, $position, $logical) = @_;
+    diag "Called st_name_widget with '$logical'. Sleeping 5. "."\n";
+    sleep(5);
     eval {
         my @widgetlist = $self->_getWidgetList;
         $self->{_widgets}{$logical} = $widgetlist[$position-1];
@@ -381,6 +383,7 @@ sub st_send_signal_within_activities_widget {
     $self->handle_command('wait_for_element_present_ok', 'mainWikiwyg', 5000);
     $self->handle_command('click_ok', 'mainWikiwyg');
 
+    $self->handle_command('set_Speed',4000);
     my $browser = $ENV{'selenium_browser'} || 'chrome';
     if ($browser=~/chrome|firefox/ig) {
         $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
@@ -401,6 +404,7 @@ sub st_send_signal_within_activities_widget {
     $self->handle_command('wait_for_element_visible_ok','post', 5000);
     $self->handle_command('click_ok','post');
     $self->handle_command('pause',3000); 
+    $self->handle_command('set_Speed',0);
 }
 
 =head2 st_send_signal_via_activities_widget 
@@ -507,23 +511,16 @@ Radiotype should be self-join-radio or private-radio
 
 sub st_create_group {
     my ($self, $groupname, $groupdesc, $radiotype) = @_;
+    $self->handle_command('comment',"st_create_group called with params '$groupname','$groupdesc','$radiotype'");
+    $self->handle_command('set_Speed',4000);
     $self->handle_command('wait_for_element_present_ok','link=Create Group...',30000);
     $self->handle_command('click_ok','link=Create Group...');
     $self->handle_command('wait_for_element_present_ok','st-create-group-next', 30000);
-    $self->handle_command('wait_for_element_present_ok','st-lightbox-cancel-create-group', 30000);
-    $self->handle_command('click_ok', 'st-lightbox-cancel-create-group', 30000);
-    $self->handle_command('wait_for_element_not_present_ok','st-create-group-next', 30000);
-    $self->handle_command('wait_for_element_not_present_ok','st-lightbox-cancel-create-group', 30000);
-    $self->handle_command('wait_for_element_present_ok','link=Create Group...', 30000);
-    $self->handle_command('click_ok','link=Create Group...');
-    $self->handle_command('wait_for_element_present_ok','st-create-group-next');
     $self->handle_command('wait_for_element_present_ok','st-lightbox-cancel-create-group');
     $self->handle_command('wait_for_element_present_ok', $radiotype);
     $self->handle_command('check_ok', $radiotype);
     $self->handle_command('click_ok','st-create-group-next');
     $self->handle_command('wait_for_element_not_present_ok','st-create-group-next', 30000);
-    $self->handle_command('wait_for_element_not_present_ok','st-lightbox-cancel-create-group', 30000);
-    $self->handle_command('wait_for_element_visible_ok','link=?',30000);
     $self->handle_command('wait_for_element_visible_ok','create-group', 30000);
     $self->handle_command('text_like','//body','Create a Group');
     $self->handle_command('st-name-widget', 1,'create_group');
@@ -535,6 +532,8 @@ sub st_create_group {
     $self->handle_command('type_ok','name',$groupname);
     $self->handle_command('type_ok','description',$groupdesc);
     $self->handle_command('select-frame','relative=parent');
+    $self->handle_command('set_Speed',0);
+    $self->handle_command('comment','end of st_create_group.  Final create has not yet been clicked');
 }
 
 =head2 st_find_user ( $user_id ) 

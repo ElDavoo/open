@@ -43,14 +43,16 @@ sub handler ($$) {
     my $auth_info = $class->getAuthForURI($r->uri);
 
     my $user = $class->authenticate($r);
-    if (!$user and $r->header_in('User-agent') =~ /\bAppleWebKit\b.*\bAdobeAIR\b/) {
+    unless ($user) {
+        my $ua = $r->header_in('User-Agent') || '';
         # WebKit in Adobe AIR has a bug where "401" will trigger a
         # non-suppressable re-authenticate dialog that doesn't work
         # well for Socialtext Desktop, so handle it as a special case.
-        return $class->_webkit_air_unauthorized_handler($r);
+        return $class->_webkit_air_unauthorized_handler($r)
+            if ($ua =~ /\bAppleWebKit\b.*\bAdobeAIR\b/);
+        $user = $class->guest($r, $auth_info);
     }
 
-    $user ||= $class->guest($r, $auth_info);
     Socialtext::Timer->Pause('web_auth');
 
     return $class->challenge(request => $r, auth_info => $auth_info) unless $user;

@@ -29,18 +29,17 @@
 | st-name-widget | 1 | active_members |
 | st-widget-title-like | active_members | Active People |
 | st-widget-settings | active_members |  |
-| wait_for_element_visible_ok | up_account | 30000 |
-| uncheck_ok | up_rotate |  |
-| select_ok | up_account | %%am_acct_one%% |
+| wait_for_element_visible_ok | account | 30000 |
+| uncheck_ok | rotate |  |
+| select_ok | account | %%am_acct_one%% |
 | click_ok | st-savebutton-%%active_members%% |  |
-| wait_for_element_not_visible_ok | up_account | 30000 |
+| wait_for_element_not_visible_ok | account | 30000 |
 
 | *Comment* | Test Case: Active Members Widget Check the content of Viewed |  |
 | st-select-widget-frame | active_members |  |
 | wait_for_element_visible_ok | link=Readers | 30000 |
 | wait_for_element_visible_ok | link=Edits | 30000 |
 | wait_for_element_visible_ok | link=Signals | 30000 |
-| wait_for_element_not_present_ok | link=Viewed | 5000 |
 | text_like | //body | Viewed |
 
 | *Comment* | Test Case: Active Members Widget Check the content of Readers |  |
@@ -72,7 +71,7 @@
 | wait_for_element_visible_ok | link=Readers | 30000 |
 | wait_for_element_visible_ok | link=Edits | 30000 |
 | wait_for_element_visible_ok | link=Signals | 30000 |
-| wait_for_element_not_present_ok | link=Viewed | 5000 |
+| wait_for_element_not_present_ok | link=Viewed | 20000 |
 | text_like | //body | Viewed |
 | text_unlike | //body | test page 1 |
 | text_unlike | //body | test page 2 |
@@ -81,12 +80,12 @@
 
 | *Comment* | Test Case: Active Members Widget Test Account Combo Box |  |
 | st-widget-settings | active_members |  |
-| wait_for_element_visible_ok | up_account | 30000 |
-| select_ok | up_account | %%am_acct_two%% |
-| select_ok | up_view | Viewed Profiles |
-| uncheck_ok | up_rotate |  |
+| wait_for_element_visible_ok | account | 30000 |
+| select_ok | account | %%am_acct_two%% |
+| select_ok | view | Viewed Profiles |
+| uncheck_ok | rotate |  |
 | click_ok | st-savebutton-%%active_members%% |  |
-| wait_for_element_not_visible_ok | up_account | 30000 |
+| wait_for_element_not_visible_ok | account | 30000 |
 
 | st-select-widget-frame | active_members |  |
 | wait_for_element_visible_ok | link=Edits | 30000 |

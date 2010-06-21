@@ -1,6 +1,7 @@
 | *Comment* | Test Case: Settings: Admin |
 
 | *Comment* | Test Case: Settings: Admin make sure user is an admin |  |
+| st-admin | add-account-admin --email %%email%% --account %%hostname%% |  |
 | st-admin | add-workspace-admin --email %%email%% --workspace %%workspace%% |  |
 | st-admin | set-workspace-config --w %%workspace%% email_notify_is_enabled 1 | has been updated |
 
@@ -10,8 +11,6 @@
 | text_like | contentLeft | Manage All Users |
 | text_like | contentLeft | Invite New Users |
 | text_like | contentLeft | My Workspaces |
-| text_like | contentLeft | Create New Workspace |
-| text_like | contentLeft | Clone This Workspace |
 | text_like | contentLeft | Unsubscribe |
 | text_like | contentLeft | Workspace Appearance |
 | text_like | contentLeft | Workspace Features |
@@ -48,35 +47,10 @@
 | text_like | workspaceNav | Add Members |
 | st-logoutin |  |  |
 
-| *Comment* | Test Case: Settings: Admin workspace title cannot begin with a dash |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Create New Workspace |  |
-| type_ok | title | -newspace %%start_time%% |
-| type_ok | name | newspace%%start_time%% |
-| click_and_wait | link=Save |  |
-| text_like | Workspace title must be between 2 and 64 characters long and may not begin with a - |
-
-| *Comment* | Test Case: Settings: Admin test Create New Workspace functionality |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Create New Workspace |  |
-| type_ok | title | Newspace %%start_time%% |
-| type_ok | name | newspace-%%start_time%% |
-| click_and_wait | link=Save |  |
-| text_like | contentContainer | You have just created "Newspace %%start_time%%" |
-| click_and_wait | link=Go to |  |
-| location_like | /newspace-%%start_time%%/index.cgi?newspace_%%start_time%% |  |
-
-| *Comment* | Test Case: Settings: Admin test Clone Workspace functionality |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Clone This Workspace |  |
-| type_ok | title | Newspace Clone %%start_time%% |
-| type_ok | name | newspace-clone-%%start_time%% |
-| click_and_wait | link=Save |  |
-| text_like | contentContainer | You have just created "Newspace Clone %%start_time%%" |
-| click_and_wait | link=Go to |  |
-| location_like | /newspace-clone-%%start_time%%/index.cgi?newspace_clone_%%start_time%% |  |
-
 | *Comment* | Test Case: Settings: Admin test Workspace Appearance using newspace-%%start_time%% |  |
+| st-admin | create-workspace --title "Newspace %%start_time%%" --name newspace-%%start_time%% | was created |
+| st-admin | add-member --workspace newspace-%%start_time%% --e %%username%% | now has the role of |
+| st-admin | add-workspace-admin --workspace newspace-%%start_time%% --e %%username%% | now has the role of |
 | open_ok | /newspace-%%start_time%% |  |
 | location_like | /newspace-%%start_time%%/index.cgi?newspace_%%start_time%% |  |
 | click_and_wait | link=Settings |  |
@@ -137,11 +111,10 @@
 | uncheck_ok | timezone__time_display_seconds |  |
 | click_and_wait | link=Save |  |
 
-*Privacy features and workspace skin are tested in separate test cases.*
+*Privacy features, Create new Workspace and workspace skin are tested in separate test cases.*
 
 | *Comment* | Test Case: Settings: Admin Teardown |  |
 | st-admin | delete-workspace --workspace newspace-%%start_time%% --no-export | has been deleted |
-| st-admin | delete-workspace --workspace newspace-clone-%%start_time%% --no-export | has been deleted |
 | st-admin | remove-member --email invite_%%start_time%%@ken.socialtext.net --workspace %%workspace%% |  |
 
 | *Comment* | Test Case: Settings: Admin COMPLETED |

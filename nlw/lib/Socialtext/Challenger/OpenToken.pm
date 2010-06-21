@@ -3,6 +3,7 @@ package Socialtext::Challenger::OpenToken;
 
 use strict;
 use warnings;
+use base qw(Socialtext::Challenger::Base);
 use Crypt::OpenToken;
 use URI;
 use MIME::Base64;
@@ -11,8 +12,6 @@ use Socialtext::Log qw(st_log);
 use Socialtext::OpenToken::Config;
 use Socialtext::User;
 use Socialtext::WebApp;
-
-our $DEFAULT_REDIRECT_URI = '/';
 
 sub challenge {
     my $class    = shift;
@@ -51,6 +50,7 @@ sub challenge {
     # figure out where the User is supposed to be redirected to after the
     # challenge is successful.
     $redirect ||= $class->get_redirect_uri($request);
+    $redirect = $class->clean_redirect_uri($redirect);
 
     # figure out where we need to redirect the User to in order to get an
     # OpenToken, in the event that we're either not Authenticated or we have
@@ -220,7 +220,7 @@ sub get_redirect_uri {
             st_log->error(
                 "ST::Challenger::OpenToken; redirect attempted to external source; $redirect"
             );
-            return $DEFAULT_REDIRECT_URI;
+            return $self->default_redirect_uri;
         }
     }
 

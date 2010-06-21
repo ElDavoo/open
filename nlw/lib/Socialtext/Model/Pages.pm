@@ -296,6 +296,7 @@ sub Minimal_by_name {
     my $workspace_id = $p{workspace_id};
     my $limit        = $p{limit} || '';
     my $page_filter  = $p{page_filter} or die "page_filter is mandatory!";
+    # \m matches beginning of a word
     $page_filter = '\\m' . $page_filter;
 
     my @bind = ($workspace_id, $page_filter);

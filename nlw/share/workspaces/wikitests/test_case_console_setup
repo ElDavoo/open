@@ -19,10 +19,8 @@
 | is_element_present_ok | link=Socialtext Desktop |  |
 | is_element_present_ok | link=How to configure a web proxy |  |
 | is_element_present_ok | link=Socialtext, Inc. |  |
-| is_element_present_ok | self_registration |  |
 | is_element_present_ok | login_message |  |
 | is_element_present_ok | support_href |  |
-| is_element_present_ok | allow_network_invitation |  |
 | is_element_present_ok | web_proxy |  |
 | is_element_present_ok | web_proxy_config |  |
 | is_element_present_ok | timeserver |  |
@@ -36,8 +34,6 @@
 | is_element_present_ok | admin_email |  |
 | is_element_present_ok | add_admin |  |
 | is_element_present_ok | create_workspace |  |
-| is_element_present_ok | setup-self-register |  |
-| is_element_present_ok | setup-allow-invitation |  |
 | is_element_present_ok | setup-support-href |  |
 | is_element_present_ok | setup-login-message |  |
 | is_element_present_ok | desktop_update_enabled |  |
@@ -48,20 +44,20 @@
 | type_ok | signals_size_limit | -25 |
 | click_ok | set_signals_size_limit |  |
 | wait_for_page_to_load_ok | 30000 |  |
-| wait_for_text_present_ok | Must set a signals maximum size greater than zero | 30000 |
+| wait_for_text_present_ok | Signals maximum size must be an positive integer | 30000 |
 | text_unlike | //body | -25 |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
 | wait_for_element_visible_ok | set_signals_size_limit | 30000 |
 | type_ok | signals_size_limit | 0 |
 | click_ok | set_signals_size_limit |  |
 | wait_for_page_to_load_ok | 30000 |  |
-| wait_for_text_present_ok | Must set a signals maximum size greater than zero | 30000 |
+| wait_for_text_present_ok | Signals maximum size must be an positive integer | 30000 |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
 | wait_for_element_visible_ok | set_signals_size_limit | 30000 |
 | type_ok | signals_size_limit | 300 |
 | click_ok | set_signals_size_limit |  |
 | wait_for_page_to_load_ok | 30000 |  |
-| text_unlike | //body | Must set a signals maximum size greater than zero |
+| text_unlike | //body | Signals maximum size must be an positive integer |
 | verifyValue | signals_size_limit | 300 |
 
 | *Comment* | Test Case: Console Setup. Disable/Enable Desktop Update |  |
@@ -84,58 +80,6 @@
 | click_ok | link=Setup |  |
 | wait_for_page_to_load_ok | 30000 |  |
 | config_is | desktop_update_enabled | 1 |
-
-| *Comment* | Test Case: Console Setup. Self register, login msg, support contact, allow invites |  |
-| uncheck_ok | self_registration |  |
-| click_and_wait | setup-self-register |  |
-| type_ok | login_message | `This is the %%start_time%% login message` |
-| click_and_wait | setup-login-message |  |
-| uncheck_ok | allow_network_invitation |  |
-| click_and_wait | setup-allow-invitation |  |
-| type_ok | support_href | `http://sc-%%start_time%%.ken.socialtext.net` |
-| click_and_wait | setup-support-href |  |
-| open_ok | /nlw/submit/logout |  |
-
-| *Comment* | Test Case: Console Setup. Verify Self register, login msg |  |
-| wait_for_text_present_ok | Log in to Socialtext | 30000 |
-| text_like | `This is the %%start_time%% login message` |  |
-| text_unlike | mainWrap | Register |
-| text_like | mainWrap | Mobile |
-
-| *Comment* | Test Case: Console Setup. Verify allow invites |  |
-| st-login |  |  |
-| text_unlike | st-wiki-subnav-left | qr/Invite/i |
-| text_like | st-wiki-subnav-left | Workspaces |
-
-| *Comment* | Test Case: Console Setup. CANNOT FIND Support Contact |  |
-
-| *Comment* | Test Case: Console Setup. RESET Self register, login msg, support contact, allow invites |  |
-| open | /console |  |
-| text_like | Socialtext Appliance |  |
-| click_and_wait | link=Setup |  |
-
-| check_ok | self_registration |  |
-| click_and_wait | setup-self-register |  |
-| type_ok | login_message |  |
-| click_and_wait | setup-login-message |  |
-| check_ok | allow_network_invitation |  |
-| click_and_wait | setup-allow-invitation |  |
-| type_ok | support_href | `http://www.socialtext.com/customers/support_request.php` |
-| click_and_wait | setup-support-href |  |
-| open_ok | /nlw/submit/logout |  |
-
-| *Comment* | Test Case: Console Setup. Verify reset Self register, login msg |  |
-| wait_for_text_present_ok | Log in to Socialtext | 30000 |
-| text_unlike | mainWrap | `This is the %%start_time%% login message` |  |
-| text_like | mainWrap | Register |
-| text_like | mainWrap | Mobile |
-
-| *Comment* | Test Case: Console Setup. Verify reset allow invites |  |
-| st-login |  |  |
-| text_like | st-wiki-subnav-left | qr/Invite/i |
-| text_like | st-wiki-subnav-left | Workspaces |
-
-| *Comment* | Test Case: Console Setup. verify CANNOT FIND Support Contact |  |
 
 | *Comment* | Test Case: Console Setup. Time server and Apache Logs |  |
 | open | /console |  |
@@ -205,6 +149,7 @@
 | click_and_wait | timeserver_config |  |
 | type_ok | smarthost |  |
 | click_and_wait | config_email |  |
+| st-admin | remove-system-admin --email %%email%% | no longer has system admin access |
 
 | *Comment* | Test Case: Console Setup. make sure the default setting is ntp.ubuntu.com |  |
 | value_is | timeserver | ntp.ubuntu.com |

@@ -21,6 +21,7 @@ sub _build_start_index {
     my $index = $self->rest->query->param('startIndex');
     $index = $self->rest->query->param('offset') unless defined $index;
     $index = 0 unless defined $index;
+    $index = 0 unless $index =~ m/^\d+$/;
     return $index;
 }
 
@@ -29,7 +30,7 @@ sub _build_items_per_page {
     my $self = shift;
     my $count = $self->rest->query->param('count');
     $count = $self->rest->query->param('limit') unless defined $count;
-    $count = 25 unless defined $count;
+    $count = 25 unless defined $count and $count =~ m/^\d+$/;
     return $count > max_per_page ? max_per_page : $count;
 }
 
@@ -42,7 +43,9 @@ sub _build_reverse {
 has 'order' => ( is => 'ro', isa => 'Maybe[Str]', lazy_build => 1 );
 sub _build_order {
     my $self = shift;
-    $self->rest->query->param('order');
+    my $order = $self->rest->query->param('order');
+    return undef unless $order =~ m/^\w+$/;
+    return $order;
 }
 
 sub get_resource {
@@ -62,8 +65,10 @@ sub get_resource {
             return {
                 startIndex => $self->start_index+0,
                 itemsPerPage => $self->items_per_page+0,
-                totalResults => $self->_get_total_results()+0,
                 entry => $results,
+                ($self->rest->query->param('skipTotalResults')
+                    ? ()
+                    : (totalResults => $self->_get_total_results()+0)),
             }
         }
         else {

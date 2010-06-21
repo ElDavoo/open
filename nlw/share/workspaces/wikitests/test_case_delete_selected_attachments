@@ -32,7 +32,7 @@
 
 | *Comment* | Process Indexing Jobs |  |
 | pause | 5000 | pause to register index job |
-| st_process_jobs |  |  |
+| st_process_jobs | AttachmentIndex |  |
 
 | *Comment* | Test Case: Delete Selected Attachments Search the attachment and verify that it is present |  |
 | wait_for_element_visible_ok | st-search-term | 30000 |
@@ -63,7 +63,7 @@
 
 | *Comment* | Process Indexing Jobs after deleting wikitest.doc |  |
 | pause | 5000 | pause to register index job |
-| st_process_jobs |  |  |
+| st_process_jobs | AttachmentIndex  |  |
 
 | *Comment* | Test Case: Delete Selected Attachments Search page and verify that attachment is gone |  |
 | wait_for_element_visible_ok | st-search-term | 30000 |

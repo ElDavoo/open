@@ -17,6 +17,9 @@ echo "Set up wikitests"
 echo ENABLING Socialcalc for all workspaces
 $NLW_DEVBIN/st-socialcalc enable
 
+echo "Creating current help workspace"
+$NLW_BIN/st-create-help-workspace
+
 echo "CTRL-C to halt reports DB setup"
 
 echo ""

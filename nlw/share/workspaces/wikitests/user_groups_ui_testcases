@@ -3,6 +3,7 @@ Done:
 * [Test Case: Groups Home]
 * [Test Case: User Creates Group]
 * [Test Case: Self Join Group]
+* [Test Case: Private Group]
 * [Test Case: User Deactivates Group]
 * [Test Case: Groups in Global Nav]
 * [Test Case: Groups UI Invite Colleages to account-group]
@@ -15,6 +16,8 @@ FF3 only, not Safari, not IE: {bz: 3471} (IE: Selenium: Unable to send signals f
 * [Test Case: Groups UI Signal from group home]
 * [Test Case: Groups UI Send Signal to Group]
 * [Test Case: Groups UI Create New Workspace]
+* [Test Case: Group Home At Different Levels]
+* [Test Case: Groups UI mismatched Workspace]
 
 Broken due to selenium issues:
 

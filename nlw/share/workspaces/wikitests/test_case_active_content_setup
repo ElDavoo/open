@@ -19,47 +19,47 @@
 
 | *Comment* | Test Case: Active Content Create Pages to test length limits of widget |  |
 | st-create-pages | %%acwnoresults%% | 20 |
-| st-page-multi-view | /%%acwnoresults%%/index.cgi?test_page_1 | 1 |
-| st-page-multi-view | /%%acwnoresults%%/index.cgi?test_page_2 | 6 |
-| st-page-multi-view | /%%acwnoresults%%/index.cgi?test_page_3 | 1 |
+| st-page-multi-view | /%%acwnoresults%%/?test_page_1 | 1 |
+| st-page-multi-view | /%%acwnoresults%%/?test_page_2 | 6 |
+| st-page-multi-view | /%%acwnoresults%%/?test_page_3 | 1 |
 
 | st-create-pages | %%acw%% | 21 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_1 | 1 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_2 | 1 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_3 | 1 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_4 | 1 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_5 | 1 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_14 | 1 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_15 | 3 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_16 | 3 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_17 | 3 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_18 | 3 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_19 | 3 |
-| st-page-multi-view | /%%acw%%/index.cgi?test_page_20 | 3 |
+| st-page-multi-view | /%%acw%%/?test_page_1 | 1 |
+| st-page-multi-view | /%%acw%%/?test_page_2 | 1 |
+| st-page-multi-view | /%%acw%%/?test_page_3 | 1 |
+| st-page-multi-view | /%%acw%%/?test_page_4 | 1 |
+| st-page-multi-view | /%%acw%%/?test_page_5 | 1 |
+| st-page-multi-view | /%%acw%%/?test_page_14 | 1 |
+| st-page-multi-view | /%%acw%%/?test_page_15 | 3 |
+| st-page-multi-view | /%%acw%%/?test_page_16 | 3 |
+| st-page-multi-view | /%%acw%%/?test_page_17 | 3 |
+| st-page-multi-view | /%%acw%%/?test_page_18 | 3 |
+| st-page-multi-view | /%%acw%%/?test_page_19 | 3 |
+| st-page-multi-view | /%%acw%%/?test_page_20 | 3 |
 
 | *Comment* | Test Case: Active Content Setup Create Tag page though GUI |  |
 | st-create-wikipage | %%acw%% | Active Content Tag %%start_time%% |
-| st-page-multi-view | /%%acw%%/index.cgi?Active Content Tag %%start_time%% | 2 |
+| st-page-multi-view | /%%acw%%/?Active Content Tag %%start_time%% | 2 |
 
 | *Comment* | Test Case: Active Content Setup Create Edit page though GUI |  |
 | st-create-wikipage | %%acw%% | Active Content Edit %%start_time%% |
-| st-page-multi-view | /%%acw%%/index.cgi?Active Content Edit %%start_time%% | 2 |
+| st-page-multi-view | /%%acw%%/?Active Content Edit %%start_time%% | 2 |
 
 | *Comment* | Test Case: Active Content Setup Create Comment page though GUI |  |
 | st-create-wikipage | %%acw%% | Active Content Comment %%start_time%% |
-| st-page-multi-view | /%%acw%%/index.cgi?Active Content Comment %%start_time%% | 2 |
+| st-page-multi-view | /%%acw%%/?Active Content Comment %%start_time%% | 2 |
 
 | *Comment* | Test Case: Active Content Setup Create Watch page though GUI |  |
 | st-create-wikipage | %%acw%% | Active Content Watch %%start_time%% |
 | st-page-multi-watch | 4 |
-| st-page-multi-view | /%%acw%%/index.cgi?Active Content Watch %%start_time%% | 4 |
+| st-page-multi-view | /%%acw%%/?Active Content Watch %%start_time%% | 4 |
 
 | *Comment* | Test Case: Active Content Setup Create Emailed page though GUI |  |  |
 | st-create-wikipage | %%acw%% | Active Content Emailed %%start_time%% |  |
 
 | *Comment* | Test Case: Active Content Setup Email the page to itself just to create an Email event |  |  |
-| st-email-page | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% | %%workspace%%@%%wikiemail%% |  |
-| st-page-multi-view | /%%acw%%/index.cgi?Active Content Emailed %%start_time%% | 4 |  |
+| st-email-page | /%%acw%%/?Active Content Emailed %%start_time%% | %%workspace%%@%%wikiemail%% |  |
+| st-page-multi-view | /%%acw%%/?Active Content Emailed %%start_time%% | 4 |  |
 
 | *Comment* | Test Case: Active Content Setup Login as %%conv_email%% |  |
 | st-logoutin | %%conv_email%% | %%password%% |
@@ -72,7 +72,8 @@
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | %%conv_user%% edits |
-| click_and_wait | link=Save |  |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| click_and_wait | st-save-button-link |  |
 | st-page-multi-view | /%%acw%%/?Active Content Edit %%start_time%% | 5 |
 
 | *Comment* | Test Case: Active Content Setup comment on a page |  |

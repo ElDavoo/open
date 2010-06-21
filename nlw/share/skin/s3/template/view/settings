@@ -42,6 +42,8 @@
               [% IF perm_acct_admin %]
               <li><a href="?action=workspaces_create">[% loc('Create New Workspace') %]</a></li>
               <li><a href="?action=workspace_clone">[% loc('Clone This Workspace') %]</a></li>
+              [% ELSIF perm_ws_admin %]
+              <li><a href="?action=workspaces_create">[% loc('Create New Workspace') %]</a></li>
               [% END %]
               [% IF workspace_present %]
               <li><a href="?action=workspaces_unsubscribe">[% loc('Unsubscribe') %]</a></li>

@@ -16,8 +16,8 @@
 | st-name-widget | 1 | active_content |
 | st-widget-title-like | active_content | Active Content |
 | st-widget-settings | active_content |  |
-| uncheck_ok | up_rotate |  |
-| select_ok | up_view | Viewed Pages |
+| uncheck_ok | rotate |  |
+| select_ok | view | Viewed Pages |
 | click_ok | st-savebutton-%%active_content%% |  |
 | wait_for_element_not_visible_ok | st-savebutton-%%active_content%% | 30000 |
 
@@ -33,16 +33,14 @@
 | wait_for_element_visible_ok | link=Emailed | 30000 |
 | wait_for_element_visible_ok | link=Edited | 30000 |
 | wait_for_element_visible_ok | link=Watched | 30000 |
-| wait_for_element_not_present_ok | link=Viewed | 5000 |
-| text_like | //body | Viewed |
 
-| wait_for_text_present_ok | %%EmptyViews%% | 5000 |
+| wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 | click_ok | link=Edited |  |
-| wait_for_text_present_ok | %%EmptyEdits%% | 5000 |
+| wait_for_text_present_ok | %%EmptyEdits%% | 30000 |
 | click_ok | link=Watched |  |
-| wait_for_text_present_ok | %%EmptyWatch%% | 5000 |
+| wait_for_text_present_ok | %%EmptyWatch%% | 30000 |
 | click_ok | link=Emailed |  |
-| wait_for_text_present_ok | %%EmptyEmail%% | 5000 |
+| wait_for_text_present_ok | %%EmptyEmail%% | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Active Content Empty Messages TEARDOWN |  |

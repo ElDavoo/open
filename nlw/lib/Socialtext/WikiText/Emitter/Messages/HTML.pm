@@ -5,6 +5,7 @@ use warnings;
 use base 'Socialtext::WikiText::Emitter::Messages::Base';
 use Socialtext::l10n qw/loc/;
 use Socialtext::Formatter::AbsoluteLinkDictionary;
+use Socialtext::String;
 use Readonly;
 
 Readonly my %markup => (
@@ -13,6 +14,7 @@ Readonly my %markup => (
     i    => [ '<i>',             '</i>' ],
     del  => [ '<del>',           '</del>' ],
     a    => [ '<a href="HREF">', '</a>' ],
+    hashmark => undef, # handled by overriding markup_node()
 );
 
 sub link_dictionary {
@@ -34,6 +36,27 @@ sub msg_format_link {
         page_uri => $ast->{page_id},
     );
     return qq{<a href="$url">$ast->{text}</a>};
+}
+
+sub msg_format_hashtag {
+    my $self = shift;
+    my $ast = shift;
+    my $is_end = shift;
+
+    my $hashtag = Socialtext::String::uri_escape(qq["$ast->{text}"]);
+    my $url = $self->link_dictionary->format_link(
+        url_prefix => $self->{callbacks}{baseurl} || "",
+        link => 'signal_hashtag',
+        hashtag => $hashtag,
+    );
+
+    my $prefix = qq{#<a href="$url">};
+
+    if (defined $is_end) {
+        # is_end is only defined when called for rendering a hashmark
+        return $is_end ? "</a>" : $prefix;
+    }
+    return "$prefix$ast->{text}</a>";
 }
 
 sub msg_format_user {
@@ -58,6 +81,18 @@ sub msg_format_user {
     else {
         return $user->guess_real_name;
     }
+}
+
+sub markup_node {
+    my $self = shift;
+    my $is_end = shift;
+    my $ast = shift;
+
+    if ($ast->{type} && $ast->{type} eq 'hashmark') {
+        $self->{output} .= $self->msg_format_hashtag($ast,$is_end);
+        return;
+    }
+    return $self->SUPER::markup_node($is_end,$ast,@_);
 }
 
 sub text_node {

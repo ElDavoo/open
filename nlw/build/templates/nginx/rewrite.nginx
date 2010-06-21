@@ -64,6 +64,7 @@
         set $container $1;
         rewrite ^/$ /st/$container? redirect;
     }
+    rewrite ^/st/people$  /?action=people    redirect;
 
     rewrite ^/control/   /nlw/control/  redirect;
 
@@ -99,7 +100,7 @@
     }
 
     if ($to_backend) {
-        rewrite "^(/challenge.*)" $1 break;
+        rewrite "^(/challenge(?:[/\?].*|$))" $1 break;
         rewrite "^/(?!index.cgi)([^/]+)(\?.+)?$" "/$1/$2" permanent;
         rewrite "^/(?!index.cgi)([^/]+)/?(\?.+)?$" "/$1/index.cgi$2" break;
     }

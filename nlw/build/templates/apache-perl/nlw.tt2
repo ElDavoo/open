@@ -134,8 +134,13 @@
 # determine the shared memory size for your platform.
 
 # This sets the maximum amount of unshared memory the process can use.
+[%- IF config.is_dev %]
+#   368640 == 360MB
+PerlSetVar st_max_unshared_size 368640
+[%- ELSE %]
 #   296960 == 290MB
 PerlSetVar st_max_unshared_size 296960
+[%- END %]
 
 # This sets the minimum amount of shared memory the process must have.
 # PerlSetVar st_min_shared_size   70000

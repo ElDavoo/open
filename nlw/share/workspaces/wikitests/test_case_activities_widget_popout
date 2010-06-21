@@ -2,16 +2,19 @@
 
 * Fixture: SocialWidgets
 
-| *Comment* | Test Case: Activities Widget Popout Send some signals |  |
+| *Comment* | Test Case: Activities Widget Popout assure login as %%username%% |  |
+| open_ok | /nlw/submit/logout |  |
+| st-login | %%username%% | %%password%% |
+
+| *Comment* | Test Case: Activities Widget Popout Send some signals as %%username%% |  |
 | http-user-pass | %%username%% | %%password%% |
 | post-signal | What would you do %%start_time%% |  |
 | post-signal | If I sang out of tune %%start_time%% |  |
 | post-signal | Would you stand up and walk out on me %%start_time%% |  |
 | post-signal | Lend me your ears and I'll sing you a song %%start_time%% |  |
-| open_ok | / |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
-| *Comment* | Test Case: Activities Popout At Dashboard with widget |  |
+| *Comment* | Test Case: Activities Widget Popout. At Dashboard with widget |  |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 | wait_for_text_present_ok | Welcome | 30000 |
 | text_like | st-editing-tools-edit | Welcome |
@@ -19,6 +22,8 @@
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st_verify_text_in_activities_widget | activities_widget | What would you do %%start_time%% |
+
+| *Comment* | Test Case: Activities Widget Popout verify pop_out link |  |
 | st-select-widget-frame | activities_widget |  |
 | wait_for_element_visible_ok | pop_out | 30000 |
 | select-frame | relative=parent |  |
@@ -33,5 +38,8 @@
 | st_send_signal_within_activities_widget | And I'll try not to sing out of key %%start_time%% |  |
 | st_verify_text_within_activities_widget | And I'll try not to sing out of key %%start_time%% |  |
 | select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Activities Widget Popout TEARDOWN. logout since /st/activities has no nav menus |  |
+| open_ok | /nlw/submit/logout |  |
 
 | *Comment* | Test Case: Activities Widget Popout COMPLETED |  |

@@ -8,13 +8,13 @@
 | st-name-widget | 1 | image_widget |
 | st-widget-title-like | image_widget | Image |
 | st-widget-settings | image_widget |  |
-| wait_for_element_visible_ok | up_src | 30000 |
-| wait_for_element_visible_ok | up_title | 30000 |
-| type_ok | up_src | `http://www.socialtext.com/images/people/r-mayfield.jpg` |
-| type_ok | up_title | Chairman |
+| wait_for_element_visible_ok | src | 30000 |
+| wait_for_element_visible_ok | title | 30000 |
+| type_ok | src | `http://www.socialtext.com/images/people/r-mayfield.jpg` |
+| type_ok | title | Chairman |
 | wait_for_element_visible_ok | st-savebutton-%%image_widget%% | 30000 |
 | click_and_wait | st-savebutton-%%image_widget%% |  |
-| wait_for_element_not_visible_ok | up_title | 30000 |
+| wait_for_element_not_visible_ok | title | 30000 |
 
 | *Comment* | Test Case: Multiple Widgets Add Wiki Page Widget |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
@@ -39,13 +39,13 @@
 | st-widget-title-like | image_widget | Chairman |
 | st-name-widget | 2 | wiki_page |
 
-| wait_for_element_visible_ok | up_workspace_name | 30000 |
-| wait_for_element_visible_ok | //input[contains(@name,'up_page_title')] | 30000 |
-| select_ok | up_workspace_name | label=%%title%% |
-| type_ok | //input[contains(@name,'up_page_title')] | jabberwocky |
+| wait_for_element_visible_ok | workspace_name | 30000 |
+| wait_for_element_visible_ok | //input[contains(@name,'page_title')] | 30000 |
+| select_ok | workspace_name | label=%%title%% |
+| type_ok | //input[contains(@name,'page_title')] | jabberwocky |
 | wait_for_element_visible_ok | st-savebutton-%%wiki_page%% | 30000 |
 | click_ok | st-savebutton-%%wiki_page%% |  |
-| wait_for_element_not_visible_ok | //input[contains(@name,'up_page_title')] | 30000 |
+| wait_for_element_not_visible_ok | //input[contains(@name,'page_title')] | 30000 |
 
 | st-select-widget-frame | wiki_page |  |
 | wait_for_element_present_ok | link=Edit | 30000 |

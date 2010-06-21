@@ -2,7 +2,7 @@
 
 # rewrite: /:ws/?args => /m/pages/:ws/?args
 [% mobile_agents = ['^BlackBerry', '^Nokia', 'Palm', 'SymbianOS', 'Windows CE',
-                    '^hiptop', 'iPad', 'iPhone', 'Android'] %]
+                    '^hiptop', 'iPhone', 'Android'] %]
 [% FOR ua IN mobile_agents %]
   if ($http_user_agent ~ "[% ua %]") {
     rewrite ^/+$ /m break;
@@ -11,7 +11,7 @@
   if ($uri ~ ^/(m|data)) {
     set $redirect_page 0;
   }
-  if ($uri ~ ^/(index\.cgi|challenge)) {
+  if ($uri ~ ^/(index\.cgi|challenge(?:[\/\?]|$))) {
     set $redirect_page 0;
   }
   set $ua_redirect "$http_user_agent-$redirect_page";

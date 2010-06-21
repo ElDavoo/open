@@ -101,8 +101,7 @@ sub user_can {
     my $authz = Socialtext::Authz->new();
     return $authz->user_has_permission_for_group(
         group      => $self,
-        user       => $p{user},
-        permission => $p{permission},
+        %p,
     );
 }
 
@@ -264,7 +263,7 @@ sub All {
             my $group = Socialtext::Group->GetGroup(group_id=>$row->{group_id});
             unless ($group) {
                 warn "Couldn't fetch group_id: $row->{group_id}";
-                return unless $group;
+                return;
             }
             if ($p{include_aggregates}) {
                 $group->$_($row->{$_}) for qw(user_count workspace_count);
@@ -484,11 +483,18 @@ after 'role_change_check' => sub {
         permission => ST_ADMIN_PERM
     );
 
+    if ($change eq 'remove' && $thing->can('user_id') &&
+        $actor->user_id == $thing->user_id)
+    {
+        # users can always self-part
+        return;
+    }
+
     # allow self-updating users for the self-join type of groups
     if ($self->permission_set eq 'self-join' &&
         $thing->can('user_id') && 
         $actor->user_id == $thing->user_id &&
-        Socialtext::Authz->new->user_sets_share_an_account($actor,$self)
+        $self->shares_account_with($actor)
     ) {
         if ($change eq 'add' || $change eq 'update') {
             return if $role->name eq 'member';
@@ -496,9 +502,6 @@ after 'role_change_check' => sub {
             if ($role->name eq 'admin') {
                 return if $self->role_count == 0;
             }
-        }
-        elsif ($change eq 'remove') {
-            return;
         }
     }
 

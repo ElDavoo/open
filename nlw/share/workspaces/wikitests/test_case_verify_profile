@@ -3,11 +3,13 @@
 | *Comment* | Test Case: Verify Profile |  |
 | *Comment* | [Test Case: Edit Profile] should have run before Verify Profile |  |
 
-| *Comment* | These values must match the one in [Test Case: Edit Profile] |  |
+| *Comment* | THESE VALUES MUST MATCH the ones in [Test Case: Edit Profile] |  |
 | set | e_user | profile.editor@ken.socialtext.net |
 | set | short_e_user | profile.editor |
 | set | fname | Profligate |
 | set | lname | Edisaurus |
+| set | short_super | epsupervisor |
+| set | short_assistant | epassistant |
 
 | *Comment* | Test Case: Verify Profile. Access profile |  |
 | open_ok | /nlw/submit/logout |  |
@@ -60,6 +62,9 @@
 | text_like | supervisor |
 | text_like | Assistant |
 | text_like | assistant |
+
+| wait_for_element_visible_ok | link=%%short_super%% | 30000 |
+| wait_for_element_visible_ok | link=%%short_assistant%% | 30000 |
 
 | *Comment* | Test Case: Verify Profile. PHOTO |  |
 | wait_for_element_present_ok | //img[@class='bigAvatar'] | 1000 |

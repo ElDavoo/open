@@ -12,10 +12,11 @@ use Socialtext::Permission;
 use Socialtext::SQL ':txn';
 use Socialtext::Workspace;
 use Socialtext::Account;
-use Socialtext::Exceptions;
+use Socialtext::Exceptions qw(param_error);
 use Socialtext::User;
 use Socialtext::Group;
 use Socialtext::Permission 'ST_ADMIN_PERM';
+use Socialtext::Workspace::Permissions;
 use Socialtext::JobCreator;
 use Socialtext::AppConfig;
 use Socialtext::Timer;
@@ -39,20 +40,36 @@ sub collection_name {
 
 sub _entities_for_query {
     my $self = shift;
+    my $rest = $self->rest;
 
-    my $query = $self->rest->query->param('q');
-    my $minimal = $self->rest->query->param('minimal');
-    my $user  = $self->rest->user();
+    my $query = $rest->query->param('q');
+    my $minimal = $rest->query->param('minimal');
+    my $set_filter = $rest->query->param('permission_set');
+    my $user  = $rest->user();
+
+    if ($set_filter) {
+        param_error "permission_set is invalid" if
+            !Socialtext::Workspace::Permissions->SetNameIsValid($set_filter);
+    }
 
     # REVIEW: 'all' should only work for some super authenticate user,
     # but which one? business admin seems right
-    if ( defined $query and $query eq 'all' and $user->is_business_admin() )
-    {
-        return ( Socialtext::Workspace->All()->all() );
+    my $fetch_all = defined $query && $query eq 'all'
+        && $user->is_business_admin;
+
+    my $workspaces = $fetch_all
+        ? Socialtext::Workspace->All()
+        : $rest->user->workspaces( minimal => $minimal );
+
+    if ($set_filter && !$minimal) { # can't do this for minimal
+        $workspaces = Socialtext::MultiCursorFilter->new(
+            cursor => $workspaces,
+            filter => sub {
+                shift->permissions->current_set_name eq $set_filter},
+        );
     }
-    else {
-        return ( $self->rest->user->workspaces( minimal => $minimal )->all() );
-    }
+
+    return $workspaces->all();
 }
 
 sub _entity_hash {
@@ -79,6 +96,8 @@ sub _entity_hash {
         account_id => $workspace->account_id,
         user_count => $workspace->user_count(direct => 1),
         group_count => $workspace->group_count(direct => 1),
+        permission_set => $workspace->permissions->current_set_name,
+        is_all_users_workspace => $workspace->is_all_users_workspace ? 1 : 0,
 
         # workspace_id is the 'right' name for this field, but hang on to 'id'
         # for backwards compatibility.

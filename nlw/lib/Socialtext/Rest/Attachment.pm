@@ -7,7 +7,6 @@ use strict;
 use base 'Socialtext::Rest';
 use IO::File;
 use Socialtext::HTTP ':codes';
-use Socialtext::l10n qw(system_locale);
 use Socialtext::String ();
 
 sub allowed_methods { 'GET, HEAD, DELETE' }
@@ -35,33 +34,11 @@ sub GET {
     my $file_size = -s _;
 
     eval {
-        my $mime_type = $attachment->mime_type;
-
-        if ( $mime_type =~ /^text/ ) {
-            my $charset = $attachment->charset(system_locale());
-            if (! defined $charset) {
-                $charset = 'UTF8';
-            }
-            $mime_type .= '; charset=' . $charset;
-        }
-
         # eg:
         # admin/attachments/admin_wiki/20091217174324-11-3042/video_60seconds.png 
         my $data_dir = Socialtext::AppConfig->data_root_dir;
         (my $file_path = $file) =~ s{^$data_dir/plugin}{/nlw/protected};
-
-        # See Socialtext::Headers::add_attachments for the IE6/7 motivation
-        # behind Pragma and Cache-control below.
-        $rest->header(
-            -status               => HTTP_200_OK,
-            '-content-length'     => $file_size,
-            -type                 => $mime_type,
-            -pragma               => undef,
-            '-cache-control'      => undef,
-            'Content-Disposition' => 'filename="'
-                . $attachment->filename . '"',
-            '-X-Accel-Redirect'  => $file_path,
-        );
+        $self->_serve_file($rest, $attachment, $file_path, $file_size);
     };
     warn $@ if $@;
 

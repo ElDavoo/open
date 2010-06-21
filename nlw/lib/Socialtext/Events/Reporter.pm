@@ -695,7 +695,7 @@ sub _build_standard_sql {
             );
         }
 
-        if ($opts->{activity} && $opts->{activity} eq 'all-combined') {
+        if ($opts->{activity} and $opts->{activity} eq 'all-combined') {
             $self->add_condition('NOT is_ignorable_action(event_class,action)');
         }
 

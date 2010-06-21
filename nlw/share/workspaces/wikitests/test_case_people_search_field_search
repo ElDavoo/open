@@ -19,6 +19,9 @@ st-admin | add-member --e %%euserfive%% --w %%diffws%% | |
 st-logoutin | %%euserfive%% | %%password%% | |
 include | [Test Case: People Search Edit A Profile] | |
 
+| *Comment* | Test Case: People Search Field Search. Index %%first%% %%last%% profile |  |
+| st-process-jobs | PersonIndex |  |
+
 | *Comment* | Test Case: People Search Field Search Access People. |  |
 | open_ok | /?action=people |  |
 | wait_for_element_visible_ok | st-search-term | 30000 |

@@ -11,7 +11,6 @@ use or create a workspace with several tags and tagged pages
 | *Comment* | Test Case: Tags Create tag 1 |  |
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| pause | 5000 | I hate pause; needed to editor to load completely |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | Tag 1 Content Title %%start_time%% |
@@ -56,6 +55,9 @@ use or create a workspace with several tags and tagged pages
 | click_ok | st-tagqueue-close |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | clickAndWait | st-save-button-link |  |
+
+| *Comment* | Test Case: Tags Process page index jobs |  |
+| st_process_jobs | PageIndex |  |
 
  click on several tag links | Category (Tag) page with table containing links to tagged pages appears
 click on several page links | Pages appear; each page has its that tag displayed in Tags sidebar.
@@ -113,6 +115,9 @@ Go to All Tags | The deleted tag should not appear in list
 | *Comment* | Test Case: Tags second wait |  |
 | wait_for_text_not_present_ok | Tag 2 %%start_time%% | 30000 |
 
+| *Comment* | Test Case: Tags Process page index jobs |  |
+| st_process_jobs | PageIndex |  |
+
 | *Comment* | Test Case: Tags deleted tag gone from list view |  |
 | open_ok | /%%workspace%%/index.cgi?action=category_list |  |
 | text_unlike | contentContainer | Tag 1 %%start_time%% |
@@ -127,6 +132,10 @@ Go to All Tags | The tag from the deleted page should not appear in list.
 | click_ok | link=Delete Page |  |
 | wait_for_element_visible_ok | st-delete-deletelink | 30000 |
 | click_and_wait | st-delete-deletelink |  |
+
+| *Comment* | Test Case: Tags Process page index jobs |  |
+| st_process_jobs | PageIndex |  |
+
 | open_ok | /%%workspace%%/index.cgi?action=category_list |  |
 | text_unlike | contentContainer | Tag 2 %%start_time%% |
 

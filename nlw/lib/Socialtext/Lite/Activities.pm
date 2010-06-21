@@ -78,7 +78,30 @@ sub events {
     }
     $events ||= [];
     my $more = pop @$events if @$events > 10;
-
+    foreach my $event (@$events) {
+        if (defined ($event->{context}{attachments})) {
+            foreach my $attachment (@{$event->{context}{attachments}}) {
+                my $size = $attachment->{content_length};
+                my $humansize = '';
+                if ($size < 1000) {
+                    $humansize = $size . " bytes"
+                } elsif ($size < 10000) {
+                    $humansize = sprintf("%.2f", ($size/1000)) . "K";
+                } elsif ($size < 100000) {
+                    $humansize = sprintf("%.1f", ($size/1000)) . "K";
+                } elsif ($size < 1000000) {
+                    $humansize = sprintf("%.0f", ($size/1000)) . "K";
+                } elsif ($size < 10000000) {
+                    $humansize = sprintf("%.2f", ($size/1000000)) . "M";
+                } elsif ($size < 100000000) {
+                    $humansize = sprintf("%.1f", ($size/1000000)) . "M";
+                } else {
+                    $humansize = sprintf("%.0f", ($size/1000000)) . "M";
+                }
+                $attachment->{pretty_content_length} = $humansize;
+            }
+        }
+    }
     $self->hub->viewer->link_dictionary($self->link_dictionary);
     return $self->_process_template(
         "lite/$args{section}.html",

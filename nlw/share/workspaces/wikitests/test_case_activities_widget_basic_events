@@ -12,8 +12,11 @@
 | add-member | %%signalsuser%% | %%ws%% |  |
 | st-admin | enable-plugin --all-accounts --p signals |  |  |
 
-| *Comment* | Test Case: Activities Widget Basic events. Generate wiki events |  |
+| *Comment* | Test Case: Activities Widget Basic Events. Generate wiki events |  |
 | st-admin | update-page --workspace %%ws%% --email %%signalsuser%% --page "Edit Summary Signal %%start_time%%" < %%wikitest_client_files%%wikitest_toc.txt | The "Edit Summary Signal %%start_time%%" page has been created. |
+
+| st-process-jobs | PageIndex |  |
+
 | st-logoutin | %%signalsuser%% | %%password%% |
 | open_ok | /%%ws%%/index.cgi?Edit Summary Signal %%start_time%% |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
@@ -28,7 +31,7 @@
 | click_ok | st-edit-summary-signal-checkbox |  |
 | click_and_wait | st-save-button-link |  |
 
-| *Comment* | Test Case: Activities Widget Basic events. Generate Basic Signals |  |
+| *Comment* | Test Case: Activities Widget Basic Events. Generate Basic Signals |  |
 | http-user-pass | %%signalsuser%% | %%password%% |
 | post-signal | She rocks in the treehouse %%start_time%% |  |
 | post-signal | Rockin and a bopin %%start_time%% |  |
@@ -36,29 +39,29 @@
 | post-signal | Love to hear the robin going %%start_time%% |  |
 
 | *Comment* | Test Case: Activities Widget Basic Events. Process jobs |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Activities Widget Basic Events. Check Dashboard |  |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 
-| *Comment* | Test Case: Activities Widget Basic events. Back at Dashboard with widget |  |
+| *Comment* | Test Case: Activities Widget Basic Events. Back at Dashboard with widget |  |
 | wait_for_text_present_ok | Welcome | 30000 |
 | text_like | st-editing-tools-edit | Welcome |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st-widget-settings | activities_widget |  |
-| wait_for_element_visible_ok | up_limit | 30000 |
-| select_ok | up_limit | 25 |
+| wait_for_element_visible_ok | limit | 30000 |
+| select_ok | limit | 25 |
 | click_ok | st-savebutton-%%activities_widget%% |  |
-| wait_for_element_not_visible_ok | up_limit | 30000 |
+| wait_for_element_not_visible_ok | limit | 30000 |
 
-| *Comment* | Test Case: Activities Widget basic events. Signals in widget. Select signals. |  |
+| *Comment* | Test Case: Activities Widget basic Events. Signals in widget. Select signals. |  |
 | wait_for_element_present_ok | link=signals | 10000 |
 | click_ok | link=signals |  |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Activities Widget basic events. select_and_wait in iframe doesn't work. Use pause. |  |
+| *Comment* | Test Case: Activities Widget basic Events. select_and_wait in iframe doesn't work. Use pause. |  |
 | pause | 10000 | I hate pause |
 | st_verify_text_in_activities_widget | activities_widget | She rocks in the treehouse %%start_time%% |
 | st_verify_text_in_activities_widget | activities_widget | Rockin and a bopin %%start_time%% |
@@ -67,7 +70,7 @@
 | st_verify_text_in_activities_widget | activities_widget | Signal %%start_time%% |
 | st_verify_text_in_activities_widget | activities_widget | qr/Super.+Edit.+Summary.+From.+Signal.+%%start_time%%/ |
 
-| *Comment* | Test case: Activities Widget Basic events. Wait for Signal to appear in Profile Activity |  |
+| *Comment* | Test case: Activities Widget Basic Events. Wait for Signal to appear in Profile Activity |  |
 | open_ok | /st/profile |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | profile_activity |
@@ -79,7 +82,7 @@
 | st_verify_text_in_activities_widget | profile_activity | Signal %%start_time%% |
 | st_verify_text_in_activities_widget | profile_activity | qr/Super.+Edit.+Summary.+From.+Signal.+%%start_time%%/ |
 
-| *Comment* | Test Case: Activities Widget Basic Signals TEARDOWN |  |
+| *Comment* | Test Case: Activities Widget Basic Events TEARDOWN |  |
 | st-admin | delete-workspace --w %%ws%% --no-export |  |
 
-| *Comment* | Test Case: Activities Widget Basic Signals COMPLETED |
+| *Comment* | Test Case: Activities Widget Basic Events COMPLETED |

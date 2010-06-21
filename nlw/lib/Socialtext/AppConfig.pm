@@ -1286,6 +1286,14 @@ Default: 1000
 
 =for code type => POSITIVE_INT_TYPE
 
+=head2 advertise_push
+
+Make /data/config claim that push support is available (assuming you've got the push plugin installed).
+
+Default: 1
+
+=for code type => BOOLEAN_TYPE
+
 =head1 OTHER METHODS
 
 In addition to the methods available for each configuration variable,

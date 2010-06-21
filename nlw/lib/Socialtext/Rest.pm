@@ -12,13 +12,17 @@ use DateTime;
 use DateTime::Format::HTTP;
 use Date::Parse qw/str2time/;
 use Carp 'croak';
+use List::MoreUtils qw/part/;
 use Try::Tiny;
+use Scalar::Util qw/blessed/;
 
-use Socialtext::Exceptions;
+use Socialtext::Exceptions qw/bad_request/;
 use Socialtext::Workspace;
 use Socialtext::HTTP ':codes';
 use Socialtext::Log 'st_log';
 use Socialtext::URI;
+use Socialtext::JSON qw/decode_json/;
+use Socialtext::l10n qw(system_locale);
 
 our $AUTOLOAD;
 
@@ -166,13 +170,14 @@ sub _check_on_behalf_of {
     }
     catch {
         my $e = $_;
+        st_log->warning("exception while trying to impersonate: $e");
+        st_log->warning("... no such user") unless $desired_user;
         if (UNIVERSAL::isa($e,'Socialtext::Exception::Auth')) {
             $self->rest->header(
                 -status => HTTP_403_Forbidden,
             );
             $e->rethrow();
         }
-        st_log->warning("exception while trying to impersonate: $e");
         die $e;
     };
 
@@ -379,14 +384,13 @@ sub full_url {
 
 sub GET_yaml {
     require YAML;
-    require Socialtext::JSON;
     my $self = shift;
     my $json = $self->GET_json(@_);
     $self->rest->header(
         $self->rest->header,
         -type   => 'text/plain',
     );
-    return YAML::Dump(Socialtext::JSON::decode_json($json))
+    return YAML::Dump(decode_json($json))
 }
 
 sub _renderer_load {
@@ -457,21 +461,150 @@ sub nonexistence_message { 'The requested resource does not exist.' }
 
 sub http_404 {
     my ( $self, $rest ) = @_;
+    $rest->header(
+        -type   => 'text/plain',
+        -status => HTTP_404_Not_Found,
+        $rest->header(),
+    );
+    return $self->nonexistence_message;
+}
 
-    $rest->header( -type   => 'text/plain',
-                   -status => HTTP_404_Not_Found,
-                   $rest->header() );
+sub http_404_force {
+    my $self = shift;
+    $self->rest->header(
+        $self->rest->header(),
+        -type   => 'text/plain',
+        -status => HTTP_404_Not_Found,
+    );
     return $self->nonexistence_message;
 }
 
 sub http_400 {
-   my ( $self, $rest, $content ) = @_;
-
-    $rest->header( -type   => 'text/plain',
-                   -status => HTTP_400_Bad_Request,
-                   $rest->header() );
+    my ( $self, $rest, $content ) = @_;
+    $rest->header(
+        -type   => 'text/plain',
+        -status => HTTP_400_Bad_Request,
+        $rest->header(),
+    );
     return $content || ""; 
 }
 
+sub http_400_force {
+    my ( $self, $content ) = @_;
+    $self->rest->header(
+        $self->rest->header(),
+        -type   => 'text/plain',
+        -status => HTTP_400_Bad_Request,
+    );
+    return $content || ""; 
+}
+
+sub decoded_json_body {
+    my $self = shift;
+    return try { decode_json($self->rest->getContent) }
+    catch { bad_request 'Malformed JSON passed to resource.' };
+}
+
+# Send a file to the client via nginx
+sub _serve_file {
+    my ($self, $rest, $attachment, $file_path, $file_size) = @_;
+
+    my $mime_type = $attachment->mime_type;
+    if ( $mime_type =~ /^text/ ) {
+        my $charset = $attachment->can('charset')
+            ? $attachment->charset(system_locale())
+            : undef;
+        $charset = 'UTF-8' unless defined $charset;
+        $mime_type .= "; charset=$charset";
+    }
+
+    # See Socialtext::Headers::add_attachments for the IE6/7 motivation
+    # behind Pragma and Cache-control below.
+    $rest->header(
+        '-status'             => HTTP_200_OK,
+        '-content-length'     => $file_size,
+        '-type'               => $mime_type,
+        '-pragma'             => undef,
+        '-cache-control'      => undef,
+        'Content-Disposition' => 'filename="'.$attachment->filename.'"',
+        '-X-Accel-Redirect'   => $file_path,
+    );
+}
+
+{
+    my @default_exception_handlers = (
+       ['Socialtext::Exception::Auth' =>
+        sub { my($self,$e)=@_; $self->not_authorized }],
+       ['Socialtext::Exception::NotFound' =>
+        sub { my($self,$e)=@_; $self->http_404_force() }],
+       ['Socialtext::Exception::NoSuchResource' =>
+        sub { my($self,$e)=@_; $self->no_resource($e->name) }],
+       ['Socialtext::Exception::Conflict' =>
+        sub { my($self,$e)=@_; $self->conflict($e->errors) }],
+       ['Socialtext::Exception::BadRequest' =>
+        sub { my($self,$e)=@_; $self->http_400_force($e->message) }],
+       ['Socialtext::Exception::DataValidation' =>
+        sub { my($self,$e)=@_; $self->http_400_force($e->message) }],
+    );
+    sub rest_exception_handlers {
+        return [@default_exception_handlers]; # copy
+    }
+}
+
+sub trim_exception {
+    my $msg = shift;
+    $msg =~ s{(?:^Trace begun)? at \S+ line .*$}{}ims;
+    return $msg;
+}
+
+sub handle_rest_exception {
+    my ($self, $e) = @_;
+    my $msg;
+
+    $self->rest->header(
+        $self->rest->header,
+        -status => HTTP_500_Internal_Server_Error,
+        -type => 'text/plain',
+    );
+
+    my $hdlrs = $self->rest_exception_handlers;
+    my ($re_hdlrs, $isa_hdlrs) = part { ('Regexp' eq ref $_->[0]) ? 0 : 1 }
+        @$hdlrs;
+
+    if (blessed($e) && $e->isa("Socialtext::Exception")) {
+        my %hdr;
+        if (my $status = $e->http_status) {
+            $hdr{'-status'} = $status;
+        }
+        if (my $type = $e->http_type) {
+            $hdr{'-type'} = $type;
+        }
+        $self->rest->header($self->rest->header, %hdr);
+
+        # try a handler based on the class name
+        for my $handler (@$isa_hdlrs) {
+            my ($isa, $code) = @$handler;
+            next unless ($e->isa($isa));
+            $msg = $self->$code($e);
+            goto _send_error_message if defined $msg;
+        }
+
+        # fall through to the regex handlers
+        $e = $e->as_string;
+    }
+
+    for my $handler (@$re_hdlrs) {
+        my ($re, $code) = @$handler;
+        $msg = $self->$code($e) if ($e =~ $re);
+        goto _send_error_message if defined $msg;
+    }
+
+    $msg = trim_exception($e);
+    _send_error_message: {
+        warn "REST Error: $e\n";
+        st_log->error($msg);
+        return $msg;
+    }
+}
 
 1;

@@ -22,6 +22,7 @@ EDITOR_LIGHT_FILE_MINI=socialtext-editor-light-mini.js
 EDITOR_LIGHT_FILE_GZIP=socialtext-editor-light.js.gz
 
 EDITOR_LIGHT_FILES= \
+		jquery-popup.js \
 		jquery-plugin.js \
 		lookahead.js \
 		jquery.selectOverlap.js \
@@ -48,6 +49,7 @@ S3_SOURCE_FILES= \
 		Class.js \
 		lightbox.js \
 		jquery-patch.js \
+		jquery-popup.js \
 		jquery-plugin.js \
 		jquery.tablesorter.js \
 		jquery.selectOverlap.js \

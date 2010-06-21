@@ -12,6 +12,7 @@ Readonly my %markup => (
     i    => [ '_',  '_' ],
     del  => [ '-',  '-' ],
     a    => [ '"',  '"<HREF>' ],
+    hashmark => [ '{hashtag: ', '}' ],
 );
 
 sub msg_markup_table { return \%markup }
@@ -29,6 +30,12 @@ sub msg_format_link {
     }
 
     return "{$ast->{wafl_type}: $ast->{wafl_string}}"
+}
+
+sub msg_format_hashtag {
+    my $self = shift;
+    my $ast = shift;
+    return "{hashtag: $ast->{text}}";
 }
 
 sub msg_format_user {

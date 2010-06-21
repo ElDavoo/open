@@ -11,7 +11,7 @@
 | *Comment* | Test Case: Activities Widget: Send a signal ... |  |
 | http-user-pass | %%user%% | %%password%% |
 | post-signal | Picture yourself on a boat on a river %%start_time%% |  |
-| st_process_jobs |  |  |
+| st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Activities Widget: Find the link for that signal |  |
 | open_ok | /st/signals |  |
@@ -23,7 +23,10 @@
 
 json-path-set | signal_hash | $[0].hash |
 
-| set-from-content | signal_hash | qr/"hash":"(\S+)","body":/ |
+| GET-json | /data/events |  |
+| json-parse |  |  |
+| set-from-content | signal_hash | qr/"hash":"(\S+)","topics":/ |
+| wait_for_element_visible_ok | //a[contains(@href,'/st/signals/%%signal_hash%%')] | 30000 |
 
 | wait_for_element_visible_ok | //a[contains(@href,'/st/signals/%%signal_hash%%')] | 30000 |
 | select-frame | relative=parent |  |

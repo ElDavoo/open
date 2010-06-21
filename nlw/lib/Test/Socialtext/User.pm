@@ -63,6 +63,13 @@ sub delete_recklessly {
         }, $system_user->user_id, $user_id
     );
 
+    # Delete all attachments and signals sent by this user
+    Socialtext::SQL::sql_execute( q{
+            DELETE FROM attachment
+             WHERE creator_id = ?
+        }, $user_id,
+    );
+
     # Delete the User from the DB, and let this cascade across all other DB
     # tables, nuking data from the DB as it goes.
     Socialtext::SQL::sql_execute( q{

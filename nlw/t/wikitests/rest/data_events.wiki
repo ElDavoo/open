@@ -367,7 +367,24 @@ Tester One</a></span>            <span class="ago_raw" style="display:none">2009
 | code-is        | 403                                                                |                  |
 | st-admin       | enable-plugin --plugin people --account Socialtext                 |                  |
 
+| *Comment* | Test the ?activity=all-combined filtering |
+
+| st-clear-events |
+
+| post-json       | /data/events                       | {"page":{"workspace_name":"%%test_workspace%%","id":"page_one"},"event_class":"page","action":"edit_start"}   |
+| code-is         | 201                                |                                                                                                               |
+| post-json       | /data/events                       | {"page":{"workspace_name":"%%test_workspace%%","id":"page_one"},"event_class":"page","action":"edit_cancel"}  |
+| code-is         | 201                                |                                                                                                               |
+| post-json       | /data/events                       | {"page":{"workspace_name":"%%test_workspace%%","id":"page_one"},"event_class":"page","action":"watch_add"}    |
+| code-is         | 201                                |                                                                                                               |
+| post-json       | /data/events                       | {"page":{"workspace_name":"%%test_workspace%%","id":"page_one"},"event_class":"page","action":"watch_delete"} |
+| code-is         | 201                                |                                                                                                               |
+| post-json       | /data/events                       | {"event_class":"widget","action":"update"}                                                                    |
+| code-is         | 201                                |                                                                                                               |
+| get             | /data/events?activity=all-combined | application/json                                                                                              |
+| json-parse      |                                    |                                                                                                               |
+| json-array-size | 0                                  |                                                                                                               |
+
 The following additional tests should be created:
 
 ^^ TODO: POST an event using form data
-

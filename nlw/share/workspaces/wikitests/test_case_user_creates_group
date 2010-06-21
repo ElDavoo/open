@@ -20,20 +20,21 @@
 
 | st-logoutin | %%groupemail%% | %%password%% |
 
+| *Comment* | Test Case: User Creates Group enabled, check group popup buttons |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
-| wait_for_element_present_ok | st-create-group-next | 30000 |
-| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
+| wait_for_element_visible_ok | st-create-group-next | 30000 |
+| wait_for_element_visible_ok | st-lightbox-cancel-create-group | 30000 |
 | click_ok | st-lightbox-cancel-create-group | 30000 |
 | wait_for_element_not_present_ok | st-create-group-next | 30000 |
 | wait_for_element_not_present_ok | st-lightbox-cancel-create-group | 30000 |
+
+| *Comment* | Test Case: User Creates Group enabled, create group |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
-| wait_for_element_present_ok | st-create-group-next | 30000 |
-| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
-| click_ok | st-create-group-next |  |
-| wait_for_element_not_present_ok | st-create-group-next | 30000 |
-| wait_for_element_not_present_ok | st-lightbox-cancel-create-group | 30000 |
+| wait_for_element_visible_ok | st-create-group-next | 30000 |
+| wait_for_element_visible_ok | st-lightbox-cancel-create-group | 30000 |
+| click_and_wait | st-create-group-next |  |
 | wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
 | text_like | //body | Create a Group |
@@ -58,7 +59,7 @@
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | text_like | //body | Administrators |
-| text_like | //body | %%groupuser%% |
+| text_like | //body | %%short_groupuser%% |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Inspect New Group Page Workspaces |  |
@@ -84,11 +85,9 @@
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
-| wait_for_element_present_ok | st-create-group-next | 30000 |
-| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
-| click_ok | st-create-group-next |  |
-| wait_for_element_not_present_ok | st-create-group-next | 30000 |
-| wait_for_element_not_present_ok | st-lightbox-cancel-create-group | 30000 |
+| wait_for_element_visible_ok | st-create-group-next | 30000 |
+| wait_for_element_visible_ok | st-lightbox-cancel-create-group | 30000 |
+| click_and_wait | st-create-group-next |  |
 | wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
 | st-name-widget | 1 | create_group |
@@ -106,11 +105,9 @@
 | *Comment* | Test Case: User Creates Group. Test the cancel button, go to Dashboard |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
-| wait_for_element_present_ok | st-create-group-next | 30000 |
-| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
-| click_ok | st-create-group-next |  |
-| wait_for_element_not_present_ok | st-create-group-next | 30000 |
-| wait_for_element_not_present_ok | st-lightbox-cancel-create-group | 30000 |
+| wait_for_element_visible_ok | st-create-group-next | 30000 |
+| wait_for_element_visible_ok | st-lightbox-cancel-create-group | 30000 |
+| click_and_wait | st-create-group-next |  |
 | wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
 | wait_for_element_visible_ok | st-cancel-create-group | 30000 |

@@ -118,7 +118,8 @@ sub _POST_json {
         return "Invalid role name: '$role_name'";
     }
 
-    if (! $account->user_has_role(user => $user, role => $role)) {
+    my $has_role = $account->role_for_user($user, direct => 1);
+    unless ($has_role && $has_role->role_id == $role->role_id) {
         eval {
             $account->assign_role_to_user( user => $user, role => $role );
         };

@@ -18,18 +18,18 @@ Set up a second account, but no users.
 * Make sure that user count is 0: SystemUser shouldn't added as an admin
 
 | set      | g1                         | g1-%%start_time%%                                              |
-| st-admin | create-group --name %%g1%% --account %%account_b%% | %%g1%% Group has been created (Group Id:                       |
-| st-admin | list-groups                | qr/%%g1%% .\s+0 .\s+0 .\s+%%account_b%% . [\d-]+ .\s+system-user/ |
+| st-admin | create-group --name %%g1%% --account %%account_b%% --email %%username%% | %%g1%% Group has been created (Group Id:                       |
+| st-admin | list-groups                | qr/%%g1%% .\s+0 .\s+0 .\s+%%account_b%% . [\d-]+ .\s+%%username%%/ |
 
 * Can't create a group with a duplicate name
 
-| st-admin | create-group --name %%g1%% --account %%account_b%% | The %%g1%% Group has already been added to the system. |
+| st-admin | create-group --name %%g1%% --account %%account_b%% --email %%username%% | The %%g1%% Group has already been added to the system. |
 
 * Create with a specific account
 
 | set | g2 | g2-%%start_time%% |
-| st-admin | create-group --name %%g2%% --account %%account%% | %%g2%% Group has been created (Group Id:                        |
-| st-admin | list-groups                                      | qr/%%g2%% .\s+0 .\s+0 .\s+%%account%% . [\d-]+ .\s+system-user/ |
+| st-admin | create-group --name %%g2%% --account %%account%% --email %%username%% | %%g2%% Group has been created (Group Id:                        |
+| st-admin | list-groups                                      | qr/%%g2%% .\s+0 .\s+0 .\s+%%account%% . [\d-]+ .\s+%%username%%/ |
 
 * Create with a specific user
 # This time, the user count is 1 because %%username%% is not system created, and thus should be added as an admin to the group
@@ -110,6 +110,23 @@ Set up a second account, but no users.
 | *Comment* | Create a group with workspace memberships |
 | POST-json | /data/groups | {"name":"%%g6%%","workspaces":[{"workspace_id":"%%erosional_id%%","role":"admin"},{"workspace_id":"%%solutional_id%%"}]} |
 | code-is   | 201          |                                                                                                                          |
+
+## Cannot create a self-join group with workspaces
+| *Comment* | Cannot create a self-join group with workspaces |
+| set | sj1 | sj1-%%start_time%% |
+| POST-json | /data/groups | {"name":"%%sj1%%","permission_set":"self-join","workspaces":[{"workspace_id":"%%solutional_id%%"}]} |
+| code-is   | 400          |                                                                                                     |
+
+## Cannot create a private group with non-private workspaces
+| *Comment* | Cannot create a private group with non-private workspaces |
+| set                | pubws1        | pubws1-%%start_time%% |       |
+| create-workspace   | %%pubws1%%    |                       |       |
+| set                | pubws1_id     | %%workspace_id%%      |       |
+| add-member         | %%non_admin%% | %%pubws1%%            | admin |
+| set-ws-permissions | %%pubws1%%    | public                |       |
+| set                | privg1        | privg-%%start_time%%  |       |
+| POST-json | /data/groups | {"name":"%%privg1%%","permission_set":"private","workspaces":[{"workspace_id":"%%pubws1_id%%"}]} |
+| code-is   | 400          |                                                                                                  |
 
 ## Get a couple of users to add to a group
 | set         | bowline          | bowline%%start_time%%@ken.socialtext.net      |             |

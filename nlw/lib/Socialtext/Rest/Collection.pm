@@ -6,7 +6,7 @@ use base 'Socialtext::Rest';
 
 use Socialtext::JSON;
 use Socialtext::HTTP ':codes';
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::AppConfig;
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
@@ -89,12 +89,10 @@ sub _make_getter {
     my ( $perl_method, $content_type ) = @_;
     return sub {
         my ( $self, $rest ) = @_;
-
-        Socialtext::Timer->Continue("GET_$content_type");
+        my $t_outer = time_scope "GET_$content_type";
         my $rv = eval { $self->if_authorized( 'GET', sub {
-            Socialtext::Timer->Continue('get_resource');
+            my $t_inner = time_scope "get_resource";
             my $resource = $self->get_resource($rest, $content_type);
-            Socialtext::Timer->Pause('get_resource');
             $resource = [] unless ref $resource;
 
             my %new_headers = (
@@ -106,7 +104,6 @@ sub _make_getter {
             $rest->header(%new_headers);
             return $self->$perl_method($resource);
         })};
-        Socialtext::Timer->Pause("GET_$content_type");
         if (my $e = $@) {
             my %error_handlers = (
                 'Auth'           => sub { $self->not_authorized },
@@ -194,14 +191,10 @@ but subclasses can override this.
 
 sub _hashes_for_query {
     my $self = shift;
-
-    Socialtext::Timer->Continue('_entities_for_query');
+    my $t = time_scope '_entities_for_query';
     my @results =  $self->_entities_for_query;
-    Socialtext::Timer->Pause('_entities_for_query');
-    Socialtext::Timer->Continue('_entity_hash_map');
-    @results = map { $self->_entity_hash($_) } @results;
-    Socialtext::Timer->Pause('_entity_hash_map');
-    return @results;
+    $t = time_scope '_entity_hash_map';
+    return map { $self->_entity_hash($_) } @results;
 }
 
 =head2 $obj->add_text_element($text);

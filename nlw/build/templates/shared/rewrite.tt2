@@ -16,7 +16,7 @@
     # unconditionally include local socialtext add-on rewrite rules on this system
     Include socialtext-conf.d/rewrite*
 [%- UNLESS for_ssl_vhost %]
-    [%- IF config.use_ssl && config.redirect_to_ssl %]
+    [%- IF config.ssl_name && config.redirect_to_ssl %]
         # include file for per-workspace redirection to ssl, but only for
         # non-SSL virts
         Include conf.d/redirect-to-ssl

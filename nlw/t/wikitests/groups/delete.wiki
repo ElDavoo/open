@@ -9,7 +9,7 @@
 ## User cannot DELETE Group
 | *Comment* | User cannot DELETE Group  |
 | DELETE    | /data/groups/%%group_id%% |
-| code-is   | 403                       |
+| code-is   | 404                       |
 
 ## Add User as a Group admin
 | add-user-to-group | %%username%% | %%group_id%%          | admin |

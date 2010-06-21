@@ -24,8 +24,11 @@ sub do_work {
             'SELECT signal_id FROM signal order by signal_id ASC'
         );
         while (my $row = $sth->fetchrow_arrayref) {
-            my $signal = Socialtext::Signal->Get(signal_id => $row->[0]);
-            Socialtext::JobCreator->index_signal($signal, priority => 60);
+            # Ignore errors for individual signals.
+            eval {
+                my $signal = Socialtext::Signal->Get(signal_id => $row->[0]);
+                Socialtext::JobCreator->index_signal($signal, priority => 60);
+            };
         }
     };
     $self->hub->log->error($@) if $@;

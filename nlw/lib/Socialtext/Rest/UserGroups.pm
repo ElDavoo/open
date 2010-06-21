@@ -33,12 +33,7 @@ sub _entities_for_query {
     my $group_cursor = $other->groups;
     return $group_cursor->all() if $viewer->is_business_admin;
     
-    my @shared_groups;
-    while (my $g = $group_cursor->next) {
-        push @shared_groups, $g
-            if $g->has_user($viewer)
-            or $g->creator->user_id == $viewer->user_id;
-    }
+    my @shared_groups = $other->shared_groups($viewer);
 
     return @shared_groups;
 }

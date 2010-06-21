@@ -2,6 +2,7 @@
 package Socialtext::Encode;
 use strict;
 use warnings;
+use base 'Exporter';
 
 use Encode;
 use Encode::Guess;
@@ -9,6 +10,8 @@ use Socialtext::Validate qw[validate SCALAR_TYPE];
 use Carp qw/carp croak/;
 
 our @GUESSES = qw( cp1252 );
+
+our @EXPORT_OK = qw(ensure_is_utf8);
 
 sub is_valid_utf8 {
     my $copy = shift;
@@ -24,12 +27,11 @@ sub noisy_decode {
     return guess_decode($args{input}, $args{blame}, 'noisy');
 }
 
-sub ensure_is_utf8 {
+sub ensure_is_utf8 ($) {
     my $bytes = shift;
-    return
-        Encode::is_utf8($bytes)
-            ? $bytes
-            : Encode::decode_utf8($bytes);
+    return Encode::is_utf8($bytes)
+           ? $bytes
+           : Encode::decode_utf8($bytes);
 }
 
 sub guess_decode {

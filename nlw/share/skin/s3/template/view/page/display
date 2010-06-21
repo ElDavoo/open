@@ -65,7 +65,7 @@
 
       [% UNLESS user.is_guest %]
         [% IF watching %]
-        <li><a id="st-watchlist-indicator" class="on watch" href="#" title="[% loc('Stop watching') %]">[% loc('Stop watching') %]</a></li>
+        <li><a id="st-watchlist-indicator" class="on watch" href="#" title="[% loc('Stop Watching') %]">[% loc('Stop Watching') %]</a></li>
         [% ELSE %]
         <li><a id="st-watchlist-indicator" class="watch" href="#" title="[% loc('Watch') %]">[% loc('Watch') %]</a></li>
         [% END %]

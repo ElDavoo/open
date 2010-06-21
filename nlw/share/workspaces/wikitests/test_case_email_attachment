@@ -49,7 +49,7 @@
 
 | *Comment* | Test Case: Email attachment Search for attachment page and verify no attachment |  |
 | *Comment* | Test Case: Email attachment Process jobs |  |
-| st-process-jobs |  |  |
+| st-process-jobs | PageIndex |  |
 
 | type_ok | st-search-term | "Note %%start_time%%" |
 | click_and_wait | st-search-submit |  |

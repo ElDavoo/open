@@ -34,6 +34,7 @@ Test case for `/data/workspaces`; the Workspace list
 | body-like        | "name":"%%ws_two%%"                               |                              |             |
 | body-like        | "id":                                             |                              |             |
 | body-like        | "workspace_id":                                   |                              |             |
+| body-like        | "permission_set":                                 |                              |             |
 | body-unlike      | "name":"%%ws_three%%"                             |                              |             |
 
 ## Setup so we can test POST
@@ -65,7 +66,8 @@ Test case for `/data/workspaces`; the Workspace list
 | code-is        | 201                                          |                                                                              |
 | GET-json       | /data/workspaces?q=all                       |                                                                              |
 | code-is        | 200                                          |                                                                              |
-| body-like | qr/\{"workspace_id":"\d+","group_count":"0","name":"%%violin%%",[^\}]+,"account_id":"%%default_account_id%%",[^\}]+,"id":"\d+","title":"Violin","user_count":"1"\}/s |
+| json-parse |
+| json-like |  [{"permission_set":"member-only", "group_count":"0", "name":"%%violin%%", "account_id":"%%default_account_id%%", "title":"Violin", "user_count":"1"}] |
 
 ## POST to a workspace, Using the creator's account_id
 | *Comment* | POST to a workspace, Using the creator's account_id |                                      |
@@ -73,7 +75,8 @@ Test case for `/data/workspaces`; the Workspace list
 | code-is   | 201                                                 |                                      |
 | GET-json  | /data/workspaces?q=all                              |                                      |
 | code-is   | 200                                                 |                                      |
-| body-like | qr/\{"workspace_id":"\d+","group_count":"0","name":"%%viola%%",[^\}]+,"account_id":"%%non_default_acct_id%%",[^\}]+,"id":"\d+","title":"Viola","user_count":"1"\}/s |
+| json-parse |
+| json-like |  [{"permission_set":"member-only", "group_count":"0", "name":"%%viola%%", "account_id":"%%non_default_acct_id%%", "title":"Viola", "user_count":"1"}] |
 
 ## POST, authenticated user cannot create a workspace in an account they don't have access to
 | *Comment*      | POST, authenticated user, unauthorized account |                                                                             |
@@ -99,7 +102,8 @@ Test case for `/data/workspaces`; the Workspace list
 | code-is   | 201                                 |                                                                           |
 | GET-json  | /data/workspaces                    |                                                                           |
 | code-is   | 200                                 |                                                                           |
-| body-like | qr/\{"workspace_id":"\d+","group_count":"1","name":"%%tuba%%",[^\}]+,"account_id":"%%default_account_id%%",[^\}]+,"id":"\d+","title":"Tuba","user_count":"1"\}/s |
+| json-parse |
+| json-like |  [{"permission_set":"member-only", "group_count":"1", "name":"%%tuba%%", "account_id":"%%default_account_id%%", "title":"Tuba", "user_count":"1"}] |
 
 # Minimal interface
 | *Comment*   | GET minimal                |
@@ -119,3 +123,35 @@ Test case for `/data/workspaces`; the Workspace list
 | body-unlike | modified_time              |
 | body-unlike | "id"                       |
 | body-unlike | user_count                 |
+
+## Permission Set filtering
+| set                | perms_user     | perms-user%%start_time%%@ken.socialtext.net |             |
+| create-user        | %%perms_user%% | password                                    | %%account%% |
+| set                | private        | private-%%start_time%%                      |             |
+| create-workspace   | %%private%%    | %%account%%                                 |             |
+| set                | private_id     | %%workspace_id%%                            |             |
+| add-member         | %%perms_user%% | %%private%%                                 | admin       |
+| set                | public         | public-%%start_time%%                       |             |
+| create-workspace   | %%public%%     | %%account%%                                 |             |
+| set                | public_id      | %%workspace_id%%                            |             |
+| set-ws-permissions | %%public%%     | public                                      |             |
+| add-member         | %%perms_user%% | %%public%%                                  | admin       |
+
+| http-user-pass | %%perms_user%% | password |
+
+## GET-json error when permission_set is invalid
+| GET-json | /data/workspaces?permission_set=ENOSUCHSET |
+| code-is  | 500                                        |
+
+## GET-json returns proper results with permission_set param
+| GET-json        | /data/workspaces?permission_set=member-only |                |
+| code-is         | 200                                         |                |
+| json-parse      |                                             |                |
+| json-array-size | 1                                           |                |
+| json-path-is    | $[0].id                                     | %%private_id%% |
+
+## GET-json, using a minimal param ignores a permission_set param
+| GET-json        | /data/workspaces?minimal=1;permission_set=member-only |
+| code-is         | 200                                                   |
+| json-parse      |                                                       |
+| json-array-size | 2                                                     |

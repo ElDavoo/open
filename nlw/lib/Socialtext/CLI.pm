@@ -17,6 +17,7 @@ use Getopt::Long qw( :config pass_through );
 use Socialtext::AppConfig;
 use Pod::Usage;
 use Readonly;
+use Scalar::Util qw/blessed/;
 use Socialtext::Search::AbstractFactory;
 use Socialtext::Validate qw( validate SCALAR_TYPE ARRAYREF_TYPE );
 use Socialtext::l10n qw( loc loc_lang system_locale );
@@ -2518,10 +2519,9 @@ sub locked_pages {
 
 sub purge_attachment {
     my $self = shift;
-
     my ( $hub, $main ) = $self->_require_hub();
     my $page = $self->_require_page($hub);
-    my $attachment = $self->_require_attachment($page);
+    my $attachment = $self->_require_page_attachment($page);
 
     my $title = $page->metadata()->Subject();
     my $filename = $attachment->filename;
@@ -2530,6 +2530,51 @@ sub purge_attachment {
     $self->_success( "The $filename attachment was purged from "
                       . "$title page in the "
                       . $hub->current_workspace()->name() . " workspace.\n" );
+}
+
+sub purge_signal_attachment {
+    my $self = shift;
+    my ($signal, $attachment) = $self->_require_signal_attachment;
+
+    my $filename = $attachment->filename;
+    my $signal_id = $attachment->signal_id;
+    $attachment->purge;
+
+    $self->_success( "The $filename attachment was purged from "
+                      . "signal $signal_id.\n");
+}
+
+sub _require_signal_attachment {
+    my $self = shift;
+
+    my %opts = $self->_get_options('signal:s', 'attachment:s');
+    unless ($opts{signal} and $opts{attachment}) {
+        $self->_error(
+            "The command you called ($self->{command}) requires --signal and "
+            . "--attachment arguments."
+        );
+    }
+
+    require Socialtext::Signal;
+    my $signal = eval { Socialtext::Signal->Get($opts{signal}) };
+    if ($@ or !$signal) {
+        $self->_error(
+            "$self->{command} requires a valid signal id or hash. $opts{signal}"
+            . " is not valid."
+        );
+    }
+
+    require Socialtext::Signal::Attachment;
+    my $attachment = Socialtext::Signal::Attachment->GetForSignalFilename(
+        $signal, $opts{attachment}
+    );
+    unless ($attachment) {
+        $self->_error(
+            "$opts{attachment} is not a valid filename for an attachment of "
+            . " signal $opts{signal}."
+        );
+    }
+    return ($signal,$attachment);
 }
 
 
@@ -2678,7 +2723,7 @@ sub index_attachment {
 
     my ( $hub, $main ) = $self->_require_hub();
     my $page       = $self->_require_page($hub);
-    my $attachment = $self->_require_attachment($page);
+    my $attachment = $self->_require_page_attachment($page);
 
     my $search_config = $self->_optional_string('search-config') || 'live';
     my $ws_name       = $hub->current_workspace()->name();
@@ -2748,8 +2793,23 @@ sub index_people {
 sub index_groups {
     my $self = shift;
 
-    my $jobs = Socialtext::Group->IndexGroups();
-    $self->_success( "Scheduled $jobs groups for indexing." );
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    unless ($adapter->plugin_exists('groups')) {
+        $self->_error(loc("The People plugin is not installed."));
+    }
+    Socialtext::JobCreator->insert('Socialtext::Job::Upgrade::ReindexGroups');
+    $self->_success( "Scheduled groups for re-indexing." );
+}
+
+sub index_signals {
+    my $self = shift;
+
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    unless ($adapter->plugin_exists('signals')) {
+        $self->_error(loc("The Signals plugin is not installed."));
+    }
+    Socialtext::JobCreator->insert('Socialtext::Job::Upgrade::ReindexSignals');
+    $self->_success( "Scheduled signals for re-indexing." );
 }
 
 sub send_email_notifications {
@@ -3241,8 +3301,14 @@ sub create_group {
         );
     }
 
-    my $user = Socialtext::User->new(email_address => $opts{email})
-        || Socialtext::User->SystemUser;
+    my $email = $opts{email};
+    $self->_error( loc("--email must be supplied to create a group.") )
+        unless $email;
+
+    my $user = Socialtext::User->new(email_address => $opts{email});
+    $self->_error( loc("no user for email address [_1]", $email) )
+        unless $user;
+
     my $account = $opts{account} || Socialtext::Account->Default;
     my $group = eval {
         Socialtext::Group->Create({
@@ -3260,7 +3326,11 @@ sub create_group {
                 )
             );
         }
-        $self->_error(loc("Error creating group: [_1]", $err));
+        elsif (blessed($err)) {
+            $err = $err->as_string();
+        }
+        my ($msg) = ($err =~ m{(.+?)(?:^Trace begun)? at \S+ line .*}ims);
+        $self->_error(loc("Error creating group: [_1]", $msg));
     }
     $self->_success(
         loc("[_1] Group has been created (Group Id: [_2])",
@@ -3548,7 +3618,7 @@ sub _require_page {
     return $page;
 }
 
-sub _require_attachment {
+sub _require_page_attachment {
     my $self = shift;
     my $page = shift;
 
@@ -3795,6 +3865,8 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-workspace-admin [--username or --email] --workspace
   add-workspace-impersonator [--username or --email] --workspace
   remove-workspace-impersonator [--username or --email] --workspace
+  add-account-admin [--username or --email] --account
+  remove-account-admin [--username or --email] --account
   add-account-impersonator [--username or --email] --account
   remove-account-impersonator [--username or --email] --account
   add-group-admin [--username or --email] --group
@@ -3837,6 +3909,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   unlock-page --workspace --page
   purge-page --workspace --page
   purge-attachment --workspace --page --attachment
+  purge-signal-attachment --signal --attachment
   search-tags --workspace --search
   delete-tag --workspace [--tag or --search]
   add-users-from --workspace --target
@@ -3895,6 +3968,8 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-workspace-from-search-set --name --workspace [--username or --email]
   list-workspaces-in-search-set --name [--username or --email]
   index-people
+  index-groups
+  index-signals
 
   PROFILE (only available with Socialtext People)
 
@@ -4007,6 +4082,17 @@ impersonator for the given workspace.
 Given a user and a workspace, this command remove impersonate privileges for
 the specified user in the given workspace, and makes them a normal workspace
 member.
+
+=head2 add-account-admin [--username or --email] --account
+
+Given a user and an account, this command makes the specified user an
+admin for the given account.
+
+=head2 remove-account-admin [--username or --email] --account
+
+Given a user and a account, this command remove admin privileges for
+the specified user in the given account, and makes them a normal
+account member.
 
 =head2 add-account-impersonator [--username or --email] --account
 
@@ -4276,6 +4362,12 @@ specified by its I<page id>, which is the name used in URIs.
 Purges the specified attachment from the given page and workspace. The
 attachment must be specified by its I<attachment id>, which is the
 name used in URIs.
+
+=head2 purge-signal-attachment --signal --attachment
+
+Purges the specified attachment from the given signal. The attachment
+must be specified by its I<filename>.  The signal can be specified by
+its I<signal_id> or I<signal hash>.
 
 =head2 index-workspace --workspace [--sync] [--search-config]
 

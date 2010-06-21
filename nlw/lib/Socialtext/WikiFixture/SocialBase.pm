@@ -7,7 +7,7 @@ use Socialtext::AppConfig;
 use Socialtext::Account;
 use Socialtext::User;
 use Socialtext::SQL qw/:exec :txn/;
-use Socialtext::JSON qw/decode_json encode_json/;
+use Socialtext::JSON qw/encode_json decode_json_utf8 decode_json/;
 use Socialtext::File;
 use Socialtext::Group;
 use Socialtext::System qw();
@@ -18,8 +18,10 @@ use Socialtext::People::Profile;
 use Socialtext::UserSet qw(ACCT_OFFSET);
 use Socialtext::Cache;
 use Socialtext::Workspace;
+use Socialtext::Encode qw/ensure_is_utf8/;
 use File::LogReader;
 use File::Path qw(rmtree);
+use File::Temp qw(tempfile);
 use Test::More;
 use Test::HTTP;
 use Test::Socialtext;
@@ -27,6 +29,7 @@ use Time::HiRes qw/gettimeofday tv_interval time/;
 use URI::Escape qw(uri_unescape uri_escape);
 use Data::Dumper;
 use MIME::Types;
+use List::MoreUtils qw(any);
 use Cwd;
 use HTTP::Request::Common;
 use LWP::UserAgent;
@@ -243,6 +246,17 @@ sub stress_for {
     Socialtext::System::shell_run('torture', @args);
 }
 
+=head2 invalidate_dbh
+
+Invalidates the DBH used in-process.  If you've restarted Pg, you'll want to
+run this command to force a reconnect.
+
+=cut
+
+sub invalidate_dbh {
+    Socialtext::SQL::invalidate_dbh();
+}
+
 =head2 password standard-test-setup
 
 Set up a new account, workspace and user to work with.
@@ -282,6 +296,33 @@ sub standard_test_setup {
         $self->{"${prefix}group_id"} = $self->{group_id};
     }
     $self->http_user_pass($user_name, $password);
+}
+
+=head2 st_open_noeval ($url)
+
+Opens a page that maybe should return a 404 or something
+
+=cut
+
+sub st_open_noeval {
+    my ($self, $url) = @_;
+    my %valid_pre_open_commands = (open => 1, testComplete => 1, getNewBrowserSession => 1,);
+    my $command = 'open';
+    if (!$self->{_page_opened} and !$valid_pre_open_commands{$command}) {
+        die "You must open a page before calling $command. eg: \$sel->open('/');\n";
+    }
+    $command = uri_escape('open');
+    my $fullurl = "http://$self->{host}:$self->{port}/selenium-server/driver/" . "\?cmd=$command";
+    $fullurl .= '&1=' . URI::Escape::uri_escape_utf8($url);
+    print "fullurl is $fullurl\n";
+    if (defined $self->{selenium}->{session_id}) {
+        $fullurl .= "&sessionId=$self->{selenium}->{session_id}";
+    }
+    print "---> Requesting $fullurl\n" if $self->{verbose};
+    my $ua = LWP::UserAgent->new;
+    my $response = $ua->request( HTTP::Request->new(GET => $fullurl) );
+    #Wait for page to acutally open. 
+    $self->handle_command('pause',20000);
 }
 
 =head2 st_create_pages($workspace, $numberpages)
@@ -646,6 +687,24 @@ sub create_group {
     return $group;
 }
 
+
+sub group_permission_set {
+    my $self     = shift;
+    my $group_id = shift;
+    my $set_name = shift;
+
+    my $group;
+    eval {
+        $group = Socialtext::Group->GetGroup({group_id => $group_id});
+        $group->update_store({permission_set => $set_name});
+    };
+    if (my $e = $@) {
+        die "couldn't update group permissions: $e";
+    }
+
+    diag "Group " . $group->name . " now has $set_name permissions";
+}
+
 sub create_multi_groups {
    my ($self, $name, $num) = @_;
    for (my $idx=0; $idx<$num; $idx++) {
@@ -863,10 +922,11 @@ sub remove_user_from_account {
 }
 
 sub create_workspace {
-    my $self = shift;
-    my $name = shift;
-    my $account = shift;
-    my $title = shift;
+    my $self      = shift;
+    my $name      = shift;
+    my $acct_name = shift;
+    my $title     = shift;
+    my $allusers  = shift;
 
     if (!defined($title) || length($title)<2) {
        $title = $name;
@@ -878,16 +938,19 @@ sub create_workspace {
         return
     }
 
+
+    my $account = $acct_name
+        ? Socialtext::Account->new(name => $acct_name)
+        : Socialtext::Account->Default;
+
     $ws = Socialtext::Workspace->create(
         name => $name, title => $title,
-        (
-            $account
-            ? (account_id => Socialtext::Account->new(name => $account)
-                ->account_id())
-            : (account_id => Socialtext::Account->Default->account_id())
-        ),
+        account_id => $account->account_id(),
         skip_default_pages => 1,
     );
+
+    $ws->assign_role_to_account(account => $account) if ($allusers);
+
     $ws->enable_plugin($_) for qw/socialcalc/;
     $self->{workspace_id} = $ws->workspace_id;
     diag "Created workspace $name";
@@ -1237,6 +1300,8 @@ sub code_is {
 
 =head2 dump_http_response 
 
+Dump the headers of the last http response.
+
 =cut
 
 sub dump_http_response {
@@ -1245,6 +1310,20 @@ sub dump_http_response {
     $self->{http}->response->content("Content removed");
     diag $self->{http}->response->as_string;
     $self->{http}->response->content($content);
+}
+
+=head2 dump_json
+
+Decode the last response as JSON, produce Data::Dumper diag output.
+
+=cut
+
+sub dump_json {
+    my $self = shift;
+    my $json = $self->{http}->_decoded_content;
+    $json =~ s/^throw 1; < don't be evil' >\s*//ms;
+    my $blob = decode_json_utf8($json);
+    diag(Dumper($blob));
 }
 
 =head2 has_header( header [, expected_value])
@@ -1345,6 +1424,61 @@ sub post_file {
     my $res = $ua->request($req);
     $self->{http}->response($res);
     $self->{_last_http_time} = time() - $start;
+}
+
+=head2 upload_file( filename )
+
+Post a local file to the specified URI, DWIMy
+
+    | upload-file | bob.txt |
+    | set | your_var | %%upload_id%% |
+
+To check for a 413 Request Entity Too Large error:
+
+    | upload-file | huge.dat | fail-413 |
+
+=cut
+
+sub upload_file {
+    my $self = shift;
+    my $filename = shift;
+    my $opt = shift || '';
+    $self->post_file('/data/uploads', 'method=file', 'file', $filename);
+    if ($opt eq 'fail-413') {
+        $self->code_is(413);
+        $self->body_like(q{nginx}, "nginx blocked the upload");
+    }
+    else {
+        $self->code_is(201);
+        $self->body_like(q{"status":"success"});
+        $self->set_from_content('upload_id', 'qr/"id":"([^"]+)"/');
+        diag "Uploaded $filename, got id $self->{upload_id}";
+    }
+}
+
+=head2 generate_large_file( kb )
+
+Make a large file full of nul-bytes.  Sets the large_filename variable.  File
+is deleted during global destruction (of Perl).
+
+    | generate-large-file | 1024 |
+    | set | one_mb_filename | %%large_filename%% |
+
+=cut
+
+our @generated_temp_files;
+sub generate_large_file {
+    my ($self, $size_in_kb) = @_;
+
+    die "size must be in kb" if ($size_in_kb =~ /\D/);
+
+    my $tmp = File::Temp->new(UNLINK => 1);
+    my $filename = $tmp->filename;
+    $tmp->close;
+    my $rc = system("dd if=/dev/zero of=$filename bs=1024 count=$size_in_kb");
+    is $rc, 0, "created large file $filename";
+    $self->{large_filename} = $filename;
+    push @generated_temp_files, $tmp;
 }
 
 =head2 put( uri, headers, body )
@@ -1580,9 +1714,9 @@ Try to parse the body as JSON, remembering the result for additional tests.
 sub json_parse {
     my $self = shift;
     $self->{json} = undef;
-    my $content = $self->{http}->response->content || '';
+    my $content = $self->{http}->_decoded_content || '';
     $content =~ s/^throw 1; < don't be evil' >\s*//ms;
-    $self->{json} = eval { decode_json($content) };
+    $self->{json} = eval { decode_json_utf8($content) };
     ok !$@ && defined $self->{json} && ref($self->{json}) =~ /^ARRAY|HASH$/,
         $self->{http}->name . " parsed content" . ($@ ? " \$\@=$@" : "");
     unless (defined $self->{json}) {
@@ -1638,7 +1772,7 @@ sub _json_test {
     if (not defined $json ) {
         fail $self->{http}->name . " no json result";
     }
-    my $parsed_candidate = eval { decode_json($candidate) };
+    my $parsed_candidate = eval { decode_json_utf8($candidate) };
     if ($@ || ! defined $parsed_candidate || ref($parsed_candidate) !~ /^|ARRAY|HASH|SCALAR$/)  {
         fail $self->{http}->name . " failed to find or parse candidate " . ($@ ? " \$\@=$@" : "");
         return;
@@ -1766,9 +1900,9 @@ sub _call_method {
 
 sub _get {
     my ($self, $uri, $opts) = @_;
-    warn "GET: $self->{browser_url}$uri\n"; # intentional warn
     my $start = time();
     $uri = "$self->{browser_url}$uri" if $uri =~ m#^/#;
+    warn "GET: $uri\n"; # intentional warn
     $self->{http}->get( $uri, $opts );
     $self->{_last_http_time} = time() - $start;
 }
@@ -1811,7 +1945,11 @@ sub comment_page {
 sub post_signal {
     my $self = shift;
     my $content = shift;
-    $self->post_json('/data/signals', encode_json( { signal => $content } ));
+    my $extra = shift || "{}";
+    my $blob = decode_json($extra);
+
+    $blob->{signal} = $content;
+    $self->post_json('/data/signals', encode_json( $blob ));
     $self->code_is(201);
 }
 
@@ -2051,16 +2189,19 @@ sub st_clear_jobs {
 
 =head2 st-process-jobs
 
-Run any queued jobs.
+Run any queued jobs synchronously.
+
+Takes an optional TYPE as parameter. If present, only run jobs matching the given TYPE.
 
 =cut
 
 sub st_process_jobs {
+    my $self = shift;
     # sleep a bit, to avoid race conditions w/jobs that don't have sub-second
     # timings (e.g. the "email-notify" wikiD test.
     CORE::sleep(1);
 
-    Test::Socialtext::ceqlotron_run_synchronously();
+    Test::Socialtext::ceqlotron_run_synchronously(@_);
 }
 
 
@@ -2122,9 +2263,9 @@ sub st_setup_a_group {
      if (defined($create_ws) && ($create_ws) ) { 
          $self->handle_command('set','group_ws','group-ws-%%start_time%%');
          if (defined($create_and_add_account) && ($create_and_add_account) ) {
-             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --title %%group_ws%% --account %%group_acct%%','was created');
+             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --title %%group_ws%% --empty --account %%group_acct%%','was created');
          } else {
-             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --title %%group_ws%%','was created');
+             $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --empty --title %%group_ws%%','was created');
          }
      }
 
@@ -2590,7 +2731,7 @@ sub _json_path_test {
     }
 
     # work around the fact that we aren't reading .wiki files in unicode mode
-    $expected = Encode::decode_utf8($expected) if $test =~ /^is/;
+    $expected = ensure_is_utf8($expected) if $test =~ /^is/;
     if ($test eq 'is') { # grep json_path_is
         return is $sel, $expected, $comment;
     }
@@ -2636,6 +2777,30 @@ sub _json_path_test {
             $self->_json_path_test($test,@_);
         };
     }
+}
+
+=head2 json_in_array
+
+Test that a string occurs within a json array.
+
+=cut
+
+sub json_in_array {
+    my ($self, $path, $element) = @_;
+    $path =~ s/^\$//; # remove leading $
+
+    my $selected = eval { $self->_select_json_path($path, $self->{json}) };
+    if (my $e = $@) {
+        fail $@;
+        return;
+    }
+
+    fail "'$path' is not an array'"
+        unless ref($selected) && ref($selected) eq 'ARRAY';
+
+    # breaks if $_ is not a scalar.
+    my $exists = any { "$_" eq "$element" } @$selected;
+    ok $exists, "found '$element' in json path";
 }
 
 =head2 json_path_set
@@ -2685,7 +2850,7 @@ sub json_path_parse {
         return;
     }
 
-    my $json = eval { decode_json($sel) };
+    my $json = eval { decode_json_utf8($sel) };
     if (my $e = $@) {
         fail "json-path-parse error: $e";
         $self->{json} = {};
@@ -2709,6 +2874,17 @@ sub st_widgets {
     my $self    = shift;
     my $options = shift || '';
     Socialtext::System::shell_run('st-widgets', $options);
+}
+
+sub signal_search {
+    my $self = shift;
+    my $query = shift;
+    my $expected_result_count = shift;
+
+    $self->get_json("/data/signals?$query");
+    $self->code_is(200);
+    $self->json_parse;
+    $self->json_array_size($expected_result_count);
 }
 
 1;

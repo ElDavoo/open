@@ -35,7 +35,7 @@
 | click_ok | st-group-create-submit |  |
 
 | *Comment* | Test Case: Create LDAP Group. Process jobs after Motorhead |  |
-| st-process-jobs |  |  |
+| st-process-jobs | GroupIndex |  |
 
 | get_group_id | Motorhead | created_group_id |
 | open_ok | /nlw/control/group/%%created_group_id%% |  |

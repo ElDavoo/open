@@ -10,6 +10,7 @@
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - Not Admin - No Edit Link |  |
 | open_ok | /?group/%%group_id%% |  |
+
 | st-name-widget | 1 | info_widget |
 | st-widget-title-like | info_widget | Information |
 | st-select-widget-frame | info_widget |  |
@@ -19,38 +20,55 @@
 | *Comment* | Test Case: Groups UI Edit an Existing Group - Become Admin - Yes Edit Link |  |
 | st-admin | add-group-admin --group %%group_id%% --email %%group_user%% | is now a admin of the %%group_name%% Group |
 | open_ok | /?group/%%group_id%% |  |
+
+| *Comment* | Test Case: Groups UI Edit an Existing Group - PAUSE |  |
+| pause | 5000 |  |
+
 | st-name-widget | 1 | info_widget |
 | st-widget-title-like | info_widget | Information |
 | st-select-widget-frame | info_widget |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
+
+| *Comment* | Test Case: Groups UI Edit an Existing Group - do not click Edit - frame will be wrong |  |
+| select-frame | relative=parent |  |
+
+| open_ok | /st/edit_group/%%group_id%% |  |
+
+| *Comment* | Test Case: Groups UI Edit an Existing Group - PAUSE |  |
+| pause | 5000 |  |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group Change the Values & Click Save |  |
+
+| st-name-widget | 1 | info_widget |
+| st-widget-title-like | info_widget | Information |
+| st-select-widget-frame | info_widget |  |
+
 | wait_for_element_visible_ok | name | 30000 |
 | wait_for_element_visible_ok | description | 30000 |
 | type_ok | name | %%new_group_name%% |
 | type_ok | description | %%new_group_description%% |
-
 | verifyValue | name | %%new_group_name%% |
 | verifyValue | description | %%new_group_description%% |
 | select-frame | relative=parent |  |
+
 | wait_for_element_visible_ok | create-group | 30000 |
-| wait_for_element_visible_ok | st-cancel-create-group | 30000 |
 | click_and_wait | create-group |  |
 
-| *Comment* | Test Case: Groups UI Edit an Existing Group See the new values |  |
+| *Comment* | Test Case: Groups UI Edit an Existing Group - PAUSE |  |
+| pause | 5000 |  |
 
+| *Comment* | Test Case: Groups UI Edit an Existing Group See the new values |  |
 | st-name-widget | 1 | info_widget |
 | st-widget-title-like | info_widget | Information |
 | st-select-widget-frame | info_widget |  |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
-| wait_for_element_visible_ok | link=%%group_user%% | 30000 |
+| wait_for_element_visible_ok | link=%%group_user_short%% | 30000 |
 | text_like | //body | Administrators |
 | text_like | //body | %%new_group_name%% |
 | text_like | //body | %%new_group_description%% |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group Teardown |
 | delete-group | %%group_id%% |
-| st-admin | delete-workspace --w %%group_ws%% --no-export |
+| st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group COMPLETED |

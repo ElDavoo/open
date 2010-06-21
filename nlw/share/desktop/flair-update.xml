@@ -1,8 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>258</version>
-  <url>http://topaz.socialtext.net/flair/flairSignals-258.air</url>
-  <description><![CDATA[[Build 258 - Thu Apr 29 08:28:15 PDT 2010]
+  <version>292</version>
+  <url>http://topaz.socialtext.net/flair/flairSignals-292.air</url>
+  <description><![CDATA[[Build 292 - Tue Jun  1 22:42:34 PDT 2010]
+* The spinners should keep spinning, not spinning only once.
+
+[Build 291 - Tue Jun  1 22:19:14 PDT 2010]
+* Make the spinner not show behind the Workspace Search button.
+
+[Build 290 - Tue Jun  1 22:14:30 PDT 2010]
+* Workspaces: Clicking the "Loading" spinner stops the current search.
+
+[Build 289 - Sun May 30 23:50:05 PDT 2010]
+* Fix {bz: 3971}: Shorten Local Store file names to <256 characters.
+* Fix {bz: 3977}: ...More... button messes up threadview internals.
+* Signals: Restore proper account skin colouring for listviews.
+
+[Build 288 - Wed May 26 03:36:55 PDT 2010]
+* Fix {bz: 3942}: Desktop: All tab under People does not display users.
+
+[Build 287 - Tue May 18 12:52:00 PDT 2010]
+* Sync-up Activities shared code.
+* Fix {bz: 3914}: Unresponsive script while replying to conversation.
+
+[Build 286 - Wed May 12 16:25:22 PDT 2010]
+* Added support for pushd synchronization.
+
+[Build 285 - Wed May 12 15:12:38 PDT 2010]
+* Confirmed fixing {bz: 3904} for real.
+
+[Build 284 - Wed May 12 14:29:54 PDT 2010]
+* Tentative fix to the "adding replies to expanded thread while signals arrive" beachball. ({bz: 3904})
+
+[Build 283 - Tue May 11 16:24:47 PDT 2010]
+* Fix the "show replies twice" bug under Push mode.
+
+[Build 282 - Tue May 11 16:14:12 PDT 2010]
+* Improve rendering speed for new signal arrival to avoid beachballing.
+
+[Build 281 - Tue May 11 08:28:43 PDT 2010]
+* Add a + to the status if push mode is active
+
+[Build 280 - Mon May 10 17:56:20 PDT 2010]
+* Signal Input box now holds two lines of text again.
+
+[Build 279 - Mon May 10 17:19:52 PDT 2010]
+* Tentative fix for the beachball-during-reply bug.
+
+[Build 278 - Thu May  6 18:20:39 PDT 2010]
+* Bump version for the non-RC build.
+
+[Build 277 - Thu May  6 17:54:03 PDT 2010]
+* Threadview: Update timestamps on regular intervals.
+* Increase font size for input textareas to match Web UI. ({bz: 3868})
+
+[Build 276 - Thu May  6 02:03:44 PDT 2010]
+* Properly fetch not-in-memory old topics when receiving newer replies. ({bz: 3881})
+* If a topic is deleted on the server, delete it when receiving new replies. ({bz: 3811})
+
+[Build 275 - Wed May  5 23:41:09 PDT 2010]
+* Flatview: Take out the colon in meta-info line to match threadview's UI.
+* Repair People->Person->Activities display. (regression in build 274)
+
+[Build 274 - Wed May  5 19:53:13 PDT 2010]
+* Server-side deletion now propagates correctly back to threadview. ({bz: 3879})
+* Cmd-Backspace no longer breaks signal/event/profile views. ({bz: 3877})
+* Add an UserAgent annotation to signals sent from Flair.
+* Pull 100 signals upfront, not 50.
+
+[Build 273 - Tue May  4 18:58:32 PDT 2010]
+* No longer clears input box when typed replies exceeds size limit.  ({bz: 3835})
+* Reduce memory usage by putting flatview code in a separate file. (Stash)
+* Make Wikiwyg input area's right border fit the input box. (Alan)
+* When typed replies exceeds size limit, make the wordcount red.
+
+[Build 272 - Tue May  4 05:42:49 PDT 2010]
+* Login to old appliances now works after logging out from new servers. ({bz: 3836})
+* Threadview: Deleting a topic with replies warns about "entire Conversation". ({bz: 3869})
+* Deleting signals from threadview propagates to flatview, and vice versa.
+* Suppress auto-clicking "...More..." when showing "All Groups" upon login.
+
+[Build 271 - Mon May  3 17:42:38 PDT 2010]
+* Pop up notifications now show up after thread renders, not before.
+* Clicking Insert no longer closes wikiwyg input box. ({bz: 3843})
+* Insert mention lookahead now shows avatars correctly. ({bz: 3867})
+* Threadview: Make top/bottom gray bars right-align with replies. (Alan)
+* Make delete icon a bit more vertically spaced from reply icon. (Alan)
+
+[Build 270 - Mon May  3 16:18:38 PDT 2010]
+* Re-position private/mention hints; they were bleeding into the avatar.
+* Fix the "signals do not appear to post correctly" bug. ({bz: 3860})
+* Fix the Bluifying-metadata-link UI bug so they are now blue only upon hover. 
+
+[Build 269 - Mon May  3 06:56:52 PDT 2010]
+* Threadview: Remove the redundant right-floating "signal" asset icon.
+* When toggling into "All My Groups" for the first time, reload signals.
+
+[Build 268 - Mon May  3 06:08:06 PDT 2010]
+* Threadview: More'd signals now sort into chronological order. ({bz: 3851})
+* Threadview: Recipient of private signals are now clickable. ({bz: 3850})
+* Threadview: Avatar icons should now stay on screen. ({bz: 3820})
+* Improved performance when rendering thread views and toggling networks.
+
+[Build 267 - Sun May  2 18:28:24 PDT 2010]
+* Replies to private messages should still show up as privmsgs in flatview. ({bz: 3842})
+
+[Build 266 - Sun May  2 18:18:12 PDT 2010]
+* Mentions in threadview are now correctly striped. ({bz: 3845})
+* Filter-by-network now interacts smoothly with "...More...". ({bz: 3847})
+
+[Build 265 - Sun May  2 16:11:40 PDT 2010]
+* Attempt to fix {bz: 3845} by always pulling "More" from active network. (Ken)
+
+[Build 264 - Sun May  2 15:10:06 PDT 2010]
+* ...More... now respects "Show Signals From" filtering. (Ken)
+
+[Build 263 - Sun May  2 05:44:22 PDT 2010]
+* Implements filtering signals by network in threadview. ({bz: 3807})
+* Hovering over avatars in threadview now shows the correct username.
+* Display replies in flatview with a smaller font and teal background.
+* Remove the dotted border around topical signals in Convo lightbox.
+* Private signals no longer show up "as a topic" in flatview.
+
+[Build 262 - Fri Apr 30 17:01:40 PDT 2010]
+* New replies now cause the original thread to bubble up.
+
+[Build 261 - Fri Apr 30 16:00:07 PDT 2010]
+* DM recipients are now displayed properly. ({bz: 3814})
+* More assorted stylistic tweaks for threaded display.
+
+[Build 260 - Fri Apr 30 05:23:19 PDT 2010]
+* Restore correct vertical spacing for linear view. ({bz: 3824})
+* Fixed chronological ordering of older replies under the same thread. ({bz: 3825}
+* Repair the styling of "...More..." button for the activity tab.
+* Make linear view's text slightly bigger to match thread view's.
+
+[Build 259 - Thu Apr 29 19:00:00 PDT 2010]
+* Adjust styles to match web widget. ({bz: 3830})
+
+[Build 258 - Thu Apr 29 08:28:15 PDT 2010]
 * Full-refresh the thread view when the user is not composing a reply. ({bz: 3823})
 * Make Flair always auto-update from topaz.
 * Restore "Find" functionality for thread view.

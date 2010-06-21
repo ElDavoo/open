@@ -322,3 +322,8 @@ div.pagination-container .paging-forward {
 div#contentContainer {
     border-bottom: 1px solid transparent;
 }
+
+div.group_directory .widgetHeaderTitle {
+    position: static;
+    float: none;
+}

@@ -60,6 +60,7 @@
 | code-is         | 200                                 |
 | json-parse      |                                     |
 | json-array-size | 2                                   |
+| body-like       | permission_set                      |
 | body-like       | %%ws1%%                             |
 | body-like       | %%ws2%%                             |
 
@@ -69,6 +70,7 @@
 | code-is         | 200                                                            |
 | json-parse      |                                                                |
 | json-array-size | 1                                                              |
+| body-like       | permission_set                                                 |
 | body-like       | %%ws1%%                                                        |
 | body-like       | workspace_id                                                   |
 | body-unlike     | %%ws2%%                                                        |
@@ -83,3 +85,18 @@
 | json-path-is     | $.totalResults                                   | 2  |
 | json-path-exists | $.entry[0]                                       |    |
 | json-path-exists | $.entry[1]                                       |    |
+
+## GET JSON, passing a bad permission_set param
+| *Comment* | GET JSON, passing a bad permission_set param |
+| GET-json | /data/users/%%username%%/workspaces?permission_set=ENOSUCHSET |
+| code-is  | 500                                                           |
+
+## GET JSON, with permission_set filtering
+| st-admin          | set-permissions --workspace %%ws1%% --permissions public                    |         |
+| GET-json          | /data/users/%%username%%/workspaces?startIndex=0;permission_set=member-only |         |
+| code-is           | 200                                                                         |         |
+| json-parse        |                                                                             |         |
+| json-path-is      | $.totalResults                                                              | 1       |
+| json-path-exists  | $.entry[0]                                                                  |         |
+| json-path-is      | $.entry[0].name                                                             | %%ws2%% |
+| json-path-missing | $.entry[1]                                                                  |         |

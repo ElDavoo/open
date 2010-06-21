@@ -2,11 +2,12 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 39;
+use Test::Socialtext tests => 45;
 use Test::Exception;
 BEGIN { use_ok 'Socialtext::CLI'; }
 use Test::Socialtext::CLIUtils qw/is_last_exit/;
 use Test::Output qw(combined_from);
+use Socialtext::Jobs;
 
 fixtures('db');
 
@@ -145,19 +146,56 @@ delete_a_group: {
 
     ok $output, 'got output...';
     like $output, qr/Deleted group id: \d+/, '... deleted the group';
+
+    my $refresh = Socialtext::Group->GetGroup(group_id => $group->group_id);
+    ok !$refresh, '... and its really gone';
 }
 
 ################################################################################
 index_all_groups: {
-    my $group1        = create_test_group();
-    my $group2        = create_test_group();
+    my $group1 = create_test_group();
+    my $group2 = create_test_group();
+    my $jobs   = Socialtext::Jobs->instance();
 
+    $jobs->clear_jobs();
     my $output = combined_from {
         eval { new_cli( )->index_groups() }
     };
 
     ok $output, 'got output...';
-    like $output, qr/Scheduled \d+ groups for indexing/;
+    like $output, qr/Scheduled groups for re-indexing/,
+        '... Groups are being re-indexed';
+
+    my @jobs = $jobs->list_jobs(
+        funcname => 'Socialtext::Job::Upgrade::ReindexGroups',
+    );
+    ok @jobs, '... Ceq job(s) created to re-index Groups';
+}
+
+################################################################################
+create_group: {
+
+    # simple:
+    my $user = create_test_user();
+    my $output = combined_from {
+        eval { new_cli(
+            '--name'  => 'simple group',
+            '--email' => $user->email_address,
+        )->create_group() }
+    };
+
+    ok $output, 'got output for simple group create...';
+    like $output, qr/simple group Group has been created/, '... correct';
+
+    # no email_address provided
+    $output = combined_from {
+        eval { new_cli(
+            '--name'  => 'illegal group',
+        )->create_group() }
+    };
+
+    ok $output, 'got output for illegal group create...';
+    like $output, qr/--email must be supplied/, '... correct';
 }
 
 ################################################################################

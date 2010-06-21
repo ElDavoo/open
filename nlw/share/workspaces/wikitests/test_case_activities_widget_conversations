@@ -29,8 +29,11 @@
 | st-admin | update-page --email %%isolateduser%% --workspace %%wrkspc%% --page %%mycommentedpagename%% < %%wikitest_client_files%%wikitest.txt | has been created |
 | st-admin | update-page --email %%isolateduser%% --workspace %%wrkspc%% --page %%watchedpagename%% < %%wikitest_client_files%%wikitest.txt | has been created |
 
+| *Comment* | Test Case: Activities Widget Conversations - logout explicitly |  |
+| open_ok | /nlw/submit/logout |  |
+
 | *Comment* | Test Case: Activities Widget Conversations - %%actor%% creates a page, comments on a page, watches a page |  |
-| st-logoutin | %%actor%% | %%password%% |
+| st-login | %%actor%% | %%password%% |
 
 | st-create-wikipage | %%wrkspc%% | %%mypagename%% |
 | st-comment-on-page | /%%wrkspc%%/?%%mycommentedpagename%% | Leaving a comment |
@@ -55,11 +58,11 @@
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
 | st-widget-settings | activities_widget |  |
-| wait_for_element_visible_ok | up_limit | 30000 |
-| select-ok | up_limit | 25 |
+| wait_for_element_visible_ok | limit | 30000 |
+| select-ok | limit | 25 |
 | wait_for_element_visible_ok | st-savebutton-%%activities_widget%% | 30000 |
 | click_ok | st-savebutton-%%activities_widget%% |  |
-| wait_for_element_not_visible_ok | up_limit | 30000 |
+| wait_for_element_not_visible_ok | limit | 30000 |
 | wait_for_element_not_visible_ok | st-savebutton-%%activities_widget%% | 30000 |
 
 | *Comment* | Test Case: Activities Widget Conversations you have to wait for the widget to load |  |

@@ -16,8 +16,8 @@
 
 | st-admin | enable-plugin --account %%hostname%% --plugin groups |  |
 | st-admin | enable-plugin --account %%hostname%% --plugin signals |  |
-| st-admin | create-workspace --title %%wsname%% --name %%wsname%% | was created |
-| st-admin | create-workspace --title %%wsname2%% --name %%wsname2%% | was created |
+| st-admin | create-workspace --title %%wsname%% --name %%wsname%% --empty | was created |
+| st-admin | create-workspace --title %%wsname2%% --name %%wsname2%% --empty | was created |
 | st-admin | add-member --workspace %%wsname%% --group %%group_id%% | now has the role of 'member' |
 | st-admin | add-member --workspace %%wsname2%% --group %%group_id%% | now has the role of 'member' |
 | st-admin | create-user --e %%nopermuser%% --p %%password%% | was created |
@@ -61,15 +61,16 @@
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | signals_widget |
 | st-send-signal-via-activities-widget | signals_widget | signal-%%start_time%% |
+| pause | 3000 |  |
 | st-select-widget-frame | signals_widget |  |
 | wait_for_text_present_ok | to %%groupname%% | 30000 |
 | select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups Check Lack of Permissions |  |
 | st-logoutin | %%nopermuser%% | %%password%% |
-| open_ok | /?group/%%group_id%% |  |
+| st_open_noeval | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | Error | 30000 |
-| wait_for_text_present_ok | You do not have permission to view this group. Please check with the group administrator or contact Socialtext Support | 30000 |
+| wait_for_text_present_ok | The group you are trying to view does not exist | 30000 |
 | wait_for_element_visible_ok | link=Socialtext Support | 30000 |
 
 | *Comment* | Test Case: Groups Add member, Check again |  |
@@ -97,6 +98,7 @@
 | wait_for_text_present_ok | within %%groupname%% | 30000 |
 | wait_for_text_present_ok | minute | 30000 |
 | wait_for_text_present_ok | signal-%%start_time%% | 30000 |
+| pause | 15000 |  |
 
 | text_like | //body | qr/edited New Page\s+%%start_time%%\s+in\s+%%wsname%%/ism |
 | text_like | //body | qr/tagged New Page\s+%%start_time%%\s+in\s+%%wsname%%\s+as\s+tag-%%start_time%%/ism |

@@ -66,9 +66,7 @@ has 'sql_from' => (
 );
 sub _build_sql_from {
     return q{
-        user_sets_for_user viewer
-        JOIN user_sets_for_user other USING (user_set_id)
-        JOIN users ON (other.user_id = users.user_id)
+        users
     };
 }
 
@@ -77,9 +75,9 @@ has 'sql_cols' => (
 );
 sub _build_sql_cols {
     my $self = shift;
-    my @cols = 'DISTINCT users.user_id', 'display_name';
+    my @cols = ('DISTINCT users.user_id', 'display_name');
     if ($self->minimal < 2) {
-        push @cols, 'first_name', 'last_name', 'display_name',
+        push @cols, 'first_name', 'last_name',
             'email_address', 'driver_username';
     }
     return \@cols;
@@ -98,16 +96,40 @@ has 'sql_where' => (
 sub _build_sql_where {
     my $self = shift;
     my $filter = $self->filter;
+
+    # get sql/bindings for Users that are actually visible to us
+    my ($vis_sql, @vis_bind);
+    {
+        my $vis_from = q{
+            user_sets_for_user other
+            JOIN user_sets_for_user viewer USING (user_set_id)
+        };
+        my $vis_cols  = 'other.user_id';
+        my $vis_where = $self->all
+            ? { }
+            : { 'viewer.user_id' => $self->viewer->user_id };
+        ($vis_sql, @vis_bind) = sql_abstract()->select(
+            \$vis_from, $vis_cols, $vis_where,
+        );
+    }
+
+    my @in_visible_users = (
+        user_id => { -in => \[$vis_sql, @vis_bind] },
+    );
+
     return {
-        $self->all ? ()
-            : ('-and' => [ 'viewer.user_id' => $self->viewer->user_id ]),
-        '-or' => [
-            'lower(first_name)'      => { '-like' => $filter },
-            'lower(last_name)'       => { '-like' => $filter },
-            'lower(email_address)'   => { '-like' => $filter },
-            'lower(driver_username)' => { '-like' => $filter },
-            'lower(display_name)'    => { '-like' => $filter },
-        ],
+        $self->all
+        ? (@in_visible_users)
+        : (
+            '-and' => [ @in_visible_users ],
+            '-or'  => [
+                'lower(first_name)'      => { '-like' => $filter },
+                'lower(last_name)'       => { '-like' => $filter },
+                'lower(email_address)'   => { '-like' => $filter },
+                'lower(driver_username)' => { '-like' => $filter },
+                'lower(display_name)'    => { '-like' => $filter },
+            ],
+        )
     };
 }
 

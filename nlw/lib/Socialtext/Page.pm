@@ -817,16 +817,18 @@ sub _fire_webhooks {
             return {
                 tags_added   => $p{tags_added}   || [],
                 tags_deleted => $p{tags_deleted} || [],
-                workspace_name => $wksp->name,
-                page_id        => $self->id,
-                page_name      => $self->metadata->Subject,
-                page_uri       => $self->full_uri,
-                edit_summary   => $self->edit_summary,
-                tags           => $self->metadata->Category,
-                edit_time      => $self->metadata->Date,
-                editor         => {
-                    email => $editor->email_address,
-                    bfn   => $editor->best_full_name,
+                action       => 'tag',
+                workspace_title => $wksp->title,
+                workspace_name  => $wksp->name,
+                page_id         => $self->id,
+                page_name       => $self->metadata->Subject,
+                page_uri        => $self->full_uri,
+                edit_summary    => $self->edit_summary,
+                tags            => $self->metadata->Category,
+                edit_time       => $self->metadata->Date,
+                editor          => {
+                    user_id => $editor->user_id,
+                    bfn     => $editor->best_full_name,
                 },
             };
         },
