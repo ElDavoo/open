@@ -129,14 +129,22 @@ sub _run_htmldoc {
         while ($failures < 5) {
             my $err;
             run \@command, \$input, $output_ref, \$err;
+
+            my @stderr =
+                grep { !/^\s*$/ }
+                split /[\r\n]/, $err;
             my @errors =
                 grep { !/Unable to connect to/ }
                 grep { /^ERR/ }
-                split /^/, $err;
+                @stderr;
+
+            if (@errors || $ENV{NLW_DEV_MODE}) {
+                st_log->error("@command");
+                st_log->error($_) for @stderr;
+            }
+
             last unless @errors;
 
-            st_log->error("@command");
-            st_log->error($_) for @errors;
             $failures ++;
         }
     }
