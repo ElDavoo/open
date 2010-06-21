@@ -1,66 +1,54 @@
-#!perl
+#!/usr/bin/perl
 # @COPYRIGHT@
 
-# These tests provide a very simple and inadequate regression
-# test to confirm that the output from the PdfExportPlugin is PDF.
-# More exhaustive tests would be nice if we could figure out a
-# good way to do it...
-
-use warnings;
 use strict;
-
-use Test::Socialtext tests => 7;
-fixtures('admin');
-
-use Readonly;
+use warnings;
+use Test::Socialtext tests => 9;
 use YAML;
 
-BEGIN {
-    use_ok('Socialtext::PdfExportPlugin');
+fixtures(qw( admin ));
+
+###############################################################################
+# TEST: ability to convert a page to HTML, from "admin" Workspace.
+convert_page_to_html: {
+    my $hub  = new_hub('admin');
+    my $file = $hub->pdf_export->_create_html_file('Conversations');
+    ok $file, 'Got file from converting wikipage to HTML';
+    ok -s $file, '... which is not an empty file';
 }
 
-Readonly my $PAGE_NAME => 'Admin Wiki';
-Readonly my $HUB       => new_hub('admin');
-
-my @cases = Load(join '', <DATA>);
-
-generates_valid_pdf(@$_) for @cases;
-
-sub generates_valid_pdf {
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
-    my ( $wikitext, $description ) = @_;
-    $description ||= $wikitext;
-
-    my $pdf_content = pdf_for_wikitext($wikitext);
-    looks_like_pdf_ok $pdf_content;
+###############################################################################
+# TEST: multi-page export, from "admin" Workspace.
+multi_page_export: {
+    my @pages = ('Conversations', 'Start Here', 'Meeting agendas');
+    my $hub   = new_hub('admin');
+    my $pdf;
+    $hub->pdf_export->multi_page_export(\@pages, \$pdf);
+    looks_like_pdf_ok $pdf, 'Multi-page export looks like PDF';
 }
 
-MULTI_PAGE: {
-    my @page_names = ('Conversations', 'Start Here', 'Meeting agendas');
+###############################################################################
+# TEST: create some wikipages, and convert them to PDF
+export_to_pdf: {
+    my $hub   = create_test_hub();
+    my @cases = Load(join '', <DATA>);
 
-    my $pdf_content;
-    $HUB->pdf_export->multi_page_export( \@page_names, \$pdf_content );
-    looks_like_pdf_ok $pdf_content;
+    foreach my $case (@cases) {
+        my ($content, $title) = @{$case};
+        my $page = Socialtext::Page->new(hub => $hub)->create(
+            creator => $hub->current_user,
+            title   => $title,
+            content => $content,
+        );
+        ok $page, "Created test page: $title";
+
+        my $pdf;
+        $hub->pdf_export->multi_page_export([ $page->name ], \$pdf);
+        looks_like_pdf_ok $pdf, '... results look like a PDF';
+    }
 }
 
-HTML_FILES: {
-    my $filename = $HUB->pdf_export->_create_html_file( 'Conversations' );
-    isnt($filename, '',  'Filename is defined');
-    isnt(-s $filename, 0, 'temp file is not 0 length');
-}
 
-# ripped straight from the pages of RtfExportPlugin.t
-sub pdf_for_wikitext {
-    my ($wikitext) = @_;
-    my $page = $HUB->pages->new_from_name($PAGE_NAME);
-    $page->content($wikitext);
-    $page->store( user => $HUB->current_user );
-
-    my $pdf_content;
-    $HUB->pdf_export->multi_page_export( [$PAGE_NAME], \$pdf_content );
-
-    return $pdf_content;
-}
 
 __DATA__
 ---
