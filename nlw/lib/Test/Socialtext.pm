@@ -67,6 +67,7 @@ our @EXPORT = qw(
     timer_clear
     timer_report
     set_as_default_account
+    looks_like_pdf_ok
 );
 
 our @EXPORT_OK = qw(
@@ -653,6 +654,14 @@ sub set_as_default_account($) {
     Socialtext::SystemSettings::set_system_setting(
         'default-account' => $acct->account_id);
     Socialtext::Account->Clear_Default_Account_Cache();
+}
+
+sub looks_like_pdf_ok($;$) {
+    my $pdf = shift;
+    my $msg = shift || 'looks like a PDF';
+    my $pdf_start = $pdf =~ qr/\A%PDF-\d+\.\d+/;
+    my $pdf_end   = $pdf =~ qr/%%EOF\Z/;
+    ok $pdf_start && $pdf_end, $msg;
 }
 
 sub SSS() {
