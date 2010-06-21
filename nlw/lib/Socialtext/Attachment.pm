@@ -4,9 +4,8 @@ use strict;
 use base 'Socialtext::Base';
 use Class::Field qw( field );
 use Email::Valid;
-use MIME::Types;
 use Socialtext::Encode;
-use Socialtext::File;
+use Socialtext::File ();
 use Socialtext::File::Stringify;
 use Socialtext::JobCreator;
 
@@ -259,13 +258,17 @@ sub image_path {
 sub is_image {
     my $self = shift;
     return $self->{is_image} if defined $self->{is_image};
-    return $self->{is_image} = $self->mime_type =~ /image/;
+    return $self->{is_image} = ($self->mime_type =~ /^image\//);
 }
 
-# XXX - this should be used elsewhere in this package
 sub full_path {
     my $self = shift;
     return $self->image_path(@_) if $self->is_image;
+    return $self->_raw_path;
+}
+
+sub _raw_path {
+    my $self = shift;
     return $self->{full_path} if defined $self->{full_path};
     $self->{full_path} = join '/', $self->attachdir, $self->db_filename;
     return $self->{full_path};
@@ -492,13 +495,12 @@ sub inline {
 sub mime_type {
     my $self = shift;
 
-    my $type = $self->Content_type;
+    return $self->{mime_type} if $self->{mime_type};
+    $self->{mime_type} = $self->Content_type ||
+        Socialtext::File::mime_type(
+            $self->_raw_path, $self->filename, 'application/binary');
 
-    if ($type) {
-        return $type;
-    }
-    my $type_object = MIME::Types->new->mimeTypeOf( $self->filename );
-    return $type_object ? $type_object->type : 'application/binary';
+    return $self->{mime_type};
 }
 
 sub charset {
@@ -525,11 +527,11 @@ sub should_popup {
     return not grep { $self->mime_type =~ $_ } @easy_going_types;
 }
 
-#XXX use MIME::Types?
 sub image_or_file_wafl {
     my $self = shift;
     my $filename = $self->utf8_decode($self->filename);
-    $filename =~ /\.(bmp|gif|jpg|jpeg|png)$/i
+
+    return $self->is_image
       ? "{image: $filename}" . "\n\n"
       : "{file: $filename}" . "\n\n";
 }
