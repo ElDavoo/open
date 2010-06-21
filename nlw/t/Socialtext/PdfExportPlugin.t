@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 9;
+use Test::Socialtext tests => 12;
 use YAML;
 
 fixtures(qw( admin ));
@@ -48,6 +48,22 @@ export_to_pdf: {
     }
 }
 
+###############################################################################
+# TEST: empty content
+empty_page_content: {
+    my $hub = create_test_hub();
+    my $page = Socialtext::Page->new(hub => $hub)->create(
+        creator => $hub->current_user,
+        title   => 'Empty Page',
+        content => '',
+    );
+    ok $page, 'Created empty test page';
+
+    my $pdf;
+    my $rc = $hub->pdf_export->multi_page_export([ $page->name ], \$pdf);
+    ok !$rc, '... which we are unable to convert to PDF';
+    ok !$pdf, '... resulting in no PDF content';
+}
 
 
 __DATA__
