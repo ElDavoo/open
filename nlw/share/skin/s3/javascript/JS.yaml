@@ -113,6 +113,7 @@
 'socialtext-editor-light.js':
     compress: 1
     parts:
+        - 'jquery-popup.js'
         - 'jquery-plugin.js'
         - 'lookahead.js'
         - 'jquery.selectOverlap.js'
