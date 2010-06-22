@@ -69,6 +69,7 @@ sub CleanAll {
 sub BuildAll {
     my ($class) = @_;
     for my $dir (keys %dirs) {
+        warn "Building $dir...\n" if $VERBOSE;
         $class->BuildDir($dir);
     }
 }
