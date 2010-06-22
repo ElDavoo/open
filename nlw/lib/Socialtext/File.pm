@@ -487,9 +487,9 @@ finds a type that B<isn't> a "basic" type, that type is returned.  Otherwise,
 the function falls through to the next check.
 
 If a C<$file_extension> isn't given, this check is skipped.  The file extension
-is given as input to the C<MIME::Types> module.  If this check finds a type
-that B<isn't> a "basic" type, that type is returned.  If a "basic" type or no
-type is found, the function falls through to the next check.
+is given as input to the C<MIME::Types> module.  If this check finds a type,
+that type is returned.  If no type is found, this function falls through to
+the next check.
 
 If a C<$type_hint> isn't given, this check is skipped.  The type hint is for
 example what an uploading browser or external system considers this file to be
@@ -530,9 +530,7 @@ sub mime_type {
             my $mt = $mts->mimeTypeOf(lc $file_extension);
             $mt->type;
         };
-        if ($type) {
-            return $type unless $type =~ $is_basic_type;
-        }
+        return $type if ($type);
     }
 
     return $type_hint if $type_hint;
