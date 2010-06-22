@@ -75,6 +75,7 @@ sub to_html {
         my $cache_file = $self->_answer_file($a_str);
         if (-e $cache_file) {
             warn "Page HTML cache HIT ($cache_file)\n";
+            $self->{__cache_hit}++;
             return Socialtext::File::get_contents_utf8($cache_file);
         }
         warn "Page HTML cache MISS ($cache_file)\n";

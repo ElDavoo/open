@@ -60,6 +60,12 @@ sub make_GETter {
                         }
                     }
 
+                    my $content_to_return = $page->content_as_type(
+                        type => $content_type,
+
+                        # FIXME: this should be a CGI paramter in some cases
+                        link_dictionary => $self->_link_dictionary($rest),
+                    );
                     $rest->header(
                         -status        => HTTP_200_OK,
                         -type          => $content_type . '; charset=UTF-8',
@@ -67,12 +73,7 @@ sub make_GETter {
                             $page->modified_time()
                         ),
                         @etag,
-                    );
-                    my $content_to_return = $page->content_as_type(
-                        type => $content_type,
-
-                        # FIXME: this should be a CGI paramter in some cases
-                        link_dictionary => $self->_link_dictionary($rest),
+                        -X_Socialtext_Cache => ($page->{__cache_hit} ? 'hit' : 'miss'),
                     );
                     $self->_record_view($page);
                     return $content_to_return;
