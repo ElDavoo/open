@@ -88,17 +88,23 @@ sub existence_error {
 
 sub parse_wafl_reference {
     my $self = shift;
-        eval {
     my ( $workspace_name, $page_title, $qualifier, @other ) =
         $self->arguments =~ $self->wafl_reference_parse or return;
-    $workspace_name ||= $self->current_workspace_name;
+
+    # Needed for funky behaviour with unit tests.
+    if ($self->hub && $self->current_workspace) {
+        $workspace_name ||= $self->current_workspace_name;
+    }
+    else {
+        $workspace_name ||= '';
+    }
+
     # XXX this just feels wrong. It's necessary for the many ways
     # we might enter the formatter. This is probably the wrong place
     # for this.
     my $page_id = Socialtext::String::title_to_id($page_title)
         || $self->hub->viewer->page_id || $self->current_page_id;
     my $title = $page_title || '';
-        }; die "lllllOMG: $@" if $@;
 
     # XXX using hub here may causes issues with page titles
     # from other workspaces
