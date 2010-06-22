@@ -33,19 +33,19 @@
         });
 
         $.each($popup.find(':input'), function() {
-            var self = this;
-            $(self).unbind('mousedown').mousedown(function () {
+            var $element = $(this);
+            $element.unbind('mousedown').mousedown(function () {
                 if ($.browserHasReverseBlurMousedownOrder())
                     $popup.clickedInInput = true;
-                $(self).focus();
+                $element.focus();
                 return false;
             });
 
-            $(self).unbind('keydown').keydown(function(e) {
+            $element.unbind('keydown').keydown(function(e) {
                if (e.keyCode == 9) $popup.tabPressed = true;
             });
 
-            $(self).unbind('blur').blur(function(e) {
+            $element.unbind('blur').blur(function(e) {
                 // tab has been pressed, do default behaviour
                 if ($popup.tabPressed) {
                     $popup.tabPressed = false;
@@ -62,7 +62,7 @@
                 setTimeout(function() {
                     if ($popup.clickedInPopup || $popup.clickedInInput) {
                         if (!$popup.clickedInInput)
-                            $(self).focus();
+                            $element.focus();
                         $popup.clickedInPopup = false;
                         $popup.clickedInInput = false;
                     }
