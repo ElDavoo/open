@@ -1018,23 +1018,35 @@ sub _cache_html {
     my $html_ref;
     {
         my $t = time_scope('cache_html');
-        my @cache_questions;
+        my %interwiki;
         my %allows_html;
         my $expires_at = 0;
         $self->get_units(
             wafl_phrase => sub {
                 my $wafl = shift;
+                my $wafl_expiry = 0;
                 if (ref($wafl) eq 'Socialtext::Formatter::InterWikiLink') {
                     my ($ws_name) = $wafl->parse_wafl_reference;
-                    my $ws = Socialtext::Workspace->new(name => $ws_name);
-                    push @cache_questions, { workspace => $ws } if $ws;
+                    $interwiki{$ws_name}++;
                 }
                 elsif (ref($wafl) eq 'Socialtext::FetchRSS::Wafl') {
                     # Feeds are cached for 1 hour, so we can cache this render for 1h
                     # There may be an edge case initially where a feed
                     # ends up getting cached for at most 2 hours if the Question
                     # had not yet been generated.
-                    my $feed_expiry = time + 3600;
+                    $wafl_expiry = 3600;
+                }
+                elsif (ref($wafl) eq 'Socialtext::GoogleSearchPlugin::Wafl') {
+                    # Cache google searches for 5 minutes
+                    $wafl_expiry = 300;
+                }
+                else {
+                    warn ref $wafl;
+                }
+
+                if ($wafl_expiry) {
+                    my $feed_expiry = time + $wafl_expiry;
+                    # Keep track of the lowest expiry time.
                     if (!$expires_at or $expires_at > $feed_expiry) {
                         $expires_at = $feed_expiry;
                     }
@@ -1047,9 +1059,15 @@ sub _cache_html {
                 }
             },
         );
+
+        my @cache_questions;
+        for my $ws_name (keys %interwiki) {
+            my $ws = Socialtext::Workspace->new(name => $ws_name);
+            push @cache_questions, { workspace => $ws } if $ws;
+        }
         for my $ws_id (keys %allows_html) {
             my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
-            push @cache_questions, { allows_html_wafl => $ws };
+            push @cache_questions, { allows_html_wafl => $ws } if $ws;
         }
         if ($expires_at) {
             push @cache_questions, { expires_at => $expires_at };

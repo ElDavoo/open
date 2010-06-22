@@ -86,10 +86,13 @@ Create another workspace just for the main user.
 | fetch-page         | RSSTest | miss     |
 | fetch-page         | RSSTest | hit      |
 
+| Comment            | Google searches |
+| edit-page          | %%workspace%% | GoogleTest | {googlesearch: Socialtext} |
+| fetch-page         | GoogleTest | hit      |
+| question-file-like | RSSTest | qr/E\d+/ |
 
 ^^ To Test
 
-** Google searches
 ** web links to images (any external content)
 ** user WAFLs
 ** included pages and spreadsheets
