@@ -14,6 +14,13 @@ Create another workspace just for the main user.
 | set | ws2_id | %%workspace_id%% |
 | add-member | %%username%% | %%ws2%% |
 
+Create another account and another user that is in the same group as user1
+This should give username visibility of foo_username
+| standard-test-setup | foo |
+| add_user_to_group | %%username%% | %%foo_group_id%% |
+
+Run these tests as the main user.
+| http-user-pass | %%username%% | password |
 
 | Comment    | Create and fetch the simplest possible page    |
 | edit_page  | %%workspace%%          | Test | Simplest page possible. |
@@ -91,10 +98,18 @@ Create another workspace just for the main user.
 | fetch-page         | GoogleTest | hit      |
 | question-file-like | RSSTest | qr/E\d+/ |
 
+| Comment   | User Wafls    |          |                            |
+| edit-page | %%workspace%% | usertest | Hi {user: %%foo_user_id%%} |
+| fetch-page | usertest                        | hit |
+| body-like  | <span class="person authorized" |     |
+| question-file-is | usertest                          | u%%foo_user_id%% |
+| http-user-pass   | %%user2%%                         | password         |
+| fetch-page       | usertest                          | miss             |
+| body-unlike      | <span class="person authorized"   |                  |
+| body-like        | <span class="person unauthorized" |                  |
+
 ^^ To Test
 
-** web links to images (any external content)
-** user WAFLs
 ** included pages and spreadsheets
 ** Any links or WAFLS whose "More Options" can include a workspace:
 *** TOC links
@@ -103,6 +118,9 @@ Create another workspace just for the main user.
 *** Recent Changes
 *** Wiki Search
 *** links to attachments in other workspaces
+
+Is there anything to this?
+* web links to images (any external content)
 
 Really Tricky Cases:
 * Page includes

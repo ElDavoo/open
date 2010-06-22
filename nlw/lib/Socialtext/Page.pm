@@ -1020,6 +1020,7 @@ sub _cache_html {
         my $t = time_scope('cache_html');
         my %interwiki;
         my %allows_html;
+        my %users;
         my $expires_at = 0;
         $self->get_units(
             wafl_phrase => sub {
@@ -1039,6 +1040,15 @@ sub _cache_html {
                 elsif (ref($wafl) eq 'Socialtext::GoogleSearchPlugin::Wafl') {
                     # Cache google searches for 5 minutes
                     $wafl_expiry = 300;
+                }
+                elsif (ref($wafl) eq 'Socialtext::Pluggable::WaflPhrase') {
+                    if ($wafl->{method} eq 'user') {
+                        $users{$wafl->{arguments}}++;
+                    }
+                    else {
+                        use Data::Dumper;
+                        warn Dumper $wafl;
+                    }
                 }
                 else {
                     warn ref $wafl;
@@ -1069,6 +1079,9 @@ sub _cache_html {
             my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
             push @cache_questions, { allows_html_wafl => $ws } if $ws;
         }
+        for my $user_id (keys %users) {
+            push @cache_questions, { user_id => $user_id };
+        }
         if ($expires_at) {
             push @cache_questions, { expires_at => $expires_at };
         }
@@ -1097,6 +1110,12 @@ sub _cache_using_questions {
                 permission => ST_READ_PERM,
                 workspace => $ws
             ) ? 1 : 0;
+        }
+        elsif (my $user_id = $q->{user_id}) {
+            my $user = Socialtext::User->new(user_id => $user_id) or next;
+            push @short_q, 'u' . $user_id;
+            push @answers,
+                $user->profile_is_visible_to($self->hub->current_user) ? 1 : 0;
         }
         elsif ($ws = $q->{allows_html_wafl}) {
             push @short_q, 'h' . $ws->workspace_id;
@@ -1143,7 +1162,7 @@ sub _question_file {
 
 sub _answer_file {
     my $self = shift;
-    my $answer_str = shift;
+    my $answer_str = shift || '';
     my $base = $self->_page_cache_basename or return;
     return "$base-$answer_str";
 }

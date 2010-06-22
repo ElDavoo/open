@@ -72,7 +72,7 @@ sub to_html {
         my $q_str = Socialtext::File::get_contents($q_file);
         warn "Found a question string: '$q_str'\n";
         my $a_str = $self->_questions_to_answers($q_str);
-        warn "My answer is '$a_str'";
+        warn "My answer is '$a_str'" if defined $a_str;
         my $cache_file = $self->_answer_file($a_str);
         if (-e $cache_file) {
             warn "Page HTML cache HIT ($cache_file)\n";
@@ -82,7 +82,7 @@ sub to_html {
         warn "Page HTML cache MISS ($cache_file)\n";
 
         my $html = $self->hub->viewer->process($content, $page);
-        Socialtext::File::set_contents_utf8($cache_file, $html);
+        Socialtext::File::set_contents_utf8($cache_file, $html) if defined $a_str;
         return $html;
     }
 
@@ -94,20 +94,23 @@ sub _questions_to_answers {
     my $self = shift;
     my $q_str = shift;
 
-    my $cur_user;
+    my $cur_user = $self->hub->current_user;
     my $authz = $self->hub->authz;
 
     my @answers;
     for my $q (split '-', $q_str) {
         if ($q =~ m/^w(\d+)$/) {
-            $cur_user ||= $self->hub->current_user;
-
             my $ws = Socialtext::Workspace->new(workspace_id => $1);
             my $ok = $ws && $self->hub->authz->user_has_permission_for_workspace(
                 user => $cur_user,
                 permission => ST_READ_PERM,
                 workspace => $ws,
             ) ? 1 : 0;
+            push @answers, "${q}_$ok";
+        }
+        elsif ($q =~ m/^u(\d+)$/) {
+            my $user = Socialtext::User->new(user_id => $1);
+            my $ok = $user && $user->profile_is_visible_to($cur_user) ? 1 : 0;
             push @answers, "${q}_$ok";
         }
         elsif ($q =~ m/^h(\d+)$/) {
@@ -127,7 +130,7 @@ sub _questions_to_answers {
             my $ws_name = $self->hub->current_workspace->name;
             st_log->info("Unknown wikitext cache question '$q' for $ws_name/"
                     . $self->id);
-            return 'no-answers';
+            return undef;;
         }
     }
     return join '-', @answers;
