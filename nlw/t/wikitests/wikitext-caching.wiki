@@ -1,0 +1,61 @@
+* Fixture: WikitextCaching
+
+| standard-test-setup |
+| set | ws1_id | %%workspace_id%% |
+
+Create another user in the same workspace as the main user
+| set | user2 | user2-%%start_time%%@ken.socialtext.net |
+| create-user | %%user2%% | password | %%account%% |
+| add-member | %%user2%% | %%workspace%% |
+
+Create another workspace just for the main user.
+| set | ws2 | ws2-%%start_time%% |
+| create-workspace | %%ws2%% |
+| set | ws2_id | %%workspace_id%% |
+| add-member | %%username%% | %%ws2%% |
+
+
+| Comment    | Create and fetch the simplest possible page    |
+| edit_page  | %%workspace%%          | Test | Simplest page possible. |
+| fetch-page | Test                   | hit  |                         |
+| body-like  | Simplest page possible |      |                         |
+
+| cache-created-ok | %%workspace%% |
+| question-file-is | %%workspace%% | Test | null |
+
+| Comment    | fetch it again, make sure it's cached again |     |
+| fetch-page | Test                                        | hit |
+
+
+| Comment    | Create and fetch a page with an intra-ws link |
+| edit_page  | %%workspace%% | Test2 | This has [one link]. |
+| fetch-page | Test2         | hit   |                      |
+
+| cache-created-ok | %%workspace%% |
+| question-file-is | %%workspace%% | Test2 | null |
+
+
+| Comment    | Create and fetch a page with an inter-ws link |
+| edit_page  | %%workspace%% | Test3 | See {link: %%ws2%% [this page]}. |
+| fetch-page | Test3         | hit   |                                  |
+| body-like  | href="/%%ws2%%/index.cgi?this%20page">this page</a> |
+
+| cache-created-ok | %%workspace%% |
+| question-file-is | %%workspace%% | Test3 | w%%ws2_id%% |
+
+| Comment | Now view this page from the other user without access |
+| http-user-pass | %%user2%% | password |
+| fetch-page     | Test3     | miss     |
+| body-like  | <span class="wafl_permission_error">this page</span> |
+
+| Comment    | View it a second time, it should be cached |     |
+| fetch-page | Test3                                      | hit |
+| body-like  | <span class="wafl_permission_error">this page</span> |
+
+| Comment | Clear out the cache, verify it is re-generated |
+| http-user-pass       | %%username%%  | password |             |
+| clear-wikitext-cache |               |          |             |
+| fetch-page           | Test3         | miss     |             |
+| question-file-is     | %%workspace%% | Test3    | w%%ws2_id%% |
+| fetch-page           | Test3         | hit      |             |
+
