@@ -21,7 +21,7 @@ Create another workspace just for the main user.
 | body-like  | Simplest page possible |      |                         |
 
 | cache-created-ok | %%workspace%% |
-| question-file-is | %%workspace%% | Test | null |
+| question-file-is | Test | null |
 
 | Comment    | fetch it again, make sure it's cached again |     |
 | fetch-page | Test                                        | hit |
@@ -32,7 +32,7 @@ Create another workspace just for the main user.
 | fetch-page | Test2         | hit   |                      |
 
 | cache-created-ok | %%workspace%% |
-| question-file-is | %%workspace%% | Test2 | null |
+| question-file-is | Test2 | null |
 
 
 | Comment    | Create and fetch a page with an inter-ws link |
@@ -41,7 +41,7 @@ Create another workspace just for the main user.
 | body-like  | href="/%%ws2%%/index.cgi?this%20page">this page</a> |
 
 | cache-created-ok | %%workspace%% |
-| question-file-is | %%workspace%% | Test3 | w%%ws2_id%% |
+| question-file-is | Test3 | w%%ws2_id%% |
 
 | Comment | Now view this page from the other user without access |
 | http-user-pass | %%user2%% | password |
@@ -56,7 +56,7 @@ Create another workspace just for the main user.
 | http-user-pass       | %%username%%  | password |             |
 | clear-wikitext-cache |               |          |             |
 | fetch-page           | Test3         | miss     |             |
-| question-file-is     | %%workspace%% | Test3    | w%%ws2_id%% |
+| question-file-is     | Test3    | w%%ws2_id%% |
 | fetch-page           | Test3         | hit      |             |
 
 
@@ -64,7 +64,7 @@ Create another workspace just for the main user.
 | st-admin | set-workspace-config -w %%workspace%% allows_html_wafl 1 |
 | edit_page  | %%workspace%% | Test4 | Test\n.html\n<strong>hai</strong>\n.html\n |
 | fetch-page       | Test4         | hit   |             |
-| question-file-is | %%workspace%% | Test4 | h%%ws1_id%% |
+| question-file-is | Test4 | h%%ws1_id%% |
 | body-like   | <div class="wafl_block"><strong>hai</strong>             |      |
 | st-admin    | set-workspace-config -w %%workspace%% allows_html_wafl 0 |      |
 | fetch-page  | Test4                                                    | miss |
@@ -78,9 +78,17 @@ Create another workspace just for the main user.
 | body-like   | <div class="wafl_block"><strong>hai</strong>             |      |
 
 
+| Comment            | RSS Feeds     |         |      |
+| edit-page          | %%workspace%% | RSSTest | {fetchrss: http://www.socialtext.com/blog/atom.xml} |
+| fetch-page         | RSSTest | hit      |
+| question-file-like | RSSTest | qr/E\d+/ |
+| set-question-file  | RSSTest | E0       |
+| fetch-page         | RSSTest | miss     |
+| fetch-page         | RSSTest | hit      |
+
+
 ^^ To Test
 
-** RSS/ATOM feeds
 ** Google searches
 ** web links to images (any external content)
 ** user WAFLs

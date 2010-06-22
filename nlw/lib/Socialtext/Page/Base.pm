@@ -15,6 +15,7 @@ use warnings;
 use Socialtext::Formatter::AbsoluteLinkDictionary;
 use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::File;
+use Socialtext::Log qw/st_log/;
 use Carp ();
 use Carp qw/cluck/;
 
@@ -114,11 +115,19 @@ sub _questions_to_answers {
             my $ok = $ws && $ws->allows_html_wafl() ? 1 : 0;
             push @answers, "${q}_$ok";
         }
+        elsif ($q =~ m/^E(\d+)$/) {
+            my $expires_at = $1;
+            my $ok = time() < $expires_at ? 1 : 0;
+            push @answers, "${q}_$ok";
+        }
         elsif ($q eq 'null') {
             next;
         }
         else {
-            die "Unknown question - '$q'!";
+            my $ws_name = $self->hub->current_workspace->name;
+            st_log->info("Unknown wikitext cache question '$q' for $ws_name/"
+                    . $self->id);
+            return 'no-answers';
         }
     }
     return join '-', @answers;

@@ -1020,14 +1020,25 @@ sub _cache_html {
         my $t = time_scope('cache_html');
         my @cache_questions;
         my %allows_html;
+        my $expires_at = 0;
         $self->get_units(
             wafl_phrase => sub {
                 my $wafl = shift;
-                return unless ref($wafl) eq
-                    'Socialtext::Formatter::InterWikiLink';
-                my ($ws_name) = $wafl->parse_wafl_reference;
-                my $ws = Socialtext::Workspace->new(name => $ws_name);
-                push @cache_questions, { workspace => $ws } if $ws;
+                if (ref($wafl) eq 'Socialtext::Formatter::InterWikiLink') {
+                    my ($ws_name) = $wafl->parse_wafl_reference;
+                    my $ws = Socialtext::Workspace->new(name => $ws_name);
+                    push @cache_questions, { workspace => $ws } if $ws;
+                }
+                elsif (ref($wafl) eq 'Socialtext::FetchRSS::Wafl') {
+                    # Feeds are cached for 1 hour, so we can cache this render for 1h
+                    # There may be an edge case initially where a feed
+                    # ends up getting cached for at most 2 hours if the Question
+                    # had not yet been generated.
+                    my $feed_expiry = time + 3600;
+                    if (!$expires_at or $expires_at > $feed_expiry) {
+                        $expires_at = $feed_expiry;
+                    }
+                }
             },
             wafl_block => sub {
                 my $wafl = shift;
@@ -1039,6 +1050,9 @@ sub _cache_html {
         for my $ws_id (keys %allows_html) {
             my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
             push @cache_questions, { allows_html_wafl => $ws };
+        }
+        if ($expires_at) {
+            push @cache_questions, { expires_at => $expires_at };
         }
         
         eval {
@@ -1069,6 +1083,11 @@ sub _cache_using_questions {
         elsif ($ws = $q->{allows_html_wafl}) {
             push @short_q, 'h' . $ws->workspace_id;
             push @answers, $ws->allows_html_wafl ? 1 : 0;
+        }
+        elsif (my $t = $q->{expires_at}) {
+            push @short_q, 'E' . $t;
+            # We just made it, so it's not expired yet
+            push @answers, 1;
         }
         else {
             die "Unknown question: " . keys(%$q);
