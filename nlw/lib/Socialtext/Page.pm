@@ -1010,7 +1010,12 @@ sub _perform_store_actions {
     $self->hub->backlinks->update($self);
     Socialtext::JobCreator->index_page($self);
     Socialtext::JobCreator->send_page_notifications($self);
+    $self->_cache_html();
+}
 
+sub _cache_html {
+    my $self = shift;
+    my $html_ref;
     {
         my $t = time_scope('cache_html');
         my @cache_questions;
@@ -1028,11 +1033,12 @@ sub _perform_store_actions {
         }; die "ZOMG: $@" if $@;
         
         eval {
-        $self->_cache_using_questions( \@cache_questions );
+        $html_ref = $self->_cache_using_questions( \@cache_questions );
         }; die "OMG: $@" if $@;
     }
 
     $self->_log_page_action();
+    return $html_ref;
 }
 
 sub _cache_using_questions {
@@ -1066,6 +1072,7 @@ sub _cache_using_questions {
     my $cache_file = $self->_answer_file($answer_str);
     warn "Writing cached html to $cache_file\n";
     Socialtext::File::set_contents_utf8($cache_file, $html);
+    return \$html;
 }
 
 sub _page_cache_basename {
