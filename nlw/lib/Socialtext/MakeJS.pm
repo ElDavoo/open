@@ -18,7 +18,9 @@ use Carp qw(confess);
 use Socialtext::AppConfig;
 use namespace::clean -except => 'meta';
 
-my $code_base = Socialtext::AppConfig->code_base;
+my $code_base = $ENV{NLW_CONFIG}
+    ? Socialtext::AppConfig->code_base : $FindBin::Bin;
+$code_base =~ s{dev-bin$}{share};
 
 our $VERBOSE = 0;
 
