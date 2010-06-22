@@ -57,14 +57,11 @@ QUOTE
         "Assert searching defaults to OR connectivity"
     );
     search_ok( 'bridges -smoke',   0, "Search with negation" );
-    TODO: {
-    local $TODO = 'Phrase searching not yet implemented';
     search_ok( '"smell of smoke"', 1, "Phrase search" );
     search_ok(
         'bridges AND NOT "smell of smoke"', 0,
         "Search with phrase negation"
     );
-    }
     search_ok(
         'bridges AND NOT "smoke on the water"', 1,
         "Search without Deep Purple "
@@ -161,12 +158,9 @@ rt22174_title_search_bug: {
     erase_index_ok();
     make_page_ok( "Beamish Stout", 'has thou slain the jabberwock' );
     make_page_ok( "light", 'is beamish.  has thou slain the jabberwock' );
-    TODO: {
-    local $TODO = 'Solr stories should fix me!';
     search_ok( '"has thou slain the jabberwock" AND title:beamish', 1, "" );
     search_ok( '"has thou slain the jabberwock" AND =beamish',      1, "" );
     search_ok( '=beamish AND "has thou slain the jabberwock"',      1, "" );
-    }
 }
 
 ###############################################################################
