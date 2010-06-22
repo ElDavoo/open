@@ -59,3 +59,40 @@ Create another workspace just for the main user.
 | question-file-is     | %%workspace%% | Test3    | w%%ws2_id%% |
 | fetch-page           | Test3         | hit      |             |
 
+
+| Comment  | Allows HTML wafl preference                              |
+| st-admin | set-workspace-config -w %%workspace%% allows_html_wafl 1 |
+| edit_page  | %%workspace%% | Test4 | Test\n.html\n<strong>hai</strong>\n.html\n |
+| fetch-page       | Test4         | hit   |             |
+| question-file-is | %%workspace%% | Test4 | h%%ws1_id%% |
+| body-like   | <div class="wafl_block"><strong>hai</strong>             |      |
+| st-admin    | set-workspace-config -w %%workspace%% allows_html_wafl 0 |      |
+| fetch-page  | Test4                                                    | miss |
+| body-unlike | <div class="wafl_block"><strong>hai</strong>             |      |
+| body-like   | &lt;strong&gt;hai&lt;/strong&gt;                         |      |
+| fetch-page  | Test4                                                    | hit  |
+| body-unlike | <div class="wafl_block"><strong>hai</strong>             |      |
+| body-like   | &lt;strong&gt;hai&lt;/strong&gt;                         |      |
+| st-admin    | set-workspace-config -w %%workspace%% allows_html_wafl 1 |      |
+| fetch-page  | Test4                                                    | hit  |
+| body-like   | <div class="wafl_block"><strong>hai</strong>             |      |
+
+
+^^ To Test
+
+** RSS/ATOM feeds
+** Google searches
+** web links to images (any external content)
+** user WAFLs
+** included pages and spreadsheets
+** Any links or WAFLS whose "More Options" can include a workspace:
+*** TOC links
+*** Tag/Weblog links
+*** Tag/Weblog lists
+*** Recent Changes
+*** Wiki Search
+*** links to attachments in other workspaces
+
+Really Tricky Cases:
+* Page includes
+** allows_html for included pages?

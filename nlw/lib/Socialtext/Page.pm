@@ -1019,7 +1019,7 @@ sub _cache_html {
     {
         my $t = time_scope('cache_html');
         my @cache_questions;
-        eval {
+        my %allows_html;
         $self->get_units(
             wafl_phrase => sub {
                 my $wafl = shift;
@@ -1029,11 +1029,20 @@ sub _cache_html {
                 my $ws = Socialtext::Workspace->new(name => $ws_name);
                 push @cache_questions, { workspace => $ws } if $ws;
             },
+            wafl_block => sub {
+                my $wafl = shift;
+                if ($wafl->wafl_id eq 'html') {
+                    $allows_html{$self->hub->current_workspace->workspace_id}++;
+                }
+            },
         );
-        }; die "ZOMG: $@" if $@;
+        for my $ws_id (keys %allows_html) {
+            my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
+            push @cache_questions, { allows_html_wafl => $ws };
+        }
         
         eval {
-        $html_ref = $self->_cache_using_questions( \@cache_questions );
+            $html_ref = $self->_cache_using_questions( \@cache_questions );
         }; die "OMG: $@" if $@;
     }
 
@@ -1048,13 +1057,21 @@ sub _cache_using_questions {
     my @short_q;
     my @answers;
     for my $q (@$questions) {
-        if (my $ws = $q->{workspace}) {
+        my $ws;
+        if ($ws = $q->{workspace}) {
             push @short_q, 'w' . $ws->workspace_id;
             push @answers, $self->hub->authz->user_has_permission_for_workspace(
                 user => $self->hub->current_user,
                 permission => ST_READ_PERM,
                 workspace => $ws
             ) ? 1 : 0;
+        }
+        elsif ($ws = $q->{allows_html_wafl}) {
+            push @short_q, 'h' . $ws->workspace_id;
+            push @answers, $ws->allows_html_wafl ? 1 : 0;
+        }
+        else {
+            die "Unknown question: " . keys(%$q);
         }
     }
 

@@ -79,9 +79,14 @@ sub to_html {
             return Socialtext::File::get_contents_utf8($cache_file);
         }
         warn "Page HTML cache MISS ($cache_file)\n";
+
+        my $html = $self->hub->viewer->process($content, $page);
+        Socialtext::File::set_contents_utf8($cache_file, $html);
+        return $html;
     }
 
-    return $self->hub->viewer->process($content, $page);
+    my $html_ref = $self->_cache_html;
+    return $$html_ref;
 }
 
 sub _questions_to_answers {
@@ -97,11 +102,16 @@ sub _questions_to_answers {
             $cur_user ||= $self->hub->current_user;
 
             my $ws = Socialtext::Workspace->new(workspace_id => $1);
-            my $ok = $self->hub->authz->user_has_permission_for_workspace(
+            my $ok = $ws && $self->hub->authz->user_has_permission_for_workspace(
                 user => $cur_user,
                 permission => ST_READ_PERM,
                 workspace => $ws,
             ) ? 1 : 0;
+            push @answers, "${q}_$ok";
+        }
+        elsif ($q =~ m/^h(\d+)$/) {
+            my $ws = Socialtext::Workspace->new(workspace_id => $1);
+            my $ok = $ws && $ws->allows_html_wafl() ? 1 : 0;
             push @answers, "${q}_$ok";
         }
         elsif ($q eq 'null') {
