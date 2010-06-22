@@ -15,12 +15,16 @@ use File::Find qw(find);
 use File::Basename qw(basename dirname);
 use Clone qw(clone);
 use Carp qw(confess);
-use Socialtext::AppConfig;
 use namespace::clean -except => 'meta';
 
-my $code_base = $ENV{NLW_CONFIG}
-    ? Socialtext::AppConfig->code_base : $FindBin::Bin;
-$code_base =~ s{dev-bin$}{share};
+my $code_base;
+if ($FindBin::Bin =~ /dev-bin/) {
+    ($code_base = $FindBin::Bin) =~ s{dev-bin$}{share};
+}
+else {
+    require Socialtext::AppConfig;
+    $code_base = Socialtext::AppConfig->code_base;
+}
 
 our $VERBOSE = 0;
 
