@@ -1924,8 +1924,15 @@ sub edit_page {
         $content,
     );
     my $code = $self->{http}->response->code;
-    ok( (($code == 201) or ($code == 204)), "Code is $code");
-    diag "Edited page [$page_name]/$workspace";
+    my $success = $code == 201 || $code == 204;
+    ok( $success, "Code is $code");
+
+    if ($success) {
+        diag "Edited page $workspace/[$page_name]";
+    }
+    else {
+        diag "Failed to edit page $workspace/[$page_name]";
+    }
 }
 
 sub comment_page {
