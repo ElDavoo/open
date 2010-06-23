@@ -797,6 +797,10 @@ By default, the Groups are returned ordered by their Group Name.
 
 Specifies that the Groups should be returned in ascending or descending order.
 
+=item ids_only => 1
+
+Return I<only> the Group Ids.  By default, Group objects are returned.
+
 =item include_aggregates => 1
 
 Specifies that the C<Socialtext::Group> objects returned should B<already>
