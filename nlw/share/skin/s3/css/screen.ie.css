@@ -122,19 +122,6 @@ div#mainNav ul.level2 li {
     width: 20em; 
 }
 
-/* These two are not perfect in IE6 because it does not have a max-selector. */
-div#mainNav ul ul.level2 {
-    max-height: 168px;
-    height: auto !important;
-    height: 168px;
-}
-
-div#mainNav ul ul.level2.withimage {
-    max-height: 261px;
-    height: auto !important;
-    height: 261px;
-}
-
 /* Stupid IE6 that doesn't understand '>' */
 * html div#mainNav ul.level1 li a {
     background: url(../images/dropdownTick.png) no-repeat center right;

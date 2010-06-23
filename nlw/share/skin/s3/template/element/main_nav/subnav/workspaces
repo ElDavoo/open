@@ -7,23 +7,26 @@
 
   [% UNLESS user.is_guest %]
     <script>
-        $("#global-workspace-list").navList({
-            url: "/data/workspaces?minimal=1",
-            defaultId: 'default-workspace-link',
-            href: function(w) { return '/' + w.name },
-            title: function(w) { return w.title },
-            sort: function(a,b) {
-                if (a['default']) return -1;
-                if (b['default']) return 1;
-                if (a.name == b.title) return 0;
-                return (a.title < b.title) ? -1 : 1;
+        $("#global-workspace-list").navList([
+            {
+                title: loc("All My Workspaces"),
+                href: "/?action=workspaces_listall"
             },
-            emptyMessage:
-                loc("Currently, you are not a member of any workspaces."),
-            actions: [
-                [ loc("All My Workspaces..."), "/?action=workspaces_listall" ]
-            ]
-        });
+            {
+                url: "/data/workspaces?minimal=1",
+                defaultId: 'default-workspace-link',
+                href: function(w) { return '/' + w.name },
+                title: function(w) { return w.title },
+                sort: function(a,b) {
+                    if (a['default']) return -1;
+                    if (b['default']) return 1;
+                    if (a.name == b.title) return 0;
+                    return (a.title < b.title) ? -1 : 1;
+                },
+                emptyMessage:
+                    loc("Currently, you are not a member of any workspaces.")
+            }
+        ]);
     </script>
   [% END %]
 </li>

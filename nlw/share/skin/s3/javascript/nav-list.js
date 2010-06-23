@@ -1,46 +1,51 @@
 (function($) {
 
-$.fn.navList = function(opts) {
-    var self = this;
+function fetchData(entries, index, callback) {
+    if (index < entries.length) {
+        var entry = entries[index];
+        if (entry.url) {
+            $.ajax({
+                url: entry.url,
+                type: 'get',
+                dataType: 'json',
+                success: function(data) {
+                    if (entry.sort) data = data.sort(entry.sort);
+                    entry.data = data;
 
-    if (!opts.url || !opts.title || !opts.href)
-        throw new Error("url, title and href are required");
-
-    $.ajax({
-        url: opts.url,
-        type: 'get',
-        dataType: 'json',
-        success: function(data) {
-            if (opts.sort) data = data.sort(opts.sort);
-            $(self).each(function() {
-                $(this).html(Jemplate.process('nav-list.tt2', {
-                    loc: loc,
-                    data: data,
-                    opts: opts
-                }));
-
-                // Work around {bz: 3614} by hiding the Y-axis
-                // scroll bar when the list size is small.
-                if ($.browser.msie && $.browser.version == 7) {
-                    if ($(this).find('li').size() < 8) {
-                        $(this).css('overflow-y', 'hidden');
-                    }
+                    fetchData(entries, index + 1, callback);
                 }
             });
         }
-    });
-};
+        else {
+            // skip loading data, move on to the next entry
+            fetchData(entries, index + 1, callback);
+        }
+    }
+    else {
+        callback(); // Done loading all data
+    }
+}
 
-$.fn.peopleNavList = function () {
-    $(this).navList({
-        url: "/data/people/" + Socialtext.userid + "/watchlist",
-        icon: function(p) { return '/data/people/' + p.id + '/small_photo' },
-        href: function(p) { return '/st/profile/' + p.id },
-        title: function(p) { return p.best_full_name },
-        emptyMessage: loc("Currently, you are not following any people."),
-        actions: [
-            [ loc("People Directory..."), "/?action=people" ]
-        ]
+$.fn.navList = function(entries) {
+    var self = this;
+
+    fetchData(entries, 0, function() {
+        $(self).each(function() {
+            $(this).html(Jemplate.process('nav-list.tt2', {
+                loc: loc,
+                entries: entries
+            }));
+
+            $('.scrollingNav', this).each(function() {
+                // Show a maximum of 8 entries (AKA cross-browser max-height)
+                var li_height = $(this).hasClass('has_icons') ? 30 : 20;
+                if ($(this).find('li').size() >= 8) {
+                    $(this).height(li_height * 8);
+                }
+            });
+
+            $('li.scrollingNav li:last, li:last', this).addClass('last');
+        });
     });
 };
 
