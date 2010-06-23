@@ -32,15 +32,16 @@ sub All {
 }
 
 sub delete_recklessly {
-    my $class               = shift;
-    my $group_or_homunculus = shift;
+    my $class       = shift;
+    my $maybe_group = shift;
+    my $group_id = ref($maybe_group) ? $maybe_group->group_id : $maybe_group;
 
     require Socialtext::SQL;
 
     Socialtext::SQL::sql_execute( q{
         DELETE FROM groups
          WHERE group_id = ?
-    }, $group_or_homunculus->group_id );
+    }, $group_id );
 
     Socialtext::SQL::disconnect_dbh();
 }
