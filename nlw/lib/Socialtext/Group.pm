@@ -257,6 +257,9 @@ sub All {
             };
         };
     }
+    elsif ($p{ids_only}) {
+        $apply = sub { shift->{group_id} };
+    }
     else {
         $apply = sub {
             my $row = shift;
