@@ -91,7 +91,7 @@ sub parse_wafl_reference {
     my ( $workspace_name, $page_title, $qualifier, @other ) =
         $self->arguments =~ $self->wafl_reference_parse or return;
 
-    # Needed for funky behaviour with unit tests.
+    # Not sure why, but sometimes we don't have the hub here.
     if ($self->hub && $self->current_workspace) {
         $workspace_name ||= $self->current_workspace_name;
     }
@@ -103,7 +103,9 @@ sub parse_wafl_reference {
     # we might enter the formatter. This is probably the wrong place
     # for this.
     my $page_id = Socialtext::String::title_to_id($page_title)
-        || $self->hub->viewer->page_id || $self->current_page_id;
+        || ($self->hub
+            && $self->hub->viewer ? $self->hub->viewer->page_id : '')
+        || $self->current_page_id;
     my $title = $page_title || '';
 
     # XXX using hub here may causes issues with page titles
