@@ -16,6 +16,7 @@ use Socialtext::Formatter::AbsoluteLinkDictionary;
 use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::File;
 use Socialtext::Log qw/st_log/;
+use Socialtext::Timer qw/time_scope/;
 use Carp ();
 use Carp qw/cluck/;
 
@@ -70,20 +71,23 @@ sub to_html {
     my $q_file = $self->_question_file;
     if ($q_file and -e $q_file) {
         my $q_str = Socialtext::File::get_contents($q_file);
-        warn "Found a question string: '$q_str'\n";
         my $a_str = $self->_questions_to_answers($q_str);
-        warn "My answer is '$a_str'" if defined $a_str;
         my $cache_file = $self->_answer_file($a_str);
         if (-e $cache_file) {
-            warn "Page HTML cache HIT ($cache_file)\n";
+            my $t = time_scope('wikitext_HIT');
             $self->{__cache_hit}++;
             return Socialtext::File::get_contents_utf8($cache_file);
         }
-        warn "Page HTML cache MISS ($cache_file)\n";
 
+        my $t = time_scope('wikitext_MISS');
         my $html = $self->hub->viewer->process($content, $page);
-        Socialtext::File::set_contents_utf8($cache_file, $html) if defined $a_str;
-        return $html;
+        if (defined $a_str) {
+            Socialtext::File::set_contents_utf8($cache_file, $html);
+            return $html;
+        }
+        # Our answer string was invalid, so we'll need to re-generate the Q file
+        # We will pass in the rendered html to save work
+        return ${ $self->_cache_html(\$html) };
     }
 
     my $html_ref = $self->_cache_html;
@@ -120,7 +124,21 @@ sub _questions_to_answers {
         }
         elsif ($q =~ m/^E(\d+)$/) {
             my $expires_at = $1;
+            warn "Checking expiry: " . time() . " < $expires_at";
             my $ok = time() < $expires_at ? 1 : 0;
+            return undef unless $ok;
+            push @answers, "${q}_1";
+        }
+        elsif ($q =~ m/^d(.+)$/) {
+            my $pref_str = $1;
+            my $prefs = $self->hub->preferences_object;
+            my $my_prefs = join ',',
+                $prefs->date_display_format->value,
+                $prefs->time_display_12_24->value,
+                $prefs->time_display_seconds->value,
+                $prefs->timezone->value;
+            $my_prefs =~ s/-/m/; # - is used as a field separator
+            my $ok = $pref_str eq $my_prefs;
             push @answers, "${q}_$ok";
         }
         elsif ($q eq 'null') {

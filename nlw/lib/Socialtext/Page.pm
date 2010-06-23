@@ -34,6 +34,7 @@ use Socialtext::SQL qw/:exec :txn get_dbh sql_parse_timestamptz/;
 use Socialtext::SQL::Builder qw/sql_insert_many/;
 use Socialtext::Permission 'ST_READ_PERM';
 
+use Data::Dumper;
 use Carp ();
 use Class::Field qw( field const );
 use Cwd ();
@@ -1015,62 +1016,135 @@ sub _perform_store_actions {
 
 sub _cache_html {
     my $self = shift;
-    my $html_ref;
+    my $html_ref = shift;
+    return if $self->is_spreadsheet;
     {
         my $t = time_scope('cache_html');
         my %interwiki;
         my %allows_html;
         my %users;
-        my $expires_at = 0;
+        my $expires_at;
+
+        my $cur_ws = $self->hub->current_workspace;
+        local *Socialtext::Formatter::WaflPhrase::hub = sub {
+            my $wafl = shift;
+            return $wafl->{hub} || $self->hub;
+        };
+        my %cacheable_wafls = map { $_ => 1 } qw/
+            Socialtext::Formatter::TradeMark 
+            Socialtext::Formatter::Preformatted 
+            Socialtext::PageAnchorsWafl
+            Socialtext::Wikiwyg::FormattingTestRunAll
+        /;
+        my %not_cacheable_wafls = map { $_ => 1 } qw/
+            Socialtext::Formatter::SpreadsheetInclusion
+            Socialtext::Formatter::PageInclusion
+            Socialtext::RecentChanges::Wafl
+            Socialtext::Category::Wafl
+            Socialtext::Search::Wafl
+        /;
+        my @cache_questions;
         $self->get_units(
             wafl_phrase => sub {
                 my $wafl = shift;
+
                 my $wafl_expiry = 0;
-                if (ref($wafl) eq 'Socialtext::Formatter::InterWikiLink') {
+                my $wafl_class = ref $wafl;
+
+                # Some short-circuts based on the wafl class
+                return if $cacheable_wafls{ $wafl_class };
+                if ($not_cacheable_wafls{$wafl_class}) {
+                    $expires_at = -1;
+                    return;
+                }
+
+                my $unknown = 0;
+                if ($wafl_class =~ m/(?:InterWikiLink|Image|File|HtmlPage|Toc|CSS)$/) {
                     my ($ws_name) = $wafl->parse_wafl_reference;
                     $interwiki{$ws_name}++;
                 }
-                elsif (ref($wafl) eq 'Socialtext::FetchRSS::Wafl') {
+                elsif ($wafl_class =~ m/(?:TagLink|CategoryLink|WeblogLink)$/) {
+                    my ($ws_name) = $wafl->parse_wafl_category;
+                    $interwiki{$ws_name}++ if $ws_name;
+                }
+                elsif ($wafl_class eq 'Socialtext::FetchRSS::Wafl') {
                     # Feeds are cached for 1 hour, so we can cache this render for 1h
                     # There may be an edge case initially where a feed
                     # ends up getting cached for at most 2 hours if the Question
                     # had not yet been generated.
                     $wafl_expiry = 3600;
                 }
-                elsif (ref($wafl) eq 'Socialtext::GoogleSearchPlugin::Wafl') {
+                elsif ($wafl_class eq 'Socialtext::GoogleSearchPlugin::Wafl') {
                     # Cache google searches for 5 minutes
                     $wafl_expiry = 300;
                 }
-                elsif (ref($wafl) eq 'Socialtext::Pluggable::WaflPhrase') {
+                elsif ($wafl_class eq 'Socialtext::Pluggable::WaflPhrase') {
                     if ($wafl->{method} eq 'user') {
-                        $users{$wafl->{arguments}}++;
+                        $users{$wafl->{arguments}}++ if $wafl->{arguments};
                     }
                     else {
-                        use Data::Dumper;
-                        warn Dumper $wafl;
+                        $unknown = 1;
+                    }
+                }
+                elsif ($wafl_class eq 'Socialtext::Date::Wafl') {
+                    # Must cache on date prefs
+                    my $prefs = $self->hub->preferences_object;
+
+                    push @cache_questions, {
+                        date => join ',',
+                            $prefs->date_display_format->value,
+                            $prefs->time_display_12_24->value,
+                            $prefs->time_display_seconds->value,
+                            $prefs->timezone->value
+                    };
+                }
+                elsif ($wafl_class eq 'Socialtext::Category::Wafl') {
+                    if ($wafl->{method} =~ m/^(?:tag|category)_list$/) {
+                        # We do not cache tag list views
+                        $expires_at = -1;
+                    }
+                    else {
+                        $unknown = 1;
                     }
                 }
                 else {
-                    warn ref $wafl;
+                    $unknown = 1;
+                }
+
+                if ($unknown) {
+                    # For unknown wafls, set expiry to be a second ago so 
+                    # the page is never cached.
+                    warn "Unknown wafl phrase: " . ref($wafl) . ' - ' . $wafl->{method};
+                    $expires_at = -1;
                 }
 
                 if ($wafl_expiry) {
-                    my $feed_expiry = time + $wafl_expiry;
                     # Keep track of the lowest expiry time.
-                    if (!$expires_at or $expires_at > $feed_expiry) {
-                        $expires_at = $feed_expiry;
+                    if (!$expires_at or $expires_at > $wafl_expiry) {
+                        $expires_at = $wafl_expiry;
                     }
                 }
             },
             wafl_block => sub {
                 my $wafl = shift;
-                if ($wafl->wafl_id eq 'html') {
-                    $allows_html{$self->hub->current_workspace->workspace_id}++;
+                my $wafl_class = ref($wafl);
+                return if $cacheable_wafls{ $wafl_class };
+                if ($wafl_class eq 'Socialtext::Wikiwyg::FormattingTest') {
+                    # This can be cached.
+                    return;
+                }
+                elsif ($wafl->can('wafl_id') and $wafl->wafl_id eq 'html') {
+                    $allows_html{$cur_ws->workspace_id}++;
+                }
+                else {
+                    # Do not cache pages with unknown blocks present
+                    $expires_at = -1;
+                    warn "Unknown wafl block: " . ref($wafl);
                 }
             },
         );
 
-        my @cache_questions;
+        delete $interwiki{ $cur_ws->name };
         for my $ws_name (keys %interwiki) {
             my $ws = Socialtext::Workspace->new(name => $ws_name);
             push @cache_questions, { workspace => $ws } if $ws;
@@ -1082,12 +1156,13 @@ sub _cache_html {
         for my $user_id (keys %users) {
             push @cache_questions, { user_id => $user_id };
         }
-        if ($expires_at) {
+        if (defined $expires_at) {
+            $expires_at += time();
             push @cache_questions, { expires_at => $expires_at };
         }
         
         eval {
-            $html_ref = $self->_cache_using_questions( \@cache_questions );
+            $html_ref = $self->_cache_using_questions( \@cache_questions, $html_ref );
         }; die "OMG: $@" if $@;
     }
 
@@ -1098,6 +1173,7 @@ sub _cache_html {
 sub _cache_using_questions {
     my $self = shift;
     my $questions = shift;
+    my $html_ref = shift;
 
     my @short_q;
     my @answers;
@@ -1126,8 +1202,13 @@ sub _cache_using_questions {
             # We just made it, so it's not expired yet
             push @answers, 1;
         }
+        elsif (my $d = $q->{date}) {
+            $d =~ s/-/m/; # - is used as a field separator
+            push @short_q, 'd' . $d;
+            push @answers, 1;
+        }
         else {
-            die "Unknown question: " . keys(%$q);
+            die "Unknown question: " . Dumper $q;
         }
     }
 
@@ -1138,7 +1219,7 @@ sub _cache_using_questions {
     warn "Wrote '$q_str' to $q_file\n";
     Socialtext::File::set_contents($q_file, $q_str);
 
-    my $html = $self->to_html;
+    my $html = $html_ref ? $$html_ref : $self->to_html;
     my $answer_str = join '-', map { $_ . '_' . shift(@answers) } @short_q;
 
     my $cache_dir = $self->_cache_dir or return;

@@ -37,7 +37,12 @@ Run these tests as the main user.
 | Comment    | Create and fetch a page with an intra-ws link |
 | edit_page  | %%workspace%% | Test2 | This has [one link]. |
 | fetch-page | Test2         | hit   |                      |
+| cache-created-ok | %%workspace%% |
+| question-file-is | Test2 | null |
 
+| Comment    | Create and fetch a page with an intra-ws link wafl |
+| edit_page  | %%workspace%% | Test2 | This has {link: [one link]}. |
+| fetch-page | Test2         | hit   |                      |
 | cache-created-ok | %%workspace%% |
 | question-file-is | Test2 | null |
 
@@ -89,7 +94,7 @@ Run these tests as the main user.
 | edit-page          | %%workspace%% | RSSTest | {fetchrss: http://www.socialtext.com/blog/atom.xml} |
 | fetch-page         | RSSTest | hit      |
 | question-file-like | RSSTest | qr/E\d+/ |
-| set-question-file  | RSSTest | E0       |
+| set-question-file  | RSSTest | E5440    |
 | fetch-page         | RSSTest | miss     |
 | fetch-page         | RSSTest | hit      |
 
@@ -107,21 +112,114 @@ Run these tests as the main user.
 | fetch-page       | usertest                          | miss             |
 | body-unlike      | <span class="person authorized"   |                  |
 | body-like        | <span class="person unauthorized" |                  |
+| http-user-pass   | %%username%%                      | password         |
 
-^^ To Test
+| Comment | Pages with includes are never cached |
+| edit-page  | %%workspace%% | includee | Hi, I am being included |
+| edit-page  | %%workspace%% | includer | {include: [includee]}   |
+| fetch-page | includer      | miss     |                         |
+| fetch-page | includer      | miss     |                         |
+| edit-page  | %%workspace%% | includer | {ss: [includee]}   |
+| fetch-page | includer      | miss     |                         |
 
-** included pages and spreadsheets
-** Any links or WAFLS whose "More Options" can include a workspace:
-*** TOC links
-*** Tag/Weblog links
-*** Tag/Weblog lists
-*** Recent Changes
-*** Wiki Search
-*** links to attachments in other workspaces
+| Comment | Image, File and HTML_page wafls on same page |
+| edit-page | %%workspace%% | att | This page has no attachments yet. |
+| set | attach_url | /data/workspaces/%%workspace%%/pages/att/attachments |
+| set | hdrs | Content-Type=text/html |
+| post | %%attach_url%%?name=test.html | %%hdrs%% | <strong>Hi</strong> |
+| set | hdrs | Content-Type=text/css |
+| post | %%attach_url%%?name=test.css | %%hdrs%% | CSS goes here. |
+| code-is          | 201           |      |                                          |
+| edit-page        | %%workspace%% | att  | {file: test.html}                        |
+| fetch-page       | att           | hit  |                                          |
+| question-file-is | att           | null |                                          |
+| edit-page        | %%workspace%% | att  | {html_page: test.html} {file: test.html} |
+| fetch-page       | att           | hit  |                                          |
+| question-file-is | att           | null |                                          |
+| edit-page        | %%workspace%% | att  | {css_include: test.css}                  |
+| fetch-page       | att           | hit  |                                          |
+| question-file-is | att           | null |                                          |
 
-Is there anything to this?
-* web links to images (any external content)
+| Comment | Image, File and html_page wafls on interworkspace page |
+| edit-page | %%ws2%% | att | This page has no attachments yet. |
+| set | attach_url | /data/workspaces/%%ws2%%/pages/att/attachments |
+| set | hdrs | Content-Type=text/html |
+| post | %%attach_url%%?name=test.html | %%hdrs%% | <strong>Hi</strong> |
+| code-is          | 201           |             |                                 |
+| edit-page        | %%workspace%% | att         | {file: %%ws2%% [att] test.html} |
+| fetch-page       | att           | hit         |                                 |
+| question-file-is | att           | w%%ws2_id%% |                                 |
+| edit-page        | %%workspace%% | att         | {html_page: %%ws2%% [att] test.html} |
+| fetch-page       | att           | hit         |                                 |
+| question-file-is | att           | w%%ws2_id%% |                                 |
+| edit-page        | %%workspace%% | att         | {html_page: %%ws2%% [att] test.html} {file: %%ws2%% [att] test.html} ||
+| fetch-page       | att           | hit         |                                 |
+| question-file-is | att           | w%%ws2_id%% |                                 |
 
-Really Tricky Cases:
-* Page includes
-** allows_html for included pages?
+| Comment | TOC wafls on the current page |
+| edit-page | %%workspace%% | toc | {toc: }\n^ Header One\n |
+| fetch-page | toc | hit |
+| question-file-is | toc | null |
+
+| Comment | TOC wafls on a page in another workspace |
+| edit-page        | %%ws2%%       | othertoc    | ^ ONe\n\n^ Two              |
+| edit-page        | %%workspace%% | toc         | {toc: %%ws2%% [othertoc]}\n |
+| fetch-page       | toc           | hit         |                             |
+| question-file-is | toc           | w%%ws2_id%% |                             |
+
+These tag/category/weblog wafls just generate a link, so we can safely cache them.
+
+| Comment          | Tag Wafl      |      |                |
+| edit-page        | %%workspace%% | tags | {tag: welcome} |
+| fetch-page       | tags          | hit  |                |
+| question-file-is | tags           | null |                |
+| edit-page        | %%workspace%% | tags | {tag: %%ws2%%; welcome} |
+| fetch-page       | tags          | hit  |                |
+| question-file-is | tags           | w%%ws2_id%% |                |
+
+| Comment          | Category Wafl      |      |                |
+| edit-page        | %%workspace%% | category | {category: welcome} |
+| fetch-page       | category          | hit  |                |
+| question-file-is | category           | null |                |
+| edit-page        | %%workspace%% | category | {category: %%ws2%%; welcome} |
+| fetch-page       | category          | hit  |                |
+| question-file-is | category           | w%%ws2_id%% |                |
+
+| Comment          | Weblog Wafl      |      |                |
+| edit-page        | %%workspace%% | weblog | {weblog: welcome} |
+| fetch-page       | weblog          | hit  |                |
+| question-file-is | weblog           | null |                |
+| edit-page        | %%workspace%% | weblog | {weblog: %%ws2%%; welcome} |
+| fetch-page       | weblog          | hit  |                |
+| question-file-is | weblog           | w%%ws2_id%% |                |
+
+These next wafls all generate dynamic data and are not cacheable.
+
+| Comment          | Tag List Wafl      |      |                |
+| edit-page        | %%workspace%% | taglist | {tag_list: welcome} |
+| fetch-page       | taglist          | miss  |                |
+| question-file-like | taglist           | qr/^E\d+$/ |                |
+| edit-page        | %%workspace%% | taglist | {tag_list: %%ws2%%; welcome} |
+| fetch-page       | taglist          | miss  |                |
+| question-file-like | taglist           | qr/^E\d+$/ |                |
+
+| Comment          | Category List Wafl      |      |                |
+| edit-page        | %%workspace%% | categorylist | {category_list: welcome} |
+| fetch-page       | categorylist          | miss  |                |
+| question-file-like | categorylist           | qr/^E\d+$/ |                |
+| edit-page        | %%workspace%% | categorylist | {category_list: %%ws2%%; welcome} |
+| fetch-page       | categorylist          | miss  |                |
+| question-file-like | categorylist           | qr/^E\d+$/ |                |
+
+| Comment          | Recent Changes Wafl      |      |                |
+| edit-page        | %%workspace%% | recentchanges | {recent_changes: welcome} |
+| fetch-page       | recentchanges          | miss  |                |
+| question-file-like | recentchanges           | qr/^E\d+$/ |                |
+| edit-page        | %%workspace%% | recentchanges | {recent_changes: %%ws2%%; welcome} |
+| fetch-page       | recentchanges          | miss  |                |
+| question-file-like | recentchanges           | qr/^E\d+$/ |                |
+
+| Comment          | Search Wafl      |      |                |
+| edit-page        | %%workspace%% | search | {search: welcome} |
+| fetch-page       | search          | miss  |                |
+| question-file-like | search           | qr/^E\d+$/ |                |
