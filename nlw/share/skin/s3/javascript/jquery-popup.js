@@ -61,8 +61,8 @@
                 // Use the timeout to sequence events 'properly'
                 setTimeout(function() {
                     if ($popup.clickedInPopup || $popup.clickedInInput) {
-                        if (!$popup.clickedInInput)
-                            $element.focus();
+                        if (!$popup.clickedInInput) $element.focus();
+
                         $popup.clickedInPopup = false;
                         $popup.clickedInInput = false;
                     }
