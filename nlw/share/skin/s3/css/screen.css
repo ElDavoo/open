@@ -117,7 +117,6 @@ div#header div#logo a {
 	text-indent: -9999px;
 }
 
-
 div#header div#globalNav {
 	float: right;
 	margin-top: 13px;
@@ -3087,7 +3086,7 @@ div#mainNav ul.level2 li a:hover {
 }
 
 /* Order matters with the two following styles. Second one overrides the first
- * for ul elems with BOTH level2 and withimage classes
+ * for ul elems with BOTH level2 and has_icons classes
  */
 div#mainNav ul.level2 li {
     color: #0C5A9A;
@@ -3095,18 +3094,27 @@ div#mainNav ul.level2 li {
     text-decoration: none; 
     font-size: 10px;
     line-height: 20px;
-    clear:left;
     text-align: left;
     width: 100%;
     border-bottom: 1px solid black;
 }
 
-div#mainNav ul.level2 li.last {
-    border-bottom: none;
+div#mainNav li.scrollingNav {
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-div#mainNav ul.level2.withimage li {
-    line-height: 30px; /* 27 pt image with 1px margin top/bottom + 1 px border-bottom*/
+div#mainNav li.scrollingNav ul {
+    float: none;
+}
+
+div#mainNav li.last {
+    border-bottom: none !important;
+}
+
+div#mainNav li.has_icons li {
+    line-height: 30px;
+    height: 30px;
 }
 
 
@@ -3114,6 +3122,7 @@ div#mainNav ul.level2 li a {
     color: #0C5A9A;
     font-size: 10px;
     line-height: 20px;
+    height: 20px;
     padding: 0px 0px 0px 3px;
     background: none;
 }
@@ -3124,8 +3133,7 @@ div#mainNav ul.level2 li.dropaction a.label:hover {
 }
 
 div#mainNav ul.level2 li.dropaction a,
-div#mainNav ul.level2 li.notinstallednotice a
-{
+div#mainNav ul.level2 li.notinstallednotice a {
     font-weight: bold;
     line-height: 20px;
     font-size: 10px;
@@ -3144,7 +3152,6 @@ div#mainNav li {
     list-style: none; 
     margin: 0;
     float: left;
-    line-height: 1em;
 }
 
 div#mainNav>ul a {
@@ -3152,20 +3159,13 @@ div#mainNav>ul a {
 }
 
 /* Order matters with the two following styles. Second one overrides the first
- * for ul elems with BOTH level2 and withimage classes
+ * for ul elems with BOTH level2 and has_icons classes
  */
 div#mainNav ul ul.level2 {
     position: absolute;
     width: 18em;
     display: none;
     border: 1px solid #313a3d;
-    max-height: 168px; /* 8 lines where each line is 20px plus 1 px border- 8*21. see above */
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-div#mainNav ul ul.level2.withimage {
-    max-height: 261px; /* 8 lines of 29 pixels(+1 for border each line) + 1 row of 20px (+1 for border) for ul.level2 that contain images in each line.  */
 }
 
 div#mainNav ul.level1 li.submenu:hover ul.level2 {
@@ -3179,11 +3179,7 @@ div#mainNav ul.level2 {
     top: 3.0em; 
     left: -1px;
     background: white;
-}
-
-div#mainNav ul.level2 li {
-    position: static;
-    float: none;
+    overflow: hidden;
 }
 
 /* WTF is the dropdownTick doing on the li element in styles.css? */

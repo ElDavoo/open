@@ -118,9 +118,7 @@ sub _build_sql_where {
     );
 
     return {
-        $self->all
-        ? (@in_visible_users)
-        : (
+        (
             '-and' => [ @in_visible_users ],
             '-or'  => [
                 'lower(first_name)'      => { '-like' => $filter },

@@ -257,6 +257,9 @@ sub All {
             };
         };
     }
+    elsif ($p{ids_only}) {
+        $apply = sub { shift->{group_id} };
+    }
     else {
         $apply = sub {
             my $row = shift;
@@ -793,6 +796,10 @@ By default, the Groups are returned ordered by their Group Name.
 =item sort_order => (ASC|DESC)
 
 Specifies that the Groups should be returned in ascending or descending order.
+
+=item ids_only => 1
+
+Return I<only> the Group Ids.  By default, Group objects are returned.
 
 =item include_aggregates => 1
 

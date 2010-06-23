@@ -1,22 +1,29 @@
-[%- FOR action = opts.actions -%]
-    [% IF action.1.defined OR action.2.defined %]
-    <li class="dropaction"><a href="[% action.1 %]"[% IF action.2.defined %] onClick="[% action.2 %]"[% END %]>[% action.0 %]</a></li>
-    [% ELSE %]
-    <li class="dropaction"><a class="label" name="st-dropaction-[% action.0 %]">[% action.0 %]</a></li>
-    [% END %]
-[%- END -%]
-[%- IF data.size -%]
-    [%- FOR entry = data -%]
-        <li>
-            <a [% IF opts.defaultId AND entry.default %] id="[% opts.defaultId %]"[% END %]href="[% opts.href(entry) %]">
-                [%- IF opts.exists('icon') -%]
-                    <img src="[% opts.icon(entry) %]"/>
+[%- FOR entry = entries -%]
+    [% IF entry.data %]
+        [% IF entry.data.size %]
+        <li class="scrollingNav[% IF entry.exists('icon') %] has_icons[% END %]">
+            <ul>
+                [%- FOR item = entry.data -%]
+                    <li>
+                        <a [% IF entry.defaultId AND item.default %] id="[% entry.defaultId %]"[% END %]href="[% entry.href(item) %]">
+                            [%- IF entry.exists('icon') -%]
+                                <img src="[% entry.icon(item) %]"/>
+                            [%- END -%]
+                            [%- entry.title(item) | label_ellipsis(25) | html_encode %][% IF item.default %] ([% loc("Default") %])[% END -%]
+                        </a>
+                    </li>
+                    [%- IF item.default %]<li style="background-color: #eee;">&nbsp;</li>[% END -%]
                 [%- END -%]
-                [%- opts.title(entry) | label_ellipsis(25) | html_encode %][% IF entry.default %] ([% loc("Default") %])[% END -%]
-            </a>
+            </ul>
         </li>
-        [%- IF entry.default %]<li style="background-color: #eee;">&nbsp;</li>[% END -%]
-    [%- END -%]
-[%- ELSE -%]
-    <li class="emptynotice">[% opts.emptyMessage %]</li>
+        [% ELSE %]
+            <li class="emptynotice">[% entry.emptyMessage %]</li>
+        [% END %]
+    [% ELSE %]
+        [% IF entry.href.defined OR entry.onclick.defined %]
+        <li class="dropaction"><a href="[% entry.href || '#' %]"[% IF entry.onclick.defined %] onClick="[% entry.onclick %]"[% END %]>[% entry.title %]</a></li>
+        [% ELSE %]
+        <li class="dropaction"><a class="label" name="st-dropaction-[% action.title %]">[% action.title %]</a></li>
+        [% END %]
+    [% END %]
 [%- END -%]

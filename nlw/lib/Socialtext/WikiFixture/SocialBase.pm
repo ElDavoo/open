@@ -732,7 +732,7 @@ sub delete_created_groups {
 sub delete_all_groups {
     my $self = shift;
 
-    my $groups = Socialtext::Group->All();
+    my $groups = Socialtext::Group->All(ids_only => 1);
     while (my $g = $groups->next) {
         Test::Socialtext::Group->delete_recklessly($g);
     }
