@@ -580,6 +580,13 @@ sub nginx_params {
                 or die "Can't mkdir $nginx_client_body_dir: $!";
         }
         $config{nginx_client_body_dir} = $nginx_client_body_dir;
+
+        my $nginx_proxy_temp_dir = "$dirs{cache}/nginx_proxy";
+        unless (-d $nginx_proxy_temp_dir) {
+            mkdir $nginx_proxy_temp_dir
+                or die "Can't mkdir $nginx_proxy_temp_dir: $!";
+        }
+        $config{nginx_proxy_temp_dir} = $nginx_proxy_temp_dir;
     }
     else {
         $config{user} = get_build_setting( 'st-user' );

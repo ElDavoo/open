@@ -1,83 +1,106 @@
-#!perl
+#!/usr/bin/perl
 # @COPYRIGHT@
 
-# These tests provide a very simple and inadequate regression
-# test to confirm that the output from the PdfExportPlugin is PDF.
-# More exhaustive tests would be nice if we could figure out a
-# good way to do it...
-
-use warnings;
 use strict;
-
-use Test::Socialtext tests => 11;
-fixtures('admin');
-
-use Readonly;
+use warnings;
+use Test::Socialtext tests => 16;
 use YAML;
+use URI::Escape qw(uri_escape);
 
-BEGIN {
-    use_ok('Socialtext::PdfExportPlugin');
+fixtures(qw( admin ));
+
+###############################################################################
+# TEST: ability to convert a page to HTML, from "admin" Workspace.
+convert_page_to_html: {
+    my $hub  = new_hub('admin');
+    my $file = $hub->pdf_export->_create_html_file('Conversations');
+    ok $file, 'Got file from converting wikipage to HTML';
+    ok -s $file, '... which is not an empty file';
 }
 
-Readonly my $PAGE_NAME => 'Admin Wiki';
-Readonly my $HUB       => new_hub('admin');
+###############################################################################
+# TEST: convert to HTML, with attached image w/spaces in filename
+convert_to_html_w_spaces_in_image_filename: {
+    my $imgfile = 'socialtext-logo-30.gif';
+    my $imgpath = "t/attachments/$imgfile";
+    my $newname = 'name with spaces in filename.gif';
+    my $wiki    = "{image: $newname}";
 
-my @cases = Load(join '', <DATA>);
-
-generates_valid_pdf(@$_) for @cases;
-
-sub generates_valid_pdf {
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
-    my ( $wikitext, $description ) = @_;
-    $description ||= $wikitext;
-
-    my $pdf_content = pdf_for_wikitext($wikitext);
-    like(
-        $pdf_content, qr/\A%PDF-\d+\.\d+/,
-        "$description looks like a pdf at start"
+    my $hub  = create_test_hub();
+    my $page = Socialtext::Page->new(hub => $hub)->create(
+        creator => $hub->current_user,
+        title   => 'Test Page',
+        content => $wiki,
     );
-    like(
-        $pdf_content, qr/%%EOF\Z/,
-        "$description looks like a pdf at end"
+    ok $page, 'Created test page';
+
+    open my $fh, '<', $imgpath or die "$imgpath\: $!";
+    $hub->attachments->create(
+        creator  => $hub->current_user,
+        page_id  => $page->id,
+        filename => $newname,
+        fh       => $fh,
     );
+
+    my @attachments = $page->attachments();
+    is scalar(@attachments), 1, '... attached image';
+
+    my $html = $hub->pdf_export->_get_html($page->name);
+    ok $html, '... converted to HTML';
+
+    my $escaped = uri_escape($newname);
+    like $html, qr{<img [^>]*src="[^"]+/$escaped"},
+        '... image filename is properly escaped';
 }
 
-MULTI_PAGE: {
-    my @page_names = ('Conversations', 'Start Here', 'Meeting agendas');
+###############################################################################
+# TEST: multi-page export, from "admin" Workspace.
+multi_page_export: {
+    my @pages = ('Conversations', 'Start Here', 'Meeting agendas');
+    my $hub   = new_hub('admin');
+    my $pdf;
+    $hub->pdf_export->multi_page_export(\@pages, \$pdf);
+    looks_like_pdf_ok $pdf, 'Multi-page export looks like PDF';
+}
 
-    my $pdf_content;
-    $HUB->pdf_export->multi_page_export( \@page_names, \$pdf_content );
+###############################################################################
+# TEST: create some wikipages, and convert them to PDF
+export_to_pdf: {
+    my $hub   = create_test_hub();
+    my @cases = Load(join '', <DATA>);
 
-    like(
-        $pdf_content, 
-        qr/\A%PDF-\d+\.\d+/,
-        'generated content looks like a pdf at start'
+    foreach my $case (@cases) {
+        my ($content, $title) = @{$case};
+        my $page = Socialtext::Page->new(hub => $hub)->create(
+            creator => $hub->current_user,
+            title   => $title,
+            content => $content,
+        );
+        ok $page, "Created test page: $title";
+
+        my $pdf;
+        $hub->pdf_export->multi_page_export([ $page->name ], \$pdf);
+        looks_like_pdf_ok $pdf, '... results look like a PDF';
+    }
+}
+
+###############################################################################
+# TEST: empty content
+empty_page_content: {
+    my $hub = create_test_hub();
+    my $page = Socialtext::Page->new(hub => $hub)->create(
+        creator => $hub->current_user,
+        title   => 'Empty Page',
+        content => '',
     );
-    like(
-        $pdf_content, 
-        qr/%%EOF\Z/,
-        'generated content looks like a pdf at end'
-    );
+    ok $page, 'Created empty test page';
+
+    my $pdf;
+    my $rc = $hub->pdf_export->multi_page_export([ $page->name ], \$pdf);
+    ok !$rc, '... which we are unable to convert to PDF';
+    ok !$pdf, '... resulting in no PDF content';
 }
 
-HTML_FILES: {
-    my $filename = $HUB->pdf_export->_create_html_file( 'Conversations' );
-    isnt($filename, '',  'Filename is defined');
-    isnt(-s $filename, 0, 'temp file is not 0 length');
-}
-
-# ripped straight from the pages of RtfExportPlugin.t
-sub pdf_for_wikitext {
-    my ($wikitext) = @_;
-    my $page = $HUB->pages->new_from_name($PAGE_NAME);
-    $page->content($wikitext);
-    $page->store( user => $HUB->current_user );
-
-    my $pdf_content;
-    $HUB->pdf_export->multi_page_export( [$PAGE_NAME], \$pdf_content );
-
-    return $pdf_content;
-}
 
 __DATA__
 ---

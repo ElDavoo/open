@@ -7,6 +7,7 @@ use base 'Socialtext::Plugin';
 use Socialtext::PdfExport::LinkDictionary;
 use File::chdir;
 use Socialtext::l10n qw(loc);
+use Socialtext::Log qw(st_log);
 use IPC::Run 'run';
 use Readonly;
 use Class::Field 'const';
@@ -77,7 +78,7 @@ sub pdf_export {
         );
         return $pdf_content;
     }
-    return "Error:<pre>$pdf_content</pre>\n";
+    return "Error:<pre>Unable to convert to PDF</pre>\n";
 }
 
 =head2 multi_page_export($page_names, \$output)
@@ -107,7 +108,6 @@ sub multi_page_export {
 sub _run_htmldoc {
     my ( $input, $output_ref, @command ) = @_;
 
-    my $err;
     # We ignore the exit code because htmldoc sometimes exits nonzero even
     # when a PDF was created.  We check for the '%PDF' magic number at the top
     # of the output instead. -mml
@@ -121,18 +121,31 @@ sub _run_htmldoc {
         # be the root where it begins looking for files. -mml
         local $CWD = '/';
 
-        # Sometimes htmldoc has errors trying to write to a tmp file
-        # that is already there. That corresponds to a 512 or 1024 
-        # return from the run command. This is a hack making up 
-        # for lameness in htmldoc. It runs the same command again
-        # if a first attempt doesn't work. This doesn't happen
-        # very often.
-        my $attempts = 0;
-        while ($attempts < 5) {
+        # When htmldoc generates output, we *expect* some error output
+        # indicating "Unable to connect to...".  Sucks, but htmldoc tries to
+        # do HTTP lookups based on file paths.  We'll ignore these errors, but
+        # anything else should be treated as an actual error condition.
+        my $failures = 0;
+        while ($failures < 5) {
+            my $err;
             run \@command, \$input, $output_ref, \$err;
-            my $wait_result = $?;
-            last unless ($wait_result == 512 || $wait_result == 1024 );
-            $attempts++;
+
+            my @stderr =
+                grep { !/^\s*$/ }
+                split /[\r\n]/, $err;
+            my @errors =
+                grep { !/Unable to connect to/ }
+                grep { /^ERR/ }
+                @stderr;
+
+            if (@errors || $ENV{NLW_DEV_MODE}) {
+                st_log->error("@command");
+                st_log->error($_) for @stderr;
+            }
+
+            last unless @errors;
+
+            $failures ++;
         }
     }
 
@@ -168,13 +181,19 @@ sub _get_html {
 
     # Old school here.  htmldoc doesn't support the &trade; entitity, and it
     # doesn't support Unicode.
-    local *Socialtext::Formatter::TradeMark::html = sub {'<SUP>TM</SUP>'};
+    my $content = do {
+        no warnings 'redefine';
+        local *Socialtext::Formatter::TradeMark::html = sub {'<SUP>TM</SUP>'};
+        $page->to_absolute_html(
+            undef,
+            link_dictionary => Socialtext::PdfExport::LinkDictionary->new,
+        );
+    };
+
     my $html = "<html><head><title>"
         . $page->metadata->Subject
         . "</title></head><body>"
-        . $page->to_absolute_html(
-            undef,
-            link_dictionary => Socialtext::PdfExport::LinkDictionary->new )
+        . $content
         . "</body></html>";
     $self->hub->current_workspace($initial_ws) if ($initial_ws->name ne $workspace_name);
     return $html;    
