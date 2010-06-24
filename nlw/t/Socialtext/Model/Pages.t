@@ -846,7 +846,7 @@ SELECT * FROM (
         WHERE NOT deleted 
           AND workspace_id = ? 
           AND name ~* ?
-        ORDER BY last_edit_time
+        ORDER BY last_edit_time DESC
 ) AS X ORDER BY name
 EOT
             args => [9,'\\mmonk'],
@@ -872,7 +872,7 @@ SELECT * FROM (
         WHERE NOT deleted 
           AND workspace_id = ? 
           AND name ~* ?
-        ORDER BY last_edit_time
+        ORDER BY last_edit_time DESC
         LIMIT ?
 ) AS X ORDER BY name
 EOT
@@ -921,7 +921,7 @@ SELECT page_id,
       AND workspace_id = ? 
       AND name ~* ?
       AND page_type = ?
-    ORDER BY last_edit_time
+    ORDER BY last_edit_time DESC
 ) AS X ORDER BY name
 EOT
         args => [9,'\\mmonk', 'wiki'],
