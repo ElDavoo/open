@@ -231,4 +231,86 @@ sub set_mtime {
         or warn "utime $mtime, $dirpath failed: $!";
 }
 
+sub _page_cache_basename {
+    my $self = shift;
+    my $cache_dir = $self->_cache_dir or return;
+    return "$cache_dir/" . $self->id . '-' . $self->revision_id;
+}
+
+sub _question_file {
+    my $self = shift;
+    my $base = $self->_page_cache_basename or return;
+    return "$base-Q";
+}
+
+sub _answer_file {
+    my $self = shift;
+    my $answer_str = shift || '';
+    my $base = $self->_page_cache_basename or return;
+    my $filename = "$base-$answer_str";
+    (my $basename = $filename) =~ s#.+/##;
+    return undef if length($basename) > 255;
+    return $filename;
+}
+
+sub _cache_dir {
+    my $self = shift;
+    return unless $self->hub;
+    return $self->hub->viewer->parser->cache_dir(
+        $self->hub->current_workspace->workspace_id);
+}
+
+=head2 revision_id( $id )
+
+If $id is present, sets the revision_id of this object. This is the
+way to retrieve an older revision.
+
+If $id is not present, returns the revision_id of the page object.
+
+Debates on what a revision_id is left as an exercise for the 
+reader. See also L<Socialtext::PageMeta> and its Revision field.
+
+=cut
+sub revision_id {
+    my $self = shift;
+    if (@_) {
+        $self->{revision_id} = shift;
+        return $self->{revision_id};
+    }
+    return $self->assert_revision_id;
+}
+
+sub _get_index_file {
+    my $self      = shift;
+    my $dir       = $self->directory_path;
+    my $filename  = "$dir/index.txt";
+
+    return $filename if -f $filename;
+    return '' unless my @revisions = $self->all_revision_ids;
+
+    # This is adding some fault-tolerance to the system. If the index.txt file
+    # doesn not exist, we're gonna re-create it rather than throw an error.
+    my $revision_file = $self->revision_file( pop @revisions ); 
+    Socialtext::File::safe_symlink($revision_file => $filename);
+
+    return $filename;
+}
+
+# XXX split this into a getter and setter to more
+# accurately measure how often it is called as a
+# setter. In a fake-request run of 50, this is called 1100
+# times, which is, uh, high. When disk is loaded, it eats
+# a lot of real time.
+sub assert_revision_id {
+    my $self = shift;
+    my $revision_id = $self->{revision_id};
+    return $revision_id if $revision_id;
+    return '' unless my $index_file = $self->_get_index_file;
+
+    $revision_id = readlink $index_file;
+    $revision_id =~ s/(?:.*\/)?(.*)\.txt$/$1/
+      or die "$revision_id is bad file name";
+    $self->revision_id($revision_id);
+}
+
 1;
