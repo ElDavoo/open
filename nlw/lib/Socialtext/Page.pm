@@ -1020,32 +1020,33 @@ sub _cache_html {
     return if $self->is_spreadsheet;
 
     my $t = time_scope('cache_wt');
-    {
-        my %interwiki;
-        my %allows_html;
-        my %users;
-        my $expires_at;
+    my %interwiki;
+    my %allows_html;
+    my %users;
+    my $expires_at;
 
-        my $cur_ws = $self->hub->current_workspace;
+    my $cur_ws = $self->hub->current_workspace;
+    my %cacheable_wafls = map { $_ => 1 } qw/
+        Socialtext::Formatter::TradeMark 
+        Socialtext::Formatter::Preformatted 
+        Socialtext::PageAnchorsWafl
+        Socialtext::Wikiwyg::FormattingTestRunAll
+    /;
+    my %not_cacheable_wafls = map { $_ => 1 } qw/
+        Socialtext::Formatter::SpreadsheetInclusion
+        Socialtext::Formatter::PageInclusion
+        Socialtext::RecentChanges::Wafl
+        Socialtext::Category::Wafl
+        Socialtext::Search::Wafl
+    /;
+    my @cache_questions;
+
+    {
         no warnings 'redefine';
         local *Socialtext::Formatter::WaflPhrase::hub = sub {
             my $wafl = shift;
             return $wafl->{hub} || $self->hub;
         };
-        my %cacheable_wafls = map { $_ => 1 } qw/
-            Socialtext::Formatter::TradeMark 
-            Socialtext::Formatter::Preformatted 
-            Socialtext::PageAnchorsWafl
-            Socialtext::Wikiwyg::FormattingTestRunAll
-        /;
-        my %not_cacheable_wafls = map { $_ => 1 } qw/
-            Socialtext::Formatter::SpreadsheetInclusion
-            Socialtext::Formatter::PageInclusion
-            Socialtext::RecentChanges::Wafl
-            Socialtext::Category::Wafl
-            Socialtext::Search::Wafl
-        /;
-        my @cache_questions;
         $self->get_units(
             wafl_phrase => sub {
                 my $wafl = shift;
@@ -1145,28 +1146,28 @@ sub _cache_html {
                 }
             },
         );
-
-        delete $interwiki{ $cur_ws->name };
-        for my $ws_name (keys %interwiki) {
-            my $ws = Socialtext::Workspace->new(name => $ws_name);
-            push @cache_questions, { workspace => $ws } if $ws;
-        }
-        for my $ws_id (keys %allows_html) {
-            my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
-            push @cache_questions, { allows_html_wafl => $ws } if $ws;
-        }
-        for my $user_id (keys %users) {
-            push @cache_questions, { user_id => $user_id };
-        }
-        if (defined $expires_at) {
-            $expires_at += time();
-            push @cache_questions, { expires_at => $expires_at };
-        }
-        
-        eval {
-            $html_ref = $self->_cache_using_questions( \@cache_questions, $html_ref );
-        }; die "OMG: $@" if $@;
     }
+
+    delete $interwiki{ $cur_ws->name };
+    for my $ws_name (keys %interwiki) {
+        my $ws = Socialtext::Workspace->new(name => $ws_name);
+        push @cache_questions, { workspace => $ws } if $ws;
+    }
+    for my $ws_id (keys %allows_html) {
+        my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
+        push @cache_questions, { allows_html_wafl => $ws } if $ws;
+    }
+    for my $user_id (keys %users) {
+        push @cache_questions, { user_id => $user_id };
+    }
+    if (defined $expires_at) {
+        $expires_at += time();
+        push @cache_questions, { expires_at => $expires_at };
+    }
+    
+    eval {
+        $html_ref = $self->_cache_using_questions( \@cache_questions, $html_ref );
+    }; die "Failed to cache using questions: $@" if $@;
 
     $self->_log_page_action();
     return $html_ref;
