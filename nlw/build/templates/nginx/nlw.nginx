@@ -176,7 +176,7 @@ server {
     [%- END %]
 }
 
-[%- IF config.ssl_only OR config.ssl_name %]
+[%- IF config.is_dev OR (config.ssl_only OR config.ssl_name) %]
 server {
     [%#- Have SSL enabled server too %]
     listen [% config.frontend_ports.https %];
