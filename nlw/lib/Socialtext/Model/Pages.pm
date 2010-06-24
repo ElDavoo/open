@@ -324,7 +324,7 @@ SELECT * FROM (
        AND workspace_id = ? 
        AND name ~* ?
        $and_type
-     ORDER BY last_edit_time
+     ORDER BY last_edit_time DESC
       $limit
 ) AS X ORDER BY name
 EOT
