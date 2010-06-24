@@ -1018,8 +1018,9 @@ sub _cache_html {
     my $self = shift;
     my $html_ref = shift;
     return if $self->is_spreadsheet;
+
+    my $t = time_scope('cache_wt');
     {
-        my $t = time_scope('cache_html');
         my %interwiki;
         my %allows_html;
         my %users;
@@ -1216,7 +1217,6 @@ sub _cache_using_questions {
     $q_str ||= 'null';
 
     my $q_file = $self->_question_file or return;
-    warn "Wrote '$q_str' to $q_file\n";
     Socialtext::File::set_contents($q_file, $q_str);
 
     my $html = $html_ref ? $$html_ref : $self->to_html;
@@ -1224,8 +1224,12 @@ sub _cache_using_questions {
 
     my $cache_dir = $self->_cache_dir or return;
     my $cache_file = $self->_answer_file($answer_str);
-    warn "Writing cached html to $cache_file\n";
-    Socialtext::File::set_contents_utf8($cache_file, $html);
+    if ($cache_file) {
+        Socialtext::File::set_contents_utf8($cache_file, $html);
+    }
+    else {
+        warn "Answer string is too long - not writing $cache_file";
+    }
     return \$html;
 }
 
@@ -1245,7 +1249,10 @@ sub _answer_file {
     my $self = shift;
     my $answer_str = shift || '';
     my $base = $self->_page_cache_basename or return;
-    return "$base-$answer_str";
+    my $filename = "$base-$answer_str";
+    (my $basename = $filename) =~ s#.+/##;
+    return undef if length($basename) > 255;
+    return $filename;
 }
 
 sub _cache_dir {

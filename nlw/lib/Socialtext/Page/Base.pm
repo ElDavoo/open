@@ -73,7 +73,7 @@ sub to_html {
         my $q_str = Socialtext::File::get_contents($q_file);
         my $a_str = $self->_questions_to_answers($q_str);
         my $cache_file = $self->_answer_file($a_str);
-        if (-e $cache_file) {
+        if ($cache_file and -e $cache_file) {
             my $t = time_scope('wikitext_HIT');
             $self->{__cache_hit}++;
             return Socialtext::File::get_contents_utf8($cache_file);
@@ -82,7 +82,8 @@ sub to_html {
         my $t = time_scope('wikitext_MISS');
         my $html = $self->hub->viewer->process($content, $page);
         if (defined $a_str) {
-            Socialtext::File::set_contents_utf8($cache_file, $html);
+            # cache_file may be undef if the answer string was too long.
+            Socialtext::File::set_contents_utf8($cache_file, $html) if $cache_file;
             return $html;
         }
         # Our answer string was invalid, so we'll need to re-generate the Q file
@@ -98,6 +99,7 @@ sub _questions_to_answers {
     my $self = shift;
     my $q_str = shift;
 
+    my $t = time_scope('QtoA');
     my $cur_user = $self->hub->current_user;
     my $authz = $self->hub->authz;
 
@@ -124,7 +126,6 @@ sub _questions_to_answers {
         }
         elsif ($q =~ m/^E(\d+)$/) {
             my $expires_at = $1;
-            warn "Checking expiry: " . time() . " < $expires_at";
             my $ok = time() < $expires_at ? 1 : 0;
             return undef unless $ok;
             push @answers, "${q}_1";
