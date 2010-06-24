@@ -2550,6 +2550,16 @@ sub set_profile_relationship {
     $profile->save;
 }
 
+
+sub tag_profile_via_gui {
+    my ($self, $tag) = @_;
+    $self->handle_command('open_ok','/st/profile');    
+    $self->handle_command('wait_for_element_visible_ok','new_tag', 30000);
+    $self->handle_command('type_ok', 'new_tag', $tag);
+    $self->handle_command('click_ok','//input[@value=' . "'" . 'Add Tag' . "'" . ']');      
+    $self->handle_command('wait_for_element_visible_ok',"link=$tag", 30000);
+}
+
 sub tag_profile {
     my $self = shift;
     my $user_name = shift;

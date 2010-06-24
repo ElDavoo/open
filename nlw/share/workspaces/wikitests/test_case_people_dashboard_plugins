@@ -1,77 +1,103 @@
+* Fixture: SocialWidgets
 * HighPermissions
 
 | *Comment* | Test Case: People Dashboard Plugins |  |
 
-This test is designed to test global navigation changes as people/dashboard is enabled and disabled.
-
-| *Comment* | Test Case: People Dashboard Plugins |  |
-| *Comment* | Enable people and dashboard. See "Home" (is dashboard), "People", "Workspaces" |  |
+| *Comment* | Test Case: People Dashboard Plugins Create an account/user |  |
+| set | user | pdp%%start_time%%@matt.socialtext.net |
+| set | acct | pdp-acct-%%start_time%% |
+| set | ws | pdp-ws-%%start_time%% |
+| st-admin | create-account --name %%acct%% | was created |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% | was created |
+| st-admin | create-user --email %%user%% --password %%password%% --account %%acct%% | was created |
+| st-admin | add-member --email %%user%% --workspace %%ws%% | now has the role of 'member' in the |
 | st-admin | enable-plugin --plugin people --all-accounts |  |
 | st-admin | enable-plugin --plugin dashboard --all-accounts |  |
-| open_ok | / |  |
-| wait_for_element_visible_ok | link=Dashboard | 30000 |
-| wait_for_element_visible_ok | link=People | 30000 |
-| wait_for_element_visible_ok | link=Workspaces | 30000 |
-| click_and_wait | link=Workspaces |  |
-| text_like | contentRight | Workspace Title |
-| text_like | contentRight | Workspace Name |
-| text_like | contentRight | %%title%% |
-| click_and_wait | link=People |  |
-| text_like | All People |  |
-| text_like | Showing 1 |  |
-| wait_for_element_visible_ok | link=Dashboard | 30000 |
-| click_and_wait | link=Dashboard |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| text_like | st-editing-tools-edit | Welcome |
+| st-admin | enable-plugin --plugin signals --all-accounts |  |
+| set | page1 | page_one_%%start_time%% |
+| set | page2 | page_two_%%start_time%% |
+| set | tagtoadd | tag-%%start_time%% |
+| set | signal1 | What would you If I sang out of tune %%start_time%% |
+| set | signal2 | Would you stand up and walk out on me %%start_time%% |
 
-| *Comment* | Test Case: People Dashboard Plugins |  |
-| *Comment* | Disable people. Refresh. People links to socialtext.com |  |
-| st-admin | disable-plugin --plugin people --all-accounts | The people plugin is now disabled for all accounts |
-| open_ok | / |  |
-| wait_for_element_visible_ok | link=Dashboard | 30000 |
-| wait_for_element_visible_ok | link=People | 30000 |
-| wait_for_element_visible_ok | link=Workspaces | 30000 |
-| click_and_wait | link=People |  |
-| location_like | `http://www.socialtext.com/products/socialnetworking.php` |  |
+| *Comment* | Test Case: People Dashboard Plugins Create an pages and signals, tag |  |
+| st-logoutin | %%user%% | %%password%% |
+| tag_profile_via_gui | %%tagtoadd%% |  |
+| st-create-wikipage | %%ws%% | %%page1%% |
+| st-create-wikipage | %%ws%% | %%page2%% |
+| http-user-pass | %%user%% | %%password%% |
+| post-signal | %%signal1%% |  |
+| post-signal | %%signal2%% |  |
 
-| *Comment* | Test Case: People Dashboard Plugins |  |
-| *Comment* | Disable dashboard. Home is workspace list. |  |
-| st-admin | disable-plugin --plugin dashboard --all-accounts | The dashboard plugin is now disabled for all accounts |
+| *Comment* | Test Case: People Dashboard Plugins Setup Activities Widget |  |
+| st_single_widget_in_dashboard | gallery-widget-Activities |  |
 | open_ok | / |  |
-| wait_for_element_visible_ok | link=Dashboard | 30000 |
-| text_like | contentRight | Workspaces you belong to |
-| text_like | contentRight | You have free access |
-| location_like | /?action=workspace_list |  |
-| click_and_wait | link=Dashboard |  |
-| location_like | /?action=workspace_list |  |
 
-| *Comment* | Test Case: People Dashboard Plugins |  |
-| *Comment* | Enable people. A formerly illegal configuration, which PM declared OK |  |
-| st-admin | enable-plugin --plugin people --all-accounts | The people plugin is now enabled for all accounts |
-| open_ok | / |  |
-| wait_for_element_visible_ok | link=People | 30000 |
-| text_like | contentRight | Workspaces you belong to |
-| wait_for_element_present_ok | link=Dashboard | 30000 |
-| click_and_wait | link=Dashboard |  |
-| text_like | contentRight | You have free access |
+| *Comment* | Test Case: People Dashboard Plugins Set event limit to 25 |  |
+| st-name-widget | 1 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+| st-widget-settings | activities_widget |  |
+| wait_for_element_visible_ok | limit | 30000 |
+| select_ok | limit | 25 |
+| click_ok | st-savebutton-%%activities_widget%% |  |
+| wait_for_element_not_visible_ok | limit | 30000 |
+| select-frame | relative=parent |  |
 
-| *Comment* | Test Case: People Dashboard Plugins |  |
-| *Comment* | Disable people, enable dashboard. Home is dashboard. |  |
-| st-admin | disable-plugin --plugin people --all-accounts | The people plugin is now disabled for all accounts |
-| st-admin | enable-plugin --plugin dashboard --all-accounts | The dashboard plugin is now enabled for all accounts |
-| open_ok | / |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| text_like | st-editing-tools-edit | Welcome |
-| wait_for_element_visible_ok | link=Dashboard | 30000 |
-| click_and_wait | link=Dashboard |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| text_like | st-editing-tools-edit | Welcome |
-| wait_for_element_visible_ok | link=People | 30000 |
-| click_and_wait | link=People |  |
-| location_like | `http://www.socialtext.com/products/socialnetworking.php` |  |
+| *Comment* | Test Case: People Dashboard Plugins See see pages, Signals, Tags |  |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 30000 |
+| text_like | //body | edited %%page2%% in %%ws%% |
+| text_like | //body | tagged themself %%tagtoadd%% |
+| text_like | //body | %%signal1%% |
+| text_like | //body | %%signal2%% |
+| wait_for_element_visible_ok | post | 5000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: People Dashboard Plugins Disable Signals, see only pages, people tags |  |
+| st-admin | disable-plugin --plugin signals --account %%acct%% | is now disabled |
+| refresh |  |  |
+| st-name-widget | 1 | activities_widget |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 30000 |
+| text_like | //body | edited %%page2%% in %%ws%% |
+| text_like | //body | tagged themself %%tagtoadd%% |
+| text_unlike | //body | %%signal1%% |
+| text_unlike | //body | %%signal2%% |
+| wait_for_element_not_present_ok | post | 5000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: People Dashboard Plugins disable people see only pages NOT people tags or signals |  |
+| st-admin | disable-plugin --plugin people --account %%acct%% | is now disabled |
+| refresh |  |  |
+| st-name-widget | 1 | activities_widget |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 30000 |
+| text_like | //body | edited %%page2%% in %%ws%% |
+| text_unlike | //body | tagged themself %%tagtoadd%% |
+| text_unlike | //body | %%signal1%% |
+| text_unlike | //body | %%signal2%% |
+| wait_for_element_not_present_ok | post | 5000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: People Dashboard Plugins enable signals NOTE |  |
+| *Comment* | Test Case: People Dashboard Plugins enable signals NOTE This will implicitly enable people |  |
+| *Comment* | Test Case: People Dashboard Plugins enable signals NOTE Per Tracy Ruggles, 6/24/2010 irc log 11:38 AM |  |
+| st-admin | enable-plugin --plugin signals --account %%acct%% | is now enabled |
+| refresh |  |  |
+| st-name-widget | 1 | activities_widget |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 30000 |
+| text_like | //body | edited %%page2%% in %%ws%% |
+| text_like | //body | tagged themself %%tagtoadd%% |
+| text_like | //body | %%signal1%% |
+| text_like | //body | %%signal2%% |
+| wait_for_element_visible_ok | post | 5000 |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: People Dashboard Plugins teardown |  |
 | st-admin | enable-plugin --plugin people --all-accounts |  |
 | st-admin | enable-plugin --plugin dashboard --all-accounts |  |
+| st-admin | enable-plugin --plugin dashboard --all-accounts |  |
+| st-admin | delete-workspace --no-export --w %%ws%% |  |
 
 | *Comment* | Test Case: People Dashboard Plugins COMPLETED |
