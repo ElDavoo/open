@@ -200,6 +200,7 @@ use Socialtext::HTTP::Cookie;
 
 my $InHref = 0;
 my $In_Table = 0;
+my $RelativeLink = 0;
 
 # Make the DEL tag, which Socialtext uses rather than S or STRIKE, work the
 # same as the STRIKE tag.  By default, HTML::FormatRTF throws content inside
@@ -223,15 +224,19 @@ sub a_start {
     my ($self, $node) = @_;
 
     my $href = $node->attr('href');
+
     if ($href) {
-        my $out;
+        # RTF generator has a problem with relative links. Disable relative
+        # links until we get a better RTF generator
+        my $out = ($href =~ /^\#/) ? '' : "{\\field{\\*\\fldinst HYPERLINK $href}";
+        $RelativeLink  = ($out eq '');
         if ($In_Table) {
-            $out
-                = "{\\field{\\*\\fldinst HYPERLINK $href}{\\fldrslt \\pard\\intbl \\ul\\cf2 ";
+            $out .= '{\fldrslt \pard\intbl ';
         }
         else {
-            $out = "{\\field{\\*\\fldinst HYPERLINK $href}{\\fldrslt \\pard \\ul\\cf2 ";
+            $out .= '{\fldrslt \pard ';
         }
+        $out .= '\ul\cf2 ' if (!$RelativeLink);
         $InHref = 1;
         $self->out(\ $out);
     }
@@ -240,7 +245,13 @@ sub a_start {
 sub a_end {
     my ($self, $node) = @_;
     $InHref = 0;
-    $self->out(\ ' }}');
+    if ($RelativeLink) {
+        $self->out(\ ' }');
+    }
+    else {
+        $self->out(\ ' }}');
+    }
+    $RelativeLink = 0;
 }
 
 # REVIEW: use object fields?
