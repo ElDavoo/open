@@ -1031,6 +1031,7 @@ sub _cache_html {
         Socialtext::Formatter::Preformatted 
         Socialtext::PageAnchorsWafl
         Socialtext::Wikiwyg::FormattingTestRunAll
+        Socialtext::ShortcutLinks::Wafl
     /;
     my %not_cacheable_wafls = map { $_ => 1 } qw/
         Socialtext::Formatter::SpreadsheetInclusion
