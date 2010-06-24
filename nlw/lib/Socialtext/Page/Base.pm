@@ -76,7 +76,7 @@ sub to_html {
         if ($cache_file and -e $cache_file) {
             my $t = time_scope('wikitext_HIT');
             $self->{__cache_hit}++;
-            return Socialtext::File::get_contents_utf8($cache_file);
+            return scalar Socialtext::File::get_contents_utf8($cache_file);
         }
 
         my $t = time_scope('wikitext_MISS');
