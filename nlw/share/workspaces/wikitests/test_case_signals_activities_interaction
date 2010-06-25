@@ -42,9 +42,9 @@
 
 | *Comment* | logoutin hangs in IE. Try explicit %%emainuser%% ... |
 
-| click_ok | link=Log out |
+| click_ok | link=Log out |  |
 | pause | 8000 | I HATE pause |
-| open_ok | /challenge | |
+| open_ok | /challenge |  |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
 | type_ok | username | %%emainuser%% |
@@ -91,9 +91,9 @@
 
 | *Comment* | logoutin hangs in IE. Try explicit %%efollowed%% ... |
 
-| click_ok | link=Log out |
+| click_ok | link=Log out |  |
 | pause | 8000 | I HATE pause |
-| open_ok | /challenge | |
+| open_ok | /challenge |  |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
 | type_ok | username | %%efollowed%% |
@@ -111,14 +111,14 @@
 | st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%followed%% |
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%followed%% |
 
-| *Comment* | Wait for frame to appear before proceeding |
+| *Comment* | Wait for frame to appear before proceeding |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 
 | *Comment* | logoutin hangs in IE. Try explicit %%efriend%% ... |
 
-| click_ok | link=Log out |
+| click_ok | link=Log out |  |
 | pause | 8000 | I HATE pause |
-| open_ok | /challenge | |
+| open_ok | /challenge |  |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
 | type_ok | username | %%efriend%% |
@@ -134,14 +134,14 @@
 | st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%friend%% |
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%friend%% |
 
-| *Comment* | Wait for frame to appear before proceeding |
+| *Comment* | Wait for frame to appear before proceeding |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 
 | *Comment* | logoutin hangs in IE. Try explicit %%econversant%% ... |
 
-| click_ok | link=Log out |
+| click_ok | link=Log out |  |
 | pause | 8000 | I HATE pause |
-| open_ok | /challenge | |
+| open_ok | /challenge |  |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
 | type_ok | username | %%econversant%% |
@@ -170,14 +170,14 @@
 | st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%conversant%% |
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%conversant%% |
 
-| *Comment* | Wait for frame to appear before proceeding |
+| *Comment* | Wait for frame to appear before proceeding |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 
 | *Comment* | logoutin hangs in IE. Try explicit %%esecond%% ... |
 
 | click_ok | link=Log out |  |
 | pause | 8000 | I HATE pause |
-| open_ok | /challenge | |
+| open_ok | /challenge |  |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
 | type_ok | username | %%esecond%% |

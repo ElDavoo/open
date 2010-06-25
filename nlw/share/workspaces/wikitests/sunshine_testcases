@@ -18,6 +18,7 @@ Sunshine Testcases. Sample testcases to smoketest builds and dev envs
 * [Test Case: Verify Profile]
 * [Test Case: Verify Avatar Popup]
 * [Test Case: Multiple Widgets]
-* [Test Case: Activities Widget]
+* [Test Case: Activities Widget Greeting]
+* [Test Case: Activities Widget Basic Events]
 * [Test Case: Signals Activities Interaction]
 * [Test Case: Gadgets Galore]
