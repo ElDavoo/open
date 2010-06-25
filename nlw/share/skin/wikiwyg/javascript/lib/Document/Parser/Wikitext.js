@@ -244,7 +244,7 @@ proto.create_grammar = function() {
             }
         },
         a: {
-            match: /((?:"([^"]*)"\s*)?<?((?:http|https|ftp|irc|file):(?:\/\/)?[\;\/\?\:\@\&\=\+\$\,\[\]\#A-Za-z0-9\-\_\.\!\~\*\'\(\)]+[A-Za-z0-9\/#])>?)/,
+            match: /((?:"([^"]*)"\s*)?<?((?:http|https|ftp|irc|file):(?:\/\/)?[\;\/\?\:\@\&\=\+\$\,\[\]\#A-Za-z0-9\-\_\.\!\~\*\'\(\)%]+[A-Za-z0-9\/#])>?)/,
             filter: function(node) {
                 node._href = node[2];
                 return(node[1] || node[2]);
