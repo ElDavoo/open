@@ -1,14 +1,15 @@
+[%- IF config.is_dev %]
+error_log [% config.log_dir %]/error.log notice;
+[%- ELSE %]
+error_log [% config.log_dir %]/error.log;
+[%- END %]
+
 [% IF !config.is_dev %]
   user       [% config.user %] [% config.group %];
 [% END %]
 pid        [% config.pid_dir %]/[% config.app_prefix %]nginx.pid;
 
 worker_processes [% config.servers.worker_processes %];
-[%- IF config.is_dev %]
-error_log [% config.log_dir %]/error.log notice;
-[%- ELSE %]
-error_log [% config.log_dir %]/error.log;
-[%- END %]
  
 worker_rlimit_nofile 8192;
 events {
@@ -18,6 +19,9 @@ events {
 http {
   keepalive_requests [% config.servers.keep_alive_max_req %];
   keepalive_timeout  [% config.servers.keep_alive_timeout %];
+[%- IF config.is_dev %]
+  fastcgi_temp_path [% config.cache_dir %]/nginx_fastcgi;
+[%- END %]
 
   default_type application/octet-stream;
   log_format   main '$remote_addr - $remote_user [$time_local]  $status '
