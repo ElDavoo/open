@@ -1,0 +1,44 @@
+| *Comment* | Test Case: Activities Widget Special Buttons |  |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Activities Widget Special Buttons SETUP |  |
+| set | acct | acct-awsb%%start_time%% |
+| set | user | awsb%%start_time%%@matt.socialtext.net |
+| set | ws | ws-%%start_time%% |
+| st-admin | create-account --name %%acct%% | was created |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% | was created |
+| st-admin | create-user --e %%user%% --password %%password%% --account %%acct%% | was created |
+| st-admin | add-member --e %%user%% --workspace %%ws%% | now has the role |
+| st-logoutin | %%user%% | %%password%% |
+| open_ok | /st/signals |  |
+
+| *Comment* | Test Case: Activities Widget Special Buttons Are Present Tag |  |
+| st-name-widget | 1 | signal_widget |
+| st-select-widget-frame | signal_widget |
+| wait_for_element_visible_ok | mainInsertWeblink | 30000 |
+| wait_for_element_visible_ok | mainInsertWikilink | 30000 |
+| wait_for_element_visible_ok | mainInsertTag | 30000 |
+| wait_for_element_visible_ok | mainInsertFile | 30000 |
+
+| *Comment* | Test Case: Activities Widget Special Buttons Tag |  |
+| click_ok | mainInsertTag |  |
+| wait_for_element_visible_ok | //div[@id='signals']/div[2]/div[4]/div[2]/input | 30000 |
+| click_ok | Test%%start_time%% |  |
+| type-lookahead-ok | //div[@id='signals']/div[2]/div[4]/div[2]/input | Test%%start_time%% |
+| wait_for_element_visible_ok | link=Ok | 30000 |
+| wait_for_element_visible_ok | link=Cancel | 30000 |
+| click_ok | link=Ok |
+| wait_for_element_visible_ok | post | 3000 |
+| pause | 1000 |
+| click_ok | post |
+| wait_for_element_visible_ok | link=Test%%start_time%% | 30000 |
+| wait_for_text_present_ok | #Test%%start_time%% | 30000 |
+| select-frame | relative=parent |
+
+| *Comment* | Test Case: Activities Widget Special Buttons Web Link |  |
+
+| *Comment* | Test Case: Activities Widget Special Buttons Click |  |
+| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
+
+| *Comment* | Test Case: Activities Widget Special Buttons COMPLETED |
