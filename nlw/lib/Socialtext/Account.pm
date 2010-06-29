@@ -465,6 +465,7 @@ sub import_file {
         warn "Could not import account logo: $@" if $@;
     }
     
+    print loc("Importing users..."), "\n";
     my @profiles;
     for my $user_hash (@{ $hash->{users} }) {
 

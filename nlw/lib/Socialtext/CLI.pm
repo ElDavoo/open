@@ -449,7 +449,7 @@ sub import_account {
         Socialtext::User->SystemUser(),
     );
 
-    print loc("Importing users ..."), "\n";
+    print loc("Importing account data..."), "\n";
     my $account = eval { Socialtext::Account->import_file(
         file  => "$dir/account.yaml",
         name  => $opts{name},
