@@ -10,6 +10,7 @@ use Socialtext::Exceptions;
 use Socialtext::Role;
 use Socialtext::Permission 'ST_ADMIN_WORKSPACE_PERM';
 use Socialtext::JobCreator;
+use Socialtext::Upload;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
@@ -182,7 +183,7 @@ sub POST_json {
 
         if (my $photo_id = $data->{photo_id}) {
             my $blob = scalar Socialtext::File::get_contents_binary(
-                "$Socialtext::Rest::Uploads::UPLOAD_DIR/$photo_id");
+                "$Socialtext::Upload::UPLOAD_DIR/upload-$photo_id");
             $group->photo->set(\$blob);
         }
     }};
