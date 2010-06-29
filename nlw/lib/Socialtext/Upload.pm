@@ -245,16 +245,19 @@ sub purge {
     sql_execute(q{DELETE FROM attachment WHERE attachment_id = ?},
         $self->attachment_id);
 
-    st_log()->info(join(',', "UPLOAD,DELETE",
-        $self->is_image ? 'IMAGE' : 'FILE',
-        encode_json({
-            'id'       => $self->attachment_id,
-            'uuid'     => $self->attachment_uuid,
-            'path'     => $self->disk_filename,
-            'actor_id' => $actor->user_id,
-            'actor'    => $actor->username,
-            'filename' => $self->filename,
-        })));
+    unless ($p{no_log}) {
+        st_log()->info(join(',', "UPLOAD,DELETE",
+            $self->is_image ? 'IMAGE' : 'FILE',
+            encode_json({
+                'id'       => $self->attachment_id,
+                'uuid'     => $self->attachment_uuid,
+                'path'     => $self->disk_filename,
+                'actor_id' => $actor->user_id,
+                'actor'    => $actor->username,
+                'filename' => $self->filename,
+            })
+        ));
+    }
 }
 
 sub make_permanent {
