@@ -1117,6 +1117,7 @@ proto.make_web_link = function(url, link_text) {
 }
 
 proto.make_link = function(label, page_name, url) {
+    var span_node = document.createElement("span");
     var link_node = document.createElement("a");
 
     // Anchor text
@@ -1130,7 +1131,10 @@ proto.make_link = function(label, page_name, url) {
         jQuery(link_node).attr('wiki_page', page_name)
     }
 
-    this.insert_element_at_cursor(link_node);
+    span_node.appendChild( link_node );
+    span_node.appendChild( document.createTextNode('\u00A0') );
+
+    this.insert_element_at_cursor(span_node);
 }
 
 if (Wikiwyg.is_ie) {
