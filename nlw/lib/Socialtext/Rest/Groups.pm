@@ -181,11 +181,6 @@ sub POST_json {
         $self->_add_group_to_workspaces(
             $group, @{$data->{workspaces}}, @created);
 
-        if (my $photo_id = $data->{photo_id}) {
-            my $blob = scalar Socialtext::File::get_contents_binary(
-                "$Socialtext::Upload::UPLOAD_DIR/upload-$photo_id");
-            $group->photo->set(\$blob);
-        }
     }};
     if (my $e = $@) {
         my $status = (ref($e) eq 'Socialtext::Exception::Auth')
@@ -194,6 +189,19 @@ sub POST_json {
 
         $rest->header(-status => $status);
         return $e;
+    }
+
+    if (my $photo_id = $data->{photo_id}) {
+        eval {
+            my $blob;
+            my $upload = Socialtext::Upload->Get(attachment_uuid => $photo_id);
+            $upload->binary_contents(\$blob);
+            $group->photo->set(\$blob);
+            $upload->purge;
+        };
+        if (my $e = $@) {
+            warn "Couldn't set profile photo: $e";
+        }
     }
 
     $rest->header(-status => HTTP_201_Created);
