@@ -439,14 +439,14 @@
     };
 
     Lookahead.prototype.clickCurrent = function () {
-        if (this._items.length) {
+        if (!this.opts.requireMatch) {
+            this.acceptInputValue();
+        }
+        else if (this._items.length) {
             var selitem = jQuery('li.selected a', this.lookahead);
             if (selitem.length && selitem.attr('value')) {
                 this.accept(selitem.attr('value'));
             }
-        }
-        else if (!this.opts.requireMatch) {
-            this.acceptInputValue();
         }
     };
 

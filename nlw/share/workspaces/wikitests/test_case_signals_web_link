@@ -1,0 +1,47 @@
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Signals Web Link SETUP |  |
+
+| set | text | Signals Web Link Text %%start_time%% |
+| set | url | `http://ken.socialtext.net.%%start_time%%` |
+
+| open_ok | /st/signals |  |
+
+| *Comment* | Test Case: Signals Web Link buttons are present |  |
+| st-name-widget | 1 | signals_widget |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_element_visible_ok | mainInsertWeblink | 30000 |
+
+| *Comment* | Test Case: Signals Wiki Link. Click Insert Wiki Link |  |
+| click_ok | mainInsertWeblink |  |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Signals Web Link. Verify visible elements |  |
+| wait_for_element_visible_ok | //div[@id='weblink-ui'] | 30000 |
+| wait_for_element_visible_ok | //input[@name='label'] | 5000 |
+| wait_for_element_visible_ok | //input[@name='destination'] | 5000 |
+| wait_for_element_visible_ok | //a[@class='btn done'] | 5000 |
+| wait_for_element_visible_ok | //a[@class='btn cancel'] | 5000 |
+
+| *Comment* | Test Case: Signals Web Link setSpeed 3000 to allow for type-in |  |
+| set_Speed | 3000 |  |
+| type_ok | //input[@name='label'] | %%text%% |
+| type_ok | //input[@name='destination'] | %%url%% |
+
+| *Comment* | Test Case: Signals Web Link setSpeed zero, click OK |  |
+| set_Speed | 0 |  |
+| click_ok | //a[@class='btn done'] | 5000 |
+| wait_for_element_not_visible_ok | //div[@id='weblink-ui'] | 5000 |
+
+| *Comment* | Test Case: Signals Web Link post signal the hard way |  |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_element_visible_ok | post | 5000 |
+| click_ok | post |  |
+| pause | 3000 |  |
+| wait_for_element_visible_ok | link=%%text%% | 30000 |
+| wait_for_element_visible_ok | //a[@href='%%url%%'] | 30000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Signals Web Link can't click the link since it has target="_new" |  |
+
+| *Comment* | Test Case: Signals Web Link COMPLETED |

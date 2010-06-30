@@ -1,0 +1,21 @@
+* Fixture: SocialWidgets
+
+| *Comment* | Signals Annotations Test Cases |  |
+
+| open_ok | /st/signals |  |
+
+| *Comment* | Signals Annotations Test Cases. buttons are present |  |
+| st-name-widget | 1 | signals_widget |
+| st-select-widget-frame | signals_widget |  |
+| wait_for_element_visible_ok | mainInsertWeblink | 30000 |
+| wait_for_element_visible_ok | mainInsertWikilink | 30000 |
+| wait_for_element_visible_ok | mainInsertTag | 30000 |
+| wait_for_element_visible_ok | mainInsertFile | 30000 |
+| select-frame | relative=parent |  |
+
+| include | [Test Case: Signals Tag] |
+| include | [Test Case: Signals Attachment] |
+| include | [Test Case: Signals Wiki Link] |
+| include | [Test Case: Signals Web Link] |
+
+| *Comment* | Signals Annotations Test Cases COMPLETED |  |

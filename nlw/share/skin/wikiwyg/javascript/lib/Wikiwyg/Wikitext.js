@@ -571,7 +571,7 @@ proto.make_web_link = function(url, url_text) {
     } else {
         wikitext = url;
     }
-    this.insert_text_at_cursor(wikitext);
+    this.insert_text_at_cursor(wikitext + ' ');
 
     return true;
 }
@@ -2201,9 +2201,13 @@ proto.is_italic = function(elem) {
             (
                 elem.nodeName == 'SPAN' &&
                 (function(elem) {
-                    return self.squish_style_object_into_string(
-                        elem.getAttribute('style')
-                    ).match(/font-style: italic;/)
+                    var style = '';
+                    try {
+                        style = self.squish_style_object_into_string(
+                            elem.getAttribute('style')
+                        )
+                    } catch (e) {};
+                    return /font-style: italic;/.test(style);
                 })(elem)
             )
         )

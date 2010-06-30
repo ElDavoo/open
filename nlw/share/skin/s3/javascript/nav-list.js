@@ -41,6 +41,7 @@ $.fn.navList = function(entries) {
                 var li_height = $(this).hasClass('has_icons') ? 30 : 20;
                 if ($(this).find('li').size() >= 8) {
                     $(this).height(li_height * 8);
+                    $(this).css('overflow-y', 'scroll');
                 }
             });
 
