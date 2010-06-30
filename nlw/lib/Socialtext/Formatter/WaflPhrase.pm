@@ -892,10 +892,13 @@ sub _parse_page_for_headers {
         );
     }
 
-    $title = $self->hub->viewer->text_to_non_wrapped_html(
-        $title . "\n", 
-        Socialtext::Formatter::Viewer::NO_PARAGRAPH,
-    );
+    {
+        no strict 'subs';
+        $title = $self->hub->viewer->text_to_non_wrapped_html(
+            $title . "\n", 
+            Socialtext::Formatter::Viewer::NO_PARAGRAPH,
+        );
+    }
     my $html = $self->hub->viewer->text_to_html($wikitext);
     $html =~ s/{{{(toc:?\s*.*?)}}}/{$1}/g;
 
