@@ -262,7 +262,7 @@ sub get_id_from_url {
     $self->{$variable} = $arr[scalar(@arr)-1];
 }
 
-=head2 st_page_create ( $workspace, pagename )
+=head2 st_create_wikipage ( $workspace, pagename )
 
 Creates a plain-english page at server/workspace/pagname and leaves you in view mode.  
 
@@ -289,6 +289,32 @@ sub st_create_wikipage {
     $self->handle_command('wait_for_element_visible_ok','st-edit-button-link',30000);                
     $self->handle_command('set_Speed',0);
 }
+
+=head st_update_wikipage ( $workspace, $page, $content) 
+
+Goes to a wiki page, clicks edit, types in $content, clicks save
+
+=cut
+
+sub st_update_wikipage {
+    my $pause = 2000;
+    my ($self, $workspace, $page, $content)  = @_;
+    my $url = '/' . $workspace . '/?'  . $page;
+           
+    $self->{selenium}->open_ok($url);
+    $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 3000);
+    $self->handle_command('click_ok', 'st-edit-button-link');
+    $self->handle_command('set_Speed',3000);
+    $self->handle_command('wait_for_element_visible_ok','link=Wiki Text',30000);
+    $self->handle_command('click_ok','link=Wiki Text');   
+    $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea',30000);
+    $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$content);
+    $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
+    $self->handle_command('pause',$pause);
+    $self->handle_command('click_ok','st-save-button-link');
+    $self->handle_command('set_Speed',0);
+}
+
 
 =head2 st_add_page_tag ($url, $page, @tags)
 
