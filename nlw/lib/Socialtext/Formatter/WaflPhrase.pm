@@ -10,6 +10,7 @@ use Socialtext::Paths;
 use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::String ();
 use Socialtext::Formatter::Viewer;
+use Socialtext::Timer qw/time_scope/;
 
 const formatter_id  => 'wafl_phrase';
 const pattern_start =>
@@ -137,6 +138,7 @@ sub hub_for_workspace_name {
 sub get_file_id {
     my $self = shift;    # XXX maybe belongs in Socialtext::Attachments
     my ( $workspace_name, $page_id, $filename ) = @_;
+    my $t = time_scope 'get_file_id';
 
     my $ws = Socialtext::Workspace->new( name => $workspace_name );
     return $self->set_error( $self->permission_error )
@@ -201,6 +203,7 @@ package Socialtext::Formatter::Image;
 
 use base 'Socialtext::Formatter::WaflPhrase';
 use Class::Field qw( const );
+use Socialtext::Timer qw/time_scope/;
 
 const wafl_id => 'image';
 const wafl_reference_parse => 
@@ -219,6 +222,7 @@ sub html_end {
 
 sub html {
     my $self = shift;
+    my $t = time_scope 'wafl_image';
     my ($workspace_name, $page_title, $image_name, $page_id, $page_uri, $size)
         = $self->parse_wafl_reference;
 

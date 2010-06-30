@@ -17,27 +17,33 @@ use Socialtext::Indexes;
 use Socialtext::Page;
 use Readonly;
 use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE HANDLE_TYPE USER_TYPE );
+use Socialtext::Timer qw/time_scope/;
+use Socialtext::Cache;
 use Memoize;
 
 sub class_id { 'attachments' }
-field 'attachment_set';
-field 'attachment_set_page_id';
+
+{
+    my $cache;
+    sub cache {
+        return $cache ||= Socialtext::Cache->cache('attachments');
+    }
+}
 
 sub all {
     my $self = shift;
+    my $t = time_scope 'all_attach';
     my %p = @_;
     my $page_id  = $p{page_id} || $self->hub->pages->current->id;
     my $no_index = $p{no_index};
+    my $ws_id    = $self->hub->current_workspace->workspace_id;
+    my $cache_key = join ':', $ws_id, $page_id;
 
-    my $attachment_set = $self->attachment_set;
+    if (my $set = $self->cache->get($cache_key)) {
+        return $set;
+    }
 
-    return $attachment_set
-      if defined $attachment_set and defined $self->attachment_set_page_id
-        and $self->attachment_set_page_id eq $page_id;
-
-    $self->attachment_set_page_id($page_id);
-    $attachment_set = [];
-
+    my @attachment_set;
     for my $entry ( @{ $self->_all_for_page($page_id, $no_index) } ) {
         my $attachment = $self->new_attachment(
             id      => $entry->{id},
@@ -46,10 +52,12 @@ sub all {
         next if $attachment->deleted;
         next unless -f $attachment->full_path; 
 
-        push @$attachment_set, $attachment;
+        push @attachment_set, $attachment;
     }
 
-    $self->attachment_set($attachment_set);
+    $self->cache->set($cache_key => \@attachment_set);
+
+    return \@attachment_set;
 }
 
 sub index {
@@ -60,9 +68,7 @@ sub index {
 
 sub new_attachment {
     my $self = shift;
-    $self->attachment_set(undef);
-    $self->attachment_set_page_id(undef);
-    Socialtext::Attachment->new(hub => $self->hub, @_);
+    return Socialtext::Attachment->new(hub => $self->hub, @_);
 }
 
 {
@@ -86,6 +92,7 @@ sub new_attachment {
         $attachment->store( user => $args{creator} );
         $attachment->inline( $args{page_id}, $args{creator} )
             if $args{embed};
+        $self->cache->clear();
         return $attachment;
     }
 }
