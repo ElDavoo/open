@@ -290,7 +290,7 @@ sub st_create_wikipage {
     $self->handle_command('set_Speed',0);
 }
 
-=head st_update_wikipage ( $workspace, $page, $content) 
+=head2 st_update_wikipage ( $workspace, $page, $content) 
 
 Goes to a wiki page, clicks edit, types in $content, clicks save
 
