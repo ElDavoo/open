@@ -262,6 +262,16 @@ sub get_id_from_url {
     $self->{$variable} = $arr[scalar(@arr)-1];
 }
 
+=head st_timed_save 
+  Pauses before clicking save, just in case the GUI element is not yet enabled
+=cut
+
+sub st_timed_page_save {
+    my ($self) = @_;
+    $self->handle_command('pause',3000);
+    $self->handle_command('click_and_wait','st-save-button-link');
+}
+
 =head2 st_create_wikipage ( $workspace, pagename )
 
 Creates a plain-english page at server/workspace/pagname and leaves you in view mode.  
