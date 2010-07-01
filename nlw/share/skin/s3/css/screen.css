@@ -4433,18 +4433,16 @@ ul.dropdownOptions {
     margin: 0;
     text-align: left;
     width: 100px;
+    border: 1px solid black;
+    border-top: none;
 }
 ul.dropdownOptions li {
     display: block;
     list-style: none;
     margin: 0;
     padding: 3px;
-    border: 1px solid black;
-    border-bottom: none;
+    border-top: 1px solid black;
     overflow: hidden;
-}
-ul.dropdownOptions li.last {
-    border-bottom: 1px solid black;
 }
 
 ul.dropdownOptions a {
