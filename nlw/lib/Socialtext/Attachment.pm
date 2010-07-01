@@ -160,7 +160,6 @@ sub extract {
     # attach the archive file itself.
     @files = $tmparchive unless @files;
 
-    my @attachments;
     for my $file (@files) {
         open my $fh, '<', $file or die "Cannot read $file: $!";
 
@@ -177,7 +176,11 @@ sub extract {
         $attachment->inline( $self->page_id, $creator );
     }
 
-    return @attachments;
+    my $cache_key = join(
+        ':', $self->hub->current_workspace->workspace_id, $self->page_id);
+    $self->hub->attachments->cache->clear();
+    
+    return;
 }
 
 
