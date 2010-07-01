@@ -27,7 +27,6 @@ sub GET {
 
     Socialtext::MakeJS->Build($dir, $file);
     
-    $file =~ s/\.gz$//;
     my $path = "$code_base/$dir/$file";
     my $url = "/nlw/static/$dir/$file";
     unless (-f $path) {
