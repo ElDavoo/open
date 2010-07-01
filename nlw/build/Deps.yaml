@@ -25,6 +25,7 @@ Carp: 0
 CGI: 3.10
 CGI::Cookie: 0
 Cache::FileCache: 0
+Captcha::reCAPTCHA: 0.92
 Carp: 0
 Class::Accessor: 0.34
 Class::Field: 0.12
@@ -86,6 +87,7 @@ HTML::FillInForm::ForceUTF8: 0.02
 HTML::FormatRTF: 2.04
 HTML::PrettyPrinter: 0.03
 HTML::Scrubber: 0.08
+HTML::Tiny: 1.05
 HTML::TreeBuilder: 3.13
 HTML::WikiConverter: 0.61
 HTML::WikiConverter::Socialtext: 0.03
