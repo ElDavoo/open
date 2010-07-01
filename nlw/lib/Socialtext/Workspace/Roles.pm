@@ -156,7 +156,7 @@ sub RolesForUserInWorkspace {
     # arguments in from the control panel.
     Readonly my $spec => {
         exclude       => ARRAYREF_TYPE(default => []),
-        limit         => SCALAR_TYPE(default   => undef),
+        limit         => BOOLEAN_TYPE(default   => undef),
         offset        => SCALAR_TYPE(default   => 0),
         order_by      => SCALAR_TYPE(default   => 'name'),
         sort_order    => SCALAR_TYPE(default   => 'asc'),
@@ -221,9 +221,16 @@ sub RolesForUserInWorkspace {
              $where_filter
              GROUP BY $group_by
              ORDER BY UPPER(w.title) $sort_order
-             LIMIT ? OFFSET ?
         };
-        my $sth = sql_execute( $sql, @binds, $limit, $offset );
+        if ($limit) {
+            $sql .= ' LIMIT ? ';
+            push @binds, $limit;
+        }
+        if ($offset) {
+            $sql .= ' OFFSET ? ';
+            push @binds, $offset;
+        }
+        my $sth = sql_execute( $sql, @binds );
 
         my $cursor = Socialtext::MultiCursor->new(
             iterables => [ $sth->fetchall_arrayref({}) ]);

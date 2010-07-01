@@ -21,6 +21,10 @@ Shows the people that viewed the given page recently.
 
 =cut
 
+# We don't need a backwards compatible interface here, so pageable should
+# always return 1.
+sub _build_pageable { return 1; }
+
 # Note: We're not using Socialtext::Rest::Pageable's get_resource() because
 # we do not need to provide backwards compatible interfaces, and we want
 # more control over the REST responses.
