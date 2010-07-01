@@ -493,3 +493,4 @@ t/Socialtext/Signal/Tag.t
 lib/Socialtext/Gadgets/Container/SignalsPopOut.pm
 lib/Socialtext/Handler/Container/SignalsPopOut.pm
 share/skin/wikiwyg/javascript/jemplate_wikiwyg_edit.js
+t/widget/todo.xml
