@@ -20,7 +20,7 @@ Set test_string to such a string, then make a widget with that as the link text,
 | click_ok | link=Rich Text |  |
 | pause | 5000 | wait for the Rich Text editor to load |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | The last line of the page should contain only %%test_string%% |  |
 | text_like | st-page-content | qr/^\s*%%test_string_escaped%%\s*$/m |

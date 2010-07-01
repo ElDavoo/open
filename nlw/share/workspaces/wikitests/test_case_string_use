@@ -38,7 +38,7 @@ Set default values if they are not defined by the caller
 | wait_for_element_visible_ok | st-tagqueue-close | 30000 |
 | click_ok | st-tagqueue-close |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: String Use: check tag 1 |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
@@ -129,7 +129,7 @@ Set default values if they are not defined by the caller
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: String Use: try opening for editing Rich Text mode |  |
 | click_ok | st-edit-button-link |  |
@@ -139,7 +139,7 @@ Set default values if they are not defined by the caller
 | click_ok | link=Rich Text |  |
 | pause | 10000 | wait for the editor to load |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | This regexp carefully tests for the page content being just the link text and no other garbage |  |
 | *Comment* | in the last line in st page maincontent. DO NOT CHANGE IT. |  |
@@ -155,7 +155,7 @@ Set default values if they are not defined by the caller
 | type_ok | st-newpage-pagename-edit | %%test_string%% pad |
 | type_ok | wikiwyg_wikitext_textarea | %%test_string%% pad content |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: String Use: set Your Notepad |  |
 | open_ok | /%%workspace%%/?action=users_settings |  |
@@ -189,7 +189,7 @@ Set default values if they are not defined by the caller
 | click_ok | link=Rich Text |  |
 | pause | 6000 | wait for the editor to load |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: String Use: test for TOC blow up |  |
 | pause | 10000 |  |

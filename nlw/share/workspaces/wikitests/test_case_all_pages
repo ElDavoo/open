@@ -46,7 +46,7 @@
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | st-save-button-link |  |
 | pause | 5000 | I hate pause; needed for entire page load |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | wait_for_element_visible_ok | st-edit-button-link |  |
 
 | open_ok | /%%new_ws%%/index.cgi?action=changes&changes=all |  |
@@ -79,7 +79,7 @@ For some reason, IE 6 blows up when open_ok is used in some places. We avoid it.
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | st-save-button-link |  |
 | pause | 5000 | I hate pause; needed for entire page load |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | wait_for_element_visible_ok | st-edit-button-link |  |
 
 | *Comment* | Test Case: All Pages verify revision by user %%s_user%% |  |

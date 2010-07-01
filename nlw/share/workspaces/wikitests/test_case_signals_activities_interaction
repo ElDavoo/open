@@ -63,7 +63,7 @@
 | click_ok | st-edit-summary-text-area |  |
 | type_ok | st-edit-summary-text-area | Super Edit Summary From Signal %%start_time%% |
 | click_ok | st-edit-summary-signal-checkbox |  |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Signals/Activities Add Activities widget |  |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
@@ -161,7 +161,7 @@
 | click_ok | st-edit-summary-text-area |  |
 | type_ok | st-edit-summary-text-area | Someone Else's Edit Summary From Signal %%start_time%% |
 | click_ok | st-edit-summary-signal-checkbox |  |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | signals_widget |

@@ -44,7 +44,7 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | %%mau%% continues the conversation in %%ma%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | wait_for_element_visible_ok | st-edit-button-link | 60000 |
 
 | st-logoutin |  |  |

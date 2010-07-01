@@ -203,7 +203,7 @@
 
 | *Comment* | Test Case: Calc Slideshow - Save and re-edit |  |
 | pause | 5000 |  |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | wait_for_element_visible_ok | st-edit-button-link |  |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | st-save-button-link |
@@ -329,7 +329,7 @@
 | click_ok | st-delete-col-button-link |  |
 | *Comment* | SlideShow Calc Slideshow: SEE delete row/cols |  |
 | pause | %%pt%% |  |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | wait_for_element_visible_ok | st-edit-button-link |  |
 | pause | 10000 |  |
 

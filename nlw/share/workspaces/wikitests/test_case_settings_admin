@@ -83,7 +83,7 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | post2 %%start_time%% content |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Settings: Admin test weblog sort order using newspace-%%start_time%% |  |
 | text_like | contentContainer | qr/post2 %%start_time%%.+first post/ |
@@ -93,7 +93,7 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | edit |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | text_like | contentContainer | qr/edit.+post2 %%start_time%%/ |
 | click_and_wait | link=Settings |  |

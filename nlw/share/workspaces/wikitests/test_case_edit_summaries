@@ -16,7 +16,7 @@
 | wait_for_element_present_ok | st-edit-summary-text-area | 30000 |
 | click_ok | st-edit-summary-text-area |  |
 | type_ok | st-edit-summary-text-area | Quick Summary for my friends %%start_time%% |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Edit Summaries. Create a second edit summary. |  |
 | open_ok | /%%workspace%%/index.cgi?Edit Summaries %%start_time%% |  |
@@ -31,7 +31,7 @@
 | wait_for_element_present_ok | st-edit-summary-text-area | 30000 |
 | click_ok | st-edit-summary-text-area |  |
 | type_ok | st-edit-summary-text-area | A second summary for a wikitest %%start_time%% |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 
 | *Comment* | Test Case: Edit Summaries. Watch this page |  |

@@ -34,7 +34,7 @@
 | type_ok | st-newpage-pagename-edit | Create Page %%start_time%% |
 | type_ok | wikiwyg_wikitext_textarea | Have some Create Page %%start_time%% Content |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Create Content: tag blank as Template |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
@@ -59,7 +59,7 @@
 | verifyValue | wikiwyg_wikitext_textarea | Have some Create Page %%start_time%% Content |
 | type_ok | st-newpage-pagename-edit | Create Page %%start_time%% from Template |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | text_like | st-page-titletext | Create Page %%start_time%% from Template |
 | text_like | st-page-content | Have some Create Page %%start_time%% Content |
 
@@ -90,7 +90,7 @@
 | verifyValue | wikiwyg_wikitext_textarea | Have some Create Page %%start_time%% Content |
 | type_ok | st-newpage-pagename-edit | Create Page %%start_time%% from Copy |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Create Content: tag copy as Template |  |
 | text_like | st-page-titletext | Create Page %%start_time%% from Copy |

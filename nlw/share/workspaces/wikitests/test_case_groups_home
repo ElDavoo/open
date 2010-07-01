@@ -34,7 +34,7 @@
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | New Page %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Groups Tag A Page |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
