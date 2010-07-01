@@ -5,7 +5,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 39;
-fixtures( 'admin', 'foobar' );
+fixtures( 'admin', 'foobar', 'destructive' );
 
 my $admin = new_hub('admin');
 my $foobar = new_hub('foobar');
