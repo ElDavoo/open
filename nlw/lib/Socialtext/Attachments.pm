@@ -56,6 +56,8 @@ sub all {
     }
 
     $self->cache->set($cache_key => \@attachment_set);
+    # Make sure our hub doesn't disappear
+    $self->cache->set("hub:$cache_key" => $self->hub);
 
     return \@attachment_set;
 }
