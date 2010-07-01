@@ -367,6 +367,7 @@ QUOTEDTEXT
     $self->Content_MD5("$md5==");
     $self->From($from);
 
+    $self->hub->attachments->cache->clear();
     $self->hub->attachments->index->add($self) unless $self->deleted;
     Socialtext::JobCreator->index_attachment($self);
 }
