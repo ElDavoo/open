@@ -24,6 +24,7 @@
 
 | *Comment* | Test Case: Activities Widget Upload. setSpeed 3000 for type-in, upload three files |  |
 | set_Speed | 3000 |  |
+| text_like | //body | select an image or file to upload |
 | type-lookahead-ok | //form[@name='attachForm']//input | %%jpg_file%% |
 | type-lookahead-ok | //form[@name='attachForm']//input | %%txt_file%% |
 | type-lookahead-ok | //form[@name='attachForm']//input | %%zip_file%% |
@@ -34,6 +35,7 @@
 | wait_for_text_present_ok | Uploaded files: %%jpg%%, %%txt%%, %%zip%% | 30000 |
 | click_ok | //a[@class='btn'] |  |
 | wait_for_element_not_visible_ok | //form[@name='attachForm'] | 30000 |
+| text_unlike | //body | select an image or file to upload |
 
 | *Comment* | Test Case: Activities Widget Upload. post %%signal%% |  |
 | st-select-widget-frame | signals_widget |  |
