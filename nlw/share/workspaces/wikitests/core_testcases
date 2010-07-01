@@ -90,7 +90,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: Weblog naming with Latin-1 character]
 * [Test Case: Signal From Profile]
 * [Test Case: Profile Activity Widget]
-
+* [Test Case: People Dashboard Plugins]
 * [Edit Contention Testcases]
 * [Mobile Testcases]
 
