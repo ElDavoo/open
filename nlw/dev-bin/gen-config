@@ -794,6 +794,8 @@ sub standard_params {
     $config{prefix_dir} = get_build_setting("prefix");
     $config{pid_dir}    = $dirs{run};
 
+    $config{challenger} = Socialtext::AppConfig->challenger;
+
     return %config;
 }
 
