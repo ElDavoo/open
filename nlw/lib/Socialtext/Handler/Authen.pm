@@ -112,6 +112,14 @@ sub handler ($$) {
                     return $self->_redirect($redirect_to);
                 }
             }
+            if (Socialtext::AppConfig->captcha_enabled) {
+                my $c = Captcha::reCAPTCHA->new;
+                my $c_pubkey = Socialtext::AppConfig->captcha_pubkey;
+                if ($c_pubkey) {
+                    $vars->{captcha_form} = $c->get_html($c_pubkey);
+                }
+            }
+
         }
         if ( $uri eq 'register.html' ) {
             if (Socialtext::AppConfig->captcha_enabled) {
