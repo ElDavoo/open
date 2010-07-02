@@ -262,7 +262,7 @@ sub get_id_from_url {
     $self->{$variable} = $arr[scalar(@arr)-1];
 }
 
-=head st_page_save 
+=head2 st_page_save 
   Pauses before clicking st-save-button-link, just in case the GUI element is not yet enabled
 =cut
 
