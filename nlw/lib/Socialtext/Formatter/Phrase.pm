@@ -182,7 +182,6 @@ sub html {
     my $page_title = $self->title;
 
     my ( $page_disposition, $page_uri )
-        # XXX hub remainder
         = $self->hub->pages->title_to_disposition($page_title);
 
     if ($page_uri) {
