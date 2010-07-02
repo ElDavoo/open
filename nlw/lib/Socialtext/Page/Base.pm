@@ -17,6 +17,7 @@ use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::File;
 use Socialtext::Log qw/st_log/;
 use Socialtext::Timer qw/time_scope/;
+use Socialtext::SQL qw/sql_singlevalue/;
 use Carp ();
 use Carp qw/cluck/;
 
@@ -73,7 +74,11 @@ sub to_html {
         my $q_str = Socialtext::File::get_contents($q_file);
         my $a_str = $self->_questions_to_answers($q_str);
         my $cache_file = $self->_answer_file($a_str);
-        if ($cache_file and -e $cache_file) {
+        my $cache_file_exists = $cache_file && -e $cache_file;
+        my $users_changed
+            = $self->_users_modified_since($q_str, (stat($cache_file))[9])
+            if $cache_file_exists;
+        if ($cache_file_exists and !$users_changed) {
             my $t = time_scope('wikitext_HIT');
             $self->{__cache_hit}++;
             return scalar Socialtext::File::get_contents_utf8($cache_file);
@@ -93,6 +98,30 @@ sub to_html {
 
     my $html_ref = $self->_cache_html;
     return $$html_ref;
+}
+
+sub _users_modified_since {
+    my $self = shift;
+    my $q_str = shift;
+    my $cached_at = shift;
+
+    my @found_users;
+    my @user_ids;
+    while ($q_str =~ m/(?:^|-)u(\d+)(?:-|$)/g) {
+        push @user_ids, $1;
+    }
+    return 0 unless @user_ids;
+
+    my $user_placeholders = join ',', map {'?'} @user_ids;
+    my $updated_after_cache = sql_singlevalue(qq{
+        SELECT 1 FROM users
+         WHERE user_id IN ($user_placeholders)
+           AND last_profile_update >
+                'epoch'::timestamptz + ? * INTERVAL '1 second'
+        }, @user_ids, $cached_at) || 0;
+
+    return 1 if $updated_after_cache;
+    return 0;
 }
 
 sub _questions_to_answers {

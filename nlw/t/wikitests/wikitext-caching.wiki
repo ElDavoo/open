@@ -2,6 +2,8 @@
 
 | standard-test-setup |
 | set | ws1_id | %%workspace_id%% |
+| set | user1 | %%username%% |
+| set | user1_id | %%user_id%% |
 
 Create another user in the same workspace as the main user
 | set | user2 | user2-%%start_time%%@ken.socialtext.net |
@@ -252,8 +254,18 @@ Now delete the linked page to make the link incipient again.
 | fetch-page | linker | miss |
 | body-like | is_incipient=1 |
 
+| Comment | Change a users details should clear cache |
+| edit_page | %%workspace%% | userchange | {user: %%user1_id%%} |
+| question-file-is | userchange  | u%%user1_id%% |
+| fetch-page | userchange | hit | |
+| body-like | user %%start_time%% |
+| sleep | 1 |
+| POST-json | /data/people/%%username%% | {"first_name":"Jimmy"} |
+| code-is | 204 |
+| fetch-page | userchange | miss | |
+| body-unlike | foo %%start_time%% |
+| body-like | Jimmy |
+
 TODO:
-* user link becomes hidden (user is removed from ws)
-* user details change, user link becomes out of date
 * link mouseover workspace preference
 * really short expiries don't fill up the disk
