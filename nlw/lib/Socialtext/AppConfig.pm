@@ -1294,6 +1294,30 @@ Default: 1
 
 =for code type => BOOLEAN_TYPE
 
+=head2 captcha_enabled
+
+Enable or disable use of captcha for self-registration
+
+Default: 0
+
+=for code type => BOOLEAN_TYPE
+
+=head2 captcha_privkey
+
+Private key for use with reCAPTCHA service
+
+Optional.
+
+=for code type => SCALAR_TYPE
+
+=head2 captcha_pubkey
+
+Public key for use with reCAPTCHA service
+
+Optional.
+
+=for code type => SCALAR_TYPE
+
 =head1 OTHER METHODS
 
 In addition to the methods available for each configuration variable,
