@@ -2,6 +2,7 @@ package Socialtext::Job::PageIndex;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::PageLinks;
+use Socialtext::Log qw/st_log/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
@@ -26,9 +27,18 @@ sub do_work {
 sub unlink_cached_wikitext_linkers {
     my $self = shift;
 
-    my $links = Socialtext::PageLinks->new(page => $self->page);
-    # Find pages that link to $self->page
-    # delete cached versions of those pages.
+    eval {
+        my $links = Socialtext::PageLinks->new(
+            page => $self->page,
+            hub  => $self->hub,
+        );
+        for my $page (@{ $links->backlinks }) {
+            $page->delete_cached_html;
+        }
+    };
+    if ($@) {
+        st_log->info("Error cleaning wikitext cache: $@");
+    }
 }
 
 __PACKAGE__->meta->make_immutable;

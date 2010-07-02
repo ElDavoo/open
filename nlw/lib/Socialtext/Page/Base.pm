@@ -237,6 +237,11 @@ sub _page_cache_basename {
     return "$cache_dir/" . $self->id . '-' . $self->revision_id;
 }
 
+sub delete_cached_html {
+    my $self = shift;
+    unlink glob($self->_page_cache_basename . '-*');
+}
+
 sub _question_file {
     my $self = shift;
     my $base = $self->_page_cache_basename or return;

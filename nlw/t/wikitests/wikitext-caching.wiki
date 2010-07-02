@@ -22,6 +22,7 @@ This should give username visibility of foo_username
 Run these tests as the main user.
 | http-user-pass | %%username%% | password |
 
+
 | Comment    | Create and fetch the simplest possible page    |
 | edit_page  | %%workspace%%          | Test | Simplest page possible. |
 | fetch-page | Test                   | hit  |                         |
@@ -228,18 +229,31 @@ These next wafls all generate dynamic data and are not cacheable.
 Caching bugs for changing non-wikitext state.
 
 | Comment | Incipient links |
+| st-clear-jobs | |
 | edit-page | %%workspace%% | linker | Hey there [no page] |
 | fetch-page | linker | hit |
 | body-like | is_incipient=1 |
 | comment | now create the incipient page, it should invalidate cache |
 | edit-page | %%workspace%% | no_page | I am real now! |
+
+Need to let the ceq run to remove stale cached html.
+
+| st-process-jobs | |
+| job-count | PageIndex | 0 |
 | fetch-page | linker | miss |
 | body-unlike | is_incipient=1 |
 
+Now delete the linked page to make the link incipient again.
+
+| DELETE | /data/workspaces/%%workspace%%/pages/no_page |
+| code-is | 204 |
+| st-process-jobs | |
+| job-count | PageIndex | 0 |
+| fetch-page | linker | miss |
+| body-like | is_incipient=1 |
 
 TODO:
-* page link becomes incipient
-* page link becomes non-incipient
 * user link becomes hidden (user is removed from ws)
 * user details change, user link becomes out of date
 * link mouseover workspace preference
+* really short expiries don't fill up the disk
