@@ -653,11 +653,6 @@ proto.on_key_enter = function(e) {
 }
 
 proto.enable_pastebin = function () {
-    if ($.browser.safari) {
-        // XXX - Need to find a way to intercept paste for Safari5.
-        return;
-    }
-
     var self = this;
     self.pastebin = jQuery('#pastebin').attr('contentWindow');
 
@@ -673,6 +668,13 @@ proto.enable_pastebin = function () {
         self.pastebin.document.designMode = "on";
     }
 
+    if ($.browser.safari) {
+        self.get_edit_window().addEventListener("beforepaste", function(e) {
+            self.on_before_paste();
+        }, false);
+        return;
+    }
+
     var event_name = "keydown";
     if (jQuery.browser.mozilla && navigator.oscpu.match(/Mac/)) {
         event_name = "keypress";
@@ -680,16 +682,7 @@ proto.enable_pastebin = function () {
 
     this.bind(event_name, function(e) {
         if ((e.ctrlKey || e.metaKey) && (e.which == 86 || e.which == 118)) {
-            if (self.pastebin) {
-                self.pastebin.focus();
-
-                setTimeout(function() {
-                    var html = self.pastebin.document.body.innerHTML;
-                    self.pastebin.document.body.innerHTML = "";
-
-                    self.on_pasted(html);
-                }, 100);
-            }
+            self.on_before_paste();
         }
         else if (self.on_key_handler) {
             return self.on_key_handler(e);
@@ -700,6 +693,20 @@ proto.enable_pastebin = function () {
     });
 
     this.rebindHandlers();
+}
+
+proto.on_before_paste = function () {
+    var self = this;
+    if (self.pastebin) {
+        self.pastebin.focus();
+
+        setTimeout(function() {
+            var html = self.pastebin.document.body.innerHTML;
+            self.pastebin.document.body.innerHTML = "";
+
+            self.on_pasted(html);
+        }, 100);
+    }
 }
 
 proto.bind = function (event_name, callback) {
