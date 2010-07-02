@@ -4,7 +4,7 @@
 | open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=Rename%20Spreadsheet%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link |  |
 | pause | 5000 | I hate pause; needed for entire page load |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
 | click_ok | link=Add Tag |  |

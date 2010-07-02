@@ -73,7 +73,7 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | %%conv_user%% edits |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | st-page-multi-view | /%%acw%%/?Active Content Edit %%start_time%% | 5 |
 
 | *Comment* | Test Case: Active Content Setup comment on a page |  |

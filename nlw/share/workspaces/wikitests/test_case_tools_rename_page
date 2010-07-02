@@ -17,7 +17,7 @@
 | click_ok | st-tagqueue-addbutton |  |
 | click_ok | st-tagqueue-close |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Tools: Rename Page. Rename the page |  |
 | click_ok | link=Rename Page |  |
@@ -45,7 +45,7 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | Rename This Page %%start_time%% NEW content |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Tools: Rename Page. Rename the edited page and Cancel |  |
 | click_ok | link=Rename Page |  |

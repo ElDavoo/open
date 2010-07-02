@@ -6,7 +6,7 @@ Note: Cannot automate attachments, test is slightly reduced
 | open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=Dupe%20Spreadsheet%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link |  |
 | pause | 5000 | I hate pause; needed for entire page load |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Calc Tools: Duplicate Page Test Duplicate popup, duplicate the page |  |
 | click_ok | link=Duplicate Page |  |

@@ -12,7 +12,7 @@
 | type_ok | st-newpage-pagename-edit | Wiki Page %%start_time%% |
 | type_ok | wikiwyg_wikitext_textarea | I have created a page called Wiki Page %%start_time%%. w00t. |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Wiki Page Widget. Create the widget |  |
 | st-single-widget-in-dashboard | gallery-widget-Wiki Page |  |

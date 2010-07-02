@@ -122,7 +122,9 @@ sub _get_entities {
             : sort { $a->{$order} cmp $b->{$order} } @$accounts;
     }
     return [
-        splice @sorted, $self->start_index || 0, $self->items_per_page,
+        $self->pageable
+            ? splice(@sorted, $self->start_index || 0, $self->items_per_page)
+            : @sorted
     ];
 };
 

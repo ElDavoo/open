@@ -29,7 +29,7 @@
 | click_ok | st-edit-summary-text-area |  |
 | type_ok | st-edit-summary-text-area | Super Edit Summary From Signal %%start_time%% |
 | click_ok | st-edit-summary-signal-checkbox |  |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Activities Widget Basic Events. Generate Basic Signals |  |
 | http-user-pass | %%signalsuser%% | %%password%% |

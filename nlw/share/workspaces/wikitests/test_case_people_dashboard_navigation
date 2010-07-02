@@ -11,7 +11,7 @@
 | set | new_email_find_me | zzzz %%start_time%% 99 |
 | set | new_email_prefix | `zzzz_` |
 
-| *Comment* | Test Case: People Dashboard Navigation - force a Last link |  |  |
+| *Comment* | Test Case: People Dashboard Navigation - create a Last page using %%baseusername%% prefix |  |  |
 | create_user | %%baseusername%%01@ken.socialtext.net | %%password%% | %%hostname%% |
 | create_user | %%baseusername%%02@ken.socialtext.net | %%password%% | %%hostname%% |
 | create_user | %%baseusername%%03@ken.socialtext.net | %%password%% | %%hostname%% |
@@ -33,8 +33,11 @@
 | create_user | %%baseusername%%19@ken.socialtext.net | %%password%% | %%hostname%% |
 | create_user | %%baseusername%%20@ken.socialtext.net | %%password%% | %%hostname%% |
 | create_user | %%baseusername%%21@ken.socialtext.net | %%password%% | %%hostname%% |
+| create_user | %%new_email%% | %%password%% | %%hostname%% |
 
-| st-admin | create_user --email %%new_email%% --password %%password%% |  |
+| *Comment* | Test Case: People Dashboard Navigation - make sure %%username%% is in %%hostname%% account |  |  |
+| st-admin | add-member --account %%hostname%% --u %%username%% | has the role of 'member' |
+
 | open_ok | / |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |
 | click_and_wait | link=Add Content |  |
@@ -64,10 +67,9 @@ TO DO - Add testability hooks and confirm Grey Ghost Icon
 | wait_for_element_visible_ok | //a[@id='gallery-widget-ToDo'] | 30000 |
 | text_like | Displays a single page from any of your workspaces within a Socialtext Widget. |  |
 
-| *Comment* | Test Case: People Dashboard Navigation People. Last people page. Set filter to All not %%hostname%% |  |
+| *Comment* | Test Case: People Dashboard Navigation People. Last people page. Use the last person %%new_email%% |  |
+
 | open_ok | /?action=people |  |
-| wait_for_element_visible_ok | //select[@class='account-select'] | 30000 |
-| select_ok | //select[@class='account-select'] | label=All Groups |
 | wait_for_element_visible_ok | link=Last | 30000 |
 | click_and_wait | link=Last |  |
 
@@ -97,6 +99,10 @@ TO DO - Add testability hooks and confirm Grey Ghost Icon
 | text_like | qr/People matching \'pastafazool\'/ |  |
 | text_like | Showing 1 - 0 of 0 total |  |
 
-| *comment* | Test Case: People Dashboard Navigation TEARDOWN |  |
+| *Comment* | Test Case: People Dashboard Navigation TEARDOWN |  |
+
+Note: you can't verify the remove because you may be trying to remove from the primary account. Let It Be.
+
+| st-admin | remove-member --account %%hostname%% --u %%username%% |  |
 
 | *comment* | Test Case: People Dashboard Navigation COMPLETED |  |

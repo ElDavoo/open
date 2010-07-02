@@ -21,7 +21,7 @@
 | wait_for_element_visible_ok | link=Expand | 10000 |
 
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Edit This Page verify editing buttons |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
@@ -72,7 +72,7 @@
 | verify_value | wikiwyg_wikitext_textarea | Edit This Page content %%start_time%% |
 | text_like | st-preview-button-link | Preview |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Edit This Page cancel edit Advanced mode |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
@@ -207,7 +207,7 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | Edit This Page %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | wait_for_text_present_ok | Edit This Page %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Edit This Page edit tips |  |

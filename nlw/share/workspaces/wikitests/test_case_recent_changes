@@ -16,7 +16,7 @@
 | type_ok | st-newpage-pagename-edit | Created Page 1 |
 | type_ok | wikiwyg_wikitext_textarea | I have created a page called Created Page 1. woot. |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Recent Changes. Create page 2 |  |
 | open_ok | /%%newspace%%/index.cgi?action=new_page |  |
@@ -27,7 +27,7 @@
 | type_ok | st-newpage-pagename-edit | Created Page 2 |
 | type_ok | wikiwyg_wikitext_textarea | I have created a page called Created Page 2. woot. |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Recent Changes. Create page 3 |  |
 | open_ok | /%%newspace%%/index.cgi?action=new_page |  |
@@ -38,7 +38,7 @@
 | type_ok | st-newpage-pagename-edit | Created Page 3 |
 | type_ok | wikiwyg_wikitext_textarea | I have created a page called Created Page 3. woot. |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Recent Changes. Create page 4 |  |
 | open_ok | /%%newspace%%/index.cgi?action=new_page |  |
@@ -49,7 +49,7 @@
 | type_ok | st-newpage-pagename-edit | Created Page 4 |
 | type_ok | wikiwyg_wikitext_textarea | I have created a page called Created Page 4. woot. |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Recent Changes. Create page 5 |  |
 | open_ok | /%%newspace%%/index.cgi?action=new_page |  |
@@ -60,7 +60,7 @@
 | type_ok | st-newpage-pagename-edit | Created Page 5 |
 | type_ok | wikiwyg_wikitext_textarea | I have created a page called Created Page 5. woot. |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *comment* | Test Case: Recent Changes Comment on a page |  |
 | click_ok | link=Comment |  |

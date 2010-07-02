@@ -24,22 +24,23 @@
 | st-logoutin | %%username%% | %%password%% |
 | st-admin | give-accounts-admin --u %%username%% |  |
 | open_ok | /nlw/control/account/%%account_id%% |  |
+| wait_for_element_visible_ok | link=Motorhead | 30000 |
 | text_like | //body | Groups (1) |
 | text_like | //body | Motorhead |
-| wait_for_element_visible_ok | link=Motorhead | 30000 |
 
 | *Comment* | Test Case: Exercise LDAP Group Login as a member, see the group home page |  |
 | open_ok | / |  |
 | st-logoutin | Lemmy Kilmister | ld@pu53r |
 | st-admin | add-member --workspace %%ldapy_ws%% --g %%created_group_id%% | Motorhead now has the role of 'member' in the |
-| pause | 5000 |  |
+| st-process-jobs | GroupIndex |  |
 | open_ok | /%%ldapy_ws%% |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | wait_for_element_present_ok | link=Motorhead | 30000 |
 | click_and_wait | link=Motorhead |  |
 
 | *Comment* | Test Case: Exercise LDAP see the workspace, see the members on the group home page |  |
-| pause | 50000 |  |
+| wait_for_text_present_ok | Motorhead | 30000 |
+| text_like | st-editing-tools-edit | Motorhead |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |

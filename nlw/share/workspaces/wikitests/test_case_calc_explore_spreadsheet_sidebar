@@ -3,12 +3,12 @@
 | open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=TC%20Hide%20Sidebar%20Spreadsheet1%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed because save button appears before page is done loading |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=TC%20Hide%20Sidebar%20Spreadsheet2%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed because save button appears before page is done loading |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar sidebar should be open |  |
 

@@ -24,9 +24,9 @@
 | click_and_wait | //a[@id='gallery-widget-RSS Viewer'] |  |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Test for RSS Viewer |  |
-| wait_for_text_present_ok | Socialtext blog | 30000 |
+| wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 | st-name-widget | 1 | rssv |
-| st-widget-title-like | rssv | Socialtext blog |
+| st-widget-title-like | rssv | Enterprise Social Software Blog |
 | text_like | Push to all dashboards |  |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Add Wikipedia |  |
@@ -67,7 +67,7 @@
 | st-logoutin | %%mwgmail%%-2 | %%password%% |
 | open_ok | /?dashboard | 60000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| wait_for_text_present_ok | Socialtext blog | 30000 |
+| wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 
 | *Comment* | Test Case: Reset to Default Dashboard Revert to Default... |  |
 | st-admin | give-accounts-admin --e %%mwgmail%%-2 --account "%%acct%%" | now has accounts admin access |
@@ -83,7 +83,7 @@
 | wait_for_element_visible_ok | //a[@id='dashboard-revert-yes'] | 30000 |
 | click_and-wait | //a[@id='dashboard-revert-yes'] |  |
 | wait_for_text_not_present_ok | Wikipedia | 30000 |
-| wait_for_text_not_present_ok | Socialtext blog | 30000 |
+| wait_for_text_not_present_ok | Enterprise Social Software Blog | 30000 |
 
 | *Comment* | Test Case: Reset to Default Dashboard Wikipedia and RSS are gone |  |
 | open_ok | /?dashboard | 60000 |
@@ -92,7 +92,7 @@
 | click_and_wait | link=Administer Dashboards |  |
 | wait_for_element_visible_ok | link=Revert to Default... |  |
 | wait_for_text_not_present_ok | Wikipedia | 30000 |
-| wait_for_text_not_present_ok | Socialtext blog | 30000 |
+| wait_for_text_not_present_ok | Enterprise Social Software Blog | 30000 |
 
 | *Comment* | Test Case: Reset to Default Dashboard should have two WikiPage widgets |  |
 | wait_for_text_present_ok | Learning Resources | 30000 |

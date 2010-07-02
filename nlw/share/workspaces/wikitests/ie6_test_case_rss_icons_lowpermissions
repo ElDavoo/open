@@ -24,7 +24,7 @@ It seems that Selenium cannot analyze the content of feed pages because they are
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | A simple page with a Chinese character title |
 | type_ok | st-newpage-pagename-edit | 牛愛我 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: RSS Icons LowPermissions. Force index since this is testing for indexed pages that have been deleted. |  |
 | st-admin | index-workspace --workspace %%workspace%% --sync | The %%workspace%% workspace has been indexed. |

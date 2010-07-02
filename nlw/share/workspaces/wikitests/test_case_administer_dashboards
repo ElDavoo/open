@@ -42,9 +42,9 @@
 | click_and_wait | //a[@id='gallery-widget-RSS Viewer'] |  |
 
 | *Comment* | Test Case: Administer Dashboards - Test for RSS Viewer, then remove it |  |
-| wait_for_text_present_ok | Socialtext blog | 30000 |
+| wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 | st-name-widget | 1 | rssv |
-| st-widget-title-like | rssv | Socialtext blog |
+| st-widget-title-like | rssv | Enterprise Social Software Blog |
 | text_like | Push to all dashboards |  |
 | wait_for_element_visible_ok | //a[contains(@class,'close')] | 30000 |
 | click_ok | //a[contains(@class,'close')] |  |
@@ -115,9 +115,9 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | open_ok | /?dashboard | 60000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
 | click_and_wait | link=Administer Dashboards |  |
-| wait_for_text_present_ok | Socialtext blog | 30000 |
+| wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 | st-name-widget | 1 | rssv |
-| st-widget-title-like | rssv | Socialtext blog |
+| st-widget-title-like | rssv | Enterprise Social Software Blog |
 
 | *Comment* | Test Case: Administer Dashboards - verify no force update occurred |  |
 | open_ok | /?dashboard | 60000 |
@@ -126,7 +126,7 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | st-widget-title-like | topdog | Wikipedia |
 | st-select-widget-frame | topdog |  |
 | text_unlike | //body | Push to all dashboards |
-| text_unlike | //body | Socialtext blog |
+| text_unlike | //body | Enterprise Social Software Blog |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Administer Dashboards - new user dashboard has Wikipedia and RSS Viewer |  |
@@ -136,7 +136,7 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | st-logoutin | %%mwgmail%%-2 | %%password%% |
 | open_ok | /?dashboard | 60000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| wait_for_text_present_ok | Socialtext blog | 30000 |
+| wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 
 | *Comment* | Test Case: Administer Dashboards Revert to Default... and Cancel |  |
 | st-admin | give-accounts-admin --e %%mwgmail%%-2 --account "%%acct%%" | now has accounts admin access |
@@ -174,7 +174,7 @@ click_and_wait | link=Administer Dashboards | |
 
 wait_for_element_visible_ok | link=Revert to Default... | |
 wait_for_text_not_present_ok | Wikipedia | 30000 |
-wait_for_text_not_present_ok | Socialtext blog | 30000 |
+wait_for_text_not_present_ok | Enterprise Social Software Blog | 30000 |
 st-name-widget | 1 | topcat |
 st-widget-title-like | topcat | Welcome |
 

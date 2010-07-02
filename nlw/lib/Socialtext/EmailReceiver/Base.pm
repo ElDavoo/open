@@ -81,6 +81,8 @@ sub receive {
 
     $self->_save_html_bodies_as_attachments();
 
+    $self->{hub}->attachments->cache->clear();
+
     # Must be done after we get the email body, because there may be
     # "category: ..." commands in the body.
     $self->_set_page_categories();

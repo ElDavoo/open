@@ -9,7 +9,7 @@
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | Delete Page %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Tools: Delete Page: Create backlinking page |  |
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
@@ -20,7 +20,7 @@
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | Backlink Page %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Tools: Delete Page: delete the page |  |
 | open_ok | /%%workspace%%/?Delete Page %%start_time%% |  |
@@ -56,7 +56,7 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | New Content %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | open_ok | /%%workspace%%/index.cgi?action=revision_list;page_name=delete_page_%%start_time%% |  |
 | text_like | contentContainer | qr/Revision 2.+Revision 1.+Revision 1.+Revision 1.+Revision 1/ |

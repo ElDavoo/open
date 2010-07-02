@@ -1,5 +1,4 @@
 * Fixture: SocialWidgets
-* HighPermissions
 
 | *Comment* | Test Case: People Dashboard Plugins |  |
 
@@ -7,13 +6,14 @@
 | set | user | pdp%%start_time%%@matt.socialtext.net |
 | set | acct | pdp-acct-%%start_time%% |
 | set | ws | pdp-ws-%%start_time%% |
+
 | st-admin | create-account --name %%acct%% | was created |
 | st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% | was created |
 | st-admin | create-user --email %%user%% --password %%password%% --account %%acct%% | was created |
 | st-admin | add-member --email %%user%% --workspace %%ws%% | now has the role of 'member' in the |
-| st-admin | enable-plugin --plugin people --all-accounts |  |
 | st-admin | enable-plugin --plugin dashboard --all-accounts |  |
 | st-admin | enable-plugin --plugin signals --all-accounts |  |
+
 | set | page1 | page_one_%%start_time%% |
 | set | page2 | page_two_%%start_time%% |
 | set | tagtoadd | tag-%%start_time%% |
@@ -31,7 +31,6 @@
 
 | *Comment* | Test Case: People Dashboard Plugins Setup Activities Widget |  |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
-| open_ok | / |  |
 
 | *Comment* | Test Case: People Dashboard Plugins Set event limit to 25 |  |
 | st-name-widget | 1 | activities_widget |
@@ -43,7 +42,7 @@
 | wait_for_element_not_visible_ok | limit | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: People Dashboard Plugins See see pages, Signals, Tags |  |
+| *Comment* | Test Case: People Dashboard Plugins See pages, Signals, Tags |  |
 | st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | edited %%page1%% in %%ws%% | 30000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
@@ -95,9 +94,6 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: People Dashboard Plugins teardown |  |
-| st-admin | enable-plugin --plugin people --all-accounts |  |
-| st-admin | enable-plugin --plugin dashboard --all-accounts |  |
-| st-admin | enable-plugin --plugin dashboard --all-accounts |  |
 | st-admin | delete-workspace --no-export --w %%ws%% |  |
 
 | *Comment* | Test Case: People Dashboard Plugins COMPLETED |

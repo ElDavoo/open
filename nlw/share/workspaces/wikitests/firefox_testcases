@@ -46,6 +46,7 @@ People tests
 Dashboard tests
 
 * [Widgets Testcases]
+* [Signals Annotations Testcases]
 * [Test Case: Gadgets Galore]
 * [Test Case: Upload Update Gallery Widgets]
 * [Test Case: Add Remove Gallery Widgets]

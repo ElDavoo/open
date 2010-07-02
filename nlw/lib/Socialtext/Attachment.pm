@@ -160,7 +160,6 @@ sub extract {
     # attach the archive file itself.
     @files = $tmparchive unless @files;
 
-    my @attachments;
     for my $file (@files) {
         open my $fh, '<', $file or die "Cannot read $file: $!";
 
@@ -177,7 +176,11 @@ sub extract {
         $attachment->inline( $self->page_id, $creator );
     }
 
-    return @attachments;
+    my $cache_key = join(
+        ':', $self->hub->current_workspace->workspace_id, $self->page_id);
+    $self->hub->attachments->cache->clear();
+    
+    return;
 }
 
 
@@ -188,7 +191,7 @@ sub attachdir {
     my $attachdir = $self->hub->attachments->plugin_directory;
     my $page_id = $self->page_id;
     my $id = $self->id;
-    $attachdir = "$attachdir/$page_id/$id";
+    return "$attachdir/$page_id/$id";
 }
 
 sub dimensions {
@@ -364,6 +367,7 @@ QUOTEDTEXT
     $self->Content_MD5("$md5==");
     $self->From($from);
 
+    $self->hub->attachments->cache->clear();
     $self->hub->attachments->index->add($self) unless $self->deleted;
     Socialtext::JobCreator->index_attachment($self);
 }
@@ -490,9 +494,20 @@ sub mime_type {
     my $self = shift;
 
     return $self->{mime_type} if $self->{mime_type};
+
+    my $mime_type_file = $self->_raw_path . '-mime';
+    if (-e $mime_type_file) {
+        my $type = Socialtext::File::get_contents($mime_type_file);
+        return $self->{mime_type} = $type;
+    }
+
     $self->{mime_type} = $self->Content_type ||
         Socialtext::File::mime_type(
             $self->_raw_path, $self->filename, 'application/binary');
+
+    eval {
+        Socialtext::File::set_contents($mime_type_file, $self->{mime_type});
+    }; #ignore failures
 
     return $self->{mime_type};
 }

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>318</version>
-  <url>http://topaz.socialtext.net/flair/flairSignals-318.air</url>
-  <description><![CDATA[[Build 318 - Tue Jun 29 11:33:15 PDT 2010]
+  <version>319</version>
+  <url>http://topaz.socialtext.net/flair/flairSignals-319.air</url>
+  <description><![CDATA[[Build 319 - Wed Jun 30 15:37:05 PDT 2010]
+* Fix {bz: 4061}: Attach file jump scrolls to top of widget.
+
+[Build 318 - Tue Jun 29 11:33:15 PDT 2010]
 * Fix {bz: 4072}: In "Add Web Link", supply "http://" prefix and disallow invalid URLs.
 
 [Build 317 - Tue Jun 29 10:45:15 PDT 2010]

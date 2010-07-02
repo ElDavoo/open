@@ -32,7 +32,7 @@
 | click_ok | st-edit-summary-text-area |  |
 | type_ok | st-edit-summary-text-area | Other User Summary signal %%start_time%% |
 | click_ok | st-edit-summary-signal-checkbox |  |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Activities Widget Other Signals. Send four signals |  |
 | http-user-pass | %%otheruser%% | %%password%% |

@@ -190,7 +190,7 @@ Click that tag | Tag list page appears with two remaining tagged pages
 | type_ok | wikiwyg_wikitext_textarea | tag page 4 %%start_time%% content |
 | type_ok | st-newpage-pagename-edit | tag page 4 %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Tagging verify suggestions foo bar, fog, and Foster City |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |

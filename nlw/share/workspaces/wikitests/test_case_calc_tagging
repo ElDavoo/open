@@ -3,7 +3,7 @@
 | open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
 
@@ -79,7 +79,7 @@ Add any other tag to three different pages | tag is added
 | open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%201%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
 | click_ok | link=Add Tag |  |
@@ -95,7 +95,7 @@ Add any other tag to three different pages | tag is added
 | open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%202%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
 | click_ok | link=Add Tag |  |
 | wait_for_element_visible_ok | st-tags-field | 30000 |
@@ -112,7 +112,7 @@ Add any other tag to three different pages | tag is added
 | open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%203%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
 
 | click_ok | link=Add Tag |  |

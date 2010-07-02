@@ -24,7 +24,7 @@
 | click_ok | st-tagqueue-addbutton |  |
 | click_ok | st-tagqueue-close |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 TODO: upload a file and test for Keep Attachments
 
@@ -54,7 +54,7 @@ NOT the target WS |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | Copy This Page %%start_time%% NEW content |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Copy the edited page and Cancel |  |
 | click_ok | link=Copy Page to Workspace |  |
