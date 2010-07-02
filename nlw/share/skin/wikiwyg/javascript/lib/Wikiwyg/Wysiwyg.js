@@ -669,8 +669,18 @@ proto.enable_pastebin = function () {
     }
 
     if ($.browser.safari) {
+        // This is for Safari.
         self.get_edit_window().addEventListener("beforepaste", function(e) {
             self.on_before_paste();
+        }, false);
+
+        // This is for Chrome.
+        self.get_edit_window().addEventListener("paste", function(e) {
+            var pasted = e.clipboardData.getData('text');
+            if (pasted) {
+                self.on_pasted(Wikiwyg.htmlEscape(pasted));
+                e.preventDefault();
+            }
         }, false);
         return;
     }
