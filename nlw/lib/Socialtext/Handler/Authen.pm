@@ -25,6 +25,7 @@ use Socialtext::Workspace;
 use Socialtext::Permission qw( ST_SELF_JOIN_PERM );
 use Socialtext::l10n qw( loc loc_lang system_locale );
 use URI::Escape qw(uri_escape_utf8);
+use Captcha::reCAPTCHA;
 
 sub handler ($$) {
     my $class = shift;
@@ -109,6 +110,16 @@ sub handler ($$) {
             if (my $ws_name = $self->{args}{workspace_name}) {
                 if ($self->_add_user_to_workspace($user, $ws_name)) {
                     return $self->_redirect($redirect_to);
+                }
+            }
+        }
+        if ( $uri eq 'register.html' ) {
+            if (Socialtext::AppConfig->captcha_enabled) {
+                my $c = Captcha::reCAPTCHA->new;
+                my $c_pubkey = Socialtext::AppConfig->captcha_pubkey;
+                warn "C_pubkey $c_pubkey";
+                if ($c_pubkey) {
+                    $vars->{captcha_form} = $c->get_html($c_pubkey);
                 }
             }
         }
@@ -322,6 +333,26 @@ sub register {
         $self->session->add_error(loc("Registration is disabled."));
         return $self->_redirect($redirect_target);
     }
+    
+    if (Socialtext::AppConfig->captcha_enabled) {
+        # check captcha.. 
+        
+        my $c = Captcha::reCAPTCHA->new;
+        my $c_challenge = $self->{args}{recaptcha_challenge_field};
+        my $c_response = $self->{args}{recaptcha_response_field};
+
+        my $c_privkey = Socialtext::AppConfig->captcha_privkey;
+        my $result = $c->check_answer(
+            $c_privkey,
+            $r->connection->remote_ip,
+            $c_challenge,
+            $c_response);
+        unless ( $result->{is_valid} ) {
+            $self->session->add_error(loc("Captcha failed."));
+            return $self->_redirect($redirect_target);
+        }
+    }
+
 
     my $ws;
     if ($target_ws_name) {

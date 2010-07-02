@@ -31,6 +31,7 @@
     <dd> <input id="last_name" name="last_name" type="text" size="30" value="" /> <i> [% loc('(Optional)') %]</i> </dd> 
   </dl>
 
+  <div>[% captcha_form %]</div>
   <div class="hidesubmit"><input type="submit"></div>
 
   <div class="loginButtons">
