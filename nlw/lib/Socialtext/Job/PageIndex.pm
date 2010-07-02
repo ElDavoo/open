@@ -14,12 +14,7 @@ sub do_work {
     my $indexer = $self->indexer or return;
 
     $indexer->index_page($page->id);
-
-    # If this page was just created (only 1 revision) or deleted, then
-    # we should clear out any relevant wikitext cache entries
-    if ($page->revision_count == 1 or $page->deleted) {
-        $self->unlink_cached_wikitext_linkers;
-    }
+    $self->unlink_cached_wikitext_linkers;
 
     $self->completed();
 }

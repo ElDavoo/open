@@ -36,12 +36,23 @@ Run these tests as the main user.
 | Comment    | fetch it again, make sure it's cached again |     |
 | fetch-page | Test                                        | hit |
 
-
 | Comment    | Create and fetch a page with an intra-ws link |
+| edit_page  | %%workspace%% | one_link | Alpha |
 | edit_page  | %%workspace%% | Test2 | This has [one link]. |
 | fetch-page | Test2         | hit   |                      |
 | cache-created-ok | %%workspace%% |
 | question-file-is | Test2 | null |
+| GET | /%%workspace%%/index.cgi?test2 |
+| code-is | 200 |
+| body-like | Alpha |
+| edit_page  | %%workspace%% | one_link | Beta |
+| st-process-jobs | |
+| job-count | PageIndex | 0 |
+| fetch-page | Test2         | miss   |                      |
+| GET | /%%workspace%%/index.cgi?test2 |
+| code-is | 200 |
+| body-unlike | Alpha |
+| body-like | Beta |
 
 | Comment    | Create and fetch a page with an intra-ws link wafl |
 | edit_page  | %%workspace%% | Test2 | This has {link: [one link]}. |
