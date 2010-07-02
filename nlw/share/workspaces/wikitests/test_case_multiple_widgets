@@ -92,7 +92,7 @@
 | click_and_wait | link=Add Content |  |
 | wait_for_element_visible_ok | gallery-widget-RSS Viewer | 30000 |
 | click_and_wait | gallery-widget-RSS Viewer |  |
-| wait_for_text_present_ok | Socialtext blog | 30000 |
+| wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 
 | *Comment* | Add All People Tags everything shifts by 1 |  |
 | click_and_wait | link=Add Content |  |
@@ -100,6 +100,6 @@
 | click_and_wait | gallery-widget-All People Tags |  |
 | wait_for_text_present_ok | All People Tags | 30000 |
 
-| *Comment* | Test Case: Multiple Widgets teardown |  |
+| *Comment* | Test Case: Multiple Widgets TEARDOWN |  |
 
 | *Comment* | Test Case: Multiple Widgets COMPLETED |  |

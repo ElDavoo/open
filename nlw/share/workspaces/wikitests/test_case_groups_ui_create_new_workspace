@@ -58,8 +58,8 @@
 
 | *Comment* | Test Case: Groups UI Create New Workspace Save - is the new workspace there? |  |
 | st-select-widget-frame | workspaces_widget |  |
-| text_like | //body | %%createme_ws_title%% |
 | wait_for_element_visible_ok | %%createme_ws_name%% | 30000 |
+| wait_for_text_present_ok | %%createme_ws_title%% | 30000 |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
