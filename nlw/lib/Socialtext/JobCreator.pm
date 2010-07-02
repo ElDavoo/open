@@ -96,6 +96,9 @@ sub index_page {
         push @job_ids, $job_id;
     }
 
+    # Tests need the cache cleared
+    $page->hub->attachments->cache->clear();
+
     my $attachments = $page->hub->attachments->all( page_id => $page->id );
     foreach my $attachment (@$attachments) {
         next if $attachment->deleted();
