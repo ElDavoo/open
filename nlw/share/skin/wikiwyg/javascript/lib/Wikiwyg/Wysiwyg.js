@@ -653,6 +653,11 @@ proto.on_key_enter = function(e) {
 }
 
 proto.enable_pastebin = function () {
+    if ($.browser.safari) {
+        // XXX - Need to find a way to intercept paste for Safari5.
+        return;
+    }
+
     var self = this;
     self.pastebin = jQuery('#pastebin').attr('contentWindow');
 
@@ -1326,7 +1331,7 @@ proto._do_table_manip = function(callback) {
         if ($new_cell) {
             $cell = $new_cell;
             self.set_focus();
-            if ($.browser.mozilla) {
+            if (Wikiwyg.is_gecko) {
                 var $span = $new_cell.find("span");
                 if ($span.length > 0) {
                     if ($span.html() == '') {

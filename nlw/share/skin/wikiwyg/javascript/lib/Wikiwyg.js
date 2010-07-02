@@ -1017,7 +1017,7 @@ this.addGlobal().setup_wikiwyg = function() {
         var template = 'edit_wikiwyg';
         var html = Jemplate.process(template, Socialtext.wikiwyg_variables);
 
-        if (jQuery.browser.mozilla || (jQuery.browser.version == 6 && jQuery.browser.msie)) {
+        if (Wikiwyg.is_gecko || (jQuery.browser.version == 6 && jQuery.browser.msie)) {
             html = html.replace(/scrolling="no"><\/iframe>/, "></iframe>");
         }
 
@@ -1027,7 +1027,7 @@ this.addGlobal().setup_wikiwyg = function() {
             jQuery('a[do="do_widget_ss"]').parent("li").remove()
         }
 
-        if (jQuery.browser.mozilla) {
+        if (Wikiwyg.is_gecko) {
             jQuery("iframe#st-page-editing-wysiwyg").attr("scrolling", "auto");
         }
     }

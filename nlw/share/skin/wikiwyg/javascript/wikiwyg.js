@@ -17,7 +17,7 @@ if (Socialtext.S3) {
                 $('#st-save-button-link').show();
             }, 100);
         }
-        else if ($.browser.mozilla) {
+        else if (Wikiwyg.is_gecko) {
             setTimeout(function() {
                 if (window.wikiwyg.current_mode && window.wikiwyg.current_mode.get_edit_document) {
                     window.wikiwyg.current_mode.get_edit_document()
