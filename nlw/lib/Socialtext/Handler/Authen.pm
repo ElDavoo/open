@@ -117,7 +117,6 @@ sub handler ($$) {
             if (Socialtext::AppConfig->captcha_enabled) {
                 my $c = Captcha::reCAPTCHA->new;
                 my $c_pubkey = Socialtext::AppConfig->captcha_pubkey;
-                warn "C_pubkey $c_pubkey";
                 if ($c_pubkey) {
                     $vars->{captcha_form} = $c->get_html($c_pubkey);
                 }
