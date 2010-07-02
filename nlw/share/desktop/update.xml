@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.2.0</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.2.0.air</url>
-  <description><![CDATA[[4.2.0 - Mon May 31 05:06:30 PDT 2010]
+  <version>4.2.1</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.2.1.air</url>
+  <description><![CDATA[[4.2.1 - Sat Jun 26 09:43:09 PDT 2010]
+(Features)
+* Signals: New button for uploading attachments.
+* Signals: New buttons for inserting tags, web links and wiki links.
+* Signals: New "Attachment" subtab listing signals with attachments.
+* Signals: Support for displaying attachment and inline thumbnails.
+* Signals: Dynamically adjust input box's height for multiline signals.
+
+(Enhancements)
+* Signals: Replaced "Followed" and "Mine" subtabs's text with icons.
+
+[4.2.0 - Mon May 31 05:06:30 PDT 2010]
 (Enhancements)
 * Signals: Apply account skin coloring for list-views correctly.
 * Signals: Clicking "More" button in threadview now synchronizes with listview.

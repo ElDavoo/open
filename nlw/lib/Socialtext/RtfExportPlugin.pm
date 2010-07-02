@@ -71,6 +71,12 @@ sub rtf_export {
 
     }
 
+    # If there is only one page to be exported, set the current
+    # page to the export page so TOC links render properly.
+    if (1 == @page_names) {
+        $self->hub->pages->current($self->hub->pages->new_page($page_names[0]));
+    }
+
     my $index;
     for ($index=0; $index<@page_names; $index++) {
         Encode::_utf8_off($page_names[$index]);

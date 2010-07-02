@@ -9,6 +9,7 @@ use Class::Field qw( const field );
 use Socialtext::Paths;
 use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::String ();
+use Socialtext::Formatter::Viewer;
 
 const formatter_id  => 'wafl_phrase';
 const pattern_start =>
@@ -897,6 +898,10 @@ sub _parse_page_for_headers {
         );
     }
 
+    $title = $self->hub->viewer->text_to_non_wrapped_html(
+        $title . "\n", 
+        Socialtext::Formatter::Viewer::NO_PARAGRAPH,
+    );
     my $html = $self->hub->viewer->text_to_html($wikitext);
     $html =~ s/{{{(toc:?\s*.*?)}}}/{$1}/g;
 

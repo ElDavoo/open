@@ -1,8 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>292</version>
-  <url>http://topaz.socialtext.net/flair/flairSignals-292.air</url>
-  <description><![CDATA[[Build 292 - Tue Jun  1 22:42:34 PDT 2010]
+  <version>318</version>
+  <url>http://topaz.socialtext.net/flair/flairSignals-318.air</url>
+  <description><![CDATA[[Build 318 - Tue Jun 29 11:33:15 PDT 2010]
+* Fix {bz: 4072}: In "Add Web Link", supply "http://" prefix and disallow invalid URLs.
+
+[Build 317 - Tue Jun 29 10:45:15 PDT 2010]
+* When restarting polling from server, force-refresh the latest signals first. (for real.)
+
+[Build 316 - Tue Jun 29 10:18:32 PDT 2010]
+* When restarting polling from server, force-refresh the latest signals first.
+
+[Build 315 - Tue Jun 29 04:35:29 PDT 2010]
+* Fix {bz: 4059}: Links decrement char count by full length instead of link text length.
+* Fix {bz: 4054}: Push client makes too many requests.
+
+[Build 314 - Mon Jun 28 15:55:25 PDT 2010]
+* Switching from a single group to "Show All Groups" should retain old signals.
+* Add back support for interactor annotations.
+
+[Build 313 - Mon Jun 28 10:10:42 PDT 2010]
+* Fix {bz: 3987}: Locks up when searching for the word blog in the Workspaces tab.
+* Fix {bz: 4049}: Add Web link - text should appear above destination.
+* Fix {bz: 4050}: Insert Icon Text is "wiki", should be "workspace".
+
+[Build 312 - Mon Jun 28 07:28:40 PDT 2010]
+* Implement [Story: Desktop uses Standard Push API client].
+* Fix {bz: 3931}: Push causing duplicate signals to display. (Kevin)
+* Fix {bz: 4055}: Signals input does not expand correctly after inserting link. (Ken)
+
+[Build 311 - Fri Jun 25 03:50:38 PDT 2010]
+* Restore the input box's height after posting out a multiline signal.
+* Adjust the reply box's height after inserting a link.
+
+[Build 310 - Thu Jun 24 13:21:11 PDT 2010]
+* Insert Wiki Page's lookahead field to work with multi-character lookaheads. (Swd)
+
+[Build 309 - Thu Jun 24 02:04:23 PDT 2010]
+* Insert Wiki Link: Workspaces is now an auto-complete field instead of a dropdown. (Alan)
+* Clicking "Attach File" in replies now works correctly. (Alan)
+* Convo: Panel height now auto-adjusts when input has more than 2 lines.
+
+[Build 308 - Wed Jun 23 01:12:53 PDT 2010]
+* Implement insert wiki/weblinks for threadview replies.
+* Correctly render attachment/thumbnails with <>& characters in their file names.
+
+[Build 307 - Tue Jun 22 11:07:48 PDT 2010]
+* First sketch of working "Add a wiki link" dialog.
+* Improve visual layout of "Add a web link" dialog.
+
+[Build 306 - Mon Jun 21 11:45:54 PDT 2010]
+* Fix {bz: 4035}: Display of attached image thumbnails incorrect.
+* First sketch of working "Add a web link" dialog.
+* Show an additional "loading" spinner when attachments are being uploaded.
+* Show alert boxes when uploading to server fails.
+* Alert about duplicated file names, zero-length files, and directory-as-attachments.
+
+[Build 305 - Thu Jun 17 09:52:34 PDT 2010]
+* QA snapshot for [Story: User adds tag to Signals] and [Story: User adds file attachment to Signals].
+
+[Build 304 - Thu Jun 10 00:10:08 PDT 2010]
+* Support for rendering "reshare" signals as its own lines, complete with profile photos. 
+* Correctly scroll to the interactor frame if it's opened from last signal in the convo dialog.
+* Auto-refresh signals after C-Enter for demo servers with no Push support.
+
+[Build 303 - Wed Jun  9 21:25:40 PDT 2010]
+* Take out C-Backspace; the Gong sound is now auto-played.
+* Correctly scroll to the topical signal when displaying the Conversation lightbox. (Alan)
+* Merge the fix to {bz: 4009} so thumbnails won't overlap into replies.
+
+[Build 302 - Wed Jun  9 13:33:02 PDT 2010]
+* misc demo updates
+
+[Build 301 - Wed Jun  9 01:07:00 PDT 2010]
+* Hack to work around {bz: 4005} by hiding reply thumbnails.
+* Interactors with prompts, such as "Place Order" in E2 demo, now works correclty.
+
+[Build 300 - Tue Jun  8 22:42:33 PDT 2010]
+* Decouple signal-posting from demoNextStep; now always requires explicit C-Enter.
+
+[Build 299 - Tue Jun  8 22:16:02 PDT 2010]
+* C-Backspace now plays a sound snippet from the EA Gong video.
+* C-Enter now triggers demo script as a proper webplugin (was hosted on topaz).
+
+[Build 298 - Tue Jun  8 06:14:45 PDT 2010]
+* Adjust margins a bit for thumbnail pictures.
+
+[Build 297 - Tue Jun  8 05:03:34 PDT 2010]
+* Initial support for interactor buttons with prompts.
+
+[Build 296 - Mon Jun  7 22:56:43 PDT 2010]
+* Initial support for displaying attachment and thumbnails.
+* Secret C-Enter hotkey to trigger scripted action for Enterprise 2.0 demo.
+
+[Build 295 - Thu Jun  3 03:40:18 PDT 2010]
+* Initial support for BugBot's "data" annotations. ("method" is not really supported yet.)
+
+[Build 294 - Thu Jun  3 00:21:41 PDT 2010]
+* Make annotations work for retrieved replies, too.
+
+[Build 293 - Thu Jun  3 00:09:34 PDT 2010]
+* Initial support for Interactor Annotations. (See Sally's "weather" for a demo.)
+
+[Build 292 - Tue Jun  1 22:42:34 PDT 2010]
 * The spinners should keep spinning, not spinning only once.
 
 [Build 291 - Tue Jun  1 22:19:14 PDT 2010]

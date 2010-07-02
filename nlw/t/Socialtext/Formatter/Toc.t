@@ -112,7 +112,7 @@ like $html_two,
     qr{<div class="wafl_title">\s*Contents\s*</div>}sm,
     'page two has a title for the first table of contents';
 like $html_two,
-    qr{<div class="wafl_title">\s*Contents: \[target one\]\s*</div>}sm,
+    qr{<div class="wafl_title">\s*Contents: <a.*>target one<\/a>.*</div>}sm,
     'page two has a title for the remote table of contents';
 like $html_two,
     qr{<li><span.*<a.* href="#witness_the_fitness">Witness the Fitness</a>.*</li>},

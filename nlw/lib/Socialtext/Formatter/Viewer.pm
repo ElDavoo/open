@@ -14,6 +14,8 @@ use Readonly;
 
 sub class_id { 'viewer' }
 const class_title  => 'NLW Viewer';
+use constant NO_PARAGRAPH => 1;
+use constant WITH_PARAGRAPH => 0;
 
 field page_id         => '';
 field url_prefix      => '';
@@ -32,9 +34,47 @@ sub text_to_html {
     $self->to_html( $self->parser->text_to_parsed(@_), $self->hub );
 }
 
+sub text_to_non_wrapped_html {
+    my $self = shift;
+    my $text = shift;
+    my $paragraph = shift || WITH_PARAGRAPH;
+
+    $in_paragraph = 0;
+    my $html = $self->to_non_wrapped_html( $self->parser->text_to_parsed($text), $self->hub );
+    if ($paragraph) {
+        $html =~ s/^<p>//;
+        $html =~ s/<\/p>\s*$//;
+    }
+    return $html;
+}
+
 sub SELF () { 0 }
 sub TREE () { 1 }
 sub HUB  () { 2 }
+
+# XXX the variable assignments happening here make this sub 
+# less performant than it could be
+sub to_non_wrapped_html {
+    my $html = $_[TREE]->html();
+
+    if ($_[TREE]->formatter_id eq 'p') {
+        $in_paragraph = 1;
+    }
+    # get the internal units
+    for my $unit ( @{ $_[TREE]->units } ) {
+        if ( ref ($unit) ) {
+            $unit->{hub} = $_[HUB];
+            $html .= $_[SELF]->to_html($unit, $_[HUB]);
+        }
+        else {
+            $html .= $_[TREE]->escape_html($unit);
+        }
+    }
+
+    $html = $_[TREE]->text_filter($html);
+    $in_paragraph = 0;
+    return $html;
+}
 
 # XXX the variable assignments happening here make this sub 
 # less performant than it could be
