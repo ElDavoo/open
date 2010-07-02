@@ -1,0 +1,72 @@
+| *Comment* | Test Case: Wiki Page Caching |  |
+
+| *Comment* | Test Case: Wiki Page Caching Setup 1 - create a workspace |  |
+| set | ws | wpc-ws-%%start_time%% |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% | was created |
+| st-admin | add-member --e %%username%% --w %%ws%% | now has |
+| set | pagename | wpc-%%start_time%% |
+
+| *Comment* | Test Case: Wiki Page Caching Create the page |  |
+| st-create-wikipage | %%ws%% | %%pagename%% |
+
+| *Comment* | Test Case: Wiki Page Caching Create a second user, give rights |  |
+| set | user2_short | wpc%%start_time%% |
+| set | user2 | %%user2_short%%@matt.socialtext.net |
+| set | newacct | wpc%%start_time%% |
+| set | newws | wpc-alt-account-%%start_time%% |
+| set | pagetwo | wpc-alt-page-%%start_time%% |
+
+| st-admin | create-account --name %%newacct%% | was created |
+| st-admin | create-user --e %%user2%% -p %%password%% --account %%newacct%% | was created |
+| st-admin | create-workspace --name %%newws%% --title %%newws%% --account %%newacct%% | was created |
+| st-admin | add-member --e %%user2%% --w %%ws%% | now has |
+| st-admin | add-member --e %%user2%% --w %%newws%% | now has |
+
+| *Comment* | Test Case: Wiki Page Caching Login as second user, comment |  |
+| st-logoutin | %%user2%% | %%password%% |
+| st-create-wikipage | %%newws%% | %%pagetwo%% |
+| st-comment-on-page | /%%newws%%/?%%pagetwo%% | Check if this text exists |
+| st-comment-on-page | /%%ws%%/?%%pagename%% | "linked text"{link: %%newws%% [%%pagetwo%%]} |
+
+| *Comment* | Test Case: Wiki Page Caching Login as user1, text is text |  |
+| st-logoutin | %%username%% | %%password%% |
+| open_ok | /%%ws%%/?%%pagename%% |  |
+| wait_for_text_present_ok | linked text | 30000 |
+| wait_for_element_visible_ok | link=%%user2_short%% | 30000 |
+| wait_for_element_not_present_ok | link=linked text | 30000 |
+
+| *Comment* | Test Case: Wiki Page Caching Add user1 to %%newws%%, text becomes a link |  |
+| st-admin | add-member --e %%username%% --w %%newws%% | now has the role |
+| refresh |  |  |
+| wait_for_element_visible_ok | link=linked text | 30000 |
+| wait_for_element_visible_ok | link=%%user2_short%% | 3000 |
+
+| *Comment* | Test Case: Wiki Page Caching Remove %%username%% from %%newws%% link becomes a text |  |
+| st-admin | remove-member -e %%username%% --w %%newws%% | no longer has the role of |
+| refresh |  |  |
+| wait_for_text_present_ok | linked text | 30000 |
+| wait_for_element_not_present_ok | link=linked text | 30000 |
+| wait_for_element_visible_ok | link=%%user2_short%% | 3000 |
+
+| *Comment* | Test Case: Wiki Page Caching Remove %%user2%% from %%ws%% username becomes a link |  |
+| st-admin | remove-member -e %%user2%% --w %%ws%% | no longer has the role of |
+| refresh |  |  |
+| wait_for_text_present_ok | linked text | 30000 |
+| wait_for_element_not_present_ok | link=linked text | 30000 |
+| wait_for_text_present_ok | %%user2_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user2_short%% | 3000 |
+
+| *Comment* | Test Case: Wiki Page Caching Add %%username%% to %%newws%% and include a page |  |
+| st-admin | add-member --e %%username%% --w %%newws%% | now has the role |
+| st-comment-on-page | /%%ws%%/?%%pagename%% | {include: %%newws%% [%%pagetwo%%]} |
+| wait_for_text_present_ok | Check if this text exists | 30000 |
+
+| *Comment* | Test Case: Wiki Page Caching Remove %%username%% to %%newws%% and include a page |  |
+| st-admin | remove-member --e %%username%% --w %%newws%% | no longer has the role of |
+| refresh |  |  |
+| text_unlike | //body | Check if this text exists |
+
+| *Comment* | Test Case: Wiki Page Caching Cleanup |  |
+| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%newws%% --no-export | has been deleted |
+| *Comment* | Test Case: Wiki Page Caching COMPLETED |  |
