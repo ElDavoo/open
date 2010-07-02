@@ -444,6 +444,7 @@ sub delete {
     $self->deleted(1);
     $self->store(%p);
     $self->hub->attachments->index->delete($self);
+    $self->hub->attachments->cache->clear();
 }
 
 sub make_permanent {
