@@ -669,12 +669,12 @@ proto.enable_pastebin = function () {
     }
 
     if ($.browser.safari) {
-        // This is for Safari.
+        // This is for Safari/Mac.
         self.get_edit_window().addEventListener("beforepaste", function(e) {
             self.on_before_paste();
         }, false);
 
-        // This is for Chrome.
+        // This is for Chrome and Safari/Windows. (Suboptimal - text paste only.)
         self.get_edit_window().addEventListener("paste", function(e) {
             var pasted = e.clipboardData.getData('text');
             if (pasted) {
