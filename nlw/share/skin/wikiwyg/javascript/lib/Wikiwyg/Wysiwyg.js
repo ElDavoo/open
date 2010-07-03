@@ -654,6 +654,12 @@ proto.on_key_enter = function(e) {
 
 proto.enable_pastebin = function () {
     var self = this;
+
+    if ($.browser.safari) {
+        self.enable_pastebin_webkit();
+        return;
+    }
+
     self.pastebin = jQuery('#pastebin').attr('contentWindow');
 
     if (self.pastebin) {
@@ -666,23 +672,6 @@ proto.enable_pastebin = function () {
 
         self.pastebin.document.body.innerHTML = "";
         self.pastebin.document.designMode = "on";
-    }
-
-    if ($.browser.safari) {
-        // This is for Safari/Mac.
-        self.get_edit_window().addEventListener("beforepaste", function(e) {
-            self.on_before_paste();
-        }, false);
-
-        // This is for Chrome and Safari/Windows. (Suboptimal - text paste only.)
-        self.get_edit_window().addEventListener("paste", function(e) {
-            var pasted = e.clipboardData.getData('text');
-            if (pasted) {
-                self.on_pasted(Wikiwyg.htmlEscape(pasted));
-                e.preventDefault();
-            }
-        }, false);
-        return;
     }
 
     var event_name = "keydown";
@@ -703,6 +692,48 @@ proto.enable_pastebin = function () {
     });
 
     this.rebindHandlers();
+}
+
+// WebKit 5xx can only paste into the same editable div, not another iframe,
+// so it needs a separate treatment.
+proto.enable_pastebin_webkit = function () {
+    var self = this;
+    self.get_edit_window().addEventListener("paste", function(e) {
+        var editDoc = self.get_edit_document();
+        var pasteBin = editDoc.createElement('div');
+        pasteBin.style.width = '1px';
+        pasteBin.style.height = '1px';
+        pasteBin.style.position = 'fixed';
+        pasteBin.style.top = '0';
+        pasteBin.style.right = '-4000';
+        pasteBin.appendChild( editDoc.createTextNode('') );
+        editDoc.getElementsByTagName('div')[0].appendChild( pasteBin );
+        pasteBin.focus();
+
+        var sel = self.get_edit_window().getSelection();
+        var oldRange = sel.getRangeAt(0);
+
+        var r = editDoc.createRange();
+        r.setStart( pasteBin, 0 );
+        r.setEnd( pasteBin, 0 );
+
+        sel.removeAllRanges();
+        sel.addRange(r);
+
+        setTimeout(function(){
+            var pastedHtml;
+            if (pasteBin.firstChild && pasteBin.firstChild.className == 'Apple-style-span') {
+                pastedHtml = pasteBin.firstChild.innerHTML;
+            }
+            else {
+                pastedHtml = pasteBin.innerHTML;
+            }
+            sel.removeAllRanges();
+            sel.addRange(oldRange);
+            editDoc.getElementsByTagName('div')[0].removeChild( pasteBin );
+            self.on_pasted(pastedHtml);
+        }, 1);
+    }, false);
 }
 
 proto.on_before_paste = function () {
