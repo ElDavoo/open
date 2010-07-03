@@ -116,7 +116,7 @@ sub handler ($$) {
                 my $c = Captcha::reCAPTCHA->new;
                 my $c_pubkey = Socialtext::AppConfig->captcha_pubkey;
                 if ($c_pubkey) {
-                    $vars->{captcha_form} = $c->get_html($c_pubkey);
+                    $vars->{captcha_form} = $c->get_html($c_pubkey, undef, $ENV{'NLWHTTPSRedirect'});
                 }
             }
 
@@ -126,7 +126,7 @@ sub handler ($$) {
                 my $c = Captcha::reCAPTCHA->new;
                 my $c_pubkey = Socialtext::AppConfig->captcha_pubkey;
                 if ($c_pubkey) {
-                    $vars->{captcha_form} = $c->get_html($c_pubkey);
+                    $vars->{captcha_form} = $c->get_html($c_pubkey, undef, $ENV{'NLWHTTPSRedirect'});
                 }
             }
         }
