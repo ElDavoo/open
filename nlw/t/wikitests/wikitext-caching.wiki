@@ -276,7 +276,3 @@ Now delete the linked page to make the link incipient again.
 | fetch-page | userchange | miss | |
 | body-unlike | foo %%start_time%% |
 | body-like | Jimmy |
-
-TODO:
-* link mouseover workspace preference
-* really short expiries don't fill up the disk
