@@ -236,6 +236,7 @@ sub shutdown {
     if ($timeout) {
         $t = AE::timer $timeout, 0, sub {
             $self->cv->croak("timeout while waiting for queue to flush");
+            undef $t; # clear circular ref
         };
     }
     $self->cv->end;
