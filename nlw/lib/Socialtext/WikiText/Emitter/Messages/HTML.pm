@@ -75,17 +75,12 @@ sub msg_format_user {
         return loc("Unknown Person");
     }
 
-    if ($viewer && $user->profile_is_visible_to($viewer)) {
-        my $url = $self->link_dictionary->format_link(
-            url_prefix => $self->{callbacks}{baseurl} || "",
-            link => 'people_profile',
-            user_id => $user->user_id,
-        );
-        return qq{<a href="$url">} . $user->guess_real_name . '</a>';
-    }
-    else {
-        return $user->guess_real_name;
-    }
+    my $url = $self->link_dictionary->format_link(
+        url_prefix => $self->{callbacks}{baseurl} || "",
+        link => 'people_profile',
+        user_id => $user->user_id,
+    );
+    return qq{<a href="$url">} . $user->guess_real_name . '</a>';
 }
 
 sub markup_node {
