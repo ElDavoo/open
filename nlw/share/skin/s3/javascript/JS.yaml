@@ -11,6 +11,7 @@
         - 'Class.js'
         - 'lightbox.js'
         - 'jquery-patch.js'
+        - 'jquery-popup.js'
         - 'jquery-plugin.js'
         - 'jquery.tablesorter.js'
         - 'jquery.selectOverlap.js'
@@ -113,7 +114,6 @@
 'socialtext-editor-light.js':
     compress: 1
     parts:
-        - 'jquery-popup.js'
         - 'jquery-plugin.js'
         - 'lookahead.js'
         - 'jquery.selectOverlap.js'
