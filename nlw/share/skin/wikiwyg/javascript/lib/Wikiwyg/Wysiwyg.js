@@ -752,6 +752,7 @@ proto.on_before_paste = function () {
 
 proto.bind = function (event_name, callback) {
     var $edit_doc = jQuery(this.get_edit_document());
+    var $edit_win = jQuery(this.get_edit_window());
 
     this._bindings = this._bindings || {};
     this._bindings[event_name] = this._bindings[event_name] || [];
@@ -766,19 +767,32 @@ proto.bind = function (event_name, callback) {
     );
     if (!matches.length) {
         this._bindings[event_name].push(callback);
-        $edit_doc.bind(event_name, callback);
+        this._bindHandler(event_name, callback);
     }
 }
 
 proto.rebindHandlers = function() {
-    var $edit_doc = jQuery(this.get_edit_document());
     if (this._bindings) {
         for (var event_name in this._bindings) {
-            $edit_doc.unbind(event_name);
+            this._unbindHandler(event_name);
             for (var i=0; i<this._bindings[event_name].length; i++) {
-                $edit_doc.bind(event_name, this._bindings[event_name][i]);
+                this._bindHandler(event_name, this._bindings[event_name][i]);
             }
         }
+    }
+}
+
+proto._unbindHandler = function(event_name) {
+    jQuery(this.get_edit_document()).unbind(event_name);
+    jQuery(this.get_edit_window()).unbind(event_name);
+}
+
+proto._bindHandler = function(event_name, callback) {
+    if (Wikiwyg.is_ie && event_name == 'blur') {
+        jQuery(this.get_edit_window()).bind(event_name, callback);
+    }
+    else {
+        jQuery(this.get_edit_document()).bind(event_name, callback);
     }
 }
 
