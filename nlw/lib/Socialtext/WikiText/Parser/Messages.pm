@@ -6,6 +6,7 @@ use warnings;
 use base 'WikiText::Socialtext::Parser';
 
 use Socialtext::String ();
+use Scalar::Util qw/weaken/;
 
 my $url_scheme = qr{(?:http|https|ftp|irc|file):(?://)?};
 my $reserved   = q{;/?:@&=+$,[]#};
@@ -42,12 +43,14 @@ sub create_grammar {
         }
     };
 
+    # avoid circular reference in the filter sub closure.
+    weaken(my $weakself = $self);
     $grammar->{hashmark} = {
         # Only match after a space or beginning-of-line
         match => qr/(?<!\S)#(\p{IsWord}+)/,
         filter => sub {
             $_ =~ s/^#//;
-            $self->{receiver}->insert({
+            $weakself->{receiver}->insert({
                 wafl_type => 'hashmark',
                 text => $_[0]{text},
             });
