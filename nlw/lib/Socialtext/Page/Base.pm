@@ -75,8 +75,8 @@ sub to_html {
         my $a_str = $self->_questions_to_answers($q_str);
         my $cache_file = $self->_answer_file($a_str);
         my $cache_file_exists = $cache_file && -e $cache_file;
-        my $users_changed
-            = $self->_users_modified_since($q_str, (stat($cache_file))[9])
+        my $cached_at = (stat($cache_file))[9];
+        my $users_changed = $self->_users_modified_since($q_str, $cached_at)
             if $cache_file_exists;
         if ($cache_file_exists and !$users_changed) {
             my $t = time_scope('wikitext_HIT');
@@ -113,15 +113,12 @@ sub _users_modified_since {
     return 0 unless @user_ids;
 
     my $user_placeholders = join ',', map {'?'} @user_ids;
-    my $updated_after_cache = sql_singlevalue(qq{
-        SELECT 1 FROM users
+    return sql_singlevalue(qq{
+        SELECT count(user_id) FROM users
          WHERE user_id IN ($user_placeholders)
            AND last_profile_update >
                 'epoch'::timestamptz + ? * INTERVAL '1 second'
         }, @user_ids, $cached_at) || 0;
-
-    return 1 if $updated_after_cache;
-    return 0;
 }
 
 sub _questions_to_answers {
@@ -145,8 +142,7 @@ sub _questions_to_answers {
         }
         elsif ($q =~ m/^u(\d+)$/) {
             my $user = Socialtext::User->new(user_id => $1);
-            my $ok = $user && $user->profile_is_visible_to($cur_user) ? 1 : 0;
-            push @answers, "${q}_$ok";
+            push @answers, "${q}_1"; # All users are linkable
         }
         elsif ($q =~ m/^h(\d+)$/) {
             my $ws = Socialtext::Workspace->new(workspace_id => $1);

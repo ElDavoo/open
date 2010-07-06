@@ -117,17 +117,27 @@ Run these tests as the main user.
 | fetch-page         | GoogleTest | hit      |
 | question-file-like | RSSTest | qr/E\d+/ |
 
-| Comment   | User Wafls    |          |                            |
+| Comment   | User Wafls are visible to everyone. |
 | edit-page | %%workspace%% | usertest | Hi {user: %%foo_user_id%%} |
 | fetch-page | usertest                        | hit |
 | body-like  | <span class="person authorized" |     |
 | question-file-is | usertest                          | u%%foo_user_id%% |
 | http-user-pass   | %%user2%%                         | password         |
-| fetch-page       | usertest                          | miss             |
-| body-unlike      | <span class="person authorized"   |                  |
-| body-like        | <span class="person unauthorized" |                  |
+| fetch-page       | usertest                          | hit              |
+| body-like        | <span class="person authorized"   |                  |
 | http-user-pass   | %%username%%                      | password         |
 
+| Comment | Change a users details should clear cache |
+| edit_page | %%workspace%% | userchange | {user: %%user1_id%%} |
+| question-file-is | userchange  | u%%user1_id%% |
+| fetch-page | userchange | hit | |
+| body-like | user %%start_time%% |
+| sleep | 1 |
+| POST-json | /data/people/%%username%% | {"first_name":"Jimmy"} |
+| code-is | 204 |
+| fetch-page | userchange | miss | |
+| body-unlike | foo %%start_time%% |
+| body-like | Jimmy |
 | Comment | Pages with includes are never cached |
 | edit-page  | %%workspace%% | includee | Hi, I am being included |
 | edit-page  | %%workspace%% | includer | {include: [includee]}   |
@@ -264,15 +274,3 @@ Now delete the linked page to make the link incipient again.
 | job-count | PageIndex | 0 |
 | fetch-page | linker | miss |
 | body-like | is_incipient=1 |
-
-| Comment | Change a users details should clear cache |
-| edit_page | %%workspace%% | userchange | {user: %%user1_id%%} |
-| question-file-is | userchange  | u%%user1_id%% |
-| fetch-page | userchange | hit | |
-| body-like | user %%start_time%% |
-| sleep | 1 |
-| POST-json | /data/people/%%username%% | {"first_name":"Jimmy"} |
-| code-is | 204 |
-| fetch-page | userchange | miss | |
-| body-unlike | foo %%start_time%% |
-| body-like | Jimmy |

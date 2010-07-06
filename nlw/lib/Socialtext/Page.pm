@@ -1194,8 +1194,7 @@ sub _cache_using_questions {
         elsif (my $user_id = $q->{user_id}) {
             my $user = Socialtext::User->new(user_id => $user_id) or next;
             push @short_q, 'u' . $user_id;
-            push @answers,
-                $user->profile_is_visible_to($self->hub->current_user) ? 1 : 0;
+            push @answers, 1; # All users are linkable.
         }
         elsif ($ws = $q->{allows_html_wafl}) {
             push @short_q, 'h' . $ws->workspace_id;
