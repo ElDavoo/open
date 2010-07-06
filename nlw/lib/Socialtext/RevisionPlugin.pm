@@ -78,6 +78,7 @@ sub revision_view {
         $page->all,
         from => $from,
         human_readable_revision => $revision,
+        tags => [ $page->html_escaped_categories ],
         edit_summary => $edit_summary,
         edit_summary_maxlength => EDIT_SUMMARY_MAXLENGTH,
         display_title    => $self->html_escape( $page->title ),

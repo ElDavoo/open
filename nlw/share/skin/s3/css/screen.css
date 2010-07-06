@@ -3970,11 +3970,14 @@ ul li.flexButtonBlue a.addButton:hover {
     width: 150px;
 }
 
-#st-page-title .st-edit-summary {
+#st-page-title .st-edit-summary,
+#st-page-title .st-revision-tags {
     border: solid black;
     border-width: 0px 0px 1px;
     width: 95%;
-    padding-bottom: 8px;
+    padding-top: 4px;
+    padding-bottom: 6px;
+    font-size: 12px;
 }
 
 #st-page-title .st-edit-summary .text {
