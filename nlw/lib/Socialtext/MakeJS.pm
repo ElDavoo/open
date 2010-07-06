@@ -291,7 +291,6 @@ sub _jemplate_to_text {
     if (-d $part->{jemplate}) {
         # Traverse the directory, so we can maintain template names like
         # element/something.tt2 rather than just something.tt2
-        warn "Finding in $part->{jemplate}";
         find({
             no_chdir => 1,
             wanted => sub {
