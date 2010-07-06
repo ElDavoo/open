@@ -112,9 +112,10 @@ sub handler ($$) {
                     return $self->_redirect($redirect_to);
                 }
             }
-            if (Socialtext::AppConfig->captcha_enabled) {
+            my $appliance_config = Socialtext::Appliance::Config->new;
+            if ($appliance_config->value('captcha_enabled')) {
                 my $c = Captcha::reCAPTCHA->new;
-                my $c_pubkey = Socialtext::AppConfig->captcha_pubkey;
+                my $c_pubkey = $appliance_config->value('captcha_pubkey');
                 if ($c_pubkey) {
                     $vars->{captcha_form} = $c->get_html($c_pubkey, undef, $ENV{'NLWHTTPSRedirect'});
                 }
@@ -122,9 +123,10 @@ sub handler ($$) {
            $vars = {%{$self->{args}}, %$vars}; # for refilling the form fields
         }
         if ( $uri eq 'register.html' ) {
-            if (Socialtext::AppConfig->captcha_enabled) {
+            my $appliance_config = Socialtext::Appliance::Config->new;
+            if ($appliance_config->value('captcha_enabled')) {
                 my $c = Captcha::reCAPTCHA->new;
-                my $c_pubkey = Socialtext::AppConfig->captcha_pubkey;
+                my $c_pubkey = $appliance_config->value('captcha_pubkey');
                 if ($c_pubkey) {
                     $vars->{captcha_form} = $c->get_html($c_pubkey, undef, $ENV{'NLWHTTPSRedirect'});
                 }
@@ -341,15 +343,16 @@ sub register {
         $self->session->add_error(loc("Registration is disabled."));
         return $self->_redirect($redirect_target);
     }
-    
-    if (Socialtext::AppConfig->captcha_enabled) {
+   
+    my $appliance_config = Socialtext::Appliance::Config->new;
+    if ($appliance_config->value('captcha_enabled')) {
         # check captcha.. 
         
         my $c = Captcha::reCAPTCHA->new;
         my $c_challenge = $self->{args}{recaptcha_challenge_field};
         my $c_response = $self->{args}{recaptcha_response_field};
 
-        my $c_privkey = Socialtext::AppConfig->captcha_privkey;
+        my $c_privkey = $appliance_config->value('captcha_privkey');
         my $result = $c->check_answer(
             $c_privkey,
             $r->connection->remote_ip,
