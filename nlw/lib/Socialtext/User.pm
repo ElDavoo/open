@@ -883,6 +883,11 @@ sub _index {
     my $self = shift;
     require Socialtext::JobCreator;
     Socialtext::JobCreator->index_person($self, @_);
+
+    require Socialtext::Pluggable::Adapter;
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub($self);
+    $adapter->hook('nlw.profile.changed' => $self);
 }
 
 # Class methods
