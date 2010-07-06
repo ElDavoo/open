@@ -95,11 +95,16 @@ NOTE: Safari Widgets Testcases may now be identical to Widgets Testcases, 2009-0
 * [Safari Widgets Testcases]
 * [Test Case: Gadgets Galore]
 
+Rich Text testcases
+
+* [Test Case: Edit This Page]
+* [Test Case: Insert Menu]
+* [Test Case: Strings]
+* [Test Case: Nasty Double Dashes]
+* [Test Case: Single Dash]
+
 Non-Safari cases
-Test Case: Edit This Page
-Test Case: Nasty Double Dashes
-Test Case: Single Dash
-Test Case: Strings
+Test Case: Table Info (Keypress doesn't do what you'd expect in Safari. Sorry.)
 Test Case: Link Interface
 Test Case: Preview Format
 Test Case: RSS Icons
