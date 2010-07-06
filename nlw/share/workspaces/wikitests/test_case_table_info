@@ -21,7 +21,8 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | keyPress | wikiwyg_wikitext_textarea | \124 |
 | keyPress | wikiwyg_wikitext_textarea | \13 |
 | type_ok | st-newpage-pagename-edit | Table Info %%start_time%% |
-| click_and_wait | link=Save |  |
+
+| st_pause_click | 2000 | link=Save | and_wait |
 
 | *Comment* | Test Case: Table Info. Verify the table content. |  |
 | wait_for_element_visible_ok | link=Edit | 30000 |
@@ -36,9 +37,10 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | *Comment* | Test Case: Table Info. Sort ON, Border OFF |  |
 | wait_for_element_visible_ok | link=Rich Text | 30000 |
 | click_ok | link=Rich Text |  |
-| pause | 6000 | wait for Rich Text editor to load |
-| wait_for_element_visible_ok | wikiwyg_button_table-settings | 30000 |
-| click_ok | wikiwyg_button_table-settings |  |
+| wait_for_element_not_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| wait_for_element_visible_ok | st-page-editing-wysiwyg | 30000 |
+| wait_for_element_visible_ok | //img[@id='wikiwyg_button_table-settings' and @class='wikiwyg_button'] | 30000 |
+| st_pause_click | 3000 | wikiwyg_button_table-settings |
 | wait_for_element_visible_ok | st-table-settings | 30000 |
 
 | *Comment* | Test Case: Table Info. Additional interlocks 1 |  |
@@ -46,24 +48,27 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | text_like | st-table-settings | Edit Table |
 | text_like | st-table-settings | qr/Table is Sortable/i |
 | text_like | st-table-settings | qr/Show Cell Borders/i |
-
+| pause | 3000 |  |
 | wait_for_element_visible_ok | sort | 30000 |
 | check_ok | sort |  |
+| is_checked_ok | sort |  |
 | wait_for_element_visible_ok | border | 30000 |
 | uncheck_ok | border |  |
+| st_unchecked_ok | border |  |
 | wait_for_element_visible_ok | table-info-save | 5000 |
-| click_ok | table-info-save |  |
+| st_pause_click | 3000 | table-info-save |
 | wait_for_element_not_visible_ok | st-table-settings | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/sort:on border:off/` |
 
-| *Comment* | Test Case: Table Info. Sort OFF, Border ON |  |
+| *Comment* | Test Case: Table Info. Sort OFF, Border ON in Rich Text mode |  |
 | wait_for_element_visible_ok | link=Rich Text | 30000 |
 | click_ok | link=Rich Text |  |
-| pause | 6000 | wait for Rich Text editor to load |
-| wait_for_element_visible_ok | wikiwyg_button_table-settings | 30000 |
-| click_ok | wikiwyg_button_table-settings |  |
+| wait_for_element_not_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| wait_for_element_visible_ok | st-page-editing-wysiwyg | 30000 |
+| wait_for_element_visible_ok | //img[@id='wikiwyg_button_table-settings' and @class='wikiwyg_button'] | 30000 |
+| st_pause_click | 3000 | wikiwyg_button_table-settings |
 | wait_for_element_visible_ok | st-table-settings | 30000 |
 
 | *Comment* | Test Case: Table Info. Additional interlocks 2 |  |
@@ -71,13 +76,15 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | text_like | st-table-settings | Edit Table |
 | text_like | st-table-settings | qr/Table is Sortable/i |
 | text_like | st-table-settings | qr/Show Cell Borders/i |
-
-| wait_for_element_visible_ok | sort | 30000 |
-| uncheck_ok | sort |  |
+| pause | 3000 |  |
 | wait_for_element_visible_ok | border | 30000 |
 | check_ok | border |  |
+| is_checked_ok | border |  |
+| wait_for_element_visible_ok | sort | 30000 |
+| uncheck_ok | sort |  |
+| st_unchecked_ok | sort |  |
 | wait_for_element_visible_ok | table-info-save | 5000 |
-| click_ok | table-info-save |  |
+| st_pause_click | 3000 | table-info-save |
 | wait_for_element_not_visible_ok | st-table-settings | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
@@ -86,9 +93,10 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | *Comment* | Test Case: Table Info. Sort OFF, Border OFF |  |
 | wait_for_element_visible_ok | link=Rich Text | 30000 |
 | click_ok | link=Rich Text |  |
-| pause | 6000 | wait for Rich Text editor to load |
-| wait_for_element_visible_ok | wikiwyg_button_table-settings | 30000 |
-| click_ok | wikiwyg_button_table-settings |  |
+| wait_for_element_not_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| wait_for_element_visible_ok | st-page-editing-wysiwyg | 30000 |
+| wait_for_element_visible_ok | //img[@id='wikiwyg_button_table-settings' and @class='wikiwyg_button'] | 30000 |
+| st_pause_click | 3000 | wikiwyg_button_table-settings |
 | wait_for_element_visible_ok | st-table-settings | 30000 |
 
 | *Comment* | Test Case: Table Info. Additional interlocks 3 |  |
@@ -96,13 +104,15 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | text_like | st-table-settings | Edit Table |
 | text_like | st-table-settings | qr/Table is Sortable/i |
 | text_like | st-table-settings | qr/Show Cell Borders/i |
-
+| pause | 3000 |  |
 | wait_for_element_visible_ok | sort | 30000 |
 | uncheck_ok | sort |  |
+| st_unchecked_ok | sort |  |
 | wait_for_element_visible_ok | border | 30000 |
 | uncheck_ok | border |  |
+| st_unchecked_ok | border |  |
 | wait_for_element_visible_ok | table-info-save | 5000 |
-| click_ok | table-info-save |  |
+| st_pause_click | 3000 | table-info-save |
 | wait_for_element_not_visible_ok | st-table-settings | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
@@ -111,9 +121,10 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | *Comment* | Test Case: Table Info. Sort ON, Border ON |  |
 | wait_for_element_visible_ok | link=Rich Text | 30000 |
 | click_ok | link=Rich Text |  |
-| pause | 6000 | wait for Rich Text editor to load |
-| wait_for_element_visible_ok | wikiwyg_button_table-settings | 30000 |
-| click_ok | wikiwyg_button_table-settings |  |
+| wait_for_element_not_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| wait_for_element_visible_ok | st-page-editing-wysiwyg | 30000 |
+| wait_for_element_visible_ok | //img[@id='wikiwyg_button_table-settings' and @class='wikiwyg_button'] | 30000 |
+| st_pause_click | 3000 | wikiwyg_button_table-settings |
 | wait_for_element_visible_ok | st-table-settings | 30000 |
 
 | *Comment* | Test Case: Table Info. Additional interlocks 4 |  |
@@ -121,13 +132,15 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | text_like | st-table-settings | Edit Table |
 | text_like | st-table-settings | qr/Table is Sortable/i |
 | text_like | st-table-settings | qr/Show Cell Borders/i |
-
+| pause | 3000 |  |
 | wait_for_element_visible_ok | sort | 30000 |
 | check_ok | sort |  |
+| is_checked_ok | sort |  |
 | wait_for_element_visible_ok | border | 30000 |
 | check_ok | border |  |
+| is_checked_ok | border |  |
 | wait_for_element_visible_ok | table-info-save | 5000 |
-| click_ok | table-info-save |  |
+| st_pause_click | 3000 | table-info-save |
 | wait_for_element_not_visible_ok | st-table-settings | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
