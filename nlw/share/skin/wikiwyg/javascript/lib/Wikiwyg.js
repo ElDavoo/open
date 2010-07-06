@@ -111,7 +111,7 @@ Wikiwyg.is_safari = (
 );
 
 /* Safari 5+ is Gecko-compatible. */
-if ($.browser.safari && $.browser.version > 500) {
+if ($.browser.safari && parseInt($.browser.version) > 500) {
     Wikiwyg.is_gecko = true;
     Wikiwyg.is_safari = false;
 }
