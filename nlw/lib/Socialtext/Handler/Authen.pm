@@ -119,7 +119,7 @@ sub handler ($$) {
                     $vars->{captcha_form} = $c->get_html($c_pubkey, undef, $ENV{'NLWHTTPSRedirect'});
                 }
             }
-
+           $vars = {%{$self->{args}}, %$vars}; # for refilling the form fields
         }
         if ( $uri eq 'register.html' ) {
             if (Socialtext::AppConfig->captcha_enabled) {
@@ -129,6 +129,7 @@ sub handler ($$) {
                     $vars->{captcha_form} = $c->get_html($c_pubkey, undef, $ENV{'NLWHTTPSRedirect'});
                 }
             }
+           $vars = {%{$self->{args}}, %$vars}; # for refilling the form fields
         }
 
         if ($self->{args}{workspace_name}) {
@@ -333,7 +334,7 @@ sub register {
 
     my $target_ws_name  = $self->{args}{workspace_name};
     my $redirect_target = $target_ws_name
-        ? "/nlw/join.html?workspace_name=$target_ws_name"
+        ? "/nlw/join.html"
         : '/nlw/register.html';
 
     unless (Socialtext::AppConfig->self_registration()) {
@@ -356,7 +357,7 @@ sub register {
             $c_response);
         unless ( $result->{is_valid} ) {
             $self->session->add_error(loc("Captcha failed."));
-            return $self->_redirect($redirect_target);
+            return $self->_redirect($redirect_target, $self->{args});
         }
     }
 
@@ -608,12 +609,22 @@ sub require_confirmation_redirect {
 sub _redirect {
     my $self = shift;
     my $uri  = shift;
+    my $formfields = shift;
     my $redirect_to = $self->{args}{redirect_to};
-
+    my $oldformvarquery = '';
+    if ($formfields) {
+        $oldformvarquery = join(";", 
+            map { $_ . "=" . uri_escape_utf8($formfields->{$_})} grep {!/^(recaptcha_|password|redirect_to)/} keys %{$formfields});
+    }
     if ($redirect_to) {
         $uri .= ($uri =~ m/\?/ ? ';' : '?')
               . "redirect_to=" . uri_escape_utf8($redirect_to);
     }
+    if ($oldformvarquery) {
+        $uri .= ($uri =~ m/\?/ ? ';' : '?')
+              . $oldformvarquery; 
+    }
+
     $self->redirect($uri);
 }
 

@@ -8,7 +8,7 @@
 
   <dl class="form">
     <dt> <label for="email_address">[% loc('Email Address:') %]</label> </dt> </dt>
-    <dd> <input id="email_address" name="email_address" type="text" size="30" value="" /> </dd>
+    <dd> <input id="email_address" name="email_address" type="text" size="30" value="[% email_address %]" /> </dd>
   </dl>
 
   <dl class="form">
@@ -23,12 +23,12 @@
 
   <dl class="form">
     <dt><label for="first_name">[% loc('First Name:') %]</label> </dt>
-    <dd> <input id="first_name" name="first_name" type="text" size="30" value="" /> <i> [% loc('(Optional)') %]</i> </dd> 
+    <dd> <input id="first_name" name="first_name" type="text" size="30" value="[% first_name %]" /> <i> [% loc('(Optional)') %]</i> </dd> 
   </dl>
 
   <dl class="form">
     <dt><label for="last_name">[% loc('Last Name:') %]</label> </dt>
-    <dd> <input id="last_name" name="last_name" type="text" size="30" value="" /> <i> [% loc('(Optional)') %]</i> </dd> 
+    <dd> <input id="last_name" name="last_name" type="text" size="30" value="[% last_name %]" /> <i> [% loc('(Optional)') %]</i> </dd> 
   </dl>
 
   <div>[% captcha_form %]</div>
