@@ -40,7 +40,8 @@
             [% INCLUDE widget/setup %]
         </div>
         <div id="[% gadget.id %]-content" class="[% IF gadget.incomplete %]hidden[% ELSE %]visible[% END %]">
-            [% INCLUDE widget/iframe %]
+            [% IF gadget.content_type == 'inline'; gadget.content; ELSE; INCLUDE widget/iframe; END %]
+            <div class="clear"></div>
         </div>
         [% IF editing && !gadget.parent_instance_id  %]
         <div id="[% gadget.id %]-push">

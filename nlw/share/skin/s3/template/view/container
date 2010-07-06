@@ -24,7 +24,8 @@
     </div><!-- controlsRight END -->
 </div><!-- controls END -->
 
-<div class="notice">
+<div class="notice" [% IF container.notice %]style="display:block"[% END %]>
+[% container.notice %]
 [% FILTER decorate('notice') %]
 [% END %]
 </div>

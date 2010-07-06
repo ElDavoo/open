@@ -1375,7 +1375,8 @@ div.dashNewPage a {
 	
 }
 
-div.widgetContent div#profile {
+div.widgetContent div#profile,
+div.widgetContent div.profile {
 	width: 99%;
 	margin-left: 14px;
 	text-align: left;
@@ -1385,20 +1386,23 @@ div.widgetContent div#profile {
 }
 
 
-div.widgetContent div#profile dl.mainInfo {
+div.widgetContent div#profile dl.mainInfo,
+div.widgetContent div.profile dl.mainInfo {
 	float: left;
 	margin-left: 15px;
 	
 }
 
-div.widgetContent div#profile dl dt {
+div.widgetContent div#profile dl dt,
+div.widgetContent div.profile dl dt {
 	font-weight: bold;
 	font-size: 11px;
 	text-transform: uppercase;
 }
 
 
-div.widgetContent div#profile dl.mainInfo dt {
+div.widgetContent div#profile dl.mainInfo dt,
+div.widgetContent div.profile dl.mainInfo dt {
 	font-size: 13px;
 	text-transform: capitalize;
 	}
