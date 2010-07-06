@@ -263,14 +263,26 @@ sub get_id_from_url {
 }
 
 =head2 st_page_save 
-  Pauses before clicking st-save-button-link, just in case the GUI element is not yet enabled
+  | st_page_save |  |  |
+  Pauses 3 seconds before clicking st-save-button-link; needed when the GUI element is not yet enabled
 =cut
 
 sub st_page_save {
     my ($self) = @_;
-    my $pause = 3000;
+    st_pause_click($self, 3000, 'st-save-button-link', 'andWait');
+}
+
+=head2 st_pause_click
+  | st_pause_click | N | button_locator | ANDWAIT |
+  Pauses N msec before clicking the button_locator; needed when the GUI element is not yet enabled
+  uses click_and_wait if third arg is not empty
+=cut
+
+sub st_pause_click {
+    my ($self, $pause, $locator, $andwait) = @_;
     $self->handle_command('pause',$pause);
-    $self->handle_command('click_and_wait','st-save-button-link');
+    my $cmd = $andwait ? 'click_and_wait' : 'click_ok';
+    $self->handle_command($cmd, $locator);
 }
 
 =head2 st_create_wikipage ( $workspace, pagename )
@@ -967,6 +979,11 @@ sub type_lookahead_ok {
     $self->wait_for_element_present_ok($locator);
     $self->type_ok($locator, $text);
     $self->{selenium}->do_command("keyUp", $locator, substr($text,-1));
+}
+
+sub st_unchecked_ok {
+    my ($self, $locator) = @_;
+    ok !$self->is_checked($locator), "$locator is not checked";
 }
 
 sub _click_user_row {

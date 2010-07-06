@@ -76,7 +76,7 @@ Automated backup and restore testing
 | *Comment* | Test Case: Console Backup and Restore: Select most recent element |  |
 | wait_for_element_visible_ok | restore_id | 30000 |
 | select_ok | restore_id | index=0 |
-| click_and_wait | //input[@value='Restore'] |  |
+| click_ok | //input[@value='Restore'] |  |
 
 | *Comment* | WAIT six minutes FOR RESTORE TO COMPLETE and hope it is enough |  |
 | pause | 360000 |  |
@@ -161,6 +161,6 @@ Automated backup and restore testing
 
 | *Comment* | Test Case: Console Backup and Restore: empty-2 should already be gone. Tear it down anyway. |  |
 | st-admin | delete-workspace --no-export --w empty-2-%%start_time%% |  |
-|  st-admin | remove-system-admin --e %%email%% |  |
+| st-admin | remove-system-admin --e %%email%% |  |
 
 | *Comment* | Test Case: Console Backup and Restore COMPLETED |  |
