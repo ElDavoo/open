@@ -16,13 +16,15 @@ sub register {
     $self->add_hook("nlw.signal.new"        => \&signal_new);
 
     $self->add_hook("nlw.page.create" => 
-        sub { shift->_add_pagehook('page.create' => @_) });
+        sub { shift->_add_pagehook('page.create' => @_, action => 'create') });
+    $self->add_hook("nlw.page.update" => 
+        sub { shift->_add_pagehook('page.update' => @_) });
     $self->add_hook("nlw.page.delete" => 
-        sub { shift->_add_pagehook('page.delete' => @_) });
+        sub { shift->_add_pagehook('page.delete' => @_, action => 'delete') });
     $self->add_hook("nlw.page.tags_added" =>
-        sub { shift->_add_pagehook('page.tag' => @_) });
+        sub { shift->_add_pagehook('page.tag' => @_, action => 'tag') });
     $self->add_hook("nlw.page.tags_deleted" =>
-        sub { shift->_add_pagehook('page.tag' => @_) });
+        sub { shift->_add_pagehook('page.tag' => @_, action => 'tag') });
 }
 
 sub signal_new {
@@ -53,7 +55,7 @@ sub _add_pagehook {
             return {
                 tags_added   => $p{tags_added}   || [],
                 tags_deleted => $p{tags_deleted} || [],
-                action       => 'tag',
+                action       => $p{action} || 'update',
                 workspace_title => $wksp->title,
                 workspace_name  => $wksp->name,
                 page_id         => $page->id,

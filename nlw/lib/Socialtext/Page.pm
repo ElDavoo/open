@@ -306,6 +306,7 @@ sub update_from_remote {
     }
 
     Socialtext::Events->Record(\%event);
+    $self->hub->pluggable->hook('nlw.page.update', $self, action => 'edit');
     return; 
 }
 
@@ -802,6 +803,7 @@ sub add_tags {
         $self->hub->pluggable->hook( 'nlw.page.tags_added',
             $self, tags_added => [sort keys %tags_added],
         );
+        $self->hub->pluggable->hook( 'nlw.page.update', $self, action => 'tag');
     }
 }
 
@@ -823,6 +825,7 @@ sub delete_tag {
         $self->hub->pluggable->hook( 'nlw.page.tags_deleted',
             $self, tags_deleted => [$tag],
         );
+        $self->hub->pluggable->hook( 'nlw.page.update', $self, action => 'tag');
     }
 }
 
@@ -874,6 +877,7 @@ sub add_comment {
         page => $self,
         summary => $summary,
     });
+    $self->hub->pluggable->hook('nlw.page.update', $self, action => 'comment');
     return;
 }
 

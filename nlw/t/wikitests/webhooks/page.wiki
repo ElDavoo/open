@@ -5,7 +5,7 @@
 | clear-webhooks      |                   |     |                |
 | st-clear-jobs |
 
-# Page.create hook
+# page.create hook
 
 | PUT_json | /data/webhooks | {"class":"page.create","url":"http://example.com"} |
 | code-is | 201 |
@@ -13,6 +13,7 @@
 | job-count     | WebHook   | 1   |                |
 | clear-webhooks      |                   |     |                |
 
+# page.tag webhook
 # Tag a page, verify no webhooks fired
 
 | st-clear-jobs |               |     |                |
@@ -51,7 +52,30 @@
 | code-is | 400 |
 | body-like | not a valid webhook |
 
-# Page.delete webhook
+# page.update webhook
+
+| st-clear-jobs |
+| clear-webhooks |
+| PUT_json | /data/webhooks | {"class":"page.update","url":"http://example.com"} |
+| code-is   | 201           |     |                 |
+| edit-page | %%workspace%% | Foo | Updated content |
+| job-count | WebHook       | 1   |                 |
+
+# Adding/Deleting Tags should also fire page.update
+
+| PUT | /data/workspaces/%%workspace%%/pages/Foo/tags/monkey | | |
+| code-is | 201 |
+| job-count | WebHook | 2 |
+| DELETE | /data/workspaces/%%workspace%%/pages/Foo/tags/monkey | | |
+| code-is | 204 |
+| job-count     | WebHook   | 3   |                |
+
+# Making a page comment should also fire page.update
+
+| comment-page | %%workspace%% | Foo | This is excellent. |
+| job-count     | WebHook   | 4   |                |
+
+# page.delete webhook
 
 | st-clear-jobs |
 | clear-webhooks |
