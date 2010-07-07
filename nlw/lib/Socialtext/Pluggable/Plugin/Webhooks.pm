@@ -37,6 +37,9 @@ sub register {
         sub { shift->_add_attachmenthook('attachment.create', @_) });
     $self->add_hook('nlw.attachment.delete' =>
         sub { shift->_add_attachmenthook('attachment.delete', @_) });
+
+    $self->add_hook('nlw.person.create' =>
+        sub { shift->_add_personhook('person.create', @_, action => 'create') });
 }
 
 sub _add_signalhook {
@@ -112,6 +115,26 @@ sub _add_attachmenthook {
                     user_id => $creator->user_id,
                     bfn     => $creator->best_full_name,
                 },
+            };
+        },
+    );
+}
+
+sub _add_personhook {
+    my $self  = shift;
+    my $class = shift;
+    my $user  = shift;
+    my %p     = @_;
+
+    Socialtext::WebHook->Add_webhooks(
+        class         => $class,
+        account_ids   => [ $user->primary_account_id ],
+        payload_thunk => sub {
+            return {
+                user_id => $user->user_id,
+                username => $user->username,
+                best_full_name => $self->best_full_name,
+                %p,
             };
         },
     );

@@ -26,6 +26,7 @@ my %valid_classes = map { $_ => 1 }
     qw/page.create page.update page.tag page.watch page.delete
        attachment.create attachment.delete
        signal.create signal.delete
+       person.create
       /;
 
 sub _build_workspace {die 'not implemented yet!'}
@@ -104,7 +105,6 @@ sub _new_from_db {
     my $class = shift;
     my $hashref = shift;
 
-    
     for (qw/account_id workspace_id/) {
         delete $hashref->{$_} unless defined $hashref->{$_};
     }

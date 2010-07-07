@@ -231,6 +231,7 @@ sub create {
 
     $user->_update_profile();
     $user->_index();
+    $user->_call_hook('nlw.person.create');
 
     return $user;
 }
@@ -879,15 +880,22 @@ sub reactivate {
     $deleted->remove_user( user => $self );
 }
 
+sub _call_hook {
+    my $self = shift;
+    my $class = shift;
+
+    require Socialtext::Pluggable::Adapter;
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub($self);
+    $adapter->hook($class => $self);
+}
+
 sub _index {
     my $self = shift;
     require Socialtext::JobCreator;
     Socialtext::JobCreator->index_person($self, @_);
 
-    require Socialtext::Pluggable::Adapter;
-    my $adapter = Socialtext::Pluggable::Adapter->new;
-    $adapter->make_hub($self);
-    $adapter->hook('nlw.profile.changed' => $self);
+    $self->_call_hook('nlw.profile.changed');
 }
 
 # Class methods
