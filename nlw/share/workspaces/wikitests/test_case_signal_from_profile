@@ -8,6 +8,10 @@
 | st-admin | enable-plugin --all-accounts --plugin signals |  |
 | st-logoutin | %%spuser%% |  |
 
+| set | spshort_two | spusertwo%%start_time%% |
+| set | spusertwo | %%spshort_two%%@ken.socialtext.net |
+| create-user | %%spusertwo%% | %%password%% |
+
 | *Comment* | Test Case: Signal From Profile. logged in user has empty "lastsignal" |  |
 
 | wait_for_element_visible_ok | link=%%spshort%% | 30000 |
@@ -55,12 +59,14 @@
 | *Comment* | Test Case: Signal From Profile. it is safe to let the other user be wikitester@ken.socialtext.net |  |
 
 | set | private | Private Hello to wikitester from %%spuser%% |  |
+| set | private_two | Second Signal to wikitester from %%spuser%% |  |
 
 | st-find-user | wikitester |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | activities |
 | st-widget-title-like | activities | Activities |
 | st-send-signal-via-activities-widget | activities | %%private%% | PRIVATE |
+| st-send-signal-via-activities-widget | activities | %%private_two%% |  |
 
 | *Comment* | Test Case: Signal From Profile. Private mention appears in wikitester profile activities widget |  |
 | st-verify-text-in-activities-widget | activities | %%private%% |
@@ -86,7 +92,16 @@
 | st-widget-title-like | dbactivities | Activities |
 | st-verify-text-in-activities-widget | dbactivities | %%private%% |
 
+| *Comment* | Test Case: Signal From Profile. login as another user, see public but not private signal. See public "last message" but not private |  |
+| st-logoutin | %%spusertwo%% |  |
+| st-single-widget-in-dashboard | gallery-widget-Activities |  |
+| st-name-widget | 1 | other_user_activities |
+| st-verify-text-in-activities-widget | other_user_activities | %%signal%% |
+| st-text-unlike-in-activities-widget | other_user_activities | %%private%% |
+
+| *Comment* | Test Case: Signal From Profile. Demo {bz: 4090} |  |
+| st-text-unlike-in-activities-widget | other_user_activities | %%private_two%% |
+
 TODO: login as wikitester, see public and private signals
-TODO: login as another user, see public but not private signal. See public "last message" but not private
 
 | *Comment* | Test Case: Signal From Profile COMPLETED |  |
