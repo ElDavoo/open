@@ -42,6 +42,8 @@ sub register {
         sub { shift->_add_personhook('person.create', @_, action => 'create')});
     $self->add_hook('nlw.person.update' =>
         sub { shift->_add_personhook('person.update', @_)});
+    $self->add_hook('nlw.person.follow' =>
+        sub { shift->_add_personhook('person.follow', @_)});
 }
 
 sub _add_signalhook {
@@ -74,7 +76,7 @@ sub _add_pagehook {
             return {
                 tags_added   => $p{tags_added}   || [],
                 tags_deleted => $p{tags_deleted} || [],
-                action       => $p{action} || 'update',
+                ($p{action} ? (action => $p{action}) : ()),
                 workspace_title => $wksp->title,
                 workspace_name  => $wksp->name,
                 page_id         => $page->id,
@@ -133,6 +135,7 @@ sub _add_personhook {
         account_ids   => [ $user->primary_account_id ],
         payload_thunk => sub {
             return {
+                ($p{action} ? (action => $p{action}) : ()),
                 user_id => $user->user_id,
                 username => $user->username,
                 best_full_name => $self->best_full_name,
