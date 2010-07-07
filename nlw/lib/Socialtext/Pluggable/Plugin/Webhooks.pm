@@ -39,7 +39,9 @@ sub register {
         sub { shift->_add_attachmenthook('attachment.delete', @_) });
 
     $self->add_hook('nlw.person.create' =>
-        sub { shift->_add_personhook('person.create', @_, action => 'create') });
+        sub { shift->_add_personhook('person.create', @_, action => 'create')});
+    $self->add_hook('nlw.person.update' =>
+        sub { shift->_add_personhook('person.update', @_)});
 }
 
 sub _add_signalhook {
