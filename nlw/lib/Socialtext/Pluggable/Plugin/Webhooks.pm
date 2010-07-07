@@ -13,7 +13,12 @@ use constant is_hook_enabled => 1;
 sub register {
     my $self = shift;
 
-    $self->add_hook("nlw.signal.new"        => \&signal_new);
+    $self->add_hook("nlw.signal.new" =>
+        sub { shift->_add_signalhook('signal.create', @_) });
+    $self->add_hook("nlw.signal.hidden" =>
+        sub { shift->_add_signalhook('signal.delete', @_) });
+    $self->add_hook("nlw.signal.delete" =>
+        sub { shift->_add_signalhook('signal.delete', @_) });
 
     $self->add_hook("nlw.page.create" => 
         sub { shift->_add_pagehook('page.create' => @_, action => 'create') });
@@ -34,11 +39,13 @@ sub register {
         sub { shift->_add_attachmenthook('attachment.delete', @_) });
 }
 
-sub signal_new {
-    my ($self, $signal) = @_;
+sub _add_signalhook {
+    my $self = shift;
+    my $class = shift;
+    my $signal = shift;
 
     Socialtext::WebHook->Add_webhooks(
-        class => 'signal.create',
+        class => $class,
         payload_thunk => sub { $signal->as_hash },
         account_ids => $signal->account_ids,
         annotations => $signal->annotations,

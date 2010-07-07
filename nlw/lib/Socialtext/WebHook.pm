@@ -25,7 +25,7 @@ has 'details'   => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 my %valid_classes = map { $_ => 1 }
     qw/page.create page.update page.tag page.watch page.delete
        attachment.create attachment.delete
-       signal.create
+       signal.create signal.delete
       /;
 
 sub _build_workspace {die 'not implemented yet!'}
