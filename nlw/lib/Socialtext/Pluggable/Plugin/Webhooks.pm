@@ -14,8 +14,11 @@ sub register {
     my $self = shift;
 
     $self->add_hook("nlw.signal.new"        => \&signal_new);
+
     $self->add_hook("nlw.page.create" => 
         sub { shift->_add_pagehook('page.create' => @_) });
+    $self->add_hook("nlw.page.delete" => 
+        sub { shift->_add_pagehook('page.delete' => @_) });
     $self->add_hook("nlw.page.tags_added" =>
         sub { shift->_add_pagehook('page.tag' => @_) });
     $self->add_hook("nlw.page.tags_deleted" =>

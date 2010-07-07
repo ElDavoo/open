@@ -213,6 +213,7 @@ sub DELETE {
 
     $self->if_authorized(
         DELETE => sub {
+            $self->hub->action('delete_page');
             $self->page->delete( user => $rest->user );
             $rest->header( -status => HTTP_204_No_Content );
             return '';

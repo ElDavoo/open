@@ -22,7 +22,7 @@ has 'creator'   => (is => 'ro', isa => 'Object',  lazy_build => 1);
 has 'details'   => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 
 my %valid_classes = map { $_ => 1 }
-    qw/page.create page.tag 
+    qw/page.create page.tag page.delete
        signal.create
       /;
 

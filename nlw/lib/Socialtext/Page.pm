@@ -979,6 +979,7 @@ sub _perform_store_actions {
     Socialtext::JobCreator->index_page($self);
     Socialtext::JobCreator->send_page_notifications($self);
     $self->_cache_html();
+    $self->_log_page_action();
 }
 
 sub _cache_html {
@@ -1137,7 +1138,6 @@ sub _cache_html {
         $html_ref = $self->_cache_using_questions( \@cache_questions, $html_ref );
     }; die "Failed to cache using questions: $@" if $@;
 
-    $self->_log_page_action();
     return $html_ref;
 }
 
@@ -1229,6 +1229,9 @@ sub _log_page_action {
 
     if ($log_action eq 'CREATE') {
         $self->hub->pluggable->hook('nlw.page.create', $self);
+    }
+    else {
+        $self->hub->pluggable->hook('nlw.page.delete', $self);
     }
 }
 
