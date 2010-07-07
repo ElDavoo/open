@@ -19,6 +19,8 @@ sub register {
         sub { shift->_add_pagehook('page.create' => @_, action => 'create') });
     $self->add_hook("nlw.page.update" => 
         sub { shift->_add_pagehook('page.update' => @_) });
+    $self->add_hook("nlw.page.watch" => 
+        sub { shift->_add_pagehook('page.watch' => @_) });
     $self->add_hook("nlw.page.delete" => 
         sub { shift->_add_pagehook('page.delete' => @_, action => 'delete') });
     $self->add_hook("nlw.page.tags_added" =>

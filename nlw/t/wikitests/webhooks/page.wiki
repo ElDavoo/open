@@ -75,6 +75,19 @@
 | comment-page | %%workspace%% | Foo | This is excellent. |
 | job-count     | WebHook   | 4   |                |
 
+# page.watch webhook
+
+| st-clear-jobs |
+| clear-webhooks |
+| PUT_json | /data/webhooks | {"class":"page.watch","url":"http://example.com"} |
+| code-is | 201 |
+| GET | /%%workspace%%/index.cgi?page=foo;action=add_to_watchlist |
+| code-is | 200 |
+| job-count | WebHook | 1 |
+| GET | /%%workspace%%/index.cgi?page=foo;action=remove_from_watchlist |
+| code-is | 200 |
+| job-count | WebHook | 2 |
+
 # page.delete webhook
 
 | st-clear-jobs |

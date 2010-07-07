@@ -125,6 +125,8 @@ sub add_to_watchlist {
         action => 'watch_add',
         page => $page,
     });
+    $self->hub->pluggable->hook('nlw.page.watch', $page,
+        action => 'add-to-watchlist');
     return '1';
 }
 
@@ -167,6 +169,8 @@ sub _record_watch_delete {
         revision_count => $page->revision_count,
         revision_id => $page->revision_id,
     });
+    $self->hub->pluggable->hook('nlw.page.watch', $page,
+        action => 'remove-from-watchlist');
 }
 
 sub watchlist {
