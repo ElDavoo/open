@@ -17,6 +17,8 @@ Moose::Exporter->setup_import_methods(
     as_is => [qw(worker_make_immutable call_orig_in_worker)],
 );
 
+our $IN_WORKER = 0;
+
 {
     package Socialtext::Async::Wrapper::Worker;
     use Moose;
@@ -57,6 +59,7 @@ sub worker_wrap {
     (my $orig_pkg = $method_to_wrap) =~ s/::.+?$//;
     my $orig_method = \&{$method_to_wrap};
     my $worker_name = "worker_$replacement";
+    my $replacement_method = \&{$caller.'::'.$replacement};
 
     # Install a method to call the original, "real" method.  This
     # worker_method will be called in the AnyEvent::Worker sub-process.
@@ -68,7 +71,6 @@ sub worker_wrap {
             my $t = time_scope $worker_name;
             shift; # instance of Socialtext::Async::Wrapper::Worker
             my $class_or_obj = shift;
-            warn "CALLING ORIG METHOD";
             return $class_or_obj->$orig_method(@_);
         },
     );
@@ -77,7 +79,11 @@ sub worker_wrap {
 
     # Swap in a replacement for the original method.  This replacement *must*
     # call the call_orig_in_worker() function.
-    *{$method_to_wrap} = *{$caller.'::'.$replacement};
+    *{$method_to_wrap} = sub {
+        # prevent recursive calls into additional workers
+        if ($IN_WORKER) { goto $orig_method; }
+        else { goto $replacement_method; }
+    };
 }
 
 sub worker_function {
@@ -120,7 +126,6 @@ sub worker_make_immutable {
 
 our $ae_worker;
 sub setup_ae_worker {
-    Socialtext::SQL::invalidate_dbh(); # make it reconnect in the kid
     $ae_worker = AnyEvent::Worker->new({
         class => 'Socialtext::Async::Wrapper::Worker',
         on_error => sub {
