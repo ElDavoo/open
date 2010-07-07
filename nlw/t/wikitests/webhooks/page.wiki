@@ -2,7 +2,15 @@
 
 | standard-test-setup |                   |     |                |
 | set-business-admin  | %%email_address%% | 1   |                |
+| clear-webhooks      |                   |     |                |
+| st-clear-jobs |
+
+# Page.create hook
+
+| PUT_json | /data/webhooks | {"class":"page.create","url":"http://example.com"} |
+| code-is | 201 |
 | edit-page           | %%workspace%%     | Foo | Sample Content |
+| job-count     | WebHook   | 1   |                |
 | clear-webhooks      |                   |     |                |
 
 # Tag a page, verify no webhooks fired

@@ -14,8 +14,12 @@ sub register {
     my $self = shift;
 
     $self->add_hook("nlw.signal.new"        => \&signal_new);
-    $self->add_hook("nlw.page.tags_added"   => \&pagetags_changed);
-    $self->add_hook("nlw.page.tags_deleted" => \&pagetags_changed);
+    $self->add_hook("nlw.page.create" => 
+        sub { shift->_add_pagehook('page.create' => @_) });
+    $self->add_hook("nlw.page.tags_added" =>
+        sub { shift->_add_pagehook('page.tag' => @_) });
+    $self->add_hook("nlw.page.tags_deleted" =>
+        sub { shift->_add_pagehook('page.tag' => @_) });
 }
 
 sub signal_new {
@@ -29,12 +33,15 @@ sub signal_new {
     );
 }
 
-sub pagetags_changed {
-    my ($self, $page, %p) = @_;
-    my $wksp = $self->hub->current_workspace;
+sub _add_pagehook {
+    my $self  = shift;
+    my $class = shift;
+    my $page  = shift;
+    my %p     = @_;
+    my $wksp  = $self->hub->current_workspace;
 
     Socialtext::WebHook->Add_webhooks(
-        class         => 'page.tag',
+        class         => $class,
         account_ids   => [ $wksp->account->account_id ],
         workspace_id  => $wksp->workspace_id,
         payload_thunk => sub {

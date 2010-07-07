@@ -22,7 +22,9 @@ has 'creator'   => (is => 'ro', isa => 'Object',  lazy_build => 1);
 has 'details'   => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 
 my %valid_classes = map { $_ => 1 }
-    qw/page.tag signal.create/;
+    qw/page.create page.tag 
+       signal.create
+      /;
 
 sub _build_workspace {die 'not implemented yet!'}
 sub _build_account   {die 'not implemented yet!'}

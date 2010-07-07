@@ -1226,6 +1226,10 @@ sub _log_page_action {
                    . 'user:' . $user->username . '(' . $user->user_id . '),'
                    . '[NA]'
     );
+
+    if ($log_action eq 'CREATE') {
+        $self->hub->pluggable->hook('nlw.page.create', $self);
+    }
 }
 
 sub update_db_metadata {
