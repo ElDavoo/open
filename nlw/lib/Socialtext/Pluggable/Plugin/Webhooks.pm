@@ -22,7 +22,7 @@ sub signal_new {
     my ($self, $signal) = @_;
 
     Socialtext::WebHook->Add_webhooks(
-        class => 'signal',
+        class => 'signal.create',
         payload_thunk => sub { $signal->as_hash },
         account_ids => $signal->account_ids,
         annotations => $signal->annotations,
@@ -34,7 +34,7 @@ sub pagetags_changed {
     my $wksp = $self->hub->current_workspace;
 
     Socialtext::WebHook->Add_webhooks(
-        class         => 'pagetag',
+        class         => 'page.tag',
         account_ids   => [ $wksp->account->account_id ],
         workspace_id  => $wksp->workspace_id,
         payload_thunk => sub {
