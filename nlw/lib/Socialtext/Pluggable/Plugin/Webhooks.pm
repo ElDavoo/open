@@ -27,6 +27,11 @@ sub register {
         sub { shift->_add_pagehook('page.tag' => @_, action => 'tag') });
     $self->add_hook("nlw.page.tags_deleted" =>
         sub { shift->_add_pagehook('page.tag' => @_, action => 'tag') });
+
+    $self->add_hook('nlw.attachment.create' =>
+        sub { shift->_add_attachmenthook('attachment.create', @_) });
+    $self->add_hook('nlw.attachment.delete' =>
+        sub { shift->_add_attachmenthook('attachment.delete', @_) });
 }
 
 sub signal_new {
@@ -69,6 +74,36 @@ sub _add_pagehook {
                 editor          => {
                     user_id => $editor->user_id,
                     bfn     => $editor->best_full_name,
+                },
+            };
+        },
+    );
+}
+
+sub _add_attachmenthook {
+    my $self  = shift;
+    my $class = shift;
+    my $att   = shift;
+    my $wksp  = $self->hub->current_workspace;
+
+    Socialtext::WebHook->Add_webhooks(
+        class         => $class,
+        account_ids   => [ $wksp->account->account_id ],
+        workspace_id  => $wksp->workspace_id,
+        payload_thunk => sub {
+            my $creator = $att->uploaded_by;
+            return {
+                workspace_title => $wksp->title,
+                workspace_name  => $wksp->name,
+                page_id         => $att->page_id,
+                attachment_id   => $att->id,
+                attachment_date => $att->Date,
+                filename        => $att->filename,
+                length          => $att->Content_Length,
+                mime_type       => $att->mime_type,
+                creator         => {
+                    user_id => $creator->user_id,
+                    bfn     => $creator->best_full_name,
                 },
             };
         },

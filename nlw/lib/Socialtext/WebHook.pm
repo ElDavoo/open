@@ -4,6 +4,7 @@ use Moose;
 use Socialtext::Workspace;
 use Socialtext::SQL qw/sql_execute sql_singlevalue/;
 use Socialtext::SQL::Builder qw/sql_nextval/;
+use Socialtext::Log qw/st_log/;
 use Carp qw/croak/;
 use Socialtext::Page;
 use Socialtext::JSON qw/decode_json encode_json/;
@@ -23,6 +24,7 @@ has 'details'   => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 
 my %valid_classes = map { $_ => 1 }
     qw/page.create page.update page.tag page.watch page.delete
+       attachment.create attachment.delete
        signal.create
       /;
 

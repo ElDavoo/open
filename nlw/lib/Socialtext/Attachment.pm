@@ -366,7 +366,10 @@ QUOTEDTEXT
     $self->From($from);
 
     $self->hub->attachments->cache->clear();
-    $self->hub->attachments->index->add($self) unless $self->deleted;
+    unless ($self->deleted) {
+        $self->hub->attachments->index->add($self);
+        $self->hub->pluggable->hook('nlw.attachment.create', $self);
+    }
     Socialtext::JobCreator->index_attachment($self);
 }
 
@@ -445,6 +448,7 @@ sub delete {
     $self->store(%p);
     $self->hub->attachments->index->delete($self);
     $self->hub->attachments->cache->clear();
+    $self->hub->pluggable->hook('nlw.attachment.delete', $self);
 }
 
 sub make_permanent {

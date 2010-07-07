@@ -97,3 +97,31 @@
 | DELETE | /data/workspaces/%%ws2%%/pages/Foo |
 | code-is | 204 |
 | job-count | WebHook | 1 |
+
+# attachment.create webhooks
+
+| st-clear-jobs |
+| clear-webhooks |
+| PUT_json | /data/webhooks | {"class":"attachment.create","url":"http://example.com"} |
+| code-is | 201 |
+| PUT_json | /data/webhooks | {"class":"attachment.delete","url":"http://example.com"} |
+| code-is | 201 |
+| set | page | my_page_%%start_time%%                            |
+| set | url  | /data/workspaces/%%workspace%%/pages/%%page%%/attachments |
+| set | hdrs | Content-Type=text/plain |
+| edit-page | %%workspace%%                      | %%page%%         | Hello there |
+| code-is | 201 |
+| post      | %%url%%?name=test.txt      | %%hdrs%%         | Hi You      |
+| code-is | 201 |
+| job-count | WebHook | 1 |
+
+# attachment.delete webhooks
+
+| get       | %%url%%                    | application/json |             |
+| code-is   | 200                        |                  |             |
+| body-like | content-type":"text/plain" |                  |             |
+| body-like | "name":"test.txt"          |                  |             |
+| set-from-content | file_url     | qr/"uri":"([^"]+)"/ |
+| DELETE | %%file_url%% |
+| code-is | 204 |
+| job-count | WebHook | 2 |

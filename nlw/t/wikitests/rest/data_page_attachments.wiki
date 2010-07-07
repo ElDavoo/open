@@ -6,6 +6,7 @@
 
 | edit-page | admin                      | %%page%%         | Hello there |
 | post      | %%url%%?name=test.txt      | %%hdrs%%         | Hi You      |
+| code-is   | 201 |
 | body-like |                            |                  |             |
 | get       | %%url%%                    | application/json |             |
 | code-is   | 200                        |                  |             |
