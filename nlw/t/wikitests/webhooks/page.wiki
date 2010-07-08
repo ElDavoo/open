@@ -15,7 +15,7 @@
 # Add a webhook, Tag a page, verify webhook fires
 
 | st-clear-jobs |               |     |                |
-| PUT_json | /data/webhooks | {"class":"pagetag","url":"http://example.com","workspace_id":"%%workspace_id%%"} |
+| PUT_json | /data/webhooks | {"class":"page.tag","url":"http://example.com","workspace_id":"%%workspace_id%%"} |
 | code-is | 201 |
 | PUT | /data/workspaces/%%workspace%%/pages/Foo/tags/baz | | |
 | code-is | 201 |
@@ -37,3 +37,8 @@
 | code-is | 201 |
 | job-count     | WebHook   | 0   |                |
 
+# Try adding an invalid webhook class
+
+| PUT_json | /data/webhooks | {"class":"page.nothing","url":"http://example.com"} |
+| code-is | 400 |
+| body-like | not a valid webhook |
