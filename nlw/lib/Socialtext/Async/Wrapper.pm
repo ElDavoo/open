@@ -12,6 +12,50 @@ use Scalar::Util qw/blessed/;
 use Socialtext::Timer qw/time_scope/;
 use namespace::clean -except => 'meta';
 
+=head1 NAME
+
+Socialtext::Async::Wrapper - wrap code to run in a worker process.
+
+=head1 SYNOPSIS
+
+    use Moose;
+    use Socialtext::Async::Wrapper;
+
+    worker_function do_x => sub {
+        my $input = shift;
+        # ... runs in worker
+        return alright => 'i was passed: '.$input;
+    };
+    my @result = do_x("something");
+
+    worker_wrap replacement => 'Some::Slow::class_method';
+    sub replacement {
+        my $class = shift; # e.g. 'Some::Slow'
+        # executes the original method in the worker:
+        my $result = call_orig_in_worker(replacement => $class, @_);
+    }
+    # ... then elsewhere
+    my $r = Some::Slow->class_method(param_a => 1, param_b => 2);
+
+=head1 DESCRIPTION
+
+Currently this library is Moose-y sugar around C<AnyEvent::Worker>.
+
+Running "blocking" or "slow" code in a worker has two key advantages: it uses
+another CPU core for speed and it doesn't block your evented daemon from doing
+I/O tasks (like accepting new clients, receiving requests, sending responses).
+
+The first call to a wrapped bit of code will launch the sub-process.
+
+Calling a wrapped method will transmit arguments to the subprocess and receive
+results (to the extent that C<Storable> and C<AnyEvent::Worker> can do so).
+
+=head1 EXPORTS
+
+=over 4
+
+=cut
+
 Moose::Exporter->setup_import_methods(
     with_caller => [qw(worker_wrap worker_function)],
     as_is => [qw(worker_make_immutable call_orig_in_worker ping_worker)],
@@ -48,6 +92,16 @@ our $IN_WORKER = 0;
 
     no Moose; # remove sugar
 }
+
+=item worker_wrap replacement => 'Slow::Class::method';
+
+Wrap some slow class-method so that it runs in a worker child process.  All
+calls to that method are proxied to the worker.
+
+The replacement should be a function in the current package.  It should call
+C<call_orig_in_worker> after perhaps doing some parent-process caching.
+
+=cut
 
 sub worker_wrap {
     my $caller = shift;
@@ -88,6 +142,13 @@ sub worker_wrap {
     };
 }
 
+=item worker_function func_name => sub { ... }
+
+Installs C<sub func_name { ... }> into the current package.  The supplied sub
+will actually run in the worker process.
+
+=cut
+
 sub worker_function {
     my $caller = shift;
     my $name = shift;
@@ -121,13 +182,21 @@ sub worker_function {
     return;
 }
 
+=item worker_make_immutable
+
+Make the Socialtext::Async::Wrapper::Worker package immutable (optimize the
+worker for speed).  Call this after you've installed all the wrapped
+methods/functions you need.
+
+=cut
+
 sub worker_make_immutable {
     Socialtext::Async::Wrapper::Worker->meta->make_immutable(
         inline_constructor => 1);
 }
 
 our $ae_worker;
-sub setup_ae_worker {
+sub _setup_ae_worker {
     $ae_worker = AnyEvent::Worker->new({
         class => 'Socialtext::Async::Wrapper::Worker',
         on_error => sub {
@@ -138,6 +207,13 @@ sub setup_ae_worker {
         timeout => 30,
     });
 }
+
+=item call_orig_in_worker name => $class[, @params]
+
+Calls the 'name' method installed by C<worker_wrap>, passing in optional
+parameters.
+
+=cut
 
 # Used by the replacement method (executing in the parent) to invoke the
 # "real" method in the Worker process.
@@ -150,7 +226,7 @@ sub call_orig_in_worker {
     Carp::confess "Cannot call_orig_in_worker from within a worker"
         if $IN_WORKER;
 
-    setup_ae_worker() unless $ae_worker;
+    _setup_ae_worker() unless $ae_worker;
 
     my $err;
     my $cv = AE::cv;
@@ -167,6 +243,13 @@ sub call_orig_in_worker {
     return wantarray ? @$result : $result->[0];
 }
 
+=item ping_worker
+
+Calls the 'ping' method on the worker, dies if worker is unreachable or if the
+result was corrupted somehow.
+
+=cut
+
 sub ping_worker {
     my $result = call_orig_in_worker('ping', undef);
     die "corrupted result" unless $result->{PING} eq 'PONG';
@@ -174,3 +257,10 @@ sub ping_worker {
 }
 
 1;
+__END__
+
+=back
+
+=head1 COPYRIGHT
+
+(C) 2010 Socialtext Inc.
