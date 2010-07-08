@@ -1364,6 +1364,13 @@ proto.deselect = function() {
 proto.find_table_cell_with_cursor = function() {
     var doc = this.get_edit_document();
 
+    try {
+        var container = this.get_edit_window().getSelection()
+            .getRangeAt(0).startContainer;
+    }
+    catch (e) {}
+    if (container) return $(container).parents('td');
+
     jQuery("span.find-cursor", doc).removeClass('find-cursor');
 
     // Note that we explicitly don't call set_focus() here, otherwise
