@@ -1,7 +1,10 @@
-| *Comment* | Test Case: Signals Login/Logout expects to be included |  |
+| *Comment* | Test Case: Signals Login/Logout expects to be included in a testset |  |
 
 | set | inout_user | inout_%%start_time%%@ken.socialtext.net |
-| st-admin | create-user --email %%inout_user%% --password 123456 | created |
+| st-admin | create-user --email %%inout_user%% --password %%password%% | created |
+
+| *Comment* | Test Case: Signals Login/Logout Login disable LDAP |  |
+| include | [Disable LDAP] |  |
 
 | *Comment* | Test Case: Signals Login/Logout Login redirect |  |
 | open_ok | /nlw/submit/logout |  |
@@ -43,18 +46,21 @@
 | type_ok | username | %%inout_user%% |
 | click_and_wait | //input[@value='Submit'] |  |
 | st-message | An email with instructions on changing your password has been sent to %%inout_user%% |  |
-| st-force-confirmation | %%inout_user%% | 123456 |
+| st-force-confirmation | %%inout_user%% | %%password%% |
 
 | open_ok | / |  |
 | text_like | Log in to Socialtext |  |
 
 | *Comment* | Test Case: Signals Login/Logout successful login: |  |
 | type_ok | username | %%inout_user%% |
-| type_ok | password | 123456 |
+| type_ok | password | %%password%% |
 | click_and_wait | login_btn |  |
 | location_like | /st/signals |  |
 | wait_for_element_visible_ok | link=People | 30000 |
 | click_and_wait | link=People |  |
 | text_like | All People |  |
+
+| *Comment* | Test case: Signals Login/Logout TEARDOWN |  |
+| include | [Enable LDAP] |  |
 
 | *Comment* | Test case: Signals Login/Logout COMPLETED |  |
