@@ -37,12 +37,16 @@
 
 | *Comment* | Test Case: Wiki Page Caching Add user1 to %%newws%%, text becomes a link |  |
 | st-admin | add-member --e %%username%% --w %%newws%% | now has the role |
+| st-process-jobs |  |  |
+| pause | 10000 |  |
 | refresh |  |  |
 | wait_for_element_visible_ok | link=linked text | 30000 |
 | wait_for_element_visible_ok | link=%%user2_short%% | 3000 |
 
 | *Comment* | Test Case: Wiki Page Caching Remove %%username%% from %%newws%% link becomes a text |  |
 | st-admin | remove-member -e %%username%% --w %%newws%% | no longer has the role of |
+| st-process-jobs |  |  |
+| pause | 15000 |  |
 | refresh |  |  |
 | wait_for_text_present_ok | linked text | 30000 |
 | wait_for_element_not_present_ok | link=linked text | 30000 |
@@ -50,23 +54,32 @@
 
 | *Comment* | Test Case: Wiki Page Caching Remove %%user2%% from %%ws%% username becomes a link |  |
 | st-admin | remove-member -e %%user2%% --w %%ws%% | no longer has the role of |
+| st-process-jobs |  |  |
+| pause | 10000 |  |
 | refresh |  |  |
 | wait_for_text_present_ok | linked text | 30000 |
 | wait_for_element_not_present_ok | link=linked text | 30000 |
 | wait_for_text_present_ok | %%user2_short%% | 30000 |
-| wait_for_element_not_present_ok | link=%%user2_short%% | 3000 |
+| wait_for_element_visible_ok | link=%%user2_short%% | 3000 |
+| click_and_wait | link=%%user2_short%% |  |
+| wait_for_text_present_ok | NOTE: You do not share a group with this person and cannot view their profile information. | 30000 |
 
 | *Comment* | Test Case: Wiki Page Caching Add %%username%% to %%newws%% and include a page |  |
 | st-admin | add-member --e %%username%% --w %%newws%% | now has the role |
+| open_ok | /%%ws%%/?%%pagename%% |  |
 | st-comment-on-page | /%%ws%%/?%%pagename%% | {include: %%newws%% [%%pagetwo%%]} |
 | wait_for_text_present_ok | Check if this text exists | 30000 |
 
 | *Comment* | Test Case: Wiki Page Caching Remove %%username%% to %%newws%% and include a page |  |
 | st-admin | remove-member --e %%username%% --w %%newws%% | no longer has the role of |
+| st-process-jobs |  |  |
+| pause | 15000 | Yes, this is odd |
 | refresh |  |  |
+| pause | 15000 | This seems to be needed. |
 | text_unlike | //body | Check if this text exists |
 
 | *Comment* | Test Case: Wiki Page Caching Cleanup |  |
+
 | st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --w %%newws%% --no-export | has been deleted |
 | *Comment* | Test Case: Wiki Page Caching COMPLETED |  |
