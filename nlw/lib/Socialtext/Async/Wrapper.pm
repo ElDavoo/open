@@ -75,6 +75,7 @@ our $IN_WORKER = 0;
         $Socialtext::Async::Wrapper::IN_WORKER = 1;
 
         # make it reconnect; AE::Worker disconnects it anyway
+        Socialtext::SQL::invalidate_dbh();
         Socialtext::SQL::disconnect_dbh();
 
         # clear caches.
