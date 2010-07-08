@@ -14,7 +14,7 @@ use namespace::clean -except => 'meta';
 
 Moose::Exporter->setup_import_methods(
     with_caller => [qw(worker_wrap worker_function)],
-    as_is => [qw(worker_make_immutable call_orig_in_worker)],
+    as_is => [qw(worker_make_immutable call_orig_in_worker ping_worker)],
 );
 
 our $IN_WORKER = 0;
@@ -41,6 +41,8 @@ our $IN_WORKER = 0;
 
         return;
     }
+
+    sub worker_ping { return {'PING'=>'PONG'} }
 
     # other methods get installed here by worker_wrap and worker_function.
 
@@ -163,6 +165,12 @@ sub call_orig_in_worker {
 
     return unless ($result and defined wantarray);
     return wantarray ? @$result : $result->[0];
+}
+
+sub ping_worker {
+    my $result = call_orig_in_worker('ping', undef);
+    die "corrupted result" unless $result->{PING} eq 'PONG';
+    return $result;
 }
 
 1;
