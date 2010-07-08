@@ -33,6 +33,8 @@
 'timestamp.js':
     parts:
         - { template: 'template/timestamp.js' }
+    if_modifieds:
+        - 'socialtext-editor.js'
 'info.js':
     parts:
         - { template: 'template/info.js', config: '../info.yaml' }

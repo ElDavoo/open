@@ -141,6 +141,14 @@ sub Build {
         push @last_modifieds, $class->_part_last_modified($part);
     }
 
+    # Recompile the current part if any files in `if_modifieds` has been
+    # modified.
+    for my $part (@{$info->{if_modifieds}}) {
+        $part = ref $part ? $part : { file => $part };
+        $part->{dir} ||= $dir;
+        push @last_modifieds, $class->_part_last_modified($part);
+    }
+
     # Return if the file is up-to-date
     return if (modified($target) >= (sort @last_modifieds)[-1]);
     warn "Building $dir/$target...\n" if $VERBOSE;
