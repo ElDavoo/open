@@ -82,3 +82,7 @@ body.signals .wiki, body.socialcalc .wiki {
 body.signals img, body.socialcalc img {
     vertical-align: middle;
 }
+
+body.signals a {
+    text-decoration: underline;
+}
