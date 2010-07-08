@@ -26,7 +26,7 @@ my %valid_classes = map { $_ => 1 }
     qw/page.create page.update page.tag page.watch page.delete
        attachment.create attachment.delete
        signal.create signal.delete
-       person.create person.update person.follow
+       person.create person.update person.follow person.delete
       /;
 
 sub _build_workspace {die 'not implemented yet!'}

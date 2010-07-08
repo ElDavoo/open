@@ -44,6 +44,8 @@ sub register {
         sub { shift->_add_personhook('person.update', @_)});
     $self->add_hook('nlw.person.follow' =>
         sub { shift->_add_personhook('person.follow', @_)});
+    $self->add_hook('nlw.person.delete' =>
+        sub { shift->_add_personhook('person.delete', @_)});
 }
 
 sub _add_signalhook {
