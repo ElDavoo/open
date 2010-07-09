@@ -1127,6 +1127,11 @@ body#dashBoard div.widget.tan {
 	background:#fbf2e3 url(../images/widgetTanTop.png) no-repeat top left;
 }
 
+body#dashBoard div.widget.gray {
+	margin: 10px 0 0 0;
+	background:#fbf2e3 url(../images/widgetGrayTop.png) no-repeat top left;
+}
+
 body#dashBoard div.widget.regular {
 	background: url(../images/dashWidgetTop.png) no-repeat top left;
 	margin-right: 0px;
@@ -1157,6 +1162,11 @@ body#dashBoard div.widget.tan div.widgetHeader {
 	background: url(../images/widgetTanHeader.png) no-repeat top right;
 }
 
+body#dashBoard div.widget.gray div.widgetHeader {
+	height: 35px;
+	background: url(../images/widgetGrayHeader.png) no-repeat top right;
+}
+
 body#dashBoard div.widget.regular div.widgetHeader {
 	height: 35px;
 	background: url(../images/dashWidgetHeader.png) no-repeat top right;
@@ -1182,7 +1192,8 @@ body#dashBoard div.widget div.widgetHeader h4 {
 	float: left;
 }
 
-body#dashBoard div.widget.tan div.widgetHeader h4 {
+body#dashBoard div.widget.tan div.widgetHeader h4,
+body#dashBoard div.widget.gray div.widgetHeader h4 {
 	margin-left: 12px;
 	color: #0c5a9c;
 	border-bottom: #dedede 2px solid;
@@ -1218,13 +1229,15 @@ body#dashBoard div.widgetContent p {
 	line-height: 15px;
 }
 
-body#dashBoard div.widget.tan div.widgetContent {
+body#dashBoard div.widget.tan div.widgetContent,
+body#dashBoard div.widget.gray div.widgetContent {
         padding-left: 5px;
         padding-right: 5px;
 	padding-bottom: 10px;
 }
 
-body#dashBoard div.widget.tan div.widgetContent p {
+body#dashBoard div.widget.tan div.widgetContent p,
+body#dashBoard div.widget.gray div.widgetContent p {
 	clear:left;
 }
 
@@ -1237,6 +1250,11 @@ div.widgetContent ul.dots li {
 body#dashBoard div.widget div.widgetContent {
 	border-left: #c3c3c5 1px solid;
 	background: url(../images/dashWidgetRight.png) repeat-y top right;
+}
+
+body#dashBoard div.widget.gray div.widgetContent {
+	border-left: #f0f0f0 1px solid;
+	background: url(../images/widgetGrayRight.png) repeat-y top right;
 }
 
 body#settingsPage div.widget div.widgetContent h4 {
@@ -1286,6 +1304,11 @@ body#dashBoard div.widget.tan div.widgetBottom {
 	height: 10px;
 }
 
+body#dashBoard div.widget.gray div.widgetBottom {
+	background: url(../images/widgetGrayBottom.png) no-repeat left bottom;
+	height: 10px;
+}
+
 body#dashBoard div.widget div.widgetBottom {
 	background: url(../images/dashWidgetBottom.png) no-repeat left bottom;
 }
@@ -1298,6 +1321,10 @@ div.widget div.widgetBottomRight {
 body#dashBoard div.widget.tan div.widgetBottomRight {	
 	height: 10px;
 	background: url(../images/widgetTanBottomRight.png) no-repeat bottom right;
+}
+
+body#dashBoard div.widget.gray div.widgetBottomRight {	
+    /* XXX MISSING! XXX */
 }
 
 body#dashBoard div.widget div.widgetBottomRight {
@@ -1320,7 +1347,8 @@ div.subHeader h5 {
 	margin-left: 16px;	
 }
 
-body#dashBoard div.widget.tan div.subHeader h5 {
+body#dashBoard div.widget.tan div.subHeader h5,
+body#dashBoard div.widget.gray div.subHeader h5 {
 	font-size: 12px;
 	font-weight: bold;
 	color: #333;
@@ -3482,6 +3510,10 @@ body#dashBoard .widget.tan {
     background-color:#fff ! important;
 }
 
+body#dashBoard .widget.gray {
+    background-color:#fff ! important;
+}
+
 /* Login page */
 .authentication div#contentContainer {
     padding-top: 10px;
@@ -4183,8 +4215,17 @@ body#dashBoard .widget.regular .widgetHeader {
     cursor: move;
 }
 
-body#dashBoard .widget.tan .widgetHeader {
+body#dashBoard .widget.tan .widgetHeader,
+body#dashBoard .widget.gray .widgetHeader {
     cursor: default;
+}
+
+body#dashBoard .widget.gray .widgetHeader h4 {
+    /**
+     * XXX Fade the header??
+     *
+    color: #ABC1E2 !important;
+     */
 }
 
 body#dashBoard .hidden {
