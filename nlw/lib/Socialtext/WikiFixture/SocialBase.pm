@@ -1958,6 +1958,7 @@ sub post_signal {
     $blob->{signal} = $content;
     $self->post_json('/data/signals', encode_json( $blob ));
     $self->code_is(201);
+    diag "Posted signal '$blob->{signal}'";
 }
 
 sub send_signal {
