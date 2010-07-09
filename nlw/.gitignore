@@ -495,3 +495,4 @@ lib/Socialtext/Handler/Container/SignalsPopOut.pm
 share/skin/wikiwyg/javascript/jemplate_wikiwyg_edit.js
 t/widget/todo.xml
 lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm
+t/wikitests/webhooks/signals.wiki
