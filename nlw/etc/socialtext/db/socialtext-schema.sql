@@ -1250,7 +1250,8 @@ CREATE TABLE webhook (
     account_id bigint,
     workspace_id bigint,
     details_blob text DEFAULT '{}',
-    url text NOT NULL
+    url text NOT NULL,
+    group_id bigint
 );
 
 CREATE SEQUENCE webhook___webhook_id
@@ -1935,6 +1936,9 @@ CREATE INDEX watchlist_workspace_page
 CREATE INDEX webhook__class_account_ix
 	    ON webhook ("class", account_id);
 
+CREATE INDEX webhook__class_group_ix
+	    ON webhook ("class", group_id);
+
 CREATE INDEX webhook__class_workspace_ix
 	    ON webhook ("class", workspace_id);
 
@@ -2380,6 +2384,11 @@ ALTER TABLE ONLY webhook
             REFERENCES "Account"(account_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY webhook
+    ADD CONSTRAINT webhook_group_id_fk
+            FOREIGN KEY (group_id)
+            REFERENCES groups(group_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY webhook
     ADD CONSTRAINT webhook_user_id_fk
             FOREIGN KEY (creator_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
@@ -2400,4 +2409,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '122');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '123');
