@@ -30,24 +30,42 @@ sub PUT_json {
         return 'Content should be a hash.';
     }
 
-    my $class = $object->{class};
-    if ($class =~ m/^page\.(\w+)$/) {
-        if (my $acct_id = $object->{account_id}) {
+    my %checkers = (
+        account_id => sub {
+            my $acct_id = shift;
             my $acct = Socialtext::Account->new(account_id => $acct_id);
-            return $self->not_authorized
-                unless $acct and $acct->has_user($rest->user);
-        }
-        elsif (my $wksp_id = $object->{workspace_id}) {
+            return $acct && $acct->has_user($rest->user);
+        },
+        workspace_id => sub {
+            my $wksp_id = shift;
             my $wksp = Socialtext::Workspace->new(workspace_id => $wksp_id);
-            return $self->not_authorized
-                unless $wksp and $wksp->has_user($rest->user);
+            return $wksp && $wksp->has_user($rest->user);
+        },
+        group_id => sub {
+            my $group_id = shift;
+            my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+            return $group && $group->has_user($rest->user);
         }
-        else {
-            return $self->not_authorized unless $rest->user->is_business_admin;
+    );
+    my %class_checks = (
+        page   => [qw/account_id workspace_id/],
+        signal => [qw/account_id group_id/],
+    );
+
+    my $class = $object->{class};
+    if (!$rest->user->is_business_admin) {
+        my $allowed = 0;
+        for my $class_prefix (keys %class_checks) {
+            if ($class =~ m/^\Q$class_prefix\E\.\w+$/) {
+                for my $param (@{ $class_checks{$class_prefix} }) {
+                    next unless $object->{$param};
+                    return $self->not_authorized
+                        unless $checkers{$param}->($object->{$param});
+                    $allowed = 1;
+                }
+            }
         }
-    }
-    else {
-        return $self->not_authorized unless $rest->user->is_business_admin;
+        return $self->not_authorized unless $allowed;
     }
 
     my $hook;
