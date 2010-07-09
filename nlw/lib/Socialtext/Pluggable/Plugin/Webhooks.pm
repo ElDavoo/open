@@ -28,6 +28,8 @@ sub signal_new {
         group_ids   => $signal->group_ids,
         annotations => $signal->annotations,
         tags        => $signal->tags,
+        recipient_id => $signal->recipient_id,
+        user_topics  => [ map { $_->user_id } $signal->user_topics ],
     );
 }
 

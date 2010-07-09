@@ -161,8 +161,6 @@ sub Add_webhooks {
                 if (my $hanno = $h->details->{annotation}) {
                     next HOOK unless ref($hanno) eq 'ARRAY';
                     my $annos = $p{annotations};
-                    use Data::Dumper;
-                    warn Dumper $annos;
                     next HOOK unless @$annos;
                     my $matches = 0;
                     my ($type, $field, $value) = @$hanno;
@@ -193,6 +191,10 @@ sub Add_webhooks {
                 }
                 if (my $htag = $h->details->{tag}) {
                     next HOOK unless any {lc($_->tag) eq lc($htag)} @{$p{tags}};
+                }
+                if (my $huser_id = $h->details->{to_user}) {
+                    next HOOK unless $p{recipient_id} == $huser_id
+                                  or any { $_ == $huser_id } @{$p{user_topics}};
                 }
             }
 
