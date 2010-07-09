@@ -3,17 +3,21 @@
 use warnings;
 use strict;
 
-use Test::More tests => 20;
+use Test::More tests => 24;
 use ok 'Socialtext::File', 'mime_type';
 
 my %files_and_types = (
+    'sample.pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'sample.ppsx' => 'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+    'sample.potx' => 'application/vnd.openxmlformats-officedocument.presentationml.template',
+    'sample.xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'sample.xltx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
+    'sample.docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'sample.dotx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
     'docx.png'    => 'image/png',
     'sample.doc'  => 'application/x-msword', # it's maybe OOXML tho
-    'sample.docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     'sample.ppt'  => 'application/vnd.ms-powerpoint', # it's maybe OOXML tho
-    'sample.pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
     'sample.xls'  => 'application/vnd.ms-excel', # it's maybe OOXML tho
-    'sample.xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'test.bin'    => 'application/octet-stream',
     'test.doc'    => 'application/x-msword',
     'test.html'   => 'text/html',
