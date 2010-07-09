@@ -25,7 +25,9 @@ sub signal_new {
         class => 'signal.create',
         payload_thunk => sub { $signal->as_hash },
         account_ids => $signal->account_ids,
+        group_ids   => $signal->group_ids,
         annotations => $signal->annotations,
+        tags        => $signal->tags,
     );
 }
 
