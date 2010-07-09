@@ -1368,8 +1368,14 @@ proto.find_table_cell_with_cursor = function() {
         var container = this.get_edit_window().getSelection()
             .getRangeAt(0).startContainer;
     }
-    catch (e) {}
-    if (container) return $(container).parents('td');
+    catch (e) {};
+
+    if (container) {
+        this.deselect();
+        var $td = $(container).parents('td:first');
+        if (! $td.length) { return; }
+        return $td;
+    }
 
     jQuery("span.find-cursor", doc).removeClass('find-cursor');
 
@@ -1379,8 +1385,7 @@ proto.find_table_cell_with_cursor = function() {
     this.insert_html("<span class=\"find-cursor\"></span>");
 
     var cursor = jQuery("span.find-cursor", doc);
-    if (! cursor.parents('td').length)
-        return;
+    if (! cursor.parents('td').length) { return; }
     var $cell = cursor.parents("td");
 
     cursor.remove();
