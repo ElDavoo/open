@@ -22,7 +22,6 @@ sub GET_json {
 sub PUT_json {
     my $self = shift;
     my $rest = shift;
-    return $self->not_authorized unless $rest->user->is_business_admin;
 
     my $content = $rest->getContent();
     my $object = decode_json( $content );
@@ -30,6 +29,27 @@ sub PUT_json {
         $rest->header( -status => HTTP_400_Bad_Request );
         return 'Content should be a hash.';
     }
+
+    my $class = $object->{class};
+    if ($class =~ m/^page\.(\w+)$/) {
+        if (my $acct_id = $object->{account_id}) {
+            my $acct = Socialtext::Account->new(account_id => $acct_id);
+            return $self->not_authorized
+                unless $acct and $acct->has_user($rest->user);
+        }
+        elsif (my $wksp_id = $object->{workspace_id}) {
+            my $wksp = Socialtext::Workspace->new(workspace_id => $wksp_id);
+            return $self->not_authorized
+                unless $wksp and $wksp->has_user($rest->user);
+        }
+        else {
+            return $self->not_authorized unless $rest->user->is_business_admin;
+        }
+    }
+    else {
+        return $self->not_authorized unless $rest->user->is_business_admin;
+    }
+
     my $hook;
     eval { 
         $object->{creator_id} = $rest->user->user_id;

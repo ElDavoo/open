@@ -148,6 +148,7 @@ sub Add_webhooks {
                 next unless $hook_matches;
             }
             if (my $h_ws_id = $h->{workspace_id}) {
+                warn "checking $p{workspace_id} == $h_ws_id";
                 next unless $p{workspace_id} == $h_ws_id;
             }
             if ($p{class} eq 'signal') {

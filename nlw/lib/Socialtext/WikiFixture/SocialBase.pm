@@ -2904,4 +2904,19 @@ sub signal_search {
     $self->json_array_size($expected_result_count);
 }
 
+sub add_webhook {
+    my $self = shift;
+    my $class = shift;
+    my $url = shift;
+    my $extra = shift || '{}';
+
+    my $args = decode_json($extra);
+    $args->{class} = $class;
+    $args->{url}   = $url;
+    $self->put_json('/data/webhooks', encode_json($args));
+    $self->code_is(201);
+    diag "Created webhook $args->{class}=$args->{url}";
+}
+
+
 1;

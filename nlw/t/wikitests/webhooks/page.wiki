@@ -1,44 +1,78 @@
 * Fixture: SocialRest
 
-| standard-test-setup |                   |     |                |
-| set-business-admin  | %%email_address%% | 1   |                |
-| edit-page           | %%workspace%%     | Foo | Sample Content |
+| standard-test-setup | foo               |     |                |
+| standard-test-setup | bar               |     |                |
+| set-business-admin  | %%bar_email_address%% | 1   |                |
+| edit-page           | %%bar_workspace%%     | Foo | Sample Content |
 | clear-webhooks      |                   |     |                |
 
-# Tag a page, verify no webhooks fired
-
+| comment |  Tag a page, verify no webhooks fired |
 | st-clear-jobs |               |     |                |
-| PUT | /data/workspaces/%%workspace%%/pages/Foo/tags/bar | | |
+| PUT | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/bar | | |
 | code-is | 201 |
 | job-count     | WebHook   | 0   |                |
 
-# Add a webhook, Tag a page, verify webhook fires
-
+| comment |  Add a webhook, Tag a page, verify webhook fires |
 | st-clear-jobs |               |     |                |
-| PUT_json | /data/webhooks | {"class":"page.tag","url":"http://example.com","workspace_id":"%%workspace_id%%"} |
-| code-is | 201 |
-| PUT | /data/workspaces/%%workspace%%/pages/Foo/tags/baz | | |
+| add-webhook | page.tag | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
+| PUT | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/baz | | |
 | code-is | 201 |
 | job-count     | WebHook   | 1   |                |
 
-# Delete a tag, verify webhook fires
+| comment |  Delete a tag, verify webhook fires |
 | st-clear-jobs |               |     |                |
-| DELETE | /data/workspaces/%%workspace%%/pages/Foo/tags/baz | | |
+| DELETE | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/baz | | |
 | code-is | 204 |
 | job-count     | WebHook   | 1   |                |
 
-# Tag a page in a different workspace
+| comment |  Tag a page in a different workspace |
 | set              | ws2               | ws2-%%start_time%% |
 | create-workspace | %%ws2%%           |                    |
-| add-member       | %%email_address%% | %%ws2%%            |
+| add-member       | %%bar_email_address%% | %%ws2%%            |
 | edit-page           | %%ws2%%     | Foo2 | Sample Content |
 | st-clear-jobs |               |     |                |
 | PUT | /data/workspaces/%%ws2%%/pages/Foo/tags/baz | | |
 | code-is | 201 |
 | job-count     | WebHook   | 0   |                |
 
-# Try adding an invalid webhook class
+| comment |  Create a workspace_id filtered webhook as a non-badmin |
+| set-business-admin | %%bar_email_address%% | 0 |
+| clear-webhooks     |                   |   |
+| st-clear-jobs      |                   |   |
+| add-webhook | page.tag | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
+| PUT       | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/bazafraz |   |
+| code-is   | 201                                                   |   |
+| job-count | WebHook                                               | 1 |
+| set-business-admin | %%bar_email_address%% | 1 |
 
+| comment |  Creating an workspace_id filtered webhook as a user not in that workspace |
+| PUT_json | /data/webhooks | {"class":"page.tag","url":"http://tou.ch","workspace_id":"%%foo_workspace_id%%"} |
+| code-is | 403 |
+
+| comment |  Use an account_id filtered webhook |
+| clear-webhooks |
+| st-clear-jobs |
+| add-webhook | page.tag | http://tou.ch | {"account_id":"%%bar_account_id%%"} |
+| PUT       | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/bazzer |   |
+| code-is   | 201                                                  |   |
+| job-count | WebHook                                              | 1 |
+
+| comment |  Creating an account_id filtered webhook as a non-badmin |
+| set-business-admin | %%bar_email_address%% | 0 |
+| clear-webhooks     |                   |   |
+| st-clear-jobs      |                   |   |
+| add-webhook | page.tag | http://tou.ch | {"account_id":"%%bar_account_id%%"} |
+| PUT       | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/berzerk |   |
+| code-is   | 201                                                   |   |
+| job-count | WebHook                                               | 1 |
+
+| comment |  Creating an account_id filtered webhook as a user not in that account |
+| PUT_json | /data/webhooks | {"class":"page.tag","url":"http://tou.ch","account_id":"%%foo_account_id%%"} |
+| code-is | 403 |
+
+| comment |  Try adding an invalid webhook class |
+| set-business-admin | %%bar_email_address%% | 1 |
 | PUT_json | /data/webhooks | {"class":"page.nothing","url":"http://example.com"} |
 | code-is | 400 |
 | body-like | not a valid webhook |
+
