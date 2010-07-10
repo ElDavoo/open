@@ -223,8 +223,23 @@ sub _expand_context {
 sub _extract_signal {
     my $self = shift;
     my $row = shift;
-    my $hash = delete $row->{signal_hash};
     return unless $row->{event_class} eq 'signal';
+
+    if (my $topics = $row->{context}{topics}) {
+        my $is_visible = 1;
+        for my $topic (@$topics) {
+            next unless $topic->{page_id};
+            next if Socialtext::Signal::Topic::Page->new(%$topic)->is_visible_to($self->viewer);
+            $is_visible = 0; 
+            last;
+        }
+
+        if (!$is_visible) {
+            next EVENT;
+        }
+    }
+
+    my $hash = delete $row->{signal_hash};
 
     my $link_dictionary = $self->link_dictionary;
     my $parser = Socialtext::WikiText::Parser::Messages->new(
@@ -277,7 +292,7 @@ sub decorate_event_set {
 
     my $result = [];
 
-    while (my $row = $sth->fetchrow_hashref) {
+    EVENT: while (my $row = $sth->fetchrow_hashref) {
         $self->_extract_person($row, 'actor');
         $self->_extract_person($row, 'person');
         $self->_extract_page($row);
