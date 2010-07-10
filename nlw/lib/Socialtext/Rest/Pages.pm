@@ -44,7 +44,7 @@ sub get_resource {
             workspace_id => $self->hub->current_workspace->workspace_id,
             page_filter => $page_filter,
             limit => $count,
-            type => $self->rest->query->param('type'),
+            type => scalar $self->rest->query->param('type'),
         );
     }
 
