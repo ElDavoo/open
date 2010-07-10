@@ -1,0 +1,61 @@
+| *Comment* | Test Case: Private Signal |  |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Private Signal - create two users |  |
+| set | psshort | psuser%%start_time%% |
+| set | psuser | %%psshort%%@ken.socialtext.net |
+| set | psshort_two | psusertwo%%start_time%% |
+| set | psusertwo | %%psshort_two%%@ken.socialtext.net |
+
+| create-user | %%psuser%% | %%password%% |
+| create-user | %%psusertwo%% | %%password%% |
+
+| st-admin | enable-plugin --all-accounts --plugin signals |  |
+| st-logoutin | %%psuser%% |  |
+
+| *Comment* | Test Case: Private Signal. %%psshort%% public mention %%psshort_two%% from Signals |  |
+
+| set | signal | Public Hello to %%psshort_two%% from %%psshort%% |
+| set | private | Private Hello to %%psshort_two%% from %%psshort%% |
+| set | public | Public Hello after Private to %%psshort_two%% from %%psshort%% |
+
+| open_ok | /st/signals |  |
+| text_like | st-editing-tools-edit | Signals |
+| st-name-widget | 1 | signals |
+| st-select-widget-frame | signals |  |
+
+| st-send-signal-within-activities-widget | %%signal%% |  |
+
+| *Comment* | Test Case: Private Signal. %%psshort%% sends privmsg to %%psshort_two%% |  |
+| wait_for_element_present_ok | //a[@id='startPrivate'] | 5000 |
+| click_ok | //a[@id='startPrivate'] |  |
+| wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 5000 |
+| type-lookahead-ok | //input[@class='lookahead-prompt'] | %%psshort_two%% |
+| wait_for_element_visible_ok | //a[@class='insert btn'] | 5000 |
+| st_pause_click | 1000 | //a[@class='insert btn'] |
+| wait-for-element-visible-ok | //div[@class='message private'] | 5000 |
+| text_like | //div[@class='message private'] | You are composing a private message to %%psshort_two%% |
+| st-send-signal-within-activities-widget | %%private%% |  |
+
+| *Comment* | Test Case: Private Signal. %%psshort%% sends pubmsg to %%psshort_two%% |  |
+| wait-for-element-not-present-ok | //div[@class='message private'] | 5000 |
+| st-send-signal-within-activities-widget | %%public%% |  |
+
+| *Comment* | Test Case: Private Signal. All signals appear in activities widget |  |
+| st-verify-text-within-activities-widget | %%signal%% |  |
+| st-verify-text-within-activities-widget | %%private%% |  |
+| st-verify-text-within-activities-widget | %%public%% |  |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Private Signal. login as another user, see public but not private signals. |  |
+| st-logoutin | %%username%% | %%password%% |
+
+| open_ok | /st/signals |  |
+| text_like | st-editing-tools-edit | Signals |
+| st-name-widget | 1 | signals |
+| st-verify-text-in-activities-widget | signals | %%signal%% |
+| st-text-unlike-in-activities-widget | signals | %%private%% |
+| st-verify-text-in-activities-widget | signals | %%public%% |
+
+| *Comment* | Test Case: Private Signal COMPLETED |  |

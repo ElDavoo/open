@@ -37,6 +37,7 @@ NOTE: each of these test must manage its own plugin enables/disables, logins and
 * [Test Case: Follow]
 * [Test case: Signals Login Logout]
 * [Test Case: Invite people to your network]
+* [Signals Annotations TestCases]
 
 The True Microblogging TC will only succeed on an actual microblogging VE
 
