@@ -67,7 +67,7 @@ my @ranges;
 
 print "/* DO NOT EDIT THIS FUNCTION! run $0 instead */\n";
 print "function page_title_to_page_id (str) {\n";
-print "    str = str.replace(/[";
+print "    str = str.replace(/^\\s+/, '').replace(/\\s+\$/, '').replace(/[";
 while (my ($start,$stop) = splice @ranges,0,2) {
     if ($start == $stop) {
         printf '\u%04X', $start;

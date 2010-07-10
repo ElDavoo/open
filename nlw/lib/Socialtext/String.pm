@@ -161,6 +161,8 @@ sub title_to_id {
     # NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE #
 
     $id = '' if not defined $id;
+    $id =~ s/^\s+//;
+    $id =~ s/\s+$//;
     $id =~ s/[^\p{Letter}\p{Number}\p{ConnectorPunctuation}\pM]+/_/g;
     $id =~ s/_+/_/g;
     $id =~ s/^_(?=.)//;
