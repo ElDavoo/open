@@ -12,6 +12,7 @@ use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::HTML;
 use Socialtext::Formatter::LinkDictionary;
 use Socialtext::UserSet qw/:const/;
+use Socialtext::Signal::Topic;
 use namespace::clean -except => 'meta';
 
 has 'viewer' => (
@@ -225,18 +226,27 @@ sub _extract_signal {
     my $row = shift;
     return unless $row->{event_class} eq 'signal';
 
-    if (my $topics = $row->{context}{topics}) {
-        my $is_visible = 1;
-        for my $topic (@$topics) {
-            next unless $topic->{page_id};
-            next if Socialtext::Signal::Topic::Page->new(%$topic)->is_visible_to($self->viewer);
-            $is_visible = 0; 
-            last;
-        }
+    my @topics_to_check;
 
-        if (!$is_visible) {
-            next EVENT;
-        }
+    if (my $topics = $row->{context}{topics}) {
+        push @topics_to_check, map {
+            $_->{page_id} ? Socialtext::Signal::Topic::Page->new(%$_)
+                          : ()
+        } @$topics;
+    }
+
+    if (exists $row->{context}{in_reply_to}) {
+        push @topics_to_check, @{
+            Socialtext::Signal::Topic->Get_all_for_signal(
+                signal_id => $row->{context}{in_reply_to}{signal_id}
+            )
+        };
+    }
+
+    for my $topic (@topics_to_check) {
+        next if $topic->is_visible_to($self->viewer);
+        no warnings 'exiting';
+        next EVENT;
     }
 
     my $hash = delete $row->{signal_hash};
