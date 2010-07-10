@@ -235,7 +235,7 @@ sub _extract_signal {
         } @$topics;
     }
 
-    if (exists $row->{context}{in_reply_to}) {
+    if ($row->{context}{in_reply_to}) {
         push @topics_to_check, @{
             Socialtext::Signal::Topic->Get_all_for_signal(
                 signal_id => $row->{context}{in_reply_to}{signal_id}
