@@ -4,9 +4,9 @@
 
 | *Comment* | Test Case: Private Signal - create two users |  |
 | set | psshort | psuser%%start_time%% |
-| set | psuser | %%psshort%%@ken.socialtext.net |
+| set | psuser | `%%psshort%%@ken.socialtext.net` |
 | set | psshort_two | psusertwo%%start_time%% |
-| set | psusertwo | %%psshort_two%%@ken.socialtext.net |
+| set | psusertwo | `%%psshort_two%%@ken.socialtext.net` |
 
 | create-user | %%psuser%% | %%password%% |
 | create-user | %%psusertwo%% | %%password%% |
@@ -57,5 +57,33 @@
 | st-verify-text-in-activities-widget | signals | %%signal%% |
 | st-text-unlike-in-activities-widget | signals | %%private%% |
 | st-verify-text-in-activities-widget | signals | %%public%% |
+
+| *Comment* | Test Case: Private Signal. Start privmsg, cancel, send public msg |  |
+| set | cancel | Public Hello after Cancel to %%psshort%% from %%short_username%% |
+| set | private | Private Hello to %%psshort%% from %%short_username%% |
+
+| *Comment* | Test Case: Private Signal. %%short_username%% initiates privmsg to %%psshort%% |  |
+| st-select-widget-frame | signals |  |
+| wait_for_element_present_ok | //a[@id='startPrivate'] | 5000 |
+| click_ok | //a[@id='startPrivate'] |  |
+| wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 5000 |
+| type-lookahead-ok | //input[@class='lookahead-prompt'] | %%psshort%% |
+| wait_for_element_visible_ok | //a[@class='insert btn'] | 5000 |
+| st_pause_click | 1000 | //a[@class='insert btn'] |
+| wait-for-element-visible-ok | //div[@class='message private'] | 5000 |
+| text_like | //div[@class='message private'] | You are composing a private message to %%psshort%% |
+
+| *Comment* | Test Case: Private Signal prepare the private signal, do not send |  |
+| st-prepare-signal-within-activities-widget | %%private%% |  |
+
+| *Comment* | Test Case: Private Signal cancel the private signal |  |
+| wait_for_element_visible_ok | //a[@class='cancel'] | 5000 |
+| click_ok | //a[@class='cancel'] |  |
+| wait_for_element_not_present_ok | //div[@class='message private'] | 5000 |
+
+| *Comment* | Test Case: Private Signal send and verify the public signal |  |
+| st-send-signal-within-activities-widget | %%cancel%% |  |
+| st-verify-text-within-activities-widget | %%cancel%% |  |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Private Signal COMPLETED |  |
