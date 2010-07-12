@@ -36,6 +36,11 @@ EDITOR_LIGHT_SOURCE_FILES= \
 		lib/Wikiwyg/Widgets.js \
 		lib/Wikiwyg/Wikitext.js \
 		lib/Wikiwyg/Wysiwyg.js \
+		lib/Document/Emitter.js \
+		lib/Document/Emitter/HTML.js \
+		lib/Document/Parser.js \
+		lib/Document/Parser/Wikitext.js \
+
 
 JEMPLATE_WIKIWYG_MODULE=jemplate_wikiwyg.js
 ALL_WIKIWYG_JEMPLATES:=$(shell find jemplate_wikiwyg)
