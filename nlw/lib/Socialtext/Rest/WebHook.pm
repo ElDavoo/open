@@ -54,7 +54,6 @@ sub PUT_json {
 sub DELETE {
     my $self = shift;
     my $rest = shift;
-    return $self->not_authorized unless $rest->user->is_business_admin;
 
     my $h;
     eval { $h = Socialtext::WebHook->ById( $self->hook_id ) };
@@ -62,6 +61,12 @@ sub DELETE {
         warn $@;
         $rest->header( -status => HTTP_400_Bad_Request );
         return '';
+    }
+
+    if (!$rest->user->is_business_admin) {
+        if ($rest->user->user_id != $h->creator_id) {
+            return $self->not_authorized;
+        }
     }
 
     $h->delete;
