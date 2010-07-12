@@ -13,11 +13,27 @@ use Socialtext::HTTP ':codes';
 
 sub GET_json {
     my $self = shift;
-    return $self->not_authorized unless $self->rest->user->is_business_admin;
 
     my $result = [];
     my $all_hooks = Socialtext::WebHook->All;
-    for my $h (@$all_hooks) {
+    my $user = $self->rest->user;
+    my $is_badmin = $user->is_business_admin;
+    HOOK: for my $h (@$all_hooks) {
+        use Data::Dumper;
+        warn Dumper $h;
+        unless ($is_badmin or $h->creator_id == $user->user_id) {
+            my $can_see = 0;
+            for my $container (qw/workspace account group/) {
+                my $c = $h->$container();
+                next unless $c;
+                next HOOK unless $c->has_user($user);
+                $can_see++;
+            }
+            if (my $user_id = $h->details->{to_user}) {
+                $can_see++ if $user_id == $user->user_id;
+            }
+            next HOOK unless $can_see;
+        }
         push @$result, $h->to_hash;
     }
     return encode_json($result);

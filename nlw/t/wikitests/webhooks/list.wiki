@@ -40,3 +40,9 @@ Create a bunch of webhooks, make sure permissions are correct.
 | code-is | 200 |
 | json-parse |
 | json-array-size | 3 |
+
+| set-business-admin | %%foo_username%% | 1 |
+| GET_json | /data/webhooks |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 6 |
