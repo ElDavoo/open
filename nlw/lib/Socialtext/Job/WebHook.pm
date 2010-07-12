@@ -16,8 +16,8 @@ override 'retry_delay' => sub { 600 };
 sub do_work {
     my $self = shift;
 
-    # Set the timeout to be slightly shorter than how long we grab the job for
-    my $ua = LWP::UserAgent->new(timeout => 580);
+    # Set the timeout to be shorter than how long we grab the job for
+    my $ua = LWP::UserAgent->new(timeout => 300);
     $ua->agent('Socialtext/WebHook');
 
     my $args = $self->arg;
