@@ -65,3 +65,13 @@ DELETE tests:
 | code-is | 204 |
 | DELETE | %%page_hook_url%% |
 | code-is | 204 |
+
+
+User Deactivation
+
+| Comment | Deactivating a user deletes their webhooks |
+| deactivate-user | %%bar_username%% |
+| GET_json | /data/webhooks |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 0 |

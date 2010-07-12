@@ -13,9 +13,21 @@ use constant is_hook_enabled => 1;
 sub register {
     my $self = shift;
 
+    $self->add_hook("nlw.user.deactivate"   => \&deactivate_user);
     $self->add_hook("nlw.signal.new"        => \&signal_new);
     $self->add_hook("nlw.page.tags_added"   => \&pagetags_changed);
     $self->add_hook("nlw.page.tags_deleted" => \&pagetags_changed);
+}
+
+sub deactivate_user {
+    my $self = shift;
+    my $user = shift;
+
+    # Delete all signals created by this user
+    my $hooks = Socialtext::WebHook->Find(creator_id => $user->user_id);
+    for my $h (@$hooks) {
+        $h->delete;
+    }
 }
 
 sub signal_new {

@@ -86,7 +86,7 @@ sub Find {
     my %args  = @_;
 
     my (@bind, @where);
-    for my $field (qw/class account_id workspace_id group_id/) {
+    for my $field (qw/class creator_id account_id workspace_id group_id/) {
         if (my $val = $args{$field}) {
             push @where, "$field = ?";
             push @bind, $val;
