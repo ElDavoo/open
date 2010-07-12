@@ -5,6 +5,9 @@ use Socialtext::Workspace;
 use Socialtext::SQL qw/sql_execute sql_singlevalue/;
 use Socialtext::SQL::Builder qw/sql_nextval/;
 use Carp qw/croak/;
+use Socialtext::Workspace;
+use Socialtext::Account;
+use Socialtext::Group;
 use Socialtext::Page;
 use Socialtext::JSON qw/decode_json encode_json/;
 use List::MoreUtils qw/any/;
@@ -18,18 +21,33 @@ has 'group_id'     => (is => 'ro', isa => 'Int');
 has 'workspace_id' => (is => 'ro', isa => 'Int');
 has 'details_blob' => (is => 'ro', isa => 'Str', default => '{}');
 has 'url'          => (is => 'ro', isa => 'Str', required => 1);
-has 'workspace' => (is => 'ro', isa => 'Object',  lazy_build => 1);
-has 'account'   => (is => 'ro', isa => 'Object',  lazy_build => 1);
-has 'group'     => (is => 'ro', isa => 'Object',  lazy_build => 1);
-has 'creator'   => (is => 'ro', isa => 'Object',  lazy_build => 1);
+has 'workspace' => (is => 'ro', isa => 'Maybe[Object]',  lazy_build => 1);
+has 'account'   => (is => 'ro', isa => 'Maybe[Object]',  lazy_build => 1);
+has 'group'     => (is => 'ro', isa => 'Maybe[Object]',  lazy_build => 1);
+has 'creator'   => (is => 'ro', isa => 'Maybe[Object]',  lazy_build => 1);
 has 'details'   => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 
 my %valid_classes = map { $_ => 1 }
     qw/page.tag signal.create/;
 
-sub _build_workspace {die 'not implemented yet!'}
-sub _build_account   {die 'not implemented yet!'}
-sub _build_group     {die 'not implemented yet!'}
+sub _build_workspace {
+    my $self = shift;
+    return undef unless $self->workspace_id;
+    return Socialtext::Workspace->new(workspace_id => $self->workspace_id);
+}
+
+sub _build_account {
+    my $self = shift;
+    return undef unless $self->account_id;
+    return Socialtext::Account->new(account_id => $self->account_id);
+}
+
+sub _build_group {
+    my $self = shift;
+    return undef unless $self->group_id;
+    return Socialtext::Group->GetGroup(group_id => $self->group_id);
+}
+
 sub _build_creator   {die 'not implemented yet!'}
 
 sub _build_details {

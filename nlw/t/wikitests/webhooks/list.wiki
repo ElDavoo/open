@@ -1,0 +1,42 @@
+* Fixture: SocialRest
+
+| st-clear-jobs |
+| clear-webhooks |
+| standard-test-setup | foo |
+| standard-test-setup | bar |
+| set-business-admin | %%bar_username%% | 1 |
+
+Create a bunch of webhooks, make sure permissions are correct.
+
+| add-webhook | page.tag | http://tou.ch |
+| add-webhook | signal.create | http://tou.ch |
+| add-webhook | page.tag | http://tou.ch | {"workspace_id":"%%foo_workspace_id%%"} |
+| add-webhook | signal.create | http://tou.ch | {"account_id":"%%foo_account_id%%"} |
+| add-webhook | signal.create | http://tou.ch | {"group_id":"%%foo_group_id%%"} |
+| add-webhook | signal.create | http://tou.ch | {"details":{"to_user":%%foo_user_id%%}} |
+
+| Comment | Badmins see all |
+| GET_json | /data/webhooks |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 6 |
+
+| Comment | Reg users see things they created |
+| set-business-admin | %%bar_username%% | 0 |
+| GET_json | /data/webhooks |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 6 |
+
+| Comment | reg users can see things they are a member of or are addressed to |
+| http-user-pass | %%foo_username%% | %%foo_password%% |
+| GET_json | /data/webhooks |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 4 |
+
+| remove-user-from-group | %%foo_username%% | %%foo_group_id%% |
+| GET_json | /data/webhooks |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 3 |
