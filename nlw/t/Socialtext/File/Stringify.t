@@ -2,13 +2,16 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 41;
+use mocked 'Socialtext::Log', qw(:tests);
+use Test::Socialtext tests => 47;
 use File::Basename qw(dirname);
 use FindBin;
 
 # We need to specify a full lib path, as the stringify code will chdir
 # elsewhere, but we need to load some libraries at run time.
 use lib "$FindBin::Bin/../../../lib";
+
+fixtures('base_layout');
 
 my $data_dir = dirname(__FILE__) . "/stringify_data";
 my %ext_deps = (
@@ -38,6 +41,34 @@ for my $ext (qw(txt html doc rtf pdf ps xls ppt xml mp3 bin)) {
         like( $text, qr/Their force, their purposes;.+nay, I'll speak that/s,
             "Shakespeare 2 ($ext)" );
     };
+}
+
+office_2007_documents: {
+    my %extensions = (
+        docx => 'Word',
+        xlsx => 'Excel',
+        pptx => 'PowerPoint',
+    );
+    for my $ext (keys %extensions) {
+        my $type = $extensions{$ext};
+        my $text =
+            Socialtext::File::Stringify->to_string("$data_dir/sample.$ext");
+
+        like(
+            $text,
+            qr/This\s+is\s+Brandon.\s*s\s+test\s+\Q$type\E\s+document\.\s+Yay/,
+            "content for $type document is correct"
+        );
+    }
+
+    clear_log();
+    Socialtext::File::Stringify->to_string("$data_dir/bad.docx");
+    logged_like 'error', qr/st-tika:/, 'st-tika logged an error';
+
+    clear_log();
+    my $text = Socialtext::File::Stringify->to_string("$data_dir/just-pic.docx");
+    logged_like 'warning', qr/No text found in file/, 'got no text warning';
+    ok !$text, '... and got no text back from Tika';
 }
 
 # Test zip file indexing 

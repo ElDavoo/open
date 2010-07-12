@@ -47,14 +47,39 @@ sub _get_converter_for_file {
     return $class->_load_class_by_mime_type($type);
 }
 
-sub _load_class_by_mime_type {
-    my ( $class, $type ) = @_;
-    my $class_name = $type || "Default";
-    $class_name =~ s{\W}{_}g;
-    $class_name =~ s{_+}{_}g;
-    $class_name = "Socialtext::File::Stringify::$class_name";
-    eval "use $class_name;";
-    return $@ ? "Socialtext::File::Stringify::Default" : $class_name;
+{
+    my $openxml = 'application/vnd.openxmlformats-officedocument';
+    my %special_converters = (
+        # MS Office 2007 types
+        "$openxml.wordprocessingml.document"   => "Tika",
+        "$openxml.presentationml.presentation" => "Tika",
+        "$openxml.spreadsheetml.sheet"         => "Tika",
+
+        'audio/mpeg'                    => 'audio_mpeg',
+        'application/octet-stream'      => 'application_octet_stream',
+        'application/pdf'               => 'application_pdf',
+        'application/postscript'        => 'application_postscript',
+        'application/vnd.ms-powerpoint' => 'application_vnd_ms_powerpoint',
+        'application/vnd.ms-excel'      => 'application_vnd_ms_excel',
+        'application/x-msword'          => 'application_x_msword',
+        'application/xml'               => 'application_xml',
+        'application/zip'               => 'application_zip',
+        'text/html'                     => 'text_html',
+        'text/plain'                    => 'text_plain',
+        'text/rtf'                      => 'text_rtf',
+    );
+    sub _load_class_by_mime_type {
+        my ($class, $type) = @_;
+
+        my $default = join('::', $class, 'Default');
+        return $default unless $type;
+
+        my $converter = $special_converters{$type} || 'Default';
+        my $class_name = join('::', $class, $converter);
+
+        eval "use $class_name;";
+        return $@ ? $default : $class_name;
+    }
 }
 
 1;
