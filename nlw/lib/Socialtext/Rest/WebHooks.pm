@@ -5,6 +5,10 @@ use warnings;
 use base 'Socialtext::Rest::Entity';
 use Socialtext::JSON qw/encode_json decode_json/;
 use Socialtext::WebHook;
+use Socialtext::Account;
+use Socialtext::Workspace;
+use Socialtext::Group;
+use Socialtext::User;
 use Socialtext::HTTP ':codes';
 
 sub GET_json {
@@ -32,24 +36,33 @@ sub PUT_json {
 
     my %checkers = (
         account_id => sub {
-            my $acct_id = shift;
+            my $obj = shift;
+            my $acct_id = $obj->{account_id} || return 0;
             my $acct = Socialtext::Account->new(account_id => $acct_id);
             return $acct && $acct->has_user($rest->user);
         },
         workspace_id => sub {
-            my $wksp_id = shift;
+            my $obj = shift;
+            my $wksp_id = $obj->{workspace_id} || return 0;
             my $wksp = Socialtext::Workspace->new(workspace_id => $wksp_id);
             return $wksp && $wksp->has_user($rest->user);
         },
         group_id => sub {
-            my $group_id = shift;
+            my $obj = shift;
+            my $group_id = $obj->{group_id} || return 0;
             my $group = Socialtext::Group->GetGroup(group_id => $group_id);
             return $group && $group->has_user($rest->user);
-        }
+        },
+        to_user => sub {
+            my $obj = shift;
+            my $user_id = $obj->{details}{to_user} || return 0;
+            my $user = Socialtext::User->new(user_id => $user_id);
+            return $user && $user->user_id == $rest->user->user_id;
+        },
     );
     my %class_checks = (
         page   => [qw/account_id workspace_id/],
-        signal => [qw/account_id group_id/],
+        signal => [qw/account_id group_id to_user/],
     );
 
     my $class = $object->{class};
@@ -58,10 +71,9 @@ sub PUT_json {
         for my $class_prefix (keys %class_checks) {
             if ($class =~ m/^\Q$class_prefix\E\.\w+$/) {
                 for my $param (@{ $class_checks{$class_prefix} }) {
-                    next unless $object->{$param};
-                    return $self->not_authorized
-                        unless $checkers{$param}->($object->{$param});
+                    next unless $checkers{$param}->($object);
                     $allowed = 1;
+                    last;
                 }
             }
         }
