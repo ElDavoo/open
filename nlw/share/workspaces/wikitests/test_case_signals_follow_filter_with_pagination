@@ -73,8 +73,8 @@
 | wait_for_text_present_ok | ssig-%%start_time%% 10 | 30000 |
 | wait_for_text_present_ok | ssig-%%start_time%% 15 | 30000 |
 | wait_for_text_present_ok | ssig-%%start_time%% 19 | 30000 |
-| wait_for_element_visible_ok | More | 30000 |
-| click_and_wait | More |  |
+| wait_for_element_visible_ok | //div[@id='more'] | 30000 |
+| click_ok | //div[@id='more'] |  |
 | wait_for_text_present_ok | ssig-%%start_time%% ONE | 30000 |
 | wait_for_text_present_ok | ssig-%%start_time%% 2 | 30000 |
 | wait_for_text_present_ok | ssig-%%start_time%% 3 | 30000 |
@@ -83,8 +83,10 @@
 | wait_for_text_present_ok | ssig-%%start_time%% 19 | 30000 |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination follower unfilters signals |  |
-| wait_for_element_visible_ok | link=everyone | 30000 |
+| select-frame | relative=parent |  |
+| wait_for_element_present_ok | link=everyone | 30000 |
 | click_ok | link=everyone |  |
+| st-select-widget-frame | signals |  |
 | wait_for_text_present_ok | nfsig-%%start_time%% 65 | 30000 |
 | wait_for_text_present_ok | nfsig-%%start_time%% 46 | 30000 |
 | select-frame | relative=parent |  |
