@@ -862,6 +862,8 @@ sub deactivate {
     require Socialtext::Account;
     $self->primary_account(Socialtext::Account->Deleted());
 
+    $self->_call_hook('nlw.user.deactivate');
+
     return $self;
 }
 
@@ -884,10 +886,16 @@ sub _index {
     require Socialtext::JobCreator;
     Socialtext::JobCreator->index_person($self, @_);
 
+    $self->_call_hook('nlw.profile.changed');
+}
+
+sub _call_hook {
+    my $self = shift;
+    my $hclass = shift;
     require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub($self);
-    $adapter->hook('nlw.profile.changed' => $self);
+    $adapter->hook($hclass => $self);
 }
 
 # Class methods
