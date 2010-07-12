@@ -23,7 +23,11 @@ sub signal_new {
 
     Socialtext::WebHook->Add_webhooks(
         class => 'signal.create',
-        payload_thunk => sub { $signal->as_hash },
+        payload_thunk => sub { 
+            my $h = $signal->as_hash;
+            $h->{action} = 'create';
+            return $h;
+        },
         account_ids => $signal->account_ids,
         group_ids   => $signal->group_ids,
         annotations => $signal->annotations,
