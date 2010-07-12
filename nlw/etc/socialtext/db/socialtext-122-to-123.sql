@@ -12,6 +12,11 @@ ALTER TABLE ONLY webhook
             FOREIGN KEY (group_id)
             REFERENCES groups(group_id) ON DELETE CASCADE;
 
+UPDATE webhook SET class = 'page.tag'
+    WHERE class = 'pagetag';
+UPDATE webhook SET class = 'signal.create'
+    WHERE class = 'signal';
+
 UPDATE "System"
    SET value = '123'
  WHERE field = 'socialtext-schema-version';
