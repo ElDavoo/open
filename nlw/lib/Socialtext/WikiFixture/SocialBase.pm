@@ -2916,6 +2916,9 @@ sub add_webhook {
     $args->{url}   = $url;
     $self->put_json('/data/webhooks', encode_json($args));
     $self->code_is(201);
+    unless ($self->{http}->response->code == 201) {
+        die "Failed to create webhook: " . encode_json($args);
+    }
     diag "Created webhook $args->{class}=$args->{url}";
 }
 
