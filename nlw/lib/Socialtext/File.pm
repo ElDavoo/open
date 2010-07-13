@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base 'Exporter';
 our @EXPORT_OK = qw(
-    set_contents set_contents_utf8 set_contents_binary
+    set_contents set_contents_utf8 set_contents_binary set_contents_utf8_atomic
     get_contents get_contents_utf8 get_contents_binary
     ensure_directory mime_type
 );
@@ -86,6 +86,14 @@ sub set_contents {
 sub set_contents_utf8 {
     splice(@_,2,1,':utf8');
     goto &set_contents_binmode;
+}
+
+sub set_contents_utf8_atomic {
+    my $orig_filename = $_[0];
+    local $_[0] .= '.temp';
+    set_contents_utf8(@_);
+    rename $_[0] => $orig_filename
+        or confess "Can't rename $_[0] to $orig_filename: $!";
 }
 
 sub set_contents_binary {

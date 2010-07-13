@@ -4,11 +4,11 @@
 use strict;
 use warnings;
 
-use Test::More tests => 7;
+use Test::More tests => 8;
 use FindBin;
 
 BEGIN {
-    use_ok( 'Socialtext::File', 'set_contents', 'get_contents' );
+    use_ok( 'Socialtext::File', 'set_contents', 'get_contents', 'set_contents_utf8_atomic' );
 }
 
 my @files;
@@ -41,9 +41,12 @@ FILES_AND_DIRS_UNDER: {
 }
 
 Set_and_get_contents: {
-    my $file = 't/contents.$$';
+    my $file = "t/contents.$$";
     unlink $file;
     set_contents($file, $$);
+    is get_contents($file), $$;
+    unlink $file;
+    set_contents_utf8_atomic($file, $$);
     is get_contents($file), $$;
     unlink $file;
 }
