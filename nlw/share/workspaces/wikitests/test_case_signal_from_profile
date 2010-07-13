@@ -2,15 +2,17 @@
 
 * Fixture: SocialWidgets
 
+| *Comment* | Test Case: Signal From Profile - create two users |  |
 | set | spshort | spuser%%start_time%% |
 | set | spuser | %%spshort%%@ken.socialtext.net |
-| create-user | %%spuser%% | %%password%% |
-| st-admin | enable-plugin --all-accounts --plugin signals |  |
-| st-logoutin | %%spuser%% |  |
-
 | set | spshort_two | spusertwo%%start_time%% |
 | set | spusertwo | %%spshort_two%%@ken.socialtext.net |
+
+| create-user | %%spuser%% | %%password%% |
 | create-user | %%spusertwo%% | %%password%% |
+
+| st-admin | enable-plugin --all-accounts --plugin signals |  |
+| st-logoutin | %%spuser%% |  |
 
 | *Comment* | Test Case: Signal From Profile. logged in user has empty "lastsignal" |  |
 
@@ -59,17 +61,27 @@
 | *Comment* | Test Case: Signal From Profile. it is safe to let the other user be wikitester@ken.socialtext.net |  |
 
 | set | private | Private Hello to wikitester from %%spuser%% |  |
-| set | private_two | Second Signal to wikitester from %%spuser%% |  |
+| set | public | Public Hello after private signal to wikitester from %%spuser%% |  |
 
 | st-find-user | wikitester |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | activities |
 | st-widget-title-like | activities | Activities |
-| st-send-signal-via-activities-widget | activities | %%private%% | PRIVATE |
-| st-send-signal-via-activities-widget | activities | %%private_two%% |  |
 
-| *Comment* | Test Case: Signal From Profile. Private mention appears in wikitester profile activities widget |  |
-| st-verify-text-in-activities-widget | activities | %%private%% |
+| *Comment* | Test Case: Signal From Profile. Send a private mention |  |
+| st-select-widget-frame | activities |  |
+| st-send-signal-within-activities-widget | %%private%% | PRIVATE |
+
+| *Comment* | Test Case: Signal From Profile. VERIFY after private signal that private checkbox is unchecked |  |
+| st-unchecked-ok | //input[@class='toggle-private'] |  |
+
+| *Comment* | Test Case: Signal From Profile. Immediately send a public mention from within the same widget |  |
+| st-send-signal-within-activities-widget | %%public%% |  |
+
+| *Comment* | Test Case: Signal From Profile. Both mentions appears in wikitester profile activities widget |  |
+| st-verify-text-within-activities-widget |  | %%private%% |
+| st-verify-text-within-activities-widget |  | %%public%% |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Signal From Profile. private mention appears in %%spuser%% profile activities widget |  |
 | wait_for_element_visible_ok | link=%%spshort%% | 30000 |
@@ -78,12 +90,14 @@
 | st-name-widget | 3 | spactivities |
 | st-widget-title-like | spactivities | Activities |
 | st-verify-text-in-activities-widget | spactivities | %%private%% |
+| st-verify-text-in-activities-widget | spactivities | %%public%% |
 
 | *Comment* | Test Case: Signal From Profile. Private mention appears in %%spuser%% signal activities widget |  |
 | click_and_wait | link=Signals |  |
 | wait_for_text_present_ok | Signals | 30000 |
 | st-name-widget | 1 | sigactivities |
-| st-verify-text-in-activities-widget | sigactivities | %%signal%% |
+| st-verify-text-in-activities-widget | sigactivities | %%private%% |
+| st-verify-text-in-activities-widget | sigactivities | %%public%% |
 
 | *Comment* | Test Case: Signal From Profile. private mention appears in %%spuser%% dashboard activities widget |  |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
@@ -91,16 +105,22 @@
 | st-name-widget | 1 | dbactivities |
 | st-widget-title-like | dbactivities | Activities |
 | st-verify-text-in-activities-widget | dbactivities | %%private%% |
+| st-verify-text-in-activities-widget | dbactivities | %%public%% |
 
-| *Comment* | Test Case: Signal From Profile. login as another user, see public but not private signal. See public "last message" but not private |  |
+| *Comment* | Test Case: Signal From Profile. login as another user, see public but not private signals. |  |
 | st-logoutin | %%spusertwo%% |  |
+
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | other_user_activities |
 | st-verify-text-in-activities-widget | other_user_activities | %%signal%% |
 | st-text-unlike-in-activities-widget | other_user_activities | %%private%% |
+| st-verify-text-in-activities-widget | other_user_activities | %%public%% |
 
-| *Comment* | Test Case: Signal From Profile. Demo {bz: 4090} |  |
-| st-text-unlike-in-activities-widget | other_user_activities | %%private_two%% |
+| *Comment* | Test Case: Signal From Profile. See public "last message" but not private |  |
+
+| st-find-user | %%spshort%% |  |
+| wait_for_element_present_ok | //div[@id='lastsignal'] | 30000 |
+| text_like | //div[@id='lastsignal'] | %%public%% |
 
 TODO: login as wikitester, see public and private signals
 

@@ -370,15 +370,16 @@ sub st_single_widget_in_dashboard {
     ok(!$@, 'st_single_widget_in_dashboard' );
 }
 
-#=head2 st_send_signal_within_activities_widget
+#=head2 st_prepare_signal_within_activities_widget
 #
 #Precondition: The activities widget frame is selected
-#Parameters: You pass in the signal text and private flag
+#Parameters: You pass in the signal text and private flag.  The signal is
+#readied, but not sent.  Used for testing private signal cancel.
 #PostCondition: Signal is sent,frame focus remains on widget
 #
 #=cut
 
-sub st_send_signal_within_activities_widget {
+sub st_prepare_signal_within_activities_widget {
     my ($self, $signaltosend, $private) = @_;
     $self->handle_command('wait_for_element_present_ok', 'mainWikiwyg', 5000);
     $self->handle_command('click_ok', 'mainWikiwyg');
@@ -400,11 +401,23 @@ sub st_send_signal_within_activities_widget {
         $self->handle_command('click_ok', '//input[@class=' . "'toggle-private']");
         $self->handle_command('is_checked_ok', '//input[@class=' . "'toggle-private']");
     }
-    
+    $self->handle_command('set_Speed',0);
+}
+
+#=head2 st_send_signal_within_activities_widget
+#
+#Precondition: The activities widget frame is selected
+#Parameters: You pass in the signal text and private flag
+#PostCondition: Signal is sent,frame focus remains on widget
+#
+#=cut
+
+sub st_send_signal_within_activities_widget {
+    my ($self, $signaltosend, $private) = @_;
+    $self->st_prepare_signal_within_activities_widget($signaltosend, $private);
     $self->handle_command('wait_for_element_visible_ok','post', 5000);
     $self->handle_command('click_ok','post');
     $self->handle_command('pause',3000); 
-    $self->handle_command('set_Speed',0);
 }
 
 =head2 st_send_signal_via_activities_widget 

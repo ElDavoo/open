@@ -5,6 +5,7 @@
 
 | *Comment* | Test Case: Signals Login/Logout Login disable LDAP |  |
 | include | [Disable LDAP] |  |
+| st-admin | disable-plugin --p dashboard --account %%hostname%% |  |
 
 | *Comment* | Test Case: Signals Login/Logout Login redirect |  |
 | open_ok | /nlw/submit/logout |  |
@@ -55,12 +56,12 @@
 | type_ok | username | %%inout_user%% |
 | type_ok | password | %%password%% |
 | click_and_wait | login_btn |  |
-| location_like | /st/signals |  |
 | wait_for_element_visible_ok | link=People | 30000 |
 | click_and_wait | link=People |  |
 | text_like | All People |  |
 
 | *Comment* | Test case: Signals Login/Logout TEARDOWN |  |
 | include | [Enable LDAP] |  |
+| st-admin | enable-plugin --p dashboard --account %%hostname%% |  |
 
 | *Comment* | Test case: Signals Login/Logout COMPLETED |  |
