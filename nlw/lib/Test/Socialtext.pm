@@ -89,6 +89,8 @@ our @EXPORT_OK = qw(
 
 our $DB_AVAILABLE = 0;
 sub fixtures () {
+    $ENV{SKIP_PUSHD_TICKLE} = 1 unless defined $ENV{SKIP_PUSHD_TICKLE};
+
     # point directly to where the config file is going to go; if we have to
     # create it, we need to tell ST::AppConfig where its *supposed* to go.
     my $testdir = Socialtext::AppConfig->test_dir();
@@ -347,6 +349,7 @@ sub _store_initial_state {
 # revert back to the initial state (as best we can) when the test run is over.
 END { _teardown_cleanup() }
 sub _teardown_cleanup {
+    $ENV{SKIP_PUSHD_TICKLE} = 1 unless defined $ENV{SKIP_PUSHD_TICKLE};
     _reset_initial_appconfig();
     if ($DB_AVAILABLE) {
         _reset_initial_sysconfig();
