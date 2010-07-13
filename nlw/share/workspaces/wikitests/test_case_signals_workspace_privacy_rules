@@ -1,0 +1,43 @@
+| *Comment* | Test Case: Signals Workspace Privacy Rules |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Signals Workspace Privacy Rules Setup |  |
+| set | acct | acctA-swpr-%%start_time%% |
+| st-admin | create-account --name %%acct%% | A new account named |
+
+| set | ws | wsA-swpr-%%start_time%% |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% | A new workspace named |
+
+| set | isouser_short | isouser-%%start_time%% |
+| set | isouser | %%isouser_short%%@matt.socialtext.net |
+| st-admin | create-user --e %%isouser%% --p %%password%% --account %%acct%% | was created |
+| st-admin | add-member --w %%ws%% --e %%isouser%% | now has the role of |
+
+| *Comment* | Test Case: Signals Workspace Privacy Rules basic signal unshared workspace |  |
+| set | signal1 | test signal number one %%start_time%% {link: %%ws%% [%%ws%%]} |
+| set | signal1_text | test signal number one %%start_time%% %%ws%% |
+| http-user-pass | %%isouser%% | %%password%% |
+| post-signal | %%signal1%% |  |
+| st_single_widget_in_dashboard | gallery-widget-Activities |  |
+| st-name-widget | 1 | activities_widget |
+| st-text-unlike-in-activities-widget | activities_widget | %%signal1_text%% |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_element_not_present_ok | link=%%ws%% | 30000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Signals Workspace Privacy Rules Basic Signal with shared Workspace |  |
+| st-admin | add-member --e %%username%% --w %%ws%% | now has the role of |
+| refresh |  |  |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_element_visible_ok | link=%%ws%% | 30000 |
+| wait_for_text_present_ok | %%signal1_text%% | 30000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Signals Workspace Privacy Rules Basic Signal Reply missing (TODO) |
+| *Comment* | Test Case: Signals Workspace Privacy Rules Basic (Reply button needs id) |
+
+| *Comment* | Test Case: Signals Workspace Privacy Rules TearDown |  |
+| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
+
+| *Comment* | Test Case: Signals Workspace Privacy Rules Completed |
