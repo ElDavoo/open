@@ -947,7 +947,7 @@ sub store {
         $metadata->Control('Deleted');
     }
 
-    $self->write_file($self->headers, $body);
+    $self->write_file();
     $self->_perform_store_actions();
 
     $self->_log_edit_summary($p{user}) if $self->metadata->RevisionSummary;
@@ -1192,19 +1192,19 @@ sub _cache_using_questions {
     $q_str ||= 'null';
 
     my $q_file = $self->_question_file or return;
-    Socialtext::File::set_contents_utf8_atomic($q_file, $q_str) if $q_file;
+    Socialtext::File::set_contents_utf8_atomic($q_file, \$q_str) if $q_file;
 
-    my $html = $html_ref ? $$html_ref : $self->to_html;
+    $html_ref ||= \$self->to_html;
     my $answer_str = join '-', map { $_ . '_' . shift(@answers) } @short_q;
 
     my $cache_file = $self->_answer_file($answer_str);
     if ($cache_file) {
-        Socialtext::File::set_contents_utf8_atomic($cache_file, $html);
+        Socialtext::File::set_contents_utf8_atomic($cache_file, $html_ref);
     }
     else {
         warn "Answer string is too long - not writing $cache_file";
     }
-    return \$html;
+    return $html_ref;
 }
 
 sub _log_page_action {
@@ -1740,10 +1740,10 @@ sub _store_preview_text {
 
     my $mtime = $self->modified_time;
     my $data = $self->_get_contents_decoded_as_utf8($filename);
-    my $headers = substr($data, 0, index($data, "\n\n") + 1);
-    my $old_length = length($headers);
-    return if $headers =~ /^Summary:\ +\S/m;
-    $headers =~ s/^Summary:.*\n//mg;
+    my $content = substr($data, 0, index($data, "\n\n") + 1);
+    my $old_length = length($content);
+    return if $content =~ /^Summary:\ +\S/m;
+    $content =~ s/^Summary:.*\n//mg;
 
     if (@_) {
         # If explicitly specified, use the specified text
@@ -1757,14 +1757,10 @@ sub _store_preview_text {
     $preview_text = '...' if $preview_text =~ /^\s*$/;
     $preview_text =~ s/\s*\z//;
     return if $preview_text =~ /\n/;
-    $headers .= "Summary: $preview_text\n";
+    $content .= "Summary: $preview_text\n";
+    $content .= substr($data, $old_length);
 
-    my $body = substr($data, $old_length);
-    my $tmp_file = "$filename.tmp";
-    Socialtext::File::set_contents_utf8($tmp_file, $headers . $body);
-    rename $tmp_file => $filename 
-        or warn "rename $tmp_file => $filename failed: $!";
-
+    Socialtext::File::set_contents_utf8_atomic($filename, \$content);
     $self->set_mtime($mtime, $filename);
 }
 
@@ -2378,13 +2374,13 @@ sub headers {
 
 sub write_file {
     my $self = shift;
-    my ($headers, $body) = @_;
     my $id = $self->id
       or die "No id for content object";
     my $revision_file = $self->revision_file( $self->new_revision_id );
     my $page_path = join '/', Socialtext::Paths::page_data_directory( $self->hub->current_workspace->name ), $id;
     Socialtext::File::ensure_directory($page_path, 0, 0755);
-    Socialtext::File::set_contents_utf8($revision_file, join "\n", $headers, $body);
+    my $content = join "\n", $self->headers, $self->content;
+    Socialtext::File::set_contents_utf8_atomic($revision_file, \$content);
 
     my $index_path = join '/', $page_path, 'index.txt';
     Socialtext::File::safe_symlink($revision_file => $index_path);

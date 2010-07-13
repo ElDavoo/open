@@ -80,7 +80,7 @@ sub set_question_file {
     my $new_value = shift;
     my $Q_file = $self->_question_filename($self->{workspace}, $page_name);
 
-    set_contents($Q_file, $new_value);
+    set_contents($Q_file, \$new_value);
 }
 
 sub fetch_page {
