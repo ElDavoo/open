@@ -158,7 +158,11 @@ a singleton instance of the object.
 =cut
 sub new {
     my $class = shift;
-    return $Instance if $Instance;
+    return $Instance ? $Instance : $class->_renew();
+}
+
+sub _renew {
+    my $class = shift;
     my $self = bless {}, $class;
     local $@;
     eval {
