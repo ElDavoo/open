@@ -10,7 +10,7 @@ use namespace::clean -except => 'meta';
 extends 'Socialtext::Job';
 
 override 'max_retries' => sub { 5 };
-override 'grabbed_for' => sub { 600 };
+override 'grab_for'    => sub { 600 };
 override 'retry_delay' => sub { 600 };
 
 sub do_work {
