@@ -40,12 +40,29 @@ sub index_attachment {
     return if $attachment->page->is_bad_page_title($page_id);
     return if ($attachment->loaded && $attachment->temporary);
 
+    return $self->index_attachment_by_ids(
+        workspace_id => $wksp_id,
+        page_id      => $page_id,
+        attach_id    => $attach_id,
+        config       => $search_config,
+    );
+}
+
+sub index_attachment_by_ids {
+    my $self = shift;
+    my %p    = @_;
+    my $wksp_id       = delete $p{workspace_id};
+    my $page_id       = delete $p{page_id};
+    my $attach_id     = delete $p{attach_id};
+    my $priority      = delete $p{priority} || 63;
+    my $search_config = delete $p{config};
+
     my %job_args = (
         workspace_id => $wksp_id,
-        page_id => $page_id,
-        attach_id => $attach_id,
-        job => {
-            priority => 63,
+        page_id      => $page_id,
+        attach_id    => $attach_id,
+        job          => {
+            priority => $priority,
             coalesce => "$wksp_id-$page_id-$attach_id",
         },
     );
