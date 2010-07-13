@@ -1127,7 +1127,6 @@ sub _cache_html {
     for my $user_id (keys %users) {
         push @cache_questions, { user_id => $user_id };
     }
-    # XXX: put cheapest questions first? (e.g. time check for expires)
     if (defined $expires_at) {
         $expires_at += time();
         push @cache_questions, { expires_at => $expires_at };
@@ -1148,6 +1147,15 @@ sub _cache_using_questions {
 
     my @short_q;
     my @answers;
+    
+    # Do one pass looking for expiry Q's, as they are cheap to early-out
+    for my $q (@$questions) {
+        if (my $t = $q->{expires_at}) {
+            push @short_q, 'E' . $t;
+            # We just made it, so it's not expired yet
+            push @answers, 1;
+        }
+    }
     for my $q (@$questions) {
         my $ws;
         if ($ws = $q->{workspace}) {
@@ -1168,9 +1176,7 @@ sub _cache_using_questions {
             push @answers, $ws->allows_html_wafl ? 1 : 0;
         }
         elsif (my $t = $q->{expires_at}) {
-            push @short_q, 'E' . $t;
-            # We just made it, so it's not expired yet
-            push @answers, 1;
+            # Skip, it's handled above.
         }
         elsif (my $d = $q->{date}) {
             $d =~ s/-/m/; # - is used as a field separator
@@ -1186,7 +1192,7 @@ sub _cache_using_questions {
     $q_str ||= 'null';
 
     my $q_file = $self->_question_file or return;
-    Socialtext::File::set_contents_utf8_atomic($q_file, $q_str);
+    Socialtext::File::set_contents_utf8_atomic($q_file, $q_str) if $q_file;
 
     my $html = $html_ref ? $$html_ref : $self->to_html;
     my $answer_str = join '-', map { $_ . '_' . shift(@answers) } @short_q;
