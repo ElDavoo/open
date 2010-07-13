@@ -113,7 +113,7 @@ our $IN_WORKER = 0;
 
     sub worker_ping {
         Try::Tiny::try { before_each() };
-        get_dbh();
+        Socialtext::SQL::get_dbh();
         return {'PING'=>'PONG'}
     }
 
