@@ -5,6 +5,7 @@ use warnings;
 use strict;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
+use Socialtext::TimestampedWarnings;
 
 #
 # Override a bunch of modules to prevent Apache::AuthenNTLM from loading
@@ -196,22 +197,22 @@ sub get_config {
 
     return unless $self->{debug};
 
-    # debugging notes
-    my $prefix = 'st-ntlmd';
-    st_log->debug("$prefix default domain: " . $self->{defaultdomain} );
-    st_log->debug("$prefix fallback domain: " . $self->{fallbackdomain} );
-    st_log->debug("$prefix AuthType: " . $self->{authtype} );
-    st_log->debug("$prefix AuthName: " . $self->{authname} );
-    st_log->debug("$prefix Auth NTLM: " . $self->{authntlm} );
-    st_log->debug("$prefix Auth Basic: " . $self->{authbasic} );
-    st_log->debug("$prefix NTLMAuthoritative: " . $self->{ntlmauthoritative} );
-    st_log->debug("$prefix SplitDomainPrefix: " . $self->{splitdomainprefix} );
-    foreach my $domain (sort keys %{$self->{smbpdc}}) {
-        next unless ($domain);  # skip blank/empty domains
-        st_log->debug("$prefix domain: $domain" );
-        st_log->debug("$prefix ... pdc: " . $self->{smbpdc}{$domain} );
-        st_log->debug("$prefix ... bdc: " . $self->{smbbdc}{$domain} );
-    }
+    # debugging for development and/or trouble-shooting:
+#     my $prefix = 'st-ntlmd';
+#     st_log->debug("$prefix default domain: " . $self->{defaultdomain} );
+#     st_log->debug("$prefix fallback domain: " . $self->{fallbackdomain} );
+#     st_log->debug("$prefix AuthType: " . $self->{authtype} );
+#     st_log->debug("$prefix AuthName: " . $self->{authname} );
+#     st_log->debug("$prefix Auth NTLM: " . $self->{authntlm} );
+#     st_log->debug("$prefix Auth Basic: " . $self->{authbasic} );
+#     st_log->debug("$prefix NTLMAuthoritative: " . $self->{ntlmauthoritative} );
+#     st_log->debug("$prefix SplitDomainPrefix: " . $self->{splitdomainprefix} );
+#     foreach my $domain (sort keys %{$self->{smbpdc}}) {
+#         next unless ($domain);  # skip blank/empty domains
+#         st_log->debug("$prefix domain: $domain" );
+#         st_log->debug("$prefix ... pdc: " . $self->{smbpdc}{$domain} );
+#         st_log->debug("$prefix ... bdc: " . $self->{smbbdc}{$domain} );
+#     }
 }
 
 sub handle_http {
