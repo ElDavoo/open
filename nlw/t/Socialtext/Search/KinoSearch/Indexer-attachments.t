@@ -36,7 +36,7 @@ Test::Socialtext->main_hub($hub);
 run {
     my $case = shift;
     my $filename = $case->filename;
-    my $filepath = 't/attachments/' . $filename;
+    my $filepath = find_attachment($filename);
     create_and_confirm_page('a test page',
         "a simple page containing a funkity string");
 
@@ -69,6 +69,17 @@ sub check_for_file_in_path {
     }
 
     return 0;
+}
+
+sub find_attachment {
+    my $filename = shift;
+    for my $path (qw(t/attachments t/Socialtext/File/stringify_data)) {
+        my $file = "$path/$filename";
+
+        return $file if -e $file;
+    }
+
+    die "Could not find attachment named '$filename'\n";
 }
 
 
@@ -105,3 +116,15 @@ __DATA__
 === ppt
 --- filename: indext.ppt
 --- term: "Indexing Things"
+
+=== docx
+--- filename: sample.docx
+--- term: "Word"
+
+=== xlsx
+--- filename: sample.xlsx
+--- term: "Excel"
+
+=== pptx
+--- filename: sample.pptx
+--- term: "PowerPoint"
