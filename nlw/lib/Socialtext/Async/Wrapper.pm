@@ -10,6 +10,7 @@ use AnyEvent::Worker;
 use Carp qw/carp croak/;
 use Scalar::Util qw/blessed/;
 use Socialtext::Timer qw/time_scope/;
+use Try::Tiny;
 use namespace::clean -except => 'meta';
 
 =head1 NAME
@@ -80,14 +81,32 @@ our $IN_WORKER = 0;
 
         # clear caches.
         Socialtext::Cache->clear();
+        # but make sure it uses the user-cache until we clear it.
+        $Socialtext::User::Cache::Enabled = 1;
 
         # TODO: st_log is disconnected by AnyEvent::Worker right after fork.
         # Reconnect it here.
+        Socialtext::Log->_renew()->info("async worker started: $0");
 
         return;
     }
 
-    sub worker_ping { return {'PING'=>'PONG'} }
+    sub DEMOLISH {
+        $Socialtext::Log::Instance->info("async worker stopping: $0");
+    }
+
+    sub before_each {
+        # most of these copied from Socialtext::Handler::Cleanup
+        Socialtext::Cache->clear();
+        Socialtext::SQL::invalidate_dbh();
+        File::Temp::cleanup();
+    }
+
+    sub worker_ping {
+        Try::Tiny::try { before_each() };
+        get_dbh();
+        return {'PING'=>'PONG'}
+    }
 
     # other methods get installed here by worker_wrap and worker_function.
 
@@ -124,7 +143,7 @@ sub worker_wrap {
         name => $worker_name,
         package_name => 'Socialtext::Async::Wrapper::Worker',
         body => sub {
-            scope_guard { Socialtext::Cache->clear };
+            try { Socialtext::Async::Wrapper::Worker::before_each() };
             my $t = time_scope $worker_name;
             shift; # instance of Socialtext::Async::Wrapper::Worker
             my $class_or_obj = shift;
@@ -160,7 +179,7 @@ sub worker_function {
         name => $worker_name,
         package_name => 'Socialtext::Async::Wrapper::Worker',
         body => sub {
-            scope_guard { Socialtext::Cache->clear };
+            try { Socialtext::Async::Wrapper::Worker::before_each() };
             my $t = time_scope $worker_name;
             shift; # instance of Socialtext::Async::Wrapper::Worker
             shift; # undef
