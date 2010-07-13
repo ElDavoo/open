@@ -117,6 +117,10 @@ __DATA__
 --- filename: indext.ppt
 --- term: "Indexing Things"
 
+=== xls
+--- filename: sample.xls
+--- term: "Excel"
+
 === docx
 --- filename: sample.docx
 --- term: "Word"
