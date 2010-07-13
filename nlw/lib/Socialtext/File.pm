@@ -89,11 +89,12 @@ sub set_contents_utf8 {
 }
 
 sub set_contents_utf8_atomic {
-    my $orig_filename = $_[0];
-    local $_[0] .= '.temp';
-    set_contents_utf8(@_);
-    rename $_[0] => $orig_filename
-        or confess "Can't rename $_[0] to $orig_filename: $!";
+    my @args = @_;
+    my $orig_filename = $args[0];
+    $args[0] .= '.temp';
+    set_contents_utf8(@args);
+    rename $args[0] => $orig_filename
+        or confess "Can't rename $args[0] to $orig_filename: $!";
 }
 
 sub set_contents_binary {
