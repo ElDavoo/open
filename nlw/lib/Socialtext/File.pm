@@ -89,12 +89,13 @@ sub set_contents_utf8 {
 }
 
 sub set_contents_utf8_atomic {
-    my @args = @_;
-    my $orig_filename = $args[0];
-    (undef, $args[0]) = File::Temp::tempfile();
-    set_contents_utf8(@args);
-    rename $args[0] => $orig_filename
-        or confess "Can't rename $args[0] to $orig_filename: $!";
+    my $filename = shift;
+    my ($dir,$file) = ($filename =~ m#^((?:.+)/)?([^/]+)$#);
+    $dir ||= '.';
+    my (undef, $temp) = File::Temp::tempfile("$file.tmpXXXXXX", DIR => $dir);
+    set_contents_utf8($temp, @_);
+    rename $temp => $filename
+        or confess "Can't rename $temp to $filename: $!";
 }
 
 sub set_contents_binary {
