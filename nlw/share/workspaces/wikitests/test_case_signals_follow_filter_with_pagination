@@ -2,11 +2,11 @@
 
 * Fixture: SocialWidgets
 
-| set | signaler | siguser_%%start_time%%@ken.socialtext.net |
+| set | signaler | `siguser_%%start_time%%@ken.socialtext.net` |
 | set | signaler_short | siguser_%%start_time%% |
-| set | follower | foluser_%%start_time%%@ken.socialtext.net |
+| set | follower | `foluser_%%start_time%%@ken.socialtext.net` |
 | set | follower_short | foluser_%%start_time%% |
-| set | notfollowed | nfoluser_%%start_time%%@ken.socialtext.net |
+| set | notfollowed | `nfoluser_%%start_time%%@ken.socialtext.net` |
 | set | notfollowed_short | nfoluser_%%start_time%% |
 
 | set | acct | account_%%start_time%% |
@@ -27,7 +27,6 @@
 | http-user-pass | %%signaler%% | %%password%% |  |
 | post-signal | ssig-%%start_time%% ONE |  |
 | post-signals | 21 | ssig-%%start_time%% | 1 |
-| st-process-jobs | SignalIndex |  |  |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination notfollowed signals many times |  |  |
 | http-user-pass | %%notfollowed%% | %%password%% |  |
@@ -36,15 +35,8 @@
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination follower logs in, follows signaler |  |
 | st-logoutin | %%follower%% | %%password%% |
-| pause | 10000 | wait for indexing |
-| wait_for_element_visible_ok | link=People | 30000 |
-| click_and_wait | link=People |  |
-| wait_for_element_visible_ok | st-search-term | 30000 |
-| type_ok | st-search-term | %%signaler_short%% |
-| wait_for_element_visible_ok | st-search-submit | 30000 |
-| click_and_wait | st-search-submit |  |
-| wait_for_element_visible_ok | link=%%signaler_short%% | 30000 |
-| click_and_wait | link=%%signaler_short%% |  |
+| st-process-jobs | PeopleIndex |  |
+| st-search-for | Search People: | %%signaler_short%% |
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
 | click_ok | link=Follow this person |  |
 | wait_for_element_visible_ok | link=Stop following this person | 30000 |
@@ -61,6 +53,7 @@
 | st_verify_text_in_activities_widget | signals | nfsig-%%start_time%% 65 |
 | st_verify_text_in_activities_widget | signals | nfsig-%%start_time%% 46 |
 
+| *Comment* | Test Case: Signals Follow Filter With Pagination follower checks signals, filter to only People I Follow |  |
 | wait_for_element_present_ok | link=people I follow | 30000 |
 | click_ok | link=people I follow |  |
 | st_text_unlike_in_activities_widget | signals | nfsig-%%start_time%% | 30000 |
@@ -74,6 +67,8 @@
 | wait_for_text_present_ok | ssig-%%start_time%% 15 | 30000 |
 | wait_for_text_present_ok | ssig-%%start_time%% 19 | 30000 |
 | wait_for_element_visible_ok | //div[@id='more'] | 30000 |
+
+| *Comment* | Test Case: Signals Follow Filter With Pagination click More ... , see the ONE signal |  |
 | click_ok | //div[@id='more'] |  |
 | wait_for_text_present_ok | ssig-%%start_time%% ONE | 30000 |
 | wait_for_text_present_ok | ssig-%%start_time%% 2 | 30000 |
@@ -91,7 +86,7 @@
 | wait_for_text_present_ok | nfsig-%%start_time%% 46 | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Signals Follow Filter With Pagination teardown |  |
-| st-admin | delete-workspace --w %%ws%% --no-export |  |
+| *Comment* | Test Case: Signals Follow Filter With Pagination TEARDOWN |  |
+| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination COMPLETED |  |

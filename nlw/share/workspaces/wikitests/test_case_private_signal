@@ -85,5 +85,6 @@
 | st-send-signal-within-activities-widget | %%cancel%% |  |
 | st-verify-text-within-activities-widget | %%cancel%% |  |
 | select-frame | relative=parent |  |
+| st-text-unlike-in-activities-widget | signals | qr/You.+private to.+%%cancel%%/ism |
 
 | *Comment* | Test Case: Private Signal COMPLETED |  |
