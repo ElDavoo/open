@@ -91,7 +91,7 @@ sub set_contents_utf8 {
 sub set_contents_utf8_atomic {
     my @args = @_;
     my $orig_filename = $args[0];
-    $args[0] .= '.temp';
+    (undef, $args[0]) = File::Temp::tempfile();
     set_contents_utf8(@args);
     rename $args[0] => $orig_filename
         or confess "Can't rename $args[0] to $orig_filename: $!";
