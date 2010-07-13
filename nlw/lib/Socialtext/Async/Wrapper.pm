@@ -49,7 +49,16 @@ I/O tasks (like accepting new clients, receiving requests, sending responses).
 The first call to a wrapped bit of code will launch the sub-process.
 
 Calling a wrapped method will transmit arguments to the subprocess and receive
-results (to the extent that C<Storable> and C<AnyEvent::Worker> can do so).
+results (to the extent that C<Storable> and C<AnyEvent::Worker> can do so).  A
+string exception will be thrown starting with "Worker shutdown: " if a
+communication or other fatal error occurs.  Other exceptions are
+passed-through as-is.
+
+To affect startup and shutdown of the worker process, overload the
+Socialtext::Async::Wrapper::Worker::BUILD and DEMOLISH methods.
+
+To affect what happens before each request (e.g. cache clearing), override
+Socialtext::Async::Wrapper::Worker::before_each;
 
 =head1 EXPORTS
 
@@ -217,15 +226,21 @@ sub worker_make_immutable {
 
 our $ae_worker;
 sub _setup_ae_worker {
-    $ae_worker = AnyEvent::Worker->new({
-        class => 'Socialtext::Async::Wrapper::Worker',
+
+    my %parent_args = (
         on_error => sub {
             my ($w,$error,$fatal) = @_;
             warn(($fatal ? "fatal " : "") ."ae-worker error: $error\n");
+            delete $ae_worker->{on_error}; # remove circular ref
             undef $ae_worker;
         },
         timeout => 30,
-    });
+    );
+    my %child_args = (
+        class => 'Socialtext::Async::Wrapper::Worker',
+    );
+
+    $ae_worker = AnyEvent::Worker->new(\%child_args, %parent_args);
 }
 
 =item call_orig_in_worker name => $class[, @params]
@@ -248,13 +263,21 @@ sub call_orig_in_worker {
 
     _setup_ae_worker() unless $ae_worker;
 
-    my $err;
     my $cv = AE::cv;
     $ae_worker->do($worker_method_name => $tgt_class, @_, sub {
-        $cv->croak("In Worker callback: $@") if $@;
-        shift; # callback always passed a ref to the worker
-        my $res = \@_;
-        $cv->send($res);
+        my $wrkr = shift; # AnyEvent::Worker, but never a ::Pool
+        if (my $e = $@) {
+            if (!$wrkr->{fh}) {
+                # fh is deleted for fatal errors
+                $cv->croak("Worker shutdown: $e");
+            }
+            else {
+                $cv->croak("Worker died: $e")
+            }
+        }
+        else {
+            $cv->send(\@_);
+        }
     });
     # TODO pause all Socialtext::Timer while sleeping in coro
     my $result = $cv->recv; # may croak
