@@ -88,7 +88,9 @@ sub to_html {
         my $html = $self->hub->viewer->process($content, $page);
         if (defined $a_str) {
             # cache_file may be undef if the answer string was too long.
-            Socialtext::File::set_contents_utf8($cache_file, $html) if $cache_file;
+            # XXX if long answers get hashed we can still save it here
+            Socialtext::File::set_contents_utf8_atomic($cache_file, $html)
+                if $cache_file;
             return $html;
         }
         # Our answer string was invalid, so we'll need to re-generate the Q file
@@ -112,7 +114,7 @@ sub _users_modified_since {
     }
     return 0 unless @user_ids;
 
-    my $user_placeholders = join ',', map {'?'} @user_ids;
+    my $user_placeholders = '?,' x @user_ids; chop $user_placeholders;
     return sql_singlevalue(qq{
         SELECT count(user_id) FROM users
          WHERE user_id IN ($user_placeholders)
@@ -174,7 +176,7 @@ sub _questions_to_answers {
             my $ws_name = $self->hub->current_workspace->name;
             st_log->info("Unknown wikitext cache question '$q' for $ws_name/"
                     . $self->id);
-            return undef;;
+            return undef;
         }
     }
     return join '-', @answers;
@@ -279,7 +281,8 @@ sub _answer_file {
     my $base = $self->_page_cache_basename or return;
     my $filename = "$base-$answer_str";
     (my $basename = $filename) =~ s#.+/##;
-    return undef if length($basename) > 255;
+    # XXX If too long we could return a hash
+    return undef if length($basename) > 254;
     return $filename;
 }
 

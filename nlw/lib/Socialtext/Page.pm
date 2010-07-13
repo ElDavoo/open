@@ -987,10 +987,6 @@ sub _cache_html {
     return if $self->is_spreadsheet;
 
     my $t = time_scope('cache_wt');
-    my %interwiki;
-    my %allows_html;
-    my %users;
-    my $expires_at;
 
     my $cur_ws = $self->hub->current_workspace;
     my %cacheable_wafls = map { $_ => 1 } qw/
@@ -998,6 +994,7 @@ sub _cache_html {
         Socialtext::Formatter::Preformatted 
         Socialtext::PageAnchorsWafl
         Socialtext::Wikiwyg::FormattingTestRunAll
+        Socialtext::Wikiwyg::FormattingTest
         Socialtext::ShortcutLinks::Wafl
     /;
     my %not_cacheable_wafls = map { $_ => 1 } qw/
@@ -1008,9 +1005,14 @@ sub _cache_html {
         Socialtext::Search::Wafl
     /;
     my @cache_questions;
+    my %interwiki;
+    my %allows_html;
+    my %users;
+    my $expires_at;
 
     {
         no warnings 'redefine';
+        # Maybe in the future un-weaken the hub so this hack isn't needed. 
         local *Socialtext::Formatter::WaflPhrase::hub = sub {
             my $wafl = shift;
             return $wafl->{hub} || $self->hub;
@@ -1061,6 +1063,7 @@ sub _cache_html {
                     # Must cache on date prefs
                     my $prefs = $self->hub->preferences_object;
 
+                    # XXX We really only need to do this once per page.
                     push @cache_questions, {
                         date => join ',',
                             $prefs->date_display_format->value,
@@ -1100,11 +1103,7 @@ sub _cache_html {
                 my $wafl = shift;
                 my $wafl_class = ref($wafl);
                 return if $cacheable_wafls{ $wafl_class };
-                if ($wafl_class eq 'Socialtext::Wikiwyg::FormattingTest') {
-                    # This can be cached.
-                    return;
-                }
-                elsif ($wafl->can('wafl_id') and $wafl->wafl_id eq 'html') {
+                if ($wafl->can('wafl_id') and $wafl->wafl_id eq 'html') {
                     $allows_html{$cur_ws->workspace_id}++;
                 }
                 else {
@@ -1128,6 +1127,7 @@ sub _cache_html {
     for my $user_id (keys %users) {
         push @cache_questions, { user_id => $user_id };
     }
+    # XXX: put cheapest questions first? (e.g. time check for expires)
     if (defined $expires_at) {
         $expires_at += time();
         push @cache_questions, { expires_at => $expires_at };
@@ -1186,15 +1186,14 @@ sub _cache_using_questions {
     $q_str ||= 'null';
 
     my $q_file = $self->_question_file or return;
-    Socialtext::File::set_contents($q_file, $q_str);
+    Socialtext::File::set_contents_utf8_atomic($q_file, $q_str);
 
     my $html = $html_ref ? $$html_ref : $self->to_html;
     my $answer_str = join '-', map { $_ . '_' . shift(@answers) } @short_q;
 
-    my $cache_dir = $self->_cache_dir or return;
     my $cache_file = $self->_answer_file($answer_str);
     if ($cache_file) {
-        Socialtext::File::set_contents_utf8($cache_file, $html);
+        Socialtext::File::set_contents_utf8_atomic($cache_file, $html);
     }
     else {
         warn "Answer string is too long - not writing $cache_file";
