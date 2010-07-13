@@ -1324,7 +1324,7 @@ body#dashBoard div.widget.tan div.widgetBottomRight {
 }
 
 body#dashBoard div.widget.gray div.widgetBottomRight {	
-    /* XXX MISSING! XXX */
+	background: url(../images/widgetGrayBottomRight.png) no-repeat bottom right;
 }
 
 body#dashBoard div.widget div.widgetBottomRight {
@@ -4221,11 +4221,7 @@ body#dashBoard .widget.gray .widgetHeader {
 }
 
 body#dashBoard .widget.gray .widgetHeader h4 {
-    /**
-     * XXX Fade the header??
-     *
     color: #ABC1E2 !important;
-     */
 }
 
 body#dashBoard .hidden {
