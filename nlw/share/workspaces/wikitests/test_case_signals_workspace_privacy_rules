@@ -29,12 +29,14 @@
 | *Comment* | Test Case: Signals Workspace Privacy Rules Basic Signal with shared Workspace |  |
 | st-admin | add-member --e %%username%% --w %%ws%% | now has the role of |
 | refresh |  |  |
+| st-name-widget | 1 | activities_widget |
 | st-select-widget-frame | activities_widget |  |
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | wait_for_text_present_ok | %%signal1_text%% | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Signals Workspace Privacy Rules Basic Signal Reply missing (TODO) |
+
 | *Comment* | Test Case: Signals Workspace Privacy Rules Basic (Reply button needs id) |
 
 | *Comment* | Test Case: Signals Workspace Privacy Rules TearDown |  |
