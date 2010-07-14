@@ -2309,14 +2309,14 @@ ALTER TABLE ONLY tag_people__person_tags
             REFERENCES person_tag(id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY topic_signal_page
-    ADD CONSTRAINT topic_signal_page_forward
-            FOREIGN KEY (workspace_id, page_id)
-            REFERENCES page(workspace_id, page_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY topic_signal_page
     ADD CONSTRAINT topic_signal_page_reverse
             FOREIGN KEY (signal_id)
             REFERENCES signal(signal_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY topic_signal_page
+    ADD CONSTRAINT topic_signal_page_workspace_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY topic_signal_user
     ADD CONSTRAINT tsu_signal_fk
@@ -2409,4 +2409,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '123');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '124');
