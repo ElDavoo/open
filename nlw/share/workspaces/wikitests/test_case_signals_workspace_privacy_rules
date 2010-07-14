@@ -16,15 +16,26 @@
 
 | *Comment* | Test Case: Signals Workspace Privacy Rules basic signal unshared workspace |  |
 | set | signal1 | test signal number one %%start_time%% {link: %%ws%% [%%ws%%]} |
+| set | text_link | text_link%%start_time%% |
+| set | signal2 | test signal number two %%start_time%% "%%text_link%%"{link: %%ws%% [%%ws%%]} |
+| set | signal3 | test signal number three %%start_time%% {link: %%ws%% [fake_page%%start_time%%]} |
 | set | signal1_text | test signal number one %%start_time%% %%ws%% |
+| set | signal2_text | text signal number two %%start_time%% %%text_link%% |
+| set | signal3_text | test signal number three %%start_time%% fake_page%%start_time%% |
+
 | http-user-pass | %%isouser%% | %%password%% |
 | post-signal | %%signal1%% |  |
+| post-signal | %%signal2%% |  |
+| post-signal | %%signal3%% |  |
+
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-text-unlike-in-activities-widget | activities_widget | %%signal1_text%% |
-| st-select-widget-frame | activities_widget |  |
-| wait_for_element_not_present_ok | link=%%ws%% | 30000 |
-| select-frame | relative=parent |  |
+| st-text-unlike-in-activities-widget | activities_widget | %%signal2_text%% |
+| st-text-unlike-in-activities-widget | activities_widget | %%signal3_text%% |
+| st-element-not-present-in-activities-widget | activities_widget | link=%%ws%% |
+| st-element-not-present-in-activities-widget | activities_widget | link=%%text_link%% |
+| st-element-not-present-in-activities-widget | activities_widget | link=fake_page%%start_time%% |
 
 | *Comment* | Test Case: Signals Workspace Privacy Rules Basic Signal with shared Workspace |  |
 | st-admin | add-member --e %%username%% --w %%ws%% | now has the role of |

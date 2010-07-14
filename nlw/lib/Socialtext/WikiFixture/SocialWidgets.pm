@@ -497,6 +497,26 @@ sub st_text_unlike_in_activities_widget  {
     ok(!$@, 'st_text_unlike_in_activities_widget');
 }
 
+
+=head2 st_element_not_present_in_activities_widget
+
+Precondition: open to container with a named activities widget
+Precondition: Frame focus should be entire page
+Parameters: You paass in the activties widget name, link to look for
+PostCondition: link is found  (or not), Frame focus is back to entire page
+
+=cut
+
+sub st_element_not_present_in_activities_widget {
+    my ($self, $widgetname, $linktofind) = @_;
+    $self->handle_command('st-select-widget-frame', $widgetname);
+    $self->handle_command('pause', 3000);
+    $self->handle_command('wait_for_element_not_present_ok', $linktofind);
+    $self->handle_command('select-frame', 'relative=parent');
+    ok(!$@, 'st-element-not-present-in-activities-widget');
+}
+
+
 =head2 st_verify_link_in_activities_wdiget
 
 Precondition: open to container with a named activities widget
