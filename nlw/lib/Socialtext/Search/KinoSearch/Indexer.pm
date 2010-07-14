@@ -216,14 +216,17 @@ sub _get_page_tags {
 
 # Load an attachment and then add it to the index.
 sub index_attachment {
-    my ( $self, $page_uri, $attachment_id ) = @_;
+    my ( $self, $page_uri, $attachment_or_id ) = @_;
     $self->_init_indexer();
 
-    my $attachment = Socialtext::Attachment->new(
-        hub     => $self->hub,
-        id      => $attachment_id,
-        page_id => $page_uri,
-    )->load;
+    my $attachment = ref($attachment_or_id)
+        ? $attachment_or_id
+        : Socialtext::Attachment->new(
+            hub     => $self->hub,
+            id      => $attachment_or_id,
+            page_id => $page_uri,
+        )->load;
+    my $attachment_id = $attachment->id;
     _debug("Loaded attachment: page_id=$page_uri attachment_id=$attachment_id");
 
     $self->_add_attachment_doc($attachment);
