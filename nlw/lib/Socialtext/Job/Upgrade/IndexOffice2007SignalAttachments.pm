@@ -35,3 +35,25 @@ sub _signal_ids {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Job::Upgrade::IndexOffice2007SignalAttachments - Index Office 2007 signal attachments
+
+=head1 SYNOPSIS
+
+  use Socialtext::JobCreator;
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::Upgrade::IndexOffice2007SignalAttachments',
+    );
+
+=head1 DESCRIPTION
+
+Finds all Signals that have an Office 2007 document attached to them, and
+creates jobs to have those signals indexed.
+
+Up until this point we weren't indexing Office 2007 documents, so there
+shouldn't be anything in the search index for them.
+
+=cut

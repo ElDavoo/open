@@ -49,3 +49,27 @@ sub _reindex_attachment {
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Job::Upgrade::IndexOffice2007PageAttachments - Index Office 2007 page attachments
+
+=head1 SYNOPSIS
+
+  use Socialtext::JobCreator;
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::Upgrade::IndexOffice2007PageAttachments', {
+            workspace_id => $workspace_id,
+        },
+    );
+
+=head1 DESCRIPTION
+
+Finds all Pages in the specified Workspace that have an Office 2007 document
+attached to them, and creates jobs to have those attachments indexed.
+
+Up until this point we weren't indexing Office 2007 documents, so there
+shouldn't be anything in the search index for them.
+
+=cut
