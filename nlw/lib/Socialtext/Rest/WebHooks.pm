@@ -39,7 +39,7 @@ sub GET_json {
     return encode_json($result);
 }
 
-sub PUT_json {
+sub POST_json {
     my $self = shift;
     my $rest = shift;
 

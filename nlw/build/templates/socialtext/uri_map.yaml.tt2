@@ -618,8 +618,8 @@
     '/data/webhooks':
         'GET':
             'application/json': [Socialtext::Rest::WebHooks, GET_json]
-        'PUT':
-            'application/json': [Socialtext::Rest::WebHooks, PUT_json]
+        'POST':
+            'application/json': [Socialtext::Rest::WebHooks, POST_json]
         '*':                    [Socialtext::Rest::WebHooks, bad_method]
 -
     '/data/webhooks/:hook_id':
