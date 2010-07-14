@@ -14,7 +14,7 @@ sub do_work {
 
     my $page = eval { $self->page };
     # this should be done in the builder for ->page, but just in case:
-    unless ($page && $page->exists) {
+    unless ($page && $page->active) {
         $self->permanent_failure(
             "No page $args->{page_id} in workspace $args->{workspace_id}\n"
         );
