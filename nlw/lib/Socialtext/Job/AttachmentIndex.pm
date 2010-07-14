@@ -21,7 +21,18 @@ sub do_work {
         return;
     }
 
-    $indexer->index_attachment( $args->{page_id}, $args->{attach_id} );
+    my $attachment = Socialtext::Attachment->new(
+        hub     => $page->hub,
+        id      => $args->{attach_id},
+        page_id => $page->id,
+    )->load();
+
+    if ($attachment->deleted) {
+        $indexer->delete_attachment( $page->id, $attachment->id );
+    }
+    else {
+        $indexer->index_attachment( $page->id, $attachment );
+    }
 
     $self->completed();
 }
