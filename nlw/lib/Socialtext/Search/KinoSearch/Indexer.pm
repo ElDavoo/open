@@ -244,6 +244,7 @@ sub delete_attachment {
     else {
         $key = $page_uri . ':' . $attachment_id;
     }
+    _debug("Remove attachment: page_id=$page_uri attachment_id=$attachment_id");
     $self->_delete_doc_by_key( $key );
     $self->_finish();
 }
