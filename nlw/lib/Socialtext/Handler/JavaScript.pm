@@ -1,4 +1,5 @@
 package Socialtext::Handler::JavaScript;
+# @COPYRIGHT@
 use Moose;
 use Socialtext::HTTP ':codes';
 use Socialtext::MakeJS;
