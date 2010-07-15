@@ -9,11 +9,6 @@ use Async::Interrupt (); # for handling signals "safer"
 use Coro (); # needed for Socialtext::Async::Syslog
 use Coro::State (); # needed for spin_down_coros
 use Coro::AnyEvent (); # make Coro use AnyEvent/EV for timers/io/etc.
-use IO::AIO (); # for making certain "blocking" calls run in a posix thread.
-
-# set up Socialtext::Log for async logging:
-use Socialtext::Log ();
-use Socialtext::Async::Syslog();
 
 sub spin_down_coros {
     #require Coro::Debug;
