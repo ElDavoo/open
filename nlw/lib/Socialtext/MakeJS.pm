@@ -1,4 +1,5 @@
 package Socialtext::MakeJS;
+# @COPYRIGHT@
 use strict;
 use warnings;
 use Socialtext::System qw(shell_run);
