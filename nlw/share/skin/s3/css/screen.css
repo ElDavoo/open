@@ -1325,6 +1325,7 @@ body#dashBoard div.widget.tan div.widgetBottomRight {
 
 body#dashBoard div.widget.gray div.widgetBottomRight {	
 	background: url(../images/widgetGrayBottomRight.png) no-repeat bottom right;
+        margin-right: 1px;
 }
 
 body#dashBoard div.widget div.widgetBottomRight {
