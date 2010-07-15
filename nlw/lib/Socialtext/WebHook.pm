@@ -8,8 +8,10 @@ use Carp qw/croak/;
 use Socialtext::Workspace;
 use Socialtext::Account;
 use Socialtext::Group;
+use Socialtext::User;
 use Socialtext::Page;
 use Socialtext::JSON qw/decode_json encode_json/;
+use Socialtext::Log qw/st_log/;
 use List::MoreUtils qw/any/;
 use namespace::clean -except => 'meta';
 
@@ -48,7 +50,10 @@ sub _build_group {
     return Socialtext::Group->GetGroup(group_id => $self->group_id);
 }
 
-sub _build_creator   {die 'not implemented yet!'}
+sub _build_creator   {
+    my $self = shift;
+    return Socialtext::User->new(user_id => $self->creator_id);
+}
 
 sub _build_details {
     my $self = shift;
@@ -161,6 +166,7 @@ sub Add_webhooks {
     eval {
         my $hooks = $class->Find( class => $p{class} );
         HOOK: for my $h (@$hooks) {
+            my $hcreator = $h->creator;
             for my $container (qw/account group/) {
                 if (my $h_cont_id = $h->{"${container}_id"}) {
                     my $hook_matches = 0;
@@ -176,6 +182,9 @@ sub Add_webhooks {
                 next HOOK unless $p{workspace_id} == $h_ws_id;
             }
             if ($p{class} =~ m/^signal\./) {
+                next HOOK unless $hcreator->is_business_admin
+                              or $p{signal}->is_visible_to($hcreator);
+
                 if (my $hanno = $h->details->{annotation}) {
                     next HOOK unless ref($hanno) eq 'ARRAY';
                     my $annos = $p{annotations};
@@ -228,6 +237,7 @@ sub Add_webhooks {
         }
     };
     if ($@) {
+        warn $@;
         st_log->info("Error firing webhooks: '$@' " . ref($@));
     }
 }

@@ -35,6 +35,7 @@ sub signal_new {
 
     Socialtext::WebHook->Add_webhooks(
         class => 'signal.create',
+        signal => $signal,
         payload_thunk => sub { 
             my $h = $signal->as_hash;
             $h->{action} = 'create';
@@ -45,7 +46,8 @@ sub signal_new {
         annotations => $signal->annotations,
         tags        => $signal->tags,
         recipient_id => $signal->recipient_id,
-        user_topics  => [ map { $_->user_id } $signal->user_topics ],
+        user_topics =>
+            [ grep {defined} map { $_->user_id } $signal->user_topics ],
     );
 }
 
