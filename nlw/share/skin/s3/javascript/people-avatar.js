@@ -187,14 +187,16 @@ Avatar.prototype = {
             best_full_name: this.popup.find('.fn').text(),
             email: this.popup.find('.email').text()
         });
-        var followLink = this.person.createFollowLink();
-        if (followLink) {
-            $('<div></div>')
-                .addClass('follow')
-                .append(
-                    $('<ul></ul>').append($('<li></li>').append(followLink))
-                )
-                .appendTo(this.contentNode);
+        if (!this.popup.find('.vcard').hasClass('restricted')) {
+            var followLink = this.person.createFollowLink();
+            if (followLink) {
+                $('<div></div>')
+                    .addClass('follow')
+                    .append(
+                        $('<ul></ul>').append($('<li></li>').append(followLink))
+                    )
+                    .appendTo(this.contentNode);
+            }
         }
         
         this.mouseOver();
