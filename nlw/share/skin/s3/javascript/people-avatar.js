@@ -25,7 +25,7 @@ Person.prototype = {
 
     createFollowLink: function() {
         var self = this;
-        if (!this.isSelf()) {
+        if (!this.isSelf() && !this.restricted) {
             var link_text = this.linkText();
             this.node = $('<a href="#"></a>')
                 .addClass('followPersonButton')
@@ -185,18 +185,17 @@ Avatar.prototype = {
         this.person = new Person({
             id: this.id,
             best_full_name: this.popup.find('.fn').text(),
-            email: this.popup.find('.email').text()
+            email: this.popup.find('.email').text(),
+            restricted: this.popup.find('.vcard').hasClass('restricted')
         });
-        if (!this.popup.find('.vcard').hasClass('restricted')) {
-            var followLink = this.person.createFollowLink();
-            if (followLink) {
-                $('<div></div>')
-                    .addClass('follow')
-                    .append(
-                        $('<ul></ul>').append($('<li></li>').append(followLink))
-                    )
-                    .appendTo(this.contentNode);
-            }
+        var followLink = this.person.createFollowLink();
+        if (followLink) {
+            $('<div></div>')
+                .addClass('follow')
+                .append(
+                    $('<ul></ul>').append($('<li></li>').append(followLink))
+                )
+                .appendTo(this.contentNode);
         }
         
         this.mouseOver();
