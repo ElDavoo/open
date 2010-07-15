@@ -11,6 +11,7 @@ use Carp qw/carp croak/;
 use Scalar::Util qw/blessed/;
 use Socialtext::Timer qw/time_scope/;
 use Try::Tiny;
+use Socialtext::TimestampedWarnings;
 use namespace::clean -except => 'meta';
 
 =head1 NAME
@@ -72,6 +73,7 @@ Moose::Exporter->setup_import_methods(
 );
 
 our $IN_WORKER = 0;
+our @AT_FORK;
 
 {
     package Socialtext::Async::Wrapper::Worker;
@@ -83,8 +85,31 @@ our $IN_WORKER = 0;
 
         # prevent recursive worker invocations
         $Socialtext::Async::Wrapper::IN_WORKER = 1;
+        Socialtext::TimestampedWarnings->import;
 
-        # make it reconnect; AE::Worker disconnects it anyway
+        for my $fork_cb (@Socialtext::Async::Wrapper::AT_FORK) {
+            eval { $fork_cb->() };
+        }
+
+#         use Coro::Debug;
+#         Coro::Debug::command('ps w');
+
+#         Coro::killall(); # other threads
+        for my $coro (Coro::State::list()) {
+            unless (
+                $coro == $Coro::current ||
+                $coro->{desc} =~ /^\[/ ||
+                $coro->{_preserve_on_fork}
+            ) {
+#                 warn "killing coro $coro->{desc}\n";
+                $coro->cancel;
+            }
+        }
+
+#         warn "$$ ... AFTER KILLING COROS:\n";
+#         Coro::Debug::command('ps w');
+
+        # make it reconnect
         Socialtext::SQL::invalidate_dbh();
         Socialtext::SQL::disconnect_dbh();
 
@@ -93,15 +118,29 @@ our $IN_WORKER = 0;
         # but make sure it uses the user-cache until we clear it.
         $Socialtext::User::Cache::Enabled = 1;
 
-        # TODO: st_log is disconnected by AnyEvent::Worker right after fork.
+        # st_log is disconnected by AnyEvent::Worker right after fork.
         # Reconnect it here.
-        Socialtext::Log->_renew()->info("async worker started: $0");
+        Sys::Syslog::disconnect;
+        $Socialtext::Log::Instance = Socialtext::Log->_renew();
+
+#         warn "$$ ... JUST BEFORE STARTING WORKER TASKS:\n";
+#         use Coro::Debug;
+#         Coro::Debug::command('ps w');
+
+        # If something's messed up with Coro/Ev/AnyEvent this will fail:
+        my $cv = AE::cv;
+        my $t = AE::timer 0.0005, 0, sub {
+            $cv->send("seems to be working");
+        };
+        my $ok = eval { $cv->recv };
+        $ok ||= 'is broken';
+        Socialtext::Log::st_log()->info("in async worker $$, AnyEvent $ok");
 
         return;
     }
 
     sub DEMOLISH {
-        $Socialtext::Log::Instance->info("async worker stopping: $0");
+        $Socialtext::Log::Instance->info("async worker $$ stopping");
     }
 
     sub before_each {
@@ -114,6 +153,7 @@ our $IN_WORKER = 0;
     sub worker_ping {
         Try::Tiny::try { before_each() };
         Socialtext::SQL::get_dbh();
+        $Socialtext::Log::Instance->debug("async worker is OK");
         return {'PING'=>'PONG'}
     }
 
@@ -226,6 +266,8 @@ sub worker_make_immutable {
 
 our $ae_worker;
 sub _setup_ae_worker {
+    die 'IO::AIO shouldnt be loaded' if $INC{'IO/AIO.pm'};
+    Socialtext::Log::st_log()->info("async worker starting...");
 
     my %parent_args = (
         on_error => sub {
@@ -240,7 +282,13 @@ sub _setup_ae_worker {
         class => 'Socialtext::Async::Wrapper::Worker',
     );
 
-    $ae_worker = AnyEvent::Worker->new(\%child_args, %parent_args);
+    my $old_desc = $Coro::current->{desc};
+    my $coro = async {
+        $Coro::current->{desc} = "AnyEvent::Worker";
+        $ae_worker = AnyEvent::Worker->new(\%child_args, %parent_args);
+    };
+    $coro->cede_to;
+    $coro->join;
 }
 
 =item call_orig_in_worker name => $class[, @params]
