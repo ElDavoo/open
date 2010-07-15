@@ -437,3 +437,36 @@ sub modified {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::MakeJS - Rebuild JavaScript as needed
+
+=head1 SYNOPSIS
+
+  use Socialtext::MakeJS;
+
+  # Rebuild/clean *all* of the JS
+  Socialtext::MakeJS->BuildAll();
+  Socialtext::MakeJS->CleanAll();
+
+  # Rebuild/clean the JS in just one of the JS dirs
+  Socialtext::MakeJS->BuildDir($dir);
+  Socialtext::MakeJS->CleanDir($dir);
+
+  # Check if a given JS file exists
+  Exists($dir, $js_file);
+
+  # Rebuild a single JS file
+  Build($dir, $js_file);
+
+=head1 DESCRIPTION
+
+Rebuilds the JavaScript files as needed, including minified and gzipped
+versions.
+
+B<Way> faster than doing it via F<Makefile>.
+
+=cut

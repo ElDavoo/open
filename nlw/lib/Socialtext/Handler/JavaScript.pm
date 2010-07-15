@@ -49,3 +49,19 @@ sub GET {
 no Moose;
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Handler::JavaScript - rebuilds JS as needed in a dev-env
+
+=head1 SYNOPSIS
+
+  # its mapped in automatically in "uri_map.yaml"
+
+=head1 DESCRIPTION
+
+Rebuilds JS as necessary in your dev-env.
+
+=cut
