@@ -86,3 +86,9 @@ body#contentPage * div#contentColumns div#contentRight {
     padding-right: 0px;
 }
 
+div.widgetContent div#profile,
+div.widgetContent div.profile {
+    width: 90%;
+}
+
+
