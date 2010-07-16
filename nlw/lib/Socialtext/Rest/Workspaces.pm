@@ -45,6 +45,7 @@ sub _entities_for_query {
     my $query = $rest->query->param('q');
     my $minimal = $rest->query->param('minimal');
     my $set_filter = $rest->query->param('permission_set');
+    my $name_filter = $rest->query->param('name_filter');
     my $user  = $rest->user();
 
     if ($set_filter) {
@@ -57,9 +58,25 @@ sub _entities_for_query {
     my $fetch_all = defined $query && $query eq 'all'
         && $user->is_business_admin;
 
-    my $workspaces = $fetch_all
-        ? Socialtext::Workspace->All()
-        : $rest->user->workspaces( minimal => $minimal );
+    my $workspaces;
+    if ($fetch_all) {
+        if ($name_filter) {
+            my $offset = $rest->query->param('offset');
+            my $limit = ($rest->query->param('limit') || $rest->query->param('count'));
+            $workspaces = Socialtext::Workspace->ByName(
+                case_insensitive => 1,
+                name => $name_filter,
+                ((defined $limit) ? (limit => $limit) : ()),
+                ((defined $offset) ? (offset => $offset) : ()),
+            )
+        }
+        else {
+            $workspaces = Socialtext::Workspace->All();
+        }
+    }
+    else {
+        $workspaces = $rest->user->workspaces( minimal => $minimal );
+    }
 
     if ($set_filter && !$minimal) { # can't do this for minimal
         $workspaces = Socialtext::MultiCursorFilter->new(

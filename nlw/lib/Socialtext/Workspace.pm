@@ -1650,8 +1650,14 @@ SELECT *
 },
         );
 
-        # Turn our substring into a SQL pattern.
-        $p{name} = '%' . $p{name} . '%';
+        if ($p{name} =~ /^\\b(.+)/) {
+            # Match from the beginning.
+            $p{name} = "$1%";
+        }
+        else {
+            # Turn our substring into a SQL pattern.
+            $p{name} = '%' . $p{name} . '%';
+        }
 
         return $class->_WorkspaceCursor(
             $SQL{ $p{order_by} },
@@ -2682,6 +2688,9 @@ This accepts the same parameters as C<< Socialtext::Workspace->All()
 >>, but requires an additional "name" parameter. Any workspaces
 containing the specified string anywhere in their name will be
 returned.
+
+If the "name" parameters begin with the C<\b>, then it's matched from
+the beginning instead.
 
 =head2 Socialtext::Workspace->Count()
 
