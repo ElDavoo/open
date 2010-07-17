@@ -61,7 +61,7 @@ sub to_absolute_html {
 
 sub to_html {
     my $self = shift;
-    my $content = @_ ? shift : $self->content;
+    my $content = @_ ? shift : $self->content_or_default;
     my $page = shift;
     $content = '' unless defined $content;
 
