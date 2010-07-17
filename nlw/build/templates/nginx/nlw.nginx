@@ -7,6 +7,7 @@
 
 [%- UNLESS config.is_dev %]
     error_page 502 /static/html/502.html;
+    error_page 504 /static/html/502.html;
 [%- END %]
 
 [%- IF config.is_appliance || config.is_dev %]
