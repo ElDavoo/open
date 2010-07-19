@@ -801,6 +801,7 @@ sub add_tags {
         }
         $self->hub->pluggable->hook( 'nlw.page.tags_added',
             $self, tags_added => [sort keys %tags_added],
+            workspace => $self->hub->current_workspace,
         );
     }
 }
@@ -822,6 +823,7 @@ sub delete_tag {
         $self->store( user => $self->hub->current_user );
         $self->hub->pluggable->hook( 'nlw.page.tags_deleted',
             $self, tags_deleted => [$tag],
+            workspace => $self->hub->current_workspace,
         );
     }
 }
