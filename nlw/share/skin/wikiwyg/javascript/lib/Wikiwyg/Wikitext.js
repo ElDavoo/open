@@ -1095,7 +1095,7 @@ proto.contain_widget_image = function(element) {
         var e = element.childNodes[ii]
         if ( e.nodeType == 1 ) {
             if ( e.nodeName == 'IMG' ) {
-                if ( e.getAttribute("widget") )
+                if ( /^st-widget-/.test(e.getAttribute('alt')) )
                     return true;
             }
         }
@@ -1855,8 +1855,9 @@ proto.format_p = function(elem) {
 }
 
 proto.format_img = function(elem) {
-    var widget = elem.getAttribute('widget');
-    if (widget) {
+    var widget = elem.getAttribute('alt');
+    if (/^st-widget-/.test(widget)) {
+        widget = widget.replace(/^st-widget-/, '');
         if (Wikiwyg.is_ie) widget = Wikiwyg.htmlUnescape( widget );
         if (widget.match(/^\.\w+\n/))
             elem.top_level_block = true;

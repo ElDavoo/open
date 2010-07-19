@@ -271,7 +271,7 @@ sub html {
     my $widget = $self->wikitext;
 
     return
-        qq{<img alt="$alt_text" src="$link" widget="$widget" />};
+        qq{<img alt="$alt_text" src="$link" alt="st-widget-$widget" />};
 }
 
 ################################################################################
