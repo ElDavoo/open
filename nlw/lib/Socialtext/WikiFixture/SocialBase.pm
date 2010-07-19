@@ -28,7 +28,6 @@ use Test::Socialtext;
 use Time::HiRes qw/gettimeofday tv_interval time/;
 use URI::Escape qw(uri_unescape uri_escape);
 use Data::Dumper;
-use MIME::Types;
 use List::MoreUtils qw(any);
 use Cwd;
 use HTTP::Request::Common;

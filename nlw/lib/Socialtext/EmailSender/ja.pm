@@ -17,7 +17,6 @@ use Encode qw(decode_utf8);
 use File::Basename ();
 use File::Slurp    ();
 use List::Util qw(first);
-use MIME::Types;
 use Readonly;
 use Socialtext::Exceptions qw( param_error );
 use Socialtext::Validate
