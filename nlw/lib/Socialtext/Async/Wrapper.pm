@@ -110,7 +110,6 @@ our @AT_FORK;
 #         Coro::Debug::command('ps w');
 
         # make it reconnect
-        Socialtext::SQL::invalidate_dbh();
         Socialtext::SQL::disconnect_dbh();
 
         # clear caches.
