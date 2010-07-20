@@ -2670,11 +2670,12 @@ proto.insert_image = function (src, widget, widget_element, cb) {
         '" alt="st-widget-' + widget.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;") + '" />';
     if ( widget_element ) {
         if ( widget_element.parentNode ) {
-            var div = this.get_edit_document().createElement("div");
-            div.innerHTML = html;
-
-            var new_widget_element = div.firstChild;
-            widget_element.parentNode.replaceChild(new_widget_element, widget_element);
+            if (widget_element.getAttribute('alt') == 'st-widget-' + widget) {
+                // Do nothing - The widget was not modified.
+            }
+            else {
+                $(widget_element).replaceWith(html);
+            }
         }
         else {
             this.insert_html(html);
