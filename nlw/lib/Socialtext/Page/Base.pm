@@ -75,9 +75,11 @@ sub to_html {
         my $a_str = $self->_questions_to_answers($q_str);
         my $cache_file = $self->_answer_file($a_str);
         my $cache_file_exists = $cache_file && -e $cache_file;
-        my $cached_at = (stat($cache_file))[9];
-        my $users_changed = $self->_users_modified_since($q_str, $cached_at)
-            if $cache_file_exists;
+        my $users_changed = 0;
+        if ($cache_file_exists) {
+            my $cached_at = (stat($cache_file))[9];
+            $users_changed = $self->_users_modified_since($q_str, $cached_at)
+        }
         if ($cache_file_exists and !$users_changed) {
             my $t = time_scope('wikitext_HIT');
             $self->{__cache_hit}++;
