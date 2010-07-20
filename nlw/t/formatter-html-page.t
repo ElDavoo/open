@@ -11,7 +11,8 @@ use Socialtext::Encode;
 my $hub = new_hub('admin');
 
 {
-    my $page = $hub->pages->new_from_name('Formatter Test for html-page wafl');
+    my $name = "Formatter Test for html-page wafl";
+    my $page = $hub->pages->new_from_name($name);
 
     my $attachment =
         $hub->attachments->new_attachment( page_id => $page->id,
@@ -20,8 +21,9 @@ my $hub = new_hub('admin');
     $attachment->save('t/attachments/html-page-wafl.html');
     $attachment->store( user => $hub->current_user );
 
-    $page->metadata->Subject('Formatter Test for html-page wafl');
+    $page->metadata->Subject($name);
     $page->metadata->update( user => $hub->current_user );
+    # Put some dummy content in. run_tests() will replace it later.
     $page->content('foo');
     $page->store( user => $hub->current_user );
 
@@ -60,12 +62,14 @@ my $hub = new_hub('admin');
 sub run_tests {
     my ($page, $tests) = @_;
 
-    my $text = shift @$tests;
-    $page->content($text);
     # XXX without this the existence of the attachment to the page
     # is not correct, and the test fails, so there appears to be
     # an issue with a hidden dependency on current
     $page->hub->pages->current($page);
+
+    my $text = shift @$tests;
+    $page->content($text);
+    $page->store(user => $hub->current_user);
 
     my $html = $page->to_html;
 
