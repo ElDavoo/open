@@ -11,6 +11,7 @@ use URI;
 use URI::QueryParam;
 use Socialtext::l10n qw( loc );
 use Encode;
+use Socialtext::Log qw(st_log);
 use Socialtext::String ();
 use Socialtext::Timer qw/time_scope/;
 use utf8;
@@ -285,6 +286,7 @@ sub weblog_display {
         my $p = $self->preferences->weblog_depth;
         my $largest_depth = $p->choices->[-2];
         if ($weblog_limit > $largest_depth) {
+            st_log->info("too many weblog entries requested ($weblog_limit); limiting to $largest_depth entries");
             $weblog_limit = $largest_depth;
         }
     }
