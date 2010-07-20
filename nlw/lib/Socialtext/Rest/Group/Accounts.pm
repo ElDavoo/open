@@ -6,6 +6,8 @@ use Socialtext::Permission qw/ST_READ_PERM/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
+with 'Socialtext::Rest::Pageable';
+with 'Socialtext::Rest::ForGroup';
 
 # Anybody can see these, since they are just the list of workspaces the user
 # has 'selected'.
@@ -13,28 +15,74 @@ sub permission { +{} }
 
 sub collection_name { 'Group accounts' }
 
-sub _entities_for_query {
+sub if_authorized {
     my $self = shift;
-    my $group_id = $self->group_id;
-    my $user = $self->rest->user();
+    my $method = shift;
+    my $call = shift;
+    my $user = $self->rest->user;
 
-    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
-    die Socialtext::Exception::NotFound->new() unless $group;
+    return $self->not_authorized if $user->is_guest;
 
-    my $can_read = $group->user_can(
-        user => $user,
-        permission => ST_READ_PERM
-    );
-    die Socialtext::Exception::NotFound->new()
-        unless $user->is_business_admin
-            or $group->creator->user_id == $user->user_id
-            or $can_read;
+    my $group = $self->group;
+    return $self->no_resource('group') unless $self->group;
 
-    return $group->accounts->all();
+    # we should _never_ return here, but just in case.
+    return $self->bad_method() unless $method eq 'GET';
+
+    my $can_do = 
+        $self->user_is_related ||
+        $self->group->user_can(user => $user, permission => ST_READ_PERM) ||
+        $self->user_can_admin;
+
+    return $self->not_authorized() unless $can_do;
+
+    return $self->$call(@_);
+}
+
+has accounts => (
+    is => 'ro', isa => 'ArrayRef', lazy_build => 1
+);
+
+sub _build_accounts {
+    my $self = shift;
+    my @accounts = $self->group->accounts->all;
+    return \@accounts;
+}
+
+sub _get_entities {
+    my $self = shift;
+    my $order = $self->rest->query->param('order') || 'account_id';
+    my $accounts = $self->accounts;
+    my @sorted;
+    if ($self->reverse) {
+        @sorted = $order eq 'account_id'
+            ? sort { $b->{$order} <=> $a->{$order} } @$accounts
+            : sort { $b->{$order} cmp $a->{$order} } @$accounts;
+    }
+    else {
+        @sorted = $order eq 'account_id'
+            ? sort { $a->{$order} <=> $b->{$order} } @$accounts
+            : sort { $a->{$order} cmp $b->{$order} } @$accounts;
+    }
+    return [
+        $self->pageable
+            ? splice(@sorted, $self->start_index || 0, $self->items_per_page)
+            : @sorted
+    ];
+}
+
+sub _get_total_results {
+    my $self = shift;
+    my $accounts = $self->accounts;
+    return scalar @$accounts;
 }
 
 sub _entity_hash { 
-    return $_[1]->to_hash;
+    my ($self, $account) = @_;
+    my $hash = $account->to_hash;
+    $hash->{workspace_count} = $account->workspace_count;
+    $hash->{user_count} = $account->user_count;
+    return $hash;
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

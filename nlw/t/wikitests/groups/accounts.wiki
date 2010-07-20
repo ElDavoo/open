@@ -43,6 +43,17 @@ Tests for [Story: Groups ReST API]
 | json-array-size      | 2                                   |               |
 | body-like            | "account_id":"%%base_acct_id%%"     |               |
 | body-like            | "account_id":"%%creator_acct_id%%"  |               |
+# Test the pageableness of /data/groups/:group_id/accounts
+
+| GET-json       | /data/groups/%%group1_id%%/accounts?startIndex=0 |                     |
+| code-is        | 200                                              |                     |
+| json-parse     |                                                  |                     |
+| json-path-is   | $.startIndex                                     | 0                   |
+| json-path-is   | $.itemsPerPage                                   | 25                  |
+| json-path-is   | $.totalResults                                   | 2                   |
+| json-path-size | $.entry                                          | 2                   |
+| json-path-is   | $.entry[0].account_id                            | %%base_acct_id%%    |
+| json-path-is   | $.entry[1].account_id                            | %%creator_acct_id%% |
 
 ## Invalid group -> 404
 
