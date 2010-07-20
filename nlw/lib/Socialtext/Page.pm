@@ -1149,7 +1149,7 @@ sub _cache_using_questions {
 
     my @short_q;
     my @answers;
-    
+
     # Do one pass looking for expiry Q's, as they are cheap to early-out
     for my $q (@$questions) {
         if (my $t = $q->{expires_at}) {
@@ -1197,7 +1197,13 @@ sub _cache_using_questions {
     Socialtext::File::set_contents_utf8_atomic($q_file, \$q_str) if $q_file;
 
     $html_ref ||= \$self->to_html;
-    my $answer_str = join '-', map { $_ . '_' . shift(@answers) } @short_q;
+
+    # Which link dictionary is always the first question
+    my $ld = $self->hub->viewer->link_dictionary;
+    $ld = ref($ld);
+    $ld =~ s/.+:://; # only use the last part of the package name
+    
+    my $answer_str = join '-', $ld, map { $_ . '_' . shift(@answers) } @short_q;
 
     my $cache_file = $self->_answer_file($answer_str);
     if ($cache_file) {

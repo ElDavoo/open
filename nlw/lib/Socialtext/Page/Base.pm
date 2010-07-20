@@ -132,6 +132,12 @@ sub _questions_to_answers {
     my $authz = $self->hub->authz;
 
     my @answers;
+
+    # Which link dictionary is always the first question
+    my $ld = ref($self->hub->viewer->link_dictionary);
+    $ld =~ s/.+:://;
+    push @answers, $ld;
+
     for my $q (split '-', $q_str) {
         if ($q =~ m/^w(\d+)$/) {
             my $ws = Socialtext::Workspace->new(workspace_id => $1);
