@@ -277,6 +277,10 @@ sub _question_file {
 
 sub _answer_file {
     my $self = shift;
+
+    # {bz: 4129}: Don't cache temporary pages during new_page creation.
+    $self->exists or return;
+
     my $answer_str = shift || '';
     my $base = $self->_page_cache_basename or return;
     my $filename = "$base-$answer_str";
