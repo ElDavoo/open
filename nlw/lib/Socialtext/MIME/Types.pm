@@ -1,5 +1,5 @@
 package Socialtext::MIME::Types;
-
+# @COPYRIGHT@
 use strict;
 use warnings;
 use MIME::Types;
