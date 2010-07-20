@@ -404,12 +404,12 @@ sub get_entries {
     my $attachments = $self->hub->attachments;
     my @entries;
 
-    my @page = $self->hub->category->get_pages_numeric_range(
+    my @pages = $self->hub->category->get_pages_numeric_range(
         $weblog_id, $start, $start + $limit,
         ( $self->hub->current_workspace->sort_weblogs_by_create ? 'create' : 'update' ),
     );
 
-    for my $page (@page) {
+    for my $page (@pages) {
         my $entry = $self->format_page_for_entry(
             no_post => $no_post,
             page => $page,
