@@ -1010,6 +1010,7 @@ sub _cache_html {
     my %interwiki;
     my %allows_html;
     my %users;
+    my %attachments;
     my $expires_at;
 
     {
@@ -1034,9 +1035,14 @@ sub _cache_html {
                 }
 
                 my $unknown = 0;
-                if ($wafl_class =~ m/(?:InterWikiLink|Image|File|HtmlPage|Toc|CSS)$/) {
+                if ($wafl_class =~ m/(?:Image|File)$/) {
                     my ($ws_name) = $wafl->parse_wafl_reference;
-                    $interwiki{$ws_name}++;
+                    $interwiki{$ws_name}++ if $ws_name;
+                    $attachments{$wafl->arguments}++ if $wafl->arguments =~ m{^[^/]+$};
+                }
+                elsif ($wafl_class =~ m/(?:InterWikiLink|HtmlPage|Toc|CSS)$/) {
+                    my ($ws_name) = $wafl->parse_wafl_reference;
+                    $interwiki{$ws_name}++ if $ws_name;
                 }
                 elsif ($wafl_class =~ m/(?:TagLink|CategoryLink|WeblogLink)$/) {
                     my ($ws_name) = $wafl->parse_wafl_category;
@@ -1129,6 +1135,9 @@ sub _cache_html {
     for my $user_id (keys %users) {
         push @cache_questions, { user_id => $user_id };
     }
+    for my $attachment (keys %attachments) {
+        push @cache_questions, { attachment => $attachment };
+    }
     if (defined $expires_at) {
         $expires_at += time();
         push @cache_questions, { expires_at => $expires_at };
@@ -1158,6 +1167,8 @@ sub _cache_using_questions {
             push @answers, 1;
         }
     }
+
+    my $page_attachments;
     for my $q (@$questions) {
         my $ws;
         if ($ws = $q->{workspace}) {
@@ -1184,6 +1195,21 @@ sub _cache_using_questions {
             $d =~ s/-/m/; # - is used as a field separator
             push @short_q, 'd' . $d;
             push @answers, 1;
+        }
+        elsif (my $a = $q->{attachment}) {
+            $a =~ s|-|/|; # - is used as a field separator
+            push @short_q, 'a' . $a;
+
+            my $attachment_exists = 0;
+            $page_attachments ||= [ $self->attachments ];
+            for (@$page_attachments) {
+                if ($_->filename eq lc($a)) {
+                    $attachment_exists = $_->exists || 0;
+                    last;
+                }
+            }
+
+            push @answers, $attachment_exists;
         }
         else {
             die "Unknown question: " . Dumper $q;

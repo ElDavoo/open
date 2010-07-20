@@ -18,9 +18,10 @@ my $FILE  = 'rock#it.txt';
 my $IMAGE = 'sit#start.png';
 
 my $hub = new_hub('empty');
+my $page_id = "formater_file_test_$$";
 
 my $page_one = Socialtext::Page->new( hub => $hub )->create(
-    title   => 'aa page yo',
+    title   => $page_id,
     content => <<'EOF',
 
 Shoots brah, I'm going to attach me something here
@@ -38,14 +39,15 @@ attach($FILE);
 attach($IMAGE);
 
 my $html_one
-    = $hub->pages->new_from_name('aa page yo')->to_html_or_default();
+    = $hub->pages->new_from_name($page_id)->to_html_or_default();
 
 like $html_one,
-     qr{/data/workspaces/empty/attachments/aa_page_yo:[\d-]+/original/rock%23it\.txt"},
+     qr{/data/workspaces/empty/attachments/$page_id:[\d-]+/original/rock%23it\.txt"},
      'url for rock#it.txt is escaped';
 like $html_one,
-     qr{/data/workspaces/empty/attachments/aa_page_yo:[\d-]+/scaled/sit%23start\.png"},
+     qr{/data/workspaces/empty/attachments/$page_id:[\d-]+/scaled/sit%23start\.png"},
      'url for sit#start.png is escaped';
+
 exit;
 
 

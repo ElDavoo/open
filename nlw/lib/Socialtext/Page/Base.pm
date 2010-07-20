@@ -140,6 +140,7 @@ sub _questions_to_answers {
     $ld =~ s/.+:://;
     push @answers, $ld;
 
+    my $page_attachments;
     for my $q (split '-', $q_str) {
         if ($q =~ m/^w(\d+)$/) {
             my $ws = Socialtext::Workspace->new(workspace_id => $1);
@@ -176,6 +177,21 @@ sub _questions_to_answers {
             $my_prefs =~ s/-/m/; # - is used as a field separator
             my $ok = $pref_str eq $my_prefs;
             push @answers, "${q}_$ok";
+        }
+        elsif ($q =~ m/^a(.+)$/) {
+            my $a = $1;
+            $a =~ s!/!-!;
+
+            my $attachment_exists = 0;
+            $page_attachments ||= [ $self->attachments ];
+            for (@$page_attachments) {
+                if ($_->filename eq lc($a)) {
+                    $attachment_exists = $_->exists || 0;
+                    last;
+                }
+            }
+
+            push @answers, $attachment_exists;
         }
         elsif ($q eq 'null') {
             next;
