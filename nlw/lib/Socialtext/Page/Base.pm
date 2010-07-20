@@ -18,6 +18,7 @@ use Socialtext::File;
 use Socialtext::Log qw/st_log/;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_singlevalue/;
+use Digest::SHA1 'sha1_hex';
 use Carp ();
 use Carp qw/cluck/;
 
@@ -307,7 +308,7 @@ sub _answer_file {
 
     my $answer_str = shift || '';
     my $base = $self->_page_cache_basename or return;
-    my $filename = "$base-$answer_str";
+    my $filename = "$base-".sha1_hex($answer_str);
     (my $basename = $filename) =~ s#.+/##;
     # XXX If too long we could return a hash
     return undef if length($basename) > 254;
