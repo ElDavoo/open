@@ -140,7 +140,8 @@ sub PUT_json {
             driver_group_name => $data->{name},
             description => $data->{description} || "",
             permission_set => $data->{permission_set},
-            primary_account_id => $data->{account_id},
+            $data->{account_id} ?
+                (primary_account_id => $data->{account_id}) : (),
         });
     }
     catch {
