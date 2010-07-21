@@ -493,6 +493,9 @@
             'application/json': [Socialtext::Rest::AccountGroups, POST_json]
         '*':                    [Socialtext::Rest::AccountGroups, bad_method]
 -
+    '/data/accounts/:acct/groups/:group_id':
+        'DELETE':               [Socialtext::Rest::AccountGroups, DELETE]
+-
     '/data/accounts/:acct/logo':
         'GET':
             '*/*':       [Socialtext::Rest::AccountLogo, bad_type]

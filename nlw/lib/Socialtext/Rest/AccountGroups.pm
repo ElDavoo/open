@@ -11,7 +11,7 @@ extends 'Socialtext::Rest::Collection';
 has 'account' => (is => 'ro', isa => 'Maybe[Object]', lazy_build => 1);
 
 sub permission { +{ GET => undef, POST => undef } }
-sub allowed_methods { 'POST', 'GET' }
+sub allowed_methods { 'POST', 'GET', 'DELETE' }
 sub collection_name { "Account Groups" }
 
 sub _entities_for_query {
@@ -128,6 +128,44 @@ sub POST_json {
     );
     return '';
 }
+
+sub DELETE {
+    my ($self, $rest) = @_;
+    return $self->if_authorized('DELETE', sub {
+        $self->_DELETE($rest);
+    });
+}
+
+sub _DELETE {
+    my ( $self, $rest ) = @_;
+
+    unless ( $self->account ) {
+        $rest->header( -status => HTTP_404_Not_Found );
+        return "Could not find that account.";
+    }
+
+    my $group_id = $self->group_id;
+    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+    if ($@ or !defined $group) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "Could not find group $group_id";
+    }
+
+    if ($group->primary_account->account_id == $self->account->account_id) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "Cannot remove a group from their primary account.";
+    }
+
+    eval { $self->account->remove_group(group => $group) };
+    if ( $@ ) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "Could not remove group from the account: $@";
+    }
+
+    $rest->header( -status => HTTP_204_No_Content );
+    return '';
+}
+
 
 __PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 1;

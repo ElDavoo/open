@@ -116,3 +116,18 @@ Tests for [Story: Groups ReST API]
 | code-is      | 200                        |                  |
 | json-parse   |                            |                  |
 | json-path-is | $.primary_account_id       | %%base_acct_id%% |
+
+# Now remove the group from the account, we should see the account
+
+| http-user-pass | %%creator%%                                          | password |
+| DELETE         | /data/accounts/%%creator_acct%%/groups/%%group1_id%% |          |
+| code-is        | 204                                                  |          |
+
+| http-user-pass  | %%creator%%                         | password |
+| GET             | /data/groups/%%group1_id%%/accounts |          |
+| code-is         | 200                                 |          |
+| header-like     | Cache-Control                       | private  |
+| json-parse      |                                     |          |
+| json-array-size | 1                                   |          |
+| body-like       | "account_id":"%%base_acct_id%%"     |          |
+| body-unlike     | "account_id":"%%creator_acct_id%%"  |          |
