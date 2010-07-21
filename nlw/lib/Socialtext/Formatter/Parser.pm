@@ -181,7 +181,13 @@ sub cache_dir {
 
     # XXX Do we need to check available disk space?
     # XXX Do we use Cache::Cache?
-    my $cache_dir = Socialtext::AppConfig->formatter_cache_dir . "/$ws_id";
+
+    # {bz: 4136}: HTTPS caches are stored in its own cache to preserve rendered https:// links.
+    require Socialtext::URI;
+    my %uri = Socialtext::URI::_scheme();
+    my $suffix = ($uri{scheme} eq 'http') ? '' : ".$uri{scheme}";
+
+    my $cache_dir = Socialtext::AppConfig->formatter_cache_dir . "/$ws_id$suffix";
     File::Path::mkpath($cache_dir) unless -d $cache_dir;
     return $cache_dir;
 }
