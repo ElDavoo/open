@@ -429,8 +429,9 @@ sub get_pages_numeric_range {
     my $start              = shift || 0;
     my $finish             = shift;
     my $sort_and_get_pages = shift;
+    my $limit              = $finish - $start;
     my @pages              = $self->get_pages_for_category(
-        $category, $finish, $sort_and_get_pages, $start
+        $category, $limit, $sort_and_get_pages, $start
     );
     return @pages;
 }
