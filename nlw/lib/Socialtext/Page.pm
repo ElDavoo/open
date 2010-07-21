@@ -862,32 +862,6 @@ sub _perform_store_actions {
     $self->_cache_html();
 }
 
-sub _log_page_action {
-    my $self = shift;
-
-    my $action = $self->hub->action || '';
-    my $clobber = eval { $self->hub->rest->query->param('clobber') };
-
-    return if $clobber
-        || $action eq 'submit_comment'
-        || $action eq 'attachments_upload';
-
-    if ($action eq 'edit_content' || $action eq 'rename_page') {
-         return unless ($self->restored || $self->revision_count == 1);
-    }
-
-    my $log_action = ($action eq 'delete_page') ? 'DELETE' : 'CREATE';
-    my $ws         = $self->hub->current_workspace;
-    my $user       = $self->hub->current_user;
-
-    st_log()->info("$log_action,PAGE,"
-                   . 'workspace:' . $ws->name . '(' . $ws->workspace_id . '),'
-                   . 'page:' . $self->id . ','
-                   . 'user:' . $user->username . '(' . $user->user_id . '),'
-                   . '[NA]'
-    );
-}
-
 sub update_db_metadata {
     my $self = shift;
     sql_txn { $self->_do_update_db_metadata() };
@@ -1458,7 +1432,7 @@ sub _to_plain_text {
     }
 
     my $plain_text = '';
-    _chunk_it_up( \$content, sub {
+    Socialtext::Page::Base::_chunk_it_up( \$content, sub {
         my $chunk_ref = shift;
         $plain_text 
             .= $self->_to_socialtext_wikitext_parser_plain_text($$chunk_ref);
