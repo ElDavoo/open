@@ -15,6 +15,7 @@ use warnings;
 use Socialtext::Formatter::AbsoluteLinkDictionary;
 use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::File;
+use Socialtext::l10n qw(loc);
 use Socialtext::Log qw/st_log/;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_singlevalue/;
