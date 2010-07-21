@@ -112,8 +112,8 @@ Tests for [Story: Groups ReST API]
 | json-parse     |                            |                     |
 | json-path-is   | $.primary_account_id       | %%creator_acct_id%% |
 
-| PUT-json | /data/groups/%%group1_id%% | {"primary_account_id":"%%base_acct_id%%","name":"%%base_acct%%","permission_set":"private"} |
-| code-is  | 202                        |                                                                                             |
+| PUT-json | /data/groups/%%group1_id%% | {"account_id":"%%base_acct_id%%","name":"%%base_acct%%","permission_set":"private"} |
+| code-is  | 202                        |                                                                                     |
 
 | GET-json     | /data/groups/%%group1_id%% |                  |
 | code-is      | 200                        |                  |
