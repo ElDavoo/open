@@ -347,9 +347,6 @@ sub _add_signal_doc {
     }
 
     for my $attachment (@{ $signal->attachments }) {
-        # {bz: 4125}: Don't index binary attachments in Signal Search results.
-        next if -B $attachment->disk_filename;
-
         $self->_add_signal_attachment_doc($signal, $attachment);
     }
 
