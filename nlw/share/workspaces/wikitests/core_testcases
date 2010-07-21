@@ -91,6 +91,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: Signal From Profile]
 * [Test Case: Profile Activity Widget]
 * [Test Case: People Dashboard Plugins]
+* [Test Case: Hidden Email Address for Public Wiki]
 * [Edit Contention Testcases]
 * [Mobile Testcases]
 
