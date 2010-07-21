@@ -130,6 +130,21 @@ $.extend(Socialtext.Group.prototype, {
         this.runAsynch(jobs, callback);
     },
 
+    removeFromAccounts: function(accounts, callback) {
+        var self = this;
+        var jobs = [];
+        if (!accounts.length) return this._call(callback);
+        $.each(accounts, function(i, info) {
+            jobs.push(function(cb) {
+                var account = new Socialtext.Account({
+                    account_name: info.name
+                });
+                account.removeGroup(self, cb);
+            });
+        });
+        this.runAsynch(jobs, callback);
+    },
+
     removeMembers: function(trash, callback) {
         if (!trash.length) return this._call(callback);
         this.postItems(this.url('/trash'), trash, callback);

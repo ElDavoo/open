@@ -41,6 +41,17 @@ $.extend(Socialtext.Account.prototype, {
         });
     },
 
+    removeGroup: function(group, callback) {
+        var self = this;
+        if (!group.group_id) throw new Error(loc("group_id is required"));
+        $.ajax({
+            url: this.url('/groups/' + group.group_id),
+            type: 'delete',
+            success: this.successCallback(callback),
+            error: this.errorCallback(callback)
+        });
+    },
+
     updateSignalsPrefs: function(prefs, callback) {
         var self = this;
         self.updatePluginPrefs('signals', prefs, callback);
