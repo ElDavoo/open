@@ -20,6 +20,9 @@ for my $target (@targets) {
     if ($target eq 'all') {
         Socialtext::MakeJS->BuildAll;
     }
+    elsif ($target eq 'cleanall') {
+        Socialtext::MakeJS->CleanAll;;
+    }
     elsif ($target eq 'clean') {
         Socialtext::MakeJS->CleanDir($dir);
     }
