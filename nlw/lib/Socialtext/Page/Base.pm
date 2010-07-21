@@ -18,6 +18,7 @@ use Socialtext::File;
 use Socialtext::Log qw/st_log/;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_singlevalue/;
+use Socialtext::l10n qw(loc);
 use Digest::SHA1 'sha1_hex';
 use Carp ();
 
