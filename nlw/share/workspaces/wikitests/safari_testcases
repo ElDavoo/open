@@ -86,9 +86,26 @@ NOT READY YET - Test Case: Link Interface
 Skipping - Test Case: Include Page
 Skipping - Test Case: Create Content
 Skipping - Test Case: Sticky Search Preferences
-AT - People Dashobard navigation
+Skipping - People Dashobard navigation
+Skipping - Test Case: Invite People to your network (is there a flashmob bug in there?)
 
+* [Test Case: Follow]
+* [Test Case: Servername redirect to default ws]
+* [Test Case: Page Locking]
 * [Test Case: Edit Summaries]
+* [Test Case: What's New Pagination]
+* [Test Case: User Settings no mojibake]
+
+Skipping - Test Case: Created By Sorting
+Skipping - Test Case: Join - Appears to be a multi-window problem
+Skilling - Test Case: Weblog naming with Latin-1 character
+
+* [Test Case: Signal From Profile]
+* [Test Case: Profile Activity Widget]
+* [Test Case: People Dashboard Plugins]
+* [Edit Contention Testcases]
+* [Test Case: Miki]
+* [Test Case: Miki Authentication]
 
 * [Test Case: Email]
 * [Test Case: Email Attachment]
@@ -111,19 +128,12 @@ Widgets testcases
 
 NOTE: Safari Widgets Testcases may now be identical to Widgets Testcases, 2009-09-15
 
+* [User Groups UI Testcases]
 * [Test Case: Signals Activities Interaction]
 * [Test Case: Signals Search]
 * [Test Case: Signals Search Pagination]
 * [Safari Widgets Testcases]
 * [Test Case: Gadgets Galore]
-
-Rich Text testcases
-
-* [Test Case: Edit This Page]
-* [Test Case: Insert Menu]
-* [Test Case: Strings]
-* [Test Case: Nasty Double Dashes]
-* [Test Case: Single Dash]
 
 Non-Safari cases
 Test Case: Table Info (Keypress doesn't do what you'd expect in Safari. Sorry.)
