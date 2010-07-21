@@ -13,6 +13,11 @@ Tests for [Story: Groups ReST API]
 | set         | creator     | c%%start_time%%@ken.socialtext.net |                  |
 | create-user | %%creator%% | password                           | %%creator_acct%% |
 
+# Create an administrative user too
+| set                | admin     | a%%start_time%%@ken.socialtext.net |                  |
+| create-user        | %%admin%% | password                           | %%creator_acct%% |
+| set-business-admin | %%admin%% | 1                                  |                  |
+
 | set          | group1_name     | group%%start_time%% |             |
 | create-group | %%group1_name%% | %%creator_acct%%         | %%creator%% |
 | set          | group1_id       | %%group_id%%        |             |
@@ -43,6 +48,7 @@ Tests for [Story: Groups ReST API]
 | json-array-size      | 2                                   |               |
 | body-like            | "account_id":"%%base_acct_id%%"     |               |
 | body-like            | "account_id":"%%creator_acct_id%%"  |               |
+
 # Test the pageableness of /data/groups/:group_id/accounts
 
 | GET-json       | /data/groups/%%group1_id%%/accounts?startIndex=0 |                     |
@@ -96,3 +102,17 @@ Tests for [Story: Groups ReST API]
 | json-parse        |                                     |               |
 | json-array-size   | 2                                   |               |
 
+# Test changing primary accounts
+
+| http-user-pass | %%admin%%                  | password            |
+| GET-json       | /data/groups/%%group1_id%% |                     |
+| json-parse     |                            |                     |
+| json-path-is   | $.primary_account_id       | %%creator_acct_id%% |
+
+| PUT-json | /data/groups/%%group1_id%% | {"primary_account_id":"%%base_acct_id%%","name":"%%base_acct%%","permission_set":"private"} |
+| code-is  | 202                        |                                                                                             |
+
+| GET-json     | /data/groups/%%group1_id%% |                  |
+| code-is      | 200                        |                  |
+| json-parse   |                            |                  |
+| json-path-is | $.primary_account_id       | %%base_acct_id%% |
