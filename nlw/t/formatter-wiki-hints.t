@@ -202,7 +202,7 @@ http:index.cgi
 --- match
 <div class="wiki">
 <p>
-<a href="index.cgi?people" wiki_page=""  >People</a></p>
+<a href="index.cgi?people" wiki_page=""  title="This is the people directory, a list of people working in this workspace. It is built by you, as a place to introduce yourself . Please add yourself below and then create your own homepage. Find out more: Introduce yourself . your name here (e.g. John or Jane Doe ) Meet your fellow socialtext users. You&#39;re not alone! Meet other Socialtext customers...">People</a></p>
 </div>
 
 === renamed wiki links
@@ -211,5 +211,5 @@ http:index.cgi
 --- match
 <div class="wiki">
 <p>
-<a href="index.cgi?people" wiki_page="People"  >my todo list for today</a></p>
+<a href="index.cgi?people" wiki_page="People"  title="This is the people directory, a list of people working in this workspace. It is built by you, as a place to introduce yourself . Please add yourself below and then create your own homepage. Find out more: Introduce yourself . your name here (e.g. John or Jane Doe ) Meet your fellow socialtext users. You&#39;re not alone! Meet other Socialtext customers...">my todo list for today</a></p>
 </div>
