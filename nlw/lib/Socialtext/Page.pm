@@ -1224,19 +1224,26 @@ sub _cache_using_questions {
 
     $html_ref ||= \$self->to_html;
 
-    # Which link dictionary is always the first question
-    my $ld = $self->hub->viewer->link_dictionary;
-    $ld = ref($ld);
-    $ld =~ s/.+:://; # only use the last part of the package name
-    
-    my $answer_str = join '-', $ld, map { $_ . '_' . shift(@answers) } @short_q;
+    # Check if we are the "current" page, and do not cache if we are not.
+    # This is to avoid crazy errors where we may be rendering other page's
+    # content for TOC wafls and such.
+    my $is_current = $self->hub->pages->current->id eq $self->id;
+    if ($is_current) {
+        # Which link dictionary is always the first question
+        my $ld = $self->hub->viewer->link_dictionary;
+        $ld = ref($ld);
+        $ld =~ s/.+:://; # only use the last part of the package name
+        
+        my $answer_str = join '-', $ld,
+            map { $_ . '_' . shift(@answers) } @short_q;
 
-    my $cache_file = $self->_answer_file($answer_str);
-    if ($cache_file) {
-        Socialtext::File::set_contents_utf8_atomic($cache_file, $html_ref);
-    }
-    else {
-        warn "Answer string is too long - not writing $cache_file";
+        my $cache_file = $self->_answer_file($answer_str);
+        if ($cache_file) {
+            Socialtext::File::set_contents_utf8_atomic($cache_file, $html_ref);
+        }
+        else {
+            warn "Answer string is too long - not writing $cache_file";
+        }
     }
     return $html_ref;
 }

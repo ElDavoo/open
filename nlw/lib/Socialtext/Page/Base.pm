@@ -20,7 +20,8 @@ use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_singlevalue/;
 use Digest::SHA1 'sha1_hex';
 use Carp ();
-use Carp qw/cluck/;
+
+our $CACHING_DEBUG = 0;
 
 =head2 to_absolute_html($content)
 
@@ -84,16 +85,24 @@ sub to_html {
         if ($cache_file_exists and !$users_changed) {
             my $t = time_scope('wikitext_HIT');
             $self->{__cache_hit}++;
+            warn "HIT: $cache_file" if $CACHING_DEBUG;
             return scalar Socialtext::File::get_contents_utf8($cache_file);
         }
 
         my $t = time_scope('wikitext_MISS');
+        warn "MISS on content ($content)" if $CACHING_DEBUG;
         my $html = $self->hub->viewer->process($content, $page);
-        if (defined $a_str) {
+
+        # Check if we are the "current" page, and do not cache if we are not.
+        # This is to avoid crazy errors where we may be rendering other page's
+        # content for TOC wafls and such.
+        my $is_current = $self->hub->pages->current->id eq $self->id;
+        if (defined $a_str and $is_current) {
             # cache_file may be undef if the answer string was too long.
             # XXX if long answers get hashed we can still save it here
             Socialtext::File::set_contents_utf8_atomic($cache_file, $html)
                 if $cache_file;
+            warn "MISSED: $cache_file ($html)" if $CACHING_DEBUG;
             return $html;
         }
         # Our answer string was invalid, so we'll need to re-generate the Q file
