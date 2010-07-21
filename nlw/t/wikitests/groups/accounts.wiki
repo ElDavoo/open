@@ -39,15 +39,18 @@ Tests for [Story: Groups ReST API]
 
 # Now add a user to the group, we should see their account
 
-| http-user-pass       | %%creator%%                         | password      |
-| add-group-to-account | %%group1_id%%                       | %%base_acct%% |
-| GET                  | /data/groups/%%group1_id%%/accounts |               |
-| code-is              | 200                                 |               |
-| header-like          | Cache-Control                       | private       |
-| json-parse           |                                     |               |
-| json-array-size      | 2                                   |               |
-| body-like            | "account_id":"%%base_acct_id%%"     |               |
-| body-like            | "account_id":"%%creator_acct_id%%"  |               |
+| http-user-pass | %%admin%%                           | password                     |
+| POST-json      | /data/accounts/%%base_acct%%/groups | {"group_id":"%%group1_id%%"} |
+| code-is        | 204                                 |                              |
+
+| http-user-pass  | %%creator%%                         | password |
+| GET             | /data/groups/%%group1_id%%/accounts |          |
+| code-is         | 200                                 |          |
+| header-like     | Cache-Control                       | private  |
+| json-parse      |                                     |          |
+| json-array-size | 2                                   |          |
+| body-like       | "account_id":"%%base_acct_id%%"     |          |
+| body-like       | "account_id":"%%creator_acct_id%%"  |          |
 
 # Test the pageableness of /data/groups/:group_id/accounts
 
