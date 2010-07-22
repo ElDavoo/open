@@ -328,6 +328,7 @@ sub _ldap_config {
             email_address   => 'mail',
             first_name      => 'givenName',
             last_name       => 'sn',
+            supervisor      => 'manager',
             },
         group_filter => '(objectClass=groupOfNames)',
         group_attr_map => {
