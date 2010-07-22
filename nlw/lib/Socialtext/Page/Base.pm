@@ -410,6 +410,14 @@ sub _questions_to_answers {
     $ld =~ s/.+:://;
     push @answers, $ld;
 
+    # Which formatter is always the second question
+    push @answers, ref($self->hub->formatter);
+
+    # Which URI scheme is always the third question
+    require Socialtext::URI;
+    my %uri = Socialtext::URI::_scheme();
+    push @answers, $uri{scheme};
+
     for my $q (split "\n", $q_str) {
         if ($q =~ m/^w(\d+)$/) {
             my $ws = Socialtext::Workspace->new(workspace_id => $1);
