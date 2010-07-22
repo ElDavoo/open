@@ -173,14 +173,12 @@ sub _cache_html {
                 }
 
                 my $unknown = 0;
-                if ($wafl_class =~ m/(?:Image|File)$/) {
-                    my ($ws_name) = $wafl->parse_wafl_reference;
+                if ($wafl_class =~ m/(?:Image|File|InterWikiLink|HtmlPage|Toc|CSS)$/) {
+                    my ($ws_name, undef, $file_name, $page_id)
+                        = $wafl->parse_wafl_reference;
                     $interwiki{$ws_name}++ if $ws_name;
-                    $attachments{$wafl->arguments}++ if $wafl->arguments =~ m{^[^/]+$};
-                }
-                elsif ($wafl_class =~ m/(?:InterWikiLink|HtmlPage|Toc|CSS)$/) {
-                    my ($ws_name) = $wafl->parse_wafl_reference;
-                    $interwiki{$ws_name}++ if $ws_name;
+                    $attachments{ join ' ', $ws_name, $page_id, $file_name }++
+                        if $file_name;
                 }
                 elsif ($wafl_class =~ m/(?:TagLink|CategoryLink|WeblogLink)$/) {
                     my ($ws_name) = $wafl->parse_wafl_category;
@@ -335,17 +333,7 @@ sub _cache_using_questions {
         }
         elsif (my $a = $q->{attachment}) {
             push @short_q, 'a' . $a;
-
-            my $attachment_exists = 0;
-            $page_attachments ||= [ $self->attachments ];
-            for (@$page_attachments) {
-                if ($_->filename eq lc($a)) {
-                    $attachment_exists = $_->exists || 0;
-                    last;
-                }
-            }
-
-            push @answers, $attachment_exists;
+            push @answers, $self->hub->attachments->attachment_exists(split " ", $a);
         }
         else {
             die "Unknown question: " . Dumper $q;
@@ -383,6 +371,8 @@ sub _cache_using_questions {
     }
     return $html_ref;
 }
+
+
 
 sub _users_modified_since {
     my $self = shift;
@@ -456,20 +446,8 @@ sub _questions_to_answers {
             my $ok = $pref_str eq $my_prefs;
             push @answers, "${q}_$ok";
         }
-        elsif ($q =~ m/^a(.+)$/) {
-            my $a = $1;
-            $a =~ s!/!-!;
-
-            my $attachment_exists = 0;
-            $page_attachments ||= [ $self->attachments ];
-            for (@$page_attachments) {
-                if ($_->filename eq lc($a)) {
-                    $attachment_exists = $_->exists || 0;
-                    last;
-                }
-            }
-
-            push @answers, $attachment_exists;
+        elsif ($q =~ m/^a(\S+) (\S+) (.+)$/) {
+            push @answers, $self->hub->attachments->attachment_exists($1, $2, $3);
         }
         elsif ($q eq 'null') {
             next;

@@ -164,15 +164,16 @@ Run these tests as the main user.
 | edit-page        | %%workspace%% | att  | {file: test.html}                        |
 | fetch-page       | att           | miss  |                                          |
 | fetch-page       | att           | hit  |                                          |
-| question-file-is | att           | null |                                          |
+| question-file-is | att           | a%%workspace%% wksp_%%start_time%% test.html |    |
+
 | edit-page        | %%workspace%% | att  | {html_page: test.html} {file: test.html} |
 | fetch-page       | att           | miss  |                                          |
 | fetch-page       | att           | hit  |                                          |
-| question-file-is | att           | null |                                          |
+| question-file-is | att           | a%%workspace%% wksp_%%start_time%% test.html |    |
 | edit-page        | %%workspace%% | att  | {css_include: test.css}                  |
 | fetch-page       | att           | miss  |                                          |
 | fetch-page       | att           | hit  |                                          |
-| question-file-is | att           | null |                                          |
+| question-file-is | att           | a%%workspace%% wksp_%%start_time%% test.css |    |
 
 | Comment | Image, File and html_page wafls on interworkspace page |
 | edit-page | %%ws2%% | att | This page has no attachments yet. |
@@ -183,15 +184,15 @@ Run these tests as the main user.
 | edit-page        | %%workspace%% | att         | {file: %%ws2%% [att] test.html} |
 | fetch-page       | att           | miss         |                                 |
 | fetch-page       | att           | hit         |                                 |
-| question-file-is | att           | w%%ws2_id%% |                                 |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
 | edit-page        | %%workspace%% | att         | {html_page: %%ws2%% [att] test.html} |
 | fetch-page       | att           | miss         |                                 |
 | fetch-page       | att           | hit         |                                 |
-| question-file-is | att           | w%%ws2_id%% |                                 |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
 | edit-page        | %%workspace%% | att         | {html_page: %%ws2%% [att] test.html} {file: %%ws2%% [att] test.html} ||
 | fetch-page       | att           | miss         |                                 |
 | fetch-page       | att           | hit         |                                 |
-| question-file-is | att           | w%%ws2_id%% |                                 |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
 
 | Comment | TOC wafls on the current page |
 | edit-page | %%workspace%% | toc | {toc: }\n^ Header One\n |
