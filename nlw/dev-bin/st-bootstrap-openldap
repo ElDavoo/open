@@ -444,3 +444,21 @@ gn: Michael
 sn: Moorcock
 cn: Michael Moorcock
 userPassword: ld@pu53r
+
+# Define a User with a Manager
+dn: cn=Sharon Osbourne,dc=socialtext,dc=com
+objectClass: inetOrgPerson
+mail: sharon@socialtext.com
+gn: Sharon
+sn: Osbourne
+cn: Sharon Osbourne
+userPassword: ld@pu53r
+
+dn: cn=Ozzy Osbourne,dc=socialtext,dc=com
+objectClass: inetOrgPerson
+mail: ozzy@socialtext.com
+gn: Ozzy
+sn: Osbourne
+cn: Ozzy Osbourne
+userPassword: ld@pu53r
+manager: cn=Sharon Osbourne,dc=socialtext,dc=com
