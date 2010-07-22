@@ -1664,11 +1664,16 @@ sub send_as_email {
     };
 
     if ($p{include_attachments}) {
-        my $prev_formatter = $self->hub->formatter;
+        my $prev_viewer = $self->hub->viewer;
         my $formatter = Socialtext::Pages::Formatter->new(hub => $self->hub);
-        $self->hub->formatter($formatter);
+        $self->hub->viewer->parser(
+            Socialtext::Formatter::Parser->new(
+                table => $formatter->table,
+                wafl_table => $formatter->wafl_table
+            )
+        );
         $body_content = $make_body_content->();
-        $self->hub->formatter($prev_formatter);
+        $self->hub->viewer($prev_viewer);
     }
     else {
         # If we don't have attachments, don't link to nonexistent "cid:" hrefs. {bz: 1418}
