@@ -13,7 +13,7 @@ sub GET {
     my ($self, $rest) = @_;
     my $name = $self->name;
     my $type = $self->type;
-    my $file = $self->file;
+    my $file = $self->__file__;
 
     my $dir;
     if ($type eq 'skin') {
