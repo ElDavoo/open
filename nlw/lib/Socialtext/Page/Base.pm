@@ -330,12 +330,10 @@ sub _cache_using_questions {
             # Skip, it's handled above.
         }
         elsif (my $d = $q->{date}) {
-            $d =~ s/-/m/; # - is used as a field separator
             push @short_q, 'd' . $d;
             push @answers, 1;
         }
         elsif (my $a = $q->{attachment}) {
-            $a =~ s|-|/|; # - is used as a field separator
             push @short_q, 'a' . $a;
 
             my $attachment_exists = 0;
@@ -354,7 +352,7 @@ sub _cache_using_questions {
         }
     }
 
-    my $q_str = join '-', @short_q;
+    my $q_str = join "\n", @short_q;
     $q_str ||= 'null';
 
     my $q_file = $self->_question_file or return;
@@ -422,8 +420,7 @@ sub _questions_to_answers {
     $ld =~ s/.+:://;
     push @answers, $ld;
 
-    my $page_attachments;
-    for my $q (split '-', $q_str) {
+    for my $q (split "\n", $q_str) {
         if ($q =~ m/^w(\d+)$/) {
             my $ws = Socialtext::Workspace->new(workspace_id => $1);
             my $ok = $ws && $self->hub->authz->user_has_permission_for_workspace(
@@ -456,7 +453,6 @@ sub _questions_to_answers {
                 $prefs->time_display_12_24->value,
                 $prefs->time_display_seconds->value,
                 $prefs->timezone->value;
-            $my_prefs =~ s/-/m/; # - is used as a field separator
             my $ok = $pref_str eq $my_prefs;
             push @answers, "${q}_$ok";
         }
