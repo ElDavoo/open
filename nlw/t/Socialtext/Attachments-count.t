@@ -4,8 +4,8 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 5;
-fixtures( 'admin' );
+use Test::Socialtext tests => 7;
+fixtures( 'admin', 'clean' );
 
 BEGIN {
     use_ok( 'Socialtext::Attachments' );
@@ -20,7 +20,9 @@ my $hub = new_hub('admin');
 
 create_page('test page', 'meh');
 my $all_attachments_count_before = count_all_attachments();
+ok !$hub->attachments->attachment_exists('admin', 'test_page', 'foo.txt'), 'attachment_exists false';
 attach_to_page('foo.txt', 'test page');
+ok $hub->attachments->attachment_exists('admin', 'test_page', 'foo.txt'), 'attachment_exists true';
 my $all_attachments_count_middle = count_all_attachments();
 delete_page('test page');
 my $all_attachments_count_after = count_all_attachments();
