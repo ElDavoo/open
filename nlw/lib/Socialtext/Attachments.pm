@@ -69,8 +69,14 @@ sub attachment_exists {
     my $old_ws = $self->hub->current_workspace;
     my $g = scope_guard { $self->hub->current_workspace($old_ws) };
 
+    use Socialtext::Permission 'ST_READ_PERM';
     my $ws = Socialtext::Workspace->new(name => $workspace);
-    return 0 unless $ws;
+    return 0 unless $ws && $self->hub->authz->user_has_permission_for_workspace(
+            user       => $self->hub->current_user,
+            permission => ST_READ_PERM,
+            workspace  => $ws,
+        );
+
     $self->hub->current_workspace($ws);
     my $attachments = $self->all(page_id => $page_id);
     for my $att (@$attachments) {
