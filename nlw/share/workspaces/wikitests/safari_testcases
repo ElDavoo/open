@@ -128,7 +128,10 @@ Widgets testcases
 
 NOTE: Safari Widgets Testcases may now be identical to Widgets Testcases, 2009-09-15
 
-* [User Groups UI Testcases]
+* [Test Case: Groups Home]
+* [Test Case: Groups in Global Nav]
+* [Test Case: User Deactivates Group]
+
 * [Test Case: Signals Activities Interaction]
 * [Test Case: Signals Search]
 * [Test Case: Signals Search Pagination]

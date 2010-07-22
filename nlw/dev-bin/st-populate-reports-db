@@ -125,7 +125,7 @@ sub st_reports_reduce {
 
 sub is_dev_env {
     my $host = shift;
-    if ($host=~/talc/ || $host=~/topaz/) {
+    if ($host=~/talc/ || $host=~/topaz/ || $host=~/borax/ ) {
         return 1; 
     } else {
         return 0;
