@@ -177,13 +177,20 @@ Run these tests as the main user.
 
 | Comment | Image, File and html_page wafls on interworkspace page |
 | edit-page | %%ws2%% | att | This page has no attachments yet. |
+| edit-page        | %%workspace%% | att         | {file: %%ws2%% [att] test.html} |
+| fetch-page       | att           | miss         |                                 |
+| body-like | wafl_existence_error |
+| fetch-page       | att           | hit         |                                 |
+| body-like | wafl_existence_error |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
 | set | attach_url | /data/workspaces/%%ws2%%/pages/att/attachments |
 | set | hdrs | Content-Type=text/html |
 | post | %%attach_url%%?name=test.html | %%hdrs%% | <strong>Hi</strong> |
 | code-is          | 201           |             |                                 |
-| edit-page        | %%workspace%% | att         | {file: %%ws2%% [att] test.html} |
 | fetch-page       | att           | miss         |                                 |
+| body-unlike | wafl_existence_error |
 | fetch-page       | att           | hit         |                                 |
+| body-unlike | wafl_existence_error |
 | question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
 | edit-page        | %%workspace%% | att         | {html_page: %%ws2%% [att] test.html} |
 | fetch-page       | att           | miss         |                                 |
