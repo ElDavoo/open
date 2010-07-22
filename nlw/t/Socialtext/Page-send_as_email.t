@@ -23,7 +23,7 @@ my $hub   = new_hub('admin');
 my $pages = $hub->pages;
 
 my $junk = q(!@#$%^&*()[]{}\\|'");
-my $utf8_subject = Encode::decode_utf8("Groß Send ($junk) Email Test");
+my $utf8_subject = Encode::decode_utf8("Groß Send ($junk) Email Test $$");
 
 Socialtext::Page->new(hub => $hub)->create(
     title   => $utf8_subject,
