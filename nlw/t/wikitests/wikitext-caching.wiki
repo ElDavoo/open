@@ -111,9 +111,11 @@ Run these tests as the main user.
 | edit-page          | %%workspace%% | RSSTest | {fetchrss: http://www.socialtext.com/blog/atom.xml} |
 | fetch-page         | RSSTest | miss      |
 | fetch-page         | RSSTest | hit      |
-| question-file-like | RSSTest | qr/E\d+/ |
+| question-file-like | RSSTest | qr/^E\d+$/ |
 | set-question-file  | RSSTest | E5440    |
 | fetch-page         | RSSTest | miss     |
+| fetch-page         | RSSTest | miss     |
+| fetch-page         | RSSTest | hit      |
 | fetch-page         | RSSTest | hit      |
 
 | Comment            | Google searches |

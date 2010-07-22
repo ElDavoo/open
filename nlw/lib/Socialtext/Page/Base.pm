@@ -97,7 +97,7 @@ sub to_html {
         }
 
         my $t = time_scope('wikitext_MISS');
-        warn "MISS on content ($content)" if $CACHING_DEBUG;
+        warn "MISS on content" if $CACHING_DEBUG;
         my $html = $self->hub->viewer->process($content, $page);
 
         # Check if we are the "current" page, and do not cache if we are not.
@@ -109,7 +109,7 @@ sub to_html {
             # XXX if long answers get hashed we can still save it here
             Socialtext::File::set_contents_utf8_atomic($cache_file, $html)
                 if $cache_file;
-            warn "MISSED: $cache_file ($html)" if $CACHING_DEBUG;
+            warn "MISSED: $cache_file" if $CACHING_DEBUG;
             return $html;
         }
         # Our answer string was invalid, so we'll need to re-generate the Q file
@@ -438,8 +438,9 @@ sub _questions_to_answers {
             push @answers, "${q}_$ok";
         }
         elsif ($q =~ m/^E(\d+)$/) {
-            my $expires_at = $1;
-            my $ok = time() < $expires_at ? 1 : 0;
+            my ($expires_at, $now) = ($1, time());
+            my $ok = $now < $expires_at ? 1 : 0;
+            warn "Checking Expiry ($now < $expires_at) = $ok" if $CACHING_DEBUG;
             return undef unless $ok;
             push @answers, "${q}_1";
         }
@@ -573,7 +574,7 @@ sub _answer_file {
     my $base = $self->_page_cache_basename or return;
     my $filename = "$base-".sha1_hex($answer_str);
     (my $basename = $filename) =~ s#.+/##;
-    # XXX If too long we could return a hash
+    warn "Answer file: $answer_str => $basename" if $CACHING_DEBUG;
     return undef if length($basename) > 254;
     return $filename;
 }
