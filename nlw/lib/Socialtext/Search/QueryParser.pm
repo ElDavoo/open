@@ -53,7 +53,7 @@ sub munge_raw_query_string {
     # we would find "cow:". 
     my $searchable_fields;
     my @non_fields;
-    while ($query =~ /(\w+):/g ) {
+    while ($query =~ /([a-zA-Z_]+):/g ) {
         my ($f_start, $f_length) = ($-[1], $+[1] - $-[1]);
         my $maybe_field = $1;
         $searchable_fields ||= { map { $_ => 1 } @{ $self->searchable_fields } };
