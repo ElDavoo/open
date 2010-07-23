@@ -23,6 +23,7 @@ use Email::Address;
 use Socialtext::l10n qw(system_locale loc);
 use Socialtext::EmailSender::Factory;
 use Socialtext::User::Cache;
+use Socialtext::Cache;
 use Socialtext::Timer qw/time_scope/;
 use Carp qw/croak/;
 use Try::Tiny;
@@ -328,16 +329,27 @@ sub accounts {
               AND into_set_id }.PG_ACCT_FILTER;
     }
 
-    my $sth = sql_execute($sql, @args);
-    my @account_ids = map {$_->[0] - ACCT_OFFSET} @{$sth->fetchall_arrayref()};
+    my $cache_string = join "\0", @args;
+    my $acct_ids;
+    my $cache = Socialtext::Cache->cache('user_accts');
+    if ($acct_ids = $cache->get($cache_string)){
+        require Clone;
+        # ensure callers don't modify the cache:
+        $acct_ids = Clone::clone $acct_ids unless wantarray;
+    }
+    else {
+        my $sth = sql_execute($sql, @args);
+        $acct_ids = [map {$_->[0] - ACCT_OFFSET} @{$sth->fetchall_arrayref()}];
+        $cache->set($cache_string, $acct_ids);
+    }
     if ($p{ids_only}) {
-        return (wantarray ? @account_ids : \@account_ids);
+        return (wantarray ? @$acct_ids : $acct_ids);
     }
     else {
         my @accounts = sort {$a->name cmp $b->name} 
                        map {
                            Socialtext::Account->new(account_id => $_)
-                       } @account_ids;
+                       } @$acct_ids;
         return (wantarray ? @accounts : \@accounts);
     }
 }
