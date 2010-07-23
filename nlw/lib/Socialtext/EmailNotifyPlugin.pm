@@ -21,6 +21,8 @@ sub register {
     $registry->add(preference => $self->links_only);
 }
 
+our $Default_notify_frequency = 1440;
+
 sub notify_frequency {
     my $self = shift;
     my $p = $self->new_preference('notify_frequency');
@@ -38,7 +40,7 @@ sub notify_frequency {
         10080 => loc('Every Week'),
     ];
     $p->choices($choices);
-    $p->default(1440);
+    $p->default($Default_notify_frequency);
     return $p;
 }
 

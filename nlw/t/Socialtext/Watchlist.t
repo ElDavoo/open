@@ -57,7 +57,7 @@ Users_watching_page: {
     my $users = Socialtext::Watchlist->Users_watching_page(
         $ws->workspace_id, $page->id,
     );
-    is_deeply [map { $_->email_address} $users->all], [$user->email_address],
+    is_deeply $users, [$user->user_id],
         "Users_watching_page works";
 }
 

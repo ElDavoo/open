@@ -36,6 +36,8 @@ sub init {
     );
 }
 
+our $Default_notify_frequency = 1440;
+
 sub watchlist_notify_frequency {
     my $self = shift;
     my $p    = $self->new_preference('watchlist_notify_frequency');
@@ -53,7 +55,7 @@ sub watchlist_notify_frequency {
         10080 => 'Every Week',
     ];
     $p->choices($choices);
-    $p->default(1440);
+    $p->default($Default_notify_frequency);
     return $p;
 }
 

@@ -1,6 +1,8 @@
 package Socialtext::Job::EmailNotify;
 # @COPYRIGHT@
 use Moose;
+use Socialtext::PreferencesPlugin;
+use Socialtext::EmailNotifyPlugin;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
@@ -14,15 +16,32 @@ sub _user_job_class {
     return "Socialtext::Job::EmailNotifyUser";
 }
 
+sub _default_freq {
+    return $Socialtext::EmailNotifyPlugin::Default_notify_frequency;
+}
+
+sub _pref_name {
+    return 'notify_frequency';
+}
+
 sub _freq_for_user {
     my $self = shift;
-    my $user = shift;
-    my $prefs = $self->hub->preferences->new_for_user($user->email_address);
-    return $prefs->{notify_frequency}->value * 60;
+    my $ws_id = shift;
+    my $user_id = shift;
+
+    my $pref_name = $self->_pref_name;
+    my $pref_blob = Socialtext::PreferencesPlugin->Get_blob_matching(
+        $ws_id, $user_id, qq{"$pref_name"},
+    );
+    my $freq = $self->_default_freq;
+    if ($pref_blob and $pref_blob =~ m/"\Q$pref_name\E":"(\d+)"/) {
+        $freq = $1;
+    }
+    return $freq * 60;
 }
-sub _get_applicable_users {
+sub _get_applicable_user_ids {
     my $self = shift;
-    return $self->workspace->users;
+    return $self->workspace->user_ids;
 }
 
 sub do_work {
@@ -45,12 +64,10 @@ sub do_work {
     $hub->log->info( "Sending recent changes notifications from ".$ws->name );
  
     my @jobs;
-    my $users = $self->_get_applicable_users();
+    my $user_ids = $self->_get_applicable_user_ids();
     my $job_class = $self->_user_job_class;
-    while (my $user = $users->next) {
-        my $user_id = $user->user_id;
-        $hub->current_user($user);
-        my $freq = $self->_freq_for_user($user);
+    for my $user_id (@$user_ids) {
+        my $freq = $self->_freq_for_user($ws_id, $user_id);
         next unless $freq;
 
         my $after = $t + $freq;

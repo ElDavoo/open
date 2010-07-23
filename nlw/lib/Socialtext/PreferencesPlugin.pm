@@ -165,6 +165,20 @@ sub Store_prefs_for_user {
     $class_or_self->_cache->clear();
 }
 
+sub Get_blob_matching {
+    my $class_or_self = shift;
+    my $ws_id = shift;
+    my $user_id = shift;
+    my $match_str = shift;
+
+    my $blob = sql_singlevalue( qq{
+        SELECT pref_blob FROM user_workspace_pref
+         WHERE workspace_id = ? AND user_id = ?
+           AND pref_blob LIKE '\%$match_str\%'
+        }, $ws_id, $user_id);
+    return $blob;
+}
+
 package Socialtext::Preference;
 
 use base 'Socialtext::Base';

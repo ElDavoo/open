@@ -89,6 +89,7 @@ sub Users_watching_page {
     my $class        = shift;
     my $workspace_id = shift;
     my $page_id      = shift;
+    my $userids_only = shift;
 
     my $sth = sql_execute( <<EOT, $workspace_id, $page_id );
 SELECT user_id
@@ -96,14 +97,7 @@ SELECT user_id
     WHERE workspace_id = ? AND page_text_id = ?
 EOT
 
-    return Socialtext::MultiCursor->new(
-        iterables => [
-            map { $_->[0] } @{ $sth->fetchall_arrayref }
-        ],
-        apply => sub {
-            return Socialtext::User->new(user_id => shift);
-        }
-    );
+    return [ map { $_->[0] } @{ $sth->fetchall_arrayref } ];
 }
 
 1;
