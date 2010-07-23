@@ -88,7 +88,7 @@ proto.create_user = function(params, callback) {
             contentType: 'application/json',
             data: JSON.stringify({
                 username: params.username,
-                rolename: "member",
+                role_name: "member",
                 send_confirmation_invitation: 0
             }),
             success: function() {
