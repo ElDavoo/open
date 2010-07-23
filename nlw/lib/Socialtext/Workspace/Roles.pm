@@ -179,6 +179,14 @@ sub RolesForUserInWorkspace {
 
         Socialtext::Timer->Continue('ws_by_userid');
 
+        my $cache_string = join "\0",
+            map { ref($p{$_}) eq 'ARRAY' ? "$_=@{$p{$_}}" : "$_=$p{$_}" }
+            grep { defined $p{$_} } sort keys %p;
+        my $rows;
+        if ($rows = $class->cache->get($cache_string)) {
+            goto return_it;
+        }
+
         my @binds = ($user_id);
 
         my $uwr_table = $direct
@@ -231,9 +239,11 @@ sub RolesForUserInWorkspace {
             push @binds, $offset;
         }
         my $sth = sql_execute( $sql, @binds );
+        $rows = $sth->fetchall_arrayref({});
+        $class->cache->set($cache_string, $rows);
 
-        my $cursor = Socialtext::MultiCursor->new(
-            iterables => [ $sth->fetchall_arrayref({}) ]);
+    return_it:
+        my $cursor = Socialtext::MultiCursor->new(iterables => [ $rows ]);
 
         unless ($minimal) {
             $cursor->apply(sub {
