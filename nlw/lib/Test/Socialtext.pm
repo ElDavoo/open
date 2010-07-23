@@ -269,10 +269,15 @@ sub ceqlotron_run_synchronously() {
         $condition = "AND funcid = $funcid";
     }
     require Socialtext::SQL;
-    my $jobs_left = Socialtext::SQL::sql_singlevalue(qq{
-        SELECT COUNT(*) FROM job WHERE run_after < EXTRACT(epoch from now()) $condition
-    });
-    $jobs_left ||= 0;
+    my $jobs_left;
+    # Wait for 60 seconds for the previously-grabbed jobs by ceq to complete
+    for (1..60) {
+        $jobs_left = Socialtext::SQL::sql_singlevalue(qq{
+            SELECT COUNT(*) FROM job WHERE run_after < EXTRACT(epoch from now()) $condition
+        }) || 0;
+        last if $jobs_left == 0;
+        sleep 1;
+    }
     Test::More::is($jobs_left, 0, "ceqlotron finished all runnable jobs");
     if ($jobs_left) {
         system("ceq-read");
