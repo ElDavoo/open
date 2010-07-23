@@ -58,8 +58,7 @@ sub _load_all {
         return $prefs;
     }
 
-    my $prefs = $self->_values_for_email_from_db($email)
-                || $self->_values_for_email_from_disk($email);
+    my $prefs = $self->_values_for_email_from_db($email);
     $cache->set($cache_key => $prefs);
     return $prefs;
 }
@@ -109,29 +108,6 @@ sub Prefs_for_user {
     return $result;
 }
 
-
-# XXX DELETE _values_for_email_from_disk AFTER 2009-05-22 has been released to appliances.
-# XXX See https://www2.socialtext.net/dev-tasks/?story_store_user_prefs_in_db
-sub _values_for_email_from_disk {
-    my $self = shift;
-    my $email = shift;
-
-    my $file = Socialtext::File::catfile(
-       $self->user_plugin_directory(
-           $email, 'do not create the directory for me'
-       ),
-       'preferences.dd'
-    );
-
-    return {} unless -f $file and -r _;
-
-    my $dump = Socialtext::File::get_contents($file);
-    return {} unless defined $dump and length $dump;
-
-    my $prefs = eval $dump;
-    die $@ if $@;
-    return $prefs;
-}
 
 sub new_preferences {
     my $self = shift;
