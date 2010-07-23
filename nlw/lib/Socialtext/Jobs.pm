@@ -83,6 +83,8 @@ sub job_to_string {
         if $job->arg->{user_id};
     $string .= ";group=".$job->arg->{group_id}
         if $job->arg->{group_id};
+    $string .= ";solr=".$job->arg->{solr}
+        if $job->arg->{solr};
 
     if ($shortname eq 'Cmd') {
         $string .= ";cmd=".$job->arg->{cmd};
