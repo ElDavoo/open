@@ -173,6 +173,16 @@ sub create_uwr {
             ?, 1, 's3', ?
         )
     });
+    my $ws_perm_sth = $dbh->prepare_cached(qq{
+        INSERT INTO "WorkspaceRolePermission" (
+            workspace_id, role_id, permission_id)
+            VALUES (?, ?, ?)
+    });
+    my @ws_perms = (
+        (map { [5, $_] } qw/1 2 3 4 5 6 7 9 12/),
+        (map { [6, $_] } qw/1 2 3 4 5 6 7 11/),
+        (map { [4, $_] } qw/1 2 3 4 5 6 7/),
+    );
 
     for (my $i=1; $i<=$ACCOUNTS; $i++) {
         # Create an account
@@ -189,8 +199,12 @@ sub create_uwr {
             $acct_id, $ws_set_id,
         );
         push @workspaces, $ws_id;
+
+        for my $p (@ws_perms) {
+            $ws_perm_sth->execute( $ws_id, @$p );
+        }
         
-        $writes += 2;
+        $writes += 2 + @ws_perms;
         $ws_to_acct{$ws_id} = $acct_id;
         $acct_to_uset{$acct_id} = $acct_set_id;
         $ws_to_uset{$ws_id} = $ws_set_id;
