@@ -29,7 +29,6 @@
      <li><a onclick="return false" href="#" class="daddy">From The Web...</a>
       <ul>
        <li><a do="do_widget_googlesearch" onclick="return false;" href="#">Google Search Results</a></li>
-       <li><a do="do_widget_technorati" onclick="return false;" href="#">Technorati Results</a></li>
        <li><a do="do_widget_fetchrss" onclick="return false;" href="#">RSS Feed Items</a></li>
        <li><a do="do_widget_fetchatom" onclick="return false;" href="#">Atom Feed Items</a></li>
       </ul>
