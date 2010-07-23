@@ -11,7 +11,7 @@ t.runAsync([
     },
 
     function() { 
-        t.is( t.$('a.realName').text(), 'devnull1devnull2', 'People search works on strings containing @');
+        t.is( t.$('a.realName').text(), 'devnull1', 'People search works on strings containing @');
         t.endAsync();
     }
 ]);
