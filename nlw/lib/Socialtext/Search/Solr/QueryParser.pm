@@ -48,7 +48,7 @@ sub _build_searchable_fields {
         # General fields - multi-type
         qw/tag body w doctype id creator creator_name tag date created/,
         # Page / attachment fields:
-        qw/title/,
+        qw/title editor pagetype/,
         # Signal fields:
         qw/pvt dm_recip a g reply_to mention
            link_page_key link_w link is_question
