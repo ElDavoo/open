@@ -61,6 +61,7 @@ our %EXPORT_TAGS = (
 our $DEBUG = 0;
 our $TRACE_SQL = 0;
 our $PROFILE_SQL = 0;
+our $COUNT_SQL = 0;
 our $Level = 2;
 
 protect_the_dbh: {
@@ -449,6 +450,7 @@ sub _sql_execute {
     }
 
     eval {
+        _count_sql($statement) if $COUNT_SQL;
         Socialtext::Timer->Continue('sql_prepare');
         $sth = $dbh->prepare($statement);
         Socialtext::Timer->Pause('sql_prepare');
@@ -463,6 +465,18 @@ sub _sql_execute {
 
     Socialtext::Timer->Pause('sql_execute');
     return $sth;
+}
+
+sub _count_sql {
+    my $sql = shift;
+    $sql =~ s/\s+/ /sm;
+    $sql =~ s/\n/ /smg;
+
+    require Digest::SHA1;
+    my $sql_file = '/tmp/sql-count';
+    open(my $fh, ">>$sql_file") or die "Can't open $sql_file: $!";
+    print $fh Digest::SHA1::sha1_hex($sql), " $sql\n";
+    close $fh;
 }
 
 sub _list_bindings {
