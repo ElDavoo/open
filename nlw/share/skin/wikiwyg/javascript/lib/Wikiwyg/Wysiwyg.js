@@ -1573,7 +1573,7 @@ proto.do_add_col_left = function() {
             $td.before(
                 $(doc.createElement( $td.get(0).tagName ))
                     .attr({style: 'border: 1px solid black;', padding: '0.2em'})
-                    .html("&nbsp;")
+                    .html("<span>&nbsp;</span>")
             );
         });
 
@@ -1592,7 +1592,7 @@ proto.do_add_col_right = function() {
             $td.after(
                 $(doc.createElement( $td.get(0).tagName ))
                     .attr({style: 'border: 1px solid black;', padding: '0.2em'})
-                    .html("&nbsp;")
+                    .html("<span>&nbsp;</span>")
             );
         });
 
