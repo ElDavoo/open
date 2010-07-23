@@ -469,7 +469,7 @@ sub _sql_execute {
 
 sub _count_sql {
     my $sql = shift;
-    $sql =~ s/\s+/ /sm;
+    $sql =~ s/\s+/ /smg;
     $sql =~ s/\n/ /smg;
 
     require Digest::SHA1;
