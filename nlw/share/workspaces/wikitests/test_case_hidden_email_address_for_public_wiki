@@ -8,10 +8,12 @@
 | *Comment* | Test Case: Hidden Email Address for Public wiki. The username will appear to be in Title Case due to CSS styling, but the page actually contains lower case names. |  |
 | set | he_name | hidden email %%start_time%% |
 
-| st-admin | create-workspace --n %%he_ws%% --t "Hidden Email %%start_time%%" | created |
+| st-admin | create-workspace --n %%he_ws%% --t "Hidden Email %%start_time%%" --empty | created |
 | st-admin | create-user --e %%he_mail%% --p %%password%% |  |
 | st-admin | add-workspace-admin --w %%he_ws%% --e %%he_mail%% | now has the role of 'admin' in the |
+
 | st_process_jobs | PersonIndex |  |
+
 | open-ok | /%%he_ws%% |  |
 | type_ok | username | %%he_mail%% |
 | type_ok | password | %%password%% |
@@ -20,14 +22,15 @@
 | *Comment* | Test Case: Hidden Email Address for Public wiki. Removed file upload test so IE and Safari will succeed. |  |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki verify user WAFL |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| click_ok | link=Edit |  |
+| open_ok | /%%he_ws%%/?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | `{user: %%he_mail%%}` |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| type_ok | st-newpage-pagename-edit | Hidden Email %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+| st-pause-click | 2000 | st-save-button-link |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki create comment |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
