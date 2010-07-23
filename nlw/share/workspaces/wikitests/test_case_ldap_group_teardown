@@ -1,7 +1,9 @@
 | *Comment* | Test Case: LDAP Group Teardown |
 | *Comment* | Test Case: LDAP Group Teardown Isolated as independent test for test purposes |
 
-| get-group-id | Motorhead | created_group_id |
-| delete-group | %%created_group_id%% |  |
+| *Comment* | Test Case: LDAP Group Teardown DON'T DELETE Motorhead GROUP, it messes up People Indexing |
+
+ get-group-id | Motorhead | created_group_id |
+delete-group | %%created_group_id%% | |
 
 | *Comment* | Test Case: LDAP Group Teardown COMPLETED |
