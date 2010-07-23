@@ -3,6 +3,9 @@ use strict;
 use warnings;
 use Fatal qw/open/;
 
+# This script should be used in coordination with
+# $Socialtext::SQL::COUNT_SQL=1 in your process under inspection;
+
 my $file = shift || "/tmp/sql-count";
 die "No such file: $file" unless -e $file;
 
