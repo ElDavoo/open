@@ -498,3 +498,4 @@ lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm
 t/wikitests/webhooks/signals.wiki
 t/Socialtext/Handler/Push-worker.t
 t/wikitests/signals/search-attachments.wiki
+t/Socialtext/Handler/Push-ldap.t
