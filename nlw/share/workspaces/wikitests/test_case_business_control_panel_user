@@ -68,20 +68,22 @@
 
 | *Comment* | Test case: Business Control Panel User test account table |  |
 | text_like | qr/%%new_acct%%.+Primary Account, Via Workspace: %%new_workspace%%/ism |  |
-| text_like | Socialtext Accounts Access? no |  |
-| text_like | Socialtext System Management Access? no |  |
-| click_and_Wait | //input[@value='Give Access to Socialtext Accounts'] |  |
-| text_like | Gave Socialtext Accounts access to %%cli_user%% |  |
-| text_like | Socialtext Accounts Access? yes |  |
-| click_and_wait | //input[@value='Remove Access to Socialtext Accounts'] |  |
-| text_like | Removed Socialtext Accounts access from %%cli_user%% |  |
-| text_like | Socialtext Accounts Access? no |  |
-| click_and_wait | //input[@value='Give Access to Socialtext System Management'] |  |
-| text_like | Gave Socialtext System Management access to %%cli_user%% |  |
-| text_like | Socialtext System Management Access? yes |  |
-| click_and_wait | //input[@value='Remove Access to Socialtext System Management'] |  |
-| text_like | Removed Socialtext System Management access from %%cli_user%% |  |
-| text_like | Socialtext System Management Access? no |  |
+| text_like | Appliance Business Administrator? no |  |
+| text_like | Appliance Technical Administrator? no |  |
+| click_and_Wait | //input[@value='Assign Appliance Business Administrator Role'] |  |
+| text_like | Assigned the Appliance Business Administrator role to %%cli_user%% |  |
+| text_like | Appliance Business Administrator? yes |  |
+| click_and_wait | //input[@value='Remove Appliance Business Administrator Role'] |  |
+| text_like | Removed the Appliance Business Administrator role from %%cli_user%% |  |
+| text_like | Appliance Business Administrator? no |  |
+| click_and_wait | //input[@value='Assign Appliance Technical Administrator Role'] |  |
+| text_like | Assigned the Appliance Technical Administrator role to
+
+%%cli_user%% |  |
+| text_like | Appliance Technical Administrator? yes |  |
+| click_and_wait | //input[@value='Remove Appliance Technical Administrator Role'] |  |
+| text_like | Removed the Appliance Technical Administrator role from %%cli_user%% |  |
+| text_like | Appliance Technical Administrator? no |  |
 
 | *Comment* | Test case: Business Control Panel User Search |  |
 | click_and_wait | link=Users |  |
