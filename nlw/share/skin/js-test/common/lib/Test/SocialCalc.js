@@ -72,7 +72,7 @@ proto.doClick = function(selector) {
 proto.doExec = function(cmd) {
     var t = this;
     return function() {
-        t.ss.editor.EditorScheduleSheetCommands(cmd);
+        t.ss.editor.EditorScheduleSheetCommands(cmd, true, true);
         t.callNextStepOnReady();
     };
 };
