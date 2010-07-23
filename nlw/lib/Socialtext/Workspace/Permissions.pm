@@ -15,6 +15,7 @@ use Socialtext::Permission qw( ST_EMAIL_IN_PERM ST_READ_PERM ST_EDIT_CONTROLS_PE
 use Socialtext::l10n qw(loc system_locale);
 use Socialtext::Exceptions qw( rethrow_exception );
 use Socialtext::Role;
+use Socialtext::Timer qw/time_scope/;
 
 our %AllowableRoles = map { $_ => 1 }
     qw/guest authenticated_user affiliate member admin impersonator/;
@@ -298,21 +299,22 @@ EOSQL
         my $role_id = $p{role}->role_id;
         my $perm_id = $p{permission}->permission_id;
 
-        my $cache_string = "$wksp_id-$role_id-$perm_id";
-        my $cached_perm = $self->cache->get($cache_string);
-        return $cached_perm ? 1 : 0 if defined $cached_perm;
+        my $cache_string = $wksp_id;
+        my $cached_perms = $self->cache->get($cache_string);
+        return $cached_perms->{$role_id}{$perm_id} ? 1 : 0 if defined $cached_perms;
 
-        my $sth = sql_execute(<<EOSQL, $wksp_id, $role_id, $perm_id);
-SELECT * FROM "WorkspaceRolePermission"
+        my $sth = sql_execute(<<EOSQL, $wksp_id);
+SELECT role_id, permission_id FROM "WorkspaceRolePermission"
     WHERE workspace_id = ?
-      AND role_id = ?
-      AND permission_id = ?
 EOSQL
 
-        my $perm = $sth->fetchall_arrayref->[0] ? 1 : 0;
+        my %perms;
+        for my $row (@{ $sth->fetchall_arrayref }) {
+            $perms{$row->[0]}{$row->[1]}++;
+        }
 
-        $self->cache->set($cache_string => $perm);
-        return $perm ? 1 : 0;
+        $self->cache->set($cache_string => \%perms);
+        return $perms{$role_id}{$perm_id} ? 1 : 0;
     }
 }
 
