@@ -201,6 +201,8 @@ sub RolesForUserInWorkspace {
         }
 
         if ($permission_id) {
+            # TODO: mapp the permission_id using
+            # Socialtext::Workspace::Permissions
             $where_filter .= qq{
                 AND EXISTS (
                     SELECT 1
