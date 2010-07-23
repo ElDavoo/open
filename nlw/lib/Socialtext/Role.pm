@@ -88,6 +88,7 @@ sub EnsureRequiredDataIsPresent {
             $role_cache{role_id}{$role->{role_id}} = $role;
             $role_cache{name}{$role->{name}} = $role;
         }
+        $seeded++;
     }
 
     sub _cache_clear {
