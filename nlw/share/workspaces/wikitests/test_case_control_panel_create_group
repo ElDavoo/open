@@ -36,7 +36,7 @@
 | *Comment* | Test Case: Control Panel Create Group. Pause for lightbox JS load to complete. |  |
 | pause | 5000 |  |
 | click_and_wait | st-group-create-submit |  |
-| wait_for_element_visible_ok | link=Add Group To An Account | 30000 |
+| wait_for_element_visible_ok | link=addToAccountLookahead | 30000 |
 | text_like | //body | Created By: %%short_username%% |
 | text_like | //body | %%CPgroupname%% |
 
@@ -176,10 +176,10 @@
 
 Former Add Users functionality tests. Delete if Add Users is gone, otherwise, restore:
 
- wait_for_element_visible_ok | link=Add Users | 30000 |
+wait_for_element_visible_ok | link=Add Users | 30000 |
 click_and_wait | link=Add Users | 30000 |
 
- *Comment* | Test Case: Control Panel Create Group - dumb hack 2 to avoid alert - select all, then clear all | |
+*Comment* | Test Case: Control Panel Create Group - dumb hack 2 to avoid alert - select all, then clear all | |
 wait_for_element_visible_ok | toggle_all_users | |
 check_ok | toggle_all_users | |
 is_checked_ok | toggle_all_users | |
@@ -187,7 +187,7 @@ wait_for_element_visible_ok | link=Clear Selection | |
 click_ok | link=Clear Selection | |
 wait_for_text_present_ok | 0 users selected | 30000 |
 
- *Comment* | Test Case: Control Panel Create Group - add members via add members link | |
+*Comment* | Test Case: Control Panel Create Group - add members via add members link | |
 wait_for_text_present_ok | Add users to %%groupname%% group | 30000 |
 wait_for_element_visible_ok | link=Return to %%groupname%% Group | 30000 |
 wait_for_element_visible_ok | st-username-search-submit | 30000 |
