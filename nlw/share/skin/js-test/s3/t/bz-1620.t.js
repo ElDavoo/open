@@ -13,7 +13,7 @@ t.runAsync([
     },
             
     function() { 
-        var rss_link = t.$('iframe[src*=local:people:profile_activities]').get(0).contentWindow.document.getElementById('rss_link');
+        var rss_link = t.$('iframe[src*=local:widgets:activities]').get(0).contentWindow.document.getElementById('rss_link');
 
         t.is(
             rss_link.getAttribute('target'),
