@@ -28,7 +28,6 @@ use Test::Socialtext;
 use Time::HiRes qw/gettimeofday tv_interval time/;
 use URI::Escape qw(uri_unescape uri_escape);
 use Data::Dumper;
-use MIME::Types;
 use List::MoreUtils qw(any);
 use Cwd;
 use HTTP::Request::Common;
@@ -957,22 +956,32 @@ sub create_workspace {
     return $ws;
 }
 
+
 sub purge_workspace {
     my $self = shift;
     my $name = shift;
+    my $del_users = shift;
+    $del_users = 1 unless defined($del_users);
 
     my $ws = Socialtext::Workspace->new(name => $name);
     unless ($ws) {
         die "Workspace $name doesn't already exist";
     }
 
-    my $users = $ws->users;
-    while (my $user = $users->next) {
-        sql_execute('DELETE FROM users WHERE user_id = ? CASCADE',
-            $user->user_id);
-    }
-    $ws->delete();
-    diag "Workspace $name was purged, along with all users in that workspace.";
+    if ($del_users) {
+        my $users = $ws->users;
+        while (my $user = $users->next) {
+            sql_execute('DELETE FROM users WHERE user_id = ? CASCADE',
+                $user->user_id);
+        }
+        $ws->delete();
+        diag "Workspace $name was purged, along with all users in that workspace.";
+    } else {
+        $ws->delete();
+        diag "Workspace $name was purged";
+    };
+
+
 }
 
 sub set_ws_permissions {

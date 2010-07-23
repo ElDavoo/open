@@ -188,6 +188,9 @@ sub timezone { $_[0] } # return ourself
 sub date_local { $_[1] } # return the date we passed in
 sub get_date   { $_[1] } # return the date we passed in
 
+# Authz plugin mocked up here
+sub authz { $_[0] } # return ourself
+
 sub registry_loaded { 1 }
 
 # Mock up the registry here

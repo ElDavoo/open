@@ -104,6 +104,7 @@ Create_from_row: {
     local *Socialtext::Paths::page_data_directory = sub { "/directory/$_[0]" };
     my $fake_path = '/directory/workspace_name/page_id/current_revision_id.txt';
     local $Socialtext::File::CONTENT{$fake_path} = "header\n\nfoo content\n";
+    $Socialtext::Page::Base::DISABLE_CACHING = 1;
     is $page->to_absolute_html, <<EOT;
 <div class="wiki">
 <p>

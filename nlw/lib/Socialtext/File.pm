@@ -497,9 +497,9 @@ finds a type that B<isn't> a "basic" type, that type is returned.  Otherwise,
 the function falls through to the next check.
 
 If a C<$file_extension> isn't given, this check is skipped.  The file extension
-is given as input to the C<MIME::Types> module.  If this check finds a type,
-that type is returned.  If no type is found, this function falls through to
-the next check.
+is given as input to the C<Socialtext::MIME::Types> module.  If this check finds
+a type, that type is returned.  If no type is found, this function falls through
+to the next check.
 
 If a C<$type_hint> isn't given, this check is skipped.  The type hint is for
 example what an uploading browser or external system considers this file to be
@@ -535,9 +535,8 @@ sub mime_type {
     if ($file_extension) {
         $file_extension =~ s/.+\.([^.]+)$/$1/;
         my $type = eval {
-            require MIME::Types;
-            my $mts = MIME::Types->new(only_complete => 1);
-            my $mt = $mts->mimeTypeOf(lc $file_extension);
+            require Socialtext::MIME::Types;
+            my $mt = Socialtext::MIME::Types::mimeTypeOf(lc $file_extension);
             $mt->type;
         };
         return $type if ($type);

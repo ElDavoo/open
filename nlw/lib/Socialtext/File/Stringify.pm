@@ -3,7 +3,7 @@ package Socialtext::File::Stringify;
 use strict;
 use warnings;
 
-use MIME::Types;
+use Socialtext::MIME::Types;
 use Socialtext::System;
 use Socialtext::File::Stringify::Default;
 use Socialtext::Encode;
@@ -43,7 +43,7 @@ sub to_string {
 
 sub _get_converter_for_file {
     my ( $class, $filename, $type ) = @_;
-    $type ||= MIME::Types->new->mimeTypeOf($filename);
+    $type ||= Socialtext::MIME::Types::mimeTypeOf($filename);
     return $class->_load_class_by_mime_type($type);
 }
 
@@ -103,7 +103,7 @@ overrides what MIME::Type would return.
 
 =head1 SEE ALSO
 
-L<MIME::Types>, L<Socialtext::File::Stringify::*>
+L<Socialtext::MIME::Types>, L<Socialtext::File::Stringify::*>
 
 =head1 AUTHOR
 

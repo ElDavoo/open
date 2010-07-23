@@ -53,7 +53,7 @@ sub signal_new {
 
 sub pagetags_changed {
     my ($self, $page, %p) = @_;
-    my $wksp = $self->hub->current_workspace;
+    my $wksp = $p{workspace} or die "workspace is mandatory!";
 
     Socialtext::WebHook->Add_webhooks(
         class         => 'page.tag',

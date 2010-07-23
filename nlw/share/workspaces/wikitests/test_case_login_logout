@@ -133,6 +133,5 @@
 
 | *Comment* | Test Case: Login/Logout TEARDOWN |  |
 | st-admin | remove-member --email %%inout_user%% --workspace %%workspace%% |  |
-| include | [Enable LDAP] |  |
 
 | *Comment* | Test case: Login/Logout COMPLETED |  |

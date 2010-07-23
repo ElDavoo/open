@@ -132,7 +132,6 @@ use Tie::Cache::LRU ();
 # packages above)
 use Socialtext::Async::HTTPD qw/http_server/;
 use Socialtext::Log qw/st_log/;
-use Socialtext::Async::Syslog; # patches st_log
 use Socialtext::NTLM::Config;
 use Apache::AuthenNTLM;
 

@@ -18,10 +18,11 @@ NOTE: every search should check for every search result
 
 | *Comment* | STARTING Test Case: stemming |  |
 | st-search | wikis | Pages matching 'wikis' |
-| st-result | 3 total |  |
+| st-result | 4 total |  |
 | st-result | Stemming test page 2 |  |
 | st-result | Announcements and Links |  |
 | st-result | Quick Start |  |
+| st-result |  Sample Excel 2007 file.xlsx |  |
 
 | st-search | fish | Pages matching 'fish' |
 | st-result | 1 total |  |

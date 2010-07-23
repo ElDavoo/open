@@ -594,127 +594,6 @@ sub get_sections {
     )
 }
 
-=head2 $page->get_units(%matches)
-
-Parse the wikitext of a page to find the units named in matches
-and push information about each matched unit onto a list that
-is returned as a reference.
-
-%matches is made up of key value pairs. The key is the name of a 
-valid L<Socialtext::Formatter::Unit>. The value is a 
-subroutine that returns a reference to a hash that may
-contain anything. The assumption is that it will contain
-information about the unit. See get_headers and get_sections
-for examples.
-
-=cut 
-
-sub get_units {
-    my $self    = shift;
-    my %matches = @_;
-    my @units;
-
-    my $chunker = sub {
-        my $content_ref = shift;
-        _chunk_it_up( $content_ref, sub {
-            my $chunk_ref = shift;
-            $self->_get_units_for_chunk(\%matches, $chunk_ref, \@units);
-        });
-    };
-
-    my $content = $self->content;
-    if ($self->is_spreadsheet) {
-        require Socialtext::Sheet;
-        my $sheet = Socialtext::Sheet->new(sheet_source => \$content);
-        my $valueformats = $sheet->_sheet->{valueformats};
-        for my $cell_name (@{ $sheet->cells }) {
-            my $cell = $sheet->cell($cell_name);
-
-            my $tvf_num = $cell->textvalueformat
-                || $sheet->{defaulttextvalueformat};
-            next unless defined $tvf_num;
-            my $format = $valueformats->[$tvf_num];
-            next unless defined $format;
-            next unless $format =~ m/^text-wiki/;
-
-            # The Socialtext::Formatter::Parser expects this content
-            # to end in a newline.  Without it no links will be found for
-            # simple pages.
-            $content = $cell->datavalue . "\n";
-
-            $chunker->(\$content);
-        }
-    }
-    else {
-        $chunker->(\$content);
-    }
-
-    return \@units;
-}
-
-sub _get_units_for_chunk {
-    my $self = shift;
-    my $matches = shift;
-    my $content_ref = shift;
-    my $units = shift;
-
-    my $parser = Socialtext::Formatter::Parser->new(
-        table      => $self->hub->formatter->table,
-        wafl_table => $self->hub->formatter->wafl_table
-    );
-    my $parsed_unit = $parser->text_to_parsed( $$content_ref );
-    {
-        no warnings 'once';
-        # When we use get_text to unwind the parse tree and give
-        # us the content of a unit that contains units, we need to
-        # make sure that we get the right stuff as get_text is
-        # called recursively. This insures we do.
-        local *Socialtext::Formatter::WaflPhrase::get_text = sub {
-            my $self = shift;
-            return $self->arguments;
-        };
-        my $sub = sub {
-            my $unit         = shift;
-            my $formatter_id = $unit->formatter_id;
-            if ( $matches->{$formatter_id} ) {
-                push @$units, $matches->{$formatter_id}($unit);
-            }
-        };
-        $self->traverse_page_units($parsed_unit->units, $sub);
-    }
-}
-
-=head2 $page->traverse_page_units($units, $sub)
-
-Traverse the parse tree of a page to perform the 
-actions described in $sub on each unit. $sub is
-passed the current unit.
-
-$units is usually the result of
-C<Socialtext::Formatter::text_to_parsed($content)->units>
-
-The upshot of that is that this method expects a 
-list of units, not a single unit. This makes it
-easy for it to be recursive.
-
-=cut
-# REVIEW: This should probably be somewhere other than Socialtext::Page
-# but where? Socialtext::Formatter? Socialtext::Formatter::Unit?
-sub traverse_page_units {
-    my $self  = shift;
-    my $units = shift;
-    my $sub   = shift;
-
-    foreach my $unit (@$units) {
-        if (ref $unit) {
-            $sub->($unit);
-            if ($unit->units) {
-                $self->traverse_page_units($unit->units, $sub);
-            }
-        }
-    }
-}
-
 =head2 $page->title( [$str] )
 
 Gets or sets the page title.  If the page title, or I<$str>, is not
@@ -801,6 +680,7 @@ sub add_tags {
         }
         $self->hub->pluggable->hook( 'nlw.page.tags_added',
             $self, tags_added => [sort keys %tags_added],
+            workspace => $self->hub->current_workspace,
         );
     }
 }
@@ -822,6 +702,7 @@ sub delete_tag {
         $self->store( user => $self->hub->current_user );
         $self->hub->pluggable->hook( 'nlw.page.tags_deleted',
             $self, tags_deleted => [$tag],
+            workspace => $self->hub->current_workspace,
         );
     }
 }
@@ -981,258 +862,6 @@ sub _perform_store_actions {
     $self->_cache_html();
 }
 
-sub _cache_html {
-    my $self = shift;
-    my $html_ref = shift;
-    return if $self->is_spreadsheet;
-
-    my $t = time_scope('cache_wt');
-
-    my $cur_ws = $self->hub->current_workspace;
-    my %cacheable_wafls = map { $_ => 1 } qw/
-        Socialtext::Formatter::TradeMark 
-        Socialtext::Formatter::Preformatted 
-        Socialtext::PageAnchorsWafl
-        Socialtext::Wikiwyg::FormattingTestRunAll
-        Socialtext::Wikiwyg::FormattingTest
-        Socialtext::ShortcutLinks::Wafl
-    /;
-    my %not_cacheable_wafls = map { $_ => 1 } qw/
-        Socialtext::Formatter::SpreadsheetInclusion
-        Socialtext::Formatter::PageInclusion
-        Socialtext::RecentChanges::Wafl
-        Socialtext::Category::Wafl
-        Socialtext::Search::Wafl
-    /;
-    my @cache_questions;
-    my %interwiki;
-    my %allows_html;
-    my %users;
-    my $expires_at;
-
-    {
-        no warnings 'redefine';
-        # Maybe in the future un-weaken the hub so this hack isn't needed. 
-        local *Socialtext::Formatter::WaflPhrase::hub = sub {
-            my $wafl = shift;
-            return $wafl->{hub} || $self->hub;
-        };
-        $self->get_units(
-            wafl_phrase => sub {
-                my $wafl = shift;
-
-                my $wafl_expiry = 0;
-                my $wafl_class = ref $wafl;
-
-                # Some short-circuts based on the wafl class
-                return if $cacheable_wafls{ $wafl_class };
-                if ($not_cacheable_wafls{$wafl_class}) {
-                    $expires_at = -1;
-                    return;
-                }
-
-                my $unknown = 0;
-                if ($wafl_class =~ m/(?:InterWikiLink|Image|File|HtmlPage|Toc|CSS)$/) {
-                    my ($ws_name) = $wafl->parse_wafl_reference;
-                    $interwiki{$ws_name}++;
-                }
-                elsif ($wafl_class =~ m/(?:TagLink|CategoryLink|WeblogLink)$/) {
-                    my ($ws_name) = $wafl->parse_wafl_category;
-                    $interwiki{$ws_name}++ if $ws_name;
-                }
-                elsif ($wafl_class eq 'Socialtext::FetchRSS::Wafl') {
-                    # Feeds are cached for 1 hour, so we can cache this render for 1h
-                    # There may be an edge case initially where a feed
-                    # ends up getting cached for at most 2 hours if the Question
-                    # had not yet been generated.
-                    $wafl_expiry = 3600;
-                }
-                elsif ($wafl_class eq 'Socialtext::GoogleSearchPlugin::Wafl') {
-                    # Cache google searches for 5 minutes
-                    $wafl_expiry = 300;
-                }
-                elsif ($wafl_class eq 'Socialtext::Pluggable::WaflPhrase') {
-                    if ($wafl->{method} eq 'user') {
-                        $users{$wafl->{arguments}}++ if $wafl->{arguments};
-                    }
-                    else {
-                        $unknown = 1;
-                    }
-                }
-                elsif ($wafl_class eq 'Socialtext::Date::Wafl') {
-                    # Must cache on date prefs
-                    my $prefs = $self->hub->preferences_object;
-
-                    # XXX We really only need to do this once per page.
-                    push @cache_questions, {
-                        date => join ',',
-                            $prefs->date_display_format->value,
-                            $prefs->time_display_12_24->value,
-                            $prefs->time_display_seconds->value,
-                            $prefs->timezone->value
-                    };
-                }
-                elsif ($wafl_class eq 'Socialtext::Category::Wafl') {
-                    if ($wafl->{method} =~ m/^(?:tag|category)_list$/) {
-                        # We do not cache tag list views
-                        $expires_at = -1;
-                    }
-                    else {
-                        $unknown = 1;
-                    }
-                }
-                else {
-                    $unknown = 1;
-                }
-
-                if ($unknown) {
-                    # For unknown wafls, set expiry to be a second ago so 
-                    # the page is never cached.
-                    warn "Unknown wafl phrase: " . ref($wafl) . ' - ' . $wafl->{method};
-                    $expires_at = -1;
-                }
-
-                if ($wafl_expiry) {
-                    # Keep track of the lowest expiry time.
-                    if (!$expires_at or $expires_at > $wafl_expiry) {
-                        $expires_at = $wafl_expiry;
-                    }
-                }
-            },
-            wafl_block => sub {
-                my $wafl = shift;
-                my $wafl_class = ref($wafl);
-                return if $cacheable_wafls{ $wafl_class };
-                if ($wafl->can('wafl_id') and $wafl->wafl_id eq 'html') {
-                    $allows_html{$cur_ws->workspace_id}++;
-                }
-                else {
-                    # Do not cache pages with unknown blocks present
-                    $expires_at = -1;
-                    warn "Unknown wafl block: " . ref($wafl);
-                }
-            },
-        );
-    }
-
-    delete $interwiki{ $cur_ws->name };
-    for my $ws_name (keys %interwiki) {
-        my $ws = Socialtext::Workspace->new(name => $ws_name);
-        push @cache_questions, { workspace => $ws } if $ws;
-    }
-    for my $ws_id (keys %allows_html) {
-        my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
-        push @cache_questions, { allows_html_wafl => $ws } if $ws;
-    }
-    for my $user_id (keys %users) {
-        push @cache_questions, { user_id => $user_id };
-    }
-    if (defined $expires_at) {
-        $expires_at += time();
-        push @cache_questions, { expires_at => $expires_at };
-    }
-    
-    eval {
-        $html_ref = $self->_cache_using_questions( \@cache_questions, $html_ref );
-    }; die "Failed to cache using questions: $@" if $@;
-
-    $self->_log_page_action();
-    return $html_ref;
-}
-
-sub _cache_using_questions {
-    my $self = shift;
-    my $questions = shift;
-    my $html_ref = shift;
-
-    my @short_q;
-    my @answers;
-    
-    # Do one pass looking for expiry Q's, as they are cheap to early-out
-    for my $q (@$questions) {
-        if (my $t = $q->{expires_at}) {
-            push @short_q, 'E' . $t;
-            # We just made it, so it's not expired yet
-            push @answers, 1;
-        }
-    }
-    for my $q (@$questions) {
-        my $ws;
-        if ($ws = $q->{workspace}) {
-            push @short_q, 'w' . $ws->workspace_id;
-            push @answers, $self->hub->authz->user_has_permission_for_workspace(
-                user => $self->hub->current_user,
-                permission => ST_READ_PERM,
-                workspace => $ws
-            ) ? 1 : 0;
-        }
-        elsif (my $user_id = $q->{user_id}) {
-            my $user = Socialtext::User->new(user_id => $user_id) or next;
-            push @short_q, 'u' . $user_id;
-            push @answers, 1; # All users are linkable.
-        }
-        elsif ($ws = $q->{allows_html_wafl}) {
-            push @short_q, 'h' . $ws->workspace_id;
-            push @answers, $ws->allows_html_wafl ? 1 : 0;
-        }
-        elsif (my $t = $q->{expires_at}) {
-            # Skip, it's handled above.
-        }
-        elsif (my $d = $q->{date}) {
-            $d =~ s/-/m/; # - is used as a field separator
-            push @short_q, 'd' . $d;
-            push @answers, 1;
-        }
-        else {
-            die "Unknown question: " . Dumper $q;
-        }
-    }
-
-    my $q_str = join '-', @short_q;
-    $q_str ||= 'null';
-
-    my $q_file = $self->_question_file or return;
-    Socialtext::File::set_contents_utf8_atomic($q_file, \$q_str) if $q_file;
-
-    $html_ref ||= \$self->to_html;
-    my $answer_str = join '-', map { $_ . '_' . shift(@answers) } @short_q;
-
-    my $cache_file = $self->_answer_file($answer_str);
-    if ($cache_file) {
-        Socialtext::File::set_contents_utf8_atomic($cache_file, $html_ref);
-    }
-    else {
-        warn "Answer string is too long - not writing $cache_file";
-    }
-    return $html_ref;
-}
-
-sub _log_page_action {
-    my $self = shift;
-
-    my $action = $self->hub->action || '';
-    my $clobber = eval { $self->hub->rest->query->param('clobber') };
-
-    return if $clobber
-        || $action eq 'submit_comment'
-        || $action eq 'attachments_upload';
-
-    if ($action eq 'edit_content' || $action eq 'rename_page') {
-         return unless ($self->restored || $self->revision_count == 1);
-    }
-
-    my $log_action = ($action eq 'delete_page') ? 'DELETE' : 'CREATE';
-    my $ws         = $self->hub->current_workspace;
-    my $user       = $self->hub->current_user;
-
-    st_log()->info("$log_action,PAGE,"
-                   . 'workspace:' . $ws->name . '(' . $ws->workspace_id . '),'
-                   . 'page:' . $self->id . ','
-                   . 'user:' . $user->username . '(' . $user->user_id . '),'
-                   . '[NA]'
-    );
-}
-
 sub update_db_metadata {
     my $self = shift;
     sql_txn { $self->_do_update_db_metadata() };
@@ -1335,13 +964,6 @@ sub is_system_page {
                $from eq $SYSTEM_EMAIL_ADDRESS
             or $from eq Socialtext::User->SystemUser()->email_address()
     );
-}
-
-sub content_or_default {
-    my $self = shift;
-    return $self->is_spreadsheet
-        ? ($self->content || loc('Creating a New Spreadsheet...') . '   ')
-        : ($self->content || loc('Replace this text with your own.') . '   ');
 }
 
 sub content {
@@ -1810,29 +1432,12 @@ sub _to_plain_text {
     }
 
     my $plain_text = '';
-    _chunk_it_up( \$content, sub {
+    Socialtext::Page::Base::_chunk_it_up( \$content, sub {
         my $chunk_ref = shift;
         $plain_text 
             .= $self->_to_socialtext_wikitext_parser_plain_text($$chunk_ref);
     });
     return $plain_text;
-}
-
-sub _chunk_it_up {
-    my $content_ref = shift;
-    my $callback    = shift;
-
-    # The WikiText::Parser doesn't yet handle really large chunks,
-    # so we should chunk this up ourself.
-    my $chunk_start = 0;
-    my $chunk_size  = 100 * 1024;
-    while (1) {
-        my $chunk = substr( $$content_ref, $chunk_start, $chunk_size );
-        last unless length $chunk;
-        $chunk_start += length $chunk;
-
-        $callback->(\$chunk);
-    }
 }
 
 sub _to_socialtext_formatter_parser_plain_text {
@@ -2059,11 +1664,16 @@ sub send_as_email {
     };
 
     if ($p{include_attachments}) {
-        my $prev_formatter = $self->hub->formatter;
+        my $prev_viewer = $self->hub->viewer;
         my $formatter = Socialtext::Pages::Formatter->new(hub => $self->hub);
-        $self->hub->formatter($formatter);
+        $self->hub->viewer->parser(
+            Socialtext::Formatter::Parser->new(
+                table => $formatter->table,
+                wafl_table => $formatter->wafl_table
+            )
+        );
         $body_content = $make_body_content->();
-        $self->hub->formatter($prev_formatter);
+        $self->hub->viewer($prev_viewer);
     }
     else {
         # If we don't have attachments, don't link to nonexistent "cid:" hrefs. {bz: 1418}

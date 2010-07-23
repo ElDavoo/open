@@ -267,11 +267,10 @@ sub html {
     return qq{<a href="$link">} . $self->label ."</a>"
         if $self->label;
 
-    my $alt_text = $image_name;
     my $widget = $self->wikitext;
 
     return
-        qq{<img alt="$alt_text" src="$link" widget="$widget" />};
+        qq{<img src="$link" alt="st-widget-$widget" />};
 }
 
 ################################################################################

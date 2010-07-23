@@ -27,6 +27,7 @@ Run these tests as the main user.
 
 | Comment    | Create and fetch the simplest possible page    |
 | edit_page  | %%workspace%%          | Test | Simplest page possible. |
+| fetch-page | Test                   | miss  |                         |
 | fetch-page | Test                   | hit  |                         |
 | body-like  | Simplest page possible |      |                         |
 
@@ -39,6 +40,7 @@ Run these tests as the main user.
 | Comment    | Create and fetch a page with an intra-ws link |
 | edit_page  | %%workspace%% | one_link | Alpha |
 | edit_page  | %%workspace%% | Test2 | This has [one link]. |
+| fetch-page | Test2         | miss   |                      |
 | fetch-page | Test2         | hit   |                      |
 | cache-created-ok | %%workspace%% |
 | question-file-is | Test2 | null |
@@ -56,15 +58,16 @@ Run these tests as the main user.
 
 | Comment    | Create and fetch a page with an intra-ws link wafl |
 | edit_page  | %%workspace%% | Test2 | This has {link: [one link]}. |
+| fetch-page | Test2         | miss   |                      |
 | fetch-page | Test2         | hit   |                      |
 | cache-created-ok | %%workspace%% |
 | question-file-is | Test2 | null |
 
-
 | Comment    | Create and fetch a page with an inter-ws link |
 | edit_page  | %%workspace%% | Test3 | See {link: %%ws2%% [this page]}. |
+| fetch-page | Test3         | miss   |                                  |
 | fetch-page | Test3         | hit   |                                  |
-| body-like  | href="/%%ws2%%/index.cgi?this%20page">this page</a> |
+| body-like  | /data/workspaces/%%ws2%%/pages/this%20page">this page</a> |
 
 | cache-created-ok | %%workspace%% |
 | question-file-is | Test3 | w%%ws2_id%% |
@@ -89,6 +92,7 @@ Run these tests as the main user.
 | Comment  | Allows HTML wafl preference                              |
 | st-admin | set-workspace-config -w %%workspace%% allows_html_wafl 1 |
 | edit_page  | %%workspace%% | Test4 | Test\n.html\n<strong>hai</strong>\n.html\n |
+| fetch-page       | Test4         | miss   |             |
 | fetch-page       | Test4         | hit   |             |
 | question-file-is | Test4 | h%%ws1_id%% |
 | body-like   | <div class="wafl_block"><strong>hai</strong>             |      |
@@ -103,22 +107,26 @@ Run these tests as the main user.
 | fetch-page  | Test4                                                    | hit  |
 | body-like   | <div class="wafl_block"><strong>hai</strong>             |      |
 
-
 | Comment            | RSS Feeds     |         |      |
 | edit-page          | %%workspace%% | RSSTest | {fetchrss: http://www.socialtext.com/blog/atom.xml} |
+| fetch-page         | RSSTest | miss      |
 | fetch-page         | RSSTest | hit      |
-| question-file-like | RSSTest | qr/E\d+/ |
+| question-file-like | RSSTest | qr/^E\d+$/ |
 | set-question-file  | RSSTest | E5440    |
 | fetch-page         | RSSTest | miss     |
+| fetch-page         | RSSTest | miss     |
+| fetch-page         | RSSTest | hit      |
 | fetch-page         | RSSTest | hit      |
 
 | Comment            | Google searches |
 | edit-page          | %%workspace%% | GoogleTest | {googlesearch: Socialtext} |
+| fetch-page         | GoogleTest | miss      |
 | fetch-page         | GoogleTest | hit      |
 | question-file-like | RSSTest | qr/E\d+/ |
 
 | Comment   | User Wafls are visible to everyone. |
 | edit-page | %%workspace%% | usertest | Hi {user: %%foo_user_id%%} |
+| fetch-page | usertest                        | miss |
 | fetch-page | usertest                        | hit |
 | body-like  | <span class="person authorized" |     |
 | question-file-is | usertest                          | u%%foo_user_id%% |
@@ -130,6 +138,7 @@ Run these tests as the main user.
 | Comment | Change a users details should clear cache |
 | edit_page | %%workspace%% | userchange | {user: %%user1_id%%} |
 | question-file-is | userchange  | u%%user1_id%% |
+| fetch-page | userchange | miss | |
 | fetch-page | userchange | hit | |
 | body-like | user %%start_time%% |
 | sleep | 1 |
@@ -155,39 +164,55 @@ Run these tests as the main user.
 | post | %%attach_url%%?name=test.css | %%hdrs%% | CSS goes here. |
 | code-is          | 201           |      |                                          |
 | edit-page        | %%workspace%% | att  | {file: test.html}                        |
+| fetch-page       | att           | miss  |                                          |
 | fetch-page       | att           | hit  |                                          |
-| question-file-is | att           | null |                                          |
+| question-file-is | att           | a%%workspace%% wksp_%%start_time%% test.html |    |
+
 | edit-page        | %%workspace%% | att  | {html_page: test.html} {file: test.html} |
+| fetch-page       | att           | miss  |                                          |
 | fetch-page       | att           | hit  |                                          |
-| question-file-is | att           | null |                                          |
+| question-file-is | att           | a%%workspace%% wksp_%%start_time%% test.html |    |
 | edit-page        | %%workspace%% | att  | {css_include: test.css}                  |
+| fetch-page       | att           | miss  |                                          |
 | fetch-page       | att           | hit  |                                          |
-| question-file-is | att           | null |                                          |
+| question-file-is | att           | a%%workspace%% wksp_%%start_time%% test.css |    |
 
 | Comment | Image, File and html_page wafls on interworkspace page |
 | edit-page | %%ws2%% | att | This page has no attachments yet. |
+| edit-page        | %%workspace%% | att         | {file: %%ws2%% [att] test.html} |
+| fetch-page       | att           | miss         |                                 |
+| body-like | wafl_existence_error |
+| fetch-page       | att           | hit         |                                 |
+| body-like | wafl_existence_error |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
 | set | attach_url | /data/workspaces/%%ws2%%/pages/att/attachments |
 | set | hdrs | Content-Type=text/html |
 | post | %%attach_url%%?name=test.html | %%hdrs%% | <strong>Hi</strong> |
 | code-is          | 201           |             |                                 |
-| edit-page        | %%workspace%% | att         | {file: %%ws2%% [att] test.html} |
+| fetch-page       | att           | miss         |                                 |
+| body-unlike | wafl_existence_error |
 | fetch-page       | att           | hit         |                                 |
-| question-file-is | att           | w%%ws2_id%% |                                 |
+| body-unlike | wafl_existence_error |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
 | edit-page        | %%workspace%% | att         | {html_page: %%ws2%% [att] test.html} |
+| fetch-page       | att           | miss         |                                 |
 | fetch-page       | att           | hit         |                                 |
-| question-file-is | att           | w%%ws2_id%% |                                 |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
 | edit-page        | %%workspace%% | att         | {html_page: %%ws2%% [att] test.html} {file: %%ws2%% [att] test.html} ||
+| fetch-page       | att           | miss         |                                 |
 | fetch-page       | att           | hit         |                                 |
-| question-file-is | att           | w%%ws2_id%% |                                 |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
 
 | Comment | TOC wafls on the current page |
 | edit-page | %%workspace%% | toc | {toc: }\n^ Header One\n |
+| fetch-page | toc | miss |
 | fetch-page | toc | hit |
 | question-file-is | toc | null |
 
 | Comment | TOC wafls on a page in another workspace |
 | edit-page        | %%ws2%%       | othertoc    | ^ ONe\n\n^ Two              |
 | edit-page        | %%workspace%% | toc         | {toc: %%ws2%% [othertoc]}\n |
+| fetch-page       | toc           | miss         |                             |
 | fetch-page       | toc           | hit         |                             |
 | question-file-is | toc           | w%%ws2_id%% |                             |
 
@@ -195,25 +220,31 @@ These tag/category/weblog wafls just generate a link, so we can safely cache the
 
 | Comment          | Tag Wafl      |      |                |
 | edit-page        | %%workspace%% | tags | {tag: welcome} |
+| fetch-page       | tags          | miss  |                |
 | fetch-page       | tags          | hit  |                |
 | question-file-is | tags           | null |                |
 | edit-page        | %%workspace%% | tags | {tag: %%ws2%%; welcome} |
+| fetch-page       | tags          | miss  |                |
 | fetch-page       | tags          | hit  |                |
 | question-file-is | tags           | w%%ws2_id%% |                |
 
 | Comment          | Category Wafl      |      |                |
 | edit-page        | %%workspace%% | category | {category: welcome} |
+| fetch-page       | category          | miss  |                |
 | fetch-page       | category          | hit  |                |
 | question-file-is | category           | null |                |
 | edit-page        | %%workspace%% | category | {category: %%ws2%%; welcome} |
+| fetch-page       | category          | miss  |                |
 | fetch-page       | category          | hit  |                |
 | question-file-is | category           | w%%ws2_id%% |                |
 
 | Comment          | Weblog Wafl      |      |                |
 | edit-page        | %%workspace%% | weblog | {weblog: welcome} |
+| fetch-page       | weblog          | miss  |                |
 | fetch-page       | weblog          | hit  |                |
 | question-file-is | weblog           | null |                |
 | edit-page        | %%workspace%% | weblog | {weblog: %%ws2%%; welcome} |
+| fetch-page       | weblog          | miss  |                |
 | fetch-page       | weblog          | hit  |                |
 | question-file-is | weblog           | w%%ws2_id%% |                |
 
@@ -254,6 +285,7 @@ Caching bugs for changing non-wikitext state.
 | Comment | Incipient links |
 | st-clear-jobs | |
 | edit-page | %%workspace%% | linker | Hey there [no page] |
+| fetch-page | linker | miss |
 | fetch-page | linker | hit |
 | body-like | is_incipient=1 |
 | comment | now create the incipient page, it should invalidate cache |

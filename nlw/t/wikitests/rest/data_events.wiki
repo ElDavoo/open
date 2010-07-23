@@ -360,6 +360,27 @@ Tester One</a></span>            <span class="ago_raw" style="display:none">2009
 | body-like  | "tag_name":"ldaptaggy"                              |                                                                                                                                 |
 | body-like  | qr/"actor":{[^}]*"best_full_name":"Dev Null Three"/ |                                                                                                                                 |
 
+| *Comment* | Test events with topics to purged-ws disappear {bz: 4132} |
+| set | gone_workspace | gone_workspace%%start_time%% |
+| create-workspace | %%gone_workspace%% | %%testers%% |
+| add-member | %%tester1%% | %%gone_workspace%% |
+| set | gone_workspace_id | %%workspace_id%% |
+
+| http-user-pass | %%tester1%%              | password                                   |             |
+| edit-page | %%gone_workspace%% | foobar | This is some content |
+| st-clear-events |
+| post-signal | This is a refernce to {link: %%gone_workspace%% [foobar]} |
+| get        | /data/events           | application/json |
+| code-is    | 200                    |                  |
+| json-parse |
+| json-array-size | 1 |
+| json-path-is | $[0].action | signal |
+| purge-workspace | %%gone_workspace%% | 0 |
+| get        | /data/events           | application/json |
+| code-is    | 200                    |                  |
+| json-parse |
+| json-array-size | 0 |
+
 | *Comment*      | ensure /data/events?event_class=person respects plugin enabledness | .                |
 | http-user-pass | %%tester1%%                                                        | password         |
 | st-admin       | disable-plugin --plugin people --account %%testers%%               |                  |

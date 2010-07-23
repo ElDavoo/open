@@ -2185,7 +2185,7 @@ proto.setWidgetHandlers = function() {
 
     var $$ = jQuery;
     jQuery(doc, win).mouseup(function(e) {
-        if (!$$(e.target).is("img[widget]")) return true;
+        if (!$$(e.target).is("img[alt|=st-widget-]")) return true;
         self.currentWidget = self.parseWidgetElement(e.target);
         var id = self.currentWidget.id;  
         if (widget_data[id] && widget_data[id].uneditable) {
@@ -2198,8 +2198,8 @@ proto.setWidgetHandlers = function() {
 }
 
 proto.setWidgetHandler = function(img) {
-    var widget = img.getAttribute('widget');
-    if (! widget) return;
+    var widget = img.getAttribute('alt');
+    if (! /^st-widget-/.test(widget)) return;
     this.currentWidget = this.parseWidgetElement(img);
     this.currentWidget = this.setTitleAndId(this.currentWidget);
     this.attachTooltip(img);
@@ -2220,7 +2220,7 @@ proto.revert_widget_images = function() {
         for (var i=0, l = imgs.length; i < l; i++) {
             var img = imgs[i];
 
-            if (!img.getAttribute("widget")) { continue; }
+            if (! /^st-widget-/.test(img.getAttribute('alt'))) { continue; }
 
             img.removeAttribute("style");
             img.removeAttribute("width");
@@ -2294,7 +2294,7 @@ proto.reclaim_element_registry_space = function() {
         var found = false;
         for (var j = 0; j < imgs.length; j++) {
             var img = imgs[j];
-            if (!img.getAttribute("widget")) { continue; }
+            if (! /^st-widget-/.test(img.getAttribute('alt'))) { continue; }
             if (wikiwyg_widgets_element_registry[i] == img) {
                 found = true;
                 break;
@@ -2390,7 +2390,7 @@ proto.setTitleAndId = function (widget) {
 }
 
 proto.parseWidgetElement = function(element) {
-    var widget = element.getAttribute('widget');
+    var widget = element.getAttribute('alt').replace(/^st-widget-/, '');
     if (Wikiwyg.is_ie) widget = Wikiwyg.htmlUnescape( widget );
     return this.parseWidget(widget);
 }
@@ -2602,7 +2602,7 @@ proto.replace_widget = function(elem) {
 
     widget_image = Wikiwyg.createElementWithAttrs('img', {
         'src': src,
-        'widget': Wikiwyg.is_ie? Wikiwyg.htmlEscape(widget) : widget
+        'alt': 'st-widget-' + (Wikiwyg.is_ie? Wikiwyg.htmlEscape(widget) : widget)
     });
     elem.parentNode.replaceChild(widget_image, elem);
     return widget_image;
@@ -2667,14 +2667,15 @@ proto.insert_image = function (src, widget, widget_element, cb) {
     }
 
     html += ' src="' + src +
-        '" widget="' + widget.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;") + '" />';
+        '" alt="st-widget-' + widget.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;") + '" />';
     if ( widget_element ) {
         if ( widget_element.parentNode ) {
-            var div = this.get_edit_document().createElement("div");
-            div.innerHTML = html;
-
-            var new_widget_element = div.firstChild;
-            widget_element.parentNode.replaceChild(new_widget_element, widget_element);
+            if (widget_element.getAttribute('alt') == 'st-widget-' + widget) {
+                // Do nothing - The widget was not modified.
+            }
+            else {
+                $(widget_element).replaceWith(html);
+            }
         }
         else {
             this.insert_html(html);

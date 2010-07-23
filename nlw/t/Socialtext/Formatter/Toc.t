@@ -15,9 +15,9 @@ fixtures('admin','foobar','public','destructive');
 
 use Socialtext::Pages;
 
-my $admin  = new_hub('admin');
-my $foobar = new_hub('foobar');
-my $public = new_hub('public');
+my $admin  = new_hub('admin'); $admin->action('test');
+my $foobar = new_hub('foobar'); $foobar->action('test');
+my $public = new_hub('public'); $public->action('test');
 
 my $page_one = Socialtext::Page->new( hub => $admin )->create(
     title   => 'target one',
@@ -107,10 +107,14 @@ EOF
 );
 
 $admin->pages->current($page_two);
+$admin->viewer->page_id($page_two->id);
+$page_two->delete_cached_html;
+
 my $html_two = $page_two->to_html_or_default();
 like $html_two,
-    qr{<div class="wafl_title">\s*Contents\s*</div>}sm,
+    qr{<div class="wafl_title">\s*Contents\s*}sm,
     'page two has a title for the first table of contents';
+
 like $html_two,
     qr{<div class="wafl_title">\s*Contents: <a.*>target one<\/a>.*</div>}sm,
     'page two has a title for the remote table of contents';

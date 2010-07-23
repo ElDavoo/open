@@ -5,7 +5,7 @@ use warnings;
 use base 'Exporter';
 
 our @EXPORT_OK = qw/get_contents set_contents catdir
-                    get_contents_utf8 set_contents_utf8/;
+                    get_contents_utf8 set_contents_utf8 set_contents_utf8_atomic/;
 
 our %CONTENT;
 our %SYMLINK;
@@ -29,6 +29,7 @@ sub set_contents {
 
 sub get_contents_utf8 { get_contents(@_) }
 sub set_contents_utf8 { set_contents(@_) }
+sub set_contents_utf8_atomic { set_contents(@_) }
 
 sub catdir { join('/',@_) }
 sub catfile { join('/',@_) }

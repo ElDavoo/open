@@ -16,9 +16,9 @@ use Encode         ();
 use File::Basename ();
 use File::Slurp    ();
 use List::Util qw(first);
-use MIME::Types;
 use Readonly;
 use Socialtext::Exceptions qw( param_error );
+use Socialtext::MIME::Types;
 use Socialtext::Validate
     qw( validate SCALAR_TYPE ARRAYREF_TYPE HASHREF_TYPE SCALAR_OR_ARRAYREF_TYPE BOOLEAN_TYPE );
 use vars qw[$SendClass];
@@ -77,7 +77,7 @@ $SendClass                       = 'Sendmail';
         return Email::MIME->create(
             header     => [ 'Content-Id' => $content_id ],
             attributes => {
-                content_type => MIME::Types->new()->mimeTypeOf($file),
+                content_type => Socialtext::MIME::Types::mimeTypeOf($file),
                 charset      => '',
                 disposition  => 'attachment',
                 encoding     => 'base64',

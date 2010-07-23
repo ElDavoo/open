@@ -16,7 +16,6 @@ use File::Path ();
 use File::Temp ();
 use IPC::Run qw/run/;
 use List::MoreUtils ();
-use MIME::Types;
 use Socialtext;
 use Socialtext::AppConfig;
 use Socialtext::EmailAlias;
@@ -37,6 +36,7 @@ use Socialtext::Cache;
 use Socialtext::Permission qw( ST_EMAIL_IN_PERM ST_READ_PERM ST_IMPERSONATE_PERM );
 use Socialtext::Role;
 use Socialtext::URI;
+use Socialtext::MIME::Types;
 use Socialtext::MultiCursor;
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
@@ -875,7 +875,7 @@ sub logo_filename {
         my $self = shift;
         my %p = @_;
 
-        my $mime_type = MIME::Types->new()->mimeTypeOf( $p{filename} );
+        my $mime_type = Socialtext::MIME::Types::mimeTypeOf($p{filename});
         unless ( $mime_type and $ValidTypes{$mime_type} ) {
             data_validation_error errors => [ loc("Logo file must be a gif, jpeg, or png file.") ];
         }

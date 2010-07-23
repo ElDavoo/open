@@ -62,6 +62,8 @@ sub dump_signal {
         group_ids => $signal->group_ids,
         account_ids => $signal->account_ids,
         attachments => $signal->attachments,
+        page_ids => undef,
+        workspace_names => undef,
     };
     return $data;
 }

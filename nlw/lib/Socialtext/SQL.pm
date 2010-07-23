@@ -139,6 +139,7 @@ Forces the DBI connection to close.  Useful for scripts to avoid deadlocks.
         }
         $DBH->disconnect if $DBH;
         undef $DBH;
+        undef $NEEDS_PING;
         return;
     }
 

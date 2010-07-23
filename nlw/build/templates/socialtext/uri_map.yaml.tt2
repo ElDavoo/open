@@ -10,7 +10,7 @@
             '*/*':     &default [Test::Socialtext::Rest, GET]
         '*':                    [Test::Socialtext::Rest, bad_method]
 -
-    '/js/:type/:name/:file':
+    '/js/:type/:name/:__file__':
         'GET':
             '*/*':     &default [Socialtext::Handler::JavaScript, GET]
         '*':                    [Socialtext::Handler::JavaScript, bad_method]

@@ -46,8 +46,9 @@ has 'homunculus' => (
         display_name
         password_is_correct
         has_valid_password
-        driver_name
         is_profile_hidden
+        driver_name
+        driver_unique_id
     )],
 );
 

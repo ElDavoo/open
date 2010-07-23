@@ -2,7 +2,6 @@
 package Socialtext::Attachments;
 use strict;
 use warnings;
-
 use base 'Socialtext::Base';
 
 use Carp ();
@@ -20,6 +19,7 @@ use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE HANDLE_TYPE USER_
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::Cache;
 use Memoize;
+use Guard qw/scope_guard/;
 
 sub class_id { 'attachments' }
 
@@ -60,6 +60,31 @@ sub all {
     $self->cache->set("hub:$cache_key" => $self->hub);
 
     return \@attachment_set;
+}
+
+sub attachment_exists {
+    my $self = shift;
+    my ($workspace, $page_id, $filename) = @_;
+
+    my $old_ws = $self->hub->current_workspace;
+    my $g = scope_guard { $self->hub->current_workspace($old_ws) };
+
+    use Socialtext::Permission 'ST_READ_PERM';
+    my $ws = Socialtext::Workspace->new(name => $workspace);
+    return 0 unless $ws && $self->hub->authz->user_has_permission_for_workspace(
+            user       => $self->hub->current_user,
+            permission => ST_READ_PERM,
+            workspace  => $ws,
+        );
+
+    $self->hub->current_workspace($ws);
+    my $attachments = $self->all(page_id => $page_id);
+    for my $att (@$attachments) {
+        if ($att->filename eq lc($filename)) {
+            return $att->exists || 0;
+        }
+    }
+    return 0;
 }
 
 sub index {

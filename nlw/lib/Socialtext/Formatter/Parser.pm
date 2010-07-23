@@ -181,6 +181,7 @@ sub cache_dir {
 
     # XXX Do we need to check available disk space?
     # XXX Do we use Cache::Cache?
+
     my $cache_dir = Socialtext::AppConfig->formatter_cache_dir . "/$ws_id";
     File::Path::mkpath($cache_dir) unless -d $cache_dir;
     return $cache_dir;

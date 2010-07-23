@@ -147,7 +147,7 @@ sub _default_code_base {
         my $base = File::Basename::dirname(__FILE__);
 
         my $dir = Cwd::abs_path( 
-            File::Spec->catdir( $ENV{ST_SRC_BASE}, 'current', 'nlw' )
+            File::Spec->catdir( $ENV{ST_SRC_BASE}, 'socialtext', 'nlw' )
         );
 
         return $dir if defined $dir && -d $dir;

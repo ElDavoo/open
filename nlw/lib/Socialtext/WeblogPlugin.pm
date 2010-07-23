@@ -11,6 +11,7 @@ use URI;
 use URI::QueryParam;
 use Socialtext::l10n qw( loc );
 use Encode;
+use Socialtext::Log qw(st_log);
 use Socialtext::String ();
 use Socialtext::Timer qw/time_scope/;
 use utf8;
@@ -285,6 +286,7 @@ sub weblog_display {
         my $p = $self->preferences->weblog_depth;
         my $largest_depth = $p->choices->[-2];
         if ($weblog_limit > $largest_depth) {
+            st_log->info("too many weblog entries requested ($weblog_limit); limiting to $largest_depth entries");
             $weblog_limit = $largest_depth;
         }
     }
@@ -402,12 +404,12 @@ sub get_entries {
     my $attachments = $self->hub->attachments;
     my @entries;
 
-    my @page = $self->hub->category->get_pages_numeric_range(
+    my @pages = $self->hub->category->get_pages_numeric_range(
         $weblog_id, $start, $start + $limit,
         ( $self->hub->current_workspace->sort_weblogs_by_create ? 'create' : 'update' ),
     );
 
-    for my $page (@page) {
+    for my $page (@pages) {
         my $entry = $self->format_page_for_entry(
             no_post => $no_post,
             page => $page,

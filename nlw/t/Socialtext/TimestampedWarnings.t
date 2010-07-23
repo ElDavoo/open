@@ -1,4 +1,6 @@
-#!perl
+#!/usr/bin/perl
+use warnings;
+use strict;
 # @COPYRIGHT@
 use Test::More tests => 5;
 use Test::Output;

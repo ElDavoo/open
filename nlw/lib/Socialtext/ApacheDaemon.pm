@@ -26,11 +26,11 @@ Readonly my $TOTAL_SECONDS_TO_WAIT            => 25;
 
 Readonly my $BIN_DIR => '/usr/sbin';
 Readonly my %BINARY => (
-    'nginx'     => 'nginx',
+    'nginx'       => 'nginx',
     'apache-perl' => 'apache',
 );
 Readonly my %ENV_OVERRIDE => (
-    'nginx'     => 'NLW_NGINX_PATH',
+    'nginx'       => 'NLW_NGINX_PATH',
     'apache-perl' => 'NLW_APACHE_PATH',
 );
 
