@@ -5,7 +5,7 @@
 | set | cli_user | cli_test%%start_time%%@ken.socialtext.net |
 
 | st-admin | create-account --name '%%new_acct%%' |  |
-| st-admin | create-workspace --name %%new_workspace%% --title %%new_workspace%% --account '%%new_acct%%' |  |
+| st-admin | create-workspace --empty --name %%new_workspace%% --title %%new_workspace%% --account '%%new_acct%%' |  |
 
 | *Comment* | Test case: Business Control Panel Workspace Verify workspace in account |  |
 

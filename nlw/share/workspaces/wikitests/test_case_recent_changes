@@ -4,7 +4,7 @@
 | set | newtitle | recent %%start_time%% |
 
 | *Comment* | Test Case: Recent Changes. Create a target workspace |  |
-| st-admin | create-workspace --name %%newspace%% --title "%%newtitle%%" --empty | A new workspace named "%%newspace%%" was created. |
+| st-admin | create-workspace --empty --name %%newspace%% --title "%%newtitle%%" --empty | A new workspace named "%%newspace%%" was created. |
 | st-admin | add-member --email %%email%% --workspace %%newspace%% | qr/%%username%% now has the role of 'member' in the %%newspace%% Workspace/ism |
 
 | *Comment* | Test Case: Recent Changes. Create a page |  |

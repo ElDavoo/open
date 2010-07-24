@@ -7,8 +7,6 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | st-newpage-pagename-edit | Connections TestPage %%start_time%% |
 
-| *Comment* | Test Case: Connections. Technorati decommissioned |
-
 | type_ok | wikiwyg_wikitext_textarea | `FetchRSS Test\n{fetchrss: http://feeds.feedburner.com/ross}\n*AIM.* aim:example *Yahoo!* *alternatively:* ymsgr:example yahoo:example *Skype.* *alternatively:* callto:example skype:example Googlesearch\n{googlesearch: example}\n` |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |

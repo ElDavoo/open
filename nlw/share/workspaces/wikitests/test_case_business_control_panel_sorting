@@ -4,12 +4,12 @@
 | st-admin | create-account --name "0 sort 2 account %%start_time%%" | was created |
 | st-admin | create-account --name "0 sort 3 account %%start_time%%" | was created |
 
-| st-admin | create-workspace --name 0-sort-1-workspace1-%%start_time%% --title "0 sort 1 workspace1 %%start_time%%" --account "0 sort 1 account %%start_time%%" |  |
-| st-admin | create-workspace --name 0-sort-2-workspace1-%%start_time%% --title "0 sort 2 workspace1 %%start_time%%" --account "0 sort 2 account %%start_time%%" |  |
-| st-admin | create-workspace --name 0-sort-3-workspace1-%%start_time%% --title "0 sort 3 workspace1 %%start_time%%" --account "0 sort 3 account %%start_time%%" |  |
-| st-admin | create-workspace --name 0-sort-2-workspace2-%%start_time%% --title "0 sort 2 workspace2 %%start_time%%" --account "0 sort 2 account %%start_time%%" |  |
-| st-admin | create-workspace --name 0-sort-3-workspace2-%%start_time%% --title "0 sort 3 workspace2 %%start_time%%" --account "0 sort 3 account %%start_time%%" |  |
-| st-admin | create-workspace --name 0-sort-3-workspace3-%%start_time%% --title "0 sort 3 workspace3 %%start_time%%" --account "0 sort 3 account %%start_time%%" |  |
+| st-admin | create-workspace --empty --name 0-sort-1-workspace1-%%start_time%% --title "0 sort 1 workspace1 %%start_time%%" --account "0 sort 1 account %%start_time%%" |  |
+| st-admin | create-workspace --empty --name 0-sort-2-workspace1-%%start_time%% --title "0 sort 2 workspace1 %%start_time%%" --account "0 sort 2 account %%start_time%%" |  |
+| st-admin | create-workspace --empty --name 0-sort-3-workspace1-%%start_time%% --title "0 sort 3 workspace1 %%start_time%%" --account "0 sort 3 account %%start_time%%" |  |
+| st-admin | create-workspace --empty --name 0-sort-2-workspace2-%%start_time%% --title "0 sort 2 workspace2 %%start_time%%" --account "0 sort 2 account %%start_time%%" |  |
+| st-admin | create-workspace --empty --name 0-sort-3-workspace2-%%start_time%% --title "0 sort 3 workspace2 %%start_time%%" --account "0 sort 3 account %%start_time%%" |  |
+| st-admin | create-workspace --empty --name 0-sort-3-workspace3-%%start_time%% --title "0 sort 3 workspace3 %%start_time%%" --account "0 sort 3 account %%start_time%%" |  |
 
 | st-admin | create-user --email 0_sort_1_user1@%%start_time%%.com --password sort1user1 --first-name "0 sort 11" --last-name "0 user 11" |
 | st-admin | create-user --email 0_sort_2_user1@%%start_time%%.com --password sort2user1 --first-name "0 sort 21" --last-name "0 user 21" |

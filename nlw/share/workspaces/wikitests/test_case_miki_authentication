@@ -6,7 +6,7 @@ that follow it. So we do this test in a scratch workspace instead
 
 | *Comment* | Test Case: Miki Authentication setup |  |
 | set | miki_space | miki-%%start_time%% |
-| st-admin | create-workspace --name %%miki_space%% --title "Miki %%start_time%%" |  |
+| st-admin | create-workspace --empty --name %%miki_space%% --title "Miki %%start_time%%" |  |
 | st-admin | add-workspace-admin --workspace %%miki_space%% --email %%email%% |  |
 
 | *Comment* | Test Case: Miki Authentication Login and Logout from Miki/Lite UI |  |

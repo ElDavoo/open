@@ -16,7 +16,7 @@ TODO: there seems to be some weirdness indexing usernames that end in a string o
 | set | pagetag | pagetag |
 | set | wrkspc | acwidg-tags-ws%%start_time%% |
 
-| st-admin | create-workspace --name %%wrkspc%% --title %%wrkspc%% |  |
+| st-admin | create-workspace --empty --name %%wrkspc%% --title %%wrkspc%% |  |
 | st-admin | create-user --email %%tagginguser%% --password %%password%% |  |
 | st-admin | create-user --email %%taguser%% --password %%password%% |  |
 | st-admin | add-member --email %%tagginguser%% --workspace %%wrkspc%% |  |

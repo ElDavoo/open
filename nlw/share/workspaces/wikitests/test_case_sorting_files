@@ -18,7 +18,7 @@
 | set | sorting_workspace | sorting-data-%%start_time%% |
 
 | *Comment* | Test Case: Sorting Files Create new ws sorting-data-%%start_time%% |  |
-| st-admin | create-workspace --name %%sorting_workspace%% --title %%sorting_workspace%% --empty | A new workspace named "%%sorting_workspace%%" was created. |
+| st-admin | create-workspace --empty --name %%sorting_workspace%% --title %%sorting_workspace%% --empty | A new workspace named "%%sorting_workspace%%" was created. |
 
 | *Comment* | Test Case: Sorting Files. Adding %%email%% so you can login to this workspace |  |
 | st-admin | add-workspace-admin --e %%email%% --w %%sorting_workspace%% |  |

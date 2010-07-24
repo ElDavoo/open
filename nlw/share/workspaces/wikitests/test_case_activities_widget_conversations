@@ -18,7 +18,7 @@
 | set | notconvpage | notconvpage%%start_time%% |
 | set | notconvpagetwo | notconvpagetwo%%start_time%% |
 
-| st-admin | create-workspace --name %%wrkspc%% --title %%wrkspc%% |  |
+| st-admin | create-workspace --empty --name %%wrkspc%% --title %%wrkspc%% |  |
 | st-admin | create-user --email %%convuser%% --password %%password%% |  |
 | st-admin | create-user --email %%isolateduser%% --password %%password%% |  |
 | st-admin | create-user --email %%actor%% --password %%password%% |  |

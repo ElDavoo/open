@@ -3,9 +3,13 @@
 | *Comment* | A testset solely for the purpose of enabling LDAP from other testsets. |  |
 | *Comment* | Always makes default LDAP user devnullx a workspace admin in the test workspace |  |
 
+| st-ldap | stop |  |
+| st-ldap | status | not running |
+| st-ceq-rm | PersonIndex |  |
 | st-ldap | start | openldap running |
 
-| pause | 5000 |  |
+| pause | 20000 |  |
+
 | st-process-jobs | PersonIndex |  |
 | st-admin | add-workspace-admin --username devnullx --w %%workspace%% | devnullx now has the role of 'admin' in the test-data Workspace |
 

@@ -1,7 +1,7 @@
 | *Comment* | STARTING Test Case Command Line INDEXING |  |
 
 | set | cmdline_workspace | clw_%%start_time%% |
-| st-admin | create-workspace --name %%cmdline_workspace%% --title %%cmdline_workspace%% | A new workspace named "%%cmdline_workspace%%" was created |
+| st-admin | create-workspace --empty --name %%cmdline_workspace%% --title %%cmdline_workspace%% | A new workspace named "%%cmdline_workspace%%" was created |
 
 | *Comment* | Test Case: Command Line INDEXING index-workspace, delete-search-index, index-page, index-attachment |  |
 

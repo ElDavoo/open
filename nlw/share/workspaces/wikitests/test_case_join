@@ -16,7 +16,7 @@
 | st-admin | set-permissions --w %%acct_ws%% --p public-join-to-edit | have been changed |
 
 | *Comment* | The self-joining user is %%to_ws_user%% and the wiki to be created is %%to_ws%%, so the user email addr and wiki email addr are identical, so we can read the email in the wiki! |  |
-| st-admin | create-workspace --name %%to_ws%% --title "%%to_ws%%" --account "%%acct%%" | created |
+| st-admin | create-workspace --empty --name %%to_ws%% --title "%%to_ws%%" --account "%%acct%%" | created |
 
 | *Comment* | Test Case: Join. Allow invitation to be mailed to %%to_ws%% |  |
 | st-admin | add-permission --w %%to_ws%% --role guest --p email_in | has been granted |
@@ -98,6 +98,7 @@
 | st-admin | get-user-account --u %%to_ws_user%% | Primary account for "%%to_ws_user%%" is %%acct%%. |
 
 | *Comment* | Test Case: Join TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%to_ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --w %%acct_ws%% --no-export | has been deleted |
 

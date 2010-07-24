@@ -59,7 +59,7 @@ THIS TEST SHOULD NOT USE DASHBOARD
 
 | st-admin | create-account --name "%%acct%%" | created |
 | st-admin | create-user --e %%acct_user%% --p %%password%% --account "%%acct%%" | created |
-| st-admin | create-workspace --name %%to_ws%% --title "IPN %%to_ws%%" --account "%%acct%%" --empty | created |
+| st-admin | create-workspace --empty --name %%to_ws%% --title "IPN %%to_ws%%" --account "%%acct%%" --empty | created |
 
 | *Comment* | Test Case: Invite people. Define a user in an entirely different account |  |
 | set | social | `ipn-social-%%start_time%%@ken.socialtext.net` |

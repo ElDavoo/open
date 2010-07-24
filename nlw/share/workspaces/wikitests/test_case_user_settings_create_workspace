@@ -5,7 +5,7 @@
 | set | ws | user-setting-ws-%%start_time%% |
 | set | user | user-setting%%start_time%%@matt.socialtext.net |
 | st-admin | create-account --name %%acct%% | was created |
-| st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% | was created |
+| st-admin | create-workspace --empty --name %%ws%% --title %%ws%% --account %%acct%% | was created |
 | st-admin | create-user --e %%user%% --p %%password%% --account %%acct%% | was created |
 | st-admin | add-member --e %%user%% --w %%ws%% | now has the role of 'member' in the |
 

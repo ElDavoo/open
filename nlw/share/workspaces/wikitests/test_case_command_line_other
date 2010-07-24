@@ -6,7 +6,7 @@
 
 | *Comment* | Test Case: Command Line Tests OTHER test plugin enable/disable |  |
 | st-admin | create_account --name %%cmdline_account%% | qr/A new account named "%%cmdline_account%%" was created\./ |
-| st-admin | create-workspace --name %%cmdline_workspace%% --title %%cmdline_workspace%% --account %%cmdline_account%% |  |
+| st-admin | create-workspace --empty --name %%cmdline_workspace%% --title %%cmdline_workspace%% --account %%cmdline_account%% |  |
 | st-admin | create-user --email %%cli_user%% --password d3vnu1ll |  |
 | st-admin | add-member --email %%username%% --password %%password%% --workspace %%cmdline_workspace%% |  |
 

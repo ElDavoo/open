@@ -7,12 +7,12 @@ When we had Users that had an _all numeric_ username, that *could* conflict with
 | set | acct_one | acct_one_%%start_time%% |
 | st-admin | create-account --name '%%acct_one%%' | was created |
 | set | ws_one | ws_one_%%start_time%% |
-| st-admin | create-workspace --name %%ws_one%% --title %%ws_one%% --empty --account %%acct_one%% | was created |
+| st-admin | create-workspace --empty --name %%ws_one%% --title %%ws_one%% --empty --account %%acct_one%% | was created |
 
 | set | acct_two | acct_two_%%start_time%% |
 | st-admin | create-account --name '%%acct_two%%' | was created |
 | set | ws_two | ws_two_%%start_time%% |
-| st-admin | create-workspace --name %%ws_two%% --title %%ws_two%% --empty --account %%acct_two%% | was created |
+| st-admin | create-workspace --empty --name %%ws_two%% --title %%ws_two%% --empty --account %%acct_two%% | was created |
 
 | set | user_one_firstname | John |
 | set | user_one_lastname | Doe |
@@ -54,7 +54,7 @@ When we had Users that had an _all numeric_ username, that *could* conflict with
 | set | acct_three | acct_three_%%start_time%% |
 | st-admin | create-account --name '%%acct_three%%' | was created |
 | set | ws_three | ws_three_%%start_time%% |
-| st-admin | create-workspace --name %%ws_three%% --title %%ws_three%% --empty --account %%acct_three%% | was created |
+| st-admin | create-workspace --empty --name %%ws_three%% --title %%ws_three%% --empty --account %%acct_three%% | was created |
 | st-admin | add-member --workspace %%ws_three%% --email %%user_one_email%% |
 | st-admin | add-member --workspace %%ws_three%% --email %%user_two_email%% |
 

@@ -8,7 +8,7 @@
 | set | page | %%title%% |
 | set | section | Signals-Section-%%start_time%% |
 
-| st-admin | create-workspace --name %%wiki%% --title %%title%% | created |
+| st-admin | create-workspace --empty --name %%wiki%% --title %%title%% | created |
 | st-admin | add-member --workspace %%wiki%% --u %%username%% | now has the role |
 
 | open_ok | /st/signals |  |

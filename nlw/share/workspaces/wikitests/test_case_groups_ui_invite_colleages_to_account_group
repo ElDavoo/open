@@ -8,7 +8,7 @@
 | set | to_ws | GIN-ws-%%start_time%% |  |
 | set | to_ws_user | %%to_ws%%@%%wikiemail%% |  |
 | set | eto_ws_user | %%to_ws%%\@%%wikiemail%% |  |
-| st-admin | create-workspace --name %%to_ws%% --title "GIN %%to_ws%%" --account "%%group_acct%%" --empty | created |  |
+| st-admin | create-workspace --empty --name %%to_ws%% --title "GIN %%to_ws%%" --account "%%group_acct%%" --empty | created |  |
 | add-group-to-workspace | %%group_id%% | %%to_ws%% |  |
 
 | *Comment* | Test Case: Groups UI Invite Colleages to account-group INVITE! |  |  |

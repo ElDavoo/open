@@ -16,7 +16,7 @@
 | set | delete_ws_id | %%workspace_id%% |  |
 | st-admin | add-member --w %%test_delete_ws%% --g %%group_id%% | now has the role of |  |
 | st-admin | add-workspace-admin --w %%test_delete_ws%% --e %%group_user%% |  |  |
-| st-admin | create-workspace --name %%addme_ws%% --title %%addme_ws%% |  |  |
+| st-admin | create-workspace --empty --name %%addme_ws%% --title %%addme_ws%% |  |  |
 | st-admin | add-member -w %%addme_ws%% --g %%group_id%% | now has the role of |  |
 
 | *Comment* | Test Case: Groups UI Create New Workspace Get to Workspaces Widget |  |

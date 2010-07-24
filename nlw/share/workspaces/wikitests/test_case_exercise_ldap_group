@@ -8,7 +8,7 @@
 | set | ldapy_account | ldapy-acct-%%start_time%% |
 
 | *Comment* | Test Case: Exercise LDAP Group Add a workspace |  |
-| st-admin | create-workspace --name %%ldapy_ws%% --title %%ldapy_ws%% | A new workspace named "%%ldapy_ws%%" was created |
+| st-admin | create-workspace --empty --name %%ldapy_ws%% --title %%ldapy_ws%% | A new workspace named "%%ldapy_ws%%" was created |
 | open_ok | / |  |
 | st-logoutin | Lemmy Kilmister | ld@pu53r |
 | open_ok | /%%ldapy_ws%%/ |  |

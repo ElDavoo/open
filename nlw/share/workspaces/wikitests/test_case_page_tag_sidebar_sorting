@@ -7,7 +7,7 @@ Addresses Bug {bz: 3421}
 | set | ws_name | pagetag-%%start_time%% |
 
 | *Comment* | Test Case: Page Tag Sidebar Sorting.  Create new test WS |
-| st-admin | create-workspace --name %%ws_name%% --title %%ws_name%% --empty | A new workspace named "%%ws_name%%" was created. |
+| st-admin | create-workspace --empty --name %%ws_name%% --title %%ws_name%% --empty | A new workspace named "%%ws_name%%" was created. |
 | st-admin | add-member --workspace %%ws_name%% --email %%email%%            |                                                  |
 
 | *Comment* | Test Case: Page Tag Sidebar Sorting.  Create some pages and tag them |

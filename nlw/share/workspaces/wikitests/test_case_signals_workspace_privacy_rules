@@ -7,7 +7,7 @@
 | st-admin | create-account --name %%acct%% | A new account named |
 
 | set | ws | wsA-swpr-%%start_time%% |
-| st-admin | create-workspace --name %%ws%% --title %%ws%% | A new workspace named |
+| st-admin | create-workspace --empty --name %%ws%% --title %%ws%% | A new workspace named |
 
 | set | isouser_short | isouser-%%start_time%% |
 | set | isouser | %%isouser_short%%@matt.socialtext.net |

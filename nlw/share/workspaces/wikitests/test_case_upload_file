@@ -16,9 +16,9 @@
 
 | *Comment* | Test Case: Upload File Lightbox Text |  |
 | wait_for_text_present_ok | Upload Files | 30000 |
-| text_like | st-attachments-attach-limit | Maximum file size: 50MB |
+| text_like | //body | Maximum file size: 50MB |
 
-| *Comment* | Test Case: Close Upload file lightbox |  |
+| *Comment* | Test Case: Upload File Close Upload file lightbox |  |
 | wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
 | click_ok | st-attachments-attach-closebutton |  |
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
@@ -71,6 +71,7 @@
 | text_like | st-page-content | MODIFY THE CONTENT OF Upload File %%start_time%% |
 
 | *Comment* | Test Case: Upload File Teardown |  |
+| st-process-jobs |  |  |
 | st-admin | purge-page --w %%workspace%% --page upload_file_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Upload File COMPLETED |

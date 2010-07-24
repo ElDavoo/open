@@ -7,7 +7,7 @@ Look ahead: start to type "fo" | sidebar autosuggests "foo", "foo bar", "foster 
 | *Comment* | Starting Test Case: Tagging |  |
 
 | set | t_ws | tagging_ws_%%start_time%% |
-| st-admin | create-workspace --name %%t_ws%% --title %%t_ws%% | was created |
+| st-admin | create-workspace --empty --name %%t_ws%% --title %%t_ws%% | was created |
 | add-member | %%username%% | %%t_ws%% |
 
 | open_ok | /%%t_ws%%/index.cgi?action=new_page |  |

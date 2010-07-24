@@ -12,7 +12,7 @@
 | set | sorting_workspace | tagged-%%start_time%% |
 
 | *Comment* | Test Case: Tagged Page Sorting Create new ws %%sorting_workspace%% |  |
-| st-admin | create-workspace --name %%sorting_workspace%% --title %%sorting_workspace%% --empty | A new workspace named "%%sorting_workspace%%" was created. |
+| st-admin | create-workspace --empty --name %%sorting_workspace%% --title %%sorting_workspace%% --empty | A new workspace named "%%sorting_workspace%%" was created. |
 | *Comment* | Test Case: Tagged Page Sorting. Adding %%email%% so you can login to this workspace |  |
 | st-admin | add-workspace-admin --e %%email%% --w %%sorting_workspace%% |  |
 | *Comment* | Test Case: Tagged Page Sorting. Adding devnull1 so you can login to this workspace |  |
