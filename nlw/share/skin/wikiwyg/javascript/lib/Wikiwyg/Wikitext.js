@@ -143,8 +143,8 @@ proto.find_right = function(t, selection_end, matcher) {
 
 proto.get_lines = function() {
     var t = this.area;
-    var selection_start = t.selectionStart;
-    var selection_end = t.selectionEnd;
+    var selection_start = this.getSelectionStart();
+    var selection_end = this.getSelectionEnd();
 
     if (selection_start == null) {
         selection_start = selection_end;
@@ -171,7 +171,7 @@ proto.get_lines = function() {
 
     this.selection_start = this.find_left(our_text, selection_start, /[\r\n]/);
     this.selection_end = this.find_right(our_text, selection_end, /[\r\n]/);
-    t.setSelectionRange(selection_start, selection_end);
+    this.setSelectionRange(selection_start, selection_end);
     t.focus();
 
     this.start = our_text.substr(0,this.selection_start);
@@ -201,8 +201,8 @@ proto.get_words = function() {
     }
 
     var t = this.area;
-    var selection_start = t.selectionStart;
-    var selection_end = t.selectionEnd;
+    var selection_start = this.getSelectionStart();
+    var selection_end = this.getSelectionEnd();
 
     if (selection_start == null) {
         selection_start = selection_end;
@@ -234,7 +234,7 @@ proto.get_words = function() {
     this.selection_end =
         this.find_right(our_text, selection_end, Wikiwyg.Wikitext.phrase_end_re);
 
-    t.setSelectionRange(this.selection_start, this.selection_end);
+    this.setSelectionRange(this.selection_start, this.selection_end);
     t.focus();
 
     this.start = our_text.substr(0,this.selection_start);
@@ -303,8 +303,8 @@ proto.insert_text_at_cursor = function(text, opts) {
         return false;
     }
 
-    var selection_start = t.selectionStart;
-    var selection_end = t.selectionEnd;
+    var selection_start = this.getSelectionStart();
+    var selection_end = this.getSelectionEnd();
 
     if (selection_start == null) {
         selection_start = selection_end;
@@ -319,7 +319,7 @@ proto.insert_text_at_cursor = function(text, opts) {
 
     this.area.focus();
     var end = selection_end + text.length;
-    this.area.setSelectionRange(end, end);
+    this.setSelectionRange(end, end);
 }
 
 proto.insert_text = function (text) {
@@ -328,7 +328,7 @@ proto.insert_text = function (text) {
 
 proto.set_text_and_selection = function(text, start, end) {
     this.area.value = text;
-    this.area.setSelectionRange(start, end);
+    this.setSelectionRange(start, end);
 }
 
 proto.add_markup_words = function(markup_start, markup_finish, example) {
@@ -410,7 +410,7 @@ proto.add_markup_lines = function(markup_start) {
 
     // Here we cancel the selection and allow the user to keep typing
     // (instead of replacing the freshly-inserted-markup by typing.)
-    this.area.selectionStart = this.area.selectionEnd;
+    this.setSelectionRange(this.getSelectionEnd(), this.getSelectionEnd());
 
     this.area.focus();
 }
@@ -451,7 +451,7 @@ proto.bound_markup_lines = function(markup_array) {
 
     // Here we cancel the selection and allow the user to keep typing
     // (instead of replacing the freshly-inserted-markup by typing.)
-    this.area.selectionStart = this.area.selectionEnd;
+    this.setSelectionRange(this.getSelectionEnd(), this.getSelectionEnd());
 
     this.area.focus();
 }
@@ -582,8 +582,8 @@ proto.get_selection_text = function() {
     }
 
     var t = this.area;
-    var selection_start = t.selectionStart;
-    var selection_end   = t.selectionEnd;
+    var selection_start = this.getSelectionStart();
+    var selection_end   = this.getSelectionEnd();
 
     if (selection_start != null) {
         return t.value.substr(selection_start, selection_end - selection_start);
@@ -652,8 +652,8 @@ proto.kill_linkedness = function(str) {
 proto.markup_line_alone = function(markup_array) {
     var t = this.area;
     var scroll_top = t.scrollTop;
-    var selection_start = t.selectionStart;
-    var selection_end = t.selectionEnd;
+    var selection_start = this.getSelectionStart();
+    var selection_end = this.getSelectionEnd();
     if (selection_start == null) {
         selection_start = selection_end;
     }
@@ -661,7 +661,7 @@ proto.markup_line_alone = function(markup_array) {
     var text = t.value;
     this.selection_start = this.find_right(text, selection_start, /\r?\n/);
     this.selection_end = this.selection_start;
-    t.setSelectionRange(this.selection_start, this.selection_start);
+    this.setSelectionRange(this.selection_start, this.selection_start);
     t.focus();
 
     var markup = markup_array[1];
@@ -1039,6 +1039,19 @@ proto.looks_like_a_url = function(string) {
     return string.match(/^(http|https|ftp|irc|mailto|file):/);
 }
 
+proto.setSelectionRange = function (startPos, endPos) {
+    this.area.setSelectionRange(startPos, endPos);
+}
+
+proto.getSelectionStart = function () {
+    return this.area.selectionStart;
+}
+
+proto.getSelectionEnd = function () {
+    return this.area.selectionEnd;
+}
+
+
 /*==============================================================================
 Support for Internet Explorer in Wikiwyg.Wikitext
  =============================================================================*/
@@ -1055,10 +1068,93 @@ proto.initializeObject = function() {
     this.initialize_object();
     if (!this.config.javascriptLocation)
         throw new Error("Missing javascriptLocation config option!");
-    this.area.addBehavior(this.config.javascriptLocation + "Selection.htc");
+
     jQuery(this.area).bind('beforedeactivate', function () {
         self.old_range = document.selection.createRange();
     });
+}
+
+var selectionStart = 0;
+var selectionEnd = 0;
+
+proto.setSelectionRange = function (startPos, endPos) {
+    var element = this.area;
+    var objRange = element.createTextRange();
+    objRange.collapse(true);
+    objRange.move("character", startPos);
+
+    charLength = endPos - startPos;
+    for (var i=1; i<=charLength; i++)
+        objRange.expand("character");
+
+    objRange.select();
+}
+
+proto.getSelectionStart = function() {
+    this.getSelectionRange("start");
+    return selectionStart;
+}
+
+proto.getSelectionEnd = function() {
+    var element = this.area;
+    this.getSelectionRange("end");
+    element.value = element.value.replace(/\x01/g, '');
+    return selectionEnd;
+}
+
+proto.getSelectionRange = function (type) {
+    var element = this.area;
+    var sRange = element.document.selection.createRange();
+    if (sRange.text.length == 0) {
+        var pos = element.value.indexOf('\x01');
+        if (pos == -1) {
+            element.focus();
+            sRange = element.document.selection.createRange();
+            sRange.text = '\x01';
+            element.focus();
+            selectionStart = null;
+            selectionEnd = null;
+        }
+        else {
+            element.value = element.value.replace(/\x01/, '');
+            selectionStart = pos;
+            selectionEnd = pos;
+        }
+        return;
+    }
+
+    var sRange2 = sRange.duplicate();
+    var iRange = element.document.body.createTextRange();
+    iRange.moveToElementText(element);
+    var coord = 0;
+    var fin = 0;
+
+    while (fin == 0) {
+        len = iRange.text.length;
+        move = Math.floor(len / 2);
+        _move = iRange.moveStart("character", move);
+        where = iRange.compareEndPoints("StartToStart", sRange2);
+        if (where == 1) {
+            iRange.moveStart("character", -_move);
+            iRange.moveEnd("character", -len+move);
+        }
+        else if (where == -1) {
+            coord = coord + move;
+        }
+        else {
+            coord = coord + move;
+            fin = 1;
+        }
+        if (move == 0) {
+            while (iRange.compareEndPoints("StartToStart", sRange2) < 0) {
+                iRange.moveStart("character", 1);
+                coord++;
+            }
+            fin = 2;
+        }
+    }
+    selectionStart = coord;
+    selectionEnd = coord + (sRange.text.replace(/\r/g, "")).length;
 }
 
 } // end of global if
