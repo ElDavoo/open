@@ -1,7 +1,7 @@
 | *Comment* | STARTING Test Case Command Line INDEXING |  |
 
 | set | cmdline_workspace | clw_%%start_time%% |
-| st-admin | create-workspace --empty --name %%cmdline_workspace%% --title %%cmdline_workspace%% | A new workspace named "%%cmdline_workspace%%" was created |
+| st-admin | create-workspace --name %%cmdline_workspace%% --title %%cmdline_workspace%% | A new workspace named "%%cmdline_workspace%%" was created |
 
 | *Comment* | Test Case: Command Line INDEXING index-workspace, delete-search-index, index-page, index-attachment |  |
 
@@ -23,6 +23,7 @@
 | st-admin | index-page --workspace %%cmdline_workspace%% --page example_page_project_tracking | The Example Page: Project Tracking page in the %%cmdline_workspace%% workspace has been indexed. |
 
 | *Comment* | Test Case: Command Line INDEXING Teardown |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%cmdline_workspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case Command Line INDEXING COMPLETED |  |
