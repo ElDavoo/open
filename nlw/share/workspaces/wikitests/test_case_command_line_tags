@@ -62,6 +62,9 @@
 delete-tag
 tag-search
 
+| *Comment* | Test Case: Command Line: TAGS process all jobs, then teardown |  |
+| st-process-jobs | |  |
+
 | *Comment* | Test Case: Command Line: TAGS tag-search 1 |  |
 | st-admin | search-tags --workspace %%cmd_tag_workspace%% --tag "Tag 2 %%start_time%%" | Tag 2 %%start_time%% |
 | st-admin | search-tags --workspace %%cmd_tag_workspace%% --tag "Tag 1 %%start_time%%" | Tag 1 %%start_time%% |
@@ -82,7 +85,7 @@ tag-search
 
 TODO: When {bz 2704} is fixed, add stemming tests
 
-| *Comment* | Test Case: Command Line Tests TAGS Teardown |  |
+| *Comment* | Test Case: Command Line Tests TAGS TEARDOWN |  |
 | st-admin | delete-workspace --w %%cmd_tag_workspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Command Line Tests TAGS COMPLETED |  |
