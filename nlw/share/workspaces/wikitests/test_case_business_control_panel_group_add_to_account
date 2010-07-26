@@ -6,29 +6,35 @@
 | set | group | group%%start_time%% |
 | set | account | account%%start_time%% |
 | set | addl_account | new_account%%start_time%% |
-| st-admin | create-account --name %%addl_account%% | was created |
 | create-account | %%account%% |  |
+| st-admin | create-account --name %%addl_account%% | was created |
 | create-group | %%group%% | %%account%% |
 | st_process_jobs |  |  |
 
 | *Comment* | Test Case: Control Panel Group Add To Account Add second account to the group |  |
 | st-admin | give-accounts-admin --e %%email%% | now has accounts admin access |
 | open-ok | /nlw/control/group/%%group_id%% |  |
+| pause | 3000 | page seems to need to finish loading javascript. I know |
 | wait_for_element_visible_ok | addToAccountLookahead | 3000 |
 | type-lookahead-ok | addToAccountLookahead | %%addl_account%% |
 | wait_for_element_visible_ok | link=%%addl_account%% |  |
 | click_ok | link=%%addl_account%% |  |
-| wait_for_text_present_ok | Accounts (2) | 30000 |
+| pause | 5000 | want to see the link for the account, not the link to add the account |
+| wait_for_text_present_ok | Accounts (2) | 60000 |
 | text_like | //body | qr/%%account%%.+%%addl_account%%/ |
+
+| *Comment* | Test Case: Control Panel Group Add To Account Make sure the change 'took' by a refresh |  |
 | refresh |  |  |
-| wait_for_text_present_ok | Accounts (2) | 30000 |
+| wait_for_text_present_ok | Accounts (2) | 60000 |
 | text_like | //body | qr/%%account%%.+%%addl_account%%/ |
+| wait_for_element_visible_ok | link=%%addl_account%% | 30000 |
 
 | *Comment* | Test Case: Control Panel Group Add To Account Remove Account from group |  |
 | wait_for_element_visible_ok | accountTable-select-1 | 30000 |
 | click_ok | accountTable-select-1 |  |
-| wait_for_element_visible_ok | //input[@type='button' and @value="Remove from account(s)"] | 30000 |
-| click_ok | //input[@type='button' and @value="Remove from account(s)"] |  |
+| wait_for_element_visible_ok | //input[@type='button' and @value="Remove from account"] | 30000 |
+| click_ok | //input[@type='button' and @value="Remove from account"] |  |
+| verifyConfirmation | Remove this Group from the 1 selected Accounts? |  |
 | wait_for_text_present_ok | Accounts (1) | 30000 |
 | refresh |  |  |
 | wait_for_text_present_ok | Accounts (1) | 30000 |
