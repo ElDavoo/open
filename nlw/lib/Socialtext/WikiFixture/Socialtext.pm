@@ -765,15 +765,16 @@ sub st_admin {
 sub _st_admin_in_process {
     my @argv = @_;
 
-    {
-        # over-ride "_exit()" so that we don't exit while running in-process.
-        #
-        # We *do*, however, want to make sure that we stop whatever we're
-        # doing, so throw a fatal exception and get us outta there.
-        require Socialtext::CLI;
-        no warnings 'redefine';
-        *Socialtext::CLI::_exit = sub { die "\n" };
-    }
+    # Override "_exit()" so that we don't exit while running in-process.
+    # We *do*, however, want to make sure that we stop whatever we're
+    # doing, so throw a fatal exception and get us outta there.
+    require Socialtext::CLI;
+    no warnings 'redefine';
+    local *Socialtext::CLI::_exit = sub { die "\n" };
+
+    # IPC::Run will barf on IO::Scalar's lack of a fileno().  We can safely
+    # return undef since it seems IPC::Run ignores it anyway.
+    local *IPC::Run::_debug_fd = sub {};
 
     # clear any in-memory caches that exist, so that we pick up changes that
     # _may_ have been made outside of this process.
