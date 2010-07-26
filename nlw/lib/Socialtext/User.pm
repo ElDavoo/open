@@ -125,7 +125,7 @@ sub new_homunculus {
     my $homunculus = Socialtext::User::Cache->Fetch($key, $val);
     return $homunculus if $homunculus;
 
-    # if we pass in user_id, it will be one of the new system-wide
+    # if we pass in user_id, it will be one of the system-wide
     # ids, we must short-circuit and immediately go to the driver
     # associated with that system id
     if ($key eq 'user_id') {
@@ -133,8 +133,7 @@ sub new_homunculus {
 
         # Go get this User from the DB (so we know what driver it came from,
         # and what it looked like _last time_ we saw it.
-        my $sql = qq{ SELECT * FROM users WHERE user_id=? };
-        my $sth = sql_execute($sql, $val);
+        my $sth = sql_execute(qq{SELECT * FROM users WHERE user_id = ?}, $val);
         my $row = $sth->fetchrow_hashref();
         return unless $row;
 

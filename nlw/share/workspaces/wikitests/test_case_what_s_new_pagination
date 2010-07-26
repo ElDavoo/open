@@ -2,7 +2,7 @@
 
 | *Comment* | Test Case: What's New Pagination: Create new workspace |  |
 | set | pws | pageme-workspace-%%start_time%% |
-| st-admin | create-workspace --name %%pws%% --title %%pws%% |  |
+| st-admin | create-workspace --empty --name %%pws%% --title %%pws%% |  |
 | st-admin | add-member --username %%username%% --workspace %%pws%% |  |
 
 | *Comment* | Test Case: What's New Pagination: Create Pages |  |  |  |

@@ -10,7 +10,7 @@
 | set | reports_user | ed-reports-user%%start_time%%@matt.socialtext.net |
 
 | create-account | %%ed_account%% |  |
-| st-admin | create-workspace --name %%ed_ws%% --title %%ed_ws%% --account %%ed_account%% | was created |
+| st-admin | create-workspace --empty --name %%ed_ws%% --title %%ed_ws%% --account %%ed_account%% | was created |
 | st-admin | create-user --e %%reports_user%% --p %%password%% --account %%ed_account%% | A new user with the username |
 | st-admin | add-member --e %%username%% --w %%ed_ws%% | has the role of |
 | st-admin | add-member --e %%reports_user%% --w %%ed_ws%% | has the role of |

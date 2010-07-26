@@ -58,7 +58,7 @@ get-user-account [--username or --email]
 | *Comment* | Test Case: Command Line Tests ACCOUNTS export and import |  |
 | st-admin | export-account | qr/The command you called \(export-account\) requires an account to be specified/ |
 | st-admin | export-account --account account%%start_time%% | qr/account%%start_time%% account exported to \/tmp\/account%%start_time%%\.id-\d+\.export/ |
-| st-admin | create-workspace --name ws%%start_time%% --title ws%%start_time%% --account account%%start_time%% | A new workspace named "ws%%start_time%%" was created |
+| st-admin | create-workspace --empty --name ws%%start_time%% --title ws%%start_time%% --account account%%start_time%% | A new workspace named "ws%%start_time%%" was created |
 | st-admin | export-account --account account%%start_time%% | qr/Error - export directory \/tmp\/account%%start_time%%\.id-\d+\.export already exists!/ |
 | st-admin | export-account --account account%%start_time%% --force | qr/Exporting account account%%start_time%% \.\.\..+Exporting workspace ws%%start_time%% /././..+account%%start_time%% account exported to \/tmp\/account\.id-\d+\.export/ |
 

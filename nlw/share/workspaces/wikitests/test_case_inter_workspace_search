@@ -134,7 +134,7 @@
 | *Comment* | delete the ws first in case it already exists |  |
 
 | st-admin | delete-workspace --workspace from-scratch --no-export |  |
-| st-admin | create-workspace --name from-scratch --title From-Scratch --empty | A new workspace named "from-scratch" was created. |
+| st-admin | create-workspace --empty --name from-scratch --title From-Scratch --empty | A new workspace named "from-scratch" was created. |
 | st-admin | add-member --workspace from-scratch --email %%email%% | now has the role of 'member' in the from-scratch Workspace |
 
 | open_ok | /from-scratch/index.cgi?action=new_page |  |

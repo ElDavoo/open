@@ -7,7 +7,7 @@
 | set | user | awsb%%start_time%%@matt.socialtext.net |
 | set | ws | ws-%%start_time%% |
 | st-admin | create-account --name %%acct%% | was created |
-| st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% | was created |
+| st-admin | create-workspace --empty --name %%ws%% --title %%ws%% --account %%acct%% | was created |
 | st-admin | create-user --e %%user%% --password %%password%% --account %%acct%% | was created |
 | st-admin | add-member --e %%user%% --workspace %%ws%% | now has the role |
 | st-logoutin | %%user%% | %%password%% |

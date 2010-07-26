@@ -2,7 +2,7 @@
 
 | *Comment* | Test Case: Wiki Page Caching Setup 1 - create a workspace |  |
 | set | ws | wpc-ws-%%start_time%% |
-| st-admin | create-workspace --name %%ws%% --title %%ws%% -empty | was created |
+| st-admin | create-workspace --empty --name %%ws%% --title %%ws%% -empty | was created |
 | st-admin | add-member --e %%username%% --w %%ws%% | now has |
 | set | pagename | wpc-%%start_time%% |
 
@@ -18,7 +18,7 @@
 
 | st-admin | create-account --name %%newacct%% | was created |
 | st-admin | create-user --e %%user2%% -p %%password%% --account %%newacct%% | was created |
-| st-admin | create-workspace --name %%newws%% --title %%newws%% --account %%newacct%% --empty | was created |
+| st-admin | create-workspace --empty --name %%newws%% --title %%newws%% --account %%newacct%% --empty | was created |
 | st-admin | add-member --e %%user2%% --w %%ws%% | now has |
 | st-admin | add-member --e %%user2%% --w %%newws%% | now has |
 

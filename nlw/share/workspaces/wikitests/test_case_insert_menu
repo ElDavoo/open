@@ -133,11 +133,6 @@ verifyValue | wikiwyg_wikitext_textarea | foo |
 | click_ok | link=Atom Feed Items |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
 
-| click_ok | link=Technorati Results |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{technorati: ----}/s` |
-| click_ok | link=Technorati Results |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
-
 | *Comment* | Test Case: Insert Menu "Communicating..." |  |
 | click_ok | link=AIM Link |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+aim:----/s` |

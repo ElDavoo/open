@@ -4,8 +4,8 @@
 | set | cmdline_workspace | clw_%%start_time%% |
 | set | target_workspace | trgt_%%start_time%% |
 
-| st-admin | create-workspace | qr/Workspace name is a required field.+Workspace title is a required field/ |
-| st-admin | create-workspace --name %%cmdline_workspace%% | qr/title is a required field/ |
+| st-admin | create-workspace --empty | qr/Workspace name is a required field.+Workspace title is a required field/ |
+| st-admin | create-workspace --empty --name %%cmdline_workspace%% | qr/title is a required field/ |
 | st-admin | create-workspace --name %%cmdline_workspace%% --title %%cmdline_workspace%% | A new workspace named "%%cmdline_workspace%%" was created |
 | st-admin | create-workspace --name %%target_workspace%% --title %%target_workspace%% | A new workspace named "%%target_workspace%%" was created. |
 
@@ -141,7 +141,7 @@ show-impersonators
 | *Comment* | end BZ 406 |  |
 
 | st-admin | export-workspace --workspace %%target_workspace%% | The %%target_workspace%% workspace has been exported to /tmp/%%target_workspace%%.1.tar.gz. |
-| st-admin | create-workspace --name export-name%%start_time%% --title export-name%%start_time%% |  |
+| st-admin | create-workspace --empty --name export-name%%start_time%% --title export-name%%start_time%% |  |
 | st-admin | export-workspace --workspace export-name%%start_time%% --name new-name%%start_time%% | The export-name%%start_time%% workspace has been exported to /tmp/new-name%%start_time%%.1.tar.gz. |
 | st-admin | delete-workspace --workspace export-name%%start_time%% |  |
 | st-admin-export-workspace-ok | %%target_workspace%% |  |
@@ -248,6 +248,7 @@ delete-category --workspace [--category or --search]
 | st-admin | customjs | qr/The command you called \(customjs\) requires a workspace to be specified./ |
 
 | *Comment* | Test Case: Command Line Tests WORKSPACE Teardown |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%cmdline_workspace%% --no-export |  |
 | st-admin | delete-workspace --w %%target_workspace%% --no-export |  |
 | st-admin | delete-workspace --w import-name%%start_time%% --no-export |  |

@@ -4,7 +4,7 @@
 
 | *Comment* | Test Case: Groups UI mismatched Workspace SETUP Workspaces |  |
 | set | ws_private | ws-private-%%start_time%% |
-| st-admin | create-workspace --name %%ws_private%% --title %%ws_private%% | was created |
+| st-admin | create-workspace --empty --name %%ws_private%% --title %%ws_private%% | was created |
 | st-admin | add-workspace-admin --e %%username%% --w %%ws_private%% | now has the role of 'admin' |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace Create Self-join Group |  |  |

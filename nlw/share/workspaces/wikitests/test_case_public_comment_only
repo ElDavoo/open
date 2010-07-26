@@ -53,6 +53,7 @@
 | text_like | contentLeft | Unsubscribe |
 
 | *Comment* | Test Case: Public-Comment-Only Teardown |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace %%auth_w%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Public-Comment-Only COMPLETED |

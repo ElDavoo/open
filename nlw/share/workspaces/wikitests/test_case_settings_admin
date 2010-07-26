@@ -48,11 +48,10 @@
 | st-logoutin |  |  |
 
 | *Comment* | Test Case: Settings: Admin test Workspace Appearance using newspace-%%start_time%% |  |
-| st-admin | create-workspace --title "Newspace %%start_time%%" --name newspace-%%start_time%% | was created |
+| st-admin | create-workspace --empty --title "Newspace %%start_time%%" --name newspace-%%start_time%% | was created |
 | st-admin | add-member --workspace newspace-%%start_time%% --e %%username%% | now has the role of |
 | st-admin | add-workspace-admin --workspace newspace-%%start_time%% --e %%username%% | now has the role of |
 | open_ok | /newspace-%%start_time%% |  |
-| location_like | /newspace-%%start_time%%/index.cgi?newspace_%%start_time%% |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Workspace Appearance |  |
 | text_like | contentContainer | When users click |
@@ -60,7 +59,7 @@
 | type_ok | title | New Title %%start_time%% |
 | click_and_wait | link=Save |  |
 | open_ok | /newspace-%%start_time%% |  |
-| location_like | /newspace-%%start_time%%/index.cgi?new_title_%%start_time%% |  |
+| location_like | /newspace-%%start_time%%/index.cgi?New%20Title%20%%start_time%% |  |
 
 | *Comment* | Test Case: Settings: Admin test Workspace Features using newspace-%%start_time%% |  |
 | *Comment* | Test Case: Settings: Admin set up testing weblog |  |

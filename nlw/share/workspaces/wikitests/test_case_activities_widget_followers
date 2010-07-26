@@ -16,7 +16,7 @@
 | st-admin | enable-plugin --account %%followacct%% --plugin dashboard |  |
 | st-admin | enable-plugin --account %%followacct%% --plugin people |  |
 | st-admin | enable-plugin --account %%followacct%% --plugin signals |  |
-| st-admin | create-workspace --name %%followws%% --title %%followws%% --account %%followacct%% |  |
+| st-admin | create-workspace --empty --name %%followws%% --title %%followws%% --account %%followacct%% |  |
 | st-admin | create-user --email %%followinguser%% --password %%password%% --account %%followacct%% |  |
 | st-admin | add-member --workspace %%followws%% --email %%followinguser%% |  |
 | st-admin | create-user --email %%notfollowinguser%% --password %%password%% --account %%followacct%% |  |

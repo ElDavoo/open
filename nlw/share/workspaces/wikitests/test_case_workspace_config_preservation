@@ -3,7 +3,7 @@
 | *Comment* | Test Case: Workspace Config Preservation Setup |  |
 | set | temp_ws_name | tc_wcp_%%start_time%% |
 | set | temp_ws_tarball | /tmp/%%temp_ws_name%%.1.tar.gz |
-| st-admin | create-workspace --name %%temp_ws_name%% --title 'Test Case: Workspace Config Preservation workspace' | A new workspace named "%%temp_ws_name%%" was created. |
+| st-admin | create-workspace --empty --name %%temp_ws_name%% --title 'Test Case: Workspace Config Preservation workspace' | A new workspace named "%%temp_ws_name%%" was created. |
 
 | *Comment* | Test Case: Workspace Config Preservation Alter Workspace Config |  |
 | *Comment* | - |  |

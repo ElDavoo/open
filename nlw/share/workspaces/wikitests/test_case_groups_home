@@ -16,8 +16,8 @@
 
 | st-admin | enable-plugin --account %%hostname%% --plugin groups |  |
 | st-admin | enable-plugin --account %%hostname%% --plugin signals |  |
-| st-admin | create-workspace --title %%wsname%% --name %%wsname%% --empty | was created |
-| st-admin | create-workspace --title %%wsname2%% --name %%wsname2%% --empty | was created |
+| st-admin | create-workspace --empty --title %%wsname%% --name %%wsname%% --empty | was created |
+| st-admin | create-workspace --empty --title %%wsname2%% --name %%wsname2%% --empty | was created |
 | st-admin | add-member --workspace %%wsname%% --group %%group_id%% | now has the role of 'member' |
 | st-admin | add-member --workspace %%wsname2%% --group %%group_id%% | now has the role of 'member' |
 | st-admin | create-user --e %%nopermuser%% --p %%password%% | was created |

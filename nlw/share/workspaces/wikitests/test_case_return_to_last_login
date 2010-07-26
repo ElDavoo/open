@@ -13,14 +13,14 @@
 
 | set | login_user | user_%%start_time%%@ken.socialtext.net |  |
 
-| st-admin | create-workspace --name aaa-%%start_time%% --title 'AAA %%start_time%%' |  |
-| st-admin | create-workspace --name aaa-public-%%start_time%% --title 'AAA Public %%start_time%%' |  |
+| st-admin | create-workspace --empty --name aaa-%%start_time%% --title 'AAA %%start_time%%' |  |
+| st-admin | create-workspace --empty --name aaa-public-%%start_time%% --title 'AAA Public %%start_time%%' |  |
 | st-admin | set-permissions --workspace aaa-public-%%start_time%% --permissions public |  |
-| st-admin | create-workspace --name private-%%start_time%% --title 'Private %%start_time%%' |  |
+| st-admin | create-workspace --empty --name private-%%start_time%% --title 'Private %%start_time%%' |  |
 | st-admin | set-permissions --workspace private-%%start_time%% --permissions member-only |  |
-| st-admin | create-workspace --name public-%%start_time%% --title 'Public %%start_time%%' |  |
+| st-admin | create-workspace --empty --name public-%%start_time%% --title 'Public %%start_time%%' |  |
 | st-admin | set-permissions --workspace public-%%start_time%% --permissions public |  |
-| st-admin | create-workspace --name login-to-edit-%%start_time%% --title 'Login to Edit %%start_time%%' |  |
+| st-admin | create-workspace --empty --name login-to-edit-%%start_time%% --title 'Login to Edit %%start_time%%' |  |
 | st-admin | set-permissions --workspace login-to-edit-%%start_time%% --permissions public-authenticate-to-edit |  |
 | st-admin | create-user --email %%login_user%% --password test%%start_time%% |  |
 | st-admin | add-member --email %%login_user%% --workspace aaa-%%start_time%% |  |

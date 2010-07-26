@@ -1,7 +1,7 @@
 | *Comment* | Test Case: Calc All Pages |  |
 
 | set | new_ws | all-pages-%%start_time%% |
-| st-admin | create-workspace --name %%new_ws%% --title %%new_ws%% --empty |  |
+| st-admin | create-workspace --empty --name %%new_ws%% --title %%new_ws%% --empty |  |
 | st-admin | add-member --email %%email%% --workspace %%new_ws%% |  |
 | st-admin | enable-plugin --plugin socialcalc --workspace %%new_ws%% |  |
 

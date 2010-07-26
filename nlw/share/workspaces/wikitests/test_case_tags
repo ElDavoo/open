@@ -133,8 +133,8 @@ Go to All Tags | The tag from the deleted page should not appear in list.
 | wait_for_element_visible_ok | st-delete-deletelink | 30000 |
 | click_and_wait | st-delete-deletelink |  |
 
-| *Comment* | Test Case: Tags Process page index jobs |  |
-| st_process_jobs | PageIndex |  |
+| *Comment* | Test Case: Tags Process all jobs before teardown |  |
+| st_process_jobs | |  |
 
 | open_ok | /%%workspace%%/index.cgi?action=category_list |  |
 | text_unlike | contentContainer | Tag 2 %%start_time%% |

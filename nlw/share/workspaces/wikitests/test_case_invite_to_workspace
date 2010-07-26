@@ -12,7 +12,7 @@
 | set | emailbad2 | mark%%start_time%%@baddonmain.com |
 | set | eemailbad2 | mark%%start_time%%\@baddonmain.com |
 
-| st-admin | create-workspace --name %%ws%% --title %%ws%% | was created |
+| st-admin | create-workspace --empty --name %%ws%% --title %%ws%% | was created |
 | st-admin | add-member --email %%username%% --workspace %%ws%% | %%username%% now has the role of 'member' in the %%ws%% workspace. |
 
 | *Comment* | Test Case: Invite to Workspace Non-Admin has no invite link |  |

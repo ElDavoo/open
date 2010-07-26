@@ -674,7 +674,7 @@ sub st_is_watched {
 
 =head2 st_rm_rf( $command_options )
 
-Runs an command-line rm -Rf command with the supplied options.
+Runs on command-line rm -Rf command with the supplied options.
 
 Note that this will delete files, directories, and not prompt.  Use at your own risk.
 
@@ -688,6 +688,24 @@ sub st_rm_rf {
     }
     
     _run_command("rm -Rf $options", 'ignore output');
+}
+
+=head2 st_ceq_rm( $command_options )
+
+Runs on command-line ceq-rm  command with the supplied options.
+
+Note that this will delete ceqlotron jobs.  Use at your own risk.
+
+=cut
+
+sub st_ceq_rm {
+    my $self = shift;
+    my $options = shift;
+    unless (defined $options) {
+        die "parameter required in call to st_ceq_rm\n";
+    }
+    
+    _run_command("ceq-rm $options", 'ignore output');
 }
 
 =head2 st_qa_setup_reports 

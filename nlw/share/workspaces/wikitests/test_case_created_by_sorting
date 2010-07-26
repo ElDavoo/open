@@ -12,7 +12,7 @@
 | set | page_4 | Search ddd %%start_time%% |
 
 | *Comment* | Test Case: Created By Sorting Create new ws %%sws%% |  |
-| st-admin | create-workspace --name %%sws%% --title %%sws%% --empty | A new workspace named "%%sws%%" was created. |
+| st-admin | create-workspace --empty --name %%sws%% --title %%sws%% --empty | A new workspace named "%%sws%%" was created. |
 | *Comment* | Test Case: Created By Sorting. Adding %%email%% so you can login to this workspace |  |
 | st-admin | add-workspace-admin --e %%email%% --w %%sws%% |  |
 | *Comment* | Test Case: Created By Sorting. Adding devnull1 so you can login to this workspace |  |

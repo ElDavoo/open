@@ -2710,6 +2710,7 @@ sub index_page {
     require Socialtext::Search::AbstractFactory;
     my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
     for my $indexer (@indexers) {
+        next if ref($indexer) =~ m/solr/i; # Do NOT index with Solr.
         $indexer->index_page( $page->id() );
     }
 
@@ -2731,6 +2732,7 @@ sub index_attachment {
     require Socialtext::Search::AbstractFactory;
     my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
     for my $indexer (@indexers) {
+        next if ref($indexer) =~ m/solr/i; # Do NOT index with Solr.
         $indexer->index_attachment( $page->id, $attachment->id );
         $indexer->index_page( $page->id );
     }
@@ -2751,6 +2753,7 @@ sub index_workspace {
         require Socialtext::Search::AbstractFactory;
         my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
         for my $indexer (@indexers) {
+            next if ref($indexer) =~ m/solr/i; # Do NOT index with Solr.
             $indexer->index_workspace($ws_name);
         }
         $self->_success("The $ws_name workspace has been indexed.");

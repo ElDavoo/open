@@ -1,7 +1,7 @@
 | *Comment* | Test Case: Authenticated-User-Only |
 
 | set | auth_w | auth-user-%%start_time%% |
-| st-admin | create-workspace --name %%auth_w%% --title %%auth_w%% | was created |
+| st-admin | create-workspace --empty --name %%auth_w%% --title %%auth_w%% | was created |
 | st-admin | set-permissions --workspace %%auth_w%% --permissions authenticated-user-only | The permissions for the %%auth_w%% workspace have been changed to authenticated-user-only. |
 | st-admin | set-workspace-config --workspace %%auth_w%% skin_name s3 | The workspace config for %%auth_w%% has been updated |
 | st-logout |  |  |

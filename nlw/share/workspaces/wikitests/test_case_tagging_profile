@@ -8,7 +8,7 @@
 | *Comment* | Test Case: Tagging Profile. You don't know the account of %%username%%, so we need a common account between the logged in user and %%e_user%%. |  |
 | st-admin | create-account --name tagging-profile |  |
 | st-admin | enable-plugin --account tagging-profile --p signals |  |
-| st-admin | create-workspace --account tagging-profile --n tp-%%start_time%% --t TP --empty | was created |
+| st-admin | create-workspace --empty --account tagging-profile --n tp-%%start_time%% --t TP --empty | was created |
 | st-admin | add-member --w tp-%%start_time%% --e %%email%% | now has the role of 'member' in the |
 | st-admin | add-member --w tp-%%start_time%% --e %%e_user%% | now has the role of 'member' in the |
 

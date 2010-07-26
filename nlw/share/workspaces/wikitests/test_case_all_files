@@ -11,7 +11,7 @@
 
 | *Comment* | Test Case: All Files setup user_1 and user_2 |  |
 | set | new_ws | all-pages-%%start_time%% |
-| st-admin | create-workspace --name %%new_ws%% --title %%new_ws%% --empty |  |
+| st-admin | create-workspace --empty --name %%new_ws%% --title %%new_ws%% --empty |  |
 | st-admin | add-member --email %%email%% --workspace %%new_ws%% |  |
 
 | st-admin | create-user --email %%all_files_user_1%% --password 123456 |  |

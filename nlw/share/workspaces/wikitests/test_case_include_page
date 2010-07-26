@@ -265,7 +265,7 @@ Include a page from a different workspace. This test assumes the existence of he
 | text_like | //div[@class='wiki-include-content'] | This is an index of the help topics available. |
 
 | *Comment* | Test Case: Include Page Teardown |  |
-
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%tcipw%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Include Page COMPLETED |  |

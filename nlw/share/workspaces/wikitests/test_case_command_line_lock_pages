@@ -4,7 +4,7 @@
 | set | cli_user | `cli-%%start_time%%@ken.socialtext.net` |
 | set | cli_admin | `cli-admin-%%start_time%%@ken.socialtext.net` |
 | set | cmdline_workspace | clw_%%start_time%% |
-| st-admin | create-workspace --name %%cmdline_workspace%% --title %%cmdline_workspace%% | qr/A new workspace named "%%cmdline_workspace%%" was created/ism |
+| st-admin | create-workspace --empty --name %%cmdline_workspace%% --title %%cmdline_workspace%% | qr/A new workspace named "%%cmdline_workspace%%" was created/ism |
 | st-admin | create-user --email %%cli_user%% --password wikicli --first-name Wiki --last-name CLI | qr/A new user with the username "%%cli_user%%" was created/ism |
 | st-admin | create-user --email %%cli_admin%% --password wikicli --first-name Wiki --last-name CLI | qr/A new user with the username "%%cli_admin%%" was created/ism |
 | st-admin | add-member --email %%cli_user%% --workspace %%cmdline_workspace%% | qr/%%cli_user%% now has the role of 'member' in the %%cmdline_workspace%% workspace/ism |

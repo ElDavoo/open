@@ -240,6 +240,19 @@ sub formatted_unlike() {
 
 sub ceqlotron_run_synchronously() {
     my $funcname = shift;
+    my $workspace_name_or_id = shift;
+    my $workspace;
+
+    if ($workspace_name_or_id =~ /^\d+$/) {
+        $workspace = Socialtext::Workspace->new(
+            workspace_id => $workspace_name_or_id
+        );
+    }
+    else {
+        $workspace = Socialtext::Workspace->new(
+            name => $workspace_name_or_id
+        );
+    }
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
@@ -247,33 +260,37 @@ sub ceqlotron_run_synchronously() {
     require Socialtext::Jobs;
     Socialtext::Jobs->can_do_all();
 
-    my $funcid;
-    if ($funcname) {
-        $funcname =~ s/^(?:Socialtext::Job::)?/Socialtext::Job::/;
-        $funcid = Socialtext::Jobs->_client->funcname_to_id(Socialtext::SQL::get_dbh(), $funcname);
-    }
-
+    my @jobid;
     while (my $job = Socialtext::Jobs->find_job_for_workers()) {
         if ($funcname and $job->funcname !~ /$funcname$/i) {
             next;
         }
+
+        if ($workspace) {
+            my $ws = $job->workspace or next;
+            ($ws->workspace_id == $workspace->workspace_id) or next;
+        }
+
+        push @jobid, $job->jobid;
 
         Socialtext::Jobs->work_once($job);
         Socialtext::Cache->clear();
         Socialtext::SQL::invalidate_dbh();
     }
 
-    # Make sure the Job queue is empty.
-    my $condition = '';
-    if ($funcid) {
-        $condition = "AND funcid = $funcid";
+    if (!@jobid) {
+        Test::More::pass("no jobs left for ceqlotron to run");
     }
+
+    # Make sure all jobs above completed successfully.
     require Socialtext::SQL;
     my $jobs_left;
-    # Wait for 60 seconds for the previously-grabbed jobs by ceq to complete
+    # Wait for 60 seconds for the previously-grabbed jobs by ceq to complete.
+    # However, we only count the jobs ran by the in-process loop above.
     for (1..60) {
         $jobs_left = Socialtext::SQL::sql_singlevalue(qq{
-            SELECT COUNT(*) FROM job WHERE run_after < EXTRACT(epoch from now()) $condition
+            SELECT COUNT(*) FROM job WHERE run_after < EXTRACT(epoch from now())
+                AND jobid IN (@{[join ',', @jobid]}) 
         }) || 0;
         last if $jobs_left == 0;
         sleep 1;

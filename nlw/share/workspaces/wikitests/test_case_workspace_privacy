@@ -3,8 +3,9 @@
 | *Comment* | Test Case: Workspace Privacy. Make a scratch workspace |  |
 | set | wspriv | wspriv-%%start_time%% |
 | set | perm_link | /%%wspriv%%/?action=workspaces_permissions |
-| st-admin | create-workspace --n %%wspriv%% --t WSPRIV | was created |
+| st-admin | create-workspace --empty --n %%wspriv%% --t WSPRIV | was created |
 | st-admin | add-workspace-admin --u %%username%% --w %%wspriv%% | now has the role of 'admin' |
+| st-create-wikipage | %%wspriv%% | WSPRIV |
 | st-admin | set-permissions --p public --w %%wspriv%% | have been changed |
 
 | *Comment* | Test Case: Workspace Privacy Public Workspace Save is still public |  |

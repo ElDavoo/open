@@ -73,7 +73,6 @@ TODO: test Join after just joining: Join. See dual Login/Membership page. Login.
 TODO: Join. See immediate editable and membership.
 
 | *Comment* | Test Case: Public Join to Edit. logout, having already joined %%auth_w%%. Attempt to rejoin. |  |
-| *Comment* | Test Case: Public Join to Edit. FAIL UNTIL {bz 3538} IS FIXED |  |
 
 | *Comment* | Case 3: Logged out user, existing member |  |
 | st-admin | add-member --u %%username%% --w %%auth_w%% | now has the role of 'member' |
@@ -90,7 +89,6 @@ TODO: Join. See immediate editable and membership.
 
 | *Comment* | Test Case: Public Join to Edit. Member redirected to WS after login |  |
 
-| *Comment* | TEMPORARY REOPEN UNTIL {bz: 3538} IS FIXED |  |
 | open_ok | /%%auth_w%%/index.cgi |  |
 
 | wait_for_element_visible_ok | link=Edit | 30000 |
@@ -110,6 +108,7 @@ TODO: Join. See immediate editable and membership.
 | wait_for_element_visible_ok | link=Join to edit | 30000 |
 
 | *Comment* | Test Case: Public Join to Edit Teardown |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace -workspace %%auth_w%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Public Join to Edit COMPLETED |

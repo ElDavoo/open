@@ -14,7 +14,7 @@
 
 | st-admin | create-account --name %%acct%% |  |
 | st-admin | enable-plugin --account %%acct%% --p signals |  |
-| st-admin | create-workspace --account %%acct%% --n %%ws%% --t %%ws%% --empty | was created |
+| st-admin | create-workspace --empty --account %%acct%% --n %%ws%% --t %%ws%% --empty | was created |
 
 | st-admin | create-user --e %%signaler%% --p %%password%% --account %%acct%% --f "%%short_signaler%%" |  |
 | st-admin | create-user --e %%follower%% --p %%password%% --account %%acct%% --f "%%short_follower%%" |  |

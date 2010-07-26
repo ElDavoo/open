@@ -4,7 +4,7 @@
 | set | newtitle | Newspace %%start_time%% |
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Create a target workspace |  |
-| st-admin | create-workspace --name %%newspace%% --title "%%newtitle%%" | was created |
+| st-admin | create-workspace --empty --name %%newspace%% --title "%%newtitle%%" | was created |
 | st-admin | add-member --email %%email%% --workspace %%newspace%% | now has the role of 'member' |
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Create a page and a tag to copy |  |

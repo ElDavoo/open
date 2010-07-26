@@ -2,7 +2,7 @@
 
 * Fixture: SocialWidgets
 
-| st-admin | create-workspace --name workspacewidget-%%start_time%% --title "Workspace Widget %%start_time%%" |  |
+| st-admin | create-workspace --empty --name workspacewidget-%%start_time%% --title "Workspace Widget %%start_time%%" |  |
 | st-admin | add-member --workspace workspacewidget-%%start_time%% --username %%username%% |  |
 
 | st-clear-json-cache |  |  |

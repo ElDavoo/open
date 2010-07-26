@@ -23,6 +23,7 @@
 | st-admin | index-page --workspace %%cmdline_workspace%% --page example_page_project_tracking | The Example Page: Project Tracking page in the %%cmdline_workspace%% workspace has been indexed. |
 
 | *Comment* | Test Case: Command Line INDEXING Teardown |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%cmdline_workspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case Command Line INDEXING COMPLETED |  |
