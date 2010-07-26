@@ -201,7 +201,7 @@ proto.create_grammar = function() {
             }
         },
         waflparagraph: {
-            match: /^\{([\w-]+(?=[\:\ \}])(?:\s*:)?\s*[^\n}]*?\s*)\}[\ \t]*\n(?:\s*\n)?/,
+            match: /^(?:"[^"]+")?\{([\w-]+(?=[\:\ \}])(?:\s*:)?\s*[^\n}]*?\s*)\}[\ \t]*\n(?:\s*\n)?/,
             filter: function(node) {
                 node._wafl = node._label = node.text;
                 // node._function = node._wafl.replace(/[: ].*/, '');;
