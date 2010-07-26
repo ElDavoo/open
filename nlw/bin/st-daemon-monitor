@@ -24,12 +24,14 @@ our $max_fds = 512;
 our $signal  = 15; # SIGTERM
 our $tcp_port = 0;
 our $check_http = 0;
+our $daemontools = 0;
 our $config_prefix;
 
 GetOptions(
     'help|?' => \$help,
     man      => \$man,
     'pidfile=s' => \$pidfile,
+    'daemontools' => \$daemontools,  
     'init=s' => \$init_cmd,
     'sig=i'  => \$signal,
     'rss=i'  => \$max_rss,
@@ -61,7 +63,7 @@ if ($config_prefix) {
     no strict "refs";
     for my $key (qw(
         pidfile init_cmd signal max_rss max_vsz max_fds tcp_port
-        check_http
+        check_http daemontools
     )) {
         my $val = $conf->value("monitor_${config_prefix}_$key");
         next unless defined $val;
@@ -75,14 +77,14 @@ if ($config_prefix) {
     }
 }
 
-pod2usage(-exitstatus => 1, -message => "pidfile is required")
-    unless $pidfile;
+pod2usage(-exitstatus => 1, -message => "pidfile or daemontools is required")
+    unless $pidfile || $daemontools;
 pod2usage(-exitstatus => 1, -message => "init command is required")
     unless $init_cmd;
 
 if ($config_prefix) {
     # allow relative paths
-    if ($pidfile !~ m#^/#) {
+    if ($pidfile && ($pidfile !~ m#^/#)) {
         $pidfile = "/var/run/socialtext/$pidfile";
     }
     if ($init_cmd !~ m#^/#) {
@@ -90,7 +92,20 @@ if ($config_prefix) {
     }
 }
 
-my ($pid) = slurp($pidfile);
+my $pid='';
+
+if ($pidfile) {
+    ($pid) = slurp($pidfile);
+} else {
+    my $svcinfo = `/usr/bin/svstat /var/lib/svscan/${config_prefix}`;
+    if ($svcinfo =~ /\(pid (\d+)\)/) {
+        $pid = $1;
+    }
+    else {
+        recover ("Daemontools not reporting pid");
+    }
+}
+
 $pid ||= 0;
 
 sub slurp {
@@ -110,10 +125,15 @@ sub recover {
     chomp $now;
     my $msg = shift;
     st_log()->error("PID=".($pid ? $pid : '?')." $msg");
-    kill $signal, $pid if ($signal && $pid);
-    st_log()->info("st-daemon-monitor: running $init_cmd");
+    if ($signal && $pid) {
+        st_log()->info("st-daemon-monitor: sending $signal to $pid");
+        kill $signal, $pid;
+    }
     # 1 == ran init ok, 2 == init bad?
-    system("$init_cmd") and exit 2;
+    if ($init_cmd) {
+        st_log()->info("st-daemon-monitor: running $init_cmd");
+        system("$init_cmd") and exit 2;
+    } 
     exit 1;
 }
 
