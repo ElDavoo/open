@@ -2208,7 +2208,9 @@ sub st_clear_jobs {
 
 Run any queued jobs synchronously.
 
-Takes an optional TYPE as parameter. If present, only run jobs matching the given TYPE.
+Takes an optional TYPE as the first parameter. If present, only run jobs matching the given TYPE.
+
+Takes an optional WORKSPACE_ID or NAME as the second parameter. If present, only run jobs pertaining to that workspace.
 
 =cut
 
