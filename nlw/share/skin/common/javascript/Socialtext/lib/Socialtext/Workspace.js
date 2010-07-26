@@ -162,6 +162,7 @@ Socialtext.Workspace.Create = function(opts, callback) {
     if (opts.title) data.title = opts.title;
     if (opts.name) data.name = opts.name;
     if (opts.groups) data.groups = opts.groups;
+    if (opts.account_id) data.account_id = opts.account_id;
 
     opts.accept = 'application/json';
 
