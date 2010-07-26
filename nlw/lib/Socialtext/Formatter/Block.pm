@@ -95,7 +95,7 @@ use base 'Socialtext::Formatter::Paragraph';
 use Class::Field qw( const );
 
 const formatter_id  => 'wafl_p';
-const pattern_block => qr/\A(\{.*\})[\ \t]*\n/m;
+const pattern_block => qr/\A((?:"[^"]+")?\{.*\})[\ \t]*\n/m;
 const html_start    => "";
 const html_end      => "<br />";
 
