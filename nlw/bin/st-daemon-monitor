@@ -79,15 +79,15 @@ if ($config_prefix) {
 
 pod2usage(-exitstatus => 1, -message => "pidfile or daemontools is required")
     unless $pidfile || $daemontools;
-pod2usage(-exitstatus => 1, -message => "init command is required")
-    unless $init_cmd;
+pod2usage(-exitstatus => 1, -message => "init command or daemontools is required")
+    unless $init_cmd || $daemontools;
 
 if ($config_prefix) {
     # allow relative paths
     if ($pidfile && ($pidfile !~ m#^/#)) {
         $pidfile = "/var/run/socialtext/$pidfile";
     }
-    if ($init_cmd !~ m#^/#) {
+    if ($init_cmd && ($init_cmd !~ m#^/#)) {
         $init_cmd = "/etc/init.d/$init_cmd";
     }
 }
