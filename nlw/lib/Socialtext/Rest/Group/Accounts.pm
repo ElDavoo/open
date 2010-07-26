@@ -51,7 +51,7 @@ sub _build_accounts {
 
 sub _get_entities {
     my $self = shift;
-    my $order = $self->rest->query->param('order') || 'account_id';
+    my $order = $self->rest->query->param('order') || 'name';
     my $accounts = $self->accounts;
     my @sorted;
     if ($self->reverse) {
