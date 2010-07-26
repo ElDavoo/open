@@ -280,6 +280,7 @@ sub ceqlotron_run_synchronously() {
 
     if (!@jobid) {
         Test::More::pass("no jobs left for ceqlotron to run");
+        return;
     }
 
     # Make sure all jobs above completed successfully.
