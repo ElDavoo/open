@@ -92,24 +92,25 @@ two_in_sequence_full_disable: {
     ok !exists $resolver->{st_cache}{$hostname}{a}, "NOT cached";
 }
 
-two_in_sequence_forced_expiry: {
+three_in_sequence_forced_expiry: {
     local $Socialtext::Async::DNS::EnableCache = 1;
     local $Socialtext::Async::DNS::RespectTTL = 0;
-    local $Socialtext::Async::DNS::DefaultTTL = 1.0;
+    local $Socialtext::Async::DNS::DefaultTTL = 2.0;
     scope_guard { $resolver->clear_cache; $exec_counter=0 };
     my @results;
 
-    for (0..1) {
-        sleep 2 if $_;
+    # first request stores in cache, second request gets cache hit, third
+    # requests sees that cache has expired and goes to fetch it again.
+    for (0..2) {
+        sleep 3 if $_ == 2;
         AE::now_update;
         my $cv = AE::cv;
         AnyEvent::DNS::a($hostname,sub { $cv->send(\@_) });
         push @results, $cv->recv;
     }
 
-    ok scalar(@{$results[0]}), 'got a result';
-    ok scalar(@{$results[1]}), 'got a second result';
-    is_deeply $results[0][0], $results[1][0], 'same answer in both';
+    is_deeply $results[0][0], $results[1][0], 'same answer in both 0 and 1';
+    is_deeply $results[0][0], $results[2][0], 'same answer in both 0 and 2';
     is $exec_counter, 2, "two net requests";
     is scalar @{$resolver->{st_cache}{$hostname}{a}}, 1, "just one cache entry";
 }
