@@ -2,7 +2,8 @@
 
 # detect whether running in dev env
 SUDO='sudo'
-if [ `hostname` == 'talc.socialtext.net' ] || [ `hostname` == 'topaz.socialtext.net' ]; then
+HOST=`hostname`
+if [ $HOST == 'talc.socialtext.net' ] || [ $HOST == 'topaz.socialtext.net' ] || [ $HOST == 'borax.socialtext.net' ]; then
     SUDO=''
 fi
 
