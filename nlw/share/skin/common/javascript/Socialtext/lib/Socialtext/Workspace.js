@@ -13,6 +13,19 @@ $.extend(Socialtext.Workspace.prototype, {
         if (!extra) extra = '';
         return '/data/workspaces/' + this.name + extra
     },
+    load: function(callback) {
+        var self = this;
+        $.ajax({
+            url: self.url(),
+            type: 'get',
+            dataType: 'json',
+            success: function(data) {
+                $.extend(self, data);
+                callback();
+            },
+            error: self.errorCallback(callback)
+        });
+    },
     _splitMemberRoles: function(members) {
         // XXX: We should make /data/workspace/:ws/members so we don't need to
         // split this here
@@ -150,14 +163,15 @@ Socialtext.Workspace.Create = function(opts, callback) {
     if (opts.name) data.name = opts.name;
     if (opts.groups) data.groups = opts.groups;
 
+    opts.accept = 'application/json';
+
     $.ajax({
         url: '/data/workspaces',
         type: 'POST',
-        dataType: 'json',
         contentType: 'application/json',
         data: $.toJSON(data),
         success: function(data) {
-            var workspace = new Socialtext.Workspace({name: data.name});
+            var workspace = new Socialtext.Workspace({name: opts.name});
             if (callback) callback(workspace);
         },
         error: function(xhr, textStatus, errorThrown) {
