@@ -8,6 +8,7 @@ use Time::HiRes ();
 use POSIX ();
 use Socialtext::AppConfig;
 use Socialtext::Paths;
+use Test::Socialtext::Async;
 
 POSIX::setsid;
 
@@ -126,7 +127,8 @@ my $update_procs = `/usr/bin/pgrep -f st-appliance-update`;
 is $update_procs, '', "no st-appliance-update is running before the test"
     or die "shut down any st-appliance-update procs/vims before running this test";
 
-my $c = 'dev-bin/cranky.pl ';
+my $port = empty_port;
+my $c = "dev-bin/cranky.pl --port $port ";
 
 test_monitor('/bin/sleep 5', ''                           => 'lives');
 test_monitor('/bin/sleep 5', '--rss 32 --vsz 32 --fds 10' => 'lives');
@@ -141,6 +143,7 @@ logged_like qr/can't read pidfile/;
 
 test_monitor($c.'--ram 64',         '--rss 64');
 logged_like qr/is too big \(RSS\)/i;
+
 test_monitor($c.'--ram 64',         '--vsz 256' => 'lives');
 test_monitor($c.'--ram 64',         '--vsz 64');
 logged_like qr/is too big \(vsize\)/i;
@@ -149,7 +152,6 @@ logged_like qr/has too many files open/i;
 test_monitor($c.'--fds 64',         '--vsz 256 --fds 32');
 logged_like qr/has too many files open/i;
 
-my $port = $>+26000;
 socket_tests: {
     # check for open port only; monitor doesn't try to connect
 
