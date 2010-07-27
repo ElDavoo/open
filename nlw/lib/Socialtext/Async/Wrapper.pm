@@ -59,7 +59,8 @@ To affect startup and shutdown of the worker process, overload the
 Socialtext::Async::Wrapper::Worker::BUILD and DEMOLISH methods.
 
 To affect what happens before each request (e.g. cache clearing), override
-Socialtext::Async::Wrapper::Worker::before_each;
+Socialtext::Async::Wrapper::Worker::before_each.  before_each B<MUST NOT>
+throw an exception.
 
 =head1 EXPORTS
 
@@ -78,6 +79,7 @@ our @AT_FORK;
 {
     package Socialtext::Async::Wrapper::Worker;
     use Moose;
+    use Try::Tiny;
 
     # This BUILD runs in the child worker process only.
     sub BUILD {
@@ -143,14 +145,21 @@ our @AT_FORK;
     }
 
     sub before_each {
-        # most of these copied from Socialtext::Handler::Cleanup
-        Socialtext::Cache->clear();
-        Socialtext::SQL::invalidate_dbh();
-        File::Temp::cleanup();
+        try {
+            # most of these copied from Socialtext::Handler::Cleanup
+            Socialtext::Cache->clear();
+            Socialtext::SQL::invalidate_dbh();
+            File::Temp::cleanup();
+        }
+        catch {
+            warn "in before_each: $_";
+        };
+        return;
     }
 
     sub worker_ping {
-        Try::Tiny::try { before_each() };
+        my $self = shift;
+        $self->before_each();
         Socialtext::SQL::get_dbh();
         $Socialtext::Log::Instance->debug("async worker is OK");
         return {'PING'=>'PONG'}
@@ -191,9 +200,9 @@ sub worker_wrap {
         name => $worker_name,
         package_name => 'Socialtext::Async::Wrapper::Worker',
         body => sub {
-            try { Socialtext::Async::Wrapper::Worker::before_each() };
+            my $self = shift;
+            $self->before_each();
             my $t = time_scope $worker_name;
-            shift; # instance of Socialtext::Async::Wrapper::Worker
             my $class_or_obj = shift;
             return $class_or_obj->$orig_method(@_);
         },
@@ -227,9 +236,9 @@ sub worker_function {
         name => $worker_name,
         package_name => 'Socialtext::Async::Wrapper::Worker',
         body => sub {
-            try { Socialtext::Async::Wrapper::Worker::before_each() };
+            my $self = shift; # instance of Socialtext::Async::Wrapper::Worker
+            $self->before_each();
             my $t = time_scope $worker_name;
-            shift; # instance of Socialtext::Async::Wrapper::Worker
             shift; # undef
             return $code->(@_);
         },
