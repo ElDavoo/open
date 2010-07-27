@@ -46,13 +46,13 @@ sub _build_searchable_fields {
     my $self = shift;
     [
         # General fields - multi-type
-        qw/tag body w doctype id creator creator_name tag date created/,
+        qw/tag body w doctype id creator creator_name tag date created filename filename_ext/,
         # Page / attachment fields:
         qw/title editor pagetype/,
         # Signal fields:
         qw/pvt dm_recip a g reply_to mention
            link_page_key link_w link is_question
-           annotation filename/,
+           annotation/,
         # People fields: (keys AND values)
         %{ $self->field_map },
         qw/phone tag_exact tag_count sounds_like/,

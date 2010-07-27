@@ -234,6 +234,8 @@ sub _add_attachment_doc {
     _debug( "Retrieved attachment content.  Length is " . length $body );
     return unless length $body;
 
+    my $filename = $att->filename;
+    (my $ext = $filename) =~ s/.+\.//;
     my @fields = (
         [id => $id],
         # it is important to call this 'w' instead of 'workspace_id', because
@@ -244,8 +246,9 @@ sub _add_attachment_doc {
         [doctype => 'attachment'],
         [page_key => $key],
         [attach_id => $att->id],
-        [title => $att->filename],
-        [filename => $att->filename],
+        [title => $filename],
+        [filename => $filename],
+        [filename_ext => $ext],
         [editor => $editor_id],
         [creator => $editor_id],
         [date => $date],
