@@ -158,6 +158,16 @@ Socialtext.Workspace.All = function(callback) {
 };
 
 Socialtext.Workspace.Create = function(opts, callback) {
+    try {
+        if (!opts.title || !opts.name) throw new Error("name, title required");
+        Socialtext.Workspace.AssertValidTitle(opts.title);
+        Socialtext.Workspace.AssertValidName(opts.name);
+    }
+    catch(e) {
+        callback({error: e.message});
+        return;
+    }
+
     var data = {};
     if (opts.title) data.title = opts.title;
     if (opts.name) data.name = opts.name;
@@ -177,7 +187,7 @@ Socialtext.Workspace.Create = function(opts, callback) {
         },
         error: function(xhr, textStatus, errorThrown) {
             var error = xhr ? xhr.responseText : errorThrown;
-            if (callback) callback({ error: error });
+            if (callback) callback({ error: error || textStatus });
         }
     });
 }
