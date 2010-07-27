@@ -31,6 +31,7 @@ sub get_resource {
     my $minimal = $self->rest->query->param('minimal_pages');
     my $filter  = $self->rest->query->param('filter');
     my $count   = $self->rest->query->param('count') || 100;
+    my $type    = $self->rest->query->param('type');
 
     # This is a performance path for page lookahead, which must be very fast
     if ($minimal) {
@@ -44,7 +45,7 @@ sub get_resource {
             workspace_id => $self->hub->current_workspace->workspace_id,
             page_filter  => $page_filter,
             limit        => $count,
-            type         => scalar $self->rest->query->param('type'),
+            type         => $type,
         );
     }
 
@@ -168,6 +169,7 @@ sub _entities_for_query {
         my $order = $self->rest->query->param('order') || '';
         my $offset = $self->rest->query->param('offset') || 0;
         my $count = $self->rest->query->param('count') || 100;
+        my $type  = $self->rest->query->param('type');
 
         if ($order eq 'newest') {
             $order_by = 'last_edit_time DESC',
@@ -180,7 +182,7 @@ sub _entities_for_query {
             order_by     => $order_by,
             count        => $count,
             offset       => $offset,
-            type         => $self->rest->query->param('type'),
+            type         => $type,
         ) || [] };
     }
 

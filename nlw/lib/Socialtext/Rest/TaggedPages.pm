@@ -27,6 +27,7 @@ sub _entities_for_query {
     my $limit = $self->rest->query->param('limit')
                 || $self->rest->query->param('count')
                 || 500;
+    my $type = $self->rest->query->param('type');
 
     my $pagesref = [];
     if (lc($self->tag) eq 'recent changes') {
@@ -38,7 +39,7 @@ sub _entities_for_query {
             limit            => $limit,
             do_not_need_tags => 1,
             workspace_id => $self->hub->current_workspace->workspace_id,
-            type => $self->rest->query->param('type'),
+            type => $type,
         );
     }
     else {
@@ -47,7 +48,7 @@ sub _entities_for_query {
             tag => $self->tag,
             workspace_id => $self->hub->current_workspace->workspace_id,
             limit => $limit,
-            type => $self->rest->query->param('type'),
+            type => $type,
         );
     }
     return @$pagesref;
