@@ -42,9 +42,9 @@ sub get_resource {
         $self->{_last_modified} = time;
         return Socialtext::Model::Pages->Minimal_by_name(
             workspace_id => $self->hub->current_workspace->workspace_id,
-            page_filter => $page_filter,
-            limit => $count,
-            type => scalar $self->rest->query->param('type'),
+            page_filter  => $page_filter,
+            limit        => $count,
+            type         => scalar $self->rest->query->param('type'),
         );
     }
 
@@ -175,13 +175,13 @@ sub _entities_for_query {
         elsif  ($order eq 'name') {
             $order_by = 'name'
         }
-        @entities = @{Socialtext::Model::Pages->All_active(
+        @entities = @{ Socialtext::Model::Pages->All_active(
             workspace_id => $self->hub->current_workspace->workspace_id,
-            order_by => $order_by,
-            count => $count, 
-            offset => $offset,
-            type => $self->rest->query->param('type'),
-        ) || []};
+            order_by     => $order_by,
+            count        => $count,
+            offset       => $offset,
+            type         => $self->rest->query->param('type'),
+        ) || [] };
     }
 
     return @entities;
