@@ -19,12 +19,16 @@ my $page = Socialtext::Page->new( hub => $hub )->create(
 
 my $content = $page->to_html_or_default;
 
-like $content, qr{\Q<a href="http://www.google.com/search?q=One">Search for "One"</a>\E},
-    '{googlesearch: One} works';
-like $content, qr{\Q<a href="http://www.google.com/search?q=Two">Search for "Two"</a>\E},
-    '{googlesoap: Two} works';
+SKIP: {
+    skip "Google gave us 403", 4 if $content =~ m/\s403\s/;
 
-like $content, qr{\QSearch for "naïve"</a>\E},
-    '{googlesearch: naïve} works';
-like $content, qr{\QSearch for "曌"</a>\E},
-    '{googlesearch: 曌} works';
+    like $content, qr{\Q<a href="http://www.google.com/search?q=One">Search for "One"</a>\E},
+        '{googlesearch: One} works';
+    like $content, qr{\Q<a href="http://www.google.com/search?q=Two">Search for "Two"</a>\E},
+        '{googlesoap: Two} works';
+
+    like $content, qr{\QSearch for "naïve"</a>\E},
+        '{googlesearch: naïve} works';
+    like $content, qr{\QSearch for "曌"</a>\E},
+        '{googlesearch: 曌} works';
+}

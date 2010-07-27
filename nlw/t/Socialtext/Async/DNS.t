@@ -1,8 +1,9 @@
 #!perl
+# @COPYRIGHT@
 use warnings;
 use strict;
 
-use Test::More qw/no_plan/;
+use Test::More tests => 25;
 use Test::Socialtext::Async qw/empty_port/;
 use Guard;
 

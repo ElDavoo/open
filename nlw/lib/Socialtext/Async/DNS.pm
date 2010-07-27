@@ -1,4 +1,5 @@
 package Socialtext::Async::DNS;
+# @COPYRIGHT@
 use warnings;
 use strict;
 
@@ -9,8 +10,8 @@ use Scalar::Util qw/weaken/;
 use List::MoreUtils qw/any firstidx/;
 
 BEGIN {
-    if ($AnyEvent::DNS::VERSION ne '5.2') {
-        warn "Only AnyEvent::DNS version 5.2 has been tested\n";
+    if ($AnyEvent::DNS::VERSION < 5.2 or $AnyEvent::DNS::VERSION > 5.271) {
+        warn "Only AnyEvent::DNS versions 5.2 thru 5.271 have been tested\n";
         # if you see this, please read the REVIEW ON UPGRADE sections BEFORE
         # you up the version check.
         die "AnyEvent::DNS version mismatch; refusing to load";

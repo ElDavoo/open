@@ -21,7 +21,8 @@ sub add_report_test_data {
     # Now insert some rows into the DB for these pages
     my $dbh = Socialtext::Reports::DB->get_dbh;
     my $sth = $dbh->prepare('DELETE FROM workspace_actions_by_user');
-    my $sth = $dbh->prepare('DELETE FROM top_content_rollup');
+    $sth->execute;
+    $sth = $dbh->prepare('DELETE FROM top_content_rollup');
     $sth->execute;
 
     $sth = $dbh->prepare(

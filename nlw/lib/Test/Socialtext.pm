@@ -262,7 +262,7 @@ sub ceqlotron_run_synchronously() {
 
     my @jobid;
     while (my $job = Socialtext::Jobs->find_job_for_workers()) {
-        if ($funcname and $job->funcname !~ /$funcname$/i) {
+        if ($funcname and ($job->funcname || '') !~ /$funcname$/i) {
             next;
         }
 
@@ -280,6 +280,7 @@ sub ceqlotron_run_synchronously() {
 
     if (!@jobid) {
         Test::More::pass("no jobs left for ceqlotron to run");
+        return;
     }
 
     # Make sure all jobs above completed successfully.
