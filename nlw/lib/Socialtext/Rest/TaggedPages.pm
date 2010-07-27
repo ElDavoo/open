@@ -38,17 +38,17 @@ sub _entities_for_query {
             hub              => $self->hub,
             limit            => $limit,
             do_not_need_tags => 1,
-            workspace_id => $self->hub->current_workspace->workspace_id,
-            type => $type,
+            workspace_id     => $self->hub->current_workspace->workspace_id,
+            type             => $type,
         );
     }
     else {
         $pagesref = Socialtext::Model::Pages->By_tag(
-            hub => $self->hub,
-            tag => $self->tag,
+            hub          => $self->hub,
+            tag          => $self->tag,
             workspace_id => $self->hub->current_workspace->workspace_id,
-            limit => $limit,
-            type => $type,
+            limit        => $limit,
+            type         => $type,
         );
     }
     return @$pagesref;

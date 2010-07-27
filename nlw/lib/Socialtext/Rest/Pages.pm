@@ -166,10 +166,10 @@ sub _entities_for_query {
         # Specify ordering to Model::Pages, as it only returns 500 items.
         # We want it to return the *correct* 500.
         my $order_by = undef;
-        my $order = $self->rest->query->param('order') || '';
-        my $offset = $self->rest->query->param('offset') || 0;
-        my $count = $self->rest->query->param('count') || 100;
-        my $type  = $self->rest->query->param('type');
+        my $order    = $self->rest->query->param('order') || '';
+        my $offset   = $self->rest->query->param('offset') || 0;
+        my $count    = $self->rest->query->param('count') || 100;
+        my $type     = $self->rest->query->param('type');
 
         if ($order eq 'newest') {
             $order_by = 'last_edit_time DESC',
