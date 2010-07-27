@@ -140,7 +140,7 @@ sub _add_page_doc {
         _scrub_body(\$body);
     }
 
-
+    my $tags = $page->metadata->Category;
     my @fields = (
         [id => $id], # composite of workspace and page
         # it is important to call this 'w' instead of 'workspace_id', because
@@ -156,7 +156,8 @@ sub _add_page_doc {
         [creator => $creator_id],
         [revisions => $revisions],
         [body => $body],
-        map { [ tag => $_ ] } @{$page->metadata->Category},
+        [tag_count => scalar(@$tags) ],
+        (map { [ tag => $_ ] } @$tags),
     );
     if (my $mtime = _date_header_to_iso($page->metadata->Date)) {
         push @fields, [date => $mtime];
@@ -340,6 +341,7 @@ sub _add_signal_doc {
             } @$page_links),
         (map { [link => $_] } @$external_links),
         (map { [tag => $_->tag] } @{$signal->tags}),
+        [ tag_count => scalar(@{$signal->tags}) ],
     );
 
     for my $triplet (@{ $signal->annotation_triplets }) {
