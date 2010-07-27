@@ -1,4 +1,5 @@
 package Socialtext::Async::DNS;
+# @COPYRIGHT@
 use warnings;
 use strict;
 
