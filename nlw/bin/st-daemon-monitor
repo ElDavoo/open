@@ -45,6 +45,8 @@ or pod2usage(-exitstatus => 1, -message => $?);
 pod2usage(1) if $help;
 pod2usage(-exitstatus => 0, -verbose => 2) if $man;
 
+my $config_name = $config_prefix ? $config_prefix : 'default';
+
 {
     my $update_running = `pgrep -f st-appliance-update`;
     if ($update_running ne '') {
@@ -124,14 +126,14 @@ sub recover {
     my $now = `/bin/date`;
     chomp $now;
     my $msg = shift;
-    st_log()->error("PID=".($pid ? $pid : '?')." $msg");
+    st_log()->error("st-daemon-monitor [$config_name]: PID=".($pid ? $pid : '?')." $msg");
     if ($signal && $pid) {
-        st_log()->info("st-daemon-monitor: sending $signal to $pid");
+        st_log()->info("st-daemon-monitor [$config_name]: sending $signal to $pid");
         kill $signal, $pid;
     }
     # 1 == ran init ok, 2 == init bad?
     if ($init_cmd) {
-        st_log()->info("st-daemon-monitor: running $init_cmd");
+        st_log()->info("st-daemon-monitor [$config_name]: running $init_cmd");
         system("$init_cmd") and exit 2;
     } 
     exit 1;
