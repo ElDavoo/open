@@ -7,7 +7,7 @@ use IPC::Run qw(run timeout);
 
 use utf8;
 use Test::Socialtext::Search;
-use Test::Socialtext tests => 232;
+use Test::Socialtext tests => 227;
 fixtures(qw( db no-ceq-jobs ));
 
 use_ok("Socialtext::Search::KinoSearch::Factory");
@@ -32,7 +32,6 @@ lots_of_hits();
 test_for_dollar_amp_and_friend();
 index_and_search_a_big_document(); # go away?
 basic_wildcard_search();
-rampup_indexing(); # MUST be the last test.
 
 sub basic_search {
     erase_index_ok();
@@ -260,18 +259,6 @@ sub basic_wildcard_search {
     search_ok( "tag:cow_roof*", 3, "Searching for wildcard in tag" );
     search_ok( "tag:cow_roof*", 3, "Searching for wildcard in tag w/ caps." );
     search_ok( "(roof*)", 3, "Searching for wildcard in tag in parens." );
-}
-
-sub rampup_indexing {
-    erase_index_ok();
-    turn_on_rampup();
-    make_indexer( 'config_type' => 'rampup' );
-
-    make_page_ok( "RampupPage", "i am a rampup page" );
-
-    make_searcher( 'config_type' => 'rampup' );
-    search_ok( "rampup", 1, "Searching for rampup in rampup index" );
-    turn_off_rampup();
 }
 
 sub make_page_ok {
