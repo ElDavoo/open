@@ -44,6 +44,10 @@ sub bootstrap_openldap {
 MASS_ADD_USERS: {
     my $ldap = bootstrap_openldap();
 
+    # force automatic creation of People Profile fields, so we don't have to
+    # set them all up ourselves here prior to running the test.
+    local $Socialtext::People::Fields::AutomaticStockFields=1;
+
     # mass-add an LDAP user
     # - is required for the 'update_ldap_user' test that comes below
     add_ldap_user: {
