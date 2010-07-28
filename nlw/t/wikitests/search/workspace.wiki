@@ -1,9 +1,5 @@
 * Fixture: Search
 
-| Comment | Skip tests |
-
-^ SKIP: while Solr Page & Attachment indexing is disabled.
-
 # Set up 2 workspaces with similar content
 
 | standard-test-setup |
