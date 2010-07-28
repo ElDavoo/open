@@ -7,7 +7,7 @@ use IPC::Run qw(run timeout);
 
 use utf8;
 use Test::Socialtext::Search;
-use Test::Socialtext tests => 205;
+use Test::Socialtext tests => 204;
 fixtures(qw( db no-ceq-jobs ));
 
 use_ok("Socialtext::Search::Solr::Factory");
@@ -119,10 +119,7 @@ our coffee, like the sages sipping their tea underneath the willow, sitting
 quietly, saying nothing.
 QUOTE
     search_ok( "bridges OR children", 2, "Disjunctive Search" );
-    TODO: {
-    local $TODO = 'Solr stories should fix me!';
-    search_ok( "the",                 3, "Common word" );
-    }
+    search_ok( "the",                 0, "The is a stop word" );
 
     search_ok( "tag:writers",       3, "Common tags" );
     search_ok( "tag: writers",      3, "Field search with a space" );
@@ -248,23 +245,19 @@ basic_wildcard_search: {
     my $n = 0;
     for my $word (@words) {
         $n++;
-        make_page_ok( "Wildcard $n: $word", $word, ["cow_$word"] );
+        make_page_ok("Wildcard $n: $word", $word, ["cow_$word"]);
     }
-    search_ok( "roof*",          3, "Searching for roof*" );
-    search_ok( "title:wildcard", 8, "Searching for wildcard" );
-    search_ok( "title: wild*",   8, "Searching for title: wild*" );
-    search_ok( "title:wild*",    8, "Searching for title:wild*" );
-    search_ok( "=wild*",         8, "Searching for title:wild*" );
-    TODO: {
-    local $TODO = 'Solr stories should fix me!';
-    search_ok( "ro*",            0, "No wildcard when term too short" );
-    search_ok( "whe* OR don*",   2, "Searching for wildcard in disjunction" );
-    search_ok( "whe* -don*",     1, "Searching with negation of wildcard" );
-    search_ok( "category:cow_roof*", 3, "Searching for wildcard in category" );
-    search_ok( "tag:cow_roof*", 3, "Searching for wildcard in tag" );
-    search_ok( "tag:cow_roof*", 3, "Searching for wildcard in tag w/ caps." );
-    }
-    search_ok( "(roof*)", 3, "Searching for wildcard in tag in parens." );
+    search_ok("roof*",            3, "Searching for roof*");
+    search_ok("title:wildcard",   8, "Searching for wildcard");
+    search_ok("title: wild*",     8, "Searching for title: wild*");
+    search_ok("title:wild*",      8, "Searching for title:wild*");
+    search_ok("=wild*",           8, "Searching for title:wild*");
+    search_ok("ro*",              3, "wildcard works when term is short");
+    search_ok("roo* OR don*",     4, "Searching for wildcard in disjunction");
+    search_ok("don* -roo*",       1, "Searching with negation of wildcard");
+    search_ok("tag_exact:cow_r*", 3, "Searching for wildcard in tag_exact");
+    search_ok("tag:roo*", 3, "Searching for wildcard in tag");
+    search_ok("(roof*)",  3, "Searching for wildcard in tag in parens.");
 }
 
 exit;
