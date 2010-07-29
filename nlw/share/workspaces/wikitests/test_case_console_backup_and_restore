@@ -30,7 +30,7 @@ Automated backup and restore testing
 | text_like | contentContainer | Backup Restore content %%start_time%% |
 
 | *Comment* | Test Case: Console Backup and Restore: Create a new empty workspace |  |
-| st_admin | create-workspace --name empty-%%start_time%% --title "Empty %%start_time%%" --empty |
+| st_admin | create-workspace --name empty-%%start_time%% --title "Empty %%start_time%%" --empty | created |
 | st-admin | add-member --w empty-%%start_time%% --e %%email%% |  |
 
 | *Comment* | Test Case: Console Backup and Restore: Open the console and verify it is there |  |
@@ -57,14 +57,15 @@ Automated backup and restore testing
 | click_and_wait | //input[@value='Backup'] |  |
 | text_like | Backup is in progress |  |
 
-| *Comment* | WAIT two minutes FOR BACKUP TO COMPLETE and hope it is long enough |  |
-| pause | 120000 |  |
+| *Comment* | WAIT FOR BACKUP TO START, THEN TO FINISH |  |
+| pause | 5000 |  |
+| wait_for_backup_to_finish |  |  |
 
 | *Comment* | Test Case: Console Backup and Restore: create a second test page in admin. It should be gone after restore. |  |
 | st_admin | update-page --w admin --e %%email%% --page --page "Backup Restore Page 2 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "Backup Restore Page 2 %%start_time%%" page has been created. |
 
 | *Comment* | Test Case: Console Backup and Restore: create a second empty workspace. It should be gone after restore. |  |
-| st_admin | create-workspace --name empty-2-%%start_time%% --title "Empty 2 %%start_time%%" --empty |
+| st_admin | create-workspace --name empty-2-%%start_time%% --title "Empty 2 %%start_time%%" --empty | created |
 
 | *Comment* | Test Case: Console Backup and Restore: Do the Restore |  |
 | *Comment* | Test Case: Console Backup and Restore: Navigate away and come back to Backup page |  |
@@ -78,8 +79,12 @@ Automated backup and restore testing
 | select_ok | restore_id | index=0 |
 | click_ok | //input[@value='Restore'] |  |
 
-| *Comment* | WAIT six minutes FOR RESTORE TO COMPLETE and hope it is enough |  |
-| pause | 360000 |  |
+| *Comment* | WAIT FOR RESTORE TO START, THEN TO FINISH |  |
+| pause | 5000 |  |
+| wait_for_restore_to_finish |  |  |
+
+| *Comment* | Test Case: Console Backup and Restore: Execute a command that will re-establish DBH connection |  |
+| invalidate_dbh |  |  |
 
 | *Comment* | Test Case: Console Backup and Restore: Verify that the restore completed |  |
 | st_admin | give-system-admin --e %%email%% |  |
@@ -154,7 +159,7 @@ Automated backup and restore testing
 | click_and_wait | link=Finding your way around |  |
 | wait_for_text_present_ok | Many features are within easy reach | 10000 |
 
-| *Comment* | Test Case: Console Backup and Restore: Teardown |  |
+| *Comment* | Test Case: Console Backup and Restore: TEARDOWN |  |
 | st-admin | delete-workspace --no-export --w empty-%%start_time%% | has been deleted |
 | st-admin | purge-page --w admin --p backup_restore_%%start_time%% | was purged |
 | st-admin | purge-page --w admin --p backup_restore_3_%%start_time%% | was purged |

@@ -1,3 +1,6 @@
-* [Test case: Control Panel Reports]
+REMOVED Control Panel Reports testcase because of repeated false failures
+
+Test case: Control Panel Reports
+
 * [Test case: Report Permissions]
 * [Test case: Event-Driven Control Panel Reports]

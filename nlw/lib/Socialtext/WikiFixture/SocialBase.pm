@@ -33,6 +33,7 @@ use Cwd;
 use HTTP::Request::Common;
 use LWP::UserAgent;
 use Socialtext::l10n qw(loc);
+use YAML qw/LoadFile/;
 
 # mix-in some commands from the Socialtext fixture
 # XXX move bodies to SocialBase?
@@ -254,6 +255,7 @@ run this command to force a reconnect.
 
 sub invalidate_dbh {
     Socialtext::SQL::invalidate_dbh();
+    ok 1, "dbh handle invalidated";
 }
 
 =head2 password standard-test-setup
@@ -2933,5 +2935,38 @@ sub add_webhook {
     diag "Created webhook $args->{class}=$args->{url}";
 }
 
+# XXX This will only work on appliances/VEs
+sub wait_for_backup_to_finish {
+    my $self = shift;
+    my $state_file = '/var/run/socialtext/st-daemon-backup.state';
+    my $yaml = LoadFile($state_file);
+    warn "Backup status:\n" . Dumper $yaml;
+    while (1) {
+        $yaml = LoadFile($state_file);
+        if ($yaml->{status} eq 'finished') {
+            ok 1, 'Backup has finished';
+            return;
+        }
+        CORE::sleep(10);
+        ok 1, "Backup still in progress";
+    }
+}
+
+# XXX This will only work on appliances/VEs
+sub wait_for_restore_to_finish {
+    my $self = shift;
+    my $state_file = '/var/run/socialtext/st-daemon-restore.state';
+    my $yaml = LoadFile($state_file);
+    warn "Restore status:\n" . Dumper $yaml;
+    while (1) {
+        $yaml = LoadFile($state_file);
+        if ($yaml->{status} eq 'finished') {
+            ok 1, 'Restore has finished';
+            return;
+        }
+        CORE::sleep(30);
+        ok 1, "Restore still in progress. Checking again in 30 seconds.";
+    }
+}
 
 1;
