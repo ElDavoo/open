@@ -20,7 +20,9 @@ sub search_on_behalf {
 
     my @workspaces = _enumerate_workspaces($scope, $user, $ws_name, \$query);
 
-    my $factory = Socialtext::Search::AbstractFactory->GetFactory();
+    my $factory = Socialtext::Search::AbstractFactory->GetFactory(
+        ($opts{use_index} ? (use_index => $opts{use_index}) : ()),
+    );
     return $factory->search_on_behalf(\@workspaces, $query, $user,
         $no_such_ws_handler, $authz_handler, %opts);
 }

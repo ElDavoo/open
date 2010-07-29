@@ -90,7 +90,10 @@ sub direction_pref {
 sub search {
     my $self = shift;
     my $timer = Socialtext::Timer->new;
-    my $search_factory = Socialtext::Search::AbstractFactory->GetFactory();
+    my $index = $self->cgi->index;
+    my $search_factory = Socialtext::Search::AbstractFactory->GetFactory(
+        ($index ? (use_index => $index) : ()),
+    );
 
     if (my $cgi_sortby = $self->cgi->sortby) {
         if (my $default_dir = $self->sortdir->{$cgi_sortby}) {
@@ -295,6 +298,7 @@ sub _new_search {
         offset => $self->cgi->offset || 0,
         order => $sortby,
         direction => $direction,
+        use_index => $query{use_index},
     );
     Socialtext::Timer->Pause('search_on_behalf');
 
@@ -342,6 +346,7 @@ sub default_result_set {
     $self->search_for_term(
         search_term => $self->{_current_search_term},
         scope => $self->{_current_scope},
+        use_index => $self->cgi->index,
     );
     return $self->result_set;
 }
@@ -423,6 +428,7 @@ cgi search_term => '-html_clean';
 cgi orig_search_term => '-html_clean';
 cgi 'offset';
 cgi 'limit';
+cgi 'index';
 
 ######################################################################
 package Socialtext::Search::Wafl;
