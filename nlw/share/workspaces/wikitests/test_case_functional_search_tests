@@ -22,7 +22,7 @@ Note: Heavily dependent on the default content of current test-data workspace
 | st-result | Project Plans |  |
 
 | *Comment* | Test case: Functional Search Word, Excel, PPT 2007 format |  |
-| st-search | lorem ipsum |  |
+| st-search | lorem AND ipsum |  |
 | st-result | 3 total |  |
 | st-result | Boilerplate PPT File.pptx |  |
 | st-result | Sample Excel 2007 file.xlsx |  |
@@ -214,7 +214,7 @@ Title searches
 | st-result | wock |  |
 
 | *Comment* | Test case: Functional Search Tests NOT title searches |  |
-| st-search | title:jabber NOT slithy | Pages matching 'title:jabber NOT slithy' |
+| st-search | title:jabber AND NOT slithy | Pages matching 'title:jabber AND NOT slithy' |
 | st-result | 1 total |  |
 | st-result | jabber |  |
 | st-search | title:jabber OR slithy | Pages matching 'title:jabber OR slithy' |
@@ -223,45 +223,45 @@ Title searches
 | st-result | Jabberwocky |  |
 | st-result | Slithy |  |
 | st-result | Wock |  |
-| st-search | slithy NOT title:jabber | Pages matching 'slithy NOT title:jabber' |
+| st-search | slithy AND NOT title:jabber | Pages matching 'slithy AND NOT title:jabber' |
 | st-result | 3 total |  |
 | st-result | Jabberwocky |  |
 | st-result | Slithy |  |
 | st-result | wock |  |
-| st-search | ="vorpal sword" NOT tag:"carroll's poem" | Pages matching 'title:"vorpal sword" NOT tag:"carroll's poem"' |
+| st-search | ="vorpal sword" AND NOT tag:"carroll's poem" | Pages matching 'title:"vorpal sword" AND NOT tag:"carroll's poem"' |
 | st-result | 1 total |  |
 | st-result | The Vorpal Sword |  |
 
 | *Comment* | Test case: Functional Search Tests NOT tag searches |  |
-| st-search | tag:carroll -slithy | Pages matching 'tag:carroll -slithy' |
+| st-search | tag:carroll AND -slithy | Pages matching 'tag:carroll AND -slithy' |
 | st-result | 3 total |  |
 | st-result | jabber |  |
 | st-result | The Vorpal Sword |  |
-| st-search | tag:carroll NOT slithy | Pages matching 'tag:carroll NOT slithy' |
+| st-search | tag:carroll AND NOT slithy | Pages matching 'tag:carroll AND NOT slithy' |
 | st-result | 3 total |  |
 | st-result | jabber |  |
 | st-result | The Vorpal Sword |  |
-| st-search | slithy -tag:carroll | Pages matching 'slithy -tag:carroll' |
+| st-search | slithy AND -tag:carroll | Pages matching 'slithy AND -tag:carroll' |
 | st-result | 1 total |  |
 | st-result | Slithy |  |
-| st-search | slithy NOT tag:carroll | Pages matching 'slithy NOT tag:carroll' |
+| st-search | slithy AND NOT tag:carroll | Pages matching 'slithy AND NOT tag:carroll' |
 | st-result | 1 total |  |
 | st-result | Slithy |  |
-| st-search | tag:"carroll's poem" NOT tag:jabber | Pages matching 'tag:"carroll's poem" NOT tag:jabber' |
+| st-search | tag:"carroll's poem" AND NOT tag:jabber | Pages matching 'tag:"carroll's poem" AND NOT tag:jabber' |
 | st-result | 0 total |  |
 
 | *Comment* | Test case: Functional Search Tests NOT token searches |  |
-| st-search | 1.2 NOT 1.5 | Pages matching '1.2 NOT 1.5' |
+| st-search | 1.2 AND NOT 1.5 | Pages matching '1.2 AND NOT 1.5' |
 | st-result | 2 total |  |
 | st-result | jabber |  |
 | st-result | Wock |  |
-| st-search | 1.2 NOT =jabber | Pages matching '1.2 NOT title:jabber' |
+| st-search | 1.2 AND NOT =jabber | Pages matching '1.2 AND NOT title:jabber' |
 | st-result | 1 total |  |
 | st-result | Wock |  |
-| st-search | 1.2 NOT jabber | Pages matching '1.2 NOT jabber' |
+| st-search | 1.2 AND NOT jabber | Pages matching '1.2 AND NOT jabber' |
 | st-result | 1 total |  |
 | st-result | Wock |  |
-| st-search | tag:"carroll's poem" NOT 1.2 | Pages matching 'tag:"carroll's poem" NOT 1.2' |
+| st-search | tag:"carroll's poem" AND NOT 1.2 | Pages matching 'tag:"carroll's poem" AND NOT 1.2' |
 | st-result | 2 total |  |
 | st-result | beamish boy |  |
 | st-result | Jabberwocky |  |
