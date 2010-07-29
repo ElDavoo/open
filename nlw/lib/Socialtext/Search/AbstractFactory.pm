@@ -55,9 +55,18 @@ Socialtext::Search::AbstractFactory->GetFactory: >>.
 =cut
 
 sub GetFactory {
-    my ( $class ) = @_;
+    my ( $class, %p ) = @_;
 
     my $factory_class = Socialtext::AppConfig->search_factory_class;
+    if ($p{use_index}) {
+        if ($p{use_index} eq 'solr') {
+            $factory_class = 'Socialtext::Search::Solr::Factory';
+        }
+        elsif ($p{use_index} eq 'kino') {
+            $factory_class = 'Socialtext::Search::KinoSearch::Factory';
+        }
+    }
+    warn "Using $factory_class";
 
     eval "require $factory_class";
     die __PACKAGE__, "->GetFactory: $@" if $@;
