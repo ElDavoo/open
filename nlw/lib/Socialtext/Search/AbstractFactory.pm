@@ -66,7 +66,6 @@ sub GetFactory {
             $factory_class = 'Socialtext::Search::KinoSearch::Factory';
         }
     }
-    warn "Using $factory_class";
 
     eval "require $factory_class";
     die __PACKAGE__, "->GetFactory: $@" if $@;
