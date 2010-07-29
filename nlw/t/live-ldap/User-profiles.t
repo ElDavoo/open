@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 8;
+use Test::Socialtext tests => 9;
 
 # Explicitly load these, so we *know* they're loaded (instead of just waiting
 # for them to be lazy loaded); we need to set some pkg vars for testing
@@ -57,6 +57,10 @@ instantiate_user_with_supervisor: {
 
     my $supervisor = Socialtext::User->new(username => 'Adrian Harris');
     ok $supervisor, 'loaded Supervisor';
+
+    # Check that the Supervisor was loaded _into_ the Default Account
+    is $supervisor->primary_account_id, $acct->account_id,
+        '... who was loaded into the Default Account';
 
     # Check that the Supervisor is linked in the Profile
     my $profile = Socialtext::People::Profile->GetProfile($user, no_recurse=>1);
