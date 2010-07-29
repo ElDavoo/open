@@ -3201,9 +3201,11 @@ div#mainNav ul ul.level2 {
     border: 1px solid #313a3d;
 }
 
+div#mainNav ul.level1 li.submenu.hover ul.level2,
 div#mainNav ul.level1 li.submenu:hover ul.level2 {
     display: block; 
 }
+div#mainNav ul.level1 li.submenu.hover,
 div#mainNav ul.level1 li.submenu:hover {
     z-index: 2000;
 }
@@ -3325,9 +3327,11 @@ div#workspaceNav ul.level2 {
 
 }
 
+div#workspaceNav li.submenu.hover ul.level2,
 div#workspaceNav li.submenu:hover ul.level2 {
     display: block; 
 }
+div#workspaceNav li.submenu.hover,
 div#workspaceNav li.submenu:hover {
     z-index: 4000;
 }
