@@ -1,0 +1,30 @@
+dn: ou=related,dc=example,dc=com
+objectClass: organizationalUnit
+description: related employees
+ou: related
+
+dn: cn=Adrian Harris,ou=related,dc=example,dc=com
+objectClass: inetOrgPerson
+cn: Adrian Harris
+gn: Adrian
+sn: Harris
+mail: adrian.harris@example.com
+userPassword: abc123
+
+dn: cn=Ariel Young,ou=related,dc=example,dc=com
+objectClass: inetOrgPerson
+cn: Ariel Young
+gn: Ariel
+sn: Young
+mail: ariel.young@example.com
+userPassword: abc123
+manager: cn=Adrian Harris,ou=related,dc=example,dc=com
+
+dn: cn=Belinda King,ou=related,dc=example,dc=com
+objectClass: inetOrgPerson
+cn: Belinda King
+gn: Belinda
+sn: King
+mail: belinda.king@example.com
+userPassword: abc123
+manager: cn=Adrian Harris,ou=related,dc=example,dc=com
