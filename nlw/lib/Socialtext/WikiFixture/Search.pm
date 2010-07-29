@@ -65,4 +65,24 @@ sub people_search {
     $self->json_array_size($expected_results);
 }
 
+sub ws_search {
+    my $self = shift;
+    my $q = shift;
+    my $expected_results = shift;
+    $q = Socialtext::String::uri_escape(Socialtext::Encode::ensure_is_utf8($q));
+
+    $self->st_process_jobs();
+    $self->get("/$self->{workspace}/index.cgi?action=search;search_term=$q");
+    $self->code_is(200);
+
+    my $body = $self->{http}->_decoded_content;
+    if ($body =~ m/Showing 1 - \d+ of (\d+) total/) {
+        my $matches = $1;
+        is $matches, $expected_results, "expected results for '$q'";
+    }
+    else {
+        ok 0, "Couldn't find the number of results";
+    }
+}
+
 1;
