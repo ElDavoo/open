@@ -956,6 +956,23 @@ sub Resolve {
     return $user;
 }
 
+sub ResolveId {
+    my $class = shift;
+    my $p     = shift;
+
+    foreach my $driver ($class->_drivers) {
+        my $subclass = $class->_realize($driver, 'ResolveId');
+        if ($subclass) {
+            my $res = $subclass->ResolveId( {
+                %{$p},
+                driver_key => $subclass->driver_key,
+            } );
+            return $res if $res;
+        }
+    }
+    return;
+}
+
 my $standard_apply = sub {
     my $row = shift;
     return Socialtext::User->new( user_id => $row->[0] );
@@ -2283,6 +2300,15 @@ Given something that might be a Socialtext::User or an identifier for a user
 Socialtext::User object.
 
 Throws an exception if C<$thingy> can't be resolved to a User.
+
+=head2 Socialtext::User->ResolveId( { driver_unique_id => $uniq_id } );
+
+Given the low-level driver-unique-id for a User, try to resolve it to the
+low-level C<user_id> for said User.
+
+Checks each of the configured User Factories to see if they know about this
+User, B<without> actually instantiating the User object; useful as a
+peek-ahead to see if we know about a User with this C<driver_unique_id> yet.
 
 =head2 Socialtext::User->Create_user_from_hash( $hashref )
 
