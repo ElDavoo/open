@@ -28,7 +28,7 @@ ceq_config(
 at_least_one_worker_capable_of_running_long: {
     ceq_config(max_concurrency => 1);
     Socialtext::JobCreator->insert(
-        'Socialtext::Job::Delay::LongLived', { sleep => 0.1 },
+        'Socialtext::Job::Test::LongLived', { sleep => 0.1 },
     );
 
     ceq_fast_forward();
@@ -52,10 +52,10 @@ at_least_one_worker_capable_of_running_long: {
 long_running_worker_can_run_short_jobs: {
     ceq_config(max_concurrency => 1);
     Socialtext::JobCreator->insert(
-        'Socialtext::Job::Delay::LongLived', { sleep => 0.1 },
+        'Socialtext::Job::Test::LongLived', { sleep => 0.1 },
     );
     Socialtext::JobCreator->insert(
-        'Socialtext::Job::Delay::ShortLived', { sleep => 0.1 },
+        'Socialtext::Job::Test::ShortLived', { sleep => 0.1 },
     );
 
     ceq_fast_forward();
@@ -81,10 +81,10 @@ long_running_worker_can_run_short_jobs: {
 long_jobs_dont_stall_entire_queue: {
     ceq_config(max_concurrency => 2);
     Socialtext::JobCreator->insert(
-        'Socialtext::Job::Delay::LongLived', { sleep => 5 },
+        'Socialtext::Job::Test::LongLived', { sleep => 5 },
     ) for (0 .. 5);
     Socialtext::JobCreator->insert(
-        'Socialtext::Job::Delay::ShortLived', { sleep => 0.1 },
+        'Socialtext::Job::Test::ShortLived', { sleep => 0.1 },
     ) for (0 .. 20);
 
     ceq_fast_forward();

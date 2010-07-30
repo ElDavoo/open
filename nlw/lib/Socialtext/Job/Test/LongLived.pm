@@ -1,4 +1,4 @@
-package Socialtext::Job::Delay::LongLived;
+package Socialtext::Job::Test::LongLived;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::Log qw(st_log);
@@ -23,14 +23,14 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 
-Socialtext::Job::Delay::LongLived - Test/sample Long-Lived Job
+Socialtext::Job::Test::LongLived - Test/sample Long-Lived Job
 
 =head1 SYNOPSIS
 
   use Socialtext::JobCreator;
 
   Socialtext::JobCreator->insert(
-    'Socialtext::Job::Delay::LongLived',
+    'Socialtext::Job::Test::LongLived',
     { sleep => 5 },
   );
 
@@ -42,6 +42,6 @@ or stall the rest of the queue).
 
 =head1 SEE ALSO
 
-L<Socialtext::Job::Delay::ShortLived>.
+L<Socialtext::Job::Test::ShortLived>.
 
 =cut
