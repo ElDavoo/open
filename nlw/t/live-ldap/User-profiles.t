@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 19;
+use Test::Socialtext tests => 28;
 
 # Explicitly load these, so we *know* they're loaded (instead of just waiting
 # for them to be lazy loaded); we need to set some pkg vars for testing
@@ -106,4 +106,38 @@ supervisor_cleared: {
     $profile = Socialtext::People::Profile->GetProfile($user, no_recurse=>1);
     $queried = $profile->get_reln('supervisor');
     ok !defined $queried, '... removal of supervisor reflected in People Profile';
+}
+
+###############################################################################
+# TEST: recursive relationship A->B->A
+recursive_relationship: {
+    my $acct = Socialtext::Account->Default;
+    my $ldap = bootstrap_openldap(account => $acct);
+
+    # Update the Users in LDAP, creating the recursive relationship
+    my $ariel_dn  = 'cn=Ariel Young,ou=related,dc=example,dc=com';
+    my $adrian_dn = 'cn=Adrian Harris,ou=related,dc=example,dc=com';
+
+    my $rc = $ldap->modify($ariel_dn, replace => ['manager' => $adrian_dn]);
+    ok $rc, 'Ariel now has Adrian as a manager, in LDAP';
+
+    $rc = $ldap->modify($adrian_dn, replace => ['manager' => $ariel_dn]);
+    ok $rc, 'Adrian now has Ariel as a manager, in LDAP';
+
+    # Load up one of the Users; both should get loaded, but we shouldn't end
+    # up recursing endlessly.
+    my $ariel = Socialtext::User->new(username => 'Ariel Young');
+    ok $ariel, 'loaded Ariel user';
+
+    my $adrian = Socialtext::User->new(username => 'Adrian Harris');
+    ok $adrian, 'loaded Adrian user';
+
+    # Check that they're each marked as each other's manager
+    my $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
+    is $ariel_profile->get_reln('supervisor'), $adrian->user_id,
+        'Ariel has Adrian as a manager';
+
+    my $adrian_profile = Socialtext::People::Profile->GetProfile($adrian, no_recurse=>1);
+    is $adrian_profile->get_reln('supervisor'), $ariel->user_id,
+        'Adrian has Ariel as a manager';
 }
