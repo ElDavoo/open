@@ -207,7 +207,7 @@ sub _make_me_a_job {
         {
             %p, # pass through args.
             job => {
-                priority => -50,
+                priority => 50,
                 uniqkey  => 'group_id:' . $p{group_id},
             },
         }
