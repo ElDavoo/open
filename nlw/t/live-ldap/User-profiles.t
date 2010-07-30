@@ -23,20 +23,15 @@ $Socialtext::People::Fields::AutomaticStockFields=1;
 
 ###############################################################################
 sub bootstrap_openldap {
+    my %p    = @_;
+    my $acct = $p{account};
+
     my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
     isa_ok $openldap, 'Test::Socialtext::Bootstrap::OpenLDAP';
     ok $openldap->add_ldif('t/test-data/ldap/base_dn.ldif'),
         '.. added data: base_dn';
     ok $openldap->add_ldif('t/test-data/ldap/relationships.ldif'),
         '... added data: relationships';
-    return $openldap;
-}
-
-###############################################################################
-# TEST: instantiate User with a Supervisor
-instantiate_user_with_supervisor: {
-    my $ldap = bootstrap_openldap();
-    my $acct = Socialtext::Account->Default;
 
     # Update the "supervisor" People Field in this Account so its LDAP sourced
     my $people = Socialtext::Pluggable::Adapter->plugin_class('people');
@@ -47,9 +42,18 @@ instantiate_user_with_supervisor: {
     } );
 
     # Ensure that the LDAP config maps the "supervisor" field to an LDAP attr
-    my $config = $ldap->ldap_config();
+    my $config = $openldap->ldap_config();
     $config->{attr_map}{supervisor} = 'manager';
     Socialtext::LDAP::Config->save($config);
+
+    return $openldap;
+}
+
+###############################################################################
+# TEST: instantiate User with a Supervisor
+instantiate_user_with_supervisor: {
+    my $acct = Socialtext::Account->Default;
+    my $ldap = bootstrap_openldap(account => $acct);
 
     # Load up a User that has a Supervisor, and the Supervisor itself
     my $user = Socialtext::User->new(username => 'Ariel Young');
@@ -74,21 +78,8 @@ instantiate_user_with_supervisor: {
 ###############################################################################
 # TEST: supervisor gets cleared in LDAP
 supervisor_cleared: {
-    my $ldap = bootstrap_openldap();
     my $acct = Socialtext::Account->Default;
-
-    # Update the "supervisor" People Field in this Account so its LDAP sourced
-    my $people = Socialtext::Pluggable::Adapter->plugin_class('people');
-    $people->SetProfileField( {
-        name    => 'supervisor',
-        source  => 'external',
-        account => $acct,
-    } );
-
-    # Ensure that the LDAP config maps the "supervisor" field to an LDAP attr
-    my $config = $ldap->ldap_config();
-    $config->{attr_map}{supervisor} = 'manager';
-    Socialtext::LDAP::Config->save($config);
+    my $ldap = bootstrap_openldap(account => $acct);
 
     # Load up a User that has a Supervisor, and the Supervisor itself
     my $user = Socialtext::User->new(username => 'Ariel Young');
