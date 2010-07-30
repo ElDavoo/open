@@ -32,6 +32,7 @@ sub index_attachment {
     my $self = shift;
     my $attachment = shift;
     my $search_config = shift;
+    my %opts = @_;
 
     my $wksp_id = $attachment->hub->current_workspace->workspace_id;
     my $page_id = $attachment->page->id;
@@ -45,6 +46,7 @@ sub index_attachment {
         page_id      => $page_id,
         attach_id    => $attach_id,
         config       => $search_config,
+        %opts,
     );
 }
 
@@ -56,6 +58,8 @@ sub index_attachment_by_ids {
     my $attach_id     = delete $p{attach_id};
     my $priority      = delete $p{priority} || 63;
     my $search_config = delete $p{config};
+    my $job_class     = delete $p{attachment_job_class}
+                            || 'Socialtext::Job::AttachmentIndex';
 
     my %job_args = (
         workspace_id => $wksp_id,
@@ -75,30 +79,36 @@ sub index_attachment_by_ids {
         $job_args{job}{coalesce} .= "-kino";
         $job_args{search_config} = $search_config;
     }
-    return $self->insert('Socialtext::Job::AttachmentIndex' => \%job_args);
+    return $self->insert($job_class => \%job_args);
 }
 
 sub index_page {
     my $self = shift;
     my $page = shift;
     my $search_config = shift;
-    my %opts = @_;
+    my %opts = (
+        page_job_class => 'Socialtext::Job::PageIndex',
+        @_,
+    );
+    
 
     return if $page->is_bad_page_title($page->id);
 
     my @job_ids;
 
-    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers(
-        $page->hub->current_workspace->name,
-    );
+    $opts{indexers} ||= [ 
+        Socialtext::Search::AbstractFactory->GetIndexers(
+            $page->hub->current_workspace->name,
+        )
+    ];
 
     my $wksp_id = $page->hub->current_workspace->workspace_id;
     my $page_id = $page->id;
-    for my $indexer (@indexers) {
+    for my $indexer (@{ $opts{indexers} }) {
         my $solr = ref($indexer) =~ m/solr/i;
 
         my $job_id = $self->insert(
-            'Socialtext::Job::PageIndex' => {
+            $opts{page_job_class} => {
                 workspace_id => $wksp_id,
                 page_id => $page_id,
                 ($solr ? (solr => 1) : (search_config => $search_config)),
@@ -117,10 +127,14 @@ sub index_page {
     my $attachments = $page->hub->attachments->all( page_id => $page->id );
     foreach my $attachment (@$attachments) {
         next if $attachment->deleted();
-        for my $indexer (@indexers) {
+        for my $indexer (@{ $opts{indexers} }) {
             my $job_id;
             if (ref($indexer) =~ m/solr/i) {
-                $job_id = $self->index_attachment($attachment, 'solr');
+                $job_id = $self->index_attachment($attachment, 'solr', 
+                    indexers => $opts{indexers},
+                    attachment_job_class => $opts{attachment_job_class},
+                    priority => $opts{priority},
+                );
             }
             else {
                 $job_id = $self->index_attachment($attachment, $search_config);

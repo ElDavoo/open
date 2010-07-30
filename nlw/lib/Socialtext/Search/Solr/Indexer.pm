@@ -182,14 +182,17 @@ sub page_key {
 
 # Load an attachment and then add it to the index.
 sub index_attachment {
-    my ( $self, $page_uri, $attachment_id ) = @_;
+    my ( $self, $page_id, $attachment_or_id ) = @_;
 
-    my $attachment = Socialtext::Attachment->new(
-        hub     => $self->hub,
-        id      => $attachment_id,
-        page_id => $page_uri,
-    )->load;
-    _debug("Loaded attachment: page_id=$page_uri attachment_id=$attachment_id");
+    my $attachment = ref($attachment_or_id)
+        ? $attachment_or_id
+        : Socialtext::Attachment->new(
+            hub     => $self->hub,
+            id      => $attachment_or_id,
+            page_id => $page_id,
+        )->load;
+    my $attachment_id = $attachment->id;
+    _debug("Loaded attachment: page_id=$page_id attachment_id=$attachment_id");
 
     $self->_add_attachment_doc($attachment);
     $self->_commit();
@@ -197,9 +200,9 @@ sub index_attachment {
 
 # Remove an attachment from the index.
 sub delete_attachment {
-    my ( $self, $page_uri, $attachment_id ) = @_;
+    my ( $self, $page_id, $attachment_id ) = @_;
     my $ws_id = $self->workspace->workspace_id;
-    my $page = $self->_load_page($page_uri, 'deleted ok') || return;
+    my $page = $self->_load_page($page_id, 'deleted ok') || return;
     my $id = join(':',$ws_id,$page->id,$attachment_id);
     $self->solr->delete_by_id($id);
     $self->_commit();
@@ -214,8 +217,8 @@ sub _add_attachment_doc {
 
     my $ws_id = $self->workspace->workspace_id;
     my $id = join(':',$ws_id,$att->page_id,$att->id);
-    st_log->debug("Indexing attachment doc $id <".$att->filename.">");
 
+    st_log->debug("Indexing attachment doc $id <".$att->filename.">");
     my $date = _date_header_to_iso($att->Date);
     my $editor_id = $att->uploaded_by->user_id;
 
