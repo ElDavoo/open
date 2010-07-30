@@ -13,6 +13,14 @@ use Socialtext::Jobs;
 use Socialtext::l10n qw(loc);
 use DateTime;
 
+{
+    no strict 'refs';
+    *{__PACKAGE__.'::GET_yaml'} = Socialtext::Rest::Collection::_make_getter(
+        \&Socialtext::Rest::resource_to_yaml, 'text/x-yaml');
+    *{__PACKAGE__.'::GET_text'} = Socialtext::Rest::Collection::_make_getter(
+        \&Socialtext::Rest::resource_to_yaml, 'text/plain');
+}
+
 sub allowed_methods {'GET'}
 sub collection_name { loc('Jobs') }
 
@@ -46,7 +54,7 @@ sub get_resource {
     for my $type (keys %$stat) {
         next unless $type =~ m/^Socialtext::Job::(.+)/;
         my $shortname = $1;
-        next if $shortname =~ m/^Delay::/;
+        next if $shortname =~ m/^Test::/;
         push @job_stats, {name => $shortname, %{$stat->{$type}}}
     }
 
@@ -65,8 +73,6 @@ sub get_resource {
 
     return \@job_stats;
 }
-
-sub _entity_hash { }
 
 sub resource_to_html {
     my ($self, $job_stats) = @_;

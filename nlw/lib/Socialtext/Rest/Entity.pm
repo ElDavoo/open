@@ -15,6 +15,7 @@ L<Socialtext::Rest::Collection>
 =cut
 
 use Socialtext::JSON;
+use YAML qw/Dump/;
 use base 'Socialtext::Rest';
 use Socialtext::HTTP ':codes';
 
@@ -39,6 +40,8 @@ sub attribute_table_row {
     *GET_text = _make_getter(\&resource_to_text, 'text/plain');
     *GET_html = _make_getter(\&resource_to_html, 'text/html');
     *GET_json = _make_getter(\&resource_to_json, 'application/json');
+    *GET_yaml = _make_getter(
+        \&Socialtext::Rest::resource_to_yaml, 'text/x-yaml');
     *PUT_json = _make_putter(\&json_to_resource);
 }
 

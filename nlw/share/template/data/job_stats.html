@@ -2,14 +2,17 @@
     <head>
         <title>[% collection_name %]</title>
     </head>
+    <style type="text/css">
+        
+    </style>
     <body>
-        <table width="100%">
-            <tbody>
-                <tr class="job_stat_hdr">
+        <table class="jobs jobstats">
+            <thead>
+                <tr class="jobheader">
                     [% FOREACH hdr IN columns %]
                     <th>
                     [%- SWITCH hdr -%]
-                       [%- CASE 'name'     %][% loc('Name') -%]
+                       [%- CASE 'name'     %][% loc('Class') -%]
                        [%- CASE 'queued'   %][% loc('Queued') -%]
                        [%- CASE 'delayed'  %][% loc('Delayed') -%]
                        [%- CASE 'grabbed'  %][% loc('Grabbed') -%]
@@ -22,10 +25,18 @@
                     </th>
                     [% END %]
                 </tr>
+            <thead>
+            <tbody>
                 [% FOREACH job_stat IN job_stats %]
-                <tr class="job_stat_row">
+                <tr class="jobrow">
                     [% FOREACH col IN columns %]
-                    <td class="job_stat_col_[%col%]">[% job_stat.$col |html%]</td>
+                    <td class="jobcol[%col%]">
+                      [% IF col == 'name' %]
+                        <a href="/data/jobs/class/[% job_stat.name %]">[% job_stat.name |html%]</a>
+                      [% ELSE %]
+                        [% job_stat.$col |html%]
+                      [% END %]
+                    </td>
                     [% END %]
                 </tr>
                 [% END %]

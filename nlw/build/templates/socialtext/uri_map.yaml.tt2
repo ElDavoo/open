@@ -22,7 +22,26 @@
             'text/html':              *default
             'application/json':       [Socialtext::Rest::Jobs, GET_json]
             'text/x-yaml':            [Socialtext::Rest::Jobs, GET_yaml]
+            'text/plain':             [Socialtext::Rest::Jobs, GET_text]
         '*':                    [Socialtext::Rest::Jobs, bad_method]
+-
+    '/data/jobs/job/:jobid':
+        'GET':
+            '*/*':           &default [Socialtext::Rest::Job, GET_html]
+            'text/html':              *default
+            'application/json':       [Socialtext::Rest::Job, GET_json]
+            'text/x-yaml':            [Socialtext::Rest::Job, GET_yaml]
+            'text/plain':             [Socialtext::Rest::Job, GET_text]
+        '*':                    [Socialtext::Rest::Job, bad_method]
+-
+    '/data/jobs/class/:jobclass':
+        'GET':
+            '*/*':           &default [Socialtext::Rest::JobsByClass, GET_html]
+            'text/html':              *default
+            'application/json':       [Socialtext::Rest::JobsByClass, GET_json]
+            'text/x-yaml':            [Socialtext::Rest::JobsByClass, GET_yaml]
+            'text/plain':             [Socialtext::Rest::JobsByClass, GET_text]
+        '*':                    [Socialtext::Rest::JobsByClass, bad_method]
 -
     '/data/events':
         'GET':

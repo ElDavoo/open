@@ -12,10 +12,11 @@ sub is_long_running { 0 }
 has job => (
     is => 'rw', isa => 'TheSchwartz::Moosified::Job',
     handles => [qw(
-        arg
-        permanent_failure
-        failed
-        completed
+        jobid funcname 
+        arg uniqkey insert_time run_after grabbed_until priority coalesce
+        permanent_failure failed completed
+        exit_status failure_log failures
+        as_hashref
     )],
 );
 
@@ -182,6 +183,14 @@ sub _build_user {
     my $user = Socialtext::User->new(user_id => $user_id);
     $self->hub->current_user($user) if $self->has_hub;
     return $user;
+}
+
+sub to_hash {
+    my $self = shift;
+    my $hash = $self->as_hashref;
+    $hash->{funcname} = $self->funcname;
+    delete $hash->{funcid};
+    return $hash;
 }
 
 __PACKAGE__->meta->make_immutable;

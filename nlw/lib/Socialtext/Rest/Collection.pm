@@ -71,6 +71,8 @@ application/atom+xml and text/plain, respectively.
     *GET_json = _make_getter(resource_to_json => 'application/json');
     *GET_atom = _make_getter(resource_to_atom => 'application/atom+xml');
     *GET_text = _make_getter(resource_to_text => 'text/plain');
+    *GET_yaml = _make_getter(
+        \&Socialtext::Rest::resource_to_yaml, 'text/x-yaml');
 }
 
 sub extra_headers {

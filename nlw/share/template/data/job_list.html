@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <title>[% collection_name %]</title>
+    </head>
+    <body>
+        <style type="text/css">
+            table.jobs {
+                border-collapse: collapse;
+                border: 1px solid black;
+            }
+            table.jobs td {
+                border: 1px solid #888;
+                padding: 2px;
+            }
+            table.jobs th {
+                padding-left: 4px;
+                padding-right: 4px;
+                border: 1px dotted #888;
+            }
+
+            td.jobcolarg {
+                font-family: Inconsolata, Fixed;
+                font-size: smaller;
+            }
+            td.jobcolpriority {
+                font-family: Inconsolata, Fixed;
+                font-size: smaller;
+            }
+        </style>
+        <p>
+        Jobs in roughly the order that ceqlotron will process them (limited to the first 1000).</p>
+        <p>Hint: use <a href="?verbose=1">?verbose=1</a> to also show job arguments.
+            <a href="?accept=json">Display as JSON.</a>
+            <a href="?accept=text/plain">Display as YAML.</a>
+        </p>
+        <table class="jobs joblist">
+            <thead>
+                <tr class="jobsheader">
+                    [% FOREACH hdr IN columns %]
+                    <th>
+                    [%- SWITCH hdr -%]
+                       [%- CASE 'jobid'%][% loc('ID') -%]
+                       [%- CASE 'uniqkey'%][% loc('Key') -%]
+                       [%- CASE 'priority'%][% loc('Prio') -%]
+                       [%- CASE 'insert_time'%][% loc('Created') -%]
+                       [%- CASE 'run_after'%][% loc('Run After') -%]
+                       [%- CASE 'grabbed_until'%][% loc('Grabbed Until') -%]
+                       [%- CASE 'coalesce'%][% loc('Coalesce') -%]
+                       [%- CASE 'arg'%][% loc('Args') -%]
+                       [%- CASE %][% hdr -%]
+                    [%- END -%]
+                    </th>
+                    [% END %]
+                </tr>
+            </thead>
+            <tbody>
+                [% FOREACH job IN jobs %]
+                <tr class="jobrow">
+                    [% FOREACH col IN columns -%]
+                    <td class="jobcol[%col%]" [% IF col == 'arg' %]width="*"[% END %]>
+                    [% IF col == 'jobid' %]
+                        <a name="job[% job.jobid %]"></a>
+                        <a href="/data/jobs/job/[% job.jobid %]">
+                            [%- job.jobid %]</a>
+                    [% ELSE %]
+                        [%- job.$col |html -%]
+                    [% END %]
+                    </td>
+                    [%- END %]
+                </tr>
+                [% END %]
+            </tbody>
+        </table>
+    </body>
+</html>

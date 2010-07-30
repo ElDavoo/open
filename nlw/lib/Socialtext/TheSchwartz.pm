@@ -224,6 +224,15 @@ sub move_jobs_by {
     }
 }
 
+sub job_handle {
+    my $self = shift;
+    my $jobid = shift;
+    my $handle = TheSchwartz::Moosified::JobHandle->new(
+        jobid => $jobid,
+        client => $self,
+        dbh => Socialtext::SQL::get_dbh(),
+    );
+}
 
 __PACKAGE__->meta->make_immutable;
 1;

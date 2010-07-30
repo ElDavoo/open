@@ -15,6 +15,7 @@ use Carp 'croak';
 use List::MoreUtils qw/part/;
 use Try::Tiny;
 use Scalar::Util qw/blessed/;
+use YAML ();
 
 use Socialtext::Exceptions qw/bad_request/;
 use Socialtext::Workspace;
@@ -606,5 +607,7 @@ sub handle_rest_exception {
         return $msg;
     }
 }
+
+sub resource_to_yaml { YAML::Dump($_[1]) }
 
 1;
