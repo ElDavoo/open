@@ -104,7 +104,6 @@ sub index_page {
     my $page = $self->_load_page($page_uri, 'deleted ok') || return;
     return $self->delete_page($page_uri) if $page->deleted;
     $self->_add_page_doc($page);
-    $self->_index_page_attachments($page);
     $self->_commit;
 }
 
