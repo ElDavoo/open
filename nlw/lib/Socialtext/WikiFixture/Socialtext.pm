@@ -1005,6 +1005,11 @@ sub st_unchecked_ok {
     ok !$self->is_checked($locator), "$locator is not checked";
 }
 
+sub st_uneditable_ok {
+    my ($self, $locator) = @_;
+    ok !$self->is_editable($locator), "$locator is not editable";
+}
+
 sub _click_user_row {
     my ($self, $email, $method_name, $click_col) = @_;
     my $sel = $self->{selenium};
