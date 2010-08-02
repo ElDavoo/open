@@ -904,6 +904,8 @@ proto.disableThis = function() {
 proto.on_pasted = function(html) {
     var self = this;
 
+    html = html.replace(/^(?:\s*<meta\s[^>]*>)+/, '');
+
     if (this.paste_buffer_is_simple(html)) {
         self.insert_html( html );
         return;
