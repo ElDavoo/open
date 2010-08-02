@@ -6,7 +6,7 @@ use warnings;
 use mocked 'Apache::Request';
 use Socialtext::CredentialsExtractor;
 use Socialtext::AppConfig;
-use Test::Socialtext no_plan => 1;
+use Test::Socialtext tests => 4;
 
 fixtures(qw( base_config ));
 
