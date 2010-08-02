@@ -915,7 +915,7 @@ proto.on_pasted = function(html) {
     if (!/<(?:table|img)[\s>]/i.test(html)) {
         // The HTML does not contain tables or images - use the JS Document parser.
         html = ((new Document.Parser.Wikitext()).parse(wikitext, new Document.Emitter.HTML()));
-        self.insert_html( html );
+        self.insert_html( html.replace(/^\s*<p>/i, '').replace(/<\/p>\s*$/i, '') );
         return;
     }
 
