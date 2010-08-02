@@ -61,13 +61,14 @@ sub PurgeCache {
     $class->ClearMemoryCache;
 
     my $cache_dir = Socialtext::Paths::storage_directory('json_cache');
+    my $tmp_dir = '';
     if (-d $cache_dir) {
-        my $tmp_dir = mkdtemp("$cache_dir.purge.XXXXXX");
+        $tmp_dir = mkdtemp("$cache_dir.purge.XXXXXX");
         rename $cache_dir => $tmp_dir
             or die "can't rename cache dir to $tmp_dir: $!";
     }
     mkdir $cache_dir;
-
+    rmdir $tmp_dir if -d $tmp_dir;
     return $cache_dir;
 }
 
