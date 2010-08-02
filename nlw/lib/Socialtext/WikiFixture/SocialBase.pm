@@ -1591,6 +1591,7 @@ sub set_from_header {
     my $self = shift;
     my $name = shift || die "name is mandatory for set-from-header";
     my $header = shift || die "header is mandatory for set-from-header";
+    my $regex = shift;
     my $content = $self->{http}->response->header($header);
 
     if ($header eq 'Location') {
@@ -1598,8 +1599,13 @@ sub set_from_header {
     }
 
     if (defined $content) {
-        $self->{$name} = $content;
-        warn "# Set $name to '$content' from response header\n";
+        if (defined $regex) {
+            $self->exec_regex($name, $content, $regex);
+        }
+        else {
+            $self->{$name} = $content;
+        }
+        warn "# Set $name to '$self->{$name}' from response header\n";
     }
     else {
         die "Could not set $name - header $header not present\n";
