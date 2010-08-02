@@ -353,12 +353,7 @@ sub _cache_using_questions {
     # content for TOC wafls and such.
     my $is_current = $self->hub->pages->current->id eq $self->id;
     if ($is_current) {
-        # Which link dictionary is always the first question
-        my $ld = $self->hub->viewer->link_dictionary;
-        $ld = ref($ld);
-        $ld =~ s/.+:://; # only use the last part of the package name
-        
-        my $answer_str = join '-', $ld,
+        my $answer_str = join '-', $self->_stock_answers(),
             map { $_ . '_' . shift(@answers) } @short_q;
 
         my $cache_file = $self->_answer_file($answer_str);
@@ -395,14 +390,8 @@ sub _users_modified_since {
         }, @user_ids, $cached_at) || 0;
 }
 
-sub _questions_to_answers {
+sub _stock_answers {
     my $self = shift;
-    my $q_str = shift;
-
-    my $t = time_scope('QtoA');
-    my $cur_user = $self->hub->current_user;
-    my $authz = $self->hub->authz;
-
     my @answers;
 
     # Which link dictionary is always the first question
@@ -417,6 +406,19 @@ sub _questions_to_answers {
     require Socialtext::URI;
     my %uri = Socialtext::URI::_scheme();
     push @answers, $uri{scheme};
+    
+    return @answers;
+};
+
+sub _questions_to_answers {
+    my $self = shift;
+    my $q_str = shift;
+
+    my $t = time_scope('QtoA');
+    my $cur_user = $self->hub->current_user;
+    my $authz = $self->hub->authz;
+
+    my @answers = $self->_stock_answers;
 
     for my $q (split "\n", $q_str) {
         if ($q =~ m/^w(\d+)$/) {
