@@ -64,7 +64,7 @@ sub all {
 
 sub attachment_exists {
     my $self = shift;
-    my ($workspace, $page_id, $filename) = @_;
+    my ($workspace, $page_id, $filename, $attach_id) = @_;
 
     my $old_ws = $self->hub->current_workspace;
     my $g = scope_guard { $self->hub->current_workspace($old_ws) };
@@ -80,8 +80,15 @@ sub attachment_exists {
     $self->hub->current_workspace($ws);
     my $attachments = $self->all(page_id => $page_id);
     for my $att (@$attachments) {
-        if ($att->filename eq lc($filename)) {
-            return $att->exists || 0;
+        if ($attach_id) {
+            if ($att->id eq $attach_id) {
+                return $att->exists || 0;
+            }
+        }
+        else {
+            if ($att->filename eq lc($filename)) {
+                return $att->exists || 0;
+            }
         }
     }
     return 0;
