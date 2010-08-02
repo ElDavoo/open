@@ -1,0 +1,85 @@
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account |  |
+
+| set | acct | acct-for-account-%%start_time%% |
+| set | wstitle | WS For Account %%start_time%% |
+| set | wsname | ws-for-account-%%start_time%% |
+
+| set | altacct | alt-for-account-%%start_time%% |
+| set | alttitle | Alt For Account %%start_time%% |
+| set | altname | different-for-account-%%start_time%% |
+
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account - create acct |  |
+| create-account | %%acct%% | was created |
+| create-account | %%altacct%% | was created |
+
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account. find account by search |  |
+| open_ok | /nlw/control/account |  |
+| wait_for_element_visible_ok | st-search-by-name | 30000 |
+| type_ok | st-search-by-name | %%acct%% |
+| click_and_wait | st-submit-search-by-name |  |
+| wait_for_element_visible_ok | link=%%acct%% | 30000 |
+| click_and_wait | link=%%acct%% |  |
+
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account. Create Workspace from account page |  |
+| wait_for_element_present_ok | //input[contains(@value,'Create a new Workspace in this Account')] | 30000 |
+| click_and_wait | //input[contains(@value,'Create a new Workspace in this Account')] |  |
+| location_like | /nlw/control/workspaces/new?account_id |  |
+| text_like | //body | Create Workspace |
+| text_like | //body | Title: |
+| text_like | //body | qr/Account: %%acct%%.+(change)/ism |
+| text_like | //body | qr/URI: http[s]?:\/\/%%hostname%%/ |
+
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account - default case |  |
+| wait_for_element_visible_ok | workspace_title | 30000 |
+| click_ok | workspace_title | %%wstitle%% |
+| type_ok | workspace_title | %%wstitle%% |
+| is_checked_ok | auto_name |  |
+| st_uneditable_ok | workspace_name |  |
+| wait_for_element_visible_ok | //input[@type='submit' and @value="Create Workspace"] | 30000 |
+| st-pause-click | 2000 | //input[@type='submit' and @value="Create Workspace"] |
+
+| *Comment* | Test Case: Business Control Panel from Create Workspace from Account. verify workspace created |  |
+| *Comment* | There is one user but there should be zero users |  |
+| location_like | /nlw/control/workspace |  |
+| text_like | //body | qr/%%wsname%% workspace/ism |
+| text_like | //body | Users (1) |
+| text_like | //body | Groups (0) |
+| text_like | //body | qr/Group.+Add Group To Workspace/ism |
+
+| *Comment* | Test Case: Business Control Panel from Create Workspace from Account. go back to acct page |  |
+| click_ok | %%acct%% |  |
+
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account. Create using alternate account |  |
+| wait_for_element_present_ok | //input[contains(@value,'Create a new Workspace in this Account')] | 30000 |
+| click_and_wait | //input[contains(@value,'Create a new Workspace in this Account')] |  |
+
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account - alternate account and WS name |  |
+| wait_for_element_visible_ok | workspace_title | 30000 |
+| type_ok | workspace_title | %%alttitle%% |
+| uncheck_ok | auto_name |  |
+| st_unchecked_ok | auto_name |  |
+| st_editable_ok | workspace_name |  |
+| type_ok | workspace_name | %%altname%% |
+| verifyValue | workspace_name | %%altname%% |
+| click_ok | link=change |  |
+| type_lookahed_ok | changeAccountLookahead | %%altacct%% |
+| wait_for_element_visible_ok | //input[@type="submit" and value="Create Workspace"] | 30000 |
+| st-pause-click | 2000 | //input[@type="submit" and value="Create Workspace"] |
+
+| *Comment* | Test Case: Business Control Panel from Create Workspace from Account. verify alternate WS created |  |
+| *Comment* | There is one user but there should be zero users |  |
+| location_like | /nlw/control/workspace |  |
+| text_like | //body | qr/%%altname%% workspace/ism |
+| text_like | //body | Users (1) |
+| text_like | //body | Groups (1) |
+| text_like | //body | qr/Group.+Add Group To Workspace/ism |
+
+TODO: add users and groups to a creating workspace
+TODO: test the error conditions which were all buggy
+
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account TEARDOWN |  |
+
+| st-admin | delete-workspace --no-export --w %%wsname%% | was deleted |
+| st-admin | delete-workspace --no-export --w %%altname%% | was deleted |
+
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account COMPLETED |
