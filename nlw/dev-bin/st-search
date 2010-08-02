@@ -31,6 +31,7 @@ my $verbose;
 my $global;
 my $scope;
 my ($help, $man);
+my $solr;
 GetOptions(
     'workspace=s'   => \$workspace,
     'global'        => \$global,
@@ -40,6 +41,7 @@ GetOptions(
     'verbose'       => \$verbose,
     'help|?'        => \$help,
     'man'           => \$man,
+    'solr!'         => \$solr,
 ) || pod2usage(1);
 my $term = join ' ', @ARGV;
 
@@ -96,6 +98,10 @@ my $timer = Socialtext::Timer->new;
     $search->search_for_term(
         search_term => $term,
         scope       => $scope,
+        ( defined $solr ?
+            ( use_index => $solr ? 'solr' : 'kino')
+            : ()
+        ),
     );
     $result_set = $search->result_set( $search->sorted_result_set(\%sortdir) );
 }
@@ -140,6 +146,7 @@ st-search - Basic search script
     --workspace=<ws>        Workspace name to search in
     --username=<username>   Username to run search as (default "system-user")
     --sortby=<sortby>       Sort criteria (default "Relevance")
+    --solr/--nosolr         Force search to use a specific backend
     --verbose               Generate verbose output
     --help/-?               Brief help message
     --man                   Full documentation
@@ -186,6 +193,12 @@ Valid sort options include:
   From
   Date
   revision_count
+
+=item B<--solr>
+
+=item B<--nosolr>
+
+Force the search to use Solr or Kinosearch as the backend.
 
 =item B<--verbose>
 
