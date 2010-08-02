@@ -174,11 +174,18 @@ sub _cache_html {
 
                 my $unknown = 0;
                 if ($wafl_class =~ m/(?:Image|File|InterWikiLink|HtmlPage|Toc|CSS)$/) {
-                    my ($ws_name, undef, $file_name, $page_id)
-                        = $wafl->parse_wafl_reference;
-                    $interwiki{$ws_name}++ if $ws_name;
-                    $attachments{ join ' ', $ws_name, $page_id, $file_name }++
-                        if $file_name;
+                    my @args = $wafl->arguments =~ $wafl->wafl_reference_parse;
+                    $args[0] ||= $self->hub->current_workspace->name;
+                    $args[1] ||= $self->id;
+                    my ($ws_name, $page_id, $file_name) = @args;
+                    $interwiki{$ws_name}++;
+                    if ($file_name) {
+                        my $attach_id = $wafl->get_file_id($ws_name, $page_id,
+                            $file_name);
+                        $attachments{
+                            join ' ', $ws_name, $page_id, $file_name, $attach_id
+                        }++;
+                    }
                 }
                 elsif ($wafl_class =~ m/(?:TagLink|CategoryLink|WeblogLink)$/) {
                     my ($ws_name) = $wafl->parse_wafl_category;
@@ -333,7 +340,9 @@ sub _cache_using_questions {
         }
         elsif (my $a = $q->{attachment}) {
             push @short_q, 'a' . $a;
-            push @answers, $self->hub->attachments->attachment_exists(split " ", $a);
+            $a =~ m/^(\S+) (\S+) (.+) (\S+)$/;
+            push @answers, $self->hub->attachments->attachment_exists(
+                $1, $2, $3, $4);
         }
         else {
             die "Unknown question: " . Dumper $q;
@@ -457,8 +466,14 @@ sub _questions_to_answers {
             my $ok = $pref_str eq $my_prefs;
             push @answers, "${q}_$ok";
         }
-        elsif ($q =~ m/^a(\S+) (\S+) (.+)$/) {
-            push @answers, $self->hub->attachments->attachment_exists($1, $2, $3);
+        elsif ($q =~ m/^a(\S+) (\S+) (.+) (\S+)$/) {
+            my $e = $self->hub->attachments->attachment_exists($1, $2, $3, $4);
+            if ($e and !$4) {
+                warn "Attachment $1/$2/$3 exists, but attachment_id is 0"
+                    . " so we will re-generate the question" if $CACHING_DEBUG;
+                return undef;
+            }
+            push @answers, "${q}_$e";
         }
         elsif ($q eq 'null') {
             next;
@@ -470,7 +485,9 @@ sub _questions_to_answers {
             return undef;
         }
     }
-    return join '-', @answers;
+    my $str = join '-', @answers;
+    warn "Caching Answers: '$str'" if $CACHING_DEBUG;
+    return $str;
 }
 
 sub exists {

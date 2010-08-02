@@ -114,7 +114,6 @@ Run these tests as the main user.
 | question-file-like | RSSTest | qr/^E\d+$/ |
 | set-question-file  | RSSTest | E5440    |
 | fetch-page         | RSSTest | miss     |
-| fetch-page         | RSSTest | miss     |
 | fetch-page         | RSSTest | hit      |
 | fetch-page         | RSSTest | hit      |
 
@@ -156,26 +155,30 @@ Run these tests as the main user.
 | fetch-page | includer      | miss     |                         |
 
 | Comment | Image, File and HTML_page wafls on same page |
-| edit-page | %%workspace%% | att | This page has no attachments yet. |
+| edit-page  | %%workspace%% | att  | This page has no attachments yet. |
+| fetch-page | att           | miss |                                   |
+| fetch-page | att           | hit  |                                   |
 | set | attach_url | /data/workspaces/%%workspace%%/pages/att/attachments |
-| set | hdrs | Content-Type=text/html |
+| set | hdrs       | Content-Type=text/html                               |
 | post | %%attach_url%%?name=test.html | %%hdrs%% | <strong>Hi</strong> |
+| set-from-header | test_html_attach_id | Location | qr/attachments.att:([\d-]+).files/ |
 | set | hdrs | Content-Type=text/css |
-| post | %%attach_url%%?name=test.css | %%hdrs%% | CSS goes here. |
-| code-is          | 201           |      |                                          |
-| edit-page        | %%workspace%% | att  | {file: test.html}                        |
-| fetch-page       | att           | miss  |                                          |
-| fetch-page       | att           | hit  |                                          |
-| question-file-is | att           | a%%workspace%% wksp_%%start_time%% test.html |    |
+| post    | %%attach_url%%?name=test.css | %%hdrs%% | CSS goes here. |
+| code-is | 201                          |          |                |
+| set-from-header | test_css_attach_id | Location | qr/attachments.att:([\d-]+).files/ |
+| edit-page  | %%workspace%% | att  | {file: test.html} |
+| fetch-page | att           | miss |                   |
+| fetch-page | att           | hit  |                   |
+| question-file-is | att           | a%%workspace%% att test.html %%test_html_attach_id%% |    |
 
 | edit-page        | %%workspace%% | att  | {html_page: test.html} {file: test.html} |
 | fetch-page       | att           | miss  |                                          |
 | fetch-page       | att           | hit  |                                          |
-| question-file-is | att           | a%%workspace%% wksp_%%start_time%% test.html |    |
+| question-file-is | att           | a%%workspace%% att test.html %%test_html_attach_id%% |    |
 | edit-page        | %%workspace%% | att  | {css_include: test.css}                  |
 | fetch-page       | att           | miss  |                                          |
 | fetch-page       | att           | hit  |                                          |
-| question-file-is | att           | a%%workspace%% wksp_%%start_time%% test.css |    |
+| question-file-is | att           | a%%workspace%% att test.css %%test_css_attach_id%%|    |
 
 | Comment | Image, File and html_page wafls on interworkspace page |
 | edit-page | %%ws2%% | att | This page has no attachments yet. |
@@ -184,24 +187,28 @@ Run these tests as the main user.
 | body-like | wafl_existence_error |
 | fetch-page       | att           | hit         |                                 |
 | body-like | wafl_existence_error |
-| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html 0 |                                 |
+
 | set | attach_url | /data/workspaces/%%ws2%%/pages/att/attachments |
 | set | hdrs | Content-Type=text/html |
 | post | %%attach_url%%?name=test.html | %%hdrs%% | <strong>Hi</strong> |
+| set-from-header | test_html_attach_id | Location | qr/attachments.att:([\d-]+).files/ |
 | code-is          | 201           |             |                                 |
 | fetch-page       | att           | miss         |                                 |
 | body-unlike | wafl_existence_error |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html %%test_html_attach_id%% |                                 |
 | fetch-page       | att           | hit         |                                 |
 | body-unlike | wafl_existence_error |
-| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html %%test_html_attach_id%% |                                 |
+
 | edit-page        | %%workspace%% | att         | {html_page: %%ws2%% [att] test.html} |
 | fetch-page       | att           | miss         |                                 |
 | fetch-page       | att           | hit         |                                 |
-| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html %%test_html_attach_id%% |                                 |
 | edit-page        | %%workspace%% | att         | {html_page: %%ws2%% [att] test.html} {file: %%ws2%% [att] test.html} ||
 | fetch-page       | att           | miss         |                                 |
 | fetch-page       | att           | hit         |                                 |
-| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html |                                 |
+| question-file-is | att           | w%%ws2_id%%\na%%ws2%% att test.html %%test_html_attach_id%% |                                 |
 
 | Comment | TOC wafls on the current page |
 | edit-page | %%workspace%% | toc | {toc: }\n^ Header One\n |
