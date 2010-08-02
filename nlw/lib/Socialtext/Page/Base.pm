@@ -575,7 +575,10 @@ sub _answer_file {
     my $filename = "$base-".sha1_hex($answer_str);
     (my $basename = $filename) =~ s#.+/##;
     warn "Answer file: $answer_str => $basename" if $CACHING_DEBUG;
-    return undef if length($basename) > 254;
+    if (length($basename) > 254) {
+        warn "Answer file basename is too long! - $basename";
+        return undef;
+    }
     return $filename;
 }
 
