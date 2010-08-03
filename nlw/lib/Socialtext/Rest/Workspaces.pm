@@ -148,18 +148,57 @@ sub POST {
 
     my @workspaces;
 
-    eval { sql_txn {
+    eval {
+        # Do initial error checking outside the transaction to avoid creating
+        # the workspaces if possible
         for my $meta (@$request) {
-            my $ws = $self->_create_workspace_from_meta($meta);
-            push @workspaces, $ws;
+            if (my $members = $meta->{members}) {
+                die Socialtext::Exception::Auth->new(
+                    'Must be a business admin to set members of a workspace'
+                ) unless $user->is_business_admin;
 
-            $ws->add_user(
-                user  => $user,
-                role  => Socialtext::Role->Admin(),
-                actor => $user,
-            );
+                unless (grep { $_->{role_name} eq 'admin' } @$members) {
+                    die Socialtext::Exception::DataValidation->new(
+                        "You must add at least one workspace administrator."
+                    );
+                }
+            }
+            else {
+                $meta->{members} = [
+                    { role_name => 'admin', user_id => $user->user_id }
+                ];
+            }
         }
-    }};
+
+        sql_txn {
+            for my $meta (@$request) {
+                my $ws = $self->_create_workspace_from_meta($meta);
+                push @workspaces, $ws;
+
+                for my $m (@{$meta->{members}}) {
+                    my $role = Socialtext::Role->new(
+                        name => $m->{role_name}
+                    );
+                    if (my $uid = $m->{user_id}) {
+                        $ws->add_user(
+                            user => Socialtext::User->new(user_id => $uid),
+                            role => $role,
+                            actor => $user,
+                        );
+                    }
+                    elsif (my $gid = $m->{group_id}) {
+                        $ws->add_group(
+                            group => Socialtext::Group->GetGroup(
+                                group_id => $gid,
+                            ),
+                            role  => $role,
+                            actor => $user,
+                        );
+                    }
+                }
+            }
+        }
+    };
     if (my $e = $@) {
         my ($status, $message);
         if (ref($e)) {

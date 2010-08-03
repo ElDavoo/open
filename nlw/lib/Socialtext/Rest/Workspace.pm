@@ -6,6 +6,7 @@ use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
 use Socialtext::Workspace;
 use Socialtext::Workspace::Permissions;
+use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::User;
 use Socialtext::Group;
 use namespace::clean -except => 'meta';
@@ -14,9 +15,25 @@ extends 'Socialtext::Rest::Entity';
 with 'Socialtext::Rest::WorkspaceRole';
 
 # we handle perms ourselves for PUT
-sub permission      { +{ GET => 'read', PUT => undef } }
+sub permission      { +{ GET => undef, PUT => undef } }
 sub allowed_methods {'GET, PUT, HEAD'}
 sub entity_name     { 'workspace ' . $_[0]->workspace->title }
+
+sub if_authorized {
+    my $self = shift;
+    my $method = shift;
+    my $call = shift;
+
+    my $has_perm = $self->workspace->permissions->user_can(
+        user => $self->rest->user,
+        permission => ST_READ_PERM,
+    );
+    unless ($has_perm or $self->rest->user->is_business_admin) {
+        return $self->not_authorized;
+    }
+
+    return $self->$call(@_);
+}
 
 
 # Generic method called by the other GET_* routines.
@@ -55,8 +72,10 @@ sub get_resource {
     my( $self, $rest ) = @_;
 
     my $workspace = $self->workspace;
-    my $is_admin
-        = sub { $self->hub->checker->check_permission('admin_workspace') };
+    my $is_admin = sub {
+        $self->hub->checker->check_permission('admin_workspace')
+            || $rest->user->is_business_admin;
+    };
     my $peon_view
         = sub { name => $workspace->name, title => $workspace->title };
     my $extra_data
