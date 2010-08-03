@@ -232,6 +232,8 @@ sub _add_attachment_from_index {
         }
     } grep {
         -e $self->plugin_directory . '/' . $_->{page_id} . '/' . $_->{id};
+    } grep {
+        ref($_) eq 'HASH'
     } values %$entry;
 }
 
