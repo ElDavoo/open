@@ -6,8 +6,5 @@ use Socialtext::Migration::Utils qw/ensure_socialtext_schema
                                     create_job_for_each_workspace
                                     create_job/;
 
-# Current schema as of 2010/08/03, the day this script was written.
-ensure_socialtext_schema(124);
 create_job_for_each_workspace('FixAttachmentMimeTypes');
-
 exit 0;
