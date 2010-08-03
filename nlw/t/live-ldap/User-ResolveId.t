@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 3;
+use Test::Socialtext tests => 6;
 
 fixtures(qw( db ));
 
@@ -50,4 +50,37 @@ resolve_ldap_user: {
         driver_unique_id => $test_dn,
     } );
     is $found, $expected, 'ResolveId for vivified LDAP User';
+}
+
+###############################################################################
+# TEST: only resolve Users for _active_ LDAP factories
+resolve_only_in_active_ldap_user_factories: {
+    # Vivify User from LDAP, then dismantle the LDAP instance
+    {
+        my $ldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
+        $ldap->add_ldif('t/test-data/ldap/base_dn.ldif');
+        $ldap->add_ldif('t/test-data/ldap/people.ldif');
+        my $john = Socialtext::User->new(driver_unique_id => $test_dn);
+        ok $john, 'Vivified test User';
+    }
+
+    # Check: Resolve UserId, with *no* LDAP instance (shouldn't find one)
+    {
+        my $found = Socialtext::User->ResolveId( {
+            driver_unique_id => $test_dn,
+        } );
+        ok !$found, '... no LDAP instance running, did not resolve UserId';
+    }
+
+    # Check: Resolve UserId, with a _new_ LDAP instance present (still
+    # shouldn't find one)
+    {
+        my $ldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
+        $ldap->add_ldif('t/test-data/ldap/base_dn.ldif');
+        $ldap->add_ldif('t/test-data/ldap/people.ldif');
+        my $found = Socialtext::User->ResolveId( {
+            driver_unique_id => $test_dn,
+        } );
+        ok !$found, '... LDAP instance running, but still did not resolve UserId';
+    }
 }
