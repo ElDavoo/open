@@ -575,11 +575,12 @@ sub purge {
     my $page = shift;
 
     # clean up the index first
-    my $indexer
-        = Socialtext::Search::AbstractFactory->GetFactory->create_indexer(
-        $self->hub->current_workspace->name );
-
-    $indexer->delete_attachment( $page->uri, $self->id );
+    my $ws_name = $self->hub->current_workspace->name;
+    require Socialtext::Search::AbstractFactory;
+    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
+    for my $indexer (@indexers) {
+        $indexer->delete_attachment( $page->uri, $self->id );
+    }
 
     $self->delete(user => $self->hub->current_user());
 
