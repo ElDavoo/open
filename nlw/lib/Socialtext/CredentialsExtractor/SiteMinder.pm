@@ -4,6 +4,9 @@ package Socialtext::CredentialsExtractor::SiteMinder;
 use strict;
 use warnings;
 
+our $USER_HEADER = 'SM_USER';
+our $SESS_HEADER = 'SM_SERVERSESSIONID';
+
 sub extract_credentials {
     my ($class, $request) = @_;
 
@@ -12,17 +15,17 @@ sub extract_credentials {
     # Don't care what the Session Id is, just that one exists; once the User
     # logs out it is possible to still have an SM_USER header, but there won't
     # be an active Session any more.
-    my $session = $request->header_in('SM_SERVERSESSIONID');
+    my $session = $request->header_in($SESS_HEADER);
     unless ($session) {
         $request->log_reason("No active SiteMinder session.", $request->uri);
         return;
     }
 
     # Get the "SM_USER" header; the "username" of the logged in user
-    my $HEADER   = 'SM_USER';
-    my $username = $request->header_in($HEADER);
+    my $username = $request->header_in($USER_HEADER);
+    $username =~ s/^[^\\]+\\// if $username; # remove a DOMAIN\ prefix if any
     unless ($username) {
-        $request->log_reason("$HEADER header missing or empty", $request->uri);
+        $request->log_reason("$USER_HEADER header missing or empty", $request->uri);
         return;
     }
 
