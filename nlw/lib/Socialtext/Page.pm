@@ -1258,7 +1258,8 @@ sub delete {
     Carp::confess('no user given to Socialtext::Page->delete')
         unless $p{user};
 
-    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
+    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers(
+        $self->hub->current_workspace->name);
     foreach my $attachment ( $self->attachments ) {
         my @args = ($self->uri, $attachment->id);
         for my $indexer (@indexers) {
