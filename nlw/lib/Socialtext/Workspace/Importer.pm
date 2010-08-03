@@ -129,10 +129,14 @@ sub import_workspace {
             }
             else {
                 chdir( $old_cwd );
-                my $idx = Socialtext::Search::AbstractFactory->GetFactory
-                    ->create_indexer($self->{workspace}->name);
-                $idx->hub->current_user( Socialtext::User->SystemUser );
-                $idx->index_workspace( $self->{workspace}->name );
+                my $ws_name = $self->{workspace}->name;
+                my @indexers
+                    = Socialtext::Search::AbstractFactory->GetIndexers(
+                    $ws_name);
+                for my $idx (@indexers) {
+                    $idx->hub->current_user( Socialtext::User->SystemUser );
+                    $idx->index_workspace( $ws_name );
+                }
             }
         }
 
