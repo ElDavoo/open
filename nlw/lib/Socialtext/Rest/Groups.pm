@@ -66,6 +66,7 @@ sub _get_entities {
 
     my $filter = $q->param('q') || $q->param('filter') || '';
     my $discoverable = $q->param('discoverable');
+    my $all = $user->is_business_admin && $self->rest->query->param('all');
  
     if ($filter) {
         my $group_ids = [
@@ -79,18 +80,18 @@ sub _get_entities {
             undef,
             undef,
             doctype   => 'group',
-            viewer    => $user,
             limit     => $self->items_per_page, 
             offset    => $self->start_index,
             direction => $self->reverse ? 'desc' : 'asc',
             order     => 'title',
             group_ids => $group_ids,
+            $all ? () : (viewer => $user),
         );
         $self->{_total_results} = $count;
         return [ map { $_->group } @{ $results->() } ];
     }
     else {
-        if ($user->is_business_admin and $self->rest->query->param('all')) {
+        if ($all) {
             my $iter = Socialtext::Group->All(
                 order_by => $self->order,
                 sort_order => $self->reverse ? 'DESC' : 'ASC',

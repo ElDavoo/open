@@ -8,6 +8,8 @@
     var DEFAULTS = {
         count: 10,
         filterName: 'filter',
+        filterPrefix: '\\b',
+        filterPostfix: '',
         requireMatch: false,
         params: { 
             order: 'alpha',
@@ -516,7 +518,8 @@
         var params = this.opts.params;
         if (this.opts.filterValue)
             val = this.opts.filterValue(val);
-        params[this.opts.filterName] = '\\b' + val;
+        params[this.opts.filterName] = this.opts.filterPrefix + val
+                                     + this.opts.filterPostfix
 
         this._loading_lookahead = true;
         this.request = $.ajax({
