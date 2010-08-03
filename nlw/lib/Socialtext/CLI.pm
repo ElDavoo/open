@@ -2687,11 +2687,9 @@ sub delete_workspace {
     my $file = $self->_export_workspace($ws)
         unless $skip_export;
 
-    my $name = $ws->name();
-    Socialtext::Search::AbstractFactory->GetFactory->create_indexer(
-        $ws->name )->delete_workspace( $ws->name );
     $ws->delete();
 
+    my $name = $ws->name();
     my $msg = "The $name workspace has been ";
     $msg .= "exported to $file and " unless $skip_export;
     $msg .= 'deleted.';
@@ -2767,11 +2765,7 @@ sub delete_search_index {
     my $self = shift;
 
     my $ws = $self->_require_workspace();
-
-    require Socialtext::Search::AbstractFactory;
-    Socialtext::Search::AbstractFactory->GetFactory->create_indexer(
-        $ws->name()
-    )->delete_workspace($ws->name());
+    $ws->delete_search_index();
 
     $self->_success( 'The search index for the '
             . $ws->name()

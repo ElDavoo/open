@@ -514,9 +514,22 @@ sub to_hash {
     return $hash;
 }
 
+sub delete_search_index {
+    my $self = shift;
+    my $ws_name = $self->name;
+
+    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
+    for my $indexer (@indexers) {
+        $indexer->delete_workspace( $ws_name );
+    }
+}
+
 sub delete {
     my $self = shift;
     my $timer = Socialtext::Timer->new;
+    my $ws_name = $self->name;
+
+    $self->delete_search_index();
 
     for my $dir ( $self->_data_dir_paths() ) {
         File::Path::rmtree($dir);
