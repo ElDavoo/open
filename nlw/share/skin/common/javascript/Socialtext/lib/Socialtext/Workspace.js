@@ -159,7 +159,8 @@ Socialtext.Workspace.All = function(callback) {
 
 Socialtext.Workspace.Create = function(opts, callback) {
     try {
-        if (!opts.title || !opts.name) throw new Error("name, title required");
+        if (!opts.title) throw new Error("Title is required");
+        if (!opts.name) throw new Error("Name is required");
         Socialtext.Workspace.AssertValidTitle(opts.title);
         Socialtext.Workspace.AssertValidName(opts.name);
     }
