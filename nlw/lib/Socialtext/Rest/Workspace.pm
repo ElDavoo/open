@@ -126,11 +126,8 @@ sub DELETE {
     return $self->can_admin(sub {
         my $ws = $self->workspace;
 
-        Socialtext::Search::AbstractFactory->GetFactory->create_indexer(
-            $ws->name
-        )->delete_workspace($ws->name);
-
         $ws->delete;
+
         $rest->header(
             -status => HTTP_204_No_Content,
         );
