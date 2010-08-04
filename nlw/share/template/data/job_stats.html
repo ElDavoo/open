@@ -3,12 +3,16 @@
         <title>[% collection_name %]</title>
     </head>
     <style type="text/css">
-        
+[% INCLUDE data/jobs.css %]
     </style>
     <body>
+        <p>
+            Also available in
+            <a href="?accept=json">JSON</a> and <a href="?accept=text/plain">YAML</a>
+        <p>
         <table class="jobs jobstats">
             <thead>
-                <tr class="jobheader">
+                <tr class="jobsheader">
                     [% FOREACH hdr IN columns %]
                     <th>
                     [%- SWITCH hdr -%]
@@ -20,6 +24,8 @@
                        [%- CASE 'num_fail' %][% loc('Num Fail') -%]
                        [%- CASE 'last_ok'  %][% loc('Last OK') -%]
                        [%- CASE 'last_fail'%][% loc('Last Fail') -%]
+                       [%- CASE 'most_recent'%][% loc('Latest') -%]
+                       [%- CASE 'most_recent_non_delayed' %][% loc('Latest Queued') -%]
                        [%- CASE %][% hdr -%]
                     [%- END -%]
                     </th>

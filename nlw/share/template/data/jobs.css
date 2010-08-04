@@ -1,0 +1,43 @@
+body {
+    font-family: Sans-serif
+}
+table.jobs {
+    border-collapse: collapse;
+}
+table.jobs td {
+    border: 1px solid #888;
+    padding: 2px;
+}
+table.jobs th {
+    padding-left: 4px;
+    padding-right: 4px;
+    border: 1px dotted #888;
+}
+table.jobs thead {
+    border-bottom: 2px solid black;
+}
+
+table.job {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+table.job td {
+    text-align: left;
+    border: 1px solid #888;
+    padding: 2px;
+}
+table.job th {
+    text-align: right;
+    padding-left: 4px;
+    padding-right: 4px;
+    border: 1px dotted #888;
+}
+
+.jobcolarg {
+    font-family: Inconsolata, Fixed;
+    font-size: smaller;
+}
+.jobcolcoalesce {
+    font-family: Inconsolata, Fixed;
+    font-size: smaller;
+}

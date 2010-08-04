@@ -4,30 +4,7 @@
 </head>
 <body>
 <style type="text/css">
-    table.job {
-        border-collapse: collapse;
-        border: 1px solid black;
-    }
-    table.job td {
-        text-align: left;
-        border: 1px solid #888;
-        padding: 2px;
-    }
-    table.job th {
-        text-align: right;
-        padding-left: 4px;
-        padding-right: 4px;
-        border: 1px dotted #888;
-    }
-
-    td.jobcolarg {
-        font-family: Inconsolata, Fixed;
-        font-size: smaller;
-    }
-    td.jobcolpriority {
-        font-family: Inconsolata, Fixed;
-        font-size: smaller;
-    }
+[% INCLUDE data/jobs.css %]
 </style>
 <h1>[% entity_name %]</h1>
 <table class="job">
@@ -62,6 +39,7 @@
     </tr>
 [% END %]
 </table>
+<p><a href="/data/jobs">Go up to summary</a></p>
 </body>
 </html>
 

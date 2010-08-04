@@ -4,34 +4,13 @@
     </head>
     <body>
         <style type="text/css">
-            table.jobs {
-                border-collapse: collapse;
-                border: 1px solid black;
-            }
-            table.jobs td {
-                border: 1px solid #888;
-                padding: 2px;
-            }
-            table.jobs th {
-                padding-left: 4px;
-                padding-right: 4px;
-                border: 1px dotted #888;
-            }
-
-            td.jobcolarg {
-                font-family: Inconsolata, Fixed;
-                font-size: smaller;
-            }
-            td.jobcolpriority {
-                font-family: Inconsolata, Fixed;
-                font-size: smaller;
-            }
+[% INCLUDE data/jobs.css %]
         </style>
         <p>
-        Jobs in roughly the order that ceqlotron will process them (limited to the first 1000).</p>
-        <p>Hint: use <a href="?verbose=1">?verbose=1</a> to also show job arguments.
+        Jobs in roughly the order that ceqlotron will process them (limited to the first 1000). Hint: use <a href="?verbose=1">?verbose=1</a> to also show job arguments.
             <a href="?accept=json">Display as JSON.</a>
             <a href="?accept=text/plain">Display as YAML.</a>
+            <a href="/data/jobs">Go up to summary</a>
         </p>
         <table class="jobs joblist">
             <thead>
@@ -62,6 +41,8 @@
                         <a name="job[% job.jobid %]"></a>
                         <a href="/data/jobs/job/[% job.jobid %]">
                             [%- job.jobid %]</a>
+                    [% ELSIF col == 'arg' %]
+                        <pre>[%- job.arg -%]</pre>
                     [% ELSE %]
                         [%- job.$col |html -%]
                     [% END %]
