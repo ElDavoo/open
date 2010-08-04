@@ -310,7 +310,6 @@ sub UpdateGroupRecord {
     # Delete any copy of this Group in the *in-memory* cache
     Socialtext::Group->cache->remove($proto_group->{group_id});
 
-    # set "cached_at" 
     $proto_group->{cached_at} ||= $self->Now();
 
     # Only concern ourselves with valid Db Columns

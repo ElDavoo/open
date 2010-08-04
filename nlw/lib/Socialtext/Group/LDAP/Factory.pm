@@ -8,6 +8,7 @@ use Socialtext::User::LDAP::Factory;
 use Socialtext::Log qw(st_log);
 use DateTime::Duration;
 use Net::LDAP::Util qw(escape_filter_value);
+use Socialtext::IntSet;
 use namespace::clean -except => 'meta';
 
 with qw(
@@ -138,7 +139,8 @@ sub _build_cache_lifetime {
 
 # look up the Group in LDAP
 sub _lookup_group {
-    my ($self, $proto_group) = @_;
+    my ($self, $proto_group, %opts) = @_;
+    $opts{escaped} ||= 0;
 
     # Get our LDAP Group Attribute Map.  If we don't have one, we *can't* look
     # up Groups, so just return right away.
@@ -149,7 +151,8 @@ sub _lookup_group {
     # attributes, and make sure that the values are properly escaped.  If we
     # don't have anything sensible to lookup, return right away; we're not
     # going to find it if we don't know what we're looking for.
-    my $ldap_search_attrs = $self->_map_proto_to_ldap_attrs($proto_group);
+    my $ldap_search_attrs = $self->_map_proto_to_ldap_attrs($proto_group,
+        escaped => $opts{escaped});
     return unless (%{$ldap_search_attrs});
 
     # build up the LDAP search options
@@ -223,6 +226,9 @@ sub _lookup_group {
     return $response;
 }
 
+# "trace update"; if set to false, perl can optimize out statements starting
+# with "TU &&" in front.
+use constant TU => 0;
 our %UPDATING_GROUP;
 sub _update_group_members {
     my $self    = shift;
@@ -257,63 +263,112 @@ sub _update_group_members {
     }
     local $UPDATING_GROUP{$name} = 1;
 
-    # Get the list of all of the existing Users in the Group, which we'll
-    # whittle down to *just* those that are no longer members and can have
-    # their UGRs deleted.
-    my %last_cached_users =
-        map { $_->homunculus->driver_unique_id => $_ }
-        $group->users->all;
+    # Start with the current direct members. Algorithm below cross-checks this
+    # list.
+    my $member_set = Socialtext::IntSet->FromArray(
+        $group->user_ids(direct => 1));
+    TU && warn "*** INITIAL SET IS ".join(',',@{$member_set->array});
 
-    # Keep track of DNs that we've looked up already, so we're not looking
-    # them up repeatedly.  This prevents infinite recursion on nested Groups.
-    my %seen_dns;
+    # Keep track of DNs and IDs that we've seen, so we're not looking them up
+    # repeatedly.  This prevents lots of superflous user lookups on nested
+    # groups (and helps for recursively nested groups).
+    my %seen_dn;
+    my $seen_set = Socialtext::IntSet->new();
 
-    # Take all of the "Member DNs" that we were given, and add all of them to
-    # ourselves.  Be forewarned, though, that the DN _may_ be a User, but it
-    # _may_ be a *Group* (and there's no way to tell without actually looking
-    # it up).
+    # Take all of the "Member DNs" that we were given and try to add them.
+    # The DN _may_ be a User, a Group, or not in any LDAP store we know of.
+    # The DN might also be a referral, so don't use the DN as a key.
     my @left_to_add = @{$members};
-    while (@left_to_add) {
-        # get the next DN, skipping it if we've looked this one up already
-        my $dn = shift @left_to_add;
-        next if ($seen_dns{$dn}++);
+    while (my $dn = shift @left_to_add) {
+        TU && warn "CONSIDERING $dn";
 
-        # if this DN existed in the Group before, leave it unchanged
-        next if (delete $last_cached_users{$dn});
+        # early-out if we've already processed this *exact* DN (DNs in
+        # sub-groups are not guaranteed to be the same case/punctuation and
+        # can also be referrals).  Need to check ID for correctness; this is
+        # an optimization for speed.
+        next if ($seen_dn{$dn}++);
 
-        # look this DN up as a User, and give them an UGR
-        my $user = eval { Socialtext::User->new( driver_unique_id => $dn ) };
-        if (my $e = Exception::Class->caught('Socialtext::Exception::DataValidation')) {
-            st_log->warning("Unable to refresh LDAP Group member '$dn', skipping; $_")
+        my $user_id; 
+        eval {
+            $user_id = Socialtext::User->ResolveId({driver_unique_id => $dn})
+        };
+        if ($@) {
+            TU && warn "unable to resolve $dn to user_id: $@";
+            st_log->warning("Unable to resolve DN to user_id: $@");
+        }
+
+        if ($user_id) {
+            TU && warn "$dn IS ID $user_id";
+            # set() returns the previous presence/absence in the IntSet
+            next if ($seen_set->set($user_id) or $member_set->get($user_id));
+        }
+        else {
+            TU && warn "$dn has no quick user_id";
+        }
+
+        # we couldn't find a user_id because either
+        # * the user doesn't exist in our database yet, or
+        # * the DN isn't a user; it's either a group or doesn't exist
+        # OR 
+        # we did get a user_id, but the user isn't in the group.
+
+        my $user = eval { Socialtext::User->new(driver_unique_id => $dn) };
+        if (my $e = Exception::Class->caught(
+                'Socialtext::Exception::DataValidation'))
+        {
+            st_log()->warning(
+                "Unable to refresh LDAP Group member '$dn', skipping; $_")
                 for $e->messages;
             next;
         }
         elsif ($@) {
-            st_log->error("Unable to refresh LDAP Group member '$dn', skipping; $@");
+            TU && warn "during user->new: $@";
+            st_log()->error(
+                "Unable to refresh LDAP Group member '$dn', skipping; $@");
             next;
         }
 
         if ($user) {
-            $group->add_user( user => $user );
+            $user_id = $user->user_id;
+            TU && warn "$dn IS ID $user_id (no shortcut)";
+            next if ($seen_set->set($user_id) or $member_set->get($user_id));
+
+            # it's a user, but they don't have a role.  Give them the default
+            # role in the group.
+            TU && warn "ADD $dn";
+            $group->add_user(user => $user);
+            $member_set->set($user_id);
             next;
         }
+        else {
+            TU && warn "no user record?!";
+        }
 
-        # look this DN up as a Group, and add its membership list to the list
-        # of things we have left to lookup
-        my $nested_proto = $self->_lookup_group( { driver_unique_id => $dn } );
+        # OK, the DN isn't a user. Look this DN up as a Group, and add its
+        # membership list to the list of things we have left to try and add.
+        my $nested_proto = $self->_lookup_group(
+            {driver_unique_id => $dn}, escaped => 1);
         if ($nested_proto) {
+            TU && warn "GROUP $dn";
             push @left_to_add, @{$nested_proto->{members}};
             next;
         }
 
-        # didn't find this DN as a User or Group, log a warning
-        st_log->warning( "Unable to find User/Group in LDAP for DN '$dn'; skipping" );
+        st_log()->warning(
+            "Unable to find User/Group in LDAP for DN '$dn'; skipping" );
     }
 
     # Remove Users that *used to* be in the Group, but that don't appear to be
     # any more.
-    for my $user (values %last_cached_users) {
-        $group->remove_user( user => $user );
+    TU && warn "MEMBER SET IS ".join(',',@{$member_set->array});
+    TU && warn "SEEN SET IS ".join(',',@{$seen_set->array});
+    my $gone = $member_set->subtract($seen_set);
+    TU && warn "DIFF SET IS ".join(',',@{$gone->array});
+    my $gone_gen = $gone->generator;
+    while (my $to_remove_id = $gone_gen->()) {
+        TU && warn "REMOVE $to_remove_id";
+        my $to_remove = Socialtext::User->new(user_id => $to_remove_id);
+        $group->remove_user(user => $to_remove) if $to_remove;
     }
 }
 
@@ -326,7 +381,8 @@ sub _update_group_members {
     my %field_to_proto = reverse %proto_to_field;
 
     sub _map_proto_to_ldap_attrs {
-        my ($self, $proto_group) = @_;
+        my ($self, $proto_group, %opts) = @_;
+        $opts{escaped} ||= 0;
 
         my $attr_map = $self->ldap_config->group_attr_map();
         return unless (%{$attr_map});
@@ -339,7 +395,8 @@ sub _update_group_members {
             my $attr = $attr_map->{$field};
             next unless $attr;
 
-            $ldap_attrs{$attr} = escape_filter_value($proto_value);
+            $ldap_attrs{$attr} = $opts{escaped}
+                ?  $proto_value : escape_filter_value($proto_value);
         }
         return \%ldap_attrs;
     }
