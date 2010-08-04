@@ -899,7 +899,7 @@ in.
 
 Returns a B<cached> count of Workspaces in which this Group has a Role
 
-=item B<$group->serialize_for_export()>
+=item B<$group-E<gt>serialize_for_export()>
 
 Serializes the Group metadata for export, and returns it to the caller as a
 hash-ref.
@@ -910,75 +910,41 @@ Returns the Group Homunculus for the Group.
 
 =item B<$group-E<gt>group_id()>
 
-Delegated to C<Socialtext::Group::Homunculus>.
-
 =item B<$group-E<gt>driver_key()>
-
-Delegated to C<Socialtext::Group::Homunculus>.
 
 =item B<$group-E<gt>driver_name()>
 
-Delegated to C<Socialtext::Group::Homunculus>.
-
 =item B<$group-E<gt>driver_id()>
-
-Delegated to C<Socialtext::Group::Homunculus>.
 
 =item B<$group-E<gt>driver_unique_id()>
 
-Delegated to C<Socialtext::Group::Homunculus>.
-
 =item B<$group-E<gt>driver_group_name()>
-
-Delegated to C<Socialtext::Group::Homunculus>.
 
 =item B<$group-E<gt>description()>
 
-Delegated to C<Socialtext::Group::Homunculus>.
-
 =item B<$group-E<gt>primary_account_id()>
-
-Delegated to C<Socialtext::Group::Homunculus>.
 
 =item B<$group-E<gt>primary_account()>
 
-Delegated to C<Socialtext::Group::Homunculus>.
-
 =item B<$group-E<gt>creation_datetime()>
-
-Delegated to C<Socialtext::Group::Homunculus>.
 
 =item B<$group-E<gt>created_by_user_id()>
 
-Delegated to C<Socialtext::Group::Homunculus>.
-
 =item B<$group-E<gt>creator()>
-
-Delegated to C<Socialtext::Group::Homunculus>.
 
 =item B<$group-E<gt>cached_at()>
 
-Delegated to C<Socialtext::Group::Homunculus>.
-
 =item B<$group-E<gt>is_system_managed()>
-
-Delegated to C<Socialtext::Group::Homunculus>.
 
 =item B<$group-E<gt>expire()>
 
-Delegated to C<Socialtext::Group::Homunculus>.
-
 =item B<$group-E<gt>can_update_store()>
-
-Delegated to C<Socialtext::Group::Homunculus>.
 
 =item B<$group-E<gt>update_store()>
 
-Delegated to C<Socialtext::Group::Homunculus>.
-
 =item B<$group-E<gt>delete()>
 
-Delegated to C<Socialtext::Group::Homunculus>.
+Delegated to the homunculus attribute (a C<Socialtext::Group::Homunculus>).
 
 =back
 
