@@ -1,15 +1,11 @@
 package Socialtext::Group::Default;
 # @COPYRIGHT@
-
 use Moose;
-use namespace::clean -except => 'meta';
-
 extends 'Socialtext::Group::Homunculus';
-
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
-
+__END__
 
 =head1 NAME
 
