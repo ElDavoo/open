@@ -35,10 +35,10 @@ sub do_work {
 
             Socialtext::File::set_contents($mtype_file, $current);
             Socialtext::JobCreator->index_attachment_by_ids(
-                workspace_id  => $ws->workspace_id,
-                page_id       => $page_id,
-                attachment_id => $attachment_id,
-                priority      => 54,
+                workspace_id => $ws->workspace_id,
+                page_id      => $page_id,
+                attach_id    => $attachment_id,
+                priority     => 54,
             );
         }
     }
