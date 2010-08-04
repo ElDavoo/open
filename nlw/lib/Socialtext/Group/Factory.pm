@@ -9,10 +9,10 @@ use Socialtext::Exceptions qw(data_validation_error);
 use Socialtext::Group::Homunculus;
 use Socialtext::Log qw(st_log);
 use Socialtext::Role;
-use Socialtext::SQL qw(:exec :time);
+use Socialtext::SQL qw(:exec :time sql_txn);
 use Socialtext::SQL::Builder qw(:all);
 use Socialtext::l10n qw(loc);
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use namespace::clean -except => 'meta';
 
 # Do *NOT* disable this unless you are testing!
@@ -46,9 +46,9 @@ has 'cache_lifetime' => (
 );
 
 # Methods we require downstream classes consuming this role to implement:
-requires 'Create';
-requires 'Update';
-requires 'Available';
+requires 'Create'; around 'Create' => \&sql_txn;
+requires 'Update'; around 'Update' => \&sql_txn;
+requires 'Available'; around 'Available' => \&sql_txn;
 requires 'can_update_store';
 requires 'is_cacheable';
 requires '_build_cache_lifetime';
@@ -69,6 +69,7 @@ sub _build_driver_id {
 
 # Retrieves a Group from the DB, managed by this Factory instance, and returns
 # a Group Homunculus object for the Group back to the caller.
+around 'GetGroupHomunculus' => \&sql_txn;
 sub GetGroupHomunculus {
     my ($self, %p) = @_;
 
@@ -79,18 +80,17 @@ sub GetGroupHomunculus {
 
     # check DB for existing cached Group
     # ... if cached copy exists and is fresh, use that
-    Socialtext::Timer->Continue('group_check_cache');
+    my $t = time_scope 'group_check_cache';
     my $proto_group = $self->_get_cached_group($where);
-    Socialtext::Timer->Pause('group_check_cache');
     if ($proto_group && $self->_cached_group_is_fresh($proto_group)) {
         return $self->NewGroupHomunculus($proto_group);
     }
+
     # cache non-existent or stale, refresh from data store
     # ... if unable to refresh, return empty-handed; we know nothing about
     # this Group.
-    Socialtext::Timer->Continue('group_lookup');
+    $t = time_scope 'group_lookup';
     my $refreshed = $self->_lookup_group($proto_group || $where);
-    Socialtext::Timer->Pause('group_lookup');
     unless ($refreshed) {
 # XXX: what if?... we had an old cached group, but couldn't find it now?
         return;
@@ -149,15 +149,15 @@ sub GetGroupHomunculus {
         );
     }
     else {
-        Socialtext::Timer->Continue('group_membership_update');
+        my $t2 = time_scope 'group_membership_update';
         $self->_update_group_members($homey, $proto_group->{members});
-        Socialtext::Timer->Pause('group_membership_update');
     }
 
     return $homey;
 }
 
 # Create the initial creator/account relationships for a Group
+around 'CreateInitialRelationships' => \&sql_txn;
 sub CreateInitialRelationships {
     my ($self, $proto_or_homey) = @_;
 
@@ -268,14 +268,8 @@ sub _cached_group_is_fresh {
     return 0;
 }
 
-# Looks up the Group in the Factories underlying data store, and returns a new
-# $refreshed_proto_group for the Group.  The provided $proto_group should be
-# *UNTOUCHED*.
-#sub _lookup_group {
-#    my ($self, $proto_group) = @_;
-#}
-
 # Delete a Group object from the local DB.
+around 'Delete' => \&sql_txn;
 sub Delete {
     my $self = shift;
     my $group = shift;
@@ -283,6 +277,7 @@ sub Delete {
 }
 
 # Deletes a Group record from the local DB.
+around 'DeleteGroupRecord' => \&sql_txn;
 sub DeleteGroupRecord {
     my ($self, $proto_group, $actor) = @_;
     $actor ||= Socialtext::User->SystemUser;
@@ -304,6 +299,7 @@ sub DeleteGroupRecord {
 }
 
 # Updates the local DB using the provided Group information
+around 'UpdateGroupRecord' => \&sql_txn;
 sub UpdateGroupRecord {
     my ($self, $proto_group) = @_;
 
@@ -367,6 +363,7 @@ sub NewGroupId {
 }
 
 # Creates a new Group object in the local DB store
+around 'NewGroupRecord' => \&sql_txn;
 sub NewGroupRecord {
     my ($self, $proto_group) = @_;
 
