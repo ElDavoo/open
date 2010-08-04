@@ -22,6 +22,7 @@ sub do_work {
     for my $file (@$files) {
 
         my $mtype_file = $file . "-mime";
+        next unless -e $mtype_file;
         my $extension  = (File::Basename::fileparse($file, qr/[^\.]+$/))[2];
 
         my $cached  = Socialtext::File::get_contents($mtype_file);
