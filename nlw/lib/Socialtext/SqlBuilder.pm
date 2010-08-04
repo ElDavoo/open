@@ -108,6 +108,7 @@ sub SqlExec {
 
     my ($sql, @bindings) = sql_abstract()->$sa_method(@_);
     $class->_CoerceBindings(\@bindings);
+    local $Socialtext::SQL::Level = $Socialtext::SQL::Level+1;
     return sql_execute($sql, @bindings);
 }
 
@@ -118,6 +119,7 @@ sub SqlSelect {
     my $table = $class->Table();
     $table = \"$table $opts->{join}" if $opts->{join};
 
+    local $Socialtext::SQL::Level = $Socialtext::SQL::Level+1;
     return $class->SqlExec('select' =>
         $table, $opts->{columns} || '*',
         $opts->{where}, $opts->{order}, $opts->{limit}, $opts->{offset}
@@ -132,12 +134,15 @@ sub SqlSelectOneRecord {
     unless ($class->IdentifiesUniqueRecord($where)) {
         croak "Cannot accurately identify unique record to retrieve; aborting";
     }
+    local $Socialtext::SQL::Level = $Socialtext::SQL::Level+1;
     return $class->SqlSelect($opts);
 }
 
 sub SqlInsert {
     my $class = shift;
     my $proto = shift;
+    local $Socialtext::SQL::Level = $Socialtext::SQL::Level+1;
+
     return $class->SqlExec('insert' =>
         $class->Table, $proto
     );
@@ -146,6 +151,7 @@ sub SqlInsert {
 sub SqlUpdate {
     my $class = shift;
     my $opts  = shift;
+    local $Socialtext::SQL::Level = $Socialtext::SQL::Level+1;
 
     return $class->SqlExec('update' =>
         $class->Table, $opts->{values}, $opts->{where}
@@ -155,6 +161,7 @@ sub SqlUpdate {
 sub SqlUpdateOneRecord {
     my $class = shift;
     my $opts  = shift;
+    local $Socialtext::SQL::Level = $Socialtext::SQL::Level+1;
 
     my $where = $opts->{where};
     unless ($class->IdentifiesUniqueRecord($where)) {
@@ -166,6 +173,7 @@ sub SqlUpdateOneRecord {
 sub SqlDelete {
     my $class = shift;
     my $where = shift;
+    local $Socialtext::SQL::Level = $Socialtext::SQL::Level+1;
 
     return $class->SqlExec('delete' => $class->Table, $where);
 }
@@ -174,6 +182,7 @@ sub SqlDeleteOneRecord {
     my $class = shift;
     my $where = shift;
 
+    local $Socialtext::SQL::Level = $Socialtext::SQL::Level+1;
     unless ($class->IdentifiesUniqueRecord($where)) {
         croak "Cannot accurately identify unique record to delete; aborting";
     }
