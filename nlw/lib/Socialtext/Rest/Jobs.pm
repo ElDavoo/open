@@ -11,7 +11,7 @@ use Socialtext::HTTP ':codes';
 use Socialtext::Exceptions;
 use Socialtext::Jobs;
 use Socialtext::l10n qw(loc);
-use DateTime;
+use POSIX qw/strftime/;
 
 {
     no strict 'refs';
@@ -60,17 +60,6 @@ sub get_resource {
 
     @job_stats = sort {$a->{name} cmp $b->{name}} @job_stats;
 
-    for my $row (@job_stats) {
-        for my $stat (qw(last_ok last_fail)) {
-            next unless $row->{$stat};
-            my $dt = DateTime->from_epoch(
-                epoch => $row->{$stat},
-                time_zone => 'UTC'
-            );
-            $row->{$stat} = $dt->iso8601().'Z';
-        }
-    }
-
     return \@job_stats;
 }
 
@@ -81,11 +70,17 @@ sub resource_to_html {
     my @column_order;
     {
         @column_order
-            = qw(name queued delayed grabbed num_ok last_ok num_fail last_fail);
+            = qw(name queued delayed grabbed num_ok last_ok num_fail last_fail
+                 most_recent most_recent_non_delayed);
         # append extra keys
         my %avail = map {$_=>1} keys %{ $job_stats->[0] };
         delete @avail{@column_order};
         push @column_order, sort keys %avail;
+    }
+
+    for my $k (qw(last_ok last_fail most_recent most_recent_non_delayed)) {
+        $_->{$k} = $_->{$k} ? strftime('%F %T%z',localtime($_->{$k})) : ''
+            for @$job_stats;
     }
 
     return $self->template_render('data/job_stats.html' => { 

@@ -11,6 +11,7 @@ use Socialtext::l10n qw/loc/;
 use Socialtext::DaemonUtil;
 use List::Util qw/max/;
 use List::MoreUtils qw/first_index/;
+use POSIX qw/strftime/;
 
 # don't run as root
 Socialtext::DaemonUtil->Check_and_drop_privs();
@@ -32,11 +33,13 @@ my %header = (
     num_fail => loc('Num Fail'),
     last_ok => loc('Last OK'),
     last_fail => loc('Last Fail'),
+    most_recent => loc('Latest'),
+    most_recent_non_delayed => loc('Latest Queued'),
 );
-my @stat_order = (qw(queued grabbed delayed num_ok last_ok num_fail last_fail));
-my @max_stats = grep /^last_/, @stat_order;
-my @time_stats = grep /^last_/, @stat_order;
-my @sum_stats = grep !/^last_/, @stat_order;
+my @stat_order = (qw(queued grabbed delayed num_ok last_ok num_fail last_fail most_recent most_recent_non_delayed));
+my @max_stats = grep /^(?:last|most)_/, @stat_order;
+my @time_stats = grep /^(?:last|most)_/, @stat_order;
+my @sum_stats = grep !/^(?:last|most)_/, @stat_order;
 my $name_header = loc('Job Type');
 my $total = loc('Total');
 
@@ -78,7 +81,7 @@ sub show_total {
         my $i = first_index { $_ eq $stat } @stat_order;
         $i+=1; # offset for name
         for my $row (@table) {
-            $row->[$i] &&= localtime($row->[$i]);
+            $row->[$i] &&= strftime('%m/%d@%T',localtime($row->[$i]));
         }
     }
 
