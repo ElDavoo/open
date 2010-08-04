@@ -29,7 +29,7 @@ sub do_work {
         my $current = Socialtext::File::mime_type(
             $file, $extension, 'application/binary');
 
-        if ("$cached" ne "$current") {
+        if ($cached ne $current) {
             my ($page_id, $attachment_id) =
                 ($file =~ m{$dir/([^/]+)/([^/]+)/});
 
