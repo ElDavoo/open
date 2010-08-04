@@ -538,6 +538,11 @@ sub teardown {
     }
 }
 
+sub dump_ldif {
+    my $self = shift;
+    system("slapcat", "-f",$self->conffile);
+}
+
 sub add_ldif {
     my ($self, $ldif_filename) = @_;
     return $self->_ldif_update( \&_cb_add_entry, $ldif_filename );
