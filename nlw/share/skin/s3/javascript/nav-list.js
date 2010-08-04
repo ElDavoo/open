@@ -36,6 +36,16 @@ $.fn.navList = function(entries) {
                 entries: entries
             }));
 
+            if ($.browser.msie && $.browser.version < 7) {
+                $(this).parents('.submenu')
+                    .mouseover(function() {
+                        $(this).addClass('hover');
+                    })
+                    .mouseout(function() {
+                        $(this).removeClass('hover');
+                    });
+            }
+
             $('.scrollingNav', this).each(function() {
                 // Show a maximum of 8 entries (AKA cross-browser max-height)
                 var li_height = $(this).hasClass('has_icons') ? 30 : 20;

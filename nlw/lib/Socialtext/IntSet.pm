@@ -268,8 +268,10 @@ sub nth { Judy::1::Nth(${$_[0]->judy1},$_[1]) }
 
 # These may modify the "pointer" value of the judy1 and are supposedly the
 # only ones that can do so.
-sub set   { Judy::1::Set  (${$_[0]->judy1},$_[1]) }
-sub unset { Judy::1::Unset(${$_[0]->judy1},$_[1]) }
+# Judy::1::Set returns if the bit was successfully changed, we want the
+# previous state, so negate it. See set_sanity tests in the .t
+sub set   { !Judy::1::Set  (${$_[0]->judy1},$_[1]) }
+sub unset {  Judy::1::Unset(${$_[0]->judy1},$_[1]) }
 *clear = \&unset;
 
 *size = \&count;

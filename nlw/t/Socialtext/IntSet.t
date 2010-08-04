@@ -10,7 +10,7 @@ BEGIN {
             "Judy and Judy::1 are required for Socialtext::IntSet";
     }
     else {
-        plan tests => 86;
+        plan tests => 91;
     }
 }
 
@@ -22,6 +22,19 @@ pack_sanity: {
     eq_or_diff [unpack('w*',pack('w*',1,128,1024))], [1,128,1024], 'pack test2';
 }
 
+set_sanity: {
+    my $x = 0;
+    my $was_set = !Judy::1::Set($x,42);
+    ok !$was_set, "bit wasn't in empty set";
+    $was_set = !Judy::1::Set($x,42);
+    ok $was_set, "bit was in the set already";
+    $was_set = Judy::1::Unset($x,42);
+    ok $was_set, "bit was cleared";
+    $was_set = Judy::1::Unset($x,42);
+    ok !$was_set, "bit was already cleared";
+    Judy::1::Free($x);
+}
+
 basic_construction: {
     my $ints = Socialtext::IntSet->FromArray(1,2,3);
     ok $ints;
@@ -29,7 +42,7 @@ basic_construction: {
     ok $ints->get(2);
     ok !$ints->get(4);
 
-    $ints->set(4);
+    ok !$ints->set(4), '4 wasn\'t set';
     ok $ints->get(4), '4 is set now';
 
     my $raw = $ints->array; # lazy-build the new raw list

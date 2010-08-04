@@ -9,6 +9,7 @@ use Getopt::Long;
 use Pod::Usage;
 use Log::Dispatch::Screen;
 use Socialtext::LDAP::Operations;
+use Socialtext::SQL qw/sql_txn/;
 
 ###############################################################################
 # Read in our command line options.
@@ -66,10 +67,8 @@ unless ($commands{$command}) {
     die "Unknown command, '$command'.\n";
 }
 
-$commands{$command}->();
+sql_txn { $commands{$command}->() };
 
-###############################################################################
-# All done, exit peacefully.
 exit;
 
 

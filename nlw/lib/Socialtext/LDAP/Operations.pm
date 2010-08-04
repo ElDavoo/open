@@ -1,12 +1,11 @@
 package Socialtext::LDAP::Operations;
 # @COPYRIGHT@
+use Moose;
 
-use strict;
-use warnings;
 use List::MoreUtils qw(uniq);
 use Socialtext::LDAP;
 use Socialtext::Log qw(st_log);
-use Socialtext::SQL qw(sql_execute);
+use Socialtext::SQL qw(sql_execute sql_txn);
 use Socialtext::Group;
 use Socialtext::Group::Factory;         # needed for cache/async over-ride
 use Socialtext::User::LDAP::Factory;    # needed for cache/async over-ride
@@ -397,6 +396,8 @@ sub ListGroups {
         %Factories = ();
     }
 }
+
+around qr/^[A-Z]/ => \&sql_txn;
 
 1;
 

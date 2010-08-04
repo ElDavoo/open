@@ -75,11 +75,13 @@ Moose::Exporter->setup_import_methods(
 
 our $IN_WORKER = 0;
 our @AT_FORK;
+our $VMEM_LIMIT = 512 * 2**20; # MiB
 
 {
     package Socialtext::Async::Wrapper::Worker;
     use Moose;
     use Try::Tiny;
+    use BSD::Resource qw/setrlimit get_rlimits/;
 
     # This BUILD runs in the child worker process only.
     sub BUILD {
@@ -136,6 +138,16 @@ our @AT_FORK;
         my $ok = eval { $cv->recv };
         $ok ||= 'is broken';
         Socialtext::Log::st_log()->info("in async worker $$, AnyEvent $ok");
+
+        my $lim = $Socialtext::Async::Wrapper::VMEM_LIMIT;
+        if ($lim) {
+            my $rlimits = get_rlimits();
+            # limit Virtual Memory and Address Space
+            for my $res (qw(RLIMIT_VMEM RLIMIT_AS)) {
+                next unless exists $rlimits->{$res};
+                setrlimit($rlimits->{$res}, $lim, $lim);
+            }
+        }
 
         return;
     }

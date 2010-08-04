@@ -4,7 +4,7 @@ cn: Black Sabbath
 member: cn=Ozzy Osbourne,dc=example,dc=com
 member: cn=Geezer Butler,dc=example,dc=com
 member: cn=Tony Iommi,dc=example,dc=com
-member: cn=Bill Ward,dc=example,dc=com
+member: cn=Ward\, Bill,dc=example,dc=com
 
 dn: cn=Ozzy Osbourne,dc=example,dc=com
 objectClass: inetOrgPerson
@@ -27,9 +27,9 @@ gn: Tony
 sn: Iommi
 cn: Tony Iommi
 
-dn: cn=Bill Ward,dc=example,dc=com
+dn: cn=Ward\, Bill,dc=example,dc=com
 objectClass: inetOrgPerson
 mail: bill.ward@example.com
 gn: Bill
 sn: Ward
-cn: Bill Ward
+cn: Ward, Bill
