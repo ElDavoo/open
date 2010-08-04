@@ -970,7 +970,7 @@ sub Resolve {
 
 sub ResolveId {
     my $class = shift;
-    my $p     = shift;
+    my $p = (@_==1) ? shift(@_) : {@_};
 
     foreach my $driver ($class->_drivers) {
         my $subclass = $class->_realize($driver, 'ResolveId');

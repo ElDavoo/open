@@ -238,9 +238,14 @@ sub cache_ttl {
     return DateTime::Duration->new( seconds => $self->ldap_config->ttl );
 }
 
+my @resolve_id_order = (
+    [ driver_unique_id => 'driver_unique_id = ?' ],
+    [ driver_username  => 'LOWER(driver_username) = LOWER(?)' ],
+    [ email_address    => 'LOWER(email_address) = LOWER(?)' ],
+);
 sub ResolveId {
     my $class = shift;
-    my $p = shift;
+    my $p = (@_==1) ? shift(@_) : {@_};
 
     # HACK: map "object -> DB"
     # - ideally we get rid of this thing having two names at different levels
@@ -249,21 +254,12 @@ sub ResolveId {
         $p->{driver_username} = $p->{username};
     }
 
-    # in LDAP, any of these fields *could* be considered a unique identifier
-    # for the User.  They all have to be unique in LDAP, but they're all also
-    # subject to change; a user _could_ have their DN or e-mail changed.
-    my @possible_ldap_identifiers
-        = qw(driver_unique_id driver_username email_address);
-
-    # some of the fields are also case IN-sensitive
-    my %case_insensitive_identifier
-        = map { $_ => 1 } qw(driver_username email_address);
-
-    foreach my $field (@possible_ldap_identifiers) {
-        my $sql = $case_insensitive_identifier{$field}
-            ?  qq{SELECT user_id FROM users WHERE driver_key=? AND LOWER($field) = LOWER(?)}
-            :  qq{SELECT user_id FROM users WHERE driver_key=? AND $field = ?};
-        my $user_id = sql_singlevalue( $sql, $p->{driver_key}, $p->{$field} );
+    foreach my $r (@resolve_id_order) {
+        my ($field,$sql_suffix) = @$r;
+        my $user_id = sql_singlevalue(
+            "SELECT user_id FROM users WHERE driver_key = ? AND $sql_suffix",
+            $p->{driver_key}, $p->{$field}
+        );
         return $user_id if $user_id;
     }
 
