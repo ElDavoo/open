@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 28;
+use Test::Socialtext tests => 37;
 use Test::Socialtext::User;
 
 # Explicitly load these, so we *know* they're loaded (instead of just waiting
@@ -144,4 +144,41 @@ recursive_relationship: {
     my $adrian_profile = Socialtext::People::Profile->GetProfile($adrian, no_recurse=>1);
     is $adrian_profile->get_reln('supervisor'), $ariel->user_id,
         'Adrian has Ariel as a manager';
+}
+
+###############################################################################
+# TEST: supervisor changes
+supervisor_changes: {
+    my $guard = Test::Socialtext::User->snapshot();
+    my $acct  = Socialtext::Account->Default;
+    my $ldap  = bootstrap_openldap(account => $acct);
+
+    # instantiate "username => 'Ariel Young'" 
+    my $ariel = Socialtext::User->new(username => 'Ariel Young');
+    ok $ariel, 'loaded Ariel user';
+    my $adrian = Socialtext::User->new(username => 'Adrian Harris');
+    ok $adrian, 'loaded Adrian user';
+    my $belinda = Socialtext::User->new(username => 'Belinda King');
+    ok $belinda, 'loaded Belinda user';
+
+    # change Ariel's manager to Belinda King
+    my $ariel_dn  = 'cn=Ariel Young,ou=related,dc=example,dc=com';
+    my $belinda_dn = 'cn=Belinda King,ou=related,dc=example,dc=com';
+
+    my $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
+
+    my $rc = $ldap->modify($ariel_dn, replace => ['manager' => $belinda_dn]);
+    ok $rc, 'Ariel now has Belinda as a manager, in LDAP';
+
+    # expire Ariel's user record
+    $ariel->homunculus->expire();
+
+    # reload Ariel
+    $ariel = Socialtext::User->new(username => 'Ariel Young');
+    ok $ariel, 'reloaded Ariel user';
+
+    # Check that Ariel now has Belinda as her manager
+    $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
+    is $ariel_profile->get_reln('supervisor'), $belinda->user_id,
+        'Ariel has Belinda as a manager after expire';
 }
