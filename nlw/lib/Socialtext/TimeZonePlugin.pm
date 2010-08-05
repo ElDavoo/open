@@ -255,6 +255,7 @@ sub date_local_epoch {
 sub date_local {
     my $self = shift;
     my $date = shift;
+    my %opts = @_;
 
     my $locale = $self->hub->best_locale;
 
@@ -279,7 +280,8 @@ sub date_local {
         second    => $sec,
         time_zone => 'UTC'
     );
-    return $self->get_date_user($datetime);
+    return $opts{dateonly} ? $self->get_dateonly_user($datetime)
+                           : $self->get_date_user($datetime);
 }
 
 sub time_local {

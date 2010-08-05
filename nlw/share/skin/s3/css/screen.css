@@ -4122,6 +4122,15 @@ div.hidesubmit {
     overflow: hidden;
 }
 
+#st-attachment-listing .fileInfo,
+#st-attachment-listing .fileInfo a {
+    color: #CCC;
+    font-style: italic;
+}
+#st-attachment-listing .fileInfo a {
+    text-decoration: underline;
+}
+
 #st-attachment-delete-confirm,
 #st-edit-warning-help-inline,
 #st-edit-check {

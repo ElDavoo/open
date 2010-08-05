@@ -280,6 +280,13 @@ sub _render_display {
             accept_encoding         => eval {
                 $self->hub->rest->request->header_in( 'Accept-Encoding' )
             } || '',
+            local_time              => sub {
+                loc(
+                    "[_1] at [_2]",
+                    $self->hub->timezone->date_local( $_[0], dateonly => 1 ),
+                    $self->hub->timezone->time_local( $_[0] ),
+                ),
+            },
             title                   => $page->title,
             page                    => $self->_get_page_info($page),
             template_name           => $self->cgi->template || '',
