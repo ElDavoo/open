@@ -4122,6 +4122,10 @@ div.hidesubmit {
     overflow: hidden;
 }
 
+#st-attachment-listing li {
+    padding: 0 5px;
+}
+
 #st-attachment-listing .fileInfo,
 #st-attachment-listing .fileInfo a {
     color: #CCC;
@@ -4129,6 +4133,21 @@ div.hidesubmit {
 }
 #st-attachment-listing .fileInfo a {
     text-decoration: underline;
+}
+
+#st-attachment-listing li.hover,
+#st-attachment-listing li:hover {
+    background-color: #FFFCE0;
+}
+
+#st-attachment-listing li.hover .fileInfo,
+#st-attachment-listing li:hover .fileInfo {
+    color: #888;
+}
+
+#st-attachment-listing li.hover .fileInfo a,
+#st-attachment-listing li:hover .fileInfo a {
+    color: #0C5A9A;
 }
 
 #st-attachment-delete-confirm,

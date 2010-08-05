@@ -178,6 +178,15 @@ $(function() {
             return false;
         });
 
+    if ($.browser.msie && $.browser.version < 7) {
+        $('#st-attachment-listing li').mouseover(function() {
+            $(this).addClass("hover");
+        });
+        $('#st-attachment-listing li').mouseout(function() {
+            $(this).removeClass("hover");
+        });
+    }
+
     $('#st-attachments-uploadbutton').unbind('click').click(function () {
         get_lightbox('attachment', function () {
             $('#st-attachments-attach-list').html('').hide();
