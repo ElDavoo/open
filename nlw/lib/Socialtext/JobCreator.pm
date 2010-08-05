@@ -146,6 +146,20 @@ sub index_page {
     return @job_ids;
 }
 
+sub resolve_relationships {
+    my $self     = shift;
+    my %p        = @_;
+    my $user_id  = $p{user_id};
+    my $priority = $p{priority} || 50;
+    return $self->insert('Socialtext::Job::ResolveRelationship', {
+        user_id => $user_id,
+        job => {
+            priority => $priority,
+            uniqkey  => "user_id: $user_id",
+        },
+    } );
+}
+
 sub send_page_email {
     my $self = shift;
     my %opts = @_;
