@@ -4,8 +4,10 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 49;
+use Test::Socialtext tests => 61;
 use Test::Socialtext::User;
+use Socialtext::Jobs;
+use Socialtext::Job::ResolveRelationship;
 
 # Explicitly load these, so we *know* they're loaded (instead of just waiting
 # for them to be lazy loaded); we need to set some pkg vars for testing
@@ -21,6 +23,14 @@ fixtures(qw( db destructive ));
 # Force People Profile Fields to be automatically created, so we don't have to
 # set up the default sets of fields from scratch.
 $Socialtext::People::Fields::AutomaticStockFields=1;
+
+###############################################################################
+# Make *ALL* profile lookups synchronous (easier testing)
+$Socialtext::Pluggable::Plugin::People::Asynchronous=0;
+
+###############################################################################
+# Limit the runnable Jobs to just the ones we care about
+Socialtext::Jobs->can_do('Socialtext::Job::ResolveRelationship');
 
 ###############################################################################
 sub bootstrap_openldap {
@@ -243,4 +253,48 @@ multiple_managers: {
     my $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
     is $ariel_profile->get_reln('supervisor'), $belinda->user_id,
         'Ariel has one manager even though multiple listed in LDAP';
+}
+
+###############################################################################
+# TEST: *DON'T* recurse to find supervisors; create a Ceq job instead
+recurse_asynchronously: {
+    my $guard = Test::Socialtext::User->snapshot();
+    my $acct  = Socialtext::Account->Default;
+    my $ldap  = bootstrap_openldap(account => $acct);
+
+    # Re-enable async lookup
+    local $Socialtext::Pluggable::Plugin::People::Asynchronous=1;
+
+    # Clear Ceq queue
+    Socialtext::Jobs->clear_jobs();
+
+    # Load up a User that has a Supervisor
+    my $user = Socialtext::User->new(username => 'Ariel Young');
+    ok $user, 'loaded User with a supervisor';
+
+    # Check that the Supervisor is *NOT* linked into the Profile
+    my $profile = Socialtext::People::Profile->GetProfile($user, no_recurse=>1);
+    ok $profile, 'got People Profile';
+
+    my $queried = $profile->get_reln('supervisor');
+    ok !$queried, '... which has *NO* supervisor (yet)';
+
+    # Check that a Ceq job was created to resolve the Supervisor
+    my $job = Socialtext::Jobs->find_job_for_workers();
+    ok $job, '... job was found to resolve Supervisor';
+    is $job->funcname, 'Socialtext::Job::ResolveRelationship',
+        '... ... which *is* a relationship resolver job';
+
+    # Run the Ceq job
+    my $rc = Socialtext::Jobs->work_once($job);
+    ok $rc, '... job run';
+    is $job->exit_status, 0, '... ... successfully';
+
+    # Check that the Supervisor is now linked into the Profile
+    my $supervisor = Socialtext::User->new(username => 'Adrian Harris');
+    ok $supervisor, 'loaded Supervisor';
+
+    $profile = Socialtext::People::Profile->GetProfile($user, no_recurse=>1);
+    $queried = $profile->get_reln('supervisor');
+    is $queried, $supervisor->user_id, '... which is the reln target';
 }
