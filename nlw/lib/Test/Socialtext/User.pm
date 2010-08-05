@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use Carp qw(croak);
 use Class::Field qw(const);
+use Guard qw(guard);
 use List::MoreUtils qw(any);
 
 const 'test_username'      => 'devnull1@socialtext.com';
@@ -85,6 +86,27 @@ sub delete_recklessly {
     Socialtext::Cache->clear();
 }
 
+sub snapshot {
+    my %existing = map { $_ => 1 } _get_user_ids();
+    my $guard = guard {
+        my @eventual = _get_user_ids();
+        foreach my $user_id (@eventual) {
+            unless ($existing{$user_id}) {
+                Test::Socialtext::User->delete_recklessly($user_id);
+            }
+        }
+    };
+    return $guard;
+}
+
+sub _get_user_ids {
+    require Socialtext::SQL;
+    my $rows = Socialtext::SQL::get_dbh->selectall_arrayref( qq{
+        SELECT user_id FROM users ORDER BY user_id;
+    } );
+    return map { $_->[0] } @{$rows};
+}
+
 1;
 
 =head1 NAME
@@ -105,6 +127,9 @@ Test::Socialtext::User - methods to operate on Users from within tests
 
   # or...
   Test::Socialtext::User->delete_recklessly($user_id);
+
+  # create guard, to auto-cleanup Users at end of scope
+  $guard = Test::Socialtext::User->snapshot();
 
 =head1 DESCRIPTION
 
@@ -132,6 +157,16 @@ Workspaces and Pages that this User had created are first re-assigned to be
 owned by the System User, so that we don't cascade through a series of deletes
 in the DB that leaves the system in a funky state; you'd have files for the
 Workspace/Pages on disk but no records for them in the DB.
+
+=head2 B<Test::Socialtext::User-E<gt>snapshot()>
+
+Returns a C<Guard> object which will automatically call C<delete_recklessly()>
+for any Users that didn't exist in the system at the moment where the Guard
+was created.
+
+B<Really> useful for tests; create the guard, do your stuff, and when the
+guard goes out of scope it'll automatically purge any User records that you
+created during the test.
 
 =head1 AUTHOR
 
