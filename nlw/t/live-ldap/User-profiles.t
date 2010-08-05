@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 28;
+use Test::Socialtext::User;
 
 # Explicitly load these, so we *know* they're loaded (instead of just waiting
 # for them to be lazy loaded); we need to set some pkg vars for testing
@@ -52,8 +53,9 @@ sub bootstrap_openldap {
 ###############################################################################
 # TEST: instantiate User with a Supervisor
 instantiate_user_with_supervisor: {
-    my $acct = Socialtext::Account->Default;
-    my $ldap = bootstrap_openldap(account => $acct);
+    my $guard = Test::Socialtext::User->snapshot();
+    my $acct  = Socialtext::Account->Default;
+    my $ldap  = bootstrap_openldap(account => $acct);
 
     # Load up a User that has a Supervisor, and the Supervisor itself
     my $user = Socialtext::User->new(username => 'Ariel Young');
@@ -78,8 +80,9 @@ instantiate_user_with_supervisor: {
 ###############################################################################
 # TEST: supervisor gets cleared in LDAP
 supervisor_cleared: {
-    my $acct = Socialtext::Account->Default;
-    my $ldap = bootstrap_openldap(account => $acct);
+    my $guard = Test::Socialtext::User->snapshot();
+    my $acct  = Socialtext::Account->Default;
+    my $ldap  = bootstrap_openldap(account => $acct);
 
     # Load up a User that has a Supervisor, and the Supervisor itself
     my $user = Socialtext::User->new(username => 'Ariel Young');
@@ -111,8 +114,9 @@ supervisor_cleared: {
 ###############################################################################
 # TEST: recursive relationship A->B->A
 recursive_relationship: {
-    my $acct = Socialtext::Account->Default;
-    my $ldap = bootstrap_openldap(account => $acct);
+    my $guard = Test::Socialtext::User->snapshot();
+    my $acct  = Socialtext::Account->Default;
+    my $ldap  = bootstrap_openldap(account => $acct);
 
     # Update the Users in LDAP, creating the recursive relationship
     my $ariel_dn  = 'cn=Ariel Young,ou=related,dc=example,dc=com';
