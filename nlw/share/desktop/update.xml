@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.2.1</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.2.1.air</url>
-  <description><![CDATA[[4.2.1 - Sat Jun 26 09:43:09 PDT 2010]
+  <version>4.3.1</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.3.0-snapshot2-noStartAtLogin.air</url>
+  <description><![CDATA[[4.3.1 - Wed Aug  4 20:10:48 PDT 2010]
+(Features)
+* Signals: Support for real-time "Push" delivery mechanism.
+* Signals: Add support for actions in signal annotations.
+* Signals: Pressing @ now triggers the "mention" autocompleter.
+* Signals: Pressing # now triggers the "tag" autocompleter.
+* Signals: Show the "Post to" dropdown even if there's only one network to post to.
+* Signals: When new signals arrive when the reply box is still open, show a "X new" alert.
+* People: Paged people display and people search for ST 4.3.1+.
+* People: Show a restricted view when navigating to a restricted profile.
+* Workspaces: Fixes locking up when searching for a common word.
+
+(Enhancements)
+* {bz: 4201}: Pressing Enter multiple times when sending reply causes duplicated replies.
+* {bz: 4098}: Find now works again on Activity subtabs.
+* {bz: 4049}: In Add Web Link, "text" field should be above "destination".
+* {bz: 4072}: In Add Web Link, supply "http://" prefix and disallow invalid URLs.
+* {bz: 4061}: Attach file jump scrolls to top of widget.
+* Switching from a single group to "Show All Groups" now retains old signals.
+
+[4.2.1 - Sat Jun 26 09:43:09 PDT 2010]
 (Features)
 * Signals: New button for uploading attachments.
 * Signals: New buttons for inserting tags, web links and wiki links.

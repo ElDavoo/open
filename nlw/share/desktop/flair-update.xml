@@ -1,8 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>319</version>
-  <url>http://topaz.socialtext.net/flair/flairSignals-319.air</url>
-  <description><![CDATA[[Build 319 - Wed Jun 30 15:37:05 PDT 2010]
+  <version>334</version>
+  <url>http://topaz.socialtext.net/flair/flairSignals-334.air</url>
+  <description><![CDATA[[Build 334 - Wed Aug  4 21:50:07 PDT 2010]
+* Signals: Correctly unescape annotation images and support absolute URLs in flatview. (Luke)
+
+[Build 333 - Wed Aug  4 03:03:38 PDT 2010]
+* Signals: Rapidly pressing Enter for replies no longer cause duplicates. {bz: 4201}
+* Signals: Improve the de-duplication logic for expanded replies. {bz: 4201}
+
+[Build 332 - Sun Aug  1 05:52:39 PDT 2010]
+* Fix the "aggressive tagging" bug for tag lookaheads. (Gabe)
+* Use "#" prefix when inserting tags with all-alphanumerics.
+
+[Build 331 - Thu Jul 22 17:23:21 PDT 2010]
+* When push is enabled, there's no need to GET /data/signals after posting. (Stash)
+
+[Build 330 - Thu Jul 22 01:18:34 PDT 2010]
+* Display "Checking every X seconds" only when the server has push disabled. (Ken)
+
+[Build 329 - Mon Jul 19 15:47:30 PDT 2010]
+* People: Restore people dropdown for ST 4.3.0 and earlier. {bz: 4124}
+
+[Build 328 - Fri Jul 16 18:41:07 PDT 2010]
+* People: Restore filtering for ST 4.3.0 and earlier. {bz: 4124}
+
+[Build 327 - Fri Jul 16 18:22:21 PDT 2010]
+* Signals: "X new" alert is now always displayed in front. {bz: 4123}
+* Signals: "X new" alert now blinks with new numbers when new messages arrive. {bz: 4123}
+
+[Build 326 - Fri Jul 16 02:05:35 PDT 2010]
+* Signals: Show the "Post to" dropdown even if there's only one network to post to.
+* Signals: When new signals arrive when the reply box is still open, show a "X new" alert. {bz: 4111}
+
+[Build 325 - Thu Jul 15 19:18:42 PDT 2010]
+* Signals: "Private to" and "Mention user" are now Tag-style autocompleters.
+* Signals: Pressing @ now triggers the "mention" autocompleter.
+* Signals: Pressing # now triggers the "tag" autocompleter.
+* People: Paged people display and people search for ST 4.3.1+.
+* People: Show a restricted view when navigating to a restricted profile.
+* People: Watchlist now updates reliably on "Follow/Unfollow". {bz: 4098}
+
+[Build 324 - Fri Jul  9 16:04:33 PDT 2010]
+* Fix part of {bz: 4098}: Make Find work on Activity subtabs.
+* Also check in the first series of performance improvements; more to come.
+
+[Build 323 - Wed Jul  7 20:04:48 PDT 2010]
+* Support URL interpolation in interactor actions.
+
+[Build 322 - Sun Jul  4 14:45:28 PDT 2010]
+* Fix {bz: 4087}: Timestamp updating for Activity tabs.
+
+[Build 321 - Thu Jul  1 17:47:52 PDT 2010]
+* Another test build with Flex 4 SDK running on Topaz.
+
+[Build 320 - Thu Jul  1 16:46:58 PDT 2010]
+* Test build with Flex 4 SDK.
+
+[Build 319 - Wed Jun 30 15:37:05 PDT 2010]
 * Fix {bz: 4061}: Attach file jump scrolls to top of widget.
 
 [Build 318 - Tue Jun 29 11:33:15 PDT 2010]
