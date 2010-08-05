@@ -272,6 +272,13 @@ proto.showUploadInterface = function () {
         this.process('attachment.tt2');
     }
 
+    var $attach = $('#st-attachments-attachinterface');
+    $('.warning .chooser .cancel', $attach).unbind('click').click(function() {
+        $('#st-attachments-attach-filename').attr('value', '');
+        $('.warning', $attach).fadeOut();
+        return false;
+    });
+
     $('#st-attachments-attach-filename')
         .val('')
         .unbind('change')
