@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 37;
+use Test::Socialtext tests => 42;
 use Test::Socialtext::User;
 
 # Explicitly load these, so we *know* they're loaded (instead of just waiting
@@ -181,4 +181,29 @@ supervisor_changes: {
     $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
     is $ariel_profile->get_reln('supervisor'), $belinda->user_id,
         'Ariel has Belinda as a manager after expire';
+}
+
+###############################################################################
+# TEST: supervisor is invisible (out of base_dn or filtered out)
+supervisor_cannot_be_found: {
+    my $guard = Test::Socialtext::User->snapshot();
+    my $acct  = Socialtext::Account->Default;
+    my $ldap  = bootstrap_openldap(account => $acct);
+
+    # update LDAP config "filter" to be
+    #   "(&(objectClass=inetOrgPerson)(manager=*))"
+    #   - e.g. only inetOrgPerson records that *have* a manager, which will
+    #     ignore Adrian (the manager) because he has no manager
+    my $config = $ldap->ldap_config();
+    $config->{filter} = '(&(objectClass=inetOrgPerson)(manager=*))';
+    Socialtext::LDAP::Config->save($config);
+
+    # instantiate "username => 'Ariel Young'"
+    my $ariel = Socialtext::User->new(username => 'Ariel Young');
+    ok $ariel, 'loaded Ariel user';
+
+    # Check that Ariel has _no_ manager in her Profile
+    my $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
+    ok !$ariel_profile->get_reln('supervisor'),
+        'Ariel has no manager because manager is filtered out';
 }
