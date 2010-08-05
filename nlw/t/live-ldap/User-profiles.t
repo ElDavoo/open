@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 42;
+use Test::Socialtext tests => 49;
 use Test::Socialtext::User;
 
 # Explicitly load these, so we *know* they're loaded (instead of just waiting
@@ -206,4 +206,41 @@ supervisor_cannot_be_found: {
     my $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
     ok !$ariel_profile->get_reln('supervisor'),
         'Ariel has no manager because manager is filtered out';
+}
+
+###############################################################################
+# TEST: multiple supervisors listed in LDAP, _we_ only record one
+multiple_managers: {
+    my $guard = Test::Socialtext::User->snapshot();
+    my $acct  = Socialtext::Account->Default;
+    my $ldap  = bootstrap_openldap(account => $acct);
+
+    # update "Ariel Young"'s record in LDAP so that she's got *both*
+    # Adrian and Belinda as manager.
+    my $ariel_dn   = 'cn=Ariel Young,ou=related,dc=example,dc=com';
+    my $belinda_dn = 'cn=Belinda King,ou=related,dc=example,dc=com';
+    my $adrian_dn  = 'cn=Adrian Harris,ou=related,dc=example,dc=com';
+
+    my $rc = $ldap->modify(
+        $ariel_dn,
+        replace => [
+            manager => [
+                $belinda_dn,
+                $adrian_dn 
+            ],
+        ],
+    );
+    ok $rc, "LDAP updated to give ariel multiple managers"; 
+
+    # instantiate "username => 'Ariel Young'"
+    my $ariel = Socialtext::User->new(username => 'Ariel Young');
+    ok $ariel, 'loaded Ariel user';
+
+    my $belinda = Socialtext::User->new(username => 'Belinda King');
+    ok $belinda, 'loaded Belinda user';
+
+    # Check that only the first of the manager's is listed in her Profile
+    my $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
+    is $ariel_profile->get_reln('supervisor'), $belinda->user_id,
+        'Ariel has one manager even though multiple listed in LDAP';
 }
