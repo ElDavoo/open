@@ -188,16 +188,36 @@ proto.onChangeFilename = function () {
 
     var basename = filename.match(/[^\\\/]+$/);
 
-    $('#st-attachments-attach-uploadmessage').html(
-        loc('Uploading [_1]...', basename)
-    );
+    $.getJSON(this.attachmentsURL(), function(attachments) {
+        var matches = $.grep(attachments, function(a) {
+            return a.name == filename;
+        });
+        if (matches.length) {
+            $("#st-attachments-duplicate-menu").show();
+        }
+        else {
+            $('#st-attachments-attach-uploadmessage').html(
+                loc('Uploading [_1]...', basename)
+            );
 
-    $('#st-attachments-attach-formtarget')
-        .one('load', function () { self.onTargetLoad(this) });
+            $('#st-attachments-attach-formtarget')
+                .one('load', function () { self.onTargetLoad(this) });
 
-    $('#st-attachments-attach-form').submit();
-    $('#st-attachments-attach-closebutton').addClass('disabled');
-    $(this).attr('disabled', true);
+            $('#st-attachments-attach-form').submit();
+            $('#st-attachments-attach-closebutton').addClass('disabled');
+            $(this).attr('disabled', true);
+        }
+    });
+}
+
+proto.attachmentsURL = function () {
+    return [
+        "/data/workspaces",
+        Socialtext.wiki_id,
+        "pages",
+        Socialtext.page_id,
+        "attachments"
+    ].join("/");
 }
 
 proto.showDeleteInterface = function (img) {
