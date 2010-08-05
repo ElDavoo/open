@@ -190,7 +190,7 @@ proto.onChangeFilename = function () {
 
     $.getJSON(this.attachmentsURL(), function(attachments) {
         var matches = $.grep(attachments, function(a) {
-            return a.name == filename;
+            return a.name.toLowerCase() == filename.toLowerCase();
         });
         if (matches.length) {
             var $menu = $("#st-attachments-duplicate-menu");
