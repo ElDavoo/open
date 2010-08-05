@@ -12,7 +12,7 @@ const 'test_email_address' => 'devnull1@socialtext.com';
 const 'test_password'      => 'd3vnu11l';
 
 sub delete_recklessly {
-    my ($class, $user_or_homunculus) = @_;
+    my ($class, $maybe_user) = @_;
 
     # Load classes on demand
     require Socialtext::SQL;
@@ -28,7 +28,9 @@ sub delete_recklessly {
     # behaviour (e.g. refreshing LDAP data) that may have troubles.  This *is*
     # to be run in a test environment, so trigger as little external behaviour
     # as is possible.
-    my $user_id = $user_or_homunculus->user_id;
+    my $user_id = (ref($maybe_user) && $maybe_user->can('user_id'))
+        ? $maybe_user->user_id
+        : $maybe_user;
 
     # Don't delete Guest and SystemUser
     my @req_users = ($system_user, Socialtext::User->Guest());
@@ -101,6 +103,9 @@ Test::Socialtext::User - methods to operate on Users from within tests
   $homunculus = ...
   Test::Socialtext::User->delete_recklessly($homunculus);
 
+  # or...
+  Test::Socialtext::User->delete_recklessly($user_id);
+
 =head1 DESCRIPTION
 
 C<Test::Socialtext::User> implements methods that can be used to operate on
@@ -113,14 +118,15 @@ out of them.
 
 =head1 METHODS
 
-=head2 B<Test::Socialtext::User-E<gt>delete_recklessly($user)>
+=head2 B<Test::Socialtext::User-E<gt>delete_recklessly($maybe_user)>
 
-Deletes the given C<$user> record outright, purging B<all> of the data related
-to this User from the DB.  This is an B<irreverible> action!
+Deletes the User record for the specified C<$maybe_user> outright, purging
+B<all> of the data related to this User from the DB.  This is an
+B<irreverible> action!
 
-This method accepts either a `Socialtext::User` object, or a homunculus
-object.  I<Either> of these will cause the deletion of data relating to this
-User.
+This method accepts a C<user_id>, a C<Socialtext::User> object, or a
+homunculus object.  I<Any> of these will cause the deletion of data relating
+to this User.
 
 Workspaces and Pages that this User had created are first re-assigned to be
 owned by the System User, so that we don't cascade through a series of deletes
