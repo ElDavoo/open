@@ -22,9 +22,9 @@
         </span>
 
         <ul class="chooser">
-            <li><a href="#">[% loc("Add") %]</a></li>
-            <li><a href="#">[% loc("Replace") %]</a></li>
-            <li class="last"><a href="#">[% loc("Cancel") %]</a></li>
+            <li><a class="add" href="#">[% loc("Add") %]</a></li>
+            <li><a class="replace" href="#">[% loc("Replace") %]</a></li>
+            <li class="last"><a class="cancel" href="#">[% loc("Cancel") %]</a></li>
         </ul>
     </div>
     <div class="error" id="st-attachments-attach-error">&nbsp;</div>
