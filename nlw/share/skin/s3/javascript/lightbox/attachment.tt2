@@ -16,8 +16,15 @@
     </p>
     <input type="hidden" id="st-attachments-attach-editmode" name="editmode" value="0"/>
     <input type="hidden" id="st-attachments-attach-embed" name="embed" value="1"/>
-    <div id="st-attachments-duplicate-menu" style="display:none">
-        [% loc("That already exists!") %]
+    <div class="warning" id="st-attachments-duplicate-menu" style="display:none">
+        <span class="tip">
+        </span>
+
+        <ul class="chooser">
+            <li><a href="#">[% loc("Add") %]</a></li>
+            <li><a href="#">[% loc("Replace") %]</a></li>
+            <li class="last"><a href="#">[% loc("Cancel") %]</a></li>
+        </ul>
     </div>
     <div class="error" id="st-attachments-attach-error">&nbsp;</div>
     <div class="message" id="st-attachments-attach-uploadmessage">&nbsp;</div>

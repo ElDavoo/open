@@ -193,7 +193,9 @@ proto.onChangeFilename = function () {
             return a.name == filename;
         });
         if (matches.length) {
-            $("#st-attachments-duplicate-menu").show();
+            var $menu = $("#st-attachments-duplicate-menu");
+            $('.tip .filename', $menu).text(filename);
+            $menu.show();
         }
         else {
             $('#st-attachments-attach-uploadmessage').html(
