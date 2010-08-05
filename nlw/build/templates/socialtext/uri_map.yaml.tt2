@@ -43,6 +43,18 @@
             'text/plain':             [Socialtext::Rest::JobsByClass, GET_text]
         '*':                    [Socialtext::Rest::JobsByClass, bad_method]
 -
+    '/data/auth/token':
+        'GET':                        [Socialtext::Rest::OpenToken::Factory, login]
+        '*':                          [Socialtext::Rest::OpenToken::Factory, bad_method]
+-
+    '/data/auth/token/:token_str':
+        'GET':
+            '*/*':          &default [Socialtext::Rest::OpenToken::Token, GET_text]
+            'text/html':             [Socialtext::Rest::OpenToken::Token, GET_html]
+            'application/json':      [Socialtext::Rest::OpenToken::Token, GET_json]
+            'text/x-yaml':           [Socialtext::Rest::OpenToken::Token, GET_yaml]
+            'text/plain':            [Socialtext::Rest::OpenToken::Token, GET_text]
+-
     '/data/events':
         'GET':
             '*/*':           &default [Socialtext::Rest::Events, GET_html]
