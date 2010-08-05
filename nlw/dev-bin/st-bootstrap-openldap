@@ -22,9 +22,11 @@ my @ORIGINAL_ARGV = @ARGV;
 ###############################################################################
 # Read in our command line arguments.
 my $daemonize = 0;
+my $dataset   = \*DATA;
 my ($help, $man);
 GetOptions(
     'daemonize' => \$daemonize,
+    'dataset=s' => \$dataset,
     'help|?'    => \$help,
     'man'       => \$man,
 ) || pod2usage(1);
@@ -72,9 +74,9 @@ sub start {
     # for a single copy of this to be running per-user.
     _kill_running_copy_of_ourselves();
 
-    # get the LDIF data we want to add; once we daemonize we'll lose the DATA
-    # filehandle.
-    my $ldif_data = slurp(\*DATA);
+    # get the LDIF data we want to add; once we daemonize we'll lose any
+    # filehandle that we may have had to DATA.
+    my $ldif_data = slurp($dataset);
 
     # daemonize ourselves, if needed.
     #
@@ -272,7 +274,8 @@ st-bootstrap-openldap - Bootstrap OpenLDAP instance for testing
 
   Actions:
     start           Start an OpenLDAP instance for testing
-        --daemonize     Daemonize, running OpenLDAP in the background
+        --daemonize         Daemonize, running OpenLDAP in the background
+        --dataset <ldif>    Specify LDIF file to use for data set
     stop            Stop any running OpenLDAP instance
     status          See if an OpenLDAP instance is running
     delete <dn>     Delete the given DN from running OpenLDAP instance
@@ -283,6 +286,7 @@ st-bootstrap-openldap - Bootstrap OpenLDAP instance for testing
 
   Example:
     st-bootstrap-openldap start --daemonize
+    st-bootstrap-openldap start --dataset /path/to/big.ldif
     st-bootstrap-openldap delete "cn=devnull3,dc=socialtext,dc=com"
 
 =head1 DESCRIPTION
@@ -312,6 +316,11 @@ Kills off any running OpenLDAP instance and starts a new one.
 When starting an OpenLDAP instance, daemonize it and fire it off into the
 background.  Without this option, C<st-bootstrap-openldap> will pause on the
 console waiting for you to hit ^C to stop the instance.
+
+=item --dataset <ldif>
+
+Specifies an LDIF file to use as the data set to be loaded into OpenLDAP.  If
+no data set is specified, a built-in default data set will be used instead.
 
 =back
 
