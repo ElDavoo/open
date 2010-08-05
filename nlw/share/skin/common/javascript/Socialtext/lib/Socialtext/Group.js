@@ -22,6 +22,20 @@ $.extend(Socialtext.Group.prototype, {
         return '/data/groups/' + this.group_id + rest;
     },
 
+    load: function(callback) {
+        var self = this;
+        $.ajax({
+            url: self.url(),
+            type: 'get',
+            dataType: 'json',
+            success: function(data) {
+                $.extend(self, data);
+                callback();
+            },
+            error: self.errorCallback(callback)
+        });
+    },
+
     saveInfo: function(callback) {
         var self = this;
         if (!this.name && !this.ldap_dn) {
