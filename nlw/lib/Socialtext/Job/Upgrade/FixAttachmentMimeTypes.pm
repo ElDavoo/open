@@ -11,6 +11,20 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 
+=head1 NAME
+
+Socialtext::Job::Upgrade::FixAttachmentMimeTypes 
+
+=head1 SYNOPSIS
+
+  Rewrite -mime files for attachments when neccessary, for a single workspace 
+
+=head1 DESCRIPTION
+
+Updates the mime types stored on disk (as -mime files next to the actual attachments) for workspace attachments, now that a new MIME detection library/tool is being used 
+
+=cut
+
 sub do_work {
     my $self = shift;
     my $ws   = $self->workspace;
