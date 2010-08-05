@@ -13,6 +13,9 @@ use Socialtext::SQL qw(:exec);
 use Socialtext::Date;
 use Socialtext::LDAP::Operations;
 
+# no point in using the ceqlotron for these tests
+local $Socialtext::Group::Factory::Asynchronous = 0;
+
 ###############################################################################
 # FIXTURE: db
 # - Need a DB, but don't care what's in it.
@@ -138,7 +141,7 @@ test_refresh_stale_groups: {
 
     # make sure that the bogus data we set into the user was over-written by
     # the refresh
-    isnt $ldap_homey->driver_group_name, 'Not-Motorhead',
+    is $refreshed_homey->driver_group_name, 'Motorhead',
         '... group name was refreshed';
 
     # cleanup; don't want to pollute other tests
@@ -192,9 +195,6 @@ test_force_refresh: {
 # be able to refresh without him.
 user_w_missing_email_doesnt_kill_group_refresh: {
     my $ldap = set_up_openldap();
-
-    # Force Group lookups to be synchronous.
-    local $Socialtext::Group::Factory::Asynchronous = 0;
 
     # set up custom LDAP config, so we can create Users with invalid data
     $ldap->ldap_config->{attr_map}{email_address} = 'title';
