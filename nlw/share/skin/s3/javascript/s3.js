@@ -218,8 +218,12 @@ $(function() {
         _gz = '.gz';
     }
 
-    var editor_uri = nlw_make_s3_path('/javascript/socialtext-editor.js' + _gz)
-        .replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+Socialtext.make_time);
+    var timestamp = (new Date).getTime();
+
+    var editor_uri = nlw_make_s3_path('/javascript/socialtext-editor.js' + _gz);
+    if (Socialtext.dev_env) {
+        editor_uri = editor_uri.replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+timestamp);
+    }
 
     var socialcalc_uri = nlw_make_plugin_path(
         "/socialcalc/javascript/socialtext-socialcalc.js" + _gz
@@ -240,7 +244,10 @@ $(function() {
             Socialtext.lightbox_loaded[lightbox] = true;
             var uri = nlw_make_s3_path(
                 '/javascript/lightbox-' + lightbox + '.js' + _gz
-            ).replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+Socialtext.make_time);
+            );
+            if (Socialtext.dev_env) {
+                uri = uri.replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+timestamp);
+            }
 
             $.ajaxSettings.cache = true;
             $.getScript(uri, cb);
@@ -258,7 +265,10 @@ $(function() {
         else {
             var uri = nlw_make_plugin_path(
                 '/' + plugin + '/javascript/lightbox-' + lightbox + '.js' + _gz
-            ).replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+Socialtext.make_time);
+            );
+            if (Socialtext.dev_env) {
+                uri = uri.replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+timestamp);
+            }
             $.ajaxSettings.cache = true;
             $.getScript(uri, cb);
             $.ajaxSettings.cache = false;
@@ -508,10 +518,12 @@ $(function() {
 
             if (!$.browser.msie) {
                 var lnk = $('link[rel=stylesheet][media=screen]');
+                var uri = nlw_make_s3_path('/css/wikiwyg.css');
+                if (Socialtext.dev_env) {
+                    uri = uri.replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+timestamp);
+                }
                 lnk.clone()
-                    .attr('href', nlw_make_s3_path('/css/wikiwyg.css')
-                        .replace(/(\d+\.\d+\.\d+\.\d+)/, '$1.' + Socialtext.make_time)
-                    )
+                    .attr('href',  uri)
                     .attr('media', 'wikiwyg')
                     .appendTo('head');
             }

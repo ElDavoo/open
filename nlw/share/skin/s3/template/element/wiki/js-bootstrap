@@ -16,6 +16,8 @@ Socialtext.loc_lang = '[% loc_lang %]';
 Socialtext.wiki_id = '[% wiki.name.replace('\'', '\\\'') %]';
 Socialtext.start_in_edit_mode = [% IF start_in_edit_mode %] true; [% ELSE %] false; [% END %]
 
+Socialtext.dev_env = [% IF dev_mode %]true[% ELSE %]false[% END %];
+
 Socialtext.page_id = '[% page.id %]';
 Socialtext.page_title = '[% page.title.replace('\'', '\\\'') %]';
 Socialtext.template_name = '[% template_name.replace('\'', '\\\'') %]';

@@ -250,6 +250,7 @@ sub global_template_vars {
         app_version        => Socialtext->product_version,
         'time'             => time,
         locking_enabled    => $hub->current_workspace->allows_page_locking,
+        dev_mode           => $ENV{NLW_DEV_MODE},
 
         $thunker->(css       => sub { $hub->skin->css_info }),
         $thunker->(user      => sub { $self->_get_user_info }),
