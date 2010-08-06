@@ -238,5 +238,21 @@ sub job_handle {
     );
 }
 
+sub job_count {
+    my ($self, $funcname) = @_;
+
+    my $count = 0;
+    for my $dbh (@{ $self->databases }) {
+        my $funcid = $self->funcname_to_id($dbh, $funcname);
+        my $sth = $dbh->prepare(qq{
+            SELECT count(*) FROM job
+            WHERE funcid = ?
+        });
+        $sth->execute($funcid);
+        $count += ${$sth->fetchrow_arrayref || [0]}[0];
+    }
+    return $count;
+}
+
 __PACKAGE__->meta->make_immutable;
 1;
