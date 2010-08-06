@@ -28,7 +28,7 @@ sub ensure_socialtext_schema {
 sub create_job_for_each_workspace {
     my ($class, $prio, %opts) = @_;
     die 'A job class is mandatory' unless $class;
-    $prio ||= 31;
+    $prio = 31 unless defined $prio;
     my $except = $opts{except} || [];
 
     my $job_class = 'Socialtext::Job::Upgrade::' . $class;
@@ -41,7 +41,7 @@ sub create_job_for_each_workspace {
         Socialtext::JobCreator->insert( $job_class,
             { 
                 workspace_id => $ws->workspace_id,
-                ($prio ? (job => {priority => $prio}) : ()),
+                job => {priority => $prio},
             },
         );
         $job_count++;
@@ -56,10 +56,11 @@ sub create_job_for_each_workspace {
 
 sub create_job {
     my $class = shift || die 'A job class is mandatory';
-    my $prio  = shift || 31;
+    my $prio  = shift;
+    $prio = 31 unless defined $prio;
     my $job_class = 'Socialtext::Job::Upgrade::' . $class;
 
-    Socialtext::JobCreator->insert( $job_class, {} );
+    Socialtext::JobCreator->insert( $job_class, {job => {priority => $prio}} );
 
     print "Inserted $job_class job\n";
 }
