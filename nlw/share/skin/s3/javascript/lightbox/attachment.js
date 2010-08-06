@@ -53,7 +53,7 @@ proto.deleteNewAttachments = function (cb) {
 proto.refreshAttachments = function (cb) {
     var self = this;
     $.ajax({
-        url: Page.pageUrl() + '/attachments?accept=application/json',
+        url: Page.pageUrl() + '/attachments?order=alpha_date;accept=application/json',
         cache: false,
         dataType: 'json',
         success: function (list) {
