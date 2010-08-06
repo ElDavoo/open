@@ -423,6 +423,7 @@ gn: Lemmy
 sn: Kilmister
 cn: Lemmy Kilmister
 userPassword: ld@pu53r
+telephoneNumber: 604-555-1212
 
 dn: cn=Phil Taylor,dc=socialtext,dc=com
 objectClass: inetOrgPerson
@@ -431,6 +432,7 @@ gn: Phil
 sn: Taylor
 cn: Phil Taylor
 userPassword: ld@pu53r
+telephoneNumber: 250-123-4567
 
 dn: cn=Eddie Clarke,dc=socialtext,dc=com
 objectClass: inetOrgPerson
@@ -439,6 +441,7 @@ gn: Eddie
 sn: Clarke
 cn: Eddie Clarke
 userPassword: ld@pu53r
+telephoneNumber: 416-987-6543
 
 dn: cn=Hawkwind,dc=socialtext,dc=com
 objectClass: groupOfNames

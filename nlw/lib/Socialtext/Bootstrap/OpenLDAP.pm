@@ -329,6 +329,7 @@ sub _ldap_config {
             first_name      => 'givenName',
             last_name       => 'sn',
             supervisor      => 'manager',
+            work_phone      => 'telephoneNumber',
             },
         group_filter => '(objectClass=groupOfNames)',
         group_attr_map => {
