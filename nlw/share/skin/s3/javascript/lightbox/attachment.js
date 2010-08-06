@@ -213,6 +213,15 @@ proto.onChangeFilename = function () {
 
             // Add Handler
             $('.chooser .add', $menu).unbind('click').click(function() {
+                $('#st-attachments-attach-replace').val('0');
+                upload.call();
+                $menu.fadeOut();
+                return false;
+            });
+
+            // Replace Handler
+            $('.chooser .replace', $menu).unbind('click').click(function() {
+                $('#st-attachments-attach-replace').val('1');
                 upload.call();
                 $menu.fadeOut();
                 return false;
