@@ -14,7 +14,7 @@ has job => (
     handles => [qw(
         jobid funcname 
         arg uniqkey insert_time run_after grabbed_until priority coalesce
-        permanent_failure failed completed
+        permanent_failure failed completed replace_with
         exit_status failure_log failures
         as_hashref
     )],
