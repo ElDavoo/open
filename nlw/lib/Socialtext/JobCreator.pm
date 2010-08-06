@@ -155,7 +155,7 @@ sub resolve_relationships {
         user_id => $user_id,
         job => {
             priority => $priority,
-            uniqkey  => "user_id: $user_id",
+            coalesce => $user_id,
         },
     } );
 }
