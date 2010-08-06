@@ -99,7 +99,8 @@ sub _stat_jobs_per_dbh {
             COALESCE(num_ok, 0) AS num_ok,
             COALESCE(num_fail, 0) AS num_fail,
             COALESCE(last_ok, 0) AS last_ok,
-            COALESCE(last_fail, 0) AS last_fail
+            COALESCE(last_fail, 0) AS last_fail,
+            COALESCE(recent_completions, 0) AS recent_completions
         FROM funcmap
         LEFT JOIN (
             SELECT funcid,
@@ -117,14 +118,16 @@ sub _stat_jobs_per_dbh {
                 COUNT(NULLIF(status <> 0, 'f'::boolean)) AS num_fail,
                 MAX(
                     CASE WHEN status = 0 THEN completion_time
-                         ELSE 0
-                    END
+                         ELSE 0 END
                 ) AS last_ok,
                 MAX(
                     CASE WHEN status <> 0 THEN completion_time
-                         ELSE 0
-                    END
-                ) AS last_fail
+                         ELSE 0 END
+                ) AS last_fail,
+                COUNT(
+                    CASE WHEN (completion_time > $1 - 300) THEN 1 
+                         ELSE NULL END
+                ) AS recent_completions
             FROM exitstatus
             GROUP BY funcid
         ) e USING (funcid)
