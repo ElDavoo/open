@@ -211,6 +211,13 @@ proto.onChangeFilename = function () {
             var $menu = $("#st-attachments-duplicate-menu");
             $('.tip .filename', $menu).text(filename);
 
+            // Add Handler
+            $('.chooser .add', $menu).unbind('click').click(function() {
+                upload.call();
+                $menu.fadeOut();
+                return false;
+            });
+
             // Cancel Handler
             $('.chooser .cancel', $menu).unbind('click').click(function() {
                 $('#st-attachments-attach-filename').attr('value', '');
