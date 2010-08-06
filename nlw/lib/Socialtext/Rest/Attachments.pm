@@ -21,6 +21,13 @@ sub SORTS {
             $Socialtext::Rest::Collection::b->{'content-length'} <=>
                 $Socialtext::Rest::Collection::a->{'content-length'};
         },
+        alpha_date => sub {
+            lc($Socialtext::Rest::Collection::a->{name}
+                . "\0" . $Socialtext::Rest::Collection::a->{date})
+            cmp
+            lc($Socialtext::Rest::Collection::b->{name}
+                . "\0" . $Socialtext::Rest::Collection::b->{date});
+        }
     };
 }
 

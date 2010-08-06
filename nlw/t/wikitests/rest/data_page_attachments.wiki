@@ -25,3 +25,27 @@
 | body-like   | Hi You              |                     |
 | has-header  | Content-type        | text/plain          |
 | header-like | Content-Disposition | filename="test.txt" |
+
+# Sort Order, sleep to ensure that we don't get the same time.
+| sleep   | 1                             |          |                   |
+| POST    | %%url%%?name=another-test.txt | %%hdrs%% | Just trying Again |
+| code-is | 201                           |          |                   |
+| sleep   | 1                             |          |                   |
+| POST    | %%url%%?name=Test.txt         | %%hdrs%% | Capital T test    |
+| code-is | 201                           |          |                   |
+
+# date ascending by default
+| GET-json     | %%url%%   |                  |
+| code-is      | 200       |                  |
+| json-parse   |           |                  |
+| json-path-is | $[0].name | test.txt         |
+| json-path-is | $[1].name | another-test.txt |
+| json-path-is | $[2].name | Test.txt         |
+
+# lowercase alpha, then date
+| GET-json     | %%url%%?order=alpha_date |                  |
+| code-is      | 200                      |                  |
+| json-parse   |                          |                  |
+| json-path-is | $[0].name                | another-test.txt |
+| json-path-is | $[1].name                | test.txt         |
+| json-path-is | $[2].name                | Test.txt         |
