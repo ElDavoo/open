@@ -46,20 +46,15 @@ sub RefreshUsers {
     foreach my $row (@{$rows_aref}) {
         my ($driver_key, $driver_unique_id, $driver_username) = @{$row};
 
-        # get the LDAP user factory we need for this user.
-        my $factory = _get_user_factory($driver_key);
-        next unless $factory;
-
         # refresh the user data from the Factory
         st_log->info( "... refreshing: $driver_username" );
         my $homunculus = eval {
-            $factory->GetUser( driver_unique_id => $driver_unique_id )
+            Socialtext::User->new(driver_unique_id => $driver_unique_id)
         };
         if ($@) {
             st_log->error($@);
         }
     }
-    _clear_user_factory_cache();
 
     # All done.
     st_log->info( "done" );
