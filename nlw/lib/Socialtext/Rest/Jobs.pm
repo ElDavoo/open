@@ -44,6 +44,11 @@ sub get_resource {
     my $self = shift;
     my $rest = shift;
 
+    my %filter;
+    if (my @show = $rest->query->param('show')) {
+        %filter = map { $_ => 1 } @show;
+    }
+
     my $stat = Socialtext::Jobs->stat_jobs();
 
     unless ($ENV{NLW_DEV_MODE}) {
@@ -58,6 +63,10 @@ sub get_resource {
         push @job_stats, {name => $shortname, %{$stat->{$type}}}
     }
 
+    if (%filter) {
+        @job_stats = grep { $filter{$_->{name}} } @job_stats;
+    }
+
     @job_stats = sort {$a->{name} cmp $b->{name}} @job_stats;
 
     return \@job_stats;
@@ -66,12 +75,17 @@ sub get_resource {
 sub resource_to_html {
     my ($self, $job_stats) = @_;
 
+    my $lite = $self->rest->query->param('lite');
+    my $refresh = $self->rest->query->param('refresh');
+
     # TODO: this block is View code in the Controller
     my @column_order;
-    {
-        @column_order
-            = qw(name queued delayed grabbed num_ok last_ok num_fail last_fail
-                 latest latest_nodelay);
+    if ($lite) {
+        @column_order = qw(name queued num_ok last_ok num_fail last_fail recent_completions);
+    }
+    else {
+        @column_order = qw(name queued delayed grabbed num_ok last_ok recent_completions
+            num_fail last_fail latest latest_nodelay);
         # append extra keys
         my %avail = map {$_=>1} keys %{ $job_stats->[0] };
         delete @avail{@column_order};
@@ -79,10 +93,13 @@ sub resource_to_html {
     }
 
     for my $k (qw(last_ok last_fail latest latest_nodelay)) {
+        next unless grep /^$k$/, @column_order;
         $_->{$k} = format_timestamp($_->{$k}) for @$job_stats;
     }
 
     return $self->template_render('data/job_stats.html' => { 
+        lite => $lite,
+        refresh => $refresh,
         job_stats => $job_stats,
         columns => \@column_order,
     });

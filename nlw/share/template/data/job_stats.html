@@ -2,15 +2,20 @@
 <html>
     <head>
         <title>[% collection_name %]</title>
+[% IF refresh %]
+    <meta http-equiv="refresh" content="[% refresh %]" />
+[% END %]
     </head>
     <style type="text/css">
 [% INCLUDE data/jobs.css %]
     </style>
     <body>
+        [% IF !lite %]
         <p>
             Also available in
             <a href="?accept=json">JSON</a> and <a href="?accept=text/plain">YAML</a>
         <p>
+        [% END %]
         <table class="jobs jobstats">
             <thead>
                 <tr class="jobsheader">
@@ -27,6 +32,7 @@
                        [%- CASE 'last_fail'%][% loc('Last Fail') -%]
                        [%- CASE 'latest'%][% loc('Latest') -%]
                        [%- CASE 'latest_nodelay' %][% loc('Latest NoDelay') -%]
+                       [%- CASE 'recent_completions' %][% loc('Last 5min') -%]
                        [%- CASE %][% hdr -%]
                     [%- END -%]
                     </th>
