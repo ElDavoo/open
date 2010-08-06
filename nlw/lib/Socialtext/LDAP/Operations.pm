@@ -23,7 +23,8 @@ sub RefreshUsers {
 
     # Disable cache freshness checks if we're forcing the refresh of all
     # users.
-    local $Socialtext::User::LDAP::Factory::CacheEnabled = 0 if ($force);
+    local $Socialtext::User::LDAP::Factory::CacheEnabled = 0     if ($force);
+    local $Socialtext::Pluggable::Plugin::People::Asynchronous=0 if ($force);
 
     # Get the list of LDAP users *directly* from the DB.
     #
