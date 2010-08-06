@@ -92,9 +92,12 @@ sub attachments_upload {
 
     my @files = $self->cgi->file;
     my @embeds = $self->cgi->embed unless $self->cgi->editmode;
+    my @replace = $self->cgi->replace;
+
     my $error = $self->process_attachments_upload(
         files  => \@files,
         embed  => \@embeds,
+        replace => \@replace,
     );
 
     Socialtext::Timer->Pause('upload_attachments');
@@ -111,6 +114,7 @@ sub process_attachments_upload {
 
     my @files = @{$p{files}};
     my @embeds = @{$p{embed}};
+    my @replace = @{$p{replace}};
 
     my $count = grep { -s $_->{handle} } @files;
 
@@ -125,8 +129,13 @@ sub process_attachments_upload {
 
     my $error = '';
     for (my $i=0; $i < $count; $i++) {
+        my $file = $files[$i];
+        if ($replace[$i]) {
+            my $filename = $file->{filename} . '';
+            $self->_delete_similar_attachments($filename);
+        }
         my $error_code = $self->save_attachment(
-            $files[$i],
+            $file,
             $embeds[$i],
         );
         if ($error_code) {
@@ -136,6 +145,21 @@ sub process_attachments_upload {
 
     }
     return $error;
+}
+
+sub _delete_similar_attachments {
+    my ($self, $filename) = @_;
+
+    for my $att ($self->hub->pages->current->attachments) {
+        next unless lc $filename eq lc $att->filename;
+
+        if ($att->temporary) {
+            $att->purge($att->page);
+        }
+        else {
+            $att->delete(user => $self->hub->current_user);
+        }
+    }
 }
 
 sub _finish {
@@ -407,5 +431,6 @@ cgi 'attachment_id';
 cgi 'page_id';
 cgi 'size';
 cgi 'offset';
+cgi 'replace';
 
 1;
