@@ -346,7 +346,7 @@ sub default_result_set {
     $self->search_for_term(
         search_term => $self->{_current_search_term},
         scope => $self->{_current_scope},
-        use_index => $self->cgi->index,
+        use_index => scalar $self->cgi->index,
     );
     return $self->result_set;
 }
