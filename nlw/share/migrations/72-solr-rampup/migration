@@ -2,8 +2,10 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Socialtext::Migration::Utils qw/create_job_for_each_workspace/;
+use Socialtext::Migration::Utils qw/create_job_for_each_workspace create_job/;
 
 create_job_for_each_workspace('ReIndexWorkspace');
+
+create_job('SwitchToSolr');
 
 exit 0;
