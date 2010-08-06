@@ -22,7 +22,7 @@ my @ORIGINAL_ARGV = @ARGV;
 ###############################################################################
 # Read in our command line arguments.
 my $daemonize = 0;
-my $dataset   = \*DATA;
+my $dataset;
 my ($help, $man);
 GetOptions(
     'daemonize' => \$daemonize,
@@ -76,7 +76,7 @@ sub start {
 
     # get the LDIF data we want to add; once we daemonize we'll lose any
     # filehandle that we may have had to DATA.
-    my $ldif_data = slurp($dataset);
+    my $ldif_data = slurp($dataset ||= \*DATA);
 
     # daemonize ourselves, if needed.
     #
