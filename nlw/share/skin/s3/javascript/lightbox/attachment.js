@@ -192,22 +192,36 @@ proto.onChangeFilename = function () {
         var matches = $.grep(attachments, function(a) {
             return a.name.toLowerCase() == filename.toLowerCase();
         });
-        if (matches.length) {
-            var $menu = $("#st-attachments-duplicate-menu");
-            $('.tip .filename', $menu).text(filename);
-            $menu.show();
-        }
-        else {
+
+        var upload = function() {
             $('#st-attachments-attach-uploadmessage').html(
                 loc('Uploading [_1]...', basename)
             );
 
-            $('#st-attachments-attach-formtarget')
-                .one('load', function () { self.onTargetLoad(this) });
+            $('#st-attachments-attach-formtarget').one('load', function () {
+                self.onTargetLoad(this)
+            });
 
             $('#st-attachments-attach-form').submit();
             $('#st-attachments-attach-closebutton').addClass('disabled');
             $(this).attr('disabled', true);
+        };
+
+        if (matches.length) {
+            var $menu = $("#st-attachments-duplicate-menu");
+            $('.tip .filename', $menu).text(filename);
+
+            // Cancel Handler
+            $('.chooser .cancel', $menu).unbind('click').click(function() {
+                $('#st-attachments-attach-filename').attr('value', '');
+                $menu.fadeOut();
+                return false;
+            });
+
+            $menu.show();
+        }
+        else {
+            upload.call();
         }
     });
 }
@@ -271,13 +285,6 @@ proto.showUploadInterface = function () {
     if (!$('#st-attachments-attachinterface').size()) {
         this.process('attachment.tt2');
     }
-
-    var $attach = $('#st-attachments-attachinterface');
-    $('.warning .chooser .cancel', $attach).unbind('click').click(function() {
-        $('#st-attachments-attach-filename').attr('value', '');
-        $('.warning', $attach).fadeOut();
-        return false;
-    });
 
     $('#st-attachments-attach-filename')
         .val('')
