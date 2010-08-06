@@ -44,11 +44,6 @@ field 'group_attr_map' => +{};
 sub init {
     my $self = shift;
 
-    # {bz: 4211} Common typo is 'bind_username' instead of 'bind_user':
-    if (!$self->{bind_user} && $self->{bind_username}) {
-        $self->{bind_user} = $self->{bind_username};
-    }
-
     # make sure we've got all required fields
     my @required = (qw( id host attr_map ));
     $self->check_required_fields(@required);

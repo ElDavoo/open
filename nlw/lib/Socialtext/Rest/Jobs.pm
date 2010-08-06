@@ -71,26 +71,22 @@ sub resource_to_html {
     {
         @column_order
             = qw(name queued delayed grabbed num_ok last_ok num_fail last_fail
-                 latest latest_nodelay);
+                 most_recent most_recent_non_delayed);
         # append extra keys
         my %avail = map {$_=>1} keys %{ $job_stats->[0] };
         delete @avail{@column_order};
         push @column_order, sort keys %avail;
     }
 
-    for my $k (qw(last_ok last_fail latest latest_nodelay)) {
-        $_->{$k} = format_timestamp($_->{$k}) for @$job_stats;
+    for my $k (qw(last_ok last_fail most_recent most_recent_non_delayed)) {
+        $_->{$k} = $_->{$k} ? strftime('%F %T%z',localtime($_->{$k})) : ''
+            for @$job_stats;
     }
 
     return $self->template_render('data/job_stats.html' => { 
         job_stats => $job_stats,
         columns => \@column_order,
     });
-}
-
-sub format_timestamp {
-    my $t = shift;
-    return $t ? strftime('%m/%d %T', localtime($t)) : '';
 }
 
 1;

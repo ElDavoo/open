@@ -1,23 +1,17 @@
 body {
-    font-family: Sans-serif;
-    font-size: 85%;
-}
-td, th {
-    /* font-size: 85%; */
-    white-space: nowrap;
-    text-align:left;
-    vertical-align:top;
-    padding-right: 1em;
-}
-table.jobs tr:nth-child(odd) td {
-    background:#eeeeee;
+    font-family: Sans-serif
 }
 table.jobs {
     border-collapse: collapse;
 }
 table.jobs td {
+    border: 1px solid #888;
+    padding: 2px;
 }
 table.jobs th {
+    padding-left: 4px;
+    padding-right: 4px;
+    border: 1px dotted #888;
 }
 table.jobs thead {
     border-bottom: 2px solid black;
@@ -25,29 +19,25 @@ table.jobs thead {
 
 table.job {
     border-collapse: collapse;
-}
-table.job tr:nth-child(odd) td {
-    background:#eeeeee;
-}
-table.job tr:nth-child(odd) th {
-    background:#dddddd;
+    border: 1px solid black;
 }
 table.job td {
-    padding-left: 0.5em;
+    text-align: left;
+    border: 1px solid #888;
+    padding: 2px;
 }
 table.job th {
     text-align: right;
-    padding-right: 0.5em;
+    padding-left: 4px;
+    padding-right: 4px;
+    border: 1px dotted #888;
 }
 
 .jobcolarg {
     font-family: Inconsolata, Fixed;
     font-size: smaller;
-    white-space: pre-line;
-    word-wrap: nowrap;
 }
-.jobcolcoalesce, .jobcolkey {
+.jobcolcoalesce {
     font-family: Inconsolata, Fixed;
     font-size: smaller;
-    word-wrap: break-word;
 }

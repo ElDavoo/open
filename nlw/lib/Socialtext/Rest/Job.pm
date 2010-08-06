@@ -6,6 +6,7 @@ use Socialtext::Exceptions;
 use Socialtext::Jobs;
 use Socialtext::Job;
 use Socialtext::Rest::Jobs;
+use POSIX qw/strftime/;
 
 extends 'Socialtext::Rest::Entity';
 
@@ -19,7 +20,6 @@ extends 'Socialtext::Rest::Entity';
     *GET_html = Socialtext::Rest::Entity::_make_getter(
         \&resource_to_html, 'text/html');
     *{__PACKAGE__.'::if_authorized'} = \&Socialtext::Rest::Jobs::if_authorized;
-    *format_timestamp = \&Socialtext::Rest::Jobs::format_timestamp;
 }
 
 has 'job' => (
@@ -65,11 +65,11 @@ sub resource_to_html {
     }
 
     for my $k (qw(insert_time run_after grabbed_until)) {
-        $job->{$k} = format_timestamp($job->{$k});
+        $job->{$k} = $job->{$k} 
+            ? strftime('%F %T%z',localtime($job->{$k})) : '';
     }
 
     $job->{arg} = YAML::Dump($job->{arg});
-    $job->{arg} =~ s/---\n//;
     return $self->template_render('data/job.html' => {
         job => $job,
         columns => \@column_order,

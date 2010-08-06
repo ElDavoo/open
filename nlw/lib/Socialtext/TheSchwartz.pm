@@ -94,8 +94,8 @@ sub _stat_jobs_per_dbh {
             COALESCE(queued, 0) AS queued,
             COALESCE(delayed, 0) AS delayed,
             COALESCE(grabbed, 0) AS grabbed,
-            COALESCE(latest, 0) AS latest,
-            COALESCE(latest_nodelay, 0) AS latest_nodelay,
+            COALESCE(most_recent, 0) AS most_recent,
+            COALESCE(most_recent_non_delayed, 0) AS most_recent_non_delayed,
             COALESCE(num_ok, 0) AS num_ok,
             COALESCE(num_fail, 0) AS num_fail,
             COALESCE(last_ok, 0) AS last_ok,
@@ -106,8 +106,8 @@ sub _stat_jobs_per_dbh {
                 COUNT(jobid) AS queued,
                 COUNT(NULLIF(run_after > $1, 'f'::boolean)) AS delayed,
                 COUNT(NULLIF(grabbed_until > $1, 'f'::boolean)) AS grabbed,
-                MAX(insert_time) AS latest,
-                MAX( CASE WHEN run_after <= $1 THEN insert_time ELSE NULL END) AS latest_nodelay
+                MAX(insert_time) AS most_recent,
+                MAX( CASE WHEN run_after <= $1 THEN insert_time ELSE NULL END) AS most_recent_non_delayed
             FROM job
             GROUP BY funcid
         ) s USING (funcid)
