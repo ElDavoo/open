@@ -314,45 +314,6 @@ sub ListGroups {
 }
 
 ###############################################################################
-# Subroutine:   _get_user_factory($driver_key)
-###############################################################################
-# Gets the LDAP user Factory to use for the given '$driver_key'.  Caches the
-# Factory for later re-use, so that we're not opening a new LDAP connection
-# for each and every user lookup.
-###############################################################################
-{
-    my %Factories;
-    sub _get_user_factory {
-        my $driver_key = shift;
-
-        # create a new Factory if we don't have a cached one yet
-        unless ($Factories{$driver_key}) {
-            # instantiate a new LDAP user Factory
-            my ($driver_id) = ($driver_key =~ /LDAP:(.*)/);
-            st_log->info( "creating new LDAP user Factory, '$driver_id'" );
-            my $factory = Socialtext::User::LDAP::Factory->new($driver_id);
-            unless ($factory) {
-                st_log->error( "unable to find LDAP config '$driver_id'; was it removed from your LDAP config?" );
-                return;
-            }
-
-            # make sure we can actually connect to the LDAP server
-            unless ($factory->connect()) {
-                st_log->error( "unable to connect to LDAP server" );
-                return;
-            }
-
-            # cache the factory for later re-use
-            $Factories{$driver_key} = $factory;
-        }
-        return $Factories{$driver_key};
-    }
-    sub _clear_user_factory_cache {
-        %Factories = ();
-    }
-}
-
-###############################################################################
 # Subroutine:   _get_group_factory($driver_key)
 ###############################################################################
 # Gets the LDAP Group Factory to use for the given '$driver_key'.  Caches the
