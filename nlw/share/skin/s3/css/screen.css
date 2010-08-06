@@ -873,6 +873,11 @@ div#controls div#controlsRight ul li a.revision {
 	padding:0 10px 0 28px;
 }
 
+div#controls div#controlsRight ul li a.signalthis {
+	background: url(../images/asset-icons/signal-16.png) no-repeat center left;
+	padding:0 10px 0 24px;
+}
+
 div#controls div#controlsRight ul li a.watch {
 	background: url(../images/watchIcon.png) no-repeat center left;
 	padding:0 10px 0 24px;
