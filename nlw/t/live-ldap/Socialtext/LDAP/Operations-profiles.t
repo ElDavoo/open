@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 6;
+use Test::Socialtext tests => 8;
 use Test::Socialtext::User;
 use Socialtext::LDAP::Operations;
 
@@ -50,6 +50,34 @@ sub bootstrap_openldap {
     Socialtext::LDAP::Config->save($config);
 
     return $openldap;
+}
+
+###############################################################################
+# TEST: Load LDAP Users, and make sure their Profiles get loaded.
+load_users_populates_profiles: {
+    my $guard = Test::Socialtext::User->snapshot();
+    my $acct  = Socialtext::Account->Default;
+    my $ldap  = bootstrap_openldap(account => $acct);
+
+    # Load LDAP Users
+    Socialtext::LDAP::Operations->LoadUsers();
+
+    # Get the Profile for a User, and make sure that it has a Manager.
+    #
+    # Have to cheat a bit here when fetching the profile, as we *don't* want
+    # to trigger any behaviour that would cause ST::User->new() to be called
+    # for the User in question (as _that_ could in turn load the User and
+    # cloud our ability to see that it was LoadUsers() that did the work for
+    # us).
+    my $ariel_dn = 'cn=Ariel Young,ou=related,dc=example,dc=com';
+    my $ariel_id = Socialtext::User->ResolveId(driver_unique_id => $ariel_dn);
+
+    my $adrian_dn = 'cn=Adrian Harris,ou=related,dc=example,dc=com';
+    my $adrian_id = Socialtext::User->ResolveId(driver_unique_id => $adrian_dn);
+
+    my $profile = Socialtext::People::Profile->_fetch_profile($ariel_id);
+    ok $profile, 'Ariel has a profile';
+    is $profile->{supervisor}, $adrian_id, '... and Adrian is her Manager';
 }
 
 ###############################################################################
