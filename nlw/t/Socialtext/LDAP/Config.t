@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use YAML qw();
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 33;
+use Test::Socialtext tests => 35;
 
 use_ok( 'Socialtext::LDAP::Config' );
 
@@ -104,4 +104,15 @@ instantiation: {
     my $data = YAML::Load($yaml);
     my $config = Socialtext::LDAP::Config->new(%{$data});
     isa_ok $config, 'Socialtext::LDAP::Config', 'valid instantiation';
+}
+
+###############################################################################
+# Mistyping 'bind_user' as 'bind_username' should be OK.
+username_typo: {
+    my $yaml2 = $yaml;
+    $yaml2 =~ s/^bind_user:/bind_username:/m; # introduce a common typo
+    my $data = YAML::Load($yaml2);
+    my $config = Socialtext::LDAP::Config->new(%{$data});
+    isa_ok $config, 'Socialtext::LDAP::Config', 'valid instantiation';
+    ok $config->bind_user, 'typo was fixed';
 }
