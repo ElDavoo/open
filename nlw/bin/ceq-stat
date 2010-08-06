@@ -33,13 +33,13 @@ my %header = (
     num_fail => loc('Num Fail'),
     last_ok => loc('Last OK'),
     last_fail => loc('Last Fail'),
-    most_recent => loc('Latest'),
-    most_recent_non_delayed => loc('Latest Queued'),
+    latest => loc('Latest'),
+    latest_nodelay => loc('Latest NoDelay'),
 );
-my @stat_order = (qw(queued grabbed delayed num_ok last_ok num_fail last_fail most_recent most_recent_non_delayed));
-my @max_stats = grep /^(?:last|most)_/, @stat_order;
-my @time_stats = grep /^(?:last|most)_/, @stat_order;
-my @sum_stats = grep !/^(?:last|most)_/, @stat_order;
+my @stat_order = (qw(queued grabbed delayed num_ok last_ok num_fail last_fail latest latest_nodelay));
+my @max_stats = grep /^(?:last_|latest)/, @stat_order;
+my @time_stats = grep /^(?:last_|latest)/, @stat_order;
+my @sum_stats = grep !/^(?:last_|latest)/, @stat_order;
 my $name_header = loc('Job Type');
 my $total = loc('Total');
 
@@ -119,9 +119,8 @@ ceqlotron's queue.
 
 =head1 SYNOPSIS
 
-B<ceq-stat>
-
-B<ceq-stat> 1.5
+  B<ceq-stat>
+  B<ceq-stat> 1.5  # periodically re-queries
 
 =head1 OPTIONS
 
@@ -129,14 +128,6 @@ B<ceq-stat> 1.5
     --man       Manual page
 
 An optional delay interval can be provided to repeat the output.
-
-=head1 SAMPLE OUTPUT
-
- Jobs in the queue:
-   AttachmentIndex  1
-               Cmd  5 (1 grabbed)
-         PageIndex  0
-             Total  6
 
 =head1 SEE ALSO
 

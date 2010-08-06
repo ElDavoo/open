@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
         <title>[% collection_name %]</title>
@@ -37,17 +38,17 @@
                 <tr class="jobrow">
                     [% FOREACH col IN columns -%]
                     <td class="jobcol[%col%]" [% IF col == 'arg' %]width="*"[% END %]>
-                    [% IF col == 'jobid' %]
+                    [%- IF col == 'jobid' %]
                         <a name="job[% job.jobid %]"></a>
                         <a href="/data/jobs/job/[% job.jobid %]">
                             [%- job.jobid %]</a>
                     [% ELSIF col == 'arg' %]
-                        <pre>[%- job.arg -%]</pre>
+                        [%- job.arg -%]
                     [% ELSE %]
                         [%- job.$col |html -%]
-                    [% END %]
+                    [% END -%]
                     </td>
-                    [%- END %]
+                    [%- END -%]
                 </tr>
                 [% END %]
             </tbody>

@@ -7,9 +7,14 @@ use Socialtext::Jobs;
 use Socialtext::Job;
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::l10n qw(loc);
-use POSIX qw/strftime/;
 
 extends 'Socialtext::Rest::Jobs';
+
+{
+    no strict 'refs';
+    no warnings 'redefine';
+    *format_timestamp = \&Socialtext::Rest::Jobs::format_timestamp;
+}
 
 sub allowed_methods {'GET'}
 sub collection_name { loc('All [_1] Jobs', $_[0]->jobclass) }
@@ -31,7 +36,10 @@ sub resource_to_html {
 
     my @columns = qw(jobid uniqkey priority insert_time run_after grabbed_until coalesce);
     if ($self->rest->query->{'verbose'}) {
-        $_->{arg} = YAML::Dump($_->{arg}) for @$jobs;
+        for my $j (@$jobs) {
+            $j->{arg} = YAML::Dump($j->{arg});
+            $j->{arg} =~ s/^---\n//;
+        }
         push @columns, 'arg';
     }
     else {
@@ -39,8 +47,7 @@ sub resource_to_html {
     }
 
     for my $k (qw(insert_time run_after grabbed_until)) {
-        $_->{$k} = $_->{$k} ? strftime('%F %T%z',localtime($_->{$k})) : ''
-            for @$jobs;
+        $_->{$k} = format_timestamp($_->{$k}) for @$jobs;
     }
 
     return $self->template_render('data/job_list.html' => { 
