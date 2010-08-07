@@ -109,9 +109,9 @@ sub Prefs_for_user {
 
 
 sub new_preferences {
-    my $self = shift;
+    my $self   = shift;
     my $values = shift;
-    my $new = bless {}, ref $self;
+    my $new    = bless {}, ref $self;
     $new->hub($self->hub);
     $new->load($values);
     return $new;
