@@ -58,7 +58,7 @@ sub _load_all {
         return $prefs;
     }
 
-    my $prefs = $self->_values_for_email_from_db($email);
+    my $prefs = $self->_values_for_user_from_db($email);
     $cache->set($cache_key => $prefs);
     return $prefs;
 }
@@ -72,11 +72,10 @@ sub _values_for_email {
     return +{ map %$_, values %$prefs };
 }
 
-sub _values_for_email_from_db {
-    my $self = shift;
-    my $email = shift;
-
-    my $user = Socialtext::User->new(email_address => $email);
+sub _values_for_user_from_db {
+    my $self       = shift;
+    my $maybe_user = shift;
+    my $user       = Socialtext::User->Resolve($maybe_user);
     return {} unless $user;
 
     return $self->Prefs_for_user($user, $self->hub->current_workspace);
