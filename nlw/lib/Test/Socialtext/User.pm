@@ -101,7 +101,7 @@ sub snapshot {
 
 sub _get_user_ids {
     require Socialtext::SQL;
-    my $rows = Socialtext::SQL::get_dbh->selectall_arrayref( qq{
+    my $rows = Socialtext::SQL::get_dbh()->selectall_arrayref( qq{
         SELECT user_id FROM users ORDER BY user_id;
     } );
     return map { $_->[0] } @{$rows};
