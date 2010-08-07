@@ -251,7 +251,7 @@ sub bug_safe {
 }
 
 # XXX - this was in Socialtext::Users - but mostly it just depends on the hub
-# and knowing the current user's email address
+# and knowing who the current User is
 sub preferences_object {
     my $self = shift;
 
