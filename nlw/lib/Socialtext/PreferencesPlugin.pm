@@ -130,15 +130,18 @@ sub new_dynamic_preference {
 }
 
 sub store {
-    my $self      = shift;
-    my $email     = shift;
-    my $class_id  = shift;
-    my $new_prefs = shift;
+    my $self       = shift;
+    my $maybe_user = shift;
+    my $class_id   = shift;
+    my $new_prefs  = shift;
+
+    my $user  = Socialtext::User->Resolve($maybe_user);
+    return unless $user;
+    my $email = $user->email_address;
+
     my $prefs = $self->_load_all_for_email($email);
     $prefs->{$class_id} = $new_prefs if defined $class_id;
 
-    my $user = Socialtext::User->new(email_address => $email);
-    return unless $user;
     $self->Store_prefs_for_user($user, $self->hub->current_workspace, $prefs);
 }
 
