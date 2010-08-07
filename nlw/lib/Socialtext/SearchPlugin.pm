@@ -412,8 +412,7 @@ sub _store_preferences {
     $opts{show_summaries} = $self->preferences->show_summaries->value
         unless defined $opts{show_summaries};
 
-    my $user  = $self->hub->current_user;
-    my $email = $user->email_address;
+    my $user = $self->hub->current_user;
     $self->preferences->store( $user, $self->class_id, \%opts );
     $self->hub->preferences_object(
         $self->preferences->new_for_user($user),

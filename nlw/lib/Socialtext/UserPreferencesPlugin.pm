@@ -84,9 +84,8 @@ sub save {
 
     my %cgi = $self->cgi->vars;
 
-    my $user       = $self->hub->current_user;
-    my $user_email = $user->email_address;
-    my $prefs      = $self->hub->preferences->new_for_user($user);
+    my $user  = $self->hub->current_user;
+    my $prefs = $self->hub->preferences->new_for_user($user);
 
     my $settings = {};
     my $class_id = $object->class_id;
