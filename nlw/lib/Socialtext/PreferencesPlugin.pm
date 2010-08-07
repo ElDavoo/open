@@ -130,8 +130,10 @@ sub new_dynamic_preference {
 }
 
 sub store {
-    my $self = shift;
-    my ($email, $class_id, $new_prefs) = @_;
+    my $self      = shift;
+    my $email     = shift;
+    my $class_id  = shift;
+    my $new_prefs = shift;
     my $prefs = $self->_load_all_for_email($email);
     $prefs->{$class_id} = $new_prefs if defined $class_id;
 
