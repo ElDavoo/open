@@ -1595,6 +1595,7 @@ sub set_locale {
     my $user = $self->_require_user();
     my ( $hub, $main ) = $self->_require_hub($user);
 
+    # XXX: ick; we're accessing internal methods in another class.
     my $email         = $user->email_address;
     my $prefs         = $hub->preferences->_load_all_for_email($email);
     my $display_prefs = $prefs->{display};
