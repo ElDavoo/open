@@ -692,6 +692,21 @@ $(function() {
         }
     }; }
 
+    // SignalThis handler for single-page view
+    $('#st-signalthis-indicator').click(function(){
+        var $c,$b,$s,$h=document.getElementsByTagName('head')[0];
+        $b='/nlw/plugin/signals/';
+        $c=document.createElement('LINK');
+        $c.rel='stylesheet';
+        $c.href=$b+'css/bookmarklet.css?_='+Math.random();
+        $c.type='text/css';
+        $h.appendChild($c);
+        $s=document.createElement('SCRIPT');
+        $s.type='text/javascript';
+        $s.src=$b+'/javascript/bookmarklet.js?_='+Math.random();
+        $h.appendChild($s);
+    });
+
     // Watch handler for single-page view
     $('#st-watchlist-indicator').click(makeWatchHandler(Socialtext.page_id));
 
