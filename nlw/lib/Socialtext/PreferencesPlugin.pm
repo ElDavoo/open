@@ -45,7 +45,7 @@ sub new_for_user {
 
     # This caching does not seem to be well used.
     return $self->{per_user_cache}{$email} if $self->{per_user_cache}{$email};
-    my $values = $self->_values_for_email($email);
+    my $values = $self->_values_for_user($user);
     return $self->{per_user_cache}{$email} = $self->new_preferences($values);
 }
 
