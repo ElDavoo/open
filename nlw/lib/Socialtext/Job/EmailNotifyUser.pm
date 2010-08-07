@@ -32,7 +32,7 @@ sub do_work {
     my $pages_fetched_at = time;
     return $self->completed unless $pages && @$pages;
 
-    my $prefs = $hub->preferences->new_for_user($user->email_address);
+    my $prefs = $hub->preferences->new_for_user($user);
     $pages = $self->_sort_pages_for_user($user, $pages, $prefs);
 
     my $tz = $hub->timezone;

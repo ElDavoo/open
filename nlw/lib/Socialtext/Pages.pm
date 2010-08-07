@@ -183,7 +183,7 @@ sub show_mouseover {
     my $self = shift;
     return $self->{show_mouseover} if defined $self->{show_mouseover};
     $self->{show_mouseover} = 
-      $self->hub->preferences->new_for_user( $self->hub->current_user->email_address )->mouseover_length->value;
+      $self->hub->preferences->new_for_user( $self->hub->current_user )->mouseover_length->value;
 }
 
 sub title_to_disposition {

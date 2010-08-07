@@ -47,8 +47,7 @@ sub preferences_settings {
         $self->message(loc('Preferences saved'));
     }
 
-    my $prefs = $self->preferences->new_for_user(
-        $self->hub->current_user->email_address );
+    my $prefs = $self->preferences->new_for_user($self->hub->current_user);
 
     my @pref_list = map { $prefs->$_ } @$list;
     my $settings_section = $self->template_process(
@@ -85,8 +84,9 @@ sub save {
 
     my %cgi = $self->cgi->vars;
 
-    my $user_email = $self->hub->current_user->email_address;
-    my $prefs = $self->hub->preferences->new_for_user($user_email);
+    my $user       = $self->hub->current_user;
+    my $user_email = $user->email_address;
+    my $prefs      = $self->hub->preferences->new_for_user($user);
 
     my $settings = {};
     my $class_id = $object->class_id;
