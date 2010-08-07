@@ -144,9 +144,8 @@ sub store {
 
     my $user  = Socialtext::User->Resolve($maybe_user);
     return unless $user;
-    my $email = $user->email_address;
 
-    my $prefs = $self->_load_all_for_email($email);
+    my $prefs = $self->_load_all_for_user($user);
     $prefs->{$class_id} = $new_prefs if defined $class_id;
 
     $self->Store_prefs_for_user($user, $self->hub->current_workspace, $prefs);
