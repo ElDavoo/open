@@ -47,7 +47,7 @@ sub new_for_user {
     return $self->{per_user_cache}{$email} = $self->new_preferences($values);
 }
 
-sub _load_all {
+sub _load_all_for_email {
     my $self = shift;
     my $email = shift;
     my $wksp  = $self->hub->current_workspace;
@@ -68,7 +68,7 @@ sub _values_for_email {
     my $self = shift;
     my $email = shift;
 
-    my $prefs = $self->_load_all($email);
+    my $prefs = $self->_load_all_for_email($email);
     return +{ map %$_, values %$prefs };
 }
 
@@ -130,7 +130,7 @@ sub new_dynamic_preference {
 sub store {
     my $self = shift;
     my ($email, $class_id, $new_prefs) = @_;
-    my $prefs = $self->_load_all($email);
+    my $prefs = $self->_load_all_for_email($email);
     $prefs->{$class_id} = $new_prefs if defined $class_id;
 
     my $user = Socialtext::User->new(email_address => $email);

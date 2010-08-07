@@ -1596,7 +1596,7 @@ sub set_locale {
     my ( $hub, $main ) = $self->_require_hub($user);
 
     my $email         = $user->email_address;
-    my $prefs         = $hub->preferences->_load_all($email);
+    my $prefs         = $hub->preferences->_load_all_for_email($email);
     my $display_prefs = $prefs->{display};
     loc_lang( $display_prefs->{locale} || 'en' );
 
