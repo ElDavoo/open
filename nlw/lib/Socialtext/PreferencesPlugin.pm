@@ -73,15 +73,6 @@ sub _load_all_for_user {
     return $prefs;
 }
 
-
-sub _values_for_email {
-    my $self  = shift;
-    my $email = shift;
-
-    my $prefs = $self->_load_all_for_email($email);
-    return +{ map %$_, values %$prefs };
-}
-
 sub _values_for_user {
     my $self = shift;
     my $user = shift;
