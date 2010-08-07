@@ -49,13 +49,6 @@ sub new_for_user {
     return $self->{per_user_cache}{$email} = $self->new_preferences($values);
 }
 
-sub _load_all_for_email {
-    my $self  = shift;
-    my $email = shift;
-    my $user  = Socialtext::User->new(email_address => $email);
-    return $self->_load_all_for_user($user);
-}
-
 sub _load_all_for_user {
     my $self  = shift;
     my $user  = shift;
