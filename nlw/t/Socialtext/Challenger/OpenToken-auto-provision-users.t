@@ -34,6 +34,7 @@ our %data = (
 ###############################################################################
 # auto-create user on first request
 auto_create_user: {
+    my $guard      = Test::Socialtext::User->snapshot();
     my $email_addr = 'auto-create-user-' . time . $$ . '@ken.socialtext.net';
     my $first_name = 'Auto Created';
     my $last_name  = 'Test User';
@@ -64,9 +65,6 @@ auto_create_user: {
     # log in; you can't login unless your User record thinks it has a valid
     # password).
     ok $user->has_valid_password, '... ... with a valid (but bogus) password';
-
-    # CLEANUP: out of process fixtures don't clean up for us
-    $user && Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -93,6 +91,7 @@ log_failure_to_auto_create_user: {
 
 # auto-update User info on subsequent request
 auto_update_user: {
+    my $guard      = Test::Socialtext::User->snapshot();
     my $email_addr = 'auto-update-user-' . time . $$ . '@ken.socialtext.net';
     my $first_name = 'Auto Updated';
     my $last_name  = 'Test User';
@@ -132,9 +131,6 @@ auto_update_user: {
     isa_ok $user, 'Socialtext::User', '... auto-updated user';
     is $user->first_name, $new_first, '... ... with updated first_name';
     is $user->last_name, $new_last, '... ... with updated last_name';
-
-    # CLEANUP: out of process fixtures don't clean up for us
-    $user && Test::Socialtext::User->delete_recklessly($user);
 }
 
 

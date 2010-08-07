@@ -22,6 +22,7 @@ inviting_ldap_user_vivifies_ldap_user_record: {
     my $email_address = 'john.doe@example.com';
 
     # bootstrap OpenLDAP
+    my $guard    = Test::Socialtext::User->snapshot();
     my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
     isa_ok $openldap, 'Test::Socialtext::Bootstrap::OpenLDAP';
 
@@ -52,8 +53,7 @@ inviting_ldap_user_vivifies_ldap_user_record: {
     isa_ok $invited_user, 'Socialtext::User', '... and found User object';
     is $invited_user->homunculus->driver_name, 'LDAP', '... and its an LDAP User';
 
-    # CLEANUP: remove test User, to not pollute other tests
-    $invited_user && Test::Socialtext::User->delete_recklessly($invited_user);
+    # CLEANUP: to not pollute other tests
     Email::Send::Test->clear;
 }
 
@@ -67,6 +67,7 @@ inviting_ldap_user_by_email_alias_vivifies_ldap_user_record: {
     my $aliased_email = 'jdoe@example.com';
 
     # bootstrap OpenLDAP
+    my $guard    = Test::Socialtext::User->snapshot();
     my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
     isa_ok $openldap, 'Test::Socialtext::Bootstrap::OpenLDAP';
 
@@ -99,9 +100,6 @@ inviting_ldap_user_by_email_alias_vivifies_ldap_user_record: {
 #        my $invited_user = Socialtext::User->new(user_id => $user_id);
 #        isa_ok $invited_user, 'Socialtext::User', '... and found User object';
 #        is $invited_user->homunculus->driver_name, 'LDAP', '... and its an LDAP User';
-
-#        # CLEANUP: remove test User, to not pollute other tests
-#        $invited_user && Test::Socialtext::User->delete_recklessly($invited_user);
     }
     Email::Send::Test->clear;
 }

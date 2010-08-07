@@ -52,6 +52,8 @@ instantiate_ldap_group_factory_by_name_and_id: {
 ###############################################################################
 # TEST: retrieve an LDAP Group
 retrieve_ldap_group: {
+    my $guard = Test::Socialtext::User->snapshot();
+
     my $openldap  = bootstrap_openldap();
     my $group_dn  = 'cn=Motorhead,dc=example,dc=com';
     my $motorhead = Socialtext::Group->GetGroup(

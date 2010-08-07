@@ -16,6 +16,7 @@ fixtures(qw( db ));
 # TEST: User has been removed from LDAP server
 ldap_user_removed: {
     # Bootstrap OpenLDAP
+    my $guard    = Test::Socialtext::User->snapshot();
     my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
     ok $openldap->add_ldif('t/test-data/ldap/base_dn.ldif'),
         '... added data: base_dn';
@@ -48,15 +49,13 @@ ldap_user_removed: {
         '... ... which has "last cached" last_name';
     is $refreshed->email_address, $user->email_address,
         '... ... which has "last cached" email_address';
-
-    # CLEANUP
-    Test::Socialtext::User->delete_recklessly($refreshed);
 }
 
 ###############################################################################
 # TEST: LDAP server has been decommissioned
 ldap_server_decommissioned: {
     # Bootstrap OpenLDAP
+    my $guard    = Test::Socialtext::User->snapshot();
     my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
     ok $openldap->add_ldif('t/test-data/ldap/base_dn.ldif'),
         '... added data: base_dn';
@@ -89,7 +88,4 @@ ldap_server_decommissioned: {
         '... ... which has "last cached" last_name';
     is $refreshed->email_address, $user->email_address,
         '... ... which has "last cached" email_address';
-
-    # CLEANUP
-    Test::Socialtext::User->delete_recklessly($refreshed);
 }

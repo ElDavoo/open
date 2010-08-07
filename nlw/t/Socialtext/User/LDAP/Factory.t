@@ -104,6 +104,7 @@ simple_connection_ok: {
 ###############################################################################
 # Verify list of valid search terms when retrieving a user record.
 get_user_valid_search_terms: {
+    my $guard = Test::Socialtext::User->snapshot();
     Net::LDAP->set_mock_behaviour(
         search_results => [ $TEST_USERS[0] ],
     );
@@ -143,9 +144,6 @@ get_user_valid_search_terms: {
     # "cn" isn't a valid search term
     $missing_user = $factory->GetUser(cn=>'First Last');
     ok !defined $missing_user, 'cn; INVALID search term';
-
-    # cleanup; *can't* leave users lying around at the end of a test
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -206,6 +204,7 @@ get_user_multiple_matches: {
 ###############################################################################
 # User retrieval via "username" is done as a sub-tree search
 get_user_via_username_is_subtree: {
+    my $guard = Test::Socialtext::User->snapshot();
     Net::LDAP->set_mock_behaviour(
         search_results => [ $TEST_USERS[0] ],
         );
@@ -222,14 +221,12 @@ get_user_via_username_is_subtree: {
     $mock->called_pos_ok( 2, 'search' );
     my ($self, %opts) = $mock->call_args(2);
     is $opts{'scope'}, 'sub', 'username search is sub-tree';
-
-    # cleanup; *can't* leave users lying around at the end of a test
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
 # User retrieval via "email_address" is done as a sub-tree search
 get_user_via_email_address_is_subtree: {
+    my $guard = Test::Socialtext::User->snapshot();
     Net::LDAP->set_mock_behaviour(
         search_results => [ $TEST_USERS[0] ],
         );
@@ -246,15 +243,13 @@ get_user_via_email_address_is_subtree: {
     $mock->called_pos_ok( 2, 'search' );
     my ($self, %opts) = $mock->call_args(2);
     is $opts{'scope'}, 'sub', 'email_address search is sub-tree';
-
-    # cleanup; *can't* leave users lying around at the end of a test
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
 # User retrieval via "driver_unique_id" is optimized to be done as an exact
 # search
 get_user_via_driver_unique_id_is_exact: {
+    my $guard = Test::Socialtext::User->snapshot();
     Net::LDAP->set_mock_behaviour(
         search_results => [ $TEST_USERS[0] ],
         );
@@ -273,7 +268,4 @@ get_user_via_driver_unique_id_is_exact: {
     my ($self, %opts) = $mock->call_args(2);
     is $opts{'scope'}, 'base', 'driver_unique_id search is exact';
     is $opts{'base'}, $dn, 'driver_unique_id search base is DN';
-
-    # cleanup; *can't* leave users lying around at the end of a test
-    Test::Socialtext::User->delete_recklessly($user);
 }

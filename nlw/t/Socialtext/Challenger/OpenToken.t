@@ -98,7 +98,8 @@ authenticated_as_guest_user: {
 ###############################################################################
 # redirects that are issued point to the challenge URI
 redirect_to_challenge_uri: {
-    my $user = create_test_user();
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = create_test_user();
 
     my $rc = _issue_challenge(
         with_user  => $user,
@@ -112,15 +113,13 @@ redirect_to_challenge_uri: {
     my $redirect_uri  = $webapp->{redirect};
     like $redirect_uri, qr/^$challenge_uri\?TARGET=/,
         '... redirecting to the challenge_uri';
-
-    # CLEANUP: out of process fixtures don't clean up for us
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
 # expired/stale ticket
 stale_ticket: {
-    my $user = create_test_user();
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = create_test_user();
 
     my $rc = _issue_challenge(
         with_user => $user,
@@ -140,15 +139,13 @@ stale_ticket: {
     my $redirect_uri  = $webapp->{redirect};
     like $redirect_uri, qr/^$challenge_uri\?TARGET=/,
         '... redirecting to the challenge_uri';
-
-    # CLEANUP: out of process fixtures don't clean up for us
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
 # successful login sets the "user data cookie".
 login_sets_user_data_cookie: {
-    my $user = create_test_user();
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = create_test_user();
 
     my $rc = _issue_challenge(
         with_user  => $user,
@@ -159,15 +156,13 @@ login_sets_user_data_cookie: {
     # verify that cookie was created
     my $count = Apache::Cookie->cookie_count();
     is $count, 1, 'HTTP cookie created';
-
-    # CLEANUP: out of process fixtures don't clean up for us
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
 # Default redirection on successful login is "/".
 default_redirect_is_root: {
-    my $user = create_test_user();
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = create_test_user();
 
     my $rc = _issue_challenge(
         with_user  => $user,
@@ -179,14 +174,12 @@ default_redirect_is_root: {
     my $webapp        = Socialtext::WebApp->instance();
     my $redirect_uri  = $webapp->{redirect};
     is $redirect_uri, '/', '... redirecting to "/"';
-
-    # CLEANUP: out of process fixtures don't clean up for us
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
 # An "url" parameter containing a relative URL may be provided.
 relative_url_is_allowed: {
+    my $guard        = Test::Socialtext::User->snapshot();
     my $resource_url = '/relative/uri';
     my $user         = create_test_user();
 
@@ -201,14 +194,12 @@ relative_url_is_allowed: {
     my $webapp = Socialtext::WebApp->instance();
     my $redirect_uri  = $webapp->{redirect};
     is $redirect_uri, $resource_url, '... redirecting to specified URL';
-
-    # CLEANUP: out of process fixtures don't clean up for us
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
 # An "url" parameter containing a local absolute URL may be provided.
 local_absolute_url_is_allowed: {
+    my $guard        = Test::Socialtext::User->snapshot();
     my $hostname     = Socialtext::AppConfig->web_hostname();
     my $resource_url = '/absolute/uri';
     my $absolute_uri = "http://$hostname$resource_url";
@@ -225,14 +216,12 @@ local_absolute_url_is_allowed: {
     my $webapp = Socialtext::WebApp->instance();
     my $redirect_uri  = $webapp->{redirect};
     is $redirect_uri, $resource_url, '... redirecting to (local) absolute URL';
-
-    # CLEANUP: out of process fixtures don't clean up for us
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
 # An "url" parameter containing an external absolute URL is *NOT* allowed.
 external_absolute_url_is_not_allowed: {
+    my $guard        = Test::Socialtext::User->snapshot();
     my $hostname     = 'www.example.com';
     my $resource_url = '/absolute/uri';
     my $absolute_uri = "http://$hostname$resource_url";
@@ -254,9 +243,6 @@ external_absolute_url_is_not_allowed: {
     # make sure we used the default redirect URI for the right reason
     logged_like 'error', qr/redirect attempted to external/,
         '... ... and error was logged indicating why';
-
-    # CLEANUP: out of process fixtures don't clean up for us
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 exit;

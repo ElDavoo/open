@@ -18,6 +18,8 @@ fixtures( 'db' );
 # Authenticate, with LDAP referrals enabled; should succeed
 authenticate_with_referrals: {
     diag "TEST: authenticate_with_referrals";
+    my $guard = Test::Socialtext::User->snapshot();
+
     # set up the OpenLDAP servers
     my ($ldap_src, $ldap_tgt) = setup_ldap_servers_with_referrals();
 
@@ -29,11 +31,6 @@ authenticate_with_referrals: {
     # authenticate as the user
     ok $user->password_is_correct('foobar'), '... authen w/correct password';
     ok !$user->password_is_correct('BADPASS'), '... authen w/bad password';
-
-    # The long-term cache will make the user appear "Deleted" in the next test
-    # unless we explicitly remove the user here.  It appears Deleted since
-    # setup_ldap_servers_with_referrals() changes the driver_id every time.
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################

@@ -24,11 +24,9 @@ my %TEST_DATA = (
 ###############################################################################
 # Create user: all fields present
 create_user_all_fields_present: {
-    my $user = eval { Socialtext::User->create(%TEST_DATA) };
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = eval { Socialtext::User->create(%TEST_DATA) };
     isa_ok $user, 'Socialtext::User';
-
-    # Cleanup
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -57,11 +55,9 @@ optional_field_password: {
     my %data = %TEST_DATA;
     delete $data{password};
 
-    my $user = eval { Socialtext::User->create(%data) };
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = eval { Socialtext::User->create(%data) };
     isa_ok $user, 'Socialtext::User';
-
-    # Cleanup
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -81,12 +77,10 @@ cleanup_username_trim: {
     my %data = %TEST_DATA;
     $data{username} = "   " . $data{username} . "    ";
 
-    my $user = eval { Socialtext::User->create(%data) };
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = eval { Socialtext::User->create(%data) };
     isa_ok $user, 'Socialtext::User';
     is $user->username, $TEST_DATA{username}, 'cleanup: "username" is trimmed';
-
-    # Cleanup
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -95,12 +89,10 @@ cleanup_username_lc: {
     my %data = %TEST_DATA;
     $data{username} = uc($data{username});
 
-    my $user = eval { Socialtext::User->create(%data) };
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = eval { Socialtext::User->create(%data) };
     isa_ok $user, 'Socialtext::User';
     is $user->username, $TEST_DATA{username}, 'cleanup: "username" is lower-cased';
-
-    # Cleanup
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -109,12 +101,10 @@ cleanup_email_address_trim: {
     my %data = %TEST_DATA;
     $data{email_address} = "   " . $data{email_address} . "    ";
 
-    my $user = eval { Socialtext::User->create(%data) };
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = eval { Socialtext::User->create(%data) };
     isa_ok $user, 'Socialtext::User';
     is $user->email_address, $TEST_DATA{email_address}, 'cleanup: "email_address" is trimmed';
-
-    # Cleanup
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -123,12 +113,10 @@ cleanup_email_address_lc: {
     my %data = %TEST_DATA;
     $data{email_address} = uc($data{email_address});
 
-    my $user = eval { Socialtext::User->create(%data) };
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = eval { Socialtext::User->create(%data) };
     isa_ok $user, 'Socialtext::User';
     is $user->email_address, $TEST_DATA{email_address}, 'cleanup: "email_address" is lower-cased';
-
-    # Cleanup
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -136,12 +124,10 @@ cleanup_email_address_lc: {
 cleanup_password_encrypted: {
     my %data = %TEST_DATA;
 
-    my $user = eval { Socialtext::User->create(%data) };
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = eval { Socialtext::User->create(%data) };
     isa_ok $user, 'Socialtext::User';
     isnt $user->password, $TEST_DATA{password}, 'cleanup: "password" is encrypted';
-
-    # Cleanup
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -150,12 +136,10 @@ cleanup_password_disable_encryption: {
     my %data = %TEST_DATA;
     $data{no_crypt} = 1;
 
-    my $user = eval { Socialtext::User->create(%data) };
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = eval { Socialtext::User->create(%data) };
     isa_ok $user, 'Socialtext::User';
     is $user->password, $TEST_DATA{password}, 'cleanup: "password" encryption can be disabled';
-
-    # Cleanup
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -174,15 +158,13 @@ constraint_password_length: {
     my %data = %TEST_DATA;
     $data{password} = '12345';
 
-    my $user = eval { Socialtext::User->create(%data) };
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = eval { Socialtext::User->create(%data) };
     like $@, qr/must be at least/, 'constraint: "password" too short';
 
     $data{password} = '123456';
     $user = eval { Socialtext::User->create(%data) };
     isa_ok $user, 'Socialtext::User';
-
-    # Cleanup
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -190,15 +172,13 @@ constraint_password_length: {
 constraint_username_unique: {
     my %data = %TEST_DATA;
 
-    my $user = eval { Socialtext::User->create(%data) };
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = eval { Socialtext::User->create(%data) };
     isa_ok $user, 'Socialtext::User';
 
     $data{email_address} = 'foo@bar.com';
     my $another = eval { Socialtext::User->create(%data) };
     like $@, qr/username.*already in use/, 'constraint: "username" must be unique';
-
-    # Cleanup
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -206,15 +186,13 @@ constraint_username_unique: {
 constraint_email_address_unique: {
     my %data = %TEST_DATA;
 
-    my $user = eval { Socialtext::User->create(%data) };
+    my $guard = Test::Socialtext::User->snapshot();
+    my $user  = eval { Socialtext::User->create(%data) };
     isa_ok $user, 'Socialtext::User';
 
     $data{username} = 'Another Test User';
     my $another = eval { Socialtext::User->create(%data) };
     like $@, qr/email.*already in use/, 'constraint: "email_address" must be unique';
-
-    # Cleanup
-    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################

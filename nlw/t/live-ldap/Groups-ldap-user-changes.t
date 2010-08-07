@@ -92,6 +92,7 @@ sub test_ldap_data_changes {
     local $Socialtext::Group::Factory::CacheEnabled = 0;
 
     # Bootstrap OpenLDAP, add our test user and group, and vivify them in ST.
+    my $guard    = Test::Socialtext::User->snapshot();
     my $openldap = bootstrap_openldap();
 
     ok 1, "======================================================================";
@@ -142,7 +143,6 @@ sub test_ldap_data_changes {
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($changed_group);
-    Test::Socialtext::User->delete_recklessly($changed_user);
 }
 
 ###############################################################################

@@ -39,7 +39,8 @@ test_no_ldap_users: {
 ###############################################################################
 # TEST: have LDAP users, but they're all fresh; not refreshed again.
 test_ldap_users_all_fresh: {
-    my $ldap = set_up_openldap();
+    my $guard = Test::Socialtext::User->snapshot();
+    my $ldap  = set_up_openldap();
 
     # add an LDAP user to our DB cache
     my $ldap_user = Socialtext::User->new( email_address => 'john.doe@example.com' );
@@ -66,9 +67,6 @@ test_ldap_users_all_fresh: {
     is $refreshed_homey->cached_at->hires_epoch,
         $ldap_homey->cached_at->hires_epoch,
         'user was not refreshed; was already fresh';
-
-    # cleanup; don't want to pollute other tests
-    Test::Socialtext::User->delete_recklessly($ldap_user);
 }
 
 ###############################################################################
@@ -79,7 +77,8 @@ test_ldap_users_all_fresh: {
 # refreshed properly.  This is then skipped in subsequent tests (as we've
 # already tested for that condition here).
 test_refresh_stale_users: {
-    my $ldap = set_up_openldap();
+    my $guard = Test::Socialtext::User->snapshot();
+    my $ldap  = set_up_openldap();
 
     # add an LDAP user to our DB cache
     my $ldap_user = Socialtext::User->new( email_address => 'john.doe@example.com' );
@@ -130,16 +129,14 @@ test_refresh_stale_users: {
     isnt $ldap_homey->first_name, 'bogus_first', '... first_name was refreshed';
     isnt $ldap_homey->last_name, 'bogus_last', '... last_name was refreshed';
     isnt $ldap_homey->username, 'bogus_username', '... username was refreshed';
-
-    # cleanup; don't want to pollute other tests
-    Test::Socialtext::User->delete_recklessly($ldap_user);
 }
 
 ###############################################################################
 # TEST: have LDAP users, force the refresh; *all* users are refreshed
 # regardless of whether they're fresh/stale.
 test_force_refresh: {
-    my $ldap = set_up_openldap();
+    my $guard = Test::Socialtext::User->snapshot();
+    my $ldap  = set_up_openldap();
 
     # add an LDAP user to our DB cache
     my $ldap_user = Socialtext::User->new( email_address => 'john.doe@example.com' );
@@ -167,15 +164,13 @@ test_force_refresh: {
     my $refreshed_at = $refreshed_homey->cached_at->hires_epoch();
     ok $refreshed_at > $time_before_refresh->hires_epoch(), 'user was refreshed';
     ok $refreshed_at < $time_after_refresh->hires_epoch(), '... by RefreshUsers()';
-
-    # cleanup; don't want to pollute other tests
-    Test::Socialtext::User->delete_recklessly($ldap_user);
 }
 
 ###############################################################################
 # TEST: first name is missing; should run clean, and set first name to ''
 test_ldap_missing_first_name: {
-    my $ldap = set_up_openldap();
+    my $guard = Test::Socialtext::User->snapshot();
+    my $ldap  = set_up_openldap();
 
     my $user_dn = 'cn=John Doe,dc=example,dc=com';
 
@@ -227,15 +222,13 @@ test_ldap_missing_first_name: {
 
     # make sure that the User now has a blank/empty first name
     is $refreshed_homey->first_name, '', '... first_name is blank/empty';
-
-    # cleanup; don't want to pollute other tests
-    Test::Socialtext::User->delete_recklessly($ldap_user);
 }
 
 ###############################################################################
 # TEST: last name is missing; should run clean, and set last name to ''
 test_ldap_missing_last_name: {
-    my $ldap = set_up_openldap();
+    my $guard = Test::Socialtext::User->snapshot();
+    my $ldap  = set_up_openldap();
 
     my $user_dn = 'cn=John Doe,dc=example,dc=com';
 
@@ -287,16 +280,14 @@ test_ldap_missing_last_name: {
 
     # make sure that the User now has a blank/empty last name
     is $refreshed_homey->last_name, '', '... last_name is blank/empty';
-
-    # cleanup; don't want to pollute other tests
-    Test::Socialtext::User->delete_recklessly($ldap_user);
 }
 
 ###############################################################################
 # TEST: e-mail address is missing; should warn about error, leave DB record
 # untouched, and continue to run.
 test_ldap_missing_email_address: {
-    my $ldap = set_up_openldap();
+    my $guard = Test::Socialtext::User->snapshot();
+    my $ldap  = set_up_openldap();
 
     my $user_dn = 'cn=John Doe,dc=example,dc=com';
 
@@ -329,9 +320,6 @@ test_ldap_missing_email_address: {
     logged_like 'info', qr/found 1 LDAP users/, 'one LDAP user present';
     logged_like 'warning', qr/Unable to refresh LDAP user '$username'/, '... unable to refresh the LDAP user';
     logged_like 'warning', qr/Email address is a required field/, '... LDAP user is missing e-mail address';
-
-    # cleanup; don't want to pollute other tests
-    Test::Socialtext::User->delete_recklessly($ldap_user);
 }
 
 ###############################################################################
