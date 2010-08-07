@@ -82,6 +82,14 @@ sub _values_for_email {
     return +{ map %$_, values %$prefs };
 }
 
+sub _values_for_user {
+    my $self = shift;
+    my $user = shift;
+
+    my $prefs = $self->_load_all_for_user($user);
+    return +{ map %$_, values %$prefs };
+}
+
 sub _values_for_user_from_db {
     my $self = shift;
     my $user = shift;
