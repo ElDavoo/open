@@ -414,7 +414,7 @@ sub _store_preferences {
 
     my $user  = $self->hub->current_user;
     my $email = $user->email_address;
-    $self->preferences->store( $email, $self->class_id, \%opts );
+    $self->preferences->store( $user, $self->class_id, \%opts );
     $self->hub->preferences_object(
         $self->preferences->new_for_user($user),
     );

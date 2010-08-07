@@ -148,7 +148,7 @@ sub save {
         }
     }
     if (keys %$settings) {
-        $self->preferences->store( $user_email, $class_id, $settings );
+        $self->preferences->store( $user, $class_id, $settings );
     }
 }
 

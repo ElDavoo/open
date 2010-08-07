@@ -1578,7 +1578,7 @@ sub disable_email_notify {
     # XXX - this wipes out other email-related prefs, but that's
     # probably ok for now
     $hub->preferences()->store(
-        $user->email_address(),
+        $user,
         email_notify => { notify_frequency => 0 }
     );
 
@@ -1606,7 +1606,7 @@ sub set_locale {
     }
 
     $display_prefs->{locale} = $new_locale;
-    $hub->preferences->store( $email, display => $display_prefs );
+    $hub->preferences->store( $user, display => $display_prefs );
     loc_lang($new_locale);
     $self->_success(
         loc(
