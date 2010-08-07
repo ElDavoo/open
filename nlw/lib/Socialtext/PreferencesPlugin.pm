@@ -43,7 +43,9 @@ sub new_for_user {
     my $user       = Socialtext::User->Resolve($maybe_user);
     my $email      = $user->email_address();
 
-    # This caching does not seem to be well used.
+    # This caching does not seem to be well used, but *is* apparently
+    # necessary (removing it causes failures from side-affects caused by
+    # calling 'new_preferences' repeatedly).
     return $self->{per_user_cache}{$email} if $self->{per_user_cache}{$email};
     my $values = $self->_values_for_user($user);
     return $self->{per_user_cache}{$email} = $self->new_preferences($values);
