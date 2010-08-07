@@ -38,7 +38,7 @@ sub load {
 }
 
 sub new_for_user {
-    my $self = shift;
+    my $self  = shift;
     my $email = shift;
 
     # This caching does not seem to be well used.
@@ -48,7 +48,7 @@ sub new_for_user {
 }
 
 sub _load_all_for_email {
-    my $self = shift;
+    my $self  = shift;
     my $email = shift;
     my $wksp  = $self->hub->current_workspace;
     my $cache_key = join ':', $wksp->name, $email;
@@ -65,7 +65,7 @@ sub _load_all_for_email {
 
 
 sub _values_for_email {
-    my $self = shift;
+    my $self  = shift;
     my $email = shift;
 
     my $prefs = $self->_load_all_for_email($email);
