@@ -28,7 +28,7 @@ field 'filter';
 field 'group_filter';
 field 'follow_referrals' => 1;
 field 'max_referral_depth' => 3;
-field 'ttl' => 300;
+field 'ttl' => 3600;
 field 'attr_map';
 field 'group_attr_map' => +{};
 
@@ -195,7 +195,7 @@ Specifies the maximum depth to which LDAP referrals are followed.  Defaults to
 =item B<ttl>
 
 Specifies the TTL (in seconds) for data which is queried via this LDAP
-instance.  Defaults to "300" seconds.
+instance.  Defaults to "3600" seconds (1 hour)
 
 If you are using LDAP as a Group factory, it is recommended that you
 B<increase> this TTL value.  When Groups are fetched from LDAP, all of the
