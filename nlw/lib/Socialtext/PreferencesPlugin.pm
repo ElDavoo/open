@@ -60,6 +60,8 @@ sub _values_for_user {
 sub _load_all_for_user {
     my $self  = shift;
     my $user  = shift;
+    return {} unless $user;
+
     my $wksp  = $self->hub->current_workspace;
     my $email = $user->email_address;
     my $cache_key = join ':', $wksp->name, $email;
@@ -69,17 +71,9 @@ sub _load_all_for_user {
         return $prefs;
     }
 
-    my $prefs = $self->_values_for_user_from_db($user);
+    my $prefs = $self->Prefs_for_user($user, $wksp);
     $cache->set($cache_key => $prefs);
     return $prefs;
-}
-
-sub _values_for_user_from_db {
-    my $self = shift;
-    my $user = shift;
-    return {} unless $user;
-
-    return $self->Prefs_for_user($user, $self->hub->current_workspace);
 }
 
 sub Prefs_for_user {
