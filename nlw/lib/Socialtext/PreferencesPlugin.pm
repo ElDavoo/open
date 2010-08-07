@@ -49,6 +49,14 @@ sub new_for_user {
     return $self->{per_user_cache}{$email} = $self->new_preferences($values);
 }
 
+sub _values_for_user {
+    my $self = shift;
+    my $user = shift;
+
+    my $prefs = $self->_load_all_for_user($user);
+    return +{ map %$_, values %$prefs };
+}
+
 sub _load_all_for_user {
     my $self  = shift;
     my $user  = shift;
@@ -64,14 +72,6 @@ sub _load_all_for_user {
     my $prefs = $self->_values_for_user_from_db($user);
     $cache->set($cache_key => $prefs);
     return $prefs;
-}
-
-sub _values_for_user {
-    my $self = shift;
-    my $user = shift;
-
-    my $prefs = $self->_load_all_for_user($user);
-    return +{ map %$_, values %$prefs };
 }
 
 sub _values_for_user_from_db {
