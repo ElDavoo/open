@@ -38,8 +38,10 @@ sub load {
 }
 
 sub new_for_user {
-    my $self  = shift;
-    my $email = shift;
+    my $self       = shift;
+    my $maybe_user = shift;
+    my $user       = Socialtext::User->Resolve($maybe_user);
+    my $email      = $user->email_address();
 
     # This caching does not seem to be well used.
     return $self->{per_user_cache}{$email} if $self->{per_user_cache}{$email};
