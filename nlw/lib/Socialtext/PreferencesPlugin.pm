@@ -52,7 +52,15 @@ sub new_for_user {
 sub _load_all_for_email {
     my $self  = shift;
     my $email = shift;
+    my $user  = Socialtext::User->new(email_address => $email);
+    return $self->_load_all_for_user($user);
+}
+
+sub _load_all_for_user {
+    my $self  = shift;
+    my $user  = shift;
     my $wksp  = $self->hub->current_workspace;
+    my $email = $user->email_address;
     my $cache_key = join ':', $wksp->name, $email;
 
     my $cache = $self->_cache;
@@ -60,7 +68,7 @@ sub _load_all_for_email {
         return $prefs;
     }
 
-    my $prefs = $self->_values_for_user_from_db($email);
+    my $prefs = $self->_values_for_user_from_db($user);
     $cache->set($cache_key => $prefs);
     return $prefs;
 }
@@ -75,9 +83,8 @@ sub _values_for_email {
 }
 
 sub _values_for_user_from_db {
-    my $self       = shift;
-    my $maybe_user = shift;
-    my $user       = Socialtext::User->Resolve($maybe_user);
+    my $self = shift;
+    my $user = shift;
     return {} unless $user;
 
     return $self->Prefs_for_user($user, $self->hub->current_workspace);
