@@ -366,10 +366,6 @@ MANIFEST:
 	# XXX: this hack explicitely.
 	perl -i -p -e 's/^(.*Rule #1)$$/#-#$$1/;s/^(.*O Star\.txt)$$/#-#$$1/' $@
 
-js: javascript
-javascript:
-	cd share/skin/s2/javascript && make
-
 tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
@@ -537,8 +533,6 @@ critic:
         $(CONF_TARGETS)          \
         $(INSTALL_PKGS_TARGETS)  \
         install-eventspace-forms \
-	javascript               \
-        js                       \
         install-base             \
         favicon                  \
         install-init-d           \
