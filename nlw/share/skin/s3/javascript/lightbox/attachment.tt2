@@ -18,9 +18,8 @@
     <input type="hidden" id="st-attachments-attach-embed" name="embed" value="1"/>
     <input type="hidden" id="st-attachments-attach-replace" name="replace" value="0" />
     <div class="warning" id="st-attachments-duplicate-menu" style="display:none">
-        <span class="tip">
-          [% loc('There is already a file named "<span class="filename"></span>" attached to this page. You can <span class="emphasis">add</span> another version of the file or <span class="emphasis">replace</span> the existing version with this one. What would you like to do?'); %]
-        </span>
+        <p class="tip"> </p>
+        <p class="more" style="display:none"></p>
 
         <ul class="chooser">
             <li><a class="add" href="#">[% loc("Add") %]</a></li>
