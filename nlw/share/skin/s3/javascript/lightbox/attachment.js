@@ -59,42 +59,44 @@ proto.refreshAttachments = function (cb) {
         success: function (list) {
             $('#st-attachment-listing').html('');
             for (var i=0; i< list.length; i++) {
-                var item = list[i];
-                self._attachmentList.push(item);
-                var extractLink = '';
-                if (item.name.match(/\.(zip|tar|tar.gz|tgz)$/)) {
-                    var attach_id = item.id;
-                    extractLink = $('<a href="#" />')
-                        .html('<img src="/static/skin/common/images/extract.png" width="16" height="16" border="0" />')
-                        .attr('name', item.uri)
-                        .attr('alt', loc('Extract this attachment'))
-                        .attr('title', loc('Extract this attachment'))
-                        .bind('click', function () {
-                            $(this).children('img').attr('src', '/static/skin/common/images/ajax-loader.gif');
-                            self.extractAttachment(attach_id);
-                            return false;
-                        });
-                }
-                $('#st-attachment-listing').append(
-                    $('<li />').append(
-                        $('<a />')
-                            .html(item.name)
-                            .attr('title', loc("Uploaded by [_1] on [_2]. ([_3] bytes)", item.uploader, item.date, Page._format_bytes(item['content-length'])))
-                            .attr('href', item.uri),
-                        ' ',
-                        extractLink,
-                        ' ',
-                        $('<a href="#" />')
-                            .html('<img src="'+nlw_make_s3_path('/images/delete.png')+'"width="16" height="16" border="0" />')
-                            .attr('name', item.uri)
-                            .attr('alt', loc('Delete this attachment'))
-                            .attr('title', loc('Delete this attachment'))
-                            .bind('click', function () {
-                                self.showDeleteInterface(this);
-                                return false;
-                            })
-                    )
-                )
+                var attachment = list[i];
+
+                var repr = {
+                    name: attachment.name,
+                    id: attachment.id,
+                    uploader: attachment.uploader,
+                    uploader_name: attachment.uploader_name,
+                    upload_date: attachment.local_date,
+                    uri: attachment.uri,
+                    length: Page._format_bytes(attachment['content-length']),
+                    extractable: attachment.name.match(/\.(zip|tar|tar.gz|tgz)$/)
+                };
+
+                var $item = $(
+                    Jemplate.process('attachment-listing.tt2', {
+                        wiki: Socialtext.wikiwyg_variables.wiki,
+                        item: repr,
+                        loc: loc
+                    })
+                );
+
+                $('#st-attachment-listing').append($item);
+
+                // Delete Attachments
+                $('.delete_attachment', $item).unbind('click')
+                    .click(function() {
+                        self.showDeleteInterface(this);
+                        return false;
+                    });
+
+                // Extract Archives
+                $('.extract_attachment', $item).unbind('click')
+                    .click(function() {
+                        self.extractAttachment(attachment.id);
+                        return false;
+                    });
+
+                self._attachmentList.push(attachment);
             }
             if (cb) cb(list);
         }
@@ -209,7 +211,16 @@ proto.onChangeFilename = function () {
 
         if (matches.length) {
             var $menu = $("#st-attachments-duplicate-menu");
-            $('.tip .filename', $menu).text(filename);
+
+            if (matches.length > 1 ) {
+                $('.more', $menu).show().html(
+                    loc('There are [_1] previous versions of this file, If you click <em>Replace</em>, you will <em>delete all other versions</em>.', matches.length)
+                );
+            }
+
+            $('.tip', $menu).html(
+                loc('There is already a file named "[_1]" attached to this page. You can <span class="emphasis">Add</span> another version of the file or <span class="emphasis">Replace</span> the existing version with this one. What would you like to do?', filename)
+            );
 
             // Add Handler
             $('.chooser .add', $menu).unbind('click').click(function() {
@@ -301,6 +312,10 @@ proto.showUploadInterface = function () {
     if (!$('#st-attachments-attachinterface').size()) {
         this.process('attachment.tt2');
     }
+    
+    // Make sure the duplicate attachment warnings are hidden.
+    $("#st-attachments-duplicate-menu").hide();
+    $("#st-attachments-duplicate-menu .more").hide();
 
     $('#st-attachments-attach-filename')
         .val('')
