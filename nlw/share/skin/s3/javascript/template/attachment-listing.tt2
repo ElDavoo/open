@@ -1,0 +1,24 @@
+<li>
+  <a href="[% item.uri %]">[% item.name %]</a>
+  [% IF item.extractable %]
+  <a name="[% item.id %]" href="#" class="extract_attachment">
+   <img src="[% wiki.static_path %]/skin/common/images/extract.png"
+        width="16" height="16" border="0"
+        alt="[% loc('Extract this attachment') %]"
+        title="[% loc('Extract this attachment') %]"
+    />
+  </a>
+  [% END %]
+  <a href="#" class="delete_attachment">
+   <img src="[% wiki.static_path %]/skin/s3/images/delete.png"
+        width="16" height="16" border="0"
+        alt="[% loc('Delete this attachment') %]"
+        title="[% loc('Delete this attachment') %]"
+   />
+  </a>
+  <div class="fileInfo">
+   [% item.upload_date %] [% loc('by') %]
+   <a class="person authorized" userid="[% item.uploader_id %]"
+      href="/st/profile/[% item.uploader %]">[% item.uploader_name %]</a>
+  </div>
+</li>
