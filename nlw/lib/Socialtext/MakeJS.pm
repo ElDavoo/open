@@ -187,7 +187,7 @@ sub _part_last_modified {
     elsif ($part->{jemplate} and -d $part->{jemplate}) {
         find({
             no_chdir => 1,
-            wanted => sub { push @files, $File::Find::name },
+            wanted => sub { push @files, $_ unless basename($_) =~ /^\./ },
         }, $part->{jemplate});
     }
 
@@ -305,6 +305,7 @@ sub _jemplate_to_text {
             wanted => sub {
                 my $jemplate = $File::Find::name;
                 return unless -f $jemplate;
+                return if basename($File::Find::name) =~ /^\./;
                 (my $name = $jemplate) =~ s{^$part->{jemplate}/}{};
                 $text .= $part->{nocomment} ? '' : "// BEGIN $jemplate\n";
                 $text .= Jemplate->compile_template_content(
