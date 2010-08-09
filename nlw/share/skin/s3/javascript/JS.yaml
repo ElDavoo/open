@@ -35,6 +35,7 @@
 'lightbox-attachment.js':
     compress: 1
     parts:
+        - { jemplate: 'template/attachment-listing.tt2' }
         - { jemplate: 'lightbox/attachment.tt2' }
         - 'st-lightbox.js'
         - 'lightbox/attachment.js'
