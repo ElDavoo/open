@@ -51,8 +51,8 @@ sub bad_content {
 }
 
 sub _entity_hash {
-    my $self = shift;
-    my ($attachment) = @_;
+    my ($self, $attachment) = @_;
+    my $user = $self->rest->user;
 
     # REVIEW: URI code looks cut and pasted here and in
     # Socialtext::Rest::PageAttachments.
@@ -68,7 +68,9 @@ sub _entity_hash {
         'content-length' => $attachment->Content_Length,
         date             => $attachment->Date,
         uploader         => $attachment->From,
+        uploader_name     => $user->display_name,
         'page-id'        => $attachment->page_id,
+        local_date  => $self->hub->timezone->date_local($attachment->Date),
     };
 }
 
