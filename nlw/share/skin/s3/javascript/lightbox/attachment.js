@@ -221,9 +221,10 @@ proto.onChangeFilename = function () {
                     loc('There is already a file named "[_1]" attached to this page. You can <span class="emphasis">Add</span> another version of the file or <span class="emphasis">Replace</span> the existing version with this one. What would you like to do?', filename)
                 );
 
-                $('.more', $menu).show().html(
+                $('.more p', $menu).html(
                     loc('There are <span class="emphasis">[_1] previous versions</span> of this file (most recently: [_2], uploaded by [_3] at [_4]). If you click <em>Replace</em>, you will <em>delete all other versions</em>.', matches.length, match.size, match.uploader_name, match.local_date)
                 );
+                $('.more', $menu).show();
             }
             else {
                 $('.tip', $menu).html(

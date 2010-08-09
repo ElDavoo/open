@@ -169,8 +169,16 @@
     font-size: inherit;
 }
 
-.lightbox p {
-    padding-bottom: 10px;
+.lightbox .warning div {
+    padding: 10px 0px;
+}
+
+.lightbox .more p {
+    display: inline;
+}
+
+.lightbox .tip img {
+    float: left;
 }
 
 .lightbox .title {
