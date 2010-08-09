@@ -41,15 +41,6 @@ Socialtext.perms = {
 
 Socialtext.action = [% action.json %];
 
-[% IF box_javascript == 1 %]
-Socialtext.box_javascript = true;
-[% INCLUDE js_page_object %]
-[% END %]
-
-[% IF box_javascript == 0 %]
-Socialtext.box_javascript = false;
-[% END %]
-
 Socialtext.double_click_to_edit = false;
 [% IF wikiwyg_double %]
 Socialtext.double_click_to_edit = true;

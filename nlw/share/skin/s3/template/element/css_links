@@ -8,7 +8,7 @@
       [%- PROCESS css_link -%]
     [% END %]
 
-    [%- IF box_javascript || wikiwyg_mode -%]
+    [%- IF wikiwyg_mode -%]
       [% FOREACH css_file IN css.wikiwyg -%]
         [%- PROCESS css_link -%]
       [% END %]
