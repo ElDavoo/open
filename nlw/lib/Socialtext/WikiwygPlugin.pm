@@ -57,6 +57,7 @@ sub register {
     $registry->add(action => 'wikiwyg_dff_get_page');
     $registry->add(action => 'wikiwyg_dff_diff');
     $registry->add(action => 'wikiwyg_diff');
+    $registry->add(action => 'wikiwyg_html');
     $registry->add(preference => $self->wikiwyg_double);
     $registry->add(wafl => wikiwyg_formatting_test =>
                    'Socialtext::Wikiwyg::FormattingTest');
@@ -64,6 +65,16 @@ sub register {
                    'Socialtext::Wikiwyg::FormattingTestRunAll');
     $registry->add(wafl => wikiwyg_data_validator =>
                    'Socialtext::Wikiwyg::DataValidator');
+}
+
+sub wikiwyg_html {
+    my $self = shift;
+    return $self->template_render(
+        template => 'wikiwyg',
+        vars => {
+            $self->hub->helpers->global_template_vars,
+        }
+    );
 }
 
 sub wikiwyg_diff {

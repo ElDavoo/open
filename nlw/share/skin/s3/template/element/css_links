@@ -8,7 +8,7 @@
       [%- PROCESS css_link -%]
     [% END %]
 
-    [%- IF box_javascript -%]
+    [%- IF box_javascript || wikiwyg_mode -%]
       [% FOREACH css_file IN css.wikiwyg -%]
         [%- PROCESS css_link -%]
       [% END %]
@@ -28,7 +28,7 @@ div#header div#logo a {
 [% END %]
 
 [%- BLOCK css_link -%]
-  [% media = 'screen' %][% SET media = 'print' IF css_file.search('print\.') %][% SET media = 'wikiwyg' IF css_file.search('wikiwyg\.') %]
+  [% media = 'screen' %][% SET media = 'print' IF css_file.search('print\.') %][% SET media = 'wikiwyg' IF css_file.search('wikiwyg\.') && ! wikiwyg_mode %]
   [%- IF css_file.search('ie\.') OR css_file.search('\/ieprint') -%]<!--[if gte IE 6]>[% END %]
   [%- IF css_file.search("ie7\.") -%]<!--[if gte IE 7]>[% END %]
   [%- IF css_file.search("ie6\.") -%]<!--[if IE 6]>[% END %]
