@@ -10,6 +10,7 @@ use Fcntl ':seek';
 use File::Temp 'tempfile';
 use Socialtext::HTTP ':codes';
 use Socialtext::Base ();
+use Number::Format;
 
 sub SORTS {
     return +{
@@ -50,12 +51,19 @@ sub bad_content {
     return '';
 }
 
+sub number_formatter {
+    my $self = shift;
+    $self->{_formatter} ||= Number::Format->new;
+    return $self->{_formatter};
+}
+
 sub _entity_hash {
     my ($self, $attachment) = @_;
     my $user = $self->rest->user;
 
     # REVIEW: URI code looks cut and pasted here and in
     # Socialtext::Rest::PageAttachments.
+    my $bytes = $attachment->Content_Length;
     return +{
         id   => $attachment->id,
         name => $attachment->filename,
@@ -65,7 +73,10 @@ sub _entity_hash {
             . '/original/'
             . Socialtext::Base->uri_escape($attachment->db_filename),
         'content-type'   => '' . $attachment->mime_type,    # Stringify!
-        'content-length' => $attachment->Content_Length,
+        'content-length' => $bytes,
+        size             => $bytes < 1024
+                                ? "$bytes bytes"
+                                : $self->number_formatter->format_bytes($bytes),
         date             => $attachment->Date,
         uploader         => $attachment->From,
         uploader_name    => $user->display_name,
