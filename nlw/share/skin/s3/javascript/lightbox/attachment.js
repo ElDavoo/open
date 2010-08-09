@@ -66,6 +66,7 @@ proto.refreshAttachments = function (cb) {
                     id: attachment.id,
                     uploader: attachment.uploader,
                     uploader_name: attachment.uploader_name,
+                    uploader_id: attachment.uploader_id,
                     upload_date: attachment.local_date,
                     uri: attachment.uri,
                     length: Page._format_bytes(attachment['content-length']),
@@ -79,6 +80,8 @@ proto.refreshAttachments = function (cb) {
                         loc: loc
                     })
                 );
+                $item.find('.person.authorized')
+                    .each(function() { new Avatar(this) });
 
                 $('#st-attachment-listing').append($item);
 

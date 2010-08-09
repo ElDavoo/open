@@ -68,9 +68,10 @@ sub _entity_hash {
         'content-length' => $attachment->Content_Length,
         date             => $attachment->Date,
         uploader         => $attachment->From,
-        uploader_name     => $user->display_name,
+        uploader_name    => $user->display_name,
+        uploader_id      => $user->user_id,
         'page-id'        => $attachment->page_id,
-        local_date  => $self->hub->timezone->date_local($attachment->Date),
+        local_date       => $self->hub->timezone->date_local($attachment->Date),
     };
 }
 
