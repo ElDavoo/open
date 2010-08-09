@@ -14,7 +14,8 @@ proto.resetNewAttachments = function () {
 
 proto.addNewAttachment = function (file) {
     this._newAttachmentList.push(file);
-    if (window.wikiwyg && wikiwyg.is_editing && wikiwyg.current_mode) {
+    var doEmbed = Number($("#st-attachments-attach-embed").val());
+    if (doEmbed && window.wikiwyg && wikiwyg.is_editing && wikiwyg.current_mode) {
         var type = file["content-type"].match(/image/) ? 'image' : 'file';
         var widget_text = type + ': ' + file.name;
         var widget_string = '{' + widget_text + '}';
