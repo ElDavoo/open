@@ -213,17 +213,23 @@ proto.onChangeFilename = function () {
         };
 
         if (matches.length) {
+            var match = matches[0];
             var $menu = $("#st-attachments-duplicate-menu");
 
             if (matches.length > 1 ) {
+                $('.tip', $menu).html(
+                    loc('There is already a file named "[_1]" attached to this page. You can <span class="emphasis">Add</span> another version of the file or <span class="emphasis">Replace</span> the existing version with this one. What would you like to do?', filename)
+                );
+
                 $('.more', $menu).show().html(
-                    loc('There are [_1] previous versions of this file, If you click <em>Replace</em>, you will <em>delete all other versions</em>.', matches.length)
+                    loc('There are <span class="emphasis">[_1] previous versions</span> of this file (most recently: [_2], uploaded by [_3] at [_4]). If you click <em>Replace</em>, you will <em>delete all other versions</em>.', matches.length, match.size, match.uploader_name, match.local_date)
                 );
             }
-
-            $('.tip', $menu).html(
-                loc('There is already a file named "[_1]" attached to this page. You can <span class="emphasis">Add</span> another version of the file or <span class="emphasis">Replace</span> the existing version with this one. What would you like to do?', filename)
-            );
+            else {
+                $('.tip', $menu).html(
+                    loc('There is already a file named "[_1]" ([_2] uploaded by [_3] on [_4]) attached to this page. You can <span class="emphasis">Add</span> another version of the file or <span class="emphasis">Replace</span> the existing version with this one. What would you like to do?', filename, match.size, match.uploader_name, match.local_date)
+                );
+            }
 
             // Add Handler
             $('.chooser .add', $menu).unbind('click').click(function() {
