@@ -164,6 +164,15 @@
     font-style: italic;
 }
 
+.lightbox em {
+    font-style: italic;
+    font-size: inherit;
+}
+
+.lightbox p {
+    padding-bottom: 10px;
+}
+
 .lightbox .title {
     display:block;
     font-size:1.5em;
