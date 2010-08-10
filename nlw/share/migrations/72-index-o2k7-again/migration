@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+use Socialtext::Migration::Utils qw/ensure_socialtext_schema
+                                    create_job_for_each_workspace
+                                    create_job/;
+
+create_job_for_each_workspace('IndexOffice2007PageAttachments');
+create_job('IndexOffice2007SignalAttachments');
+
+exit 0;
