@@ -71,15 +71,6 @@ sub create_grammar {
 sub match_a {
     my $self = shift;
 
-    unless ($self->{_checked_url_re}++) {
-        if ($self->{input} !~ $url_re) {
-            # There are no URLs in this message, disable this function by
-            # providing a defined, yet "match nothing" grammar rule.
-            $self->{grammar}{a}{match} = qr/(?!)/;
-            return;
-        }
-    }
-
     my ($simple, $labelled);
     if ($self->{input} =~ $simple_re) {
 #         warn "FOUND SIMPLE:   '$1'<$2>\n";
