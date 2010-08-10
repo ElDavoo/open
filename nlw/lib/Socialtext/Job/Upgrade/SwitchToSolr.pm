@@ -85,6 +85,7 @@ EOT
 
 __PACKAGE__->meta->make_immutable;
 1;
+
 =head1 NAME
 
 Socialtext::Job::Upgrade::SwitchToSolr - When the time is right, make Solr the

@@ -28,6 +28,7 @@ sub do_work {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
 =head1 NAME
 
 Socialtext::Job::Upgrade::ReIndexWorkspace - Index workspace stuff again

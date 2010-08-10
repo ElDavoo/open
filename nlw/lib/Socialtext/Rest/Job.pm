@@ -79,3 +79,19 @@ sub resource_to_html {
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Rest::Job - Display info about a particular job.
+
+=head1 SYNOPSIS
+
+  None.
+
+=head1 DESCRIPTION
+
+A REST resource for a particular ceqlotron job.
+
+=cut
