@@ -34,7 +34,7 @@ We're not testing the results of what the Permission Set grants to readers/viewe
 | st-admin    | give-accounts-admin --username %%test_user%%                              | now has          |
 | GET         | /data/workspaces/%%workspace%%                                            | application/json |
 | code-is     | 200                                                                       |                  |
-| body-unlike | permission_set                                                            |                  |
+| body-like   | permission_set                                                            |                  |
 | st-admin    | remove-accounts-admin --username %%test_user%%                            | no longer        |
 | *comment*   | ... workspace admin                                                       |                  |
 | st-admin    | add-workspace-admin --username %%test_user%% --workspace %%workspace%%    | now has          |
