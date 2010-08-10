@@ -5,6 +5,13 @@ body {
     zoom: 1;
 }
 
+.wiki a {
+    color: #0C5A9A !important;
+}
+.wiki a.incipient {
+    color: #25a800 !important;
+}
+
 body.wiki {
     padding: 0 !important;
     line-height: normal !important;
