@@ -18,12 +18,14 @@ use namespace::clean;
 
 # like qx()'s, but use the safe, non-shell-interpolated call
 sub backtick {
+    my $opts = (ref $_[$#_] && ref $_[$#_] eq 'HASH') ? pop(@_) : {};
     $@ = 0;
     my $out;
     my $err;
+    my $in = $opts->{stdin} || \undef;
     eval {
         # STDIN  needs to be closed explicitly
-        my @args = (\@_, \undef, \$out, \$err);
+        my @args = (\@_, '<', $in, '>', \$out, '2>', \$err);
 
         # init must happen before timeout:
         push @args, init => \&_vmem_limiter
