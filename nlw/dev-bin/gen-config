@@ -607,6 +607,10 @@ sub nginx_params {
     $config{ssl_only} = $appconfig->ssl_only();
     $config{custom_http_port} = $appconfig->custom_http_port();
 
+    if ($config{ssl_only} && !$config{ssl_name}) {
+        die "Configured for SSL only, but no SSL certificate found/detected!\n";
+    }
+
     return \%config;
 }
 
