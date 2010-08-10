@@ -329,7 +329,6 @@ sub _add_signal_doc {
 
     my @fields = (
         [id => $id],
-        [w => 0],
         [doctype => 'signal'], 
         [signal_key => $signal->signal_id],
         [date => $ctime], [created => $ctime],
@@ -386,7 +385,6 @@ sub _add_signal_attachment_doc {
         # These fields are mostly shared with the signal for visibility
         # and consistency reasons
         [id => $id],
-        [w => 0],
         [signal_key => $signal->signal_id], # so delete deletes both
         [date => $ctime], [created => $ctime],
         [creator => $signal->user_id],
@@ -476,7 +474,6 @@ sub _add_person_doc {
 
     my @fields = (
         [id => "person:$user_id"],
-        [w => 0],
         (map { [a => $_] } $user->accounts(ids_only => 1)),
         (map { [g => $_] } $user->groups(ids_only => 1)->all),
         [doctype => 'person'], 
@@ -559,7 +556,6 @@ sub _add_group_doc {
 
     my @fields = (
         [id => "group:$group_id"],
-        [w => 0],
         [g => $group_id],
         [doctype => 'group'], 
         [group_key => $group_id],
