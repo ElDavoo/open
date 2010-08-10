@@ -1,4 +1,4 @@
-package Socialtext::Job::ReIndexer;
+package Socialtext::ReIndexJob;
 # @COPYRIGHT@
 use Moose::Role;
 
@@ -16,16 +16,17 @@ around '_build_indexer' => sub {
 
 no Moose::Role;
 1;
+
 __END__
 
 =head1 NAME
 
-Socialtext::Job::ReIndexer - (Re-)index things in the background
+Socialtext::ReIndexJob - (Re-)index things in the background
 
 =head1 SYNOPSIS
 
   package Your::Job::Module;
-  with 'Socialtext::Job::ReIndexer';
+  with 'Socialtext::ReIndexJob';
 
 =head1 DESCRIPTION
 

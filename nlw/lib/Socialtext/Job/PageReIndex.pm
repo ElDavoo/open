@@ -4,7 +4,7 @@ use Moose;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job::PageIndex';
-with 'Socialtext::Job::ReIndexer';
+with 'Socialtext::ReIndexJob';
 
 __PACKAGE__->meta->make_immutable;
 1;
