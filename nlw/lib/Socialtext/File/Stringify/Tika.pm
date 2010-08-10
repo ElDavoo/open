@@ -8,15 +8,15 @@ use namespace::clean -except => 'meta';
 
 sub to_string {
     my ($class, $file) = @_;
-    my $text = 
-        Socialtext::System::backtick('st-tika', $file);
+
+    my $text = Socialtext::System::backtick('st-tika', {stdin => $file});
     if (my $e = $@) {
-        st_log->error("st-tika: $e\n");
-        return Socialtext::File::Stringify::Default->to_string($file);
+        st_log->error(qq{st-tika failed on "$file": $e});
+        return Socialtext::File::Stringify::Default->to_string($file)
     }
 
     if ($text =~ /^\s*$/) {
-        st_log->warning("No text found in file $file\n");
+        st_log->warning(qq{No text found in file "$file"\n});
         return '';
     }
 
