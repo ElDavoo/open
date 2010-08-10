@@ -4,9 +4,7 @@ use Moose;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job::AttachmentIndex';
-
-override 'retry_delay' => sub {12 * 60 * 60};
-override 'max_retries' => sub {14};
+with 'Socialtext::Job::ReIndexer';
 
 __PACKAGE__->meta->make_immutable;
 1;

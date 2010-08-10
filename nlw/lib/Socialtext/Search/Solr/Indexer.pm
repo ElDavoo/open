@@ -50,6 +50,8 @@ has '_docs' => (
     provides => { push => '_add_doc' },
 );
 
+has 'always_commit' => (is => 'rw', isa => 'Bool', default => 1);
+
 use constant FUDGE_ATTACH_REVS => 25;
 
 ######################
@@ -637,7 +639,6 @@ sub _scrub_body {
 sub _commit {
     my $self = shift;
     my $docs = $self->_docs || [];
-    my $t = time_scope('solr_commit');
 
     _debug("Preparing to finalize index.");
     eval {
@@ -651,7 +652,10 @@ sub _commit {
             $self->solr->add($docs);
         }
 
-        $self->solr->commit();
+        if ($self->always_commit) {
+            my $t = time_scope('solr_commit');
+            $self->solr->commit();
+        }
     };
     my $err = $@;
     die $err if $err;
