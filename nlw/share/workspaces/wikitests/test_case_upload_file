@@ -1,4 +1,4 @@
-*NOTE: This test only works if selenium_browser has higher powers, i.e. *chrome for firefox*
+[*NOTE: This test only works if selenium_browser has higher powers, i.e. *chrome for firefox*
 
 * HighPermissions
 
@@ -40,8 +40,68 @@
 | *Comment* | Test Case: Upload File verify doc upload |  |
 | wait_for_element_visible_ok | st-attachment-listing | 30000 |
 | text_like | //a[contains(@href,'original/wikitest.doc')] | wikitest.doc |
+| text_like | contentRight | qr/wikitest.doc.+\w\w\w \d+ \d+\:\d\d[ap]m by %%short_username%%/ |
 
-| *Comment* | Test Case: Upload File wikitest.pdf, wikitestzip.zip |
+| *Comment* | Test Case: Upload File Re-upload the same file, see lightbox, Cancel |  |
+| wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
+| click_ok | st-attachments-uploadbutton |  |
+| wait_for_text_present_ok | Click "Browse" | 30000 |
+| wait_for_element_visible_ok | st-attachments-attach-filename |  |
+| type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.doc |
+| wait_for_text_present_ok | There is already a file named "wikitest.doc" | 30000 |
+| wait_for_text_present_ok | attached to this page. You can Add another version of the file or Replace the existing version with this one. What would you like to do? | 30000 |
+| wait_for_element_visible_ok | link=Add | 30000 |
+| wait_for_element_visible_ok | link=Replace | 30000 |
+| wait_for_element_visible_ok | //a[@class='cancel'] | 30000 |
+| click_ok | //a[@class='cancel'] |  |
+| wait_for_text_not_present_ok | There is already a file named "wikitest.doc" | 30000 |
+| wait_for_text_not_present_ok | attached to this page. You can Add another version of the file or Replace the existing version with this one. What would you like to do? | 30000 |
+
+| *Comment* | Test Case: Upload File Re-upload the same file, replace, see only one file |  |
+| wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
+| click_ok | st-attachments-uploadbutton |  |
+| wait_for_text_present_ok | Click "Browse" | 30000 |
+| wait_for_element_visible_ok | st-attachments-attach-filename |  |
+| type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.doc |
+| wait_for_text_present_ok | There is already a file named "wikitest.doc" | 30000 |
+| wait_for_text_present_ok | attached to this page. You can Add another version of the file or Replace the existing version with this one. What would you like to do? | 30000 |
+| wait_for_element_visible_ok | link=Replace | 30000 |
+| click_ok | link=Replace |  |
+| wait_for_element_visible_ok | st-attachments-attach-closebutton | 30000 |
+| click_and_wait | st-attachments-attach-closebutton |  |
+| text_unlike | contentRight | qr/wikitest.doc.+\w\w\w \d+ \d+\:\d\d[ap]m by %%short_username%%\s+wikitest.doc.+\w\w\w \d+ \d+\:\d\d[ap]m by %%short_username%%/ |
+
+| *Comment* | Test Case: Upload File Re-upload the same file, ADD, see TWO files |  |
+| wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
+| click_ok | st-attachments-uploadbutton |  |
+| wait_for_text_present_ok | Click "Browse" | 30000 |
+| wait_for_element_visible_ok | st-attachments-attach-filename |  |
+| type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.doc |
+| wait_for_text_present_ok | There is already a file named "wikitest.doc" | 30000 |
+| wait_for_text_present_ok | attached to this page. You can Add another version of the file or Replace the existing version with this one. What would you like to do? | 30000 |
+| wait_for_element_visible_ok | link=Add | 30000 |
+| click_ok | link=Add |  |
+| wait_for_element_visible_ok | st-attachments-attach-closebutton | 30000 |
+| click_and_wait | st-attachments-attach-closebutton |  |
+| pause | 5000 |
+| text_like | contentRight | qr/wikitest\.doc.+\w\w\w \d+ \d+\:\d\d[ap]m by %%short_username%%[\s\.]+wikitest\.doc[\s\.]+\w\w\w \d+ \d+\:\d\d[ap]m by %%short_username%%/ |  |
+
+| *Comment* | Test Case: Upload File Re-upload the same file, REPLACE again, see ONE file |  |
+| wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
+| click_ok | st-attachments-uploadbutton |  |
+| wait_for_text_present_ok | Click "Browse" | 30000 |
+| wait_for_element_visible_ok | st-attachments-attach-filename |  |
+| type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.doc |
+| wait_for_text_present_ok | There is already a file named "wikitest.doc" | 30000 |
+| wait_for_text_present_ok | attached to this page. You can Add another version of the file or Replace the existing version with this one. What would you like to do? | 30000 |
+| wait_for_element_visible_ok | link=Replace | 30000 |
+| click_ok | link=Replace |  |
+| wait_for_element_visible_ok | st-attachments-attach-closebutton | 30000 |
+| click_and_wait | st-attachments-attach-closebutton |  |
+| pause | 5000 |  |
+| text_unlike | contentRight | qr/wikitest\.doc.+\w\w\w \d+ \d+\:\d\d[ap]m by %%short_username%%[\s\.]+wikitest\.doc[\s\.]+\w\w\w \d+ \d+\:\d\d[ap]m by %%short_username%%/ |  |
+
+| *Comment* | Test Case: Upload File wikitest.pdf, wikitestzip.zip |  |
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
 | click_ok | st-attachments-uploadbutton |  |
 | wait_for_element_visible_ok | st-attachments-attach-filename | 30000 |
@@ -56,6 +116,7 @@
 | wait_for_element_visible_ok | st-attachment-listing | 30000 |
 | text_like | //a[contains(@href,'original/wikitest.pdf')] | wikitest.pdf |
 | text_like | //a[contains(@href,'original/wikitestzip.zip')] | wikitestzip.zip |
+| text_like | contentRight | qr/\w\w\w\s+\d+ \d+\:\d\d[ap]m by %%short_username%%/ |
 
 | *Comment* | Test Case: Upload File Edit Mode - verify page is still editable |  |
 | click_ok | st-edit-button-link |  |
