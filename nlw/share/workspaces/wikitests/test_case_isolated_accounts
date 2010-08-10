@@ -1,0 +1,35 @@
+| *Comment* | Test Case: Isolated Accounts |
+
+| *Comment* | Test Case: Isolated Accounts SETUP |  |  |  |
+| set | typeone | typeone%%start_time%% |  |  |
+| set | typetwo | typetwo%%start_time%% |  |  |
+| st-setup-a-group | 1 | 1 | 1 | grpone |
+| set | acct_one | %%group_acct%% |  |  |
+| set | grp_one | %%group_name%% |  |  |
+| set | grp_id | %%group_id%% |  |  |
+| set | user_one | %%group_user%% |  |  |
+| set | user_one_short | %%group_user_short%% |  |  |
+| set | ws_one | %%group_ws%% |  |  |
+| st-setup-a-group | 1 | 1 | 1 | grptwo |
+
+| *Comment* | Test Case: Isolated Accounts Login as %%user_one%%, dirty account |  |
+| st-logoutin | %%user_one%% | %%password%% |
+| include | [Test Case: Isolated Accounts Dirty Account] |  |
+
+| *Comment* | Test case: Isolated Accounts Login as %%user_two%%, verify clean |  |
+| [include] | [Test Case: Isolated Accounts Verify Blank] |  |
+
+| *Comment* | Test Case: Isolated Accounts AddRemove %%user_two%% from %%group_id%%, %%group_ws%%, %%group_acct%% |  |
+| st-admin | add-member --e %%user_twp%% --g %%group_id%% |  |
+| st-admin | add-member --e %%user_two%% --w %%group_ws%% |  |
+| st-admin | add-member --e %%user_two%% --account %%group_account%% |  |
+| st-logoutin | %%user_one%% | %%password%% |
+| open_ok | /%%group_ws%% / |  |
+| st-admin | remove-member --e %%user_twp%% --g %%group_id%% |  |
+| st-admin | remove-member --e %%user_two%% --w %%group_ws%% |  |
+| st-admin | remove-member --e %%user_two%% --account %%group_account%% |  |
+
+| *Comment* | Test case: Isolated Accounts Login as %%user_two%%, verify clean |  |
+| [include] | Test Case: Isolated Accounts Verify Blank] |  |
+
+| *Comment* | Test Case: Isolated Accounts |

@@ -31,8 +31,27 @@
 | click_and_wait | st-submit-search-by-name |  |
 | text_like | link=%%new_acct%% | %%new_acct%% |
 
+Work in progress for story_add_missing_create_workspace_links_in_cp
+*Comment* | Test case: Business Control Panel Workspace Create workspace | |
+open_ok | /nlw/control/workspace | |
+set | wsname | %%wsname%% |
+set | wstitle | %%wstitle%% |
+wait_for_element_visible_ok | //input[@value='Create a new Workspace'] | 30000 |
+click_ok | //input[@value='Create a new Workspace'] | 30000 |
+wait_for_element_visible_ok | new-workspace-next | 30000 |
+wait_for_element_visible_ok | new_workspace_title | 30000 |
+type_ok | new_workspace_title | %%wstitle%% |
+click_ok | new-workspace-next | |
+wait_for_element_visible_ok | new-workspace-next | 30000 |
+wait_for_element_visible_ok | new-workspace-cancel | 30000 |
+wait_for_element_visible_ok | new_workspace_name | 30000 |
+type_ok | new_workspace_name | %%wsname%% |
+click_ok | new-workspace-next | |
+wait_for_text_present_ok | %%wsname%% workspace | 30000 |
+
 | *Comment* | Test case: Business Control Panel Workspace Change new workspace account to Socialtext |  |
 | open_ok | /nlw/control/workspace |  |
+
 | wait_for_element_visible_ok | name | 30000 |
 | type_ok | name | %%new_workspace%% |
 | st-submit |  |  |

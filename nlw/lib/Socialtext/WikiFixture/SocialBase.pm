@@ -2241,6 +2241,22 @@ sub shell_run {
     Socialtext::System::shell_run(join ' ', @_);
 }
 
+=head2 st_setup_group_if_need(group_name, optional $create_and_add_account, optional $create_ws, optional $add_ws_to_group)
+
+Examines self to see if %%group_name%% is defined, if it not defined, it calls st_setup_group with the provided parameters.
+
+The big advantage of this is that if you do st_setup_a_group, then include a page, the included page can run independently if it sets up it's own group, or as part of the bigger test if it does not.
+
+=cut
+
+
+sub st_setup_group_if_needed {
+    my ($self, $create_and_add_account, $create_ws, $add_ws_to_group, $base) = @_;
+    
+    if (!defined($self->{'group_name'})) {
+        st_setup_a_group($self, $create_and_add_account, $create_ws, $add_ws_to_group, $base);
+    }
+}
 
 =head2 st-setup_a_group(group_name, optional $create_and_add_account, optional $create_ws, optional $add_ws_to_group)
 optional fields are BINARY - blank (0) or true (1)
@@ -2262,15 +2278,16 @@ PS: If you've got a more object-oriented, less structured way to do this, I'd be
 =cut
 
 sub st_setup_a_group {
-     my ($self, $create_and_add_account, $create_ws, $add_ws_to_group) = @_;
-     $self->handle_command('set','group_user','gmu%%start_time%%@matt.socialtext.net');
-     $self->handle_command('set','group_user_escaped','gmu%%start_time%%\@matt.socialtext.net');
-     $self->handle_command('set','group_user_short','gmu%%start_time%%');
-     $self->handle_command('set','group_name', 'group-name-%%start_time%%');
+     my ($self, $create_and_add_account, $create_ws, $add_ws_to_group, $base) = @_;
+     $base = $base || 'gmu';
+     $self->handle_command('set','group_user', $base . '%%start_time%%@matt.socialtext.net');
+     $self->handle_command('set','group_user_escaped',$base . '%%start_time%%\@matt.socialtext.net');
+     $self->handle_command('set','group_user_short', $base . '%%start_time%%');
+     $self->handle_command('set','group_name', $base . 'name-%%start_time%%');
     
      #Create the user, the account, and possible the group
      if (defined($create_and_add_account) && ($create_and_add_account) ) {
-         $self->handle_command('set','group_acct','group-acct-%%start_time%%');
+         $self->handle_command('set','group_acct', $base . 'acct-%%start_time%%');
          $self->handle_command('st-admin','create_account --name %%group_acct%%',' was created');
          $self->handle_command('st-admin','enable-plugin --account %%group_acct%% --plugin people');
          $self->handle_command('st-admin','enable-plugin --account %%group_acct%% --plugin groups');
@@ -2288,7 +2305,7 @@ sub st_setup_a_group {
 
      #Create Workspace if requested
      if (defined($create_ws) && ($create_ws) ) { 
-         $self->handle_command('set','group_ws','group-ws-%%start_time%%');
+         $self->handle_command('set','group_ws', $base . '-ws-%%start_time%%');
          if (defined($create_and_add_account) && ($create_and_add_account) ) {
              $self->handle_command('st-admin', 'create_workspace --name %%group_ws%% --title %%group_ws%% --empty --account %%group_acct%%','was created');
          } else {
