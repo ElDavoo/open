@@ -41,7 +41,11 @@ sub create_job_for_each_workspace {
         Socialtext::JobCreator->insert( $job_class,
             { 
                 workspace_id => $ws->workspace_id,
-                ($prio ? (job => {priority => $prio}) : ()),
+                job => {
+                    coalesce => $name,
+                    ($prio ? (priority => $prio) : ()),
+                }
+
             },
         );
         $job_count++;
@@ -59,7 +63,7 @@ sub create_job {
     my $prio  = shift || 31;
     my $job_class = 'Socialtext::Job::Upgrade::' . $class;
 
-    Socialtext::JobCreator->insert( $job_class, {} );
+    Socialtext::JobCreator->insert( $job_class, {job => {coalesce => 'only'}} );
 
     print "Inserted $job_class job\n";
 }
