@@ -1,4 +1,5 @@
 package Socialtext::Job::ReIndexer;
+# @COPYRIGHT@
 use Moose::Role;
 
 requires 'indexer';
