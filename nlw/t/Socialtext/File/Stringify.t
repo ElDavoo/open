@@ -63,11 +63,13 @@ office_2007_documents: {
 
     clear_log();
     Socialtext::File::Stringify->to_string("$data_dir/bad.docx");
-    logged_like 'error', qr/st-tika:/, 'st-tika logged an error';
+    logged_like 'error', qr{st-tika failed on ".+/bad.docx": },
+        'st-tika logged an error';
 
     clear_log();
     my $text = Socialtext::File::Stringify->to_string("$data_dir/just-pic.docx");
-    logged_like 'warning', qr/No text found in file/, 'got no text warning';
+    logged_like 'warning', qr{No text found in file ".+/just-pic.docx"},
+        'got no text warning';
     ok !$text, '... and got no text back from Tika';
 }
 

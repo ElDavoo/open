@@ -6,6 +6,7 @@ use Socialtext::SQL qw(sql_execute);
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
+with 'Socialtext::CoalescingJob';
 
 sub do_work {
     my $self = shift;
