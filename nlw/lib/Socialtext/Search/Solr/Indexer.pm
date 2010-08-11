@@ -392,6 +392,7 @@ sub _add_signal_attachment_doc {
         (map { [a => $_] } @{ $signal->account_ids }),
         (map { [g => $_] } @{ $signal->group_ids }),
         [body => $body],
+        [title => $att->filename],
         [filename => $att->filename],
         [filename_ext => $ext],
         [doctype => 'signal_attachment'], 
