@@ -378,6 +378,7 @@ sub _add_signal_attachment_doc {
         _debug( "Retrieved attachment content.  Length is " . length $body );
     }
 
+    (my $ext = $att->filename) =~ s/.+\.//;
     my @fields = (
         # These fields are mostly shared with the signal for visibility
         # and consistency reasons
@@ -392,6 +393,7 @@ sub _add_signal_attachment_doc {
         (map { [g => $_] } @{ $signal->group_ids }),
         [body => $body],
         [filename => $att->filename],
+        [filename_ext => $ext],
         [doctype => 'signal_attachment'], 
     );
     $self->_add_doc(WebService::Solr::Document->new(@fields));
