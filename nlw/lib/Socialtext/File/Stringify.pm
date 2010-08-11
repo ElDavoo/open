@@ -32,7 +32,7 @@ sub to_string {
         local $Socialtext::System::VMEM_LIMIT = (2 * 2**30) - 4096;
 
         my $convert_class = $class->_get_converter_for_file( $filename, $type );
-        $text = $convert_class->to_string($filename);
+        $text = $convert_class->to_string($filename, $type);
     }
 
     # Proactively cleanup, to avoid temp files left by long running processes

@@ -7,8 +7,8 @@ use Socialtext::System;
 use Socialtext::MIME::Types;
 
 sub to_string {
-    my ( $class, $filename ) = @_;
-    my $mime = Socialtext::MIME::Types::mimeTypeOf($filename) || '';
+    my ( $class, $filename, $mime ) = @_;
+    $mime ||= Socialtext::MIME::Types::mimeTypeOf($filename) || '';
 
     # These produce huge output that is 99% not useful, so just do nothing.
     return "" if $mime =~ m{^(image|video|audio)/.*};  
