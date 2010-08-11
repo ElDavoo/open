@@ -571,12 +571,14 @@ for my $thing_name (qw(user group account)) {
         my $t = time_scope("uset_${thing_name}_roles");
 
         my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
+        my $role_filter = $p{role_id} ? "AND role_id = ?" : '';
         my $sth = sql_execute(qq{
             SELECT DISTINCT from_set_id, role_id
             FROM $table
             WHERE from_set_id $id_filter
               AND into_set_id = ?
-        }, $self->user_set_id);
+              $role_filter
+        }, $self->user_set_id, ($p{role_id} ? ($p{role_id}) : ()));
         my $rows = $sth->fetchall_arrayref();
         return Socialtext::MultiCursor->new(
             iterables => [$rows],

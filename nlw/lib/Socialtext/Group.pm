@@ -596,19 +596,15 @@ sub to_hash {
 sub users_as_minimal_arrayref {
     my $self = shift;
     my $role_name = shift;
+    my $role = Socialtext::Role->new(name => $role_name);
 
     my @members;
-    my $cursor = $self->user_roles();
+    my $cursor = $self->user_roles(role_id => $role->role_id);
     while (my $ur = $cursor->next) {
         my ($user,$role) = @$ur;
         my $hash = $user->to_hash(minimal => 1);
         $hash->{role} = $role->name;
         push @members, $hash;
-    }
-
-    # FIXME: this really should be filtering at the DB query level
-    if ($role_name) {
-        @members = grep { $_->{role} eq $role_name } @members;
     }
 
     return \@members;

@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 76;
+use Test::Socialtext tests => 78;
 use Test::Exception;
 
 ################################################################################
@@ -119,6 +119,12 @@ update_users_role_in_group: {
     # Make sure User had their Role updated
     $users_role = $group->role_for_user($user);
     is $users_role->role_id, $role->role_id, '... Role was updated';
+
+    # Test users_as_minimal_arrayref
+    my $users = $group->users_as_minimal_arrayref('member');
+    is scalar(@$users), 0, 'no members';
+    $users = $group->users_as_minimal_arrayref('admin');
+    is scalar(@$users), 1, 'no members';
 }
 
 ###############################################################################
