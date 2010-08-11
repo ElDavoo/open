@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 25;
+use Test::Socialtext tests => 34;
 use Socialtext::SQL qw(sql_execute);
 
 fixtures(qw( db ));
@@ -19,6 +19,7 @@ my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
 my $hub       = create_test_hub();
 my $backlinks = $hub->backlinks;
 my $pages     = $hub->pages;
+my $workspace = $hub->current_workspace;
 
 # check the preference that allows backlinks to be shown
 my $user = Socialtext::User->create(
@@ -72,6 +73,29 @@ my $page_six = Socialtext::Page->new(hub => $hub)->create(
     creator => $user,
 );
 
+my $page_seven = Socialtext::Page->new(hub => $hub)->create(
+    title => 'page seven',
+    content => "Hello\nthis page links to page five {link: [page five]}\n",
+    creator => $user,
+);
+
+my $page_eight = Socialtext::Page->new(hub => $hub)->create(
+    title => 'page eight',
+    content => "Hello\nthis page links to page five {link: [page five] foosection}\n",
+    creator => $user,
+);
+
+my $page_nine = Socialtext::Page->new(hub => $hub)->create(
+    title => 'page nine',
+    content => "Hello\nthis page links to some other workspace {link: other [page five] foosection}\n",
+    creator => $user,
+);
+
+my $page_ten = Socialtext::Page->new(hub => $hub)->create(
+    title => 'page ten',
+    content => "Hello\nthis page links to this workspace {link: ".$workspace->name ." [page five] }\n",
+    creator => $user,
+);
 
 # Test all_backlink_pages_for_page
 {
@@ -82,7 +106,7 @@ my $page_six = Socialtext::Page->new(hub => $hub)->create(
     @links = $backlinks->all_backlink_pages_for_page($page_four);
     is scalar(@links), 1, 'page four should have two pages that links to it';;
     @links = $backlinks->all_backlink_pages_for_page($page_five);
-    is scalar(@links), 2, 'page five should have two pages that links to it';
+    is scalar(@links), 5, 'page five should have five pages that links to it';
 }
 
 TEST_FRONTLINK_PAGES: {
@@ -94,6 +118,10 @@ TEST_FRONTLINK_PAGES: {
     check_frontlinks($page_four, ['page five']);
     check_frontlinks($page_five, ['page four']);
     check_frontlinks($page_six, ['page five']);
+    check_frontlinks($page_seven, ['page five']);
+    check_frontlinks($page_eight, ['page five']);
+    check_frontlinks($page_nine, []);
+    check_frontlinks($page_ten, ['page five']);
 }
 
 {
@@ -103,6 +131,12 @@ TEST_FRONTLINK_PAGES: {
     check_backlinks($page_two, $page_one, 2);
     check_backlinks($pages->new_from_name($singapore), $page_two, 0);
     check_backlinks($pages->new_from_name('page three'), $page_one, 0);
+
+    check_backlinks($page_six, undef, 1);
+    check_backlinks($page_seven, undef, 1);
+    check_backlinks($page_eight, undef, 1);
+    check_backlinks($page_nine, undef, 0);
+    check_backlinks($page_ten, undef, 1);
 
     $page_two->delete( user => $user );
     check_backlinks($page_two, undef, 0);

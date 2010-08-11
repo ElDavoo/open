@@ -94,15 +94,29 @@ sub update {
         },
         'wafl_phrase' => sub {
             my $unit = shift;
-            return unless $unit->method eq 'include';
-            $unit->arguments =~ $unit->wafl_reference_parse;
-            my ( $workspace_name, $page_title, $qualifier ) = ( $1, $2, $3 );
-            my $page_id = Socialtext::String::title_to_id($page_title);
-            my $w = Socialtext::Workspace->new(name => $workspace_name);
-            return +{
-                page_id => $page_id,
-                workspace_id => $w ? $w->workspace_id : $workspace_id,
-            };
+            if ($unit->method eq 'include') {
+                $unit->arguments =~ $unit->wafl_reference_parse;
+                my ( $workspace_name, $page_title, $qualifier ) = ( $1, $2, $3 );
+                my $page_id = Socialtext::String::title_to_id($page_title);
+                my $w = Socialtext::Workspace->new(name => $workspace_name);
+                return +{
+                    page_id => $page_id,
+                    workspace_id => $w ? $w->workspace_id : $workspace_id,
+                };
+            } elsif ($unit->method eq 'link') {
+                $unit->arguments =~ $unit->wafl_reference_parse;
+                my ( $workspace_name, $page_title, $section ) = ( $1, $2, $3 );
+                if ((! $workspace_name) || 
+                    ($workspace_name eq $cur_workspace_name )) { #internal link 
+                    my $page_id = Socialtext::String::title_to_id($page_title);
+                    my $w = Socialtext::Workspace->new(name => $workspace_name);
+                    return +{ 
+                        page_id => $page_id, 
+                        workspace_id => $w ? $w->workspace_id: $workspace_id,
+                    };
+                }
+            }
+            return;
         }
     );
 
