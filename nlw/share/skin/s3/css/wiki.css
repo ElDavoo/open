@@ -38,8 +38,9 @@
 /* Default font settings.
 The font-size percentage is of 16px. (0.75 * 16px = 12px) */
 .wiki {
-    font-size:110% ! important;
-    line-height: 1.2 ! important;
+    padding: 0 !important;
+    line-height: normal !important;
+    font-size: 12px !important;
 }
 .wiki p,
 .wiki li,
@@ -50,6 +51,10 @@ The font-size percentage is of 16px. (0.75 * 16px = 12px) */
 .wiki td {
     font-size:12px;
     line-height:15px;
+}
+
+div#contentColumns div#contentLeft .wiki p {
+    line-height: normal;
 }
 
 .wiki a:visited {
@@ -113,8 +118,9 @@ html .wiki a:hover {
 -------------------------------------------------------------- */
 
 .wiki p {
-    margin-bottom: 1em ! important;
+    margin-bottom: 1.2em ! important;
     margin-top: 0 ! important;
+
 }
 
 .wiki p img.left {
@@ -333,9 +339,7 @@ html .wiki a:hover {
 }
 .wiki a.incipient,
 .wiki .wafl_existence_error {
-    border-bottom:1px #d82500 dashed;
     border-bottom:1px #25a800 dashed;
-    color:#d82500;
     color:#25a800;
 }
 .wiki a.incipient:hover,
