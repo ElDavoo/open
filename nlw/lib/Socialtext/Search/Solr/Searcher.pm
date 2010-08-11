@@ -3,7 +3,7 @@ package Socialtext::Search::Solr::Searcher;
 use Moose;
 use MooseX::AttributeInflate;
 use Socialtext::Log qw(st_log);
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::Search::AbstractFactory;
 use Socialtext::Search::Solr::QueryParser;
 use Socialtext::Search::SimpleAttachmentHit;
@@ -63,9 +63,8 @@ sub begin_search {
 
     my $thunk = sub {
         _debug("Processing $name thunk");
-        Socialtext::Timer->Continue('solr_begin');
+        my $t = time_scope('solr_begin');
         my $results = $self->_process_docs($docs);
-        Socialtext::Timer->Continue('solr_begin');
         return $results;
     };
     return ($thunk, $num_hits);
