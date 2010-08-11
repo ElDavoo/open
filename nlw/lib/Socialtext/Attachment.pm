@@ -576,6 +576,8 @@ sub purge {
 
     # clean up the index first
     my $ws_name = $self->hub->current_workspace->name;
+
+    # If solr/kino are slow, we may wish to do this async in a job.
     require Socialtext::Search::AbstractFactory;
     my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
     for my $indexer (@indexers) {

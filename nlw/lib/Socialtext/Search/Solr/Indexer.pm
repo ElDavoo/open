@@ -225,6 +225,7 @@ sub _add_attachment_doc {
 
     # XXX: this code assumes there's just one attachment revision
     # counteract the revisions boost by providing a dummy constant
+    # XXX: This FUDGE is for the boost, but it doesn't make sense.
     my $revisions = FUDGE_ATTACH_REVS;
 
     my ($body, $key); {
@@ -236,6 +237,8 @@ sub _add_attachment_doc {
     }
 
     _debug( "Retrieved attachment content.  Length is " . length $body );
+    # XXX Even if there is no body, shouldn't we still index the filename and
+    # such?
     return unless length $body;
 
     my $filename = $att->filename;
@@ -395,7 +398,6 @@ sub _add_signal_attachment_doc {
         (map { [g => $_] } @{ $signal->group_ids }),
         [body => $body],
         [filename => $att->filename],
-
         [doctype => 'signal_attachment'], 
     );
     $self->_add_doc(WebService::Solr::Document->new(@fields));
