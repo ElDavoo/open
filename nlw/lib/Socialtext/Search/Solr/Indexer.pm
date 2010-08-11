@@ -237,17 +237,11 @@ sub _add_attachment_doc {
     }
 
     _debug( "Retrieved attachment content.  Length is " . length $body );
-    # XXX Even if there is no body, shouldn't we still index the filename and
-    # such?
-    return unless length $body;
 
     my $filename = $att->filename;
     (my $ext = $filename) =~ s/.+\.//;
     my @fields = (
         [id => $id],
-        # it is important to call this 'w' instead of 'workspace_id', because
-        # we specify it many times for inter-workspace search, and we face 
-        # lengths on the URI limit.
         [w => $ws_id], 
         [w_title => $self->workspace->title],
         [doctype => 'attachment'],
