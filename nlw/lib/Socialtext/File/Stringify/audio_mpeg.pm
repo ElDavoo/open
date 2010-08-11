@@ -6,7 +6,7 @@ use warnings;
 use Socialtext::File::Stringify::Default;
 
 sub to_string {
-    my ( $class, $file ) = @_;
+    my ( $class, $file, $mime ) = @_;
     my $text = "";
     eval {
         require MP3::Tag;
@@ -17,7 +17,7 @@ sub to_string {
             $text .= uc($tag) . ": $info->{$tag}\n";
         }
     };
-    $text = Socialtext::File::Stringify::Default->to_string($file) if $@;
+    $text = Socialtext::File::Stringify::Default->to_string($file, $mime) if $@;
     return $text;
 }
 

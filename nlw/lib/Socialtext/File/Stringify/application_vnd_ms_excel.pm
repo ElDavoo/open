@@ -7,10 +7,10 @@ use Socialtext::File::Stringify::Default;
 use Socialtext::System;
 
 sub to_string {
-    my ( $class, $file ) = @_;
+    my ( $class, $file, $mime ) = @_;
     my $text = Socialtext::System::backtick( "xls2csv", $file );
     if ( $? or $@ ) {
-        $text = Socialtext::File::Stringify::Default->to_string($file);
+        $text = Socialtext::File::Stringify::Default->to_string($file, $mime);
     }
     elsif ( defined $text ) {
         $text =~ s/^"|"$//mg;

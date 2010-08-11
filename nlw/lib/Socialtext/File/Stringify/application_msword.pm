@@ -10,7 +10,7 @@ use Socialtext::System qw/backtick/;
 use Socialtext::Log qw/st_log/;
 
 sub to_string {
-    my ( $class, $filename ) = @_;
+    my ( $class, $filename, $mime ) = @_;
 
     my $tmp = File::Temp->new(
         TEMPLATE =>
@@ -23,9 +23,10 @@ sub to_string {
     my $ignored = backtick('wvText', $filename, $temp_filename);
     if (my $err = $@) {
         st_log->warning("Failed to index $filename: $err");
-        return Socialtext::File::Stringify::Default->to_string($filename);
+        return Socialtext::File::Stringify::Default->to_string($filename, $mime);
     }
     else {
+        # TODO - this should use tika
         return Socialtext::File::get_contents_utf8($temp_filename)
     }
 }

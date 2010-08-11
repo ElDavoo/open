@@ -7,7 +7,7 @@ use Socialtext::File;
 use Socialtext::l10n qw(system_locale);
 
 sub to_string {
-    my ( $class, $filename ) = @_;
+    my ( $class, $filename, $mime ) = @_;
     my $text = '';
     return $text unless (-T $filename);
     eval {

@@ -7,9 +7,9 @@ use Socialtext::File::Stringify::Default;
 use Socialtext::System;
 
 sub to_string {
-    my ( $class, $file ) = @_;
+    my ( $class, $file, $mime ) = @_;
     my $text = Socialtext::System::backtick( "ps2ascii", $file );
-    $text = Socialtext::File::Stringify::Default->to_string($file) if $? or $@;
+    $text = Socialtext::File::Stringify::Default->to_string($file, $mime) if $? or $@;
     return $text;
 }
 

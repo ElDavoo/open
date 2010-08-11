@@ -12,12 +12,12 @@ use Socialtext::File::Stringify::Default;
 use Socialtext::System;
 
 sub to_string {
-    my ( $class, $file ) = @_;
+    my ( $class, $file, $mime ) = @_;
 
     # Unpack the zip file in a temp dir.
     my $tempdir = File::Temp::tempdir( CLEANUP => 1 );
     Socialtext::System::backtick( "unzip", '-P', '', "-q", $file, "-d", $tempdir );
-    return _default($file) if $@;
+    return _default($file, $mime) if $@;
 
     # Find all the files we unpacked.
     my @files;
@@ -34,12 +34,11 @@ sub to_string {
 
     # Cleanup and return the text if we got any, 'else use the default.
     File::Path::rmtree($tempdir);
-    return $zip_text || _default($file);
+    return $zip_text || _default($file, $mime);
 }
 
 sub _default {
-    my $file = shift;
-    return Socialtext::File::Stringify::Default->to_string($file)
+    return Socialtext::File::Stringify::Default->to_string(@_)
 }
 
 1;

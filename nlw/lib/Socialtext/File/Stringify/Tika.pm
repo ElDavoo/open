@@ -7,12 +7,12 @@ use Socialtext::Log qw/st_log/;
 use namespace::clean -except => 'meta';
 
 sub to_string {
-    my ($class, $file) = @_;
+    my ( $class, $file, $mime ) = @_;
 
     my $text = Socialtext::System::backtick('st-tika', {stdin => $file});
     if (my $e = $@) {
         st_log->error(qq{st-tika failed on "$file": $e});
-        return Socialtext::File::Stringify::Default->to_string($file)
+        return Socialtext::File::Stringify::Default->to_string($file, $mime)
     }
 
     if ($text =~ /^\s*$/) {

@@ -7,7 +7,7 @@ use XML::SAX::ParserFactory;
 use Socialtext::File::Stringify;
 
 sub to_string {
-    my ( $class, $file ) = @_;
+    my ( $class, $file, $mime ) = @_;
     my $text = "";
     my $handler
         = Socialtext::File::Stringify::text_xml::SAX->new( output => \$text );
