@@ -170,7 +170,8 @@ html .wiki a:hover {
     margin: 0 0 1.5em;
     font-style: italic;
 }
-.wiki del {
+.wiki del,
+.wiki strike {
     color: #666;
 }
 
