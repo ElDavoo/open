@@ -38,6 +38,7 @@ sub do_work {
     my $proto         = $self->proto_group;
 
     # always force the refresh from the underlying store
+    local $Socialtext::Group::Factory::CacheEnabled = 0;
     local $Socialtext::Group::Factory::Asynchronous = 0;
 
     # clear the in-memory Group cache, so we *know* we're going to the DB
