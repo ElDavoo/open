@@ -73,7 +73,7 @@ ldap_refresh_invalid_data_uses_last_good_data: {
         '... which failed to refresh because e-mail was missing';
 
     # VERIFY: last_cached was set (even though we had troubles with lookup)
-    my $refreshed_at = $refetched_user->homunculus->cached_at->epoch();
+    my $refreshed_at = $refetched_user->cached_at->epoch();
     ok $refreshed_at > $time_before, '... User was marked as cached';
     ok $refreshed_at < $time_after,  '... ... when he was RE-fetched';
 
@@ -152,14 +152,14 @@ refresh_with_duped_email: {
     ok $rc, 'added Nathan Explosion to LDAP';
     my $nathan = Socialtext::User->new(username => 'Nathan Explosion');
     ok $nathan->isa('Socialtext::User'), 'got Nathan Explosion';
-    my $nathan_cached_at = $nathan->homunculus->cached_at->epoch();
+    my $nathan_cached_at = $nathan->cached_at->epoch();
 
     # create second "bogus" User in LDAP
     $rc = $ldap->add($user2_dn, %user2_attrs);
     ok $rc, 'added Toki Wartooth to LDAP';
     my $toki = Socialtext::User->new(username => 'Toki Wartooth');
     ok $toki->isa('Socialtext::User'), 'got Toki Wartooth';
-    my $toki_cached_at = $toki->homunculus->cached_at->epoch();
+    my $toki_cached_at = $toki->cached_at->epoch();
 
     # update LDAP config, so we can refresh Users with invalid data
     $ldap->ldap_config->{attr_map}{email_address} = 'title';
@@ -176,7 +176,7 @@ refresh_with_duped_email: {
     ok $toki_refreshed->isa('Socialtext::User'), 'Toki is still a user';
     is $toki_refreshed->email_address, 'duped@example.com',
         '... now has bad email_address';
-    ok $toki_cached_at < $toki_refreshed->homunculus->cached_at->epoch(),
+    ok $toki_cached_at < $toki_refreshed->cached_at->epoch(),
         '... who has been properly refreshed.';
 
     # Refresh Nathan, should _not_ update.
@@ -184,6 +184,6 @@ refresh_with_duped_email: {
     ok $nathan_refreshed->isa('Socialtext::User'), 'Nathan is still a user';
     is $nathan_refreshed->email_address, 'nathan@example.com',
         '... still has old email_address';
-    ok $nathan_cached_at < $nathan_refreshed->homunculus->cached_at->epoch(),
+    ok $nathan_cached_at < $nathan_refreshed->cached_at->epoch(),
         '... who has been refreshed.';
 }

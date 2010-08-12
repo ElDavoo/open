@@ -85,9 +85,9 @@ auto_vivification: {
     my $homunculus = $user->homunculus();
     isa_ok $homunculus, 'Socialtext::User::LDAP',
         '... auto-vivified LDAP homunculus';
-    isa_ok $homunculus->cached_at, 'DateTime',
+    isa_ok $user->cached_at, 'DateTime',
         '... cached_at field is a DateTime object';
-    ok $homunculus->cached_at->is_finite, 
+    ok $user->cached_at->is_finite, 
         '... cached_at is finite (not +/- infinity)';
 }
 
@@ -154,8 +154,8 @@ ldap_user_comes_from_cache_if_fresh: {
             is_deeply $user, $cached_user, '... matches original user';
         }
 
-        is $cached_user->homunculus->cached_at->epoch(),
-           $user->homunculus->cached_at->epoch(),
+        is $cached_user->cached_at->epoch(),
+           $user->cached_at->epoch(),
            '... cached_at roughly matches';
 
         is $cached_homey->driver_unique_id, $dn,
@@ -303,6 +303,6 @@ sub user_fields_ok {
     is $new_homey->driver_unique_id, $dn, '... homunculus has DN as ID';
 
     ok $new_homey->cached_at->is_finite, '... cached time is finite';
-    ok $new_homey->cached_at > $user->homunculus->cached_at,
+    ok $new_homey->cached_at > $user->cached_at,
         '... cache time is newer than the original expected';
 }

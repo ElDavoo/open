@@ -132,8 +132,8 @@ sub test_ldap_data_changes {
     # CHECK: are we looking at the same user?
     is $changed_user->user_id, $user->user_id,
         'refreshed User has matching user_id; its same guy';
-    isnt $changed_user->homunculus->cached_at->hires_epoch,
-        $user->homunculus->cached_at->hires_epoch,
+    isnt $changed_user->cached_at->hires_epoch,
+        $user->cached_at->hires_epoch,
         '... and *has* been refreshed';
 
     # CHECK: we didn't accidentally vivify a *new* User behind the scenes
