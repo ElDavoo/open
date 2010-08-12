@@ -118,6 +118,7 @@ sub GetUser {
             # User was previously cached, so they existed at some point but
             # can't be found in LDAP any longer.  Must be a Deleted User.
             my $homey = $self->{_cache_lookup};
+            $self->_mark_as_missing($homey);
             return Socialtext::User::Deleted->new($homey);
         }
         else {
@@ -129,6 +130,36 @@ sub GetUser {
 
     # Didn't find User in LDAP, don't exist in DB; unknown User.
     return;
+}
+
+sub _mark_as_missing {
+    my $self  = shift;
+    my $homey = shift;
+    unless ($homey->{missing}) {
+        $homey->{missing}   = 1;
+        $homey->{cached_at} = $self->Now();
+        $self->UpdateUserRecord( {
+            user_id   => $homey->{user_id},
+            cached_at => $homey->{cached_at},
+            missing   => $homey->{missing},
+        } );
+        st_log->info("LDAP User '$homey->{driver_unique_id}' missing");
+    }
+}
+
+sub _mark_as_found {
+    my $self  = shift;
+    my $homey = shift;
+    if ($homey->{missing}) {
+        $homey->{missing}   = 0;
+        $homey->{cached_at} = $self->Now();
+        $self->UpdateUserRecord( {
+            user_id   => $homey->{user_id},
+            cached_at => $homey->{cached_at},
+            missing   => $homey->{missing},
+        } );
+        st_log->info("LDAP User '$homey->{driver_unique_id}' found");
+    }
 }
 
 sub lookup {
@@ -313,6 +344,7 @@ sub _vivify {
         # we know *that* data was good at some point.
         eval {
             $user_attrs{user_id} = $user_id;
+            $user_attrs{missing} = $cached_homey->{missing};
             $self->ValidateAndCleanData($cached_homey, \%user_attrs);
             $self->_check_cache_for_conflict(
                 user_id => $cached_homey->{user_id},
@@ -345,6 +377,7 @@ sub _vivify {
         my $new_name = $user_attrs{display_name}; # set by Validate above
         $user_attrs{driver_username} = delete $user_attrs{username};    # map "object -> DB"
         $self->UpdateUserRecord(\%user_attrs);
+        $self->_mark_as_found(\%user_attrs);
         Socialtext::JobCreator->index_person(
             $user_attrs{user_id},
             run_after => 10,
