@@ -7,13 +7,11 @@ use Socialtext::File::Stringify::Default;
 use Socialtext::System;
 
 sub to_string {
-    my ( $class, $file, $mime ) = @_;
-    my $text = Socialtext::System::backtick( "catppt",  $file );
+    my ( $class, $buf_ref, $file, $mime ) = @_;
+    Socialtext::System::backtick( "catppt",  $file, {stdout => $buf_ref} );
     if ( $? or $@ ) {
-        $text = Socialtext::File::Stringify::Default->to_string($file, $mime);
+        Socialtext::File::Stringify::Default->to_string($buf_ref, $file, $mime);
     }
-    
-    return $text;
 }
 
 1;

@@ -7,14 +7,14 @@ use XML::SAX::ParserFactory;
 use Socialtext::File::Stringify;
 
 sub to_string {
-    my ( $class, $file, $mime ) = @_;
-    my $text = "";
+    my ( $class, $buf_ref, $file, $mime ) = @_;
+    $buf_ref = "";
     my $handler
-        = Socialtext::File::Stringify::text_xml::SAX->new( output => \$text );
+        = Socialtext::File::Stringify::text_xml::SAX->new( output => $buf_ref );
     my $parser = XML::SAX::ParserFactory->parser( Handler => $handler );
     $parser->parse_uri($file);
-    return $text
-        || Socialtext::File::Stringify->to_string( $file, 'text/plain' );
+    Socialtext::File::Stringify->to_string( $file, 'text/plain' ) unless length $$buf_ref;
+    return;
 }
 
 1;

@@ -11,7 +11,7 @@ use Carp qw/carp croak/;
 
 our @GUESSES = qw( cp1252 );
 
-our @EXPORT_OK = qw(ensure_is_utf8);
+our @EXPORT_OK = qw(ensure_is_utf8 ensure_ref_is_utf8);
 
 sub is_valid_utf8 {
     my $copy = shift;
@@ -32,6 +32,12 @@ sub ensure_is_utf8 ($) {
     return Encode::is_utf8($bytes)
            ? $bytes
            : Encode::decode_utf8($bytes);
+}
+sub ensure_ref_is_utf8 ($) {
+    my $ref = shift; 
+    return unless Encode::is_utf8($$ref);
+    $$ref = Encode::decode_utf8($$ref);
+    return;
 }
 
 sub guess_decode {
