@@ -3978,12 +3978,12 @@ ul li.flexButtonBlue a.addButton:hover {
     height: 1.4em;
     line-height:1.4em;
     margin: 1.4em 0 -2.8em 0;
-    width:270px;
+    width: 190px;
     padding: 0 5px
 }
 
 #st-edit-summary form .field input {
-    width: 280px;
+    width: 200px;
     background: #fff;
 }
 
