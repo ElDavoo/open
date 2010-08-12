@@ -145,7 +145,7 @@ html .wiki a:hover {
 }
 
 .wiki blockquote {
-    margin: 1em 1.5em;
+    margin: 1em 0px 1em 40px;
 }
 .wiki strong {
     font-weight: bold;
