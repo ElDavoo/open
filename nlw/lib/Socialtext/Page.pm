@@ -163,7 +163,7 @@ sub create {
 }
 
 sub _signal_edit_summary {
-    my ($self, $user, $edit_summary) = @_;
+    my ($self, $user, $edit_summary, $to_network) = @_;
     my $signals = $self->hub->pluggable->plugin_class('signals');
     return unless $signals;
     return unless $user->can_use_plugin('signals');
@@ -177,15 +177,23 @@ sub _signal_edit_summary {
         ? loc('"[_1]" (edited [_2] in [_3])', $edit_summary, $page_link, $workspace->title)
         : loc('wants you to know about an edit of [_1] in [_2]', $page_link, $workspace->title);
 
-    my $signal = $signals->Send({
-        user    => $user,
-        body    => $body,
-        account_ids => [ $workspace->account_id ],
+    my %params = (
+        user  => $user,
+        body  => $body,
         topic => {
             page_id      => $self->id,
             workspace_id => $workspace->workspace_id,
         },
-    });
+    );
+
+    if ($to_network and $to_network =~ /^(group|account)-(\d+)$/) {
+        $params{"$1_ids"} = [ $2 ];
+    }
+    else {
+        $params{account_ids} = [ $workspace->account_id ];
+    }
+
+    my $signal = $signals->Send(\%params);
     return $signal;
 }
 
@@ -371,6 +379,7 @@ various places where this has been done in the past.
         date                => { can => [qw(strftime)], default => undef },
         edit_summary        => { type => SCALAR, default => '' },
         signal_edit_summary => { type => SCALAR, default => undef },
+        signal_edit_to_network => { type => SCALAR, default => undef },
         locked              => { type => SCALAR, default => undef },
     };
     sub update {
@@ -415,7 +424,7 @@ various places where this has been done in the past.
         }
 
         if ($args{signal_edit_summary}) {
-            $self->_signal_edit_summary($args{user}, $args{edit_summary});
+            $self->_signal_edit_summary($args{user}, $args{edit_summary}, $args{signal_edit_to_network});
         }
     }
 }
@@ -834,7 +843,7 @@ sub store {
     $self->_log_edit_summary($p{user}) if $self->metadata->RevisionSummary;
 
     if ($p{signal_edit_summary}) {
-        return $self->_signal_edit_summary($p{user}, $p{edit_summary});
+        return $self->_signal_edit_summary($p{user}, $p{edit_summary}, $p{signal_edit_to_network});
     }
 
     return;

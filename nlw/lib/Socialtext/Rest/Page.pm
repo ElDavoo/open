@@ -331,6 +331,7 @@ sub PUT_json {
     }
     my $edit_summary = $object->{edit_summary} || '';
     my $signal_edit_summary = $object->{signal_edit_summary} || '';
+    my $signal_edit_to_network = $object->{signal_edit_to_network} || '';
 
     $page->update_from_remote(
         content => $object->{content},
@@ -338,6 +339,7 @@ sub PUT_json {
         date    => $self->make_date_time_date($object->{date}),
         edit_summary => $edit_summary,
         signal_edit_summary => $signal_edit_summary,
+        signal_edit_to_network => $signal_edit_to_network,
         $object->{tags} ? (tags => $object->{tags}) : (),
         $object->{type} ? (type => $object->{type}) : (),
         $object->{locked} ? (locked => $object->{locked}) : (),

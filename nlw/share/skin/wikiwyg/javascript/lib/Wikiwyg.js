@@ -675,6 +675,8 @@ proto.saveChanges = function() {
     var $signal_checkbox = jQuery('#st-edit-summary-signal-checkbox');
     jQuery('#st-page-editing-signal-summary')
         .val($signal_checkbox.length && ($signal_checkbox[0].checked ? '1' : '0'));
+    jQuery('#st-page-editing-signal-to')
+        .val( $('#st-edit-summary-signal-to').val() );
 
     var submit_changes = function(wikitext) {
         /*
