@@ -270,6 +270,11 @@ sub cache_ttl {
     return DateTime::Duration->new( seconds => $self->ldap_config->ttl );
 }
 
+sub cache_not_found_ttl {
+    my $self = shift;
+    return DateTime::Duration->new( seconds => $self->ldap_config->not_found_ttl );
+}
+
 sub ResolveId {
     my $class = shift;
     my $p = shift;
@@ -653,6 +658,11 @@ user attributes.
 
 Returns a C<DateTime::Duration> object representing the TTL for this Factory's
 LDAP data.
+
+=item B<cache_not_found_ttl()>
+
+Returns a C<DateTime::Duration> object representing the "Not Found TTL" for
+this Factory's LDAP data.
 
 =item B<ResolveId(\%params)>
 
