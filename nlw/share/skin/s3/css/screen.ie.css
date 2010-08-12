@@ -11,7 +11,7 @@ html div#contentLeft {
 
 html body#contentPage div#controls div#controlsRight,
 html body#settingsPage div#controls div#controlsRight {
-    width: 550px !important;
+    width: 580px !important;
 }
 
 /* IE6-only fix for {bz: 1424} - Force alignment to the right */
