@@ -18,6 +18,7 @@ our @EXPORT = qw(
     logged_is
     logged_like
     logged_not_like
+    logged_unlike
     nothing_logged_ok
     no_errors_logged_ok
     no_warnings_logged_ok
@@ -168,6 +169,7 @@ sub logged_not_like($$;$) {
 
     _generic_log_like( $level, $rgx, $name, 0, 1 );
 }
+*logged_unlike = \&logged_not_like;
 
 sub _generic_log_like {
     my ($level, $rgx, $name, $match_result, $no_match_result) = @_;
