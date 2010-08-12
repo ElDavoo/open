@@ -130,7 +130,7 @@ sub html_start {
     my $self = shift;
     my $level
         = defined $self->start_level ? $self->start_level : $self->level;
-    return ( '<blockquote>' x $level ) . "\n";
+    return ( '<blockquote>' x $level );
 }
 
 sub html_end {
