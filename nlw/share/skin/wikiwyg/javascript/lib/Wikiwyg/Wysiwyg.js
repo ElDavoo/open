@@ -2595,6 +2595,11 @@ proto.replace_widget = function(elem) {
     var widget_image;
     var src;
 
+    if ( (matches = widget.match(/^"([\s\S]+?)"<(.+?)>$/m)) || // Named Links
+        (matches = widget.match(/^(?:"([\s\S]*)")?\{(\w+):?\s*([\s\S]*?)\s*\}$/m))) {
+        // For labeled links or wafls, remove all newlines/returns
+        widget = widget.replace(/[\r\n]/g, ' ');
+    }
     if (widget.match(/^{image:/)) {
         var orig = elem.firstChild;
         if (orig.src) src = orig.src;
