@@ -119,6 +119,10 @@ sub GetUser {
             # can't be found in LDAP any longer.  Must be a Deleted User.
             my $homey = $self->{_cache_lookup};
             $self->_mark_as_missing($homey);
+            $self->UpdateUserRecord( {
+                user_id   => $homey->{user_id},
+                cached_at => $self->Now(),
+            } );
             return Socialtext::User::Deleted->new($homey);
         }
         else {

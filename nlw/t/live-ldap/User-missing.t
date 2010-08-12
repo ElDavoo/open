@@ -136,9 +136,13 @@ reuse_cached_data_while_missing: {
     # Re-query the User, and make sure we grab the cached copy (and do *NOT*
     # go out to LDAP).
     requery_using_cache: {
-        Socialtext::LDAP->ConnectionCache->clear();
         Socialtext::LDAP->ResetStats();
-        $user = Socialtext::User->new(username => 'John Doe');
+
+        # multiple lookups, so we know we didn't at all go to LDAP
+        for (1 .. 3) {
+            Socialtext::LDAP->ConnectionCache->clear();
+            $user = Socialtext::User->new(username => 'John Doe');
+        }
         ok $user, 'refreshed User';
         is $Socialtext::LDAP::stats{connect}, 0, '... using cache, not LDAP';
         ok $user->missing, '... still missing';
@@ -159,9 +163,12 @@ reuse_cached_data_while_missing: {
 
         }, $not_found_ttl + 60, $user_id );
 
-        Socialtext::LDAP->ConnectionCache->clear();
+        # multiple lookups, so we know we went to LDAP once (and only once)
         Socialtext::LDAP->ResetStats();
-        $user = Socialtext::User->new(username => 'John Doe');
+        for (1 .. 3) {
+            Socialtext::LDAP->ConnectionCache->clear();
+            $user = Socialtext::User->new(username => 'John Doe');
+        }
         ok $user, 'refreshed User';
         is $Socialtext::LDAP::stats{connect}, 1, '... from LDAP';
         ok $user->missing, '... still missing';
