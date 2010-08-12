@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 14;
+use Test::Socialtext tests => 17;
 
 fixtures(qw( db ));
 
@@ -91,4 +91,21 @@ missing_when_not_in_ldap: {
         ok $homey_after->cached_at > $homey_before->cached_at,
             '... ... "cached_at" was updated';
     }
+}
+
+###############################################################################
+# TEST: Missing Users always return "$user->is_deleted()" true
+missing_users_are_deemed_deleted: {
+    my $ldap = bootstrap_openldap();
+    my $user = Socialtext::User->new(username => 'John Doe');
+    my $conn = Socialtext::LDAP->new();
+    my $dn   = $user->driver_unique_id;
+
+    my $mesg = $conn->{ldap}->delete($dn);
+    ok !$mesg->is_error, 'removed User from LDAP';
+
+    $user->homunculus->expire;
+    $user = Socialtext::User->new(username => 'John Doe');
+    ok $user->missing, '... marked as "missing"';
+    ok $user->is_deleted, '... and deemed is_deleted';
 }
