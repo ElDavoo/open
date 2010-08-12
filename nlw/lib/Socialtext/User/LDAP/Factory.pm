@@ -117,7 +117,8 @@ sub GetUser {
         if ($self->{_user_not_found}) {
             # User was previously cached, so they existed at some point but
             # can't be found in LDAP any longer.  Must be a Deleted User.
-            return Socialtext::User::Deleted->new($self->{_cache_lookup});
+            my $homey = $self->{_cache_lookup};
+            return Socialtext::User::Deleted->new($homey);
         }
         else {
             # Something else caused LDAP lookup to fail; return previously
