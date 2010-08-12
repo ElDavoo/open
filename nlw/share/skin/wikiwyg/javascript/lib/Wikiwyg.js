@@ -1016,6 +1016,40 @@ this.addGlobal().setup_wikiwyg = function() {
         Socialtext.wikiwyg_variables.loc = loc;
         var template = 'edit_wikiwyg';
         var html = Jemplate.process(template, Socialtext.wikiwyg_variables);
+        $.getScript('/nlw/plugin/widgets/javascript/jquery.dropdown.js', function() {
+            $.getScript('/nlw/plugin/widgets/javascript/activities.js', function() {
+                var activities = new Activities({
+                    node: true,
+                    base_uri: true,
+                    share: true,
+                    viewer: true,
+                    viewer_id: true
+                });
+                $.getJSON('/data/users/' + Socialtext.userid, function(data) {
+                    activities.user_data = data;
+                    activities.prefs.getString = function () { return null };
+                    var default_network = 'account-' + data.primary_account_id;
+                    $('#st-edit-summary-signal-to').val(default_network);
+                    $('#signal_network').text('').dropdown({
+                        value: default_network,
+                        fixed: null,
+                        width: '150px',
+                        options: activities.signalNetworks(),
+                        onChange: function(option) {
+                            $('#st-edit-summary-signal-to').val(option.value);
+                            $('#st-edit-summary-signal-checkbox').attr('checked', true);
+                        }
+                    });
+                    $('#signal_network .dropdownOptions').css({
+                        'margin-top': '-15px',
+                        'margin-left': '11em'
+                    });
+                    $('#signal_network .dropdownOptions li').css({
+                        'line-height': '16px'
+                    });
+                });
+            });
+        });
 
         if (Wikiwyg.is_gecko || (jQuery.browser.version == 6 && jQuery.browser.msie)) {
             html = html.replace(/scrolling="no"><\/iframe>/, "></iframe>");
@@ -1143,7 +1177,7 @@ this.addGlobal().setup_wikiwyg = function() {
         ww.is_editing = false;
         ww.showScrollbars();
 
-        jQuery('#st-edit-summary-text-area').val('');
+        jQuery('#st-edit-summary-text-area, #st-edit-summary-signal-to').val('');
         jQuery('#st-edit-summary-signal-checkbox').attr('checked', false);
 
         Socialtext.ui_expand_off();
