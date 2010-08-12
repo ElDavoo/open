@@ -10,7 +10,7 @@ use Socialtext::System qw/backtick/;
 use Socialtext::Log qw/st_log/;
 
 sub to_string {
-    my ( $class, $buf_ref, $filename, $mime ) = @_;
+    my ( $class, $filename, $mime ) = @_;
 
     my $tmp = File::Temp->new(
         TEMPLATE =>
@@ -20,16 +20,14 @@ sub to_string {
     $tmp->unlink_on_destroy(1);
 
     # If 'wvText' fails, fall back on the "any' mode.
-    backtick('wvText', $filename, $temp_filename, {stdout => \undef});
+    my $ignored = backtick('wvText', $filename, $temp_filename);
     if (my $err = $@) {
         st_log->warning("Failed to index $filename: $err");
-        Socialtext::File::Stringify::Default->to_string($buf_ref, $filename,
-            $mime);
+        return Socialtext::File::Stringify::Default->to_string($filename, $mime);
     }
     else {
         # TODO - this should use tika
-        # TODO - can we make a get_contents that reads into a scalar-ref?
-        $$buf_ref = Socialtext::File::get_contents_utf8($temp_filename);
+        return Socialtext::File::get_contents_utf8($temp_filename)
     }
 }
 

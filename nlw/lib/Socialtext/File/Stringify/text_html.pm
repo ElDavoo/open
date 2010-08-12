@@ -7,12 +7,13 @@ use Socialtext::File::Stringify::Default;
 use Socialtext::System;
 
 sub to_string {
-    my ( $class, $buf_ref, $file, $mime ) = @_;
+    my ( $class, $file, $mime ) = @_;
     my @cmd = "lynx";
+
     push @cmd, '-dump' => $file;
-    Socialtext::System::backtick(@cmd, {stdout => $buf_ref});
-    Socialtext::File::Stringify::Default->to_string($buf_ref, $file, $mime)
-        if $? or $@;
+    my $text = Socialtext::System::backtick(@cmd);
+    $text = Socialtext::File::Stringify::Default->to_string($file, $mime) if $? or $@;
+    return $text;
 }
 
 1;

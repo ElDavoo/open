@@ -12,12 +12,12 @@ use Socialtext::File::Stringify::Default;
 use Socialtext::System;
 
 sub to_string {
-    my ( $class, $buf_ref, $file, $mime ) = @_;
+    my ( $class, $file, $mime ) = @_;
 
     # Unpack the zip file in a temp dir.
     my $tempdir = File::Temp::tempdir( CLEANUP => 1 );
-    Socialtext::System::backtick( "unzip", '-P', '', "-q", $file, "-d", $tempdir, {stdout => \undef} );
-    return _default($buf_ref, $file, $mime) if $@;
+    Socialtext::System::backtick( "unzip", '-P', '', "-q", $file, "-d", $tempdir );
+    return _default($file, $mime) if $@;
 
     # Find all the files we unpacked.
     my @files;
@@ -26,20 +26,20 @@ sub to_string {
     }, $tempdir;
 
     # Stringify each the files we found
-    $$buf_ref = "";
+    my $zip_text = "";
     for my $f (@files) {
-        my $file_buf;
-        Socialtext::File::Stringify->to_string(\$file_buf, $f);
-        $$buf_ref .= "\n\n========== $f ==========\n\n$$file_buf" if $$file_buf;
+        my $text = Socialtext::File::Stringify->to_string($f);
+        $zip_text .= "\n\n========== $f ==========\n\n" . $text if $text;
     }
 
     # Cleanup and return the text if we got any, 'else use the default.
     File::Path::rmtree($tempdir);
-    _default($buf_ref, $file, $mime) unless $$buf_ref;
-    return;
+    return $zip_text || _default($file, $mime);
 }
 
-sub _default { Socialtext::File::Stringify::Default->to_string(@_) }
+sub _default {
+    return Socialtext::File::Stringify::Default->to_string(@_)
+}
 
 1;
 

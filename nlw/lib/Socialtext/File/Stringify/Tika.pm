@@ -7,21 +7,20 @@ use Socialtext::Log qw/st_log/;
 use namespace::clean -except => 'meta';
 
 sub to_string {
-    my ( $class, $buf_ref, $file, $mime ) = @_;
+    my ( $class, $file, $mime ) = @_;
 
-    Socialtext::System::backtick('st-tika',
-        { stdin => $file, stdout => $buf_ref });
+    my $text = Socialtext::System::backtick('st-tika', {stdin => $file});
     if (my $e = $@) {
         st_log->error(qq{st-tika failed on "$file": $e});
-        Socialtext::File::Stringify::Default->to_string($buf_ref, $file, $mime)
-        return;
+        return Socialtext::File::Stringify::Default->to_string($file, $mime)
     }
 
-    if ($$buf_ref =~ /^\s*$/) {
+    if ($text =~ /^\s*$/) {
         st_log->warning(qq{No text found in file "$file"\n});
         return '';
     }
-    return;
+
+    return $text;
 }
 
 no Moose;

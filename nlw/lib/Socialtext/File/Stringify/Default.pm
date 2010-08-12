@@ -7,13 +7,12 @@ use Socialtext::System;
 use Socialtext::MIME::Types;
 
 sub to_string {
-    my ( $class, $buf_ref, $filename, $mime ) = @_;
+    my ( $class, $filename, $mime ) = @_;
 
     # These produce huge output that is 99% not useful, so just do nothing.
     return "" if $mime =~ m{^(image|video|audio)/.*};  
 
-    Socialtext::System::backtick('strings', $filename,
-        { stdout => $buf_ref });
+    return Socialtext::System::backtick( 'strings', $filename );
 }
 
 1;

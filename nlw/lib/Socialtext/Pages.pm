@@ -55,14 +55,11 @@ sub all_active {
 
 sub all_ids {
     my $self = shift;
-    my %p = @_;
     my $t = time_scope 'all_ids';
-    my $hide_deleted = $p{not_deleted} ? "AND NOT deleted" : '';
     my $sth = sql_execute(<<EOT,
 SELECT page_id 
     FROM page
     WHERE workspace_id = ?
-        $hide_deleted
     ORDER BY last_edit_time DESC
 EOT
         $self->hub->current_workspace->workspace_id,
