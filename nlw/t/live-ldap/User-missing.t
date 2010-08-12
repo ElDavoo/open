@@ -5,7 +5,8 @@ use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 17;
+use Test::Socialtext tests => 24;
+use Socialtext::SQL qw(sql_execute);
 
 fixtures(qw( db ));
 
@@ -14,6 +15,13 @@ sub bootstrap_openldap {
     my $ldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
     $ldap->add_ldif('t/test-data/ldap/base_dn.ldif');
     $ldap->add_ldif('t/test-data/ldap/people.ldif');
+
+    # Set explicit "ttl" and "not_found_ttl" values we can test against.
+    my $config = $ldap->ldap_config;
+    $config->{ttl} = 86400;
+    $config->{not_found_ttl} = 3600;
+    $ldap->add_to_ldap_config;
+
     return $ldap;
 }
 
@@ -108,4 +116,54 @@ missing_users_are_deemed_deleted: {
     $user = Socialtext::User->new(username => 'John Doe');
     ok $user->missing, '... marked as "missing"';
     ok $user->is_deleted, '... and deemed is_deleted';
+}
+
+###############################################################################
+# TEST: Re-use cached data up to "not_found_ttl" for missing Users
+reuse_cached_data_while_missing: {
+    my $ldap = bootstrap_openldap();
+    my $user = Socialtext::User->new(username => 'John Doe');
+    my $conn = Socialtext::LDAP->new();
+    my $dn   = $user->driver_unique_id;
+
+    # Remove User from LDAP, expire, and refresh (so he's marked as missing)
+    my $mesg = $conn->{ldap}->delete($dn);
+    ok !$mesg->is_error, 'removed User from LDAP';
+
+    $user->homunculus->expire;
+    $user = Socialtext::User->new(username => 'John Doe');
+
+    # Re-query the User, and make sure we grab the cached copy (and do *NOT*
+    # go out to LDAP).
+    requery_using_cache: {
+        Socialtext::LDAP->ConnectionCache->clear();
+        Socialtext::LDAP->ResetStats();
+        $user = Socialtext::User->new(username => 'John Doe');
+        ok $user, 'refreshed User';
+        is $Socialtext::LDAP::stats{connect}, 0, '... using cache, not LDAP';
+        ok $user->missing, '... still missing';
+    }
+
+    # Move us past the "not_found_ttl" and re-query again.  This time we
+    # *should* go out to LDAP to check if the User is there.
+    requery_from_ldap: {
+        # Twiddle User so it looks like its stale w.r.t. "not_found_ttl", but
+        # still valid/fresh w.r.t. "ttl" (so if we refresh, we know it was the
+        # "not_found_ttl" that was used).
+        my $not_found_ttl = $ldap->ldap_config->{not_found_ttl};
+        my $user_id       = $user->user_id;
+        sql_execute( qq{
+            UPDATE users
+               SET cached_at = cached_at - ?::interval
+             WHERE user_id = ?
+
+        }, $not_found_ttl + 60, $user_id );
+
+        Socialtext::LDAP->ConnectionCache->clear();
+        Socialtext::LDAP->ResetStats();
+        $user = Socialtext::User->new(username => 'John Doe');
+        ok $user, 'refreshed User';
+        is $Socialtext::LDAP::stats{connect}, 1, '... from LDAP';
+        ok $user->missing, '... still missing';
+    }
 }
