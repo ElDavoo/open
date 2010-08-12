@@ -49,6 +49,7 @@ has 'homunculus' => (
         is_profile_hidden
         driver_name
         driver_unique_id
+        missing
     )],
 );
 
