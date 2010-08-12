@@ -7,17 +7,16 @@ use Socialtext::File;
 use Socialtext::l10n qw(system_locale);
 
 sub to_string {
-    my ( $class, $filename, $mime ) = @_;
-    my $text = '';
-    return $text unless (-T $filename);
+    my ( $class, $buf_ref, $filename, $mime ) = @_;
+    $$buf_ref = '';
+    return unless (-T $filename); # TODO: taint checking? really?
     eval {
         my $encoding = Socialtext::File::get_guess_encoding(system_locale(), $filename);
-        $text = scalar Socialtext::File::get_contents_based_on_encoding($filename, $encoding);
+        $$buf_ref = scalar Socialtext::File::get_contents_based_on_encoding($filename, $encoding);
     };
     if ($@) {
-        $text = Socialtext::File::get_contents($filename);
+        $$buf_ref = Socialtext::File::get_contents($filename);
     }
-    return $text;
 }
 
 1;

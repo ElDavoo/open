@@ -7,20 +7,18 @@ use Socialtext::File::Stringify::Default;
 use Socialtext::System;
 
 sub to_string {
-    my ( $class, $file, $mime ) = @_;
-    my $text = Socialtext::System::backtick(
+    my ( $class, $buf_ref, $file, $mime ) = @_;
+    Socialtext::System::backtick(
         "unrtf", "--nopict", "--text",
-        $file
+        $file, {stdout => $buf_ref}
     );
 
     if ( $? or $@ ) {
-        $text = Socialtext::File::Stringify::Default->to_string($file, $mime);
+        Socialtext::File::Stringify::Default->to_string($buf_ref, $file, $mime);
     }
-    elsif ( defined $text ) {
-        $text =~ s/^.*?-----------------\n//s; # Remove annoying unrtf header.
-        $text = Socialtext::File::Stringify::Default->to_string($file, $mime) if $?;
+    elsif ( defined $$buf_ref ) {
+        $$buf_ref =~ s/^.*?-----------------\n//s; # Remove annoying unrtf header.
     }
-    return $text;
 }
 
 1;

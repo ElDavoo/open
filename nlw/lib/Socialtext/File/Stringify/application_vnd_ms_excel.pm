@@ -7,16 +7,15 @@ use Socialtext::File::Stringify::Default;
 use Socialtext::System;
 
 sub to_string {
-    my ( $class, $file, $mime ) = @_;
-    my $text = Socialtext::System::backtick( "xls2csv", $file );
+    my ( $class, $buf_ref, $file, $mime ) = @_;
+    Socialtext::System::backtick( "xls2csv", $file, {stdout => $buf_ref} );
     if ( $? or $@ ) {
-        $text = Socialtext::File::Stringify::Default->to_string($file, $mime);
+        Socialtext::File::Stringify::Default->to_string($buf_ref, $file, $mime);
     }
-    elsif ( defined $text ) {
-        $text =~ s/^"|"$//mg;
-        $text =~ s/"+/"/g;
+    elsif ( defined $$buf_ref ) {
+        $$buf_ref =~ s/^"|"$//mg;
+        $$buf_ref =~ s/"+/"/g;
     }
-    return $text;
 }
 
 1;

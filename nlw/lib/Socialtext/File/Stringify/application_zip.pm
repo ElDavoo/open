@@ -10,14 +10,26 @@ use File::Temp;
 use Socialtext::File::Stringify;
 use Socialtext::File::Stringify::Default;
 use Socialtext::System;
+use Socialtext::Encode qw/ensure_ref_is_utf8/;
 
 sub to_string {
-    my ( $class, $file, $mime ) = @_;
+    my ( $class, $buf_ref, $file, $mime ) = @_;
 
     # Unpack the zip file in a temp dir.
     my $tempdir = File::Temp::tempdir( CLEANUP => 1 );
-    Socialtext::System::backtick( "unzip", '-P', '', "-q", $file, "-d", $tempdir );
-    return _default($file, $mime) if $@;
+    {
+        my $ignored; # need to capture it or unzip won't work
+        Socialtext::System::backtick("unzip",
+            '-q', '-P', '', # don't prompt for password
+            $file, '-d', $tempdir,
+            {stdout => \$ignored, stdin => \undef} );
+
+        if ($@ or $?) {
+            # if it fails it makes *no* sense to run strings on it
+            $$buf_ref = '';
+            return;
+        }
+    }
 
     # Find all the files we unpacked.
     my @files;
@@ -26,20 +38,25 @@ sub to_string {
     }, $tempdir;
 
     # Stringify each the files we found
-    my $zip_text = "";
+    $$buf_ref = "";
+    Encode::_utf8_on($$buf_ref); # infectious
     for my $f (@files) {
-        my $text = Socialtext::File::Stringify->to_string($f);
-        $zip_text .= "\n\n========== $f ==========\n\n" . $text if $text;
+        $$buf_ref .= "\n\n========== $f ==========\n\n";
+        my $file_buf;
+        Socialtext::File::Stringify->to_string(\$file_buf, $f);
+        if (length $file_buf) {
+            ensure_ref_is_utf8(\$file_buf);
+            $$buf_ref .= $file_buf;
+        }
     }
 
     # Cleanup and return the text if we got any, 'else use the default.
     File::Path::rmtree($tempdir);
-    return $zip_text || _default($file, $mime);
+    _default($buf_ref, $file, $mime) unless $$buf_ref;
+    return;
 }
 
-sub _default {
-    return Socialtext::File::Stringify::Default->to_string(@_)
-}
+sub _default { Socialtext::File::Stringify::Default->to_string(@_) }
 
 1;
 

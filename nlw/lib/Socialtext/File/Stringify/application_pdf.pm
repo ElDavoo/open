@@ -7,13 +7,12 @@ use Socialtext::File::Stringify::Default;
 use Socialtext::System;
 
 sub to_string {
-    my ( $class, $file, $mime ) = @_;
-    $? = 0;
-    $@ = undef;
-    my $text = Socialtext::System::backtick( "pdftotext", "-enc", "UTF-8", $file,
-        "-" );
-    $text = Socialtext::File::Stringify::Default->to_string($file, $mime) if $? or $@;
-    return $text;
+    my ( $class, $buf_ref, $file, $mime ) = @_;
+    Socialtext::System::backtick( "pdftotext", "-enc", "UTF-8", $file, "-",
+        { stdout => $buf_ref });
+    Socialtext::File::Stringify::Default->to_string($buf_ref, $file, $mime)
+        if $? or $@;
+    return;
 }
 
 1;

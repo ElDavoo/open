@@ -6,15 +6,15 @@ use warnings;
 use Socialtext::MIME::Types ();
 use Socialtext::System;
 use Socialtext::File::Stringify::Default;
-use Socialtext::Encode;
+use Socialtext::Encode qw/ensure_ref_is_utf8/;
 use Socialtext::File qw/mime_type/;
 use File::Temp qw/tempdir/;
 use File::chdir;
 use File::Path qw/rmtree/;
 
 sub to_string {
-    my ( $class, $filename, $type ) = @_;
-    return "" unless defined $filename;
+    my ( $class, $buf_ref, $filename, $type ) = @_;
+    return unless defined $filename;
 
     $filename = Cwd::abs_path($filename);
 
@@ -35,13 +35,14 @@ sub to_string {
         local $Socialtext::System::VMEM_LIMIT = (2 * 2**30) - 4096;
 
         my $convert_class = $class->_load_class_by_mime_type($type);
-        $text = $convert_class->to_string($filename, $type);
+        $convert_class->to_string($buf_ref, $filename, $type);
     }
 
     # Proactively cleanup, to avoid temp files left by long running processes
     rmtree $tmpdir;
 
-    return Socialtext::Encode::ensure_is_utf8($text);
+    ensure_ref_is_utf8($buf_ref);
+    return;
 }
 
 {

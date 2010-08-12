@@ -7,20 +7,22 @@ use Socialtext::Log qw/st_log/;
 use namespace::clean -except => 'meta';
 
 sub to_string {
-    my ( $class, $file, $mime ) = @_;
-
-    my $text = Socialtext::System::backtick('st-tika', {stdin => $file});
+    my ( $class, $buf_ref, $file, $mime ) = @_;
+    Socialtext::System::backtick('st-tika',
+        { stdin => $file, stdout => $buf_ref });
     if (my $e = $@) {
         st_log->error(qq{st-tika failed on "$file": $e});
-        return Socialtext::File::Stringify::Default->to_string($file, $mime)
+        Socialtext::File::Stringify::Default->to_string($buf_ref, $file, $mime);
     }
-
-    if ($text =~ /^\s*$/) {
+    elsif ($$buf_ref =~ /^\s*$/) {
         st_log->warning(qq{No text found in file "$file"\n});
-        return '';
+        $$buf_ref = '';
     }
-
-    return $text;
+    else {
+        # We know Tika outputs UTF-8 so it's safe to just turn the flag on.
+        # Avoids a copy during utf8_decode() higher-up the stringifier stack.
+        Encode::_utf8_on($$buf_ref);
+    }
 }
 
 no Moose;
