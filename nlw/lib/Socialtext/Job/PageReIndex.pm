@@ -1,14 +1,15 @@
 package Socialtext::Job::PageReIndex;
 # @COPYRIGHT@
 use Moose;
-use namespace::clean -except => 'meta';
+use Socialtext::Job::PageIndex;
 
-extends 'Socialtext::Job::PageIndex';
+extends 'Socialtext::Job', 'Socialtext::Job::PageIndex::Base';
 with 'Socialtext::ReIndexJob';
 
 override unlink_cached_wikitext_linkers => sub {};
 
 __PACKAGE__->meta->make_immutable;
+no Moose;
 1;
 __END__
 
@@ -27,6 +28,6 @@ Socialtext::Job::PageReIndex - do it again
 
 =head1 DESCRIPTION
 
-Exactly like PageIndex but with retries.
+Exactly like PageIndex but with special "bulk re-indexing" logic.
 
 =cut

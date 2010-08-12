@@ -1,12 +1,13 @@
 package Socialtext::Job::AttachmentReIndex;
 # @COPYRIGHT@
 use Moose;
-use namespace::clean -except => 'meta';
+use Socialtext::Job::AttachmentIndex;
 
-extends 'Socialtext::Job::AttachmentIndex';
+extends 'Socialtext::Job', 'Socialtext::Job::AttachmentIndex::Base';
 with 'Socialtext::ReIndexJob';
 
 __PACKAGE__->meta->make_immutable;
+no Moose;
 1;
 __END__
 
@@ -24,6 +25,6 @@ Socialtext::Job::AttachmentReIndex - do it again
 
 =head1 DESCRIPTION
 
-Exactly like AttachmentIndex but with retries.
+Exactly like AttachmentIndex but with special "bulk re-indexing" logic.
 
 =cut

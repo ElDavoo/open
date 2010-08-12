@@ -1,10 +1,15 @@
 package Socialtext::Job::AttachmentIndex;
 # @COPYRIGHT@
 use Moose;
-use namespace::clean -except => 'meta';
 
-extends 'Socialtext::Job';
+extends 'Socialtext::Job', 'Socialtext::Job::AttachmentIndex::Base';
 with 'Socialtext::CoalescingJob';
+
+__PACKAGE__->meta->make_immutable;
+no Moose;
+
+package Socialtext::Job::AttachmentIndex::Base;
+use Moose;
 
 sub do_work {
     my $self = shift;
@@ -38,4 +43,21 @@ sub do_work {
 }
 
 __PACKAGE__->meta->make_immutable;
+no Moose;
 1;
+__END__
+
+=head1 NAME
+
+Socialtext::Job::PageIndex - index a page
+
+=head1 SYNOPSIS
+
+  use Socialtext::JobCreator;
+  Socialtext::JobCreator->index_attachment($attachment, $config);
+
+=head1 DESCRIPTION
+
+Index a page attachment.
+
+=cut
