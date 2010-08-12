@@ -257,7 +257,9 @@ sub _check_cache {
     $self->{_cache_lookup} = $cached_homey;
 
     # If the cached copy is stale, return empty handed
-    my $ttl    = $self->cache_ttl;
+    my $ttl = $cached_homey->{missing}
+        ? $self->cache_not_found_ttl
+        : $self->cache_ttl;
     my $cutoff = $self->Now() - $ttl;
     return unless ($cached_homey->cached_at > $cutoff);
 
