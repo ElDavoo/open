@@ -2,7 +2,6 @@
 # @COPYRIGHT@
 
 if [ -d /usr/share/nlw/plugin/widgets ]; then
-    st-run-as-web-user st-widgets reset-containers --verbose
     st-run-as-web-user st-widgets update-all --ceqlotron --force --verbose
     st-run-as-web-user st-widgets update-gallery --verbose
 fi
