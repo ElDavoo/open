@@ -23,6 +23,7 @@ has 'driver_unique_id'  => (is => 'rw', isa => 'Str');
 has 'cached_at'         => (is => 'rw', isa => 'Pg.DateTime',
                             coerce => 1, required => 1);
 has 'is_profile_hidden' => (is => 'rw', isa => 'Bool');
+has 'missing'           => (is => 'ro', isa => 'Bool');
 
 # All fields/attributes that a "Socialtext::User::*" has.
 Readonly our @fields => qw(
@@ -39,6 +40,7 @@ Readonly our @other_fields => qw(
     driver_unique_id
     cached_at
     is_profile_hidden
+    missing
 );
 Readonly our @all_fields => (@fields, @other_fields);
 Readonly our %all_fields => map {$_=>1} @all_fields;
@@ -155,6 +157,12 @@ meaning to a user.  e.g. "LDAP:0deadbeef0".
 Returns the driver-specific unique identifier for this user.  This field is
 internal and likely has no meaning to a user.
 e.g. "cn=Bob,ou=Staff,dc=socialtext,dc=net"
+
+item B<missing>
+
+Returns a flag stating whether or not the User was "missing" last time we went
+to check the data source for the User.  e.g. the User I<used to> exist in LDAP
+but we can't find him there any more.
 
 =item B<to_hash()>
 
