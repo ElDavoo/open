@@ -6,6 +6,8 @@ use namespace::clean -except => 'meta';
 extends 'Socialtext::Job::PageIndex';
 with 'Socialtext::ReIndexJob';
 
+override unlink_cached_wikitext_linkers => sub {};
+
 __PACKAGE__->meta->make_immutable;
 1;
 __END__
