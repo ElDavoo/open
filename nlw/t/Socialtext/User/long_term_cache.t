@@ -109,6 +109,7 @@ autovivify_cache_value: {
         password            => '*no-password*',
         last_profile_update => '-infinity',
         is_profile_hidden   => '0',
+        missing             => '0',
     };
 
     # not strictly necessary, but a nice sanity check:
@@ -280,6 +281,7 @@ sub db_cache_ok {
         last_profile_update => '-infinity',
         is_profile_hidden   => '0',
         display_name        => join(' ', @{ $TEST_USERS[$user_num] }{qw/gn sn/}),
+        missing             => '0',
     };
 }
 
