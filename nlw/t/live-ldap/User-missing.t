@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 24;
+use Test::Socialtext tests => 27;
 use Socialtext::SQL qw(sql_execute);
 
 fixtures(qw( db ));
@@ -112,10 +112,16 @@ missing_users_are_deemed_deleted: {
     my $mesg = $conn->{ldap}->delete($dn);
     ok !$mesg->is_error, 'removed User from LDAP';
 
+    # Expire/refresh; should be missing/deleted
     $user->homunculus->expire;
     $user = Socialtext::User->new(username => 'John Doe');
     ok $user->missing, '... marked as "missing"';
     ok $user->is_deleted, '... and deemed is_deleted';
+
+    # Refresh from cache; should *still* be missing/deleted
+    $user = Socialtext::User->new(username => 'John Doe');
+    ok $user->missing, '... still missing';
+    ok $user->is_deleted, '... still is_deleted';
 }
 
 ###############################################################################
@@ -172,5 +178,6 @@ reuse_cached_data_while_missing: {
         ok $user, 'refreshed User';
         is $Socialtext::LDAP::stats{connect}, 1, '... from LDAP';
         ok $user->missing, '... still missing';
+        ok $user->is_deleted, '... and is_deleted';
     }
 }

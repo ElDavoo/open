@@ -805,7 +805,9 @@ sub is_guest {
 }
 
 sub is_deleted {
-    return $_[0]->homunculus->isa('Socialtext::User::Deleted');
+    my $self = shift;
+    return $self->homunculus->isa('Socialtext::User::Deleted')
+        || $self->missing;
 }
 
 sub default_role {
