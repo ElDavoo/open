@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use YAML qw();
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 35;
+use Test::Socialtext tests => 37;
 
 use_ok( 'Socialtext::LDAP::Config' );
 
@@ -23,6 +23,7 @@ bind_user: cn=Manager,ou=Development,dc=my-domain,dc=com
 bind_password: abc123
 filter: '(objectClass=inetOrgPerson)'
 ttl: 300
+not_found_ttl: 150
 attr_map:
     user_id: dn
     username: cn
@@ -115,4 +116,17 @@ username_typo: {
     my $config = Socialtext::LDAP::Config->new(%{$data});
     isa_ok $config, 'Socialtext::LDAP::Config', 'valid instantiation';
     ok $config->bind_user, 'typo was fixed';
+}
+
+###############################################################################
+# If "not_found_ttl" is missing, should default to "ttl"
+not_found_ttl_default: {
+    my $data = YAML::Load($yaml);
+
+    my $with = Socialtext::LDAP::Config->new(%{$data});
+    is $with->not_found_ttl, 150, 'not_found_ttl has explicit value';
+
+    delete $data->{not_found_ttl};
+    my $without = Socialtext::LDAP::Config->new(%{$data});
+    is $without->not_found_ttl, $without->ttl, 'not_found_tto defaults to ttl';
 }
