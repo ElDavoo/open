@@ -36,9 +36,9 @@
 | edit-page | %%ws2%% | Statement 9 | The greatest goodness is a peaceful mind. |
 
 
-| job-count | PageIndex | 21 |
-| st-process-jobs | | |
-| job-count | PageIndex | 0 |
+| job-count       | PageIndex | 21 |
+| st-process-jobs |           |    |
+| job-count       | PageIndex | 0  |
 
 # only search results from the current workspace are returned
 

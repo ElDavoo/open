@@ -565,9 +565,11 @@ sub preview_text {
 }
 
 sub to_string {
-    my $self = shift;
-    return Socialtext::File::Stringify->to_string( $self->full_path,
-        $self->mime_type );
+    die "must supply a buffer reference for to_string()" unless @_ == 2;
+    my ($self, $buf_ref) = @_;
+    Socialtext::File::Stringify->to_string(
+        $buf_ref, $self->full_path, $self->mime_type);
+    return;
 }
 
 sub purge {

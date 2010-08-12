@@ -156,9 +156,9 @@ sub _add_page_doc {
         [editor => $editor_id],
         [creator => $creator_id],
         [revisions => $revisions],
-        [body => $body],
         [tag_count => scalar(@$tags) ],
         (map { [ tag => $_ ] } @$tags),
+        Socialtext::Search::Solr::BigField->new(body => \$body),
     );
     if (my $mtime = _date_header_to_iso($page->metadata->Date)) {
         push @fields, [date => $mtime];
@@ -228,12 +228,18 @@ sub _add_attachment_doc {
     # XXX: This FUDGE is for the boost, but it doesn't make sense.
     my $revisions = FUDGE_ATTACH_REVS;
 
-    my ($body, $key); {
+    my ($body, $key);
+    {
         my $t = time_scope('solr_attach_body');
-        $body = $att->to_string;
-        _scrub_body(\$body);
+        $att->to_string(\$body);
         $key = $self->page_key($att->page_id);
-        $self->_truncate( $key, \$body );
+
+        # KinoSearch would exit unless there's a body. Don't do that here so
+        # that we can still index metadata.
+        if (length $body) {
+            _scrub_body(\$body);
+            $self->_truncate( $key, \$body );
+        }
     }
 
     _debug( "Retrieved attachment content.  Length is " . length $body );
@@ -255,7 +261,7 @@ sub _add_attachment_doc {
         [date => $date],
         [created => $date],
         [revisions => $revisions],
-        [body => $body],
+        Socialtext::Search::Solr::BigField->new(body => \$body),
     );
 
     $self->_add_doc(WebService::Solr::Document->new(@fields));
@@ -331,7 +337,6 @@ sub _add_signal_doc {
         [date => $ctime], [created => $ctime],
         [creator => $signal->user_id],
         [creator_name => $signal->user->best_full_name],
-        [body => $body],
         [is_question => $is_question],
         [pvt => $recip ? 1 : 0],
         [dm_recip => $recip],
@@ -345,6 +350,7 @@ sub _add_signal_doc {
         (map { [link => $_] } @$external_links),
         (map { [tag => $_->tag] } @{$signal->tags}),
         [ tag_count => scalar(@{$signal->tags}) ],
+        Socialtext::Search::Solr::BigField->new('body' => \$body),
     );
 
     for my $triplet (@{ $signal->annotation_triplets }) {
@@ -372,7 +378,7 @@ sub _add_signal_attachment_doc {
 
     my $body; {
         my $t = time_scope('solr_attach_body');
-        $body = $att->to_string;
+        $att->to_string(\$body);
         _scrub_body(\$body);
         $self->_truncate( $id, \$body );
         _debug( "Retrieved attachment content.  Length is " . length $body );
@@ -391,11 +397,11 @@ sub _add_signal_attachment_doc {
         [dm_recip => $recip],
         (map { [a => $_] } @{ $signal->account_ids }),
         (map { [g => $_] } @{ $signal->group_ids }),
-        [body => $body],
         [title => $att->filename],
         [filename => $att->filename],
         [filename_ext => $ext],
         [doctype => 'signal_attachment'], 
+        Socialtext::Search::Solr::BigField->new(body => \$body),
     );
     $self->_add_doc(WebService::Solr::Document->new(@fields));
 }

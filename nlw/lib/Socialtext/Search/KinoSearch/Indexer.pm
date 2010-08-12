@@ -259,10 +259,12 @@ sub _add_attachment_doc {
     # XXX FIXME HACK
     my $key
         = $self->generate_key( $attachment->page_id ) . ':' . $attachment->id;
-    my $content = $attachment->to_string;
-    _debug( "Retrieved attachment content.  Length is " . length $content );
-    return unless length $content;
-    $self->_truncate( $key, \$content );
+    my $body;
+    $attachment->to_string(\$body);
+    _debug( "Retrieved attachment content.  Length is " . length $body );
+    # for kinosearch *only*, there's nothing to index unless we get a body
+    return unless length $body;
+    $self->_truncate( $key, \$body );
 
     my $doc = $self->_create_new_document();
     $self->_set_fields(
@@ -273,7 +275,7 @@ sub _add_attachment_doc {
         type      => Socialtext::Search::ContentTypes->lookup( 
                          ref $attachment ),
         workspace => Socialtext::Search::Utils::harden( $self->ws_name ),
-        text      => $content,
+        text      => $body,
     );
 
     $self->_add_document($doc);
