@@ -20,12 +20,14 @@ use namespace::clean;
 sub backtick {
     my $opts = (ref $_[$#_] && ref $_[$#_] eq 'HASH') ? pop(@_) : {};
     $@ = 0;
+    $? = 0;
     my $out;
+    $out = $opts->{stdout} if $opts->{stdout};
     my $err;
     my $in = $opts->{stdin} || \undef;
     eval {
         # STDIN  needs to be closed explicitly
-        my @args = (\@_, '<', $in, '>', \$out, '2>', \$err);
+        my @args = (\@_, '<', $in, '>', ref($out) ? $out : \$out, '2>', \$err);
 
         # init must happen before timeout:
         push @args, init => \&_vmem_limiter
@@ -37,7 +39,7 @@ sub backtick {
         my $return = run(@args);
         die $err unless $return;
     };
-    return $out;
+    return $out unless $opts->{stdout};
 }
 
 {
