@@ -167,6 +167,7 @@ sub NewUserRecord {
     my $proto_user = shift;
 
     $proto_user->{user_id} ||= $class->NewUserId();
+    $proto_user->{missing} ||= 0;
     $proto_user->{is_profile_hidden} ||= 0;
 
     # always need a cached_at during INSERT, default it to 'now'
