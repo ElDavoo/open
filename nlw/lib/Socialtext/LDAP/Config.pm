@@ -29,6 +29,7 @@ field 'group_filter';
 field 'follow_referrals' => 1;
 field 'max_referral_depth' => 3;
 field 'ttl' => 3600;
+field 'not_found_ttl';
 field 'attr_map';
 field 'group_attr_map' => +{};
 
@@ -47,6 +48,11 @@ sub init {
     # {bz: 4211} Common typo is 'bind_username' instead of 'bind_user':
     if (!$self->{bind_user} && $self->{bind_username}) {
         $self->{bind_user} = $self->{bind_username};
+    }
+
+    # default "not_found_ttl" to current "ttl" value
+    unless ($self->{not_found_ttl}) {
+        $self->{not_found_ttl} = $self->ttl();
     }
 
     # make sure we've got all required fields
@@ -203,6 +209,11 @@ Users in the Group are enumerated in order to verify that we have valid data
 for them.  Larger Groups contain more Users and thus take more time to
 enumerate/verify; please ensure that you have set a suitable value for the TTL
 based on your Group size.
+
+=item B<not_found_ttl>
+
+Specifies the TTL (in seconds) for LDAP queries done that return "not found"
+as a result.  Defaults to the configured C<ttl> value.
 
 =item B<attr_map> (required)
 

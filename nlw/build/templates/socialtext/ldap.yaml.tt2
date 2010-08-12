@@ -17,6 +17,7 @@
 #   bind_password: its-a-secret
 #   filter: (objectClass=inetOrgPerson)
 #   ttl: 3600
+#   not_found_ttl: 1800
 #   attr_map:
 #       user_id: dn
 #       username: cn
@@ -44,6 +45,7 @@
 #   base: cn=Sales,dc=example,dc=com
 #   filter: (&(objectClass=user)(objectCategory=person))
 #   ttl: 3600
+#   not_found_ttl: 1800
 #   attr_map:
 #       user_id: dn
 #       username: sAMAccountName
