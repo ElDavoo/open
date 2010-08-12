@@ -26,13 +26,7 @@ sub get_resource {
     my ( $self, $rest ) = @_;
 
     my $acting_user = $self->rest->user;
-    my $username = $self->username;
-
-    if ($username eq '@self') {
-        $username = $acting_user->username;
-    }
-
-    my $user = Socialtext::User->new( username => $username );
+    my $user = Socialtext::User->new( username => $self->username );
 
     # REVIEW: A permissions issue at this stage will result in a 404
     # which might not be the desired result. In a way it's kind of good,
