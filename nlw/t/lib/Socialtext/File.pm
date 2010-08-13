@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base 'Exporter';
 
-our @EXPORT_OK = qw/get_contents set_contents catdir
+our @EXPORT_OK = qw/get_contents set_contents catdir mime_type
                     get_contents_utf8 set_contents_utf8 set_contents_utf8_atomic/;
 
 our %CONTENT;
@@ -43,5 +43,7 @@ sub safe_symlink {
 }
 
 sub write_lock { 1 }
+
+sub mime_type { 'text/blah' }
 
 1;
