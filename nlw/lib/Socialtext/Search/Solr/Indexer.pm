@@ -243,6 +243,7 @@ sub _add_attachment_doc {
     }
 
     _debug( "Retrieved attachment content.  Length is " . length $body );
+    warn $body;
 
     my $filename = $att->filename;
     (my $ext = $filename) =~ s/.+\.//;

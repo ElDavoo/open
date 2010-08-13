@@ -41,7 +41,8 @@ sub to_string {
     $$buf_ref = "";
     Encode::_utf8_on($$buf_ref); # infectious
     for my $f (@files) {
-        $$buf_ref .= "\n\n========== $f ==========\n\n";
+        (my $shortname = $f) =~ s!\Q$tempdir/\E!!;
+        $$buf_ref .= "$shortname ";
         my $file_buf;
         Socialtext::File::Stringify->to_string(\$file_buf, $f);
         if (length $file_buf) {

@@ -8,6 +8,7 @@ use Socialtext::System;
 use Socialtext::File::Stringify::Default;
 use Socialtext::Encode qw/ensure_ref_is_utf8/;
 use Socialtext::File qw/mime_type/;
+use Socialtext::Log qw/st_log/;
 use File::Temp qw/tempdir/;
 use File::chdir;
 use File::Path qw/rmtree/;
@@ -19,6 +20,8 @@ sub to_string {
     $filename = Cwd::abs_path($filename);
 
     $type ||= mime_type($filename, $filename);
+    st_log()->info("Stringify: $type - $filename");
+
 
     # some stringifiers emit a bunch of junk into the cwd/$HOME
     # (I'm looking at you, ELinks)
