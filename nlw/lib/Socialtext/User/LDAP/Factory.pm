@@ -7,6 +7,7 @@ use warnings;
 use base qw(Socialtext::User::Factory);
 
 use Class::Field qw(field const);
+use Socialtext::Encode qw(ensure_is_utf8);
 use Socialtext::LDAP;
 use Socialtext::User::LDAP;
 use Socialtext::UserMetadata;
@@ -240,6 +241,7 @@ sub lookup {
         else {
             $proto_user->{$user_attr} = $result->get_value($ldap_attr);
         }
+        $proto_user->{$user_attr} = ensure_is_utf8($proto_user->{$user_attr});
     }
 
     return $proto_user;
