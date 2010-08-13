@@ -43,6 +43,7 @@ sub to_string {
     for my $f (@files) {
         (my $shortname = $f) =~ s!\Q$tempdir/\E!!;
         $$buf_ref .= "$shortname ";
+        next if $shortname =~ m/\.DS_Store$/;
         my $file_buf;
         Socialtext::File::Stringify->to_string(\$file_buf, $f);
         if (length $file_buf) {

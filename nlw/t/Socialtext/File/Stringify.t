@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 50;
+use Test::Socialtext tests => 48;
 use File::Basename qw(dirname);
 use FindBin;
 
@@ -22,16 +22,15 @@ my %ext_deps = (
     ps   => 'ps2ascii',
     xls  => 'xls2csv',
     mp3  => 'MP3::Tag',
-    xml  => 'XML::SAX',
+    xml  => 'XML::LibXML',
     zip  => 'unzip',
-    bin  => 'strings',
 );
 
 BEGIN {
     use_ok("Socialtext::File::Stringify");
 }
 
-for my $ext (qw(txt html doc rtf pdf ps xls ppt xml mp3 bin)) {
+for my $ext (qw(txt html doc rtf pdf ps xls ppt xml mp3)) {
     my $file = $data_dir . "/test.$ext";
     my $text; Socialtext::File::Stringify->to_string(\$text, $file);
     SKIP: {
@@ -41,6 +40,12 @@ for my $ext (qw(txt html doc rtf pdf ps xls ppt xml mp3 bin)) {
         ok( $text =~ /Their force, their purposes;.+nay, I'll speak that/s,
             "Shakespeare 2 ($ext)" );
     };
+}
+
+for my $ext (qw(bin)) {
+    my $file = $data_dir . "/test.$ext";
+    my $text; Socialtext::File::Stringify->to_string(\$text, $file);
+    ok !length($text), "didn't try to decode an $ext file";
 }
 
 office_2007_documents: {

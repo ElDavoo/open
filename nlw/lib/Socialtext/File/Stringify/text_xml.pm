@@ -8,7 +8,7 @@ use Socialtext::File::Stringify;
 
 sub to_string {
     my ( $class, $buf_ref, $file, $mime ) = @_;
-    $buf_ref = "";
+    $$buf_ref = "";
     my $handler
         = Socialtext::File::Stringify::text_xml::SAX->new( output => $buf_ref );
     my $parser = XML::SAX::ParserFactory->parser( Handler => $handler );

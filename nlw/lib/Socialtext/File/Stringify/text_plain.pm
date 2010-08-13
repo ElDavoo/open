@@ -4,19 +4,25 @@ use strict;
 use warnings;
 
 use Socialtext::File;
-use Socialtext::l10n qw(system_locale);
+use Socialtext::File::Stringify;
+use Socialtext::l10n qw/system_locale/;
+use Socialtext::Log qw/st_log/;
 
 sub to_string {
     my ( $class, $buf_ref, $filename, $mime ) = @_;
     $$buf_ref = '';
-    return unless (-T $filename); # TODO: taint checking? really?
-    eval {
-        my $encoding = Socialtext::File::get_guess_encoding(system_locale(), $filename);
-        $$buf_ref = scalar Socialtext::File::get_contents_based_on_encoding($filename, $encoding);
-    };
+
+    open my $fh, '<', $filename or return;
+    my $data = do { local $/; <$fh> };
+    (my $charset) = ($mime =~ /;charset=(\S+)/);
+    $charset ||= Socialtext::File::guess_string_encoding(
+        system_locale(),\$data);
+    warn "USING CHARSET $charset";
+    $$buf_ref = eval { Encode::decode($charset,$data) } || '';
     if ($@) {
-        $$buf_ref = Socialtext::File::get_contents($filename);
+        st_log()->warning("could not decode attachment charset '$charset': $@'");
     }
+    return;
 }
 
 1;
