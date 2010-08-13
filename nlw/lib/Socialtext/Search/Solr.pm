@@ -63,7 +63,7 @@ sub _build_solr {
     sub to_xml {
         my $self = shift;
         my $gen = XML::Generator->new(':std', escape => 'always,even-entities');
-        return $gen->field( { name => $self->name }, $self->value );
+        return $gen->field( { name => $self->name }, ${$self->value} );
     }
     no Moose;
     __PACKAGE__->meta->make_immutable();
