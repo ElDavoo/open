@@ -1030,7 +1030,7 @@ this.addGlobal().setup_wikiwyg = function() {
                 $.getJSON('/data/users/' + Socialtext.userid, function(data) {
                     activities.user_data = data;
                     activities.prefs.getString = function () { return null };
-                    var default_network = 'account-' + data.primary_account_id;
+                    var default_network = 'account-' + Socialtext.current_workspace_account_id;
                     $('#st-edit-summary-signal-to').val(default_network);
                     $('#signal_network').text('').dropdown({
                         value: default_network,
