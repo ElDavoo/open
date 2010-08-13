@@ -387,8 +387,8 @@ sub _vivify {
         $self->_mark_as_found(\%user_attrs);
         Socialtext::JobCreator->index_person(
             $user_attrs{user_id},
-            run_after => 10,
-            priority => 60,
+            run_after        => 10,
+            priority         => 60,
             name_is_changing => ($old_name ne $new_name),
         );
     }
@@ -410,8 +410,10 @@ sub _vivify {
         );
 
         # trigger an initial indexing of the User record
-        Socialtext::JobCreator->index_person($user_attrs{user_id},
-            run_after => 10);
+        Socialtext::JobCreator->index_person(
+            $user_attrs{user_id},
+            run_after => 10,
+        );
     }
 
     $user_attrs{username} = delete $user_attrs{driver_username};        # map "DB -> object"
