@@ -12,7 +12,7 @@ use Coro::AnyEvent;
 use Guard qw/scope_guard/;
 use Socialtext::Log qw/st_log/;
 
-our $VERSION = '2.0';
+our $VERSION = '3.0';
 
 our $man = 0;
 our $help = 0;
@@ -25,6 +25,7 @@ our $signal  = 15; # SIGTERM
 our $tcp_port = 0;
 our $check_http = 0;
 our $daemontools = 0;
+our $solr = '';
 our $config_prefix;
 
 GetOptions(
@@ -40,6 +41,7 @@ GetOptions(
     'tcp=i'  => \$tcp_port,
     'http!'  => \$check_http,
     'config=s' => \$config_prefix,
+    'solr=s' => \$solr,
 )
 or pod2usage(-exitstatus => 1, -message => $?);
 pod2usage(1) if $help;
@@ -56,8 +58,15 @@ my $config_name = $config_prefix ? $config_prefix : 'default';
     }
 }
 
+if ($solr) {
+    $pidfile = '/var/run/socialtext-solr.pid';
+    $init_cmd = '/etc/init.d/socialtext-solr';
+    $max_fds = $max_rss = $max_vsz = 0; # don't check; java limits itself
+    $tcp_port = 8983;
+    $check_http = 1;
+}
 # read in the params from appliance.conf
-if ($config_prefix) {
+elsif ($config_prefix) {
     eval "require Socialtext::Appliance::Config";
     die "Can't use appliance config: $@" if $@;
 
@@ -176,28 +185,30 @@ else {
         recover("is zombified");
     }
 
-    if (to_MiB($status{VmRSS}) > $max_rss) {
+    if ($max_rss && to_MiB($status{VmRSS}) > $max_rss) {
         recover("is too big (RSS)");
     }
 
-    if (to_MiB($status{VmSize}) > $max_vsz) {
+    if ($max_vsz && to_MiB($status{VmSize}) > $max_vsz) {
         recover("is too big (vsize)");
     }
 }
 
 #warn "checking fds\n";
 
-my $open_fd = eval {
-    `ls /proc/$pid/fd/ 2>/dev/null | wc -l`
-};
+if ($max_fds) {
+    my $open_fd = eval {
+        `ls /proc/$pid/fd/ 2>/dev/null | wc -l`
+    };
 
-if (!$open_fd) {
-    recover("is gone? can't read /proc/$pid/fd directory");
-}
-chomp $open_fd;
+    if (!$open_fd) {
+        recover("is gone? can't read /proc/$pid/fd directory");
+    }
+    chomp $open_fd;
 
-if ($open_fd > $max_fds) {
-    recover("has too many files open");
+    if ($open_fd > $max_fds) {
+        recover("has too many files open");
+    }
 }
 
 #warn "checking port open\n";
@@ -220,7 +231,11 @@ if ($check_http) {
     $ua->no_proxy('localhost');
     $ua->agent("st-daemon-monitor/$VERSION ".$ua->_agent);
 
-    my $req = HTTP::Request->new('GET', "http://localhost:$tcp_port/ping",
+    my $url = $solr
+        ? "http://localhost:$tcp_port/solr/$solr/admin/ping?wt=json"
+        : "http://localhost:$tcp_port/ping";
+
+    my $req = HTTP::Request->new(GET => $url,
         [Accept => 'application/json; charset=UTF-8']);
 
     my $resp = eval { $ua->request($req) };
