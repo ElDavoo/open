@@ -72,7 +72,7 @@ sub _email_technical_admins {
         ],
         subject   => "Your Socialtext Appliance search migration is complete",
         text_body => <<EOT,
-Greetings Human,
+Hello Socialtext Appliance Technical admin,
 
 The search re-indexing of the workspace content in your Socialtext Appliance
 has finished. Your appliance is now using the upgraded search capability.
