@@ -694,17 +694,29 @@ $(function() {
 
     // SignalThis handler for single-page view
     $('#st-signalthis-indicator').click(function(){
-        var $c,$b,$s,$h=document.getElementsByTagName('head')[0];
-        $b='/nlw/plugin/signals/';
-        $c=document.createElement('LINK');
-        $c.rel='stylesheet';
-        $c.href=$b+'css/bookmarklet.css?_='+Math.random();
-        $c.type='text/css';
-        $h.appendChild($c);
-        $s=document.createElement('SCRIPT');
-        $s.type='text/javascript';
-        $s.src=$b+'/javascript/bookmarklet.js?_='+Math.random();
-        $h.appendChild($s);
+        if ($('#st-signal-this-frame').size() > 0) {
+            $('#st-signal-this-frame').remove();
+            return;
+        }
+
+        $('<iframe id="st-signal-this-frame" src="/st/signalthis'
+            + '?status=%20'
+            + ';network=' + Socialtext.current_workspace_account_id
+            + ';suffix=' + encodeURIComponent(
+                '{link: ' + Socialtext.wiki_id + '[' + Socialtext.page_title + ']}'
+            ) + '" />'
+        ).css({
+            width: '400px',
+            height: '300px',
+            position: 'fixed',
+            right: '15px',
+            top: '15px',
+            border: '3px ridge #CCCCCC',
+            'z-index': '100000',
+            'box-shadow': '5px 5px 3px #888888',
+            '-moz-box-shadow': '5px 5px 3px #888888',
+            '-webkit-box-shadow': '5px 5px 3px #888888',
+        }).appendTo($('body'));
     });
 
     // Watch handler for single-page view
