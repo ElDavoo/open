@@ -1190,7 +1190,7 @@ Default: 0
 This points the system at different fulltext search implementations.  See
 L<Socialtext::Search::AbstractFactory> for more details.
 
-Default: Socialtext::Search::KinoSearch::Factory
+Default: Socialtext::Search::Solr::Factory
 
 =for code type => SCALAR_TYPE
 
