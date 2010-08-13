@@ -157,6 +157,23 @@
 | body-like | in <a href="/%%workspace%%">                                    |
 | body-like | in <a href="/%%ws2%%">                                          |
 
+# deletes
+
+| GET       | /%%ws2%%/index.cgi?action=search&scope=_&search_term=peaceful |
+| code-is   | 200                                                                |
+| body-like | Statement 9                                                        |
+
+| DELETE | /data/workspaces/%%ws2%%/pages/statement_9 |
+| code-is | 204 |
+
+| job-count       | PageIndex | 1 |
+| st-process-jobs |           |   |
+| job-count       | PageIndex | 0 |
+
+| GET         | /%%ws2%%/index.cgi?action=search&scope=_&search_term=peaceful |
+| code-is     | 200                                                                |
+| body-unlike | Statement 9                                                        |
+
 * Cleanup
 
 | set-searcher | KinoSearch |
