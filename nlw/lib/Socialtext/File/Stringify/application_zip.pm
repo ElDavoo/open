@@ -48,6 +48,8 @@ sub to_string {
         if (length $file_buf) {
             ensure_ref_is_utf8(\$file_buf);
             $$buf_ref .= $file_buf;
+            last if length($$buf_ref)
+                >= Socialtext::File::Stringify::MAX_STRING;
         }
     }
 
