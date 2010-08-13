@@ -701,8 +701,8 @@ $(function() {
 
         $('<iframe id="st-signal-this-frame" src="/st/signalthis'
             + '?status=%20'
-            + ';network=' + Socialtext.current_workspace_account_id
-            + ';suffix=' + encodeURIComponent(
+            + ';default_network=account-' + Socialtext.current_workspace_account_id
+            + ';signal_this=' + encodeURIComponent(
                 '{link: ' + Socialtext.wiki_id + '[' + Socialtext.page_title + ']}'
             ) + '" />'
         ).css({
