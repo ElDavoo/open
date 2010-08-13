@@ -129,7 +129,7 @@ auto_vivify_an_ldap_user: {
     is $homunculus->{password}, '*no-password*', '... and *no-password*';
 }
 
-deactiveate_an_ldap_user: {
+deactivate_an_ldap_user: {
     my $refs = bootstrap_tests();
 
     my $user = Socialtext::User->new(username => 'Ray Parker');

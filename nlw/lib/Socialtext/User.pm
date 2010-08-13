@@ -50,6 +50,8 @@ has 'homunculus' => (
         is_profile_hidden
         driver_name
         driver_unique_id
+        cached_at
+        missing
     )],
 );
 
@@ -815,7 +817,9 @@ sub is_guest {
 }
 
 sub is_deleted {
-    return $_[0]->homunculus->isa('Socialtext::User::Deleted');
+    my $self = shift;
+    return $self->homunculus->isa('Socialtext::User::Deleted')
+        || $self->missing;
 }
 
 sub default_role {

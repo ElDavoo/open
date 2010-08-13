@@ -1207,7 +1207,8 @@ CREATE TABLE users (
     cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
     last_profile_update timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
     is_profile_hidden boolean DEFAULT false NOT NULL,
-    display_name text NOT NULL
+    display_name text NOT NULL,
+    missing boolean DEFAULT false NOT NULL
 );
 
 CREATE SEQUENCE users___user_id
@@ -2409,4 +2410,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '124');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '125');
