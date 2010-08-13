@@ -234,16 +234,16 @@ sub lookup {
         driver_key  => $self->driver_key(),
     };
     while (my ($user_attr, $ldap_attr) = each %$attr_map) {
+        my $val;
         if ($ldap_attr =~ m{^(dn|distinguishedName)$}) {
             # DN isn't an attribute, its a Net::LDAP::Entry method
-            $proto_user->{$user_attr} = $result->dn();
+            $val = $result->dn();
         }
         else {
-            $proto_user->{$user_attr} = $result->get_value($ldap_attr);
+            $val = $result->get_value($ldap_attr);
         }
-        if (defined $proto_user->{$user_attr}) {
-            $proto_user->{$user_attr} = Socialtext::Encode::guess_decode($proto_user->{$user_attr});
-        }
+        $val = Socialtext::Encode::guess_decode($val) if (defined $val);
+        $proto_user->{$user_attr} = $val;
     }
 
     return $proto_user;
