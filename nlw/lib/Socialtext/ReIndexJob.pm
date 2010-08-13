@@ -4,12 +4,15 @@ use Moose::Role;
 
 requires 'indexer';
 
-override 'retry_delay' => sub {12 * 60 * 60};
-override 'max_retries' => sub {14};
+override 'keep_exit_status_for' => sub { 24 * 60 * 60 };
+override 'retry_delay'          => sub { 12 * 60 * 60 };
+override 'max_retries'          => sub { 14 };
 
 around '_build_indexer' => sub {
-    my $orig = shift;
-    my $indexer = $orig->(@_);
+    my $code = shift;
+    my $indexer = $code->(@_);
+    # Don't manually commit; let Solr auto-commit or another manual commit
+    # flush the data for this job.
     $indexer->always_commit(0);
     return $indexer;
 };
