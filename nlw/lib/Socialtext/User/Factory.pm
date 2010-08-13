@@ -49,8 +49,12 @@ sub NewHomunculus {
     confess "homunculi need to have a user_id, driver_key and driver_unique_id"
         unless ($user{user_id} && $user{driver_key} && $user{driver_unique_id});
 
-    # bless the user object to the right class
+    # What kind of User Homunculus object do we need to create?
+    # - generally based on the driver
+    # - "missing" Users are turned into a "ST::U::Deleted" homunculus to
+    #   denote that they've gone missing and aren't valid Users any more.
     my ($driver_name, $driver_id) = split( /:/, $p->{driver_key} );
+    $driver_name = 'Deleted' if ($p->{missing});
     require Socialtext::User;
     my $driver_class = join '::', Socialtext::User->base_package, $driver_name;
     eval "require $driver_class";
