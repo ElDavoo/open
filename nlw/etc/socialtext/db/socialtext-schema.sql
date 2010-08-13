@@ -1572,6 +1572,15 @@ CREATE INDEX idx_attach_created_at_temp
 	    ON attachment (created_at)
 	    WHERE (NOT is_temporary);
 
+CREATE INDEX idx_job_func_coalesce_prio
+	    ON job (funcid, "coalesce", (COALESCE((priority)::integer, 0)));
+
+CREATE INDEX idx_job_ready
+	    ON job ((COALESCE((priority)::integer, 0)), grabbed_until, run_after);
+
+CREATE INDEX idx_job_ready_coalesce_prefix
+	    ON job (funcid, "coalesce" text_pattern_ops, grabbed_until, run_after);
+
 CREATE INDEX idx_opensocial_appdata_app_user
 	    ON opensocial_appdata (app_id, user_id);
 
@@ -2410,4 +2419,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '125');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '126');
