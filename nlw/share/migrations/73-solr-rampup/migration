@@ -3,9 +3,20 @@
 use strict;
 use warnings;
 use Socialtext::Migration::Utils qw/create_job_for_each_workspace create_job/;
+use Socialtext::AppConfig;
 
+# Explicitly set kinosearch as our search_factory_class so we can change the
+# default for new appliances.
+Socialtext::AppConfig->set(
+    search_factory_class => 'Socialtext::Search::KinoSearch::Factory',
+);
+Socialtext::AppConfig->write;
+
+
+# Create jobs to re-index workspaces using Solr
 create_job_for_each_workspace('ReIndexWorkspace');
 
+# Create a job to watch for Solr indexing to be done, then make Solr live.
 create_job('SwitchToSolr');
 
 exit 0;
