@@ -40,7 +40,7 @@
         <div id="[% gadget.id %]-setup" class="[% IF gadget.incomplete %]visible[% ELSE %]hidden[% END %]">
             [% INCLUDE widget/setup %]
         </div>
-        <div id="[% gadget.id %]-content" class="[% IF gadget.incomplete %]hidden[% ELSE %]visible[% END %]">
+        <div id="[% gadget.id %]-content" class="[% IF gadget.content_type == 'inline' %]inlineWidget [% END %][% IF gadget.incomplete %]hidden[% ELSE %]visible[% END %]">
             [% IF gadget.content_type == 'inline'; gadget.content; ELSE; INCLUDE widget/iframe; END %]
             <div class="clear"></div>
         </div>
