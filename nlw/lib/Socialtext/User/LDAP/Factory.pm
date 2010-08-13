@@ -11,10 +11,9 @@ use Socialtext::LDAP;
 use Socialtext::User::LDAP;
 use Socialtext::UserMetadata;
 use Socialtext::Log qw(st_log);
-use Socialtext::SQL qw(sql_singlevalue);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use Net::LDAP::Util qw(escape_filter_value);
-use Socialtext::SQL qw(sql_execute sql_singlevalue sql_selectrow);
+use Socialtext::SQL qw(:exec :time);
 use Socialtext::Exceptions qw(data_validation_error);
 use Socialtext::Timer;
 use Readonly;
@@ -249,26 +248,32 @@ sub lookup {
 sub _check_cache {
     my ($self, $key, $val) = @_;
 
-    # get cached User data, exiting early if we don't know about this User (or
-    # the User has *never* had their LDAP data cached)
-    my $cached_homey = $self->GetHomunculus(
-        $key, $val, $self->driver_key
+    # Check the DB for a cached copy of the User.
+    my $proto_user = $self->GetHomunculus(
+        $key, $val, $self->driver_key, 'raw_proto_user_please',
     );
-    return unless $cached_homey;
-    return unless $cached_homey->cached_at;
+    return unless $proto_user;
+    return unless $proto_user->{cached_at};
 
-    # We might need to use an expired cached copy if the LDAP query fails.
-    $self->{_cache_lookup} = $cached_homey;
+    # Figure out when the User record was cached.  NEED to do this from the
+    # raw DB record instead of the Homunculus, *in case* we have a missing
+    # User (as ST:U:Deleted over-rides 'cached_at').
+    my $cached_at = sql_parse_timestamptz($proto_user->{cached_at});
 
-    # If the cached copy is stale, return empty handed
-    my $ttl = $cached_homey->{missing}
+    # Turn to the User data into an actual User Homunculus.  We'll need this
+    # for both cases of "need to use stale data" and for "is fresh, use this".
+    my $homey = $self->NewHomunculus($proto_user);
+    $self->{_cache_lookup} = $homey;
+
+    # Check if the cached data is fresh/stale
+    my $ttl = $homey->missing
         ? $self->cache_not_found_ttl
         : $self->cache_ttl;
     my $cutoff = $self->Now() - $ttl;
-    return unless ($cached_homey->cached_at > $cutoff);
+    return unless ($cached_at > $cutoff);
 
-    # Cached copy still good
-    return $cached_homey;
+    # Cached copy still good.
+    return $homey;
 }
 
 sub cache_ttl {
