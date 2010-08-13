@@ -214,33 +214,18 @@ sub get_guess_encoding {
     read FH, $data, $len;
     close FH;
 
-    my $encoding_names = $locale_encoding_names->{$locale};
-    if ( ! defined $encoding_names) {
-        return 'utf8';
-    }
-    my @match_list = split(/\s/, $encoding_names);
-    my $enc = Encode::Guess::guess_encoding($data, @match_list);
-    if ( ref($enc) ) {
-        return $enc->name;
-    } else {
-        foreach (@match_list) {
-            if ( $enc =~ /$_/ ) {
-                return $_;
-            }
-        }
-        return 'utf8';
-    }
+    return guess_string_encoding(\$data);
 }
 
-sub _guess_string_encoding {
+sub guess_string_encoding {
     my $locale = shift;
-    my $data = shift;
+    my $data_ref = shift;
     my $encoding_names = $locale_encoding_names->{$locale};
     if ( ! defined $encoding_names) {
         return 'utf8';
     }
     my @match_list = split(/\s/, $encoding_names);
-    my $enc = Encode::Guess::guess_encoding($data, @match_list);
+    my $enc = Encode::Guess::guess_encoding($$data_ref, @match_list);
     if ( ref($enc) ) {
         return $enc->name;
     } else {
