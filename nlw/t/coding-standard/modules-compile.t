@@ -56,4 +56,5 @@ Socialtext::Challenger::OpenId
 Socialtext::Handler::REST
 Socialtext::Rest::Hydra
 Socialtext::WikiFixture::Socialtext
+Socialtext::Handler::Push
 Test::SeleniumRC
