@@ -64,7 +64,10 @@
       [% END %]
 
       [% UNLESS user.is_guest %]
+        [% IF plugins_enabled.grep("signals").size && plugins_enabled_for_current_workspace_account.grep("signals").size -%]
+
         <li><a id="st-signalthis-indicator" class="signalthis" href="#" title="[% loc('Signal This!') %]">[% loc('Signal This!') %]</a></li>
+        [% END %]
         [% IF watching %]
         <li><a id="st-watchlist-indicator" class="on watch" href="#" title="[% loc('Stop Watching') %]">[% loc('Stop Watching') %]</a></li>
         [% ELSE %]
