@@ -45,7 +45,7 @@ sub to_string {
         # subtract 4kiB so we don't overflow a 32-bit signed integer.
         local $Socialtext::System::VMEM_LIMIT = (2 * 2**30) - 4096;
 
-        my $convert_class = $class->_load_class_by_mime_type($type);
+        my $convert_class = $class->Load_class_by_mime_type($type);
         $convert_class->to_string($buf_ref, $filename, $type);
     }
 
@@ -77,7 +77,7 @@ sub to_string {
         'text/plain'                    => 'text_plain',
         'text/rtf'                      => 'text_rtf',
     );
-    sub _load_class_by_mime_type {
+    sub Load_class_by_mime_type {
         my ($class, $type) = @_;
 
         my $default = join('::', $class, 'Default');
