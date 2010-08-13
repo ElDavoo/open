@@ -17,6 +17,7 @@ use Socialtext::Log qw(st_log);
 use Socialtext::Search::ContentTypes;
 use Socialtext::Search::Utils;
 use Socialtext::File;
+use Socialtext::File::Stringify;
 use WebService::Solr;
 use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::Solr;
@@ -278,7 +279,7 @@ sub _add_attachment_doc {
 # information.
 sub _truncate {
     my ( $self, $key, $text_ref ) = @_;
-    my $max_size = 20 * ( 1024**2 );
+    my $max_size = Socialtext::File::Stringify::MAX_STRING;
     return if length($$text_ref) <= $max_size;
     my $info = ($self->ws_name ? "ws = " . $self->ws_name . ' '
                               : '')
