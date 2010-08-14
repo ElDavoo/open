@@ -214,7 +214,7 @@ sub get_guess_encoding {
     read FH, $data, $len;
     close FH;
 
-    return guess_string_encoding(\$data);
+    return guess_string_encoding($locale, \$data);
 }
 
 sub guess_string_encoding {
