@@ -695,7 +695,9 @@ $(function() {
     // SignalThis handler for single-page view
     $('#st-signalthis-indicator').click(function(){
         if ($('#st-signal-this-frame').size() > 0) {
-            $('#st-signal-this-frame').remove();
+            $('#st-signal-this-frame').fadeOut('fast', function(){
+                $('#st-signal-this-frame').remove();
+            });
             return;
         }
 
@@ -712,12 +714,13 @@ $(function() {
             position: 'fixed',
             right: '15px',
             top: '15px',
+            display: 'none',
             border: '3px ridge #CCCCCC',
             'z-index': '100000',
             'box-shadow': '5px 5px 3px #888888',
             '-moz-box-shadow': '5px 5px 3px #888888',
             '-webkit-box-shadow': '5px 5px 3px #888888',
-        }).appendTo($('body'));
+        }).appendTo($('body')).fadeIn('fast');
     });
 
     // Watch handler for single-page view
