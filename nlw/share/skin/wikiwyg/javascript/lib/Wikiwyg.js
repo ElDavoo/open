@@ -1019,15 +1019,17 @@ this.addGlobal().setup_wikiwyg = function() {
         var template = 'edit_wikiwyg';
         var html = Jemplate.process(template, Socialtext.wikiwyg_variables);
         $.getScript('/nlw/plugin/widgets/javascript/jquery.dropdown.js', function() {
-            $.getScript('/nlw/plugin/widgets/javascript/activities.js', function() {
-                var activities = new Activities({
-                    node: true,
-                    base_uri: true,
-                    share: true,
-                    viewer: true,
-                    viewer_id: true
-                });
+        $.getScript('/nlw/plugin/widgets/javascript/activities.js', function() {
+            $.getJSON('/data/workspaces/' + Socialtext.wiki_id, function(data) {
+                var group_ids = data.group_ids || [];
                 $.getJSON('/data/users/' + Socialtext.userid, function(data) {
+                    var activities = new Activities({
+                        node: true,
+                        base_uri: true,
+                        share: true,
+                        viewer: true,
+                        viewer_id: true
+                    });
                     activities.user_data = data;
                     activities.prefs.getString = function () { return null };
                     var default_network = 'account-' + Socialtext.current_workspace_account_id;
@@ -1049,9 +1051,30 @@ this.addGlobal().setup_wikiwyg = function() {
                     $('#signal_network .dropdownOptions li').css({
                         'line-height': '16px'
                     });
+
+                    var warningText = loc('Only members with permission to view this page will receive the signal.');
+                    var warningImage = '<img src="/static/skin/common/images/warning-icon.png" width="19" height="17" style="vertical-align: top" />';
+                    $('#signal_network .dropdownOptions li a').each(function(){
+                        var val = $(this).attr('value');
+                        if (/^account-/.test(val)) {
+                            if (val != default_network) {
+                                $(this).prepend(warningImage + ' ').attr('title', warningText);
+                            }
+                            return;
+                        }
+                        var id = parseInt(val.substr(6));
+                        if ($.inArray(id, group_ids) == -1) {
+                            $(this).text(
+                                $(this).text().replace(/^\.\.\.\s+/, '')
+                            ).prepend(
+                                '...' + warningImage + ' '
+                            ).attr('title', warningText);
+                        }
+                        return;
+                    });
                 });
             });
-        });
+        });});
 
         if (Wikiwyg.is_gecko || (jQuery.browser.version == 6 && jQuery.browser.msie)) {
             html = html.replace(/scrolling="no"><\/iframe>/, "></iframe>");
