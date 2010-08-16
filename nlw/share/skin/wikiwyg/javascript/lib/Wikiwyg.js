@@ -1018,8 +1018,8 @@ this.addGlobal().setup_wikiwyg = function() {
         Socialtext.wikiwyg_variables.loc = loc;
         var template = 'edit_wikiwyg';
         var html = Jemplate.process(template, Socialtext.wikiwyg_variables);
-        $.getScript('/nlw/plugin/widgets/javascript/jquery.dropdown.js', function() {
-            $.getScript('/nlw/plugin/widgets/javascript/activities.js', function() {
+        $.getScript( nlw_make_plugin_path('/widgets/javascript/jquery.dropdown.js') , function() {
+            $.getScript( nlw_make_plugin_path('/widgets/javascript/activities.js') , function() {
                 $.getJSON('/data/users/' + Socialtext.userid, function(data) {
                     var default_network = 'account-' + Socialtext.current_workspace_account_id;
                     var activities = new Activities({
@@ -1044,6 +1044,16 @@ this.addGlobal().setup_wikiwyg = function() {
                             $('#st-edit-summary-signal-checkbox').attr('checked', true);
                         }
                     });
+
+                    $('#signal_network > a').css({
+                        width: '110px',
+                        verticalAlign: 'top',
+                        height: '30px',
+                        overflow: 'hidden',
+                        display: 'inline-block',
+                        whiteSpace: 'nowrap'
+                    });
+
                     $('#signal_network .dropdownOptions').css({
                         'margin-top': '-15px',
                         'margin-left': '11em'
