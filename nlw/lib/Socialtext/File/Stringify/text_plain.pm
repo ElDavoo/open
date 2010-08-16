@@ -17,7 +17,6 @@ sub to_string {
     (my $charset) = ($mime =~ /;charset=(\S+)/);
     $charset ||= Socialtext::File::guess_string_encoding(
         system_locale(),\$data);
-    warn "USING CHARSET $charset";
     $$buf_ref = eval { Encode::decode($charset,$data) } || '';
     if ($@) {
         st_log()->warning("could not decode attachment charset '$charset': $@'");
