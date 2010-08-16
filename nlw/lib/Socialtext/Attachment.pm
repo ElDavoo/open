@@ -8,6 +8,7 @@ use Socialtext::Encode;
 use Socialtext::File ();
 use Socialtext::File::Stringify;
 use Socialtext::JobCreator;
+use Carp qw/croak/;
 
 my $MAX_WIDTH  = 600;
 my $MAX_HEIGHT = 600;
@@ -558,14 +559,15 @@ sub preview_text {
 
     my $ExcerptLength = 350;
 
-    my $excerpt = $self->to_string;
+    my $excerpt;
+    $self->to_string(\$excerpt);
     $excerpt = substr( $excerpt, 0, $ExcerptLength ) . '...'
         if length $excerpt > $ExcerptLength;
     return $excerpt;
 }
 
 sub to_string {
-    die "must supply a buffer reference for to_string()" unless @_ == 2;
+    croak "must supply a buffer reference for to_string()" unless @_ == 2;
     my ($self, $buf_ref) = @_;
     Socialtext::File::Stringify->to_string(
         $buf_ref, $self->full_path, $self->mime_type);
