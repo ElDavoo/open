@@ -56,13 +56,12 @@ sub _get_converter_for_file {
         "$openxml.spreadsheetml.sheet"         => "Tika",
 
         'audio/mpeg'                    => 'audio_mpeg',
-        'application/octet-stream'      => 'application_octet_stream',
         'application/pdf'               => 'application_pdf',
         'application/postscript'        => 'application_postscript',
         'application/vnd.ms-powerpoint' => 'application_vnd_ms_powerpoint',
         'application/vnd.ms-excel'      => 'application_vnd_ms_excel',
-        'application/x-msword'          => 'application_x_msword',
-        'application/xml'               => 'application_xml',
+        'application/x-msword'          => 'application_msword',
+        'application/xml'               => 'text_xml',
         'application/zip'               => 'application_zip',
         'text/html'                     => 'text_html',
         'text/plain'                    => 'text_plain',
@@ -78,7 +77,12 @@ sub _get_converter_for_file {
         my $class_name = join('::', $class, $converter);
 
         eval "use $class_name;";
-        return $@ ? $default : $class_name;
+        if (my $e = $@) {
+            warn $e;
+            return $default;
+        }
+
+        return $class_name;
     }
 }
 
