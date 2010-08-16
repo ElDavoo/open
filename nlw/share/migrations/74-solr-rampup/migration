@@ -14,7 +14,7 @@ Socialtext::AppConfig->write;
 
 
 # Create jobs to re-index workspaces using Solr
-create_job_for_each_workspace('ReIndexWorkspace');
+create_job_for_each_workspace('ReIndexWorkspace', -64);
 
 # Create a job to watch for Solr indexing to be done, then make Solr live.
 create_job('SwitchToSolr');
