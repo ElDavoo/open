@@ -396,7 +396,9 @@ sub ExpireUserRecord {
     sub _validate_check_unique_value {
         my ($self, $field, $p) = @_;
         my $value = $p->{$field};
-        my $isnt_unique = Socialtext::User->_first('lookup', $field => $value);
+        my $isnt_unique = eval {
+            Socialtext::User->_first('lookup', $field => $value);
+        };
         if ($isnt_unique) {
             # User lookup found _something_.
             # 

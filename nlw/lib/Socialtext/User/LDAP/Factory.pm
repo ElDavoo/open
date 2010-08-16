@@ -92,12 +92,11 @@ sub GetUser {
     return unless ($valid_get_user_terms{$key});
 
     # If we have a valid/fresh cached copy of the User, use that
-    my $cache_lookup;
+    my $cache_lookup = $self->GetHomunculus(
+        $key, $val, $self->driver_key, 'raw_proto_user_please',
+    );
     if ($CacheEnabled) {
         time_scope 'ldap_user_check_cache';
-        $cache_lookup = $self->GetHomunculus(
-            $key, $val, $self->driver_key, 'raw_proto_user_please',
-        );
         if ($self->_is_cached_proto_user_valid($cache_lookup)) {
             return $self->NewHomunculus($cache_lookup);
         }
@@ -105,7 +104,11 @@ sub GetUser {
 
     # Look the User up in LDAP
     local $self->{_user_not_found};
-    my $proto_user = $self->lookup($key => $val);
+    my $proto_user = eval { $self->lookup($key => $val) };
+    if ($@) {
+        st_log->error($@);
+        return;
+    }
 
     # If we found the User in LDAP, cache the data in the DB and return that
     # back to the caller as the homunculus.
@@ -205,29 +208,22 @@ sub lookup {
     # search LDAP directory for our record
     my $mesg = $self->_find_user($key => $val);
     unless ($mesg) {
-        st_log->error( "ST::User::LDAP: no suitable LDAP response" );
-        return;
+        die "ST::User::LDAP: no suitable LDAP response\n";
     }
 
     if ($mesg->code && ($mesg->code != LDAP_NO_SUCH_OBJECT)) {
-        st_log->error( "ST::User::LDAP: LDAP error while finding user $key/$val; " . $mesg->error() );
-        return;
+        die "ST::User::LDAP: LDAP error while finding user $key/$val; " . $mesg->error . "\n";
     }
     if ($mesg->count() > 1) {
         # If we get here, there are duped LDAP records for this field. ST
         # requires that these fields be unique, so be sure to note this.
-        st_log->error( "ST::User::LDAP: found multiple matches for user; $key/$val" );
-        return;
+        die "ST::User::LDAP: found multiple matches for user; $key/$val\n";
     }
 
     # extract result record
     my $result = $mesg->shift_entry();
     unless ($result) {
         st_log->debug( "ST::User::LDAP: unable to find user in LDAP; $key/$val" );
-        # XXX: other code expects lookup() to return false when it can't find
-        # the LDAP user.  Throwing an exception seems like the right thing to
-        # do, but we can't do that either due to previous design decisions.
-        # For now, set a private field that GetUser can check ~stash
         $self->{_user_not_found} = 1;
         return;
     }
