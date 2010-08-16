@@ -2702,13 +2702,19 @@ sub index_page {
 
     my ( $hub, $main ) = $self->_require_hub();
     my $page = $self->_require_page($hub);
+    my $attachments_too = $self->_boolean_flag('attachments');
 
     my $ws_name = $hub->current_workspace()->name();
 
     require Socialtext::Search::AbstractFactory;
     my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
+    my $attachments = $attachments_too
+                        ? $hub->attachments->all(page_id => $page->id) : [];
     for my $indexer (@indexers) {
         $indexer->index_page( $page->id() );
+        foreach my $attachment (@$attachments) {
+            $indexer->index_attachment($page->id, $attachment);
+        }
     }
 
     $self->_success( 'The '
@@ -3916,7 +3922,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   index-workspace --workspace [--sync] [--search-config]
   delete-search-index --workspace
-  index-page --workspace --page
+  index-page --workspace --page [--attachments]
   index-attachment --workspace --page --attachment [--search-config]
 
   ACCOUNTS
@@ -4375,9 +4381,12 @@ live.yaml) to specify indexing parameters.
 
 Deletes the search index for the specified workspace.
 
-=head2 index-page --workspace --page
+=head2 index-page --workspace --page [--attachments]
 
 (Re-)indexes the specified page in the given workspace.
+
+If --attachments is specified, that page's attachments will
+also be re-indexed.
 
 =head2 index-attachment --workspace --page --attachment [--search-config]
 
