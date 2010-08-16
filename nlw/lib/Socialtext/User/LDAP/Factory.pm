@@ -14,6 +14,7 @@ use Socialtext::UserMetadata;
 use Socialtext::Log qw(st_log);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use Net::LDAP::Util qw(escape_filter_value);
+use Net::LDAP::Constant qw(LDAP_NO_SUCH_OBJECT);
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::Exceptions qw(data_validation_error);
 use Socialtext::Timer qw(time_scope);
@@ -207,7 +208,8 @@ sub lookup {
         st_log->error( "ST::User::LDAP: no suitable LDAP response" );
         return;
     }
-    if ($mesg->code()) {
+
+    if ($mesg->code && ($mesg->code != LDAP_NO_SUCH_OBJECT)) {
         st_log->error( "ST::User::LDAP: LDAP error while finding user $key/$val; " . $mesg->error() );
         return;
     }
