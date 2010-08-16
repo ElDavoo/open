@@ -90,12 +90,16 @@ sub GetUser {
     # SANITY CHECK: get user term is acceptable
     return unless ($valid_get_user_terms{$key});
 
-    # If we have a fresly cached copy of the User, use that
-    local $self->{_cache_lookup}; # temporary cache-lookup storage
+    # If we have a valid/fresh cached copy of the User, use that
+    my $cache_lookup;
     if ($CacheEnabled) {
         time_scope 'ldap_user_check_cache';
-        my $cached = $self->_check_cache($key => $val);
-        return $cached if $cached;
+        $cache_lookup = $self->GetHomunculus(
+            $key, $val, $self->driver_key, 'raw_proto_user_please',
+        );
+        if ($self->_is_cached_proto_user_valid($cache_lookup)) {
+            return $self->NewHomunculus($cache_lookup);
+        }
     }
 
     # Look the User up in LDAP
@@ -110,11 +114,11 @@ sub GetUser {
     }
 
     # Didn't find User in LDAP, but they *do* exist in the DB
-    if ($self->{_cache_lookup}) {
+    if ($cache_lookup) {
+        my $homey = $self->NewHomunculus($cache_lookup);
         if ($self->{_user_not_found}) {
             # User was previously cached, so they existed at some point but
             # can't be found in LDAP any longer.  Must be a Deleted User.
-            my $homey = $self->{_cache_lookup};
             $self->_mark_as_missing($homey);
             $self->UpdateUserRecord( {
                 user_id   => $homey->{user_id},
@@ -125,7 +129,7 @@ sub GetUser {
         else {
             # Something else caused LDAP lookup to fail; return previously
             # cached data (its better than nothing).
-            return $self->{_cache_lookup};
+            return $homey;
         }
     }
 
@@ -247,35 +251,20 @@ sub lookup {
     return $proto_user;
 }
 
-sub _check_cache {
-    my ($self, $key, $val) = @_;
+sub _is_cached_proto_user_valid {
+    my $self       = shift;
+    my $proto_user = shift;
 
-    # Check the DB for a cached copy of the User.
-    my $proto_user = $self->GetHomunculus(
-        $key, $val, $self->driver_key, 'raw_proto_user_please',
-    );
     return unless $proto_user;
     return unless $proto_user->{cached_at};
 
-    # Figure out when the User record was cached.  NEED to do this from the
-    # raw DB record instead of the Homunculus, *in case* we have a missing
-    # User (as ST:U:Deleted over-rides 'cached_at').
-    my $cached_at = sql_parse_timestamptz($proto_user->{cached_at});
-
-    # Turn to the User data into an actual User Homunculus.  We'll need this
-    # for both cases of "need to use stale data" and for "is fresh, use this".
-    my $homey = $self->NewHomunculus($proto_user);
-    $self->{_cache_lookup} = $homey;
-
-    # Check if the cached data is fresh/stale
-    my $ttl = $homey->missing
+    my $ttl = $proto_user->{missing}
         ? $self->cache_not_found_ttl
         : $self->cache_ttl;
-    my $cutoff = $self->Now() - $ttl;
-    return unless ($cached_at > $cutoff);
+    my $cutoff    = $self->Now() - $ttl;
+    my $cached_at = sql_parse_timestamptz($proto_user->{cached_at});
 
-    # Cached copy still good.
-    return $homey;
+    return $cached_at > $cutoff ? 1 : 0;
 }
 
 sub cache_ttl {
