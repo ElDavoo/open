@@ -16,7 +16,7 @@ use Socialtext::SQL::Builder qw(sql_abstract);
 use Net::LDAP::Util qw(escape_filter_value);
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::Exceptions qw(data_validation_error);
-use Socialtext::Timer;
+use Socialtext::Timer qw(time_scope);
 use Readonly;
 use List::MoreUtils qw(part);
 
@@ -93,17 +93,14 @@ sub GetUser {
     # If we have a fresly cached copy of the User, use that
     local $self->{_cache_lookup}; # temporary cache-lookup storage
     if ($CacheEnabled) {
-        Socialtext::Timer->Continue('ldap_user_check_cache');
+        time_scope 'ldap_user_check_cache';
         my $cached = $self->_check_cache($key => $val);
-        Socialtext::Timer->Pause('ldap_user_check_cache');
         return $cached if $cached;
     }
 
     # Look the User up in LDAP
     local $self->{_user_not_found};
-    Socialtext::Timer->Continue('ldap_user_lookup');
     my $proto_user = $self->lookup($key => $val);
-    Socialtext::Timer->Pause('ldap_user_lookup');
 
     # If we found the User in LDAP, cache the data in the DB and return that
     # back to the caller as the homunculus.
@@ -168,6 +165,7 @@ sub _mark_as_found {
 
 sub lookup {
     my ($self, $key, $val) = @_;
+    time_scope 'ldap_user_lookup';
 
     # SANITY CHECK: lookup term is acceptable
     return unless ($valid_get_user_terms{$key});
