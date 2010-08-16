@@ -48,7 +48,10 @@ has '_docs' => (
     is => 'rw', isa => 'ArrayRef[WebService::Solr::Document]',
     metaclass => 'Collection::Array',
     default => sub { [] },
-    provides => { push => '_add_doc' },
+    provides => { 
+        push => '_add_doc',
+        clear => '_clear_docs',
+    },
 );
 
 has 'always_commit' => (is => 'rw', isa => 'Bool', default => 1);
@@ -244,7 +247,6 @@ sub _add_attachment_doc {
     }
 
     _debug( "Retrieved attachment content.  Length is " . length $body );
-    warn $body;
 
     my $filename = $att->filename;
     (my $ext = $filename) =~ s/.+\.//;
@@ -662,6 +664,7 @@ sub _commit {
     };
     my $err = $@;
     die $err if $err;
+    $self->_clear_docs;
     _debug("Done finalizing index.");
 }
 
