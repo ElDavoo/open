@@ -60,7 +60,7 @@ my $config_name = $config_prefix ? $config_prefix : 'default';
 
 if ($solr) {
     $pidfile = '/var/run/socialtext-solr.pid';
-    $init_cmd = '/etc/init.d/socialtext-solr';
+    $init_cmd = '/etc/init.d/socialtext-solr restart';
     $max_fds = $max_rss = $max_vsz = 0; # don't check; java limits itself
     $tcp_port = 8983;
     $check_http = 1;
