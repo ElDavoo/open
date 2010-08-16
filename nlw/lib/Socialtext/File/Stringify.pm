@@ -61,6 +61,7 @@ sub _get_converter_for_file {
         'application/vnd.ms-powerpoint' => 'application_vnd_ms_powerpoint',
         'application/vnd.ms-excel'      => 'application_vnd_ms_excel',
         'application/x-msword'          => 'application_msword',
+        'application/msword'            => 'application_msword',
         'application/xml'               => 'text_xml',
         'application/zip'               => 'application_zip',
         'text/html'                     => 'text_html',
