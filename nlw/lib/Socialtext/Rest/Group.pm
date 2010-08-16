@@ -403,6 +403,7 @@ sub user_invite {
     Socialtext::JobCreator->insert(
         'Socialtext::Job::GroupInvite',
         {
+            job => { priority => 80 },
             group_id  => $self->group->group_id,
             user_id   => $user_role->{object}->user_id,
             sender_id => $user_role->{actor}->user_id,

@@ -246,6 +246,7 @@ sub _add_members_to_group {
             Socialtext::JobCreator->insert(
                 'Socialtext::Job::GroupInvite',
                 {
+                    job => { priority => 80 },
                     group_id  => $group->group_id,
                     user_id   => $invitee->user_id,
                     sender_id => $invitor->user_id,

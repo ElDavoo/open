@@ -44,6 +44,7 @@ sub queue {
     Socialtext::JobCreator->insert(
         'Socialtext::Job::Invite',
         {
+            job => { priority => 80 },
             user_id         => $user->user_id,
             sender_id       => $self->from_user->user_id,
             extra_text      => $self->extra_text,
