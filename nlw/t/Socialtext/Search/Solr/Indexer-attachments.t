@@ -11,11 +11,6 @@ use Test::Socialtext;
 use Test::Socialtext::Search;
 use Socialtext::File;
 
-plan tests => 1;
-ok "Test removed until we decide to implement Solr WS Search";
-exit;
-
-
 ###############################################################################
 # Fixtures: db no-ceq-jobs
 # - we're an indexer test, so make sure there are *NO* Ceq jobs kicking around
@@ -60,7 +55,6 @@ run {
     # purge the page for cleanliness
     my $page = $hub->pages->new_from_name('a test page');
     $page->purge();
-
 };
 
 # non-portable, but better than 'which' or some of the other
