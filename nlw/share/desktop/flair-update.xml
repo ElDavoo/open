@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>334</version>
-  <url>http://topaz.socialtext.net/flair/flairSignals-334.air</url>
-  <description><![CDATA[[Build 334 - Wed Aug  4 21:50:07 PDT 2010]
+  <version>338</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-338.air</url>
+<description><![CDATA[[Build 338 - Sun Aug 15 02:39:22 PDT 2010]
+* Workspaces: AIR 2 uploads files with spaces in directory names, but not in filenames; still show an alert in the latter case. {bz: 4245}
+
+[Build 337 - Sat Aug 14 08:20:35 PDT 2010]
+* When push is enabled, sending a new signal still trigger an immediate refresh.
+
+[Build 336 - Sat Aug 14 07:34:23 PDT 2010]
+* Signals: Display tooltips on "Reply to conversation" icons. {bz: 4201}
+* Workspaces: File pathnames with spaces are now uploadable for Mac/AIR2. {bz: 4142}
+
+[Build 335 - Sat Aug 14 05:54:06 PDT 2010]
+* Password are now saved in the system encrypted store.
+
+[Build 334 - Wed Aug  4 21:50:07 PDT 2010]
 * Signals: Correctly unescape annotation images and support absolute URLs in flatview. (Luke)
 
 [Build 333 - Wed Aug  4 03:03:38 PDT 2010]
