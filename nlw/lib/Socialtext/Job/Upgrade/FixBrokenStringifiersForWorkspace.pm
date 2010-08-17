@@ -49,3 +49,24 @@ sub _attachments_for {
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Job::Upgrade::FixBrokenStringifiersForWorkspace - Re-Index workspace page attachments that had broken stringifiers.
+
+=head1 SYNOPSIS
+
+  use Socialtext::JobCreator;
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::Upgrade::FixBrokenStringifiersForWorkspace', {
+            workspace_id => $workspace_id,
+        },
+    );
+
+=head1 DESCRIPTION
+
+Finds all Pages in the specified Workspace that have a 'doc' or 'xml' document
+attached to them, and creates jobs to have those attachments indexed.
+
+=cut
