@@ -118,12 +118,24 @@ sub _best_full_name {
     return $full_name;
 }
 
+{
+    my $cache;
+    sub cache {
+        return $cache ||= Socialtext::Cache->cache('EventsReporter');
+    }
+}
+
 sub _extract_person {
     my ($self, $row, $prefix) = @_;
     my $id = delete $row->{"${prefix}_id"};
     return unless $id;
 
-    # this real-name calculation may benefit from caching at some point
+    my $cache_key = "person:$id";
+    if (my $hash = $self->cache->get($cache_key)) {
+        $row->{$prefix} = $hash;
+        return;
+    }
+
     my $real_name;
     my $user = Socialtext::User->new(user_id => $id);
     my $avatar_is_visible = $user->avatar_is_visible || 0;
@@ -136,7 +148,9 @@ sub _extract_person {
     my $adapter = Socialtext::Pluggable::Adapter->new;
     if ($adapter->plugin_exists('people')) {
         require Socialtext::People::Profile;
-        my $profile = Socialtext::People::Profile->GetProfile($user);
+        my $profile = Socialtext::People::Profile->GetProfile($user,
+            no_recurse => 1,
+        );
         $hidden = $profile->is_hidden if $profile;
     }
 
@@ -151,6 +165,7 @@ sub _extract_person {
         avatar_is_visible => $avatar_is_visible,
         profile_is_visible => $profile_is_visible,
     };
+    $self->cache->set($cache_key, $row->{$prefix});
 }
 
 sub _extract_page {
