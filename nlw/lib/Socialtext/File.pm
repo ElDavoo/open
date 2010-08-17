@@ -505,7 +505,7 @@ our $is_basic_type = qr{^(?:
     )$
 )}x;
 sub mime_type {
-    my ($path_to_file, $file_extension, $type_hint) = @_;
+    my ($path_to_file, $filename, $type_hint) = @_;
 
     local $@;
     my $magic_type = eval {
@@ -517,14 +517,18 @@ sub mime_type {
         return $magic_type unless $magic_type =~ $is_basic_type;
     }
 
-    if ($file_extension) {
-        $file_extension =~ s/.+\.([^.]+)$/$1/;
+    if ($filename and $filename =~ m/.+\.([^.]+)$/) {
+        my $file_ext = $1;
         my $type = eval {
             require Socialtext::MIME::Types;
-            my $mt = Socialtext::MIME::Types::mimeTypeOf(lc $file_extension);
+            my $mt = Socialtext::MIME::Types::mimeTypeOf(lc $file_ext);
             $mt->type;
         };
         return $type if ($type);
+    }
+    elsif ($filename) {
+        # Filename without an extension; use the magic type from `file`
+        return $magic_type if $magic_type;
     }
 
     return $type_hint if $type_hint;
