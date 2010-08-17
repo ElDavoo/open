@@ -38,3 +38,19 @@ sub _signal_ids {
 __PACKAGE__->meta->make_immutable;
 1;
 
+=head1 NAME
+
+Socialtext::Job::Upgrade::FixBrokenStringifiersForSignals - Re-Index signal attachments that formerly had broken stringifiers.
+
+=head1 SYNOPSIS
+
+  use Socialtext::JobCreator;
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::Upgrade::FixBrokenStringifiersForSignals');
+
+=head1 DESCRIPTION
+
+Finds all of the Signal attachments that have a 'doc' or 'xml' file extension and creates a job to re-index the signal that it's attached to.
+
+=cut
