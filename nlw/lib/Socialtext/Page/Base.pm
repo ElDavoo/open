@@ -369,9 +369,6 @@ sub _cache_using_questions {
         if ($cache_file) {
             Socialtext::File::set_contents_utf8_atomic($cache_file, $html_ref);
         }
-        else {
-            warn "Answer string is too long - not writing $cache_file";
-        }
     }
     return $html_ref;
 }
@@ -587,14 +584,20 @@ sub _answer_file {
     my $self = shift;
 
     # {bz: 4129}: Don't cache temporary pages during new_page creation.
-    $self->exists or return;
+    unless ($self->exists) {
+        warn "Not caching new page" if $CACHING_DEBUG;
+        return;
+    }
 
     my $answer_str = shift || '';
-    my $base = $self->_page_cache_basename or return;
+    my $base = $self->_page_cache_basename;
+    unless ($base) {
+        warn "No _page_cache_basename, not caching";
+        return;
+    }
     my $filename = "$base-".sha1_hex($answer_str);
     (my $basename = $filename) =~ s#.+/##;
     warn "Answer file: $answer_str => $basename" if $CACHING_DEBUG;
-    return undef if length($basename) > 254;
     return $filename;
 }
 
