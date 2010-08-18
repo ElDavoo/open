@@ -19,7 +19,7 @@
     [%- END -%]
 [%- END -%]
 
-[% WRAPPER $frame_name id="contentPage" %]
+[% WRAPPER layout/html id="contentPage" %]
 <div id="controls">
   <div id="st-editing-tools-edit">
     [% IF page_locked_for_user %]
