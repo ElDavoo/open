@@ -1,5 +1,5 @@
 [%# @COPYRIGHT@ -%]
-[% WRAPPER layout/html content_id = 'st-editcontention' box_javascript = 0 %]
+[% WRAPPER $frame_name content_id = 'st-editcontention' box_javascript = 0 %]
 
 [% IF page.metadata.Type == 'spreadsheet' %]
   [% PROCESS contention_msg type="spreadsheet" %]

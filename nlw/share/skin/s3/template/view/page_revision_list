@@ -2,7 +2,7 @@
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
 [% USE label_ellipsis %]
-[% WRAPPER layout/html id="contentPage" title = loc("[_1]: All Revisions", display_title) %]
+[% WRAPPER $frame_name id="contentPage" title = loc("[_1]: All Revisions", display_title) %]
 <script language="javascript"><!--
     function preventSameRevisionCompare () {
         var newVal = $('input[name=new_revision_id]:checked:first').val();

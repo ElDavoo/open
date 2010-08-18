@@ -1,6 +1,6 @@
 [%# @COPYRIGHT@ -%]
 [%# vim: set et sts=2 sw=2: %]
-[% WRAPPER layout/html id="loginPage" title=loc("Error") %]
+[% WRAPPER $frame_name id="loginPage" title=loc("Error") %]
 <div id="st-display-mode-container" class="authentication">
   <div id="controls">
     <div id="st-editing-tools-edit">

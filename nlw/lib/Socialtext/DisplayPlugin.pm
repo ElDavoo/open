@@ -2,7 +2,6 @@
 package Socialtext::DisplayPlugin;
 use strict;
 use warnings;
-our $ENABLE_FRAME_CACHE = 1;
 
 use base 'Socialtext::Plugin';
 
@@ -277,13 +276,9 @@ sub _render_display {
         @{$self->hub->attachments->all(page_id => $page->id)},
     ];
 
-    my $frame_name = $ENABLE_FRAME_CACHE ? $self->_render_user_frame : 'layout/html';
-
     return $self->template_render(
         template => 'view/page/display',
-        paths => [ $self->user_frame_path ],
         vars     => {
-            frame_name => $frame_name,
             $self->hub->helpers->global_template_vars,
             accept_encoding         => eval {
                 $self->hub->rest->request->header_in( 'Accept-Encoding' )
@@ -331,48 +326,6 @@ sub _render_display {
             st_page_accessories     => $st_page_accessories,
         },
     );
-}
-
-sub user_frame_path {
-    return Socialtext::Paths::cache_directory('user_frame');
-}
-
-sub _render_user_frame {
-    my $self = shift;
-
-    my $frame_path = $self->user_frame_path;
-    my $user_id = $self->hub->current_user->user_id;
-    $user_id =~ m/^(\d\d?)/;
-    my $user_prefix = $1;
-
-    my $loc_lang = $self->hub->display->preferences->locale->value || 0;
-    my $is_guest = $self->hub->current_user->is_guest || 0;
-
-    my $frame_dir = "$frame_path/$user_prefix/$user_id";
-    my $tmpl_name = "user_frame.$loc_lang.$is_guest";
-    my $frame_tmpl = "$user_prefix/$user_id/$tmpl_name";
-    my $frame_file = "$frame_dir/$tmpl_name";
-
-    return $frame_tmpl if -f $frame_file;
-
-    warn "Rendering layout frame $tmpl_name";
-    Socialtext::Timer->Continue('render_user_frame');
-    my $frame_content = $self->template_render(
-        template => 'layout/user_frame',
-        vars     => {
-            $self->hub->helpers->global_template_vars,
-            generate_user_frame => 1,
-        }
-    );
-
-    unless (-d $frame_dir) {
-        mkpath $frame_dir or die "Could not create $frame_dir: $!";
-    }
-
-    set_contents_utf8($frame_file, $frame_content);
-    warn "Wrote $frame_file";
-    Socialtext::Timer->Pause('render_user_frame');
-    return $frame_tmpl;
 }
 
 sub _get_minimal_page_info {

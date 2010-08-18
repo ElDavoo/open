@@ -1,7 +1,7 @@
 [%# vim: set et sts=2 sw=2: %]
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
-[% WRAPPER layout/html id="revisions" title="${display_title}: ${display_title_decorator}" %]
+[% WRAPPER $frame_name id="revisions" title="${display_title}: ${display_title_decorator}" %]
 
 <div id="controls">
   <div id="st-editing-tools-edit">

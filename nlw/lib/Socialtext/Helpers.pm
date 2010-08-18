@@ -7,6 +7,7 @@ use Encode;
 # vaguely akin to RubyOnRails' "helpers"
 use Socialtext;
 use base 'Socialtext::Base';
+use Socialtext::File;
 use Socialtext::Search::Config;
 use Socialtext::Search::Set;
 use Socialtext::TT2::Renderer;
@@ -18,6 +19,7 @@ use Apache::Cookie;
 use Email::Address;
 use Email::Valid;
 
+our $ENABLE_FRAME_CACHE = 1;
 my $PROD_VERSION = Socialtext->product_version;
 my $CODE_BASE = Socialtext::AppConfig->code_base;
 
@@ -233,7 +235,9 @@ sub global_template_vars {
     };
 
     my $locale = $hub->display->preferences->locale;
+    my $frame_name = $ENABLE_FRAME_CACHE ? $self->_render_user_frame : 'layout/html';
     my %result = (
+        frame_name        => $frame_name,
         firebug           => $hub->rest->query->param('firebug') || 0,
         action            => $hub->cgi->action,
         pluggable         => $hub->pluggable,
@@ -329,6 +333,52 @@ sub global_template_vars {
     Socialtext::Timer->Pause('global_tt2_vars');
     return %result;
 }
+
+sub user_frame_path {
+    return Socialtext::Paths::cache_directory('user_frame');
+}
+
+sub _render_user_frame {
+    local $ENABLE_FRAME_CACHE = 0;
+    my $self = shift;
+
+    my $frame_path = $self->user_frame_path;
+    my $user_id = $self->hub->current_user->user_id;
+    $user_id =~ m/^(\d\d?)/;
+    my $user_prefix = $1;
+
+    my $loc_lang = $self->hub->display->preferences->locale->value || 0;
+    my $is_guest = $self->hub->current_user->is_guest || 0;
+
+    my $frame_dir = "$frame_path/$user_prefix/$user_id";
+    my $tmpl_name = "user_frame.$loc_lang.$is_guest";
+    my $frame_tmpl = "$user_prefix/$user_id/$tmpl_name";
+    my $frame_file = "$frame_dir/$tmpl_name";
+
+    return $frame_tmpl if -f $frame_file;
+
+    warn "Rendering layout frame $tmpl_name";
+    Socialtext::Timer->Continue('render_user_frame');
+    my $renderer = Socialtext::TT2::Renderer->instance();
+    my $frame_content = $renderer->render(
+        template => 'layout/user_frame',
+        paths    => $self->hub->skin->template_paths,
+        vars     => {
+            $self->hub->helpers->global_template_vars,
+            generate_user_frame => 1,
+        }
+    );
+
+    unless (-d $frame_dir) {
+        mkpath $frame_dir or die "Could not create $frame_dir: $!";
+    }
+
+    Socialtext::File::set_contents_utf8($frame_file, $frame_content);
+    warn "Wrote $frame_file";
+    Socialtext::Timer->Pause('render_user_frame');
+    return $frame_tmpl;
+}
+
 
 sub miki_path {
     my ($self, $link) = @_;

@@ -1,7 +1,7 @@
 [% USE decorate %]
 [%# vim: set et sts=2 sw=2: %]
 [%# @COPYRIGHT@ -%]
-[% WRAPPER layout/html id="settingsPage" %]
+[% WRAPPER $frame_name id="settingsPage" %]
   [% perm_acct_admin = acct_checker.check_permission('admin') %]
   [% perm_ws_admin = checker.check_permission('admin_workspace') %]
   [% perm_invite = checker.check_permission('request_invite') %]

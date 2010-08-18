@@ -1,7 +1,7 @@
 [%# vim: set et sts=2 sw=2: %]
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
-[% WRAPPER layout/html id="listPage" %]
+[% WRAPPER $frame_name id="listPage" %]
   [% INCLUDE element/listview_tabs %]
   <div id="controls">
     <div id="st-editing-tools-edit">
