@@ -22,6 +22,12 @@ $Socialtext::MassAdd::Has_People_Installed = 1;
 
 use_ok 'Socialtext::MassAdd';
 
+### Create our test fixtures *OUT OF PROCESS*; we're using a mocked ST::User,
+### which conflicts with in-process fixture generation.
+BEGIN {
+    system('dev-bin/make-test-fixture --fixture db');
+};
+
 my %userinfo = (
     username      => 'ronnie',
     email_address => 'ronnie@mrshow.example.com',
