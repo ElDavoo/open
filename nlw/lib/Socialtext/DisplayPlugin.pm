@@ -2,6 +2,7 @@
 package Socialtext::DisplayPlugin;
 use strict;
 use warnings;
+our $ENABLE_FRAME_CACHE = 1;
 
 use base 'Socialtext::Plugin';
 
@@ -276,7 +277,7 @@ sub _render_display {
         @{$self->hub->attachments->all(page_id => $page->id)},
     ];
 
-    my $frame_name = $self->_render_user_frame;
+    my $frame_name = $ENABLE_FRAME_CACHE ? $self->_render_user_frame : 'layout/html';
 
     return $self->template_render(
         template => 'view/page/display',
@@ -354,7 +355,7 @@ sub _render_user_frame {
 
     return $frame_tmpl if -f $frame_file;
 
-    #warn "Rendering layout frame $tmpl_name";
+    warn "Rendering layout frame $tmpl_name";
     Socialtext::Timer->Continue('render_user_frame');
     my $frame_content = $self->template_render(
         template => 'layout/user_frame',
@@ -369,7 +370,7 @@ sub _render_user_frame {
     }
 
     set_contents_utf8($frame_file, $frame_content);
-    #warn "Wrote $frame_file";
+    warn "Wrote $frame_file";
     Socialtext::Timer->Pause('render_user_frame');
     return $frame_tmpl;
 }
