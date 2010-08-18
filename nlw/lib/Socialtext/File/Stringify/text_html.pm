@@ -10,6 +10,7 @@ use HTML::HeadParser ();
 use HTML::Entities qw/decode_entities/;
 use File::Temp qw/tempfile/;
 use Encode ();
+use Encode::Guess ();
 use POSIX ();
 use Guard;
 use List::MoreUtils qw/firstidx/;
@@ -107,6 +108,7 @@ sub _detect_charset {
     my $filename = shift;
     my $hp = HTML::HeadParser->new();
     $hp->parse_file($filename);
+
     my $charset = $hp->header('Content-Type');
     if ($charset) {
         my ($cs) = ($charset =~ /charset=(.+);?/);
@@ -115,6 +117,19 @@ sub _detect_charset {
     else {
         $charset = $hp->header('X-Meta-Charset');
     }
+
+    # Check if the file seems to be one of the Unicode charsets.  UTF-16 foils
+    # HTML::HeadParser.
+    unless ($charset) {
+        my $first_1k = do { local (@ARGV) = ($filename); local $/ = \1024; <> };
+        Encode::Guess->set_suspects(
+            qw/UTF-32LE UTF-16LE UTF-32BE UTF-16BE UTF-8/);
+        my $guess = Encode::Guess->guess($first_1k);
+        if (defined $guess) {
+            $charset = $guess->name;
+        }
+    }
+
     $charset ||= 'UTF-8';
     return $charset;
 }

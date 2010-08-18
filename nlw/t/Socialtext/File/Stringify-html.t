@@ -1,7 +1,7 @@
 #!perl
 use warnings;
 use strict;
-use Test::More tests => 58;
+use Test::More tests => 60;
 use Test::Exception;
 use utf8;
 
@@ -34,6 +34,15 @@ sub has_danish_content ($$;$) {
     like $buf, qr/\Qdenne side er $ct. Her er et billede af en kanin med en pandekage på hovedet. Æ!/, "$name body text"; # "this page is $charset. Here is a picture of a rabbit with a pancake on it's head. Ae!"
     ok $buf =~ m#\Qhttp://socialtext.com/?$ct#i, "$name a-tag link href";
     ok $buf =~ /\Qlinktekst/, "$name a-tag link text"; # "link text"
+}
+
+missing: {
+    my $filename = $base_dir .'/does-not-exist.html';
+    my $buf;
+    lives_ok {
+        to_str(\$buf, $filename, 'text/html; charset=UTF-8');
+    } 'stringify with explicit charset';
+    ok $buf eq '', "empty buffer on missing file";
 }
 
 utf8: {
@@ -69,7 +78,6 @@ utf16_guess: {
     lives_ok {
         to_str(\$buf, $filename, 'text/html');
     } 'stringify UTF-16 with absent charset (derived by meta header)';
-    local $TODO = 'UTF-16LE guessing not implemented';
     has_japanese_content($buf, 'UTF-16', "UTF-16LE-guessed");
 }
 
