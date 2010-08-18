@@ -1751,22 +1751,26 @@ sub primary_account {
     $new_account = Socialtext::Account->new(account_id => $new_account)
         unless ref($new_account);
 
-    $self->metadata->set_primary_account_id($new_account->account_id);
+    # Only go to the effort of doing the change *if* we're actually moving the
+    # User to a new Primary Account.
+    unless ($self->primary_account_id == $new_account->account_id) {
+        $self->metadata->set_primary_account_id($new_account->account_id);
 
-    Socialtext::Cache->clear('authz_plugin');
+        Socialtext::Cache->clear('authz_plugin');
 
-    my $deleted_acct = Socialtext::Account->Deleted;
-    # Update account membership. Business logic says to keep
-    # the user as a member of the old account.
+        my $deleted_acct = Socialtext::Account->Deleted;
+        # Update account membership. Business logic says to keep
+        # the user as a member of the old account.
 
-    unless ($new_account->has_user($self, direct => 1)) {
-        $new_account->add_user(
-            user => $self, # use a default role
-        );
+        unless ($new_account->has_user($self, direct => 1)) {
+            $new_account->add_user(
+                user => $self, # use a default role
+            );
+        }
+
+        require Socialtext::JobCreator;
+        Socialtext::JobCreator->index_person( $self );
     }
-
-    require Socialtext::JobCreator;
-    Socialtext::JobCreator->index_person( $self );
 
     return $new_account;
 }
