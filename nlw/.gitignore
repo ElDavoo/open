@@ -499,3 +499,4 @@ t/wikitests/webhooks/signals.wiki
 t/Socialtext/Handler/Push-worker.t
 t/wikitests/signals/search-attachments.wiki
 t/Socialtext/Handler/Push-ldap.t
+t/Socialtext/User-change-primary-account-purges-dashboard.t
