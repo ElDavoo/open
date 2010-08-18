@@ -5,6 +5,8 @@ use strict;
 
 use Socialtext::File::Stringify::Default;
 use Socialtext::System ();
+use Socialtext::Log qw/st_log/;
+
 use HTML::Parser ();
 use HTML::HeadParser ();
 use HTML::Entities qw/decode_entities/;
@@ -15,11 +17,20 @@ use POSIX ();
 use Guard;
 use List::MoreUtils qw/firstidx/;
 
+our $DEFAULT_OK = 1;
+
 sub to_string {
     my ( $class, $buf_ref, $filename, $mime ) = @_;
 
     return if $class->stringify_html($buf_ref, $filename, $mime);
-    Socialtext::File::Stringify::Default->to_string($buf_ref,$filename,$mime);
+    if ($DEFAULT_OK) {
+        st_log()->error($@) if $@;
+        Socialtext::File::Stringify::Default->to_string(
+            $buf_ref,$filename,$mime);
+    }
+    else {
+        die $@ if $@;
+    }
     return;
 }
 
@@ -40,47 +51,49 @@ sub stringify_html {
 
     binmode $temp_fh, ':utf8';
 
-#     my $pid = fork;
-#     die "can't fork html stringifier: $!" unless defined $pid;
-#     if ($pid) { # parent
-#         my $g = guard { kill -9, $pid };
-#         # TODO: alarm
-#         eval {
-#             local $SIG{ALRM} = sub { die 'timeout' };
-#             alarm 15;
-#             waitpid $pid, 0;
-#             alarm 0;
-#         };
-#         my $rv = $? >> 8;
-#         if ($rv) {
-#             $@ = "HTML stringifier crashed $@";
-#             return;
-#         }
-#         else {
-#             $g->cancel;
-#         }
-#     }
-#     else { # kid
-#         # TODO: limit memory
-#         eval { _run_stringifier($filename, $charset) };
-#         my $e = $@;
-#         warn $@ if $@;
-#         $temp_fh->flush;
-#         close $temp_fh; # flush
-#         my $f = $!;
-#         my $g;
-#         if ($e || $f) {
-#             unlink $temp_filename;
-#             $g = $!;
-#         }
-#         POSIX::_exit($e||$f||$g ? 1 : 0);
-#     }
+    my $pid = fork;
+    die "can't fork html stringifier: $!" unless defined $pid;
+    if ($pid) { # parent
+        my $g = guard { kill -9, $pid; waitpid $pid, POSIX::WNOHANG(); };
+        scope_guard { unlink "$temp_filename.err" };
+        eval {
+            local $SIG{ALRM} = sub { die 'Command Timeout' };
+            alarm $Socialtext::System::TIMEOUT;
+            waitpid $pid, 0; # wait until timeout or process exit
+            alarm 0;
+        };
+        my $rv = $? >> 8;
+        if ($rv) {
+            $@ ||= "code $rv";
+            my $err = do { local (@ARGV,$/) = "$temp_filename.err"; <> } || '';
+            $@ = "HTML stringifier failed: $@ $err";
+            $$buf_ref = '';
+            return;
+        }
+        else {
+            $g->cancel;
+        }
+    }
+    else { # kid
+        scope_guard { POSIX::_exit(1) }; # kill the process on exceptions
 
-    _run_stringifier($filename, $charset);
+        open STDERR, '>', "$temp_filename.err";
+        select STDERR; $|=1; select STDOUT;
 
+        # XXX: this doesn't work when Test::Socialtext is used?!
+        Socialtext::System::_vmem_limiter();
+
+        _run_stringifier($filename, $charset);
+        $temp_fh->flush or die "can't flush: $!";
+        close $temp_fh or die "can't close: $!";
+        POSIX::_exit(0);
+    }
+
+    # turn utf8 layer off so we can slurp with max efficiency!
     seek $temp_fh, 0, 0; # rewind
-    binmode $temp_fh, ':mmap'; # turn utf8 layer off so we can ...
-    $$buf_ref = do { local $/; <$temp_fh> }; # ... slurp with max efficiency!
+    binmode $temp_fh, ':mmap';
+    $$buf_ref = do { local $/; <$temp_fh> };
+
     # And because it just wrote the file as utf8 so we can safely just switch
     # the flag on.
     Encode::_utf8_on($$buf_ref);
@@ -140,6 +153,7 @@ sub _got_text {
     decode_entities($t);
     $t =~ s/\s+/ /smg;
     return if ($t eq ' ' || $t eq '');
+    # TODO: check byte count
     print $temp_fh $t, ' ';
 }
 
@@ -161,6 +175,7 @@ sub _got_start {
     return unless defined $in;
     my $out = $enc->decode($in);
     decode_entities($out);
+    # TODO: check byte count
     print $temp_fh $out, ' ';
 }
 

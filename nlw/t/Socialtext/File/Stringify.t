@@ -15,7 +15,7 @@ fixtures('base_layout');
 
 my $data_dir = dirname(__FILE__) . "/stringify_data";
 my %ext_deps = (
-    html => 'elinks',
+    html => 'HTML::Parser',
     doc  => 'wvText',
     rtf  => 'unrtf',
     pdf  => 'pdftotext',

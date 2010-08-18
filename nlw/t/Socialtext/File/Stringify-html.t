@@ -1,13 +1,22 @@
 #!perl
 use warnings;
 use strict;
-use Test::More tests => 60;
+use Test::More tests => 72;
 use Test::Exception;
+use File::Basename qw(dirname);
 use utf8;
 
+use ok 'Socialtext::System';
+use ok 'Socialtext::File::Stringify';
 use ok 'Socialtext::File::Stringify::text_html';
 
-my $base_dir = 't/Socialtext/File/stringify_data/html';
+local $Socialtext::System::VMEM_LIMIT = 512 * 2**20;
+local $Socialtext::System::TIMEOUT = 30; # for testing
+
+my $base_dir = dirname(__FILE__) . "/stringify_data/html";
+
+# not sure why, but using Test::Socialtext makes the oom test below not work.
+system('make-test-fixture --fixture base_layout');
 
 sub to_str { Socialtext::File::Stringify::text_html->to_string(@_) };
 
@@ -15,6 +24,7 @@ sub has_japanese_content ($$;$) {
     my ($buf, $ct, $name) = @_;
     $name ||= $ct;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
+    ok $buf !~ /<html>/, "$name didn't hit default stringifier";
     ok $buf =~ /\Q日本語/, "$name found decoded title"; # "Japanese"
     ok $buf =~ /\Qキーワード/, "$name found meta keywords"; # "keywords"
     ok $buf =~ /\Q説明/, "$name found meta description"; # "description"
@@ -28,6 +38,7 @@ sub has_danish_content ($$;$) {
     my ($buf, $ct, $name) = @_;
     $name ||= $ct;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
+    ok $buf !~ /<html>/, "$name didn't hit default stringifier";
     ok $buf =~ /\QDansk/, "$name decoded title";
     ok $buf =~ /\Qsøgeord/, "$name meta keywords"; # "keywords"
     ok $buf =~ /\Qbeskrivelse/, "$name meta description"; # "description"
@@ -43,6 +54,18 @@ missing: {
         to_str(\$buf, $filename, 'text/html; charset=UTF-8');
     } 'stringify with explicit charset';
     ok $buf eq '', "empty buffer on missing file";
+}
+
+oom_fail: {
+    local $Socialtext::System::VMEM_LIMIT = 4096; # one page
+    local $Socialtext::File::Stringify::text_html::DEFAULT_OK = 0;
+    local $@;
+    my $filename = $base_dir .'/japanese-utf8.html';
+    my $buf;
+    eval {
+        to_str(\$buf, $filename, 'text/html; charset=UTF-8');
+    }; ok $@, 'dies because of memory limit';
+    ok $buf eq '', "empty buffer on oom";
 }
 
 utf8: {
