@@ -46,10 +46,12 @@ sub _build_hub {
 
 sub _build_solr {
     my $self = shift;
-    return WebService::Solr->new(
+    my $solr = WebService::Solr->new(
         Socialtext::AppConfig->solr_base,
         { autocommit => 0 },
     );
+    $solr->agent->timeout(90);
+    return $solr;
 }
 
 {
