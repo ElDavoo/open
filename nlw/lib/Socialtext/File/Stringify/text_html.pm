@@ -154,7 +154,7 @@ sub _got_start {
         my %attr = @_;
         if (my $name = $attr{name}) {
             $in = $attr{content}
-                if ($name eq 'keywords' or $name eq 'description');
+                if ($name =~ /^(?:keywords|description|author)$/i);
         }
     }
 
