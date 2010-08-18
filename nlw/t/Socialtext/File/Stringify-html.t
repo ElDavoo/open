@@ -1,7 +1,7 @@
 #!perl
 use warnings;
 use strict;
-use Test::More tests => 72;
+use Test::More tests => 98;
 use Test::Exception;
 use File::Basename qw(dirname);
 use utf8;
@@ -30,8 +30,10 @@ sub has_japanese_content ($$;$) {
     ok $buf =~ /\Q説明/, "$name found meta description"; # "description"
     ok $buf =~ /\Qこのページは${ct}でいる/,
         "$name body text"; # "this page is $charset"
-    ok $buf =~ m#\Qhttp://socialtext.com/?$ct#i, "$name a-tag link href";
-    ok $buf =~ /\Qリンクテキスト/, "$name a-tag link text"; # "link text"
+    ok $buf =~ m#\Qhttp://socialtext.com/?$ct リンクテキスト#i,
+        "$name a-tag link plus text"; # "link text"
+    ok $buf !~ /\Qconsole.log/, "$name no script content";
+    ok $buf !~ /\QIgnored/, "$name no style content";
 }
 
 sub has_danish_content ($$;$) {
@@ -43,8 +45,10 @@ sub has_danish_content ($$;$) {
     ok $buf =~ /\Qsøgeord/, "$name meta keywords"; # "keywords"
     ok $buf =~ /\Qbeskrivelse/, "$name meta description"; # "description"
     like $buf, qr/\Qdenne side er $ct. Her er et billede af en kanin med en pandekage på hovedet. Æ!/, "$name body text"; # "this page is $charset. Here is a picture of a rabbit with a pancake on it's head. Ae!"
-    ok $buf =~ m#\Qhttp://socialtext.com/?$ct#i, "$name a-tag link href";
-    ok $buf =~ /\Qlinktekst/, "$name a-tag link text"; # "link text"
+    ok $buf =~ m#\Qhttp://socialtext.com/?$ct linktekst#i,
+        "$name a-tag link href plus text"; # "link text"
+    ok $buf !~ /\Qconsole.log/, "$name no script content";
+    ok $buf !~ /\QIgnored/, "$name no style content";
 }
 
 missing: {
@@ -90,8 +94,17 @@ utf16_no_guess: {
     my $filename = $base_dir .'/japanese-utf16.html';
     my $buf;
     lives_ok {
+        to_str(\$buf, $filename, 'text/html; charset=UTF-16BE');
+    } 'stringify with explicit UTF-16 charset';
+    has_japanese_content($buf, 'UTF-16', "UTF-16BE");
+}
+
+utf16le_no_guess: {
+    my $filename = $base_dir .'/japanese-utf16le.html';
+    my $buf;
+    lives_ok {
         to_str(\$buf, $filename, 'text/html; charset=UTF-16LE');
-    } 'stringify with explicit UTF-16LE charset';
+    } 'stringify with explicit UTF-16 charset';
     has_japanese_content($buf, 'UTF-16', "UTF-16LE");
 }
 
@@ -100,8 +113,17 @@ utf16_guess: {
     my $buf;
     lives_ok {
         to_str(\$buf, $filename, 'text/html');
-    } 'stringify UTF-16 with absent charset (derived by meta header)';
-    has_japanese_content($buf, 'UTF-16', "UTF-16LE-guessed");
+    } 'stringify UTF-16 with absent charset (derived by BOM)';
+    has_japanese_content($buf, 'UTF-16', "UTF-16BE-BOM-guessed");
+}
+
+utf16le_guess: {
+    my $filename = $base_dir .'/japanese-utf16le.html';
+    my $buf;
+    lives_ok {
+        to_str(\$buf, $filename, 'text/html');
+    } 'stringify UTF-16 with absent charset (derived by BOM)';
+    has_japanese_content($buf, 'UTF-16', "UTF-16LE-BOM-guessed");
 }
 
 sjis: {

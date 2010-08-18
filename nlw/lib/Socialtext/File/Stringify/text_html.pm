@@ -101,19 +101,33 @@ sub stringify_html {
     return 1;
 }
 
+our $parser;
+
 sub _run_stringifier {
     my ($filename, $charset) = @_;
     $charset = _detect_charset($filename) unless $charset;
-    $enc = Encode::find_encoding($charset);
-    my $p = HTML::Parser->new(
+
+    $charset = lc($1).lc($2) if ($charset =~ /^(utf|ucs)-?(.+)$/);
+    $enc = Encode::find_encoding($charset)
+        || Encode::find_encoding('ISO-8859-1');
+
+    # Could use a PerlIO layer and ->parse_file, but we want un-decodable
+    # characters converted into HTML entities as a fallback mode.
+    open my $fh, '<:mmap', $filename or die "Can't open $filename: $!";
+    my $doc = $enc->decode(do { local $/; <$fh> },
+        Encode::FB_WARN|Encode::FB_HTMLCREF);
+    close $fh;
+
+    local $parser = HTML::Parser->new(
         ignore_elements => [qw(style script)],
-        text_h => [\&_got_text, 'text'],
+        text_h  => [\&_got_text,  'text'], # *not* dtext
         start_h => [\&_got_start, 'tagname, @attr'],
-        utf8_mode => 0,
+        utf8_mode => 0, # we do our own decoding of charsets
         attr_encoded => 1, # do our own decoding of attr entities
         case_sensitive => 0, # lowercase tags and attrs
     );
-    $p->parse_file($filename);
+    $parser->parse($doc);
+    $parser->eof();
     return;
 }
 
@@ -148,35 +162,33 @@ sub _detect_charset {
 }
 
 sub _got_text {
-    my $t = shift;
-    $t = $enc->decode($t);
-    decode_entities($t);
-    $t =~ s/\s+/ /smg;
-    return if ($t eq ' ' || $t eq '');
-    # TODO: check byte count
-    print $temp_fh $t, ' ';
+    my $txt = shift;
+    decode_entities($txt);
+    $txt =~ s/\s+/ /smg;
+    return if ($txt eq ' ' || $txt eq '');
+    # TODO: check byte count, call $parser->eof();
+    print $temp_fh $txt, ' ';
 }
 
 sub _got_start {
     my $tag = shift;
-    my $in;
+    my $txt;
     if ($tag eq 'a') {
         my $i = firstidx { $_ eq 'href' } @_;
-        $in = $_[$i+1] if ($i >= 0 && $i <= $#_);
+        $txt = $_[$i+1] if ($i >= 0 && $i <= $#_);
     }
     elsif ($tag eq 'meta') {
         my %attr = @_;
         if (my $name = $attr{name}) {
-            $in = $attr{content}
+            $txt = $attr{content}
                 if ($name =~ /^(?:keywords|description|author)$/i);
         }
     }
 
-    return unless defined $in;
-    my $out = $enc->decode($in);
-    decode_entities($out);
-    # TODO: check byte count
-    print $temp_fh $out, ' ';
+    return unless defined $txt;
+    decode_entities($txt);
+    # TODO: check byte count, call $parser->eof();
+    print $temp_fh $txt, ' ';
 }
 
 1;
