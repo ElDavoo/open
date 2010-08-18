@@ -1,7 +1,7 @@
 #!perl
 use warnings;
 use strict;
-use Test::More tests => 98;
+use Test::More tests => 116;
 use Test::Exception;
 use File::Basename qw(dirname);
 use utf8;
@@ -90,6 +90,15 @@ utf8_with_guess: {
     has_japanese_content($buf, 'UTF-8', "UTF-8-guessed");
 }
 
+utf8_with_unknown: {
+    my $filename = $base_dir .'/japanese-utf8.html';
+    my $buf;
+    lives_ok {
+        to_str(\$buf, $filename, 'text/html; charset=unknown');
+    } 'stringify with "unknown" charset (derived by meta header), guess utf8';
+    has_japanese_content($buf, 'UTF-8', "UTF-8-from-unknown");
+}
+
 utf16_no_guess: {
     my $filename = $base_dir .'/japanese-utf16.html';
     my $buf;
@@ -160,6 +169,15 @@ danish_iso_8859_1_with_guess: {
         to_str(\$buf, $filename, 'text/html');
     } 'stringify with absent charset (derived by meta header), guess iso';
     has_danish_content($buf, 'ISO-8859-1', "ISO-8859-1-danish");
+}
+
+danish_iso_8859_1_with_bogus_charset: {
+    my $filename = $base_dir .'/danish-iso-8859-1.html';
+    my $buf;
+    lives_ok {
+        to_str(\$buf, $filename, 'text/html; charset=bogus');
+    } 'stringify with bogus charset (derived by meta header), guess iso';
+    has_danish_content($buf, 'ISO-8859-1', "ISO-8859-1-danish-bogus");
 }
 
 pass 'done';

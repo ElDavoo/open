@@ -36,7 +36,6 @@ sub to_string {
 
 our $temp_fh;
 our $temp_filename;
-our $enc;
 
 sub stringify_html {
     my ( $class, $buf_ref, $filename, $mime ) = @_;
@@ -47,7 +46,6 @@ sub stringify_html {
         "/tmp/htmlstringify-$$-XXXXXX", CLEANUP => 1);
     local $temp_fh = $tfh;
     local $temp_filename = $tfilename;
-    local $enc;
 
     binmode $temp_fh, ':utf8';
 
@@ -105,11 +103,19 @@ our $parser;
 
 sub _run_stringifier {
     my ($filename, $charset) = @_;
-    $charset = _detect_charset($filename) unless $charset;
 
-    $charset = lc($1).lc($2) if ($charset =~ /^(utf|ucs)-?(.+)$/);
-    $enc = Encode::find_encoding($charset)
-        || Encode::find_encoding('ISO-8859-1');
+    my $enc;
+    if ($charset) {
+        $charset = lc($1).lc($2) if ($charset =~ /^(utf|ucs)-?(.+)$/);
+        $enc = Encode::find_encoding($charset);
+    }
+
+    unless ($charset && $enc) {
+        $charset = _detect_charset($filename);
+        $enc = Encode::find_encoding($charset) if $charset;
+    }
+
+    $enc ||= Encode::find_encoding('ISO-8859-1');
 
     # Could use a PerlIO layer and ->parse_file, but we want un-decodable
     # characters converted into HTML entities as a fallback mode.
