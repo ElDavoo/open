@@ -182,6 +182,11 @@ sub _got_start {
     if ($tag eq 'a') {
         my $i = firstidx { $_ eq 'href' } @_;
         $txt = $_[$i+1] if ($i >= 0 && $i <= $#_);
+
+        # don't emit relative links or links missing a scheme (e.g. http:)
+        if ($txt and $txt =~ m#^/# || $txt !~ m#^[a-z]+:#i) {
+            undef $txt;
+        }
     }
     elsif ($tag eq 'meta') {
         my %attr = @_;

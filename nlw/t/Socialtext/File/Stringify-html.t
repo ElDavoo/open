@@ -1,7 +1,7 @@
 #!perl
 use warnings;
 use strict;
-use Test::More tests => 116;
+use Test::More tests => 119;
 use Test::Exception;
 use File::Basename qw(dirname);
 use utf8;
@@ -49,6 +49,7 @@ sub has_danish_content ($$;$) {
         "$name a-tag link href plus text"; # "link text"
     ok $buf !~ /\Qconsole.log/, "$name no script content";
     ok $buf !~ /\QIgnored/, "$name no style content";
+    ok $buf !~ m#\Qrelative#, "$name no relative links output";
 }
 
 missing: {
