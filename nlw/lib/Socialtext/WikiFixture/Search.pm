@@ -13,6 +13,10 @@ extends 'Socialtext::WikiFixture::SocialRest';
 after 'init' => sub {
     shell_run('nlwctl -c stop');
     shell_run('ceq-rm .');
+    if (Socialtext::AppConfig->syslog_level ne 'debug') {
+        Socialtext::AppConfig->set('syslog_level' => 'debug');
+        Socialtext::AppConfig->write();
+    }
 };
 
 sub set_searcher {
