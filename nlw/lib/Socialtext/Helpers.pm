@@ -334,6 +334,10 @@ sub global_template_vars {
     return %result;
 }
 
+sub clean_user_frame_cache {
+    system("find " . user_frame_path() . " -mindepth 1 -print0 | xargs -0 rm -rf");
+}
+
 sub user_frame_path {
     return Socialtext::Paths::cache_directory('user_frame');
 }

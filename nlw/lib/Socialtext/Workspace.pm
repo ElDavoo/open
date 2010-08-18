@@ -1087,6 +1087,10 @@ around 'enable_plugin','disable_plugin' => sub {
     return $self->$code($plugin, 'workspace');
 };
 
+after 'enable_plugin','disable_plugin' => sub {
+    Socialtext::Helpers->clean_user_frame_cache();
+};
+
 sub comment_form_custom_fields {
     my $self = shift;
 
