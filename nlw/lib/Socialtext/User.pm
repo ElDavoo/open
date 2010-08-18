@@ -1758,7 +1758,6 @@ sub primary_account {
 
         Socialtext::Cache->clear('authz_plugin');
 
-        my $deleted_acct = Socialtext::Account->Deleted;
         # Update account membership. Business logic says to keep
         # the user as a member of the old account.
 
