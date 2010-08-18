@@ -1969,8 +1969,21 @@ sub comment_page {
 sub post_signal {
     my $self = shift;
     my $content = shift;
-    my $extra = shift || "{}";
-    my $blob = decode_json($extra);
+    my $extra = shift;
+
+    my $blob;
+    if (defined $extra) {
+        $blob = decode_json($extra);
+    }
+    else {
+        # look up the account by name instead of using %%account_id%%
+        # because %%account%% is probably more pervasive.
+        my $acct = Socialtext::Account->new(name => $self->{account});
+        $blob = {
+            account_ids => [ $acct->account_id ],
+            group_ids => [ $self->{group_id} ],
+        };
+    }
 
     $blob->{signal} = $content;
     $self->post_json('/data/signals', encode_json( $blob ));
