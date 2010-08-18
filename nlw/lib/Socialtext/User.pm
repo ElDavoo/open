@@ -1767,6 +1767,8 @@ sub primary_account {
             );
         }
 
+        $self->_call_hook('nlw.user.primary_account');
+
         require Socialtext::JobCreator;
         Socialtext::JobCreator->index_person( $self );
     }
