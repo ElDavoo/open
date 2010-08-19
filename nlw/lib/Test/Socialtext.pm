@@ -685,6 +685,7 @@ sub set_as_default_account($) {
 sub looks_like_pdf_ok($;$) {
     my $pdf = shift;
     my $msg = shift || 'looks like a PDF';
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
     my $pdf_start = $pdf =~ qr/\A%PDF-\d+\.\d+/;
     my $pdf_end   = $pdf =~ qr/%%EOF\Z/;
     ok $pdf_start && $pdf_end, $msg;
