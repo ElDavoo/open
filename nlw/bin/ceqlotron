@@ -306,6 +306,9 @@ sub load_jobs {
     require Socialtext::User;
     require Socialtext::Workspace;
 
+    require Socialtext::File::Stringify;
+    Socialtext::File::Stringify->PreLoad();
+
     # `require` the Jobs, but don't register them yet
     Socialtext::Jobs->load_all_jobs();
 }

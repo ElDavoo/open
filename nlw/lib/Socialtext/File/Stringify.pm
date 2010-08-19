@@ -152,6 +152,14 @@ sub to_string {
     }
 }
 
+sub PreLoad {
+    my $class = shift;
+    # pre-load any predominantly Perl-based stringifiers here.
+    require Socialtext::File::Stringify::Default;
+    require Socialtext::File::Stringify::text_plain;
+    require Socialtext::File::Stringify::text_html;
+}
+
 1;
 __END__
 
