@@ -4,7 +4,7 @@ use Moose;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
-with 'Socialtext::CoalescingJob';
+with 'Socialtext::CoalescingJob', 'Socialtext::IndexingJob';
 
 sub do_work {
     my $self    = shift;

@@ -3,7 +3,7 @@ package Socialtext::Job::PageIndex;
 use Moose;
 
 extends 'Socialtext::Job', 'Socialtext::Job::PageIndex::Base';
-with 'Socialtext::CoalescingJob';
+with 'Socialtext::CoalescingJob', 'Socialtext::IndexingJob';
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

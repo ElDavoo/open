@@ -645,27 +645,18 @@ sub _commit {
     my $self = shift;
     my $docs = $self->_docs || [];
 
-    _debug("Preparing to finalize index.");
-    eval {
-        # there used to be code here to delete docs before adding them, but
-        # apparently this isn't necessary:
-        # http://lucene.apache.org/solr/tutorial.html#Updating+Data
+    if (@$docs) {
+        st_log->debug('Adding '.@$docs.' documents to index');
+        my $t2 = time_scope('solr_add');
+        $self->solr->add($docs);
+    }
 
-        if (@$docs) {
-            st_log->debug('Adding '.@$docs.' documents to index');
-            my $t2 = time_scope('solr_add');
-            $self->solr->add($docs);
-        }
+    if ($self->always_commit) {
+        my $t = time_scope('solr_commit');
+        $self->solr->commit();
+    }
 
-        if ($self->always_commit) {
-            my $t = time_scope('solr_commit');
-            $self->solr->commit();
-        }
-    };
-    my $err = $@;
-    die $err if $err;
     $self->_clear_docs;
-    _debug("Done finalizing index.");
 }
 
 __PACKAGE__->meta->make_immutable;

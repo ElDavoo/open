@@ -4,10 +4,6 @@ use Moose::Role;
 
 requires 'indexer';
 
-override 'keep_exit_status_for' => sub { 24 * 60 * 60 };
-override 'retry_delay'          => sub { 12 * 60 * 60 };
-override 'max_retries'          => sub { 14 };
-
 around '_build_indexer' => sub {
     my $code = shift;
     my $indexer = $code->(@_);

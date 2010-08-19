@@ -20,6 +20,11 @@ our @EXPORT = qw(init delete_page search_for_term
                  create_and_confirm_page turn_on_rampup
                  turn_off_rampup);
 
+if (Socialtext::AppConfig->syslog_level ne 'debug') {
+    Socialtext::AppConfig->set('syslog_level' => 'debug');
+    Socialtext::AppConfig->write();
+}
+
 sub hub {
     return Test::Socialtext::main_hub();
 };

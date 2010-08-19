@@ -4,7 +4,7 @@ use Moose;
 use Socialtext::Job::PageIndex;
 
 extends 'Socialtext::Job', 'Socialtext::Job::PageIndex::Base';
-with 'Socialtext::ReIndexJob';
+with 'Socialtext::ReIndexJob', 'Socialtext::IndexingJob';
 
 override unlink_cached_wikitext_linkers => sub {};
 
