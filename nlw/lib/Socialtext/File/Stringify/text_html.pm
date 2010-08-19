@@ -110,11 +110,12 @@ sub _run_stringifier {
         $enc = Encode::find_encoding($charset);
     }
 
-    unless ($charset && $enc) {
+    unless ($charset && $enc && ref($enc)) {
         $charset = _detect_charset($filename);
         $enc = Encode::find_encoding($charset) if $charset;
     }
 
+    undef $enc unless ref($enc);
     $enc ||= Encode::find_encoding('ISO-8859-1');
 
     # Could use a PerlIO layer and ->parse_file, but we want un-decodable
@@ -158,9 +159,7 @@ sub _detect_charset {
         Encode::Guess->set_suspects(
             qw/UTF-32LE UTF-16LE UTF-32BE UTF-16BE UTF-8/);
         my $guess = Encode::Guess->guess($first_1k);
-        if (defined $guess) {
-            $charset = $guess->name;
-        }
+        $charset = $guess->name if ($guess && ref($guess));
     }
 
     $charset ||= 'UTF-8';
