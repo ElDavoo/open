@@ -236,7 +236,10 @@ sub global_template_vars {
     };
 
     my $locale = $hub->display->preferences->locale;
-    my $frame_name = $ENABLE_FRAME_CACHE ? $self->_render_user_frame : 'layout/html';
+    my $use_frame_cache
+        = $ENABLE_FRAME_CACHE && $self->hub->skin->skin_name ne 's2';
+    my $frame_name
+        = $use_frame_cache ? $self->_render_user_frame : 'layout/html';
     my %result = (
         frame_name        => $frame_name,
         firebug           => $hub->rest->query->param('firebug') || 0,
@@ -364,7 +367,6 @@ sub _render_user_frame {
 
     return $frame_tmpl if -f $frame_file;
 
-    warn "Rendering layout frame $tmpl_name";
     Socialtext::Timer->Continue('render_user_frame');
     my $renderer = Socialtext::TT2::Renderer->instance();
     my $frame_content = $renderer->render(
