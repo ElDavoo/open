@@ -19,8 +19,8 @@ sub to_string {
     my $temp_filename = $tmp->filename;
     $tmp->unlink_on_destroy(1);
 
-    # If 'wvText' fails, fall back on the "any' mode.
-    backtick('wvText', $filename, $temp_filename, {stdout => \undef});
+    my $ignored = '';
+    backtick('wvText', $filename, $temp_filename, {stdout => \$ignored});
     if (my $err = $@) {
         st_log->warning("Failed to index $filename: $err");
         Socialtext::File::Stringify::Default->to_string($buf_ref, $filename,
