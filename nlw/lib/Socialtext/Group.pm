@@ -596,12 +596,16 @@ sub to_hash {
 sub users_as_minimal_arrayref {
     my $self = shift;
     my $role_name = shift;
-    my $role = Socialtext::Role->new(name => $role_name);
+
+    my %user_roles_params;
+    if ($role_name and (my $role = Socialtext::Role->new(name => $role_name))) {
+        $user_roles_params{role_id} = $role->role_id;
+    }
 
     my @members;
-    my $cursor = $self->user_roles(role_id => $role->role_id);
+    my $cursor = $self->user_roles(%user_roles_params);
     while (my $ur = $cursor->next) {
-        my ($user,$role) = @$ur;
+        my ($user, $role) = @$ur;
         my $hash = $user->to_hash(minimal => 1);
         $hash->{role} = $role->name;
         push @members, $hash;
