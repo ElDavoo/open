@@ -19,6 +19,8 @@ sub to_string {
     my $temp_filename = $tmp->filename;
     $tmp->unlink_on_destroy(1);
 
+    # NOTE: wvText actually uses elinks internally for some HTML conversion
+    # (no idea why).
     my $ignored = '';
     backtick('wvText', $filename, $temp_filename, {stdout => \$ignored});
     if (my $err = $@) {
