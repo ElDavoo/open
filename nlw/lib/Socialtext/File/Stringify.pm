@@ -19,7 +19,10 @@ use File::Path qw/rmtree/;
 # See {link dev-tasks [KinoSearch - Maximum File Size Cap]} for more
 # information.  However, large attachments seem to really mess with Solr, so
 # we're going to keep this for now.
-use constant MAX_STRING => 20 * 2**20; # 20MiB
+# Update: 20MiB makes Solr run out of memory too infrequently.  Since solr
+# fields can only use 10k in our config, and since 10000 english words are
+# roughly 50kB, i've set this to 64kiB
+use constant MAX_STRING => 64 * 2**10; # 64kiB
 
 sub to_string {
     my ( $class, $buf_ref, $filename, $type ) = @_;
