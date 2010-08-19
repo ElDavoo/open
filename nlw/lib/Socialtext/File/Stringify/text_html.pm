@@ -35,17 +35,19 @@ sub to_string {
 }
 
 our $temp_fh;
-our $temp_filename;
 
 sub stringify_html {
     my ( $class, $buf_ref, $filename, $mime ) = @_;
 
     my ($charset) = ($mime =~ /charset=(.+);?/);
 
-    my ($tfh, $tfilename) = tempfile(
-        "/tmp/htmlstringify-$$-XXXXXX", CLEANUP => 1);
-    local $temp_fh = $tfh;
-    local $temp_filename = $tfilename;
+    my $temp_filename;
+    local $temp_fh;
+    ($temp_fh, $temp_filename) = tempfile(
+        "/tmp/htmlstringify-$$-XXXXXX", UNLINK => 0);
+    # Anonymize the tempfile. Reduces the likelyhood of other procs reading it
+    # and to automagically cleans up the storage once we drop the file-handle.
+    unlink $temp_filename;
 
     binmode $temp_fh, ':utf8';
 
@@ -81,7 +83,9 @@ sub stringify_html {
         # XXX: this doesn't work when Test::Socialtext is used?!
         Socialtext::System::_vmem_limiter();
 
-        _run_stringifier($filename, $charset);
+        eval { _run_stringifier($filename, $charset); };
+        if ($@) { warn $@; die $@ }
+
         $temp_fh->flush or die "can't flush: $!";
         close $temp_fh or die "can't close: $!";
         POSIX::_exit(0);
@@ -91,6 +95,7 @@ sub stringify_html {
     seek $temp_fh, 0, 0; # rewind
     binmode $temp_fh, ':mmap';
     $$buf_ref = do { local $/; <$temp_fh> };
+    close $temp_fh;
 
     # And because it just wrote the file as utf8 so we can safely just switch
     # the flag on.
