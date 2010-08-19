@@ -1069,7 +1069,7 @@ EOSQL
 SELECT user_id
   FROM "UserMetadata"
   JOIN "Account" ON "Account".account_id = "UserMetadata".primary_account_id
- ORDER BY "Account".name $p{sort_order}
+ ORDER BY "Account".name $p{sort_order}, user_id ASC
  LIMIT ? OFFSET ?
 EOSQL
         );

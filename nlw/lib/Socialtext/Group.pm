@@ -599,7 +599,7 @@ sub users_as_minimal_arrayref {
     my $role = Socialtext::Role->new(name => $role_name);
 
     my @members;
-    my $cursor = $self->user_roles( $role ? (role_id => $role->role_id) : () );
+    my $cursor = $self->user_roles(role_id => $role->role_id);
     while (my $ur = $cursor->next) {
         my ($user,$role) = @$ur;
         my $hash = $user->to_hash(minimal => 1);
