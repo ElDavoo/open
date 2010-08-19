@@ -143,6 +143,7 @@ sub _add_page_doc {
         my $t = time_scope('solr_page_body');
         $body = $page->_to_plain_text;
         _scrub_body(\$body);
+        $self->_truncate( $id, \$body );
     }
 
     my $tags = $page->metadata->Category;
@@ -242,7 +243,7 @@ sub _add_attachment_doc {
         # that we can still index metadata.
         if (length $body) {
             _scrub_body(\$body);
-            $self->_truncate( $key, \$body );
+            $self->_truncate( $id, \$body );
         }
     }
 
@@ -280,14 +281,13 @@ sub _add_attachment_doc {
 # See {link dev-tasks [KinoSearch - Maximum File Size Cap]} for more
 # information.
 sub _truncate {
-    my ( $self, $key, $text_ref ) = @_;
+    my ( $self, $id, $text_ref ) = @_;
     my $max_size = Socialtext::File::Stringify::MAX_STRING;
     return if length($$text_ref) <= $max_size;
-    my $info = ($self->ws_name ? "ws = " . $self->ws_name . ' '
-                              : '')
-                . " key = $key";
-    _debug("Truncating text to $max_size characters:  $info");
-    $$text_ref = substr( $$text_ref, 0, $max_size );
+    st_log()->info("Trimming $id from ".length($$text_ref)." to $max_size");
+    _debug("Truncating text to $max_size characters: $id");
+    substr($$text_ref, $max_size) = '';
+    return;
 }
 
 ##################

@@ -33,7 +33,6 @@ sub to_string {
     $type ||= mime_type($filename, $filename);
     st_log()->info("Stringify: $type - $filename");
 
-
     # some stringifiers emit a bunch of junk into the cwd/$HOME
     # (I'm looking at you, ELinks)
     my $tmpdir = tempdir(CLEANUP=>1);
@@ -61,6 +60,7 @@ sub to_string {
     rmtree $tmpdir;
 
     ensure_ref_is_utf8($buf_ref);
+    st_log()->info("Stringify: done $filename - ".length($buf_ref)." characters");
     return;
 }
 
