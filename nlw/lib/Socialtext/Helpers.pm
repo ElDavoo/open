@@ -18,6 +18,7 @@ use Socialtext::String ();
 use Apache::Cookie;
 use Email::Address;
 use Email::Valid;
+use File::Path ();
 
 our $ENABLE_FRAME_CACHE = 1;
 my $PROD_VERSION = Socialtext->product_version;
@@ -376,7 +377,7 @@ sub _render_user_frame {
     );
 
     unless (-d $frame_dir) {
-        mkpath $frame_dir or die "Could not create $frame_dir: $!";
+        File::Path::mkpath($frame_dir) or die "Could not create $frame_dir: $!";
     }
 
     Socialtext::File::set_contents_utf8($frame_file, $frame_content);
