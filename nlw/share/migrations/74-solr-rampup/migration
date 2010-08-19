@@ -22,9 +22,11 @@ create_job('SwitchToSolr');
 
 warn "Clearing out old page & attachment data from solr\n";
 shell_run("/etc/init.d/socialtext-solr start");
+sleep 3; # need to wait for it to start up
 my $indexer = Socialtext::Search::Solr::Indexer->new;
 $indexer->solr->delete_by_query(q{doctype:page OR doctype:attachment});
 $indexer->solr->commit;
 shell_run("/etc/init.d/socialtext-solr stop");
+sleep 3;
 
 exit 0;
