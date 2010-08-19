@@ -335,7 +335,9 @@ sub global_template_vars {
 }
 
 sub clean_user_frame_cache {
-    system("find " . user_frame_path() . " -mindepth 1 -print0 | xargs -0 rm -rf");
+    if (-d user_frame_path()) {
+        system("find " . user_frame_path() . " -mindepth 1 -print0 | xargs -0 rm -rf");
+    }
 }
 
 sub user_frame_path {
