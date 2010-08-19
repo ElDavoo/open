@@ -22,7 +22,7 @@
 
     <% FILTER decorate "head" %>
     <title>[% title || display_title %][% IF workspace_present AND wiki.title %] / [% wiki.title %][% END %]</title>
-    <% PROCESS element/css_links %>
+    [% PROCESS element/css_links %]
     [% IF feeds %]
       [% IF feeds.rss %]
         [% FOREACH feed IN feeds.rss %]
@@ -59,7 +59,7 @@
       [% INCLUDE $head_template %]
     [% END %]
 
-    <% INCLUDE "element/wiki/js-bootstrap" %>
+    [% INCLUDE "element/wiki/js-bootstrap" %]
 
     [% IF customjs %]
     <script type="text/javascript" charset="utf-8" src="[% customjs %]"></script>
@@ -100,7 +100,7 @@
           </ul>
           [% IF !authen_page %]
           <div>
-            <% INCLUDE element/search_form %>
+            [% INCLUDE element/search_form %]
           </div>
           [% END %]
         </div><!-- globalNav END -->
