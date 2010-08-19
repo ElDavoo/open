@@ -512,7 +512,7 @@ sub to_hash {
         = Socialtext::Account->new(account_id => $hash->{account_id})->name;
 
     $hash->{is_all_users_workspace}
-        = $self->is_all_users_workspace;
+        = $self->is_all_users_workspace ? 1 : 0;
 
     return $hash;
 }
