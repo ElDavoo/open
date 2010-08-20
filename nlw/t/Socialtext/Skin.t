@@ -18,6 +18,8 @@ BEGIN {
     $Socialtext::Skin::PROD_VER = '1.0';
 }
 
+my $test_root = Test::Socialtext::Environment->instance->root_dir;
+
 # Cascading S3 Skin
 {
     my $hub = Socialtext::Hub->new;
@@ -41,7 +43,7 @@ BEGIN {
 
     is_deeply($hub->skin->template_paths, [
         "t/share/skin/s2/template",
-        "$ENV{ST_CURRENT}/nlw/t/tmp/cache/user_frame",
+        "$test_root/cache/user_frame",
         "t/share/skin/s3/template",
         "t/share/skin/cascades_s3/template",
     ], 'Custom s3 skin has both template dirs');
@@ -70,7 +72,7 @@ BEGIN {
 
     is_deeply($hub->skin->template_paths, [
         "t/share/skin/s2/template",
-        "$ENV{ST_SRC_BASE}/socialtext/nlw/t/tmp/cache/user_frame",
+        "$test_root/cache/user_frame",
         "t/share/skin/cascades_s2/template",
     ], 'Cascading skin has both template dirs');
 }
@@ -94,7 +96,7 @@ BEGIN {
 
     is_deeply($hub->skin->template_paths, [
         "t/share/skin/s2/template",
-        "$ENV{ST_CURRENT}/nlw/t/tmp/cache/user_frame",
+        "$test_root/cache/user_frame",
         "t/share/skin/nocascade/template",
     ], 'Non cascading skin has both template dirs');
 }
@@ -118,7 +120,7 @@ BEGIN {
 
     is_deeply($hub->skin->template_paths, [
         "t/share/skin/s2/template",
-        "$ENV{ST_CURRENT}/nlw/t/tmp/cache/user_frame",
+        "$test_root/cache/user_frame",
         "t/share/skin/s3/template",
     ], 'S3 skin has both template dirs');
 }
@@ -149,7 +151,7 @@ my $info_file = 't/share/uploaded-skin/admin/info.yaml';
 
     is_deeply($hub->skin->template_paths, [
         "t/share/skin/s2/template",
-        "$ENV{ST_CURRENT}/nlw/t/tmp/cache/user_frame",
+        "$test_root/cache/user_frame",
         "t/share/uploaded-skin/admin/template",
     ], 'Uploaded templates are included in template_paths');
 }
@@ -182,7 +184,7 @@ my $info_file = 't/share/uploaded-skin/admin/info.yaml';
 
     is_deeply($hub->skin->template_paths, [
         "t/share/skin/s2/template",
-        "$ENV{ST_CURRENT}/nlw/t/tmp/cache/user_frame",
+        "$test_root/cache/user_frame",
         "t/share/skin/s3/template",
         "t/share/uploaded-skin/admin/template",
     ], 'Uploaded templates are included in template_paths');
@@ -196,7 +198,7 @@ my $info_file = 't/share/uploaded-skin/admin/info.yaml';
     is $cascades_s2->skin_info->{cascade_css}, 1, 'cascades_s2 cascades_s2';
     is_deeply($cascades_s2->template_paths, [
         "t/share/skin/s2/template",
-        "$ENV{ST_CURRENT}/nlw/t/tmp/cache/user_frame",
+        "$test_root/cache/user_frame",
         "t/share/skin/cascades_s2/template",
     ], 'Cascading skin has both template dirs');
 }
