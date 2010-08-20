@@ -50,6 +50,7 @@ for my $template (@templates) {
         paths    => \@paths,
         vars     => {
             pluggable => FakePluggable->new,
+            frame_name => 'layout/html',
         },
     );
     exit;
