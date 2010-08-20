@@ -231,17 +231,19 @@ sub log_job {
     my $job = shift;
 
     my $verb = 'finished';
-    my @failures;
-    eval {
-        my $ex = $job->exit_status;
-        unless (defined $ex && $ex == 0) {
-            $verb = (defined $ex) ? 'failed' : 'tempfailed';
-            @failures = $job->failure_log;
-        }
-    };
-    if ($@) {
-        $verb = 'failed';
-        push @failures, "failed to get failures: $@" if $@;
+    my ($ex, $msg) = Socialtext::Jobs->get_last_status($job);
+    if (defined $ex && $ex == 0) {
+        $msg = '';
+    }
+    else {
+        $verb = (defined $ex) ? 'failed' : 'tempfailed';
+        $msg ||= '';
+    }
+
+    my $msg_summary;
+    if ($msg) {
+        $msg =~ s/^\s+//sg;
+        ($msg_summary = $msg) =~ s/\n.+//sg;
     }
 
     st_timed_log(
@@ -250,10 +252,11 @@ sub log_job {
         {
             %{$job->arg},
             jobid => $job->jobid,
-            (@failures == 0) ? () : (failures => \@failures),
+            ($msg ? (failures => [$msg_summary]) : ()),
         },
         Socialtext::Timer->Report()
     );
+    st_log()->error('Full error for last job: '.$msg) if $msg;
 
     return $verb;
 }

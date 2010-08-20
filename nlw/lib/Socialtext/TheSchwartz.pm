@@ -257,5 +257,32 @@ sub job_count {
     return $count;
 }
 
+sub get_last_status {
+    my ($self, $thing) = @_;
+    my $jobid;
+    if (ref($thing) && $thing->can('jobid')) {
+        $jobid = $thing->jobid;
+    }
+    else {
+        $jobid = $thing;
+    }
+
+    die "no jobid" unless $jobid;
+
+    my $sth = Socialtext::SQL::sql_execute(q{
+        SELECT 'status' AS col, status::text
+        FROM exitstatus
+        WHERE jobid = $1
+        UNION ALL (
+            SELECT 'error' AS col, message::text
+            FROM error
+            WHERE jobid = $1
+            ORDER BY error_time DESC LIMIT 1
+        )
+    }, $jobid);
+    my %status = map { $_->[0] => $_->[1] } @{$sth->fetchall_arrayref || []};
+    return $status{status}, $status{error};
+}
+
 __PACKAGE__->meta->make_immutable;
 1;
