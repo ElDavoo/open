@@ -6,6 +6,7 @@ use Socialtext::Migration::Utils qw/create_job_for_each_workspace create_job/;
 use Socialtext::AppConfig;
 use Socialtext::System qw/shell_run/;
 use Socialtext::Search::Solr::Indexer;
+use LWP::UserAgent;
 
 # Explicitly set kinosearch as our search_factory_class so we can change the
 # default for new appliances.
@@ -22,7 +23,17 @@ create_job('SwitchToSolr');
 
 warn "Clearing out old page & attachment data from solr\n";
 shell_run("/etc/init.d/socialtext-solr start");
-sleep 3; # need to wait for it to start up
+
+# Wait for Solr to start
+my $ua = LWP::UserAgent->new;
+while (my $resp = $ua->get("http://localhost:8983/solr/core0/admin/ping")) {
+    if ($resp->code == 200) {
+        last;
+    }
+    warn "Waiting for Solr to start ...\n";
+    sleep 3;
+}
+
 my $indexer = Socialtext::Search::Solr::Indexer->new;
 $indexer->solr->delete_by_query(q{doctype:page OR doctype:attachment});
 $indexer->solr->commit;
