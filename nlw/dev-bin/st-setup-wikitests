@@ -12,7 +12,7 @@ $NLW_BIN/st-admin give-accounts-admin  --e $USERNAME  >/dev/null 2>/dev/null || 
 $NLW_BIN/st-admin give-system-admin  --e $USERNAME  >/dev/null 2>/dev/null || true
 
 echo "Set up wikitests"
-#    $NLW_DEVBIN/wikitests-to-wiki
+    $NLW_DEVBIN/wikitests-to-wiki
 
 echo ENABLING Socialcalc for all workspaces
 $NLW_DEVBIN/st-socialcalc enable
