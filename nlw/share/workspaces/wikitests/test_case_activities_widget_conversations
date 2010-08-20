@@ -65,8 +65,8 @@
 | wait_for_element_not_visible_ok | limit | 30000 |
 | wait_for_element_not_visible_ok | st-savebutton-%%activities_widget%% | 30000 |
 
-| *Comment* | Test Case: Activities Widget Conversations you have to wait for the widget to load |  |
-| pause | 12000 | I hate pause |
+| *Comment* | Test Case: Activities Widget Conversations reopen dashboard |  |
+| open_ok | /st/dashboard |  |
 
 | *Comment* | Test Case: Activities Widget Conversations Verify Edits and Comments |  |
 
