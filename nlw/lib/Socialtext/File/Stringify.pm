@@ -60,7 +60,7 @@ sub to_string {
     rmtree $tmpdir;
 
     ensure_ref_is_utf8($buf_ref);
-    st_log()->info("Stringify: done $filename - ".length($buf_ref)." characters");
+    st_log()->info("Stringify: done $filename - ".length($$buf_ref)." characters");
     return;
 }
 
