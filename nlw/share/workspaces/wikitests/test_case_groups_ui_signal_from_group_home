@@ -8,15 +8,17 @@
 | st-admin | enable-plugin --account %%group_acct%% --plugin signals |  |
 | st-admin | enable-plugin --account %%group_acct%% --plugin groups |  |
 
-| st-logoutin | %%group_user%% | %%password%% |  |
-| open_ok | /?group/%%group_id%% |  |  |
+| st-logoutin | %%group_user%% | %%password%% |
+| open_ok | /?group/%%group_id%% |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home. SELECT Signal, Send Signal, Verify |  |
 | st-name-widget | 3 | activity_widget |
 | set | mysignal_1 | Signal 1 %%start_time%% |
 | set | mysignal_2 | Signal 2 %%start_time%% |
-| st-send-signal-via-activities-widget | activity_widget | %%mysignal_1%% |
-| st-send-signal-via-activities-widget | activity_widget | %%mysignal_2%% |
+| st-send-signal-in-activities-widget | %%mysignal_1%% |  |
+| open_ok | /?group/%%group_id%% |  |
+| st-send-signal-in-activities-widget | %%mysignal_2%% |  |
+
 | st_verify_text_in_activities_widget | activity_widget | %%mysignal_1%% |
 | st_verify_text_in_activities_widget | activity_widget | qr/You.+minute.+ago to %%group_name%%/ |
 | st_verify_text_in_activities_widget | activity_widget | %%mysignal_2%% |
@@ -39,28 +41,23 @@
 | text_like | st-editing-tools-edit | Signals |
 
 | st-name-widget | 1 | signals_widget |
-| st_verify_text_in_activities_widget | signals_widget | %%mysignal_1%% |
-| st_verify_text_in_activities_widget | signals_widget | qr/You.+minute.+ago to %%group_name%%/ |
-| st_verify_text_in_activities_widget | signals_widget | %%mysignal_2%% |
+| st_verify_text_within_activities_widget | %%mysignal_1%% |  |
+| st_verify_text_within_activities_widget | qr/You.+minute.+ago to %%group_name%%/ |  |
+| st_verify_text_within_activities_widget | %%mysignal_2%% |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Disable signals, do not see signal option |  |
 | st-admin | disable-plugin --plugin signals --account %%group_acct%% |  |
 | open_ok | /?group/%%group_id%% |  |
 | st-name-widget | 3 | activity_widget |
-| st-select-widget-frame | activity_widget |  |
 | text_unlike | //body | What are you working on? |
 | text_like | within %%group_name%% |  |
-| select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Enable signals, see signal option |  |
 | st-admin | enable-plugin --plugin signals --all-accounts |  |
 | open_ok | /?group/%%group_id%% |  |
 | st-name-widget | 3 | activity_widget |
-| st-select-widget-frame | activity_widget |  |
-| wait_for_element_present_ok | mainWikiwyg | 10000 |
-| text_like | What are you working on? |  |
-| text_like | within %%group_name%% |  |
-| select_frame | relative=parent |  |
+| wait_for_text_present_ok | What are you working on? | 10000 |
+| wait_for_text_present_ok | within %%group_name%% | 10000 |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Login as non group member, do not see signal |  |
 | st-admin | add-member --workspace %%group_ws%% --email %%username%% |  |

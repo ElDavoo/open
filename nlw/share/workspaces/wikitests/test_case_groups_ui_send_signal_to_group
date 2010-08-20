@@ -44,12 +44,14 @@
 | st_send_signal_via_activities_widget | signals_widget | %%account_signal%% |
 | st_verify_text_in_activities_widget | signals_widget | qr/You.+minute.+ago to %%group_acct%%/ |
 | st_verify_text_in_activities_widget | signals_widget | %%account_signal%% |
+| open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Choose within %%group_name%% |  |
 | *Comment* | Test Case: Groups UI Send Signal to Group. Post to should automagically become %%group_name%% |  |
 | click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[contains(text(),'%%group_name%%')] |  |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Send and check %%group_signal%% |  |
+
 | st_send_signal_via_activities_widget | signals_widget | %%group_signal%% |
 | st_verify_text_in_activities_widget | signals_widget | qr/You.+minute.+ago to %%group_name%%/ |
 | st_verify_text_in_activities_widget | signals_widget | %%group_signal%% |

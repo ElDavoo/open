@@ -42,8 +42,7 @@
 
 | *Comment* | logoutin hangs in IE. Try explicit %%emainuser%% ... |
 
-| click_ok | link=Log out |  |
-| pause | 8000 | I HATE pause |
+| open_ok | /nlw/submit/logout |  |
 | open_ok | /challenge |  |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
@@ -73,6 +72,7 @@
 
 | *Comment* | Test Case: Signals/Activities Interaction Signal, Mention, Reply, Edit Summaries, Delete |  |
 | st-send-signal-via-activities-widget | signals_widget | %%mainuser%% simple signals |
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | signals_widget | {user: %%efriend%%} mention |
 
 | *Comment* | Test Case:Signals/Activities Interaction Start following %%followed%% |  |
@@ -91,8 +91,7 @@
 
 | *Comment* | logoutin hangs in IE. Try explicit %%efollowed%% ... |
 
-| click_ok | link=Log out |  |
-| pause | 8000 | I HATE pause |
+| open_ok | /nlw/submit/logout |  |
 | open_ok | /challenge |  |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
@@ -108,7 +107,9 @@
 
 | *Comment* | Test Case: Signals/Activities Interaction %%efollowed%% Signal, Mention, Reply, Edit Summaries, Delete |  |
 | st-send-signal-via-activities-widget | signals_widget | %%followed%% simple signal |
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%followed%% |
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%followed%% |
 
 | *Comment* | Wait for frame to appear before proceeding |  |
@@ -116,8 +117,8 @@
 
 | *Comment* | logoutin hangs in IE. Try explicit %%efriend%% ... |
 
-| click_ok | link=Log out |  |
-| pause | 8000 | I HATE pause |
+| open_ok | /nlw/submit/logout |  |
+| open_ok | /challenge |  |
 | open_ok | /challenge |  |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
@@ -131,7 +132,9 @@
 | st-name-widget | 1 | signals_widget |
 | st-widget-title-like | signals_widget | Activities |
 | st-send-signal-via-activities-widget | signals_widget | %%friend%% simple signal |
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%friend%% |
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%friend%% |
 
 | *Comment* | Wait for frame to appear before proceeding |  |
@@ -139,8 +142,7 @@
 
 | *Comment* | logoutin hangs in IE. Try explicit %%econversant%% ... |
 
-| click_ok | link=Log out |  |
-| pause | 8000 | I HATE pause |
+| open_ok | /nlw/submit/logout |  |
 | open_ok | /challenge |  |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
@@ -167,7 +169,9 @@
 | st-name-widget | 1 | signals_widget |
 | st-widget-title-like | signals_widget | Activities |
 | st-send-signal-via-activities-widget | signals_widget | %%conversant%% simple signal |
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%conversant%% |
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%conversant%% |
 
 | *Comment* | Wait for frame to appear before proceeding |  |
@@ -175,8 +179,7 @@
 
 | *Comment* | logoutin hangs in IE. Try explicit %%esecond%% ... |
 
-| click_ok | link=Log out |  |
-| pause | 8000 | I HATE pause |
+| open_ok | /nlw/submit/logout |  |
 | open_ok | /challenge |  |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
@@ -190,7 +193,9 @@
 | st-name-widget | 1 | signals_widget |
 | st-widget-title-like | signals_widget | Activities |
 | st-send-signal-via-activities-widget | signals_widget | %%second%% simple signal |
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | signals_widget | {user: %%emainuser%%} mention from %%second%% |
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%second%% |
 
 | *Comment* | Test Case: Signals/Activities Interaction TEARDOWN |  |

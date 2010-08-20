@@ -14,31 +14,27 @@
 
 | *Comment* | Test Case: Signals Page. Send four signals |  |
 | st-name-widget | 1 | signals_widget |
-| pause | 5000 | I hate pause |
 
 | *Comment* | Test Case: Signals Page. Once Upon A Time |  |
 | st_send_signal_via_activities_widget | signals_widget | Once Upon A Time %%start_time%% %%mark%% |
-| pause | 3000 |  |
+| open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Signals Page. I Remember Long Ago |  |
 | st_send_signal_via_activities_widget | signals_widget | I Remember Long Ago %%start_time%% %%mark%% |
-| pause | 3000 |  |
+| open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Signals Page. Way Back In History |  |
 | st_send_signal_via_activities_widget | signals_widget | Way Back In History %%start_time%% %%mark%% |
-| pause | 3000 |  |
+| open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Signals Page. I May Be Kinda Slow |  |
 | st_send_signal_via_activities_widget | signals_widget | I May Be Kinda Slow %%start_time%% %%mark%% |
-| pause | 3000 |  |
+| open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Signals Page. Process jobs. |  |
 | st-process-jobs | SignalIndex |  |
 
 | *Comment* | Test Case: Signals Page. Verify signals in page. |  |
-| st-name-widget | 1 | signal_activity |
-| st-select-widget-frame | signal_activity |  |
-
 | wait_for_text_present_ok | Once Upon A Time %%start_time%% %%mark%% | 30000 |
 | wait_for_text_present_ok | I Remember Long Ago %%start_time%% %%mark%% | 30000 |
 | wait_for_text_present_ok | Way Back In History %%start_time%% %%mark%% | 30000 |
@@ -48,6 +44,5 @@
 | wait_for_text_present_ok | minute | 30000 |
 | text_like | //body | qr/You.+to.+%%group%%/ism |
 | text_like | //body | qr/You.+minute.+ago/ |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Signals Page COMPLETED |  |

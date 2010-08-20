@@ -246,7 +246,9 @@ This assumes that the currently selected frame is the "parent" container frame.
 
 sub st_widget_title_like {
     my ($self, $logical, $opt1) = @_;
-    $self->{selenium}->text_like_ok("//span[\@class='widgetHeaderTitleText' and \@id='".$self->{_widgets}{$logical}."-title-text']", $opt1);
+    eval {
+        $self->{selenium}->text_like_ok("//span[\@class='widgetHeaderTitleText' and \@id='".$self->{_widgets}{$logical}."-title-text']", $opt1);
+    };
     ok( !$@, "st-widget-title-like" );
 
 }
@@ -367,7 +369,7 @@ sub st_single_widget_in_dashboard {
         $self->handle_command('wait_for_element_visible_ok', $str, 30000);
         $self->handle_command('click_and_wait' ,$str); 
         $self->handle_command('open_ok','/st/dashboard');
-        };
+    };
     ok(!$@, 'st_single_widget_in_dashboard' );
 }
 
@@ -431,7 +433,9 @@ Private flag only makes sense if the widget being used has a toggle-private elem
 
 sub st_send_signal_via_activities_widget {
     my ($self, $widgetname, $signaltosend, $private) = @_;
-    $self->st_send_signal_in_activities_widget($signaltosend, $private);
+    eval {
+        $self->st_send_signal_in_activities_widget($signaltosend, $private);
+    };
     ok(!$@, 'st_send_signal_via_activities_widget');
 }
 
@@ -466,7 +470,9 @@ PostCondition: Text is verified (or not), Frame focus is back to entire page
 
 sub st_verify_text_in_activities_widget {
     my ($self, $widgetname, $texttofind) = @_;
-    $self->st_verify_text_within_activities_widget($texttofind);
+    eval {
+        $self->st_verify_text_within_activities_widget($texttofind);
+    };
     ok(!$@, 'st_verify_text_in_activities_widget');
 }
 
@@ -481,7 +487,9 @@ Postcondition: Text is unverified (or not), Frame focus is back to entire page
 
 sub st_text_unlike_in_activities_widget  {
     my ($self, $widgetname, $notpresent) = @_;
-    $self->handle_command('text_unlike','//body', $notpresent);
+    eval {
+        $self->handle_command('text_unlike','//body', $notpresent);
+    };
     ok(!$@, 'st_text_unlike_in_activities_widget');
 }
 
@@ -497,10 +505,12 @@ PostCondition: link is found  (or not), Frame focus is back to entire page
 
 sub st_element_not_present_in_activities_widget {
     my ($self, $widgetname, $linktofind) = @_;
-    $self->handle_command('st-select-widget-frame', $widgetname);
-    $self->handle_command('pause', 3000);
-    $self->handle_command('wait_for_element_not_present_ok', $linktofind);
-    $self->handle_command('select-frame', 'relative=parent');
+    eval {
+        $self->handle_command('st-select-widget-frame', $widgetname);
+        $self->handle_command('pause', 3000);
+        $self->handle_command('wait_for_element_not_present_ok', $linktofind);
+        $self->handle_command('select-frame', 'relative=parent');
+    };
     ok(!$@, 'st-element-not-present-in-activities-widget');
 }
 
@@ -516,10 +526,12 @@ PostCondition: link is found  (or not), Frame focus is back to entire page
 
 sub st_verify_link_in_activities_widget {
     my ($self, $widgetname, $linktofind) = @_;
-    $self->handle_command('st-select-widget-frame', $widgetname);
-    $self->handle_command('pause', 3000);
-    $self->handle_command('wait_for_element_present_ok', $linktofind);
-    $self->handle_command('select-frame', 'relative=parent');
+    eval {
+        $self->handle_command('st-select-widget-frame', $widgetname);
+        $self->handle_command('pause', 3000);
+        $self->handle_command('wait_for_element_present_ok', $linktofind);
+        $self->handle_command('select-frame', 'relative=parent');
+    };
     ok(!$@, 'st-verify-link-in-activities-widget');
 }
       
@@ -566,16 +578,18 @@ search for it and click on that user.
 
 sub st_find_user {
     my ($self, $user_id) = @_;
-    $self->handle_command('open_ok','/?action=people');
-    $self->handle_command('wait_for_element_present_ok','st-search-action', 30000);
-    $self->handle_command('wait_for_element_present_ok', 'st-search-term', 30000);
-    $self->handle_command('wait_for_element_present_ok', 'st-search-submit', 30000);
-    $self->handle_command('select_ok', 'st-search-action', 'Search People:');
-    $self->handle_command('type_ok', 'st-search-term', $user_id);
-    $self->handle_command('click_and_wait', 'st-search-submit');
-    $self->handle_command('wait-for-element-visible-ok', "link=$user_id", 30000);
-    $self->handle_command('click_and_wait',"link=$user_id");
-    $self->handle_command('wait-for-element-visible-ok','new_tag',30000);
+    eval {
+        $self->handle_command('open_ok','/?action=people');
+        $self->handle_command('wait_for_element_present_ok','st-search-action', 30000);
+        $self->handle_command('wait_for_element_present_ok', 'st-search-term', 30000);
+        $self->handle_command('wait_for_element_present_ok', 'st-search-submit', 30000);
+        $self->handle_command('select_ok', 'st-search-action', 'Search People:');
+        $self->handle_command('type_ok', 'st-search-term', $user_id);
+        $self->handle_command('click_and_wait', 'st-search-submit');
+        $self->handle_command('wait-for-element-visible-ok', "link=$user_id", 30000);
+        $self->handle_command('click_and_wait',"link=$user_id");
+        $self->handle_command('wait-for-element-visible-ok','new_tag',30000);
+    };
     ok(!$@, 'st-find-user');
 }   
 

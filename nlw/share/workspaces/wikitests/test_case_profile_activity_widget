@@ -44,7 +44,7 @@
 | st-verify-text-in-activities-widget | activitieswidget | Private signal to %%tuser%% at %%start_time%% HURRAY |
 
 | *Comment* | Test Case: Profile Activity Widget. Clean start: navigate to the %%tuser%% Profile page |  |
-| st_process_jobs | PersonIndex  |  |
+| st_process_jobs | PersonIndex |  |
 | st_find_user | %%tuser%% |  |
 
 | *Comment* | Test Case: Profile Activity Widget. Probe the activities widget on the %%tuser%% Profile page |  |
@@ -53,7 +53,6 @@
 | text_like | Activities |  |
 | st-name-widget | 3 | activitieswidget |
 | st-widget-title-like | activitieswidget | Activities |
-| st-select-widget-frame | activitieswidget |  |
 | wait_for_text_present_ok | Showing | 10000 |
 | text_like | qr/Showing all events.*from.+%%tuser%%.*within/ism |  |
 
@@ -70,14 +69,14 @@
 | *Comment* | Test Case: Profile Activity Widget. ... with a checkbox that reads: (make this signal private: {{[]}}) |  |
 | text_like | qr/Make this signal private/ism |  |
 
-| *Comment* | Test Case: Profile Activity Widget. selecting the checkbox changes the message to "... composing a private message ..." |  |
+| *Comment* | Test Case: Profile Activity Widget. checking the checkbox changes the message to "... composing a private message ..." |  |
 | wait_for_element_visible_ok | //input[@class='toggle-private'] | 5000 |
 | click_ok | //input[@class='toggle-private'] | use click because js does not see check_ok |
 | is_checked_ok | //input[@class='toggle-private'] |  |
 | wait_for_text_present_ok | private | 5000 |
 | text_like | //div[@class='message mention'] | qr/You are composing a private message to.+%%tuser%%/ism |
 
-| *Comment* | Test Case: Profile Activity Widget. unselecting the checkbox changes the message back to "... composing a message ..." |  |
+| *Comment* | Test Case: Profile Activity Widget. unchecking the checkbox changes the message back to "... composing a message ..." |  |
 | click_ok | //input[@class='toggle-private'] |  |
 | pause | 5000 | I Hate Pause |
 | text_unlike | //div[@class='message mention'] | You are composing a private message |
@@ -86,26 +85,23 @@
 | *Comment* | Test Case: Profile Activity Widget. "Post to" |  |
 | text_like | qr/Post to/ism |  |
 
-| *Comment* | Test Case: Profile Activity Widget. select list values for "from <feed-type>" filter is only the user's name |  |
+| *Comment* | Test Case: Profile Activity Widget. list values for "from <feed-type>" filter is only the user's name |  |
 | text_like | qr/Showing all events.*from.+%%tuser%%.*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. ... and cannot be changed |  |
 | wait_for_element_not_present_ok | //span[@id='feed']/a | 5000 |
 | wait_for_element_not_present_ok | //ul[@id='st-dropdown-1-list'] | 5000 |
 
-| *Comment* | Test Case: Profile Activity Widget. Pulldown menus |  |
-| select_frame | relative=parent |  |
-
-| *Comment* | Test Case: Profile Activity Widget. select list values for ".. within <group>" filter shows all shared groups |  |
+| *Comment* | Test Case: Profile Activity Widget. list values for ".. within <group>" filter shows all shared groups |  |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All shared groups'] | 5000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[contains(text(),'%%shared_acct%%')] | 5000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[contains(text(),'%%shared_group%%')] | 5000 |
 
-| *Comment* | Test Case: Profile Activity Widget. "Post to" select list shows all shared groups between viewer and viewee |  |
+| *Comment* | Test Case: Profile Activity Widget. "Post to" list shows all shared groups between viewer and viewee |  |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[1]/a[contains(text(),'%%shared_acct%%')] | 5000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[2]/a[contains(text(),'%%shared_group%%')] | 5000 |
 
-| *Comment* | Test Case: Profile Activity Widget. select list values for "Showing <event-type>" filter are all the standard choices |  |
+| *Comment* | Test Case: Profile Activity Widget. list values for "Showing <event-type>" filter are all the standard choices |  |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[1]/a[text()='all events'] | 5000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[2]/a[text()='signals'] | 5000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[3]/a[text()='contributions'] | 5000 |
@@ -121,7 +117,6 @@
 | text_like | Activities |  |
 | st-name-widget | 3 | activitieswidget |
 | st-widget-title-like | activitieswidget | Activities |
-| st-select-widget-frame | activitieswidget |  |
 | wait_for_text_present_ok | Showing | 10000 |
 | text_like | qr/Showing all events.*from %%short_luser%%.*within/ism |  |
 

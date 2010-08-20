@@ -40,43 +40,33 @@
 | select_ok | limit | 25 |
 | click_ok | st-savebutton-%%activities_widget%% |  |
 | wait_for_element_not_visible_ok | limit | 30000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: People Dashboard Plugins See pages, Signals, Tags |  |
-| st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | edited %%page1%% in %%ws%% | 30000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
 | text_like | //body | tagged themself %%tagtoadd%% |
 | text_like | //body | %%signal1%% |
 | text_like | //body | %%signal2%% |
-| wait_for_element_visible_ok | post | 5000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: People Dashboard Plugins Disable Signals, see only pages, people tags |  |
 | st-admin | disable-plugin --plugin signals --account %%acct%% | is now disabled |
 | refresh |  |  |
 | st-name-widget | 1 | activities_widget |
-| st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | edited %%page1%% in %%ws%% | 30000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
 | text_like | //body | tagged themself %%tagtoadd%% |
 | text_unlike | //body | %%signal1%% |
 | text_unlike | //body | %%signal2%% |
-| wait_for_element_not_present_ok | post | 5000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: People Dashboard Plugins disable people see only pages NOT people tags or signals |  |
 | st-admin | disable-plugin --plugin people --account %%acct%% | is now disabled |
 | refresh |  |  |
 | st-name-widget | 1 | activities_widget |
-| st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | edited %%page1%% in %%ws%% | 30000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
 | text_unlike | //body | tagged themself %%tagtoadd%% |
 | text_unlike | //body | %%signal1%% |
 | text_unlike | //body | %%signal2%% |
-| wait_for_element_not_present_ok | post | 5000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: People Dashboard Plugins enable signals NOTE |  |
 | *Comment* | Test Case: People Dashboard Plugins enable signals NOTE This will implicitly enable people |  |
@@ -84,14 +74,11 @@
 | st-admin | enable-plugin --plugin signals --account %%acct%% | is now enabled |
 | refresh |  |  |
 | st-name-widget | 1 | activities_widget |
-| st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | edited %%page1%% in %%ws%% | 30000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
 | text_like | //body | tagged themself %%tagtoadd%% |
 | text_like | //body | %%signal1%% |
 | text_like | //body | %%signal2%% |
-| wait_for_element_visible_ok | post | 5000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: People Dashboard Plugins teardown |  |
 | st-admin | delete-workspace --no-export --w %%ws%% |  |
