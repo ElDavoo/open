@@ -383,7 +383,6 @@ sub _render_user_frame {
     }
 
     Socialtext::File::set_contents_utf8($frame_file, $frame_content);
-    warn "Wrote $frame_file";
     Socialtext::Timer->Pause('render_user_frame');
     return $frame_tmpl;
 }
