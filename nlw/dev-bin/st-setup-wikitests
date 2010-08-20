@@ -12,19 +12,21 @@ $NLW_BIN/st-admin give-accounts-admin  --e $USERNAME  >/dev/null 2>/dev/null || 
 $NLW_BIN/st-admin give-system-admin  --e $USERNAME  >/dev/null 2>/dev/null || true
 
 echo "Set up wikitests"
-    $NLW_DEVBIN/wikitests-to-wiki
+#    $NLW_DEVBIN/wikitests-to-wiki
 
 echo ENABLING Socialcalc for all workspaces
 $NLW_DEVBIN/st-socialcalc enable
 
-echo "Creating current help workspace"
-$NLW_BIN/st-create-help-workspace
+echo "Importing latest help workspace"
+$NLW_BIN/st-admin delete-workspace --workspace help-en --no-export
+$NLW_BIN/st-admin import-workspace --tarball $NLW_BIN/../share/l10n/help/help-en.tar.gz
 
-echo "CTRL-C to halt reports DB setup"
+echo "No longer populating reports DB"
+#echo "CTRL-C to halt reports DB setup"
 
-echo ""
-echo Populating reports DB
-export PGUSER=`st-config echo db_user`
-$NLW_DEVBIN/st-populate-reports-db
+#echo ""
+#echo Populating reports DB
+#export PGUSER=`st-config echo db_user`
+#$NLW_DEVBIN/st-populate-reports-db
 
 echo Done setting up wikitests

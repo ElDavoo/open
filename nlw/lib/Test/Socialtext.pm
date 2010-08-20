@@ -243,7 +243,7 @@ sub ceqlotron_run_synchronously() {
     my $workspace_name_or_id = shift;
     my $workspace;
 
-    if ($workspace_name_or_id =~ /^\d+$/) {
+    if ($workspace_name_or_id and $workspace_name_or_id =~ /^\d+$/) {
         $workspace = Socialtext::Workspace->new(
             workspace_id => $workspace_name_or_id
         );
