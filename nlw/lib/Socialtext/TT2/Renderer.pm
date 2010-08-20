@@ -113,9 +113,8 @@ sub _maybe_fetch {
         };
 
         if ( my $e = $@ ) {
-            warn "$output\n" if $output;
-            warn "Template Toolkit error:\n$e";
-            die "Template Toolkit error:\n$e";
+            warn "Output: $output\n" if $output;
+            die "Template Toolkit error: ($p{template})\n$e";
         }
 
         Socialtext::Timer->Pause('tt2_render');
