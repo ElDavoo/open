@@ -70,7 +70,7 @@ BEGIN {
 
     is_deeply($hub->skin->template_paths, [
         "t/share/skin/s2/template",
-        "$ENV{ST_CURRENT}/nlw/t/tmp/cache/user_frame",
+        "$ENV{ST_SRC_BASE}/socialtext/nlw/t/tmp/cache/user_frame",
         "t/share/skin/cascades_s2/template",
     ], 'Cascading skin has both template dirs');
 }
