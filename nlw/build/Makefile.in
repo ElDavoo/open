@@ -66,7 +66,8 @@ INSTALL_BASE = install-html       \
                install-post-install \
                install-desktop \
                install-wsdl \
-	       install-workspaces
+	       install-workspaces \
+	       install-static-config
 
 INSTALL_FILE_TARGETS = $(INSTALL_BASE)
 
