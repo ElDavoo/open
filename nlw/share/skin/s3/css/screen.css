@@ -3674,6 +3674,11 @@ span.st-weblog-nextentries:before {
     width: 95%;
 }
 
+.widgetContent .signals .mainInput iframe {
+    margin-left: 2px !important;
+    margin-right: 2px !important;
+}
+
 .widgetContent form table {
     margin: 0 5px;
 }
