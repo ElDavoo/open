@@ -3677,7 +3677,8 @@ span.st-weblog-nextentries:before {
 .widgetContent .signals .mainInput iframe,
 .widgetContent .event_list .replies iframe {
     margin-left: 2px !important;
-    margin-right: 2px !important;
+    margin-right: 0px !important;
+    width: 98% !important;
 }
 
 .widgetContent form table {
