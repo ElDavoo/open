@@ -2229,6 +2229,7 @@ sub st_process_jobs {
     CORE::sleep(1);
 
     Test::Socialtext::ceqlotron_run_synchronously(@_);
+    CORE::sleep(1);
 }
 
 
