@@ -502,7 +502,7 @@ sub groups {
         SELECT group_id, driver_group_name
           FROM groups
          WHERE $conditions
-         ORDER BY driver_group_name
+         ORDER BY lower(driver_group_name)
          $limit
          $offset
     },@bind);
