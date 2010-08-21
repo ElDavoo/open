@@ -8,27 +8,22 @@
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | %%Greeting%% | 10000 |
 
 | *Comment* | Test Case: Activities Widget Greeting Dashboard click - Greeting disappears |  |
-| wait_for_element_present_ok | mainWikiwyg | 5000 |
-| click_ok | mainWikiwyg |  |
+| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 5000 |
+| click_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] |  |
 | wait_for_text_not_present_ok | %%Greeting%% | 5000 |
-| select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Activities Widget Greeting Signals present |  |
 | open_ok | /st/signals/ |
 | wait_for_text_present_ok | Signal | 10000 |
-| st-name-widget | 1 | signal_widget |
-| st-select-widget-frame | signal_widget |  |
 | wait_for_text_present_ok | %%Greeting%% | 10000 |
 
 | *Comment* | Test Case: Activities Widget Greeting Signals click - Greeting disappears |  |
-| wait_for_element_present_ok | mainWikiwyg | 5000 |
-| click_ok | mainWikiwyg |  |
+| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 5000 |
+| click_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] |  |
 | wait_for_text_not_present_ok | %%Greeting%% | 5000 |
-| select_frame | relative=parent |  |
 
 TODO: profile and group activity widget greetings
 

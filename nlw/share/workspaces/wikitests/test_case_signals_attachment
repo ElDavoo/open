@@ -2,27 +2,24 @@
 
 * Fixture: SocialWidgets
 
+| *Comment* | Test Case: Signals Attachment SETUP |  |
 | *Comment* | wikitest_client_files at %%wikitest_client_files%% |  |
 
-| *Comment* | Test Case: Activities Widget Upload SETUP |  |
 | set | jpg | wikitest.jpg |
 | set | txt | wikitest.txt |
 | set | zip | wikitestzip.zip |
 | set | jpg_file | %%wikitest_client_files%%%%jpg%% |
 | set | txt_file | %%wikitest_client_files%%%%txt%% |
 | set | zip_file | %%wikitest_client_files%%%%zip%% |
-| set | signal | TC: Activities Widget Upload %%start_time%% |
+| set | signal | TC: Signals Attachment %%start_time%% |
 
 | open_ok | /st/signals |  |
 
-| *Comment* | Test Case: Activities Widget Upload. Insert file button |  |
-| st-name-widget | 1 | signals_widget |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_element_visible_ok | mainInsertFile | 30000 |
-| click_ok | mainInsertFile |  |
-| select-frame | relative=parent |  |
+| *Comment* | Test Case: Signals Attachment. Insert file button |  |
+| wait_for_element_visible_ok | //a[contains(@class,'insertFile')] | 30000 |
+| click_ok | //a[contains(@class,'insertFile')] |  |
 
-| *Comment* | Test Case: Activities Widget Upload. setSpeed 3000 for type-in, upload three files |  |
+| *Comment* | Test Case: Signals Attachment. setSpeed 3000 for type-in, upload three files |  |
 | set_Speed | 3000 |  |
 | text_like | //body | select an image or file to upload |
 | type-lookahead-ok | //form[@name='attachForm']//input | %%jpg_file%% |
@@ -30,25 +27,24 @@
 | type-lookahead-ok | //form[@name='attachForm']//input | %%zip_file%% |
 | set_Speed | 0 |  |
 
-| *Comment* | Test Case: Activities Widget Upload. click Done |  |
-
+| *Comment* | Test Case: Signals Attachment. click Done |  |
 | wait_for_text_present_ok | Uploaded files: %%jpg%%, %%txt%%, %%zip%% | 30000 |
 | click_ok | //a[@class='btn'] |  |
 | wait_for_element_not_visible_ok | //form[@name='attachForm'] | 30000 |
 | text_unlike | //body | select an image or file to upload |
 
-| *Comment* | Test Case: Activities Widget Upload. post %%signal%% |  |
-| st-select-widget-frame | signals_widget |  |
-| st-send-signal-within-activities-widget | %%signal%% |  |
+| *Comment* | Test Case: Signals Attachment. post %%signal%%. Only works in Firefox |  |
+| wait_for_element_visible_ok | signalFrame | 5000 |
+| select_frame | signalFrame |  |
+| type_ok | //body | %%signal%% |  |
+| select_frame | relative=parent |  |
+| wait_for_element_visible_ok | link=Post | 5000 |
+| click_ok | link=Post |  |
 
-| *Comment* | Test Case: Activities Widget Upload. see signal and uploaded files |  |
+| *Comment* | Test Case: Signals Attachment. see signal and uploaded files |  |
 | wait_for_text_present_ok | %%signal%% | 30000 |
 | wait_for_element_visible_ok | link=%%jpg%% | 30000 |
 | wait_for_element_visible_ok | link=%%txt%% | 30000 |
 | wait_for_element_visible_ok | link=%%zip%% | 30000 |
-| select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Activities Widget Upload *NOTE: the files uploaded are zero length. Don't know why.* |
-| *Comment* | Test Case: Activities Widget Upload *TODO: investigate zero length uploads* |
-
-| *Comment* | Test Case: Activities Widget Upload COMPLETED |
+| *Comment* | Test Case: Signals Attachment COMPLETED |

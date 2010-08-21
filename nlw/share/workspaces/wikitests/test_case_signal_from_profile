@@ -75,6 +75,7 @@
 | st-unchecked-ok | //input[@class='toggle-private'] |  |
 
 | *Comment* | Test Case: Signal From Profile. Immediately send a public mention from within the same widget |  |
+| open_ok | /st/dashboard |  |
 | st-send-signal-in-activities-widget | %%public%% |  |
 
 | *Comment* | Test Case: Signal From Profile. Both mentions appears in wikitester profile activities widget |  |

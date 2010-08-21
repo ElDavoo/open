@@ -5,30 +5,25 @@
 | open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Activities Widget Tag button is present |  |
-| st-name-widget | 1 | signals_widget |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_element_visible_ok | mainInsertTag | 30000 |
+| wait_for_element_visible_ok | //a[@class='setupWikiwyg insertTag'] | 30000 |
 
 | *Comment* | Test Case: Activities Widget click Tag |  |
-| click_ok | mainInsertTag |  |
-| select-frame | relative=parent |  |
+| click_ok | //a[@class='setupWikiwyg insertTag'] |  |
 
 | *Comment* | Test Case: Activities Widget Tag setSpeed 3000 to allow for lookahead |  |
 | set_Speed | 3000 |  |
-| type-lookahead-ok | //div[@id='signals']/div[2]/div[4]/div[2]/input | %%tag%% |
+| type-lookahead-ok | //input[@class='lookahead-prompt'] | %%tag%% |
 | wait_for_element_visible_ok | //a[@class='insert btn'] | 30000 |
 | wait_for_element_visible_ok | //a[@class='cancel btn'] | 30000 |
 | click_ok | //a[@class='insert btn'] |  |
-| wait_for_element_not_visible_ok | //div[@id='signals']/div[2]/div[4]/div[2]/input | 30000 |
+| wait_for_element_not_visible_ok | //input[@class='lookahead-prompt'] | 5000 |
 
 | *Comment* | Test Case: Activities Widget Tag setSpeed zero |  |
 | set_Speed | 0 |  |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_element_visible_ok | post | 30000 |
+| wait_for_element_visible_ok | link=Post | 30000 |
 | pause | 3000 |  |
-| click_ok | post |  |
+| click_ok | link=Post |  |
 | wait_for_element_visible_ok | link=%%tag%% | 30000 |
 | wait_for_text_present_ok | #%%tag%% | 30000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Activities Widget Tag COMPLETED |

@@ -4,14 +4,7 @@
 
 | open_ok | /st/signals |  |
 
-| *Comment* | Signals Annotations Test Cases. buttons are present |  |
-| st-name-widget | 1 | signals_widget |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_element_visible_ok | mainInsertWeblink | 30000 |
-| wait_for_element_visible_ok | mainInsertWikilink | 30000 |
-| wait_for_element_visible_ok | mainInsertTag | 30000 |
-| wait_for_element_visible_ok | mainInsertFile | 30000 |
-| select-frame | relative=parent |  |
+| *Comment* | Signals Annotations Test Cases. Tag, Attachment, Wiki Link, Web Link |  |
 
 | include | [Test Case: Signals Tag] |
 | include | [Test Case: Signals Attachment] |

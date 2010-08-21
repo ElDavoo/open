@@ -36,7 +36,7 @@
 
 | *Comment* | Test Case: Profile Activity Widget. Send and check signals |  |
 | st_send_signal_via_activities_widget | activitieswidget | Public signal to %%tuser%% at %%start_time%% WHOOPEE |
-
+| open_ok | /st/dashboard |  |
 | st_send_signal_via_activities_widget | activitieswidget | Private signal to %%tuser%% at %%start_time%% HURRAY | private |
 
 | st-verify-text-in-activities-widget | activitieswidget | qr/%%tuser%%.+Public signal to %%tuser%% at %%start_time%% WHOOPEE/ism |
