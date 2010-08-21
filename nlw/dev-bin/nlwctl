@@ -173,10 +173,14 @@ sub init_commands {
             print "Stopping ceqlotron.\n";
             # XXX: killall --wait is non-portable. Should we kill
             # the pid represented in the ceqloton pid_file?
-            my $ceqlotron_pid = _ceqlotron_pid();
-            my $kill_count = kill 15, $ceqlotron_pid if $ceqlotron_pid;
-            print "Unable to kill ceqlotron\n" unless $kill_count;
-            print "Pid file said pid $ceqlotron_pid\n" if $ceqlotron_pid;
+            if (my $ceqlotron_pid = _ceqlotron_pid()) {
+                my $kill_count = kill 15, $ceqlotron_pid;
+                print "Unable to kill ceqlotron\n" unless $kill_count;
+                print "Pid file said pid $ceqlotron_pid\n";
+            }
+            else {
+                print "Ceqlotron was already stopped.\n";
+            }
         },
         hup     => sub { },
         restart => sub { $ceqlotron_command{$_}->(@_) for qw( stop start ) },
