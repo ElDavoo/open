@@ -240,7 +240,7 @@ sub formatted_unlike() {
 
 sub ceqlotron_run_synchronously() {
     my $funcname = shift;
-    my $workspace_name_or_id = shift;
+    my $workspace_name_or_id = shift || '';
     my $workspace;
 
     if ($workspace_name_or_id and $workspace_name_or_id =~ /^\d+$/) {
@@ -248,7 +248,7 @@ sub ceqlotron_run_synchronously() {
             workspace_id => $workspace_name_or_id
         );
     }
-    else {
+    elsif ($workspace_name_or_id) {
         $workspace = Socialtext::Workspace->new(
             name => $workspace_name_or_id
         );
