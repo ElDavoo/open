@@ -29,19 +29,24 @@
 | set | EmptyEmail | The most frequently emailed pages will be listed here. Try emailing a page to a colleague by clicking on the Email icon in the page's toolbar. |
 
 | *Comment* | Test Case: Active Content Empty Messages Check the Empty Content messages |  |
-| st-select-widget-frame | active_content |  |
-| wait_for_element_visible_ok | link=Emailed | 30000 |
-| wait_for_element_visible_ok | link=Edited | 30000 |
-| wait_for_element_visible_ok | link=Watched | 30000 |
-
+| text_like | //body | Viewed |
 | wait_for_text_present_ok | %%EmptyViews%% | 30000 |
+
+| wait_for_element_visible_ok | link=Edited | 30000 |
 | click_ok | link=Edited |  |
 | wait_for_text_present_ok | %%EmptyEdits%% | 30000 |
+
+| wait_for_element_visible_ok | link=Watched | 30000 |
 | click_ok | link=Watched |  |
 | wait_for_text_present_ok | %%EmptyWatch%% | 30000 |
+
+| wait_for_element_visible_ok | link=Emailed | 30000 |
 | click_ok | link=Emailed |  |
 | wait_for_text_present_ok | %%EmptyEmail%% | 30000 |
-| select-frame | relative=parent |  |
+
+| wait_for_element_visible_ok | link=Viewed | 30000 |
+| click_ok | link=Viewed |  |
+| wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 
 | *Comment* | Test Case: Active Content Empty Messages TEARDOWN |  |
 

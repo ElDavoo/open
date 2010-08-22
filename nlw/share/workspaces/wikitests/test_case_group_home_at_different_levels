@@ -59,8 +59,8 @@
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| text_like | //body | Group Type private |
-| text_unlike | //body | Group Type self-join |
+| text_like | //body | qr/Group Type.+Private/ism |
+| text_unlike | //body | qr/Group Type.+Self-join/ism |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
 | select-frame | relative=parent |  |
 
@@ -79,11 +79,13 @@
 | pause | 8000 |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | self-join |  |
+| wait_for_text_present_ok | Group Type | 30000 |
 | text_like | //body | qr/self-join.+Change/ism |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
+
+FOR SOME BIZARRE REASON, THIS create-group OPENS A NEW WINDOW.
 
 | *Comment* | Test Case: Group Home at Different Levels See Group is changed to self-join |  |
 | wait_for_element_present_ok | link=%%self_join_grp%% | 30000 |
@@ -92,8 +94,8 @@
 
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | self-join | 10000 |
-| text_like | //body | qr/Group Type.+self-join/ism |
+| wait_for_text_present_ok | Group Type | 10000 |
+| text_like | //body | qr/Group Type.+Self-join/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group Home at Different Levels for self-join group - as group member |  |
@@ -117,14 +119,13 @@
 | st-logoutin | %%account_user%% | %%password%% |
 
 | open_ok | /st/group/%%self_join_grp_id%% |  |
-| text_like | %%self_join_grp%% |  |
+| text_like | //div[@class='groupsTitle'] | %%self_join_grp%% |  |
 | wait_for_element_visible_ok | st-join-group | 30000 |
 
 | st-name-widget | 1 | information_widget |
-| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
 | st-select-widget-frame | information_widget |  |
+| wait_for_text_present_ok | Administrators | 30000 |
 | wait_for_text_present_ok | %%self_join_grp%% | 30000 |
-| pause | 60000 |  |
 | select-frame | relative=parent |  |
 
 | st-name-widget | 2 | workspaces_widget |

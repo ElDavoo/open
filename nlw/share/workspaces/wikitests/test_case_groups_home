@@ -16,8 +16,8 @@
 
 | st-admin | enable-plugin --account %%hostname%% --plugin groups |  |
 | st-admin | enable-plugin --account %%hostname%% --plugin signals |  |
-| st-admin | create-workspace --empty --title %%wsname%% --name %%wsname%% --empty | was created |
-| st-admin | create-workspace --empty --title %%wsname2%% --name %%wsname2%% --empty | was created |
+| st-admin | create-workspace --empty --title %%wsname%% --name %%wsname%% | was created |
+| st-admin | create-workspace --empty --title %%wsname2%% --name %%wsname2%% | was created |
 | st-admin | add-member --workspace %%wsname%% --group %%group_id%% | now has the role of 'member' |
 | st-admin | add-member --workspace %%wsname2%% --group %%group_id%% | now has the role of 'member' |
 | st-admin | create-user --e %%nopermuser%% --p %%password%% | was created |
@@ -26,7 +26,8 @@
 
 | st-logoutin | %%permuser%% | %%password%% |
 
-| *Comment* | Test Case: Groups Make A New Page |  |
+| *Comment* | Test Case: Groups Make A New Page. Start from dashboard to allow settle down time for login |  |
+| open_ok | /st/dashboard |  |
 | open_ok | /%%wsname%%/index.cgi?action=new_page |  |
 | wait_for_element_present_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |

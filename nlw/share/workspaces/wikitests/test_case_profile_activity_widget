@@ -36,7 +36,7 @@
 
 | *Comment* | Test Case: Profile Activity Widget. Send and check signals |  |
 | st_send_signal_via_activities_widget | activitieswidget | Public signal to %%tuser%% at %%start_time%% WHOOPEE |
-| open_ok | /st/dashboard |  |
+| st_find_user | %%tuser%% |  |
 | st_send_signal_via_activities_widget | activitieswidget | Private signal to %%tuser%% at %%start_time%% HURRAY | private |
 
 | st-verify-text-in-activities-widget | activitieswidget | qr/%%tuser%%.+Public signal to %%tuser%% at %%start_time%% WHOOPEE/ism |
@@ -57,9 +57,9 @@
 | text_like | qr/Showing all events.*from.+%%tuser%%.*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. The widget defaults to mentioning the viewed user when clicked |  |
-| wait_for_element_present_ok | mainWikiwyg | 10000 |
+| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 10000 |
 | text_like | qr/What are you working on/ism |  |
-| click_ok | mainWikiwyg |  |
+| click_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] |  |
 | wait_for_element_visible_ok | //div[@class='message mention'] | 10000 |
 | wait_for_element_visible_ok | link=%%tuser%% | 10000 |
 
@@ -70,15 +70,15 @@
 | text_like | qr/Make this signal private/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. checking the checkbox changes the message to "... composing a private message ..." |  |
-| wait_for_element_visible_ok | //input[@class='toggle-private'] | 5000 |
+| wait_for_element_visible_ok | //input[@class='toggle-private'] | 10000 |
 | click_ok | //input[@class='toggle-private'] | use click because js does not see check_ok |
 | is_checked_ok | //input[@class='toggle-private'] |  |
-| wait_for_text_present_ok | private | 5000 |
+| wait_for_text_present_ok | private | 10000 |
 | text_like | //div[@class='message mention'] | qr/You are composing a private message to.+%%tuser%%/ism |
 
 | *Comment* | Test Case: Profile Activity Widget. unchecking the checkbox changes the message back to "... composing a message ..." |  |
 | click_ok | //input[@class='toggle-private'] |  |
-| pause | 5000 | I Hate Pause |
+| wait_for_text_not_present_ok | You are composing a private message | 10000 |
 | text_unlike | //div[@class='message mention'] | You are composing a private message |
 | text_like | //div[@class='message mention'] | You are composing a message |
 
