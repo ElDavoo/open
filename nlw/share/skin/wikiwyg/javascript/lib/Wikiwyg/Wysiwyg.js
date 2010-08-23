@@ -3168,9 +3168,9 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
         }
     );
 
-    jQuery('#st-widget-savebutton')
-        .unbind('click')
-        .click(function() {
+    jQuery(form)
+        .unbind('submit')
+        .submit(function() {
             var error = null;
             jQuery('#lightbox .buttons input').attr('disabled', 'disabled');
             try {
