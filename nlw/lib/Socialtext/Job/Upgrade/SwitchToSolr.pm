@@ -3,7 +3,7 @@ package Socialtext::Job::Upgrade::SwitchToSolr;
 use Moose;
 use Socialtext::JobCreator;
 use Socialtext::Log qw/st_log/;
-use Socialtext::AppConfig;
+use Socialtext::System qw/shell_run/;
 use Socialtext::User;
 use Socialtext::EmailSender::Factory;
 use Clone qw/clone/;
@@ -53,10 +53,8 @@ sub do_work {
 sub _enable_solr {
     my $self = shift;
 
-    Socialtext::AppConfig->set(
-        search_factory_class => 'Socialtext::Search::Solr::Factory',
-    );
-    Socialtext::AppConfig->write;
+    shell_run("sudo st-appliance-set-config search_factory_class "
+                . "Socialtext::Search::Solr::Factory");
 }
 
 sub _email_technical_admins {
