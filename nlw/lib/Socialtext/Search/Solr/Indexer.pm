@@ -6,6 +6,7 @@ use DateTime;
 use Moose;
 use MooseX::AttributeInflate;
 use MooseX::AttributeHelpers;
+use Socialtext::AppConfig;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::Hub;
 use Socialtext::Workspace;
@@ -282,7 +283,7 @@ sub _add_attachment_doc {
 # information.
 sub _truncate {
     my ( $self, $id, $text_ref ) = @_;
-    my $max_size = Socialtext::File::Stringify::MAX_STRING;
+    my $max_size = Socialtext::AppConfig->stringify_max_length;
     return if length($$text_ref) <= $max_size;
     st_log()->info("Trimming $id from ".length($$text_ref)." to $max_size");
     _debug("Truncating text to $max_size characters: $id");

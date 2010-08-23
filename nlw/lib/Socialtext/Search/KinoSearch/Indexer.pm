@@ -11,6 +11,7 @@ use List::MoreUtils 'zip';
 use Readonly;
 use YAML;
 
+use Socialtext::AppConfig;
 use Socialtext::Hub;
 use Socialtext::Workspace;
 use Socialtext::Page;
@@ -284,7 +285,7 @@ sub _add_attachment_doc {
 
 sub _truncate {
     my ( $self, $key, $text_ref ) = @_;
-    my $max_size = Socialtext::File::Stringify::MAX_STRING;
+    my $max_size = Socialtext::AppConfig->stringify_max_length;
     return if length($$text_ref) <= $max_size;
     my $info = "ws = " . $self->ws_name . " key = $key";
     _debug("Truncating text to $max_size characters:  $info");

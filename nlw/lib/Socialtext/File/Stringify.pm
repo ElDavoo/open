@@ -13,17 +13,6 @@ use File::Temp qw/tempdir/;
 use File::chdir;
 use File::Path qw/rmtree/;
 
-# Limit the size of doc/attachment text we index.
-# 
-# The 20 MiB figure was arrived at by history which is no longer relevant.
-# See {link dev-tasks [KinoSearch - Maximum File Size Cap]} for more
-# information.  However, large attachments seem to really mess with Solr, so
-# we're going to keep this for now.
-# Update: 20MiB makes Solr run out of memory too infrequently.  Since solr
-# fields can only use 10k in our config, and since 10000 english words are
-# roughly 50kB, i've set this to 64kiB
-use constant MAX_STRING => 64 * 2**10; # 64kiB
-
 sub to_string {
     my ( $class, $buf_ref, $filename, $type ) = @_;
     return unless defined $filename;

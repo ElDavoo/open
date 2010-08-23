@@ -11,6 +11,7 @@ use Socialtext::File::Stringify;
 use Socialtext::File::Stringify::Default;
 use Socialtext::System;
 use Socialtext::Encode qw/ensure_ref_is_utf8/;
+use Socialtext::AppConfig;
 
 sub to_string {
     my ( $class, $buf_ref, $file, $mime ) = @_;
@@ -50,7 +51,7 @@ sub to_string {
             ensure_ref_is_utf8(\$file_buf);
             $$buf_ref .= $file_buf;
             last if length($$buf_ref)
-                >= Socialtext::File::Stringify::MAX_STRING;
+                >= Socialtext::AppConfig->stringify_max_length;
         }
     }
 

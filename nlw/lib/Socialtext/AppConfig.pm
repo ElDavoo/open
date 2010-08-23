@@ -1294,6 +1294,18 @@ Default: 1
 
 =for code type => BOOLEAN_TYPE
 
+=head2 stringify_max_length
+
+Set this to the maximum size of stringified content to send to the search engine.
+
+Notes on Solr: Setting this too large will cause Solr OOM errors, so be very conservative.
+Also, Solr by default only indexes the first 10,000 tokens in a string, so sending too much
+content to Solr may simply waste memory/speed without having more content indexed.
+
+Default: 262144
+
+=for code type => POSITIVE_INT_TYPE
+
 =head1 OTHER METHODS
 
 In addition to the methods available for each configuration variable,
