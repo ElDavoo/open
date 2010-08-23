@@ -1104,7 +1104,7 @@ sub last_edited_by {
         $email_address = $name . '@example.com';
     }
 
-    my $user = Socialtext::User->Resolve( $email_address );
+    my $user = eval { Socialtext::User->Resolve( $email_address ) };
 
     # There are many usernames in pages that were never in the users
     # table.  We need to have all users in the DBMS, so
