@@ -154,7 +154,7 @@ sub _build_page {
     my $msg = "Couldn't load page id=$page_id from the '" . 
         $hub->current_workspace->name .
         "' workspace: $@";
-    $self->failed($msg);
+    $self->permanent_failure($msg);
     die $msg;
 }
 
