@@ -360,8 +360,11 @@ sub _render_user_frame {
     my $loc_lang = $self->hub->display->preferences->locale->value || 0;
     my $is_guest = $self->hub->current_user->is_guest || 0;
 
+    my $can_invite = $self->hub->pluggable->hook('template_var.invite_url');
+    $can_invite = ($can_invite ? 1 : 0);
+
     my $frame_dir = "$frame_path/$user_prefix/$user_id";
-    my $tmpl_name = "user_frame.$loc_lang.$is_guest";
+    my $tmpl_name = "user_frame.$loc_lang.$is_guest.$can_invite";
     my $frame_tmpl = "$user_prefix/$user_id/$tmpl_name";
     my $frame_file = "$frame_dir/$tmpl_name";
 
