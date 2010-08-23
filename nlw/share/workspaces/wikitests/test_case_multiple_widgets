@@ -13,8 +13,8 @@
 | type_ok | src | `http://www.socialtext.com/images/people/r-mayfield.jpg` |
 | type_ok | title | Chairman |
 | wait_for_element_visible_ok | st-savebutton-%%image_widget%% | 30000 |
-| click_and_wait | st-savebutton-%%image_widget%% |  |
-| wait_for_element_not_visible_ok | title | 30000 |
+| click_ok | st-savebutton-%%image_widget%% |  |
+| wait_for_element_not_visible_ok | title | 5000 |
 
 | *Comment* | Test Case: Multiple Widgets Add Wiki Page Widget |  |
 | wait_for_element_visible_ok | link=Add Content | 30000 |

@@ -64,7 +64,7 @@
 | *Comment* | Test Case: Activities Widget Others Signals. Signals in Dashboard Activities widget. |  |
 | wait_for_element_present_ok | link=signals | 10000 |
 | click_ok | link=signals |  |
-| st-select-widget-frame | activities_widget |  |
+| open_ok | /st/dashboard |  |
 
 | *Comment* | Test Case: Activities Widget Other Signals. Verify those signals. |  |
 | wait_for_text_present_ok | woke up %%start_time%% | 30000 |
@@ -75,7 +75,6 @@
 
 | *Comment* | Test Case: Activities widget Other Signals. Wait for automatic refresh to 3 minutes ago in Activity |  |
 | wait_for_text_present_ok | 3 minutes ago | 180000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Activities Widget Other Signals TEARDOWN |
 | st-admin | delete-workspace -w %%ws%% --no-export |  |

@@ -3680,6 +3680,13 @@ span.st-weblog-nextentries:before {
     width: 95%;
 }
 
+.widgetContent .signals .mainInput iframe,
+.widgetContent .event_list .replies iframe {
+    margin-left: 2px !important;
+    margin-right: 0px !important;
+    width: 98% !important;
+}
+
 .widgetContent form table {
     margin: 0 5px;
 }
@@ -4631,7 +4638,6 @@ ul.dropdownOptions li.disabled a:hover {
 .wikilinkPopup .buttons,
 .weblinkPopup .buttons {
     padding: 3px;
-    height: 22px;
     text-align: right;
 }
 

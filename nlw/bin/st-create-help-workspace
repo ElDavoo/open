@@ -66,7 +66,6 @@ STADMIN=$(abs_path `which st-admin`)
 DELETE="$STADMIN delete-workspace --workspace $WS_NAME --no-export --ceqlotron"
 IMPORT="$STADMIN import-workspace --tarball $TARBALL --noindex"
 ASSIGN="$STADMIN set-workspace-config --workspace $WS_NAME account_name $ACCOUNT"
-REINDEX="$STADMIN index-workspace --workspace $WS_NAME --sync --ceqlotron"
 
 # Check that we found the st-admin command.
 if [ ! -x "$STADMIN" ]; then
@@ -80,7 +79,6 @@ if [ -n "$DRYRUN" ]; then
     DELETE="echo $DELETE"
     IMPORT="echo $IMPORT"
     ASSIGN="echo $ASSIGN"
-    REINDEX="echo $REINDEX"
 fi
 
 echo "Deleting workspace $WS_NAME."
@@ -89,9 +87,6 @@ $DELETE || /bin/true
 echo "Importing $(basename $TARBALL) as workspace $WS_NAME."
 $IMPORT
 $ASSIGN
-
-echo "Reindexing $WS_NAME."
-$REINDEX
 
 echo "Done updating workspace $WS_NAME."
 exit 0

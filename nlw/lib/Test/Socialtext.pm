@@ -243,12 +243,12 @@ sub ceqlotron_run_synchronously() {
     my $workspace_name_or_id = shift || '';
     my $workspace;
 
-    if ($workspace_name_or_id =~ /^\d+$/) {
+    if ($workspace_name_or_id and $workspace_name_or_id =~ /^\d+$/) {
         $workspace = Socialtext::Workspace->new(
             workspace_id => $workspace_name_or_id
         );
     }
-    else {
+    elsif ($workspace_name_or_id) {
         $workspace = Socialtext::Workspace->new(
             name => $workspace_name_or_id
         );
@@ -262,6 +262,7 @@ sub ceqlotron_run_synchronously() {
 
     my @jobid;
     while (my $job = Socialtext::Jobs->find_job_for_workers()) {
+        warn "Running ceq job " . Socialtext::Jobs->job_to_string($job) . "\n";
         if ($funcname and ($job->funcname || '') !~ /$funcname$/i) {
             next;
         }
@@ -272,6 +273,7 @@ sub ceqlotron_run_synchronously() {
         }
 
         push @jobid, $job->jobid;
+        warn "Running ceq job " . Socialtext::Jobs->job_to_string($job) . "\n";
 
         Socialtext::Jobs->work_once($job);
         Socialtext::Cache->clear();

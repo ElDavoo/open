@@ -17,6 +17,13 @@ find( sub { push @templates, $File::Find::name if -f }, $template_dir );
 
 plan tests => scalar @templates;
 
+### Create our test fixtures *OUT OF PROCESS*; we call fork() for each test we
+### run, and we'll have troubles with an already loaded/used DBH if we create
+### the fixtures in-process.
+BEGIN {
+    system('dev-bin/make-test-fixture --fixture db');
+};
+
 my $skin = Socialtext::Skin->new;
 my @paths = (
     @{$skin->template_paths},
@@ -43,6 +50,7 @@ for my $template (@templates) {
         paths    => \@paths,
         vars     => {
             pluggable => FakePluggable->new,
+            frame_name => 'layout/html',
         },
     );
     exit;

@@ -8,6 +8,8 @@ use Test::Socialtext tests => 36;
 my $class = 'Socialtext::Rest::SetController';
 use_ok $class;
 
+fixtures(qw( db ));
+
 # Roles to test against.
 my $member = Socialtext::Role->Member();
 my $admin  = Socialtext::Role->Admin();

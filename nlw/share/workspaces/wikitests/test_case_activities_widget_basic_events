@@ -56,13 +56,12 @@
 | click_ok | st-savebutton-%%activities_widget%% |  |
 | wait_for_element_not_visible_ok | limit | 30000 |
 
-| *Comment* | Test Case: Activities Widget basic Events. Signals in widget. Select signals. |  |
+| *Comment* | Test Case: Activities Widget Basic Events. Signals in widget. Select signals. |  |
 | wait_for_element_present_ok | link=signals | 10000 |
 | click_ok | link=signals |  |
-| select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Activities Widget basic Events. select_and_wait in iframe doesn't work. Use pause. |  |
-| pause | 10000 | I hate pause |
+| *Comment* | Test Case: Activities Widget Basic Events. Verify Text |  |
+| open_ok | /st/dashboard |  |
 | st_verify_text_in_activities_widget | activities_widget | She rocks in the treehouse %%start_time%% |
 | st_verify_text_in_activities_widget | activities_widget | Rockin and a bopin %%start_time%% |
 | st_verify_text_in_activities_widget | activities_widget | All the little birds %%start_time%% |

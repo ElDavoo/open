@@ -33,11 +33,9 @@
 | wait_for_text_present_ok | Wiki Page %%start_time%% | 30000 |
 | st-name-widget | 1 | wikipage |
 | st-widget-title-like | wikipage | Wiki Page %%start_time%% |
-| st-select-widget-frame | wikipage |  |
 | wait_for_element_present_ok | link=Edit | 30000 |
 | wait_for_element_present_ok | link=View | 30000 |
 | wait_for_text_present_ok | I have created a page called Wiki Page %%start_time%%. w00t. | 30000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Wiki Page TEARDOWN |  |
 | st-admin | purge-page --workspace %%workspace%% --page wiki_page_%%start_time%% | was purged |

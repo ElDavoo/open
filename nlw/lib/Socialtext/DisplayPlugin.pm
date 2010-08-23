@@ -14,8 +14,11 @@ use Socialtext::l10n qw/loc system_locale/;
 use Socialtext::Locales qw/available_locales/;
 use Socialtext::JSON;
 use Socialtext::Timer;
+use Socialtext::Paths;
+use Socialtext::File qw/get_contents_utf8 set_contents_utf8/;
 use Apache::Cookie;
 use Socialtext::Events;
+use File::Path qw/mkpath/;
 
 sub class_id { 'display' }
 const class_title => loc('Screen Layout');

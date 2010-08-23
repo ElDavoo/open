@@ -2,7 +2,7 @@
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
 [% USE label_ellipsis %]
-[% WRAPPER layout/html id="revisions" title="${display_title}: ${display_title_decorator}" %]
+[% WRAPPER $frame_name id="revisions" title="${display_title}: ${display_title_decorator}" %]
 <div id="controls">
   <div id="st-editing-tools-edit">
     <ul id="revision-tools">

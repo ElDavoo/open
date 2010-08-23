@@ -1,5 +1,5 @@
 [% USE decorate %]
-[% WRAPPER layout/html 
+[% WRAPPER $frame_name 
     id="dashBoard"
     head_template="element/container_head"
     title=container.title

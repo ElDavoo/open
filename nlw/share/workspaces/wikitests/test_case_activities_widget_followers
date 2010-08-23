@@ -68,11 +68,8 @@
 | set | r3 | %%shortfollow%%.+ago.*to.+%%followacct%%.+You.+should.+see.+this.+%%start_time%% |
 | set | r4 | %%shortfollow%%.+ago.+edited.+pageone.+in.+%%followws%% |
 
-| *Comment* | Test Case: Activities Widget Followers wait until widget reloads |  |
-| st_select_widget_frame | activities_widget |  |
-| wait_for_text_present_ok | %%shortnot%% | 30000 |
-| wait_for_text_present_ok | %%shortfollow%% | 30000 |
-| select_frame | relative=parent |  |
+| *Comment* | Test Case: Activities Widget Followers reopen dashboard |  |
+| open_ok | /st/dashboard |  |
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, see all activities |  |
 | st_verify_text_in_activities_widget | activities_widget | qr/%%r1%%/ism |

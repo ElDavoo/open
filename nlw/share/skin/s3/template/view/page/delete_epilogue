@@ -1,5 +1,5 @@
 [%# vim: set et sts=2 sw=2: %]
-[% WRAPPER layout/html id="contentPage" %]
+[% WRAPPER $frame_name id="contentPage" %]
   <div id="controls">
     <div id="st-editing-tools-edit">
 

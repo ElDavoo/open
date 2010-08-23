@@ -332,9 +332,10 @@ html .wiki a:hover {
 /* Socialtext classes
 -------------------------------------------------------------- */
 
-.wiki {
+.wiki:first-child {
     padding-top:1em;
-
+}
+.wiki {
     /* {bz: 1445}: Gecko needs this to show left border of collapsed tables. */
     padding-left:1px;
 }

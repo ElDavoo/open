@@ -1,20 +1,24 @@
 (function($) {
 
+var LOAD_DELAY = 1500;
+
 function fetchData(entries, index, callback) {
     if (index < entries.length) {
         var entry = entries[index];
         if (entry.url) {
-            $.ajax({
-                url: entry.url,
-                type: 'get',
-                dataType: 'json',
-                success: function(data) {
-                    if (entry.sort) data = data.sort(entry.sort);
-                    entry.data = data;
+            setTimeout(function() {
+                $.ajax({
+                    url: entry.url,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(data) {
+                        if (entry.sort) data = data.sort(entry.sort);
+                        entry.data = data;
 
-                    fetchData(entries, index + 1, callback);
-                }
-            });
+                        fetchData(entries, index + 1, callback);
+                    }
+                });
+            }, LOAD_DELAY);
         }
         else {
             // skip loading data, move on to the next entry

@@ -3,7 +3,6 @@
 | *Comment* | STARTING Test case: Activities Widget |
 
 | include | [Test Case: Activities Widget Basic Events] |  |
-| include | [Test Case: Activities Widget Popout] |  |
 | include | [Test Case: Activities Widget Other Signals] |  |
 | include | [Test Case: Activities Widget Greeting] |  |
 | include | [Test Case: Activities Widget Conversations] |  |

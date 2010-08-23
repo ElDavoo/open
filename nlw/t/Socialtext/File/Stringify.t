@@ -3,7 +3,8 @@
 use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 48;
+use Test::Socialtext tests => 58;
+use Test::Warn;
 use File::Basename qw(dirname);
 use FindBin;
 
@@ -32,7 +33,11 @@ BEGIN {
 
 for my $ext (qw(txt html doc rtf pdf ps xls ppt xml mp3)) {
     my $file = $data_dir . "/test.$ext";
-    my $text; Socialtext::File::Stringify->to_string(\$text, $file);
+
+    my $text;
+    warning_is { Socialtext::File::Stringify->to_string(\$text, $file); }
+        undef, "no warnings";
+
     SKIP: {
         skip( "$ext_deps{$ext} not installed.", 3 ) if should_skip($ext);
         ok( $text =~ /This file is a \"$ext\" file/, "Test $ext marker" );

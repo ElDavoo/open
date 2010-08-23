@@ -6,7 +6,7 @@ use warnings;
 use Test::More tests => 9;
 use Test::Socialtext;
 use Test::Exception;
-fixtures(qw(plugin));
+fixtures(qw(empty plugin));
 
 my $hub = create_test_hub;
 my $account1 = create_test_account;

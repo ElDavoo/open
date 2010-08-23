@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 57;
+use Test::Socialtext tests => 61;
 use Test::Socialtext::User;
 use File::Slurp qw(write_file);
 use Benchmark qw(timeit timestr);
@@ -164,6 +164,39 @@ test_force_refresh: {
     my $refreshed_at = $refreshed_homey->cached_at->hires_epoch();
     ok $refreshed_at > $time_before_refresh->hires_epoch(), 'user was refreshed';
     ok $refreshed_at < $time_after_refresh->hires_epoch(), '... by RefreshUsers()';
+}
+
+###############################################################################
+# TEST: refresh missing LDAP Users.
+refresh_missing_ldap_users: {
+    my $ldap = set_up_openldap();
+
+    # load a User from LDAP
+    my $ldap_user = Socialtext::User->new(email_address => 'john.doe@example.com');
+    isa_ok $ldap_user, 'Socialtext::User', 'LDAP user';
+
+    # refresh User; should still be "found"
+    {
+        Socialtext::LDAP::Operations->RefreshUsers(force => 1);
+        my $refreshed = Socialtext::User->new(email_address => 'john.doe@example.com');
+        ok !$refreshed->missing, '... not missing after refresh';
+    }
+
+    # remove User from LDAP
+    my $dn   = $ldap_user->driver_unique_id;
+    my $conn = Socialtext::LDAP->new();
+    my $mesg = $conn->{ldap}->delete($dn);
+    ok !$mesg->is_error, '... removed User from LDAP';
+
+    # refresh User; should be "missing"
+    {
+        Socialtext::LDAP::Operations->RefreshUsers(force => 1);
+        my $refreshed = Socialtext::User->new(email_address => 'john.doe@example.com');
+        ok $refreshed->missing, '... now missing';
+    }
+
+    # cleanup; don't want to pollute other tests
+    Test::Socialtext::User->delete_recklessly($ldap_user);
 }
 
 ###############################################################################

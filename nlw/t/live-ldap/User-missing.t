@@ -6,7 +6,7 @@ use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 27;
-use Socialtext::SQL qw(sql_execute);
+use Socialtext::SQL qw(:exec :time);
 
 fixtures(qw( db ));
 
@@ -26,13 +26,21 @@ sub bootstrap_openldap {
 }
 
 ###############################################################################
-# Helper method to pull up the Homunculus straight from the DB; when we want
-# to check if the DB got updated, we can't just check the User object (as
-# instantiating the User object may give us a ST::User::Deleted, which
-# explicitly sets/over-rides several attributes).
-sub get_homunculus_for_dn {
-    my $dn = shift;
-    return Socialtext::User->_first('get_homunculus', driver_unique_id=>$dn);
+# Grab the "cached_at" time for a User, straight from the DB.
+#
+# Don't want to do it by checking against a User or Homunculus, as we
+# over-ride "cached_at" for certain scenarios (e.g. ST:U:Deleted).
+sub get_user_cached_at {
+    my $key = shift;
+    my $val = shift;
+    my ($driver) = grep { /LDAP/ } Socialtext::User->_drivers();
+    my $cached_at = sql_singlevalue( qq{
+        SELECT cached_at
+          FROM users
+         WHERE driver_key = ?
+           AND $key = ?
+    }, $driver, $val );
+    return sql_parse_timestamptz($cached_at);
 }
 
 ###############################################################################
@@ -67,7 +75,7 @@ missing_when_not_in_ldap: {
         my $mesg = $conn->{ldap}->delete($dn);
         ok !$mesg->is_error, '... removed User from LDAP';
 
-        my $homey_before = get_homunculus_for_dn($dn);
+        my $cached_at_before = get_user_cached_at(driver_unique_id => $dn);
         clear_log();
 
         $user->homunculus->expire;
@@ -76,8 +84,8 @@ missing_when_not_in_ldap: {
         ok $user->missing, '... ... and has been flagged as "missing"';
         logged_like 'info', qr/$dn.*missing/, '... ... logged to nlw.log';
 
-        my $homey_after = get_homunculus_for_dn($dn);
-        ok $homey_after->cached_at > $homey_before->cached_at,
+        my $cached_at_after = get_user_cached_at(driver_unique_id => $dn);
+        ok $cached_at_after > $cached_at_before,
             '... ... "cached_at" was updated';
     }
 
@@ -86,7 +94,7 @@ missing_when_not_in_ldap: {
         my $mesg = $conn->{ldap}->add($entry);
         ok !$mesg->is_error, '... added User back into LDAP';
 
-        my $homey_before = get_homunculus_for_dn($dn);
+        my $cached_at_before = get_user_cached_at(driver_unique_id => $dn);
         clear_log();
 
         $user->homunculus->expire;
@@ -95,15 +103,18 @@ missing_when_not_in_ldap: {
         ok !$user->missing, '... ... and has been flagged as "found"';
         logged_like 'info', qr/$dn.*found/, '... ... logged to nlw.log';
 
-        my $homey_after = get_homunculus_for_dn($dn);
-        ok $homey_after->cached_at > $homey_before->cached_at,
+        my $cached_at_after = get_user_cached_at(driver_unique_id => $dn);
+        ok $cached_at_after > $cached_at_before,
             '... ... "cached_at" was updated';
     }
 }
 
 ###############################################################################
-# TEST: Missing Users always return "$user->is_deleted()" true
-missing_users_are_deemed_deleted: {
+# TEST: Missing Users are always a "ST::User::Deleted".  Deleted Users have
+# *special* behaviour, so we want to make sure that if a User goes missing
+# that we always treat them the same.  Not just "$user->is_deleted", but the
+# full suite of over-rides found in ST::User::Deleted;
+missing_users_are_deleted_users: {
     my $ldap = bootstrap_openldap();
     my $user = Socialtext::User->new(username => 'John Doe');
     my $conn = Socialtext::LDAP->new();
@@ -116,12 +127,14 @@ missing_users_are_deemed_deleted: {
     $user->homunculus->expire;
     $user = Socialtext::User->new(username => 'John Doe');
     ok $user->missing, '... marked as "missing"';
-    ok $user->is_deleted, '... and deemed is_deleted';
+    isa_ok $user->homunculus, 'Socialtext::User::Deleted',
+        '... with a ST::U::Deleted homunculus';
 
     # Refresh from cache; should *still* be missing/deleted
     $user = Socialtext::User->new(username => 'John Doe');
     ok $user->missing, '... still missing';
-    ok $user->is_deleted, '... still is_deleted';
+    isa_ok $user->homunculus, 'Socialtext::User::Deleted',
+        '... still with ST::U::Deleted homunculus';
 }
 
 ###############################################################################

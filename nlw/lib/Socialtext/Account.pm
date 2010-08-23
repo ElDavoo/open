@@ -306,6 +306,7 @@ sub is_placeholder {
 after 'enable_plugin','disable_plugin' => sub {
     my $self = shift;
     Socialtext::JSON::Proxy::Helper->ClearForAccount($self->account_id);
+    Socialtext::Helpers->clean_user_frame_cache();
 };
 
 sub export {

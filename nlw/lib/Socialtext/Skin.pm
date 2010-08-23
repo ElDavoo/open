@@ -13,6 +13,7 @@ use Socialtext::AppConfig;
 use Socialtext;
 use File::Spec;
 use YAML;
+use List::MoreUtils qw/any/;
 
 our $CODE_BASE = Socialtext::AppConfig->code_base;
 our $PROD_VER = Socialtext->product_version();
@@ -85,6 +86,11 @@ sub template_paths {
 
     my $dirs = $self->parent ? $self->parent->template_paths : [];
     push @$dirs, grep { -d $_ } $self->skin_path('template');
+
+    unless (any { $_ =~ m!/user_frame$! } @$dirs) {
+        push @$dirs, Socialtext::Paths::cache_directory('user_frame');
+    }
+
     return $dirs;
 }
 

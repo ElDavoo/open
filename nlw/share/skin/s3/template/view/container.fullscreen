@@ -28,7 +28,10 @@
         [% SET num = 0 %]
         [% SET col = 0 %]
         <div class="widget" id="[% gadget.id %]">
-            [% INCLUDE 'widget/iframe' %]
+            <div id="[% gadget.id %]-setup" style="display:none">
+                [% INCLUDE widget/setup %]
+            </div>
+            [% IF gadget.content_type == 'inline'; INCLUDE widget/inline; ELSE; INCLUDE widget/iframe; END %]
         </div>
 
         <script>

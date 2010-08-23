@@ -39,6 +39,13 @@ sub GET_json {
     });
 }
 
+sub GET_html {
+    my $self = shift;
+    $self->rest->header(-type => 'text/html; charset=utf-8');
+    my $gadget = $self->gadget;
+    return $gadget->content;
+}
+
 sub DELETE {
     my $self = shift;
     $self->if_authorized_to_edit(sub {

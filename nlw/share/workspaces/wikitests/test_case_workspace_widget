@@ -10,37 +10,24 @@
 | st-single-widget-in-dashboard | gallery-widget-Workspaces |  |
 
 | *Comment* | Test Case: Widgets - Workspaces Widget |  |
-| st-name-widget | 1 | myworkspace |
-| st-widget-title-like | myworkspace | Workspaces |
-| st-select-widget-frame | myworkspace |  |
 | wait_for_text_present_ok | changes | 30000 |
 | wait_for_text_present_ok | views | 30000 |
 | wait_for_element_visible_ok | link=new page | 30000 |
 | wait_for_element_visible_ok | link=Workspace Widget %%start_time%% | 30000 |
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Remove member, see if workspace is gone |  |
-| *Comment* | The widget name is %%myworkspace%% |  |
 | st-admin | remove-member --username %%username%% --workspace workspacewidget-%%start_time%% | no longer has the role of 'member' |
 
-Why logout and login?
-
- st-logout |  |  |
 | st-clear-json-cache |  |  |
- st-login |  |  |
 
-| open_ok | /?dashboard | 60000 |
-| st-name-widget | 1 | myworkspace |
-| st-widget-title-like | myworkspace | Workspaces |
-| st-select-widget-frame | myworkspace |  |
+| open_ok | /st/dashboard | 60000 |
 | wait_for_text_present_ok | changes | 30000 |
 | wait_for_text_present_ok | views | 30000 |
 | wait_for_element_visible_ok | link=new page | 30000 |
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //body | %%title%% |
 | text_unlike | //body | Workspace Widget %%start_time%% |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Workspace Widget Teardown |  |
 | st-admin | delete-workspace --workspace workspacewidget-%%start_time%% --no-export | has been deleted |

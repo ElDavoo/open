@@ -92,9 +92,9 @@ fixtures(qw( clean populated_rdbms ));
     # Check the t/Fixtures/populated_rdbms/generate script for up-to-date
     # info, but users are added to either the Other 1 or Other 2 accounts.
     is( join(',', map { $_->username } $users->all() ),
-        'guest,system-user,devnull6@urth.org,devnull4@urth.org,'
-        . 'devnull2@urth.org,devnull1@urth.org,devnull7@urth.org,'
-        . 'devnull5@urth.org,devnull3@urth.org',
+        'system-user,guest,devnull2@urth.org,devnull4@urth.org,'
+        . 'devnull6@urth.org,devnull1@urth.org,devnull3@urth.org,'
+        . 'devnull5@urth.org,devnull7@urth.org',
         'All() sorted by primary account name',
     );
 }

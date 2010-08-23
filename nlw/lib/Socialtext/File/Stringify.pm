@@ -74,6 +74,7 @@ sub to_string {
         'application/x-msword'          => 'application_msword',
         'application/msword'            => 'application_msword',
         'application/vnd.ms-word'       => 'application_msword',
+        'application/xml'               => 'text_xml',
         'application/zip'               => 'application_zip',
         'application/xml'               => 'text_xml',
         'application/json'              => 'text_plain',

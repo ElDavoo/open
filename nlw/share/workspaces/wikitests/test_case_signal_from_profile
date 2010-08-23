@@ -69,19 +69,18 @@
 | st-widget-title-like | activities | Activities |
 
 | *Comment* | Test Case: Signal From Profile. Send a private mention |  |
-| st-select-widget-frame | activities |  |
-| st-send-signal-within-activities-widget | %%private%% | PRIVATE |
+| st-send-signal-in-activities-widget | %%private%% | PRIVATE |
 
 | *Comment* | Test Case: Signal From Profile. VERIFY after private signal that private checkbox is unchecked |  |
 | st-unchecked-ok | //input[@class='toggle-private'] |  |
 
 | *Comment* | Test Case: Signal From Profile. Immediately send a public mention from within the same widget |  |
-| st-send-signal-within-activities-widget | %%public%% |  |
+| open_ok | /st/dashboard |  |
+| st-send-signal-in-activities-widget | %%public%% |  |
 
 | *Comment* | Test Case: Signal From Profile. Both mentions appears in wikitester profile activities widget |  |
-| st-verify-text-within-activities-widget |  | %%private%% |
-| st-verify-text-within-activities-widget |  | %%public%% |
-| select-frame | relative=parent |  |
+| st-verify-text-within-activities-widget | %%private%% |  |
+| st-verify-text-within-activities-widget | %%public%% |  |
 
 | *Comment* | Test Case: Signal From Profile. private mention appears in %%spuser%% profile activities widget |  |
 | wait_for_element_visible_ok | link=%%spshort%% | 30000 |

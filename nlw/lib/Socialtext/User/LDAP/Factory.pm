@@ -12,12 +12,12 @@ use Socialtext::LDAP;
 use Socialtext::User::LDAP;
 use Socialtext::UserMetadata;
 use Socialtext::Log qw(st_log);
-use Socialtext::SQL qw(sql_singlevalue);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use Net::LDAP::Util qw(escape_filter_value);
-use Socialtext::SQL qw(sql_execute sql_singlevalue sql_selectrow);
+use Net::LDAP::Constant qw(LDAP_NO_SUCH_OBJECT);
+use Socialtext::SQL qw(:exec :time);
 use Socialtext::Exceptions qw(data_validation_error);
-use Socialtext::Timer;
+use Socialtext::Timer qw(time_scope);
 use Readonly;
 use List::MoreUtils qw(part);
 
@@ -91,20 +91,24 @@ sub GetUser {
     # SANITY CHECK: get user term is acceptable
     return unless ($valid_get_user_terms{$key});
 
-    # If we have a fresly cached copy of the User, use that
-    local $self->{_cache_lookup}; # temporary cache-lookup storage
+    # If we have a valid/fresh cached copy of the User, use that
+    my $cache_lookup = $self->GetHomunculus(
+        $key, $val, $self->driver_key, 'raw_proto_user_please',
+    );
     if ($CacheEnabled) {
-        Socialtext::Timer->Continue('ldap_user_check_cache');
-        my $cached = $self->_check_cache($key => $val);
-        Socialtext::Timer->Pause('ldap_user_check_cache');
-        return $cached if $cached;
+        time_scope 'ldap_user_check_cache';
+        if ($self->_is_cached_proto_user_valid($cache_lookup)) {
+            return $self->NewHomunculus($cache_lookup);
+        }
     }
 
     # Look the User up in LDAP
     local $self->{_user_not_found};
-    Socialtext::Timer->Continue('ldap_user_lookup');
-    my $proto_user = $self->lookup($key => $val);
-    Socialtext::Timer->Pause('ldap_user_lookup');
+    my $proto_user = eval { $self->lookup($key => $val) };
+    if ($@) {
+        st_log->error($@);
+        return;
+    }
 
     # If we found the User in LDAP, cache the data in the DB and return that
     # back to the caller as the homunculus.
@@ -114,11 +118,11 @@ sub GetUser {
     }
 
     # Didn't find User in LDAP, but they *do* exist in the DB
-    if ($self->{_cache_lookup}) {
+    if ($cache_lookup) {
+        my $homey = $self->NewHomunculus($cache_lookup);
         if ($self->{_user_not_found}) {
             # User was previously cached, so they existed at some point but
             # can't be found in LDAP any longer.  Must be a Deleted User.
-            my $homey = $self->{_cache_lookup};
             $self->_mark_as_missing($homey);
             $self->UpdateUserRecord( {
                 user_id   => $homey->{user_id},
@@ -129,7 +133,7 @@ sub GetUser {
         else {
             # Something else caused LDAP lookup to fail; return previously
             # cached data (its better than nothing).
-            return $self->{_cache_lookup};
+            return $homey;
         }
     }
 
@@ -169,6 +173,7 @@ sub _mark_as_found {
 
 sub lookup {
     my ($self, $key, $val) = @_;
+    time_scope 'ldap_user_lookup';
 
     # SANITY CHECK: lookup term is acceptable
     return unless ($valid_get_user_terms{$key});
@@ -203,28 +208,22 @@ sub lookup {
     # search LDAP directory for our record
     my $mesg = $self->_find_user($key => $val);
     unless ($mesg) {
-        st_log->error( "ST::User::LDAP: no suitable LDAP response" );
-        return;
+        die "ST::User::LDAP: no suitable LDAP response\n";
     }
-    if ($mesg->code()) {
-        st_log->error( "ST::User::LDAP: LDAP error while finding user $key/$val; " . $mesg->error() );
-        return;
+
+    if ($mesg->code && ($mesg->code != LDAP_NO_SUCH_OBJECT)) {
+        die "ST::User::LDAP: LDAP error while finding user $key/$val; " . $mesg->error . "\n";
     }
     if ($mesg->count() > 1) {
         # If we get here, there are duped LDAP records for this field. ST
         # requires that these fields be unique, so be sure to note this.
-        st_log->error( "ST::User::LDAP: found multiple matches for user; $key/$val" );
-        return;
+        die "ST::User::LDAP: found multiple matches for user; $key/$val\n";
     }
 
     # extract result record
     my $result = $mesg->shift_entry();
     unless ($result) {
         st_log->debug( "ST::User::LDAP: unable to find user in LDAP; $key/$val" );
-        # XXX: other code expects lookup() to return false when it can't find
-        # the LDAP user.  Throwing an exception seems like the right thing to
-        # do, but we can't do that either due to previous design decisions.
-        # For now, set a private field that GetUser can check ~stash
         $self->{_user_not_found} = 1;
         return;
     }
@@ -250,29 +249,20 @@ sub lookup {
     return $proto_user;
 }
 
-sub _check_cache {
-    my ($self, $key, $val) = @_;
+sub _is_cached_proto_user_valid {
+    my $self       = shift;
+    my $proto_user = shift;
 
-    # get cached User data, exiting early if we don't know about this User (or
-    # the User has *never* had their LDAP data cached)
-    my $cached_homey = $self->GetHomunculus(
-        $key, $val, $self->driver_key
-    );
-    return unless $cached_homey;
-    return unless $cached_homey->cached_at;
+    return unless $proto_user;
+    return unless $proto_user->{cached_at};
 
-    # We might need to use an expired cached copy if the LDAP query fails.
-    $self->{_cache_lookup} = $cached_homey;
-
-    # If the cached copy is stale, return empty handed
-    my $ttl = $cached_homey->{missing}
+    my $ttl = $proto_user->{missing}
         ? $self->cache_not_found_ttl
         : $self->cache_ttl;
-    my $cutoff = $self->Now() - $ttl;
-    return unless ($cached_homey->cached_at > $cutoff);
+    my $cutoff    = $self->Now() - $ttl;
+    my $cached_at = sql_parse_timestamptz($proto_user->{cached_at});
 
-    # Cached copy still good
-    return $cached_homey;
+    return $cached_at > $cutoff ? 1 : 0;
 }
 
 sub cache_ttl {

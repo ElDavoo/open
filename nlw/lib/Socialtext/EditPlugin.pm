@@ -143,19 +143,6 @@ sub edit_content {
         page => $page,
     );
 
-    my $signal = $page->store(
-        user => $self->hub->current_user,
-        signal_edit_summary => scalar($self->cgi->signal_edit_summary),
-        signal_edit_to_network => scalar($self->cgi->signal_edit_to_network),
-        edit_summary => $edit_summary,
-    );
-
-    if ($signal) {
-        $event{signal} = $signal->signal_id;
-    } 
-
-    Socialtext::Events->Record(\%event);
-
     # Move attachments uploaded to 'Untitled Page'/'Untitled Spreadsheet' to the actual page
     my @attach = $self->cgi->attachment;
     for my $a (@attach) {
@@ -185,6 +172,18 @@ sub edit_content {
         # Remove the temporary flag from the new file
         $target->make_permanent(user => $self->hub->current_user);
     }
+
+    my $signal = $page->store(
+        user => $self->hub->current_user,
+        signal_edit_summary => scalar($self->cgi->signal_edit_summary),
+        edit_summary => $edit_summary,
+    );
+
+    if ($signal) {
+        $event{signal} = $signal->signal_id;
+    }
+
+    Socialtext::Events->Record(\%event);
 
     return $self->to_display($page);
 }
