@@ -13,7 +13,8 @@ sub do_work {
     my $solr_indexer = Socialtext::Search::Solr::Factory->create_indexer();
     for my $page_id ( $hub->pages->all_ids() ) {
         my $page = $hub->pages->new_page($page_id);
-        next if $page->deleted;
+        next unless $page and $page->exists and !$page->deleted;
+
         Socialtext::JobCreator->index_page(
             $page, undef,
             page_job_class => 'Socialtext::Job::PageReIndex',
