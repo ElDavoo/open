@@ -38,7 +38,11 @@ Run these tests as the main user.
 | fetch-page | Test                                        | hit |
 
 | Comment    | Create and fetch a page with an intra-ws link |
+| st-process-jobs | |
 | edit_page  | %%workspace%% | one_link | Alpha |
+| GET | /%%workspace%%/index.cgi?one_link |
+| code-is | 200 |
+| body-like | Alpha |
 | edit_page  | %%workspace%% | Test2 | This has [one link]. |
 | fetch-page | Test2         | miss   |                      |
 | fetch-page | Test2         | hit   |                      |
@@ -48,6 +52,9 @@ Run these tests as the main user.
 | code-is | 200 |
 | body-like | Alpha |
 | edit_page  | %%workspace%% | one_link | Beta |
+| GET | /%%workspace%%/index.cgi?one_link |
+| code-is | 200 |
+| body-like | Beta |
 | st-process-jobs | |
 | job-count | PageIndex | 0 |
 | fetch-page | Test2         | miss   |                      |
