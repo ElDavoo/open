@@ -1111,10 +1111,11 @@ sub last_edited_by {
     # we assume that if they don't exist, they should be created. When
     # we import pages into the DBMS, we'll need to create any
     # non-existent users at the same time, for referential integrity.
-    $user ||= Socialtext::User->create(
+    $user ||= eval { Socialtext::User->create(
         username         => $email_address,
         email_address    => $email_address,
-    );
+    ) };
+    $user ||= Socialtext::User->Guest;
 
     return $user;
 }
