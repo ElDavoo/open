@@ -143,9 +143,11 @@ sub _add_page_doc {
     my $body; {
         my $t = time_scope('solr_page_body');
         $body = $page->_to_plain_text;
-        _scrub_body(\$body);
+        _scrub_field(\$body);
         $self->_truncate( $id, \$body );
     }
+    my $title = $page->title;
+    _scrub_field(\$title);
 
     my $tags = $page->metadata->Category;
     my @fields = (
@@ -158,7 +160,7 @@ sub _add_page_doc {
         [doctype => 'page'], 
         [pagetype => $page->metadata->Type],
         [page_key => $self->page_key($page->id)],
-        [title => $page->title],
+        [title => $title],
         [editor => $editor_id],
         [creator => $creator_id],
         [revisions => $revisions],
@@ -243,7 +245,7 @@ sub _add_attachment_doc {
         # KinoSearch would exit unless there's a body. Don't do that here so
         # that we can still index metadata.
         if (length $body) {
-            _scrub_body(\$body);
+            _scrub_field(\$body);
             $self->_truncate( $id, \$body );
         }
     }
@@ -330,7 +332,7 @@ sub _add_signal_doc {
     my $recip = $signal->recipient_id || 0;
     my @user_topics = $signal->user_topics;
     my ($body, $external_links, $page_links) = $self->render_signal_body($signal);
-    _scrub_body(\$body);
+    _scrub_field(\$body);
 
     my $in_reply_to = $signal->in_reply_to;
     my $is_question = $body =~ m/\?\s*$/ ? 1 : 0;
@@ -384,7 +386,7 @@ sub _add_signal_attachment_doc {
     my $body; {
         my $t = time_scope('solr_attach_body');
         $att->to_string(\$body);
-        _scrub_body(\$body);
+        _scrub_field(\$body);
         $self->_truncate( $id, \$body );
         _debug( "Retrieved attachment content.  Length is " . length $body );
     }
@@ -637,7 +639,7 @@ sub _date_header_to_iso {
     return $date->iso8601 . 'Z';
 }
 
-sub _scrub_body {
+sub _scrub_field {
     my $body_ref = shift;
     $$body_ref =~ s/[[:cntrl:]]+/ /g; # make Jetty happy
 }
