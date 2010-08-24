@@ -1,6 +1,6 @@
 [%- IF col.borderless; div_class = "$class borderless"; END -%]
 [%- SET div_class = gadget.class ? gadget.class
-    : gadget.fixed ? 'tan' : 'regular' -%]
+    : gadget.fixed ? 'tan ' _ div_class : 'regular ' _ div_class -%]
 <li id="[% gadget.id %]-li" class="[% gadget.fixed ? "fixed" : "draggable" %]">
 <div class="[% div_class %] widget" id="[% gadget.id %]">
     <div class="widgetHeader">

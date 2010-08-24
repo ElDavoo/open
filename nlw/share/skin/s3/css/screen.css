@@ -4311,6 +4311,14 @@ body#dashBoard div#controls div#controlsRight ul {
 .widget.borderless .widgetHeader {
     display: none;
 }
+
+.widget.borderless {
+    background: none !important;
+    border-left: none !important;
+    padding: 0 !important;
+    margin: 10px 0 0 !important;
+}
+
 .widget.borderless div.widget,
 .widget.borderless div.widgetContent,
 .widget.borderless div.widgetBottom,
