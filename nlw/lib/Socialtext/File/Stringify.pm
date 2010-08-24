@@ -151,6 +151,7 @@ sub PreLoad {
     require Socialtext::File::Stringify::Default;
     require Socialtext::File::Stringify::text_plain;
     require Socialtext::File::Stringify::text_html;
+    require Socialtext::File::Stringify::text_xml;
 }
 
 1;
