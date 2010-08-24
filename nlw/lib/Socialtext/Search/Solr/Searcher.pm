@@ -15,7 +15,7 @@ use Socialtext::Search::Utils;
 use Socialtext::AppConfig;
 use Socialtext::Exceptions;
 use Socialtext::Workspace;
-use Socialtext::JSON qw/decode_json/;
+use Socialtext::JSON qw/decode_json encode_json/;
 use WebService::Solr;
 use namespace::clean -except => 'meta';
 use Guard;
@@ -72,7 +72,7 @@ sub begin_search {
 
 # Parses the query string and returns the raw Solr hit results.
 sub _search {
-    my ( $self, $query_string, $authorizer, $workspaces, %opts) = @_;
+    my ( $self, $raw_query_string, $authorizer, $workspaces, %opts) = @_;
     $opts{limit}   ||= $self->_default_rows;
     $opts{timeout} ||= Socialtext::AppConfig->search_time_threshold();
 
@@ -92,21 +92,13 @@ sub _search {
         $group_ids = [$opts{viewer}->groups(ids_only => 1)->all];
     }
 
-    $query_string = lc $query_string;
+    my $query_string = lc $raw_query_string;
     $query_string =~ s/\b(and|or|not)\b/uc($1)/ge;
     $query_string =~ s/\[([^\]]+)\]/'[' . uc($1) . ']'/ge;
 
     my $query = $self->parse($query_string, \@account_ids, %opts);
     return ([], 0) if $query =~ m/^(?:\*|\?)/;
     $self->_authorize( $query, $authorizer );
-
-    my $name = 'solr_raw';
-    my $t = Socialtext::Timer->new();
-    scope_guard {
-        my $elapsed = $t->elapsed();
-        $Socialtext::Timer::Timings->{$name}->{how_many}++;
-        $Socialtext::Timer::Timings->{$name}->{timer} += $elapsed;
-    };
 
     my @filter_query;
     my $qf;
@@ -172,6 +164,30 @@ sub _search {
         timeAllowed => $opts{timeout},
         @sort,
     };
+
+    my $t = Socialtext::Timer->new();
+    my $num_hits = 0;
+    scope_guard {
+        # Move this to ST::Timer?
+        my $name = 'solr_raw';
+        my $elapsed = $t->elapsed();
+        $Socialtext::Timer::Timings->{$name}->{how_many}++;
+        $Socialtext::Timer::Timings->{$name}->{timer} += $elapsed;
+
+        my $json_data = encode_json({
+            timer      => sprintf('%0.03f', $elapsed),
+            raw_query  => $raw_query_string,
+            hits       => $num_hits,
+            solr_query => {
+                map { $_ => $query_hash->{$_} } qw/sort qt q fq start/
+            },
+        });
+
+        st_log->info('SEARCH,SOLR,'
+            .'ACTOR_ID:'. $opts{viewer}->user_id .','
+            .$json_data
+        );
+    };
     my $response = $self->solr->search($query, $query_hash);
 
     my $resp_headers = eval { $response->content->{responseHeader} };
@@ -186,7 +202,7 @@ sub _search {
     }
 
     my $docs = $response->docs;
-    my $num_hits = $response->pager->total_entries();
+    $num_hits = $response->pager->total_entries();
 
     return ($docs, $num_hits);
 }
