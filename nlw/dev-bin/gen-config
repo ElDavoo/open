@@ -713,9 +713,9 @@ sub detect_server_settings {
 #        || qx#cat /proc/meminfo | grep MemTotal | awk '{print \$2}'#;
 
     return { # Typical prod/appliance 4G of ram configuration
-            min_spare              => 10,
-            max_spare              => 15,
-            start                  => 15,
+            min_spare              => 2,
+            max_spare              => 4,
+            start                  => 3,
             max_clients            => 22,
             keep_alive_timeout     => 30,
             keep_alive_max_req     => 50,
