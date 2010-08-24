@@ -148,11 +148,6 @@ sub search {
         )
     );
 
-    st_log()
-        ->info( "SEARCH,WORKSPACE,term:'$search_term',"
-            . "num_results:" . $self->result_set->{hits}
-            . ',[' . $timer->elapsed . ']');
-
     if ($self->result_set->{too_many}) {
         $self->screen_template('view/listview');
         return $self->render_screen(
