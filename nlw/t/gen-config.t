@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 36;
+use Test::More tests => 31;
 use File::Temp qw/tempdir/;
 
 my $gen_config = "dev-bin/gen-config";
@@ -49,28 +49,14 @@ Dev_env: {
     );
 }
 
-# This means anything greater than 2.2G of RAM.
-Full_memory: {
-    $ENV{ST_MEMTOTAL} = 8000000;
+Appliance: {
+    $ENV{ST_MEMTOTAL} = 8000000;    # triggering use of Appliance settings
     run_test("--root $test_root --dev=0");
     check_apache_config(
-        MinSpareServers     => 10,
-        MaxSpareServers     => 15,
-        StartServers        => 15,
+        MinSpareServers     => 2,
+        MaxSpareServers     => 4,
+        StartServers        => 3,
         MaxClients          => 22,
-        MaxRequestsPerChild => 1000,
-    );
-}
-
-# This means <= 2.2G of RAM.
-Less_memory: {
-    $ENV{ST_MEMTOTAL} = 1024;
-    run_test("--root $test_root --dev=0");
-    check_apache_config(
-        MinSpareServers     => 5,
-        MaxSpareServers     => 9,
-        StartServers        => 7,
-        MaxClients          => 11,
         MaxRequestsPerChild => 1000,
     );
 }
