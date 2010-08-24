@@ -18,6 +18,7 @@ use Socialtext::Workspace;
 use Socialtext::JSON qw/decode_json/;
 use WebService::Solr;
 use namespace::clean -except => 'meta';
+use Guard;
 
 =head1 NAME
 
@@ -100,7 +101,14 @@ sub _search {
     return ([], 0) if $query =~ m/^(?:\*|\?)/;
     $self->_authorize( $query, $authorizer );
 
-    Socialtext::Timer->Continue('solr_raw');
+    my $name = 'solr_raw';
+    my $t = Socialtext::Timer->new();
+    scope_guard {
+        my $elapsed = $t->elapsed();
+        $Socialtext::Timer::Timings->{$name}->{how_many}++;
+        $Socialtext::Timer::Timings->{$name}->{timer} += $elapsed;
+    };
+
     my @filter_query;
     my $qf;
 
@@ -182,7 +190,6 @@ sub _search {
 
     my $docs = $response->docs;
     my $num_hits = $response->pager->total_entries();
-    Socialtext::Timer->Pause('solr_raw');
 
     _debug("Found $num_hits matches");
     return ($docs, $num_hits);
