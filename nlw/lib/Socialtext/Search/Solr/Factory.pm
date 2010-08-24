@@ -120,7 +120,13 @@ sub _search_workspaces {
     # Searcher needs a workspace, which is kinda dumb in the case of
     # inter-workspace search.
     my $searcher = $self->create_searcher($workspaces->[0]);
-    return $searcher->begin_search($query, undef, $workspaces, @_);
+    return $searcher->begin_search(
+        $query,
+        undef,  # authorizer
+        $workspaces,
+        (viewer => $user),
+        @_
+    );
 }
 
 
