@@ -57,7 +57,6 @@ sub begin_search {
     my ( $self, $query_string, $authorizer, $workspaces, %opts ) = @_;
     my $name = $workspaces ? join(',', @$workspaces) : $self->ws_name;
     $name ||= $opts{doctype} || 'unknown';
-    _debug("Searching $name with query: $query_string");
 
     my ($docs, $num_hits)
         = $self->_search($query_string, undef, $workspaces, %opts);
@@ -173,8 +172,6 @@ sub _search {
         timeAllowed => $opts{timeout},
         @sort,
     };
-    _debug("Solr query: $query");
-    _debug("qt=$_") for @filter_query;
     my $response = $self->solr->search($query, $query_hash);
 
     my $resp_headers = eval { $response->content->{responseHeader} };
@@ -191,7 +188,6 @@ sub _search {
     my $docs = $response->docs;
     my $num_hits = $response->pager->total_entries();
 
-    _debug("Found $num_hits matches");
     return ($docs, $num_hits);
 }
 
