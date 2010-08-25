@@ -719,7 +719,7 @@ $(function() {
             'z-index': '100000',
             'box-shadow': '5px 5px 3px #888888',
             '-moz-box-shadow': '5px 5px 3px #888888',
-            '-webkit-box-shadow': '5px 5px 3px #888888',
+            '-webkit-box-shadow': '5px 5px 3px #888888'
         }).appendTo($('body')).fadeIn('fast');
     });
 
