@@ -5,20 +5,13 @@ use warnings;
 use Test::Socialtext tests => 3;
 use Socialtext::Jobs;
 use Socialtext::Search::AbstractFactory;
+use Test::Differences;
 
 fixtures(qw( admin no-ceq-jobs ));
 
 use_ok 'Socialtext::Pluggable::Plugin';
 
 my $hub = new_hub('admin');
-
-diag qq{
-
-If this test fails without *any* indication of what went wrong, we've likely
-dumped core while trying to extract text from an attachment in the 'admin'
-Workspace.
-
-};
 
 Socialtext::Search::AbstractFactory->GetFactory->create_indexer('admin')
     ->index_workspace('admin');
@@ -28,10 +21,13 @@ my $plug = Socialtext::Pluggable::Plugin->new;
 $plug->hub($hub);
 
 #search
-my $pages = $plug->search(search_term => 'tag:welcome');
+my $pages = $plug->search(
+    search_term => 'tag:welcome',
+    sortby => 'title',
+);
 
 # 'central_page_templates' maybe got removed?
-my @expected = qw(
+my $expected = join "\n", qw(
 advanced_getting_around
 can_i_change_something
 central_page_important_links
@@ -52,12 +48,7 @@ people
 project_plans
 project_summary_template
 quick_start
-start_here
-what_else_is_here
-what_if_i_make_a_mistake
-what_s_the_funny_punctuation
-workspace_tour_table_of_contents
 );
 
-my @page_ids = sort map { $_->{page_id} } @{$pages->{rows}};
-is_deeply \@page_ids, \@expected, "Tag search returned the right page results";
+my $results = join "\n", sort map { $_->{page_id} } @{$pages->{rows}};
+eq_or_diff $results, $expected, "tag search returned the right page results";
