@@ -73,7 +73,8 @@ sub search_on_behalf {
 
     my $hit_threshold = Socialtext::AppConfig->search_warning_threshold || 500;
 
-    my ($thunk, $num_hits);
+    my $thunk = sub {};
+    my $num_hits = 0;
     eval {
         ($thunk, $num_hits)
             = $self->_search_workspaces($user, $workspaces, $query, %opts);
@@ -112,7 +113,6 @@ sub _search_workspaces {
     my $authorizer = $self->_make_authorizer($user);
     for my $workspace (@$workspaces) {
         unless ($authorizer->($workspace)) {
-            _debug("authorizer failed for $workspace");
             Socialtext::Exception::Auth->throw;
         }
     }
