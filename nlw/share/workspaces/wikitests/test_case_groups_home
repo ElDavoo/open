@@ -26,7 +26,7 @@
 
 | st-logoutin | %%permuser%% | %%password%% |
 
-| *Comment* | Test Case: Groups Make A New Page. Start from dashboard to allow settle down time for login |  |
+| *Comment* | Test Case: Groups Home. Make A New Page. Start from dashboard to allow settle down time for login |  |
 | open_ok | /st/dashboard |  |
 | open_ok | /%%wsname%%/index.cgi?action=new_page |  |
 | wait_for_element_present_ok | link=Wiki Text | 30000 |
@@ -37,7 +37,7 @@
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
 
-| *Comment* | Test Case: Groups Tag A Page |  |
+| *Comment* | Test Case: Groups Home. Tag A Page |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
 | click_ok | link=Add Tag |  |
 | wait_for_element_visible_ok | st-tags-field | 30000 |
@@ -46,7 +46,7 @@
 | click_ok | st-tags-plusbutton-link | 30000 |
 | wait_for_element_visible_ok | link=tag-%%start_time%% | 30000 |
 
-| *Comment* | Test Case: Groups Comment on a Page |  |
+| *Comment* | Test Case: Groups Home. Comment on a Page |  |
 | wait_for_element_visible_ok | st-comment-button-link | 30000 |
 | click_ok | st-comment-button-link |  |
 | wait_for_element_visible_ok | comment | 30000 |
@@ -57,7 +57,7 @@
 | wait_for_text_present_ok | contributed by | 30000 |
 | text_like | qr/contributed by.+ %%short_permuser%%/ism |  |
 
-| *Comment* | Test Case: Groups Send A Signal to the Group |  |
+| *Comment* | Test Case: Groups Home. Send A Signal to the Group |  |
 | open_ok | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | signals_widget |
@@ -67,14 +67,14 @@
 | wait_for_text_present_ok | to %%groupname%% | 30000 |
 | select_frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups Check Lack of Permissions |  |
+| *Comment* | Test Case: Groups Home. Check Lack of Permissions |  |
 | st-logoutin | %%nopermuser%% | %%password%% |
 | st_open_noeval | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | Error | 30000 |
 | wait_for_text_present_ok | The group you are trying to view does not exist | 30000 |
 | wait_for_element_visible_ok | link=Socialtext Support | 30000 |
 
-| *Comment* | Test Case: Groups Add member, Check again |  |
+| *Comment* | Test Case: Groups Home. Add member, Check again |  |
 | st-admin | add-member --e %%nopermuser%% --group %%group_id%% | is now a member of the |
 | open_ok | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | %%groupname%% | 30000 |
@@ -83,7 +83,7 @@
 | st-name-widget | 3 | signals_widget |
 | st-name-widget | 4 | people_widget |
 
-| *Comment* | Test Case: Groups Home Check Information Widget |  |
+| *Comment* | Test Case: Groups Home. Check Information Widget |  |
 | st-select-widget-frame | information_widget |  |
 | wait_for_text_present_ok | %%groupname%% | 30000 |
 | select-frame | relative=parent |  |
@@ -94,7 +94,7 @@
 | wait_for_element_visible_ok | link=%%wsname2%% | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups Home Check Activity Widget |  |
+| *Comment* | Test Case: Groups Home. Check Activity Widget |  |
 | st-select-widget-frame | signals_widget |  |
 | wait_for_text_present_ok | within %%groupname%% | 30000 |
 | wait_for_text_present_ok | minute | 30000 |
@@ -111,7 +111,7 @@
 | text_like | //body | qr/System User.+minute.+ago.+added.+%%short_permuser%%.+to.+%%groupname%%/ism |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups Home Check People Widget |  |
+| *Comment* | Test Case: Groups Home. Check People Widget |  |
 | st-select-widget-frame | people_widget |  |
 | wait_for_text_present_ok | %%short_permuser%% | 30000 |
 | wait_for_text_present_ok | %%short_nopermuser%% | 30000 |
