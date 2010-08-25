@@ -586,6 +586,7 @@ sub search {
     );
 
     $p{sortby} ||= 'Relevance';
+    $self->hub->search->dont_use_cached_result_set;
     $self->hub->search->sortby( $p{sortby} );
     # load the search result which may or may not be cached.
     my $set =  $self->hub->search->get_result_set(
