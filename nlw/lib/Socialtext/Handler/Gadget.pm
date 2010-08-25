@@ -43,7 +43,7 @@ sub GET_html {
     my $self = shift;
     $self->rest->header(-type => 'text/html; charset=utf-8');
     my $gadget = $self->gadget;
-    return $gadget->content;
+    return $gadget->expanded_content;
 }
 
 sub DELETE {
