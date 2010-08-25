@@ -15,7 +15,7 @@ sub to_string {
         my $parser = XML::SAX::ParserFactory->parser(Handler => $handler);
         $parser->parse_uri($file);
     };
-    Socialtext::File::Stringify->to_string($file, 'text/plain')
+    Socialtext::File::Stringify->to_string($buf_ref, $file, 'text/plain')
         unless length $$buf_ref;
     return;
 }
