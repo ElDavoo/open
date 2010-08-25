@@ -32,20 +32,20 @@
 | text_like | //li[@name='profile_views'] | Viewed |
 | wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 
-| wait_for_element_visible_ok | //li[@name='reads'] | 30000 |
-| click_ok | //li[@name='reads'] |  |
+| wait_for_element_visible_ok | //li[@name='reads']//a | 30000 |
+| click_ok | //li[@name='reads']//a |  |
 | wait_for_text_present_ok | %%EmptyReaders%% | 30000 |
 
-| wait_for_element_visible_ok | //li[@name='contribs'] | 30000 |
-| click_ok | //li[@name='contribs'] |  |
+| wait_for_element_visible_ok | //li[@name='contribs']//a | 30000 |
+| click_ok | //li[@name='contribs']//a |  |
 | wait_for_text_present_ok | %%EmptyEdits%% | 30000 |
 
-| wait_for_element_visible_ok | //li[@name='signals'] | 30000 |
-| click_ok | //li[@name='signals'] |  |
+| wait_for_element_visible_ok | //li[@name='signals']//a | 30000 |
+| click_ok | //li[@name='signals']//a |  |
 | wait_for_text_present_ok | %%EmptySignals%% | 30000 |
 
-| wait_for_element_visible_ok | //li[@name='profile_views'] | 30000 |
-| click_ok | //li[@name='profile_views'] |  |
+| wait_for_element_visible_ok | //li[@name='profile_views']//a | 30000 |
+| click_ok | //li[@name='profile_views']//a |  |
 | wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 
 | *Comment* | Test Case: Active Members Empty Messages TEARDOWN |  |
