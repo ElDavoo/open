@@ -122,8 +122,10 @@ st-admin enable-plugin --all-accounts --plugin groups
 st-admin enable-plugin --all-accounts --plugin push
 
 if [ $UPDATE_WIDGETS == 1 ]; then
+    set -x
     st-widgets update-all --verbose
     st-widgets update-gallery --verbose
+    set +x
 fi
 
 [ $ST_USERS == 1 ] && create-socialtext-users
