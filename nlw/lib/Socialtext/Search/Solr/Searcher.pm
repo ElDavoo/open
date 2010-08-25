@@ -210,7 +210,7 @@ sub _search {
 sub _sort_opts {
     my $self       = shift;
     my $order      = lc(shift || '');
-    my $direction  = shift || 'desc';
+    my $direction  = shift;
     my $query_type = shift;
 
     # Map the UI options into Solr fields
@@ -225,6 +225,13 @@ sub _sort_opts {
         name           => 'name_asort',
         title          => 'plain_title',
     );
+    my %default_dir = (
+        title => 'asc',
+        workspace => 'asc',
+        sender => 'asc',
+        name => 'asc',
+        subject => 'asc',
+    );
 
     # Sugar for Signals search
     if ($order eq 'newest') {
@@ -238,6 +245,8 @@ sub _sort_opts {
     # score sort.
     return ('sort' => $query_type eq 'standard' ? 'date desc' : 'score desc')
         unless $sortable{$order};
+
+    $direction ||= $default_dir{$order} || 'desc';
 
     # If a valid sort order is supplied, then we secondary sort by date,
     # unless the primary sort is already date.
