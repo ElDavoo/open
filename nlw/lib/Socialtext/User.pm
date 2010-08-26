@@ -1741,7 +1741,7 @@ sub primary_account {
     my %opts = @_;
 
     require Socialtext::Account;
-    if (@_==0) {
+    unless ($new_account) {
         return Socialtext::Account->new(account_id => $self->primary_account_id)
             || Socialtext::Account->Unknown;
     }
