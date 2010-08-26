@@ -39,7 +39,7 @@ at_least_one_worker_capable_of_running_long: {
     ok kill(INT => $ceq_pid), "killed TheCeq pid: $ceq_pid";
 
     # VERIFY: the long lived job was run
-    my @longlived = grep { /delay::longlived/i } @lines;
+    my @longlived = grep { /test::longlived/i } @lines;
     ok @longlived, '... which can process long-lived jobs';
 
     # CLEANUP; clear out TheCeq queue
@@ -66,10 +66,10 @@ long_running_worker_can_run_short_jobs: {
     ok kill(INT => $ceq_pid), "killed TheCeq pid: $ceq_pid";
 
     # VERIFY: both long+short jobs got run
-    my @longlived = grep { /delay::longlived/i } @lines;
+    my @longlived = grep { /test::longlived/i } @lines;
     ok @longlived, '... which can process long-lived jobs';
 
-    my @shortlived = grep { /delay::shortlived/i } @lines;
+    my @shortlived = grep { /test::shortlived/i } @lines;
     ok @shortlived, '... and which can process short-lived jobs';
 
     # Cleanup; clear out TheCeq queue
