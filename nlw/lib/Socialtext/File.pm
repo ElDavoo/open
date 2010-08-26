@@ -513,6 +513,7 @@ Finally, if no better type could be found using the above two checks, the
 # application/msword is detected for a number of OLE-type documents it seems.
 our $is_basic_type = qr{^(?:
     text/plain |
+    text/html |
     application/(?:
         octet-stream |
         msword | # magic db calls all OLE documents this
@@ -520,7 +521,7 @@ our $is_basic_type = qr{^(?:
     )$
 )}x;
 sub mime_type {
-    my ($path_to_file, $file_extension, $type_hint) = @_;
+    my ($path_to_file, $filename, $type_hint) = @_;
 
     local $@;
     my $magic_type = eval {
@@ -532,11 +533,12 @@ sub mime_type {
         return $magic_type unless $magic_type =~ $is_basic_type;
     }
 
-    if ($file_extension) {
-        $file_extension =~ s/.+\.([^.]+)$/$1/;
+    if ($filename and $filename =~ m/.+\.([^.]+)$/) {
+        my $file_ext = lc $1;
+        $file_ext = 'eml' if $file_ext eq 'mht'; # {bz: 4257}
         my $type = eval {
             require Socialtext::MIME::Types;
-            my $mt = Socialtext::MIME::Types::mimeTypeOf(lc $file_extension);
+            my $mt = Socialtext::MIME::Types::mimeTypeOf($file_ext);
             $mt->type;
         };
         return $type if ($type);
