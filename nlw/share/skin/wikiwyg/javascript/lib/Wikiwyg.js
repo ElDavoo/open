@@ -1031,6 +1031,7 @@ this.addGlobal().setup_wikiwyg = function() {
                         share: true,
                         viewer: true,
                         viewer_id: true,
+                        prefix: '',
                         workspace_id: Socialtext.wiki_id,
                         default_network: default_network
                     });
