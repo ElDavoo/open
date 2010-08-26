@@ -1976,9 +1976,6 @@ sub post_signal {
         $blob = decode_json($extra);
     }
     else {
-        # look up the account by name instead of using %%account_id%%
-        # because %%account%% is probably more pervasive.
-        my $acct = Socialtext::Account->new(name => $self->{account});
         $blob = {
             all_accounts => 1, 
         };
