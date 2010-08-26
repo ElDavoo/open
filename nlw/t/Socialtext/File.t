@@ -4,11 +4,12 @@
 use strict;
 use warnings;
 
-use Test::More tests => 8;
+use Test::More tests => 9;
 use FindBin;
+use File::Basename;
 
 BEGIN {
-    use_ok( 'Socialtext::File', 'set_contents', 'get_contents', 'set_contents_utf8_atomic' );
+    use_ok( 'Socialtext::File', 'set_contents', 'get_contents', 'set_contents_utf8_atomic', 'mime_type' );
 }
 
 my @files;
@@ -50,3 +51,9 @@ Set_and_get_contents: {
     is get_contents($file), $$;
     unlink $file;
 }
+
+bz_4257: {
+    my $file = "t/Socialtext/File/stringify_data/test.mht";
+    is mime_type($file, basename($file)), 'message/rfc822', 'MIME Type detection for .mht files is correct';
+}
+
