@@ -23,7 +23,7 @@
 | set | account2_id | %%account_id%% |
 
 | edit-page       | %%workspace%% | coolpage                                                               | Stupid plain content |
-| post-json       | /data/signals    | {"signal":"Stupid plain"}                                               |                      |
+| post-json       | /data/signals    | {"signal":"Stupid plain","account_ids":[%%account1_id%%],"group_ids":[%%group1_id%%]}                                               |                      |
 | code-is         | 201              |                                                                         |                      |
 | post-json       | /data/signals    | {"signal":"Simple Humbles Yes we can! {link: help-en [Start Here]}"}           |                      |
 | code-is         | 201              |                                                                         |                      |
@@ -60,7 +60,7 @@
 | json-parse      |                                      |                  |
 | json-array-size | 0                                    |                  |
 
-| get             | /data/signals?q=link_page_key%3A1%3Astart_here | application/json |
+| get             | /data/signals?q=link_page_key%3A%221%3Astart_here%22 | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
 | json-array-size | 1                                    |                  |
@@ -203,7 +203,7 @@ creator, dm_recip
 | get             | /data/signals?q=g%3A%%group1_id%% | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
-| json-array-size | 7                                    |                  |
+| json-array-size | 3                                    |                  |
 
 | get             | /data/signals?q=stupid;groups=%%group1_id%% | application/json |
 | code-is         | 200                                  |                  |
