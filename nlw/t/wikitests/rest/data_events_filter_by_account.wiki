@@ -42,7 +42,7 @@ Set up events
 | post-json | /data/events | {"context":{"tk":"2c"},"person":{"id":"%%c_user_id%%"},"actor":{"id":"%%c_user_id%%"},"action":"edit_save","event_class":"person"} |
 
 | http-user-pass | %%b_username%% | b_password |
-| post-json | /data/signals | {"signal":"tk 3abc!"} |
+| post-json | /data/signals | {"signal":"tk 3abc!","all_accounts":1} |
 | post-json | /data/signals | {"signal":"tk 3a!","account_ids":[%%a_account_id%%]} |
 | post-json | /data/signals | {"signal":"tk 3b!","account_ids":[%%b_account_id%%]} |
 | post-json | /data/signals | {"signal":"tk 3c!","account_ids":[%%c_account_id%%]} |
