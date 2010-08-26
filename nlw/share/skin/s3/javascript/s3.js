@@ -701,7 +701,7 @@ $(function() {
             return;
         }
 
-        $('<iframe id="st-signal-this-frame" src="/st/signalthis'
+        $('<iframe id="st-signal-this-frame" scrolling="no" src="/st/signalthis'
             + '?status=%20'
             + ';default_network=account-' + Socialtext.current_workspace_account_id
             + ';workspace_id=' + encodeURIComponent(Socialtext.wiki_id)
@@ -711,7 +711,11 @@ $(function() {
         ).css({
             width: '400px',
             height: '300px',
-            position: 'fixed',
+            position: (
+                ($.browser.msie && $.browser.version < 7)
+                    ? 'absolute' // IE6
+                    : 'fixed'
+            ),
             right: '15px',
             top: '15px',
             display: 'none',
