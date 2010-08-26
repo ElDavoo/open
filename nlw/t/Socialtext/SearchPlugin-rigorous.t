@@ -73,7 +73,7 @@ my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
     my $content = 'abstract content';
     create_and_confirm_page($title, $content);
     search_for_term('"the mostest"');
-    search_for_term('"this mostest"', 'negate');
+    search_for_term('"monkey mostest"', 'negate');
 }
 
 # test or in a phrase
