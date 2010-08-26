@@ -52,7 +52,7 @@ Set up events
 | code-is | 201 |
 
 | http-user-pass | %%b_username%% | b_password |
-| post-json | /data/signals | {"signal":"tk 3abc!"} |
+| post-json | /data/signals | {"signal":"tk 3abc!","group_ids":[%%a_group_id%%, %%b_group_id%%, %%c_group_id%%]} |
 | code-is | 201 |
 | post-json | /data/signals | {"signal":"tk 3a!","group_ids":[%%a_group_id%%]} |
 | code-is | 201 |
