@@ -545,8 +545,9 @@ sub set_user_account {
     my $self = shift;
     my $user = $self->_require_user;
     my $account = $self->_require_account;
+    my %opts = $self->_get_options('no-hooks');
 
-    $user->primary_account($account->account_id);
+    $user->primary_account($account->account_id, no_hooks => $opts{'no-hooks'});
 
     $self->_success( loc('User "[_1]" was updated.', $user->username) );
 }
