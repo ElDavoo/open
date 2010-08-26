@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-
+# @COPYRIGHT@
 use strict;
 use warnings;
 use Test::Socialtext tests => 2;
