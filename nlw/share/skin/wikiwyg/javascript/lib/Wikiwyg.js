@@ -1018,6 +1018,9 @@ this.addGlobal().setup_wikiwyg = function() {
         Socialtext.wikiwyg_variables.loc = loc;
         var template = 'edit_wikiwyg';
         var html = Jemplate.process(template, Socialtext.wikiwyg_variables);
+        if (typeof gadgets == 'undefined') {
+            gadgets = {};
+        }
         $.getScript( nlw_make_plugin_path('/widgets/javascript/jquery.dropdown.js') , function() {
             $.getScript( nlw_make_plugin_path('/widgets/javascript/activities.js') , function() {
                 $.getJSON('/data/users/' + Socialtext.userid, function(data) {
