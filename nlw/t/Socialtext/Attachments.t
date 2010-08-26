@@ -77,8 +77,8 @@ __DATA__
 
 ===
 --- in: foo
---- mime_type: application/binary
---- should_popup: 1
+--- mime_type: text/plain; charset=us-ascii
+--- should_popup: 0
 
 ===
 --- in: Internationalization.txt
