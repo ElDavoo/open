@@ -1980,8 +1980,7 @@ sub post_signal {
         # because %%account%% is probably more pervasive.
         my $acct = Socialtext::Account->new(name => $self->{account});
         $blob = {
-            account_ids => [ $acct->account_id ],
-            group_ids => [ $self->{group_id} ],
+            all_accounts => 1, 
         };
     }
 
