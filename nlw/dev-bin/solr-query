@@ -2,7 +2,8 @@
 use strict;
 use warnings;
 use LWP::Simple qw/get/;
-use lib 'lib';
+use FindBin;
+use lib "$FindBin::Bin/../lib";
 use Socialtext::String;
 use Getopt::Long;
 
