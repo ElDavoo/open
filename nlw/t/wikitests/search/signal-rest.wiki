@@ -3,6 +3,7 @@
 # Testing the Signals search REST API options.
 
 | standard-test-setup |       |                                         |
+| set                 | origuser_id | %%user_id%% |
 | set-searcher        | Solr  |                                         |
 | set                 | userZ | zzz_%%start_time%%@ken.socialtext.net |
 | create-user         | %%userZ%% | abc123 | %%account%% |
@@ -79,15 +80,21 @@
 | json-array-size | 1                              |                  |
 | body-like | Another coffee |
 
-| get             | /data/signals?q=coffee;order=sender;count=1 | application/json |
+| get             | /data/signals?q=coffee;order=sender;direction=desc;count=1 | application/json |
 | code-is         | 200                            |                  |
 | json-parse      |                                |                  |
 | json-array-size | 1                              |                  |
 | body-like | zzz |
 
+| get             | /data/signals?q=coffee;order=sender;count=1 | application/json |
+| code-is         | 200                            |                  |
+| json-parse      |                                |                  |
+| json-array-size | 1                              |                  |
+| json-like | [{"user_id":"%%origuser_id%%"}] |
+
 # Offset
 
-| get             | /data/signals?q=coffee;order=sender;count=1;offset=1 | application/json |
+| get             | /data/signals?q=coffee;order=sender;direction=desc;count=1;offset=1 | application/json |
 | code-is         | 200                            |                  |
 | json-parse      |                                |                  |
 | json-array-size | 1                              |                  |
@@ -105,7 +112,7 @@
 | get             | /data/signals?q=coffee;order=sender;count=2;direction=desc | application/json |
 | code-is         | 200                            |                  |
 | json-parse      |                                |                  |
-| json-array-size | 2                             |                  |
+| json-array-size | 2                              |                  |
 | body-like | yyy |
 | body-like | zzz |
 
