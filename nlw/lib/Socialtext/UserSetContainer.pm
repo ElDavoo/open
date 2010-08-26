@@ -63,6 +63,7 @@ sub enable_plugin {
     }, $self->user_set_id, $plugin);
 
     Socialtext::Cache->clear('authz_plugin');
+    Socialtext::Cache->clear('user_accts');
 
     for my $dep ($plugin_class->dependencies, $plugin_class->enables) {
         $self->enable_plugin($dep);
@@ -88,6 +89,7 @@ sub disable_plugin {
     }, $self->user_set_id, $plugin);
 
     Socialtext::Cache->clear('authz_plugin');
+    Socialtext::Cache->clear('user_accts');
 
     # Disable any reverse depended packages
     for my $rdep ($plugin_class->reverse_dependencies) {
@@ -408,6 +410,8 @@ for my $thing_name (qw(user group account)) {
             object => $o,
             role   => $p{role},
         );
+
+        $o->clear_cache if $o->can('clear_cache');
     };
 
     # grep: sub assign_role_to_user sub assign_role_to_group
@@ -425,6 +429,7 @@ for my $thing_name (qw(user group account)) {
             object => $o,
             role   => $p{role},
         );
+        $o->clear_cache if $o->can('clear_cache');
     };
 
     # grep: sub remove_user sub remove_group sub remove_account
@@ -443,6 +448,7 @@ for my $thing_name (qw(user group account)) {
                 object => $o,
                 role   => $p{role},
             );
+            $o->clear_cache if $o->can('clear_cache');
         };
         if ($@) {
             return if ($@ =~ /object not in this user.set/);

@@ -332,7 +332,7 @@ sub accounts {
 
     my $cache_string = join "\0", @args;
     my $acct_ids;
-    my $cache = Socialtext::Cache->cache('user_accts');
+    my $cache = $self->_user_acct_cache;
     if ($acct_ids = $cache->get($cache_string)){
         require Clone;
         # ensure callers don't modify the cache:
@@ -353,6 +353,12 @@ sub accounts {
                        } @$acct_ids;
         return (wantarray ? @accounts : \@accounts);
     }
+}
+
+sub _user_acct_cache { Socialtext::Cache->cache('user_accts') }
+
+sub clear_cache {
+    shift->_user_acct_cache->clear;
 }
 
 sub is_in_account {
