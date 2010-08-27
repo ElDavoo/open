@@ -1375,11 +1375,12 @@ proto.find_table_cell_with_cursor = function() {
     if (container) {
         this.deselect();
 
-        if (container.tagName.toLowerCase() == 'td') {
-            return $(container);
+        var $container = $(container);
+        if ($container.get(0).tagName && $container.get(0).tagName.toLowerCase() == 'td') {
+            return $container;
         }
 
-        var $td = $(container).parents('td:first');
+        var $td = $container.parents('td:first');
         if (! $td.length) { return; }
         return $td;
     }
