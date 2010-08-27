@@ -28,5 +28,5 @@
 | log-like     | "qt":"standard"                                                           |
 | log-like     | "sort":"score desc, date desc"                                            |
 | log-like     | "timer":"[\.\d]+"                                                         |
-| log-like     | "hits":"\d+"                                                              |
+| log-like     | "hits":\d+                                                              |
 | log-like     | "raw_query":"couch and corner"                                            |
