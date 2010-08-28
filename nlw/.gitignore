@@ -502,3 +502,8 @@ t/Socialtext/Handler/Push-ldap.t
 lib/Socialtext/Gadgets/Container/SignalThis.pm
 lib/Socialtext/Handler/Container/SignalThis.pm
 t/Socialtext/User-change-primary-account-purges-dashboard.t
+lib/Socialtext/LogData.pm
+lib/Socialtext/LogData/Perf.pm
+lib/Socialtext/LogData/PerfDataPoint.pm
+lib/Socialtext/LogData/Search.pm
+lib/Socialtext/LogData/SearchDataPoint.pm
