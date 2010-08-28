@@ -710,7 +710,7 @@ $(function() {
             ) + '" />'
         ).css({
             width: '400px',
-            height: '300px',
+            height: '180px',
             position: (
                 ($.browser.msie && $.browser.version < 7)
                     ? 'absolute' // IE6
@@ -721,9 +721,9 @@ $(function() {
             display: 'none',
             border: '3px ridge #CCCCCC',
             'z-index': '100000',
-            'box-shadow': '5px 5px 3px #888888',
-            '-moz-box-shadow': '5px 5px 3px #888888',
-            '-webkit-box-shadow': '5px 5px 3px #888888'
+            'box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
+            '-moz-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
+            '-webkit-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
         }).appendTo($('body')).fadeIn('fast');
     });
 
