@@ -729,7 +729,7 @@ $(function() {
             right: '15px',
             top: '15px',
             display: 'none',
-            border: '3px ridge #CCCCCC',
+            border: '1px solid #999',
             'z-index': '100000',
             'box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
             '-moz-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
