@@ -710,7 +710,7 @@ $(function() {
             ) + '" />'
         ).css({
             width: '400px',
-            height: '180px',
+            height: '260px',
             position: (
                 ($.browser.msie && $.browser.version < 7)
                     ? 'absolute' // IE6
