@@ -11,6 +11,7 @@
                 <input id="st-edit-summary-signal-checkbox" type="checkbox" /><label for="st-edit-summary-signal-checkbox">[% loc('Signal this edit to') %]</label>
                 <input id="st-edit-summary-signal-to" type="hidden" />
                 <span class="select" id="signal_network">...</span>
+                <img id="signal_network_warning" src="/static/skin/common/images/warning-icon.png" style="margin-right: -20px; display: inline-block; display: none" title="[% loc('Only members with permission to view this page will receive the signal.') %]" />
             </div>
             [%- END %]
          [%#    <div class="minor">

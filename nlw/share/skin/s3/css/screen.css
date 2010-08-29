@@ -4005,6 +4005,7 @@ ul li.flexButtonBlue a.addButton:hover {
 
 #st-edit-summary .signal {
     float: left;
+    white-space: nowrap;
 }
 #st-edit-summary .signal label:focus {
     outline: none;

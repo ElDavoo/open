@@ -1044,13 +1044,19 @@ this.addGlobal().setup_wikiwyg = function() {
                         width: '150px',
                         options: activities.signalNetworks(),
                         onChange: function(option) {
+                            if (option.warn) {
+                                $('#signal_network_warning').fadeIn('fast');
+                            }
+                            else {
+                                $('#signal_network_warning').fadeOut('fast');
+                            }
                             $('#st-edit-summary-signal-to').val(option.value);
                             $('#st-edit-summary-signal-checkbox').attr('checked', true);
                         }
                     });
 
                     $('#signal_network > a').css({
-                        width: '110px',
+                        width: '108px',
                         verticalAlign: 'top',
                         height: '30px',
                         overflow: 'hidden',
