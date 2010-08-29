@@ -505,6 +505,15 @@ $(function() {
             .show();
     }
 
+    Socialtext._hide_floating_dialogs = function () {
+        /* Hide the "Signal This Page" floating dialog */
+        if ($('#st-signal-this-frame').size() > 0) {
+            $('#st-signal-this-frame').fadeOut('fast', function(){
+                $('#st-signal-this-frame').remove();
+            });
+        }
+    }
+
     Socialtext.load_editor = function () {
         $.ajaxSettings.cache = true;
         if (Socialtext.page_type == 'spreadsheet' && Socialtext.wikiwyg_variables.hub.current_workspace.enable_spreadsheet) {
@@ -534,6 +543,7 @@ $(function() {
 
     $("#st-edit-button-link,#st-edit-actions-below-fold-edit, #bottomButtons .editButton")
         .one("click", function(){
+	    Socialtext._hide_floating_dialogs();
 	    Socialtext._show_loading_animation();
 
 	    setTimeout(
