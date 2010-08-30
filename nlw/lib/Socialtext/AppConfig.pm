@@ -844,6 +844,14 @@ Default: 0
 
 =for code type => BOOLEAN_TYPE
 
+=head2 prefer_https
+
+NLW will only generate HTTPS scheme URLs.
+
+Default: 0
+
+=for code type => BOOLEAN_TYPE
+
 =head2 custom_http_port
 
 Specifies NLW uses a non-standard HTTP port.  No redirection is provided for
