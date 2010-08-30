@@ -711,7 +711,7 @@ $(function() {
             return;
         }
 
-        $('<iframe id="st-signal-this-frame" scrolling="no" src="/st/signalthis'
+        $('<iframe id="st-signal-this-frame" name="st-signal-this-frame" scrolling="no" src="/st/signalthis'
             + '?status=%20'
             + ';default_network=account-' + Socialtext.current_workspace_account_id
             + ';workspace_id=' + encodeURIComponent(Socialtext.wiki_id)
@@ -730,10 +730,10 @@ $(function() {
             top: '15px',
             display: 'none',
             border: '1px solid #999',
-            'z-index': '100000',
+            'z-index': '3000',
             'box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
             '-moz-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
-            '-webkit-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
+            '-webkit-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)'
         }).appendTo($('body')).fadeIn('fast');
     });
 
