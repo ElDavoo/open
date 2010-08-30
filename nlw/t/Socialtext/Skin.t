@@ -12,7 +12,7 @@ use FindBin;
 use mocked 'Socialtext::Hub';
 
 BEGIN {
-    use Test::Socialtext tests => 25;
+    use Test::Socialtext tests => 23;
     use_ok( 'Socialtext::Skin' );
     $Socialtext::Skin::CODE_BASE = 't/share';
     $Socialtext::Skin::PROD_VER = '1.0';
@@ -209,17 +209,3 @@ my $info_file = 't/share/uploaded-skin/admin/info.yaml';
     isa_ok $skin, 'Socialtext::Skin', 'got the "absent" skin';
     ok !$skin->exists, "... and it doesn't actually exist";
 }
-
-# make_dirs
-{
-    my @s2 = Socialtext::Skin->new(name => 's2')->make_dirs;
-    my @s3 = Socialtext::Skin->new(name => 's3')->make_dirs;
-    is_deeply \@s2, [qw(
-        t/share/skin/s2/javascript
-    )], "s2 make_dirs";
-    is_deeply \@s3, [qw(
-        t/share/skin/s2/javascript
-        t/share/skin/s3/javascript
-    )], "s3 make_dirs";
-}
-
