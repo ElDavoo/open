@@ -373,6 +373,32 @@ sub st_single_widget_in_dashboard {
     ok(!$@, 'st_single_widget_in_dashboard' );
 }
 
+=head2 st_send_page_signal($signaltosend)
+
+Sends a signal of a page from a wikipage
+
+=cut
+
+sub st_send_page_signal {
+    my ($self, $signaltosend) = @_;
+    $self->handle_command('set_Speed',4000);
+    my $browser = $ENV{'selenium_browser'} || 'chrome';
+    if ($browser=~/chrome|firefox/ig) {
+        $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 25000);
+        $self->handle_command('selectFrame', 'signalFrame');
+        $self->handle_command('type_ok' ,'//body', $signaltosend);
+        $self->handle_command('select-frame' ,'relative=parent');
+    } else {
+        $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 25000);
+        $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$signaltosend);
+    }
+
+    $self->handle_command('set_Speed',0);
+    $self->handle_command('wait_for_element_visible_ok','//a[@class="btn post"]', 5000);
+    $self->handle_command('click_ok', '//a[@class="btn post"]');
+    $self->handle_command('pause',3000);
+}
+
 =head2 st_prepare_signal_within_activities_widget
 
 Parameters: You pass in the signal text and private flag.  The signal is
