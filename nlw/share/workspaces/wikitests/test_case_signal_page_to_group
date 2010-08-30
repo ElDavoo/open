@@ -1,5 +1,7 @@
 | *Comment* | Test Case: Signal Page To Group |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Signal Page To Group SETUP Account |  |
 | set | group1 | signalpage-group1-%%start_time%% |
 | set | group2 | signalpage-group2-%%start_time%% |
@@ -20,25 +22,28 @@
 | set | signalpage | Signal Page %%start_time%% |  |
 | st-admin | update-page --w %%ws%% --e %%email%% --p "%%signalpage%%" < %%wikitest_client_files%%wikitest.txt | has been created |  |
 
-| *Comment* | Test Case: Signal Page To Group - click link then cancel |  |
-| open_ok | /%%ws%%/index.cgi?%%signalpage%% |
-| wait_for_element_visible_ok | st-signalthis-indicator | 30000 |
-| click_ok | st-signalthis-indicator |  |
-| wait_for_text_present_ok | Send a signal with a link to this page | 30000 |
-| wait_for_element_visible_ok | widget1_close | 30000 |
-| click_ok | widget1_close |  |
-| wait_for_text_not_present_ok | Send a signal with a link to this page | 30000 |
+a| *Comment* | Test Case: Signal Page To Group - click link then cancel | |
+a | open_ok | /%%ws%%/index.cgi?%%signalpage%% | |
+a | wait_for_element_visible_ok | st-signalthis-indicator | 30000 |
+a | click_ok | st-signalthis-indicator | |
+a | pause | 5000 | |
+a | select-frame | st-signal-this-frame | |
+a | wait_for_text_present_ok | Send a signal with a link to this page | 30000 |
+a | wait_for_element_visible_ok | widget1_close | 30000 |
+a | click_ok | widget1_close | |
+a | wait_for_text_not_present_ok | Send a signal with a link to this page | 30000 |
 
 | *Comment* | Test Case: Signal Page To Group - click link then send a signal |  |
-| open_ok | /%%ws%%/index.cgi?%%signalpage%% |
+| open_ok | /%%ws%%/index.cgi?%%signalpage%% |  |
 | wait_for_element_visible_ok | st-signalthis-indicator | 30000 |
 | click_ok | st-signalthis-indicator |  |
+| pause | 5000 |  |
+| select-frame | st-signal-this-frame |  |
 | wait_for_text_present_ok | Send a signal with a link to this page | 30000 |
-| wait_for_element_visible_ok | widget1_close | 30000 |
-| click_ok | widget1_close |  |
-| wait_for_text_not_present_ok | Send a signal with a link to this page | 30000 |
-| st-send-signal-within-activities-widget | Signal a page |  |
+| st-send-signal-in-activities-widget | Signal a page |  |
 
-| open_ok | /st/signals |  | *Comment* | Test Case: Signal Page To Group TEARDOWN |  |
+| open_ok | /st/signals |  |
+
+| *Comment* | Test Case: Signal Page To Group TEARDOWN |  |
 | delete-group | %%group2_id%% |  |
 | delete-group | %%group1_id%% |  |
