@@ -724,6 +724,11 @@ proto.enable_pastebin_webkit = function () {
 
         setTimeout(function(){
             var pastedHtml;
+
+            while (pasteBin.firstChild && pasteBin.firstChild.tagName && pasteBin.firstChild.tagName.toLowerCase() == 'meta') {
+                pasteBin.removeChild( pasteBin.firstChild );
+            }
+
             if (pasteBin.firstChild && pasteBin.firstChild.className == 'Apple-style-span') {
                 pastedHtml = pasteBin.firstChild.innerHTML;
             }
@@ -904,7 +909,7 @@ proto.disableThis = function() {
 proto.on_pasted = function(html) {
     var self = this;
 
-    html = html.replace(/^(?:\s*<meta\s[^>]*>)+/, '');
+    html = html.replace(/^(?:\s*<meta\s[^>]*>)+/i, '');
 
     if (this.paste_buffer_is_simple(html)) {
         self.insert_html( html );
