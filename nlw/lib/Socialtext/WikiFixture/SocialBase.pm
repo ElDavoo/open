@@ -1975,7 +1975,8 @@ sub post_signal {
     $blob->{signal} = $content;
     $self->post_json('/data/signals', encode_json( $blob ));
     $self->code_is(201);
-    diag "Posted signal '$blob->{signal}'";
+    $self->{last_signal_id} = $self->{http}->response->header('X-Signal-ID');
+    diag "Posted signal '$blob->{signal}' (id $self->{last_signal_id})";
 }
 
 sub send_signal {
