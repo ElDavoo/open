@@ -192,7 +192,8 @@ sub build_challenge_uri {
         );
     }
 
-    $challenge_uri->query_form(TARGET => $target_uri);
+    my @form = $challenge_uri->query_form();
+    $challenge_uri->query_form(@form, TARGET => $target_uri);
     return $challenge_uri->as_string;
 }
 
