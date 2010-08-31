@@ -13,7 +13,7 @@ use Crypt::OpenToken;
 use Socialtext::Challenger::OpenToken;
 use File::Slurp qw(write_file);
 use Socialtext::User;
-use Test::Socialtext tests => 24;
+use Test::Socialtext tests => 27;
 
 ###############################################################################
 # Create our test fixtures *OUT OF PROCESS* as we're using a mocked Hub.
@@ -243,6 +243,25 @@ external_absolute_url_is_not_allowed: {
     # make sure we used the default redirect URI for the right reason
     logged_like 'error', qr/redirect attempted to external/,
         '... ... and error was logged indicating why';
+}
+
+###############################################################################
+# "challenge_uri" with query form preserves query vars.
+preserve_challenge_uri_query_params: {
+    local $data{challenge_uri} = 'http://www.google.com?foo=bar';
+
+    my $user = create_test_user();
+    my $rc   = _issue_challenge(
+        with_user  => $user,
+        with_token => 0,
+    );
+    ok $rc, 'challenge was successful';
+
+    # make sure a redirect was issued
+    my $webapp       = Socialtext::WebApp->instance();
+    my $redirect_uri = $webapp->{redirect};
+    like $redirect_uri, qr/TARGET=/, '... containing TARGET';
+    like $redirect_uri, qr/foo=bar/, '... preserving query params';
 }
 
 exit;

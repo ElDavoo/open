@@ -497,7 +497,7 @@ sub import_file {
                         );
         }
 
-        $user->primary_account($pri_acct);
+        $user->primary_account($pri_acct, no_hooks => 1);
 
         my $default = Socialtext::Account->Default();
         if (!$existing_user and $pri_acct->account_id != $default->account_id) {

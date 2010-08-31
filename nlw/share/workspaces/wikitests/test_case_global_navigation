@@ -8,10 +8,16 @@
 | text_like | mainNav | Dashboard |
 | text_like | mainNav | People |
 | text_like | mainNav | Workspaces |
+
+| wait_for_element_visible_ok | st-home-link | 10000 |
 | click_and_wait | st-home-link |  |
 | text_like | st-editing-tools-edit | Welcome |
+
+| wait_for_element_visible_ok | st-wiki-subnav-link-people | 10000 |
 | click_and_wait | st-wiki-subnav-link-people |  |
 | wait_for_text_present_ok | All People | 30000 |
+
+| wait_for_element_visible_ok | st-wiki-subnav-link-workspaces | 10000 |
 | click_and_wait | st-wiki-subnav-link-workspaces |  |
 | text_like | contentContainer | qr/Workspace Title\s+Workspace Name/ |
 
@@ -25,7 +31,7 @@
 | text_like | st-wikinav-logout | Log out |
 
 | *Comment* | Test Case: Global Navigation Profile |  |
-| wait_for_element_present_ok | link=%%short_username%% | 30000 |
+| wait_for_element_visible_ok | link=%%short_username%% | 30000 |
 | click_and_wait | link=%%short_username%% |  |
 | text_like | contentContainer | Profile |
 | text_like | contentContainer | Activities |
@@ -35,11 +41,14 @@
 | open_ok | /%%workspace%%/ |  |
 
 | *Comment* | Test Case: Global Navigation Mobile |  |
+
+| wait_for_element_visible_ok | link=Mobile | 30000 |
 | click_and_wait | link=Mobile |  |
 | location_like | `/m/page/%%workspace%%` |  |
 
 | *Comment* | Test Case: Global Navigation Settings |  |
 | open_ok | /%%workspace%%/ |  |
+| wait_for_element_visible_ok | link=Settings | 30000 |
 | click_and_wait | link=Settings |  |
 | text_like | contentLeft | Settings |
 | text_like | link=My Settings | My Settings |
@@ -49,6 +58,7 @@
 | wait_for_element_present_ok | //a[contains(@href,'help/index.cgi')] | 30000 |
 
 | *Comment* | Test Case: Global Navigation Log out |  |
+| wait_for_element_visible_ok | link=Log out | 30000 |
 | click_and_wait | link=Log out |  |
 | text_like | Log in to Socialtext |  |
 | st-login |  |  |
@@ -60,7 +70,10 @@ TODO: find a way to check the best full name
 
 | *Comment* | Test Case: Global Navigation Search |  |
 | text_like | st-search-form | qr/Search This Workspace:.*Search My Workspaces:.*Search People:/i |
+
+| wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | wiki |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
 | text_like | Pages matching 'wiki' |  |
 

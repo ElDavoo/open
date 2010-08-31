@@ -1755,9 +1755,11 @@ sub profile_is_visible_to {
 
 sub primary_account {
     my $self = shift;
+    my $new_account = shift;
+    my %opts = @_;
 
     require Socialtext::Account;
-    if (@_==0) {
+    unless ($new_account) {
         return Socialtext::Account->new(account_id => $self->primary_account_id)
             || Socialtext::Account->Unknown;
     }
@@ -1765,7 +1767,6 @@ sub primary_account {
     die "Cannot change the account of a system-user.\n"
         if $self->is_system_created;
 
-    my $new_account = shift;
     $new_account = Socialtext::Account->new(account_id => $new_account)
         unless ref($new_account);
 
@@ -1785,7 +1786,7 @@ sub primary_account {
             );
         }
 
-        $self->_call_hook('nlw.user.primary_account');
+        $self->_call_hook('nlw.user.primary_account') unless $opts{no_hooks};
 
         require Socialtext::JobCreator;
         Socialtext::JobCreator->index_person( $self );

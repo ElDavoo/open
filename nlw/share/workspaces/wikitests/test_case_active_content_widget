@@ -31,17 +31,17 @@
 | text_like | //body | Viewed |
 
 | *Comment* | Test Case: Active Content Widget Use text_like //body to print contents of widget without crashing entire test. |  |
-| wait_for_element_visible_ok | link=Active Content Watch %%start_time%% | 5000 |
+| wait_for_element_visible_ok | link=Active Content Watch %%start_time%% | 20000 |
 | text_like | //body | Active Content Watch %%start_time%% |
-| wait_for_element_visible_ok | link=Active Content Emailed %%start_time%% | 5000 |
+| wait_for_element_visible_ok | link=Active Content Emailed %%start_time%% | 20000 |
 | text_like | //body | Active Content Emailed %%start_time%% |
-| wait_for_element_visible_ok | link=active-content-%%start_time%% | 5000 |
+| wait_for_element_visible_ok | link=active-content-%%start_time%% | 20000 |
 | text_like | //body | active-content-%%start_time%% |
-| wait_for_element_visible_ok | link=Active Content Edit %%start_time%% | 5000 |
+| wait_for_element_visible_ok | link=Active Content Edit %%start_time%% | 20000 |
 | text_like | //body | Active Content Edit %%start_time%% |
-| wait_for_element_visible_ok | link=Active Content Tag %%start_time%% | 5000 |
+| wait_for_element_visible_ok | link=Active Content Tag %%start_time%% | 20000 |
 | text_like | //body | Active Content Tag %%start_time%% |
-| wait_for_element_visible_ok | link=Active Content Comment %%start_time%% | 5000 |
+| wait_for_element_visible_ok | link=Active Content Comment %%start_time%% | 20000 |
 | text_like | //body | Active Content Comment %%start_time%% |
 
 | *Comment* | Test Case: Active Content Widget Check the content of Edited |  |

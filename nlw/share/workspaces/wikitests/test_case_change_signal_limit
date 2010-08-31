@@ -6,7 +6,7 @@
 | *Comment* | Test Case: Change Signal Limit Create two accounts and two users |  |
 | set | onehundredlimit | one-hundred-limit-%%start_time%% |
 | set | twohundredlimit | twohundred-limit-%%start_time%% |
-| set | onehundreduser | onehundreduser-%%start_time%%@ken.socialtext.net |
+| set | onehundreduser | `onehundreduser-%%start_time%%@ken.socialtext.net` |
 
 | set | onehundredsignal | 3 5 7 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 |
 
@@ -26,26 +26,22 @@
 | st-admin | give-accounts-admin --email %%username%% |  |
 | st-admin | give-accounts-admin --email %%onehundreduser%% |  |
 
-| open_ok | /st/dashboard |  |
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | 400 | 20000 |
-| select-frame | relative=parent |  |
+| text_like | //div[@class='activitiesWidget']//div[@class='count'] | 400 |
 
 | *Comment* | Test Case: Change Signal Limit Send 200 and 440 char signals |  |
-| st-send-signal-via-activities-widget | activities_widget | %%twohundredsignal%% |
-| st-verify-text-in-activities-widget | activities_widget | %%twohundredsignal%% |
-| st-send-signal-via-activities-widget | activities_widget | %%fourfortysignal%% |
+| st-send-signal-in-activities-widget | %%twohundredsignal%% |  |
+| st-verify-text-within-activities-widget | %%twohundredsignal%% |  |
+| open_ok | /st/dashboard |  |
+| st-send-signal-in-activities-widget | %%fourfortysignal%% |  |
 
-| st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | Signal length limit is | 20000 |
-| text_like | //body | qr/Signal length limit is \d+, please edit your Signal/ism |
-| select-frame | relative=parent |  |
+| text_like | //div[@class='activitiesWidget'] | qr/Signal length limit is \d+, please edit your Signal/ism |
 
-| st-send-signal-via-activities-widget | activities_widget | abc 123 to get FORTY FOUR out of input box |
-| st-text-unlike-in-activities-widget | activities_widget | %%fourfortysignal%% |
+| open_ok | /st/dashboard |  |
+| st-send-signal-in-activities-widget | abc 123 to get FORTY FOUR out of input box |  |
+| st-text-unlike-in-activities-widget | nonsense | %%fourfortysignal%% |
 
 | *Comment* | Test Case: Change Signal Limit set serverwide 300 char limit - see limit |  |
 | st-admin | give-system-admin --email %%username%% |  |
@@ -56,12 +52,8 @@
 | click_and_wait | set_signals_size_limit |  |
 
 | open_ok | /st/dashboard |  |
-| st_single_widget_in_dashboard | gallery-widget-Activities |  |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | 300 | 20000 |
-| select-frame | relative=parent |  |
+| text_like | //div[@class='activitiesWidget']//div[@class='count'] | 300 |
 
 | *Comment* | Test Case: Change Signal Limit Login set account limit to 200 but server to 100 - see limit of 100 |  |
 | st-search-cp-account | %%twohundredlimit%% |  |
@@ -83,12 +75,8 @@
 
 | *Comment* | Test Case: Change Signal Limit Verify limit is MIN(server, account) limit |  |
 | open_ok | /st/dashboard |  |
-| st_single_widget_in_dashboard | gallery-widget-Activities |  |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | 100 | 20000 |
-| select-frame | relative=parent |  |
+| text_like | //div[@class='activitiesWidget']//div[@class='count'] | 100 |
 
 | *Comment* | Test Case: Change Signal Limit set serverwide limit back to 400 |  |
 | open_ok | /console/?rm=Setup |  |
@@ -98,12 +86,8 @@
 | click_and_wait | set_signals_size_limit |  |
 
 | open_ok | /st/dashboard |  |
-| st_single_widget_in_dashboard | gallery-widget-Activities |  |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | 400 | 20000 |
-| select-frame | relative=parent |  |
+| text_like | //div[@class='activitiesWidget']//div[@class='count'] | 400 |
 
 | *Comment* | Test Case: Change Signal Limit Login set serverwide 200 char limit for a specific acct - see limit |  |
 | st-search-cp-account | %%twohundredlimit%% |  |
@@ -145,20 +129,17 @@
 | st-login | %%onehundreduser%% | %%password%% |
 
 | open_ok | /st/dashboard |  |
-| st_single_widget_in_dashboard | gallery-widget-Activities |  |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
-| wait_for_text_present_ok | 100 | 30000 |
-| select-frame | relative=parent |  |
+| wait_for_text_present_ok | 100 | 20000 |
+| text_like | //div[@class='activitiesWidget']//div[@class='count'] | 100 |
 
 | st-send-signal-via-activities-widget | activities_widget | %%onehundredsignal%% |
 | st-verify-text-in-activities-widget | activities_widget | %%onehundredsignal%% |
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | activities_widget | %%twohundredsignal%% |
-
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | activities_widget | def 456 to get two hundred out of input box |
 | st-text-unlike-in-activities-widget | activities_widget | %%twohundredsignal%% |
-
+| open_ok | /st/dashboard |  |
 | st-send-signal-via-activities-widget | activities_widget | %%twohundredsignal%% |
 | st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | Signal length limit is 100 | 20000 |
@@ -177,10 +158,9 @@
 | open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Change Signal Limit. Test Limit 100 in All Groups |  |
-| st-name-widget | 1 | signals_widget |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_text_present_ok | 100 | 30000 |
-| selectFrame | relative=parent |  |
+
+| wait_for_text_present_ok | 100 | 20000 |
+| text_like | //div[@class='activitiesWidget']//div[@class='count'] | 100 |
 
 | *Comment* | Test Case: Change Signal Limit. Limit 100 in %%onehundredlimit%% |  |
 
@@ -191,10 +171,8 @@
 | open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Change Signal Limit. Test Limit 100 in %%onehundredlimit%% |  |
-| st-name-widget | 1 | signals_widget |
-| st-select-widget-frame | signals_widget |  |
 | wait_for_text_present_ok | 100 | 20000 |
-| selectFrame | relative=parent |  |
+| text_like | //div[@class='activitiesWidget']//div[@class='count'] | 100 |
 
 | *Comment* | Test Case: Change Signal Limit. Limit 200 in %%twohundredlimit%% |  |
 
@@ -205,21 +183,16 @@
 | open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Change Signal Limit. Limit 200 in %%twohundredlimit%% |  |
-| st-name-widget | 1 | signals_widget |
-| st-select-widget-frame | signals_widget |  |
 | wait_for_text_present_ok | 200 | 20000 |
-| selectFrame | relative=parent |  |
+| text_like | //div[@class='activitiesWidget']//div[@class='count'] | 200 |
 
 | *Comment* | Test Case: Change Signal Limit. Test Limit 200 in %%twohundredlimit%% |  |
 | st-send-signal-via-activities-widget | signals_widget | %%onehundred_two%% |
-| st-select-widget-frame | signals_widget |  |
-| text_unlike | //body | Signal length limit is 100, please edit your Signal |
-| selectFrame | relative=parent |  |
+| text_unlike | //div[@class='activitiesWidget'] | Signal length limit is 100, please edit your Signal |
 
+| open_ok | /st/signals |  |
 | st-send-signal-via-activities-widget | signals_widget | %%fourfortysignal%% |
-| st-select-widget-frame | signals_widget |  |
 | wait_for_text_present_ok | Signal length limit is 200 | 20000 |
-| selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Change Signal Limit TEARDOWN |  |
 

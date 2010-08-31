@@ -45,7 +45,7 @@ sub _scheme_host_port {
 }
 
 sub _scheme {
-    if (Socialtext::AppConfig->ssl_only) {
+    if (Socialtext::AppConfig->ssl_only or Socialtext::AppConfig->prefer_https) {
         # If SSL-only is enabled, *only* generate HTTPS URIs (regardless of how
         # we're connected to the system).
         return ( scheme => 'https' );
