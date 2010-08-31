@@ -6,6 +6,7 @@ use strict;
 use Socialtext::File::Stringify::Default;
 use Socialtext::System ();
 use Socialtext::Log qw/st_log/;
+use Socialtext::AppConfig;
 
 use HTML::Parser ();
 use HTML::HeadParser ();
@@ -35,6 +36,7 @@ sub to_string {
 }
 
 our $temp_fh;
+our $limit;
 
 sub stringify_html {
     my ( $class, $buf_ref, $filename, $mime ) = @_;
@@ -43,6 +45,7 @@ sub stringify_html {
 
     my $temp_filename;
     local $temp_fh;
+    local $limit = Socialtext::AppConfig->stringify_max_length;
     ($temp_fh, $temp_filename) = tempfile(
         "/tmp/htmlstringify-$$-XXXXXX", UNLINK => 0);
     # Anonymize the tempfile. Reduces the likelyhood of other procs reading it
@@ -105,6 +108,7 @@ sub stringify_html {
 }
 
 our $parser;
+our $count;
 
 sub _run_stringifier {
     my ($filename, $charset) = @_;
@@ -126,10 +130,17 @@ sub _run_stringifier {
     # Could use a PerlIO layer and ->parse_file, but we want un-decodable
     # characters converted into HTML entities as a fallback mode.
     open my $fh, '<:mmap', $filename or die "Can't open $filename: $!";
-    my $doc = $enc->decode(do { local $/; <$fh> },
-        Encode::FB_WARN|Encode::FB_HTMLCREF);
+    # if it's really big, limit it; parser seems to do just fine with
+    # truncated HTML
+    my $doc;
+    {
+        my $to_read = 8*$limit;
+        my $in = do { local $/ = \$to_read; <$fh> };
+        $doc = $enc->decode($in, Encode::FB_WARN|Encode::FB_HTMLCREF);
+    }
     close $fh;
 
+    local $count = 0;
     local $parser = HTML::Parser->new(
         ignore_elements => [qw(style script)],
         text_h  => [\&_got_text,  'text'], # *not* dtext
@@ -176,8 +187,10 @@ sub _got_text {
     decode_entities($txt);
     $txt =~ s/\s+/ /smg;
     return if ($txt eq ' ' || $txt eq '');
-    # TODO: check byte count, call $parser->eof();
-    print $temp_fh $txt, ' ';
+    $txt .= ' ';
+    $count += length($txt);
+    print $temp_fh $txt;
+    $parser->eof if $count > $limit;
 }
 
 sub _got_start {
@@ -202,8 +215,10 @@ sub _got_start {
 
     return unless defined $txt;
     decode_entities($txt);
-    # TODO: check byte count, call $parser->eof();
-    print $temp_fh $txt, ' ';
+    $txt .= ' ';
+    $count += length($txt);
+    print $temp_fh $txt;
+    $parser->eof if $count > $limit;
 }
 
 1;

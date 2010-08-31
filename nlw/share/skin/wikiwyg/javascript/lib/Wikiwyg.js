@@ -1066,6 +1066,13 @@ this.addGlobal().setup_wikiwyg = function() {
                         whiteSpace: 'nowrap'
                     });
 
+                    if ($.browser.msie) {
+                        $('#signal_network > a').css({
+                            marginLeft: '-4px',
+                            marginTop: '-9px'
+                        });
+                    }
+
                     $('#signal_network .dropdownOptions').css({
                         'margin-top': '-15px',
                         'margin-left': '11em'

@@ -2,9 +2,11 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::More tests => 119;
+use Test::More tests => 122;
 use Test::Exception;
 use File::Basename qw(dirname);
+use File::Temp;
+use File::Copy;
 use utf8;
 
 use ok 'Socialtext::System';
@@ -180,6 +182,18 @@ danish_iso_8859_1_with_bogus_charset: {
         to_str(\$buf, $filename, 'text/html; charset=bogus');
     } 'stringify with bogus charset (derived by meta header), guess iso';
     has_danish_content($buf, 'ISO-8859-1', "ISO-8859-1-danish-bogus");
+}
+
+danish_utf8_with_low_limit: {
+    my $filename = $base_dir .'/danish-utf8.html';
+    no warnings 'redefine';
+    *Socialtext::AppConfig::stringify_max_length = sub { 16 };
+    my $buf;
+    lives_ok {
+        to_str(\$buf, $filename, 'text/html; charset=UTF-8');
+    } 'stringify with absent charset (derived by meta header), guess utf8';
+    ok $buf !~ /<html>/, 'low-string limit did not use Default';
+    ok $buf eq 'Dansk søgeord ', 'content was truncated just fine';
 }
 
 pass 'done';
