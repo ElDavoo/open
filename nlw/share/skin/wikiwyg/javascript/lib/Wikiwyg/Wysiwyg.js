@@ -499,6 +499,8 @@ proto.set_inner_html = function(html) {
         // First time running get_editable_div() -- give it 1.6sec
         // The heuristic here is to allow 3 tries of tryAppendDiv to pass.
         self.get_editable_div();
+
+        if (!html) { return }
         setTimeout( function() {
             self.set_inner_html(html);
         }, 1600);      
