@@ -120,7 +120,8 @@ sub revision_count {
 
 sub creator {
     my $self = shift;
-    return $self->original_revision->last_edited_by;
+    return $self->original_revision->last_edited_by
+        || Socialtext::User->SystemUser;
 }
 
 =head2 create( %args )
