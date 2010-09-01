@@ -11,15 +11,18 @@ Note: Heavily dependent on the default content of current test-data workspace
 | st-result | The Vorpal Sword |  |
 | st-result | Wock |  |
 | st-search | 1.2 | Pages matching '1.2' |
-| st-result | 2 total |  |
+| st-result | 3 total |  |
 | st-result | jabber |  |
 | st-result | Wock |  |
+| st-result | beamish boy |  |
 | st-search | 100% | Pages matching '100%' |
-| st-result | 4 total |  |
+| st-result | 6 total |  |
 | st-result | jabber |  |
 | st-result | Canonical Test Data Set |  |
 | st-result | Jabberwocky |  |
 | st-result | Project Plans |  |
+| st-result | Credit Card Payment |  |
+| st-result | Sample Excel 2007 file.xlsx, |  |
 
 | *Comment* | Test case: Functional Search Word, Excel, PPT 2007 format |  |
 | st-search | lorem AND ipsum |  |
@@ -35,10 +38,12 @@ Note: Heavily dependent on the default content of current test-data workspace
 | st-search | jab | Pages matching 'jab' |
 | st-result | 0 total |  |
 | st-search | jab* | Pages matching 'jab*' |
-| st-result | 3 total |  |
+| st-result | 5 total |  |
 | st-result | Jabberwocky |  |
 | st-result | beamish boy |  |
 | st-result | jabber |  |
+| st-result | The Vorpal Sword |  |
+| st-result | Stemming test page 2 |  |
 | st-search | vorp | Pages matching 'vorp' |
 | st-result | 0 total |  |
 | st-search | vorp* | Pages matching 'vorp*' |
@@ -46,11 +51,12 @@ Note: Heavily dependent on the default content of current test-data workspace
 | st-result | Jabberwocky |  |
 | st-result | The Vorpal Sword |  |
 | st-search | jab* OR vorp* | Pages matching 'jab* OR vorp*' |
-| st-result | 4 total |  |
+| st-result | 5 total |  |
 | st-result | Jabberwocky |  |
 | st-result | beamish boy |  |
 | st-result | jabber |  |
 | st-result | The Vorpal Sword |  |
+| st-result | Stemming test page 2 |  |
 
 | *Comment* | Test case: Functional Search tag match and partial |  |
 | st-search | tag:carr | Pages matching 'tag:carr' |
@@ -121,9 +127,10 @@ Title searches
 
 | *Comment* | Test case: Functional Search Tests AND token searches |  |
 | st-search | tag:carroll AND 1.2 | Pages matching 'tag:carroll AND 1.2' |
-| st-result | 2 total |  |
+| st-result | 3 total |  |
 | st-result | jabber |  |
 | st-result | Wock |  |
+| st-result | beamish boy |  |
 | st-search | brillig AND 1.2 | Pages matching 'brillig AND 1.2' |
 | st-result | 1 total |  |
 | st-result | jabber |  |
@@ -186,26 +193,37 @@ Title searches
 
 | *Comment* | Test case: Functional Search Tests OR token searches |  |
 | st-search | 1.2 OR 1.5 | Pages matching '1.2 OR 1.5' |
-| st-result | 2 total |  |
+| st-result | 3 total |  |
 | st-result | jabber |  |
 | st-result | Wock |  |
+| st-result | beamish boy |  |
+
 | st-search | 1.2 OR 100% | Pages matching '1.2 OR 100%' |
-| st-result | 5 total |  |
+| st-result | 8 total |  |
 | st-result | jabber |  |
+| st-result | beamish boy |  |
 | st-result | Canonical Test Data Set |  |
 | st-result | Jabberwocky |  |
 | st-result | Wock |  |
 | st-result | Project Plans |  |
+| st-result | Sample Excel 2007 file.xlsx, |  |
+| st-result | Credit Card Payment |  |
+
 | st-search | =jabber OR 1.2 | Pages matching 'title:jabber OR 1.2' |
-| st-result | 2 total |  |
+| st-result | 3 total |  |
 | st-result | jabber |  |
 | st-result | Wock |  |
+| st-result | beamish boy |  |
+
 | st-search | =jabber OR 100% | Pages matching 'title:jabber OR 100%' |
-| st-result | 4 total |  |
+| st-result | 6 total |  |
 | st-result | jabber |  |
 | st-result | Canonical Test Data Set |  |
 | st-result | Jabberwocky |  |
 | st-result | Project Plans |  |
+| st-result | Sample Excel 2007 file.xlsx, |  |
+| st-result | Credit Card Payment |  |
+
 | st-search | tag:"carroll's poem" OR 1.2 | Pages matching 'tag:"carroll's poem" OR 1.2' |
 | st-result | 4 total |  |
 | st-result | Jabberwocky |  |
@@ -252,18 +270,21 @@ Title searches
 
 | *Comment* | Test case: Functional Search Tests NOT token searches |  |
 | st-search | 1.2 AND NOT 1.5 | Pages matching '1.2 AND NOT 1.5' |
-| st-result | 2 total |  |
+| st-result | 3 total |  |
 | st-result | jabber |  |
 | st-result | Wock |  |
+| st-result | beamish boy |  |
+
 | st-search | 1.2 AND NOT =jabber | Pages matching '1.2 AND NOT title:jabber' |
-| st-result | 1 total |  |
+| st-result | 2 total |  |
 | st-result | Wock |  |
+| st-result | beamish boy |  |
+
 | st-search | 1.2 AND NOT jabber | Pages matching '1.2 AND NOT jabber' |
 | st-result | 1 total |  |
 | st-result | Wock |  |
 | st-search | tag:"carroll's poem" AND NOT 1.2 | Pages matching 'tag:"carroll's poem" AND NOT 1.2' |
-| st-result | 2 total |  |
-| st-result | beamish boy |  |
+| st-result | 1 total |  |
 | st-result | Jabberwocky |  |
 
 | *Comment* | Test case: Functional Search Tests Phrase title searches |  |
