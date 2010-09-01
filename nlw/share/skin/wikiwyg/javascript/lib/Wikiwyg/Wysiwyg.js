@@ -818,18 +818,29 @@ proto.enableThis = function() {
             self.fromHtml( self.wikiwyg.div.innerHTML );
         }
         if (Wikiwyg.is_gecko) {
-            self.get_edit_document().designMode = 'on';
-            setTimeout(function() {
+            var doEnableDesignMode = function() {
                 try {
-                    self.get_edit_document().execCommand(
-                        "enableObjectResizing", false, false
-                    );
-                    self.get_edit_document().execCommand(
-                        "enableInlineTableEditing", false, false
-                    );
+                    self.get_edit_document().designMode = 'on';
+                } catch (e) {
+                    setTimeout(doEnableDesignMode, 100);
+                    return;
                 }
-                catch(e){}
-            }, 100);
+                setTimeout(function() {
+                    try {
+                        self.get_edit_document().execCommand(
+                            "enableObjectResizing", false, false
+                        );
+                        self.get_edit_document().execCommand(
+                            "enableInlineTableEditing", false, false
+                        );
+                    }
+                    catch(e){
+                        setTimeout(doEnableDesignMode, 100);
+                    }
+                    $('#st-page-editing-wysiwyg').css('visibility', 'visible');
+                }, 100);
+            };
+            doEnableDesignMode();
         }
         else if (Wikiwyg.is_ie) {
             /* IE needs this to prevent stack overflow when switching modes,
@@ -851,6 +862,11 @@ proto.enableThis = function() {
                     'overflow', 'visible'
                 );
             }
+
+            $('#st-page-editing-wysiwyg').css('visibility', 'visible');
+        }
+        else {
+            $('#st-page-editing-wysiwyg').css('visibility', 'visible');
         }
 
         self.enable_keybindings();
