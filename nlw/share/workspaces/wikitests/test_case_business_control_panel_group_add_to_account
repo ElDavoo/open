@@ -34,7 +34,7 @@
 | click_ok | accountTable-select-1 |  |
 | wait_for_element_visible_ok | //input[@type='button' and @value="Remove from account"] | 30000 |
 | click_ok | //input[@type='button' and @value="Remove from account"] |  |
-| verifyConfirmation | Remove this Group from the 1 selected Accounts? |  |
+| verifyConfirmation | Remove this Group from the 1 selected Account |  |
 | wait_for_text_present_ok | Accounts (1) | 30000 |
 | refresh |  |  |
 | wait_for_text_present_ok | Accounts (1) | 30000 |
