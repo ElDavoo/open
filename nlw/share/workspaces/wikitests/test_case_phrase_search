@@ -63,11 +63,17 @@ Note: Depends on the content of the test-data workspace, most notably the pages 
 | st-result | 1 total |  |
 | st-result | Kinosearch test page: politics |  |
 | st-search | tag:wisdom tag:drink | Pages matching 'tag:wisdom tag:drink' |
-| st-result | 0 total |  |
+| st-result | 2 total |  |
+| st-result | Kinosearch test page: truth & falsity |  |
+| st-result | Kinosearch test page: politics |  |
 | st-search | tag:(wisdom drink) | Pages matching 'tag:(wisdom drink)' |
-| st-result | 0 total |  |
+| st-result | 2 total |  |
+| st-result | Kinosearch test page: truth & falsity |  |
+| st-result | Kinosearch test page: politics |  |
 | st-search | category:(wisdom drink) | Pages matching 'category:(wisdom drink)' |
-| st-result | 0 total |  |
+| st-result | 2 total |  |
+| st-result | Kinosearch test page: truth & falsity |  |
+| st-result | Kinosearch test page: politics |  |
 | st-search | tag:"test_tag: speech" category:(wisdom folly) | Pages matching 'tag:"test_tag: speech" category:(wisdom folly)' |
 | st-result | 1 total |  |
 | st-result | Kinosearch test page: truth & falsity |  |
