@@ -1185,6 +1185,14 @@ Default: 0
 
 =for code type => BOOLEAN_TYPE
 
+=head2 minify_javascript
+
+Set this to false disables the javascript minifier.
+
+Default: 1
+
+=for code type => BOOLEAN_TYPE
+
 =head2 debug
 
 Setting this to true turns on debugging output for NLW.

@@ -16,6 +16,8 @@ use File::Find qw(find);
 use File::Basename qw(basename dirname);
 use Clone qw(clone);
 use Carp qw(confess);
+use Socialtext::AppConfig;
+
 use namespace::clean -except => 'meta';
 
 my $code_base;
@@ -23,9 +25,10 @@ if ($FindBin::Bin =~ /dev-bin/) {
     ($code_base = $FindBin::Bin) =~ s{dev-bin$}{share};
 }
 else {
-    require Socialtext::AppConfig;
     $code_base = Socialtext::AppConfig->code_base;
 }
+
+my $MINIFY_JS = Socialtext::AppConfig->minify_javascript;
 
 our $VERBOSE = 0;
 
@@ -424,10 +427,10 @@ sub write_compressed {
     my ($target, $text) = @_;
 
     warn "Minifying $target...\n" if $VERBOSE;
-    my $minified = minify($text);
+    $text = minify($text) if $MINIFY_JS;
 
     warn "Gzipping $target...\n" if $VERBOSE;
-    my $gzipped = Compress::Zlib::memGzip($minified);
+    my $gzipped = Compress::Zlib::memGzip($text);
 
     warn "Writing to $target.gz...\n" if $VERBOSE;
     write_file("$target.gz", $gzipped);
