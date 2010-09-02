@@ -38,35 +38,6 @@ sub handler {
     return;
 }
 
-sub _remake_all {
-    my $remake_time = 10;
-    my $stamp_file = Socialtext::Paths::storage_directory('make_ran');
-    my $mtime = (stat $stamp_file)[9] || 0;
-    if ($mtime < time - $remake_time) {
-#         warn "[$$] need to remake ".time."\n";
-        # file is missing or out of date; serialize requests
-        sysopen my $lock, $stamp_file, Fcntl::O_CREAT|Fcntl::O_RDWR, 0660;
-        flock $lock, Fcntl::LOCK_EX;
-        $mtime = (stat $lock)[9];
-        if ($mtime < time - $remake_time) {
-#             warn "[$$] is going to make ".time."\n";
-            # we're the first one, run make
-            local $Socialtext::System::SILENT_RUN = 1;
-            shell_run '-st-make-all @all';
-            shell_run '-st-widgets update-all';
-            # prevent others holding the lock from running make
-            print $lock time."\n";
-#             warn "[$$] done make ".time."\n";
-        }
-#         else {
-#             warn "[$$] not stale after all ".time."\n";
-#         }
-    }
-#     else {
-#         warn "[$$] no make needed ".time."\n";
-#     }
-}
-
 1;
 
 __END__
@@ -88,10 +59,6 @@ content.  It does not need to be called when serving static files.
 It does the following:
 
 =over 4
-
-=item *
-
-Re-generates the javascript files if in a development mode.
 
 =item *
 
