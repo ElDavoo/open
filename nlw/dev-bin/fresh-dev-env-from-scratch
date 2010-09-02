@@ -3,6 +3,7 @@
 
 # '-m' option ( minimal ) will set up ony 'admin_no_pages' fixture, 'ALL' is default
 # '-w' option will _not_ upadte widgets/galleries
+# '-j' option will _not_ minify javascript
 # '-p' option will _not_ start up nlw in this script
 # '-h' option will import the help-en wiki
 # '-s' option will create-socialtext-users
@@ -12,10 +13,12 @@ FIXTURE='ALL'
 PAUSE=0
 UPDATE_WIDGETS=1
 ST_USERS=0
+MINIFY_JS=1
 while getopts "hmbpws" OPT; do
   case $OPT in
     h) HELPEN=1;;
     m) FIXTURE=admin_no_pages;;
+    j) MINIFY_JS=0;;
     p) PAUSE=1;;
     w) UPDATE_WIDGETS=0;
     s) ST_USERS=1;;
@@ -100,6 +103,8 @@ dev-bin/link-reports
 # Start the supervisor
 dev-bin/setup-supervisors start
 set -e
+
+[ $MINIFY_JS == 0 ] && st-config set minify_javascript 0
 
 if [ $PAUSE == 0 ]; then
     echo "Starting nginx and apache-perl"
