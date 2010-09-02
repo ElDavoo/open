@@ -1200,7 +1200,7 @@ sub exec_regex {
     if ($content =~ $regex) {
         if (defined $1) {
             $self->{$name} = $1;
-            warn "# Set $name to '$1' from response content\n";
+            diag "# Set $name to '$1' from response content\n";
         }
         else {
             die "Could not set $name - regex didn't capture!";
@@ -1257,7 +1257,7 @@ sub cond_get {
     push @headers, 'If-Modified-Since', $ims if $ims;
     push @headers, 'If-None-Match', $inm if $inm;
 
-    warn "Calling get on $uri";
+    diag "Calling get on $uri";
     my $start = time();
     $self->{http}->get($self->{browser_url} . $uri, \@headers);
     $self->{_last_http_time} = time() - $start;
@@ -1298,10 +1298,10 @@ sub code_is {
     my $resp = $http->response;
     $http->status_code_is($code);
     if ($resp->code != $code) {
-        warn "Response message: " . ($resp->message || 'None') ."\n";
-        warn "Content: " . ($resp->content || 'No content') . "\n"
+        diag "Response message: " . ($resp->message || 'None') ."\n";
+        diag "Content: " . (substr($resp->content,0,256) || 'No content') . "\n"
             unless $resp->code == 200;
-        warn "url(" . $http->request->url . ")\n";
+        diag "url(" . $http->request->url . ")\n";
     }
     if ($msg) {
         like $self->{http}->response->content(), $self->quote_as_regex($msg),
@@ -1605,7 +1605,7 @@ sub set_from_header {
         else {
             $self->{$name} = $content;
         }
-        warn "# Set $name to '$self->{$name}' from response header\n";
+        diag "Set $name to '$self->{$name}' from response header\n";
     }
     else {
         die "Could not set $name - header $header not present\n";
@@ -1737,7 +1737,7 @@ sub json_parse {
     ok !$@ && defined $self->{json} && ref($self->{json}) =~ /^ARRAY|HASH$/,
         $self->{http}->name . " parsed content" . ($@ ? " \$\@=$@" : "");
     unless (defined $self->{json}) {
-        warn "Bad content: '$content'\n";
+        diag "Bad content: '$content'\n";
     }
 }
 
@@ -1878,7 +1878,7 @@ sub json_array_size {
             $self->{http}->name . " array is $comparator $size" ;
         if ($comparator eq '==' and $count != $size) {
             use Data::Dumper;
-            warn Dumper $json;
+            diag Dumper $json;
         }
     }
 }
@@ -1919,7 +1919,7 @@ sub _get {
     my ($self, $uri, $opts) = @_;
     my $start = time();
     $uri = "$self->{browser_url}$uri" if $uri =~ m#^/#;
-    warn "GET: $uri\n"; # intentional warn
+    diag "GET: $uri\n";
     $self->{http}->get( $uri, $opts );
     $self->{_last_http_time} = time() - $start;
 }
@@ -2487,7 +2487,7 @@ sub st_purge_account_gallery {
     my $sth = sql_execute('
         DELETE FROM gallery WHERE account_id = ?
     ', $acct->account_id);
-    warn loc("# Deleted [quant,_1,gallery,galleries]", $sth->rows)."\n";
+    diag loc("Deleted [quant,_1,gallery,galleries]", $sth->rows)."\n";
 }
 
 sub st_purge_account_containers {
@@ -2503,7 +2503,7 @@ sub st_purge_account_containers {
             )
             OR user_set_id = ' . ACCT_OFFSET . ' + $1
     ', $acct->account_id);
-    warn loc("# Deleted [quant,_1,container]", $sth->rows)."\n";
+    diag loc("Deleted [quant,_1,container]", $sth->rows)."\n";
 }
 
 sub st_purge_uploaded_widgets {
@@ -2514,13 +2514,13 @@ sub st_purge_uploaded_widgets {
          WHERE src IS NULL
             OR src like 'file:/tmp/acct-%/%.xml'
     });
-    warn loc("# Deleted [quant,_1,uploaded widget]", $sth->rows)."\n";
+    diag loc("Deleted [quant,_1,uploaded widget]", $sth->rows)."\n";
 }
 
 sub st_purge_widget {
     my ($self, $src) = @_;
     my $sth = sql_execute('DELETE FROM gadget WHERE src = ?', $src);
-    warn loc("# Deleted [quant,_1,widget]", $sth->rows)."\n";
+    diag loc("Deleted [quant,_1,widget]", $sth->rows)."\n";
 }
 
 sub enable_ws_plugin    { shift; _change_plugin('Workspace', 1, @_) }
@@ -2569,7 +2569,7 @@ sub _run_command {
         like $output, $verify, $command;
     }
     else {
-        warn $output;
+        diag $output;
     }
 }
 
@@ -2974,7 +2974,7 @@ sub wait_for_backup_to_finish {
     my $self = shift;
     my $state_file = '/var/run/socialtext/st-daemon-backup.state';
     my $yaml = LoadFile($state_file);
-    warn "Backup status:\n" . Dumper $yaml;
+    diag "Backup status:\n" . Dumper $yaml;
     while (1) {
         $yaml = LoadFile($state_file);
         if ($yaml->{status} eq 'finished') {
@@ -2991,7 +2991,7 @@ sub wait_for_restore_to_finish {
     my $self = shift;
     my $state_file = '/var/run/socialtext/st-daemon-restore.state';
     my $yaml = LoadFile($state_file);
-    warn "Restore status:\n" . Dumper $yaml;
+    diag "Restore status:\n" . Dumper $yaml;
     while (1) {
         $yaml = LoadFile($state_file);
         if ($yaml->{status} eq 'finished') {

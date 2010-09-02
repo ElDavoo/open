@@ -317,7 +317,7 @@ sub st_wait_for_widget_load {
 ENDJS
         $self->{selenium}->wait_for_condition($js, $timeout);
     };
-    warn $@ if $@;
+    diag $@ if $@;
     ok( !$@, "st-wait-for-widget-load");
 }
 

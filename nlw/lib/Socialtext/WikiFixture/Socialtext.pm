@@ -607,7 +607,7 @@ sub st_watch_page {
                 last;
             }
             else {
-                warn "# Looking at watchlist for ($short_name), found ($alt)\n";
+                diag "Looking at watchlist for ($short_name), found ($alt)\n";
             }
             $row++;
         }
@@ -794,7 +794,7 @@ sub _st_admin_in_process {
         local *STDOUT = $fh_out;
         local *STDERR = $fh_err;
         eval { Socialtext::CLI->new(argv => \@argv)->run };
-        if ($@) { warn $@ };
+        if ($@) { diag $@ };
     }
     return ($out, $err);
 }
