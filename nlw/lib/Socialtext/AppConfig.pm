@@ -1174,17 +1174,6 @@ Default: warning
 
 =for code type => SCALAR_TYPE
 
-=head2 benchmark_mode
-
-Set this to true tells NLW you are running benchmarks against
-it. This tries to make developer environment act more like a
-production environment, so the benchmarks are reflective of real
-performance.
-
-Default: 0
-
-=for code type => BOOLEAN_TYPE
-
 =head2 minify_javascript
 
 Set this to false disables the javascript minifier.
