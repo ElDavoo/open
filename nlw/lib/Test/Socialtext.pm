@@ -262,7 +262,7 @@ sub ceqlotron_run_synchronously() {
 
     my @jobid;
     while (my $job = Socialtext::Jobs->find_job_for_workers()) {
-        warn "Running ceq job " . Socialtext::Jobs->job_to_string($job) . "\n";
+        diag "Running ceq job " . Socialtext::Jobs->job_to_string($job) . "\n";
         if ($funcname and ($job->funcname || '') !~ /$funcname$/i) {
             next;
         }
@@ -273,7 +273,6 @@ sub ceqlotron_run_synchronously() {
         }
 
         push @jobid, $job->jobid;
-        warn "Running ceq job " . Socialtext::Jobs->job_to_string($job) . "\n";
 
         Socialtext::Jobs->work_once($job);
         Socialtext::Cache->clear();
