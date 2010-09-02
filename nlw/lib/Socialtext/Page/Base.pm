@@ -700,12 +700,18 @@ sub get_units {
         for my $cell_name (@{ $sheet->cells }) {
             my $cell = $sheet->cell($cell_name);
 
-            my $tvf_num = $cell->textvalueformat
-                || $sheet->{defaulttextvalueformat};
-            next unless defined $tvf_num;
-            my $format = $valueformats->[$tvf_num];
-            next unless defined $format;
-            next unless $format =~ m/^text-wiki/;
+            my $valuesubtype = substr($cell->valuetype || ' ', 1);
+            if ($valuesubtype eq "w" or $valuesubtype eq "r") {
+                # This is a wikitext/richtext cell - proceed
+            }
+            else {
+                my $tvf_num = $cell->textvalueformat
+                    || $sheet->{defaulttextvalueformat};
+                next unless defined $tvf_num;
+                my $format = $valueformats->[$tvf_num];
+                next unless defined $format;
+                next unless $format =~ m/^text-wiki/;
+            }
 
             # The Socialtext::Formatter::Parser expects this content
             # to end in a newline.  Without it no links will be found for
