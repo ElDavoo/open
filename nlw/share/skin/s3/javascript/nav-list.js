@@ -64,4 +64,22 @@ $.fn.navList = function(entries) {
     });
 };
 
+$.fn.peopleNavList = function(nodes) {
+    $(this).each(function() {
+        $(this).navList([
+            { title: loc("People Directory"), href: "/?action=people" },
+            {
+                url: "/data/people/" + Socialtext.userid + "/watchlist",
+                icon: function(p) {
+                    return '/data/people/' + p.id + '/small_photo'
+                },
+                href: function(p) { return '/st/profile/' + p.id },
+                title: function(p) { return p.best_full_name },
+                emptyMessage:
+                    loc("Currently, you are not following any people.")
+            }
+        ]);
+    });
+};
+
 })(jQuery);
