@@ -290,7 +290,6 @@ sub _cache_html {
         $html_ref = $self->_cache_using_questions( \@cache_questions, $html_ref );
     }; die "Failed to cache using questions: $@" if $@;
 
-    $self->_log_page_action();
     return $html_ref;
 }
 
