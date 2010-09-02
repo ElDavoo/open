@@ -27,11 +27,11 @@
 
 | *Comment* | Visual inspection of add to workspace |  |
 | open-ok | /nlw/control/group/%%group_id%% |  |
-| wait_for_element_visible_ok | link=Add Group To A Workspace | 30000 |
+| wait_for_element_visible_ok | add-workspace | 30000 |
 | wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
 | text_like | //body | Workspaces (0) |
 | text_like | //body | Users (2) |
-| click_and_wait | link=Add Group To A Workspace |  |
+| click_and_wait | add-workspace |  |
 | text_like | //body | qr/Add Group To Workspace/ism |
 | text_like | //body | Send invitation email |
 
@@ -53,8 +53,8 @@
 
 | *Comment* | Add workspace /again/ so we see a failure |  |
 | open-ok | /nlw/control/group/%%group_id%% |  |
-| wait_for_element_visible_ok | link=Add Group To A Workspace | 3000 |
-| click_and_wait | link=Add Group To A Workspace |  |
+| wait_for_element_visible_ok | add-workspace | 3000 |
+| click_and_wait | add-workspace |  |
 | select-ok | workspace_id | %%ws%% |
 | click-and-wait | //input[@value='Add to Workspace'] |  |
 | text_like | //body | %%group%% Group |
@@ -64,11 +64,11 @@
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Add as admin |  |
 | open-ok | /nlw/control/group/%%group_id%% |  |
-| wait_for_element_visible_ok | link=Add Group To A Workspace | 30000 |
+| wait_for_element_visible_ok | add-workspace | 30000 |
 | wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
 | text_like | //body | Workspaces (1) |
 | text_like | //body | Users (2) |
-| click_and_wait | link=Add Group To A Workspace |  |
+| click_and_wait | add-workspace |  |
 | text_like | //body | qr/Add Group To Workspace/ism |
 | text_like | //body | Send invitation email |
 | wait_for_element_visible_ok | invite-as-admins | 30000 |
@@ -87,9 +87,9 @@
 | st-admin | show-members -w %%ws%% | member |
 | st-admin | show-members -w %%workspaceforadmin%% | admin |
 
-| *Comment* | Test Case: Business Control Panel Group Add to Workspace TEARDOWN | |
+| *Comment* | Test Case: Business Control Panel Group Add to Workspace TEARDOWN |  |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace %%workspaceforadmin%% --no-export | has been deleted |
-| delete-group | %%group_id%% | |
+| delete-group | %%group_id%% |  |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace COMPLETED |

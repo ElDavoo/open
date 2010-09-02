@@ -748,7 +748,7 @@ body#contentPage div#controls div#controlsRight,
 body#settingsPage div#controls div#controlsRight {
 	background: url(../images/contentControlsRight.png) no-repeat top right;
 	height: 44px;
-	width: 600px !important;
+	width: 640px !important;
 }
 div #controls.empty div#controlsRight {
         height: 8px !important;
@@ -3799,7 +3799,10 @@ body div#globalNav div input.searchText {
 }
 
 #st-edit-mode-container #controlsRight {
-    max-width: 64px !important;
+    max-width: 20px !important;
+}
+#st-edit-mode-container #controlsRight ul.level1 {
+    max-width: 20px !important;
 }
 
 .table-options {
@@ -3970,7 +3973,7 @@ ul li.flexButtonBlue a.addButton:hover {
     float: left;
     height: 44px;
     line-height:44px;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 #st-edit-summary form .field {

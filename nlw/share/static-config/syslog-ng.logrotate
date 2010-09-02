@@ -111,3 +111,38 @@
       /etc/init.d/syslog-ng reload >/dev/null
    endscript
 }
+
+/var/log/appliance-console-httpd.log {
+   rotate 5
+   weekly
+   missingok
+   compress
+}
+
+/var/log/st-db.log {
+   rotate 9
+   weekly
+   missingok
+   compress
+}
+
+/var/log/st-update.log {
+    rotate 6
+    monthly
+    missingok
+    compress
+}
+
+/var/log/st-reports.log {
+    rotate 14
+    daily
+    missingok
+    compress
+}
+
+/var/log/st-perf-data.log {
+    rotate 10 
+    weekly
+    missingok
+    compress
+}

@@ -36,7 +36,7 @@
 | *Comment* | Test Case: Control Panel Create Group. Pause for lightbox JS load to complete. |  |
 | pause | 5000 |  |
 | click_and_wait | st-group-create-submit |  |
-| wait_for_element_visible_ok | link=addToAccountLookahead | 30000 |
+| wait_for_element_visible_ok | //input[@id='addToAccountLookahead'] | 30000 |
 | text_like | //body | Created By: %%short_username%% |
 | text_like | //body | %%CPgroupname%% |
 

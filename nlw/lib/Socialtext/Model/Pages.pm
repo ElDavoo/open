@@ -63,6 +63,7 @@ sub All_active {
     my $order_by     = $p{order_by};
     my $offset       = $p{offset};
     my $type         = $p{type};
+    my $orphaned     = $p{orphaned} || 0;
 
     $limit = 500 unless defined $limit;
 
@@ -74,6 +75,7 @@ sub All_active {
         ($order_by ? (order_by => "page.$order_by") : ()),
         offset       => $offset,
         type         => $type,
+        orphaned     => $orphaned,
     );
 }
 
@@ -156,6 +158,7 @@ sub _fetch_pages {
         offset           => undef,
         do_not_need_tags => 0,
         deleted_ok       => undef,
+        orphaned         => 0,
         @_,
     );
 
@@ -197,6 +200,11 @@ sub _fetch_pages {
     elsif (defined $p{workspace_id}) {
         $workspace_filter = '.workspace_id = ?';
         push @workspace_ids, $p{workspace_id};
+    }
+
+    if ($p{orphaned}) {
+      $p{where} .= ' AND ' if $p{where};
+      $p{where} .= ' not exists (select 1 from page_link where page_link.to_page_id = page.page_id and page_link.to_workspace_id = page.workspace_id)';
     }
 
     my $order_by = '';

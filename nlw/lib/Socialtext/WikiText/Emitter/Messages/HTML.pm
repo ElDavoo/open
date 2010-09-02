@@ -36,8 +36,12 @@ sub msg_format_link {
         page_uri => $ast->{page_id},
     );
     if (defined $ast->{section} && length($ast->{section})) {
-        push @args,
-            section => '#'.$ast->{section};
+        my $section = Socialtext::String::title_to_id(
+            Socialtext::String::uri_unescape(
+                $ast->{section}
+            )
+        );
+        push @args, section => "#$section";
     }
     my $url = $self->link_dictionary->format_link(@args);
     return qq{<a href="$url">$ast->{text}</a>};

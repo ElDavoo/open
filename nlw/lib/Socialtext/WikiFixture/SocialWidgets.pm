@@ -409,8 +409,6 @@ PostCondition: Signal is sent,frame focus remains on widget
 
 sub st_prepare_signal_within_activities_widget {
     my ($self, $signaltosend, $private) = @_;
-    $self->handle_command('wait_for_element_present_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']", 5000);
-    $self->handle_command('click_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']");
 
     $self->handle_command('set_Speed',4000);
     my $browser = $ENV{'selenium_browser'} || 'chrome';

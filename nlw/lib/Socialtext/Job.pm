@@ -56,7 +56,7 @@ has user => (
 );
 
 # These are called as class methods:
-override 'keep_exit_status_for' => sub {3600};
+override 'keep_exit_status_for' => sub {60 * 60 * 24};
 override 'grab_for'             => sub {3600};
 override 'retry_delay'          => sub {0};
 override 'max_retries'          => sub {0};

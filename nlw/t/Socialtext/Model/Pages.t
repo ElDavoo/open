@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 130;
+use Test::More tests => 133;
 use Test::Exception;
 use mocked 'Socialtext::SQL', qw/:test/;
 use mocked 'Socialtext::Page';
@@ -351,6 +351,33 @@ EOT
         ok_no_more_sql();
     }
 
+    Orphaned: {
+        local @Socialtext::SQL::RETURN_VALUES = (
+            {
+                return => [{workspace_id => 9, page_id => 'page_id'}],
+            },
+        );
+        Socialtext::Model::Pages->All_active(
+            hub => 'hub',
+            count => 20,
+            workspace_id => 9,
+            do_not_need_tags => 1,
+            orphaned => 1,
+        );
+        sql_ok(
+            name => 'all_active orphans only',
+            sql => <<EOT,
+$COMMON_SELECT
+    WHERE NOT deleted 
+      AND page.workspace_id = ?
+      AND not exists (select 1 from page_link where page_link.to_page_id = page.page_id and page_link.to_workspace_id = page.workspace_id)
+    LIMIT ?
+EOT
+            args => [9,20],
+        );
+        ok_no_more_sql();
+
+    }
     No_tags: {
         local @Socialtext::SQL::RETURN_VALUES = (
             {

@@ -198,19 +198,15 @@ sub html_description {
 sub get_orphaned_pages {
     my $self = shift;
     return [] unless $self->hub->current_workspace->real;
+
     my $pages = Socialtext::Model::Pages->All_active(
         hub => $self->hub,
         workspace_id => $self->hub->current_workspace->workspace_id,
         do_not_need_tags => 1,
         limit => -1,
+        orphaned => 1,
     );
-
-    my $orphans = [];
-    foreach my $page (@$pages) {
-        my $backlinks = $self->all_backlinks_for_page( $page );
-        push( @$orphans, $page ) unless scalar(@$backlinks);
-    }
-    return $orphans;
+    return $pages;
 }
 
 package Socialtext::Backlinks::CGI;

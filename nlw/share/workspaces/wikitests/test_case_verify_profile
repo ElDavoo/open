@@ -104,7 +104,7 @@
 | st-name-widget | 5 | workspaces |
 | st-widget-title-like | workspaces | Workspaces |
 | st-select-widget-frame | workspaces |  |
-| text-like | This person belongs to no workspaces |  |
+| text-like | You belong to no workspaces |  |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Verify Profile COMPLETED |  |

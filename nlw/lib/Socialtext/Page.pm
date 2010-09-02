@@ -120,7 +120,8 @@ sub revision_count {
 
 sub creator {
     my $self = shift;
-    return $self->original_revision->last_edited_by;
+    return $self->original_revision->last_edited_by
+        || Socialtext::User->SystemUser;
 }
 
 =head2 create( %args )
@@ -868,6 +869,7 @@ sub _perform_store_actions {
     $self->hub->backlinks->update($self);
     Socialtext::JobCreator->index_page($self);
     Socialtext::JobCreator->send_page_notifications($self);
+    $self->_log_page_action();
     $self->_cache_html();
 }
 

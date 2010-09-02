@@ -1058,7 +1058,11 @@ this.addGlobal().setup_wikiwyg = function() {
                     });
 
                     $('#signal_network > a').css({
-                        width: '108px',
+                        width: (
+                            ($.browser.msie && $.browser.version < 7)
+                                ? '85px' // IE6
+                                : '105px'
+                        ),
                         verticalAlign: 'top',
                         height: '30px',
                         overflow: 'hidden',
