@@ -1058,7 +1058,7 @@ this.addGlobal().setup_wikiwyg = function() {
                     });
 
                     $('#signal_network > a').css({
-                        width: '108px',
+                        width: '105px',
                         verticalAlign: 'top',
                         height: '30px',
                         overflow: 'hidden',
