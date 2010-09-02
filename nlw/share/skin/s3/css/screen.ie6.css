@@ -91,4 +91,7 @@ div.widgetContent div.profile {
     width: 90%;
 }
 
+#st-edit-mode-container #controlsRight ul.level1 {
+    margin-right: 5px;
+}
 
