@@ -20,7 +20,7 @@ while getopts "hmbpws" OPT; do
     m) FIXTURE=admin_no_pages;;
     j) MINIFY_JS=0;;
     p) PAUSE=1;;
-    w) UPDATE_WIDGETS=0;
+    w) UPDATE_WIDGETS=0;;
     s) ST_USERS=1;;
   esac
 done
