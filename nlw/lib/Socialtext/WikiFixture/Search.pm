@@ -44,7 +44,7 @@ sub search_people {
     is $count, $num_results, "search '$query' results: $num_results";
     if ($count != $num_results) {
         use Data::Dumper;
-        warn Dumper $ppl;
+        diag Dumper $ppl;
     }
 }
 

@@ -13,6 +13,7 @@ use Socialtext::l10n qw( loc );
 use Encode;
 use Socialtext::Log qw(st_log);
 use Socialtext::String ();
+use Socialtext::Encode ();
 use Socialtext::Timer qw/time_scope/;
 use utf8;
 
@@ -251,7 +252,10 @@ sub current_blog {
     my $self = shift;
     my $tag = $self->cgi->tag_or_category;
     $self->current_weblog($tag) && $self->update_current_weblog if $tag;
-    return $tag || $self->cache->{current_weblog} || 'recent changes';
+    return Socialtext::Encode::guess_decode(
+        $tag || $self->cache->{current_weblog} || 'recent changes'
+    );
+
 }
 
 sub current_blog_escape_uri {

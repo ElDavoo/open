@@ -1040,6 +1040,11 @@ this.addGlobal().setup_wikiwyg = function() {
                     activities.user_data = data;
                     activities.prefs.getString = function () { return null };
                     $('#st-edit-summary-signal-to').val(default_network);
+
+                    activities.selectSignalToNetwork = function(network){
+                        $('#st-edit-summary-signal-to').val(network);
+                    };
+
                     $('#signal_network').text('').dropdown({
                         value: default_network,
                         fixed: null,
@@ -1052,7 +1057,7 @@ this.addGlobal().setup_wikiwyg = function() {
                             else {
                                 $('#signal_network_warning').fadeOut('fast');
                             }
-                            $('#st-edit-summary-signal-to').val(option.value);
+                            activities.selectSignalToNetwork(option.value);
                             $('#st-edit-summary-signal-checkbox').attr('checked', true);
                         }
                     });

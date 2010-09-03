@@ -317,7 +317,7 @@ sub st_wait_for_widget_load {
 ENDJS
         $self->{selenium}->wait_for_condition($js, $timeout);
     };
-    warn $@ if $@;
+    diag $@ if $@;
     ok( !$@, "st-wait-for-widget-load");
 }
 
@@ -409,6 +409,8 @@ PostCondition: Signal is sent,frame focus remains on widget
 
 sub st_prepare_signal_within_activities_widget {
     my ($self, $signaltosend, $private) = @_;
+    $self->handle_command('wait_for_element_present_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']", 5000);
+    $self->handle_command('click_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']");
 
     $self->handle_command('set_Speed',4000);
     my $browser = $ENV{'selenium_browser'} || 'chrome';

@@ -31,7 +31,7 @@ sub add_report_test_data {
     my @common = ('yesterday', 42, $workspace, 'user1');
     my $mult = 1;
     for my $action (qw/view_page edit_page add_to_watchlist email_page/) {
-        warn "inserting $action";
+        diag "inserting $action";
         $sth->execute(@common, 'awesome', $action, 2 * $mult) || die $sth->errstr;
         $sth->execute(@common, '',        $action, 1 * $mult) || die $sth->errstr;
         $sth->execute(@common, 'middle',  $action, 2 * $mult) || die $sth->errstr;

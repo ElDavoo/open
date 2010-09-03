@@ -16,26 +16,28 @@ use File::Find qw(find);
 use File::Basename qw(basename dirname);
 use Clone qw(clone);
 use Carp qw(confess);
+
 use namespace::clean -except => 'meta';
 
-my $code_base;
-if ($FindBin::Bin =~ /dev-bin/) {
-    ($code_base = $FindBin::Bin) =~ s{dev-bin$}{share};
-}
-else {
-    require Socialtext::AppConfig;
-    $code_base = Socialtext::AppConfig->code_base;
-}
+our ($VERBOSE, $CODE_BASE, $MINIFY_JS);
 
-our $VERBOSE = 0;
+eval {
+    require Socialtext::AppConfig;
+    $CODE_BASE = Socialtext::AppConfig->code_base;
+    $MINIFY_JS = Socialtext::AppConfig->minify_javascript;
+};
+if ($@) {
+    ($CODE_BASE = $FindBin::Bin) =~ s{dev-bin$}{share};
+    $MINIFY_JS = 1;
+}
 
 my @dirs = (
-    glob("$code_base/skin/*/javascript/JS.yaml"),
-    glob("$code_base/plugin/*/share/javascript/JS.yaml"),
+    glob("$CODE_BASE/skin/*/javascript/JS.yaml"),
+    glob("$CODE_BASE/plugin/*/share/javascript/JS.yaml"),
 );
 my %dirs;
 for my $file (@dirs) {
-    my ($subdir) = $file =~ m{$code_base/(.*)/JS\.yaml};
+    my ($subdir) = $file =~ m{$CODE_BASE/(.*)/JS\.yaml};
     $dirs{$subdir} = YAML::LoadFile($file);
     expand_collapsed($dirs{$subdir});
 }
@@ -88,7 +90,7 @@ sub BuildDir {
 
 sub CleanDir {
     my ($class, $dir) = @_;
-    local $CWD = "$code_base/$dir";
+    local $CWD = "$CODE_BASE/$dir";
     warn "Cleaning files in dir $dir...\n" if $VERBOSE;
     my @toclean;
     for my $file (keys %{$dirs{$dir}}) {
@@ -113,7 +115,7 @@ sub Build {
     my ($class, $dir, $target) = @_;
     $target =~ s/\.gz$//; # built anyway
 
-    local $CWD = "$code_base/$dir";
+    local $CWD = "$CODE_BASE/$dir";
 
     my $info = $dirs{$dir}{$target};
     
@@ -173,7 +175,7 @@ sub Build {
 sub _part_last_modified {
     my ($class, $part) = @_;
     my @files;
-    local $CWD = "$code_base/$part->{dir}";
+    local $CWD = "$CODE_BASE/$part->{dir}";
     push @files, "JS.yaml";
     push @files, glob($part->{file}) if $part->{file};
     push @files, $part->{template} if $part->{template};
@@ -200,7 +202,7 @@ sub _part_last_modified {
 
 sub _part_to_text {
     my ($class, $part) = @_;
-    local $CWD = "$code_base/$part->{dir}";
+    local $CWD = "$CODE_BASE/$part->{dir}";
     if ($part->{file}) {
         return $class->_file_to_text($part);
     }
@@ -424,10 +426,10 @@ sub write_compressed {
     my ($target, $text) = @_;
 
     warn "Minifying $target...\n" if $VERBOSE;
-    my $minified = minify($text);
+    $text = minify($text) if $MINIFY_JS;
 
     warn "Gzipping $target...\n" if $VERBOSE;
-    my $gzipped = Compress::Zlib::memGzip($minified);
+    my $gzipped = Compress::Zlib::memGzip($text);
 
     warn "Writing to $target.gz...\n" if $VERBOSE;
     write_file("$target.gz", $gzipped);
