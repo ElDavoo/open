@@ -176,6 +176,7 @@ sub edit_content {
     my $signal = $page->store(
         user => $self->hub->current_user,
         signal_edit_summary => scalar($self->cgi->signal_edit_summary),
+        signal_edit_to_network => scalar($self->cgi->signal_edit_to_network),
         edit_summary => $edit_summary,
     );
 
