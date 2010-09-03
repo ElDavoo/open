@@ -9,7 +9,8 @@ use File::Slurp qw(write_file);
 use Benchmark qw(timeit timestr);
 use Socialtext::Group::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 102;
+use Test::Socialtext tests => 111;
+use Test::Differences qw(eq_or_diff);
 use Socialtext::AppConfig;
 
 # Force this to be synchronous.
@@ -265,6 +266,51 @@ ldap_group_records_events_on_membership_change: {
 #     event_ok( event_class => 'group', action => 'delete_role' );
     next_log_like 'info', qr/REMOVE,USER_ROLE,.*group:/,
         '... User/Group role removal logged in nlw.log';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($motorhead);
+}
+
+###############################################################################
+# TEST: Removing and Adding Users works successfully
+group_remove_and_add_users_back: {
+    my $openldap = bootstrap_openldap();
+    my $group_dn = 'cn=Motorhead,dc=example,dc=com';
+    my @users    = sort (
+        'cn=Lemmy Kilmister,dc=example,dc=com',
+        'cn=Eddie Clarke,dc=example,dc=com',
+        'cn=Phil Taylor,dc=example,dc=com',
+    );
+
+    # Load the Group, should have expected number of Users
+    my $motorhead = Socialtext::Group->GetGroup(driver_unique_id => $group_dn);
+    isa_ok $motorhead, 'Socialtext::Group', 'Group loaded';
+    my @dns = sort map { $_->driver_unique_id } $motorhead->users->all;
+    eq_or_diff \@dns, \@users, '... with expected Users';
+
+    # Remove a User, refresh the Group; should be missing a User.
+    my $rc = $openldap->modify($group_dn,
+        replace => [
+            member => [ $users[0], $users[1] ],
+        ],
+    );
+    ok $rc, '... removed a User from Group';
+    $motorhead->expire();
+    $motorhead = Socialtext::Group->GetGroup(driver_unique_id => $group_dn);
+    @dns = sort map { $_->driver_unique_id } $motorhead->users->all;
+    eq_or_diff \@dns, [@users[0..1]], '... ... and User count looks ok';
+
+    # Add a User *back*, refresh the Group; should be back in the Group.
+    $rc = $openldap->modify($group_dn,
+        replace => [
+            member => [ @users ],
+        ],
+    );
+    ok $rc, '... added User back to the Group';
+    $motorhead->expire();
+    $motorhead = Socialtext::Group->GetGroup(driver_unique_id => $group_dn);
+    @dns = sort map { $_->driver_unique_id } $motorhead->users->all;
+    eq_or_diff \@dns, \@users, '... ... and User count looks ok';
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($motorhead);

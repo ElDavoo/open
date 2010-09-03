@@ -331,7 +331,8 @@ sub _update_group_members {
         if ($user) {
             $user_id = $user->user_id;
             TU && warn "$dn IS ID $user_id (no shortcut)";
-            next if ($seen_set->set($user_id) or $member_set->get($user_id));
+            $seen_set->set($user_id);
+            next if ($member_set->get($user_id));
 
             # it's a user, but they don't have a role.  Give them the default
             # role in the group.
