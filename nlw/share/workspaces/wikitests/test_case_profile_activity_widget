@@ -57,8 +57,9 @@
 | text_like | qr/Showing all events.*from.+%%tuser%%.*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. The widget defaults to mentioning the viewed user when clicked |  |
-| wait_for_element_present_ok | signalFrame | 10000 |
-| click_ok | signalFrame |  |
+| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 10000 |
+| text_like | qr/What are you working on/ism |  |
+| click_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] |  |
 | wait_for_element_visible_ok | //div[@class='message mention'] | 10000 |
 | wait_for_element_visible_ok | link=%%tuser%% | 10000 |
 

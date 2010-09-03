@@ -49,14 +49,14 @@
 | st-admin | disable-plugin --plugin signals --account %%group_acct%% |  |
 | open_ok | /?group/%%group_id%% |  |
 | st-name-widget | 3 | activity_widget |
-| wait_for_text_not_present_ok | What are you working on? | 10000 |
+| text_unlike | //body | What are you working on? |
 | text_like | within %%group_name%% |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Enable signals, see signal option |  |
 | st-admin | enable-plugin --plugin signals --all-accounts |  |
 | open_ok | /?group/%%group_id%% |  |
 | st-name-widget | 3 | activity_widget |
-| wait_for_text_not_present_ok | What are you working on? | 10000 |
+| wait_for_text_present_ok | What are you working on? | 10000 |
 | wait_for_text_present_ok | within %%group_name%% | 10000 |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Login as non group member, do not see signal |  |
