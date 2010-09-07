@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>338</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-338.air</url>
-<description><![CDATA[[Build 338 - Sun Aug 15 02:39:22 PDT 2010]
+  <version>342</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-342.air</url>
+<description><![CDATA[[Build 342 - Fri Sep  3 23:56:59 PDT 2010]
+* Fetch user and tag lookahead candidates asynchronously to improve performance. (Eugene)
+* Re-use push-client id on temporary server errors. {bz: 4161}
+
+[Build 341 - Fri Aug 27 15:49:26 PDT 2010]
+* Allow the reply box to close when it loses focus and it only contains whitespaces. {bz: 4208}
+
+[Build 340 - Thu Aug 26 10:35:01 PDT 2010]
+* Switching "Post to" is now much faster when "Show Signals within" is set to "All Groups". (Luke)
+
+[Build 339 - Wed Aug 18 09:15:49 PDT 2010]
+* When Encrypted Store fails access, show an error. (Graham)
+* Also, if Encrypted Store fail on Linux, navigate to the Adobe knowledge base with instructions for repair.
+
+[Build 338 - Sun Aug 15 02:39:22 PDT 2010]
 * Workspaces: AIR 2 uploads files with spaces in directory names, but not in filenames; still show an alert in the latter case. {bz: 4245}
 
 [Build 337 - Sat Aug 14 08:20:35 PDT 2010]

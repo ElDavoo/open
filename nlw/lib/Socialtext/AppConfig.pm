@@ -339,6 +339,8 @@ sub new {
 
     my $config_from_file =
         $p{file} && -f $p{file} ? YAML::LoadFile( $p{file} ) : {};
+    # remove deprecated option for {bz: 4347}
+    delete $config_from_file->{benchmark_mode} if $config_from_file;
 
     my $real_config = validate_with(
         params      => ( $config_from_file || {} ),
