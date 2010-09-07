@@ -164,7 +164,7 @@ sub create {
 }
 
 sub _signal_edit_summary {
-    my ($self, $user, $edit_summary, $to_network) = @_;
+    my ($self, $user, $edit_summary, $to_network, $is_comment) = @_;
     my $signals = $self->hub->pluggable->plugin_class('signals');
     return unless $signals;
     return unless $user->can_use_plugin('signals');
@@ -175,7 +175,9 @@ sub _signal_edit_summary {
     $edit_summary = Socialtext::String::word_truncate($edit_summary, 140);
     my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->title;
     my $body = $edit_summary
-        ? loc('"[_1]" (edited [_2] in [_3])', $edit_summary, $page_link, $workspace->title)
+        ? ($is_comment
+            ? loc('"[_1]" (commented on [_2] in [_3])', $edit_summary, $page_link, $workspace->title)
+            : loc('"[_1]" (edited [_2] in [_3])', $edit_summary, $page_link, $workspace->title))
         : loc('wants you to know about an edit of [_1] in [_2]', $page_link, $workspace->title);
 
     my %params = (
@@ -380,6 +382,7 @@ various places where this has been done in the past.
         date                => { can => [qw(strftime)], default => undef },
         edit_summary        => { type => SCALAR, default => '' },
         signal_edit_summary => { type => SCALAR, default => undef },
+        signal_edit_summary_from_comment => { type => SCALAR, default => undef },
         signal_edit_to_network => { type => SCALAR, default => undef },
         locked              => { type => SCALAR, default => undef },
     };
@@ -741,6 +744,7 @@ author.
 sub add_comment {
     my $self     = shift;
     my $wikitext = shift;
+    my $signal_edit_to_network = shift;
 
     my $timer = Socialtext::Timer->new;
 
@@ -756,7 +760,14 @@ sub add_comment {
     my $user = $self->hub->current_user;
 
     $self->metadata->RevisionSummary(loc('(comment)'));
-    $self->store( user => $user );
+    $self->store(
+        user => $user,
+        $signal_edit_to_network ? (
+            edit_summary => $wikitext, # TODO
+            signal_edit_summary_from_comment => 1,
+            signal_edit_to_network => $signal_edit_to_network,
+        ) : ()
+    );
 
     my $summary = $self->preview_text($wikitext);
     Socialtext::Events->Record({
@@ -843,7 +854,10 @@ sub store {
 
     $self->_log_edit_summary($p{user}) if $self->metadata->RevisionSummary;
 
-    if ($p{signal_edit_summary}) {
+    if ($p{signal_edit_summary_from_comment}) {
+        return $self->_signal_edit_summary($p{user}, $p{edit_summary}, $p{signal_edit_to_network}, 'comment');
+    }
+    elsif ($p{signal_edit_summary}) {
         return $self->_signal_edit_summary($p{user}, $p{edit_summary}, $p{signal_edit_to_network});
     }
 

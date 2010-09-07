@@ -67,11 +67,13 @@ GuiEdit.prototype.show = function () {
         .click(function () { self['do_'+this.name].call(self) })
 
     jQuery('.saveButton', this.container).one('click', function () {
+        var doSignal = $('#st-comment-st-edit-summary-signal-checkbox').is(':checked');
         jQuery.post('/' + self.workspace + '/index.cgi?action=submit_comment',
             {
                 action: 'submit_comment',
                 page_name: self.page_id,
-                comment: jQuery('textarea', self.container).val()
+                comment: jQuery('textarea', self.container).val(),
+                signal_comment_to_network: doSignal ? $('#st-comment-st-edit-summary-signal-to').val() : ''
             },
             function () {
                 if (self.oncomplete) {

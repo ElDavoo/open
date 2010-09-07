@@ -111,7 +111,7 @@ Socialtext.show_signal_network_dropdown = function(prefix, width) {
                 });
                 activities.user_data = data;
                 activities.prefs.getString = function () { return null };
-                $('#'+prefix+'st-edit-summary-signal-checkbox').val(default_network);
+                $('#'+prefix+'st-edit-summary-signal-to').val(default_network);
 
                 activities.selectSignalToNetwork = function(network){
                     $('#'+prefix+'st-edit-summary-signal-to').val(network);
