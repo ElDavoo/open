@@ -763,7 +763,7 @@ sub add_comment {
     $self->store(
         user => $user,
         $signal_edit_to_network ? (
-            edit_summary => $wikitext, # TODO
+            edit_summary => substr($wikitext, 0, 250), # Truncated to the first 250 characters
             signal_edit_summary_from_comment => 1,
             signal_edit_to_network => $signal_edit_to_network,
         ) : ()
