@@ -1176,6 +1176,14 @@ Default: warning
 
 =for code type => SCALAR_TYPE
 
+=head2 benchmark_mode
+
+Deprecated option - do not use.
+
+Default: 0
+
+=for code type => BOOLEAN_TYPE
+
 =head2 minify_javascript
 
 Set this to false disables the javascript minifier.
