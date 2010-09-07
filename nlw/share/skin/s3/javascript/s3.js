@@ -136,9 +136,11 @@ Socialtext.show_signal_network_dropdown = function(prefix, width) {
 
                 $('#'+prefix+'signal_network > a').css({
                     width: (
-                        ($.browser.msie && $.browser.version < 7)
-                            ? '85px' // IE6
-                            : '105px'
+                        width || (
+                            ($.browser.msie && $.browser.version < 7)
+                                ? '85px' // IE6
+                                : '105px'
+                        )
                     ),
                     verticalAlign: 'top',
                     height: '30px',
@@ -148,10 +150,18 @@ Socialtext.show_signal_network_dropdown = function(prefix, width) {
                 });
 
                 if ($.browser.msie) {
-                    $('#'+prefix+'signal_network > a').css({
-                        marginLeft: '-4px',
-                        marginTop: '-9px'
-                    });
+                    if (width) {
+                        $('#'+prefix+'signal_network > a').css({
+                            height: '16px',
+                            marginTop: '7px'
+                        });
+                    }
+                    else {
+                        $('#'+prefix+'signal_network > a').css({
+                            marginLeft: '-4px',
+                            marginTop: '-9px'
+                        });
+                    }
                 }
 
                 $('#'+prefix+'signal_network .dropdownOptions').css({
