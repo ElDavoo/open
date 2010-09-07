@@ -5,3 +5,4 @@ These testcases are specific to the appliance.
 * [Test case: Console Setup]
 * [Test case: Console Backup and Restore]
 * [Test case: Business Control Panel Settings]
+* [Test Case: Data Jobs]

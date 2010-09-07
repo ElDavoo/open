@@ -71,9 +71,9 @@ click on several page links | Pages appear; each page has its that tag displayed
 | clickAndWait | link=tag1 content spreadsheet %%start_time%% |  |
 | text_like | link=tag1 %%start_time%% | tag1 %%start_time%% |
 
- click: View {link: Category as a weblog} | All pages with that tag appear in weblog form
+click: View {link: Category as a weblog} | All pages with that tag appear in weblog form
 
- return to Category (Tag) page | sortable table of tagged pages appears
+return to Category (Tag) page | sortable table of tagged pages appears
 Toggle sort link at top of each column | tables sort and reverse sort correctly
 
 | *Comment* | Test Case Calc: Tags Checking tag sorting |  |
@@ -82,7 +82,7 @@ Toggle sort link at top of each column | tables sort and reverse sort correctly
 
 TODO: test fancy table headers that sort
 
- click_ok | link=Add Tag | |
+click_ok | link=Add Tag | |
 text_like | qr/tag2 %%start_time%%.+tag1 %%start_time%%/ | |
 click_ok | link=Add Tag | |
 text_like | qr/tag1 %%start_time%%.+tag2 %%start_time%%/ | |
@@ -105,6 +105,9 @@ Go to All Tags | The deleted tag should not appear in list
 | *Comment* | Test Case Calc: Tags second wait |  |
 | wait_for_text_not_present_ok | Tag 2 %%start_time%% | 30000 |
 
+| *Comment* | Test Case Calc: Tags process tag reindexing |  |
+| st-process-jobs | PageIndex |  |
+
 | open_ok | %%workspace%%/index.cgi?action=category_list |  |
 | text_unlike | contentContainer | tag1 %%start_time%% |
 
@@ -118,6 +121,10 @@ Go to All Tags | The tag from the deleted page should not appear in list.
 | click_ok | link=Delete Page |  |
 | wait_for_element_visible_ok | st-delete-deletelink | 20000 |
 | click_and_wait | st-delete-deletelink |  |
+
+| *Comment* | Test Case Calc: Tags process page delete reindexing |  |
+| st-process-jobs | PageIndex |  |
+
 | open_ok | %%workspace%%/index.cgi?action=category_list |  |
 | text_unlike | contentContainer | tag2 %%start_time%% |
 
