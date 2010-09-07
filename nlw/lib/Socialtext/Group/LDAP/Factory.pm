@@ -228,7 +228,7 @@ sub _lookup_group {
 
 # "trace update"; if set to false, perl can optimize out statements starting
 # with "TU &&" in front.
-use constant TU => 0;
+use constant TU => $ENV{ST_DEBUG_LDAP};
 our %UPDATING_GROUP;
 sub _update_group_members {
     my $self    = shift;
