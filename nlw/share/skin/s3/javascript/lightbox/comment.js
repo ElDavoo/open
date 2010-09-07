@@ -95,6 +95,10 @@ GuiEdit.prototype.show = function () {
         this.area.addBehavior(nlw_make_s3_path('/javascript/Selection.htc'));
     }
 
+    if ($('#st-comment-signal_network').size() > 0) {
+        Socialtext.show_signal_network_dropdown('st-comment-', '200px');
+    }
+
     this.scrollTo(function () {
         jQuery('.comment', this.container).fadeIn(
             'normal',

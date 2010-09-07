@@ -18,6 +18,7 @@
         - 'JemplatePlugin/*.js'
         - { jemplate: 'template/nav-list.tt2' }
         - { jemplate: 'template/new_signal.tt2' }
+        - { jemplate: 'template/dropdown.tt2' }
         - 'lightbox-create_content.js'
         - 'loc.js'
         - 'cookie.js'
