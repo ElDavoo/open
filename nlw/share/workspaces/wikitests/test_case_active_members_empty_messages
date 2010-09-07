@@ -21,8 +21,9 @@
 | wait_for_element_not_visible_ok | st-savebutton-%%active_members%% | 10000 |
 
 | *Comment* | Test Case: Active Members Empty Messages set the empty People messages |  |
-
 | set | EmptyViews | The most frequently viewed profiles will be listed here. You can view your own profile or invite a colleague and help them get started. |
+
+| *Comment* | Test Case: Active Members Empty Messages fails due to {bz: 4356} |
 | set | EmptyReaders | The most active readers will be listed here. As you explore your new workspaces, your reader activity will grow. |
 | set | EmptyEdits | The most active editors will be listed here. As you begin to build and modify your new workspaces, your editor activity will grow. |
 | set | EmptySignals | The most active signalers will be listed here. Try sending a signal from this Dashboard! |

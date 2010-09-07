@@ -81,6 +81,7 @@ Note: Depends on the content of the test-data workspace, most notably the pages 
 | *Comment* | test AND, OR, (NOT, -) with combinations of different search value types (text, title, tag) |  |
 
 | *Comment* | Test case: Phrase Search: homogenous AND searches |  |
+| *Comment* | Test case: Phrase Search {bz: 4327} |  |
 | st-search | :Sophocles AND :Shakespeare | Pages matching ':Sophocles AND :Shakespeare' |
 | st-result | 1 total |  |
 | st-result | Kinosearch test page: truth & falsity |  |
@@ -90,12 +91,14 @@ Note: Depends on the content of the test-data workspace, most notably the pages 
 | st-search | ":Sun Tzu" AND ":Sir Winston Churchill" | Pages matching '":Sun Tzu" AND ":Sir Winston Churchill"' |
 | st-result | 1 total |  |
 | st-result | Kinosearch test page: strategy |  |
+| *Comment* | Test case: Phrase Search {bz: 4327} |  |
 | st-search | ":Sir John A. MacDonald" AND ":Publius Syrus" | Pages matching '":Sir John A. MacDonald" AND ":Publius Syrus"' |
 | st-result | 0 total |  |
 | *Comment* | confusing / incorrect search result page title -- already reported as {rt: 22619} |  |
 | st-search | ="Kinosearch test page:" AND =": truth" | Pages matching 'title:"Kinosearch test page:" AND title:": truth"' |
 | st-result | 1 total |  |
 | st-result | Kinosearch test page: truth & falsity |  |
+| *Comment* | Test case: Phrase Search {bz: 4327} |  |
 | st-search | tag:"test_tag: cynicism" AND tag:"root: civil society: peace, order, & good government: politics" | Pages matching 'tag:"test_tag: cynicism" AND tag:"root: civil society: peace, order, & good government: politics"' |
 | st-result | 1 total |  |
 | st-result | Kinosearch test page: politics |  |

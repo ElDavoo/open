@@ -221,7 +221,7 @@ SEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSE
 | *Comment* | Test Case: Tagged Page Sorting. Sorting search results. Verify Relevance sort |
 | text_like | contentContainer | qr/simple simple more simple most simple.+This is a simple text file/ |
 | click_and_wait | link=Titles |  |
-| text_like | contentContainer | qr/Search Sort 5.+Search Sort 1.+Search Sort 2.+Search Sort 3.+Search Sort 4/ |
+| text_like | contentContainer | qr/Search Sort 5.+Search Sort 2.+Search Sort 1.+Search Sort 4.+Search Sort 3/ |
 
 | *Comment* | Test Case: Tagged Page Sorting. Teardown |  |
 
