@@ -794,7 +794,7 @@ sub _st_admin_in_process {
         local *STDOUT = $fh_out;
         local *STDERR = $fh_err;
         eval { Socialtext::CLI->new(argv => \@argv)->run };
-        if ($@) { diag $@ };
+        if ($@) { warn $@ };
     }
     return ($out, $err);
 }
