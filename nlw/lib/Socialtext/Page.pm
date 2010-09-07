@@ -172,7 +172,7 @@ sub _signal_edit_summary {
     my $workspace = $self->hub->current_workspace;
     $user ||= $self->hub->current_user;
 
-    $edit_summary = Socialtext::String::word_truncate($edit_summary, 140);
+    $edit_summary = Socialtext::String::word_truncate($edit_summary, ($is_comment ? 250 : 140));
     my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->title;
     my $body = $edit_summary
         ? ($is_comment
@@ -763,7 +763,7 @@ sub add_comment {
     $self->store(
         user => $user,
         $signal_edit_to_network ? (
-            edit_summary => substr($wikitext, 0, 250), # Truncated to the first 250 characters
+            edit_summary => $wikitext,
             signal_edit_summary_from_comment => 1,
             signal_edit_to_network => $signal_edit_to_network,
         ) : ()
