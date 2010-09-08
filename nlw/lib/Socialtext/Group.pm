@@ -65,9 +65,33 @@ with 'Socialtext::UserSetContained',
                         add_account assign_role_to_account
         )],
      };
-
 sub enable_plugin { die "cannot enable a plugin for a group" }
 sub disable_plugin { die "cannot disable a plugin for a group" }
+
+around 'update_store' => sub {
+    my $orig = shift;
+    my $self = shift;
+    my $proto = shift;
+
+    my $group_set = $proto->{permission_set};
+    if ($group_set) {
+        my $workspaces = $self->workspaces;
+        my $ws_set = {
+           'self-join' => 'self-join',
+           'private'   => 'member-only',
+        }->{$group_set};
+
+        die "no compatible workspace permissions for '$group_set'"
+            if $workspaces->count() > 0 && !$ws_set;
+
+        while (my $ws = $workspaces->next()) {
+            die "workspace has multiple groups" if $ws->group_count > 1;
+            $ws->permissions->set(set_name => $ws_set);
+        }
+    }
+
+    $self->$orig($proto);
+};
 
 # Basic implementation for now.
 sub allow_invitation { shift->can_update_store() }

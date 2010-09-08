@@ -2,11 +2,70 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 24;
+use Test::Socialtext tests => 38;
 use Test::Socialtext::Account qw/export_account export_and_reimport_account/;
+use Test::Exception;
 use YAML qw/LoadFile/;
 
 fixtures(qw( db ));
+
+################################################################################
+# TEST: update group perms, ws membership controlled by group
+update_perms_controlling_ws: {
+    my $ws  = create_test_workspace();
+    my $grp = create_test_group();
+
+    $ws->add_group(group => $grp);
+    is $ws->group_count, 1, 'group is only one in workspace';
+
+    lives_ok { $grp->update_store({permission_set => 'self-join'}); }
+        'update group permissions lives';
+
+    is $grp->permission_set, 'self-join', 'group permission is updated';
+    is $ws->permissions->current_set_name,
+        'self-join', 'workspace permission is updated, too';
+}
+
+################################################################################
+# TEST: update group perms, ws has individual members
+update_perms_ws_has_users: {
+    my $ws  = create_test_workspace();
+    my $grp = create_test_group();
+    my $user = create_test_user();
+
+    $ws->add_group(group => $grp);
+    is $ws->group_count, 1, 'group is only one in workspace';
+
+    $ws->add_user(user => $user);
+    is $ws->user_count, 1, 'workspace has a user';
+
+    lives_ok { $grp->update_store({permission_set => 'self-join'}); }
+        'update group permissions lives';
+
+    is $grp->permission_set, 'self-join', 'group permission is updated';
+    is $ws->permissions->current_set_name,
+        'self-join', 'workspace permission is updated, too';
+}
+
+################################################################################
+# TEST: update group perms, ws membership not solely controlled by group
+update_perms_ws_not_controlled: {
+    my $ws  = create_test_workspace();
+    my $grp = create_test_group();
+    my $other = create_test_group();
+
+    $ws->add_group(group => $grp);
+    $ws->add_group(group => $other);
+    is $ws->group_count, 2, 'workspace has two groups';
+
+    dies_ok { $grp->update_store({permission_set => 'self-join'}); }
+        'update group permissions dies when workspace has other groups';
+
+    is $grp->permission_set, 'private', 'group permission unchanged';
+    is $other->permission_set, 'private', 'other group permission unchanged';
+    is $ws->permissions->current_set_name,
+        'member-only', 'workspace permission unchanged';
+}
 
 default_set_exported: {
     my $account = create_test_account_bypassing_factory();
