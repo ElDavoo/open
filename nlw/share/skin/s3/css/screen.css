@@ -748,8 +748,7 @@ body#contentPage div#controls div#controlsRight,
 body#settingsPage div#controls div#controlsRight {
 	background: url(../images/contentControlsRight.png) no-repeat top right;
 	height: 44px;
-	width: 640px !important;
-        white-space: nowrap;
+	width: auto !important;
 }
 div #controls.empty div#controlsRight {
         height: 8px !important;
@@ -2689,7 +2688,6 @@ ul.buttonRight li.submenu a {
 #controlsRight ul.level2 {
     top: 1.3em;
     left: -4.2em;
-    white-space: normal;
 }
 
 body#listView #controlsRight ul ul li {
