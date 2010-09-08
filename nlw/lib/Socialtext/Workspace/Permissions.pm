@@ -57,6 +57,12 @@ our %PermissionSets = (
     authenticated_user => [qw( read                                                                         self_join )],
     guest              => [qw( read                                                                         self_join )],
   },
+  'self-join' => {
+    admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock           )],
+    member             => [qw( read edit attachments comment delete email_in email_out                                )],
+    authenticated_user => [qw( read                                                                         self_join )],
+    guest              => [                                                                                            ],
+  },
   'intranet' => {
     admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
     member             => [qw( read edit attachments comment delete email_in email_out                      )],
