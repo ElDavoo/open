@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 22;
+use Test::Socialtext tests => 24;
 use Test::Exception;
 
 ###############################################################################
@@ -12,6 +12,27 @@ use Test::Exception;
 fixtures(qw( db ));
 
 use_ok 'Socialtext::Workspace';
+
+################################################################################
+# TEST: Workspace and Group have compatible permissions
+compatible_permissions: {
+    my $ws  = create_test_workspace();
+    my $grp = create_test_group();
+
+    $ws->assign_role_to_group(group => $grp);
+    is $ws->group_count(), 1, 'private group added to private workspace';
+}
+
+################################################################################
+# TEST: Workspace and Group have incompatible permissions
+incompatible_permissions: {
+    my $ws = create_test_workspace();
+    my $grp = create_test_group();
+
+    $ws->permissions->set(set_name => 'public-join-to-edit');
+    dies_ok { $ws->assign_role_to_group(group => $grp); }
+        'workspace and group have incompatible permissions';
+}
 
 ################################################################################
 # TEST: Workspace has no Groups with Roles in it

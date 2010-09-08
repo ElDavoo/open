@@ -1852,6 +1852,15 @@ after role_change_check => sub {
             die "Only a workspace's primary account can be a member.\n";
         }
     }
+    elsif ($thing->isa('Socialtext::Group')) {
+        my $has_set = {
+            'member-only' => 'private',
+            'self-join'   => 'self-join',
+        }->{$self->permissions->current_set_name};
+
+        croak "group and workspace do not have compatible permission sets"
+            unless ($has_set && $thing->permission_set eq $has_set);
+    }
 };
 
 after qw(assign_role_to_account add_account) => \&_de_dupe_users;

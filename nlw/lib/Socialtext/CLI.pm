@@ -1079,7 +1079,11 @@ sub _add_thingy_to_ws_as {
     );
 
     my $assign_method = "assign_role_to_$type";
-    $ws->$assign_method($type => $thingy, role => $new_role);
+    eval { $ws->$assign_method($type => $thingy, role => $new_role); };
+    if (my $e = $@) {
+        $e =~ s/\s+at\s+.+\.pm\s+line\s+\d+.*//;
+        $self->_error(loc($e));
+    }
     $self->_success(
         loc("[_1] now has the role of '[_2]' in the [_3] Workspace",
             $thingy->name,
