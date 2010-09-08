@@ -163,6 +163,11 @@ Socialtext.show_signal_network_dropdown = function(prefix, width) {
                         });
                     }
                 }
+                else if (width) {
+                    $('#'+prefix+'signal_network > a').css({
+                        marginTop: '2px'
+                    });
+                }
 
                 $('#'+prefix+'signal_network .dropdownOptions').css({
                     'margin-top': '-15px',
