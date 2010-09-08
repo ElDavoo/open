@@ -126,9 +126,8 @@ GuiEdit.prototype.scrollTo = function (callback) {
     // Scroll the window so that the middle of .commentWrapper is in the
     // middle of the screen
     var wrapper = jQuery('.commentWrapper', this.container);
-    var offset =
-        wrapper.offset().top + wrapper.height() - jQuery(window).height();
-    $('html,body').animate({scrollTop: offset}, 'slow', 'linear', callback);
+    var offset = wrapper.offset().top;
+    $('html,body').animate({scrollTop: offset}, 'normal', 'linear', callback);
 }
 
 GuiEdit.prototype.alarm_on = function() {
