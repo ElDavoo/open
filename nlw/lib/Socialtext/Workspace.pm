@@ -1853,13 +1853,9 @@ after role_change_check => sub {
         }
     }
     elsif ($thing->isa('Socialtext::Group')) {
-        my $has_set = {
-            'member-only' => 'private',
-            'self-join'   => 'self-join',
-        }->{$self->permissions->current_set_name};
-
         croak "group and workspace do not have compatible permission sets"
-            unless ($has_set && $thing->permission_set eq $has_set);
+            unless $self->permissions->current_set_name
+                eq $thing->workspace_compat_perm_set;
     }
 };
 

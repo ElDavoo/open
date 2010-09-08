@@ -76,10 +76,7 @@ around 'update_store' => sub {
     my $group_set = $proto->{permission_set};
     if ($group_set) {
         my $workspaces = $self->workspaces;
-        my $ws_set = {
-           'self-join' => 'self-join',
-           'private'   => 'member-only',
-        }->{$group_set};
+        my $ws_set = $self->WorkspaceCompatPermSet($group_set);
 
         die "no compatible workspace permissions for '$group_set'"
             if $workspaces->count() > 0 && !$ws_set;
@@ -127,6 +124,20 @@ sub user_can {
         group      => $self,
         %p,
     );
+}
+
+sub workspace_compat_perm_set {
+    my $self = shift;
+    return $self->WorkspaceCompatPermSet($self->permission_set);
+}
+
+sub WorkspaceCompatPermSet {
+    my $class = shift;
+    my $set   = shift;
+    return {
+       'self-join' => 'self-join',
+       'private'   => 'member-only',
+    }->{$set};
 }
 
 ###############################################################################
