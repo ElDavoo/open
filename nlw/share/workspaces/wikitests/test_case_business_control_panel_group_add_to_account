@@ -13,19 +13,21 @@
 
 | *Comment* | Test Case: Control Panel Group Add To Account Add second account to the group |  |
 | st-admin | give-accounts-admin --e %%email%% | now has accounts admin access |
+| setSpeed | 4000 | Need to wait for some javascript to paint the screen |
 | open-ok | /nlw/control/group/%%group_id%% |  |
-| pause | 3000 | page seems to need to finish loading javascript. I know |
 | wait_for_element_visible_ok | addToAccountLookahead | 3000 |
 | type-lookahead-ok | addToAccountLookahead | %%addl_account%% |
-| wait_for_element_visible_ok | link=%%addl_account%% |  |
+| wait_for_element_visible_ok | link=%%addl_account%% | 10000 |
 | click_ok | link=%%addl_account%% |  |
-| pause | 5000 | want to see the link for the account, not the link to add the account |
 | wait_for_text_present_ok | Accounts (2) | 60000 |
 | text_like | //body | qr/%%account%%.+%%addl_account%%/ |
+| setSpeed | 0 |  |
 
 | *Comment* | Test Case: Control Panel Group Add To Account Make sure the change 'took' by a refresh |  |
 | refresh |  |  |
 | wait_for_text_present_ok | Accounts (2) | 60000 |
+| wait_for_element_visible_ok | accountTable | 30000 |
+| pause | 1000 | Wait for javascript. Yup. Hokey |
 | text_like | //body | qr/%%account%%.+%%addl_account%%/ |
 | wait_for_element_visible_ok | link=%%addl_account%% | 30000 |
 
@@ -38,7 +40,7 @@
 | wait_for_text_present_ok | Accounts (1) | 30000 |
 | refresh |  |  |
 | wait_for_text_present_ok | Accounts (1) | 30000 |
-| text_unlike | //body | %%addl_account%% |
+| wait_for_text_not_present_ok | %%addl_account%% | 30000 |
 
 | *Comment* | Test Case: Control Panel Group Add To Account TEARDOWN |  |
 | delete-group | %%group_id%% |  |

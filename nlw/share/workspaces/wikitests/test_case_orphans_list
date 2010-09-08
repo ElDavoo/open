@@ -21,11 +21,13 @@ Create a page by a different user
 "What's New -> Orphans List"<http://.../> | list of links to orphan pages appears
 
 | *Comment* | Test Case: Orphans List. Orphan page list |  |
+| setSpeed | 5000 | For Safari |
 | open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
 | text_like | link=orphan %%start_time%% 0001 | orphan %%start_time%% 0001 |
 | text_like | link=orphan %%start_time%% 0002 | orphan %%start_time%% 0002 |
 | text_like | link=orphan %%start_time%% 0003 | orphan %%start_time%% 0003 |
 | text_like | link=orphan %%start_time%% 0004 | orphan %%start_time%% 0004 |
+| setSpeed | 0 |  |
 
 edit a page to include a link to an orphan page | link appears in page
 
