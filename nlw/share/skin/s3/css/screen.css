@@ -2689,6 +2689,7 @@ ul.buttonRight li.submenu a {
 #controlsRight ul.level2 {
     top: 1.3em;
     left: -4.2em;
+    white-space: normal;
 }
 
 body#listView #controlsRight ul ul li {
