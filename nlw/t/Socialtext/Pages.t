@@ -3,7 +3,7 @@
 
 use warnings;
 use strict;
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 16;
 
 BEGIN {
     use_ok( 'Socialtext::Pages' );
@@ -61,4 +61,18 @@ All_ids_locked: {
     ok grep({ /^conversations$/ } @ids), 'conversations is one of the pages';
     ok grep({ /^meeting_agendas$/ } @ids), 'meeting_agendas is one of the pages';
 
+}
+
+Page_existence: {
+    unnamed_pages_shouldnt_exist: {
+        my $page = $hub->pages->new_from_name('');
+        ok $page, 'Got page object for un-named page';
+        ok !$page->exists, '... and page does not exist';
+    }
+
+    actual_page_exists: {
+        my $page = $hub->pages->new_from_name('Conversations');
+        ok $page, 'Got "Conversations" page';
+        ok $page->exists, '... which exists';
+    }
 }
