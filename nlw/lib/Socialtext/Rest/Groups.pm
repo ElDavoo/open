@@ -159,14 +159,6 @@ sub POST_json {
         return '';
     }
 
-    my $is_self_join = $data->{permission_set}
-        && $data->{permission_set} eq 'self-join';
-    my $wses = $data->{workspaces};
-    if ($is_self_join && defined($wses) && scalar(@$wses)) {
-        $rest->header(-status => HTTP_400_Bad_Request);
-        return 'self-join groups may not contain workspaces';
-    }
-
     $data->{account_id} ||= $user->primary_account_id;
 
     my $group;

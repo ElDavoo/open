@@ -153,8 +153,8 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | code-is   | 409                                 |                                |
 | body-like | group already in workspace          |                                |
 
-## Cannot add self-join group to workspaces
-| *Comment* | Cannot add self-join group to workspaces |
+## Cannot add self-join group to member-only workspaces
+| *Comment* | Cannot add self-join group to private workspaces |
 | set          | sj1     | sj1-%%start_time%% |           |  |           |
 | create-group | %%sj1%% |                    | %%admin%% |  | self-join |
 | set          | sj1_id  | %%group_id%%       |           |  |           |

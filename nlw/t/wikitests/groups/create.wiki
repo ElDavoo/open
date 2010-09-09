@@ -106,13 +106,13 @@ Set up a second account, but no users.
 | add-member | %%non_admin%% | %%erosional%%  | admin |
 | add-member | %%non_admin%% | %%solutional%% | admin |
 
-## Create a group with workspace memberships
-| *Comment* | Create a group with workspace memberships |
+## Create a private group with member-only workspace memberships
+| *Comment* | Create a private group with member-only workspace memberships |
 | POST-json | /data/groups | {"name":"%%g6%%","workspaces":[{"workspace_id":"%%erosional_id%%","role":"admin"},{"workspace_id":"%%solutional_id%%"}]} |
 | code-is   | 201          |                                                                                                                          |
 
-## Cannot create a self-join group with workspaces
-| *Comment* | Cannot create a self-join group with workspaces |
+## Cannot create a self-join group with a member-only workspaces
+| *Comment* | Cannot create a self-join group with member-only workspaces |
 | set | sj1 | sj1-%%start_time%% |
 | POST-json | /data/groups | {"name":"%%sj1%%","permission_set":"self-join","workspaces":[{"workspace_id":"%%solutional_id%%"}]} |
 | code-is   | 400          |                                                                                                     |
@@ -127,6 +127,17 @@ Set up a second account, but no users.
 | set                | privg1        | privg-%%start_time%%  |       |
 | POST-json | /data/groups | {"name":"%%privg1%%","permission_set":"private","workspaces":[{"workspace_id":"%%pubws1_id%%"}]} |
 | code-is   | 400          |                                                                                                  |
+
+## Can create a self-join group with self-join workspaces
+| *Comment* | Can create a self-join group with self-join workspaces |
+| set                | sjws          | sjws-%%start_time%% |       |
+| create-workspace   | %%sjws%%      |                     |       |
+| set                | sjws_id       | %%workspace_id%%    |       |
+| add-member         | %%non_admin%% | %%sjws%%            | admin |
+| set-ws-permissions | %%sjws%%      | self-join           |       |
+| set                | sjg           | sjg-%%start_time%%  |       |
+| POST-json | /data/groups | {"name":"%%sjg%%","permission_set":"self-join","workspaces":[{"workspace_id":"%%sjws_id%%"}]} |
+| code-is   | 201          |                                                                                            |
 
 ## Get a couple of users to add to a group
 | set         | bowline          | bowline%%start_time%%@ken.socialtext.net      |             |
