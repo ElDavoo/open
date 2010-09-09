@@ -1153,11 +1153,7 @@ sub _index_path {
 sub modified_time {
     my $self = shift;
     return $self->{modified_time} if defined $self->{modified_time};
-    # REVIEW: Can't this use $self->file_path ?
-    my $path = Socialtext::File::catfile(
-        Socialtext::Paths::page_data_directory( $self->hub->current_workspace->name ),
-        $self->id,
-    );
+    my $path = $self->file_path;
     $self->{modified_time} = (stat($path))[9] || time;
     return $self->{modified_time};
 }
