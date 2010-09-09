@@ -1,8 +1,8 @@
-| *Comment* | Test Case: Replies Include. %%i%% |  |
+| *Comment* | Test Case: Replies Include IE. %%i%% |  |
 
 | set | my_signal | Reply from %%my_user%%-%%i%% |
 
-| *Comment* | Test Case: Replies Include. Included loop %%i%% |  |
+| *Comment* | Test Case: Replies Include IE. Included loop %%i%% |  |
 | wait_for_element_visible_ok | //div[@class='wikiwyg'][last()] | 5000 |
 | click_ok | //div[@class='wikiwyg'][last()] |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 5000 |
@@ -12,4 +12,4 @@
 | click_ok | //a[@class='btn post postReply'] |  |
 | pause | %%my_wait%% |  |
 
-| *Comment* | Test Case: Replies Include %%i%% COMPLETED |  |
+| *Comment* | Test Case: Replies Include IE %%i%% COMPLETED |  |
