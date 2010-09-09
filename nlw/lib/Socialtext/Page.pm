@@ -1152,9 +1152,10 @@ sub _index_path {
 
 sub modified_time {
     my $self = shift;
-    return $self->{modified_time} if defined $self->{modified_time};
-    my $path = $self->file_path;
-    $self->{modified_time} = (stat($path))[9] || time;
+    unless (defined $self->{modified_time}) {
+        my $path = $self->file_path;
+        $self->{modified_time} = (stat($path))[9] || time;
+    }
     return $self->{modified_time};
 }
 
