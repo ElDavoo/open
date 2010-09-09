@@ -488,7 +488,7 @@ sub _questions_to_answers {
 
 sub exists {
     my $self = shift;
-    -e $self->file_path;
+    $self->id && -e $self->file_path;
 }
 
 sub file_path {
