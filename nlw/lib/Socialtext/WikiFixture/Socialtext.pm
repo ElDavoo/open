@@ -160,7 +160,7 @@ sub st_login {
     $self->click_and_wait(q{id=login_btn}, 'log in');
 }
 
-=head click_and_pause
+=head2 click_and_pause
 
 For some reason no submit-is-done event is sent, and we have no interlock to know the next step is done.
 
