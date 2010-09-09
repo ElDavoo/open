@@ -156,6 +156,19 @@ Set up a second account, but no users.
 | json-path-is | $.workspace_count | 2 |
 | json-path-is | $.user_count      | 1 |
 
+| set | g9 | g9-%%start_time%% |
+| set | ws_g9a | ws-g9a-%%start_time%% |
+
+## Create a self-join group with a workspace
+| *Comment* | Create a self-join group with a workspace |
+| POST-json | /data/groups/ | {"name":"%%g9%%","permission_set":"self-join","new_workspaces":[{"name":"%%ws_g9a%%","title":"WS(a) for Group 9"}]} |
+| code-is      | 201                         |           |
+| json-parse   |                             |           |
+| json-path-is | $.workspace_count           | 1         |
+| GET-json     | /data/workspaces/%%ws_g9a%% |           |
+| json-parse   |                             |           |
+| json-path-is | $.permission_set            | self-join |
+
 
 ####################################
 # Test the `users_can_create_groups` option

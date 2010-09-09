@@ -177,7 +177,8 @@ sub POST_json {
 
         $self->_add_members_to_group($group, $data);
 
-        my @created = $self->_create_workspaces($data->{new_workspaces});
+        my @created = $self->_create_workspaces(
+            $group->workspace_compat_perm_set(), $data->{new_workspaces});
 
         $self->_add_group_to_workspaces(
             $group, @{$data->{workspaces}}, @created);
@@ -259,6 +260,7 @@ sub _add_members_to_group {
 
 sub _create_workspaces {
     my $self      = shift;
+    my $ws_perms  = shift;
     my $to_create = shift;
     my $creator   = $self->rest->user;
 
@@ -270,6 +272,7 @@ sub _create_workspaces {
             account_id => $creator->primary_account_id,
         );
 
+        $ws->permissions->set(set_name => $ws_perms);
         $ws->add_user(
             user => $creator,
             role => Socialtext::Role->Admin(),
