@@ -92,6 +92,7 @@ sub init {
         diag  "wikiemail:  $self->{wikiemail}";
     }
     diag "Browser url is ".$self->{browser_url};
+    diag "Session ID: ".$self->{selenium}{session_id};
     $self->st_login;
 }
 
