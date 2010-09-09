@@ -79,28 +79,29 @@
 | text_like | qr/Accounts \(2\).+%%mastergroupsacct%%.+%%isolatedacct%%/ |  |
 
 | *Comment* | Test Case: Business Control Panel Groups In Account - Group Detail SORT by # of Workspaces |  |
-| wait_for_element_visible_ok | account-sort-workspaces | 30000 |
-| click_and_wait | account-sort-workspaces |  |
+| wait_for_element_visible_ok | accountTable-orderBy-1 | 30000 |
+| click_ok | accountTable-orderBy-1 |  |
+
 | wait_for_text_present_ok | Users (3) | 30000 |
 | wait_for_text_present_ok | Accounts (2) | 30000 |
 | text_like | qr/Accounts \(2\).+%%mastergroupsacct%%.+%%isolatedacct%%/ |  |
 
 | *Comment* | Test Case: Business Control Panel Groups In Account - Group Detail SORT By # of Users |  |
-| wait_for_element_visible_ok | account-sort-users | 30000 |
-| click_and_wait | account-sort-users |  |
+| wait_for_element_visible_ok | accountTable-orderBy-2 | 30000 |
+| click_and_pause | accountTable-orderBy-2 |  |
 | wait_for_text_present_ok | Users (3) | 30000 |
 | wait_for_text_present_ok | Accounts (2) | 30000 |
 | text_like | qr/Accounts \(2\).+%%isolatedacct%%.+%%mastergroupsacct%%/ |  |
 
 | *Comment* | Test Case: Business Control Panel Groups In Account - Group Detail SORT by # of Workspaces |  |
-| wait_for_element_visible_ok | account-sort-workspaces | 30000 |
-| click_and_wait | account-sort-workspaces |  |
+| wait_for_element_visible_ok | accountTable-orderBy-1 | 30000 |
+| click_and_pause | accountTable-orderBy-1 |  |
 | wait_for_text_present_ok | Users (3) | 30000 |
 | wait_for_text_present_ok | Accounts (2) | 30000 |
 | text_like | qr/Accounts \(2\).+%%mastergroupsacct%%.+%%isolatedacct%%/ |  |
 
 | *Comment* | Test Case: Business Control Panel Groups In Account - Group Detail User Info |  |
-| wait_for_element_visible_ok | link=addToAccountLookahead | 30000 |
+| wait_for_element_visible_ok | addToAccountLookahead | 30000 |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Primary Account | 30000 |
 | text_like | qr/Users \(3\).+%%e_isouser3%%.+%%e_isouser2%%.+%%e_isouser1%%/ |  |

@@ -160,6 +160,22 @@ sub st_login {
     $self->click_and_wait(q{id=login_btn}, 'log in');
 }
 
+=head click_and_pause
+
+For some reason no submit-is-done event is sent, and we have no interlock to know the next step is done.
+
+(For example, js is firing which changes the text and we want to match it with a regexp.  We can't use
+wait_for_text_present_ok so we've got to use text_like, which has no wait_for)
+
+=cut
+
+sub click_and_pause {
+  my ($self, $link) = @_;
+  $self->click_ok($link);
+  $self->pause(10000);
+}
+
+
 =head2 st_logout()
 
 Log out of the Socialtext wiki.
