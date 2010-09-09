@@ -25,7 +25,7 @@ unless ($ws) {
     );
     my $u = Socialtext::User->new(username => 'devnull1@socialtext.com');
     if ($u) {
-        $ws->add_user($u);
+        $ws->add_user(user => $u);
     }
 }
 
