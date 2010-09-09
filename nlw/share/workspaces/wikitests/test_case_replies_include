@@ -1,0 +1,18 @@
+| *Comment* | Test Case: Replies Include. %%i%% |  |
+
+| set | my_signal | Reply from %%my_user%%-%%i%% |
+
+| *Comment* | Test Case: Replies Include. Included loop %%i%% |  |
+| wait_for_element_visible_ok | //div[@class='wikiwyg'][last()] | 5000 |
+| click_ok | //div[@class='wikiwyg'][last()] |  |
+| wait_for_element_visible_ok | //iframe[@name='signalFrame'][last()] | 5000 |
+| pause | %%frame_pause%% |  |
+| select_frame | //iframe[@name='signalFrame'][last()] |  |
+| type_ok | //body | %%my_signal%% |
+| select_frame | relative=parent |  |
+| wait_for_element_visible_ok | /descendant::a[@class='btn post postReply'] | 5000 |
+| pause | %%post_pause%% |  |
+| click_ok | /descendant::a[@class='btn post postReply'] |  |
+| pause | %%my_wait%% |  |
+
+| *Comment* | Test Case: Replies Include %%i%% COMPLETED |  |
