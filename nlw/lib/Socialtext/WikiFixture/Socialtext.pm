@@ -89,7 +89,11 @@ sub init {
     { # Talc/Topaz are configured to allow emailing into specific dev-envs
         (my $host = $self->{browser_url}) =~ s#^http.?://(.+):\d+#$1#;
         $self->{wikiemail} = $ENV{WIKIEMAIL} || "$ENV{USER}.$host";
-        diag  "wikiemail:  $self->{wikiemail}";
+        diag "wikiemail:  $self->{wikiemail}";
+    }
+    for my $var (map { /^selenium_var_(.+)/ ? $1 : () } keys %ENV) {
+        diag "[selenium_var] $var: ".$ENV{"selenium_var_$var"};
+        $self->{$var} = $ENV{"selenium_var_$var"};
     }
     diag "Browser url is ".$self->{browser_url};
     diag "Session ID: ".$self->{selenium}{session_id};
