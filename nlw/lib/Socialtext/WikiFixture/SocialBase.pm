@@ -1605,10 +1605,11 @@ sub set_from_header {
         else {
             $self->{$name} = $content;
         }
-        diag "Set $name to '$self->{$name}' from response header\n";
+        pass "Set $name to '$self->{$name}' from response header\n";
     }
     else {
-        die "Could not set $name - header $header not present\n";
+        fail "Could not set $name - header $header not present\n";
+        $self->{$name} = '';
     }
 }
 
@@ -2695,7 +2696,7 @@ sub set_substr {
 # Gross hack workaround
 sub set_pipe {
     my $self = shift;
-    my $var  = shift;
+    my $var  = shift || 'pipe';
     $self->{$var} = '|';
 }
 

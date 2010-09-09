@@ -24,7 +24,7 @@ sub if_authorized {
     my $method = shift;
     my $call = shift;
 
-    return $self->no_resource unless $self->workspace;
+    return $self->no_resource('workspace') unless $self->workspace;
 
     my $has_perm = $self->workspace->permissions->user_can(
         user => $self->rest->user,
