@@ -58,6 +58,7 @@ Test case for `/data/workspaces`; the Workspace list
 | set                | trumpet_id           | %%group_id%%                                    |                      |
 | add-user-to-group  | %%auth_user%%        | %%trumpet_id%%                                  | admin                |
 | set                | tuba                 | tuba-ws-%%start_time%%                          |                      |
+| set                | sousaphone           | sousaphone-ws-%%start_time%%                    |                      |
 
 ## POST to a workspace, Using an account_id arg.
 | *Comment*      | POST to a workspace, Using an account_id arg |                                                                              |
@@ -104,6 +105,20 @@ Test case for `/data/workspaces`; the Workspace list
 | code-is   | 200                                 |                                                                           |
 | json-parse |
 | json-like |  [{"permission_set":"member-only", "group_count":"1", "name":"%%tuba%%", "account_id":"%%default_account_id%%", "title":"Tuba", "user_count":"1"}] |
+
+## POST, create workspace using invalid permission_set param
+| *Comment* | POST, create workspace using permission_set param |
+| POST-json | /data/workspaces | {"name":"bad-workspace","title":"Bad Bad Bad","permission_set":"ENOSUCHSET"} |
+| code-is | 400 |
+
+## POST, create workspace using valid permission_set param
+| *Comment* | POST, create workspace using permission_set param |
+| POST-json | /data/workspaces | {"name":"%%sousaphone%%","title":"Sousaphone Hero","permission_set":"public"} |
+| code-is      | 201                             |        |
+| GET-json     | /data/workspaces/%%sousaphone%% |        |
+| code-is      | 200                             |        |
+| json-parse   |                                 |        |
+| json-path-is | $.permission_set                | public |
 
 # Minimal interface
 | *Comment*   | GET minimal                |

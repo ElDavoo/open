@@ -268,6 +268,9 @@ sub _create_workspace_from_meta {
             : () ),
     );
 
+    $ws->permissions->set(set_name => $meta->{permission_set})
+        if $meta->{permission_set};
+
     if (my $groups = $meta->{groups}) {
         $self->_add_groups_to_workspace($ws, $groups);
     }
