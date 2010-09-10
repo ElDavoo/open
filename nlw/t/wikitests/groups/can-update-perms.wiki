@@ -21,7 +21,6 @@
 | get-json    | /data/groups/%%group0_id%% |
 | body-unlike | can_update_perms           |
 
-
 * Group G1
 ** is Member of no workspaces, user is admin of group -> cup 1
 | set               | group1       | %%start_time%%group1 |       |

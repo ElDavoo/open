@@ -19,7 +19,7 @@ use Socialtext::JobCreator;
 use Socialtext::Authz::SimpleChecker;
 use List::MoreUtils qw/any/;
 use Socialtext::Exceptions qw/auth_error/;
-use Socialtext::Permission qw(ST_ADMIN_PERM);
+use Socialtext::Permission qw(ST_ADMIN_PERM ST_ADMIN_WORKSPACE_PERM);
 use namespace::clean -except => 'meta';
 
 ###############################################################################
@@ -124,6 +124,31 @@ sub user_can {
         group      => $self,
         %p,
     );
+}
+
+sub user_can_update_perms {
+    my $self = shift;
+    my $user = shift;
+
+    return 0 unless $self->can_update_store;
+    return 0 unless $self->user_can(
+        user       => $user,
+        permission => ST_ADMIN_PERM,
+    );
+
+    return 1 unless $self->workspace_count > 0;
+
+    my $workspaces = $self->workspaces(exclude_auw_paths=>1);
+    while (my $ws = $workspaces->next()) {
+        return 0 if $ws->group_count > 1;
+
+        return 0 unless $ws->permissions->user_can(
+            user => $user,
+            permission => ST_ADMIN_WORKSPACE_PERM,
+        );
+    }
+
+    return 1;
 }
 
 sub workspace_compat_perm_set {

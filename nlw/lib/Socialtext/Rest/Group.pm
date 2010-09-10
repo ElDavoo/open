@@ -103,10 +103,16 @@ sub get_resource {
     my $self = shift;
     return $self->if_authorized('GET', sub {
         my $q = $self->rest->query;
-        return $self->group->to_hash(
+        my $hash = $self->group->to_hash(
             show_members => $q->param('show_members') ? 1 : 0,
             show_admins  => $q->param('show_admins') ? 1 : 0,
         );
+
+        if ($q->param('can_update_perms')) {
+            $hash->{can_update_perms} = 
+                $self->group->user_can_update_perms($self->rest->user);
+        }
+        return $hash;
     });
 }
 
