@@ -760,7 +760,7 @@ sub add_comment {
     my $user = $self->hub->current_user;
 
     $self->metadata->RevisionSummary(loc('(comment)'));
-    $self->store(
+    my $signal = $self->store(
         user => $user,
         $signal_edit_to_network ? (
             edit_summary => $wikitext,
@@ -770,12 +770,17 @@ sub add_comment {
     );
 
     my $summary = $self->preview_text($wikitext);
-    Socialtext::Events->Record({
+    my %event = (
         event_class => 'page',
         action => 'comment',
         page => $self,
         summary => $summary,
-    });
+    );
+    if ($signal) {
+        $event{signal} = $signal->signal_id;
+    }
+
+    Socialtext::Events->Record(\%event);
     return;
 }
 
