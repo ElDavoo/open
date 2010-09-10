@@ -7,9 +7,9 @@
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group |  |
 
-| st_setup_a_group | NOOP | 1 |  |  |
-| st-admin | give-accounts-admin --e %%group_user%% | now has accounts admin access |  |
-| st-logoutin | %%group_user%% | %%password%% |  |
+| st_setup_a_group | NOOP | 1 |
+| st-admin | give-accounts-admin --e %%group_user%% | now has accounts admin access |
+| st-logoutin | %%group_user%% | %%password%% |
 
 | set | groupname | %%group_name%% |
 | set | groupacct | %%group_acct%% |

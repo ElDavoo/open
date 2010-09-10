@@ -36,7 +36,7 @@
 | st_unchecked_ok | auto_name |  |
 | wait_for_element_visible_ok | //input[@type='submit' and @value="Create Workspace"] | 30000 |
 | st-pause-click | 2000 | //input[@type='submit' and @value="Create Workspace"] |
-| wait_for_text_present_ok | You must add at least one workspace administrator. |
+| wait_for_text_present_ok | You must add at least one workspace administrator. | 30000 |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account - a workspace admin |  |
 | wait_for_element_visible_ok | addUserLookahead | 30000 |
@@ -51,7 +51,7 @@
 | st-pause-click | 5000 | //input[@type='submit' and @value="Create Workspace"] |
 
 | *Comment* | Test Case: Business Control Panel from Create Workspace from Account. verify workspace created |  |
-| wait_for_text_present_ok | %%wsname%% workspace |
+| wait_for_text_present_ok | %%wsname%% workspace | 30000 |
 | location_like | /nlw/control/workspace |  |
 | wait_for_text_present_ok | Users (1) | 30000 |
 | wait_for_text_present_ok | Groups (0) | 30000 |

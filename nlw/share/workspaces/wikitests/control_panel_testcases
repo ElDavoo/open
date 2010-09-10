@@ -9,7 +9,6 @@
 * [Test Case: Business Control Panel Workspace Roles]
 
 * [Test Case: Business Control Panel Sorting]
-* [Test Case: Custom Fields]
 * [Test Case: Control Panel Create Group]
 * [Test Case: Control Panel Deactivate Group]
 * [Test Case: Business Control Panel Invite To Workspace]
@@ -30,3 +29,8 @@ Test Case: Control Panel Remove Group is redundant with Add Group
 
 * [Test Case: Business Control Panel]
 * [Test Case: Business Control Panel User Lookup by User Id]
+
+----
+
+* [Test Case: Business Control Panel Create Workspace from Group]
+* [Test Case: Business Control Panel Create Workspace from Account]
