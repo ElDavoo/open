@@ -388,12 +388,12 @@ sub st_prepare_signal_within_activities_widget {
 
     $self->handle_command('set_Speed',4000);
     my $browser = $ENV{'selenium_browser'} || 'chrome';
-    if ($browser=~/chrome|firefox/ig) {
+    if ($browser=~/safari|chrome|firefox/ig) { #wikiwyg
         $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
         $self->handle_command('selectFrame', 'signalFrame');
         $self->handle_command('type_ok' ,'//body', $signaltosend);
         $self->handle_command('select-frame' ,'relative=parent');
-    } else {
+    } else { #IE. When IE is driven by Selenium, we start it without wikiwyg
         $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 5000);
         $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$signaltosend);
     }
