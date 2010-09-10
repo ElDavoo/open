@@ -688,6 +688,19 @@ sub create_group {
     return $group;
 }
 
+sub workspace_permission_set {
+    my $self = shift;
+    my $ws_name = shift;
+    my $permission_set = shift;
+
+    my $ws = Socialtext::Workspace->new(name => $ws_name);
+    eval { $ws->permissions->set(set_name => $permission_set); };
+    if (my $e = $@) {
+        die "could not update workspace permissions: $e";
+    }
+
+    diag "workspace $ws_name now has set $permission_set";
+}
 
 sub group_permission_set {
     my $self     = shift;

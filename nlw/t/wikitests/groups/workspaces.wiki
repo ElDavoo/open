@@ -169,3 +169,17 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | set-ws-permissions | %%gold%%  | public               |           |  |         |
 | POST-json | /data/groups/%%pubg1_id%%/workspaces | {"workspace_id":"%%gold_id%%"} |
 | code-is   | 400                                |                                |
+
+## Can add self-join Group to a self-join Workspace
+| *Comment* | Can add self-join Group to a self-join Workspace |
+| set                      | sjg       | sjg-%%start_time%%  |           |  |           |
+| create-group             | %%sjg%%   |                     | %%admin%% |  | self-join |
+| set                      | sjg_id    | %%group_id%%        |           |  |           |
+| set                      | sjws      | sjws-%%start_time%% |           |  |           |
+| create-workspace         | %%sjws%%  |                     |           |  |           |
+| set                      | sjws_id   | %%workspace_id%%    |           |  |           |
+| add-member               | %%admin%% | %%sjws%%            | admin     |  |           |
+| workspace-permission-set | %%sjws%%  | self-join           |           |  |           |
+# Test:
+| POST-json | /data/groups/%%sjg_id%%/workspaces | {"workspace_id":"%%sjws_id%%"} |
+| code-is   | 201                             |                                |
