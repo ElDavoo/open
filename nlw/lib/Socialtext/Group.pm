@@ -75,7 +75,7 @@ around 'update_store' => sub {
 
     my $group_set = $proto->{permission_set};
     if ($group_set) {
-        my $workspaces = $self->workspaces;
+        my $workspaces = $self->workspaces(exclude_auw_paths=>1);
         my $ws_set = $self->WorkspaceCompatPermSet($group_set);
 
         die "no compatible workspace permissions for '$group_set'"
