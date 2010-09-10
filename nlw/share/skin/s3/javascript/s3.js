@@ -120,7 +120,7 @@ Socialtext.show_signal_network_dropdown = function(prefix, width) {
                 $('#'+prefix+'signal_network').text('').dropdown({
                     value: default_network,
                     fixed: null,
-                    width: width || '165px',
+                    width: width || '170px',
                     options: activities.signalNetworks(),
                     onChange: function(option) {
                         if (option.warn) {
