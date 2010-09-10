@@ -8,8 +8,8 @@
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group |  |
 
 | st_setup_a_group | NOOP | 1 |  |  |
-| st-admin | give-accounts-admin --e %%group_user%% | now has accounts admin access |
-| st-logoutin | %%group_user%% | %%password%% |
+| st-admin | give-accounts-admin --e %%group_user%% | now has accounts admin access |  |
+| st-logoutin | %%group_user%% | %%password%% |  |
 
 | set | groupname | %%group_name%% |
 | set | groupacct | %%group_acct%% |
@@ -73,6 +73,7 @@
 | refresh |  |  |
 | wait_for_text_present_ok | Users (1) | 30000 |
 | wait_for_element_visible_ok | st-group-permission-set-selector | 30000 |
+| pause | 5000 | No idea what to do here. element-visible succeed but is-selected-ok can't find the element. Wait for JS. |
 | is_selected_ok | st-group-permission-set-selector | label=Private: Only Members can access this group. |
 | select_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group but must become Members to contribute. |
 | wait_for_element_visible_ok | st-group-permission-set-submit | 30000 |
@@ -83,13 +84,15 @@
 | refresh |  |  |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace - workspace buttons should be disabled. |  |
-| wait_for_element_visible_ok | create-workspace | 30000 |
 | wait_for_element_visible_ok | add-workspace | 30000 |
+| wait_for_element_visible_ok | create-workspace | 30000 |
+| pause | 5000 | editable commands seem to need more time |
 | st-uneditable-ok | create-workspace |  |
 | st-uneditable-ok | add-workspace |  |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace - Make private. |  |
 | open_ok | /nlw/control/group/%%group_id%% |  |
+
 | wait_for_element_visible_ok | st-group-permission-set-selector | 30000 |
 | is_selected_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group but must become Members to contribute. |
 | select_ok | st-group-permission-set-selector | label=Private: Only Members can access this group. |
@@ -102,10 +105,11 @@
 | refresh |  |  |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace -workspace buttons should be enabled. |  |
-| wait_for_element_visible_ok | create-workspace | 30000 |
 | wait_for_element_visible_ok | add-workspace | 30000 |
-| is_editable_ok | create-workspace |  |
+| wait_for_element_visible_ok | create-workspace | 30000 |
+| pause | 5000 | wait-for succeeds but is-editable needs more. Sorry. |
 | is_editable_ok | add-workspace |  |
+| is_editable_ok | create-workspace |  |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group TEARDOWN |  |
 

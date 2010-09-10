@@ -53,8 +53,8 @@
 | *Comment* | Test Case: Business Control Panel from Create Workspace from Account. verify workspace created |  |
 | wait_for_text_present_ok | %%wsname%% workspace |
 | location_like | /nlw/control/workspace |  |
-| text_like | //body | Users (1) |
-| text_like | //body | Groups (0) |
+| wait_for_text_present_ok | Users (1) | 30000 |
+| wait_for_text_present_ok | Groups (0) | 30000 |
 | text_like | //body | qr/Group.+Add Group To Workspace/ism |
 
 | *Comment* | Test Case: Business Control Panel from Create Workspace from Account. go back to acct page |  |
