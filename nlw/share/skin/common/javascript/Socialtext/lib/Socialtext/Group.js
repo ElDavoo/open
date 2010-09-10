@@ -82,6 +82,7 @@ $.extend(Socialtext.Group.prototype, {
         ];
         $.each(self.new_workspaces || [], function(i, info) {
             info.groups = {group_id: self.group_id};
+            info.permission_set = self.workspace_compat_perms();
             jobs.push(function(cb) {
                 Socialtext.Workspace.Create(info, cb);
             });
@@ -90,6 +91,11 @@ $.extend(Socialtext.Group.prototype, {
         self.runAsynch(jobs, function() {
             self._call(callback, self);
         });
+    },
+
+    workspace_compat_perms: function() {
+        return (this.permission_set == 'self-join')
+            ? 'self-join' : 'member-only';
     },
 
     /**

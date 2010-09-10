@@ -175,6 +175,7 @@ Socialtext.Workspace.Create = function(opts, callback) {
     if (opts.groups) data.groups = opts.groups;
     if (opts.account_id) data.account_id = opts.account_id;
     if (opts.members) data.members = opts.members;
+    if (opts.permission_set) data.permission_set = opts.permission_set;
 
     opts.accept = 'application/json';
 
