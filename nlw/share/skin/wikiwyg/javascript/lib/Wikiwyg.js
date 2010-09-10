@@ -1020,80 +1020,6 @@ this.addGlobal().setup_wikiwyg = function() {
         Socialtext.wikiwyg_variables.loc = loc;
         var template = 'edit_wikiwyg';
         var html = Jemplate.process(template, Socialtext.wikiwyg_variables);
-        if (typeof gadgets == 'undefined') {
-            gadgets = {};
-        }
-        $.getScript( nlw_make_plugin_path('/widgets/javascript/jquery.dropdown.js') , function() {
-            $.getScript( nlw_make_plugin_path('/widgets/javascript/activities.js') , function() {
-                $.getJSON('/data/users/' + Socialtext.userid, function(data) {
-                    var default_network = 'account-' + Socialtext.current_workspace_account_id;
-                    var activities = new Activities({
-                        node: true,
-                        base_uri: true,
-                        share: true,
-                        viewer: true,
-                        viewer_id: true,
-                        prefix: '',
-                        workspace_id: Socialtext.wiki_id,
-                        default_network: default_network
-                    });
-                    activities.user_data = data;
-                    activities.prefs.getString = function () { return null };
-                    $('#st-edit-summary-signal-to').val(default_network);
-
-                    activities.selectSignalToNetwork = function(network){
-                        $('#st-edit-summary-signal-to').val(network);
-                    };
-
-                    $('#signal_network').text('').dropdown({
-                        value: default_network,
-                        fixed: null,
-                        width: '165px',
-                        options: activities.signalNetworks(),
-                        onChange: function(option) {
-                            if (option.warn) {
-                                $('#signal_network_warning').fadeIn('fast');
-                            }
-                            else {
-                                $('#signal_network_warning').fadeOut('fast');
-                            }
-                            activities.selectSignalToNetwork(option.value);
-                            $('#st-edit-summary-signal-checkbox').attr('checked', true);
-                        }
-                    });
-
-                    $('#signal_network > a').css({
-                        width: (
-                            ($.browser.msie && $.browser.version < 7)
-                                ? '85px' // IE6
-                                : '105px'
-                        ),
-                        verticalAlign: 'top',
-                        height: '30px',
-                        overflow: 'hidden',
-                        display: 'inline-block',
-                        whiteSpace: 'nowrap'
-                    });
-
-                    if ($.browser.msie) {
-                        $('#signal_network > a').css({
-                            marginLeft: '-4px',
-                            marginTop: '-9px'
-                        });
-                    }
-
-                    $('#signal_network .dropdownOptions').css({
-                        'margin-top': '-15px',
-                        'margin-left': '11em'
-                    });
-                    $('#signal_network .dropdownOptions li').css({
-                        'line-height': '16px'
-                    });
-
-                    activities.setupSelectSignalToNetworkWarningSigns();
-                });
-            });
-        });
 
         if (Wikiwyg.is_gecko || (jQuery.browser.version == 6 && jQuery.browser.msie)) {
             html = html.replace(/scrolling="no"><\/iframe>/, "></iframe>");
@@ -1107,6 +1033,10 @@ this.addGlobal().setup_wikiwyg = function() {
 
         if (Wikiwyg.is_gecko) {
             jQuery("iframe#st-page-editing-wysiwyg").attr("scrolling", "auto");
+        }
+
+        if (Socialtext.show_signal_network_dropdown) {
+            Socialtext.show_signal_network_dropdown();
         }
     }
 
