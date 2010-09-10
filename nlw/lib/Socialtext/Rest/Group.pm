@@ -128,18 +128,27 @@ sub PUT_json {
         return 'Name is required';
     }
 
-    if ($data->{permission_set} ne $group->permission_set) {
-        Socialtext::Exception::DataValidation->throw( message => 
-            "self-join groups cannot contain workspaces"
-        ) if $data->{permission_set} eq 'self-join'
-           && $group->workspaces(exclude_auw_paths => 1)->count > 0;
+    my $set = $data->{permission_set};
+    if ($set && $set ne $group->permission_set) {
+        my $workspaces = $group->workspaces(exclude_auw_paths => 1);
+        while (my $ws = $workspaces->next()) {
+
+            my $can_admin_ws = $ws->permissions->user_can(
+                user       => $rest->user,
+                permission => ST_ADMIN_WORKSPACE_PERM,
+            );
+
+            Socialtext::Exception::DataValidation->throw( message => 
+                "user cannot manage workspaces this group is associated with"
+            ) unless $can_admin_ws;
+        }
     }
 
     try {
         $group->update_store({
             driver_group_name => $data->{name},
             description => $data->{description} || "",
-            permission_set => $data->{permission_set},
+            permission_set => $set,
             $data->{account_id} ?
                 (primary_account_id => $data->{account_id}) : (),
         });
