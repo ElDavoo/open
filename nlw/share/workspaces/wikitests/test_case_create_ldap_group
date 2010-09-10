@@ -41,7 +41,7 @@
 | get_group_id | Motorhead | created_group_id |
 | open_ok | /nlw/control/group/%%created_group_id%% |  |
 
-| wait_for_element_visible_ok | link=addToAccountLookahead | 30000 |
+| wait_for_element_visible_ok | addToAccountLookahead | 30000 |
 | text_like | //body | Motorhead Group |
 | text_like | //body | Created By: |
 | text_like | //body | Created On: |

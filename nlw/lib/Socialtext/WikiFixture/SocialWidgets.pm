@@ -373,31 +373,47 @@ sub st_single_widget_in_dashboard {
     ok(!$@, 'st_single_widget_in_dashboard' );
 }
 
-=head2 st_send_page_signal($signaltosend)
+=head2 st_send_page_signal ($signaltosend)
 
-Sends a signal of a page from a wikipage
+The send page signal box does not contain the wikiwkg stuff that the ActivitiesWidget does.
+
+So you don't need as much of the prepare signal function.
 
 =cut
 
 sub st_send_page_signal {
+   my ($self, $signaltosend) = @_;
+
+   $self->handle_command('set_Speed',4000);
+   $self->st_type_signal($signaltosend);
+   $self->handle_command('wait_for_element_visible_ok','//a[@class="btn post"]', 5000);
+   $self->handle_command('click_ok', '//a[@class="btn post"]');
+   $self->handle_command('pause',3000);
+   $self->handle_command('set_Speed',0);
+
+}
+
+=head2 st_type_signal 
+
+Parameters: You pass in the signal text.  
+
+=cut
+
+sub st_type_signal {
     my ($self, $signaltosend) = @_;
-    $self->handle_command('set_Speed',4000);
+
     my $browser = $ENV{'selenium_browser'} || 'chrome';
-    if ($browser=~/chrome|firefox/ig) {
-        $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 25000);
+    if ($browser=~/safari|chrome|firefox/ig) { #wikiwyg
+        $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
         $self->handle_command('selectFrame', 'signalFrame');
         $self->handle_command('type_ok' ,'//body', $signaltosend);
         $self->handle_command('select-frame' ,'relative=parent');
-    } else {
-        $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 25000);
+    } else { #IE. When IE is driven by Selenium, we start it without wikiwyg
+        $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 5000);
         $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$signaltosend);
     }
-
-    $self->handle_command('set_Speed',0);
-    $self->handle_command('wait_for_element_visible_ok','//a[@class="btn post"]', 5000);
-    $self->handle_command('click_ok', '//a[@class="btn post"]');
-    $self->handle_command('pause',3000);
 }
+
 
 =head2 st_prepare_signal_within_activities_widget
 
@@ -413,16 +429,7 @@ sub st_prepare_signal_within_activities_widget {
     $self->handle_command('click_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']");
 
     $self->handle_command('set_Speed',4000);
-    my $browser = $ENV{'selenium_browser'} || 'chrome';
-    if ($browser=~/chrome|firefox/ig) {
-        $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
-        $self->handle_command('selectFrame', 'signalFrame');
-        $self->handle_command('type_ok' ,'//body', $signaltosend);
-        $self->handle_command('select-frame' ,'relative=parent');
-    } else {
-        $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 5000);
-        $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$signaltosend);
-    }
+    $self->st_type_signal($signaltosend);
 
     if ($private) {
         # use click_ok - JS does not see check_ok

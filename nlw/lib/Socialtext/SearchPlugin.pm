@@ -294,6 +294,7 @@ sub _new_search {
         order => $sortby,
         direction => $direction,
         use_index => $query{use_index},
+        limit => $query{limit},
     );
     Socialtext::Timer->Pause('search_on_behalf');
 
@@ -322,8 +323,10 @@ sub _new_search {
 sub get_result_set {
     my ( $self, %query ) = @_;
     my %sortdir = %{$self->sortdir};
+    
     $self->{_current_search_term} = $query{search_term};
     $self->{_current_scope} = $query{scope};
+    $self->{_current_limit} = $query{limit};
     if (!$self->{_current_search_term}) {
         $self->result_set($self->new_result_set());
     }
@@ -341,6 +344,7 @@ sub default_result_set {
     $self->search_for_term(
         search_term => $self->{_current_search_term},
         scope => $self->{_current_scope},
+        limit => $self->{_current_limit},
         use_index => scalar $self->cgi->index,
     );
     return $self->result_set;

@@ -31,9 +31,10 @@
 | wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
 | text_like | //body | Workspaces (0) |
 | text_like | //body | Users (2) |
-| click_and_wait | add-workspace |  |
-| text_like | //body | qr/Add Group To Workspace/ism |
-| text_like | //body | Send invitation email |
+| setSpeed | 4000 | safari issues |
+| click_ok | add-workspace |  |
+| wait_for_text_present_ok | Add Group To Workspace | 30000 |
+| wait_for_text_present_ok | Send invitation email | 30000 |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Verify Checkboxes |  |
 | wait_for_element_visible_ok | send-invite-message | 30000 |
@@ -82,6 +83,7 @@
 | wait_for_element_visible_ok | link=%%workspaceforadmin%% | 30000 |
 | text_like | //body | Users (2) |
 | wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
+| setSpeed | 0 |  |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Verify membership via command line tools |  |
 | st-admin | show-members -w %%ws%% | member |

@@ -507,3 +507,5 @@ lib/Socialtext/LogData/Perf.pm
 lib/Socialtext/LogData/PerfDataPoint.pm
 lib/Socialtext/LogData/Search.pm
 lib/Socialtext/LogData/SearchDataPoint.pm
+t/wikitests/signals/bz4361.wiki
+t/wikitests/signals/reply-to-anno.wiki

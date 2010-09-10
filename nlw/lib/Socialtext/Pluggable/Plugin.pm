@@ -582,6 +582,7 @@ sub search {
     my %p = (
         search_term => undef,
         sortby => 'Relevance',
+        limit => 20,
         @_
     );
 
@@ -592,6 +593,7 @@ sub search {
     my $set =  $self->hub->search->get_result_set(
        search_term => $p{search_term},
        scope       => '_',
+       limit => $p{limit},
     );
     my $rset = $self->hub->search->result_set($set);
     return $rset;
