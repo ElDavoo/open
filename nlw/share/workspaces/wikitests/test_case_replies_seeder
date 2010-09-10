@@ -1,0 +1,35 @@
+This is the test that opens a topic and creates three seed replies.
+It should be included by the top-level replies testcase
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Replies Seeder. These vars will come in from the command line |  |
+
+| Comment | shared_account is %%shared_account%% |  |
+| Comment | delay is %%delay%% |  |
+| Comment | rate is %%rate%% |  |
+
+| *Comment* | Test Case: Replies Seeder. Setup and login |  |
+| set | my_acct | %%shared_account%% |
+| set | my_user | `%%my_acct%%-%%start_time%%-seeder@ken.socialtext.net` |
+| set | first_wait | %%delay%% |
+| set | my_wait | %%rate%% |
+
+| st-admin | create-account --name %%my_acct%% |  |
+| st-admin | create-user --account %%my_acct%% --e %%my_user%% --p %%password%% | was created |
+| st-login | %%my_user%% | %%password%% |
+
+| *Comment* | One time setup using [Test Case: Replies Setup] |  |
+| open_ok | /st/signals |  |
+| st-send-signal-in-activities-widget | Topic Signal for %%my_acct%% |  |
+
+| set | i | 0-0 |
+| include | `[Test Case: Replies Setup]` |  |
+
+| set | i | 0-1 |
+| include | `[Test Case: Replies Setup]` |  |
+
+| set | i | 0-2 |
+| include | `[Test Case: Replies Setup]` |  |
+
+| *Comment* | Test Case: Replies Seeder COMPLETED |  |
