@@ -1048,7 +1048,7 @@ this.addGlobal().setup_wikiwyg = function() {
                     $('#signal_network').text('').dropdown({
                         value: default_network,
                         fixed: null,
-                        width: '165px',
+                        width: '170px',
                         options: activities.signalNetworks(),
                         onChange: function(option) {
                             if (option.warn) {
