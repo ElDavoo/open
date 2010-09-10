@@ -3,6 +3,16 @@ It should be included by the top-level replies testcase
 
 * Fixture: SocialWidgets
 
+| set | frame_pause | 10 |
+| set | post_pause | 10 |
+| set | speed | 4000 |
+| *Comment* | Test Case: Replies Seeder. speed %%speed%% frame_pause %%frame_pause%% post_pause %%post_pause%% |  |
+
+| *Comment* | Test Case: Replies. These vars will come in from the command line |  |
+| Comment | shared_account is %%shared_account%% |  |
+| Comment | delay is %%delay%% |  |
+| Comment | rate is %%rate%% |  |
+
 | *Comment* | Test Case: Replies Seeder. These vars will come in from the command line |  |
 
 | Comment | shared_account is %%shared_account%% |  |
