@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 14;
 fixtures(qw( empty ));
 
 filters {
@@ -43,6 +43,16 @@ I mean to say -hello- goodbye.
 --- wiki
 I mean to say -good-bye- hello.
 --- match: I mean to say <del>good-bye</del> hello.
+
+=== Non-huggy begin-phrase markers should have no effect.
+--- wiki
+- 2 degrees between today- tomorrow
+--- match: -2 degrees between today - tomorrow
+
+=== Non-huggy end-phrase markers should have no effect.
+--- wiki
+-2 degrees between today - tomorrow
+--- match: -2 degrees between today - tomorrow
 
 === Double hyphens do nothing.
 --- wiki
