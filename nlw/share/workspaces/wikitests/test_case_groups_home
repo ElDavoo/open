@@ -27,7 +27,7 @@
 | st-logoutin | %%permuser%% | %%password%% |
 
 | *Comment* | Test Case: Groups Home. Make A New Page. Start from dashboard to allow settle down time for login |  |
-| open_ok | /st/dashboard |  |
+| open_ok | /%%wsname%% |  |
 | open_ok | /%%wsname%%/index.cgi?action=new_page |  |
 | wait_for_element_present_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
