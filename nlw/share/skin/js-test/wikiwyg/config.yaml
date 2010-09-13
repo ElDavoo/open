@@ -16,5 +16,9 @@ import_libs:
   - ../../wikiwyg/javascript/lib/Wikiwyg/Toolbar.js
   - ../../wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js
   - ../../wikiwyg/javascript/lib/Wikiwyg/Wikitext.js
+  - ../../wikiwyg/javascript/lib/Document/Emitter.js
+  - ../../wikiwyg/javascript/lib/Document/Emitter/HTML.js
+  - ../../wikiwyg/javascript/lib/Document/Parser.js
+  - ../../wikiwyg/javascript/lib/Document/Parser/Wikitext.js
 template_include_path:
   - ./template

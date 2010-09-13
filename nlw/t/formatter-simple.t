@@ -47,7 +47,7 @@ I mean to say -good-bye- hello.
 === Non-huggy begin-phrase markers should have no effect.
 --- wiki
 mmm - 2 degrees between today- tomorrow
---- match: mmm -2 degrees between today - tomorrow
+--- match: mmm - 2 degrees between today- tomorrow
 
 === Non-huggy end-phrase markers should have no effect.
 --- wiki
