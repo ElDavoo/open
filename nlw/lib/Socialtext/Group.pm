@@ -131,7 +131,7 @@ sub user_can_update_perms {
     my $user = shift;
 
     return 0 unless $self->can_update_store;
-    return 0 unless $self->user_can(
+    return 0 unless $user->is_business_admin || $self->user_can(
         user       => $user,
         permission => ST_ADMIN_PERM,
     );
@@ -142,7 +142,7 @@ sub user_can_update_perms {
     while (my $ws = $workspaces->next()) {
         return 0 if $ws->group_count > 1;
 
-        return 0 unless $ws->permissions->user_can(
+        return 0 unless $user->is_business_admin || $ws->permissions->user_can(
             user => $user,
             permission => ST_ADMIN_WORKSPACE_PERM,
         );
@@ -225,6 +225,10 @@ sub All {
                               FROM user_set_path
                              WHERE into_set_id = ?)
                         }, $p{workspace_id} + WKSP_OFFSET];
+    }
+
+    if ($p{permission_set}) {
+        push @where, \[q{groups.permission_set =?}, $p{permission_set}];
     }
 
     if ($p{_count_only}) {
