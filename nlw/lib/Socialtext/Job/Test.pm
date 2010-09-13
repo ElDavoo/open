@@ -20,6 +20,8 @@ override 'grab_for' => sub { $Grab_for };
 # this wraps grab_for, so it needs to execute here
 with 'Socialtext::CoalescingJob';
 
+sub really_work { } # no-op
+
 sub do_work {
     my $self = shift;
     my $args = $self->arg;
@@ -46,6 +48,9 @@ sub do_work {
 
     $Last_ID = $self->job->jobid;
     $Work_count++;
+
+    $self->really_work();
+
     $self->completed();
 }
 

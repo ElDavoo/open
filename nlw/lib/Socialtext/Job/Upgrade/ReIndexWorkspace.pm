@@ -6,6 +6,10 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 
+# Generating the ReIndex jobs can take a very long time so the grab_for is set
+# to 5 hours just in case we hit a hideously-large workspace in the field.
+override 'grab_for' => sub { 5 * 3600 };
+
 sub do_work {
     my $self = shift;
     my $hub = $self->hub;

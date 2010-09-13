@@ -1,8 +1,13 @@
 | *Comment* | Test Case: New Page |  |
 | st-admin | update-page --email %%email%% --workspace %%workspace%% --page "np %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "np %%start_time%%" page has been created. |
 
+| *Comment* | Test Case: New Page. Use the actual New Page button |  |
+| wait_for_element_visible_ok | st-create-content-link | 30000 |
+| click_ok | st-create-content-link |  |
+| wait_for_element_visible_ok | st-create-content-savelink | 30000 |
+| click_and_wait | st-create-content-savelink |  |
+
 | *Comment* | Test Case: New Page. Create a new page in Wiki Text mode |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
@@ -12,7 +17,7 @@
 | type_ok | st-newpage-pagename-edit | np %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 
-| click_ok | st-save-button-link | |
+| click_ok | st-save-button-link |  |
 
 | *Comment* | Test Case: New Page. Page Already Exists |  |
 | *Comment* | Test Case: New Page. Use duplicate option different |  |

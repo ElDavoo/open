@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 57;
+use Test::Socialtext tests => 62;
 use Test::Exception;
 
 fixtures('foobar');
@@ -11,6 +11,8 @@ BEGIN {
     use_ok 'Socialtext::Jobs';
     use_ok 'Socialtext::JobCreator';
 }
+
+sub clear_and_run (&);
 
 my $hub = new_hub('foobar', 'system-user');
 ok $hub, "loaded hub";
@@ -31,7 +33,7 @@ Load_jobs: {
     ok $INC{"Socialtext/Job/Test.pm"}, 'test module now loaded';
 }
 
-Queue_job: {
+Queue_job: clear_and_run {
     my @jobs = Socialtext::Jobs->list_jobs(
         funcname => 'Socialtext::Job::Test',
     );
@@ -54,12 +56,9 @@ Queue_job: {
     is scalar(@jobs), 1, 'found a job';
     my $j = shift @jobs;
     is $j->funcname, 'Socialtext::Job::Test', 'funcname is correct';
-}
+};
 
-Process_a_job: {
-    $jobs->clear_jobs();
-    $Socialtext::Job::Test::Work_count = 0;
-
+Process_a_job: clear_and_run {
     Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1);
     is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 1;
     is $Socialtext::Job::Test::Work_count, 0;
@@ -69,14 +68,10 @@ Process_a_job: {
 
     is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 0;
     is $Socialtext::Job::Test::Work_count, 1;
-}
+};
 
-Process_a_failing_job: {
-    $jobs->clear_jobs();
-    $Socialtext::Job::Test::Work_count = 0;
-    {
-        no warnings 'once'; $Socialtext::Job::Test::Retries = 1;
-    }
+Process_a_failing_job: clear_and_run {
+    local $Socialtext::Job::Test::Retries = 1;
 
     Socialtext::JobCreator->insert('Socialtext::Job::Test', fail => 1);
     is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 1;
@@ -91,11 +86,9 @@ Process_a_failing_job: {
     is scalar(@failures), 1;
     like $failures[0], qr/^failed!\n/;
     is $Socialtext::Job::Test::Work_count, 0;
-}
+};
 
-Process_a_failing_cmd_job: {
-    $jobs->clear_jobs();
-
+Process_a_failing_cmd_job: clear_and_run {
     use_ok 'Socialtext::Job::Cmd';
 
     my $handle = Socialtext::JobCreator->insert('Socialtext::Job::Cmd', cmd => '/bin/false');;
@@ -108,9 +101,9 @@ Process_a_failing_cmd_job: {
     is scalar(@failures), 1;
     is $failures[0], "rc=256";
     is $handle->exit_status, 256, 'correct exit status';
-}
+};
 
-Blah_does_not_exist: {
+Blah_does_not_exist: clear_and_run {
     my @tests = (
         { desc => 'workspace does not exist',
             args => {
@@ -151,9 +144,9 @@ Blah_does_not_exist: {
         );
         is scalar(@jobs), 0, 'perma-fail: no jobs left';
     }
-}
+};
 
-Cant_index_untitled_page_attachments: {
+Cant_index_untitled_page_attachments: clear_and_run {
     no warnings 'redefine';
     local *Socialtext::Attachment::load = sub { die 'do not load' };
     local *Socialtext::Attachment::temporary = sub { 1 };
@@ -170,9 +163,9 @@ Cant_index_untitled_page_attachments: {
         $handle = Socialtext::JobCreator->index_attachment($att, 'live')
     } 'fails silently';
     ok !$handle, 'job wasn\'t created';
-}
+};
 
-Existing_untitled_page_jobs_fail: {
+Existing_untitled_page_jobs_fail: clear_and_run {
     use_ok 'Socialtext::Job::AttachmentIndex';
 
     # simulate adding a pre-existing job for untitled_page
@@ -197,12 +190,9 @@ Existing_untitled_page_jobs_fail: {
         like $failures[0], qr/Couldn't load page id=untitled_page/, 'no untitled_page for you';
         ok $handle->exit_status, "job permanently failed";
     }
-}
+};
 
-coalescing_jobs: {
-    $jobs->clear_jobs();
-    $Socialtext::Job::Test::Work_count = 0;
-
+coalescing_jobs: clear_and_run {
     Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1, job => {coalesce => 'AAA'});
     Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1, job => {coalesce => 'AAA'});
     Socialtext::JobCreator->insert('Socialtext::Job::Test', test => 1, job => {coalesce => 'BBB'});
@@ -221,11 +211,9 @@ coalescing_jobs: {
     $jobs->work_once();
     is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 0, 'all done now';
     is $Socialtext::Job::Test::Work_count, 2, 'only 2 of the 4 jobs "ran"';
-}
+};
 
-coalescing_jobs_fail: {
-    $jobs->clear_jobs();
-    $Socialtext::Job::Test::Work_count = 0;
+coalescing_jobs_fail: clear_and_run {
     local $Socialtext::Job::Test::Retries = 0;
 
     for (1..5) {
@@ -241,4 +229,48 @@ coalescing_jobs_fail: {
 
     is scalar($jobs->list_jobs( funcname => 'Socialtext::Job::Test' )), 0, 'all jobs got failed';
     is $Socialtext::Job::Test::Work_count, 0, 'no jobs got to work';
+};
+
+grab_for: clear_and_run {
+    local $Socialtext::Job::Test::Grab_for;
+
+    my $expected;
+    my $now;
+    no warnings 'once';
+    no warnings 'redefine';
+    local *Socialtext::Job::Test::really_work = sub {
+        my $stjob = shift;
+        cmp_ok $stjob->grabbed_until - $now, '>=', $expected-1,
+            "job is roughly expected grab time ($expected)"
+        or do {
+            diag 'until:  '.$stjob->grabbed_until;
+            diag 'now:    '.$now;
+            diag 'expect: '.$expected;
+            diag 'delta:  '.($stjob->grabbed_until - $now);
+        };
+    };
+
+    $Socialtext::Job::Test::Grab_for = $expected = 60;
+    Socialtext::JobCreator->insert('Socialtext::Job::Test');
+    $jobs->can_do('Socialtext::Job::Test');
+    $now = time;
+    $jobs->work_once();
+    is $Socialtext::Job::Test::Work_count, 1, "did first grabber job";
+
+    $Socialtext::Job::Test::Grab_for = $expected = 7200;
+    Socialtext::JobCreator->insert('Socialtext::Job::Test');
+    $jobs->can_do('Socialtext::Job::Test');
+    $now = time;
+    $jobs->work_once();
+    is $Socialtext::Job::Test::Work_count, 2, "did second grabber job";
+};
+
+pass 'done';
+
+exit;
+
+sub clear_and_run (&) {
+    $Socialtext::Job::Test::Work_count = 0;
+    $jobs->clear_jobs();
+    goto $_[0];
 }
