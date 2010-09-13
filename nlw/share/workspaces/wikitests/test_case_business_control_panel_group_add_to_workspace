@@ -32,9 +32,9 @@
 | text_like | //body | Workspaces (0) |
 | text_like | //body | Users (2) |
 | setSpeed | 4000 | safari issues |
-| click_ok | add-workspace |  |
-| wait_for_text_present_ok | Add Group To Workspace | 30000 |
-| wait_for_text_present_ok | Send invitation email | 30000 |
+| click_and_wait | add-workspace |  |
+| text_like | //body | qr/Add Group To Workspace/ism |
+| text_like | //body | Send invitation email |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Verify Checkboxes |  |
 | wait_for_element_visible_ok | send-invite-message | 30000 |
