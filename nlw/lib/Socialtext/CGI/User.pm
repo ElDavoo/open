@@ -24,7 +24,7 @@ sub get_current_user {
 
 sub _user_id_or_username {
     my $cookie_name = Socialtext::HTTP::Cookie->cookie_name();
-    my %user_data   = Socialtext::HTTP::Cookie::get_value($cookie_name);
+    my %user_data   = Socialtext::HTTP::Cookie->get_value($cookie_name);
     return unless keys %user_data;
 
     my $mac = Socialtext::HTTP::Cookie->MAC_for_user_id( $user_data{user_id} );

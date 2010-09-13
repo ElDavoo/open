@@ -48,7 +48,7 @@ sub MAC_for_user_id {
 sub GetValidatedUserId {
     my $class = shift;
     my $name = USER_DATA_COOKIE();
-    my %user_data = get_value($name);
+    my %user_data = $class->get_value($name);
     return $user_data{user_id}
         if $user_data{user_id} and $user_data{MAC}
             and $user_data{MAC} eq $class->MAC_for_user_id($user_data{user_id});
@@ -56,6 +56,7 @@ sub GetValidatedUserId {
 }
 
 sub get_value {
+    my $class = shift;
     my $name = shift;
     my $cookies = CGI::Cookie->raw_fetch;
     my $value = $cookies->{$name} || '';
