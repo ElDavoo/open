@@ -74,7 +74,7 @@ around 'update_store' => sub {
     my $proto = shift;
 
     my $group_set = $proto->{permission_set};
-    if ($group_set) {
+    if ($group_set && $group_set ne $self->permission_set) {
         my $workspaces = $self->workspaces(exclude_auw_paths=>1);
         my $ws_set = $self->WorkspaceCompatPermSet($group_set);
 
