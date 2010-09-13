@@ -4,7 +4,6 @@ package Socialtext::CredentialsExtractor::Cookie;
 use strict;
 use warnings;
 
-use Apache::Cookie;
 use Socialtext::HTTP::Cookie;
 
 sub extract_credentials {
@@ -12,7 +11,7 @@ sub extract_credentials {
     my $request = shift;
 
     my $cookie_name = Socialtext::HTTP::Cookie->cookie_name($request);
-    my %user_data   = _get_cookie_value($cookie_name);
+    my %user_data   = Socialtext::HTTP::Cookie->get_value($cookie_name);
     return unless keys %user_data;
 
     my $mac = Socialtext::HTTP::Cookie->MAC_for_user_id( $user_data{user_id} );
@@ -24,20 +23,6 @@ sub extract_credentials {
     }
 
     return $user_data{user_id};
-}
-
-sub _get_cookie_value {
-    my $name = shift;
-
-    my $cookies = Apache::Cookie->fetch;
-
-    return unless $cookies;
-
-    my $cookie = $cookies->{$name};
-
-    return unless $cookie;
-
-    return $cookie->value;
 }
 
 1;
