@@ -267,6 +267,17 @@ sub help_workspace {
     return $ws;
 }
 
+# Return the list of help workspaces on this appliances
+sub Help_workspaces {
+    my $class = shift;
+
+    my $share_dir = Socialtext::AppConfig->new->code_base();
+    my $help_dir = "$share_dir/l10n/help";
+    return
+        map { s#.+/(help-.+)\.tar\.gz$#$1#; $_ }
+        glob("$help_dir/help-*.tar.gz");
+}
+
 sub _clone_workspace_pages {
     my $self    = shift;
     my $ws_name = shift;
@@ -2214,6 +2225,10 @@ into the DBMS.
 Return the help workspace for the current system-wide locale().  This method
 takes the same arguments as new(), sans the name argument, which will be
 ignored.
+
+=head2 Socialtext::Workspace->help_workspaces()
+
+Returns the list of installed help workspaces.
 
 =head2 $workspace->update(PARAMS)
 
