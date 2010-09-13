@@ -4,7 +4,6 @@
 use strict;
 use warnings;
 use mocked 'Apache::Request', qw( get_log_reasons );
-use mocked 'Apache::Cookie';
 use Digest::SHA;
 use Socialtext::HTTP::Cookie qw(USER_DATA_COOKIE AIR_USER_COOKIE);
 use Socialtext::AppConfig;
@@ -29,6 +28,13 @@ my $air_user_agent  = 'Mozilla/5.0 (Windows; U; en) AppleWebKit/420+ (KHTML, lik
 
 my $creds_extractors = 'Cookie:Guest';
 
+sub sudo_make_me_a_cookie {
+    my $name   = shift;
+    my @values = @_;
+    my $str    = "$name=" . join '&', @values;
+    return $str;
+}
+
 ###############################################################################
 # TEST: Cookie present, user can authenticate
 cookie_ok: {
@@ -36,18 +42,14 @@ cookie_ok: {
     my $mock_request = Apache::Request->new();
 
     # create the cookie data
-    local $Apache::Cookie::DATA = {
-        $cookie_name => Apache::Cookie->new(
-            $mock_request,
-            value => {
-                user_id => $valid_username,
-                MAC     => Digest::SHA::sha1_base64(
-                    $valid_username,
-                    Socialtext::AppConfig->MAC_secret()
-                ),
-            },
+    local $ENV{HTTP_COOKIE} = sudo_make_me_a_cookie(
+        $cookie_name,
+        user_id => $valid_username,
+        MAC     => Digest::SHA::sha1_base64(
+            $valid_username,
+            Socialtext::AppConfig->MAC_secret()
         ),
-    };
+    );
 
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
@@ -69,15 +71,11 @@ cookie_has_bad_mac: {
     my $mock_request = Apache::Request->new();
 
     # create the cookie data
-    local $Apache::Cookie::DATA = {
-        $cookie_name => Apache::Cookie->new(
-            $mock_request,
-            value => {
-                user_id => $valid_username,
-                MAC     => 'THIS-IS-A-BAD-MAC',
-            },
-        ),
-    };
+    local $ENV{HTTP_COOKIE} = sudo_make_me_a_cookie(
+        $cookie_name,
+        user_id => $valid_username,
+        MAC     => 'THIS-IS-A-BAD-MAC',
+    );
 
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
@@ -98,6 +96,9 @@ cookie_has_bad_mac: {
 cookie_missing: {
     # create a mocked Apache::Request to extract the credentials from
     my $mock_request = Apache::Request->new();
+
+    # empty cookie
+    delete local $ENV{HTTP_COOKIE};
 
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
@@ -120,15 +121,21 @@ adobe_air_separate_cookie: {
     my $mock_request = Apache::Request->new();
 
     # create the cookie data
-    my $cookie = Apache::Cookie->new(
-        $mock_request,
-        value => {
-            user_id => $valid_username,
-            MAC => Digest::SHA::sha1_base64(
-                $valid_username,
-                Socialtext::AppConfig->MAC_secret()
-            ),
-        },
+    my $cookie = sudo_make_me_a_cookie(
+        $cookie_name,
+        user_id => $valid_username,
+        MAC     => Digest::SHA::sha1_base64(
+            $valid_username,
+            Socialtext::AppConfig->MAC_secret()
+        ),
+    );
+    my $air_cookie = sudo_make_me_a_cookie(
+        $air_cookie_name,
+        user_id => $valid_username,
+        MAC     => Digest::SHA::sha1_base64(
+            $valid_username,
+            Socialtext::AppConfig->MAC_secret()
+        ),
     );
 
     # configure the list of Credentials Extractors to run
@@ -138,14 +145,14 @@ adobe_air_separate_cookie: {
     local $ENV{HTTP_USER_AGENT} = $air_user_agent;
 
     # TEST: AIR client doesn't get to use standard HTTP cookie
-    local $Apache::Cookie::Data = { $cookie_name => $cookie };
+    local $ENV{HTTP_COOKIE} = $cookie;
     my $username
         = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
     ok !defined $username, 'AIR client does not use regular HTTP cookie';
 
     # TEST: AIR client uses its own HTTP cookie
-    local $Apache::Cookie::Data = { $air_cookie_name => $cookie };
+    local $ENV{HTTP_COOKIE} = $air_cookie;
     $username
         = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    ok !defined $username, 'AIR client uses its own HTTP cookie';
+    ok $username, 'AIR client uses its own HTTP cookie';
 }
