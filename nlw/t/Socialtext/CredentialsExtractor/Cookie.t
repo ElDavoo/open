@@ -3,12 +3,12 @@
 
 use strict;
 use warnings;
-use mocked 'Apache::Request', qw( get_log_reasons );
+use mocked 'Apache::Request';
 use Digest::SHA;
 use Socialtext::HTTP::Cookie qw(USER_DATA_COOKIE AIR_USER_COOKIE);
 use Socialtext::AppConfig;
 use Socialtext::CredentialsExtractor;
-use Test::Socialtext tests => 9;
+use Test::Socialtext tests => 5;
 use Test::Socialtext::User;
 
 ###############################################################################
@@ -58,10 +58,6 @@ cookie_ok: {
     my $username
         = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
     is $username, $valid_username, 'extracted credentials from HTTP cookie';
-
-    # make sure that nothing got logged as a failure
-    my @reasons = get_log_reasons();
-    ok !@reasons, '... no failures logged';
 }
 
 ###############################################################################
@@ -84,11 +80,6 @@ cookie_has_bad_mac: {
     my $username
         = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
     is $username, undef, 'unable to extract credentials when MAC is bad';
-
-    # make sure that nothing got logged as a failure
-    my @reasons = get_log_reasons();
-    is scalar(@reasons), 1, '... one failure logged';
-    like $reasons[0], qr/Invalid MAC in cookie/, '... ... noting the invalid MAC';
 }
 
 ###############################################################################
@@ -108,10 +99,6 @@ cookie_missing: {
         = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
     is $username, undef,
         'unable to extract credentials when cookie is missing';
-
-    # make sure that nothing got logged as a failure
-    my @reasons = get_log_reasons();
-    ok !@reasons, '... no failures logged';
 }
 
 ###############################################################################
