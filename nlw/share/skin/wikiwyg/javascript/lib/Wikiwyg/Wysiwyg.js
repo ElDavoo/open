@@ -1090,6 +1090,7 @@ proto.set_clear_handler = function () {
     var clean = function(e) {
         self.clear_inner_html();
         jQuery(editor).unbind('click', clean).unbind('keydown', clean);
+        $(window).focus();
         self.set_focus();
     };
 
