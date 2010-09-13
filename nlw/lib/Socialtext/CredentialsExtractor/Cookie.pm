@@ -7,22 +7,14 @@ use warnings;
 use Socialtext::HTTP::Cookie;
 
 sub extract_credentials {
-    my $class = shift;
+    my $class   = shift;
     my $request = shift;
+    my $user_id = Socialtext::HTTP::Cookie->GetValidatedUserId($request);
 
-    my $cookie_name = Socialtext::HTTP::Cookie->cookie_name($request);
-    my %user_data   = Socialtext::HTTP::Cookie->get_value($cookie_name);
-    return unless keys %user_data;
-
-    my $mac = Socialtext::HTTP::Cookie->MAC_for_user_id( $user_data{user_id} );
-
-    unless ( $mac eq $user_data{MAC} ) {
-        $request->log_reason(
-            "Invalid MAC in cookie presented for $user_data{user_id}");
-        return;
-    }
-
-    return $user_data{user_id};
+    # GetValidatedUserId() returns "0" on failure, but *we* need to return
+    # undef.  Handle/map that appropriately.
+    return $user_id if $user_id;
+    return;
 }
 
 1;
