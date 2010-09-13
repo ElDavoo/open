@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 # do *not* `use utf8` here
-use Test::More tests => 6 + 7 + 4 + 3*33 + 7;
+use Test::More tests => 6 + 7 + 4 + 3*35 + 7;
 
 use ok 'WikiText::Socialtext';
 use ok 'Socialtext::WikiText::Parser::Messages';
@@ -124,6 +124,23 @@ check_hashmark_after_spaces: {
     is $noun_links[0]{text}, 'yesmatch1', 'yesmatch1';
     is $noun_links[1]{text}, 'yesmatch2', 'yesmatch2';
     is $noun_links[2]{text}, 'yesmatch3', 'yesmatch3';
+}
+
+# Make sure the "huggy" rule of markup sanity is respected
+markup_sanity_begin: {
+    my $parser = make_parser('HTML');
+
+    my $content = $parser->parse('mmm - 2 degrees between today- tomorrow');
+    ok $content, 'parsed';
+    unlike $content, qr/del/, 'non-huggy strikethrough left alone';
+}
+
+markup_sanity_end: {
+    my $parser = make_parser('HTML');
+
+    my $content = $parser->parse('mmm -2 degrees between today - tomorrow');
+    ok $content, 'parsed';
+    unlike $content, qr/del/, 'non-huggy strikethrough left alone';
 }
 
 sub make_parser {
