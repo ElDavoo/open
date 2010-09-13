@@ -144,8 +144,10 @@ sub PUT_json {
                 permission => ST_ADMIN_WORKSPACE_PERM,
             );
 
-            Socialtext::Exception::DataValidation->throw( message => 
-                "user cannot manage workspaces this group is associated with"
+            Socialtext::Exception::DataValidation->throw( 
+                message => "user cannot manage workspaces this group is associated with",
+                http_status => HTTP_403_Forbidden
+
             ) unless $can_admin_ws;
         }
     }
@@ -164,6 +166,13 @@ sub PUT_json {
         if ($e =~ m/duplicate key violates/) {
             Socialtext::Exception::Conflict->throw(message =>
                 "Error updating group: $data->{name} already exists.");
+        }
+        elsif ($e =~ m/workspace has multiple groups/) {
+            Socialtext::Exception::Conflict->throw(
+                message => "Error updating group: $e", 
+                http_status => HTTP_403_Forbidden
+            );
+
         }
         elsif (blessed($e) && $e->isa('Socialtext::Exception::DataValidation')){ 
             $e->{http_status} = HTTP_400_Bad_Request;
