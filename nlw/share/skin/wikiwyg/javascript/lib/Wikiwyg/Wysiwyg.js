@@ -700,12 +700,14 @@ proto.enable_pastebin = function () {
 // so it needs a separate treatment.
 proto.enable_pastebin_webkit = function () {
     var self = this;
-    self.get_edit_window().addEventListener("paste", function(e) {
+    $(self.get_edit_window()).unbind('paste').bind("paste", function(e) {
         self.get_edit_window().focus();
 
         var editDoc = self.get_edit_document();
         var sel = self.get_edit_window().getSelection();
         var oldRange = sel.getRangeAt(0);
+
+        $('div.pastebin', editDoc).remove();
 
         var pasteBin = editDoc.createElement('div');
         pasteBin.style.width = '1px';
@@ -713,6 +715,7 @@ proto.enable_pastebin_webkit = function () {
         pasteBin.style.position = 'fixed';
         pasteBin.style.top = '0';
         pasteBin.style.right = '-4000';
+        pasteBin.className = 'pastebin';
         pasteBin.appendChild( editDoc.createTextNode('') );
         editDoc.body.appendChild( pasteBin );
         pasteBin.focus();
@@ -737,7 +740,9 @@ proto.enable_pastebin_webkit = function () {
             else {
                 pastedHtml = pasteBin.innerHTML;
             }
-            editDoc.body.removeChild( pasteBin );
+            try {
+                editDoc.body.removeChild( pasteBin );
+            } catch (e) {}
             sel.removeAllRanges();
             sel.addRange(oldRange);
             self.on_pasted(pastedHtml);
@@ -1085,6 +1090,7 @@ proto.set_clear_handler = function () {
     var clean = function(e) {
         self.clear_inner_html();
         jQuery(editor).unbind('click', clean).unbind('keydown', clean);
+        $(window).focus();
         self.set_focus();
     };
 

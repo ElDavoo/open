@@ -22,16 +22,16 @@
 | set | signalpage | Signal Page %%start_time%% |  |
 | st-admin | update-page --w %%ws%% --e %%email%% --p "%%signalpage%%" < %%wikitest_client_files%%wikitest.txt | has been created |  |
 
-a| *Comment* | Test Case: Signal Page To Group - click link then cancel | |
-a | open_ok | /%%ws%%/index.cgi?%%signalpage%% | |
-a | wait_for_element_visible_ok | st-signalthis-indicator | 30000 |
-a | click_ok | st-signalthis-indicator | |
-a | pause | 5000 | |
-a | select-frame | st-signal-this-frame | |
-a | wait_for_text_present_ok | Send a signal with a link to this page | 30000 |
-a | wait_for_element_visible_ok | widget1_close | 30000 |
-a | click_ok | widget1_close | |
-a | wait_for_text_not_present_ok | Send a signal with a link to this page | 30000 |
+| *Comment* | Test Case: Signal Page To Group - click link then cancel |  |
+| open_ok | /%%ws%%/index.cgi?%%signalpage%% |  |
+| wait_for_element_visible_ok | st-signalthis-indicator | 30000 |
+| click_ok | st-signalthis-indicator |  |
+| pause | 5000 |  |
+| select-frame | st-signal-this-frame |  |
+| wait_for_text_present_ok | Send a signal with a link to this page | 30000 |
+| wait_for_element_visible_ok | //img[@title='Close this window'] | 30000 |
+| click_ok | //img[@title='Close this window'] |  |
+| wait_for_text_not_present_ok | Send a signal with a link to this page | 30000 |
 
 | *Comment* | Test Case: Signal Page To Group - click link then send a signal |  |
 | open_ok | /%%ws%%/index.cgi?%%signalpage%% |  |
@@ -40,7 +40,7 @@ a | wait_for_text_not_present_ok | Send a signal with a link to this page | 3000
 | pause | 5000 |  |
 | select-frame | st-signal-this-frame |  |
 | wait_for_text_present_ok | Send a signal with a link to this page | 30000 |
-| st-send-signal-in-activities-widget | Signal a page |  |
+| st-send-page-signal | Signal a page |  |
 
 | open_ok | /st/signals |  |
 

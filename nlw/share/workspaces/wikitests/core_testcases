@@ -24,6 +24,8 @@ test env properly and are not testing the test-workspace
 * [Test Case: stemming]
 * [Test Case: Double Click to Edit]
 * [Test Case: Preview Format]
+* [Test Case: Signals Workspace Privacy Rules]
+* [Test Case: Wiki Page Caching]
 * [Test Case: New Page]
 * [Test Case: New Page No Overwrite]
 * [Test Case: Tags]
