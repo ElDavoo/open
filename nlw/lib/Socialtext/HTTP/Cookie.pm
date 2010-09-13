@@ -47,7 +47,8 @@ sub MAC_for_user_id {
 
 sub GetValidatedUserId {
     my $class = shift;
-    my $name = USER_DATA_COOKIE();
+    my $req   = shift;
+    my $name  = $class->cookie_name($req);
     my %user_data = $class->get_value($name);
     return $user_data{user_id}
         if $user_data{user_id} and $user_data{MAC}
