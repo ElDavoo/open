@@ -1,7 +1,7 @@
 #!perl
 # @COPYRIGHT@
 use mocked qw(Socialtext::l10n system_locale); # Has to come firstest.
-use Test::Socialtext tests => 120;
+use Test::Socialtext tests => 121;
 use Test::Exception;
 use strict;
 use warnings;
@@ -727,6 +727,11 @@ HELP_WORKSPACE_WITH_WS_NOT_MISSING: {
 
     my $ws2 = Socialtext::Workspace->new( name => "help" );
     is( $ws2->name, "help-xx", "new(name => help) DTRT" );
+}
+
+HELP_WORKSPACES: {
+    my @ws = Socialtext::Workspace->Help_workspaces();
+    is scalar(@ws), 3;
 }
 
 CASCADE_CSS: {
