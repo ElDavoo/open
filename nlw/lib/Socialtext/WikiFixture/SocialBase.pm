@@ -3004,7 +3004,7 @@ sub wait_for_restore_to_finish {
     }
 }
 
-sub signal_targetted {
+sub signal_targeted {
     my ($self, $signal_id, $what, $id, $yes_no) = @_;
     $yes_no ||= 'yes';
     my $expect = ($yes_no eq 'yes') ? 1 : 0;
@@ -3016,7 +3016,7 @@ sub signal_targetted {
     my ($count) = $sth->fetchrow_array();
 
     if ($expect) {
-        ok($count == $expect, "signal targetted $what $id ($uset_id)");
+        ok($count == $expect, "signal targeted $what $id ($uset_id)");
     }
     else {
         ok($count == $expect, "signal did not target $what $id ($uset_id)");
