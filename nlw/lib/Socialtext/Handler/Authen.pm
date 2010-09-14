@@ -268,11 +268,8 @@ sub _add_user_to_workspace {
             return 1;
         }
 
-        my $perms = $ws->permissions;
-        my $can_self_join = $perms->role_can( 
-            role => Socialtext::Role->Guest(),
-            permission => ST_SELF_JOIN_PERM
-        );
+        my $can_self_join = $ws->permissions->user_can( 
+            user => $user, permission => ST_SELF_JOIN_PERM);
         if ($can_self_join) {
             $ws->add_user(
                 user => $user, role => Socialtext::Role->Member()
