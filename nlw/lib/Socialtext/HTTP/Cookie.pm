@@ -23,10 +23,6 @@ const AIR_USER_COOKIE  => 'AIR-user';
 
 ###############################################################################
 sub cookie_name {
-    my ($class, $req) = @_;
-
-    # Depending on the User-Agent in use, return the name of the cookie that
-    # we're expecting.
     return Socialtext::BrowserDetect::adobe_air()
         ? AIR_USER_COOKIE()
         : USER_DATA_COOKIE();
@@ -76,7 +72,6 @@ Socialtext::HTTP::Cookie - HTTP cookie interface
   $mac = Socialtext::HTTP::Cookie->MAC_for_user_id($user_id);
 
   # determine name of HTTP cookie to use
-  $name = Socialtext::HTTP::Cookie->cookie_name($r);
   $name = Socialtext::HTTP::Cookie->cookie_name();
 
 =head1 DESCRIPTION
@@ -120,16 +115,13 @@ to be logged in separately using Internet Explorer and Socialtext Desktop
 Generates a MAC based on the given C<$user_id>, and returns the MAC back to
 the caller.
 
-=item B<Socialtext::HTTP::Cookie-E<gt>cookie_name($request)>
+=item B<Socialtext::HTTP::Cookie-E<gt>cookie_name()>
 
-Determines the name of the HTTP cookie to use for the given Apache
-C<$request>, returning the cookie name back to the caller.
+Determines the name of the HTTP cookie to use for the current HTTP request,
+returning the cookie name back to the caller.
 
 Cookie name is User-Agent specific, in order to accommodate Adobe AIR sharing
 a cookie store with Internet Explorer.
-
-If no Apache Request object is provided, this method looks in
-C<$ENV{HTTP_USER_AGENT}> to determine the User-Agent in use.
 
 =back
 
