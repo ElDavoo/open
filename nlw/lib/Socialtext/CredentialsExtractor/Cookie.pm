@@ -9,7 +9,7 @@ use Socialtext::HTTP::Cookie;
 sub extract_credentials {
     my $class   = shift;
     my $request = shift;
-    my $user_id = Socialtext::HTTP::Cookie->GetValidatedUserId($request);
+    my $user_id = Socialtext::HTTP::Cookie->GetValidatedUserId();
 
     # GetValidatedUserId() returns "0" on failure, but *we* need to return
     # undef.  Handle/map that appropriately.

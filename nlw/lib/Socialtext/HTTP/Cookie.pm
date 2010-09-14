@@ -38,7 +38,6 @@ sub MAC_for_user_id {
 
 sub GetValidatedUserId {
     my $class     = shift;
-    my $req       = shift;
     my $name      = $class->cookie_name();
     my %user_data = $class->get_value($name);
     return $user_data{user_id}
