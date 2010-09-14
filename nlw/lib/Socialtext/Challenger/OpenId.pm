@@ -148,7 +148,7 @@ sub _set_cookie {
         MAC     => Socialtext::HTTP::Cookie->MAC_for_user_id($user_id),
     };
     my $request     = Apache::Request->instance(Apache->request);
-    my $cookie_name = Socialtext::HTTP::Cookie->cookie_name($request);
+    my $cookie_name = Socialtext::HTTP::Cookie->cookie_name();
     my $cookie      = Apache::Cookie->new(
         $request,
         -name    => $cookie_name,
