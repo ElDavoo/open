@@ -7,6 +7,7 @@ use warnings;
 use Class::Field qw(const);
 use Digest::SHA qw(sha1_base64);
 use Socialtext::AppConfig;
+use Socialtext::BrowserDetect;
 use CGI::Cookie;
 
 ###############################################################################
@@ -32,10 +33,9 @@ sub cookie_name {
 
     # Depending on the User-Agent in use, return the name of the cookie that
     # we're expecting.
-    if ($user_agent =~ /AdobeAIR/) {
-        return AIR_USER_COOKIE();
-    }
-    return USER_DATA_COOKIE();
+    return Socialtext::BrowserDetect::adobe_air()
+        ? AIR_USER_COOKIE()
+        : USER_DATA_COOKIE();
 }
 
 ###############################################################################
