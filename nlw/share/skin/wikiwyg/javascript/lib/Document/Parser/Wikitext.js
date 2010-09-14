@@ -17,7 +17,7 @@ proto.create_grammar = function() {
         brace2 = '\\' + (brace2 || brace1);
         brace1 = '\\' + brace1;
         return {
-            match: new RegExp('(?:^|[^'+brace1+preAlphaNum+'])('+brace1+'(?=\\S)(?!'+brace2+')(.*?)'+brace2+'(?=[^'+brace2+'\\w]|$))'),
+            match: new RegExp('(?:^|[^'+brace1+preAlphaNum+'])('+brace1+'(?=\\S)(?!'+brace2+')(.*?[^\\s'+brace2+'])'+brace2+'(?=[^'+brace2+'\\w]|$))'),
             phrases: (brace1 == '\\`') ? null : all_phrases,
             lookbehind: true
         };
