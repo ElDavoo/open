@@ -424,6 +424,7 @@ sub register {
                 password      => $args{password},
                 first_name    => $args{first_name},
                 last_name     => $args{last_name},
+                ($ws ? (primary_account_id => $ws->account_id) : ()),
             );
             $is_new_user = 1;
         }
