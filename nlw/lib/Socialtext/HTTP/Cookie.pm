@@ -25,12 +25,6 @@ const AIR_USER_COOKIE  => 'AIR-user';
 sub cookie_name {
     my ($class, $req) = @_;
 
-    # Figure out what User-Agent is being used
-    my $user_agent;
-    $user_agent   = $req->header_in("User-Agent") if ($req);
-    $user_agent ||= $ENV{HTTP_USER_AGENT};
-    $user_agent ||= ''; # should only ever occur if *NO* UA is provided
-
     # Depending on the User-Agent in use, return the name of the cookie that
     # we're expecting.
     return Socialtext::BrowserDetect::adobe_air()
