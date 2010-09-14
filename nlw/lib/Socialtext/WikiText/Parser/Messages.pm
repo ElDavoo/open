@@ -25,11 +25,18 @@ sub create_grammar {
     @$blocks = ('line');
     my $phrases = $grammar->{_all_phrases};
 
-    # For {bz: 3771}, ":-" and ";-" are not <del>-production rules anymore.
-    $grammar->{del} = {
-        match => re_huggy(q{\-}),
-        phrases => $grammar->{_all_phrases},
-    };
+    my %huggy = (
+        b   => q{\*},
+        i   => q{\_},
+        del => q{\-},
+    );
+
+    while (my ($rule, $char) = each %huggy) {
+        $grammar->{$rule} = {
+            match => re_huggy($char),
+            phrases => $grammar->{_all_phrases},
+        };
+    }
 
     # NOTE: if you add phrases here, be sure to update %markup in
     # ST::WT::Emitter::Canonicalize. Order matters
@@ -120,7 +127,7 @@ sub re_huggy {
     qr/
         (?:^|(?<=[^{$PRE_ALPHANUM}$brace1]))$brace1(?=\S)(?!$brace2)
         (.*?)
-        $brace2(?=[^{$ALPHANUM}$brace2]|\z)
+        (?<=[^\s$brace2])$brace2(?=[^{$ALPHANUM}$brace2]|\z)
     /x;
 }
 

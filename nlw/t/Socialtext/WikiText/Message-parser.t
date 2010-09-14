@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 # do *not* `use utf8` here
-use Test::More tests => 6 + 7 + 4 + 3*35 + 7;
+use Test::More tests => 6 + 7 + 4 + 3*39 + 7;
 
 use ok 'WikiText::Socialtext';
 use ok 'Socialtext::WikiText::Parser::Messages';
@@ -127,20 +127,22 @@ check_hashmark_after_spaces: {
 }
 
 # Make sure the "huggy" rule of markup sanity is respected
-markup_sanity_begin: {
-    my $parser = make_parser('HTML');
+for my $char (qw( - * _ )) {
+    markup_sanity_begin: {
+        my $parser = make_parser('HTML');
 
-    my $content = $parser->parse('mmm - 2 degrees between today- tomorrow');
-    ok $content, 'parsed';
-    unlike $content, qr/del/, 'non-huggy strikethrough left alone';
-}
+        my $content = $parser->parse("mmm $char 2 degrees between today$char tomorrow");
+        ok $content, 'parsed';
+        unlike $content, qr/<(b|i|del)>/i, "non-huggy beginning $char left alone";
+    }
 
-markup_sanity_end: {
-    my $parser = make_parser('HTML');
+    markup_sanity_end: {
+        my $parser = make_parser('HTML');
 
-    my $content = $parser->parse('mmm -2 degrees between today - tomorrow');
-    ok $content, 'parsed';
-    unlike $content, qr/del/, 'non-huggy strikethrough left alone';
+        my $content = $parser->parse("mmm ${char}2 degrees between today $char tomorrow");
+        ok $content, 'parsed';
+        unlike $content, qr/<(b|i|del)>/i, "non-huggy ending $char left alone";
+    }
 }
 
 sub make_parser {
