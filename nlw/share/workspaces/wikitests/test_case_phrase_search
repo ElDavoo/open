@@ -82,9 +82,6 @@ Note: Depends on the content of the test-data workspace, most notably the pages 
 
 | *Comment* | Test case: Phrase Search: homogenous AND searches |  |
 | *Comment* | Test case: Phrase Search {bz: 4327} |  |
-| st-search | :Sophocles AND :Shakespeare | Pages matching ':Sophocles AND :Shakespeare' |
-| st-result | 1 total |  |
-| st-result | Kinosearch test page: truth & falsity |  |
 | st-search | ":Sir Winston Churchill" AND ":Sun Tzu" | Pages matching '":Sir Winston Churchill" AND ":Sun Tzu"' |
 | st-result | 1 total |  |
 | st-result | Kinosearch test page: strategy |  |
@@ -145,16 +142,5 @@ Note: Depends on the content of the test-data workspace, most notably the pages 
 | st-search | ":Sir Winston Churchill" NOT tag:"test_tag: speech" | Pages matching '":Sir Winston Churchill" NOT tag:"test_tag: speech"' |
 | st-result | 1 total |  |
 | st-result | Kinosearch test page: strategy |  |
-
-| *Comment* | Test case: Phrase Search: complex logical constructs |  |
-| st-search | (":Sir Winston Churchill" AND ":Sophocles" ) OR (":Publius Syrus" OR ":Sir John A. MacDonald") | Pages matching '(":Sir Winston Churchill" AND ":Sophocles" ) OR (":Publius Syrus" OR ":Sir John A. MacDonald")' |
-| st-result | 3 total |  |
-| st-result | Kinosearch test page: truth & falsity |  |
-| st-result | Kinosearch test page: strategy |  |
-| st-result | Kinosearch test page: politics |  |
-| st-search | (":Sir Winston Churchill" AND ":Sophocles" ) OR (":Publius Syrus" OR ":Sir John A. MacDonald") NOT ":Sun Tzu" | Pages matching '(":Sir Winston Churchill" AND ":Sophocles" ) OR (":Publius Syrus" OR ":Sir John A. MacDonald") NOT ":Sun Tzu"' |
-| st-result | 2 total |  |
-| st-result | Kinosearch test page: truth & falsity |  |
-| st-result | Kinosearch test page: politics |  |
 
 | *Comment* | Test case: Phrase Search COMPLETED |  |
