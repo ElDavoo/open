@@ -15,7 +15,7 @@ use Socialtext::HTTP::Ports;
 use Socialtext::PrefsTable;
 use Socialtext::Role;
 use Socialtext::People::Profile;
-use Socialtext::UserSet qw(ACCT_OFFSET);
+use Socialtext::UserSet qw(ACCT_OFFSET GROUP_OFFSET);
 use Socialtext::Cache;
 use Socialtext::Workspace;
 use Socialtext::Encode qw/ensure_is_utf8/;
@@ -3001,6 +3001,25 @@ sub wait_for_restore_to_finish {
         }
         CORE::sleep(30);
         ok 1, "Restore still in progress. Checking again in 30 seconds.";
+    }
+}
+
+sub signal_targeted {
+    my ($self, $signal_id, $what, $id, $yes_no) = @_;
+    $yes_no ||= 'yes';
+    my $expect = ($yes_no eq 'yes') ? 1 : 0;
+    my $uset_id = $id + (($what eq 'group') ? GROUP_OFFSET : ACCT_OFFSET);
+    my $sth = sql_execute(q{
+        SELECT COUNT(*) FROM signal_user_set
+        WHERE signal_id = ? AND user_set_id = ?
+    }, $signal_id, $uset_id);
+    my ($count) = $sth->fetchrow_array();
+
+    if ($expect) {
+        ok($count == $expect, "signal targeted $what $id ($uset_id)");
+    }
+    else {
+        ok($count == $expect, "signal did not target $what $id ($uset_id)");
     }
 }
 

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>342</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-342.air</url>
-<description><![CDATA[[Build 342 - Fri Sep  3 23:56:59 PDT 2010]
+  <version>343</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-343.air</url>
+<description><![CDATA[[Build 343 - Sat Sep  4 02:10:28 PDT 2010]
+* Fetch page name lookahead candidates asynchronously too in "insert wiki link" dialog.
+
+[Build 342 - Fri Sep  3 23:56:59 PDT 2010]
 * Fetch user and tag lookahead candidates asynchronously to improve performance. (Eugene)
 * Re-use push-client id on temporary server errors. {bz: 4161}
 
