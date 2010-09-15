@@ -48,7 +48,7 @@ use Class::Field qw( const );
 
 const formatter_id  => 'strong';
 const pattern_start => qr/(^|(?<=[^{$ALPHANUM}\*]))\*(?=\S)(?!\*)/;
-const pattern_end   => qr/(?<=[^\s\*])\*(?=[^{$ALPHANUM}\*]|\z)/;
+const pattern_end   => qr/(?<![\s\*])\*(?=[^{$ALPHANUM}\*]|\z)/;
 const html_start    => "<strong>";
 const html_end      => "</strong>";
 
@@ -60,7 +60,7 @@ use Class::Field qw( const );
 
 const formatter_id  => 'em';
 const pattern_start => qr/(^|(?<=[^${ALPHANUM}_]))_(?=\S[^_]*_(?=\W|\z))/;
-const pattern_end   => qr/(?<=[^\s_])_(?=[^{$ALPHANUM}_]|\z)/;
+const pattern_end   => qr/(?<![\s_])_(?=[^{$ALPHANUM}_]|\z)/;
 const html_start    => "<em>";
 const html_end      => "</em>";
 
@@ -72,7 +72,7 @@ use Class::Field qw( const );
 
 const formatter_id  => 'del';
 const pattern_start => qr/(^|(?<=[^${ALPHANUM}\-;:]))-(?=[^\s\-])/; # {bz: 3771}: Make ":-)" and ";-)" smileys non-huggy.
-const pattern_end   => qr/(?<=[^\s\-])-(?=[^{$ALPHANUM}\-]|\z)/;
+const pattern_end   => qr/(?<![\s\-])-(?=[^{$ALPHANUM}\-]|\z)/;
 const html_start    => '<del>';
 const html_end      => '</del>';
 

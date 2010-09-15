@@ -127,7 +127,7 @@ sub re_huggy {
     qr/
         (?:^|(?<=[^{$PRE_ALPHANUM}$brace1]))$brace1(?=\S)(?!$brace2)
         (.*?)
-        (?<=[^\s$brace2])$brace2(?=[^{$ALPHANUM}$brace2]|\z)
+        (?<![\s$brace2])$brace2(?=[^{$ALPHANUM}$brace2]|\z)
     /x;
 }
 
