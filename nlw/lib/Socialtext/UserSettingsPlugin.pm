@@ -409,12 +409,25 @@ sub _invite_users {
                             $self->cgi->invitation_text :
                             '';
 
-    if ( $self->hub->checker->check_permission('admin_workspace') ) {
+    my $has_role_in_group = {};
+    my $no_role_in_group = {};
+    my @invited = ();
+    if ($self->hub->checker->check_permission('admin_workspace')) {
         for my $user_data ( values %invitees ) {
             if ($invite_groups) {
-                $self->group_invite_one_user( $user_data, $extra_invite_text, \@actual_groups);
-            } else {
+                my ($good, $bad) = $self->_filter_groups_for_user(
+                    $user_data, \@actual_groups);
 
+                if (scalar(@$bad)) {
+                    $has_role_in_group->{$user_data->{email_address}} = $bad;
+                }
+
+                next unless scalar(@$good);
+                $no_role_in_group->{$user_data->{email_address}} = $good;
+                $self->group_invite_one_user(
+                    $user_data, $extra_invite_text, $good);
+            } else {
+                push(@invited, $user_data->{email_address});
                 $self->invite_one_user( $user_data, $extra_invite_text );
             }
         }
@@ -425,9 +438,11 @@ sub _invite_users {
 
     my $settings_section = $self->template_process(
         'element/settings/users_invited_section',
-        users_invited         => [ sort keys %invitees ],
+        users_invited         => [ sort @invited ],
         users_already_present => [ sort @present ],
         invalid_addresses     => [ sort @$invalid ],
+        has_role_in_group     => $has_role_in_group,
+        no_role_in_group      => $no_role_in_group,
         domain                => $ws->account->restrict_to_domain,
         wrong_domain          => [ sort @wrong_domain ],
         groups                => $invite_groups ? \@actual_groups : [],
@@ -443,6 +458,29 @@ sub _invite_users {
         display_title     => loc('Users: Invite New Users'),
         pref_list         => $self->_get_pref_list,
     );
+}
+
+sub _filter_groups_for_user {
+    my $self = shift;
+    my $user_data = shift;
+    my $groups = shift;
+
+    my $user = Socialtext::User->new(
+        email_address => $user_data->{email_address});
+    return ($groups, []) unless $user;
+
+    my @good = ();
+    my @bad = ();
+    for my $group (@$groups) {
+        if ($group->has_user($user, {direct=>1}) ) {
+            push(@bad, $group);
+        }
+        else {
+            push(@good, $group);
+        }
+    }
+
+    return (\@good, \@bad);
 }
 
 sub invite_request_to_admin {
