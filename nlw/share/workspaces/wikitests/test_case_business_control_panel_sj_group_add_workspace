@@ -1,0 +1,47 @@
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace SETUP |
+
+| set | group_name | BCP-GROUP-SJ-%%start_time%% |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace create group via groups UI |  |
+| open_ok | nlw/control/group |  |
+| wait_for_element_visible_ok | //input[@type='button' and @value="Create new Group"] | 30000 |
+| click_ok | //input[@type='button' and @value="Create new Group"] |  |
+| wait_for_element_visible_ok | st-groupname | 30000 |
+| wait_for_element_visible_ok | st-group-create-submit | 30000 |
+| type_ok | st-groupname | %%group_name%% |
+| pause | 5000 |  |
+| click_and_wait | st-group-create-submit |  |
+| wait_for_element_visible_ok | //input[@id='addToAccountLookahead'] | 30000 |
+| text_like | //body | Created By: %%short_username%% |
+| text_like | //body | %%group_name%% |
+| wait_for_element_visible_ok | //a[contains(text(),'%%short_username%%')] | 10000 |
+| wait_for_text_present_ok | Users (1) | 10000 |
+| wait_for_element_visible_ok | st-group-permission-set-selector | 30000 |
+| is_selected_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group but must become Members to contribute. |
+| get_group_id | %%group_name%% | group_id_one |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add a workspace - See permission set enabled |  |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add new workspace - permission set enabled |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add other group to the workspace |  |
+| set | grouptwo | BCP-SJTWO-%%start_time%% |
+| create-group | %%grouptwo%% |  |
+| set | group_id_two | %%group_id%% |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Permission set disabled |  |
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add Group |  |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace |  |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace |  |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace |  |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace TEARDOWN |  |
+| delete_group | %%group_id%% |  |
+| delete_group | %%group_id_two%% |  |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace COMPLETED |  |

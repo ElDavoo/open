@@ -22,6 +22,7 @@
 * [Test Case: Business Control Panel Group Role Within A Workspace]
 * [Test Case: Business Control Panel Group Add To Workspace]
 * [Test Case: Business Control Panel Workspace Add Group]
+* [Test Case: Business Control Panel SJ Group Add Workspace]
 
 Test Case: Control Panel Remove Group is redundant with Add Group
 
