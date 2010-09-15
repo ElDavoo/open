@@ -467,10 +467,24 @@ sub visibility_sql {
         and $self->viewer->can_use_plugin('signals') 
         and not $self->no_signals_are_visible($opts)
     ) {
-        push @parts,
-            "( evt.event_class <> 'signal' OR".
-                $self->visible_exists('signals','evt.actor_id',$opts,\@bind).
-            ')';
+        if ($opts->{signals}) {
+            # If we limit to signal-bearing events, then the signal must be
+            # visible with the group_id/account_id filter; this addresses the
+            # case where a hybrid edit/signal or comment/signal event sends
+            # to somewhere other than the workspace (W)'s primary account (A);
+            # when filtering to "group G's signals", we need to ignore that event
+            # even if G has W as an associated workspace.
+            push @parts,
+                "( ".
+                    $self->visible_exists('signals','evt.actor_id',$opts,\@bind).
+                ')';
+        }
+        else {
+            push @parts,
+                "( evt.event_class <> 'signal' OR".
+                    $self->visible_exists('signals','evt.actor_id',$opts,\@bind).
+                ')';
+        }
     }
     else {
         push @parts, "(evt.event_class <> 'signal')";
