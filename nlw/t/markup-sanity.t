@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 9;
+use Test::Socialtext tests => 12;
 fixtures(qw( empty ));
 
 filters {
@@ -44,6 +44,11 @@ mmm - 2 degrees between today- tomorrow
 mmm -2 degrees between today - tomorrow
 --- match: mmm -2 degrees between today - tomorrow
 
+=== Huggy markers around WAFLs work (dash)
+--- wiki
+_{date: 2010-09-15 10:36:30 GMT}_
+--- match: <em><span class="nlw_phrase">Sep 15 3:36am<!-- wiki: {date: 2010-=09-=15 10:36:30 GMT} --></span></em>
+
 === Huggy begin-phrase markers should have effect. (asterisk)
 --- wiki
 mmm *2 degrees between today* tomorrow
@@ -59,6 +64,11 @@ mmm * 2 degrees between today* tomorrow
 mmm *2 degrees between today * tomorrow
 --- match: mmm *2 degrees between today * tomorrow
 
+=== Huggy markers around WAFLs work (asterisk)
+--- wiki
+_{date: 2010-09-15 10:36:30 GMT}_
+--- match: <em><span class="nlw_phrase">Sep 15 3:36am<!-- wiki: {date: 2010-=09-=15 10:36:30 GMT} --></span></em>
+
 === Huggy begin-phrase markers should have effect. (underscore)
 --- wiki
 mmm _2 degrees between today_ tomorrow
@@ -73,4 +83,9 @@ mmm _ 2 degrees between today_ tomorrow
 --- wiki
 mmm _2 degrees between today _ tomorrow
 --- match: mmm _2 degrees between today _ tomorrow
+
+=== Huggy markers around WAFLs work (underscore)
+--- wiki
+_{date: 2010-09-15 10:36:30 GMT}_
+--- match: <em><span class="nlw_phrase">Sep 15 3:36am<!-- wiki: {date: 2010-=09-=15 10:36:30 GMT} --></span></em>
 
