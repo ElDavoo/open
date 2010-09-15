@@ -22,6 +22,9 @@ sub if_authorized {
     my $method = shift;
     my $call = shift;
 
+    return $self->not_authorized
+       if $self->rest->user->is_guest();
+
     my $permission = ($method eq 'GET')
         ? ST_READ_PERM
         : ST_ADMIN_WORKSPACE_PERM;
@@ -30,6 +33,7 @@ sub if_authorized {
         user => $self->rest->user,
         permission => $permission,
     );
+
     unless ($has_perm or $self->rest->user->is_business_admin) {
         return $self->not_authorized;
     }
