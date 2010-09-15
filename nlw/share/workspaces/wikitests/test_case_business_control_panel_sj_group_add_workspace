@@ -3,6 +3,10 @@
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace SETUP |
 
 | set | group_name | BCP-GROUP-SJ-%%start_time%% |
+| set | ws_to_add | GROUP-SJ-WS-%%start_time%% |
+| set | add_ws_two | SJ-WS-TWO-%%start_time%% |
+| st-admin | create-workspace --name %%workspace_to_add%% --title %%ws_to_add%% | was created |
+| st-admin | create-workspace --name %%workspace_to_add%% --title %%add_ws_two%% | was created |
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace create group via groups UI |  |
 | open_ok | nlw/control/group |  |
@@ -24,7 +28,10 @@
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add a workspace - See permission set enabled |  |
 
-| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add new workspace - permission set enabled |
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add new workspace - permission set enabled |  |
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Give Admin privileges |  |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Confirm Admin privileges |  |
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add other group to the workspace |  |
 | set | grouptwo | BCP-SJTWO-%%start_time%% |
@@ -32,7 +39,7 @@
 | set | group_id_two | %%group_id%% |
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Permission set disabled |  |
-| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add Group |  |
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace |  |
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace |  |
 
