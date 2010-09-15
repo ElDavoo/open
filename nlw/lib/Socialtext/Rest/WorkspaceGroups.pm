@@ -4,7 +4,7 @@ use Moose;
 use Socialtext::Workspace;
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON qw/decode_json/;
-use Socialtext::Permission 'ST_ADMIN_WORKSPACE_PERM';
+use Socialtext::Permission qw/ST_ADMIN_WORKSPACE_PERM ST_READ_PERM/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
@@ -22,9 +22,13 @@ sub if_authorized {
     my $method = shift;
     my $call = shift;
 
+    my $permission = ($method eq 'GET')
+        ? ST_READ_PERM
+        : ST_ADMIN_WORKSPACE_PERM;
+
     my $has_perm = $self->workspace->permissions->user_can(
         user => $self->rest->user,
-        permission => ST_ADMIN_WORKSPACE_PERM,
+        permission => $permission,
     );
     unless ($has_perm or $self->rest->user->is_business_admin) {
         return $self->not_authorized;
@@ -60,6 +64,7 @@ sub _get_entities {
         my $group = Socialtext::Group->GetGroup(group_id => $info->{group_id});
         my $role = Socialtext::Role->new(role_id => $info->{role_id});
         return {
+            permission_set => $group->permission_set,
             group_id => $group->group_id,
             name => $group->driver_group_name,
             user_count => $info->{user_count},
