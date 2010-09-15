@@ -329,6 +329,14 @@ sub _update_group_members {
         }
 
         if ($user) {
+            if (!$user_id) {
+                # This user was _just_ created, we should set the user's
+                # primary account to that of the group, and we do not need to
+                # call the hooks as the user has not created any dashboards
+                # yet.
+                $user->primary_account($group->primary_account, no_hooks => 1);
+            }
+
             $user_id = $user->user_id;
             TU && warn "$dn IS ID $user_id (no shortcut)";
             $seen_set->set($user_id);
