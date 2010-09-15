@@ -163,6 +163,8 @@ sub create {
     return $page;
 }
 
+Readonly my $SignalCommentLength => 250;
+Readonly my $SignalEditLength => 140;
 sub _signal_edit_summary {
     my ($self, $user, $edit_summary, $to_network, $is_comment) = @_;
     my $signals = $self->hub->pluggable->plugin_class('signals');
@@ -172,7 +174,7 @@ sub _signal_edit_summary {
     my $workspace = $self->hub->current_workspace;
     $user ||= $self->hub->current_user;
 
-    $edit_summary = Socialtext::String::word_truncate($edit_summary, ($is_comment ? 250 : 140));
+    $edit_summary = Socialtext::String::word_truncate($edit_summary, ($is_comment ? $SignalCommentLength : $SignalEditLength));
     my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->title;
     my $body = $edit_summary
         ? ($is_comment
@@ -197,7 +199,10 @@ sub _signal_edit_summary {
     }
 
     my $signal = $signals->Send(\%params);
-    return $signal;
+    if ($signal->is_edit_summary) {
+        return $signal;
+    }
+    return;
 }
 
 =head2 update_from_remote( %args )
@@ -769,7 +774,12 @@ sub add_comment {
         ) : ()
     );
 
-    my $summary = $self->preview_text($wikitext);
+    # Truncate the comment to $SignalCommentLength chars if we're sending this
+    # comment as a signal.  Otherwise use the normal 350-char excerpt.
+    my $summary = $signal
+        ? Socialtext::String::word_truncate($wikitext, $SignalCommentLength)
+        : $self->preview_text($wikitext);
+
     my %event = (
         event_class => 'page',
         action => 'comment',
