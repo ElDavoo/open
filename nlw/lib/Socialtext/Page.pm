@@ -189,6 +189,9 @@ sub _signal_edit_summary {
             page_id      => $self->id,
             workspace_id => $workspace->workspace_id,
         },
+        annotations => [
+            { icon => { title => ($is_comment ? 'comment' : 'edit') } }
+        ],
     );
 
     if ($to_network and $to_network =~ /^(group|account)-(\d+)$/) {
