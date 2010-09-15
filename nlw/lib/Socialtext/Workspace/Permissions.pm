@@ -170,8 +170,8 @@ EOSQL
             $dbh->pg_endcopy;
         }
 
-        my $html_wafl = ( $p{set_name} =~ /^(member|intranet|public\-read)/ ) ? 1 : 0;
-        my $email_addresses = ( $p{set_name} =~ /^(member|intranet)/ ) ? 0 : 1 ;
+        my $html_wafl = ( $p{set_name} =~ /^(member|intranet|public\-read|self\-join)/ ) ? 1 : 0;
+        my $email_addresses = ( $p{set_name} =~ /^(member|intranet|self\-join)/ ) ? 0 : 1 ;
         my $email_notify = ( $p{set_name} =~ /^public/ ) ? 0 : 1;
         my $homepage = ( $p{set_name} eq 'member-only' ) ? 1 : 0;
         $wksp->update(
