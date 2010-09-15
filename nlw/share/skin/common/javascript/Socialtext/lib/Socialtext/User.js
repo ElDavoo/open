@@ -34,6 +34,21 @@ $.extend(Socialtext.User.prototype, {
         });
     },
 
+    addToGroups: function(groups, callback) {
+        var self = this;
+        var jobs = [];
+        if (!groups.length) return this.call(callback);
+        var errors = [];
+        $.each(groups, function(i, info) {
+            jobs.push(function(cb) {
+                var group = new Socialtext.Group({group_id: info.id});
+                group.addMembers(
+                    [{user_id: self.user_id, role: 'member'}], cb);
+            });
+        });
+        this.runAsynch(jobs, callback);
+    },
+
     removeFromWorkspaces: function(workspaces, callback) {
         var self = this;
         var jobs = [];
