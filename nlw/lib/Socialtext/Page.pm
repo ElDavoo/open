@@ -318,12 +318,7 @@ sub update_from_remote {
     );
 
     if ($p{signal_edit_summary}) {
-        my $signal = $self->_signal_edit_summary($user, $edit_summary);
-        if ($signal) {
-            $event{signal} = $signal->signal_id;
-            $event{context}{account_ids} = $signal->account_ids;
-            $event{context}{group_ids} = $signal->group_ids;
-        }
+        $event{signal} = $self->_signal_edit_summary($user, $edit_summary);
     }
 
     Socialtext::Events->Record(\%event);
@@ -792,9 +787,7 @@ sub add_comment {
         summary => $summary,
     );
     if ($signal) {
-        $event{signal} = $signal->signal_id;
-        $event{context}{account_ids} = $signal->account_ids;
-        $event{context}{group_ids} = $signal->group_ids;
+        $event{signal} = $signal;
     }
 
     Socialtext::Events->Record(\%event);

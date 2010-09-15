@@ -181,7 +181,7 @@ sub edit_content {
     );
 
     if ($signal) {
-        $event{signal} = $signal->signal_id;
+        $event{signal} = $signal;
     }
 
     Socialtext::Events->Record(\%event);
