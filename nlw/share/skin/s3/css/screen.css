@@ -4190,6 +4190,7 @@ div.hidesubmit {
 }
 
 #st-attachment-delete-confirm .buttons,
+#st-self-join-workspaceinterface .buttons,
 #st-edit-warning-help-inline .buttons,
 #st-edit-check .buttons {
     float: right;
@@ -4197,6 +4198,7 @@ div.hidesubmit {
 }
 
 #st-attachment-delete-confirm .buttons:after,
+#st-self-join-workspaceinterface .buttons:after,
 #st-edit-warning-help-inline .buttons:after,
 #st-edit-check .buttons:after  {
     content: '.';
@@ -4205,6 +4207,7 @@ div.hidesubmit {
 }
 
 #st-attachment-delete-confirm .buttons .flexButton,
+#st-self-join-workspaceinterface .buttons .flexButton,
 #st-edit-warning-help-inline .buttons .flexButton,
 #st-edit-check .buttons .flexButton {
     height: 22px;
@@ -4215,6 +4218,7 @@ div.hidesubmit {
 }
 
 #st-attachment-delete-confirm .buttons .flexButton a,
+#st-self-join-workspaceinterface .buttons .flexButton a,
 #st-edit-warning-help-inline .buttons .flexButton a,
 #st-edit-check .buttons .flexButton a {
     color: #fff;

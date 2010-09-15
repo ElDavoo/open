@@ -1,0 +1,20 @@
+<div class="lightbox" id="st-self-join-workspaceinterface">
+
+  <div class="content"></div>
+  <div class="error" style="display:none;"></div>
+
+  <div class="buttons" id="st-self-join-workspace-buttons">
+      <div class="loading" style="display:none;">
+        <img src="/static/skin/common/images/ajax-loader.gif"/>
+      </div>
+      <ul class="widgetButton" style="float:left; padding:10px">
+          <li class="flexButton" id="st-self-join-workspace-action">
+              <a class="genericOrangeButton" href="#">[% loc('Join') %]</a>
+          </li>
+          <li class="flexButton" id="st-self-join-workspace-closebutton">
+              <a class="genericOrangeButton" href="#">[% loc('Cancel') %]</a>
+          </li>
+      </ul>
+  </div>
+
+</div>

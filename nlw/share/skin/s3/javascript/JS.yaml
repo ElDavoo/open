@@ -100,6 +100,14 @@
         - { jemplate: lightbox/simple.tt2 }
         - 'st-lightbox.js'
         - lightbox/simple.js
+'lightbox-self_join_workspace.js':
+    compress: 1
+    parts:
+        - { jemplate: lightbox/self_join_workspace.tt2 }
+        - { jemplate: lightbox/self_join_single.tt2 }
+        - { jemplate: lightbox/self_join_many.tt2 }
+        - 'st-lightbox.js'
+        - lightbox/self_join_workspace.js
 'Selection.htc':
     nocomment: 1
     parts:
