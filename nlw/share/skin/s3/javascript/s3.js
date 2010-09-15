@@ -702,6 +702,30 @@ $(function() {
         }
     }; }
 
+    $('#st-wikinav-register a').click(function() {
+        $.ajax({
+            type: 'GET',
+            url: '/data/workspaces/' + Socialtext.wiki_id + '/groups',
+            success: function(response) {
+                var groups = $.grep(response, function(group) {
+                    return (group.permission_set == 'self-join');
+                });
+
+                if (groups.length > 0) {
+                    get_lightbox('self_join_workspace', function () {
+                        SelfJoinWorkspace.show(groups);
+                    });
+                }
+                else { // old default action
+                    var href = $('#st-wikinav-register a').attr('href');
+                    $(window.location).attr('href', href);
+                }
+            },
+            dataType: 'json'
+        });
+        return false;
+    });
+
     // SignalThis handler for single-page view
     $('#st-signalthis-indicator').click(function(){
         if ($('#st-signal-this-frame').size() > 0) {
