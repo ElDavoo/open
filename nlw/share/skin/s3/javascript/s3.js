@@ -703,6 +703,8 @@ $(function() {
     }; }
 
     $('#st-wikinav-register a').click(function() {
+        if (Socialtext.userid == 'guest') return true;
+
         $.ajax({
             type: 'GET',
             url: '/data/workspaces/' + Socialtext.wiki_id + '/groups',
