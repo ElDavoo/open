@@ -11,7 +11,9 @@ use Socialtext::EmailSender::Factory;
 use Socialtext::Permission qw( ST_ADMIN_WORKSPACE_PERM );
 use Socialtext::TT2::Renderer;
 use Socialtext::User;
+use Socialtext::Group;
 use Socialtext::WorkspaceInvitation;
+use Socialtext::GroupInvitation;
 use Socialtext::URI;
 use Socialtext::l10n qw( loc system_locale);
 use Socialtext::Helpers;
@@ -255,12 +257,23 @@ sub users_invitation {
     $self->hub->action(
         $restrict_invitation_to_search ? 'users_search' : $action );
 
+    
+    my $user = $self->hub->current_user;
+    my @invite_groups = 
+        grep { 
+                $_->user_has_role(
+                    user => $user, 
+                    role => Socialtext::Role->Admin) 
+            } $ws->groups->all;
+
     my $settings_section = $self->template_process(
         $template,
         invitation_filter         => $invitation_filter,
         workspace_invitation_body =>
             "email/$template_dir/workspace-invitation-body.html",
         restrict_domain => $restrict_domain,
+        groups => \@invite_groups,
+        is_admin => $self->hub->checker->check_permission('admin_workspace'),
         $self->status_messages_for_template,
     );
 
@@ -284,8 +297,11 @@ sub users_invite {
     my ($emails, $invalid) = Socialtext::Helpers->validate_email_addresses(
         $self->cgi->users_new_ids
     );
+    my @grouparams= $self->cgi->invite_to_group; 
 
-    my $html = $self->_invite_users($emails, $invalid);
+    my $invite_groups = $self->cgi->group_invite ? \@grouparams : undef; 
+
+    my $html = $self->_invite_users($emails, $invalid, $invite_groups);
     return $html if $html;
 }
 
@@ -345,13 +361,20 @@ sub users_search {
 
 sub _invite_users {
     my $self = shift;
-    my ($emails, $invalid) = @_;
+    my ($emails, $invalid, $invite_groups) = @_;
     my $ws = $self->hub->current_workspace;
     my $ws_filter = $ws->invitation_filter();
 
     my %invitees;
     my @present;
     my @wrong_domain;
+    my @actual_groups; 
+    
+    if ($invite_groups) {
+        @actual_groups = 
+            map { Socialtext::Group->GetGroup(group_id => $_ ) } 
+            @$invite_groups;
+    };
     for my $e (@{ $emails }) {
         my $email = $e->{email_address};
         next if $invitees{$email};
@@ -388,7 +411,12 @@ sub _invite_users {
 
     if ( $self->hub->checker->check_permission('admin_workspace') ) {
         for my $user_data ( values %invitees ) {
-            $self->invite_one_user( $user_data, $extra_invite_text );
+            if ($invite_groups) {
+                $self->group_invite_one_user( $user_data, $extra_invite_text, \@actual_groups);
+            } else {
+
+                $self->invite_one_user( $user_data, $extra_invite_text );
+            }
         }
     }
     else {
@@ -402,6 +430,8 @@ sub _invite_users {
         invalid_addresses     => [ sort @$invalid ],
         domain                => $ws->account->restrict_to_domain,
         wrong_domain          => [ sort @wrong_domain ],
+        groups                => $invite_groups ? \@actual_groups : [],
+        checker               => $self->hub->checker,
         $self->status_messages_for_template,
     );
 
@@ -463,6 +493,25 @@ sub invite_request_to_admin {
 
 }
 
+sub group_invite_one_user {
+    my $self = shift;
+    my $user_data  = shift;
+    my $extra_text = shift;
+    my $invite_groups= shift;
+
+    for my $group (@$invite_groups) {
+        my $invitation = Socialtext::GroupInvitation->new(
+            group              => $group,
+            from_user          => $self->hub->current_user,
+            invitee            => $user_data->{email_address},
+            extra_text         => $extra_text
+        ); 
+        $invitation->queue( $user_data->{email_address},
+                    first_name => $user_data->{first_name},
+                    last_name => $user_data->{last_name});
+    }
+}
+
 sub invite_one_user {
     my $self = shift;
     my $user_data  = shift;
@@ -501,4 +550,6 @@ cgi 'last_name';
 cgi 'append_invitation';
 cgi 'invitation_text';
 cgi 'dm_sends_email';
+cgi 'invite_to_group';
+cgi 'group_invite';
 1;

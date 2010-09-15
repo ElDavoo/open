@@ -2,9 +2,35 @@
 [%# @COPYRIGHT@ -%]
 [% save_button_value = loc('Invite') %]
 [% INCLUDE element/settings/start %]
+
 <dl class="form">
   <dt><label>[% loc('Invite Other Users') %]</label></dt>
+[% IF groups.size and is_admin %]
+  <dd>[% loc('Use the form below to invite users to one of this workspace\'s managing groups. Anyone who is a member of one of these groups has access to this workspace. If, instead, you would like to grant access to a specific individual, you can uncheck the "invite users to selected group(s)" checkbox below.') %]</dd>
+[% ELSE %]
   <dd>[% loc('Enter a list of email addresses (one address per line) of people you would like to invite to this Workspace.') %]</dd>
+[% END %]
+[% IF is_admin && groups.size == 1 %]
+<dd>[% loc('Group') %]: [% groups.0.name %]</dd>
+[% ELSIF is_admin && groups.size > 1 %]
+<dd>[% loc('Groups') %]: 
+<ul>
+[% FOR group IN groups %] 
+<li>
+<input name="invite_to_group" type="checkbox" value="[% group.group_id %]" checked="1">[% group.name %]
+</li>
+
+[% END %]
+</ul>
+</dd>
+[% END %]
+
+[% IF is_admin && groups.size %]
+  <dd>
+    <input name="group_invite" type="checkbox" value="1" checked="1" />
+    [% loc('Invite users to selected group(s)') %] 
+  </dd>
+[% END %]
 
   [% IF restrict_domain %]
     [% restrict_domain = '<span style="color: red">' _ restrict_domain
@@ -26,7 +52,7 @@
   </dd>
 </dl>
 
-[% IF hub.checker.check_permission('admin_workspace') %]
+[% IF is_admin %] 
 <dl class="form">
   <dt><label>[% loc('Personal Message') %]</label></dt>
   <dd>[% loc('If you wish, you can include a personal message in the invitation email. You can edit the message to say anything you want.') %]</dd>
