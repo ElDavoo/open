@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.3.2</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.3.0-snapshot2-noStartAtLogin.air</url>
-  <description><![CDATA[[4.3.2 - Mon Aug 16 01:48:39 PDT 2010]
+  <version>4.3.3</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.3.3.air</url>
+  <description><![CDATA[[4.3.3 - Wed Sep  8 00:17:57 PDT 2010]
+(Enhancements)
+* Signals: Reduced lagging when typing in mention, private, tag and page-name lookaheads.
+* Signals: Faster switching of "Post to" when "Show Signals within" is set to "All Groups".
+* Signals: Allow reply boxes with only whitespaces in them to close when the focus changes.
+* When Encrypted Store fail on Linux, navigate to the Adobe knowledge base with help instructions.
+
+[4.3.2 - Mon Aug 16 01:48:39 PDT 2010]
 (Enhancements)
 * Signals: Display tooltips on "Reply to conversation" icons. {bz: 4201}
 * Signals: When push is enabled, sending a new signal will still trigger an immediate refresh.

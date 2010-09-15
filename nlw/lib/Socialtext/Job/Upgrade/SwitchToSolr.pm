@@ -11,7 +11,9 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 
-my $Job_delay = 15 * 60;
+# Try this every 2 minutes.
+my $Job_delay = 2 * 60;
+
 override 'retry_delay' => sub { $Job_delay };
 override 'max_retries' => sub {0x7fffffff};
 
