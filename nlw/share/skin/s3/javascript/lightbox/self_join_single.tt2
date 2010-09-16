@@ -1,4 +1,5 @@
-<p>[% loc('You must be a member of [_1] Group to edit or comment on this page. Would you like to join now?', group.name) %]</p>
+<p>[% loc('You must be a member of [_1] Group to edit or comment on this page. Would you like to join now?', 
+'<a target="_blank" href="/st/group/' + group.group_id + '">' + group.name + '</a>') %]</p>
 
 <input type="hidden" name="join-group-[% group.group_id %]"
        value="[% group.group_id %]" checked="checked" />
