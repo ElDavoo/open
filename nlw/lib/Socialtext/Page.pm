@@ -308,10 +308,7 @@ sub update_from_remote {
     );
 
     if ($p{signal_edit_summary}) {
-        my $signal = $self->_signal_edit_summary($user, $edit_summary);
-        if ($signal) {
-            $event{signal} = $signal->signal_id;
-        }
+        $event{signal} = $self->_signal_edit_summary($user, $edit_summary);
     }
 
     Socialtext::Events->Record(\%event);
