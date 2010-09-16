@@ -383,7 +383,7 @@ sub _render_user_frame {
     );
 
     unless (-d $frame_dir) {
-        File::Path::mkpath($frame_dir) or die "Could not create $frame_dir: $!";
+        File::Path::mkpath($frame_dir);
     }
 
     Socialtext::File::set_contents_utf8($frame_file, $frame_content);
