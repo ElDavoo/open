@@ -11,13 +11,13 @@
   <dd>[% loc('Enter a list of email addresses (one address per line) of people you would like to invite to this Workspace.') %]</dd>
 [% END %]
 [% IF is_admin && groups.size == 1 %]
-<dd>[% loc('Group') %]: [% groups.0.name %]</dd>
+<dd>[% loc('Group') %]: [% groups.0.display_name %]<input type="hidden" name="invite_to_group" value="[% groups.0.group_id %]"></dd>
 [% ELSIF is_admin && groups.size > 1 %]
 <dd>[% loc('Groups') %]: 
 <ul>
 [% FOR group IN groups %] 
 <li>
-<input name="invite_to_group" type="checkbox" value="[% group.group_id %]" checked="1">[% group.name %]
+<input name="invite_to_group" type="checkbox" value="[% group.group_id %]" checked="1">[% group.display_name %]
 </li>
 
 [% END %]

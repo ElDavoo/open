@@ -7,12 +7,12 @@
          users = users_already_present
          IF users_already_present.size;
         PROCESS user_group_listing 
-         label = loc('The following [*,_1,user,users] already have roles in the following Groups:', has_role_in_group.size),
+         label = loc('The following [*,_1,user already has,users already have] roles in the following Groups:', has_role_in_group.size),
          user_group_list = has_role_in_group
          IF has_role_in_group.size ;
         PROCESS user_group_listing
-         label = loc('The following [*,_1,user,users] were invited to the following Groups:', no_role_in_group.size),
-         use_group_list = no_role_in_group
+         label = loc('The following [*,_1,user was,users were] invited to the following Groups:', no_role_in_group.size),
+         user_group_list = no_role_in_group
          IF no_role_in_group.size;
         PROCESS users_listing
          label = loc('The following [*,_1,email address was,email addresses were] invalid:', invalid_addresses.size),
@@ -59,8 +59,8 @@
 
 [% BLOCK user_group_listing %]
    <p style="font-weight: bold; margin-top: 5px">[% label %]</p>
-   [% FOR user IN user_group_list.keys %]
-   <p style="font-family: monospace">[% user %]: 
+   [% FOR user IN user_group_list.keys() %]
+   <p style="font-family: monospace">[% user %]:
        [% FOR group IN user_group_list.$user %]
             [% group.display_name %][% UNLESS loop.last() %], [% END %]
        [% END %]
