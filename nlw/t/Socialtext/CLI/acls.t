@@ -51,6 +51,24 @@ SET_PERMISSIONS: {
     );
 }
 
+set_group_permission_set: {
+    my $group = create_test_group();
+    my $name = $group->name;
+
+    expect_success(
+        call_cli_argv('set-permissions',
+            '--group' => $group->group_id,
+            '--permissions' => 'self-join'
+        ),
+        qr/The permissions for the \Q$name\E group have been changed to self-join/,
+        'change group permission, cli returned success'
+    );
+
+    # refresh
+    $group = Socialtext::Group->GetGroup({group_id => $group->group_id});
+    is $group->permission_set, 'self-join', 'group permissions changed';
+}
+
 ADD_REMOVE_PERMISSION: {
     my $ws = create_test_workspace(account => $acct);
     my $wsname = $ws->name;

@@ -866,14 +866,7 @@ sub _type_of_entity_collection_operation {
     my @cli_entities    = uniq map { @{ $cli_option_map{$_} } } @entities;
     my @cli_collections = uniq map { @{ $cli_option_map{$_} } } @collections;
 
-    # Peek ahead at what ARGV options were provided, so we know what type of
-    # "entity/collection" command we're dealing with.
-    #
-    # _get_options() is destructive to ARGV, though, so be sure to
-    # preserve+restore it.
-    my $argv = $self->{argv};
-    my %opts = $self->_get_options(@cli_entities, @cli_collections);
-    $self->{argv} = $argv;
+    my %opts = $self->_argv_peekahead(@cli_entities, @cli_collections);
 
     # March through the list of acceptable combinations and see if we've got
     # sufficient args for any of them.
@@ -1797,19 +1790,53 @@ sub create_account {
 sub set_permissions {
     my $self = shift;
 
-    my $ws       = $self->_require_workspace();
     my $set_name = $self->_require_string('permissions');
+    my %opts = $self->_argv_peekahead(qw/workspace:s group:s/);
 
-    eval {
-        $ws->permissions->set( set_name => $set_name );
-    };
-    if ($@) {
-        $self->_error(loc("The '[_1]' permission does not exist.", $set_name));
+    my ($object,$name);
+    if ($opts{workspace}) {
+        my $ws  = $self->_require_workspace();
+        $object = 'workspace';
+        $name   = $ws->name;
+
+        eval { $ws->permissions->set( set_name => $set_name ); };
+        if ($@) {
+            $self->_error(
+                loc("The '[_1]' permission does not exist.", $set_name));
+        }
+    }
+    elsif ($opts{group}) {
+        my $group = $self->_require_group();
+        $object = 'group';
+        $name   = $group->name;
+
+        eval { $group->update_store({permission_set => $set_name}) };
+        if ($@) {
+            $self->_error(
+                loc("Could not update permissions for [_1] group.", $name));
+        }
+    }
+    else {
+        $self->_error(
+            loc("Can on change permissions on a group or workspace.")
+        );
     }
 
-    $self->_success( 'The permissions for the '
-            . $ws->name()
-            . " workspace have been changed to $set_name.\n" );
+    $self->_success(
+        loc("The permissions for the [_1] [_2] have been changed to [_3].\n",
+            $name, $object, $set_name)
+    );
+}
+
+sub _argv_peekahead {
+    my $self = shift;
+    my @to_check = @_;
+
+    my $argv = $self->{argv};
+    my %opts = $self->_get_options(@to_check); # this is destructive
+    $self->{argv} = $argv;
+
+    return %opts;
 }
 
 sub add_permission {
