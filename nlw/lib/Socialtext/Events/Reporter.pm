@@ -696,7 +696,7 @@ sub _build_standard_sql {
     $self->_process_before_after($opts);
 
     unless ($self->_skip_standard_opts) {
-        {
+        if (!$opts->{signals}) {
             my $visible_ws = $VISIBLE_WORKSPACES;
             if ($self->_include_public_ws) {
                 $visible_ws .= ' UNION ALL '.$PUBLIC_WORKSPACES;
