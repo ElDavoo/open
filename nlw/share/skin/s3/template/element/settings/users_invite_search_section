@@ -28,7 +28,31 @@
 </dl>
 
 [% IF search_performed %]
+Groups: [% groups %]
+<br>
+is_adimin : [% is_admin %]
 <dl class="form">
+  [% IF users.size and groups.size and is_admin %]
+  <dd>[% loc('Use the form below to invite users to one of this workspace\'s managing groups. Anyone who is a member of one of these groups has access to this workspace. If, instead, you would like to grant access to a specific individual, you can uncheck the "invite users to selected group(s)" checkbox below.') %]</dd>
+    [% IF groups.size == 1 %]
+      <dd>[% loc('Group') %]: [% groups.0.display_name %]<input type="hidden" name="invite_to_group" value="[% groups.0.group_id %]"></dd>
+    [% ELSIF groups.size > 1 %]
+      <dd>[% loc('Groups') %]: 
+      <ul>
+      [% FOR group IN groups %] 
+      <li>
+      <input name="invite_to_group" type="checkbox" value="[% group.group_id %]" checked="1">[% group.display_name %]
+      </li>
+
+      [% END %]
+    </ul>
+    </dd>
+    [% END %]
+    <dd>
+      <input name="group_invite" type="checkbox" value="1" checked="1" />
+      [% loc('Invite users to selected group(s)') %] 
+    </dd>
+  [% END %]
   <dt><label>[% loc('Search Results') %]</label></dt>
   [% IF users.size %]
   <dd>

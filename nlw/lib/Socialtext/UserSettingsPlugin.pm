@@ -257,7 +257,7 @@ sub users_invitation {
     $self->hub->action(
         $restrict_invitation_to_search ? 'users_search' : $action );
 
-    
+
     my $user = $self->hub->current_user;
     my @invite_groups = 
         grep { 
@@ -319,7 +319,10 @@ sub users_search {
         if ( $self->cgi->Button eq 'Invite' && $self->cgi->email_addresses ) {
             my @emails = map {+{email_address=>$_}} $self->cgi->email_addresses;
             my @invalid;
-            my $html = $self->_invite_users(\@emails, \@invalid);
+            my @grouparams= $self->cgi->invite_to_group; 
+
+            my $invite_groups = $self->cgi->group_invite ? \@grouparams : undef; 
+            my $html = $self->_invite_users(\@emails, \@invalid, $invite_groups);
             return $html if $html;
         }
     }
@@ -340,12 +343,23 @@ sub users_search {
         $user && !$user->is_deactivated
     } @users;
 
+    my $user = $self->hub->current_user;
+    my $ws = $self->hub->current_workspace;
+    my @invite_groups = 
+        grep { 
+                $_->user_has_role(
+                    user => $user, 
+                    role => Socialtext::Role->Admin) 
+            } $ws->groups->all;
+    
     my $settings_section = $self->template_process(
         'element/settings/users_invite_search_section',
         invitation_filter => $filter,
         $self->status_messages_for_template,
         workspace_invitation_body     => "email/$template_dir/workspace-invitation-body.html",
         users => \@users,
+        groups => \@invite_groups,
+        is_admin => $self->hub->checker->check_permission('admin_workspace'),
         search_performed => 1,
     );
 
