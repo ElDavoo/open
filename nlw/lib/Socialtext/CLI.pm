@@ -4029,6 +4029,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-member --group [--account or --workspace]
   remove-member [ --username or --email ] --group
   delete-group --group
+  set-permissions --group --permissions [self-join | private]
 
   OTHER
 
@@ -4220,6 +4221,8 @@ permission set. Valid set names are:
 =item * public-read-only
 
 =item * public-comment-only
+
+=item * self-join
 
 =item * public-join-to-edit
 
@@ -4637,6 +4640,19 @@ via the web UI.  Other values will eventually be introduced.
 =head2 delete-group --group
 
 Deletes a Socialtext Group. C<--group> must be a Group ID.
+
+=head2 set-permissions --group --permissions
+
+Sets the permission for the specified group to the given named
+permission set. Valid set names are:
+
+=over 8
+
+=item * private
+
+=item * self-join
+
+=back
 
 =head2 add-member --group [--account or --workpsace]
 
