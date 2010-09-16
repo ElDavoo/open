@@ -878,15 +878,17 @@ sub add_user_to_group {
     my $user_name = shift;
     my $group_id  = shift || $self->{group_id};
     my $role_name = shift || '';
+    my $actor_name = shift || Socialtext::User->SystemUser->user_id;
 
     my $group = Socialtext::Group->GetGroup(group_id => $group_id);
     my $user  = Socialtext::User->Resolve($user_name);
+    my $actor = Socialtext::User->Resolve($actor_name);
 
     my $role = $role_name
         ? Socialtext::Role->new(name => $role_name)
         : undef;
 
-    $group->assign_role_to_user( user => $user, role => $role );
+    $group->assign_role_to_user( user => $user, role => $role, actor => $actor );
 
     diag "Added User $user_name"
        . ' to ' . $group->driver_group_name . ' Group'
