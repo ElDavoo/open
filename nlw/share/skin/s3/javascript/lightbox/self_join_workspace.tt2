@@ -1,5 +1,6 @@
 <div class="lightbox" id="st-self-join-workspaceinterface">
 
+  <div class="title">[% loc('Join To Edit') %]</div><br />
   <div class="content"></div>
   <div class="error" style="display:none;"></div>
 
