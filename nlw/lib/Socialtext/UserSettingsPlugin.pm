@@ -394,7 +394,9 @@ sub _invite_users {
         my $invitee = Socialtext::User->new( email_address => $email );
         if ($invitee && $ws->has_user($invitee, direct => 1)) {
             push @present, $email;
-            next;
+            # do not invite this email address unless they are being invited
+            # to groups
+            next unless $invite_groups;
         }
 
         $invitees{$email} = {
