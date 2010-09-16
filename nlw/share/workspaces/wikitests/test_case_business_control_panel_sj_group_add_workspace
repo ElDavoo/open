@@ -33,7 +33,7 @@
 | get_group_id | %%group_name%% | group_id_one |
 | st-admin | create-group --n %%group_two%% --e %%username%% | %%group_two%% Group has been created |
 | get_group_id | %%group_two%% | group_id_two |
-| st-admin | set-permissions --g %%group_id_two%% --p self-join |  |
+| st-admin | set-permissions --g %%group_id_two%% --p self-join | The permissions for the %%group_two%% group have been changed to self-join |
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add a workspace - See permission set enabled |  |
 | wait_for_element_visible_ok | create-workspace | 30000 |
@@ -90,9 +90,9 @@
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Confirm Admin privileges |  |
 | st-admin | show-members --w %%add_ws_two%% | admin |
 
-| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add Another Grouop |  |
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add Another Group to a WS - buttons deactivate |  |
 | st-admin | add-member --g %%group_id_two%% --w %%ws_to_add%% | %%group_two%% now has the role of 'member' in the %%ws_to_add%% Workspace |
-| open_ok | /nlw/control/group/%%group_id_one%% |  |
+| refresh |  |  |
 | wait_for_element_visible_ok | create-workspace | 30000 |
 | wait_for_element_visible_ok | add-workspace | 30000 |
 | pause | 5000 |  |
@@ -101,17 +101,27 @@
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Remove the group |  |
 | st-admin | remove-member --g %%group_id_two%% --workspace %%ws_to_add%% | %%group_two%% is no longer a member of %%ws_to_add%% |
-| open_ok | /nlw/control/group/%%group_id_one%% |  |
+| refresh |  |  |
 | wait_for_element_visible_ok | create-workspace | 30000 |
 | wait_for_element_visible_ok | add-workspace | 30000 |
 | pause | 5000 |  |
 | is_editable | add-workspace |  |
 | is_editable | create-workspace |  |
 
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Change Group to private - workspaces change too. |  |
+| st-admin | set-permissions -g %%group_id_one%% --p private | The permissions for the %%group_name%% group have been changed to private |
+| st-admin | show-acls --w %%ws_to_add%% | permission set name: member-only |
+| st-admin | show-acls --w %%ws_to_add%% | permission set name: member-only |
+
+| *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Change Group to self-join - workspaces change too. |  |
+| st-admin | set-permissions -g %%group_id_one%% --p self-join | The permissions for the %%group_name%% group have been changed to self-join |
+| st-admin | show-acls --w %%ws_to_add%% | permission set name: self-join |
+| st-admin | show-acls --w %%ws_to_add%% | permission set name: self-join |
+
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace TEARDOWN |  |
 | st-admin | delete-workspace --w %%ws_to_add%% --no-export |  |
 | st-admin | delete-workspace --w %%add_ws_two%% --no-export |  |
-| delete_group | %%group_id%% |  |
+| delete_group | %%group_id_one%% |  |
 | delete_group | %%group_id_two%% |  |
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace COMPLETED |  |
