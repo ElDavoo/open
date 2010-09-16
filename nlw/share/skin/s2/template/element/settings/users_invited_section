@@ -25,7 +25,7 @@
         PROCESS users_listing
          label = loc('The following [*,_1,user was,users were] invited into this Workspace:', users_invited.size),
          users = users_invited
-         IF !groups && checker.check_permission('admin_workspace') ;
+         IF groups.size == 0 && checker.check_permission('admin_workspace') ;
         PROCESS users_listing
          label = loc('Your request to invite the following [*,_1,user] has been sent:', users_invited.size),
          users = users_invited
@@ -37,7 +37,7 @@
 
 [% BLOCK users_listing %]
   <p style="font-weight: bold; margin-top: 5px">[% label %]</p>
-  [% IF groups %]
+  [% IF groups.size %]
     [% PROCESS groups_listing groups=groups %]
     <p style="font-weight: bold; margin-top: 5px">[% loc("Users") %]<p>
   [% END %]
