@@ -18,13 +18,9 @@ our @EXPORT_OK = qw/get_current_user/;
 # This one is used by reports and the appliance console
 
 sub get_current_user {
-    my $name_or_id = _user_id_or_username() || return;
-    return Socialtext::Apache::User::_current_user($name_or_id);
-}
-
-sub _user_id_or_username {
     my $user_id = Socialtext::HTTP::Cookie->GetValidatedUserId();
-    return $user_id;
+    return unless $user_id;
+    return Socialtext::User->new(user_id => $user_id);
 }
 
 1;
