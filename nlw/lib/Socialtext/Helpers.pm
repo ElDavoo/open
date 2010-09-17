@@ -315,9 +315,10 @@ sub global_template_vars {
                 } Socialtext::Pluggable::Adapter->plugins
             ]
         }),
-
         $thunker->(self_registration => sub {
-                Socialtext::AppConfig->self_registration }),
+                return Socialtext::AppConfig->self_registration
+                    || $hub->current_workspace->permissions->current_set_name eq 'self-join';
+        }),
         $thunker->(dynamic_logo_url => sub { $hub->skin->dynamic_logo }),
         $thunker->(can_lock => sub { $hub->checker->check_permission('lock') }),
         $thunker->(page_locked => sub { $hub->pages->current->locked }),
