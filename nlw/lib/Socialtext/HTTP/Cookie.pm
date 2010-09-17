@@ -48,6 +48,12 @@ sub GetValidatedUserId {
     return 0;
 }
 
+sub AuthCookiePresent {
+    my $class = shift;
+    my $name  = $class->cookie_name();
+    return $class->GetRawCookie($name) ? 1 : 0;
+}
+
 sub GetRawCookie {
     my $class   = shift;
     my $name    = shift;
