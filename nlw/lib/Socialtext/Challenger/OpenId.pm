@@ -8,11 +8,10 @@ use warnings;
 use Net::OpenID::Consumer;
 use Apache;
 use Apache::Request;
-use Apache::Cookie;
 use Socialtext::User;
+use Socialtext::Apache::User;
 use LWP::UserAgent;
 use Socialtext::WebApp;
-use Socialtext::HTTP::Cookie;
 use URI::Escape qw (uri_unescape);
 
 =head1 NAME
@@ -141,19 +140,12 @@ sub _get_uri {
 sub _set_cookie {
     my $identity = shift;
     my $user = Socialtext::User->new( username => $identity );
-    if ( !$user ) { return undef; }
-    my $user_id = $user->user_id;
-    my $value   = Socialtext::HTTP::Cookie->BuildForUserId($user_id);
-    my $request     = Apache::Request->instance(Apache->request);
-    my $cookie_name = Socialtext::HTTP::Cookie->cookie_name();
-    my $cookie      = Apache::Cookie->new(
-        $request,
-        -name    => $cookie_name,
-        -value   => $value,
-        -expires => '+12M',
-        -path    => '/',
-    )->bake;
-    return $user_id;
+    return unless $user;
+    return Socialtext::Apache::User->set_login_cookie(
+        Apache->request,
+        $user->user_id,
+        '+12M',
+    );
 }
 
 1;
