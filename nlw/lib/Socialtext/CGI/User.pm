@@ -23,17 +23,8 @@ sub get_current_user {
 }
 
 sub _user_id_or_username {
-    my $cookie_name = Socialtext::HTTP::Cookie->cookie_name();
-    my %user_data   = Socialtext::HTTP::Cookie->get_value($cookie_name);
-    return unless keys %user_data;
-
-    my $mac = Socialtext::HTTP::Cookie->MAC_for_user_id( $user_data{user_id} );
-    unless ($mac eq $user_data{MAC}) {
-        warn "Invalid MAC in cookie presented for $user_data{user_id}\n";
-        return;
-    }
-
-    return $user_data{user_id};
+    my $user_id = Socialtext::HTTP::Cookie->GetValidatedUserId();
+    return $user_id;
 }
 
 1;
