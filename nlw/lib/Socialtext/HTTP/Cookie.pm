@@ -47,11 +47,17 @@ sub GetValidatedUserId {
     return 0;
 }
 
+sub GetRawCookie {
+    my $class   = shift;
+    my $name    = shift;
+    my $cookies = CGI::Cookie->raw_fetch;
+    return $cookies->{$name};
+}
+
 sub get_value {
     my $class     = shift;
     my $name      = shift;
-    my $cookies   = CGI::Cookie->raw_fetch;
-    my $value     = $cookies->{$name} || '';
+    my $value     = $class->GetRawCookie($name) || '';
     my @user_data = split(/[&;]/, $value);
     push @user_data, undef if (@user_data % 2 == 1);
     return @user_data;
