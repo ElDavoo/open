@@ -39,7 +39,8 @@ sub MAC_for_user_id {
 sub GetValidatedUserId {
     my $class     = shift;
     my $name      = $class->cookie_name();
-    my %user_data = $class->get_value($name);
+    my $cookie    = $class->GetRawCookie($name) || '';
+    my %user_data = $class->_parse_cookie($cookie);
     return $user_data{user_id}
         if $user_data{user_id}
         and $user_data{MAC}
@@ -54,10 +55,9 @@ sub GetRawCookie {
     return $cookies->{$name};
 }
 
-sub get_value {
+sub _parse_cookie {
     my $class     = shift;
-    my $name      = shift;
-    my $value     = $class->GetRawCookie($name) || '';
+    my $value     = shift;
     my @user_data = split(/[&;]/, $value);
     push @user_data, undef if (@user_data % 2 == 1);
     return @user_data;
