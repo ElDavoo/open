@@ -46,20 +46,9 @@ sub current_user {
     my $r = shift;
     my $name_or_id = _user_id_or_username( $r ) or return;
 
-    my $user = _current_user($name_or_id);
+    my $user = Socialtext::User->Resolve($name_or_id);
     $r->connection->user($user->username) unless $r->connection->user();
     return $user;
-}
-
-sub _current_user {
-    my $name_or_id = shift;
-
-    if ($name_or_id =~ /\D+/) {
-        return Socialtext::User->new( username => $name_or_id );
-    }
-    else {
-        return Socialtext::User->new( user_id => $name_or_id );
-    }
 }
 
 sub _user_id_or_username {
