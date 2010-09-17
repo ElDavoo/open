@@ -37,9 +37,15 @@ sub MAC_for_user_id {
 }
 
 sub GetValidatedUserId {
-    my $class     = shift;
-    my $name      = $class->cookie_name();
-    my $cookie    = $class->GetRawCookie($name) || '';
+    my $class  = shift;
+    my $name   = $class->cookie_name();
+    my $cookie = $class->GetRawCookie($name) || '';
+    return $class->GetValidatedUserIdFromCookie($cookie);
+}
+
+sub GetValidatedUserIdFromCookie {
+    my $class  = shift;
+    my $cookie = shift;
     my %user_data = $class->_parse_cookie($cookie);
     return $user_data{user_id}
         if $user_data{user_id}
