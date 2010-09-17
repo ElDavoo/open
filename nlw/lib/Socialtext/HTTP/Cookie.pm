@@ -63,6 +63,15 @@ sub _parse_cookie {
     return @user_data;
 }
 
+sub BuildCookieValueForUserId {
+    my $class   = shift;
+    my $user_id = shift;
+    return {
+        user_id => $user_id,
+        MAC     => $class->MAC_for_user_id($user_id),
+    };
+}
+
 1;
 
 =head1 NAME
