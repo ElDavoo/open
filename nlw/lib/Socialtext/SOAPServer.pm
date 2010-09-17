@@ -548,15 +548,12 @@ sub _pageMetadata {
 sub _get_cookie {
     my $id = shift;
 
-    my $mac         = Socialtext::HTTP::Cookie->MAC_for_user_id($id);
     my $cookie_name = Socialtext::HTTP::Cookie->cookie_name();
+    my $value       = Socialtext::HTTP::Cookie->BuildForUserId($id);
 
     my $cookie = CGI::Cookie->new(
-        -name => $cookie_name,
-        -value => {
-            user_id => $id,
-            MAC => $mac,
-        },
+        -name  => $cookie_name,
+        -value => $value,
     );
 
     return $cookie;

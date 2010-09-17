@@ -143,10 +143,7 @@ sub _set_cookie {
     my $user = Socialtext::User->new( username => $identity );
     if ( !$user ) { return undef; }
     my $user_id = $user->user_id;
-    my $value   = {
-        user_id => $user_id,
-        MAC     => Socialtext::HTTP::Cookie->MAC_for_user_id($user_id),
-    };
+    my $value   = Socialtext::HTTP::Cookie->BuildForUserId($user_id);
     my $request     = Apache::Request->instance(Apache->request);
     my $cookie_name = Socialtext::HTTP::Cookie->cookie_name();
     my $cookie      = Apache::Cookie->new(
