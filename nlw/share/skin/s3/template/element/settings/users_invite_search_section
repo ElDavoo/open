@@ -32,13 +32,13 @@
   [% IF users.size and groups.size and is_admin %]
   <dd>[% loc('Use the form below to invite users to one of this workspace\'s managing groups. Anyone who is a member of one of these groups has access to this workspace. If, instead, you would like to grant access to a specific individual, you can uncheck the "invite users to selected group(s)" checkbox below.') %]</dd>
     [% IF groups.size == 1 %]
-      <dd>[% loc('Group') %]: [% groups.0.display_name %]<input type="hidden" name="invite_to_group" value="[% groups.0.group_id %]"></dd>
+      <dd><p><strong>[% loc('Group') %]:</strong> <a href="/st/group/[% groups.0.group_id %]" target="_blank">[% groups.0.display_name %]</a><input type="hidden" name="invite_to_group" value="[% groups.0.group_id %]"></p></dd>
     [% ELSIF groups.size > 1 %]
-      <dd>[% loc('Groups') %]: 
+      <dd><strong>[% loc('Groups') %]: </strong>
       <ul>
       [% FOR group IN groups %] 
       <li>
-      <input name="invite_to_group" type="checkbox" value="[% group.group_id %]" checked="1">[% group.display_name %]
+      <input name="invite_to_group" type="checkbox" value="[% group.group_id %]" checked="1"><a href="/st/groups/[% group.group_id %]" target="_blank">[% group.display_name %]</a>
       </li>
 
       [% END %]
@@ -75,7 +75,7 @@ function toggle_all() {
     return true;
 };
 </script>
-        <input type="checkbox" name="all" onclick="toggle_all()"/>[% loc('(Select/Deselect All)') %]<br />
+        <input type="checkbox" name="all" onclick="toggle_all()"/>[% loc('Select/Deselect All') %]<br />
     [% FOREACH user = users %]
         <input type="checkbox" name="email_addresses" value="[% user.email_address %]"/> [% user.name_and_email | html %]<br/>
     [% END %]
