@@ -23,11 +23,22 @@
 [% END %]
 </ul>
 </dd>
+    <script language="Javascript">
+      jQuery("input[name=invite_to_group]").click(function() {
+        var checkedgroups= jQuery("input[name=invite_to_group]:checked");
+        jQuery("#group_invite_checkbox").attr('checked', (checkedgroups.size() > 0));
+        if (checkedgroups.size() > 0) {
+             jQuery("#group_invite_checkbox").removeAttr('disabled');
+        } else {
+             jQuery("#group_invite_checkbox").attr('disabled', true);
+        }
+      });
+    </script>
 [% END %]
 
 [% IF is_admin && groups.size %]
   <dd>
-    <input name="group_invite" type="checkbox" value="1" checked="1" />
+    <input id="group_invite_checkbox" name="group_invite" type="checkbox" value="1" checked="1" />
     [% loc('Invite users to selected group(s)') %] 
   </dd>
 [% END %]
