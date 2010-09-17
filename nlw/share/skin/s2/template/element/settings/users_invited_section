@@ -37,24 +37,11 @@
 
 [% BLOCK users_listing %]
   <p style="font-weight: bold; margin-top: 5px">[% label %]</p>
-  [% IF groups.size %]
-    [% PROCESS groups_listing groups=groups %]
-    <p style="font-weight: bold; margin-top: 5px">[% loc("Users") %]<p>
-  [% END %]
   <ul>
     [% FOREACH user IN users %]
       <li style="font-family: monospace">[% user %]</li>
     [% END %]
   </ul>
-[% END %]
-
-[% BLOCK groups_listing %]
-   <p style="font-weight: bold; margin-top: 5px">[% loc("Groups") %]<p>
-   <ul>
-   [% FOR group IN groups %]
-       <li style="font-family: monospace">[% group.display_name %]</li>
-   [% END %]
-   </ul>
 [% END %]
 
 [% BLOCK user_group_listing %]
