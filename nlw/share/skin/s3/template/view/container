@@ -37,6 +37,10 @@
 
 [% SET num = 0 %]
 <div id="contentContainer" class="container [% container.type %]">
+    [% IF container.header_template %]
+        [% INCLUDE $container.header_template %]
+    [% END %]
+
     <div id="contentColumns">
         [% FOR col = container.columns %]
             [% SET i = loop.index %]
