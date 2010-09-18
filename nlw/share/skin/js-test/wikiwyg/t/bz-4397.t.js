@@ -15,7 +15,7 @@ line1
 line2
 --- html
 line1<br />
-line2
+line2</p>
 
 === Phrase markup across lines should have no effect (asterisk)
 --- text
@@ -23,7 +23,7 @@ line2
 line2*
 --- html
 \*line1<br />
-line2\*
+line2\*</p>
 
 === Phrase markup across lines should have no effect (underscore)
 --- text
@@ -31,7 +31,7 @@ _line1
 line2_
 --- html
 _line1<br />
-line2_
+line2_</p>
 
 === Phrase markup across lines should have no effect (dash)
 --- text
@@ -39,7 +39,7 @@ line2_
 line2-
 --- html
 -line1<br />
-line2-
+line2-</p>
 
 === Phrase markup across lines should have no effect (backtick)
 --- text
@@ -47,7 +47,7 @@ line2-
 line2`
 --- html
 `line1<br />
-line2`
+line2`</p>
 
 === Phrase markup across lines should have no effect (double braces)
 --- text
@@ -55,7 +55,7 @@ line2`
 line2}}
 --- html
 {{line1<br />
-line2}}
+line2}}</p>
 
 === Phrase markup across lines should have no effect (wafl)
 --- text
@@ -63,5 +63,6 @@ line2}}
 2010-09-15 10:36:30 GMT}
 --- html
 {date:<br />
-2010-09-15 10:36:30 GMT}
+2010-09-15 10:36:30 GMT}</p>
+
 */
