@@ -18,7 +18,8 @@ sub match {
     my $pattern_end = $self->pattern_end
         or return 1;
     my $end = substr( $text, $+[0] );
-    return substr($end, 0, index($end, "\n")) =~ $pattern_end;
+    $end =~ s/\n.*//s;
+    return $end =~ $pattern_end;
 }
 
 sub contains_phrases {
@@ -114,7 +115,8 @@ sub match {
 
     # Match the end, save matched body in the title field
     my $end = substr( $text, $+[0] );
-    return unless substr($end, 0, index($end, "\n")) =~ $self->pattern_end;
+    $end =~ s/\n.*//s;
+    return unless $end =~ $self->pattern_end;
     Socialtext::BrowserDetect::ie()
         ? $self->extra_space( $1 ? "&nbsp;" : '' )
         : $self->extra_space( $1 || '' );
@@ -171,7 +173,8 @@ sub match {
 
     # Match the end, save matched body in the title field
     my $end = substr( $text, $match_start );
-    return unless substr($end, 0, index($end, "\n")) =~ $self->pattern_end;
+    $end =~ s/\n.*//s;
+    return unless $end =~ $self->pattern_end;
     $text = $rt_19458_hack = $text; # To work around a Perl bug, see {rt 19458}
     $self->title( substr( $text, $match_start, $-[0] ) );
     $self->start_end_offset( $-[0] + $match_start );
