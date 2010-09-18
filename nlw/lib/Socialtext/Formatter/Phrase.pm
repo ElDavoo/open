@@ -120,8 +120,8 @@ sub match {
     Socialtext::BrowserDetect::ie()
         ? $self->extra_space( $1 ? "&nbsp;" : '' )
         : $self->extra_space( $1 || '' );
-    $self->asis_text( substr( $text, $match_start, $-[0] - $match_start ) || return );
-    $self->start_end_offset( $-[0] );
+    $self->asis_text( substr( $text, $match_start, $-[0]) );
+    $self->start_end_offset( $match_start + $-[0] );
     return 1;
 }
 
