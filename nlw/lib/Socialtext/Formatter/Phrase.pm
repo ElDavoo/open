@@ -114,7 +114,7 @@ sub match {
 
     # Match the end, save matched body in the title field
     my $end = substr( $text, $+[0] );
-    return unless substr($end, 0, index($end, "\n")) =~ $pattern_end;
+    return unless substr($end, 0, index($end, "\n")) =~ $self->pattern_end;
     Socialtext::BrowserDetect::ie()
         ? $self->extra_space( $1 ? "&nbsp;" : '' )
         : $self->extra_space( $1 || '' );
@@ -171,7 +171,7 @@ sub match {
 
     # Match the end, save matched body in the title field
     my $end = substr( $text, $match_start );
-    return unless substr($end, 0, index($end, "\n")) =~ $pattern_end;
+    return unless substr($end, 0, index($end, "\n")) =~ $self->pattern_end;
     $text = $rt_19458_hack = $text; # To work around a Perl bug, see {rt 19458}
     $self->title( substr( $text, $match_start, $-[0] ) );
     $self->start_end_offset( $-[0] + $match_start );
