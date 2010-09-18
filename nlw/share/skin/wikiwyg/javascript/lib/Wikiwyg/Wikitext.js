@@ -2452,7 +2452,8 @@ proto.has_parent = function(elem, name) {
             // Example: "x<b> y </b>z" becomes "x *y* z".
             return wikitext
                 .replace(/^(\s*)/, "$1" + markup_open)
-                .replace(/(\s*)$/, markup_close + "$1");
+                .replace(/(\s*)$/, markup_close + "$1")
+                .replace(/\n/g, ' ');
         }
     }
 
