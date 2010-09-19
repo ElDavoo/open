@@ -550,7 +550,7 @@ proto.newpage_save = function(page_name, pagename_editfield) {
 }
 
 proto.saveContent = function() {
-    if (jQuery('#st-editing-tools-edit ul').is(':hidden')) {
+    if (jQuery('#st-save-button-link').is(':hidden')) {
         // Don't allow "Save" to be clicked while saving: {bz: 1718}
         return;
     }
