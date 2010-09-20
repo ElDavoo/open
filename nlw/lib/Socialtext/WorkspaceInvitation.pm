@@ -48,11 +48,15 @@ sub send {
 
 sub _invite_one_user {
     my $self = shift;
+    my $wksp = $self->{workspace};
 
     my $user = Socialtext::User->new(
         email_address => $self->{invitee}
     );
-    my $wksp = $self->{workspace};
+    if ($user and $user->is_deactivated) {
+        $user->reactivate(account_id => $wksp->account_id);
+    }
+
     $user ||= Socialtext::User->create(
         username => $self->{invitee},
         email_address => $self->{invitee},

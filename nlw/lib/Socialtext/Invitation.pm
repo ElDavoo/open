@@ -23,6 +23,9 @@ sub queue {
     my $role   = delete $addtl{role} || Socialtext::Role->Member();
     my $object = $self->object;
     my $user   = Socialtext::User->new(email_address => $invitee);
+    if ($user and $user->is_deactivated) {
+        $user->reactivate(account_id => $object->account_id);
+    }
 
     $user ||= Socialtext::User->create(
         username           => $invitee,
