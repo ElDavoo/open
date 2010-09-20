@@ -77,7 +77,7 @@ Tests to create groups via REST and CLI.
 | create-workspace       | %%ws8%%                |                                                |
 | add-group-to-workspace | %%g8_id%%              | %%ws8%%                                        |
 | PUT-json               | /data/groups/%%g8_id%% | {"permission_set":"self-join","name":"%%g8%%"} |
-| code-is                | 400                    |                                                |
+| code-is                | 403                    |                                                |
 
 | *Comment* | verify the permission set of that group didn't change |
 | GET-json     | /data/groups/%%g8_id%% |                 |
