@@ -1,10 +1,10 @@
 #!/usr/bin/perl
-# @ACOPYRIGHT@
+# @COPYRIGHT@
 
 use strict;
 use warnings;
 
-use Test::Socialtext 'no_plan';
+use Test::Socialtext tests => 2;
 use Socialtext::Permission qw/ST_READ_PERM/;
 use Socialtext::Role;
 
