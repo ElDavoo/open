@@ -18,7 +18,7 @@ sub set_login_cookie {
     my $r = shift;
     my $id = shift;
     my $expire = shift;
-    my $value = Socialtext::HTTP::Cookie->BuildCookieValueForUserId($id);
+    my $value = Socialtext::HTTP::Cookie->BuildCookieValue(user_id => $id);
 
     _login_cookie( $r, $value, $expire );
 }

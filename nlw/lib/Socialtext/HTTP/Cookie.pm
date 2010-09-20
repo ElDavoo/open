@@ -75,13 +75,10 @@ sub _parse_cookie {
     return @user_data;
 }
 
-sub BuildCookieValueForUserId {
-    my $class   = shift;
-    my $user_id = shift;
-    my %values  = (
-        user_id => $user_id,
-        MAC     => $class->MAC_for_user_id($user_id),
-    );
+sub BuildCookieValue {
+    my $class  = shift;
+    my %values = @_;
+    $values{MAC} ||= $class->MAC_for_user_id($user_id);
     return join '&', %values;
 }
 
