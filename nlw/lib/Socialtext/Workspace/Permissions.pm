@@ -403,7 +403,7 @@ EOSQL
         # default Role if the User has no explicit Role in the WS
         my @roles = $ws->role_for_user($user);
         unless (@roles) {
-            @roles = $ws->account->has_user($user)
+            @roles = $user->is_authenticated && $ws->account->has_user($user)
                 ? Socialtext::Role->AccountUser()
                 : $user->default_role;
         }
