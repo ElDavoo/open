@@ -120,18 +120,18 @@ sub set_nlw_cookie_for_user {
 
     require Socialtext::HTTP::Cookie;
     my $user_id = $user->user_id;
-    my $mac = Socialtext::HTTP::Cookie->MAC_for_user_id($user_id);
-    $self->set_nlw_cookie($user_id, $mac);
+    my $cookie  = Socialtext::HTTP::Cookie->BuildCookieValue(user_id => $user_id);
+    $self->set_nlw_cookie($cookie);
 }
 
-=head2 set_nlw_cookie ( $user_id, $mac )
+=head2 set_nlw_cookie ( $cookie )
 
-Set the NLW cookie to a valid cookie for $username
+Set the NLW cookie to the given $cookie
 
 =cut
 sub set_nlw_cookie {
-    my ($self, $user_id, $mac) = @_;
-    $self->{_cookie} = "NLW-user=user_id&$user_id&MAC&$mac";
+    my ($self, $cookie) = @_;
+    $self->{_cookie} = "NLW-user=$cookie";
 }
 
 =head2 clear_nlw_cookie ()
