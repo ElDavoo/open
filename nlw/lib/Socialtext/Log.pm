@@ -58,6 +58,7 @@ BEGIN {
         no strict 'refs';
         *{$l} = sub {
             local $@;
+            local $SIG{PIPE} = sub { die "Syslog SIGPIPE" };
             eval {
                 my $self = shift;
                 foreach my $call (@deferred_calls) {
