@@ -60,26 +60,26 @@ sub _user_id_or_username {
 }
 
 sub _set_cookie {
-    my $r = shift;
-    my $name = shift;
-    my $value = shift;
+    my $r       = shift;
+    my $name    = shift;
+    my $value   = shift;
     my $expires = shift;
 
     my $ssl_only = Socialtext::AppConfig->ssl_only ? 1 : 0;
 
-    Apache::Cookie->new
-        ( $r,
-          -name    => $name,
-          -value   => $value,
-          -expires => $expires,
-          -path    => '/',
-          -secure  => $ssl_only,
-          -httponly => 1,
-          ( Socialtext::AppConfig->cookie_domain ?
-            ( -domain  => '.' . Socialtext::AppConfig->cookie_domain ) :
-            ()
-          ),
-        )->bake;
+    Apache::Cookie->new(
+        $r,
+        -name     => $name,
+        -value    => $value,
+        -expires  => $expires,
+        -secure   => $ssl_only,
+        -path     => '/',
+        -httponly => 1,
+        ( Socialtext::AppConfig->cookie_domain
+            ? (-domain => '.' . Socialtext::AppConfig->cookie_domain)
+            : ()
+        ),
+    )->bake;
 }
 
 
