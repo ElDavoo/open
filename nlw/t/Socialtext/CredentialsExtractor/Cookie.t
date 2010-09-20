@@ -11,16 +11,16 @@ use Test::Socialtext tests => 5;
 use Test::Socialtext::User;
 
 ###############################################################################
-# Fixtures: base_config
+# Fixtures: empty
 #
-# Need to have the config files present/available, but don't need anything
-# else.
-fixtures(qw( base_config ));
+# Need to have the test User around.
+fixtures(qw( empty ));
 
 ###############################################################################
 ### TEST DATA
 ###############################################################################
 my $valid_username  = Test::Socialtext::User->test_username();
+my $valid_user_id   = Socialtext::User->new(username => $valid_username)->user_id;
 my $cookie_name     = USER_DATA_COOKIE();
 my $air_cookie_name = AIR_USER_COOKIE();
 my $air_user_agent  = 'Mozilla/5.0 (Windows; U; en) AppleWebKit/420+ (KHTML, like Gecko) AdobeAIR/1.0';
@@ -28,10 +28,9 @@ my $air_user_agent  = 'Mozilla/5.0 (Windows; U; en) AppleWebKit/420+ (KHTML, lik
 my $creds_extractors = 'Cookie:Guest';
 
 sub sudo_make_me_a_cookie {
-    my $name   = shift;
-    my @values = @_;
-    my $str    = "$name=" . join '&', @values;
-    return $str;
+    my $name  = shift;
+    my $value = shift;
+    return "$name=$value";
 }
 
 ###############################################################################
@@ -40,11 +39,7 @@ cookie_ok: {
     # create the cookie data
     local $ENV{HTTP_COOKIE} = sudo_make_me_a_cookie(
         $cookie_name,
-        user_id => $valid_username,
-        MAC     => Digest::SHA::sha1_base64(
-            $valid_username,
-            Socialtext::AppConfig->MAC_secret()
-        ),
+        Socialtext::HTTP::Cookie->BuildCookieValue(user_id => $valid_user_id),
     );
 
     # configure the list of Credentials Extractors to run
@@ -52,17 +47,16 @@ cookie_ok: {
 
     # extract the credentials
     my $username = Socialtext::CredentialsExtractor->ExtractCredentials();
-    is $username, $valid_username, 'extracted credentials from HTTP cookie';
+    is $username, $valid_user_id, 'extracted credentials from HTTP cookie';
 }
 
 ###############################################################################
-# TEST: Cookie present, but contains bad MAC, not authenticated
-cookie_has_bad_mac: {
+# TEST: Cookie present, but invalid
+cookie_invalid: {
     # create the cookie data
     local $ENV{HTTP_COOKIE} = sudo_make_me_a_cookie(
         $cookie_name,
-        user_id => $valid_username,
-        MAC     => 'THIS-IS-A-BAD-MAC',
+        'THIS-IS-A-BAD-COOKIE',
     );
 
     # configure the list of Credentials Extractors to run
@@ -70,7 +64,7 @@ cookie_has_bad_mac: {
 
     # extract the credentials
     my $username = Socialtext::CredentialsExtractor->ExtractCredentials();
-    is $username, undef, 'unable to extract credentials when MAC is bad';
+    is $username, undef, 'unable to extract credentials when cookie invalid';
 }
 
 ###############################################################################
@@ -94,19 +88,11 @@ adobe_air_separate_cookie: {
     # create the cookie data
     my $cookie = sudo_make_me_a_cookie(
         $cookie_name,
-        user_id => $valid_username,
-        MAC     => Digest::SHA::sha1_base64(
-            $valid_username,
-            Socialtext::AppConfig->MAC_secret()
-        ),
+        Socialtext::HTTP::Cookie->BuildCookieValue(user_id => $valid_user_id),
     );
     my $air_cookie = sudo_make_me_a_cookie(
         $air_cookie_name,
-        user_id => $valid_username,
-        MAC     => Digest::SHA::sha1_base64(
-            $valid_username,
-            Socialtext::AppConfig->MAC_secret()
-        ),
+        Socialtext::HTTP::Cookie->BuildCookieValue(user_id => $valid_user_id),
     );
 
     # configure the list of Credentials Extractors to run
