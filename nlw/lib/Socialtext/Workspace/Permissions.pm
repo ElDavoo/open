@@ -107,12 +107,8 @@ sub new {
 
 {
     Readonly my $spec => {
-        set_name => {
-            callbacks => {
-                 'valid permission set name' =>
-                 sub { $_[0] && exists $PermissionSets{ $_[0] } },
-            },
-        },
+        set_name => SCALAR_TYPE,
+        allow_deprecated => BOOLEAN_TYPE(default => 0),
     };
     sub set {
         my ($self,@args) = @_;
@@ -126,7 +122,12 @@ sub new {
         my $wksp = $self->{wksp};
 
         my $workspace_id = $wksp->workspace_id;
-        my $set = $PermissionSets{ $p{set_name} };
+        my %valid_sets = $p{allow_deprecated} == 0
+            ? %PermissionSets
+            : (%PermissionSets, %DeprecatedPermissionSets);
+
+        my $set = $valid_sets{ $p{set_name} };
+        die "Set $p{set_name} is not valid" unless $set;
 
         # We need to preserve the guest's email_in permission
         my $guest_id    = Socialtext::Role->Guest()->role_id();

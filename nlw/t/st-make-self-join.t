@@ -42,40 +42,17 @@ test_it: {
         primary_account_id => $acctsec->account_id
     );
 
-
     my $workspacepri = Socialtext::Workspace->create(
         name => "msjworkspace$now",
         title => "msjworkspace$now",
         account_id => $acctpri->account_id
     );
 
-    $workspacepri->permissions->set(set_name => 'public-join-to-edit');
-
-    # now, reset back to the old public-authenticate-to-edit and
-    # run the tool
-    #
-    $workspacepri->permissions->add(
-        permission => ST_EDIT_CONTROLS_PERM,
-        role => Socialtext::Role->Guest()
+    $workspacepri->permissions->set(
+        set_name => 'public-authenticate-to-edit',
+        allow_deprecated => 1,
     );
 
-    $workspacepri->permissions->remove(
-        permission => ST_SELF_JOIN_PERM,
-        role => Socialtext::Role->Guest()
-    );
-    $workspacepri->permissions->remove(
-        permission => ST_SELF_JOIN_PERM,
-        role => Socialtext::Role->AuthenticatedUser()
-    );
-
-    for my $perm (ST_READ_PERM,
-                  ST_EDIT_PERM,ST_ATTACHMENTS_PERM,ST_COMMENT_PERM,
-                  ST_DELETE_PERM,ST_EMAIL_IN_PERM,ST_EMAIL_OUT_PERM) {
-        $workspacepri->permissions->add(
-            permission => $perm,
-            role => Socialtext::Role->AuthenticatedUser()
-        );
-    };
     my @command = qw( bin/st-make-self-join --add );
     push(@command,  $acctpri->name );
 
