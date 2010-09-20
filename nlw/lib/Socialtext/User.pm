@@ -895,10 +895,11 @@ sub reactivate {
     require Socialtext::Account;
     my $deleted = Socialtext::Account->Deleted();
 
-    die "Account is required" unless $p{account};
+    die "Account is required" unless $p{account} or $p{account_id};
+    $p{account_id} ||= $p{account}->account_id;
 
     # Add the user to a new primary _before_ deleting the old
-    $self->primary_account( $p{account}->account_id );
+    $self->primary_account( $p{account_id} );
     $deleted->remove_user( user => $self );
 }
 
