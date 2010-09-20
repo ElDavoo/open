@@ -11,6 +11,7 @@
 | set | joiner | %%joiner_short%%@matt.socialtext.net |
 
 | set | ws | selfjoin-ws-%%start_time%% |
+| set | wstwo | selfjointwo%%start_time%% |
 | set | other_account | other-acct-%%start_time%% |
 | set | other_user | other-user-%%start_time%%@matt.socialtext.net |
 | set | public_group | public-group-%%start_time%% |
@@ -64,7 +65,6 @@
 | get_id_from_url | first_group |  |
 
 | *Comment* | Test Case: Self Join Group - See Group is Saved private |  |
-
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | text_like | //span[@class='permissionType'] | qr/private/ism |
@@ -88,6 +88,13 @@
 | get_id_from_url | second_id |  |
 
 | *Comment* | Test Case: Self Join Group - Edit Private Group, Flip Permissions |  |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% | A new workspsce named "%%ws%%" was created |
+| st-admin | show-acls --workspace %%ws%% | permission set name: member-only |
+| st-admin | add-member --workspace %%ws%% --g %%second_id%% | %%private_group%% now has the role of 'member' in the %%ws%% Workspace |
+| st-admin | create-workspace --name %%wstwo%% --title %%wstwo%% | A new workspsce named "%%ws%%" was created |
+| st-admin | show-acls --workspace %%wstwo%% | permission set name: member-only |
+| st-admin | add-member --workspace %%wstwo%% --g %%second_id%% | %%private_group%% now has the role of 'member' in the %%wstwo%% Workspace |
+
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
@@ -136,6 +143,8 @@
 | text_like | //span[@class='permissionType'] | qr/self-join/ism |
 | text_unlike | //span[@class='permissionType'] | qr/private/ism |
 | select-frame | relative=parent |  |
+| st-admin | show-acls --w %%ws%% | permission set name: self-join |
+| st-admin | show-acls --w %%wstwo%% | permission set name: self-join |
 
 | wait_for_element_visible_ok | st-leave-group | 30000 |
 | click_ok | st-leave-group |  |
@@ -180,7 +189,52 @@
 | wait_for_text_present_ok | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. | 30000 |
 | wait_for_element_not_present_ok | st-join-group | 5000 |
 
+| *Comment* | Test Case: Self Join Group - Flip back to private |  |
+| st-logoutin | %%user%% | %%password%% |  |
+| open_ok | /st/edit_group/%%second_id%% |
+
+| st-name-widget | 1 | information_widget |
+| st-widget-title-like | information_widget | Information |
+| st-select-widget-frame | information_widget |  |
+| wait_for_element_visible_ok | permission-change | 30000 |
+| click_ok | permission-change |  |
+
+| select-frame | relative=parent |  |
+| wait_for_element_present_ok | st-create-group-next | 30000 |
+| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
+| wait_for_element_present_ok | private-radio | 30000 |
+
+| click_ok | private-radio | 30000 |
+| is_checked_ok | sprivate-radio |  |
+
+| *Comment* | Test Case: Self Join Group - wait for the f#$%^king JS to finish loading |  |
+| pause | 5000 |  |
+
+| click_ok | st-create-group-next |  |
+| wait_for_element_not_present_ok | st-create-group-next | 30000 |
+
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+| text_unlike | //span[@id='permission-set'] | qr/self-join/ism |
+| text_like | //span[@id='permission-set'] | qr/private/ism |
+
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| click_and_wait | create-group |  |
+| get_id_from_url | group_id |  |
+
+| *Comment* | Test Case: Self Join Group - See Group is changed to private |  |
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
+| text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
+| text_like | //span[@class='permissionType'] | qr/private/ism |
+| select-frame | relative=parent |  |
+| st-admin | show-acls --w %%ws%% | permission set name: member-only |
+| st-admin | show-acls --w %%wstwo%% | permission set name: member-only |
+
 | *Comment* | Test Case: Self Join Group TEARDOWN |  |
+| st-admin | delete-workspace --w %%ws%% | has been deleted |
+| st-admin | delete-workspace --w %%wstwo%% | has been deleted |
 | delete-group | %%first_group%% |  |
 | delete-group | %%group_id%% |  |
 
