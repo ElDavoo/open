@@ -323,6 +323,7 @@ sub _set_permissions {
     my $self = shift;
 
     my $perms = $self->_load_yaml( $self->_permissions_file() );
+    $perms = $self->_add_missing_role_for_perms($perms);
 
     # Also look for lock permissions
     my $lock_perm_file = $self->_lock_permissions_file;
@@ -375,6 +376,32 @@ sub _set_permissions {
         }
 
     };
+}
+
+sub _add_missing_role_for_perms {
+    my $self = shift;
+    my $set  = shift;
+
+    # map to a hash for easy duplication
+    my %set_as_hash = ();
+    for my $item (@$set) {
+        my $role_name = $item->{role_name};
+        $set_as_hash{$role_name} = [] unless $set_as_hash{$role_name};
+        push(@{$set_as_hash{$role_name}}, $item->{permission_name});
+    }
+
+    $set_as_hash{account_user} = $set_as_hash{authenticated_user}
+        unless $set_as_hash{account_user};
+
+    # re-map our set
+    my @remapped = ();
+    for my $role_name (keys %set_as_hash) {
+        my $names = $set_as_hash{$role_name};
+        push @remapped, (
+            map { +{permission_name=>$_, role_name=>$role_name}} @$names );
+    }
+
+    return \@remapped;
 }
 
 sub _populate_db_metadata {
