@@ -18,54 +18,62 @@ use Socialtext::Role;
 use Socialtext::Timer qw/time_scope/;
 
 our %AllowableRoles = map { $_ => 1 }
-    qw/guest authenticated_user affiliate member admin impersonator/;
+    qw/guest authenticated_user account_user   affiliate member admin impersonator/;
 
 our %PermissionSets = (
   'public' => {
     admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
     member             => [qw( read edit attachments comment delete email_in email_out                      )],
+    account_user       => [qw( read edit             comment        email_in                                )],
     authenticated_user => [qw( read edit             comment        email_in                                )],
     guest              => [qw( read edit             comment                                                )],
   },
   'member-only' => {
     admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
     member             => [qw( read edit attachments comment delete email_in email_out                      )],
+    account_user       => [qw(                                      email_in                                )],
     authenticated_user => [qw(                                      email_in                                )],
     guest              => [                                                                                  ],
   },
   'authenticated-user-only' => {
     admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
     member             => [qw( read edit attachments comment delete email_in email_out                      )],
+    account_user       => [qw( read edit attachments comment delete email_in email_out                      )],
     authenticated_user => [qw( read edit attachments comment delete email_in email_out                      )],
     guest              => [                                                                                  ],
   },
   'public-read-only' => {
     admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
     member             => [qw( read edit attachments comment delete email_in email_out                      )],
-    guest              => [qw( read                                                                         )],
+    account_user       => [qw( read                                                                         )],
     authenticated_user => [qw( read                                                                         )],
+    guest              => [qw( read                                                                         )],
   },
   'public-comment-only' => {
     admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
     member             => [qw( read edit attachments comment delete email_in email_out                      )],
+    account_user       => [qw( read                  comment                                                )],
     authenticated_user => [qw( read                  comment                                                )],
     guest              => [qw( read                  comment                                                )],
   },
   'public-join-to-edit' => {
     admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock           )],
     member             => [qw( read edit attachments comment delete email_in email_out                                )],
+    account_user       => [qw( read                                                                         self_join )],
     authenticated_user => [qw( read                                                                         self_join )],
     guest              => [qw( read                                                                         self_join )],
   },
   'self-join' => {
     admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock           )],
     member             => [qw( read edit attachments comment delete email_in email_out                                )],
-    authenticated_user => [qw( read                                                                         self_join )],
+    account_user       => [qw( read                                                                         self_join )],
+    authenticated_user => [                                                                                            ],
     guest              => [                                                                                            ],
   },
   'intranet' => {
     admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock )],
     member             => [qw( read edit attachments comment delete email_in email_out                      )],
+    account_user       => [qw( read edit attachments comment delete email_in email_out                      )],
     authenticated_user => [qw( read edit attachments comment delete email_in email_out                      )],
     guest              => [qw( read edit attachments comment delete email_in email_out                      )],
   },
@@ -75,6 +83,7 @@ our %DeprecatedPermissionSets = (
   'public-authenticate-to-edit' => {
     admin              => [qw( read edit attachments comment delete email_in email_out admin_workspace lock               )],
     member             => [qw( read edit attachments comment delete email_in email_out                                    )],
+    account_user       => [                                                                                                ],
     authenticated_user => [qw( read edit attachments comment delete email_in email_out                                    )],
     guest              => [qw( read                                                                         edit_controls )],
   },
@@ -393,7 +402,11 @@ EOSQL
         # get the list of Roles this User has in the WS, falling back to a
         # default Role if the User has no explicit Role in the WS
         my @roles = $ws->role_for_user($user);
-        @roles = $user->default_role unless @roles;
+        unless (@roles) {
+            @roles = $ws->account->has_user($user)
+                ? Socialtext::Role->AccountUser()
+                : $user->default_role;
+        }
 
         # check if any of those Roles have the specified Permission
         my $has_permission = first {

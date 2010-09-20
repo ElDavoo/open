@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 53;
+use Test::Socialtext tests => 56;
 use Test::Socialtext::CLIUtils qw/:all/;
 
 fixtures(qw(db));
@@ -125,10 +125,10 @@ SHOW_ACLS: {
             qw(show-acls --workspace ),$ws->name),
         qr/\Qpermission set name: public-read-only\E
            .+
-           \|\s+admin_workspace\s+\|\s+\|\s+\|\s+\|\s+\|\s+X\s+\|\s+\|\s+
-           \|\s+attachments\s+\|\s+\|\s+\|\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
+           \|\s+admin_workspace\s+\|\s+\|\s+\|\s+\|\s+\|\s+\|\s+X\s+\|\s+\|\s+
+           \|\s+attachments\s+\|\s+\|\s+\|\s+\|\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
            .+
-           \|\s+read\s+\|\s+X\s+\|\s+X\s+\|\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
+           \|\s+read\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+\|\s+X\s+\|\s+X\s+\|\s+X\s+\|\s+
           /xs,
         'show-acls'
     );
