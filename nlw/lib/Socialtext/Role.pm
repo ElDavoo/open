@@ -24,6 +24,7 @@ field 'used_as_default';
 Readonly my @RequiredRoles => (
     [ guest              => 1 ],
     [ authenticated_user => 1 ],
+    [ account_user       => 1 ],
     [ affiliate          => 0 ],
     [ member             => 0 ],
     [ admin              => 0 ],
@@ -191,6 +192,7 @@ sub display_name {
 sub Guest             { shift->new(name => 'guest') }
 sub AuthenticatedUser { shift->new(name => 'authenticated_user') }
 sub Affiliate         { shift->new(name => 'affiliate') }
+sub AccountUser       { shift->new(name => 'account_user') }
 sub Member            { shift->new(name => 'member') }
 sub Admin             { shift->new(name => 'admin') }
 sub Impersonator      { shift->new(name => 'impersonator') }
