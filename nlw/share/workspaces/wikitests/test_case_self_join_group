@@ -88,10 +88,10 @@
 | get_id_from_url | second_id |  |
 
 | *Comment* | Test Case: Self Join Group - Edit Private Group, Flip Permissions |  |
-| st-admin | create-workspace --name %%ws%% --title %%ws%% | A new workspsce named "%%ws%%" was created |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% | A new workspace named "%%ws%%" was created |
 | st-admin | show-acls --workspace %%ws%% | permission set name: member-only |
 | st-admin | add-member --workspace %%ws%% --g %%second_id%% | %%private_group%% now has the role of 'member' in the %%ws%% Workspace |
-| st-admin | create-workspace --name %%wstwo%% --title %%wstwo%% | A new workspsce named "%%ws%%" was created |
+| st-admin | create-workspace --name %%wstwo%% --title %%wstwo%% | A new workspace named "%%wstwo%%" was created |
 | st-admin | show-acls --workspace %%wstwo%% | permission set name: member-only |
 | st-admin | add-member --workspace %%wstwo%% --g %%second_id%% | %%private_group%% now has the role of 'member' in the %%wstwo%% Workspace |
 
@@ -137,7 +137,6 @@
 | get_id_from_url | group_id |  |
 
 | *Comment* | Test Case: Self Join Group - See Group is changed to self-join |  |
-
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | text_like | //span[@class='permissionType'] | qr/self-join/ism |
