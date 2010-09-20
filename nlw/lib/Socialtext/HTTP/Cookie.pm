@@ -6,9 +6,11 @@ use strict;
 use warnings;
 use Class::Field qw(const);
 use Digest::SHA qw(sha1_base64);
+use POSIX qw(strftime);
 use Socialtext::AppConfig;
 use Socialtext::BrowserDetect;
 use CGI::Cookie;
+use Crypt::OpenToken;
 
 ###############################################################################
 # Allow some constant values to be exported
@@ -46,12 +48,26 @@ sub GetValidatedUserId {
 sub GetValidatedUserIdFromCookie {
     my $class  = shift;
     my $cookie = shift;
-    my %user_data = $class->_parse_cookie($cookie);
-    return $user_data{user_id}
-        if $user_data{user_id}
-        and $user_data{MAC}
-        and $user_data{MAC} eq $class->MAC_for_user_id($user_data{user_id});
-    return 0;
+
+    my $factory = _token_factory();
+    my $token   = eval { $factory->parse($cookie) };
+
+    if ($@) {
+        #warn "cookie failed to decrypt; $@";
+        return 0;
+    }
+
+    unless ($token) {
+        #warn "no token cookie\n";
+        return 0;
+    }
+
+    unless ($token->is_valid) {
+        #warn "token cookie invalid\n";
+        return 0;
+    }
+
+    return $token->data->{user_id};
 }
 
 sub AuthCookiePresent {
@@ -67,19 +83,50 @@ sub GetRawCookie {
     return $cookies->{$name};
 }
 
-sub _parse_cookie {
-    my $class     = shift;
-    my $value     = shift;
-    my @user_data = split(/[&;]/, $value);
-    push @user_data, undef if (@user_data % 2 == 1);
-    return @user_data;
-}
-
 sub BuildCookieValue {
     my $class  = shift;
     my %values = @_;
-    $values{MAC} ||= $class->MAC_for_user_id($user_id);
-    return join '&', %values;
+
+    my $not_before      = _not_before();
+    my $not_on_or_after = _not_on_or_after();
+    my $renew_until     = _renew_until();
+
+    my $factory = _token_factory();
+    my $token   = $factory->create(
+        Crypt::OpenToken::CIPHER_AES128,
+        {
+            %values,
+            'not-before'      => $not_before,
+            'not-on-or-after' => $not_on_or_after,
+            'renew-until'     => $renew_until,
+        },
+    );
+    return $token;
+}
+
+sub _token_factory {
+    $MAC_secret ||= Socialtext::AppConfig->MAC_secret;
+    return Crypt::OpenToken->new(password => $MAC_secret);
+}
+
+sub _not_before {
+    # token cookies aren't valid before now.
+    _make_iso8601_date(time);
+}
+
+sub _not_on_or_after {
+    # XXX: token cookies are good for 2wks
+    _make_iso8601_date(time + (86400*14));
+}
+
+sub _renew_until {
+    # XXX: token cookies should renew after ~13d
+    _make_iso8601_date(time + (86400*13));
+}
+
+sub _make_iso8601_date {
+    my $time_t = shift;
+    return strftime('%Y-%m-%dT%H:%M:%SGMT', gmtime($time_t));
 }
 
 1;
