@@ -39,6 +39,9 @@ sub handler {
                  );
                  return '';
             }
+            elsif (Exception::Class->caught('Socialtext::WebApp::Exception::AuthRenewal')) {
+                return $self->renew_authentication;
+            }
         }
         $rest->header(-type => 'text/html; charset=UTF-8', # default
                       $self->hub->rest->header);
