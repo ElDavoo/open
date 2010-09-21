@@ -7,6 +7,7 @@ use Socialtext::l10n qw/loc_lang loc/;
 use Socialtext::JSON qw(encode_json decode_json);
 use Exception::Class;
 use Socialtext::AppConfig;
+use Socialtext::Session;
 use Socialtext::Gadgets::Container;
 use Socialtext::Gadgets::Util qw(share_path plugin_dir);
 use namespace::clean -except => 'meta';
@@ -22,6 +23,14 @@ has 'container' => (
     is => 'ro', isa => 'Maybe[Socialtext::Gadgets::Container]',
     lazy_build => 1,
 );
+
+has 'session' => (
+    is => 'ro', isa => 'Socialtext::Session',
+    lazy_build => 1,
+);
+sub _build_session {
+    return Socialtext::Session->new;
+}
 
 has 'template_paths' => (
     is => 'ro', isa => 'ArrayRef',
