@@ -15,6 +15,7 @@ use Carp 'croak';
 use List::MoreUtils qw/part/;
 use Try::Tiny;
 use Scalar::Util qw/blessed/;
+use URI::Escape qw(uri_escape);
 use YAML ();
 
 use Socialtext::Exceptions qw/bad_request/;
@@ -24,7 +25,7 @@ use Socialtext::Log 'st_log';
 use Socialtext::URI;
 use Socialtext::Session;
 use Socialtext::JSON qw/decode_json/;
-use Socialtext::l10n qw(system_locale);
+use Socialtext::l10n qw(system_locale loc);
 
 our $AUTOLOAD;
 
@@ -51,6 +52,20 @@ sub error {
         -type   => 'text/plain',
     );
     return $body;
+}
+
+sub renew_authentication {
+    my $self     = shift;
+    my $here     = shift || $self->rest->query->url(-absolute => 1, -path_info => 1, -query => 1);
+    my $location = '/challenge?' . uri_escape($here);
+    $self->session->add_error(
+        loc("Login session has expired; please re-authenticate.")
+    );
+    $self->rest->header(
+        -status   => HTTP_302_Found,
+        -location => $location,
+    );
+    return '';
 }
 
 sub bad_method {
