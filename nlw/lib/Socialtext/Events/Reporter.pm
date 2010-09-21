@@ -259,7 +259,9 @@ sub _extract_signal {
     }
 
     for my $topic (@topics_to_check) {
-        next if $topic->is_visible_to($self->viewer);
+        my $is_visible = 0;
+        eval { $is_visible = $topic->is_visible_to($self->viewer) };
+        next if $is_visible;
         no warnings 'exiting';
         next EVENT;
     }
