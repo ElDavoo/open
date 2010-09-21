@@ -131,7 +131,9 @@ Set the NLW cookie to the given $cookie
 =cut
 sub set_nlw_cookie {
     my ($self, $cookie) = @_;
-    $self->{_cookie} = "NLW-user=$cookie";
+    require Socialtext::HTTP::Cookie;
+    my $name = Socialtext::HTTP::Cookie::USER_DATA_COOKIE;
+    $self->{_cookie} = "$name=$cookie";
 }
 
 =head2 clear_nlw_cookie ()
