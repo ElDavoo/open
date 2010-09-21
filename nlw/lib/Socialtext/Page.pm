@@ -284,8 +284,6 @@ sub update_from_remote {
         die "Contention: page has been updated since retrieved\n";
     }
 
-    # REVIEW: cateories/tag naming mismatch, using tag in this
-    # method because it is close to the exterior
     $self->update(
         original_page_id => $self->id,
         content          => $content,
@@ -295,8 +293,9 @@ sub update_from_remote {
         user             => $user,
         edit_summary     => $edit_summary,
         locked           => $locked,
-        $p{date} ? ( date => $p{date} ) : (),
-        $p{type} ? ( type => $p{type} ) : (),
+        $p{date} ? (date => $p{date}) : (),
+        $p{type} ? (type => $p{type}) : (),
+        # don't signal-this-edit via update() so we can tie it to the event
     );
 
     # XXX: record a lock/unlock event.
@@ -308,7 +307,8 @@ sub update_from_remote {
     );
 
     if ($p{signal_edit_summary}) {
-        $event{signal} = $self->_signal_edit_summary($user, $edit_summary);
+        $event{signal} = $self->_signal_edit_summary(
+            $user, $edit_summary, $p{signal_edit_to_network});
     }
 
     Socialtext::Events->Record(\%event);
