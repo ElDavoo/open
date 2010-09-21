@@ -70,6 +70,25 @@ sub GetValidatedUserIdFromCookie {
     return $token->data->{user_id};
 }
 
+sub NeedsRenewal {
+    my $class = shift;
+    my $name   = $class->cookie_name();
+    my $cookie = $class->GetRawCookie($name) || '';
+
+    my $factory = _token_factory();
+    my $token   = eval { $factory->parse($cookie) };
+
+    if ($@) {
+        #warn "cookie failed to decrypt; $@";
+        return 0;
+    }
+
+    # Check if the cookie needs to be renewed
+    my $renew_until = $token->renew_until;
+    my $time_now    = DateTime->now(time_zone => 'UTC');
+    return $time_now > $renew_until ? 1 : 0;
+}
+
 sub AuthCookiePresent {
     my $class = shift;
     my $name  = $class->cookie_name();
