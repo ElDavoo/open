@@ -118,10 +118,49 @@ sub set_nlw_cookie_for_user {
     $username ||= $self->{http_username};
     my $user = Socialtext::User->Resolve($username);
 
-    require Socialtext::HTTP::Cookie;
-    my $user_id = $user->user_id;
-    my $cookie  = Socialtext::HTTP::Cookie->BuildCookieValue(user_id => $user_id);
-    $self->set_nlw_cookie($cookie);
+    require Test::Socialtext::Cookie;
+    my $cookie = Test::Socialtext::Cookie->BuildCookie(
+        user_id => $user->user_id,
+    );
+    $self->{_cookie} = $cookie;
+}
+
+=head2 set_expired_nlw_cookie_for_user ( $username )
+
+Set an NLW cookie for $username that has B<expired> and is no longer valid.
+
+=cut
+
+sub set_expired_nlw_cookie_for_user {
+    my ($self, $username) = @_;
+
+    $username ||= $self->{http_username};
+    my $user = Socialtext::User->Resolve($username);
+
+    require Test::Socialtext::Cookie;
+    my $cookie = Test::Socialtext::Cookie->BuildExpiredCookie(
+        user_id => $user->user_id,
+    );
+    $self->{_cookie} = $cookie;
+}
+
+=head2 set_nlw_cookie_needing_renewal_for_user ( $username )
+
+Set an NLW cookie for $username that is valid but that should be renewed.
+
+=cut
+
+sub set_nlw_cookie_needing_renewal_for_user {
+    my ($self, $username) = @_;
+
+    $username ||= $self->{http_username};
+    my $user = Socialtext::User->Resolve($username);
+
+    require Test::Socialtext::Cookie;
+    my $cookie = Test::Socialtext::Cookie->BuildCookieNeedingRenewal(
+        user_id => $user->user_id,
+    );
+    $self->{_cookie} = $cookie;
 }
 
 =head2 set_nlw_cookie ( $cookie )
