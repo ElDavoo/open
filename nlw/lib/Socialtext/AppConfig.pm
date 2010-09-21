@@ -238,6 +238,9 @@ sub _default_solr_base {
     return "$base/$name";
 }
 
+sub _default_auth_token_soft_limit { return 86400 * 13; }
+sub _default_auth_token_hard_limit { return 86400 * 14; }
+
 sub _default_schema_name { 'socialtext' }
 
 sub _default_db_user {
@@ -1284,6 +1287,32 @@ Set this to the base URL for your solr instance.
 =for code default => _default_solr_base()
 
 =for code type => SCALAR_TYPE
+
+=head2 auth_token_soft_limit
+
+The duration, in seconds, that authentication tokens are considered to be
+valid and I<not> require the User to re-authenticate themselves.  Once this
+"soft" limit has passed (and before the "hard" limit has been reached) the
+authentication token will still be considered to be valid but the User I<will>
+be prompted to re-authenticate if they perform an interruptable action.
+
+Defaults to 13d.
+
+=for code default => _default_auth_token_soft_limit
+
+=for code type => POSITIVE_INT_TYPE
+
+=head2 auth_token_hard_limit
+
+The duration, in seconds, that authentication tokens are considered to be
+valid.  Once this limit has been reached, the authentication token will be
+considered invalid and the User will be required to re-authenticate.
+
+Defaults to 14d.
+
+=for code default => _default_auth_token_hard_limit
+
+=for code type => POSITIVE_INT_TYPE
 
 =head2 json_proxy_backend_limit
 
