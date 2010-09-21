@@ -26,7 +26,10 @@ sub POST {
                 return "There is no page called '" . $self->pname . "'";
             }
             else {
-                $self->page->add_comment( $rest->getContent );
+                $self->page->add_comment(
+                    $rest->getContent,
+                    $rest->query->param('signal_comment_to_network')
+                );
                 $rest->header( -status => HTTP_204_No_Content );
                 return '';
             }

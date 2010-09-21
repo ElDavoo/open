@@ -321,7 +321,7 @@ sub update_from_remote {
     );
 
     if ($p{signal_edit_summary}) {
-        $event{signal} = $self->_signal_edit_summary($user, $edit_summary);
+        $event{signal} = $self->_signal_edit_summary($user, $edit_summary, $p{signal_edit_to_network});
     }
 
     Socialtext::Events->Record(\%event);
