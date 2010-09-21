@@ -370,7 +370,7 @@ various places where this has been done in the past.
         content          => { type => SCALAR, default => '' },
         original_page_id => SCALAR_TYPE,
         revision         => { type => SCALAR,   regex   => qr/^\d+$/ },
-        type             => { type => SCALAR,   regex   => qr/^wiki|spreadsheet$/, default => undef },
+        type             => { type => SCALAR,   regex   => qr/^(?:wiki|spreadsheet)$/, default => 'wiki' },
         categories       => { type => ARRAYREF, default => [] },
         subject             => SCALAR_TYPE,
         user                => USER_TYPE,
