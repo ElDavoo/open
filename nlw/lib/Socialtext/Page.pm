@@ -174,6 +174,9 @@ sub _signal_edit_summary {
     my $workspace = $self->hub->current_workspace;
     $user ||= $self->hub->current_user;
 
+    # Trim trailing whitespaces first
+    $edit_summary =~ s/\s+$//;
+
     $edit_summary = Socialtext::String::word_truncate($edit_summary, ($is_comment ? $SignalCommentLength : $SignalEditLength));
     my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->title;
     my $body = $edit_summary
