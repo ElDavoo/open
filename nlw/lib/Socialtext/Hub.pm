@@ -102,7 +102,17 @@ sub _process {
     Socialtext::Timer->Continue('drop_workspace_breadcrumb');
     $self->drop_workspace_breadcrumb($method);
     Socialtext::Timer->Pause('drop_workspace_breadcrumb');
-    my $html = eval { $self->$class_id->$method };
+
+    my $html = eval {
+        # GET requests are interruptable *if* the authen cookie needs to be
+        # renewed.
+        my $req_method = uc($self->rest->getRequestMethod());
+        if (($req_method eq 'GET') && Socialtext::HTTP::Cookie->NeedsRenewal) {
+            Socialtext::WebApp::Exception::AuthRenewal->throw();
+        }
+        $self->$class_id->$method;
+    };
+
     my $e = $@;
     if ( Exception::Class->caught('Socialtext::Exception::DataValidation') ) {
         $html = $self->handle_validation_error($@);
