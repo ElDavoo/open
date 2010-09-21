@@ -87,18 +87,18 @@ sub BuildCookieValue {
     my $class  = shift;
     my %values = @_;
 
-    my $not_before      = _not_before();
-    my $not_on_or_after = _not_on_or_after();
-    my $renew_until     = _renew_until();
+    my $not_before      = delete $values{'not-before'}      || _not_before();
+    my $not_on_or_after = delete $values{'not-on-or-after'} || _not_on_or_after();
+    my $renew_until     = delete $values{'renew-until'}     || _renew_until();
 
     my $factory = _token_factory();
     my $token   = $factory->create(
         Crypt::OpenToken::CIPHER_AES128,
         {
             %values,
-            'not-before'      => $not_before,
-            'not-on-or-after' => $not_on_or_after,
-            'renew-until'     => $renew_until,
+            'not-before'      => _make_iso8601_date($not_before),
+            'not-on-or-after' => _make_iso8601_date($not_on_or_after),
+            'renew-until'     => _make_iso8601_date($renew_until),
         },
     );
     return $token;
@@ -111,7 +111,7 @@ sub _token_factory {
 
 sub _not_before {
     # token cookies aren't valid before now.
-    _make_iso8601_date(time);
+    return time;
 }
 
 {
@@ -119,12 +119,12 @@ sub _not_before {
 
     sub _not_on_or_after {
         $hard_limit ||= Socialtext::AppConfig->auth_token_hard_limit;
-        _make_iso8601_date(time + $hard_limit);
+        return time + $hard_limit;
     }
 
     sub _renew_until {
         $soft_limit ||= Socialtext::AppConfig->auth_token_soft_limit;
-        _make_iso8601_date(time + $soft_limit);
+        return time + $soft_limit;
     }
 }
 
