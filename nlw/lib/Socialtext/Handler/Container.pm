@@ -2,6 +2,7 @@ package Socialtext::Handler::Container;
 # @COPYRIGHT@
 use Moose::Role;
 use Socialtext::HTTP ':codes';
+use Socialtext::HTTP::Cookie;
 use Socialtext::Workspace;
 use Socialtext::l10n qw/loc_lang loc/;
 use Socialtext::JSON qw(encode_json decode_json);
@@ -58,8 +59,24 @@ sub if_authorized_to_edit {
     return $self->if_authorized_to_view($cb);
 }
 
+sub unless_authen_needs_renewal {
+    my ($self, $cb) = @_;
+    return $self->renew_authentication if Socialtext::HTTP::Cookie->NeedsRenewal;
+    return $cb->();
+}
+
 sub not_authenticated {
     my $self = shift;
+    my $redirect_to = $self->rest->request->parsed_uri->unparse;
+    $self->redirect("/challenge?$redirect_to");
+    return '';
+}
+
+sub renew_authentication {
+    my $self = shift;
+    $self->session->add_error(
+        loc("Login session has expired; please re-authenticate.")
+    );
     my $redirect_to = $self->rest->request->parsed_uri->unparse;
     $self->redirect("/challenge?$redirect_to");
     return '';
