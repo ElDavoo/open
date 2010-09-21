@@ -89,10 +89,12 @@
 
 | *Comment* | Test Case: Self Join Group - Edit Private Group, Flip Permissions |  |
 | st-admin | create-workspace --name %%ws%% --title %%ws%% | A new workspace named "%%ws%%" was created |
+| st-admin | add-workspace-admin --email %%user%% --w %%ws%% | now has the role of 'admin' in the %%ws%% Workspace |
 | st-admin | show-acls --workspace %%ws%% | permission set name: member-only |
 | st-admin | add-member --workspace %%ws%% --g %%second_id%% | %%private_group%% now has the role of 'member' in the %%ws%% Workspace |
 | st-admin | create-workspace --name %%wstwo%% --title %%wstwo%% | A new workspace named "%%wstwo%%" was created |
 | st-admin | show-acls --workspace %%wstwo%% | permission set name: member-only |
+| st-admin | add-workspace-admin --email %%user%% --w %%wstwo%% | now has the role of 'admin' in the %%wstwo%% Workspace |
 | st-admin | add-member --workspace %%wstwo%% --g %%second_id%% | %%private_group%% now has the role of 'member' in the %%wstwo%% Workspace |
 
 | st-name-widget | 1 | information_widget |
@@ -204,7 +206,7 @@
 | wait_for_element_present_ok | private-radio | 30000 |
 
 | click_ok | private-radio | 30000 |
-| is_checked_ok | sprivate-radio |  |
+| is_checked_ok | private-radio |  |
 
 | *Comment* | Test Case: Self Join Group - wait for the f#$%^king JS to finish loading |  |
 | pause | 5000 |  |
@@ -232,8 +234,8 @@
 | st-admin | show-acls --w %%wstwo%% | permission set name: member-only |
 
 | *Comment* | Test Case: Self Join Group TEARDOWN |  |
-| st-admin | delete-workspace --w %%ws%% | has been deleted |
-| st-admin | delete-workspace --w %%wstwo%% | has been deleted |
+| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%wstwo%% --no-export | has been deleted |
 | delete-group | %%first_group%% |  |
 | delete-group | %%group_id%% |  |
 
