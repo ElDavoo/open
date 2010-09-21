@@ -22,6 +22,7 @@ use Socialtext::Workspace;
 use Socialtext::HTTP ':codes';
 use Socialtext::Log 'st_log';
 use Socialtext::URI;
+use Socialtext::Session;
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::l10n qw(system_locale);
 
@@ -34,6 +35,7 @@ field 'authz', -init => '$self->hub ? $self->hub->authz : Socialtext::Authz->new
 field 'workspace';
 field 'params' => {};
 field 'rest';
+field 'session', -init => 'Socialtext::Session->new()';
 
 sub new {
     my $class = shift;
