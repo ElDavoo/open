@@ -114,14 +114,18 @@ sub _not_before {
     _make_iso8601_date(time);
 }
 
-sub _not_on_or_after {
-    # XXX: token cookies are good for 2wks
-    _make_iso8601_date(time + (86400*14));
-}
+{
+    my ($soft_limit, $hard_limit);
 
-sub _renew_until {
-    # XXX: token cookies should renew after ~13d
-    _make_iso8601_date(time + (86400*13));
+    sub _not_on_or_after {
+        $hard_limit ||= Socialtext::AppConfig->auth_token_hard_limit;
+        _make_iso8601_date(time + $hard_limit);
+    }
+
+    sub _renew_until {
+        $soft_limit ||= Socialtext::AppConfig->auth_token_soft_limit;
+        _make_iso8601_date(time + $soft_limit);
+    }
 }
 
 sub _make_iso8601_date {
