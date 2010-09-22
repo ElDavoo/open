@@ -134,6 +134,9 @@ sub extract_common_args {
                 # is the viewer IN this group?
                 my $group_id = shift;
                 my $group = Socialtext::Group->GetGroup(group_id => $group_id);
+                Socialtext::Exception::NoSuchResource
+                    ->throw(name => "group: $group_id")
+                    unless $group;
                 auth_error "you don't have permission to view group $group_id"
                     unless $group->user_can(
                         user       => $viewer,

@@ -31,6 +31,7 @@ sub get_resource {
     # stream without actually being a member of the group, SO here we add the
     # user to the group in a transaction to the user can be removed after
     # we've generated the list of events.
+    # Permission is checked in extract_common_args().
     my $g;
     my %ro_args = @args;
     if ($ro_args{group_id}) {

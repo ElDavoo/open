@@ -17,29 +17,15 @@ sub get_resource {
     my ($self, $rest) = @_;
     my $viewer = $self->rest->user;
 
-    my $events = Socialtext::Events->GetGroupActivities(
-        $viewer, $self->_group, $self->extract_common_args(),
-    );
+    my @args = $self->extract_common_args();
+
+    # Permission for this group is checked in extract_common_args()
+    my $group = Socialtext::Group->GetGroup(
+        group_id => $self->rest->group_id);
+
+    my $events = Socialtext::Events->GetGroupActivities($viewer, $group);
     $events ||= [];
     return $events;
-}
-
-sub _group {
-    my $self = shift;
-    my $group_id = $self->group_id;
-    my $viewer = $self->rest->user;
-
-    my $group = Socialtext::Group->GetGroup(group_id => $group_id);
-    if ($group) {
-        return $group if $viewer->is_business_admin;
-        return $group if $group->user_can(
-            user       => $viewer,
-            permission => ST_READ_PERM,
-        );
-        Socialtext::Exception::Auth->throw();
-    }
-
-    Socialtext::Exception::NoSuchResource->throw(name => "group: $group_id")
 }
 
 1;
