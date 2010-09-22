@@ -987,10 +987,6 @@ String.prototype.times = function(n) {
     return n ? this + this.times(n-1) : "";
 }
 
-String.prototype.ucFirst = function () {
-    return this.substr(0,1).toUpperCase() + this.substr(1,this.length);
-}
-
 Wikiwyg.is_old_firefox = (
     Wikiwyg.ua.indexOf('firefox/1.0.7') != -1 &&
     Wikiwyg.ua.indexOf('safari') == -1 &&
