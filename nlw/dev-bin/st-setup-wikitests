@@ -29,4 +29,6 @@ echo "No longer populating reports DB"
 #export PGUSER=`st-config echo db_user`
 #$NLW_DEVBIN/st-populate-reports-db
 
+sed -i 's/captcha_enabled: 1/captcha_enabled: 0/' /home/$USER/.nlw/etc/socialtext/appliance.conf
+
 echo Done setting up wikitests
