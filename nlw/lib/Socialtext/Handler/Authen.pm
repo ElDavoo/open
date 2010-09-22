@@ -151,6 +151,7 @@ sub handler ($$) {
             authen_page    => 1,
             username_label => Socialtext::Authen->username_label,
             redirect_to    => $self->{args}{redirect_to},
+            remember_duration => Socialtext::Authen->remember_duration,
             %$saved_args,
             %$vars,
         };

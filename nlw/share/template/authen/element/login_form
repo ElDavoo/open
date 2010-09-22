@@ -21,6 +21,9 @@
     <span class="description">
       <label for="remember">[% loc('Remember me on this computer.') %]</label>
     </span>
+    [% UNLESS lite %]
+      <a id="remember-lightbox" href="#" onclick="$.showLightbox('Checking this box will keep you logged in for up to [% remember_duration %], or until you sign out.  Un-checking this box will cause you to be automatically logged out when you close your browser.')">[?]</a>
+    [% END %]
   </div>
 
   [% IF lite %]
