@@ -238,8 +238,9 @@ sub login {
         return $self->_challenge();
     }
 
-    my $expire = $self->{args}{remember} ? '+12M' : '';
-    Socialtext::Apache::User::set_login_cookie( $r, $user->user_id, $expire );
+    my $cookie_limit = Socialtext::AppConfig->auth_token_hard_limit();
+    my $expires = $self->{args}{remember} ? "+${cookie_limit}s" : '';
+    Socialtext::Apache::User::set_login_cookie($r, $user->user_id, $expires);
 
     $user->record_login;
 
