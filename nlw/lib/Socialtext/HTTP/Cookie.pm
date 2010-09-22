@@ -9,6 +9,7 @@ use Digest::SHA qw(sha1_base64);
 use POSIX qw(strftime);
 use Socialtext::AppConfig;
 use Socialtext::BrowserDetect;
+use Socialtext::Cache;
 use CGI::Cookie;
 use Crypt::OpenToken;
 
@@ -126,6 +127,10 @@ sub BuildCookieValue {
 sub _token_factory {
     $MAC_secret ||= Socialtext::AppConfig->MAC_secret;
     return Crypt::OpenToken->new(password => $MAC_secret);
+}
+
+sub _cache {
+    return Socialtext::Cache->cache('st-http-cookie');
 }
 
 sub _not_before {
