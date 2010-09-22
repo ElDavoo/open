@@ -50,12 +50,17 @@ sub GetValidatedUserIdFromCookie {
     my $class  = shift;
     my $cookie = shift;
 
-    my $factory = _token_factory();
-    my $token   = eval { $factory->parse($cookie) };
+    my $cache = _cache();
+    my $token = $cache->get($cookie);
+    unless ($token) {
+        my $factory = _token_factory();
+        $token = eval { $factory->parse($cookie) };
 
-    if ($@) {
-        #warn "cookie failed to decrypt; $@";
-        return 0;
+        if ($@) {
+            #warn "cookie failed to decrypt; $@";
+            return 0;
+        }
+        $cache->set($cookie, $token) if ($token);
     }
 
     unless ($token) {
