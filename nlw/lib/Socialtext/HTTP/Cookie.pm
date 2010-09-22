@@ -133,18 +133,14 @@ sub _not_before {
     return time;
 }
 
-{
-    my ($soft_limit, $hard_limit);
+sub _not_on_or_after {
+    my $hard_limit = Socialtext::AppConfig->auth_token_hard_limit;
+    return time + $hard_limit;
+}
 
-    sub _not_on_or_after {
-        $hard_limit ||= Socialtext::AppConfig->auth_token_hard_limit;
-        return time + $hard_limit;
-    }
-
-    sub _renew_until {
-        $soft_limit ||= Socialtext::AppConfig->auth_token_soft_limit;
-        return time + $soft_limit;
-    }
+sub _renew_until {
+    my $soft_limit = Socialtext::AppConfig->auth_token_soft_limit;
+    return time + $soft_limit;
 }
 
 sub _make_iso8601_date {
