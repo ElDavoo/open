@@ -60,6 +60,15 @@
       <input id="group_invite_checkbox" name="group_invite" type="checkbox" value="1" checked="1" />
       [% loc('Invite users to selected group(s)') %] 
     </dd>
+    <script language="Javascript">
+        jQuery("input[name=group_invite]").click(function() {
+          if (jQuery(this).attr('checked')) {
+            jQuery("input[name=invite_to_group]").removeAttr('disabled');
+          } else {
+            jQuery("input[name=invite_to_group]").attr('disabled', true);
+          }
+        });
+    </script>
   [% END %]
   <dt><label>[% loc('Search Results') %]</label></dt>
   [% IF users.size %]
