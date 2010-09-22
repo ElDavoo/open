@@ -74,7 +74,6 @@ sub _set_cookie {
         -expires  => $expires,
         -secure   => $ssl_only,
         -path     => '/',
-        -httponly => 1,
         ( Socialtext::AppConfig->cookie_domain
             ? (-domain => '.' . Socialtext::AppConfig->cookie_domain)
             : ()
