@@ -523,8 +523,7 @@ sub visibility_sql {
 }
 
 my $VISIBLE_WORKSPACES = q{
-    SELECT into_set_id - }.PG_WKSP_OFFSET.q{ AS workspace_id FROM user_set_include_tc WHERE from_set_id = ?
-};
+    SELECT into_set_id - }.PG_WKSP_OFFSET.q{ AS workspace_id FROM user_set_include_tc WHERE from_set_id = ? AND into_set_id }.PG_WKSP_FILTER;
 
 my $PUBLIC_WORKSPACES = <<'EOSQL';
     SELECT workspace_id
