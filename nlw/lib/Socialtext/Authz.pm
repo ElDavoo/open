@@ -175,7 +175,7 @@ sub plugin_enabled_for_users {
 
     my $actor = delete $p{actor};
     my $user = delete $p{user};
-    my $plugin_name = delete $p{plugin_name};
+    my $plugin_name = delete $p{plugin_name} || delete $p{plugin};
     return 0 unless ($actor && $user && $plugin_name);
 
     my $user_id = $user->user_id;
@@ -184,14 +184,14 @@ sub plugin_enabled_for_users {
     if ($actor_id eq $user_id) {
         return $self->plugin_enabled_for_user(
             user => $actor,
-            plugin_name => $plugin_name
+            plugin => $plugin_name
         );
     }
 
     return $self->plugin_enabled_for_user_sets(
         actor_id => $actor_id,
         user_set_id => $user_id,
-        plugin_name => $plugin_name,
+        plugin => $plugin_name,
     );
 }
 
@@ -200,7 +200,7 @@ sub plugin_enabled_for_user_sets {
     my %p           = @_;
     my $set_id_a    = $p{actor_id} || $p{set_id_a};
     my $set_id_b    = $p{user_set_id} || $p{set_id_b};
-    my $plugin_name = $p{plugin_name};
+    my $plugin_name = $p{plugin_name} || $p{plugin};
 
     my $t = time_scope 'plugin_enabled_for_user_sets';
 
@@ -242,7 +242,7 @@ sub plugin_enabled_for_user_in_accounts {
     my %p = @_;
     my $user = delete $p{user};
     my $accounts = delete $p{accounts};
-    my $plugin_name = delete $p{plugin_name};
+    my $plugin_name = delete $p{plugin_name} || delete $p{plugin};
 
     if (!@$accounts) {
         Carp::cluck "what?! no accounts?!";
@@ -317,7 +317,7 @@ EOT
 sub plugin_enabled_for_user_set {
     my $self = shift;
     my %p = @_;
-    my $plugin_name = delete $p{plugin_name};
+    my $plugin_name = delete $p{plugin_name} || delete $p{plugin};
     my @plugins = $self->plugins_enabled_for_user_set(%p);
     return (any { $_ eq $plugin_name } @plugins) ? 1 : 0;
 }
@@ -409,7 +409,7 @@ Requires the following PARAMS:
 
 =item * user - a user object
 
-=item * plugin_name - the name of the plugin to check
+=item * plugin - the name of the plugin to check (or plugin_name)
 
 =back
 
@@ -425,7 +425,7 @@ Requires the following PARAMS:
 
 =item * user - another user object, the "object" in an interaction.
 
-=item * plugin_name - the name of the plugin to check
+=item * plugin - the name of the plugin to check (or plugin_name)
 
 =back
 
@@ -443,7 +443,7 @@ Requires the following PARAMS:
 
 =item * account - a C<Socialtext::Account> object
 
-=item * plugin_name - the name of the plugin to check
+=item * plugin - the name of the plugin to check (or plugin_name)
 
 =back
 
