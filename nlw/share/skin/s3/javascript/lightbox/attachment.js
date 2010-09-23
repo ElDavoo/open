@@ -214,7 +214,7 @@ proto.onChangeFilename = function () {
         };
 
         if (matches.length) {
-            $("#st-attachments-attach-embed").val(0); // Don't embed the file wafl
+            $("#st-attachments-attach-embed").val(1); // Always embed the file wafl: {bz: 4412}
 
             var match = matches[0];
             var $menu = $("#st-attachments-duplicate-menu");
@@ -261,7 +261,6 @@ proto.onChangeFilename = function () {
             $menu.show();
         }
         else {
-            $("#st-attachments-attach-embed").val(1); // Embed the file wafl
             upload.call();
         }
     });
