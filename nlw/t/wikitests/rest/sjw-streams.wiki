@@ -548,26 +548,28 @@ All Activity thus far (most recent first):
 | json-path-is | $[3].event_class | page                    |
 | json-path-is | $[3].action      | edit_save               |
 
-
-# ^ Bugs
-# 
-# BUG: conversations *should* get decorated with signal_ids
-# 
-# | *Comment* | TODO Adminia - conversations should see membart's|
-# | http-user-pass | %%adminia%% | password |
-# | GET-json | /data/events/conversations/%%adminia_id%%?html=0 |
-# | json-response-is | 200 | 1 |
-# | json-path-is | $[0].event_class | page                |
-# | json-path-is | $[0].action      | edit_save           |
-# | json-path-is | $[0].signal_id   | %%edit_via_sjg_id%% |
-# 
-# BUG: group events don't respect the account_id filter
+# BUG: group events don't respect the account_id filter, this sees a signal and 4 group events instead of just the signal.
 # 
 # | *Comment* | TODO Member - events for another account |
 # | add-user-to-account | %%membart%% | %%other_acct%% | member |
 # | http-user-pass | %%membart%% | password |
 # | GET-json | /data/events?html=0;account_id=%%other_acct_id%% |
 # | json-response-is | 200 | 1 |
-# | json-path-is | $[0].signal_id   | %%otis_signal_id%%  |
+# | json-path-is | $[0].signal_id | %%otis_signal_id%%  |
 # | remove-user-from-account | %%membart%% | %%other_acct%% |
+
+
+# spot-check Adminia
+
+
+| *Comment* | Adminia - conversations should see membart's|
+| http-user-pass | %%adminia%% | password |
+| GET-json | /data/events/conversations/%%adminia_id%%?html=0 |
+| json-response-is | 200 | 1 |
+| json-path-is | $[0].event_class | page                |
+| json-path-is | $[0].action      | edit_save           |
+# BUG: conversations should still have the signal_id.  It's not available
+# because the event_page_contrib table is missing it and that's primarily
+# what's used for this stream.
+# | json-path-is | $[0].signal_id   | %%edit_via_sjg_id%% |
 
