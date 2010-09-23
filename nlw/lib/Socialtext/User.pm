@@ -441,19 +441,6 @@ sub groups {
          WHERE from_set_id = ?
     };
 
-    if ($p{plugin}) {
-        die "can't use plugin filter with the discoverable filter"
-            if $p{discoverable};
-        $path_sub_query .= q{
-          AND user_set_id IN (
-            SELECT user_set_id
-              FROM user_set_plugin_tc
-             WHERE plugin = ?
-          )
-        };
-        push @bind, $p{plugin};
-    }
-
     # Using an EXISTS with a join happening in the subquery seems to be
     # reasonably fast so long as the into_set_ids are bounded with the account
     # filter.  On staging, this is about 30% faster than using a second nested
@@ -472,7 +459,7 @@ sub groups {
             -- an account is shared by this user and the group:
             SELECT 1
             FROM user_set_path g_path, user_set_path u_path
-            WHERE g_path.from_set_id = groups.user_set_id
+            WHERE g_path.from_set_id = g.user_set_id
               AND g_path.into_set_id }.PG_ACCT_FILTER.q{
               AND u_path.from_set_id = ?
               AND u_path.into_set_id }.PG_ACCT_FILTER.q{
@@ -503,6 +490,21 @@ sub groups {
         die "unknown 'discoverable' filter: '$d'\n";
     }
 
+    my $plugin_condition = '1=1';
+    if ($p{plugin}) {
+        # The plugin check used to be part of the IN clauses above as its own
+        # "user_set_id IN ( ... ) condition.  It was moved to the top of the
+        # query, and made an EXISTS condition, so that we could filter
+        # discoverable groups by plugins as well.
+        $plugin_condition = q{
+            EXISTS (
+                SELECT 1 FROM user_set_plugin_tc ustp
+                WHERE plugin = ? AND g.user_set_id = ustp.user_set_id
+            )
+        };
+        push @bind, $p{plugin};
+    }
+
     my $limit = '';
     my $offset = '';
 
@@ -516,13 +518,14 @@ sub groups {
         push @bind, $p{offset};
     }
 
+    my $order_by = $p{no_order} ? '' : 'ORDER BY lower(driver_group_name)';
+
     my $sth = sql_execute(qq{
         SELECT group_id, driver_group_name
-          FROM groups
+          FROM groups g
          WHERE $conditions
-         ORDER BY lower(driver_group_name)
-         $limit
-         $offset
+           AND $plugin_condition
+         $order_by $limit $offset
     },@bind);
 
     my $apply = $p{ids_only}
