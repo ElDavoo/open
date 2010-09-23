@@ -116,6 +116,14 @@ foreach my $column (@COLUMNS) {
     has $column => (is => 'rw', isa => 'Any');
 }
 
+has 'permissions' => (
+    is => 'rw', isa => 'Socialtext::Workspace::Permissions',
+    lazy_build => 1,
+    handles => [qw(
+        user_can
+    )],
+);
+
 with 'Socialtext::UserSetContainer',
      'Socialtext::UserSetContained' => {
         excludes => [qw(sorted_workspace_roles)]
@@ -1131,10 +1139,9 @@ sub comment_form_custom_fields {
     return map { $_->[0] } @$fields;
 }
 
-sub permissions {
+sub _build_permissions {
     my $self = shift;
-    $self->{_perms} ||= Socialtext::Workspace::Permissions->new(wksp => $self);
-    return $self->{_perms};
+    return Socialtext::Workspace::Permissions->new(wksp => $self);
 }
 
 sub email_passes_invitation_filter {
