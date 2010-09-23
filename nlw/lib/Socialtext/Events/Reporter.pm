@@ -1059,7 +1059,7 @@ sub get_events_workspace_activities {
     my $workspace    = shift;
     my $opts     = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
 
-    Socialtext::Timer->Continue('get_gactivity');
+    Socialtext::Timer->Continue('get_wactivity');
 
     $self->add_condition(q{
         (
@@ -1078,7 +1078,7 @@ sub get_events_workspace_activities {
 
     $self->_skip_standard_opts(1);
     my $evs = $self->_get_events(@_);
-    Socialtext::Timer->Pause('get_gactivity');
+    Socialtext::Timer->Pause('get_wactivity');
 
     return @$evs if wantarray;
     return $evs;
@@ -1141,6 +1141,7 @@ sub _build_convos_sql {
 
     my @bind = ($user_id); # the `actor_id <> ?` part of the big convos SQL
 
+    my @ws_bind;
     my $visible_ws = qq{
     $VISIBLE_WORKSPACES
     UNION ALL
@@ -1151,16 +1152,17 @@ sub _build_convos_sql {
             WHERE has_contrib.actor_id = ?
         )
     };
-    push @bind, ($user_id) x 2; # for $visible_ws
+    push @ws_bind, ($user_id) x 2; # for $visible_ws
 
     if ($filtered_opts->{account_id}) {
         $visible_ws = _limit_ws_to_account($visible_ws);
-        push @bind, $filtered_opts->{account_id};
+        push @ws_bind, $filtered_opts->{account_id};
     }
     elsif ($filtered_opts->{group_id}) {
         $visible_ws = _limit_ws_to_group($visible_ws);
-        push @bind, $filtered_opts->{group_id} + GROUP_OFFSET;
+        push @ws_bind, $filtered_opts->{group_id} + GROUP_OFFSET;
     }
+    push @bind, @ws_bind;
 
     my $conv_where = _conversations_where($visible_ws);
     push @bind, ($user_id) x 3;
@@ -1233,6 +1235,6 @@ sub get_page_contention_events {
     my $result = $self->decorate_event_set($sth);
     return $result;
 }
-__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
