@@ -2,7 +2,7 @@ package Socialtext::UserSetContainer;
 # @COPYRIGHT@
 use Moose::Role;
 use Carp qw/croak/;
-use Socialtext::SQL qw/:exec/;
+use Socialtext::SQL qw/:exec :txn/;
 use Socialtext::l10n qw/loc/;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::UserSetPerspective;
@@ -13,6 +13,7 @@ use Socialtext::Timer qw/time_scope/;
 use Socialtext::Log qw/st_log/;
 use Time::HiRes qw/time/;
 use List::MoreUtils qw/any/;
+use Guard;
 use namespace::clean -except => 'meta';
 
 requires 'user_set_id';
@@ -155,6 +156,15 @@ sub add_role {
     return;
 }
 
+sub add_temporary_role {
+    my ($self,$thing,$role) = @_;
+    $role ||= Socialtext::Role->Member;
+    die "can't add temporary role without an active transaction"
+        unless sql_in_transaction();
+    $self->user_set->add_object_role($thing, $role);
+    return;
+}
+
 sub assign_role {
     my $self = shift;
     my %p = (@_==1) ? %{$_[0]} : @_;
@@ -289,7 +299,7 @@ sub _log_identifier_for_thing {
     if ($thing->isa('Socialtext::User') ||
         $thing->isa('Socialtext::UserMetadata'))
     {
-        my $uname = $thing->can('username') ? $thing->username : '?';
+        my $uname = $thing->can('username') ? $thing->username : $thing->email_address_at_import;
         return 'user', $uname.'('.$thing->user_id.')';
     }
     elsif ($thing->isa('Socialtext::Group')) {
