@@ -8,11 +8,14 @@ use Test::Socialtext tests => 2;
 use Socialtext::Permission qw/ST_READ_PERM/;
 use Socialtext::Role;
 
+fixtures('db');
+
 my $in_acct = create_test_account_bypassing_factory();
 my $in_wksp = create_test_workspace(account => $in_acct);
 my $other_acct = create_test_account_bypassing_factory();
 my $other_wksp = create_test_workspace(account => $other_acct);
 my $user = create_test_user(account => $in_acct);
+$user->password('123456'); # needed to make sure user->is_authenticated
 
 for my $wksp ($in_wksp, $other_wksp) {
     $wksp->permissions->add(
