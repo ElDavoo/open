@@ -146,44 +146,29 @@
 | *Comment* | Test Case: Mobile Signals. Verify signal to groups |  |
 | open_ok | /st/signals |  |
 | text_like | st-editing-tools-edit | Signals |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 20000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a | 20000 |
 
-| open_ok | /?action=invite |  |
-| open_ok | /st/signals |  |
-
-| st-name-widget | 1 | signals_widget |
-| st-select-widget-frame | signals_widget |  |
+| refresh |  |  |
 | wait_for_text_present_ok | Signal to %%msacct%%-B | 20000 |
 | wait_for_text_present_ok | Signal to %%msacct%%-A | 20000 |
-| selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Mobile Signals. See only one signal to A |  |
 
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[text()='%%msacct%%-A (primary, 1 users)'] | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[text()='%%msacct%%-A (primary, 1 users)'] | 20000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 20000 |
 
-| open_ok | /?action=invite |  |
-| open_ok | /st/signals |  |
-
-| st-name-widget | 1 | signals_widget |
-| st-select-widget-frame | signals_widget |  |
+| refresh |  |  |
 | wait_for_text_present_ok | Signal to %%msacct%%-A | 20000 |
 | text_unlike | //body | Signal to %%msacct%%-B |
-| selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Mobile Signals. See only one signal to B |  |
 
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[text()='%%msacct%%-B (1 users)'] | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[text()='%%msacct%%-B (1 users)'] | 20000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 20000 |
 
-| open_ok | /?action=invite |  |
-| open_ok | /st/signals |  |
-
-| st-name-widget | 1 | signals_widget |
-| st-select-widget-frame | signals_widget |  |
+| refresh |  |  |
 | wait_for_text_present_ok | Signal to %%msacct%%-B | 20000 |
 | text_unlike | //body | Signal to %%msacct%%-A |
-| selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Mobile Signals COMPLETED |  |

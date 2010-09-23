@@ -18,10 +18,7 @@ sub set_login_cookie {
     my $r = shift;
     my $id = shift;
     my $expire = shift;
-
-    my $value = { user_id => $id,
-                  MAC     => Socialtext::HTTP::Cookie->MAC_for_user_id($id),
-                };
+    my $value = Socialtext::HTTP::Cookie->BuildCookieValue(user_id => $id);
 
     _login_cookie( $r, $value, $expire );
 }
@@ -37,7 +34,7 @@ sub _login_cookie {
     my $r = shift;
     my $value = shift;
     my $expire = shift;
-    my $cookie_name = Socialtext::HTTP::Cookie->cookie_name($r);
+    my $cookie_name = Socialtext::HTTP::Cookie->cookie_name();
 
     _set_cookie( $r, $cookie_name, $value, $expire );
 }
@@ -46,20 +43,9 @@ sub current_user {
     my $r = shift;
     my $name_or_id = _user_id_or_username( $r ) or return;
 
-    my $user = _current_user($name_or_id);
+    my $user = Socialtext::User->Resolve($name_or_id);
     $r->connection->user($user->username) unless $r->connection->user();
     return $user;
-}
-
-sub _current_user {
-    my $name_or_id = shift;
-
-    if ($name_or_id =~ /\D+/) {
-        return Socialtext::User->new( username => $name_or_id );
-    }
-    else {
-        return Socialtext::User->new( user_id => $name_or_id );
-    }
 }
 
 sub _user_id_or_username {
@@ -74,22 +60,25 @@ sub _user_id_or_username {
 }
 
 sub _set_cookie {
-    my $r = shift;
-    my $name = shift;
-    my $value = shift;
+    my $r       = shift;
+    my $name    = shift;
+    my $value   = shift;
     my $expires = shift;
 
-    Apache::Cookie->new
-        ( $r,
-          -name    => $name,
-          -value   => $value,
-          -expires => $expires,
-          -path    => '/',
-          ( Socialtext::AppConfig->cookie_domain ?
-            ( -domain  => '.' . Socialtext::AppConfig->cookie_domain ) :
-            ()
-          ),
-        )->bake;
+    my $ssl_only = Socialtext::AppConfig->ssl_only ? 1 : 0;
+
+    Apache::Cookie->new(
+        $r,
+        -name     => $name,
+        -value    => $value,
+        -expires  => $expires,
+        -secure   => $ssl_only,
+        -path     => '/',
+        ( Socialtext::AppConfig->cookie_domain
+            ? (-domain => '.' . Socialtext::AppConfig->cookie_domain)
+            : ()
+        ),
+    )->bake;
 }
 
 

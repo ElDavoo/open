@@ -163,8 +163,10 @@ sub create {
     return $page;
 }
 
+Readonly my $SignalCommentLength => 250;
+Readonly my $SignalEditLength => 140;
 sub _signal_edit_summary {
-    my ($self, $user, $edit_summary, $to_network) = @_;
+    my ($self, $user, $edit_summary, $to_network, $is_comment) = @_;
     my $signals = $self->hub->pluggable->plugin_class('signals');
     return unless $signals;
     return unless $user->can_use_plugin('signals');
@@ -172,10 +174,15 @@ sub _signal_edit_summary {
     my $workspace = $self->hub->current_workspace;
     $user ||= $self->hub->current_user;
 
-    $edit_summary = Socialtext::String::word_truncate($edit_summary, 140);
+    # Trim trailing whitespaces first
+    $edit_summary =~ s/\s+$//;
+
+    $edit_summary = Socialtext::String::word_truncate($edit_summary, ($is_comment ? $SignalCommentLength : $SignalEditLength));
     my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->title;
     my $body = $edit_summary
-        ? loc('"[_1]" (edited [_2] in [_3])', $edit_summary, $page_link, $workspace->title)
+        ? ($is_comment
+            ? loc('"[_1]" (commented on [_2] in [_3])', $edit_summary, $page_link, $workspace->title)
+            : loc('"[_1]" (edited [_2] in [_3])', $edit_summary, $page_link, $workspace->title))
         : loc('wants you to know about an edit of [_1] in [_2]', $page_link, $workspace->title);
 
     my %params = (
@@ -185,6 +192,9 @@ sub _signal_edit_summary {
             page_id      => $self->id,
             workspace_id => $workspace->workspace_id,
         },
+        annotations => [
+            { icon => { title => ($is_comment ? 'comment' : 'edit') } }
+        ],
     );
 
     if ($to_network and $to_network =~ /^(group|account)-(\d+)$/) {
@@ -195,7 +205,10 @@ sub _signal_edit_summary {
     }
 
     my $signal = $signals->Send(\%params);
-    return $signal;
+    if ($signal->is_edit_summary) {
+        return $signal;
+    }
+    return;
 }
 
 =head2 update_from_remote( %args )
@@ -377,6 +390,7 @@ various places where this has been done in the past.
         date                => { can => [qw(strftime)], default => undef },
         edit_summary        => { type => SCALAR, default => '' },
         signal_edit_summary => { type => SCALAR, default => undef },
+        signal_edit_summary_from_comment => { type => SCALAR, default => undef },
         signal_edit_to_network => { type => SCALAR, default => undef },
         locked              => { type => SCALAR, default => undef },
     };
@@ -738,6 +752,7 @@ author.
 sub add_comment {
     my $self     = shift;
     my $wikitext = shift;
+    my $signal_edit_to_network = shift;
 
     my $timer = Socialtext::Timer->new;
 
@@ -753,15 +768,32 @@ sub add_comment {
     my $user = $self->hub->current_user;
 
     $self->metadata->RevisionSummary(loc('(comment)'));
-    $self->store( user => $user );
+    my $signal = $self->store(
+        user => $user,
+        $signal_edit_to_network ? (
+            edit_summary => $wikitext,
+            signal_edit_summary_from_comment => 1,
+            signal_edit_to_network => $signal_edit_to_network,
+        ) : ()
+    );
 
-    my $summary = $self->preview_text($wikitext);
-    Socialtext::Events->Record({
+    # Truncate the comment to $SignalCommentLength chars if we're sending this
+    # comment as a signal.  Otherwise use the normal 350-char excerpt.
+    my $summary = $signal
+        ? Socialtext::String::word_truncate($wikitext, $SignalCommentLength)
+        : $self->preview_text($wikitext);
+
+    my %event = (
         event_class => 'page',
         action => 'comment',
         page => $self,
         summary => $summary,
-    });
+    );
+    if ($signal) {
+        $event{signal} = $signal;
+    }
+
+    Socialtext::Events->Record(\%event);
     return;
 }
 
@@ -840,7 +872,10 @@ sub store {
 
     $self->_log_edit_summary($p{user}) if $self->metadata->RevisionSummary;
 
-    if ($p{signal_edit_summary}) {
+    if ($p{signal_edit_summary_from_comment}) {
+        return $self->_signal_edit_summary($p{user}, $p{edit_summary}, $p{signal_edit_to_network}, 'comment');
+    }
+    elsif ($p{signal_edit_summary}) {
         return $self->_signal_edit_summary($p{user}, $p{edit_summary}, $p{signal_edit_to_network});
     }
 
@@ -1135,13 +1170,10 @@ sub _index_path {
 
 sub modified_time {
     my $self = shift;
-    return $self->{modified_time} if defined $self->{modified_time};
-    # REVIEW: Can't this use $self->file_path ?
-    my $path = Socialtext::File::catfile(
-        Socialtext::Paths::page_data_directory( $self->hub->current_workspace->name ),
-        $self->id,
-    );
-    $self->{modified_time} = (stat($path))[9] || time;
+    unless (defined $self->{modified_time}) {
+        my $path = $self->file_path;
+        $self->{modified_time} = (stat($path))[9] || time;
+    }
     return $self->{modified_time};
 }
 

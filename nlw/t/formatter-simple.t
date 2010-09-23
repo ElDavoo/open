@@ -88,4 +88,3 @@ You just say `$foo->bar($baz);`.
 --- wiki
 this is {not-wafl: foo} yeah?
 --- match: this is {not-wafl: foo} yeah?
-

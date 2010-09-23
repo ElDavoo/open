@@ -20,6 +20,7 @@ use Socialtext::Authz::SimpleChecker;
 use Socialtext::String ();
 use Socialtext::SQL qw(:txn :exec);
 use Socialtext::Log qw/st_log/;
+use Socialtext::Session;
 use Socialtext::PrefsTable;
 use Socialtext::UserSet qw/:const/;
 my $prod_ver = Socialtext->product_version;
@@ -34,6 +35,7 @@ field hub => -weak;
 field 'rest';
 field 'declined';
 field 'last';
+field 'session', -init => 'Socialtext::Session->new()';
 
 const scope => 'account';
 const hidden => 1; # hidden to admins

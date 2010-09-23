@@ -15,6 +15,8 @@ use Exception::Class (
       { description => 'return a NOT_FOUND status' },
     'Socialtext::WebApp::Exception::Redirect' =>
       { description => 'system needs to send a redirect' },
+    'Socialtext::WebApp::Exception::AuthRenewal' =>
+      { description => 'user needs to re-authenticate' },
 );
 
 use Socialtext::Helpers;

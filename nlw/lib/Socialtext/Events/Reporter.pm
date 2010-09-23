@@ -263,7 +263,9 @@ sub _extract_signal {
     }
 
     for my $topic (@topics_to_check) {
-        next if $topic->is_visible_to($self->viewer);
+        my $is_visible = 0;
+        eval { $is_visible = $topic->is_visible_to($self->viewer) };
+        next if $is_visible;
         no warnings 'exiting';
         next EVENT;
     }
@@ -696,7 +698,7 @@ sub _build_standard_sql {
     $self->_process_before_after($opts);
 
     unless ($self->_skip_standard_opts) {
-        {
+        if (!$opts->{signals}) {
             my $visible_ws = $VISIBLE_WORKSPACES;
             if ($self->_include_public_ws) {
                 $visible_ws .= ' UNION ALL '.$PUBLIC_WORKSPACES;

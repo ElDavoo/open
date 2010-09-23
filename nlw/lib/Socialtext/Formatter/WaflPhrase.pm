@@ -14,7 +14,7 @@ use Socialtext::Timer qw/time_scope/;
 
 const formatter_id  => 'wafl_phrase';
 const pattern_start =>
-    qr/(^|(?<=[\s\-]))("[^"]+")?\{[\w-]+(?=[\:\ \}])(\s*:)?\s*.*?\}(?=[^A-Za-z0-9]|\z)/;
+    qr/(^|(?<=[\s\-]))("[^"]+")?\{[\w-]+(?=[\:\ \}])(\x20*:)?\x20*.*?\}(?=[^A-Za-z0-9]|\z)/;
 const wafl_reference_parse => qr/^\s*(?:([\w\-]+)?\s*\[(.*?)\])?\s*(\S.*?)?\s*$/;
 field 'method';
 field 'arguments';
@@ -48,7 +48,7 @@ sub match {
     return unless $self->SUPER::match(@_);
 
     my $label_re = qr/"([^"]+)"/;
-    my $wafl_re  = qr/\{([\w\-]+)(?:\s*\:)?\s*(.*)\}/;
+    my $wafl_re  = qr/\{([\w\-]+)(?:\x20*\:)?\x20*(.*)\}/;
     if ( $self->matched =~ /^${label_re}${wafl_re}$/ ) {
         $self->label($1);
         $self->arguments($3);

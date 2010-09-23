@@ -146,7 +146,9 @@ sub challenge {
 
 sub _update_user {
     my ($class, $user, %proto_user) = @_;
-    $user->update_store(%proto_user);
+    if ($user->can_update_store) {
+        $user->update_store(%proto_user);
+    }
 }
 
 sub _create_user {

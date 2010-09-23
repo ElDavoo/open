@@ -493,7 +493,7 @@ sub exists {
 
 sub file_path {
     my $self = shift;
-    join '/', $self->database_directory, $self->id;
+    return $self->directory_path;
 }
 
 sub directory_path {

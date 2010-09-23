@@ -25,6 +25,10 @@ Fetches types of events for miki activities.
 sub if_authorized {
     my ( $self, $method, $perl_method, @args ) = @_;
 
+    if ((uc($method) eq 'GET') && Socialtext::HTTP::Cookie->NeedsRenewal) {
+        return $self->renew_authentication();
+    }
+
     my $user = $self->rest->user;
     return $self->not_authorized unless $user and $user->is_authenticated;
 

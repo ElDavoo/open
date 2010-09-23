@@ -8,6 +8,7 @@ use base 'REST::Application::Routes';
 use base 'Socialtext::Handler';
 use Socialtext::HTTP ':codes';
 use Socialtext::Handler::URIMap;
+use Socialtext::JSON qw/encode_json decode_json/;
 use Apache;
 use Apache::Constants qw(OK AUTH_REQUIRED);
 use Class::Field qw/field/;
@@ -172,14 +173,41 @@ sub log_timings {
     elsif ( $method eq 'POST' ) {
         my $query = $handler->query;
         my @params = $query->param();
-        $query_hash = {
-            map {
-                my $val = $query->param($_);
-                $val = 'ref:'.ref($val) if ref $val;
-                # 254 is ~ page id size
-                length($val) > 254 ? () : ($_ => $val)
-            } @params
-        };
+        if (@params == 1 and $params[0] eq 'POSTDATA') {
+            $query_hash = eval { decode_json($query->param('POSTDATA')) };
+        }
+        else {
+            $query_hash = {
+                map {
+                    my $val = $query->param($_);
+                    $val = 'ref:'.ref($val) if ref $val;
+                    ($_ => $val);
+                } @params
+            };
+        }
+
+        if (ref $query_hash eq 'ARRAY') {
+            $query_hash = { 'POSTDATA' => $query_hash };
+        }
+
+        delete $query_hash->{$_} for qw/signal body page_body comment/;
+        for my $key (keys %$query_hash) {
+            my $val = $query_hash->{$key};
+            if (ref($val)) {
+                if (ref($val) eq 'JSON::XS::Boolean') {
+                    next;
+                }
+                if (ref($val) eq 'ARRAY') {
+                    $val = undef unless @$val;
+                }
+                if (ref($val) eq 'HASH') {
+                    $val = undef unless %$val;
+                }
+                $val = $query_hash->{$key} = encode_json($val) if $val;
+            }
+            next if $val and length($val) < 50;
+            delete $query_hash->{$key};
+        }
     }
 
     my $data = {

@@ -54,6 +54,9 @@ sub handler {
         if (Exception::Class->caught('Socialtext::WebApp::Exception::Forbidden')) {
             $self->not_authorized();
         }
+        if (Exception::Class->caught('Socialtext::WebApp::Exception::AuthRenewal')) {
+            return $self->renew_authentication();
+        }
         # XXX Socialtext::Rest does not throw an exception when
         # Params Validate notices the current_workspace parameter
         # is not set because the URI does not have a valid workspace

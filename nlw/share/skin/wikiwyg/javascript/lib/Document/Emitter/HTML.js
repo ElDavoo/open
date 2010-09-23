@@ -4,7 +4,6 @@ var proto = this.prototype;
 proto.className = 'Document.Emitter.HTML';
 
 proto.content = function() {
-    var len = this.output.length;
     return this.output;
 }
 
@@ -111,17 +110,19 @@ proto.end_node = function(node) {
     return;
 }
 
-proto.text_node = function(text) {
+var FFFC = new RegExp(String.fromCharCode(0xFFFC), 'g');
+proto.text_node = function(text, type) {
     if (/[&<>"']/.test(text)) {
         this.output += text
             .replace(/&/g, '&amp;')
             .replace(/>/g, '&gt;')
             .replace(/</g, '&lt;')
             .replace(/"/g, '&#34;')
-            .replace(/'/g, '&#39;');
+            .replace(/'/g, '&#39;')
+            .replace(FFFC, '<br />');
     }
     else {
-        this.output += text
+        this.output += text.replace(FFFC, '<br />');
     }
 }
 

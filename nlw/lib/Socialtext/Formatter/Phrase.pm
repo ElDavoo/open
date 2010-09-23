@@ -17,7 +17,9 @@ sub match {
     $self->matched( substr( $text, $-[0], $+[0] - $-[0] ) );
     my $pattern_end = $self->pattern_end
         or return 1;
-    return substr( $text, $+[0] ) =~ $pattern_end;
+    my $end = substr( $text, $+[0] );
+    $end =~ s/\n.*//s;
+    return $end =~ $pattern_end;
 }
 
 sub contains_phrases {
@@ -48,7 +50,7 @@ use Class::Field qw( const );
 
 const formatter_id  => 'strong';
 const pattern_start => qr/(^|(?<=[^{$ALPHANUM}\*]))\*(?=\S)(?!\*)/;
-const pattern_end   => qr/\*(?=[^{$ALPHANUM}\*]|\z)/;
+const pattern_end   => qr/(?<![\s\*])\*(?=[^{$ALPHANUM}\*]|\z)/;
 const html_start    => "<strong>";
 const html_end      => "</strong>";
 
@@ -60,7 +62,7 @@ use Class::Field qw( const );
 
 const formatter_id  => 'em';
 const pattern_start => qr/(^|(?<=[^${ALPHANUM}_]))_(?=\S[^_]*_(?=\W|\z))/;
-const pattern_end   => qr/_(?=[^{$ALPHANUM}_]|\z)/;
+const pattern_end   => qr/(?<![\s_])_(?=[^{$ALPHANUM}_]|\z)/;
 const html_start    => "<em>";
 const html_end      => "</em>";
 
@@ -72,7 +74,7 @@ use Class::Field qw( const );
 
 const formatter_id  => 'del';
 const pattern_start => qr/(^|(?<=[^${ALPHANUM}\-;:]))-(?=[^\s\-])/; # {bz: 3771}: Make ":-)" and ";-)" smileys non-huggy.
-const pattern_end   => qr/-(?=[^{$ALPHANUM}\-]|\z)/;
+const pattern_end   => qr/(?<![\s\-])-(?=[^{$ALPHANUM}\-]|\z)/;
 const html_start    => '<del>';
 const html_end      => '</del>';
 
@@ -112,12 +114,14 @@ sub match {
     $self->matched( substr( $text, $-[0], $+[0] - $-[0] ) );
 
     # Match the end, save matched body in the title field
-    return unless $text =~ $self->pattern_end;
+    my $end = substr( $text, $+[0] );
+    $end =~ s/\n.*//s;
+    return unless $end =~ $self->pattern_end;
     Socialtext::BrowserDetect::ie()
         ? $self->extra_space( $1 ? "&nbsp;" : '' )
         : $self->extra_space( $1 || '' );
-    $self->asis_text( substr( $text, $match_start, $-[0] - $match_start ) || return );
-    $self->start_end_offset( $-[0] );
+    $self->asis_text( substr( $text, $match_start, $-[0]) );
+    $self->start_end_offset( $match_start + $-[0] );
     return 1;
 }
 
@@ -169,6 +173,7 @@ sub match {
 
     # Match the end, save matched body in the title field
     my $end = substr( $text, $match_start );
+    $end =~ s/\n.*//s;
     return unless $end =~ $self->pattern_end;
     $text = $rt_19458_hack = $text; # To work around a Perl bug, see {rt 19458}
     $self->title( substr( $text, $match_start, $-[0] ) );

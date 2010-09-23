@@ -89,9 +89,14 @@ sub init {
     { # Talc/Topaz are configured to allow emailing into specific dev-envs
         (my $host = $self->{browser_url}) =~ s#^http.?://(.+):\d+#$1#;
         $self->{wikiemail} = $ENV{WIKIEMAIL} || "$ENV{USER}.$host";
-        diag  "wikiemail:  $self->{wikiemail}";
+        diag "wikiemail:  $self->{wikiemail}";
+    }
+    for my $var (map { /^selenium_var_(.+)/ ? $1 : () } keys %ENV) {
+        diag "[selenium_var] $var: ".$ENV{"selenium_var_$var"};
+        $self->{$var} = $ENV{"selenium_var_$var"};
     }
     diag "Browser url is ".$self->{browser_url};
+    diag "Session ID: ".$self->{selenium}{session_id};
     $self->st_login;
 }
 
@@ -203,6 +208,28 @@ sub st_logoutin {
     $self->st_login($username, $password);
 }
 
+=head2 st_toggle_captcha ($toggle - default to 0, or off)
+
+Disables or eanbles the captcha on the server
+
+=cut
+
+sub st_toggle_captcha {
+    my ($self, $enable) = @_;
+    $self->handle_command('st-admin','give-system-admin --e %%username%%');
+    $self->handle_command('open_ok','/console/?rm=Setup');
+    $self->handle_command('wait_for_element_visible_ok','captcha_enabled',3000);
+    $self->handle_command('wait_for_element_visible_ok','setup-captcha',3000);    
+    
+    if ($enable) {
+        $self->handle_command('check_ok','captcha_enabled');
+    } else {
+        $self->handle_command('uncheck_ok','captcha_enabled');
+    }
+
+    $self->handle_command('click_and_wait','setup-captcha');    
+    $self->handle_command('st-admin','remove-system-admin --e %%username%%','no longer has system admin access');
+}
 
 =head2 st_page_title( $expected_title )
 

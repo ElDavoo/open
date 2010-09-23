@@ -8,7 +8,19 @@
 | *Comment* | Test Case: Active Members Empty Messages setup empty user and account |  |
 | st-admin | create-account --name %%empty_acct%% |  |
 | st-admin | create-user --e %%empty_member%% --p %%password%% --account %%empty_acct%% |  |
-| st-logoutin | %%empty_member%% | %%password%% |
+
+| *Comment* | Test Case: Active Members Empty Messages explicit logout |  |
+| open_ok | /nlw/submit/logout |  |
+| pause | 5000 |  |
+
+| *Comment* | Test Case: Active Members Empty Messages explicit login |  |
+| open_ok | / |  |
+| wait_for_element_visible_ok | username |  |
+| wait_for_element_visible_ok | password |  |
+| type_ok | username | %%empty_member%% |
+| type_ok | password | %%password%% |
+| wait_for_element_visible_ok | login_btn | 5000 |
+| click_and_wait | login_btn |  |
 
 | *Comment* | Test Case: Active Members Empty Messages get an empty Active People widget |  |
 

@@ -92,6 +92,97 @@ Socialtext.prepare_attachments_before_save = function() {
     }
 }
 
+Socialtext.show_signal_network_dropdown = function(prefix, width) {
+    prefix = prefix || '';
+    $.getScript( nlw_make_plugin_path('/widgets/javascript/jquery.dropdown.js') , function() {
+        $.getScript( nlw_make_plugin_path('/widgets/javascript/activities.js') , function() {
+            $.getJSON('/data/users/' + Socialtext.userid, function(data) {
+                var default_network = 'account-' + Socialtext.current_workspace_account_id;
+                var activities = new Activities({
+                    node: true,
+                    base_uri: true,
+                    share: true,
+                    viewer: true,
+                    viewer_id: true,
+                    prefix: prefix,
+                    prefs: {},
+                    workspace_id: Socialtext.wiki_id,
+                    default_network: default_network
+                });
+                activities.user_data = data;
+                activities.prefs.getString = function () { return null };
+                $('#'+prefix+'st-edit-summary-signal-to').val(default_network);
+
+                activities.selectSignalToNetwork = function(network){
+                    $('#'+prefix+'st-edit-summary-signal-to').val(network);
+                };
+
+                $('#'+prefix+'signal_network').text('').dropdown({
+                    value: default_network,
+                    fixed: null,
+                    width: width || '170px',
+                    options: activities.signalNetworks(),
+                    onChange: function(option) {
+                        if (option.warn) {
+                            $('#'+prefix+'signal_network_warning').fadeIn('fast');
+                        }
+                        else {
+                            $('#'+prefix+'signal_network_warning').fadeOut('fast');
+                        }
+                        activities.selectSignalToNetwork(option.value);
+                        $('#'+prefix+'st-edit-summary-signal-checkbox').attr('checked', true);
+                    }
+                });
+
+                $('#'+prefix+'signal_network > a').css({
+                    width: (
+                        width || (
+                            ($.browser.msie && $.browser.version < 7)
+                                ? '85px' // IE6
+                                : '105px'
+                        )
+                    ),
+                    verticalAlign: 'top',
+                    height: '30px',
+                    overflow: 'hidden',
+                    display: 'inline-block',
+                    whiteSpace: 'nowrap'
+                });
+
+                if ($.browser.msie) {
+                    if (width) {
+                        $('#'+prefix+'signal_network > a').css({
+                            height: '16px',
+                            marginTop: '7px'
+                        });
+                    }
+                    else {
+                        $('#'+prefix+'signal_network > a').css({
+                            marginLeft: '-4px',
+                            marginTop: '-9px'
+                        });
+                    }
+                }
+                else if (width) {
+                    $('#'+prefix+'signal_network > a').css({
+                        marginTop: '2px'
+                    });
+                }
+
+                $('#'+prefix+'signal_network .dropdownOptions').css({
+                    'margin-top': '-15px',
+                    'margin-left': '11em'
+                });
+                $('#'+prefix+'signal_network .dropdownOptions li').css({
+                    'line-height': '16px'
+                });
+
+                activities.setupSelectSignalToNetworkWarningSigns();
+            });
+        });
+    });
+}
+
 $(function() {
     if (document.getElementById('contentWarning')) {
         setTimeout(function() {

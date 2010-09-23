@@ -22,7 +22,7 @@ use Template::Provider;
 use Socialtext::Build qw( get_build_setting );
 use Socialtext::l10n qw( loc system_locale );
 use Socialtext::Skin;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 
 use Template::Plugin::FillInForm;
 
@@ -74,7 +74,7 @@ sub _maybe_fetch {
     sub render {
         my $self = shift;
         my %p = validate( @_, $spec );
-        Socialtext::Timer->Continue('tt2_render');
+        my $t = time_scope('tt2_render');
 
         if (! defined $p{vars}{loc} ) {$p{vars}{loc} = \&loc;}
         if (! defined $p{vars}{loc_lang} ) {$p{vars}{loc_lang} = system_locale();}
@@ -117,7 +117,6 @@ sub _maybe_fetch {
             die "Template Toolkit error: ($p{template})\n$e";
         }
 
-        Socialtext::Timer->Pause('tt2_render');
         return $output;
     }
 }

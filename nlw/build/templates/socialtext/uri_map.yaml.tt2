@@ -230,7 +230,8 @@
 -
     '/data/workspaces/:ws/pages/:pname/comments':
         'POST': 
-            'text/x.socialtext-wiki': [Socialtext::Rest::Comments, POST]
+            'text/x.socialtext-wiki': [Socialtext::Rest::Comments, POST_wikitext]
+            'application/json':       [Socialtext::Rest::Comments, POST_json]
             '*/*':                    [Socialtext::Rest::Comments, bad_type]
         '*':    [Socialtext::Rest::Comments, bad_method]
 -

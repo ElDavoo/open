@@ -2076,9 +2076,22 @@ proto.assert_padding_between_block_elements = function(html) {
 
 proto.assert_padding_around_block_elements = function(html) {
     var tmpElement = document.createElement('div');
-    tmpElement.innerHTML = 
-        html.replace(/<div\b/g, '<span tmp="div"')
-            .replace(/<\/div>/g, '</span>')
+    var separator = '<<<'+Math.random()+'>>>';
+    var chunks = html.replace(/<!--[\d\D]*?-->/g, separator + '$&' + separator).split(separator);
+    var escapedHtml = '';
+    for(var i=0;i<chunks.length;i++) {
+        var chunk = chunks[i];
+        if (/^<!--/.test(chunk) && /-->$/.test(chunk)) {
+            /* {bz: 4285}: Do not escape <div>s in <!-- wiki: ... --> sections */
+            escapedHtml += chunk;
+        }
+        else {
+            escapedHtml += chunk
+                .replace(/<div\b/g, '<span tmp="div"')
+                .replace(/<\/div>/g, '</span>')
+        }
+    }
+    tmpElement.innerHTML = escapedHtml;
     var doc = $(tmpElement);
 
     var el;

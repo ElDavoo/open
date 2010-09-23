@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 # do *not* `use utf8` here
-use Test::More tests => 6 + 7 + 4 + 3*33 + 7;
+use Test::More tests => 6 + 7 + 4 + 3*45 + 7;
 
 use ok 'WikiText::Socialtext';
 use ok 'Socialtext::WikiText::Parser::Messages';
@@ -124,6 +124,41 @@ check_hashmark_after_spaces: {
     is $noun_links[0]{text}, 'yesmatch1', 'yesmatch1';
     is $noun_links[1]{text}, 'yesmatch2', 'yesmatch2';
     is $noun_links[2]{text}, 'yesmatch3', 'yesmatch3';
+}
+
+# Make sure the "huggy" rule of markup sanity is respected
+for my $char (qw( - * _ )) {
+    markup_sanity_begin: {
+        my $parser = make_parser('HTML');
+
+        my $content = $parser->parse("mmm $char 2 degrees between today$char tomorrow");
+        ok $content, 'parsed';
+        unlike $content, qr/<(b|i|del)>/i, "non-huggy beginning $char left alone";
+    }
+
+    markup_sanity_end: {
+        my $parser = make_parser('HTML');
+
+        my $content = $parser->parse("mmm ${char}2 degrees between today $char tomorrow");
+        ok $content, 'parsed';
+        unlike $content, qr/<(b|i|del)>/i, "non-huggy ending $char left alone";
+    }
+
+    markup_sanity_huggy: {
+        my $parser = make_parser('HTML');
+
+        my $content = $parser->parse("mmm ${char}2 degrees between today$char tomorrow");
+        ok $content, 'parsed';
+        like $content, qr/<(b|i|del)>/i, "huggy beginning $char works alone";
+    }
+
+    markup_sanity_huggy_wafl: {
+        my $parser = make_parser('HTML');
+
+        my $content = $parser->parse("mmm ${char}{date: 2010-09-15 10:36:30 GMT}$char");
+        ok $content, 'parsed';
+        like $content, qr/<(b|i|del)>/i, "huggy beginning $char works around WAFLs";
+    }
 }
 
 sub make_parser {

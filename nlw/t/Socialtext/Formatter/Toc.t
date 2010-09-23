@@ -139,10 +139,10 @@ like $html_two,
 like $html_two,
     qr{href='/foobar/index.cgi\?noheaders'>NoHeaders</a>.*does not have any headers.},
     'a page with no headers in a different workspace links to page only';
-unlike $html_two, qr{this is a list},
-    'html two does not include list content from one';
-unlike $html_two, qr{The bees are in the what},
-    'html two does not paragraph ontent from one';
+like $html_two, qr{title="[^"]+this is a list},
+    'html two contains lookahead list content from one';
+like $html_two, qr{title="[^"]+The bees are in the what},
+    'html two has a lookahead link containing content from one';
 
 # Test under conditions similar to RSS and Atom
 $admin->pages->current(undef);

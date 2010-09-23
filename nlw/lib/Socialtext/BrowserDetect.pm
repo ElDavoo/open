@@ -35,6 +35,18 @@ sub safari {
     return (index($ua,'safari') != -1) || (index($ua,'applewebkit') != -1);
 }
 
+=head2 adobe_air()
+
+Tell if the user agent is Adobe AIR.
+
+=cut
+
+sub adobe_air {
+    my $ua = lc $ENV{HTTP_USER_AGENT};
+
+    return (index($ua,'adobeair') != -1);
+}
+
 =head2 is_mobile()
 
 Tell if the user agent is some sort of mobile browser.

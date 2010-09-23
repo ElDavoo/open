@@ -202,9 +202,7 @@ sub title_to_disposition {
            ) unless $page->active;
 
     my $disposition = '';
-    if ($self->show_mouseover
-        && (   $self->hub->action eq 'display'
-            or $self->hub->action eq 'homepage')) {
+    if ($self->show_mouseover) {
         my $preview = $page->summary;
         $disposition = qq|title="$preview"|;
     }

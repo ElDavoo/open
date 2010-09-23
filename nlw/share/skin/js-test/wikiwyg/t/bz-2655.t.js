@@ -16,11 +16,11 @@ else {
 === Bold, italics and strikethrough in the TD level are correctly preserved
 --- html
 <div class="wiki">
-<table border="1" class="formatter_table" style="border-collapse: collapse;">
+<table border="1" class="formatter_table" options="" style="border-collapse: collapse;">
 <tbody><tr>
-<td style="font-weight: bold">Bold</td>
-<td style="font-style: italic">Italic</td>
-<td style="text-decoration: line-through">Strikethrough</td>
+<td><span style="font-weight: bold">Bold</span></td>
+<td><span style="font-style: italic">Italic</span></td>
+<td><strike>Strikethrough</strike></td>
 </tr>
 </tbody></table>
 </div>

@@ -2,7 +2,7 @@
 'socialtext-s3.js':
     compress: 1
     parts:
-        - {dir: 'skin/common/javascript', file: 'jquery-1.2.6.js'}
+        - {dir: 'skin/common/javascript', file: 'jquery-1.4.2.min.js'}
         - {dir: 'skin/common/javascript', file: 'jquery-json-1.3.js'}
         - {dir: 'skin/common/javascript', file: 'utf8.js'}
         - 'info.js'
@@ -18,6 +18,7 @@
         - 'JemplatePlugin/*.js'
         - { jemplate: 'template/nav-list.tt2' }
         - { jemplate: 'template/new_signal.tt2' }
+        - { jemplate: 'template/dropdown.tt2' }
         - 'lightbox-create_content.js'
         - 'loc.js'
         - 'cookie.js'

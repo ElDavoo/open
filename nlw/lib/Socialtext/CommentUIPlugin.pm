@@ -33,7 +33,7 @@ sub enter_comment {
 sub submit_comment {
     my $self = shift;
     $self->current_page($self->hub->pages->current->load);
-    $self->current_page->add_comment($self->cgi->comment)
+    $self->current_page->add_comment($self->cgi->comment, $self->cgi->signal_comment_to_network)
         if ($self->hub->checker->check_permission('comment')
             && $self->hub->checker->can_modify_locked($self->hub->pages->current));
 
@@ -65,6 +65,7 @@ use Socialtext::CGI qw( cgi );
 cgi 'comment';
 cgi 'caller_action';
 cgi 'page_name';
+cgi 'signal_comment_to_network';
 
 package Socialtext::User::Wafl;
 

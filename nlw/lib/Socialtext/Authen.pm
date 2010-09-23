@@ -5,6 +5,7 @@ use warnings;
 
 our $VERSION = 0.01;
 
+use DateTime;
 use Socialtext::User;
 use Socialtext::AppConfig;
 use Socialtext::l10n qw(loc);
@@ -35,6 +36,14 @@ sub username_label {
     return username_is_email()
         ? loc('Email Address:')
         : loc('Username:');
+}
+
+sub remember_duration {
+    my $expires = Socialtext::AppConfig->auth_token_hard_limit;
+    my $now     = DateTime->now();
+    my $then    = DateTime->now->add(seconds => $expires);
+    my $diff    = $then - $now;
+    return loc("[quant,_1,day]", $diff->in_units('days'));
 }
 
 sub username_is_email {

@@ -151,6 +151,7 @@ sub handler ($$) {
             authen_page    => 1,
             username_label => Socialtext::Authen->username_label,
             redirect_to    => $self->{args}{redirect_to},
+            remember_duration => Socialtext::Authen->remember_duration,
             %$saved_args,
             %$vars,
         };
@@ -238,8 +239,9 @@ sub login {
         return $self->_challenge();
     }
 
-    my $expire = $self->{args}{remember} ? '+12M' : '';
-    Socialtext::Apache::User::set_login_cookie( $r, $user->user_id, $expire );
+    my $cookie_limit = Socialtext::AppConfig->auth_token_hard_limit();
+    my $expires = $self->{args}{remember} ? "+${cookie_limit}s" : '';
+    Socialtext::Apache::User::set_login_cookie($r, $user->user_id, $expires);
 
     $user->record_login;
 
@@ -421,6 +423,7 @@ sub register {
                 password      => $args{password},
                 first_name    => $args{first_name},
                 last_name     => $args{last_name},
+                ($ws ? (primary_account_id => $ws->account_id) : ()),
             );
             $is_new_user = 1;
         }

@@ -9,10 +9,27 @@ use base 'Socialtext::Rest';
 use Socialtext::Lite;
 use Socialtext::Challenger;
 use Socialtext::HTTP ':codes';
+use Socialtext::HTTP::Cookie;
 use Socialtext::Events;
 
 # basically just a dispatcher to NLW::Lite
 # need some deduping
+
+sub if_plugin_authorized {
+    my ($self, $plugin, $method, $perl_method) = @_;
+    if ((uc($method) eq 'GET') && Socialtext::HTTP::Cookie->NeedsRenewal) {
+        return $self->renew_authentication();
+    }
+    return $self->SUPER::if_plugin_authorized($plugin, $method, $perl_method);
+}
+
+sub if_authorized {
+    my ($self, $method, $perl_method, @args) = @_;
+    if ((uc($method) eq 'GET') && Socialtext::HTTP::Cookie->NeedsRenewal) {
+        return $self->renew_authentication();
+    }
+    return $self->SUPER::if_authorized($method, $perl_method, @args);
+}
 
 sub not_authorized {
     my $self = shift;

@@ -136,6 +136,9 @@ proto.wikitext_to_html = function(wikitext) {
     );
 }
 
+proto.wikitext_to_html_js = function(wikitext) {
+    return ((new Document.Parser.Wikitext()).parse(wikitext, new Document.Emitter.HTML()) + "\n");
+}
 
 proto.template_vars = function(content) {
     return content.replace(

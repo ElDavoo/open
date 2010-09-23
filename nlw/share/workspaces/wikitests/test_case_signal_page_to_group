@@ -13,6 +13,7 @@
 | set | ws | signalpage-%%start_time%% |
 | st-admin | create-workspace --name %%ws%% --title %%ws%% --e %%nonwsuser%% --p %%password%% --account %%acct%% | was created |
 | st-admin | add-member --e %%username%% --w %%ws%% | now has the role of |
+| st-admin | create-user --e %%nonwsuser%% --p %%password%% | was created |
 
 | *Comment* | Test Case: Signal Page To Group SETUP Groups |  |  |
 | create-group | %%group1%% | %%acct%% | %%username%% |
@@ -40,9 +41,25 @@
 | pause | 5000 |  |
 | select-frame | st-signal-this-frame |  |
 | wait_for_text_present_ok | Send a signal with a link to this page | 30000 |
-| st-send-page-signal | Signal a page |  |
+| st-send-page-signal | Check out this page; it's great: |  |
 
-| open_ok | /st/signals |  |
+| *Comment* | Test Case: Signal Page To Group - see signal on signals page for %%acct%% |  |
+| open_ok | /st/signals/ |  |
+| wait_for_text_present_ok | Check out this page; it's great | 30000 |
+| wait_for_text_present_ok | %%signalpage%% | 30000 |
+| wait_for_element_visible_ok | link=%%signalpage%% | 30000 |
+| set | blockingiosignal | blockingiosignal-%%start_time%% |
+| st-send-signal-in-activities-widget | %%blockingiosignal%% |  |
+
+| *Comment* | Test Case: Signal Page To Group - Login as non-workspace member; do no see signal |  |
+| st-logoutin | %%nonwsuser%% | %%password%% |
+| wait_for_element_visible_ok | link=Signals |  |
+| click_and_wait | link=Signals |  |
+| wait_for_text_present_ok | %%blockingiosignal%% | 30000 |
+| wait_for_text_not_present_ok | Check out this page; it's great: | 30000 |
+| text_unlike | //body | %%signalpage%% |
+
+| *Comment* | Test Case: Signal Page To Group TBD: Signal to different groups within the widget |  |
 
 | *Comment* | Test Case: Signal Page To Group TEARDOWN |  |
 | delete-group | %%group2_id%% |  |

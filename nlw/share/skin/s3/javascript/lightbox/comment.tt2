@@ -22,6 +22,16 @@
   <ul class="formButtons">
     <li class="flexButton"><a class="saveButton genericOrangeButton" href="#">[% loc('Save') %]</a></li>
     <li class="flexButton"><a class="cancelButton genericOrangeButton" href="#">[% loc('Cancel') %]</a></li>
+    [% IF plugins_enabled.grep("signals").size && plugins_enabled_for_current_workspace_account.grep("signals").size -%]
+    <li>
+      <div class="signal">
+        <input id="st-comment-st-edit-summary-signal-checkbox" type="checkbox" /><label for="st-comment-st-edit-summary-signal-checkbox">[% loc('Signal this comment to') %]</label>
+        <input id="st-comment-st-edit-summary-signal-to" type="hidden" />
+        <span id="st-comment-signal_network">...</span>
+        <img title="[% loc('Only members with permission to view this page will receive the signal.') %]" style="vertical-align: top; display: none" src="/static/skin/common/images/warning-icon.png" id="st-comment-signal_network_warning">
+      </div>
+    </li>
+    [% END %]
   </ul>
 </div>
 </div>

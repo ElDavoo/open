@@ -67,11 +67,13 @@ GuiEdit.prototype.show = function () {
         .click(function () { self['do_'+this.name].call(self) })
 
     jQuery('.saveButton', this.container).one('click', function () {
+        var doSignal = $('#st-comment-st-edit-summary-signal-checkbox').is(':checked');
         jQuery.post('/' + self.workspace + '/index.cgi?action=submit_comment',
             {
                 action: 'submit_comment',
                 page_name: self.page_id,
-                comment: jQuery('textarea', self.container).val()
+                comment: jQuery('textarea', self.container).val(),
+                signal_comment_to_network: doSignal ? $('#st-comment-st-edit-summary-signal-to').val() : ''
             },
             function () {
                 if (self.oncomplete) {
@@ -93,6 +95,10 @@ GuiEdit.prototype.show = function () {
 
     if (this.area.addBehavior) {
         this.area.addBehavior(nlw_make_s3_path('/javascript/Selection.htc'));
+    }
+
+    if ($('#st-comment-signal_network').size() > 0) {
+        Socialtext.show_signal_network_dropdown('st-comment-', '200px');
     }
 
     this.scrollTo(function () {
@@ -120,9 +126,8 @@ GuiEdit.prototype.scrollTo = function (callback) {
     // Scroll the window so that the middle of .commentWrapper is in the
     // middle of the screen
     var wrapper = jQuery('.commentWrapper', this.container);
-    var offset =
-        wrapper.offset().top + wrapper.height() - jQuery(window).height();
-    $('html,body').animate({scrollTop: offset}, 'slow', 'linear', callback);
+    var offset = wrapper.offset().top;
+    $('html,body').animate({scrollTop: offset}, 'normal', 'linear', callback);
 }
 
 GuiEdit.prototype.alarm_on = function() {

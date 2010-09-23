@@ -3,7 +3,7 @@ package Socialtext::Rest::Uploads;
 use Moose;
 extends 'Socialtext::Rest::Collection';
 use Socialtext::HTTP ':codes';
-use Socialtext::HTTP::Cookie 'AIR_USER_COOKIE';
+use Socialtext::BrowserDetect;
 use Socialtext::Upload;
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::SQL qw/sql_txn/;
@@ -85,9 +85,7 @@ sub POST_file {
         message => 'file uploaded',
     });
 
-    if (Socialtext::HTTP::Cookie->cookie_name($self->rest->request)
-        eq AIR_USER_COOKIE
-    ) {
+    if (Socialtext::BrowserDetect::adobe_air()) {
         return << ".";
 <html><head>
     <script>window.childSandboxBridge = $response;</script>

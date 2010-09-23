@@ -2,11 +2,13 @@ package Socialtext::Handler::Container;
 # @COPYRIGHT@
 use Moose::Role;
 use Socialtext::HTTP ':codes';
+use Socialtext::HTTP::Cookie;
 use Socialtext::Workspace;
 use Socialtext::l10n qw/loc_lang loc/;
 use Socialtext::JSON qw(encode_json decode_json);
 use Exception::Class;
 use Socialtext::AppConfig;
+use Socialtext::Session;
 use Socialtext::Gadgets::Container;
 use Socialtext::Gadgets::Util qw(share_path plugin_dir);
 use namespace::clean -except => 'meta';
@@ -22,6 +24,14 @@ has 'container' => (
     is => 'ro', isa => 'Maybe[Socialtext::Gadgets::Container]',
     lazy_build => 1,
 );
+
+has 'session' => (
+    is => 'ro', isa => 'Socialtext::Session',
+    lazy_build => 1,
+);
+sub _build_session {
+    return Socialtext::Session->new;
+}
 
 has 'template_paths' => (
     is => 'ro', isa => 'ArrayRef',
@@ -49,8 +59,24 @@ sub if_authorized_to_edit {
     return $self->if_authorized_to_view($cb);
 }
 
+sub unless_authen_needs_renewal {
+    my ($self, $cb) = @_;
+    return $self->renew_authentication if Socialtext::HTTP::Cookie->NeedsRenewal;
+    return $cb->();
+}
+
 sub not_authenticated {
     my $self = shift;
+    my $redirect_to = $self->rest->request->parsed_uri->unparse;
+    $self->redirect("/challenge?$redirect_to");
+    return '';
+}
+
+sub renew_authentication {
+    my $self = shift;
+    $self->session->add_error(
+        loc("Login session has expired; please re-authenticate.")
+    );
     my $redirect_to = $self->rest->request->parsed_uri->unparse;
     $self->redirect("/challenge?$redirect_to");
     return '';
@@ -162,9 +188,11 @@ sub get_html {
             });
         }
         else {
-            return $self->render_template($self->container->view_template, {
-                container => $self->container->template_vars
-            });
+            $self->unless_authen_needs_renewal(sub {
+                return $self->render_template($self->container->view_template, {
+                    container => $self->container->template_vars
+                });
+            } );
         }
     });
 }

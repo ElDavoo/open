@@ -6,7 +6,12 @@ use strict;
 use warnings;
 use Class::Field qw(const);
 use Digest::SHA qw(sha1_base64);
+use POSIX qw(strftime);
 use Socialtext::AppConfig;
+use Socialtext::BrowserDetect;
+use Socialtext::Cache;
+use CGI::Cookie;
+use Crypt::OpenToken;
 
 ###############################################################################
 # Allow some constant values to be exported
@@ -21,20 +26,9 @@ const AIR_USER_COOKIE  => 'AIR-user';
 
 ###############################################################################
 sub cookie_name {
-    my ($class, $req) = @_;
-
-    # Figure out what User-Agent is being used
-    my $user_agent;
-    $user_agent   = $req->header_in("User-Agent") if ($req);
-    $user_agent ||= $ENV{HTTP_USER_AGENT};
-    $user_agent ||= ''; # should only ever occur if *NO* UA is provided
-
-    # Depending on the User-Agent in use, return the name of the cookie that
-    # we're expecting.
-    if ($user_agent =~ /AdobeAIR/) {
-        return AIR_USER_COOKIE();
-    }
-    return USER_DATA_COOKIE();
+    return Socialtext::BrowserDetect::adobe_air()
+        ? AIR_USER_COOKIE()
+        : USER_DATA_COOKIE();
 }
 
 ###############################################################################
@@ -42,26 +36,126 @@ our $MAC_secret; # prevent constantly loading socialtext.conf
 sub MAC_for_user_id {
     my ($class, $user_id) = @_;
     $MAC_secret ||= Socialtext::AppConfig->MAC_secret;
-    return sha1_base64( $user_id, $MAC_secret );
+    return sha1_base64($user_id, $MAC_secret);
 }
 
 sub GetValidatedUserId {
-    my $class = shift;
-    my $name = USER_DATA_COOKIE();
-    my %user_data = get_value($name);
-    return $user_data{user_id}
-        if $user_data{user_id} and $user_data{MAC}
-            and $user_data{MAC} eq $class->MAC_for_user_id($user_data{user_id});
-    return 0;
+    my $class  = shift;
+    my $name   = $class->cookie_name();
+    my $cookie = $class->GetRawCookie($name) || '';
+    return $class->GetValidatedUserIdFromCookie($cookie);
 }
 
-sub get_value {
-    my $name = shift;
+sub GetValidatedUserIdFromCookie {
+    my $class  = shift;
+    my $cookie = shift;
+
+    my $cache = _cache();
+    my $token = $cache->get($cookie);
+    unless ($token) {
+        my $factory = _token_factory();
+        $token = eval { $factory->parse($cookie) };
+
+        if ($@) {
+            #warn "cookie failed to decrypt; $@";
+            return 0;
+        }
+        $cache->set($cookie, $token) if ($token);
+    }
+
+    unless ($token) {
+        #warn "no token cookie\n";
+        return 0;
+    }
+
+    unless ($token->is_valid) {
+        #warn "token cookie invalid\n";
+        return 0;
+    }
+
+    return $token->data->{user_id};
+}
+
+sub NeedsRenewal {
+    my $class = shift;
+    my $name   = $class->cookie_name();
+    my $cookie = $class->GetRawCookie($name) || '';
+
+    my $factory = _token_factory();
+    my $token   = eval { $factory->parse($cookie) };
+
+    if ($@) {
+        #warn "cookie failed to decrypt; $@";
+        return 0;
+    }
+
+    # Check if the cookie needs to be renewed
+    my $renew_until = $token->renew_until;
+    my $time_now    = DateTime->now(time_zone => 'UTC');
+    return $time_now > $renew_until ? 1 : 0;
+}
+
+sub AuthCookiePresent {
+    my $class = shift;
+    my $name  = $class->cookie_name();
+    return $class->GetRawCookie($name) ? 1 : 0;
+}
+
+sub GetRawCookie {
+    my $class   = shift;
+    my $name    = shift;
     my $cookies = CGI::Cookie->raw_fetch;
-    my $value = $cookies->{$name} || '';
-    my @user_data = split(/[&;]/, $value);
-    push @user_data, undef if (@user_data % 2 == 1);
-    return @user_data;
+    return $cookies->{$name};
+}
+
+sub BuildCookieValue {
+    my $class  = shift;
+    my %values = @_;
+
+    my $not_before      = delete $values{'not-before'}      || _not_before();
+    my $not_on_or_after = delete $values{'not-on-or-after'} || _not_on_or_after();
+    my $renew_until     = delete $values{'renew-until'}     || _renew_until();
+
+    my $factory = _token_factory();
+    my $token   = $factory->create(
+        Crypt::OpenToken::CIPHER_AES128,
+        {
+            %values,
+            'not-before'      => _make_iso8601_date($not_before),
+            'not-on-or-after' => _make_iso8601_date($not_on_or_after),
+            'renew-until'     => _make_iso8601_date($renew_until),
+        },
+    );
+    return $token;
+}
+
+sub _token_factory {
+    $MAC_secret ||= Socialtext::AppConfig->MAC_secret;
+    return Crypt::OpenToken->new(password => $MAC_secret);
+}
+
+sub _cache {
+    return Socialtext::Cache->cache('st-http-cookie');
+}
+
+sub _not_before {
+    # token cookies aren't valid before now.
+    return time;
+}
+
+sub _not_on_or_after {
+    my $hard_limit = Socialtext::AppConfig->auth_token_hard_limit;
+    return time + $hard_limit;
+}
+
+sub _renew_until {
+    my $soft_limit = Socialtext::AppConfig->auth_token_soft_limit;
+    return time + $soft_limit;
+}
+
+sub _make_iso8601_date {
+    my $time_t = shift;
+    return strftime('%Y-%m-%dT%H:%M:%SGMT', gmtime($time_t));
 }
 
 1;
@@ -78,7 +172,6 @@ Socialtext::HTTP::Cookie - HTTP cookie interface
   $mac = Socialtext::HTTP::Cookie->MAC_for_user_id($user_id);
 
   # determine name of HTTP cookie to use
-  $name = Socialtext::HTTP::Cookie->cookie_name($r);
   $name = Socialtext::HTTP::Cookie->cookie_name();
 
 =head1 DESCRIPTION
@@ -122,16 +215,13 @@ to be logged in separately using Internet Explorer and Socialtext Desktop
 Generates a MAC based on the given C<$user_id>, and returns the MAC back to
 the caller.
 
-=item B<Socialtext::HTTP::Cookie-E<gt>cookie_name($request)>
+=item B<Socialtext::HTTP::Cookie-E<gt>cookie_name()>
 
-Determines the name of the HTTP cookie to use for the given Apache
-C<$request>, returning the cookie name back to the caller.
+Determines the name of the HTTP cookie to use for the current HTTP request,
+returning the cookie name back to the caller.
 
 Cookie name is User-Agent specific, in order to accommodate Adobe AIR sharing
 a cookie store with Internet Explorer.
-
-If no Apache Request object is provided, this method looks in
-C<$ENV{HTTP_USER_AGENT}> to determine the User-Agent in use.
 
 =back
 

@@ -176,7 +176,7 @@ Smiley_Friendly: {
 
     my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'smiley',
-        content => ':-) Making Wikitext - more Smiley Friendly',
+        content => ':-) Making Wikitext- more Smiley Friendly',
         creator => $hub->current_user,
     );
 
@@ -190,7 +190,7 @@ NonSmiley_UnFriendly: {
 
     my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'non-smiley',
-        content => ':*) Making Wikitext * more Smiley Friendly',
+        content => ':*) Making Wikitext* more Smiley Friendly',
         creator => $hub->current_user,
     );
 

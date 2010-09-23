@@ -3,9 +3,6 @@ package Socialtext::CGI::User;
 
 use strict;
 use warnings;
-use Digest::SHA;
-use CGI::Cookie;
-use Socialtext::Apache::User;
 use Socialtext::HTTP::Cookie;
 
 use base 'Exporter';
@@ -18,22 +15,9 @@ our @EXPORT_OK = qw/get_current_user/;
 # This one is used by reports and the appliance console
 
 sub get_current_user {
-    my $name_or_id = _user_id_or_username() || return;
-    return Socialtext::Apache::User::_current_user($name_or_id);
-}
-
-sub _user_id_or_username {
-    my $cookie_name = Socialtext::HTTP::Cookie->cookie_name();
-    my %user_data   = Socialtext::HTTP::Cookie::get_value($cookie_name);
-    return unless keys %user_data;
-
-    my $mac = Socialtext::HTTP::Cookie->MAC_for_user_id( $user_data{user_id} );
-    unless ($mac eq $user_data{MAC}) {
-        warn "Invalid MAC in cookie presented for $user_data{user_id}\n";
-        return;
-    }
-
-    return $user_data{user_id};
+    my $user_id = Socialtext::HTTP::Cookie->GetValidatedUserId();
+    return unless $user_id;
+    return Socialtext::User->new(user_id => $user_id);
 }
 
 1;
