@@ -1,0 +1,260 @@
+* Fixture: SocialRest
+
+| st-clear-events |
+| st-clear-signals |
+
+* create two accounts, main and other
+
+| set | other_acct | other-%%start_time%% |
+| create-account | %%other_acct%% |
+| set | other_acct_id | %%account_id%% |
+
+| set | main_acct | main-%%start_time%% |
+| create-account | %%main_acct%% |
+| set | main_acct_id | %%account_id%% |
+
+* otis and sharron are primary members of the Other account
+** otis and sharron are in no groups
+
+| set | otis | otis-%%start_time%%@ken.socialtext.net |
+| create-user | %%otis%% | password | %%other_acct%% | Otis Outsider |
+| set | otis_id | %%user_id%% |
+
+| set | sharron | sharron-%%start_time%%@ken.socialtext.net |
+| create-user | %%sharron%% | password | %%other_acct%% | Sharron Account |
+| set | sharron_id | %%user_id%% |
+
+* membart and adminia are primary members of the Main account
+
+| set | membart | membart-%%start_time%%@ken.socialtext.net |
+| create-user | %%membart%% | password | %%main_acct%% | Membart Ofthegroup |
+| set | membart_id | %%user_id%% |
+
+| set | adminia | adminia-%%start_time%%@ken.socialtext.net |
+| create-user | %%adminia%% | password | %%main_acct%% | Adminia Ofthegroup |
+| set | adminia_id | %%user_id%% |
+
+* sharron has a member role in the Main account (shares an account w/ membart and adminia)
+
+| add-user-to-account | %%sharron%% | %%main_acct%% | member |
+
+* membart and adminia are in a sjg (in Main)
+
+| create-group | Self-Joiners Anonymous | %%main_acct%% | %%adminia%% | | self-join |
+| set | sjg_id | %%group_id%% |
+| add-user-to-group | %%membart%% | %%sjg_id%% | member | %%adminia%% |
+
+* the workspace is associated with the sjg
+
+| set | stuff_ws | stuff-%%start_time%% |
+| create-workspace | %%stuff_ws%% | %%main_acct%% | Stuff and Things |
+| set | stuff_ws_id | %%workspace_id%% |
+
+| workspace-permission-set | %%stuff_ws%%     | self-join    |
+| add-group-to-workspace   | %%sjg_id%% | %%stuff_ws%% |
+
+
+| Comment | post a plain signal to the other account |
+| http-user-pass | %%otis%% | password |
+| POST-signal | sometimes i feel so othery | {"account_ids":[%%other_acct_id%%]} |
+| set | otis_signal_id | %%last_signal_id%% |
+| GET-json | /data/signals/%%otis_signal_id%% |
+| code-is | 200 |
+| json-parse     |                  |                   |
+| json-path-size | $.account_ids    | 1                 |
+| json-path-is   | $.account_ids[0] | %%other_acct_id%% |
+| json-path-size | $.group_ids      | 0                 |
+
+
+| Comment | set up a page with initial content |
+| http-user-pass | %%adminia%% | password |
+| edit-page | %%stuff_ws%% | Stuff and Things | here is the content |
+
+| Comment | signal a page mention to an Account |
+| POST-signal | this stuff is accounty: {link: %%stuff_ws%% [Stuff and Things]} | {"account_ids":[%%main_acct_id%%]} |
+| set | mention_via_acct_id | %%last_signal_id%% |
+
+| Comment | signal a page mention to a SJG |
+| POST-signal | this stuff is groupy: {link: %%stuff_ws%% [Stuff and Things]} | {"group_ids":[%%sjg_id%%]} |
+| set | mention_via_sjg_id | %%last_signal_id%% |
+
+| Comment | signal a page edit, targeting an Account |
+| PUT-json | /data/workspaces/%%stuff_ws%%/pages/stuff_and_things | {"content":"here is modified content","edit_summary":"mod for account","signal_edit_summary":1,"signal_edit_to_network":"account-%%main_acct_id%%"} |
+| code-is | 204 |
+
+| Comment | check the signal-edit, grab the id |
+| GET-json       | /data/signals?limit=1 |                  |
+| code-is        | 200                   |                  |
+| json-parse     |                       |                  |
+| json-path-size | $[0].account_ids      | 1                |
+| json-path-is   | $[0].account_ids[0]   | %%main_acct_id%% |
+| json-path-size | $[0].group_ids        | 0                |
+| json-path-set  | edit_via_acct_id      | $[0].signal_id   |
+
+| Comment | signal a page edit, targeting the SJG |
+| http-user-pass | %%membart%% | password |
+| PUT-json | /data/workspaces/%%stuff_ws%%/pages/stuff_and_things | {"content":"here is awesome content","edit_summary":"mod for group","signal_edit_summary":1,"signal_edit_to_network":"group-%%sjg_id%%"} |
+| code-is | 204 |
+
+| Comment | check the second signal-edit, grab the id |
+| GET-json       | /data/signals?limit=1 |                |
+| code-is        | 200                   |                |
+| json-parse     |                       |                |
+| json-path-size | $[0].group_ids        | 1              |
+| json-path-is   | $[0].group_ids[0]     | %%sjg_id%%     |
+| json-path-size | $[0].account_ids      | 0              |
+| json-path-set  | edit_via_sjg_id       | $[0].signal_id |
+
+
+# As an authenticated user (that isn't an Account User)
+
+| http-user-pass | %%otis%% | password |
+
+| *Comment* | AuthUser - just own signal in all my groups |
+| GET-json | /data/signals?html=0 |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 1 |
+| json-path-is | $[0].signal_id | %%otis_signal_id%% |
+
+| *Comment* | AuthUser - no signals when trying to filter by the sjg |
+| GET-json | /data/signals?html=0;groups=%%sjg_id%% |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 0 |
+
+| *Comment* | AuthUser - no signals when trying to filter by main acct |
+| GET-json | /data/signals?html=0;accounts=%%main_acct_id%% |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 0 |
+
+| *Comment* | AuthUser - just own signal when trying to filter by other acct |
+| GET-json | /data/signals?html=0;accounts=%%other_acct_id%% |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 1 |
+| json-path-is | $[0].signal_id | %%otis_signal_id%% |
+
+| *Comment* | AuthUser - can see signals by self when filtering by self |
+| GET-json | /data/signals?html=0;sender=%%otis_id%% |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 1 |
+| json-path-is | $[0].signal_id | %%otis_signal_id%% |
+
+| *Comment* | AuthUser - can't see sender not sharing an account with |
+| GET-json | /data/signals?html=0;sender=%%adminia_id%% |
+| code-is | 403 |
+
+# TODO: events w/ signals=1
+# TODO: events w/o signals=1
+
+
+# Log in as Account User
+
+| http-user-pass | %%sharron%% | password |
+
+| *Comment* | AcctUser - see otis, mod and link_to_acct signals in all-my-groups |
+| GET-json | /data/signals?html=0 |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 3 |
+| json-path-is | $[0].signal_id | %%edit_via_acct_id%% |
+| json-path-is | $[1].signal_id | %%mention_via_acct_id%% |
+| json-path-is | $[2].signal_id | %%otis_signal_id%% |
+
+| *Comment* | AcctUser - see mod and link_to_acct signals when viewing account |
+| GET-json | /data/signals?html=0;accounts=%%main_acct_id%% |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 2 |
+| json-path-is | $[0].signal_id | %%edit_via_acct_id%% |
+| json-path-is | $[1].signal_id | %%mention_via_acct_id%% |
+
+| *Comment* | AcctUser - see awesome and link_to_sjg signals when viewing sjg |
+| GET-json | /data/signals?html=0;groups=%%sjg_id%% |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 2 |
+| json-path-is | $[0].signal_id | %%edit_via_sjg_id%% |
+| json-path-is | $[1].signal_id | %%mention_via_sjg_id%% |
+
+| *Comment* | AcctUser - filtering by user sees all signals by that user |
+| GET-json | /data/signals?html=0;sender=%%adminia_id%% |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 3              |                         |
+| json-path-is    | $[0].signal_id | %%edit_via_acct_id%%    |
+| json-path-is    | $[1].signal_id | %%mention_via_sjg_id%%  |
+| json-path-is    | $[2].signal_id | %%mention_via_acct_id%% |
+
+| *Comment* | AcctUser - Check individual signal access |
+| GET-json  | /data/signals/%%otis_signal_id%%          |
+| code-is   | 200                                       |
+| GET-json  | /data/signals/%%edit_via_acct_id%%        |
+| code-is   | 200                                       |
+| GET-json  | /data/signals/%%edit_via_sjg_id%%         |
+| code-is   | 200                                       |
+| GET-json  | /data/signals/%%mention_via_acct_id%%     |
+| code-is   | 200                                       |
+| GET-json  | /data/signals/%%mention_via_sjg_id%%      |
+| code-is   | 200                                       |
+
+# TODO: events w/ signals=1
+# TODO: events w/o signals=1
+
+
+# Log in as Member
+
+| http-user-pass | %%membart%% | password |
+
+| *Comment* | Member - all signals in all-my-groups |
+| GET-json | /data/signals?html=0 |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 4 |
+| json-path-is | $[0].signal_id | %%edit_via_sjg_id%% |
+| json-path-is | $[1].signal_id | %%edit_via_acct_id%% |
+| json-path-is | $[2].signal_id | %%mention_via_sjg_id%% |
+| json-path-is | $[3].signal_id | %%mention_via_acct_id%% |
+
+| *Comment* | Member - see only sjg signals when viewing sjg |
+| GET-json | /data/signals?html=0;groups=%%sjg_id%% |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 2 |
+| json-path-is | $[0].signal_id | %%edit_via_sjg_id%% |
+| json-path-is | $[1].signal_id | %%mention_via_sjg_id%% |
+
+| *Comment* | Member - see only acct signals when viewing acct |
+| GET-json | /data/signals?html=0;accounts=%%main_acct_id%% |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 2 |
+| json-path-is | $[0].signal_id | %%edit_via_acct_id%% |
+| json-path-is | $[1].signal_id | %%mention_via_acct_id%% |
+
+| *Comment* | Member - see all adminia signals when viewing that user |
+| GET-json | /data/signals?html=0;sender=%%adminia_id%% |
+| code-is | 200 |
+| json-parse |
+| json-array-size | 3 |
+| json-path-is | $[0].signal_id | %%edit_via_acct_id%% |
+| json-path-is | $[1].signal_id | %%mention_via_sjg_id%% |
+| json-path-is | $[2].signal_id | %%mention_via_acct_id%% |
+
+| *Comment* | Member - Check individual signal access |
+| GET-json  | /data/signals/%%otis_signal_id%%          |
+| code-is   | 403                                       |
+| GET-json  | /data/signals/%%edit_via_acct_id%%        |
+| code-is   | 200                                       |
+| GET-json  | /data/signals/%%edit_via_sjg_id%%         |
+| code-is   | 200                                       |
+| GET-json  | /data/signals/%%mention_via_acct_id%%     |
+| code-is   | 200                                       |
+| GET-json  | /data/signals/%%mention_via_sjg_id%%      |
+| code-is   | 200                                       |
+
+# TODO: events w/ signals=1
+# TODO: events w/o signals=1
