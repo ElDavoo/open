@@ -17,15 +17,19 @@ sub get_resource {
     my ($self, $rest) = @_;
     my $viewer = $self->rest->user;
 
+    # fake it like it was a param too (instead of just a placeholder)
+    $self->rest->query->param('group_id',$self->group_id);
+
+    # Permission check is done in extract_common_args:
     my @args = $self->extract_common_args();
-
-    # Permission for this group is checked in extract_common_args()
-    my $group = Socialtext::Group->GetGroup(
-        group_id => $self->rest->group_id);
-
-    my $events = Socialtext::Events->GetGroupActivities($viewer, $group);
+    my $events = Socialtext::Events->GetGroupActivities($viewer, $self->_group);
     $events ||= [];
     return $events;
+}
+
+sub _group { # called outside of this file
+    my $self = shift;
+    return Socialtext::Group->GetGroup(group_id => $self->group_id);
 }
 
 1;
