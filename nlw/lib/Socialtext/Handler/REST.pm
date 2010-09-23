@@ -186,10 +186,17 @@ sub log_timings {
             };
         }
 
+        if (ref $query_hash eq 'ARRAY') {
+            $query_hash = { 'POSTDATA' => $query_hash };
+        }
+
         delete $query_hash->{$_} for qw/signal body page_body comment/;
         for my $key (keys %$query_hash) {
             my $val = $query_hash->{$key};
             if (ref($val)) {
+                if (ref($val) eq 'JSON::XS::Boolean') {
+                    next;
+                }
                 if (ref($val) eq 'ARRAY') {
                     $val = undef unless @$val;
                 }
