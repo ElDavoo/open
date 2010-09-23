@@ -1322,6 +1322,7 @@ sub code_is {
         like $self->{http}->response->content(), $self->quote_as_regex($msg),
              "Status content matches";
     }
+    return $code;
 }
 
 =head2 dump_http_response 
@@ -1755,6 +1756,53 @@ sub json_parse {
     unless (defined $self->{json}) {
         diag "Bad content: '$content'\n";
     }
+}
+
+=head2 json-response-is
+
+A macro for C<json-parse> C<code-is> and an optional C<json-array-size>.
+
+E.g. to check for a 200 response with 50 elements in an array:
+
+   | GET-json         | /data/foo |    |
+   | json-response-is | 200       | 50 |
+
+... is equivalent to ...
+
+   | GET-json        | /data/foo |
+   | code-is         | 200       |
+   | json-parse      |           |
+   | json-array-size | 50        |
+
+E.g. to check for a 201 response without a number-of-elements check:
+
+   | POST-json        | /data/bar | {"blah":"blah"} |
+   | json-response-is | 201       |                 |
+
+... is equivalent to ...
+
+   | POST-json  | /data/bar | {"blah":"blah"} |
+   | code-is    | 201       |                 |
+   | json-parse |           |                 |
+
+If the "expected code" param is missing, it defaults to 200.  If the response
+code doesn't match the expected code, instead of parsing an empty json object
+or array is substituted.
+
+=cut
+
+sub json_response_is {
+    my ($self,$expected_code,$expected_array_size) = @_;
+    $expected_code ||= 200;
+    my $code = $self->code_is($expected_code);
+    if ($code == $expected_code) {
+        $self->json_parse;
+    }
+    else {
+        $self->{json} = defined($expected_array_size) ? [] : {};
+    }
+    $self->json_array_size($expected_array_size)
+        if defined $expected_array_size;
 }
 
 =head2 json-like
