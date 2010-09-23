@@ -28,6 +28,7 @@ use Socialtext::Timer qw/time_scope/;
 use Carp qw/croak/;
 use Try::Tiny;
 use Readonly;
+use Scalar::Util qw/blessed/;
 
 BEGIN {
     extends 'Socialtext::Base','Socialtext::MultiPlugin';
@@ -951,7 +952,7 @@ sub Resolve {
 
     croak "no user identifier specified" unless $maybe_user;
 
-    if (ref($maybe_user) && $maybe_user->can('user_id')) {
+    if (blessed($maybe_user) && $maybe_user->can('user_id')) {
         return $maybe_user;
     }
 
