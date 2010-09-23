@@ -1,4 +1,4 @@
-Addresses Bugs {bz: 3708} and {bz: 3717}, where we saw the CP looking up Users by "username" instead of "user_id".
+Addresses Bugs {bz: 3708} and {bz: 3717} , where we saw the CP looking up Users by "username" instead of "user_id".
 
 When we had Users that had an _all numeric_ username, that *could* conflict with the user_id of another User in the system, and the CP would inadvertently display data for or perform operations against the wrong User.
 
@@ -33,19 +33,23 @@ When we had Users that had an _all numeric_ username, that *could* conflict with
 # ... User One shows their Account/WS list
 
 | open-ok | /nlw/control/user/%%user_one_id%% |  |
-| text-like | //body | %%user_one_email%% |
+| wait_for_text_present_ok | %%user_one_email%% | 30000 |
 | wait-for-element-visible-ok | accountTable | 30000 |
+| wait_for_text_present_ok | %%acct_one%% | 30000 |
 | text-like | accountTable | %%acct_one%% |
 | wait-for-element-visible-ok | workspaceTable | 30000 |
+| wait_for_text_present_ok | %%ws_one%% | 30000 |
 | text-like | workspaceTable | %%ws_one%% |
 
 # ... and User Two shows their Account/WS list
 
 | open-ok | /nlw/control/user/%%user_two_id%% |  |
-| text-like | //body | %%user_two_email%% |
+| wait_for_text_present_ok | %%user_two_email%% | 30000 |
 | wait-for-element-visible-ok | accountTable | 30000 |
+| wait_for_text_present_ok | %%acct_two%% | 30000 |
 | text-like | accountTable | %%acct_two%% |
 | wait-for-element-visible-ok | workspaceTable | 30000 |
+| wait_for_text_present_ok | %%ws_two%% | 30000 |
 | text-like | workspaceTable | %%ws_two%% |
 
 # Bug 3717; Changing Primary Account acts against the correct User
@@ -62,11 +66,13 @@ When we had Users that had an _all numeric_ username, that *could* conflict with
 
 | open-ok | /nlw/control/user/%%user_two_id%% |  |
 | wait-for-element-visible-ok | accountTable | 30000 |
+| wait_for_text_present_ok | Primary Account, Via Workspace: %%ws_two%% | 30000 |
 | text-like | accountTable | Primary Account, Via Workspace: %%ws_two%% |
 | click-ok | accountTable-radio-2-1 |  |
 | pause | 10000 | wait for AJAX request to save+reload Primary Account change |
 | open-ok | /nlw/control/user/%%user_two_id%% |  |
 | wait-for-element-visible-ok | accountTable | 30000 |
+| wait_for_text_present_ok | Primary Account, Via Workspace: %%ws_three%% | 30000 |
 | text-like | accountTable | Primary Account, Via Workspace: %%ws_three%% |
 
 | *Comment* | Test Case: Business Control Panel USER: Lookup by User Id TEARDOWN |
