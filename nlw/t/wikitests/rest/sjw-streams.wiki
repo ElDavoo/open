@@ -195,8 +195,157 @@ All Activity thus far (most recent first):
 | GET-json  | /data/signals/%%mention_via_sjg_id%%      |
 | code-is   | 200                                       |
 
-# TODO: events w/ signals=1
-# TODO: events w/o signals=1
+| *Comment* | AcctUser - Check individual signal access after removing viewer |
+| remove-user-from-account | %%sharron%% | %%main_acct%% |
+| GET-json  | /data/signals/%%otis_signal_id%%          |
+| code-is   | 200                                       |
+| GET-json  | /data/signals/%%edit_via_acct_id%%        |
+| code-is   | 403                                       |
+| GET-json  | /data/signals/%%edit_via_sjg_id%%         |
+| code-is   | 403                                       |
+| GET-json  | /data/signals/%%mention_via_acct_id%%     |
+| code-is   | 403                                       |
+| GET-json  | /data/signals/%%mention_via_sjg_id%%      |
+| code-is   | 403                                       |
+| add-user-to-account | %%sharron%% | %%main_acct%% |
+
+| *Comment* | AcctUser - all-my-groups events |
+| GET-json | /data/events?html=0 |
+| json-response-is | 200 | 2 |
+| json-path-is | $[0].signal_id   | %%mention_via_acct_id%% |
+| json-path-is | $[1].signal_id   | %%otis_signal_id%%    |
+
+| *Comment* | AcctUser - all-my-groups events that have a signal |
+| GET-json | /data/events?html=0;signals=1 |
+| json-response-is | 200 | 2 |
+| json-path-is | $[0].signal_id   | %%mention_via_acct_id%% |
+| json-path-is | $[1].signal_id   | %%otis_signal_id%%    |
+
+| *Comment* | AcctUser - just signal-classed events |
+| GET-json | /data/events?html=0;event_class=signal |
+| json-response-is | 200 | 2 |
+| json-path-is | $[0].signal_id   | %%mention_via_acct_id%% |
+| json-path-is | $[1].signal_id   | %%otis_signal_id%%    |
+
+| http-user-pass | %%sharron%% | password |
+
+| *Comment* | AcctUser - events for a group |
+| GET-json | /data/events?html=0;group_id=%%sjg_id%% |
+| json-response-is | 200 | 7 |
+| json-path-is | $[0].signal_id   | %%edit_via_sjg_id%%     |
+| json-path-is | $[1].signal_id   | %%edit_via_acct_id%%    |
+| json-path-is | $[2].signal_id   | %%mention_via_sjg_id%%  |
+| json-path-is | $[3].event_class | page                    |
+| json-path-is | $[3].action      | edit_save               |
+| json-path-is | $[4].event_class | group                   |
+| json-path-is | $[4].action      | add_to_workspace        |
+| json-path-is | $[5].event_class | group                   |
+| json-path-is | $[5].action      | add_user                |
+| json-path-is | $[5].person.id   | %%membart_id%%          |
+| json-path-is | $[6].event_class | group                   |
+| json-path-is | $[6].action      | add_user                |
+| json-path-is | $[6].person.id   | %%adminia_id%%          |
+
+| *Comment* | AcctUser - events for a group containing a signal |
+| GET-json | /data/events?html=0;group_id=%%sjg_id%%;signals=1 |
+| json-response-is | 200 | 2 |
+| json-path-is | $[0].signal_id   | %%edit_via_sjg_id%%     |
+| json-path-is | $[1].signal_id   | %%mention_via_sjg_id%%  |
+
+| *Comment* | AcctUser - events for an account |
+| GET-json | /data/events?html=0;account_id=%%main_acct_id%% |
+| json-response-is | 200 | 4 |
+| json-path-is | $[0].signal_id   | %%edit_via_sjg_id%%     |
+| json-path-is | $[1].signal_id   | %%edit_via_acct_id%%    |
+| json-path-is | $[2].signal_id   | %%mention_via_acct_id%%  |
+| json-path-is | $[3].event_class | page                    |
+| json-path-is | $[3].action      | edit_save               |
+
+| *Comment* | AcctUser - events for an account containing a signal |
+| GET-json | /data/events?html=0;account_id=%%main_acct_id%%;signals=1 |
+| json-response-is | 200 | 2 |
+| json-path-is | $[0].signal_id | %%edit_via_acct_id%%    |
+| json-path-is | $[1].signal_id | %%mention_via_acct_id%% |
+
+| *Comment* | AcctUser - groups event feed |
+| GET-json | /data/events/groups/%%sjg_id%% |
+| json-response-is | 200 | 7 |
+| json-path-is | $[0].signal_id   | %%edit_via_sjg_id%%     |
+| json-path-is | $[1].signal_id   | %%edit_via_acct_id%%    |
+| json-path-is | $[2].signal_id   | %%mention_via_sjg_id%%  |
+| json-path-is | $[3].event_class | page                    |
+| json-path-is | $[3].action      | edit_save               |
+| json-path-is | $[4].event_class | group                   |
+| json-path-is | $[4].action      | add_to_workspace        |
+| json-path-is | $[5].event_class | group                   |
+| json-path-is | $[5].action      | add_user                |
+| json-path-is | $[5].person.id   | %%membart_id%%          |
+| json-path-is | $[6].event_class | group                   |
+| json-path-is | $[6].action      | add_user                |
+| json-path-is | $[6].person.id   | %%adminia_id%%          |
+
+| *Comment* | AcctUser - events for self (actor.id) |
+| GET-json | /data/events?actor.id=%%sharron_id%%;html=0 |
+| json-response-is | 200 | 0 |
+
+| *Comment* | AcctUser - events for adminia (actor.id) |
+| GET-json | /data/events?actor.id=%%adminia_id%%;html=0 |
+| json-response-is | 200 | 6 |
+| json-path-is | $[0].signal_id   | %%edit_via_acct_id%%    |
+| json-path-is | $[1].signal_id   | %%mention_via_sjg_id%%  |
+| json-path-is | $[2].signal_id   | %%mention_via_acct_id%% |
+| json-path-is | $[3].event_class | page                    |
+| json-path-is | $[3].action      | edit_save               |
+| json-path-is | $[4].event_class | group                   |
+| json-path-is | $[4].action      | add_user                |
+| json-path-is | $[4].actor.id    | %%adminia_id%%          |
+| json-path-is | $[4].person.id   | %%membart_id%%          |
+| json-path-is | $[5].action      | add_user                |
+| json-path-is | $[5].actor.id    | %%adminia_id%%          |
+| json-path-is | $[5].person.id   | %%adminia_id%%          |
+
+| *Comment* | AcctUser - events for membart (actor.id) |
+| GET-json | /data/events?actor.id=%%membart_id%%;html=0 |
+| json-response-is | 200 | 1 |
+| json-path-is | $[0].signal_id   | %%edit_via_sjg_id%%    |
+
+| *Comment* | AcctUser - events for that workspace |
+| GET-json | /data/events?page.workspace_id=%%stuff_ws_id%%;html=0 |
+| json-response-is | 200 | 3 |
+| json-path-is | $[0].signal_id   | %%edit_via_sjg_id%%     |
+| json-path-is | $[1].signal_id   | %%edit_via_acct_id%%    |
+# pure mentions aren't selected due to a bug
+# | json-path-is | $[2].signal_id   | %%mention_via_sjg_id%%  |
+# | json-path-is | $[3].signal_id   | %%mention_via_acct_id%%  |
+| json-path-is | $[2].event_class | page                    |
+| json-path-is | $[2].action      | edit_save               |
+# workspace-group-add event isn't displayed because it doesn't set page_workspace_id in the event table
+
+| *Comment* | AcctUser - events for that page (empty b/c of perf expense) |
+| GET-json | /data/events?page.id=stuff_and_things;html=0 |
+| json-response-is | 200 | 0 |
+
+| *Comment* | AcctUser - conversations (empty since no edits) |
+| GET-json | /data/events/conversations/%%sharron_id%%?html=0 |
+| json-response-is | 200 | 0 |
+
+| *Comment* | AcctUser - own activities (empty since no activity )|
+| GET-json | /data/events/activities/%%sharron_id%%?html=0 |
+| json-response-is | 200 | 0 |
+
+| *Comment* | AcctUser - colleague activities (adminia) |
+| GET-json | /data/events/activities/%%adminia_id%%?html=0 |
+| json-response-is | 200 | 4 |
+| json-path-is | $[0].signal_id   | %%edit_via_acct_id%%    |
+| json-path-is | $[1].signal_id   | %%mention_via_sjg_id%%  |
+| json-path-is | $[2].signal_id   | %%mention_via_acct_id%% |
+| json-path-is | $[3].event_class | page                    |
+| json-path-is | $[3].action      | edit_save               |
+
+| *Comment* | AcctUser - colleague activities (membart) |
+| GET-json | /data/events/activities/%%membart_id%%?html=0 |
+| json-response-is | 200 | 1 |
+| json-path-is | $[0].signal_id   | %%edit_via_sjg_id%%    |
 
 
 # Log in as Member
@@ -305,6 +454,7 @@ All Activity thus far (most recent first):
 | json-path-is | $[2].signal_id   | %%mention_via_acct_id%%  |
 | json-path-is | $[3].event_class | page                    |
 | json-path-is | $[3].action      | edit_save               |
+| *Comment* | Member - BUG events for an account; groups shouldn't be here |
 | json-path-is | $[4].event_class | group                   |
 | json-path-is | $[4].action      | add_to_workspace        |
 | json-path-is | $[5].event_class | group                   |
@@ -400,25 +550,25 @@ All Activity thus far (most recent first):
 | json-path-is | $[3].action      | edit_save               |
 
 
-^ Bugs
-
-BUG: conversations *should* get decorated with signal_ids
-
-| *Comment* | TODO Adminia - conversations should see membart's|
-| http-user-pass | %%adminia%% | password |
-| GET-json | /data/events/conversations/%%adminia_id%%?html=0 |
-| json-response-is | 200 | 1 |
-| json-path-is | $[0].event_class | page                |
-| json-path-is | $[0].action      | edit_save           |
-| json-path-is | $[0].signal_id   | %%edit_via_sjg_id%% |
-
-BUG: group events don't respect the account_id filter
-
-| *Comment* | TODO Member - events for another account |
-| add-user-to-account | %%membart%% | %%other_acct%% | member |
-| http-user-pass | %%membart%% | password |
-| GET-json | /data/events?html=0;account_id=%%other_acct_id%% |
-| json-response-is | 200 | 1 |
-| json-path-is | $[0].signal_id   | %%otis_signal_id%%  |
-| remove-user-from-account | %%membart%% | %%other_acct%% |
+# ^ Bugs
+# 
+# BUG: conversations *should* get decorated with signal_ids
+# 
+# | *Comment* | TODO Adminia - conversations should see membart's|
+# | http-user-pass | %%adminia%% | password |
+# | GET-json | /data/events/conversations/%%adminia_id%%?html=0 |
+# | json-response-is | 200 | 1 |
+# | json-path-is | $[0].event_class | page                |
+# | json-path-is | $[0].action      | edit_save           |
+# | json-path-is | $[0].signal_id   | %%edit_via_sjg_id%% |
+# 
+# BUG: group events don't respect the account_id filter
+# 
+# | *Comment* | TODO Member - events for another account |
+# | add-user-to-account | %%membart%% | %%other_acct%% | member |
+# | http-user-pass | %%membart%% | password |
+# | GET-json | /data/events?html=0;account_id=%%other_acct_id%% |
+# | json-response-is | 200 | 1 |
+# | json-path-is | $[0].signal_id   | %%otis_signal_id%%  |
+# | remove-user-from-account | %%membart%% | %%other_acct%% |
 

@@ -27,27 +27,6 @@ sub get_resource {
                 $self->extract_page_args(),
                 $self->extract_people_args());
 
-    # For self-join groups, we need to be able to view the group's activity
-    # stream without actually being a member of the group, SO here we add the
-    # user to the group in a transaction to the user can be removed after
-    # we've generated the list of events.
-    # Permission is checked in extract_common_args().
-    my $g;
-    my %ro_args = @args;
-    if ($ro_args{group_id}) {
-        my $group = Socialtext::Group->GetGroup(group_id => $ro_args{group_id});
-        unless ($group->has_user($self->rest->user)) {
-            $g = guard { sql_rollback };
-            sql_begin_work;
-            $group->user_set->add_role(
-                $self->rest->user->user_id,
-                $group->user_set_id,
-                Socialtext::Role->Member->role_id
-            );
-            push @args, 'person_id!', $self->rest->user->user_id;
-        }
-    }
-
     my $events = Socialtext::Events->Get($self->rest->user, @args);
     $events ||= [];
 

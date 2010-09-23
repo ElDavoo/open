@@ -3,16 +3,20 @@ package Socialtext::Events::Reporter;
 use Moose;
 use Clone qw/clone/;
 use Socialtext::Encode ();
-use Socialtext::SQL qw/sql_execute sql_format_timestamptz/;
+use Socialtext::SQL qw/sql_execute sql_format_timestamptz :txn/;
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::User;
 use Socialtext::Pluggable::Adapter;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::HTML;
 use Socialtext::Formatter::LinkDictionary;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::Signal::Topic;
+use Socialtext::Permission qw/ST_READ_PERM/;
+use Socialtext::Role ();
+use Guard;
+use Scalar::Util qw/blessed/;
 use namespace::clean -except => 'meta';
 
 has 'viewer' => (
@@ -501,6 +505,7 @@ sub visibility_sql {
     if (_options_include_class($opts, 'group')
         and $self->viewer->can_use_plugin('groups') 
     ) {
+        # TODO BUG: groups should be limited to those in any account_id params
         my $i_am_connected_to_that_group = q{
             SELECT 1
               FROM user_set_path
@@ -863,6 +868,90 @@ sub _filter_opts {
     return \%filtered;
 }
 
+sub _discovery_wrapper {
+    my $code = shift;
+    my $self = shift;
+    my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+
+    my $t = time_scope 'disco_rapper';
+    sql_begin_work();
+    my $viewer = $self->viewer;
+
+    my @temps;
+
+    my $read = ST_READ_PERM;
+    my $read_id = $read->permission_id;
+
+    # If the viewer can also view the group, but isn't in the group, pretend
+    # that they're in it for the query.
+    if (my $group = $opts->{group_id}) {
+        $group = Socialtext::Group->GetGroup(group_id => $group)
+            unless blessed($group);
+        if ($group && $group->user_can(user=>$viewer, permission=>$read)) {
+            push @temps, $group;
+        }
+    }
+
+    # find all the workspaces in this account that are self-joinable by
+    # account-users. *Iff* the viewer is an account-user, pretend to be in
+    # those workspaces.
+    if ($opts->{account_id}) {
+        my $acct = Socialtext::Account->new(account_id => $opts->{account_id});
+        if ($acct && $acct->has_user($viewer)) {
+            my $account_user_id = Socialtext::Role->AccountUser->role_id;
+            # find account-user readable workspaces in this account
+            my $sth = sql_execute(q{
+                SELECT workspace_id
+                  FROM "WorkspaceRolePermission" wrp
+                  JOIN "Workspace" w USING (workspace_id)
+                 WHERE wrp.permission_id = $1
+                   AND wrp.role_id = $2
+                   AND w.account_id = $3
+            }, $read_id, $account_user_id,$opts->{account_id});
+            for my $row (@{$sth->fetchall_arrayref || []}) {
+                my $ws = Socialtext::Workspace->new(workspace_id => $row->[0]);
+                push @temps, $ws if $ws;
+            }
+        }
+    }
+
+    # find all the groups the actor is in and pretend to be in those too (*iff*
+    # the viewer is connected to the actor through a group/account/workspace).
+    if (my $actor = $opts->{actor_id}) {
+        $actor = Socialtext::User->Resolve($actor) unless blessed($actor);
+        my $authz = Socialtext::Authz->new;
+        if ($authz->user_sets_share_an_account($viewer, $actor)) {
+            # find all the discoverable groups for the actor, add the viewer
+            # into ones that they aren't a member of.
+            my $groups = $actor->groups();
+            while (my $group = $groups->next) {
+                next unless $group->user_can(user=>$viewer, permission=>$read);
+                push @temps, $group;
+            }
+        }
+    }
+
+    # If the viewer can also view the workspace, but isn't in the workspace,
+    # pretend that they're in it for the query.
+    if (my $ws = $opts->{page_workspace_id}) {
+        $ws = Socialtext::Workspace->new(workspace_id => $ws)
+            unless blessed($ws);
+        if ($ws && $ws->user_can(user=>$viewer, permission=>$read)) {
+            push @temps, $ws;
+        }
+    }
+
+    for my $c (@temps) {
+        next if $c->has_user($viewer);
+        $c->add_temporary_role($viewer);
+    }
+    @temps = ();
+
+    scope_guard { sql_rollback() };
+    return $code->($self,$opts);
+}
+
+around 'get_events' => \&_discovery_wrapper;
 sub get_events {
     my $self   = shift;
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
@@ -872,7 +961,6 @@ sub get_events {
     {
         return $self->get_events_page_contribs($opts);
     }
-
     return $self->_get_events($opts);
 }
 
@@ -897,6 +985,7 @@ sub use_event_page_contrib {
     $self->_skip_visibility(1);
 }
 
+around 'get_events_page_contribs' => \&_discovery_wrapper;
 sub get_events_page_contribs {
     my $self = shift;
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
@@ -918,16 +1007,18 @@ sub get_events_page_contribs {
     return $result;
 }
 
+around 'get_events_activities' => \&_discovery_wrapper;
 sub get_events_activities {
     my $self = shift;
-    my $maybe_user = shift;
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+
+    my $user = delete $opts->{actor_id}; # discovery hack
+    $user = Socialtext::User->Resolve($user)
+        unless blessed($user);
 
     Socialtext::Timer->Continue('get_activity');
 
     # First we need to get the user id in case this was email or username used
-    my $user = Socialtext::User->Resolve($maybe_user);
-    my $user_id = $user->user_id;
 
     $self->_include_public_ws(1);
 
@@ -968,6 +1059,10 @@ sub get_events_activities {
     }
 
     if ($classes{signal}) {
+        # BUG? if signals=1 instead of "event_class = 'signal'" we want
+        # "signal_id IS NOT NULL" here
+
+        # from the user, mentioning the user or to the user (?!)
         push @conditions, q{
             event_class = 'signal' AND (
                 actor_id = ?
@@ -984,7 +1079,7 @@ sub get_events_activities {
     }
 
     my $cond_sql = join(' OR ', map {"($_)"} @conditions);
-    $self->add_condition($cond_sql, ($user_id) x $user_ids);
+    $self->add_condition($cond_sql, ($user->user_id) x $user_ids);
     my $evs = $self->_get_events(@_);
     Socialtext::Timer->Pause('get_activity');
 
@@ -992,12 +1087,16 @@ sub get_events_activities {
     return $evs;
 }
 
+around 'get_events_group_activities' => \&_discovery_wrapper;
 sub get_events_group_activities {
     my $self     = shift;
-    my $group    = shift;
+    my $opts     = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+
+    my $group = delete $opts->{group_id}; # discovery hack
+    $group = Socialtext::Group->GetGroup(group_id => $group)
+        unless blessed($group);
     my $group_id = $group->group_id;
     my $group_set_id = $group->user_set_id;
-    my $opts     = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
 
     Socialtext::Timer->Continue('get_gactivity');
 
@@ -1028,7 +1127,7 @@ sub get_events_group_activities {
                  WHERE from_set_id = e.actor_id
                    AND into_set_id = ?
             )
-            AND EXISTS ( -- the group is in the event's workspace
+            AND EXISTS ( -- the group is in the event's workspace(s)
                 SELECT 1
                   FROM user_set_path usp
                  WHERE e.page_workspace_id = into_set_id - }.PG_WKSP_OFFSET.q{
@@ -1054,10 +1153,14 @@ sub get_events_group_activities {
     return $evs;
 }
 
+around 'get_events_workspace_activities' => \&_discovery_wrapper;
 sub get_events_workspace_activities {
     my $self     = shift;
-    my $workspace    = shift;
     my $opts     = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+    
+    my $workspace = delete $opts->{page_workspace_id}; # discovery hack
+    $workspace = Socialtext::Workspace->new(workspace_id => $workspace)
+        unless blessed($workspace);
 
     Socialtext::Timer->Continue('get_wactivity');
 

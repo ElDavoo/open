@@ -21,7 +21,7 @@ sub GetActivities {
     my $viewer = shift || croak 'must supply viewer';
     my $user = shift || croak 'must supply user to view (or maybe you just passed in one user to this function)';
     my $reporter = Socialtext::Events::Reporter->new(viewer => $viewer);
-    return $reporter->get_events_activities($user, @_);
+    return $reporter->get_events_activities(@_, actor_id => $user);
 }
 
 sub GetWorkspaceActivities {
@@ -29,7 +29,8 @@ sub GetWorkspaceActivities {
     my $viewer = shift || croak 'must supply viewer';
     my $workspace = shift || croak 'must supply workspace to view';
     my $reporter = Socialtext::Events::Reporter->new(viewer => $viewer);
-    return $reporter->get_events_workspace_activities($workspace, @_);
+    return $reporter->get_events_workspace_activities(
+        @_, page_workspace_id => $workspace);
 }
 
 sub GetGroupActivities {
@@ -37,7 +38,8 @@ sub GetGroupActivities {
     my $viewer = shift || croak 'must supply viewer';
     my $group = shift || croak 'must supply group to view';
     my $reporter = Socialtext::Events::Reporter->new(viewer => $viewer);
-    return $reporter->get_events_group_activities($group, @_);
+    return $reporter->get_events_group_activities(
+        @_, group_id => $group);
 }
 
 sub Record {
