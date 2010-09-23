@@ -319,7 +319,7 @@ sub POST_to_users {
         return $self->not_authorized() unless $self->user_can_admin;
     }
 
-    $ctrl->hooks()->{post_user_add} = sub {$self->user_invite(@_)}
+    $ctrl->hooks()->{post_user_add} = sub {$self->user_invite($data, @_)}
         if ($data->{send_message});
 
     $ctrl->alter_members($data->{users});
@@ -340,6 +340,7 @@ sub _parse_data {
             $data = {
                 users => $data->{users},
                 send_message => $data->{send_message} || 0,
+                additional_message => $data->{additional_message},
             };
         }
         elsif ($data->{username} || $data->{user_id}) {
@@ -385,7 +386,7 @@ sub PUT_to_users {
         return $self->not_authorized() unless $self->user_can_admin;
     }
     
-    $ctrl->hooks()->{post_user_add} = sub {$self->user_invite(@_)}
+    $ctrl->hooks()->{post_user_add} = sub {$self->user_invite($data, @_)}
         if ($data->{send_message});
 
     $ctrl->alter_members($data->{entry});
@@ -398,7 +399,10 @@ sub PUT_to_users {
 
 sub user_invite {
     my $self       = shift;
+    my $data       = shift;
     my $user_role  = shift;
+
+    my $message = $data->{additional_message} || '';
 
     Socialtext::JobCreator->insert(
         'Socialtext::Job::GroupInvite',
@@ -407,6 +411,7 @@ sub user_invite {
             group_id  => $self->group->group_id,
             user_id   => $user_role->{object}->user_id,
             sender_id => $user_role->{actor}->user_id,
+            ($message ? (extra_text => $message) : ()),
         },
     );
 }
