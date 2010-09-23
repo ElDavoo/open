@@ -1170,7 +1170,7 @@ body#dashBoard div.widget.tan div.widgetHeader {
 
 body#dashBoard div.widget.gray div.widgetHeader {
 	height: 35px;
-	background: url(../images/widgetGrayHeader.png) no-repeat top right;
+	background: url(../images/widgetGrayHeader.png) no-repeat top right !important;
 }
 
 body#dashBoard div.widget.regular div.widgetHeader {
