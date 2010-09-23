@@ -116,7 +116,7 @@
 | open-ok     | /data/workspaces                 |                                                   |
 | text-unlike | //body                           | Login session has expired; please re-authenticate |
 
-| *Comment*     | Feeds - *NOT* interruptable (didn't get redirected to /nlw/login.html) |
+| *Comment*     | Feeds - *NOT* interruptable (didn't get redirected to STLogin) |
 | open-ok       | /feed/workspace/%%workspace%%                                          |
 | location-like | /feed/workspace/%%workspace%%                                          |
 
