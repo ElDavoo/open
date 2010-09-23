@@ -57,4 +57,4 @@ All pages tagged 'Testcase' (only a list, visit the pages above for tests)
 
 Tests do not run out of the list since it isn't really here.
 
-{search: category:testcase}
+{search: tag:testcase}

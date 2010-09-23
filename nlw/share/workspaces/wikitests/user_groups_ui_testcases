@@ -19,6 +19,11 @@ FF3 only, not Safari, not IE: {bz: 3471} (IE: Selenium: Unable to send signals f
 * [Test Case: Group Home At Different Levels]
 * [Test Case: Groups UI mismatched Workspace]
 
+New as of self-join groups and workspaces
+
+* [Test Case: Restrict Self-Join Workspaces]
+* [Test Case: Group No Change Link]
+
 Broken due to selenium issues:
 
 Test Case: Groups UI AddRemove Members From Group
