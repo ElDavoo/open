@@ -217,17 +217,16 @@ All Activity thus far (most recent first):
 
 | *Comment* | AcctUser - all-my-groups events that have a signal |
 | GET-json | /data/events?html=0;signals=1 |
-| json-response-is | 200 | 2 |
-| json-path-is | $[0].signal_id   | %%mention_via_acct_id%% |
-| json-path-is | $[1].signal_id   | %%otis_signal_id%%    |
+| json-response-is | 200 | 3 |
+| json-path-is | $[0].signal_id   | %%edit_via_acct_id%% |
+| json-path-is | $[1].signal_id   | %%mention_via_acct_id%% |
+| json-path-is | $[2].signal_id   | %%otis_signal_id%%    |
 
 | *Comment* | AcctUser - just signal-classed events |
 | GET-json | /data/events?html=0;event_class=signal |
 | json-response-is | 200 | 2 |
 | json-path-is | $[0].signal_id   | %%mention_via_acct_id%% |
 | json-path-is | $[1].signal_id   | %%otis_signal_id%%    |
-
-| http-user-pass | %%sharron%% | password |
 
 | *Comment* | AcctUser - events for a group |
 | GET-json | /data/events?html=0;group_id=%%sjg_id%% |
