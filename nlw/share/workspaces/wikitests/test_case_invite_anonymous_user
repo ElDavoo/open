@@ -8,8 +8,9 @@ This case only covers inviting anonymous users into the test workspace.
 | type_ok | users_new_ids | `%%start_time%%.one@ken.socialtext.net\n%%start_time%%.two@ken.socialtext.net\n%%start_time%%.malformed2ken.socialtext` |
 | check_ok | append_invitation |  |
 | click_and_wait | link=Invite |  |
-| text_like | contentRight | qr/The following 1 email address was invalid.+%%start_time%%\.malformed2ken\.socialtext/ |
-| text_like | contentRight | qr/Your request to invite the following 2 users has been sent.+%%start_time%%\.one\@ken\.socialtext\.net.+%%start_time%%\.two\@ken\.socialtext\.net/ |
+
+| text_like | contentRight | qr/The following 1 email address was invalid.+%%start_time%%\.malformed2ken\.socialtext/ism |
+| text_like | contentRight | qr/The following 2 users were invited into this Workspace.+%%start_time%%\.one\@ken\.socialtext\.net.+%%start_time%%\.two\@ken\.socialtext\.net/ism |
 
 | *Comment* | Test Case: Invite Anonymous User Make user an admin |  |
 | click_and_wait | link=Manage All Users |  |

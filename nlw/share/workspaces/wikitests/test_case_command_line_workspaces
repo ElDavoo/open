@@ -11,9 +11,9 @@
 
 | *Comment* | Test Case: Command Line Tests WORKSPACES Check all of the set-permissions error conditions... |  |
 
-| st-admin | set-permissions --workspace | qr/The command you called \(set-permissions\) requires a workspace to be specified/ |
-| st-admin | set-permissions | qr/The command you called \(set-permissions\) requires a workspace to be specified/ |
-| st-admin | set-permissions --workspace zomg | qr/No workspace named "zomg" could be found/ |
+| st-admin | set-permissions --workspace | qr/The command you called \(set-permissions\) requires a permissions to be specified with the --permissions option/ |
+| st-admin | set-permissions | qr/The command you called \(set-permissions\) requires a permissions to be specified with the --permissions option/ |
+| st-admin | set-permissions --workspace zomg | qr/The command you called \(set-permissions\) requires a permissions to be specified with the --permissions option/ |
 | st-admin | set-permissions --workspace %%cmdline_workspace%% | qr/The command you called \(set-permissions\) requires a permissions to be specified with the --permissions option/ |
 | st-admin | set-permissions --workspace %%cmdline_workspace%% --permission | qr/The command you called \(set-permissions\) requires a permissions to be specified with the --permissions option/ |
 
