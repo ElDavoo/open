@@ -70,3 +70,20 @@
 | json-path-is | $.entry[1].name                              | %%dogs%%   |
 | json-path-is | $.entry[2].name                              | %%fish%%   |
 | json-path-is | $.entry[3].name                              | %%zebras%% |
+
+################
+| *Comment* | create and authenticated user and a self-join workspace |
+
+| set                       | auth_user        | auth-user%%start_time%%@ken.socialtext.net |
+| create-user               | %%auth_user%%    | password                                   |
+| set                       | self_join        | self-join-%%start_time%%                   |
+| create-workspace          | %%self_join%%    |                                            |
+| set                       | self_join_id     | %%group_id%%                               |
+| workspace-permission-set | %%self_join%% | self-join                                  |
+
+###
+| *Comment* | Check that users with read permission can see the workspace's |
+
+| http-user-pass | %%auth_user%% | password |
+| GET-json | /data/workspaces/%%self_join%%/groups |
+| json-response-is | 200 |
