@@ -2,6 +2,7 @@ package Socialtext::Async::WorkQueue;
 # @COPYRIGHT@
 use Moose;
 use MooseX::StrictConstructor;
+use MooseX::AttributeHelpers;
 use Coro;
 use AnyEvent;
 use Coro::AnyEvent;
@@ -62,12 +63,25 @@ non-blocking shutdown:
     $q->shutdown_nowait();
     $cv->recv;
 
+=item prio
+
+Set the Coro thread priority. Either C<< use Coro qw/:prio/; >> or see
+L<Coro>.
+
+Defaults to C<Coro::PRIO_NORMAL>.
+
+=item size
+
+Returns the size of the queue in number of jobs. The job count increases when
+a job is enqueued and decreases B<after> it is worked on.
+
 =back
 
 =cut
 
 has 'cb' => (is => 'ro', isa => 'CodeRef', required => 1);
 has 'name' => (is => 'ro', isa => 'Str', required => 1, default => 'work');
+has 'prio' => (is => 'ro', isa => 'Int', default => Coro::PRIO_NORMAL());
 
 # below attributes are "protected"
 
@@ -85,6 +99,17 @@ for my $end (qw(head tail)) {
         default => undef,
     );
 }
+
+has 'size' => (
+    is => 'ro', isa => 'Int',
+    metaclass => 'Counter',
+    default => 0,
+    provides => {
+        inc => '_inc',
+        dec => '_dec',
+        reset => '_reset_size',
+    },
+);
 
 sub BUILD {
     my $self = shift;
@@ -131,6 +156,7 @@ sub enqueue {
         $self->head($job);
         $self->tail($job);
     }
+    $self->_inc;
 
     # start a runner since this is the first job
     $self->_start unless $self->has_runner;
@@ -153,6 +179,7 @@ sub drop_pending {
     }
     $self->head(undef);
     $self->tail(undef);
+    $self->_reset_size;
 }
 
 sub _start {
@@ -160,6 +187,7 @@ sub _start {
     $self->cv->begin;
     $self->runner(async {
         $Coro::current->{desc} = $self->name." queue runner";
+        $Coro::current->prio($self->prio);
         scope_guard { $self->cv->end };
         while (1) {
             $self->_run(); # returns when no more work
@@ -187,6 +215,7 @@ sub _run {
         # shift next onto head and cede if more work
         $head = $head->[1];
         $self->head($head);
+        $self->_dec;
         cede if $head;
     }
 }
