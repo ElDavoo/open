@@ -704,19 +704,40 @@ sub _build_standard_sql {
                 $visible_ws .= ' UNION ALL '.$PUBLIC_WORKSPACES;
             }
             my @bind = ($self->viewer_id);
+            my $do_add_sig_sql;
             if ($opts->{account_id}) {
                 $visible_ws = _limit_ws_to_account($visible_ws);
                 push @bind, $opts->{account_id};
+
+                # For "all events in account A", ignore the visible_ws check
+                # if the hybrid signal specifically sends to the account.
+                if ($opts->{activity} and $opts->{activity} eq 'all-combined') {
+                    $do_add_sig_sql = 1;
+                }
             }
             elsif ($opts->{group_id}) {
                 $visible_ws = _limit_ws_to_group($visible_ws);
                 push @bind, $opts->{group_id} + GROUP_OFFSET;
+
+                # For "all events in group G", ignore the visible_ws check
+                # if the hybrid signal specifically sends to the group.
+                if ($opts->{activity} and $opts->{activity} eq 'all-combined') {
+                    $do_add_sig_sql = 1;
+                }
             }
+
+            my $sig_sql = '';
+            if ($do_add_sig_sql) {
+                $sig_sql .= 'OR (signal_id IS NOT NULL AND '
+                          . $self->visible_exists('signals','e.actor_id', $opts, \@bind, 'e')
+                          . ')';
+            }
+
             my $can_use_this_ws = qq{
                 -- start "can_use_this_ws"
                 page_workspace_id IS NULL OR page_workspace_id IN (
                     $visible_ws
-                )
+                ) $sig_sql
                 -- end "can_use_this_ws"
             };
             $self->prepend_condition($can_use_this_ws => @bind);
