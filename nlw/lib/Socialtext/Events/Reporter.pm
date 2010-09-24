@@ -770,6 +770,16 @@ sub _build_standard_sql {
             $self->add_condition(
                 "event_class <> 'group' OR group_id = ?", $opts->{group_id}
             );
+            if ($opts->{_discovering_group}) {
+                # Exclude the viewer, who has just a temporary role, from the
+                # event display.  If this causes other problems, maybe
+                # groups/self-join.wiki and PM needs to accept that the viewer
+                # will be displayed?
+                $self->add_condition(q{ NOT (
+                    event_class IN ('person','group')
+                    AND person_id = ?
+                )}, $self->viewer_id);
+            }
         }
 
         if ($opts->{activity} and $opts->{activity} eq 'all-combined') {
@@ -910,8 +920,11 @@ sub _discovery_wrapper {
     if (my $group = $opts->{group_id}) {
         $group = Socialtext::Group->GetGroup(group_id => $group)
             unless blessed($group);
-        if ($group && $group->user_can(user=>$viewer, permission=>$read)) {
+        if ($group && !$group->has_user($viewer) &&
+            $group->user_can(user=>$viewer, permission=>$read))
+        {
             push @temps, $group;
+            $opts->{_discovering_group} = 1;
         }
     }
 
@@ -933,6 +946,7 @@ sub _discovery_wrapper {
             }, $read_id, $account_user_id,$opts->{account_id});
             for my $row (@{$sth->fetchall_arrayref || []}) {
                 my $ws = Socialtext::Workspace->new(workspace_id => $row->[0]);
+                next if $ws->has_user($viewer);
                 push @temps, $ws if $ws;
             }
         }
@@ -948,6 +962,7 @@ sub _discovery_wrapper {
             # into ones that they aren't a member of.
             my $groups = $actor->groups();
             while (my $group = $groups->next) {
+                next if $group->has_user($viewer);
                 next unless $group->user_can(user=>$viewer, permission=>$read);
                 push @temps, $group;
             }
@@ -959,14 +974,15 @@ sub _discovery_wrapper {
     if (my $ws = $opts->{page_workspace_id}) {
         $ws = Socialtext::Workspace->new(workspace_id => $ws)
             unless blessed($ws);
-        if ($ws && $ws->user_can(user=>$viewer, permission=>$read)) {
+        if ($ws && !$ws->has_user($viewer) &&
+            $ws->user_can(user=>$viewer, permission=>$read))
+        {
             push @temps, $ws;
         }
     }
 
-    for my $c (@temps) {
-        next if $c->has_user($viewer);
-        $c->add_temporary_role($viewer);
+    for my $container (@temps) {
+        $container->add_temporary_role($viewer);
     }
     @temps = ();
 
