@@ -49,7 +49,7 @@ proto.begin_node = function(node) {
                     }
                 }
             }
-            this.output += '<img alt="st-widget-{'+node._wafl.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'}" src="https://www2.socialtext.net/data/wafl/'+encodeURIComponent(node._label)+'" onload="'+onload+'" />';
+            this.output += '<img alt="st-widget-{'+node._wafl.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/>/, '&gt;')+'}" src="https://www2.socialtext.net/data/wafl/'+encodeURIComponent(node._label).replace(/%2F/g, '/')+'" onload="'+onload+'" />';
             return;
         }
         case 'a': case 'wikilink': {
