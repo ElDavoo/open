@@ -3,6 +3,7 @@ package Socialtext::User::Cache;
 use strict;
 use warnings;
 use Socialtext::Cache;
+use Socialtext::Cache::TokyoCabinet;
 
 our $Enabled = 0;
 our %stats = (
@@ -11,20 +12,43 @@ our %stats = (
     remove => 0,
 );
 
-my %ValidKeys = (
-    user_id          => 1,
-    email_address    => 1,
-    username         => 1,
-    driver_unique_id => 1,
-);
+my $PrimaryKey = 'user_id';
+my @OtherKeys = qw(email_address username driver_unique_id);
+my @ValidKeys = ($PrimaryKey,@OtherKeys);
+my %ValidKeys = map { $_ => 1 } @ValidKeys;
+
+sub ucache {
+    my $cache = $Socialtext::Cache::CACHES{'USERS'};
+    if (!$cache) {
+        $cache = Socialtext::Cache::TokyoCabinet->new(
+            namespace => 'USERS',
+            host => $ENV{HOME}.'/.nlw/run/tt-users.sock',
+            port => 0,
+        );
+        $Socialtext::Cache::CACHES{'USERS'} = $cache;
+    }
+    return $cache;
+}
 
 sub Fetch {
     my ($class, $key, $val) = @_;
     return unless $Enabled;
     return unless $ValidKeys{$key};
     $stats{fetch}++;
-    my $key_cache = Socialtext::Cache->cache("homunculus:$key");
-    return $key_cache->get($val);
+    my $uc = ucache();
+    if ($key ne 'user_id') {
+        warn "GET $key:$val\n";
+        my $id = $uc->get("$key:$val");
+        return unless $id;
+        $key = 'user_id';
+        $val = $id;
+    }
+    use XXX;
+    warn "GET user_id:$val\n";
+    my $hom = WWW($uc->get("user_id:$val"));
+    return unless $hom;
+    $hom->{cached_at} = DateTime::Format::Pg->parse_timestamptz($hom->{cached_at});
+    return $hom;
 }
 
 sub Store {
@@ -38,17 +62,24 @@ sub Store {
     if ($old_homey) {
         # localize the stats so that the "remove" action doesn't get counted
         local %stats = %stats;
-        Socialtext::User::Cache->Remove($old_homey);
+        $class->Remove($old_homey);
     }
 
     # proactively cache the homunculus against all valid keys, so he can be
     # found quickly/easily again in the future
     if ($homunculus) {
         $stats{store}++;
-        foreach my $key (keys %ValidKeys) {
-            my $cache = Socialtext::Cache->cache("homunculus:$key");
-            $cache->set($homunculus->$key, $homunculus);
-        }
+        my $id = $homunculus->user_id;
+        my $uc = ucache();
+        my $dt = delete $homunculus->{cached_at};
+        $homunculus->{cached_at} = DateTime::Format::Pg->format_timestamptz($dt);
+        use XXX;
+        warn "MSET\n";
+        ucache()->mset(WWW({
+            "user_id:$id" => $homunculus,
+            map { $_.":".$homunculus->$_ => $id } @OtherKeys
+        }));
+        $homunculus->{cached_at} = $dt;
     }
 }
 
@@ -61,20 +92,18 @@ sub Remove {
     my $homunculus = _resolve_homunculus(@_);
     return unless $homunculus;
 
-    # remove the homunculus from all caches
     $stats{remove}++;
-    foreach my $key (keys %ValidKeys) {
-        my $cache = Socialtext::Cache->cache("homunculus:$key");
-        $cache->remove($homunculus->$key);
-    }
+    my $uc = ucache();
+    use XXX;
+    warn "MREMOVE\n";
+    $uc->mremove(WWW({
+        map { $_ => $homunculus->$_ } @ValidKeys
+    }));
 }
 
 sub Clear {
-    my $cache;
-    foreach my $key (keys %ValidKeys) {
-        $cache = Socialtext::Cache->cache("homunculus:$key");
-        $cache->clear();
-    }
+    my ($class,$force) = @_;
+    ucache()->clear($force);
 }
 
 sub ClearStats {
@@ -86,9 +115,8 @@ sub _resolve_homunculus {
     if (@_ > 1) {
         my ($key, $val) = @_;
         return unless $ValidKeys{$key};
-
-        my $cache = Socialtext::Cache->cache("homunculus:$key");
-        return $cache->get($val);
+        warn "GET $key:$val\n";
+        return ucache()->get("$key:$val");
     }
     # only given one arg; must *be* the homunculus
     return $_[0];

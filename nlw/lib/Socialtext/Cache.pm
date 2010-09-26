@@ -3,23 +3,17 @@ package Socialtext::Cache;
 use strict;
 use warnings;
 use Socialtext::Cache::Hash;
-
-# if we ever forget to clear, make sure that caches auto-purge periodically.
-our $DefaultExpiresIn = '1m';
-
-# cache class used
-our $CacheClass = 'Socialtext::Cache::Hash';
+use Socialtext::Cache::TokyoCabinet;
 
 # keep track of named caches we've instantiated; its faster that way.
 our %CACHES;
 
 sub cache {
     my ($class, $name) = @_;
-    $CACHES{$name} ||= $CacheClass->new( {
+    my $cache_class = $name eq 'st-http-cookie' ? 'Socialtext::Cache::TokyoCabinet' : 'Socialtext::Cache::Hash';
+    $CACHES{$name} ||= $cache_class->new({
         namespace           => $name,
-        default_expires_in  => $DefaultExpiresIn,
-        auto_purge_on_get   => 1,
-        } );
+    });
     return $CACHES{$name};
 }
 

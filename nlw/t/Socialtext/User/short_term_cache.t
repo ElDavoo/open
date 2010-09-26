@@ -34,6 +34,8 @@ $appconfig->set('user_factories', 'LDAP;Default');
 $appconfig->write();
 is (Socialtext::AppConfig->user_factories(), 'LDAP;Default');
 
+Socialtext::User::Cache->Clear('force');
+
 Socialtext::User->create(
     email_address => 'dbuser@example.com',
     username => 'dbuser@example.com',
