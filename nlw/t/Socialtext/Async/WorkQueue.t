@@ -3,6 +3,7 @@ use warnings;
 use strict;
 # @COPYRIGHT@
 use Test::More tests => 53;
+use Test::Differences;
 use AnyEvent;
 use Coro;
 use Coro::AnyEvent;
@@ -68,8 +69,8 @@ normal: {
     $q1->shutdown();
     $q2->shutdown();
 
-    is_deeply \@order1, [map { "one $_" } 1..5], "all of one looks good";
-    is_deeply \@order2, [map { "two $_" } 1..5], "all of two looks good";
+    eq_or_diff \@order1, [map { "one $_" } 1..5], "all of one looks good";
+    eq_or_diff \@order2, [map { "two $_" } 1..5], "all of two looks good";
 }
 
 timeout: {
@@ -156,8 +157,8 @@ cancel: {
             pass 'work on just one job';
             $worked_on++;
             $q->drop_pending();
-            is $q->size, 0, "all jobs cleared";
-        },
+            is $q->size, 1, "all jobs except this one cleared";
+        }
     );
     $q->enqueue(['job 1']);
     $q->enqueue(['job 2']);
