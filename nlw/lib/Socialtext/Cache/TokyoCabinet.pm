@@ -6,6 +6,17 @@ use Socialtext::Paths;
 use Storable ();
 use namespace::clean -except => 'meta';
 
+# NOTES
+# to start the server:
+#
+# ttserver -host `pwd`/tt-users.sock -port 0 -pid tt-users.pid -kl \
+#    ~/.nlw/root/storage/tt-users.tch
+# 
+# to read the keys in the database:
+#
+# tchmgr list -nl ~/.nlw/root/storage/tt-users.tch
+
+
 # defaults, can be overridden via constructor
 our $TYRANT_HOST = 'localhost'; # set to path for unix socket
 our $TYRANT_PORT = '1978';      # set to 0 for unix socket
