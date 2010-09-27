@@ -62,63 +62,37 @@ Before signalling, get everybody a push mailbox.
 | Comment | get otis a push mailbox |
 | http-user-pass-and-cookie | %%otis%% | password |
 | GET-json         | %%push_uri%% |   |
-| json-response-is | 200                 | 3                                    |
+| json-response-is | 200                 | 2                                    |
 | json-path-is     | $[0].class          | command                              |
 | json-path-is     | $[0].object.command | welcome                              |
 | json-path-is     | $[1].class          | command                              |
-| json-path-is     | $[1].object.command | userlist                             |
-| json-path-is     | $[2].class          | command                              |
-| json-path-is     | $[2].object.command | continue                             |
+| json-path-is     | $[1].object.command | continue                             |
 | json-path-set    | client_id           | $[0].object.client_id                |
 | set              | otis_push_uri       | %%push_uri%%&client_id=%%client_id%% |
 
 | Comment | get sharron a push mailbox |
 | http-user-pass-and-cookie | %%sharron%% | password |
 | GET-json         | %%push_uri%% |   |
-| json-response-is | 200                 | 3                                    |
+| json-response-is | 200                 | 2                                    |
 | json-path-is     | $[0].class          | command                              |
 | json-path-is     | $[0].object.command | welcome                              |
 | json-path-is     | $[1].class          | command                              |
-| json-path-is     | $[1].object.command | userlist                             |
-| json-path-is     | $[2].class          | command                              |
-| json-path-is     | $[2].object.command | continue                             |
+| json-path-is     | $[1].object.command | continue                             |
 | json-path-set    | client_id           | $[0].object.client_id                |
 | set              | sharron_push_uri    | %%push_uri%%&client_id=%%client_id%% |
 
 | Comment | get membart a push mailbox |
 | http-user-pass-and-cookie | %%membart%% | password |
 | GET-json         | %%push_uri%% |   |
-| json-response-is | 200                 | 3                                    |
+| json-response-is | 200                 | 2                                    |
 | json-path-is     | $[0].class          | command                              |
 | json-path-is     | $[0].object.command | welcome                              |
 | json-path-is     | $[1].class          | command                              |
-| json-path-is     | $[1].object.command | userlist                             |
-| json-path-is     | $[2].class          | command                              |
-| json-path-is     | $[2].object.command | continue                             |
+| json-path-is     | $[1].object.command | continue                             |
 | json-path-set    | client_id           | $[0].object.client_id                |
 | set              | membart_push_uri    | %%push_uri%%&client_id=%%client_id%% |
 
 ## Everyone is connected to push, check mailboxes to clear status change messages
-
-| *Comment* | AuthUser - Clear status_change messages |
-| http-user-pass-and-cookie | %%otis%% | password |
-| GET-json | %%otis_push_uri%% |
-| json-response-is | 200 | 2 |
-| json-path-is | $[0].class          | command       |
-| json-path-is | $[0].object.command | status_change |
-| json-path-is | $[1].class          | command       |
-| json-path-is | $[1].object.command | continue      |
-
-| *Comment* | AcctUser - check pushd Mailbox |
-| http-user-pass-and-cookie | %%sharron%% | password |
-| GET-json | %%sharron_push_uri%% |
-| json-response-is | 200 | 2 |
-| json-path-is | $[0].class          | command       |
-| json-path-is | $[0].object.command | status_change |
-| json-path-is | $[1].class          | command       |
-| json-path-is | $[1].object.command | continue      |
-
-# Membart won't have a status_change; he's the last to log in.
 
 ## Make some events
 
