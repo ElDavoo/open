@@ -151,8 +151,8 @@
 | open_ok | /st/signals |  |
 | text_like | st-editing-tools-edit | Signals |
 
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 20000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a | 20000 |
 
 | open_ok | /?action=invite |  |
 | open_ok | /st/signals |  |
@@ -164,8 +164,8 @@
 
 | *Comment* | Test Case: Change Signal Limit. Limit 100 in %%onehundredlimit%% |  |
 
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[text()='%%onehundredlimit%% (primary, 1 users)'] | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[text()='%%onehundredlimit%% (primary, 1 users)'] | 20000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 20000 |
 
 | open_ok | /?action=invite |  |
 | open_ok | /st/signals |  |
@@ -176,8 +176,8 @@
 
 | *Comment* | Test Case: Change Signal Limit. Limit 200 in %%twohundredlimit%% |  |
 
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[text()='%%twohundredlimit%% (1 users)'] | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[text()='%%twohundredlimit%% (1 users)'] | 20000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 20000 |
 
 | open_ok | /?action=invite |  |
 | open_ok | /st/signals |  |

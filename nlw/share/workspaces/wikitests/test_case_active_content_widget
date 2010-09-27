@@ -24,7 +24,6 @@
 | wait_for_element_not_visible_ok | workspace | 30000 |
 
 | *Comment* | Test Case: Active Content Widget Check the content of Viewed |  |
-| st-select-widget-frame | active_content |  |
 | wait_for_element_visible_ok | link=Edited | 30000 |
 | wait_for_element_visible_ok | link=Watched | 30000 |
 | wait_for_element_visible_ok | link=Emailed | 30000 |
@@ -35,14 +34,15 @@
 | text_like | //body | Active Content Watch %%start_time%% |
 | wait_for_element_visible_ok | link=Active Content Emailed %%start_time%% | 20000 |
 | text_like | //body | Active Content Emailed %%start_time%% |
-| wait_for_element_visible_ok | link=active-content-%%start_time%% | 20000 |
-| text_like | //body | active-content-%%start_time%% |
 | wait_for_element_visible_ok | link=Active Content Edit %%start_time%% | 20000 |
 | text_like | //body | Active Content Edit %%start_time%% |
 | wait_for_element_visible_ok | link=Active Content Tag %%start_time%% | 20000 |
 | text_like | //body | Active Content Tag %%start_time%% |
 | wait_for_element_visible_ok | link=Active Content Comment %%start_time%% | 20000 |
 | text_like | //body | Active Content Comment %%start_time%% |
+
+| *Comment* | Test Case: Active Content Widget. Verify link inside widget, not in Workspaces menu |  |
+| is_element_present_ok | //div[@class='inlineWidget'] | link=active-content-%%start_time%% |
 
 | *Comment* | Test Case: Active Content Widget Check the content of Edited |  |
 | click_ok | link=Edited |  |
@@ -79,20 +79,17 @@
 | text_unlike | //body | Active Content Comment %%start_time%% |
 | wait_for_element_visible_ok | link=Active Content Emailed %%start_time%% | 30000 |
 | text_unlike | //body | Active Content Watch %%start_time%% |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Active Content Widget Different workspace doesn't show up |  |
 | open_ok | /?dashboard |  |
-| st-name-widget | 1 | active_content |
-| st-select-widget-frame | active_content |  |
 | wait_for_element_visible_ok | link=Edited | 30000 |
 | text_like | //body | Viewed |
 | text_unlike | //body | test page 1 |
 | text_unlike | //body | test page 2 |
 | text_unlike | //body | test page 3 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Active Content Widget Test Workspace Combo Box |  |
+| st-name-widget | 1 | active_content |
 | st-widget-settings | active_content |  |
 | wait_for_element_visible_ok | workspace | 30000 |
 | select_ok | workspace | %%acwnoresults%% |

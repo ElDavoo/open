@@ -89,10 +89,10 @@
 | *Comment* | Check that self-join events are visible for non members |
 
 | GET-json          | /data/events?group_id=%%group_id%%&html=0 |       |
-| code-is           | 200                                       |       |
-| json-parse        |                                           |       |
-| json-path-is      | $[0].event_class                          | group |
-| json-path-missing | $[1]                                      |       |
+| json-response-is | 200 | 1 |
+| json-path-is   | $[0].event_class | group        |
+| json-path-is   | $[0].action      | add_user     |
+| json-path-isnt | $[0].person.id   | %%steve_id%% |
 
 ##
 | *Comment* | Make sure only permanant users' person events show up in event feeds |
@@ -105,11 +105,10 @@
 | set-user-id | user_id | %%username%% |
 
 | GET-json          | /data/events?group_id=%%group_id%%&html=0&event_class=person |             |
-| code-is           | 200                                                          |             |
-| json-parse        |                                                              |             |
-| json-path-is      | $[0].event_class                                             | person      |
-| json-path-is      | $[0].person.id                                               | %%user_id%% |
-| json-path-missing | $[1]                                                         |             |
+| json-response-is | 200 | 1 |
+| json-path-is   | $[0].event_class | person       |
+| json-path-is   | $[0].person.id   | %%user_id%%  |
+| json-path-isnt | $[0].person.id   | %%steve_id%% |
 
 ## Confirm fix for {bz: 3982};
 ## A private group that has only AUW workspace

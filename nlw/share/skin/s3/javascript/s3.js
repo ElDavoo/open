@@ -85,6 +85,7 @@ Socialtext.prepare_attachments_before_save = function() {
         var files = Attachments.get_new_attachments();
 
         $.each(files, function () {
+            if (this.deleted) return;
             $('<input type="hidden" name="attachment" />')
                 .val(this['id'] + ':' + this['page-id'])
                 .appendTo('#st-page-editing-files');

@@ -53,7 +53,8 @@ sub events {
     my ($events, $error, $base_uri);
     if ($args{mine}) {
         $base_uri = "/m/$args{section}?mine=1";
-        $events = $reporter->get_events_activities($viewer, \%event_args);
+        $events = $reporter->get_events_activities(
+           %event_args, actor_id => $viewer);
         $error = loc("There are no [_1] to display because you have not created any.", $args{section}) unless @$events;
     }
     elsif ($args{followed}) {

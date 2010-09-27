@@ -245,6 +245,13 @@ proto.onChangeFilename = function () {
 
             // Replace Handler
             $('.chooser .replace', $menu).unbind('click').click(function() {
+                if (Socialtext.new_page) {
+                    $(self.getNewAttachments()).each(function() {
+                        if (this.name.toLowerCase() == filename.toLowerCase()) {
+                            this.deleted = true;
+                        }
+                    });
+                }
                 $('#st-attachments-attach-replace').val('1');
                 upload.call();
                 $menu.fadeOut();

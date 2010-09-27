@@ -2,7 +2,7 @@
 use warnings;
 use strict;
 # @COPYRIGHT@
-use Test::More tests => 38;
+use Test::More tests => 53;
 use AnyEvent;
 use Coro;
 use Coro::AnyEvent;
@@ -15,31 +15,38 @@ empty: {
         cb => sub { },
     );
     ok $q;
+    is $q->size, 0, "initially empty";
     eval { $q->shutdown };
     ok !$@, "shutdown ok";
 }
 
 normal: {
+    my $expect_q1 = 0;
     my @order1;
-    my $q1 = Socialtext::Async::WorkQueue->new(
+    my $q1; $q1 = Socialtext::Async::WorkQueue->new(
         name => 'queue one',
+        prio => Coro::PRIO_HIGH(),
         cb => sub {
             my $n = shift;
             cede if rand > 0.2;
             push @order1, "one $n";
-            pass "one $n";
+            is $q1->size, $expect_q1, "one $n";
+            $expect_q1--;
         },
     );
     ok $q1;
 
+    my $expect_q2 = 0;
     my @order2;
-    my $q2 = Socialtext::Async::WorkQueue->new(
+    my $q2; $q2 = Socialtext::Async::WorkQueue->new(
         name => 'queue two',
+        prio => Coro::PRIO_LOW(),
         cb => sub {
             my $n = shift;
             cede if rand > 0.9;
             push @order2, "two $n";
-            pass "two $n";
+            is $q2->size, $expect_q2, "two $n";
+            $expect_q2--;
         },
     );
     ok $q2;
@@ -49,8 +56,12 @@ normal: {
 
     for my $x (1..5) {
         $q1->enqueue([$x]);
+        $expect_q1++;
+        is $q1->size, $expect_q1, "check q1 size num $x";
         cede if rand > 0.5;
         $q2->enqueue([$x]);
+        $expect_q2++;
+        is $q2->size, $expect_q2, "check q2 size num $x";
         cede if rand > 0.4;
     }
 
@@ -89,6 +100,7 @@ recursive: {
                 pass 'first pass, queue still active';
                 ok $q->enqueue(['alright','a job']),
                     "queued a job from within runner";
+                is $q->size, 2, "two jobs now";
                 eval { $q->shutdown };
                 ok $@, 'cannot shutdown queue from runner thread';
                 $sync->();
@@ -107,7 +119,7 @@ recursive: {
         }
     );
     $q->enqueue(['alright','first job']);
-    pass 'enqueued first recursive job';
+    is $q->size, 1, "enqueued first recursive job";
     Coro::rouse_wait $sync;
     pass 'sync to shut down';
     $q->shutdown();
@@ -130,6 +142,7 @@ shutdown_chain: {
     );
     $chain->enqueue(['job']);
     $chain->enqueue(['job 2']);
+    is $chain->size, 2, "two jobs";
     $chain->shutdown_nowait();
     $top_cv->recv;
     is $got_after, 1, 'chained shutdown';
@@ -143,11 +156,13 @@ cancel: {
             pass 'work on just one job';
             $worked_on++;
             $q->drop_pending();
+            is $q->size, 0, "all jobs cleared";
         },
     );
     $q->enqueue(['job 1']);
     $q->enqueue(['job 2']);
     $q->enqueue(['job 3']);
+    is $q->size, 3, "three jobs";
     $q->shutdown();
     is $worked_on, 1, 'worked on exactly one job';
 }

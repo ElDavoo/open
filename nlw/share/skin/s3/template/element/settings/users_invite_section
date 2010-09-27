@@ -6,7 +6,7 @@
 <dl class="form">
   <dt><label>[% loc('Invite Other Users') %]</label></dt>
 [% IF groups.size and is_admin %]
-  <dd>[% loc('Use the form below to invite users to one of this workspace\'s managing groups. Anyone who is a member of one of these groups has access to this workspace. If, instead, you would like to grant access to a specific individual, you can uncheck the "invite users to selected group(s)" checkbox below.') %]</dd>
+  <dd>[% loc('Use the form below to invite users to one of this workspace\'s groups. Anyone who is a member of one of these groups has access to this workspace. If, instead, you would like to grant the individual access to the workspace without inviting them to the group, you can uncheck the "invite users to selected group(s)" checkbox below. Adding a user via a group is strongly recommended.') %]</dd>
 [% ELSE %]
   <dd>[% loc('Enter a list of email addresses (one address per line) of people you would like to invite to this Workspace.') %]</dd>
 [% END %]

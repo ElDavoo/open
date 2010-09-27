@@ -2233,16 +2233,16 @@ proto.setWidgetHandlers = function() {
 
     if (jQuery(doc, win).data("mouseup_handler_set")) return;
 
-    var $$ = jQuery;
     jQuery(doc, win).mouseup(function(e) {
-        if (!$$(e.target).is("img[alt|=st-widget-]")) return true;
-        self.currentWidget = self.parseWidgetElement(e.target);
-        var id = self.currentWidget.id;  
-        if (widget_data[id] && widget_data[id].uneditable) {
-            alert(loc("This is not an editable widget. Please edit it in Wiki Text mode."))  
-        }
-        else {
-            self.getWidgetInput(e.target, false, false);
+        if (e.target && e.target.tagName && e.target.tagName.toLowerCase() == 'img' && /^st-widget-/.test(e.target.getAttribute('alt'))) {
+            self.currentWidget = self.parseWidgetElement(e.target);
+            var id = self.currentWidget.id;  
+            if (widget_data[id] && widget_data[id].uneditable) {
+                alert(loc("This is not an editable widget. Please edit it in Wiki Text mode."))  
+            }
+            else {
+                self.getWidgetInput(e.target, false, false);
+            }
         }
     }).data("mouseup_handler_set", true);
 }
@@ -2835,7 +2835,7 @@ proto.getWidgetImageUrl = function(widget_text) {
         // Just ignore and set the text to be the widget text
     }
 
-    return '/data/wafl/' + encodeURIComponent(widget_text) + (uneditable ? '?uneditable=1' : '');
+    return '/data/wafl/' + encodeURIComponent(widget_text).replace(/%2F/g, '/') + (uneditable ? '?uneditable=1' : '');
 }
 
 proto.create_wafl_string = function(widget, form) {

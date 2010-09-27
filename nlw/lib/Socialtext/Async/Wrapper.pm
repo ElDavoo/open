@@ -123,7 +123,7 @@ our $VMEM_LIMIT = 512 * 2**20; # MiB
 
         # st_log is disconnected by AnyEvent::Worker right after fork.
         # Reconnect it here.
-        Sys::Syslog::disconnect;
+        Sys::Syslog::disconnect();
         $Socialtext::Log::Instance = Socialtext::Log->_renew();
 
 #         warn "$$ ... JUST BEFORE STARTING WORKER TASKS:\n";
