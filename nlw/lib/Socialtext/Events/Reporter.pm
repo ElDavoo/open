@@ -741,6 +741,20 @@ sub _build_standard_sql {
                 -- end "can_use_this_ws"
             };
             $self->prepend_condition($can_use_this_ws => @bind);
+            if ($opts->{account_id}) {
+                my $can_see_group_event =  qq{
+                    -- start "can_see_group_event"
+                    group_id IS NULL 
+                        OR (NOT event_class = 'group') 
+                        OR EXISTS 
+                            (SELECT 1 FROM 
+                                groups WHERE groups.group_id = group_id 
+                                AND
+                                groups.primary_account_id = ?)
+                    -- end "can_see_group_event" 
+                    };
+                $self->prepend_condition($can_see_group_event, $opts->{account_id});
+            }
         }
 
         unless ($self->_skip_visibility) {

@@ -618,14 +618,14 @@ Check everybody's push mailbox before timeouts.
 | json-path-is | $[3].action      | edit_save               |
 
 # BUG: group events don't respect the account_id filter, this sees a signal and 4 group events instead of just the signal.
-# 
-# | *Comment* | TODO Member - events for another account |
-# | add-user-to-account | %%membart%% | %%other_acct%% | member |
-# | http-user-pass | %%membart%% | password |
-# | GET-json | /data/events?html=0;account_id=%%other_acct_id%% |
-# | json-response-is | 200 | 1 |
-# | json-path-is | $[0].signal_id | %%otis_signal_id%%  |
-# | remove-user-from-account | %%membart%% | %%other_acct%% |
+
+| *Comment* | TODO Member - events for another account |
+| add-user-to-account | %%membart%% | %%other_acct%% | member |
+| http-user-pass | %%membart%% | password |
+| GET-json | /data/events?html=0;account_id=%%other_acct_id%% |
+| json-response-is | 200 | 1 |
+| json-path-is | $[0].signal_id | %%otis_signal_id%%  |
+| remove-user-from-account | %%membart%% | %%other_acct%% |
 
 
 # spot-check Adminia
