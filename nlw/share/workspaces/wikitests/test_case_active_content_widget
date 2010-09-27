@@ -42,7 +42,7 @@
 | text_like | //body | Active Content Comment %%start_time%% |
 
 | *Comment* | Test Case: Active Content Widget. Verify link inside widget, not in Workspaces menu |  |
-| is_element_present_ok | //div[@class='inlineWidgetContent'] | link=active-content-%%start_time%% |
+| is_element_present_ok | //div[@class='inlineWidget'] | link=active-content-%%start_time%% |
 
 | *Comment* | Test Case: Active Content Widget Check the content of Edited |  |
 | click_ok | link=Edited |  |

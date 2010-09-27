@@ -24,8 +24,8 @@
 | wait_for_element_present_ok | //input[contains(@value,'Create a new Workspace in this Account')] | 30000 |
 | click_and_wait | //input[contains(@value,'Create a new Workspace in this Account')] |  |
 | location_like | /nlw/control/workspaces/new?account_id |  |
-| text_like | //body | Create Workspace |
-| text_like | //body | Title: |
+| wait_for_text_present_ok | Create Workspace | 30000 |
+| wait_for_text_present_ok | Title: | 30000 |
 | text_like | //body | qr/Account: %%acct%%.+(change)/ism |
 | text_like | //body | qr/URI: http[s]?:\/\/%%hostname%%/ |
 
@@ -89,9 +89,9 @@
 | *Comment* | Test Case: Business Control Panel from Create Workspace from Account. verify alternate WS created |  |
 | wait_for_text_present_ok | %%altname%% workspace | 30000 |
 | location_like | /nlw/control/workspace |  |
+| wait_for_text_present_ok | Users (1) | 30000 |
 | text_like | //body | qr/Account: %%altacct%%/ism |
 | text_like | //body | qr/%%altname%% workspace/ism |
-| text_like | //body | Users (1) |
 | text_like | //body | qr/Group.+Add Group To Workspace/ism |
 
 TODO: add users and groups to a creating workspace
