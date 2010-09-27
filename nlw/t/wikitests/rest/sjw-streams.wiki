@@ -147,7 +147,7 @@ Before signalling, get everybody a push mailbox.
 All Activity thus far (most recent first):
 # membart signal-this-edit to sjg
 # adminia signal-this-edit to account
-# adminia mention to sjg
+# membart mention to sjg
 # adminia mention to account
 # adminia page create
 # otis_signal_id
@@ -301,20 +301,18 @@ Check everybody's push mailbox before timeouts.
 
 | *Comment* | AcctUser - events for a group |
 | GET-json | /data/events?html=0;group_id=%%sjg_id%% |
-| json-response-is | 200 | 7 |
+| json-response-is | 200 | 6 |
 | json-path-is | $[0].signal_id   | %%edit_via_sjg_id%%     |
 | json-path-is | $[1].signal_id   | %%edit_via_acct_id%%    |
 | json-path-is | $[2].signal_id   | %%mention_via_sjg_id%%  |
 | json-path-is | $[3].event_class | page                    |
 | json-path-is | $[3].action      | edit_save               |
 | json-path-is | $[4].event_class | group                   |
-| json-path-is | $[4].action      | add_to_workspace        |
+| json-path-is | $[4].action      | add_user                |
+| json-path-is | $[4].person.id   | %%membart_id%%          |
 | json-path-is | $[5].event_class | group                   |
 | json-path-is | $[5].action      | add_user                |
-| json-path-is | $[5].person.id   | %%membart_id%%          |
-| json-path-is | $[6].event_class | group                   |
-| json-path-is | $[6].action      | add_user                |
-| json-path-is | $[6].person.id   | %%adminia_id%%          |
+| json-path-is | $[5].person.id   | %%adminia_id%%          |
 
 | *Comment* | AcctUser - events for a group containing a signal |
 | GET-json | /data/events?html=0;group_id=%%sjg_id%%;signals=1 |
