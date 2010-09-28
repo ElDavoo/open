@@ -1,5 +1,11 @@
 * Fixture: SocialRest
 
+# This test is susceptible to races. Pushd connections are set to time out
+# after 10 seconds in a dev env, so we need to check mailboxes right after
+# sending a signal. However, in so doing there's a possibility that we'll be
+# checking the mailbox before the signal arrives. For now, there's a 2 second
+# sleep after sending signals to allow mailboxes to "catch up".
+
 | st-clear-events |
 | st-clear-signals |
 
@@ -158,8 +164,20 @@ All Activity thus far (most recent first):
 # create a group (_no event_)
 # add sharron to account (_no event yet_)
 
+| sleep | 2 |
 
-Check everybody's push mailbox before timeouts.
+# Check everybody's push mailbox before timeouts.
+
+| *Comment* | Member - check pushd Mailbox |
+| http-user-pass-and-cookie | %%membart%% | password |
+| GET-json | %%membart_push_uri%% |
+| json-response-is | 200 | 5 |
+| json-path-is | $[0].object.signal_id | %%mention_via_acct_id%% |
+| json-path-is | $[1].object.signal_id | %%mention_via_sjg_id%%  |
+| json-path-is | $[2].object.signal_id | %%edit_via_acct_id%%    |
+| json-path-is | $[3].object.signal_id | %%edit_via_sjg_id%%     |
+| json-path-is | $[4].class            | command                 |
+| json-path-is | $[4].object.command   | continue                |
 
 | *Comment* | AuthUser - check pushd Mailbox |
 | http-user-pass-and-cookie | %%otis%% | password |
@@ -179,17 +197,6 @@ Check everybody's push mailbox before timeouts.
 | json-path-is | $[2].object.signal_id | %%edit_via_acct_id%%    |
 | json-path-is | $[3].class            | command                 |
 | json-path-is | $[3].object.command   | continue                |
-
-| *Comment* | Member - check pushd Mailbox |
-| http-user-pass-and-cookie | %%membart%% | password |
-| GET-json | %%membart_push_uri%% |
-| json-response-is | 200 | 5 |
-| json-path-is | $[0].object.signal_id | %%mention_via_acct_id%% |
-| json-path-is | $[1].object.signal_id | %%mention_via_sjg_id%%  |
-| json-path-is | $[2].object.signal_id | %%edit_via_acct_id%%    |
-| json-path-is | $[3].object.signal_id | %%edit_via_sjg_id%%     |
-| json-path-is | $[4].class            | command                 |
-| json-path-is | $[4].object.command   | continue                |
 
 
 # As an authenticated user (that isn't an Account User)
