@@ -72,7 +72,7 @@
 | json-path-is | $.entry[3].name                              | %%zebras%% |
 
 ################
-| *Comment* | create and authenticated user and a self-join workspace |
+| *Comment* | create an authenticated user and a self-join workspace |
 
 | set                       | auth_user        | auth-user%%start_time%%@ken.socialtext.net |
 | create-user               | %%auth_user%%    | password                                   |
@@ -82,7 +82,7 @@
 | workspace-permission-set | %%self_join%% | self-join                                  |
 
 ###
-| *Comment* | Check that users with read permission can see the workspace's |
+| *Comment* | Check that users with read permission can see the workspace's Groups (of which there are *none* currently) |
 
 | http-user-pass | %%auth_user%% | password |
 | GET-json | /data/workspaces/%%self_join%%/groups |
