@@ -126,6 +126,13 @@ sub user_can {
     );
 }
 
+sub uri {
+    my $self = shift;
+    return Socialtext::URI::uri(
+        path   => 'st/group/' . $self->group_id,
+    );
+}
+
 sub user_can_update_perms {
     my $self = shift;
     my $user = shift;
