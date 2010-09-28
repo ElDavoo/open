@@ -1557,39 +1557,35 @@ sub send_confirmation_completed_email {
 
     my $renderer = Socialtext::TT2::Renderer->instance();
 
-    my $ws = $target_workspace;
-    $ws ||= $self->workspaces->next();
-
-    my %vars;
+    my $app_name =
+        Socialtext::AppConfig->is_appliance()
+        ? 'Socialtext Appliance'
+        : 'Socialtext';
+    my @workspaces = [];
+    my @groups = [];
     my $subject;
-    # A user who self-registers may not be a member of any workspaces.
+    my $ws = $target_workspace;
     if ($ws) {
-        %vars = (
-            title => $ws->title(),
-            uri   => $ws->uri(),
-        );
-
         $subject = loc('You can now login to the [_1] workspace', $ws->title());
     }
     else {
-        # REVIEW - duplicated form ST::UserSettingsPlugin - where does
-        # this belong, maybe AppConfig?
-        my $app_name =
-            Socialtext::AppConfig->is_appliance()
-            ? 'Socialtext Appliance'
-            : 'Socialtext';
-
-        %vars = (
-            title => $app_name,
-            uri   => Socialtext::URI::uri(path => '/challenge'),
-        );
-
         $subject = loc("You can now login to the [_1] application", $app_name);
+        @groups = $self->groups->all;
+        @workspaces = $self->workspaces->all;
     }
 
-    $vars{user}      = $self;
-    $vars{appconfig} = Socialtext::AppConfig->instance();
-    $vars{target_workspace} = $target_workspace;
+    my %vars = (
+        title => ($ws) ? $ws->title() : $app_name,
+        uri   => ($ws) ? $ws->uri() : Socialtext::URI::uri(path => '/challenge'),
+        workspaces => \@workspaces,
+        groups => \@groups,
+        target_workspace => $target_workspace,
+        user => $self,
+        app_name => $app_name,
+        appconfig => Socialtext::AppConfig->instance(),
+        support_address => Socialtext::AppConfig->instance()->support_address,
+    );
+
     my $text_body = $renderer->render(
         template => 'email/email-address-confirmation-completed.txt',
         vars     => \%vars,

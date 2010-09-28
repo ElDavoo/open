@@ -9,6 +9,7 @@
 [% loc('Hello,') %]
 </p>
 
+[% IF target_workspace %]
 <p>
 [% SET escaped_str = title | html %]
 [% loc('You have confirmed your email address and can now log on to the [_1] workspace.', escaped_str ) %]
@@ -21,11 +22,37 @@
 <p>
 [% loc('Log in with your email address:') %] [% user.email_address %]
 </p>
+[% ELSE %]
+<p>
+[% SET escaped_str = app_name | html %]
+[% loc('You have confirmed your email address and can now log on to the [_1] application.', escaped_str ) %]
+</p>
+
+[% IF groups.size > 0 %]
+<p>[% loc('You are a member of the following groups:') %]</p>
+<ul>
+[% FOREACH group IN groups %]
+    <li><a href="[% group.uri | html %]">[% group.name | html %]</a>
+[% END %]
+</ul>
+[% ELSE %]
+<p>[% loc('You are a member of the following workspaces:') %]</p>
+<ul>
+[% FOREACH workspace IN workspaces %]
+    <li><a href="[% workspace.uri | html %]">[% workspace.title | html %]</a>
+[% END %]
+</ul>
+[% END %]
+
+<p>
+[% loc('Log in with your email address:') %] [% user.email_address %]
+</p>
+[% END %]
 
 <p>
 [% loc('You may want to keep this email for future reference.') %]
 [% loc('If you have questions, please ') %]
-<a href="[% appconfig.support_address | html %]">
+<a href="[% support_address | html %]">
   [% loc('Contact Support') %]</a>.
 </p>
 
