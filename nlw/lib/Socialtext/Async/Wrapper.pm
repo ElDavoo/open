@@ -113,6 +113,9 @@ our $VMEM_LIMIT = 512 * 2**20; # MiB
 #         warn "$$ ... AFTER KILLING COROS:\n";
 #         Coro::Debug::command('ps w');
 
+        # make I/O die on SIGPIPE/EPIPE
+        $SIG{PIPE} = 'DEFAULT';
+
         # make it reconnect
         Socialtext::SQL::disconnect_dbh();
 
