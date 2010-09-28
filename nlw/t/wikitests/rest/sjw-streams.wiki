@@ -59,7 +59,6 @@
 | workspace-permission-set | %%stuff_ws%%     | self-join    |
 | add-group-to-workspace   | %%sjg_id%% | %%stuff_ws%% |
 
-
 Before signalling, get everybody a push mailbox.
 
 | sleep | 1 |
@@ -624,8 +623,6 @@ All Activity thus far (most recent first):
 | json-path-is | $[3].event_class | page                    |
 | json-path-is | $[3].action      | edit_save               |
 
-# BUG: group events don't respect the account_id filter, this sees a signal and 4 group events instead of just the signal.
-
 | *Comment* | TODO Member - events for another account |
 | add-user-to-account | %%membart%% | %%other_acct%% | member |
 | http-user-pass | %%membart%% | password |
@@ -634,6 +631,39 @@ All Activity thus far (most recent first):
 | json-path-is | $[0].signal_id | %%otis_signal_id%%  |
 | remove-user-from-account | %%membart%% | %%other_acct%% |
 
+| *Comment* | Test that indirect group membership in an account via a workspace lets the group events be seen |
+| set | indirect_wksp | indirect_%%start_time%% |
+| set | indirect_acct | indirectacct_%%start_time%% |
+| set | indirect_group | indirectgrp_%%start_time%% |
+| create-account | %%indirect_acct%% |
+| set | indirect_acct_id | %%account_id%% |
+| create-workspace | %%indirect_wksp%% | %%indirect_acct%% |
+| create-group | %%indirect_group%% | %%main_acct%% |
+| set | indirect_group_id | %%group_id%% |
+| add-user-to-account | %%otis%% | %%indirect_acct%% |
+| add-group-to-workspace | %%indirect_group_id%% | %%indirect_wksp%% |
+| add-user-to-group | %%otis%% | %%indirect_group_id%% |
+
+# Create a group event
+| add-user-to-group | %%membart%% | %%indirect_group_id%% |
+| http-user-pass | %%otis%% | password |
+| GET-json | /data/events?html=0;account_id=%%indirect_acct_id%% |
+| json-response-is | 200 | 3 |
+# group add_to_workspace event goes here
+| json-path-is | $[0].event_class | group                   |
+| json-path-is | $[0].action      | add_user                |
+| json-path-is | $[0].group_id | %%indirect_group_id%% |
+| json-path-is | $[0].person.id   | %%membart_id%%          |
+| json-path-is | $[1].event_class | group                   |
+| json-path-is | $[1].action      | add_user                |
+| json-path-is | $[1].group_id | %%indirect_group_id%% |
+| json-path-is | $[1].person.id   | %%otis_id%%          |
+
+| remove-user-from-group | %%otis%% | %%indirect_group_id%% |
+| GET-json | /data/events?html=0;account_id=%%indirect_acct_id%% |
+| json-response-is | 200 | 0 |
+
+| remove-user-from-account | %%otis%% | %%indirect_acct%% |
 
 # spot-check Adminia
 

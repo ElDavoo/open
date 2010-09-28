@@ -510,14 +510,27 @@ sub visibility_sql {
         # TODO BUG: groups should be limited to those in any account_id params
         my $i_am_connected_to_that_group = q{
             SELECT 1
-              FROM user_set_path
-             WHERE from_set_id = ?
-               AND into_set_id = evt.group_id + }.PG_GROUP_OFFSET.q{
+              FROM user_set_path grp_usp
+             WHERE grp_usp.from_set_id = ?
+               AND grp_usp.into_set_id = evt.group_id + }.PG_GROUP_OFFSET.q{
         };
+        push @bind, $self->viewer_id;
+
+        if ($opts->{account_id}) {
+            # limit to groups in the selected account
+            $i_am_connected_to_that_group .= q{
+              AND EXISTS(
+                SELECT 1 FROM
+                    user_set_path acct_usp
+                    WHERE acct_usp.from_set_id = grp_usp.into_set_id
+                    AND acct_usp.into_set_id = ? + }.PG_ACCT_OFFSET.q{
+              )};
+            push @bind, $opts->{account_id};
+        }
+
         push @parts,
             "( evt.event_class <> 'group' OR EXISTS (".
                 $i_am_connected_to_that_group."))";
-        push @bind, $self->viewer_id;
     }
     else {
         push @parts, "(evt.event_class <> 'group')";
@@ -741,20 +754,6 @@ sub _build_standard_sql {
                 -- end "can_use_this_ws"
             };
             $self->prepend_condition($can_use_this_ws => @bind);
-            if ($opts->{account_id}) {
-                my $can_see_group_event =  qq{
-                    -- start "can_see_group_event"
-                    group_id IS NULL 
-                        OR (NOT event_class = 'group') 
-                        OR EXISTS 
-                            (SELECT 1 FROM 
-                                groups WHERE groups.group_id = group_id 
-                                AND
-                                groups.primary_account_id = ?)
-                    -- end "can_see_group_event" 
-                    };
-                $self->prepend_condition($can_see_group_event, $opts->{account_id});
-            }
         }
 
         unless ($self->_skip_visibility) {
