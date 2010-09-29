@@ -116,7 +116,7 @@
 
 | *Comment* | Test Case: Even-Driven Control Panel Reports - And I've got a workspace |
 | *Comment* | Test Case: Even-Driven Control Panel Reports - And the pages are 3 |
-| *Comment* | Test Case: Even-Driven Control Panel Reports - And the Page Views are 7 (thanks to create) |
+| *Comment* | Test Case: Even-Driven Control Panel Reports - And the Page Views are 17 (thanks to create) |
 
 | *Comment* | Test case: Event-Driven Control Panel Reports DELIBERATELY WAIT EIGHT MINUTES |  |
 | pause | 480000 |  |
