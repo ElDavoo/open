@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>343</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-343.air</url>
-<description><![CDATA[[Build 343 - Sat Sep  4 02:10:28 PDT 2010]
+  <version>345</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-345.air</url>
+<description><![CDATA[[Build 345 - Sun Sep 19 08:06:49 PDT 2010]
+* Deleted signals are now properly removed from all views. {bz: 3174}
+
+[Build 344 - Tue Sep 14 04:32:09 PDT 2010]
+* Only put an account on a reply prior to REST API v20. {bz: 4385} (Stash)
+
+[Build 343 - Sat Sep  4 02:10:28 PDT 2010]
 * Fetch page name lookahead candidates asynchronously too in "insert wiki link" dialog.
 
 [Build 342 - Fri Sep  3 23:56:59 PDT 2010]
