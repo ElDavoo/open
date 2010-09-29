@@ -23,7 +23,11 @@
 | st-logoutin | %%reports_user%% | %%password%% |  |
 | open_ok | /%%ed_ws%%/ |  |  |
 | st_create_wikipage | %%ed_ws%% | hello_page |  |
-| comment_page | %%ed_ws%% | hello_page | hello says Matt. This is a comment. |
+| st_comment_on_page | %%ed_ws%% | hello_page | hello says Matt. This is a comment. |
+| st_create_wikipage | %%ed_ws%% | hello_page_two |  |
+| st_comment_on_page | %%ed_ws%% | hello_page | hello says Matt. This is a comment. |
+| st_create_wikipage | %%ed_ws%% | hello_page_three |  |
+| st_comment_on_page | %%ed_ws%% | hello_page | hello says Matt. This is a comment. |
 | open_ok | /st/dashboard/ |  |  |
 
 | *Comment* | Test Case: Even-Driven Control Panel Reports - Personalize my dashboard |  |
@@ -111,7 +115,7 @@
 | post-signal | zxy |  |
 
 | *Comment* | Test Case: Even-Driven Control Panel Reports - And I've got a workspace |
-| *Comment* | Test Case: Even-Driven Control Panel Reports - And the pages are 30 |
+| *Comment* | Test Case: Even-Driven Control Panel Reports - And the pages are 3 |
 | *Comment* | Test Case: Even-Driven Control Panel Reports - And the Page Views are 7 (thanks to create) |
 
 | *Comment* | Test case: Event-Driven Control Panel Reports DELIBERATELY WAIT EIGHT MINUTES |  |
@@ -122,7 +126,7 @@
 | wait_for_element_visible_ok | link=Growth Reports | 30000 |
 | click_and_wait | link=Growth Reports |  |
 | selectFrame | report-iframe |  |
-| text_like | //body | qr/3\s*1\s*1\s*1\s*1\s*8\s*6\s*5\s*1\s*11\s*7\s*1/ |
+| text_like | //body | qr/3\s*1\s*1\s*1\s*1\s*4\s*8\s*5\s*1\s*3\s*17\s*6/ |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test case: Event-Driven Control Panel Reports - Teardown |  |
