@@ -62,6 +62,7 @@ sub init {
     $self->{https_port}         = Socialtext::HTTP::Ports->https_port();
     $self->{backend_http_port}  = Socialtext::HTTP::Ports->backend_http_port();
     $self->{backend_https_port} = Socialtext::HTTP::Ports->backend_https_port();
+    $self->{userd_port}         = Socialtext::HTTP::Ports->userd_port();
 
     my $def = Socialtext::Account->Default;
     $self->{default_account} = $def->name;
