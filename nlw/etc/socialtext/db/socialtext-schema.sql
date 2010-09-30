@@ -1127,6 +1127,11 @@ CREATE TABLE tag_people__person_tags (
     tag_id integer NOT NULL
 );
 
+CREATE TABLE topic_signal_link (
+    signal_id integer NOT NULL,
+    href text NOT NULL
+);
+
 CREATE TABLE topic_signal_page (
     signal_id integer NOT NULL,
     workspace_id integer NOT NULL,
@@ -1465,6 +1470,10 @@ ALTER TABLE ONLY "System"
 ALTER TABLE ONLY tag_people__person_tags
     ADD CONSTRAINT tag_people__person_tags_pkey
             PRIMARY KEY (person_id, tag_id);
+
+ALTER TABLE ONLY topic_signal_link
+    ADD CONSTRAINT topic_signal_link_pk
+            PRIMARY KEY (signal_id, href);
 
 ALTER TABLE ONLY topic_signal_page
     ADD CONSTRAINT topic_signal_page_pk
@@ -1836,6 +1845,12 @@ CREATE INDEX ix_signal_uset_groups
 CREATE INDEX ix_signal_uset_wksps
 	    ON signal_user_set (signal_id, user_set_id)
 	    WHERE ((user_set_id >= (B'00100000000000000000000000000001'::"bit")::integer) AND (user_set_id <= (B'00110000000000000000000000000000'::"bit")::integer));
+
+CREATE INDEX ix_topic_signal_link_forward
+	    ON topic_signal_link (href);
+
+CREATE INDEX ix_topic_signal_link_reverse
+	    ON topic_signal_link (signal_id);
 
 CREATE INDEX ix_topic_signal_page_forward
 	    ON topic_signal_page (workspace_id, page_id);
@@ -2419,4 +2434,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '126');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '127');
