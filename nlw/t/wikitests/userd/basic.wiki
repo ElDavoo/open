@@ -1,0 +1,9 @@
+* Fixture: SocialRest
+
+| set | userduri | http://localhost:%%userd_port%%/stuserd |
+| set | pinguri  | http://localhost:%%userd_port%%/ping    |
+
+| clear-nlw-cookie |                |
+| get-json         | %%pinguri%%    |
+| json-parse       |                |
+| json-like        | {"ping":"ok" } |
