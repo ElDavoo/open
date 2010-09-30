@@ -16,6 +16,7 @@ body.wiki {
     padding: 0 !important;
     line-height: normal !important;
     font-size: 11px !important;
+    overflow: auto !important;
 }
 
 table {
