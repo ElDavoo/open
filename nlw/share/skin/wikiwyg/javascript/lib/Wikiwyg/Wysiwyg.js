@@ -1244,9 +1244,9 @@ if (Wikiwyg.is_ie) {
         var href = url || "?" + encodeURIComponent(page_name);
         var attr = "";
         if (page_name) {
-            attr = " wiki_page=\"" + page_name + "\"";
+            attr = " wiki_page=\"" + html_escape(page_name).replace(/"/g, "&quot;") + "\"";
         }
-        var html = "<a href=\"" + href + "\"" + attr + ">" + html_escape( text.replace(/"/g, '\uFF02') );
+        var html = "<a href=\"" + href + "\"" + attr + ">" + html_escape( text.replace(/"/g, '\uFF02').replace(/"/g, "&quot;") );
 
 
         html += "</a>";
