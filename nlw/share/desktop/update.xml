@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.4.0</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.4.0.air</url>
-  <description><![CDATA[[4.4.0 - Wed Sep 29 03:00:18 PDT 2010]
+  <version>4.5.0</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.5.0.air</url>
+  <description><![CDATA[[4.5.0 - Thu Sep 30 04:47:59 PDT 2010]
+(Features)
+* Auto-renew the time-limited login cookie every 24 hours for server version 4.5.0+.
+
+[4.4.0 - Wed Sep 29 03:00:18 PDT 2010]
 (Enhancements)
 * Signals: When a signal is deleted, remove it from all sub-tabs and popup windows as well.
 * Performance: Fetch /data/people only once, not twice, during startup.
