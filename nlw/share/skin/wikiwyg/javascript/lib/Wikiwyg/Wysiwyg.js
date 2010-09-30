@@ -1306,7 +1306,8 @@ proto.insert_table_html = function(rows, columns, options) {
         .attr('id', id)
         .addClass("formatter_table")
         .html(innards);
-    this.insert_html($table.parent().html());
+    var $div = jQuery('<div />').append($table);
+    this.insert_html($div.html());
 
     jQuery.poll(
         function() {
