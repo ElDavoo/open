@@ -1,6 +1,7 @@
 <script src="[% share %]/javascript/socialtext-container.js.gz"></script>
 
 <link rel="stylesheet" type="text/css" href="[% share %]/css/inline.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="[% share %]/css/jquery-ui-1.8.5.custom.css" media="screen" />
 
 [% INCLUDE syndicator %]
 
