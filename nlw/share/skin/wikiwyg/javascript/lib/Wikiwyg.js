@@ -2037,7 +2037,7 @@ proto.set_add_a_link_error = function(msg) {
 }
 
 proto.create_link_wafl = function(label, workspace, pagename, section) {
-    var label_txt = label ? "\"" + label + "\"" : "";
+    var label_txt = label ? "\"" + label.replace(/"/g, '\uFF02') + "\"" : "";
     var wafl = label_txt + "{link:";
     if (workspace) { wafl += " " + workspace; }
     if (pagename) { wafl += " [" + pagename + "]"; }

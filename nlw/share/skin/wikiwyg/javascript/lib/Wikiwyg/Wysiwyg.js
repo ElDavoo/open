@@ -1222,7 +1222,7 @@ proto.make_link = function(label, page_name, url) {
 
     // Anchor text
     var text = label || page_name || url;
-    link_node.appendChild( document.createTextNode(text) );
+    link_node.appendChild( document.createTextNode(text.replace(/"/g, '\uFF02')) );
 
     // Anchor HREF
     link_node.href = url || "?" + encodeURIComponent(page_name);
@@ -1240,13 +1240,13 @@ proto.make_link = function(label, page_name, url) {
 if (Wikiwyg.is_ie) {
     proto.make_link = function(label, page_name, url) {
 
-        var text = html_escape( label || page_name || url );
+        var text = label || page_name || url;
         var href = url || "?" + encodeURIComponent(page_name);
         var attr = "";
         if (page_name) {
             attr = " wiki_page=\"" + page_name + "\"";
         }
-        var html = "<a href=\"" + href + "\"" + attr + ">" + text;
+        var html = "<a href=\"" + href + "\"" + attr + ">" + html_escape( text.replace(/"/g, '\uFF02') );
 
 
         html += "</a>";
