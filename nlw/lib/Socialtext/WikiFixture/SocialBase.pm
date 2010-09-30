@@ -1289,7 +1289,7 @@ sub get {
 
     my @headers = (
         Accept => $accept,
-        Cookie => $self->{_cookie},
+        $self->{_cookie} ? (Cookie => $self->{_cookie}) : (),
     );
     if ($headers) {
         push @headers, map { split m/\s*=\s*/ } split m/\s*,\s*/, $headers;
