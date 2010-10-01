@@ -3133,4 +3133,12 @@ sub signal_targeted {
     }
 }
 
+sub set_basic_auth_header {
+    my ($self, $name, $user, $pass) = @_;
+
+    $user ||= $self->{username};
+    $pass ||= $self->{password};
+
+    $self->{$name} = "Basic ".  MIME::Base64::encode("$user:$pass", '');
+}
 1;
