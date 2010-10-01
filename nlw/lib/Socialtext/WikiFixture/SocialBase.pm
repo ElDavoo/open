@@ -1954,9 +1954,7 @@ sub _compare_json {
         my $match = 1;
         for my $key (keys %$candidate) {
             die "Can't find value for key '$key' in JSON" unless defined($json->{$key});
-            use XXX; WWW "Comparing value for $key", $candidate->{$key}, $json->{$key};
             $match &&= $self->_compare_json($candidate->{$key}, $json->{$key});
-            WWW "match is now $match";
         }
         die "No match for hash candidates" unless $match;
     }
