@@ -237,6 +237,15 @@ EOSQL
         return 'custom';
     }
 
+    sub current_set_display_name {
+        my $self = shift;
+
+        my @parts = map { ucfirst $_ }
+            split('-', $self->current_set_name);
+
+        return join('-', @parts);
+    }
+
     sub _perm_set_as_string {
         my $set = shift;
 

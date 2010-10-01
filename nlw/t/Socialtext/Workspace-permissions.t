@@ -7,20 +7,20 @@ use Socialtext::Account;
 use Socialtext::Permission qw( ST_ADMIN_WORKSPACE_PERM ST_EMAIL_IN_PERM ST_LOCK_PERM );
 use Socialtext::Role;
 use Socialtext::Workspace;
-use Test::Socialtext tests => 57;
+use Test::Socialtext tests => 64;
 fixtures(qw( clean db ));
 
 {
-    for my $set_name (
-        qw( public
-            member-only
-            authenticated-user-only
-            public-read-only
-            public-comment-only
-            public-join-to-edit
-            intranet
-          )
-        ) {
+    my %sets = (
+        'public'                  => 'Public',
+        'member-only'             => 'Member-Only',
+        'authenticated-user-only' => 'Authenticated-User-Only',
+        'public-read-only'        => 'Public-Read-Only',
+        'public-comment-only'     => 'Public-Comment-Only',
+        'public-join-to-edit'     => 'Public-Join-To-Edit',
+        'intranet'                => 'Intranet',
+    );
+    for my $set_name (keys %sets) {
         my $ws = Socialtext::Workspace->create(
             name       => $set_name,
             title      => 'Test',
@@ -32,6 +32,9 @@ fixtures(qw( clean db ));
 
         is( $ws->permissions->current_set_name(), $set_name,
             "current permission set is $set_name" );
+
+        is $ws->permissions->current_set_display_name, $sets{$set_name},
+           "current permission display name is $sets{$set_name}";
 
         my %p = (
             role       => Socialtext::Role->Guest(),
