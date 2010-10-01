@@ -11,6 +11,7 @@ use Socialtext::Async::Wrapper;
 use Socialtext::Log qw/st_log st_timed_log/;
 use Socialtext::SQL qw/get_dbh sql_execute sql_singlevalue/;
 use Socialtext::JSON qw/decode_json encode_json/;
+use JSON::XS qw();
 use Socialtext::UserSet ':const';
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::HTTP::Cookie;
@@ -248,7 +249,7 @@ sub _build_extract_q {
             return unless $self;
 
             my $result = do_extract_creds($params);
-            my $http = result_to_http($result);
+            my $http = $self->result_to_http($result);
             $responder->($http);
         }, 'extract queue error'),
 
@@ -261,16 +262,35 @@ sub _build_extract_q {
 }
 
 sub result_to_http {
-    return  "HTTP/1.0 200 OK$CRLF".
+    my $self = shift;
+    my $result = shift;
+    my $json = $result->{body} ? encode_json($result->{body}) : "[]";
+    my $header;
+    if ($result->{code} == 200) { 
+        $header = "HTTP/1.0 200 OK$CRLF";
+    } else {
+        $header = "HTTP/1.0 500 Server Error$CRLF";
+    }
+    return  $header. 
             "Content-Type: application/json; charset=UTF-8$CRLF".
             "Connection: close$CRLF".
             $CRLF.
-            qq({"status":"its all good homey"})
+            $json;
 }
 
 
 worker_function do_extract_creds => sub {
     my $params = shift;
+    my $guest = Socialtext::User->Guest();
+    return { 
+        code => 200, 
+        body => {
+            valid => JSON::XS::true,
+            needs_renewal => JSON::XS::false,
+            username => $guest->username,
+            user_id => $guest->user_id 
+        }
+    };
     # this executes in a sub-process
 };
 
