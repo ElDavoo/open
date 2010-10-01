@@ -1,18 +1,76 @@
 * Fixture: SocialRest
 
+## SETUP
 | set | userduri | http://localhost:%%userd_port%%/stuserd |
 | set | pinguri  | http://localhost:%%userd_port%%/ping    |
+| set | gooduser | %%start_time%%user@example.com |
+| create-user | %%gooduser%% | password |
+| set | gooduser_id | %%user_id%% |
 
-| http-user-pass |
-| clear-nlw-cookie |                |
-| get-json         | %%pinguri%%    |
-| json-parse       |                |
-| json-like        | {"ping":"ok" } |
+## PING TEST
+| *Comment*      | Ping userd     |
+| http-user-pass |                |
+| get-json       | %%pinguri%%    |
+| json-parse     |                |
+| json-like      | {"ping":"ok" } |
 
-# Test guest invalid auth
+## NO AUTH (Guest)
+| *Comment*  | Test no auth (guest user)                                              |                         |
+| post-json  | %%userduri%%                                                           | {"URI":"/data/signals"} |
+| code-is    | 200                                                                    |                         |
+| json-parse |                                                                        |                         |
+| json-like  | {"valid":true, "needs_renewal":false, "username":"guest", "user_id":2} |                         |
 
-| post-json | %%userduri%% | {"URI":"/data/signals","Cookie":"empty"} |
-| code-is | 200 |
-| json-parse |
-| json-like |  {"valid":true, "needs_renewal":false, "username":"guest", "user_id":1} |
+## COOKIE AUTH
+| *Comment*   | Test for invalid cookie                |                                                     |
+| post-json   | %%userduri%%                           | {"URI":"/data/signals","Cookie":"NLW_user:invalid"} |
+| code-is     | 200                                    |                                                     |
+| json-parse  |                                        |                                                     |
+| json-like   | {"valid":false, "reason":"bad cookie"} |                                                     |
+| json-unlike | {"user_id":"%%gooduser_id%%"}          |                                                     |
+
+| *Comment*               | Test for valid cookie                                                                       |                                                 |
+| set_nlw_cookie_for_user | %%gooduser%%                                                                                |                                                 |
+| set                     | mycookie                                                                                    | %%_cookie%%                                     |
+| http-user-pass          |                                                                                             |                                                 |
+| post-json               | %%userduri%%                                                                                | {"URI":"/data/signals","Cookie":"%%mycookie%%"} |
+| code-is                 | 200                                                                                         |                                                 |
+| json-parse              |                                                                                             |                                                 |
+| json-like               | {"valid":true, "needs_renewal":false, "username":"%%gooduser%%", "user_id":%%gooduser_id%%} |                                                 |
+
+*TODO* Test for *expired* cookie! And also testing for a cookie that needs renewal? 
+
+## BASIC AUTH 
+| *Comment*             | Test for valid basic auth headers                                                           |                                                          |          |
+| http-user-pass        |                                                                                             |                                                          |          |
+| set-basic-auth-header | authheader                                                                                  | %%gooduser%%                                             | password |
+| post-json             | %%userduri%%                                                                                | {"URI":"/data/signals","Authorization":"%%authheader%%"} |          |
+| code-is               | 200                                                                                         |                                                          |          |
+| json-parse            |                                                                                             |                                                          |          |
+| json-like             | {"valid":true, "needs_renewal":false, "username":"%%gooduser%%", "user_id":%%gooduser_id%%} |                                                          |          |
+
+| *Comment*             | Test for invalid basic auth headers                    |                                                             |             |
+| http-user-pass        |                                                        |                                                             |             |
+| set-basic-auth-header | badauthheader                                          | %%gooduser%%                                                | badpassword |
+| post-json             | %%userduri%%                                           | {"URI":"/data/signals","Authorization":"%%badauthheader%%"} |             |
+| code-is               | 200                                                    |                                                             |             |
+| json-parse            |                                                        |                                                             |             |
+| json-like             | {"valid":false,"reason":"invalid username or password"} |                                                            |             |
+| json-unlike           | {"user_id":"%%gooduser_id%%"}                          |                                                             |             |
+
+## SITEMINDER AUTH
+| *Comment*      | Test valid Siteminder request                                                               |                                                                                   |
+| http-user-pass |                                                                                             |                                                                                   |
+| post-json      | %%userduri%%                                                                                | {"URI":"/data/signals","SM_USER":"%%gooduser%%", "SM_SERVERSESSIONID":"anything"} |
+| code-is        | 200                                                                                         |                                                                                   |
+| json-parse     |                                                                                             |                                                                                   |
+| json-like      | {"valid":true, "needs_renewal":false, "username":"%%gooduser%%", "user_id":%%gooduser_id%%} |                                                                                   |
+
+| *Comment*      | Test expired Siteminder session request |                                                  |
+| http-user-pass |                                         |                                                  |
+| post-json      | %%userduri%%                            | {"URI":"/data/signals","SM_USER":"%%gooduser%%"} |
+| code-is        | 200                                     |                                                  |
+| json-parse     |                                         |                                                  |
+| json-like      | {"valid":false, "reason":"logged out"}  |                                                  |
+| json-unlike    | {"user_id":"%%gooduser_id%%"}           |                                                  |
 
