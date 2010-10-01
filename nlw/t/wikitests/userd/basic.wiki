@@ -3,7 +3,16 @@
 | set | userduri | http://localhost:%%userd_port%%/stuserd |
 | set | pinguri  | http://localhost:%%userd_port%%/ping    |
 
+| http-user-pass |
 | clear-nlw-cookie |                |
 | get-json         | %%pinguri%%    |
 | json-parse       |                |
 | json-like        | {"ping":"ok" } |
+
+# Test guest invalid auth
+
+| post-json | %%userduri%% | {"URI":"/data/signals","Cookie":"empty"} |
+| code-is | 200 |
+| json-parse |
+| json-like |  {"valid":true, "needs_renewal":false, "username":"guest", "user_id":1} |
+

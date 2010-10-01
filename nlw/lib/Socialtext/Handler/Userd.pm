@@ -238,7 +238,7 @@ sub handle_request {
 
 sub _build_extract_q {
     my $self = shift;
-    weaken $self;
+    Scalar::Util::weaken $self;
     my $wq; $wq = Socialtext::Async::WorkQueue->new(
         name => 'extract',
         prio => Coro::PRIO_LOW(),
@@ -259,6 +259,15 @@ sub _build_extract_q {
     $self->cv->begin;
     return $wq;
 }
+
+sub result_to_http {
+    return  "HTTP/1.0 200 OK$CRLF".
+            "Content-Type: application/json; charset=UTF-8$CRLF".
+            "Connection: close$CRLF".
+            $CRLF.
+            qq({"status":"its all good homey"})
+}
+
 
 worker_function do_extract_creds => sub {
     my $params = shift;
