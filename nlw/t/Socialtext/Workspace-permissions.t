@@ -7,18 +7,19 @@ use Socialtext::Account;
 use Socialtext::Permission qw( ST_ADMIN_WORKSPACE_PERM ST_EMAIL_IN_PERM ST_LOCK_PERM );
 use Socialtext::Role;
 use Socialtext::Workspace;
-use Test::Socialtext tests => 64;
+use Test::Socialtext tests => 73;
 fixtures(qw( clean db ));
 
 {
     my %sets = (
+        'member-only'             => 'Private',
+        'self-join'               => 'Self-Join',
         'public'                  => 'Public',
-        'member-only'             => 'Member-Only',
-        'authenticated-user-only' => 'Authenticated-User-Only',
-        'public-read-only'        => 'Public-Read-Only',
-        'public-comment-only'     => 'Public-Comment-Only',
-        'public-join-to-edit'     => 'Public-Join-To-Edit',
-        'intranet'                => 'Intranet',
+        'authenticated-user-only' => 'Public',
+        'public-read-only'        => 'Public',
+        'public-comment-only'     => 'Public',
+        'public-join-to-edit'     => 'Public',
+        'intranet'                => 'Public',
     );
     for my $set_name (keys %sets) {
         my $ws = Socialtext::Workspace->create(
@@ -65,8 +66,8 @@ fixtures(qw( clean db ));
         is( $admin_has_lock, 1, 'Admin has page lock permissions');
 
 	my %defaults;
-        $defaults{allows_html_wafl} = ( $set_name =~ /^(member|intranet|public\-read)/ ) ? 1 : 0;
-        $defaults{email_addresses_are_hidden} = ( $set_name =~ /^(member|intranet)/ ) ? 0 : 1 ;
+        $defaults{allows_html_wafl} = ( $set_name =~ /^(member|intranet|public\-read|self\-join)/ ) ? 1 : 0;
+        $defaults{email_addresses_are_hidden} = ( $set_name =~ /^(member|intranet|self\-join)/ ) ? 0 : 1 ;
         $defaults{email_notify_is_enabled} = ( $set_name =~ /^public/ ) ? 0 : 1;
         $defaults{homepage_is_dashboard} = ( $set_name eq 'member-only' ) ? 1 : 0;
 
