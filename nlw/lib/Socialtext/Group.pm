@@ -51,6 +51,7 @@ has 'homunculus' => (
         delete
         user_set_id
         permission_set
+        display_permission_set
     )],
 );
 
