@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>348</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-348.air</url>
-<description><![CDATA[[Build 348 - Thu Sep 30 04:44:48 PDT 2010]
+  <version>349</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-349.air</url>
+<description><![CDATA[[Build 349 - Fri Oct  1 02:02:25 PDT 2010]
+* Workspaces: Restore page preview and loading functionality (regression in build 347).
+
+[Build 348 - Thu Sep 30 04:44:48 PDT 2010]
 * Renew the (time-limited) login cookie every 24 hours.
 
 [Build 347 - Thu Sep 30 04:40:20 PDT 2010]
