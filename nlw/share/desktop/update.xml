@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.5.0</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.5.0.air</url>
-  <description><![CDATA[[4.5.0 - Thu Sep 30 04:47:59 PDT 2010]
+  <version>4.5.1</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.5.1.air</url>
+  <description><![CDATA[[4.5.1 - Fri Oct  1 02:05:31 PDT 2010]
 (Features)
 * Auto-renew the time-limited login cookie every 24 hours for server version 4.5.0+.
 
