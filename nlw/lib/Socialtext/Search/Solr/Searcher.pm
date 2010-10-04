@@ -101,7 +101,7 @@ sub _search {
     $self->_authorize( $query, $authorizer );
 
     my @filter_query;
-    my $qf;
+    my $field_boosts;
 
     # No $opts{doctype} indicates workspace search (legacy, could be changed)
     if ($workspaces and @$workspaces) {
@@ -136,7 +136,7 @@ sub _search {
                         . "(dm_recip:$viewer_id OR creator:$viewer_id))",
             }
             if ($opts{doctype} eq 'person') {
-                $qf = 'name_pf_t^4 sounds_like^3.5 *_pf_rt^3 tag^2 all';
+                $field_boosts = 'name_pf_t^4 sounds_like^3.5 *_pf_rt^3 tag^2 all';
             }
         }
     }
@@ -155,7 +155,7 @@ sub _search {
         qt => $query_type,
 
         # qf = Query Fields (Boost)
-        ($qf ? (qf => $qf) : ()),
+        ($field_boosts ? (qf => $field_boosts) : ()),
 
         # fq = Filter Query - superset of docs to return from
         (@filter_query ? (fq => \@filter_query) : ()),
