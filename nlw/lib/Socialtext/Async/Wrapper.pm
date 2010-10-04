@@ -4,6 +4,7 @@ use warnings;
 use strict;
 use Moose::Exporter ();
 use Coro;
+use Coro::State ();
 use Coro::AnyEvent;
 use Guard;
 use AnyEvent::Worker;
@@ -12,6 +13,8 @@ use Scalar::Util qw/blessed/;
 use Socialtext::Timer qw/time_scope/;
 use Try::Tiny;
 use Socialtext::TimestampedWarnings;
+use BSD::Resource qw/setrlimit get_rlimits/;
+use Socialtext::Log qw/st_log/;
 use namespace::clean -except => 'meta';
 
 =head1 NAME
@@ -62,10 +65,6 @@ To affect what happens before each request (e.g. cache clearing), override
 Socialtext::Async::Wrapper::Worker::before_each.  before_each B<MUST NOT>
 throw an exception.
 
-=head1 EXPORTS
-
-=over 4
-
 =cut
 
 Moose::Exporter->setup_import_methods(
@@ -77,78 +76,106 @@ our $IN_WORKER = 0;
 our @AT_FORK;
 our $VMEM_LIMIT = 512 * 2**20; # MiB
 
+=head1 CLASS METHODS
+
+=over 4
+
+=item C<< RegisterCoros() >>
+
+Marks currently active Coros for non-deletion.  At fork, other Coros will be
+cancelled.
+
+=cut
+
+sub RegisterCoros {
+    # mark the current coros so we don't kill them in the sub-process.
+    for my $coro (Coro::State::list()) {
+         $coro->{_preserve_on_fork} = 1;
+    }
+}
+
+=item C<< RegisterAtFork(sub { ... }) >>
+
+Register some code to run after forking.  Will run after extraneous coros have
+been cancelled but before any "standard" initializations the socialtext stack
+needs.
+
+=cut
+
+sub RegisterAtFork {
+    my $class = shift;
+    push @AT_FORK, shift;
+}
+
+sub _InWorker {
+    my $class = shift;
+
+    # Prevents recursive workers:
+    $IN_WORKER = 1;
+
+    no warnings 'redefine';
+    Socialtext::TimestampedWarnings->import;
+
+    for my $coro (Coro::State::list()) {
+        unless (
+            $coro == $Coro::current ||
+            $coro->{desc} =~ /^\[/ ||
+            $coro->{_preserve_on_fork}
+        ) {
+            $coro->cancel;
+        }
+    }
+
+    for my $fork_cb (@AT_FORK) {
+        eval { $fork_cb->() };
+    }
+
+    # make it reconnect
+    Socialtext::SQL::disconnect_dbh();
+
+    # clear caches.
+    Socialtext::Cache->clear();
+    # but make sure it uses the user-cache until we clear it.
+    $Socialtext::User::Cache::Enabled = 1;
+
+    # st_log is disconnected by AnyEvent::Worker right after fork.
+    # Reconnect it here.
+    Sys::Syslog::disconnect();
+    $Socialtext::Log::Instance = Socialtext::Log->_renew();
+
+    # If something's messed up with Coro/Ev/AnyEvent this will fail:
+    my $cv = AE::cv;
+    my $t = AE::timer 0.0005, 0, sub {
+        $cv->send("seems to be working");
+    };
+    my $ok = eval { $cv->recv };
+    $ok ||= 'is broken';
+    st_log()->info("in async worker $$, AnyEvent $ok");
+
+    my $lim = $VMEM_LIMIT;
+    if ($lim) {
+        my $rlimits = get_rlimits();
+        # limit Virtual Memory and Address Space
+        for my $res (qw(RLIMIT_VMEM RLIMIT_AS)) {
+            next unless exists $rlimits->{$res};
+            setrlimit($rlimits->{$res}, $lim, $lim);
+        }
+    }
+}
+
+=back
+
+=cut
+
 {
     package Socialtext::Async::Wrapper::Worker;
     use Moose;
     use Try::Tiny;
-    use BSD::Resource qw/setrlimit get_rlimits/;
 
-    # This BUILD runs in the child worker process only.
     sub BUILD {
-        no warnings 'redefine';
-
-        # prevent recursive worker invocations
-        $Socialtext::Async::Wrapper::IN_WORKER = 1;
-        Socialtext::TimestampedWarnings->import;
-
-        for my $fork_cb (@Socialtext::Async::Wrapper::AT_FORK) {
-            eval { $fork_cb->() };
-        }
-
-#         use Coro::Debug;
-#         Coro::Debug::command('ps w');
-
-#         Coro::killall(); # other threads
-        for my $coro (Coro::State::list()) {
-            unless (
-                $coro == $Coro::current ||
-                $coro->{desc} =~ /^\[/ ||
-                $coro->{_preserve_on_fork}
-            ) {
-#                 warn "killing coro $coro->{desc}\n";
-                $coro->cancel;
-            }
-        }
-
-#         warn "$$ ... AFTER KILLING COROS:\n";
-#         Coro::Debug::command('ps w');
-
-        # make it reconnect
-        Socialtext::SQL::disconnect_dbh();
-
-        # clear caches.
-        Socialtext::Cache->clear();
-        # but make sure it uses the user-cache until we clear it.
-        $Socialtext::User::Cache::Enabled = 1;
-
-        # st_log is disconnected by AnyEvent::Worker right after fork.
-        # Reconnect it here.
-        Sys::Syslog::disconnect();
-        $Socialtext::Log::Instance = Socialtext::Log->_renew();
-
-#         warn "$$ ... JUST BEFORE STARTING WORKER TASKS:\n";
-#         use Coro::Debug;
-#         Coro::Debug::command('ps w');
-
-        # If something's messed up with Coro/Ev/AnyEvent this will fail:
-        my $cv = AE::cv;
-        my $t = AE::timer 0.0005, 0, sub {
-            $cv->send("seems to be working");
-        };
-        my $ok = eval { $cv->recv };
-        $ok ||= 'is broken';
-        Socialtext::Log::st_log()->info("in async worker $$, AnyEvent $ok");
-
-        my $lim = $Socialtext::Async::Wrapper::VMEM_LIMIT;
-        if ($lim) {
-            my $rlimits = get_rlimits();
-            # limit Virtual Memory and Address Space
-            for my $res (qw(RLIMIT_VMEM RLIMIT_AS)) {
-                next unless exists $rlimits->{$res};
-                setrlimit($rlimits->{$res}, $lim, $lim);
-            }
-        }
-
+        my $self = shift;
+        # This BUILD runs in the child worker process only.
+        Socialtext::Async::Wrapper->_InWorker();
         return;
     }
 
@@ -181,6 +208,12 @@ our $VMEM_LIMIT = 512 * 2**20; # MiB
 
     no Moose; # remove sugar
 }
+
+=head1 EXPORTS
+
+=over 4
+
+=cut
 
 =item worker_wrap replacement => 'Slow::Class::method';
 
@@ -287,7 +320,7 @@ sub worker_make_immutable {
 our $ae_worker;
 sub _setup_ae_worker {
     die 'IO::AIO shouldnt be loaded' if $INC{'IO/AIO.pm'};
-    Socialtext::Log::st_log()->info("async worker starting...");
+    st_log()->info("async worker starting...");
 
     my %parent_args = (
         on_error => sub {
