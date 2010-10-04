@@ -1,5 +1,7 @@
 | *Comment* | Test Case: Isolated Accounts |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Isolated Accounts SETUP |  |  |  |
 | set | typeone | typeone%%start_time%% |  |  |
 | set | typetwo | typetwo%%start_time%% |  |  |
@@ -10,26 +12,44 @@
 | set | user_one | %%group_user%% |  |  |
 | set | user_one_short | %%group_user_short%% |  |  |
 | set | ws_one | %%group_ws%% |  |  |
+| set | tag_one | new tag %%start_time%% |  |  |
+| set | page_one | page one %%start_time%% |  |  |
+| set | page_two | page two %%start_time%% |  |  |
+| set | page_three | page three %%start_time%% |  |  |
 | st-setup-a-group | 1 | 1 | 1 | grptwo |
 
 | *Comment* | Test Case: Isolated Accounts Login as %%user_one%%, dirty account |  |
 | st-logoutin | %%user_one%% | %%password%% |
-| include | [Test Case: Isolated Accounts Dirty Account] |  |
+| include | [Test Cases Isolated Accounts: Dirty] |  |
 
 | *Comment* | Test case: Isolated Accounts Login as %%user_two%%, verify clean |  |
-| [include] | [Test Case: Isolated Accounts Verify Blank] |  |
+| st-logoutin | %%group_user%% | %%password%% |
+| open_ok | /st/dashboard/ |  |
+| wait_for_text_present_ok | There are no events to display because no events have been created. | 30000 |
 
 | *Comment* | Test Case: Isolated Accounts AddRemove %%user_two%% from %%group_id%%, %%group_ws%%, %%group_acct%% |  |
-| st-admin | add-member --e %%user_twp%% --g %%group_id%% |  |
+| st-admin | add-member --e %%user_two%% --g %%group_id%% |  |
 | st-admin | add-member --e %%user_two%% --w %%group_ws%% |  |
 | st-admin | add-member --e %%user_two%% --account %%group_account%% |  |
 | st-logoutin | %%user_one%% | %%password%% |
 | open_ok | /%%group_ws%% / |  |
-| st-admin | remove-member --e %%user_twp%% --g %%group_id%% |  |
+| open_ok | /st/dashboard |  |
+| text_unlike | //body | There are no events to display because no events have been created. |
+| st-admin | remove-member --e %%user_two%% --g %%group_id%% |  |
 | st-admin | remove-member --e %%user_two%% --w %%group_ws%% |  |
 | st-admin | remove-member --e %%user_two%% --account %%group_account%% |  |
 
 | *Comment* | Test case: Isolated Accounts Login as %%user_two%%, verify clean |  |
-| [include] | Test Case: Isolated Accounts Verify Blank] |  |
+| open_ok | /st/dashboard/ |  |
+| wait_for_text_present_ok | There are no events to display because no events have been created. | 30000 |
 
-| *Comment* | Test Case: Isolated Accounts |
+| *Comment* | Test Case: Isolated Accounts TODO Make sure there are no workspace links, group links in the nav bar |
+| *Comment* | Test Case: Isolated Accounts TODO Send a signal you should see, mention a workspace you can't, don't see |
+
+| *Comment* | Test Case: Isolated Accounts TEARDOWN |  |
+| st-admin | delete-workspace --w %%ws_one%% --no-export | has been deleted |
+| st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
+| delete-group | %%grp_id%% |  |
+| delete-group | %%group_id%% |  |
+
+| *Comment* | Test Case: Isolated Accounts COMPLETED |

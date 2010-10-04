@@ -1,0 +1,54 @@
+| *Comment* | Test Case: Isolated Accounts Dirty |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Isolated Accounts Dirty Note: Must be included from [Test Case: Isolated Accounts] |  |
+
+| *Comment* | Test Case: Isolated Accounts Dirty Create Pages |  |
+| st-create-wikipage | %%ws_one%% | %%page_one%% |
+| st-create-wikipage | %%ws_one%% | %%page_two%% |
+| st-create-wikipage | %%ws_one%% | %%page_three%% |
+
+| *Comment* | Test Case: Isolated Accounts Dirty Send signals |  |
+| open_ok | /st/signals |  |
+| st-name-widget | 1 | signals_widget |
+| st_send_signal_via_activities_widget | signals_widget | cinderalla %%start_time%% |
+| st_send_signal_via_activities_widget | signals_widget | sleeping beauty %%start_time%% mulan |
+| st_send_signal_via_activities_widget | signals_widget | sleeping beauty %%start_time%% the little mermaid |
+| st_send_signal_via_activities_widget | signals_widget | "test"{link: %%ws_one%% [%%page_one%%]} |
+
+| *Comment* | Test Case: Isolated Accounts Dirty Tag myself |  |
+| open_ok | /st/profile |  |
+| wait_for_element_visible_ok | new_tag | 30000 |
+| type_ok | new_tag | %%tag_one%% |
+| click_ok | //input[@value='Add Tag'] |  |
+| text_like | link=%%tag_one%% | %%tag_one%% |
+
+| *Comment* | Test Case: Isolated Accounts Dirty Comment on Pages |  |
+| st-comment-on-page | /%%ws_one%%/?%%page_one%% | comment one |
+| st-comment-on-page | /%%ws_one%%/?%%page_one%% | comment two |
+| st-comment-on-page | /%%ws_one%%/?%%page_one%% | comment three |
+
+| *Comment* | Test Case: Isolated Accounts Dirty Tag a page |  |
+| open_ok | /%%ws_one/?%%page_one%% |  |
+| wait_for_element_visible_ok | st-tagqueue-field | 30000 |
+| type_ok | st-tagqueue-field | Tag 1 %%start_time%% |
+| click_ok | st-tagqueue-addbutton |  |
+| click_ok | st-tagqueue-close |  |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+
+| open_ok | /%%ws_one/?%%page_two%% |  |
+| wait_for_element_visible_ok | st-tagqueue-field | 30000 |
+| type_ok | st-tagqueue-field | Tag 1 %%start_time%% |
+| click_ok | st-tagqueue-addbutton |  |
+| click_ok | st-tagqueue-close |  |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+
+| open_ok | /%%ws_one/?%%page_three%% |  |
+| wait_for_element_visible_ok | st-tagqueue-field | 30000 |
+| type_ok | st-tagqueue-field | Tag 1 %%start_time%% |
+| click_ok | st-tagqueue-addbutton |  |
+| click_ok | st-tagqueue-close |  |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+
+| *Comment* | Test Case: Isolated Accounts Dirty (Complete) |  |
