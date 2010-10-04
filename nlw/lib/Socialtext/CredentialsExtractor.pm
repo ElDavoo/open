@@ -18,18 +18,6 @@ sub _drivers {
     return @drivers;
 }
 
-sub Extractors {
-    my $class = shift;
-
-    return Socialtext::MultiCursor->new(
-        iterables => [ [ $class->_drivers ] ],
-        apply     => sub {
-            my $driver = shift;
-            return $class->_realize( $driver, 'extract_credentials' );
-        }
-    );
-}
-
 sub ExtractCredentials {
     my $class = shift;
 
@@ -49,7 +37,6 @@ credentials from a Request
 
   use Socialtext::CredentialsExtractor;
 
-  my $extractors  = Socialtext::CredentialsExtractor->Extractors;
   my $credentials = Socialtext::CredentialsExtractor->ExtractCredentials(
     $request,
   );
@@ -62,11 +49,6 @@ This class provides a hook point for registering new means of gathering
 credentials from a request object. 
 
 =head1 METHODS
-
-=head2 Socialtext::CredentialsExtractor->Extractors
-
-Returns an iterable object comprising all the registered plugins in order of
-their configuration (found as a setting in C<Socialtext::AppConfig>.
 
 =head2 Socialtext::CredentialsExtractor->ExtractCredentials
 
