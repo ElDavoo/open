@@ -38,7 +38,24 @@
 | json-parse              |                                                                                             |                                                 |
 | json-like               | {"valid":true, "needs_renewal":false, "username":"%%gooduser%%", "user_id":%%gooduser_id%%} |                                                 |
 
-*TODO* Test for *expired* cookie! And also testing for a cookie that needs renewal? 
+| *Comment*                       | Test for expired cookie                    |                                                 |
+| set_expired_nlw_cookie_for_user | %%gooduser%%                               |                                                 |
+| set                             | mycookie                                   | %%_cookie%%                                     |
+| http-user-pass                  |                                            |                                                 |
+| post-json                       | %%userduri%%                               | {"URI":"/data/signals","Cookie":"%%mycookie%%"} |
+| code-is                         | 200                                        |                                                 |
+| json-parse                      |                                            |                                                 |
+| json-like                       | {"valid":false, "reason":"expired cookie"} |                                                 |
+| json-unlike                     | {"user_id":"%%gooduser_id%%"}              |                                                 |
+
+| *Comment*                               | Test for valid cookie needing renewal                                                      |                                                 |
+| set_nlw_cookie_needing_renewal_for_user | %%gooduser%%                                                                               |                                                 |
+| set                                     | mycookie                                                                                   | %%_cookie%%                                     |
+| http-user-pass                          |                                                                                            |                                                 |
+| post-json                               | %%userduri%%                                                                               | {"URI":"/data/signals","Cookie":"%%mycookie%%"} |
+| code-is                                 | 200                                                                                        |                                                 |
+| json-parse                              |                                                                                            |                                                 |
+| json-like                               | {"valid":true, "needs_renewal":true, "username":"%%gooduser%%", "user_id":%%gooduser_id%%} |                                                 |
 
 ## BASIC AUTH 
 | *Comment*             | Test for valid basic auth headers                                                           |                                                          |          |
