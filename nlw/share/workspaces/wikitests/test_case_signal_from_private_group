@@ -13,12 +13,16 @@
 | set | group_desc | group%%start_time%% |
 
 | st-admin | create-account --name %%acct%% | was created |
-| st-admin | create-user --e %%user1%% --p %%password%% | was created |
-| st-admin | create-user --e %%user2%% --p %%password%% | was created |
+| st-admin | create-user --e %%user1%% --p %%password%% --account %%acct%% | was created |
+| st-admin | create-user --e %%user2%% --p %%password%% --account %%acct%% | was created |
 
-| *Comment* | Test Case: Signal From Private Group. %%user1_short%% creates a private group |  |
-| st-logoutin | %%user1%% | %%password%% |
+| *Comment* | Test Case: Signal From Private Group. logout explicitly to avoid spurious Basic Authentication pop-up |  |
+| pause | 5000 |  |
+| open_ok | /nlw/submit/logout |  |
+| pause | 5000 |  |
+| st-login | %%user1%% | %%password%% |
 
+| *Comment* | Test Case: Signal From Private Group. %%user1_short%% creates a private group |  |  |
 | st_create_group | %%group_name%% | %%group_desc%% | private-radio |
 
 | wait_for_element_visible_ok | create-group | 30000 |

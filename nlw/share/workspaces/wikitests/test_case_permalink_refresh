@@ -22,22 +22,16 @@
 | post-json | /data/signals | {"signal":"%%pr1%%", "in_reply_to":{"signal_id":%%parent%%},"group_ids":[%%ps_id%%]} |
 | post-json | /data/signals | {"signal":"%%pr2%%", "in_reply_to":{"signal_id":%%parent%%},"group_ids":[%%ps_id%%]} |
 
-| *Comment* | Test Case: Permalink Refresh. verify group received |  |
-| open_ok | /st/signals |  |
-| wait_for_element_present_ok | //a[contains(text(),'%%p_prgroup%%')] | 10000 |
-| click_ok | //a[contains(text(),'%%p_prgroup%%')] |  |
-| refresh |  |  |
-
-| wait_for_text_present_ok | %%ps1%% | 10000 |
-| wait_for_text_present_ok | %%pr1%% | 10000 |
-| wait_for_text_present_ok | %%pr2%% | 10000 |
-
 | *Comment* | Test Case: Permalink Refresh. Open the group permalinks page and verify received |  |
 | open_ok | /st/signals/%%parent%% |  |
 
 | wait_for_text_present_ok | %%ps1%% | 10000 |
 | wait_for_text_present_ok | %%pr1%% | 10000 |
 | wait_for_text_present_ok | %%pr2%% | 10000 |
+
+| *Comment* | Test Case: Permalink Refresh. Verify auto updates |  |
+| wait_for_text_present_ok | less than a minute ago | 10000 |
+| wait_for_text_present_ok | one minute ago | 120000 |
 
 | *Comment* | Test Case: Permalink Refresh. Send new group reply and wait for it |  |
 | post-json | /data/signals | {"signal":"%%pr3%%", "in_reply_to":{"signal_id":%%parent%%},"group_ids":[%%ps_id%%]} |
@@ -52,12 +46,16 @@
 | click_ok | //body |  |
 | type_ok | //body | %%pr4%% |
 | select_frame | relative=parent |  |
-| wait_for_element_visible_ok | //a[@class='btn post'] | 5000 |
+| wait_for_element_visible_ok | //a[@class='btn post postReply'] | 5000 |
 | pause | 3000 |  |
-| click_ok | //a[@class='btn post'] |  |
+| click_ok | //a[@class='btn post postReply'] |  |
 
 | *Comment* | Test Case: Permalink Refresh. Wait for the new group reply |  |
 | wait_for_text_present_ok | %%pr4%% | 20000 |
+
+| *Comment* | Test Case: Permalink Refresh. Verify reply auto updates |  |
+| wait_for_text_present_ok | less than a minute ago | 10000 |
+| wait_for_text_present_ok | one minute ago | 120000 |
 
 | *Comment* | Test Case: Permalink Refresh. Now do it for the primary account |  |
 
@@ -73,18 +71,8 @@
 | send-signal-reply | %%parent%% | %%r1%% |
 | send-signal-reply | %%parent%% | %%r2%% |
 
-| *Comment* | Test Case: Permalink Refresh. verify received |  |
-| open_ok | /st/signals |  |
-| wait_for_element_present_ok | //a[contains(text(),'%%hostname%%')] | 10000 |
-| click_ok | //a[contains(text(),'%%hostname%%')] |  |
-| refresh |  |  |
-
-| wait_for_text_present_ok | %%s1%% | 10000 |
-| wait_for_text_present_ok | %%r1%% | 10000 |
-| wait_for_text_present_ok | %%r2%% | 10000 |
-
 | *Comment* | Test Case: Permalink Refresh. Open the permalinks page and verify received |  |
-| open_ok | /st/signals/%%parent%% |
+| open_ok | /st/signals/%%parent%% |  |
 
 | wait_for_text_present_ok | %%s1%% | 10000 |
 | wait_for_text_present_ok | %%r1%% | 10000 |
@@ -103,9 +91,9 @@
 | click_ok | //body |  |
 | type_ok | //body | %%r4%% |
 | select_frame | relative=parent |  |
-| wait_for_element_visible_ok | //a[@class='btn post'] | 5000 |
+| wait_for_element_visible_ok | //a[@class='btn post postReply'] | 5000 |
 | pause | 3000 |  |
-| click_ok | //a[@class='btn post'] |  |
+| click_ok | //a[@class='btn post postReply'] |  |
 
 | *Comment* | Test Case: Permalink Refresh. Wait for the new reply |  |
 | wait_for_text_present_ok | %%r4%% | 30000 |

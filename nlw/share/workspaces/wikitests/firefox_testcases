@@ -17,6 +17,11 @@ Socialcalc enabled is required because we run Calc Testcases
 * [Test Case: Signals Search]
 * [Test Case: Signals Search Pagination]
 * [Test Case: Signals Activities Interaction]
+* [Test Case: Permalink Refresh]
+
+Test Case: Replies is Firefox-specific because we load IE without wikiwyg while using Se
+
+* [Test Case: Replies]
 
 * [Calc Testcases]
 * [File Testcases]

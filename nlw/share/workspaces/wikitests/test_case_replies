@@ -1,0 +1,17 @@
+| *Comment* | Test Case: Replies. Start |  |
+
+* Fixture: SocialWidgets
+
+| set | reply_prefix | Reply at %%start_time%% |
+| set | topic_signal | Topic for %%reply_prefix%% |
+
+| open_ok | /nlw/submit/logout |  |
+| include | [Test Case: Replies Seeder] |  |
+
+| open_ok | /nlw/submit/logout |  |
+| include | [Test Case: Replies Includer] |  |
+
+| open_ok | /nlw/submit/logout |  |
+| include | [Test Case: Replies Checker] |  |
+
+| *Comment* | Test Case: Replies COMPLETED |  |
