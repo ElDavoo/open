@@ -198,7 +198,7 @@ sub _searched_pages {
     eval { 
         my $index = $self->rest->query->param('index');
         my $count = $self->rest->query->param('count') || 100;
-        my ($hits, $count) = search_on_behalf(
+        my ($hits, $hits_count) = search_on_behalf(
                 $self->hub->current_workspace->name,
                 $search_query,
                 ($self->rest->query->param('scope') || '_'),
