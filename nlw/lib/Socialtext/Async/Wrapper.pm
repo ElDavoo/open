@@ -113,6 +113,10 @@ our $VMEM_LIMIT = 512 * 2**20; # MiB
 #         warn "$$ ... AFTER KILLING COROS:\n";
 #         Coro::Debug::command('ps w');
 
+        # AnyEvent::Worker ignores SIGINT, un-ignore it so st-daemon-monitor
+        # can kill us.
+        $SIG{INT} = 'DEFAULT';
+
         # make it reconnect
         Socialtext::SQL::disconnect_dbh();
 

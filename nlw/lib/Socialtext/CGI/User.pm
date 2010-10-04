@@ -3,6 +3,7 @@ package Socialtext::CGI::User;
 
 use strict;
 use warnings;
+use Socialtext::User;
 use Socialtext::HTTP::Cookie;
 
 use base 'Exporter';

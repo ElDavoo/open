@@ -29,16 +29,16 @@
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. values for ".. within <group>" filter shows account and group |  |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 5000 |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[contains(text(),'%%group_acct%%')] | 5000 |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[contains(text(),'%%group_name%%')] | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 5000 |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. "Post to" list shows account and group |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[1]/a[contains(text(),'%%group_acct%%')] | 5000 |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[2]/a[contains(text(),'%%group_name%%')] | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[1]/a | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[2]/a | 5000 |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Choose within %%group_acct%% |  |
 | *Comment* | Test Case: Groups UI Send Signal to Group. Post to should automagically become %%group_acct%% |  |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[contains(text(),'%%group_acct%%')] | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 20000 |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Send and check %%account_signal%% |  |
 | st_send_signal_via_activities_widget | signals_widget | %%account_signal%% |
@@ -48,7 +48,7 @@
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Choose within %%group_name%% |  |
 | *Comment* | Test Case: Groups UI Send Signal to Group. Post to should automagically become %%group_name%% |  |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[contains(text(),'%%group_name%%')] |  |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a |  |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Send and check %%group_signal%% |  |
 
@@ -65,8 +65,8 @@
 | st-name-widget | 1 | signals_widget |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Select within %%group_name%% |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[contains(text(),'%%group_name%%')] | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[contains(text(),'%%group_name%%')] |  |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a |  |
 
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Welcome, New User | 30000 |
@@ -101,8 +101,8 @@
 | st_verify_text_in_activities_widget | signals_widget | %%account_signal%% |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Select within %%group_acct%% |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[contains(text(),'%%group_acct%%')] | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[contains(text(),'%%group_acct%%')] |  |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a |  |
 
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Welcome, New User | 30000 |

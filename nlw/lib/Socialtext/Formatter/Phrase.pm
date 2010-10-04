@@ -213,7 +213,8 @@ sub _freelink_url {
         url_prefix => $self->url_prefix,
         workspace => $self->current_workspace_name, # for page inclusion
     );
-    my $page_attr = qq{ wiki_page="$page" };
+    my $escaped_page = $self->html_escape($page);
+    my $page_attr = qq{ wiki_page="$escaped_page" };
     
     return qq{<a href="$link"$page_attr $page_disposition>$label</a>};
 }

@@ -30,7 +30,7 @@ Carp: 0
 Class::Accessor: 0.34
 Class::Field: 0.12
 Class::Singleton: 1.03
-Crypt::OpenToken: 0
+Crypt::OpenToken: 0.02
 Crypt::Rijndael: 1.09
 Cwd: 3.07
 Data::Dumper: 2.121

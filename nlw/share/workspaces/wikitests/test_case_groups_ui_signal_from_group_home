@@ -30,8 +30,8 @@
 | text_like | st-editing-tools-edit | Signals |
 
 | *Comment* | Test Case: Groups UI Signal from group home. Select within %%group_name%% |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[contains(text(),'%%group_name%%')] | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[contains(text(),'%%group_name%%')] |  |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a |  |
 
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Welcome, New User | 30000 |

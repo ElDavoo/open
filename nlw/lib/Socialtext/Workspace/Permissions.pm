@@ -237,6 +237,18 @@ EOSQL
         return 'custom';
     }
 
+    my %display_names = (
+        'member-only' => 'Private',
+        'self-join'   => 'Self-Join',
+        'custom'      => 'Custom',
+    );
+    sub current_set_display_name {
+        my $self = shift;
+
+        my $display_name = $display_names{$self->current_set_name};
+        return $display_name || 'Public';
+    }
+
     sub _perm_set_as_string {
         my $set = shift;
 

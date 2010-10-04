@@ -1,13 +1,32 @@
 [% loc('Hello,') %]
-
+[% IF target_workspace %]
 [% SET escaped_str = title | html %]
 [% loc('You have confirmed your email address and can now log on to the [_1] workspace.', escaped_str) %]
 
 [% loc('To do so, go to this web address:') %] [% uri | html %]
 
+[% ELSE %]
+[% SET escaped_str = app_name | html -%]
+[% loc('You have confirmed your email address and can now log on to the [_1] application.', escaped_str) %]
+
+[% IF groups.size -%]
+[% loc('You are a member of the following groups:') %]
+[% FOREACH group IN groups -%]
+* [% group.name %] : [% group.uri | html %]
+[% END -%]
+[%- ELSIF workspaces.size -%]
+[% loc('You are a member of the following workspaces:') %]
+[% FOREACH workspace IN workspaces -%]
+* [% workspace.title %] : [% workspace.uri | html %]
+[% END -%]
+[%- ELSE -%]
+[% loc('To do so, go to this web address:') %] [% uri | html %]
+[% END %]
+[% END %]
 [% loc('Log in with your email address:') %] [% user.email_address %]
 
 [% loc('You may want to keep this email for future reference.') %]
+
 [% loc('If you have questions, please contact support at [_1].', appconfig.support_address) %]
 
 [% PROCESS 'email/standard-footer.txt'

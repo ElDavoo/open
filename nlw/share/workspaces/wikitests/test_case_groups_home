@@ -16,7 +16,7 @@
 
 | st-admin | enable-plugin --account %%hostname%% --plugin groups |  |
 | st-admin | enable-plugin --account %%hostname%% --plugin signals |  |
-| st-admin | create-workspace --empty --title %%wsname%% --name %%wsname%% | was created |
+| st-admin | create-workspace --title %%wsname%% --name %%wsname%% | was created |
 | st-admin | create-workspace --empty --title %%wsname2%% --name %%wsname2%% | was created |
 | st-admin | add-member --workspace %%wsname%% --group %%group_id%% | now has the role of 'member' |
 | st-admin | add-member --workspace %%wsname2%% --group %%group_id%% | now has the role of 'member' |
@@ -27,12 +27,7 @@
 | st-logoutin | %%permuser%% | %%password%% |
 
 | *Comment* | Test Case: Groups Home. Make A New Page. On galena, this often raises a basic auth popup as if the login had not worked. Try to open the ws and see if you are there. |  |
-| open_ok | /%%wsname%% |  |
-| location_like | /%%wsname%%/index.cgi |  |
-| wait_for_element_visible_ok | st-create-content-cancellink | 30000 |
-| click_ok | st-create-content-cancellink |  |
-| pause | 3000 |  |
-| open_ok | /%%wsname%%/index.cgi?action=new_page |  |
+| open_ok | /%%wsname%%/?action=new_page |  |
 | wait_for_element_present_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |

@@ -210,6 +210,15 @@ sub update_store {
     st_log()->info($msg);
 }
 
+sub display_permission_set {
+    my $self = shift;
+
+    my @parts = map { ucfirst $_ }
+        split('-', $self->permission_set);
+
+    return join('-', @parts);
+}
+
 # Delete the Group Homunculus from the system.
 sub delete {
     my $self = shift;

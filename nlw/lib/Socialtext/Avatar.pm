@@ -1,15 +1,15 @@
 package Socialtext::Avatar;
 # @COPYRIGHT@
-
 use Moose::Role;
-
 use DBD::Pg qw/:pg_types/;
 use File::Temp qw(tempfile);
+use File::Path qw/remove_tree/;
 use Socialtext::Image;
 use Socialtext::File;
 use Socialtext::Skin;
 use Socialtext::SQL qw(:txn :exec get_dbh);
 use Socialtext::SQL::Builder qw(sql_insert sql_update);
+use namespace::clean -except => 'meta';
 
 sub DefaultPhoto {
     my $class = shift;
@@ -27,15 +27,9 @@ sub DefaultPhoto {
 
 requires qw(cache table versions id_column id Resize default_skin);
 
-has 'cache_dir' => (
-    is => 'ro', isa => 'Str',
-    lazy_build => 1,
-);
-
-sub _build_cache_dir {
-    my $self = shift;
-    my $table = $self->table;
-    my $cache_dir = Socialtext::Paths::cache_directory($self->cache);
+sub cache_dir {
+    my $class = shift;
+    my $cache_dir = Socialtext::Paths::cache_directory($class->cache);
     Socialtext::File::ensure_directory($cache_dir);
     return $cache_dir;
 }
@@ -191,6 +185,20 @@ sub load {
     my $blob_ref = $blob ? \$blob : $self->DefaultPhoto($version);
     $self->_save_cache($version => $blob_ref);
     return $blob_ref;
+}
+
+sub ClearCache {
+    my $class = shift;
+    my $cache_dir = $class->cache_dir
+        or die "can't get cache_dir; is it a class-method?";
+
+    my $lock_fh = Socialtext::File::write_lock("$cache_dir/.lock");
+    my $temp_dir = $cache_dir . ".tmp" . $$;
+    rename $cache_dir => $temp_dir;
+    undef $lock_fh;
+
+    Socialtext::File::ensure_directory($cache_dir);
+    remove_tree($temp_dir);
 }
 
 no Moose::Role;

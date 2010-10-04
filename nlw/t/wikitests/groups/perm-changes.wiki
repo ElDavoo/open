@@ -84,6 +84,22 @@ These next two tests are here just in case the fixture or defaults change so the
 | json-parse |
 | json-like | {"permission_set":"self-join"} |
 
+* Group G2 (reverse)
+Then, change it *back* to "member-only/private" so we can watch it work in the other direction
+
+| *Comment* | Change perms on group to private |
+| put-json| /data/groups/%%group2_id%% | {"name":"%%group2%%", "permission_set":"private"} |
+| code-is | 202 |
+
+| *Comment* | Check group perm is changed |
+| get-json | /data/groups/%%group2_id%% |
+| json-parse |
+| json-like | {"permission_set":"private"} |
+
+| *Comment* | Check secondary workspace permission changed to member-only |
+| get-json | /data/workspaces/%%wkspc21%% |
+| json-parse |
+| json-like | {"permission_set":"member-only"} |
 
 * Group G3
 ** is Member of two workspaces, other members in one of those, user is admin of all -> 403

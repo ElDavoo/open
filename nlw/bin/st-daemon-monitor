@@ -26,6 +26,7 @@ our $tcp_port = 0;
 our $check_http = 0;
 our $daemontools = 0;
 our $solr = '';
+our $procname = '';
 our $config_prefix;
 
 GetOptions(
@@ -42,6 +43,7 @@ GetOptions(
     'http!'  => \$check_http,
     'config=s' => \$config_prefix,
     'solr=s' => \$solr,
+    'procname=s' => \$procname,
 )
 or pod2usage(-exitstatus => 1, -message => $?);
 pod2usage(1) if $help;
@@ -74,7 +76,7 @@ elsif ($config_prefix) {
     no strict "refs";
     for my $key (qw(
         pidfile init_cmd signal max_rss max_vsz max_fds tcp_port
-        check_http daemontools
+        check_http daemontools procname
     )) {
         my $val = $conf->value("monitor_${config_prefix}_$key");
         next unless defined $val;
@@ -138,8 +140,15 @@ sub recover {
     st_log()->error("st-daemon-monitor [$config_name]: PID=".($pid ? $pid : '?')." $msg");
     if ($signal && $pid) {
         st_log()->info("st-daemon-monitor [$config_name]: sending $signal to $pid");
-        kill $signal, $pid;
+        kill $signal, -$pid, $pid;
     }
+    elsif (!$pid && $daemontools) {
+        st_log()->info("st-daemon-monitor [$config_name]: daemontools process has gone, trying to restart with svc/killall/svc combo");
+        system("/usr/bin/svc -d /var/lib/svscan/${config_prefix}");
+        system("killall -9 $procname") if $procname;
+        system("/usr/bin/svc -u /var/lib/svscan/${config_prefix}");
+    }
+
     # 1 == ran init ok, 2 == init bad?
     if ($init_cmd) {
         st_log()->info("st-daemon-monitor [$config_name]: running $init_cmd");

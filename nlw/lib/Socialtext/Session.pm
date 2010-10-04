@@ -9,6 +9,7 @@ our $VERSION = '0.01';
 use Apache::Session::Wrapper 0.28;
 use Data::Dumper ();
 use Socialtext::SQL qw/get_dbh/;
+use Socialtext::AppConfig;
 
 Apache::Session::Wrapper->RegisterFlexClass(
     type => 'store',
@@ -26,6 +27,14 @@ sub _session {
     return $_[0]->_wrapper->session;
 }
 
+sub _ssl_only {
+    my $self = shift;
+    unless (defined $self->{ssl_only}) {
+        $self->{ssl_only} = Socialtext::AppConfig->ssl_only ? 1 : 0;
+    }
+    return $self->{ssl_only};
+}
+
 sub _wrapper {
     return $_[0]->{wrapper} if $_[0]->{wrapper};
 
@@ -33,6 +42,7 @@ sub _wrapper {
         Apache::Session::Wrapper->new(
             use_cookie  => 1,
             cookie_name => 'NLW-session',
+            cookie_secure => $_[0]->_ssl_only(),
             class       => 'Flex',
             store       => 'Postgres::Socialtext',
             lock        => 'Null',
