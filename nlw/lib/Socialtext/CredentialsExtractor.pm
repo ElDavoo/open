@@ -37,7 +37,7 @@ credentials from a Request
 
   use Socialtext::CredentialsExtractor;
 
-  my $credentials = Socialtext::CredentialsExtractor->ExtractCredentials(
+  my $username_or_id = Socialtext::CredentialsExtractor->ExtractCredentials(
     $request,
   );
 
