@@ -110,6 +110,8 @@ sub _search {
               . join(' OR ', map { "w:$_" }
                 map { Socialtext::Workspace->new(name => $_)->workspace_id }
                     @$workspaces) . ")";
+        # Adjust the field boosts for this query
+        $field_boosts = '';
     }
     elsif ($opts{doctype}) {
         if ($opts{doctype} eq 'signal') {
