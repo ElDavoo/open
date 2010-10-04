@@ -49,15 +49,10 @@ credentials from a Request
 
   use Socialtext::CredentialsExtractor;
 
-  my $extractors = Socialtext::CredentialsExtractor->Extractors;
-  my $credentials;
-
-  while ( my $extractor = $extractors->next ) {
-
-    $credentials = $extractor->extract_credentials( $request );
-
-    ...
-  }
+  my $extractors  = Socialtext::CredentialsExtractor->Extractors;
+  my $credentials = Socialtext::CredentialsExtractor->ExtractCredentials(
+    $request,
+  );
 
   die "No creds, can't do anything" if !$credentials;
 
