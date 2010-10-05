@@ -96,7 +96,7 @@ proto.refreshAttachments = function (cb) {
                 // Extract Archives
                 $('.extract_attachment', $item).unbind('click')
                     .click(function() {
-                        self.extractAttachment(attachment.id);
+                        self.extractAttachment($(this).attr('name'));
                         return false;
                     });
 
