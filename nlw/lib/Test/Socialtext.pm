@@ -241,6 +241,7 @@ sub formatted_unlike() {
 sub ceqlotron_run_synchronously() {
     my $funcname = shift;
     my $workspace_name_or_id = shift || '';
+    my $quiet = shift || 0;
     my $workspace;
 
     if ($workspace_name_or_id and $workspace_name_or_id =~ /^\d+$/) {
@@ -260,9 +261,29 @@ sub ceqlotron_run_synchronously() {
     require Socialtext::Jobs;
     Socialtext::Jobs->can_do_all();
 
+    if ($quiet) {
+        my $message = '';
+        if ($workspace_name_or_id) {
+            if ($funcname) {
+                $message = "Waiting for $funcname jobs in $workspace_name_or_id worskapce to clear\n";
+            }
+            else {
+                $message = "Waiting for jobs in $workspace_name_or_id workspace to clear\n";
+            }
+        }
+        else {
+            if ($funcname) {
+                $message = "Waiting for $funcname jobs to clear\n";
+            }
+            else {
+                $message = "Waiting for all jobs to clear\n";
+            }
+        }
+        diag $message;
+    }
     my @jobid;
     while (my $job = Socialtext::Jobs->find_job_for_workers()) {
-        diag "Running ceq job " . Socialtext::Jobs->job_to_string($job) . "\n";
+        diag "Running ceq job " . Socialtext::Jobs->job_to_string($job) . "\n" unless $quiet;
         if ($funcname and ($job->funcname || '') !~ /$funcname$/i) {
             next;
         }

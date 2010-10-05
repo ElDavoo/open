@@ -367,6 +367,17 @@ sub st_open_noeval {
     $self->handle_command('pause',20000);
 }
 
+sub _get_random_page_content {
+    my $self = shift;
+    my $filename =  "t/share/pagecontent.txt";
+    local *INF;
+    open(INF, '<', $filename);
+    local $/;
+    my $lines = <INF>;
+    close(INF);
+    return split/\n/, $lines;
+}
+
 =head2 st_create_pages($workspace, $numberpages)
 
 Creates $numpages number of pages in $workspace
@@ -378,11 +389,14 @@ sub st_create_pages {
 
     my $user = Socialtext::User->new(username => $self->{'username'});
     my $hub = new_hub($workspace);
+    my @lines = $self->_get_random_page_content;
     for (my $idx=0; $idx<$numberpages;$idx++) {
         my $title = "test page " . $idx;
+        my $content = shift @lines;
+        push @lines, $content;
         Socialtext::Page->new(hub => $hub)->create(
                                   title => $title,
-                                  content => 'This is a sample page',
+                                  content => $content,
                                   creator => $user);
     }
     ok 1, "Created $numberpages of pages in $workspace";
@@ -2339,11 +2353,14 @@ Takes an optional WORKSPACE_ID or NAME as the second parameter. If present, only
 
 sub st_process_jobs {
     my $self = shift;
+    my $job = shift || '';
+    my $workspace = shift || '';
+    my $quiet = shift || 0;
     # sleep a bit, to avoid race conditions w/jobs that don't have sub-second
     # timings (e.g. the "email-notify" wikiD test.
     CORE::sleep(1);
 
-    Test::Socialtext::ceqlotron_run_synchronously(@_);
+    Test::Socialtext::ceqlotron_run_synchronously($job, $workspace, $quiet);
     CORE::sleep(1);
 }
 
