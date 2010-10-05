@@ -7,20 +7,38 @@ use Socialtext::AppConfig;
 use base qw( Socialtext::MultiPlugin );
 
 sub base_package {
-    return __PACKAGE__;
+    return 'Socialtext::CredentialsExtractor::Extractor';
 }
+
+our %driver_aliases = (
+    Apache => 'RemoteUser',     # should've had this name in the first place
+);
 
 sub _drivers {
     my $class = shift;
     my $drivers = Socialtext::AppConfig->credentials_extractors();
-    my @drivers = split /:/, $drivers;
+    my @drivers =
+        map { $driver_aliases{$_} || $_ }
+        split /:/, $drivers;
     return @drivers;
 }
 
 sub ExtractCredentials {
-    my $class = shift;
+    my $class   = shift;
+    my $request = shift;
 
-    return $class->_first('extract_credentials', @_);
+    my %headers_in = $request->headers_in;
+    my %hdrs = (
+        (map { _key($_) => $headers_in{$_} } keys %headers_in)
+    );
+
+    return $class->_first('extract_credentials', \%hdrs);
+}
+
+sub _key {
+    my $key = shift;
+    $key =~ tr/-/_/;
+    return uc($key);
 }
 
 1;
