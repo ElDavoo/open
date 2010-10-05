@@ -29,6 +29,7 @@ sub ExtractCredentials {
 
     my %headers_in = $request->headers_in;
     my %hdrs = (
+        (map { _key($_) => $ENV{$_} } keys %ENV),
         (map { _key($_) => $headers_in{$_} } keys %headers_in)
     );
 
