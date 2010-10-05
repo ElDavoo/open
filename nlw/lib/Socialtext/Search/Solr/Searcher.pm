@@ -108,6 +108,7 @@ sub _search {
         # Pages and attachments in my workspaces.
         push @filter_query, "(doctype:attachment OR doctype:page) AND ("
               . join(' OR ', map { "w:$_" }
+                sort { $a <=> $b }
                 map { Socialtext::Workspace->new(name => $_)->workspace_id }
                     @$workspaces) . ")";
         # Adjust the field boosts for this query
@@ -181,7 +182,7 @@ sub _search {
             raw_query  => $raw_query_string,
             hits       => $num_hits,
             solr_query => {
-                map { $_ => $query_hash->{$_} } qw/sort qt q fq start/
+                map { $_ => $query_hash->{$_} } qw/sort qt q fq qf start/
             },
         });
 
