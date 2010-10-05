@@ -16,30 +16,29 @@
 | set | page_one | page one %%start_time%% |  |  |
 | set | page_two | page two %%start_time%% |  |  |
 | set | page_three | page three %%start_time%% |  |  |
-| st-setup-a-group | 1 | 1 | 1 | grptwo |
+| st-setup-a-group | 1 | 0 | 0 | grptwo |
 
 | *Comment* | Test Case: Isolated Accounts Login as %%user_one%%, dirty account |  |
 | st-logoutin | %%user_one%% | %%password%% |
 | include | [Test Cases Isolated Accounts: Dirty] |  |
 
-| *Comment* | Test case: Isolated Accounts Login as %%user_two%%, verify clean |  |
+| *Comment* | Test case: Isolated Accounts Login as %%group_user%%, verify clean |  |
 | st-logoutin | %%group_user%% | %%password%% |
 | open_ok | /st/dashboard/ |  |
 | wait_for_text_present_ok | There are no events to display because no events have been created. | 30000 |
 
-| *Comment* | Test Case: Isolated Accounts AddRemove %%user_two%% from %%group_id%%, %%group_ws%%, %%group_acct%% |  |
-| st-admin | add-member --e %%user_two%% --g %%group_id%% |  |
-| st-admin | add-member --e %%user_two%% --w %%group_ws%% |  |
-| st-admin | add-member --e %%user_two%% --account %%group_account%% |  |
-| st-logoutin | %%user_one%% | %%password%% |
+| *Comment* | Test Case: Isolated Accounts AddRemove %%group_user%% from %%group_id%%, %%group_ws%%, %%group_acct%% |  |
+| st-admin | add-member --e %%group_user%% --g %%grp_id%% |  |
+| st-admin | add-member --e %%group_user%% --w %%ws_one%% |  |
+| st-admin | add-member --e %%group_user%% --account %%acct_one%% |  |
 | open_ok | /%%group_ws%% / |  |
 | open_ok | /st/dashboard |  |
 | text_unlike | //body | There are no events to display because no events have been created. |
-| st-admin | remove-member --e %%user_two%% --g %%group_id%% |  |
-| st-admin | remove-member --e %%user_two%% --w %%group_ws%% |  |
-| st-admin | remove-member --e %%user_two%% --account %%group_account%% |  |
+| st-admin | remove-member --e %%group_user%% --g %%grp_id%% |  |
+| st-admin | remove-member --e %%group_user%% --w %%ws_one%% |  |
+| st-admin | remove-member --e %%group_user%% --account %%acct_one%% |  |
 
-| *Comment* | Test case: Isolated Accounts Login as %%user_two%%, verify clean |  |
+| *Comment* | Test case: Isolated Accounts Login as %%group_user%%, verify clean |  |
 | open_ok | /st/dashboard/ |  |
 | wait_for_text_present_ok | There are no events to display because no events have been created. | 30000 |
 
@@ -48,7 +47,6 @@
 
 | *Comment* | Test Case: Isolated Accounts TEARDOWN |  |
 | st-admin | delete-workspace --w %%ws_one%% --no-export | has been deleted |
-| st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
 | delete-group | %%grp_id%% |  |
 | delete-group | %%group_id%% |  |
 
