@@ -40,18 +40,15 @@ sub _login_cookie {
 }
 
 sub current_user {
-    my $r = shift;
-    my $name_or_id = _user_id_or_username( $r ) or return;
+    my $r        = shift;
+    my $user_id  = Socialtext::CredentialsExtractor->ExtractCredentials($r);
+    my $guest_id = Socialtext::User->Guest->user_id;
 
-    my $user = Socialtext::User->Resolve($name_or_id);
+    return if $user_id == $guest_id;
+
+    my $user = Socialtext::User->new(user_id => $user_id);
     $r->connection->user($user->username) unless $r->connection->user();
     return $user;
-}
-
-sub _user_id_or_username {
-    my $request = shift;
-
-    return Socialtext::CredentialsExtractor->ExtractCredentials($request);
 }
 
 sub _set_cookie {

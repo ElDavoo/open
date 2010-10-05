@@ -18,6 +18,7 @@ use Socialtext::RequestContext;
 use Socialtext::WebApp;
 use Socialtext::TT2::Renderer;
 use Socialtext::User;
+use Socialtext::User::Default::Users qw($GuestUsername);
 use Socialtext::Challenger;
 use Socialtext::l10n qw/loc_lang/;
 
@@ -48,17 +49,15 @@ sub handler ($$) {
 sub authenticate {
     my $class   = shift;
     my $request = shift;
-    my $credential
-        = Socialtext::CredentialsExtractor->ExtractCredentials($request);
-    if ($credential) {
-        my $user = Socialtext::User->new( user_id  => $credential )
-            || Socialtext::User->new( username => $credential );
-        return undef unless $user;
-        return undef if $user->is_deleted();
-        $request->connection->user($user->username);
-        return $user;
-    }
-    return undef;
+    my $user_id = Socialtext::CredentialsExtractor->ExtractCredentials($request);
+
+    my $user = Socialtext::User->new(user_id => $user_id);
+    return undef unless $user;
+    return undef if $user->is_deleted;
+    return undef if $user->username eq $GuestUsername;
+
+    $request->connection->user($user->username);
+    return $user;
 }
 
 sub guest {
