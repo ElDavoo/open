@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use Socialtext::AppConfig;
-use Socialtext::MultiCursor;
 use base qw( Socialtext::MultiPlugin );
 
 sub base_package {
