@@ -2774,9 +2774,9 @@ proto.insert_widget = function(widget, widget_element, cb) {
 
 proto.getWidgetImageText = function(widget_text, widget) {
     var text = widget_text;
-    // XXX Hack for html block. Should key off of 'uneditable' flag.
-    if (widget.id == 'html') {
-        text = widget_data.html.title;
+    var config = widget_data[ widget.id ];
+    if (config && config.use_title_as_text) {
+        text = config.title;
     }
     else if (widget_text.match(/^"([^"]+)"{/)) {
         text = RegExp.$1;
