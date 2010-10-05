@@ -8,7 +8,11 @@ use Socialtext::CredentialsExtractor;
 use Socialtext::AppConfig;
 use Test::Socialtext tests => 5;
 
-fixtures(qw( base_config ));
+###############################################################################
+# Fixtures: empty
+#
+# Need to have the test User around.
+fixtures(qw( empty ));
 
 ###############################################################################
 ## TEST DATA

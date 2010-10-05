@@ -10,11 +10,10 @@ use Test::Socialtext tests => 2;
 use Test::Socialtext::User;
 
 ###############################################################################
-# Fixtures: base_config
+# Fixtures: empty
 #
-# Need to have the config files present/available, but don't need anything
-# else.
-fixtures(qw( base_config ));
+# Need to have the test User around.
+fixtures(qw( empty ));
 
 ###############################################################################
 ### TEST DATA
