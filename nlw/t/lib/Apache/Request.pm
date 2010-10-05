@@ -17,7 +17,7 @@ sub new {
 }
 
 sub method           { }
-sub headers_in       {shift}
+sub headers_in       { %{$_[0]} }
 sub err_headers_out  {shift}
 sub unset            { }
 sub add              { $HEADERS{$_[1]} = $_[2] }
