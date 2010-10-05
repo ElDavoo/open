@@ -1,4 +1,5 @@
 package Socialtext::CredentialsExtractor::Extractor::BasicAuth;
+# @COPYRIGHT@
 
 use Moose;
 use MIME::Base64 qw(decode_base64);

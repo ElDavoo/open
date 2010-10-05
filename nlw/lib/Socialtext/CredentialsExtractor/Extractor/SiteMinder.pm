@@ -1,4 +1,5 @@
 package Socialtext::CredentialsExtractor::Extractor::SiteMinder;
+# @COPYRIGHT@
 
 use Moose;
 with 'Socialtext::CredentialsExtractor::Extractor';
