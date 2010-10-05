@@ -51,11 +51,6 @@ sub current_user {
 sub _user_id_or_username {
     my $request = shift;
 
-    if ( $ENV{SET_GENERIC_USER} ) {
-        $request->connection->user($ENV{SET_GENERIC_USER});
-        return $ENV{SET_GENERIC_USER};
-    }
-
     return Socialtext::CredentialsExtractor->ExtractCredentials($request);
 }
 
