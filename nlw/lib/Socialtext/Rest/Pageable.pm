@@ -53,7 +53,7 @@ sub get_resource {
     my ($self, $rest, $content_type) = @_;
 
     Socialtext::Timer->Continue('_get_entities');
-    my $results = $self->_get_entities($rest);
+    my $results = $self->_get_entities($rest, $content_type);
     Socialtext::Timer->Pause('_get_entities');
 
     Socialtext::Timer->Continue('_entity_hash_map');
@@ -82,7 +82,7 @@ sub get_resource {
     else {
         return $results;
     }
-};
+}
 
 sub _entity_hash {
     my ($self, $item) = @_;

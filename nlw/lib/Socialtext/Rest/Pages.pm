@@ -1,10 +1,7 @@
 package Socialtext::Rest::Pages;
 # @COPYRIGHT@
-
-use warnings;
-use strict;
-
-use base 'Socialtext::Rest::Collection';
+use Moose;
+extends 'Socialtext::Rest::Collection';
 use Socialtext;
 use Socialtext::Workspace;
 use Socialtext::HTTP ':codes';
@@ -17,21 +14,37 @@ use Socialtext::JSON;
 use Socialtext::l10n qw/loc/;
 use Try::Tiny;
 
+with 'Socialtext::Rest::Pageable';
 $JSON::UTF8 = 1;
 
-# We provide our own get_resource, so we can do crazy optimizations here
-# for certain conditions, but otherwise use ST::Rest::Collection's handler
-sub get_resource {
+has 'total_result_count' => ( is => 'rw', isa => 'Int', default => 0 );
+
+# /data/workspaces/:wksp_id/pages supported limit and offset so
+# including those should not trigger a pageable result
+sub _build_pageable {
+    my $self = shift;
+
+    return 0 if (defined $self->rest->query->param('minimal_pages'));
+    if (defined($self->rest->query->param('startIndex')) ||
+        defined($self->rest->query->param('count'))) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+sub _get_entities {
     my $self = shift;
     my $rest = shift;
     my $content_type = shift || '';
     $self->{_content_type} = $content_type;
 
     # If we're filtering, get that from the DB directly
-    my $minimal = $self->rest->query->param('minimal_pages');
     my $filter  = $self->rest->query->param('filter');
     my $count   = $self->rest->query->param('count') || 100;
     my $type    = $self->rest->query->param('type');
+    my $minimal = $self->rest->query->param('minimal_pages');
 
     # This is a performance path for page lookahead, which must be very fast
     if ($minimal) {
@@ -50,6 +63,7 @@ sub get_resource {
     }
 
     my $search_query = $self->rest->query->param('q');
+
     if (defined $search_query and length $search_query) {
         my $rv;
         try { $rv = $self->SUPER::get_resource() }
@@ -143,12 +157,11 @@ sub POST {
     return '';
 }
 
-
 sub _entity_hash {
     my $self   = shift;
     my $entity = shift;
 
-    $entity->hash_representation();
+    return ref($entity) eq 'HASH' ? $entity : $entity->hash_representation();
 }
 
 sub _entities_for_query {
@@ -156,7 +169,7 @@ sub _entities_for_query {
 
     my $t = time_scope 'entities_for_query';
     my $search_query = $self->rest->query->param('q')
-                        || $self->rest->query->param('filter');
+                     || $self->rest->query->param('filter');
     my @entities;
 
     if (defined $search_query and length $search_query) {
@@ -167,10 +180,10 @@ sub _entities_for_query {
         # We want it to return the *correct* 500.
         my $order_by = undef;
         my $order    = $self->rest->query->param('order') || '';
-        my $offset   = $self->rest->query->param('offset') || 0;
-        my $count    = $self->rest->query->param('count') || 100;
+        my $offset   = $self->start_index;
+        my $count    = $self->items_per_page;
+        $count = $self->rest->query->param('limit') if (!$count); 
         my $type     = $self->rest->query->param('type');
-
         if ($order eq 'newest') {
             $order_by = 'last_edit_time DESC',
         } 
@@ -184,6 +197,10 @@ sub _entities_for_query {
             offset       => $offset,
             type         => $type,
         ) || [] };
+        $self->total_result_count(
+            Socialtext::Model::Pages->ActiveCount(
+              workspace_id => $self->hub->current_workspace->workspace_id,
+            ));
     }
 
     return @entities;
@@ -206,6 +223,7 @@ sub _searched_pages {
                 undef,
                 use_index => $index,
             );
+        $self->total_result_count($count);
         for my $hit (grep { $_->isa('Socialtext::Search::PageHit') } @$hits) {
             push @{$page_ids_by_workspace{$hit->workspace_name} ||= []}, $hit->page_uri;
         }
@@ -242,6 +260,11 @@ sub _searched_pages {
     return @all_pages;
 }
 
+sub _get_total_results {
+    my $self    = shift;
+    return $self->total_result_count;
+}
+
 sub _hub_for_hit {
     # Mostly, evilly, stolen from Socialtext::Formatter::WaflPhrase
     my ( $self, $hub, $workspace_name ) = @_;
@@ -259,5 +282,7 @@ sub _hub_for_hit {
     return $main->hub;
 }
 
+no Moose;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 1;

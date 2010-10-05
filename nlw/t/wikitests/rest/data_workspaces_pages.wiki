@@ -10,7 +10,7 @@ Not a perfect test case since we aren't counting the actual number of total page
 | GET | /data/workspaces/%%workspace%%/pages | application/json |
 | code-is | 200|
 | json-parse |
-| json-array-size | 100 |
+| json-array-size | 500 |
 
 | GET | /data/workspaces/%%workspace%%/pages?count=34 | application/json |
 | code-is | 200|
@@ -38,6 +38,16 @@ Not a complete test of the combination of ordering/limit/offset,but a stab
 | json-array-size | 34 |
 | body-like | qr/pagenew4.*pagenew3.*pagenew2.*pagenew1/ |
 
+| GET | /data/workspaces/%%workspace%%/pages?order=newest;limit=34;offset=1 | application/json |
+| code-is | 200|
+| json-parse |
+| json-array-size | 34 |
+| body-like | qr/pagenew3.*pagenew2.*pagenew1/ |
+| body-unlike | pagenew4 |
+| body-unlike | qr/startIndex/ | old limit,count params  means no startIndex |
+| body-unlike | qr/itemsPerPage/ | old limit,count params  means no itemsPerPage |
+| body-unlike | qr/totalResults/ | old limit,count params  means No totalResults |
+
 | GET | /data/workspaces/%%workspace%%/pages?order=newest;count=34;offset=1 | application/json |
 | code-is | 200|
 | json-parse |
@@ -45,4 +55,32 @@ Not a complete test of the combination of ordering/limit/offset,but a stab
 | body-like | qr/pagenew3.*pagenew2.*pagenew1/ |
 | body-unlike | pagenew4 |
 
+| GET | /data/workspaces/%%workspace%%/pages?order=newest;minimal_pages=1;filter=p | application/json |
+| code-is | 200|
+| json-parse |
+| body-unlike | qr/startIndex/ | minimal pages means no startIndex |
+| body-unlike | qr/itemsPerPage/ | minimal pages means no itemsPerPage |
+| body-unlike | qr/totalResults/ | minimal pages means No totalResults |
+
+| GET | /data/workspaces/%%workspace%%/pages?order=newest;count=3;startIndex=0;skipTotalResults=1 | application/json |
+| code-is | 200|
+| json-parse |
+| body-like | qr/startIndex/ | startIndex present with skipTotalresults |
+| body-like | qr/itemsPerPage/ | itemsPerPage present with skipTotalResults |
+| body-unlike | qr/totalResults/ | No totalResults entry with skipTotalResults |
+
+| st-process-jobs | PageIndex | | quiet |
+| GET | /data/workspaces/%%workspace%%/pages?order=newest;count=3;startIndex=0 | application/json |
+| code-is | 200|
+| json-parse |
+| body-like | qr/startIndex/ | startIndex present without filter |
+| body-like | qr/itemsPerPage/ | itemsPerPage present without filter |
+| body-like | qr/totalResults":754/ | totalresults present without filter |
+
+| GET | /data/workspaces/%%workspace%%/pages?q=light;count=3;startIndex=0 | application/json |
+| code-is | 200|
+| json-parse |
+| body-like | qr/startIndex/ | Start index present with q |
+| body-like | qr/itemsPerPage/ | itemsPerPage present with q |
+| body-like | qr/totalResults":75/ | totalresults present with q |
 
