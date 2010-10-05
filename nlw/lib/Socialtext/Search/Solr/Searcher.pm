@@ -117,6 +117,7 @@ sub _search {
     elsif ($opts{doctype}) {
         if ($opts{doctype} eq 'signal') {
             push @filter_query, "(doctype:signal OR doctype:signal_attachment)";
+            $field_boosts = '';
         }
         else {
             push @filter_query, "doctype:$opts{doctype}";
