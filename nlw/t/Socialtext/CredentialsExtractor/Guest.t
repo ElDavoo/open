@@ -3,10 +3,11 @@
 
 use strict;
 use warnings;
-use mocked 'Apache::Request', qw( get_log_reasons );
+use mocked 'Apache::Request';
 use Socialtext::CredentialsExtractor;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 2;
+use Socialtext::User;
+use Test::Socialtext tests => 1;
 
 ###############################################################################
 # Fixtures: base_config
@@ -19,6 +20,7 @@ fixtures(qw( base_config ));
 ### TEST DATA
 ###############################################################################
 my $creds_extractors = 'Guest';
+my $guest_user_id    = Socialtext::User->Guest->user_id;
 
 ###############################################################################
 # TEST: Always fails to authenticate
@@ -30,11 +32,7 @@ guest_is_always_failure: {
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $username
+    my $user_id
         = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $username, undef, 'Guest credentials are always "undef"';
-
-    # make sure that nothing got logged as a failure
-    my @reasons = get_log_reasons();
-    ok !@reasons, '... no failures logged';
+    is $user_id, $guest_user_id, 'Guest credentials extracted';
 }

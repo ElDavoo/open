@@ -3,11 +3,11 @@
 
 use strict;
 use warnings;
-use mocked 'Apache::Request', qw( get_log_reasons );
+use mocked 'Apache::Request';
 use MIME::Base64;
 use Socialtext::CredentialsExtractor;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 10;
+use Test::Socialtext tests => 4;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));
@@ -17,6 +17,8 @@ fixtures(qw( empty ));
 ###############################################################################
 my $valid_username = Test::Socialtext::User->test_username();
 my $valid_password = Test::Socialtext::User->test_password();
+my $valid_user_id  = Socialtext::User->new(username => $valid_username)->user_id;
+my $guest_user_id  = Socialtext::User->Guest->user_id;
 
 my $bad_username = 'unknown_user@socialtext.com';
 my $bad_password = '*bad-password*';
@@ -33,14 +35,10 @@ correct_username_and_password: {
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $username
+    my $user_id
         = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $username, $valid_username,
+    is $user_id, $valid_user_id,
         'extracted credentials when username+password are valid';
-
-    # make sure that nothing got logged as a failure
-    my @reasons = get_log_reasons();
-    ok !@reasons, '... no failures logged';
 }
 
 ###############################################################################
@@ -55,14 +53,8 @@ incorrect_password: {
     # extract the credentials
     my $username
         = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $username, undef,
+    is $username, $guest_user_id,
         'unable to extract credentials when password is incorrect';
-
-    # make sure that an appropriate failure reason was logged
-    my @reasons = get_log_reasons();
-    is scalar(@reasons), 1, '... one failure logged';
-    like $reasons[0], qr/unable to authenticate $valid_username for/,
-        '... ... noting failure to authenticate user';
 }
 
 ###############################################################################
@@ -75,16 +67,10 @@ unknown_username: {
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $username
+    my $user_id
         = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $username, undef,
+    is $user_id, $guest_user_id,
         'unable to extract credentials when username is unknown';
-
-    # make sure that an appropriate failure reason was logged
-    my @reasons = get_log_reasons();
-    is scalar(@reasons), 1, '... one failure logged';
-    like $reasons[0], qr/unable to authenticate $bad_username for/,
-        '... ... noting failure to authenticate user';
 }
 
 ###############################################################################
@@ -97,15 +83,10 @@ no_authentication_header_set: {
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $username
+    my $user_id
         = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $username, undef,
+    is $user_id, $guest_user_id,
         'unable to extract credentials when no Authen info provided';
-
-    # make sure that nothing got logged as a failure; if no Authen info is
-    # available the Credentials Extractor should exit early
-    my @reasons = get_log_reasons();
-    ok !@reasons, '... no failures logged';
 }
 
 

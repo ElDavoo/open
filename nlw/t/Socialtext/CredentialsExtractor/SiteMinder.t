@@ -14,6 +14,8 @@ fixtures(qw( base_config ));
 ## TEST DATA
 ###############################################################################
 my $valid_username   = Test::Socialtext::User->test_username();
+my $valid_user_id    = Socialtext::User->new(username => $valid_username)->user_id;
+my $guest_user_id    = Socialtext::User->Guest->user_id;
 my $bogus_username   = 'totally-bogus-unknown-user';
 my $creds_extractors = 'SiteMinder:Guest';
 
@@ -24,10 +26,10 @@ Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 no_credentials: {
     my $mock_request = Apache::Request->new();
 
-    my $username = Socialtext::CredentialsExtractor->ExtractCredentials(
+    my $user_id = Socialtext::CredentialsExtractor->ExtractCredentials(
         $mock_request,
     );
-    is $username, undef, 'No credentials provided, none found';
+    is $user_id, $guest_user_id, 'No credentials provided, none found';
 }
 
 ###############################################################################
@@ -37,10 +39,11 @@ siteminder_user_without_session: {
         SM_USER => $valid_username,
     );
 
-    my $username = Socialtext::CredentialsExtractor->ExtractCredentials(
+    my $user_id = Socialtext::CredentialsExtractor->ExtractCredentials(
         $mock_request,
     );
-    is $username, undef, 'User provided, but no running SiteMinder session';
+    is $user_id, $guest_user_id,
+        'User provided, but no running SiteMinder session';
 }
 
 ###############################################################################
@@ -51,10 +54,10 @@ siteminder_user_in_session: {
         SM_SERVERSESSIONID => 'abc123',
     );
 
-    my $username = Socialtext::CredentialsExtractor->ExtractCredentials(
+    my $user_id = Socialtext::CredentialsExtractor->ExtractCredentials(
         $mock_request,
     );
-    is $username, $valid_username, 'User provided, with SiteMinder session';
+    is $user_id, $valid_user_id, 'User provided, with SiteMinder session';
 }
 
 siteminder_user_in_session_with_domain: {
@@ -63,10 +66,10 @@ siteminder_user_in_session_with_domain: {
         SM_SERVERSESSIONID => 'abc123',
     );
 
-    my $username = Socialtext::CredentialsExtractor->ExtractCredentials(
+    my $user_id = Socialtext::CredentialsExtractor->ExtractCredentials(
         $mock_request,
     );
-    is $username, $valid_username, 'User provided w/ domain, with SiteMinder session';
+    is $user_id, $valid_user_id, 'User provided w/ domain, with SiteMinder session';
 }
 
 ###############################################################################
@@ -78,8 +81,8 @@ siteminder_session_without_user: {
         SM_SERVERSESSIONID => 'abc123',
     );
 
-    my $username = Socialtext::CredentialsExtractor->ExtractCredentials(
+    my $user_id = Socialtext::CredentialsExtractor->ExtractCredentials(
         $mock_request,
     );
-    is $username, undef, 'Session active, but unable to find username';
+    is $user_id, $guest_user_id, 'Session active, but unable to find username';
 }
