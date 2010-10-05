@@ -6,13 +6,16 @@ with 'Socialtext::CredentialsExtractor::Extractor';
 use Socialtext::HTTP::Cookie;
 
 sub uses_headers {
-    return qw(COOKIE);
+    # UA needed for ST::HTTP::Cookie to determine which UA cookie to use
+    # (NLW, or AIR)
+    return qw(COOKIE USER_AGENT);
 }
 
 sub extract_credentials {
     my ($class, $hdrs) = @_;
 
-    local $ENV{HTTP_COOKIE} = $hdrs->{COOKIE};
+    local $ENV{HTTP_COOKIE}     = $hdrs->{COOKIE}     || '';
+    local $ENV{HTTP_USER_AGENT} = $hdrs->{USER_AGENT} || '';
 
     my $user_id = Socialtext::HTTP::Cookie->GetValidatedUserId;
     return unless $user_id;
