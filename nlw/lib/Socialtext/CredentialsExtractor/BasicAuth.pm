@@ -7,7 +7,6 @@ use warnings;
 use Apache::Constants qw(OK);
 use MIME::Base64;
 use Readonly;
-use Socialtext::Authen;
 
 Readonly my $SERVICE => __PACKAGE__;
 
@@ -54,15 +53,9 @@ sub _authenticate_with {
 
 sub _authenticates {
     my ( $username, $password ) = @_;
-
-    my $auth = Socialtext::Authen->new();
-
-    return (
-        $auth->check_password(
-            username => $username,
-            password => $password,
-        )
-    );
+    my $user = Socialtext::User->new(username => $username);
+    return unless $user;
+    return $user->password_is_correct($password);
 }
 
 1;
