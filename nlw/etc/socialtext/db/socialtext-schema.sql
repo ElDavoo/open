@@ -1100,6 +1100,28 @@ CREATE TABLE signal_attachment (
     signal_id bigint NOT NULL
 );
 
+CREATE TABLE topic_signal_link (
+    signal_id integer NOT NULL,
+    href text NOT NULL,
+    title text
+);
+
+CREATE TABLE topic_signal_page (
+    signal_id integer NOT NULL,
+    workspace_id integer NOT NULL,
+    page_id text NOT NULL
+);
+
+CREATE VIEW signal_asset AS
+ ( SELECT topic_signal_link.signal_id, topic_signal_link.href, topic_signal_link.title, NULL AS workspace_id, NULL AS page_id, 0 AS attachment_id, 'weblink' AS "class"
+   FROM topic_signal_link
+UNION ALL 
+ SELECT topic_signal_page.signal_id, NULL AS href, NULL AS title, topic_signal_page.workspace_id, topic_signal_page.page_id, 0 AS attachment_id, 'wikilink' AS "class"
+   FROM topic_signal_page)
+UNION ALL 
+ SELECT signal_attachment.signal_id, NULL AS href, NULL AS title, NULL AS workspace_id, NULL AS page_id, signal_attachment.attachment_id, 'attachment' AS "class"
+   FROM signal_attachment;
+
 CREATE SEQUENCE signal_id_seq
     INCREMENT BY 1
     NO MAXVALUE
@@ -1125,18 +1147,6 @@ CREATE SEQUENCE tag_id_seq
 CREATE TABLE tag_people__person_tags (
     person_id integer NOT NULL,
     tag_id integer NOT NULL
-);
-
-CREATE TABLE topic_signal_link (
-    signal_id integer NOT NULL,
-    href text NOT NULL,
-    title text
-);
-
-CREATE TABLE topic_signal_page (
-    signal_id integer NOT NULL,
-    workspace_id integer NOT NULL,
-    page_id text NOT NULL
 );
 
 CREATE TABLE topic_signal_user (

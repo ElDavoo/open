@@ -18,6 +18,26 @@ CREATE INDEX ix_topic_signal_link_forward
 CREATE INDEX ix_topic_signal_link_reverse
 	    ON topic_signal_link (signal_id);
 
+CREATE VIEW signal_asset AS
+  SELECT signal_id, href, title,
+         NULL AS workspace_id, NULL AS page_id,
+         0 AS attachment_id,
+         'weblink' AS class
+   FROM topic_signal_link
+UNION ALL 
+  SELECT signal_id, NULL AS href, NULL AS title,
+         workspace_id, page_id,
+         0 AS attachment_id,
+         'wikilink' AS class
+   FROM topic_signal_page
+UNION ALL 
+  SELECT signal_id, NULL AS href, NULL AS title,
+         NULL AS workspace_id, NULL AS page_id,
+         attachment_id,
+         'attachment' AS class
+    FROM signal_attachment;
+;
+
 UPDATE "System"
    SET value = '127'
  WHERE field = 'socialtext-schema-version';
