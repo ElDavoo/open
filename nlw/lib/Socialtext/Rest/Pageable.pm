@@ -60,6 +60,12 @@ sub get_resource {
     @$results = map { $self->_entity_hash($_) } @$results;
     Socialtext::Timer->Pause('_entity_hash_map');
 
+    my $total_results;
+    unless ($self->rest->query->param('skipTotalResults')) {
+        $total_results = $self->_get_total_results;
+        $total_results = $total_results+0 if defined $total_results;
+    }
+
     if ($self->pageable and $content_type eq 'application/json') {
         if (defined $self->rest->query->param('startIndex')) {
             # Emit OpenSocial-compatible payload
@@ -67,9 +73,7 @@ sub get_resource {
                 startIndex => $self->start_index+0,
                 itemsPerPage => $self->items_per_page+0,
                 entry => $results,
-                ($self->rest->query->param('skipTotalResults')
-                    ? ()
-                    : (totalResults => $self->_get_total_results()+0)),
+                defined $total_results ? (totalResults => $total_results) : (),
             }
         }
         else {
