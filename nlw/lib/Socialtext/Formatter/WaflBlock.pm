@@ -54,14 +54,9 @@ use base 'Socialtext::Formatter::WaflBlock';
 use Class::Field qw( const );
 
 const wafl_id => 'pre';
-sub html_start {
-    my $self = shift;
-    return $self->SUPER::html_start() . "<pre>\n";
-}
-sub html_end {
-    my $self = shift;
-    return "</pre>".$self->SUPER::html_end();
-}
+const html_start => "<pre>\n";
+const html_end => "</pre>\n";
+
 
 ################################################################################
 package Socialtext::Formatter::Html;
