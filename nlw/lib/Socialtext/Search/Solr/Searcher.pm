@@ -165,6 +165,9 @@ sub _search {
         # qf = Query Fields (Boost)
         ($field_boosts ? (qf => "$field_boosts all") : ()),
 
+        # pf = Phrase Fields (Boost)
+        ($field_boosts ? (pf => "$field_boosts all") : ()),
+
         # mm = Minimum words that must match in a multi-word "dismax" query.
         # The default is 100% (all words must match), but we relax this to
         # 1 (any word matches) for compatibility with multi-word "standard"
