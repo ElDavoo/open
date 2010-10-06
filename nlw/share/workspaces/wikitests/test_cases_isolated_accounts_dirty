@@ -15,9 +15,10 @@
 | click_ok | link=Add Tag |  |
 | wait_for_element_visible_ok | st-tags-field | 30000 |
 | type_ok | st-tags-field | Tag 1 %%start_time%% |
-| click_ok | st-tags-plusbutton-link |
+| click_ok | st-tags-plusbutton-link |  |
 | wait_for_element_visible_ok | link=Tag 1 %%start_time%% | 30000 |
 
+| *Comment* | Test Case: Isolated Accounts Dirty Tag 2 a page |  |
 | open_ok | /%%ws_one%%/?%%page_two%% |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
 | click_ok | link=Add Tag |  |
@@ -26,24 +27,24 @@
 | click_ok | st-tags-plusbutton-link |
 | wait_for_element_visible_ok | link=Tag 2 %%start_time%% | 30000 |
 
+| *Comment* | Test Case: Isolated Accounts Dirty Tag 3 a page |  |
 | open_ok | /%%ws_one%%/?%%page_three%% |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
 | click_ok | link=Add Tag |  |
 | wait_for_element_visible_ok | st-tags-field | 30000 |
 | type_ok | st-tags-field | Tag 3 %%start_time%% |
-| click_ok | st-tags-plusbutton-link |
+| click_ok | st-tags-plusbutton-link |  |
 | wait_for_element_visible_ok | link=Tag 3 %%start_time%% | 30000 |
 
-| *Comment* | Test Case: Isolated Accounts Dirty Send signals |  |
-| open_ok | /st/signals |  |
-| st-name-widget | 1 | signals_widget |
-| st_send_signal_via_activities_widget | signals_widget | cinderalla %%start_time%% |
-| open_ok | /st/signals |  |
-| st_send_signal_via_activities_widget | signals_widget | sleeping beauty %%start_time%% mulan |
-| open_ok | /st/signals |  |
-| st_send_signal_via_activities_widget | signals_widget | sleeping beauty %%start_time%% the little mermaid |
-| open_ok | /st/signals |  |
-| st_send_signal_via_activities_widget | signals_widget | "test"{link: %%ws_one%% [%%page_one%%]} |
+| *Comment* | Test Case: Isolated Accounts Dirty Send signals |
+| open_ok | /st/signals |
+| st-send-signal-in-activities-widget | cinderalla %%start_time%% |
+| open_ok | /st/signals |
+| st-send-signal-in-activities-widget | sleeping beauty %%start_time%% mulan |
+| open_ok | /st/signals |
+| st-send-signal-in-activities-widget | sleeping beauty %%start_time%% the little mermaid |
+| open_ok | /st/signals |
+| st-send-signal-in-activities-widget | `"test"{link: %%ws_one%% [%%page_one%%]}` |
 
 | *Comment* | Test Case: Isolated Accounts Dirty Tag myself |  |
 | open_ok | /st/profile |  |
@@ -58,4 +59,4 @@
 | st-comment-on-page | /%%ws_one%%/?%%page_one%% | comment two |
 | st-comment-on-page | /%%ws_one%%/?%%page_one%% | comment three |
 
-| *Comment* | Test Case: Isolated Accounts Dirty (Complete) |  |
+| *Comment* | Test Case: Isolated Accounts Dirty COMPLETED |  |
