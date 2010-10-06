@@ -4,7 +4,8 @@ BEGIN;
 
 CREATE TABLE topic_signal_link (
     signal_id integer NOT NULL,
-    href text NOT NULL
+    href text NOT NULL,
+    title text
 );
 
 ALTER TABLE ONLY topic_signal_link

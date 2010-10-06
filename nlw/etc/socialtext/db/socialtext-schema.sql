@@ -1129,7 +1129,8 @@ CREATE TABLE tag_people__person_tags (
 
 CREATE TABLE topic_signal_link (
     signal_id integer NOT NULL,
-    href text NOT NULL
+    href text NOT NULL,
+    title text
 );
 
 CREATE TABLE topic_signal_page (
