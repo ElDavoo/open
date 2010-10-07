@@ -71,7 +71,7 @@ sub random_tags {
 }
 
 sub load_words {
-    open( my $fh, "/usr/share/dict/words");
+    open( my $fh, "/usr/share/dict/words") or die "Can't open dict file!";
     local $/ = undef;
     my $content = <$fh>;
     my @words = split "\n", $content;
