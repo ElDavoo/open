@@ -384,6 +384,7 @@ div#controls div#st-editing-tools-edit {
 
 div#controls div#st-editing-tools-edit {
        width: auto !important;
+       white-space: nowrap;
 }
 
 body#revisions div#controls div#st-editing-tools-edit, body#contentPage div#controls div#st-editing-tools-edit,body#dashBoard div#controls div#st-editing-tools-edit,body#settingsPage div#controls div#st-editing-tools-edit {
