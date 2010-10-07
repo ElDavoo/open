@@ -1,0 +1,17 @@
+| *Comment* | Test Case: Bare Account |
+
+| *Comment* | Test Case: Bare Account Create an account, ideally after a big test run has completed |
+| *Comment* | Test Case: Bare Account There should be no events available at all. Period. |
+
+| *Comment* | Test Case: Bare Account SETUP |  |
+| set | acct | bare-acct-%%start_time%% |
+| set | user | bare-user-%%start_time%%@matt.socialtext.net |
+| st-admin | create-account --name %%acct%% | was created |
+| st-admin | create-user --e %%user%% --p %%password%% --account %%acct%% | was created |
+
+| *Comment* | Test Case: Bare Account Check for text |  |
+| st-logoutin | %%user%% | %%password%% |
+| open_ok | /st/dashboard |  |
+| wait_for_text_present_ok | There are no events to display because no events have been created. | 30000 |
+
+| *Comment* | Test Case: Bare Account COMPLETED |

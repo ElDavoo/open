@@ -6,7 +6,7 @@ It should be included by the top-level replies testcase
 | set | frame_pause | 10 |
 | set | post_pause | 10 |
 
-| *Comment* | Test Case: Replies Seeder. speed %%speed%% frame_pause %%frame_pause%% post_pause %%post_pause%% |  |
+| *Comment* | Test Case: Replies Seeder. frame_pause %%frame_pause%% post_pause %%post_pause%% |  |
 
 | *Comment* | Test Case: Replies Seeder. These vars may come in from the ENV where wikitest is executed using `export selenium_var_shared_account=Ken1` |  |
 | set_default | shared_account | Replies-%%start_time%% |

@@ -127,6 +127,12 @@ sub _POST_json {
             $rest->header( -status => HTTP_400_Bad_Request );
             return "Could not add user to the account: $@";
         }
+
+        if ($user->is_deactivated) {
+            my $deleted_account = $user->primary_account;
+            $user->primary_account($account);
+            $deleted_account->remove_user(user => $user);
+        }
     }
 
     $rest->header( -status => HTTP_201_Created );

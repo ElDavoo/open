@@ -11,7 +11,7 @@ BEGIN {
         exit;
     }
     
-    plan tests => 115;
+    plan tests => 121;
 }
 
 use mocked 'Socialtext::People::Profile', qw(save_ok);
@@ -843,4 +843,30 @@ EOT
     is $profile->get_attr('position'), 'Captain',       'People position was updated';
     is $profile->get_attr('company'),  'Pirates R. Us', 'People company was updated';
     is $profile->get_attr('location'), 'High Seas',     'People location was updated';
+}
+
+Adding_a_deactivated_user: {
+    my $default_acct_id = Socialtext::Account->Deleted->account_id;
+    my $user = Socialtext::User->new(
+        username => 'ronnie',
+        primary_account_id => $default_acct_id,
+        is_deactivated => 1,
+    );
+    local $Socialtext::User::Users{ronnie} = $user;
+    my @successes;
+    my @failures;
+    my $acct = Socialtext::Account->create(name => "test-$$-2");
+    my $mass_add = Socialtext::MassAdd->new(
+        pass_cb => sub { push @successes, shift },
+        fail_cb => sub { push @failures,  shift },
+        account => $acct,
+    );
+    $mass_add->add_user(%userinfo);
+    is_deeply \@successes, ['Updated user ronnie'], 'success message ok';
+    logged_like 'info', qr/Updated user ronnie/, '... message also logged';
+    is_deeply \@failures, [], 'no failure messages';
+    my $role = $acct->role_for_user($user);
+    ok $role;
+    is $role->name, 'member', 'user got added to the account';
+    ok !$user->is_deactivated, "ronnie got re-activated";
 }

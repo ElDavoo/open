@@ -214,7 +214,8 @@ sub _searched_pages {
     my %page_ids_by_workspace;
     eval { 
         my $index = $self->rest->query->param('index');
-        my ($hits, $count) = search_on_behalf(
+        my $count = $self->rest->query->param('count') || 100;
+        my ($hits, $hits_count) = search_on_behalf(
                 $self->hub->current_workspace->name,
                 $search_query,
                 ($self->rest->query->param('scope') || '_'),
@@ -222,6 +223,7 @@ sub _searched_pages {
                 undef,
                 undef,
                 use_index => $index,
+                limit => $count,
             );
         $self->total_result_count($count);
         for my $hit (grep { $_->isa('Socialtext::Search::PageHit') } @$hits) {
