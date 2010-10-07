@@ -15,7 +15,6 @@ sub extract_credentials {
     my ($class, $hdrs) = @_;
 
     # Get the "Authorization" header and make sure that its BasicAuth
-# XXX: multiple "Authorization" headers?
     my $authz = $hdrs->{AUTHORIZATION};
     return unless $authz;
     return unless ($authz =~ s/^\s*Basic\s+//); # check + strip in one step
