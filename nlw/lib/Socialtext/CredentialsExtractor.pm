@@ -24,16 +24,9 @@ sub _drivers {
 }
 
 sub ExtractCredentials {
-    my $class   = shift;
-    my $request = shift;
-
-    my %headers_in = $request->headers_in;
-    my %hdrs = (
-        (map { _key($_) => $ENV{$_} } keys %ENV),
-        (map { _key($_) => $headers_in{$_} } keys %headers_in)
-    );
-
-    return $class->_first('extract_credentials', \%hdrs);
+    my $class = shift;
+    my $hdrs  = shift;
+    return $class->_first('extract_credentials', $hdrs);
 }
 
 sub _key {
@@ -55,25 +48,48 @@ credentials from a Request
 
   use Socialtext::CredentialsExtractor;
 
-  my $username_or_id = Socialtext::CredentialsExtractor->ExtractCredentials(
-    $request,
-  );
+  my $creds = Socialtext::CredentialsExtractor->ExtractCredentials($headers);
 
-  die "No creds, can't do anything" if !$credentials;
+  die "No creds, can't do anything" unless ($creds->{valid});
 
 =head1 DESCRIPTION
 
 This class provides a hook point for registering new means of gathering
-credentials from a request object. 
+credentials from a hash-ref of HTTP headers and Environment Variables.
 
 =head1 METHODS
 
-=head2 Socialtext::CredentialsExtractor->ExtractCredentials
+=head2 Socialtext::CredentialsExtractor->ExtractCredentials($headers)
 
-Returns the first defined set of credentials it can.
+Processes the provided hash-ref of C<$headers> with the list of configured
+Credentials Extractors (see L<Socialtext::AppConfig>), and returns a data
+structure outlining the validity of the credentials found:
 
-Individual plugin classes are expected to implement a method called
-'extract_credentials' which returns a scalar, either username or user_id.
+  {
+      valid: 1,         # true/false; are the creds valid?
+      valid_for: 60,    # seconds that these creds can be considered valid
+      user_id: 123,     # User Id of verified User
+      needs_renewal: 0, # true/false; should creds be re-verified ?
+  }
+
+The provided hash-ref of C<$headers> is to be encoded such that:
+
+=over
+
+=item *
+
+Header names are transformed such that they're in all upper-case, and such
+that all "-" characters are replaced with "_".
+
+=item *
+
+Header values are flattened into a single line,
+
+=item *
+
+Multiple values are separated by a ";".
+
+=back
 
 =head2 base_package()
 
