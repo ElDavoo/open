@@ -3,11 +3,10 @@
 
 use strict;
 use warnings;
-use mocked 'Apache::Request';
 use Socialtext::CredentialsExtractor;
 use Socialtext::AppConfig;
 use Socialtext::User;
-use Test::Socialtext tests => 1;
+use Test::Socialtext tests => 2;
 
 ###############################################################################
 # Fixtures: base_config
@@ -25,14 +24,11 @@ my $guest_user_id    = Socialtext::User->Guest->user_id;
 ###############################################################################
 # TEST: Always fails to authenticate
 guest_is_always_failure: {
-    # create a mocked Apache::Request to extract the credentials from
-    my $mock_request = Apache::Request->new();
-
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $user_id
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $user_id, $guest_user_id, 'Guest credentials extracted';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( { } );
+    ok $creds->{valid}, 'extracted credentials';
+    is $creds->{user_id}, $guest_user_id, '... the Guest';
 }

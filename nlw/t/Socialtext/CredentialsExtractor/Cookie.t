@@ -3,12 +3,11 @@
 
 use strict;
 use warnings;
-use mocked 'Apache::Request';
 use Digest::SHA;
 use Socialtext::HTTP::Cookie qw(USER_DATA_COOKIE AIR_USER_COOKIE);
 use Socialtext::AppConfig;
 use Socialtext::CredentialsExtractor;
-use Test::Socialtext tests => 5;
+use Test::Socialtext tests => 10;
 use Test::Socialtext::User;
 
 ###############################################################################
@@ -43,15 +42,16 @@ cookie_ok: {
         $cookie_name,
         Socialtext::HTTP::Cookie->BuildCookieValue(user_id => $valid_user_id),
     );
-    my $mock_request = Apache::Request->new(Cookie => $cookie);
 
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $user_id
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $user_id, $valid_user_id, 'extracted credentials from HTTP cookie';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        COOKIE => $cookie,
+    } );
+    ok $creds->{valid}, 'extracted credentials from HTTP cookie';
+    is $creds->{user_id}, $valid_user_id, '... the expected User Id';
 }
 
 ###############################################################################
@@ -62,16 +62,16 @@ cookie_invalid: {
         $cookie_name,
         'THIS-IS-A-BAD-COOKIE',
     );
-    my $mock_request = Apache::Request->new(Cookie => $cookie);
 
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $user_id
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $user_id, $guest_user_id,
-        'unable to extract credentials when cookie invalid';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        COOKIE => $cookie,
+    } );
+    ok !$creds->{valid}, 'unable to extract credentials from HTTP cookie';
+    like $creds->{reason}, qr/invalid/, '... invalid cookie';
 }
 
 ###############################################################################
@@ -81,11 +81,9 @@ cookie_missing: {
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $mock_request = Apache::Request->new();
-    my $user_id
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $user_id, $guest_user_id,
-        'unable to extract credentials when cookie is missing';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( { } );
+    ok $creds->{valid}, 'extracted credentials from HTTP cookie';
+    is $creds->{user_id}, $guest_user_id, '... the Guest; fall-through';
 }
 
 ###############################################################################
@@ -106,25 +104,21 @@ adobe_air_separate_cookie: {
 
     # TEST: AIR client doesn't get to use standard HTTP cookie
     {
-        my $mock_request = Apache::Request->new(
-            'Cookie'     => $cookie,
-            'User-Agent' => $air_user_agent,
-        );
-        my $user_id
-            = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-        is $user_id, $guest_user_id,
-            'AIR client does not use regular HTTP cookie';
+        my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
+            USER_AGENT => $air_user_agent,
+            COOKIE     => $cookie,
+        } );
+        ok $creds->{valid}, 'extracted credentials from AIR cookie';
+        is $creds->{user_id}, $guest_user_id, '... the Guest; fall-through';
     }
 
     # TEST: AIR client uses its own HTTP cookie
     {
-        my $mock_request = Apache::Request->new(
-            'Cookie'     => $air_cookie,
-            'User-Agent' => $air_user_agent,
-        );
-        my $user_id
-            = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-        is $user_id, $valid_user_id,
-            'AIR client uses its own HTTP cookie';
+        my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
+            USER_AGENT => $air_user_agent,
+            COOKIE     => $air_cookie,
+        } );
+        ok $creds->{valid}, 'extracted credentials from AIR cookie';
+        is $creds->{user_id}, $valid_user_id, '... the expected User Id';
     }
 }

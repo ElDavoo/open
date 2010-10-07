@@ -3,10 +3,9 @@
 
 use strict;
 use warnings;
-use mocked 'Apache::Request';
 use Socialtext::CredentialsExtractor;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 2;
+use Test::Socialtext tests => 4;
 use Test::Socialtext::User;
 
 ###############################################################################
@@ -27,32 +26,25 @@ my $creds_extractors = 'Apache:Guest';
 ###############################################################################
 # TEST: Apache has authenticated User
 apache_has_authenticated: {
-    # create a mocked Apache::Request to extract the credentials from
-    local $ENV{REMOTE_USER} = $valid_username,
-    my $mock_request = Apache::Request->new();
-
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $user_id
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $user_id, $valid_user_id, 'extracted credentials from Apache';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        REMOTE_USER => $valid_username,
+    } );
+    ok $creds->{valid}, 'extracted credentials from Apache';
+    is $creds->{user_id}, $valid_user_id, '... with expected User Id';
 }
 
 ###############################################################################
 # TEST: Apache has not authenticated User
 apache_has_not_authenticated: {
-    # create a mocked Apache::Request to extract the credentials from
-    delete local $ENV{REMOTE_USER};
-    my $mock_request = Apache::Request->new();
-
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $user_id
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $user_id, $guest_user_id,
-        'unable to extract credentials; Apache did not authentticate';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( { } );
+    ok $creds->{valid}, 'extracted credentials from Apache';
+    is $creds->{user_id}, $guest_user_id, '... the Guest; fall-through';
 }
