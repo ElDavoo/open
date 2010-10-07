@@ -213,13 +213,13 @@ sub do_work {
         }
         else {
             return if $OnceMode;
-            st_log->debug("Ceqlotron worker: no jobs");
+            # st_log->debug("Ceqlotron worker: no jobs");
             $sleep_for = Socialtext::AppConfig->ceqlotron_polling_period;
         }
 
         # if we're going to loop again...
         if ($jobs_remaining && !$ExitPlease) {
-            st_log->debug("Ceqlotron worker: sleeping");
+            # st_log->debug("Ceqlotron worker: sleeping");
             Socialtext::Cache->clear();
             invalidate_dbh();
             sleep $sleep_for;
