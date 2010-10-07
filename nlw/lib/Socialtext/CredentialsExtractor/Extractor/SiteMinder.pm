@@ -4,6 +4,8 @@ package Socialtext::CredentialsExtractor::Extractor::SiteMinder;
 use Moose;
 with 'Socialtext::CredentialsExtractor::Extractor';
 
+use Socialtext::Log qw(st_log);
+
 our $USER_HEADER = 'SM_USER';
 our $SESS_HEADER = 'SM_SERVERSESSIONID';
 
@@ -20,8 +22,7 @@ sub extract_credentials {
     # logs out it is possible to still have an SM_USER header, but there won't
     # be an active Session any more.
     unless ($hdrs->{$SESS_HEADER}) {
-        # no active SiteMinder session; skip
-        # XXX: warn "No active SiteMinder session.\n";
+        st_log->debug("No active SiteMinder session; skipping");
         return;
     }
 
@@ -29,8 +30,7 @@ sub extract_credentials {
     my $username = $hdrs->{$USER_HEADER};
     $username =~ s/^[^\\]+\\// if $username; # remove a DOMAIN\ prefix if any
     unless ($username) {
-        # no username provided for SiteMinder session
-        # XXX: warn "$USER_HEADER header missing or empty\n";
+        st_log->debug("SiteMinder $USER_HEADER missing or empty");
         return;
     }
 
