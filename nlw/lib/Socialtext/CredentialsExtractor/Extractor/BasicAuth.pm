@@ -22,12 +22,16 @@ sub extract_credentials {
 
     # Grab the user/pass out of the header
     my ($username, $password) = split /:/, decode_base64($authz), 2;
-    return unless ($username && $password);
+    unless ($username && $password) {
+        return $class->invalid_creds(reason => 'missing username or password')
+    }
 
     # Check that the user/pass is valid
     my $user = Socialtext::User->new(username => $username);
-    return $user->user_id if ($user && $user->password_is_correct($password));
-    return;
+    if ($user && $user->password_is_correct($password)) {
+        return $class->valid_creds(user_id => $user->user_id);
+    }
+    return $class->invalid_creds(reason => 'invalid username or password');
 }
 
 no Moose;

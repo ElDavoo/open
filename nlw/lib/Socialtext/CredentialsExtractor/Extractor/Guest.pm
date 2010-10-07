@@ -9,7 +9,9 @@ use Socialtext::User;
 sub uses_headers { }
 
 sub extract_credentials {
-    return Socialtext::User->Guest->user_id();
+    my $class = shift;
+    my $guest = Socialtext::User->Guest;
+    return $class->valid_creds(user_id => $guest->user_id);
 }
 
 1;

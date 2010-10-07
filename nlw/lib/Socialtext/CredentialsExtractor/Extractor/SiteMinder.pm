@@ -20,8 +20,8 @@ sub extract_credentials {
     # logs out it is possible to still have an SM_USER header, but there won't
     # be an active Session any more.
     unless ($hdrs->{$SESS_HEADER}) {
-# XXX: exposed warn statement
-        warn "No active SiteMinder session.\n";
+        # no active SiteMinder session; skip
+        # XXX: warn "No active SiteMinder session.\n";
         return;
     }
 
@@ -29,13 +29,15 @@ sub extract_credentials {
     my $username = $hdrs->{$USER_HEADER};
     $username =~ s/^[^\\]+\\// if $username; # remove a DOMAIN\ prefix if any
     unless ($username) {
-# XXX: exposed warn statement
-        warn "$USER_HEADER header missing or empty\n";
+        # no username provided for SiteMinder session
+        # XXX: warn "$USER_HEADER header missing or empty\n";
         return;
     }
 
     # Get the UserId for the User.
-    return $class->username_to_user_id($username);
+    my $user_id = $class->username_to_user_id($username);
+    return $class->valid_creds(user_id => $user_id) if ($user_id);
+    return $class->invalid_creds(reason => "invalid username: $username");
 }
 
 1;

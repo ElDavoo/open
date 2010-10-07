@@ -4,6 +4,7 @@ package Socialtext::CredentialsExtractor::Extractor::Cookie;
 use Moose;
 with 'Socialtext::CredentialsExtractor::Extractor';
 
+use Socialtext::JSON qw(json_bool);
 use Socialtext::HTTP::Cookie;
 
 sub uses_headers {
@@ -18,9 +19,22 @@ sub extract_credentials {
     local $ENV{HTTP_COOKIE}     = $hdrs->{COOKIE}     || '';
     local $ENV{HTTP_USER_AGENT} = $hdrs->{USER_AGENT} || '';
 
+    unless (Socialtext::HTTP::Cookie->AuthCookiePresent) {
+        # No cookie; skip this Creds Extractor.
+        return;
+    }
+
     my $user_id = Socialtext::HTTP::Cookie->GetValidatedUserId;
-    return unless $user_id;
-    return $user_id;
+    unless ($user_id) {
+        return $class->invalid_creds(reason => 'invalid cookie');
+    }
+
+    my $needs_renewal = Socialtext::HTTP::Cookie->NeedsRenewal;
+    return $class->valid_creds(
+        user_id       => $user_id,
+        needs_renewal => json_bool($needs_renewal),
+        valid_for     => 60,             # XXX: let userd client cache for 60s
+    );
 }
 
 no Moose;
