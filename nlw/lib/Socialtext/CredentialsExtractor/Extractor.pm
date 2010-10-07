@@ -25,21 +25,21 @@ sub username_to_user_id {
 # Returns "valid" response.
 sub valid_creds {
     my $class = shift;
-    my @extra = @_;
+    my %extra = @_;
     return {
         valid         => json_true(),
         needs_renewal => json_false(),
-        @extra,
+        %extra,
     };
 }
 
 # Returns "invalid" response.
 sub invalid_creds {
     my $class = shift;
-    my @extra = @_;
+    my %extra = @_;
     return {
         valid => json_false(),
-        @extra,
+        %extra,
     };
 }
 
